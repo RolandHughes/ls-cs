@@ -43,7 +43,7 @@ ninja
 # This QA_RPATHS variable is a bitmask override for certain checks.
 #
 # TODO:: See if we cannot completely remove $ORIGIN for BUILDING_RPM
-#        Should be able to 
+#        Should be able to
 #
 QA_RPATHS=\$[0x0023]
 
@@ -54,6 +54,7 @@ ninja install
 #
 sed -i 's#${_IMPORT_PREFIX}/include;#${_IMPORT_PREFIX}/include/copperspice;#g' "%{buildroot}/usr/%{_lib}/cmake/CopperSpice/CopperSpiceLibraryTargets.cmake"
 sed -i 's#${_IMPORT_PREFIX}/include/Qt#${_IMPORT_PREFIX}/include/copperspice/Qt#g' "%{buildroot}/usr/%{_lib}/cmake/CopperSpice/CopperSpiceLibraryTargets.cmake"
+sed -i 's#/usr/lib64/glib-2.0/include/copperspice#/usr/lib64/glib-2.0/include#g' "%{buildroot}/usr/%{_lib}/cmake/CopperSpice/CopperSpiceLibraryTargets.cmake"
 
 #  Fedora screwed the pooch, at least with 36 and possibly later. The UsrMove proposal went in and now
 #  /bin    ->  /usr/bin
