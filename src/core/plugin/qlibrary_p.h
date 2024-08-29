@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -36,14 +36,13 @@
 
 class QLibraryStore;
 
-bool qt_debug_component();
-
 class QLibraryHandle
 {
-   enum {IsAPlugin, IsNotAPlugin, MightBeAPlugin } pluginState;
-
  public:
-    enum UnloadFlag { UnloadSys, NoUnloadSys };
+   enum UnloadFlag {
+      UnloadSys,
+      NoUnloadSys
+   };
 
    bool tryload();
    bool loadPlugin();                              // loads and resolves instance
@@ -59,7 +58,7 @@ class QLibraryHandle
    void setLoadHints(QLibrary::LoadHints lh);
 
    static QLibraryHandle *findOrLoad(const QString &fileName, const QString &version = QString(),
-                  QLibrary::LoadHints loadHints = Qt::EmptyFlag);
+         QLibrary::LoadHints loadHints = Qt::EmptyFlag);
 
    static QStringList suffixes_sys(const QString &fullVersion);
    static QStringList prefixes_sys();
@@ -68,12 +67,10 @@ class QLibraryHandle
    bool isPlugin();
 
 #ifdef Q_OS_WIN
-   HINSTANCE
+   HINSTANCE pHnd;
 #else
-   void *
+   void *pHnd;
 #endif
-
-   pHnd;
 
    QString fileName;
    QString qualifiedFileName;
@@ -85,6 +82,12 @@ class QLibraryHandle
    QPointer<QObject> pluginObj;
 
  private:
+   enum PluginState {
+      IsAPlugin,
+      IsNotAPlugin,
+      MightBeAPlugin
+   };
+
    explicit QLibraryHandle(const QString &canonicalFileName, const QString &version, QLibrary::LoadHints loadHints);
    ~QLibraryHandle();
 
@@ -93,6 +96,8 @@ class QLibraryHandle
    bool load_sys();
    bool unload_sys();
    void *resolve_sys(const QString &symbol);
+
+   PluginState pluginState;
 
    QAtomicInt loadHintsInt;
 

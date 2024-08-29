@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -40,7 +40,7 @@ class Q_NETWORK_EXPORT QAuthenticator
    QAuthenticator &operator=(const QAuthenticator &other);
 
    bool operator==(const QAuthenticator &other) const;
-   inline bool operator!=(const QAuthenticator &other) const {
+   bool operator!=(const QAuthenticator &other) const {
       return !operator==(other);
    }
 

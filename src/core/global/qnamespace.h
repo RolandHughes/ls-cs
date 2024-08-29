@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -80,7 +80,7 @@ class Q_CORE_EXPORT Qt
          transparent
       };
 
-      enum KeyboardModifier {
+      enum KeyboardModifier : uint32_t {
          NoModifier           = 0x00000000,
          ShiftModifier        = 0x02000000,
          ControlModifier      = 0x04000000,
@@ -732,9 +732,7 @@ class Q_CORE_EXPORT Qt
       Key_division = 0x0f7,
       Key_ydiaeresis = 0x0ff,
 
-      // International input method support (X keycode - 0xEE00, the
-      // definition follows Qt/Embedded 2.3.7) Only interesting if
-      // you are writing your own input method
+      // International input method support, only interesting when writing a custom input method
 
       // International & multi-key character composition
       Key_AltGr               = 0x01001103,
@@ -1062,7 +1060,7 @@ class Q_CORE_EXPORT Qt
    CORE_CS_ENUM(BrushStyle)
 
    CORE_CS_REGISTER_ENUM(
-      enum BrushStyle {                     // brush style
+      enum BrushStyle {                  // brush style
          NoBrush,
          SolidPattern,
          Dense1Pattern,
@@ -1539,7 +1537,7 @@ class Q_CORE_EXPORT Qt
    };
    using MatchFlags = QFlags<MatchFlag>;
 
-   typedef void *HANDLE;
+   using HANDLE = void *;
 
    CORE_CS_ENUM(WindowModality)
 
@@ -1645,8 +1643,8 @@ class Q_CORE_EXPORT Qt
    };
 
    enum GestureFlag {
-      DontStartGestureOnChildren = 0x01,
-      ReceivePartialGestures     = 0x02,
+      DontStartGestureOnChildren       = 0x01,
+      ReceivePartialGestures           = 0x02,
       IgnoredGesturesPropagateToParent = 0x04
    };
    using GestureFlags = QFlags<GestureFlag>;
@@ -1661,8 +1659,7 @@ class Q_CORE_EXPORT Qt
       RotateNativeGesture,
       SwipeNativeGesture
    };
-
-#endif // QT_NO_GESTURES
+#endif
 
    enum NavigationMode {
       NavigationModeNone,
@@ -1707,9 +1704,11 @@ class Q_CORE_EXPORT Qt
    };
    using MouseEventFlags = QFlags<MouseEventFlag>;
 
-
-   // following enum and 3 methods declarations moved from gui/text/qtextdocument.h
-   enum HitTestAccuracy { ExactHit, FuzzyHit };
+   // following enum and 3 method declarations were moved from gui/text/qtextdocument.h
+   enum HitTestAccuracy {
+      ExactHit,
+      FuzzyHit
+   };
 
    static bool mightBeRichText(const QString &text);
    static QString convertFromPlainText(const QString &plain, WhiteSpaceMode mode = WhiteSpacePre);
@@ -1794,7 +1793,7 @@ Q_DECLARE_OPERATORS_FOR_FLAGS(Qt::MouseEventFlags)
    Q_DECLARE_OPERATORS_FOR_FLAGS(Qt::GestureFlags)
 #endif
 
-typedef bool (*qInternalCallback)(void **);
+using qInternalCallback = bool (*)(void **);
 
 class Q_CORE_EXPORT QInternal
 {

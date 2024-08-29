@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -34,7 +34,6 @@ struct QSimplexVariable {
    int index;
 };
 
-
 /*
   internal
 
@@ -47,13 +46,15 @@ struct QSimplexVariable {
     Where (ci, Xi) are the pairs in "variables" and K the real "constant".
 */
 struct QSimplexConstraint {
-   QSimplexConstraint() : constant(0), ratio(Equal), artificial(nullptr) {}
-
    enum Ratio {
       LessOrEqual = 0,
       Equal,
       MoreOrEqual
    };
+
+   QSimplexConstraint()
+      : constant(0), ratio(Equal), artificial(nullptr)
+   { }
 
    QHash<QSimplexVariable *, qreal> variables;
    qreal constant;
@@ -88,7 +89,7 @@ struct QSimplexConstraint {
       }
    }
 
-#ifdef QT_DEBUG
+#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
    QString toString() {
       QString result;
       result += QString::fromLatin1("-- QSimplexConstraint %1 --").formatArg(quintptr(this), 0, 16);
@@ -133,6 +134,11 @@ class QSimplex
    void dumpMatrix();
 
  private:
+   enum SolverFactor {
+      Minimum = -1,
+      Maximum = 1
+   };
+
    // Matrix handling
    inline qreal valueAt(int row, int column);
    inline void setValueAt(int row, int column, qreal value);
@@ -151,7 +157,6 @@ class QSimplex
    void clearDataStructures();
    void solveMaxHelper();
 
-   enum SolverFactor { Minimum = -1, Maximum = 1 };
    qreal solver(SolverFactor factor);
 
    void collectResults();

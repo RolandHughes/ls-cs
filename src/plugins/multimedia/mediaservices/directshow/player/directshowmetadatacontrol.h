@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -40,17 +40,17 @@ class DirectShowMetaDataControl : public QMetaDataReaderControl
    DirectShowMetaDataControl(QObject *parent = nullptr);
    ~DirectShowMetaDataControl();
 
-   bool isMetaDataAvailable() const;
+   bool isMetaDataAvailable() const override;
 
-   QVariant metaData(const QString &key) const;
-   QStringList availableMetaData() const;
+   QVariant metaData(const QString &key) const override;
+   QStringList availableMetaData() const override;
 
    void reset();
    void updateMetadata(IFilterGraph2 *graph, IBaseFilter *source,
       const QString &fileSrc = QString());
 
  protected:
-   void customEvent(QEvent *event);
+   void customEvent(QEvent *event) override;
 
  private:
    void setMetadataAvailable(bool available);

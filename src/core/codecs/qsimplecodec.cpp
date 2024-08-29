@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -650,7 +650,6 @@ static const struct {
       }
    },
 
-
    // this one is generated from the charmap file located in /usr/share/i18n/charmaps
    // on most Linux distributions. The thai character set tis620 is byte by byte equivalent
    // to iso8859-11, so we name it 8859-11 here, but recognise the name tis620 too.
@@ -751,6 +750,7 @@ static QByteArray *buildReverseMap(int forwardIndex)
 
    for (i = 128; i < 256; i++) {
       int u = unicodevalues[forwardIndex].values[i - 128];
+
       if (u < m) {
          (*map)[u] = (char)(unsigned char)(i);
       }
@@ -773,7 +773,7 @@ QString QSimpleTextCodec::convertToUnicode(const char *chars, int len, Converter
          retval.append(unicodevalues[forwardIndex].values[c[i] - 128]);
 
       } else {
-        retval.append(c[i]);
+         retval.append(c[i]);
       }
    }
 

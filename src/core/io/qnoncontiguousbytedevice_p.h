@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,11 +24,12 @@
 #ifndef QNONCONTIGUOUSBYTEDEVICE_P_H
 #define QNONCONTIGUOUSBYTEDEVICE_P_H
 
-#include <qobject.h>
-#include <qbytearray.h>
 #include <qbuffer.h>
+#include <qbytearray.h>
 #include <qiodevice.h>
+#include <qobject.h>
 #include <qsharedpointer.h>
+
 #include <qringbuffer_p.h>
 
 class Q_CORE_EXPORT QNonContiguousByteDevice : public QObject
@@ -48,7 +49,7 @@ class Q_CORE_EXPORT QNonContiguousByteDevice : public QObject
 
    virtual qint64 size() = 0;
    virtual qint64 pos() {
-       return -1;
+      return -1;
    }
 
    virtual ~QNonContiguousByteDevice();
@@ -114,10 +115,9 @@ class QNonContiguousByteDeviceRingBufferImpl : public QNonContiguousByteDevice
    qint64 currentPosition;
 };
 
-
 class QNonContiguousByteDeviceIoDeviceImpl : public QNonContiguousByteDevice
 {
-  CORE_CS_OBJECT(QNonContiguousByteDeviceIoDeviceImpl)
+   CORE_CS_OBJECT(QNonContiguousByteDeviceIoDeviceImpl)
 
  public:
    QNonContiguousByteDeviceIoDeviceImpl(QIODevice *d);

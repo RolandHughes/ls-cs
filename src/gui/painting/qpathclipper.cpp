@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -49,7 +49,7 @@
 
 static inline bool fuzzyIsNull(qreal d)
 {
-   if (sizeof(qreal) == sizeof(double)) {
+   if constexpr (sizeof(qreal) == sizeof(double)) {
       return qAbs(d) <= 1e-12;
    } else {
       return qAbs(d) <= 1e-5f;
@@ -61,7 +61,6 @@ static inline bool comparePoints(const QPointF &a, const QPointF &b)
    return fuzzyIsNull(a.x() - b.x()) && fuzzyIsNull(a.y() - b.y());
 }
 
-//#define QDEBUG_CLIPPER
 static qreal dot(const QPointF &a, const QPointF &b)
 {
    return a.x() * b.x() + a.y() * b.y();
@@ -1242,8 +1241,9 @@ int QWingedEdge::addEdge(int fi, int si)
    QPathVertex *vertices[2] = { fp, sp };
    QPathEdge::Direction dirs[2] = { QPathEdge::Backward, QPathEdge::Forward };
 
-#ifdef QDEBUG_CLIPPER
-   printf("** Adding edge %d / vertices: %.07f %.07f, %.07f %.07f\n", ei, fp->x, fp->y, sp->x, sp->y);
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+   qDebug("QWingedEdge::addEdge() Adding edge %d, vertices = %.07f %.07f, %.07f %.07f",
+         ei, fp->x, fp->y, sp->x, sp->y);
 #endif
 
    for (int i = 0; i < 2; ++i) {
@@ -1693,14 +1693,6 @@ bool QPathClipper::doClip(QWingedEdge &list, ClipperMode mode)
    std::sort(y_coords.begin(), y_coords.end());
    y_coords.erase(std::unique(y_coords.begin(), y_coords.end(), fuzzyCompare), y_coords.end());
 
-#ifdef QDEBUG_CLIPPER
-   printf("sorted y coords:\n");
-
-   for (int i = 0; i < y_coords.size(); ++i) {
-      printf("%.9f\n", y_coords[i]);
-   }
-#endif
-
    bool found;
 
    do {
@@ -1757,10 +1749,6 @@ bool QPathClipper::doClip(QWingedEdge &list, ClipperMode mode)
             }
          }
 
-#ifdef QDEBUG_CLIPPER
-         printf("y: %.9f, gap: %.9f\n", bestY, biggestGap);
-#endif
-
          if (handleCrossingEdges(list, bestY, mode) && mode == CheckMode) {
             return true;
          }
@@ -1791,8 +1779,8 @@ static void traverse(QWingedEdge &list, int edge, QPathEdge::Traversal traversal
 
       ep->flag |= (flag | (flag << 4));
 
-#ifdef QDEBUG_CLIPPER
-      qDebug() << "traverse: adding edge " << status.edge << ", mask:" << (flag << 4) << ep->flag;
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+      qDebug() << "traverse() adding edge = " << status.edge << ", mask = " << (flag << 4) << ep->flag;
 #endif
 
       status = list.next(status);
@@ -1876,17 +1864,18 @@ bool QPathClipper::handleCrossingEdges(QWingedEdge &list, qreal y, ClipperMode m
 {
    QVector<QCrossingEdge> crossings = findCrossings(list, y);
 
-   Q_ASSERT(!crossings.isEmpty());
+   Q_ASSERT(! crossings.isEmpty());
+
    std::sort(crossings.begin(), crossings.end());
 
    int windingA = 0;
    int windingB = 0;
-
    int windingD = 0;
 
-#ifdef QDEBUG_CLIPPER
-   qDebug() << "crossings:" << crossings.size();
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+   qDebug() << "QPathClipper::handleCrossingEdges() Crossing = " << crossings.size();
 #endif
+
    for (int i = 0; i < crossings.size() - 1; ++i) {
       int ei = crossings.at(i).edge;
       const QPathEdge *edge = list.edge(ei);
@@ -1906,11 +1895,6 @@ bool QPathClipper::handleCrossingEdges(QWingedEdge &list, qreal y, ClipperMode m
       const bool inside = bool_op(inA, inB, op);
       const bool add = inD ^ inside;
 
-#ifdef QDEBUG_CLIPPER
-      printf("y %f, x %f, inA: %d, inB: %d, inD: %d, inside: %d, flag: %x, bezier: %p, edge: %d\n", y, crossings.at(i).x, inA,
-         inB, inD, inside, edge->flag, edge->bezier, ei);
-#endif
-
       if (add) {
          if (mode == CheckMode) {
             return true;
@@ -1920,19 +1904,20 @@ bool QPathClipper::handleCrossingEdges(QWingedEdge &list, qreal y, ClipperMode m
          qreal y1 = list.vertex(edge->second)->y;
 
          if (y0 < y1) {
-            if (!(edge->flag & 1)) {
+            if (! (edge->flag & 1)) {
                traverse(list, ei, QPathEdge::LeftTraversal);
             }
 
-            if (!(edge->flag & 2)) {
+            if (! (edge->flag & 2)) {
                clear(list, ei, QPathEdge::RightTraversal);
             }
+
          } else {
-            if (!(edge->flag & 1)) {
+            if (! (edge->flag & 1)) {
                clear(list, ei, QPathEdge::LeftTraversal);
             }
 
-            if (!(edge->flag & 2)) {
+            if (! (edge->flag & 2)) {
                traverse(list, ei, QPathEdge::RightTraversal);
             }
          }

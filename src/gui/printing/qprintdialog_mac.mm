@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -23,14 +23,14 @@
 
 #include <Cocoa/Cocoa.h>
 
-#include <qprintdialog.h>
-#include <qabstractprintdialog_p.h>
-
-#include <qcore_mac_p.h>
-#include <qapplication_p.h>
-#include <qprinter.h>
-#include <qprintengine.h>
 #include <qplatform_printdevice.h>
+#include <qprintdialog.h>
+#include <qprintengine.h>
+#include <qprinter.h>
+
+#include <qabstractprintdialog_p.h>
+#include <qapplication_p.h>
+#include <qcore_mac_p.h>
 
 #ifndef QT_NO_PRINTDIALOG
 
@@ -304,9 +304,6 @@ int QPrintDialog::exec()
    return result();
 }
 
-/*!
-    \reimp
-*/
 void QPrintDialog::setVisible(bool visible)
 {
    Q_D(QPrintDialog);

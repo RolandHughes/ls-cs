@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -454,36 +454,41 @@ void QGraphicsWidget::initStyleOption(QStyleOption *option) const
    } else {
       option->palette.setCurrentColorGroup(QPalette::Inactive);
    }
+
    option->fontMetrics = QFontMetrics(font());
    option->styleObject = const_cast<QGraphicsWidget *>(this);
 }
 
-/*!
-    \reimp
-*/
 QSizeF QGraphicsWidget::sizeHint(Qt::SizeHint which, const QSizeF &constraint) const
 {
    Q_D(const QGraphicsWidget);
    QSizeF sh;
+
    if (d->layout) {
       QSizeF marginSize(0, 0);
+
       if (d->margins) {
          marginSize = QSizeF(d->margins[d->Left] + d->margins[d->Right],
                d->margins[d->Top] + d->margins[d->Bottom]);
       }
+
       sh = d->layout->effectiveSizeHint(which, constraint - marginSize);
       sh += marginSize;
+
    } else {
       switch (which) {
          case Qt::MinimumSize:
             sh = QSizeF(0, 0);
             break;
+
          case Qt::PreferredSize:
             sh = QSizeF(50, 50);    //rather arbitrary
             break;
+
          case Qt::MaximumSize:
             sh = QSizeF(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
             break;
+
          default:
             qWarning("QGraphicsWidget::sizeHint() Value for size hint is not valid");
             break;

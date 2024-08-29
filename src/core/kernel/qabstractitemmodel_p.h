@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,9 +24,9 @@
 #ifndef QABSTRACTITEMMODEL_P_H
 #define QABSTRACTITEMMODEL_P_H
 
+#include <qmultihash.h>
 #include <qstack.h>
 #include <qset.h>
-#include <qmultihash.h>
 
 #include <optional>
 
@@ -56,7 +56,7 @@ class Q_CORE_EXPORT QAbstractItemModelPrivate
 
    void removePersistentIndexData(QPersistentModelIndexData *data);
    void movePersistentIndexes(const QVector<QPersistentModelIndexData *> &indexes, int change,
-                  const QModelIndex &parent, Qt::Orientation orientation);
+         const QModelIndex &parent, Qt::Orientation orientation);
 
    void rowsAboutToBeInserted(const QModelIndex &parent, int first, int last);
    void rowsInserted(const QModelIndex &parent, int first, int last);
@@ -70,23 +70,23 @@ class Q_CORE_EXPORT QAbstractItemModelPrivate
    static bool variantLessThan(const QVariant &v1, const QVariant &v2);
 
    void itemsAboutToBeMoved(const QModelIndex &srcParent, int srcFirst, int srcLast,
-                  const QModelIndex &destinationParent, int destinationChild, Qt::Orientation);
+         const QModelIndex &destinationParent, int destinationChild, Qt::Orientation);
 
    void itemsMoved(const QModelIndex &srcParent, int srcFirst, int srcLast,
-                  const QModelIndex &destinationParent, int destinationChild, Qt::Orientation orientation);
+         const QModelIndex &destinationParent, int destinationChild, Qt::Orientation orientation);
 
    bool allowMove(const QModelIndex &srcParent, int srcFirst, int srcLast,
-                  const QModelIndex &destinationParent, int destinationChild, Qt::Orientation orientation);
+         const QModelIndex &destinationParent, int destinationChild, Qt::Orientation orientation);
 
-   inline QModelIndex createIndex(int row, int column, void *data = nullptr) const {
+   QModelIndex createIndex(int row, int column, void *data = nullptr) const {
       return q_func()->createIndex(row, column, data);
    }
 
-   inline QModelIndex createIndex(int row, int column, int id) const {
+   QModelIndex createIndex(int row, int column, int id) const {
       return q_func()->createIndex(row, column, id);
    }
 
-   inline bool indexValid(const QModelIndex &index) const {
+   bool indexValid(const QModelIndex &index) const {
       return (index.row() >= 0) && (index.column() >= 0) && (index.model() == q_func());
    }
 
@@ -99,7 +99,7 @@ class Q_CORE_EXPORT QAbstractItemModelPrivate
       persistent.m_indexes.clear();
    }
 
-   inline void invalidatePersistentIndex(const QModelIndex &index) {
+   void invalidatePersistentIndex(const QModelIndex &index) {
       QMultiMap<QModelIndex, QPersistentModelIndexData *>::iterator it = persistent.m_indexes.find(index);
 
       if (it != persistent.m_indexes.end()) {
@@ -142,8 +142,8 @@ class Q_CORE_EXPORT QAbstractItemModelPrivate
       Persistent() {}
       QMultiMap<QModelIndex, QPersistentModelIndexData *> m_indexes;
 
-      QStack<QVector<QPersistentModelIndexData *> > moved;
-      QStack<QVector<QPersistentModelIndexData *> > invalidated;
+      QStack<QVector<QPersistentModelIndexData *>> moved;
+      QStack<QVector<QPersistentModelIndexData *>> invalidated;
 
       void insertMultiAtEnd(const QModelIndex &key, QPersistentModelIndexData *data);
    } persistent;

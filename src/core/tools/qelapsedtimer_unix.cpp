@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -22,6 +22,7 @@
 ***********************************************************************/
 
 #include <qelapsedtimer.h>
+
 #include <qcore_unix_p.h>
 
 #include <sys/time.h>
@@ -37,8 +38,8 @@
 #endif
 
 #if (_POSIX_MONOTONIC_CLOCK-0 != 0)
-static const bool monotonicClockChecked = true;
-static const bool monotonicClockAvailable = _POSIX_MONOTONIC_CLOCK > 0;
+static constexpr const bool monotonicClockChecked   = true;
+static constexpr const bool monotonicClockAvailable = _POSIX_MONOTONIC_CLOCK > 0;
 #else
 static int monotonicClockChecked = false;
 static int monotonicClockAvailable = false;
@@ -55,6 +56,7 @@ static int monotonicClockAvailable = false;
 static void unixCheckClockType()
 {
 #if (_POSIX_MONOTONIC_CLOCK-0 == 0)
+
    if (is_likely(load_acquire(monotonicClockChecked))) {
       return;
    }
@@ -85,6 +87,7 @@ static inline void do_gettime(qint64 *sec, qint64 *frac)
 {
 #if (_POSIX_MONOTONIC_CLOCK-0 >= 0)
    unixCheckClockType();
+
    if (is_likely(monotonicClockAvailable)) {
       timespec ts;
       clock_gettime(CLOCK_MONOTONIC, &ts);
@@ -92,6 +95,7 @@ static inline void do_gettime(qint64 *sec, qint64 *frac)
       *frac = ts.tv_nsec;
       return;
    }
+
 #endif
    // use gettimeofday
    struct timeval tv;
@@ -115,19 +119,18 @@ struct timespec qt_gettime()
 
 void qt_nanosleep(timespec amount)
 {
-    // We'd like to use clock_nanosleep.
-    //
-    // But clock_nanosleep is from POSIX.1-2001 and both are *not*
-    // affected by clock changes when using relative sleeps, even for
-    // CLOCK_REALTIME.
-    //
-    // nanosleep is POSIX.1-1993
+   // like to use clock_nanosleep.
+   //
+   // But clock_nanosleep is from POSIX.1-2001 and both are *not*
+   // affected by clock changes when using relative sleeps, even for
+   // CLOCK_REALTIME.
+   //
+   // nanosleep is POSIX.1-1993
 
-    int r;
-    EINTR_LOOP(r, nanosleep(&amount, &amount));
+   int r;
+   EINTR_LOOP(r, nanosleep(&amount, &amount));
 }
-static qint64 elapsedAndRestart(qint64 sec, qint64 frac,
-                                qint64 *nowsec, qint64 *nowfrac)
+static qint64 elapsedAndRestart(qint64 sec, qint64 frac, qint64 *nowsec, qint64 *nowfrac)
 {
    do_gettime(nowsec, nowfrac);
    sec = *nowsec - sec;
@@ -157,19 +160,20 @@ qint64 QElapsedTimer::nsecsElapsed() const
 
 qint64 QElapsedTimer::elapsed() const
 {
-    return nsecsElapsed() / Q_INT64_C(1000000);
+   return nsecsElapsed() / Q_INT64_C(1000000);
 }
 
 qint64 QElapsedTimer::msecsSinceReference() const
 {
-    return t1 * Q_INT64_C(1000) + t2 / Q_INT64_C(1000000);
+   return t1 * Q_INT64_C(1000) + t2 / Q_INT64_C(1000000);
 }
 
 qint64 QElapsedTimer::msecsTo(const QElapsedTimer &other) const
 {
    qint64 secs = other.t1 - t1;
    qint64 fraction = other.t2 - t2;
-    return (secs * Q_INT64_C(1000000000) + fraction) / Q_INT64_C(1000000);
+
+   return (secs * Q_INT64_C(1000000000) + fraction) / Q_INT64_C(1000000);
 }
 
 qint64 QElapsedTimer::secsTo(const QElapsedTimer &other) const
@@ -181,4 +185,3 @@ bool operator<(const QElapsedTimer &v1, const QElapsedTimer &v2)
 {
    return v1.t1 < v2.t1 || (v1.t1 == v2.t1 && v1.t2 < v2.t2);
 }
-

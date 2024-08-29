@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -25,6 +25,7 @@
 #define QGRAPHICS_WIDGET_P_H
 
 #include <qgraphicswidget.h>
+
 #include <qfont.h>
 #include <qpalette.h>
 #include <qsizepolicy.h>
@@ -35,13 +36,17 @@
 class QGraphicsLayout;
 class QStyleOptionTitleBar;
 
-#if !defined(QT_NO_GRAPHICSVIEW)
+#if ! defined(QT_NO_GRAPHICSVIEW)
 
 class QGraphicsWidgetPrivate : public QGraphicsItemPrivate
 {
  public:
-   // Margins
-   enum {Left, Top, Right, Bottom};
+   enum WidgetMargins {
+      Left,
+      Top,
+      Right,
+      Bottom
+   };
 
    QGraphicsWidgetPrivate()
       : windowData(nullptr), margins(nullptr), setWindowFrameMargins(false), windowFrameMargins(nullptr),

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -61,8 +61,6 @@
 #include <stdio.h>
 #include <windowsx.h>
 #include <comdef.h>
-
-int QWindowsContext::verbose = 0;
 
 #if ! defined(LANG_SYRIAC)
 #  define LANG_SYRIAC 0x5a
@@ -244,7 +242,7 @@ QWindowsContextPrivate::QWindowsContextPrivate()
    }
 
    if (FAILED(m_oleInitializeResult)) {
-      qWarning() << "QWindowsContext: OleInitialize() failed: "
+      qWarning() << "QWindowsContext: OleInitialize() Failed: "
          << QWindowsContext::comErrorString(m_oleInitializeResult);
    }
 }
@@ -315,7 +313,10 @@ int QWindowsContext::processDpiAwareness()
 
 void QWindowsContext::setProcessDpiAwareness(QtWindows::ProcessDpiAwareness dpiAwareness)
 {
-   qDebug() << "QWindowsContext::setProcessDpiAwareness(): Dpi =" << dpiAwareness;
+
+#if defined(CS_SHOW_DEBUG_PLATFORM)
+   qDebug() << "QWindowsContext::setProcessDpiAwareness() Dpi =" << dpiAwareness;
+#endif
 
    if (QWindowsContext::shcoredll.isValid()) {
       const HRESULT hr = QWindowsContext::shcoredll.setProcessDpiAwareness(dpiAwareness);
@@ -323,14 +324,14 @@ void QWindowsContext::setProcessDpiAwareness(QtWindows::ProcessDpiAwareness dpiA
       // Silence warning in that case unless debug is enabled.
 
       if (FAILED(hr) && (hr != E_ACCESSDENIED)) {
-         qWarning() << " QWindowsContext::setProcessDpiAwareness(): Dpi = " << dpiAwareness << "\n  "
+         qWarning() << " QWindowsContext::setProcessDpiAwareness() Dpi = " << dpiAwareness << "\n  "
             << "Failed = " << QWindowsContext::comErrorString(hr) << " Using = " << QWindowsContext::processDpiAwareness();
       }
 
    } else {
       if (dpiAwareness != QtWindows::ProcessDpiUnaware && QWindowsContext::user32dll.setProcessDPIAware) {
-         if ( !QWindowsContext::user32dll.setProcessDPIAware()) {
-            qErrnoWarning("SetProcessDPIAware() failed");
+         if (! QWindowsContext::user32dll.setProcessDPIAware()) {
+            qErrnoWarning("SetProcessDPIAware() Failed");
          }
       }
    }
@@ -517,15 +518,16 @@ QString QWindowsContext::registerWindowClass(QString cname, WNDPROC proc, unsign
 
    ATOM atom = RegisterClassEx(&wc);
 
-   if (! atom)
-      qErrnoWarning("QApplication::regClass: Registering window class '%s' failed.", csPrintable(cname));
+   if (! atom) {
+      qErrnoWarning("QApplication::regClass() Registering window class %s failed", csPrintable(cname));
+   }
 
    d->m_registeredWindowClassNames.insert(cname);
 
-#if defined(CS_SHOW_DEBUG)
-   qDebug() << "QWindowsContext::registerWindowClass(): ClassName =" << cname << "\n  "
-      << "Style = 0x" << hex << style << dec
-      << "Brush =" << brush << " Icon = " << icon << " Atom =" << atom;
+#if defined(CS_SHOW_DEBUG_PLATFORM)
+   qDebug() << "QWindowsContext::registerWindowClass() ClassName =" << cname << "\n"
+      << "  Style = 0x" << hex << style << dec
+      << "Brush =" << brush << " Icon =" << icon << " Atom =" << atom;
 #endif
 
    return cname;
@@ -536,8 +538,8 @@ void QWindowsContext::unregisterWindowClasses()
    const HINSTANCE appInstance = static_cast<HINSTANCE>(GetModuleHandle(nullptr));
 
    for (const QString &name : d->m_registeredWindowClassNames) {
-      if (! UnregisterClass(name.toStdWString().data(), appInstance) && QWindowsContext::verbose) {
-         qErrnoWarning("UnregisterClass failed for '%s'", csPrintable(name));
+      if (! UnregisterClass(name.toStdWString().data(), appInstance)) {
+         qErrnoWarning("UnregisterClass failed for %s", csPrintable(name));
       }
    }
 
@@ -807,15 +809,8 @@ static inline QWindowsInputContext *windowsInputContext()
    return dynamic_cast<QWindowsInputContext *>(QWindowsIntegration::instance()->inputContext());
 }
 
-/*!
-     \brief Main windows procedure registered for windows.
-
-     \sa QWindowsGuiEventDispatcher
-*/
-
-bool QWindowsContext::windowsProc(HWND hwnd, UINT message,
-   QtWindows::WindowsEventType et,
-   WPARAM wParam, LPARAM lParam, LRESULT *result)
+bool QWindowsContext::windowsProc(HWND hwnd, UINT message, QtWindows::WindowsEventType et,
+      WPARAM wParam, LPARAM lParam, LRESULT *result)
 {
    *result = 0;
 
@@ -831,7 +826,7 @@ bool QWindowsContext::windowsProc(HWND hwnd, UINT message,
       msg.pt.y = GET_Y_LPARAM(lParam);
       // For non-client-area messages, these are screen coordinates (as expected
       // in the MSG structure), otherwise they are client coordinates.
-      if (!(et & QtWindows::NonClientEventFlag)) {
+      if (! (et & QtWindows::NonClientEventFlag)) {
          ClientToScreen(msg.hwnd, &msg.pt);
       }
 
@@ -840,7 +835,7 @@ bool QWindowsContext::windowsProc(HWND hwnd, UINT message,
 
    }
 
-   // Run the native event filters.
+   // Run the native event filters
    long filterResult = 0;
    QAbstractEventDispatcher *dispatcher = QAbstractEventDispatcher::instance();
 
@@ -886,27 +881,27 @@ bool QWindowsContext::windowsProc(HWND hwnd, UINT message,
             break;
       }
 
-   } // InputMethodEventFlag
+   }
 
    switch (et) {
       case QtWindows::GestureEvent:
 #if ! defined(QT_NO_SESSIONMANAGER)
-         return platformSessionManager()->isInteractionBlocked() ? true : d->m_mouseHandler.translateGestureEvent(platformWindow->window(),
-               hwnd, et, msg, result);
+         return platformSessionManager()->isInteractionBlocked() ? true :
+               d->m_mouseHandler.translateGestureEvent(platformWindow->window(), hwnd, et, msg, result);
 #else
          return d->m_mouseHandler.translateGestureEvent(platformWindow->window(), hwnd, et, msg, result);
 #endif
 
       case QtWindows::InputMethodOpenCandidateWindowEvent:
       case QtWindows::InputMethodCloseCandidateWindowEvent:
-         // TODO: Release/regrab mouse if a popup has mouse grab.
+         // TODO: Release/regrab mouse if a popup has mouse grab
          return false;
 
       case QtWindows::DestroyEvent:
          if (platformWindow && !platformWindow->testFlag(QWindowsWindow::WithinDestroy)) {
-            qWarning() << "External WM_DESTROY received for " << platformWindow->window()
-               << ", parent: " << platformWindow->window()->parent()
-               << ", transient parent: " << platformWindow->window()->transientParent();
+            qWarning() << "QWindowsContext::windowsProc() External WM_DESTROY received for " << platformWindow->window()
+               << ", parent = " << platformWindow->window()->parent()
+               << ", transient parent = " << platformWindow->window()->transientParent();
          }
          return false;
 
@@ -940,7 +935,7 @@ bool QWindowsContext::windowsProc(HWND hwnd, UINT message,
    // Before CreateWindowEx() returns, some events are sent,
    // for example WM_GETMINMAXINFO asking for size constraints for top levels.
    // Pass on to current creation context
-   if (!platformWindow && ! d->m_creationContext.isNull()) {
+   if (! platformWindow && ! d->m_creationContext.isNull()) {
       switch (et) {
          case QtWindows::QuerySizeHints:
             d->m_creationContext->applyToMinMaxInfo(reinterpret_cast<MINMAXINFO *>(lParam));
@@ -971,13 +966,9 @@ bool QWindowsContext::windowsProc(HWND hwnd, UINT message,
          return false;
       }
 
-      if (QWindowsContext::verbose > 1) {
-         qDebug() << "Event window: " << platformWindow->window();
-      }
-
    } else {
-      qWarning("%s: No Window found for event 0x%x (%s), hwnd=0x%p.", __FUNCTION__, message,
-         QWindowsGuiEventDispatcher::windowsMessageName(message), hwnd);
+      qWarning("QWindowsContext::windowsProc() No Window found for event = 0x%x (%s), hwnd = 0x%p.",
+            message, QWindowsGuiEventDispatcher::windowsMessageName(message), static_cast<void *>(hwnd));
       return false;
    }
 
@@ -995,7 +986,7 @@ bool QWindowsContext::windowsProc(HWND hwnd, UINT message,
       case QtWindows::AppCommandEvent:
 #if ! defined(QT_NO_SESSIONMANAGER)
          return platformSessionManager()->isInteractionBlocked() ? true
-                  : d->m_keyMapper.translateKeyEvent(platformWindow->window(), hwnd, msg, result);
+               : d->m_keyMapper.translateKeyEvent(platformWindow->window(), hwnd, msg, result);
 #else
          return d->m_keyMapper.translateKeyEvent(platformWindow->window(), hwnd, msg, result);
 #endif
@@ -1010,7 +1001,7 @@ bool QWindowsContext::windowsProc(HWND hwnd, UINT message,
 
       case QtWindows::QuerySizeHints:
          platformWindow->getSizeHints(reinterpret_cast<MINMAXINFO *>(lParam));
-         return true;// maybe available on some SDKs revisit WM_NCCALCSIZE
+         return true;   // maybe available on some SDKs revisit WM_NCCALCSIZE
 
       case QtWindows::CalculateSize:
          return QWindowsGeometryHint::handleCalculateSize(platformWindow->customMargins(), msg, result);
@@ -1025,7 +1016,6 @@ bool QWindowsContext::windowsProc(HWND hwnd, UINT message,
          return platformWindow->handleWmPaint(hwnd, message, wParam, lParam);
 
       case QtWindows::NonClientMouseEvent:
-
          if (platformWindow->frameStrutEventsEnabled())
 #if ! defined(QT_NO_SESSIONMANAGER)
             return platformSessionManager()->isInteractionBlocked() ? true :
@@ -1067,8 +1057,9 @@ bool QWindowsContext::windowsProc(HWND hwnd, UINT message,
          handleFocusEvent(et, platformWindow);
          return true;
 
-      case QtWindows::ShowEventOnParentRestoring: // QTBUG-40696, prevent Windows from re-showing hidden transient children (dialogs).
-         if (!platformWindow->window()->isVisible()) {
+      case QtWindows::ShowEventOnParentRestoring:
+         // QTBUG-40696, prevent Windows from re-showing hidden transient children (dialogs)
+         if (! platformWindow->window()->isVisible()) {
             *result = 0;
             return true;
          }
@@ -1083,17 +1074,19 @@ bool QWindowsContext::windowsProc(HWND hwnd, UINT message,
          return true;
 
       case QtWindows::ThemeChanged: {
-         // Switch from Aero to Classic changes margins.
+         // Switch from Aero to Classic changes margins
          const Qt::WindowFlags flags = platformWindow->window()->flags();
-         if ((flags & Qt::WindowType_Mask) != Qt::Desktop && !(flags & Qt::FramelessWindowHint)) {
+         if ((flags & Qt::WindowType_Mask) != Qt::Desktop && ! (flags & Qt::FramelessWindowHint)) {
             platformWindow->setFlag(QWindowsWindow::FrameDirty);
          }
 
          if (QWindowsTheme *theme = QWindowsTheme::instance()) {
             theme->windowsThemeChanged(platformWindow->window());
          }
+
          return true;
       }
+
       case QtWindows::CompositionSettingsChanged:
          platformWindow->handleCompositionSettingsChanged();
          return true;
@@ -1104,10 +1097,11 @@ bool QWindowsContext::windowsProc(HWND hwnd, UINT message,
             return true;
          }
 
-         if (platformWindow->testFlag(QWindowsWindow::BlockedByModal))
+         if (platformWindow->testFlag(QWindowsWindow::BlockedByModal)) {
             if (const QWindow *modalWindow = QApplication::modalWindow()) {
                QWindowsWindow::baseWindowOf(modalWindow)->alertWindow();
             }
+         }
          break;
 
       case QtWindows::MouseActivateWindowEvent:
@@ -1221,8 +1215,7 @@ void QWindowsContext::handleFocusEvent(QtWindows::WindowsEventType et,
       nextActiveWindow = platformWindow->window();
 
    } else {
-      // Focus out: Is the next window known and different
-      // from the receiving the focus out.
+      // Focus out: Is the next window known and different from the receiving the focus out
       if (const HWND nextActiveHwnd = GetFocus())
          if (QWindowsWindow *nextActivePlatformWindow = findClosestPlatformWindow(nextActiveHwnd))
             if (nextActivePlatformWindow != platformWindow) {
@@ -1264,6 +1257,7 @@ bool QWindowsContext::handleContextMenuEvent(QWindow *window, const MSG &msg)
 
    QWindowSystemInterface::handleContextMenuEvent(window, mouseTriggered, pos, globalPos,
       QWindowsKeyMapper::queryKeyboardModifiers());
+
    return true;
 }
 #endif
@@ -1288,14 +1282,6 @@ extern "C" LRESULT QT_WIN_CALLBACK qWindowsWndProc(HWND hwnd, UINT message, WPAR
    LRESULT result;
    const QtWindows::WindowsEventType et = windowsEventType(message, wParam, lParam);
    const bool handled = QWindowsContext::instance()->windowsProc(hwnd, message, et, wParam, lParam, &result);
-
-   if (QWindowsContext::verbose > 1) {
-      if (const char *eventName = QWindowsGuiEventDispatcher::windowsMessageName(message)) {
-         qDebug() << "EVENT: hwd = " << hwnd << eventName << hex << "msg = 0x"  << message
-            << "et = x" << et << dec << " wp = " << int(wParam) << "at"
-            << GET_X_LPARAM(lParam) << GET_Y_LPARAM(lParam) << "handled=" << handled;
-      }
-   }
 
    if (!handled) {
       result = DefWindowProc(hwnd, message, wParam, lParam);

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -46,14 +46,14 @@
 #endif
 
 #ifdef QT_NO_COMPRESS
-static const bool do_compress = false;
+static constexpr const bool do_compress = false;
 #else
-static const bool do_compress = true;
+static constexpr const bool do_compress = true;
 #endif
 
 // might be helpful for smooth transforms of images
 // can not use it though, as gs generates completely wrong images if this is true.
-static const bool interpolateImages = false;
+static constexpr const bool interpolateImages = false;
 
 inline QPaintEngine::PaintEngineFeatures qt_pdf_decide_features()
 {
@@ -1130,19 +1130,22 @@ extern QPainterPath qt_regionToPath(const QRegion &region);
 void QPdfEngine::updateClipPath(const QPainterPath &p, Qt::ClipOperation op)
 {
     Q_D(QPdfEngine);
+
     QPainterPath path = d->stroker.matrix.map(p);
-    //qDebug() << "updateClipPath: " << d->stroker.matrix << p.boundingRect() << path.boundingRect() << op;
 
     if (op == Qt::NoClip) {
         d->clipEnabled = false;
         d->clips.clear();
+
     } else if (op == Qt::ReplaceClip) {
         d->clips.clear();
         d->clips.append(path);
+
     } else if (op == Qt::IntersectClip) {
         d->clips.append(path);
-    } else { // UniteClip
-        // ask the painter for the current clipping path. that's the easiest solution
+
+    } else {
+        // UniteClip, ask the painter for the current clipping path. that's the easiest solution
         path = painter()->clipPath();
         path = d->stroker.matrix.map(path);
         d->clips.clear();
@@ -1310,6 +1313,7 @@ int QPdfEngine::metric(QPaintDevice::PaintDeviceMetric metricType) const
 {
     Q_D(const QPdfEngine);
     int val;
+
     switch (metricType) {
     case QPaintDevice::PdmWidth:
         val = d->m_pageLayout.paintRectPixels(d->resolution).width();
@@ -1532,7 +1536,6 @@ void QPdfEnginePrivate::writePageRoot()
 
 void QPdfEnginePrivate::embedFont(QFontSubset *font)
 {
-    //qDebug() << "embedFont" << font->object_id;
     int fontObject = font->object_id;
     QByteArray fontData = font->toTruetype();
 
@@ -1953,21 +1956,29 @@ int QPdfEnginePrivate::writeImage(const QByteArray &data, int width, int height,
         xprintf("/BitsPerComponent 8\n"
                 "/ColorSpace %s\n", (depth == 32) ? "/DeviceRGB" : "/DeviceGray");
     }
-    if (maskObject > 0)
+
+    if (maskObject > 0) {
         xprintf("/Mask %d 0 R\n", maskObject);
-    if (softMaskObject > 0)
+    }
+
+    if (softMaskObject > 0) {
         xprintf("/SMask %d 0 R\n", softMaskObject);
+    }
 
     int lenobj = requestObject();
     xprintf("/Length %d 0 R\n", lenobj);
-    if (interpolateImages)
+
+    if (interpolateImages) {
         xprintf("/Interpolate true\n");
+    }
+
     int len = 0;
+
     if (dct) {
-        //qDebug() << "DCT";
         xprintf("/Filter /DCTDecode\n>>\nstream\n");
         write(data);
         len = data.length();
+
     } else {
         if (do_compress)
             xprintf("/Filter /FlateDecode\n>>\nstream\n");
@@ -1975,11 +1986,11 @@ int QPdfEnginePrivate::writeImage(const QByteArray &data, int width, int height,
             xprintf(">>\nstream\n");
         len = writeCompressed(data);
     }
-    xprintf("endstream\n"
-            "endobj\n");
+
+    xprintf("endstream\n" "endobj\n");
     addXrefEntry(lenobj);
-    xprintf("%d\n"
-            "endobj\n", len);
+    xprintf("%d\n" "endobj\n", len);
+
     return image;
 }
 
@@ -2340,7 +2351,6 @@ int QPdfEnginePrivate::addConstantAlphaObject(int brushAlpha, int penAlpha)
     return object;
 }
 
-
 int QPdfEnginePrivate::addBrushPattern(const QTransform &m, bool *specifyColor, int *gStateObject)
 {
     int paintType = 2; // Uncolored tiling
@@ -2353,26 +2363,28 @@ int QPdfEnginePrivate::addBrushPattern(const QTransform &m, bool *specifyColor, 
     QTransform matrix = m;
     matrix.translate(brushOrigin.x(), brushOrigin.y());
     matrix = matrix * pageMatrix();
-    //qDebug() << brushOrigin << matrix;
 
     Qt::BrushStyle style = brush.style();
-    if (style == Qt::LinearGradientPattern || style == Qt::RadialGradientPattern) {// && style <= Qt::ConicalGradientPattern) {
+    if (style == Qt::LinearGradientPattern || style == Qt::RadialGradientPattern) {
         *specifyColor = false;
         return gradientBrush(brush, matrix, gStateObject);
     }
 
-    if ((!brush.isOpaque() && brush.style() < Qt::LinearGradientPattern) || opacity != 1.0)
-        *gStateObject = addConstantAlphaObject(qRound(brush.color().alpha() * opacity),
-                                               qRound(pen.color().alpha() * opacity));
+    if ((!brush.isOpaque() && brush.style() < Qt::LinearGradientPattern) || opacity != 1.0) {
+       *gStateObject = addConstantAlphaObject(qRound(brush.color().alpha() * opacity),
+             qRound(pen.color().alpha() * opacity));
+    }
 
     int imageObject = -1;
     QByteArray pattern = QPdf::patternForBrush(brush);
+
     if (pattern.isEmpty()) {
         if (brush.style() != Qt::TexturePattern)
             return 0;
         QImage image = brush.textureImage();
         bool bitmap = true;
         imageObject = addImage(image, &bitmap, image.cacheKey());
+
         if (imageObject != -1) {
             QImage::Format f = image.format();
             if (f != QImage::Format_MonoLSB && f != QImage::Format_Mono) {
@@ -2572,10 +2584,13 @@ void QPdfEnginePrivate::drawTextItem(const QPointF &p, const QTextItemInt &ti)
         // Build text rendering matrix (Trm). We need it to map the text area to user
         // space units on the PDF page.
         trans = QTransform(size*stretch, 0, 0, size, 0, 0);
+
         // Apply text matrix (Tm).
         trans *= QTransform(1,0,0,-1,p.x(),p.y());
+
         // Apply page displacement (Identity for first page).
         trans *= stroker.matrix;
+
         // Apply Current Transformation Matrix (CTM)
         trans *= pageMatrix();
         qreal x1, y1, x2, y2;
@@ -2583,21 +2598,22 @@ void QPdfEnginePrivate::drawTextItem(const QPointF &p, const QTextItemInt &ti)
         trans.map(ti.width.toReal()/size, (ti.ascent.toReal()-ti.descent.toReal())/size, &x2, &y2);
 
         uint annot = addXrefEntry(-1);
+
         QByteArray x1s, y1s, x2s, y2s;
         x1s.setNum(static_cast<double>(x1), 'f');
         y1s.setNum(static_cast<double>(y1), 'f');
         x2s.setNum(static_cast<double>(x2), 'f');
         y2s.setNum(static_cast<double>(y2), 'f');
+
         QByteArray rectData = x1s + ' ' + y1s + ' ' + x2s + ' ' + y2s;
         xprintf("<<\n/Type /Annot\n/Subtype /Link\n/Rect [");
         xprintf(rectData.constData());
-#ifdef Q_DEBUG_PDF_LINKS
-        xprintf("]\n/Border [16 16 1]\n/A <<\n");
-#else
+
         xprintf("]\n/Border [0 0 0]\n/A <<\n");
-#endif
+
         xprintf("/Type /Action\n/S /URI\n/URI (%s)\n",
                 ti.charFormat.anchorHref().toLatin1().constData());
+
         xprintf(">>\n>>\n");
         xprintf("endobj\n");
 

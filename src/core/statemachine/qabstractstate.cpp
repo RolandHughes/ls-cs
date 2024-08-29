@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -25,11 +25,10 @@
 
 #ifndef QT_NO_STATEMACHINE
 
-#include <qabstractstate_p.h>
-
 #include <qstate.h>
 #include <qstatemachine.h>
 
+#include <qabstractstate_p.h>
 #include <qstate_p.h>
 #include <qstatemachine_p.h>
 
@@ -58,6 +57,7 @@ QStateMachine *QAbstractStatePrivate::machine() const
       if (QStateMachine *mach = dynamic_cast<QStateMachine *>(par)) {
          return mach;
       }
+
       par = par->parent();
    }
 
@@ -104,7 +104,6 @@ QAbstractState::QAbstractState(QState *parent)
 {
    d_ptr->q_ptr = this;
 }
-
 
 QAbstractState::QAbstractState(QAbstractStatePrivate &dd, QState *parent)
    : QObject(parent), d_ptr(&dd)

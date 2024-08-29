@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2013 Klarälvdalens Datakonsult AB, a KDAB Group company
 * Copyright (c) 2015 The Qt Company Ltd.
@@ -154,7 +154,15 @@ static inline bool contains(const QJsonArray &haystack, const QString &needle)
 
 namespace {
 
-enum Operator { NotEqual, LessThan, LessEqualThan, Equals, GreaterThan, GreaterEqualThan };
+enum Operator {
+   NotEqual,
+   LessThan,
+   LessEqualThan,
+   Equals,
+   GreaterThan,
+   GreaterEqualThan
+};
+
 static const char operators[][3] = {"!=", "<", "<=", "=", ">", ">="};
 
 // VersionTerm describing a version term consisting of number and operator

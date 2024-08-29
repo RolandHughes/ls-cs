@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -47,7 +47,7 @@ struct AnchorVertex {
    AnchorVertex()
       : m_item(nullptr), m_edge(Qt::AnchorPoint(0)), m_type(Normal) {}
 
-#ifdef QT_DEBUG
+#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
    inline QString toString() const;
 #endif
 
@@ -89,7 +89,7 @@ struct AnchorData : public QSimplexVariable {
    virtual void updateChildrenSizes() {}
    void refreshSizeHints(const QLayoutStyleInfo *styleInfo = nullptr);
 
-#ifdef QT_DEBUG
+#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
    void dump(int indent = 2);
    inline QString toString() const;
    QString name;
@@ -133,7 +133,7 @@ struct AnchorData : public QSimplexVariable {
    uint dependency : 2;      // either Independent, Master or Slave
 };
 
-#ifdef QT_DEBUG
+#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
 inline QString AnchorData::toString() const
 {
    return QString("Anchor(%1)").formatArg(name);
@@ -146,7 +146,7 @@ struct SequentialAnchorData : public AnchorData {
       type = AnchorData::Sequential;
       orientation = m_edges.at(0)->orientation;
 
-#ifdef QT_DEBUG
+#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
       name = QString::fromLatin1("%1 -- %2").formatArgs(vertices.first()->toString(), vertices.last()->toString());
 #endif
    }
@@ -173,7 +173,7 @@ struct ParallelAnchorData : public AnchorData {
       from = first->from;
       to = first->to;
 
-#ifdef QT_DEBUG
+#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
       name = QString("%1 | %2").formatArgs(first->toString(), second->toString());
 #endif
 
@@ -210,7 +210,7 @@ struct AnchorVertexPair : public AnchorVertex {
    QList<AnchorData *> m_secondAnchors;
 };
 
-#ifdef QT_DEBUG
+#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
 inline QString AnchorVertex::toString() const
 {
    if (m_type == Pair) {
@@ -258,17 +258,6 @@ inline QString AnchorVertex::toString() const
 }
 #endif
 
-/*
-  internal
-
-  Representation of a valid path for a given vertex in the graph.
-  In this struct, "positives" is the set of anchors that have been
-  traversed in the forward direction, while "negatives" is the set
-  with the ones walked backwards.
-
-  This paths are compared against each other to produce LP Constraints,
-  the exact order in which the anchors were traversed is not relevant.
-*/
 class GraphPath
 {
  public:
@@ -276,9 +265,10 @@ class GraphPath
 
    QSimplexConstraint *constraint(const GraphPath &path) const;
 
-#ifdef QT_DEBUG
+#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
    QString toString() const;
 #endif
+
    QSet<AnchorData *> positives;
    QSet<AnchorData *> negatives;
 };
@@ -435,15 +425,15 @@ class QGraphicsAnchorLayoutPrivate : public QGraphicsLayoutPrivate
    void identifyFloatItems(const QSet<AnchorData *> &visited, Orientation orientation);
    void identifyNonFloatItems_helper(const AnchorData *ad, QSet<QGraphicsLayoutItem *> *nonFloatingItemsIdentifiedSoFar);
 
-   inline AnchorVertex *internalVertex(const QPair<QGraphicsLayoutItem *, Qt::AnchorPoint> &itemEdge) const {
+   AnchorVertex *internalVertex(const QPair<QGraphicsLayoutItem *, Qt::AnchorPoint> &itemEdge) const {
       return m_vertexList.value(itemEdge).first;
    }
 
-   inline AnchorVertex *internalVertex(const QGraphicsLayoutItem *item, Qt::AnchorPoint edge) const {
+   AnchorVertex *internalVertex(const QGraphicsLayoutItem *item, Qt::AnchorPoint edge) const {
       return internalVertex(qMakePair(const_cast<QGraphicsLayoutItem *>(item), edge));
    }
 
-   inline void changeLayoutVertex(Orientation orientation, AnchorVertex *oldV, AnchorVertex *newV) {
+   void changeLayoutVertex(Orientation orientation, AnchorVertex *oldV, AnchorVertex *newV) {
       if (layoutFirstVertex[orientation] == oldV) {
          layoutFirstVertex[orientation] = newV;
 
@@ -473,7 +463,7 @@ class QGraphicsAnchorLayoutPrivate : public QGraphicsLayoutPrivate
       const QList<AnchorData *> &variables);
    bool hasConflicts() const;
 
-#ifdef QT_DEBUG
+#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
    void dumpGraph(const QString &name = QString());
 #endif
 
@@ -513,7 +503,7 @@ class QGraphicsAnchorLayoutPrivate : public QGraphicsLayoutPrivate
    bool graphHasConflicts[2];
    QSet<QGraphicsLayoutItem *> m_floatItems[2];
 
-#if defined(QT_DEBUG)
+#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
    bool lastCalculationUsedSimplex[2];
 #endif
 

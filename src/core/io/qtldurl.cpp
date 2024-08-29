@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -21,12 +21,14 @@
 *
 ***********************************************************************/
 
+#include <qtldurl_p.h>
+
 #include <qplatformdefs.h>
 #include <qurl.h>
-#include <qurltlds_p.h>
-#include <qtldurl_p.h>
 #include <qstringlist.h>
 #include <qstringparser.h>
+
+#include <qurltlds_p.h>
 
 static bool containsTLDEntry(const QString &entry)
 {
@@ -38,31 +40,24 @@ static bool containsTLDEntry(const QString &entry)
    uint offset     = 0;
 
    while (chunk < tldChunkCount && tldIndices[index] >= tldChunks[chunk]) {
-        chunkIndex -= tldChunks[chunk];
-        offset     += tldChunks[chunk];
-        chunk++;
+      chunkIndex -= tldChunks[chunk];
+      offset     += tldChunks[chunk];
+      chunk++;
    }
 
    // check all the entries from the given index
-   while (chunkIndex < tldIndices[index+1] - offset) {
-        QString currentEntry = QString::fromUtf8(tldData[chunk] + chunkIndex);
+   while (chunkIndex < tldIndices[index + 1] - offset) {
+      QString currentEntry = QString::fromUtf8(tldData[chunk] + chunkIndex);
 
-        if (currentEntry == entry) {
-           return true;
-        }
+      if (currentEntry == entry) {
+         return true;
+      }
 
-        chunkIndex += qstrlen(tldData[chunk] + chunkIndex) + 1; // +1 for the ending \0
+      chunkIndex += qstrlen(tldData[chunk] + chunkIndex) + 1; // +1 for the ending \0
    }
 
    return false;
 }
-
-/*!
-    \internal
-
-    Return the top-level-domain per Qt's copy of the Mozilla public suffix list of
-    \a domain.
-*/
 
 Q_CORE_EXPORT QString qTopLevelDomain(const QString &domain)
 {
@@ -74,6 +69,7 @@ Q_CORE_EXPORT QString qTopLevelDomain(const QString &domain)
    }
 
    QString level, tld;
+
    for (int j = sections.count() - 1; j >= 0; --j) {
       level.prepend('.' + sections.at(j));
 
@@ -84,12 +80,6 @@ Q_CORE_EXPORT QString qTopLevelDomain(const QString &domain)
 
    return tld;
 }
-
-/*!
-    \internal
-
-    Return true if \a domain is a top-level-domain per Qt's copy of the Mozilla public suffix list.
-*/
 
 Q_CORE_EXPORT bool qIsEffectiveTLD(const QString &domain)
 {
@@ -120,6 +110,6 @@ Q_CORE_EXPORT bool qIsEffectiveTLD(const QString &domain)
          return (! containsTLDEntry(exceptionDomain));
       }
    }
+
    return false;
 }
-

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -36,7 +36,6 @@
 #ifndef QT_NO_COMPRESS
 #include <zlib.h>
 #endif
-
 
 QSvgTinyDocument::QSvgTinyDocument()
    : QSvgStructureNode(nullptr), m_widthPercent(false), m_heightPercent(false)
@@ -254,8 +253,11 @@ void QSvgTinyDocument::draw(QPainter *p, const QString &id, const QRectF &bounds
 {
    QSvgNode *node = scopeNode(id);
 
-   if (!node) {
+   if (! node) {
+#if defined(CS_SHOW_DEBUG_SVG)
       qDebug("Unable to find node %s, skipping rendering.", csPrintable(id));
+#endif
+
       return;
    }
 
@@ -442,8 +444,11 @@ QMatrix QSvgTinyDocument::matrixForElement(const QString &id) const
 {
    QSvgNode *node = scopeNode(id);
 
-   if (!node) {
+   if (! node) {
+#if defined(CS_SHOW_DEBUG_SVG)
       qDebug("Unable to find node %s, skipping rendering.", csPrintable(id));
+#endif
+
       return QMatrix();
    }
 

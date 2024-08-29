@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -249,9 +249,9 @@ Qt::CursorMoveStyle QTextLayout::cursorMoveStyle() const
 
 void QTextLayout::beginLayout()
 {
-#if defined(CS_SHOW_DEBUG)
+#if defined(CS_SHOW_DEBUG_GUI_TEXT)
    if (d->layoutData && d->layoutData->layoutState == QTextEngine::InLayout) {
-      qWarning("QTextLayout::beginLayout() Layout already is in progress");
+      qDebug("QTextLayout::beginLayout() Layout was already in progress");
       return;
    }
 #endif
@@ -264,9 +264,9 @@ void QTextLayout::beginLayout()
 
 void QTextLayout::endLayout()
 {
-#if defined(CS_SHOW_DEBUG)
+#if defined(CS_SHOW_DEBUG_GUI_TEXT)
    if (! d->layoutData || d->layoutData->layoutState == QTextEngine::LayoutEmpty) {
-      qWarning("QTextLayout::endLayout() No layout in progress");
+      qDebug("QTextLayout::endLayout() No layout in progress");
       return;
    }
 #endif
@@ -396,9 +396,9 @@ bool QTextLayout::isValidCursorPosition(int pos) const
 
 QTextLine QTextLayout::createLine()
 {
-#if defined(CS_SHOW_DEBUG)
+#if defined(CS_SHOW_DEBUG_GUI_TEXT)
    if (! d->layoutData || d->layoutData->layoutState == QTextEngine::LayoutEmpty) {
-      qWarning("QTextLayout::createLine() No layout in progress");
+      qDebug("QTextLayout::createLine() No layout in progress");
       return QTextLine();
    }
 #endif
@@ -1083,8 +1083,9 @@ const QFixed LineBreakHelper::RightBearingNotCalculated = QFixed(1);
 
 inline bool LineBreakHelper::checkFullOtherwiseExtend(QScriptLine &line)
 {
-#if defined(CS_SHOW_DEBUG)
-   qDebug("Possible break width %f, space w = %f", tmpData.textWidth.toReal(), spaceData.textWidth.toReal());
+#if defined(CS_SHOW_DEBUG_GUI_TEXT)
+   qDebug("checkFullOtherwiseExtend() Possible break width %f, space w = %f",
+         tmpData.textWidth.toReal(), spaceData.textWidth.toReal());
 #endif
 
    QFixed newWidth = calculateNewWidth(line);
@@ -1168,9 +1169,9 @@ void QTextLine::layout_helper(int maxGlyphs)
    int newItem = m_textEngine->findItem(line.from);
    Q_ASSERT(newItem >= 0);
 
-#if defined(CS_SHOW_DEBUG)
-   qDebug("From = %d: Item = %d, Total = %zd, Width available = %f",
-                  line.from, newItem, m_textEngine->layoutData->items.size(), line.width.toReal());
+#if defined(CS_SHOW_DEBUG_GUI_TEXT)
+   qDebug("QTextLine::layout_helper() From = %d: Item = %d, Total = %zd, Width available = %f",
+         line.from, newItem, m_textEngine->layoutData->items.size(), line.width.toReal());
 #endif
 
    Qt::Alignment alignment = m_textEngine->option.alignment();
@@ -1207,7 +1208,6 @@ void QTextLine::layout_helper(int maxGlyphs)
          }
 
          lbh.m_currentPosition = qMax(line.from, current.position);
-
          end = current.position + m_textEngine->length(item);
 
          lbh.glyphs = m_textEngine->shapedGlyphs(&current);
@@ -1272,7 +1272,7 @@ void QTextLine::layout_helper(int maxGlyphs)
             }
 
             addNextCluster(lbh.m_currentPosition, end, lbh.tmpData, lbh.glyphCount,
-               current, lbh.glyphs, lbh.logClusters);
+                  current, lbh.glyphs, lbh.logClusters);
 
          } else {
             lbh.tmpData.length++;
@@ -1437,21 +1437,17 @@ found:
 
    if (line.length == 0) {
 
-#if defined(CS_SHOW_DEBUG)
-      qDebug("No break available in line, adding temp: length %d, width %f, space: length %d, width %f",
-         lbh.tmpData.length, lbh.tmpData.textWidth.toReal(),
-         lbh.spaceData.length, lbh.spaceData.textWidth.toReal());
+#if defined(CS_SHOW_DEBUG_GUI_TEXT)
+      qDebug("QTextLine::layout_helper() No break available, adding a new line");
 #endif
 
       line += lbh.tmpData;
    }
 
-#if defined(CS_SHOW_DEBUG)
-   qDebug("Line length =%d, Ascent =%f, Descent =%f, textWidth =%f (spacew =%f)",
-                  line.length, line.ascent.toReal(), line.descent.toReal(), line.textWidth.toReal(),
-                  lbh.spaceData.width.toReal());
-
-   qDebug("        : '%s'", csPrintable(m_textEngine->layoutData->string.mid(line.from, line.length)));
+#if defined(CS_SHOW_DEBUG_GUI_TEXT)
+   qDebug("QTextLine::layout_helper() Line length = %d, Ascent = %f, Descent = %f\n   textWidth = %f, spaceWidth = %f : %s",
+         line.length, line.ascent.toReal(), line.descent.toReal(), line.textWidth.toReal(),
+         lbh.spaceData.width.toReal(), csPrintable(m_textEngine->layoutData->string.mid(line.from, line.length)) );
 #endif
 
 

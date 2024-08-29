@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -53,8 +53,8 @@ void QGraphicsLayoutPrivate::reparentChildItems(QGraphicsItem *newParent)
       } else if (QGraphicsItem *itemChild = layoutChild->graphicsItem()) {
          QGraphicsItem *childParent = itemChild->parentItem();
 
-#ifdef QT_DEBUG
-         if (childParent && childParent != newParent && itemChild->isWidget() && qt_graphicsLayoutDebug()) {
+#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
+         if (childParent && childParent != newParent && itemChild->isWidget()) {
 
             QGraphicsWidget *w = static_cast<QGraphicsWidget *>(layoutChild);
 
@@ -62,6 +62,7 @@ void QGraphicsLayoutPrivate::reparentChildItems(QGraphicsItem *newParent)
                csPrintable(w->metaObject()->className()), csPrintable(w->objectName()));
          }
 #endif
+
          if (childParent != newParent) {
             itemChild->setParentItem(newParent);
          }
@@ -150,7 +151,7 @@ void QGraphicsLayoutPrivate::addChildLayoutItem(QGraphicsLayoutItem *layoutItem)
             return;
          }
 
-#ifdef QT_DEBUG
+#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
          if (oldParent && item->isWidget()) {
             QGraphicsWidget *w = static_cast<QGraphicsWidget *>(item);
             qWarning("QGraphicsLayout::addChildLayoutItem() Widget %s \"%s\" had the wrong parent, moved to correct",

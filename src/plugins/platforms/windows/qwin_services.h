@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -29,8 +29,8 @@
 class QWindowsServices : public QPlatformServices
 {
  public:
-   bool openUrl(const QUrl &url);
-   bool openDocument(const QUrl &url);
+   bool openUrl(const QUrl &url) override;
+   bool openDocument(const QUrl &url) override;
 };
 
 #endif

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -22,12 +22,12 @@
 ***********************************************************************/
 
 #include <qjsonparser_p.h>
-#include <qjson.h>
 
 #include <qcoreapplication.h>
+#include <qjson.h>
 #include <qstringparser.h>
 
-static const int NESTING_LIMIT = 1024;
+static constexpr const int NESTING_LIMIT = 1024;
 
 // error strings for the JSON parser
 #define JSONERR_OK          cs_mark_tr("QJsonParseError", "no error occurred")
@@ -577,7 +577,7 @@ static inline bool scanEscapeSequence(QString::const_iterator &m_position, QStri
 
          for (int i = 0; i < 4; ++i) {
 
-            if (! addHexDigit(*m_position,tmp)) {
+            if (! addHexDigit(*m_position, tmp)) {
                return false;
             }
 
@@ -632,4 +632,3 @@ bool QJsonParser::parseString(QString &str)
 
    return true;
 }
-

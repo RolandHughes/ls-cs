@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -325,8 +325,6 @@ static bool checkStaticArray(int &val, const QString &dateString, int at, const 
    return false;
 }
 
-//#define PARSEDATESTRINGDEBUG
-
 #define ADAY   1
 #define AMONTH 2
 #define AYEAR  4
@@ -367,27 +365,29 @@ static QDateTime parseDateString(const QString &dateString)
    int at = 0;
    while (at < dateString.length()) {
 
-#ifdef PARSEDATESTRINGDEBUG
+#if defined(CS_SHOW_DEBUG_NETWORK)
       qDebug() << dateString.mid(at);
 #endif
+
       bool isNum = isNumber(dateString[at]);
 
       // Month
       if (! isNum && checkStaticArray(month, dateString, at, months, sizeof(months) - 1)) {
          ++month;
 
-#ifdef PARSEDATESTRINGDEBUG
+#if defined(CS_SHOW_DEBUG_NETWORK)
          qDebug() << "Month:" << month;
 #endif
          at += 3;
          continue;
       }
+
       // Zone
       if (! isNum && zoneOffset == -1 && checkStaticArray(zoneOffset, dateString, at, zones, sizeof(zones) - 1)) {
          int sign = (at >= 0 && dateString[at - 1] == '-') ? -1 : 1;
          zoneOffset = sign * zoneOffsets[zoneOffset] * 60 * 60;
 
-#ifdef PARSEDATESTRINGDEBUG
+#if defined(CS_SHOW_DEBUG_NETWORK)
          qDebug() << "Zone:" << month;
 #endif
          at += 3;
@@ -434,7 +434,7 @@ static QDateTime parseDateString(const QString &dateString)
             int sign = dateString[at] == '-' ? -1 : 1;
             zoneOffset = sign * ((minutes * 60) + (hours * 60 * 60));
 
-#ifdef PARSEDATESTRINGDEBUG
+#if defined(CS_SHOW_DEBUG_NETWORK)
             qDebug() << "Zone offset:" << zoneOffset << hours << minutes;
 #endif
             at += end;
@@ -466,7 +466,7 @@ static QDateTime parseDateString(const QString &dateString)
 
             time = QTime(h, m, s, ms);
 
-#ifdef PARSEDATESTRINGDEBUG
+#if defined(CS_SHOW_DEBUG_NETWORK)
             qDebug() << "Time:" << list << match.capturedLength(0);
 #endif
 
@@ -482,7 +482,7 @@ static QDateTime parseDateString(const QString &dateString)
             year = atoi(dateString.mid(at, 4).constData());
             at += 4;
 
-#ifdef PARSEDATESTRINGDEBUG
+#if defined(CS_SHOW_DEBUG_NETWORK)
             qDebug() << "Year:" << year;
 #endif
             continue;
@@ -514,7 +514,7 @@ static QDateTime parseDateString(const QString &dateString)
          }
          at += length;
 
-#ifdef PARSEDATESTRINGDEBUG
+#if defined(CS_SHOW_DEBUG_NETWORK)
          qDebug() << "Saving" << x;
 #endif
          continue;
@@ -657,14 +657,15 @@ static QDateTime parseDateString(const QString &dateString)
          year = unknown[i];
       }
    }
-#ifdef PARSEDATESTRINGDEBUG
+#if defined(CS_SHOW_DEBUG_NETWORK)
    qDebug() << "Final set" << year << month << day;
 #endif
 
    if (year == -1 || month == -1 || day == -1) {
-#ifdef PARSEDATESTRINGDEBUG
+#if defined(CS_SHOW_DEBUG_NETWORK)
       qDebug() << "Parser failure" << year << month << day;
 #endif
+
       return QDateTime();
    }
 

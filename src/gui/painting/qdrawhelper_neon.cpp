@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -892,7 +892,7 @@ void QT_FASTCALL comp_func_Plus_neon(uint *dst, const uint *src, int length, uin
 }
 
 #if defined(ENABLE_PIXMAN_DRAWHELPERS)
-static const int tileSize = 32;
+static constexpr const int tileSize = 32;
 
 extern "C" void qt_rotate90_16_neon(quint16 *dst, const quint16 *src, int sstride, int dstride, int count);
 

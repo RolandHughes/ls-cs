@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -88,13 +88,13 @@ void QHistoryState::setDefaultState(QAbstractState *state)
    Q_D(QHistoryState);
 
    if (state && state->parentState() != parentState()) {
-      qWarning("QHistoryState::setDefaultState: State %p does not belong "
-         "to this history state's group (%p)", state, parentState());
+      qWarning("QHistoryState::setDefaultState() State %p does not belong "
+            "to this history state group (%p)", static_cast<void *>(state), static_cast<void *>(parentState()) );
       return;
    }
 
    if (! d->defaultTransition || d->defaultTransition->targetStates().size() != 1
-      || d->defaultTransition->targetStates().first() != state) {
+         || d->defaultTransition->targetStates().first() != state) {
 
       if (! d->defaultTransition || ! dynamic_cast<DefaultStateTransition *>(d->defaultTransition)) {
          d->defaultTransition = new DefaultStateTransition(this, state);
@@ -128,7 +128,6 @@ void QHistoryState::onEntry(QEvent *event)
 {
    (void) event;
 }
-
 
 void QHistoryState::onExit(QEvent *event)
 {

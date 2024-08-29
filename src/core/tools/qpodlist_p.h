@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -35,36 +35,41 @@ class QPodList : public QVarLengthArray<T, Prealloc>
    using QVarLengthArray<T, Prealloc>::realloc;
 
  public:
-   inline explicit QPodList(int size = 0)
-      : QVarLengthArray<T, Prealloc>(size) {
+   explicit QPodList(int size = 0)
+      : QVarLengthArray<T, Prealloc>(size)
+   {
    }
 
-   inline void insert(int idx, const T &t) {
+   void insert(int idx, const T &t) {
       const int sz = s++;
+
       if (s == a) {
          realloc(s, s << 1);
       }
+
       ::memmove(ptr + idx + 1, ptr + idx, (sz - idx) * sizeof(T));
       ptr[idx] = t;
    }
 
-   inline void removeAll(const T &t) {
+   void removeAll(const T &t) {
       int i = 0;
+
       for (int j = 0; j < s; ++j) {
          if (ptr[j] != t) {
             ptr[i++] = ptr[j];
          }
       }
+
       s = i;
    }
 
-   inline void removeAt(int idx) {
+   void removeAt(int idx) {
       Q_ASSERT(idx >= 0 && idx < s);
       ::memmove(ptr + idx, ptr + idx + 1, (s - idx - 1) * sizeof(T));
       --s;
    }
 
-   inline T takeFirst() {
+   T takeFirst() {
       Q_ASSERT(s > 0);
       T tmp = ptr[0];
       removeAt(0);

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,11 +24,11 @@
 #ifndef QABSTRACTANIMATION_P_H
 #define QABSTRACTANIMATION_P_H
 
+#include <qabstractanimation.h>
 #include <qbasictimer.h>
 #include <qdatetime.h>
-#include <qtimer.h>
 #include <qelapsedtimer.h>
-#include <qabstractanimation.h>
+#include <qtimer.h>
 
 #ifdef Q_OS_WIN
 #include <qt_windows.h>
@@ -44,20 +44,15 @@ class QAbstractAnimationPrivate
 {
  public:
    QAbstractAnimationPrivate()
-      : state(QAbstractAnimation::Stopped),
-        direction(QAbstractAnimation::Forward),
-        totalCurrentTime(0),
-        currentTime(0),
-        loopCount(1),
-        currentLoop(0),
-        deleteWhenStopped(false),
-        hasRegisteredTimer(false),
-        isPause(false),
-        isGroup(false),
-        group(nullptr) {
+      : state(QAbstractAnimation::Stopped), direction(QAbstractAnimation::Forward),
+        totalCurrentTime(0), currentTime(0),  loopCount(1), currentLoop(0), deleteWhenStopped(false),
+        hasRegisteredTimer(false), isPause(false), isGroup(false), group(nullptr)
+   {
    }
 
-   virtual ~QAbstractAnimationPrivate() {}
+   virtual ~QAbstractAnimationPrivate()
+   {
+   }
 
    static QAbstractAnimationPrivate *get(QAbstractAnimation *q) {
       return q->d_func();
@@ -86,7 +81,6 @@ class QAbstractAnimationPrivate
    QAbstractAnimation *q_ptr;
 };
 
-
 class QDefaultAnimationDriver : public QAnimationDriver
 {
    CORE_CS_OBJECT(QDefaultAnimationDriver)
@@ -103,18 +97,21 @@ class QDefaultAnimationDriver : public QAnimationDriver
    QUnifiedTimer *m_unified_timer;
 };
 
-
 class Q_CORE_EXPORT QAnimationDriverPrivate
 {
 
  public:
-   QAnimationDriverPrivate() : running(false) {}
-   virtual ~QAnimationDriverPrivate() {}
+   QAnimationDriverPrivate()
+      : running(false)
+   { }
+
+   virtual ~QAnimationDriverPrivate() {
+   }
 
    bool running;
 };
 
-typedef QElapsedTimer ElapsedTimer;
+using ElapsedTimer = QElapsedTimer;
 
 class Q_CORE_EXPORT QUnifiedTimer : public QObject
 {
@@ -145,6 +142,7 @@ class Q_CORE_EXPORT QUnifiedTimer : public QObject
    void setSlowModeEnabled(bool enabled) {
       slowMode = enabled;
    }
+
    void setSlowdownFactor(double factor) {
       slowdownFactor = factor;
    }

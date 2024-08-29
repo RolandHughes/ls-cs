@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -79,6 +79,9 @@ class QGraphicsItemGroupPrivate;
 class Q_GUI_EXPORT QGraphicsItem
 {
  public:
+   static constexpr const int Type = 1;
+   static constexpr const int UserType = 65536;
+
    enum GraphicsItemFlag {
       ItemIsMovable = 0x1,
       ItemIsSelectable = 0x2,
@@ -431,9 +434,6 @@ class Q_GUI_EXPORT QGraphicsItem
 
    Qt::InputMethodHints inputMethodHints() const;
    void setInputMethodHints(Qt::InputMethodHints hints);
-
-   static constexpr const int Type = 1;
-   static constexpr const int UserType = 65536;
 
    virtual int type() const;
 

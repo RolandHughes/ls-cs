@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -21,23 +21,22 @@
 *
 ***********************************************************************/
 
-#include <mainwindow.h>
 #include <globals.h>
+#include <mainwindow.h>
 
-#include <QFile>
-#include <QLibraryInfo>
-#include <QLocale>
-#include <QSettings>
-#include <QTextCodec>
-#include <QTranslator>
-
-#include <QApplication>
-#include <QDesktopWidget>
-#include <QPixmap>
+#include <qapplication.h>
+#include <qdesktopwidget.h>
+#include <qfile.h>
+#include <qlibraryinfo.h>
+#include <qlocale.h>
+#include <qpixmap.h>
+#include <qsettings.h>
+#include <qtextcodec.h>
+#include <qtranslator.h>
 
 #ifdef Q_OS_DARWIN
-#include <QUrl>
-#include <QFileOpenEvent>
+#include <qfileopenevent.h>
+#include <qurl.h>
 
 class ApplicationEventFilter : public QObject
 {

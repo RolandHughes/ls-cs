@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -46,8 +46,6 @@ struct GpuDescription {
    QByteArray driverName;
    QByteArray description;
 };
-
-QDebug operator<<(QDebug d, const GpuDescription &gd);
 
 class QWindowsOpenGLTester
 {

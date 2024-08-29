@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,10 +24,10 @@
 #ifndef QDIR_H
 #define QDIR_H
 
-#include <qstring.h>
 #include <qfileinfo.h>
-#include <qstringlist.h>
 #include <qshareddata.h>
+#include <qstring.h>
+#include <qstringlist.h>
 
 class QDebug;
 class QDirIterator;
@@ -36,54 +36,56 @@ class QDirPrivate;
 class Q_CORE_EXPORT QDir
 {
  public:
-   enum Filter { Dirs            = 0x001,
-                 Files           = 0x002,
-                 Drives          = 0x004,
-                 NoSymLinks      = 0x008,
-                 AllEntries      = Dirs | Files | Drives,
-                 TypeMask        = 0x00f,
-                 Readable        = 0x010,
-                 Writable        = 0x020,
-                 Executable      = 0x040,
-                 PermissionMask  = 0x070,
-                 Modified        = 0x080,
-                 Hidden          = 0x100,
-                 System          = 0x200,
+   enum Filter {
+      Dirs            = 0x001,
+      Files           = 0x002,
+      Drives          = 0x004,
+      NoSymLinks      = 0x008,
+      AllEntries      = Dirs | Files | Drives,
+      TypeMask        = 0x00f,
+      Readable        = 0x010,
+      Writable        = 0x020,
+      Executable      = 0x040,
+      PermissionMask  = 0x070,
+      Modified        = 0x080,
+      Hidden          = 0x100,
+      System          = 0x200,
 
-                 AccessMask      = 0x3F0,
+      AccessMask      = 0x3F0,
 
-                 AllDirs         = 0x400,
-                 CaseSensitive   = 0x800,
-                 NoDot           = 0x2000,
-                 NoDotDot        = 0x4000,
-                 NoDotAndDotDot  = NoDot|NoDotDot,
+      AllDirs         = 0x400,
+      CaseSensitive   = 0x800,
+      NoDot           = 0x2000,
+      NoDotDot        = 0x4000,
+      NoDotAndDotDot  = NoDot | NoDotDot,
 
-                 NoFilter = -1
-               };
+      NoFilter = -1
+   };
 
    using Filters = QFlags<Filter>;
 
-   enum SortFlag { Name        = 0x00,
-                   Time        = 0x01,
-                   Size        = 0x02,
-                   Unsorted    = 0x03,
-                   SortByMask  = 0x03,
+   enum SortFlag {
+      Name        = 0x00,
+      Time        = 0x01,
+      Size        = 0x02,
+      Unsorted    = 0x03,
+      SortByMask  = 0x03,
 
-                   DirsFirst   = 0x04,
-                   Reversed    = 0x08,
-                   IgnoreCase  = 0x10,
-                   DirsLast    = 0x20,
-                   LocaleAware = 0x40,
-                   Type        = 0x80,
-                   NoSort = -1
-                 };
+      DirsFirst   = 0x04,
+      Reversed    = 0x08,
+      IgnoreCase  = 0x10,
+      DirsLast    = 0x20,
+      LocaleAware = 0x40,
+      Type        = 0x80,
+      NoSort      = -1
+   };
 
    using SortFlags = QFlags<SortFlag>;
 
    QDir(const QDir &dir);
    QDir(const QString &path = QString());
    QDir(const QString &path, const QString &nameFilter, SortFlags sort = SortFlags(Name | IgnoreCase),
-            Filters filters = AllEntries);
+         Filters filters = AllEntries);
 
    ~QDir();
 
@@ -132,11 +134,11 @@ class Q_CORE_EXPORT QDir
 
    QStringList entryList(Filters filters = NoFilter, SortFlags sort = NoSort) const;
    QStringList entryList(const QStringList &nameFilters, Filters filters = NoFilter,
-            SortFlags sort = NoSort) const;
+         SortFlags sort = NoSort) const;
 
    QFileInfoList entryInfoList(Filters filters = NoFilter, SortFlags sort = NoSort) const;
    QFileInfoList entryInfoList(const QStringList &nameFilters, Filters filters = NoFilter,
-            SortFlags sort = NoSort) const;
+         SortFlags sort = NoSort) const;
 
    bool mkdir(const QString &dirName) const;
    bool rmdir(const QString &dirName) const;
@@ -154,19 +156,19 @@ class Q_CORE_EXPORT QDir
    }
 
    static bool isRelativePath(const QString &path);
-   static inline bool isAbsolutePath(const QString &path) {
+   static bool isAbsolutePath(const QString &path) {
       return !isRelativePath(path);
    }
 
    bool isRelative() const;
-   inline bool isAbsolute() const {
+   bool isAbsolute() const {
       return !isRelative();
    }
 
    bool makeAbsolute();
 
    bool operator==(const QDir &other) const;
-   inline bool operator!=(const QDir &other) const {
+   bool operator!=(const QDir &other) const {
       return !operator==(other);
    }
 
@@ -178,32 +180,32 @@ class Q_CORE_EXPORT QDir
 
    static QChar listSeparator() {
 #if defined(Q_OS_WIN)
-        return ';';
+      return ';';
 #else
-        return ':';
+      return ':';
 #endif
-    }
+   }
    static QChar separator();
 
    static bool setCurrent(const QString &path);
-   static inline QDir current() {
+   static QDir current() {
       return QDir(currentPath());
    }
 
    static QString currentPath();
 
-   static inline QDir home() {
+   static QDir home() {
       return QDir(homePath());
    }
 
    static QString homePath();
 
-   static inline QDir root() {
+   static QDir root() {
       return QDir(rootPath());
    }
 
    static QString rootPath();
-   static inline QDir temp() {
+   static QDir temp() {
       return QDir(tempPath());
    }
 
@@ -219,12 +221,12 @@ class Q_CORE_EXPORT QDir
    explicit QDir(QDirPrivate &d);
    QSharedDataPointer<QDirPrivate> d_ptr;
 
-    friend class QDirIterator;
-    QDirPrivate* d_func();
-    inline const QDirPrivate* d_func() const
-    {
-        return d_ptr.constData();
-    }
+   friend class QDirIterator;
+   QDirPrivate *d_func();
+
+   const QDirPrivate *d_func() const {
+      return d_ptr.constData();
+   }
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(QDir::Filters)

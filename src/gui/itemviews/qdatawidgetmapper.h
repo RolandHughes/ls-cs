@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -52,7 +52,10 @@ class Q_GUI_EXPORT QDataWidgetMapper : public QObject
    GUI_CS_PROPERTY_WRITE(submitPolicy, setSubmitPolicy)
 
  public:
-   enum SubmitPolicy { AutoSubmit, ManualSubmit };
+   enum SubmitPolicy {
+      AutoSubmit,
+      ManualSubmit
+   };
 
    explicit QDataWidgetMapper(QObject *parent = nullptr);
 

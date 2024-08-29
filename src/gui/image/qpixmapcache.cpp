@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -26,7 +26,7 @@
 #include <qdebug.h>
 #include <qpixmapcache_p.h>
 
-static int cache_limit = 10240;    // 10 MB cache limit for desktop
+static int CacheLimit = 10240;    // 10 MB cache limit for desktop
 
 QPixmapCache::Key::Key()
    : d(nullptr)
@@ -41,9 +41,6 @@ QPixmapCache::Key::Key(const Key &other)
    d = other.d;
 }
 
-/*!
-    Destroys the key.
-*/
 QPixmapCache::Key::~Key()
 {
    if (d && --(d->ref) == 0) {
@@ -51,17 +48,10 @@ QPixmapCache::Key::~Key()
    }
 }
 
-/*!
-    \internal
-
-    Returns true if this key is the same as the given \a key; otherwise returns
-    false.
-*/
 bool QPixmapCache::Key::operator ==(const Key &key) const
 {
    return (d == key.d);
 }
-
 
 QPixmapCache::Key &QPixmapCache::Key::operator =(const Key &other)
 {
@@ -69,11 +59,14 @@ QPixmapCache::Key &QPixmapCache::Key::operator =(const Key &other)
       if (other.d) {
          ++(other.d->ref);
       }
+
       if (d && --(d->ref) == 0) {
          delete d;
       }
+
       d = other.d;
    }
+
    return *this;
 }
 
@@ -109,7 +102,8 @@ class QPMCache : public QObject, public QCache<QPixmapCache::Key, QPixmapCacheEn
    bool flushDetachedPixmaps(bool nt);
 
  private:
-   enum { soon_time = 10000, flush_time = 30000 };
+   static constexpr const int TimeSoon  = 10000;
+   static constexpr const int TimeFlush = 30000;
 
    int *keyArray;
    int theid;
@@ -132,7 +126,7 @@ uint qHash(const QPixmapCache::Key &k)
 }
 
 QPMCache::QPMCache()
-   : QObject(nullptr), QCache<QPixmapCache::Key, QPixmapCacheEntry>(cache_limit * 1024),
+   : QObject(nullptr), QCache<QPixmapCache::Key, QPixmapCacheEntry>(CacheLimit * 1024),
      keyArray(nullptr), theid(0), ps(0), keyArraySize(0), freeKey(0), t(false)
 {
 }
@@ -171,9 +165,10 @@ void QPMCache::timerEvent(QTimerEvent *)
    if (!flushDetachedPixmaps(nt)) {
       killTimer(theid);
       theid = 0;
+
    } else if (nt != t) {
       killTimer(theid);
-      theid = startTimer(nt ? soon_time : flush_time);
+      theid = startTimer(nt ? TimeSoon : TimeFlush);
       t = nt;
    }
 }
@@ -224,7 +219,7 @@ bool QPMCache::insert(const QString &key, const QPixmap &pixmap, int cost)
    if (success) {
       cacheKeys.insert(key, cacheKey);
       if (!theid) {
-         theid = startTimer(flush_time);
+         theid = startTimer(TimeFlush);
          t = false;
       }
    } else {
@@ -237,17 +232,19 @@ bool QPMCache::insert(const QString &key, const QPixmap &pixmap, int cost)
 QPixmapCache::Key QPMCache::insert(const QPixmap &pixmap, int cost)
 {
    QPixmapCache::Key cacheKey = createKey();
-   bool success = QCache<QPixmapCache::Key, QPixmapCacheEntry>::insert(cacheKey, new QPixmapCacheEntry(cacheKey, pixmap),
-         cost);
+   bool success = QCache<QPixmapCache::Key, QPixmapCacheEntry>::insert(cacheKey, new QPixmapCacheEntry(cacheKey, pixmap), cost);
+
    if (success) {
-      if (!theid) {
-         theid = startTimer(flush_time);
+      if (! theid) {
+         theid = startTimer(TimeFlush);
          t = false;
       }
+
    } else {
-      //Insertion failed we released the key and return an invalid one
+      // Insertion failed we released the key and return an invalid one
       releaseKey(cacheKey);
    }
+
    return cacheKey;
 }
 
@@ -259,28 +256,33 @@ bool QPMCache::replace(const QPixmapCache::Key &key, const QPixmap &pixmap, int 
 
    QPixmapCache::Key cacheKey = createKey();
 
-   bool success = QCache<QPixmapCache::Key, QPixmapCacheEntry>::insert(cacheKey, new QPixmapCacheEntry(cacheKey, pixmap),
-         cost);
+   bool success = QCache<QPixmapCache::Key, QPixmapCacheEntry>::insert(cacheKey, new QPixmapCacheEntry(cacheKey, pixmap), cost);
+
    if (success) {
-      if (!theid) {
-         theid = startTimer(flush_time);
+      if (! theid) {
+         theid = startTimer(TimeFlush);
          t = false;
       }
+
       const_cast<QPixmapCache::Key &>(key) = cacheKey;
+
    } else {
       //Insertion failed we released the key
       releaseKey(cacheKey);
    }
+
    return success;
 }
 
 bool QPMCache::remove(const QString &key)
 {
    QPixmapCache::Key cacheKey = cacheKeys.value(key);
-   //The key was not in the cache
-   if (!cacheKey.d) {
+
+   // the key was not in the cache
+   if (! cacheKey.d) {
       return false;
    }
+
    cacheKeys.remove(key);
    return QCache<QPixmapCache::Key, QPixmapCacheEntry>::remove(cacheKey);
 }
@@ -416,13 +418,13 @@ bool QPixmapCache::replace(const Key &key, const QPixmap &pixmap)
 
 int QPixmapCache::cacheLimit()
 {
-   return cache_limit;
+   return CacheLimit;
 }
 
 void QPixmapCache::setCacheLimit(int n)
 {
-   cache_limit = n;
-   pm_cache()->setMaxCost(1024 * cache_limit);
+   CacheLimit = n;
+   pm_cache()->setMaxCost(1024 * CacheLimit);
 }
 
 void QPixmapCache::remove(const QString &key)

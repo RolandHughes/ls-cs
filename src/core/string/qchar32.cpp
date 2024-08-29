@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -22,9 +22,11 @@
 ***********************************************************************/
 
 #include <qchar32.h>
-#include <qstring8.h>
-#include <qstring16.h>
+
 #include <qdatastream.h>
+#include <qstring16.h>
+#include <qstring8.h>
+
 #include <qunicodetables_p.h>
 
 #include "../locale/qunicodetables.cpp"      // do not change to < >

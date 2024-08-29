@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -22,9 +22,11 @@
 ***********************************************************************/
 
 #include <qline.h>
+
 #include <qdebug.h>
 #include <qdatastream.h>
 #include <qmath.h>
+
 #include <qnumeric_p.h>
 
 QDebug operator<<(QDebug d, const QLine &p)
@@ -41,7 +43,9 @@ QDataStream &operator<<(QDataStream &stream, const QLine &line)
 
 QDataStream &operator>>(QDataStream &stream, QLine &line)
 {
-   QPoint p1, p2;
+   QPoint p1;
+   QPoint p2;
+
    stream >> p1;
    stream >> p2;
    line = QLine(p1, p2);
@@ -114,7 +118,7 @@ QLineF QLineF::unitVector() const
    QLineF f(p1(), QPointF(pt1.x() + x / len, pt1.y() + y / len));
 
    if (qAbs(f.length() - 1) >= 0.001) {
-      qWarning("QLine::unitVector() New line does not have unit length");
+      qWarning("QLine::unitVector() New line does not have a unit length");
    }
 
    return f;
@@ -128,12 +132,14 @@ QLineF::IntersectType QLineF::intersect(const QLineF &l, QPointF *intersectionPo
    const QPointF c = pt1 - l.pt1;
 
    const qreal denominator = a.y() * b.x() - a.x() * b.y();
+
    if (denominator == 0 || !qt_is_finite(denominator)) {
       return NoIntersection;
    }
 
    const qreal reciprocal = 1 / denominator;
    const qreal na = (b.y() * c.x() - b.x() * c.y()) * reciprocal;
+
    if (intersectionPoint) {
       *intersectionPoint = pt1 + a * na;
    }
@@ -143,6 +149,7 @@ QLineF::IntersectType QLineF::intersect(const QLineF &l, QPointF *intersectionPo
    }
 
    const qreal nb = (a.x() * c.y() - a.y() * c.x()) * reciprocal;
+
    if (nb < 0 || nb > 1) {
       return UnboundedIntersection;
    }
@@ -200,7 +207,9 @@ QDataStream &operator<<(QDataStream &stream, const QLineF &lineF)
 
 QDataStream &operator>>(QDataStream &stream, QLineF &lineF)
 {
-   QPointF start, end;
+   QPointF start;
+   QPointF end;
+
    stream >> start;
    stream >> end;
    lineF = QLineF(start, end);

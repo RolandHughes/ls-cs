@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,19 +24,19 @@
 #ifndef QABSTRACTITEMMODEL_H
 #define QABSTRACTITEMMODEL_H
 
-#include <qvariant.h>
-#include <qobject.h>
-#include <qmultihash.h>
-#include <qvector.h>
-#include <qscopedpointer.h>
 #include <qcontainerfwd.h>
+#include <qmultihash.h>
+#include <qobject.h>
+#include <qscopedpointer.h>
+#include <qvariant.h>
+#include <qvector.h>
 
 class QAbstractItemModel;
+class QAbstractItemModelPrivate;
+class QMimeData;
+class QModelIndex;
 class QPersistentModelIndex;
 class QPersistentModelIndexData;
-class QModelIndex;
-class QMimeData;
-class QAbstractItemModelPrivate;
 
 using QModelIndexList = QList<QModelIndex>;
 
@@ -45,26 +45,26 @@ class Q_CORE_EXPORT QModelIndex
    friend class QAbstractItemModel;
 
  public:
-   inline QModelIndex()
+   QModelIndex()
       : r(-1), c(-1), p(nullptr), m(nullptr)
    {
    }
 
    // compiler-generated copy/move constructor/assignment operators are fine
 
-   inline int row() const {
+   int row() const {
       return r;
    }
 
-   inline int column() const {
+   int column() const {
       return c;
    }
 
-   inline void *internalPointer() const {
+   void *internalPointer() const {
       return p;
    }
 
-   inline qint64 internalId() const {
+   qint64 internalId() const {
       return reinterpret_cast<qint64>(p);
    }
 
@@ -74,23 +74,23 @@ class Q_CORE_EXPORT QModelIndex
    inline QVariant data(int role = Qt::DisplayRole) const;
    inline Qt::ItemFlags flags() const;
 
-   inline const QAbstractItemModel *model() const {
+   const QAbstractItemModel *model() const {
       return m;
    }
 
-   inline bool isValid() const {
+   bool isValid() const {
       return (r >= 0) && (c >= 0) && (m != nullptr);
    }
 
-   inline bool operator==(const QModelIndex &other) const {
+   bool operator==(const QModelIndex &other) const {
       return (other.r == r) && (other.p == p) && (other.c == c) && (other.m == m);
    }
 
-   inline bool operator!=(const QModelIndex &other) const {
+   bool operator!=(const QModelIndex &other) const {
       return !(*this == other);
    }
 
-   inline bool operator<(const QModelIndex &other) const {
+   bool operator<(const QModelIndex &other) const {
       if (r < other.r) {
          return true;
       }
@@ -99,20 +99,23 @@ class Q_CORE_EXPORT QModelIndex
          if (c < other.c) {
             return true;
          }
+
          if (c == other.c) {
             if (p < other.p) {
                return true;
             }
+
             if (p == other.p) {
                return m < other.m;
             }
          }
       }
+
       return false;
    }
 
  private:
-   inline QModelIndex(int row, int column, void *ptr, const QAbstractItemModel *model)
+   QModelIndex(int row, int column, void *ptr, const QAbstractItemModel *model)
       : r(row), c(column), p(ptr), m(model)
    {
    }
@@ -136,23 +139,24 @@ class Q_CORE_EXPORT QPersistentModelIndex
 
    bool operator<(const QPersistentModelIndex &other) const;
    bool operator==(const QPersistentModelIndex &other) const;
-   inline bool operator!=(const QPersistentModelIndex &other) const {
+
+   bool operator!=(const QPersistentModelIndex &other) const {
       return !operator==(other);
    }
 
    QPersistentModelIndex &operator=(const QPersistentModelIndex &other);
-    inline QPersistentModelIndex(QPersistentModelIndex &&other)
+   QPersistentModelIndex(QPersistentModelIndex &&other)
       : d(other.d)
-    {
+   {
       other.d = nullptr;
-    }
+   }
 
-   inline QPersistentModelIndex &operator=(QPersistentModelIndex &&other) {
+   QPersistentModelIndex &operator=(QPersistentModelIndex &&other) {
       qSwap(d, other.d);
       return *this;
    }
 
-   inline void swap(QPersistentModelIndex &other)   {
+   void swap(QPersistentModelIndex &other)   {
       qSwap(d, other.d);
    }
 
@@ -195,11 +199,11 @@ class Q_CORE_EXPORT QAbstractItemModel : public QObject
    CORE_CS_ENUM(LayoutChangeHint)
 
  public:
-    enum LayoutChangeHint {
-        NoLayoutChangeHint,
-        VerticalSortHint,
-        HorizontalSortHint
-    };
+   enum LayoutChangeHint {
+      NoLayoutChangeHint,
+      VerticalSortHint,
+      HorizontalSortHint
+   };
 
    explicit QAbstractItemModel(QObject *parent = nullptr);
 
@@ -230,10 +234,10 @@ class Q_CORE_EXPORT QAbstractItemModel : public QObject
    virtual QMimeData *mimeData(const QModelIndexList &indexes) const;
 
    virtual bool canDropMimeData(const QMimeData *data, Qt::DropAction action,
-                                 int row, int column, const QModelIndex &parent) const;
+         int row, int column, const QModelIndex &parent) const;
 
    virtual bool dropMimeData(const QMimeData *data, Qt::DropAction action,
-                             int row, int column, const QModelIndex &parent);
+         int row, int column, const QModelIndex &parent);
 
    virtual Qt::DropActions supportedDropActions() const;
    virtual Qt::DropActions supportedDragActions() const;
@@ -243,10 +247,10 @@ class Q_CORE_EXPORT QAbstractItemModel : public QObject
    virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
    virtual bool removeColumns(int column, int count, const QModelIndex &parent = QModelIndex());
 
-    virtual bool moveRows(const QModelIndex &sourceParent, int sourceRow, int count,
-                          const QModelIndex &destinationParent, int destinationChild);
-    virtual bool moveColumns(const QModelIndex &sourceParent, int sourceColumn, int count,
-                             const QModelIndex &destinationParent, int destinationChild);
+   virtual bool moveRows(const QModelIndex &sourceParent, int sourceRow, int count,
+         const QModelIndex &destinationParent, int destinationChild);
+   virtual bool moveColumns(const QModelIndex &sourceParent, int sourceColumn, int count,
+         const QModelIndex &destinationParent, int destinationChild);
 
    inline bool insertRow(int row, const QModelIndex &parent = QModelIndex());
    inline bool insertColumn(int column, const QModelIndex &parent = QModelIndex());
@@ -254,9 +258,9 @@ class Q_CORE_EXPORT QAbstractItemModel : public QObject
    inline bool removeColumn(int column, const QModelIndex &parent = QModelIndex());
 
    inline bool moveRow(const QModelIndex &sourceParent, int sourceRow,
-                        const QModelIndex &destinationParent, int destinationChild);
+         const QModelIndex &destinationParent, int destinationChild);
    inline bool moveColumn(const QModelIndex &sourceParent, int sourceColumn,
-                           const QModelIndex &destinationParent, int destinationChild);
+         const QModelIndex &destinationParent, int destinationChild);
 
    virtual void fetchMore(const QModelIndex &parent);
    virtual bool canFetchMore(const QModelIndex &parent) const;
@@ -265,7 +269,7 @@ class Q_CORE_EXPORT QAbstractItemModel : public QObject
    virtual QModelIndex buddy(const QModelIndex &index) const;
 
    virtual QModelIndexList match(const QModelIndex &start, int role, const QVariant &value, int hits = 1,
-                  Qt::MatchFlags flags = Qt::MatchFlags(Qt::MatchStartsWith|Qt::MatchWrap)) const;
+         Qt::MatchFlags flags = Qt::MatchFlags(Qt::MatchStartsWith | Qt::MatchWrap)) const;
 
    virtual QSize span(const QModelIndex &index) const;
 
@@ -274,18 +278,18 @@ class Q_CORE_EXPORT QAbstractItemModel : public QObject
    using QObject::parent;
 
    CORE_CS_SIGNAL_1(Public, void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight,
-                    const QVector<int> &roles = QVector<int>()))
+               const QVector<int> &roles = QVector<int>()))
    CORE_CS_SIGNAL_2(dataChanged, topLeft, bottomRight, roles)
 
    CORE_CS_SIGNAL_1(Public, void headerDataChanged(Qt::Orientation orientation, int first, int last))
    CORE_CS_SIGNAL_2(headerDataChanged, orientation, first, last)
 
    CORE_CS_SIGNAL_1(Public, void layoutChanged(const QList<QPersistentModelIndex> &parents = QList<QPersistentModelIndex>(),
-                     QAbstractItemModel::LayoutChangeHint hint = QAbstractItemModel::NoLayoutChangeHint))
+               QAbstractItemModel::LayoutChangeHint hint = QAbstractItemModel::NoLayoutChangeHint))
    CORE_CS_SIGNAL_2(layoutChanged, parents, hint)
 
    CORE_CS_SIGNAL_1(Public, void layoutAboutToBeChanged(const QList<QPersistentModelIndex> &parents = QList<QPersistentModelIndex>(),
-                     QAbstractItemModel::LayoutChangeHint hint = QAbstractItemModel::NoLayoutChangeHint))
+               QAbstractItemModel::LayoutChangeHint hint = QAbstractItemModel::NoLayoutChangeHint))
    CORE_CS_SIGNAL_2(layoutAboutToBeChanged, parents, hint)
 
    CORE_CS_SIGNAL_1(Public, void rowsAboutToBeInserted(const QModelIndex &parent, int first, int last))
@@ -319,19 +323,19 @@ class Q_CORE_EXPORT QAbstractItemModel : public QObject
    CORE_CS_SIGNAL_2(modelReset)
 
    CORE_CS_SIGNAL_1(Public, void rowsAboutToBeMoved(const QModelIndex &sourceParent, int sourceStart, int sourceEnd,
-            const QModelIndex &destinationParent, int destinationRow))
+               const QModelIndex &destinationParent, int destinationRow))
    CORE_CS_SIGNAL_2(rowsAboutToBeMoved, sourceParent, sourceStart, sourceEnd, destinationParent, destinationRow)
 
    CORE_CS_SIGNAL_1(Public, void rowsMoved(const QModelIndex &sourceParent, int sourceStart, int sourceEnd,
-            const QModelIndex &destinationParent, int destinationRow))
-   CORE_CS_SIGNAL_2(rowsMoved, sourceParent, sourceStart, sourceEnd,destinationParent, destinationRow)
+               const QModelIndex &destinationParent, int destinationRow))
+   CORE_CS_SIGNAL_2(rowsMoved, sourceParent, sourceStart, sourceEnd, destinationParent, destinationRow)
 
    CORE_CS_SIGNAL_1(Public, void columnsAboutToBeMoved(const QModelIndex &sourceParent, int sourceStart, int sourceEnd,
-            const QModelIndex &destinationParent, int destinationColumn))
+               const QModelIndex &destinationParent, int destinationColumn))
    CORE_CS_SIGNAL_2(columnsAboutToBeMoved, sourceParent, sourceStart, sourceEnd, destinationParent, destinationColumn)
 
    CORE_CS_SIGNAL_1(Public, void columnsMoved(const QModelIndex &sourceParent, int sourceStart, int sourceEnd,
-            const QModelIndex &destinationParent, int destinationColumn))
+               const QModelIndex &destinationParent, int destinationColumn))
    CORE_CS_SIGNAL_2(columnsMoved, sourceParent, sourceStart, sourceEnd, destinationParent, destinationColumn)
 
    //
@@ -357,7 +361,7 @@ class Q_CORE_EXPORT QAbstractItemModel : public QObject
    void endRemoveRows();
 
    bool beginMoveRows(const QModelIndex &sourceParent, int sourceFirst, int sourceLast,
-                      const QModelIndex &destinationParent, int destinationRow);
+         const QModelIndex &destinationParent, int destinationRow);
    void endMoveRows();
 
    void beginInsertColumns(const QModelIndex &parent, int first, int last);
@@ -367,7 +371,7 @@ class Q_CORE_EXPORT QAbstractItemModel : public QObject
    void endRemoveColumns();
 
    bool beginMoveColumns(const QModelIndex &sourceParent, int sourceFirst, int sourceLast,
-                         const QModelIndex &destinationParent, int destinationColumn);
+         const QModelIndex &destinationParent, int destinationColumn);
 
    void endMoveColumns();
    void beginResetModel();
@@ -413,13 +417,13 @@ inline bool QAbstractItemModel::removeColumn(int column, const QModelIndex &pare
 }
 
 inline bool QAbstractItemModel::moveRow(const QModelIndex &sourceParent, int sourceRow,
-                                        const QModelIndex &destinationParent, int destinationChild)
+      const QModelIndex &destinationParent, int destinationChild)
 {
    return moveRows(sourceParent, sourceRow, 1, destinationParent, destinationChild);
 }
 
 inline bool QAbstractItemModel::moveColumn(const QModelIndex &sourceParent, int sourceColumn,
-                                           const QModelIndex &destinationParent, int destinationChild)
+      const QModelIndex &destinationParent, int destinationChild)
 {
    return moveColumns(sourceParent, sourceColumn, 1, destinationParent, destinationChild);
 }
@@ -436,29 +440,29 @@ inline QModelIndex QAbstractItemModel::createIndex(int row, int column, quintptr
 
 class Q_CORE_EXPORT QAbstractTableModel : public QAbstractItemModel
 {
-    CORE_CS_OBJECT(QAbstractTableModel)
+   CORE_CS_OBJECT(QAbstractTableModel)
 
  public:
-    explicit QAbstractTableModel(QObject *parent = nullptr);
+   explicit QAbstractTableModel(QObject *parent = nullptr);
 
-    QAbstractTableModel(const QAbstractTableModel &) = delete;
-    QAbstractTableModel &operator=(const QAbstractTableModel &) = delete;
+   QAbstractTableModel(const QAbstractTableModel &) = delete;
+   QAbstractTableModel &operator=(const QAbstractTableModel &) = delete;
 
-    ~QAbstractTableModel();
+   ~QAbstractTableModel();
 
-    QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override;
-    QModelIndex sibling(int row, int column, const QModelIndex &index) const override;
-    bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent) override;
+   QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override;
+   QModelIndex sibling(int row, int column, const QModelIndex &index) const override;
+   bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent) override;
 
-    Qt::ItemFlags flags(const QModelIndex &index) const override;
-    using QObject::parent;
+   Qt::ItemFlags flags(const QModelIndex &index) const override;
+   using QObject::parent;
 
  protected:
-    QAbstractTableModel(QAbstractItemModelPrivate &dd, QObject *parent);
+   QAbstractTableModel(QAbstractItemModelPrivate &dd, QObject *parent);
 
  private:
-    QModelIndex parent(const QModelIndex &child) const override;
-    bool hasChildren(const QModelIndex &parent) const override;
+   QModelIndex parent(const QModelIndex &child) const override;
+   bool hasChildren(const QModelIndex &parent) const override;
 };
 
 class Q_CORE_EXPORT QAbstractListModel : public QAbstractItemModel
@@ -466,28 +470,28 @@ class Q_CORE_EXPORT QAbstractListModel : public QAbstractItemModel
    CORE_CS_OBJECT(QAbstractListModel)
 
  public:
-    explicit QAbstractListModel(QObject *parent = nullptr);
+   explicit QAbstractListModel(QObject *parent = nullptr);
 
-    QAbstractListModel(const QAbstractListModel &) = delete;
-    QAbstractListModel &operator=(const QAbstractListModel &) = delete;
+   QAbstractListModel(const QAbstractListModel &) = delete;
+   QAbstractListModel &operator=(const QAbstractListModel &) = delete;
 
-    ~QAbstractListModel();
+   ~QAbstractListModel();
 
-    QModelIndex index(int row, int column = 0, const QModelIndex &parent = QModelIndex()) const override;
-    QModelIndex sibling(int row, int column, const QModelIndex &index) const override;
+   QModelIndex index(int row, int column = 0, const QModelIndex &parent = QModelIndex()) const override;
+   QModelIndex sibling(int row, int column, const QModelIndex &index) const override;
 
-    bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent) override;
+   bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent) override;
 
-    Qt::ItemFlags flags(const QModelIndex &index) const override;
-    using QObject::parent;
+   Qt::ItemFlags flags(const QModelIndex &index) const override;
+   using QObject::parent;
 
  protected:
-    QAbstractListModel(QAbstractItemModelPrivate &dd, QObject *parent);
+   QAbstractListModel(QAbstractItemModelPrivate &dd, QObject *parent);
 
  private:
-    QModelIndex parent(const QModelIndex &child) const override;
-    int columnCount(const QModelIndex &parent) const override;
-    bool hasChildren(const QModelIndex &parent) const override;
+   QModelIndex parent(const QModelIndex &child) const override;
+   int columnCount(const QModelIndex &parent) const override;
+   bool hasChildren(const QModelIndex &parent) const override;
 };
 
 inline QModelIndex QModelIndex::parent() const

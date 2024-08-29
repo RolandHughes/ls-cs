@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -41,6 +41,7 @@
 #include <qpathclipper_p.h>
 #include <qstroker_p.h>
 #include <qtextengine_p.h>
+
 #include <limits.h>
 
 #define PM_INIT
@@ -60,10 +61,6 @@ namespace cs_internal {
 
 // This value is used to determine the length of control point vectors when approximating
 // arc segments as curves. The factor is multiplied with the radius of the circle.
-
-// #define QPP_DEBUG
-// #define QPP_STROKE_DEBUG
-// #define QPP_FILLPOLYGONS_DEBUG
 
 QPainterPath qt_stroke_dash(const QPainterPath &path, qreal *dashes, int dashCount);
 
@@ -125,29 +122,11 @@ void qt_find_ellipse_coords(const QRectF &r, qreal angle, qreal length,
    }
 }
 
-#ifdef QPP_DEBUG
-static void qt_debug_path(const QPainterPath &path)
-{
-   const char *names[] = {
-      "MoveTo     ",
-      "LineTo     ",
-      "CurveTo    ",
-      "CurveToData"
-   };
-
-   printf("\nQPainterPath: elementCount=%d\n", path.elementCount());
-   for (int i = 0; i < path.elementCount(); ++i) {
-      const QPainterPath::Element &e = path.elementAt(i);
-      Q_ASSERT(e.type >= 0 && e.type <= QPainterPath::CurveToDataElement);
-      printf(" - %3d:: %s, (%.2f, %.2f)\n", i, names[e.type], e.x, e.y);
-   }
-}
-#endif
-
 int QPainterPath::elementCount() const
 {
     return d_ptr ? d_ptr->elements.size() : 0;
 }
+
 QPainterPath::Element QPainterPath::elementAt(int i) const
 {
     Q_ASSERT(d_ptr);
@@ -241,15 +220,12 @@ void QPainterPath::closeSubpath()
 
 void QPainterPath::moveTo(const QPointF &p)
 {
-#ifdef QPP_DEBUG
-   printf("QPainterPath::moveTo() (%.2f,%.2f)\n", p.x(), p.y());
+   if (! qt_is_finite(p.x()) || ! qt_is_finite(p.y())) {
+
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+      qDebug("QPainterPath::moveTo() Value for point x or y is invalid");
 #endif
 
-   if (!qt_is_finite(p.x()) || !qt_is_finite(p.y())) {
-
-#ifndef QT_NO_DEBUG
-      qWarning("QPainterPath::moveTo() Value for point x or y is invalid");
-#endif
       return;
    }
 
@@ -273,15 +249,12 @@ void QPainterPath::moveTo(const QPointF &p)
 
 void QPainterPath::lineTo(const QPointF &p)
 {
-#ifdef QPP_DEBUG
-   printf("QPainterPath::lineTo() (%.2f,%.2f)\n", p.x(), p.y());
+   if (! qt_is_finite(p.x()) || ! qt_is_finite(p.y())) {
+
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+      qDebug("QPainterPath::lineTo() Value for point x or y is invalid");
 #endif
 
-   if (!qt_is_finite(p.x()) || !qt_is_finite(p.y())) {
-
-#ifndef QT_NO_DEBUG
-      qWarning("QPainterPath::lineTo() Value for point x or y is invalid");
-#endif
       return;
    }
 
@@ -303,17 +276,13 @@ void QPainterPath::lineTo(const QPointF &p)
 
 void QPainterPath::cubicTo(const QPointF &c1, const QPointF &c2, const QPointF &e)
 {
-#ifdef QPP_DEBUG
-   printf("QPainterPath::cubicTo() (%.2f,%.2f), (%.2f,%.2f), (%.2f,%.2f)\n",
-      c1.x(), c1.y(), c2.x(), c2.y(), e.x(), e.y());
+   if (! qt_is_finite(c1.x()) || ! qt_is_finite(c1.y()) || ! qt_is_finite(c2.x()) || ! qt_is_finite(c2.y())
+      || !qt_is_finite(e.x()) || ! qt_is_finite(e.y())) {
+
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+      qDebug("QPainterPath::cubicTo() Value for point x or y is invalid");
 #endif
 
-   if (!qt_is_finite(c1.x()) || !qt_is_finite(c1.y()) || !qt_is_finite(c2.x()) || !qt_is_finite(c2.y())
-      || !qt_is_finite(e.x()) || !qt_is_finite(e.y())) {
-
-#ifndef QT_NO_DEBUG
-      qWarning("QPainterPath::cubicTo() Value for point x or y is invalid");
-#endif
       return;
    }
 
@@ -339,14 +308,12 @@ void QPainterPath::cubicTo(const QPointF &c1, const QPointF &c2, const QPointF &
 
 void QPainterPath::quadTo(const QPointF &c, const QPointF &e)
 {
-#ifdef QPP_DEBUG
-   printf("QPainterPath::quadTo() (%.2f,%.2f), (%.2f,%.2f)\n", c.x(), c.y(), e.x(), e.y());
+   if (! qt_is_finite(c.x()) || !qt_is_finite(c.y()) || !qt_is_finite(e.x()) || !qt_is_finite(e.y())) {
+
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+      qDebug("QPainterPath::quadTo() Value for point x or y is invalid");
 #endif
 
-   if (!qt_is_finite(c.x()) || !qt_is_finite(c.y()) || !qt_is_finite(e.x()) || !qt_is_finite(e.y())) {
-#ifndef QT_NO_DEBUG
-      qWarning("QPainterPath::quadTo() Value for point x or y is invalid");
-#endif
       return;
    }
 
@@ -371,17 +338,13 @@ void QPainterPath::quadTo(const QPointF &c, const QPointF &e)
 
 void QPainterPath::arcTo(const QRectF &rect, qreal startAngle, qreal sweepLength)
 {
-#ifdef QPP_DEBUG
-   printf("QPainterPath::arcTo() (%.2f, %.2f, %.2f, %.2f, angle=%.2f, sweep=%.2f\n",
-      rect.x(), rect.y(), rect.width(), rect.height(), startAngle, sweepLength);
+   if ((! qt_is_finite(rect.x()) && ! qt_is_finite(rect.y())) || ! qt_is_finite(rect.width()) || ! qt_is_finite(rect.height())
+      || ! qt_is_finite(startAngle) || ! qt_is_finite(sweepLength)) {
+
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+      qDebug("QPainterPath::arcTo() Value for point x or y is invalid");
 #endif
 
-   if ((!qt_is_finite(rect.x()) && !qt_is_finite(rect.y())) || !qt_is_finite(rect.width()) || !qt_is_finite(rect.height())
-      || !qt_is_finite(startAngle) || !qt_is_finite(sweepLength)) {
-
-#ifndef QT_NO_DEBUG
-      qWarning("QPainterPath::arcTo() Value for point x or y is invalid");
-#endif
       return;
    }
 
@@ -424,9 +387,10 @@ void QPainterPath::addRect(const QRectF &r)
 {
    if (!qt_is_finite(r.x()) || !qt_is_finite(r.y()) || !qt_is_finite(r.width()) || !qt_is_finite(r.height())) {
 
-#ifndef QT_NO_DEBUG
-      qWarning("QPainterPath::addRect() Value for point x or y is invalid");
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+      qDebug("QPainterPath::addRect() Value for point x or y is invalid");
 #endif
+
       return;
    }
 
@@ -475,8 +439,8 @@ void QPainterPath::addEllipse(const QRectF &boundingRect)
    if (!qt_is_finite(boundingRect.x()) || !qt_is_finite(boundingRect.y())
       || !qt_is_finite(boundingRect.width()) || !qt_is_finite(boundingRect.height())) {
 
-#ifndef QT_NO_DEBUG
-      qWarning("QPainterPath::addEllipse() Value for ellipse is invalid");
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+      qDebug("QPainterPath::addEllipse() Value for ellipse is invalid");
 #endif
 
       return;
@@ -830,7 +794,6 @@ QPainterPath QPainterPath::toReversed() const
       }
    }
 
-   //qt_debug_path(rev);
    return rev;
 }
 
@@ -893,7 +856,6 @@ QList<QPolygonF> QPainterPath::toSubpathPolygons(const QMatrix &matrix) const
 
 QList<QPolygonF> QPainterPath::toFillPolygons(const QTransform &matrix) const
 {
-
    QList<QPolygonF> polys;
 
    QList<QPolygonF> subpaths = toSubpathPolygons(matrix);
@@ -908,13 +870,6 @@ QList<QPolygonF> QPainterPath::toFillPolygons(const QTransform &matrix) const
       bounds += subpaths.at(i).boundingRect();
    }
 
-#ifdef QPP_FILLPOLYGONS_DEBUG
-   printf("QPainterPath::toFillPolygons, subpathCount=%d\n", count);
-   for (int i = 0; i < bounds.size(); ++i) {
-      qDebug() << " bounds" << i << bounds.at(i);
-   }
-#endif
-
    QVector< QList<int>> isects;
    isects.resize(count);
 
@@ -923,6 +878,7 @@ QList<QPolygonF> QPainterPath::toFillPolygons(const QTransform &matrix) const
       if (subpaths.at(j).size() <= 2) {
          continue;
       }
+
       QRectF cbounds = bounds.at(j);
       for (int i = 0; i < count; ++i) {
          if (cbounds.intersects(bounds.at(i))) {
@@ -931,27 +887,16 @@ QList<QPolygonF> QPainterPath::toFillPolygons(const QTransform &matrix) const
       }
    }
 
-#ifdef QPP_FILLPOLYGONS_DEBUG
-   printf("Intersections before flattening:\n");
-
-   for (int i = 0; i < count; ++i) {
-      printf("%d: ", i);
-      for (int j = 0; j < isects[i].size(); ++j) {
-         printf("%d ", isects[i][j]);
-      }
-
-      printf("\n");
-   }
-#endif
-
    // flatten the sets of intersections
    for (int i = 0; i < count; ++i) {
       const QList<int> &current_isects = isects.at(i);
       for (int j = 0; j < current_isects.size(); ++j) {
          int isect_j = current_isects.at(j);
+
          if (isect_j == i) {
             continue;
          }
+
          for (int k = 0; k < isects[isect_j].size(); ++k) {
             int isect_k = isects[isect_j][k];
             if (isect_k != i && !isects.at(i).contains(isect_k)) {
@@ -962,22 +907,13 @@ QList<QPolygonF> QPainterPath::toFillPolygons(const QTransform &matrix) const
       }
    }
 
-#ifdef QPP_FILLPOLYGONS_DEBUG
-   printf("Intersections after flattening:\n");
-   for (int i = 0; i < count; ++i) {
-      printf("%d: ", i);
-      for (int j = 0; j < isects[i].size(); ++j) {
-         printf("%d ", isects[i][j]);
-      }
-      printf("\n");
-   }
-#endif
-
    // Join the intersected subpaths as rewinded polygons
    for (int i = 0; i < count; ++i) {
       const QList<int> &subpath_list = isects[i];
+
       if (!subpath_list.isEmpty()) {
          QPolygonF buildUp;
+
          for (int j = 0; j < subpath_list.size(); ++j) {
             const QPolygonF &subpath = subpaths.at(subpath_list.at(j));
             buildUp += subpath;
@@ -1001,10 +937,7 @@ QList<QPolygonF> QPainterPath::toFillPolygons(const QMatrix &matrix) const
 }
 
 //same as qt_polygon_isect_line in qpolygon.cpp
-static void qt_painterpath_isect_line(const QPointF &p1,
-   const QPointF &p2,
-   const QPointF &pos,
-   int *winding)
+static void qt_painterpath_isect_line(const QPointF &p1, const QPointF &p2, const QPointF &pos, int *winding)
 {
    qreal x1 = p1.x();
    qreal y1 = p1.y();
@@ -1128,20 +1061,26 @@ bool QPainterPath::contains(const QPointF &pt) const
          : ((winding_number % 2) != 0));
 }
 
-static bool qt_painterpath_isect_line_rect(qreal x1, qreal y1, qreal x2, qreal y2,
-   const QRectF &rect)
+static bool qt_painterpath_isect_line_rect(qreal x1, qreal y1, qreal x2, qreal y2, const QRectF &rect)
 {
-   qreal left = rect.left();
-   qreal right = rect.right();
-   qreal top = rect.top();
+   enum PainterDirection {
+      Left,
+      Right,
+      Top,
+      Bottom
+   };
+
+   qreal left   = rect.left();
+   qreal right  = rect.right();
+   qreal top    = rect.top();
    qreal bottom = rect.bottom();
 
-   enum { Left, Right, Top, Bottom };
    // clip the lines, after cohen-sutherland, see e.g. http://www.nondot.org/~sabre/graphpro/line6.html
    int p1 = ((x1 < left) << Left)
       | ((x1 > right) << Right)
       | ((y1 < top) << Top)
       | ((y1 > bottom) << Bottom);
+
    int p2 = ((x2 < left) << Left)
       | ((x2 > right) << Right)
       | ((y2 < top) << Top)
@@ -1585,8 +1524,8 @@ QDataStream &operator>>(QDataStream &s, QPainterPath &p)
 
       if (!qt_is_finite(x) || !qt_is_finite(y)) {
 
-#ifndef QT_NO_DEBUG
-         qWarning("QDataStream::operator>>() Element in QPainterPath is invalid");
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+         qDebug("QDataStream::operator>>() Element in QPainterPath is invalid");
 #endif
 
          continue;
@@ -2255,6 +2194,7 @@ void QPainterPath::computeControlPointRect() const
 {
    QPainterPathData *d = d_func();
    d->dirtyControlBounds = false;
+
    if (!d_ptr) {
       d->controlBounds = QRect();
       return;
@@ -2263,6 +2203,7 @@ void QPainterPath::computeControlPointRect() const
    qreal minx, maxx, miny, maxy;
    minx = maxx = d->elements.at(0).x;
    miny = maxy = d->elements.at(0).y;
+
    for (int i = 1; i < d->elements.size(); ++i) {
       const Element &e = d->elements.at(i);
       if (e.x > maxx) {
@@ -2279,14 +2220,15 @@ void QPainterPath::computeControlPointRect() const
    d->controlBounds = QRectF(minx, miny, maxx - minx, maxy - miny);
 }
 
-QDebug operator<<(QDebug s, const QPainterPath &p)
+QDebug operator<<(QDebug debug, const QPainterPath &p)
 {
-   s.nospace() << "QPainterPath: Element count=" << p.elementCount() << endl;
+   debug.nospace() << "QPainterPath() Element count =" << p.elementCount() << endl;
    const char *types[] = {"MoveTo", "LineTo", "CurveTo", "CurveToData"};
-   for (int i = 0; i < p.elementCount(); ++i) {
-      s.nospace() << " -> " << types[p.elementAt(i).type] << "(x=" << p.elementAt(i).x << ", y=" << p.elementAt(
-            i).y << ')' << endl;
 
+   for (int i = 0; i < p.elementCount(); ++i) {
+      debug.nospace() << " -> " << types[p.elementAt(i).type]
+            << "(x =" << p.elementAt(i).x << ", y =" << p.elementAt(i).y << ")\n";
    }
-   return s;
+
+   return debug;
 }

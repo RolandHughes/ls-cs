@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -25,8 +25,9 @@
 #define QFSFILEENGINE_ITERATOR_P_H
 
 #include <qabstractfileengine.h>
-#include <qfilesystemiterator_p.h>
 #include <qdir.h>
+
+#include <qfilesystemiterator_p.h>
 
 #ifndef QT_NO_FSFILEENGINE
 #ifndef QT_NO_FILESYSTEMITERATOR

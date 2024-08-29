@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,13 +24,13 @@
 #ifndef QHASH_H
 #define QHASH_H
 
-#include <initializer_list>
-#include <unordered_map>
-
 #include <qcontainerfwd.h>
 #include <qhashfunc.h>
 #include <qhashfwd.h>
 #include <qlist.h>
+
+#include <initializer_list>
+#include <unordered_map>
 
 template <typename Key, typename Val, typename Hash = qHashFunc<Key>, typename KeyEqual = qHashEqual<Key>>
 class QHashIterator;
@@ -254,21 +254,27 @@ class QHash
    QHash(const QHash<Key, Val, Hash, KeyEqual> &other) = default;
    QHash(QHash<Key, Val, Hash, KeyEqual> &&other) = default;
 
-   QHash(std::initializer_list<std::pair<const Key, Val> > list, const Hash & hash = Hash(), const KeyEqual &key_equal = KeyEqual())
-      : m_data(list, bucket_count, hash, key_equal) {}
+   QHash(std::initializer_list<std::pair<const Key, Val>> list, const Hash &hash = Hash(),
+         const KeyEqual &key = KeyEqual())
+      : m_data(list, bucket_count, hash, key)
+   { }
 
-   explicit QHash(const Hash & hash, const KeyEqual &key_equal = KeyEqual())
-      : m_data(hash, key_equal) {}
+   explicit QHash(const Hash &hash, const KeyEqual &key = KeyEqual())
+      : m_data(hash, key)
+   { }
 
    explicit QHash(const std::unordered_map<Key, Val, Hash, KeyEqual> &other)
-       : m_data(other) {}
+      : m_data(other)
+   { }
 
    explicit QHash(std::unordered_map<Key, Val, Hash, KeyEqual> &&other)
-       : m_data(std::move(other)) {}
+      : m_data(std::move(other))
+   { }
 
    template <typename Input_Iterator>
-   QHash(Input_Iterator first, Input_Iterator last, const Hash & hash = Hash(), const KeyEqual &key_equal = KeyEqual())
-      : m_data(first, last, hash, key_equal) {}
+   QHash(Input_Iterator first, Input_Iterator last, const Hash &hash = Hash(), const KeyEqual &key = KeyEqual())
+      : m_data(first, last, hash, key)
+   { }
 
    ~QHash() = default;
 
@@ -417,7 +423,7 @@ class QHash
       return m_data == other.m_data;
    }
 
-   inline bool operator!=(const QHash<Key, Val, Hash, KeyEqual> &other) const {
+   bool operator!=(const QHash<Key, Val, Hash, KeyEqual> &other) const {
       return ! (*this == other);
    }
 
@@ -430,35 +436,35 @@ class QHash
    }
 
    // iterators
-   inline iterator begin() {
+   iterator begin() {
       return m_data.begin();
    }
 
-   inline const_iterator begin() const {
+   const_iterator begin() const {
       return m_data.begin();
    }
 
-   inline const_iterator cbegin() const {
+   const_iterator cbegin() const {
       return m_data.begin();
    }
 
-   inline const_iterator constBegin() const {
+   const_iterator constBegin() const {
       return m_data.begin();
    }
 
-   inline iterator end() {
+   iterator end() {
       return m_data.end();
    }
 
-   inline const_iterator end() const {
+   const_iterator end() const {
       return m_data.end();
    }
 
-   inline const_iterator cend() const {
+   const_iterator cend() const {
       return m_data.end();
    }
 
-   inline const_iterator constEnd() const {
+   const_iterator constEnd() const {
       return m_data.end();
    }
 
@@ -540,8 +546,8 @@ QList<Val> QHash<Key, Val, Hash, KeyEqual>::values() const
 template <typename Key, typename Val, typename Hash, typename KeyEqual>
 class QHashIterator
 {
-   typedef typename QHash<Key, Val, Hash, KeyEqual>::const_iterator const_iterator;
-   typedef const_iterator Item;
+   using const_iterator = typename QHash<Key, Val, Hash, KeyEqual>::const_iterator;
+   using Item           = const_iterator;
 
  public:
    QHashIterator(const QHash<Key, Val, Hash, KeyEqual> &hash)
@@ -635,7 +641,7 @@ class QHashIterator
    const_iterator i;
    const_iterator n;
 
-   inline bool item_exists() const {
+   bool item_exists() const {
       return n != c->constEnd();
    }
 };
@@ -643,9 +649,9 @@ class QHashIterator
 template <typename Key, typename Val, typename Hash, typename KeyEqual>
 class QMutableHashIterator
 {
-   typedef typename QHash<Key, Val, Hash, KeyEqual>::iterator iterator;
-   typedef typename QHash<Key, Val, Hash, KeyEqual>::const_iterator const_iterator;
-   typedef iterator Item;
+   using const_iterator = typename QHash<Key, Val, Hash, KeyEqual>::const_iterator;
+   using iterator       = typename QHash<Key, Val, Hash, KeyEqual>::iterator;
+   using Item           = iterator;
 
  public:
    QMutableHashIterator(QHash<Key, Val, Hash, KeyEqual> &hash)
@@ -714,7 +720,7 @@ class QMutableHashIterator
       }
    }
 
-  Val &value() {
+   Val &value() {
       Q_ASSERT(item_exists());
       return *n;
    }

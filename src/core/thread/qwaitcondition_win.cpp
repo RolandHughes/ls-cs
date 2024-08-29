@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -22,11 +22,12 @@
 ***********************************************************************/
 
 #include <qwaitcondition.h>
-#include <qnamespace.h>
-#include <qmutex.h>
-#include <qreadwritelock.h>
-#include <qlist.h>
+
 #include <qalgorithms.h>
+#include <qlist.h>
+#include <qmutex.h>
+#include <qnamespace.h>
+#include <qreadwritelock.h>
 #include <qt_windows.h>
 
 #include <qreadwritelock_p.h>
@@ -35,8 +36,7 @@ class QWaitConditionEvent
 {
  public:
    QWaitConditionEvent()
-      : priority(0), wokenUp(false)
-   {
+      : priority(0), wokenUp(false) {
       event = CreateEvent(nullptr, TRUE, FALSE, nullptr);
    }
 
@@ -48,8 +48,7 @@ class QWaitConditionEvent
    bool wokenUp;
    HANDLE event;
 };
-
-typedef QList<QWaitConditionEvent *> EventQueue;
+using EventQueue = QList<QWaitConditionEvent *>;
 
 class QWaitConditionPrivate
 {
@@ -67,18 +66,21 @@ QWaitConditionEvent *QWaitConditionPrivate::pre()
 {
    mtx.lock();
    QWaitConditionEvent *wce =
-      freeQueue.isEmpty() ? new QWaitConditionEvent : freeQueue.takeFirst();
+         freeQueue.isEmpty() ? new QWaitConditionEvent : freeQueue.takeFirst();
    wce->priority = GetThreadPriority(GetCurrentThread());
    wce->wokenUp = false;
 
    // insert 'wce' into the queue (sorted by priority)
    int index = 0;
+
    for (; index < queue.size(); ++index) {
       QWaitConditionEvent *current = queue.at(index);
+
       if (current->priority < wce->priority) {
          break;
       }
    }
+
    queue.insert(index, wce);
    mtx.unlock();
 
@@ -98,6 +100,7 @@ bool QWaitConditionPrivate::wait(QWaitConditionEvent *wce, unsigned long time)
          ret = true;
          break;
    }
+
    return ret;
 }
 
@@ -132,7 +135,7 @@ QWaitCondition::QWaitCondition()
 QWaitCondition::~QWaitCondition()
 {
    if (!d->queue.isEmpty()) {
-      qWarning("QWaitCondition: Destroyed while threads are still waiting");
+      qWarning("QWaitCondition() Destroyed while threads are still waiting");
       qDeleteAll(d->queue);
    }
 
@@ -162,8 +165,9 @@ bool QWaitCondition::wait(QReadWriteLock *readWriteLock, unsigned long time)
    if (!readWriteLock || readWriteLock->d->accessCount == 0) {
       return false;
    }
+
    if (readWriteLock->d->accessCount < -1) {
-      qWarning("QWaitCondition: cannot wait on QReadWriteLocks with recursive lockForWrite()");
+      qWarning("QWaitCondition::wait() Unable to wait on QReadWriteLocks with recursive lockForWrite()");
       return false;
    }
 
@@ -178,6 +182,7 @@ bool QWaitCondition::wait(QReadWriteLock *readWriteLock, unsigned long time)
    } else {
       readWriteLock->lockForRead();
    }
+
    d->post(wce, returnValue);
 
    return returnValue;
@@ -190,9 +195,11 @@ void QWaitCondition::wakeOne()
 
    for (int i = 0; i < d->queue.size(); ++i) {
       QWaitConditionEvent *current = d->queue.at(i);
+
       if (current->wokenUp) {
          continue;
       }
+
       SetEvent(current->event);
       current->wokenUp = true;
       break;
@@ -203,6 +210,7 @@ void QWaitCondition::wakeAll()
 {
    // wake up the all threads in the queue
    QMutexLocker locker(&d->mtx);
+
    for (int i = 0; i < d->queue.size(); ++i) {
       QWaitConditionEvent *current = d->queue.at(i);
       SetEvent(current->event);

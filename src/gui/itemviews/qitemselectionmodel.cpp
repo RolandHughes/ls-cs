@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -1293,6 +1293,7 @@ void QItemSelectionModel::emitSelectionChanged(const QItemSelection &newSelectio
             ++o;
          }
       }
+
       // split selected
       for (int s = 0; s < selected.count();) {
          if (selected.at(s).intersects(intersections.at(i))) {
@@ -1309,13 +1310,14 @@ void QItemSelectionModel::emitSelectionChanged(const QItemSelection &newSelectio
    }
 }
 
-QDebug operator<<(QDebug dbg, const QItemSelectionRange &range)
+QDebug operator<<(QDebug debug, const QItemSelectionRange &range)
 {
-   QDebugStateSaver saver(dbg);
-   dbg.nospace() << "QItemSelectionRange(" << range.topLeft()
-      << ',' << range.bottomRight() << ')';
-   return dbg;
+   QDebugStateSaver saver(debug);
+   debug.nospace();
 
+   debug << "QItemSelectionRange(" << range.topLeft() << ", " << range.bottomRight() << ')';
+
+   return debug;
 }
 
 void QItemSelectionModel::_q_columnsAboutToBeRemoved(const QModelIndex &parent, int start, int end)

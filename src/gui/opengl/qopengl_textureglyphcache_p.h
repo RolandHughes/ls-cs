@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2013 Klarälvdalens Datakonsult AB, a KDAB Group company
 * Copyright (c) 2015 The Qt Company Ltd.
@@ -33,7 +33,6 @@
 #include <qopenglfunctions.h>
 #include <qopenglcontext_p.h>
 
-// #define QT_GL_TEXTURE_GLYPH_CACHE_DEBUG
 
 class QOpenGL2PaintEngineExPrivate;
 
@@ -41,24 +40,25 @@ class QOpenGLGlyphTexture : public QOpenGLSharedResource
 {
 public:
     explicit QOpenGLGlyphTexture(QOpenGLContext *ctx)
-        : QOpenGLSharedResource(ctx->shareGroup())
-        , m_width(0)
-        , m_height(0)
+        : QOpenGLSharedResource(ctx->shareGroup()), m_width(0), m_height(0)
     {
         if (!ctx->d_func()->workaround_brokenFBOReadBack)
             QOpenGLFunctions(ctx).glGenFramebuffers(1, &m_fbo);
 
-#ifdef QT_GL_TEXTURE_GLYPH_CACHE_DEBUG
+#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
         qDebug(" -> QOpenGLGlyphTexture() %p for context %p.", this, ctx);
 #endif
+
     }
 
     void freeResource(QOpenGLContext *context) override
     {
         QOpenGLContext *ctx = context;
-#ifdef QT_GL_TEXTURE_GLYPH_CACHE_DEBUG
+
+#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
         qDebug("~QOpenGLGlyphTexture() %p for context %p.", this, ctx);
 #endif
+
         if (!ctx->d_func()->workaround_brokenFBOReadBack)
             ctx->functions()->glDeleteFramebuffers(1, &m_fbo);
         if (m_width || m_height)
@@ -82,45 +82,58 @@ public:
 class Q_GUI_EXPORT QOpenGLTextureGlyphCache : public QImageTextureGlyphCache
 {
 public:
+    enum FilterMode {
+        Nearest,
+        Linear
+    };
+
     QOpenGLTextureGlyphCache(QFontEngine::GlyphFormat glyphFormat, const QTransform &matrix);
     ~QOpenGLTextureGlyphCache();
 
-    virtual void createTextureData(int width, int height) override;
-    virtual void resizeTextureData(int width, int height) override;
-    virtual void fillTexture(const Coord &c, glyph_t glyph, QFixed subPixelPosition) override;
-    virtual int glyphPadding() const override;
-    virtual int maxTextureWidth() const override;
-    virtual int maxTextureHeight() const override;
+    void createTextureData(int width, int height) override;
+    void resizeTextureData(int width, int height) override;
+    void fillTexture(const Coord &c, glyph_t glyph, QFixed subPixelPosition) override;
+    int glyphPadding() const override;
+    int maxTextureWidth() const override;
+    int maxTextureHeight() const override;
 
-    inline GLuint texture() const {
+    GLuint texture() const {
         QOpenGLTextureGlyphCache *that = const_cast<QOpenGLTextureGlyphCache *>(this);
         QOpenGLGlyphTexture *glyphTexture = that->m_textureResource;
         return glyphTexture ? glyphTexture->m_texture : 0;
     }
 
-    inline int width() const {
+    int width() const {
         QOpenGLTextureGlyphCache *that = const_cast<QOpenGLTextureGlyphCache *>(this);
         QOpenGLGlyphTexture *glyphTexture = that->m_textureResource;
         return glyphTexture ? glyphTexture->m_width : 0;
     }
-    inline int height() const {
+
+    int height() const {
         QOpenGLTextureGlyphCache *that = const_cast<QOpenGLTextureGlyphCache *>(this);
         QOpenGLGlyphTexture *glyphTexture = that->m_textureResource;
         return glyphTexture ? glyphTexture->m_height : 0;
     }
 
-    inline void setPaintEnginePrivate(QOpenGL2PaintEngineExPrivate *p) { pex = p; }
+    void setPaintEnginePrivate(QOpenGL2PaintEngineExPrivate *p) {
+       pex = p;
+    }
 
-    inline const QOpenGLContextGroup *contextGroup() const { return m_textureResource ? m_textureResource->group() : nullptr; }
+    const QOpenGLContextGroup *contextGroup() const {
+       return m_textureResource ? m_textureResource->group() : nullptr;
+    }
 
-    inline int serialNumber() const { return m_serialNumber; }
+    int serialNumber() const {
+      return m_serialNumber;
+    }
 
-    enum FilterMode {
-        Nearest,
-        Linear
-    };
-    FilterMode filterMode() const { return m_filterMode; }
-    void setFilterMode(FilterMode m) { m_filterMode = m; }
+    FilterMode filterMode() const {
+      return m_filterMode;
+    }
+
+    void setFilterMode(FilterMode m) {
+       m_filterMode = m;
+    }
 
     void clear();
 

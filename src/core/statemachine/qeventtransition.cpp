@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -25,12 +25,13 @@
 
 #ifndef QT_NO_STATEMACHINE
 
-#include <qeventtransition_p.h>
-#include <qstate.h>
-#include <qstate_p.h>
-#include <qstatemachine.h>
-#include <qstatemachine_p.h>
 #include <qdebug.h>
+#include <qstate.h>
+#include <qstatemachine.h>
+
+#include <qeventtransition_p.h>
+#include <qstate_p.h>
+#include <qstatemachine_p.h>
 
 QEventTransitionPrivate::QEventTransitionPrivate()
 {
@@ -47,18 +48,22 @@ QEventTransitionPrivate *QEventTransitionPrivate::get(QEventTransition *q)
 void QEventTransitionPrivate::unregister()
 {
    Q_Q(QEventTransition);
-   if (!registered || !machine()) {
+
+   if (! registered || !machine()) {
       return;
    }
+
    QStateMachinePrivate::get(machine())->unregisterEventTransition(q);
 }
 
 void QEventTransitionPrivate::maybeRegister()
 {
    Q_Q(QEventTransition);
-   if (!machine() || !machine()->configuration().contains(sourceState())) {
+
+   if (! machine() || !machine()->configuration().contains(sourceState())) {
       return;
    }
+
    QStateMachinePrivate::get(machine())->registerEventTransition(q);
 }
 
@@ -76,22 +81,17 @@ QEventTransition::QEventTransition(QObject *object, QEvent::Type type, QState *s
    d->eventType = type;
 }
 
-/*!
-  \internal
-*/
 QEventTransition::QEventTransition(QEventTransitionPrivate &dd, QState *parent)
    : QAbstractTransition(dd, parent)
 {
 }
 
-/*!
-  \internal
-*/
 QEventTransition::QEventTransition(QEventTransitionPrivate &dd, QObject *object,
-   QEvent::Type type, QState *parent)
+      QEvent::Type type, QState *parent)
    : QAbstractTransition(dd, parent)
 {
    Q_D(QEventTransition);
+
    d->registered = false;
    d->object = object;
    d->eventType = type;
@@ -110,9 +110,11 @@ QEvent::Type QEventTransition::eventType() const
 void QEventTransition::setEventType(QEvent::Type type)
 {
    Q_D(QEventTransition);
+
    if (d->eventType == type) {
       return;
    }
+
    d->unregister();
    d->eventType = type;
    d->maybeRegister();
@@ -143,9 +145,10 @@ bool QEventTransition::eventTest(QEvent *event)
 
    if (event->type() == QEvent::StateMachineWrapped) {
       QStateMachine::WrappedEvent *we = static_cast<QStateMachine::WrappedEvent *>(event);
-      return (we->object() == d->object)
-         && (we->event()->type() == d->eventType);
+
+      return (we->object() == d->object) && (we->event()->type() == d->eventType);
    }
+
    return false;
 }
 

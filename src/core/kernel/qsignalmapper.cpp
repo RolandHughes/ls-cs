@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -32,7 +32,8 @@ class QSignalMapperPrivate
    Q_DECLARE_PUBLIC(QSignalMapper)
 
  public:
-   virtual ~QSignalMapperPrivate() {}
+   virtual ~QSignalMapperPrivate()
+   { }
 
    void _q_senderDestroyed() {
       Q_Q(QSignalMapper);
@@ -138,16 +139,18 @@ void QSignalMapper::map(QObject *sender)
    if (d->intHash.contains(sender)) {
       emit mapped(d->intHash.value(sender));
    }
+
    if (d->stringHash.contains(sender)) {
       emit mapped(d->stringHash.value(sender));
    }
+
    if (d->widgetHash.contains(sender)) {
       emit mapped(d->widgetHash.value(sender));
    }
+
    if (d->objectHash.contains(sender)) {
       emit mapped(d->objectHash.value(sender));
    }
 }
 
 #endif
-

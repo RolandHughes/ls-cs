@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -22,16 +22,14 @@
 ***********************************************************************/
 
 #include <qwin_services.h>
-#include <qwin_additional.h>
 
-#include <QUrl>
-#include <QDebug>
-#include <QDir>
+#include <qurl.h>
+#include <qdebug.h>
+#include <qdir.h>
+#include <qwin_additional.h>
 
 #include <shlobj.h>
 #include <intshcut.h>
-
-enum { debug = 0 };
 
 static inline bool shellExecute(const QUrl &url)
 {
@@ -56,7 +54,7 @@ static inline bool shellExecute(const QUrl &url)
 // command line for the mailto: shell command.
 static inline QString mailCommand()
 {
-   enum { BufferSize = sizeof(wchar_t) * MAX_PATH };
+   static constexpr const auto BufferSize = sizeof(wchar_t) * MAX_PATH;
 
    const wchar_t mailUserKey[] = L"Software\\Microsoft\\Windows\\Shell\\Associations\\UrlAssociations\\mailto\\UserChoice";
 
@@ -82,9 +80,9 @@ static inline QString mailCommand()
 
    keyName += "\\Shell\\Open\\Command";
 
-   if (debug) {
-      qDebug() << __FUNCTION__ << "keyName=" << keyName;
-   }
+#if defined(CS_SHOW_DEBUG_PLATFORM)
+   qDebug() << __FUNCTION__ << "keyName=" << keyName;
+#endif
 
    command[0] = 0;
 
@@ -129,9 +127,10 @@ static inline bool launchMail(const QUrl &url)
    // Pass the url as the parameter. Should use QProcess::startDetached(),
    // but that cannot handle a Windows command line [yet].
    command.replace(QString("%1"), url.toString(QUrl::FullyEncoded));
-   if (debug) {
-      qDebug() << __FUNCTION__ << "Launching" << command;
-   }
+
+#if defined(CS_SHOW_DEBUG_PLATFORM)
+   qDebug() << __FUNCTION__ << "Launching" << command;
+#endif
 
    //start the process
    PROCESS_INFORMATION pi;

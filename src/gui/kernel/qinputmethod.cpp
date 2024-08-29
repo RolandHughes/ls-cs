@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -281,22 +281,6 @@ void QInputMethod::commit()
    }
 }
 
-/*!
-    \enum QInputMethod::Action
-
-    Indicates the kind of action performed by the user.
-
-    \value Click        A normal click/tap
-    \value ContextMenu  A context menu click/tap (e.g. right-button or tap-and-hold)
-
-    \sa invokeAction()
-*/
-
-/*!
-    Called by the input item when the word currently being composed is tapped by
-    the user, as indicated by the action \a a and the given \a cursorPosition.
-    Input methods often use this information to offer more word suggestions to the user.
-*/
 void QInputMethod::invokeAction(Action a, int cursorPosition)
 {
    Q_D(QInputMethod);

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -177,7 +177,7 @@ class Q_CORE_EXPORT QDateTimeParser
    }
 
    virtual QString displayText() const {
-      return text;
+      return m_text;
    }
 
  protected:
@@ -228,10 +228,15 @@ class Q_CORE_EXPORT QDateTimeParser
    */
 
    mutable int cachedDay;
-   mutable QString text;
+   mutable QString m_text;
 
    QVector<SectionNode> sectionNodes;
-   SectionNode first, last, none, popup;
+
+   SectionNode first;
+   SectionNode last;
+   SectionNode none;
+   SectionNode popup;
+
    QStringList separators;
    QString displayFormat;
    QLocale defaultLocale;
@@ -253,17 +258,17 @@ class Q_CORE_EXPORT QDateTimeParser
    int sectionMaxSize(Section s, int count) const;
    QString sectionText(const QString &text, int sectionIndex, int index) const;
    int parseSection(const QDateTime &currentValue, int sectionIndex, QString &txt, int &cursorPosition,
-      int index, QDateTimeParser::State &state, int *used = nullptr) const;
+         int index, QDateTimeParser::State &state, int *used = nullptr) const;
 
    int findMonth(const QString &str1, int monthstart, int sectionIndex,
-      QString *monthName = nullptr, int *used = nullptr) const;
+         QString *monthName = nullptr, int *used = nullptr) const;
 
    int findDay(const QString &str1, int intDaystart, int sectionIndex,
-      QString *dayName = nullptr, int *used = nullptr) const;
+         QString *dayName = nullptr, int *used = nullptr) const;
 
    AmPmFinder findAmPm(QString &str, int index, int *used = nullptr) const;
    bool potentialValue(const QString &str, int min, int max, int index,
-      const QDateTime &currentValue, int insert) const;
+         const QDateTime &currentValue, int insert) const;
 };
 
 Q_CORE_EXPORT bool operator==(const QDateTimeParser::SectionNode &s1, const QDateTimeParser::SectionNode &s2);

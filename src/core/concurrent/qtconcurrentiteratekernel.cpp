@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -23,6 +23,8 @@
 
 #include <qtconcurrentiteratekernel.h>
 
+#include <qglobal.h>
+
 #if defined(Q_OS_DARWIN)
 #include <mach/mach.h>
 #include <mach/mach_time.h>
@@ -37,12 +39,8 @@
 
 #endif
 
-#include <qglobal.h>
-
-enum {
-   TargetRatio = 100,
-   MedianSize = 7
-};
+static constexpr const int TargetRatio = 100;
+static constexpr const int MedianSize  = 7;
 
 #ifdef Q_OS_DARWIN
 
@@ -53,7 +51,6 @@ static qint64 getticks()
 
 #elif defined(Q_OS_UNIX)
 
-
 static qint64 getticks()
 {
 #if defined(_POSIX_TIMERS) && (_POSIX_TIMERS > 0)
@@ -63,7 +60,7 @@ static qint64 getticks()
    clockId = CLOCK_REALTIME;
 
 #elif (_POSIX_THREAD_CPUTIME-0 <= 0)
-   // if we don't have CLOCK_THREAD_CPUTIME_ID, we have to just use elapsed realtime instead
+   // if we do not have CLOCK_THREAD_CPUTIME_ID, we have to just use elapsed realtime instead
    clockId = CLOCK_REALTIME;
 
 #  if (_POSIX_THREAD_CPUTIME-0 == 0)
@@ -77,6 +74,7 @@ static qint64 getticks()
    if (useThreadCpuTime != -1) {
       clockId = CLOCK_THREAD_CPUTIME_ID;
    }
+
 #  endif
 
 #else
@@ -84,9 +82,11 @@ static qint64 getticks()
 #endif
 
    struct timespec ts;
+
    if (clock_gettime(clockId, &ts) == -1) {
       return 0;
    }
+
    return (ts.tv_sec * 1000000000) + ts.tv_nsec;
 #else
 
@@ -94,7 +94,6 @@ static qint64 getticks()
    struct timeval tv;
    gettimeofday(&tv, 0);
    return (tv.tv_sec * 1000000) + tv.tv_usec;
-
 
 #endif
 }
@@ -104,9 +103,11 @@ static qint64 getticks()
 static qint64 getticks()
 {
    LARGE_INTEGER x;
+
    if (!QueryPerformanceCounter(&x)) {
       return 0;
    }
+
    return x.QuadPart;
 }
 
@@ -119,14 +120,10 @@ static double elapsed(qint64 after, qint64 before)
 
 namespace QtConcurrent {
 
-/*! \internal
-
-*/
 BlockSizeManager::BlockSizeManager(int iterationCount)
    : maxBlockSize(iterationCount / (QThreadPool::globalInstance()->maxThreadCount() * 2)),
-     beforeUser(0), afterUser(0),
-     controlPartElapsed(MedianSize), userPartElapsed(MedianSize),
-     m_blockSize(1)
+     beforeUser(0), afterUser(0), controlPartElapsed(MedianSize),
+     userPartElapsed(MedianSize), m_blockSize(1)
 { }
 
 // Records the time before user code.
@@ -161,7 +158,7 @@ void BlockSizeManager::timeAfterUser()
 
    m_blockSize = qMin(m_blockSize * 2,  maxBlockSize);
 
-#ifdef QTCONCURRENT_FOR_DEBUG
+#if defined(CS_SHOW_DEBUG_CORE)
    qDebug() << QThread::currentThread() << "adjusting block size" << controlPartElapsed.median() <<
             userPartElapsed.median() << m_blockSize;
 #endif

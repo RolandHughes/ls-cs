@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -57,43 +57,58 @@ static const QFontEngineQPF2::TagType tagTypes[QFontEngineQPF2::NumTags] = {
    QFontEngineQPF2::BitFieldType// WritingSystems
 };
 
-// #define DEBUG_HEADER
-// #define DEBUG_FONTENGINE
-
-#if defined(DEBUG_HEADER)
-# define DEBUG_VERIFY qDebug
-#else
-# define DEBUG_VERIFY if (0) qDebug
-#endif
+#if defined(CS_SHOW_DEBUG_GUI_TEXT)
 
 #define READ_VERIFY(type, variable) \
     if (tagPtr + sizeof(type) > endPtr) { \
-        DEBUG_VERIFY() << "read verify failed in line" << __LINE__; \
+        qDebug() << "read verify failed in line" << __LINE__; \
         return nullptr; \
     } \
     variable = qFromBigEndian<type>(tagPtr); \
-    DEBUG_VERIFY() << "read value" << variable << "of type " #type; \
+    qDebug() << "read value" << variable << "of type " #type; \
     tagPtr += sizeof(type)
+
+#define VERIFY(condition) \
+    if (! (condition)) { \
+        qDebug() << "condition " #condition " failed in line" << __LINE__; \
+        return 0; \
+    }
+
+#define VERIFY_TAG(condition) \
+    if (! (condition)) { \
+        qDebug() << "verifying tag condition " #condition " failed in line" << __LINE__ << "with tag" << tag; \
+        return nullptr; \
+    }
+
+#else
+
+#define READ_VERIFY(type, variable) \
+    if (tagPtr + sizeof(type) > endPtr) { \
+        return nullptr; \
+    } \
+    variable = qFromBigEndian<type>(tagPtr); \
+    tagPtr += sizeof(type)
+
+#define VERIFY(condition) \
+    if (!(condition)) { \
+        return 0; \
+    }
+
+#define VERIFY_TAG(condition) \
+    if (!(condition)) { \
+        return nullptr; \
+    }
+
+#endif
 
 template <typename T>
 T readValue(const uchar *&data)
 {
    T value = qFromBigEndian<T>(data);
    data += sizeof(T);
+
    return value;
 }
-
-#define VERIFY(condition) \
-    if (!(condition)) { \
-        DEBUG_VERIFY() << "condition " #condition " failed in line" << __LINE__; \
-        return 0; \
-    }
-
-#define VERIFY_TAG(condition) \
-    if (!(condition)) { \
-        DEBUG_VERIFY() << "verifying tag condition " #condition " failed in line" << __LINE__ << "with tag" << tag; \
-        return nullptr; \
-    }
 
 static inline const uchar *verifyTag(const uchar *tagPtr, const uchar *endPtr)
 {
@@ -125,7 +140,7 @@ static inline const uchar *verifyTag(const uchar *tagPtr, const uchar *endPtr)
             break;
       }
 
-#if defined(DEBUG_HEADER)
+#if defined(CS_SHOW_DEBUG_GUI_TEXT)
       if (length == 1) {
          qDebug() << "tag data" << hex << *tagPtr;
 
@@ -133,7 +148,9 @@ static inline const uchar *verifyTag(const uchar *tagPtr, const uchar *endPtr)
          qDebug() << "tag data" << hex << tagPtr[0] << tagPtr[1] << tagPtr[2] << tagPtr[3];
       }
 #endif
+
    }
+
    return tagPtr + length;
 }
 
@@ -150,7 +167,7 @@ const QFontEngineQPF2::Glyph *QFontEngineQPF2::findGlyph(glyph_t g) const
          return nullptr;
       }
 
-#if defined(DEBUG_FONTENGINE)
+#if defined(CS_SHOW_DEBUG_GUI_TEXT)
       qDebug() << "glyph" << g << "outside of glyphData, remapping font file";
 #endif
 
@@ -166,12 +183,11 @@ bool QFontEngineQPF2::verifyHeader(const uchar *data, int size)
 {
    VERIFY(quintptr(data) % alignof(Header) == 0);
    VERIFY(size >= int(sizeof(Header)));
+
    const Header *header = reinterpret_cast<const Header *>(data);
 
-   if (header->magic[0] != 'Q'
-      || header->magic[1] != 'P'
-      || header->magic[2] != 'F'
-      || header->magic[3] != '2') {
+   if (header->magic[0] != 'Q' || header->magic[1] != 'P'
+         || header->magic[2] != 'F' || header->magic[3] != '2') {
       return false;
    }
 
@@ -195,34 +211,41 @@ bool QFontEngineQPF2::verifyHeader(const uchar *data, int size)
 QVariant QFontEngineQPF2::extractHeaderField(const uchar *data, HeaderTag requestedTag)
 {
    const Header *header = reinterpret_cast<const Header *>(data);
-   const uchar *tagPtr = data + sizeof(Header);
-   const uchar *endPtr = tagPtr + qFromBigEndian<quint16>(header->dataSize);
+   const uchar *tagPtr  = data + sizeof(Header);
+   const uchar *endPtr  = tagPtr + qFromBigEndian<quint16>(header->dataSize);
+
    while (tagPtr < endPtr - 3) {
       quint16 tag = readValue<quint16>(tagPtr);
       quint16 length = readValue<quint16>(tagPtr);
+
       if (tag == requestedTag) {
          switch (tagTypes[requestedTag]) {
             case StringType:
                return QVariant(QString::fromUtf8(reinterpret_cast<const char *>(tagPtr), length));
+
             case UInt32Type:
                return QVariant(readValue<quint32>(tagPtr));
+
             case UInt8Type:
                return QVariant(uint(*tagPtr));
+
             case FixedType:
                return QVariant(QFixed::fromFixed(readValue<quint32>(tagPtr)).toReal());
+
             case BitFieldType:
                return QVariant(QByteArray(reinterpret_cast<const char *>(tagPtr), length));
          }
          return QVariant();
+
       } else if (tag == Tag_EndOfHeader) {
          break;
       }
+
       tagPtr += length;
    }
 
    return QVariant();
 }
-
 
 QFontEngineQPF2::QFontEngineQPF2(const QFontDef &def, const QByteArray &data)
    : QFontEngine(QPF2), fontData(reinterpret_cast<const uchar *>(data.constData())), dataSize(data.size())
@@ -241,14 +264,11 @@ QFontEngineQPF2::QFontEngineQPF2(const QFontDef &def, const QByteArray &data)
    kerning_pairs_loaded = false;
    readOnly = true;
 
-#if defined(DEBUG_FONTENGINE)
-   qDebug() << "QFontEngineQPF2::QFontEngineQPF2( fd =" << fd << ", renderingFontEngine =" << renderingFontEngine << ')';
+   if (! verifyHeader(fontData, dataSize)) {
+#if defined(CS_SHOW_DEBUG_GUI_TEXT)
+      qDebug() << "VerifyHeader failed";
 #endif
 
-   if (!verifyHeader(fontData, dataSize)) {
-#if defined(DEBUG_FONTENGINE)
-      qDebug() << "verifyHeader failed!";
-#endif
       return;
    }
 
@@ -257,7 +277,7 @@ QFontEngineQPF2::QFontEngineQPF2(const QFontDef &def, const QByteArray &data)
    readOnly = (header->lock == 0xffffffff);
 
    const uchar *imgData = fontData + sizeof(Header) + qFromBigEndian<quint16>(header->dataSize);
-   const uchar *endPtr = fontData + dataSize;
+   const uchar *endPtr  = fontData + dataSize;
 
    while (imgData <= endPtr - 8) {
       quint16 blockTag = readValue<quint16>(imgData);
@@ -303,19 +323,19 @@ QFontEngineQPF2::QFontEngineQPF2(const QFontDef &def, const QByteArray &data)
 
          if (glyphDataPos >= glyphDataSize) {
             // error
-            glyphMapOffset = 0;
+            glyphMapOffset  = 0;
             glyphMapEntries = 0;
             break;
          }
       }
    }
 
-#if defined(DEBUG_FONTENGINE)
-   if (!isValid())
-      qDebug() << "fontData" <<  fontData << "dataSize" << dataSize
-         << "cmap" << cmap << "cmapOffset" << cmapOffset
-         << "glyphMapOffset" << glyphMapOffset << "glyphDataOffset" << glyphDataOffset
-         << "fd" << fd << "glyphDataSize" << glyphDataSize;
+#if defined(CS_SHOW_DEBUG_GUI_TEXT)
+   if (! isValid()) {
+      qDebug() << "fontData" <<  fontData << "dataSize" << dataSize  << "cmap" << cmap
+         << "cmapOffset" << cmapOffset << "glyphMapOffset" << glyphMapOffset
+         << "glyphDataOffset" << glyphDataOffset << "glyphDataSize" << glyphDataSize;
+   }
 #endif
 }
 

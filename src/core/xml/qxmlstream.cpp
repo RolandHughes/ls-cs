@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -21,19 +21,20 @@
 *
 ***********************************************************************/
 
-#include <stdlib.h>
-#include <stdio.h>
-
 #include <qxmlstream.h>
-#include <qxmlstream_p.h>
 
+#include <qbuffer.h>
 #include <qcoreapplication.h>
 #include <qdebug.h>
 #include <qfile.h>
-#include <qtextcodec.h>
 #include <qstack.h>
-#include <qbuffer.h>
+#include <qtextcodec.h>
+
+#include <qxmlstream_p.h>
 #include <qxmlutils_p.h>
+
+#include <stdlib.h>
+#include <stdio.h>
 
 QXmlStreamEntityResolver::~QXmlStreamEntityResolver()
 {
@@ -139,7 +140,7 @@ void QXmlStreamReader::addData(const QByteArray &data)
    Q_D(QXmlStreamReader);
 
    if (d->device) {
-      qWarning("QXmlStreamReader: addData() with device()");
+      qWarning("QXmlStreamReader::addData() Invalid when using a device");
       return;
    }
 
@@ -177,7 +178,7 @@ bool QXmlStreamReader::atEnd() const
    Q_D(const QXmlStreamReader);
 
    if (d->atEnd && ((d->type == QXmlStreamReader::Invalid && d->error == PrematureEndOfDocumentError)
-             || (d->type == QXmlStreamReader::EndDocument))) {
+               || (d->type == QXmlStreamReader::EndDocument))) {
 
       if (d->device) {
          return d->device->atEnd();
@@ -235,6 +236,7 @@ bool QXmlStreamReader::readNextStartElement()
          return true;
       }
    }
+
    return false;
 }
 
@@ -284,17 +286,17 @@ EntityReference
 ProcessingInstruction
 */
 static const char QXmlStreamReader_tokenTypeString_string[] =
-   "NoToken\0"
-   "Invalid\0"
-   "StartDocument\0"
-   "EndDocument\0"
-   "StartElement\0"
-   "EndElement\0"
-   "Characters\0"
-   "Comment\0"
-   "DTD\0"
-   "EntityReference\0"
-   "ProcessingInstruction\0";
+      "NoToken\0"
+      "Invalid\0"
+      "StartDocument\0"
+      "EndDocument\0"
+      "StartElement\0"
+      "EndElement\0"
+      "Characters\0"
+      "Comment\0"
+      "DTD\0"
+      "EntityReference\0"
+      "ProcessingInstruction\0";
 
 static const short QXmlStreamReader_tokenTypeString_indices[] = {
    0, 8, 16, 30, 42, 55, 66, 77, 85, 89, 105, 0
@@ -413,12 +415,12 @@ void QXmlStreamReaderPrivate::parseEntity(const QString &value)
       return;
    }
 
-
    if (!entityParser) {
       entityParser = new QXmlStreamReaderPrivate(q);
    } else {
       entityParser->init();
    }
+
    entityParser->inParseEntity = true;
    entityParser->readBuffer    = value;
    entityParser->injectToken(PARSE_ENTITY);
@@ -426,6 +428,7 @@ void QXmlStreamReaderPrivate::parseEntity(const QString &value)
    while (!entityParser->atEnd && entityParser->type != QXmlStreamReader::Invalid) {
       entityParser->parse();
    }
+
    if (entityParser->type == QXmlStreamReader::Invalid || entityParser->tagStack.size()) {
       raiseWellFormedError(QXmlStream::tr("Invalid entity value."));
    }
@@ -462,6 +465,7 @@ inline uint QXmlStreamReaderPrivate::filterCarriageReturn()
       } else {
          ++readBuffer_Iter;
       }
+
       return peekc;
    }
 
@@ -476,6 +480,7 @@ inline uint QXmlStreamReaderPrivate::filterCarriageReturn()
 inline uint QXmlStreamReaderPrivate::getChar()
 {
    uint c;
+
    if (putStack.size() != 0) {
       c = atEnd ? 0 : putStack.pop();
 
@@ -499,7 +504,7 @@ inline uint QXmlStreamReaderPrivate::peekChar()
       c = putStack.top();
 
    } else if (readBuffer_Iter != readBuffer.cend() ) {
-         c = readBuffer_Iter->unicode();
+      c = readBuffer_Iter->unicode();
 
    } else {
       c = getChar_helper();
@@ -525,6 +530,7 @@ bool QXmlStreamReaderPrivate::scanUntil(const char *str, short tokenToInject)
             if ((c = filterCarriageReturn()) == 0) {
                break;
             }
+
             [[fallthrough]];
 
          case '\n':
@@ -542,6 +548,7 @@ bool QXmlStreamReaderPrivate::scanUntil(const char *str, short tokenToInject)
                lineNumber = oldLineNumber;
                return false;
             }
+
             textBuffer += char32_t(c);
       }
 
@@ -552,6 +559,7 @@ bool QXmlStreamReaderPrivate::scanUntil(const char *str, short tokenToInject)
             if (tokenToInject >= 0) {
                injectToken(tokenToInject);
             }
+
             return true;
 
          } else {
@@ -572,17 +580,22 @@ bool QXmlStreamReaderPrivate::scanUntil(const char *str, short tokenToInject)
 bool QXmlStreamReaderPrivate::scanString(const char *str, short tokenToInject, bool requireSpace)
 {
    int n = 0;
+
    while (str[n]) {
       ushort c = getChar();
+
       if (c != ushort(str[n])) {
          if (c) {
             putChar(c);
          }
+
          while (n--) {
             putChar(ushort(str[n]));
          }
+
          return false;
       }
+
       ++n;
    }
 
@@ -592,6 +605,7 @@ bool QXmlStreamReaderPrivate::scanString(const char *str, short tokenToInject, b
 
    if (requireSpace) {
       int s = fastScanSpace();
+
       if (!s || atEnd) {
          int pos = textBuffer.size() - n - s;
          putString(textBuffer, pos);
@@ -626,6 +640,7 @@ bool QXmlStreamReaderPrivate::scanAfterLangleBang()
          if (scanString(spell[ELEMENT], ELEMENT)) {
             return true;
          }
+
          return scanString(spell[ENTITY], ENTITY);
 
       default:
@@ -657,8 +672,10 @@ bool QXmlStreamReaderPrivate::scanNData()
       if (scanString(spell[NDATA], NDATA)) {
          return true;
       }
+
       putChar(' ');
    }
+
    return false;
 }
 
@@ -677,6 +694,7 @@ bool QXmlStreamReaderPrivate::scanAfterDefaultDecl()
       default:
          ;
    }
+
    return false;
 }
 
@@ -690,29 +708,35 @@ bool QXmlStreamReaderPrivate::scanAttType()
          if (scanString(spell[ID], ID)) {
             return true;
          }
+
          if (scanString(spell[IDREF], IDREF)) {
             return true;
          }
+
          return scanString(spell[IDREFS], IDREFS);
 
       case 'E':
          if (scanString(spell[ENTITY], ENTITY)) {
             return true;
          }
+
          return scanString(spell[ENTITIES], ENTITIES);
 
       case 'N':
          if (scanString(spell[NOTATION], NOTATION)) {
             return true;
          }
+
          if (scanString(spell[NMTOKEN], NMTOKEN)) {
             return true;
          }
+
          return scanString(spell[NMTOKENS], NMTOKENS);
 
       default:
          ;
    }
+
    return false;
 }
 
@@ -735,6 +759,7 @@ inline int QXmlStreamReaderPrivate::fastScanLiteralContent()
             if (filterCarriageReturn() == 0) {
                return n;
             }
+
             [[fallthrough]];
 
          case '\n':
@@ -750,6 +775,7 @@ inline int QXmlStreamReaderPrivate::fastScanLiteralContent()
             } else {
                textBuffer += char32_t(c);
             }
+
             ++n;
             break;
 
@@ -784,6 +810,7 @@ inline int QXmlStreamReaderPrivate::fastScanSpace()
             if ((c = filterCarriageReturn()) == 0) {
                return n;
             }
+
             [[fallthrough]];
 
          case '\n':
@@ -802,6 +829,7 @@ inline int QXmlStreamReaderPrivate::fastScanSpace()
             return n;
       }
    }
+
    return n;
 }
 
@@ -817,15 +845,18 @@ inline int QXmlStreamReaderPrivate::fastScanContentCharList()
          case 0:
             putChar(c);
             return n;
+
          case ']': {
             isWhitespace = false;
             int pos = textBuffer.size();
             textBuffer += QChar(ushort(c));
             ++n;
+
             while ((c = getChar()) == ']') {
                textBuffer += QChar(ushort(c));
                ++n;
             }
+
             if (c == 0) {
                putString(textBuffer, pos);
                textBuffer.resize(pos);
@@ -837,13 +868,16 @@ inline int QXmlStreamReaderPrivate::fastScanContentCharList()
                putChar(c);
                break;
             }
+
             return n;
          }
          break;
+
          case '\r':
             if ((c = filterCarriageReturn()) == 0) {
                return n;
             }
+
             [[fallthrough]];
 
          case '\n':
@@ -863,6 +897,7 @@ inline int QXmlStreamReaderPrivate::fastScanContentCharList()
                putChar(c);
                return n;
             }
+
             [[fallthrough]];
 
          default:
@@ -870,6 +905,7 @@ inline int QXmlStreamReaderPrivate::fastScanContentCharList()
                putChar(c);
                return n;
             }
+
             isWhitespace = false;
             textBuffer += QChar(ushort(c));
             ++n;
@@ -883,6 +919,7 @@ inline int QXmlStreamReaderPrivate::fastScanName(int *prefix)
 {
    int n = 0;
    ushort c;
+
    while ((c = getChar())) {
       switch (c) {
          case '\n':
@@ -911,12 +948,15 @@ inline int QXmlStreamReaderPrivate::fastScanName(int *prefix)
          case '+':
          case '*':
             putChar(c);
+
             if (prefix && *prefix == n + 1) {
                *prefix = 0;
                putChar(':');
                --n;
             }
+
             return n;
+
          case ':':
             if (prefix) {
                if (*prefix == 0) {
@@ -929,6 +969,7 @@ inline int QXmlStreamReaderPrivate::fastScanName(int *prefix)
                putChar(c);
                return n;
             }
+
             [[fallthrough]];
 
          default:
@@ -948,7 +989,11 @@ inline int QXmlStreamReaderPrivate::fastScanName(int *prefix)
    return 0;
 }
 
-enum NameChar { NameBeginning, NameNotBeginning, NotName };
+enum NameChar {
+   NameBeginning,
+   NameNotBeginning,
+   NotName
+};
 
 static const char Begi = static_cast<char>(NameBeginning);
 static const char NtBg = static_cast<char>(NameNotBeginning);
@@ -1001,6 +1046,7 @@ static inline NameChar fastDetermineNameChar(QChar ch)
          || (cat >= QChar::Mark_NonSpacing && cat <= QChar::Mark_Enclosing)) {
       return NameNotBeginning;
    }
+
    return NotName;
 }
 
@@ -1085,8 +1131,9 @@ ushort QXmlStreamReaderPrivate::getChar_helper()
    characterOffset = characterOffset + (readBuffer_Iter - readBuffer.cbegin());
    readBuffer.resize(0);
 
-   if (decoder)
+   if (decoder) {
       nbytesread = 0;
+   }
 
    if (device) {
       rawReadBuffer.resize(BUFFER_SIZE);
@@ -1178,6 +1225,7 @@ QStringView QXmlStreamReaderPrivate::namespaceForPrefix(QStringView prefix)
 {
    for (int j = namespaceDeclarations.size() - 1; j >= 0; --j) {
       const NamespaceDeclaration &namespaceDeclaration = namespaceDeclarations.at(j);
+
       if (namespaceDeclaration.prefix == prefix) {
          return namespaceDeclaration.namespaceUri;
       }
@@ -1204,6 +1252,7 @@ void QXmlStreamReaderPrivate::resolveTag()
          }
 
          int i = 0;
+
          while (i < n && symName(attributeStack[i].key) != dtdAttribute.attributeQualifiedName) {
             ++i;
          }
@@ -1288,9 +1337,11 @@ void QXmlStreamReaderPrivate::resolveTag()
       }
 
       int i = 0;
+
       while (i < n && symName(attributeStack[i].key) != dtdAttribute.attributeQualifiedName) {
          ++i;
       }
+
       if (i != n) {
          continue;
       }
@@ -1434,6 +1485,7 @@ bool QXmlStreamReaderPrivate::checkStartDocument()
    }
 
    type = QXmlStreamReader::StartDocument;
+
    if (atEnd) {
       hasCheckedStartDocument = false;
       raiseError(QXmlStreamReader::PrematureEndOfDocumentError);
@@ -1575,6 +1627,7 @@ void QXmlStreamReaderPrivate::parseError()
       }
 
    error_message.clear ();
+
    if (nexpected && nexpected < nmax) {
       bool first = true;
 
@@ -1614,6 +1667,7 @@ void QXmlStreamReaderPrivate::parseError()
 void QXmlStreamReaderPrivate::resume(int rule)
 {
    resumeReduction = rule;
+
    if (error == QXmlStreamReader::NoError) {
       raiseError(QXmlStreamReader::PrematureEndOfDocumentError);
    }
@@ -1657,18 +1711,22 @@ QXmlStreamNotationDeclarations QXmlStreamReader::notationDeclarations() const
 QXmlStreamEntityDeclarations QXmlStreamReader::entityDeclarations() const
 {
    Q_D(const QXmlStreamReader);
+
    if (d->entityDeclarations.size()) {
       const_cast<QXmlStreamReaderPrivate *>(d)->resolveDtd();
    }
+
    return d->publicEntityDeclarations;
 }
 
 QStringView QXmlStreamReader::dtdName() const
 {
    Q_D(const QXmlStreamReader);
+
    if (d->type == QXmlStreamReader::DTD) {
       return d->dtdName;
    }
+
    return QStringView();
 }
 
@@ -1686,9 +1744,11 @@ QStringView QXmlStreamReader::dtdPublicId() const
 QStringView QXmlStreamReader::dtdSystemId() const
 {
    Q_D(const QXmlStreamReader);
+
    if (d->type == QXmlStreamReader::DTD) {
       return d->dtdSystemId;
    }
+
    return QStringView();
 }
 
@@ -1729,8 +1789,7 @@ QString QXmlStreamReader::readElementText(ReadElementTextBehaviour behaviour)
       QString result;
 
       while (true) {
-         switch (readNext())
-         {
+         switch (readNext()) {
             case Characters:
             case EntityReference:
                result.append(d->text);
@@ -1760,6 +1819,7 @@ QString QXmlStreamReader::readElementText(ReadElementTextBehaviour behaviour)
                   if (! d->error) {
                      d->raiseError(UnexpectedElementError, QXmlStream::tr("Expected character data."));
                   }
+
                   return result;
                }
          }
@@ -1831,7 +1891,6 @@ QStringView QXmlStreamReader::qualifiedName() const
    Q_D(const QXmlStreamReader);
    return d->qualifiedName;
 }
-
 
 QStringView QXmlStreamReader::prefix() const
 {
@@ -1934,7 +1993,6 @@ QXmlStreamNamespaceDeclaration::~QXmlStreamNamespaceDeclaration()
 {
 }
 
-
 QXmlStreamEntityDeclaration::QXmlStreamEntityDeclaration()
 {
 }
@@ -1967,6 +2025,7 @@ QStringView QXmlStreamAttributes::value(const QString &namespaceUri, const QStri
          return attribute.value();
       }
    }
+
    return QStringView();
 }
 
@@ -1979,6 +2038,7 @@ QStringView QXmlStreamAttributes::value(const QString &qualifiedName) const
          return attribute.value();
       }
    }
+
    return QStringView();
 }
 
@@ -2024,9 +2084,11 @@ QStringView QXmlStreamReader::documentVersion() const
 QStringView QXmlStreamReader::documentEncoding() const
 {
    Q_D(const QXmlStreamReader);
+
    if (d->type == QXmlStreamReader::StartDocument) {
       return d->documentEncoding;
    }
+
    return QStringView();
 }
 
@@ -2089,7 +2151,6 @@ class QXmlStreamWriterPrivate : public QXmlStreamPrivateTagStack
    void indent(int level);
 };
 
-
 QXmlStreamWriterPrivate::QXmlStreamWriterPrivate(QXmlStreamWriter *q)
    : autoFormattingIndent(4, ' ')
 {
@@ -2138,7 +2199,7 @@ void QXmlStreamWriterPrivate::write(QStringView str)
       stringDevice->append(str);
 
    } else {
-      qWarning("QXmlStreamWriter: No device");
+      qWarning("QXmlStreamWriter::write() No device available");
    }
 }
 
@@ -2158,7 +2219,7 @@ void QXmlStreamWriterPrivate::write(const QString &s)
    } else if (stringDevice) {
       stringDevice->append(s);
    } else {
-      qWarning("QXmlStreamWriter: No device");
+      qWarning("QXmlStreamWriter::write() No device available");
    }
 }
 
@@ -2215,6 +2276,7 @@ void QXmlStreamWriterPrivate::write(const char *s, int len)
          if (device->write(s, len) != len) {
             hasError = true;
          }
+
          return;
       }
    }
@@ -2241,6 +2303,7 @@ bool QXmlStreamWriterPrivate::finishStartElement(bool contents)
 {
    bool hadSomethingWritten = wroteSomething;
    wroteSomething = contents;
+
    if (!inStartElement) {
       return hadSomethingWritten;
    }
@@ -2315,6 +2378,7 @@ QXmlStreamPrivateTagStack::NamespaceDeclaration &QXmlStreamWriterPrivate::findNa
 void QXmlStreamWriterPrivate::indent(int level)
 {
    write("\n");
+
    for (int i = level; i > 0; --i) {
       write(autoFormattingIndent.constData(), autoFormattingIndent.length());
    }
@@ -2355,6 +2419,7 @@ QXmlStreamWriter::~QXmlStreamWriter()
 void QXmlStreamWriter::setDevice(QIODevice *device)
 {
    Q_D(QXmlStreamWriter);
+
    if (device == d->device) {
       return;
    }
@@ -2522,10 +2587,13 @@ void QXmlStreamWriter::writeDTD(const QString &dtd)
 {
    Q_D(QXmlStreamWriter);
    d->finishStartElement();
+
    if (d->autoFormatting) {
       d->write("\n");
    }
+
    d->write(dtd);
+
    if (d->autoFormatting) {
       d->write("\n");
    }
@@ -2564,9 +2632,11 @@ void QXmlStreamWriter::writeTextElement(const QString &namespaceUri, const QStri
 void QXmlStreamWriter::writeEndDocument()
 {
    Q_D(QXmlStreamWriter);
+
    while (d->tagStack.size()) {
       writeEndElement();
    }
+
    d->write("\n");
 }
 
@@ -2678,6 +2748,7 @@ void QXmlStreamWriter::writeProcessingInstruction(const QString &target, const Q
       d->write(" ");
       d->write(data);
    }
+
    d->write("?>");
 }
 
@@ -2749,6 +2820,7 @@ void QXmlStreamWriterPrivate::writeStartElement(const QString &namespaceUri, con
    tag.namespaceDeclaration = findNamespace(namespaceUri);
 
    write("<");
+
    if (!tag.namespaceDeclaration.prefix.isEmpty()) {
       write(tag.namespaceDeclaration.prefix);
       write(":");
@@ -2780,11 +2852,13 @@ void QXmlStreamWriter::writeCurrentToken(const QXmlStreamReader &reader)
 
       case QXmlStreamReader::StartElement: {
          QXmlStreamNamespaceDeclarations namespaceDeclarations = reader.namespaceDeclarations();
+
          for (int i = 0; i < namespaceDeclarations.size(); ++i) {
             const QXmlStreamNamespaceDeclaration &namespaceDeclaration = namespaceDeclarations.at(i);
             writeNamespace(namespaceDeclaration.namespaceUri().toString(),
-                           namespaceDeclaration.prefix().toString());
+                  namespaceDeclaration.prefix().toString());
          }
+
          writeStartElement(reader.namespaceUri().toString(), reader.name().toString());
          writeAttributes(reader.attributes());
       }
@@ -2793,29 +2867,36 @@ void QXmlStreamWriter::writeCurrentToken(const QXmlStreamReader &reader)
       case QXmlStreamReader::EndElement:
          writeEndElement();
          break;
+
       case QXmlStreamReader::Characters:
          if (reader.isCDATA()) {
             writeCDATA(reader.text().toString());
          } else {
             writeCharacters(reader.text().toString());
          }
+
          break;
+
       case QXmlStreamReader::Comment:
          writeComment(reader.text().toString());
          break;
+
       case QXmlStreamReader::DTD:
          writeDTD(reader.text().toString());
          break;
+
       case QXmlStreamReader::EntityReference:
          writeEntityReference(reader.name().toString());
          break;
+
       case QXmlStreamReader::ProcessingInstruction:
          writeProcessingInstruction(reader.processingInstructionTarget().toString(),
-                                    reader.processingInstructionData().toString());
+               reader.processingInstructionData().toString());
          break;
+
       default:
          Q_ASSERT(reader.tokenType() != QXmlStreamReader::Invalid);
-         qWarning("QXmlStreamWriter: writeCurrentToken() with invalid state.");
+         qWarning("QXmlStreamWriter::writeCurrentToken() Invalid state");
          break;
    }
 }

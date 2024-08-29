@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -55,12 +55,13 @@ class Q_CORE_EXPORT QFile : public QFileDevice
    QString fileName() const override;
    void setFileName(const QString &name);
 
-   typedef QByteArray (*EncoderFn)(const QString &fileName);
-   typedef QString (*DecoderFn)(const QByteArray &localfileName);
+   using EncoderFn = QByteArray (*)(const QString &fileName);
+   using DecoderFn = QString (*)(const QByteArray &localfileName);
+
    static QByteArray encodeName(const QString &fileName);
    static QString decodeName(const QByteArray &localFileName);
 
-   static inline QString decodeName(const char *localFileName) {
+   static QString decodeName(const char *localFileName) {
       return decodeName(QByteArray(localFileName));
    }
 
@@ -72,11 +73,12 @@ class Q_CORE_EXPORT QFile : public QFileDevice
 
    QString readLink() const;
    static QString readLink(const QString &fileName);
-   inline QString symLinkTarget() const {
+
+   QString symLinkTarget() const {
       return readLink();
    }
 
-   static inline QString symLinkTarget(const QString &fileName) {
+   static QString symLinkTarget(const QString &fileName) {
       return readLink(fileName);
    }
 

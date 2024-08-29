@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -280,18 +280,19 @@ QCursor &QCursor::operator=(const QCursor &c)
    return *this;
 }
 
-
 QCursor::operator QVariant() const
 {
    return QVariant(QVariant::Cursor, this);
 }
 
-QDebug operator<<(QDebug dbg, const QCursor &c)
+QDebug operator<<(QDebug debug, const QCursor &c)
 {
-   QDebugStateSaver saver(dbg);
-   dbg.nospace() << "QCursor(Qt::CursorShape(" << c.shape() << "))";
+   QDebugStateSaver saver(debug);
+   debug.nospace();
 
-   return dbg;
+   debug << "QCursor(Qt::CursorShape(" << c.shape() << "))";
+
+   return debug;
 }
 
 QCursorData *qt_cursorTable[Qt::LastCursor + 1];

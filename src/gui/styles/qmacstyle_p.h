@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -189,7 +189,9 @@ class QMacStylePrivate : public QCommonStylePrivate
 
    NSView *cocoaControl(QCocoaWidget widget) const;
 
-   void drawNSViewInRect(QCocoaWidget widget, NSView *view, const QRect &rect, QPainter *p, bool isQWidget = true, QCocoaDrawRectBlock drawRectBlock = nil) const;
+   void drawNSViewInRect(QCocoaWidget widget, NSView *view, const QRect &rect, QPainter *p, bool isQWidget = true,
+         QCocoaDrawRectBlock drawRectBlock = nil) const;
+
    void resolveCurrentNSView(QWindow *window);
 
    void drawFocusRing(QPainter *p, const QRect &targetRect, int hMargin, int vMargin, qreal radius = 0) const;
@@ -202,8 +204,16 @@ class QMacStylePrivate : public QCommonStylePrivate
 
    struct ButtonState {
       int frame;
-      enum { ButtonDark, ButtonLight } dir;
-   } buttonState;
+
+      enum ButtonColor {
+         ButtonDark,
+         ButtonLight
+      };
+
+      ButtonColor dir;
+   };
+
+   ButtonState buttonState;
 
    mutable QPointer<QFocusFrame> focusWidget;
    CFAbsoluteTime defaultButtonStart;
@@ -217,6 +227,5 @@ class QMacStylePrivate : public QCommonStylePrivate
    NSView *backingStoreNSView;
    QHash<QCocoaWidget, NSView *> cocoaControls;
 };
-
 
 #endif

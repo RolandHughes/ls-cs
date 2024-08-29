@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -37,19 +37,23 @@ class QCameraImageProcessingFakeControl : public QCameraImageProcessingControl
 {
  public:
    QCameraImageProcessingFakeControl(QObject *parent)
-      : QCameraImageProcessingControl(parent) {
+      : QCameraImageProcessingControl(parent)
+   { }
+
+   bool isParameterSupported(ProcessingParameter) const override {
+      return false;
    }
 
-   bool isParameterSupported(ProcessingParameter) const {
+   bool isParameterValueSupported(ProcessingParameter, const QVariant &) const override {
       return false;
    }
-   bool isParameterValueSupported(ProcessingParameter, const QVariant &) const {
-      return false;
-   }
-   QVariant parameter(ProcessingParameter) const {
+
+   QVariant parameter(ProcessingParameter) const override {
       return QVariant();
    }
-   void setParameter(ProcessingParameter, const QVariant &) {}
+
+   void setParameter(ProcessingParameter, const QVariant &) override {
+   }
 };
 
 class QCameraImageProcessingPrivate : public QMediaObjectPrivate

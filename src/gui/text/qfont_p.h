@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -304,7 +304,6 @@ class QFontCache : public QObject
    void timerEvent(QTimerEvent *event) override;
    void decreaseCache();
 
-   static const uint min_cost;
    uint total_cost;
    uint max_cost;
    uint current_timestamp;

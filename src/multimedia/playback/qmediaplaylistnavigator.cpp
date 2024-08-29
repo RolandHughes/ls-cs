@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -37,13 +37,15 @@ class QMediaPlaylistNullProvider : public QMediaPlaylistProvider
    {
    }
 
-   virtual ~QMediaPlaylistNullProvider() {}
+   virtual ~QMediaPlaylistNullProvider()
+   {
+   }
 
-   virtual int mediaCount() const {
+   int mediaCount() const override {
       return 0;
    }
 
-   virtual QMediaContent media(int) const {
+   QMediaContent media(int) const override {
       return QMediaContent();
    }
 };

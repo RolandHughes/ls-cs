@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -36,7 +36,8 @@ class Median
 {
  public:
    Median(int _bufferSize)
-      : currentMedian(), bufferSize(_bufferSize), currentIndex(0), valid(false), dirty(true) {
+      : currentMedian(), bufferSize(_bufferSize), currentIndex(0), valid(false), dirty(true)
+   {
       values.resize(bufferSize);
    }
 
@@ -49,6 +50,7 @@ class Median
 
    void addValue(T value) {
       currentIndex = ((currentIndex + 1) % bufferSize);
+
       if (valid == false && currentIndex % bufferSize == 0) {
          valid = true;
       }
@@ -57,6 +59,7 @@ class Median
       // is when the new value is on then other side of the median
       // compared to the current value at the index.
       const T currentIndexValue = values[currentIndex];
+
       if ((currentIndexValue > currentMedian && currentMedian > value)
             || (currentMedian > currentIndexValue && value > currentMedian)) {
          dirty = true;
@@ -78,6 +81,7 @@ class Median
 
          currentMedian = sorted.at(bufferSize / 2 + 1);
       }
+
       return currentMedian;
    }
 

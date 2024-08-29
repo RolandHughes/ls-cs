@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2013 Klarälvdalens Datakonsult AB, a KDAB Group company
 * Copyright (c) 2015 The Qt Company Ltd.
@@ -51,9 +51,6 @@ QOpenGLPaintDevice::QOpenGLPaintDevice(int width, int height)
 {
 }
 
-/*!
-    \internal
- */
 QOpenGLPaintDevice::QOpenGLPaintDevice(QOpenGLPaintDevicePrivate &dd)
     : d_ptr(&dd)
 {
@@ -64,17 +61,9 @@ QOpenGLPaintDevice::~QOpenGLPaintDevice()
     delete d_ptr->engine;
 }
 
-/*!
-    \fn int QOpenGLPaintDevice::devType() const
-    \internal
-    \reimp
-*/
-
 QOpenGLPaintDevicePrivate::QOpenGLPaintDevicePrivate(const QSize &sz)
-    : size(sz), ctx(QOpenGLContext::currentContext())
-    , dpmx(qt_defaultDpiX() * 100. / 2.54)
-    , dpmy(qt_defaultDpiY() * 100. / 2.54)
-    , devicePixelRatio(1.0), flipped(false), engine(nullptr)
+    : size(sz), ctx(QOpenGLContext::currentContext()), dpmx(qt_defaultDpiX() * 100. / 2.54),
+      dpmy(qt_defaultDpiY() * 100. / 2.54), devicePixelRatio(1.0), flipped(false), engine(nullptr)
 {
 }
 
@@ -119,20 +108,10 @@ QPaintEngine *QOpenGLPaintDevice::paintEngine() const
     return engine;
 }
 
-/*!
-    Returns the OpenGL context associated with the paint device.
-*/
-
 QOpenGLContext *QOpenGLPaintDevice::context() const
 {
     return d_ptr->ctx;
 }
-
-/*!
-    Returns the pixel size of the paint device.
-
-    \sa setSize()
-*/
 
 QSize QOpenGLPaintDevice::size() const
 {
@@ -144,49 +123,42 @@ void QOpenGLPaintDevice::setSize(const QSize &size)
     d_ptr->size = size;
 }
 
-/*!
-    Sets the device pixel ratio for the paint device to \a devicePixelRatio.
-*/
 void QOpenGLPaintDevice::setDevicePixelRatio(qreal devicePixelRatio)
 {
     d_ptr->devicePixelRatio = devicePixelRatio;
 }
 
-/*!
-    \reimp
-*/
-
 int QOpenGLPaintDevice::metric(QPaintDevice::PaintDeviceMetric metric) const
 {
     switch (metric) {
-    case PdmWidth:
-        return d_ptr->size.width();
-    case PdmHeight:
-        return d_ptr->size.height();
-    case PdmDepth:
-        return 32;
-    case PdmWidthMM:
-        return qRound(d_ptr->size.width() * 1000 / d_ptr->dpmx);
-    case PdmHeightMM:
-        return qRound(d_ptr->size.height() * 1000 / d_ptr->dpmy);
-    case PdmNumColors:
-        return 0;
-    case PdmDpiX:
-        return qRound(d_ptr->dpmx * 0.0254);
-    case PdmDpiY:
-        return qRound(d_ptr->dpmy * 0.0254);
-    case PdmPhysicalDpiX:
-        return qRound(d_ptr->dpmx * 0.0254);
-    case PdmPhysicalDpiY:
-        return qRound(d_ptr->dpmy * 0.0254);
-    case PdmDevicePixelRatio:
-        return d_ptr->devicePixelRatio;
-    case PdmDevicePixelRatioScaled:
-        return d_ptr->devicePixelRatio * QPaintDevice::devicePixelRatioFScale();
+       case PdmWidth:
+           return d_ptr->size.width();
+       case PdmHeight:
+           return d_ptr->size.height();
+       case PdmDepth:
+           return 32;
+       case PdmWidthMM:
+           return qRound(d_ptr->size.width() * 1000 / d_ptr->dpmx);
+       case PdmHeightMM:
+           return qRound(d_ptr->size.height() * 1000 / d_ptr->dpmy);
+       case PdmNumColors:
+           return 0;
+       case PdmDpiX:
+           return qRound(d_ptr->dpmx * 0.0254);
+       case PdmDpiY:
+           return qRound(d_ptr->dpmy * 0.0254);
+       case PdmPhysicalDpiX:
+           return qRound(d_ptr->dpmx * 0.0254);
+       case PdmPhysicalDpiY:
+           return qRound(d_ptr->dpmy * 0.0254);
+       case PdmDevicePixelRatio:
+           return d_ptr->devicePixelRatio;
+       case PdmDevicePixelRatioScaled:
+           return d_ptr->devicePixelRatio * QPaintDevice::devicePixelRatioFScale();
 
-    default:
-        qWarning("QOpenGLPaintDevice::metric() - metric %d not known", metric);
-        return 0;
+       default:
+           qWarning("QOpenGLPaintDevice::metric() - metric %d not known", metric);
+           return 0;
     }
 }
 

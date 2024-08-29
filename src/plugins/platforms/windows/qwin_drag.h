@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -46,15 +46,15 @@ class QWindowsOleDropTarget : public IDropTarget
    virtual ~QWindowsOleDropTarget();
 
    // IUnknown methods
-   STDMETHOD(QueryInterface)(REFIID riid, void FAR *FAR *ppvObj);
-   STDMETHOD_(ULONG, AddRef)(void);
-   STDMETHOD_(ULONG, Release)(void);
+   STDMETHOD(QueryInterface)(REFIID riid, void FAR *FAR *ppvObj) override;
+   STDMETHOD_(ULONG, AddRef)(void) override;
+   STDMETHOD_(ULONG, Release)(void) override;
 
    // IDropTarget methods
-   STDMETHOD(DragEnter)(LPDATAOBJECT pDataObj, DWORD grfKeyState, POINTL pt, LPDWORD pdwEffect);
-   STDMETHOD(DragOver)(DWORD grfKeyState, POINTL pt, LPDWORD pdwEffect);
-   STDMETHOD(DragLeave)();
-   STDMETHOD(Drop)(LPDATAOBJECT pDataObj, DWORD grfKeyState, POINTL pt, LPDWORD pdwEffect);
+   STDMETHOD(DragEnter)(LPDATAOBJECT pDataObj, DWORD grfKeyState, POINTL pt, LPDWORD pdwEffect) override;
+   STDMETHOD(DragOver)(DWORD grfKeyState, POINTL pt, LPDWORD pdwEffect) override;
+   STDMETHOD(DragLeave)() override;
+   STDMETHOD(Drop)(LPDATAOBJECT pDataObj, DWORD grfKeyState, POINTL pt, LPDWORD pdwEffect) override;
 
  private:
    void handleDrag(QWindow *window, DWORD grfKeyState, const QPoint &, LPDWORD pdwEffect);

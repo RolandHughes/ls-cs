@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2013 Klarälvdalens Datakonsult AB, a KDAB Group company
 * Copyright (c) 2015 The Qt Company Ltd.
@@ -35,17 +35,20 @@ void QOpenGL2PEXVertexArray::clear()
 
 QOpenGLRect QOpenGL2PEXVertexArray::boundingRect() const
 {
-    if (boundingRectDirty)
+    if (boundingRectDirty) {
         return QOpenGLRect(0.0, 0.0, 0.0, 0.0);
-    else
+    } else {
         return QOpenGLRect(minX, minY, maxX, maxY);
+    }
 }
 
 void QOpenGL2PEXVertexArray::addClosingLine(int index)
 {
     QPointF point(vertexArray.at(index));
-    if (point != QPointF(vertexArray.last()))
+
+    if (point != QPointF(vertexArray.last())) {
         vertexArray.append(point);
+    }
 }
 
 void QOpenGL2PEXVertexArray::addCentroid(const QVectorPath &path, int subPathIndex)
@@ -56,7 +59,7 @@ void QOpenGL2PEXVertexArray::addCentroid(const QVectorPath &path, int subPathInd
     QPointF sum = points[subPathIndex];
     int count = 1;
 
-    for (int i = subPathIndex + 1; i < path.elementCount() && (!elements || elements[i] != QPainterPath::MoveToElement); ++i) {
+    for (int i = subPathIndex + 1; i < path.elementCount() && (! elements || elements[i] != QPainterPath::MoveToElement); ++i) {
         sum += points[i];
         ++count;
     }
@@ -84,7 +87,6 @@ void QOpenGL2PEXVertexArray::addPath(const QVectorPath &path, GLfloat curveInver
 
     do {
         if (! elements) {
-//         qDebug("QVectorPath has no elements");
            // If the path has a null elements pointer, the elements implicitly
            // start with a moveTo (already added) and continue with lineTos:
            for (int i=1; i<path.elementCount(); ++i)
@@ -93,32 +95,35 @@ void QOpenGL2PEXVertexArray::addPath(const QVectorPath &path, GLfloat curveInver
            break;
         }
 
-//      qDebug("QVectorPath has element types");
-
         for (int i=1; i<path.elementCount(); ++i) {
             switch (elements[i]) {
+
             case QPainterPath::MoveToElement:
-                if (!outline)
-                    addClosingLine(lastMoveTo);
-//                qDebug("element[%d] is a MoveToElement", i);
+                if (! outline) {
+                   addClosingLine(lastMoveTo);
+                }
+
                 vertexArrayStops.append(vertexArray.size());
-                if (!outline) {
-                    if (!path.isConvex()) addCentroid(path, i);
+
+                if (! outline) {
+                    if (! path.isConvex()) {
+                       addCentroid(path, i);
+                    }
+
                     lastMoveTo = vertexArray.size();
                 }
+
                 lineToArray(points[i].x(), points[i].y()); // Add the moveTo as a new vertex
                 break;
 
             case QPainterPath::LineToElement:
-//                qDebug("element[%d] is a LineToElement", i);
                 lineToArray(points[i].x(), points[i].y());
                 break;
 
             case QPainterPath::CurveToElement: {
                 QBezier b = QBezier::fromPoints(*(((const QPointF *) points) + i - 1),
-                                                points[i],
-                                                points[i+1],
-                                                points[i+2]);
+                      points[i], points[i+1], points[i+2]);
+
                 QRectF bounds = b.bounds();
                 // threshold based on same algorithm as in qtriangulatingstroker.cpp
                 int threshold = qMin<float>(64, qMax(bounds.width(), bounds.height()) * 3.14f / (curveInverseScale * 6));

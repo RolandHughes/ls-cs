@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -28,11 +28,18 @@
 
 // in qurlrecode.cpp
 extern int qt_urlRecode(QString &appendTo, QString::const_iterator begin, QString::const_iterator end,
-                        QUrl::FormattingOptions encoding, const ushort *tableModifications = nullptr);
+      QUrl::FormattingOptions encoding, const ushort *tableModifications = nullptr);
 
 // in qurlidna.cpp
-enum AceLeadingDot { AllowLeadingDot, ForbidLeadingDot };
-enum AceOperation { ToAceOnly, NormalizeAce };
+enum AceLeadingDot {
+   AllowLeadingDot,
+   ForbidLeadingDot
+};
+
+enum AceOperation {
+   ToAceOnly,
+   NormalizeAce
+};
 
 QString qt_ACE_do(QStringView domain, AceOperation op, AceLeadingDot dot);
 QString qt_urlRecodeByteArray(const QByteArray &ba);

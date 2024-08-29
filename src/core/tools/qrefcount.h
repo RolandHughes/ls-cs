@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,34 +24,44 @@
 #ifndef QREFCOUNT_H
 #define QREFCOUNT_H
 
-#include <qglobal.h>
 #include <qassert.h>
 #include <qatomic.h>
+#include <qglobal.h>
 
 namespace QtPrivate {
 
 class RefCount
 {
  public:
-   inline bool ref() {
+   bool ref() {
       int count = atomic.load();
-      if (count == 0) { // !isSharable
+
+      if (count == 0) {
+         // !isSharable
          return false;
       }
-      if (count != -1) { // !isStatic
+
+      if (count != -1) {
+         // !isStatic
          atomic.ref();
       }
+
       return true;
    }
 
-   inline bool deref() {
+   bool deref() {
       int count = atomic.load();
-      if (count == 0) { // !isSharable
+
+      if (count == 0) {
+         // !isSharable
          return false;
       }
-      if (count == -1) { // isStatic
+
+      if (count == -1) {
+         // isStatic
          return true;
       }
+
       return atomic.deref();
    }
 
@@ -82,19 +92,19 @@ class RefCount
       return (count != 1) && (count != 0);
    }
 
-   inline bool operator==(int value) const {
+   bool operator==(int value) const {
       return atomic.load() == value;
    }
 
-   inline bool operator!=(int value) const {
+   bool operator!=(int value) const {
       return atomic.load() != value;
    }
 
-   inline bool operator!() const {
+   bool operator!() const {
       return !atomic.load();
    }
 
-   inline operator int() const {
+   operator int() const {
       return atomic.load();
    }
 

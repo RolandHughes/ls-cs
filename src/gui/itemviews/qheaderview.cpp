@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -57,7 +57,8 @@ QDataStream &operator>>(QDataStream &in, QHeaderViewPrivate::SectionItem &sectio
    return in;
 }
 
-static const int maxSizeSection = 1048575; // since section size is in a bitfield (uint 20). See qheaderview_p.h
+// since section size is in a bitfield (uint 20), refer to qheaderview_p.h
+static constexpr const int maxSizeSection = 1048575;
 
 QHeaderView::QHeaderView(Qt::Orientation orientation, QWidget *parent)
    : QAbstractItemView(*new QHeaderViewPrivate, parent)
@@ -446,7 +447,6 @@ void QHeaderView::moveSection(int from, int to)
       d->lastSectionSize = sectionSize(from);
    }
 
-   // int oldHeaderLength = length(); // ### for debugging, remove later
    d->initializeIndexMapping();
 
    int *visualIndices = d->visualIndices.data();
@@ -2921,21 +2921,18 @@ void QHeaderViewPrivate::cascadingResize(int visual, int newSize)
          }
 
          int newSectionSize = qMax(currentSectionSize - delta, minimumSize);
-         //qDebug() << "### cascading to" << i << newSectionSize - currentSectionSize << delta;
 
          resizeSectionItem(i, currentSectionSize, newSectionSize);
          saveCascadingSectionSize(i, currentSectionSize);
          delta = delta - (currentSectionSize - newSectionSize);
-
-         //qDebug() << "new delta" << delta;
-         //if (newSectionSize != minimumSize)
 
          if (delta <= 0) {
             break;
          }
       }
 
-   } else { // smaller
+   } else {
+      // smaller
       bool sectionResized = false;
 
       // restore old section sizes
@@ -2952,10 +2949,11 @@ void QHeaderViewPrivate::cascadingResize(int visual, int newSize)
 
          int newSectionSize = currentSectionSize - delta;
          resizeSectionItem(i, currentSectionSize, newSectionSize);
+
          if (newSectionSize >= originalSectionSize && false) {
-            //qDebug() << "section" << i << "restored to" << originalSectionSize;
             cascadingSectionSize.remove(i); // the section is now restored
          }
+
          sectionResized = true;
          break;
       }

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -34,8 +34,8 @@
 
 // If the change in scale for a single touch event is out of this range,
 // we consider it to be spurious.
-static const qreal kSingleStepScaleMax = 2.0;
-static const qreal kSingleStepScaleMin = 0.1;
+static constexpr const qreal kSingleStepScaleMax = 2.0;
+static constexpr const qreal kSingleStepScaleMin = 0.1;
 
 QGesture *QPanGestureRecognizer::create(QObject *target)
 {
@@ -299,10 +299,14 @@ QGestureRecognizer::Result QSwipeGestureRecognizer::recognize(QGesture *state,
          break;
       }
       case QEvent::TouchUpdate: {
+         static constexpr const int MoveThreshold = 50;
+         static constexpr const int directionChangeThreshold = MoveThreshold / 8;
+
          const QTouchEvent *ev = static_cast<const QTouchEvent *>(event);
 
          if (d->state == QSwipeGesturePrivate::NoGesture) {
             result = QGestureRecognizer::CancelGesture;
+
          } else if (ev->touchPoints().size() == 3) {
             d->state = QSwipeGesturePrivate::ThreePointsReached;
             QTouchEvent::TouchPoint p1 = ev->touchPoints().at(0);
@@ -314,6 +318,7 @@ QGestureRecognizer::Result QSwipeGestureRecognizer::recognize(QGesture *state,
                d->lastPositions[1] = p2.startScreenPos().toPoint();
                d->lastPositions[2] = p3.startScreenPos().toPoint();
             }
+
             d->hotSpot = p1.screenPos();
             d->isHotSpotSet = true;
 
@@ -326,14 +331,14 @@ QGestureRecognizer::Result QSwipeGestureRecognizer::recognize(QGesture *state,
 
             const int distance = xDistance >= yDistance ? xDistance : yDistance;
             int elapsedTime = d->time.restart();
+
             if (!elapsedTime) {
                elapsedTime = 1;
             }
+
             d->velocityValue = 0.9 * d->velocityValue + distance / elapsedTime;
             d->swipeAngle = QLineF(p1.startScreenPos(), p1.screenPos()).angle();
 
-            static const int MoveThreshold = 50;
-            static const int directionChangeThreshold = MoveThreshold / 8;
             if (qAbs(xDistance) > MoveThreshold || qAbs(yDistance) > MoveThreshold) {
                // measure the distance to check if the direction changed
                d->lastPositions[0] = p1.screenPos().toPoint();
@@ -439,12 +444,15 @@ QGestureRecognizer::Result QTapGestureRecognizer::recognize(QGesture *state,
          result = QGestureRecognizer::TriggerGesture;
          break;
       }
+
       case QEvent::TouchUpdate:
       case QEvent::TouchEnd: {
+         static constexpr const int TapRadius = 40;
+
          if (q->state() != Qt::NoGesture && ev->touchPoints().size() == 1) {
             QTouchEvent::TouchPoint p = ev->touchPoints().at(0);
             QPoint delta = p.pos().toPoint() - p.startPos().toPoint();
-            enum { TapRadius = 40 };
+
             if (delta.manhattanLength() <= TapRadius) {
                if (event->type() == QEvent::TouchEnd) {
                   result = QGestureRecognizer::FinishGesture;
@@ -455,11 +463,13 @@ QGestureRecognizer::Result QTapGestureRecognizer::recognize(QGesture *state,
          }
          break;
       }
+
       case QEvent::MouseButtonPress:
       case QEvent::MouseMove:
       case QEvent::MouseButtonRelease:
          result = QGestureRecognizer::Ignore;
          break;
+
       default:
          result = QGestureRecognizer::Ignore;
          break;
@@ -492,6 +502,8 @@ QGesture *QTapAndHoldGestureRecognizer::create(QObject *target)
 QGestureRecognizer::Result QTapAndHoldGestureRecognizer::recognize(QGesture *state, QObject *object,
    QEvent *event)
 {
+   static constexpr const int TapRadius = 40;
+
    QTapAndHoldGesture *q = static_cast<QTapAndHoldGesture *>(state);
    QTapAndHoldGesturePrivate *d = q->d_func();
 
@@ -500,8 +512,6 @@ QGestureRecognizer::Result QTapAndHoldGestureRecognizer::recognize(QGesture *sta
       d->timerId = 0;
       return QGestureRecognizer::FinishGesture | QGestureRecognizer::ConsumeEventHint;
    }
-
-   enum { TapRadius = 40 };
 
    switch (event->type()) {
 #ifndef QT_NO_GRAPHICSVIEW
@@ -516,6 +526,7 @@ QGestureRecognizer::Result QTapAndHoldGestureRecognizer::recognize(QGesture *sta
          return QGestureRecognizer::MayBeGesture; // we don't show a sign of life until the timeout
       }
 #endif
+
       case QEvent::MouseButtonPress: {
          const QMouseEvent *me = static_cast<const QMouseEvent *>(event);
          d->position = me->globalPos();

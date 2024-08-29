@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -38,10 +38,10 @@ class MediaSampleVideoBuffer : public QAbstractVideoBuffer
       return m_sample;
    }
 
-   uchar *map(MapMode mode, int *numBytes, int *bytesPerLine);
-   void unmap();
+   uchar *map(MapMode mode, int *numBytes, int *bytesPerLine) override;
+   void unmap() override;
 
-   MapMode mapMode() const;
+   MapMode mapMode() const override;
 
  private:
    IMediaSample *m_sample;

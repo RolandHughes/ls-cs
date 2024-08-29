@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -75,19 +75,23 @@ class QPlatformBackingStorePrivate
    ~QPlatformBackingStorePrivate() {
 #ifndef QT_NO_OPENGL
       QOpenGLContext *ctx = QOpenGLContext::currentContext();
+
       if (ctx) {
          if (textureId) {
             ctx->functions()->glDeleteTextures(1, &textureId);
          }
+
          if (blitter) {
             blitter->destroy();
          }
+
       } else if (textureId || blitter) {
-         qWarning("QPlatformBackingStorePrivate, No current OpenGL context in destructor, resources not released");
+         qWarning("QPlatformBackingStore() No current OpenGL context in destructor, resources not released");
       }
       delete blitter;
 #endif
    }
+
    QWindow *window;
 
 #ifndef QT_NO_OPENGL
@@ -267,11 +271,11 @@ static void blitTextureForWidget(const QPlatformTextureList *textures, int idx, 
 void QPlatformBackingStore::composeAndFlush(QWindow *window, const QRegion &region,
    const QPoint &offset, QPlatformTextureList *textures, QOpenGLContext *context, bool translucentBackground)
 {
-   if (!qt_window_private(window)->receivedExpose) {
+   if (! qt_window_private(window)->receivedExpose) {
       return;
    }
 
-   if (!context->makeCurrent(window)) {
+   if (! context->makeCurrent(window)) {
       qWarning("QPlatformBackingStore::composeAndFlush() Unable to set the current OpenGL context");
       return;
    }
@@ -468,9 +472,10 @@ GLuint QPlatformBackingStore::toTexture(const QRegion &dirtyRegion, QSize *textu
 
    // The image provided by the backingstore may have a stride larger than width * 4, for
    // instance on platforms that manually implement client-side decorations.
-   static const int bytesPerPixel = 4;
-   const int strideInPixels = image.bytesPerLine() / bytesPerPixel;
-   const bool hasUnpackRowLength = !ctx->isOpenGLES() || ctx->format().majorVersion() >= 3;
+   static constexpr const int bytesPerPixel  = 4;
+
+   const int strideInPixels      = image.bytesPerLine() / bytesPerPixel;
+   const bool hasUnpackRowLength = ! ctx->isOpenGLES() || ctx->format().majorVersion() >= 3;
 
    QOpenGLFunctions *funcs = ctx->functions();
 

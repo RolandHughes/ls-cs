@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -850,7 +850,7 @@ QRect QItemDelegate::doCheck(const QStyleOptionViewItem &option,
    return QRect();
 }
 
-QRect QItemDelegate::textRectangle(QPainter * /*painter*/, const QRect &rect,
+QRect QItemDelegate::textRectangle(QPainter *, const QRect &rect,
    const QFont &font, const QString &text) const
 {
    Q_D(const QItemDelegate);

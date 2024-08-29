@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -21,20 +21,22 @@
 *
 ***********************************************************************/
 
-#include <qcamera.h>
-#include <qcameracontrol.h>
 #include <qcameraimagecapture.h>
-#include <qcameraimagecapturecontrol.h>
-#include <qcameracapturedestinationcontrol.h>
+
+#include <qcamera.h>
 #include <qcameracapturebufferformatcontrol.h>
-#include <qimageencodercontrol.h>
-#include <qmediaobject_p.h>
-#include <qmediaservice.h>
-#include <qmediaencodersettings.h>
+#include <qcameracapturedestinationcontrol.h>
+#include <qcameracontrol.h>
+#include <qcameraimagecapturecontrol.h>
 #include <qdebug.h>
+#include <qimageencodercontrol.h>
+#include <qmediaencodersettings.h>
+#include <qmediaservice.h>
 #include <qmetaobject.h>
 #include <qstringlist.h>
 #include <qurl.h>
+
+#include <qmediaobject_p.h>
 
 class QCameraImageCapturePrivate
 {
@@ -121,17 +123,11 @@ QCameraImageCapture::~QCameraImageCapture()
    delete d_ptr;
 }
 
-/*!
-  \reimp
-*/
 QMediaObject *QCameraImageCapture::mediaObject() const
 {
    return d_func()->mediaObject;
 }
 
-/*!
-  \reimp
-*/
 bool QCameraImageCapture::setMediaObject(QMediaObject *mediaObject)
 {
    Q_D(QCameraImageCapture);
@@ -139,13 +135,26 @@ bool QCameraImageCapture::setMediaObject(QMediaObject *mediaObject)
    if (d->mediaObject) {
 
       if (d->control) {
-         disconnect(d->control, &QCameraImageCaptureControl::imageExposed,           this, &QCameraImageCapture::imageExposed);
-         disconnect(d->control, &QCameraImageCaptureControl::imageCaptured,          this, &QCameraImageCapture::imageCaptured);
-         disconnect(d->control, &QCameraImageCaptureControl::imageMetadataAvailable, this, &QCameraImageCapture::imageMetadataAvailable);
-         disconnect(d->control, &QCameraImageCaptureControl::imageAvailable,         this, &QCameraImageCapture::imageAvailable);
-         disconnect(d->control, &QCameraImageCaptureControl::imageSaved,             this, &QCameraImageCapture::imageSaved);
-         disconnect(d->control, &QCameraImageCaptureControl::readyForCaptureChanged, this, &QCameraImageCapture::_q_readyChanged);
-         disconnect(d->control, &QCameraImageCaptureControl::error,                  this, &QCameraImageCapture::_q_error);
+         disconnect(d->control, &QCameraImageCaptureControl::imageExposed,
+               this, &QCameraImageCapture::imageExposed);
+
+         disconnect(d->control, &QCameraImageCaptureControl::imageCaptured,
+               this, &QCameraImageCapture::imageCaptured);
+
+         disconnect(d->control, &QCameraImageCaptureControl::imageMetadataAvailable,
+               this, &QCameraImageCapture::imageMetadataAvailable);
+
+         disconnect(d->control, &QCameraImageCaptureControl::imageAvailable,
+               this, &QCameraImageCapture::imageAvailable);
+
+         disconnect(d->control, &QCameraImageCaptureControl::imageSaved,
+               this, &QCameraImageCapture::imageSaved);
+
+         disconnect(d->control, &QCameraImageCaptureControl::readyForCaptureChanged,
+               this, &QCameraImageCapture::_q_readyChanged);
+
+         disconnect(d->control, &QCameraImageCaptureControl::error,
+               this, &QCameraImageCapture::_q_error);
 
          if (d->captureDestinationControl) {
             disconnect(d->captureDestinationControl, &QCameraCaptureDestinationControl::captureDestinationChanged,

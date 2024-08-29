@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -50,7 +50,7 @@ class QPSQLResult : public QSqlResult
    QPSQLResult(const QPSQLDriver *db);
    ~QPSQLResult();
 
-   QVariant handle() const;
+   QVariant handle() const override;
    void virtual_hook(int id, void *data) override;
 
  protected:

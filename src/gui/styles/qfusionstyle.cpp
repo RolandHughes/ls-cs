@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -26,31 +26,31 @@
 
 #if ! defined(QT_NO_STYLE_FUSION) || defined(QT_PLUGIN)
 
-#include <qcommonstyle_p.h>
-#include <qcombobox.h>
-#include <qpushbutton.h>
-#include <qpainter.h>
-#include <qdir.h>
-#include <qstyleoption.h>
 #include <qapplication.h>
-#include <qmainwindow.h>
+#include <qcombobox.h>
+#include <qdialogbuttonbox.h>
+#include <qdir.h>
+#include <qdrawutil.h>
 #include <qfont.h>
 #include <qgroupbox.h>
-#include <qprocess.h>
-#include <qpixmapcache.h>
-#include <qdialogbuttonbox.h>
-#include <qscrollbar.h>
-#include <qspinbox.h>
-#include <qslider.h>
-#include <qsplitter.h>
-#include <qprogressbar.h>
-#include <qwizard.h>
 #include <qlibrary.h>
-#include <qdrawutil.h>
+#include <qmainwindow.h>
+#include <qpainter.h>
+#include <qpixmapcache.h>
+#include <qprocess.h>
+#include <qprogressbar.h>
+#include <qpushbutton.h>
+#include <qscrollbar.h>
+#include <qslider.h>
+#include <qspinbox.h>
+#include <qsplitter.h>
+#include <qstyleoption.h>
+#include <qwizard.h>
 
-#include <qstylehelper_p.h>
-#include <qdrawhelper_p.h>
 #include <qapplication_p.h>
+#include <qcommonstyle_p.h>
+#include <qdrawhelper_p.h>
+#include <qstylehelper_p.h>
 
 using namespace QStyleHelper;
 
@@ -62,14 +62,13 @@ enum Direction {
 };
 
 // from windows style
-static const int windowsItemFrame        =  2; // menu item frame width
-static const int windowsItemHMargin      =  3; // menu item hor text margin
-static const int windowsItemVMargin      =  8; // menu item ver text margin
-static const int windowsRightBorder      = 15; // right border on windows
+static constexpr const int windowsItemFrame        =  2;  // menu item frame width
+static constexpr const int windowsItemHMargin      =  3;  // menu item hor text margin
+static constexpr const int windowsItemVMargin      =  8;  // menu item ver text margin
+static constexpr const int windowsRightBorder      = 15;  // right border on windows
 
-static const int groupBoxBottomMargin    =  0;  // space below the groupbox
-static const int groupBoxTopMargin       =  3;
-
+static constexpr const int groupBoxBottomMargin    =  0;  // space below the groupbox
+static constexpr const int groupBoxTopMargin       =  3;
 
 /* XPM */
 static const char *const dock_widget_close_xpm[] = {
@@ -162,7 +161,6 @@ static const char *const qt_titlebar_context_help[] = {
    "    ##    "
 };
 
-
 static QColor mergedColors(const QColor &colorA, const QColor &colorB, int factor = 50)
 {
    const int maxFactor = 100;
@@ -170,15 +168,16 @@ static QColor mergedColors(const QColor &colorA, const QColor &colorB, int facto
    tmp.setRed((tmp.red() * factor) / maxFactor + (colorB.red() * (maxFactor - factor)) / maxFactor);
    tmp.setGreen((tmp.green() * factor) / maxFactor + (colorB.green() * (maxFactor - factor)) / maxFactor);
    tmp.setBlue((tmp.blue() * factor) / maxFactor + (colorB.blue() * (maxFactor - factor)) / maxFactor);
+
    return tmp;
 }
 
 static QPixmap colorizedImage(const QString &fileName, const QColor &color, int rotation = 0)
 {
-
    QString pixmapName = "$qt_ia-" + fileName + HexString<uint>(color.rgba()) + QString::number(rotation);
    QPixmap pixmap;
-   if (!QPixmapCache::find(pixmapName, pixmap)) {
+
+   if (! QPixmapCache::find(pixmapName, pixmap)) {
       QImage image(fileName);
 
       if (image.format() != QImage::Format_ARGB32_Premultiplied) {
@@ -257,8 +256,8 @@ static QLinearGradient qt_fusion_gradient(const QRect &rect, const QBrush &baseC
    return gradient;
 }
 
-
-static void qt_fusion_draw_mdibutton(QPainter *painter, const QStyleOptionTitleBar *option, const QRect &tmp, bool hover, bool sunken)
+static void qt_fusion_draw_mdibutton(QPainter *painter, const QStyleOptionTitleBar *option,
+      const QRect &tmp, bool hover, bool sunken)
 {
    QColor dark;
    dark.setHsv(option->palette.button().color().hue(),
@@ -321,71 +320,26 @@ static void qt_fusion_draw_mdibutton(QPainter *painter, const QStyleOptionTitleB
    painter->drawPoint(tmp.right(), tmp.bottom() - 1);
 }
 
-/*
-    \internal
-*/
 QFusionStylePrivate::QFusionStylePrivate()
 {
    animationFps = 60;
 }
 
-/*!
-    \class QFusionStyle
-    \brief The QFusionStyle class provides a custom widget style
-
-    \inmodule QtWidgets
-    \internal
-
-    The Fusion style provides a custom look and feel that is not
-    tied to a particular platform.
-    //{Fusion Style Widget Gallery}
-    \sa QWindowsStyle, QWindowsVistaStyle, QMacStyle, QCommonStyle
-*/
-
-/*!
-    Constructs a QFusionStyle object.
-*/
 QFusionStyle::QFusionStyle() : QCommonStyle(*new QFusionStylePrivate)
 {
    setObjectName(QLatin1String("Fusion"));
 }
 
-/*!
-    \internal
-
-    Constructs a QFusionStyle object.
-*/
 QFusionStyle::QFusionStyle(QFusionStylePrivate &dd) : QCommonStyle(dd)
 {
 }
 
-/*!
-    Destroys the QFusionStyle object.
-*/
 QFusionStyle::~QFusionStyle()
 {
 }
 
-/*!
-    \fn void QFusionStyle::drawItemText(QPainter *painter, const QRect &rectangle, int alignment, const QPalette &palette,
-                                    bool enabled, const QString& text, QPalette::ColorRole textRole) const
-
-    Draws the given \a text in the specified \a rectangle using the
-    provided \a painter and \a palette.
-
-    Text is drawn using the painter's pen. If an explicit \a textRole
-    is specified, then the text is drawn using the \a palette's color
-    for the specified role.  The \a enabled value indicates whether or
-    not the item is enabled; when reimplementing, this value should
-    influence how the item is drawn.
-
-    The text is aligned and wrapped according to the specified \a
-    alignment.
-
-    \sa Qt::Alignment
-*/
 void QFusionStyle::drawItemText(QPainter *painter, const QRect &rect, int alignment, const QPalette &pal,
-   bool enabled, const QString &text, QPalette::ColorRole textRole) const
+      bool enabled, const QString &text, QPalette::ColorRole textRole) const
 {
    if (text.isEmpty()) {
       return;
@@ -395,6 +349,7 @@ void QFusionStyle::drawItemText(QPainter *painter, const QRect &rect, int alignm
    if (textRole != QPalette::NoRole) {
       painter->setPen(QPen(pal.brush(textRole), savedPen.widthF()));
    }
+
    if (!enabled) {
       QPen pen = painter->pen();
       painter->setPen(pen);
@@ -403,16 +358,11 @@ void QFusionStyle::drawItemText(QPainter *painter, const QRect &rect, int alignm
    painter->setPen(savedPen);
 }
 
-
-/*!
-    \reimp
-*/
-void QFusionStyle::drawPrimitive(PrimitiveElement elem,
-   const QStyleOption *option,
-   QPainter *painter, const QWidget *widget) const
+void QFusionStyle::drawPrimitive(PrimitiveElement elem, const QStyleOption *option,
+      QPainter *painter, const QWidget *widget) const
 {
    Q_ASSERT(option);
-   Q_D (const QFusionStyle);
+   Q_D(const QFusionStyle);
 
    QRect rect = option->rect;
    int state = option->state;
@@ -624,6 +574,7 @@ void QFusionStyle::drawPrimitive(PrimitiveElement elem,
          painter->restore();
       }
       break;
+
       case PE_FrameMenu:
          painter->save();
          {
@@ -644,6 +595,7 @@ void QFusionStyle::drawPrimitive(PrimitiveElement elem,
          }
          painter->restore();
          break;
+
       case PE_FrameDockWidget:
 
          painter->save();
@@ -662,6 +614,7 @@ void QFusionStyle::drawPrimitive(PrimitiveElement elem,
          }
          painter->restore();
          break;
+
       case PE_PanelButtonTool:
          painter->save();
          if ((option->state & State_Enabled || option->state & State_On) || !(option->state & State_AutoRaise)) {
@@ -675,6 +628,7 @@ void QFusionStyle::drawPrimitive(PrimitiveElement elem,
          }
          painter->restore();
          break;
+
       case PE_IndicatorDockWidgetResizeHandle: {
          QStyleOption dockWidgetHandle = *option;
          bool horizontal = option->state & State_Horizontal;
@@ -686,6 +640,7 @@ void QFusionStyle::drawPrimitive(PrimitiveElement elem,
          proxy()->drawControl(CE_Splitter, &dockWidgetHandle, painter, widget);
       }
       break;
+
       case PE_FrameWindow:
          painter->save();
          {
@@ -703,6 +658,7 @@ void QFusionStyle::drawPrimitive(PrimitiveElement elem,
          }
          painter->restore();
          break;
+
       case PE_FrameLineEdit: {
          QRect r = rect;
          bool hasFocus = option->state & State_HasFocus;
@@ -732,6 +688,7 @@ void QFusionStyle::drawPrimitive(PrimitiveElement elem,
 
       }
       break;
+
       case PE_IndicatorCheckBox:
          painter->save();
          if (const QStyleOptionButton *checkbox = qstyleoption_cast<const QStyleOptionButton *>(option)) {
@@ -837,8 +794,10 @@ void QFusionStyle::drawPrimitive(PrimitiveElement elem,
          }
          break;
       }
+
       case PE_FrameDefaultButton:
          break;
+
       case PE_FrameFocusRect:
          if (const QStyleOptionFocusRect *fropt = qstyleoption_cast<const QStyleOptionFocusRect *>(option)) {
             //### check for d->alt_down
@@ -862,6 +821,7 @@ void QFusionStyle::drawPrimitive(PrimitiveElement elem,
             painter->restore();
          }
          break;
+
       case PE_PanelButtonCommand: {
          bool isDefault = false;
          bool isFlat = false;
@@ -935,6 +895,7 @@ void QFusionStyle::drawPrimitive(PrimitiveElement elem,
          END_STYLE_PIXMAPCACHE
       }
       break;
+
       case PE_FrameTabWidget:
          painter->save();
          painter->fillRect(option->rect.adjusted(0, 0, -1, -1), tabFrameColor);
@@ -962,22 +923,25 @@ void QFusionStyle::drawPrimitive(PrimitiveElement elem,
 
          }
          painter->restore();
-         break ;
+         break;
 
       case PE_FrameStatusBarItem:
          break;
+
       case PE_IndicatorTabClose: {
-         Q_D(const QFusionStyle);
          if (d->tabBarcloseButtonIcon.isNull()) {
             d->tabBarcloseButtonIcon = proxy()->standardIcon(SP_DialogCloseButton, option, widget);
          }
+
          if ((option->state & State_Enabled) && (option->state & State_MouseOver)) {
             proxy()->drawPrimitive(PE_PanelButtonCommand, option, painter, widget);
          }
+
          QPixmap pixmap = d->tabBarcloseButtonIcon.pixmap(QSize(16, 16), QIcon::Normal, QIcon::On);
          proxy()->drawItemPixmap(painter, option->rect, Qt::AlignCenter, pixmap);
       }
       break;
+
       case PE_PanelMenu: {
          painter->save();
          QColor menuBackground = option->palette.base().color().lighter(108);
@@ -995,13 +959,11 @@ void QFusionStyle::drawPrimitive(PrimitiveElement elem,
    }
 }
 
-/*!
-  \reimp
-*/
 void QFusionStyle::drawControl(ControlElement element, const QStyleOption *option, QPainter *painter,
-   const QWidget *widget) const
+      const QWidget *widget) const
 {
-   Q_D (const QFusionStyle);
+   Q_D(const QFusionStyle);
+
    QRect rect = option->rect;
    QColor outline = d->outline(option->palette);
    QColor highlightedOutline = d->highlightedOutline(option->palette);
@@ -1949,22 +1911,16 @@ void QFusionStyle::drawControl(ControlElement element, const QStyleOption *optio
 
 extern QPalette qt_fusionPalette();
 
-/*!
-  \reimp
-*/
 QPalette QFusionStyle::standardPalette () const
 {
    return qt_fusionPalette();
 }
 
-/*!
-  \reimp
-*/
 void QFusionStyle::drawComplexControl(ComplexControl control, const QStyleOptionComplex *option,
-   QPainter *painter, const QWidget *widget) const
+      QPainter *painter, const QWidget *widget) const
 {
 
-   Q_D (const QFusionStyle);
+   Q_D(const QFusionStyle);
 
    QColor buttonColor = d->buttonColor(option->palette);
    QColor gradientStartColor = buttonColor.lighter(118);
@@ -3113,9 +3069,6 @@ void QFusionStyle::drawComplexControl(ComplexControl control, const QStyleOption
    }
 }
 
-/*!
-  \reimp
-*/
 int QFusionStyle::pixelMetric(PixelMetric metric, const QStyleOption *option, const QWidget *widget) const
 {
    int val = -1;
@@ -3233,13 +3186,11 @@ int QFusionStyle::pixelMetric(PixelMetric metric, const QStyleOption *option, co
    return QStyleHelper::dpiScaled(val);
 }
 
-/*!
-  \reimp
-*/
 QSize QFusionStyle::sizeFromContents(ContentsType type, const QStyleOption *option,
-   const QSize &size, const QWidget *widget) const
+      const QSize &size, const QWidget *widget) const
 {
    QSize newSize = QCommonStyle::sizeFromContents(type, option, size, widget);
+
    switch (type) {
       case CT_PushButton:
          if (const QStyleOptionButton *btn = qstyleoption_cast<const QStyleOptionButton *>(option)) {
@@ -3309,9 +3260,11 @@ QSize QFusionStyle::sizeFromContents(ContentsType type, const QStyleOption *opti
             newSize.setWidth(qMax(newSize.width(), 120));
          }
          break;
+
       case CT_SizeGrip:
          newSize += QSize(4, 4);
          break;
+
       case CT_MdiControls:
          if (const QStyleOptionComplex *styleOpt = qstyleoption_cast<const QStyleOptionComplex *>(option)) {
             int width = 0;
@@ -3335,17 +3288,11 @@ QSize QFusionStyle::sizeFromContents(ContentsType type, const QStyleOption *opti
    return newSize;
 }
 
-/*!
-  \reimp
-*/
 void QFusionStyle::polish(QApplication *app)
 {
    QCommonStyle::polish(app);
 }
 
-/*!
-  \reimp
-*/
 void QFusionStyle::polish(QWidget *widget)
 {
    QCommonStyle::polish(widget);
@@ -3364,17 +3311,11 @@ void QFusionStyle::polish(QWidget *widget)
    }
 }
 
-/*!
-  \reimp
-*/
 void QFusionStyle::polish(QPalette &pal)
 {
    QCommonStyle::polish(pal);
 }
 
-/*!
-  \reimp
-*/
 void QFusionStyle::unpolish(QWidget *widget)
 {
    QCommonStyle::unpolish(widget);
@@ -3392,19 +3333,13 @@ void QFusionStyle::unpolish(QWidget *widget)
    }
 }
 
-/*!
-  \reimp
-*/
 void QFusionStyle::unpolish(QApplication *app)
 {
    QCommonStyle::unpolish(app);
 }
 
-/*!
-  \reimp
-*/
 QRect QFusionStyle::subControlRect(ComplexControl control, const QStyleOptionComplex *option,
-   SubControl subControl, const QWidget *widget) const
+      SubControl subControl, const QWidget *widget) const
 {
    QRect rect = QCommonStyle::subControlRect(control, option, subControl, widget);
 
@@ -3473,13 +3408,18 @@ QRect QFusionStyle::subControlRect(ComplexControl control, const QStyleOptionCom
       case CC_SpinBox:
          if (const QStyleOptionSpinBox *spinbox = qstyleoption_cast<const QStyleOptionSpinBox *>(option)) {
             int center = spinbox->rect.height() / 2;
-            int fw = spinbox->frame ? 3 : 0; // Is drawn with 3 pixels width in drawComplexControl, independently from PM_SpinBoxFrameWidth
+
+            // drawn with 3 pixels width in drawComplexControl, independently from PM_SpinBoxFrameWidth
+            int fw = spinbox->frame ? 3 : 0;
             int y = fw;
+
             const int buttonWidth = QStyleHelper::dpiScaled(14);
             int x, lx, rx;
+
             x = spinbox->rect.width() - y - buttonWidth + 2;
             lx = fw;
             rx = x - fw;
+
             switch (subControl) {
                case SC_SpinBoxUp:
                   if (spinbox->buttonSymbols == QAbstractSpinBox::NoButtons) {
@@ -3520,7 +3460,9 @@ QRect QFusionStyle::subControlRect(ComplexControl control, const QStyleOptionCom
                int margin = 3;
                int leftMarginExtension = 0;
                int topMargin = qMax(pixelMetric(PM_ExclusiveIndicatorHeight), option->fontMetrics.height()) + groupBoxTopMargin;
-               return frameRect.adjusted(leftMarginExtension + margin, margin + topMargin, -margin, -margin - groupBoxBottomMargin);
+
+               return frameRect.adjusted(leftMarginExtension + margin, margin + topMargin, -margin,
+                     -margin - groupBoxBottomMargin);
             }
 
             QSize textSize = option->fontMetrics.boundingRect(groupBox->text).size() + QSize(2, 2);
@@ -3717,47 +3659,31 @@ QRect QFusionStyle::subControlRect(ComplexControl control, const QStyleOptionCom
    return rect;
 }
 
-
-/*!
-  \reimp
-*/
 QRect QFusionStyle::itemPixmapRect(const QRect &r, int flags, const QPixmap &pixmap) const
 {
    return QCommonStyle::itemPixmapRect(r, flags, pixmap);
 }
 
-/*!
-  \reimp
-*/
 void QFusionStyle::drawItemPixmap(QPainter *painter, const QRect &rect,
-   int alignment, const QPixmap &pixmap) const
+      int alignment, const QPixmap &pixmap) const
 {
    QCommonStyle::drawItemPixmap(painter, rect, alignment, pixmap);
 }
 
-/*!
-  \reimp
-*/
 QStyle::SubControl QFusionStyle::hitTestComplexControl(ComplexControl cc, const QStyleOptionComplex *opt,
-   const QPoint &pt, const QWidget *w) const
+      const QPoint &pt, const QWidget *w) const
 {
    return QCommonStyle::hitTestComplexControl(cc, opt, pt, w);
 }
 
-/*!
-  \reimp
-*/
 QPixmap QFusionStyle::generatedIconPixmap(QIcon::Mode iconMode, const QPixmap &pixmap,
-   const QStyleOption *opt) const
+      const QStyleOption *opt) const
 {
    return QCommonStyle::generatedIconPixmap(iconMode, pixmap, opt);
 }
 
-/*!
-  \reimp
-*/
 int QFusionStyle::styleHint(StyleHint hint, const QStyleOption *option, const QWidget *widget,
-   QStyleHintReturn *returnData) const
+      QStyleHintReturn *returnData) const
 {
    switch (hint) {
       case SH_Slider_SnapToValue:
@@ -3829,7 +3755,6 @@ int QFusionStyle::styleHint(StyleHint hint, const QStyleOption *option, const QW
    return QCommonStyle::styleHint(hint, option, widget, returnData);
 }
 
-/*! \reimp */
 QRect QFusionStyle::subElementRect(SubElement sr, const QStyleOption *opt, const QWidget *w) const
 {
    QRect r = QCommonStyle::subElementRect(sr, opt, w);
@@ -3864,25 +3789,21 @@ QRect QFusionStyle::subElementRect(SubElement sr, const QStyleOption *opt, const
    return r;
 }
 
-/*!
-    \reimp
-*/
 QIcon QFusionStyle::standardIcon(StandardPixmap standardIcon, const QStyleOption *option, const QWidget *widget) const
 {
    return QCommonStyle::standardIcon(standardIcon, option, widget);
 }
 
-/*!
- \reimp
- */
 QPixmap QFusionStyle::standardPixmap(StandardPixmap standardPixmap, const QStyleOption *opt, const QWidget *widget) const
 {
 #ifndef QT_NO_IMAGEFORMAT_XPM
    switch (standardPixmap) {
       case SP_TitleBarNormalButton:
          return QPixmap(dock_widget_restore_xpm);
+
       case SP_TitleBarMinButton:
          return QPixmap(workspace_minimize);
+
       case SP_TitleBarCloseButton:
       case SP_DockWidgetCloseButton:
          return QPixmap(dock_widget_close_xpm);

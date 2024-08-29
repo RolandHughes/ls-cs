@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -293,12 +293,16 @@ bool QListView::isRowHidden(int row) const
 void QListView::setRowHidden(int row, bool hide)
 {
    Q_D(QListView);
+
    const bool hidden = d->isHidden(row);
-   if (hide && !hidden) {
+
+   if (hide && ! hidden) {
       d->commonListView->appendHiddenRow(row);
-   } else if (!hide && hidden) {
+
+   } else if (! hide && hidden) {
       d->commonListView->removeHiddenRow(row);
    }
+
    d->doDelayedItemsLayout();
    d->viewport->update();
 }
@@ -1587,10 +1591,6 @@ bool QListViewPrivate::dropOn(QDropEvent *event, int *dropRow, int *dropCol, QMo
 }
 #endif
 
-/*
- * Common ListView Implementation
-*/
-
 void QCommonListViewBase::appendHiddenRow(int row)
 {
    dd->hiddenRows.insert(dd->model->index(row, 0, qq->rootIndex()));
@@ -1671,16 +1671,18 @@ void QCommonListViewBase::updateVerticalScrollBar(const QSize &step)
    }
 }
 
-void QCommonListViewBase::scrollContentsBy(int dx, int dy, bool /*scrollElasticBand*/)
+void QCommonListViewBase::scrollContentsBy(int dx, int dy, bool)
 {
    dd->scrollContentsBy(isRightToLeft() ? -dx : dx, dy);
 }
 
-int QCommonListViewBase::verticalScrollToValue(int /*index*/, QListView::ScrollHint hint,
-   bool above, bool below, const QRect &area, const QRect &rect) const
+int QCommonListViewBase::verticalScrollToValue(int, QListView::ScrollHint hint,
+      bool above, bool below, const QRect &area, const QRect &rect) const
 {
    int verticalValue = verticalScrollBar()->value();
+
    QRect adjusted = rect.adjusted(-spacing(), -spacing(), spacing(), spacing());
+
    if (hint == QListView::PositionAtTop || above) {
       verticalValue += adjusted.top();
    } else if (hint == QListView::PositionAtBottom || below) {
@@ -1688,6 +1690,7 @@ int QCommonListViewBase::verticalScrollToValue(int /*index*/, QListView::ScrollH
    } else if (hint == QListView::PositionAtCenter) {
       verticalValue += adjusted.top() - ((area.height() - adjusted.height()) / 2);
    }
+
    return verticalValue;
 }
 
@@ -1697,10 +1700,11 @@ int QCommonListViewBase::horizontalOffset() const
          horizontalScrollBar()->value());
 }
 
-int QCommonListViewBase::horizontalScrollToValue(const int /*index*/, QListView::ScrollHint hint,
-   bool leftOf, bool rightOf, const QRect &area, const QRect &rect) const
+int QCommonListViewBase::horizontalScrollToValue(const int, QListView::ScrollHint hint,
+      bool leftOf, bool rightOf, const QRect &area, const QRect &rect) const
 {
    int horizontalValue = horizontalScrollBar()->value();
+
    if (isRightToLeft()) {
       if (hint == QListView::PositionAtCenter) {
          horizontalValue += ((area.width() - rect.width()) / 2) - rect.left();
@@ -1711,6 +1715,7 @@ int QCommonListViewBase::horizontalScrollToValue(const int /*index*/, QListView:
             horizontalValue += qMin(rect.left(), area.width() - rect.right());
          }
       }
+
    } else {
       if (hint == QListView::PositionAtCenter) {
          horizontalValue += rect.left() - ((area.width() - rect.width()) / 2);
@@ -1722,6 +1727,7 @@ int QCommonListViewBase::horizontalScrollToValue(const int /*index*/, QListView:
          }
       }
    }
+
    return horizontalValue;
 }
 
@@ -1730,7 +1736,6 @@ QListModeViewBase::QListModeViewBase(QListView *q, QListViewPrivate *d)
 {
    dd->defaultDropAction = Qt::CopyAction;
 }
-
 
 #ifndef QT_NO_DRAGANDDROP
 QAbstractItemView::DropIndicatorPosition QListModeViewBase::position(const QPoint &pos, const QRect &rect,
@@ -2547,10 +2552,6 @@ void QListModeViewBase::clear()
    batchStartRow = 0;
    batchSavedDeltaSeg = 0;
 }
-
-/*
- * IconMode ListView Implementation
-*/
 
 void QIconModeViewBase::setPositionForIndex(const QPoint &position, const QModelIndex &index)
 {

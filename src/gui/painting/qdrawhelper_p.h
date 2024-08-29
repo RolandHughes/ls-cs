@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -51,10 +51,10 @@ class QClipData;
 class QRasterPaintEngineState;
 class QRasterPaintEngine;
 
-static const uint AMASK = 0xff000000;
-static const uint RMASK = 0x00ff0000;
-static const uint GMASK = 0x0000ff00;
-static const uint BMASK = 0x000000ff;
+static constexpr const uint AMASK = 0xff000000;
+static constexpr const uint RMASK = 0x00ff0000;
+static constexpr const uint GMASK = 0x0000ff00;
+static constexpr const uint BMASK = 0x000000ff;
 
 typedef QT_FT_Span QSpan;
 typedef QT_FT_SpanFunc ProcessSpans;
@@ -373,6 +373,7 @@ static inline const QRgba64 &qt_gradient_pixel64(const QGradientData *data, qrea
    int ipos = int(pos * (GRADIENT_STOPTABLE_SIZE - 1) + qreal(0.5));
    return data->colorTable64[qt_gradient_clamp(data, ipos)];
 }
+
 static inline qreal qRadialDeterminant(qreal a, qreal b, qreal c)
 {
    return (b * b) - (4 * a * c);
@@ -380,7 +381,7 @@ static inline qreal qRadialDeterminant(qreal a, qreal b, qreal c)
 
 template <class RadialFetchFunc, typename BlendType>
 static const BlendType *qt_fetch_radial_gradient_template(BlendType *buffer, const Operator *op,
-   const QSpanData *data, int y, int x, int length)
+      const QSpanData *data, int y, int x, int length)
 {
    // avoid division by zero
    if (qFuzzyIsNull(op->radial.a)) {
@@ -388,12 +389,11 @@ static const BlendType *qt_fetch_radial_gradient_template(BlendType *buffer, con
       return buffer;
    }
 
-   const BlendType *b = buffer;
-   qreal rx = data->m21 * (y + qreal(0.5))
-      + data->dx + data->m11 * (x + qreal(0.5));
-   qreal ry = data->m22 * (y + qreal(0.5))
-      + data->dy + data->m12 * (x + qreal(0.5));
-   bool affine = !data->m13 && !data->m23;
+   const BlendType *retvalPtr = buffer;
+
+   qreal rx = data->m21 * (y + qreal(0.5)) + data->dx + data->m11 * (x + qreal(0.5));
+   qreal ry = data->m22 * (y + qreal(0.5)) + data->dy + data->m12 * (x + qreal(0.5));
+   bool affine = ! data->m13 && ! data->m23;
 
    BlendType *end = buffer + length;
 
@@ -431,20 +431,21 @@ static const BlendType *qt_fetch_radial_gradient_template(BlendType *buffer, con
       RadialFetchFunc::fetch(buffer, end, op, data, det, delta_det, delta_delta_det, b, delta_b);
 
    } else {
-      qreal rw = data->m23 * (y + qreal(0.5))
-         + data->m33 + data->m13 * (x + qreal(0.5));
+      qreal rw = data->m23 * (y + qreal(0.5)) + data->m33 + data->m13 * (x + qreal(0.5));
 
       while (buffer < end) {
          if (rw == 0) {
             *buffer = 0;
+
          } else {
             qreal invRw = 1 / rw;
-            qreal gx = rx * invRw - data->gradient.radial.focal.x;
-            qreal gy = ry * invRw - data->gradient.radial.focal.y;
-            qreal b  = 2 * (op->radial.dr * data->gradient.radial.focal.radius + gx * op->radial.dx + gy * op->radial.dy);
+            qreal gx  = rx * invRw - data->gradient.radial.focal.x;
+            qreal gy  = ry * invRw - data->gradient.radial.focal.y;
+            qreal b   = 2 * (op->radial.dr * data->gradient.radial.focal.radius + gx * op->radial.dx + gy * op->radial.dy);
             qreal det = qRadialDeterminant(op->radial.a, b, op->radial.sqrfr - (gx * gx + gy * gy));
 
             BlendType result = RadialFetchFunc::null();
+
             if (det >= 0) {
                qreal detSqrt = qSqrt(det);
 
@@ -469,7 +470,7 @@ static const BlendType *qt_fetch_radial_gradient_template(BlendType *buffer, con
       }
    }
 
-   return b;
+   return retvalPtr;
 }
 
 template <class Simd>

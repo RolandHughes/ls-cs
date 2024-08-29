@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -389,10 +389,12 @@ QRectF QPixmapBlurFilter::boundingRectFor(const QRectF &rect) const
 template <int shift>
 inline int qt_static_shift(int value)
 {
-   if (shift == 0) {
+   if constexpr (shift == 0) {
       return value;
-   } else if (shift > 0) {
+
+   } else if constexpr (shift > 0) {
       return value << (uint(shift) & 0x1f);
+
    } else {
       return value >> (uint(-shift) & 0x1f);
    }

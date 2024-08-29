@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -43,7 +43,8 @@ QAccessibleCache *QAccessibleCache::instance()
 */
 QAccessible::Id QAccessibleCache::acquireId() const
 {
-   static const QAccessible::Id FirstId = QAccessible::Id(INT_MAX) + 1;
+   static constexpr const QAccessible::Id FirstId = QAccessible::Id(INT_MAX) + 1;
+
    static QAccessible::Id lastUsedId = FirstId;
 
    while (idToInterface.contains(lastUsedId)) {
@@ -73,12 +74,12 @@ QAccessible::Id QAccessibleCache::insert(QObject *object, QAccessibleInterface *
 {
    Q_ASSERT(iface);
 
-   // object might be 0
-   Q_ASSERT(!objectToId.contains(object));
-   Q_ASSERT_X(!interfaceToId.contains(iface), "", "Accessible interface inserted into cache twice!");
+   Q_ASSERT(! objectToId.contains(object));
+   Q_ASSERT_X(! interfaceToId.contains(iface), "", "Accessible interface inserted into cache twice");
 
    QAccessible::Id id = acquireId();
    QObject *obj = iface->object();
+
    Q_ASSERT(object == obj);
 
    if (obj) {

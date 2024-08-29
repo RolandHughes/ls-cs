@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -38,7 +38,15 @@ class Q_GUI_EXPORT QFileIconProvider
    };
    using Options = QFlags<Option>;
 
-   enum IconType { Computer, Desktop, Trashcan, Network, Drive, Folder, File };
+   enum IconType {
+      Computer,
+      Desktop,
+      Trashcan,
+      Network,
+      Drive,
+      Folder,
+      File
+   };
 
    QFileIconProvider();
 

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -46,20 +46,20 @@ class QWindowsOleDataObject : public IDataObject
    DWORD reportedPerformedEffect() const;
 
    // IUnknown methods
-   STDMETHOD(QueryInterface)(REFIID riid, void FAR *FAR *ppvObj);
-   STDMETHOD_(ULONG, AddRef)(void);
-   STDMETHOD_(ULONG, Release)(void);
+   STDMETHOD(QueryInterface)(REFIID riid, void FAR *FAR *ppvObj) override;
+   STDMETHOD_(ULONG, AddRef)(void) override;
+   STDMETHOD_(ULONG, Release)(void) override;
 
    // IDataObject methods
-   STDMETHOD(GetData)(LPFORMATETC pformatetcIn, LPSTGMEDIUM pmedium);
-   STDMETHOD(GetDataHere)(LPFORMATETC pformatetc, LPSTGMEDIUM pmedium);
-   STDMETHOD(QueryGetData)(LPFORMATETC pformatetc);
-   STDMETHOD(GetCanonicalFormatEtc)(LPFORMATETC pformatetc, LPFORMATETC pformatetcOut);
-   STDMETHOD(SetData)(LPFORMATETC pformatetc, STGMEDIUM FAR *pmedium, BOOL fRelease);
-   STDMETHOD(EnumFormatEtc)(DWORD dwDirection, LPENUMFORMATETC FAR *ppenumFormatEtc);
-   STDMETHOD(DAdvise)(FORMATETC FAR *pFormatetc, DWORD advf, LPADVISESINK pAdvSink, DWORD FAR *pdwConnection);
-   STDMETHOD(DUnadvise)(DWORD dwConnection);
-   STDMETHOD(EnumDAdvise)(LPENUMSTATDATA FAR *ppenumAdvise);
+   STDMETHOD(GetData)(LPFORMATETC pformatetcIn, LPSTGMEDIUM pmedium) override;
+   STDMETHOD(GetDataHere)(LPFORMATETC pformatetc, LPSTGMEDIUM pmedium) override;
+   STDMETHOD(QueryGetData)(LPFORMATETC pformatetc) override;
+   STDMETHOD(GetCanonicalFormatEtc)(LPFORMATETC pformatetc, LPFORMATETC pformatetcOut) override;
+   STDMETHOD(SetData)(LPFORMATETC pformatetc, STGMEDIUM FAR *pmedium, BOOL fRelease) override;
+   STDMETHOD(EnumFormatEtc)(DWORD dwDirection, LPENUMFORMATETC FAR *ppenumFormatEtc) override;
+   STDMETHOD(DAdvise)(FORMATETC FAR *pFormatetc, DWORD advf, LPADVISESINK pAdvSink, DWORD FAR *pdwConnection) override;
+   STDMETHOD(DUnadvise)(DWORD dwConnection) override;
+   STDMETHOD(EnumDAdvise)(LPENUMSTATDATA FAR *ppenumAdvise) override;
 
  private:
    ULONG m_refs;
@@ -79,15 +79,15 @@ class QWindowsOleEnumFmtEtc : public IEnumFORMATETC
    bool isNull() const;
 
    // IUnknown methods
-   STDMETHOD(QueryInterface)(REFIID riid, void FAR *FAR *ppvObj);
-   STDMETHOD_(ULONG, AddRef)(void);
-   STDMETHOD_(ULONG, Release)(void);
+   STDMETHOD(QueryInterface)(REFIID riid, void FAR *FAR *ppvObj) override;
+   STDMETHOD_(ULONG, AddRef)(void) override;
+   STDMETHOD_(ULONG, Release)(void) override;
 
    // IEnumFORMATETC methods
-   STDMETHOD(Next)(ULONG celt, LPFORMATETC rgelt, ULONG FAR *pceltFetched);
-   STDMETHOD(Skip)(ULONG celt);
-   STDMETHOD(Reset)(void);
-   STDMETHOD(Clone)(LPENUMFORMATETC FAR *newEnum);
+   STDMETHOD(Next)(ULONG celt, LPFORMATETC rgelt, ULONG FAR *pceltFetched) override;
+   STDMETHOD(Skip)(ULONG celt) override;
+   STDMETHOD(Reset)(void) override;
+   STDMETHOD(Clone)(LPENUMFORMATETC FAR *newEnum) override;
 
  private:
    bool copyFormatEtc(LPFORMATETC dest, const FORMATETC *src) const;

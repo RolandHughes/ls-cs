@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -115,7 +115,7 @@ QSqlIndex QSqlDriver::primaryIndex(const QString &) const
    return QSqlIndex();
 }
 
-QSqlRecord QSqlDriver::record(const QString & /* tableName */) const
+QSqlRecord QSqlDriver::record(const QString &) const
 {
    return QSqlRecord();
 }

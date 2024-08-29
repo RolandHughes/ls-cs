@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2017-2023 Barbara Geller
-* Copyright (c) 2017-2023 Ansel Sermersheim
+* Copyright (c) 2017-2024 Barbara Geller
+* Copyright (c) 2017-2024 Ansel Sermersheim
 *
 * Copyright (c) 1998-2009 John Maddock
 *
@@ -37,8 +37,8 @@ namespace cs_regex_detail_ns {
 template <class BidiIterator, class Allocator, class traits>
 void perl_matcher<BidiIterator, Allocator, traits>::construct_init(const basic_regex<char_type, traits> &e, match_flag_type f)
 {
-   typedef typename regex_iterator_traits<BidiIterator>::iterator_category category;
-   typedef typename basic_regex<char_type, traits>::flag_type expression_flag_type;
+   using category             = typename regex_iterator_traits<BidiIterator>::iterator_category;
+   using expression_flag_type = typename basic_regex<char_type, traits>::flag_type;
 
    if (e.empty()) {
       // precondition failure: e is not a valid regex.
@@ -97,8 +97,8 @@ void perl_matcher<BidiIterator, Allocator, traits>::estimate_max_state_count(std
    // but these take unreasonably amounts of time to bale out in pathological cases.
 
    // Calculate NS^2 first
+   static constexpr const std::ptrdiff_t k = 100000;
 
-   static const std::ptrdiff_t k = 100000;
    std::ptrdiff_t dist = std::distance(base, last);
 
   if (dist == 0) {
@@ -596,7 +596,7 @@ bool perl_matcher<BidiIterator, Allocator, traits>::match_backref()
 template <class BidiIterator, class Allocator, class traits>
 bool perl_matcher<BidiIterator, Allocator, traits>::match_long_set()
 {
-   typedef typename traits::char_class_type char_class_type;
+   using char_class_type = typename traits::char_class_type;
 
    // let the traits class do the work:
    if (position == last) {

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -206,19 +206,23 @@ class QWindowsOleDropSource : public IDropSource
    void createCursors();
 
    // IUnknown methods
-   STDMETHOD(QueryInterface)(REFIID riid, void **ppvObj);
-   STDMETHOD_(ULONG, AddRef)(void);
-   STDMETHOD_(ULONG, Release)(void);
+   STDMETHOD(QueryInterface)(REFIID riid, void **ppvObj) override;
+   STDMETHOD_(ULONG, AddRef)(void) override;
+   STDMETHOD_(ULONG, Release)(void) override;
 
    // IDropSource methods
-   STDMETHOD(QueryContinueDrag)(BOOL fEscapePressed, DWORD grfKeyState);
-   STDMETHOD(GiveFeedback)(DWORD dwEffect);
+   STDMETHOD(QueryContinueDrag)(BOOL fEscapePressed, DWORD grfKeyState) override;
+   STDMETHOD(GiveFeedback)(DWORD dwEffect) override;
 
  private:
    struct CursorEntry {
-      CursorEntry() : cacheKey(0) {}
-      CursorEntry(const QPixmap &p, qint64 cK, const CursorHandlePtr &c, const QPoint &h) :
-         pixmap(p), cacheKey(cK), cursor(c), hotSpot(h) {}
+      CursorEntry()
+         : cacheKey(0)
+      { }
+
+      CursorEntry(const QPixmap &p, qint64 cK, const CursorHandlePtr &c, const QPoint &h)
+         : pixmap(p), cacheKey(cK), cursor(c), hotSpot(h)
+      { }
 
       QPixmap pixmap;
       qint64 cacheKey; // Cache key of cursor
@@ -234,8 +238,6 @@ class QWindowsOleDropSource : public IDropSource
    QWindowsDragCursorWindow *m_touchDragWindow;
 
    ULONG m_refs;
-
-   friend QDebug operator<<(QDebug, const QWindowsOleDropSource::CursorEntry &);
 };
 
 QWindowsOleDropSource::QWindowsOleDropSource(QWindowsDrag *drag)
@@ -248,18 +250,6 @@ QWindowsOleDropSource::~QWindowsOleDropSource()
 {
    m_cursors.clear();
    delete m_touchDragWindow;
-}
-
-QDebug operator<<(QDebug d, const QWindowsOleDropSource::CursorEntry &e)
-{
-   (void) e;
-
-#if defined(CS_SHOW_DEBUG)
-   d << "QWindowsOleDropSource: CursorEntry = " << e.pixmap.size() << '#' << e.cacheKey
-     << "HCURSOR =" << e.cursor->handle() << "Hotspot =" << e.hotSpot;
-#endif
-
-   return d;
 }
 
 void QWindowsOleDropSource::createCursors()
@@ -318,7 +308,7 @@ void QWindowsOleDropSource::createCursors()
       }
 
       if (cursorPixmap.isNull()) {
-         qWarning("%s: Unable to obtain drag cursor for %d.", __FUNCTION__, action);
+         qWarning("QWindowsOleDropSource::createCursors() Unable to obtain drag cursor for %d", action);
          continue;
       }
 
@@ -353,11 +343,6 @@ void QWindowsOleDropSource::createCursors()
          }
       }
    }
-
-#if defined(CS_SHOW_DEBUG)
-   qDebug() << "QWindowsOleDropSource::createCursors(): Pixmap =" << pixmap.size() << m_cursors.size() << "\n  "
-            << "Cursors =" << m_cursors;
-#endif
 }
 
 //---------------------------------------------------------------------
@@ -371,7 +356,9 @@ STDMETHODIMP QWindowsOleDropSource::QueryInterface(REFIID iid, void FAR *FAR *pp
       ++m_refs;
       return NOERROR;
    }
+
    *ppv = nullptr;
+
    return ResultFromScode(E_NOINTERFACE);
 }
 
@@ -428,22 +415,8 @@ QT_ENSURE_STACK_ALIGNED_FOR_SSE STDMETHODIMP QWindowsOleDropSource::QueryContinu
 
    } while (false);
 
-   if (QWindowsContext::verbose > 1 || hr != S_OK) {
-
-#if defined(CS_SHOW_DEBUG)
-      qDebug() << "QWindowsOleDropSource::QueryContinueDrag fEscapePressed =" << fEscapePressed
-               << "GrfKeyState =" << grfKeyState << "Buttons =" << m_currentButtons
-               << "returns 0x" << hex << int(hr) << dec;
-#endif
-
-   }
-
    return hr;
 }
-
-/*!
-    \brief Give feedback: Change cursor accoding to action.
-*/
 
 QT_ENSURE_STACK_ALIGNED_FOR_SSE STDMETHODIMP QWindowsOleDropSource::GiveFeedback(DWORD dwEffect)
 {
@@ -716,7 +689,7 @@ Qt::DropAction QWindowsDrag::drag(QDrag *drag)
       // Force it to be a copy if an unsupported operation occurred.
       // This indicates a bug in the drop target.
       if (resultEffect != DROPEFFECT_NONE && !(resultEffect & allowedEffects)) {
-         qWarning("%s: Forcing Qt::CopyAction", __FUNCTION__);
+         qWarning("QWindowsDrag::drag() Forcing Qt::CopyAction");
          dragResult = Qt::CopyAction;
       }
    }

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -30,8 +30,6 @@
 #include <qmetaenum.h>
 
 #include <qopenglcontext_p.h>
-
-// #define QT_GL_SHARED_SHADER_DEBUG
 
 class QGLEngineSharedShadersResource : public QOpenGLSharedResource
 {
@@ -267,23 +265,24 @@ QGLEngineSharedShaders::QGLEngineSharedShaders(const QGLContext *context)
    }
 
    blitShaderProg->link();
+
    if (blitShaderProg->isLinked()) {
-      if (!inCache) {
+      if (! inCache) {
          blitShaderCache.store(blitShaderProg, context);
       }
    } else {
         qCritical("Errors linking blit shader: %s", csPrintable(blitShaderProg->log()));
    }
 
-#ifdef QT_GL_SHARED_SHADER_DEBUG
-   qDebug(" -> QGLEngineSharedShaders() %p for thread %p.", this, QThread::currentThread());
+#if defined(CS_SHOW_DEBUG_OPENGL)
+   qDebug("QGLEngineSharedShaders() %p for thread %p", this, QThread::currentThread());
 #endif
 }
 
 QGLEngineSharedShaders::~QGLEngineSharedShaders()
 {
-#ifdef QT_GL_SHARED_SHADER_DEBUG
-   qDebug(" -> ~QGLEngineSharedShaders() %p for thread %p.", this, QThread::currentThread());
+#if defined(CS_SHOW_DEBUG_OPENGL)
+   qDebug("~QGLEngineSharedShaders() %p for thread %p", this, QThread::currentThread());
 #endif
 
    qDeleteAll(shaders);
@@ -303,7 +302,7 @@ QGLEngineSharedShaders::~QGLEngineSharedShaders()
    }
 }
 
-#if defined (QT_DEBUG)
+#if defined(CS_SHOW_DEBUG_OPENGL)
 QString QGLEngineSharedShaders::snippetNameStr(SnippetName name)
 {
    QMetaEnum m = staticMetaObject().enumerator(staticMetaObject().indexOfEnumerator("SnippetName"));
@@ -363,7 +362,7 @@ QGLEngineShaderProg *QGLEngineSharedShaders::findProgramInCache(const QGLEngineS
          QScopedPointer<QGLShader> fragShader(new QGLShader(QGLShader::Fragment));
          QString description;
 
-#if defined(QT_DEBUG)
+#if defined(CS_SHOW_DEBUG_OPENGL)
          // Name the shader for easier debugging
          description.append("Fragment shader: main=");
          description.append(snippetNameStr(prog.mainFragShader));
@@ -390,7 +389,7 @@ QGLEngineShaderProg *QGLEngineSharedShaders::findProgramInCache(const QGLEngineS
 
          QScopedPointer<QGLShader> vertexShader(new QGLShader(QGLShader::Vertex));
 
-#if defined(QT_DEBUG)
+#if defined(CS_SHOW_DEBUG_OPENGL)
          // Name the shader for easier debugging
          description.clear();
          description.append("Vertex shader: main=");
@@ -439,7 +438,7 @@ QGLEngineShaderProg *QGLEngineSharedShaders::findProgramInCache(const QGLEngineS
       } else {
          QString error("Shader program failed to link,");
 
-#if defined(QT_DEBUG)
+#if defined(CS_SHOW_DEBUG_OPENGL)
          error += "\n  Shaders Used:\n";
 
          for (int i = 0; i < newProg->program->shaders().count(); ++i) {

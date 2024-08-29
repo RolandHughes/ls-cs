@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -32,7 +32,10 @@
 class Q_GUI_EXPORT QIconEngine
 {
  public:
-   enum IconEngineHook { AvailableSizesHook = 1, IconNameHook };
+   enum IconEngineHook {
+      AvailableSizesHook = 1,
+      IconNameHook
+   };
 
    QIconEngine();
 

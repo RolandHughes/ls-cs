@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -40,15 +40,16 @@
 class QIconLoader;
 
 struct QIconDirInfo {
-   enum Type { Fixed, Scalable, Threshold };
+   enum Type {
+      Fixed,
+      Scalable,
+      Threshold
+   };
 
-   QIconDirInfo(const QString &_path = QString()) :
-      path(_path),
-      size(0),
-      maxSize(0),
-      minSize(0),
-      threshold(0),
-      type(Threshold) {}
+   QIconDirInfo(const QString &_path = QString())
+      : path(_path), size(0), maxSize(0), minSize(0), threshold(0), type(Threshold)
+   { }
+
    QString path;
    short size;
    short maxSize;

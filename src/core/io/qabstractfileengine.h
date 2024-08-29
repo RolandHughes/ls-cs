@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -122,13 +122,13 @@ class Q_CORE_EXPORT QAbstractFileEngine
    virtual QDateTime fileTime(FileTime time) const;
    virtual void setFileName(const QString &file);
    virtual int handle() const;
+
    bool atEnd() const;
    uchar *map(qint64 offset, qint64 size, QFile::MemoryMapFlags flags);
    bool unmap(uchar *address);
 
-   typedef QAbstractFileEngineIterator Iterator;
-   virtual Iterator *beginEntryList(QDir::Filters filters, const QStringList &filterNames);
-   virtual Iterator *endEntryList();
+   virtual QAbstractFileEngineIterator *beginEntryList(QDir::Filters filters, const QStringList &filterNames);
+   virtual QAbstractFileEngineIterator *endEntryList();
 
    virtual qint64 read(char *data, qint64 maxlen);
    virtual qint64 readLine(char *data, qint64 maxlen);
@@ -145,10 +145,10 @@ class Q_CORE_EXPORT QAbstractFileEngine
    };
 
    class ExtensionOption
-   {};
+   { };
 
    class ExtensionReturn
-   {};
+   { };
 
    class MapExtensionOption : public ExtensionOption
    {

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -29,8 +29,6 @@
 #include <qfileinfo.h>
 #include <qdir.h>
 #include <qcoreapplication.h>
-
-//#define QNETWORKACCESSCACHEBACKEND_DEBUG
 
 QNetworkAccessCacheBackend::QNetworkAccessCacheBackend()
    : QNetworkAccessBackend()
@@ -90,11 +88,12 @@ bool QNetworkAccessCacheBackend::sendCacheContents()
       redirectionRequested(redirectionTarget.toUrl());
    }
 
-   // signal we're open
+   // signal we are open
    metaDataChanged();
 
    if (operation() == QNetworkAccessManager::GetOperation) {
       QIODevice *contents = nc->data(url());
+
       if (! contents) {
          return false;
       }
@@ -103,9 +102,10 @@ bool QNetworkAccessCacheBackend::sendCacheContents()
       writeDownstreamData(contents);
    }
 
-#if defined(QNETWORKACCESSCACHEBACKEND_DEBUG)
-   qDebug() << "Successfully sent cache:" << url();
+#if defined(CS_SHOW_DEBUG_NETWORK)
+   qDebug() << "Cache successfully sent:" << url();
 #endif
+
    return true;
 }
 
@@ -127,5 +127,3 @@ void QNetworkAccessCacheBackend::downstreamReadyWrite()
 {
    Q_ASSERT_X(false, Q_FUNC_INFO, "This method should not be called");
 }
-
-

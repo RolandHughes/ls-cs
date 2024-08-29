@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,8 +24,8 @@
 #ifndef QDATASTREAM_H
 #define QDATASTREAM_H
 
-#include <qglobal.h>
 #include <qcontainerfwd.h>
+#include <qglobal.h>
 #include <qiodevice.h>
 #include <qregularexpression.h>
 #include <qscopedpointer.h>
@@ -50,11 +50,9 @@ class Q_CORE_EXPORT QDataStream
 {
  public:
 
-#if CS_VERSION >= 0x010900
+#if CS_VERSION >= 0x011000
 #error (CopperSpice compile issue in qdatastream.h) Verify version number is listed in the following enum
 #endif
-
-   // emerald, may want to consider adding a setVersion(QDataStream::CS_1_7) to a stream written to disk
 
    enum Version {
       CS_1_0 = 128,
@@ -66,8 +64,9 @@ class Q_CORE_EXPORT QDataStream
       CS_1_6 = CS_1_5,
       CS_1_7 = CS_1_6,
       CS_1_8 = CS_1_7,
+      CS_1_9 = CS_1_8,
 
-      CS_DefaultStreamVersion = CS_1_8
+      CS_DefaultStreamVersion = CS_1_9
    };
 
    enum ByteOrder {
@@ -157,7 +156,7 @@ class Q_CORE_EXPORT QDataStream
  private:
    QScopedPointer<QDataStreamPrivate> d;
 
-   QIODevice *dev;
+   QIODevice *m_device;
    bool owndev;
    bool noswap;
    ByteOrder byteorder;
@@ -167,7 +166,7 @@ class Q_CORE_EXPORT QDataStream
 
 inline QIODevice *QDataStream::device() const
 {
-   return dev;
+   return m_device;
 }
 
 inline QDataStream::ByteOrder QDataStream::byteOrder() const
@@ -335,6 +334,7 @@ template <typename T>
 QDataStream &operator<<(QDataStream &stream, const QVector<T> &vector)
 {
    stream << quint32(vector.size());
+
    for (typename QVector<T>::const_iterator it = vector.begin(); it != vector.end(); ++it) {
       stream << *it;
    }

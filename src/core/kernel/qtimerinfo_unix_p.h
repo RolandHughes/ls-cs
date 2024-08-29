@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -28,59 +28,57 @@
 
 #include <sys/time.h>
 
-// #define QTIMERINFO_UNIX_DEBUG
-
 // internal timer info
 struct QTimerInfo_Unix {
-    int id;                           // timer identifier
-    int interval;                     // timer interval in milliseconds
-    Qt::TimerType timerType;          // timer type
-    timespec timeout;                 // when to actually fire
-    QObject *obj;                     // object to receive event
-    QTimerInfo_Unix **activateRef;    // ref from activateTimers
+   int id;                           // timer identifier
+   int interval;                     // timer interval in milliseconds
+   Qt::TimerType timerType;          // timer type
+   timespec timeout;                 // when to actually fire
+   QObject *obj;                     // object to receive event
+   QTimerInfo_Unix **activateRef;    // ref from activateTimers
 
-#ifdef QTIMERINFO_UNIX_DEBUG
-    timeval expected;                 // when timer is expected to fire
-    float cumulativeError;
-    uint count;
+#if defined(CS_SHOW_DEBUG_CORE)
+   timeval expected;                 // when timer is expected to fire
+   float cumulativeError;
+   uint count;
 #endif
 };
 
 class Q_CORE_EXPORT QTimerInfoList : public QList<QTimerInfo_Unix *>
 {
 #if (_POSIX_MONOTONIC_CLOCK-0 <= 0) && ! defined(Q_OS_DARWIN)
-    timespec previousTime;
-    clock_t previousTicks;
-    int ticksPerSecond;
-    int msPerTick;
+   timespec previousTime;
+   clock_t previousTicks;
+   int ticksPerSecond;
+   int msPerTick;
 
-    bool timeChanged(timespec *delta);
-    void timerRepair(const timespec &);
+   bool timeChanged(timespec *delta);
+   void timerRepair(const timespec &);
 #endif
 
-    // state variables used by activateTimers()
-    QTimerInfo_Unix *firstTimerInfo;
+   // state variables used by activateTimers()
+   QTimerInfo_Unix *firstTimerInfo;
 
-public:
-    QTimerInfoList();
+ public:
+   QTimerInfoList();
 
-    timespec currentTime;
-    timespec updateCurrentTime();
+   timespec currentTime;
+   timespec updateCurrentTime();
 
-    // must call updateCurrentTime() first!
-    void repairTimersIfNeeded();
+   // must call updateCurrentTime() first!
+   void repairTimersIfNeeded();
 
-    bool timerWait(timespec &);
-    void timerInsert(QTimerInfo_Unix *);
+   bool timerWait(timespec &);
+   void timerInsert(QTimerInfo_Unix *);
 
-    int timerRemainingTime(int timerId);
+   int timerRemainingTime(int timerId);
 
-    void registerTimer(int timerId, int interval, Qt::TimerType timerType, QObject *object);
-    bool unregisterTimer(int timerId);
-    bool unregisterTimers(QObject *object);
-    QList<QTimerInfo> registeredTimers(QObject *object) const;
+   void registerTimer(int timerId, int interval, Qt::TimerType timerType, QObject *object);
+   bool unregisterTimer(int timerId);
+   bool unregisterTimers(QObject *object);
+   QList<QTimerInfo> registeredTimers(QObject *object) const;
 
-    int activateTimers();
+   int activateTimers();
 };
 
 #endif

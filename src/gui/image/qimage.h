@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -49,7 +49,10 @@ class Q_GUI_EXPORT QImage : public QPaintDevice
 {
 
  public:
-   enum InvertMode { InvertRgb, InvertRgba };
+   enum InvertMode {
+      InvertRgb,
+      InvertRgba
+   };
 
    enum Format {
       Format_Invalid,
@@ -101,8 +104,9 @@ class Q_GUI_EXPORT QImage : public QPaintDevice
 
    QImage(const QImage &other);
 
-   inline QImage(QImage &&other)
-      : QPaintDevice(), d(nullptr) {
+   QImage(QImage &&other)
+      : QPaintDevice(), d(nullptr)
+   {
       qSwap(d, other.d);
    }
 

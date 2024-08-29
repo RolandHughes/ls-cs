@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -31,10 +31,10 @@
 #ifndef QT_NO_PROCESS
 
 #if ! defined(Q_OS_WIN)
-   using Q_PID = qint64;
+using Q_PID = qint64;
 
 #else
-   using Q_PID = struct _PROCESS_INFORMATION *;
+using Q_PID = struct _PROCESS_INFORMATION *;
 
 #endif
 
@@ -77,7 +77,7 @@ class Q_CORE_EXPORT QProcess : public QIODevice
 
    enum InputChannelMode {
       ManagedInputChannel,
-       ForwardedInputChannel
+      ForwardedInputChannel
    };
 
    enum ExitStatus {
@@ -99,7 +99,7 @@ class Q_CORE_EXPORT QProcess : public QIODevice
    QString program() const;
    void setProgram(const QString &command);
    QStringList arguments() const;
-   void setArguments(const QStringList & arguments);
+   void setArguments(const QStringList &arguments);
 
    ProcessChannelMode readChannelMode() const;
    void setReadChannelMode(ProcessChannelMode mode);
@@ -164,7 +164,7 @@ class Q_CORE_EXPORT QProcess : public QIODevice
    static int execute(const QString &command);
 
    static bool startDetached(const QString &command, const QStringList &arguments,
-                  const QString &workingDirectory = QString(), qint64 *pid = nullptr);
+         const QString &workingDirectory = QString(), qint64 *pid = nullptr);
 
    static bool startDetached(const QString &command);
 
@@ -242,7 +242,7 @@ class Q_CORE_EXPORT QProcessEnvironment
    QProcessEnvironment &operator=(const QProcessEnvironment &other);
 
    bool operator==(const QProcessEnvironment &other) const;
-   inline bool operator!=(const QProcessEnvironment &other) const {
+   bool operator!=(const QProcessEnvironment &other) const {
       return !(*this == other);
    }
 

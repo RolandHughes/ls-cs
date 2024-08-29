@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -154,7 +154,6 @@ public:
     void setResolution(int resolution);
     int resolution() const;
 
-    // reimplementations QPaintEngine
     bool begin(QPaintDevice *pdev) override;
     bool end() override;
 
@@ -177,7 +176,6 @@ public:
 
     int metric(QPaintDevice::PaintDeviceMetric metricType) const;
     Type type() const override;
-    // end reimplementations QPaintEngine
 
     // Printer stuff
     bool newPage();

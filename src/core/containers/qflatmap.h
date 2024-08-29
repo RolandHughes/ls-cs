@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,14 +24,14 @@
 #ifndef QFLATMAP_H
 #define QFLATMAP_H
 
-#include <initializer_list>
-#include <vector>
-
 #include <qcontainerfwd.h>
 #include <qlist.h>
 #include <qmap.h>
 #include <qmapfunc.h>
 #include <qpair.h>
+
+#include <initializer_list>
+#include <vector>
 
 template <typename Key, typename Val, typename C>
 class QFlatMapIterator;
@@ -237,29 +237,29 @@ class QFlatMap
 
    class CompareFilter
    {
-      public:
-         using Element = std::pair<Key, Val>;
+    public:
+      using Element = std::pair<Key, Val>;
 
-         CompareFilter(const C &compare) : m_compare(compare) {}
+      CompareFilter(const C &compare) : m_compare(compare) {}
 
-         bool operator()(const Element &x, const Key &y) const {
-            return m_compare(x.first, y);
-         }
+      bool operator()(const Element &x, const Key &y) const {
+         return m_compare(x.first, y);
+      }
 
-         bool operator()(const Key &x, const Element &y) const {
-            return m_compare(x, y.first);
-         }
+      bool operator()(const Key &x, const Element &y) const {
+         return m_compare(x, y.first);
+      }
 
-         bool operator()(const Key &x, const Key &y) const {
-            return m_compare(x, y);
-         }
+      bool operator()(const Key &x, const Key &y) const {
+         return m_compare(x, y);
+      }
 
-         bool operator()(const Element &x, const Element &y) const {
-            return m_compare(x.first, y.first);
-         }
+      bool operator()(const Element &x, const Element &y) const {
+         return m_compare(x.first, y.first);
+      }
 
-      private:
-         const C &m_compare;
+    private:
+      const C &m_compare;
    };
 
    using difference_type = typename std::vector<std::pair<Key, Val>>::difference_type;
@@ -439,7 +439,7 @@ class QFlatMap
    QList<Key> keys(const Val &value) const;
 
    Val &last()  {
-      return (end()- 1).value();
+      return (end() - 1).value();
    }
 
    const Val &last() const  {
@@ -505,7 +505,7 @@ class QFlatMap
 
       std::vector<std::pair<Key, Val>> tmp;
       std::set_union(m_data.begin(), m_data.end(), other.m_data.begin(), other.m_data.end(),
-                  std::back_inserter(tmp), CompareFilter{m_compare} );
+            std::back_inserter(tmp), CompareFilter{m_compare} );
 
       m_data = std::move(tmp);
 
@@ -639,6 +639,7 @@ QList<Key> QFlatMap<Key, Val, C>::keys(const Val &value) const
 
       ++iter;
    }
+
    return retval;
 }
 
@@ -712,7 +713,6 @@ Val &QFlatMap<Key, Val, C>::operator[](const Key &key)
 
    return iter->second;
 }
-
 
 // java style iterators
 
@@ -790,6 +790,7 @@ class QFlatMapIterator
             return true;
          }
       }
+
       return false;
    }
 
@@ -809,7 +810,7 @@ class QFlatMapIterator
    const_iterator i;
    const_iterator n;
 
-   inline bool item_exists() const {
+   bool item_exists() const {
       return n != c->constEnd();
    }
 };

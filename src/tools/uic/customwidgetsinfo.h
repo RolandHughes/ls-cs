@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,10 +24,9 @@
 #ifndef CUSTOMWIDGETSINFO_H
 #define CUSTOMWIDGETSINFO_H
 
-#include <treewalker.h>
-
-#include <qstringlist.h>
 #include <qmap.h>
+#include <qstringlist.h>
+#include <treewalker.h>
 
 class Driver;
 class DomScript;

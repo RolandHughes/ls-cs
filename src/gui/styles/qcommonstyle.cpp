@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -22,44 +22,44 @@
 ***********************************************************************/
 
 #include <qcommonstyle.h>
-#include <qcommonstyle_p.h>
 
-#include <qfile.h>
 #include <qapplication.h>
-#include <qplatform_theme.h>
 #include <qbitmap.h>
 #include <qcache.h>
+#include <qdebug.h>
+#include <qdialogbuttonbox.h>
+#include <qdir.h>
 #include <qdockwidget.h>
 #include <qdrawutil.h>
-#include <qdialogbuttonbox.h>
+#include <qfile.h>
+#include <qfileinfo.h>
 #include <qformlayout.h>
 #include <qgroupbox.h>
 #include <qmath.h>
 #include <qmenu.h>
-#include <qpainter.h>
 #include <qpaintengine.h>
+#include <qpainter.h>
 #include <qpainterpath.h>
+#include <qpixmapcache.h>
+#include <qplatform_theme.h>
+#include <qrubberband.h>
+#include <qsettings.h>
 #include <qslider.h>
 #include <qstyleoption.h>
 #include <qtabbar.h>
 #include <qtabwidget.h>
+#include <qtextformat.h>
 #include <qtoolbar.h>
 #include <qtoolbutton.h>
-#include <qrubberband.h>
 #include <qtreeview.h>
-#include <qdebug.h>
-#include <qtextformat.h>
 #include <qwizard.h>
-#include <qfileinfo.h>
-#include <qdir.h>
-#include <qsettings.h>
-#include <qpixmapcache.h>
 
+#include <qcommonstyle_p.h>
 #include <qcommonstylepixmaps_p.h>
 #include <qguiapplication_p.h>
 #include <qmath_p.h>
-#include <qstylehelper_p.h>
 #include <qstyleanimation_p.h>
+#include <qstylehelper_p.h>
 
 #ifndef QT_NO_ITEMVIEWS
 #   include <qtextengine_p.h>
@@ -241,7 +241,7 @@ void QCommonStyle::drawPrimitive(PrimitiveElement pe, const QStyleOption *opt, Q
 #endif
 
       case PE_IndicatorBranch: {
-         static const int decoration_size = 9;
+         static constexpr const int decoration_size = 9;
 
          int mid_h = opt->rect.x() + opt->rect.width() / 2;
          int mid_v = opt->rect.y() + opt->rect.height() / 2;
@@ -982,21 +982,15 @@ void QCommonStylePrivate::viewItemDrawText(QPainter *p, const QStyleOptionViewIt
    }
 }
 
-/*! \internal
-    compute the position for the different component of an item (pixmap, text, checkbox)
-
-    Set sizehint to false to layout the elements inside opt->rect. Set sizehint to true to ignore
-    opt->rect and return rectangles in infinite space
-
-    Code duplicated in QItemDelegate::doLayout
-*/
 void QCommonStylePrivate::viewItemLayout(const QStyleOptionViewItem *opt,  QRect *checkRect,
-   QRect *pixmapRect, QRect *textRect, bool sizehint) const
+      QRect *pixmapRect, QRect *textRect, bool sizehint) const
 {
    Q_ASSERT(checkRect && pixmapRect && textRect);
+
    *checkRect  = QRect(QPoint(0, 0), viewItemSize(opt, Qt::CheckStateRole));
    *pixmapRect = QRect(QPoint(0, 0), viewItemSize(opt, Qt::DecorationRole));
    *textRect   = QRect(QPoint(0, 0), viewItemSize(opt, Qt::DisplayRole));
+
    const QWidget *widget  = opt->widget;
    const bool hasCheck    = checkRect->isValid();
    const bool hasPixmap   = pixmapRect->isValid();
@@ -1142,14 +1136,9 @@ void QCommonStylePrivate::viewItemLayout(const QStyleOptionViewItem *opt,  QRect
 }
 #endif
 
-
 #ifndef QT_NO_TABBAR
-/*! \internal
-    Compute the textRect and the pixmapRect from the opt rect
-
-    Uses the same computation than in QTabBar::tabSizeHint
- */
-void QCommonStylePrivate::tabLayout(const QStyleOptionTab *opt, const QWidget *widget, QRect *textRect, QRect *iconRect) const
+void QCommonStylePrivate::tabLayout(const QStyleOptionTab *opt, const QWidget *widget,
+      QRect *textRect, QRect *iconRect) const
 {
    Q_ASSERT(textRect);
    Q_ASSERT(iconRect);
@@ -1774,6 +1763,7 @@ void QCommonStyle::drawControl(ControlElement element, const QStyleOption *opt,
          }
          break;
 #endif // QT_NO_TOOLBUTTON
+
 #ifndef QT_NO_TOOLBOX
       case CE_ToolBoxTab:
          if (const QStyleOptionToolBox *tb = qstyleoption_cast<const QStyleOptionToolBox *>(opt)) {
@@ -1786,45 +1776,46 @@ void QCommonStyle::drawControl(ControlElement element, const QStyleOption *opt,
          if (const QStyleOptionToolBox *tb = qstyleoption_cast<const QStyleOptionToolBox *>(opt)) {
             p->setPen(tb->palette.mid().color().darker(150));
 
-            int d = 20 + tb->rect.height() - 3;
+            int depth = 20 + tb->rect.height() - 3;
 
             if (tb->direction != Qt::RightToLeft) {
                const QPoint points[] = {
                   QPoint(-1, tb->rect.height() + 1),
                   QPoint(-1, 1),
-                  QPoint(tb->rect.width() - d, 1),
+                  QPoint(tb->rect.width() - depth, 1),
                   QPoint(tb->rect.width() - 20, tb->rect.height() - 2),
                   QPoint(tb->rect.width() - 1, tb->rect.height() - 2),
                   QPoint(tb->rect.width() - 1, tb->rect.height() + 1),
                   QPoint(-1, tb->rect.height() + 1),
                };
+
                p->drawPolygon(points, sizeof points / sizeof * points);
+
             } else {
                const QPoint points[] = {
                   QPoint(tb->rect.width(), tb->rect.height() + 1),
                   QPoint(tb->rect.width(), 1),
-                  QPoint(d - 1, 1),
+                  QPoint(depth - 1, 1),
                   QPoint(20 - 1, tb->rect.height() - 2),
                   QPoint(0, tb->rect.height() - 2),
                   QPoint(0, tb->rect.height() + 1),
                   QPoint(tb->rect.width(), tb->rect.height() + 1),
                };
+
                p->drawPolygon(points, sizeof points / sizeof * points);
             }
-
 
             p->setPen(tb->palette.light().color());
 
             if (tb->direction != Qt::RightToLeft) {
-               p->drawLine(0, 2, tb->rect.width() - d, 2);
-               p->drawLine(tb->rect.width() - d - 1, 2, tb->rect.width() - 21, tb->rect.height() - 1);
-               p->drawLine(tb->rect.width() - 20, tb->rect.height() - 1,
-                  tb->rect.width(), tb->rect.height() - 1);
+               p->drawLine(0, 2, tb->rect.width() - depth, 2);
+               p->drawLine(tb->rect.width() - depth - 1, 2, tb->rect.width() - 21, tb->rect.height() - 1);
+               p->drawLine(tb->rect.width() - 20, tb->rect.height() - 1, tb->rect.width(), tb->rect.height() - 1);
+
             } else {
-               p->drawLine(tb->rect.width() - 1, 2, d - 1, 2);
-               p->drawLine(d, 2, 20, tb->rect.height() - 1);
-               p->drawLine(19, tb->rect.height() - 1,
-                  -1, tb->rect.height() - 1);
+               p->drawLine(tb->rect.width() - 1, 2, depth - 1, 2);
+               p->drawLine(depth, 2, 20, tb->rect.height() - 1);
+               p->drawLine(19, tb->rect.height() - 1, -1, tb->rect.height() - 1);
             }
             p->setBrush(Qt::NoBrush);
          }
@@ -1838,6 +1829,7 @@ void QCommonStyle::drawControl(ControlElement element, const QStyleOption *opt,
             proxy()->drawControl(CE_TabBarTabLabel, tab, p, widget);
          }
          break;
+
       case CE_TabBarTabShape:
          if (const QStyleOptionTab *tab = qstyleoption_cast<const QStyleOptionTab *>(opt)) {
             p->save();
@@ -1892,6 +1884,7 @@ void QCommonStyle::drawControl(ControlElement element, const QStyleOption *opt,
             int y;
             int x;
             QPolygon a(10);
+
             switch (tab->shape) {
                case QTabBar::TriangularNorth:
                case QTabBar::TriangularSouth: {
@@ -2006,6 +1999,7 @@ void QCommonStyle::drawControl(ControlElement element, const QStyleOption *opt,
             }
          }
          break;
+
       case CE_TabBarTabLabel:
          if (const QStyleOptionTab *tab = qstyleoption_cast<const QStyleOptionTab *>(opt)) {
 
@@ -2106,6 +2100,7 @@ void QCommonStyle::drawControl(ControlElement element, const QStyleOption *opt,
                sx -= s;
                sy += s;
             }
+
          } else if (corner == Qt::BottomRightCorner) {
             for (int i = 0; i < 4; ++i) {
                p->setPen(QPen(opt->palette.light().color(), 1));
@@ -2117,6 +2112,7 @@ void QCommonStyle::drawControl(ControlElement element, const QStyleOption *opt,
                sx += s;
                sy += s;
             }
+
          } else if (corner == Qt::TopRightCorner) {
             sy = y + sw;
             for (int i = 0; i < 4; ++i) {
@@ -2129,6 +2125,7 @@ void QCommonStyle::drawControl(ControlElement element, const QStyleOption *opt,
                sx += s;
                sy -= s;
             }
+
          } else if (corner == Qt::TopLeftCorner) {
             for (int i = 0; i < 4; ++i) {
                p->setPen(QPen(opt->palette.light().color(), 1));
@@ -2479,9 +2476,6 @@ void QCommonStyle::drawControl(ControlElement element, const QStyleOption *opt,
    }
 }
 
-/*!
-  \reimp
-*/
 QRect QCommonStyle::subElementRect(SubElement sr, const QStyleOption *opt,
    const QWidget *widget) const
 {
@@ -2502,6 +2496,7 @@ QRect QCommonStyle::subElementRect(SubElement sr, const QStyleOption *opt,
             r = visualRect(opt->direction, opt->rect, r);
          }
          break;
+
       case SE_PushButtonFocusRect:
          if (const QStyleOptionButton *btn = qstyleoption_cast<const QStyleOptionButton *>(opt)) {
             int dbw1 = 0, dbw2 = 0;
@@ -3309,13 +3304,11 @@ static StaticPolygonF<3> calcArrow(const QStyleOptionSlider *dial, qreal &a)
 
 #endif // QT_NO_DIAL
 
-/*!
-  \reimp
-*/
 void QCommonStyle::drawComplexControl(ComplexControl cc, const QStyleOptionComplex *opt,
    QPainter *p, const QWidget *widget) const
 {
    switch (cc) {
+
 #ifndef QT_NO_SLIDER
       case CC_Slider:
          if (const QStyleOptionSlider *slider = qstyleoption_cast<const QStyleOptionSlider *>(opt)) {
@@ -4014,13 +4007,11 @@ void QCommonStyle::drawComplexControl(ComplexControl cc, const QStyleOptionCompl
    }
 }
 
-/*!
-    \reimp
-*/
 QStyle::SubControl QCommonStyle::hitTestComplexControl(ComplexControl cc, const QStyleOptionComplex *opt,
    const QPoint &pt, const QWidget *widget) const
 {
    SubControl sc = SC_None;
+
    switch (cc) {
 #ifndef QT_NO_SLIDER
       case CC_Slider:
@@ -4036,7 +4027,7 @@ QStyle::SubControl QCommonStyle::hitTestComplexControl(ComplexControl cc, const 
             }
          }
          break;
-#endif // QT_NO_SLIDER
+#endif
 
 #ifndef QT_NO_SCROLLBAR
       case CC_ScrollBar:
@@ -4053,7 +4044,7 @@ QStyle::SubControl QCommonStyle::hitTestComplexControl(ComplexControl cc, const 
             }
          }
          break;
-#endif // QT_NO_SCROLLBAR
+#endif
 
 #ifndef QT_NO_TOOLBUTTON
       case CC_ToolButton:
@@ -4070,7 +4061,7 @@ QStyle::SubControl QCommonStyle::hitTestComplexControl(ComplexControl cc, const 
             }
          }
          break;
-#endif // QT_NO_TOOLBUTTON
+#endif
 
 #ifndef QT_NO_SPINBOX
       case CC_SpinBox:
@@ -4087,7 +4078,8 @@ QStyle::SubControl QCommonStyle::hitTestComplexControl(ComplexControl cc, const 
             }
          }
          break;
-#endif // QT_NO_SPINBOX
+#endif
+
       case CC_TitleBar:
          if (const QStyleOptionTitleBar *tb = qstyleoption_cast<const QStyleOptionTitleBar *>(opt)) {
             QRect r;
@@ -4158,9 +4150,6 @@ QStyle::SubControl QCommonStyle::hitTestComplexControl(ComplexControl cc, const 
    return sc;
 }
 
-/*!
-    \reimp
-*/
 QRect QCommonStyle::subControlRect(ComplexControl cc, const QStyleOptionComplex *opt,
    SubControl sc, const QWidget *widget) const
 {
@@ -4657,7 +4646,6 @@ QRect QCommonStyle::subControlRect(ComplexControl cc, const QStyleOptionComplex 
    return ret;
 }
 
-/*! \reimp */
 int QCommonStyle::pixelMetric(PixelMetric m, const QStyleOption *opt, const QWidget *widget) const
 {
    int ret;
@@ -5050,9 +5038,6 @@ int QCommonStyle::pixelMetric(PixelMetric m, const QStyleOption *opt, const QWid
    return ret;
 }
 
-/*!
-    \reimp
-*/
 QSize QCommonStyle::sizeFromContents(ContentsType ct, const QStyleOption *opt,
    const QSize &csz, const QWidget *widget) const
 {
@@ -5256,7 +5241,6 @@ QSize QCommonStyle::sizeFromContents(ContentsType ct, const QStyleOption *opt,
    return sz;
 }
 
-/*! \reimp */
 int QCommonStyle::styleHint(StyleHint sh, const QStyleOption *opt, const QWidget *widget,
    QStyleHintReturn *hret) const
 {
@@ -6576,9 +6560,8 @@ static inline uint qt_intensity(uint r, uint g, uint b)
    return (77 * r + 150 * g + 28 * b) / 255;
 }
 
-/*! \reimp */
 QPixmap QCommonStyle::generatedIconPixmap(QIcon::Mode iconMode, const QPixmap &pixmap,
-   const QStyleOption *opt) const
+      const QStyleOption *opt) const
 {
    switch (iconMode) {
       case QIcon::Disabled: {
@@ -6653,8 +6636,8 @@ QPixmap QCommonStyle::generatedIconPixmap(QIcon::Mode iconMode, const QPixmap &p
    return pixmap;
 }
 
-int QCommonStyle::layoutSpacing(QSizePolicy::ControlType /* control1 */, QSizePolicy::ControlType /* control2 */,
-   Qt::Orientation /* orientation */, const QStyleOption * /* option */, const QWidget * /* widget */) const
+int QCommonStyle::layoutSpacing(QSizePolicy::ControlType, QSizePolicy::ControlType,
+      Qt::Orientation, const QStyleOption *, const QWidget *) const
 {
    return -1;
 }

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -167,7 +167,7 @@ class QWindowsWindow : public QPlatformWindow
       return WId(m_data.hwnd);
    }
 
-   void *nativeHandle() {
+   void *nativeHandle() override {
       return &m_data.hwnd;
    }
 
@@ -323,12 +323,12 @@ class QWindowsWindow : public QPlatformWindow
    void *m_surface;
 };
 
-QDebug operator<<(QDebug d, const RECT &r);
-QDebug operator<<(QDebug d, const POINT &);
+QDebug operator<<(QDebug debug, const RECT &r);
+QDebug operator<<(QDebug debug, const POINT &);
 
-QDebug operator<<(QDebug d, const MINMAXINFO &i);
-QDebug operator<<(QDebug d, const NCCALCSIZE_PARAMS &p);
-QDebug operator<<(QDebug d, const WINDOWPLACEMENT &);
+QDebug operator<<(QDebug debug, const MINMAXINFO &i);
+QDebug operator<<(QDebug debug, const NCCALCSIZE_PARAMS &p);
+QDebug operator<<(QDebug debug, const WINDOWPLACEMENT &);
 
 // ---------- QWindowsGeometryHint inline functions.
 QPoint QWindowsGeometryHint::mapToGlobal(HWND hwnd, const QPoint &qp)

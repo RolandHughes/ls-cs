@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -39,7 +39,6 @@ class Q_CORE_EXPORT QThreadStorageData
    int id;
 };
 
-
 // pointer specialization
 template <typename T>
 inline T *&qThreadStorage_localData(QThreadStorageData &d, T **)
@@ -49,6 +48,7 @@ inline T *&qThreadStorage_localData(QThreadStorageData &d, T **)
    if (! v) {
       v = d.set(nullptr);
    }
+
    return *(reinterpret_cast<T **>(v));
 }
 
@@ -77,7 +77,8 @@ template <typename T>
 inline T &qThreadStorage_localData(QThreadStorageData &d, T *)
 {
    void **v = d.get();
-   if (!v) {
+
+   if (! v) {
       v = d.set(new T());
    }
 
@@ -109,31 +110,34 @@ class QThreadStorage
  private:
    QThreadStorageData d;
 
-   static inline void deleteData(void *x) {
+   static void deleteData(void *x) {
       qThreadStorage_deleteData(x, static_cast<T *>(nullptr));
    }
 
  public:
-   inline QThreadStorage() : d(deleteData) { }
+   QThreadStorage()
+      : d(deleteData)
+   { }
 
    QThreadStorage(const QThreadStorage &) = delete;
    QThreadStorage &operator=(const QThreadStorage &) = delete;
 
-   inline ~QThreadStorage() { }
+   ~QThreadStorage()
+   { }
 
-   inline bool hasLocalData() const {
+   bool hasLocalData() const {
       return d.get() != nullptr;
    }
 
-   inline T &localData() {
+   T &localData() {
       return qThreadStorage_localData(d, static_cast<T *>(nullptr));
    }
 
-   inline T localData() const {
+   T localData() const {
       return qThreadStorage_localData_const(d, static_cast<T *>(nullptr));
    }
 
-   inline void setLocalData(T data) {
+   void setLocalData(T data) {
       qThreadStorage_setLocalData(d, &data);
    }
 };

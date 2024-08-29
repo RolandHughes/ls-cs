@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -33,21 +33,22 @@ template <int N = 1>
 class QFragment
 {
  public:
+   static constexpr const int size_array_max = N;
+
    quint32 parent;
    quint32 left;
    quint32 right;
    quint32 color;
    quint32 size_left_array[N];
    quint32 size_array[N];
-   enum {size_array_max = N };
 };
 
 template <class Fragment>
 class QFragmentMapData
 {
-   enum Color { Red, Black };
-
  public:
+   static constexpr const int fragmentSize = sizeof(Fragment);
+
    QFragmentMapData();
    ~QFragmentMapData();
 
@@ -62,9 +63,6 @@ class QFragmentMapData
       quint32 node_count;
       quint32 allocated;
    };
-
-
-   enum {fragmentSize = sizeof(Fragment) };
 
    int length(uint field = 0) const;
 
@@ -183,6 +181,11 @@ class QFragmentMapData
    };
 
  private:
+   enum Color {
+      Red,
+      Black
+   };
+
    void rotateLeft(uint x);
    void rotateRight(uint x);
    void rebalance(uint x);
@@ -190,7 +193,6 @@ class QFragmentMapData
 
    uint createFragment();
    void freeFragment(uint f);
-
 };
 
 template <class Fragment>
@@ -556,13 +558,13 @@ uint QFragmentMapData<Fragment>::erase_single(uint z)
    }
    uint n = z;
    while (F(n).parent) {
-      uint p = F(n).parent;
-      if (F(p).left == n) {
+      uint p2 = F(n).parent;
+      if (F(p2).left == n) {
          for (uint field = 0; field < Fragment::size_array_max; ++field) {
-            F(p).size_left_array[field] -= F(z).size_array[field];
+            F(p2).size_left_array[field] -= F(z).size_array[field];
          }
       }
-      n = p;
+      n = p2;
    }
 
    freeFragment(z);
@@ -571,61 +573,61 @@ uint QFragmentMapData<Fragment>::erase_single(uint z)
    if (F(y).color != Red) {
       while (F(x).parent && (x == 0 || F(x).color == Black)) {
          if (x == F(p).left) {
-            uint w = F(p).right;
-            if (F(w).color == Red) {
-               F(w).color = Black;
+            uint w2 = F(p).right;
+            if (F(w2).color == Red) {
+               F(w2).color = Black;
                F(p).color = Red;
                rotateLeft(p);
-               w = F(p).right;
+               w2 = F(p).right;
             }
-            if ((F(w).left == 0 || F(F(w).left).color == Black) &&
-               (F(w).right == 0 || F(F(w).right).color == Black)) {
-               F(w).color = Red;
+            if ((F(w2).left == 0 || F(F(w2).left).color == Black) &&
+               (F(w2).right == 0 || F(F(w2).right).color == Black)) {
+               F(w2).color = Red;
                x = p;
                p = F(x).parent;
             } else {
-               if (F(w).right == 0 || F(F(w).right).color == Black) {
-                  if (F(w).left) {
-                     F(F(w).left).color = Black;
+               if (F(w2).right == 0 || F(F(w2).right).color == Black) {
+                  if (F(w2).left) {
+                     F(F(w2).left).color = Black;
                   }
-                  F(w).color = Red;
+                  F(w2).color = Red;
                   rotateRight(F(p).right);
-                  w = F(p).right;
+                  w2 = F(p).right;
                }
-               F(w).color = F(p).color;
+               F(w2).color = F(p).color;
                F(p).color = Black;
-               if (F(w).right) {
-                  F(F(w).right).color = Black;
+               if (F(w2).right) {
+                  F(F(w2).right).color = Black;
                }
                rotateLeft(p);
                break;
             }
          } else {
-            uint w = F(p).left;
-            if (F(w).color == Red) {
-               F(w).color = Black;
+            uint w3 = F(p).left;
+            if (F(w3).color == Red) {
+               F(w3).color = Black;
                F(p).color = Red;
                rotateRight(p);
-               w = F(p).left;
+               w3 = F(p).left;
             }
-            if ((F(w).right == 0 || F(F(w).right).color == Black) &&
-               (F(w).left == 0 || F(F(w).left).color == Black)) {
-               F(w).color = Red;
+            if ((F(w3).right == 0 || F(F(w3).right).color == Black) &&
+               (F(w3).left == 0 || F(F(w3).left).color == Black)) {
+               F(w3).color = Red;
                x = p;
                p = F(x).parent;
             } else {
-               if (F(w).left == 0 || F(F(w).left).color == Black) {
-                  if (F(w).right) {
-                     F(F(w).right).color = Black;
+               if (F(w3).left == 0 || F(F(w3).left).color == Black) {
+                  if (F(w3).right) {
+                     F(F(w3).right).color = Black;
                   }
-                  F(w).color = Red;
+                  F(w3).color = Red;
                   rotateLeft(F(p).left);
-                  w = F(p).left;
+                  w3 = F(p).left;
                }
-               F(w).color = F(p).color;
+               F(w3).color = F(p).color;
                F(p).color = Black;
-               if (F(w).left) {
-                  F(F(w).left).color = Black;
+               if (F(w3).left) {
+                  F(F(w3).left).color = Black;
                }
                rotateRight(p);
                break;

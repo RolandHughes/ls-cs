@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -25,8 +25,8 @@
 
 #ifndef QT_NO_STATEMACHINE
 
-#include <qstatemachine.h>
 #include <qpainterpath.h>
+#include <qstatemachine.h>
 
 #include <qbasicmouseeventtransition_p.h>
 #include <qeventtransition_p.h>
@@ -103,9 +103,6 @@ void QMouseEventTransition::setHitTestPath(const QPainterPath &path)
    d->transition->setHitTestPath(path);
 }
 
-/*!
-  \reimp
-*/
 bool QMouseEventTransition::eventTest(QEvent *event)
 {
    Q_D(const QMouseEventTransition);
@@ -117,9 +114,6 @@ bool QMouseEventTransition::eventTest(QEvent *event)
    return QAbstractTransitionPrivate::get(d->transition)->callEventTest(we->event());
 }
 
-/*!
-  \reimp
-*/
 void QMouseEventTransition::onTransition(QEvent *event)
 {
    QEventTransition::onTransition(event);

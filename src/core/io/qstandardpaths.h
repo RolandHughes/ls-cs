@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -31,7 +31,7 @@
 class Q_CORE_EXPORT QStandardPaths
 {
  public:
-   // Do not re-order, must match QDesktopServices
+   // Do not re-order, this must match QDesktopServices
    enum StandardLocation {
       DesktopLocation,
       DocumentsLocation,
@@ -69,7 +69,6 @@ class Q_CORE_EXPORT QStandardPaths
    static QString displayName(StandardLocation type);
 
    static QString findExecutable(const QString &executableName, const QStringList &paths = QStringList());
-
 
    static void setTestModeEnabled(bool testMode);
    static bool isTestModeEnabled();

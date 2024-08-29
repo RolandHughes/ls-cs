@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -39,8 +39,6 @@
 #  include <unistd.h>
 #endif
 
-// #define QHOSTINFO_DEBUG
-
 QHostInfoLookupManager *cs_HostInfoLookupManager()
 {
    static QHostInfoLookupManager retval;
@@ -52,12 +50,12 @@ static QAtomicInt theIdCounter = 1;
 int QHostInfo::lookupHost(const QString &name, QObject *receiver, const QString &member)
 {
 
-#if defined QHOSTINFO_DEBUG
+#if defined(CS_SHOW_DEBUG_NETWORK)
    qDebug("QHostInfo::lookupHost(\"%s\", %p, %s)", csPrintable(name), receiver, csPrintable(member));
 #endif
 
    if (! QAbstractEventDispatcher::instance(QThread::currentThread())) {
-      qWarning("QHostInfo::lookupHost() called with no event dispatcher");
+      qWarning("QHostInfo::lookupHost() Called with no event dispatcher");
       return -1;
    }
 
@@ -136,7 +134,7 @@ QHostInfo QHostInfo::fromName(const QString &name)
 #ifndef QT_NO_BEARERMANAGEMENT
 QHostInfo QHostInfoPrivate::fromName(const QString &name, QSharedPointer<QNetworkSession> session)
 {
-#if defined QHOSTINFO_DEBUG
+#if defined(CS_SHOW_DEBUG_NETWORK)
    qDebug("QHostInfoPrivate::fromName(\"%s\") with session %p", name.toLatin1().constData(), session.data());
 #endif
 

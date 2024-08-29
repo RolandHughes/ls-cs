@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -31,13 +31,13 @@ void QBasicTimer::start(int msec, QObject *obj)
    QAbstractEventDispatcher *eventDispatcher = QAbstractEventDispatcher::instance();
 
    if (! eventDispatcher) {
-     qWarning("QBasicTimer::start() Timer can only be used within a QThread");
-     return;
+      qWarning("QBasicTimer::start() Timer can only be used within a QThread");
+      return;
    }
 
    if (obj && obj->thread() != eventDispatcher->thread()) {
-     qWarning("QBasicTimer::start() Unable to start a timer from another thread");
-     return;
+      qWarning("QBasicTimer::start() Unable to start a timer from another thread");
+      return;
    }
 
    if (id) {
@@ -70,8 +70,8 @@ void QBasicTimer::start(int msec, Qt::TimerType timerType, QObject *obj)
    }
 
    if (obj && obj->thread() != eventDispatcher->thread()) {
-     qWarning("QBasicTimer::start() Unable to start a timer from another thread");
-     return;
+      qWarning("QBasicTimer::start() Unable to start a timer from another thread");
+      return;
    }
 
    if (id) {

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -184,10 +184,6 @@ class Q_GUI_EXPORT QRasterPaintEngine : public QPaintEngineEx
 
    QSize size() const;
 
-#ifndef QT_NO_DEBUG
-   void saveBuffer(const QString &s) const;
-#endif
-
 #ifdef Q_OS_WIN
    void setDC(HDC hdc);
    HDC getDC() const;
@@ -268,7 +264,7 @@ class QRasterPaintEnginePrivate : public QPaintEngineExPrivate
    void rasterize(QT_FT_Outline *outline, ProcessSpans callback, void *userData, QRasterBuffer *rasterBuffer);
    void updateMatrixData(QSpanData *spanData, const QBrush &brush, const QTransform &brushMatrix);
 
-   void systemStateChanged();
+   void systemStateChanged() override;
 
    void drawImage(const QPointF &pt, const QImage &img, SrcOverBlendFunc func,
       const QRect &clip, int alpha, const QRect &sr = QRect());
@@ -436,10 +432,6 @@ class QRasterBuffer
       return m_buffer + y * bytes_per_line;
    }
 
-#ifndef QT_NO_DEBUG
-   QImage bufferImage() const;
-#endif
-
    void flushToARGBImage(QImage *image) const;
 
    int width() const {
@@ -489,6 +481,7 @@ inline void QRasterPaintEngine::ensureOutlineMapper()
 inline const QClipData *QRasterPaintEnginePrivate::clip() const
 {
    Q_Q(const QRasterPaintEngine);
+
    if (q->state() && q->state()->clip && q->state()->clip->enabled) {
       return q->state()->clip;
    }
@@ -498,6 +491,7 @@ inline const QClipData *QRasterPaintEnginePrivate::clip() const
 inline const QClipData *QRasterPaintEngine::clipData() const
 {
    Q_D(const QRasterPaintEngine);
+
    if (state() && state()->clip && state()->clip->enabled) {
       return state()->clip;
    }

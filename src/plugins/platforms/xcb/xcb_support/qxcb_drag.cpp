@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -47,19 +47,6 @@
 #include <xcb/xcb.h>
 
 #ifndef QT_NO_DRAGANDDROP
-
-//#define DND_DEBUG
-#ifdef DND_DEBUG
-#define DEBUG qDebug
-#else
-#define DEBUG if(0) qDebug
-#endif
-
-#ifdef DND_DEBUG
-#define DNDDEBUG qDebug()
-#else
-#define DNDDEBUG if(0) qDebug()
-#endif
 
 const int xdnd_version = 5;
 
@@ -377,7 +364,10 @@ void QXcbDrag::move(const QPoint &globalPos)
    if (target && target != rootwin) {
       xcb_window_t src = rootwin;
       while (target != 0) {
-         DNDDEBUG << "checking target for XdndAware" << target << lx << ly;
+
+#if defined(CS_SHOW_DEBUG_PLATFORM)
+         qDebug() << "QXcbDrag::move() Checking target for XdndAware =" << target << lx << ly;
+#endif
 
          // translate coordinates
          translate = ::translateCoordinates(connection(), src, target, lx, ly);
@@ -399,7 +389,10 @@ void QXcbDrag::move(const QPoint &globalPos)
 
          free(reply);
          if (aware) {
-            DNDDEBUG << "Found XdndAware on " << target;
+
+#if defined(CS_SHOW_DEBUG_PLATFORM)
+            qDebug() << "QXcbDrag::move() Found XdndAware on =" << target;
+#endif
             break;
          }
 
@@ -407,12 +400,11 @@ void QXcbDrag::move(const QPoint &globalPos)
       }
 
       if (!target || target == shapedPixmapWindow()->handle()->winId()) {
-         DNDDEBUG << "need to find real window";
          target = findRealWindow(globalPos, rootwin, 6, true);
+
          if (target == 0) {
             target = findRealWindow(globalPos, rootwin, 6, false);
          }
-         DNDDEBUG << "real window found" << target;
       }
    }
 
@@ -477,7 +469,10 @@ void QXcbDrag::move(const QPoint &globalPos)
          // provisionally set the rectangle to 5x5 pixels...
          source_sameanswer = QRect(globalPos.x() - 2, globalPos.y() - 2, 5, 5);
 
-         DEBUG() << "sending Xdnd enter source=" << enter.data.data32[0];
+#if defined(CS_SHOW_DEBUG_PLATFORM)
+         qDebug() << "QXcbDrag::move() Sending Xdnd enter source =" << enter.data.data32[0];
+#endif
+
          if (w) {
             handleEnter(w, &enter, current_proxy_target);
          } else if (target) {
@@ -505,7 +500,10 @@ void QXcbDrag::move(const QPoint &globalPos)
       move.data.data32[2] = (globalPos.x() << 16) + globalPos.y();
       move.data.data32[3] = connection()->time();
       move.data.data32[4] = toXdndAction(defaultAction(currentDrag()->supportedActions(), QApplication::keyboardModifiers()));
-      DEBUG() << "sending Xdnd position source=" << move.data.data32[0] << "target=" << move.window;
+
+#if defined(CS_SHOW_DEBUG_PLATFORM)
+      qDebug() << "QXcbDrag::move() Sending Xdnd position source =" << move.data.data32[0] << "target =" << move.window;
+#endif
 
       source_time = connection()->time();
 
@@ -720,7 +718,9 @@ static bool checkEmbedded(QWidget *w, const XEvent *xe)
 
 void QXcbDrag::handleEnter(QPlatformWindow *window, const xcb_client_message_event_t *event, xcb_window_t proxy)
 {
-   DEBUG() << "handleEnter" << window;
+#if defined(CS_SHOW_DEBUG_PLATFORM)
+   qDebug() << "QXcbDrag::handleEnter() window =" << window;
+#endif
 
    xdnd_types.clear();
 
@@ -766,9 +766,6 @@ void QXcbDrag::handleEnter(QPlatformWindow *window, const xcb_client_message_eve
          }
       }
    }
-   for (int i = 0; i < xdnd_types.length(); ++i) {
-      DEBUG() << "    " << connection()->atomName(xdnd_types.at(i));
-   }
 }
 
 void QXcbDrag::handle_xdnd_position(QPlatformWindow *w, const xcb_client_message_event_t *e)
@@ -784,7 +781,12 @@ void QXcbDrag::handle_xdnd_position(QPlatformWindow *w, const xcb_client_message
    }
 
    if (e->data.data32[0] != xdnd_dragsource) {
-      DEBUG("xdnd drag position from unexpected source (%x not %x)", e->data.data32[0], xdnd_dragsource);
+
+#if defined(CS_SHOW_DEBUG_PLATFORM)
+      qDebug("QXcbDrag::handle_xdnd_position() xdnd drag position from unexpected source (%x not %x)",
+            e->data.data32[0], xdnd_dragsource);
+#endif
+
       return;
    }
 
@@ -894,8 +896,8 @@ void QXcbDrag::handlePosition(QPlatformWindow *w, const xcb_client_message_event
 
 void QXcbDrag::handle_xdnd_status(const xcb_client_message_event_t *event)
 {
-   DEBUG("xdndHandleStatus");
    waiting_for_status = false;
+
    // ignore late status messages
    if (event->data.data32[0] && event->data.data32[0] != current_target) {
       return;
@@ -941,12 +943,10 @@ void QXcbDrag::handleStatus(const xcb_client_message_event_t *event)
    if (lastEvent != event) {
       free(lastEvent);
    }
-   DEBUG("xdndHandleStatus end");
 }
 
 void QXcbDrag::handleLeave(QPlatformWindow *w, const xcb_client_message_event_t *event)
 {
-   DEBUG("xdnd leave");
    if (!currentWindow || w != currentWindow.data()->handle()) {
       return;   // sanity
    }
@@ -958,10 +958,12 @@ void QXcbDrag::handleLeave(QPlatformWindow *w, const xcb_client_message_event_t 
    //        return;
    //    }
 
+#if defined(CS_SHOW_DEBUG_PLATFORM)
    if (event->data.data32[0] != xdnd_dragsource) {
-      // This often happens - leave other-process window quickly
-      DEBUG("xdnd drag leave from unexpected source (%x not %x", event->data.data32[0], xdnd_dragsource);
+      qDebug("QXcbDrag::handleLeave() xdnd drag leave from unexpected source (%x not %x)",
+            event->data.data32[0], xdnd_dragsource);
    }
+#endif
 
    QWindowSystemInterface::handleDrag(w->window(), nullptr, QPoint(), Qt::IgnoreAction);
 
@@ -990,7 +992,7 @@ void QXcbDrag::send_leave()
 
    QXcbWindow *w = connection()->platformWindowFromId(current_proxy_target);
 
-   if (w != nullptr && (w->window()->type() == Qt::Desktop) /*&& !w->acceptDrops()*/) {
+   if (w != nullptr && (w->window()->type() == Qt::Desktop)) {
       w = nullptr;
    }
 
@@ -1009,8 +1011,6 @@ void QXcbDrag::send_leave()
 
 void QXcbDrag::handleDrop(QPlatformWindow *, const xcb_client_message_event_t *event)
 {
-   DEBUG("xdndHandleDrop");
-
    if (! currentWindow) {
       xdnd_dragsource = 0;
       return; // sanity
@@ -1018,10 +1018,12 @@ void QXcbDrag::handleDrop(QPlatformWindow *, const xcb_client_message_event_t *e
 
    const uint32_t *l = event->data.data32;
 
-   DEBUG("xdnd drop");
-
    if (l[0] != xdnd_dragsource) {
-      DEBUG("xdnd drop from unexpected source (%x not %x", l[0], xdnd_dragsource);
+
+#if defined(CS_SHOW_DEBUG_PLATFORM)
+      qDebug("QXcbDrag::handleDrop() xdnd drop from unexpected source (%x not %x)", l[0], xdnd_dragsource);
+#endif
+
       return;
    }
 
@@ -1081,25 +1083,24 @@ void QXcbDrag::handleDrop(QPlatformWindow *, const xcb_client_message_event_t *e
 
 void QXcbDrag::handleFinished(const xcb_client_message_event_t *event)
 {
-   DEBUG("xdndHandleFinished");
    if (event->window != connection()->clipboard()->owner()) {
       return;
    }
 
-   const unsigned long *l = (const unsigned long *)event->data.data32;
+   unsigned long windowId;
+   memcpy(&windowId, event->data.data32, sizeof(unsigned long));
 
-   DNDDEBUG << "xdndHandleFinished, l[0]" << l[0]
-      << "current_target" << current_target
-      << "qt_xdnd_current_proxy_targe" << current_proxy_target;
+   if (windowId) {
+      int at = findTransactionByWindow(windowId);
 
-   if (l[0]) {
-      int at = findTransactionByWindow(l[0]);
       if (at != -1) {
 
          Transaction t = transactions.takeAt(at);
+
          if (t.drag) {
             t.drag->deleteLater();
          }
+
          //            QDragManager *manager = QDragManager::self();
 
          //            Window target = current_target;
@@ -1123,10 +1124,12 @@ void QXcbDrag::handleFinished(const xcb_client_message_event_t *event)
          //            current_proxy_target = proxy_target;
          //            current_embedding_widget = embedding_widget;
          //            manager->object = currentObject;
+
       } else {
-         qWarning("QXcbDrag::handleFinished - drop data has expired");
+         qWarning("QXcbDrag::handleFinished() Drop data has expired");
       }
    }
+
    waiting_for_status = false;
 }
 
@@ -1171,8 +1174,8 @@ void QXcbDrag::timerEvent(QTimerEvent *e)
 
 void QXcbDrag::cancel()
 {
-   DEBUG("QXcbDrag::cancel");
    QBasicDrag::cancel();
+
    if (current_target) {
       send_leave();
    }
@@ -1185,11 +1188,10 @@ static xcb_window_t findXdndAwareParent(QXcbConnection *c, xcb_window_t window)
 
    while (true) {
       // check if window has XdndAware
-      xcb_get_property_cookie_t gpCookie = Q_XCB_CALL(xcb_get_property(c->xcb_connection(), false, window,
-            c->atom(QXcbAtom::XdndAware), XCB_GET_PROPERTY_TYPE_ANY, 0, 0));
+      xcb_get_property_cookie_t gpCookie = Q_XCB_CALL2(xcb_get_property(c->xcb_connection(), false, window,
+            c->atom(QXcbAtom::XdndAware), XCB_GET_PROPERTY_TYPE_ANY, 0, 0), c);
 
-      xcb_get_property_reply_t *gpReply = xcb_get_property_reply(
-            c->xcb_connection(), gpCookie, nullptr);
+      xcb_get_property_reply_t *gpReply = xcb_get_property_reply(c->xcb_connection(), gpCookie, nullptr);
 
       bool aware = gpReply && gpReply->type != XCB_NONE;
       free(gpReply);
@@ -1200,8 +1202,8 @@ static xcb_window_t findXdndAwareParent(QXcbConnection *c, xcb_window_t window)
       }
 
       // try window's parent
-      xcb_query_tree_cookie_t qtCookie = Q_XCB_CALL(xcb_query_tree_unchecked(c->xcb_connection(), window));
-      xcb_query_tree_reply_t *qtReply = xcb_query_tree_reply(c->xcb_connection(), qtCookie, nullptr);
+      xcb_query_tree_cookie_t qtCookie = Q_XCB_CALL2(xcb_query_tree_unchecked(c->xcb_connection(), window), c);
+      xcb_query_tree_reply_t *qtReply  = xcb_query_tree_reply(c->xcb_connection(), qtCookie, nullptr);
 
       if (! qtReply) {
          break;
@@ -1294,15 +1296,12 @@ void QXcbDrag::handleSelectionRequest(const xcb_selection_request_event_t *event
    xcb_send_event(xcb_connection(), false, proxy_target, XCB_EVENT_MASK_NO_EVENT, (const char *)&notify);
 }
 
-
 bool QXcbDrag::dndEnable(QXcbWindow *w, bool on)
 {
-   DNDDEBUG << "xdndEnable" << w << on;
-
    if (on) {
       QXcbWindow *xdnd_widget = nullptr;
 
-      if ((w->window()->type() == Qt::Desktop)) {
+      if (w->window()->type() == Qt::Desktop) {
          if (desktop_proxy) {
             // already have one
             return false;
@@ -1331,7 +1330,10 @@ bool QXcbDrag::dndEnable(QXcbWindow *w, bool on)
       }
 
       if (xdnd_widget) {
-         DNDDEBUG << "setting XdndAware for" << xdnd_widget << xdnd_widget->xcb_window();
+#if defined(CS_SHOW_DEBUG_PLATFORM)
+         qDebug() << "QXcbDrag::dndEnable() Setting XdndAware for =" << xdnd_widget << xdnd_widget->xcb_window();
+#endif
+
          xcb_atom_t atm = xdnd_version;
 
          xcb_change_property(xcb_connection(), XCB_PROP_MODE_REPLACE, xdnd_widget->xcb_window(),
@@ -1348,9 +1350,6 @@ bool QXcbDrag::dndEnable(QXcbWindow *w, bool on)
          xcb_delete_property(xcb_connection(), w->xcb_window(), atom(QXcbAtom::XdndProxy));
          delete desktop_proxy;
          desktop_proxy = nullptr;
-
-      } else {
-         DNDDEBUG << "not deleting XDndAware";
       }
 
       return true;

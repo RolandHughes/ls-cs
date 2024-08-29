@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2013 Klarälvdalens Datakonsult AB, a KDAB Group company
 * Copyright (c) 2015 The Qt Company Ltd.
@@ -148,7 +148,7 @@ template <typename T>
 void QOpenGL2PaintEngineExPrivate::updateTexture(GLenum textureUnit, const T &texture, GLenum wrapMode,
       GLenum filterMode, TextureUpdateMode updateMode)
 {
-   static const GLenum target = GL_TEXTURE_2D;
+   static constexpr const GLenum target = GL_TEXTURE_2D;
 
    activateTextureUnit(textureUnit);
 
@@ -232,7 +232,6 @@ void QOpenGL2PaintEngineExPrivate::updateBrushTexture()
 {
    Q_Q(QOpenGL2PaintEngineEx);
 
-   // qDebug("QOpenGL2PaintEngineExPrivate::updateBrushTexture()");
    Qt::BrushStyle style = currentBrush.style();
 
    bool smoothPixmapTransform = q->state()->renderHints & QPainter::SmoothPixmapTransform;
@@ -281,7 +280,6 @@ void QOpenGL2PaintEngineExPrivate::updateBrushTexture()
 
 void QOpenGL2PaintEngineExPrivate::updateBrushUniforms()
 {
-   // qDebug("QOpenGL2PaintEngineExPrivate::updateBrushUniforms()");
    Qt::BrushStyle style = currentBrush.style();
 
    if (style == Qt::NoBrush) {
@@ -407,8 +405,6 @@ void QOpenGL2PaintEngineExPrivate::updateBrushUniforms()
 // This assumes the shader manager has already setup the correct shader program
 void QOpenGL2PaintEngineExPrivate::updateMatrix()
 {
-   //     qDebug("QOpenGL2PaintEngineExPrivate::updateMatrix()");
-
    const QTransform &transform = q->state()->matrix;
 
    // The projection matrix converts from Qt's coordinate system to GL's coordinate system
@@ -477,9 +473,9 @@ void QOpenGL2PaintEngineExPrivate::updateMatrix()
 
 void QOpenGL2PaintEngineExPrivate::updateCompositionMode()
 {
-   // NOTE: The entire paint engine works on pre-multiplied data - which is why some of these
-   //       composition modes look odd.
-   //     qDebug() << "QOpenGL2PaintEngineExPrivate::updateCompositionMode() - Setting GL composition mode for " << q->state()->composition_mode;
+   // entire paint engine works on pre-multiplied data - which is why some of these
+   // composition modes look odd.
+
    switch (q->state()->composition_mode) {
       case QPainter::CompositionMode_SourceOver:
          funcs.glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
@@ -1040,8 +1036,7 @@ void QOpenGL2PaintEngineExPrivate::fillStencilWithVertexArray(const float *data,
 {
    Q_ASSERT(count || stops);
 
-   // qDebug("QOpenGL2PaintEngineExPrivate::fillStencilWithVertexArray()");
-   funcs.glStencilMask(0xff); // Enable stencil writes
+   funcs.glStencilMask(0xff);  // Enable stencil writes
 
    if (dirtyStencilRegion.intersects(currentScissorBounds)) {
       QVector<QRect> clearRegion = dirtyStencilRegion.intersected(currentScissorBounds).rects();
@@ -1265,13 +1260,10 @@ void QOpenGL2PaintEngineExPrivate::drawVertexArrays(const float *data, const int
    setVertexAttributePointer(QT_VERTEX_COORDS_ATTR, data);
 
    int previousStop = 0;
+
    for (int i = 0; i < stopCount; ++i) {
       int stop = stops[i];
-      /*
-              qDebug("Drawing triangle fan for vertecies %d -> %d:", previousStop, stop-1);
-              for (int i=previousStop; i<stop; ++i)
-                  qDebug("   %02d: [%.2f, %.2f]", i, vertexArray.data()[i].x, vertexArray.data()[i].y);
-      */
+
       funcs.glDrawArrays(primitive, previousStop, stop - previousStop);
       previousStop = stop;
    }
@@ -1406,18 +1398,21 @@ void QOpenGL2PaintEngineExPrivate::stroke(const QVectorPath &path, const QPen &p
 }
 
 void QOpenGL2PaintEngineEx::penChanged()
-{ }
+{
+}
 
 void QOpenGL2PaintEngineEx::brushChanged()
-{ }
+{
+}
 
 void QOpenGL2PaintEngineEx::brushOriginChanged()
-{ }
+{
+}
 
 void QOpenGL2PaintEngineEx::opacityChanged()
 {
-   //    qDebug("QOpenGL2PaintEngineEx::opacityChanged()");
    Q_D(QOpenGL2PaintEngineEx);
+
    state()->opacityChanged = true;
 
    Q_ASSERT(d->shaderManager);
@@ -1427,8 +1422,8 @@ void QOpenGL2PaintEngineEx::opacityChanged()
 
 void QOpenGL2PaintEngineEx::compositionModeChanged()
 {
-   // qDebug("QOpenGL2PaintEngineEx::compositionModeChanged()");
    Q_D(QOpenGL2PaintEngineEx);
+
    state()->compositionModeChanged = true;
    d->compositionModeDirty = true;
 }
@@ -1457,12 +1452,12 @@ void QOpenGL2PaintEngineEx::renderHintsChanged()
    d->lastTextureUsed = GLuint(-1);
 
    d->brushTextureDirty = true;
-   // qDebug("QOpenGL2PaintEngineEx::renderHintsChanged() not implemented!");
 }
 
 void QOpenGL2PaintEngineEx::transformChanged()
 {
    Q_D(QOpenGL2PaintEngineEx);
+
    d->matrixDirty = true;
    state()->matrixChanged = true;
 }
@@ -2422,12 +2417,11 @@ void QOpenGL2PaintEngineEx::clip(const QVectorPath &path, Qt::ClipOperation op)
       const QPointF *const points = reinterpret_cast<const QPointF *>(path.points());
       QRectF rect(points[0], points[2]);
 
-      if (state()->matrix.type() <= QTransform::TxScale
-            || (state()->matrix.type() == QTransform::TxRotate
-                && qFuzzyIsNull(state()->matrix.m11())
-                && qFuzzyIsNull(state()->matrix.m22()))) {
+      if (state()->matrix.type() <= QTransform::TxScale || (state()->matrix.type() == QTransform::TxRotate
+            && qFuzzyIsNull(state()->matrix.m11()) && qFuzzyIsNull(state()->matrix.m22()))) {
          state()->rectangleClip = state()->rectangleClip.intersected(state()->matrix.mapRect(rect).toRect());
          d->updateClipScissorTest();
+
          return;
       }
    }
@@ -2522,8 +2516,6 @@ void QOpenGL2PaintEngineExPrivate::systemStateChanged()
 
 void QOpenGL2PaintEngineEx::setState(QPainterState *new_state)
 {
-   //     qDebug("QOpenGL2PaintEngineEx::setState()");
-
    Q_D(QOpenGL2PaintEngineEx);
 
    QOpenGL2PaintEngineState *s = static_cast<QOpenGL2PaintEngineState *>(new_state);
@@ -2637,4 +2629,3 @@ void QOpenGL2PaintEngineExPrivate::syncGlState()
       }
    }
 }
-

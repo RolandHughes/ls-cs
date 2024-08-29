@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -80,13 +80,13 @@ class Q_CORE_EXPORT QSettings : public QObject
    };
 
    explicit QSettings(const QString &organization,
-                  const QString &application = QString(), QObject *parent = nullptr);
+         const QString &application = QString(), QObject *parent = nullptr);
 
    QSettings(Scope scope, const QString &organization,
-                  const QString &application = QString(), QObject *parent = nullptr);
+         const QString &application = QString(), QObject *parent = nullptr);
 
    QSettings(Format format, Scope scope, const QString &organization,
-                  const QString &application = QString(), QObject *parent = nullptr);
+         const QString &application = QString(), QObject *parent = nullptr);
 
    QSettings(const QString &fileName, Format format, QObject *parent = nullptr);
    explicit QSettings(QObject *parent = nullptr);
@@ -141,12 +141,12 @@ class Q_CORE_EXPORT QSettings : public QObject
    static void setUserIniPath(const QString &dir);   // ### remove in 5.0 (use setPath() instead)
    static void setPath(Format format, Scope scope, const QString &path);
 
-   typedef QMap<QString, QVariant> SettingsMap;
-   typedef bool (*ReadFunc)(QIODevice &device, SettingsMap &map);
-   typedef bool (*WriteFunc)(QIODevice &device, const SettingsMap &map);
+   using SettingsMap = QMap<QString, QVariant>;
+   using ReadFunc    = bool (*)(QIODevice &device, SettingsMap &map);
+   using WriteFunc   = bool (*)(QIODevice &device, const SettingsMap &map);
 
    static Format registerFormat(const QString &extension, ReadFunc readFunc, WriteFunc writeFunc,
-                                Qt::CaseSensitivity caseSensitivity = Qt::CaseSensitive);
+         Qt::CaseSensitivity caseSensitivity = Qt::CaseSensitive);
 
  protected:
    bool event(QEvent *event) override;

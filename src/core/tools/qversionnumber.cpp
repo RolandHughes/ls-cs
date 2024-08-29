@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -23,9 +23,9 @@
 
 #include <qversionnumber.h>
 
-#include <qhash.h>
 #include <qdatastream.h>
 #include <qdebug.h>
+#include <qhash.h>
 
 #include <qlocale_tools_p.h>
 
@@ -153,6 +153,7 @@ QVersionNumber QVersionNumber::fromString(const QString &string, int *suffixInde
    do {
       bool ok = false;
       const quint64 value = qstrtoull(start, &end, 10, &ok);
+
       if (! ok || value > quint64(std::numeric_limits<int>::max())) {
          break;
       }
@@ -178,6 +179,7 @@ void QVersionNumber::SegmentStorage::setVector(int len, int maj, int min, int mi
 
    if (len > 1) {
       pointer_segments.data()[1] = min;
+
       if (len > 2) {
          pointer_segments.data()[2] = mic;
       }
@@ -215,5 +217,3 @@ uint qHash(const QVersionNumber &key, uint seed)
 
    return seed;
 }
-
-

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -119,7 +119,7 @@ class QDateTimePrivate
    }
 
    static qint64 zoneMSecsToEpochMSecs(qint64 msecs, const QTimeZone &zone,
-      QDate *localDate = nullptr, QTime *localTime = nullptr);
+         QDate *localDate = nullptr, QTime *localTime = nullptr);
 
    qint64 m_msecs;
    QTimeZone m_timeZone;

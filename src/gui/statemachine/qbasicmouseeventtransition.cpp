@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -25,9 +25,9 @@
 
 #ifndef QT_NO_STATEMACHINE
 
+#include <qdebug.h>
 #include <qevent.h>
 #include <qpainterpath.h>
-#include <qdebug.h>
 
 #include <qabstracttransition_p.h>
 
@@ -94,9 +94,6 @@ Qt::MouseButton QBasicMouseEventTransition::button() const
    return d->button;
 }
 
-/*!
-  Sets the button that this mouse event transition will check for.
-*/
 void QBasicMouseEventTransition::setButton(Qt::MouseButton button)
 {
    Q_D(QBasicMouseEventTransition);
@@ -127,9 +124,6 @@ void QBasicMouseEventTransition::setHitTestPath(const QPainterPath &path)
    d->path = path;
 }
 
-/*!
-  \reimp
-*/
 bool QBasicMouseEventTransition::eventTest(QEvent *event)
 {
    Q_D(const QBasicMouseEventTransition);
@@ -142,9 +136,6 @@ bool QBasicMouseEventTransition::eventTest(QEvent *event)
    return false;
 }
 
-/*!
-  \reimp
-*/
 void QBasicMouseEventTransition::onTransition(QEvent *)
 {
 }

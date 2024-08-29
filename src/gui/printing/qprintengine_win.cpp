@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -48,11 +48,8 @@ Q_GUI_EXPORT HBITMAP qt_pixmapToWinHBITMAP(const QPixmap &p, int hbitmapFormat =
 extern QPainterPath qt_regionToPath(const QRegion &region);
 extern QMarginsF qt_convertMargins(const QMarginsF &margins, QPageLayout::Unit fromUnits, QPageLayout::Unit toUnits);
 
-// #define QT_DEBUG_DRAW
-// #define QT_DEBUG_METRICS
-
 static void draw_text_item_win(const QPointF &_pos, const QTextItemInt &ti, HDC hdc,
-   const QTransform &xform, const QPointF &topLeft);
+      const QTransform &xform, const QPointF &topLeft);
 
 enum HBitmapFormat {
    HBitmapNoAlpha,
@@ -222,33 +219,6 @@ bool QWin32PrintEngine::newPage()
       SetBkMode(d->hdc, TRANSPARENT);
    }
 
-   // ###
-   return true;
-
-   bool success = false;
-   if (d->hdc && d->state == QPrinter::Active) {
-      if (EndPage(d->hdc) != SP_ERROR) {
-         // reinitialize the DC before StartPage if needed,
-         // because resetdc is disabled between calls to the StartPage and EndPage functions
-         // (see StartPage documentation in the Platform SDK:Windows GDI)
-         //          state = PST_ACTIVEDOC;
-         //          reinit();
-         //          state = PST_ACTIVE;
-         // start the new page now
-
-         if (d->reinit) {
-            if (!d->resetDC()) {
-               qErrnoWarning("QWin32PrintEngine::newPage(), ResetDC failed (2)");
-            }
-            d->reinit = false;
-         }
-         success = (StartPage(d->hdc) != SP_ERROR);
-      }
-      if (!success) {
-         d->state = QPrinter::Aborted;
-         return false;
-      }
-   }
    return true;
 }
 
@@ -681,9 +651,8 @@ void QWin32PrintEnginePrivate::composeGdiPath(const QPainterPath & path)
       }
    }
 
-   if (start >= 0
-      && path.elementAt(start).x == path.elementAt(path.elementCount() - 1).x
-      && path.elementAt(start).y == path.elementAt(path.elementCount() - 1).y) {
+   if (start >= 0 && path.elementAt(start).x == path.elementAt(path.elementCount() - 1).x
+         && path.elementAt(start).y == path.elementAt(path.elementCount() - 1).y) {
       CloseFigure(hdc);
    }
 
@@ -696,11 +665,6 @@ void QWin32PrintEnginePrivate::composeGdiPath(const QPainterPath & path)
 
 void QWin32PrintEnginePrivate::fillPath_dev(const QPainterPath & path, const QColor & color)
 {
-
-#ifdef QT_DEBUG_DRAW
-   qDebug() << " --- QWin32PrintEnginePrivate::fillPath() bound:" << path.boundingRect() << color;
-#endif
-
    composeGdiPath(path);
 
    HBRUSH brush = CreateSolidBrush(RGB(color.red(), color.green(), color.blue()));
@@ -782,10 +746,6 @@ void QWin32PrintEnginePrivate::strokePath(const QPainterPath & path, const QColo
 
 void QWin32PrintEngine::drawPath(const QPainterPath & path)
 {
-#ifdef QT_DEBUG_DRAW
-   qDebug() << " - QWin32PrintEngine::drawPath(), bounds: " << path.boundingRect();
-#endif
-
    Q_D(QWin32PrintEngine);
 
    QAlphaPaintEngine::drawPath(path);
@@ -804,11 +764,8 @@ void QWin32PrintEngine::drawPath(const QPainterPath & path)
 
 void QWin32PrintEngine::drawPolygon(const QPointF * points, int pointCount, PolygonDrawMode mode)
 {
-#ifdef QT_DEBUG_DRAW
-   qDebug() << " - QWin32PrintEngine::drawPolygon(), pointCount: " << pointCount;
-#endif
-
    QAlphaPaintEngine::drawPolygon(points, pointCount, mode);
+
    if (!continueCall()) {
       return;
    }
@@ -1648,19 +1605,9 @@ void QWin32PrintEnginePrivate::updateMetrics() {
    origin_y = qRound(margins.top() * dpi_y)  - GetDeviceCaps(hdc, PHYSICALOFFSETY);
 }
 
-void QWin32PrintEnginePrivate::debugMetrics() const {
-   qDebug() << "    " << "m_pageLayout      = " << m_pageLayout;
-   qDebug() << "    " << "m_paintRectPixels = " << m_paintRectPixels;
-   qDebug() << "    " << "m_paintSizeMM     = " << m_paintSizeMM;
-   qDebug() << "    " << "resolution        = " << resolution;
-   qDebug() << "    " << "stretch           = " << stretch_x << stretch_y;
-   qDebug() << "    " << "origin            = " << origin_x << origin_y;
-   qDebug() << "    " << "dpi               = " << dpi_x << dpi_y;
-   qDebug() << "";
-}
-
 static void draw_text_item_win(const QPointF & pos, const QTextItemInt & ti, HDC hdc,
-                               const QTransform & xform, const QPointF & topLeft) {
+      const QTransform & xform, const QPointF & topLeft)
+{
    QPointF baseline_pos = xform.inverted().map(xform.map(pos) - topLeft);
 
    SetTextAlign(hdc, TA_BASELINE);

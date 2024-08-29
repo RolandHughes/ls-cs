@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -96,25 +96,12 @@ GpuDescription GpuDescription::detect()
    return result;
 }
 
-#ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug d, const GpuDescription &gd)
-{
-   QDebugStateSaver s(d);
-   d.nospace();
-   d << hex << showbase << "GpuDescription(vendorId=" << gd.vendorId
-      << ", deviceId=" << gd.deviceId << ", subSysId=" << gd.subSysId
-      << dec << noshowbase << ", revision=" << gd.revision
-      << ", driver: " << gd.driverName
-      << ", version=" << gd.driverVersion << ", " << gd.description << ')';
-   return d;
-}
-#endif // !QT_NO_DEBUG_STREAM
-
 // Return printable string formatted like the output of the dxdiag tool.
 QString GpuDescription::toString() const
 {
    QString result;
    QTextStream str(&result);
+
    str <<   "         Card name: " << description
       << "\n       Driver Name: " << driverName
       << "\n    Driver Version: " << driverVersion.toString()
@@ -124,12 +111,14 @@ QString GpuDescription::toString() const
       << "\n         SubSys ID: 0x" << qSetFieldWidth(8) << subSysId
       << "\n       Revision ID: 0x" << qSetFieldWidth(4) << revision
       << dec;
+
    return result;
 }
 
 QVariant GpuDescription::toVariant() const
 {
    QVariantMap result;
+
    result.insert(QString("vendorId"), QVariant(vendorId));
    result.insert(QString("deviceId"), QVariant(deviceId));
    result.insert(QString("subSysId"), QVariant(subSysId));
@@ -142,6 +131,7 @@ QVariant GpuDescription::toVariant() const
    result.insert(QString("driverVersionString"), driverVersion.toString());
    result.insert(QString("description"), QVariant(QLatin1String(description)));
    result.insert(QString("printable"), QVariant(toString()));
+
    return result;
 }
 
@@ -216,18 +206,22 @@ static inline QString resolveBugListFile(const QString &fileName)
    // Try QLibraryInfo::SettingsPath which is typically empty unless specified in qt.conf,
    // then resolve via QStandardPaths::ConfigLocation.
    const QString settingsPath = QLibraryInfo::location(QLibraryInfo::SettingsPath);
-   if (!settingsPath.isEmpty()) { // SettingsPath is empty unless specified in qt.conf.
-      const QFileInfo fi(settingsPath + QLatin1Char('/') + fileName);
+
+   if (!settingsPath.isEmpty()) {
+      // SettingsPath is empty unless specified in cs.conf
+
+      const QFileInfo fi(settingsPath + QChar('/') + fileName);
       if (fi.isFile()) {
          return fi.absoluteFilePath();
       }
    }
+
    return QStandardPaths::locate(QStandardPaths::ConfigLocation, fileName);
 }
 
 #ifndef QT_NO_OPENGL
 
-using SupportedRenderersCache = QHash<QOpenGLConfig::Gpu, QWindowsOpenGLTester::Renderers> ;
+using SupportedRenderersCache = QHash<QOpenGLConfig::Gpu, QWindowsOpenGLTester::Renderers>;
 
 static SupportedRenderersCache *supportedRenderersCache()
 {
@@ -239,16 +233,17 @@ static SupportedRenderersCache *supportedRenderersCache()
 
 QWindowsOpenGLTester::Renderers QWindowsOpenGLTester::detectSupportedRenderers(const GpuDescription &gpu, bool glesOnly)
 {
-
 #if defined(QT_NO_OPENGL)
-   return 0;
+   return Qt::EmptyFlag;
 
 #else
    QOpenGLConfig::Gpu qgpu = QOpenGLConfig::Gpu::fromDevice(gpu.vendorId, gpu.deviceId, gpu.driverVersion, gpu.description);
    SupportedRenderersCache *srCache = supportedRenderersCache();
-   SupportedRenderersCache::const_iterator it = srCache->find(qgpu);
-   if (it != srCache->cend()) {
-      return *it;
+
+   SupportedRenderersCache::const_iterator iter = srCache->find(qgpu);
+
+   if (iter != srCache->cend()) {
+      return *iter;
    }
 
    QWindowsOpenGLTester::Renderers result(QWindowsOpenGLTester::AngleRendererD3d11
@@ -256,7 +251,7 @@ QWindowsOpenGLTester::Renderers QWindowsOpenGLTester::detectSupportedRenderers(c
       | QWindowsOpenGLTester::AngleRendererD3d11Warp
       | QWindowsOpenGLTester::SoftwareRasterizer);
 
-   if (!glesOnly && testDesktopGL()) {
+   if (! glesOnly && testDesktopGL()) {
       result |= QWindowsOpenGLTester::DesktopGl;
    }
 
@@ -273,31 +268,25 @@ QWindowsOpenGLTester::Renderers QWindowsOpenGLTester::detectSupportedRenderers(c
       }
    }
 
-   qDebug() << "GPU features:" << features;
-
-   if (features.contains(QString("disable_desktopgl"))) {    // Qt-specific
-      qDebug() << "Disabling Desktop GL: " << gpu;
+   if (features.contains("disable_desktopgl")) {
       result &= ~QWindowsOpenGLTester::DesktopGl;
    }
 
-   if (features.contains(QString("disable_angle"))) {        // Qt-specific keyword
-      qDebug() << "Disabling ANGLE: " << gpu;
+   if (features.contains("disable_angle")) {
       result &= ~QWindowsOpenGLTester::GlesMask;
 
    } else {
-      if (features.contains(QString("disable_d3d11"))) {    // standard keyword
-         qDebug() << "Disabling D3D11: " << gpu;
+      if (features.contains("disable_d3d11")) {
+         // standard keyword
          result &= ~QWindowsOpenGLTester::AngleRendererD3d11;
       }
 
-      if (features.contains(QString("disable_d3d9"))) {     // Qt-specific
-         qDebug() << "Disabling D3D9: " << gpu;
+      if (features.contains("disable_d3d9")) {
          result &= ~QWindowsOpenGLTester::AngleRendererD3d9;
       }
    }
 
-   if (features.contains(QString("disable_rotation"))) {
-      qDebug() << "Disabling rotation: " << gpu;
+   if (features.contains("disable_rotation")) {
       result |= DisableRotationFlag;
    }
 
@@ -311,7 +300,6 @@ QWindowsOpenGLTester::Renderers QWindowsOpenGLTester::supportedGlesRenderers()
 {
    const GpuDescription gpu = GpuDescription::detect();
    const QWindowsOpenGLTester::Renderers result = detectSupportedRenderers(gpu, true);
-   qDebug() << __FUNCTION__ << gpu << "renderer: " << result;
 
    return result;
 }
@@ -320,7 +308,6 @@ QWindowsOpenGLTester::Renderers QWindowsOpenGLTester::supportedRenderers()
 {
    const GpuDescription gpu = GpuDescription::detect();
    const QWindowsOpenGLTester::Renderers result = detectSupportedRenderers(gpu, false);
-   qDebug() << __FUNCTION__ << gpu << "renderer: " << result;
 
    return result;
 }
@@ -345,6 +332,7 @@ bool QWindowsOpenGLTester::testDesktopGL()
    // Test #1: Load opengl32.dll and try to resolve an OpenGL 2 function.
    // This will typically fail on systems that do not have a real OpenGL driver.
    lib = LoadLibraryA("opengl32.dll");
+
    if (lib) {
       CreateContext = cs_bitCast<HGLRC (WINAPI *)(HDC)>(::GetProcAddress(lib, "wglCreateContext"));
       if (!CreateContext) {
@@ -405,29 +393,28 @@ bool QWindowsOpenGLTester::testDesktopGL()
       // Use the GDI functions. Under the hood this will call the wgl variants in opengl32.dll.
       int pixelFormat = ChoosePixelFormat(dc, &pfd);
 
-      if (!pixelFormat) {
+      if (! pixelFormat) {
          goto cleanup;
       }
 
-      if (!SetPixelFormat(dc, pixelFormat, &pfd)) {
+      if (! SetPixelFormat(dc, pixelFormat, &pfd)) {
          goto cleanup;
       }
 
       context = CreateContext(dc);
-      if (!context) {
-         goto cleanup;
-      }
-      if (!MakeCurrent(dc, context)) {
+      if (! context) {
          goto cleanup;
       }
 
-      // Now that there is finally a context current, try doing something useful.
+      if (! MakeCurrent(dc, context)) {
+         goto cleanup;
+      }
 
-      // Check the version. If we got 1.x then it's all hopeless and we can stop right here.
+      // Check the version, if it is 1.x then stop
       typedef const GLubyte * (APIENTRY * GetString_t)(GLenum name);
       GetString_t GetString = cs_bitCast<GetString_t>(::GetProcAddress(lib, "glGetString"));
 
-      if (GetString) {
+      if (GetString != nullptr) {
          if (const char *versionStr = reinterpret_cast<const char *>(GetString(GL_VERSION))) {
             const QByteArray version(versionStr);
             const int majorDot = version.indexOf('.');
@@ -438,36 +425,44 @@ bool QWindowsOpenGLTester::testDesktopGL()
                if (minorDot == -1) {
                   minorDot = version.size();
                }
+
                const int major = version.mid(0, majorDot).toInt();
                const int minor = version.mid(majorDot + 1, minorDot - majorDot - 1).toInt();
 
-               qDebug("Basic wglCreateContext gives version %d.%d", major, minor);
-               // Try to be as lenient as possible. Missing version, bogus values and
-               // such are all accepted. The driver may still be functional. Only
-               // check for known-bad cases, like versions "1.4.0 ...".
-
                if (major == 1) {
+#if defined(CS_SHOW_DEBUG_PLATFORM)
+                  qDebug("QWindowsOpenGLTester::testDesktopGL() OpenGL version 1.x is unsupported");
+#endif
+
                   result = false;
-                  qDebug("OpenGL version too low");
+
+               } else {
+#if defined(CS_SHOW_DEBUG_PLATFORM)
+                  qDebug("QWindowsOpenGLTester::testDesktopGL() OpenGL version %d.%d", major, minor);
+#endif
                }
             }
          }
 
       } else {
+         // "glGetString" was added in version 2
+#if defined(CS_SHOW_DEBUG_PLATFORM)
+         qDebug("QWindowsOpenGLTester::testDesktopGL() OpenGL version 1.x is unsupported");
+#endif
+
          result = false;
-         qDebug("OpenGL 1.x entry points not found");
       }
 
-      // Check for a shader-specific function.
-      if (WGL_GetProcAddress("glCreateShader")) {
+      // Check for a shader specific function
+      if (result || WGL_GetProcAddress("glCreateShader")) {
          result = true;
-         qDebug("OpenGL 2.0 entry points available");
-      } else {
-         qDebug("OpenGL 2.0 entry points not found");
       }
 
    } else {
-      qDebug("Failed to load opengl32.dll");
+#if defined(CS_SHOW_DEBUG_PLATFORM)
+         qDebug("QWindowsOpenGLTester::testDesktopGL() Failed to load opengl32.dll");
+#endif
+
    }
 
 cleanup:
@@ -487,12 +482,14 @@ cleanup:
       DestroyWindow(wnd);
       UnregisterClass(className, GetModuleHandle(nullptr));
    }
-   // No FreeLibrary. Some implementations, Mesa in particular, deadlock when trying to unload.
+
+   // No calls to FreeLibrary, some implementations like Mesa in particular deadlock when trying to unload
 
    return result;
 
 #else
    return false;
+
 #endif
 }
 

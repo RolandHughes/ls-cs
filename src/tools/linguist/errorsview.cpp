@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -21,22 +21,21 @@
 *
 ***********************************************************************/
 
-#include "errorsview.h"
+#include <errorsview.h>
 
-#include "messagemodel.h"
+#include <messagemodel.h>
 
-#include <QList>
-#include <QListView>
-#include <QStandardItem>
-#include <QStandardItemModel>
-#include <QString>
-#include <QTextEdit>
-#include <QUrl>
-#include <QVBoxLayout>
+#include <qlist.h>
+#include <qlistview.h>
+#include <qstandarditem.h>
+#include <qstandarditemmodel.h>
+#include <qstring.h>
+#include <qtextedit.h>
+#include <qurl.h>
+#include <qvboxlayout.h>
 
-ErrorsView::ErrorsView(MultiDataModel *dataModel, QWidget *parent) :
-   QListView(parent),
-   m_dataModel(dataModel)
+ErrorsView::ErrorsView(MultiDataModel *dataModel, QWidget *parent)
+   : QListView(parent), m_dataModel(dataModel)
 {
    m_list = new QStandardItemModel(this);
    setModel(m_list);

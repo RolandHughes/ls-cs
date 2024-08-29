@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -487,16 +487,14 @@ bool QHttpNetworkReplyPrivate::parseStatus(const QByteArray &status)
    // that makes: 'HTTP/n.n xxx Message'
    // byte count:  0123456789012
 
-   static const int minLength = 11;
-   static const int dotPos = 6;
-   static const int spacePos = 8;
-   static const char httpMagic[] = "HTTP/";
+   static constexpr const int minLength = 11;
+   static constexpr const int dotPos = 6;
+   static constexpr const int spacePos = 8;
+   static constexpr const char httpMagic[] = "HTTP/";
 
-   if (status.length() < minLength
-         || !status.startsWith(httpMagic)
-         || status.at(dotPos) != '.'
-         || status.at(spacePos) != ' ') {
-      // I don't know how to parse this status line
+   if (status.length() < minLength || ! status.startsWith(httpMagic) || status.at(dotPos) != '.' || status.at(spacePos) != ' ') {
+      // unable to parse this status line
+
       return false;
    }
 

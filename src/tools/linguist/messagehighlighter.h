@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,8 +24,8 @@
 #ifndef MESSAGEHIGHLIGHTER_H
 #define MESSAGEHIGHLIGHTER_H
 
-#include <qtextedit.h>
 #include <qsyntaxhighlighter.h>
+#include <qtextedit.h>
 
 // Message highlighter based on HtmlSyntaxHighlighter from designer
 class MessageHighlighter : public QSyntaxHighlighter

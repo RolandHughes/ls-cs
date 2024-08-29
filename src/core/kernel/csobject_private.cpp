@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -21,9 +21,10 @@
 *
 ***********************************************************************/
 
-#include <qobject.h>
-#include <qthread_p.h>
 #include <qabstracteventdispatcher.h>
+#include <qobject.h>
+
+#include <qthread_p.h>
 
 void CSInternalChildren::deleteChildren(QObject *object)
 {
@@ -63,7 +64,6 @@ void CSInternalChildren::set_mParent(QObject *object, QObject *value)
 }
 
 // **
-
 CSAbstractDeclarativeData *CSInternalDeclarativeData::get_m_declarativeData(const QObject *object)
 {
    if (! object) {
@@ -81,7 +81,6 @@ void CSInternalDeclarativeData::set_m_declarativeData(QObject *object, CSAbstrac
 
    object->m_declarativeData = value;
 }
-
 
 // **
 bool CSInternalEvents::get_m_sendChildEvents(const QObject *object)
@@ -111,7 +110,7 @@ int CSInternalEvents::get_m_PostedEvents(const QObject *object)
    return object->m_postedEvents;
 }
 
-QList<QPointer<QObject> > &CSInternalEvents::get_m_EventFilters(QObject *object)
+QList<QPointer<QObject>> &CSInternalEvents::get_m_EventFilters(QObject *object)
 {
    if (! object) {
       static QList<QPointer<QObject>> emptyList;
@@ -149,7 +148,6 @@ void CSInternalEvents::set_m_receiveChildEvents(QObject *object, bool data)
    object->m_receiveChildEvents = data;
 }
 
-
 // **
 bool CSInternalRefCount::get_m_wasDeleted(const QObject *object)
 {
@@ -171,14 +169,13 @@ void CSInternalRefCount::set_m_wasDeleted(QObject *object, bool data)
 
 std::atomic<QtSharedPointer::ExternalRefCountData *> &CSInternalRefCount::get_m_SharedRefCount(const QObject *object)
 {
-   if (! object) {
+   if (object == nullptr) {
       static std::atomic<QtSharedPointer::ExternalRefCountData *> emptyAtomic;
       return emptyAtomic;
    }
 
    return object->m_sharedRefCount;
 }
-
 
 // **
 bool CSInternalSender::isSender(const QObject *object, const QObject *receiver, const QString &signal)
@@ -207,7 +204,6 @@ QList<QObject *> CSInternalSender::senderList(const QObject *object)
 
    return object->senderList();
 }
-
 
 // **
 QThreadData *CSInternalThreadData::get_m_ThreadData(const QObject *object)

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -176,7 +176,7 @@ QList<QSslCertificate> QSslCertificate::fromPath(const QString &path, QSsl::Enco
 QList<QSslCertificate> QSslCertificate::fromDevice(QIODevice *device, QSsl::EncodingFormat format)
 {
    if (!device) {
-      qWarning("QSslCertificate::fromDevice: can not read from a null device");
+      qWarning("QSslCertificate::fromDevice() Unable to read device (nullptr)");
       return QList<QSslCertificate>();
    }
 

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -36,11 +36,11 @@
 
 #define CP_READONLY   5
 
-static const int windowsItemFrame     =  2;    // menu item frame width
-static const int windowsItemHMargin   =  3;    // menu item hor text margin
-static const int windowsItemVMargin   =  4;    // menu item ver text margin
-static const int windowsArrowHMargin  =  6;    // arrow horizontal margin
-static const int windowsRightBorder   = 15;    // right border on windows
+static constexpr const int windowsItemFrame    =  2;    // menu item frame width
+static constexpr const int windowsItemHMargin  =  3;    // menu item hor text margin
+static constexpr const int windowsItemVMargin  =  4;    // menu item ver text margin
+static constexpr const int windowsArrowHMargin =  6;    // arrow horizontal margin
+static constexpr const int windowsRightBorder  = 15;    // right border on windows
 
 #ifndef TMT_CONTENTMARGINS
 #  define TMT_CONTENTMARGINS 3602

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -105,7 +105,8 @@ QScreen *QPlatformScreen::screen() const
 
 QSizeF QPlatformScreen::physicalSize() const
 {
-   static const int dpi = 100;
+   static constexpr const int dpi = 100;
+
    return QSizeF(geometry().size()) / dpi * qreal(25.4);
 }
 

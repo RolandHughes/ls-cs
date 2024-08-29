@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -53,8 +53,21 @@ class Q_MULTIMEDIA_EXPORT QMediaPlaylist : public QObject, public QMediaBindable
    MULTI_CS_ENUM(Error)
 
  public:
-   enum PlaybackMode { CurrentItemOnce, CurrentItemInLoop, Sequential, Loop, Random };
-   enum Error { NoError, FormatError, FormatNotSupportedError, NetworkError, AccessDeniedError };
+   enum PlaybackMode {
+      CurrentItemOnce,
+      CurrentItemInLoop,
+      Sequential,
+      Loop,
+      Random
+   };
+
+   enum Error {
+      NoError,
+      FormatError,
+      FormatNotSupportedError,
+      NetworkError,
+      AccessDeniedError
+   };
 
    explicit QMediaPlaylist(QObject *parent = nullptr);
    virtual ~QMediaPlaylist();

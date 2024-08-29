@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -30,12 +30,12 @@ template <class Key, class T>
 class QCache
 {
    struct Node {
-      inline Node()
+      Node()
          : keyPtr(0)
       {
       }
 
-      inline Node(T *data, int cost)
+      Node(T *data, int cost)
          : keyPtr(nullptr), t(data), c(cost), p(nullptr), n(nullptr)
       {
       }
@@ -87,6 +87,7 @@ class QCache
       }
 
       Node &n = *i;
+
       if (f != &n) {
          if (n.p) {
             n.p->n = n.n;
@@ -95,6 +96,7 @@ class QCache
          if (n.n) {
             n.n->p = n.p;
          }
+
          if (l == &n) {
             l = n.p;
          }
@@ -104,6 +106,7 @@ class QCache
          f->p = &n;
          f = &n;
       }
+
       return n.t;
    }
 
@@ -113,7 +116,7 @@ class QCache
    QCache(const QCache &) = delete;
    QCache &operator=(const QCache &) = delete;
 
-   inline ~QCache() {
+   ~QCache() {
       clear();
    }
 

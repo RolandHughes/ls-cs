@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -30,11 +30,11 @@
 #include <write_icondata.h>
 
 #include <qdatastream.h>
-#include <qtextstream.h>
-#include <qtextcodec.h>
 #include <qdir.h>
 #include <qfile.h>
 #include <qfileinfo.h>
+#include <qtextcodec.h>
+#include <qtextstream.h>
 
 namespace CPP {
 

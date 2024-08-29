@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -28,10 +28,7 @@
 #include <qvector.h>
 #include <qscopedpointer.h>
 
-
-
 #ifndef QT_NO_SHORTCUT
-
 
 class QKeyEvent;
 class QShortcutMapPrivate;
@@ -48,6 +45,7 @@ class Q_GUI_EXPORT QShortcutMap
    ~QShortcutMap();
 
    typedef bool (*ContextMatcher)(QObject *object, Qt::ShortcutContext context);
+
    int addShortcut(QObject *owner, const QKeySequence &key, Qt::ShortcutContext context, ContextMatcher matcher);
    int removeShortcut(int id, QObject *owner, const QKeySequence &key = QKeySequence());
    int setShortcutEnabled(bool enable, int id, QObject *owner, const QKeySequence &key = QKeySequence());
@@ -57,6 +55,10 @@ class Q_GUI_EXPORT QShortcutMap
 
    bool tryShortcut(QKeyEvent *event);
    bool hasShortcutForKeySequence(const QKeySequence &seq) const;
+
+#if defined(CS_SHOW_DEBUG_GUI)
+   void dumpMap() const;
+#endif
 
  private:
    void resetState();

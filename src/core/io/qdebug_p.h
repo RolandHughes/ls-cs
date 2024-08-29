@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,10 +24,10 @@
 #ifndef QDEBUG_P_H
 #define QDEBUG_P_H
 
-#include "qdebug.h"
-#include "qmetaobject.h"
-#include "qflags.h"
+#include <qdebug.h>
 
+#include <qflags.h>
+#include <qmetaobject.h>
 
 namespace QtDebugUtils {
 
@@ -36,26 +36,26 @@ namespace QtDebugUtils {
 template <class Point>
 static inline void formatQPoint(QDebug &debug, const Point &point)
 {
-    debug << point.x() << ',' << point.y();
+   debug << point.x() << ',' << point.y();
 }
 
 template <class Size>
 static inline void formatQSize(QDebug &debug, const Size &size)
 {
-    debug << size.width() << ", " << size.height();
+   debug << size.width() << ", " << size.height();
 }
 
 template <class Rect>
 static inline void formatQRect(QDebug &debug, const Rect &rect)
 {
-    debug << rect.x() << ',' << rect.y() << ' ' << rect.width() << 'x' << rect.height();
+   debug << rect.x() << ',' << rect.y() << ' ' << rect.width() << 'x' << rect.height();
 }
 
 template <class Margins>
 static inline void formatQMargins(QDebug &debug, const Margins &margins)
 {
-    debug << margins.left() << ", " << margins.top() << ", " << margins.right()
-        << ", " << margins.bottom();
+   debug << margins.left() << ", " << margins.top() << ", " << margins.right()
+         << ", " << margins.bottom();
 }
 
 template <class QEnum>
@@ -78,10 +78,10 @@ static inline void formatQEnum(QDebug &debug, QEnum value)
 template <class QEnum>
 static inline void formatNonNullQEnum(QDebug &debug, const char *prefix, QEnum value)
 {
-    if (value) {
-         debug << prefix;
-         formatQEnum(debug, value);
-    }
+   if (value) {
+      debug << prefix;
+      formatQEnum(debug, value);
+   }
 }
 
 template <class Enum>
@@ -105,12 +105,11 @@ static inline void formatQFlags(QDebug &debug, const QFlags<Enum> &value)
 template <class Enum>
 static inline void formatNonNullQFlags(QDebug &debug, const char *prefix, const QFlags<Enum> &value)
 {
-    if (value) {
-        debug << prefix;
-        formatQFlags(debug, value);
-    }
+   if (value) {
+      debug << prefix;
+      formatQFlags(debug, value);
+   }
 }
-
 
 } // namespace QtDebugUtils
 

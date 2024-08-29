@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,14 +24,14 @@
 #ifndef QFUTUREINTERFACE_P_H
 #define QFUTUREINTERFACE_P_H
 
-#include <qelapsedtimer.h>
 #include <qcoreevent.h>
-#include <qlist.h>
-#include <qwaitcondition.h>
-#include <qrunnable.h>
+#include <qelapsedtimer.h>
 #include <qfutureinterface.h>
-#include <qtconcurrentresultstore.h>
+#include <qlist.h>
+#include <qrunnable.h>
 #include <qtconcurrentexception.h>
+#include <qtconcurrentresultstore.h>
+#include <qwaitcondition.h>
 
 class QFutureCallOutEvent : public QEvent
 {
@@ -48,48 +48,42 @@ class QFutureCallOutEvent : public QEvent
    };
 
    QFutureCallOutEvent()
-      : QEvent(QEvent::FutureCallOut), callOutType(CallOutType(0)), index1(-1), index2(-1) {
-   }
+      : QEvent(QEvent::FutureCallOut), m_callOutType(CallOutType(0)), m_index1(-1), m_index2(-1)
+   { }
 
    QFutureCallOutEvent(CallOutType callOutType, int index1 = -1)
-      : QEvent(QEvent::FutureCallOut), callOutType(callOutType), index1(index1), index2(-1) {
-   }
+      : QEvent(QEvent::FutureCallOut), m_callOutType(callOutType), m_index1(index1), m_index2(-1)
+   { }
 
    QFutureCallOutEvent(CallOutType callOutType, int index1, int index2)
-      : QEvent(QEvent::FutureCallOut), callOutType(callOutType), index1(index1), index2(index2) {
-   }
+      : QEvent(QEvent::FutureCallOut), m_callOutType(callOutType), m_index1(index1), m_index2(index2)
+   { }
 
    QFutureCallOutEvent(CallOutType callOutType, int index1, const QString &text)
-      : QEvent(QEvent::FutureCallOut),
-        callOutType(callOutType),
-        index1(index1),
-        index2(-1),
-        text(text) {
-   }
+      : QEvent(QEvent::FutureCallOut), m_callOutType(callOutType), m_index1(index1), m_index2(-1), m_text(text)
+   { }
 
-   CallOutType callOutType;
-   int index1;
-   int index2;
-   QString text;
+   CallOutType m_callOutType;
+   int m_index1;
+   int m_index2;
+   QString m_text;
 
    QFutureCallOutEvent *clone() const {
-      return new QFutureCallOutEvent(callOutType, index1, index2, text);
+      return new QFutureCallOutEvent(m_callOutType, m_index1, m_index2, m_text);
    }
 
  private:
    QFutureCallOutEvent(CallOutType callOutType, int index1, int index2, const QString &text)
-      : QEvent(QEvent::FutureCallOut),
-        callOutType(callOutType),
-        index1(index1),
-        index2(index2),
-        text(text) {
-   }
+      : QEvent(QEvent::FutureCallOut), m_callOutType(callOutType), m_index1(index1), m_index2(index2), m_text(text)
+   { }
 };
 
 class QFutureCallOutInterface
 {
  public:
-   virtual ~QFutureCallOutInterface() {}
+   virtual ~QFutureCallOutInterface()
+   { }
+
    virtual void postCallOutEvent(const QFutureCallOutEvent &) = 0;
    virtual void callOutInterfaceDisconnected() = 0;
 };

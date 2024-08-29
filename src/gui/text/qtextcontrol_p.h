@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -340,12 +340,14 @@ class QUnicodeControlCharacterMenu : public QMenu
 class QTextEditMimeData : public QMimeData
 {
  public:
-   inline QTextEditMimeData(const QTextDocumentFragment &aFragment) : fragment(aFragment) {}
+   QTextEditMimeData(const QTextDocumentFragment &aFragment)
+      : fragment(aFragment)
+   { }
 
-   virtual QStringList formats() const override;
+   QStringList formats() const override;
 
  protected:
-   virtual QVariant retrieveData(const QString &mimeType, QVariant::Type type) const override;
+   QVariant retrieveData(const QString &mimeType, QVariant::Type type) const override;
 
  private:
    void setup() const;

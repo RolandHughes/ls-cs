@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2013 Klarälvdalens Datakonsult AB, a KDAB Group company
 * Copyright (c) 2015 The Qt Company Ltd.
@@ -31,29 +31,39 @@
 
 #ifdef __GLEW_H__
 #if defined(Q_CC_GNU)
-#warning qopenglfunctions.h is not compatible with GLEW, GLEW defines will be undefined
-#warning To use GLEW with Qt, do not include <qopengl.h> or <QOpenGLFunctions> after glew.h
+#warning Header file qopenglfunctions.h is not compatible with GLEW, GLEW defines will be undefined
+#warning To use GLEW with CS, do not include <qopengl.h> or <QOpenGLFunctions> after glew.h
 #endif
 #endif
 
 #include <qopengl.h>
 #include <qopenglcontext.h>
 
-//#define Q_ENABLE_OPENGL_FUNCTIONS_DEBUG
+#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
 
-#ifdef Q_ENABLE_OPENGL_FUNCTIONS_DEBUG
 #include <stdio.h>
+
 #define Q_OPENGL_FUNCTIONS_DEBUG \
     GLenum error = glGetError(); \
     if (error != GL_NO_ERROR) { \
-        unsigned clamped = qMin(unsigned(error - GL_INVALID_ENUM), 4U); \
-        const char *errors[] = { "GL_INVALID_ENUM", "GL_INVALID_VALUE", "GL_INVALID_OPERATION", "Unknown" }; \
-        printf("GL error at %s:%d: %s\n", __FILE__, __LINE__, errors[clamped]); \
-        int *value = 0; \
-        *value = 0; \
+       unsigned clamped = qMin(unsigned(error - GL_INVALID_ENUM), 4U); \
+       const char *errors[] = { "GL_INVALID_ENUM", "GL_INVALID_VALUE", "GL_INVALID_OPERATION", "Unknown" }; \
+       qDebug("GL error at %s:%d, %s", __FILE__, __LINE__, errors[clamped]); \
     }
+
+#define Q_OPENGL_FUNCTIONS_DEBUG_ARG(var) \
+    GLenum error = glGetError(); \
+    if (error != GL_NO_ERROR) { \
+       unsigned clamped = qMin(unsigned(error - GL_INVALID_ENUM), 4U); \
+       const char *errors[] = { "GL_INVALID_ENUM", "GL_INVALID_VALUE", "GL_INVALID_OPERATION", "Unknown" }; \
+       qDebug("GL error at %s:%d, %s Argument=%d", __FILE__, __LINE__, errors[clamped], var); \
+    }
+
 #else
+
 #define Q_OPENGL_FUNCTIONS_DEBUG
+#define Q_OPENGL_FUNCTIONS_DEBUG_ARG(var)
+
 #endif
 
 struct QOpenGLFunctionsPrivate;
@@ -244,150 +254,155 @@ public:
     void initializeOpenGLFunctions();
 
     // GLES2 + OpenGL1 common subset
-    void glBindTexture(GLenum target, GLuint texture);
-    void glBlendFunc(GLenum sfactor, GLenum dfactor);
-    void glClear(GLbitfield mask);
-    void glClearColor(GLclampf red, GLclampf green, GLclampf blue, GLclampf alpha);
-    void glClearStencil(GLint s);
-    void glColorMask(GLboolean red, GLboolean green, GLboolean blue, GLboolean alpha);
-    void glCopyTexImage2D(GLenum target, GLint level, GLenum internalformat, GLint x, GLint y, GLsizei width, GLsizei height, GLint border);
-    void glCopyTexSubImage2D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint x, GLint y, GLsizei width, GLsizei height);
-    void glCullFace(GLenum mode);
-    void glDeleteTextures(GLsizei n, const GLuint* textures);
-    void glDepthFunc(GLenum func);
-    void glDepthMask(GLboolean flag);
-    void glDisable(GLenum cap);
-    void glDrawArrays(GLenum mode, GLint first, GLsizei count);
-    void glDrawElements(GLenum mode, GLsizei count, GLenum type, const GLvoid* indices);
-    void glEnable(GLenum cap);
-    void glFinish();
-    void glFlush();
-    void glFrontFace(GLenum mode);
-    void glGenTextures(GLsizei n, GLuint* textures);
-    void glGetBooleanv(GLenum pname, GLboolean* params);
-    GLenum glGetError();
-    void glGetFloatv(GLenum pname, GLfloat* params);
-    void glGetIntegerv(GLenum pname, GLint* params);
-    const GLubyte *glGetString(GLenum name);
-    void glGetTexParameterfv(GLenum target, GLenum pname, GLfloat* params);
-    void glGetTexParameteriv(GLenum target, GLenum pname, GLint* params);
-    void glHint(GLenum target, GLenum mode);
-    GLboolean glIsEnabled(GLenum cap);
-    GLboolean glIsTexture(GLuint texture);
-    void glLineWidth(GLfloat width);
-    void glPixelStorei(GLenum pname, GLint param);
-    void glPolygonOffset(GLfloat factor, GLfloat units);
-    void glReadPixels(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLvoid* pixels);
-    void glScissor(GLint x, GLint y, GLsizei width, GLsizei height);
-    void glStencilFunc(GLenum func, GLint ref, GLuint mask);
-    void glStencilMask(GLuint mask);
-    void glStencilOp(GLenum fail, GLenum zfail, GLenum zpass);
-    void glTexImage2D(GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const GLvoid* pixels);
-    void glTexParameterf(GLenum target, GLenum pname, GLfloat param);
-    void glTexParameterfv(GLenum target, GLenum pname, const GLfloat* params);
-    void glTexParameteri(GLenum target, GLenum pname, GLint param);
-    void glTexParameteriv(GLenum target, GLenum pname, const GLint* params);
-    void glTexSubImage2D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, const GLvoid* pixels);
-    void glViewport(GLint x, GLint y, GLsizei width, GLsizei height);
+    inline void glBindTexture(GLenum target, GLuint texture);
+    inline void glBlendFunc(GLenum sfactor, GLenum dfactor);
+    inline void glClear(GLbitfield mask);
+    inline void glClearColor(GLclampf red, GLclampf green, GLclampf blue, GLclampf alpha);
+    inline void glClearStencil(GLint s);
+    inline void glColorMask(GLboolean red, GLboolean green, GLboolean blue, GLboolean alpha);
+    inline void glCopyTexImage2D(GLenum target, GLint level, GLenum internalformat, GLint x, GLint y, GLsizei width, GLsizei height, GLint border);
+    inline void glCopyTexSubImage2D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint x, GLint y, GLsizei width, GLsizei height);
+    inline void glCullFace(GLenum mode);
+    inline void glDeleteTextures(GLsizei n, const GLuint* textures);
+    inline void glDepthFunc(GLenum func);
+    inline void glDepthMask(GLboolean flag);
+    inline void glDisable(GLenum cap);
+    inline void glDrawArrays(GLenum mode, GLint first, GLsizei count);
+    inline void glDrawElements(GLenum mode, GLsizei count, GLenum type, const GLvoid* indices);
+    inline void glEnable(GLenum cap);
+    inline void glFinish();
+    inline void glFlush();
+    inline void glFrontFace(GLenum mode);
+    inline void glGenTextures(GLsizei n, GLuint* textures);
+    inline void glGetBooleanv(GLenum pname, GLboolean* params);
+    inline GLenum glGetError();
+
+    inline void glGetFloatv(GLenum pname, GLfloat* params);
+    inline void glGetIntegerv(GLenum pname, GLint* params);
+    inline const GLubyte *glGetString(GLenum name);
+    inline void glGetTexParameterfv(GLenum target, GLenum pname, GLfloat* params);
+    inline void glGetTexParameteriv(GLenum target, GLenum pname, GLint* params);
+    inline void glHint(GLenum target, GLenum mode);
+    inline GLboolean glIsEnabled(GLenum cap);
+    inline GLboolean glIsTexture(GLuint texture);
+    inline void glLineWidth(GLfloat width);
+    inline void glPixelStorei(GLenum pname, GLint param);
+    inline void glPolygonOffset(GLfloat factor, GLfloat units);
+    inline void glReadPixels(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLvoid* pixels);
+    inline void glScissor(GLint x, GLint y, GLsizei width, GLsizei height);
+    inline void glStencilFunc(GLenum func, GLint ref, GLuint mask);
+    inline void glStencilMask(GLuint mask);
+    inline void glStencilOp(GLenum fail, GLenum zfail, GLenum zpass);
+    inline void glTexImage2D(GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLint border,
+          GLenum format, GLenum type, const GLvoid* pixels);
+    inline void glTexParameterf(GLenum target, GLenum pname, GLfloat param);
+    inline void glTexParameterfv(GLenum target, GLenum pname, const GLfloat* params);
+    inline void glTexParameteri(GLenum target, GLenum pname, GLint param);
+    inline void glTexParameteriv(GLenum target, GLenum pname, const GLint* params);
+    inline void glTexSubImage2D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height,
+         GLenum format, GLenum type, const GLvoid* pixels);
+    inline void glViewport(GLint x, GLint y, GLsizei width, GLsizei height);
 
     // GL(ES)2
-    void glActiveTexture(GLenum texture);
-    void glAttachShader(GLuint program, GLuint shader);
-    void glBindAttribLocation(GLuint program, GLuint index, const char* name);
-    void glBindBuffer(GLenum target, GLuint buffer);
-    void glBindFramebuffer(GLenum target, GLuint framebuffer);
-    void glBindRenderbuffer(GLenum target, GLuint renderbuffer);
-    void glBlendColor(GLclampf red, GLclampf green, GLclampf blue, GLclampf alpha);
-    void glBlendEquation(GLenum mode);
-    void glBlendEquationSeparate(GLenum modeRGB, GLenum modeAlpha);
-    void glBlendFuncSeparate(GLenum srcRGB, GLenum dstRGB, GLenum srcAlpha, GLenum dstAlpha);
-    void glBufferData(GLenum target, qopengl_GLsizeiptr size, const void* data, GLenum usage);
-    void glBufferSubData(GLenum target, qopengl_GLintptr offset, qopengl_GLsizeiptr size, const void* data);
-    GLenum glCheckFramebufferStatus(GLenum target);
-    void glClearDepthf(GLclampf depth);
-    void glCompileShader(GLuint shader);
-    void glCompressedTexImage2D(GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLint border, GLsizei imageSize, const void* data);
-    void glCompressedTexSubImage2D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLsizei imageSize, const void* data);
-    GLuint glCreateProgram();
-    GLuint glCreateShader(GLenum type);
-    void glDeleteBuffers(GLsizei n, const GLuint* buffers);
-    void glDeleteFramebuffers(GLsizei n, const GLuint* framebuffers);
-    void glDeleteProgram(GLuint program);
-    void glDeleteRenderbuffers(GLsizei n, const GLuint* renderbuffers);
-    void glDeleteShader(GLuint shader);
-    void glDepthRangef(GLclampf zNear, GLclampf zFar);
-    void glDetachShader(GLuint program, GLuint shader);
-    void glDisableVertexAttribArray(GLuint index);
-    void glEnableVertexAttribArray(GLuint index);
-    void glFramebufferRenderbuffer(GLenum target, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer);
-    void glFramebufferTexture2D(GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level);
-    void glGenBuffers(GLsizei n, GLuint* buffers);
-    void glGenerateMipmap(GLenum target);
-    void glGenFramebuffers(GLsizei n, GLuint* framebuffers);
-    void glGenRenderbuffers(GLsizei n, GLuint* renderbuffers);
-    void glGetActiveAttrib(GLuint program, GLuint index, GLsizei bufsize, GLsizei* length, GLint* size, GLenum* type, char* name);
-    void glGetActiveUniform(GLuint program, GLuint index, GLsizei bufsize, GLsizei* length, GLint* size, GLenum* type, char* name);
-    void glGetAttachedShaders(GLuint program, GLsizei maxcount, GLsizei* count, GLuint* shaders);
-    GLint glGetAttribLocation(GLuint program, const char* name);
-    void glGetBufferParameteriv(GLenum target, GLenum pname, GLint* params);
-    void glGetFramebufferAttachmentParameteriv(GLenum target, GLenum attachment, GLenum pname, GLint* params);
-    void glGetProgramiv(GLuint program, GLenum pname, GLint* params);
-    void glGetProgramInfoLog(GLuint program, GLsizei bufsize, GLsizei* length, char* infolog);
-    void glGetRenderbufferParameteriv(GLenum target, GLenum pname, GLint* params);
-    void glGetShaderiv(GLuint shader, GLenum pname, GLint* params);
-    void glGetShaderInfoLog(GLuint shader, GLsizei bufsize, GLsizei* length, char* infolog);
-    void glGetShaderPrecisionFormat(GLenum shadertype, GLenum precisiontype, GLint* range, GLint* precision);
-    void glGetShaderSource(GLuint shader, GLsizei bufsize, GLsizei* length, char* source);
-    void glGetUniformfv(GLuint program, GLint location, GLfloat* params);
-    void glGetUniformiv(GLuint program, GLint location, GLint* params);
-    GLint glGetUniformLocation(GLuint program, const char* name);
-    void glGetVertexAttribfv(GLuint index, GLenum pname, GLfloat* params);
-    void glGetVertexAttribiv(GLuint index, GLenum pname, GLint* params);
-    void glGetVertexAttribPointerv(GLuint index, GLenum pname, void** pointer);
-    GLboolean glIsBuffer(GLuint buffer);
-    GLboolean glIsFramebuffer(GLuint framebuffer);
-    GLboolean glIsProgram(GLuint program);
-    GLboolean glIsRenderbuffer(GLuint renderbuffer);
-    GLboolean glIsShader(GLuint shader);
-    void glLinkProgram(GLuint program);
-    void glReleaseShaderCompiler();
-    void glRenderbufferStorage(GLenum target, GLenum internalformat, GLsizei width, GLsizei height);
-    void glSampleCoverage(GLclampf value, GLboolean invert);
-    void glShaderBinary(GLint n, const GLuint* shaders, GLenum binaryformat, const void* binary, GLint length);
-    void glShaderSource(GLuint shader, GLsizei count, const char** string, const GLint* length);
-    void glStencilFuncSeparate(GLenum face, GLenum func, GLint ref, GLuint mask);
-    void glStencilMaskSeparate(GLenum face, GLuint mask);
-    void glStencilOpSeparate(GLenum face, GLenum fail, GLenum zfail, GLenum zpass);
-    void glUniform1f(GLint location, GLfloat x);
-    void glUniform1fv(GLint location, GLsizei count, const GLfloat* v);
-    void glUniform1i(GLint location, GLint x);
-    void glUniform1iv(GLint location, GLsizei count, const GLint* v);
-    void glUniform2f(GLint location, GLfloat x, GLfloat y);
-    void glUniform2fv(GLint location, GLsizei count, const GLfloat* v);
-    void glUniform2i(GLint location, GLint x, GLint y);
-    void glUniform2iv(GLint location, GLsizei count, const GLint* v);
-    void glUniform3f(GLint location, GLfloat x, GLfloat y, GLfloat z);
-    void glUniform3fv(GLint location, GLsizei count, const GLfloat* v);
-    void glUniform3i(GLint location, GLint x, GLint y, GLint z);
-    void glUniform3iv(GLint location, GLsizei count, const GLint* v);
-    void glUniform4f(GLint location, GLfloat x, GLfloat y, GLfloat z, GLfloat w);
-    void glUniform4fv(GLint location, GLsizei count, const GLfloat* v);
-    void glUniform4i(GLint location, GLint x, GLint y, GLint z, GLint w);
-    void glUniform4iv(GLint location, GLsizei count, const GLint* v);
-    void glUniformMatrix2fv(GLint location, GLsizei count, GLboolean transpose, const GLfloat* value);
-    void glUniformMatrix3fv(GLint location, GLsizei count, GLboolean transpose, const GLfloat* value);
-    void glUniformMatrix4fv(GLint location, GLsizei count, GLboolean transpose, const GLfloat* value);
-    void glUseProgram(GLuint program);
-    void glValidateProgram(GLuint program);
-    void glVertexAttrib1f(GLuint indx, GLfloat x);
-    void glVertexAttrib1fv(GLuint indx, const GLfloat* values);
-    void glVertexAttrib2f(GLuint indx, GLfloat x, GLfloat y);
-    void glVertexAttrib2fv(GLuint indx, const GLfloat* values);
-    void glVertexAttrib3f(GLuint indx, GLfloat x, GLfloat y, GLfloat z);
-    void glVertexAttrib3fv(GLuint indx, const GLfloat* values);
-    void glVertexAttrib4f(GLuint indx, GLfloat x, GLfloat y, GLfloat z, GLfloat w);
-    void glVertexAttrib4fv(GLuint indx, const GLfloat* values);
-    void glVertexAttribPointer(GLuint indx, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const void* ptr);
+    inline void glActiveTexture(GLenum texture);
+    inline void glAttachShader(GLuint program, GLuint shader);
+    inline void glBindAttribLocation(GLuint program, GLuint index, const char* name);
+    inline void glBindBuffer(GLenum target, GLuint buffer);
+    inline void glBindFramebuffer(GLenum target, GLuint framebuffer);
+    inline void glBindRenderbuffer(GLenum target, GLuint renderbuffer);
+    inline void glBlendColor(GLclampf red, GLclampf green, GLclampf blue, GLclampf alpha);
+    inline void glBlendEquation(GLenum mode);
+    inline void glBlendEquationSeparate(GLenum modeRGB, GLenum modeAlpha);
+    inline void glBlendFuncSeparate(GLenum srcRGB, GLenum dstRGB, GLenum srcAlpha, GLenum dstAlpha);
+    inline void glBufferData(GLenum target, qopengl_GLsizeiptr size, const void* data, GLenum usage);
+    inline void glBufferSubData(GLenum target, qopengl_GLintptr offset, qopengl_GLsizeiptr size, const void* data);
+    inline GLenum glCheckFramebufferStatus(GLenum target);
+    inline void glClearDepthf(GLclampf depth);
+    inline void glCompileShader(GLuint shader);
+    inline void glCompressedTexImage2D(GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLint border,
+          GLsizei imageSize, const void* data);
+    inline void glCompressedTexSubImage2D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format,
+          GLsizei imageSize, const void* data);
+    inline GLuint glCreateProgram();
+    inline GLuint glCreateShader(GLenum type);
+    inline void glDeleteBuffers(GLsizei n, const GLuint* buffers);
+    inline void glDeleteFramebuffers(GLsizei n, const GLuint* framebuffers);
+    inline void glDeleteProgram(GLuint program);
+    inline void glDeleteRenderbuffers(GLsizei n, const GLuint* renderbuffers);
+    inline void glDeleteShader(GLuint shader);
+    inline void glDepthRangef(GLclampf zNear, GLclampf zFar);
+    inline void glDetachShader(GLuint program, GLuint shader);
+    inline void glDisableVertexAttribArray(GLuint index);
+    inline void glEnableVertexAttribArray(GLuint index);
+    inline void glFramebufferRenderbuffer(GLenum target, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer);
+    inline void glFramebufferTexture2D(GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level);
+    inline void glGenBuffers(GLsizei n, GLuint* buffers);
+    inline void glGenerateMipmap(GLenum target);
+    inline void glGenFramebuffers(GLsizei n, GLuint* framebuffers);
+    inline void glGenRenderbuffers(GLsizei n, GLuint* renderbuffers);
+    inline void glGetActiveAttrib(GLuint program, GLuint index, GLsizei bufsize, GLsizei* length, GLint* size, GLenum* type, char* name);
+    inline void glGetActiveUniform(GLuint program, GLuint index, GLsizei bufsize, GLsizei* length, GLint* size, GLenum* type, char* name);
+    inline void glGetAttachedShaders(GLuint program, GLsizei maxcount, GLsizei* count, GLuint* shaders);
+    inline GLint glGetAttribLocation(GLuint program, const char* name);
+    inline void glGetBufferParameteriv(GLenum target, GLenum pname, GLint* params);
+    inline void glGetFramebufferAttachmentParameteriv(GLenum target, GLenum attachment, GLenum pname, GLint* params);
+    inline void glGetProgramiv(GLuint program, GLenum pname, GLint* params);
+    inline void glGetProgramInfoLog(GLuint program, GLsizei bufsize, GLsizei* length, char* infolog);
+    inline void glGetRenderbufferParameteriv(GLenum target, GLenum pname, GLint* params);
+    inline void glGetShaderiv(GLuint shader, GLenum pname, GLint* params);
+    inline void glGetShaderInfoLog(GLuint shader, GLsizei bufsize, GLsizei* length, char* infolog);
+    inline void glGetShaderPrecisionFormat(GLenum shadertype, GLenum precisiontype, GLint* range, GLint* precision);
+    inline void glGetShaderSource(GLuint shader, GLsizei bufsize, GLsizei* length, char* source);
+    inline void glGetUniformfv(GLuint program, GLint location, GLfloat* params);
+    inline void glGetUniformiv(GLuint program, GLint location, GLint* params);
+    inline GLint glGetUniformLocation(GLuint program, const char* name);
+    inline void glGetVertexAttribfv(GLuint index, GLenum pname, GLfloat* params);
+    inline void glGetVertexAttribiv(GLuint index, GLenum pname, GLint* params);
+    inline void glGetVertexAttribPointerv(GLuint index, GLenum pname, void** pointer);
+    inline GLboolean glIsBuffer(GLuint buffer);
+    inline GLboolean glIsFramebuffer(GLuint framebuffer);
+    inline GLboolean glIsProgram(GLuint program);
+    inline GLboolean glIsRenderbuffer(GLuint renderbuffer);
+    inline GLboolean glIsShader(GLuint shader);
+    inline void glLinkProgram(GLuint program);
+    inline void glReleaseShaderCompiler();
+    inline void glRenderbufferStorage(GLenum target, GLenum internalformat, GLsizei width, GLsizei height);
+    inline void glSampleCoverage(GLclampf value, GLboolean invert);
+    inline void glShaderBinary(GLint n, const GLuint* shaders, GLenum binaryformat, const void* binary, GLint length);
+    inline void glShaderSource(GLuint shader, GLsizei count, const char** string, const GLint* length);
+    inline void glStencilFuncSeparate(GLenum face, GLenum func, GLint ref, GLuint mask);
+    inline void glStencilMaskSeparate(GLenum face, GLuint mask);
+    inline void glStencilOpSeparate(GLenum face, GLenum fail, GLenum zfail, GLenum zpass);
+    inline void glUniform1f(GLint location, GLfloat x);
+    inline void glUniform1fv(GLint location, GLsizei count, const GLfloat* v);
+    inline void glUniform1i(GLint location, GLint x);
+    inline void glUniform1iv(GLint location, GLsizei count, const GLint* v);
+    inline void glUniform2f(GLint location, GLfloat x, GLfloat y);
+    inline void glUniform2fv(GLint location, GLsizei count, const GLfloat* v);
+    inline void glUniform2i(GLint location, GLint x, GLint y);
+    inline void glUniform2iv(GLint location, GLsizei count, const GLint* v);
+    inline void glUniform3f(GLint location, GLfloat x, GLfloat y, GLfloat z);
+    inline void glUniform3fv(GLint location, GLsizei count, const GLfloat* v);
+    inline void glUniform3i(GLint location, GLint x, GLint y, GLint z);
+    inline void glUniform3iv(GLint location, GLsizei count, const GLint* v);
+    inline void glUniform4f(GLint location, GLfloat x, GLfloat y, GLfloat z, GLfloat w);
+    inline void glUniform4fv(GLint location, GLsizei count, const GLfloat* v);
+    inline void glUniform4i(GLint location, GLint x, GLint y, GLint z, GLint w);
+    inline void glUniform4iv(GLint location, GLsizei count, const GLint* v);
+    inline void glUniformMatrix2fv(GLint location, GLsizei count, GLboolean transpose, const GLfloat* value);
+    inline void glUniformMatrix3fv(GLint location, GLsizei count, GLboolean transpose, const GLfloat* value);
+    inline void glUniformMatrix4fv(GLint location, GLsizei count, GLboolean transpose, const GLfloat* value);
+    inline void glUseProgram(GLuint program);
+    inline void glValidateProgram(GLuint program);
+    inline void glVertexAttrib1f(GLuint indx, GLfloat x);
+    inline void glVertexAttrib1fv(GLuint indx, const GLfloat* values);
+    inline void glVertexAttrib2f(GLuint indx, GLfloat x, GLfloat y);
+    inline void glVertexAttrib2fv(GLuint indx, const GLfloat* values);
+    inline void glVertexAttrib3f(GLuint indx, GLfloat x, GLfloat y, GLfloat z);
+    inline void glVertexAttrib3fv(GLuint indx, const GLfloat* values);
+    inline void glVertexAttrib4f(GLuint indx, GLfloat x, GLfloat y, GLfloat z, GLfloat w);
+    inline void glVertexAttrib4fv(GLuint indx, const GLfloat* values);
+    inline void glVertexAttribPointer(GLuint indx, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const void* ptr);
 
 protected:
     QOpenGLFunctionsPrivate *d_ptr;
@@ -440,12 +455,14 @@ struct QOpenGLFunctionsPrivate
     void (QOPENGLF_APIENTRYP StencilFunc)(GLenum func, GLint ref, GLuint mask);
     void (QOPENGLF_APIENTRYP StencilMask)(GLuint mask);
     void (QOPENGLF_APIENTRYP StencilOp)(GLenum fail, GLenum zfail, GLenum zpass);
-    void (QOPENGLF_APIENTRYP TexImage2D)(GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const GLvoid* pixels);
+    void (QOPENGLF_APIENTRYP TexImage2D)(GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLint border,
+          GLenum format, GLenum type, const GLvoid* pixels);
     void (QOPENGLF_APIENTRYP TexParameterf)(GLenum target, GLenum pname, GLfloat param);
     void (QOPENGLF_APIENTRYP TexParameterfv)(GLenum target, GLenum pname, const GLfloat* params);
     void (QOPENGLF_APIENTRYP TexParameteri)(GLenum target, GLenum pname, GLint param);
     void (QOPENGLF_APIENTRYP TexParameteriv)(GLenum target, GLenum pname, const GLint* params);
-    void (QOPENGLF_APIENTRYP TexSubImage2D)(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, const GLvoid* pixels);
+    void (QOPENGLF_APIENTRYP TexSubImage2D)(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height,
+          GLenum format, GLenum type, const GLvoid* pixels);
     void (QOPENGLF_APIENTRYP Viewport)(GLint x, GLint y, GLsizei width, GLsizei height);
 
     void (QOPENGLF_APIENTRYP ActiveTexture)(GLenum texture);
@@ -462,8 +479,10 @@ struct QOpenGLFunctionsPrivate
     void (QOPENGLF_APIENTRYP BufferSubData)(GLenum target, qopengl_GLintptr offset, qopengl_GLsizeiptr size, const void* data);
     GLenum (QOPENGLF_APIENTRYP CheckFramebufferStatus)(GLenum target);
     void (QOPENGLF_APIENTRYP CompileShader)(GLuint shader);
-    void (QOPENGLF_APIENTRYP CompressedTexImage2D)(GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLint border, GLsizei imageSize, const void* data);
-    void (QOPENGLF_APIENTRYP CompressedTexSubImage2D)(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLsizei imageSize, const void* data);
+    void (QOPENGLF_APIENTRYP CompressedTexImage2D)(GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height,
+          GLint border, GLsizei imageSize, const void* data);
+    void (QOPENGLF_APIENTRYP CompressedTexSubImage2D)(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height,
+          GLenum format, GLsizei imageSize, const void* data);
     GLuint (QOPENGLF_APIENTRYP CreateProgram)();
     GLuint (QOPENGLF_APIENTRYP CreateShader)(GLenum type);
     void (QOPENGLF_APIENTRYP DeleteBuffers)(GLsizei n, const GLuint* buffers);
@@ -561,6 +580,7 @@ inline void QOpenGLFunctions::glBindTexture(GLenum target, GLuint texture)
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->BindTexture(target, texture);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -572,6 +592,7 @@ inline void QOpenGLFunctions::glBlendFunc(GLenum sfactor, GLenum dfactor)
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->BlendFunc(sfactor, dfactor);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -583,6 +604,7 @@ inline void QOpenGLFunctions::glClear(GLbitfield mask)
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->Clear(mask);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -594,6 +616,7 @@ inline void QOpenGLFunctions::glClearColor(GLclampf red, GLclampf green, GLclamp
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->ClearColor(red, green, blue, alpha);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -605,6 +628,7 @@ inline void QOpenGLFunctions::glClearStencil(GLint s)
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->ClearStencil(s);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -616,6 +640,7 @@ inline void QOpenGLFunctions::glColorMask(GLboolean red, GLboolean green, GLbool
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->ColorMask(red, green, blue, alpha);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -627,6 +652,7 @@ inline void QOpenGLFunctions::glCopyTexImage2D(GLenum target, GLint level, GLenu
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->CopyTexImage2D(target, level, internalformat, x, y, width,height, border);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -638,6 +664,7 @@ inline void QOpenGLFunctions::glCopyTexSubImage2D(GLenum target, GLint level, GL
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->CopyTexSubImage2D(target, level, xoffset, yoffset, x, y, width, height);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -649,6 +676,7 @@ inline void QOpenGLFunctions::glCullFace(GLenum mode)
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->CullFace(mode);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -660,6 +688,7 @@ inline void QOpenGLFunctions::glDeleteTextures(GLsizei n, const GLuint* textures
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->DeleteTextures(n, textures);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -671,6 +700,7 @@ inline void QOpenGLFunctions::glDepthFunc(GLenum func)
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->DepthFunc(func);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -682,6 +712,7 @@ inline void QOpenGLFunctions::glDepthMask(GLboolean flag)
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->DepthMask(flag);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -693,6 +724,7 @@ inline void QOpenGLFunctions::glDisable(GLenum cap)
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->Disable(cap);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -704,6 +736,7 @@ inline void QOpenGLFunctions::glDrawArrays(GLenum mode, GLint first, GLsizei cou
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->DrawArrays(mode, first, count);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -715,6 +748,7 @@ inline void QOpenGLFunctions::glDrawElements(GLenum mode, GLsizei count, GLenum 
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->DrawElements(mode, count, type, indices);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -726,6 +760,7 @@ inline void QOpenGLFunctions::glEnable(GLenum cap)
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->Enable(cap);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -737,6 +772,7 @@ inline void QOpenGLFunctions::glFinish()
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->Finish();
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -748,6 +784,7 @@ inline void QOpenGLFunctions::glFlush()
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->Flush();
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -759,6 +796,7 @@ inline void QOpenGLFunctions::glFrontFace(GLenum mode)
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->FrontFace(mode);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -770,6 +808,7 @@ inline void QOpenGLFunctions::glGenTextures(GLsizei n, GLuint* textures)
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->GenTextures(n, textures);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -792,6 +831,7 @@ inline GLenum QOpenGLFunctions::glGetError()
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     GLenum result = d_ptr->GetError();
 #endif
+
     return result;
 }
 
@@ -803,6 +843,7 @@ inline void QOpenGLFunctions::glGetFloatv(GLenum pname, GLfloat* params)
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->GetFloatv(pname, params);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -814,7 +855,8 @@ inline void QOpenGLFunctions::glGetIntegerv(GLenum pname, GLint* params)
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->GetIntegerv(pname, params);
 #endif
-    Q_OPENGL_FUNCTIONS_DEBUG
+
+    Q_OPENGL_FUNCTIONS_DEBUG_ARG(pname)
 }
 
 inline const GLubyte *QOpenGLFunctions::glGetString(GLenum name)
@@ -825,6 +867,7 @@ inline const GLubyte *QOpenGLFunctions::glGetString(GLenum name)
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     const GLubyte *result = d_ptr->GetString(name);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
     return result;
 }
@@ -837,6 +880,7 @@ inline void QOpenGLFunctions::glGetTexParameterfv(GLenum target, GLenum pname, G
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->GetTexParameterfv(target, pname, params);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -848,6 +892,7 @@ inline void QOpenGLFunctions::glGetTexParameteriv(GLenum target, GLenum pname, G
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->GetTexParameteriv(target, pname, params);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -859,6 +904,7 @@ inline void QOpenGLFunctions::glHint(GLenum target, GLenum mode)
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->Hint(target, mode);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -870,6 +916,7 @@ inline GLboolean QOpenGLFunctions::glIsEnabled(GLenum cap)
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     GLboolean result = d_ptr->IsEnabled(cap);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
     return result;
 }
@@ -882,6 +929,7 @@ inline GLboolean QOpenGLFunctions::glIsTexture(GLuint texture)
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     GLboolean result = d_ptr->IsTexture(texture);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
     return result;
 }
@@ -894,6 +942,7 @@ inline void QOpenGLFunctions::glLineWidth(GLfloat width)
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->LineWidth(width);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -916,6 +965,7 @@ inline void QOpenGLFunctions::glPolygonOffset(GLfloat factor, GLfloat units)
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->PolygonOffset(factor, units);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -927,6 +977,7 @@ inline void QOpenGLFunctions::glReadPixels(GLint x, GLint y, GLsizei width, GLsi
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->ReadPixels(x, y, width, height, format, type, pixels);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -938,6 +989,7 @@ inline void QOpenGLFunctions::glScissor(GLint x, GLint y, GLsizei width, GLsizei
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->Scissor(x, y, width, height);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -949,6 +1001,7 @@ inline void QOpenGLFunctions::glStencilFunc(GLenum func, GLint ref, GLuint mask)
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->StencilFunc(func, ref, mask);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -960,6 +1013,7 @@ inline void QOpenGLFunctions::glStencilMask(GLuint mask)
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->StencilMask(mask);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -971,10 +1025,12 @@ inline void QOpenGLFunctions::glStencilOp(GLenum fail, GLenum zfail, GLenum zpas
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->StencilOp(fail, zfail, zpass);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
-inline void QOpenGLFunctions::glTexImage2D(GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const GLvoid* pixels)
+inline void QOpenGLFunctions::glTexImage2D(GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLint border,
+      GLenum format, GLenum type, const GLvoid* pixels)
 {
 #ifdef QT_OPENGL_ES_2
     ::glTexImage2D(target, level, internalformat, width,height, border, format, type, pixels);
@@ -982,6 +1038,7 @@ inline void QOpenGLFunctions::glTexImage2D(GLenum target, GLint level, GLint int
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->TexImage2D(target, level, internalformat, width,height, border, format, type, pixels);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -993,6 +1050,7 @@ inline void QOpenGLFunctions::glTexParameterf(GLenum target, GLenum pname, GLflo
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->TexParameterf(target, pname, param);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1004,6 +1062,7 @@ inline void QOpenGLFunctions::glTexParameterfv(GLenum target, GLenum pname, cons
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->TexParameterfv(target, pname, params);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1015,6 +1074,7 @@ inline void QOpenGLFunctions::glTexParameteri(GLenum target, GLenum pname, GLint
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->TexParameteri(target, pname, param);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1026,10 +1086,12 @@ inline void QOpenGLFunctions::glTexParameteriv(GLenum target, GLenum pname, cons
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->TexParameteriv(target, pname, params);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
-inline void QOpenGLFunctions::glTexSubImage2D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, const GLvoid* pixels)
+inline void QOpenGLFunctions::glTexSubImage2D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height,
+      GLenum format, GLenum type, const GLvoid* pixels)
 {
 #ifdef QT_OPENGL_ES_2
     ::glTexSubImage2D(target, level, xoffset, yoffset, width, height, format, type, pixels);
@@ -1037,6 +1099,7 @@ inline void QOpenGLFunctions::glTexSubImage2D(GLenum target, GLint level, GLint 
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->TexSubImage2D(target, level, xoffset, yoffset, width, height, format, type, pixels);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1048,6 +1111,7 @@ inline void QOpenGLFunctions::glViewport(GLint x, GLint y, GLsizei width, GLsize
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->Viewport(x, y, width, height);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1061,6 +1125,7 @@ inline void QOpenGLFunctions::glActiveTexture(GLenum texture)
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->ActiveTexture(texture);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1072,6 +1137,7 @@ inline void QOpenGLFunctions::glAttachShader(GLuint program, GLuint shader)
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->AttachShader(program, shader);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1083,6 +1149,7 @@ inline void QOpenGLFunctions::glBindAttribLocation(GLuint program, GLuint index,
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->BindAttribLocation(program, index, name);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1094,6 +1161,7 @@ inline void QOpenGLFunctions::glBindBuffer(GLenum target, GLuint buffer)
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->BindBuffer(target, buffer);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1107,6 +1175,7 @@ inline void QOpenGLFunctions::glBindFramebuffer(GLenum target, GLuint framebuffe
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->BindFramebuffer(target, framebuffer);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1118,6 +1187,7 @@ inline void QOpenGLFunctions::glBindRenderbuffer(GLenum target, GLuint renderbuf
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->BindRenderbuffer(target, renderbuffer);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1129,6 +1199,7 @@ inline void QOpenGLFunctions::glBlendColor(GLclampf red, GLclampf green, GLclamp
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->BlendColor(red, green, blue, alpha);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1140,6 +1211,7 @@ inline void QOpenGLFunctions::glBlendEquation(GLenum mode)
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->BlendEquation(mode);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1151,6 +1223,7 @@ inline void QOpenGLFunctions::glBlendEquationSeparate(GLenum modeRGB, GLenum mod
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->BlendEquationSeparate(modeRGB, modeAlpha);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1162,6 +1235,7 @@ inline void QOpenGLFunctions::glBlendFuncSeparate(GLenum srcRGB, GLenum dstRGB, 
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->BlendFuncSeparate(srcRGB, dstRGB, srcAlpha, dstAlpha);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1173,6 +1247,7 @@ inline void QOpenGLFunctions::glBufferData(GLenum target, qopengl_GLsizeiptr siz
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->BufferData(target, size, data, usage);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1195,6 +1270,7 @@ inline GLenum QOpenGLFunctions::glCheckFramebufferStatus(GLenum target)
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     GLenum result = d_ptr->CheckFramebufferStatus(target);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
     return result;
 }
@@ -1218,10 +1294,12 @@ inline void QOpenGLFunctions::glCompileShader(GLuint shader)
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->CompileShader(shader);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
-inline void QOpenGLFunctions::glCompressedTexImage2D(GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLint border, GLsizei imageSize, const void* data)
+inline void QOpenGLFunctions::glCompressedTexImage2D(GLenum target, GLint level, GLenum internalformat, GLsizei width,
+      GLsizei height, GLint border, GLsizei imageSize, const void* data)
 {
 #ifdef QT_OPENGL_ES_2
     ::glCompressedTexImage2D(target, level, internalformat, width, height, border, imageSize, data);
@@ -1232,7 +1310,8 @@ inline void QOpenGLFunctions::glCompressedTexImage2D(GLenum target, GLint level,
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
-inline void QOpenGLFunctions::glCompressedTexSubImage2D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLsizei imageSize, const void* data)
+inline void QOpenGLFunctions::glCompressedTexSubImage2D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width,
+      GLsizei height, GLenum format, GLsizei imageSize, const void* data)
 {
 #ifdef QT_OPENGL_ES_2
     ::glCompressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, imageSize, data);
@@ -1240,6 +1319,7 @@ inline void QOpenGLFunctions::glCompressedTexSubImage2D(GLenum target, GLint lev
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->CompressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, imageSize, data);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1251,6 +1331,7 @@ inline GLuint QOpenGLFunctions::glCreateProgram()
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     GLuint result = d_ptr->CreateProgram();
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
     return result;
 }
@@ -1263,6 +1344,7 @@ inline GLuint QOpenGLFunctions::glCreateShader(GLenum type)
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     GLuint result = d_ptr->CreateShader(type);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
     return result;
 }
@@ -1275,6 +1357,7 @@ inline void QOpenGLFunctions::glDeleteBuffers(GLsizei n, const GLuint* buffers)
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->DeleteBuffers(n, buffers);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1286,6 +1369,7 @@ inline void QOpenGLFunctions::glDeleteFramebuffers(GLsizei n, const GLuint* fram
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->DeleteFramebuffers(n, framebuffers);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1297,6 +1381,7 @@ inline void QOpenGLFunctions::glDeleteProgram(GLuint program)
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->DeleteProgram(program);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1308,6 +1393,7 @@ inline void QOpenGLFunctions::glDeleteRenderbuffers(GLsizei n, const GLuint* ren
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->DeleteRenderbuffers(n, renderbuffers);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1319,6 +1405,7 @@ inline void QOpenGLFunctions::glDeleteShader(GLuint shader)
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->DeleteShader(shader);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1330,6 +1417,7 @@ inline void QOpenGLFunctions::glDepthRangef(GLclampf zNear, GLclampf zFar)
 #else
     ::glDepthRangef(zNear, zFar);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1341,6 +1429,7 @@ inline void QOpenGLFunctions::glDetachShader(GLuint program, GLuint shader)
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->DetachShader(program, shader);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1352,6 +1441,7 @@ inline void QOpenGLFunctions::glDisableVertexAttribArray(GLuint index)
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->DisableVertexAttribArray(index);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1363,6 +1453,7 @@ inline void QOpenGLFunctions::glEnableVertexAttribArray(GLuint index)
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->EnableVertexAttribArray(index);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1374,6 +1465,7 @@ inline void QOpenGLFunctions::glFramebufferRenderbuffer(GLenum target, GLenum at
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->FramebufferRenderbuffer(target, attachment, renderbuffertarget, renderbuffer);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1396,6 +1488,7 @@ inline void QOpenGLFunctions::glGenBuffers(GLsizei n, GLuint* buffers)
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->GenBuffers(n, buffers);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1407,6 +1500,7 @@ inline void QOpenGLFunctions::glGenerateMipmap(GLenum target)
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->GenerateMipmap(target);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1418,6 +1512,7 @@ inline void QOpenGLFunctions::glGenFramebuffers(GLsizei n, GLuint* framebuffers)
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->GenFramebuffers(n, framebuffers);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1429,6 +1524,7 @@ inline void QOpenGLFunctions::glGenRenderbuffers(GLsizei n, GLuint* renderbuffer
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->GenRenderbuffers(n, renderbuffers);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1440,6 +1536,7 @@ inline void QOpenGLFunctions::glGetActiveAttrib(GLuint program, GLuint index, GL
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->GetActiveAttrib(program, index, bufsize, length, size, type, name);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1462,6 +1559,7 @@ inline void QOpenGLFunctions::glGetAttachedShaders(GLuint program, GLsizei maxco
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->GetAttachedShaders(program, maxcount, count, shaders);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1473,6 +1571,7 @@ inline GLint QOpenGLFunctions::glGetAttribLocation(GLuint program, const char* n
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     GLint result = d_ptr->GetAttribLocation(program, name);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
     return result;
 }
@@ -1485,6 +1584,7 @@ inline void QOpenGLFunctions::glGetBufferParameteriv(GLenum target, GLenum pname
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->GetBufferParameteriv(target, pname, params);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1507,6 +1607,7 @@ inline void QOpenGLFunctions::glGetProgramiv(GLuint program, GLenum pname, GLint
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->GetProgramiv(program, pname, params);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1518,6 +1619,7 @@ inline void QOpenGLFunctions::glGetProgramInfoLog(GLuint program, GLsizei bufsiz
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->GetProgramInfoLog(program, bufsize, length, infolog);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1529,6 +1631,7 @@ inline void QOpenGLFunctions::glGetRenderbufferParameteriv(GLenum target, GLenum
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->GetRenderbufferParameteriv(target, pname, params);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1540,6 +1643,7 @@ inline void QOpenGLFunctions::glGetShaderiv(GLuint shader, GLenum pname, GLint* 
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->GetShaderiv(shader, pname, params);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1551,6 +1655,7 @@ inline void QOpenGLFunctions::glGetShaderInfoLog(GLuint shader, GLsizei bufsize,
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->GetShaderInfoLog(shader, bufsize, length, infolog);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1562,6 +1667,7 @@ inline void QOpenGLFunctions::glGetShaderPrecisionFormat(GLenum shadertype, GLen
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->GetShaderPrecisionFormat(shadertype, precisiontype, range, precision);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1584,6 +1690,7 @@ inline void QOpenGLFunctions::glGetUniformfv(GLuint program, GLint location, GLf
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->GetUniformfv(program, location, params);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1606,6 +1713,7 @@ inline GLint QOpenGLFunctions::glGetUniformLocation(GLuint program, const char* 
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     GLint result = d_ptr->GetUniformLocation(program, name);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
     return result;
 }
@@ -1629,6 +1737,7 @@ inline void QOpenGLFunctions::glGetVertexAttribiv(GLuint index, GLenum pname, GL
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->GetVertexAttribiv(index, pname, params);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1640,6 +1749,7 @@ inline void QOpenGLFunctions::glGetVertexAttribPointerv(GLuint index, GLenum pna
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->GetVertexAttribPointerv(index, pname, pointer);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1651,6 +1761,7 @@ inline GLboolean QOpenGLFunctions::glIsBuffer(GLuint buffer)
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     GLboolean result = d_ptr->IsBuffer(buffer);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
     return result;
 }
@@ -1663,6 +1774,7 @@ inline GLboolean QOpenGLFunctions::glIsFramebuffer(GLuint framebuffer)
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     GLboolean result = d_ptr->IsFramebuffer(framebuffer);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
     return result;
 }
@@ -1675,6 +1787,7 @@ inline GLboolean QOpenGLFunctions::glIsProgram(GLuint program)
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     GLboolean result = d_ptr->IsProgram(program);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
     return result;
 }
@@ -1687,6 +1800,7 @@ inline GLboolean QOpenGLFunctions::glIsRenderbuffer(GLuint renderbuffer)
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     GLboolean result = d_ptr->IsRenderbuffer(renderbuffer);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
     return result;
 }
@@ -1699,6 +1813,7 @@ inline GLboolean QOpenGLFunctions::glIsShader(GLuint shader)
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     GLboolean result = d_ptr->IsShader(shader);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
     return result;
 }
@@ -1711,6 +1826,7 @@ inline void QOpenGLFunctions::glLinkProgram(GLuint program)
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->LinkProgram(program);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1722,6 +1838,7 @@ inline void QOpenGLFunctions::glReleaseShaderCompiler()
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->ReleaseShaderCompiler();
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1733,6 +1850,7 @@ inline void QOpenGLFunctions::glRenderbufferStorage(GLenum target, GLenum intern
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->RenderbufferStorage(target, internalformat, width, height);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1744,6 +1862,7 @@ inline void QOpenGLFunctions::glSampleCoverage(GLclampf value, GLboolean invert)
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->SampleCoverage(value, invert);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1755,6 +1874,7 @@ inline void QOpenGLFunctions::glShaderBinary(GLint n, const GLuint* shaders, GLe
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->ShaderBinary(n, shaders, binaryformat, binary, length);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1766,6 +1886,7 @@ inline void QOpenGLFunctions::glShaderSource(GLuint shader, GLsizei count, const
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->ShaderSource(shader, count, string, length);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1777,6 +1898,7 @@ inline void QOpenGLFunctions::glStencilFuncSeparate(GLenum face, GLenum func, GL
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->StencilFuncSeparate(face, func, ref, mask);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1788,6 +1910,7 @@ inline void QOpenGLFunctions::glStencilMaskSeparate(GLenum face, GLuint mask)
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->StencilMaskSeparate(face, mask);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1799,6 +1922,7 @@ inline void QOpenGLFunctions::glStencilOpSeparate(GLenum face, GLenum fail, GLen
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->StencilOpSeparate(face, fail, zfail, zpass);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1810,6 +1934,7 @@ inline void QOpenGLFunctions::glUniform1f(GLint location, GLfloat x)
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->Uniform1f(location, x);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1832,6 +1957,7 @@ inline void QOpenGLFunctions::glUniform1i(GLint location, GLint x)
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->Uniform1i(location, x);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1843,6 +1969,7 @@ inline void QOpenGLFunctions::glUniform1iv(GLint location, GLsizei count, const 
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->Uniform1iv(location, count, v);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1854,6 +1981,7 @@ inline void QOpenGLFunctions::glUniform2f(GLint location, GLfloat x, GLfloat y)
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->Uniform2f(location, x, y);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1887,6 +2015,7 @@ inline void QOpenGLFunctions::glUniform2iv(GLint location, GLsizei count, const 
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->Uniform2iv(location, count, v);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1898,6 +2027,7 @@ inline void QOpenGLFunctions::glUniform3f(GLint location, GLfloat x, GLfloat y, 
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->Uniform3f(location, x, y, z);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1931,6 +2061,7 @@ inline void QOpenGLFunctions::glUniform3iv(GLint location, GLsizei count, const 
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->Uniform3iv(location, count, v);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1953,6 +2084,7 @@ inline void QOpenGLFunctions::glUniform4fv(GLint location, GLsizei count, const 
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->Uniform4fv(location, count, v);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1964,6 +2096,7 @@ inline void QOpenGLFunctions::glUniform4i(GLint location, GLint x, GLint y, GLin
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->Uniform4i(location, x, y, z, w);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1986,6 +2119,7 @@ inline void QOpenGLFunctions::glUniformMatrix2fv(GLint location, GLsizei count, 
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->UniformMatrix2fv(location, count, transpose, value);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -1997,6 +2131,7 @@ inline void QOpenGLFunctions::glUniformMatrix3fv(GLint location, GLsizei count, 
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->UniformMatrix3fv(location, count, transpose, value);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -2019,6 +2154,7 @@ inline void QOpenGLFunctions::glUseProgram(GLuint program)
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->UseProgram(program);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -2030,6 +2166,7 @@ inline void QOpenGLFunctions::glValidateProgram(GLuint program)
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->ValidateProgram(program);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -2041,6 +2178,7 @@ inline void QOpenGLFunctions::glVertexAttrib1f(GLuint indx, GLfloat x)
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->VertexAttrib1f(indx, x);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -2052,6 +2190,7 @@ inline void QOpenGLFunctions::glVertexAttrib1fv(GLuint indx, const GLfloat* valu
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->VertexAttrib1fv(indx, values);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -2063,6 +2202,7 @@ inline void QOpenGLFunctions::glVertexAttrib2f(GLuint indx, GLfloat x, GLfloat y
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->VertexAttrib2f(indx, x, y);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -2074,6 +2214,7 @@ inline void QOpenGLFunctions::glVertexAttrib2fv(GLuint indx, const GLfloat* valu
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->VertexAttrib2fv(indx, values);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -2085,6 +2226,7 @@ inline void QOpenGLFunctions::glVertexAttrib3f(GLuint indx, GLfloat x, GLfloat y
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->VertexAttrib3f(indx, x, y, z);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -2096,6 +2238,7 @@ inline void QOpenGLFunctions::glVertexAttrib3fv(GLuint indx, const GLfloat* valu
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->VertexAttrib3fv(indx, values);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -2107,6 +2250,7 @@ inline void QOpenGLFunctions::glVertexAttrib4f(GLuint indx, GLfloat x, GLfloat y
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->VertexAttrib4f(indx, x, y, z, w);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -2118,6 +2262,7 @@ inline void QOpenGLFunctions::glVertexAttrib4fv(GLuint indx, const GLfloat* valu
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->VertexAttrib4fv(indx, values);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
@@ -2129,6 +2274,7 @@ inline void QOpenGLFunctions::glVertexAttribPointer(GLuint indx, GLint size, GLe
     Q_ASSERT(QOpenGLFunctions::isInitialized(d_ptr));
     d_ptr->VertexAttribPointer(indx, size, type, normalized, stride, ptr);
 #endif
+
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 

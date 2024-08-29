@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -33,10 +33,10 @@ class DSCameraViewfinderSettingsControl : public QCameraViewfinderSettingsContro
  public:
    DSCameraViewfinderSettingsControl(DSCameraSession *session);
 
-   QList<QCameraViewfinderSettings> supportedViewfinderSettings() const;
+   QList<QCameraViewfinderSettings> supportedViewfinderSettings() const override;
 
-   QCameraViewfinderSettings viewfinderSettings() const;
-   void setViewfinderSettings(const QCameraViewfinderSettings &settings);
+   QCameraViewfinderSettings viewfinderSettings() const override;
+   void setViewfinderSettings(const QCameraViewfinderSettings &settings) override;
 
  private:
    DSCameraSession *m_session;

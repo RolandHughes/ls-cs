@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -42,8 +42,8 @@ inline QPenPrivate::QPenPrivate(const QBrush &_brush, qreal _width, Qt::PenStyle
    joinStyle = _joinStyle;
 }
 
-static const Qt::PenCapStyle qpen_default_cap = Qt::SquareCap;
-static const Qt::PenJoinStyle qpen_default_join = Qt::BevelJoin;
+static constexpr const Qt::PenCapStyle qpen_default_cap   = Qt::SquareCap;
+static constexpr const Qt::PenJoinStyle qpen_default_join = Qt::BevelJoin;
 
 class QPenDataHolder
 {
@@ -439,7 +439,7 @@ QDataStream &operator<<(QDataStream &s, const QPen &p)
    s << p.brush();
    s << double(p.miterLimit());
 
-   if (sizeof(qreal) == sizeof(double)) {
+   if constexpr (sizeof(qreal) == sizeof(double)) {
       s << p.dashPattern();
 
    } else {
@@ -481,7 +481,7 @@ QDataStream &operator>>(QDataStream &s, QPen &p)
    s >> brush;
    s >> miterLimit;
 
-   if (sizeof(qreal) == sizeof(double)) {
+   if constexpr (sizeof(qreal) == sizeof(double)) {
       s >> dashPattern;
 
    } else {

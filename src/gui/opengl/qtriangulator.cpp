@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2013 Klarälvdalens Datakonsult AB, a KDAB Group company
 * Copyright (c) 2015 The Qt Company Ltd.
@@ -25,7 +25,9 @@
 #include <qtriangulator_p.h>
 
 #include <qalgorithms.h>
+#include <qdialog.h>
 #include <qevent.h>
+#include <qmath.h>
 #include <qpainter.h>
 #include <qpainterpath.h>
 #include <qvector.h>
@@ -40,16 +42,24 @@
 #include <qopenglcontext_p.h>
 #include <qrbtree_p.h>
 
-//#define Q_TRIANGULATOR_DEBUG
-
 #define Q_FIXED_POINT_SCALE 32
 
 template <typename T>
 struct QVertexSet
 {
-    inline QVertexSet() { }
-    inline QVertexSet(const QVertexSet<T> &other) : vertices(other.vertices), indices(other.indices) { }
-    QVertexSet<T> &operator = (const QVertexSet<T> &other) {vertices = other.vertices; indices = other.indices; return *this;}
+    inline QVertexSet()
+   { }
+
+    inline QVertexSet(const QVertexSet<T> &other)
+      : vertices(other.vertices), indices(other.indices)
+    { }
+
+    QVertexSet<T> &operator = (const QVertexSet<T> &other) {
+      vertices = other.vertices;
+      indices  = other.indices;
+
+      return *this;
+    }
 
     // The vertices of a triangle are given by: (x[i[n]], y[i[n]]), (x[j[n]], y[j[n]]), (x[k[n]], y[k[n]]), n = 0, 1, ...
     QVector<qreal> vertices; // [x[0], y[0], x[1], y[1], x[2], ...]
@@ -177,7 +187,7 @@ static inline qint64 qCross(const QPodPoint &u, const QPodPoint &v)
     return qint64(u.x) * qint64(v.y) - qint64(u.y) * qint64(v.x);
 }
 
-#ifdef Q_TRIANGULATOR_DEBUG
+#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
 static inline qint64 qDot(const QPodPoint &u, const QPodPoint &v)
 {
     return qint64(u.x) * qint64(v.x) + qint64(u.y) * qint64(v.y);
@@ -611,19 +621,22 @@ public:
             int edge;
         };
 
-#ifdef Q_TRIANGULATOR_DEBUG
+#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
         friend class DebugDialog;
         friend class QTriangulator;
+
         class DebugDialog : public QDialog
         {
-        public:
+         public:
             DebugDialog(ComplexToSimple *parent, int currentVertex);
-        protected:
-            void paintEvent(QPaintEvent *);
-            void wheelEvent(QWheelEvent *);
-            void mouseMoveEvent(QMouseEvent *);
-            void mousePressEvent(QMouseEvent *);
-        private:
+
+         protected:
+            void paintEvent(QPaintEvent *) override;
+            void wheelEvent(QWheelEvent *) override;
+            void mouseMoveEvent(QMouseEvent *) override;
+            void mousePressEvent(QMouseEvent *) override;
+
+         private:
             ComplexToSimple *m_parent;
             QRectF m_window;
             QPoint m_lastMousePos;
@@ -662,7 +675,7 @@ public:
         int m_initialPointCount;
     };
 
-#ifdef Q_TRIANGULATOR_DEBUG
+#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
     friend class ComplexToSimple::DebugDialog;
 #endif
 
@@ -1292,7 +1305,7 @@ void QTriangulator<T>::ComplexToSimple::sortEdgeList(const QPodPoint eventPoint)
         while (!m_topIntersection.isEmpty() && m_topIntersection.top().intersectionPoint <= currentIntersectionPoint)
             m_topIntersection.pop();
 
-#ifdef Q_TRIANGULATOR_DEBUG
+#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
         DebugDialog dialog(this, intersection.vertex);
         dialog.exec();
 #endif
@@ -1363,9 +1376,13 @@ void QTriangulator<T>::ComplexToSimple::calculateIntersections()
                 QRBTree<int>::Node *left  = m_edgeList.previous(m_edges[i].node);
                 QRBTree<int>::Node *right = m_edgeList.next(m_edges[i].node);
                 m_edgeList.deleteNode(m_edges[i].node);
-                if (!left || !right)
+
+                if (! left || ! right) {
                     continue;
+                }
+
                 calculateIntersection(left->data, right->data);
+
             } else {
                 // Insert edge into edge list.
                 Q_ASSERT(event.type == Event::Upper);
@@ -1373,19 +1390,28 @@ void QTriangulator<T>::ComplexToSimple::calculateIntersections()
                 m_edgeList.attachAfter(left, m_edges[i].node = m_edgeList.newNode());
                 m_edges[i].node->data = i;
                 QRBTree<int>::Node *right = m_edgeList.next(m_edges[i].node);
-                if (left)
+
+                if (left) {
                     calculateIntersection(left->data, i);
-                if (right)
+                }
+
+                if (right) {
                     calculateIntersection(i, right->data);
+                }
             }
         }
-        while (!m_topIntersection.isEmpty() && m_topIntersection.top().intersectionPoint <= eventPoint)
+
+        while (! m_topIntersection.isEmpty() && m_topIntersection.top().intersectionPoint <= eventPoint) {
             m_topIntersection.pop();
-#ifdef Q_TRIANGULATOR_DEBUG
+        }
+
+#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
         DebugDialog dialog(this, vertex);
         dialog.exec();
 #endif
+
     }
+
     m_processedEdgePairs.clear();
 }
 
@@ -1504,8 +1530,13 @@ void QTriangulator<T>::ComplexToSimple::removeUnwantedEdgesAndConnect()
             while (current != b.second) {
                 Q_ASSERT(current);
                 Q_ASSERT(m_edges.at(current->data).node == current);
-                Q_ASSERT(QT_PREPEND_NAMESPACE(qIntersectionPoint)(event.point).isOnLine(m_parent->m_vertices.at(m_edges.at(current->data).from), m_parent->m_vertices.at(m_edges.at(current->data).to)));
-                Q_ASSERT(m_parent->m_vertices.at(m_edges.at(current->data).from) == event.point || m_parent->m_vertices.at(m_edges.at(current->data).to) == event.point);
+
+                Q_ASSERT(QT_PREPEND_NAMESPACE(qIntersectionPoint)(event.point).isOnLine(
+                      m_parent->m_vertices.at(m_edges.at(current->data).from), m_parent->m_vertices.at(m_edges.at(current->data).to)));
+
+                Q_ASSERT(m_parent->m_vertices.at(m_edges.at(current->data).from) ==
+                      event.point || m_parent->m_vertices.at(m_edges.at(current->data).to) == event.point);
+
                 insertEdgeIntoVectorIfWanted(orderedEdges, current->data);
                 current = m_edgeList.next(current);
             }
@@ -1651,26 +1682,28 @@ inline bool QTriangulator<T>::ComplexToSimple::Event::operator < (const Event &o
     return other.point < point;
 }
 
-
-#ifdef Q_TRIANGULATOR_DEBUG
+#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
 
 template <typename T>
 QTriangulator<T>::ComplexToSimple::DebugDialog::DebugDialog(ComplexToSimple *parent, int currentVertex)
     : m_parent(parent), m_vertex(currentVertex)
 {
     QVector<QPodPoint> &vertices = m_parent->m_parent->m_vertices;
+
     if (vertices.isEmpty())
         return;
 
     int minX, maxX, minY, maxY;
     minX = maxX = vertices.at(0).x;
     minY = maxY = vertices.at(0).y;
+
     for (int i = 1; i < vertices.size(); ++i) {
         minX = qMin(minX, vertices.at(i).x);
         maxX = qMax(maxX, vertices.at(i).x);
         minY = qMin(minY, vertices.at(i).y);
         maxY = qMax(maxY, vertices.at(i).y);
     }
+
     int w = maxX - minX;
     int h = maxY - minY;
     qreal border = qMin(w, h) / 10.0;
@@ -1724,20 +1757,25 @@ void QTriangulator<T>::ComplexToSimple::DebugDialog::paintEvent(QPaintEvent *)
 
     p.setPen(Qt::gray);
     QVector<Split> &splits = m_parent->m_splits;
+
     for (int i = 0; i < splits.size(); ++i) {
         QPodPoint q = vertices.at(splits.at(i).vertex);
         QPodPoint u = vertices.at(edges.at(splits.at(i).edge).from) - q;
         QPodPoint v = vertices.at(edges.at(splits.at(i).edge).to) - q;
+
         qreal uLen = qSqrt(qDot(u, u));
         qreal vLen = qSqrt(qDot(v, v));
+
         if (uLen) {
             u.x *= 2 * halfPointSize / uLen;
             u.y *= 2 * halfPointSize / uLen;
         }
+
         if (vLen) {
             v.x *= 2 * halfPointSize / vLen;
             v.y *= 2 * halfPointSize / vLen;
         }
+
         u += q;
         v += q;
         p.drawLine(u.x, u.y, v.x, v.y);
@@ -1776,7 +1814,6 @@ void QTriangulator<T>::ComplexToSimple::DebugDialog::mousePressEvent(QMouseEvent
         m_lastMousePos = event->pos();
     event->accept();
 }
-
 
 #endif
 
@@ -2072,7 +2109,7 @@ void QTriangulator<T>::SimpleToMonotone::monotoneDecomposition()
     classifyVertices();
     fillPriorityQueue();
 
-    // debug: set helpers explicitly (shouldn't be necessary)
+    // debug: set helpers explicitly (should not be necessary)
     //for (int i = 0; i < m_edges.size(); ++i)
     //    m_edges.at(i).helper = m_edges.at(i).upper();
 

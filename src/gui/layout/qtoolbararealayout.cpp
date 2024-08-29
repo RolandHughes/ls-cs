@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -1323,7 +1323,7 @@ void QToolBarAreaLayout::saveState(QDataStream &stream) const
 
             if (objectName.isEmpty()) {
                qWarning("QMainWindow::saveState() Object name was not set for QToolBar %p '%s'",
-                  widget, csPrintable(widget->windowTitle()) );
+                     static_cast<void *>(widget), csPrintable(widget->windowTitle()) );
             }
 
             stream << objectName;

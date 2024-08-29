@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -41,13 +41,13 @@ class UiReader : public QXmlDefaultHandler
    }
 
    bool startElement(const QString &namespaceURI, const QString &localName,
-                     const QString &qName, const QXmlAttributes &atts);
+         const QString &qName, const QXmlAttributes &atts) override;
 
-   bool endElement(const QString &namespaceURI, const QString &localName, const QString &qName);
-   bool characters(const QString &ch);
-   bool fatalError(const QXmlParseException &exception);
+   bool endElement(const QString &namespaceURI, const QString &localName, const QString &qName) override;
+   bool characters(const QString &ch) override;
+   bool fatalError(const QXmlParseException &exception) override;
 
-   void setDocumentLocator(QXmlLocator *locator) {
+   void setDocumentLocator(QXmlLocator *locator) override {
       m_locator = locator;
    }
 

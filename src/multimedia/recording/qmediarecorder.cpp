@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -61,7 +61,6 @@ void QMediaRecorderPrivate::_q_stateChanged(QMediaRecorder::State newState)
       notifyTimer->stop();
    }
 
-   //  qDebug() << "Recorder state changed:" << ENUM_NAME(QMediaRecorder,"State", newState);
    if (m_state != newState) {
       emit q->stateChanged(newState);
    }

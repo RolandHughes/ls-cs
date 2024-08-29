@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,12 +24,14 @@
 #ifndef QLISTVIEW_P_H
 #define QLISTVIEW_P_H
 
-#include <qabstractitemview_p.h>
-#include <qrubberband.h>
 #include <qbitarray.h>
-#include <qbsptree_p.h>
-#include <limits.h>
+#include <qrubberband.h>
 #include <qscrollbar.h>
+
+#include <qabstractitemview_p.h>
+#include <qbsptree_p.h>
+
+#include <limits.h>
 
 #ifndef QT_NO_LISTVIEW
 
@@ -38,59 +40,59 @@ class QListViewPrivate;
 
 class QListViewItem
 {
-   friend class QListViewPrivate;
-   friend class QListModeViewBase;
-   friend class QIconModeViewBase;
-
  public:
-   inline QListViewItem()
+   QListViewItem()
       : x(-1), y(-1), w(0), h(0), indexHint(-1), visited(0xffff)
    { }
 
-   inline QListViewItem(QRect r, int i)
+   QListViewItem(QRect r, int i)
       : x(r.x()), y(r.y()), w(qMin(r.width(), SHRT_MAX)), h(qMin(r.height(), SHRT_MAX)),
         indexHint(i), visited(0xffff)
    { }
 
-   inline bool operator==(const QListViewItem &other) const {
+   bool operator==(const QListViewItem &other) const {
       return (x == other.x && y == other.y && w == other.w && h == other.h && indexHint == other.indexHint);
    }
 
-   inline bool operator!=(const QListViewItem &other) const {
+   bool operator!=(const QListViewItem &other) const {
       return !(*this == other);
    }
 
-   inline bool isValid() const {
+   bool isValid() const {
       return rect().isValid() && (indexHint > -1);
    }
 
-   inline void invalidate() {
+   void invalidate() {
       x = -1;
       y = -1;
       w = 0;
       h = 0;
    }
 
-   inline void resize(const QSize &size) {
+   void resize(const QSize &size) {
       w = qMin(size.width(),  SHRT_MAX);
       h = qMin(size.height(), SHRT_MAX);
    }
 
-   inline void move(const QPoint &position) {
+   void move(const QPoint &position) {
       x = position.x();
       y = position.y();
    }
 
-   inline int width() const {
+   int width() const {
       return w;
    }
 
-   inline int height() const {
+   int height() const {
       return h;
    }
 
  private:
-   inline QRect rect() const {
+   friend class QListViewPrivate;
+   friend class QListModeViewBase;
+   friend class QIconModeViewBase;
+
+   QRect rect() const {
       return QRect(x, y, w, h);
    }
 
@@ -221,7 +223,6 @@ class QListModeViewBase : public QCommonListViewBase
    // used when laying out in batches
    int batchSavedPosition;
 
-   //reimplementations
    int itemIndex(const QListViewItem &item) const override {
       return item.indexHint;
    }
@@ -286,7 +287,6 @@ class QIconModeViewBase : public QCommonListViewBase
    // used when laying out in batches
    QVector<QModelIndex> *interSectingVector; //used from within intersectingSet
 
-   //reimplementations
    int itemIndex(const QListViewItem &item) const override;
    QListViewItem indexToListViewItem(const QModelIndex &index) const override;
    bool doBatchedItemLayout(const QListViewLayoutInfo &info, int max) override;

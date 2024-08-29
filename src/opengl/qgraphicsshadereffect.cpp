@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -26,14 +26,13 @@
 #ifndef QT_NO_GRAPHICSEFFECT
 
 #include <qglshaderprogram.h>
+#include <qgraphicsitem.h>
+#include <qpainter.h>
+
 #include <qglcustomshaderstage_p.h>
+#include <qgraphicseffect_p.h>
 
 #define QGL_HAVE_CUSTOM_SHADERS 1
-
-#include <qpainter.h>
-#include <qgraphicsitem.h>
-
-#include <qgraphicseffect_p.h>
 
 static const char qglslDefaultImageFragmentShader[] = "\
     lowp vec4 customShader(lowp sampler2D imageTexture, highp vec2 textureCoords) { \
@@ -114,9 +113,6 @@ void QGraphicsShaderEffect::setPixelShaderFragment(const QByteArray &code)
    }
 }
 
-/*#
-    \reimp
-*/
 void QGraphicsShaderEffect::draw(QPainter *painter)
 {
    Q_D(QGraphicsShaderEffect);

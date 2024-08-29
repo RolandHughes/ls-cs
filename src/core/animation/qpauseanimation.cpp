@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -22,6 +22,7 @@
 ***********************************************************************/
 
 #include <qpauseanimation.h>
+
 #include <qabstractanimation_p.h>
 
 #ifndef QT_NO_ANIMATION
@@ -58,9 +59,10 @@ int QPauseAnimation::duration() const
 void QPauseAnimation::setDuration(int msecs)
 {
    if (msecs < 0) {
-      qWarning("QPauseAnimation::setDuration: cannot set a negative duration");
+      qWarning("QPauseAnimation::setDuration() Unable to set a negative duration");
       return;
    }
+
    Q_D(QPauseAnimation);
    d->duration = msecs;
 }

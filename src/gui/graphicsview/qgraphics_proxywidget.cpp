@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -43,8 +43,6 @@
 #include <qgraphics_proxywidget_p.h>
 #include <qwidget_p.h>
 #include <qapplication_p.h>
-
-//#define GRAPHICSPROXYWIDGET_DEBUG
 
 extern bool qt_sendSpontaneousEvent(QObject *, QEvent *);
 Q_GUI_EXPORT extern bool qt_tab_all_widgets();
@@ -450,7 +448,7 @@ void QGraphicsProxyWidgetPrivate::setWidget_helper(QWidget *newWidget, bool auto
       QWExtra *extra = newWidget->parentWidget()->d_func()->extra;
       if (!extra || !extra->proxyWidget)  {
          qWarning("QGraphicsProxyWidget::setWidget() Unable to embed widget, %p must be a toplevel widget "
-            "or a child of an embedded widget", newWidget);
+            "or a child of an embedded widget", static_cast<void *>(newWidget));
 
          return;
       }
@@ -467,7 +465,8 @@ void QGraphicsProxyWidgetPrivate::setWidget_helper(QWidget *newWidget, bool auto
    QGraphicsProxyWidget **proxyWidget = &extra->proxyWidget;
    if (*proxyWidget) {
       if (*proxyWidget != q) {
-         qWarning("QGraphicsProxyWidget::setWidget() Unable to embed widget, %p is already embedded", newWidget);
+         qWarning("QGraphicsProxyWidget::setWidget() Unable to embed widget, %p is already embedded",
+               static_cast<void *>(newWidget));
       }
       return;
    }
@@ -1017,7 +1016,7 @@ void QGraphicsProxyWidget::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
 {
    Q_D(QGraphicsProxyWidget);
 
-#ifdef GRAPHICSPROXYWIDGET_DEBUG
+#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
    qDebug("QGraphicsProxyWidget::hoverMoveEvent");
 #endif
 
@@ -1051,7 +1050,7 @@ void QGraphicsProxyWidget::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
    Q_D(QGraphicsProxyWidget);
 
-#ifdef GRAPHICSPROXYWIDGET_DEBUG
+#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
    qDebug("QGraphicsProxyWidget::mouseMoveEvent");
 #endif
 
@@ -1062,7 +1061,7 @@ void QGraphicsProxyWidget::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
    Q_D(QGraphicsProxyWidget);
 
-#ifdef GRAPHICSPROXYWIDGET_DEBUG
+#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
    qDebug("QGraphicsProxyWidget::mousePressEvent");
 #endif
 
@@ -1073,13 +1072,12 @@ void QGraphicsProxyWidget::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event
 {
    Q_D(QGraphicsProxyWidget);
 
-#ifdef GRAPHICSPROXYWIDGET_DEBUG
+#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
    qDebug("QGraphicsProxyWidget::mouseDoubleClickEvent");
 #endif
 
    d->sendWidgetMouseEvent(event);
 }
-
 
 #ifndef QT_NO_WHEELEVENT
 
@@ -1087,7 +1085,7 @@ void QGraphicsProxyWidget::wheelEvent(QGraphicsSceneWheelEvent *event)
 {
    Q_D(QGraphicsProxyWidget);
 
-#ifdef GRAPHICSPROXYWIDGET_DEBUG
+#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
    qDebug("QGraphicsProxyWidget::wheelEvent");
 #endif
 
@@ -1098,7 +1096,7 @@ void QGraphicsProxyWidget::wheelEvent(QGraphicsSceneWheelEvent *event)
    QPointF pos = event->pos();
    QPointer<QWidget> receiver = d->widget->childAt(pos.toPoint());
 
-   if (!receiver) {
+   if (! receiver) {
       receiver = d->widget;
    }
 
@@ -1131,7 +1129,7 @@ void QGraphicsProxyWidget::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
    Q_D(QGraphicsProxyWidget);
 
-#ifdef GRAPHICSPROXYWIDGET_DEBUG
+#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
    qDebug("QGraphicsProxyWidget::mouseReleaseEvent");
 #endif
 
@@ -1142,7 +1140,7 @@ void QGraphicsProxyWidget::keyPressEvent(QKeyEvent *event)
 {
    Q_D(QGraphicsProxyWidget);
 
-#ifdef GRAPHICSPROXYWIDGET_DEBUG
+#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
    qDebug("QGraphicsProxyWidget::keyPressEvent");
 #endif
 
@@ -1153,7 +1151,7 @@ void QGraphicsProxyWidget::keyReleaseEvent(QKeyEvent *event)
 {
    Q_D(QGraphicsProxyWidget);
 
-#ifdef GRAPHICSPROXYWIDGET_DEBUG
+#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
    qDebug("QGraphicsProxyWidget::keyReleaseEvent");
 #endif
 
@@ -1162,7 +1160,7 @@ void QGraphicsProxyWidget::keyReleaseEvent(QKeyEvent *event)
 
 void QGraphicsProxyWidget::focusInEvent(QFocusEvent *event)
 {
-#ifdef GRAPHICSPROXYWIDGET_DEBUG
+#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
    qDebug("QGraphicsProxyWidget::focusInEvent");
 #endif
 
@@ -1203,7 +1201,7 @@ void QGraphicsProxyWidget::focusInEvent(QFocusEvent *event)
 
 void QGraphicsProxyWidget::focusOutEvent(QFocusEvent *event)
 {
-#ifdef GRAPHICSPROXYWIDGET_DEBUG
+#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
    qDebug("QGraphicsProxyWidget::focusOutEvent");
 #endif
 

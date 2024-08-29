@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -146,7 +146,6 @@ inline QSize QSize::scaled(int width, int height, Qt::AspectRatioMode mode) cons
 {
    return scaled(QSize(width, height), mode);
 }
-
 
 inline int &QSize::rwidth()
 {
@@ -364,7 +363,6 @@ inline QSizeF QSizeF::scaled(qreal width, qreal height, Qt::AspectRatioMode mode
    return scaled(QSizeF(width, height), mode);
 }
 
-
 inline qreal &QSizeF::rwidth()
 {
    return wd;
@@ -456,6 +454,5 @@ inline QSize QSizeF::toSize() const
 }
 
 Q_CORE_EXPORT QDebug operator<<(QDebug, const QSizeF &sizeF);
-
 
 #endif // QSIZE_H

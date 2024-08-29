@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -29,6 +29,7 @@
 #include <qcolor.h>
 #include <qfont.h>
 #include <qmath.h>
+
 #include <qpushbutton_p.h>
 
 class QCommandLinkButtonPrivate : public QPushButtonPrivate
@@ -200,9 +201,6 @@ int QCommandLinkButtonPrivate::descriptionHeight(int widgetWidth) const
    return qCeil(descriptionheight);
 }
 
-/*!
-    \reimp
- */
 QSize QCommandLinkButton::minimumSizeHint() const
 {
    Q_D(const QCommandLinkButton);
@@ -213,21 +211,12 @@ QSize QCommandLinkButton::minimumSizeHint() const
    return size;
 }
 
-/*!
-    Constructs a command link with no text and a \a parent.
-*/
-
 QCommandLinkButton::QCommandLinkButton(QWidget *parent)
    : QPushButton(*new QCommandLinkButtonPrivate, parent)
 {
    Q_D(QCommandLinkButton);
    d->init();
 }
-
-/*!
-    Constructs a command link with the parent \a parent and the text \a
-    text.
-*/
 
 QCommandLinkButton::QCommandLinkButton(const QString &text, QWidget *parent)
    : QPushButton(*new QCommandLinkButtonPrivate, parent)
@@ -237,9 +226,6 @@ QCommandLinkButton::QCommandLinkButton(const QString &text, QWidget *parent)
    d->init();
 }
 
-/*!
-    Constructs a command link with a \a text, a \a description, and a \a parent.
-*/
 QCommandLinkButton::QCommandLinkButton(const QString &text, const QString &description, QWidget *parent)
    : QPushButton(*new QCommandLinkButtonPrivate, parent)
 {
@@ -252,13 +238,12 @@ QCommandLinkButton::QCommandLinkButton(const QString &text, const QString &descr
 QCommandLinkButton::~QCommandLinkButton()
 {
 }
-/*! \reimp */
+
 bool QCommandLinkButton::event(QEvent *e)
 {
    return QPushButton::event(e);
 }
 
-/*! \reimp */
 QSize QCommandLinkButton::sizeHint() const
 {
    //  Standard size hints from UI specs
@@ -278,7 +263,6 @@ QSize QCommandLinkButton::sizeHint() const
    return size;
 }
 
-/*! \reimp */
 int QCommandLinkButton::heightForWidth(int width) const
 {
    Q_D(const QCommandLinkButton);
@@ -289,10 +273,10 @@ int QCommandLinkButton::heightForWidth(int width) const
          d->bottomMargin());
 }
 
-/*! \reimp */
 void QCommandLinkButton::paintEvent(QPaintEvent *)
 {
    Q_D(QCommandLinkButton);
+
    QStylePainter p(this);
    p.save();
 
@@ -357,4 +341,3 @@ QString QCommandLinkButton::description() const
    Q_D(const QCommandLinkButton);
    return d->description;
 }
-

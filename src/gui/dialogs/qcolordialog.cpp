@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -275,10 +275,12 @@ class QWellArray : public QWidget
 void QWellArray::paintEvent(QPaintEvent *e)
 {
    QRect r = e->rect();
+
    int cx = r.x();
    int cy = r.y();
    int ch = r.height();
    int cw = r.width();
+
    int colfirst = columnAt(cx);
    int collast  = columnAt(cx + cw);
    int rowfirst = rowAt(cy);
@@ -292,30 +294,34 @@ void QWellArray::paintEvent(QPaintEvent *e)
 
    QPainter painter(this);
    QPainter *p = &painter;
-   QRect rect(0, 0, cellWidth(), cellHeight());
+
+   QRect newRect(0, 0, cellWidth(), cellHeight());
 
    if (collast < 0 || collast >= ncols) {
       collast = ncols - 1;
    }
+
    if (rowlast < 0 || rowlast >= nrows) {
       rowlast = nrows - 1;
    }
 
    // Go through the rows
-   for (int r = rowfirst; r <= rowlast; ++r) {
-      // get row position and height
-      int rowp = rowY(r);
+   for (int row = rowfirst; row <= rowlast; ++row) {
 
-      // Go through the columns in the row r
-      // if we know from where to where, go through [colfirst, collast],
-      // else go through all of them
-      for (int c = colfirst; c <= collast; ++c) {
-         // get position and width of column c
-         int colp = columnX(c);
+      // get row position and height
+      int rowPos = rowY(row);
+
+      // Go through the columns in the row if we know from where to where,
+      // go through [colfirst, collast], else go through all of them
+
+      for (int col = colfirst; col <= collast; ++col) {
+         // get position and width of column col
+         int colPos = columnX(col);
+
          // Translate painter and draw the cell
-         rect.translate(colp, rowp);
-         paintCell(p, r, c, rect);
-         rect.translate(-colp, -rowp);
+         newRect.translate(colPos, rowPos);
+         paintCell(p, row, col, newRect);
+         newRect.translate(-colPos, -rowPos);
       }
    }
 }
@@ -340,32 +346,35 @@ QSize QWellArray::sizeHint() const
 
 void QWellArray::paintCell(QPainter *p, int row, int col, const QRect &rect)
 {
-   int b = 3; //margin
+   int b = 3;    // margin
 
    const QPalette &g = palette();
    QStyleOptionFrame opt;
+
    int dfw = style()->pixelMetric(QStyle::PM_DefaultFrameWidth);
-   opt.lineWidth = dfw;
+   opt.lineWidth    = dfw;
    opt.midLineWidth = 1;
-   opt.rect = rect.adjusted(b, b, -b, -b);
+
+   opt.rect    = rect.adjusted(b, b, -b, -b);
    opt.palette = g;
-   opt.state = QStyle::State_Enabled | QStyle::State_Sunken;
+   opt.state   = QStyle::State_Enabled | QStyle::State_Sunken;
+
    style()->drawPrimitive(QStyle::PE_Frame, &opt, p, this);
    b += dfw;
 
    if ((row == curRow) && (col == curCol)) {
       if (hasFocus()) {
-         QStyleOptionFocusRect opt;
-         opt.palette = g;
-         opt.rect = rect;
-         opt.state = QStyle::State_None | QStyle::State_KeyboardFocusChange;
-         style()->drawPrimitive(QStyle::PE_FrameFocusRect, &opt, p, this);
+         QStyleOptionFocusRect tmpOption;
+         tmpOption.palette = g;
+         tmpOption.rect    = rect;
+         tmpOption.state   = QStyle::State_None | QStyle::State_KeyboardFocusChange;
+         style()->drawPrimitive(QStyle::PE_FrameFocusRect, &tmpOption, p, this);
       }
    }
+
    paintCellContents(p, row, col, opt.rect.adjusted(dfw, dfw, -dfw, -dfw));
 }
 
-//  Reimplement this function to change the contents of the well array.
 void QWellArray::paintCellContents(QPainter *p, int row, int col, const QRect &r)
 {
    (void) row;
@@ -385,17 +394,11 @@ void QWellArray::mousePressEvent(QMouseEvent *e)
    setCurrent(rowAt(pos.y()), columnAt(pos.x()));
 }
 
-void QWellArray::mouseReleaseEvent(QMouseEvent * /* event */)
+void QWellArray::mouseReleaseEvent(QMouseEvent *)
 {
    // The current cell marker is set to the cell the mouse is clicked in
    setSelected(curRow, curCol);
 }
-
-
-/*
-  Sets the cell currently having the focus. This is not necessarily
-  the same as the currently selected cell.
-*/
 
 void QWellArray::setCurrent(int row, int col)
 {
@@ -449,16 +452,11 @@ void QWellArray::focusInEvent(QFocusEvent *)
    emit currentChanged(curRow, curCol);
 }
 
-
-/*!\reimp
-*/
 void QWellArray::focusOutEvent(QFocusEvent *)
 {
    updateCell(curRow, curCol);
 }
 
-/*\reimp
-*/
 void QWellArray::keyPressEvent(QKeyEvent *e)
 {
    switch (e->key()) {                         // Look at the key code
@@ -467,24 +465,29 @@ void QWellArray::keyPressEvent(QKeyEvent *e)
             setCurrent(curRow, curCol - 1);    // set cr't to next left column
          }
          break;
+
       case Qt::Key_Right:                      // Correspondingly...
          if (curCol < numCols() - 1) {
             setCurrent(curRow, curCol + 1);
          }
          break;
+
       case Qt::Key_Up:
          if (curRow > 0) {
             setCurrent(curRow - 1, curCol);
          }
          break;
+
       case Qt::Key_Down:
          if (curRow < numRows() - 1) {
             setCurrent(curRow + 1, curCol);
          }
          break;
+
       case Qt::Key_Space:
          setSelected(curRow, curCol);
          break;
+
       default:                                // If not an interesting key,
          e->ignore();                        // we don't accept the event
          return;
@@ -502,13 +505,17 @@ class QColorPickingEventFilter : public QObject
       switch (event->type()) {
          case QEvent::MouseMove:
             return m_dp->handleColorPickingMouseMove(static_cast<QMouseEvent *>(event));
+
          case QEvent::MouseButtonRelease:
             return m_dp->handleColorPickingMouseButtonRelease(static_cast<QMouseEvent *>(event));
+
          case QEvent::KeyPress:
             return m_dp->handleColorPickingKeyPress(static_cast<QKeyEvent *>(event));
+
          default:
             break;
       }
+
       return false;
    }
 
@@ -547,7 +554,6 @@ static inline void rgb2hsv(QRgb rgb, int &h, int &s, int &v)
    c.setRgb(rgb);
    c.getHsv(&h, &s, &v);
 }
-
 
 class QColorWell : public QWellArray
 {
@@ -731,7 +737,10 @@ class QColorLuminancePicker : public QWidget
    void mousePressEvent(QMouseEvent *) override;
 
  private:
-   enum { foff = 3, coff = 4 }; //frame and contents offset
+   // frame and contents offset
+   static constexpr const int F_Offset = 3;
+   static constexpr const int C_Offset = 4;
+
    int val;
    int hue;
    int sat;
@@ -743,17 +752,17 @@ class QColorLuminancePicker : public QWidget
    QPixmap *pix;
 };
 
-
 int QColorLuminancePicker::y2val(int y)
 {
-   int d = height() - 2 * coff - 1;
-   return 255 - (y - coff) * 255 / d;
+   int d = height() - 2 * C_Offset - 1;
+
+   return 255 - (y - C_Offset) * 255 / d;
 }
 
 int QColorLuminancePicker::val2y(int v)
 {
-   int d = height() - 2 * coff - 1;
-   return coff + (255 - v) * d / 255;
+   int d = height() - 2 * C_Offset - 1;
+   return C_Offset + (255 - v) * d / 255;
 }
 
 QColorLuminancePicker::QColorLuminancePicker(QWidget *parent)
@@ -806,7 +815,7 @@ void QColorLuminancePicker::paintEvent(QPaintEvent *)
 {
    int w = width() - 5;
 
-   QRect r(0, foff, w, height() - 2 * foff);
+   QRect r(0, F_Offset, w, height() - 2 * F_Offset);
    int wi = r.width() - 2;
    int hi = r.height() - 2;
 
@@ -820,7 +829,7 @@ void QColorLuminancePicker::paintEvent(QPaintEvent *)
       for (y = 0; y < hi; y++) {
          uint *end = pixel + wi;
 
-         std::fill(pixel, end, QColor::fromHsv(hue, sat, y2val(y + coff)).rgb());
+         std::fill(pixel, end, QColor::fromHsv(hue, sat, y2val(y + C_Offset)).rgb());
          pixel = end;
       }
 
@@ -828,7 +837,7 @@ void QColorLuminancePicker::paintEvent(QPaintEvent *)
    }
 
    QPainter p(this);
-   p.drawPixmap(1, coff, *pix);
+   p.drawPixmap(1, C_Offset, *pix);
 
    const QPalette &g = palette();
    qDrawShadePanel(&p, r, g, true);
@@ -1581,7 +1590,7 @@ void QColorDialogPrivate::setCurrentRgbColor(QRgb rgb)
    }
 }
 
-// hack; doesn't keep curCol in sync, so use with care
+// does not keep curCol in sync,use with care
 void QColorDialogPrivate::setCurrentQColor(const QColor &color)
 {
    Q_Q(QColorDialog);
@@ -1593,11 +1602,9 @@ void QColorDialogPrivate::setCurrentQColor(const QColor &color)
 }
 
 // size of standard and custom color selector
-enum {
-   colorColumns = 8,
-   standardColorRows = 6,
-   customColorRows = 2
-};
+static constexpr const int ColorColumns      = 8;
+static constexpr const int StandardColorRows = 6;
+static constexpr const int CustomColorRows   = 2;
 
 bool QColorDialogPrivate::selectColor(const QColor &col)
 {
@@ -1605,18 +1612,20 @@ bool QColorDialogPrivate::selectColor(const QColor &col)
 
    // Check standard colors
    if (standard) {
-      const QRgb *standardColors = QColorDialogOptions::standardColors();
-      const QRgb *standardColorsEnd = standardColors + standardColorRows * colorColumns;
+      const QRgb *standardColors    = QColorDialogOptions::standardColors();
+      const QRgb *standardColorsEnd = standardColors + StandardColorRows * ColorColumns;
       const QRgb *match = std::find(standardColors, standardColorsEnd, color);
 
       if (match != standardColorsEnd) {
-         const int index = int(match - standardColors);
-         const int column = index / standardColorRows;
-         const int row = index % standardColorRows;
+         const int index    = int(match - standardColors);
+         const int column = index / StandardColorRows;
+         const int row    = index % StandardColorRows;
+
          _q_newStandard(row, column);
          standard->setCurrent(row, column);
          standard->setSelected(row, column);
          standard->setFocus();
+
          return true;
       }
    }
@@ -1624,14 +1633,14 @@ bool QColorDialogPrivate::selectColor(const QColor &col)
 
    // Check custom colors
    if (custom) {
-      const QRgb *customColors = QColorDialogOptions::customColors();
-      const QRgb *customColorsEnd = customColors + customColorRows * colorColumns;
+      const QRgb *customColors    = QColorDialogOptions::customColors();
+      const QRgb *customColorsEnd = customColors + CustomColorRows * ColorColumns;
       const QRgb *match = std::find(customColors, customColorsEnd, color);
 
       if (match != customColorsEnd) {
          const int index = int(match - customColors);
-         const int column = index / customColorRows;
-         const int row = index % customColorRows;
+         const int column = index / CustomColorRows;
+         const int row = index % CustomColorRows;
 
          _q_newCustom(row, column);
 
@@ -1651,6 +1660,7 @@ QColor QColorDialogPrivate::grabScreenColor(const QPoint &p)
    const QPixmap pixmap = QGuiApplication::screens().at(desktop->screenNumber())->grabWindow(desktop->winId(),
          p.x(), p.y(), 1, 1);
    QImage i = pixmap.toImage();
+
    return i.pixel(0, 0);
 }
 
@@ -1667,12 +1677,12 @@ void QColorDialogPrivate::_q_newColorTypedIn(QRgb rgb)
 
 void QColorDialogPrivate::_q_nextCustom(int r, int c)
 {
-   nextCust = r + customColorRows * c;
+   nextCust = r + CustomColorRows * c;
 }
 
 void QColorDialogPrivate::_q_newCustom(int r, int c)
 {
-   const int i = r + customColorRows * c;
+   const int i = r + CustomColorRows * c;
    setCurrentRgbColor(QColorDialogOptions::customColor(i));
 
    if (standard) {
@@ -1801,7 +1811,7 @@ void QColorDialogPrivate::initWidgets()
       leftLay = new QVBoxLayout;
       topLay->addLayout(leftLay);
 
-      standard       = new QColorWell(q, standardColorRows, colorColumns, QColorDialogOptions::standardColors());
+      standard       = new QColorWell(q, StandardColorRows, ColorColumns, QColorDialogOptions::standardColors());
       lblBasicColors = new QLabel(q);
 
 #ifndef QT_NO_SHORTCUT
@@ -1824,7 +1834,7 @@ void QColorDialogPrivate::initWidgets()
 
       leftLay->addStretch();
 
-      custom = new QColorWell(q, customColorRows, colorColumns, QColorDialogOptions::customColors());
+      custom = new QColorWell(q, CustomColorRows, ColorColumns, QColorDialogOptions::customColors());
       custom->setAcceptDrops(true);
 
       QObject::connect(custom, &QColorWell::selected,       q, &QColorDialog::_q_newCustom);
@@ -1998,7 +2008,7 @@ bool QColorDialogPrivate::canBeNativeDialog() const
    return (staticName == dynamicName);
 }
 
-static const Qt::WindowFlags DefaultWindowFlags =
+static constexpr const Qt::WindowFlags DefaultWindowFlags =
    Qt::Dialog | Qt::WindowTitleHint | Qt::MSWindowsFixedSizeDialogHint
    | Qt::WindowSystemMenuHint | Qt::WindowCloseButtonHint;
 

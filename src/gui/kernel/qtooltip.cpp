@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -271,7 +271,7 @@ void QTipLabel::placeTip(const QPoint &pos, QWidget *w)
       QTipLabel::instance->setProperty("_q_stylesheet_parent", QVariant::fromValue(w));
 
       //we force the style to be the QStyleSheetStyle, and force to clear the cache as well.
-      QTipLabel::instance->setStyleSheet(QLatin1String("/* */"));
+      QTipLabel::instance->setStyleSheet(QString("/* */"));
 
       // Set up for cleaning up this later...
       QTipLabel::instance->styleSheetParent = w;

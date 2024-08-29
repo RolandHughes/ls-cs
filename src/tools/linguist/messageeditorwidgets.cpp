@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -21,25 +21,25 @@
 *
 ***********************************************************************/
 
-#include "messageeditorwidgets.h"
-#include "messagehighlighter.h"
+#include <messageeditorwidgets.h>
+#include <messagehighlighter.h>
 
 #include <translator.h>
 
-#include <QAbstractTextDocumentLayout>
-#include <QAction>
-#include <QApplication>
-#include <QClipboard>
-#include <QDebug>
-#include <QLayout>
-#include <QMenu>
-#include <QMessageBox>
-#include <QPainter>
-#include <QScrollArea>
-#include <QTextBlock>
-#include <QTextDocumentFragment>
-#include <QToolButton>
-#include <QVBoxLayout>
+#include <qabstracttextdocumentlayout.h>
+#include <qaction.h>
+#include <qapplication.h>
+#include <qclipboard.h>
+#include <qdebug.h>
+#include <qlayout.h>
+#include <qmenu.h>
+#include <qmessagebox.h>
+#include <qpainter.h>
+#include <qscrollarea.h>
+#include <qtextblock.h>
+#include <qtextdocumentfragment.h>
+#include <qtoolbutton.h>
+#include <qvboxlayout.h>
 
 ExpandingTextEdit::ExpandingTextEdit(QWidget *parent)
    : QTextEdit(parent)
@@ -239,11 +239,12 @@ class ButtonWrapper : public QWidget
    }
 
  protected:
-   virtual bool eventFilter(QObject *object, QEvent *event) {
+   bool eventFilter(QObject *object, QEvent *event) override {
       if (event->type() == QEvent::Resize) {
          QWidget *relator = static_cast<QWidget *>(object);
          setFixedHeight((relator->height() + layout()->spacing() + m_wrapee->height()) / 2);
       }
+
       return false;
    }
 

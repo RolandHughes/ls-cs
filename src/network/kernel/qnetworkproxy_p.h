@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -29,9 +29,11 @@
 class QSystemConfigurationProxyFactory : public QNetworkProxyFactory
 {
  public:
-   QSystemConfigurationProxyFactory() : QNetworkProxyFactory() {}
+   QSystemConfigurationProxyFactory()
+      : QNetworkProxyFactory()
+   { }
 
-   virtual QList<QNetworkProxy> queryProxy(const QNetworkProxyQuery &query)  {
+   QList<QNetworkProxy> queryProxy(const QNetworkProxyQuery &query) override {
       QList<QNetworkProxy> proxies = QNetworkProxyFactory::systemProxyForQuery(query);
 
       // Make sure NoProxy is in the list, so that QTcpServer can work:

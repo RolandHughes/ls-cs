@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,21 +24,21 @@
 #ifndef QLIST_H
 #define QLIST_H
 
+#include <qassert.h>
+#include <qcontainerfwd.h>
+#include <qglobal.h>
+
 #include <algorithm>
 #include <deque>
 #include <exception>
 #include <initializer_list>
 #include <iterator>
 #include <list>
-#include <string>
 #include <stdexcept>
+#include <string>
 
 #include <limits.h>
 #include <string.h>
-
-#include <qassert.h>
-#include <qcontainerfwd.h>
-#include <qglobal.h>
 
 template <class T>
 class QListIterator;
@@ -76,11 +76,13 @@ class QList
    QList(QList<T> &&other)      = default;
 
    QList(std::initializer_list<T> args)
-      :  m_data(args) { }
+      :  m_data(args)
+   { }
 
    template <class Input_Iterator>
    QList(Input_Iterator first, Input_Iterator last)
-      : m_data(first, last) {}
+      : m_data(first, last)
+   { }
 
    ~QList() = default;
 
@@ -95,29 +97,31 @@ class QList
 
    void append(const QList<T> &other) {
       if (this != &other) {
-        m_data.insert(m_data.end(), other.m_data.begin(), other.m_data.end());
-        return;
+         m_data.insert(m_data.end(), other.m_data.begin(), other.m_data.end());
+         return;
       }
 
       auto numElements = this->size();
+
       for (QList<T>::size_type i = 0; i < numElements; ++i) {
-          m_data.push_back(m_data[i]);
+         m_data.push_back(m_data[i]);
       }
    }
 
    void append(QList<T> &&other) {
       if (this != &other) {
 
-        for (auto &item : other) {
-           m_data.push_back(std::move(item));
-        }
+         for (auto &item : other) {
+            m_data.push_back(std::move(item));
+         }
 
-        return;
+         return;
       }
 
       auto numElements = this->size();
+
       for (QList<T>::size_type i = 0; i < numElements; ++i) {
-          m_data.push_back(std::move(m_data[i]));
+         m_data.push_back(std::move(m_data[i]));
       }
    }
 
@@ -131,7 +135,7 @@ class QList
       return m_data.back();
    }
 
-   void clear(){
+   void clear() {
       return m_data.clear();
    }
 
@@ -208,7 +212,7 @@ class QList
    void insert(size_type i, const T &value);
 
    size_type length() const {
-     return size();
+      return size();
    }
 
    size_type lastIndexOf(const T &value, size_type from = -1) const {
@@ -251,7 +255,7 @@ class QList
       m_data.push_front(value);
    }
 
-  void remove(size_type i) {
+   void remove(size_type i) {
       Q_ASSERT_X(i >= 0 && i < size(), "QList<T>::remove", "index out of range");
       erase(begin() + i, begin() + i + 1);
    }
@@ -274,8 +278,8 @@ class QList
    }
 
    void removeLast() {
-     Q_ASSERT(! isEmpty());
-     m_data.pop_back();
+      Q_ASSERT(! isEmpty());
+      m_data.pop_back();
    }
 
    bool removeOne(const T &value);
@@ -283,6 +287,8 @@ class QList
 
    [[deprecated]] void reserve(size_type size) {
       // this method should do nothing, undocumented
+
+      (void) size;
    }
 
    void resize(size_type size) {
@@ -299,7 +305,7 @@ class QList
    }
 
    void swap(QList<T> &other) {
-            qSwap(m_data, other.m_data);
+      qSwap(m_data, other.m_data);
    }
 
    void swap(size_type i, size_type j);
@@ -440,8 +446,8 @@ class QList
    const T &operator[](size_type i) const;
    T &operator[](size_type i);
 
-   private:
-      std::deque<T> m_data;
+ private:
+   std::deque<T> m_data;
 };
 
 // methods
@@ -451,7 +457,7 @@ inline const T &QList<T>::at(size_type i) const
    if (i < 0 || i >= size()) {
 
       std::string msg = "QList<T>::at() Index is out of Range. (Index is " + std::to_string(i) +
-                  ", Size is " + std::to_string(size()) + ")";
+            ", Size is " + std::to_string(size()) + ")";
       throw std::logic_error(msg);
    }
 
@@ -573,7 +579,7 @@ inline T QList<T>::takeAt(size_type i)
    if (i < 0 || i >= size()) {
 
       std::string msg = "QList<T>::takeAt() Index is out of Range. (Index is " + std::to_string(i) +
-                        ", Size is " + std::to_string(size()) + ")";
+            ", Size is " + std::to_string(size()) + ")";
       throw std::logic_error(msg);
    }
 
@@ -586,19 +592,19 @@ inline T QList<T>::takeAt(size_type i)
 template <typename T>
 inline T QList<T>::takeFirst()
 {
-   T value = first();
+   T retval = first();
    removeFirst();
 
-   return value;
+   return retval;
 }
 
 template <typename T>
 inline T QList<T>::takeLast()
 {
-   T value = last();
+   T retval = last();
    removeLast();
 
-   return value;
+   return retval;
 }
 
 template <typename T>
@@ -624,7 +630,7 @@ inline const T &QList<T>::operator[](size_type i) const
    if (i < 0 || i >= size()) {
 
       std::string msg = "QList<T>::operator[] Index is out of Range. (Index is " + std::to_string(i) +
-                        ", Size is " + std::to_string(size()) + ")";
+            ", Size is " + std::to_string(size()) + ")";
       throw std::logic_error(msg);
    }
 
@@ -637,7 +643,7 @@ inline T &QList<T>::operator[](size_type i)
    if (i < 0 || i >= size()) {
 
       std::string msg = "QList<T>::operator[] Index is out of Range. (Index is " + std::to_string(i) +
-                        ", Size is " + std::to_string(size()) + ")";
+            ", Size is " + std::to_string(size()) + ")";
       throw std::logic_error(msg);
    }
 
@@ -657,116 +663,193 @@ uint qHash(const QList<T> &list, uint seed = 0)
 template <class T>
 class QListIterator
 {
-   typedef typename QList<T>::const_iterator const_iterator;
+   using const_iterator = typename QList<T>::const_iterator;
+
    QList<T> c;
    const_iterator i;
 
-   public:
-      inline QListIterator(const QList<T> &list)
-         : c(list), i(c.constBegin()) {}
+ public:
+   QListIterator(const QList<T> &list)
+      : c(list), i(c.constBegin())
+   { }
 
-      inline QListIterator &operator=(const QList<T> &list)
-         { c = list; i = c.constBegin(); return *this; }
+   QListIterator &operator=(const QList<T> &list) {
+      c = list;
+      i = c.constBegin();
+      return *this;
+   }
 
-      inline void toFront() { i = c.constBegin(); }
-      inline void toBack() { i = c.constEnd(); }
-      inline bool hasNext() const { return i != c.constEnd(); }
-      inline const T &next() { return *i++; }
-      inline const T &peekNext() const { return *i; }
-      inline bool hasPrevious() const { return i != c.constBegin(); }
-      inline const T &previous() { return *--i; }
-      inline const T &peekPrevious() const { const_iterator p = i; return *--p; }
+   void toFront() {
+      i = c.constBegin();
+   }
 
-      inline bool findNext(const T &value)  {
-         while (i != c.constEnd()) {
-            if (*i++ == value) {
-               return true;
-            }
+   void toBack() {
+      i = c.constEnd();
+   }
+
+   bool hasNext() const {
+      return i != c.constEnd();
+   }
+
+   const T &next() {
+      return *i++;
+   }
+
+   const T &peekNext() const {
+      return *i;
+   }
+
+   bool hasPrevious() const {
+      return i != c.constBegin();
+   }
+
+   const T &previous() {
+      return *--i;
+   }
+
+   const T &peekPrevious() const {
+      const_iterator p = i;
+      return *--p;
+   }
+
+   bool findNext(const T &value)  {
+      while (i != c.constEnd()) {
+         if (*i++ == value) {
+            return true;
          }
-         return false;
       }
 
-      inline bool findPrevious(const T &value)   {
-         while (i != c.constBegin()) {
-            if (*(--i) == value)  {
-               return true;
-            }
+      return false;
+   }
+
+   bool findPrevious(const T &value)   {
+      while (i != c.constBegin()) {
+         if (*(--i) == value)  {
+            return true;
          }
-         return false;
       }
+
+      return false;
+   }
 };
 
 template <class T>
 class QMutableListIterator
 {
-   typedef typename QList<T>::iterator iterator;
-   typedef typename QList<T>::const_iterator const_iterator;
+   using iterator       = typename QList<T>::iterator;
+   using const_iterator = typename QList<T>::const_iterator;
 
    QList<T> *c;
    iterator i, n;
-   inline bool item_exists() const { return const_iterator(n) != c->constEnd(); }
 
-   public:
-      inline QMutableListIterator(QList<T> &list)
-         : c(&list)
-      {
-         i = c->begin();
+   bool item_exists() const {
+      return const_iterator(n) != c->constEnd();
+   }
+
+ public:
+   QMutableListIterator(QList<T> &list)
+      : c(&list)
+   {
+      i = c->begin();
+      n = c->end();
+   }
+
+   ~QMutableListIterator()
+   {  }
+
+   QMutableListIterator &operator=(QList<T> &list) {
+      c = &list;
+      i = c->begin();
+      n = c->end();
+
+      return *this;
+   }
+
+   void toFront() {
+      i = c->begin();
+      n = c->end();
+   }
+
+   void toBack() {
+      i = c->end();
+      n = i;
+   }
+
+   bool hasNext() const {
+      return c->constEnd() != const_iterator(i);
+   }
+
+   T &next() {
+      n = i++;
+      return *n;
+   }
+
+   T &peekNext() const {
+      return *i;
+   }
+
+   bool hasPrevious() const {
+      return c->constBegin() != const_iterator(i);
+   }
+
+   T &previous() {
+      n = --i;
+      return *n;
+   }
+
+   T &peekPrevious() const {
+      iterator p = i;
+      return *--p;
+   }
+
+   void remove() {
+      if (c->constEnd() != const_iterator(n)) {
+         i = c->erase(n);
          n = c->end();
       }
+   }
 
-      inline ~QMutableListIterator()
-         {  }
-
-      inline QMutableListIterator &operator=(QList<T> &list)
-      {
-         c = &list;
-         i = c->begin();
-         n = c->end();
-
-         return *this;
+   void setValue(const T &value) const {
+      if (c->constEnd() != const_iterator(n)) {
+         *n = value;
       }
+   }
 
-      inline void toFront() { i = c->begin(); n = c->end(); }
-      inline void toBack() { i = c->end(); n = i; }
-      inline bool hasNext() const { return c->constEnd() != const_iterator(i); }
-      inline T &next() { n = i++; return *n; }
-      inline T &peekNext() const { return *i; }
-      inline bool hasPrevious() const { return c->constBegin() != const_iterator(i); }
-      inline T &previous() { n = --i; return *n; }
-      inline T &peekPrevious() const { iterator p = i; return *--p; }
+   T &value() {
+      Q_ASSERT(item_exists());
+      return *n;
+   }
 
-      inline void remove() {
-         if (c->constEnd() != const_iterator(n)) {
-            i = c->erase(n);
-            n = c->end();
+   const T &value() const {
+      Q_ASSERT(item_exists());
+      return *n;
+   }
+
+   void insert(const T &value) {
+      n = i = c->insert(i, value);
+      ++i;
+   }
+
+   bool findNext(const T &value) {
+      while (c->constEnd() != const_iterator(n = i))  {
+         if (*i++ == value) {
+            return true;
          }
       }
 
-      inline void setValue(const T &value) const { if (c->constEnd() != const_iterator(n)) *n = value; }
-      inline T &value() { Q_ASSERT(item_exists()); return *n; }
-      inline const T &value() const { Q_ASSERT(item_exists()); return *n; }
-      inline void insert(const T &value) { n = i = c->insert(i, value); ++i; }
+      return false;
+   }
 
-      inline bool findNext(const T &value) {
-         while (c->constEnd() != const_iterator(n = i))  {
-            if (*i++ == value) {
-               return true;
-            }
+   bool findPrevious(const T &value) {
+      while (c->constBegin() != const_iterator(i)) {
+         if (*(n = --i) == value) {
+            return true;
          }
-
-         return false;
       }
 
-      inline bool findPrevious(const T &value) {
-         while (c->constBegin() != const_iterator(i)) {
-            if (*(n = --i) == value) {
-               return true;
-            }
-         }
-
-         n = c->end();
-         return false;
-      }
+      n = c->end();
+      return false;
+   }
 };
 
 #endif

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -31,8 +31,6 @@
 #include <qmath.h>
 
 #include <qnumeric_p.h>
-
-//#define QDEBUG_BEZIER
 
 QBezier QBezier::fromPoints(const QPointF &p1, const QPointF &p2,
    const QPointF &p3, const QPointF &p4)
@@ -470,17 +468,6 @@ give_up:
    return o - curveSegments;
 }
 
-#ifdef QDEBUG_BEZIER
-static QDebug operator<<(QDebug dbg, const QBezier &bz)
-{
-   dbg << '[' << bz.x1 << ", " << bz.y1 << "], "
-      << '[' << bz.x2 << ", " << bz.y2 << "], "
-      << '[' << bz.x3 << ", " << bz.y3 << "], "
-      << '[' << bz.x4 << ", " << bz.y4 << ']';
-   return dbg;
-}
-#endif
-
 qreal QBezier::length(qreal error) const
 {
    qreal length = qreal(0.0);
@@ -615,22 +602,24 @@ qreal QBezier::tAtLength(qreal l) const
 {
    qreal len = length();
    qreal t   = qreal(1.0);
+
    const qreal error = qreal(0.01);
+
    if (l > len || qFuzzyCompare(l, len)) {
       return t;
    }
 
    t *= qreal(0.5);
-   //int iters = 0;
-   //qDebug()<<"LEN is "<<l<<len;
+
    qreal lastBigger = qreal(1.0);
 
    while (true) {
-      //qDebug()<<"\tt is "<<t;
       QBezier right = *this;
       QBezier left;
+
       right.parameterSplitLeft(t, &left);
       qreal lLen = left.length();
+
       if (qAbs(lLen - l) < error) {
          break;
       }
@@ -643,7 +632,7 @@ qreal QBezier::tAtLength(qreal l) const
       }
       //++iters;
    }
-   //qDebug()<<"number of iters is "<<iters;
+
    return t;
 }
 

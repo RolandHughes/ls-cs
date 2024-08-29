@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,12 +24,14 @@
 #ifndef QFSFILEENGINE_P_H
 #define QFSFILEENGINE_P_H
 
-#include <qplatformdefs.h>
 #include <qfsfileengine.h>
+
+#include <qhash.h>
+#include <qplatformdefs.h>
+
 #include <qabstractfileengine_p.h>
 #include <qfilesystementry_p.h>
 #include <qfilesystemmetadata_p.h>
-#include <qhash.h>
 
 #ifndef QT_NO_FSFILEENGINE
 
@@ -90,13 +92,13 @@ class QFSFileEnginePrivate : public QAbstractFileEnginePrivate
 #ifdef Q_OS_WIN
    HANDLE fileHandle;
    HANDLE mapHandle;
-   QHash<uchar *, DWORD /* offset % AllocationGranularity */> maps;
+   QHash<uchar *, DWORD> maps;
 
    mutable int cachedFd;
    mutable DWORD fileAttrib;
 
 #else
-   QHash<uchar *, QPair<int /*offset % PageSize*/, size_t /*length + offset % PageSize*/> > maps;
+   QHash<uchar *, QPair<int, size_t>> maps;
 
 #endif
 
@@ -107,7 +109,9 @@ class QFSFileEnginePrivate : public QAbstractFileEnginePrivate
       IOReadCommand,
       IOWriteCommand
    };
-   LastIOCommand  lastIOCommand;
+
+   LastIOCommand lastIOCommand;
+
    bool lastFlushFailed;
    bool closeFileHandle;
 

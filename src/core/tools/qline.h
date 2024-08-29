@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -68,7 +68,7 @@ class Q_CORE_EXPORT QLine
    inline void setLine(int x1, int y1, int x2, int y2);
 
    inline bool operator==(const QLine &line) const;
-   inline bool operator!=(const QLine &line) const {
+   bool operator!=(const QLine &line) const {
       return !(*this == line);
    }
 
@@ -178,8 +178,11 @@ Q_CORE_EXPORT QDataStream &operator>>(QDataStream &stream, QLine &line);
 class Q_CORE_EXPORT QLineF
 {
  public:
-
-   enum IntersectType { NoIntersection, BoundedIntersection, UnboundedIntersection };
+   enum IntersectType {
+      NoIntersection,
+      BoundedIntersection,
+      UnboundedIntersection,
+   };
 
    QLineF() = default;
 
@@ -243,7 +246,7 @@ class Q_CORE_EXPORT QLineF
    inline void setLine(qreal x1, qreal y1, qreal x2, qreal y2);
 
    inline bool operator==(const QLineF &lineF) const;
-   inline bool operator!=(const QLineF &lineF) const {
+   bool operator!=(const QLineF &lineF) const {
       return !(*this == lineF);
    }
 
@@ -341,7 +344,6 @@ inline QLine QLineF::toLine() const
 {
    return QLine(pt1.toPoint(), pt2.toPoint());
 }
-
 
 inline void QLineF::setP1(const QPointF &point)
 {

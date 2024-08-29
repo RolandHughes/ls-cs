@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -111,6 +111,7 @@ static QString locatePlugin(const QString &fileName)
 
    if (isAbsolute) {
       QFileInfo fi(fileName);
+
       if (fi.isFile()) {
          return fi.canonicalFilePath();
       }
@@ -128,11 +129,10 @@ static QString locatePlugin(const QString &fileName)
    const QStringView baseName = fileName.midView(slash + 1);
    const QStringView basePath  = isAbsolute ? QStringView() : fileName.leftView(slash + 1);    // keep the '/'
 
-   const bool debug = qt_debug_component();
-
    QStringList paths;
+
    if (isAbsolute) {
-      paths.append(fileName.left(slash));         // don't include the '/'
+      paths.append(fileName.left(slash));         // do not include the '/'
    } else {
       paths = QCoreApplication::libraryPaths();
       paths.prepend(".");                         // search in current dir first
@@ -143,9 +143,6 @@ static QString locatePlugin(const QString &fileName)
          for (const QString &suffix : suffixes) {
             const QString fn = path + '/' + basePath + prefix + baseName + suffix;
 
-            if (debug) {
-               qDebug() << "Trying..." << fn;
-            }
             if (QFileInfo(fn).isFile()) {
                return fn;
             }
@@ -153,9 +150,10 @@ static QString locatePlugin(const QString &fileName)
       }
    }
 
-   if (debug) {
-      qDebug() << fileName << "not found";
-   }
+#if defined(CS_SHOW_DEBUG_CORE_PLUGIN)
+      qDebug() << "locatePlugin() filename = " << fileName << " was not found";
+#endif
+
    return QString();
 }
 #endif
@@ -175,15 +173,17 @@ void QPluginLoader::setFileName(const QString &fileName)
    const QString fn = locatePlugin(fileName);
 
    mp_handle = QLibraryHandle::findOrLoad(fn, QString(), lh);
+
    if (! fn.isEmpty()) {
       mp_handle->updatePluginState();
    }
 
 #else
-   if (qt_debug_component()) {
-      qWarning("Unable to load %s into a statically linked CopperSpice library.",
+
+#if defined(CS_SHOW_DEBUG_CORE_PLUGIN)
+   qDebug("QPluginLoader::setFileName() Unable to load %s into a statically linked CopperSpice library",
          QFile::encodeName(fileName).constData() );
-   }
+#endif
 
 #endif
 }
@@ -225,8 +225,6 @@ QLibrary::LoadHints QPluginLoader::loadHints() const
    return mp_handle ? mp_handle->loadHints() : QLibrary::LoadHints();
 }
 
-
-
 /* emerald - static plugins
 void Q_CORE_EXPORT qRegisterStaticPluginFunction(QStaticPlugin plugin)
 {
@@ -264,4 +262,3 @@ QVector<QMetaObject *> QPluginLoader::staticPlugins()
 
    return QVector<QMetaObject *>();
 }
-

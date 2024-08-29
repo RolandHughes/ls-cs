@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -48,9 +48,13 @@ inline QNetworkReplyImplPrivate::QNetworkReplyImplPrivate()
 
 void QNetworkReplyImplPrivate::_q_startOperation()
 {
-   // ensure this function is only being called once
+   // ensure this method is only called once
+
    if (state == ReplyState::Working || state == ReplyState::Finished) {
-      qDebug("QNetworkReplyImpl::_q_startOperation was called more than once");
+#if defined(CS_SHOW_DEBUG_NETWORK)
+      qDebug("QNetworkReplyImpl::_q_startOperation() Should not be called more than once");
+#endif
+
       return;
    }
 
@@ -98,7 +102,7 @@ void QNetworkReplyImplPrivate::_q_startOperation()
          }
 
       } else {
-         qWarning("Backend is waiting for QNetworkSession to connect, but there is none!");
+         qWarning("QNetworkReply::_q_startOperation() Backend is waiting for QNetworkSession to connect");
          state = ReplyState::Working;
 
          error(QNetworkReplyImpl::NetworkSessionFailedError,
@@ -108,7 +112,7 @@ void QNetworkReplyImplPrivate::_q_startOperation()
       }
 
 #else
-      qWarning("Backend start failed");
+      qWarning("QNetworkReply::_q_startOperation() Backend start failed");
       state = ReplyState::Working;
       error(QNetworkReplyImpl::UnknownNetworkError,
             QCoreApplication::translate("QNetworkReply", "backend start error."));
@@ -575,15 +579,16 @@ void QNetworkReplyImplPrivate::setCachingEnabled(bool enable)
       createCache();
 
    } else {
-      // someone told us to turn on, then back off?
-      // ok... but you should make up your mind
+      // someone asked to turn on, then back off?
+
+#if defined(CS_SHOW_DEBUG_NETWORK)
       qDebug("QNetworkReplyImpl: setCachingEnabled(true) called after setCachingEnabled(false) -- "
              "backend %s probably needs to be fixed", csPrintable(backend->metaObject()->className())) ;
+#endif
 
       networkCache()->remove(url);
       cacheSaveDevice = nullptr;
       cacheEnabled = false;
-
    }
 }
 
@@ -626,10 +631,9 @@ void QNetworkReplyImplPrivate::emitUploadProgress(qint64 bytesSent, qint64 bytes
    resumeNotificationHandling();
 }
 
-
 qint64 QNetworkReplyImplPrivate::nextDownstreamBlockSize() const
 {
-   enum { DesiredBufferSize = 32 * 1024 };
+   static constexpr const int DesiredBufferSize = 32 * 1024;
 
    if (readBufferMaxSize == 0) {
       return DesiredBufferSize;
@@ -944,7 +948,7 @@ void QNetworkReplyImplPrivate::error(QNetworkReplyImpl::NetworkError errorCode, 
 
    // unable to set and emit multiple errors
    if (m_errorCode != QNetworkReply::NoError) {
-      qWarning("QNetworkReplyImplPrivate::error: Internal problem, this method must only be called once.");
+      qWarning("QNetworkReply::error() Method called too many times");
       return;
    }
 

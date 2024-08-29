@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -31,7 +31,6 @@
 #include <qsystemlibrary_p.h>
 #include <qurl.h>
 
-//#define QHOSTINFO_DEBUG
 
 // Older SDKs do not include the addrinfo struct declaration, so we
 // include a copy of it here.
@@ -241,9 +240,9 @@ QHostInfo QHostInfoAgent::fromName(const QString &hostName)
       }
    }
 
-#if defined(QHOSTINFO_DEBUG)
+#if defined(CS_SHOW_DEBUG_NETWORK)
    if (results.error() != QHostInfo::NoError) {
-      qDebug("QHostInfoAgent::run(): error (%s)", results.errorString().toLatin1().constData());
+      qDebug("QHostInfoAgent::run() Error (%s)", csPrintable(results.errorString()));
 
    } else {
       QString tmp;
@@ -254,11 +253,9 @@ QHostInfo QHostInfoAgent::fromName(const QString &hostName)
          tmp += addresses.at(i).toString();
       }
 
-      qDebug("QHostInfoAgent::run(): found %i entries: {%s}",
-             addresses.count(), tmp.toLatin1().constData());
+      qDebug("QHostInfoAgent::run() Found %lli entries for: %s", addresses.count(), csPrintable(tmp));
    }
 #endif
 
    return results;
 }
-

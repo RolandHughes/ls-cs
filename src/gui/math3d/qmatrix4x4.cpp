@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -29,7 +29,7 @@
 
 #ifndef QT_NO_MATRIX4X4
 
-static const qreal inv_dist_to_plane = 1. / 1024.;
+static constexpr const qreal inv_dist_to_plane = 1.0 / 1024.0;
 
 QMatrix4x4::QMatrix4x4(const qreal *values)
 {

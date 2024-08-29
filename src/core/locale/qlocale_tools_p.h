@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -38,10 +38,10 @@ enum PrecisionMode {
 };
 
 QString &decimalForm(QChar zero, QChar decimal, QChar group, QString &digits, int decpt, uint precision,
-                     PrecisionMode pm, bool always_show_decpt, bool thousands_group);
+      PrecisionMode pm, bool always_show_decpt, bool thousands_group);
 
 QString &exponentForm(QChar zero, QChar decimal, QChar exponential, QChar group, QChar plus, QChar minus,
-                      QString &digits, int decpt, uint precision, PrecisionMode pm, bool always_show_decpt);
+      QString &digits, int decpt, uint precision, PrecisionMode pm, bool always_show_decpt);
 
 inline bool isZero(double d)
 {

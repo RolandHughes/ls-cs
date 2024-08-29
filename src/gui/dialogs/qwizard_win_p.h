@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -35,6 +35,7 @@
 #include <qstylehelper_p.h>
 
 
+class QWizard;
 
 class QVistaBackButton : public QAbstractButton
 {
@@ -42,7 +43,8 @@ class QVistaBackButton : public QAbstractButton
    QVistaBackButton(QWidget *widget);
 
    QSize sizeHint() const override;
-   inline QSize minimumSizeHint() const override {
+
+   QSize minimumSizeHint() const override {
       return sizeHint();
    }
 
@@ -51,14 +53,23 @@ class QVistaBackButton : public QAbstractButton
    void paintEvent(QPaintEvent *event) override;
 };
 
-class QWizard;
-
 class QVistaHelper : public QObject
 {
  public:
+   enum TitleBarChangeType {
+      NormalTitleBar,
+      ExtendedTitleBar
+   };
+
+   enum VistaState {
+      VistaAero,
+      VistaBasic,
+      Classic,
+      Dirty
+   };
+
    QVistaHelper(QWizard *wizard);
    ~QVistaHelper();
-   enum TitleBarChangeType { NormalTitleBar, ExtendedTitleBar };
 
    void updateCustomMargins(bool vistaMargins);
    bool setDWMTitleBar(TitleBarChangeType type);
@@ -80,7 +91,7 @@ class QVistaHelper : public QObject
    }
 
    QColor basicWindowFrameColor();
-   enum VistaState { VistaAero, VistaBasic, Classic, Dirty };
+
    static VistaState vistaState();
 
    static int titleBarSize() {
@@ -98,7 +109,14 @@ class QVistaHelper : public QObject
 
    static int topOffset();
    static HDC backingStoreDC(const QWidget *wizard, QPoint *offset);
+
  private:
+   enum Changes {
+      resizeTop,
+      movePosition,
+      noChange
+   };
+
    HWND wizardHWND() const;
    bool drawTitleText(QPainter *painter, const QString &text, const QRect &rect, HDC hdc);
    static bool drawBlackRect(const QRect &rect, HDC hdc);
@@ -141,7 +159,8 @@ class QVistaHelper : public QObject
    static VistaState cachedVistaState;
    static bool isCompositionEnabled();
    static bool isThemeActive();
-   enum Changes { resizeTop, movePosition, noChange } change;
+
+   Changes change;
    QPoint pressedPos;
    bool pressed;
    QRect rtTop;
@@ -155,8 +174,7 @@ class QVistaHelper : public QObject
    static int m_devicePixelRatio;
 };
 
-
-
 #endif // QT_NO_STYLE_WINDOWSVISTA
 #endif // QT_NO_WIZARD
+
 #endif

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -214,7 +214,7 @@ void *QXcbNativeInterface::nativeResourceForContext(const QByteArray &resourceSt
 void *QXcbNativeInterface::nativeResourceForScreen(const QByteArray &resourceString, QScreen *screen)
 {
    if (!screen) {
-      qWarning() << "nativeResourceForScreen: null screen";
+      qWarning("QXcbNativeInterface::nativeResourceForContext() Screen is invalid (nullptr)");
       return nullptr;
    }
 
@@ -523,12 +523,12 @@ void *QXcbNativeInterface::atspiBus()
    QXcbIntegration *integration = static_cast<QXcbIntegration *>(QApplicationPrivate::platformIntegration());
    QXcbConnection *defaultConnection = integration->defaultConnection();
 
-   if (defaultConnection) {
+   if (defaultConnection != nullptr) {
       xcb_atom_t atspiBusAtom = defaultConnection->internAtom("AT_SPI_BUS");
-      xcb_get_property_cookie_t cookie = Q_XCB_CALL(xcb_get_property(defaultConnection->xcb_connection(), false,
-               defaultConnection->rootWindow(), atspiBusAtom, XCB_ATOM_STRING, 0, 128));
+      xcb_get_property_cookie_t cookie = Q_XCB_CALL2(xcb_get_property(defaultConnection->xcb_connection(), false,
+               defaultConnection->rootWindow(), atspiBusAtom, XCB_ATOM_STRING, 0, 128), defaultConnection);
 
-      xcb_get_property_reply_t *reply = Q_XCB_CALL(xcb_get_property_reply(defaultConnection->xcb_connection(), cookie, nullptr));
+      xcb_get_property_reply_t *reply = Q_XCB_CALL2(xcb_get_property_reply(defaultConnection->xcb_connection(), cookie, nullptr), defaultConnection);
 
       Q_ASSERT(!reply->bytes_after);
       char *data = (char *)xcb_get_property_value(reply);

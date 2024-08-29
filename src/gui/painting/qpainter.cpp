@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -60,13 +60,8 @@
 #include <qtextengine_p.h>
 #include <qwidget_p.h>
 
-#define QGradient_StretchToDevice 0x10000000
+#define QGradient_StretchToDevice     0x10000000
 #define QPaintEngine_OpaqueBackground 0x40000000
-
-// #define QT_DEBUG_DRAW
-#ifdef QT_DEBUG_DRAW
-bool qt_show_painter_debug_output = true;
-#endif
 
 extern QPixmap qt_pixmapForBrush(int style, bool invert);
 
@@ -122,9 +117,6 @@ static inline bool is_pen_transparent(const QPen &pen)
    return pen.style() > Qt::SolidLine || is_brush_transparent(pen.brush());
 }
 
-/* Discards the emulation flags that are not relevant for line drawing
-   and returns the result
-*/
 static inline uint line_emulation(uint emulation)
 {
    return emulation & (QPaintEngine::PrimitiveTransform
@@ -137,7 +129,7 @@ static inline uint line_emulation(uint emulation)
          | QPaintEngine_OpaqueBackground);
 }
 
-#ifndef QT_NO_DEBUG
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
 static bool qt_painter_thread_test(int devType, int engineType, const char *what)
 {
    const QPlatformIntegration *platformIntegration = QGuiApplicationPrivate::platformIntegration();
@@ -151,18 +143,21 @@ static bool qt_painter_thread_test(int devType, int engineType, const char *what
 
       default:
          if (QThread::currentThread() != qApp->thread()
-            // pixmaps cannot be targets unless threaded pixmaps are supported
-            && (devType != QInternal::Pixmap || !platformIntegration->hasCapability(QPlatformIntegration::ThreadedPixmaps))
-            // framebuffer objects and such cannot be targets unless threaded GL is supported
-            && (devType != QInternal::OpenGL || !platformIntegration->hasCapability(QPlatformIntegration::ThreadedOpenGL))
-            // widgets cannot be targets except for QGLWidget
-            && (devType != QInternal::Widget || !platformIntegration->hasCapability(QPlatformIntegration::ThreadedOpenGL)
+               // pixmaps cannot be targets unless threaded pixmaps are supported
+               && (devType != QInternal::Pixmap || !platformIntegration->hasCapability(QPlatformIntegration::ThreadedPixmaps))
+               // framebuffer objects and such cannot be targets unless threaded GL is supported
+               && (devType != QInternal::OpenGL || !platformIntegration->hasCapability(QPlatformIntegration::ThreadedOpenGL))
+               // widgets cannot be targets except for QGLWidget
+               && (devType != QInternal::Widget || !platformIntegration->hasCapability(QPlatformIntegration::ThreadedOpenGL)
                || (engineType != QPaintEngine::OpenGL && engineType != QPaintEngine::OpenGL2))) {
-            qWarning("qt_painter_thread() Unsafe to use %s outside the GUI thread", what);
+            qDebug("qt_painter_thread() Unsafe to use %s outside the GUI thread", what);
+
             return false;
          }
+
          break;
    }
+
    return true;
 }
 #endif
@@ -428,12 +423,6 @@ void QPainterPrivate::draw_helper(const QPainterPath &originalPath, DrawOperatio
       }
    }
 
-   //     qDebug("\nQPainterPrivate::draw_helper(), x=%d, y=%d, w=%d, h=%d",
-   //            devMinX, devMinY, device->width(), device->height());
-   //     qDebug() << " - matrix" << state->matrix;
-   //     qDebug() << " - originalPath.bounds" << originalPath.boundingRect();
-   //     qDebug() << " - path.bounds" << path.boundingRect();
-
    if (absPathRect.width() <= 0 || absPathRect.height() <= 0) {
       return;
    }
@@ -459,23 +448,6 @@ void QPainterPrivate::draw_helper(const QPainterPath &originalPath, DrawOperatio
       state->renderHints & QPainter::SmoothPixmapTransform);
 
    p.drawPath(originalPath);
-
-#ifndef QT_NO_DEBUG
-   static bool do_fallback_overlay = qgetenv("QT_PAINT_FALLBACK_OVERLAY").size() > 0;
-
-   if (do_fallback_overlay) {
-      QImage block(8, 8, QImage::Format_ARGB32_Premultiplied);
-      QPainter pt(&block);
-      pt.fillRect(0, 0, 8, 8, QColor(196, 0, 196));
-      pt.drawLine(0, 0, 8, 8);
-      pt.end();
-      p.resetTransform();
-      p.setCompositionMode(QPainter::CompositionMode_SourceAtop);
-      p.setOpacity(0.5);
-      p.fillRect(0, 0, image.width(), image.height(), QBrush(block));
-   }
-#endif
-
    p.end();
 
    q->save();
@@ -662,12 +634,8 @@ void QPainterPrivate::updateMatrix()
    }
 
    state->matrix *= hidpiScaleTransform();
-
-   //     printf("VxF=%d, WxF=%d\n", state->VxF, state->WxF);
-   //     qDebug() << " --- using matrix" << state->matrix << redirection_offset;
 }
 
-/*! \internal */
 void QPainterPrivate::updateInvMatrix()
 {
    Q_ASSERT(txinv == false);
@@ -1128,12 +1096,6 @@ bool QPainter::begin(QPaintDevice *pd)
       pd = rpd;
    }
 
-#ifdef QT_DEBUG_DRAW
-   if (qt_show_painter_debug_output) {
-      printf("QPainter::begin(), device=%p, type=%d\n", pd, pd->devType());
-   }
-#endif
-
    if (pd->devType() == QInternal::Pixmap) {
       static_cast<QPixmap *>(pd)->detach();
    } else if (pd->devType() == QInternal::Image) {
@@ -1414,10 +1376,11 @@ QPoint QPainter::brushOrigin() const
 {
    Q_D(const QPainter);
 
-   if (!d->engine) {
+   if (! d->engine) {
       qWarning("QPainter::brushOrigin() Painter engine not active");
       return QPoint();
    }
+
    return QPointF(d->state->brushOrigin).toPoint();
 }
 
@@ -1425,10 +1388,8 @@ void QPainter::setBrushOrigin(const QPointF &p)
 {
    Q_D(QPainter);
 
-#ifdef QT_DEBUG_DRAW
-   if (qt_show_painter_debug_output) {
-      printf("QPainter::setBrushOrigin(), (%.2f,%.2f)\n", p.x(), p.y());
-   }
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+   qDebug("QPainter::setBrushOrigin() pointf = (%.2f, %.2f)", p.x(), p.y());
 #endif
 
    if (! d->engine) {
@@ -1449,6 +1410,7 @@ void QPainter::setBrushOrigin(const QPointF &p)
 void QPainter::setCompositionMode(CompositionMode mode)
 {
    Q_D(QPainter);
+
    if (!d->engine) {
       qWarning("QPainter::setCompositionMode() Painter engine not active");
       return;
@@ -1524,13 +1486,11 @@ void QPainter::setClipping(bool enable)
 {
    Q_D(QPainter);
 
-#ifdef QT_DEBUG_DRAW
-   if (qt_show_painter_debug_output)
-      printf("QPainter::setClipping(), enable=%s, was=%s\n",
-         enable ? "on" : "off", hasClipping() ? "on" : "off");
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+   qDebug("QPainter::setClipping() enable = %s, was = %s", enable ? "on" : "off", hasClipping() ? "on" : "off");
 #endif
 
-   if (!d->engine) {
+   if (! d->engine) {
       qWarning("QPainter::setClipping() Painter engine not active");
       return;
    }
@@ -1539,9 +1499,7 @@ void QPainter::setClipping(bool enable)
       return;
    }
 
-   // we can't enable clipping if we don't have a clip
-   if (enable
-      && (d->state->clipInfo.isEmpty() || d->state->clipInfo.last().operation == Qt::NoClip)) {
+   if (enable && (d->state->clipInfo.isEmpty() || d->state->clipInfo.last().operation == Qt::NoClip)) {
       return;
    }
    d->state->clipEnabled = enable;
@@ -1558,6 +1516,7 @@ void QPainter::setClipping(bool enable)
 QRegion QPainter::clipRegion() const
 {
    Q_D(const QPainter);
+
    if (!d->engine) {
       qWarning("QPainter::clipRegion() Painter engine not active");
       return QRegion();
@@ -1859,18 +1818,18 @@ void QPainter::setClipRegion(const QRegion &r, Qt::ClipOperation op)
 {
    Q_D(QPainter);
 
-#ifdef QT_DEBUG_DRAW
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
    QRect rect = r.boundingRect();
 
-   if (qt_show_painter_debug_output)
-      printf("QPainter::setClipRegion(), size=%d, [%d,%d,%d,%d]\n",
+   qDebug("QPainter::setClipRegion() size = %lld, bounding rectangle = [%d,%d,%d,%d]",
          r.rects().size(), rect.x(), rect.y(), rect.width(), rect.height());
 #endif
 
-   if (!d->engine) {
+   if (! d->engine) {
       qWarning("QPainter::setClipRegion() Painter engine not active");
       return;
    }
+
    bool simplifyClipOp = (paintEngine()->type() != QPaintEngine::Picture);
 
    if (simplifyClipOp && (!d->state->clipEnabled && op != Qt::NoClip)) {
@@ -1996,11 +1955,8 @@ bool QPainter::matrixEnabled() const
 
 void QPainter::scale(qreal sx, qreal sy)
 {
-
-#ifdef QT_DEBUG_DRAW
-   if (qt_show_painter_debug_output) {
-      printf("QPainter::scale(), sx=%f, sy=%f\n", sx, sy);
-   }
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+   qDebug("QPainter::scale() Scale factor, sx = %f, sy = %f", sx, sy);
 #endif
 
    Q_D(QPainter);
@@ -2016,13 +1972,12 @@ void QPainter::scale(qreal sx, qreal sy)
 
 void QPainter::shear(qreal sh, qreal sv)
 {
-#ifdef QT_DEBUG_DRAW
-   if (qt_show_painter_debug_output) {
-      printf("QPainter::shear(), sh=%f, sv=%f\n", sh, sv);
-   }
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+   qDebug("QPainter::shear() Shear factor, sh = %f, sv = %f", sh, sv);
 #endif
 
    Q_D(QPainter);
+
    if (!d->engine) {
       qWarning("QPainter::shear() Painter engine not active");
       return;
@@ -2035,14 +1990,9 @@ void QPainter::shear(qreal sh, qreal sv)
 
 void QPainter::rotate(qreal a)
 {
-#ifdef QT_DEBUG_DRAW
-   if (qt_show_painter_debug_output) {
-      printf("QPainter::rotate(), angle=%f\n", a);
-   }
-#endif
-
    Q_D(QPainter);
-   if (!d->engine) {
+
+   if (! d->engine) {
       qWarning("QPainter::rotate() Painter engine not active");
       return;
    }
@@ -2057,13 +2007,12 @@ void QPainter::translate(const QPointF &offset)
    qreal dx = offset.x();
    qreal dy = offset.y();
 
-#ifdef QT_DEBUG_DRAW
-   if (qt_show_painter_debug_output) {
-      printf("QPainter::translate(), dx=%f, dy=%f\n", dx, dy);
-   }
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+   qDebug("QPainter::translate() Offset dx = %f, dy = %f", dx, dy);
 #endif
 
    Q_D(QPainter);
+
    if (!d->engine) {
       qWarning("QPainter::translate() Painter engine not active");
       return;
@@ -2076,12 +2025,11 @@ void QPainter::translate(const QPointF &offset)
 
 void QPainter::setClipPath(const QPainterPath &path, Qt::ClipOperation op)
 {
-#ifdef QT_DEBUG_DRAW
-   if (qt_show_painter_debug_output) {
-      QRectF b = path.boundingRect();
-      printf("QPainter::setClipPath(), size=%d, op=%d, bounds=[%.2f,%.2f,%.2f,%.2f]\n",
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+   QRectF b = path.boundingRect();
+
+   qDebug("QPainter::setClipPath() size = %d, op = %d, bounding rectangle = [%.2f,%.2f,%.2f,%.2f]",
          path.elementCount(), op, b.x(), b.y(), b.width(), b.height());
-   }
 #endif
 
    Q_D(QPainter);
@@ -2191,10 +2139,10 @@ void QPainter::fillPath(const QPainterPath &path, const QBrush &brush)
 
 void QPainter::drawPath(const QPainterPath &path)
 {
-#ifdef QT_DEBUG_DRAW
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
    QRectF pathBounds = path.boundingRect();
-   if (qt_show_painter_debug_output)
-      printf("QPainter::drawPath(), size=%d, [%.2f,%.2f,%.2f,%.2f]\n",
+
+   qDebug("QPainter::drawPath() size = %d, bounding rectangle = [%.2f,%.2f,%.2f,%.2f]",
          path.elementCount(), pathBounds.x(), pathBounds.y(), pathBounds.width(), pathBounds.height());
 #endif
 
@@ -2220,12 +2168,6 @@ void QPainter::drawPath(const QPainterPath &path)
 
 void QPainter::drawRects(const QRectF *rectPtr, int rectCount)
 {
-#ifdef QT_DEBUG_DRAW
-   if (qt_show_painter_debug_output) {
-      printf("QPainter::drawRects(), count=%d\n", rectCount);
-   }
-#endif
-
    Q_D(QPainter);
 
    if (! d->engine) {
@@ -2244,7 +2186,7 @@ void QPainter::drawRects(const QRectF *rectPtr, int rectCount)
 
    d->updateState(d->state);
 
-   if (!d->state->emulationSpecifier) {
+   if (! d->state->emulationSpecifier) {
       d->engine->drawRects(rectPtr, rectCount);
       return;
    }
@@ -2280,12 +2222,6 @@ void QPainter::drawRects(const QRectF *rectPtr, int rectCount)
 
 void QPainter::drawRects(const QRect *rectPtr, int rectCount)
 {
-#ifdef QT_DEBUG_DRAW
-   if (qt_show_painter_debug_output) {
-      printf("QPainter::drawRects(), count=%d\n", rectCount);
-   }
-#endif
-
    Q_D(QPainter);
 
    if (! d->engine) {
@@ -2318,6 +2254,7 @@ void QPainter::drawRects(const QRect *rectPtr, int rectCount)
 
          d->engine->drawRects(&rTmp, 1);
       }
+
    } else {
       if (d->state->brushNeedsResolving() || d->state->penNeedsResolving()) {
          for (int i = 0; i < rectCount; ++i) {
@@ -2339,12 +2276,6 @@ void QPainter::drawRects(const QRect *rectPtr, int rectCount)
 
 void QPainter::drawPoints(const QPointF *pointPtr, int pointCount)
 {
-#ifdef QT_DEBUG_DRAW
-   if (qt_show_painter_debug_output) {
-      printf("QPainter::drawPoints(), count=%d\n", pointCount);
-   }
-#endif
-
    Q_D(QPainter);
 
    if (! d->engine) {
@@ -2402,12 +2333,6 @@ void QPainter::drawPoints(const QPointF *pointPtr, int pointCount)
 
 void QPainter::drawPoints(const QPoint *pointPtr, int pointCount)
 {
-#ifdef QT_DEBUG_DRAW
-   if (qt_show_painter_debug_output) {
-      printf("QPainter::drawPoints(), count=%d\n", pointCount);
-   }
-#endif
-
    Q_D(QPainter);
 
    if (! d->engine) {
@@ -2463,14 +2388,9 @@ void QPainter::drawPoints(const QPoint *pointPtr, int pointCount)
 
 void QPainter::setBackgroundMode(Qt::BGMode mode)
 {
-#ifdef QT_DEBUG_DRAW
-   if (qt_show_painter_debug_output) {
-      printf("QPainter::setBackgroundMode(), mode=%d\n", mode);
-   }
-#endif
-
    Q_D(QPainter);
-   if (!d->engine) {
+
+   if (! d->engine) {
       qWarning("QPainter::setBackgroundMode() Painter engine not active");
       return;
    }
@@ -2479,6 +2399,7 @@ void QPainter::setBackgroundMode(Qt::BGMode mode)
    }
 
    d->state->bgMode = mode;
+
    if (d->extended) {
       d->checkEmulation();
    } else {
@@ -2500,11 +2421,6 @@ Qt::BGMode QPainter::backgroundMode() const
 
 void QPainter::setPen(const QColor &color)
 {
-#ifdef QT_DEBUG_DRAW
-   if (qt_show_painter_debug_output) {
-      printf("QPainter::setPen(), color=%04x\n", color.rgb());
-   }
-#endif
    Q_D(QPainter);
 
    if (!d->engine) {
@@ -2527,10 +2443,8 @@ void QPainter::setPen(const QColor &color)
 
 void QPainter::setPen(const QPen &pen)
 {
-
-#ifdef QT_DEBUG_DRAW
-   if (qt_show_painter_debug_output)
-      printf("QPainter::setPen(), color=%04x, (brushStyle=%d) style=%d, cap=%d, join=%d\n",
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+   qDebug("QPainter::setPen() color = %04x, brushStyle = %d, style = %d, cap = %d, join = %d",
          pen.color().rgb(), pen.brush().style(), pen.style(), pen.capStyle(), pen.joinStyle());
 #endif
 
@@ -2593,10 +2507,8 @@ const QPen &QPainter::pen() const
 
 void QPainter::setBrush(const QBrush &brush)
 {
-#ifdef QT_DEBUG_DRAW
-   if (qt_show_painter_debug_output) {
-      printf("QPainter::setBrush(), color=%04x, style=%d\n", brush.color().rgb(), brush.style());
-   }
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+   qDebug("QPainter::setBrush() color = %04x, style = %d", brush.color().rgb(), brush.style());
 #endif
 
    Q_D(QPainter);
@@ -2648,24 +2560,23 @@ const QBrush &QPainter::brush() const
 {
    Q_D(const QPainter);
 
-   if (!d->engine) {
+   if (! d->engine) {
       qWarning("QPainter::brush() Painter engine not active");
       return d->fakeState()->brush;
    }
+
    return d->state->brush;
 }
 
 void QPainter::setBackground(const QBrush &bg)
 {
-#ifdef QT_DEBUG_DRAW
-   if (qt_show_painter_debug_output) {
-      printf("QPainter::setBackground(), color=%04x, style=%d\n", bg.color().rgb(), bg.style());
-   }
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+   qDebug("QPainter::setBackground() color = %04x, style = %d", bg.color().rgb(), bg.style());
 #endif
 
    Q_D(QPainter);
 
-   if (!d->engine) {
+   if (! d->engine) {
       qWarning("QPainter::setBackground() Painter engine not active");
       return;
    }
@@ -2681,13 +2592,11 @@ void QPainter::setFont(const QFont &font)
 {
    Q_D(QPainter);
 
-#ifdef QT_DEBUG_DRAW
-   if (qt_show_painter_debug_output) {
-      printf("QPainter::setFont(), family=%s, pointSize=%d\n", font.family().toLatin1().constData(), font.pointSize());
-   }
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+   qDebug("QPainter::setFont() family = %s, pointSize = %d", csPrintable(font.family()), font.pointSize());
 #endif
 
-   if (!d->engine) {
+   if (! d->engine) {
       qWarning("QPainter::setFont() Painter engine not active");
       return;
    }
@@ -2703,20 +2612,21 @@ const QFont &QPainter::font() const
 {
    Q_D(const QPainter);
 
-   if (!d->engine) {
+   if (! d->engine) {
       qWarning("QPainter::font() Painter engine not active");
       return d->fakeState()->font;
    }
+
    return d->state->font;
 }
 
 void QPainter::drawRoundedRect(const QRectF &rect, qreal xRadius, qreal yRadius, Qt::SizeMode mode)
 {
-#ifdef QT_DEBUG_DRAW
-   if (qt_show_painter_debug_output) {
-      printf("QPainter::drawRoundedRect(), [%.2f,%.2f,%.2f,%.2f]\n", rect.x(), rect.y(), rect.width(), rect.height());
-   }
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+   qDebug("QPainter::drawRoundedRect() bounding rectangle = [%.2f,%.2f,%.2f,%.2f]",
+         rect.x(), rect.y(), rect.width(), rect.height());
 #endif
+
    Q_D(QPainter);
 
    if (!d->engine) {
@@ -2745,15 +2655,14 @@ void QPainter::drawRoundRect(const QRectF &r, int xRnd, int yRnd)
 
 void QPainter::drawEllipse(const QRectF &r)
 {
-#ifdef QT_DEBUG_DRAW
-   if (qt_show_painter_debug_output) {
-      printf("QPainter::drawEllipse(), [%.2f,%.2f,%.2f,%.2f]\n", r.x(), r.y(), r.width(), r.height());
-   }
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+   qDebug("QPainter::drawEllipse() bounding rectangle = [%.2f,%.2f,%.2f,%.2f]",
+         r.x(), r.y(), r.width(), r.height());
 #endif
 
    Q_D(QPainter);
 
-   if (!d->engine) {
+   if (! d->engine) {
       return;
    }
 
@@ -2782,11 +2691,10 @@ void QPainter::drawEllipse(const QRectF &r)
 
 void QPainter::drawEllipse(const QRect &r)
 {
-#ifdef QT_DEBUG_DRAW
-   if (qt_show_painter_debug_output) {
-      printf("QPainter::drawEllipse(), [%d,%d,%d,%d]\n", r.x(), r.y(), r.width(), r.height());
-   }
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+   qDebug("QPainter::drawEllipse() bounding rectangle = [%d,%d,%d,%d]", r.x(), r.y(), r.width(), r.height());
 #endif
+
    Q_D(QPainter);
 
    if (!d->engine) {
@@ -2819,14 +2727,14 @@ void QPainter::drawEllipse(const QRect &r)
 
 void QPainter::drawArc(const QRectF &r, int a, int alen)
 {
-#ifdef QT_DEBUG_DRAW
-   if (qt_show_painter_debug_output)
-      printf("QPainter::drawArc(), [%.2f,%.2f,%.2f,%.2f], angle=%d, sweep=%d\n",
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+   qDebug("QPainter::drawArc() bounding rectangle = [%.2f,%.2f,%.2f,%.2f], angle = %d, sweep = %d",
          r.x(), r.y(), r.width(), r.height(), a / 16, alen / 16);
 #endif
+
    Q_D(QPainter);
 
-   if (!d->engine) {
+   if (! d->engine) {
       return;
    }
 
@@ -2840,9 +2748,8 @@ void QPainter::drawArc(const QRectF &r, int a, int alen)
 
 void QPainter::drawPie(const QRectF &r, int a, int alen)
 {
-#ifdef QT_DEBUG_DRAW
-   if (qt_show_painter_debug_output)
-      printf("QPainter::drawPie(), [%.2f,%.2f,%.2f,%.2f], angle=%d, sweep=%d\n",
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+   qDebug("QPainter::drawPie() bounding rect = [%.2f,%.2f,%.2f,%.2f], angle = %d, sweep = %d",
          r.x(), r.y(), r.width(), r.height(), a / 16, alen / 16);
 #endif
 
@@ -2875,9 +2782,8 @@ void QPainter::drawPie(const QRectF &r, int a, int alen)
 
 void QPainter::drawChord(const QRectF &r, int a, int alen)
 {
-#ifdef QT_DEBUG_DRAW
-   if (qt_show_painter_debug_output)
-      printf("QPainter::drawChord(), [%.2f,%.2f,%.2f,%.2f], angle=%d, sweep=%d\n",
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+   qDebug("QPainter::drawChord() bounding rectangle = [%.2f,%.2f,%.2f,%.2f], angle = %d, sweep = %d",
          r.x(), r.y(), r.width(), r.height(), a / 16, alen / 16);
 #endif
 
@@ -2898,12 +2804,6 @@ void QPainter::drawChord(const QRectF &r, int a, int alen)
 
 void QPainter::drawLines(const QLineF *lines, int lineCount)
 {
-#ifdef QT_DEBUG_DRAW
-   if (qt_show_painter_debug_output) {
-      printf("QPainter::drawLines(), line count=%d\n", lineCount);
-   }
-#endif
-
    Q_D(QPainter);
 
    if (!d->engine || lineCount < 1) {
@@ -2937,17 +2837,12 @@ void QPainter::drawLines(const QLineF *lines, int lineCount)
       }
       return;
    }
+
    d->engine->drawLines(lines, lineCount);
 }
 
 void QPainter::drawLines(const QLine *lines, int lineCount)
 {
-#ifdef QT_DEBUG_DRAW
-   if (qt_show_painter_debug_output) {
-      printf("QPainter::drawLine(), line count=%d\n", lineCount);
-   }
-#endif
-
    Q_D(QPainter);
 
    if (!d->engine || lineCount < 1) {
@@ -3000,12 +2895,6 @@ void QPainter::drawLines(const QPoint *pointPairs, int lineCount)
 
 void QPainter::drawPolyline(const QPointF *pointPtr, int pointCount)
 {
-#ifdef QT_DEBUG_DRAW
-   if (qt_show_painter_debug_output) {
-      printf("QPainter::drawPolyline(), count=%d\n", pointCount);
-   }
-#endif
-
    Q_D(QPainter);
 
    if (! d->engine || pointCount < 2) {
@@ -3043,12 +2932,6 @@ void QPainter::drawPolyline(const QPointF *pointPtr, int pointCount)
 
 void QPainter::drawPolyline(const QPoint *pointPtr, int pointCount)
 {
-#ifdef QT_DEBUG_DRAW
-   if (qt_show_painter_debug_output) {
-      printf("QPainter::drawPolyline(), count=%d\n", pointCount);
-   }
-#endif
-
    Q_D(QPainter);
 
    if (! d->engine || pointCount < 2) {
@@ -3086,12 +2969,6 @@ void QPainter::drawPolyline(const QPoint *pointPtr, int pointCount)
 
 void QPainter::drawPolygon(const QPointF *pointPtr, int pointCount, Qt::FillRule fillRule)
 {
-#ifdef QT_DEBUG_DRAW
-   if (qt_show_painter_debug_output) {
-      printf("QPainter::drawPolygon(), count=%d\n", pointCount);
-   }
-#endif
-
    Q_D(QPainter);
 
    if (! d->engine || pointCount < 2) {
@@ -3125,12 +3002,6 @@ void QPainter::drawPolygon(const QPointF *pointPtr, int pointCount, Qt::FillRule
 
 void QPainter::drawPolygon(const QPoint *pointPtr, int pointCount, Qt::FillRule fillRule)
 {
-#ifdef QT_DEBUG_DRAW
-   if (qt_show_painter_debug_output) {
-      printf("QPainter::drawPolygon(), count=%d\n", pointCount);
-   }
-#endif
-
    Q_D(QPainter);
 
    if (! d->engine || pointCount < 2) {
@@ -3165,12 +3036,6 @@ void QPainter::drawPolygon(const QPoint *pointPtr, int pointCount, Qt::FillRule 
 
 void QPainter::drawConvexPolygon(const QPoint *pointPtr, int pointCount)
 {
-#ifdef QT_DEBUG_DRAW
-   if (qt_show_painter_debug_output) {
-      printf("QPainter::drawConvexPolygon(), count=%d\n", pointCount);
-   }
-#endif
-
    Q_D(QPainter);
 
    if (! d->engine || pointCount < 2) {
@@ -3206,12 +3071,6 @@ void QPainter::drawConvexPolygon(const QPoint *pointPtr, int pointCount)
 
 void QPainter::drawConvexPolygon(const QPointF *pointPtr, int pointCount)
 {
-#ifdef QT_DEBUG_DRAW
-   if (qt_show_painter_debug_output) {
-      printf("QPainter::drawConvexPolygon(), count=%d\n", pointCount);
-   }
-#endif
-
    Q_D(QPainter);
 
    if (! d->engine || pointCount < 2) {
@@ -3251,9 +3110,8 @@ static inline QPointF roundInDeviceCoordinates(const QPointF &p, const QTransfor
 
 void QPainter::drawPixmap(const QPointF &p, const QPixmap &pm)
 {
-#if defined QT_DEBUG_DRAW
-   if (qt_show_painter_debug_output)
-      printf("QPainter::drawPixmap(), p=[%.2f,%.2f], pix=[%d,%d]\n",
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+   qDebug("QPainter::drawPixmap() pointf = [%.2f,%.2f], pixmap = [%d,%d]",
          p.x(), p.y(), pm.width(), pm.height());
 #endif
 
@@ -3263,7 +3121,7 @@ void QPainter::drawPixmap(const QPointF &p, const QPixmap &pm)
       return;
    }
 
-#ifndef QT_NO_DEBUG
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
    qt_painter_thread_test(d->device->devType(), d->engine->type(), "drawPixmap()");
 #endif
 
@@ -3311,6 +3169,7 @@ void QPainter::drawPixmap(const QPointF &p, const QPixmap &pm)
 
       drawRect(pm.rect());
       restore();
+
    } else {
       if (!d->engine->hasFeature(QPaintEngine::PixmapTransform)) {
          x += d->state->matrix.dx();
@@ -3324,20 +3183,18 @@ void QPainter::drawPixmap(const QPointF &p, const QPixmap &pm)
 
 void QPainter::drawPixmap(const QRectF &r, const QPixmap &pm, const QRectF &sr)
 {
-#if defined QT_DEBUG_DRAW
-   if (qt_show_painter_debug_output)
-      printf("QPainter::drawPixmap(), target=[%.2f,%.2f,%.2f,%.2f], pix=[%d,%d], source=[%.2f,%.2f,%.2f,%.2f]\n",
-         r.x(), r.y(), r.width(), r.height(), pm.width(), pm.height(),
-         sr.x(), sr.y(), sr.width(), sr.height());
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+   qDebug("QPainter::drawPixmap() target rectangle = [%.2f,%.2f,%.2f,%.2f], pixmap = [%d,%d], source rectangle = [%.2f,%.2f,%.2f,%.2f]",
+         r.x(), r.y(), r.width(), r.height(), pm.width(), pm.height(), sr.x(), sr.y(), sr.width(), sr.height());
 #endif
 
    Q_D(QPainter);
 
-   if (!d->engine || pm.isNull()) {
+   if (! d->engine || pm.isNull()) {
       return;
    }
 
-#ifndef QT_NO_DEBUG
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
    qt_painter_thread_test(d->device->devType(), d->engine->type(), "drawPixmap()");
 #endif
 
@@ -3351,6 +3208,7 @@ void QPainter::drawPixmap(const QRectF &r, const QPixmap &pm, const QRectF &sr)
    qreal sh = sr.height();
 
    const qreal pmscale = pm.devicePixelRatio();
+
    // Sanity-check clipping
    if (sw <= 0) {
       sw = pm.width() - sx;
@@ -3899,11 +3757,8 @@ void QPainter::drawStaticText(const QPointF &topLeftPosition, const QStaticText 
 // internal
 void QPainter::drawText(const QPointF &p, const QString &str, int tf, int justificationPadding)
 {
-
-#ifdef QT_DEBUG_DRAW
-   if (qt_show_painter_debug_output) {
-      printf("QPainter::drawText(), pos=[%.2f,%.2f], str='%s'\n", p.x(), p.y(), csPrintable(str));
-   }
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+   qDebug("QPainter::drawText() pointf = [%.2f,%.2f], text str = %s", p.x(), p.y(), csPrintable(str));
 #endif
 
    Q_D(QPainter);
@@ -3995,11 +3850,9 @@ void QPainter::drawText(const QPointF &p, const QString &str, int tf, int justif
 
 void QPainter::drawText(const QRect &r, int flags, const QString &str, QRect *br)
 {
-#ifdef QT_DEBUG_DRAW
-   if (qt_show_painter_debug_output) {
-      printf("QPainter::drawText(), r=[%d,%d,%d,%d], flags=%d, str='%s'\n",
-         r.x(), r.y(), r.width(), r.height(), flags, str.toLatin1().constData());
-   }
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+   qDebug("QPainter::drawText() bounding rectangle = [%d,%d,%d,%d], flags = %d, text str= %s",
+      r.x(), r.y(), r.width(), r.height(), flags, str.toLatin1().constData());
 #endif
 
    Q_D(QPainter);
@@ -4022,10 +3875,9 @@ void QPainter::drawText(const QRect &r, int flags, const QString &str, QRect *br
 
 void QPainter::drawText(const QRectF &r, int flags, const QString &str, QRectF *br)
 {
-#ifdef QT_DEBUG_DRAW
-   if (qt_show_painter_debug_output)
-      printf("QPainter::drawText(), r=[%.2f,%.2f,%.2f,%.2f], flags=%d, str='%s'\n",
-         r.x(), r.y(), r.width(), r.height(), flags, str.toLatin1().constData());
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+   qDebug("QPainter::drawText() bounding rectangle = [%.2f,%.2f,%.2f,%.2f], flags = %d, text str = %s",
+         r.x(), r.y(), r.width(), r.height(), flags, csPrintable(str));
 #endif
 
    Q_D(QPainter);
@@ -4043,11 +3895,9 @@ void QPainter::drawText(const QRectF &r, int flags, const QString &str, QRectF *
 
 void QPainter::drawText(const QRectF &r, const QString &text, const QTextOption &o)
 {
-#ifdef QT_DEBUG_DRAW
-   if (qt_show_painter_debug_output) {
-      printf("QPainter::drawText(), r=[%.2f,%.2f,%.2f,%.2f], str='%s'\n",
-         r.x(), r.y(), r.width(), r.height(), text.toLatin1().constData());
-   }
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+   qDebug("QPainter::drawText() bounding rectangle = [%.2f,%.2f,%.2f,%.2f], text str = %s",
+         r.x(), r.y(), r.width(), r.height(), csPrintable(text));
 #endif
 
    Q_D(QPainter);
@@ -4489,18 +4339,18 @@ QRectF QPainter::boundingRect(const QRectF &r, const QString &text, const QTextO
 
 void QPainter::drawTiledPixmap(const QRectF &r, const QPixmap &pixmap, const QPointF &sp)
 {
-#ifdef QT_DEBUG_DRAW
-   if (qt_show_painter_debug_output)
-      printf("QPainter::drawTiledPixmap(), target=[%.2f,%.2f,%.2f,%.2f], pix=[%d,%d], offset=[%.2f,%.2f]\n",
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+   qDebug("QPainter::drawTiledPixmap() target rectangle = [%.2f,%.2f,%.2f,%.2f], pixmap = [%d,%d], offset = [%.2f,%.2f]",
          r.x(), r.y(), r.width(), r.height(), pixmap.width(), pixmap.height(), sp.x(), sp.y());
 #endif
 
    Q_D(QPainter);
+
    if (!d->engine || pixmap.isNull() || r.isEmpty()) {
       return;
    }
 
-#ifndef QT_NO_DEBUG
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
    qt_painter_thread_test(d->device->devType(), d->engine->type(), "drawTiledPixmap()");
 #endif
 
@@ -4705,17 +4555,8 @@ void QPainter::fillRect(const QRectF &r, const QColor &color)
 
 void QPainter::setRenderHint(RenderHint hint, bool on)
 {
-#ifdef QT_DEBUG_DRAW
-   if (qt_show_painter_debug_output) {
-      printf("QPainter::setRenderHint: hint=%x, %s\n", hint, on ? "on" : "off");
-   }
-#endif
-
-#ifndef QT_NO_DEBUG
-   static const bool antialiasingDisabled = qgetenv("QT_NO_ANTIALIASING").toInt();
-   if (hint == QPainter::Antialiasing && antialiasingDisabled) {
-      return;
-   }
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+   qDebug("QPainter::setRenderHint() hint = %x, state = %s", hint, on ? "on" : "off");
 #endif
 
    setRenderHints(hint, on);
@@ -4725,7 +4566,7 @@ void QPainter::setRenderHints(RenderHints hints, bool on)
 {
    Q_D(QPainter);
 
-   if (!d->engine) {
+   if (! d->engine) {
       qWarning("QPainter::setRenderHint() Painter engine not active");
       return;
    }
@@ -4757,24 +4598,24 @@ QPainter::RenderHints QPainter::renderHints() const
 bool QPainter::viewTransformEnabled() const
 {
    Q_D(const QPainter);
+
    if (!d->engine) {
       qWarning("QPainter::viewTransformEnabled() Painter engine not active");
       return false;
    }
+
    return d->state->VxF;
 }
 
 void QPainter::setWindow(const QRect &r)
 {
-#ifdef QT_DEBUG_DRAW
-   if (qt_show_painter_debug_output) {
-      printf("QPainter::setWindow(), [%d,%d,%d,%d]\n", r.x(), r.y(), r.width(), r.height());
-   }
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+   qDebug("QPainter::setWindow() bounding rectangle = [%d,%d,%d,%d]", r.x(), r.y(), r.width(), r.height());
 #endif
 
    Q_D(QPainter);
 
-   if (!d->engine) {
+   if (! d->engine) {
       qWarning("QPainter::setWindow() Painter engine not active");
       return;
    }
@@ -4791,19 +4632,19 @@ void QPainter::setWindow(const QRect &r)
 QRect QPainter::window() const
 {
    Q_D(const QPainter);
+
    if (!d->engine) {
       qWarning("QPainter::window() Painter engine not active");
       return QRect();
    }
+
    return QRect(d->state->wx, d->state->wy, d->state->ww, d->state->wh);
 }
 
 void QPainter::setViewport(const QRect &r)
 {
-#ifdef QT_DEBUG_DRAW
-   if (qt_show_painter_debug_output) {
-      printf("QPainter::setViewport(), [%d,%d,%d,%d]\n", r.x(), r.y(), r.width(), r.height());
-   }
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+   qDebug("QPainter::setViewport() bounding rectangle = [%d,%d,%d,%d]", r.x(), r.y(), r.width(), r.height());
 #endif
 
    Q_D(QPainter);
@@ -4825,10 +4666,12 @@ void QPainter::setViewport(const QRect &r)
 QRect QPainter::viewport() const
 {
    Q_D(const QPainter);
+
    if (!d->engine) {
       qWarning("QPainter::viewport() Painter engine not active");
       return QRect();
    }
+
    return QRect(d->state->vx, d->state->vy, d->state->vw, d->state->vh);
 }
 
@@ -5461,17 +5304,16 @@ void QPainter::drawPixmapFragments(const PixmapFragment *fragments, int fragment
 {
    Q_D(QPainter);
 
-   if (!d->engine || pixmap.isNull()) {
+   if (! d->engine || pixmap.isNull()) {
       return;
    }
 
-#ifndef QT_NO_DEBUG
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
    for (int i = 0; i < fragmentCount; ++i) {
-      QRectF sourceRect(fragments[i].sourceLeft, fragments[i].sourceTop,
-         fragments[i].width, fragments[i].height);
+      QRectF sourceRect(fragments[i].sourceLeft, fragments[i].sourceTop, fragments[i].width, fragments[i].height);
 
-      if (!(QRectF(pixmap.rect()).contains(sourceRect))) {
-         qWarning("QPainter::drawPixmapFragments() Source rectangle is not contained by the pixmap rectangle");
+      if (! (QRectF(pixmap.rect()).contains(sourceRect))) {
+         qDebug("QPainter::drawPixmapFragments() Source rectangle is not contained by the pixmap rectangle");
       }
    }
 #endif

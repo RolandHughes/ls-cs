@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -20,8 +20,6 @@
 * https://www.gnu.org/licenses/
 *
 ***********************************************************************/
-
-//#define QTCPSERVER_DEBUG
 
 #include <qtcpserver.h>
 #include <qtcpserver_p.h>
@@ -106,7 +104,7 @@ void QTcpServerPrivate::readNotification()
    for (;;) {
       if (pendingConnections.count() >= maxConnections) {
 
-#if defined (QTCPSERVER_DEBUG)
+#if defined(CS_SHOW_DEBUG_NETWORK)
          qDebug("QTcpServerPrivate::_q_processIncomingConnection() too many connections");
 #endif
 
@@ -128,7 +126,7 @@ void QTcpServerPrivate::readNotification()
          break;
       }
 
-#if defined (QTCPSERVER_DEBUG)
+#if defined(CS_SHOW_DEBUG_NETWORK)
       qDebug("QTcpServerPrivate::_q_processIncomingConnection() accepted socket %i", descriptor);
 #endif
 
@@ -148,7 +146,7 @@ QTcpServer::QTcpServer(QObject *parent)
 {
    d_ptr->q_ptr = this;
 
-#if defined(QTCPSERVER_DEBUG)
+#if defined(CS_SHOW_DEBUG_NETWORK)
    qDebug("QTcpServer::QTcpServer(%p)", parent);
 #endif
 
@@ -159,7 +157,7 @@ QTcpServer::QTcpServer(QTcpServerPrivate &dd, QObject *parent)
 {
    d_ptr->q_ptr = this;
 
-#if defined(QTCPSERVER_DEBUG)
+#if defined(CS_SHOW_DEBUG_NETWORK)
    qDebug("QTcpServer::QTcpServer(QTcpServerPrivate == %p, parent == %p)", &dd, parent);
 #endif
 }
@@ -173,7 +171,7 @@ bool QTcpServer::listen(const QHostAddress &address, quint16 port)
 {
    Q_D(QTcpServer);
    if (d->state == QAbstractSocket::ListeningState) {
-      qWarning("QTcpServer::listen() called when already listening");
+      qWarning("QTcpServer::listen() Called when already listening");
       return false;
    }
 
@@ -231,7 +229,7 @@ bool QTcpServer::listen(const QHostAddress &address, quint16 port)
    d->address = d->socketEngine->localAddress();
    d->port = d->socketEngine->localPort();
 
-#if defined (QTCPSERVER_DEBUG)
+#if defined(CS_SHOW_DEBUG_NETWORK)
    qDebug("QTcpServer::listen(%i, \"%s\") == true (listening on port %i)", port,
           address.toString().toLatin1().constData(), d->socketEngine->localPort());
 #endif
@@ -277,8 +275,9 @@ qintptr QTcpServer::socketDescriptor() const
 bool QTcpServer::setSocketDescriptor(qintptr socketDescriptor)
 {
    Q_D(QTcpServer);
+
    if (isListening()) {
-      qWarning("QTcpServer::setSocketDescriptor() called when already listening");
+      qWarning("QTcpServer::setSocketDescriptor() Called when already listening");
       return false;
    }
 
@@ -287,7 +286,7 @@ bool QTcpServer::setSocketDescriptor(qintptr socketDescriptor)
    }
 
    d->socketEngine = QAbstractSocketEngine::createSocketEngine(socketDescriptor, this);
-   if (!d->socketEngine) {
+   if (! d->socketEngine) {
       d->serverSocketError = QAbstractSocket::UnsupportedSocketOperationError;
       d->serverSocketErrorString = tr("Operation on socket is not supported");
       return false;
@@ -302,9 +301,9 @@ bool QTcpServer::setSocketDescriptor(qintptr socketDescriptor)
       d->serverSocketError = d->socketEngine->error();
       d->serverSocketErrorString = d->socketEngine->errorString();
 
-#if defined (QTCPSERVER_DEBUG)
-      qDebug("QTcpServer::setSocketDescriptor(%i) failed (%s)", socketDescriptor,
-             d->serverSocketErrorString.toLatin1().constData());
+#if defined(CS_SHOW_DEBUG_NETWORK)
+      qDebug("QTcpServer::setSocketDescriptor(%lli) failed (%s)", socketDescriptor,
+            csPrintable(d->serverSocketErrorString));
 #endif
 
       return false;
@@ -317,8 +316,8 @@ bool QTcpServer::setSocketDescriptor(qintptr socketDescriptor)
    d->address = d->socketEngine->localAddress();
    d->port = d->socketEngine->localPort();
 
-#if defined (QTCPSERVER_DEBUG)
-   qDebug("QTcpServer::setSocketDescriptor(%i) succeeded.", socketDescriptor);
+#if defined(CS_SHOW_DEBUG_NETWORK)
+   qDebug("QTcpServer::setSocketDescriptor(%lli) succeeded.", socketDescriptor);
 #endif
 
    return true;
@@ -383,8 +382,8 @@ QTcpSocket *QTcpServer::nextPendingConnection()
 
 void QTcpServer::incomingConnection(qintptr socketDescriptor)
 {
-#if defined (QTCPSERVER_DEBUG)
-   qDebug("QTcpServer::incomingConnection(%i)", socketDescriptor);
+#if defined(CS_SHOW_DEBUG_NETWORK)
+   qDebug("QTcpServer::incomingConnection(%lli)", socketDescriptor);
 #endif
 
    QTcpSocket *socket = new QTcpSocket(this);

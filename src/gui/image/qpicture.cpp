@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -49,14 +49,13 @@
 
 #include <algorithm>
 
-void qt_format_text(const QFont &fnt, const QRectF &_r,
-   int tf, const QTextOption *opt, const QString &str, QRectF *brect,
-   int tabstops, int *, int tabarraylen,
-   QPainter *painter);
+void qt_format_text(const QFont &fnt, const QRectF &_r, int tf, const QTextOption *opt,
+      const QString &str, QRectF *brect, int tabstops, int *, int tabarraylen, QPainter *painter);
 
-const char  *qt_mfhdr_tag = "QPIC"; // header tag
-static const quint16 mfhdr_maj = 11; // major version #
-static const quint16 mfhdr_min = 0; // minor version #
+const char *qt_mfhdr_tag = "QPIC";               // header tag
+
+static constexpr const quint16 mfhdr_maj = 11;   // major version #
+static constexpr const quint16 mfhdr_min = 0;    // minor version #
 
 QPicture::QPicture(int formatVersion)
    : QPaintDevice(), d_ptr(new QPicturePrivate)
@@ -81,7 +80,6 @@ QPicture::QPicture(const QPicture &pic)
 {
 }
 
-/*! \internal */
 QPicture::QPicture(QPicturePrivate &dptr)
    : QPaintDevice(), d_ptr(&dptr)
 {
@@ -91,9 +89,6 @@ QPicture::~QPicture()
 {
 }
 
-/*!
-  \internal
-*/
 int QPicture::devType() const
 {
    return QInternal::Picture;
@@ -128,7 +123,7 @@ void QPicture::setData(const char *data, uint size)
 {
    detach();
    d_func()->pictb.setData(data, size);
-   d_func()->resetFormat();                                // we'll have to check
+   d_func()->resetFormat();
 }
 
 bool QPicture::load(const QString &fileName, const QString &format)
@@ -338,18 +333,14 @@ class QFakeDevice : public QPaintDevice
    int dpi_y;
 };
 
-/*!
-  \internal
-  Iterates over the internal picture data and draws the picture using
-  \a painter.
-*/
-
 bool QPicture::exec(QPainter *painter, QDataStream &s, int nrecords)
 {
    Q_D(QPicture);
-#if defined(QT_DEBUG)
-   int                strm_pos;
+
+#if defined(CS_SHOW_DEBUG_GUI_IMAGE)
+   int        strm_pos;
 #endif
+
    quint8     c;                      // command id
    quint8     tiny_len;               // 8-bit length descriptor
    qint32     len;                    // 32-bit length descriptor
@@ -358,6 +349,7 @@ bool QPicture::exec(QPainter *painter, QDataStream &s, int nrecords)
    quint32    ul;
    double     dbl;
    bool       bl;
+
    QByteArray  str1;
    QString     str;
    QPointF     p, p1, p2;
@@ -389,7 +381,7 @@ bool QPicture::exec(QPainter *painter, QDataStream &s, int nrecords)
          len = tiny_len;
       }
 
-#if defined(QT_DEBUG)
+#if defined(CS_SHOW_DEBUG_GUI_IMAGE)
       strm_pos = s.device()->pos();
 #endif
 
@@ -593,11 +585,11 @@ bool QPicture::exec(QPainter *painter, QDataStream &s, int nrecords)
                QFontMetrics fm(fnt);
                QPointF pt(p.x(), p.y() - fm.ascent());
                qt_format_text(fnt, QRectF(pt, size), flags, nullptr,
-                  str, nullptr, 0, nullptr, 0, painter);
+                     str, nullptr, 0, nullptr, 0, painter);
 
             } else {
                qt_format_text(font, QRectF(p, QSizeF(1, 1)), Qt::TextSingleLine | Qt::TextDontClip, nullptr,
-                  str, nullptr, 0, nullptr, 0, painter);
+                     str, nullptr, 0, nullptr, 0, painter);
             }
 
             break;
@@ -836,10 +828,12 @@ bool QPicture::exec(QPainter *painter, QDataStream &s, int nrecords)
             }
 
       }
-#if defined(QT_DEBUG)
-      //qDebug("device->at(): %i, strm_pos: %i len: %i", (int)s.device()->pos(), strm_pos, len);
+
+#if defined(CS_SHOW_DEBUG_GUI_IMAGE)
+      qDebug("device->at(): %i, strm_pos: %i len: %i", (int)s.device()->pos(), strm_pos, len);
       Q_ASSERT(qint32(s.device()->pos() - strm_pos) == len);
 #endif
+
    }
 
    return false;
@@ -1134,6 +1128,12 @@ QPictureIO::~QPictureIO()
 class QPictureHandler
 {
  public:
+   enum TMode {
+      Untranslated = 0,
+      TranslateIn,
+      TranslateInOut
+   };
+
    QPictureHandler(const QString &f, const QString &h, const QString &fl,
       picture_io_handler r, picture_io_handler w);
 
@@ -1144,7 +1144,7 @@ class QPictureHandler
    picture_io_handler  write_picture;         // picture write function
    bool                obsolete;              // support not "published"
 
-   enum TMode { Untranslated = 0, TranslateIn, TranslateInOut } text_mode;
+   TMode text_mode;
 };
 
 QPictureHandler::QPictureHandler(const QString &f, const QString &h, const QString &fl,

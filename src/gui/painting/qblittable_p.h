@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -29,13 +29,12 @@
 
 #ifndef QT_NO_BLITTABLE
 
-
 class QImage;
 class QBlittablePrivate;
 
 class Q_GUI_EXPORT QBlittable
 {
-   Q_DECLARE_PRIVATE(QBlittable);
+   Q_DECLARE_PRIVATE(QBlittable)
 
  public:
    enum Capability {

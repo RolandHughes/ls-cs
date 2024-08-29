@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -32,6 +32,7 @@
 #include <qmediaopenglhelper_p.h>
 
 #if ! defined(QT_NO_OPENGL) && ! defined(QT_OPENGL_ES_1_CL) && ! defined(QT_OPENGL_ES_1)
+
 #include <qglshaderprogram.h>
 #include <qopenglcontext.h>
 #include <qopenglfunctions.h>
@@ -57,19 +58,19 @@ class QVideoSurfaceGenericPainter : public QVideoSurfacePainter
    QVideoSurfaceGenericPainter();
 
    QList<QVideoFrame::PixelFormat> supportedPixelFormats(
-      QAbstractVideoBuffer::HandleType handleType) const;
+      QAbstractVideoBuffer::HandleType handleType) const override;
 
-   bool isFormatSupported(const QVideoSurfaceFormat &format) const;
+   bool isFormatSupported(const QVideoSurfaceFormat &format) const override;
 
-   QAbstractVideoSurface::Error start(const QVideoSurfaceFormat &format);
-   void stop();
+   QAbstractVideoSurface::Error start(const QVideoSurfaceFormat &format) override;
+   void stop() override;
 
-   QAbstractVideoSurface::Error setCurrentFrame(const QVideoFrame &frame);
+   QAbstractVideoSurface::Error setCurrentFrame(const QVideoFrame &frame) override;
 
    QAbstractVideoSurface::Error paint(
-      const QRectF &target, QPainter *painter, const QRectF &source);
+      const QRectF &target, QPainter *painter, const QRectF &source) override;
 
-   void updateColors(int brightness, int contrast, int hue, int saturation);
+   void updateColors(int brightness, int contrast, int hue, int saturation) override;
 
  private:
    QList<QVideoFrame::PixelFormat> m_imagePixelFormats;
@@ -256,20 +257,21 @@ class QVideoSurfaceGLPainter : public QVideoSurfacePainter, protected QOpenGLFun
  public:
    QVideoSurfaceGLPainter(QGLContext *context);
    ~QVideoSurfaceGLPainter();
+
    QList<QVideoFrame::PixelFormat> supportedPixelFormats(
-      QAbstractVideoBuffer::HandleType handleType) const;
+      QAbstractVideoBuffer::HandleType handleType) const override;
 
-   bool isFormatSupported(const QVideoSurfaceFormat &format) const;
+   bool isFormatSupported(const QVideoSurfaceFormat &format) const override;
 
-   void stop();
+   void stop() override;
 
-   QAbstractVideoSurface::Error setCurrentFrame(const QVideoFrame &frame);
+   QAbstractVideoSurface::Error setCurrentFrame(const QVideoFrame &frame) override;
 
    QAbstractVideoSurface::Error paint(
-      const QRectF &target, QPainter *painter, const QRectF &source);
+      const QRectF &target, QPainter *painter, const QRectF &source) override;
 
-   void updateColors(int brightness, int contrast, int hue, int saturation);
-   void viewportDestroyed();
+   void updateColors(int brightness, int contrast, int hue, int saturation) override;
+   void viewportDestroyed() override;
 
  protected:
    void initRgbTextureInfo(GLenum internalFormat, GLuint format, GLenum type, const QSize &size);
@@ -302,7 +304,8 @@ class QVideoSurfaceGLPainter : public QVideoSurfacePainter, protected QOpenGLFun
    GLenum m_textureType;
    int m_textureCount;
 
-   static const uint Max_Textures = 3;
+   static constexpr const uint Max_Textures = 3;
+
    GLuint m_textureIds[Max_Textures];
    int m_textureWidths[Max_Textures];
    int m_textureHeights[Max_Textures];
@@ -674,10 +677,10 @@ class QVideoSurfaceArbFpPainter : public QVideoSurfaceGLPainter
  public:
    QVideoSurfaceArbFpPainter(QGLContext *context);
 
-   QAbstractVideoSurface::Error start(const QVideoSurfaceFormat &format);
-   void stop();
+   QAbstractVideoSurface::Error start(const QVideoSurfaceFormat &format) override;
+   void stop() override;
 
-   QAbstractVideoSurface::Error paint(const QRectF &target, QPainter *painter, const QRectF &source);
+   QAbstractVideoSurface::Error paint(const QRectF &target, QPainter *painter, const QRectF &source) override;
 
  private:
    typedef void (APIENTRY *_glProgramStringARB) (GLenum, GLenum, GLsizei, const GLvoid *);
@@ -1085,11 +1088,11 @@ class QVideoSurfaceGlslPainter : public QVideoSurfaceGLPainter
  public:
    QVideoSurfaceGlslPainter(QGLContext *context);
 
-   QAbstractVideoSurface::Error start(const QVideoSurfaceFormat &format);
-   void stop();
+   QAbstractVideoSurface::Error start(const QVideoSurfaceFormat &format) override;
+   void stop() override;
 
    QAbstractVideoSurface::Error paint(
-      const QRectF &target, QPainter *painter, const QRectF &source);
+      const QRectF &target, QPainter *painter, const QRectF &source) override;
 
  private:
    QGLShaderProgram m_program;

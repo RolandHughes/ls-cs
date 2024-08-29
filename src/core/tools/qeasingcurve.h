@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -34,6 +34,8 @@ class Q_CORE_EXPORT QEasingCurve
    CORE_CS_GADGET(QEasingCurve)
 
  public:
+   using EasingFunction = qreal (*)(qreal progress);
+
    enum Type {
       Linear,
       InQuad, OutQuad, InOutQuad, OutInQuad,
@@ -54,11 +56,13 @@ class Q_CORE_EXPORT QEasingCurve
 
    QEasingCurve(Type type = Linear);
    QEasingCurve(const QEasingCurve &other);
+
    ~QEasingCurve();
 
    QEasingCurve &operator=(const QEasingCurve &other);
+
    bool operator==(const QEasingCurve &other) const;
-   inline bool operator!=(const QEasingCurve &other) const {
+   bool operator!=(const QEasingCurve &other) const {
       return !(this->operator==(other));
    }
 
@@ -73,7 +77,7 @@ class Q_CORE_EXPORT QEasingCurve
 
    Type type() const;
    void setType(Type type);
-   typedef qreal (*EasingFunction)(qreal progress);
+
    void setCustomType(EasingFunction func);
    EasingFunction customType() const;
 

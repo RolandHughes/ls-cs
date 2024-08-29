@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -100,6 +100,7 @@ QList<QAbstractState *> QStatePrivate::childStates() const
 
          childStatesList.append(s);
       }
+
       childStatesListNeedsRefresh = false;
    }
 
@@ -122,6 +123,7 @@ QList<QHistoryState *> QStatePrivate::historyStates() const
          result.append(h);
       }
    }
+
    return result;
 }
 
@@ -137,12 +139,15 @@ QList<QAbstractTransition *> QStatePrivate::transitions() const
 
       for (it = children.constBegin(); it != children.constEnd(); ++it) {
          QAbstractTransition *t = qobject_cast<QAbstractTransition *>(*it);
+
          if (t) {
             transitionsList.append(t);
          }
       }
+
       transitionsListNeedsRefresh = false;
    }
+
    return transitionsList;
 }
 
@@ -153,7 +158,7 @@ void QState::assignProperty(QObject *object, const QString &name, const QVariant
    Q_D(QState);
 
    if (! object) {
-      qWarning("QState::assignProperty(): Unable to assign property '%s' of null object", csPrintable(name));
+      qWarning("QState::assignProperty() Unable to assign property %s to invalid object (nullptr)", csPrintable(name));
       return;
    }
 
@@ -182,11 +187,12 @@ void QState::setErrorState(QAbstractState *state)
    Q_D(QState);
 
    if (state != nullptr && qobject_cast<QStateMachine *>(state)) {
-      qWarning("QStateMachine::setErrorState: root state cannot be error state");
+      qWarning("QStateMachine::setErrorState() Unable to set error state for the 'root state'");
       return;
    }
+
    if (state != nullptr && (!state->machine() || ((state->machine() != machine()) && !qobject_cast<QStateMachine *>(this)))) {
-      qWarning("QState::setErrorState(): Error state cannot belong to a different state machine");
+      qWarning("QState::setErrorState() Unable to set error state from a different state machine");
       return;
    }
 
@@ -201,7 +207,7 @@ void QState::addTransition(QAbstractTransition *transition)
    Q_D(QState);
 
    if (!transition) {
-      qWarning("QState::addTransition(): Can not add null transition");
+      qWarning("QState::addTransition() Unable to add invalid transition");
       return ;
    }
 
@@ -212,20 +218,21 @@ void QState::addTransition(QAbstractTransition *transition)
       QAbstractState *t = targets.at(i).data();
 
       if (!t) {
-         qWarning("QState::addTransition(): Can not add transition to null state");
+         qWarning("QState::addTransition() Unable to add invalid transition (nullptr)");
          return ;
       }
+
       if ((QAbstractStatePrivate::get(t)->machine() != d->machine())
-         && QAbstractStatePrivate::get(t)->machine() && d->machine()) {
-         qWarning("QState::addTransition(): Can not add transition to a state in a different state machine");
+            && QAbstractStatePrivate::get(t)->machine() && d->machine()) {
+         qWarning("QState::addTransition() Unable to add transition for a state from a different state machine");
          return ;
       }
    }
+
    if (QStateMachine *mach = machine()) {
       QStateMachinePrivate::get(mach)->maybeRegisterTransition(transition);
    }
 }
-
 
 namespace {
 
@@ -250,7 +257,7 @@ class UnconditionalTransition : public QAbstractTransition
 QAbstractTransition *QState::addTransition(QAbstractState *target)
 {
    if (target == nullptr) {
-      qWarning("QState::addTransition(): Can not add transition to null state");
+      qWarning("QState::addTransition() Unable to add transition to an invalid state (nullptr)");
       return nullptr;
    }
 
@@ -265,17 +272,17 @@ void QState::removeTransition(QAbstractTransition *transition)
    Q_D(QState);
 
    if (transition == nullptr) {
-      qWarning("QState::removeTransition(): Can not remove null transition");
+      qWarning("QState::removeTransition() Unable to remove an invalid transition (nullptr)");
       return;
    }
 
    if (transition->sourceState() != this) {
-      qWarning("QState::removeTransition(): Transition %p's source state (%p)"
-         " is different from this state (%p)", transition, transition->sourceState(), this);
+      qWarning("QState::removeTransition() Transition source state does not match the current state");
       return;
    }
 
    QStateMachinePrivate *mach = QStateMachinePrivate::get(d->machine());
+
    if (mach) {
       mach->unregisterTransition(transition);
    }
@@ -310,13 +317,12 @@ void QState::setInitialState(QAbstractState *state)
    Q_D(QState);
 
    if (d->childMode == QState::ParallelStates) {
-      qWarning("QState::setInitialState: ignoring attempt to set initial state "
-         "of parallel state group %p", this);
+      qWarning("QState::setInitialState() Unable to set initial state of parallel state group");
       return;
    }
 
    if (state && (state->parentState() != this)) {
-      qWarning("QState::setInitialState: state %p is not a child of this state (%p)", state, this);
+      qWarning("QState::setInitialState() New state is not a child of the current state");
       return;
    }
 
@@ -337,8 +343,7 @@ void QState::setChildMode(ChildMode mode)
    Q_D(QState);
 
    if (mode == QState::ParallelStates && d->initialState) {
-      qWarning("QState::setChildMode: setting the child-mode of state %p to "
-         "parallel removes the initial state", this);
+      qWarning("QState::setChildMode() Setting the child mode of the current state to 'parallel' removes the initial state");
 
       d->initialState = nullptr;
       emit initialStateChanged();

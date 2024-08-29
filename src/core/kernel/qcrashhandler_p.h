@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -28,21 +28,21 @@
 
 #ifndef QT_NO_CRASHHANDLER
 
-typedef void (*QtCrashHandler)();
+using FP_Void = void (*)();
 
 class Q_CORE_EXPORT QSegfaultHandler
 {
    friend void qt_signal_handler(int);
-   static QtCrashHandler callback;
+   static FP_Void callback;
 
  public:
    static void initialize(char **, int);
 
-   static inline void installCrashHandler(QtCrashHandler h) {
+   static void installCrashHandler(FP_Void h) {
       callback = h;
    }
 
-   static inline QtCrashHandler crashHandler() {
+   static FP_Void crashHandler() {
       return callback;
    }
 };

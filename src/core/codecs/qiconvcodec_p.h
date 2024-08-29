@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -26,12 +26,14 @@
 
 #include <qtextcodec.h>
 
-#if defined(Q_OS_UNIX) && !defined(QT_NO_ICONV)
+#if defined(Q_OS_UNIX) && ! defined(QT_NO_ICONV)
 
 #ifdef Q_OS_DARWIN
-typedef void *iconv_t;
+using iconv_t = void *;
+
 #else
 #include <iconv.h>
+
 #endif
 
 class QIconvCodec: public QTextCodec

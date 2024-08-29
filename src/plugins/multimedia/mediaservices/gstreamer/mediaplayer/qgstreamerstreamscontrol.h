@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -36,13 +36,13 @@ class QGstreamerStreamsControl : public QMediaStreamsControl
    QGstreamerStreamsControl(QGstreamerPlayerSession *session, QObject *parent);
    virtual ~QGstreamerStreamsControl();
 
-   virtual int streamCount() override;
-   virtual StreamType streamType(int streamNumber) override;
+   int streamCount() override;
+   StreamType streamType(int streamNumber) override;
 
-   virtual QVariant metaData(int streamNumber, const QString &key) override;
+   QVariant metaData(int streamNumber, const QString &key) override;
 
-   virtual bool isActive(int streamNumber) override;
-   virtual void setActive(int streamNumber, bool state) override;
+   bool isActive(int streamNumber) override;
+   void setActive(int streamNumber, bool state) override;
 
  private:
    QGstreamerPlayerSession *m_session;

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * This file is part of CopperSpice.
 *
@@ -252,6 +252,81 @@ TEST_CASE("QString8 index", "[qstring]")
    }
 }
 
+TEST_CASE("QString8 index_ignore_case", "[qstring]")
+{
+   QString str = "A wacky FOX and sizeable pig Jumped halfway over a blue moon";
+
+   int position;
+
+   {
+      position = str.indexOf("fox", 0, Qt::CaseInsensitive);
+      CHECK(position == 8);
+   }
+
+   {
+      position = str.indexOf("FOX", 0, Qt::CaseInsensitive);
+      CHECK(position == 8);
+   }
+
+   {
+      position = str.indexOf("pig", 0, Qt::CaseInsensitive);
+      REQUIRE(position == 25);
+   }
+
+   {
+      position = str.indexOf("PIG", 0, Qt::CaseInsensitive);
+      REQUIRE(position == 25);
+   }
+
+   {
+      position = str.indexOf("jumped", 0, Qt::CaseInsensitive);
+      REQUIRE(position == 29);
+   }
+
+   {
+      position = str.indexOf("Jumped", 0, Qt::CaseInsensitive);
+      REQUIRE(position == 29);
+   }
+
+   {
+      position = str.indexOf("JUMPED", 0, Qt::CaseInsensitive);
+      REQUIRE(position == 29);
+   }
+}
+
+TEST_CASE("QString8 insert", "[qstring]")
+{
+   QString str1 = "Sunday Tuesday";
+   QString str2 = "Monday ";
+
+   SECTION ("insert_a") {
+      str1.insert(7, str2);
+      REQUIRE(str1 == "Sunday Monday Tuesday");
+   }
+
+   SECTION ("insert_b") {
+      str1.insert(str1.begin() + 7, str2);
+      REQUIRE(str1 == "Sunday Monday Tuesday");
+   }
+
+   SECTION ("insert_c") {
+      str1.insert(str1.begin() + 7, str2.begin(), str2.end());
+      REQUIRE(str1 == "Sunday Monday Tuesday");
+   }
+
+   SECTION ("insert_d") {
+      str1.insert(6, QChar('!'));
+      REQUIRE(str1 == "Sunday! Tuesday");
+   }
+
+   SECTION ("insert_e") {
+      QChar32 data[] = {'M', 'o', 'n', 'd', 'a', 'y', ' '};
+
+      str1.insert(7, data, std::size(data));
+      REQUIRE(str1 == "Sunday Monday Tuesday");
+   }
+}
+
 TEST_CASE("QString8 justify", "[qstring]")
 {
    QString str = "grapefruit";
@@ -400,6 +475,15 @@ TEST_CASE("QString8 replace_b", "[qstring]")
    str2.replace("ß", "Found eszett");
 
    REQUIRE(str2 == "Found eszett");
+}
+
+TEST_CASE("QString8 replace_c", "[qstring]")
+{
+   QString str = "cow";
+
+   str.replace('c', "cr");
+
+   REQUIRE(str == "crow");
 }
 
 TEST_CASE("QString8 replace_regex_a", "[qstring]")

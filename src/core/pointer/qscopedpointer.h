@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -26,6 +26,8 @@
 
 #include <quniquepointer.h>
 
+#if ! defined(CS_DOXYPRESS)
+
 template <typename T, typename Deleter = std::default_delete<T>>
 class QScopedPointer : public QUniquePointer<T, Deleter>
 {
@@ -33,9 +35,10 @@ class QScopedPointer : public QUniquePointer<T, Deleter>
    using QUniquePointer<T, Deleter>::QUniquePointer;
 
    QScopedPointer(QScopedPointer && other) = delete;
-   QScopedPointer & operator=(QScopedPointer && other) = delete;
-
+   QScopedPointer &operator=(QScopedPointer && other) = delete;
 };
+
+#endif
 
 // free functions
 template <typename T, typename Deleter>
@@ -45,7 +48,8 @@ void swap(QScopedPointer<T, Deleter> &ptr1, QScopedPointer<T, Deleter> &ptr2) no
 }
 
 template <typename T, typename... Args, typename = typename std::enable_if_t<! std::is_array_v<T>>>
-QScopedPointer<T> QMakeScoped(Args &&... args) {
+QScopedPointer<T> QMakeScoped(Args && ... args)
+{
    return CsPointer::make_unique<T>(std::forward<Args>(args)...);
 }
 

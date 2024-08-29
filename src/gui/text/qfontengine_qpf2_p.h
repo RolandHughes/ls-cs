@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -129,7 +129,7 @@ class Q_GUI_EXPORT QFontEngineQPF2 : public QFontEngine
    }
    bool getSfntTableData(uint tag, uchar *buffer, uint *length) const override;
 
-   virtual glyph_t glyphIndex(char32_t ch) const override;
+   glyph_t glyphIndex(char32_t ch) const override;
    bool stringToCMap(QStringView str, QGlyphLayout *glyphs, int *nglyphs, ShaperFlags flags) const override;
    void recalcAdvances(QGlyphLayout *, ShaperFlags) const override;
 

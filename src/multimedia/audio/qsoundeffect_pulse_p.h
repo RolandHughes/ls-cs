@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -87,23 +87,35 @@ public:
     MULTI_CS_SIGNAL_1(Public, void categoryChanged())
     MULTI_CS_SIGNAL_2(categoryChanged)
 
-private:
+ private:
+    enum EmptyStreamOption {
+        ReloadSampleWhenDone = 0x1
+    };
+
     MULTI_CS_SLOT_1(Private, void decoderError())
     MULTI_CS_SLOT_2(decoderError)
+
     MULTI_CS_SLOT_1(Private, void sampleReady())
     MULTI_CS_SLOT_2(sampleReady)
+
     MULTI_CS_SLOT_1(Private, void uploadSample())
     MULTI_CS_SLOT_2(uploadSample)
+
     MULTI_CS_SLOT_1(Private, void contextReady())
     MULTI_CS_SLOT_2(contextReady)
+
     MULTI_CS_SLOT_1(Private, void contextFailed())
     MULTI_CS_SLOT_2(contextFailed)
+
     MULTI_CS_SLOT_1(Private, void underRun())
     MULTI_CS_SLOT_2(underRun)
+
     MULTI_CS_SLOT_1(Private, void prepare())
     MULTI_CS_SLOT_2(prepare)
+
     MULTI_CS_SLOT_1(Private, void streamReady())
     MULTI_CS_SLOT_2(streamReady)
+
     MULTI_CS_SLOT_1(Private, void emptyComplete(void * stream,bool reload))
     MULTI_CS_SLOT_2(emptyComplete)
 
@@ -112,10 +124,6 @@ private:
 
     void playAvailable();
     void playSample();
-
-    enum EmptyStreamOption {
-        ReloadSampleWhenDone = 0x1
-    };
 
     using EmptyStreamOptions = QFlags<EmptyStreamOption>;
     void emptyStream(EmptyStreamOptions options = EmptyStreamOptions());
@@ -140,25 +148,25 @@ private:
     static void stream_reset_buffer_callback(pa_stream *s, int success, void *userdata);
 
     pa_stream *m_pulseStream;
-    int        m_sinkInputId;
+    int m_sinkInputId;
 
     pa_sample_spec m_pulseSpec;
-    int        m_pulseBufferSize;
+    int m_pulseBufferSize;
 
-    bool    m_emptying;
-    bool    m_sampleReady;
-    bool    m_playing;
+    bool m_emptying;
+    bool m_sampleReady;
+    bool m_playing;
 
     QSoundEffect::Status  m_status;
 
-    bool    m_muted;
-    bool    m_playQueued;
-    bool    m_stopping;
-    qreal   m_volume;
-    int     m_loopCount;
-    int     m_runningCount;
+    bool m_muted;
+    bool m_playQueued;
+    bool m_stopping;
+    qreal m_volume;
+    int m_loopCount;
+    int m_runningCount;
 
-    QUrl    m_source;
+    QUrl m_source;
     QByteArray m_name;
     QString m_category;
 

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -36,8 +36,17 @@ class QIconEngine;
 class Q_GUI_EXPORT QIcon
 {
  public:
-   enum Mode { Normal, Disabled, Active, Selected };
-   enum State { On, Off };
+   enum Mode {
+      Normal,
+      Disabled,
+      Active,
+      Selected
+   };
+
+   enum State {
+      On,
+      Off
+   };
 
    QIcon();
    QIcon(const QPixmap &pixmap);

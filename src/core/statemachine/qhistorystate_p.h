@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -58,12 +58,12 @@ class DefaultStateTransition : public QAbstractTransition
    // entered either: either the stored configuration will be used, or the target(s) of this
    // transition are used.
 
-   virtual bool eventTest(QEvent *event) override {
+   bool eventTest(QEvent *event) override {
       (void) event;
       return false;
    }
 
-   virtual void onTransition(QEvent *event) override {
+   void onTransition(QEvent *event) override {
       (void) event;
    }
 };

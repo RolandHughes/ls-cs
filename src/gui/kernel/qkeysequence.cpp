@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -52,7 +52,8 @@ struct MacSpecialKey {
    ushort macSymbol;
 };
 
-static const int NumEntries = 21;
+static constexpr const int NumEntries = 21;
+
 static const MacSpecialKey entries[NumEntries] = {
    { Qt::Key_Escape,    0x238B },
    { Qt::Key_Tab,       0x21E5 },
@@ -99,7 +100,7 @@ QChar qt_macSymbolForQtKey(int key)
    ushort macSymbol = i->macSymbol;
 
    if (qApp->testAttribute(Qt::AA_MacDontSwapCtrlAndMeta)
-      && (macSymbol == kControlUnicode || macSymbol == kCommandUnicode)) {
+         && (macSymbol == kControlUnicode || macSymbol == kCommandUnicode)) {
 
       if (macSymbol == kControlUnicode) {
          macSymbol = kCommandUnicode;
@@ -854,10 +855,17 @@ QString QKeySequencePrivate::encodeString(int key, QKeySequence::SequenceFormat 
       // The upshot is a lot more infrastructure to keep the number of
       // if tests down and the code relatively clean.
 
-      static const int ModifierOrder[]         = { Qt::MetaModifier, Qt::AltModifier, Qt::ShiftModifier, Qt::ControlModifier, 0 };
-      static const int QtKeyOrder[]            = { Qt::Key_Meta, Qt::Key_Alt, Qt::Key_Shift, Qt::Key_Control, 0 };
-      static const int DontSwapModifierOrder[] = { Qt::ControlModifier, Qt::AltModifier, Qt::ShiftModifier, Qt::MetaModifier, 0 };
-      static const int DontSwapQtKeyOrder[]    = { Qt::Key_Control, Qt::Key_Alt, Qt::Key_Shift, Qt::Key_Meta, 0 };
+      static const int ModifierOrder[]         = {
+            Qt::MetaModifier, Qt::AltModifier, Qt::ShiftModifier, Qt::ControlModifier, 0 };
+
+      static const int QtKeyOrder[]            = {
+            Qt::Key_Meta, Qt::Key_Alt, Qt::Key_Shift, Qt::Key_Control, 0 };
+
+      static const int DontSwapModifierOrder[] = {
+            Qt::ControlModifier, Qt::AltModifier, Qt::ShiftModifier, Qt::MetaModifier, 0 };
+
+      static const int DontSwapQtKeyOrder[]    = {
+            Qt::Key_Control, Qt::Key_Alt, Qt::Key_Shift, Qt::Key_Meta, 0 };
 
       const int *modifierOrder;
       const int *qtkeyOrder;

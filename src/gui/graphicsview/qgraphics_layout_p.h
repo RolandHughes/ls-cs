@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -26,82 +26,73 @@
 
 #include <qglobal.h>
 
-#if !defined(QT_NO_GRAPHICSVIEW)
+#if ! defined(QT_NO_GRAPHICSVIEW)
 
 #include <qgraphicslayout.h>
 #include <qstyle.h>
-#include <qwidget.h>
 #include <qstyleoption.h>
+#include <qwidget.h>
 
 #include <qgraphics_layoutitem_p.h>
 
 class QGraphicsLayoutItem;
 class QGraphicsWidget;
 
-#ifdef QT_DEBUG
-inline bool qt_graphicsLayoutDebug()
-{
-   static int checked_env = -1;
-
-   if (checked_env == -1) {
-      checked_env = qgetenv("QT_GRAPHICSLAYOUT_DEBUG").toInt() != 0;
-   }
-
-   return checked_env;
-}
-#endif
-
-
 class QLayoutStyleInfo
 {
  public:
-   inline QLayoutStyleInfo() {
+   QLayoutStyleInfo()
+   {
       invalidate();
    }
 
-   inline QLayoutStyleInfo(QStyle *style, QWidget *widget)
-      : m_valid(true), m_style(style), m_widget(widget) {
+   QLayoutStyleInfo(QStyle *style, QWidget *widget)
+      : m_valid(true), m_style(style), m_widget(widget)
+   {
       Q_ASSERT(style);
-      if (widget) { //###
+
+      if (widget) {
          m_styleOption.initFrom(widget);
       }
+
       m_defaultSpacing[0] = style->pixelMetric(QStyle::PM_LayoutHorizontalSpacing);
       m_defaultSpacing[1] = style->pixelMetric(QStyle::PM_LayoutVerticalSpacing);
    }
 
-   inline void invalidate() {
+   void invalidate() {
       m_valid  = false;
       m_style  = nullptr;
       m_widget = nullptr;
    }
 
-   inline QStyle *style() const {
+   QStyle *style() const {
       return m_style;
    }
 
-   inline QWidget *widget() const {
+   QWidget *widget() const {
       return m_widget;
    }
 
-   inline bool operator==(const QLayoutStyleInfo &other) const {
+   bool operator==(const QLayoutStyleInfo &other) const {
       return m_style == other.m_style && m_widget == other.m_widget;
    }
 
-   inline bool operator!=(const QLayoutStyleInfo &other) const {
+   bool operator!=(const QLayoutStyleInfo &other) const {
       return !(*this == other);
    }
 
-   inline void setDefaultSpacing(Qt::Orientation o, qreal spacing) {
+   void setDefaultSpacing(Qt::Orientation o, qreal spacing) {
       if (spacing >= 0) {
          m_defaultSpacing[o - 1] = spacing;
       }
    }
 
-   inline qreal defaultSpacing(Qt::Orientation o) const {
+   qreal defaultSpacing(Qt::Orientation o) const {
       return m_defaultSpacing[o - 1];
    }
 
-   inline qreal perItemSpacing(QSizePolicy::ControlType control1, QSizePolicy::ControlType control2, Qt::Orientation orientation) const {
+   qreal perItemSpacing(QSizePolicy::ControlType control1, QSizePolicy::ControlType control2,
+         Qt::Orientation orientation) const {
       Q_ASSERT(style());
       return style()->layoutSpacing(control1, control2, orientation, &m_styleOption, widget());
    }
@@ -133,7 +124,6 @@ class QGraphicsLayoutPrivate : public QGraphicsLayoutItemPrivate
    qreal left, top, right, bottom;
    bool activated;
 };
-
 
 #endif //QT_NO_GRAPHICSVIEW
 

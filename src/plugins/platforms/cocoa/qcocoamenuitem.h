@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -26,8 +26,6 @@
 
 #include <qplatform_menu.h>
 #include <qimage.h>
-
-// #define QT_COCOA_ENABLE_MENU_DEBUG
 
 #ifdef __OBJC__
 @class NSMenuItem;

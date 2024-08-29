@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -22,6 +22,7 @@
 ***********************************************************************/
 
 #include <qfactoryloader_p.h>
+
 #include <qfactoryinterface.h>
 #include <qmap.h>
 #include <qdir.h>
@@ -109,6 +110,7 @@ void QFactoryLoader::setup()
       if (d->loadedPaths.contains(pluginDir)) {
          continue;
       }
+
       d->loadedPaths.append(pluginDir);
 
       QString path = pluginDir + d->suffix;
@@ -135,14 +137,14 @@ void QFactoryLoader::setup()
 
          if (! library->isPlugin()) {
             // show the full error message
-            qWarning("%s", csPrintable(library->errorString));
+            qWarning("QFactoryLoader::setup() %s", csPrintable(library->errorString));
 
             library->release();
             continue;
          }
 
          if (library->m_metaObject == nullptr) {
-            qWarning("Warning: metaObject is a nullptr");
+            qWarning("QFactoryLoader::setup() Invalid meta object (nullptr)");
             library->release();
             continue;
          }
@@ -159,6 +161,7 @@ void QFactoryLoader::setup()
          }
 
          iid = library->m_metaObject->classInfo(index).value();
+
          if (iid != d->iid) {
             // no match
             library->release();
@@ -166,15 +169,18 @@ void QFactoryLoader::setup()
          }
 
          index = library->m_metaObject->indexOfClassInfo("plugin_key");
+
          if (index != -1) {
             keyString = library->m_metaObject->classInfo(index).value();
          }
 
          index = library->m_metaObject->indexOfClassInfo("plugin_version");
+
          if (index == -1) {
             library->release();
             continue;
          }
+
          version = library->m_metaObject->classInfo(index).value();
 
          //
@@ -241,9 +247,10 @@ void QFactoryLoader::setup()
 #else
    Q_D(QFactoryLoader);
 
-   if (qt_debug_component()) {
-      qDebug() << "QFactoryLoader::QFactoryLoader() ignoring" << d->iid << "since plugins are disabled in static builds";
-   }
+#if defined(CS_SHOW_DEBUG_CORE_PLUGIN)
+   qDebug() << "QFactoryLoader::QFactoryLoader() ignoring" << d->iid << "since plugins are disabled in static builds";
+#endif
+
 #endif
 }
 
@@ -297,12 +304,9 @@ QObject *QFactoryLoader::instance(QString key) const
    return nullptr;
 }
 
-QObject *QFactoryLoader::instance(QLibraryHandle * library) const
+QObject *QFactoryLoader::instance(QLibraryHandle *library) const
 {
-
-/*
-   Q_D(const QFactoryLoader);
-*/
+// Q_D(const QFactoryLoader);
 
    if (library == nullptr) {
       return nullptr;
@@ -319,11 +323,11 @@ QObject *QFactoryLoader::instance(QLibraryHandle * library) const
       if (! obj->parent()) {
          obj->moveToThread(QCoreApplicationPrivate::mainThread());
       }
+
       return obj;
    }
 
    return nullptr;
-
 
 /*
    emerald - static plugins
@@ -396,4 +400,3 @@ QSet<QLibraryHandle *> QFactoryLoader::librarySet(QString key) const
    QSet<QLibraryHandle *> retval = m_pluginMap.values(key).toSet();
    return retval;
 }
-

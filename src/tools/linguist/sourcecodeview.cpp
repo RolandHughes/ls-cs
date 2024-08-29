@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -23,12 +23,12 @@
 
 #include <sourcecodeview.h>
 
-#include <QFile>
-#include <QFileInfo>
-#include <QTextStream>
-#include <QTextCharFormat>
-#include <QTextBlock>
-#include <QTextCursor>
+#include <qfile.h>
+#include <qfileinfo.h>
+#include <qtextblock.h>
+#include <qtextcharformat.h>
+#include <qtextcursor.h>
+#include <qtextstream.h>
 
 SourceCodeView::SourceCodeView(QWidget *parent)
    : QPlainTextEdit(parent), m_isActive(true), m_lineNumToLoad(0)

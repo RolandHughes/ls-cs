@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2017-2023 Barbara Geller
-* Copyright (c) 2017-2023 Ansel Sermersheim
+* Copyright (c) 2017-2024 Barbara Geller
+* Copyright (c) 2017-2024 Ansel Sermersheim
 *
 * Copyright (c) 1998-2009 John Maddock
 *
@@ -94,8 +94,8 @@ enum {
 class LIB_CS_STRING_EXPORT raw_storage
 {
  public:
-   typedef std::size_t           size_type;
-   typedef unsigned char        *pointer;
+   using size_type = std::size_t;
+   using pointer   = unsigned char *;
 
  private:
    pointer last, start, end;

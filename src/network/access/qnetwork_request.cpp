@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -38,17 +38,19 @@
 class QNetworkRequestPrivate: public QSharedData, public QNetworkHeadersPrivate
 {
  public:
-   static const int maxRedirectCount = 50;
+   static constexpr const int maxRedirectCount = 50;
 
    QNetworkRequestPrivate()
-      : priority(QNetworkRequest::NormalPriority)
+      : priority(QNetworkRequest::NormalPriority),
+
 #ifdef QT_SSL
-      , sslConfiguration(nullptr)
+        sslConfiguration(nullptr),
 #endif
-      , maxRedirectsAllowed(maxRedirectCount)
+        maxRedirectsAllowed(maxRedirectCount)
    { }
 
-   ~QNetworkRequestPrivate() {
+   ~QNetworkRequestPrivate()
+   {
 
 #ifdef QT_SSL
       delete sslConfiguration;
@@ -69,12 +71,10 @@ class QNetworkRequestPrivate: public QSharedData, public QNetworkHeadersPrivate
 #endif
    }
 
-   inline bool operator==(const QNetworkRequestPrivate &other) const {
-      return url == other.url &&
-             priority == other.priority &&
-             rawHeaders == other.rawHeaders &&
-             attributes == other.attributes &&
-             maxRedirectsAllowed == other.maxRedirectsAllowed;
+   bool operator==(const QNetworkRequestPrivate &other) const {
+      return url == other.url && priority == other.priority && rawHeaders == other.rawHeaders &&
+            attributes == other.attributes && maxRedirectsAllowed == other.maxRedirectsAllowed;
+
       // do not compare cookedHeaders
    }
 
@@ -529,7 +529,7 @@ void QNetworkHeadersPrivate::setCookedHeader(QNetworkRequest::KnownHeaders heade
 
    if (name.isEmpty()) {
       // headerName verifies that a header is a known value
-      qWarning("QNetworkRequest::setHeader  Invalid header value KnownHeader(%d) received", header);
+      qWarning("QNetworkRequest::setCookedHeader() Invalid header id received %d", header);
       return;
    }
 
@@ -542,7 +542,7 @@ void QNetworkHeadersPrivate::setCookedHeader(QNetworkRequest::KnownHeaders heade
       QByteArray rawValue = headerValue(header, value);
 
       if (rawValue.isEmpty()) {
-         qWarning("QNetworkRequest::setHeader: QVariant of type %s can not be used with header %s",
+         qWarning("QNetworkRequest::setCookedHeader() QVariant type %s can not be used with header %s",
                   csPrintable(value.typeName()), name.constData());
          return;
       }

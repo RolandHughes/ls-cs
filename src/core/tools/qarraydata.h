@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -26,6 +26,8 @@
 
 #include <qrefcount.h>
 
+#include <new>
+
 struct Q_CORE_EXPORT QArrayData {
    QtPrivate::RefCount ref;
    int size;
@@ -36,12 +38,12 @@ struct Q_CORE_EXPORT QArrayData {
 
    void *data() {
       Q_ASSERT(size == 0 || offset < 0 || size_t(offset) >= sizeof(QArrayData));
-      return reinterpret_cast<char *>(this) + offset;
+      return std::launder(reinterpret_cast<char *>(this) + offset);
    }
 
    const void *data() const {
       Q_ASSERT(size == 0 || offset < 0 || size_t(offset) >= sizeof(QArrayData));
-      return reinterpret_cast<const char *>(this) + offset;
+      return std::launder(reinterpret_cast<const char *>(this) + offset);
    }
 
    // This refers to array data mutability, not "header data" represented by
@@ -65,11 +67,13 @@ struct Q_CORE_EXPORT QArrayData {
       if (capacityReserved && newSize < alloc) {
          return alloc;
       }
+
       return newSize;
    }
 
    AllocationOptions detachFlags() const {
       AllocationOptions result;
+
       if (!ref.isSharable()) {
          result |= Unsharable;
       }
@@ -83,6 +87,7 @@ struct Q_CORE_EXPORT QArrayData {
 
    AllocationOptions cloneFlags() const {
       AllocationOptions result;
+
       if (capacityReserved) {
          result |= CapacityReserved;
       }
@@ -102,8 +107,8 @@ Q_DECLARE_OPERATORS_FOR_FLAGS(QArrayData::AllocationOptions)
 
 template <class T>
 struct QTypedArrayData : QArrayData {
-   typedef T *iterator;
-   typedef const T *const_iterator;
+   using iterator       = T *;
+   using const_iterator = const T *;
 
    T *data() {
       return static_cast<T *>(QArrayData::data());
@@ -137,7 +142,7 @@ struct QTypedArrayData : QArrayData {
 
    [[nodiscard]] static QTypedArrayData *allocate(size_t capacity, AllocationOptions options = Default) {
       return static_cast<QTypedArrayData *>(QArrayData::allocate(sizeof(T),
-         alignof(AlignmentDummy), capacity, options));
+            alignof(AlignmentDummy), capacity, options));
    }
 
    static void deallocate(QArrayData *data) {
@@ -183,7 +188,7 @@ struct QArrayDataPointerRef {
 };
 
 #define Q_STATIC_ARRAY_DATA_HEADER_INITIALIZER(type, size) { \
-    Q_REFCOUNT_INITIALIZE_STATIC, size, 0, 0, \
-       (sizeof(QArrayData) + (alignof(type) - 1)) & ~(alignof(type) - 1) }
+      Q_REFCOUNT_INITIALIZE_STATIC, size, 0, 0, \
+      (sizeof(QArrayData) + (alignof(type) - 1)) & ~(alignof(type) - 1) }
 
 #endif

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -889,7 +889,7 @@ void QTextBrowser::paintEvent(QPaintEvent *e)
    d->paint(&p, e);
 }
 
-QVariant QTextBrowser::loadResource(int /*type*/, const QUrl &name)
+QVariant QTextBrowser::loadResource(int, const QUrl &name)
 {
    Q_D(QTextBrowser);
 

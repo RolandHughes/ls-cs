@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -45,7 +45,11 @@ class Q_GUI_EXPORT QListWidgetItem
    friend class QListWidget;
 
  public:
-   enum ItemType { Type = 0, UserType = 1000 };
+   enum ItemType {
+      Type     = 0,
+      UserType = 1000
+   };
+
    explicit QListWidgetItem(QListWidget *view = nullptr, int type = Type);
    explicit QListWidgetItem(const QString &text, QListWidget *view = nullptr, int type = Type);
    explicit QListWidgetItem(const QIcon &icon, const QString &text, QListWidget *view = nullptr, int type = Type);
@@ -56,7 +60,7 @@ class Q_GUI_EXPORT QListWidgetItem
 
    virtual QListWidgetItem *clone() const;
 
-   inline QListWidget *listWidget() const {
+   QListWidget *listWidget() const {
       return view;
    }
 
@@ -407,7 +411,7 @@ QListWidgetItem *QListWidget::itemAt(int x, int y) const
 
 void QListWidgetItem::setSelected(bool select)
 {
-   if (view) {
+   if (view != nullptr) {
       view->setItemSelected(this, select);
    }
 }
@@ -419,7 +423,7 @@ bool QListWidgetItem::isSelected() const
 
 void QListWidgetItem::setHidden(bool hide)
 {
-   if (view) {
+   if (view != nullptr) {
       view->setItemHidden(this, hide);
    }
 }

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -21,7 +21,7 @@
 *
 ***********************************************************************/
 
-// do not move include, if qvarient.h is included directly forward declarations are not sufficient
+// do not move include
 #include <qobject.h>
 
 #ifndef QVARIANT_H
@@ -43,39 +43,34 @@
 #include <optional>
 #include <variant>
 
-class QDataStream;
-class QDebug;
-class QObject;
-class QVariant;
-
+// core
 class QBitArray;
-class QStringList;
-
+class QDataStream;
 class QDate;
 class QDateTime;
-class QTime;
-class QLocale;
-
+class QDebug;
+class QEasingCurve;
 class QJsonArray;
 class QJsonDocument;
 class QJsonObject;
 class QJsonValue;
-
 class QLine;
 class QLineF;
+class QLocale;
+class QModelIndex;
+class QObject;
+class QPersistentModelIndex;
 class QPoint;
 class QPointF;
 class QRect;
 class QRectF;
 class QSize;
 class QSizeF;
-
-// core
-class QEasingCurve;
-class QModelIndex;
-class QPersistentModelIndex;
-class QUuid;
+class QStringList;
+class QTime;
 class QUrl;
+class QUuid;
+class QVariant;
 
 // gui
 class QBitmap;
@@ -86,8 +81,8 @@ class QFont;
 class QIcon;
 class QImage;
 class QKeySequence;
-class QMatrix;
 class QMatrix4x4;
+class QMatrix;
 class QPalette;
 class QPen;
 class QPixmap;
@@ -106,14 +101,14 @@ class QWidget;
 
 class Q_CORE_EXPORT QVariantBase
 {
-   public:
-      virtual ~QVariantBase()
-      { }
+ public:
+   virtual ~QVariantBase()
+   { }
 
-      virtual bool cs_internal_convert(uint current_userType, uint new_userType, QVariant &self) const = 0;
-      virtual bool cs_internal_create(uint typeId, const void *other, QVariant &self) const = 0;
-      virtual bool cs_internal_load(QDataStream &stream, uint type, QVariant &self) const = 0;
-      virtual bool cs_internal_save(QDataStream &stream, uint type, const QVariant &self) const = 0;
+   virtual bool cs_internal_convert(uint current_userType, uint new_userType, QVariant &self) const = 0;
+   virtual bool cs_internal_create(uint typeId, const void *other, QVariant &self) const = 0;
+   virtual bool cs_internal_load(QDataStream &stream, uint type, QVariant &self) const = 0;
+   virtual bool cs_internal_save(QDataStream &stream, uint type, const QVariant &self) const = 0;
 };
 
 class Q_CORE_EXPORT QVariant
@@ -430,7 +425,7 @@ class Q_CORE_EXPORT QVariant
       }
 
       return retval;
-   };
+   }
 
    // **
    QVariant &operator=(const QVariant &other);
@@ -448,23 +443,24 @@ class Q_CORE_EXPORT QVariant
       return ! cs_internal_compare(other);
    }
 
-   class CustomType {
-      public:
-         virtual ~CustomType()
-         {
-         }
+   class CustomType
+   {
+    public:
+      virtual ~CustomType()
+      {
+      }
 
-         virtual std::shared_ptr<CustomType> clone() const = 0;
-         virtual bool compare(const CustomType &other) const = 0;
-         virtual bool isEnum() const = 0;
+      virtual std::shared_ptr<CustomType> clone() const = 0;
+      virtual bool compare(const CustomType &other) const = 0;
+      virtual bool isEnum() const = 0;
 
-         virtual int64_t enumToInt() const = 0;
-         virtual uint64_t enumToUInt() const = 0;
+      virtual int64_t enumToInt() const = 0;
+      virtual uint64_t enumToUInt() const = 0;
 
-         virtual void loadFromStream() = 0;
-         virtual void saveToStream()   = 0;
+      virtual void loadFromStream() = 0;
+      virtual void saveToStream()   = 0;
 
-         virtual uint userType() const = 0;
+      virtual uint userType() const = 0;
    };
 
    //
@@ -508,7 +504,7 @@ class Q_CORE_EXPORT QVariant
    static QVector<QVariantBase *> m_variantClients;
 
    std::variant <std::monostate, bool, char, int, uint, qint64, quint64, double, float,
-                 QChar32, QString, QObject *, void *, std::shared_ptr<CustomType> > m_data;
+       QChar32, QString, QObject *, void *, std::shared_ptr<CustomType>> m_data;
 
    friend Q_CORE_EXPORT QDataStream &operator>> (QDataStream &stream, QVariant &data);
    friend Q_CORE_EXPORT QDataStream &operator<< (QDataStream &stream, const QVariant &data);
@@ -525,6 +521,8 @@ Q_CORE_EXPORT QDataStream &operator>> (QDataStream &stream, QVariant::Type &type
 
 Q_CORE_EXPORT QDataStream &operator<< (QDataStream &stream, const QVariant &data);
 Q_CORE_EXPORT QDataStream &operator<< (QDataStream &stream, const QVariant::Type typeId);
+
+Q_CORE_EXPORT QDebug &operator<<(QDebug &debug, const QVariant &value);
 
 //
 template <class T>
@@ -802,7 +800,7 @@ uint QVariant::registerType()
    }
 
    return userId.load(std::memory_order_acquire);
-};
+}
 
 #define CS_DECLARE_METATYPE(TYPE)                  \
    template<>                                      \

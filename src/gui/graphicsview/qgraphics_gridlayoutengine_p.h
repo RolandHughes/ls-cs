@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -40,33 +40,34 @@ class QGraphicsGridLayoutEngineItem : public QGridLayoutItem
  public:
    QGraphicsGridLayoutEngineItem(QGraphicsLayoutItem *item, int row, int columns, int rowSpan = 1, int columnSpan = 1,
       Qt::Alignment alignment = Qt::EmptyFlag)
-      : QGridLayoutItem(row, columns, rowSpan, columnSpan, alignment), q_layoutItem(item) {}
+      : QGridLayoutItem(row, columns, rowSpan, columnSpan, alignment), q_layoutItem(item)
+   { }
 
-   virtual QLayoutPolicy::Policy sizePolicy(Qt::Orientation orientation) const override {
+   QLayoutPolicy::Policy sizePolicy(Qt::Orientation orientation) const override {
       QSizePolicy sizePolicy(q_layoutItem->sizePolicy());
-      return (QLayoutPolicy::Policy)((orientation == Qt::Horizontal) ? sizePolicy.horizontalPolicy()
-            : sizePolicy.verticalPolicy());
+      return (QLayoutPolicy::Policy)((orientation == Qt::Horizontal)
+            ? sizePolicy.horizontalPolicy() : sizePolicy.verticalPolicy());
    }
 
-   virtual QLayoutPolicy::ControlTypes controlTypes(LayoutSide) const override {
+   QLayoutPolicy::ControlTypes controlTypes(LayoutSide) const override {
       const QSizePolicy::ControlType ct = q_layoutItem->sizePolicy().controlType();
       return (QLayoutPolicy::ControlTypes)ct;
    }
 
-   virtual QSizeF sizeHint(Qt::SizeHint which, const QSizeF &constraint) const override {
+   QSizeF sizeHint(Qt::SizeHint which, const QSizeF &constraint) const override {
       return q_layoutItem->effectiveSizeHint(which, constraint);
    }
 
    bool isHidden() const;
 
-   virtual bool isIgnored() const override;
+   bool isIgnored() const override;
 
-   virtual void setGeometry(const QRectF &rect) override {
+   void setGeometry(const QRectF &rect) override {
       q_layoutItem->setGeometry(rect);
    }
 
-   virtual bool hasDynamicConstraint() const override;
-   virtual Qt::Orientation dynamicConstraintOrientation() const override;
+   bool hasDynamicConstraint() const override;
+   Qt::Orientation dynamicConstraintOrientation() const override;
 
    QGraphicsLayoutItem *layoutItem() const {
       return q_layoutItem;

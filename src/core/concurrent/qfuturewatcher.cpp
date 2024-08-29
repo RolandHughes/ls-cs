@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -22,12 +22,13 @@
 ***********************************************************************/
 
 #include <qfuturewatcher.h>
-#include <qfuturewatcher_p.h>
 
 #include <qalgorithms.h>
-#include <qcoreevent.h>
 #include <qcoreapplication.h>
+#include <qcoreevent.h>
 #include <qthread.h>
+
+#include <qfuturewatcher_p.h>
 
 QFutureWatcherBase::QFutureWatcherBase(QObject *parent)
    : QObject(parent), d_ptr(new QFutureWatcherBasePrivate)
@@ -126,7 +127,7 @@ bool QFutureWatcherBase::event(QEvent *event)
          return true;
       }
 
-      if (callOutEvent->callOutType == QFutureCallOutEvent::Resumed
+      if (callOutEvent->m_callOutType == QFutureCallOutEvent::Resumed
             && !d->pendingCallOutEvents.isEmpty()) {
          // send the resume
          d->sendCallOutEvent(callOutEvent);
@@ -135,13 +136,16 @@ bool QFutureWatcherBase::event(QEvent *event)
          for (int i = 0; i < d->pendingCallOutEvents.count(); ++i) {
             d->sendCallOutEvent(d->pendingCallOutEvents.at(i));
          }
+
          qDeleteAll(d->pendingCallOutEvents);
          d->pendingCallOutEvents.clear();
       } else {
          d->sendCallOutEvent(callOutEvent);
       }
+
       return true;
    }
+
    return QObject::event(event);
 }
 
@@ -164,7 +168,7 @@ void QFutureWatcherBase::connectNotify(const QMetaMethod &signal) const
 
    if (signal == finishedSignal) {
       if (futureInterface().isRunning()) {
-         qWarning("QFutureWatcher::connect: Connecting after calling setFuture() is likely to produce a race condition");
+         qWarning("QFutureWatcher::connectNotify() Connecting after calling setFuture() is likely to produce a race condition");
       }
    }
 }
@@ -208,7 +212,7 @@ void QFutureWatcherBasePrivate::postCallOutEvent(const QFutureCallOutEvent &call
 {
    Q_Q(QFutureWatcherBase);
 
-   if (callOutEvent.callOutType == QFutureCallOutEvent::ResultsReady) {
+   if (callOutEvent.m_callOutType == QFutureCallOutEvent::ResultsReady) {
       if (pendingResultsReady.fetchAndAddRelaxed(1) >= maximumPendingResultsReady) {
          q->futureInterface().d->internal_setThrottled(true);
       }
@@ -226,7 +230,7 @@ void QFutureWatcherBasePrivate::sendCallOutEvent(QFutureCallOutEvent *event)
 {
    Q_Q(QFutureWatcherBase);
 
-   switch (event->callOutType) {
+   switch (event->m_callOutType) {
       case QFutureCallOutEvent::Started:
          emit q->started();
          break;
@@ -245,6 +249,7 @@ void QFutureWatcherBasePrivate::sendCallOutEvent(QFutureCallOutEvent *event)
          if (q->futureInterface().isCanceled()) {
             break;
          }
+
          emit q->paused();
          break;
 
@@ -252,6 +257,7 @@ void QFutureWatcherBasePrivate::sendCallOutEvent(QFutureCallOutEvent *event)
          if (q->futureInterface().isCanceled()) {
             break;
          }
+
          emit q->resumed();
          break;
 
@@ -264,8 +270,8 @@ void QFutureWatcherBasePrivate::sendCallOutEvent(QFutureCallOutEvent *event)
             q->futureInterface().setThrottled(false);
          }
 
-         const int beginIndex = event->index1;
-         const int endIndex = event->index2;
+         const int beginIndex = event->m_index1;
+         const int endIndex   = event->m_index2;
 
          emit q->resultsReadyAt(beginIndex, endIndex);
 
@@ -285,19 +291,19 @@ void QFutureWatcherBasePrivate::sendCallOutEvent(QFutureCallOutEvent *event)
             break;
          }
 
-         emit q->progressValueChanged(event->index1);
+         emit q->progressValueChanged(event->m_index1);
 
-         if (! event->text.isEmpty()) {
-            q->progressTextChanged(event->text);
+         if (! event->m_text.isEmpty()) {
+            q->progressTextChanged(event->m_text);
          }
+
          break;
 
       case QFutureCallOutEvent::ProgressRange:
-         emit q->progressRangeChanged(event->index1, event->index2);
+         emit q->progressRangeChanged(event->m_index1, event->m_index2);
          break;
 
       default:
          break;
    }
 }
-

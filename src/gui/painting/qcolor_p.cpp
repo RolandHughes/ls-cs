@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -127,12 +127,15 @@ bool qt_get_hex_rgb(QStringView str, QRgb *rgb)
 #ifdef rgb
 #  undef rgb
 #endif
+
 #define rgb(r,g,b) (0xff000000 | (r << 16) |  (g << 8) | b)
 
-static const struct RGBData {
+struct RGBData {
    const char name[21];
    uint  value;
-} rgbTbl[] = {
+};
+
+static const RGBData rgbTbl[] = {
    { "aliceblue", rgb(240, 248, 255) },
    { "antiquewhite", rgb(250, 235, 215) },
    { "aqua", rgb( 0, 255, 255) },
@@ -283,7 +286,7 @@ static const struct RGBData {
    { "yellowgreen", rgb(154, 205, 50) }
 };
 
-static const int rgbTblSize = sizeof(rgbTbl) / sizeof(RGBData);
+static constexpr const int rgbTblSize = sizeof(rgbTbl) / sizeof(RGBData);
 
 #undef rgb
 
@@ -352,7 +355,6 @@ bool qt_get_named_rgb(const QStringView name, QRgb *rgb)
    return get_named_rgb(name_no_space, rgb);
 }
 
-
 uint qt_get_rgb_val(const char *name)
 {
    QRgb r = 0;
@@ -387,9 +389,11 @@ uint qt_get_rgb_val(const char *)
 {
    return 0;
 }
+
 QStringList qt_get_colornames()
 {
    return QStringList();
 }
+
 #endif // QT_NO_COLORNAMES
 

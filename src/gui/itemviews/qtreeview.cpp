@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,25 +24,26 @@
 #include <qtreeview.h>
 
 #ifndef QT_NO_TREEVIEW
+
+#include <qapplication.h>
+#include <qdebug.h>
+#include <qevent.h>
 #include <qheaderview.h>
 #include <qitemdelegate.h>
-#include <qapplication.h>
-#include <qscrollbar.h>
+#include <qmetamethod.h>
 #include <qpainter.h>
+#include <qpen.h>
+#include <qscrollbar.h>
 #include <qstack.h>
 #include <qstyle.h>
 #include <qstyleoption.h>
-#include <qevent.h>
-#include <qpen.h>
-#include <qdebug.h>
-#include <qmetamethod.h>
 
 #ifndef QT_NO_ACCESSIBILITY
 #include <qaccessible.h>
 #endif
 
-#include <qtreeview_p.h>
 #include <qheaderview_p.h>
+#include <qtreeview_p.h>
 
 #include <algorithm>
 
@@ -648,17 +649,19 @@ void QTreeView::keyboardSearch(const QString &search)
    bool skipRow = false;
    bool keyboardTimeWasValid = d->keyboardInputTime.isValid();
 
-   qint64 keyboardInputTimeElapsed;
+   qint64 keyboardInputTimeElapsed = 0;
+
    if (keyboardTimeWasValid) {
       keyboardInputTimeElapsed = d->keyboardInputTime.restart();
    } else {
       d->keyboardInputTime.start();
    }
 
-   if (search.isEmpty() || !keyboardTimeWasValid
-      || keyboardInputTimeElapsed > QApplication::keyboardInputInterval()) {
+   if (search.isEmpty() || ! keyboardTimeWasValid
+         || keyboardInputTimeElapsed > QApplication::keyboardInputInterval()) {
       d->keyboardInput = search;
-      skipRow = currentIndex().isValid(); //if it is not valid we should really start at QModelIndex(0,0)
+      skipRow = currentIndex().isValid();    // if it is not valid, start at QModelIndex(0,0)
+
    } else {
       d->keyboardInput += search;
    }
@@ -1627,9 +1630,6 @@ void QTreeView::drawBranches(QPainter *painter, const QRect &rect, const QModelI
    painter->setBrushOrigin(oldBO);
 }
 
-/*!
-  \reimp
-*/
 void QTreeView::mousePressEvent(QMouseEvent *event)
 {
    Q_D(QTreeView);
@@ -1644,9 +1644,6 @@ void QTreeView::mousePressEvent(QMouseEvent *event)
    }
 }
 
-/*!
-  \reimp
-*/
 void QTreeView::mouseReleaseEvent(QMouseEvent *event)
 {
    Q_D(QTreeView);
@@ -1665,9 +1662,6 @@ void QTreeView::mouseReleaseEvent(QMouseEvent *event)
    }
 }
 
-/*!
-  \reimp
-*/
 void QTreeView::mouseDoubleClickEvent(QMouseEvent *event)
 {
    Q_D(QTreeView);
@@ -1738,9 +1732,6 @@ void QTreeView::mouseDoubleClickEvent(QMouseEvent *event)
    }
 }
 
-/*!
-  \reimp
-*/
 void QTreeView::mouseMoveEvent(QMouseEvent *event)
 {
    Q_D(QTreeView);
@@ -1797,9 +1788,6 @@ void QTreeView::keyPressEvent(QKeyEvent *event)
    QAbstractItemView::keyPressEvent(event);
 }
 
-/*!
-  \reimp
-*/
 QModelIndex QTreeView::indexAt(const QPoint &point) const
 {
    Q_D(const QTreeView);
@@ -1910,9 +1898,6 @@ void QTreeView::doItemsLayout()
    d->header->doItemsLayout();
 }
 
-/*!
-  \reimp
-*/
 void QTreeView::reset()
 {
    Q_D(QTreeView);
@@ -2311,21 +2296,15 @@ void QTreeView::columnMoved()
    d->viewport->update();
 }
 
-/*!
-  \internal
-*/
 void QTreeView::reexpand()
 {
    // do nothing
 }
 
-/*!
-  Informs the view that the rows from the \a start row to the \a end row
-  inclusive have been inserted into the \a parent model item.
-*/
 void QTreeView::rowsInserted(const QModelIndex &parent, int start, int end)
 {
    Q_D(QTreeView);
+
    // if we are going to do a complete relayout anyway, there is no need to update
    if (d->delayedPendingLayout) {
       QAbstractItemView::rowsInserted(parent, start, end);
@@ -2357,10 +2336,6 @@ void QTreeView::rowsInserted(const QModelIndex &parent, int start, int end)
    QAbstractItemView::rowsInserted(parent, start, end);
 }
 
-/*!
-  Informs the view that the rows from the \a start row to the \a end row
-  inclusive are about to removed from the given \a parent model item.
-*/
 void QTreeView::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end)
 {
    Q_D(QTreeView);
@@ -2378,10 +2353,6 @@ void QTreeView::rowsRemoved(const QModelIndex &parent, int start, int end)
    d->_q_rowsRemoved(parent, start, end);
 }
 
-/*!
-  Informs the tree view that the number of columns in the tree view has
-  changed from \a oldCount to \a newCount.
-*/
 void QTreeView::columnCountChanged(int oldCount, int newCount)
 {
    Q_D(QTreeView);
@@ -2408,12 +2379,6 @@ void QTreeView::resizeColumnToContents(int column)
    d->header->resizeSection(column, qMax(contents, header));
 }
 
-/*!
-  \obsolete
-  \overload
-
-  Sorts the model by the values in the given \a column.
-*/
 void QTreeView::sortByColumn(int column)
 {
    Q_D(QTreeView);
@@ -2424,22 +2389,20 @@ void QTreeView::sortByColumn(int column, Qt::SortOrder order)
 {
    Q_D(QTreeView);
 
-   //If sorting is enabled  will emit a signal connected to _q_sortIndicatorChanged, which then actually sorts
+   // If sorting is enabled  will emit a signal connected to _q_sortIndicatorChanged, which then actually sorts
    d->header->setSortIndicator(column, order);
-   //If sorting is not enabled, force to sort now.
+
+   // If sorting is not enabled, force to sort now
    if (!d->sortingEnabled) {
       d->model->sort(column, order);
    }
 }
 
-/*!
-  \reimp
-*/
 void QTreeView::selectAll()
 {
    Q_D(QTreeView);
 
-   if (!selectionModel()) {
+   if (! selectionModel()) {
       return;
    }
 
@@ -2449,9 +2412,9 @@ void QTreeView::selectAll()
    if (mode != SingleSelection && mode != NoSelection && !d->viewItems.isEmpty()) {
       const QModelIndex &idx = d->viewItems.last().index;
       QModelIndex lastItemIndex = idx.sibling(idx.row(), d->model->columnCount(idx.parent()) - 1);
+
       d->select(d->viewItems.first().index, lastItemIndex,
-         QItemSelectionModel::ClearAndSelect
-         | QItemSelectionModel::Rows);
+            QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
    }
 }
 
@@ -2564,18 +2527,16 @@ void QTreeView::expandToDepth(int depth)
    d->viewport->update();
 }
 
-void QTreeView::columnResized(int column, int /* oldSize */, int /* newSize */)
+void QTreeView::columnResized(int column, int, int)
 {
    Q_D(QTreeView);
+
    d->columnsToUpdate.append(column);
    if (d->columnResizeTimerID == 0) {
       d->columnResizeTimerID = startTimer(0);
    }
 }
 
-/*!
-  \reimp
-*/
 void QTreeView::updateGeometries()
 {
    Q_D(QTreeView);
@@ -2594,11 +2555,13 @@ void QTreeView::updateGeometries()
       QRect vg = d->viewport->geometry();
       QRect geometryRect(vg.left(), vg.top() - height, vg.width(), height);
       d->header->setGeometry(geometryRect);
+
       //d->header->setOffset(horizontalScrollBar()->value()); // ### bug ???
       QMetaObject::invokeMethod(d->header, "updateGeometries");
       d->updateScrollBars();
       d->geometryRecursionBlock = false;
    }
+
    QAbstractItemView::updateGeometries();
 }
 
@@ -2620,8 +2583,9 @@ int QTreeView::sizeHintForColumn(int column) const
    const int maximumProcessRows = d->header->resizeContentsPrecision(); // To avoid this to take forever.
 
    int offset = 0;
-   int start = d->firstVisibleItem(&offset);
-   int end = d->lastVisibleItem(start, offset);
+   int start  = d->firstVisibleItem(&offset);
+   int end    = d->lastVisibleItem(start, offset);
+
    if (start < 0 || end < 0 || end == viewItems.size() - 1) {
       end = viewItems.size() - 1;
       if (maximumProcessRows < 0) {
@@ -3269,11 +3233,6 @@ int QTreeViewPrivate::itemHeight(int item) const
    return qMax(height, 0);
 }
 
-
-/*!
-  \internal
-  Returns the viewport y coordinate for \a item.
-*/
 int QTreeViewPrivate::coordinateForItem(int item) const
 {
    if (verticalScrollMode == QAbstractItemView::ScrollPerPixel) {
@@ -3327,13 +3286,6 @@ int QTreeViewPrivate::coordinateForItem(int item) const
    return 0;
 }
 
-/*!
-  \internal
-  Returns the index of the view item at the
-  given viewport \a coordinate.
-
-  \sa modelIndex()
-*/
 int QTreeViewPrivate::itemAtCoordinate(int coordinate) const
 {
    const int itemCount = viewItems.count();
@@ -3867,9 +3819,6 @@ void QTreeView::currentChanged(const QModelIndex &current, const QModelIndex &pr
 #endif
 }
 
-/*!
-  \reimp
- */
 void QTreeView::selectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
 {
    QAbstractItemView::selectionChanged(selected, deselected);

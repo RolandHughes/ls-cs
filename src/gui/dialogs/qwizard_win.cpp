@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -97,16 +97,18 @@ enum WIZ_WINDOWTHEMEATTRIBUTETYPE {
 #define WIZ_DT_SINGLELINE                0x00000020
 #define WIZ_DT_NOPREFIX                  0x00000800
 
-enum WIZ_NAVIGATIONPARTS {               // NAVIGATIONPARTS
-   WIZ_NAV_BACKBUTTON = 1,
+enum WIZ_NAVIGATIONPARTS {
+   // NAVIGATIONPARTS
+   WIZ_NAV_BACKBUTTON    = 1,
    WIZ_NAV_FORWARDBUTTON = 2,
-   WIZ_NAV_MENUBUTTON = 3,
+   WIZ_NAV_MENUBUTTON    = 3,
 };
 
-enum WIZ_NAV_BACKBUTTONSTATES {          //NAV_BACKBUTTONSTATES
-   WIZ_NAV_BB_NORMAL = 1,
-   WIZ_NAV_BB_HOT = 2,
-   WIZ_NAV_BB_PRESSED = 3,
+enum WIZ_NAV_BACKBUTTONSTATES {
+   // NAV_BACKBUTTONSTATES
+   WIZ_NAV_BB_NORMAL   = 1,
+   WIZ_NAV_BB_HOT      = 2,
+   WIZ_NAV_BB_PRESSED  = 3,
    WIZ_NAV_BB_DISABLED = 4,
 };
 
@@ -163,7 +165,7 @@ static PtrGetThemeColor pGetThemeColor = nullptr;
 int QVistaHelper::instanceCount = 0;
 int QVistaHelper::m_devicePixelRatio = 1;
 bool QVistaHelper::is_vista = false;
-QVistaHelper::VistaState QVistaHelper::cachedVistaState = QVistaHelper::Dirty;
+QVistaHelper::VistaState QVistaHelper::cachedVistaState = QVistaHelper::VistaState::Dirty;
 
 /******************************************************************************
 ** QVistaBackButton
@@ -223,7 +225,8 @@ void QVistaBackButton::paintEvent(QPaintEvent *)
    RECT clipRect;
    int xoffset = origin.x() + QWidget::mapToParent(r.topLeft()).x() - 1;
    int yoffset = origin.y() + QWidget::mapToParent(r.topLeft()).y() - 1;
-   const int dpr = devicePixelRatio();
+
+   const qreal dpr = devicePixelRatio();
    const QRect rDp = QRect(r.topLeft() * dpr, r.size() * dpr);
    const int xoffsetDp = xoffset * dpr;
    const int yoffsetDp = yoffset * dpr;
@@ -260,7 +263,7 @@ QVistaHelper::QVistaHelper(QWizard *wizard)
    is_vista = QSysInfo::WindowsVersion >= QSysInfo::WV_VISTA && resolveSymbols();
 
    if (instanceCount++ == 0) {
-      cachedVistaState = Dirty;
+      cachedVistaState = QVistaHelper::VistaState::Dirty;
    }
 
    if (is_vista) {
@@ -318,7 +321,7 @@ bool QVistaHelper::isThemeActive()
 
 QVistaHelper::VistaState QVistaHelper::vistaState()
 {
-   if (instanceCount == 0 || cachedVistaState == Dirty) {
+   if (instanceCount == 0 || cachedVistaState == QVistaHelper::VistaState::Dirty) {
       cachedVistaState =  isCompositionEnabled() ? VistaAero : isThemeActive() ? VistaBasic : Classic;
    }
 
@@ -509,7 +512,7 @@ bool QVistaHelper::winEvent(MSG *msg, long *result)
             // DWM didn't return a hit, process using DefWindowProc
             lResult = DefWindowProc(msg->hwnd, msg->message, msg->wParam, msg->lParam);
             // If DefWindowProc returns a window caption button, just return HTCLIENT (client area).
-            // This avoid unnecessary hits to Windows NT style caption buttons which aren't visible but are
+            // This avoid unnecessary hits to Windows NT style caption buttons which are not visible but are
             // located just under the Aero style window close button.
             if (lResult == HTCLOSE || lResult == HTMAXBUTTON || lResult == HTMINBUTTON || lResult == HTHELP) {
                *result = HTCLIENT;
@@ -566,7 +569,7 @@ void QVistaHelper::mouseEvent(QEvent *event)
 bool QVistaHelper::handleWinEvent(MSG *message, long *result)
 {
    if (message->message == WIZ_WM_THEMECHANGED || message->message == WIZ_WM_DWMCOMPOSITIONCHANGED) {
-      cachedVistaState = Dirty;
+      cachedVistaState = QVistaHelper::VistaState::Dirty;
    }
 
    bool status = false;
@@ -951,19 +954,18 @@ int QVistaHelper::glowSize()
 {
    return QStyleHelper::dpiScaled(10);
 }
+
 int QVistaHelper::topOffset()
 {
    if (vistaState() != VistaAero) {
       return titleBarSize() + 3;
    }
 
-   static const int aeroOffset = QSysInfo::WindowsVersion == QSysInfo::WV_WINDOWS7 ?
-      QStyleHelper::dpiScaled(4) : QStyleHelper::dpiScaled(13);
+   static const int aeroOffset = QSysInfo::WindowsVersion == QSysInfo::WV_WINDOWS7
+         ? QStyleHelper::dpiScaled(4) : QStyleHelper::dpiScaled(13);
 
    return aeroOffset + titleBarSize();
 }
-
-
 
 #endif // QT_NO_STYLE_WINDOWSVISTA
 

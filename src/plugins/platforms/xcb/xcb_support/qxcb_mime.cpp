@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -168,10 +168,8 @@ QVariant QXcbMime::mimeConvertToFormat(QXcbConnection *connection, xcb_atom_t a,
    QVariant::Type requestedType, const QByteArray &encoding)
 {
    QString atomName = mimeAtomToString(connection, a);
-   //    qDebug() << "mimeConvertDataToFormat" << format << atomName << data;
 
-   if (!encoding.isEmpty()
-      && atomName == format + ";charset=" + QString::fromLatin1(encoding)) {
+   if (!encoding.isEmpty() && atomName == format + ";charset=" + QString::fromLatin1(encoding)) {
 
 #ifndef QT_NO_TEXTCODEC
       if (requestedType == QVariant::String) {

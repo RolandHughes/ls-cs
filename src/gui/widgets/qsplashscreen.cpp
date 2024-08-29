@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -45,6 +45,7 @@
 class QSplashScreenPrivate : public QWidgetPrivate
 {
    Q_DECLARE_PUBLIC(QSplashScreen)
+
  public:
    QPixmap pixmap;
    QString currStatus;
@@ -114,7 +115,8 @@ void QSplashScreen::clearMessage()
 
 static inline bool waitForWindowExposed(QWindow *window, int timeout = 1000)
 {
-   enum { TimeOutMs = 10 };
+   static constexpr const int TimeOutMs = 10;
+
    QElapsedTimer timer;
    timer.start();
 
@@ -123,6 +125,7 @@ static inline bool waitForWindowExposed(QWindow *window, int timeout = 1000)
       if (remaining <= 0) {
          break;
       }
+
       QCoreApplication::processEvents(QEventLoop::AllEvents, remaining);
       QCoreApplication::sendPostedEvents(nullptr, QEvent::DeferredDelete);
 

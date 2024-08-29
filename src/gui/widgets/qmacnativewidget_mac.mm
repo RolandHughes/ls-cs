@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -21,16 +21,14 @@
 *
 ***********************************************************************/
 
-#import  <Cocoa/Cocoa.h>
-
 #include <qmacnativewidget_mac.h>
 
+#include <qapplication.h>
 #include <qdebug.h>
-#include <qwindow.h>
-#include <qguiapplication.h>
 #include <qplatform_nativeinterface.h>
+#include <qwindow.h>
 
-
+#import  <Cocoa/Cocoa.h>
 
 namespace {
 // TODO use QtMacExtras copy of this function when available.
@@ -68,8 +66,6 @@ NSView *getEmbeddableView(QWindow *qtWindow)
     return qtView; // qtView is ready for use.
 }
 
-
-
 QMacNativeWidget::QMacNativeWidget(NSView *parentView)
     : QWidget(nullptr)
 {
@@ -81,16 +77,10 @@ QMacNativeWidget::QMacNativeWidget(NSView *parentView)
     setAttribute(Qt::WA_NoSystemBackground, false);
 }
 
-/*!
-    Destroy the QMacNativeWidget.
-*/
 QMacNativeWidget::~QMacNativeWidget()
 {
 }
 
-/*!
-    \reimp
-*/
 QSize QMacNativeWidget::sizeHint() const
 {
     // QMacNativeWidget really does not have any other choice
@@ -111,5 +101,3 @@ bool QMacNativeWidget::event(QEvent *ev)
 {
    return QWidget::event(ev);
 }
-
-

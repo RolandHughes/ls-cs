@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -71,10 +71,11 @@ using QScriptLineArray = QVector<QScriptLine>;
 
 struct Q_GUI_EXPORT glyph_metrics_t {
 
-   inline glyph_metrics_t()
-      : x(100000),  y(100000) {}
+   glyph_metrics_t()
+      : x(100000),  y(100000)
+   { }
 
-   inline glyph_metrics_t(QFixed _x, QFixed _y, QFixed _width, QFixed _height, QFixed _xoff, QFixed _yoff)
+   glyph_metrics_t(QFixed _x, QFixed _y, QFixed _width, QFixed _height, QFixed _xoff, QFixed _yoff)
       : x(_x), y(_y), width(_width), height(_height), xoff(_xoff), yoff(_yoff)
    { }
 
@@ -87,11 +88,11 @@ struct Q_GUI_EXPORT glyph_metrics_t {
 
    glyph_metrics_t transformed(const QTransform &xform) const;
 
-   inline bool isValid() const {
+   bool isValid() const {
       return x != 100000 && y != 100000;
    }
 
-   inline QFixed leftBearing() const {
+   QFixed leftBearing() const {
       if (! isValid()) {
          return QFixed();
       }
@@ -99,7 +100,7 @@ struct Q_GUI_EXPORT glyph_metrics_t {
       return x;
    }
 
-   inline QFixed rightBearing() const {
+   QFixed rightBearing() const {
       if (! isValid()) {
          return QFixed();
       }
@@ -166,15 +167,15 @@ static_assert(sizeof(QGlyphAttributes) == 1, "Type mismatch");
 #endif
 
 struct QGlyphLayout {
-   constexpr static const int SpaceRequired = sizeof(glyph_t) + sizeof(QFixed) + sizeof(QFixedPoint)
+   static constexpr const int SpaceRequired = sizeof(glyph_t) + sizeof(QFixed) + sizeof(QFixedPoint)
       + sizeof(QGlyphAttributes) + sizeof(QGlyphJustification);
 
-   inline QGlyphLayout()
+   QGlyphLayout()
       : numGlyphs(0)
    {
    }
 
-   inline explicit QGlyphLayout(char *address, int totalGlyphs) {
+   explicit QGlyphLayout(char *address, int totalGlyphs) {
       offsets    = reinterpret_cast<QFixedPoint *>(address);
       int offset = totalGlyphs * sizeof(QFixedPoint);
 
@@ -191,7 +192,7 @@ struct QGlyphLayout {
       numGlyphs = totalGlyphs;
    }
 
-   inline QGlyphLayout mid(int position, int n = -1) const {
+   QGlyphLayout mid(int position, int n = -1) const {
       QGlyphLayout copy = *this;
 
       copy.glyphs         += position;
@@ -209,7 +210,7 @@ struct QGlyphLayout {
       return copy;
    }
 
-   inline QFixed effectiveAdvance(int item) const {
+   QFixed effectiveAdvance(int item) const {
       return (advances[item] + QFixed::fromFixed(justifications[item].space_18d6)) * ! attributes[item].dontPrint;
    }
 
@@ -418,13 +419,13 @@ class Q_GUI_EXPORT QTextEngine
       ItemDecoration() {}
 
       ItemDecoration(qreal x1, qreal x2, qreal y, const QPen &pen)
-         : x1(x1), x2(x2), y(y), pen(pen)
-      {}
+         : m_x1(x1), m_x2(x2), m_y(y), m_pen(pen)
+      { }
 
-      qreal x1;
-      qreal x2;
-      qreal y;
-      QPen pen;
+      qreal m_x1;
+      qreal m_x2;
+      qreal m_y;
+      QPen m_pen;
    };
 
    typedef QVector<ItemDecoration> ItemDecorationList;
@@ -433,10 +434,6 @@ class Q_GUI_EXPORT QTextEngine
    QTextEngine(const QString &str, const QFont &f);
 
    ~QTextEngine();
-
-   enum Mode {
-      WidthOnly = 0x07
-   };
 
    void clearLineData();
    void invalidate();
@@ -670,7 +667,7 @@ class Q_GUI_EXPORT QTextEngine
 class QStackTextEngine : public QTextEngine
 {
  public:
-   constexpr static const int MemSize = 256 * 40 / sizeof(void *);
+   static constexpr const int MemSize = 256 * 40 / sizeof(void *);
 
    QStackTextEngine(const QString &string, const QFont &f);
 
@@ -682,18 +679,18 @@ struct QTextLineItemIterator {
    QTextLineItemIterator(QTextEngine *eng, int lineNum, const QPointF &pos = QPointF(),
       const QTextLayout::FormatRange *_selection = nullptr);
 
-   inline bool atEnd() const {
+   bool atEnd() const {
       return logicalItem >= nItems - 1;
    }
 
-   inline bool atBeginning() const {
+   bool atBeginning() const {
       return logicalItem <= 0;
    }
 
    QScriptItem &next();
 
    bool getSelectionBounds(QFixed *selectionX, QFixed *selectionWidth) const;
-   inline bool isOutsideSelection() const {
+   bool isOutsideSelection() const {
       QFixed tmp1, tmp2;
       return !getSelectionBounds(&tmp1, &tmp2);
    }

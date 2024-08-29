@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -103,11 +103,11 @@ class Q_NETWORK_EXPORT QNetworkSessionPrivate : public QObject
    NET_CS_SIGNAL_2(usagePoliciesChanged, data)
 
  protected:
-   inline QNetworkConfigurationPrivatePointer privateConfiguration(const QNetworkConfiguration &config) const {
+   QNetworkConfigurationPrivatePointer privateConfiguration(const QNetworkConfiguration &config) const {
       return config.d;
    }
 
-   inline void setPrivateConfiguration(QNetworkConfiguration &config, QNetworkConfigurationPrivatePointer ptr) const {
+   void setPrivateConfiguration(QNetworkConfiguration &config, QNetworkConfigurationPrivatePointer ptr) const {
       config.d = ptr;
    }
 

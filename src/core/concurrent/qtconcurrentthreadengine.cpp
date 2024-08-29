@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -115,7 +115,6 @@ bool ThreadEngineBarrier::releaseUnlessLast()
    while (true)  {
       int localCount = count.load();
 
-
       if (qAbs(localCount) == 1) {
          return false;
 
@@ -142,7 +141,8 @@ ThreadEngineBase::ThreadEngineBase()
    setAutoDelete(false);
 }
 
-ThreadEngineBase::~ThreadEngineBase() {
+ThreadEngineBase::~ThreadEngineBase()
+{
 }
 
 void ThreadEngineBase::startSingleThreaded()
@@ -177,7 +177,6 @@ void ThreadEngineBase::startBlocking()
    } catch (...) {
       handleException(QtConcurrent::UnhandledException());
    }
-
 
    if (throttled == false) {
       barrier.release();
@@ -216,7 +215,7 @@ void ThreadEngineBase::waitForResume()
 
 bool ThreadEngineBase::isProgressReportingEnabled()
 {
-   // If we don't have a QFuture, there is no-one to report the progress to.
+   // if we do not have a QFuture, there is no-one to report the progress to.
    return (futureInterface != nullptr);
 }
 
@@ -241,10 +240,12 @@ bool ThreadEngineBase::startThreadInternal()
    }
 
    barrier.acquire();
+
    if (!threadPool->tryStart(this)) {
       barrier.release();
       return false;
    }
+
    return true;
 }
 
@@ -296,9 +297,9 @@ void ThreadEngineBase::run()
          }
       }
 
-
    } catch (QtConcurrent::Exception &e) {
       handleException(e);
+
    } catch (...) {
       handleException(QtConcurrent::UnhandledException());
    }
@@ -315,5 +316,5 @@ void ThreadEngineBase::handleException(const QtConcurrent::Exception &exception)
    }
 }
 
-} // namepsace QtConcurrent
+} // namespace QtConcurrent
 

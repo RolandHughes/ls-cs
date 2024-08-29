@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -20,8 +20,6 @@
 * https://www.gnu.org/licenses/
 *
 ***********************************************************************/
-
-//#define QHOSTINFO_DEBUG
 
 #include <netinet/in.h>
 #include <sys/types.h>
@@ -50,8 +48,6 @@
 #if defined (QT_NO_GETADDRINFO)
 static QMutex getHostByNameMutex;
 #endif
-
-// #define QHOSTINFO_DEBUG
 
 // Almost always the same. If not, specify in qplatformdefs.h.
 #if ! defined(QT_SOCKOPTLEN_T)
@@ -88,18 +84,21 @@ static void resolveLibraryInternal()
    }
 
    local_res_ninit = res_ninit_proto(lib.resolve("__res_ninit"));
-   if (!local_res_ninit) {
+   if (! local_res_ninit) {
       local_res_ninit = res_ninit_proto(lib.resolve("res_ninit"));
    }
 
    if (!local_res_ninit) {
       // if we can't get a thread-safe context, we have to use the global _res state
       local_res = res_state_ptr(lib.resolve("_res"));
+
    } else {
       local_res_nclose = res_nclose_proto(lib.resolve("res_nclose"));
+
       if (!local_res_nclose) {
          local_res_nclose = res_nclose_proto(lib.resolve("__res_nclose"));
       }
+
       if (!local_res_nclose) {
          local_res_ninit = nullptr;
       }
@@ -110,7 +109,7 @@ QHostInfo QHostInfoAgent::fromName(const QString &hostName)
 {
    QHostInfo results;
 
-#if defined(QHOSTINFO_DEBUG)
+#if defined(CS_SHOW_DEBUG_NETWORK)
    qDebug("QHostInfoAgent::fromName(%s) looking up...", hostName.toLatin1().constData());
 #endif
 
@@ -213,10 +212,11 @@ QHostInfo QHostInfoAgent::fromName(const QString &hostName)
       QList<QHostAddress> addresses;
 
       while (node) {
-#ifdef QHOSTINFO_DEBUG
+#if defined(CS_SHOW_DEBUG_NETWORK)
          qDebug() << "getaddrinfo node: flags:" << node->ai_flags << "family:" << node->ai_family << "ai_socktype:" <<
                   node->ai_socktype << "ai_protocol:" << node->ai_protocol << "ai_addrlen:" << node->ai_addrlen;
 #endif
+
          if (node->ai_family == AF_INET) {
             QHostAddress addr;
             addr.setAddress(ntohl(((sockaddr_in *) node->ai_addr)->sin_addr.s_addr));
@@ -300,15 +300,16 @@ QHostInfo QHostInfoAgent::fromName(const QString &hostName)
       results.setError(QHostInfo::UnknownError);
       results.setErrorString(tr("Unknown error"));
    }
-#endif //  !defined (QT_NO_GETADDRINFO)
+#endif //  ! defined (QT_NO_GETADDRINFO)
 
-#if defined(QHOSTINFO_DEBUG)
+#if defined(CS_SHOW_DEBUG_NETWORK)
    if (results.error() != QHostInfo::NoError) {
-      qDebug("QHostInfoAgent::fromName(): error #%d %s",
-             h_errno, results.errorString().toLatin1().constData());
+      qDebug("QHostInfoAgent::fromName() Error #%d %s", h_errno, csPrintable(results.errorString()));
+
    } else {
       QString tmp;
       QList<QHostAddress> addresses = results.addresses();
+
       for (int i = 0; i < addresses.count(); ++i) {
          if (i != 0) {
             tmp += ", ";
@@ -316,10 +317,11 @@ QHostInfo QHostInfoAgent::fromName(const QString &hostName)
          tmp += addresses.at(i).toString();
       }
 
-      qDebug("QHostInfoAgent::fromName(): found %i entries for \"%s\": {%s}",
-             addresses.count(), hostName.toLatin1().constData(), tmp.toLatin1().constData());
+      qDebug("QHostInfoAgent::fromName() Found %ld entries for %s: {%s}",
+            addresses.count(), csPrintable(hostName), csPrintable(tmp));
    }
 #endif
+
    return results;
 }
 
@@ -330,7 +332,9 @@ QString QHostInfo::localDomainName()
    if (local_res_ninit) {
       // using thread-safe version
       res_state_ptr state = res_state_ptr(malloc(sizeof(*state)));
+
       Q_CHECK_PTR(state);
+
       memset(state, 0, sizeof(*state));
       local_res_ninit(state);
 

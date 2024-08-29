@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -37,9 +37,9 @@ class MapKernel : public IterateKernel<Iterator, void>
    MapFunctor map;
 
  public:
-   typedef void ReturnType;
    MapKernel(Iterator begin, Iterator end, MapFunctor _map)
-      : IterateKernel<Iterator, void>(begin, end), map(_map) {
+      : IterateKernel<Iterator, void>(begin, end), map(_map)
+   {
    }
 
    bool runIteration(Iterator it, int, void *) {
@@ -50,6 +50,7 @@ class MapKernel : public IterateKernel<Iterator, void>
    bool runIterations(Iterator sequenceBeginIterator, int beginIndex, int endIndex, void *) {
       Iterator it = sequenceBeginIterator;
       advance(it, beginIndex);
+
       for (int i = beginIndex; i < endIndex; ++i) {
          runIteration(it, i, 0);
          advance(it, 1);
@@ -60,7 +61,7 @@ class MapKernel : public IterateKernel<Iterator, void>
 };
 
 template <typename ReducedResultType, typename Iterator, typename MapFunctor, typename ReduceFunctor,
-          typename Reducer = ReduceKernel<ReduceFunctor, ReducedResultType, typename MapFunctor::result_type> >
+          typename Reducer = ReduceKernel<ReduceFunctor, ReducedResultType, typename MapFunctor::result_type>>
 
 class MappedReducedKernel : public IterateKernel<Iterator, ReducedResultType>
 {
@@ -70,7 +71,6 @@ class MappedReducedKernel : public IterateKernel<Iterator, ReducedResultType>
    Reducer reducer;
 
  public:
-   typedef ReducedResultType ReturnType;
    MappedReducedKernel(Iterator begin, Iterator end, MapFunctor _map, ReduceFunctor _reduce, ReduceOptions reduceOptions)
       : IterateKernel<Iterator, ReducedResultType>(begin, end), reducedResult(), map(_map), reduce(_reduce),
         reducer(reduceOptions) {
@@ -98,6 +98,7 @@ class MappedReducedKernel : public IterateKernel<Iterator, ReducedResultType>
 
       Iterator it = sequenceBeginIterator;
       advance(it, begin);
+
       for (int i = begin; i < end; ++i) {
          results.vector.append(map(*(it)));
          advance(it, 1);
@@ -119,7 +120,6 @@ class MappedReducedKernel : public IterateKernel<Iterator, ReducedResultType>
       return IterateKernel<Iterator, ReducedResultType>::shouldStartThread() && reducer.shouldStartThread();
    }
 
-   typedef ReducedResultType ResultType;
    ReducedResultType *result() {
       return &reducedResult;
    }
@@ -129,14 +129,13 @@ template <typename Iterator, typename MapFunctor>
 class MappedEachKernel : public IterateKernel<Iterator, typename MapFunctor::result_type>
 {
    MapFunctor map;
-   typedef typename MapFunctor::result_type T;
+
+   using T = typename MapFunctor::result_type;
 
  public:
-   typedef T ReturnType;
-   typedef T ResultType;
-
    MappedEachKernel(Iterator begin, Iterator end, MapFunctor _map)
-      : IterateKernel<Iterator, T>(begin, end), map(_map) { }
+      : IterateKernel<Iterator, T>(begin, end), map(_map)
+   { }
 
    bool runIteration(Iterator it, int,  T *result) {
       *result = map(*it);
@@ -147,6 +146,7 @@ class MappedEachKernel : public IterateKernel<Iterator, typename MapFunctor::res
 
       Iterator it = sequenceBeginIterator;
       advance(it, begin);
+
       for (int i = begin; i < end; ++i) {
          runIteration(it, i, results + (i - begin));
          advance(it, 1);
@@ -168,10 +168,6 @@ inline ThreadEngineStarter<T> startMapped(Iterator begin, Iterator end, Functor 
    return startThreadEngine(new MappedEachKernel<Iterator, Functor>(begin, end, functor));
 }
 
-/*
-    The SequnceHolder class is used to hold a reference to the
-    sequence we are working on.
-*/
 template <typename Sequence, typename Base, typename Functor>
 struct SequenceHolder1 : public Base {
    SequenceHolder1(const Sequence &_sequence, Functor functor)
@@ -191,35 +187,34 @@ struct SequenceHolder1 : public Base {
 template <typename T, typename Sequence, typename Functor>
 inline ThreadEngineStarter<T> startMapped(const Sequence &sequence, Functor functor)
 {
-   typedef SequenceHolder1<Sequence,
-           MappedEachKernel<typename Sequence::const_iterator , Functor>, Functor>
-           SequenceHolderType;
+   using SequenceHolderType =
+         SequenceHolder1<Sequence, MappedEachKernel<typename Sequence::const_iterator, Functor>, Functor>;
 
    return startThreadEngine(new SequenceHolderType(sequence, functor));
 }
 
 template <typename IntermediateType, typename ResultType, typename Sequence, typename MapFunctor, typename ReduceFunctor>
 inline ThreadEngineStarter<ResultType> startMappedReduced(const Sequence &sequence,
-      MapFunctor mapFunctor, ReduceFunctor reduceFunctor,
-      ReduceOptions options)
+      MapFunctor mapFunctor, ReduceFunctor reduceFunctor, ReduceOptions options)
 {
-   typedef typename Sequence::const_iterator Iterator;
-   typedef ReduceKernel<ReduceFunctor, ResultType, IntermediateType> Reducer;
-   typedef MappedReducedKernel<ResultType, Iterator, MapFunctor, ReduceFunctor, Reducer> MappedReduceType;
-   typedef SequenceHolder2<Sequence, MappedReduceType, MapFunctor, ReduceFunctor> SequenceHolderType;
+   using Iterator            = typename Sequence::const_iterator;
+   using Reducer             = ReduceKernel<ReduceFunctor, ResultType, IntermediateType>;
+   using MappedReduceType    = MappedReducedKernel<ResultType, Iterator, MapFunctor, ReduceFunctor, Reducer>;
+   using SequenceHolderType  = SequenceHolder2<Sequence, MappedReduceType, MapFunctor, ReduceFunctor>;
+
    return startThreadEngine(new SequenceHolderType(sequence, mapFunctor, reduceFunctor, options));
 }
 
 template <typename IntermediateType, typename ResultType, typename Iterator, typename MapFunctor, typename ReduceFunctor>
 inline ThreadEngineStarter<ResultType> startMappedReduced(Iterator begin, Iterator end,
-      MapFunctor mapFunctor, ReduceFunctor reduceFunctor,
-      ReduceOptions options)
+      MapFunctor mapFunctor, ReduceFunctor reduceFunctor, ReduceOptions options)
 {
-   typedef ReduceKernel<ReduceFunctor, ResultType, IntermediateType> Reducer;
-   typedef MappedReducedKernel<ResultType, Iterator, MapFunctor, ReduceFunctor, Reducer> MappedReduceType;
+   using Reducer          = ReduceKernel<ReduceFunctor, ResultType, IntermediateType>;
+   using MappedReduceType = MappedReducedKernel<ResultType, Iterator, MapFunctor, ReduceFunctor, Reducer>;
+
    return startThreadEngine(new MappedReduceType(begin, end, mapFunctor, reduceFunctor, options));
 }
 
-} // namespace QtConcurrent
+}   // end namespace
 
 #endif

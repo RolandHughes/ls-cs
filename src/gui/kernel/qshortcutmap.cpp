@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -35,26 +35,18 @@
 
 #ifndef QT_NO_SHORTCUT
 
-// To enable verbose output uncomment below
-//#define DEBUG_QSHORTCUTMAP
-
-/* \internal
-    Entry data for QShortcutMap
-    Contains:
-        Keysequence for entry
-        Pointer to parent owning the sequence
-*/
 struct QShortcutEntry {
    QShortcutEntry()
-      : keyseq(0), context(Qt::WindowShortcut), enabled(false), autorepeat(1), id(0), owner(nullptr) {
-   }
+      : keyseq(0), context(Qt::WindowShortcut), enabled(false), autorepeat(1), id(0), owner(nullptr)
+   { }
 
    QShortcutEntry(const QKeySequence &k)
-      : keyseq(k), context(Qt::WindowShortcut), enabled(false), autorepeat(1), id(0), owner(nullptr) {
-   }
+      : keyseq(k), context(Qt::WindowShortcut), enabled(false), autorepeat(1), id(0), owner(nullptr)
+   { }
 
    QShortcutEntry(QObject *o, const QKeySequence &k, Qt::ShortcutContext c, int i, bool a, QShortcutMap::ContextMatcher m)
-      : keyseq(k), context(c), enabled(true), autorepeat(a), id(i), owner(o), contextMatcher(m) {
+      : keyseq(k), context(c), enabled(true), autorepeat(a), id(i), owner(o), contextMatcher(m)
+   {
    }
 
    bool correctContext() const {
@@ -75,17 +67,14 @@ struct QShortcutEntry {
    QShortcutMap::ContextMatcher contextMatcher;
 };
 
-
-/* \internal
-    Private data for QShortcutMap
-*/
 class QShortcutMapPrivate
 {
    Q_DECLARE_PUBLIC(QShortcutMap)
 
  public:
    QShortcutMapPrivate(QShortcutMap *parent)
-      : q_ptr(parent), currentId(0), ambigCount(0), currentState(QKeySequence::NoMatch) {
+      : q_ptr(parent), currentId(0), ambigCount(0), currentState(QKeySequence::NoMatch)
+   {
       identicals.reserve(10);
       currentSequences.reserve(10);
    }
@@ -106,19 +95,12 @@ class QShortcutMapPrivate
    QVector<const QShortcutEntry *> identicals; // Last identical matches
 };
 
-
-/*! \internal
-    QShortcutMap constructor.
-*/
 QShortcutMap::QShortcutMap()
    : d_ptr(new QShortcutMapPrivate(this))
 {
    resetState();
 }
 
-/*! \internal
-    QShortcutMap destructor.
-*/
 QShortcutMap::~QShortcutMap()
 {
 }
@@ -145,13 +127,13 @@ int QShortcutMap::addShortcut(QObject *owner, const QKeySequence &key, Qt::Short
     If \a owner is 0, all entries in the map with the key sequence specified
     is removed. If \a key is null, all sequences for \a owner is removed from
     the map. If \a id is 0, any identical \a key sequences owned by \a owner
-    are removed.
-    Returns the number of sequences removed from the map.
+    are removed. Returns the number of sequences removed from the map.
 */
 
 int QShortcutMap::removeShortcut(int id, QObject *owner, const QKeySequence &key)
 {
    Q_D(QShortcutMap);
+
    int itemsRemoved = 0;
    bool allOwners = (owner == nullptr);
    bool allKeys = key.isEmpty();
@@ -165,25 +147,30 @@ int QShortcutMap::removeShortcut(int id, QObject *owner, const QKeySequence &key
    }
 
    int i = d->sequences.size() - 1;
+
    while (i >= 0) {
       const QShortcutEntry &entry = d->sequences.at(i);
       int entryId = entry.id;
+
       if ((allOwners || entry.owner == owner)
-         && (allIds || entry.id == id)
-         && (allKeys || entry.keyseq == key)) {
+            && (allIds || entry.id == id) && (allKeys || entry.keyseq == key)) {
          d->sequences.removeAt(i);
          ++itemsRemoved;
       }
+
       if (id == entryId) {
          return itemsRemoved;
       }
+
       --i;
    }
-#if defined(DEBUG_QSHORTCUTMAP)
+
+#if defined(CS_SHOW_DEBUG_GUI)
    qDebug().nospace()
          << "QShortcutMap::removeShortcut(" << id << ", " << owner << ", "
-            << key << ") = " << itemsRemoved;
+         << key << ") = " << itemsRemoved;
 #endif
+
    return itemsRemoved;
 }
 
@@ -217,11 +204,13 @@ int QShortcutMap::setShortcutEnabled(bool enable, int id, QObject *owner, const 
       }
       --i;
    }
-#if defined(DEBUG_QSHORTCUTMAP)
+
+#if defined(CS_SHOW_DEBUG_GUI)
    qDebug().nospace()
          << "QShortcutMap::setShortcutEnabled(" << enable << ", " << id << ", "
-            << owner << ", " << key << ") = " << itemsChanged;
+         << owner << ", " << key << ") = " << itemsChanged;
 #endif
+
    return itemsChanged;
 }
 
@@ -255,11 +244,13 @@ int QShortcutMap::setShortcutAutoRepeat(bool on, int id, QObject *owner, const Q
       }
       --i;
    }
-#if defined(DEBUG_QSHORTCUTMAP)
+
+#if defined(CS_SHOW_DEBUG_GUI)
    qDebug().nospace()
          << "QShortcutMap::setShortcutAutoRepeat(" << on << ", " << id << ", "
-            << owner << ", " << key << ") = " << itemsChanged;
+         << owner << ", " << key << ") = " << itemsChanged;
 #endif
+
    return itemsChanged;
 }
 
@@ -370,19 +361,17 @@ QKeySequence::SequenceMatch QShortcutMap::nextState(QKeyEvent *e)
    }
    d->currentState = result;
 
-#if defined(DEBUG_QSHORTCUTMAP)
+#if defined(CS_SHOW_DEBUG_GUI)
    qDebug().nospace() << "QShortcutMap::nextState(" << e << ") = " << result;
 #endif
+
    return result;
 }
 
-
-/*! \internal
-    Determines if an enabled shortcut has a matcing key sequence.
-*/
 bool QShortcutMap::hasShortcutForKeySequence(const QKeySequence &seq) const
 {
    Q_D(const QShortcutMap);
+
    QShortcutEntry entry(seq); // needed for searching
    QList<QShortcutEntry>::const_iterator itEnd = d->sequences.constEnd();
    QList<QShortcutEntry>::const_iterator it = std::lower_bound(d->sequences.constBegin(), itEnd, entry);
@@ -670,14 +659,11 @@ void QShortcutMap::dispatchEvent(QKeyEvent *e)
    QCoreApplication::sendEvent(const_cast<QObject *>(next->owner), &se);
 }
 
-/* \internal
-    QShortcutMap dump function, only available when DEBUG_QSHORTCUTMAP is
-    defined.
-*/
-#if defined(Dump_QShortcutMap)
+#if defined(CS_SHOW_DEBUG_GUI)
 void QShortcutMap::dumpMap() const
 {
    Q_D(const QShortcutMap);
+
    for (int i = 0; i < d->sequences.size(); ++i) {
       qDebug().nospace() << &(d->sequences.at(i));
    }

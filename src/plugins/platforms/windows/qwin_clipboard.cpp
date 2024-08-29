@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -38,41 +38,41 @@
 
 #include <qwin_gui_eventdispatcher_p.h>
 
-#if defined(CS_SHOW_DEBUG)
-static QDebug operator<<(QDebug d, const QMimeData *mimeData)
+#if defined(CS_SHOW_DEBUG_PLATFORM)
+static QDebug operator<<(QDebug debug, const QMimeData *mimeData)
 {
-   QDebugStateSaver saver(d);
+   QDebugStateSaver saver(debug);
 
-   d.nospace();
-   d << "QMimeData(";
+   debug.nospace();
+   debug << "QMimeData(";
 
    if (mimeData) {
       const QStringList formats = mimeData->formats();
 
-      d << "formats =" << formats.join(QString(", "));
+      debug << "formats =" << formats.join(QString(", "));
       if (mimeData->hasText()) {
-         d << ", text =" << mimeData->text();
+         debug << ", text =" << mimeData->text();
       }
       if (mimeData->hasHtml()) {
-         d << ", html =" << mimeData->html();
+         debug << ", html =" << mimeData->html();
       }
       if (mimeData->hasColor()) {
-         d << ", colorData =" << (mimeData->colorData()).value<QColor>();
+         debug << ", colorData =" << (mimeData->colorData()).value<QColor>();
       }
       if (mimeData->hasImage()) {
-         d << ", imageData =" << (mimeData->imageData()).value<QImage>();
+         debug << ", imageData =" << (mimeData->imageData()).value<QImage>();
       }
       if (mimeData->hasUrls()) {
-         d << ", urls =" << mimeData->urls();
+         debug << ", urls =" << mimeData->urls();
       }
 
    } else {
-      d << '0';
+      debug << '0';
    }
 
-   d << ')';
+   debug << ')';
 
-   return d;
+   return debug;
 }
 #endif
 
@@ -81,11 +81,6 @@ IDataObject *QWindowsClipboardRetrievalMimeData::retrieveDataObject() const
    IDataObject *pDataObj = nullptr;
 
    if (OleGetClipboard(&pDataObj) == S_OK) {
-
-      if (QWindowsContext::verbose > 1) {
-         qDebug() << "retrieveDataObject():" << pDataObj;
-      }
-
       return pDataObj;
    }
 
@@ -101,7 +96,7 @@ extern "C" LRESULT QT_WIN_CALLBACK qClipboardViewerWndProc(HWND hwnd, UINT messa
 {
    LRESULT result = 0;
    if (QWindowsClipboard::instance()
-            && QWindowsClipboard::instance()->clipboardViewerWndProc(hwnd, message, wParam, lParam, &result)) {
+         && QWindowsClipboard::instance()->clipboardViewerWndProc(hwnd, message, wParam, lParam, &result)) {
       return result;
    }
 
@@ -167,8 +162,8 @@ void QWindowsClipboard::registerViewer()
       m_nextClipboardViewer = SetClipboardViewer(m_clipboardViewer);
    }
 
-#if defined(CS_SHOW_DEBUG)
-   qDebug() << "QWindowsClipboard::registerViewer():"
+#if defined(CS_SHOW_DEBUG_PLATFORM)
+   qDebug() << "QWindowsClipboard::registerViewer() "
             << "Format listener =" << m_formatListenerRegistered << " Next =" << m_nextClipboardViewer;
 #endif
 
@@ -216,11 +211,9 @@ void QWindowsClipboard::propagateClipboardMessage(UINT message, WPARAM wParam, L
       return;
    }
 
-   // In rare cases, a clipboard viewer can hang (application crashed,
-   // suspended by a shell prompt 'Select' or debugger).
    if (QWindowsContext::user32dll.isHungAppWindow
          && QWindowsContext::user32dll.isHungAppWindow(m_nextClipboardViewer)) {
-      qWarning("Cowardly refusing to send clipboard message to hung application...");
+      qWarning("QWindowsClipboard::propagateClipboardMessage() Unable to send clipboard message to application");
       return;
    }
 
@@ -235,14 +228,14 @@ void QWindowsClipboard::propagateClipboardMessage(UINT message, WPARAM wParam, L
 
 bool QWindowsClipboard::clipboardViewerWndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam, LRESULT *result)
 {
-   enum { wMClipboardUpdate = 0x031D };
+   static constexpr const int wMClipboardUpdate = 0x031D;
 
    *result = 0;
 
-   if (QWindowsContext::verbose) {
-      qDebug() << "QWindowsClipboard::clipboardViewerWndProc:" << hwnd << message
-               << QWindowsGuiEventDispatcher::windowsMessageName(message);
-   }
+#if defined(CS_SHOW_DEBUG_PLATFORM)
+   qDebug() << "QWindowsClipboard::clipboardViewerWndProc() handle =" << hwnd
+         << " message =" << message << QWindowsGuiEventDispatcher::windowsMessageName(message);
+#endif
 
    switch (message) {
       case WM_CHANGECBCHAIN: {
@@ -286,7 +279,7 @@ bool QWindowsClipboard::clipboardViewerWndProc(HWND hwnd, UINT message, WPARAM w
 
 QMimeData *QWindowsClipboard::mimeData(QClipboard::Mode mode)
 {
-#if defined(CS_SHOW_DEBUG)
+#if defined(CS_SHOW_DEBUG_PLATFORM)
    qDebug() << "QWindowsClipboard::mimeData: mode =" <<  mode;
 #endif
 
@@ -303,7 +296,7 @@ QMimeData *QWindowsClipboard::mimeData(QClipboard::Mode mode)
 
 void QWindowsClipboard::setMimeData(QMimeData *mimeData, QClipboard::Mode mode)
 {
-#if defined(CS_SHOW_DEBUG)
+#if defined(CS_SHOW_DEBUG_PLATFORM)
    qDebug() << "QWindowsClipboard::setMimeData: mode =" <<  mode << mimeData;
 #endif
 
@@ -356,7 +349,7 @@ bool QWindowsClipboard::ownsMode(QClipboard::Mode mode) const
 {
    const bool result = mode == QClipboard::Clipboard ? ownsClipboard() : false;
 
-#if defined(CS_SHOW_DEBUG)
+#if defined(CS_SHOW_DEBUG_PLATFORM)
    qDebug() << "QWindowsClipboard::ownsMode: mode =" <<  mode << result;
 #endif
 

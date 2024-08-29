@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -26,9 +26,9 @@
 
 #include <qnetwork_reply.h>
 
-#include <qnetaccess_manager.h>
-#include <qfile.h>
 #include <qabstractfileengine.h>
+#include <qfile.h>
+#include <qnetaccess_manager.h>
 
 #include <qnetwork_reply_p.h>
 
@@ -43,14 +43,13 @@ class QNetworkReplyFileImpl: public QNetworkReply
    ~QNetworkReplyFileImpl();
 
    void abort() override;
-
-   // reimplemented from QNetworkReply
    void close() override;
+
    qint64 bytesAvailable() const override;
    bool isSequential () const override;
    qint64 size() const override;
 
-   virtual qint64 readData(char *data, qint64 maxlen) override;
+   qint64 readData(char *data, qint64 maxlen) override;
 
    Q_DECLARE_PRIVATE(QNetworkReplyFileImpl)
 };

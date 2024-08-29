@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -37,28 +37,28 @@ typedef SSIZE_T ssize_t;
 #endif
 
 /* Signed 16-bit type */
-#define TIFF_INT16_T qint16
+#define TIFF_INT16_T int16_t
 
 /* Signed 32-bit type */
-#define TIFF_INT32_T qint32
+#define TIFF_INT32_T int32_t
 
 /* Signed 64-bit type */
-#define TIFF_INT64_T qint64
+#define TIFF_INT64_T long long
 
 /* Signed 8-bit type */
-#define TIFF_INT8_T qint8
+#define TIFF_INT8_T int8_t
 
 /* Unsigned 16-bit type */
-#define TIFF_UINT16_T quint16
+#define TIFF_UINT16_T uint16_t
 
 /* Unsigned 32-bit type */
-#define TIFF_UINT32_T quint32
+#define TIFF_UINT32_T uint32_t
 
 /* Unsigned 64-bit type */
-#define TIFF_UINT64_T quint64
+#define TIFF_UINT64_T unsigned long long
 
 /* Unsigned 8-bit type */
-#define TIFF_UINT8_T quint8
+#define TIFF_UINT8_T uint8_t
 
 /* Signed size type */
 #define TIFF_SSIZE_T ssize_t

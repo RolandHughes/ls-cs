@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -38,6 +38,16 @@
 
 #include <algorithm>
 #include <limits.h>
+
+#define GRID(x, y) grid[(y)*(w+1) + (x)]
+#define SET(x, y) (*(image_data + (y)*bpl + ((x) >> 3)) & (0x80 >> ((x) & 7)))
+
+enum FontEdges {
+   EdgeRight = 0x1,
+   EdgeDown  = 0x2,
+   EdgeLeft  = 0x4,
+   EdgeUp    = 0x8
+};
 
 static inline bool qtransform_equals_no_translate(const QTransform &a, const QTransform &b)
 {
@@ -170,7 +180,9 @@ bool QFontEngine::supportsScript(QChar::Script script) const
       uint script_count = HB_OT_MAX_TAGS_PER_SCRIPT;
       hb_tag_t script_tag[HB_OT_MAX_TAGS_PER_SCRIPT];
 
-      hb_ot_tags_from_script_and_language(cs_script_to_hb_script(script), HB_LANGUAGE_INVALID, &script_count, script_tag, nullptr, nullptr);
+      hb_ot_tags_from_script_and_language(cs_script_to_hb_script(script), HB_LANGUAGE_INVALID, &script_count,
+            script_tag, nullptr, nullptr);
+
       retval = hb_ot_layout_table_select_script(face.get(), HB_OT_TAG_GSUB, script_count, script_tag, nullptr, nullptr);
    }
 
@@ -389,6 +401,7 @@ qreal QFontEngine::minRightBearing() const
 
       // Try the 'hhea' font table first, which covers the entire font
       QByteArray hheaTable = getSfntTable(MAKE_TAG('h', 'h', 'e', 'a'));
+
       if (hheaTable.size() >= int(kMinRightSideBearingOffset + sizeof(qint16))) {
          const uchar *tableData = reinterpret_cast<const uchar *>(hheaTable.constData());
          Q_ASSERT(q16Dot16ToFloat(qFromBigEndian<quint32>(tableData)) == 1.0);
@@ -406,6 +419,7 @@ qreal QFontEngine::minRightBearing() const
          // invalid values for their NBSPACE left bearing, causing the 'hhea' minimum bearings to
          // be way off. We detect this by assuming that the minimum bearsings are within a certain
          // range of the em square size.
+
          static const int largestValidBearing = 4 * unitsPerEm;
 
          if (qAbs(minLeftSideBearing) < largestValidBearing) {
@@ -432,7 +446,7 @@ qreal QFontEngine::minRightBearing() const
 
          for (uint i = 0; i < (sizeof(characterSubset) / sizeof(ushort)); ++i) {
             const glyph_t glyph = glyphIndex(characterSubset[i]);
-            if (!glyph) {
+            if (! glyph) {
                continue;
             }
 
@@ -495,15 +509,6 @@ void QFontEngine::addOutlineToPath(qreal x, qreal y, const QGlyphLayout &glyphs,
    getGlyphPositions(glyphs, matrix, flags, positioned_glyphs, positions);
    addGlyphsToPath(positioned_glyphs.data(), positions.data(), positioned_glyphs.size(), path, flags);
 }
-
-#define GRID(x, y) grid[(y)*(w+1) + (x)]
-#define SET(x, y) (*(image_data + (y)*bpl + ((x) >> 3)) & (0x80 >> ((x) & 7)))
-
-enum { EdgeRight = 0x1,
-   EdgeDown  = 0x2,
-   EdgeLeft  = 0x4,
-   EdgeUp    = 0x8
-};
 
 static void collectSingleContour(qreal x0, qreal y0, uint *grid, int x, int y, int w, int h, QPainterPath *path)
 {
@@ -1006,7 +1011,6 @@ void QFontEngine::loadKerningPairs(QFixed scalingFactor)
    }
 
    if (version != 0) {
-      // qDebug("wrong version");
       return;
    }
 
@@ -1036,11 +1040,9 @@ void QFontEngine::loadKerningPairs(QFixed scalingFactor)
             goto end;
          }
 
-         // qDebug("subtable: version=%d, coverage=%x",version, coverage);
          if (version == 0 && coverage == 0x0001) {
 
             if (offset + length > tab.size()) {
-               // qDebug("length ouf ot bounds");
                goto end;
             }
             const uchar *data = table + offset + 6;
@@ -1441,7 +1443,7 @@ quint32 QFontEngine::getTrueTypeGlyphIndex(const uchar *cmap, int cmapSize, char
       }
 
    } else {
-      qDebug("cmap table of format %d not implemented", format);
+      qWarning("QFontEngine::getTrueTypeGlyphIndex() cmap table of format %d not implemented", format);
    }
 
    return 0;
@@ -2277,7 +2279,7 @@ QImage QFontEngineMulti::alphaRGBMapForGlyph(glyph_t glyph, QFixed subPixelPosit
 QFontEngine *QFontEngineMulti::createMultiFontEngine(QFontEngine *fe, int script)
 {
    QFontEngine *engine = nullptr;
-   QFontCache::Key key(fe->fontDef, script, /*multi = */true);
+   QFontCache::Key key(fe->fontDef, script, true);
    QFontCache *fc = QFontCache::instance();
 
    // can not  rely on the fontDef (and hence the cache Key) alone to distinguish webfonts, since these should not be

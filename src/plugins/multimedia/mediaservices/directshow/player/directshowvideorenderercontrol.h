@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -42,12 +42,11 @@ class DirectShowVideoRendererControl : public QVideoRendererControl
    DirectShowVideoRendererControl(DirectShowEventLoop *loop, QObject *parent = nullptr);
    ~DirectShowVideoRendererControl();
 
-   QAbstractVideoSurface *surface() const;
-   void setSurface(QAbstractVideoSurface *surface);
+   QAbstractVideoSurface *surface() const override;
+   void setSurface(QAbstractVideoSurface *surface) override;
 
    IBaseFilter *filter();
 
- public:
    CS_SIGNAL_1(Public, void filterChanged())
    CS_SIGNAL_2(filterChanged)
 

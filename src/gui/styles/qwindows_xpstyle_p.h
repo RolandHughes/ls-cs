@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -115,77 +115,99 @@ class QWindowsXPStyle : public QWindowsStyle
 #  ifndef DTBG_CLIPRECT
 #   define DTBG_CLIPRECT        0x00000001
 #  endif
+
 #  ifndef DTBG_DRAWSOLID
 #   define DTBG_DRAWSOLID       0x00000002
 #  endif
+
 #  ifndef DTBG_OMITBORDER
 #   define DTBG_OMITBORDER      0x00000004
 #  endif
+
 #  ifndef DTBG_OMITCONTENT
 #   define DTBG_OMITCONTENT     0x00000008
 #  endif
+
 #  ifndef DTBG_COMPUTINGREGION
 #   define DTBG_COMPUTINGREGION 0x00000010
 #  endif
+
 #  ifndef DTBG_MIRRORDC
 #   define DTBG_MIRRORDC        0x00000020
 #  endif
+
 typedef struct _DTBGOPTS {
    DWORD dwSize;
    DWORD dwFlags;
    RECT rcClip;
 } DTBGOPTS, *PDTBGOPTS;
-#endif // _DTBGOPTS
+#endif
 
 // Undefined for some compile environments
 #ifndef TMT_TEXTCOLOR
 #  define TMT_TEXTCOLOR 3803
 #endif
+
 #ifndef TMT_BORDERCOLORHINT
 #  define TMT_BORDERCOLORHINT 3822
 #endif
+
 #ifndef TMT_BORDERSIZE
 #  define TMT_BORDERSIZE 2403
 #endif
+
 #ifndef TMT_BORDERONLY
 #  define TMT_BORDERONLY 2203
 #endif
+
 #ifndef TMT_TRANSPARENTCOLOR
 #  define TMT_TRANSPARENTCOLOR 3809
 #endif
+
 #ifndef TMT_CAPTIONMARGINS
 #  define TMT_CAPTIONMARGINS 3603
 #endif
+
 #ifndef TMT_CONTENTMARGINS
 #  define TMT_CONTENTMARGINS 3602
 #endif
+
 #ifndef TMT_SIZINGMARGINS
 #  define TMT_SIZINGMARGINS 3601
 #endif
+
 #ifndef TMT_GLYPHTYPE
 #  define TMT_GLYPHTYPE 4012
 #endif
+
 #ifndef TMT_BGTYPE
 #  define TMT_BGTYPE 4001
 #endif
+
 #ifndef TMT_TEXTSHADOWTYPE
 #    define TMT_TEXTSHADOWTYPE 4010
 #endif
+
 #ifndef TMT_BORDERCOLOR
 #    define TMT_BORDERCOLOR 3801
 #endif
+
 #ifndef BT_IMAGEFILE
 #  define BT_IMAGEFILE 0
 #endif
+
 #ifndef BT_BORDERFILL
 #  define BT_BORDERFILL 1
 #endif
+
 #ifndef BT_NONE
 #  define BT_NONE 2
 #endif
+
 #ifndef TMT_FILLCOLOR
 #  define TMT_FILLCOLOR 3802
 #endif
+
 #ifndef TMT_PROGRESSCHUNKSIZE
 #  define TMT_PROGRESSCHUNKSIZE 2411
 #endif
@@ -195,6 +217,7 @@ typedef struct _DTBGOPTS {
 #undef TMT_TEXTSHADOWCOLOR
 #define TMT_TEXTSHADOWCOLOR 3818
 #endif
+
 #ifndef TST_NONE
 #  define TST_NONE 0
 #endif
@@ -202,6 +225,7 @@ typedef struct _DTBGOPTS {
 #ifndef GT_NONE
 #  define GT_NONE 0
 #endif
+
 #ifndef GT_IMAGEGLYPH
 #  define GT_IMAGEGLYPH 1
 #endif
@@ -223,9 +247,6 @@ typedef struct _DTBGOPTS {
 #ifndef CBS_INACTIVE
 #define CBS_INACTIVE 5
 #endif
-
-// Uncomment define below to build debug assisting code, and output
-// #define DEBUG_XP_STYLE
 
 #if ! defined(QT_NO_STYLE_WINDOWSXP)
 
@@ -285,7 +306,8 @@ struct ThemeMapKey {
    ThemeMapKey() : partId(-1), stateId(-1) {}
    ThemeMapKey(const XPThemeData &data)
       : theme(data.theme), partId(data.partId), stateId(data.stateId),
-        noBorder(data.noBorder), noContent(data.noContent) {}
+        noBorder(data.noBorder), noContent(data.noContent)
+   { }
 
 };
 
@@ -488,6 +510,7 @@ class QWindowsXPStylePrivate : public QWindowsStylePrivate, public QWindowsUxThe
    static inline bool hasTheme(int theme) {
       return theme >= 0 && theme < NThemes && m_themes[theme];
    }
+
    static bool isItemViewDelegateLineEdit(const QWidget *widget);
    static bool isLineEditBaseColorSet(const QStyleOption *option, const QWidget *widget);
 
@@ -495,12 +518,6 @@ class QWindowsXPStylePrivate : public QWindowsStylePrivate, public QWindowsUxThe
    QIcon dockClose;
 
  private:
-
-#ifdef DEBUG_XP_STYLE
-   void dumpNativeDIB(int w, int h);
-   void showProperties(XPThemeData &themeData);
-#endif
-
    static bool initVistaTreeViewTheming();
    static void cleanupVistaTreeViewTheming();
    static QAtomicInt ref;

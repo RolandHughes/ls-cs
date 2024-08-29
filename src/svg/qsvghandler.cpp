@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -1467,7 +1467,15 @@ static void parseFont(QSvgNode *node, const QSvgAttributes &attributes, QSvgHand
       static const qreal sizeTable[] = { qreal(6.9), qreal(8.3), qreal(10.0),
                   qreal(12.0), qreal(14.4), qreal(17.3), qreal(20.7) };
 
-      enum AbsFontSize { XXSmall, XSmall, Small, Medium, Large, XLarge, XXLarge };
+      enum AbsFontSize {
+         XXSmall,
+         XSmall,
+         Small,
+         Medium,
+         Large,
+         XLarge,
+         XXLarge
+      };
 
       switch (attributes.fontSize.at(0).unicode()) {
          case 'x':
@@ -2977,20 +2985,25 @@ static QSvgNode *createImageNode(QSvgNode *parent, const QXmlStreamAttributes &a
    }
 
    if (nwidth <= 0 || nheight <= 0) {
-        qWarning() << "QSvgHandler: Width or height for" << filename << "image was not greater than 0";
-        return nullptr;
+      qWarning() << "QSvgHandler: Width or height for" << filename << "image was not greater than 0";
+      return nullptr;
    }
    QImage image;
 
    if (filename.startsWith(QString("data"))) {
       int idx = filename.lastIndexOf(QString("base64,"));
+
       if (idx != -1) {
          idx += 7;
          QString dataStr = filename.mid(idx);
          QByteArray data = QByteArray::fromBase64(dataStr.toLatin1());
          image = QImage::fromData(data);
+
       } else {
+
+#if defined(CS_SHOW_DEBUG_SVG)
          qDebug() << "QSvgHandler::createImageNode: Unrecognized inline image format!";
+#endif
       }
 
    } else {
@@ -2998,7 +3011,10 @@ static QSvgNode *createImageNode(QSvgNode *parent, const QXmlStreamAttributes &a
    }
 
    if (image.isNull()) {
+#if defined(CS_SHOW_DEBUG_SVG)
       qDebug() << "Unable to create image from " << filename;
+#endif
+
       return nullptr;
    }
 
@@ -3051,8 +3067,6 @@ static void parseBaseGradient(QSvgNode *node, const QXmlStreamAttributes &attrib
 
    if (!link.isEmpty()) {
       QSvgStyleProperty *prop = node->styleProperty(link);
-
-      //qDebug()<<"inherited "<<prop<<" ("<<link<<")";
 
       if (prop && prop->type() == QSvgStyleProperty::GRADIENT) {
          QSvgGradientStyle *inherited =  static_cast<QSvgGradientStyle *>(prop);
@@ -4206,7 +4220,6 @@ bool QSvgHandler::startElement(const QString &localName, const QXmlStreamAttribu
       }
 
    } else {
-      //qWarning()<<"Skipping unknown element!"<<namespaceURI<<"::"<<localName;
       m_skipNodes.push(Unknown);
       return true;
    }
@@ -4215,7 +4228,6 @@ bool QSvgHandler::startElement(const QString &localName, const QXmlStreamAttribu
       m_nodes.push(node);
       m_skipNodes.push(Graphics);
    } else {
-      //qDebug()<<"Skipping "<<localName;
       m_skipNodes.push(Style);
    }
 

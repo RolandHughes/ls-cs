@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -113,9 +113,6 @@ int QSplitterHandle::closestLegalPosition(int pos)
    return s->closestLegalPosition(pos, s->indexOf(this));
 }
 
-/*!
-    \reimp
-*/
 QSize QSplitterHandle::sizeHint() const
 {
    Q_D(const QSplitterHandle);
@@ -129,9 +126,6 @@ QSize QSplitterHandle::sizeHint() const
       .expandedTo(QApplication::globalStrut());
 }
 
-/*!
-    \reimp
-*/
 void QSplitterHandle::resizeEvent(QResizeEvent *event)
 {
    Q_D(const QSplitterHandle);
@@ -159,30 +153,27 @@ void QSplitterHandle::resizeEvent(QResizeEvent *event)
    QWidget::resizeEvent(event);
 }
 
-/*!
-    \reimp
-*/
 bool QSplitterHandle::event(QEvent *event)
 {
    Q_D(QSplitterHandle);
+
    switch (event->type()) {
       case QEvent::HoverEnter:
          d->hover = true;
          update();
          break;
+
       case QEvent::HoverLeave:
          d->hover = false;
          update();
          break;
+
       default:
          break;
    }
    return QWidget::event(event);
 }
 
-/*!
-    \reimp
-*/
 void QSplitterHandle::mouseMoveEvent(QMouseEvent *e)
 {
    Q_D(QSplitterHandle);
@@ -201,9 +192,6 @@ void QSplitterHandle::mouseMoveEvent(QMouseEvent *e)
    }
 }
 
-/*!
-   \reimp
-*/
 void QSplitterHandle::mousePressEvent(QMouseEvent *e)
 {
    Q_D(QSplitterHandle);
@@ -215,27 +203,23 @@ void QSplitterHandle::mousePressEvent(QMouseEvent *e)
    }
 }
 
-/*!
-   \reimp
-*/
 void QSplitterHandle::mouseReleaseEvent(QMouseEvent *e)
 {
    Q_D(QSplitterHandle);
+
    if (!opaqueResize() && e->button() == Qt::LeftButton) {
       int pos = d->pick(parentWidget()->mapFromGlobal(e->globalPos()))
          - d->mouseOffset;
       d->s->setRubberBand(-1);
       moveSplitter(pos);
    }
+
    if (e->button() == Qt::LeftButton) {
       d->pressed = false;
       update();
    }
 }
 
-/*!
-   \reimp
-*/
 void QSplitterHandle::paintEvent(QPaintEvent *)
 {
    Q_D(QSplitterHandle);
@@ -266,7 +250,6 @@ void QSplitterHandle::paintEvent(QPaintEvent *)
    parentWidget()->style()->drawControl(QStyle::CE_Splitter, &opt, &p, d->s);
 }
 
-
 int QSplitterLayoutStruct::getWidgetSize(Qt::Orientation orient)
 {
    if (sizer == -1) {
@@ -284,6 +267,7 @@ int QSplitterLayoutStruct::getWidgetSize(Qt::Orientation orient)
          sizer *= sf;
       }
    }
+
    return sizer;
 }
 
@@ -429,7 +413,7 @@ void QSplitterPrivate::doResize()
    for (i = 0; i < n; ++i) {
       QSplitterLayoutStruct *s = list.at(i);
 
-#ifdef QSPLITTER_DEBUG
+#if defined(CS_SHOW_DEBUG_GUI_WIDGETS)
       qDebug("widget %d hidden: %d collapsed: %d handle hidden: %d", i, s->widget->isHidden(),
          s->collapsed, s->handle->isHidden());
 #endif
@@ -470,7 +454,7 @@ void QSplitterPrivate::doResize()
 
    qGeomCalc(a, 0, n * 2, pick(r.topLeft()), pick(r.size()), 0);
 
-#ifdef QSPLITTER_DEBUG
+#if defined(CS_SHOW_DEBUG_GUI_WIDGETS)
    for (i = 0; i < n * 2; ++i) {
       qDebug("%*s%d: stretch %d, sh %d, minS %d, maxS %d, exp %d, emp %d -> %d, %d",
          i, "", i,
@@ -733,7 +717,7 @@ void QSplitterPrivate::doMove(bool backwards, int hPos, int index, int delta, bo
       return;
    }
 
-#ifdef QSPLITTER_DEBUG
+#if defined(CS_SHOW_DEBUG_GUI_WIDGETS)
    qDebug() << "QSplitterPrivate::doMove" << backwards << hPos << index << delta << mayCollapse;
 #endif
 
@@ -773,9 +757,6 @@ QSplitterLayoutStruct *QSplitterPrivate::findWidget(QWidget *w) const
    return nullptr;
 }
 
-/*!
-    \internal
-*/
 void QSplitterPrivate::insertWidget_helper(int index, QWidget *widget, bool show)
 {
    Q_Q(QSplitter);
@@ -857,11 +838,6 @@ QSplitter::QSplitter(Qt::Orientation orientation, QWidget *parent)
    d->orient = orientation;
    d->init();
 }
-
-
-/*!
-    Destroys the splitter. All children are deleted.
-*/
 
 QSplitter::~QSplitter()
 {
@@ -970,10 +946,12 @@ int QSplitter::indexOf(QWidget *w) const
 
    for (int i = 0; i < d->list.size(); ++i) {
       QSplitterLayoutStruct *s = d->list.at(i);
+
       if (s->widget == w || s->handle == w) {
          return i;
       }
    }
+
    return -1;
 }
 
@@ -983,17 +961,6 @@ QSplitterHandle *QSplitter::createHandle()
    return new QSplitterHandle(d->orient, this);
 }
 
-/*!
-    Returns the handle to the left (or above) for the item in the
-    splitter's layout at the given \a index. The handle at index 0 is
-    always hidden.
-
-    For right-to-left languages such as Arabic and Hebrew, the layout
-    of horizontal splitters is reversed. The handle will be to the
-    right of the widget at \a index.
-
-    \sa count(), widget(), indexOf(), createHandle(), setHandleWidth()
-*/
 QSplitterHandle *QSplitter::handle(int index) const
 {
    Q_D(const QSplitter);
@@ -1003,17 +970,14 @@ QSplitterHandle *QSplitter::handle(int index) const
    return d->list.at(index)->handle;
 }
 
-/*!
-    Returns the widget at the given \a index in the splitter's layout.
-
-    \sa count(), handle(), indexOf(), insertWidget()
-*/
 QWidget *QSplitter::widget(int index) const
 {
    Q_D(const QSplitter);
+
    if (index < 0 || index >= d->list.size()) {
       return nullptr;
    }
+
    return d->list.at(index)->widget;
 }
 
@@ -1027,7 +991,7 @@ void QSplitter::childEvent(QChildEvent *c)
 {
    Q_D(QSplitter);
 
-   if (!c->child()->isWidgetType()) {
+   if (! c->child()->isWidgetType()) {
       if (c->type() == QEvent::ChildAdded && qobject_cast<QLayout *>(c->child())) {
          qWarning("QSplitter::childEvent() Adding a QLayout to a QSplitter is not supported");
       }
@@ -1098,10 +1062,6 @@ void QSplitter::setRubberBand(int pos)
    d->rubberBand->show();
 }
 
-/*!
-    \reimp
-*/
-
 bool QSplitter::event(QEvent *e)
 {
    Q_D(QSplitter);
@@ -1143,14 +1103,14 @@ void QSplitter::moveSplitter(int pos, int index)
    int max;
    int farMax;
 
-#ifdef QSPLITTER_DEBUG
+#if defined(CS_SHOW_DEBUG_GUI_WIDGETS)
    int debugp = pos;
 #endif
 
    pos = d->adjustPos(pos, index, &farMin, &min, &max, &farMax);
    int oldP = d->pick(s->rect.topLeft());
 
-#ifdef QSPLITTER_DEBUG
+#if defined(CS_SHOW_DEBUG_GUI_WIDGETS)
    qDebug() << "QSplitter::moveSplitter" << debugp << index << "adjusted" << pos << "oldP" << oldP;
 #endif
 
@@ -1209,12 +1169,10 @@ void QSplitter::setOpaqueResize(bool on)
    d->opaque = on;
 }
 
-/*!
-    \reimp
-*/
 QSize QSplitter::sizeHint() const
 {
    Q_D(const QSplitter);
+
    ensurePolished();
    int l = 0;
    int t = 0;
@@ -1230,6 +1188,7 @@ QSize QSplitter::sizeHint() const
          t = qMax(t, d->trans(s));
       }
    }
+
    return orientation() == Qt::Horizontal ? QSize(l, t) : QSize(t, l);
 }
 
@@ -1242,29 +1201,34 @@ QSize QSplitter::minimumSizeHint() const
 
    for (int i = 0; i < d->list.size(); ++i) {
       QSplitterLayoutStruct *s = d->list.at(i);
-      if (!s || !s->widget) {
+
+      if (! s || !s->widget) {
          continue;
       }
+
       if (s->widget->isHidden()) {
          continue;
       }
+
       QSize widgetSize = qSmartMinSize(s->widget);
       if (widgetSize.isValid()) {
          l += d->pick(widgetSize);
          t = qMax(t, d->trans(widgetSize));
       }
+
       if (!s->handle || s->handle->isHidden()) {
          continue;
       }
+
       QSize splitterSize = s->handle->sizeHint();
       if (splitterSize.isValid()) {
          l += d->pick(splitterSize);
          t = qMax(t, d->trans(splitterSize));
       }
    }
+
    return orientation() == Qt::Horizontal ? QSize(l, t) : QSize(t, l);
 }
-
 
 QList<int> QSplitter::sizes() const
 {
@@ -1276,26 +1240,15 @@ QList<int> QSplitter::sizes() const
       QSplitterLayoutStruct *s = d->list.at(i);
       list.append(d->pick(s->rect.size()));
    }
+
    return list;
 }
-
 
 void QSplitter::setSizes(const QList<int> &list)
 {
    Q_D(QSplitter);
    d->setSizes_helper(list, true);
 }
-
-/*!
-    \property QSplitter::handleWidth
-    \brief the width of the splitter handles
-
-    By default, this property contains a value that depends on the user's platform
-    and style preferences.
-
-    If you set handleWidth to 1, the actual grab area will grow to overlap a
-    few pixels of it's respective widgets.
-*/
 
 int QSplitter::handleWidth() const
 {
@@ -1314,9 +1267,6 @@ void QSplitter::setHandleWidth(int width)
    d->updateHandles();
 }
 
-/*!
-    \reimp
-*/
 void QSplitter::changeEvent(QEvent *ev)
 {
    Q_D(QSplitter);
@@ -1326,7 +1276,7 @@ void QSplitter::changeEvent(QEvent *ev)
    QFrame::changeEvent(ev);
 }
 
-static const qint32 SplitterMagic = 0xff;
+static constexpr const qint32 SplitterMagic = 0xff;
 
 QByteArray QSplitter::saveState() const
 {

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -21,11 +21,12 @@
 *
 ***********************************************************************/
 
-#include <cmath>
-
 #include <qjsonwriter_p.h>
+
 #include <qjson.h>
 #include <qstringparser.h>
+
+#include <cmath>
 
 static void cs_internal_objectToStr(const QJsonObject &data, QString &retval, int indent, bool compact);
 static void cs_internal_arrayToStr(const QJsonArray &data,   QString &retval, int indent, bool compact);
@@ -130,17 +131,17 @@ static void valueToJson(const QJsonValue &value, QString &retval, int indent, bo
          break;
 
       case QJsonValue::Double: {
-            const double d = value.toDouble();
+         const double d = value.toDouble();
 
-            if (std::isfinite(d)) {
-               retval += QString::number(d, 'g', std::numeric_limits<double>::digits10 + 2);
+         if (std::isfinite(d)) {
+            retval += QString::number(d, 'g', std::numeric_limits<double>::digits10 + 2);
 
-            } else {
-               retval += "null";
-            }
-
-            break;
+         } else {
+            retval += "null";
          }
+
+         break;
+      }
 
       case QJsonValue::String:
          retval += '"' + escapedString(value.toString()) + '"';
@@ -244,4 +245,3 @@ QString QJsonWriter::objectToString(const QJsonObject &data,  int indent, QJsonD
 
    return retval;
 }
-

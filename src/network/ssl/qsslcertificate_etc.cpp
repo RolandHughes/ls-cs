@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -59,9 +59,6 @@ bool QSslCertificate::isSelfSigned() const
    if (d->null) {
       return false;
    }
-
-   qWarning("QSslCertificate::isSelfSigned: This function does not check, whether the certificate "
-            "is actually signed. It just checks whether issuer and subject are identical");
 
    return d->subjectMatchesIssuer;
 }

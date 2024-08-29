@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,8 +24,8 @@
 #ifndef FIND_DIALOG_H
 #define FIND_DIALOG_H
 
-#include <ui_find_dialog.h>
 #include <messagemodel.h>
+#include <ui_find_dialog.h>
 
 #include <qdialog.h>
 

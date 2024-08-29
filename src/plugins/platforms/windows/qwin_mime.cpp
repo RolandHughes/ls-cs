@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -84,11 +84,11 @@ static const int BMP_BITFIELDS = 3;
 
 static const char dibFormatC[] = "dib";
 
-static inline QString msgConversionError(const QString &func, const QString &format)
+static inline QString msgConversionError(const QString &format)
 {
-   QString retval = func;
+   QString retval;
 
-   retval += ": Unable to convert DIB image. The image converter plugin for '";
+   retval += "Unable to convert DIB image. The image converter plugin for '";
    retval += format;
    retval += "' is not available. Available formats: ";
 
@@ -107,8 +107,7 @@ static inline QImage readDib(QByteArray data)
    QImageReader reader(&buffer, dibFormatC);
 
    if (! reader.canRead()) {
-      qWarning("%s", csPrintable(msgConversionError("readDib", dibFormatC)));
-
+      qWarning("readDib() %s", csPrintable(msgConversionError(dibFormatC)));
       return QImage();
    }
 
@@ -118,18 +117,20 @@ static inline QImage readDib(QByteArray data)
 static QByteArray writeDib(const QImage &img)
 {
    QByteArray ba;
+
    QBuffer buffer(&ba);
    buffer.open(QIODevice::ReadWrite);
    QImageWriter writer(&buffer, dibFormatC);
 
    if (! writer.canWrite()) {
-      qWarning("%s", csPrintable(msgConversionError("writeDib", dibFormatC)));
+      qWarning("writeDib() %s", csPrintable(msgConversionError(dibFormatC)));
       return ba;
    }
 
-   if (!writer.write(img)) {
+   if (! writer.write(img)) {
       ba.clear();
    }
+
    return ba;
 }
 
@@ -381,56 +382,62 @@ static bool canGetData(int cf, IDataObject *pDataObj)
    return true;
 }
 
-QDebug operator<<(QDebug d, const FORMATETC &tc)
+QDebug operator<<(QDebug debug, const FORMATETC &tc)
 {
-   QDebugStateSaver saver(d);
-   d.nospace();
-   d << "FORMATETC(cfFormat=" << tc.cfFormat << ' ';
+   QDebugStateSaver saver(debug);
+   debug.nospace();
+   debug << "FORMATETC(cfFormat =" << tc.cfFormat << ' ';
 
    switch (tc.cfFormat) {
       case CF_TEXT:
-         d << "CF_TEXT";
+         debug << "CF_TEXT";
          break;
+
       case CF_BITMAP:
-         d << "CF_BITMAP";
+         debug << "CF_BITMAP";
          break;
+
       case CF_TIFF:
-         d << "CF_TIFF";
+         debug << "CF_TIFF";
          break;
+
       case CF_OEMTEXT:
-         d << "CF_OEMTEXT";
+         debug << "CF_OEMTEXT";
          break;
+
       case CF_DIB:
-         d << "CF_DIB";
+         debug << "CF_DIB";
          break;
+
       case CF_DIBV5:
-         d << "CF_DIBV5";
+         debug << "CF_DIBV5";
          break;
+
       case CF_UNICODETEXT:
-         d << "CF_UNICODETEXT";
+         debug << "CF_UNICODETEXT";
          break;
 
       case CF_ENHMETAFILE:
-         d << "CF_ENHMETAFILE";
+         debug << "CF_ENHMETAFILE";
          break;
 
       default:
-         d << QWindowsMimeConverter::clipboardFormatName(tc.cfFormat);
+         debug << QWindowsMimeConverter::clipboardFormatName(tc.cfFormat);
          break;
    }
 
-   d << ", dwAspect =" << tc.dwAspect << ", lindex =" << tc.lindex
+   debug << ", dwAspect =" << tc.dwAspect << ", lindex =" << tc.lindex
      << ", tymed =" << tc.tymed << ", ptd =" << tc.ptd << ')';
 
-   return d;
+   return debug;
 }
 
-QDebug operator<<(QDebug d, IDataObject *dataObj)
+QDebug operator<<(QDebug debug, IDataObject *dataObj)
 {
-   QDebugStateSaver saver(d);
-   d.nospace();
-   d.noquote();
-   d << "IDataObject(";
+   QDebugStateSaver saver(debug);
+   debug.nospace();
+   debug.noquote();
+   debug << "IDataObject(";
 
    if (dataObj) {
       // Output formats contained in IDataObject.
@@ -442,19 +449,19 @@ QDebug operator<<(QDebug d, IDataObject *dataObj)
 
          if (SUCCEEDED(enumFormatEtc->Reset())) {
             while (SUCCEEDED(enumFormatEtc->Next(1, formatEtc, &fetched)) && fetched) {
-               d << formatEtc[0] << ',';
+               debug << formatEtc[0] << ',';
             }
             enumFormatEtc->Release();
          }
       }
 
    } else {
-      d << '0';
+      debug << '0';
    }
 
-   d << ')';
+   debug << ')';
 
-   return d;
+   return debug;
 }
 
 QWindowsMime::QWindowsMime()
@@ -480,13 +487,13 @@ int QWindowsMime::registerMimeType(const QString &mime)
 class QWindowsMimeText : public QWindowsMime
 {
  public:
-   bool canConvertToMime(const QString &mimeType, IDataObject *pDataObj) const;
-   QVariant convertToMime(const QString &mime, LPDATAOBJECT pDataObj, QVariant::Type preferredType) const;
-   QString mimeForFormat(const FORMATETC &formatetc) const;
-   bool canConvertFromMime(const FORMATETC &formatetc, const QMimeData *mimeData) const;
-   bool convertFromMime(const FORMATETC &formatetc, const QMimeData *mimeData, STGMEDIUM *pmedium) const;
+   bool canConvertToMime(const QString &mimeType, IDataObject *pDataObj) const override;
+   QVariant convertToMime(const QString &mime, LPDATAOBJECT pDataObj, QVariant::Type preferredType) const override;
+   QString mimeForFormat(const FORMATETC &formatetc) const override;
+   bool canConvertFromMime(const FORMATETC &formatetc, const QMimeData *mimeData) const override;
+   bool convertFromMime(const FORMATETC &formatetc, const QMimeData *mimeData, STGMEDIUM *pmedium) const override;
 
-   QVector<FORMATETC> formatsForMime(const QString &mimeType, const QMimeData *mimeData) const;
+   QVector<FORMATETC> formatsForMime(const QString &mimeType, const QMimeData *mimeData) const override;
 };
 
 bool QWindowsMimeText::canConvertFromMime(const FORMATETC &formatetc, const QMimeData *mimeData) const
@@ -662,8 +669,8 @@ QVariant QWindowsMimeText::convertToMime(const QString &mime, LPDATAOBJECT pData
       }
    }
 
-#if defined(CS_SHOW_DEBUG)
-   qDebug() << "QWindowsMimeText::convertToMime:" << retval;
+#if defined(CS_SHOW_DEBUG_PLATFORM)
+   qDebug() << "QWindowsMimeText::convertToMime() " << retval;
 #endif
 
    return retval;
@@ -674,13 +681,13 @@ class QWindowsMimeURI : public QWindowsMime
  public:
    QWindowsMimeURI();
 
-   bool canConvertToMime(const QString &mimeType, IDataObject *pDataObj) const;
-   QVariant convertToMime(const QString &mime, LPDATAOBJECT pDataObj, QVariant::Type preferredType) const;
-   QString mimeForFormat(const FORMATETC &formatetc) const;
-   bool canConvertFromMime(const FORMATETC &formatetc, const QMimeData *mimeData) const;
-   bool convertFromMime(const FORMATETC &formatetc, const QMimeData *mimeData, STGMEDIUM *pmedium) const;
+   bool canConvertToMime(const QString &mimeType, IDataObject *pDataObj) const override;
+   QVariant convertToMime(const QString &mime, LPDATAOBJECT pDataObj, QVariant::Type preferredType) const override;
+   QString mimeForFormat(const FORMATETC &formatetc) const override;
+   bool canConvertFromMime(const FORMATETC &formatetc, const QMimeData *mimeData) const override;
+   bool convertFromMime(const FORMATETC &formatetc, const QMimeData *mimeData, STGMEDIUM *pmedium) const override;
 
-   QVector<FORMATETC> formatsForMime(const QString &mimeType, const QMimeData *mimeData) const;
+   QVector<FORMATETC> formatsForMime(const QString &mimeType, const QMimeData *mimeData) const override;
 
  private:
    int CF_INETURL_W; // wide char version
@@ -959,10 +966,6 @@ QVariant QWindowsMimeHtml::convertToMime(const QString &mime, IDataObject *pData
    if (canConvertToMime(mime, pDataObj)) {
       QByteArray html = getData(CF_HTML, pDataObj);
 
-#if defined(CS_SHOW_DEBUG)
-      qDebug() << "QWindowsMimeHtml::convertToMime(): Raw =" << html;
-#endif
-
       int start = html.indexOf("StartHTML:");
       int end   = html.indexOf("EndHTML:");
 
@@ -1071,9 +1074,9 @@ QVector<FORMATETC> QWindowsMimeImage::formatsForMime(const QString &mimeType, co
       formatetcs += setCf(CF_DIB);
    }
 
-#if defined(CS_SHOW_DEBUG)
+#if defined(CS_SHOW_DEBUG_PLATFORM)
    if (! formatetcs.isEmpty()) {
-      qDebug() << "QWindowsMimeImage::formatsForMime():" << mimeType << "\n" << formatetcs;
+      qDebug() << "QWindowsMimeImage::formatsForMime() Mime type = " << mimeType << "\n" << formatetcs;
    }
 #endif
 
@@ -1426,7 +1429,7 @@ bool QLastResortMimes::convertFromMime(const FORMATETC &formatetc, const QMimeDa
 #endif
 }
 
-QVector<FORMATETC> QLastResortMimes::formatsForMime(const QString &mimeType, const QMimeData * /*mimeData*/) const
+QVector<FORMATETC> QLastResortMimes::formatsForMime(const QString &mimeType, const QMimeData *) const
 {
    QVector<FORMATETC> formatetcs;
 
@@ -1441,9 +1444,9 @@ QVector<FORMATETC> QLastResortMimes::formatsForMime(const QString &mimeType, con
       formatetcs += setCf(cf);
    }
 
-#if defined(CS_SHOW_DEBUG)
+#if defined(CS_SHOW_DEBUG_PLATFORM)
    if (! formatetcs.isEmpty()) {
-      qDebug() << "QLastResortMimes::formatsForMime():" << mimeType << formatetcs;
+      qDebug() << "QLastResortMimes::formatsForMime() Mime type = " << mimeType << formatetcs;
    }
 #endif
 
@@ -1641,15 +1644,12 @@ QWindowsMime *QWindowsMimeConverter::converterFromMime(const FORMATETC &formatet
 {
    ensureInitialized();
 
-#if defined(CS_SHOW_DEBUG)
-   qDebug() << "converterFromMime():" << formatetc;
-#endif
-
    for (int i = m_mimes.size() - 1; i >= 0; --i) {
       if (m_mimes.at(i)->canConvertFromMime(formatetc, mimeData)) {
          return m_mimes.at(i);
       }
    }
+
    return nullptr;
 }
 

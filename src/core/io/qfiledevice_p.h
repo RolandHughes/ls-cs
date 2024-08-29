@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -34,7 +34,7 @@ class QFileDevicePrivate : public QIODevicePrivate
 {
    Q_DECLARE_PUBLIC(QFileDevice)
 
-protected:
+ protected:
    QFileDevicePrivate();
    ~QFileDevicePrivate();
 
@@ -63,10 +63,12 @@ inline bool QFileDevicePrivate::ensureFlushed() const
    // because certain const functions need to call it.
    if (lastWasWrite) {
       const_cast<QFileDevicePrivate *>(this)->lastWasWrite = false;
+
       if (! const_cast<QFileDevice *>(q_func())->flush()) {
          return false;
       }
    }
+
    return true;
 }
 

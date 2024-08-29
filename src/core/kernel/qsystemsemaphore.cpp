@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -22,8 +22,10 @@
 ***********************************************************************/
 
 #include <qsystemsemaphore.h>
-#include <qsystemsemaphore_p.h>
+
 #include <qglobal.h>
+
+#include <qsystemsemaphore_p.h>
 
 #ifndef QT_NO_SYSTEMSEMAPHORE
 
@@ -47,7 +49,8 @@ void QSystemSemaphore::setKey(const QString &key, int initialValue, AccessMode m
    d->error = NoError;
    d->errorString = QString();
 
-#if !defined(Q_OS_WIN) && !defined(QT_POSIX_IPC)
+#if ! defined(Q_OS_WIN) && !defined(QT_POSIX_IPC)
+
    // optimization to not destroy/create the file & semaphore
    if (key == d->key && mode == Create && d->createdSemaphore && d->createdFile) {
       d->initialValue = initialValue;
@@ -55,11 +58,13 @@ void QSystemSemaphore::setKey(const QString &key, int initialValue, AccessMode m
       d->handle(mode);
       return;
    }
+
 #endif
 
    d->cleanHandle();
    d->key = key;
    d->initialValue = initialValue;
+
    // cache the file name so it doesn't have to be generated all the time.
    d->fileName = d->makeKeyFileName();
    d->handle(mode);
@@ -100,5 +105,3 @@ QString QSystemSemaphore::errorString() const
 }
 
 #endif
-
-

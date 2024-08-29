@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -27,6 +27,7 @@
 #ifndef QT_NO_VALIDATOR
 
 #include <qlocale_p.h>
+
 #include <limits.h>
 #include <cmath>
 
@@ -44,7 +45,6 @@ class QValidatorPrivate
 
  protected:
    QValidator *q_ptr;
-
 };
 
 QValidator::QValidator(QObject *parent)
@@ -99,7 +99,6 @@ QIntValidator::QIntValidator(int minimum, int maximum, QObject *parent)
 
 QIntValidator::~QIntValidator()
 {
-   // nothing
 }
 
 static int numDigits(qint64 n)
@@ -170,7 +169,6 @@ QValidator::State QIntValidator::validate(QString &input, int &) const
    }
 }
 
-/*! \reimp */
 void QIntValidator::fixup(QString &input) const
 {
    QByteArray buff;
@@ -220,7 +218,6 @@ void QIntValidator::setTop(int top)
    setRange(bottom(), top);
 }
 
-
 #ifndef QT_NO_REGEXP
 
 class QDoubleValidatorPrivate : public QValidatorPrivate
@@ -229,8 +226,7 @@ class QDoubleValidatorPrivate : public QValidatorPrivate
 
  public:
    QDoubleValidatorPrivate()
-      : QValidatorPrivate()
-      , notation(QDoubleValidator::ScientificNotation)
+      : QValidatorPrivate(), notation(QDoubleValidator::ScientificNotation)
    { }
 
    QDoubleValidator::Notation notation;
@@ -390,7 +386,6 @@ QDoubleValidator::Notation QDoubleValidator::notation() const
    return d->notation;
 }
 
-// **
 QRegularExpressionValidator::QRegularExpressionValidator(QObject *parent)
    : QValidator(parent), m_regexp(".*")
 {

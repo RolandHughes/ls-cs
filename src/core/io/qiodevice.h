@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -99,7 +99,7 @@ class Q_CORE_EXPORT QIODevice : public QObject
    qint64 write(const char *data, qint64 maxSize);
    qint64 write(const char *data);
 
-   inline qint64 write(const QByteArray &data) {
+   qint64 write(const QByteArray &data) {
       return write(data.constData(), data.size());
    }
 

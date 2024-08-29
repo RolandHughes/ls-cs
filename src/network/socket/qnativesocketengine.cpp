@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -26,6 +26,7 @@
 #include <qabstracteventdispatcher.h>
 #include <qsocketnotifier.h>
 #include <qnetworkinterface.h>
+
 #include <qthread_p.h>
 
 #if ! defined(QT_NO_NETWORKPROXY)
@@ -33,8 +34,6 @@
 # include <qabstractsocket.h>
 # include <qtcpserver.h>
 #endif
-
-//#define QNATIVESOCKETENGINE_DEBUG
 
 // Common constructs
 #define Q_CHECK_STATE(function, checkState, returnValue) do { \
@@ -291,7 +290,7 @@ bool QNativeSocketEngine::initialize(QAbstractSocket::SocketType socketType, QAb
    // Create the socket
    if (!d->createNewSocket(socketType, protocol)) {
 
-#if defined (QNATIVESOCKETENGINE_DEBUG)
+#if defined(CS_SHOW_DEBUG_NETWORK)
       QString typeStr = "UnknownSocketType";
 
       if (socketType == QAbstractSocket::TcpSocket) {
@@ -333,7 +332,7 @@ bool QNativeSocketEngine::initialize(QAbstractSocket::SocketType socketType, QAb
 
    // Make sure we receive out-of-band data
    if (socketType == QAbstractSocket::TcpSocket && !setOption(ReceiveOutOfBandData, 1)) {
-      qWarning("QNativeSocketEngine::initialize unable to inline out-of-band data");
+      qWarning("QNativeSocketEngine::initialize() Unable to inline out-of-band data");
    }
 
    return true;
@@ -352,7 +351,7 @@ bool QNativeSocketEngine::initialize(qintptr socketDescriptor, QAbstractSocket::
    // determine socket type and protocol
    if (! d->fetchConnectionParameters()) {
 
-#if defined (QNATIVESOCKETENGINE_DEBUG)
+#if defined(CS_SHOW_DEBUG_NETWORK)
       qDebug() << "QNativeSocketEngine::initialize(socketDescriptor) failed:"
                << socketDescriptor << d->socketErrorString;
 #endif
@@ -535,8 +534,8 @@ bool QNativeSocketEngine::joinMulticastGroup(const QHostAddress &groupAddress,
    if (groupAddress.protocol() == QAbstractSocket::IPv4Protocol &&
          (d->socketProtocol == QAbstractSocket::IPv6Protocol ||
           d->socketProtocol == QAbstractSocket::AnyIPProtocol)) {
-      qWarning("QAbstractSocket: cannot bind to QHostAddress::Any (or an IPv6 address) and join an IPv4 multicast group;"
-               " bind to QHostAddress::AnyIPv4 instead if you want to do this");
+      qWarning("QNativeSocketEngine::joinMulticastGroup() Unable to bind to QHostAddress::Any (or IPv6 address) "
+            "and join an IPv4 multicast group, bind to QHostAddress::AnyIPv4 instead");
       return false;
    }
 

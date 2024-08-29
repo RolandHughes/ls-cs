@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -34,7 +34,8 @@ class Q_MULTIMEDIA_EXPORT QMediaTimeInterval
  public:
    QMediaTimeInterval();
    QMediaTimeInterval(qint64 start, qint64 end);
-   QMediaTimeInterval(const QMediaTimeInterval &other);
+
+   QMediaTimeInterval(const QMediaTimeInterval &other) = default;
 
    qint64 start() const;
    qint64 end() const;
@@ -63,6 +64,7 @@ class Q_MULTIMEDIA_EXPORT QMediaTimeRange
    QMediaTimeRange();
    QMediaTimeRange(qint64 start, qint64 end);
    QMediaTimeRange(const QMediaTimeInterval &interval);
+
    QMediaTimeRange(const QMediaTimeRange &other);
 
    ~QMediaTimeRange();

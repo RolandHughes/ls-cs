@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -22,6 +22,7 @@
 ***********************************************************************/
 
 #include <qarraydata.h>
+
 #include <qtools_p.h>
 
 #if defined (__GNUC__) && (__GNUC__ * 100 + __GNUC_MINOR__  >= 406) && !defined(Q_CC_INTEL)
@@ -32,10 +33,10 @@
 static QArrayData *qtArray()
 {
    static const QArrayData qt_array[3] = {
-      { Q_REFCOUNT_INITIALIZE_STATIC, 0, 0, 0, sizeof(QArrayData) }, 			// shared empty
-      { { 0 }, 0, 0, 0, sizeof(QArrayData) }, 	   // unsharable empty
-      { { 0 }, 0, 0, 0, 0 }
-   };						// zero initialized element
+      { Q_REFCOUNT_INITIALIZE_STATIC, 0, 0, 0, sizeof(QArrayData) },  // shared empty
+      { { 0 }, 0, 0, 0, sizeof(QArrayData) },                         // unsharable empty
+      { { 0 }, 0, 0, 0, 0 }                                           // zero initialized element
+   };
 
    return const_cast<QArrayData *>(qt_array);
 }
@@ -43,9 +44,9 @@ static QArrayData *qtArray()
 QArrayData *QArrayData::sharedNull()
 {
    static const QArrayData shared_null[2] = {
-      { Q_REFCOUNT_INITIALIZE_STATIC, 0, 0, 0, sizeof(QArrayData) }, 	      // shared null
-      { { 0 }, 0, 0, 0, 0 }
-   };					// zero initialized element
+      { Q_REFCOUNT_INITIALIZE_STATIC, 0, 0, 0, sizeof(QArrayData) },  // shared null
+      { { 0 }, 0, 0, 0, 0 }                                           // zero initialized element
+   };
 
    return const_cast<QArrayData *>(shared_null);
 }

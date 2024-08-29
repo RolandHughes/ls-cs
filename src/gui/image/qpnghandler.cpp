@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,6 +24,7 @@
 #include <qpnghandler_p.h>
 
 #ifndef QT_NO_IMAGEFORMAT_PNG
+
 #include <qcoreapplication.h>
 #include <qiodevice.h>
 #include <qimage.h>
@@ -141,10 +142,16 @@ class QPngHandlerPrivate
 class QPNGImageWriter
 {
  public:
+   enum DisposalMethod {
+      Unspecified,
+      NoDisposal,
+      RestoreBackground,
+      RestoreImage
+   };
+
    explicit QPNGImageWriter(QIODevice *);
    ~QPNGImageWriter();
 
-   enum DisposalMethod { Unspecified, NoDisposal, RestoreBackground, RestoreImage };
    void setDisposalMethod(DisposalMethod);
    void setLooping(int loops = 0); // 0 == infinity
    void setFrameDelay(int msecs);
@@ -276,7 +283,7 @@ static void setup_qt(QImage &image, png_structp png_ptr, png_infop info_ptr, QSi
             }
          }
 
-         if (QSysInfo::ByteOrder == QSysInfo::BigEndian) {
+         if constexpr (QSysInfo::ByteOrder == QSysInfo::BigEndian) {
             png_set_swap_alpha(png_ptr);
          }
 
@@ -362,6 +369,7 @@ static void setup_qt(QImage &image, png_structp png_ptr, png_infop info_ptr, QSi
          );
          i++;
       }
+
    } else {
       // 32-bit
       if (bit_depth == 16) {
@@ -375,6 +383,7 @@ static void setup_qt(QImage &image, png_structp png_ptr, png_infop info_ptr, QSi
       }
 
       QImage::Format format = QImage::Format_ARGB32;
+
       // Only add filler if no alpha, or we can get 5 channel data.
       if (!(color_type & PNG_COLOR_MASK_ALPHA)
          && !png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS)) {
@@ -383,15 +392,18 @@ static void setup_qt(QImage &image, png_structp png_ptr, png_infop info_ptr, QSi
          // We want 4 bytes, but it isn't an alpha channel
          format = QImage::Format_RGB32;
       }
+
       QSize outSize(width, height);
+
       if (!scaledSize.isEmpty() && quint32(scaledSize.width()) <= width &&
-         quint32(scaledSize.height()) <= height && interlace_method == PNG_INTERLACE_NONE) {
+            quint32(scaledSize.height()) <= height && interlace_method == PNG_INTERLACE_NONE) {
          // Do inline downscaling
          outSize = scaledSize;
          if (doScaledRead) {
             *doScaledRead = true;
          }
       }
+
       if (image.size() != outSize || image.format() != format) {
          image = QImage(outSize, format);
          if (image.isNull()) {
@@ -399,17 +411,14 @@ static void setup_qt(QImage &image, png_structp png_ptr, png_infop info_ptr, QSi
          }
       }
 
-
-
-      if (QSysInfo::ByteOrder == QSysInfo::BigEndian) {
+      if constexpr (QSysInfo::ByteOrder == QSysInfo::BigEndian) {
          png_set_swap_alpha(png_ptr);
       }
 
       png_read_update_info(png_ptr, info_ptr);
    }
 
-   // Qt==ARGB==Big(ARGB)==Little(BGRA)
-   if (QSysInfo::ByteOrder == QSysInfo::LittleEndian) {
+   if constexpr (QSysInfo::ByteOrder == QSysInfo::LittleEndian) {
       png_set_bgr(png_ptr);
    }
 }
@@ -965,13 +974,12 @@ bool Q_INTERNAL_WIN_NO_THROW QPNGImageWriter::writeImage(const QImage &image, in
 
    // Swap ARGB to RGBA (normal PNG format) before saving on
    // BigEndian machines
-   if (QSysInfo::ByteOrder == QSysInfo::BigEndian) {
+
+   if constexpr (QSysInfo::ByteOrder == QSysInfo::BigEndian) {
       png_set_swap_alpha(png_ptr);
    }
 
-   // Qt==ARGB==Big(ARGB)==Little(BGRA). But RGB888 is RGB regardless
-   if (QSysInfo::ByteOrder == QSysInfo::LittleEndian
-      && image.format() != QImage::Format_RGB888) {
+   if (QSysInfo::ByteOrder == QSysInfo::LittleEndian && image.format() != QImage::Format_RGB888) {
       png_set_bgr(png_ptr);
    }
 

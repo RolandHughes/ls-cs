@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,12 +24,12 @@
 #ifndef QMULTIMAP_H
 #define QMULTIMAP_H
 
-#include <initializer_list>
-#include <map>
-
 #include <qcontainerfwd.h>
 #include <qlist.h>
 #include <qmapfunc.h>
+
+#include <initializer_list>
+#include <map>
 
 template <typename Key, typename Val, typename C>
 class QMultiMapIterator;
@@ -281,9 +281,10 @@ class QMultiMap
 
    template <typename Input_Iterator>
    QMultiMap(Input_Iterator first, Input_Iterator last, const C &compare = C())
-      : m_data(first, last, compare) {}
+      : m_data(first, last, compare)
+   { }
 
-  ~QMultiMap() = default;
+   ~QMultiMap() = default;
 
    // methods
    void clear() {
@@ -360,7 +361,7 @@ class QMultiMap
    }
 
    const_iterator find(const Key &key, const Val &value) const {
-     auto range = m_data.equal_range(key);
+      auto range = m_data.equal_range(key);
 
       for (auto iter = range.first; iter != range.second; ++iter) {
          if (iter->second == value) {
@@ -410,7 +411,7 @@ class QMultiMap
    QList<Key> keys(const Val &value) const;
 
    Val &last()  {
-      return (end()- 1).value();
+      return (end() - 1).value();
    }
 
    const Val &last() const  {
@@ -778,7 +779,6 @@ Val &QMultiMap<Key, Val, C>::operator[](const Key &key)
    return iter->second;
 }
 
-
 // to from
 
 template <class Key, class Val, class C>
@@ -795,14 +795,13 @@ std::multimap<Key, Val, C> QMultiMap<Key, Val, C>::toStdMultiMap() const
    return map;
 }
 
-
 // java style iterators
 
 template <class Key, class Val, class C = qMapCompare<Key>>
 class QMultiMapIterator
 {
-   typedef typename QMultiMap<Key, Val, C>::const_iterator const_iterator;
-   typedef const_iterator Item;
+   using const_iterator = typename QMultiMap<Key, Val, C>::const_iterator;
+   using Item           = const_iterator;
 
  public:
    QMultiMapIterator(const QMultiMap<Key, Val, C> &map)
@@ -874,6 +873,7 @@ class QMultiMapIterator
             return true;
          }
       }
+
       return false;
    }
 
@@ -888,7 +888,7 @@ class QMultiMapIterator
       return false;
    }
 
-  private:
+ private:
    const QMultiMap<Key, Val, C> *c;
    const_iterator i;
    const_iterator n;
@@ -901,9 +901,9 @@ class QMultiMapIterator
 template <class Key, class Val, class C = qMapCompare<Key>>
 class QMutableMultiMapIterator
 {
-   typedef typename QMultiMap<Key, Val, C>::iterator iterator;
-   typedef typename QMultiMap<Key, Val, C>::const_iterator const_iterator;
-   typedef iterator Item;
+   using iterator       = typename QMultiMap<Key, Val, C>::iterator;
+   using const_iterator = typename QMultiMap<Key, Val, C>::const_iterator;
+   using Item           = iterator;
 
  public:
    QMutableMultiMapIterator(QMultiMap<Key, Val, C> &map)

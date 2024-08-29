@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -77,7 +77,10 @@ class Q_CORE_EXPORT QStringParser
       };
       using SectionFlags = QFlags<SectionFlag>;
 
-      enum SplitBehavior { KeepEmptyParts, SkipEmptyParts };
+      enum SplitBehavior {
+         KeepEmptyParts,
+         SkipEmptyParts
+      };
 
       // V is data type quint64, long, short, etc
       template <typename T, typename V, typename = typename std::enable_if<std::is_integral<V>::value>::type>
@@ -88,7 +91,7 @@ class Q_CORE_EXPORT QStringParser
          if (d.occurrences == 0) {
             // T must have a toUtf8() method, can not use csPrintable()
 
-            qWarning("Warning: QStringParser::formatArg() is missing a place marker \n"
+            qWarning("QStringParser::formatArg() Missing a place marker \n"
                   "Format string: %s, Argument value: %lld\n", str.toLatin1().constData(), static_cast<long long>(value) );
 
             return str;
@@ -146,7 +149,7 @@ class Q_CORE_EXPORT QStringParser
          if (d.occurrences == 0) {
             // T must have a toUtf8() method
 
-            qWarning("Warning: QStringParser::formatArg() is missing place marker '%%n'\n"
+            qWarning("QStringParser::formatArg() Missing place marker '%%n'\n"
                   "Format string: %s, Argument value: %f\n", str.toLatin1().constData(), value);
 
             return str;
@@ -179,10 +182,10 @@ class Q_CORE_EXPORT QStringParser
 
             default:
                if (format <= 32) {
-                  qWarning("Warning: QStringParser::formatArg() invalid format '%d'", format);
+                  qWarning("QStringParser::formatArg() Invalid format '%d'", format);
 
                } else {
-                  qWarning("Warning: QStringParser::formatArg() invalid format '%c'", format);
+                  qWarning("QStringParser::formatArg() Invalid format '%c'", format);
                }
 
                break;
@@ -250,7 +253,7 @@ class Q_CORE_EXPORT QStringParser
          if (d.occurrences == 0) {
             // T must have a toUtf8() method
 
-            qWarning("Warning: QStringParser::formatArg() is missing place marker '%%n'\n"
+            qWarning("QStringParser::formatArg() Missing place marker '%%n'\n"
                   "Format string: %s, Argument value: %s\n", str.toLatin1().constData(), tmp.toLatin1().constData());
 
             return str;
@@ -276,7 +279,7 @@ class Q_CORE_EXPORT QStringParser
       [[nodiscard]] static T number(V value, int base  = 10)
       {
          if (base < 2 || base > 36) {
-            qWarning("Warning: QStringParser::number() invalid numeric base (%d)", base);
+            qWarning("QStringParser::number() Invalid numeric base (%d)", base);
             base = 10;
          }
 
@@ -322,7 +325,7 @@ class Q_CORE_EXPORT QStringParser
                break;
 
             default:
-               qWarning("Warning: QStringParser::number() invalid format '%c'", format);
+               qWarning("QStringParser::number() Invalid format '%c'", format);
                break;
          }
 
@@ -386,7 +389,7 @@ class Q_CORE_EXPORT QStringParser
       static R toInteger(const T &str, bool *ok = nullptr, int base = 10)
       {
          if (base != 0 && (base < 2 || base > 36)) {
-            qWarning("Warning: QStringParser::toInteger() invalid numeric base (%d)", base);
+            qWarning("QStringParser::toInteger() Invalid numeric base (%d)", base);
             base = 10;
          }
 
@@ -493,7 +496,7 @@ class Q_CORE_EXPORT QStringParser
          }
 
          if (argCount > cnt) {
-            qWarning("Warning: Format string has %d arguments and %d place holders.\n%s",
+            qWarning("QStringParser::toInteger() Format string has %d arguments and %d place holders\n%s",
                   int(argCount), cnt, csPrintable(str) );
 
             argCount = cnt;
@@ -984,7 +987,7 @@ QList<T> QStringParser::split(const T &str, const Cs::QRegularExpression<T> &reg
    QList<T> retval;
 
    if (! regExp.isValid()) {
-      qWarning("QStringParser::split: Invalid QRegularExpression");
+      qWarning("QStringParser::split() Invalid regular expression");
       return retval;
    }
 

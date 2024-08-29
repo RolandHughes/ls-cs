@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -118,19 +118,21 @@
 #define _UNICODE
 #endif
 
-#include <tchar.h>
-#include <io.h>
-#include <direct.h>
-#include <stdio.h>
-#include <fcntl.h>
-#include <errno.h>
-#include <sys/stat.h>
-#include <stdlib.h>
 #include <qt_windows.h>
+
+#include <direct.h>
+#include <errno.h>
+#include <fcntl.h>
+#include <io.h>
 #include <limits.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/stat.h>
+#include <tchar.h>
 
 #if ! defined(_WIN32_WINNT) || (_WIN32_WINNT-0 < 0x0500)
-typedef enum {
+
+enum EXTENDED_NAME_FORMAT {
     NameUnknown           = 0,
     NameFullyQualifiedDN  = 1,
     NameSamCompatible     = 2,
@@ -141,7 +143,9 @@ typedef enum {
     NameCanonicalEx       = 9,
     NameServicePrincipal  = 10,
     NameDnsDomain         = 12
-} EXTENDED_NAME_FORMAT, *PEXTENDED_NAME_FORMAT;
+};
+using PEXTENDED_NAME_FORMAT = *EXTENDED_NAME_FORMAT;
+
 #endif
 
 #ifdef QT_LARGEFILE_SUPPORT

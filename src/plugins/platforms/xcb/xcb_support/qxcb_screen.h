@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -259,7 +259,6 @@ class Q_XCB_EXPORT QXcbScreen : public QXcbObject, public QPlatformScreen
    int m_antialiasingEnabled;
 };
 
-Q_GUI_EXPORT QDebug operator<<(QDebug, const QXcbScreen *);
-
+QDebug operator<<(QDebug debug, const QXcbScreen *screen);
 
 #endif

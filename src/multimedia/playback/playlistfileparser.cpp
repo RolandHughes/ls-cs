@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -102,7 +102,7 @@ class M3UParser : public ParserBase
       : ParserBase(parent), m_extendedFormat(false)
    { }
 
-   void parseLine(int lineIndex, const QString &line, const QUrl &root) {
+   void parseLine(int lineIndex, const QString &line, const QUrl &root) override {
       if (line[0] == '#' ) {
          if (m_extendedFormat) {
             if (line.startsWith("#EXTINF:")) {

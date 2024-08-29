@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -40,24 +40,15 @@ class QGIFFormat
 
    int decode(QImage *image, const uchar *buffer, int length,
       int *nextFrameDelay, int *loopCount);
+
    static void scan(QIODevice *device, QVector<QSize> *imageSizes, int *loopCount);
 
    bool newFrame;
    bool partialNewFrame;
 
  private:
-   void fillRect(QImage *image, int x, int y, int w, int h, QRgb col);
-   inline QRgb color(uchar index) const;
+   static constexpr const int max_lzw_bits = 12;
 
-   // GIF specific stuff
-   QRgb *globalcmap;
-   QRgb *localcmap;
-   QImage backingstore;
-   unsigned char hold[16];
-   bool gif89;
-   int count;
-   int ccount;
-   int expectcount;
    enum State {
       Header,
       LogicalScreenDescriptor,
@@ -77,7 +68,33 @@ class QGIFFormat
       SkipBlock,
       Done,
       Error
-   } state;
+   };
+
+   enum Disposal {
+      NoDisposal,
+      DoNotChange,
+      RestoreBackground,
+      RestoreImage
+   };
+
+   void fillRect(QImage *image, int x, int y, int w, int h, QRgb col);
+   inline QRgb color(uchar index) const;
+
+   // GIF specific stuff
+   QRgb *globalcmap;
+   QRgb *localcmap;
+   QImage backingstore;
+
+   unsigned char hold[16];
+   bool gif89;
+
+   State state;
+   Disposal disposal;
+
+   int count;
+   int ccount;
+   int expectcount;
+
    int gncols;
    int lncols;
    int ncols;
@@ -86,8 +103,7 @@ class QGIFFormat
    int swidth, sheight;
    int width, height;
    int left, top, right, bottom;
-   enum Disposal { NoDisposal, DoNotChange, RestoreBackground, RestoreImage };
-   Disposal disposal;
+
    bool disposed;
    int trans_index;
    bool gcmap;
@@ -95,8 +111,6 @@ class QGIFFormat
    int interlace;
    int accum;
    int bitcount;
-
-   enum { max_lzw_bits = 12 }; // (poor-compiler's static const int)
 
    int code_size, clear_code, end_code, max_code_size, max_code;
    int firstcode, oldcode, incode;
@@ -112,9 +126,6 @@ class QGIFFormat
    void disposePrevious(QImage *image);
 };
 
-/*!
-    Constructs a QGIFFormat.
-*/
 QGIFFormat::QGIFFormat()
 {
    globalcmap    = nullptr;
@@ -138,9 +149,6 @@ QGIFFormat::QGIFFormat()
    stack    = nullptr;
 }
 
-/*!
-    Destroys a QGIFFormat.
-*/
 QGIFFormat::~QGIFFormat()
 {
    if (globalcmap) {
@@ -292,6 +300,7 @@ int QGIFFormat::decode(QImage *image, const uchar *buffer, int length,
                count = 0;
             }
             break;
+
          case Introducer:
             hold[count++] = ch;
             switch (ch) {
@@ -311,6 +320,7 @@ int QGIFFormat::decode(QImage *image, const uchar *buffer, int length,
                   state = Error;
             }
             break;
+
          case ImageDescriptor:
             hold[count++] = ch;
             if (count == 10) {
@@ -981,6 +991,7 @@ void QGIFFormat::nextY(unsigned char *bits, int bpl)
          // }
          y++;
          break;
+
       case 1: {
          int i;
          my = qMin(7, bottom - y);
@@ -992,12 +1003,8 @@ void QGIFFormat::nextY(unsigned char *bits, int bpl)
             }
          }
 
-         // if (!out_of_bounds) {
-         //     ### Changed: QRect(left, y, right - left + 1, my + 1);
-         // }
-         //        if (!out_of_bounds)
-         //            qDebug("consumer->changed(QRect(%d, %d, %d, %d))", left, y, right-left+1, my+1);
          y += 8;
+
          if (y > bottom) {
             interlace++;
             y = top + 4;
@@ -1013,6 +1020,7 @@ void QGIFFormat::nextY(unsigned char *bits, int bpl)
          }
       }
       break;
+
       case 2: {
          int i;
          my = qMin(3, bottom - y);
@@ -1024,10 +1032,8 @@ void QGIFFormat::nextY(unsigned char *bits, int bpl)
             }
          }
 
-         // if (!out_of_bounds) {
-         //     ### Changed: QRect(left, y, right - left + 1, my + 1);
-         // }
          y += 8;
+
          if (y > bottom) {
             interlace++;
             y = top + 2;
@@ -1039,6 +1045,7 @@ void QGIFFormat::nextY(unsigned char *bits, int bpl)
          }
       }
       break;
+
       case 3: {
          int i;
          my = qMin(1, bottom - y);
@@ -1049,9 +1056,7 @@ void QGIFFormat::nextY(unsigned char *bits, int bpl)
                   (right - left + 1)*sizeof(QRgb));
             }
          }
-         // if (!out_of_bounds) {
-         //     ### Changed: QRect(left, y, right - left + 1, my + 1);
-         // }
+
          y += 4;
          if (y > bottom) {
             interlace++;
@@ -1059,10 +1064,8 @@ void QGIFFormat::nextY(unsigned char *bits, int bpl)
          }
       }
       break;
+
       case 4:
-         // if (!out_of_bounds) {
-         //     ### Changed: QRect(left, y, right - left + 1, 1);
-         // }
          y += 2;
    }
 

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -31,9 +31,9 @@ class QHttpProtocolHandler : public QAbstractProtocolHandler {
     QHttpProtocolHandler(QHttpNetworkConnectionChannel *channel);
 
  private:
-    virtual void _q_receiveReply() override;
-    virtual void _q_readyRead() override;
-    virtual bool sendRequest() override;
+    void _q_receiveReply() override;
+    void _q_readyRead() override;
+    bool sendRequest() override;
 };
 
 #endif

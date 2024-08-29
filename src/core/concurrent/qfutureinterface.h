@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -101,11 +101,11 @@ class Q_CORE_EXPORT QFutureInterfaceBase
    QtConcurrent::ResultStoreBase &resultStoreBase();
    const QtConcurrent::ResultStoreBase &resultStoreBase() const;
 
-   inline bool operator==(const QFutureInterfaceBase &other) const {
+   bool operator==(const QFutureInterfaceBase &other) const {
       return d == other.d;
    }
 
-   inline bool operator!=(const QFutureInterfaceBase &other) const {
+   bool operator!=(const QFutureInterfaceBase &other) const {
       return d != other.d;
    }
 
@@ -145,6 +145,7 @@ class QFutureInterface : public QFutureInterfaceBase
       if (referenceCountIsOne()) {
          resultStore().clear();
       }
+
       QFutureInterfaceBase::operator=(other);
       return *this;
    }
@@ -173,12 +174,12 @@ template <typename T>
 inline void QFutureInterface<T>::reportResult(const T *result, int index)
 {
    QMutexLocker locker(mutex());
+
    if (this->queryState(Canceled) || this->queryState(Finished)) {
       return;
    }
 
    QtConcurrent::ResultStore<T> &store = resultStore();
-
 
    if (store.filterMode()) {
       const int resultCountBefore = store.count();
@@ -200,6 +201,7 @@ template <typename T>
 inline void QFutureInterface<T>::reportResults(const QVector<T> &_results, int beginIndex, int count)
 {
    QMutexLocker locker(mutex());
+
    if (this->queryState(Canceled) || this->queryState(Finished)) {
       return;
    }
@@ -222,6 +224,7 @@ inline void QFutureInterface<T>::reportFinished(const T *result)
    if (result) {
       reportResult(result);
    }
+
    QFutureInterfaceBase::reportFinished();
 }
 
@@ -253,6 +256,7 @@ inline QList<T> QFutureInterface<T>::results()
    QMutexLocker lock(mutex());
 
    QtConcurrent::ResultIterator<T> it = resultStore().begin();
+
    while (it != resultStore().end()) {
       res.append(it.value());
       ++it;

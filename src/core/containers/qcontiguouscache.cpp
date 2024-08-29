@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -22,17 +22,6 @@
 ***********************************************************************/
 
 #include <qcontiguouscache.h>
-#include <qdebug.h>
-
-#ifdef QT_QCONTIGUOUSCACHE_DEBUG
-void QContiguousCacheData::dump() const
-{
-   qDebug() << "capacity:" << alloc;
-   qDebug() << "count:" << count;
-   qDebug() << "start:" << start;
-   qDebug() << "offset:" << offset;
-}
-#endif
 
 QContiguousCacheData *QContiguousCacheData::allocate(int size, int alignment)
 {

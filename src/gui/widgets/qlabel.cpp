@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -73,7 +73,7 @@ QLabelPrivate::QLabelPrivate()
      scaledcontents(false),
      textLayoutDirty(false),
      textDirty(false), isRichText(false), isTextLabel(false),
-     hasShortcut(/*???*/),
+     hasShortcut(),
      control(nullptr),
      shortcutCursor(), sh(), msh(), text(),
      pixmap(nullptr), scaledpixmap(nullptr), cachedimage(nullptr),
@@ -414,7 +414,6 @@ QSize QLabelPrivate::sizeForWidth(int w) const
    return (contentsSize + contentsMargin).expandedTo(q->minimumSize());
 }
 
-// reimp
 int QLabel::heightForWidth(int w) const
 {
    Q_D(const QLabel);
@@ -513,8 +512,6 @@ int QLabel::selectionStart() const
    return -1;
 }
 
-/*!\reimp
-*/
 QSize QLabel::sizeHint() const
 {
    Q_D(const QLabel);
@@ -524,9 +521,6 @@ QSize QLabel::sizeHint() const
    return d->sh;
 }
 
-/*!
-  \reimp
-*/
 QSize QLabel::minimumSizeHint() const
 {
    Q_D(const QLabel);
@@ -556,16 +550,12 @@ QSize QLabel::minimumSizeHint() const
    return msh;
 }
 
-/*!\reimp
-*/
 void QLabel::mousePressEvent(QMouseEvent *ev)
 {
    Q_D(QLabel);
    d->sendControlEvent(ev);
 }
 
-/*!\reimp
-*/
 void QLabel::mouseMoveEvent(QMouseEvent *ev)
 {
    Q_D(QLabel);
@@ -599,9 +589,6 @@ void QLabel::contextMenuEvent(QContextMenuEvent *ev)
 #endif
 }
 
-/*!
-    \reimp
-*/
 void QLabel::focusInEvent(QFocusEvent *ev)
 {
    Q_D(QLabel);
@@ -612,12 +599,10 @@ void QLabel::focusInEvent(QFocusEvent *ev)
    QFrame::focusInEvent(ev);
 }
 
-/*!
-    \reimp
-*/
 void QLabel::focusOutEvent(QFocusEvent *ev)
 {
    Q_D(QLabel);
+
    if (d->control) {
       d->sendControlEvent(ev);
       QTextCursor cursor = d->control->textCursor();
@@ -634,27 +619,23 @@ void QLabel::focusOutEvent(QFocusEvent *ev)
    QFrame::focusOutEvent(ev);
 }
 
-/*!\reimp
-*/
 bool QLabel::focusNextPrevChild(bool next)
 {
    Q_D(QLabel);
+
    if (d->control && d->control->setFocusToNextOrPreviousAnchor(next)) {
       return true;
    }
+
    return QFrame::focusNextPrevChild(next);
 }
 
-/*!\reimp
-*/
 void QLabel::keyPressEvent(QKeyEvent *ev)
 {
    Q_D(QLabel);
    d->sendControlEvent(ev);
 }
 
-/*!\reimp
-*/
 bool QLabel::event(QEvent *e)
 {
    Q_D(QLabel);
@@ -663,12 +644,15 @@ bool QLabel::event(QEvent *e)
 #ifndef QT_NO_SHORTCUT
    if (type == QEvent::Shortcut) {
       QShortcutEvent *se = static_cast<QShortcutEvent *>(e);
+
       if (se->shortcutId() == d->shortcutId) {
          QWidget *w = d->buddy;
          QAbstractButton *button = qobject_cast<QAbstractButton *>(w);
+
          if (w->focusPolicy() != Qt::NoFocus) {
             w->setFocus(Qt::ShortcutFocusReason);
          }
+
          if (button && !se->isAmbiguous()) {
             button->animateClick();
          } else {
@@ -676,16 +660,21 @@ bool QLabel::event(QEvent *e)
          }
          return true;
       }
+
    } else
+
 #endif
       if (type == QEvent::Resize) {
          if (d->control) {
             d->textLayoutDirty = true;
          }
+
       } else if (e->type() == QEvent::StyleChange
+
 #ifdef Q_OS_DARWIN
          || e->type() == QEvent::MacSizeChange
 #endif
+
       ) {
          d->setLayoutItemMargins(QStyle::SE_LabelLayoutItem);
          d->updateLabel();
@@ -694,16 +683,18 @@ bool QLabel::event(QEvent *e)
    return QFrame::event(e);
 }
 
-/*!\reimp
-*/
 void QLabel::paintEvent(QPaintEvent *)
 {
    Q_D(QLabel);
+
    QStyle *style = QWidget::style();
+
    QPainter painter(this);
    drawFrame(&painter);
+
    QRect cr = contentsRect();
    cr.adjust(d->margin, d->margin, -d->margin, -d->margin);
+
    int align = QStyle::visualAlignment(d->isTextLabel ? d->textDirection()
          : layoutDirection(), QFlag(d->align));
 
@@ -714,17 +705,21 @@ void QLabel::paintEvent(QPaintEvent *)
       } else {
          style->drawItemPixmap(&painter, cr, align, d->movie->currentPixmap());
       }
+
    } else
 #endif
+
       if (d->isTextLabel) {
          QRectF lr = d->layoutRect().toAlignedRect();
          QStyleOption opt;
          opt.initFrom(this);
+
 #ifndef QT_NO_STYLE_STYLESHEET
          if (QStyleSheetStyle *cssStyle = qobject_cast<QStyleSheetStyle *>(style)) {
             cssStyle->styleSheetPalette(this, &opt, &opt.palette);
          }
 #endif
+
          if (d->control) {
 #ifndef QT_NO_SHORTCUT
             const bool underline = (bool)style->styleHint(QStyle::SH_UnderlineShortcut, nullptr, this, nullptr);
@@ -753,9 +748,11 @@ void QLabel::paintEvent(QPaintEvent *)
             d->control->setPalette(context.palette);
             d->control->drawContents(&painter, QRectF(), this);
             painter.restore();
+
          } else {
             int flags = align | (d->textDirection() == Qt::LeftToRight ? Qt::TextForceLeftToRight
                   : Qt::TextForceRightToLeft);
+
             if (d->hasShortcut) {
                flags |= Qt::TextShowMnemonic;
                if (!style->styleHint(QStyle::SH_UnderlineShortcut, &opt, this)) {
@@ -1040,12 +1037,10 @@ void QLabel::setTextFormat(Qt::TextFormat format)
    }
 }
 
-/*!
-  \reimp
-*/
 void QLabel::changeEvent(QEvent *ev)
 {
    Q_D(QLabel);
+
    if (ev->type() == QEvent::FontChange || ev->type() == QEvent::ApplicationFontChange) {
       if (d->isTextLabel) {
          if (d->control) {
@@ -1053,11 +1048,13 @@ void QLabel::changeEvent(QEvent *ev)
          }
          d->updateLabel();
       }
+
    } else if (ev->type() == QEvent::PaletteChange && d->control) {
       d->control->setPalette(palette());
    } else if (ev->type() == QEvent::ContentsRectChange) {
       d->updateLabel();
    }
+
    QFrame::changeEvent(ev);
 }
 
@@ -1339,4 +1336,3 @@ void QLabel::_q_linkHovered(const QString &anchor)
    Q_D(QLabel);
    d->_q_linkHovered(anchor);
 }
-

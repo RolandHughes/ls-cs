@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -48,9 +48,11 @@ class QOrderedMutexLocker
          if (mtx1) {
             mtx1->lock();
          }
+
          if (mtx2) {
             mtx2->lock();
          }
+
          locked = true;
       }
    }
@@ -60,9 +62,11 @@ class QOrderedMutexLocker
          if (mtx1) {
             mtx1->unlock();
          }
+
          if (mtx2) {
             mtx2->unlock();
          }
+
          locked = false;
       }
    }
@@ -72,15 +76,18 @@ class QOrderedMutexLocker
       if (mtx1 == mtx2) {
          return false;
       }
+
       if (mtx1 < mtx2) {
          mtx2->lock();
          return true;
       }
+
       if (!mtx2->tryLock()) {
          mtx1->unlock();
          mtx2->lock();
          mtx1->lock();
       }
+
       return true;
    }
 

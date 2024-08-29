@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,9 +24,9 @@
 #ifndef QNETWORK_REPLYDATA_P_H
 #define QNETWORK_REPLYDATA_P_H
 
-#include <qnetwork_reply.h>
-#include <qnetaccess_manager.h>
 #include <qbuffer.h>
+#include <qnetaccess_manager.h>
+#include <qnetwork_reply.h>
 
 #include <qnetwork_reply_p.h>
 
@@ -42,7 +42,6 @@ class QNetworkReplyDataImpl: public QNetworkReply
 
    void abort() override;
 
-   // reimplemented from QNetworkReply
    void close() override;
    qint64 bytesAvailable() const override;
    bool isSequential () const override;

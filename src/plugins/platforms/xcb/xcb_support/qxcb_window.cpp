@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -67,20 +67,16 @@
 #endif
 
 #define XCOORD_MAX 16383
-enum {
-   defaultWindowWidth = 160,
-   defaultWindowHeight = 160
-};
 
-//#ifdef NET_WM_STATE_DEBUG
-static constexpr bool s_isDebug = false;
+static constexpr const int defaultWindowWidth  = 160;
+static constexpr const int defaultWindowHeight = 160;
 
 #undef FocusIn
 
 enum QX11EmbedFocusInDetail {
    XEMBED_FOCUS_CURRENT = 0,
-   XEMBED_FOCUS_FIRST = 1,
-   XEMBED_FOCUS_LAST = 2
+   XEMBED_FOCUS_FIRST   = 1,
+   XEMBED_FOCUS_LAST    = 2
 };
 
 enum QX11EmbedInfoFlags {
@@ -88,19 +84,19 @@ enum QX11EmbedInfoFlags {
 };
 
 enum QX11EmbedMessageType {
-   XEMBED_EMBEDDED_NOTIFY = 0,
-   XEMBED_WINDOW_ACTIVATE = 1,
-   XEMBED_WINDOW_DEACTIVATE = 2,
-   XEMBED_REQUEST_FOCUS = 3,
-   XEMBED_FOCUS_IN = 4,
-   XEMBED_FOCUS_OUT = 5,
-   XEMBED_FOCUS_NEXT = 6,
-   XEMBED_FOCUS_PREV = 7,
-   XEMBED_MODALITY_ON = 10,
-   XEMBED_MODALITY_OFF = 11,
-   XEMBED_REGISTER_ACCELERATOR = 12,
+   XEMBED_EMBEDDED_NOTIFY        = 0,
+   XEMBED_WINDOW_ACTIVATE        = 1,
+   XEMBED_WINDOW_DEACTIVATE      = 2,
+   XEMBED_REQUEST_FOCUS          = 3,
+   XEMBED_FOCUS_IN               = 4,
+   XEMBED_FOCUS_OUT              = 5,
+   XEMBED_FOCUS_NEXT             = 6,
+   XEMBED_FOCUS_PREV             = 7,
+   XEMBED_MODALITY_ON            = 10,
+   XEMBED_MODALITY_OFF           = 11,
+   XEMBED_REGISTER_ACCELERATOR   = 12,
    XEMBED_UNREGISTER_ACCELERATOR = 13,
-   XEMBED_ACTIVATE_ACCELERATOR = 14
+   XEMBED_ACTIVATE_ACCELERATOR   = 14
 };
 
 const quint32 XEMBED_VERSION = 0;
@@ -110,7 +106,6 @@ QXcbScreen *QXcbWindow::parentScreen()
    return parent() ? static_cast<QXcbWindow *>(parent())->parentScreen() : xcbScreen();
 }
 
-// Returns \c true if we should set WM_TRANSIENT_FOR on \a w
 static inline bool isTransient(const QWindow *w)
 {
    return w->type() == Qt::Dialog
@@ -222,8 +217,9 @@ static inline XTextProperty *qstringToXTP(Display *dpy, const QString &s)
       tl[1] = nullptr;
 
       errCode = XmbTextListToTextProperty(dpy, tl, 1, XStdICCTextStyle, &tp);
+
       if (errCode < 0) {
-         qDebug("XmbTextListToTextProperty result code %d", errCode);
+         qWarning("XmbTextListToTextProperty result code %d", errCode);
       }
    }
 
@@ -258,11 +254,12 @@ static QWindow *childWindowAt(QWindow *win, const QPoint &p)
          }
       }
    }
-   if (!win->isTopLevel()
-      && !(win->flags() & Qt::WindowTransparentForInput)
-      && win->geometry().contains(win->parent()->mapFromGlobal(p))) {
+
+   if (!win->isTopLevel() && !(win->flags() & Qt::WindowTransparentForInput)
+         && win->geometry().contains(win->parent()->mapFromGlobal(p))) {
       return win;
    }
+
    return nullptr;
 }
 
@@ -279,14 +276,9 @@ QXcbWindow::QXcbWindow(QWindow *window)
    setConnection(xcbScreen()->connection());
 }
 
-#ifdef Q_COMPILER_CLASS_ENUM
 enum : quint32 {
-#else
-enum {
-#endif
-   baseEventMask
-      = XCB_EVENT_MASK_EXPOSURE | XCB_EVENT_MASK_STRUCTURE_NOTIFY
-         | XCB_EVENT_MASK_PROPERTY_CHANGE | XCB_EVENT_MASK_FOCUS_CHANGE,
+   baseEventMask = XCB_EVENT_MASK_EXPOSURE | XCB_EVENT_MASK_STRUCTURE_NOTIFY
+      | XCB_EVENT_MASK_PROPERTY_CHANGE | XCB_EVENT_MASK_FOCUS_CHANGE,
 
    defaultEventMask = baseEventMask
       | XCB_EVENT_MASK_KEY_PRESS | XCB_EVENT_MASK_KEY_RELEASE
@@ -1140,9 +1132,11 @@ QXcbWindow::NetWmStates QXcbWindow::netWmStates()
          result |= NetWmStateDemandsAttention;
       }
       free(reply);
+
    } else {
-#ifdef NET_WM_STATE_DEBUG
-      printf("getting net wm state (%x), empty\n", m_window);
+
+#if defined(CS_SHOW_DEBUG_PLATFORM)
+      qDebug("QXcbWindow::netWmStates() Empty states, window = %x", m_window);
 #endif
    }
 
@@ -1513,8 +1507,9 @@ void QXcbWindow::updateNetWmUserTime(xcb_timestamp_t timestamp)
 
          xcb_delete_property(xcb_connection(), m_window, atom(QXcbAtom::_NET_WM_USER_TIME));
 
-#ifndef QT_NO_DEBUG
-         QByteArray ba("Qt NET_WM user time window");
+#if defined(CS_SHOW_DEBUG_PLATFORM)
+         QByteArray ba("NET_WM user time window");
+
          Q_XCB_CALL(xcb_change_property(xcb_connection(),
                XCB_PROP_MODE_REPLACE,
                m_netWmUserTimeWindow,
@@ -1524,12 +1519,14 @@ void QXcbWindow::updateNetWmUserTime(xcb_timestamp_t timestamp)
                ba.length(),
                ba.constData()));
 #endif
+
       } else if (!isSupportedByWM) {
          // WM no longer supports it, then we should remove the
          // _NET_WM_USER_TIME_WINDOW atom.
          xcb_delete_property(xcb_connection(), m_window, atom(QXcbAtom::_NET_WM_USER_TIME_WINDOW));
          xcb_destroy_window(xcb_connection(), m_netWmUserTimeWindow);
          m_netWmUserTimeWindow = XCB_NONE;
+
       } else {
          wid = m_netWmUserTimeWindow;
       }
@@ -2569,42 +2566,38 @@ void QXcbWindow::handleXIMouseEvent(xcb_ge_event_t *event, Qt::MouseEventSource 
       }
    }
 
-   const char *sourceName = nullptr;
-
-   if (s_isDebug) {
-      // emerald
-      //   const QMetaObject *metaObject = qt_getEnumMetaObject(source);
-      //   const QMetaEnum me = metaObject->enumerator(metaObject->indexOfEnumerator(qt_getEnumName(source)));
-      //   sourceName = me.valueToKey(source);
-   }
-
    switch (ev->evtype) {
       case XI_ButtonPress:
-         if (s_isDebug) {
-            qDebug("XI2 mouse press, button %d, time %d, source %s", button, ev->time, sourceName);
-         }
+
+#if defined(CS_SHOW_DEBUG_PLATFORM)
+         qDebug("QXcbWindow::handleXIMouseEvent() XI2 mouse press, button = %d, time = %d", button, ev->time);
+#endif
 
          conn->setButton(button, true);
          handleButtonPressEvent(event_x, event_y, root_x, root_y, ev->detail, modifiers, ev->time, source);
          break;
 
       case XI_ButtonRelease:
-         if (s_isDebug) {
-            qDebug("XI2 mouse release, button %d, time %d, source %s", button, ev->time, sourceName);
-         }
+
+#if defined(CS_SHOW_DEBUG_PLATFORM)
+         qDebug("QXcbWindow::handleXIMouseEvent() XI2 mouse release, button = %d, time = %d", button, ev->time);
+#endif
+
          conn->setButton(button, false);
          handleButtonReleaseEvent(event_x, event_y, root_x, root_y, ev->detail, modifiers, ev->time, source);
          break;
 
       case XI_Motion:
-         if (s_isDebug) {
-            qDebug("XI2 mouse motion %d,%d, time %d, source %s", event_x, event_y, ev->time, sourceName);
-         }
+#if defined(CS_SHOW_DEBUG_PLATFORM)
+         qDebug("QXcbWindow::handleXIMouseEvent() XI2 mouse motion, postion = %d,%d, time = %d",
+               event_x, event_y, ev->time);
+#endif
+
          handleMotionNotifyEvent(event_x, event_y, root_x, root_y, modifiers, ev->time, source);
          break;
 
       default:
-         qWarning() << "Unrecognized XI2 mouse event" << ev->evtype;
+         qWarning() << "QXcbWindow::handleXIMouseEvent() Unrecognized XI2 mouse event" << ev->evtype;
          break;
    }
 }
@@ -2629,12 +2622,21 @@ void QXcbWindow::handleXIEnterLeave(xcb_ge_event_t *event)
       case XI_Enter: {
          const int event_x = fixed1616ToInt(ev->event_x);
          const int event_y = fixed1616ToInt(ev->event_y);
-         qDebug("XI2 mouse enter %d,%d, mode %d, detail %d, time %d", event_x, event_y, ev->mode, ev->detail, ev->time);
+
+#if defined(CS_SHOW_DEBUG_PLATFORM)
+         qDebug("QXcbWindow::handleXIEnterLeave() XI2 mouse enter, position = %d,%d, mode = %d, detail = %d, time = %d",
+               event_x, event_y, ev->mode, ev->detail, ev->time);
+#endif
+
          handleEnterNotifyEvent(event_x, event_y, root_x, root_y, ev->mode, ev->detail, ev->time);
          break;
       }
+
       case XI_Leave:
-         qDebug("XI2 mouse leave, mode %d, detail %d, time %d", ev->mode, ev->detail, ev->time);
+#if defined(CS_SHOW_DEBUG_PLATFORM)
+         qDebug("QXcbWindow::handleXIEnterLeave() XI2 mouse leave, mode = %d, detail = %d, time = %d",
+               ev->mode, ev->detail, ev->time);
+#endif
          connection()->keyboard()->updateXKBStateFromXI(&ev->mods, &ev->group);
          handleLeaveNotifyEvent(root_x, root_y, ev->mode, ev->detail, ev->time);
          break;

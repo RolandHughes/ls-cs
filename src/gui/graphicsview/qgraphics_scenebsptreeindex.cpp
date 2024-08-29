@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -77,11 +77,13 @@ void QGraphicsSceneBspTreeIndexPrivate::_q_updateIndex()
       }
    }
 
+   static constexpr const int slack = 100;
+
    // Determine whether we should regenerate the BSP tree.
    if (bspTreeDepth == 0) {
       int oldDepth = intmaxlog(lastItemCount);
       bspTreeDepth = intmaxlog(indexedItems.size());
-      static const int slack = 100;
+
       if (bsp.leafCount() == 0 || (oldDepth != bspTreeDepth && qAbs(lastItemCount - indexedItems.size()) > slack)) {
          // ### Crude algorithm.
          regenerateIndex = true;

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,11 +24,11 @@
 #ifndef QJSONARRAY_H
 #define QJSONARRAY_H
 
-#include <initializer_list>
-
 #include <qjsonvalue.h>
 #include <qstringlist.h>
 #include <qvariant.h>
+
+#include <initializer_list>
 
 class QJsonData;
 class QJsonDataArray;
@@ -106,8 +106,7 @@ class Q_CORE_EXPORT QJsonArray
    bool operator==(const QJsonArray &other) const;
    bool operator!=(const QJsonArray &other) const;
 
-   QJsonArray operator+(QJsonValue value) const
-   {
+   QJsonArray operator+(QJsonValue value) const {
       QJsonArray retval = *this;
       retval += std::move(value);
 

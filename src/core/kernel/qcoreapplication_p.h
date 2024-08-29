@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -28,7 +28,7 @@
 #include <qtranslator.h>
 #include <qsettings.h>
 
-typedef QList<QTranslator *> QTranslatorList;
+using QTranslatorList = QList<QTranslator *>;
 
 class QAbstractEventDispatcher;
 
@@ -37,7 +37,10 @@ class Q_CORE_EXPORT QCoreApplicationPrivate
    Q_DECLARE_PUBLIC(QCoreApplication)
 
  public:
-   enum Type { Tty, Gui };
+   enum Type {
+      Tty,
+      Gui
+   };
 
    QCoreApplicationPrivate(int &aargc,  char **aargv, uint flags);
    virtual ~QCoreApplicationPrivate();
@@ -48,7 +51,7 @@ class Q_CORE_EXPORT QCoreApplicationPrivate
    bool sendThroughObjectEventFilters(QObject *, QEvent *);
    bool notify_helper(QObject *, QEvent *);
 
-   static inline void setEventSpontaneous(QEvent *e, bool spontaneous) {
+   static void setEventSpontaneous(QEvent *e, bool spontaneous) {
       e->spont = spontaneous;
    }
 
@@ -112,7 +115,7 @@ class Q_CORE_EXPORT QCoreApplicationPrivate
    static bool setuidAllowed;
    static uint attribs;
 
-   static inline bool testAttribute(uint flag) {
+   static bool testAttribute(uint flag) {
       return attribs & (1 << flag);
    }
 

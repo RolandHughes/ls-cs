@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,26 +24,26 @@
 #include <qsimpledrag_p.h>
 
 #include <qbitmap.h>
-#include <qdrag.h>
-#include <qpixmap.h>
-#include <qevent.h>
-#include <qfile.h>
-#include <qtextcodec.h>
-#include <qguiapplication.h>
-#include <qpoint.h>
 #include <qbuffer.h>
-#include <qimage.h>
-#include <qregularexpression.h>
+#include <qdebug.h>
 #include <qdir.h>
+#include <qdrag.h>
+#include <qevent.h>
+#include <qeventloop.h>
+#include <qfile.h>
+#include <qguiapplication.h>
+#include <qimage.h>
 #include <qimagereader.h>
 #include <qimagewriter.h>
-#include <QEventLoop>
-#include <QDebug>
+#include <qpixmap.h>
+#include <qpoint.h>
+#include <qregularexpression.h>
+#include <qtextcodec.h>
 
-#include <qguiapplication_p.h>
 #include <qdnd_p.h>
-#include <qshapedpixmapdndwindow_p.h>
+#include <qguiapplication_p.h>
 #include <qhighdpiscaling_p.h>
+#include <qshapedpixmapdndwindow_p.h>
 
 #ifndef QT_NO_DRAGANDDROP
 
@@ -79,7 +79,6 @@ void QBasicDrag::disableEventFilter()
 {
    qApp->removeEventFilter(this);
 }
-
 
 static inline QPoint getNativeMousePos(QEvent *e, QObject *o)
 {
@@ -216,11 +215,6 @@ void QBasicDrag::cancel()
    restoreCursor();
    m_drag_icon_window->setVisible(false);
 }
-
-/*!
-  Move the drag label to \a globalPos, which is
-  interpreted in device independent coordinates. Typically called from reimplementations of move().
- */
 
 void QBasicDrag::moveShapedPixmapWindow(const QPoint &globalPos)
 {

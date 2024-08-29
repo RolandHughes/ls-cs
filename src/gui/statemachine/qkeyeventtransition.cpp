@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -25,8 +25,9 @@
 
 #ifndef QT_NO_STATEMACHINE
 
-#include <qbasickeyeventtransition_p.h>
 #include <qstatemachine.h>
+
+#include <qbasickeyeventtransition_p.h>
 #include <qeventtransition_p.h>
 
 class QKeyEventTransitionPrivate : public QEventTransitionPrivate
@@ -84,9 +85,6 @@ void QKeyEventTransition::setModifierMask(Qt::KeyboardModifiers modifierMask)
    d->transition->setModifierMask(modifierMask);
 }
 
-/*!
-  \reimp
-*/
 bool QKeyEventTransition::eventTest(QEvent *event)
 {
    Q_D(const QKeyEventTransition);
@@ -98,13 +96,9 @@ bool QKeyEventTransition::eventTest(QEvent *event)
    return QAbstractTransitionPrivate::get(d->transition)->callEventTest(we->event());
 }
 
-/*!
-  \reimp
-*/
 void QKeyEventTransition::onTransition(QEvent *event)
 {
    QEventTransition::onTransition(event);
 }
-
 
 #endif //QT_NO_STATEMACHINE

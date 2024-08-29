@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -199,7 +199,7 @@ QNetworkConfiguration::BearerType QNetworkConfiguration::bearerTypeFamily() cons
          return QNetworkConfiguration::Bearer4G;
 
       default:
-         qWarning() << "unknown bearer type" << type;
+         qWarning() << "QNetworkConfiguration::bearerTypeFamily() Unknown bearer type " << type;
          return QNetworkConfiguration::BearerUnknown;
    }
 }

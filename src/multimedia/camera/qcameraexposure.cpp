@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -30,8 +30,6 @@
 #include <qdebug.h>
 
 #include <qmediaobject_p.h>
-
-//# define DEBUG_EXPOSURE_CHANGES 1
 
 class QCameraExposurePrivate
 {
@@ -121,10 +119,10 @@ void QCameraExposurePrivate::_q_exposureParameterChanged(int parameter)
 {
    Q_Q(QCameraExposure);
 
-#if DEBUG_EXPOSURE_CHANGES
+#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
    qDebug() << "Exposure parameter changed:"
-            << QCameraExposureControl::ExposureParameter(parameter)
-            << exposureControl->actualValue(QCameraExposureControl::ExposureParameter(parameter));
+         << QCameraExposureControl::ExposureParameter(parameter)
+         << exposureControl->actualValue(QCameraExposureControl::ExposureParameter(parameter));
 #endif
 
    switch (parameter) {

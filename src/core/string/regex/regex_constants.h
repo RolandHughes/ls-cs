@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2017-2023 Barbara Geller
-* Copyright (c) 2017-2023 Ansel Sermersheim
+* Copyright (c) 2017-2024 Barbara Geller
+* Copyright (c) 2017-2024 Ansel Sermersheim
 *
 * Copyright (c) 1998-2009 John Maddock
 *
@@ -67,16 +67,16 @@ class LIB_CS_STRING_EXPORT regbase
 
       // options common to all groups
       no_escape_in_lists = 1 << 16,                     // '\' not special inside [...]
-      newline_alt = 1 << 17,                            // \n is the same as |
-      no_except = 1 << 18,                              // no exception on error
-      failbit = 1 << 19,                                // error flag
-      icase = 1 << 20,                                  // characters are matched regardless of case
-      nocollate = 0,                                    // don't use locale specific collation (deprecated)
-      collate = 1 << 21,                                // use locale specific collation
-      nosubs = 1 << 22,                                 // don't mark sub-expressions
+      newline_alt        = 1 << 17,                     // \n is the same as |
+      no_except          = 1 << 18,                     // no exception on error
+      failbit            = 1 << 19,                     // error flag
+      icase              = 1 << 20,                     // characters are matched regardless of case
+      nocollate          = 0,                           // don't use locale specific collation (deprecated)
+      collate            = 1 << 21,                     // use locale specific collation
+      nosubs             = 1 << 22,                     // don't mark sub-expressions
       save_subexpression_location = 1 << 23,            // save subexpression locations
-      no_empty_expressions = 1 << 24,                   // no empty expressions allowed
-      optimize = 0,                                     // not really supported
+      no_empty_expressions        = 1 << 24,            // no empty expressions allowed
+      optimize           = 0,                           // not really supported
 
 
       basic      = basic_syntax_group | collate | no_escape_in_lists,
@@ -92,7 +92,7 @@ class LIB_CS_STRING_EXPORT regbase
       JavaScript = normal,
       JScript    = normal
    };
-   typedef unsigned int flag_type;
+   using flag_type  = unsigned int;
 
    enum restart_info {
       restart_any       = 0,
@@ -133,13 +133,13 @@ enum flag_type_ {
    save_subexpression_location = cs_regex_ns::regbase::save_subexpression_location,
    no_empty_expressions = cs_regex_ns::regbase::no_empty_expressions,
 
-   basic = cs_regex_ns::regbase::basic,
-   extended = cs_regex_ns::regbase::extended,
-   normal = cs_regex_ns::regbase::normal,
-   emacs = cs_regex_ns::regbase::emacs,
-   awk = cs_regex_ns::regbase::awk,
-   grep = cs_regex_ns::regbase::grep,
-   egrep = cs_regex_ns::regbase::egrep,
+   basic        = cs_regex_ns::regbase::basic,
+   extended     = cs_regex_ns::regbase::extended,
+   normal       = cs_regex_ns::regbase::normal,
+   emacs        = cs_regex_ns::regbase::emacs,
+   awk          = cs_regex_ns::regbase::awk,
+   grep         = cs_regex_ns::regbase::grep,
+   egrep        = cs_regex_ns::regbase::egrep,
    sed          = basic,
    perl         = normal,
    ECMAScript   = normal,
@@ -147,78 +147,77 @@ enum flag_type_ {
    JScript      = normal
 };
 
-typedef cs_regex_ns::regbase::flag_type syntax_option_type;
-
+using syntax_option_type = cs_regex_ns::regbase::flag_type;
 using syntax_type        = unsigned char;
 using escape_syntax_type = unsigned char;
 
 // values chosen are binary compatible with previous version
 
-static const syntax_type syntax_char = 0;
-static const syntax_type syntax_open_mark = 1;
-static const syntax_type syntax_close_mark = 2;
-static const syntax_type syntax_dollar = 3;
-static const syntax_type syntax_caret = 4;
-static const syntax_type syntax_dot = 5;
-static const syntax_type syntax_star = 6;
-static const syntax_type syntax_plus = 7;
-static const syntax_type syntax_question = 8;
-static const syntax_type syntax_open_set = 9;
-static const syntax_type syntax_close_set = 10;
-static const syntax_type syntax_or = 11;
-static const syntax_type syntax_escape = 12;
-static const syntax_type syntax_dash = 14;
-static const syntax_type syntax_open_brace = 15;
-static const syntax_type syntax_close_brace = 16;
-static const syntax_type syntax_digit = 17;
-static const syntax_type syntax_comma = 27;
-static const syntax_type syntax_equal = 37;
-static const syntax_type syntax_colon = 36;
-static const syntax_type syntax_not = 53;
+static constexpr const syntax_type syntax_char        = 0;
+static constexpr const syntax_type syntax_open_mark   = 1;
+static constexpr const syntax_type syntax_close_mark  = 2;
+static constexpr const syntax_type syntax_dollar      = 3;
+static constexpr const syntax_type syntax_caret       = 4;
+static constexpr const syntax_type syntax_dot         = 5;
+static constexpr const syntax_type syntax_star        = 6;
+static constexpr const syntax_type syntax_plus        = 7;
+static constexpr const syntax_type syntax_question    = 8;
+static constexpr const syntax_type syntax_open_set    = 9;
+static constexpr const syntax_type syntax_close_set   = 10;
+static constexpr const syntax_type syntax_or          = 11;
+static constexpr const syntax_type syntax_escape      = 12;
+static constexpr const syntax_type syntax_dash        = 14;
+static constexpr const syntax_type syntax_open_brace  = 15;
+static constexpr const syntax_type syntax_close_brace = 16;
+static constexpr const syntax_type syntax_digit       = 17;
+static constexpr const syntax_type syntax_comma       = 27;
+static constexpr const syntax_type syntax_equal       = 37;
+static constexpr const syntax_type syntax_colon       = 36;
+static constexpr const syntax_type syntax_not         = 53;
 
 // extensions
-static const syntax_type syntax_hash = 13;
-static const syntax_type syntax_newline = 26;
+static constexpr const syntax_type syntax_hash        = 13;
+static constexpr const syntax_type syntax_newline     = 26;
 
 // escapes
-static const escape_syntax_type escape_type_word_assert     = 18;
-static const escape_syntax_type escape_type_not_word_assert = 19;
-static const escape_syntax_type escape_type_control_f       = 29;
-static const escape_syntax_type escape_type_control_n       = 30;
-static const escape_syntax_type escape_type_control_r       = 31;
-static const escape_syntax_type escape_type_control_t       = 32;
-static const escape_syntax_type escape_type_control_v       = 33;
-static const escape_syntax_type escape_type_hex             = 34;
-static const escape_syntax_type escape_type_ascii_control   = 35;         // not used
-static const escape_syntax_type escape_type_unicode = 0;                  // not used
-static const escape_syntax_type escape_type_identity = 0;                 // not used
-static const escape_syntax_type escape_type_backref = syntax_digit;
-static const escape_syntax_type escape_type_decimal = syntax_digit;       // not used
-static const escape_syntax_type escape_type_class = 22;
-static const escape_syntax_type escape_type_not_class = 23;
+static constexpr const escape_syntax_type escape_type_word_assert     = 18;
+static constexpr const escape_syntax_type escape_type_not_word_assert = 19;
+static constexpr const escape_syntax_type escape_type_control_f       = 29;
+static constexpr const escape_syntax_type escape_type_control_n       = 30;
+static constexpr const escape_syntax_type escape_type_control_r       = 31;
+static constexpr const escape_syntax_type escape_type_control_t       = 32;
+static constexpr const escape_syntax_type escape_type_control_v       = 33;
+static constexpr const escape_syntax_type escape_type_hex             = 34;
+static constexpr const escape_syntax_type escape_type_ascii_control   = 35;             // not used
+static constexpr const escape_syntax_type escape_type_unicode         = 0;              // not used
+static constexpr const escape_syntax_type escape_type_identity        = 0;              // not used
+static constexpr const escape_syntax_type escape_type_backref         = syntax_digit;
+static constexpr const escape_syntax_type escape_type_decimal         = syntax_digit;   // not used
+static constexpr const escape_syntax_type escape_type_class           = 22;
+static constexpr const escape_syntax_type escape_type_not_class       = 23;
 
 // extensions
-static const escape_syntax_type escape_type_left_word = 20;
-static const escape_syntax_type escape_type_right_word = 21;
-static const escape_syntax_type escape_type_start_buffer = 24;            // for \`
-static const escape_syntax_type escape_type_end_buffer = 25;              // for \'
-static const escape_syntax_type escape_type_control_a = 28;               // for \a
-static const escape_syntax_type escape_type_e = 38;                       // for \e
-static const escape_syntax_type escape_type_E = 47;                       // for \Q\E
-static const escape_syntax_type escape_type_Q = 48;                       // for \Q\E
-static const escape_syntax_type escape_type_X = 49;                       // for \X
-static const escape_syntax_type escape_type_C = 50;                       // for \C
-static const escape_syntax_type escape_type_Z = 51;                       // for \Z
-static const escape_syntax_type escape_type_G = 52;                       // for \G
+static constexpr const escape_syntax_type escape_type_left_word       = 20;
+static constexpr const escape_syntax_type escape_type_right_word      = 21;
+static constexpr const escape_syntax_type escape_type_start_buffer    = 24;         // for \`
+static constexpr const escape_syntax_type escape_type_end_buffer      = 25;         // for \'
+static constexpr const escape_syntax_type escape_type_control_a       = 28;         // for \a
+static constexpr const escape_syntax_type escape_type_e               = 38;         // for \e
+static constexpr const escape_syntax_type escape_type_E               = 47;         // for \Q\E
+static constexpr const escape_syntax_type escape_type_Q               = 48;         // for \Q\E
+static constexpr const escape_syntax_type escape_type_X               = 49;         // for \X
+static constexpr const escape_syntax_type escape_type_C               = 50;         // for \C
+static constexpr const escape_syntax_type escape_type_Z               = 51;         // for \Z
+static constexpr const escape_syntax_type escape_type_G               = 52;         // for \G
 
-static const escape_syntax_type escape_type_property = 54;                // for \p
-static const escape_syntax_type escape_type_not_property = 55;            // for \P
-static const escape_syntax_type escape_type_named_char = 56;              // for \N
-static const escape_syntax_type escape_type_extended_backref = 57;        // for \g
-static const escape_syntax_type escape_type_reset_start_mark = 58;        // for \K
-static const escape_syntax_type escape_type_line_ending = 59;             // for \R
+static constexpr const escape_syntax_type escape_type_property         = 54;        // for \p
+static constexpr const escape_syntax_type escape_type_not_property     = 55;        // for \P
+static constexpr const escape_syntax_type escape_type_named_char       = 56;        // for \N
+static constexpr const escape_syntax_type escape_type_extended_backref = 57;        // for \g
+static constexpr const escape_syntax_type escape_type_reset_start_mark = 58;        // for \K
+static constexpr const escape_syntax_type escape_type_line_ending      = 59;        // for \R
 
-static const escape_syntax_type syntax_max = 60;
+static constexpr const escape_syntax_type syntax_max                   = 60;
 
 }   // end namespace
 

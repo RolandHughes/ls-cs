@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -525,13 +525,18 @@ static void convertCGPathToQPainterPath(void *info, const CGPathElement *element
             element->points[2].x + myInfo->pos.x(),
             element->points[2].y + myInfo->pos.y());
          break;
+
       case kCGPathElementCloseSubpath:
          myInfo->path->closeSubpath();
          break;
-      default:
-         qDebug() << "Unhandled path transform type: " << element->type;
-   }
 
+      default:
+#if defined(CS_SHOW_DEBUG_PLATFORM)
+         qDebug() << "Unhandled path transform type: " << element->type;
+#endif
+
+         break;
+   }
 }
 
 void QCoreTextFontEngine::addGlyphsToPath(glyph_t *glyphs, QFixedPoint *positions, int nGlyphs,

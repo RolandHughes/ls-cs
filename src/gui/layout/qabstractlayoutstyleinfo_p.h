@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -25,22 +25,26 @@
 #define QABSTRACTLAYOUTSTYLEINFO_P_H
 
 #include <qnamespace.h>
+
 #include <qlayoutpolicy_p.h>
 
 class Q_GUI_EXPORT QAbstractLayoutStyleInfo
 {
  public:
-   QAbstractLayoutStyleInfo() : m_isWindow(false) {}
+   QAbstractLayoutStyleInfo()
+      : m_isWindow(false)
+   { }
 
-   virtual ~QAbstractLayoutStyleInfo() {}
-   virtual qreal combinedLayoutSpacing(QLayoutPolicy::ControlTypes /*controls1*/,
-      QLayoutPolicy::ControlTypes /*controls2*/, Qt::Orientation /*orientation*/) const {
+   virtual ~QAbstractLayoutStyleInfo()
+   { }
+
+   virtual qreal combinedLayoutSpacing(QLayoutPolicy::ControlTypes, QLayoutPolicy::ControlTypes,
+         Qt::Orientation) const {
       return -1;
    }
 
-   virtual qreal perItemSpacing(QLayoutPolicy::ControlType /*control1*/,
-      QLayoutPolicy::ControlType /*control2*/,
-      Qt::Orientation /*orientation*/) const {
+   virtual qreal perItemSpacing(QLayoutPolicy::ControlType, QLayoutPolicy::ControlType,
+         Qt::Orientation) const {
       return -1;
    }
 

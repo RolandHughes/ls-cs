@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -87,16 +87,15 @@ void QGL2PEXVertexArray::addPath(const QVectorPath &path, GLfloat curveInverseSc
 
    do {
       if (!elements) {
-         //             qDebug("QVectorPath has no elements");
          // If the path has a null elements pointer, the elements implicitly
-         // start with a moveTo (already added) and continue with lineTos:
+         // start with a moveTo (already added) and continue with lineTos
+
          for (int i = 1; i < path.elementCount(); ++i) {
             lineToArray(points[i].x(), points[i].y());
          }
 
          break;
       }
-      //         qDebug("QVectorPath has element types");
 
       for (int i = 1; i < path.elementCount(); ++i) {
          switch (elements[i]) {
@@ -104,8 +103,6 @@ void QGL2PEXVertexArray::addPath(const QVectorPath &path, GLfloat curveInverseSc
                if (!outline) {
                   addClosingLine(lastMoveTo);
                }
-
-               //  qDebug("element[%d] is a MoveToElement", i);
 
                vertexArrayStops.append(vertexArray.size());
 
@@ -121,14 +118,13 @@ void QGL2PEXVertexArray::addPath(const QVectorPath &path, GLfloat curveInverseSc
                break;
 
             case QPainterPath::LineToElement:
-               //                qDebug("element[%d] is a LineToElement", i);
                lineToArray(points[i].x(), points[i].y());
                break;
+
             case QPainterPath::CurveToElement: {
                QBezier b = QBezier::fromPoints(*(((const QPointF *) points) + i - 1),
-                                               points[i],
-                                               points[i + 1],
-                                               points[i + 2]);
+                     points[i], points[i + 1], points[i + 2]);
+
                QRectF bounds = b.bounds();
 
                // threshold based on same algorithm as in qtriangulatingstroker.cpp

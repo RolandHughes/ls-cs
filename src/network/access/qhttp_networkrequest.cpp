@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -172,8 +172,7 @@ QByteArray QHttpNetworkRequestPrivate::header(const QHttpNetworkRequest &request
          // warning indicates a bug in application code not setting a required header
          // if using QHttpMultipart, the content-type is set in QNetworkAccessManagerPrivate::prepareMultipart already
 
-         qWarning("Content-Type missing in HTTP POST, defaulting to application/x-www-form-urlencoded."
-                  " Use QNetworkRequest::setHeader() to fix this problem.");
+         qWarning("QHttpNetworkRequest::header() Content-Type is missing in HTTP POST, defaulting to application/x-www-form-urlencoded");
 
          ba += "Content-Type: application/x-www-form-urlencoded\r\n";
       }

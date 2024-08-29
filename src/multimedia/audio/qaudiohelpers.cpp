@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -46,28 +46,38 @@ struct signedVersion {};
 template <>
 struct signedVersion<quint8>
 {
-    typedef qint8 TS;
-    enum {offset = 0x80};
+   typedef qint8 TS;
+
+   enum {
+      offset = 0x80
+   };
 };
 
 template <>
 struct signedVersion<quint16>
 {
-    typedef qint16 TS;
-    enum {offset = 0x8000};
+   typedef qint16 TS;
+
+   enum {
+      offset = 0x8000
+   };
 };
 
 template <>
 struct signedVersion<quint32>
 {
-    typedef qint32 TS;
-    enum {offset = 0x80000000};
+   typedef qint32 TS;
+
+   enum {
+      offset = 0x80000000
+   };
 };
 
 template <class T>
 void adjustUnsignedSamples(qreal factor, const void *src, void *dst, int samples)
 {
     const T *pSrc = (const T *)src;
+
     T *pDst = (T*)dst;
     for ( int i = 0; i < samples; i++ ) {
         pDst[i] = signedVersion<T>::offset + ((typename signedVersion<T>::TS)(pSrc[i] - signedVersion<T>::offset) * factor);

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -587,8 +587,9 @@ bool QTiffHandler::write(const QImage &image)
 
          int chunkStart = y;
          int chunkEnd = y + chunk.height();
+
          while (y < chunkEnd) {
-            if (QSysInfo::ByteOrder == QSysInfo::LittleEndian) {
+            if constexpr (QSysInfo::ByteOrder == QSysInfo::LittleEndian) {
                convert32BitOrder(chunk.scanLine(y - chunkStart), width);
             } else {
                convert32BitOrderBigEndian(chunk.scanLine(y - chunkStart), width);

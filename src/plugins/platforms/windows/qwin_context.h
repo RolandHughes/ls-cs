@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -140,7 +140,7 @@ class QWindowsContext
  public:
    enum SystemInfoFlags {
       SI_RTL_Extensions = 0x1,
-      SI_SupportsTouch = 0x2
+      SI_SupportsTouch  = 0x2
    };
 
    explicit QWindowsContext();
@@ -149,9 +149,6 @@ class QWindowsContext
    QWindowsContext &operator=(const QWindowsContext &) = delete;
 
    ~QWindowsContext();
-
-   // Verbose flag set by environment variable QT_QPA_VERBOSE
-   static int verbose;
 
    bool initTouch();
    bool initTouch(unsigned integrationOptions); // For calls from QWindowsIntegration::QWindowsIntegration() only.

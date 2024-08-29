@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -39,14 +39,17 @@ class QTreeWidgetPrivate;
 
 class Q_GUI_EXPORT QTreeWidgetItem
 {
-   friend class QTreeModel;
-   friend class QTreeWidget;
-   friend class QTreeWidgetPrivate;
-   friend class QTreeWidgetItemIterator;
-   friend class QTreeWidgetItemPrivate;
-
  public:
-   enum ItemType { Type = 0, UserType = 1000 };
+   enum ItemType {
+      Type     = 0,
+      UserType = 1000
+   };
+
+   enum ChildIndicatorPolicy {
+      ShowIndicator,
+      DontShowIndicator,
+      DontShowIndicatorWhenChildless
+   };
 
    explicit QTreeWidgetItem(int type = Type);
    explicit QTreeWidgetItem(const QStringList &strings, int type = Type);
@@ -84,7 +87,6 @@ class Q_GUI_EXPORT QTreeWidgetItem
    inline void setDisabled(bool disabled);
    inline bool isDisabled() const;
 
-   enum ChildIndicatorPolicy { ShowIndicator, DontShowIndicator, DontShowIndicatorWhenChildless };
    void setChildIndicatorPolicy(QTreeWidgetItem::ChildIndicatorPolicy policy);
    QTreeWidgetItem::ChildIndicatorPolicy childIndicatorPolicy() const;
 
@@ -243,6 +245,7 @@ class Q_GUI_EXPORT QTreeWidgetItem
    void executePendingSort() const;
 
    int rtti;
+
    // One item has a vector of column entries. Each column has a vector of (role, value) pairs.
    QVector< QVector<QWidgetItemData>> values;
    QTreeWidget *view;
@@ -250,6 +253,12 @@ class Q_GUI_EXPORT QTreeWidgetItem
    QTreeWidgetItem *par;
    QList<QTreeWidgetItem *> children;
    Qt::ItemFlags itemFlags;
+
+   friend class QTreeModel;
+   friend class QTreeWidget;
+   friend class QTreeWidgetPrivate;
+   friend class QTreeWidgetItemIterator;
+   friend class QTreeWidgetItemPrivate;
 };
 
 inline void QTreeWidgetItem::setText(int column, const QString &text)

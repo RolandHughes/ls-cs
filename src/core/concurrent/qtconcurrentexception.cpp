@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -67,7 +67,8 @@ class Base
 
 ExceptionHolder::ExceptionHolder(Exception *exception)
    : base(new Base(exception))
-{ }
+{
+}
 
 ExceptionHolder::ExceptionHolder(const ExceptionHolder &other)
    : base(other.base)
@@ -132,7 +133,6 @@ bool ExceptionStore::hasThrown() const
 }
 
 }   // end namespace
-
 
 } // namespace QtConcurrent
 

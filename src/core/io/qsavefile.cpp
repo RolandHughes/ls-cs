@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -25,13 +25,16 @@
 ** Copyright (c) 2012 David Faure <faure@kde.org>
 *****************************************************/
 
-#include <qplatformdefs.h>
 #include <qsavefile.h>
-#include <qsavefile_p.h>
+
+#include <qplatformdefs.h>
+
 #include <qfileinfo.h>
-#include <qabstractfileengine_p.h>
 #include <qdebug.h>
 #include <qtemporaryfile.h>
+
+#include <qsavefile_p.h>
+#include <qabstractfileengine_p.h>
 #include <qiodevice_p.h>
 #include <qtemporaryfile_p.h>
 
@@ -71,6 +74,7 @@ QSaveFile::~QSaveFile()
 {
    Q_D(QSaveFile);
    QFileDevice::close();
+
    if (d->fileEngine) {
       d->fileEngine->remove();
       delete d->fileEngine;
@@ -93,36 +97,40 @@ bool QSaveFile::open(OpenMode mode)
    Q_D(QSaveFile);
 
    if (isOpen()) {
-      qWarning("QSaveFile::open: File (%s) already open", csPrintable(fileName()));
+      qWarning("QSaveFile::open() File already open, %s", csPrintable(fileName()));
       return false;
    }
 
    unsetError();
+
    if ((mode & (QIODevice::ReadOnly | QIODevice::WriteOnly)) == 0) {
-      qWarning("QSaveFile::open: Open mode not specified");
+      qWarning("QSaveFile::open() Open mode not specified");
       return false;
    }
 
    // In the future we could implement ReadWrite by copying from the existing file to the temp file
    if ((mode & QIODevice::ReadOnly) || (mode & QIODevice::Append)) {
-      qWarning("QSaveFile::open: Unsupported open mode 0x%x", int(mode));
+      qWarning("QSaveFile::open() Unsupported open mode 0x%x", int(mode));
       return false;
    }
 
    // check if existing file is writable
    QFileInfo existingFile(d->fileName);
+
    if (existingFile.exists() && ! existingFile.isWritable()) {
       d->setError(QFileDevice::WriteError, QSaveFile::tr("Existing file %1 is not writable").formatArg(d->fileName));
       d->writeError = QFileDevice::WriteError;
       return false;
    }
+
    d->fileEngine = new QTemporaryFileEngine(d->fileName, 0666);
 
    // Same as in QFile: QIODevice provides the buffering, so there's no need to request it from the file engine.
-   if (!d->fileEngine->open(mode | QIODevice::Unbuffered)) {
+   if (! d->fileEngine->open(mode | QIODevice::Unbuffered)) {
       QFileDevice::FileError err = d->fileEngine->error();
 
 #ifdef Q_OS_UNIX
+
       if (d->directWriteFallback && err == QFileDevice::OpenError && errno == EACCES) {
          delete d->fileEngine;
          d->fileEngine = QAbstractFileEngine::create(d->fileName);
@@ -132,13 +140,16 @@ bool QSaveFile::open(OpenMode mode)
             QFileDevice::open(mode);
             return true;
          }
+
          err = d->fileEngine->error();
       }
+
 #endif
 
       if (err == QFileDevice::UnspecifiedError) {
          err = QFileDevice::OpenError;
       }
+
       d->setError(err, d->fileEngine->errorString());
       delete d->fileEngine;
       d->fileEngine = nullptr;
@@ -147,18 +158,14 @@ bool QSaveFile::open(OpenMode mode)
 
    d->useTemporaryFile = true;
    QFileDevice::open(mode);
+
    if (existingFile.exists()) {
       setPermissions(existingFile.permissions());
    }
+
    return true;
 }
 
-/*!
-  \reimp
-  This method has been made private so that it cannot be called, in order to prevent mistakes.
-  In order to finish writing the file, call commit().
-  If instead you want to abort writing, call cancelWriting().
-*/
 void QSaveFile::close()
 {
    qFatal("QSaveFile::close called");
@@ -167,14 +174,16 @@ void QSaveFile::close()
 bool QSaveFile::commit()
 {
    Q_D(QSaveFile);
-   if (!d->fileEngine) {
+
+   if (! d->fileEngine) {
       return false;
    }
 
    if (!isOpen()) {
-      qWarning("QSaveFile::commit: File (%s) is not open", csPrintable(fileName()));
+      qWarning("QSaveFile::commit() File is not open, %s", csPrintable(fileName()));
       return false;
    }
+
    QFileDevice::close(); // calls flush()
 
    // Sync to disk if possible. Ignore errors (e.g. not supported).
@@ -188,38 +197,43 @@ bool QSaveFile::commit()
          d->fileEngine = nullptr;
          return false;
       }
+
       // atomically replace old file with new file
-      // Can't use QFile::rename for that, must use the file engine directly
+      // Can not use QFile::rename for that, must use the file engine directly
       Q_ASSERT(d->fileEngine);
-      if (!d->fileEngine->renameOverwrite(d->fileName)) {
+
+      if (! d->fileEngine->renameOverwrite(d->fileName)) {
          d->setError(d->fileEngine->error(), d->fileEngine->errorString());
          d->fileEngine->remove();
          delete d->fileEngine;
          d->fileEngine = nullptr;
+
          return false;
       }
    }
+
    delete d->fileEngine;
    d->fileEngine = nullptr;
+
    return true;
 }
 
 void QSaveFile::cancelWriting()
 {
    Q_D(QSaveFile);
-   if (!isOpen()) {
+
+   if (! isOpen()) {
       return;
    }
+
    d->setError(QFileDevice::WriteError, QSaveFile::tr("Writing canceled by application"));
    d->writeError = QFileDevice::WriteError;
 }
 
-/*!
-  \reimp
-*/
 qint64 QSaveFile::writeData(const char *data, qint64 len)
 {
    Q_D(QSaveFile);
+
    if (d->writeError != QFileDevice::NoError) {
       return -1;
    }
@@ -229,6 +243,7 @@ qint64 QSaveFile::writeData(const char *data, qint64 len)
    if (d->error != QFileDevice::NoError) {
       d->writeError = d->error;
    }
+
    return ret;
 }
 
@@ -243,5 +258,3 @@ bool QSaveFile::directWriteFallback() const
    Q_D(const QSaveFile);
    return d->directWriteFallback;
 }
-
-

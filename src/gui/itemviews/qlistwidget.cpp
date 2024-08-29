@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -26,9 +26,10 @@
 #ifndef QT_NO_LISTWIDGET
 
 #include <qitemdelegate.h>
+
 #include <qlistview_p.h>
-#include <qwidgetitemdata_p.h>
 #include <qlistwidget_p.h>
+#include <qwidgetitemdata_p.h>
 
 #include <algorithm>
 
@@ -324,13 +325,6 @@ void QListModel::sort(int column, Qt::SortOrder order)
    emit layoutChanged();
 }
 
-/**
- * This function assumes that all items in the model except the items that are between
- * (inclusive) start and end are sorted.
- * With these assumptions, this function can ensure that the model is sorted in a
- * much more efficient way than doing a naive 'sort everything'.
- * (provided that the range is relatively small compared to the total number of items)
- */
 void QListModel::ensureSorted(int column, Qt::SortOrder order, int start, int end)
 {
    if (column != 0) {
@@ -513,9 +507,6 @@ QListWidgetItem::QListWidgetItem(const QIcon &icon, const QString &text, QListWi
    }
 }
 
-/*!
-    Destroys the list item.
-*/
 QListWidgetItem::~QListWidgetItem()
 {
    if (QListModel *model = (view ? qobject_cast<QListModel *>(view->model()) : nullptr)) {
@@ -524,20 +515,11 @@ QListWidgetItem::~QListWidgetItem()
    delete d;
 }
 
-/*!
-    Creates an exact copy of the item.
-*/
 QListWidgetItem *QListWidgetItem::clone() const
 {
    return new QListWidgetItem(*this);
 }
 
-/*!
-    Sets the data for a given \a role to the given \a value. Reimplement this
-    function if you need extra roles or special behavior for certain roles.
-
-    \sa Qt::ItemDataRole, data()
-*/
 void QListWidgetItem::setData(int role, const QVariant &value)
 {
    bool found = false;
@@ -560,12 +542,6 @@ void QListWidgetItem::setData(int role, const QVariant &value)
    }
 }
 
-/*!
-    Returns the item's data for a given \a role. Reimplement this function if
-    you need extra roles or special behavior for certain roles.
-
-    \sa Qt::ItemDataRole, setData()
-*/
 QVariant QListWidgetItem::data(int role) const
 {
    role = (role == Qt::EditRole ? Qt::DisplayRole : role);
@@ -579,10 +555,6 @@ QVariant QListWidgetItem::data(int role) const
    return QVariant();
 }
 
-/*!
-    Returns true if this item's text is less then \a other item's text;
-    otherwise returns false.
-*/
 bool QListWidgetItem::operator<(const QListWidgetItem &other) const
 {
    const QVariant v1 = data(Qt::DisplayRole), v2 = other.data(Qt::DisplayRole);
@@ -732,16 +704,10 @@ QListWidget::~QListWidget()
 {
 }
 
-/*!
-    Returns the item that occupies the given \a row in the list if one has been
-    set; otherwise returns 0.
-
-    \sa row()
-*/
-
 QListWidgetItem *QListWidget::item(int row) const
 {
    Q_D(const QListWidget);
+
    if (row < 0 || row >= d->model->rowCount()) {
       return nullptr;
    }
@@ -758,6 +724,7 @@ int QListWidget::row(const QListWidgetItem *item) const
 void QListWidget::insertItem(int row, QListWidgetItem *item)
 {
    Q_D(QListWidget);
+
    if (item && !item->view) {
       d->listModel()->insert(row, item);
    }
@@ -847,9 +814,6 @@ QRect QListWidget::visualItemRect(const QListWidgetItem *item) const
    return visualRect(index);
 }
 
-/*!
-    Sorts all the items in the list widget according to the specified \a order.
-*/
 void QListWidget::sortItems(Qt::SortOrder order)
 {
    Q_D(QListWidget);
@@ -956,16 +920,10 @@ QList<QListWidgetItem *> QListWidget::findItems(const QString &text, Qt::MatchFl
    for (int i = 0; i < indexes.size(); ++i) {
       items.append(d->listModel()->at(indexes.at(i).row()));
    }
+
    return items;
 }
 
-/*!
-    Returns true if the \a item is explicitly hidden; otherwise returns false.
-
-    \obsolete
-
-    This function is deprecated. Use QListWidgetItem::isHidden() instead.
-*/
 bool QListWidget::isItemHidden(const QListWidgetItem *item) const
 {
    return isRowHidden(row(item));
@@ -976,32 +934,28 @@ void QListWidget::setItemHidden(const QListWidgetItem *item, bool hide)
    setRowHidden(row(item), hide);
 }
 
-
-
 void QListWidget::scrollToItem(const QListWidgetItem *item, QAbstractItemView::ScrollHint hint)
 {
    Q_D(QListWidget);
+
    QModelIndex index = d->listModel()->index(const_cast<QListWidgetItem *>(item));
    QListView::scrollTo(index, hint);
 }
 
-
 void QListWidget::clear()
 {
    Q_D(QListWidget);
+
    selectionModel()->clear();
    d->listModel()->clear();
 }
-
 
 QStringList QListWidget::mimeTypes() const
 {
    return d_func()->listModel()->QAbstractListModel::mimeTypes();
 }
 
-
 QMimeData *QListWidget::mimeData(const QList<QListWidgetItem *> &items) const
-
 {
    Q_D(const QListWidget);
    QModelIndexList &cachedIndexes = d->listModel()->cachedIndexes;
@@ -1022,8 +976,10 @@ QMimeData *QListWidget::mimeData(const QList<QListWidgetItem *> &items) const
 bool QListWidget::dropMimeData(int index, const QMimeData *data, Qt::DropAction action)
 {
    QModelIndex idx;
-   int row = index;
+
+   int row    = index;
    int column = 0;
+
    if (dropIndicatorPosition() == QAbstractItemView::OnItem) {
       // QAbstractListModel::dropMimeData will overwrite on the index if row == -1 and column == -1
       idx = model()->index(row, column);
@@ -1032,7 +988,6 @@ bool QListWidget::dropMimeData(int index, const QMimeData *data, Qt::DropAction 
    }
    return d_func()->listModel()->QAbstractListModel::dropMimeData(data, action, row, column, idx);
 }
-
 
 void QListWidget::dropEvent(QDropEvent *event)
 {
@@ -1109,17 +1064,11 @@ QListWidgetItem *QListWidget::itemFromIndex(const QModelIndex &index) const
    return nullptr;
 }
 
-/*!
-    \internal
-*/
-void QListWidget::setModel(QAbstractItemModel * /*model*/)
+void QListWidget::setModel(QAbstractItemModel *)
 {
    Q_ASSERT(!"QListWidget::setModel() - Changing the model of the QListWidget is not allowed.");
 }
 
-/*!
-    \reimp
-*/
 bool QListWidget::event(QEvent *e)
 {
    return QListView::event(e);
@@ -1178,7 +1127,5 @@ void QListWidget::_q_dataChanged(const QModelIndex &topLeft, const QModelIndex &
    Q_D(QListWidget);
    d->_q_dataChanged(topLeft, bottomRight);
 }
-
-
 
 #endif // QT_NO_LISTWIDGET

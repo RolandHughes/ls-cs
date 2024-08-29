@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -1454,16 +1454,19 @@ void QGraphicsItemPrivate::setVisibleHelper(bool newVisible, bool explicitly,
          // Item is shown
          QGraphicsItem *p = parent;
          bool done = false;
+
          while (p) {
             if (p->flags() & QGraphicsItem::ItemIsFocusScope) {
                QGraphicsItem *fsi = p->d_ptr->focusScopeItem;
+
                if (q_ptr == fsi || q_ptr->isAncestorOf(fsi)) {
                   done = true;
+
                   while (fsi->d_ptr->focusScopeItem && fsi->d_ptr->focusScopeItem->isVisible()) {
                      fsi = fsi->d_ptr->focusScopeItem;
                   }
-                  fsi->d_ptr->setFocusHelper(Qt::OtherFocusReason, /* climb = */ true,
-                     /* focusFromHide = */ false);
+
+                  fsi->d_ptr->setFocusHelper(Qt::OtherFocusReason, true, false);
                }
                break;
             }
@@ -1485,11 +1488,11 @@ void QGraphicsItemPrivate::setVisibleHelper(bool newVisible, bool explicitly,
          // Item is hidden
          if (hasFocus) {
             QGraphicsItem *p = parent;
+
             while (p) {
                if (p->flags() & QGraphicsItem::ItemIsFocusScope) {
                   if (p->d_ptr->visible) {
-                     p->d_ptr->setFocusHelper(Qt::OtherFocusReason, /* climb = */ true,
-                        /* focusFromHide = */ true);
+                     p->d_ptr->setFocusHelper(Qt::OtherFocusReason, true, true);
                   }
                   break;
                }
@@ -6867,7 +6870,7 @@ QDebug operator<<(QDebug debug, const QGraphicsItem *item)
          debug << ')';
 
       } else {
-         debug << "QWidget(0)";
+         debug << "QWidget(nullptr)";
       }
    }
 
@@ -6882,8 +6885,8 @@ QDebug operator<<(QDebug debug, const QGraphicsObject *item)
    QDebugStateSaver saver(debug);
    debug.nospace();
 
-   if (!item) {
-      debug << "QGraphicsObject(0)";
+   if (! item) {
+      debug << "QGraphicsObject(nullptr)";
       return debug;
    }
 
@@ -7007,7 +7010,9 @@ QDebug operator<<(QDebug debug, QGraphicsItem::GraphicsItemChange change)
          str = "ItemTransformOriginPointHasChanged";
          break;
    }
+
    debug << str;
+
    return debug;
 }
 
@@ -7116,7 +7121,9 @@ QDebug operator<<(QDebug debug, QGraphicsItem::GraphicsItemFlags flags)
          debug << QGraphicsItem::GraphicsItemFlag(int(flags & (1 << i)));
       }
    }
+
    debug << ')';
+
    return debug;
 }
 

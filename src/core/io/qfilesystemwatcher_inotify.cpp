@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -22,22 +22,24 @@
 ***********************************************************************/
 
 #include <qfilesystemwatcher.h>
+
 #include <qfilesystemwatcher_inotify_p.h>
 
 #ifndef QT_NO_FILESYSTEMWATCHER
 
-#include <qcore_unix_p.h>
 #include <qdebug.h>
 #include <qfile.h>
 #include <qfileinfo.h>
 #include <qsocketnotifier.h>
 #include <qvarlengtharray.h>
 
+#include <qcore_unix_p.h>
+
 #if defined(Q_OS_LINUX)
-#include <sys/syscall.h>
-#include <sys/ioctl.h>
-#include <unistd.h>
 #include <fcntl.h>
+#include <sys/ioctl.h>
+#include <sys/syscall.h>
+#include <unistd.h>
 #endif
 
 #if defined(QT_NO_INOTIFY)
@@ -104,9 +106,9 @@
 # define __NR_inotify_rm_watch  271
 # define __NR_inotify_init1     314
 #elif defined (__avr32__)
-# define __NR_inotify_init	240
-# define __NR_inotify_add_watch	241
-# define __NR_inotify_rm_watch	242
+# define __NR_inotify_init      240
+# define __NR_inotify_add_watch 241
+# define __NR_inotify_rm_watch  242
 // no inotify_init1 for AVR32
 #elif defined (__mc68000__)
 # define __NR_inotify_init      284
@@ -207,13 +209,17 @@ QInotifyFileSystemWatcherEngine *QInotifyFileSystemWatcherEngine::create()
 #ifdef IN_CLOEXEC
    fd = inotify_init1(IN_CLOEXEC);
 #endif
+
    if (fd == -1) {
       fd = inotify_init();
+
       if (fd == -1) {
          return nullptr;
       }
+
       ::fcntl(fd, F_SETFD, FD_CLOEXEC);
    }
+
    return new QInotifyFileSystemWatcherEngine(fd);
 }
 
@@ -265,8 +271,8 @@ QStringList QInotifyFileSystemWatcherEngine::addPaths(const QStringList &paths, 
       }
 
       int wd = inotify_add_watch(inotifyFd, QFile::encodeName(path).constData(),
-                  (isDir ? (0 | IN_ATTRIB | IN_MOVE | IN_CREATE | IN_DELETE | IN_DELETE_SELF)
-                         : (0 | IN_ATTRIB | IN_MODIFY | IN_MOVE | IN_MOVE_SELF | IN_DELETE_SELF)));
+            (isDir ? (0 | IN_ATTRIB | IN_MOVE | IN_CREATE | IN_DELETE | IN_DELETE_SELF)
+            : (0 | IN_ATTRIB | IN_MODIFY | IN_MOVE | IN_MOVE_SELF | IN_DELETE_SELF)));
 
       if (wd <= 0) {
          perror("QInotifyFileSystemWatcherEngine::addPaths: inotify_add_watch failed");
@@ -276,6 +282,7 @@ QStringList QInotifyFileSystemWatcherEngine::addPaths(const QStringList &paths, 
       it.remove();
 
       int id = isDir ? -wd : wd;
+
       if (id < 0) {
          directories->append(path);
       } else {
@@ -299,19 +306,21 @@ QStringList QInotifyFileSystemWatcherEngine::removePaths(const QStringList &path
 
    QStringList p = paths;
    QMutableListIterator<QString> it(p);
+
    while (it.hasNext()) {
       QString path = it.next();
       int id = pathToID.take(path);
       QString x = idToPath.take(id);
+
       if (x.isEmpty() || x != path) {
          continue;
       }
 
       int wd = id < 0 ? -id : id;
-      // qDebug() << "removing watch for path" << path << "wd" << wd;
       inotify_rm_watch(inotifyFd, wd);
 
       it.remove();
+
       if (id < 0) {
          directories->removeAll(path);
       } else {
@@ -331,16 +340,16 @@ void QInotifyFileSystemWatcherEngine::readFromInotify()
 {
    QMutexLocker locker(&mutex);
 
-   // qDebug() << "QInotifyFileSystemWatcherEngine::readFromInotify";
-
    int buffSize = 0;
    ioctl(inotifyFd, FIONREAD, (char *) &buffSize);
+
    QVarLengthArray<char, 4096> buffer(buffSize);
    buffSize = read(inotifyFd, buffer.data(), buffSize);
    char *at = buffer.data();
    char *const end = at + buffSize;
 
    QHash<int, inotify_event *> eventForId;
+
    while (at < end) {
       inotify_event *event = reinterpret_cast<inotify_event *>(at);
 
@@ -354,24 +363,23 @@ void QInotifyFileSystemWatcherEngine::readFromInotify()
    }
 
    QHash<int, inotify_event *>::const_iterator it = eventForId.constBegin();
+
    while (it != eventForId.constEnd()) {
       const inotify_event &event = **it;
       ++it;
 
-      // qDebug() << "inotify event, wd" << event.wd << "mask" << hex << event.mask;
-
       int id = event.wd;
       QString path = idToPath.value(id);
+
       if (path.isEmpty()) {
          // perhaps a directory?
          id = -id;
          path = idToPath.value(id);
+
          if (path.isEmpty()) {
             continue;
          }
       }
-
-      // qDebug() << "event for path" << path;
 
       if ((event.mask & (IN_DELETE_SELF | IN_MOVE_SELF | IN_UNMOUNT)) != 0) {
          pathToID.remove(path);

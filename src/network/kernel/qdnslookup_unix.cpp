@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -167,7 +167,7 @@ void QDnsLookupRunnable::query(const int requestType, const QByteArray &requestN
             ns->sin6_addr.s6_addr[i] = ipv6Address[i];
          }
 #else
-         qWarning("%s", QDnsLookupPrivate::msgNoIpV6NameServerAdresses);
+         qWarning("QDnsLookupRunnable::query() %s", QDnsLookupPrivate::msgNoIpV6NameServerAdresses);
          reply->error = QDnsLookup::ResolverError;
          reply->errorString = tr(QDnsLookupPrivate::msgNoIpV6NameServerAdresses);
          return;
@@ -175,7 +175,7 @@ void QDnsLookupRunnable::query(const int requestType, const QByteArray &requestN
       }
    }
 
-#ifdef QDNSLOOKUP_DEBUG
+#if defined(CS_SHOW_DEBUG_NETWORK)
    state.options |= RES_DEBUG;
 #endif
 

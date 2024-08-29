@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -89,8 +89,8 @@ class Q_GUI_EXPORT QDialogButtonBox : public QWidget
    )
 
    // internal values
-   static const auto FirstButton = StandardButton::Ok;
-   static const auto LastButton  = StandardButton::RestoreDefaults;
+   static constexpr const auto FirstButton = StandardButton::Ok;
+   static constexpr const auto LastButton  = StandardButton::RestoreDefaults;
 
    using StandardButtons = QFlags<StandardButton>;
 

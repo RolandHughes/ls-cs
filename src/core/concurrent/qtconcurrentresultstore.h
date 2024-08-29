@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,9 +24,9 @@
 #ifndef QTCONCURRENTRESULTSTORE_H
 #define QTCONCURRENTRESULTSTORE_H
 
+#include <qdebug.h>
 #include <qglobal.h>
 #include <qmap.h>
-#include <qdebug.h>
 
 /*
     ResultStore stores indexed results. Results can be added and retrieved
@@ -66,7 +66,7 @@ class ResultItem
    }
 
    int m_count;           // result is either a pointer to a result or to a vector of results,
-   const void *result;   // if count is 0 it's a result, otherwise it's a vector.
+   const void *result;    // if count is 0 it's a result, otherwise it's a vector.
 };
 
 class Q_CORE_EXPORT ResultIteratorBase
@@ -182,27 +182,30 @@ class ResultStore : public ResultStoreBase
    }
 
    ResultIterator<T> begin() const {
-      return static_cast<ResultIterator<T> >(ResultStoreBase::begin());
+      return static_cast<ResultIterator<T>>(ResultStoreBase::begin());
    }
 
    ResultIterator<T> end() const {
-      return static_cast<ResultIterator<T> >(ResultStoreBase::end());
+      return static_cast<ResultIterator<T>>(ResultStoreBase::end());
    }
 
    ResultIterator<T> resultAt(int index) const {
-      return static_cast<ResultIterator<T> >(ResultStoreBase::resultAt(index));
+      return static_cast<ResultIterator<T>>(ResultStoreBase::resultAt(index));
    }
 
    void clear() {
       QMap<int, ResultItem>::const_iterator mapIterator = m_results.constBegin();
+
       while (mapIterator != m_results.constEnd()) {
          if (mapIterator.value().isVector()) {
             delete reinterpret_cast<const QVector<T> *>(mapIterator.value().result);
          } else {
             delete reinterpret_cast<const T *>(mapIterator.value().result);
          }
+
          ++mapIterator;
       }
+
       resultCount = 0;
       m_results.clear();
    }

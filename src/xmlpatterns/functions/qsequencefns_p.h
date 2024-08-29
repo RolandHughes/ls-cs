@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -66,7 +66,7 @@ class Existence : public FunctionCall
 {
  public:
    bool evaluateEBV(const DynamicContext::Ptr &context) const override {
-      if (Id == IDExistsFN) {
+      if constexpr (Id == IDExistsFN) {
          return !m_operands.first()->evaluateSequence(context)->isEmpty();
       } else {
          return m_operands.first()->evaluateSequence(context)->isEmpty();

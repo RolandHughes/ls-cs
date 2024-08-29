@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -25,13 +25,15 @@
 
 #ifndef QT_NO_STATEMACHINE
 
-#include <qevent.h>
 #include <qdebug.h>
+#include <qevent.h>
+
 #include <qabstracttransition_p.h>
 
 class QBasicKeyEventTransitionPrivate : public QAbstractTransitionPrivate
 {
    Q_DECLARE_PUBLIC(QBasicKeyEventTransition)
+
  public:
    QBasicKeyEventTransitionPrivate();
 
@@ -69,8 +71,7 @@ QBasicKeyEventTransition::QBasicKeyEventTransition(QEvent::Type type, int key,
 }
 
 QBasicKeyEventTransition::QBasicKeyEventTransition(QEvent::Type type, int key,
-      Qt::KeyboardModifiers modifierMask,
-      QState *sourceState)
+      Qt::KeyboardModifiers modifierMask, QState *sourceState)
    : QAbstractTransition(*new QBasicKeyEventTransitionPrivate, sourceState)
 {
    Q_D(QBasicKeyEventTransition);
@@ -119,23 +120,19 @@ void QBasicKeyEventTransition::setModifierMask(Qt::KeyboardModifiers modifierMas
    d->modifierMask = modifierMask;
 }
 
-/*!
-  \reimp
-*/
 bool QBasicKeyEventTransition::eventTest(QEvent *event)
 {
    Q_D(const QBasicKeyEventTransition);
+
    if (event->type() == d->eventType) {
       QKeyEvent *ke = static_cast<QKeyEvent *>(event);
-      return (ke->key() == d->key)
-             && ((ke->modifiers() & d->modifierMask) == d->modifierMask);
+
+      return (ke->key() == d->key) && ((ke->modifiers() & d->modifierMask) == d->modifierMask);
    }
+
    return false;
 }
 
-/*!
-  \reimp
-*/
 void QBasicKeyEventTransition::onTransition(QEvent *)
 {
 }

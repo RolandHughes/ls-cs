@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -33,12 +33,12 @@ class QSharedDataPointer;
 class Q_CORE_EXPORT QSharedData
 {
  public:
-   inline QSharedData()
+   QSharedData()
       : ref(0)
    {
    }
 
-   inline QSharedData(const QSharedData &other)
+   QSharedData(const QSharedData &other)
       : ref(0)
    {
       (void) other;
@@ -55,8 +55,8 @@ template <class T>
 class QSharedDataPointer
 {
  public:
-   typedef T Type;
-   typedef T *pointer;
+   using Type    = T;
+   using pointer = T *;
 
    inline void detach() {
       if (d && d->ref.load() != 1) {
@@ -364,9 +364,11 @@ void QSharedDataPointer<T>::detach_helper()
 {
    T *x = clone();
    x->ref.ref();
-   if (!d->ref.deref()) {
+
+   if (! d->ref.deref()) {
       delete d;
    }
+
    d = x;
 }
 
@@ -381,9 +383,11 @@ void QExplicitlySharedDataPointer<T>::detach_helper()
 {
    T *x = clone();
    x->ref.ref();
+
    if (!d->ref.deref()) {
       delete d;
    }
+
    d = x;
 }
 
@@ -419,6 +423,5 @@ inline void swap(QExplicitlySharedDataPointer<T> &p1, QExplicitlySharedDataPoint
 {
    p1.swap(p2);
 }
-
 
 #endif

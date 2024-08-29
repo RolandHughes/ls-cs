@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -76,7 +76,6 @@ static inline bool hasFeature(const QDockWidget *dockwidget, QDockWidget::DockWi
    return (dockwidget->features() & feature) == feature;
 }
 
-
 /*
     A Dock Window:
 
@@ -102,7 +101,6 @@ static inline bool hasFeature(const QDockWidget *dockwidget, QDockWidget::DockWi
     +-------------------------------+
 
 */
-
 
 class QDockWidgetTitleButton : public QAbstractButton
 {
@@ -1148,7 +1146,6 @@ QDockWidget::QDockWidget(QWidget *parent, Qt::WindowFlags flags)
    d->init();
 }
 
-
 QDockWidget::QDockWidget(const QString &title, QWidget *parent, Qt::WindowFlags flags)
    : QWidget(*new QDockWidgetPrivate, parent, flags)
 {
@@ -1157,50 +1154,21 @@ QDockWidget::QDockWidget(const QString &title, QWidget *parent, Qt::WindowFlags 
    setWindowTitle(title);
 }
 
-/*!
-    Destroys the dock widget.
-*/
 QDockWidget::~QDockWidget()
-{ }
+{
+}
 
-/*!
-    Returns the widget for the dock widget. This function returns zero
-    if the widget has not been set.
-
-    \sa setWidget()
-*/
 QWidget *QDockWidget::widget() const
 {
    QDockWidgetLayout *layout = qobject_cast<QDockWidgetLayout *>(this->layout());
    return layout->widgetForRole(QDockWidgetLayout::Content);
 }
 
-/*!
-    Sets the widget for the dock widget to \a widget.
-
-    If the dock widget is visible when \a widget is added, you must
-    \l{QWidget::}{show()} it explicitly.
-
-    Note that you must add the layout of the \a widget before you call
-    this function; if not, the \a widget will not be visible.
-
-    \sa widget()
-*/
 void QDockWidget::setWidget(QWidget *widget)
 {
    QDockWidgetLayout *layout = qobject_cast<QDockWidgetLayout *>(this->layout());
    layout->setWidgetForRole(QDockWidgetLayout::Content, widget);
 }
-
-/*!
-    \property QDockWidget::features
-    \brief whether the dock widget is movable, closable, and floatable
-
-    By default, this property is set to a combination of DockWidgetClosable,
-    DockWidgetMovable and DockWidgetFloatable.
-
-    \sa DockWidgetFeature
-*/
 
 void QDockWidget::setFeatures(QDockWidget::DockWidgetFeatures features)
 {
@@ -1281,7 +1249,6 @@ Qt::DockWidgetAreas QDockWidget::allowedAreas() const
    return d->allowedAreas;
 }
 
-/*! \reimp */
 void QDockWidget::changeEvent(QEvent *event)
 {
    Q_D(QDockWidget);
@@ -1315,7 +1282,6 @@ void QDockWidget::changeEvent(QEvent *event)
    QWidget::changeEvent(event);
 }
 
-/*! \reimp */
 void QDockWidget::closeEvent(QCloseEvent *event)
 {
    Q_D(QDockWidget);
@@ -1325,7 +1291,6 @@ void QDockWidget::closeEvent(QCloseEvent *event)
    QWidget::closeEvent(event);
 }
 
-/*! \reimp */
 void QDockWidget::paintEvent(QPaintEvent *event)
 {
    (void) event;
@@ -1354,7 +1319,6 @@ void QDockWidget::paintEvent(QPaintEvent *event)
    }
 }
 
-/*! \reimp */
 bool QDockWidget::event(QEvent *event)
 {
    Q_D(QDockWidget);
@@ -1469,14 +1433,12 @@ bool QDockWidget::event(QEvent *event)
 }
 
 #ifndef QT_NO_ACTION
-
 QAction *QDockWidget::toggleViewAction() const
 {
    Q_D(const QDockWidget);
    return d->toggleViewAction;
 }
 #endif
-
 
 void QDockWidget::setTitleBarWidget(QWidget *widget)
 {
@@ -1487,8 +1449,8 @@ void QDockWidget::setTitleBarWidget(QWidget *widget)
    d->updateButtons();
 
    if (isWindow()) {
-      //this ensures the native decoration is drawn
-      d->setWindowState(true /*floating*/, true /*unplug*/);
+      // this ensures the native decoration is drawn
+      d->setWindowState(true, true);
    }
 }
 

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -49,18 +49,23 @@ void QStyleOption::initFrom(const QWidget *widget)
    if (widget->isEnabled()) {
       state |= QStyle::State_Enabled;
    }
+
    if (widget->hasFocus()) {
       state |= QStyle::State_HasFocus;
    }
+
    if (window->testAttribute(Qt::WA_KeyboardFocusChange)) {
       state |= QStyle::State_KeyboardFocusChange;
    }
+
    if (widget->underMouse()) {
       state |= QStyle::State_MouseOver;
    }
+
    if (window->isActiveWindow()) {
       state |= QStyle::State_Active;
    }
+
    if (widget->isWindow()) {
       state |= QStyle::State_Window;
    }
@@ -488,6 +493,7 @@ QStyleHintReturnMask::QStyleHintReturnMask() : QStyleHintReturn(Version, Type)
 QStyleHintReturnMask::~QStyleHintReturnMask()
 {
 }
+
 QStyleHintReturnVariant::QStyleHintReturnVariant() : QStyleHintReturn(Version, Type)
 {
 }
@@ -498,8 +504,7 @@ QStyleHintReturnVariant::~QStyleHintReturnVariant()
 
 QDebug operator<<(QDebug debug, const QStyleOption::OptionType &optionType)
 {
-#if ! defined(QT_NO_DEBUG)
-
+#if defined(CS_SHOW_DEBUG_GUI_STYLES)
    switch (optionType) {
       case QStyleOption::SO_Default:
          debug << "SO_Default";
@@ -564,6 +569,7 @@ QDebug operator<<(QDebug debug, const QStyleOption::OptionType &optionType)
       case QStyleOption::SO_Slider:
          debug << "SO_Slider";
          break;
+
       case QStyleOption::SO_SpinBox:
          debug << "SO_SpinBox";
          break;
@@ -604,6 +610,10 @@ QDebug operator<<(QDebug debug, const QStyleOption::OptionType &optionType)
          debug << "SO_GraphicsItem";
          break;
    }
+
+#else
+   (void) optionType;
+
 #endif
 
    return debug;
@@ -611,7 +621,7 @@ QDebug operator<<(QDebug debug, const QStyleOption::OptionType &optionType)
 
 QDebug operator<<(QDebug debug, const QStyleOption &option)
 {
-#if ! defined(QT_NO_DEBUG)
+#if defined(CS_SHOW_DEBUG_GUI_STYLES)
    debug << "QStyleOption(";
    debug << QStyleOption::OptionType(option.type);
    debug << ',' << (option.direction == Qt::RightToLeft ? "RightToLeft" : "LeftToRight");
@@ -619,6 +629,10 @@ QDebug operator<<(QDebug debug, const QStyleOption &option)
    debug << ',' << option.rect;
    debug << ',' << option.styleObject;
    debug << ')';
+
+#else
+   (void) option;
+
 #endif
 
    return debug;

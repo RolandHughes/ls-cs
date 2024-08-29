@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -38,14 +38,14 @@ class DirectShowAudioEndpointControl : public QAudioOutputSelectorControl
    DirectShowAudioEndpointControl(DirectShowPlayerService *service, QObject *parent = nullptr);
    ~DirectShowAudioEndpointControl();
 
-   QList<QString> availableOutputs() const;
+   QList<QString> availableOutputs() const override;
 
-   QString outputDescription(const QString &name) const;
+   QString outputDescription(const QString &name) const override;
 
-   QString defaultOutput() const;
-   QString activeOutput() const;
+   QString defaultOutput() const override;
+   QString activeOutput() const override;
 
-   void setActiveOutput(const QString &name);
+   void setActiveOutput(const QString &name) override;
 
  private:
    void updateEndpoints();

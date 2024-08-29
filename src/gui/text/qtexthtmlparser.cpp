@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -464,14 +464,6 @@ int QTextHtmlParser::lookupElement(const QString &element)
    return e->id;
 }
 
-// quotes newlines as "\\n"
-static QString quoteNewline(const QString &s)
-{
-   QString n = s;
-   n.replace(QLatin1Char('\n'), QLatin1String("\\n"));
-   return n;
-}
-
 QTextHtmlParserNode::QTextHtmlParserNode()
    : parent(0), id(Html_unknown),
      cssFloat(QTextFrameFormat::InFlow), hasOwnListStyle(false),
@@ -482,20 +474,10 @@ QTextHtmlParserNode::QTextHtmlParserNode()
      borderBrush(Qt::darkGray), borderStyle(QTextFrameFormat::BorderStyle_Outset),
      userState(-1), cssListIndent(0), wsm(WhiteSpaceModeUndefined)
 {
-   margin[QTextHtmlParser::MarginLeft] = 0;
-   margin[QTextHtmlParser::MarginRight] = 0;
-   margin[QTextHtmlParser::MarginTop] = 0;
+   margin[QTextHtmlParser::MarginLeft]   = 0;
+   margin[QTextHtmlParser::MarginRight]  = 0;
+   margin[QTextHtmlParser::MarginTop]    = 0;
    margin[QTextHtmlParser::MarginBottom] = 0;
-}
-
-void QTextHtmlParser::dumpHtml()
-{
-   for (int i = 0; i < count(); ++i) {
-      qDebug().nospace() << csPrintable(QString(depth(i) * 4, QLatin1Char(' ')))
-         << csPrintable(at(i).tag) << ':'
-         << quoteNewline(at(i).text);
-      ;
-   }
 }
 
 QTextHtmlParserNode *QTextHtmlParser::newNode(int parent)
@@ -513,14 +495,15 @@ QTextHtmlParserNode *QTextHtmlParser::newNode(int parent)
       if (lastNode->text.isEmpty()) {
          reuseLastNode = true;
 
-      } else { // last node is a text node (empty tag) with some text
+      } else {
+         // last node is a text node (empty tag) with some text
 
          if (lastNode->text.length() == 1 && lastNode->text.first().isSpace()) {
 
             int lastSibling = count() - 2;
 
             while (lastSibling && at(lastSibling).parent != lastNode->parent
-               && at(lastSibling).displayMode == QTextHtmlElement::DisplayInline) {
+                  && at(lastSibling).displayMode == QTextHtmlElement::DisplayInline) {
 
                lastSibling = at(lastSibling).parent;
             }
@@ -567,7 +550,6 @@ void QTextHtmlParser::parse(const QString &text, const QTextDocument *_resourceP
    textEditMode = false;
    resourceProvider = _resourceProvider;
    parse();
-   //dumpHtml();
 }
 
 int QTextHtmlParser::depth(int i) const

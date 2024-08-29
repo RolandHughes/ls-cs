@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -21,11 +21,11 @@
 *
 ***********************************************************************/
 
-#include <array>
-
 #include <qstring16.h>
+
 #include <qdatastream.h>
 #include <qregularexpression.h>
+
 #include <qunicodetables_p.h>
 
 #if defined(Q_OS_WIN)
@@ -35,6 +35,8 @@
 #ifdef Q_OS_DARWIN
 #include <CoreFoundation/CFString.h>
 #endif
+
+#include <array>
 
 static bool cs_internal_quickCheck(QString16::const_iterator &first_iter, QString16::const_iterator last_iter,
                   QString16::NormalizationForm mode);
@@ -940,6 +942,7 @@ QString16 &QString16::replace(const QString16 &before, const QString16 &after, Q
 
       iter = erase(iter, last);
       iter = CsString::CsString_utf16::insert(iter, after);
+      iter = iter.advance_storage(after.size_storage());
 
       iter = indexOfFast(before, iter, cs);
    }
@@ -1061,9 +1064,9 @@ QString16 &QString16::replace(const QRegularExpression16 &regExp, const QString1
    static QRegularExpression16 regSplit("(.*?)(\\\\[0-9])");
    bool noCapture = true;
 
-   auto iter = after.indexOfFast(u'\\');
+   auto iter_start = after.indexOfFast(u'\\');
 
-   if (iter != after.end() && iter != after.end() - 1) {
+   if (iter_start != after.end() && iter_start != after.end() - 1) {
       splitMatch = regSplit.match(after);
 
       if (splitMatch.hasMatch()) {
@@ -1077,10 +1080,11 @@ QString16 &QString16::replace(const QRegularExpression16 &regExp, const QString1
          auto first = match.capturedStart(0);
          auto last  = match.capturedEnd(0);
 
-         auto iter  = this->erase(first, last);
-         iter       = CsString::CsString_utf16::insert(iter, after);
+         auto iter = this->erase(first, last);
+         iter  = CsString::CsString_utf16::insert(iter, after);
+         iter  = iter.advance_storage(after.size_storage());
 
-         match      = regExp.match(*this, iter);
+         match = regExp.match(*this, iter);
       }
 
    } else {
@@ -1114,42 +1118,53 @@ QString16 &QString16::replace(const QRegularExpression16 &regExp, const QString1
             saveCapture[x] = match.captured(x);
          }
 
-         auto iter  = this->erase(first, last);
+         auto iter = this->erase(first, last);
 
          for (const auto &item : list) {
 
             if (item == u"\\0") {
                iter = CsString::CsString_utf16::insert(iter, saveCapture[0]);
+               iter = iter.advance_storage(saveCapture[0].size_storage());
 
             } else if (item == u"\\1") {
-                  iter = CsString::CsString_utf16::insert(iter, saveCapture[1]);
+               iter = CsString::CsString_utf16::insert(iter, saveCapture[1]);
+               iter = iter.advance_storage(saveCapture[1].size_storage());
 
             } else if (item == u"\\2") {
-                  iter = CsString::CsString_utf16::insert(iter, saveCapture[2]);
+               iter = CsString::CsString_utf16::insert(iter, saveCapture[2]);
+               iter = iter.advance_storage(saveCapture[2].size_storage());
 
             } else if (item == u"\\3") {
-                  iter = CsString::CsString_utf16::insert(iter, saveCapture[3]);
+               iter = CsString::CsString_utf16::insert(iter, saveCapture[3]);
+               iter = iter.advance_storage(saveCapture[3].size_storage());
 
             } else if (item == u"\\4") {
-                  iter = CsString::CsString_utf16::insert(iter, saveCapture[4]);
+               iter = CsString::CsString_utf16::insert(iter, saveCapture[4]);
+               iter = iter.advance_storage(saveCapture[4].size_storage());
 
             } else if (item == u"\\5") {
-                  iter = CsString::CsString_utf16::insert(iter, saveCapture[5]);
+               iter = CsString::CsString_utf16::insert(iter, saveCapture[5]);
+               iter = iter.advance_storage(saveCapture[5].size_storage());
 
             } else if (item == u"\\6") {
-                  iter = CsString::CsString_utf16::insert(iter, saveCapture[6]);
+               iter = CsString::CsString_utf16::insert(iter, saveCapture[6]);
+               iter = iter.advance_storage(saveCapture[6].size_storage());
 
             } else if (item == u"\\7") {
-                  iter = CsString::CsString_utf16::insert(iter, saveCapture[7]);
+               iter = CsString::CsString_utf16::insert(iter, saveCapture[7]);
+               iter = iter.advance_storage(saveCapture[7].size_storage());
 
             } else if (item == u"\\8") {
-                  iter = CsString::CsString_utf16::insert(iter, saveCapture[8]);
+               iter = CsString::CsString_utf16::insert(iter, saveCapture[8]);
+               iter = iter.advance_storage(saveCapture[8].size_storage());
 
             } else if (item == u"\\9") {
-                  iter = CsString::CsString_utf16::insert(iter, saveCapture[9]);
+               iter = CsString::CsString_utf16::insert(iter, saveCapture[9]);
+               iter = iter.advance_storage(saveCapture[9].size_storage());
 
             } else {
                iter = CsString::CsString_utf16::insert(iter, item);
+               iter = iter.advance_storage(item.size_storage());
 
             }
          }
@@ -1756,7 +1771,9 @@ bool cs_internal_quickCheck(QString16::const_iterator &first_iter, QString16::co
    static_assert(QString16::NormalizationForm_KD == 2, "Normalization form mismatch");
    static_assert(QString16::NormalizationForm_KC == 3, "Normalization form mismatch");
 
-   enum { NFQC_YES = 0, NFQC_NO = 1, NFQC_MAYBE = 3 };
+   static constexpr const int NFQC_YES      = 0;
+   // static constexpr const int NFQC_NO    = 1;
+   // static constexpr const int NFQC_MAYBE = 3;
 
    uchar lastCombining = 0;
 

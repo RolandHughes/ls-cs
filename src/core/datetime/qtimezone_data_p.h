@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -27,7 +27,7 @@
 /*
     Windows Zone ID support, included in default base class build so can be used on all platforms,
     e.g. an app running on Linux may need to communicate with a Windows Outlook server.  These
-    tables can also be used to look-up Region Codes and UTC Offsets on platforms that don't directly
+    tables can also be used to look-up Region Codes and UTC Offsets on platforms that do not directly
     support them., e.g. Mac does not support availableTimeZones() filtering by region or offset.
 
     Another data table is provided for generic UTC+00:00 format time zones to be used as a

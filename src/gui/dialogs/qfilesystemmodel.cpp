@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -22,13 +22,14 @@
 ***********************************************************************/
 
 #include <qfilesystemmodel_p.h>
+
+#include <qapplication.h>
+#include <qdebug.h>
 #include <qfilesystemmodel.h>
 #include <qlocale.h>
+#include <qmessagebox.h>
 #include <qmimedata.h>
 #include <qurl.h>
-#include <qdebug.h>
-#include <qmessagebox.h>
-#include <qapplication.h>
 
 #include <algorithm>
 
@@ -1023,11 +1024,6 @@ int QFileSystemModelPrivate::naturalCompare(const QString &s1, const QString &s2
    return QString::compare(s1, s2, cs);
 }
 
-
-/*
-    \internal
-    Helper functor used by sort()
-*/
 class QFileSystemModelSorter
 {
  public:
@@ -1150,9 +1146,6 @@ void QFileSystemModelPrivate::sortChildren(int column, const QModelIndex &parent
    }
 }
 
-/*!
-    \reimp
-*/
 void QFileSystemModel::sort(int column, Qt::SortOrder order)
 {
    Q_D(QFileSystemModel);
@@ -1189,15 +1182,10 @@ void QFileSystemModel::sort(int column, Qt::SortOrder order)
    emit layoutChanged();
 }
 
-/*!
-    Returns a list of MIME types that can be used to describe a list of items
-    in the model.
-*/
 QStringList QFileSystemModel::mimeTypes() const
 {
    return QStringList(QString("text/uri-list"));
 }
-
 
 QMimeData *QFileSystemModel::mimeData(const QModelIndexList &indexes) const
 {
@@ -1212,13 +1200,6 @@ QMimeData *QFileSystemModel::mimeData(const QModelIndexList &indexes) const
    return data;
 }
 
-/*!
-    Handles the \a data supplied by a drag and drop operation that ended with
-    the given \a action over the row in the model specified by the \a row and
-    \a column and by the \a parent index.
-
-    \sa supportedDropActions()
-*/
 bool QFileSystemModel::dropMimeData(const QMimeData *data, Qt::DropAction action,
    int row, int column, const QModelIndex &parent)
 {
@@ -1328,9 +1309,6 @@ QString QFileSystemModelPrivate::filePath(const QModelIndex &index) const
    return fullPath;
 }
 
-/*!
-    Create a directory with the \a name in the \a parent model index.
-*/
 QModelIndex QFileSystemModel::mkdir(const QModelIndex &parent, const QString &name)
 {
    Q_D(QFileSystemModel);
@@ -1358,9 +1336,6 @@ QModelIndex QFileSystemModel::mkdir(const QModelIndex &parent, const QString &na
    return d->index(node);
 }
 
-/*!
-    Returns the complete OR-ed together combination of QFile::Permission for the \a index.
- */
 QFile::Permissions QFileSystemModel::permissions(const QModelIndex &index) const
 {
    Q_D(const QFileSystemModel);
@@ -1597,9 +1572,6 @@ void QFileSystemModel::setNameFilters(const QStringList &filters)
    d->delayedSort();
 }
 
-/*!
-    Returns a list of filters applied to the names in the model.
-*/
 QStringList QFileSystemModel::nameFilters() const
 {
    Q_D(const QFileSystemModel);
@@ -1612,9 +1584,6 @@ QStringList QFileSystemModel::nameFilters() const
    return filters;
 }
 
-/*!
-    \reimp
-*/
 bool QFileSystemModel::event(QEvent *event)
 {
 #ifndef QT_NO_FILESYSTEMWATCHER
@@ -1855,7 +1824,7 @@ void QFileSystemModelPrivate::_q_fileSystemChanged(const QString &path, const QV
    for (int i = 0; i < rowsToUpdate.count(); ++i) {
       QString value = rowsToUpdate.at(i);
 
-      //##TODO is there a way to bundle signals with QString as the content of the list?
+      // is there a way to bundle signals with QString as the content of the list?
       /*if (min.isEmpty()) {
           min = value;
           if (i != rowsToUpdate.count() - 1)
@@ -1867,6 +1836,7 @@ void QFileSystemModelPrivate::_q_fileSystemChanged(const QString &path, const QV
               continue;
           }
       }*/
+
       max = value;
       min = value;
 
@@ -1881,8 +1851,9 @@ void QFileSystemModelPrivate::_q_fileSystemChanged(const QString &path, const QV
          emit q->dataChanged(bottom, top);
       }
 
-      /*min = QString();
-      max = QString();*/
+      /* min = QString();
+         max = QString();
+      */
    }
 
    if (newFiles.count() > 0) {

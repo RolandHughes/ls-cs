@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -64,13 +64,13 @@ class QM3uPlaylistReader : public QMediaPlaylistReader
       delete m_textStream;
    }
 
-   virtual bool atEnd() const {
+   bool atEnd() const override {
       //we can't just use m_textStream->atEnd(),
       //for files with empty lines/comments at end
       return nextResource.isNull();
    }
 
-   virtual QMediaContent readItem() {
+   QMediaContent readItem() override {
       QMediaContent item;
       if (!nextResource.isNull()) {
          item = QMediaContent(nextResource);
@@ -123,7 +123,7 @@ class QM3uPlaylistReader : public QMediaPlaylistReader
       return item;
    }
 
-   virtual void close() {
+   void close() override {
    }
 
  private:
@@ -145,19 +145,18 @@ class QM3uPlaylistWriter : public QMediaPlaylistWriter
       delete m_textStream;
    }
 
-   virtual bool writeItem(const QMediaContent &item) {
+   bool writeItem(const QMediaContent &item) override {
       *m_textStream << item.canonicalUrl().toString() << endl;
       return true;
    }
 
-   virtual void close() {
+   void close() override {
    }
 
  private:
    QIODevice *m_device;
    QTextStream *m_textStream;
 };
-
 
 QM3uPlaylistPlugin::QM3uPlaylistPlugin(QObject *parent)
    : QMediaPlaylistIOPlugin(parent)

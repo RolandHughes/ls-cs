@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -44,10 +44,8 @@ typedef int (*PtrXcursorLibraryGetDefaultSize)(void *);
 
 #if defined(XCB_USE_XLIB)
 #include <X11/Xlib.h>
-enum {
-   XCursorShape = CursorShape
-};
 
+static constexpr const auto XCursorShape = CursorShape;
 #undef CursorShape
 
 static PtrXcursorLibraryLoadCursor ptrXcursorLibraryLoadCursor = nullptr;

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -21,29 +21,30 @@
 *
 ***********************************************************************/
 
-#include <qplatformdefs.h>
 #include <qfilesystemwatcher.h>
+#include <qplatformdefs.h>
+
 #include <qfilesystemwatcher_dnotify_p.h>
 
 #ifndef QT_NO_FILESYSTEMWATCHER
 
-#include <qsocketnotifier.h>
+#include <dirent.h>
 #include <qcoreapplication.h>
+#include <qdir.h>
 #include <qfileinfo.h>
+#include <qmutex.h>
+#include <qsocketnotifier.h>
 #include <qtimer.h>
 #include <qwaitcondition.h>
-#include <qmutex.h>
-#include <dirent.h>
-#include <qdir.h>
 
 #include <qcore_unix_p.h>
 
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <signal.h>
-#include <unistd.h>
 #include <fcntl.h>
+#include <signal.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 #include <time.h>
+#include <unistd.h>
 
 #ifdef QT_LINUXBASE
 
@@ -123,6 +124,7 @@ QDnotifySignalThread::QDnotifySignalThread()
    action.sa_sigaction = qfswd_sigio_monitor;
    action.sa_flags = SA_SIGINFO;
    ::sigaction(SIGIO, &action, &oldAction);
+
    if (!(oldAction.sa_flags & SA_SIGINFO)) {
       qfswd_old_sigio_handler = oldAction.sa_handler;
    } else {
@@ -256,16 +258,20 @@ QStringList QDnotifyFileSystemWatcherEngine::addPaths(const QStringList &paths, 
       if (fd == 0) {
 
          QT_DIR *d = QT_OPENDIR(path.toUtf8().constData());
-         if (!d) {
+
+         if (! d) {
             continue;   // Could not open directory
          }
+
          QT_DIR *parent = nullptr;
 
          QDir parentDir(path);
-         if (!parentDir.isRoot()) {
+
+         if (! parentDir.isRoot()) {
             parentDir.cdUp();
             parent = QT_OPENDIR(parentDir.path().toUtf8().constData());
-            if (!parent) {
+
+            if (! parent) {
                QT_CLOSEDIR(d);
                continue;
             }
@@ -275,17 +281,17 @@ QStringList QDnotifyFileSystemWatcherEngine::addPaths(const QStringList &paths, 
          int parentFd = parent ? qt_safe_dup(::dirfd(parent)) : 0;
 
          QT_CLOSEDIR(d);
+
          if (parent) {
             QT_CLOSEDIR(parent);
          }
 
          Q_ASSERT(fd);
-         if (::fcntl(fd, F_SETSIG, SIGIO) ||
-               ::fcntl(fd, F_NOTIFY, DN_MODIFY | DN_CREATE | DN_DELETE |
-                       DN_RENAME | DN_ATTRIB | DN_MULTISHOT) ||
+
+         if (::fcntl(fd, F_SETSIG, SIGIO) || ::fcntl(fd, F_NOTIFY, DN_MODIFY | DN_CREATE | DN_DELETE |
+               DN_RENAME | DN_ATTRIB | DN_MULTISHOT) ||
                (parent && ::fcntl(parentFd, F_SETSIG, SIGIO)) ||
-               (parent && ::fcntl(parentFd, F_NOTIFY, DN_DELETE | DN_RENAME |
-                                  DN_MULTISHOT))) {
+               (parent && ::fcntl(parentFd, F_NOTIFY, DN_DELETE | DN_RENAME | DN_MULTISHOT))) {
             continue; // Could not set appropriate flags
          }
 
@@ -296,6 +302,7 @@ QStringList QDnotifyFileSystemWatcherEngine::addPaths(const QStringList &paths, 
 
          fdToDirectory.insert(fd, dir);
          pathToFD.insert(path, fd);
+
          if (parentFd) {
             parentToFD.insert(parentFd, fd);
          }
@@ -334,24 +341,27 @@ QStringList QDnotifyFileSystemWatcherEngine::removePaths(const QStringList &path
 
    QStringList p = paths;
    QMutableListIterator<QString> it(p);
+
    while (it.hasNext()) {
 
       QString path = it.next();
       int fd = pathToFD.take(path);
 
-      if (!fd) {
+      if (! fd) {
          continue;
       }
 
       Directory &directory = fdToDirectory[fd];
       bool isDir = false;
+
       if (directory.path == path) {
          isDir = true;
          directory.isMonitored = false;
+
       } else {
-         for (int ii = 0; ii < directory.files.count(); ++ii) {
-            if (directory.files.at(ii).path == path) {
-               directory.files.removeAt(ii);
+         for (int index = 0; index < directory.files.count(); ++index) {
+            if (directory.files.at(index).path == path) {
+               directory.files.removeAt(index);
                break;
             }
          }
@@ -391,9 +401,11 @@ void QDnotifyFileSystemWatcherEngine::refresh(int fd)
       }
 
       iter = fdToDirectory.find(*pIter);
+
       if (iter == fdToDirectory.end()) {
          return;
       }
+
       wasParent = true;
    }
 
@@ -402,6 +414,7 @@ void QDnotifyFileSystemWatcherEngine::refresh(int fd)
    if (!wasParent) {
       for (int ii = 0; ii < directory.files.count(); ++ii) {
          Directory::File &file = directory.files[ii];
+
          if (file.updateInfo()) {
             // Emit signal
             QString filePath = file.path;
@@ -431,10 +444,12 @@ void QDnotifyFileSystemWatcherEngine::refresh(int fd)
 
    if (!directory.isMonitored && directory.files.isEmpty()) {
       qt_safe_close(directory.fd);
+
       if (directory.parentFd) {
          qt_safe_close(directory.parentFd);
          parentToFD.remove(directory.parentFd);
       }
+
       fdToDirectory.erase(iter);
    }
 }
@@ -446,20 +461,21 @@ void QDnotifyFileSystemWatcherEngine::stop()
 bool QDnotifyFileSystemWatcherEngine::Directory::File::updateInfo()
 {
    QFileInfo fi(path);
+
    QDateTime nLastWrite = fi.lastModified();
    uint nOwnerId = fi.ownerId();
    uint nGroupId = fi.groupId();
+
    QFile::Permissions nPermissions = fi.permissions();
 
-   if (nLastWrite != lastWrite ||
-         nOwnerId != ownerId ||
-         nGroupId != groupId ||
-         nPermissions != permissions) {
+   if (nLastWrite != lastWrite || nOwnerId != ownerId || nGroupId != groupId || nPermissions != permissions) {
       ownerId = nOwnerId;
       groupId = nGroupId;
       permissions = nPermissions;
-      lastWrite = nLastWrite;
+      lastWrite   = nLastWrite;
+
       return true;
+
    } else {
       return false;
    }

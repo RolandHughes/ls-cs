@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,7 +24,7 @@
 #ifndef QHASHFWD_H
 #define QHASHFWD_H
 
-template <class T> 
+template <class T>
 unsigned int qHash(const T *key, unsigned int seed = 0);
 
 #endif

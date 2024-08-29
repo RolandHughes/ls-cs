@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -72,8 +72,8 @@ class Q_CORE_EXPORT QFSFileEngine : public QAbstractFileEngine
    int handle() const override;
 
 #ifndef QT_NO_FILESYSTEMITERATOR
-   Iterator *beginEntryList(QDir::Filters filters, const QStringList &filterNames) override;
-   Iterator *endEntryList() override;
+   QAbstractFileEngineIterator *beginEntryList(QDir::Filters filters, const QStringList &filterNames) override;
+   QAbstractFileEngineIterator *endEntryList() override;
 #endif
 
    qint64 read(char *data, qint64 maxlen) override;

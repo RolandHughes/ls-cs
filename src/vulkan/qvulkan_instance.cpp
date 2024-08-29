@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -174,7 +174,7 @@ VkBool32 QVulkanInstance::debugCallback(VkDebugReportFlagsEXT flags, VkDebugRepo
          .formatArg(QString::fromUtf8(pLayerPrefix)).formatArg(QString::fromUtf8(pMessage));
    }
 
-   qDebug("%s", errorMessage.constData());
+   qWarning("%s", errorMessage.constData());
 
    return VK_FALSE;
 }

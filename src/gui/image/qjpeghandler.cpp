@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -84,7 +84,7 @@ extern "C" {
 
 }
 
-static const int max_buf = 4096;
+static constexpr const int max_buf = 4096;
 
 struct my_jpeg_source_mgr : public jpeg_source_mgr {
    // Nothing dynamic - cannot rely on destruction over longjump
@@ -95,7 +95,6 @@ struct my_jpeg_source_mgr : public jpeg_source_mgr {
  public:
    my_jpeg_source_mgr(QIODevice *device);
 };
-
 
 extern "C" {
 

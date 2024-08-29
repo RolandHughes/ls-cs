@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -140,32 +140,17 @@ QList<QNetworkProxy> QGlobalNetworkProxy::proxyForQuery(const QNetworkProxyQuery
    result = applicationLevelProxyFactory->queryProxy(query);
 
    if (result.isEmpty()) {
-      qWarning("QNetworkProxyFactory: factory %p has returned an empty result set", applicationLevelProxyFactory);
+      qWarning("QGlobalNetworkProxy::proxyForQuery() Factory returned an empty result set");
       result << QNetworkProxy(QNetworkProxy::NoProxy);
    }
 
    return result;
 }
 
-namespace {
-
-template <bool>
-struct StaticAssertTest;
-
-template <>
-struct StaticAssertTest<true> {
-   enum { Value = 1 };
-};
-
-}
-
-static inline void qt_noop_with_arg(int) {}
-#define q_static_assert(expr)   qt_noop_with_arg(sizeof(StaticAssertTest< expr >::Value))
-
 static QNetworkProxy::Capabilities defaultCapabilitiesForType(QNetworkProxy::ProxyType type)
 {
-   q_static_assert(int(QNetworkProxy::DefaultProxy) == 0);
-   q_static_assert(int(QNetworkProxy::FtpCachingProxy) == 5);
+   static_assert(int(QNetworkProxy::DefaultProxy) == 0);
+   static_assert(int(QNetworkProxy::FtpCachingProxy) == 5);
 
    static const int defaults[] = {
       /* [QNetworkProxy::DefaultProxy] = */
@@ -197,6 +182,7 @@ static QNetworkProxy::Capabilities defaultCapabilitiesForType(QNetworkProxy::Pro
    if (int(type) < 0 || int(type) > int(QNetworkProxy::FtpCachingProxy)) {
       type = QNetworkProxy::DefaultProxy;
    }
+
    return QNetworkProxy::Capabilities(defaults[int(type)]);
 }
 

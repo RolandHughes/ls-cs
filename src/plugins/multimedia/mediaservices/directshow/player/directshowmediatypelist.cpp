@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -33,17 +33,16 @@ class DirectShowMediaTypeEnum : public IEnumMediaTypes
    virtual ~DirectShowMediaTypeEnum();
 
    // IUnknown
-   HRESULT STDMETHODCALLTYPE QueryInterface(REFIID riid, void **ppvObject);
-   ULONG STDMETHODCALLTYPE AddRef();
-   ULONG STDMETHODCALLTYPE Release();
+   HRESULT STDMETHODCALLTYPE QueryInterface(REFIID riid, void **ppvObject) override;
+   ULONG STDMETHODCALLTYPE AddRef() override;
+   ULONG STDMETHODCALLTYPE Release() override;
 
    // IEnumMediaTypes
-   HRESULT STDMETHODCALLTYPE Next(
-      ULONG cMediaTypes, AM_MEDIA_TYPE **ppMediaTypes, ULONG *pcFetched);
-   HRESULT STDMETHODCALLTYPE Skip(ULONG cMediaTypes);
-   HRESULT STDMETHODCALLTYPE Reset();
+   HRESULT STDMETHODCALLTYPE Next(ULONG cMediaTypes, AM_MEDIA_TYPE **ppMediaTypes, ULONG *pcFetched) override;
+   HRESULT STDMETHODCALLTYPE Skip(ULONG cMediaTypes) override;
+   HRESULT STDMETHODCALLTYPE Reset() override;
 
-   HRESULT STDMETHODCALLTYPE Clone(IEnumMediaTypes **ppEnum);
+   HRESULT STDMETHODCALLTYPE Clone(IEnumMediaTypes **ppEnum) override;
 
  private:
    LONG m_ref;
@@ -52,13 +51,9 @@ class DirectShowMediaTypeEnum : public IEnumMediaTypes
    int m_index;
 };
 
-
 DirectShowMediaTypeEnum::DirectShowMediaTypeEnum(
    DirectShowMediaTypeList *list, int token, int index)
-   : m_ref(1)
-   , m_list(list)
-   , m_mediaTypeToken(token)
-   , m_index(index)
+   : m_ref(1), m_list(list), m_mediaTypeToken(token), m_index(index)
 {
    m_list->AddRef();
 }

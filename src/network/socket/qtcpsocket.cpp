@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -21,18 +21,16 @@
 *
 ***********************************************************************/
 
-//#define QTCPSOCKET_DEBUG
 
 #include <qlist.h>
 #include <qtcpsocket_p.h>
 #include <qtcpsocket.h>
 #include <qhostaddress.h>
 
-
 QTcpSocket::QTcpSocket(QObject *parent)
    : QAbstractSocket(TcpSocket, *new QTcpSocketPrivate, parent)
 {
-#if defined(QTCPSOCKET_DEBUG)
+#if defined(CS_SHOW_DEBUG_NETWORK)
    qDebug("QTcpSocket::QTcpSocket()");
 #endif
    d_func()->isBuffered = true;
@@ -40,7 +38,7 @@ QTcpSocket::QTcpSocket(QObject *parent)
 
 QTcpSocket::~QTcpSocket()
 {
-#if defined(QTCPSOCKET_DEBUG)
+#if defined(CS_SHOW_DEBUG_NETWORK)
    qDebug("QTcpSocket::~QTcpSocket()");
 #endif
 }
@@ -55,4 +53,3 @@ QTcpSocket::QTcpSocket(QAbstractSocket::SocketType socketType, QTcpSocketPrivate
    : QAbstractSocket(socketType, dd, parent)
 {
 }
-

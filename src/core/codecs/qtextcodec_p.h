@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,21 +24,21 @@
 #ifndef QTEXTCODEC_P_H
 #define QTEXTCODEC_P_H
 
-#include <qtextcodec.h>
 #include <string.h>
+#include <qtextcodec.h>
 
 #ifndef QT_NO_TEXTCODEC
 
-typedef void (*QTextCodecStateFreeFunction)(QTextCodec::ConverterState *);
+using QTextCodecStateFreeFunction = void (*)(QTextCodec::ConverterState *);
 
 struct QTextCodecUnalignedPointer {
-   static inline QTextCodecStateFreeFunction decode(const uint *src) {
+   static QTextCodecStateFreeFunction decode(const uint *src) {
       quintptr data;
       memcpy(&data, src, sizeof(data));
       return reinterpret_cast<QTextCodecStateFreeFunction>(data);
    }
 
-   static inline void encode(uint *dst, QTextCodecStateFreeFunction fn) {
+   static void encode(uint *dst, QTextCodecStateFreeFunction fn) {
       quintptr data = reinterpret_cast<quintptr>(fn);
       memcpy(dst, &data, sizeof(data));
    }

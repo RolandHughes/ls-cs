@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -41,11 +41,6 @@
 #include <qurl.h>
 #include <qvariant.h>
 
-// #define QT_QMAP_DEBUG
-
-#ifdef QT_QMAP_DEBUG
-#include <iostream>
-#endif
 
 class QTextFormatCollection;
 class QTextFormat;
@@ -57,7 +52,7 @@ class QTextFrame;
 class QAbstractUndoItem;
 
 #define QTextBeginningOfFrame QChar(0xfdd0)
-#define QTextEndOfFrame QChar(0xfdd1)
+#define QTextEndOfFrame       QChar(0xfdd1)
 
 class QTextFragmentData : public QFragment<>
 {

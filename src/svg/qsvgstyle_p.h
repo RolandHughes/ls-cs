@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -107,12 +107,10 @@ class QSvgRefCounted
    virtual ~QSvgRefCounted() {}
    void ref() {
       ++_ref;
-      //        qDebug() << this << ": adding ref, now " << _ref;
    }
+
    void deref() {
-      //        qDebug() << this << ": removing ref, now " << _ref;
       if (!--_ref) {
-         //            qDebug("     deleting");
          delete this;
       }
    }

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -498,10 +498,10 @@ QMap<int, QVariant> QTableModel::itemData(const QModelIndex &index) const
    return roles;
 }
 
-// reimplemented to ensure that only one dataChanged() signal is emitted
+// ensure only one dataChanged() signal is emitted
 bool QTableModel::setItemData(const QModelIndex &index, const QMap<int, QVariant> &roles)
 {
-   if (!index.isValid()) {
+   if (! index.isValid()) {
       return false;
    }
 

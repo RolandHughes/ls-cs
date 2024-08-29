@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -34,21 +34,38 @@ class QBspTree
  public:
 
    struct Node {
-      enum Type { None = 0, VerticalPlane = 1, HorizontalPlane = 2, Both = 3 };
-      inline Node() : pos(0), type(None) {}
+      enum Type {
+         None            = 0,
+         VerticalPlane   = 1,
+         HorizontalPlane = 2,
+         Both            = 3
+      };
+
+      Node()
+         : pos(0), type(None)
+      { }
+
       int pos;
       Type type;
    };
+
    typedef Node::Type NodeType;
 
    struct Data {
-      Data(void *p) : ptr(p) {}
-      Data(int n) : i(n) {}
+      Data(void *p)
+         : ptr(p)
+      { }
+
+      Data(int n)
+         : i(n)
+      { }
+
       union {
          void *ptr;
          int i;
       };
    };
+
    typedef QBspTree::Data QBspTreeData;
    typedef void callback(QVector<int> &leaf, const QRect &area, uint visited, QBspTreeData data);
 
@@ -57,22 +74,25 @@ class QBspTree
    void create(int n, int d = -1);
    void destroy();
 
-   inline void init(const QRect &area, NodeType type) {
+   void init(const QRect &area, NodeType type) {
       init(area, depth, type, 0);
    }
 
    void climbTree(const QRect &rect, callback *function, QBspTreeData data);
 
-   inline int leafCount() const {
+   int leafCount() const {
       return leaves.count();
    }
-   inline QVector<int> &leaf(int i) {
+
+   QVector<int> &leaf(int i) {
       return leaves[i];
    }
-   inline void insertLeaf(const QRect &r, int i) {
+
+   void insertLeaf(const QRect &r, int i) {
       climbTree(r, &insert, i, 0);
    }
-   inline void removeLeaf(const QRect &r, int i) {
+
+   void removeLeaf(const QRect &r, int i) {
       climbTree(r, &remove, i, 0);
    }
 
@@ -80,10 +100,11 @@ class QBspTree
    void init(const QRect &area, int depth, NodeType type, int index);
    void climbTree(const QRect &rect, callback *function, QBspTreeData data, int index);
 
-   inline int parentIndex(int i) const {
+   int parentIndex(int i) const {
       return (i & 1) ? ((i - 1) / 2) : ((i - 2) / 2);
    }
-   inline int firstChildIndex(int i) const {
+
+   int firstChildIndex(int i) const {
       return ((i * 2) + 1);
    }
 
@@ -96,7 +117,5 @@ class QBspTree
    QVector<Node> nodes;
    mutable QVector< QVector<int>> leaves; // the leaves are just indices into the items
 };
-
-
 
 #endif // QBSPTREE_P_H

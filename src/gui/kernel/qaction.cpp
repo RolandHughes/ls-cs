@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -521,10 +521,11 @@ void QAction::setText(const QString &text)
 QString QAction::text() const
 {
    Q_D(const QAction);
+
    QString s = d->text;
    if (s.isEmpty()) {
       s = d->iconText;
-      s.replace(QLatin1Char('&'), QLatin1String("&&"));
+      s.replace(QLatin1Char('&'), QString("&&"));
    }
    return s;
 }

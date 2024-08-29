@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,14 +24,14 @@
 #ifndef QBYTEARRAY_H
 #define QBYTEARRAY_H
 
+#include <qarraydata.h>
+#include <qassert.h>
+#include <qnamespace.h>
+#include <qrefcount.h>
+
 #include <string.h>
 #include <stdarg.h>
 #include <iterator>
-
-#include <qassert.h>
-#include <qrefcount.h>
-#include <qnamespace.h>
-#include <qarraydata.h>
 
 class QByteRef;
 class QDataStream;
@@ -46,10 +46,10 @@ using QByteArrayData = QArrayData;
 #endif
 
 #ifdef Q_OS_DARWIN
-   using CFDataRef = const struct __CFData *;
+using CFDataRef = const struct __CFData *;
 
 #  ifdef __OBJC__
-   @class NSData;
+@class NSData;
 #  endif
 #endif
 
@@ -63,11 +63,13 @@ inline uint qstrlen(const char *str)
 inline uint qstrnlen(const char *str, uint maxlen)
 {
    uint length = 0;
+
    if (str) {
       while (length < maxlen && *str++) {
          length++;
       }
    }
+
    return length;
 }
 
@@ -110,19 +112,19 @@ struct QByteArrayDataPtr {
 };
 
 #define Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(size, offset) \
-    { Q_REFCOUNT_INITIALIZE_STATIC, size, 0, 0, offset }
+   { Q_REFCOUNT_INITIALIZE_STATIC, size, 0, 0, offset }
 
 #define Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER(size) \
-    Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(size, sizeof(QByteArrayData))
+   Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(size, sizeof(QByteArrayData))
 
 #define QByteArrayLiteral(str) \
-    ([]() -> QByteArrayDataPtr { \
-        enum { Size = sizeof(str) - 1 }; \
-        static const QStaticByteArrayData<Size> qbytearray_literal = \
-        { { Q_REFCOUNT_INITIALIZE_STATIC, Size, 0, 0, sizeof(QByteArrayData) }, str }; \
-        QByteArrayDataPtr holder = { qbytearray_literal.data_ptr() }; \
-        return holder; \
-    }())
+   ([]() -> QByteArrayDataPtr { \
+      constexpr const int Size = sizeof(str) - 1; \
+      static const QStaticByteArrayData<Size> qbytearray_literal = \
+      { { Q_REFCOUNT_INITIALIZE_STATIC, Size, 0, 0, sizeof(QByteArrayData) }, str }; \
+      QByteArrayDataPtr holder = { qbytearray_literal.data_ptr() }; \
+      return holder; \
+   }())
 
 class Q_CORE_EXPORT QByteArray
 {
@@ -163,7 +165,7 @@ class Q_CORE_EXPORT QByteArray
    QByteArray(int size, Qt::NoDataOverload dummy);
 
    // internal
-   inline QByteArray(QByteArrayDataPtr dd)
+   QByteArray(QByteArrayDataPtr dd)
       : d(static_cast<Data *>(dd.ptr)) {
    }
 
@@ -194,7 +196,7 @@ class Q_CORE_EXPORT QByteArray
    int count(const char *str) const;
    int count(const QByteArray &value) const;
 
-   inline int count() const {
+   int count() const {
       return d->size;
    }
 
@@ -203,8 +205,7 @@ class Q_CORE_EXPORT QByteArray
 
    inline void detach();
 
-   // internal
-   inline DataPtr &data_ptr() {
+   DataPtr &data_ptr() {
       return d;
    }
 
@@ -217,7 +218,7 @@ class Q_CORE_EXPORT QByteArray
    inline bool isEmpty() const;
    inline bool isDetached() const;
 
-   inline bool isSharedWith(const QByteArray &value) const {
+   bool isSharedWith(const QByteArray &value) const {
       return d == value.d;
    }
 
@@ -370,7 +371,7 @@ class Q_CORE_EXPORT QByteArray
    QByteArray toHex() const;
 
    QByteArray toPercentEncoding(const QByteArray &exclude = QByteArray(),
-                                const QByteArray &include = QByteArray(), char percent = '%') const;
+         const QByteArray &include = QByteArray(), char percent = '%') const;
 
    inline QByteArray &setNum(short n, int base = 10);
    inline QByteArray &setNum(ushort n, int base = 10);
@@ -393,16 +394,16 @@ class Q_CORE_EXPORT QByteArray
    static QByteArray fromPercentEncoding(const QByteArray &value, char percent = '%');
 
 #if defined(Q_OS_DARWIN)
-    static QByteArray fromCFData(CFDataRef data);
-    static QByteArray fromRawCFData(CFDataRef data);
-    CFDataRef toCFData() const;
-    CFDataRef toRawCFData() const;
+   static QByteArray fromCFData(CFDataRef data);
+   static QByteArray fromRawCFData(CFDataRef data);
+   CFDataRef toCFData() const;
+   CFDataRef toRawCFData() const;
 
 #if defined(__OBJC__)
-    static QByteArray fromNSData(const NSData *data);
-    static QByteArray fromRawNSData(const NSData *data);
-    NSData *toNSData() const;
-    NSData *toRawNSData() const;
+   static QByteArray fromNSData(const NSData *data);
+   static QByteArray fromRawNSData(const NSData *data);
+   NSData *toNSData() const;
+   NSData *toRawNSData() const;
 #endif
 
 #endif
@@ -503,22 +504,22 @@ inline void QByteArray::squeeze()
 class Q_CORE_EXPORT QByteRef
 {
  public:
-
-   inline operator char() const {
+   operator char() const {
       return i < a.d->size ? a.d->data()[i] : char(0);
    }
 
-   inline QByteRef &operator=(char c) {
+   QByteRef &operator=(char c) {
       if (i >= a.d->size) {
          a.expand(i);
       } else {
          a.detach();
       }
+
       a.d->data()[i] = c;
       return *this;
    }
 
-   inline QByteRef &operator=(const QByteRef &c) {
+   QByteRef &operator=(const QByteRef &c) {
       if (i >= a.d->size) {
          a.expand(i);
       } else {
@@ -529,39 +530,38 @@ class Q_CORE_EXPORT QByteRef
       return *this;
    }
 
-   inline bool operator==(char c) const {
+   bool operator==(char c) const {
       return a.d->data()[i] == c;
    }
 
-   inline bool operator!=(char c) const {
+   bool operator!=(char c) const {
       return a.d->data()[i] != c;
    }
 
-   inline bool operator>(char c) const {
+   bool operator>(char c) const {
       return a.d->data()[i] > c;
    }
 
-   inline bool operator>=(char c) const {
+   bool operator>=(char c) const {
       return a.d->data()[i] >= c;
    }
 
-   inline bool operator<(char c) const {
+   bool operator<(char c) const {
       return a.d->data()[i] < c;
    }
 
-   inline bool operator<=(char c) const {
+   bool operator<=(char c) const {
       return a.d->data()[i] <= c;
    }
 
  private:
-   inline QByteRef(QByteArray &array, int idx): a(array), i(idx) {
+   QByteRef(QByteArray &array, int idx): a(array), i(idx) {
    }
 
    QByteArray &a;
    int i;
 
    friend class QByteArray;
-
 };
 
 inline QByteRef QByteArray::operator[](int i)

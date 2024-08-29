@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -580,80 +580,83 @@ QToolBarChangeEvent::~QToolBarChangeEvent()
 
 QShortcutEvent::QShortcutEvent(const QKeySequence &key, int id, bool ambiguous)
    : QEvent(Shortcut), sequence(key), ambig(ambiguous), sid(id)
-{}
+{ }
 
 QShortcutEvent::~QShortcutEvent()
-{}
+{ }
 
 #endif
 
-// start of debbug stream
-static inline void formatTouchEvent(QDebug d, const QTouchEvent &t)
+static inline void formatTouchEvent(QDebug debug, const QTouchEvent &t)
 {
-   d << "QTouchEvent(";
-   QtDebugUtils::formatQEnum(d, t.type());
-   d << " device: " << t.device()->name();
-   d << " states: ";
-   QtDebugUtils::formatQFlags(d, t.touchPointStates());
-   d << ", " << t.touchPoints().size() << " points: " << t.touchPoints() << ')';
+   debug << "QTouchEvent(";
+   QtDebugUtils::formatQEnum(debug, t.type());
+
+   debug << " device: " << t.device()->name();
+   debug << " states: ";
+   QtDebugUtils::formatQFlags(debug, t.touchPointStates());
+
+   debug << ", " << t.touchPoints().size() << " points: " << t.touchPoints() << ')';
 }
 
-static void formatUnicodeString(QDebug d, const QString &s)
+static void formatUnicodeString(QDebug debug, const QString &s)
 {
-   d << '"' << hex;
+   debug << '"' << hex;
 
    for (int i = 0; i < s.size(); ++i) {
       if (i) {
-         d << ',';
+         debug << ',';
       }
-      d << "U+" << s.at(i).unicode();
+      debug << "U+" << s.at(i).unicode();
    }
 
-   d << dec << '"';
+   debug << dec << '"';
 }
 
-static inline void formatInputMethodEvent(QDebug d, const QInputMethodEvent *e)
+static inline void formatInputMethodEvent(QDebug debug, const QInputMethodEvent *e)
 {
-   d << "QInputMethodEvent(";
+   debug << "QInputMethodEvent(";
 
    if (! e->preeditString().isEmpty()) {
-      d << "preedit=";
-      formatUnicodeString(d, e->preeditString());
+      debug << "preedit=";
+      formatUnicodeString(debug, e->preeditString());
    }
 
    if (! e->commitString().isEmpty()) {
-      d << ", commit=";
-      formatUnicodeString(d, e->commitString());
+      debug << ", commit=";
+      formatUnicodeString(debug, e->commitString());
    }
 
    if (e->replacementLength()) {
-      d << ", replacementStart=" << e->replacementStart() << ", replacementLength="
+      debug << ", replacementStart=" << e->replacementStart() << ", replacementLength="
          << e->replacementLength();
    }
 
    if (const int attributeCount = e->attributes().size()) {
-      d << ", attributes= {";
+      debug << ", attributes= {";
 
       for (int a = 0; a < attributeCount; ++a) {
          const QInputMethodEvent::Attribute &at = e->attributes().at(a);
 
          if (a) {
-            d << ',';
+            debug << ',';
          }
 
-         d << "[type= " << at.type << ", start=" << at.start << ", length=" << at.length
+         debug << "[type= " << at.type << ", start=" << at.start << ", length=" << at.length
            << ", value=" << at.value.toString() << ']';
       }
 
-      d << '}';
+      debug << '}';
    }
 
-   d << ')';
+   debug << ')';
 }
-static inline void formatInputMethodQueryEvent(QDebug d, const QInputMethodQueryEvent *e)
+
+static inline void formatInputMethodQueryEvent(QDebug debug, const QInputMethodQueryEvent *e)
 {
    const Qt::InputMethodQueries queries = e->queries();
-   d << "QInputMethodQueryEvent(queries=" << showbase << hex << int(queries)
+
+   debug << "QInputMethodQueryEvent(queries=" << showbase << hex << int(queries)
      << noshowbase << dec << ", {";
 
    for (unsigned mask = 1; mask <= Qt::ImTextAfterCursor; mask <<= 1) {
@@ -661,12 +664,12 @@ static inline void formatInputMethodQueryEvent(QDebug d, const QInputMethodQuery
          const QVariant value = e->value(static_cast<Qt::InputMethodQuery>(mask));
 
          if (value.isValid()) {
-            d << '[' << showbase << hex << mask <<  noshowbase << dec << '=' << value.toString() << "],";
+            debug << '[' << showbase << hex << mask <<  noshowbase << dec << '=' << value.toString() << "],";
          }
       }
    }
 
-   d << "})";
+   debug << "})";
 }
 
 static const char *eventClassName(QEvent::Type t)
@@ -793,97 +796,110 @@ static const char *eventClassName(QEvent::Type t)
 }
 
 #ifndef QT_NO_DRAGANDDROP
-static void formatDropEvent(QDebug d, const QDropEvent *e)
+static void formatDropEvent(QDebug debug, const QDropEvent *e)
 {
    const QEvent::Type type = e->type();
-   d << eventClassName(type) << "(dropAction=";
-   QtDebugUtils::formatQEnum(d, e->dropAction());
-   d << ", proposedAction=";
-   QtDebugUtils::formatQEnum(d, e->proposedAction());
-   d << ", possibleActions=";
-   QtDebugUtils::formatQFlags(d, e->possibleActions());
-   d << ", posF=";
-   QtDebugUtils::formatQPoint(d,  e->posF());
+   debug << eventClassName(type) << "(dropAction=";
+   QtDebugUtils::formatQEnum(debug, e->dropAction());
+
+   debug << ", proposedAction=";
+   QtDebugUtils::formatQEnum(debug, e->proposedAction());
+
+   debug << ", possibleActions=";
+   QtDebugUtils::formatQFlags(debug, e->possibleActions());
+
+   debug << ", posF=";
+   QtDebugUtils::formatQPoint(debug,  e->posF());
+
    if (type == QEvent::DragMove || type == QEvent::DragEnter) {
-      d << ", answerRect=" << static_cast<const QDragMoveEvent *>(e)->answerRect();
+      debug << ", answerRect=" << static_cast<const QDragMoveEvent *>(e)->answerRect();
    }
-   d << ", formats=" << e->mimeData()->formats();
-   QtDebugUtils::formatNonNullQFlags(d, ", keyboardModifiers=", e->keyboardModifiers());
-   d << ", ";
-   QtDebugUtils::formatQFlags(d, e->mouseButtons());
+
+   debug << ", formats=" << e->mimeData()->formats();
+   QtDebugUtils::formatNonNullQFlags(debug, ", keyboardModifiers=", e->keyboardModifiers());
+
+   debug << ", ";
+   QtDebugUtils::formatQFlags(debug, e->mouseButtons());
 }
 #endif
 
 #ifndef QT_NO_TABLETEVENT
-
-static void formatTabletEvent(QDebug d, const QTabletEvent *e)
+static void formatTabletEvent(QDebug debug, const QTabletEvent *e)
 {
    const QEvent::Type type = e->type();
 
-   d << eventClassName(type)  << '(';
-   QtDebugUtils::formatQEnum(d, type);
-   d << ", device=";
-   QtDebugUtils::formatQEnum(d, e->device());
-   d << ", pointerType=";
-   QtDebugUtils::formatQEnum(d, e->pointerType());
-   d << ", uniqueId=" << e->uniqueId()
-      << ", pos=" << e->posF()
-      << ", z=" << e->z()
-      << ", xTilt=" << e->xTilt()
-      << ", yTilt=" << e->yTilt()
-      << ", ";
-   QtDebugUtils::formatQFlags(d, e->buttons());
+   debug << eventClassName(type)  << '(';
+   QtDebugUtils::formatQEnum(debug, type);
+
+   debug << ", device =";
+   QtDebugUtils::formatQEnum(debug, e->device());
+
+   debug << ", pointerType =";
+   QtDebugUtils::formatQEnum(debug, e->pointerType());
+
+   debug << ", uniqueId =" << e->uniqueId() << ", pos =" << e->posF() << ", z =" << e->z() << ", xTilt  =" << e->xTilt()
+         << ", yTilt=" << e->yTilt() << ", ";
+   QtDebugUtils::formatQFlags(debug, e->buttons());
+
    if (type == QEvent::TabletPress || type == QEvent::TabletMove) {
-      d << ", pressure=" << e->pressure();
+      debug << ", pressure =" << e->pressure();
    }
+
    if (e->device() == QTabletEvent::RotationStylus || e->device() == QTabletEvent::FourDMouse) {
-      d << ", rotation=" << e->rotation();
+      debug << ", rotation =" << e->rotation();
    }
+
    if (e->device() == QTabletEvent::Airbrush) {
-      d << ", tangentialPressure=" << e->tangentialPressure();
+      debug << ", tangentialPressure =" << e->tangentialPressure();
    }
 }
+#endif
 
-#endif // !QT_NO_TABLETEVENT
-
-QDebug operator<<(QDebug dbg, const QTouchEvent::TouchPoint &tp)
+QDebug operator<<(QDebug debug, const QTouchEvent::TouchPoint &tp)
 {
-   QDebugStateSaver saver(dbg);
-   dbg.nospace();
-   dbg << "TouchPoint(" << tp.id() << " (";
-   QtDebugUtils::formatQRect(dbg, tp.rect());
-   dbg << ") ";
-   QtDebugUtils::formatQEnum(dbg, tp.state());
-   dbg << " press " << tp.pressure() << " vel " << tp.velocity()
-      << " start (";
-   QtDebugUtils::formatQPoint(dbg, tp.startPos());
-   dbg << ") last (";
-   QtDebugUtils::formatQPoint(dbg, tp.lastPos());
-   dbg << ") delta (";
-   QtDebugUtils::formatQPoint(dbg, tp.pos() - tp.lastPos());
-   dbg << ')';
-   return dbg;
+   QDebugStateSaver saver(debug);
+   debug.nospace();
+
+   debug << "TouchPoint(" << tp.id() << " (";
+   QtDebugUtils::formatQRect(debug, tp.rect());
+
+   debug << ") ";
+   QtDebugUtils::formatQEnum(debug, tp.state());
+
+   debug << " pressure = " << tp.pressure() << " velocity = " << tp.velocity() << " start (";
+   QtDebugUtils::formatQPoint(debug, tp.startPos());
+
+   debug << ") last (";
+   QtDebugUtils::formatQPoint(debug, tp.lastPos());
+
+   debug << ") delta (";
+   QtDebugUtils::formatQPoint(debug, tp.pos() - tp.lastPos());
+
+   debug << ')';
+
+   return debug;
 }
 
-QDebug operator<<(QDebug dbg, const QEvent *e)
+QDebug operator<<(QDebug debug, const QEvent *e)
 {
-   QDebugStateSaver saver(dbg);
-   dbg.nospace();
+   QDebugStateSaver saver(debug);
+   debug.nospace();
 
-   if (!e) {
-      dbg << "QEvent(this = 0x0)";
-      return dbg;
+   if (! e) {
+      debug << "QEvent(this = 0x0)";
+      return debug;
    }
 
    // More useful event output could be added here
    const QEvent::Type type = e->type();
+
    switch (type) {
       case QEvent::Expose:
-         dbg << "QExposeEvent(" << static_cast<const QExposeEvent *>(e)->region() << ')';
+         debug << "QExposeEvent(" << static_cast<const QExposeEvent *>(e)->region() << ')';
          break;
 
       case QEvent::Paint:
-         dbg << "QPaintEvent(" << static_cast<const QPaintEvent *>(e)->region() << ')';
+         debug << "QPaintEvent(" << static_cast<const QPaintEvent *>(e)->region() << ')';
          break;
 
       case QEvent::MouseButtonPress:
@@ -897,29 +913,30 @@ QDebug operator<<(QDebug dbg, const QEvent *e)
          const QMouseEvent *me = static_cast<const QMouseEvent *>(e);
          const Qt::MouseButton button   = me->button();
          const Qt::MouseButtons buttons = me->buttons();
-         dbg << "QMouseEvent(";
 
-         QtDebugUtils::formatQEnum(dbg, type);
+         debug << "QMouseEvent(";
+         QtDebugUtils::formatQEnum(debug, type);
+
          if (type != QEvent::MouseMove && type != QEvent::NonClientAreaMouseMove) {
-            dbg << ", ";
-            QtDebugUtils::formatQEnum(dbg, button);
+            debug << ", ";
+            QtDebugUtils::formatQEnum(debug, button);
          }
 
          if (buttons && (Qt::MouseButtons(button) != buttons)) {
-            dbg << ", buttons=";
-            QtDebugUtils::formatQFlags(dbg, buttons);
+            debug << ", buttons =";
+            QtDebugUtils::formatQFlags(debug, buttons);
          }
 
-         QtDebugUtils::formatNonNullQFlags(dbg, ", ", me->modifiers());
-         dbg << ", localPos=";
+         QtDebugUtils::formatNonNullQFlags(debug, ", ", me->modifiers());
+         debug << ", localPos =";
 
-         QtDebugUtils::formatQPoint(dbg, me->localPos());
-         dbg << ", screenPos=";
+         QtDebugUtils::formatQPoint(debug, me->localPos());
+         debug << ", screenPos =";
 
-         QtDebugUtils::formatQPoint(dbg, me->screenPos());
-         QtDebugUtils::formatNonNullQEnum(dbg, ", ", me->source());
-         QtDebugUtils::formatNonNullQFlags(dbg, ", flags=", me->flags());
-         dbg << ')';
+         QtDebugUtils::formatQPoint(debug, me->screenPos());
+         QtDebugUtils::formatNonNullQEnum(debug, ", ", me->source());
+         QtDebugUtils::formatNonNullQFlags(debug, ", flags =", me->flags());
+         debug << ')';
       }
 
       break;
@@ -927,7 +944,7 @@ QDebug operator<<(QDebug dbg, const QEvent *e)
 #ifndef QT_NO_WHEELEVENT
       case QEvent::Wheel: {
          const QWheelEvent *we = static_cast<const QWheelEvent *>(e);
-         dbg << "QWheelEvent(" << "pixelDelta=" << we->pixelDelta() << ", angleDelta=" << we->angleDelta() << ')';
+         debug << "QWheelEvent(" << "pixelDelta = " << we->pixelDelta() << ", angleDelta = " << we->angleDelta() << ')';
       }
       break;
 #endif
@@ -936,59 +953,67 @@ QDebug operator<<(QDebug dbg, const QEvent *e)
       case QEvent::KeyRelease:
       case QEvent::ShortcutOverride: {
          const QKeyEvent *ke = static_cast<const QKeyEvent *>(e);
-         dbg << "QKeyEvent(";
-         QtDebugUtils::formatQEnum(dbg, type);
-         dbg << ", ";
-         QtDebugUtils::formatQEnum(dbg, static_cast<Qt::Key>(ke->key()));
-         QtDebugUtils::formatNonNullQFlags(dbg, ", ", ke->modifiers());
+         debug << "QKeyEvent(";
+         QtDebugUtils::formatQEnum(debug, type);
+
+         debug << ", ";
+         QtDebugUtils::formatQEnum(debug, static_cast<Qt::Key>(ke->key()));
+         QtDebugUtils::formatNonNullQFlags(debug, ", ", ke->modifiers());
+
          if (!ke->text().isEmpty()) {
-            dbg << ", text=" << ke->text();
+            debug << ", text = " << ke->text();
          }
+
          if (ke->isAutoRepeat()) {
-            dbg << ", autorepeat, count=" << ke->count();
+            debug << ", autorepeat, count = " << ke->count();
          }
-         dbg << ')';
+         debug<< ')';
       }
       break;
 
       case QEvent::Shortcut: {
          const QShortcutEvent *se = static_cast<const QShortcutEvent *>(e);
-         dbg << "QShortcutEvent(" << se->key().toString() << ", id=" << se->shortcutId();
+         debug << "QShortcutEvent(" << se->key().toString() << ", id=" << se->shortcutId();
          if (se->isAmbiguous()) {
-            dbg << ", ambiguous";
+            debug << ", ambiguous";
          }
-         dbg << ')';
+         debug << ')';
       }
       break;
 
       case QEvent::FocusAboutToChange:
       case QEvent::FocusIn:
       case QEvent::FocusOut:
-         dbg << "QFocusEvent(";
-         QtDebugUtils::formatQEnum(dbg, type);
-         dbg << ", ";
-         QtDebugUtils::formatQEnum(dbg, static_cast<const QFocusEvent *>(e)->reason());
-         dbg << ')';
+         debug << "QFocusEvent(";
+         QtDebugUtils::formatQEnum(debug, type);
+
+         debug << ", ";
+         QtDebugUtils::formatQEnum(debug, static_cast<const QFocusEvent *>(e)->reason());
+
+         debug << ')';
          break;
+
       case QEvent::Move: {
          const QMoveEvent *me = static_cast<const QMoveEvent *>(e);
-         dbg << "QMoveEvent(";
-         QtDebugUtils::formatQPoint(dbg, me->pos());
+         debug << "QMoveEvent(";
+         QtDebugUtils::formatQPoint(debug, me->pos());
+
          if (!me->spontaneous()) {
-            dbg << ", non-spontaneous";
+            debug << ", non-spontaneous";
          }
-         dbg << ')';
+         debug << ')';
       }
       break;
 
       case QEvent::Resize: {
          const QResizeEvent *re = static_cast<const QResizeEvent *>(e);
-         dbg << "QResizeEvent(";
-         QtDebugUtils::formatQSize(dbg, re->size());
-         if (!re->spontaneous()) {
-            dbg << ", non-spontaneous";
+         debug << "QResizeEvent(";
+         QtDebugUtils::formatQSize(debug, re->size());
+
+         if (! re->spontaneous()) {
+            debug << ", non-spontaneous";
          }
-         dbg << ')';
+         debug << ')';
       }
       break;
 
@@ -996,52 +1021,54 @@ QDebug operator<<(QDebug dbg, const QEvent *e)
       case QEvent::DragEnter:
       case QEvent::DragMove:
       case QEvent::Drop:
-         formatDropEvent(dbg, static_cast<const QDropEvent *>(e));
+         formatDropEvent(debug, static_cast<const QDropEvent *>(e));
          break;
 #endif
 
       case QEvent::InputMethod:
-         formatInputMethodEvent(dbg, static_cast<const QInputMethodEvent *>(e));
+         formatInputMethodEvent(debug, static_cast<const QInputMethodEvent *>(e));
          break;
 
       case QEvent::InputMethodQuery:
-         formatInputMethodQueryEvent(dbg, static_cast<const QInputMethodQueryEvent *>(e));
+         formatInputMethodQueryEvent(debug, static_cast<const QInputMethodQueryEvent *>(e));
          break;
 
       case QEvent::TouchBegin:
       case QEvent::TouchUpdate:
       case QEvent::TouchEnd:
-         formatTouchEvent(dbg, *static_cast<const QTouchEvent *>(e));
+         formatTouchEvent(debug, *static_cast<const QTouchEvent *>(e));
          break;
 
       case QEvent::ChildAdded:
       case QEvent::ChildPolished:
       case QEvent::ChildRemoved:
-         dbg << "QChildEvent(";
-         QtDebugUtils::formatQEnum(dbg, type);
-         dbg << ", " << (static_cast<const QChildEvent *>(e))->child() << ')';
+         debug << "QChildEvent(";
+         QtDebugUtils::formatQEnum(debug, type);
+         debug << ", " << (static_cast<const QChildEvent *>(e))->child() << ')';
          break;
 
 #ifndef QT_NO_GESTURES
       case QEvent::NativeGesture: {
          const QNativeGestureEvent *ne = static_cast<const QNativeGestureEvent *>(e);
-         dbg << "QNativeGestureEvent(";
-         QtDebugUtils::formatQEnum(dbg, ne->gestureType());
-         dbg << "localPos=";
-         QtDebugUtils::formatQPoint(dbg, ne->localPos());
-         dbg << ", value=" << ne->value() << ')';
+         debug << "QNativeGestureEvent(";
+         QtDebugUtils::formatQEnum(debug, ne->gestureType());
+
+         debug << "localPos = ";
+         QtDebugUtils::formatQPoint(debug, ne->localPos());
+
+         debug << ", value = " << ne->value() << ')';
       }
       break;
 #endif
 
       case QEvent::ApplicationStateChange:
-         dbg << "QApplicationStateChangeEvent(";
-         QtDebugUtils::formatQEnum(dbg, static_cast<const QApplicationStateChangeEvent *>(e)->applicationState());
-         dbg << ')';
+         debug << "QApplicationStateChangeEvent(";
+         QtDebugUtils::formatQEnum(debug, static_cast<const QApplicationStateChangeEvent *>(e)->applicationState());
+         debug << ')';
          break;
 
       case QEvent::ContextMenu:
-         dbg << "QContextMenuEvent(" << static_cast<const QContextMenuEvent *>(e)->pos() << ')';
+         debug << "QContextMenuEvent(" << static_cast<const QContextMenuEvent *>(e)->pos() << ')';
          break;
 
 #ifndef QT_NO_TABLETEVENT
@@ -1050,40 +1077,40 @@ QDebug operator<<(QDebug dbg, const QEvent *e)
       case QEvent::TabletPress:
       case QEvent::TabletMove:
       case QEvent::TabletRelease:
-         formatTabletEvent(dbg, static_cast<const QTabletEvent *>(e));
+         formatTabletEvent(debug, static_cast<const QTabletEvent *>(e));
          break;
 #endif
 
       case QEvent::Enter:
-         dbg << "QEnterEvent(" << static_cast<const QEnterEvent *>(e)->pos() << ')';
+         debug << "QEnterEvent(" << static_cast<const QEnterEvent *>(e)->pos() << ')';
          break;
 
       case QEvent::Timer:
-         dbg << "QTimerEvent(id=" << static_cast<const QTimerEvent *>(e)->timerId() << ')';
+         debug << "QTimerEvent(id=" << static_cast<const QTimerEvent *>(e)->timerId() << ')';
          break;
 
       case QEvent::PlatformSurface:
-         dbg << "QPlatformSurfaceEvent(surfaceEventType=";
+         debug << "QPlatformSurfaceEvent(surfaceEventType=";
          switch (static_cast<const QPlatformSurfaceEvent *>(e)->surfaceEventType()) {
             case QPlatformSurfaceEvent::SurfaceCreated:
-               dbg << "SurfaceCreated";
+               debug << "SurfaceCreated";
                break;
             case QPlatformSurfaceEvent::SurfaceAboutToBeDestroyed:
-               dbg << "SurfaceAboutToBeDestroyed";
+               debug << "SurfaceAboutToBeDestroyed";
                break;
          }
-         dbg << ')';
+         debug << ')';
          break;
 
       default:
-         dbg << eventClassName(type) << '(';
-         QtDebugUtils::formatQEnum(dbg, type);
-         dbg << ", " << (const void *)e << ')';
+         debug << eventClassName(type) << '(';
+         QtDebugUtils::formatQEnum(debug, type);
+         debug << ", " << (const void *)e << ')';
          break;
    }
-   return dbg;
+
+   return debug;
 }
-// end debug stream
 
 QWindowStateChangeEvent::QWindowStateChangeEvent(Qt::WindowStates s, bool isOverride)
    : QEvent(WindowStateChange), ostate(s), m_override(isOverride)
@@ -1101,7 +1128,7 @@ QWindowStateChangeEvent::~QWindowStateChangeEvent()
 {}
 
 QTouchEvent::QTouchEvent(QEvent::Type eventType, QTouchDevice *device, Qt::KeyboardModifiers modifiers,
-            Qt::TouchPointStates touchPointStates, const QList<QTouchEvent::TouchPoint> &touchPoints)
+      Qt::TouchPointStates touchPointStates, const QList<QTouchEvent::TouchPoint> &touchPoints)
    : QInputEvent(eventType, modifiers), _window(nullptr), _target(nullptr), _device(device),
      _touchPointStates(touchPointStates), _touchPoints(touchPoints)
 {

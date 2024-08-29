@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -48,7 +48,7 @@ QUrl *cs_internal_lastVisitedDir() {
    return &retval;
 }
 
-static const qint32 QFileDialogMagic = 0xbe;
+static constexpr const qint32 QFileDialogMagic = 0xbe;
 
 QFileDialog::QFileDialog(QWidget *parent, Qt::WindowFlags flags)
    : QDialog(*new QFileDialogPrivate, parent, flags)

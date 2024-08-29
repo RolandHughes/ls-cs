@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -266,14 +266,14 @@ class Q_GUI_EXPORT QWizardPage : public QWidget
    void setField(const QString &name, const QVariant &value);
    QVariant field(const QString &name) const;
    void registerField(const QString &name, QWidget *widget, const QString &property = QString(),
-      const QString &changedSignal = QString());
+         const QString &changedSignal = QString());
    QWizard *wizard() const;
 
  private:
    Q_DECLARE_PRIVATE(QWizardPage)
 
-   GUI_CS_SLOT_1(Private, void _q_maybeEmitCompleteChanged())
-   GUI_CS_SLOT_2(_q_maybeEmitCompleteChanged)
+   GUI_CS_SLOT_1(Private, void _q_changedSignal())
+   GUI_CS_SLOT_2(_q_changedSignal)
 
    GUI_CS_SLOT_1(Private, void _q_updateCachedCompleteState())
    GUI_CS_SLOT_2(_q_updateCachedCompleteState)

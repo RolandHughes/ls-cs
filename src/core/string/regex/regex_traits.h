@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2017-2023 Barbara Geller
-* Copyright (c) 2017-2023 Ansel Sermersheim
+* Copyright (c) 2017-2024 Barbara Geller
+* Copyright (c) 2017-2024 Ansel Sermersheim
 *
 * Copyright (c) 1998-2009 John Maddock
 *
@@ -94,13 +94,12 @@ struct default_wrapper : public BaseT {
 
 template <class BaseT, bool has_extensions>
 struct compute_wrapper_base {
-   typedef BaseT type;
+   using type = BaseT;
 };
-
 
 template <class BaseT>
 struct compute_wrapper_base<BaseT, false> {
-   typedef default_wrapper<BaseT> type;
+   using type = default_wrapper<BaseT>;
 };
 
 } // namespace

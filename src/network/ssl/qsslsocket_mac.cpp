@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -55,7 +55,7 @@ static SSLContextRef qt_createSecureTransportContext(QSslSocket::SslMode mode)
    context = SSLCreateContext(nullptr, side, kSSLStreamType);
 
    if (! context) {
-      qWarning() << "SSLCreateContext failed";
+      qWarning("SSLCreateContext failed");
    }
 
    return context;
@@ -424,7 +424,7 @@ QList<QSslCertificate> QSslSocketPrivate::systemCaCertificates()
       }
    } else {
       // no detailed error handling here
-      qWarning() << "SecTrustSettingsCopyCertificates failed:" << status;
+      qWarning() << "QSslSocket::systemCaCertificates() SecTrustSettingsCopyCertificates failed - " << status;
    }
 
    return systemCerts;
@@ -492,7 +492,7 @@ QSsl::SslProtocol QSslSocketBackendPrivate::sessionProtocol() const
    SSLProtocol protocol = kSSLProtocolUnknown;
    const OSStatus err = SSLGetNegotiatedProtocolVersion(context, &protocol);
    if (err != noErr) {
-      qWarning() << "SSLGetNegotiatedProtocolVersion failed:" << err;
+      qWarning() << "QSslSocketBackend::sessionProtocol() SSLGetNegotiatedProtocolVersion failed - " << err;
       return QSsl::UnknownProtocol;
    }
 
@@ -832,7 +832,7 @@ QSslCipher QSslSocketBackendPrivate::QSslCipher_from_SSLCipherSuite(SSLCipherSui
       } else if (ciph.d->name.startsWith("ECDH-") || ciph.d->name.startsWith("ECDHE-")) {
          ciph.d->keyExchangeMethod = QLatin1String("ECDH");
       } else {
-         qWarning() << "Unknown Kx" << ciph.d->name;
+         qWarning() << "QSslSocketBackend() Unknown Kx" << ciph.d->name;
       }
 
       if (bits.size() == 2 || bits.size() == 3) {
@@ -842,7 +842,7 @@ QSslCipher QSslSocketBackendPrivate::QSslCipher_from_SSLCipherSuite(SSLCipherSui
       } else if (ciph.d->name.contains("-RSA-")) {
          ciph.d->authenticationMethod = QLatin1String("RSA");
       } else {
-         qWarning() << "Unknown Au" << ciph.d->name;
+         qWarning() << "QSslSocketBackend() Unknown Au" << ciph.d->name;
       }
 
       if (ciph.d->name.contains("RC4-")) {
@@ -864,7 +864,7 @@ QSslCipher QSslSocketBackendPrivate::QSslCipher_from_SSLCipherSuite(SSLCipherSui
       } else if (ciph.d->name.contains("NULL-")) {
          ciph.d->encryptionMethod = QLatin1String("NULL");
       } else {
-         qWarning() << "Unknown Enc" << ciph.d->name;
+         qWarning() << "QSslSocketBackend() Unknown Enc" << ciph.d->name;
       }
    }
 
@@ -1056,7 +1056,11 @@ bool QSslSocketBackendPrivate::setSessionProtocol()
    // where MINIMUM_STREAM_VERSION is SSL_Version_3_0, MAXIMUM_STREAM_VERSION is TLS_Version_1_2.
 
    if (configuration.protocol == QSsl::SslV2) {
+
+#if defined(CS_SHOW_DEBUG_NETWORK)
       qDebug() << "protocol QSsl::SslV2 is disabled";
+#endif
+
       return false;
    }
 
@@ -1319,13 +1323,16 @@ bool QSslSocketBackendPrivate::startHandshake()
 
    // Connection aborted during handshake phase.
    if (q->state() != QAbstractSocket::ConnectedState) {
+#if defined(CS_SHOW_DEBUG_NETWORK)
       qDebug() << "Connection aborted";
+#endif
+
       return false;
    }
 
    // check protocol version ourselves, as Secure Transport does not enforce
    // the requested min / max versions.
-   if (!verifySessionProtocol()) {
+   if (! verifySessionProtocol()) {
       setErrorAndEmit(QAbstractSocket::SslHandshakeFailedError, "Protocol version mismatch");
       plainSocket->disconnectFromHost();
       return false;

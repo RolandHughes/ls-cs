@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -342,8 +342,8 @@ void QLocalServerPrivate::setError(const QString &function)
          errorString = QLocalServer::tr("%1: Unknown error %2").formatArg(function).formatArg(errno);
          error = QAbstractSocket::UnknownSocketError;
 
-#if defined QLOCALSERVER_DEBUG
-         qWarning() << errorString << "fullServerName:" << fullServerName;
+#if defined(CS_SHOW_DEBUG_NETWORK)
+         qDebug() << "QLocalServer::setError() Server Name = " << fullServerName << "Error = " << errorString;
 #endif
    }
 }

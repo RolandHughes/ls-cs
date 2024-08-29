@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -23,10 +23,10 @@
 
 #include <qsystemtrayicon_p.h>
 
-#include <QApplication>
-#include <QStyle>
+#include <qapplication.h>
 #include <qplatform_systemtrayicon.h>
 #include <qplatform_theme.h>
+#include <qstyle.h>
 
 #include <qguiapplication_p.h>
 
@@ -90,6 +90,7 @@ void QSystemTrayIconPrivate::updateToolTip_sys()
 bool QSystemTrayIconPrivate::isSystemTrayAvailable_sys()
 {
    QScopedPointer<QPlatformSystemTrayIcon> sys(QGuiApplicationPrivate::platformTheme()->createPlatformSystemTrayIcon());
+
    if (sys) {
       return sys->isSystemTrayAvailable();
    } else {
@@ -100,6 +101,7 @@ bool QSystemTrayIconPrivate::isSystemTrayAvailable_sys()
 bool QSystemTrayIconPrivate::supportsMessages_sys()
 {
    QScopedPointer<QPlatformSystemTrayIcon> sys(QGuiApplicationPrivate::platformTheme()->createPlatformSystemTrayIcon());
+
    if (sys) {
       return sys->supportsMessages();
    } else {
@@ -108,7 +110,7 @@ bool QSystemTrayIconPrivate::supportsMessages_sys()
 }
 
 void QSystemTrayIconPrivate::showMessage_sys(const QString &title, const QString &message,
-   QSystemTrayIcon::MessageIcon icon, int msecs)
+      QSystemTrayIcon::MessageIcon icon, int msecs)
 {
    if (qpa_sys) {
       showMessage_sys_qpa(title, message, icon, msecs);

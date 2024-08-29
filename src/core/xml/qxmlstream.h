@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -103,10 +103,10 @@ class Q_CORE_EXPORT QXmlStreamAttribute
    }
 
    bool operator!=(const QXmlStreamAttribute &other) const {
-      return ! operator==(other);
+      return !operator==(other);
    }
 
-  private:
+ private:
    QString m_name;
    QString m_namespaceUri;
    QString m_qualifiedName;
@@ -131,11 +131,11 @@ class Q_CORE_EXPORT QXmlStreamAttributes : public QVector<QXmlStreamAttribute>
    void append(const QString &namespaceUri, const QString &name, const QString &value);
    void append(const QString &qualifiedName, const QString &value);
 
-   inline bool hasAttribute(const QString &qualifiedName) const {
+   bool hasAttribute(const QString &qualifiedName) const {
       return ! value(qualifiedName).isEmpty();
    }
 
-   inline bool hasAttribute(const QString &namespaceUri, const QString &name) const {
+   bool hasAttribute(const QString &namespaceUri, const QString &name) const {
       return ! value(namespaceUri, name).isEmpty();
    }
 
@@ -202,12 +202,11 @@ class Q_CORE_EXPORT QXmlStreamNotationDeclaration
    }
 
    bool operator==(const QXmlStreamNotationDeclaration &other) const {
-      return (name() == other.name() && systemId() == other.systemId()
-              && publicId() == other.publicId());
+      return (name() == other.name() && systemId() == other.systemId() && publicId() == other.publicId());
    }
 
    bool operator!=(const QXmlStreamNotationDeclaration &other) const {
-      return !operator==(other);
+      return ! operator==(other);
    }
 
  private:
@@ -251,11 +250,8 @@ class Q_CORE_EXPORT QXmlStreamEntityDeclaration
    }
 
    bool operator==(const QXmlStreamEntityDeclaration &other) const {
-      return (name() == other.name()
-              && notationName() == other.notationName()
-              && systemId() == other.systemId()
-              && publicId() == other.publicId()
-              && value() == other.value());
+      return (name() == other.name() && notationName() == other.notationName() && systemId() == other.systemId()
+            && publicId() == other.publicId() && value() == other.value());
    }
 
    bool operator!=(const QXmlStreamEntityDeclaration &other) const {

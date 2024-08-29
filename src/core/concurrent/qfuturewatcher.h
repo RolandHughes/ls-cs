@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -131,10 +131,11 @@ class QFutureWatcher : public QFutureWatcherBase
 
  private:
    QFuture<T> m_future;
-   const QFutureInterfaceBase &futureInterface() const {
+   const QFutureInterfaceBase &futureInterface() const override {
       return m_future.d;
    }
-   QFutureInterfaceBase &futureInterface() {
+
+   QFutureInterfaceBase &futureInterface() override  {
       return m_future.d;
    }
 };

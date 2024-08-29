@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -104,7 +104,7 @@ bool QLocalServer::listen(const QString &name)
 {
    Q_D(QLocalServer);
    if (isListening()) {
-      qWarning("QLocalServer::listen() called when already listening");
+      qWarning("QLocalServer::listen() Called when already listening");
       return false;
    }
 
@@ -131,7 +131,7 @@ bool QLocalServer::listen(qintptr socketDescriptor)
    Q_D(QLocalServer);
 
    if (isListening()) {
-     qWarning("QLocalServer::listen() called when already listening");
+     qWarning("QLocalServer::listen() Called when already listening");
      return false;
    }
 

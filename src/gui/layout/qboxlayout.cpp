@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,17 +24,17 @@
 #include <qboxlayout.h>
 
 #include <qapplication.h>
-#include <qwidget.h>
 #include <qlist.h>
 #include <qsizepolicy.h>
 #include <qvector.h>
+#include <qwidget.h>
 
 #include <qlayoutengine_p.h>
 #include <qlayout_p.h>
 
 struct QBoxLayoutItem {
-   QBoxLayoutItem(QLayoutItem *it, int stretch_ = 0)
-      : item(it), stretch(stretch_), magic(false)
+   QBoxLayoutItem(QLayoutItem *it, int stretchX = 0)
+      : item(it), stretch(stretchX), magic(false)
    { }
 
    ~QBoxLayoutItem() {
@@ -48,6 +48,7 @@ struct QBoxLayoutItem {
          return item->sizeHint().height();
       }
    }
+
    int mhfw(int w) {
       if (item->hasHeightForWidth()) {
          return item->heightForWidth(w);
@@ -55,6 +56,7 @@ struct QBoxLayoutItem {
          return item->minimumSize().height();
       }
    }
+
    int hStretch() {
       if (stretch == 0 && item->widget()) {
          return item->widget()->sizePolicy().horizontalStretch();
@@ -62,6 +64,7 @@ struct QBoxLayoutItem {
          return stretch;
       }
    }
+
    int vStretch() {
       if (stretch == 0 && item->widget()) {
          return item->widget()->sizePolicy().verticalStretch();
@@ -105,8 +108,8 @@ class QBoxLayoutPrivate : public QLayoutPrivate
    QBoxLayout::Direction dir;
    int spacing;
 
-   inline void deleteAll() {
-      while (!list.isEmpty()) {
+   void deleteAll() {
+      while (! list.isEmpty()) {
          delete list.takeFirst();
       }
    }
@@ -127,11 +130,6 @@ static inline bool horz(QBoxLayout::Direction dir)
    return dir == QBoxLayout::RightToLeft || dir == QBoxLayout::LeftToRight;
 }
 
-/**
- * The purpose of this function is to make sure that widgets are not laid out outside its layout.
- * E.g. the layoutItemRect margins are only meant to take of the surrounding margins/spacings.
- * However, if the margin is 0, it can easily cover the area of a widget above it.
- */
 void QBoxLayoutPrivate::effectiveMargins(int *left, int *top, int *right, int *bottom) const
 {
    int l = leftMargin;
@@ -141,6 +139,7 @@ void QBoxLayoutPrivate::effectiveMargins(int *left, int *top, int *right, int *b
 
 #ifdef Q_OS_DARWIN
    Q_Q(const QBoxLayout);
+
    if (horz(dir)) {
       QBoxLayoutItem *leftBox  = nullptr;
       QBoxLayoutItem *rightBox = nullptr;
@@ -148,6 +147,7 @@ void QBoxLayoutPrivate::effectiveMargins(int *left, int *top, int *right, int *b
       if (left || right) {
          leftBox = list.value(0);
          rightBox = list.value(list.count() - 1);
+
          if (dir == QBoxLayout::RightToLeft) {
             qSwap(leftBox, rightBox);
          }
@@ -254,11 +254,6 @@ void QBoxLayoutPrivate::effectiveMargins(int *left, int *top, int *right, int *b
    }
 }
 
-
-/*
-    Initializes the data structure needed by qGeomCalc and
-    recalculates max/min and size hint.
-*/
 void QBoxLayoutPrivate::setupGeom()
 {
    if (! dirty) {
@@ -423,14 +418,12 @@ void QBoxLayoutPrivate::setupGeom()
    dirty = false;
 }
 
-/*
-  Calculates and stores the preferred height given the width \a w.
-*/
 void QBoxLayoutPrivate::calcHfw(int w)
 {
    QVector<QLayoutStruct> &a = geomArray;
-   int n = a.count();
-   int h = 0;
+
+   int n  = a.count();
+   int h  = 0;
    int mh = 0;
 
    Q_ASSERT(n == list.size());
@@ -504,12 +497,6 @@ int QBoxLayout::spacing() const
    }
 }
 
-/*!
-  Reimplements QLayout::setSpacing(). Sets the spacing
-  property to \a spacing.
-
-  \sa QLayout::setSpacing(), spacing()
- */
 void QBoxLayout::setSpacing(int spacing)
 {
    Q_D(QBoxLayout);
@@ -517,9 +504,6 @@ void QBoxLayout::setSpacing(int spacing)
    invalidate();
 }
 
-/*!
-    \reimp
-*/
 QSize QBoxLayout::sizeHint() const
 {
    Q_D(const QBoxLayout);
@@ -529,9 +513,6 @@ QSize QBoxLayout::sizeHint() const
    return d->sizeHint;
 }
 
-/*!
-    \reimp
-*/
 QSize QBoxLayout::minimumSize() const
 {
    Q_D(const QBoxLayout);
@@ -541,9 +522,6 @@ QSize QBoxLayout::minimumSize() const
    return d->minSize;
 }
 
-/*!
-    \reimp
-*/
 QSize QBoxLayout::maximumSize() const
 {
    Q_D(const QBoxLayout);
@@ -563,9 +541,6 @@ QSize QBoxLayout::maximumSize() const
    return s;
 }
 
-/*!
-    \reimp
-*/
 bool QBoxLayout::hasHeightForWidth() const
 {
    Q_D(const QBoxLayout);
@@ -575,9 +550,6 @@ bool QBoxLayout::hasHeightForWidth() const
    return d->hasHfw;
 }
 
-/*!
-    \reimp
-*/
 int QBoxLayout::heightForWidth(int w) const
 {
    Q_D(const QBoxLayout);
@@ -596,21 +568,19 @@ int QBoxLayout::heightForWidth(int w) const
    return d->hfwHeight + top + bottom;
 }
 
-/*!
-    \reimp
-*/
 int QBoxLayout::minimumHeightForWidth(int w) const
 {
    Q_D(const QBoxLayout);
+
+   // return value is unused
    (void) heightForWidth(w);
+
    int top, bottom;
    d->effectiveMargins(nullptr, &top, nullptr, &bottom);
+
    return d->hasHfw ? (d->hfwMinHeight + top + bottom) : -1;
 }
 
-/*!
-    Resets cached information.
-*/
 void QBoxLayout::invalidate()
 {
    Q_D(QBoxLayout);
@@ -618,27 +588,18 @@ void QBoxLayout::invalidate()
    QLayout::invalidate();
 }
 
-/*!
-    \reimp
-*/
 int QBoxLayout::count() const
 {
    Q_D(const QBoxLayout);
    return d->list.count();
 }
 
-/*!
-    \reimp
-*/
 QLayoutItem *QBoxLayout::itemAt(int index) const
 {
    Q_D(const QBoxLayout);
    return index >= 0 && index < d->list.count() ? d->list.at(index)->item : nullptr;
 }
 
-/*!
-    \reimp
-*/
 QLayoutItem *QBoxLayout::takeAt(int index)
 {
    Q_D(QBoxLayout);
@@ -663,10 +624,6 @@ QLayoutItem *QBoxLayout::takeAt(int index)
    return item;
 }
 
-
-/*!
-    \reimp
-*/
 Qt::Orientations QBoxLayout::expandingDirections() const
 {
    Q_D(const QBoxLayout);
@@ -676,9 +633,6 @@ Qt::Orientations QBoxLayout::expandingDirections() const
    return d->expanding;
 }
 
-/*!
-    \reimp
-*/
 void QBoxLayout::setGeometry(const QRect &r)
 {
    Q_D(QBoxLayout);
@@ -761,9 +715,6 @@ void QBoxLayout::setGeometry(const QRect &r)
    }
 }
 
-/*!
-    \reimp
-*/
 void QBoxLayout::addItem(QLayoutItem *item)
 {
    Q_D(QBoxLayout);
@@ -772,17 +723,12 @@ void QBoxLayout::addItem(QLayoutItem *item)
    invalidate();
 }
 
-/*!
-    Inserts \a item into this box layout at position \a index. If \a
-    index is negative, the item is added at the end.
-
-    \sa addItem(), insertWidget(), insertLayout(), insertStretch(),
-        insertSpacing()
-*/
 void QBoxLayout::insertItem(int index, QLayoutItem *item)
 {
    Q_D(QBoxLayout);
-   if (index < 0) {                              // append
+
+   // append
+   if (index < 0) {
       index = d->list.count();
    }
 
@@ -791,19 +737,12 @@ void QBoxLayout::insertItem(int index, QLayoutItem *item)
    invalidate();
 }
 
-/*!
-    Inserts a non-stretchable space (a QSpacerItem) at position \a index, with
-    size \a size. If \a index is negative the space is added at the end.
-
-    The box layout has default margin and spacing. This function adds
-    additional space.
-
-    \sa addSpacing(), insertItem(), QSpacerItem
-*/
 void QBoxLayout::insertSpacing(int index, int size)
 {
    Q_D(QBoxLayout);
-   if (index < 0) {                              // append
+
+   // append
+   if (index < 0) {
       index = d->list.count();
    }
 
@@ -827,17 +766,12 @@ void QBoxLayout::insertSpacing(int index, int size)
    invalidate();
 }
 
-/*!
-    Inserts a stretchable space (a QSpacerItem) at position \a
-    index, with zero minimum size and stretch factor \a stretch. If \a
-    index is negative the space is added at the end.
-
-    \sa addStretch(), insertItem(), QSpacerItem
-*/
 void QBoxLayout::insertStretch(int index, int stretch)
 {
    Q_D(QBoxLayout);
-   if (index < 0) {                              // append
+
+   // append
+   if (index < 0) {
       index = d->list.count();
    }
 
@@ -867,14 +801,6 @@ void QBoxLayout::insertSpacerItem(int index, QSpacerItem *spacerItem)
    invalidate();
 }
 
-/*!
-    Inserts \a layout at position \a index, with stretch factor \a
-    stretch. If \a index is negative, the layout is added at the end.
-
-    \a layout becomes a child of the box layout.
-
-    \sa addLayout(), insertItem()
-*/
 void QBoxLayout::insertLayout(int index, QLayout *layout, int stretch)
 {
    Q_D(QBoxLayout);
@@ -887,7 +813,8 @@ void QBoxLayout::insertLayout(int index, QLayout *layout, int stretch)
       return;
    }
 
-   if (index < 0) {                              // append
+   // append
+   if (index < 0) {
       index = d->list.count();
    }
 
@@ -900,13 +827,15 @@ void QBoxLayout::insertWidget(int index, QWidget *widget, int stretch,
    Qt::Alignment alignment)
 {
    Q_D(QBoxLayout);
-   if (!d->checkWidget(widget)) {
+
+   if (! d->checkWidget(widget)) {
       return;
    }
 
    addChildWidget(widget);
 
-   if (index < 0) {                              // append
+   // append
+   if (index < 0) {
       index = d->list.count();
    }
    QWidgetItem *b = QLayoutPrivate::createWidgetItem(this, widget);
@@ -929,24 +858,11 @@ void QBoxLayout::insertWidget(int index, QWidget *widget, int stretch,
    invalidate();
 }
 
-/*!
-    Adds a non-stretchable space (a QSpacerItem) with size \a size
-    to the end of this box layout. QBoxLayout provides default margin
-    and spacing. This function adds additional space.
-
-    \sa insertSpacing(), addItem(), QSpacerItem
-*/
 void QBoxLayout::addSpacing(int size)
 {
    insertSpacing(-1, size);
 }
 
-/*!
-    Adds a stretchable space (a QSpacerItem) with zero minimum
-    size and stretch factor \a stretch to the end of this box layout.
-
-    \sa insertStretch(), addItem(), QSpacerItem
-*/
 void QBoxLayout::addStretch(int stretch)
 {
    insertStretch(-1, stretch);
@@ -962,24 +878,11 @@ void QBoxLayout::addWidget(QWidget *widget, int stretch, Qt::Alignment alignment
    insertWidget(-1, widget, stretch, alignment);
 }
 
-/*!
-    Adds \a layout to the end of the box, with serial stretch factor
-    \a stretch.
-
-    \sa insertLayout(), addItem(), addWidget()
-*/
 void QBoxLayout::addLayout(QLayout *layout, int stretch)
 {
    insertLayout(-1, layout, stretch);
 }
 
-/*!
-    Limits the perpendicular dimension of the box (e.g. height if the
-    box is \l LeftToRight) to a minimum of \a size. Other constraints
-    may increase the limit.
-
-    \sa addItem()
-*/
 void QBoxLayout::addStrut(int size)
 {
    Q_D(QBoxLayout);
@@ -996,19 +899,6 @@ void QBoxLayout::addStrut(int size)
    invalidate();
 }
 
-/*!
-    \fn int QBoxLayout::findWidget(QWidget *widget)
-
-    Use indexOf(\a widget) instead.
-*/
-
-/*!
-    Sets the stretch factor for \a widget to \a stretch and returns
-    true if \a widget is found in this layout (not including child
-    layouts); otherwise returns false.
-
-    \sa setAlignment()
-*/
 bool QBoxLayout::setStretchFactor(QWidget *widget, int stretch)
 {
    Q_D(QBoxLayout);
@@ -1026,13 +916,6 @@ bool QBoxLayout::setStretchFactor(QWidget *widget, int stretch)
    return false;
 }
 
-/*!
-    \overload
-
-    Sets the stretch factor for the layout \a layout to \a stretch and
-    returns true if \a layout is found in this layout (not including
-    child layouts); otherwise returns false.
-*/
 bool QBoxLayout::setStretchFactor(QLayout *layout, int stretch)
 {
    Q_D(QBoxLayout);
@@ -1061,7 +944,6 @@ void QBoxLayout::setStretch(int index, int stretch)
    }
 }
 
-
 int QBoxLayout::stretch(int index) const
 {
    Q_D(const QBoxLayout);
@@ -1071,9 +953,6 @@ int QBoxLayout::stretch(int index) const
    return -1;
 }
 
-/*!
-    Sets the direction of this layout to \a direction.
-*/
 void QBoxLayout::setDirection(Direction direction)
 {
    Q_D(QBoxLayout);
@@ -1083,16 +962,17 @@ void QBoxLayout::setDirection(Direction direction)
    }
 
    if (horz(d->dir) != horz(direction)) {
-      //swap around the spacers (the "magic" bits)
-      //#### a bit yucky, knows too much.
-      //#### probably best to add access functions to spacerItem
-      //#### or even a QSpacerItem::flip()
+      // swap around the spacers (the "magic" bits)
+      // might be better to add access functions to spacerItem or even a QSpacerItem::flip()
+
       for (int i = 0; i < d->list.size(); ++i) {
          QBoxLayoutItem *box = d->list.at(i);
+
          if (box->magic) {
             QSpacerItem *sp = box->item->spacerItem();
+
             if (sp) {
-               if (sp->expandingDirections() == Qt::Orientations(Qt::EmptyFlag) /*No Direction*/) {
+               if (sp->expandingDirections() == Qt::Orientations(Qt::EmptyFlag)) {
                   //spacing or strut
                   QSize s = sp->sizeHint();
                   sp->changeSize(s.height(), s.width(),
@@ -1112,6 +992,7 @@ void QBoxLayout::setDirection(Direction direction)
          }
       }
    }
+
    d->dir = direction;
    invalidate();
 }
@@ -1141,16 +1022,10 @@ QVBoxLayout::QVBoxLayout(QWidget *parent)
 {
 }
 
-/*!
-    Constructs a new vertical box. You must add
-    it to another layout.
-
-*/
 QVBoxLayout::QVBoxLayout()
    : QBoxLayout(TopToBottom)
 {
 }
-
 
 QVBoxLayout::~QVBoxLayout()
 {

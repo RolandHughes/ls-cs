@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -22,18 +22,18 @@
 ***********************************************************************/
 
 #include <qsidebar_p.h>
-#include <qfilesystemmodel.h>
 
 #ifndef QT_NO_FILEDIALOG
 
 #include <qaction.h>
-#include <qurl.h>
-#include <qmenu.h>
-#include <qmimedata.h>
-#include <qevent.h>
 #include <qdebug.h>
+#include <qevent.h>
 #include <qfileiconprovider.h>
 #include <qfiledialog.h>
+#include <qfilesystemmodel.h>
+#include <qmenu.h>
+#include <qmimedata.h>
+#include <qurl.h>
 
 void QSideBarDelegate::initStyleOption(QStyleOptionViewItem *option, const QModelIndex &index) const
 {
@@ -53,17 +53,11 @@ QUrlModel::QUrlModel(QObject *parent)
 {
 }
 
-/*!
-    \reimp
-*/
 QStringList QUrlModel::mimeTypes() const
 {
    return QStringList("text/uri-list");
 }
 
-/*!
-    \reimp
-*/
 Qt::ItemFlags QUrlModel::flags(const QModelIndex &index) const
 {
    Qt::ItemFlags flags = QStandardItemModel::flags(index);
@@ -81,31 +75,25 @@ Qt::ItemFlags QUrlModel::flags(const QModelIndex &index) const
    return flags;
 }
 
-/*!
-    \reimp
-*/
 QMimeData *QUrlModel::mimeData(const QModelIndexList &indexes) const
 {
    QList<QUrl> list;
+
    for (int i = 0; i < indexes.count(); ++i) {
       if (indexes.at(i).column() == 0) {
          list.append(indexes.at(i).data(UrlRole).toUrl());
       }
    }
+
    QMimeData *data = new QMimeData();
    data->setUrls(list);
    return data;
 }
 
 #ifndef QT_NO_DRAGANDDROP
-
-/*!
-    Decide based upon the data if it should be accepted or not
-    We only accept dirs and not files
-*/
 bool QUrlModel::canDrop(QDragEnterEvent *event)
 {
-   if (!event->mimeData()->formats().contains(mimeTypes().first())) {
+   if (! event->mimeData()->formats().contains(mimeTypes().first())) {
       return false;
    }
 
@@ -116,12 +104,10 @@ bool QUrlModel::canDrop(QDragEnterEvent *event)
          return false;
       }
    }
+
    return true;
 }
 
-/*!
-    \reimp
-*/
 bool QUrlModel::dropMimeData(const QMimeData *data, Qt::DropAction action,
    int row, int column, const QModelIndex &parent)
 {
@@ -137,14 +123,8 @@ bool QUrlModel::dropMimeData(const QMimeData *data, Qt::DropAction action,
 
    return true;
 }
+#endif
 
-#endif // QT_NO_DRAGANDDROP
-
-/*!
-    \reimp
-
-    If the role is the UrlRole then handle otherwise just pass to QStandardItemModel
-*/
 bool QUrlModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
    if (value.type() == QVariant::Url) {
@@ -152,27 +132,30 @@ bool QUrlModel::setData(const QModelIndex &index, const QVariant &value, int rol
       QModelIndex dirIndex = fileSystemModel->index(url.toLocalFile());
 
       //On windows the popup display the "C:\", convert to nativeSeparators
-      if (showFullPath)
+      if (showFullPath) {
          QStandardItemModel::setData(index, QDir::toNativeSeparators(fileSystemModel->data(dirIndex,
-                  QFileSystemModel::FilePathRole).toString()));
+               QFileSystemModel::FilePathRole).toString()));
 
-      else {
+      } else {
          QStandardItemModel::setData(index, QDir::toNativeSeparators(fileSystemModel->data(dirIndex,
-                  QFileSystemModel::FilePathRole).toString()), Qt::ToolTipRole);
+               QFileSystemModel::FilePathRole).toString()), Qt::ToolTipRole);
 
          QStandardItemModel::setData(index, fileSystemModel->data(dirIndex).toString());
       }
 
       QStandardItemModel::setData(index, fileSystemModel->data(dirIndex, Qt::DecorationRole), Qt::DecorationRole);
       QStandardItemModel::setData(index, url, UrlRole);
+
       return true;
    }
+
    return QStandardItemModel::setData(index, value, role);
 }
 
 void QUrlModel::setUrl(const QModelIndex &index, const QUrl &url, const QModelIndex &dirIndex)
 {
    setData(index, url, UrlRole);
+
    if (url.path().isEmpty()) {
       setData(index, fileSystemModel->myComputer());
       setData(index, fileSystemModel->myComputer(Qt::DecorationRole), Qt::DecorationRole);
@@ -317,9 +300,6 @@ void QUrlModel::setFileSystemModel(QFileSystemModel *model)
    insertColumns(0, 1);
 }
 
-/*
-    If one of the index's we are watching has changed update our internal data
-*/
 void QUrlModel::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
 {
    QModelIndex parent = topLeft.parent();
@@ -341,14 +321,10 @@ void QUrlModel::dataChanged(const QModelIndex &topLeft, const QModelIndex &botto
    }
 }
 
-/*!
-    Re-get all of our data, anything could have changed
- */
 void QUrlModel::layoutChanged()
 {
    QStringList paths;
    const int numPaths = watching.count();
-
 
    for (int i = 0; i < numPaths; ++i) {
       paths.append(watching.at(i).second);
@@ -484,7 +460,6 @@ void QSidebar::removeEntry()
    }
 }
 
-// internal
 void QSidebar::clicked(const QModelIndex &index)
 {
    QUrl url = model()->index(index.row(), 0).data(QUrlModel::UrlRole).toUrl();
@@ -493,19 +468,12 @@ void QSidebar::clicked(const QModelIndex &index)
    selectUrl(url);
 }
 
-/*!
-    \reimp
-    Don't automatically select something
- */
 void QSidebar::focusInEvent(QFocusEvent *event)
 {
    QAbstractScrollArea::focusInEvent(event);
    viewport()->update();
 }
 
-/*!
-    \reimp
- */
 bool QSidebar::event(QEvent *event)
 {
    if (event->type() == QEvent::KeyRelease) {
@@ -515,6 +483,7 @@ bool QSidebar::event(QEvent *event)
          return true;
       }
    }
+
    return QListView::event(event);
 }
 

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -38,20 +38,21 @@ class DSCameraControl : public QCameraControl
    DSCameraControl(QObject *parent = nullptr);
    ~DSCameraControl();
 
-   QCamera::State state() const {
+   QCamera::State state() const override {
       return m_state;
    }
 
-   QCamera::CaptureModes captureMode() const {
+   QCamera::CaptureModes captureMode() const override {
       return m_captureMode;
    }
-   void setCaptureMode(QCamera::CaptureModes mode);
+   void setCaptureMode(QCamera::CaptureModes mode) override;
 
-   void setState(QCamera::State state);
+   void setState(QCamera::State state) override;
 
-   QCamera::Status status() const;
-   bool isCaptureModeSupported(QCamera::CaptureModes mode) const;
-   bool canChangeProperty(PropertyChangeType /* changeType */, QCamera::Status /* status */) const {
+   QCamera::Status status() const override;
+   bool isCaptureModeSupported(QCamera::CaptureModes mode) const override;
+
+   bool canChangeProperty(PropertyChangeType, QCamera::Status) const override {
       return false;
    }
 

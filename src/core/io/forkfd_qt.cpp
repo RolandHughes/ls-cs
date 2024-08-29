@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -49,7 +49,7 @@ using ffd_atomic_int = std::atomic<int>;
 #define ffd_atomic_add_fetch(ptr,val,order) ((ptr)->fetch_add(val, order) + val)
 
 #define ffd_atomic_compare_exchange(ptr,expected,desired,order1,order2) \
-                                            (ptr)->compare_exchange_strong(*expected, desired, order1, order2)
+      (ptr)->compare_exchange_strong(*expected, desired, order1, order2)
 
 extern "C" {
 #include "../../3rdparty/forkfd/forkfd.c"

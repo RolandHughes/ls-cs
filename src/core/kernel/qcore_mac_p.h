@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -124,8 +124,8 @@ class Q_CORE_EXPORT QCFString : public QCFType<CFStringRef>
    static CFStringRef toCFStringRef(const QString &str);
 
 #ifdef __OBJC__
-    static QString toQString(const NSString *nsstr);
-    static NSString *toNSString(const QString &string);
+   static QString toQString(const NSString *nsstr);
+   static NSString *toNSString(const QString &string);
 #endif
 
  private:

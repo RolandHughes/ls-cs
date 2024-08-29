@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -21,17 +21,47 @@
 *
 ***********************************************************************/
 
-//#define QPROCESS_DEBUG
 #include <qdebug.h>
 
 #ifndef QT_NO_PROCESS
 
-#if defined QPROCESS_DEBUG
+#include <qdir.h>
+#include <qelapsedtimer.h>
+#include <qfile.h>
+#include <qfileinfo.h>
+#include <qlist.h>
+#include <qmutex.h>
+#include <qplatformdefs.h>
+#include <qprocess.h>
+#include <qsemaphore.h>
+#include <qstring.h>
+#include <qsocketnotifier.h>
+#include <qthread.h>
+
+#include <qcore_unix_p.h>
+#include <qcoreapplication_p.h>
+#include <qprocess_p.h>
+#include <qthread_p.h>
+
+#ifdef Q_OS_DARWIN
+#include <qcore_mac_p.h>
+
+#include <crt_externs.h>
+
+#define environ (*_NSGetEnviron())
+
+#else
+extern char **environ;
+#endif
+
+#include <errno.h>
+#include <stdlib.h>
+#include <string.h>
+#include <forkfd.h>
+
+#if defined(CS_SHOW_DEBUG_CORE_IO)
 
 #include <ctype.h>
-
-#include <qstring.h>
-#include <qtools_p.h>
 
 static QByteArray qt_prettyDebug(const char *data, int len, int maxSize)
 {
@@ -40,13 +70,15 @@ static QByteArray qt_prettyDebug(const char *data, int len, int maxSize)
    }
 
    QByteArray out;
+
    for (int i = 0; i < len; ++i) {
       char c = data[i];
 
       if (isprint(c)) {
          out += c;
 
-      } else switch (c) {
+      } else {
+         switch (c) {
             case '\n':
                out += "\\n";
                break;
@@ -63,6 +95,7 @@ static QByteArray qt_prettyDebug(const char *data, int len, int maxSize)
                QString tmp = QString("\\%1").formatArg(c, 0, 8);
                out += tmp.toLatin1();
          }
+      }
    }
 
    if (len < maxSize) {
@@ -73,36 +106,8 @@ static QByteArray qt_prettyDebug(const char *data, int len, int maxSize)
 }
 #endif
 
-#include <qplatformdefs.h>
-#include <qprocess.h>
-#include <qprocess_p.h>
-#include <qcore_unix_p.h>
-
-#ifdef Q_OS_DARWIN
-#include <qcore_mac_p.h>
-#endif
-
-#include <qcoreapplication_p.h>
-#include <qthread_p.h>
-#include <qfile.h>
-#include <qfileinfo.h>
-#include <qdir.h>
-#include <qlist.h>
-
-#include <qmutex.h>
-#include <qsemaphore.h>
-#include <qsocketnotifier.h>
-#include <qthread.h>
-#include <qelapsedtimer.h>
-
-#include <errno.h>
-#include <stdlib.h>
-#include <string.h>
-#include <forkfd.h>
-
 // POSIX requires PIPE_BUF to be 512 or larger
-// so we will use 512
-static const int errorBufferMax = 512;
+static constexpr const int errorBufferMax = 512;
 
 static inline void add_fd(int &nfds, int fd, fd_set *fdset)
 {
@@ -124,10 +129,12 @@ static int qt_create_pipe(int *pipe)
    }
 
    int pipe_ret = qt_safe_pipe(pipe);
+
    if (pipe_ret != 0) {
-      qWarning("QProcessPrivate::createPipe: Cannot create pipe %p: %s",
-               pipe, csPrintable(qt_error_string(errno)));
+      qWarning("QProcess::createPipe() Unable to create pipe %p: %s",
+            static_cast<void *>(pipe), csPrintable(qt_error_string(errno)));
    }
+
    return pipe_ret;
 }
 
@@ -137,6 +144,7 @@ void QProcessPrivate::destroyPipe(int *pipe)
       qt_safe_close(pipe[1]);
       pipe[1] = -1;
    }
+
    if (pipe[0] != -1) {
       qt_safe_close(pipe[0]);
       pipe[0] = -1;
@@ -147,11 +155,7 @@ void QProcessPrivate::closeChannel(Channel *channel)
 {
    destroyPipe(channel->pipe);
 }
-/*
-    Create the pipes to a QProcessPrivate::Channel.
 
-    This function must be called in order: stdin, stdout, stderr
-*/
 bool QProcessPrivate::openChannel(Channel &channel)
 {
    Q_Q(QProcess);
@@ -182,10 +186,12 @@ bool QProcessPrivate::openChannel(Channel &channel)
             channel.notifier = new QSocketNotifier(channel.pipe[0], QSocketNotifier::Read, q);
 
             if (&channel == &stdoutChannel) {
-               QObject::connect(channel.notifier, &QSocketNotifier::activated, q, &QProcess::_q_canReadStandardOutput);
+               QObject::connect(channel.notifier, &QSocketNotifier::activated, q,
+                     &QProcess::_q_canReadStandardOutput);
 
             } else {
-               QObject::connect(channel.notifier, &QSocketNotifier::activated, q, &QProcess::_q_canReadStandardError);
+               QObject::connect(channel.notifier, &QSocketNotifier::activated, q,
+                     &QProcess::_q_canReadStandardError);
 
             }
 
@@ -210,6 +216,7 @@ bool QProcessPrivate::openChannel(Channel &channel)
 
       } else {
          int mode = O_WRONLY | O_CREAT;
+
          if (channel.append) {
             mode |= O_APPEND;
          } else {
@@ -217,12 +224,12 @@ bool QProcessPrivate::openChannel(Channel &channel)
          }
 
          channel.pipe[0] = -1;
+
          if ( (channel.pipe[1] = qt_safe_open(fname.constData(), mode, 0666)) != -1) {
             return true;   // success
          }
 
-         setErrorAndEmit(QProcess::FailedToStart,
-                         QProcess::tr("Could not open input redirection for reading"));
+         setErrorAndEmit(QProcess::FailedToStart, QProcess::tr("Unable to open input redirection for reading"));
       }
 
       cleanup();
@@ -236,14 +243,15 @@ bool QProcessPrivate::openChannel(Channel &channel)
       Channel *sink;
 
       if (channel.type == Channel::PipeSource) {
-         // we are the source
+         // source
          source = &channel;
          sink = &channel.process->stdinChannel;
 
          Q_ASSERT(source == &stdoutChannel);
          Q_ASSERT(sink->process == this && sink->type == Channel::PipeSink);
+
       } else {
-         // we are the sink;
+         // sink
          source = &channel.process->stdoutChannel;
          sink = &channel;
 
@@ -254,6 +262,7 @@ bool QProcessPrivate::openChannel(Channel &channel)
       if (source->pipe[1] != INVALID_Q_PIPE || sink->pipe[0] != INVALID_Q_PIPE) {
          // already created, do nothing
          return true;
+
       } else {
          Q_ASSERT(source->pipe[0] == INVALID_Q_PIPE && source->pipe[1] == INVALID_Q_PIPE);
          Q_ASSERT(sink->pipe[0] == INVALID_Q_PIPE && sink->pipe[1] == INVALID_Q_PIPE);
@@ -272,14 +281,6 @@ bool QProcessPrivate::openChannel(Channel &channel)
    }
 }
 
-#if defined(Q_OS_DARWIN)
-# include <crt_externs.h>
-# define environ (*_NSGetEnviron())
-
-#else
-extern char **environ;
-#endif
-
 QProcessEnvironment QProcessEnvironment::systemEnvironment()
 {
    QProcessEnvironment env;
@@ -294,16 +295,16 @@ QProcessEnvironment QProcessEnvironment::systemEnvironment()
 
       QByteArray name(entry, equal - entry);
       QByteArray value(equal + 1);
-      env.d->hash.insert(QProcessEnvironmentPrivate::Key(name),
-                         QProcessEnvironmentPrivate::Value(value));
+      env.d->hash.insert(QProcEnvKey(name), QProcEnvValue(value));
    }
 
    return env;
 }
 
-static char **_q_dupEnvironment(const QProcessEnvironmentPrivate::Hash &environment, int *envc)
+static char **_q_dupEnvironment(const QHash<QProcEnvKey, QProcEnvValue> &environment, int *envc)
 {
    *envc = 0;
+
    if (environment.isEmpty()) {
       return nullptr;
    }
@@ -312,8 +313,8 @@ static char **_q_dupEnvironment(const QProcessEnvironmentPrivate::Hash &environm
    envp[environment.count()] = nullptr;
    envp[environment.count() + 1] = nullptr;
 
-   QProcessEnvironmentPrivate::Hash::const_iterator it        = environment.constBegin();
-   const QProcessEnvironmentPrivate::Hash::const_iterator end = environment.constEnd();
+   auto it  = environment.constBegin();
+   auto end = environment.constEnd();
 
    for ( ; it != end; ++it) {
       QByteArray key = it.key().key;
@@ -332,13 +333,9 @@ void QProcessPrivate::startProcess()
 {
    Q_Q(QProcess);
 
-#if defined (QPROCESS_DEBUG)
-   qDebug("QProcessPrivate::startProcess()");
-#endif
-
    // Initialize pipes
    if (! openChannel(stdinChannel) || ! openChannel(stdoutChannel) ||
-            ! openChannel(stderrChannel) || qt_create_pipe(childStartedPipe) != 0) {
+         ! openChannel(stderrChannel) || qt_create_pipe(childStartedPipe) != 0) {
       setErrorAndEmit(QProcess::FailedToStart, qt_error_string(errno));
       cleanup();
       return;
@@ -368,7 +365,7 @@ void QProcessPrivate::startProcess()
 
    if (encodedProgramName.endsWith(".app") && fileInfo.isDir()) {
       QCFType<CFURLRef> url = CFURLCreateWithFileSystemPath(nullptr, QCFString(fileInfo.absoluteFilePath()).toCFStringRef(),
-               kCFURLPOSIXPathStyle, true);
+            kCFURLPOSIXPathStyle, true);
 
       {
          // CFBundle is not reentrant, since CFBundleCreate might return a reference
@@ -438,7 +435,7 @@ void QProcessPrivate::startProcess()
             for (int k = 0; k < pathEntries.size(); ++k) {
                QByteArray tmp = QFile::encodeName(pathEntries.at(k));
 
-               if (!tmp.endsWith('/')) {
+               if (! tmp.endsWith('/')) {
                   tmp += '/';
                }
 
@@ -480,8 +477,8 @@ void QProcessPrivate::startProcess()
    if (forkfd == -1) {
       // Cleanup, report error and return
 
-#if defined (QPROCESS_DEBUG)
-      qDebug("fork() failed: %s", csPrintable(qt_error_string(lastForkErrno)));
+#if defined(CS_SHOW_DEBUG_CORE_IO)
+      qDebug("QProcess::startProcess() Call to fork() failed, %s", csPrintable(qt_error_string(lastForkErrno)));
 #endif
 
       q->setProcessState(QProcess::NotRunning);
@@ -509,6 +506,7 @@ void QProcessPrivate::startProcess()
       qt_safe_close(stdinChannel.pipe[0]);
       stdinChannel.pipe[0] = -1;
    }
+
    if (stdinChannel.pipe[1] != -1) {
       ::fcntl(stdinChannel.pipe[1], F_SETFL, ::fcntl(stdinChannel.pipe[1], F_GETFL) | O_NONBLOCK);
    }
@@ -517,6 +515,7 @@ void QProcessPrivate::startProcess()
       qt_safe_close(stdoutChannel.pipe[1]);
       stdoutChannel.pipe[1] = -1;
    }
+
    if (stdoutChannel.pipe[0] != -1) {
       ::fcntl(stdoutChannel.pipe[0], F_SETFL, ::fcntl(stdoutChannel.pipe[0], F_GETFL) | O_NONBLOCK);
    }
@@ -575,7 +574,7 @@ void QProcessPrivate::execChild(const char *workingDir, char **path, char **argv
    q->setupChildProcess();
 
    // execute the process
-   if (!envp) {
+   if (! envp) {
       qt_safe_execvp(argv[0], argv);
 
    } else {
@@ -585,28 +584,30 @@ void QProcessPrivate::execChild(const char *workingDir, char **path, char **argv
          while (*arg) {
             argv[0] = *arg;
 
-#if defined (QPROCESS_DEBUG)
-            fprintf(stderr, "QProcessPrivate::execChild() searching / starting %s\n", argv[0]);
+#if defined(CS_SHOW_DEBUG_CORE_IO)
+            qDebug("QProcess::execChild() Starting %s", argv[0]);
 #endif
+
             qt_safe_execve(argv[0], argv, envp);
             ++arg;
          }
 
       } else {
 
-#if defined (QPROCESS_DEBUG)
-         fprintf(stderr, "QProcessPrivate::execChild() starting %s\n", argv[0]);
+#if defined(CS_SHOW_DEBUG_CORE_IO)
+         qDebug("QProcess::execChild() Starting %s", argv[0]);
 #endif
+
          qt_safe_execve(argv[0], argv, envp);
       }
    }
 
-   // notify failure
 report_errno:
+   // notify failure
    QString error = qt_error_string(errno);
 
-#if defined (QPROCESS_DEBUG)
-   fprintf(stderr, "QProcessPrivate::execChild() failed (%s), notifying parent process\n", csPrintable(error));
+#if defined(CS_SHOW_DEBUG_CORE_IO)
+   qDebug("QProcess::execChild() Command failed with error %s", csPrintable(error));
 #endif
 
    qt_safe_write(childStartedPipe[1], error.data(), error.length() * sizeof(QChar));
@@ -628,8 +629,8 @@ bool QProcessPrivate::processStarted(QString *errorMessage)
    qt_safe_close(childStartedPipe[0]);
    childStartedPipe[0] = -1;
 
-#if defined (QPROCESS_DEBUG)
-   qDebug("QProcessPrivate::processStarted() == %s", i <= 0 ? "true" : "false");
+#if defined(CS_SHOW_DEBUG_CORE_IO)
+   qDebug("QProcess::processStarted() Returning %s", i <= 0 ? "true" : "false");
 #endif
 
    // did we read an error message?
@@ -651,8 +652,9 @@ qint64 QProcessPrivate::bytesAvailableInChannel(const Channel *channel) const
       available = (qint64) nbytes;
    }
 
-#if defined (QPROCESS_DEBUG)
-   qDebug("QProcessPrivate::bytesAvailableInChannel(%d) == %lld", int(channel - &stdinChannel), available);
+#if defined(CS_SHOW_DEBUG_CORE_IO)
+   qDebug("QProcess::bytesAvailableInChannel() channel = %d, available = %lld",
+         int(channel - &stdinChannel), available);
 #endif
 
    return available;
@@ -663,11 +665,11 @@ qint64 QProcessPrivate::readFromChannel(const Channel *channel, char *data, qint
    Q_ASSERT(channel->pipe[0] != INVALID_Q_PIPE);
    qint64 bytesRead = qt_safe_read(channel->pipe[0], data, maxlen);
 
-#if defined QPROCESS_DEBUG
+#if defined(CS_SHOW_DEBUG_CORE_IO)
    int save_errno = errno;
 
-   qDebug("QProcessPrivate::readFromChannel(%d, %p \"%s\", %lld) == %lld",
-          int(channel - &stdinChannel), data, qt_prettyDebug(data, bytesRead, 16).constData(), maxlen, bytesRead);
+   qDebug("QProcess::readFromChannel() channel = %d, data = %s, maxlen = %lld, bytes read = %lld",
+         int(channel - &stdinChannel), qt_prettyDebug(data, bytesRead, 16).constData(), maxlen, bytesRead);
 
    errno = save_errno;
 #endif
@@ -686,12 +688,12 @@ bool QProcessPrivate::writeToStdin()
 
    qint64 written = qt_safe_write_nosignal(stdinChannel.pipe[1], data, bytesToWrite);
 
-#if defined QPROCESS_DEBUG
-   qDebug("QProcessPrivate::writeToStdin(), write(%p \"%s\", %lld) == %lld",
-          data, qt_prettyDebug(data, bytesToWrite, 16).constData(), bytesToWrite, written);
+#if defined(CS_SHOW_DEBUG_CORE_IO)
+   qDebug("QProcess::writeToStdin() data = %s, bytes to write = %lld, written = %lld",
+         qt_prettyDebug(data, bytesToWrite, 16).constData(), bytesToWrite, written);
 
    if (written == -1)  {
-      qDebug("QProcessPrivate::writeToStdin(), failed to write (%s)", csPrintable(qt_error_string(errno)));
+      qDebug("QProcess::writeToStdin() Failed to write, %s", csPrintable(qt_error_string(errno)));
    }
 #endif
 
@@ -702,25 +704,25 @@ bool QProcessPrivate::writeToStdin()
       if (errno == EAGAIN) {
          return true;
       }
+
       closeChannel(&stdinChannel);
       setErrorAndEmit(QProcess::WriteError);
       return false;
    }
+
    stdinChannel.buffer.free(written);
-   if (!emittedBytesWritten && written != 0) {
+
+   if (! emittedBytesWritten && written != 0) {
       emittedBytesWritten = true;
       emit q_func()->bytesWritten(written);
       emittedBytesWritten = false;
    }
+
    return true;
 }
 
 void QProcessPrivate::terminateProcess()
 {
-#if defined (QPROCESS_DEBUG)
-   qDebug("QProcessPrivate::terminateProcess()");
-#endif
-
    if (pid) {
       ::kill(pid_t(pid), SIGTERM);
    }
@@ -728,10 +730,6 @@ void QProcessPrivate::terminateProcess()
 
 void QProcessPrivate::killProcess()
 {
-#if defined (QPROCESS_DEBUG)
-   qDebug("QProcessPrivate::killProcess()");
-#endif
-
    if (pid) {
       ::kill(pid_t(pid), SIGKILL);
    }
@@ -739,9 +737,9 @@ void QProcessPrivate::killProcess()
 
 bool QProcessPrivate::waitForStarted(int msecs)
 {
-#if defined (QPROCESS_DEBUG)
-   qDebug("QProcessPrivate::waitForStarted(%d) waiting for child to start (fd = %d)", msecs,
-          childStartedPipe[0]);
+#if defined(CS_SHOW_DEBUG_CORE_IO)
+   qDebug("QProcess::waitForStarted() Waiting %d msecs for child to start, fd = %d",
+      msecs, childStartedPipe[0]);
 #endif
 
    fd_set fds;
@@ -751,16 +749,17 @@ bool QProcessPrivate::waitForStarted(int msecs)
    if (qt_select_msecs(childStartedPipe[0] + 1, &fds, nullptr, msecs) == 0) {
       setError(QProcess::Timedout);
 
-#if defined (QPROCESS_DEBUG)
-      qDebug("QProcessPrivate::waitForStarted(%d) == false (timed out)", msecs);
+#if defined(CS_SHOW_DEBUG_CORE_IO)
+      qDebug("QProcess::waitForStarted() Timed out");
 #endif
+
       return false;
    }
 
    bool startedEmitted = _q_startupNotification();
 
-#if defined (QPROCESS_DEBUG)
-   qDebug("QProcessPrivate::waitForStarted() == %s", startedEmitted ? "true" : "false");
+#if defined(CS_SHOW_DEBUG_CORE_IO)
+   qDebug("QProcess::waitForStarted() Returning %s", startedEmitted ? "true" : "false");
 #endif
 
    return startedEmitted;
@@ -768,15 +767,14 @@ bool QProcessPrivate::waitForStarted(int msecs)
 
 bool QProcessPrivate::waitForReadyRead(int msecs)
 {
-
-#if defined (QPROCESS_DEBUG)
-   qDebug("QProcessPrivate::waitForReadyRead(%d)", msecs);
+#if defined(CS_SHOW_DEBUG_CORE_IO)
+   qDebug("QProcess::waitForReadyRead() Waiting %d msecs", msecs);
 #endif
 
    QElapsedTimer stopWatch;
    stopWatch.start();
 
-    while (true) {
+   while (true) {
       fd_set fdread;
       fd_set fdwrite;
 
@@ -816,20 +814,24 @@ bool QProcessPrivate::waitForReadyRead(int msecs)
       }
 
       if (childStartedPipe[0] != -1 && FD_ISSET(childStartedPipe[0], &fdread)) {
-         if (!_q_startupNotification()) {
+         if (! _q_startupNotification()) {
             return false;
          }
       }
 
       bool readyReadEmitted = false;
+
       if (stdoutChannel.pipe[0] != -1 && FD_ISSET(stdoutChannel.pipe[0], &fdread)) {
          bool canRead = _q_canReadStandardOutput();
+
          if (processChannel == QProcess::StandardOutput && canRead) {
             readyReadEmitted = true;
          }
       }
+
       if (stderrChannel.pipe[0] != -1 && FD_ISSET(stderrChannel.pipe[0], &fdread)) {
          bool canRead = _q_canReadStandardError();
+
          if (processChannel == QProcess::StandardError && canRead) {
             readyReadEmitted = true;
          }
@@ -855,9 +857,8 @@ bool QProcessPrivate::waitForReadyRead(int msecs)
 
 bool QProcessPrivate::waitForBytesWritten(int msecs)
 {
-
-#if defined (QPROCESS_DEBUG)
-   qDebug("QProcessPrivate::waitForBytesWritten(%d)", msecs);
+#if defined(CS_SHOW_DEBUG_CORE_IO)
+   qDebug("QProcess::waitForBytesWritten() Waiting %d msecs", msecs);
 #endif
 
    QElapsedTimer stopWatch;
@@ -880,10 +881,10 @@ bool QProcessPrivate::waitForBytesWritten(int msecs)
       if (stdoutChannel.pipe[0] != -1) {
          add_fd(nfds, stdoutChannel.pipe[0], &fdread);
       }
+
       if (stderrChannel.pipe[0] != -1) {
          add_fd(nfds, stderrChannel.pipe[0], &fdread);
       }
-
 
       if (!stdinChannel.buffer.isEmpty() && stdinChannel.pipe[1] != -1) {
          add_fd(nfds, stdinChannel.pipe[1], &fdwrite);
@@ -891,6 +892,7 @@ bool QProcessPrivate::waitForBytesWritten(int msecs)
 
       int timeout = qt_subtract_from_timeout(msecs, stopWatch.elapsed());
       int ret = qt_select_msecs(nfds + 1, &fdread, &fdwrite, timeout);
+
       if (ret < 0) {
          break;
       }
@@ -930,15 +932,14 @@ bool QProcessPrivate::waitForBytesWritten(int msecs)
 
 bool QProcessPrivate::waitForFinished(int msecs)
 {
-
-#if defined (QPROCESS_DEBUG)
-   qDebug("QProcessPrivate::waitForFinished(%d)", msecs);
+#if defined(CS_SHOW_DEBUG_CORE_IO)
+   qDebug("QProcess::waitForFinished() Waiting %d msecs", msecs);
 #endif
 
    QElapsedTimer stopWatch;
    stopWatch.start();
 
-    while (true) {
+   while (true) {
       fd_set fdread;
       fd_set fdwrite;
       int nfds = -1;
@@ -953,6 +954,7 @@ bool QProcessPrivate::waitForFinished(int msecs)
       if (stdoutChannel.pipe[0] != -1) {
          add_fd(nfds, stdoutChannel.pipe[0], &fdread);
       }
+
       if (stderrChannel.pipe[0] != -1) {
          add_fd(nfds, stderrChannel.pipe[0], &fdread);
       }
@@ -967,6 +969,7 @@ bool QProcessPrivate::waitForFinished(int msecs)
 
       int timeout = qt_subtract_from_timeout(msecs, stopWatch.elapsed());
       int ret = qt_select_msecs(nfds + 1, &fdread, &fdwrite, timeout);
+
       if (ret < 0) {
          break;
       }
@@ -981,6 +984,7 @@ bool QProcessPrivate::waitForFinished(int msecs)
             return false;
          }
       }
+
       if (stdinChannel.pipe[1] != -1 && FD_ISSET(stdinChannel.pipe[1], &fdwrite)) {
          _q_canWrite();
       }
@@ -1033,26 +1037,29 @@ bool QProcessPrivate::waitForDeadChild()
    EINTR_LOOP(ret, forkfd_close(forkfd));
    forkfd = -1; // Child is dead, don't try to kill it anymore
 
-#if defined QPROCESS_DEBUG
-   qDebug() << "QProcessPrivate::waitForDeadChild() dead with exitCode"
-            << exitCode << ", crashed?" << crashed;
+#if defined(CS_SHOW_DEBUG_CORE_IO)
+   qDebug() << "QProcess::waitForDeadChild() exitCode = "
+         << exitCode << ", crashed = " << crashed;
 #endif
 
    return true;
 }
 
 bool QProcessPrivate::startDetached(const QString &program, const QStringList &arguments,
-                                    const QString &workingDirectory, qint64 *pid)
+      const QString &workingDirectory, qint64 *pid)
 {
    QByteArray encodedWorkingDirectory = QFile::encodeName(workingDirectory);
 
    // To catch the startup of the child
    int startedPipe[2];
+
    if (qt_safe_pipe(startedPipe) != 0) {
       return false;
    }
+
    // To communicate the pid of the child
    int pidPipe[2];
+
    if (qt_safe_pipe(pidPipe) != 0) {
       qt_safe_close(startedPipe[0]);
       qt_safe_close(startedPipe[1]);
@@ -1060,6 +1067,7 @@ bool QProcessPrivate::startDetached(const QString &program, const QStringList &a
    }
 
    pid_t childPid = fork();
+
    if (childPid == 0) {
       struct sigaction noaction;
       memset(&noaction, 0, sizeof(noaction));
@@ -1072,19 +1080,22 @@ bool QProcessPrivate::startDetached(const QString &program, const QStringList &a
       qt_safe_close(pidPipe[0]);
 
       pid_t doubleForkPid = fork();
+
       if (doubleForkPid == 0) {
          qt_safe_close(pidPipe[1]);
 
          if (!encodedWorkingDirectory.isEmpty()) {
             if (QT_CHDIR(encodedWorkingDirectory.constData()) == -1) {
-               qWarning("QProcessPrivate::startDetached: failed to chdir to %s", encodedWorkingDirectory.constData());
+               qWarning("QProcess::startDetached() Failed to change directory to %s", encodedWorkingDirectory.constData());
             }
          }
 
          char **argv = new char *[arguments.size() + 2];
+
          for (int i = 0; i < arguments.size(); ++i) {
             argv[i + 1] = ::strdup(QFile::encodeName(arguments.at(i)).constData());
          }
+
          argv[arguments.size() + 1] = nullptr;
 
          if (!program.contains(QLatin1Char('/'))) {
@@ -1096,14 +1107,16 @@ bool QProcessPrivate::startDetached(const QString &program, const QStringList &a
                for (int k = 0; k < pathEntries.size(); ++k) {
                   QByteArray tmp = QFile::encodeName(pathEntries.at(k));
 
-                  if (!tmp.endsWith('/')) {
+                  if (! tmp.endsWith('/')) {
                      tmp += '/';
                   }
+
                   tmp += QFile::encodeName(program);
                   argv[0] = tmp.data();
                   qt_safe_execv(argv[0], argv);
                }
             }
+
          } else {
             QByteArray tmp = QFile::encodeName(program);
             argv[0] = tmp.data();
@@ -1111,6 +1124,7 @@ bool QProcessPrivate::startDetached(const QString &program, const QStringList &a
          }
 
          struct sigaction noaction;
+
          memset(&noaction, 0, sizeof(noaction));
          noaction.sa_handler = SIG_IGN;
          ::sigaction(SIGPIPE, &noaction, nullptr);
@@ -1120,6 +1134,7 @@ bool QProcessPrivate::startDetached(const QString &program, const QStringList &a
          qt_safe_write(startedPipe[1], &c, 1);
          qt_safe_close(startedPipe[1]);
          ::_exit(1);
+
       } else if (doubleForkPid == -1) {
          struct sigaction noaction;
          memset(&noaction, 0, sizeof(noaction));
@@ -1135,7 +1150,7 @@ bool QProcessPrivate::startDetached(const QString &program, const QStringList &a
       qt_safe_write(pidPipe[1], (const char *)&doubleForkPid, sizeof(pid_t));
 
       if (QT_CHDIR("/") == -1) {
-         qWarning("QProcessPrivate::startDetached: failed to chdir to /");
+         qWarning("QProcess::startDetached() Failed to change directory to /");
       }
 
       ::_exit(1);
@@ -1153,17 +1168,21 @@ bool QProcessPrivate::startDetached(const QString &program, const QStringList &a
    char reply = '\0';
    int startResult = qt_safe_read(startedPipe[0], &reply, 1);
    int result;
+
    qt_safe_close(startedPipe[0]);
    qt_safe_waitpid(childPid, &result, 0);
    bool success = (startResult != -1 && reply == '\0');
+
    if (success && pid) {
       pid_t actualPid = 0;
+
       if (qt_safe_read(pidPipe[0], (char *)&actualPid, sizeof(pid_t)) == sizeof(pid_t)) {
          *pid = actualPid;
       } else {
          *pid = 0;
       }
    }
+
    qt_safe_close(pidPipe[0]);
    return success;
 }

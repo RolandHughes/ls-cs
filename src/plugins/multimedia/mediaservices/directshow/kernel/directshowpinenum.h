@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -28,7 +28,6 @@
 
 #include <qlist.h>
 
-
 class DirectShowPinEnum : public IEnumPins
 {
  public:
@@ -36,15 +35,15 @@ class DirectShowPinEnum : public IEnumPins
    virtual ~DirectShowPinEnum();
 
    // IUnknown
-   HRESULT STDMETHODCALLTYPE QueryInterface(REFIID riid, void **ppvObject);
-   ULONG STDMETHODCALLTYPE AddRef();
-   ULONG STDMETHODCALLTYPE Release();
+   HRESULT STDMETHODCALLTYPE QueryInterface(REFIID riid, void **ppvObject) override;
+   ULONG STDMETHODCALLTYPE AddRef() override;
+   ULONG STDMETHODCALLTYPE Release() override;
 
    // IEnumPins
-   HRESULT STDMETHODCALLTYPE Next(ULONG cPins, IPin **ppPins, ULONG *pcFetched);
-   HRESULT STDMETHODCALLTYPE Skip(ULONG cPins);
-   HRESULT STDMETHODCALLTYPE Reset();
-   HRESULT STDMETHODCALLTYPE Clone(IEnumPins **ppEnum);
+   HRESULT STDMETHODCALLTYPE Next(ULONG cPins, IPin **ppPins, ULONG *pcFetched) override;
+   HRESULT STDMETHODCALLTYPE Skip(ULONG cPins) override;
+   HRESULT STDMETHODCALLTYPE Reset() override;
+   HRESULT STDMETHODCALLTYPE Clone(IEnumPins **ppEnum) override;
 
  private:
    LONG m_ref;

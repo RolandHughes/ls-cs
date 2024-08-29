@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -41,6 +41,7 @@ class Q_NETWORK_EXPORT QNetworkAddressEntry
  public:
    QNetworkAddressEntry();
    QNetworkAddressEntry(const QNetworkAddressEntry &other);
+
    ~QNetworkAddressEntry();
 
    QNetworkAddressEntry &operator=(const QNetworkAddressEntry &other);
@@ -52,7 +53,7 @@ class Q_NETWORK_EXPORT QNetworkAddressEntry
 
    bool operator==(const QNetworkAddressEntry &other) const;
 
-   inline bool operator!=(const QNetworkAddressEntry &other) const {
+   bool operator!=(const QNetworkAddressEntry &other) const {
       return !(*this == other);
    }
 

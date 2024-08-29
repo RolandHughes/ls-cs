@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -171,8 +171,10 @@ class Graph
       return conns;
    }
 
-#if defined(QT_DEBUG)
-   QString serializeToDot() {   // traversal
+#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
+   QString serializeToDot() {
+      // traversal
+
       QString strVertices;
       QString edges;
 
@@ -180,10 +182,12 @@ class Graph
       for (typename QSet<Vertex *>::const_iterator it = setOfVertices.begin(); it != setOfVertices.end(); ++it) {
          Vertex *v = *it;
          QList<Vertex *> adjacents = adjacentVertices(v);
+
          for (int i = 0; i < adjacents.count(); ++i) {
             Vertex *v1 = adjacents.at(i);
             EdgeData *data = edgeData(v, v1);
             bool forward = data->from == v;
+
             if (forward) {
                edges += QString::fromLatin1("\"%1\"->\"%2\" [label=\"[%3,%4,%5,%6,%7]\" color=\"#000000\"] \n")
                   .formatArg(v->toString())

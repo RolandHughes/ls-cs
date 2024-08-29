@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -25,16 +25,16 @@
 
 #ifndef QT_NO_DESKTOPSERVICES
 
-#include <qdebug.h>
-#include <qstandardpaths.h>
-#include <qhash.h>
-#include <qobject.h>
 #include <qcoreapplication.h>
-#include <qurl.h>
-#include <qmutex.h>
-#include <qplatform_services.h>
-#include <qplatform_integration.h>
+#include <qdebug.h>
 #include <qdir.h>
+#include <qhash.h>
+#include <qmutex.h>
+#include <qobject.h>
+#include <qplatform_integration.h>
+#include <qplatform_services.h>
+#include <qstandardpaths.h>
+#include <qurl.h>
 
 #include <qguiapplication_p.h>
 
@@ -94,7 +94,7 @@ bool QDesktopServices::openUrl(const QUrl &url)
          insideOpenUrlHandler = true;
 
          bool result = QMetaObject::invokeMethod(handler->receiver, handler->name,
-               Qt::DirectConnection, Q_ARG(const QUrl &, url));
+                     Qt::DirectConnection, Q_ARG(const QUrl &, url));
 
          insideOpenUrlHandler = false;
          return result;
@@ -106,6 +106,7 @@ bool QDesktopServices::openUrl(const QUrl &url)
    }
 
    QPlatformIntegration *platformIntegration = QGuiApplicationPrivate::platformIntegration();
+
    if (! platformIntegration) {
       return false;
    }
@@ -118,7 +119,7 @@ bool QDesktopServices::openUrl(const QUrl &url)
    }
 
    return url.scheme() == "file" ?
-      platformServices->openDocument(url) : platformServices->openUrl(url);
+         platformServices->openDocument(url) : platformServices->openUrl(url);
 }
 
 void QDesktopServices::setUrlHandler(const QString &scheme, QObject *receiver, const char *method)
@@ -158,6 +159,7 @@ QString QDesktopServices::storageLocationImpl(QStandardPaths::StandardLocation t
 
 #if defined(Q_OS_WIN) || defined(Q_OS_DARWIN)
       QString result = baseDir;
+
       if (! QCoreApplication::organizationName().isEmpty()) {
          result += '/' + QCoreApplication::organizationName();
       }

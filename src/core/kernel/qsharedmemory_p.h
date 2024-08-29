@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -32,8 +32,10 @@
 #ifndef QT_NO_SYSTEMSEMAPHORE
 
 namespace QSharedMemoryPrivate {
-   int createUnixKeyFile(const QString &fileName);
-   QString makePlatformSafeKey(const QString &key, const QString &prefix = QString("qipc_sharedmemory_"));
+
+int createUnixKeyFile(const QString &fileName);
+QString makePlatformSafeKey(const QString &key, const QString &prefix = QString("qipc_sharedmemory_"));
+
 }
 
 #endif
@@ -52,9 +54,8 @@ namespace QSharedMemoryPrivate {
 
 class QSharedMemoryLocker
 {
-
  public:
-   inline QSharedMemoryLocker(QSharedMemory *sharedMemory) : q_sm(sharedMemory) {
+   QSharedMemoryLocker(QSharedMemory *sharedMemory) : q_sm(sharedMemory) {
       Q_ASSERT(q_sm);
    }
 
@@ -147,4 +148,3 @@ class QSharedMemoryPrivate
 #endif // QT_NO_SHAREDMEMORY
 
 #endif
-

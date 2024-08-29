@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -275,6 +275,7 @@ static hb_blob_t *internal_hb_reference_table(hb_face_t *, hb_tag_t tag, void *u
    }
 
    if (! funcPtr(data->user_data, tag, reinterpret_cast<uchar *>(buffer), &length)) {
+      free(buffer);
       return nullptr;
    }
 

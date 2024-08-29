@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -59,7 +59,7 @@ class Q_NETWORK_EXPORT QUdpSocket : public QAbstractSocket
    qint64 readDatagram(char *data, qint64 maxlen, QHostAddress *address = nullptr, quint16 *port = nullptr);
    qint64 writeDatagram(const char *data, qint64 len, const QHostAddress &address, quint16 port);
 
-   inline qint64 writeDatagram(const QByteArray &datagram, const QHostAddress &address, quint16 port) {
+   qint64 writeDatagram(const QByteArray &datagram, const QHostAddress &address, quint16 port) {
       return writeDatagram(datagram.constData(), datagram.size(), address, port);
    }
 

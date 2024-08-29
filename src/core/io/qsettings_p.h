@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -45,17 +45,18 @@ static const Qt::CaseSensitivity IniCaseSensitivity = Qt::CaseSensitive;
 class QSettingsKey : public QString
 {
  public:
-   inline QSettingsKey(const QString &key, Qt::CaseSensitivity cs, int = -1)
-      : QString(key) {
+   QSettingsKey(const QString &key, Qt::CaseSensitivity cs, int = -1)
+      : QString(key)
+   {
       Q_ASSERT(cs == Qt::CaseSensitive);
       (void) cs;
    }
 
-   inline QString originalCaseKey() const {
+   QString originalCaseKey() const {
       return *this;
    }
 
-   inline int originalKeyPosition() const {
+   int originalKeyPosition() const {
       return -1;
    }
 };
@@ -66,18 +67,19 @@ static const Qt::CaseSensitivity IniCaseSensitivity = Qt::CaseInsensitive;
 class QSettingsKey : public QString
 {
  public:
-   inline QSettingsKey(const QString &key, Qt::CaseSensitivity cs, int position = -1)
-      : QString(key), theOriginalKey(key), theOriginalKeyPosition(position) {
+   QSettingsKey(const QString &key, Qt::CaseSensitivity cs, int position = -1)
+      : QString(key), theOriginalKey(key), theOriginalKeyPosition(position)
+   {
       if (cs == Qt::CaseInsensitive) {
          QString::operator=(toLower());
       }
    }
 
-   inline QString originalCaseKey() const {
+   QString originalCaseKey() const {
       return theOriginalKey;
    }
 
-   inline int originalKeyPosition() const {
+   int originalKeyPosition() const {
       return theOriginalKeyPosition;
    }
 
@@ -87,42 +89,41 @@ class QSettingsKey : public QString
 };
 #endif
 
-
 using UnparsedSettingsMap = QMap<QSettingsKey, QByteArray>;
 using ParsedSettingsMap   = QMap<QSettingsKey, QVariant>;
-
 
 class QSettingsGroup
 {
  public:
-   inline QSettingsGroup()
+   QSettingsGroup()
       : num(-1), maxNum(-1)
    { }
 
-   inline QSettingsGroup(const QString &s)
+   QSettingsGroup(const QString &s)
       : str(s), num(-1), maxNum(-1)
    { }
 
-   inline QSettingsGroup(const QString &s, bool guessArraySize)
+   QSettingsGroup(const QString &s, bool guessArraySize)
       : str(s), num(0), maxNum(guessArraySize ? 0 : -1)
    { }
 
-   inline QString name() const {
+   QString name() const {
       return str;
    }
 
-   inline QString toString() const;
+   QString toString() const;
 
-   inline bool isArray() const {
+   bool isArray() const {
       return num != -1;
    }
 
-   inline int arraySizeGuess() const {
+   int arraySizeGuess() const {
       return maxNum;
    }
 
-   inline void setArrayIndex(int i) {
+   void setArrayIndex(int i) {
       num = i + 1;
+
       if (maxNum != -1 && num > maxNum) {
          maxNum = num;
       }
@@ -179,7 +180,18 @@ class QConfFile
 class QSettingsPrivate
 {
  public:
-   enum ChildSpec { AllKeys, ChildKeys, ChildGroups };
+   enum ChildSpec {
+      AllKeys,
+      ChildKeys,
+      ChildGroups
+   };
+
+   enum SearchOrder {
+      F_Application  = 0x0,
+      F_Organization = 0x1,
+      F_User         = 0x0,
+      F_System       = 0x2
+   };
 
    QSettingsPrivate(QSettings::Format format);
    QSettingsPrivate(QSettings::Format format, QSettings::Scope scope, const QString &organization, const QString &application);
@@ -206,7 +218,7 @@ class QSettingsPrivate
 
    static QString normalizedKey(const QString &key);
    static QSettingsPrivate *create(QSettings::Format format, QSettings::Scope scope,
-      const QString &organization, const QString &application);
+         const QString &organization, const QString &application);
 
    static QSettingsPrivate *create(const QString &fileName, QSettings::Format format);
 
@@ -225,23 +237,12 @@ class QSettingsPrivate
    static void iniEscapedString(const QString &str, QByteArray &result, QTextCodec *codec);
    static void iniEscapedStringList(const QStringList &strs, QByteArray &result, QTextCodec *codec);
    static bool iniUnescapedStringList(const QByteArray &str, int from, int to, QString &stringResult,
-      QStringList &stringListResult, QTextCodec *codec);
+         QStringList &stringListResult, QTextCodec *codec);
 
    static QStringList splitArgs(const QString &s, int idx);
 
-   /* numeric values for this enums defines their search order.
-      F_User | F_Organization is searched before F_System | F_Application,
-      because their values are respectively 1 and 2.
-   */
-   enum {
-      F_Application  = 0x0,
-      F_Organization = 0x1,
-      F_User         = 0x0,
-      F_System       = 0x2
-   };
-
-   QSettings::Format format;
-   QSettings::Scope scope;
+   QSettings::Format m_format;
+   QSettings::Scope m_scope;
    QString organizationName;
    QString applicationName;
    QTextCodec *iniCodec;
@@ -252,7 +253,7 @@ class QSettingsPrivate
    int m_spec;
    bool fallbacks;
    bool pendingChanges;
-   mutable QSettings::Status status;
+   mutable QSettings::Status m_status;
 
    QSettings *q_ptr;
 

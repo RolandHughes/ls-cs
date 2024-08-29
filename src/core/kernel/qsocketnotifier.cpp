@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -22,9 +22,11 @@
 ***********************************************************************/
 
 #include <qsocketnotifier.h>
-#include <qplatformdefs.h>
+
 #include <qabstracteventdispatcher.h>
 #include <qcoreapplication.h>
+#include <qplatformdefs.h>
+
 #include <qthread_p.h>
 
 QSocketNotifier::QSocketNotifier(qintptr socket, Type type, QObject *parent)
@@ -38,22 +40,20 @@ QSocketNotifier::QSocketNotifier(qintptr socket, Type type, QObject *parent)
    auto tmp = threadData->eventDispatcher.load();
 
    if (socket < 0) {
-      qWarning("QSocketNotifier: Invalid socket specified");
+      qWarning("QSocketNotifier() Invalid socket specified");
 
    } else if (! tmp) {
-      qWarning("QSocketNotifier: Can only be used with threads started with QThread");
+      qWarning("QSocketNotifier() Can only be used with threads started with QThread");
 
    } else {
       tmp->registerSocketNotifier(this);
    }
 }
 
-
 QSocketNotifier::~QSocketNotifier()
 {
    setEnabled(false);
 }
-
 
 qintptr QSocketNotifier::socket() const
 {
@@ -95,8 +95,8 @@ void QSocketNotifier::setEnabled(bool enable)
    }
 
    if (thread() != QThread::currentThread()) {
-        qWarning("QSocketNotifier::setEnabled() Socket notifiers can not be enabled or disabled from another thread");
-        return;
+      qWarning("QSocketNotifier::setEnabled() Socket notifiers can not be enabled or disabled from another thread");
+      return;
    }
 
    if (snenabled) {
@@ -119,11 +119,11 @@ bool QSocketNotifier::event(QEvent *e)
    }
 
    QObject::event(e);                        // will activate filters
+
    if ((e->type() == QEvent::SockAct) || (e->type() == QEvent::SockClose)) {
       emit activated(sockfd);
       return true;
    }
+
    return false;
 }
-
-

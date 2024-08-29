@@ -2,8 +2,8 @@
 
 # **********************************************************************
 #
-# Copyright (c) 2012-2023 Barbara Geller
-# Copyright (c) 2012-2023 Ansel Sermersheim
+# Copyright (c) 2012-2024 Barbara Geller
+# Copyright (c) 2012-2024 Ansel Sermersheim
 #
 # Copyright (c) 2015 The Qt Company Ltd.
 # Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -205,7 +205,7 @@ windowsIdList = {
   103: [u'SE Asia Standard Time',             25200  ],
   104: [u'Singapore Standard Time',           28800  ],
   105: [u'South Africa Standard Time',         7200  ],
-  106: [u'South Sudan Standard Time',          7200  ], 
+  106: [u'South Sudan Standard Time',          7200  ],
   107: [u'Sri Lanka Standard Time',           19800  ],
   108: [u'Sudan Standard Time',                7200  ],
   109: [u'Syria Standard Time',                7200  ],

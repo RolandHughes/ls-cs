@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -49,7 +49,7 @@ enum {
 };
 
 // must be multiple of 4 for easier SIMD implementations
-static const int buffer_size = 2048;
+static constexpr const int buffer_size = 2048;
 
 template <QImage::Format>
 constexpr uint redWidth();
@@ -725,7 +725,7 @@ static const uint *convertARGBPMFromARGB32PM(uint *buffer, const uint *src, int 
 }
 
 template <QImage::Format Format>
-constexpr static inline QPixelLayout pixelLayoutRGB()
+static constexpr inline QPixelLayout pixelLayoutRGB()
 {
    return QPixelLayout{
       uchar(redWidth<Format>()), uchar(redShift<Format>()),
@@ -741,7 +741,7 @@ constexpr static inline QPixelLayout pixelLayoutRGB()
 }
 
 template <QImage::Format Format>
-constexpr static inline QPixelLayout pixelLayoutARGBPM()
+static constexpr inline QPixelLayout pixelLayoutARGBPM()
 {
    return QPixelLayout{
       uchar(redWidth<Format>()), uchar(redShift<Format>()),
@@ -1885,7 +1885,7 @@ static const uint *fetchTransformedARGB32PM(uint *buffer, const Operator *, cons
          int px = fx >> 16;
          int py = fy >> 16;
 
-         if (blendType == BlendTransformedTiled) {
+         if constexpr (blendType == BlendTransformedTiled) {
             px %= image_width;
             py %= image_height;
 
@@ -1923,7 +1923,7 @@ static const uint *fetchTransformedARGB32PM(uint *buffer, const Operator *, cons
          int px = int(tx) - (tx < 0);
          int py = int(ty) - (ty < 0);
 
-         if (blendType == BlendTransformedTiled) {
+         if constexpr (blendType == BlendTransformedTiled) {
             px %= image_width;
             py %= image_height;
 
@@ -1983,7 +1983,7 @@ static const uint *fetchTransformed(uint *buffer, const Operator *, const QSpanD
          int px = fx >> 16;
          int py = fy >> 16;
 
-         if (blendType == BlendTransformedTiled) {
+         if constexpr (blendType == BlendTransformedTiled) {
             px %= image_width;
             py %= image_height;
 
@@ -2021,7 +2021,7 @@ static const uint *fetchTransformed(uint *buffer, const Operator *, const QSpanD
          int px = int(tx) - (tx < 0);
          int py = int(ty) - (ty < 0);
 
-         if (blendType == BlendTransformedTiled) {
+         if constexpr (blendType == BlendTransformedTiled) {
             px %= image_width;
             py %= image_height;
 
@@ -2089,7 +2089,7 @@ static const QRgba64 *fetchTransformed64(QRgba64 *buffer, const Operator *, cons
          int px = fx >> 16;
          int py = fy >> 16;
 
-         if (blendType == BlendTransformedTiled) {
+         if constexpr (blendType == BlendTransformedTiled) {
             px %= image_width;
             py %= image_height;
             if (px < 0) {
@@ -2135,7 +2135,7 @@ static const QRgba64 *fetchTransformed64(QRgba64 *buffer, const Operator *, cons
          int px = int(tx) - (tx < 0);
          int py = int(ty) - (ty < 0);
 
-         if (blendType == BlendTransformedTiled) {
+         if constexpr (blendType == BlendTransformedTiled) {
             px %= image_width;
             py %= image_height;
             if (px < 0) {
@@ -2383,7 +2383,7 @@ static const uint *fetchTransformedBilinearARGB32PM(uint *buffer, const Operator
             Q_ASSERT(count <= buffer_size + 2); //length is supposed to be <= buffer_size and data->m11 < 1 in this case
             int f = 0;
             int lim = count;
-            if (blendType == BlendTransformedBilinearTiled) {
+            if constexpr (blendType == BlendTransformedBilinearTiled) {
                x %= image_width;
                if (x < 0) {
                   x += image_width;
@@ -2405,7 +2405,7 @@ static const uint *fetchTransformedBilinearARGB32PM(uint *buffer, const Operator
                }
             }
 
-            if (blendType != BlendTransformedBilinearTiled) {
+            if constexpr (blendType != BlendTransformedBilinearTiled) {
 
 #if defined(__SSE2__)
                const __m128i disty_ = _mm_set1_epi16(disty);
@@ -2471,7 +2471,7 @@ static const uint *fetchTransformedBilinearARGB32PM(uint *buffer, const Operator
 #endif
             }
             for (; f < count; f++) { // Same as above but without sse2
-               if (blendType == BlendTransformedBilinearTiled) {
+               if constexpr (blendType == BlendTransformedBilinearTiled) {
                   if (x >= image_width) {
                      x -= image_width;
                   }
@@ -2532,7 +2532,7 @@ static const uint *fetchTransformedBilinearARGB32PM(uint *buffer, const Operator
             const uint *s2 = (const uint *)data->texture.scanLine(y2);
             int disty = (fy & 0x0000ffff) >> 12;
 
-            if (blendType != BlendTransformedBilinearTiled) {
+            if constexpr (blendType != BlendTransformedBilinearTiled) {
 #define BILINEAR_DOWNSCALE_BOUNDS_PROLOG \
                     while (b < end) { \
                         int x1 = (fx >> 16); \
@@ -2691,7 +2691,7 @@ static const uint *fetchTransformedBilinearARGB32PM(uint *buffer, const Operator
          } else {
             //we are zooming less than 8x, use 4bit precision
 
-            if (blendType != BlendTransformedBilinearTiled) {
+            if constexpr (blendType != BlendTransformedBilinearTiled) {
 #define BILINEAR_ROTATE_BOUNDS_PROLOG \
                     while (b < end) { \
                         int x1 = (fx >> 16); \
@@ -2920,7 +2920,7 @@ static const uint *fetchTransformedBilinear(uint *buffer, const Operator *,
             int count = (qint64(length) * fdx + fixed_scale - 1) / fixed_scale + 2;
             Q_ASSERT(count <= buffer_size + 2); //length is supposed to be <= buffer_size and data->m11 < 1 in this case
 
-            if (blendType == BlendTransformedBilinearTiled) {
+            if constexpr (blendType == BlendTransformedBilinearTiled) {
                x %= image_width;
                if (x < 0) {
                   x += image_width;
@@ -4403,8 +4403,13 @@ void blend_color_generic_rgb64(int count, const QSpan *spans, void *userData)
 {
    QSpanData *data = reinterpret_cast<QSpanData *>(userData);
    Operator op = getOperator(data, spans, count);
-   if (!op.funcSolid64) {
-      qDebug("unsupported 64bit blend attempted");
+
+   if (! op.funcSolid64) {
+
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+      qDebug("blend_color_generic_rgb64() Unsupported 64-bit blend operation");
+#endif
+
       return blend_color_generic(count, spans, userData);
    }
 
@@ -4414,6 +4419,7 @@ void blend_color_generic_rgb64(int count, const QSpan *spans, void *userData)
    while (count--) {
       int x = spans->x;
       int length = spans->len;
+
       while (length) {
          int l = qMin(buffer_size, length);
          QRgba64 *dest = op.destFetch64(buffer, data->rasterBuffer, x, spans->y, l);
@@ -4646,7 +4652,10 @@ static void blend_src_generic_rgb64(int count, const QSpan *spans, void *userDat
       handleSpans(count, spans, data, blend64);
 
    } else {
-      qDebug("blend_src_generic_rgb64: unsupported 64-bit blend attempted");
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+      qDebug("blend_src_generic_rgb64() Unsupported 64-bit blend operation");
+#endif
+
       BlendSrcGeneric blend32(data, op);
       handleSpans(count, spans, data, blend32);
    }
@@ -4962,10 +4971,15 @@ static void blend_tiled_generic_rgb64(int count, const QSpan *spans, void *userD
    QSpanData *data = reinterpret_cast<QSpanData *>(userData);
 
    Operator op = getOperator(data, spans, count);
-   if (!op.func64) {
-      qDebug("unsupported rgb64 blend");
+
+   if (! op.func64) {
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+      qDebug("blend_tiled_generic_rgb64() Unsupported rgb64 blend operation");
+#endif
+
       return blend_tiled_generic(count, spans, userData);
    }
+
    QRgba64 buffer[buffer_size];
    QRgba64 src_buffer[buffer_size];
 

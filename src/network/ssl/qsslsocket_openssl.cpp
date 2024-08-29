@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -261,7 +261,7 @@ int q_X509Callback(int ok, X509_STORE_CTX *ctx)
       // Store the error and at which depth the error was detected.
       _q_sslErrorList()->errors << qMakePair<int, int>(q_X509_STORE_CTX_get_error(ctx), q_X509_STORE_CTX_get_error_depth(ctx));
 
-#ifdef QSSLSOCKET_DEBUG
+#if defined(CS_SHOW_DEBUG_NETWORK)
       qDebug() << "verification error: dumping bad certificate";
       qDebug() << QSslCertificatePrivate::QSslCertificate_from_X509(q_X509_STORE_CTX_get_current_cert(ctx)).toPem();
       qDebug() << "dumping chain";
@@ -401,7 +401,7 @@ bool QSslSocketBackendPrivate::initSslContext()
          }
 
          if (! q_SSL_ctrl(ssl, SSL_CTRL_SET_TLSEXT_HOSTNAME, TLSEXT_NAMETYPE_host_name, ace.data())) {
-            qWarning("Unable to set SSL_CTRL_SET_TLSEXT_HOSTNAME, Server Name Indication disabled");
+            qWarning("QSslSocketBackend::initSslContext() Unable to set SSL_CTRL_SET_TLSEXT_HOSTNAME, Server Name Indication disabled");
          }
       }
    }
@@ -516,7 +516,7 @@ bool QSslSocketPrivate::ensureLibraryLoaded()
 
       // Initialize OpenSSL's random seed.
       if (! q_RAND_status()) {
-         qWarning("Random number generator not seeded, disabling SSL support");
+         qWarning("QSslSocket::ensureLibraryLoaded() Random number generator not seeded, disabling SSL support");
          return false;
       }
    }
@@ -546,7 +546,7 @@ void QSslSocketPrivate::ensureCiphersAndCertsLoaded()
       ptrSecCertificateCopyData = (PtrSecCertificateCopyData) securityLib.resolve("SecCertificateCopyData");
 
       if (! ptrSecCertificateCopyData) {
-         qWarning("Unable to resolve symbols in security library");   // should never happen
+         qWarning("QSslSocket::ensureCiphersAndCertsLoaded() Unable to resolve symbols in security library");   // should never happen
       }
 
       ptrSecTrustSettingsCopyCertificates = (PtrSecTrustSettingsCopyCertificates)
@@ -558,12 +558,12 @@ void QSslSocketPrivate::ensureCiphersAndCertsLoaded()
                securityLib.resolve("SecTrustCopyAnchorCertificates");
 
          if (!ptrSecTrustCopyAnchorCertificates) {
-            qWarning("Unable to resolve symbols in security library"); // should never happen
+            qWarning("QSslSocket::ensureCiphersAndCertsLoaded() Unable to resolve symbols in security library"); // should never happen
          }
       }
 
    } else {
-      qWarning("Unable to load security library");
+      qWarning("QSslSocket::ensureCiphersAndCertsLoaded() Unable to load security library");
    }
 
 
@@ -721,7 +721,7 @@ QList<QSslCertificate> QSslSocketPrivate::systemCaCertificates()
 {
    ensureInitialized();
 
-#ifdef QSSLSOCKET_DEBUG
+#if defined(CS_SHOW_DEBUG_NETWORK)
    QElapsedTimer timer;
    timer.start();
 #endif
@@ -753,7 +753,7 @@ QList<QSslCertificate> QSslSocketPrivate::systemCaCertificates()
             data = ptrSecCertificateCopyData(cfCert);
 
             if (data == nullptr) {
-               qWarning("Error retrieving a CA certificate from the system store");
+               qWarning("QSslSocket::systemCaCertificates() Error retrieving CA certificate from the system store");
             } else {
                QByteArray rawCert = QByteArray::fromRawData((const char *)CFDataGetBytePtr(data), CFDataGetLength(data));
                systemCerts.append(QSslCertificate::fromData(rawCert, QSsl::Der));
@@ -764,7 +764,7 @@ QList<QSslCertificate> QSslSocketPrivate::systemCaCertificates()
 
       } else {
          // no detailed error handling here
-         qWarning("Unable to retrieve system CA certificates");
+         qWarning("QSslSocket::systemCaCertificates() Unable to retrieve system CA certificates");
       }
    }
 
@@ -826,7 +826,7 @@ QList<QSslCertificate> QSslSocketPrivate::systemCaCertificates()
    systemCerts.append(QSslCertificate::fromPath("/usr/local/share/certs/ca-root-nss.crt", QSsl::Pem));
 #endif
 
-#ifdef QSSLSOCKET_DEBUG
+#if defined(CS_SHOW_DEBUG_NETWORK)
    qDebug() << "systemCaCertificates retrieval time " << timer.elapsed() << "ms";
    qDebug() << "imported " << systemCerts.count() << " certificates";
 #endif
@@ -914,7 +914,7 @@ void QSslSocketBackendPrivate::transmit()
 
             }
 
-#ifdef QSSLSOCKET_DEBUG
+#if defined(CS_SHOW_DEBUG_NETWORK)
             qDebug() << "QSslSocketBackendPrivate::transmit: encrypted" << writtenBytes << "bytes";
 #endif
 
@@ -950,7 +950,7 @@ void QSslSocketBackendPrivate::transmit()
          // Write encrypted data from the buffer to the socket.
          qint64 actualWritten = plainSocket->write(data.constData(), encryptedBytesRead);
 
-#ifdef QSSLSOCKET_DEBUG
+#if defined(CS_SHOW_DEBUG_NETWORK)
          qDebug() << "QSslSocketBackendPrivate::transmit: wrote" << encryptedBytesRead
                   << "encrypted bytes to the socket" << actualWritten << "actual.";
 #endif
@@ -975,7 +975,7 @@ void QSslSocketBackendPrivate::transmit()
             // just peek() here because q_BIO_write could write less data than expected
             int encryptedBytesRead = plainSocket->peek(data.data(), pendingBytes);
 
-#ifdef QSSLSOCKET_DEBUG
+#if defined(CS_SHOW_DEBUG_NETWORK)
             qDebug() << "QSslSocketBackendPrivate::transmit: read" << encryptedBytesRead
                      << "encrypted bytes from the socket";
 #endif
@@ -1002,13 +1002,13 @@ void QSslSocketBackendPrivate::transmit()
       // If the connection isn't secured yet, this is the time to retry the connect / accept.
       if (!connectionEncrypted) {
 
-#ifdef QSSLSOCKET_DEBUG
+#if defined(CS_SHOW_DEBUG_NETWORK)
          qDebug() << "QSslSocketBackendPrivate::transmit: testing encryption";
 #endif
 
          if (startHandshake()) {
 
-#ifdef QSSLSOCKET_DEBUG
+#if defined(CS_SHOW_DEBUG_NETWORK)
             qDebug() << "QSslSocketBackendPrivate::transmit: encryption established";
 #endif
             connectionEncrypted = true;
@@ -1016,7 +1016,7 @@ void QSslSocketBackendPrivate::transmit()
 
          } else if (plainSocket->state() != QAbstractSocket::ConnectedState) {
 
-#ifdef QSSLSOCKET_DEBUG
+#if defined(CS_SHOW_DEBUG_NETWORK)
             qDebug() << "QSslSocketBackendPrivate::transmit: connection lost";
 #endif
             break;
@@ -1027,7 +1027,7 @@ void QSslSocketBackendPrivate::transmit()
 
          } else {
 
-#ifdef QSSLSOCKET_DEBUG
+#if defined(CS_SHOW_DEBUG_NETWORK)
             qDebug() << "QSslSocketBackendPrivate::transmit: encryption not done yet";
 #endif
          }
@@ -1051,7 +1051,7 @@ void QSslSocketBackendPrivate::transmit()
          // Do not use SSL_pending()., it is very unreliable.
          if ((readBytes = q_SSL_read(ssl, data.data(), data.size())) > 0) {
 
-#ifdef QSSLSOCKET_DEBUG
+#if defined(CS_SHOW_DEBUG_NETWORK)
             qDebug() << "QSslSocketBackendPrivate::transmit: decrypted" << readBytes << "bytes";
 #endif
             char *ptr = buffer.reserve(readBytes);
@@ -1074,7 +1074,7 @@ void QSslSocketBackendPrivate::transmit()
 
             case SSL_ERROR_ZERO_RETURN:
                // The remote host closed the connection.
-#ifdef QSSLSOCKET_DEBUG
+#if defined(CS_SHOW_DEBUG_NETWORK)
                qDebug() << "QSslSocketBackendPrivate::transmit: remote disconnect";
 #endif
                shutdown = true;    // the other side shut down, make sure we do not send shutdown
@@ -1241,7 +1241,7 @@ bool QSslSocketBackendPrivate::startHandshake()
          default:
             q->setErrorString(QSslSocket::tr("Error during SSL handshake: %1").formatArg(getErrorsFromOpenSsl()));
             q->setSocketError(QAbstractSocket::SslHandshakeFailedError);
-#ifdef QSSLSOCKET_DEBUG
+#if defined(CS_SHOW_DEBUG_NETWORK)
             qDebug() << "QSslSocketBackendPrivate::startHandshake: error!" << q->errorString();
 #endif
             emit q->error(QAbstractSocket::SslHandshakeFailedError);
@@ -1356,7 +1356,7 @@ bool QSslSocketBackendPrivate::startHandshake()
 
                default:
 
-#ifdef QSSLSOCKET_DEBUG
+#if defined(CS_SHOW_DEBUG_NETWORK)
                   qDebug() << sslErrors.at(i).errorString();
 #endif
                   break;
@@ -1571,7 +1571,7 @@ void QWindowsCaRootFetcher::start()
 
    if (! wincert) {
 
-#ifdef QSSLSOCKET_DEBUG
+#if defined(CS_SHOW_DEBUG_NETWORK)
       qDebug("QWindowsCaRootFetcher failed to convert certificate to windows form");
 #endif
       emit finished(cert, QSslCertificate());
@@ -1589,7 +1589,7 @@ void QWindowsCaRootFetcher::start()
    LPSTR oid = (LPSTR)(mode == QSslSocket::SslClientMode ? szOID_PKIX_KP_SERVER_AUTH : szOID_PKIX_KP_CLIENT_AUTH);
    parameters.RequestedUsage.Usage.rgpszUsageIdentifier = &oid;
 
-#ifdef QSSLSOCKET_DEBUG
+#if defined(CS_SHOW_DEBUG_NETWORK)
    QElapsedTimer stopwatch;
    stopwatch.start();
 #endif
@@ -1605,7 +1605,7 @@ void QWindowsCaRootFetcher::start()
                     nullptr,      // reserved
                     &chain);
 
-#ifdef QSSLSOCKET_DEBUG
+#if defined(CS_SHOW_DEBUG_NETWORK)
    qDebug() << "QWindowsCaRootFetcher" << stopwatch.elapsed() << "ms to get chain";
 #endif
 
@@ -1613,7 +1613,7 @@ void QWindowsCaRootFetcher::start()
 
    if (result) {
 
-#ifdef QSSLSOCKET_DEBUG
+#if defined(CS_SHOW_DEBUG_NETWORK)
       qDebug() << "QWindowsCaRootFetcher - examining windows chains";
 
       if (chain->TrustStatus.dwErrorStatus == CERT_TRUST_NO_ERROR) {
@@ -1790,16 +1790,16 @@ void QSslSocketBackendPrivate::continueHandshake()
       QFile file(sslKeyFile);
 
       if (! file.open(QIODevice::Append)) {
-         qWarning() << "could not open file" << sslKeyFile << "for appending";
+         qWarning() << "QSslSocketBackend::continueHandshake() Unable to open file" << sslKeyFile << "for appending";
       }
 
       if (! file.write(debugLineClientRandom)) {
-         qWarning() << "could not write to file" << sslKeyFile;
+         qWarning() << "QSslSocketBackend::continueHandshake() Unable to write to file" << sslKeyFile;
       }
       file.close();
 
    } else {
-      qWarning("Unable to decrypt SSL traffic");
+      qWarning("QSslSocketBackend::continueHandshake() Unable to decrypt SSL traffic");
    }
 #endif
 
@@ -1874,7 +1874,7 @@ QList<QSslError> QSslSocketBackendPrivate::verify(const QList<QSslCertificate> &
    X509_STORE *certStore = q_X509_STORE_new();
 
    if (!certStore) {
-      qWarning() << "Unable to create certificate store";
+      qWarning("QSslSocketBackend::verify() Unable to create certificate store");
       errors << QSslError(QSslError::UnspecifiedError);
       return errors;
    }
@@ -2030,7 +2030,7 @@ bool QSslSocketBackendPrivate::importPkcs12(QIODevice *device, QSslKey *key, QSs
    PKCS12 *p12 = q_d2i_PKCS12_bio(bio, nullptr);
 
    if (! p12) {
-      qWarning("Unable to read PKCS#12 structure, %s", q_ERR_error_string(q_ERR_get_error(), nullptr));
+      qWarning("QSslSocketBackend::importPkcs12() Unable to read PKCS#12 structure, %s", q_ERR_error_string(q_ERR_get_error(), nullptr));
       q_BIO_free(bio);
 
       return false;
@@ -2042,7 +2042,7 @@ bool QSslSocketBackendPrivate::importPkcs12(QIODevice *device, QSslKey *key, QSs
    STACK_OF(X509) *ca = nullptr;
 
    if (!q_PKCS12_parse(p12, passPhrase.constData(), &pkey, &x509, &ca)) {
-      qWarning("Unable to parse PKCS#12 structure, %s", q_ERR_error_string(q_ERR_get_error(), nullptr));
+      qWarning("QSslSocketBackend::importPkcs12() Unable to parse PKCS#12 structure, %s", q_ERR_error_string(q_ERR_get_error(), nullptr));
 
       q_PKCS12_free(p12);
       q_BIO_free(bio);
@@ -2052,7 +2052,7 @@ bool QSslSocketBackendPrivate::importPkcs12(QIODevice *device, QSslKey *key, QSs
 
    // Convert to Qt types
    if (! key->d->fromEVP_PKEY(pkey)) {
-      qWarning("Unable to convert private key");
+      qWarning("QSslSocketBackend::importPkcs12() Unable to convert private key");
 
 #if OPENSSL_VERSION_NUMBER < 0x10100000L
       q_sk_pop_free(reinterpret_cast<STACK *>(ca), reinterpret_cast<void(*)(void *)>(q_sk_free));

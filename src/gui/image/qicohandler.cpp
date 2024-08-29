@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -22,10 +22,11 @@
 ***********************************************************************/
 
 #include <qicohandler_p.h>
-#include <qendian.h>
-#include <qimage.h>
-#include <qfile.h>
+
 #include <qbuffer.h>
+#include <qendian.h>
+#include <qfile.h>
+#include <qimage.h>
 #include <qvariant.h>
 
 // These next two structs represent how the icon information is stored in an ICO file.
@@ -381,9 +382,8 @@ void ICOReader::readBMP(QImage &image)
    }
 }
 
-
 /**
- * NOTE: A 1 bit BMP is only flipped vertically, and not horizontally like all other color depths!
+ * A 1 bit BMP is only flipped vertically, and not horizontally like all other color depths
  * (This is the same with the bitmask)
  *
  */
@@ -584,16 +584,6 @@ QImage ICOReader::iconAt(int index)
    return img;
 }
 
-
-/*!
-    Reads all the icons from the given \a device, and returns them as
-    a list of QImage objects.
-
-    Each image has an alpha channel that represents the mask from the
-    corresponding icon.
-
-    \sa write()
-*/
 QList<QImage> ICOReader::read(QIODevice *device)
 {
    QList<QImage> images;
@@ -606,19 +596,6 @@ QList<QImage> ICOReader::read(QIODevice *device)
    return images;
 }
 
-
-/*!
-    Writes all the QImages in the \a images list to the given \a
-    device. Returns true if the images are written successfully;
-    otherwise returns false.
-
-    The first image in the list is stored as the first icon in the
-    device, and is therefore used as the default icon by applications.
-    The alpha channel of each image is converted to a mask for each
-    corresponding icon.
-
-    \sa read()
-*/
 bool ICOReader::write(QIODevice *device, const QList<QImage> &images)
 {
    bool retValue = false;
@@ -741,18 +718,12 @@ bool ICOReader::write(QIODevice *device, const QList<QImage> &images)
    return retValue;
 }
 
-/*!
-    Constructs an instance of QIcoHandler
-*/
 QIcoHandler::QIcoHandler()
 {
    m_currentIconIndex = 0;
    m_ICOReader = nullptr;
 }
 
-/*!
-    Destructor for QIcoHandler.
-*/
 QIcoHandler::~QIcoHandler()
 {
    delete m_ICOReader;
@@ -770,6 +741,7 @@ QVariant QIcoHandler::option(ImageOption option)
       QIODevice *device = QImageIOHandler::device();
       qint64 oldPos = device->pos();
       ICONDIRENTRY iconEntry;
+
       if (device->seek(oldPos + ICONDIR_SIZE + (m_currentIconIndex * ICONDIRENTRY_SIZE))) {
          if (readIconDirEntry(device, &iconEntry)) {
             device->seek(oldPos);
@@ -788,11 +760,6 @@ bool QIcoHandler::supportsOption(ImageOption option) const
    return option == Size;
 }
 
-/*!
- * Verifies if some values (magic bytes) are set as expected in the header of the file.
- * If the magic bytes were found, it is assumed that the QIcoHandler can read the file.
- *
- */
 bool QIcoHandler::canRead()
 {
    bool bCanRead = false;
@@ -811,18 +778,12 @@ bool QIcoHandler::canRead()
    return bCanRead;
 }
 
-/*! This static function is used by the plugin code, and is provided for convenience only.
-    \a device must be an opened device with pointing to the start of the header data of the ICO file.
-*/
 bool QIcoHandler::canRead(QIODevice *device)
 {
    Q_ASSERT(device);
    return ICOReader::canRead(device);
 }
 
-/*! \reimp
-
-*/
 bool QIcoHandler::read(QImage *image)
 {
    bool bSuccess = false;
@@ -838,10 +799,6 @@ bool QIcoHandler::read(QImage *image)
    return bSuccess;
 }
 
-
-/*! \reimp
-
-*/
 bool QIcoHandler::write(const QImage &image)
 {
    QIODevice *device = QImageIOHandler::device();
@@ -850,28 +807,17 @@ bool QIcoHandler::write(const QImage &image)
    return ICOReader::write(device, imgs);
 }
 
-/*!
- * Return the common identifier of the format.
- * For ICO format this will return "ico".
- */
 QString QIcoHandler::name() const
 {
    return "ico";
 }
 
-
-/*! \reimp
-
-*/
 int QIcoHandler::imageCount()
 {
    setupReader();
    return m_ICOReader->count();
 }
 
-/*! \reimp
-
-*/
 bool QIcoHandler::jumpToImage(int imageNumber)
 {
    if (imageNumber < imageCount()) {
@@ -881,11 +827,7 @@ bool QIcoHandler::jumpToImage(int imageNumber)
    return (imageNumber < imageCount()) ? true : false;
 }
 
-/*! \reimp
-
-*/
 bool QIcoHandler::jumpToNextImage()
 {
    return jumpToImage(m_currentIconIndex + 1);
 }
-

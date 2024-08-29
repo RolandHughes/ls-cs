@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -137,30 +137,32 @@ bool QWindowsLibEGL::init()
    return true;
 }
 
-#if !defined(QT_STATIC) || defined(QT_OPENGL_DYNAMIC)
+#if ! defined(QT_STATIC) || defined(QT_OPENGL_DYNAMIC)
 void *QWindowsLibGLESv2::resolve(const char *name)
 {
    void *proc = m_lib ? resolveFunc(m_lib, name) : 0;
 
    if (! proc) {
-      qWarning() << "Failed to resolve OpenGL ES function" << name;
+      qWarning() << "QWindowsLibGLESv2::resolve() Failed to resolve OpenGL ES function" << name;
    }
 
    return proc;
 }
-#endif // ! QT_STATIC
+#endif
 
 bool QWindowsLibGLESv2::init()
 {
    const char dllName[] = "libGLESv2";
 
-   qDebug() << "Using OpenGL ES 2.0 from" << dllName;
+#if defined(CS_SHOW_DEBUG_PLATFORM)
+   qDebug() << "QWindowsLibGLESv2::init() Using OpenGL ES 2.0 from " << dllName;
+#endif
 
 #if ! defined(QT_STATIC) || defined(QT_OPENGL_DYNAMIC)
    m_lib = ::LoadLibraryW(reinterpret_cast<LPCWSTR>(QString::fromLatin1(dllName).utf16()));
 
    if (! m_lib) {
-      qErrnoWarning(int(GetLastError()), "Failed to load %s", dllName);
+      qErrnoWarning(int(GetLastError()), "QWindowsLibGLESv2::init() Failed to load %s", dllName);
       return false;
    }
 #endif
@@ -370,17 +372,17 @@ bool QWindowsEGLStaticContext::initializeAngle(QWindowsOpenGLTester::Renderers p
 QWindowsEGLStaticContext *QWindowsEGLStaticContext::create(QWindowsOpenGLTester::Renderers preferredType)
 {
    const HDC dc = QWindowsContext::instance()->displayContext();
-   if (!dc) {
-      qWarning("%s: No Display", __FUNCTION__);
+   if (! dc) {
+      qWarning("QWindowsEGLStaticContext::create() No Display");
       return 0;
    }
 
-   if (!libEGL.init()) {
-      qWarning("%s: Failed to load and resolve libEGL functions", __FUNCTION__);
+   if (! libEGL.init()) {
+      qWarning("QWindowsEGLStaticContext::create() Failed to load and resolve libEGL functions");
       return 0;
    }
-   if (!libGLESv2.init()) {
-      qWarning("%s: Failed to load and resolve libGLESv2 functions", __FUNCTION__);
+   if (! libGLESv2.init()) {
+      qWarning("QWindowsEGLStaticContext::create() Failed to load and resolve libGLESv2 functions");
       return 0;
    }
 
@@ -389,7 +391,7 @@ QWindowsEGLStaticContext *QWindowsEGLStaticContext::create(QWindowsOpenGLTester:
    EGLint minor = 0;
 
    if (!initializeAngle(preferredType, dc, &display, &major, &minor)
-      && (preferredType & QWindowsOpenGLTester::AngleRendererD3d11)) {
+         && (preferredType & QWindowsOpenGLTester::AngleRendererD3d11)) {
       preferredType &= ~QWindowsOpenGLTester::AngleRendererD3d11;
       initializeAngle(preferredType, dc, &display, &major, &minor);
    }
@@ -397,27 +399,32 @@ QWindowsEGLStaticContext *QWindowsEGLStaticContext::create(QWindowsOpenGLTester:
    if (display == EGL_NO_DISPLAY) {
       display = libEGL.eglGetDisplay(dc);
    }
+
    if (!display) {
-      qWarning("%s: Could not obtain EGL display", __FUNCTION__);
+      qWarning("QWindowsEGLStaticContext::create() Unable to obtain EGL display");
       return 0;
    }
 
    if (!major && !libEGL.eglInitialize(display, &major, &minor)) {
       int err = libEGL.eglGetError();
-      qWarning("%s: Could not initialize EGL display: error 0x%x", __FUNCTION__, err);
+      qWarning("QWindowsEGLStaticContext::create() Unable to initialize EGL display, Error 0x%x", err);
+
       if (err == 0x3001) {
-         qWarning("%s: When using ANGLE, check if d3dcompiler_4x.dll is available", __FUNCTION__);
+         qWarning("QWindowsEGLStaticContext::create() Using ANGLE, check if d3dcompiler_4x.dll is available");
       }
+
       return 0;
    }
 
-   qDebug() << __FUNCTION__ << "Created EGL display" << display << 'v' << major << '.' << minor;
+#if defined(CS_SHOW_DEBUG_PLATFORM)
+   qDebug() << "QWindowsEGLStaticContext::create() Created EGL display" << display << 'v' << major << '.' << minor;
+#endif
+
    return new QWindowsEGLStaticContext(display);
 }
 
 QWindowsEGLStaticContext::~QWindowsEGLStaticContext()
 {
-   qDebug() << __FUNCTION__ << "Releasing EGL display " << m_display;
    libEGL.eglTerminate(m_display);
 }
 
@@ -429,11 +436,13 @@ QWindowsOpenGLContext *QWindowsEGLStaticContext::createContext(QOpenGLContext *c
 void *QWindowsEGLStaticContext::createWindowSurface(void *nativeWindow, void *nativeConfig, int *err)
 {
    *err = 0;
+
    EGLSurface surface = libEGL.eglCreateWindowSurface(m_display, nativeConfig,
          static_cast<EGLNativeWindowType>(nativeWindow), 0);
+
    if (surface == EGL_NO_SURFACE) {
       *err = libEGL.eglGetError();
-      qWarning("%s: Could not create the EGL window surface: 0x%x", __FUNCTION__, *err);
+      qWarning("QWindowsEGLStaticContext::createWindowSurface() Unable to create EGL window surface: 0x%x", *err);
    }
 
    return surface;
@@ -487,34 +496,9 @@ QSurfaceFormat QWindowsEGLStaticContext::formatFromConfig(EGLDisplay display, EG
    return format;
 }
 
-/*!
-    \class QWindowsEGLContext
-    \brief Open EGL context.
-
-    \section1 Using QWindowsEGLContext for Desktop with ANGLE
-    \section2 Build Instructions
-    \list
-    \o Install the Direct X SDK
-    \o Checkout and build ANGLE (SVN repository) as explained here:
-       \l{https://chromium.googlesource.com/angle/angle/+/master/README.md}
-       When building for 64bit, de-activate the "WarnAsError" option
-       in every project file (as otherwise integer conversion
-       warnings will break the build).
-    \o Run configure.exe with the options "-opengl es2".
-    \o Build qtbase and test some examples.
-    \endlist
-
-    \internal
-    \ingroup qt-lighthouse-win
-*/
-
-QWindowsEGLContext::QWindowsEGLContext(QWindowsEGLStaticContext *staticContext,
-   const QSurfaceFormat &format,
-   QPlatformOpenGLContext *share)
-   : m_staticContext(staticContext)
-   , m_eglDisplay(staticContext->display())
-   , m_api(EGL_OPENGL_ES_API)
-   , m_swapInterval(-1)
+QWindowsEGLContext::QWindowsEGLContext(QWindowsEGLStaticContext *staticContext, const QSurfaceFormat &format,
+      QPlatformOpenGLContext *share)
+   : m_staticContext(staticContext), m_eglDisplay(staticContext->display()), m_api(EGL_OPENGL_ES_API), m_swapInterval(-1)
 {
    if (!m_staticContext) {
       return;
@@ -538,11 +522,12 @@ QWindowsEGLContext::QWindowsEGLContext(QWindowsEGLStaticContext *staticContext,
 
    if (m_eglContext == EGL_NO_CONTEXT) {
       int err = QWindowsEGLStaticContext::libEGL.eglGetError();
-      qWarning("QWindowsEGLContext: Failed to create context, eglError: %x, this: %p", err, this);
+      qWarning("QWindowsEGLContext() Failed to create context, eglError: %x, this: %p", err, this);
+
       // ANGLE gives bad alloc when it fails to reset a previously lost D3D device.
       // A common cause for this is disabling the graphics adapter used by the app.
       if (err == EGL_BAD_ALLOC) {
-         qWarning("QWindowsEGLContext: Graphics device lost. (Did the adapter get disabled?)");
+         qWarning("QWindowsEGLContext() Graphics device lost, adapter maybe disabled");
       }
       return;
    }
@@ -602,17 +587,28 @@ bool QWindowsEGLContext::makeCurrent(QPlatformSurface *surface)
    window->aboutToMakeCurrent();
    int err = 0;
    EGLSurface eglSurface = static_cast<EGLSurface>(window->surface(m_eglConfig, &err));
+
    if (eglSurface == EGL_NO_SURFACE) {
       if (err == EGL_CONTEXT_LOST) {
          m_eglContext = EGL_NO_CONTEXT;
-         qDebug() << "Got EGL context lost in createWindowSurface() for context" << this;
+
+#if defined(CS_SHOW_DEBUG_PLATFORM)
+         qDebug() << "QWindowsEGLContext::makeCurrent() EGL context lost in createWindowSurface() for context" << this;
+#endif
+
       } else if (err == EGL_BAD_ACCESS) {
          // With ANGLE this means no (D3D) device and can happen when disabling/changing graphics adapters.
-         qDebug() << "Bad access (missing device?) in createWindowSurface() for context" << this;
+
+#if defined(CS_SHOW_DEBUG_PLATFORM)
+         qDebug() << "QWindowsEGLContext::makeCurrent() Bad access in createWindowSurface() for context, missing device?"
+               << this;
+#endif
+
          // Simulate context loss as the context is useless.
          QWindowsEGLStaticContext::libEGL.eglDestroyContext(m_eglDisplay, m_eglContext);
          m_eglContext = EGL_NO_CONTEXT;
       }
+
       return false;
    }
 
@@ -634,14 +630,19 @@ bool QWindowsEGLContext::makeCurrent(QPlatformSurface *surface)
    } else {
       err = QWindowsEGLStaticContext::libEGL.eglGetError();
       // EGL_CONTEXT_LOST (loss of the D3D device) is not necessarily fatal.
-      // Qt Quick is able to recover for example.
+
       if (err == EGL_CONTEXT_LOST) {
          m_eglContext = EGL_NO_CONTEXT;
-         qDebug() << "Got EGL context lost in makeCurrent() for context" << this;
+
+#if defined(CS_SHOW_DEBUG_PLATFORM)
+         qDebug() << "QWindowsEGLContext::makeCurrent() EGL context lost in makeCurrent() for context" << this;
+#endif
+
          // Drop the surface. Will recreate on the next makeCurrent.
          window->invalidateSurface();
+
       } else {
-         qWarning("%s: Failed to make surface current. eglError: %x, this: %p", __FUNCTION__, err, this);
+         qWarning("QWindowsEGLContext::makeCurrent() Failed to make surface current. eglError = %x, this = %p", err, this);
       }
    }
 
@@ -652,9 +653,11 @@ void QWindowsEGLContext::doneCurrent()
 {
    QWindowsEGLStaticContext::libEGL.eglBindAPI(m_api);
    bool ok = QWindowsEGLStaticContext::libEGL.eglMakeCurrent(m_eglDisplay, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
-   if (!ok)
-      qWarning("%s: Failed to make no context/surface current. eglError: %d, this: %p", __FUNCTION__,
-         QWindowsEGLStaticContext::libEGL.eglGetError(), this);
+
+   if (! ok) {
+      qWarning("QWindowsEGLContext::doneCurrent() Failed to make no context/surface current. eglError = %d, this = %p"
+            QWindowsEGLStaticContext::libEGL.eglGetError(), this);
+   }
 }
 
 void QWindowsEGLContext::swapBuffers(QPlatformSurface *surface)
@@ -662,24 +665,34 @@ void QWindowsEGLContext::swapBuffers(QPlatformSurface *surface)
    QWindowsEGLStaticContext::libEGL.eglBindAPI(m_api);
    QWindowsWindow *window = static_cast<QWindowsWindow *>(surface);
    int err = 0;
+
    EGLSurface eglSurface = static_cast<EGLSurface>(window->surface(m_eglConfig, &err));
 
    if (eglSurface == EGL_NO_SURFACE) {
       if (err == EGL_CONTEXT_LOST) {
          m_eglContext = EGL_NO_CONTEXT;
-         qDebug() << "Got EGL context lost in createWindowSurface() for context" << this;
+
+#if defined(CS_SHOW_DEBUG_PLATFORM)
+         qDebug() << "QWindowsEGLContext::swapBuffers() EGL context lost in createWindowSurface() for context" << this;
+#endif
       }
+
       return;
    }
 
    bool ok = QWindowsEGLStaticContext::libEGL.eglSwapBuffers(m_eglDisplay, eglSurface);
    if (!ok) {
       err =  QWindowsEGLStaticContext::libEGL.eglGetError();
+
       if (err == EGL_CONTEXT_LOST) {
          m_eglContext = EGL_NO_CONTEXT;
-         qDebug() << "Got EGL context lost in eglSwapBuffers()";
+
+#if defined(CS_SHOW_DEBUG_PLATFORM)
+         qDebug() << "QWindowsEGLContext::swapBuffers() EGL context lost in eglSwapBuffers()";
+#endif
+
       } else {
-         qWarning("%s: Failed to swap buffers. eglError: %d, this: %p", __FUNCTION__, err, this);
+         qWarning("QWindowsEGLContext::swapBuffers() Failed to swap buffers, eglError = %d, this = %p", err, this);
       }
    }
 }
@@ -689,6 +702,7 @@ QWindowsEGLContext::FP_Void QWindowsEGLContext::getProcAddress(const QByteArray 
    // We support AllGLFunctionsQueryable, which means this function must be able to
    // return a function pointer for standard GLES2 functions too. These are not
    // guaranteed to be queryable via eglGetProcAddress().
+
    static struct StdFunc {
       const char *name;
       void *func;
@@ -847,14 +861,15 @@ QWindowsEGLContext::FP_Void QWindowsEGLContext::getProcAddress(const QByteArray 
    QWindowsEGLStaticContext::libEGL.eglBindAPI(m_api);
 
    FP_Void procAddress = reinterpret_cast<FP_Void>(QWindowsEGLStaticContext::libEGL.eglGetProcAddress(
-            procName.constData()));
+         procName.constData()));
 
-   if (QWindowsContext::verbose > 1) {
-      qDebug() << __FUNCTION__ <<  procName << QWindowsEGLStaticContext::libEGL.eglGetCurrentContext() << "returns" << procAddress;
-   }
+#if defined(CS_SHOW_DEBUG_PLATFORM)
+      qDebug() << "QWindowsEGLContext::getProcAddress() "
+            << QWindowsEGLStaticContext::libEGL.eglGetCurrentContext() << " Returns = " << procAddress;
+#endif
 
-   if (!procAddress && QWindowsContext::verbose) {
-      qWarning("%s: Unable to resolve '%s'", __FUNCTION__, procName.constData());
+   if (! procAddress) {
+      qWarning("QWindowsEGLContext::getProcAddress() Unable to resolve %s", procName.constData());
    }
 
    return procAddress;
@@ -967,8 +982,10 @@ static bool reduceConfigAttributes(QVector<EGLint> *configAttributes)
       }
       return true;
    }
+
 #ifdef EGL_BIND_TO_TEXTURE_RGB
    i = configAttributes->indexOf(EGL_BIND_TO_TEXTURE_RGB);
+
    if (i >= 0) {
       configAttributes->remove(i, 2);
       return true;
@@ -989,10 +1006,13 @@ EGLConfig QWindowsEGLContext::chooseConfig(const QSurfaceFormat &format)
 
    EGLDisplay display = m_staticContext->display();
    EGLConfig cfg = 0;
+
    do {
       // Get the number of matching configurations for this set of properties.
       EGLint matching = 0;
-      if (!QWindowsEGLStaticContext::libEGL.eglChooseConfig(display, configureAttributes.constData(), 0, 0, &matching) || !matching) {
+
+      if (!QWindowsEGLStaticContext::libEGL.eglChooseConfig(display, configureAttributes.constData(),
+            0, 0, &matching) || !matching) {
          continue;
       }
 
@@ -1008,7 +1028,9 @@ EGLConfig QWindowsEGLContext::chooseConfig(const QSurfaceFormat &format)
       int confAttrAlpha = i == -1 ? 0 : configureAttributes.at(i + 1);
 
       QVector<EGLConfig> configs(matching);
-      QWindowsEGLStaticContext::libEGL.eglChooseConfig(display, configureAttributes.constData(), configs.data(), configs.size(), &matching);
+      QWindowsEGLStaticContext::libEGL.eglChooseConfig(display, configureAttributes.constData(),
+            configs.data(), configs.size(), &matching);
+
       if (!cfg && matching > 0) {
          cfg = configs.constFirst();
       }
@@ -1017,6 +1039,7 @@ EGLConfig QWindowsEGLContext::chooseConfig(const QSurfaceFormat &format)
       EGLint green = 0;
       EGLint blue = 0;
       EGLint alpha = 0;
+
       for (int i = 0; i < configs.size(); ++i) {
          if (confAttrRed) {
             QWindowsEGLStaticContext::libEGL.eglGetConfigAttrib(display, configs[i], EGL_RED_SIZE, &red);
@@ -1039,7 +1062,7 @@ EGLConfig QWindowsEGLContext::chooseConfig(const QSurfaceFormat &format)
    } while (reduceConfigAttributes(&configureAttributes));
 
    if (!cfg) {
-      qWarning("Unable to find EGLConfig, returning null config");
+      qWarning("QWindowsEGLContext::chooseConfig() Unable to find EGLConfig, returning null configuration");
    }
 
    return cfg;

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -23,7 +23,7 @@
 
 #include <qelapsedtimer.h>
 
-static const qint64 invalidData = Q_INT64_C(0x8000000000000000);
+static constexpr const qint64 invalidData = Q_INT64_C(0x8000000000000000);
 
 void QElapsedTimer::invalidate()
 {

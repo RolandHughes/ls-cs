@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -184,9 +184,9 @@ QTransform &QTransform::translate(qreal dx, qreal dy)
       return *this;
    }
 
-#ifndef QT_NO_DEBUG
-   if (qIsNaN(dx) | qIsNaN(dy)) {
-      qWarning("QTransform::translate() Value for x or y is invalid");
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+   if (qIsNaN(dx) || qIsNaN(dy)) {
+      qDebug("QTransform::translate() Value for x or y is invalid");
       return *this;
    }
 #endif
@@ -226,9 +226,9 @@ QTransform &QTransform::translate(qreal dx, qreal dy)
 
 QTransform QTransform::fromTranslate(qreal dx, qreal dy)
 {
-#ifndef QT_NO_DEBUG
-   if (qIsNaN(dx) | qIsNaN(dy)) {
-      qWarning("QTransform::fromTranslate() Value for x or y is invalid");
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+   if (qIsNaN(dx) || qIsNaN(dy)) {
+      qDebug("QTransform::fromTranslate() Value for x or y is invalid");
       return QTransform();
    }
 #endif
@@ -252,9 +252,9 @@ QTransform &QTransform::scale(qreal sx, qreal sy)
       return *this;
    }
 
-#ifndef QT_NO_DEBUG
-   if (qIsNaN(sx) | qIsNaN(sy)) {
-      qWarning("QTransform::scale() Value for x or y is invalid");
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+   if (qIsNaN(sx) || qIsNaN(sy)) {
+      qDebug("QTransform::scale() Value for x or y is invalid");
       return *this;
    }
 #endif
@@ -292,9 +292,9 @@ QTransform &QTransform::scale(qreal sx, qreal sy)
 
 QTransform QTransform::fromScale(qreal sx, qreal sy)
 {
-#ifndef QT_NO_DEBUG
-   if (qIsNaN(sx) | qIsNaN(sy)) {
-      qWarning("QTransform::fromScale() Value for x or y is invalid");
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+   if (qIsNaN(sx) || qIsNaN(sy)) {
+      qDebug("QTransform::fromScale() Value for x or y is invalid");
       return QTransform();
    }
 #endif
@@ -318,9 +318,9 @@ QTransform &QTransform::shear(qreal sh, qreal sv)
       return *this;
    }
 
-#ifndef QT_NO_DEBUG
-   if (qIsNaN(sh) | qIsNaN(sv)) {
-      qWarning("QTransform::shear() Value for horizontal or vertical is invalid");
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+   if (qIsNaN(sh) || qIsNaN(sv)) {
+      qDebug("QTransform::shear() Value for horizontal or vertical is invalid");
       return *this;
    }
 #endif
@@ -375,9 +375,9 @@ QTransform &QTransform::rotate(qreal a, Qt::Axis axis)
       return *this;
    }
 
-#if defined(CS_DEBUG)
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
    if (qIsNaN(a)) {
-      qWarning() << "QTransform::rotate() Value is invalid";
+      qDebug() << "QTransform::rotate() Value is invalid";
       return *this;
    }
 #endif
@@ -468,9 +468,9 @@ QTransform &QTransform::rotate(qreal a, Qt::Axis axis)
 
 QTransform &QTransform::rotateRadians(qreal a, Qt::Axis axis)
 {
-#ifndef QT_NO_DEBUG
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
    if (qIsNaN(a)) {
-      qWarning("QTransform::rotateRadians() Value is invalid");
+      qDebug("QTransform::rotateRadians() Value is invalid");
       return *this;
    }
 #endif
@@ -1417,7 +1417,6 @@ bool QTransform::quadToQuad(const QPolygonF &one, const QPolygonF &two, QTransfo
 
    trans *= stq;
 
-   //qDebug()<<"Final = "<<trans;
    return true;
 }
 

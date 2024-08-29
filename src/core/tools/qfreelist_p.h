@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -25,11 +25,12 @@
 #define QFREELIST_P_H
 
 #include <qatomic.h>
+#include <qglobal.h>
 
 template <typename T>
 struct QFreeListElement {
-   typedef const T &ConstReferenceType;
-   typedef T &ReferenceType;
+   using ReferenceType      = T &;
+   using ConstReferenceType = const T &;
 
    T _t;
    std::atomic<int> next;
@@ -45,24 +46,27 @@ struct QFreeListElement {
 
 template <>
 struct QFreeListElement<void> {
-   typedef void ConstReferenceType;
-   typedef void ReferenceType;
+   using ReferenceType      = void;
+   using ConstReferenceType = void;
 
    std::atomic<int> next;
 
-   inline void t() const { }
-   inline void t() { }
+   void t() const {
+   }
+
+   void t() {
+   }
 };
 
 struct QFreeListDefaultConstants {
    // used by QFreeList, make sure to define all of when customizing
-   enum {
+   enum FreeListFlags {
       InitialNextValue = 0,
-      IndexMask = 0x00ffffff,
-      SerialMask = ~IndexMask & ~0x80000000,
-      SerialCounter = IndexMask + 1,
-      MaxIndex = IndexMask,
-      BlockCount = 4,
+      IndexMask        = 0x00ffffff,
+      SerialMask       = ~IndexMask & ~0x80000000,
+      SerialCounter    = IndexMask + 1,
+      MaxIndex         = IndexMask,
+      BlockCount       = 4,
    };
 
    static const int Sizes[BlockCount];
@@ -71,19 +75,20 @@ struct QFreeListDefaultConstants {
 template <typename T, typename ConstantsType = QFreeListDefaultConstants>
 class QFreeList
 {
-   typedef T ValueType;
-   typedef QFreeListElement<T> ElementType;
-   typedef typename ElementType::ConstReferenceType ConstReferenceType;
-   typedef typename ElementType::ReferenceType ReferenceType;
+   using ValueType          = T;
+   using ElementType        = QFreeListElement<T>;
+   using ReferenceType      = typename ElementType::ReferenceType;
+   using ConstReferenceType = typename ElementType::ConstReferenceType;
 
    // return which block the index \a x falls in, and modify \a x to be the index into that block
-   static inline int blockfor(int &x) {
+   static int blockfor(int &x) {
       for (int i = 0; i < ConstantsType::BlockCount; ++i) {
          int size = ConstantsType::Sizes[i];
 
          if (x < size) {
             return i;
          }
+
          x -= size;
       }
 
@@ -91,18 +96,18 @@ class QFreeList
    }
 
    // allocate a block of the given \a size, initialized starting with the given \a offset
-   static inline ElementType *allocate(int offset, int size) {
-      // qDebug("QFreeList: allocating %d elements (%ld bytes) with offset %d", size, size * sizeof(ElementType), offset);
+   static ElementType *allocate(int offset, int size) {
       ElementType *v = new ElementType[size];
+
       for (int i = 0; i < size; ++i) {
          v[i].next.store(offset + i + 1);
       }
+
       return v;
    }
 
    // take the current serial number from \a o, increment it, and store it in \a n
-   static inline int incrementserial(int o, int n) {
-      using uint = unsigned int;
+   static int incrementserial(int o, int n) {
       return int((uint(n) & ConstantsType::IndexMask) | ((uint(o) + ConstantsType::SerialCounter) & ConstantsType::SerialMask));
    }
 
@@ -160,7 +165,10 @@ inline typename QFreeList<T, ConstantsType>::ReferenceType QFreeList<T, Constant
 template <typename T, typename ConstantsType>
 inline int QFreeList<T, ConstantsType>::next()
 {
-   int id, newid, at;
+   int id;
+   int newid;
+   int at;
+
    ElementType *v;
 
    id = _next.load();
@@ -188,11 +196,6 @@ inline int QFreeList<T, ConstantsType>::next()
 
    } while (! _next.compareExchange(id, newid, std::memory_order_relaxed));
 
-   // qDebug("QFreeList::next(): returning %d (_next now %d, serial %d)",
-   //        id & ConstantsType::IndexMask,
-   //        newid & ConstantsType::IndexMask,
-   //        (newid & ~ConstantsType::IndexMask) >> 24);
-
    return id & ConstantsType::IndexMask;
 }
 
@@ -214,13 +217,6 @@ inline void QFreeList<T, ConstantsType>::release(int id)
       newid = incrementserial(x, id);
 
    } while (! _next.compareExchange(x, newid, std::memory_order_release, std::memory_order_acquire));
-
-   // qDebug("QFreeList::release(%d): _next now %d (was %d), serial %d",
-   //        id & ConstantsType::IndexMask,
-   //        newid & ConstantsType::IndexMask,
-   //        x & ConstantsType::IndexMask,
-   //        (newid & ~ConstantsType::IndexMask) >> 24);
 }
-
 
 #endif // QFREELIST_P_H

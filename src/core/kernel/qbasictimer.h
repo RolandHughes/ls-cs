@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -32,20 +32,21 @@ class QObject;
 class Q_CORE_EXPORT QBasicTimer
 {
  public:
-   inline QBasicTimer() : id(0)
-   {}
+   QBasicTimer()
+      : id(0)
+   { }
 
-   inline ~QBasicTimer() {
+   ~QBasicTimer() {
       if (id) {
          stop();
       }
    }
 
-   inline bool isActive() const {
+   bool isActive() const {
       return id != 0;
    }
 
-   inline int timerId() const {
+   int timerId() const {
       return id;
    }
 

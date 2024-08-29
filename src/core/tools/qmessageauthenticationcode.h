@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -31,28 +31,28 @@ class QIODevice;
 
 class Q_CORE_EXPORT QMessageAuthenticationCode
 {
-   public:
-    explicit QMessageAuthenticationCode(QCryptographicHash::Algorithm method, const QByteArray &key = QByteArray());
+ public:
+   explicit QMessageAuthenticationCode(QCryptographicHash::Algorithm method, const QByteArray &key = QByteArray());
 
-    QMessageAuthenticationCode(const QMessageAuthenticationCode &) = delete;
-    QMessageAuthenticationCode &operator=(const QMessageAuthenticationCode &) = delete;
+   QMessageAuthenticationCode(const QMessageAuthenticationCode &) = delete;
+   QMessageAuthenticationCode &operator=(const QMessageAuthenticationCode &) = delete;
 
-    ~QMessageAuthenticationCode();
+   ~QMessageAuthenticationCode();
 
-    void reset();
+   void reset();
 
-    void setKey(const QByteArray &key);
+   void setKey(const QByteArray &key);
 
-    void addData(const char *data, int length);
-    void addData(const QByteArray &data);
-    bool addData(QIODevice *device);
+   void addData(const char *data, int length);
+   void addData(const QByteArray &data);
+   bool addData(QIODevice *device);
 
-    QByteArray result() const;
+   QByteArray result() const;
 
-    static QByteArray hash(const QByteArray &message, const QByteArray &key, QCryptographicHash::Algorithm method);
+   static QByteArray hash(const QByteArray &message, const QByteArray &key, QCryptographicHash::Algorithm method);
 
  private:
-    QMessageAuthenticationCodePrivate *d;
+   QMessageAuthenticationCodePrivate *d;
 };
 
 #endif

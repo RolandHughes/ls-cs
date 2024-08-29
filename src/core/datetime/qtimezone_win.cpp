@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -36,13 +36,14 @@ static const char tzRegPath[]     = "SOFTWARE\\Microsoft\\Windows NT\\CurrentVer
 static const char currTzRegPath[] = "SYSTEM\\CurrentControlSet\\Control\\TimeZoneInformation";
 
 // Copied from MSDN
-typedef struct _REG_TZI_FORMAT {
+struct _REG_TZI_FORMAT {
    LONG Bias;
    LONG StandardBias;
    LONG DaylightBias;
    SYSTEMTIME StandardDate;
    SYSTEMTIME DaylightDate;
-} REG_TZI_FORMAT;
+};
+using REG_TZI_FORMAT = _REG_TZI_FORMAT;
 
 // Fast and reliable conversion from msecs to date for all values
 // Adapted from QDateTime msecsToDate
@@ -99,7 +100,7 @@ static QString readRegistryString(const HKEY &key, const wchar_t *value)
    DWORD size = sizeof(wchar_t) * MAX_PATH;
    RegQueryValueEx(key, (LPCWSTR)value, nullptr, nullptr, (LPBYTE)&buffer[0], &size);
 
-   buffer.resize(size/sizeof(wchar_t));
+   buffer.resize(size / sizeof(wchar_t));
 
    return QString::fromStdWString(buffer);
 }
@@ -137,7 +138,7 @@ static TIME_ZONE_INFORMATION getRegistryTzi(const QByteArray &windowsId, bool *o
 {
    *ok = false;
 
-   TIME_ZONE_INFORMATION tzi;
+   TIME_ZONE_INFORMATION tzi = {};
    REG_TZI_FORMAT regTzi;
    DWORD regTziSize = sizeof(regTzi);
    HKEY key = nullptr;
@@ -271,17 +272,18 @@ static inline qint64 timeToMSecs(const QDate &date, const QTime &time)
 }
 
 static void calculateTransitionsForYear(const QWinTimeZonePrivate::QWinTransitionRule &rule, int year,
-   qint64 *stdMSecs, qint64 *dstMSecs)
+      qint64 *stdMSecs, qint64 *dstMSecs)
 {
    // TODO Consider caching the calculated values
    // The local time in Daylight Time when switches to Standard Time
    QDate standardDate = calculateTransitionLocalDate(rule.standardTimeRule, year);
    QTime standardTime = QTime(rule.standardTimeRule.wHour, rule.standardTimeRule.wMinute,
-            rule.standardTimeRule.wSecond);
+         rule.standardTimeRule.wSecond);
 
    if (standardDate.isValid() && standardTime.isValid()) {
       *stdMSecs = timeToMSecs(standardDate, standardTime)
-         + ((rule.standardTimeBias + rule.daylightTimeBias)  * 60000);
+            + ((rule.standardTimeBias + rule.daylightTimeBias)  * 60000);
+
    } else {
       *stdMSecs = QTimeZonePrivate::invalidMSecs();
    }
@@ -289,7 +291,7 @@ static void calculateTransitionsForYear(const QWinTimeZonePrivate::QWinTransitio
    // The local time in Standard Time when switches to Daylight Time
    QDate daylightDate = calculateTransitionLocalDate(rule.daylightTimeRule, year);
    QTime daylightTime = QTime(rule.daylightTimeRule.wHour, rule.daylightTimeRule.wMinute,
-            rule.daylightTimeRule.wSecond);
+         rule.daylightTimeRule.wSecond);
 
    if (daylightDate.isValid() && daylightTime.isValid()) {
       *dstMSecs = timeToMSecs(daylightDate, daylightTime) + (rule.standardTimeBias * 60000);
@@ -364,6 +366,7 @@ void QWinTimeZonePrivate::init(const QByteArray &ianaId)
          const QString dynamicKeyPath = baseKeyPath + "\\Dynamic DST";
 
          HKEY dynamicKey = nullptr;
+
          if (openRegistryKey(dynamicKeyPath, &dynamicKey)) {
             // Find out the start and end years stored, then iterate over them
             int startYear = readRegistryValue(dynamicKey, L"FirstEntry");
@@ -376,10 +379,12 @@ void QWinTimeZonePrivate::init(const QByteArray &ianaId)
                QWinTransitionRule rule = readRegistryRule(dynamicKey, &tmp[0], &ruleOk);
 
                rule.startYear = year;
+
                if (ruleOk) {
                   m_tranRules.append(rule);
                }
             }
+
             RegCloseKey(dynamicKey);
 
          } else {
@@ -411,7 +416,7 @@ QString QWinTimeZonePrivate::comment() const
 }
 
 QString QWinTimeZonePrivate::displayName(QTimeZone::TimeType timeType,
-   QTimeZone::NameType nameType, const QLocale &locale) const
+      QTimeZone::NameType nameType, const QLocale &locale) const
 {
    // TODO Registry holds MUI keys, should be able to look up translations?
    (void) locale;
@@ -533,6 +538,7 @@ QTimeZonePrivate::Data QWinTimeZonePrivate::nextTransition(qint64 afterMSecsSinc
    int year = msecsToDate(afterMSecsSinceEpoch).year();
 
    QWinTransitionRule rule;
+
    // If the required year falls after the last rule start year and the last rule has no
    // valid future transition calculations then there is no next transition
    if (year > m_tranRules.last().startYear) {
@@ -706,7 +712,7 @@ QWinTimeZonePrivate::QWinTransitionRule QWinTimeZonePrivate::ruleForYear(int yea
 }
 
 QTimeZonePrivate::Data QWinTimeZonePrivate::ruleToData(const QWinTransitionRule &rule, qint64 atMSecsSinceEpoch,
-   QTimeZone::TimeType type) const
+      QTimeZone::TimeType type) const
 {
    QTimeZonePrivate::Data tran = QTimeZonePrivate::invalidData();
    tran.atMSecsSinceEpoch  = atMSecsSinceEpoch;

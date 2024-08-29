@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -119,7 +119,7 @@
 #define CHECK_QAPP_INSTANCE(...) \
     if (QCoreApplication::instance()) { \
     } else { \
-        qWarning("QApplication must be constructed before calling this method"); \
+        qWarning("QApplication must be started before calling this method"); \
         return __VA_ARGS__; \
     }
 
@@ -179,6 +179,15 @@ QDesktopWidget *qt_desktopWidget  = nullptr;       // root window widgets
 enum ApplicationResourceFlags {
    ApplicationPaletteExplicitlySet = 0x1,
    ApplicationFontExplicitlySet    = 0x2
+};
+
+enum ApplicationMouseFlags {
+   MouseCapsMask       = 0xFF,
+   MouseSourceMaskDst  = 0xFF00,
+   MouseSourceMaskSrc  = MouseCapsMask,
+   MouseSourceShift    = 8,
+   MouseFlagsCapsMask  = 0xFF0000,
+   MouseFlagsShift     = 16
 };
 
 static bool force_reverse                = false;
@@ -506,15 +515,10 @@ QApplication::~QApplication()
    d->cleanupMultitouch();
    qt_cleanup();
 
-   if (QApplicationPrivate::widgetCount) {
-      qDebug("Widgets left: %i    Max widgets: %i \n", QWidgetPrivate::instanceCounter, QWidgetPrivate::maxInstances);
-   }
-
    QApplicationPrivate::obey_desktop_settings = true;
 
    QApplicationPrivate::app_strut = QSize(0, 0);
    QApplicationPrivate::enabledAnimations = QPlatformTheme::GeneralUiEffect;
-   QApplicationPrivate::widgetCount = false;
 
 #if ! defined(QT_NO_STATEMACHINE)
    // trigger unregistering of QStateMachine's GUI types
@@ -923,8 +927,8 @@ static void init_platform(const QString &pluginArgument, const QString &platform
    } else {
       QStringList keys = QPlatformIntegrationFactory::keys(platformPluginPath);
 
-      QString fatalMessage = QString("The application failed to start because the platform plugin was not found or did not load.\n"
-                  "Requested Plugin Key: \"%1\"\n\n").formatArg(pluginKey);
+      QString fatalMessage = QString("The application failed to start because the platform plugin was "
+            "not found or did not load.\nRequested Plugin Key: \"%1\"\n\n").formatArg(pluginKey);
 
       if (! keys.isEmpty()) {
          fatalMessage += QString("Available platform plugins: %1.\n\n").formatArg(keys.join(", "));
@@ -1380,7 +1384,7 @@ QApplication::FP_Void QApplication::platformFunction(const QByteArray &function)
    QPlatformIntegration *platform_interface = QGuiApplicationPrivate::platformIntegration();
 
    if (! platform_interface) {
-      qWarning("QApplication::platformFunction() Construct a QApplication before accessing platform functions");
+      qWarning("QApplication::platformFunction() QApplication must be started before accessing platform functions");
       return nullptr;
    }
 
@@ -1533,18 +1537,20 @@ void QGuiApplicationPrivate::processWindowSystemEvent(QWindowSystemInterfacePriv
          QGuiApplicationPrivate::processFileOpenEvent(
             static_cast<QWindowSystemInterfacePrivate::FileOpenEvent *>(e));
          break;
+
 #ifndef QT_NO_CONTEXTMENU
       case QWindowSystemInterfacePrivate::ContextMenu:
          QGuiApplicationPrivate::processContextMenuEvent(
             static_cast<QWindowSystemInterfacePrivate::ContextMenuEvent *>(e));
          break;
 #endif
+
       case QWindowSystemInterfacePrivate::EnterWhatsThisMode:
          QGuiApplication::postEvent(QGuiApplication::instance(), new QEvent(QEvent::EnterWhatsThisMode));
          break;
 
       default:
-         qWarning() << "QApplicationPrivate::processWindowSystemEvent() Unknown user input event type," << e->type;
+         qWarning() << "QApplication::processWindowSystemEvent() Unknown user input event type," << e->type;
          break;
    }
 }
@@ -2034,11 +2040,11 @@ void QGuiApplicationPrivate::processCloseEvent(QWindowSystemInterfacePrivate::Cl
 
 void QGuiApplicationPrivate::processFileOpenEvent(QWindowSystemInterfacePrivate::FileOpenEvent *e)
 {
-   if (e->url.isEmpty()) {
+   if (e->m_url.isEmpty()) {
       return;
    }
 
-   QFileOpenEvent event(e->url);
+   QFileOpenEvent event(e->m_url);
    QGuiApplication::sendSpontaneousEvent(qApp, &event);
 }
 
@@ -2712,7 +2718,7 @@ QClipboard *QApplication::clipboard()
 {
    if (QGuiApplicationPrivate::qt_clipboard == nullptr) {
       if (! qApp) {
-         qWarning("QApplication::clipboard() Construct a QApplication before accessing the clipboard");
+         qWarning("QApplication::clipboard() QApplication must be started before accessing the clipboard");
          return nullptr;
       }
       QGuiApplicationPrivate::qt_clipboard = new QClipboard(nullptr);
@@ -3067,7 +3073,7 @@ QStyle *QApplication::style()
    }
 
    if (! qobject_cast<QApplication *>(QCoreApplication::instance())) {
-      Q_ASSERT(!"No style available without QApplication!");
+      Q_ASSERT(! "No style available without creating a QApplication");
       return nullptr;
    }
 
@@ -3075,7 +3081,7 @@ QStyle *QApplication::style()
       // Compile-time search for default style
       QString style;
 
-      if (!QApplicationPrivate::styleOverride.isEmpty()) {
+      if (! QApplicationPrivate::styleOverride.isEmpty()) {
          style = QApplicationPrivate::styleOverride;
       } else {
          style = QApplicationPrivate::desktopStyleKey();
@@ -3084,7 +3090,7 @@ QStyle *QApplication::style()
       QStyle *&app_style = QApplicationPrivate::app_style;
       app_style = QStyleFactory::create(style);
 
-      if (!app_style) {
+      if (! app_style) {
          QStringList styles = QStyleFactory::keys();
 
          for (int i = 0; i < styles.size(); ++i) {
@@ -3093,6 +3099,7 @@ QStyle *QApplication::style()
             }
          }
       }
+
       if (! app_style) {
          Q_ASSERT(! "No styles are available");
          return nullptr;
@@ -3114,9 +3121,20 @@ QStyle *QApplication::style()
 #ifndef QT_NO_STYLE_STYLESHEET
    if (! QApplicationPrivate::styleSheet.isEmpty()) {
       qApp->setStyleSheet(QApplicationPrivate::styleSheet);
-   } else
-#endif
+
+   } else {
       QApplicationPrivate::app_style->polish(qApp);
+   }
+
+#else
+   QApplicationPrivate::app_style->polish(qApp);
+
+#endif
+
+#if defined(CS_SHOW_DEBUG_GUI)
+   qDebug("QApplication::style() Style class = %s",
+         csPrintable(QApplicationPrivate::app_style->metaObject()->className()));
+#endif
 
    return QApplicationPrivate::app_style;
 }
@@ -3436,17 +3454,9 @@ void QGuiApplicationPrivate::_q_updateFocusObject(QObject *object)
    if (inputContext) {
       inputContext->setFocusObject(object);
    }
+
    emit q->focusObjectChanged(object);
 }
-
-enum {
-   MouseCapsMask = 0xFF,
-   MouseSourceMaskDst = 0xFF00,
-   MouseSourceMaskSrc = MouseCapsMask,
-   MouseSourceShift = 8,
-   MouseFlagsCapsMask = 0xFF0000,
-   MouseFlagsShift = 16
-};
 
 int QGuiApplicationPrivate::mouseEventCaps(QMouseEvent *event)
 {

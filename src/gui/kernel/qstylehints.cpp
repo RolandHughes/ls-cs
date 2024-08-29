@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -37,7 +37,7 @@ static inline QVariant hint(QPlatformIntegration::StyleHint h)
 static inline QVariant themeableHint(QPlatformTheme::ThemeHint th, QPlatformIntegration::StyleHint ih)
 {
    if (! QCoreApplication::instance()) {
-      qWarning("themeableHint() Must construct a QApplication before accessing a platform theme hint");
+      qWarning("themeableHint() QApplication must be started before accessing a platform theme hint");
       return QVariant();
    }
 

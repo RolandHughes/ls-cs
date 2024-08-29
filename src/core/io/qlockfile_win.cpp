@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -25,15 +25,15 @@
 ** Copyright (c) 2013 David Faure <faure+bluesystems@kde.org>
 *****************************************************************/
 
-#include <qlockfile_p.h>
-
 #include <qcoreapplication.h>
 #include <qdatetime.h>
 #include <qdebug.h>
 #include <qfileinfo.h>
-#include <qfilesystementry_p.h>
 #include <qthread.h>
 #include <qt_windows.h>
+
+#include <qlockfile_p.h>
+#include <qfilesystementry_p.h>
 
 #include <psapi.h>
 
@@ -81,15 +81,15 @@ QLockFile::LockError QLockFilePrivate::tryLock_sys()
                   ? QLockFile::LockFailedError : QLockFile::PermissionError;
 
          default:
-            qWarning() << "Got unexpected locking error" << lastError;
+            qWarning("QLockFilePrivate::tryLock_sys() Unexpected lock error %ld", lastError);
             return QLockFile::UnknownError;
       }
    }
 
-   // hold the lock, continue.
+   // hold the lock and continue
    fileHandle = fh;
 
-   // Assemble data, to write in a single call to write
+   // Assemble data to write in a single call to write
    QByteArray fileData;
 
    fileData += QByteArray::number(QCoreApplication::applicationPid());
@@ -111,7 +111,7 @@ QLockFile::LockError QLockFilePrivate::tryLock_sys()
 
 bool QLockFilePrivate::removeStaleLock()
 {
-   // QFile::remove fails on Windows if the other process is still using the file, so it's not stale.
+   // QFile::remove fails on Windows if the other process is still using the file
    return QFile::remove(fileName);
 }
 
@@ -145,6 +145,7 @@ bool QLockFilePrivate::isApparentlyStale() const
          }
 
          const QString processName = processNameByPid(pid);
+
          if (! processName.isEmpty() && processName != appname) {
             return true;   // PID got reused by a different application.
          }
@@ -181,6 +182,7 @@ QString QLockFilePrivate::processNameByPid(qint64 pid)
    }
 
    i = name.lastIndexOf('.');
+
    if (i >= 0) {
       name.truncate(i);
    }
@@ -192,23 +194,22 @@ void QLockFile::unlock()
 {
    Q_D(QLockFile);
 
+   static constexpr const int maxAttempts = 500;   // 500ms
+
    if (! d->isLocked) {
       return;
    }
 
    CloseHandle(d->fileHandle);
    int attempts = 0;
-   static const int maxAttempts = 500; // 500ms
 
-   while (!QFile::remove(d->fileName) && ++attempts < maxAttempts) {
-      // Someone is reading the lock file right now (on Windows this prevents deleting it).
+   while (! QFile::remove(d->fileName) && ++attempts < maxAttempts) {
+      // Someone is reading the lock file right now, unable to delete
       QThread::msleep(1);
    }
 
    if (attempts == maxAttempts) {
-      qWarning() << "Could not remove our own lock file" << d->fileName <<
-         ". Either other users of the lock file are reading it constantly for 500 ms, or we (no longer) have permissions to delete the file";
-      // This is bad because other users of this lock file will now have to wait for the stale-lock-timeout...
+      qWarning("QLockFile::unlock() Unable to remove file %s", csPrintable(d->fileName));
    }
 
    d->lockError = QLockFile::NoError;

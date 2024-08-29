@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,8 +24,8 @@
 #ifndef QTCONCURRENTREDUCEKERNEL_H
 #define QTCONCURRENTREDUCEKERNEL_H
 
-#include <qglobal.h>
 #include <qatomic.h>
+#include <qglobal.h>
 #include <qlist.h>
 #include <qmap.h>
 #include <qmutex.h>
@@ -42,14 +42,14 @@ namespace QtConcurrent {
     MapReduce won't start any new threads, and when it exceeds
     ReduceQueueThrottleLimit running threads will be stopped.
 */
-enum {
-   ReduceQueueStartLimit = 20,
-   ReduceQueueThrottleLimit = 30
-};
+
+static constexpr const int ReduceQueueStartLimit    = 20;
+static constexpr const int ReduceQueueThrottleLimit = 30;
 
 // IntermediateResults holds a block of intermediate results from a
 // map or filter functor. The begin/end offsets indicates the origin
 // and range of the block.
+
 template <typename T>
 class IntermediateResults
 {
@@ -59,11 +59,12 @@ class IntermediateResults
 };
 
 enum ReduceOption {
-   UnorderedReduce = 0x1,
-   OrderedReduce = 0x2,
-   SequentialReduce = 0x4,
-// ParallelReduce = 0x8
+   UnorderedReduce   = 0x1,
+   OrderedReduce     = 0x2,
+   SequentialReduce  = 0x4,
+   // ParallelReduce = 0x8
 };
+
 using ReduceOptions = QFlags<ReduceOption>;
 Q_DECLARE_OPERATORS_FOR_FLAGS(ReduceOptions)
 
@@ -71,7 +72,7 @@ Q_DECLARE_OPERATORS_FOR_FLAGS(ReduceOptions)
 template <typename ReduceFunctor, typename ReduceResultType, typename T>
 class ReduceKernel
 {
-   typedef QMap<int, IntermediateResults<T> > ResultsMap;
+   using ResultsMap = QMap<int, IntermediateResults<T>>;
 
    const ReduceOptions reduceOptions;
 
@@ -91,6 +92,7 @@ class ReduceKernel
 
    void reduceResults(ReduceFunctor &reduce, ReduceResultType &r, ResultsMap &map) {
       typename ResultsMap::iterator it = map.begin();
+
       while (it != map.end()) {
          reduceResult(reduce, r, it.value());
          ++it;
@@ -105,6 +107,7 @@ class ReduceKernel
 
    void runReduce(ReduceFunctor &reduce, ReduceResultType &r, const IntermediateResults<T> &result) {
       QMutexLocker locker(&mutex);
+
       if (!canReduce(result.begin)) {
          ++resultsMapSize;
          resultsMap.insert(result.begin, result);
@@ -133,6 +136,7 @@ class ReduceKernel
          }
 
          progress = 0;
+
       } else {
          // reduce this result
          locker.unlock();
@@ -144,6 +148,7 @@ class ReduceKernel
 
          // reduce as many other results as possible
          typename ResultsMap::iterator it = resultsMap.begin();
+
          while (it != resultsMap.end()) {
             if (it.value().begin != progress) {
                break;
@@ -165,11 +170,11 @@ class ReduceKernel
       reduceResults(reduce, r, resultsMap);
    }
 
-   inline bool shouldThrottle() {
+   bool shouldThrottle() {
       return (resultsMapSize > (ReduceQueueThrottleLimit * threadCount));
    }
 
-   inline bool shouldStartThread() {
+   bool shouldStartThread() {
       return (resultsMapSize <= (ReduceQueueStartLimit * threadCount));
    }
 };
@@ -177,7 +182,8 @@ class ReduceKernel
 template <typename Sequence, typename Base, typename Functor1, typename Functor2>
 struct SequenceHolder2 : public Base {
    SequenceHolder2(const Sequence &_sequence, Functor1 functor1, Functor2 functor2, ReduceOptions reduceOptions)
-      : Base(_sequence.begin(), _sequence.end(), functor1, functor2, reduceOptions), sequence(_sequence) {
+      : Base(_sequence.begin(), _sequence.end(), functor1, functor2, reduceOptions), sequence(_sequence)
+   {
    }
 
    Sequence sequence;

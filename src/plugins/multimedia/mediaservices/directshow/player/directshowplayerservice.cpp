@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -72,7 +72,7 @@ class DirectShowPlayerServiceThread : public QThread
    { }
 
  protected:
-   void run() {
+   void run() override {
       m_service->run();
    }
 
@@ -171,7 +171,7 @@ QMediaControl *DirectShowPlayerService::requestControl(const QString &name)
 
    } else if (name == QVideoWindowControl_iid) {
       if (! m_videoRendererControl && ! m_videoWindowControl) {
-         IBaseFilter *filter;
+         IBaseFilter *filter = nullptr;
 
 #ifdef HAVE_EVR
          DirectShowEvrVideoWindowControl *evrControl = new DirectShowEvrVideoWindowControl;

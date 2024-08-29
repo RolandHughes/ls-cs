@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -34,7 +34,6 @@
 #include <qdesktopwidget.h>
 #include <qpushbutton.h>
 #include <qcheckbox.h>
-
 #include <qaccessible.h>
 #include <qfont.h>
 #include <qfontmetrics.h>
@@ -66,12 +65,24 @@ HMENU qt_getWindowsSystemMenu(const QWidget *w)
 }
 #endif
 
-enum Button { Old_Ok = 1, Old_Cancel = 2, Old_Yes = 3, Old_No = 4, Old_Abort = 5, Old_Retry = 6,
-   Old_Ignore = 7, Old_YesAll = 8, Old_NoAll = 9, Old_ButtonMask = 0xFF,
-   NewButtonMask = 0xFFFFFC00
+enum Button {
+   Old_Ok         = 1,
+   Old_Cancel     = 2,
+   Old_Yes        = 3,
+   Old_No         = 4,
+   Old_Abort      = 5,
+   Old_Retry      = 6,
+   Old_Ignore     = 7,
+   Old_YesAll     = 8,
+   Old_NoAll      = 9,
+   Old_ButtonMask = 0xFF,
+   NewButtonMask  = 0xFFFFFC00
 };
 
-enum DetailButtonLabel { ShowLabel = 0, HideLabel = 1 };
+enum DetailButtonLabel {
+   ShowLabel = 0,
+   HideLabel = 1
+};
 
 void cs_require_version(int argc, char *argv[], const char *str)
 {
@@ -1252,7 +1263,7 @@ void QMessageBox::aboutCs(QWidget *parent, const QString &title)
 
    QLabel *msg3 = new QLabel;
 
-   msg3->setText("Copyright (c) 2012-2023 Ansel Sermersheim & Barbara Geller\n"
+   msg3->setText("Copyright (c) 2012-2024 Ansel Sermersheim & Barbara Geller\n"
          "CopperSpice is released under the terms of the GNU LGPL version 2.1\n"
          "\n"
          "Copyright (c) 2015 The Qt Company Ltd\n"

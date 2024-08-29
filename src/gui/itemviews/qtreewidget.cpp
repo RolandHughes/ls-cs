@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -2049,7 +2049,8 @@ QMimeData *QTreeWidget::mimeData(const QList<QTreeWidgetItem *> &items) const
             const QModelIndex index = indexFromItem(item, c);
 
             if (! index.isValid()) {
-               qWarning("QTreeWidget::mimeData() No index associated with item %p at element %d", item, i);
+               qWarning("QTreeWidget::mimeData() No index associated with item %p at element %d",
+                     static_cast<void *>(item), i);
                return nullptr;
             }
 
@@ -2162,7 +2163,7 @@ void QTreeWidget::dropEvent(QDropEvent *event)
 }
 #endif
 
-void QTreeWidget::setModel(QAbstractItemModel * /*model*/)
+void QTreeWidget::setModel(QAbstractItemModel *)
 {
    Q_ASSERT(!"QTreeWidget::setModel() - Changing the model of the QTreeWidget is not allowed.");
 }

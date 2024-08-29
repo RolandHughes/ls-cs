@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -34,7 +34,7 @@ class QWindowsPrinterSupportPlugin : public QPlatformPrinterSupportPlugin
    CS_PLUGIN_KEY("printerdriver_windows")
 
  public:
-   QPlatformPrinterSupport *create(const QString &);
+   QPlatformPrinterSupport *create(const QString &) override;
 };
 
 CS_PLUGIN_REGISTER(QWindowsPrinterSupportPlugin)

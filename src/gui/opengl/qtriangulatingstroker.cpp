@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2013 Klarälvdalens Datakonsult AB, a KDAB Group company
 * Copyright (c) 2015 The Qt Company Ltd.
@@ -300,10 +300,14 @@ void QTriangulatingStroker::cubicTo(const qreal *pts)
     if (threshold < 4)
         threshold = 4;
     qreal threshold_minus_1 = threshold - 1;
-    float vx, vy;
 
-    float cx = m_cx, cy = m_cy;
-    float x, y;
+    float vx = 0.0;
+    float vy = 0.0;
+
+    float cx = m_cx;
+    float cy = m_cy;
+    float x;
+    float y;
 
     for (int i=1; i<threshold; ++i) {
         qreal t = qreal(i) / threshold_minus_1;

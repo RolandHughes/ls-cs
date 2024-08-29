@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -61,7 +61,7 @@ class Q_CORE_EXPORT QTimeZone
    explicit QTimeZone(int offsetSeconds);
 
    QTimeZone(const QByteArray &zoneId, int offsetSeconds, const QString &name,
-      const QString &abbreviation, QLocale::Country country = QLocale::AnyCountry, const QString &comment = QString());
+         const QString &abbreviation, QLocale::Country country = QLocale::AnyCountry, const QString &comment = QString());
 
    QTimeZone(const QTimeZone &other);
    QTimeZone(QTimeZone &&other);
@@ -80,10 +80,10 @@ class Q_CORE_EXPORT QTimeZone
    QString comment() const;
 
    QString displayName(const QDateTime &atDateTime, QTimeZone::NameType nameType = QTimeZone::DefaultName,
-      const QLocale &locale = QLocale()) const;
+         const QLocale &locale = QLocale()) const;
 
    QString displayName(QTimeZone::TimeType timeType, QTimeZone::NameType nameType = QTimeZone::DefaultName,
-      const QLocale &locale = QLocale()) const;
+         const QLocale &locale = QLocale()) const;
 
    QByteArray id() const;
    bool isValid() const;

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -315,10 +315,12 @@ void QTextEditPrivate::_q_adjustScrollbars()
 void QTextEditPrivate::_q_ensureVisible(const QRectF &_rect)
 {
    const QRect rect = _rect.toRect();
+
    if ((vbar->isVisible() && vbar->maximum() < rect.bottom())
       || (hbar->isVisible() && hbar->maximum() < rect.right())) {
       _q_adjustScrollbars();
    }
+
    const int visibleWidth = viewport->width();
    const int visibleHeight = viewport->height();
    const bool rtl = q_func()->isRightToLeft();
@@ -329,6 +331,7 @@ void QTextEditPrivate::_q_ensureVisible(const QRectF &_rect)
       } else {
          hbar->setValue(rect.x());
       }
+
    } else if (rect.x() + rect.width() > horizontalOffset() + visibleWidth) {
       if (rtl) {
          hbar->setValue(hbar->maximum() - (rect.x() + rect.width() - visibleWidth));
@@ -344,14 +347,12 @@ void QTextEditPrivate::_q_ensureVisible(const QRectF &_rect)
    }
 }
 
-
 QTextEdit::QTextEdit(QWidget *parent)
    : QAbstractScrollArea(*new QTextEditPrivate, parent)
 {
    Q_D(QTextEdit);
    d->init();
 }
-
 
 QTextEdit::QTextEdit(QTextEditPrivate &dd, QWidget *parent)
    : QAbstractScrollArea(dd, parent)
@@ -407,7 +408,6 @@ qreal QTextEdit::fontPointSize() const
    return d->control->textCursor().charFormat().fontPointSize();
 }
 
-
 QString QTextEdit::fontFamily() const
 {
    Q_D(const QTextEdit);
@@ -420,13 +420,11 @@ int QTextEdit::fontWeight() const
    return d->control->textCursor().charFormat().fontWeight();
 }
 
-
 bool QTextEdit::fontUnderline() const
 {
    Q_D(const QTextEdit);
    return d->control->textCursor().charFormat().fontUnderline();
 }
-
 
 bool QTextEdit::fontItalic() const
 {
@@ -434,13 +432,11 @@ bool QTextEdit::fontItalic() const
    return d->control->textCursor().charFormat().fontItalic();
 }
 
-
 QColor QTextEdit::textColor() const
 {
    Q_D(const QTextEdit);
    return d->control->textCursor().charFormat().foreground().color();
 }
-
 
 QColor QTextEdit::textBackgroundColor() const
 {
@@ -448,13 +444,11 @@ QColor QTextEdit::textBackgroundColor() const
    return d->control->textCursor().charFormat().background().color();
 }
 
-
 QFont QTextEdit::currentFont() const
 {
    Q_D(const QTextEdit);
    return d->control->textCursor().charFormat().font();
 }
-
 
 void QTextEdit::setAlignment(Qt::Alignment a)
 {
@@ -486,15 +480,16 @@ QTextDocument *QTextEdit::document() const
    return d->control->document();
 }
 
-
 QString QTextEdit::placeholderText() const
 {
    Q_D(const QTextEdit);
    return d->placeholderText;
 }
+
 void QTextEdit::setPlaceholderText(const QString &placeholderText)
 {
    Q_D(QTextEdit);
+
    if (d->placeholderText != placeholderText) {
       d->placeholderText = placeholderText;
       if (d->control->document()->isEmpty()) {
@@ -512,7 +507,6 @@ void QTextEdit::doSetTextCursor(const QTextCursor &cursor)
    Q_D(QTextEdit);
    d->control->setTextCursor(cursor);
 }
-
 
 QTextCursor QTextEdit::textCursor() const
 {
@@ -540,7 +534,6 @@ void QTextEdit::setFontWeight(int w)
    fmt.setFontWeight(w);
    mergeCurrentCharFormat(fmt);
 }
-
 
 void QTextEdit::setFontUnderline(bool underline)
 {
@@ -578,7 +571,6 @@ void QTextEdit::setCurrentFont(const QFont &f)
    mergeCurrentCharFormat(fmt);
 }
 
-
 void QTextEdit::undo()
 {
    Q_D(QTextEdit);
@@ -592,7 +584,6 @@ void QTextEdit::redo()
 }
 
 #ifndef QT_NO_CLIPBOARD
-
 void QTextEdit::cut()
 {
    Q_D(QTextEdit);
@@ -629,10 +620,9 @@ void QTextEdit::selectAll()
 bool QTextEdit::event(QEvent *e)
 {
    Q_D(QTextEdit);
+
 #ifndef QT_NO_CONTEXTMENU
-   if (e->type() == QEvent::ContextMenu
-         && static_cast<QContextMenuEvent *>(e)->reason() == QContextMenuEvent::Keyboard) {
-      Q_D(QTextEdit);
+   if (e->type() == QEvent::ContextMenu && static_cast<QContextMenuEvent *>(e)->reason() == QContextMenuEvent::Keyboard) {
       ensureCursorVisible();
 
       const QPoint cursorPos = cursorRect().center();
@@ -703,6 +693,7 @@ void QTextEdit::timerEvent(QTimerEvent *e)
                : QAbstractSlider::SliderSingleStepAdd);
       }
    }
+
 #ifdef QT_KEYPAD_NAVIGATION
    else if (e->timerId() == d->deleteAllTimer.timerId()) {
       d->deleteAllTimer.stop();
@@ -710,8 +701,6 @@ void QTextEdit::timerEvent(QTimerEvent *e)
    }
 #endif
 }
-
-
 
 void QTextEdit::setPlainText(const QString &text)
 {
@@ -767,6 +756,7 @@ void QTextEdit::keyPressEvent(QKeyEvent *e)
             }
          }
          break;
+
       case Qt::Key_Back:
       case Qt::Key_No:
          if (!QApplication::keypadNavigationEnabled()
@@ -775,6 +765,7 @@ void QTextEdit::keyPressEvent(QKeyEvent *e)
             return;
          }
          break;
+
       default:
          if (QApplication::keypadNavigationEnabled()) {
             if (!hasEditFocus() && !(e->modifiers() & Qt::ControlModifier)) {
@@ -789,6 +780,7 @@ void QTextEdit::keyPressEvent(QKeyEvent *e)
          break;
    }
 #endif
+
 #ifndef QT_NO_SHORTCUT
 
    Qt::TextInteractionFlags tif = d->control->textInteractionFlags();
@@ -804,6 +796,7 @@ void QTextEdit::keyPressEvent(QKeyEvent *e)
          return;
       }
    }
+
    if (tif & (Qt::TextSelectableByKeyboard | Qt::TextEditable)) {
       if (e == QKeySequence::MoveToPreviousPage) {
          e->accept();
@@ -844,7 +837,7 @@ void QTextEdit::keyPressEvent(QKeyEvent *e)
       }
       return;
    }
-#endif // QT_NO_SHORTCUT
+#endif
 
    {
       QTextCursor cursor = d->control->textCursor();
@@ -864,7 +857,7 @@ void QTextEdit::keyPressEvent(QKeyEvent *e)
    d->sendControlEvent(e);
 
 #ifdef QT_KEYPAD_NAVIGATION
-   if (!e->isAccepted()) {
+   if (! e->isAccepted()) {
       switch (e->key()) {
          case Qt::Key_Up:
          case Qt::Key_Down:
@@ -1740,4 +1733,3 @@ void QTextEdit::ensureCursorVisible()
 }
 
 #endif
-

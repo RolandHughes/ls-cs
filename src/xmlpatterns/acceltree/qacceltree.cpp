@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -69,7 +69,7 @@ void AccelTree::printStats(const NamePool::Ptr &np) const
 {
    Q_ASSERT(np);
 
-#if ! defined(QT_NO_DEBUG)
+#if defined(QT_DEBUG)
 
    const int len = basicData.count();
 

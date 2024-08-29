@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,21 +24,21 @@
 #ifndef MESSAGEEDITOR_H
 #define MESSAGEEDITOR_H
 
-#include "messagemodel.h"
+#include <messagemodel.h>
 
-#include <qlocale.h>
-#include <qtimer.h>
 #include <qframe.h>
+#include <qlocale.h>
 #include <qscrollarea.h>
+#include <qtimer.h>
 
 class QBoxLayout;
 class QMainWindow;
 class QTextEdit;
 
-class MessageEditor;
-class FormatTextEdit;
-class FormWidget;
 class FormMultiWidget;
+class FormWidget;
+class FormatTextEdit;
+class MessageEditor;
 
 struct MessageEditorData {
    QWidget *container;

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -37,11 +37,8 @@
 
 #include <stdlib.h>
 
-#define PMDEBUG if(0) qDebug
-
 #define QT_INIT_TEXTUNDOCOMMAND(c, a1, a2, a3, a4, a5, a6, a7, a8) \
-           QTextUndoCommand c = { a1, a2, 0, 0, quint8(a3), a4, quint32(a5), quint32(a6), { int(a7) }, quint32(a8) }
-
+      QTextUndoCommand c = { a1, a2, 0, 0, quint8(a3), a4, quint32(a5), quint32(a6), { int(a7) }, quint32(a8) }
 
 /*
   Structure of a document:
@@ -537,7 +534,6 @@ int QTextDocumentPrivate::remove_block(int pos, int *blockFormat, int command, Q
 
    } else {
       // non empty block, merge with next one into this block
-      //    qDebug("merging block with next");
 
       int n = blocks.next(b);
       Q_ASSERT((int)blocks.position(n) == pos + 1);
@@ -567,7 +563,7 @@ int QTextDocumentPrivate::remove_block(int pos, int *blockFormat, int command, Q
    return w;
 }
 
-#if !defined(QT_NO_DEBUG)
+#if defined(CS_SHOW_DEBUG_GUI_TEXT)
 static bool isAncestorFrame(QTextFrame *possibleAncestor, QTextFrame *child)
 {
    while (child) {
@@ -592,22 +588,22 @@ void QTextDocumentPrivate::move(int pos, int to, int length, QTextUndoCommand::O
 
    const bool needsInsert = to != -1;
 
-#if ! defined(QT_NO_DEBUG)
+#if defined(CS_SHOW_DEBUG_GUI_TEXT)
    const bool startAndEndInSameFrame = (frameAt(pos) == frameAt(pos + length - 1));
 
    const bool endIsEndOfChildFrame = (isAncestorFrame(frameAt(pos), frameAt(pos + length - 1))
          && text.at(find(pos + length - 1)->stringPosition) == QTextEndOfFrame);
 
    const bool startIsStartOfFrameAndEndIsEndOfFrameWithCommonParent =
-      (text.at(find(pos)->stringPosition) == QTextBeginningOfFrame
+         (text.at(find(pos)->stringPosition) == QTextBeginningOfFrame
          && text.at(find(pos + length - 1)->stringPosition) == QTextEndOfFrame
          && frameAt(pos)->parentFrame() == frameAt(pos + length - 1)->parentFrame());
 
    const bool isFirstTableCell = (qobject_cast<QTextTable *>(frameAt(pos + length - 1))
          && frameAt(pos + length - 1)->parentFrame() == frameAt(pos));
 
-   Q_ASSERT(startAndEndInSameFrame || endIsEndOfChildFrame || startIsStartOfFrameAndEndIsEndOfFrameWithCommonParent ||
-      isFirstTableCell);
+   Q_ASSERT(startAndEndInSameFrame || endIsEndOfChildFrame ||
+         startIsStartOfFrameAndEndIsEndOfFrameWithCommonParent || isFirstTableCell);
 #endif
 
    split(pos);
@@ -638,7 +634,6 @@ void QTextDocumentPrivate::move(int pos, int to, int length, QTextUndoCommand::O
          blockRevision);
 
       if (key + 1 != blocks.position(b)) {
-         //        qDebug("remove_string from %d length %d", key, X->size_array[0]);
          Q_ASSERT(noBlockInString(text.mid(X->stringPosition, X->size_array[0])));
          w = remove_string(key, X->size_array[0], op);
 
@@ -859,10 +854,10 @@ void QTextDocumentPrivate::setBlockFormat(const QTextBlock &from, const QTextBlo
 bool QTextDocumentPrivate::split(int pos)
 {
    uint x = fragments.findNode(pos);
+
    if (x) {
       int k = fragments.position(x);
-      //          qDebug("found fragment with key %d, size_left=%d, size=%d to split at %d",
-      //                k, (*it)->size_left[0], (*it)->size_array[0], pos);
+
       if (k != pos) {
          Q_ASSERT(k <= pos);
          // need to resize the first fragment and add a new one
@@ -906,10 +901,12 @@ bool QTextDocumentPrivate::unite(uint f)
    return false;
 }
 
-
 int QTextDocumentPrivate::undoRedo(bool undo)
 {
-   PMDEBUG("%s, undoState=%d, undoStack size=%zd", undo ? "undo:" : "redo:", undoState, undoStack.size());
+#if defined(CS_SHOW_DEBUG_GUI_TEXT)
+   qDebug("QTextDocument::undoRedo() %s, undoState = %d, undoStack size = %zd",
+         undo ? "Undo" : "Redo", undoState, undoStack.size());
+#endif
 
    if (!undoEnabled || (undo && undoState == 0) || (!undo && undoState == undoStack.size())) {
       return -1;
@@ -930,25 +927,41 @@ int QTextDocumentPrivate::undoRedo(bool undo)
       switch (c.command) {
          case QTextUndoCommand::Inserted:
             remove(c.pos, c.length, (QTextUndoCommand::Operation)c.operation);
-            PMDEBUG("   erase: from %d, length %d", c.pos, c.length);
+
+#if defined(CS_SHOW_DEBUG_GUI_TEXT)
+            qDebug("QTextDocument::undoRedo() Erase from = %d, length = %d", c.pos, c.length);
+#endif
+
             c.command = QTextUndoCommand::Removed;
             editPos = c.pos;
             editLength = 0;
             break;
+
          case QTextUndoCommand::Removed:
-            PMDEBUG("   insert: format %d (from %d, length %d, strpos=%d)", c.format, c.pos, c.length, c.strPos);
+#if defined(CS_SHOW_DEBUG_GUI_TEXT)
+            qDebug("QTextDocument::undoRedo() Insert format = %d, from = %d, length = %d, strpos = %d",
+                  c.format, c.pos, c.length, c.strPos);
+#endif
+
             insert_string(c.pos, c.strPos, c.length, c.format, (QTextUndoCommand::Operation)c.operation);
+
             c.command = QTextUndoCommand::Inserted;
             if (editPos != (int)c.pos) {
                editLength = 0;
             }
+
             editPos = c.pos;
             editLength += c.length;
             break;
+
          case QTextUndoCommand::BlockInserted:
          case QTextUndoCommand::BlockAdded:
             remove_block(c.pos, &c.blockFormat, c.command, (QTextUndoCommand::Operation)c.operation);
-            PMDEBUG("   blockremove: from %d", c.pos);
+
+#if defined(CS_SHOW_DEBUG_GUI_TEXT)
+            qDebug("QTextDocument::undoRedo() Block remove from = %d", c.pos);
+#endif
+
             if (c.command == QTextUndoCommand::BlockInserted) {
                c.command = QTextUndoCommand::BlockRemoved;
             } else {
@@ -960,24 +973,37 @@ int QTextDocumentPrivate::undoRedo(bool undo)
 
          case QTextUndoCommand::BlockRemoved:
          case QTextUndoCommand::BlockDeleted:
-            PMDEBUG("   blockinsert: charformat %d blockformat %d (pos %d, strpos=%d)", c.format, c.blockFormat, c.pos, c.strPos);
+
+#if defined(CS_SHOW_DEBUG_GUI_TEXT)
+            qDebug("QTextDocument::undoRedo() Block insert charformat = %d, blockformat = %d, pos = %d, strpos = %d",
+                  c.format, c.blockFormat, c.pos, c.strPos);
+#endif
+
             insert_block(c.pos, c.strPos, c.format, c.blockFormat, (QTextUndoCommand::Operation)c.operation, c.command);
             resetBlockRevision += 1;
+
             if (c.command == QTextUndoCommand::BlockRemoved) {
                c.command = QTextUndoCommand::BlockInserted;
             } else {
                c.command = QTextUndoCommand::BlockAdded;
             }
+
             if (editPos != (int)c.pos) {
                editLength = 0;
             }
+
             editPos = c.pos;
             editLength += 1;
             break;
 
          case QTextUndoCommand::CharFormatChanged: {
             resetBlockRevision = -1; // ## TODO
-            PMDEBUG("   charFormat: format %d (from %d, length %d)", c.format, c.pos, c.length);
+
+#if defined(CS_SHOW_DEBUG_GUI_TEXT)
+            qDebug("QTextDocument::undoRedo() Char Format format = %d,  from = %d,  length = %d",
+                  c.format, c.pos, c.length);
+#endif
+
             FragmentIterator it = find(c.pos);
             Q_ASSERT(!it.atEnd());
 
@@ -994,7 +1020,11 @@ int QTextDocumentPrivate::undoRedo(bool undo)
 
          case QTextUndoCommand::BlockFormatChanged: {
             resetBlockRevision = -1; // ## TODO
-            PMDEBUG("   blockformat: format %d pos %d", c.format, c.pos);
+
+#if defined(CS_SHOW_DEBUG_GUI_TEXT)
+            qDebug("QTextDocument::undoRedo() Block Format format = %d, pos = %d", c.format, c.pos);
+#endif
+
             QTextBlock it = blocksFind(c.pos);
             Q_ASSERT(it.isValid());
 
@@ -1003,6 +1033,7 @@ int QTextDocumentPrivate::undoRedo(bool undo)
             QTextBlockGroup *oldGroup = qobject_cast<QTextBlockGroup *>(objectForFormat(formats.blockFormat(oldFormat)));
             QTextBlockGroup *group = qobject_cast<QTextBlockGroup *>(objectForFormat(formats.blockFormat(c.format)));
             c.format = oldFormat;
+
             if (group != oldGroup) {
                if (oldGroup) {
                   oldGroup->blockRemoved(it);
@@ -1019,7 +1050,11 @@ int QTextDocumentPrivate::undoRedo(bool undo)
          }
          case QTextUndoCommand::GroupFormatChange: {
             resetBlockRevision = -1; // ## TODO
-            PMDEBUG("   group format change");
+
+#if defined(CS_SHOW_DEBUG_GUI_TEXT)
+            qDebug("QTextDocument::undoRedo() Group format change");
+#endif
+
             QTextObject *object = objectForIndex(c.objectIndex);
             int oldFormat = formats.objectFormatIndex(c.objectIndex);
             changeObjectFormat(object, c.format);
@@ -1087,9 +1122,6 @@ int QTextDocumentPrivate::undoRedo(bool undo)
    return newCursorPos;
 }
 
-/*!
-    Appends a custom undo \a item to the undo stack.
-*/
 void QTextDocumentPrivate::appendUndoItem(QAbstractUndoItem *item)
 {
    if (!undoEnabled) {
@@ -1113,7 +1145,10 @@ void QTextDocumentPrivate::appendUndoItem(QAbstractUndoItem *item)
 
 void QTextDocumentPrivate::appendUndoItem(const QTextUndoCommand &c)
 {
-   PMDEBUG("appendUndoItem, command=%d enabled=%d", c.command, undoEnabled);
+#if defined(CS_SHOW_DEBUG_GUI_TEXT)
+   qDebug("QTextDocument::appendUndoItem() command = %d  enabled = %d", c.command, undoEnabled);
+#endif
+
    if (! undoEnabled) {
       return;
    }
@@ -1136,7 +1171,6 @@ void QTextDocumentPrivate::appendUndoItem(const QTextUndoCommand &c)
          editBlockCursorPosition = -1;
       }
    }
-
 
    if (! undoStack.isEmpty() && modified) {
       QTextUndoCommand &last = undoStack[undoState - 1];
@@ -1346,13 +1380,13 @@ void QTextDocumentPrivate::finishEdit()
 
 void QTextDocumentPrivate::documentChange(int from, int length)
 {
-   //     qDebug("QTextDocumentPrivate::documentChange: from=%d,length=%d", from, length);
    if (docChangeFrom < 0) {
       docChangeFrom = from;
       docChangeOldLength = length;
       docChangeLength = length;
       return;
    }
+
    int start = qMin(from, docChangeFrom);
    int end = qMax(from + length, docChangeFrom + docChangeLength);
    int diff = qMax(0, end - start - docChangeLength);
@@ -1361,13 +1395,6 @@ void QTextDocumentPrivate::documentChange(int from, int length)
    docChangeLength += diff;
 }
 
-/*
-    adjustDocumentChangesAndCursors is called whenever there is an insert or remove of characters.
-    param from is the cursor position in the document
-    param addedOrRemoved is the amount of characters added or removed.  A negative number means characters are removed.
-
-    The function stores information to be emitted when finishEdit() is called.
-*/
 void QTextDocumentPrivate::adjustDocumentChangesAndCursors(int from, int addedOrRemoved, QTextUndoCommand::Operation op)
 {
    if (!editBlock) {

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -26,18 +26,18 @@
 static void dumpRecursive(int level, QObject *object)
 {
 
-#if defined(QT_DEBUG)
-
+#if defined(CS_SHOW_DEBUG_CORE)
    if (object) {
       QByteArray buffer;
 
       buffer.fill(' ', level / 2 * 8);
+
       if (level % 2) {
          buffer += "    ";
       }
 
       qDebug("%s%s::%s", buffer.constData(), csPrintable(object->metaObject()->className()),
-                  csPrintable(object->objectName()) );
+            csPrintable(object->objectName()) );
 
       QList<QObject *> children = object->children();
 
@@ -47,7 +47,9 @@ static void dumpRecursive(int level, QObject *object)
          }
       }
    }
-
+#else
+   (void) level;
+   (void) object;
 #endif
 
 }
@@ -62,10 +64,10 @@ void QObject::dumpObjectTree()
 void QObject::dumpObjectInfo()
 {
 
-#if defined(QT_DEBUG)
+#if defined(CS_SHOW_DEBUG_CORE)
    qDebug("\n--  dumpObjectInfo  --\n");
    qDebug("  OBJECT %s::%s", csPrintable(this->metaObject()->className()), objectName().isEmpty() ? "unnamed" :
-                  csPrintable(objectName()) );
+         csPrintable(objectName()) );
 
    qDebug("  SIGNAL LIST - CONNECTED TO WHICH RECEIVERS");
 
@@ -96,7 +98,7 @@ void QObject::dumpObjectInfo()
             // const QMetaMethod slotMetaMethod = receiverMetaObject->method(*temp.slotMethod);
 
             qDebug("          --> %s::%s", csPrintable(receiverMetaObject->className()),
-                obj->objectName().isEmpty() ? "unnamed" : csPrintable(obj->objectName()) );
+                  obj->objectName().isEmpty() ? "unnamed" : csPrintable(obj->objectName()) );
 
          } else {
             // receiver does not inherit from QObject
@@ -121,10 +123,7 @@ void QObject::dumpObjectInfo()
          const QMetaObject *senderMetaObject = obj->metaObject();
 
          qDebug("          <-- %s::%s", csPrintable(senderMetaObject->className()),
-                obj->objectName().isEmpty() ? "unnamed" : csPrintable(obj->objectName()));
-
-         //   qDebug("          <-- %s::%s  %s",
-         //   slot.methodSignature().constData());
+               obj->objectName().isEmpty() ? "unnamed" : csPrintable(obj->objectName()));
 
       } else {
          // sender does not inherit from QObject
@@ -134,7 +133,6 @@ void QObject::dumpObjectInfo()
    }
 
    qDebug("--\n");
-
 #endif
 
 }

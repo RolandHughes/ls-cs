@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -23,8 +23,6 @@
 
 #include <qsqlquery.h>
 
-//#define QT_DEBUG_SQL
-
 #include <qatomic.h>
 #include <qsqlrecord.h>
 #include <qsqlresult.h>
@@ -39,6 +37,7 @@ class QSqlQueryPrivate
  public:
    QSqlQueryPrivate(QSqlResult *result);
    ~QSqlQueryPrivate();
+
    QAtomicInt ref;
    QSqlResult *sqlResult;
 
@@ -746,21 +745,24 @@ bool QSqlQuery::prepare(const QString &query)
       d->sqlResult->setAt(QSql::BeforeFirstRow);
       d->sqlResult->setNumericalPrecisionPolicy(d->sqlResult->numericalPrecisionPolicy());
    }
-   if (!driver()) {
+
+   if (! driver()) {
       qWarning("QSqlQuery::prepare: no driver");
       return false;
    }
-   if (!driver()->isOpen() || driver()->isOpenError()) {
+
+   if (! driver()->isOpen() || driver()->isOpenError()) {
       qWarning("QSqlQuery::prepare: database not open");
       return false;
    }
+
    if (query.isEmpty()) {
       qWarning("QSqlQuery::prepare: empty query");
       return false;
    }
 
-#ifdef QT_DEBUG_SQL
-   qDebug("\n QSqlQuery::prepare: %s", query.toLocal8Bit().constData());
+#if defined(CS_SHOW_DEBUG_SQL)
+   qDebug("\n QSqlQuery::prepare: %s", csPrintable(query));
 #endif
 
    return d->sqlResult->savePrepare(query);

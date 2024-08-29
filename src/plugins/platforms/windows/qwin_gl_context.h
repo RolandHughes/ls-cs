@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -69,19 +69,19 @@ class QOpenGLStaticContext;
 
 struct QWindowsOpenGLContextFormat {
    QWindowsOpenGLContextFormat();
+
    static QWindowsOpenGLContextFormat current();
    void apply(QSurfaceFormat *format) const;
 
    QSurfaceFormat::OpenGLContextProfile profile;
-   int version; //! majorVersion<<8 + minorVersion
    QSurfaceFormat::FormatOptions options;
+
+   int m_version;
 };
 
-#ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug d, const PIXELFORMATDESCRIPTOR &);
-QDebug operator<<(QDebug d, const QWindowsOpenGLContextFormat &);
-QDebug operator<<(QDebug d, const QOpenGLStaticContext &s);
-#endif
+QDebug operator<<(QDebug debug, const PIXELFORMATDESCRIPTOR &);
+QDebug operator<<(QDebug debug, const QWindowsOpenGLContextFormat &);
+QDebug operator<<(QDebug debug, const QOpenGLStaticContext &s);
 
 struct QWindowsOpengl32DLL {
    bool init(bool softwareRendering);
@@ -178,10 +178,10 @@ class QOpenGLStaticContext : public QWindowsStaticOpenGLContext
    };
 
    using WglGetPixelFormatAttribIVARB = bool  (APIENTRY *) (HDC hdc, int iPixelFormat, int iLayerPlane, uint nAttributes,
-                  const int *piAttributes, int *piValues);
+         const int *piAttributes, int *piValues);
 
    using WglChoosePixelFormatARB      = bool  (APIENTRY *)(HDC hdc, const int *piAttribList, const float *pfAttribFList,
-                  uint nMaxFormats, int *piFormats, UINT *nNumFormats);
+         uint nMaxFormats, int *piFormats, UINT *nNumFormats);
 
    using WglCreateContextAttribsARB   = HGLRC (APIENTRY *)(HDC, HGLRC, const int *);
    using WglSwapInternalExt           = BOOL  (APIENTRY *)(int interval);
@@ -197,17 +197,19 @@ class QOpenGLStaticContext : public QWindowsStaticOpenGLContext
    static QOpenGLStaticContext *create(bool softwareRendering = false);
    static QByteArray getGlString(unsigned int which);
 
-   QWindowsOpenGLContext *createContext(QOpenGLContext *context);
-   void *moduleHandle() const {
+   QWindowsOpenGLContext *createContext(QOpenGLContext *context) override;
+
+   void *moduleHandle() const override {
       return opengl32.moduleHandle();
    }
-   QOpenGLContext::OpenGLModuleType moduleType() const {
+
+   QOpenGLContext::OpenGLModuleType moduleType() const override {
       return QOpenGLContext::LibGL;
    }
 
    // For a regular opengl32.dll report the ThreadedOpenGL capability.
    // For others, which are likely to be software-only, don't.
-   bool supportsThreadedOpenGL() const {
+   bool supportsThreadedOpenGL() const override {
       return ! opengl32.moduleIsNotOpengl32();
    }
 
@@ -215,7 +217,7 @@ class QOpenGLStaticContext : public QWindowsStaticOpenGLContext
    const QByteArray renderer;
    const QByteArray extensionNames;
    unsigned extensions;
-   const QWindowsOpenGLContextFormat defaultFormat;
+   const QWindowsOpenGLContextFormat m_defaultFormat;
 
    WglGetPixelFormatAttribIVARB wglGetPixelFormatAttribIVARB;
    WglChoosePixelFormatARB wglChoosePixelFormatARB;

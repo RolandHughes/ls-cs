@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,8 +24,8 @@
 #ifndef QTCONCURRENTRUNBASE_H
 #define QTCONCURRENTRUNBASE_H
 
-#include <qglobal.h>
 #include <qfuture.h>
+#include <qglobal.h>
 #include <qrunnable.h>
 #include <qthreadpool.h>
 
@@ -35,7 +35,7 @@ template <typename T>
 struct SelectSpecialization {
    template <class Normal, class Void>
    struct Type {
-      typedef Normal type;
+      using type = Normal;
    };
 };
 
@@ -43,19 +43,21 @@ template <>
 struct SelectSpecialization<void> {
    template <class Normal, class Void>
    struct Type {
-      typedef Void type;
+      using type = Void;
    };
 };
 
 template <typename T>
-class RunFunctionTaskBase : public QFutureInterface<T> , public QRunnable
+class RunFunctionTaskBase : public QFutureInterface<T>, public QRunnable
 {
  public:
    QFuture<T> start() {
       this->setRunnable(this);
       this->reportStarted();
+
       QFuture<T> future = this->future();
-      QThreadPool::globalInstance()->start(this, /*m_priority*/ 0);
+      QThreadPool::globalInstance()->start(this, 0);
+
       return future;
    }
 
@@ -85,6 +87,7 @@ class RunFunctionTask : public RunFunctionTaskBase<T>
       this->reportResult(result);
       this->reportFinished();
    }
+
    T result;
 };
 

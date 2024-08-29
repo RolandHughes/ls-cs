@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2017-2023 Barbara Geller
-* Copyright (c) 2017-2023 Ansel Sermersheim
+* Copyright (c) 2017-2024 Barbara Geller
+* Copyright (c) 2017-2024 Ansel Sermersheim
 *
 * Copyright (c) 1998-2009 John Maddock
 *
@@ -59,22 +59,22 @@ struct is_byte;
 
 template <>
 struct is_byte<char>         {
-   typedef _narrow_type width_type;
+   using width_type = _narrow_type;
 };
 
 template <>
 struct is_byte<unsigned char> {
-   typedef _narrow_type width_type;
+   using width_type = _narrow_type;
 };
 
 template <>
 struct is_byte<signed char>  {
-   typedef _narrow_type width_type;
+   using width_type = _narrow_type;
 };
 
 template <class charT>
 struct is_byte               {
-   typedef _wide_type width_type;
+   using width_type = _wide_type;
 };
 
 

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -31,8 +31,8 @@ class QDirPrivate : public QSharedData
 {
  public:
    QDirPrivate(const QString &path, const QStringList &nameFilters_ = QStringList(),
-               QDir::SortFlags sort_ = QDir::SortFlags(QDir::Name | QDir::IgnoreCase),
-               QDir::Filters filters_ = QDir::AllEntries);
+         QDir::SortFlags sort_ = QDir::SortFlags(QDir::Name | QDir::IgnoreCase),
+         QDir::Filters filters_ = QDir::AllEntries);
 
    QDirPrivate(const QDirPrivate &copy);
 
@@ -45,7 +45,7 @@ class QDirPrivate : public QSharedData
 
    static inline QChar getFilterSepChar(const QString &nameFilter);
 
-   static inline QStringList splitFilters(const QString &nameFilter, QChar sep = 0);
+   static inline QStringList splitFilters(const QString &nameFilter, QChar sep = QChar());
 
    void setPath(const QString &path);
 

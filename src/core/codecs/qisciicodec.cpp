@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -22,6 +22,7 @@
 ***********************************************************************/
 
 #include <qisciicodec_p.h>
+
 #include <qlist.h>
 
 #ifndef QT_NO_CODECS
@@ -58,7 +59,7 @@ int QIsciiCodec::mibEnum() const
    return -3000 - idx;
 }
 
-static const uchar inv = 0xFF;
+static constexpr const uchar inv = 0xFF;
 
 /* iscii range from 0xa0 - 0xff */
 static const uchar iscii_to_uni_table[0x60] = {
@@ -200,7 +201,7 @@ QByteArray QIsciiCodec::convertFromUnicode(QStringView str, ConverterState *stat
 
             if (halant) {
                // Consonant Halant ZWNJ -> Consonant Halant Halant
-               retval.append(0xe8);
+               retval.append(uchar(0xe8));
             }
 
          } else if (uc == 0x200d) {
@@ -208,7 +209,7 @@ QByteArray QIsciiCodec::convertFromUnicode(QStringView str, ConverterState *stat
 
             if (halant) {
                // Consonant Halant ZWJ -> Consonant Halant Nukta
-               retval.append(0xe9);
+               retval.append(uchar(0xe9));
             }
 
          } else {
@@ -231,6 +232,7 @@ QByteArray QIsciiCodec::convertFromUnicode(QStringView str, ConverterState *stat
 QString QIsciiCodec::convertToUnicode(const char *chars, int len, ConverterState *state) const
 {
    bool halant = false;
+
    if (state) {
       halant = state->state_data[0];
    }
@@ -272,4 +274,3 @@ QString QIsciiCodec::convertToUnicode(const char *chars, int len, ConverterState
 }
 
 #endif // QT_NO_CODECS
-

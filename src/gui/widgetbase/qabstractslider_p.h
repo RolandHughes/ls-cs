@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -26,8 +26,9 @@
 
 #include <qbasictimer.h>
 #include <qelapsedtimer.h>
-#include <qwidget_p.h>
 #include <qstyle.h>
+
+#include <qwidget_p.h>
 
 class QAbstractSliderPrivate : public QWidgetPrivate
 {
@@ -39,11 +40,12 @@ class QAbstractSliderPrivate : public QWidgetPrivate
 
    void setSteps(int single, int page);
 
-   int minimum, maximum, pageStep, value, position, pressValue;
-
-   /**
-    * Call effectiveSingleStep() when changing the slider value.
-    */
+   int minimum;
+   int maximum;
+   int pageStep;
+   int value;
+   int position;
+   int pressValue;
    int singleStep;
 
    float offset_accumulated;
@@ -60,46 +62,44 @@ class QAbstractSliderPrivate : public QWidgetPrivate
 
 #ifdef QT_KEYPAD_NAVIGATION
    int origValue;
-
-   /**
-    */
    bool isAutoRepeating;
 
-   /**
-    * When we're auto repeating, we multiply singleStep with this value to
-    * get our effective step.
-    */
+   // When auto repeating, multiply singleStep with this value to get our effective step
    qreal repeatMultiplier;
 
-   /**
-    * The time of when the first auto repeating key press event occurs.
-    */
+
+   // time of when the first auto repeating key press event occurs
    QElapsedTimer firstRepeat;
 
 #endif
 
-   inline int effectiveSingleStep() const {
-      return singleStep
+   int effectiveSingleStep() const {
+
 #ifdef QT_KEYPAD_NAVIGATION
-         * repeatMultiplier
+      return singleStep * repeatMultiplier;
+#else
+      return singleStep;
 #endif
-         ;
+
    }
 
    virtual int bound(int val) const {
       return qMax(minimum, qMin(maximum, val));
    }
 
-   inline int overflowSafeAdd(int add) const {
+   int overflowSafeAdd(int add) const {
       int newValue = value + add;
+
       if (add > 0 && newValue < value) {
          newValue = maximum;
       } else if (add < 0 && newValue > value) {
          newValue = minimum;
       }
+
       return newValue;
    }
-   inline void setAdjustedSliderPosition(int position) {
+
+   void setAdjustedSliderPosition(int position) {
       Q_Q(QAbstractSlider);
 
       if (q->style()->styleHint(QStyle::SH_Slider_StopMouseOverSlider, nullptr, q)) {
@@ -109,11 +109,11 @@ class QAbstractSliderPrivate : public QWidgetPrivate
             return;
          }
       }
+
       q->triggerAction(repeatAction);
    }
+
    bool scrollByDelta(Qt::Orientation orientation, Qt::KeyboardModifiers modifiers, int delta);
 };
-
-
 
 #endif // QABSTRACTSLIDER_P_H

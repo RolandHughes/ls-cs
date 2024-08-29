@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,8 +24,8 @@
 #ifndef QTCONCURRENTITERATEKERNEL_H
 #define QTCONCURRENTITERATEKERNEL_H
 
-#include <qglobal.h>
 #include <qatomic.h>
+#include <qglobal.h>
 #include <qtconcurrentmedian.h>
 #include <qtconcurrentthreadengine.h>
 
@@ -52,7 +52,7 @@ class Q_CORE_EXPORT BlockSizeManager
    int blockSize();
 
  private:
-   inline bool blockSizeMaxed() {
+   bool blockSizeMaxed() {
       return (m_blockSize >= maxBlockSize);
    }
 
@@ -69,8 +69,8 @@ class ResultReporter
 {
  public:
    ResultReporter(ThreadEngine<T> *_threadEngine)
-      : threadEngine(_threadEngine) {
-
+      : threadEngine(_threadEngine)
+   {
    }
 
    void reserveSpace(int resultCount) {
@@ -80,6 +80,7 @@ class ResultReporter
 
    void reportResults(int begin) {
       const int useVectorThreshold = 4; // Tunable parameter.
+
       if (currentResultCount > useVectorThreshold) {
          vector.resize(currentResultCount);
          threadEngine->reportResults(vector, begin);
@@ -90,7 +91,7 @@ class ResultReporter
       }
    }
 
-   inline T *getPointer() {
+   T *getPointer() {
       return vector.data();
    }
 
@@ -103,11 +104,16 @@ template <>
 class ResultReporter<void>
 {
  public:
-   inline ResultReporter(ThreadEngine<void> *) { }
-   inline void reserveSpace(int) { };
-   inline void reportResults(int) { };
+   ResultReporter(ThreadEngine<void> *) {
+   }
 
-   inline void *getPointer() {
+   void reserveSpace(int) {
+   };
+
+   void reportResults(int) {
+   };
+
+   void *getPointer() {
       return nullptr;
    }
 };
@@ -131,7 +137,7 @@ template <typename Iterator, typename T>
 class IterateKernel : public ThreadEngine<T>
 {
  public:
-   typedef T ResultType;
+   using ResultType = T;
 
    IterateKernel(Iterator _begin, Iterator _end)
       : begin(_begin), end(_end), current(_begin), currentIndex(0),
@@ -145,7 +151,7 @@ class IterateKernel : public ThreadEngine<T>
 
    virtual ~IterateKernel() { }
 
-   virtual bool runIteration(Iterator it, int index , T *result) {
+   virtual bool runIteration(Iterator it, int index, T *result) {
       (void) it;
       (void) index;
       (void) result;
@@ -162,6 +168,7 @@ class IterateKernel : public ThreadEngine<T>
 
    void start() {
       progressReportingEnabled = this->isProgressReportingEnabled();
+
       if (progressReportingEnabled && iterationCount > 0) {
          this->setProgressRange(0, iterationCount);
       }
@@ -235,6 +242,7 @@ class IterateKernel : public ThreadEngine<T>
             return ThrottleThread;
          }
       }
+
       return ThreadFinished;
    }
 
@@ -267,6 +275,7 @@ class IterateKernel : public ThreadEngine<T>
          }
 
          const bool resultAavailable = this->runIteration(prev, index, resultReporter.getPointer());
+
          if (resultAavailable) {
             resultReporter.reportResults(index);
          }
@@ -276,6 +285,7 @@ class IterateKernel : public ThreadEngine<T>
          }
 
          expected = 0;
+
          if (iteratorThreads.compareExchange(expected, 1, std::memory_order_acquire) == false) {
             return ThreadFinished;
          }
@@ -283,7 +293,6 @@ class IterateKernel : public ThreadEngine<T>
 
       return ThreadFinished;
    }
-
 
  public:
    const Iterator begin;

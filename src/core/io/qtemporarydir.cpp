@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -25,14 +25,12 @@
 
 #ifndef QT_NO_TEMPORARYFILE
 
-#include <qdiriterator.h>
-#include <qdir_p.h>
+#include <qcoreapplication.h>
 #include <qdebug.h>
+#include <qdiriterator.h>
 #include <qstring16.h>
 
-#if defined(QT_BUILD_CORE_LIB)
-#include <qcoreapplication.h>
-#endif
+#include <qdir_p.h>
 
 #include <stdlib.h>
 
@@ -66,14 +64,12 @@ QTemporaryDirPrivate::~QTemporaryDirPrivate()
 
 static QString defaultTemplateName()
 {
-   QString baseName;
+   QString baseName = QCoreApplication::applicationName();
 
-#if defined(QT_BUILD_CORE_LIB)
-   baseName = QCoreApplication::applicationName();
-   if (baseName.isEmpty())
-#endif
+   if (baseName.isEmpty()) {
 
       baseName = "cs_temp";
+   }
 
    return QDir::tempPath() + '/' + baseName + "-XXXXXX";
 }
@@ -118,6 +114,7 @@ void QTemporaryDirPrivate::create(const QString &templateName)
       success = true;
       m_pathOrError = QFile::decodeName(buffer.constData());
    }
+
 #endif
 }
 
@@ -189,9 +186,8 @@ bool QTemporaryDir::remove()
    const bool result = QDir(path()).removeRecursively();
 
    if (! result) {
-      qWarning() << "QTemporaryDir: Unable to remove"
-                 << QDir::toNativeSeparators(path())
-                 << "most likely due to the presence of read-only files.";
+      qWarning() << "QTemporaryDir::remove() Unable to remove path " << QDir::toNativeSeparators(path())
+            << ", verify if there are read only files in this directory";
    }
 
    return result;

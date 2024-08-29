@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -32,14 +32,10 @@
 
 #include <qguiapplication_p.h>
 
-#ifndef QT_NO_DEBUG
-#include <qdebug.h>
-#endif
-
 #include <algorithm>
 #include <limits.h>
 
-static const int MaxBits = 8 * sizeof(QSizePolicy::ControlType);
+static constexpr const int MaxBits = 8 * sizeof(QSizePolicy::ControlType);
 
 static int unpackControlTypes(QSizePolicy::ControlTypes controls, QSizePolicy::ControlType *array)
 {
@@ -71,11 +67,6 @@ QStyle::QStyle()
    d->proxyStyle = this;
 }
 
-/*!
-    \internal
-
-    Constructs a style object.
-*/
 QStyle::QStyle(QStylePrivate &dd)
    : QObject(nullptr), d_ptr(&dd)
 {
@@ -89,23 +80,23 @@ QStyle::~QStyle()
 {
 }
 
-void QStyle::polish(QWidget * /* widget */)
+void QStyle::polish(QWidget *)
 {
 }
 
-void QStyle::unpolish(QWidget * /* widget */)
+void QStyle::unpolish(QWidget *)
 {
 }
 
-void QStyle::polish(QApplication * /* app */)
+void QStyle::polish(QApplication *)
 {
 }
 
-void QStyle::unpolish(QApplication * /* app */)
+void QStyle::unpolish(QApplication *)
 {
 }
 
-void QStyle::polish(QPalette & /* pal */)
+void QStyle::polish(QPalette &)
 {
 }
 
@@ -115,6 +106,7 @@ QRect QStyle::itemTextRect(const QFontMetrics &metrics, const QRect &rect, int a
    QRect result;
    int x, y, w, h;
    rect.getRect(&x, &y, &w, &h);
+
    if (!text.isEmpty()) {
       result = metrics.boundingRect(x, y, w, h, alignment, text);
       if (!enabled && proxy()->styleHint(SH_EtchDisabledText)) {

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -31,8 +31,6 @@
 #include <qhttp_networkreply_p.h>
 #include <qnetaccess_cache_p.h>
 #include <qnoncontiguousbytedevice_p.h>
-
-//#define QHTTPTHREADDELEGATE_DEBUG
 
 static QNetworkReply::NetworkError statusCodeFromHttp(int httpStatusCode, const QUrl &url)
 {
@@ -97,8 +95,9 @@ static QNetworkReply::NetworkError statusCodeFromHttp(int httpStatusCode, const 
             code = QNetworkReply::UnknownContentError;
 
          } else {
-            qWarning("QNetworkAccess: got HTTP status code %d which is not expected from url: \"%s\"",
+            qWarning("QNetworkReply::statusCodeFromHttp() HTTP status code %d was not expected from url %s",
                      httpStatusCode, csPrintable(url.toString()));
+
             code = QNetworkReply::ProtocolFailure;
          }
    }
@@ -183,7 +182,7 @@ class QNetworkAccessCachedHttpConnection: public QHttpNetworkConnection, public 
       setShareable(true);
    }
 
-   virtual void dispose() override {
+   void dispose() override {
       delete this;
    }
 };
@@ -216,7 +215,7 @@ QHttpThreadDelegate::~QHttpThreadDelegate()
 // This is invoked as BlockingQueuedConnection from QNetworkAccessHttpBackend in the user thread
 void QHttpThreadDelegate::startRequestSynchronously()
 {
-#ifdef QHTTPTHREADDELEGATE_DEBUG
+#if defined(CS_SHOW_DEBUG_NETWORK)
    qDebug() << "QHttpThreadDelegate::startRequestSynchronously() thread=" << QThread::currentThreadId();
 #endif
 
@@ -234,15 +233,15 @@ void QHttpThreadDelegate::startRequestSynchronously()
    connections.localData()->releaseEntry(cacheKey);
    connections.setLocalData(nullptr);
 
-#ifdef QHTTPTHREADDELEGATE_DEBUG
+#if defined(CS_SHOW_DEBUG_NETWORK)
    qDebug() << "QHttpThreadDelegate::startRequestSynchronously() thread=" << QThread::currentThreadId() << "finished";
 #endif
 }
 
-// This is invoked as QueuedConnection from QNetworkAccessHttpBackend in the user thread
+// invoked as QueuedConnection from QNetworkAccessHttpBackend in the user thread
 void QHttpThreadDelegate::startRequest()
 {
-#ifdef QHTTPTHREADDELEGATE_DEBUG
+#if defined(CS_SHOW_DEBUG_NETWORK)
    qDebug() << "QHttpThreadDelegate::startRequest() thread=" << QThread::currentThreadId();
 #endif
 
@@ -375,7 +374,7 @@ void QHttpThreadDelegate::startRequest()
 // This gets called from the user thread or by the synchronous HTTP timeout timer
 void QHttpThreadDelegate::abortRequest()
 {
-#ifdef QHTTPTHREADDELEGATE_DEBUG
+#if defined(CS_SHOW_DEBUG_NETWORK)
    qDebug() << "QHttpThreadDelegate::abortRequest() thread=" << QThread::currentThreadId() << "sync=" << synchronous;
 #endif
 
@@ -397,7 +396,7 @@ void QHttpThreadDelegate::abortRequest()
 
 void QHttpThreadDelegate::readBufferSizeChanged(qint64 size)
 {
-#ifdef QHTTPTHREADDELEGATE_DEBUG
+#if defined(CS_SHOW_DEBUG_NETWORK)
    qDebug() << "QHttpThreadDelegate::readBufferSizeChanged() size " << size;
 #endif
    if (httpReply) {
@@ -462,7 +461,7 @@ void QHttpThreadDelegate::finishedSlot()
       return;
    }
 
-#ifdef QHTTPTHREADDELEGATE_DEBUG
+#if defined(CS_SHOW_DEBUG_NETWORK)
    qDebug() << "QHttpThreadDelegate::finishedSlot() thread=" << QThread::currentThreadId() << "result=" <<
             httpReply->statusCode();
 #endif
@@ -504,7 +503,7 @@ void QHttpThreadDelegate::synchronousFinishedSlot()
       return;
    }
 
-#ifdef QHTTPTHREADDELEGATE_DEBUG
+#if defined(CS_SHOW_DEBUG_NETWORK)
    qDebug() << "QHttpThreadDelegate::synchronousFinishedSlot() thread=" << QThread::currentThreadId() << "result=" << httpReply->statusCode();
 #endif
 
@@ -529,7 +528,7 @@ void QHttpThreadDelegate::finishedWithErrorSlot(QNetworkReply::NetworkError erro
       return;
    }
 
-#ifdef QHTTPTHREADDELEGATE_DEBUG
+#if defined(CS_SHOW_DEBUG_NETWORK)
    qDebug() << "QHttpThreadDelegate::finishedWithErrorSlot() thread=" << QThread::currentThreadId() << "error="
             << errorCode << detail;
 #endif
@@ -555,7 +554,7 @@ void QHttpThreadDelegate::synchronousFinishedWithErrorSlot(QNetworkReply::Networ
       return;
    }
 
-#ifdef QHTTPTHREADDELEGATE_DEBUG
+#if defined(CS_SHOW_DEBUG_NETWORK)
    qDebug() << "QHttpThreadDelegate::synchronousFinishedWithErrorSlot() thread=" << QThread::currentThreadId() << "error="
             << errorCode << detail;
 #endif
@@ -580,7 +579,7 @@ void QHttpThreadDelegate::headerChangedSlot()
       return;
    }
 
-#ifdef QHTTPTHREADDELEGATE_DEBUG
+#if defined(CS_SHOW_DEBUG_NETWORK)
    qDebug() << "QHttpThreadDelegate::headerChangedSlot() thread=" << QThread::currentThreadId();
 #endif
 
@@ -625,7 +624,7 @@ void QHttpThreadDelegate::synchronousHeaderChangedSlot()
       return;
    }
 
-#ifdef QHTTPTHREADDELEGATE_DEBUG
+#if defined(CS_SHOW_DEBUG_NETWORK)
    qDebug() << "QHttpThreadDelegate::synchronousHeaderChangedSlot() thread=" << QThread::currentThreadId();
 #endif
 

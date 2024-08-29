@@ -17,8 +17,8 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
 project(copperspice)
 
 set(BUILD_MAJOR "1")
-set(BUILD_MINOR "8")
-set(BUILD_MICRO "2")
+set(BUILD_MINOR "9")
+set(BUILD_MICRO "1")
 
 # used to control RPATH and cmake/pc variables when building RPM
 option(BUILDING_RPM "Are we building RPM" OFF)
@@ -200,7 +200,7 @@ elseif (MSVC)
    string (REGEX REPLACE "/W3" "" CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}"  )
    string (REGEX REPLACE "/W3" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 
-   add_compile_options("/utf-8")
+   add_compile_options("$<$<COMPILE_LANGUAGE:CXX>:/utf-8>")
 
 else()
    # Linux, Windows (MinGW)

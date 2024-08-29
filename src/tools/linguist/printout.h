@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,15 +24,15 @@
 #ifndef PRINTOUT_H
 #define PRINTOUT_H
 
-#include <QFont>
-#include <QPainter>
-#include <QRect>
-#include <QTextOption>
-#include <QList>
-#include <QDateTime>
+#include <qdatetime.h>
+#include <qfont.h>
+#include <qlist.h>
+#include <qpainter.h>
+#include <qrect.h>
+#include <qtextoption.h>
 
-class QPrinter;
 class QFontMetrics;
+class QPrinter;
 
 class PrintOut
 {

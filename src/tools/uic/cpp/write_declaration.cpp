@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -23,18 +23,18 @@
 
 #include <write_declaration.h>
 
+#include <customwidgetsinfo.h>
 #include <databaseinfo.h>
 #include <driver.h>
-#include <customwidgetsinfo.h>
 #include <extract_images.h>
 #include <ui4.h>
 #include <uic.h>
 #include <write_icondeclaration.h>
-#include <write_initialization.h>
 #include <write_iconinitialization.h>
+#include <write_initialization.h>
 
-#include <qtextstream.h>
 #include <qdebug.h>
+#include <qtextstream.h>
 
 namespace {
 

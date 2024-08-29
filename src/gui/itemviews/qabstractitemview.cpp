@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -1041,12 +1041,14 @@ void QAbstractItemView::mouseMoveEvent(QMouseEvent *event)
 #ifndef QT_NO_DRAGANDDROP
    if (state() == DraggingState) {
       topLeft = d->pressedPosition - d->offset();
+
       if ((topLeft - bottomRight).manhattanLength() > QApplication::startDragDistance()) {
          d->pressedIndex = QModelIndex();
          startDrag(d->model->supportedDragActions());
          setState(NoState); // the startDrag will return when the dnd operation is done
          stopAutoScroll();
       }
+
       return;
    }
 #endif
@@ -2141,7 +2143,8 @@ void QAbstractItemView::keyboardSearch(const QString &search)
 
    bool skipRow = false;
    bool keyboardTimeWasValid = d->keyboardInputTime.isValid();
-   qint64 keyboardInputTimeElapsed;
+
+   qint64 keyboardInputTimeElapsed = 0;
 
    if (keyboardTimeWasValid) {
       keyboardInputTimeElapsed = d->keyboardInputTime.restart();
@@ -2149,10 +2152,11 @@ void QAbstractItemView::keyboardSearch(const QString &search)
       d->keyboardInputTime.start();
    }
 
-   if (search.isEmpty() || !keyboardTimeWasValid
-      || keyboardInputTimeElapsed > QApplication::keyboardInputInterval()) {
+   if (search.isEmpty() || ! keyboardTimeWasValid
+         || keyboardInputTimeElapsed > QApplication::keyboardInputInterval()) {
       d->keyboardInput = search;
-      skipRow = currentIndex().isValid(); //if it is not valid we should really start at QModelIndex(0,0)
+      skipRow = currentIndex().isValid();  // if it is not valid, start at QModelIndex(0,0)
+
    } else {
       d->keyboardInput += search;
    }
@@ -2374,9 +2378,10 @@ void QAbstractItemView::update(const QModelIndex &index)
 
    if (index.isValid()) {
       const QRect rect = visualRect(index);
-      //this test is important for peformance reason
-      //For example in dataChanged we simply update all the cells without checking
-      //it can be a major bottleneck to update rects that aren't even part of the viewport
+      // this test is important for peformance reason
+      // For example in dataChanged we simply update all the cells without checking
+      // it can be a major bottleneck to update rects that are not even part of the viewport
+
       if (d->viewport->rect().intersects(rect)) {
          d->viewport->update(rect);
       }
@@ -2726,20 +2731,28 @@ void QAbstractItemView::currentChanged(const QModelIndex &current, const QModelI
 void QAbstractItemView::startDrag(Qt::DropActions supportedActions)
 {
    Q_D(QAbstractItemView);
+
    QModelIndexList indexes = d->selectedDraggableIndexes();
+
    if (indexes.count() > 0) {
       QMimeData *data = d->model->mimeData(indexes);
-      if (!data) {
+
+      if (! data) {
          return;
       }
+
       QRect rect;
+
       QPixmap pixmap = d->renderToPixmap(indexes, &rect);
       rect.adjust(horizontalOffset(), verticalOffset(), 0, 0);
+
       QDrag *drag = new QDrag(this);
       drag->setPixmap(pixmap);
       drag->setMimeData(data);
       drag->setHotSpot(d->pressedPosition - rect.topLeft());
+
       Qt::DropAction defaultDropAction = Qt::IgnoreAction;
+
       if (d->defaultDropAction != Qt::IgnoreAction && (supportedActions & d->defaultDropAction)) {
          defaultDropAction = d->defaultDropAction;
       } else if (supportedActions & Qt::CopyAction && dragDropMode() != QAbstractItemView::InternalMove) {

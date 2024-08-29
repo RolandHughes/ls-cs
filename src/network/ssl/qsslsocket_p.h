@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -154,8 +154,8 @@ public:
 
    static QList<QByteArray> unixRootCertDirectories(); // used also by QSslContext
 
-   virtual qint64 peek(char *data, qint64 maxSize) override;
-   virtual QByteArray peek(qint64 maxSize) override;
+   qint64 peek(char *data, qint64 maxSize) override;
+   QByteArray peek(qint64 maxSize) override;
 
    // Platform specific functions
    virtual void startClientEncryption() = 0;

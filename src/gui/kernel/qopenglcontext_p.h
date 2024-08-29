@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -227,21 +227,6 @@ class Q_GUI_EXPORT QOpenGLContextPrivate
    static QOpenGLContextPrivate *get(QOpenGLContext *context) {
       return context ? context->d_func() : nullptr;
    }
-
-#if ! defined(QT_NO_DEBUG)
-   static bool toggleMakeCurrentTracker(QOpenGLContext *context, bool value) {
-      QMutexLocker locker(&makeCurrentTrackerMutex);
-      bool old = makeCurrentTracker.value(context, false);
-      makeCurrentTracker.insert(context, value);
-      return old;
-   }
-   static void cleanMakeCurrentTracker(QOpenGLContext *context) {
-      QMutexLocker locker(&makeCurrentTrackerMutex);
-      makeCurrentTracker.remove(context);
-   }
-   static QHash<QOpenGLContext *, bool> makeCurrentTracker;
-   static QMutex makeCurrentTrackerMutex;
-#endif
 
    void _q_screenDestroyed(QObject *object);
 

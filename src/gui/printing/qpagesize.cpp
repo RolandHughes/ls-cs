@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -204,7 +204,7 @@ static const int qt_windowsConversion[][2] = {
    {DMPAPER_PENV_10_ROTATED,               DMPAPER_PENV_10}  // Is = DMPAPER_LAST, use as loop terminator
 };
 
-static const int windowsConversionCount = int(sizeof(qt_windowsConversion) / sizeof(qt_windowsConversion[0]));
+static constexpr const int windowsConversionCount = int(sizeof(qt_windowsConversion) / sizeof(qt_windowsConversion[0]));
 
 // Standard sizes data
 struct StandardPageSize {
@@ -368,7 +368,7 @@ static const StandardPageSize qt_pageSizes[] = {
    {QPageSize::EnvelopeYou4,   DMPAPER_JENV_YOU4,   QPageSize::Millimeter,    298,  666,      105,  235,       4.13,   9.25,    "EnvYou4"}
 };
 
-static const int pageSizesCount = int(sizeof(qt_pageSizes) / sizeof(qt_pageSizes[0]));
+static constexpr const int pageSizesCount = int(sizeof(qt_pageSizes) / sizeof(qt_pageSizes[0]));
 static_assert(pageSizesCount == QPageSize::LastPageSize + 1, "Page size array mismatch");
 
 // Return key name for PageSize

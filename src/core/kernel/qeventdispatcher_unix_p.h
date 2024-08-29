@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -48,13 +48,12 @@ class QSockNotType
    QSockNotType();
    ~QSockNotType();
 
-   typedef QPodList<QSockNot *, 32> List;
+   using List = QPodList<QSockNot *, 32>;
 
    List list;
    fd_set select_fds;
    fd_set enabled_fds;
    fd_set pending_fds;
-
 };
 
 #ifdef check
@@ -130,7 +129,5 @@ class Q_CORE_EXPORT QEventDispatcherUNIXPrivate : public QAbstractEventDispatche
    QAtomicInt wakeUps;
    std::atomic<bool> interrupt;
 };
-
-
 
 #endif // QEVENTDISPATCHER_UNIX_P_H

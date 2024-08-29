@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -119,7 +119,7 @@ public:
 #ifdef Q_OS_WIN
 class QWindowsCaRootFetcher : public QObject
 {
-   NET_CS_OBJECT(QWindowsCaRootFetcher);
+   NET_CS_OBJECT(QWindowsCaRootFetcher)
 
  public:
    QWindowsCaRootFetcher(const QSslCertificate &certificate, QSslSocket::SslMode sslMode);

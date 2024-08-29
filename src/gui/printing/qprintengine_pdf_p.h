@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -62,11 +62,9 @@ class QPdfPrintEngine: public QPdfEngine, public QPrintEngine
 
    virtual ~QPdfPrintEngine();
 
-   // reimplementations QPaintEngine
    bool begin(QPaintDevice *pdev) override;
    bool end() override;
 
-   // reimplementations QPrintEngine
    bool abort() override {
       return false;
    }
@@ -78,8 +76,8 @@ class QPdfPrintEngine: public QPdfEngine, public QPrintEngine
    }
 
    int metric(QPaintDevice::PaintDeviceMetric) const override;
-   virtual void setProperty(PrintEnginePropertyKey key, const QVariant &value) override;
-   virtual QVariant property(PrintEnginePropertyKey key) const override;
+   void setProperty(PrintEnginePropertyKey key, const QVariant &value) override;
+   QVariant property(PrintEnginePropertyKey key) const override;
 
    QPrinter::PrinterState state;
 

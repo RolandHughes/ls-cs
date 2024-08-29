@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -93,7 +93,7 @@ void QStackedWidget::setCurrentWidget(QWidget *widget)
    Q_D(QStackedWidget);
 
    if (d->layout->indexOf(widget) == -1) {
-      qWarning("QStackedWidget::setCurrentWidget() Current widget (%p) is not in this stack", widget);
+      qWarning("QStackedWidget::setCurrentWidget() Current widget (%p) is not in this stack", static_cast<void *>(widget));
       return;
    }
 

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -20,9 +20,6 @@
 * https://www.gnu.org/licenses/
 *
 ***********************************************************************/
-
-//#define QFTPPI_DEBUG
-//#define QFTPDTP_DEBUG
 
 #include <qftp_p.h>
 #include <qabstractsocket.h>
@@ -126,8 +123,8 @@ class QFtpDTP : public QObject
 
    QFtpPI *pi;
    QString err;
-   qint64 bytesDone;
-   qint64 bytesTotal;
+   qint64 m_bytesDone;
+   qint64 m_bytesTotal;
    bool callWriteData;
 
    // If is_ba is true, ba is used; ba is never 0.
@@ -326,9 +323,9 @@ void QFtpDTP::setDevice(QIODevice *dev)
 
 void QFtpDTP::setBytesTotal(qint64 bytes)
 {
-   bytesTotal = bytes;
-   bytesDone = 0;
-   emit dataTransferProgress(bytesDone, bytesTotal);
+   m_bytesTotal = bytes;
+   m_bytesDone = 0;
+   emit dataTransferProgress(m_bytesDone, m_bytesTotal);
 }
 
 void QFtpDTP::connectToHost(const QString &host, quint16 port)
@@ -408,7 +405,8 @@ qint64 QFtpDTP::read(char *data, qint64 maxlen)
       bytesFromSocket.remove(0, read);
    }
 
-   bytesDone += read;
+   m_bytesDone += read;
+
    return read;
 }
 
@@ -417,28 +415,29 @@ QByteArray QFtpDTP::readAll()
    QByteArray tmp;
    if (socket && socket->state() == QTcpSocket::ConnectedState) {
       tmp = socket->readAll();
-      bytesDone += tmp.size();
+      m_bytesDone += tmp.size();
    } else {
       tmp = bytesFromSocket;
       bytesFromSocket.clear();
    }
+
    return tmp;
 }
 
 void QFtpDTP::writeData()
 {
-   if (!socket) {
+   if (! socket) {
       return;
    }
 
    if (is_ba) {
 
-#if defined(QFTPDTP_DEBUG)
+#if defined(CS_SHOW_DEBUG_NETWORK)
       qDebug("QFtpDTP::writeData: write %d bytes", data.ba->size());
 #endif
 
       if (data.ba->size() == 0) {
-         emit dataTransferProgress(0, bytesTotal);
+         emit dataTransferProgress(0, m_bytesTotal);
       } else {
          socket->write(data.ba->data(), data.ba->size());
       }
@@ -453,7 +452,7 @@ void QFtpDTP::writeData()
       char buf[16 * 1024];
       qint64 read = data.dev->read(buf, blockSize);
 
-#if defined(QFTPDTP_DEBUG)
+#if defined(CS_SHOW_DEBUG_NETWORK)
       qDebug("QFtpDTP::writeData: write() of size %lli bytes", read);
 #endif
 
@@ -461,8 +460,8 @@ void QFtpDTP::writeData()
          socket->write(buf, read);
       } else if (read == -1 || (!data.dev->isSequential() && data.dev->atEnd())) {
          // error or EOF
-         if (bytesDone == 0 && socket->bytesToWrite() == 0) {
-            emit dataTransferProgress(0, bytesTotal);
+         if (m_bytesDone == 0 && socket->bytesToWrite() == 0) {
+            emit dataTransferProgress(0, m_bytesTotal);
          }
          socket->close();
          clearData();
@@ -495,7 +494,7 @@ inline void QFtpDTP::clearError()
 
 void QFtpDTP::abortConnection()
 {
-#if defined(QFTPDTP_DEBUG)
+#if defined(CS_SHOW_DEBUG_NETWORK)
    qDebug("QFtpDTP::abortConnection, bytesAvailable == %lli", socket ? socket->bytesAvailable() : (qint64) 0);
 #endif
 
@@ -590,15 +589,15 @@ static void _q_parseUnixDir(const QStringList &tokens, const QString &userName, 
    // Resolve permissions
    int permissions = 0;
    QString p = tokens.at(2);
-   permissions |= (p[0] == QLatin1Char('r') ? QUrlInfo::ReadOwner : 0);
-   permissions |= (p[1] == QLatin1Char('w') ? QUrlInfo::WriteOwner : 0);
-   permissions |= (p[2] == QLatin1Char('x') ? QUrlInfo::ExeOwner : 0);
-   permissions |= (p[3] == QLatin1Char('r') ? QUrlInfo::ReadGroup : 0);
-   permissions |= (p[4] == QLatin1Char('w') ? QUrlInfo::WriteGroup : 0);
-   permissions |= (p[5] == QLatin1Char('x') ? QUrlInfo::ExeGroup : 0);
-   permissions |= (p[6] == QLatin1Char('r') ? QUrlInfo::ReadOther : 0);
-   permissions |= (p[7] == QLatin1Char('w') ? QUrlInfo::WriteOther : 0);
-   permissions |= (p[8] == QLatin1Char('x') ? QUrlInfo::ExeOther : 0);
+   permissions |= (p[0] == QChar('r') ? QUrlInfo::ReadOwner : 0);
+   permissions |= (p[1] == QChar('w') ? QUrlInfo::WriteOwner : 0);
+   permissions |= (p[2] == QChar('x') ? QUrlInfo::ExeOwner : 0);
+   permissions |= (p[3] == QChar('r') ? QUrlInfo::ReadGroup : 0);
+   permissions |= (p[4] == QChar('w') ? QUrlInfo::WriteGroup : 0);
+   permissions |= (p[5] == QChar('x') ? QUrlInfo::ExeGroup : 0);
+   permissions |= (p[6] == QChar('r') ? QUrlInfo::ReadOther : 0);
+   permissions |= (p[7] == QChar('w') ? QUrlInfo::WriteOther : 0);
+   permissions |= (p[8] == QChar('x') ? QUrlInfo::ExeOther : 0);
    info->setPermissions(permissions);
 
    bool isOwner = info->owner() == userName;
@@ -638,7 +637,7 @@ static void _q_parseDosDir(const QStringList &tokens, const QString &userName, Q
                      | QUrlInfo::ReadGroup | QUrlInfo::WriteGroup
                      | QUrlInfo::ReadOther | QUrlInfo::WriteOther;
    QString ext;
-   int extIndex = name.lastIndexOf(QLatin1Char('.'));
+   int extIndex = name.lastIndexOf(QChar('.'));
 
    if (extIndex != -1) {
       ext = name.mid(extIndex + 1);
@@ -693,9 +692,9 @@ bool QFtpDTP::parseDir(const QByteArray &buffer, const QString &userName, QUrlIn
 
 void QFtpDTP::socketConnected()
 {
-   bytesDone = 0;
+   m_bytesDone = 0;
 
-#if defined(QFTPDTP_DEBUG)
+#if defined(CS_SHOW_DEBUG_NETWORK)
    qDebug("QFtpDTP::connectState(CsConnected)");
 #endif
 
@@ -711,7 +710,7 @@ void QFtpDTP::socketReadyRead()
    if (pi->currentCommand().isEmpty()) {
       socket->close();
 
-#if defined(QFTPDTP_DEBUG)
+#if defined(CS_SHOW_DEBUG_NETWORK)
       qDebug("QFtpDTP::connectState(CsClosed)");
 #endif
 
@@ -730,7 +729,7 @@ void QFtpDTP::socketReadyRead()
          QUrlInfo i;
          QByteArray line = socket->readLine();
 
-#if defined(QFTPDTP_DEBUG)
+#if defined(CS_SHOW_DEBUG_NETWORK)
          qDebug("QFtpDTP read (list): '%s'", line.constData());
 #endif
 
@@ -746,26 +745,30 @@ void QFtpDTP::socketReadyRead()
             }
          }
       }
+
    } else {
-      if (!is_ba && data.dev) {
+      if (! is_ba && data.dev) {
          do {
             QByteArray ba;
             ba.resize(socket->bytesAvailable());
             qint64 bytesRead = socket->read(ba.data(), ba.size());
+
             if (bytesRead < 0) {
                // a read following a readyRead() signal will
                // never fail.
                return;
             }
+
             ba.resize(bytesRead);
-            bytesDone += bytesRead;
-#if defined(QFTPDTP_DEBUG)
-            qDebug("QFtpDTP read: %lli bytes (total %lli bytes)", bytesRead, bytesDone);
+            m_bytesDone += bytesRead;
+
+#if defined(CS_SHOW_DEBUG_NETWORK)
+            qDebug("QFtpDTP read: %lli bytes (total %lli bytes)", bytesRead, m_bytesDone);
 #endif
             if (data.dev) {     // make sure it wasn't deleted in the slot
                data.dev->write(ba);
             }
-            emit dataTransferProgress(bytesDone, bytesTotal);
+            emit dataTransferProgress(m_bytesDone, m_bytesTotal);
 
             // Need to loop; dataTransferProgress is often connected to
             // slots that update the GUI (e.g., progress bar values), and
@@ -773,12 +776,11 @@ void QFtpDTP::socketReadyRead()
          } while (socket->bytesAvailable());
 
       } else {
-#if defined(QFTPDTP_DEBUG)
-         qDebug("QFtpDTP readyRead: %lli bytes available (total %lli bytes read)",
-                bytesAvailable(), bytesDone);
+#if defined(CS_SHOW_DEBUG_NETWORK)
+         qDebug("QFtpDTP readyRead: %lli bytes available (total %lli bytes read)", bytesAvailable(), m_bytesDone);
 #endif
 
-         emit dataTransferProgress(bytesDone + socket->bytesAvailable(), bytesTotal);
+         emit dataTransferProgress(m_bytesDone + socket->bytesAvailable(), m_bytesTotal);
          emit readyRead();
       }
    }
@@ -788,7 +790,7 @@ void QFtpDTP::socketError(QAbstractSocket::SocketError errorCode)
 {
    if (errorCode == QTcpSocket::HostNotFoundError) {
 
-#if defined(QFTPDTP_DEBUG)
+#if defined(CS_SHOW_DEBUG_NETWORK)
       qDebug("QFtpDTP::connectState(CsHostNotFound)");
 #endif
 
@@ -796,7 +798,7 @@ void QFtpDTP::socketError(QAbstractSocket::SocketError errorCode)
 
    } else if (errorCode == QTcpSocket::ConnectionRefusedError) {
 
-#if defined(QFTPDTP_DEBUG)
+#if defined(CS_SHOW_DEBUG_NETWORK)
       qDebug("QFtpDTP::connectState(CsConnectionRefused)");
 #endif
 
@@ -806,7 +808,7 @@ void QFtpDTP::socketError(QAbstractSocket::SocketError errorCode)
 
 void QFtpDTP::socketConnectionClosed()
 {
-   if (!is_ba && data.dev) {
+   if (! is_ba && data.dev) {
       clearData();
    }
 
@@ -816,7 +818,7 @@ void QFtpDTP::socketConnectionClosed()
       bytesFromSocket.clear();
    }
 
-#if defined(QFTPDTP_DEBUG)
+#if defined(CS_SHOW_DEBUG_NETWORK)
    qDebug("QFtpDTP::connectState(CsClosed)");
 #endif
 
@@ -825,13 +827,13 @@ void QFtpDTP::socketConnectionClosed()
 
 void QFtpDTP::socketBytesWritten(qint64 bytes)
 {
-   bytesDone += bytes;
+   m_bytesDone += bytes;
 
-#if defined(QFTPDTP_DEBUG)
-   qDebug("QFtpDTP::bytesWritten(%lli)", bytesDone);
+#if defined(CS_SHOW_DEBUG_NETWORK)
+   qDebug("QFtpDTP::bytesWritten(%lli)", m_bytesDone);
 #endif
 
-   emit dataTransferProgress(bytesDone, bytesTotal);
+   emit dataTransferProgress(m_bytesDone, m_bytesTotal);
    if (callWriteData) {
       writeData();
    }
@@ -853,7 +855,7 @@ void QFtpDTP::setupSocket()
 
 void QFtpDTP::clearData()
 {
-   is_ba = false;
+   is_ba    = false;
    data.dev = nullptr;
 }
 
@@ -930,19 +932,22 @@ void QFtpPI::abort()
       return;   //no command in progress
    }
 
-   if (currentCmd.startsWith(QLatin1String("STOR "))) {
+   if (currentCmd.startsWith("STOR ")) {
       abortState = AbortStarted;
-#if defined(QFTPPI_DEBUG)
+
+#if defined(CS_SHOW_DEBUG_NETWORK)
       qDebug("QFtpPI send: ABOR");
 #endif
-      commandSocket.write("ABOR\r\n", 6);
 
+      commandSocket.write("ABOR\r\n", 6);
       dtp.abortConnection();
+
    } else {
       //Deviation from RFC 959:
       //Most FTP servers do not support ABOR, or require the telnet
       //IP & synch sequence (TCP urgent data) which is not supported by QTcpSocket.
       //Following what most FTP clients do, just reset the data connection and wait for 426
+
       abortState = WaitForAbortToFinish;
       dtp.abortConnection();
    }
@@ -956,10 +961,6 @@ void QFtpPI::hostFound()
 void QFtpPI::connected()
 {
    state = Begin;
-
-#if defined(QFTPPI_DEBUG)
-   //    qDebug("QFtpPI state: %d [connected()]", state);
-#endif
 
    // try to improve performance by setting TCP_NODELAY
    commandSocket.setSocketOption(QAbstractSocket::LowDelayOption, 1);
@@ -1063,9 +1064,7 @@ void QFtpPI::readyRead()
 
 bool QFtpPI::processReply()
 {
-#if defined(QFTPPI_DEBUG)
-   //    qDebug("QFtpPI state: %d [processReply() begin]", state);
-
+#if defined(CS_SHOW_DEBUG_NETWORK)
    if (m_replyText.length() < 400) {
       qDebug("QFtpPI recv: %d %s", 100 * m_replyCode[0] + 10 * m_replyCode[1] + m_replyCode[2],
             m_replyText.toLatin1().constData());
@@ -1137,10 +1136,6 @@ bool QFtpPI::processReply()
          return true;
    }
 
-#if defined(QFTPPI_DEBUG)
-   //    qDebug("QFtpPI state: %d [processReply() intermediate]", state);
-#endif
-
    // special actions on certain replies
    emit rawFtpReply(replyCodeX, m_replyText);
 
@@ -1159,7 +1154,7 @@ bool QFtpPI::processReply()
       if (! match.hasMatch()) {
          // this error should be reported
 
-#if defined(QFTPPI_DEBUG)
+#if defined(CS_SHOW_DEBUG_NETWORK)
          qDebug("QFtp: bad 227 response -- address and port information missing");
 #endif
 
@@ -1179,8 +1174,8 @@ bool QFtpPI::processReply()
 
       if (portPos == -1) {
 
-#if defined(QFTPPI_DEBUG)
-         qDebug("QFtp: bad 229 response -- port information missing");
+#if defined(CS_SHOW_DEBUG_NETWORK)
+         qDebug("QFtp: bad 229 response, port information missing");
 #endif
          // this error should be reported
 
@@ -1238,17 +1233,19 @@ bool QFtpPI::processReply()
 
       case Failure:
          // If the EPSV or EPRT commands fail, replace them with
-         // the old PASV and PORT instead and try again.
-         if (currentCmd.startsWith(QLatin1String("EPSV"))) {
-            transferConnectionExtended = false;
-            pendingCommands.prepend(QLatin1String("PASV\r\n"));
+         // the old PASV and PORT instead and try again
 
-         } else if (currentCmd.startsWith(QLatin1String("EPRT"))) {
+         if (currentCmd.startsWith("EPSV")) {
             transferConnectionExtended = false;
-            pendingCommands.prepend(QLatin1String("PORT\r\n"));
+            pendingCommands.prepend("PASV\r\n");
+
+         } else if (currentCmd.startsWith("EPRT")) {
+            transferConnectionExtended = false;
+            pendingCommands.prepend("PORT\r\n");
 
          } else {
             emit error(QFtp::UnknownError, m_replyText);
+
          }
 
          if (state != Waiting) {
@@ -1259,23 +1256,19 @@ bool QFtpPI::processReply()
          break;
    }
 
-#if defined(QFTPPI_DEBUG)
-   //    qDebug("QFtpPI state: %d [processReply() end]", state);
-#endif
-
    return true;
 }
 
 bool QFtpPI::startNextCmd()
 {
    if (waitForDtpToConnect) {
-      // don't process any new commands until we are connected
+      // do not process any new commands until we are connected
       return true;
    }
 
-#if defined(QFTPPI_DEBUG)
+#if defined(CS_SHOW_DEBUG_NETWORK)
    if (state != Idle) {
-      qDebug("QFtpPI startNextCmd: Internal error, QFtpPI called in non-Idle state %d", state);
+      qDebug("QFtpPI startNextCmd() Internal error, QFtpPI called in non-Idle state %d", state);
    }
 #endif
 
@@ -1296,21 +1289,23 @@ bool QFtpPI::startNextCmd()
    if (currentCmd.startsWith(QLatin1String("PORT"))) {
       if ((address.protocol() == QTcpSocket::IPv6Protocol) && transferConnectionExtended) {
          int port = dtp.setupListener(address);
-         currentCmd = QLatin1String("EPRT |");
-         currentCmd += (address.protocol() == QTcpSocket::IPv4Protocol) ? QLatin1Char('1') : QLatin1Char('2');
-         currentCmd += QLatin1Char('|') + address.toString() + QLatin1Char('|') + QString::number(port);
-         currentCmd += QLatin1Char('|');
+         currentCmd = "EPRT |";
+         currentCmd += (address.protocol() == QTcpSocket::IPv4Protocol) ? QChar('1') : QChar('2');
+         currentCmd += QChar('|') + address.toString() + QChar('|') + QString::number(port);
+         currentCmd += QChar('|');
 
       } else if (address.protocol() == QTcpSocket::IPv4Protocol) {
          int port = dtp.setupListener(address);
+
          QString portArg;
          quint32 ip = address.toIPv4Address();
+
          portArg += QString::number((ip & 0xff000000) >> 24);
-         portArg += QLatin1Char(',') + QString::number((ip & 0xff0000) >> 16);
-         portArg += QLatin1Char(',') + QString::number((ip & 0xff00) >> 8);
-         portArg += QLatin1Char(',') + QString::number(ip & 0xff);
-         portArg += QLatin1Char(',') + QString::number((port & 0xff00) >> 8);
-         portArg += QLatin1Char(',') + QString::number(port & 0xff);
+         portArg += QChar(',') + QString::number((ip & 0xff0000) >> 16);
+         portArg += QChar(',') + QString::number((ip & 0xff00) >> 8);
+         portArg += QChar(',') + QString::number(ip & 0xff);
+         portArg += QChar(',') + QString::number((port & 0xff00) >> 8);
+         portArg += QChar(',') + QString::number(port & 0xff);
 
          currentCmd = QLatin1String("PORT ");
          currentCmd += portArg;
@@ -1320,17 +1315,17 @@ bool QFtpPI::startNextCmd()
          return false;
       }
 
-      currentCmd += QLatin1String("\r\n");
+      currentCmd += "\r\n";
 
-   } else if (currentCmd.startsWith(QLatin1String("PASV"))) {
+   } else if (currentCmd.startsWith("PASV")) {
       if ((address.protocol() == QTcpSocket::IPv6Protocol) && transferConnectionExtended) {
-         currentCmd = QLatin1String("EPSV\r\n");
+         currentCmd = "EPSV\r\n";
       }
    }
 
    pendingCommands.pop_front();
 
-#if defined(QFTPPI_DEBUG)
+#if defined(CS_SHOW_DEBUG_NETWORK)
    qDebug("QFtpPI send: %s", currentCmd.left(currentCmd.length() - 2).toLatin1().constData());
 #endif
 
@@ -1786,7 +1781,7 @@ void QFtpPrivate::_q_piError(int errorCode, const QString &textMsg)
    Q_Q(QFtp);
 
    if (pending.isEmpty()) {
-      qWarning("QFtpPrivate::_q_piError was called without pending command");
+      qWarning("QFtp::_q_piError() Called without pending command");
       return;
    }
 

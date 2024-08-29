@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -30,7 +30,7 @@
 
 #define kThemeAppearanceAquaGraphite CFSTR("com.apple.theme.appearance.aqua.graphite")
 
-enum {
+enum MacThemeFlags {
    kThemeTabNorth                           = 0,
    kThemeTabSouth                           = 1,
    kThemeTabEast                            = 2,

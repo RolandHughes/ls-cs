@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -67,12 +67,12 @@ class QFileIconEngine : public QPixmapIconEngine
          return pixmap;
       }
 
-      const QString &keyBase = QLatin1String("qt_.") + m_fileInfo.suffix().toUpper();
+      const QString &keyBase = "qt_." + m_fileInfo.suffix().toUpper();
 
       bool cacheable = isCacheable(m_fileInfo);
       if (cacheable) {
          QPixmapCache::find(keyBase + QString::number(size.width()), pixmap);
-         if (!pixmap.isNull()) {
+         if (! pixmap.isNull()) {
             return pixmap;
          }
       }
@@ -83,7 +83,7 @@ class QFileIconEngine : public QPixmapIconEngine
       }
 
       pixmap = theme->fileIconPixmap(m_fileInfo, size, iconOptions);
-      if (!pixmap.isNull()) {
+      if (! pixmap.isNull()) {
          if (cacheable) {
             QPixmapCache::insert(keyBase + QString::number(size.width()), pixmap);
          }
@@ -99,7 +99,7 @@ class QFileIconEngine : public QPixmapIconEngine
       static QList<QSize> sizes;
       static QPlatformTheme *theme = nullptr;
 
-      if (!theme) {
+      if (! theme) {
          theme = QGuiApplicationPrivate::platformTheme();
          if (!theme) {
             return sizes;
@@ -114,32 +114,37 @@ class QFileIconEngine : public QPixmapIconEngine
             sizes << QSize(size, size);
          }
       }
+
       return sizes;
    }
 
    QSize actualSize(const QSize &size, QIcon::Mode mode, QIcon::State state) override {
       const QList<QSize> &sizes = availableSizes(mode, state);
-      const int numberSizes = sizes.length();
+      const int numberSizes     = sizes.length();
+
       if (numberSizes == 0) {
          return QSize();
       }
 
       // Find the smallest available size whose area is still larger than the input
-      // size. Otherwise, use the largest area available size. (We don't assume the
-      // platform theme sizes are sorted, hence the extra logic.)
+      // size. Otherwise, use the largest area available size. Do not assume the
+      // platform theme sizes are sorted, hence the extra logic.
+
       const int sizeArea = size.width() * size.height();
       QSize actualSize = sizes.first();
       int actualArea = actualSize.width() * actualSize.height();
+
       for (int i = 1; i < numberSizes; ++i) {
          const QSize &s = sizes.at(i);
          const int a = s.width() * s.height();
+
          if ((sizeArea <= a && a < actualArea) || (actualArea < sizeArea && actualArea < a)) {
             actualSize = s;
             actualArea = a;
          }
       }
 
-      if (!actualSize.isNull() && (actualSize.width() > size.width() || actualSize.height() > size.height())) {
+      if (! actualSize.isNull() && (actualSize.width() > size.width() || actualSize.height() > size.height())) {
          actualSize.scale(size, Qt::KeepAspectRatio);
       }
 
@@ -163,69 +168,92 @@ QIcon QFileIconProviderPrivate::getIcon(QStyle::StandardPixmap name) const
          if (file.isNull()) {
             file = QApplication::style()->standardIcon(name);
          }
+
          return file;
+
       case QStyle::SP_FileLinkIcon:
          if (fileLink.isNull()) {
             fileLink = QApplication::style()->standardIcon(name);
          }
+
          return fileLink;
+
       case QStyle::SP_DirIcon:
          if (directory.isNull()) {
             directory = QApplication::style()->standardIcon(name);
          }
+
          return directory;
+
       case QStyle::SP_DirLinkIcon:
          if (directoryLink.isNull()) {
             directoryLink = QApplication::style()->standardIcon(name);
          }
+
          return directoryLink;
+
       case QStyle::SP_DriveHDIcon:
          if (harddisk.isNull()) {
             harddisk = QApplication::style()->standardIcon(name);
          }
+
          return harddisk;
+
       case QStyle::SP_DriveFDIcon:
          if (floppy.isNull()) {
             floppy = QApplication::style()->standardIcon(name);
          }
+
          return floppy;
+
       case QStyle::SP_DriveCDIcon:
          if (cdrom.isNull()) {
             cdrom = QApplication::style()->standardIcon(name);
          }
+
          return cdrom;
+
       case QStyle::SP_DriveNetIcon:
          if (network.isNull()) {
             network = QApplication::style()->standardIcon(name);
          }
+
          return network;
+
       case QStyle::SP_ComputerIcon:
          if (computer.isNull()) {
             computer = QApplication::style()->standardIcon(name);
          }
+
          return computer;
+
       case QStyle::SP_DesktopIcon:
          if (desktop.isNull()) {
             desktop = QApplication::style()->standardIcon(name);
          }
+
          return desktop;
+
       case QStyle::SP_TrashIcon:
          if (trashcan.isNull()) {
             trashcan = QApplication::style()->standardIcon(name);
          }
+
          return trashcan;
+
       case QStyle::SP_DirHomeIcon:
          if (home.isNull()) {
             home = QApplication::style()->standardIcon(name);
          }
+
          return home;
+
       default:
          return QIcon();
    }
+
    return QIcon();
 }
-
-
 
 QFileIconProvider::QFileIconProvider()
    : d_ptr(new QFileIconProviderPrivate(this))
@@ -250,6 +278,7 @@ QFileIconProvider::Options QFileIconProvider::options() const
 QIcon QFileIconProvider::icon(IconType type) const
 {
    Q_D(const QFileIconProvider);
+
    switch (type) {
       case Computer:
          return d->getIcon(QStyle::SP_ComputerIcon);
@@ -268,6 +297,7 @@ QIcon QFileIconProvider::icon(IconType type) const
       default:
          break;
    };
+
    return QIcon();
 }
 
@@ -280,15 +310,14 @@ static bool isCacheable(const QFileInfo &fi)
 #ifdef Q_OS_WIN
    // On windows it's faster to just look at the file extensions. QTBUG-13182
    const QString fileExtension = fi.suffix();
-   return fileExtension.compare(QLatin1String("exe"), Qt::CaseInsensitive) &&
-      fileExtension.compare(QLatin1String("lnk"), Qt::CaseInsensitive) &&
-      fileExtension.compare(QLatin1String("ico"), Qt::CaseInsensitive);
+   return fileExtension.compare("exe", Qt::CaseInsensitive) &&
+         fileExtension.compare("lnk", Qt::CaseInsensitive)  &&
+         fileExtension.compare("ico", Qt::CaseInsensitive);
 
 #else
    return !fi.isExecutable() && !fi.isSymLink();
 
 #endif
-
 }
 
 QIcon QFileIconProviderPrivate::getIcon(const QFileInfo &fi) const
@@ -317,7 +346,7 @@ QIcon QFileIconProvider::icon(const QFileInfo &info) const
    if (desktopEnvironment != "KDE") {
       QIcon gtkIcon = QGtkStylePrivate::getFilesystemIcon(info);
 
-      if (!gtkIcon.isNull()) {
+      if (! gtkIcon.isNull()) {
          return gtkIcon;
       }
    }
@@ -372,6 +401,7 @@ QIcon QFileIconProvider::icon(const QFileInfo &info) const
    if (info.isDir()) {
       if (info.isSymLink()) {
          return d->getIcon(QStyle::SP_DirLinkIcon);
+
       } else {
          if (info.absoluteFilePath() == d->homePath) {
             return d->getIcon(QStyle::SP_DirHomeIcon);

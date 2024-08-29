@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -33,8 +33,9 @@
 class QGL2GradientCache : public QOpenGLSharedResource
 {
    struct CacheInfo {
-      inline CacheInfo(QVector<QPair<qreal, QColor>> s, qreal op, QGradient::InterpolationMode mode) :
-         stops(s), opacity(op), interpolationMode(mode) {}
+      CacheInfo(QVector<QPair<qreal, QColor>> s, qreal op, QGradient::InterpolationMode mode)
+         : stops(s), opacity(op), interpolationMode(mode)
+      { }
 
       GLuint texId;
       QVector<QPair<qreal, QColor>> stops;
@@ -55,17 +56,17 @@ class QGL2GradientCache : public QOpenGLSharedResource
       return 1024;
    }
 
-   void invalidateResource();
-   void freeResource(QOpenGLContext *ctx);
+   void invalidateResource() override;
+   void freeResource(QOpenGLContext *ctx) override;
 
  private:
    inline int maxCacheSize() const {
       return 60;
    }
 
-   inline void generateGradientColorTable(const QGradient &gradient,
-                                          uint *colorTable,
-                                          int size, qreal opacity) const;
+   inline void generateGradientColorTable(const QGradient &gradient, uint *colorTable,
+         int size, qreal opacity) const;
+
    GLuint addCacheElement(quint64 hash_val, const QGradient &gradient, qreal opacity);
    void cleanCache();
 

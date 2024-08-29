@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -237,7 +237,8 @@ void QPlatformFontDialogHelper::setOptions(const QSharedPointer<QFontDialogOptio
 class QColorDialogStaticData
 {
  public:
-   enum { CustomColorCount = 16, StandardColorCount = 6 * 8 };
+   static constexpr const int CustomColorCount   = 16;
+   static constexpr const int StandardColorCount = 6 * 8;
 
    QColorDialogStaticData();
    inline void readSettings();

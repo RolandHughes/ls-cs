@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -26,8 +26,8 @@
 
 #include <ui_settings_dialog.h>
 
-#include <qlocale.h>
 #include <qdialog.h>
+#include <qlocale.h>
 
 class DataModel;
 class PhraseBook;
@@ -44,7 +44,7 @@ class SettingsDialog : public QDialog
    void setPhraseBook(PhraseBook *phraseBook);
 
  private:
-   virtual void showEvent(QShowEvent *e) override;
+   void showEvent(QShowEvent *e) override;
    Ui::SettingsDialog *m_ui;
 
    DataModel *m_dataModel;

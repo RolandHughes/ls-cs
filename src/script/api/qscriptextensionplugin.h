@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -38,8 +38,6 @@ class Q_SCRIPT_EXPORT QScriptExtensionPlugin : public QObject, public QScriptExt
    explicit QScriptExtensionPlugin(QObject *parent = nullptr);
    ~QScriptExtensionPlugin();
 
-   virtual QStringList keys() const override = 0;
-   virtual void initialize(const QString &key, QScriptEngine *engine) override = 0;
    QScriptValue setupPackage(const QString &key, QScriptEngine *engine) const;
 };
 

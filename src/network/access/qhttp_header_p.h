@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -125,13 +125,13 @@ class Q_NETWORK_EXPORT QHttpResponseHeader : public QHttpHeader
     int statusCode() const;
     QString reasonPhrase() const;
 
-    int majorVersion() const;
-    int minorVersion() const;
+    int majorVersion() const override;
+    int minorVersion() const override;
 
-    QString toString() const;
+    QString toString() const override;
 
  protected:
-    bool parseLine(const QString &line, int number);
+    bool parseLine(const QString &line, int number) override;
 
  private:
     Q_DECLARE_PRIVATE(QHttpResponseHeader)

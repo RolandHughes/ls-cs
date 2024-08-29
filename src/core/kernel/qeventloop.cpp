@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -22,9 +22,11 @@
 ***********************************************************************/
 
 #include <qeventloop.h>
+
 #include <qabstracteventdispatcher.h>
 #include <qcoreapplication.h>
 #include <qelapsedtimer.h>
+
 #include <qthread_p.h>
 
 class QEventLoopPrivate
@@ -53,7 +55,7 @@ QEventLoop::QEventLoop(QObject *parent)
    QThreadData *threadData = CSInternalThreadData::get_m_ThreadData(this);
 
    if (! QCoreApplication::instance()) {
-      qWarning("QEventLoop: Can not be used without QApplication");
+      qWarning("QEventLoop() QApplication must be started before calling this method");
 
    } else if (! threadData->eventDispatcher) {
       QThreadPrivate::createEventDispatcher(threadData);
@@ -91,7 +93,7 @@ int QEventLoop::exec(ProcessEventsFlags flags)
    }
 
    if (d->inExec) {
-      qWarning("QEventLoop::exec: instance %p has already called exec()", this);
+      qWarning("QEventLoop::exec() Called too many times");
       return -1;
    }
 
@@ -115,8 +117,7 @@ int QEventLoop::exec(ProcessEventsFlags flags)
       }
 
    } catch (...) {
-      qWarning("CopperSpice has caught an exception thrown from an event handler.\n"
-               "Reimplement QApplication::notify() and catch all exceptions.\n");
+      qWarning("QEventLoop::exec() Exception was thrown, reimplement QApplication::notify() and catch all exceptions");
 
       // copied from below
       locker.relock();
@@ -185,24 +186,12 @@ void QEventLoop::exit(int returnCode)
    threadData->eventDispatcher.load()->interrupt();
 }
 
-/*!
-    Returns true if the event loop is running; otherwise returns
-    false. The event loop is considered running from the time when
-    exec() is called until exit() is called.
-
-    \sa exec() exit()
- */
 bool QEventLoop::isRunning() const
 {
    Q_D(const QEventLoop);
    return ! d->exit;
 }
 
-/*!
-    Wakes up the event loop.
-
-    \sa QAbstractEventDispatcher::wakeUp()
-*/
 void QEventLoop::wakeUp()
 {
    QThreadData *threadData = CSInternalThreadData::get_m_ThreadData(this);
@@ -218,4 +207,3 @@ void QEventLoop::quit()
 {
    exit(0);
 }
-

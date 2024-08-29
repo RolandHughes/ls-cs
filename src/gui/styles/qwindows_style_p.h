@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -91,10 +91,12 @@ class QWindowsStylePrivate : public QCommonStylePrivate
    Q_DECLARE_PUBLIC(QWindowsStyle)
 
  public:
-   constexpr static const int InvalidMetric = -23576;
+   static constexpr const int InvalidMetric = -23576;
    QWindowsStylePrivate();
 
-   static int pixelMetricFromSystemDp(QStyle::PixelMetric pm, const QStyleOption *option = nullptr, const QWidget *widget = nullptr);
+   static int pixelMetricFromSystemDp(QStyle::PixelMetric pm, const QStyleOption *option = nullptr,
+         const QWidget *widget = nullptr);
+
    static int fixedPixelMetric(QStyle::PixelMetric pm);
 
    static qreal devicePixelRatio(const QWidget *widget = nullptr) {

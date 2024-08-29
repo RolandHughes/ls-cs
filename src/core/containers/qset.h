@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,10 +24,10 @@
 #ifndef QSET_H
 #define QSET_H
 
+#include <qhash.h>
+
 #include <initializer_list>
 #include <unordered_set>
-
-#include <qhash.h>
 
 template <class T>
 class QSetIterator;
@@ -40,10 +40,10 @@ class QSet
 {
    class Hash
    {
-      public:
-         size_t operator()(const T &data) const {
-            return qHash(data);
-         }
+    public:
+      size_t operator()(const T &data) const {
+         return qHash(data);
+      }
    };
 
  public:
@@ -239,6 +239,7 @@ class QSet
       if (contains(value)) {
          result.insert(value);
       }
+
       return (*this = result);
    }
 
@@ -402,128 +403,175 @@ QList<T> QList<T>::fromSet(const QSet<T> &set)
 template <class T>
 class QSetIterator
 {
-   typedef typename QSet<T>::const_iterator const_iterator;
+   using const_iterator = typename QSet<T>::const_iterator;
 
    QSet<T> c;
    const_iterator i;
 
-   public:
-      inline QSetIterator(const QSet<T> &set)
-         : c(set), i(c.constBegin()) {}
+ public:
+   QSetIterator(const QSet<T> &set)
+      : c(set), i(c.constBegin())
+   { }
 
-      inline QSetIterator &operator=(const QSet<T> &set)
-         { c = set; i = c.constBegin(); return *this; }
+   QSetIterator &operator=(const QSet<T> &set) {
+      c = set;
+      i = c.constBegin();
+      return *this;
+   }
 
-      inline void toFront() { i = c.constBegin(); }
-      inline void toBack() { i = c.constEnd(); }
-      inline bool hasNext() const { return i != c.constEnd(); }
-      inline const T &next() { return *i++; }
-      inline const T &peekNext() const { return *i; }
-      inline bool hasPrevious() const { return i != c.constBegin(); }
-      inline const T &previous() { return *--i; }
-      inline const T &peekPrevious() const { const_iterator p = i; return *--p; }
+   void toFront() {
+      i = c.constBegin();
+   }
 
-      inline bool findNext(const T &value)  {
-         while (i != c.constEnd()) {
-            if (*i++ == value) {
-               return true;
-            }
+   void toBack() {
+      i = c.constEnd();
+   }
+
+   bool hasNext() const {
+      return i != c.constEnd();
+   }
+
+   const T &next() {
+      return *(i++);
+   }
+
+   const T &peekNext() const {
+      return *i;
+   }
+
+   bool hasPrevious() const {
+      return i != c.constBegin();
+   }
+
+   const T &previous() {
+      return *(--i);
+   }
+
+   const T &peekPrevious() const {
+      const_iterator p = i;
+      return *--p;
+   }
+
+   bool findNext(const T &value)  {
+      while (i != c.constEnd()) {
+         if (*(i++) == value) {
+            return true;
          }
-         return false;
       }
 
-      inline bool findPrevious(const T &value)   {
-         while (i != c.constBegin()) {
-            if (*(--i) == value)  {
-               return true;
-            }
+      return false;
+   }
+
+   bool findPrevious(const T &value)   {
+      while (i != c.constBegin()) {
+         if (*(--i) == value)  {
+            return true;
          }
-         return false;
       }
+
+      return false;
+   }
 };
 
 template <typename T>
 class QMutableSetIterator
 {
-   typedef typename QSet<T>::iterator iterator;
+   using iterator = typename QSet<T>::iterator;
 
    QSet<T> *c;
    iterator i, n;
 
-   inline bool item_exists() const {
+   bool item_exists() const {
       return c->constEnd() != n;
    }
 
  public:
-   inline QMutableSetIterator(QSet<T> &set)
+   QMutableSetIterator(QSet<T> &set)
       : c(&set)
    {
       i = c->begin();
       n = c->end();
    }
 
-   inline ~QMutableSetIterator() {
+   ~QMutableSetIterator() {
    }
 
-   inline QMutableSetIterator &operator=(QSet<T> &set)
-   {
+   QMutableSetIterator &operator=(QSet<T> &set) {
       c = &set;
       i = c->begin();
       n = c->end();
+
       return *this;
    }
 
-   inline void toFront() {
+   void toFront() {
       i = c->begin();
       n = c->end();
    }
 
-   inline void toBack() {
+   void toBack() {
       i = c->end();
       n = i;
    }
 
-   inline bool hasNext() const {
+   bool hasNext() const {
       return c->constEnd() != i;
    }
-   inline const T &next() {
+
+   const T &next() {
       n = i++;
       return *n;
    }
-   inline const T &peekNext() const {
+
+   const T &peekNext() const {
       return *i;
    }
-   inline bool hasPrevious() const {
+
+   bool hasPrevious() const {
       return c->constBegin() != i;
    }
-   inline const T &previous() {
+
+   const T &previous() {
       n = --i;
       return *n;
    }
-   inline const T &peekPrevious() const {
+
+   const T &peekPrevious() const {
       iterator p = i;
-      return *--p;
+      return *(--p);
    }
-   inline void remove() {
+
+   void remove() {
       if (c->constEnd() != n) {
          i = c->erase(n);
          n = c->end();
       }
    }
-   inline const T &value() const {
+
+   const T &value() const {
       Q_ASSERT(item_exists());
       return *n;
    }
-   inline bool findNext(const T &value) {
-      while (c->constEnd() != (n = i)) if (*i++ == value) {
+
+   bool findNext(const T &value) {
+      while (c->constEnd() != (n = i)) {
+         if (*(i++) == value) {
             return true;
+         }
       }
+
       return false;
    }
-   inline bool findPrevious(const T &value) {
-      while (c->constBegin() != i) if (*(n = --i) == value) {
+
+   bool findPrevious(const T &value) {
+      while (c->constBegin() != i) {
+         n = --i;
+
+         if (*n == value) {
             return true;
+         }
       }
+
       n = c->end();
       return false;
    }

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -43,7 +43,8 @@
 // qmainwindow.cpp
 extern QMainWindowLayout *qt_mainwindow_layout(const QMainWindow *window);
 
-enum { StateFlagVisible = 1, StateFlagFloating = 2 };
+static constexpr const int StateFlagVisible  = 1;
+static constexpr const int StateFlagFloating = 2;
 
 QPlaceHolderItem::QPlaceHolderItem(QWidget *w)
 {
@@ -215,7 +216,7 @@ static quintptr tabId(const QDockAreaLayoutItem &item)
 }
 #endif
 
-static const int zero = 0;
+static constexpr const int zero = 0;
 
 QDockAreaLayoutInfo::QDockAreaLayoutInfo()
    : sep(&zero), dockPos(QInternal::LeftDock), o(Qt::Horizontal), mainWindow(nullptr)
@@ -1362,8 +1363,6 @@ bool QDockAreaLayoutInfo::insertGap(const QList<int> &path, QLayoutItem *dockWid
    // finally, insert the gap
    item_list.insert(index, gap_item);
 
-   //    dump(qDebug() << "insertGap() after:" << index << tabIndex, *this, QString());
-
    return true;
 }
 
@@ -1976,7 +1975,7 @@ void QDockAreaLayoutInfo::saveState(QDataStream &stream) const
 
          if (name.isEmpty()) {
             qWarning("QDockAreaLayoutInfo::saveState() Object name was not set for this QDockWidget %p %s",
-               w, csPrintable(w->windowTitle()));
+               static_cast<void *>(w), csPrintable(w->windowTitle()));
          }
          stream << name;
 

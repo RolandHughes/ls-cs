@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -41,6 +41,7 @@
 #include <qharfbuzz_p.h>
 
 #include <ft2build.h>
+
 #include FT_FREETYPE_H
 #include FT_OUTLINE_H
 #include FT_SYNTHESIS_H
@@ -96,7 +97,6 @@ static const QFontEngine::HintStyle ftInitialDefaultHintStyle =
 #else
    QFontEngineFT::HintNone;
 #endif
-
 
 // -------------------------- Freetype support ------------------------------
 
@@ -1009,7 +1009,9 @@ QFontEngineFT::Glyph *QFontEngineFT::loadGlyph(QGlyphSet *set, uint glyph,
    }
 
    if (err != FT_Err_Ok) {
-      qWarning("QFontEngineFT::loadGlyph() FT_Load_Glyph() failed, err=%x face=%p, glyph=%d", err, face, glyph);
+      qWarning("QFontEngineFT::loadGlyph() FT_Load_Glyph() failed, err=%x face=%p, glyph=%d",
+            err, static_cast<void *>(face), glyph);
+
       if (set) {
          set->setGlyphMissing(glyph);
       }
@@ -1089,7 +1091,8 @@ QFontEngineFT::Glyph *QFontEngineFT::loadGlyph(QGlyphSet *set, uint glyph,
       err = FT_Render_Glyph(slot, hsubpixel ? FT_RENDER_MODE_LCD : FT_RENDER_MODE_LCD_V);
 
       if (err != FT_Err_Ok) {
-         qWarning("QFontEngineFT::loadGlyph() FT_Render_Glyph() failed err=%x face=%p, glyph=%d", err, face, glyph);
+         qWarning("QFontEngineFT::loadGlyph() FT_Render_Glyph() failed err=%x face=%p, glyph=%d",
+               err, static_cast<void *>(face), glyph);
       }
 
       FT_Library_SetLcdFilter(slot->library, FT_LCD_FILTER_NONE);
@@ -1633,6 +1636,7 @@ void QFontEngineFT::addGlyphsToPath(glyph_t *glyphs, QFixedPoint *positions, int
       if (obliquen) {
          FT_GlyphSlot_Oblique(g);
       }
+
       QFreetypeFace::addGlyphToPath(face, g, positions[gl], path, xsize, ysize);
    }
 
@@ -1641,7 +1645,7 @@ void QFontEngineFT::addGlyphsToPath(glyph_t *glyphs, QFixedPoint *positions, int
 
 glyph_t QFontEngineFT::glyphIndex(char32_t ch) const
 {
-   glyph_t glyph = ch < QFreetypeFace::cmapCacheSize ? freetype->cmapCache[ch] : 0;
+   glyph_t glyph = ch < QFreetypeFace::CmapCacheSize ? freetype->cmapCache[ch] : 0;
 
    if (glyph == 0) {
 
@@ -1669,7 +1673,7 @@ glyph_t QFontEngineFT::glyphIndex(char32_t ch) const
          }
       }
 
-      if (ch < QFreetypeFace::cmapCacheSize) {
+      if (ch < QFreetypeFace::CmapCacheSize) {
          freetype->cmapCache[ch] = glyph;
       }
    }
@@ -1696,23 +1700,25 @@ bool QFontEngineFT::stringToCMap(QStringView str, QGlyphLayout *glyphs, int *num
       for (QChar c : str) {
          unsigned int uc = c.unicode();
 
-         glyphs->glyphs[glyph_pos] = uc < QFreetypeFace::cmapCacheSize ? freetype->cmapCache[uc] : 0;
+         glyphs->glyphs[glyph_pos] = uc < QFreetypeFace::CmapCacheSize ? freetype->cmapCache[uc] : 0;
 
          if (! glyphs->glyphs[glyph_pos] ) {
 
-
             glyph_t glyph = FT_Get_Char_Index(face, uc);
-            if (!glyph && (uc == 0xa0 || uc == 0x9)) {
+
+            if (! glyph && (uc == 0xa0 || uc == 0x9)) {
                uc = 0x20;
                glyph = FT_Get_Char_Index(face, uc);
             }
-            if (!glyph) {
+
+            if (! glyph) {
                FT_Set_Charmap(face, freetype->symbol_map);
                glyph = FT_Get_Char_Index(face, uc);
                FT_Set_Charmap(face, freetype->unicode_map);
             }
+
             glyphs->glyphs[glyph_pos] = glyph;
-            if (uc < QFreetypeFace::cmapCacheSize) {
+            if (uc < QFreetypeFace::CmapCacheSize) {
                freetype->cmapCache[uc] = glyph;
             }
          }
@@ -1726,20 +1732,20 @@ bool QFontEngineFT::stringToCMap(QStringView str, QGlyphLayout *glyphs, int *num
       for (QChar c : str) {
          unsigned int uc = c.unicode();
 
-         glyphs->glyphs[glyph_pos] = uc < QFreetypeFace::cmapCacheSize ? freetype->cmapCache[uc] : 0;
+         glyphs->glyphs[glyph_pos] = uc < QFreetypeFace::CmapCacheSize ? freetype->cmapCache[uc] : 0;
 
          if (! glyphs->glyphs[glyph_pos]) {
 
             {
             redo:
                glyph_t glyph = FT_Get_Char_Index(face, uc);
-               if (!glyph && (uc == 0xa0 || uc == 0x9)) {
+               if (! glyph && (uc == 0xa0 || uc == 0x9)) {
                   uc = 0x20;
                   goto redo;
                }
 
                glyphs->glyphs[glyph_pos] = glyph;
-               if (uc < QFreetypeFace::cmapCacheSize) {
+               if (uc < QFreetypeFace::CmapCacheSize) {
                   freetype->cmapCache[uc] = glyph;
                }
             }

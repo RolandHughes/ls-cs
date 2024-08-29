@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2013 Klarälvdalens Datakonsult AB, a KDAB Group company
 * Copyright (c) 2015 The Qt Company Ltd.
@@ -35,8 +35,7 @@ class QOpenGLBufferPrivate
 public:
     QOpenGLBufferPrivate(QOpenGLBuffer::Type t)
         : ref(1), type(t), guard(nullptr), usagePattern(QOpenGLBuffer::StaticDraw),
-          actualUsagePattern(QOpenGLBuffer::StaticDraw),
-          funcs(nullptr)
+          actualUsagePattern(QOpenGLBuffer::StaticDraw), funcs(nullptr)
     { }
 
     QAtomicInt ref;
@@ -171,15 +170,16 @@ bool QOpenGLBuffer::read(int offset, void *data, int count)
     (void) offset;
     (void) data;
     (void) count;
+
     return false;
 #endif
 }
 
 void QOpenGLBuffer::write(int offset, const void *data, int count)
 {
-#ifndef QT_NO_DEBUG
+#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
     if (! isCreated()) {
-        qWarning("QOpenGLBuffer::allocate(): buffer not created");
+       qDebug("QOpenGLBuffer::write() Buffer was not created");
     }
 #endif
 
@@ -192,11 +192,12 @@ void QOpenGLBuffer::write(int offset, const void *data, int count)
 
 void QOpenGLBuffer::allocate(const void *data, int count)
 {
-#ifndef QT_NO_DEBUG
+#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
     if (! isCreated()) {
-        qWarning("QOpenGLBuffer::allocate(): buffer not created");
+       qDebug("QOpenGLBuffer::allocate() Buffer was not created");
     }
 #endif
+
     Q_D(QOpenGLBuffer);
 
     if (d->guard && d->guard->id()) {
@@ -206,21 +207,22 @@ void QOpenGLBuffer::allocate(const void *data, int count)
 
 bool QOpenGLBuffer::bind()
 {
-#ifndef QT_NO_DEBUG
+#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
     if (! isCreated()) {
-        qWarning("QOpenGLBuffer::bind(): buffer not created");
+       qDebug("QOpenGLBuffer::bind() Buffer was not created");
     }
 #endif
+
     Q_D(const QOpenGLBuffer);
     GLuint bufferId = d->guard ? d->guard->id() : 0;
 
     if (bufferId) {
         if (d->guard->group() != QOpenGLContextGroup::currentContextGroup()) {
 
-#ifndef QT_NO_DEBUG
-            qWarning("QOpenGLBuffer::bind(): Buffer is not valid in the current context");
+#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
+           qDebug("QOpenGLBuffer::bind() Buffer is not valid in the current context");
 #endif
-            return false;
+           return false;
         }
 
         d->funcs->glBindBuffer(d->type, bufferId);
@@ -233,9 +235,9 @@ bool QOpenGLBuffer::bind()
 
 void QOpenGLBuffer::release()
 {
-#ifndef QT_NO_DEBUG
+#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
     if (! isCreated()) {
-        qWarning("QOpenGLBuffer::release(): buffer not created");
+       qDebug("QOpenGLBuffer::release() Buffer was not created");
     }
 #endif
 
@@ -270,22 +272,23 @@ int QOpenGLBuffer::size() const
 
     GLint value = -1;
     d->funcs->glGetBufferParameteriv(d->type, GL_BUFFER_SIZE, &value);
-    return value;
 
+    return value;
 }
 
 void *QOpenGLBuffer::map(QOpenGLBuffer::Access access)
 {
     Q_D(QOpenGLBuffer);
 
-#ifndef QT_NO_DEBUG
+#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
     if (! isCreated()) {
-        qWarning("QOpenGLBuffer::map(): buffer not created");
+       qDebug("QOpenGLBuffer::map() Buffer was not created");
     }
 #endif
 
-    if (! d->guard || ! d->guard->id())
+    if (! d->guard || ! d->guard->id()) {
         return nullptr;
+    }
 
     if (d->funcs->hasOpenGLExtension(QOpenGLExtensions::MapBufferRange)) {
         QOpenGLBuffer::RangeAccessFlags rangeAccess = Qt::EmptyFlag;
@@ -315,9 +318,9 @@ void *QOpenGLBuffer::mapRange(int offset, int count, QOpenGLBuffer::RangeAccessF
 {
     Q_D(QOpenGLBuffer);
 
-#ifndef QT_NO_DEBUG
+#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
     if (! isCreated()) {
-        qWarning("QOpenGLBuffer::mapRange(): buffer not created");
+       qDebug("QOpenGLBuffer::mapRange() Buffer was not created");
     }
 #endif
 
@@ -332,9 +335,9 @@ bool QOpenGLBuffer::unmap()
 {
     Q_D(QOpenGLBuffer);
 
-#ifndef QT_NO_DEBUG
+#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
     if (! isCreated()) {
-        qWarning("QOpenGLBuffer::unmap(): buffer not created");
+       qDebug("QOpenGLBuffer::unmap() Buffer was not created");
     }
 #endif
 
@@ -344,4 +347,3 @@ bool QOpenGLBuffer::unmap()
 
     return d->funcs->glUnmapBuffer(d->type) == GL_TRUE;
 }
-

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,7 +24,6 @@
 #ifndef QSTATEMACHINE_P_H
 #define QSTATEMACHINE_P_H
 
-#include <qstate_p.h>
 #include <qcoreevent.h>
 #include <qhash.h>
 #include <qlist.h>
@@ -34,7 +33,9 @@
 #include <qpointer.h>
 #include <qset.h>
 #include <qvector.h>
+
 #include <qfreelist_p.h>
+#include <qstate_p.h>
 
 class QEvent;
 
@@ -116,7 +117,7 @@ class Q_CORE_EXPORT QStateMachinePrivate : public QStatePrivate
    virtual void endMacrostep(bool didChange);
    virtual void exitInterpreter();
    virtual void exitStates(QEvent *event, const QList<QAbstractState *> &statesToExit_sorted,
-            const QHash<QAbstractState *, QVector<QPropertyAssignment>> &assignmentsForEnteredStates);
+         const QHash<QAbstractState *, QVector<QPropertyAssignment>> &assignmentsForEnteredStates);
 
    QList<QAbstractState *> computeExitSet(const QList<QAbstractTransition *> &enabledTransitions, CalculationCache *cache);
    QSet<QAbstractState *> computeExitSet_Unordered(const QList<QAbstractTransition *> &enabledTransitions, CalculationCache *cache);
@@ -125,27 +126,27 @@ class Q_CORE_EXPORT QStateMachinePrivate : public QStatePrivate
 
 #ifdef QT_NO_ANIMATION
    virtual void enterStates(QEvent *event, const QList<QAbstractState *> &exitedStates_sorted,
-            const QList<QAbstractState *> &statesToEnter_sorted, const QSet<QAbstractState *> &statesForDefaultEntry,
-            QHash<QAbstractState *, QVector<QPropertyAssignment>> &propertyAssignmentsForState);
+         const QList<QAbstractState *> &statesToEnter_sorted, const QSet<QAbstractState *> &statesForDefaultEntry,
+         QHash<QAbstractState *, QVector<QPropertyAssignment>> &propertyAssignmentsForState);
 
 #else
    virtual void enterStates(QEvent *event, const QList<QAbstractState *> &exitedStates_sorted,
-            const QList<QAbstractState *> &statesToEnter_sorted, const QSet<QAbstractState *> &statesForDefaultEntry,
-            QHash<QAbstractState *, QVector<QPropertyAssignment>> &propertyAssignmentsForState,
-            const QList<QAbstractAnimation *> &selectedAnimations);
+         const QList<QAbstractState *> &statesToEnter_sorted, const QSet<QAbstractState *> &statesForDefaultEntry,
+         QHash<QAbstractState *, QVector<QPropertyAssignment>> &propertyAssignmentsForState,
+         const QList<QAbstractAnimation *> &selectedAnimations);
 #endif
 
    QList<QAbstractState *> computeEntrySet(const QList<QAbstractTransition *> &enabledTransitions,
-            QSet<QAbstractState *> &statesForDefaultEntry, CalculationCache *cache);
+         QSet<QAbstractState *> &statesForDefaultEntry, CalculationCache *cache);
 
    QAbstractState *getTransitionDomain(QAbstractTransition *t,
-            const QList<QAbstractState *> &effectiveTargetStates, CalculationCache *cache) const;
+         const QList<QAbstractState *> &effectiveTargetStates, CalculationCache *cache) const;
 
    void addDescendantStatesToEnter(QAbstractState *state,
-            QSet<QAbstractState *> &statesToEnter, QSet<QAbstractState *> &statesForDefaultEntry);
+         QSet<QAbstractState *> &statesToEnter, QSet<QAbstractState *> &statesForDefaultEntry);
 
    void addAncestorStatesToEnter(QAbstractState *s, QAbstractState *ancestor,
-            QSet<QAbstractState *> &statesToEnter, QSet<QAbstractState *> &statesForDefaultEntry);
+         QSet<QAbstractState *> &statesToEnter, QSet<QAbstractState *> &statesForDefaultEntry);
 
    static QState *toStandardState(QAbstractState *state);
    static const QState *toStandardState(const QAbstractState *state);
@@ -233,7 +234,7 @@ class Q_CORE_EXPORT QStateMachinePrivate : public QStatePrivate
    bool hasRestorable(QAbstractState *state, QObject *object, const QString &propertyName) const;
 
    QVariant savedValueForRestorable(const QList<QAbstractState *> &exitedStates_sorted,
-            QObject *object, const QString &propertyName) const;
+         QObject *object, const QString &propertyName) const;
 
    void registerRestorable(QAbstractState *state, QObject *object, const QString &propertyName, const QVariant &value);
    void unregisterRestorables(const QList<QAbstractState *> &states, QObject *object, const QString &propertyName);
@@ -242,8 +243,8 @@ class Q_CORE_EXPORT QStateMachinePrivate : public QStatePrivate
    QHash<RestorableId, QVariant> computePendingRestorables(const QList<QAbstractState *> &statesToExit_sorted) const;
 
    QHash<QAbstractState *, QVector<QPropertyAssignment>>
-            computePropertyAssignments(const QList<QAbstractState *> &statesToEnter_sorted,
-            QHash<RestorableId, QVariant> &pendingRestorables) const;
+   computePropertyAssignments(const QList<QAbstractState *> &statesToEnter_sorted,
+         QHash<RestorableId, QVariant> &pendingRestorables) const;
 #endif
 
    State state;
@@ -271,7 +272,7 @@ class Q_CORE_EXPORT QStateMachinePrivate : public QStatePrivate
    bool animated;
 
    QPair<QList<QAbstractAnimation *>, QList<QAbstractAnimation *>> initializeAnimation(QAbstractAnimation *abstractAnimation,
-            const QPropertyAssignment &prop);
+         const QPropertyAssignment &prop);
 
    QHash<QAbstractState *, QList<QAbstractAnimation *>> animationsForState;
    QHash<QAbstractAnimation *, QPropertyAssignment> propertyForAnimation;
@@ -285,11 +286,11 @@ class Q_CORE_EXPORT QStateMachinePrivate : public QStatePrivate
    QList<QAbstractAnimation *> selectAnimations(const QList<QAbstractTransition *> &transitionList) const;
 
    void terminateActiveAnimations(QAbstractState *state,
-            const QHash<QAbstractState *, QVector<QPropertyAssignment>> &assignmentsForEnteredStates);
+         const QHash<QAbstractState *, QVector<QPropertyAssignment>> &assignmentsForEnteredStates);
 
    void initializeAnimations(QAbstractState *state, const QList<QAbstractAnimation *> &selectedAnimations,
-            const QList<QAbstractState *> &exitedStates_sorted,
-            QHash<QAbstractState *, QVector<QPropertyAssignment>> &assignmentsForEnteredStates);
+         const QList<QAbstractState *> &exitedStates_sorted,
+         QHash<QAbstractState *, QVector<QPropertyAssignment>> &assignmentsForEnteredStates);
 #endif
 
    QSignalEventGenerator *m_signalEventGenerator;
@@ -320,7 +321,7 @@ class Q_CORE_EXPORT QStateMachinePrivate : public QStatePrivate
    QHash<int, int> timerIdToDelayedEventId;
    QMutex delayedEventsMutex;
 
-   typedef QEvent *(*f_cloneEvent)(QEvent *);
+   using f_cloneEvent = QEvent *(*)(QEvent *);
 
    struct Handler {
       f_cloneEvent cloneEvent;

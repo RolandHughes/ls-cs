@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2013 Klarälvdalens Datakonsult AB, a KDAB Group company
 * Copyright (c) 2015 The Qt Company Ltd.
@@ -289,7 +289,7 @@ typedef GLintptr GLvdpauSurfaceNV;
 #endif
 
 
-// Types that aren't defined in all system's gl.h files.
+// Types that are not defined in all system's gl.h files.
 typedef ptrdiff_t qopengl_GLintptr;
 typedef ptrdiff_t qopengl_GLsizeiptr;
 

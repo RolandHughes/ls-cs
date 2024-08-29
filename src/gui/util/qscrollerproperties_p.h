@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,8 +24,8 @@
 #ifndef QSCROLLERPROPERTIES_P_H
 #define QSCROLLERPROPERTIES_P_H
 
-#include <QPointF>
-#include <QEasingCurve>
+#include <qeasingcurve.h>
+#include <qpointf.h>
 #include <qscrollerproperties.h>
 
 class QScrollerPropertiesPrivate
@@ -57,6 +57,4 @@ class QScrollerPropertiesPrivate
    QScrollerProperties::FrameRates frameRate;
 };
 
-
 #endif // QSCROLLERPROPERTIES_P_H
-

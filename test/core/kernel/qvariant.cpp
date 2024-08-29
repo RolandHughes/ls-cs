@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * This file is part of CopperSpice.
 *
@@ -1450,6 +1450,38 @@ TEST_CASE("QVariant constructor_json_value", "[qvariant]")
    }
 }
 
+TEST_CASE("QVariant constructor_json_object", "[qvariant]")
+{
+   QJsonObject child;
+   child["key_1"] = 111;
+   child["key_2"] = 222;
+
+   QJsonObject root;
+   root["key_0"] = child;
+
+   // part 1
+   QVariantMap map = root.toVariantMap();
+
+   // part 2
+   QJsonObject newRoot = QJsonObject::fromVariantMap(map);
+
+   QJsonDocument doc(newRoot);
+
+   QString result_1 = doc.toJsonString().simplified();
+   QString result_2 = "{ \"key_0\": { \"key_1\": 111, \"key_2\": 222 } }";
+
+   REQUIRE(result_1 == result_2);
+
+   // part 3
+   QVariant data = map;
+
+   QJsonObject root_2  = QJsonObject::fromVariantMap(data.toMap());
+   QJsonObject child_2 = root_2["key_0"].toObject();
+
+   REQUIRE(child_2["key_1"].toInt() == 111);
+   REQUIRE(child_2["key_2"].toInt() == 222);
+}
+
 TEST_CASE("QVariant constructor_line", "[qvariant]")
 {
    QVariant data = QLine(6, 12, 0, 3);
@@ -2176,7 +2208,7 @@ struct MyCustomType
    QList<int> dataList;
 };
 
-CS_DECLARE_METATYPE(MyCustomType);
+CS_DECLARE_METATYPE(MyCustomType)
 
 TEST_CASE("QVariant constructor_user_type", "[qvariant]")
 {

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -28,6 +28,7 @@
 #include <qmediaresourceset_p.h>
 
 namespace {
+
 class QDummyMediaPlayerResourceSet : public QMediaPlayerResourceSetInterface
 {
  public:
@@ -35,22 +36,28 @@ class QDummyMediaPlayerResourceSet : public QMediaPlayerResourceSetInterface
       : QMediaPlayerResourceSetInterface(parent) {
    }
 
-   bool isVideoEnabled() const {
+   bool isVideoEnabled() const override {
       return true;
    }
 
-   bool isGranted() const {
+   bool isGranted() const override {
       return true;
    }
 
-   bool isAvailable() const {
+   bool isAvailable() const override {
       return true;
    }
 
-   void acquire() {}
-   void release() {}
-   void setVideoEnabled(bool) {}
+   void acquire() override {
+   }
+
+   void release() override {
+   }
+
+   void setVideoEnabled(bool) override {
+   }
 };
+
 }
 
 static QFactoryLoader *loader()

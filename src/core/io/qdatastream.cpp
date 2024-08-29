@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -22,27 +22,29 @@
 ***********************************************************************/
 
 #include <qdatastream.h>
-#include <qdatastream_p.h>
 
 #include <qbuffer.h>
-#include <qstring.h>
-#include <stdio.h>
-#include <ctype.h>
-#include <stdlib.h>
 #include <qendian.h>
+#include <qstring.h>
+
+#include <qdatastream_p.h>
+
+#include <ctype.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 #undef  CHECK_STREAM_PRECOND
 
-#ifndef QT_NO_DEBUG
+#if defined(CS_SHOW_DEBUG_CORE)
 #define CHECK_STREAM_PRECOND(retVal) \
-   if (! dev) { \
-      qWarning("QDataStream: No device"); \
+   if (! m_device) { \
+      qWarning("QDataStream() No device"); \
       return retVal; \
    }
 #else
 
 #define CHECK_STREAM_PRECOND(retVal) \
-   if (! dev) { \
+   if (! m_device) { \
       return retVal; \
    }
 #endif
@@ -52,11 +54,11 @@
    if (q_status != Ok) \
       return retVal;
 
-// when streaming invalid QVariants,just the type should be written, no "data" after it
+// when streaming invalid QVariants just the type should be written, no "data" after it
 
 QDataStream::QDataStream()
 {
-   dev       = nullptr;
+   m_device  = nullptr;
    owndev    = false;
    byteorder = BigEndian;
    ver       = CS_DefaultStreamVersion;
@@ -64,14 +66,14 @@ QDataStream::QDataStream()
    q_status  = Ok;
 }
 
-QDataStream::QDataStream(QIODevice *d)
+QDataStream::QDataStream(QIODevice *device)
 {
-   dev       = d;                                  // set device
+   m_device  = device;                             // set device
    owndev    = false;
-   byteorder = BigEndian;                         // default byte order
+   byteorder = BigEndian;                          // default byte order
    ver       = CS_DefaultStreamVersion;
    noswap    = (QSysInfo::ByteOrder == QSysInfo::BigEndian);
-   q_status = Ok;
+   q_status  = Ok;
 }
 
 QDataStream::QDataStream(QByteArray *a, QIODevice::OpenMode flags)
@@ -80,7 +82,7 @@ QDataStream::QDataStream(QByteArray *a, QIODevice::OpenMode flags)
 
    buf->blockSignals(true);
    buf->open(flags);
-   dev       = buf;
+   m_device  = buf;
    owndev    = true;
    byteorder = BigEndian;
    ver       = CS_DefaultStreamVersion;
@@ -95,7 +97,8 @@ QDataStream::QDataStream(const QByteArray &a)
    buf->blockSignals(true);
    buf->setData(a);
    buf->open(QIODevice::ReadOnly);
-   dev       = buf;
+
+   m_device  = buf;
    owndev    = true;
    byteorder = BigEndian;
    ver       = CS_DefaultStreamVersion;
@@ -106,23 +109,23 @@ QDataStream::QDataStream(const QByteArray &a)
 QDataStream::~QDataStream()
 {
    if (owndev) {
-      delete dev;
+      delete m_device;
    }
 }
 
-void QDataStream::setDevice(QIODevice *d)
+void QDataStream::setDevice(QIODevice *device)
 {
    if (owndev) {
-      delete dev;
+      delete m_device;
       owndev = false;
    }
 
-   dev = d;
+   m_device = device;
 }
 
 bool QDataStream::atEnd() const
 {
-   return dev ? dev->atEnd() : true;
+   return m_device ? m_device->atEnd() : true;
 }
 
 QDataStream::FloatingPointPrecision QDataStream::floatingPointPrecision() const
@@ -173,8 +176,9 @@ QDataStream &QDataStream::operator>>(qint8 &i)
    CHECK_STREAM_PRECOND(*this)
    char c;
 
-   if (!dev->getChar(&c)) {
+   if (! m_device->getChar(&c)) {
       setStatus(ReadPastEnd);
+
    } else {
       i = qint8(c);
    }
@@ -187,11 +191,12 @@ QDataStream &QDataStream::operator>>(qint16 &i)
    i = 0;
    CHECK_STREAM_PRECOND(*this)
 
-   if (dev->read((char *)&i, 2) != 2) {
+   if (m_device->read((char *)&i, 2) != 2) {
       i = 0;
       setStatus(ReadPastEnd);
+
    } else {
-      if (!noswap) {
+      if (! noswap) {
          i = qbswap(i);
       }
    }
@@ -205,9 +210,10 @@ QDataStream &QDataStream::operator>>(qint32 &i)
 
    CHECK_STREAM_PRECOND(*this)
 
-   if (dev->read((char *)&i, 4) != 4) {
+   if (m_device->read((char *)&i, 4) != 4) {
       i = 0;
       setStatus(ReadPastEnd);
+
    } else {
       if (!noswap) {
          i = qbswap(i);
@@ -229,9 +235,10 @@ QDataStream &QDataStream::operator>>(qint64 &i)
       i = ((quint64)i1 << 32) + i2;
 
    } else {
-      if (dev->read((char *)&i, 8) != 8) {
+      if (m_device->read((char *)&i, 8) != 8) {
          i = qint64(0);
          setStatus(ReadPastEnd);
+
       } else {
          if (!noswap) {
             i = qbswap(i);
@@ -266,7 +273,7 @@ QDataStream &QDataStream::operator>>(float &f)
    f = 0.0f;
    CHECK_STREAM_PRECOND(*this)
 
-   if (dev->read((char *)&f, 4) != 4) {
+   if (m_device->read((char *)&f, 4) != 4) {
       f = 0.0f;
       setStatus(ReadPastEnd);
 
@@ -295,7 +302,7 @@ QDataStream &QDataStream::operator>>(double &f)
    f = 0.0;
    CHECK_STREAM_PRECOND(*this)
 
-   if (dev->read((char *)&f, 8) != 8) {
+   if (m_device->read((char *)&f, 8) != 8) {
       f = 0.0;
       setStatus(ReadPastEnd);
 
@@ -365,7 +372,7 @@ QDataStream &QDataStream::readBytes(char *&s, uint &l)
          delete [] prevBuf;
       }
 
-      if (dev->read(curBuf + allocated, blockSize) != blockSize) {
+      if (m_device->read(curBuf + allocated, blockSize) != blockSize) {
          delete [] curBuf;
          setStatus(ReadPastEnd);
          return *this;
@@ -385,14 +392,14 @@ QDataStream &QDataStream::readBytes(char *&s, uint &l)
 int QDataStream::readRawData(char *s, int len)
 {
    CHECK_STREAM_PRECOND(-1)
-   return dev->read(s, len);
+   return m_device->read(s, len);
 }
 
 QDataStream &QDataStream::operator<<(qint8 i)
 {
    CHECK_STREAM_WRITE_PRECOND(*this)
 
-   if (! dev->putChar(i)) {
+   if (! m_device->putChar(i)) {
       q_status = WriteFailed;
    }
 
@@ -407,7 +414,7 @@ QDataStream &QDataStream::operator<<(qint16 i)
       i = qbswap(i);
    }
 
-   if (dev->write((char *)&i, sizeof(qint16)) != sizeof(qint16)) {
+   if (m_device->write((char *)&i, sizeof(qint16)) != sizeof(qint16)) {
       q_status = WriteFailed;
    }
 
@@ -422,7 +429,7 @@ QDataStream &QDataStream::operator<<(qint32 i)
       i = qbswap(i);
    }
 
-   if (dev->write((char *)&i, sizeof(qint32)) != sizeof(qint32)) {
+   if (m_device->write((char *)&i, sizeof(qint32)) != sizeof(qint32)) {
       q_status = WriteFailed;
    }
 
@@ -443,7 +450,7 @@ QDataStream &QDataStream::operator<<(qint64 i)
          i = qbswap(i);
       }
 
-      if (dev->write((char *)&i, sizeof(qint64)) != sizeof(qint64)) {
+      if (m_device->write((char *)&i, sizeof(qint64)) != sizeof(qint64)) {
          q_status = WriteFailed;
       }
    }
@@ -455,7 +462,7 @@ QDataStream &QDataStream::operator<<(bool i)
 {
    CHECK_STREAM_WRITE_PRECOND(*this)
 
-   if (! dev->putChar(qint8(i))) {
+   if (! m_device->putChar(qint8(i))) {
       q_status = WriteFailed;
    }
 
@@ -478,7 +485,7 @@ QDataStream &QDataStream::operator<<(float f)
       f   = bit_cast<float>(tmp);
    }
 
-   if (dev->write((char *)&f, sizeof(float)) != sizeof(float)) {
+   if (m_device->write((char *)&f, sizeof(float)) != sizeof(float)) {
       q_status = WriteFailed;
    }
 
@@ -501,7 +508,7 @@ QDataStream &QDataStream::operator<<(double f)
       f   = bit_cast<double>(tmp);
    }
 
-   if (dev->write((char *)&f, sizeof(double)) != sizeof(double)) {
+   if (m_device->write((char *)&f, sizeof(double)) != sizeof(double)) {
       q_status = WriteFailed;
    }
 
@@ -549,7 +556,7 @@ QDataStream &QDataStream::writeBytes(const char *s, uint len)
 int QDataStream::writeRawData(const char *s, int len)
 {
    CHECK_STREAM_WRITE_PRECOND(-1)
-   int ret = dev->write(s, len);
+   int ret = m_device->write(s, len);
 
    if (ret != len) {
       q_status = WriteFailed;
@@ -562,13 +569,13 @@ int QDataStream::skipRawData(int len)
 {
    CHECK_STREAM_PRECOND(-1)
 
-   if (dev->isSequential()) {
+   if (m_device->isSequential()) {
       char buf[4096];
       int sumRead = 0;
 
       while (len > 0) {
          int blockSize = qMin(len, (int)sizeof(buf));
-         int n = dev->read(buf, blockSize);
+         int n = m_device->read(buf, blockSize);
 
          if (n == -1) {
             return -1;
@@ -585,14 +592,14 @@ int QDataStream::skipRawData(int len)
       return sumRead;
 
    } else {
-      qint64 pos  = dev->pos();
-      qint64 size = dev->size();
+      qint64 pos  = m_device->pos();
+      qint64 size = m_device->size();
 
       if (pos + len > size) {
          len = size - pos;
       }
 
-      if (!dev->seek(pos + len)) {
+      if (! m_device->seek(pos + len)) {
          return -1;
       }
 

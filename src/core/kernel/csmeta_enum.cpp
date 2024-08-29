@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -21,8 +21,10 @@
 *
 ***********************************************************************/
 
+// do not move these two includes
 #include <qobject.h>
 #include <csmeta.h>
+
 #include <qmetaobject.h>
 #include <qstringlist.h>
 #include <qstringparser.h>
@@ -53,13 +55,12 @@ const QString &QMetaEnum::key(int index) const
 {
    if (index < 0 || index >= m_data.size() ) {
 
-#if defined(CS_SHOW_DEBUG)
       if (m_data.isEmpty()) {
-         qDebug("QMetaEnum::key() Enum %s may not be registered", csPrintable(m_name));
+         qWarning("QMetaEnum::key() Enum %s may not be registered", csPrintable(m_name));
       }
-#endif
 
       static QString retval;
+
       return retval;
    }
 
@@ -169,4 +170,3 @@ QString QMetaEnum::valueToKeys(int value) const
 
    return keys;
 }
-

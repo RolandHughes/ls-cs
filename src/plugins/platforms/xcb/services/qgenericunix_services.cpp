@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -29,8 +29,6 @@
 #include <qdebug.h>
 
 #include <stdlib.h>
-
-enum { debug = 0 };
 
 static inline QByteArray detectDesktopEnvironment()
 {
@@ -116,9 +114,9 @@ static inline bool launch(const QString &launcher, const QUrl &url)
 {
    const QString command = launcher + QLatin1Char(' ') + url.toEncoded();
 
-   if (debug) {
-      qDebug("Launching %s", csPrintable(command));
-   }
+#if defined(CS_SHOW_DEBUG_PLATFORM)
+   qDebug("launch() Starting process %s", csPrintable(command));
+#endif
 
 #if defined(QT_NO_PROCESS)
    const bool ok = ::system(csPrintable(command + " &"));
@@ -127,7 +125,7 @@ static inline bool launch(const QString &launcher, const QUrl &url)
 #endif
 
    if (!ok) {
-      qWarning("Launch failed (%s)", csPrintable(command));
+      qWarning("launch() Failed to start process %s", csPrintable(command));
    }
 
    return ok;

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,10 +24,6 @@
 #include <qgraphicssceneevent.h>
 
 #ifndef QT_NO_GRAPHICSVIEW
-
-#ifndef QT_NO_DEBUG
-#include <qdebug.h>
-#endif
 
 #include <qmap.h>
 #include <qpoint.h>
@@ -85,7 +81,7 @@ class QGraphicsSceneMouseEventPrivate : public QGraphicsSceneEventPrivate
    Q_DECLARE_PUBLIC(QGraphicsSceneMouseEvent)
 
  public:
-   inline QGraphicsSceneMouseEventPrivate()
+   QGraphicsSceneMouseEventPrivate()
       : button(Qt::NoButton), buttons(Qt::EmptyFlag), modifiers(Qt::EmptyFlag),
         source(Qt::MouseEventNotSynthesized), flags(Qt::EmptyFlag)
    { }

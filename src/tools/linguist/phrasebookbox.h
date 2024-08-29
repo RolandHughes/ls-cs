@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,13 +24,14 @@
 #ifndef PHRASEBOOKBOX_H
 #define PHRASEBOOKBOX_H
 
-#include <ui_phrasebookbox.h>
 #include <phrase.h>
 #include <phrasemodel.h>
+#include <ui_phrasebookbox.h>
 
 #include <qdialog.h>
 
 class SettingsDialog;
+
 class QSortFilterProxyModel;
 
 class PhraseBookBox : public QDialog, public Ui::PhraseBookBox

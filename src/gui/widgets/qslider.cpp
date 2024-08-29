@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -111,13 +111,6 @@ inline int QSliderPrivate::pick(const QPoint &pt) const
    return orientation == Qt::Horizontal ? pt.x() : pt.y();
 }
 
-/*!
-    Initialize \a option with the values from this QSlider. This method
-    is useful for subclasses when they need a QStyleOptionSlider, but don't want
-    to fill in all the information themselves.
-
-    \sa QStyleOption::initFrom()
-*/
 void QSlider::initStyleOption(QStyleOptionSlider *option) const
 {
    if (!option) {
@@ -235,10 +228,6 @@ void QSlider::paintEvent(QPaintEvent *)
    style()->drawComplexControl(QStyle::CC_Slider, &opt, &p, this);
 }
 
-/*!
-    \reimp
-*/
-
 bool QSlider::event(QEvent *event)
 {
    Q_D(QSlider);
@@ -251,19 +240,19 @@ bool QSlider::event(QEvent *event)
             d->updateHoverControl(he->pos());
          }
          break;
+
       case QEvent::StyleChange:
       case QEvent::MacSizeChange:
          d->resetLayoutItemMargins();
          break;
+
       default:
          break;
    }
+
    return QAbstractSlider::event(event);
 }
 
-/*!
-    \reimp
-*/
 void QSlider::mousePressEvent(QMouseEvent *ev)
 {
    Q_D(QSlider);
@@ -327,16 +316,15 @@ void QSlider::mousePressEvent(QMouseEvent *ev)
    }
 }
 
-/*!
-    \reimp
-*/
 void QSlider::mouseMoveEvent(QMouseEvent *ev)
 {
    Q_D(QSlider);
+
    if (d->pressedControl != QStyle::SC_SliderHandle) {
       ev->ignore();
       return;
    }
+
    ev->accept();
    int newPosition = d->pixelPosToRangeValue(d->pick(ev->pos()) - d->clickOffset);
    QStyleOptionSlider opt;
@@ -344,17 +332,15 @@ void QSlider::mouseMoveEvent(QMouseEvent *ev)
    setSliderPosition(newPosition);
 }
 
-
-/*!
-    \reimp
-*/
 void QSlider::mouseReleaseEvent(QMouseEvent *ev)
 {
    Q_D(QSlider);
+
    if (d->pressedControl == QStyle::SC_None || ev->buttons()) {
       ev->ignore();
       return;
    }
+
    ev->accept();
    QStyle::SubControl oldPressed = QStyle::SubControl(d->pressedControl);
    d->pressedControl = QStyle::SC_None;
@@ -370,16 +356,16 @@ void QSlider::mouseReleaseEvent(QMouseEvent *ev)
    update(style()->subControlRect(QStyle::CC_Slider, &opt, oldPressed, this));
 }
 
-/*!
-    \reimp
-*/
 QSize QSlider::sizeHint() const
 {
    Q_D(const QSlider);
+
    ensurePolished();
    const int SliderLength = 84, TickSpace = 5;
+
    QStyleOptionSlider opt;
    initStyleOption(&opt);
+
    int thick = style()->pixelMetric(QStyle::PM_SliderThickness, &opt, this);
 
    if (d->tickPosition & TicksAbove) {
@@ -397,21 +383,21 @@ QSize QSlider::sizeHint() const
    return style()->sizeFromContents(QStyle::CT_Slider, &opt, QSize(w, h), this).expandedTo(QApplication::globalStrut());
 }
 
-/*!
-    \reimp
-*/
 QSize QSlider::minimumSizeHint() const
 {
    Q_D(const QSlider);
+
    QSize s = sizeHint();
    QStyleOptionSlider opt;
    initStyleOption(&opt);
    int length = style()->pixelMetric(QStyle::PM_SliderLength, &opt, this);
+
    if (d->orientation == Qt::Horizontal) {
       s.setWidth(length);
    } else {
       s.setHeight(length);
    }
+
    return s;
 }
 

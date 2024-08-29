@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -23,22 +23,22 @@
 
 //  right panel of the main window.
 
-#include "messageeditor.h"
-#include "messageeditorwidgets.h"
-#include "similartext.h"
-#include "phrasemodel.h"
+#include <messageeditor.h>
+#include <messageeditorwidgets.h>
+#include <similartext.h>
+#include <phrasemodel.h>
 
-#include <QApplication>
-#include <QBoxLayout>
-#include <QClipboard>
-#include <QDebug>
-#include <QDockWidget>
-#include <QHeaderView>
-#include <QKeyEvent>
-#include <QMainWindow>
-#include <QPainter>
-#include <QTreeView>
-#include <QVBoxLayout>
+#include <qapplication.h>
+#include <qboxlayout.h>
+#include <qclipboard.h>
+#include <qdebug.h>
+#include <qdockwidget.h>
+#include <qheaderview.h>
+#include <qkeyevent.h>
+#include <qmainwindow.h>
+#include <qpainter.h>
+#include <qtreeview.h>
+#include <qvboxlayout.h>
 
 #if 0
 

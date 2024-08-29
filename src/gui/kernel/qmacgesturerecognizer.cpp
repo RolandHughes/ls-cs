@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -36,23 +36,25 @@ QMacSwipeGestureRecognizer::QMacSwipeGestureRecognizer()
 {
 }
 
-QGesture *QMacSwipeGestureRecognizer::create(QObject * /*target*/)
+QGesture *QMacSwipeGestureRecognizer::create(QObject *)
 {
     return new QSwipeGesture;
 }
 
-QGestureRecognizer::Result
-QMacSwipeGestureRecognizer::recognize(QGesture *gesture, QObject *obj, QEvent *event)
+QGestureRecognizer::Result QMacSwipeGestureRecognizer::recognize(QGesture *gesture, QObject *obj, QEvent *event)
 {
     if (event->type() == QEvent::NativeGesture && obj->isWidgetType()) {
         QNativeGestureEvent *ev = static_cast<QNativeGestureEvent*>(event);
+
         switch (ev->gestureType()) {
             case Qt::SwipeNativeGesture: {
                 QSwipeGesture *g = static_cast<QSwipeGesture *>(gesture);
                 g->setSwipeAngle(ev->value());
                 g->setHotSpot(ev->screenPos());
                 return QGestureRecognizer::FinishGesture | QGestureRecognizer::ConsumeEventHint;
-                break; }
+                break;
+            }
+
             default:
                 break;
         }
@@ -68,23 +70,21 @@ void QMacSwipeGestureRecognizer::reset(QGesture *gesture)
     QGestureRecognizer::reset(gesture);
 }
 
-////////////////////////////////////////////////////////////////////////
-
 QMacPinchGestureRecognizer::QMacPinchGestureRecognizer()
 {
 }
 
-QGesture *QMacPinchGestureRecognizer::create(QObject * /*target*/)
+QGesture *QMacPinchGestureRecognizer::create(QObject *)
 {
     return new QPinchGesture;
 }
 
-QGestureRecognizer::Result
-QMacPinchGestureRecognizer::recognize(QGesture *gesture, QObject *obj, QEvent *event)
+QGestureRecognizer::Result QMacPinchGestureRecognizer::recognize(QGesture *gesture, QObject *obj, QEvent *event)
 {
     if (event->type() == QEvent::NativeGesture && obj->isWidgetType()) {
         QPinchGesture *g = static_cast<QPinchGesture *>(gesture);
         QNativeGestureEvent *ev = static_cast<QNativeGestureEvent*>(event);
+
         switch (ev->gestureType()) {
         case Qt::BeginNativeGesture:
             reset(gesture);
@@ -119,8 +119,10 @@ QMacPinchGestureRecognizer::recognize(QGesture *gesture, QObject *obj, QEvent *e
             g->setTotalChangeFlags(g->totalChangeFlags() | g->changeFlags());
             g->setHotSpot(ev->screenPos());
             return QGestureRecognizer::TriggerGesture | QGestureRecognizer::ConsumeEventHint;
+
         case Qt::EndNativeGesture:
             return QGestureRecognizer::FinishGesture | QGestureRecognizer::ConsumeEventHint;
+
         default:
             break;
         }
@@ -146,15 +148,13 @@ void QMacPinchGestureRecognizer::reset(QGesture *gesture)
     QGestureRecognizer::reset(gesture);
 }
 
-////////////////////////////////////////////////////////////////////////
-
 QMacPanGestureRecognizer::QMacPanGestureRecognizer() : _panCanceled(true)
 {
 }
 
 QGesture *QMacPanGestureRecognizer::create(QObject *target)
 {
-    if (!target)
+    if (! target)
         return new QPanGesture;
 
     if (QWidget *w = qobject_cast<QWidget *>(target)) {
@@ -165,8 +165,7 @@ QGesture *QMacPanGestureRecognizer::create(QObject *target)
     return nullptr;
 }
 
-QGestureRecognizer::Result
-QMacPanGestureRecognizer::recognize(QGesture *gesture, QObject *target, QEvent *event)
+QGestureRecognizer::Result QMacPanGestureRecognizer::recognize(QGesture *gesture, QObject *target, QEvent *event)
 {
     const int panBeginDelay = 300;
     const int panBeginRadius = 3;
@@ -183,7 +182,9 @@ QMacPanGestureRecognizer::recognize(QGesture *gesture, QObject *target, QEvent *
             _panCanceled = false;
             return QGestureRecognizer::MayBeGesture;
         }
-        break;}
+        break;
+    }
+
     case QEvent::TouchEnd: {
         if (_panCanceled)
             break;
@@ -191,7 +192,9 @@ QMacPanGestureRecognizer::recognize(QGesture *gesture, QObject *target, QEvent *
         const QTouchEvent *ev = static_cast<const QTouchEvent*>(event);
         if (ev->touchPoints().size() == 1)
             return QGestureRecognizer::FinishGesture;
-        break;}
+        break;
+    }
+
     case QEvent::TouchUpdate: {
         if (_panCanceled)
             break;
@@ -215,6 +218,7 @@ QMacPanGestureRecognizer::recognize(QGesture *gesture, QObject *target, QEvent *
                 g->setHotSpot(_startPos);
                 return QGestureRecognizer::TriggerGesture;
             }
+
         } else if (_panTimer.isActive()) {
             // I only want to cancel the pan if the user is pressing
             // more than one finger, and the pan hasn't started yet:
@@ -222,7 +226,9 @@ QMacPanGestureRecognizer::recognize(QGesture *gesture, QObject *target, QEvent *
             _panTimer.stop();
             return QGestureRecognizer::CancelGesture;
         }
-        break;}
+        break;
+    }
+
     case QEvent::Timer: {
         QTimerEvent *ev = static_cast<QTimerEvent *>(event);
         if (ev->timerId() == _panTimer.timerId()) {
@@ -234,7 +240,9 @@ QMacPanGestureRecognizer::recognize(QGesture *gesture, QObject *target, QEvent *
             g->setHotSpot(_startPos);
             return QGestureRecognizer::TriggerGesture | QGestureRecognizer::ConsumeEventHint;
         }
-        break; }
+        break;
+    }
+
     default:
         break;
     }
@@ -245,6 +253,7 @@ QMacPanGestureRecognizer::recognize(QGesture *gesture, QObject *target, QEvent *
 void QMacPanGestureRecognizer::reset(QGesture *gesture)
 {
     QPanGesture *g = static_cast<QPanGesture *>(gesture);
+
     _startPos = QPointF();
     _panCanceled = true;
     _panTimer.stop();
@@ -253,6 +262,5 @@ void QMacPanGestureRecognizer::reset(QGesture *gesture)
     g->setAcceleration(qreal(1));
     QGestureRecognizer::reset(gesture);
 }
-
 
 #endif // QT_NO_GESTURES

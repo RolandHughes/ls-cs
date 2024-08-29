@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -79,7 +79,6 @@ struct Dasher {
          ++dashIndex;
       }
 
-      //        qDebug() << "   dasher" << offset/64. << reverse << dashIndex;
       stroker->patternOffset += delta;
       stroker->patternOffset %= stroker->patternLength;
    }
@@ -94,7 +93,6 @@ struct Dasher {
          dashIndex %= stroker->patternSize;
       }
       offset %= stroker->patternLength;
-      //        qDebug() << "dasher.adjust" << offset/64. << dashIndex;
    }
 };
 
@@ -109,7 +107,7 @@ struct NoDasher {
    void adjust(int = 0) {}
 };
 
-};   // namespace
+}   // namespace
 
 /*
  * The return value is the result of the clipLine() call performed at the start
@@ -133,7 +131,7 @@ inline void drawPixel(QCosmeticStroker *stroker, int x, int y, int coverage)
       const int lastx = stroker->spans[stroker->current_span - 1].x + stroker->spans[stroker->current_span - 1].len ;
       const int lasty = stroker->spans[stroker->current_span - 1].y;
 
-      if (stroker->current_span == QCosmeticStroker::NSPANS || y < lasty || (y == lasty && x < lastx)) {
+      if (stroker->current_span == QCosmeticStroker::SpanCount || y < lasty || (y == lasty && x < lastx)) {
          stroker->blend(stroker->current_span, stroker->spans, &stroker->state->penData);
          stroker->current_span = 0;
       }
@@ -270,7 +268,6 @@ void QCosmeticStroker::setup()
       }
 
       strokeSelection |= Dashed;
-      // qDebug() << "setup: size=" << patternSize << "length=" << patternLength/64.;
    }
 
    stroke = strokeLine(strokeSelection);
@@ -506,7 +503,6 @@ void QCosmeticStroker::calculateLastPoint(qreal rx1, qreal ry1, qreal rx2, qreal
          lastAxisAligned = qAbs(yinc) < (1 << 14);
       }
    }
-   //    qDebug() << "   moveTo: setting last pixel to x/y dir" << lastPixel.x << lastPixel.y << lastDir;
 }
 
 static inline const QPainterPath::ElementType *subPath(const QPainterPath::ElementType *t,
@@ -524,7 +520,6 @@ static inline const QPainterPath::ElementType *subPath(const QPainterPath::Eleme
    }
 
    int offset = t - start - 1;
-   //    qDebug() << "subpath" << offset << points[0] << points[1] << points[2*offset] << points[2*offset+1];
    *closed = (points[0] == points[2 * offset] && points[1] == points[2 * offset + 1]);
 
    return t;
@@ -532,8 +527,6 @@ static inline const QPainterPath::ElementType *subPath(const QPainterPath::Eleme
 
 void QCosmeticStroker::drawPath(const QVectorPath &path)
 {
-   //    qDebug() << ">>>> drawpath" << path.convertToPainterPath()
-   //             << "antialiasing:" << (bool)(state->renderHints & QPainter::Antialiasing) << " implicit close:" << path.hasImplicitClose();
    if (path.isEmpty()) {
       return;
    }
@@ -561,7 +554,6 @@ void QCosmeticStroker::drawPath(const QVectorPath &path)
             calculateLastPoint(p1.x(), p1.y(), p2.x(), p2.y());
          }
          int caps = (!closed & drawCaps) ? CapBegin : NoCaps;
-         //            qDebug() << "closed =" << closed << capString(caps);
 
          points += 2;
          ++type;
@@ -655,14 +647,12 @@ void QCosmeticStroker::drawPath(const QVectorPath &path)
       }
    }
 
-
    blend(current_span, spans, &state->penData);
    current_span = 0;
 }
 
 void QCosmeticStroker::renderCubic(const QPointF &p1, const QPointF &p2, const QPointF &p3, const QPointF &p4, int caps)
 {
-   //    qDebug() << ">>>> renderCubic" << p1 << p2 << p3 << p4 << capString(caps);
    const int maxSubDivisions = 6;
    PointF points[3 * maxSubDivisions + 4];
 
@@ -768,8 +758,6 @@ static bool drawLine(QCosmeticStroker *stroker, qreal rx1, qreal ry1, qreal rx2,
    int dy = qAbs(y2 - y1);
 
    QCosmeticStroker::Point last = stroker->lastPixel;
-
-   //    qDebug() << "stroke" << x1/64. << y1/64. << x2/64. << y2/64.;
 
    if (dx < dy) {
       // vertical
@@ -984,8 +972,6 @@ static bool drawLineAA(QCosmeticStroker *stroker, qreal rx1, qreal ry1, qreal rx
          alphaStart = 64 - (y1 & 63);
          alphaEnd = (y2 & 63);
       }
-      //        qDebug() << "vertical" << x1/64. << y1/64. << x2/64. << y2/64.;
-      //        qDebug() << "          x=" << x << "dx=" << dx << "xi=" << (x>>16) << "xsi=" << ((x+(ys-y)*dx)>>16) << "y=" << y << "ys=" << ys;
 
       // draw first pixel
       if (dasher.on()) {
@@ -993,9 +979,11 @@ static bool drawLineAA(QCosmeticStroker *stroker, qreal rx1, qreal ry1, qreal rx
          drawPixel(stroker, x >> 16, y, (255 - alpha) * alphaStart >> 6);
          drawPixel(stroker, (x >> 16) + 1, y, alpha * alphaStart >> 6);
       }
+
       dasher.adjust();
       x += xinc;
       ++y;
+
       if (y < ys) {
          do {
             if (dasher.on()) {
@@ -1036,12 +1024,11 @@ static bool drawLineAA(QCosmeticStroker *stroker, qreal rx1, qreal ry1, qreal rx
 
       Dasher dasher(stroker, swapped, x1, x2);
 
-      int x = x1 >> 6;
+      int x  = x1 >> 6;
       int xs = x2 >> 6;
 
-      //        qDebug() << "horizontal" << x1/64. << y1/64. << x2/64. << y2/64.;
-      //        qDebug() << "          y=" << y << "dy=" << dy << "x=" << x << "xs=" << xs << "yi=" << (y>>16) << "ysi=" << ((y+(xs-x)*dy)>>16);
       int alphaStart, alphaEnd;
+
       if (x == xs) {
          alphaStart = x2 - x1;
          Q_ASSERT(alphaStart >= 0 && alphaStart < 64);

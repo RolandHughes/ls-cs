@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -27,6 +27,7 @@
 #include <qiodevice.h>
 #include <qbytearray.h>
 #include <qstring.h>
+
 #include <qringbuffer_p.h>
 
 #ifndef QIODEVICE_BUFFERSIZE
@@ -73,6 +74,7 @@ class QIODevicePrivateLinearBuffer
       if (len == 0) {
          return -1;
       }
+
       int ch = uchar(*first);
       len--;
       first++;
@@ -163,7 +165,10 @@ class QIODevicePrivateLinearBuffer
    }
 
  private:
-   enum FreeSpacePos {freeSpaceAtStart, freeSpaceAtEnd};
+   enum FreeSpacePos {
+      freeSpaceAtStart,
+      freeSpaceAtEnd
+   };
 
    void makeSpace(size_t required, FreeSpacePos where) {
       size_t newCapacity = qMax(capacity, size_t(QIODEVICE_BUFFERSIZE));
@@ -213,6 +218,12 @@ class Q_CORE_EXPORT QIODevicePrivate
    Q_DECLARE_PUBLIC(QIODevice)
 
  public:
+    enum AccessMode {
+      Unset,
+      Sequential,
+      RandomAccess
+   };
+
    QIODevicePrivate();
    virtual ~QIODevicePrivate();
 
@@ -227,23 +238,19 @@ class Q_CORE_EXPORT QIODevicePrivate
    qint64 seqDumpPos;
    qint64 *pPos;
    qint64 *pDevicePos;
+
    bool baseReadLineDataCalled;
    bool firstRead;
 
    virtual bool putCharHelper(char c);
 
-   enum AccessMode {
-      Unset,
-      Sequential,
-      RandomAccess
-   };
-
    mutable AccessMode accessMode;
 
-   inline bool isSequential() const {
+   bool isSequential() const {
       if (accessMode == Unset) {
          accessMode = q_func()->isSequential() ? Sequential : RandomAccess;
       }
+
       return accessMode == Sequential;
    }
 
@@ -254,7 +261,6 @@ class Q_CORE_EXPORT QIODevicePrivate
 
  protected:
    QIODevice *q_ptr;
-
 };
 
 #endif

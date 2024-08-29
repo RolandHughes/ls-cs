@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -22,7 +22,6 @@
 ***********************************************************************/
 
 #include <qlibrary.h>
-#include <qlibrary_p.h>
 
 #include <qstringlist.h>
 #include <qfile.h>
@@ -32,8 +31,10 @@
 #include <qdebug.h>
 #include <qvector.h>
 #include <qdir.h>
-#include <qcoreapplication_p.h>
 #include <qplatformdefs.h>
+
+#include <qlibrary_p.h>
+#include <qcoreapplication_p.h>
 
 #ifdef Q_OS_DARWIN
 #  include <qcore_mac_p.h>
@@ -41,18 +42,6 @@
 
 #ifndef NO_ERRNO_H
 #include <errno.h>
-#endif
-
-#ifdef QT_NO_DEBUG
-#  define QLIBRARY_AS_DEBUG false
-#else
-#  define QLIBRARY_AS_DEBUG true
-#endif
-
-#if defined(Q_OS_UNIX)
-// We do not use separate debug and release libs on UNIX,
-// to allow loading plugins, regardless of how they were built
-#  define QT_NO_DEBUG_PLUGIN_CHECK
 #endif
 
 static QMutex qt_library_mutex;
@@ -86,6 +75,7 @@ QLibraryStore::~QLibraryStore()
 inline void QLibraryStore::cleanup()
 {
    QLibraryStore *data = qt_library_data;
+
    if (! data) {
       return;
    }
@@ -111,16 +101,6 @@ inline void QLibraryStore::cleanup()
       }
    }
 
-   if (qt_debug_component()) {
-      for (auto lib : data->libraryMap) {
-
-         if (lib) {
-            qDebug() << "When CsCore unload," << lib->fileName << "was still open, with"
-               << lib->libraryRefCount.load() << " references";
-         }
-      }
-   }
-
    delete data;
 }
 
@@ -130,7 +110,6 @@ static void qlibraryCleanup()
 }
 
 Q_DESTRUCTOR_FUNCTION(qlibraryCleanup)
-
 
 QLibraryStore *QLibraryStore::instance()
 {
@@ -146,7 +125,7 @@ QLibraryStore *QLibraryStore::instance()
 }
 
 inline QLibraryHandle *QLibraryStore::cs_findLibrary(const QString &fileName, const QString &version,
-                  QLibrary::LoadHints loadHints)
+      QLibrary::LoadHints loadHints)
 {
    QMutexLocker locker(&qt_library_mutex);
    QLibraryStore *data = instance();
@@ -198,7 +177,7 @@ inline void QLibraryStore::releaseLibrary(QLibraryHandle *lib)
 }
 
 QLibraryHandle::QLibraryHandle(const QString &canonicalFileName, const QString &version, QLibrary::LoadHints loadHints)
-   : pluginState(MightBeAPlugin), pHnd(nullptr), fileName(canonicalFileName), fullVersion(version),
+   : pHnd(nullptr), fileName(canonicalFileName), fullVersion(version), pluginState(MightBeAPlugin),
      libraryRefCount(0), libraryUnloadCount(0)
 {
    loadHintsInt.store(loadHints);
@@ -255,12 +234,12 @@ bool QLibraryHandle::tryload()
 
    bool retval = load_sys();
 
-   if (qt_debug_component()) {
-      qDebug() << "loaded library" << fileName;
-   }
+#if defined(CS_SHOW_DEBUG_CORE_PLUGIN)
+   qDebug() << "QLibraryHandle::tryload() Loaded library "  << fileName;
+#endif
 
    if (retval) {
-      // when loading a library we add a reference so the QLibraryHandle will not be deleted
+      // when loading a library add a reference so the QLibraryHandle will not be deleted
       // this allows the abilitiy to unload the library at a later time
 
       libraryUnloadCount.ref();
@@ -276,18 +255,12 @@ bool QLibraryHandle::unload(UnloadFlag flag)
       return false;
    }
 
-   if (libraryUnloadCount.load() > 0 && !libraryUnloadCount.deref()) {
+   if (libraryUnloadCount.load() > 0 && ! libraryUnloadCount.deref()) {
       // only unload if ALL QLibrary instances wanted to
       delete pluginObj.data();
 
       if (flag == NoUnloadSys || unload_sys()) {
-         if (qt_debug_component()) {
-            qWarning() << "QLibraryHandle::unload succeeded on" << fileName
-               << (flag == NoUnloadSys ? "(faked)" : "");
-         }
-
-         // when the library is unloaded, we release the reference on it so
-         // 'this' can get deleted
+         // when the library is unloaded release the reference so 'this' can get deleted
          libraryRefCount.deref();
          pHnd = nullptr;
       }
@@ -316,9 +289,9 @@ bool QLibraryHandle::loadPlugin()
       return true;
    }
 
-   if (qt_debug_component()) {
-      qWarning() << "QLibraryHandle::loadPlugin failed on" << fileName << ":" << errorString;
-   }
+#if defined(CS_SHOW_DEBUG_CORE_PLUGIN)
+   qDebug() << "QLibraryHandle::loadPlugin() File name = " << fileName << " error = " << errorString;
+#endif
 
    pluginState = IsNotAPlugin;
 
@@ -333,9 +306,11 @@ bool QLibrary::isLibrary(const QString &fileName)
 
 #else
    QString completeSuffix = QFileInfo(fileName).completeSuffix();
+
    if (completeSuffix.isEmpty()) {
       return false;
    }
+
    QStringList suffixes = completeSuffix.split(QLatin1Char('.'));
 
 # if defined(Q_OS_DARWIN)
@@ -344,15 +319,12 @@ bool QLibrary::isLibrary(const QString &fileName)
    const QString lastSuffix = suffixes.at(suffixes.count() - 1);
    const QString firstSuffix = suffixes.at(0);
 
-   bool valid = (lastSuffix == QLatin1String("dylib")
-         || firstSuffix == QLatin1String("so")
-         || firstSuffix == QLatin1String("bundle"));
+   bool valid = (lastSuffix == QString("dylib") || firstSuffix == QString("so") || firstSuffix == QString("bundle"));
 
    return valid;
 
 # else  // Generic Unix
    QStringList validSuffixList;
-
 
 #  if defined(Q_OS_UNIX)
    validSuffixList << QLatin1String("so");
@@ -367,15 +339,18 @@ bool QLibrary::isLibrary(const QString &fileName)
 
    int suffix;
    int suffixPos = -1;
+
    for (suffix = 0; suffix < validSuffixList.count() && suffixPos == -1; ++suffix) {
       suffixPos = suffixes.indexOf(validSuffixList.at(suffix));
    }
 
    bool valid = suffixPos != -1;
+
    for (int i = suffixPos + 1; i < suffixes.count() && valid; ++i)
       if (i != suffixPos) {
          suffixes.at(i).toInteger<int>(&valid);
       }
+
    return valid;
 # endif
 
@@ -420,7 +395,6 @@ void QLibraryHandle::updatePluginState()
 
 #if defined(Q_OS_UNIX) && ! defined(Q_OS_DARWIN)
    if (fileName.endsWith(".debug")) {
-
       // do not load a file which ends in .debug, these are the debug symbols from the libraries
       // they are valid shared library files and dlopen is known to crash while opening them
 
@@ -478,16 +452,9 @@ void QLibraryHandle::updatePluginState()
    int version = m_metaObject->classInfo(index).value().toInteger<int>();
 
    if ((version & 0x00ff00) > (CS_VERSION & 0x00ff00) || (version & 0xff0000) != (CS_VERSION & 0xff0000)) {
-
-      if (qt_debug_component()) {
-         qWarning("In %s:\n"
-            "  Plugin uses incompatible CopperSpice library (%d.%d.%d)", QFile::encodeName(fileName).constData(),
-            (version & 0xff0000) >> 16, (version & 0xff00) >> 8, version & 0xff);
-      }
-
-      errorString = QLibrary::tr("Plugin '%1' uses an incompatible CopperSpice library. (%2.%3.%4)")
-         .formatArg(fileName).formatArg((version & 0xff0000) >> 16).formatArg((version & 0xff00) >> 8)
-         .formatArg(version & 0xff);
+      errorString = QLibrary::tr("Plugin '%1' uses an incompatible CopperSpice library (%2.%3.%4)")
+            .formatArg(fileName).formatArg((version & 0xff0000) >> 16).formatArg((version & 0xff00) >> 8)
+            .formatArg(version & 0xff);
 
    } else {
       pluginState = IsAPlugin;
@@ -661,16 +628,3 @@ QLibrary::LoadHints QLibrary::loadHints() const
       return QLibrary::LoadHints();
    }
 }
-
-// internal
-bool qt_debug_component()
-{
-   static int debug_env = -1;
-
-   if (debug_env == -1) {
-      debug_env = qgetenv("QT_DEBUG_PLUGINS").toInt();
-   }
-
-   return debug_env != 0;
-}
-

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -67,10 +67,14 @@ static int resourceType(const QByteArray &key)
    return int(result - names);
 }
 
+static QString customMarginPropertyC = "WindowsCustomMargins";
+
 void *QWindowsNativeInterface::nativeResourceForWindow(const QByteArray &resource, QWindow *window)
 {
    if (! window || ! window->handle()) {
-      qWarning("%s: '%s' requested for null window or window without handle.", __FUNCTION__, resource.constData());
+      qWarning("QWindowsNativeInterface::nativeResourceForWindow() Called with a null window or a window without a handle, %s",
+            resource.constData());
+
       return nullptr;
    }
 
@@ -99,12 +103,10 @@ void *QWindowsNativeInterface::nativeResourceForWindow(const QByteArray &resourc
          break;
    }
 
-   qWarning("%s: Invalid key '%s' requested.", __FUNCTION__, resource.constData());
+   qWarning("QWindowsNativeInterface::nativeResourceForWindow() Invalid key, %s", resource.constData());
 
    return nullptr;
 }
-
-static QString customMarginPropertyC = "WindowsCustomMargins";
 
 QVariant QWindowsNativeInterface::windowProperty(QPlatformWindow *window, const QString &name) const
 {
@@ -157,8 +159,8 @@ void *QWindowsNativeInterface::nativeResourceForIntegration(const QByteArray &re
 #ifndef QT_NO_OPENGL
 void *QWindowsNativeInterface::nativeResourceForContext(const QByteArray &resource, QOpenGLContext *context)
 {
-   if (!context || ! context->handle()) {
-      qWarning("nativeResourceForContext(): '%s' requested for null context or context without handle.", resource.constData());
+   if (! context || ! context->handle()) {
+      qWarning("nativeResourceForContext() Called with a null context or a conttext without a handle, %s", resource.constData());
       return nullptr;
    }
 
@@ -179,7 +181,7 @@ void *QWindowsNativeInterface::nativeResourceForContext(const QByteArray &resour
          break;
    }
 
-   qWarning("nativeResourceForContext(): Invalid key '%s' requested.", resource.constData());
+   qWarning("nativeResourceForContext() Invalid key, %s", resource.constData());
 
    return nullptr;
 }
@@ -252,4 +254,3 @@ QVariant QWindowsNativeInterface::gpu() const
 {
    return GpuDescription::detect().toVariant();
 }
-

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -21,14 +21,15 @@
 *
 ***********************************************************************/
 
-#include "recentfiles.h"
-#include "globals.h"
+#include <recentfiles.h>
 
-#include <QDebug>
-#include <QFileInfo>
-#include <QSettings>
-#include <QString>
-#include <QStringList>
+#include <globals.h>
+
+#include <qdebug.h>
+#include <qfileinfo.h>
+#include <qsettings.h>
+#include <qstring.h>
+#include <qstringlist.h>
 
 static QString configKey()
 {

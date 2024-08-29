@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -30,10 +30,10 @@ class MessageHighlighter;
 #include <qimage.h>
 #include <qlabel.h>
 #include <qmap.h>
+#include <qstringfwd.h>
 #include <qtextedit.h>
 #include <qurl.h>
 #include <qwidget.h>
-#include <qstringfwd.h>
 
 class QAbstractButton;
 class QAction;

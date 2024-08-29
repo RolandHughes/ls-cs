@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -22,21 +22,23 @@
 ***********************************************************************/
 
 #include <qutfcodec_p.h>
+
 #include <qendian.h>
 #include <qlist.h>
 #include <qstring.h>
 #include <qstring16.h>
 
-enum { Endian = 0, Data = 1 };
+static constexpr const int Endian = 0;
+static constexpr const int Data   = 1;
 
 QByteArray QUtf8::convertFromUnicode(QStringView str, QTextCodec::ConverterState *state)
 {
    QByteArray retval;
 
    if (state && ! (state->m_flags & QTextCodec::IgnoreHeader)) {
-      retval.append(0xEF);
-      retval.append(0xBB);
-      retval.append(0xBF);
+      retval.append(uchar(0xEF));
+      retval.append(uchar(0xBB));
+      retval.append(uchar(0xBF));
    }
 
    retval += QByteArray(str.charData(), str.size_storage());
@@ -196,18 +198,19 @@ QByteArray QUtf16::convertFromUnicode(QStringView str, QTextCodec::ConverterStat
    QByteArray retval;
 
    DataEndianness endian = e;
+
    if (! state || (! (state->m_flags & QTextCodec::IgnoreHeader))) {
       endian = (QSysInfo::ByteOrder == QSysInfo::BigEndian) ? BigEndianness : LittleEndianness;
    }
 
    if (! state || ! (state->m_flags & QTextCodec::IgnoreHeader)) {
       if (endian == BigEndianness) {
-         retval.append(0xFE);
-         retval.append(0xFF);
+         retval.append(uchar(0xFE));
+         retval.append(uchar(0xFF));
 
       } else  {
-         retval.append(0xFF);
-         retval.append(0xFE);
+         retval.append(uchar(0xFF));
+         retval.append(uchar(0xFE));
       }
    }
 
@@ -220,7 +223,7 @@ QByteArray QUtf16::convertFromUnicode(QStringView str, QTextCodec::ConverterStat
       char16_t ch = *iter;
       ++iter;
 
-     if (endian == BigEndianness) {
+      if (endian == BigEndianness) {
          retval.append(ch >> 8);
          retval.append(ch & 0xFF);
 
@@ -357,10 +360,10 @@ QString QUtf16::convertToUnicode(const char *chars, int len, QTextCodec::Convert
             data = 0;
          }
 
-     } else {
+      } else {
          data = (data & 0xFFFF0000) | byte;
          ++bytesRead;
-     }
+      }
    }
 
    if (state) {
@@ -390,6 +393,7 @@ QByteArray QUtf32::convertFromUnicode(QStringView str, QTextCodec::ConverterStat
    QByteArray retval;
 
    DataEndianness endian = e;
+
    if (! state || (! (state->m_flags & QTextCodec::IgnoreHeader))) {
       endian = (QSysInfo::ByteOrder == QSysInfo::BigEndian) ? BigEndianness : LittleEndianness;
    }
@@ -398,12 +402,12 @@ QByteArray QUtf32::convertFromUnicode(QStringView str, QTextCodec::ConverterStat
       if (endian == BigEndianness) {
          retval.append('\x00');
          retval.append('\x00');
-         retval.append(0xFE);
-         retval.append(0xFF);
+         retval.append(uchar(0xFE));
+         retval.append(uchar(0xFF));
 
       } else  {
-         retval.append(0xFF);
-         retval.append(0xFE);
+         retval.append(uchar(0xFF));
+         retval.append(uchar(0xFE));
          retval.append('\x00');
          retval.append('\x00');
       }
@@ -679,4 +683,3 @@ QStringList QUtf32LECodec::aliases() const
 }
 
 #endif
-

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,15 +24,18 @@
 #ifndef QREADWRITELOCK_H
 #define QREADWRITELOCK_H
 
-#include <qglobal.h>
 #include <qassert.h>
+#include <qglobal.h>
 
 struct QReadWriteLockPrivate;
 
 class Q_CORE_EXPORT QReadWriteLock
 {
  public:
-   enum RecursionMode { NonRecursive, Recursive };
+   enum RecursionMode {
+      NonRecursive,
+      Recursive
+   };
 
    explicit QReadWriteLock(RecursionMode recursionMode = NonRecursive);
 
@@ -65,11 +68,12 @@ class Q_CORE_EXPORT QReadLocker
    QReadLocker(const QReadLocker &) = delete;
    QReadLocker &operator=(const QReadLocker &) = delete;
 
-   inline ~QReadLocker() {
+   ~QReadLocker()
+   {
       unlock();
    }
 
-   inline void unlock() {
+   void unlock() {
       if (q_val) {
          if ((q_val & quintptr(1u)) == quintptr(1u)) {
             q_val &= ~quintptr(1u);
@@ -78,7 +82,7 @@ class Q_CORE_EXPORT QReadLocker
       }
    }
 
-   inline void relock() {
+   void relock() {
       if (q_val) {
          if ((q_val & quintptr(1u)) == quintptr(0u)) {
             readWriteLock()->lockForRead();
@@ -87,7 +91,7 @@ class Q_CORE_EXPORT QReadLocker
       }
    }
 
-   inline QReadWriteLock *readWriteLock() const {
+   QReadWriteLock *readWriteLock() const {
       return reinterpret_cast<QReadWriteLock *>(q_val & ~quintptr(1u));
    }
 
@@ -110,11 +114,11 @@ class Q_CORE_EXPORT QWriteLocker
    QWriteLocker(const QWriteLocker &) = delete;
    QWriteLocker &operator=(const QWriteLocker &) = delete;
 
-   inline ~QWriteLocker() {
+   ~QWriteLocker() {
       unlock();
    }
 
-   inline void unlock() {
+   void unlock() {
       if (q_val) {
          if ((q_val & quintptr(1u)) == quintptr(1u)) {
             q_val &= ~quintptr(1u);
@@ -123,7 +127,7 @@ class Q_CORE_EXPORT QWriteLocker
       }
    }
 
-   inline void relock() {
+   void relock() {
       if (q_val) {
          if ((q_val & quintptr(1u)) == quintptr(0u)) {
             readWriteLock()->lockForWrite();
@@ -132,7 +136,7 @@ class Q_CORE_EXPORT QWriteLocker
       }
    }
 
-   inline QReadWriteLock *readWriteLock() const {
+   QReadWriteLock *readWriteLock() const {
       return reinterpret_cast<QReadWriteLock *>(q_val & ~quintptr(1u));
    }
 

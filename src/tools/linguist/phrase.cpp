@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -38,11 +38,11 @@
 static QString protect(const QString &str)
 {
    QString p = str;
-   p.replace(QLatin1Char('&'),  QLatin1String("&amp;"));
-   p.replace(QLatin1Char('\"'), QLatin1String("&quot;"));
-   p.replace(QLatin1Char('>'),  QLatin1String("&gt;"));
-   p.replace(QLatin1Char('<'),  QLatin1String("&lt;"));
-   p.replace(QLatin1Char('\''), QLatin1String("&apos;"));
+   p.replace(QChar('&'),  QString("&amp;"));
+   p.replace(QChar('\"'), QString("&quot;"));
+   p.replace(QChar('>'),  QString("&gt;"));
+   p.replace(QChar('<'),  QString("&lt;"));
+   p.replace(QChar('\''), QString("&apos;"));
 
    return p;
 }
@@ -52,14 +52,13 @@ Phrase::Phrase()
 {
 }
 
-Phrase::Phrase(const QString &source, const QString &target,
-               const QString &definition, int sc)
+Phrase::Phrase(const QString &source, const QString &target, const QString &definition, int sc)
    : shrtc(sc), s(source), t(target), d(definition), m_phraseBook(nullptr)
 {
 }
 
 Phrase::Phrase(const QString &source, const QString &target,
-               const QString &definition, PhraseBook *phraseBook)
+      const QString &definition, PhraseBook *phraseBook)
    : shrtc(-1), s(source), t(target), d(definition), m_phraseBook(phraseBook)
 {
 }
@@ -106,7 +105,7 @@ void Phrase::setDefinition(const QString &nd)
 bool operator==(const Phrase &p, const Phrase &q)
 {
    return p.source() == q.source() && p.target() == q.target() &&
-          p.definition() == q.definition() && p.phraseBook() == q.phraseBook();
+         p.definition() == q.definition() && p.phraseBook() == q.phraseBook();
 }
 
 class QphHandler : public QXmlDefaultHandler
@@ -115,14 +114,14 @@ class QphHandler : public QXmlDefaultHandler
    QphHandler(PhraseBook *phraseBook)
       : pb(phraseBook), ferrorCount(0) { }
 
-   virtual bool startElement(const QString &namespaceURI,
-            const QString &localName, const QString &qName, const QXmlAttributes &atts);
+   bool startElement(const QString &namespaceURI,
+         const QString &localName, const QString &qName, const QXmlAttributes &atts) override;
 
-   virtual bool endElement(const QString &namespaceURI,
-            const QString &localName, const QString &qName);
+   bool endElement(const QString &namespaceURI,
+         const QString &localName, const QString &qName) override;
 
-   virtual bool characters(const QString &ch);
-   virtual bool fatalError(const QXmlParseException &exception);
+   bool characters(const QString &ch) override;
+   bool fatalError(const QXmlParseException &exception) override;
 
    QString language() const {
       return m_language;
@@ -145,7 +144,7 @@ class QphHandler : public QXmlDefaultHandler
 };
 
 bool QphHandler::startElement(const QString &, const QString &,
-               const QString &qName, const QXmlAttributes &atts)
+      const QString &qName, const QXmlAttributes &atts)
 {
    if (qName == "QPH") {
       m_language = atts.value("language");
@@ -190,7 +189,7 @@ bool QphHandler::fatalError(const QXmlParseException &exception)
 {
    if (ferrorCount == 0) {
       QString msg = PhraseBook::tr("Parse error at line %1, column %2 \n%3.")
-               .formatArg(exception.lineNumber()).formatArg(exception.columnNumber()).formatArg(exception.message());
+            .formatArg(exception.lineNumber()).formatArg(exception.columnNumber()).formatArg(exception.message());
 
       QMessageBox::information(nullptr, QObject::tr("Linguist"), msg);
    }
@@ -245,9 +244,9 @@ bool PhraseBook::load(const QString &fileName, bool *langGuessed)
    QXmlInputSource in(&f);
    QXmlSimpleReader reader;
 
-   reader.setFeature(QLatin1String("http://xml.org/sax/features/namespaces"), false);
-   reader.setFeature(QLatin1String("http://xml.org/sax/features/namespace-prefixes"), true);
-   reader.setFeature(QLatin1String("http://copperspice.com/xml/features/report-whitespace-only-CharData"), false);
+   reader.setFeature("http://xml.org/sax/features/namespaces", false);
+   reader.setFeature("http://xml.org/sax/features/namespace-prefixes", true);
+   reader.setFeature("http://copperspice.com/xml/features/report-whitespace-only-CharData", false);
 
    QphHandler *hand = new QphHandler(this);
    reader.setContentHandler(hand);

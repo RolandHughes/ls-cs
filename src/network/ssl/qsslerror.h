@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -64,8 +64,6 @@ public:
       UnspecifiedError = -1
    };
 
-   // RVCT compiler in debug build does not like about default values in const-
-   // So as an workaround we define all constructor overloads here explicitly
    QSslError();
    QSslError(SslError error);
    QSslError(SslError error, const QSslCertificate &certificate);
@@ -85,7 +83,7 @@ public:
    QSslError &operator=(const QSslError &other);
    bool operator==(const QSslError &other) const;
 
-   inline bool operator!=(const QSslError &other) const {
+   bool operator!=(const QSslError &other) const {
       return !(*this == other);
    }
 
@@ -105,7 +103,9 @@ Q_NETWORK_EXPORT QDebug operator<<(QDebug debug, const QSslError::SslError &erro
 
 #else
 
-class QSslError { };
+class QSslError
+{
+};
 
 #endif   // QT_SSL
 

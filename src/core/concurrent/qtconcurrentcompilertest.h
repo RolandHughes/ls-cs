@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -35,10 +35,10 @@ class HasResultType
    static char test(int, const typename U::result_type * = nullptr);
 
    template <typename U>
-   static void * test(double);
+   static void *test(double);
 
  public:
-   constexpr static bool Value = (sizeof(test<T>(0)) == sizeof(char));
+   static constexpr bool Value = (sizeof(test<T>(0)) == sizeof(char));
 };
 
 }  // namespace

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -21,17 +21,17 @@
 *
 ***********************************************************************/
 
-//#define QUDPSOCKET_DEBUG
-
 #include <qudpsocket.h>
+
 #include <qhostaddress.h>
 #include <qnetworkinterface.h>
+
 #include <qabstractsocket_p.h>
 
 #ifndef QT_NO_UDPSOCKET
 
 #define QT_CHECK_BOUND(function, a) do { \
-    if (!isValid()) { \
+    if (! isValid()) { \
         qWarning(function" called on a QUdpSocket when not in QUdpSocket::BoundState"); \
         return (a); \
     } } while (false)
@@ -43,11 +43,11 @@ class QUdpSocketPrivate : public QAbstractSocketPrivate
    bool doEnsureInitialized(const QHostAddress &bindAddress, quint16 bindPort,
                             const QHostAddress &remoteAddress);
  public:
-   inline bool ensureInitialized(const QHostAddress &bindAddress, quint16 bindPort) {
+   bool ensureInitialized(const QHostAddress &bindAddress, quint16 bindPort) {
       return doEnsureInitialized(bindAddress, bindPort, QHostAddress());
    }
 
-   inline bool ensureInitialized(const QHostAddress &remoteAddress) {
+   bool ensureInitialized(const QHostAddress &remoteAddress) {
       return doEnsureInitialized(QHostAddress(), 0, remoteAddress);
    }
 };
@@ -57,6 +57,7 @@ bool QUdpSocketPrivate::doEnsureInitialized(const QHostAddress &bindAddress, qui
 {
    const QHostAddress *address = &bindAddress;
    QAbstractSocket::NetworkLayerProtocol proto = address->protocol();
+
    if (proto == QUdpSocket::UnknownNetworkLayerProtocol) {
       address = &remoteAddress;
       proto = address->protocol();
@@ -133,7 +134,7 @@ void QUdpSocket::setMulticastInterface(const QNetworkInterface &iface)
 {
    Q_D(QUdpSocket);
    if (!isValid()) {
-      qWarning("QUdpSocket::setMulticastInterface() called on a QUdpSocket when not in QUdpSocket::BoundState");
+      qWarning("QUdpSocket::setMulticastInterface() Called on a QUdpSocket when not in QUdpSocket::BoundState");
       return;
    }
    d->socketEngine->setMulticastInterface(iface);
@@ -160,10 +161,12 @@ qint64 QUdpSocket::writeDatagram(const char *data, qint64 size, const QHostAddre
                                  quint16 port)
 {
    Q_D(QUdpSocket);
-#if defined QUDPSOCKET_DEBUG
+
+#if defined(CS_SHOW_DEBUG_NETWORK)
    qDebug("QUdpSocket::writeDatagram(%p, %llu, \"%s\", %i)", data, size,
           address.toString().toLatin1().constData(), port);
 #endif
+
    if (! d->doEnsureInitialized(QHostAddress::Any, 0, address)) {
       return -1;
    }
@@ -184,15 +187,11 @@ qint64 QUdpSocket::writeDatagram(const char *data, qint64 size, const QHostAddre
    return sent;
 }
 
-
-
-
-qint64 QUdpSocket::readDatagram(char *data, qint64 maxSize, QHostAddress *address,
-                                quint16 *port)
+qint64 QUdpSocket::readDatagram(char *data, qint64 maxSize, QHostAddress *address, quint16 *port)
 {
    Q_D(QUdpSocket);
 
-#if defined QUDPSOCKET_DEBUG
+#if defined(CS_SHOW_DEBUG_NETWORK)
    qDebug("QUdpSocket::readDatagram(%p, %llu, %p, %p)", data, maxSize, address, port);
 #endif
 

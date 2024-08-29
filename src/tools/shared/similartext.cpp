@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,9 +24,10 @@
 #include <similartext.h>
 
 #include <translator.h>
+
 #include <qbytearray.h>
-#include <qstring.h>
 #include <qlist.h>
+#include <qstring.h>
 
 /*
   How similar are two texts?  The approach used here relies on co-occurrence

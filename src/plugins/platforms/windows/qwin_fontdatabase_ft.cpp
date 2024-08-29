@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -176,27 +176,28 @@ static bool addFontToDatabase(const QString &faceName, const QString &fullName, 
    const QFont::Weight weight = QPlatformFontDatabase::weightFromInteger(textmetric->tmWeight);
    const QFont::Stretch stretch = QFont::Unstretched;
 
-#ifndef QT_NO_DEBUG_STREAM
-   if (QWindowsContext::verbose > 2) {
+#if defined(CS_SHOW_DEBUG_PLATFORM)
+   QString message;
+   QTextStream str(&message);
 
-      QString message;
-      QTextStream str(&message);
+   str << "addFontToDatabase() " << faceName << "::" << fullName << ' ' << charSet << " TTF = " << ttf;
 
-      str << __FUNCTION__ << ' ' << faceName << "::" << fullName << ' ' << charSet << " TTF=" << ttf;
-      if (type & DEVICE_FONTTYPE) {
-         str << " DEVICE";
-      }
-      if (type & RASTER_FONTTYPE) {
-         str << " RASTER";
-      }
-      if (type & TRUETYPE_FONTTYPE) {
-         str << " TRUETYPE";
-      }
-      str << " scalable=" << scalable << " Size=" << size
-         << " Style=" << style << " Weight=" << weight
-         << " stretch=" << stretch;
-      qDebug() << message;
+   if (type & DEVICE_FONTTYPE) {
+      str << " DEVICE";
    }
+
+   if (type & RASTER_FONTTYPE) {
+      str << " RASTER";
+   }
+
+   if (type & TRUETYPE_FONTTYPE) {
+      str << " TRUETYPE";
+   }
+
+   str << " scalable = " << scalable << " Size = " << size
+      << " Style = " << style << " Weight = " << weight << " stretch = " << stretch;
+
+   qDebug() << message;
 #endif
 
    QString englishName;
@@ -307,10 +308,12 @@ static int QT_WIN_CALLBACK storeFont(const LOGFONT *logFont, const TEXTMETRIC *t
 
 void QWindowsFontDatabaseFT::populateFamily(const QString &familyName)
 {
-   qDebug() << familyName;
+#if defined(CS_SHOW_DEBUG_PLATFORM)
+   qDebug() << "QWindowsFontDatabaseFT::populateFamily() Family Name = " << familyName;
+#endif
 
    if (familyName.size() >= LF_FACESIZE) {
-      qWarning() << "Unable to enumerate family '" << familyName << '\'';
+      qWarning() << "QWindowsFontDatabaseFT::populateFamily() Unable to enumerate family name = " << familyName;
       return;
    }
 
@@ -412,15 +415,23 @@ void QWindowsFontDatabaseFT::populateFontDatabase()
 QFontEngine *QWindowsFontDatabaseFT::fontEngine(const QFontDef &fontDef, void *handle)
 {
    QFontEngine *fe = QBasicFontDatabase::fontEngine(fontDef, handle);
-   qDebug() << __FUNCTION__ << "FONTDEF" << fontDef.family << fe << handle;
+
+#if defined(CS_SHOW_DEBUG_PLATFORM)
+   qDebug() << "QWindowsFontDatabaseFT::fontEngine() Font data = " << fontDef.family << fe << handle;
+#endif
 
    return fe;
 }
 
-QFontEngine *QWindowsFontDatabaseFT::fontEngine(const QByteArray &fontData, qreal pixelSize, QFont::HintingPreference hintingPreference)
+QFontEngine *QWindowsFontDatabaseFT::fontEngine(const QByteArray &fontData, qreal pixelSize,
+      QFont::HintingPreference hintingPreference)
 {
    QFontEngine *fe = QBasicFontDatabase::fontEngine(fontData, pixelSize, hintingPreference);
-   qDebug() << __FUNCTION__ << "FONTDATA" << fontData << pixelSize << hintingPreference << fe;
+
+#if defined(CS_SHOW_DEBUG_PLATFORM)
+   qDebug() << "QWindowsFontDatabaseFT::fontEngine() Font data = " << fontData << pixelSize << hintingPreference << fe;
+#endif
+
    return fe;
 }
 
@@ -433,8 +444,10 @@ QStringList QWindowsFontDatabaseFT::fallbacksForFamily(const QString &family, QF
    result.append(QWindowsFontDatabase::extraTryFontsForFamily(family));
    result.append(QBasicFontDatabase::fallbacksForFamily(family, style, styleHint, script));
 
-   qDebug() << __FUNCTION__ << family << style << styleHint
-      << script << result;
+#if defined(CS_SHOW_DEBUG_PLATFORM)
+   qDebug() << "QWindowsFontDatabaseFT::fallbacksForFamily() Font = "
+         << family << style << styleHint << script << result;
+#endif
 
    return result;
 }
@@ -442,10 +455,6 @@ QStringList QWindowsFontDatabaseFT::fallbacksForFamily(const QString &family, QF
 QString QWindowsFontDatabaseFT::fontDir() const
 {
    const QString result = qgetenv("windir") + "/Fonts";
-
-   // QPlatformFontDatabase::fontDir();
-   qDebug() << __FUNCTION__ << result;
-
    return result;
 }
 
@@ -453,4 +462,3 @@ QFont QWindowsFontDatabaseFT::defaultFont() const
 {
    return QWindowsFontDatabase::systemDefaultFont();
 }
-

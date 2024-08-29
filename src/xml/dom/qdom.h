@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -28,53 +28,55 @@
 
 #ifndef QT_NO_DOM
 
+class QDomAttr;
+class QDomAttrPrivate;
+class QDomCDATASection;
+class QDomCDATASectionPrivate;
+class QDomCharacterData;
+class QDomCharacterDataPrivate;
+class QDomComment;
+class QDomCommentPrivate;
+class QDomDocument;
+class QDomDocument;
+class QDomDocumentFragment;
+class QDomDocumentFragmentPrivate;
+class QDomDocumentPrivate;
+class QDomDocumentType;
+class QDomDocumentTypePrivate;
+class QDomElement;
+class QDomElementPrivate;
+class QDomEntity;
+class QDomEntityPrivate;
+class QDomEntityReference;
+class QDomEntityReferencePrivate;
+class QDomImplementation;
+class QDomImplementationPrivate;
+class QDomImplementationPrivate;
+class QDomNamedNodeMap;
+class QDomNamedNodeMapPrivate;
+class QDomNode;
+class QDomNodeList;
+class QDomNodeListPrivate;
+class QDomNodePrivate;
+class QDomNotation;
+class QDomNotationPrivate;
+class QDomProcessingInstruction;
+class QDomProcessingInstructionPrivate;
+class QDomText;
+class QDomTextPrivate;
 class QIODevice;
 class QTextStream;
 class QXmlInputSource;
 class QXmlReader;
 
-class QDomDocumentPrivate;
-class QDomDocumentTypePrivate;
-class QDomDocumentFragmentPrivate;
-class QDomNodePrivate;
-class QDomNodeListPrivate;
-class QDomImplementationPrivate;
-class QDomElementPrivate;
-class QDomNotationPrivate;
-class QDomEntityPrivate;
-class QDomEntityReferencePrivate;
-class QDomProcessingInstructionPrivate;
-class QDomAttrPrivate;
-class QDomCharacterDataPrivate;
-class QDomTextPrivate;
-class QDomCommentPrivate;
-class QDomCDATASectionPrivate;
-class QDomNamedNodeMapPrivate;
-class QDomImplementationPrivate;
-
-class QDomNodeList;
-class QDomElement;
-class QDomText;
-class QDomComment;
-class QDomCDATASection;
-class QDomProcessingInstruction;
-class QDomAttr;
-class QDomEntityReference;
-class QDomDocument;
-class QDomNamedNodeMap;
-class QDomDocument;
-class QDomDocumentFragment;
-class QDomDocumentType;
-class QDomImplementation;
-class QDomNode;
-class QDomEntity;
-class QDomNotation;
-class QDomCharacterData;
-
 class Q_XML_EXPORT QDomImplementation
 {
  public:
-   enum InvalidDataPolicy { AcceptInvalidChars = 0, DropInvalidChars, ReturnNullNode };
+   enum InvalidDataPolicy {
+      AcceptInvalidChars = 0,
+      DropInvalidChars,
+      ReturnNullNode
+   };
 
    QDomImplementation();
 
@@ -241,22 +243,23 @@ class Q_XML_EXPORT QDomNodeList
 
    // DOM functions
    QDomNode item(int index) const;
-   inline QDomNode at(int index) const {
+
+   QDomNode at(int index) const {
       return item(index);
    }
 
    // DOM read only attributes
    int length() const;
 
-   inline int count() const {
+   int count() const {
       return length();
    }
 
-   inline int size() const {
+   int size() const {
       return length();
    }
 
-   inline bool isEmpty() const {
+   bool isEmpty() const {
       return length() == 0;
    }
 
@@ -286,7 +289,8 @@ class Q_XML_EXPORT QDomDocumentType : public QDomNode
    QString internalSubset() const;
 
    // Overridden from QDomNode
-   inline QDomNode::NodeType nodeType() const {
+   QDomNode::NodeType nodeType() const
+   {
       return DocumentTypeNode;
    }
 
@@ -334,7 +338,7 @@ class Q_XML_EXPORT QDomDocument : public QDomNode
    QDomElement documentElement() const;
 
    // Overridden from QDomNode
-   inline QDomNode::NodeType nodeType() const {
+   QDomNode::NodeType nodeType() const {
       return DocumentNode;
    }
 
@@ -429,7 +433,7 @@ class Q_XML_EXPORT QDomDocumentFragment : public QDomNode
    QDomDocumentFragment &operator= (const QDomDocumentFragment &other);
 
    // Overridden from QDomNode
-   inline QDomNode::NodeType nodeType() const {
+   QDomNode::NodeType nodeType() const {
       return DocumentFragmentNode;
    }
 
@@ -492,7 +496,7 @@ class Q_XML_EXPORT QDomAttr : public QDomNode
    void setValue(const QString &data);
 
    // Overridden from QDomNode
-   inline QDomNode::NodeType nodeType() const {
+   QDomNode::NodeType nodeType() const {
       return AttributeNode;
    }
 
@@ -518,11 +522,11 @@ class Q_XML_EXPORT QDomElement : public QDomNode
    void setAttribute(const QString &name, qint64 value);
    void setAttribute(const QString &name, quint64 value);
 
-   inline void setAttribute(const QString &name, int value) {
+   void setAttribute(const QString &name, int value) {
       setAttribute(name, qint64(value));
    }
 
-   inline void setAttribute(const QString &name, uint value) {
+   void setAttribute(const QString &name, uint value) {
       setAttribute(name, quint64(value));
    }
 
@@ -538,11 +542,11 @@ class Q_XML_EXPORT QDomElement : public QDomNode
    QString attributeNS(const QString nsURI, const QString &localName, const QString &defValue = QString()) const;
    void setAttributeNS(const QString nsURI, const QString &qName, const QString &value);
 
-   inline void setAttributeNS(const QString nsURI, const QString &qName, int value) {
+   void setAttributeNS(const QString nsURI, const QString &qName, int value) {
       setAttributeNS(nsURI, qName, qint64(value));
    }
 
-   inline void setAttributeNS(const QString nsURI, const QString &qName, uint value) {
+   void setAttributeNS(const QString nsURI, const QString &qName, uint value) {
       setAttributeNS(nsURI, qName, quint64(value));
    }
 
@@ -562,7 +566,7 @@ class Q_XML_EXPORT QDomElement : public QDomNode
 
    // Overridden from QDomNode
    QDomNamedNodeMap attributes() const;
-   inline QDomNode::NodeType nodeType() const {
+   QDomNode::NodeType nodeType() const {
       return ElementNode;
    }
 
@@ -588,7 +592,7 @@ class Q_XML_EXPORT QDomText : public QDomCharacterData
    QDomText splitText(int offset);
 
    // Overridden from QDomCharacterData
-   inline QDomNode::NodeType nodeType() const {
+   QDomNode::NodeType nodeType() const {
       return TextNode;
    }
 
@@ -609,7 +613,7 @@ class Q_XML_EXPORT QDomComment : public QDomCharacterData
    QDomComment &operator= (const QDomComment &other);
 
    // Overridden from QDomCharacterData
-   inline QDomNode::NodeType nodeType() const {
+   QDomNode::NodeType nodeType() const {
       return CommentNode;
    }
 
@@ -629,7 +633,7 @@ class Q_XML_EXPORT QDomCDATASection : public QDomText
    QDomCDATASection &operator= (const QDomCDATASection &other);
 
    // Overridden from QDomText
-   inline QDomNode::NodeType nodeType() const {
+   QDomNode::NodeType nodeType() const {
       return CDATASectionNode;
    }
 
@@ -653,7 +657,7 @@ class Q_XML_EXPORT QDomNotation : public QDomNode
    QString systemId() const;
 
    // Overridden from QDomNode
-   inline QDomNode::NodeType nodeType() const {
+   QDomNode::NodeType nodeType() const {
       return NotationNode;
    }
 
@@ -678,7 +682,7 @@ class Q_XML_EXPORT QDomEntity : public QDomNode
    QString notationName() const;
 
    // Overridden from QDomNode
-   inline QDomNode::NodeType nodeType() const {
+   QDomNode::NodeType nodeType() const {
       return EntityNode;
    }
 
@@ -697,7 +701,7 @@ class Q_XML_EXPORT QDomEntityReference : public QDomNode
    QDomEntityReference &operator= (const QDomEntityReference &other);
 
    // Overridden from QDomNode
-   inline QDomNode::NodeType nodeType() const {
+   QDomNode::NodeType nodeType() const {
       return EntityReferenceNode;
    }
 
@@ -724,7 +728,7 @@ class Q_XML_EXPORT QDomProcessingInstruction : public QDomNode
    void setData(const QString &data);
 
    // Overridden from QDomNode
-   inline QDomNode::NodeType nodeType() const {
+   QDomNode::NodeType nodeType() const {
       return ProcessingInstructionNode;
    }
 

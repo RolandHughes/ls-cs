@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,8 +24,8 @@
 #ifndef BATCHTRANSLATION_DIALOG_H
 #define BATCHTRANSLATION_DIALOG_H
 
-#include <ui_batchtranslation.h>
 #include <phrase.h>
+#include <ui_batchtranslation.h>
 
 #include <qdialog.h>
 #include <qstandarditemmodel.h>
@@ -36,7 +36,7 @@ class CheckableListModel : public QStandardItemModel
 {
  public:
    CheckableListModel(QObject *parent = nullptr);
-   virtual Qt::ItemFlags flags(const QModelIndex &index) const;
+   Qt::ItemFlags flags(const QModelIndex &index) const override;
 };
 
 class BatchTranslationDialog : public QDialog

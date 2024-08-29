@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -28,10 +28,10 @@
 
 #ifndef QT_NO_FILESYSTEMWATCHER
 
-#include <qmutex.h>
-#include <qhash.h>
 #include <qdatetime.h>
 #include <qfile.h>
+#include <qhash.h>
+#include <qmutex.h>
 
 class QDnotifyFileSystemWatcherEngine : public QFileSystemWatcherEngine
 {
@@ -56,19 +56,16 @@ class QDnotifyFileSystemWatcherEngine : public QFileSystemWatcherEngine
    struct Directory {
       Directory()
          : fd(0), parentFd(0), isMonitored(false)
-      {}
+      { }
 
       struct File {
          File()
             : ownerId(0u), groupId(0u), permissions(Qt::EmptyFlag)
          { }
 
-         File(const File &o) : path(o.path), ownerId(o.ownerId),
-            groupId(o.groupId), permissions(o.permissions), lastWrite(o.lastWrite)
-         {}
+         bool updateInfo();
 
          QString path;
-         bool updateInfo();
          uint ownerId;
          uint groupId;
          QFile::Permissions permissions;

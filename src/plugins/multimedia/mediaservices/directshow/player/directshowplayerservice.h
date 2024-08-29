@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -79,13 +79,12 @@ class DirectShowPlayerService : public QMediaService
    void setVideoOutput(IBaseFilter *filter);
 
  protected:
-   void customEvent(QEvent *event);
+   void customEvent(QEvent *event) override;
 
- private :
+ private:
    CS_SLOT_1(Private, void videoOutputChanged())
    CS_SLOT_2(videoOutputChanged)
 
- private:
    void releaseGraph();
    void updateStatus();
 

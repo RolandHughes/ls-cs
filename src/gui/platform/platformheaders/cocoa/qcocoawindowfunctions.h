@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -21,8 +21,8 @@
 *
 ***********************************************************************/
 
-#ifndef QXCBWINDOWFUNCTIONS_H
-#define QXCBWINDOWFUNCTIONS_H
+#ifndef QCOCOA_WINDOWFUNCTIONS_H
+#define QCOCOA_WINDOWFUNCTIONS_H
 
 #include <QPlatform_HeaderHelper>
 
@@ -30,13 +30,16 @@ class QWindow;
 
 class QCocoaWindowFunctions
 {
-public:
-    typedef QPoint (*BottomLeftClippedByNSWindowOffset)(QWindow *window);
-    static const QByteArray bottomLeftClippedByNSWindowOffsetIdentifier() { return QByteArray("CocoaBottomLeftClippedByNSWindowOffset"); }
+ public:
+   typedef QPoint (*BottomLeftClippedByNSWindowOffset)(QWindow *window);
 
-    static QPoint bottomLeftClippedByNSWindowOffset(QWindow *window)
-    {
-        return QPlatformHeaderHelper::callPlatformFunction<QPoint, BottomLeftClippedByNSWindowOffset>(bottomLeftClippedByNSWindowOffsetIdentifier(),window);
+   static const QByteArray bottomLeftClippedByNSWindowOffsetIdentifier() {
+      return QByteArray("CocoaBottomLeftClippedByNSWindowOffset");
+   }
+
+   static QPoint bottomLeftClippedByNSWindowOffset(QWindow *window) {
+      return QPlatformHeaderHelper::callPlatformFunction<QPoint,
+            BottomLeftClippedByNSWindowOffset>(bottomLeftClippedByNSWindowOffsetIdentifier(),window);
     }
 };
 

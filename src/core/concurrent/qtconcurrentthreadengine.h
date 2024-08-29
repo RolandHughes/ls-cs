@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,14 +24,14 @@
 #ifndef QTCONCURRENTTHREADENGINE_H
 #define QTCONCURRENTTHREADENGINE_H
 
-#include <qglobal.h>
-#include <qthreadpool.h>
-#include <qfuture.h>
-#include <qdebug.h>
-#include <qtconcurrentexception.h>
-#include <qwaitcondition.h>
 #include <qatomic.h>
+#include <qdebug.h>
+#include <qfuture.h>
+#include <qglobal.h>
 #include <qsemaphore.h>
+#include <qtconcurrentexception.h>
+#include <qthreadpool.h>
+#include <qwaitcondition.h>
 
 namespace QtConcurrent {
 
@@ -57,7 +57,10 @@ class ThreadEngineBarrier
    QSemaphore semaphore;
 };
 
-enum ThreadFunctionResult { ThrottleThread, ThreadFinished };
+enum ThreadFunctionResult {
+   ThrottleThread,
+   ThreadFinished
+};
 
 // ThreadEngine controls the threads used in the computation.
 // Can be run in three modes: single threaded, multi-threaded blocking & multi-threaded asynchronous.
@@ -79,8 +82,11 @@ class Q_CORE_EXPORT ThreadEngineBase: public QRunnable
    void acquireBarrierSemaphore();
 
  protected:
-   virtual void start() {}
-   virtual void finish() {}
+   virtual void start() {
+   }
+
+   virtual void finish() {
+   }
 
    virtual ThreadFunctionResult threadFunction() {
       return ThreadFinished;
@@ -107,14 +113,13 @@ class Q_CORE_EXPORT ThreadEngineBase: public QRunnable
    void run() override;
    virtual void asynchronousFinish() = 0;
    void handleException(const QtConcurrent::Exception &exception);
-
 };
 
 template <typename T>
 class ThreadEngine : public virtual ThreadEngineBase
 {
  public:
-   typedef T ResultType;
+   using ResultType = T;
 
    virtual T *result() {
       return nullptr;
@@ -161,7 +166,6 @@ class ThreadEngine : public virtual ThreadEngineBase
       delete this;
    }
 
-
    void reportResult(const T *_result, int index = -1) {
       if (futureInterface) {
          futureInterfaceTyped()->reportResult(_result, index);
@@ -182,10 +186,12 @@ class ThreadEngineStarterBase
 {
  public:
    ThreadEngineStarterBase(ThreadEngine<T> *_threadEngine)
-      : threadEngine(_threadEngine) { }
+      : threadEngine(_threadEngine)
+   { }
 
-   inline ThreadEngineStarterBase(const ThreadEngineStarterBase &other)
-      : threadEngine(other.threadEngine) { }
+   ThreadEngineStarterBase(const ThreadEngineStarterBase &other)
+      : threadEngine(other.threadEngine)
+   { }
 
    QFuture<T> startAsynchronously() {
       return threadEngine->startAsynchronously();
@@ -199,18 +205,18 @@ class ThreadEngineStarterBase
    ThreadEngine<T> *threadEngine;
 };
 
-
 // factor out the code that dereferences the T pointer, with a specialization where T is void.
 // (code that dereferences a void * will not compile)
 template <typename T>
 class ThreadEngineStarter : public ThreadEngineStarterBase<T>
 {
-   typedef ThreadEngineStarterBase<T> Base;
-   typedef ThreadEngine<T> TypedThreadEngine;
+   using Base              = ThreadEngineStarterBase<T>;
+   using TypedThreadEngine = ThreadEngine<T>;
 
  public:
    ThreadEngineStarter(TypedThreadEngine *eng)
-      : Base(eng) { }
+      : Base(eng)
+   { }
 
    T startBlocking() {
       T t = *this->threadEngine->startBlocking();
@@ -225,7 +231,8 @@ class ThreadEngineStarter<void> : public ThreadEngineStarterBase<void>
 {
  public:
    ThreadEngineStarter<void>(ThreadEngine<void> *_threadEngine)
-      : ThreadEngineStarterBase<void>(_threadEngine) {}
+      : ThreadEngineStarterBase<void>(_threadEngine)
+   { }
 
    void startBlocking() {
       this->threadEngine->startBlocking();

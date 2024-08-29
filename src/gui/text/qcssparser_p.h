@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -336,21 +336,45 @@ struct Value {
 };
 
 struct ColorData {
+   enum ColorType {
+      Invalid,
+      Color,
+      Role
+   };
+
    ColorData() : role(QPalette::NoRole), type(Invalid) {}
    ColorData(const QColor &col) : color(col), role(QPalette::NoRole), type(Color) {}
    ColorData(QPalette::ColorRole r) : role(r), type(Role) {}
    QColor color;
    QPalette::ColorRole role;
-   enum { Invalid, Color, Role} type;
+
+   ColorType type;
 };
 
 struct BrushData {
-   BrushData() : role(QPalette::NoRole), type(Invalid) {}
-   BrushData(const QBrush &br) : brush(br), role(QPalette::NoRole), type(Brush) {}
-   BrushData(QPalette::ColorRole r) : role(r), type(Role) {}
+   enum BrushType {
+      Invalid,
+      Brush,
+      Role,
+      DependsOnThePalette
+   };
+
+   BrushData()
+      : role(QPalette::NoRole), type(Invalid)
+   { }
+
+   BrushData(const QBrush &br)
+      : brush(br), role(QPalette::NoRole), type(Brush)
+   { }
+
+   BrushData(QPalette::ColorRole r)
+      : role(r), type(Role)
+   { }
+
    QBrush brush;
    QPalette::ColorRole role;
-   enum { Invalid, Brush, Role, DependsOnThePalette } type;
+
+   BrushType type;
 };
 
 struct BackgroundData {
@@ -361,8 +385,16 @@ struct BackgroundData {
 };
 
 struct LengthData {
+   enum UnitType {
+      None,
+      Px,
+      Ex,
+      Em
+   };
+
    qreal number;
-   enum { None, Px, Ex, Em } unit;
+
+   UnitType unit;
 };
 
 struct BorderData {

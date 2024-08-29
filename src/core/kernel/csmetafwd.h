@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -27,7 +27,7 @@
 class cs_internalEmpty;
 
 template <class T1 = cs_internalEmpty>
-const QString &cs_typeToName();
+const QString & cs_typeToName();
 
 template <class T1, class T2, class ...Ts>
 const QString &cs_typeToName();

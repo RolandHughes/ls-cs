@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -43,7 +43,8 @@
 
 // TODO: Put channel specific stuff here instead of qhttpnetworkconnection.cpp
 
-static const int reconnectAttemptsDefault = 3;
+static constexpr const int reconnectAttemptsDefault = 3;
+
 QHttpNetworkConnectionChannel::QHttpNetworkConnectionChannel()
    : socket(nullptr), ssl(false), isInitialized(false), state(IdleState), reply(nullptr), written(0),
      bytesTotal(0), resendCurrent(false), lastStatus(0), pendingEncrypt(false),
@@ -378,7 +379,7 @@ void QHttpNetworkConnectionChannel::allDone()
    Q_ASSERT(reply);
 
    if (! reply) {
-      qWarning() << "QHttpNetworkConnectionChannel::allDone() called without reply. Please report at https://github.com/copperspice/copperspice";
+      qWarning("QHttpNetworkConnectionChannel::allDone() Called without reply");
       return;
    }
 

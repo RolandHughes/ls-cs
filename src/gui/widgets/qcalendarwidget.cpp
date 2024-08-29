@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -2696,7 +2696,7 @@ void QCalendarWidget::setDateEditAcceptDelay(int delay)
 void QCalendarWidget::updateCell(const QDate &date)
 {
    if (! date.isValid()) {
-      qWarning("QCalendarWidget::updateCell: Invalid date");
+      qWarning("QCalendarWidget::updateCell() Date is invalid");
       return;
    }
 

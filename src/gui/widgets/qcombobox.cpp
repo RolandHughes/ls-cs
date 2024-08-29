@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,6 +24,7 @@
 #include <qcombobox.h>
 
 #ifndef QT_NO_COMBOBOX
+
 #include <qstylepainter.h>
 #include <qplatform_theme.h>
 #include <qplatform_menu.h>
@@ -191,10 +192,8 @@ void QComboBoxPrivate::_q_completerActivated(const QModelIndex &index)
    }
 
 #ifdef QT_KEYPAD_NAVIGATION
-   if ( QApplication::keypadNavigationEnabled()
-      && q->isEditable()
-      && q->completer()
-      && q->completer()->completionMode() == QCompleter::UnfilteredPopupCompletion ) {
+   if (QApplication::keypadNavigationEnabled() && q->isEditable() && q->completer()
+         && q->completer()->completionMode() == QCompleter::UnfilteredPopupCompletion ) {
       q->setEditFocus(false);
    }
 #endif
@@ -1355,7 +1354,7 @@ void QComboBox::setAutoCompletion(bool enable)
 
    d->autoCompletion = enable;
 
-   if (! d->lineEdit) {
+   if (d->lineEdit == nullptr) {
       return;
    }
 
@@ -1566,6 +1565,7 @@ void QComboBox::setEditable(bool editable)
          d->viewContainer()->updateScrollers();
          view()->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
       }
+
       setAttribute(Qt::WA_InputMethodEnabled, false);
       d->lineEdit->hide();
       d->lineEdit->deleteLater();
@@ -1576,7 +1576,7 @@ void QComboBox::setEditable(bool editable)
    d->updateFocusPolicy();
    d->viewContainer()->updateTopBottomMargin();
 
-   if (!testAttribute(Qt::WA_Resized)) {
+   if (! testAttribute(Qt::WA_Resized)) {
       adjustSize();
    }
 }
@@ -1674,15 +1674,14 @@ void QComboBox::setCompleter(QCompleter *c)
 {
    Q_D(QComboBox);
 
-   if (! d->lineEdit) {
+   if (d->lineEdit == nullptr) {
       return;
    }
 
    d->lineEdit->setCompleter(c);
 
-   if (c) {
+   if (c != nullptr) {
       connect(c, cs_mp_cast<const QModelIndex &>(&QCompleter::activated), this, &QComboBox::_q_completerActivated);
-
       c->setWidget(this);
    }
 }
@@ -3014,9 +3013,9 @@ void QComboBox::keyReleaseEvent(QKeyEvent *e)
 #ifndef QT_NO_WHEELEVENT
 void QComboBox::wheelEvent(QWheelEvent *e)
 {
-
 #ifdef Q_OS_DARWIN
    // no code here
+   (void) e;
 
 #else
    Q_D(QComboBox);
@@ -3027,7 +3026,7 @@ void QComboBox::wheelEvent(QWheelEvent *e)
          --newIndex;
 
          while ((newIndex >= 0) &&
-                  ! (d->model->flags(d->model->index(newIndex, d->modelColumn, d->root)) & Qt::ItemIsEnabled)) {
+               ! (d->model->flags(d->model->index(newIndex, d->modelColumn, d->root)) & Qt::ItemIsEnabled)) {
             --newIndex;
          }
 
@@ -3035,7 +3034,7 @@ void QComboBox::wheelEvent(QWheelEvent *e)
          ++newIndex;
 
          while ((newIndex < count()) &&
-                  ! (d->model->flags(d->model->index(newIndex, d->modelColumn, d->root)) & Qt::ItemIsEnabled)) {
+               ! (d->model->flags(d->model->index(newIndex, d->modelColumn, d->root)) & Qt::ItemIsEnabled)) {
             ++newIndex;
          }
       }

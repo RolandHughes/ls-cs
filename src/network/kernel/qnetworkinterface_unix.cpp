@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -114,10 +114,10 @@ static QSet<QByteArray> interfaceNames(int socket)
    QSet<QByteArray> result;
 
 #ifdef QT_NO_IPV6IFNAME
-   QByteArray storageBuffer;
+   static constexpr const int STORAGEBUFFER_GROWTH = 256;
 
+   QByteArray storageBuffer;
    struct ifconf interfaceList;
-   static const int STORAGEBUFFER_GROWTH = 256;
 
    while(true) {
       // grow the storage buffer

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -761,6 +761,7 @@ bool QHttpResponseHeader::parseLine(const QString &line, int number)
          d->statCode = l.mid(9).toInteger<int>();
          d->reasonPhr.clear();
       }
+
    } else {
       return false;
    }
@@ -768,11 +769,12 @@ bool QHttpResponseHeader::parseLine(const QString &line, int number)
    return true;
 }
 
-/*! \reimp
-*/
 QString QHttpResponseHeader::toString() const
 {
    Q_D(const QHttpResponseHeader);
-   QString ret(QLatin1String("HTTP/%1.%2 %3 %4\r\n%5\r\n"));
-   return ret.formatArg(d->majVer).formatArg(d->minVer).formatArg(d->statCode).formatArg(d->reasonPhr).formatArg(QHttpHeader::toString());
+
+   QString retval(QLatin1String("HTTP/%1.%2 %3 %4\r\n%5\r\n"));
+
+   return retval.formatArg(d->majVer).formatArg(d->minVer).formatArg(d->statCode)
+         .formatArg(d->reasonPhr).formatArg(QHttpHeader::toString());
 }

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2013 Klarälvdalens Datakonsult AB, a KDAB Group company
 * Copyright (c) 2015 The Qt Company Ltd.
@@ -38,7 +38,7 @@ QOpenGLTextureGlyphCache::QOpenGLTextureGlyphCache(QFontEngine::GlyphFormat form
       m_filterMode(Nearest), m_serialNumber(qopengltextureglyphcache_serial_number.fetchAndAddRelaxed(1)),
       m_buffer(QOpenGLBuffer::VertexBuffer)
 {
-#ifdef QT_GL_TEXTURE_GLYPH_CACHE_DEBUG
+#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
     qDebug(" -> QOpenGLTextureGlyphCache() %p for context %p.", this, QOpenGLContext::currentContext());
 #endif
 
@@ -63,9 +63,10 @@ QOpenGLTextureGlyphCache::QOpenGLTextureGlyphCache(QFontEngine::GlyphFormat form
 
 QOpenGLTextureGlyphCache::~QOpenGLTextureGlyphCache()
 {
-#ifdef QT_GL_TEXTURE_GLYPH_CACHE_DEBUG
+#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
     qDebug(" -> ~QOpenGLTextureGlyphCache() %p.", this);
 #endif
+
     clear();
 }
 
@@ -166,7 +167,7 @@ void QOpenGLTextureGlyphCache::resizeTextureData(int width, int height)
 {
     QOpenGLContext *ctx = QOpenGLContext::currentContext();
     if (ctx == nullptr) {
-        qWarning("QOpenGLTextureGlyphCache::resizeTextureData: Called with no context");
+        qWarning("QOpenGLTextureGlyphCache::resizeTextureData() Called with no context");
         return;
     }
 

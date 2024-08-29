@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -185,13 +185,11 @@ void QGroupBox::setTitle(const QString &title)
 #endif
 }
 
-
 QString QGroupBox::title() const
 {
    Q_D(const QGroupBox);
    return d->title;
 }
-
 
 Qt::Alignment QGroupBox::alignment() const
 {
@@ -207,15 +205,10 @@ void QGroupBox::setAlignment(int alignment)
    update();
 }
 
-/*! \reimp
-*/
 void QGroupBox::resizeEvent(QResizeEvent *e)
 {
    QWidget::resizeEvent(e);
 }
-
-/*! \reimp
-*/
 
 void QGroupBox::paintEvent(QPaintEvent *)
 {
@@ -225,10 +218,10 @@ void QGroupBox::paintEvent(QPaintEvent *)
    paint.drawComplexControl(QStyle::CC_GroupBox, option);
 }
 
-/*! \reimp  */
 bool QGroupBox::event(QEvent *e)
 {
    Q_D(QGroupBox);
+
 #ifndef QT_NO_SHORTCUT
    if (e->type() == QEvent::Shortcut) {
       QShortcutEvent *se = static_cast<QShortcutEvent *>(e);
@@ -243,9 +236,12 @@ bool QGroupBox::event(QEvent *e)
       }
    }
 #endif
+
    QStyleOptionGroupBox box;
    initStyleOption(&box);
    switch (e->type()) {
+
+
       case QEvent::HoverEnter:
       case QEvent::HoverMove: {
          QStyle::SubControl control = style()->hitTestComplexControl(QStyle::CC_GroupBox, &box,
@@ -268,6 +264,7 @@ bool QGroupBox::event(QEvent *e)
             update(rect);
          }
          return true;
+
       case QEvent::KeyPress: {
          QKeyEvent *k = static_cast<QKeyEvent *>(e);
          if (!k->isAutoRepeat() && (k->key() == Qt::Key_Select || k->key() == Qt::Key_Space)) {
@@ -277,6 +274,7 @@ bool QGroupBox::event(QEvent *e)
          }
          break;
       }
+
       case QEvent::KeyRelease: {
          QKeyEvent *k = static_cast<QKeyEvent *>(e);
          if (!k->isAutoRepeat() && (k->key() == Qt::Key_Select || k->key() == Qt::Key_Space)) {
@@ -290,13 +288,13 @@ bool QGroupBox::event(QEvent *e)
          }
          break;
       }
+
       default:
          break;
    }
    return QWidget::event(e);
 }
 
-/*!\reimp */
 void QGroupBox::childEvent(QChildEvent *c)
 {
    Q_D(QGroupBox);
@@ -323,20 +321,12 @@ void QGroupBox::childEvent(QChildEvent *c)
    }
 }
 
-
-/*!
-    \internal
-
-    This private slot finds a widget in this group box that can accept
-    focus, and gives the focus to that widget.
-*/
-
 void QGroupBoxPrivate::_q_fixFocus(Qt::FocusReason reason)
 {
    Q_Q(QGroupBox);
    QWidget *fw = q->focusWidget();
 
-   if (!fw || fw == q) {
+   if (! fw || fw == q) {
       QWidget *best      = nullptr;
       QWidget *candidate = nullptr;
       QWidget *w = q;
@@ -366,9 +356,6 @@ void QGroupBoxPrivate::_q_fixFocus(Qt::FocusReason reason)
    }
 }
 
-/*
-    Sets the right frame rect depending on the title.
-*/
 void QGroupBoxPrivate::calculateFrame()
 {
    Q_Q(QGroupBox);
@@ -380,8 +367,6 @@ void QGroupBoxPrivate::calculateFrame()
    setLayoutItemMargins(QStyle::SE_GroupBoxLayoutItem, &box);
 }
 
-/*! \reimp
- */
 void QGroupBox::focusInEvent(QFocusEvent *fe)
 {
    // note no call to super
@@ -393,10 +378,6 @@ void QGroupBox::focusInEvent(QFocusEvent *fe)
    }
 }
 
-
-/*!
-  \reimp
-*/
 QSize QGroupBox::minimumSizeHint() const
 {
    Q_D(const QGroupBox);
@@ -417,23 +398,6 @@ QSize QGroupBox::minimumSizeHint() const
    return size.expandedTo(QWidget::minimumSizeHint());
 }
 
-/*!
-    \property QGroupBox::flat
-    \brief whether the group box is painted flat or has a frame
-
-    A group box usually consists of a surrounding frame with a title
-    at the top. If this property is enabled, only the top part of the frame is
-    drawn in most styles; otherwise the whole frame is drawn.
-
-    By default, this property is disabled; i.e. group boxes are not flat unless
-    explicitly specified.
-
-    \bold{Note:} In some styles, flat and non-flat group boxes have similar
-    representations and may not be as distinguishable as they are in other
-    styles.
-
-    \sa title
-*/
 bool QGroupBox::isFlat() const
 {
    Q_D(const QGroupBox);
@@ -494,11 +458,10 @@ bool QGroupBox::isChecked() const
    return d->checkable && d->checked;
 }
 
-
-
 void QGroupBox::setChecked(bool b)
 {
    Q_D(QGroupBox);
+
    if (d->checkable && b != d->checked) {
       update();
       d->checked = b;
@@ -514,16 +477,15 @@ void QGroupBox::setChecked(bool b)
    }
 }
 
-/*
-  sets all children of the group box except the qt_groupbox_checkbox
-  to either disabled/enabled
-*/
 void QGroupBoxPrivate::_q_setChildrenEnabled(bool b)
 {
    Q_Q(QGroupBox);
+
    QObjectList childList = q->children();
+
    for (int i = 0; i < childList.size(); ++i) {
       QObject *o = childList.at(i);
+
       if (o->isWidgetType()) {
          QWidget *w = static_cast<QWidget *>(o);
          if (b) {
@@ -540,10 +502,10 @@ void QGroupBoxPrivate::_q_setChildrenEnabled(bool b)
    }
 }
 
-/*! \reimp */
 void QGroupBox::changeEvent(QEvent *ev)
 {
    Q_D(QGroupBox);
+
    if (ev->type() == QEvent::EnabledChange) {
       if (d->checkable && isEnabled()) {
          // we are being enabled - disable children
@@ -551,17 +513,19 @@ void QGroupBox::changeEvent(QEvent *ev)
             d->_q_setChildrenEnabled(false);
          }
       }
+
    } else if (ev->type() == QEvent::FontChange
+
 #ifdef Q_OS_DARWIN
       || ev->type() == QEvent::MacSizeChange
 #endif
+
       || ev->type() == QEvent::StyleChange) {
       d->calculateFrame();
    }
    QWidget::changeEvent(ev);
 }
 
-/*! \reimp */
 void QGroupBox::mousePressEvent(QMouseEvent *event)
 {
    if (event->button() != Qt::LeftButton) {
@@ -570,33 +534,35 @@ void QGroupBox::mousePressEvent(QMouseEvent *event)
    }
 
    Q_D(QGroupBox);
+
    QStyleOptionGroupBox box;
    initStyleOption(&box);
+
    d->pressedControl = style()->hitTestComplexControl(QStyle::CC_GroupBox, &box,
          event->pos(), this);
+
    if (d->checkable && (d->pressedControl & (QStyle::SC_GroupBoxCheckBox | QStyle::SC_GroupBoxLabel))) {
       d->overCheckBox = true;
       update(style()->subControlRect(QStyle::CC_GroupBox, &box, QStyle::SC_GroupBoxCheckBox, this));
    }
 }
 
-/*! \reimp */
 void QGroupBox::mouseMoveEvent(QMouseEvent *event)
 {
    Q_D(QGroupBox);
    QStyleOptionGroupBox box;
    initStyleOption(&box);
-   QStyle::SubControl pressed = style()->hitTestComplexControl(QStyle::CC_GroupBox, &box,
-         event->pos(), this);
+   QStyle::SubControl pressed = style()->hitTestComplexControl(QStyle::CC_GroupBox, &box, event->pos(), this);
+
    bool oldOverCheckBox = d->overCheckBox;
    d->overCheckBox = (pressed == QStyle::SC_GroupBoxCheckBox || pressed == QStyle::SC_GroupBoxLabel);
-   if (d->checkable && (d->pressedControl == QStyle::SC_GroupBoxCheckBox || d->pressedControl == QStyle::SC_GroupBoxLabel)
+
+   if (d->checkable && (d->pressedControl  == QStyle::SC_GroupBoxCheckBox || d->pressedControl == QStyle::SC_GroupBoxLabel)
       && (d->overCheckBox != oldOverCheckBox)) {
       update(style()->subControlRect(QStyle::CC_GroupBox, &box, QStyle::SC_GroupBoxCheckBox, this));
    }
 }
 
-/*! \reimp */
 void QGroupBox::mouseReleaseEvent(QMouseEvent *event)
 {
    if (event->button() != Qt::LeftButton) {

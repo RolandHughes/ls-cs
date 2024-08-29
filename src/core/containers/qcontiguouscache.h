@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,14 +24,12 @@
 #ifndef QCONTIGUOUSCACHE_H
 #define QCONTIGUOUSCACHE_H
 
-#include <qglobal.h>
 #include <qassert.h>
 #include <qatomic.h>
+#include <qglobal.h>
 
 #include <limits.h>
 #include <new>
-
-#undef QT_QCONTIGUOUSCACHE_DEBUG
 
 struct Q_CORE_EXPORT QContiguousCacheData {
    QAtomicInt ref;
@@ -45,14 +43,10 @@ struct Q_CORE_EXPORT QContiguousCacheData {
    // total is 24 bytes (HP-UX aCC: 40 bytes)
    // the next entry is already aligned to 8 bytes
    // there will be an 8 byte gap here if T requires 16-byte alignment
-   //  (such as long double on 64-bit platforms, __int128, __float128)
+   // (such as long double on 64-bit platforms, __int128, __float128)
 
    static QContiguousCacheData *allocate(int size, int alignment);
    static void free(QContiguousCacheData *data);
-
-#ifdef QT_QCONTIGUOUSCACHE_DEBUG
-   void dump() const;
-#endif
 };
 
 template <typename T>
@@ -60,7 +54,7 @@ struct QContiguousCacheTypedData: private QContiguousCacheData {
    // private inheritance to avoid aliasing warningss
    T array[1];
 
-   static inline void free(QContiguousCacheTypedData *data) {
+   static void free(QContiguousCacheTypedData *data) {
       QContiguousCacheData::free(data);
    }
 };
@@ -68,23 +62,24 @@ struct QContiguousCacheTypedData: private QContiguousCacheData {
 template <typename T>
 class QContiguousCache
 {
-   typedef QContiguousCacheTypedData<T> Data;
+   using Data = QContiguousCacheTypedData<T>;
+
    union {
       QContiguousCacheData *d;
       QContiguousCacheTypedData<T> *p;
    };
 
  public:
-   // STL compatibility
-   typedef T value_type;
-   typedef value_type *pointer;
-   typedef const value_type *const_pointer;
-   typedef value_type &reference;
-   typedef const value_type &const_reference;
-   typedef qptrdiff difference_type;
-   typedef int size_type;
+   using value_type       = T;
+   using pointer          = value_type *;
+   using const_pointer    = const value_type *;
+   using reference        = value_type &;
+   using const_reference  = const value_type &;
+   using difference_type  = qptrdiff;
+   using size_type        = int;
 
    explicit QContiguousCache(int capacity = 0);
+
    QContiguousCache(const QContiguousCache<T> &other)
       : d(other.d)
    {
@@ -99,61 +94,68 @@ class QContiguousCache
       if (! d) {
          return;
       }
+
       if (! d->ref.deref()) {
          free(p);
       }
    }
 
-   inline void detach() {
+   void detach() {
       if (d->ref.load() != 1) {
          detach_helper();
       }
    }
 
-   inline bool isDetached() const {
+   bool isDetached() const {
       return d->ref.load() == 1;
    }
 
-   inline void setSharable(bool sharable) {
+   void setSharable(bool sharable) {
       if (! sharable) {
          detach();
       }
+
       d->sharable = sharable;
    }
 
    QContiguousCache<T> &operator=(const QContiguousCache<T> &other);
 
-   inline QContiguousCache<T> &operator=(QContiguousCache<T> && other) {
+   QContiguousCache<T> &operator=(QContiguousCache<T> && other) {
       qSwap(d, other.d);
       return *this;
    }
 
-   inline void swap(QContiguousCache<T> &other) {
+   void swap(QContiguousCache<T> &other) {
       qSwap(d, other.d);
    }
 
    bool operator==(const QContiguousCache<T> &other) const;
-   inline bool operator!=(const QContiguousCache<T> &other) const {
+
+   bool operator!=(const QContiguousCache<T> &other) const {
       return !(*this == other);
    }
 
-   inline int capacity() const {
+   int capacity() const {
       return d->alloc;
    }
-   inline int count() const {
-      return d->count;
-   }
-   inline int size() const {
+
+   int count() const {
       return d->count;
    }
 
-   inline bool isEmpty() const {
+   int size() const {
+      return d->count;
+   }
+
+   bool isEmpty() const {
       return d->count == 0;
    }
-   inline bool isFull() const {
+
+   bool isFull() const {
       return d->count == d->alloc;
    }
-   inline int available() const {
+
+   int available() const {
       return d->alloc - d->count;
    }
 
@@ -168,30 +170,35 @@ class QContiguousCache
    void prepend(const T &value);
    void insert(int pos, const T &value);
 
-   inline bool containsIndex(int pos) const {
+   bool containsIndex(int pos) const {
       return pos >= d->offset && pos - d->offset < d->count;
    }
-   inline int firstIndex() const {
+
+   int firstIndex() const {
       return d->offset;
    }
-   inline int lastIndex() const {
+
+   int lastIndex() const {
       return d->offset + d->count - 1;
    }
 
-   inline const T &first() const {
+   const T &first() const {
       Q_ASSERT(!isEmpty());
       return p->array[d->start];
    }
-   inline const T &last() const {
+
+   const T &last() const {
       Q_ASSERT(!isEmpty());
       return p->array[(d->start + d->count - 1) % d->alloc];
    }
-   inline T &first() {
+
+   T &first() {
       Q_ASSERT(!isEmpty());
       detach();
       return p->array[d->start];
    }
-   inline T &last() {
+
+   T &last() {
       Q_ASSERT(!isEmpty());
       detach();
       return p->array[(d->start + d->count - 1) % d->alloc];
@@ -202,30 +209,25 @@ class QContiguousCache
    void removeLast();
    T takeLast();
 
-   inline bool areIndexesValid() const {
+   bool areIndexesValid() const {
       return d->offset >= 0 && d->offset < INT_MAX - d->count && (d->offset % d->alloc) == d->start;
    }
 
-   inline void normalizeIndexes() {
+   void normalizeIndexes() {
       d->offset = d->start;
    }
-
-#ifdef QT_QCONTIGUOUSCACHE_DEBUG
-   void dump() const {
-      p->dump();
-   }
-#endif
 
  private:
    void detach_helper();
 
    QContiguousCacheData *malloc(int aalloc);
    void free(Data *x);
+
    int sizeOfTypedData() {
       // this is more or less the same as sizeof(Data), except that it doesn't
       // count the padding at the end
       return reinterpret_cast<const char *>(&(reinterpret_cast<const Data *>(this))->array[1]) -
-             reinterpret_cast<const char *>(this);
+            reinterpret_cast<const char *>(this);
    }
 
    int alignOfTypedData() const {
@@ -261,20 +263,23 @@ void QContiguousCache<T>::detach_helper()
          new (dest) T(*src);
       }
 
-      dest++;
+      ++dest;
+
       if (dest == x.p->array + x.d->alloc) {
          dest = x.p->array;
       }
 
-      src++;
+      ++src;
+
       if (src == p->array + d->alloc) {
          src = p->array;
       }
    }
 
-   if (!d->ref.deref()) {
+   if (! d->ref.deref()) {
       free(p);
    }
+
    d = x.d;
 }
 
@@ -304,6 +309,7 @@ void QContiguousCache<T>::setCapacity(int size)
    }
 
    int oldcount = x.d->count;
+
    if (oldcount) {
       T *dest = x.p->array + (x.d->start + x.d->count - 1) % x.d->alloc;
       T *src = p->array + (d->start + d->count - 1) % d->alloc;
@@ -321,9 +327,11 @@ void QContiguousCache<T>::setCapacity(int size)
          }
 
          dest--;
+
          if (src == p->array) {
             src = p->array + d->alloc;
          }
+
          src--;
       }
    }
@@ -351,6 +359,7 @@ void QContiguousCache<T>::clear()
             }
          }
       }
+
       d->count = d->start = d->offset = 0;
 
    } else {
@@ -368,6 +377,7 @@ void QContiguousCache<T>::clear()
       if (!d->ref.deref()) {
          free(p);
       }
+
       d = x.d;
    }
 }
@@ -395,13 +405,17 @@ template <typename T>
 QContiguousCache<T> &QContiguousCache<T>::operator=(const QContiguousCache<T> &other)
 {
    other.d->ref.ref();
-   if (!d->ref.deref()) {
+
+   if (! d->ref.deref()) {
       free(d);
    }
+
    d = other.d;
-   if (!d->sharable) {
+
+   if (! d->sharable) {
       detach_helper();
    }
+
    return *this;
 }
 
@@ -411,16 +425,19 @@ bool QContiguousCache<T>::operator==(const QContiguousCache<T> &other) const
    if (other.d == d) {
       return true;
    }
+
    if (other.d->start != d->start
          || other.d->count != d->count
          || other.d->offset != d->offset
          || other.d->alloc != d->alloc) {
       return false;
    }
+
    for (int i = firstIndex(); i <= lastIndex(); ++i)
       if (!(at(i) == other.at(i))) {
          return false;
       }
+
    return true;
 }
 
@@ -435,11 +452,13 @@ void QContiguousCache<T>::free(Data *x)
       while (oldcount--) {
          i->~T();
          i++;
+
          if (i == e) {
             i = p->array;
          }
       }
    }
+
    x->free(x);
 }
 
@@ -486,6 +505,7 @@ void QContiguousCache<T>::prepend(const T &value)
    } else {
       d->start = d->alloc - 1;
    }
+
    d->offset--;
 
    if (d->count != d->alloc) {
@@ -511,6 +531,7 @@ void QContiguousCache<T>::insert(int pos, const T &value)
    }
 
    detach();
+
    if (containsIndex(pos)) {
 
       if (std::is_trivially_constructible_v<T> && std::is_trivially_destructible_v<T>) {
@@ -559,9 +580,11 @@ template <typename T>
 inline T &QContiguousCache<T>::operator[](int pos)
 {
    detach();
-   if (!containsIndex(pos)) {
+
+   if (! containsIndex(pos)) {
       insert(pos, T());
    }
+
    return p->array[pos % d->alloc];
 }
 
@@ -570,14 +593,15 @@ inline void QContiguousCache<T>::removeFirst()
 {
    Q_ASSERT(d->count > 0);
    detach();
-   d->count--;
+
+   --d->count;
 
    if (! std::is_trivially_destructible_v<T>) {
       (p->array + d->start)->~T();
    }
 
    d->start = (d->start + 1) % d->alloc;
-   d->offset++;
+   ++d->offset;
 }
 
 template <typename T>

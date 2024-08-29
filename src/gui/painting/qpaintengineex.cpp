@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -367,7 +367,7 @@ Q_GUI_EXPORT extern bool qt_scaleForTransform(const QTransform &transform, qreal
 
 void QPaintEngineEx::stroke(const QVectorPath &path, const QPen &pen)
 {
-#ifdef QT_DEBUG_DRAW
+#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
    qDebug() << "QPaintEngineEx::stroke()" << pen;
 #endif
 
@@ -984,7 +984,7 @@ void QPaintEngineEx::drawTiledPixmap(const QRectF &r, const QPixmap &pixmap, con
 }
 
 void QPaintEngineEx::drawPixmapFragments(const QPainter::PixmapFragment *fragments, int fragmentCount,
-   const QPixmap &pixmap, QPainter::PixmapFragmentHints /*hints*/)
+      const QPixmap &pixmap, QPainter::PixmapFragmentHints)
 {
    if (pixmap.isNull()) {
       return;

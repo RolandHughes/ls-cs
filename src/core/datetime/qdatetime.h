@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -25,8 +25,8 @@
 #define QDATETIME_H
 
 #include <qnamespace.h>
-#include <qstring.h>
 #include <qshareddatapointer.h>
+#include <qstring.h>
 #include <qtimezone.h>
 
 class QDateTimePrivate;
@@ -286,7 +286,7 @@ class Q_CORE_EXPORT QTime
    static bool isValid(int h, int m, int s, int ms = 0);
 
  private:
-   enum TimeFlag { NullTime = -1 };
+   static constexpr const int NullTime = -1;
 
    constexpr int ds() const {
       return mds == -1 ? 0 : mds;

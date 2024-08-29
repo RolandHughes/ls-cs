@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -148,7 +148,7 @@ void QCocoaEventDispatcherPrivate::maybeStopCFRunLoopTimer()
 
 void QCocoaEventDispatcher::registerTimer(int timerId, int interval, Qt::TimerType timerType, QObject *obj)
 {
-#ifndef QT_NO_DEBUG
+#if defined(CS_SHOW_DEBUG_PLATFORM)
    if (timerId < 1 || interval < 0 || ! obj) {
       qWarning("QCocoaEventDispatcher::registerTimer: invalid arguments");
       return;
@@ -165,7 +165,7 @@ void QCocoaEventDispatcher::registerTimer(int timerId, int interval, Qt::TimerTy
 
 bool QCocoaEventDispatcher::unregisterTimer(int timerId)
 {
-#ifndef QT_NO_DEBUG
+#if defined(CS_SHOW_DEBUG_PLATFORM)
    if (timerId < 1) {
       qWarning("QCocoaEventDispatcher::unregisterTimer: invalid argument");
       return false;
@@ -189,7 +189,7 @@ bool QCocoaEventDispatcher::unregisterTimer(int timerId)
 
 bool QCocoaEventDispatcher::unregisterTimers(QObject *obj)
 {
-#ifndef QT_NO_DEBUG
+#if defined(CS_SHOW_DEBUG_PLATFORM)
    if (! obj) {
       qWarning("QCocoaEventDispatcher::unregisterTimers: invalid argument");
       return false;
@@ -214,7 +214,7 @@ bool QCocoaEventDispatcher::unregisterTimers(QObject *obj)
 
 QList<QTimerInfo> QCocoaEventDispatcher::registeredTimers(QObject *object) const
 {
-#ifndef QT_NO_DEBUG
+#if defined(CS_SHOW_DEBUG_PLATFORM)
    if (! object) {
       qWarning("QCocoaEventDispatcher:registeredTimers: invalid argument");
       return QList<QTimerInfo>();
@@ -543,7 +543,7 @@ bool QCocoaEventDispatcher::processEvents(QEventLoop::ProcessEventsFlags flags)
 
 int QCocoaEventDispatcher::remainingTime(int timerId)
 {
-#ifndef QT_NO_DEBUG
+#if defined(CS_SHOW_DEBUG_PLATFORM)
    if (timerId < 1) {
       qWarning("QCocoaEventDispatcher::remainingTime: invalid argument");
       return -1;

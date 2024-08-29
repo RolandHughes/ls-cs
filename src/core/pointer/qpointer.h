@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -45,7 +45,9 @@ class QPointer
    QWeakPointer<QObjectType> wp;
 
  public:
-   inline QPointer() { }
+   QPointer()
+   {
+   }
 
    inline QPointer(T *ptr)
       : wp(ptr, true)
@@ -60,80 +62,83 @@ class QPointer
       return *this;
    }
 
-   inline T *data() const {
+   T *data() const {
       return static_cast<T *>( wp.data());
    }
-   inline T *operator->() const {
+
+   T *operator->() const {
       return data();
    }
-   inline T &operator*() const {
+
+   T &operator*() const {
       return *data();
    }
-   inline operator T *() const {
+
+   operator T *() const {
       return data();
    }
 
-   inline bool isNull() const {
-      return wp.isNull();
+   void clear() {
+      wp.clear();
    }
 
-   inline void clear() {
-      wp.clear();
+   bool isNull() const {
+      return wp.isNull();
    }
 };
 
 template <class T>
-inline bool operator==(const T *o, const QPointer<T> &p)
+inline bool operator==(const T *ptr1, const QPointer<T> &ptr2)
 {
-   return o == p.operator->();
+   return ptr1 == ptr2.operator->();
 }
 
 template<class T>
-inline bool operator==(const QPointer<T> &p, const T *o)
+inline bool operator==(const QPointer<T> &ptr1, const T *ptr2)
 {
-   return p.operator->() == o;
+   return ptr1.operator->() == ptr2;
 }
 
 template <class T>
-inline bool operator==(T *o, const QPointer<T> &p)
+inline bool operator==(T *o, const QPointer<T> &ptr2)
 {
-   return o == p.operator->();
+   return o == ptr2.operator->();
 }
 
 template<class T>
-inline bool operator==(const QPointer<T> &p, T *o)
+inline bool operator==(const QPointer<T> &ptr1, T *ptr2)
 {
-   return p.operator->() == o;
+   return ptr1.operator->() == ptr2;
 }
 
 template<class T>
-inline bool operator==(const QPointer<T> &p1, const QPointer<T> &p2)
+inline bool operator==(const QPointer<T> &ptr1, const QPointer<T> &ptr2)
 {
-   return p1.operator->() == p2.operator->();
+   return ptr1.operator->() == ptr2.operator->();
 }
 
 template <class T>
-inline bool operator!=(const T *o, const QPointer<T> &p)
+inline bool operator!=(const T *ptr1, const QPointer<T> &ptr2)
 {
-   return o != p.operator->();
+   return ptr1 != ptr2.operator->();
 }
 
 template<class T>
-inline bool operator!= (const QPointer<T> &p, const T *o)
+inline bool operator!= (const QPointer<T> &ptr1, const T *ptr2)
 {
-   return p.operator->() != o;
+   return ptr1.operator->() != ptr2;
 }
 
 template <class T>
-inline bool operator!=(T *o, const QPointer<T> &p)
+inline bool operator!=(T *ptr1, const QPointer<T> &ptr2)
 {
-   return o != p.operator->();
+   return ptr1 != ptr2.operator->();
 }
 
 template<class T>
-inline bool operator!= (const QPointer<T> &p, T *o)
+inline bool operator!= (const QPointer<T> &ptr1, T *ptr2)
 {
-   return p.operator->() != o;
+   return ptr1.operator->() != ptr2;
 }
 
 template<class T>
@@ -148,4 +153,4 @@ QPointer<T> qPointerFromVariant(const QVariant &variant)
    return QPointer<T>(qobject_cast<T *>(QtSharedPointer::weakPointerFromVariant_internal(variant).data()));
 }
 
-#endif // QPOINTER_H
+#endif

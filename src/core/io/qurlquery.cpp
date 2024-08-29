@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -22,20 +22,21 @@
 ***********************************************************************/
 
 #include <qurlquery.h>
-#include <qurl_p.h>
 
 #include <qhashfunc.h>
 #include <qstringlist.h>
 
+#include <qurl_p.h>
 
-typedef QList<QPair<QString, QString> > Map;
+using Map = QList<QPair<QString, QString>>;
 
 class QUrlQueryPrivate : public QSharedData
 {
  public:
    QUrlQueryPrivate(const QString &query = QString())
       : valueDelimiter(QUrlQuery::defaultQueryValueDelimiter()),
-        pairDelimiter(QUrlQuery::defaultQueryPairDelimiter()) {
+        pairDelimiter(QUrlQuery::defaultQueryPairDelimiter())
+   {
 
       if (! query.isEmpty()) {
          setQuery(query);
@@ -50,16 +51,20 @@ class QUrlQueryPrivate : public QSharedData
    void addQueryItem(const QString &key, const QString &value) {
       itemList.append(qMakePair(recodeFromUser(key), recodeFromUser(value)));
    }
+
    int findRecodedKey(const QString &key, int from = 0) const {
       for (int i = from; i < itemList.size(); ++i)
          if (itemList.at(i).first == key) {
             return i;
          }
+
       return itemList.size();
    }
+
    Map::const_iterator findKey(const QString &key) const {
       return itemList.constBegin() + findRecodedKey(recodeFromUser(key));
    }
+
    Map::iterator findKey(const QString &key) {
       return itemList.begin() + findRecodedKey(recodeFromUser(key));
    }
@@ -76,16 +81,19 @@ void QSharedDataPointer<QUrlQueryPrivate>::detach()
    if (d && d->ref.load() == 1) {
       return;
    }
+
    QUrlQueryPrivate *x = (d ? new QUrlQueryPrivate(*d)
-                          : new QUrlQueryPrivate);
+               : new QUrlQueryPrivate);
    x->ref.ref();
+
    if (d && !d->ref.deref()) {
       delete d;
    }
+
    d = x;
 }
 
-// Here's how we do the encoding in QUrlQuery
+// Encoding in QUrlQuery
 // The RFC says these are the delimiters:
 //    gen-delims    = ":" / "/" / "?" / "#" / "[" / "]" / "@"
 //    sub-delims    = "!" / "$" / "&" / "'" / "(" / ")"
@@ -143,8 +151,9 @@ inline bool idempotentRecodeToUser(QUrl::FormattingOptions encoding)
 
 inline QString QUrlQueryPrivate::recodeToUser(const QString &input, QUrl::FormattingOptions encoding) const
 {
-   // our internal formats are stored in "PrettyDecoded" form
+   // internal formats are stored in "PrettyDecoded" form
    // and there are no ambiguous characters
+
    if (idempotentRecodeToUser(encoding)) {
       return input;
    }
@@ -155,6 +164,7 @@ inline QString QUrlQueryPrivate::recodeToUser(const QString &input, QUrl::Format
       if (qt_urlRecode(output, input.begin(), input.end(), encoding, nullptr)) {
          return output;
       }
+
       return input;
    }
 
@@ -224,7 +234,7 @@ void QUrlQueryPrivate::setQuery(const QString &query)
       } else {
          QString value;
 
-         if (! qt_urlRecode(value, delimiter + 1, iter, QUrl::DecodeReserved,prettyDecodedActions)) {
+         if (! qt_urlRecode(value, delimiter + 1, iter, QUrl::DecodeReserved, prettyDecodedActions)) {
             value = QString(delimiter + 1, iter);
          }
 
@@ -257,7 +267,6 @@ QUrlQuery::QUrlQuery(const QString &queryString)
 QUrlQuery::QUrlQuery(const QUrl &url)
    : d(nullptr)
 {
-   // use internals to avoid unnecessary recoding
    if (url.hasQuery()) {
       d = new QUrlQueryPrivate(url.query());
    }
@@ -288,8 +297,8 @@ bool QUrlQuery::operator ==(const QUrlQuery &other) const
       // keep in sync with qHash(QUrlQuery)
 
       return d->valueDelimiter == other.d->valueDelimiter &&
-             d->pairDelimiter == other.d->pairDelimiter &&
-             d->itemList == other.d->itemList;
+            d->pairDelimiter == other.d->pairDelimiter &&
+            d->itemList == other.d->itemList;
    }
 
    return false;
@@ -313,9 +322,6 @@ bool QUrlQuery::isEmpty() const
    return d ? d->itemList.isEmpty() : true;
 }
 
-/*!
-    \internal
-*/
 bool QUrlQuery::isDetached() const
 {
    return d && d->ref.load() == 1;
@@ -333,7 +339,8 @@ void QUrlQuery::setQuery(const QString &queryString)
    d->setQuery(queryString);
 }
 
-static void recodeAndAppend(QString &to, const QString &input, QUrl::FormattingOptions encoding, const ushort *tableModifications)
+static void recodeAndAppend(QString &to, const QString &input, QUrl::FormattingOptions encoding,
+      const ushort *tableModifications)
 {
    if (!qt_urlRecode(to, input.constBegin(), input.constEnd(), encoding, tableModifications)) {
       to += input;
@@ -398,7 +405,7 @@ QChar QUrlQuery::queryPairDelimiter() const
    return d ? d->pairDelimiter : defaultQueryPairDelimiter();
 }
 
-void QUrlQuery::setQueryItems(const QList<QPair<QString, QString> > &query)
+void QUrlQuery::setQueryItems(const QList<QPair<QString, QString>> &query)
 {
    clear();
 
@@ -408,25 +415,25 @@ void QUrlQuery::setQueryItems(const QList<QPair<QString, QString> > &query)
 
    QUrlQueryPrivate *dd = d;
 
-   QList<QPair<QString, QString> >::const_iterator it = query.constBegin();
-   QList<QPair<QString, QString> >::const_iterator end = query.constEnd();
+   QList<QPair<QString, QString>>::const_iterator it = query.constBegin();
+   QList<QPair<QString, QString>>::const_iterator end = query.constEnd();
 
    for ( ; it != end; ++it) {
       dd->addQueryItem(it->first, it->second);
    }
 }
 
-QList<QPair<QString, QString> > QUrlQuery::queryItems(QUrl::FormattingOptions encoding) const
+QList<QPair<QString, QString>> QUrlQuery::queryItems(QUrl::FormattingOptions encoding) const
 {
    if (! d) {
-      return QList<QPair<QString, QString> >();
+      return QList<QPair<QString, QString>>();
    }
 
    if (idempotentRecodeToUser(encoding)) {
       return d->itemList;
    }
 
-   QList<QPair<QString, QString> > result;
+   QList<QPair<QString, QString>> result;
 
    Map::const_iterator it  = d->itemList.constBegin();
    Map::const_iterator end = d->itemList.constEnd();
@@ -480,6 +487,7 @@ QStringList QUrlQuery::allQueryItemValues(const QString &key, QUrl::FormattingOp
          idx = d->findRecodedKey(encodedKey, idx + 1);
       }
    }
+
    return result;
 }
 

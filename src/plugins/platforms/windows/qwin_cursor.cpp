@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -558,7 +558,7 @@ HCURSOR QWindowsCursor::createCursorFromShape(Qt::CursorShape cursorShape, const
       }
    }
 
-   qWarning("QWindowsCursor::createCursorFromShape(): Invalid cursor shape %d", cursorShape);
+   qWarning("QWindowsCursor::createCursorFromShape() Invalid cursor shape %d", cursorShape);
 
    return nullptr;
 }
@@ -641,7 +641,7 @@ void QWindowsCursor::changeCursor(QCursor *cursorIn, QWindow *window)
       QWindowsWindow::baseWindowOf(window)->setCursor(wcursor);
 
    } else {
-      qWarning("QWindowsCursor::changeCursor(): Unable to obtain system cursor for %d", cursorIn->shape());
+      qWarning("QWindowsCursor::changeCursor() Unable to obtain system cursor for %d", cursorIn->shape());
    }
 }
 
@@ -654,7 +654,9 @@ QPoint QWindowsCursor::mousePosition()
 
 QWindowsCursor::CursorState QWindowsCursor::cursorState()
 {
-   enum { cursorShowing = 0x1, cursorSuppressed = 0x2 }; // Windows 8: CURSOR_SUPPRESSED
+   static constexpr const int cursorShowing    = 0x1;
+   static constexpr const int cursorSuppressed = 0x2;    // Windows 8: CURSOR_SUPPRESSED
+
    CURSORINFO cursorInfo;
    cursorInfo.cbSize = sizeof(CURSORINFO);
 

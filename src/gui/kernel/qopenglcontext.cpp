@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -49,10 +49,8 @@ class QOpenGLVersionProfilePrivate
 {
  public:
    QOpenGLVersionProfilePrivate()
-      : majorVersion(0),
-        minorVersion(0),
-        profile(QSurfaceFormat::NoProfile)
-   {}
+      : majorVersion(0), minorVersion(0), profile(QSurfaceFormat::NoProfile)
+   { }
 
    int majorVersion;
    int minorVersion;
@@ -153,20 +151,6 @@ static QThreadStorage<QGuiGLThreadContext *> *qwindow_context_storage()
 
 static QOpenGLContext *global_share_context = nullptr;
 
-#ifndef QT_NO_DEBUG
-   QHash<QOpenGLContext *, bool> QOpenGLContextPrivate::makeCurrentTracker;
-   QMutex QOpenGLContextPrivate::makeCurrentTrackerMutex;
-#endif
-
-/*!
-    \internal
-
-    This function is used by Qt::AA_ShareOpenGLContexts and the
-    WebEngine to set up context sharing across multiple windows.
-    Do not use it for any other purpose.
-
-    Please maintain the binary compatibility of these functions.
-*/
 void qt_gl_set_global_share_context(QOpenGLContext *context)
 {
    global_share_context = context;
@@ -209,7 +193,7 @@ int QOpenGLContextPrivate::maxTextureSize()
    funcs->glGetIntegerv(GL_MAX_TEXTURE_SIZE, &max_texture_size);
 
 #ifndef QT_OPENGL_ES
-   if (!q->isOpenGLES()) {
+   if (! q->isOpenGLES()) {
       GLenum proxy = GL_PROXY_TEXTURE_2D;
 
       GLint size;
@@ -364,14 +348,14 @@ bool QOpenGLContext::create()
 
    d->platformGLContext = QGuiApplicationPrivate::platformIntegration()->createPlatformOpenGLContext(this);
 
-   if (!d->platformGLContext) {
+   if (! d->platformGLContext) {
       return false;
    }
 
    d->platformGLContext->initialize();
    d->platformGLContext->setContext(this);
 
-   if (!d->platformGLContext->isSharing()) {
+   if (! d->platformGLContext->isSharing()) {
       d->shareContext = nullptr;
    }
 
@@ -381,24 +365,6 @@ bool QOpenGLContext::create()
    return isValid();
 }
 
-/*!
-    \internal
-
-    Destroy the underlying platform context associated with this context.
-
-    If any other context is directly or indirectly sharing resources with this
-    context, the shared resources, which includes vertex buffer objects, shader
-    objects, textures, and framebuffer objects, are not freed. However,
-    destroying the underlying platform context frees any state associated with
-    the context.
-
-    After \c destroy() has been called, you must call create() if you wish to
-    use the context again.
-
-    \note This implicitly calls doneCurrent() if the context is current.
-
-    \sa create()
-*/
 void QOpenGLContext::destroy()
 {
    deleteQGLContext();
@@ -446,10 +412,6 @@ void QOpenGLContext::destroy()
 QOpenGLContext::~QOpenGLContext()
 {
    destroy();
-
-#ifndef QT_NO_DEBUG
-   QOpenGLContextPrivate::cleanMakeCurrentTracker(this);
-#endif
 }
 
 bool QOpenGLContext::isValid() const
@@ -588,12 +550,7 @@ bool QOpenGLContext::makeCurrent(QSurface *surface)
 
    if (d->platformGLContext->makeCurrent(surface->surfaceHandle())) {
       d->surface = surface;
-
       d->shareGroup->d_func()->deletePendingResources(this);
-
-#ifndef QT_NO_DEBUG
-      QOpenGLContextPrivate::toggleMakeCurrentTracker(this, true);
-#endif
 
       return true;
    }
@@ -962,17 +919,13 @@ void QOpenGLSharedResourceGuard::freeResource(QOpenGLContext *context)
 QOpenGLMultiGroupSharedResource::QOpenGLMultiGroupSharedResource()
    : active(0)
 {
-#ifdef QT_GL_CONTEXT_RESOURCE_DEBUG
-   qDebug("Creating context group resource object %p.", this);
+#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
+   qDebug("QOpenGLMultiGroupSharedResource() Creating context group resource object %p", this);
 #endif
 }
 
 QOpenGLMultiGroupSharedResource::~QOpenGLMultiGroupSharedResource()
 {
-#ifdef QT_GL_CONTEXT_RESOURCE_DEBUG
-   qDebug("Deleting context group resource %p. Group size: %d.", this, m_groups.size());
-#endif
-
    for (int i = 0; i < m_groups.size(); ++i) {
       if (!m_groups.at(i)->shares().isEmpty()) {
          QOpenGLContext *context = m_groups.at(i)->shares().first();
@@ -989,8 +942,9 @@ QOpenGLMultiGroupSharedResource::~QOpenGLMultiGroupSharedResource()
 
 void QOpenGLMultiGroupSharedResource::insert(QOpenGLContext *context, QOpenGLSharedResource *value)
 {
-#ifdef QT_GL_CONTEXT_RESOURCE_DEBUG
-   qDebug("Inserting context group resource %p for context %p, managed by %p.", value, context, this);
+#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
+   qDebug("QOpenGLMultiGroupSharedResource::insert() Inserting context group resource "
+      "%p for context %p, managed by %p.", value, context, this);
 #endif
 
    QOpenGLContextGroup *group = context->shareGroup();
@@ -1023,9 +977,9 @@ QList<QOpenGLSharedResource *> QOpenGLMultiGroupSharedResource::resources() cons
 
 void QOpenGLMultiGroupSharedResource::cleanup(QOpenGLContextGroup *group, QOpenGLSharedResource *value)
 {
-
-#ifdef QT_GL_CONTEXT_RESOURCE_DEBUG
-   qDebug("Cleaning up context group resource %p, for group %p in thread %p.", this, group, QThread::currentThread());
+#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
+   qDebug("QOpenGLMultiGroupSharedResource::cleanup() Context group resource %p, for group %p in thread %p",
+         this, group, QThread::currentThread());
 #endif
 
    value->invalidateResource();

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -231,30 +231,31 @@ int QWindowsFontEngine::getGlyphIndexes(QStringView strView, QGlyphLayout *glyph
 }
 
 QWindowsFontEngine::QWindowsFontEngine(const QString &name, LOGFONT lf,
-   const QSharedPointer<QWindowsFontEngineData> &fontEngineData)
-
+      const QSharedPointer<QWindowsFontEngineData> &fontEngineData)
    : QFontEngine(Win), m_fontEngineData(fontEngineData), _name(name), hfont(nullptr),
      m_logfont(lf), ttf(0), hasOutline(0), cmap(nullptr), cmapSize(0), lbearing(SHRT_MIN),
      rbearing(SHRT_MIN), x_height(-1), synthesized_flags(-1), lineWidth(-1),
      widthCache(nullptr), widthCacheSize(0), designAdvances(nullptr), designAdvancesSize(0)
 {
 
-#if defined(CS_SHOW_DEBUG)
+#if defined(CS_SHOW_DEBUG_PLATFORM)
    // emerald - saw fontSize as negative, why?
-   qDebug() << "QWindowsFontEngine():  FontName = " << name << " FontSize =" << lf.lfHeight;
+   qDebug() << "QWindowsFontEngine() FontName = " << name << " FontSize =" << lf.lfHeight;
 #endif
 
    hfont = CreateFontIndirect(&m_logfont);
+
    if (! hfont) {
-      qErrnoWarning("QWindowsFontEngine(): CreateFontIndirect failed for family '%s'", csPrintable(name));
+      qErrnoWarning("QWindowsFontEngine() CreateFontIndirect failed for family %s", csPrintable(name));
       hfont = QWindowsFontDatabase::systemFont();
    }
 
    HDC hdc = m_fontEngineData->hdc;
    SelectObject(hdc, hfont);
    const BOOL res = GetTextMetrics(hdc, &tm);
+
    if (! res) {
-      qErrnoWarning("QWindowsFontEngine(): GetTextMetrics failed");
+      qErrnoWarning("QWindowsFontEngine() GetTextMetrics failed");
       ZeroMemory(&tm, sizeof(TEXTMETRIC));
    }
 
@@ -292,7 +293,7 @@ QWindowsFontEngine::~QWindowsFontEngine()
    SelectObject(m_fontEngineData->hdc, QWindowsFontDatabase::systemFont());
 
    if (! DeleteObject(hfont)) {
-      qErrnoWarning("~QWindowsFontEngine(): Failed to delete font");
+      qErrnoWarning("~QWindowsFontEngine() Failed to delete font");
    }
 
    if (! uniqueFamilyName.isEmpty()) {
@@ -577,7 +578,8 @@ qreal QWindowsFontEngine::maxCharWidth() const
    return tm.tmMaxCharWidth;
 }
 
-enum { max_font_count = 256 };
+static constexpr const int max_font_count = 256;
+
 static const ushort char_table[] = {
    40,
    67,
@@ -832,7 +834,7 @@ static bool addGlyphToPath(glyph_t glyph, const QFixedPoint &position, HDC hdc,
             }
 
             default:
-               qWarning("QFontEngineWin::addOutlineToPath, unhandled switch case");
+               qWarning("QFontEngineWin::addOutlineToPath() Unhandled switch case");
          }
          offset += sizeof(TTPOLYCURVE) + (curve->cpfx - 1) * sizeof(POINTFX);
       }
@@ -912,14 +914,14 @@ int QWindowsFontEngine::synthesized() const
          if (tm.tmItalic && !(macStyle & 2)) {
             synthesized_flags = SynthesizedItalic;
          }
+
          if (fontDef.stretch != 100 && ttf) {
             synthesized_flags |= SynthesizedStretch;
          }
+
          if (tm.tmWeight >= 500 && !(macStyle & 1)) {
             synthesized_flags |= SynthesizedBold;
          }
-         //qDebug() << "font is" << _name <<
-         //    "it=" << (macStyle & 2) << fontDef.style << "flags=" << synthesized_flags;
       }
    }
    return synthesized_flags;

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -25,21 +25,22 @@
 #define QTOOLS_P_H
 
 #include <qglobal.h>
+
 #include <limits>
 
 namespace QtMiscUtils {
 
 constexpr inline char toHexUpper(uint value)
 {
-    return "0123456789ABCDEF"[value & 0xF];
+   return "0123456789ABCDEF"[value & 0xF];
 }
 
 constexpr inline char toHexLower(uint value)
 {
-    return "0123456789abcdef"[value & 0xF];
+   return "0123456789abcdef"[value & 0xF];
 }
 
-}
+}   // end namespace
 
 // typically need an extra bit for qNextPowerOfTwo when determining the next allocation size.
 constexpr int MaxAllocSize = (1 << (std::numeric_limits<int>::digits - 1)) - 1;

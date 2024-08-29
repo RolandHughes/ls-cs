@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -83,7 +83,7 @@ int AbstractFloat<isDouble>::internalSignbit(const xsDouble num)
 
    /* The highest bit, the 64'th for those who have 64bit floats, is the sign bit. So we pull it down until that bit is the
     * only one left. */
-   if (sizeof(xsDouble) == 8) {
+   if constexpr (sizeof(xsDouble) == 8) {
       return value.asInt >> 63;
    } else {
       return value.asInt >> 31;

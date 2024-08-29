@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -21,8 +21,9 @@
 *
 ***********************************************************************/
 
-#include <qresource.h>
 #include <qresource_iterator_p.h>
+
+#include <qresource.h>
 #include <qvariant.h>
 
 QResourceFileEngineIterator::QResourceFileEngineIterator(QDir::Filters filters, const QStringList &filterNames)
@@ -36,9 +37,10 @@ QResourceFileEngineIterator::~QResourceFileEngineIterator()
 
 QString QResourceFileEngineIterator::next()
 {
-   if (!hasNext()) {
+   if (! hasNext()) {
       return QString();
    }
+
    ++index;
    return currentFilePath();
 }
@@ -46,13 +48,13 @@ QString QResourceFileEngineIterator::next()
 bool QResourceFileEngineIterator::hasNext() const
 {
    if (index == -1) {
-      // Lazy initialization of the iterator
       QResource resource(path());
+
       if (!resource.isValid()) {
          return false;
       }
 
-      // Initialize and move to the next entry.
+      // Initialize and move to the next entry
       entries = resource.children();
       index = 0;
    }
@@ -65,5 +67,6 @@ QString QResourceFileEngineIterator::currentFileName() const
    if (index <= 0 || index > entries.size()) {
       return QString();
    }
+
    return entries.at(index - 1);
 }

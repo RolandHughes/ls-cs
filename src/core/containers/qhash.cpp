@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -27,16 +27,14 @@
 #define _CRT_RAND_S
 #endif
 
-#include <stdlib.h>
-
-#include <qhash.h>
-
 #ifdef truncate
 #undef truncate
 #endif
 
-#include <qbytearray.h>
+#include <qhash.h>
+
 #include <qbitarray.h>
+#include <qbytearray.h>
 #include <qcoreapplication.h>
 #include <qdatetime.h>
 #include <qglobal.h>
@@ -48,6 +46,7 @@
 #endif
 
 #include <limits.h>
+#include <stdlib.h>
 
 static std::atomic<uint> cs_seed_value{0};
 
@@ -64,7 +63,7 @@ static inline uint hash(const uchar *p, int len, uint seed)
 
 uint qHashBits(const void *p, size_t len, uint seed)
 {
-    return hash(static_cast<const uchar*>(p), int(len), seed);
+   return hash(static_cast<const uchar *>(p), int(len), seed);
 }
 
 uint qHash(const QByteArray &key, uint seed)
@@ -81,6 +80,7 @@ uint qHash(const QBitArray &bitArray, uint seed)
    // the padding is initialized to 0 in bitArray.d
 
    int n = bitArray.size();
+
    if (n & 0x7) {
       result = ((result << 4) + bitArray.d.at(m)) & ((1 << n) - 1);
    }
@@ -120,6 +120,7 @@ static uint cs_create_seed()
 
       qt_safe_close(randomfd);
    }
+
 #endif
 
    quint64 timestamp = QDateTime::currentMSecsSinceEpoch();
@@ -162,3 +163,4 @@ uint cs_getHashSeed()
       return expectedValue;
    }
 }
+

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -38,25 +38,29 @@ QImage cs_glRead_frameBuffer(const QSize &, bool, bool);
 #define QGL_FUNC_CONTEXT  const QGLContext *ctx = QGLContext::currentContext();
 #define QGL_FUNCP_CONTEXT const QGLContext *ctx = QGLContext::currentContext();
 
-#ifndef QT_NO_DEBUG
+#if defined(CS_SHOW_DEBUG_OPENGL)
+
 #define QT_RESET_GLERROR()                                \
 {                                                         \
-    while (QOpenGLContext::currentContext()->functions()->glGetError() != GL_NO_ERROR) {} \
+   while (QOpenGLContext::currentContext()->functions()->glGetError() != GL_NO_ERROR) { } \
 }
+
 #define QT_CHECK_GLERROR()                                \
 {                                                         \
-    GLenum err = QOpenGLContext::currentContext()->functions()->glGetError(); \
-    if (err != GL_NO_ERROR) {                             \
-        qDebug("[%s line %d] GL Error: %d",               \
-               __FILE__, __LINE__, (int)err);             \
-    }                                                     \
+   GLenum err = QOpenGLContext::currentContext()->functions()->glGetError();  \
+   if (err != GL_NO_ERROR) {                              \
+      qDebug("[%s line %d] GL Error: %d", __FILE__, __LINE__, (int)err);      \
+   }                                                      \
 }
+
 #else
-#define QT_RESET_GLERROR() {}
-#define QT_CHECK_GLERROR() {}
+
+#define QT_RESET_GLERROR() { }
+#define QT_CHECK_GLERROR() { }
+
 #endif
 
-// ####TODO Properly #ifdef this class to use #define symbols actually defined
+// #### TODO Properly #ifdef this class to use #define symbols actually defined
 // by OpenGL/ES includes
 #ifndef GL_MAX_SAMPLES
 #define GL_MAX_SAMPLES 0x8D57
@@ -238,7 +242,7 @@ QGLContext *QGLFBOGLPaintDevice::context() const
 bool QGLFramebufferObjectPrivate::checkFramebufferStatus() const
 {
    QGL_FUNCP_CONTEXT;
-   if (!ctx) {
+   if (! ctx) {
       return false;   // Context no longer exists.
    }
 
@@ -250,57 +254,78 @@ bool QGLFramebufferObjectPrivate::checkFramebufferStatus() const
          return true;
 
       case GL_FRAMEBUFFER_UNSUPPORTED:
-         qDebug("QGLFramebufferObject: Unsupported framebuffer format.");
+#if defined(CS_SHOW_DEBUG_OPENGL)
+         qDebug("QGLFramebufferObject() Unsupported framebuffer format.");
+#endif
          break;
 
       case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
-         qDebug("QGLFramebufferObject: Framebuffer incomplete attachment.");
+#if defined(CS_SHOW_DEBUG_OPENGL)
+         qDebug("QGLFramebufferObject() Framebuffer incomplete attachment.");
+#endif
          break;
 
       case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
-         qDebug("QGLFramebufferObject: Framebuffer incomplete, missing attachment.");
+#if defined(CS_SHOW_DEBUG_OPENGL)
+         qDebug("QGLFramebufferObject() Framebuffer incomplete, missing attachment.");
+#endif
          break;
 
 #ifdef GL_FRAMEBUFFER_INCOMPLETE_DUPLICATE_ATTACHMENT
       case GL_FRAMEBUFFER_INCOMPLETE_DUPLICATE_ATTACHMENT:
-         qDebug("QGLFramebufferObject: Framebuffer incomplete, duplicate attachment.");
+#if defined(CS_SHOW_DEBUG_OPENGL)
+         qDebug("QGLFramebufferObject() Framebuffer incomplete, duplicate attachment.");
+#endif
          break;
 #endif
 
 #ifdef GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS
       case GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS:
-         qDebug("QGLFramebufferObject: Framebuffer incomplete, attached images must have same dimensions.");
+#if defined(CS_SHOW_DEBUG_OPENGL)
+         qDebug("QGLFramebufferObject() Framebuffer incomplete, attached images must have same dimensions.");
+#endif
          break;
 #endif
 
 #ifdef GL_FRAMEBUFFER_INCOMPLETE_FORMATS
       case GL_FRAMEBUFFER_INCOMPLETE_FORMATS:
-         qDebug("QGLFramebufferObject: Framebuffer incomplete, attached images must have same format.");
+#if defined(CS_SHOW_DEBUG_OPENGL)
+         qDebug("QGLFramebufferObject() Framebuffer incomplete, attached images must have same format.");
+#endif
          break;
 #endif
 
 #ifdef GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER
       case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER:
-         qDebug("QGLFramebufferObject: Framebuffer incomplete, missing draw buffer.");
+#if defined(CS_SHOW_DEBUG_OPENGL)
+         qDebug("QGLFramebufferObject() Framebuffer incomplete, missing draw buffer.");
+#endif
          break;
 #endif
 
 #ifdef GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER
       case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER:
-         qDebug("QGLFramebufferObject: Framebuffer incomplete, missing read buffer.");
+#if defined(CS_SHOW_DEBUG_OPENGL)
+         qDebug("QGLFramebufferObject() Framebuffer incomplete, missing read buffer.");
+#endif
          break;
 #endif
 
 #ifdef GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE
       case GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE:
-         qDebug("QGLFramebufferObject: Framebuffer incomplete, attachments must have same number of samples per pixel.");
+#if defined(CS_SHOW_DEBUG_OPENGL)
+         qDebug("QGLFramebufferObject() Framebuffer incomplete, attachments must have same number of samples per pixel.");
+#endif
          break;
 #endif
 
       default:
-         qDebug() << "QGLFramebufferObject: An undefined error has occurred: " << status;
+#if defined(CS_SHOW_DEBUG_OPENGL)
+         qDebug() << "QGLFramebufferObject() An undefined error has occurred: " << status;
+#endif
          break;
    }
+
    return false;
 }
 
@@ -321,17 +346,18 @@ void freeTextureFunc(QGLContext *ctx, GLuint id)
 {
    ctx->contextHandle()->functions()->glDeleteTextures(1, &id);
 }
+
 }
+
 void QGLFramebufferObjectPrivate::init(QGLFramebufferObject *q, const QSize &sz,
-   QGLFramebufferObject::Attachment attachment,
-   GLenum texture_target, GLenum internal_format,
-   GLint samples, bool mipmap)
+      QGLFramebufferObject::Attachment attachment, GLenum texture_target,
+      GLenum internal_format, GLint samples, bool mipmap)
 {
    QGLContext *ctx = const_cast<QGLContext *>(QGLContext::currentContext());
 
    funcs.initializeOpenGLFunctions();
 
-   if (!funcs.hasOpenGLFeature(QOpenGLFunctions::Framebuffers)) {
+   if (! funcs.hasOpenGLFeature(QOpenGLFunctions::Framebuffers)) {
       return;
    }
 
@@ -713,9 +739,9 @@ bool QGLFramebufferObject::bind()
 
    const QGLContext *current = QGLContext::currentContext();
 
-#ifdef QT_DEBUG
-   if (!current || QGLContextPrivate::contextGroup(current) != QGLContextPrivate::contextGroup(ctx)) {
-      qWarning("QGLFramebufferObject::bind() called from incompatible context");
+#if defined(CS_SHOW_DEBUG_OPENGL)
+   if (! current || QGLContextPrivate::contextGroup(current) != QGLContextPrivate::contextGroup(ctx)) {
+      qDebug("QGLFramebufferObject::bind() Called from incompatible context");
    }
 #endif
 
@@ -744,10 +770,9 @@ bool QGLFramebufferObject::release()
 
    const QGLContext *current = QGLContext::currentContext();
 
-#ifdef QT_DEBUG
-   if (!current ||
-      QGLContextPrivate::contextGroup(current) != QGLContextPrivate::contextGroup(ctx)) {
-      qWarning("QGLFramebufferObject::release() called from incompatible context");
+#if defined(CS_SHOW_DEBUG_OPENGL)
+   if (! current || QGLContextPrivate::contextGroup(current) != QGLContextPrivate::contextGroup(ctx)) {
+      qDebug("QGLFramebufferObject::release() Called from incompatible context");
    }
 #endif
 
@@ -843,9 +868,9 @@ bool QGLFramebufferObject::bindDefault()
       ctx->d_ptr->setCurrentFbo(ctx->d_ptr->default_fbo);
       functions.glBindFramebuffer(GL_FRAMEBUFFER, ctx->d_ptr->default_fbo);
 
-#ifdef QT_DEBUG
+#if defined(CS_SHOW_DEBUG_OPENGL)
    } else {
-      qWarning("QGLFramebufferObject::bindDefault() called without current context.");
+      qDebug("QGLFramebufferObject::bindDefault() Called without current context.");
 #endif
 
    }

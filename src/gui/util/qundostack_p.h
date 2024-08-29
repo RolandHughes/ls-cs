@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,9 +24,9 @@
 #ifndef QUNDOSTACK_P_H
 #define QUNDOSTACK_P_H
 
+#include <qaction.h>
 #include <qlist.h>
 #include <qstring.h>
-#include <qaction.h>
 #include <qundostack.h>
 
 class QUndoCommand;
@@ -54,7 +54,9 @@ class QUndoStackPrivate
    {
    }
 
-   virtual ~QUndoStackPrivate() {}
+   virtual ~QUndoStackPrivate()
+   {
+   }
 
    QList<QUndoCommand *> command_list;
    QList<QUndoCommand *> macro_stack;
@@ -88,8 +90,6 @@ class QUndoAction : public QAction
 
 };
 #endif // QT_NO_ACTION
-
-
 
 #endif // QT_NO_UNDOSTACK
 #endif // QUNDOSTACK_P_H

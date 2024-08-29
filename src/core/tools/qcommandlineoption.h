@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -28,8 +28,8 @@
 #ifndef QCOMMANDLINEOPTION_H
 #define QCOMMANDLINEOPTION_H
 
-#include <qstringlist.h>
 #include <qshareddata.h>
+#include <qstringlist.h>
 
 class QCommandLineOptionPrivate;
 
@@ -37,10 +37,10 @@ class Q_CORE_EXPORT QCommandLineOption
 {
  public:
    explicit QCommandLineOption(const QString &name, const QString &description = QString(),
-                               const QString &valueName = QString(), const QString &defaultValue = QString());
+         const QString &valueName = QString(), const QString &defaultValue = QString());
 
    explicit QCommandLineOption(const QStringList &names, const QString &description = QString(),
-                               const QString &valueName = QString(), const QString &defaultValue = QString());
+         const QString &valueName = QString(), const QString &defaultValue = QString());
 
    QCommandLineOption(const QCommandLineOption &other);
 
@@ -48,12 +48,12 @@ class Q_CORE_EXPORT QCommandLineOption
 
    QCommandLineOption &operator=(const QCommandLineOption &other);
 
-   inline QCommandLineOption &operator=(QCommandLineOption && other) {
+   QCommandLineOption &operator=(QCommandLineOption && other) {
       qSwap(d, other.d);
       return *this;
    }
 
-   inline void swap(QCommandLineOption &other) {
+   void swap(QCommandLineOption &other) {
       qSwap(d, other.d);
    }
 

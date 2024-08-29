@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -21,8 +21,10 @@
 *
 ***********************************************************************/
 
-#include <qjson.h>
 #include <qjsonarray.h>
+
+#include <qjson.h>
+
 #include <qjsonwriter_p.h>
 
 QJsonArray::QJsonArray()
@@ -46,7 +48,8 @@ QJsonArray::QJsonArray(QJsonArray &&other)
    m_array = std::move(other.m_array);
 }
 
-QJsonArray::QJsonArray(std::initializer_list<QJsonValue> args) {
+QJsonArray::QJsonArray(std::initializer_list<QJsonValue> args)
+{
 
    m_array = std::make_shared<QJsonDataArray>();
 
@@ -59,7 +62,8 @@ QJsonArray::~QJsonArray()
 {
 }
 
-void QJsonArray::append(QJsonValue value) {
+void QJsonArray::append(QJsonValue value)
+{
    m_array->m_vector.append(std::move(value));
 }
 
@@ -80,7 +84,8 @@ bool QJsonArray::contains(const QJsonValue &value) const
    return m_array->m_vector.contains(value);
 }
 
-QJsonArray::iterator QJsonArray::erase(const_iterator iter) {
+QJsonArray::iterator QJsonArray::erase(const_iterator iter)
+{
    return m_array->m_vector.erase(iter);
 }
 
@@ -94,7 +99,8 @@ void QJsonArray::insert(size_type index, QJsonValue value)
    return m_array->m_vector.insert(index, std::move(value));
 }
 
-QJsonArray::iterator QJsonArray::insert(iterator before, QJsonValue value) {
+QJsonArray::iterator QJsonArray::insert(iterator before, QJsonValue value)
+{
    return m_array->m_vector.insert(before, std::move(value));
 }
 
@@ -108,7 +114,8 @@ const QJsonValue &QJsonArray::last() const
    return m_array->m_vector.last();
 }
 
-void QJsonArray::prepend(QJsonValue value) {
+void QJsonArray::prepend(QJsonValue value)
+{
    m_array->m_vector.append(std::move(value));
 }
 
@@ -198,26 +205,32 @@ QJsonArray &QJsonArray::operator<< (const QJsonValue value)
 }
 
 // iterators
-QJsonArray::iterator QJsonArray::begin() {
+QJsonArray::iterator QJsonArray::begin()
+{
    return m_array->m_vector.begin();
 }
 
-QJsonArray::const_iterator QJsonArray::begin() const {
+QJsonArray::const_iterator QJsonArray::begin() const
+{
    return m_array->m_vector.begin();
 }
 
-QJsonArray::const_iterator QJsonArray::constBegin() const {
+QJsonArray::const_iterator QJsonArray::constBegin() const
+{
    return m_array->m_vector.constBegin();
 }
 
-QJsonArray::iterator QJsonArray::end() {
+QJsonArray::iterator QJsonArray::end()
+{
    return m_array->m_vector.end();
 }
 
-QJsonArray::const_iterator QJsonArray::end() const {
+QJsonArray::const_iterator QJsonArray::end() const
+{
    return m_array->m_vector.end();
 }
 
-QJsonArray::const_iterator QJsonArray::constEnd() const {
+QJsonArray::const_iterator QJsonArray::constEnd() const
+{
    return m_array->m_vector.constEnd();
 }

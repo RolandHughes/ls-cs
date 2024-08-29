@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -542,7 +542,7 @@ void SequentialAnchorData::calculateSizeHints()
    sizeAtMaximum = prefSize;
 }
 
-#ifdef QT_DEBUG
+#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
 void AnchorData::dump(int indent)
 {
    if (type == Parallel) {
@@ -593,7 +593,7 @@ QSimplexConstraint *GraphPath::constraint(const GraphPath &path) const
    return c;
 }
 
-#ifdef QT_DEBUG
+#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
 QString GraphPath::toString() const
 {
    QString string(QLatin1String("Path: "));
@@ -847,7 +847,7 @@ bool QGraphicsAnchorLayoutPrivate::replaceVertex(Orientation orientation, Anchor
       AnchorData *ad = edges[i];
       AnchorVertex *otherV = replaceVertex_helper(ad, oldV, newV);
 
-#if defined(QT_DEBUG)
+#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
       ad->name = QString::fromLatin1("%1 --to--> %2").formatArg(ad->from->toString()).formatArg(ad->to->toString());
 #endif
 
@@ -1706,12 +1706,14 @@ void QGraphicsAnchorLayoutPrivate::addAnchor_helper(QGraphicsLayoutItem *firstIt
    // from v1 or v2. "data" however is shared between the two references
    // so we still know that the anchor direction is from 1 to 2.
    data->from = v1;
-   data->to = v2;
-#ifdef QT_DEBUG
+   data->to   = v2;
+
+#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
    data->name = QString::fromLatin1("%1 --to--> %2").formatArg(v1->toString()).formatArg(v2->toString());
 #endif
-   // ### bit to track internal anchors, since inside AnchorData methods
-   // we don't have access to the 'q' pointer.
+
+   // tracks internal anchors, currently inside AnchorData methods
+   // access to the 'q' pointer is not available
    data->isLayoutAnchor = (data->item == q);
 
    graph[orientation].createEdge(v1, v2, data);
@@ -2223,7 +2225,7 @@ bool QGraphicsAnchorLayoutPrivate::calculateTrunk(Orientation orientation, const
       sizeHints[orientation][Qt::MaximumSize] = ad->sizeAtMaximum;
    }
 
-#if defined(QT_DEBUG)
+#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
    lastCalculationUsedSimplex[orientation] = needsSimplex;
 #endif
 
@@ -2821,10 +2823,15 @@ bool QGraphicsAnchorLayoutPrivate::solveMinMax(const QList<QSimplexConstraint *>
          ad->sizeAtMaximum = ad->result - g_offset;
       }
    }
+
    return feasible;
 }
 
-enum slackType { Grower = -1, Shrinker = 1 };
+enum slackType {
+   Grower   = -1,
+   Shrinker = 1
+};
+
 static QPair<QSimplexVariable *, QSimplexConstraint *> createSlack(QSimplexConstraint *sizeConstraint,
    qreal interval, slackType type)
 {
@@ -2951,13 +2958,6 @@ bool QGraphicsAnchorLayoutPrivate::solvePreferred(const QList<QSimplexConstraint
    return feasible;
 }
 
-/*!
-    \internal
-    Returns true if there are no arrangement that satisfies all constraints.
-    Otherwise returns false.
-
-    \sa addAnchor()
-*/
 bool QGraphicsAnchorLayoutPrivate::hasConflicts() const
 {
    QGraphicsAnchorLayoutPrivate *that = const_cast<QGraphicsAnchorLayoutPrivate *>(this);
@@ -2968,7 +2968,7 @@ bool QGraphicsAnchorLayoutPrivate::hasConflicts() const
    return graphHasConflicts[0] || graphHasConflicts[1] || floatConflict;
 }
 
-#ifdef QT_DEBUG
+#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
 void QGraphicsAnchorLayoutPrivate::dumpGraph(const QString &name)
 {
    QFile file(QString("anchorlayout.%1.dot").formatArg(name));

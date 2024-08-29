@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -61,7 +61,7 @@ void QLocalSocket::setServerName(const QString &name)
 {
    Q_D(QLocalSocket);
    if (d->state != UnconnectedState) {
-      qWarning("QLocalSocket::setServerName() called while not in unconnected state");
+      qWarning("QLocalSocket::setServerName() Must be called while in unconnected state");
       return;
    }
    d->serverName = name;

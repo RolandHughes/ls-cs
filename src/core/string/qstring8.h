@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -1021,8 +1021,13 @@ class Q_CORE_EXPORT QString8 : public CsString::CsString
       const_iterator cs_internal_rfind_fast(QChar32 c, const_iterator iter_begin) const;
       const_iterator cs_internal_rfind_fast(const QString8 &str, const_iterator iter_begin) const;
 
-      iterator replace(const_iterator iter, const QString8 &str) {
-         return CsString::CsString::replace(iter, str);
+      iterator replace(const_iterator iter_begin, const QString8 &str) {
+         // returns an iterator to the end of the replacement string
+
+         auto iter = CsString::CsString::replace(iter_begin, str);
+         iter = iter.advance_storage(str.size_storage());
+
+         return iter;
       }
 };
 

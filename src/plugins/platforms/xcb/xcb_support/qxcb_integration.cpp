@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -79,7 +79,7 @@ QXcbIntegration *QXcbIntegration::m_instance = nullptr;
 // or, for older Linuxes, read out 'cmdline'.
 static bool runningUnderDebugger()
 {
-#if defined(QT_DEBUG) && defined(Q_OS_LINUX)
+#if defined(CS_SHOW_DEBUG_PLATFORM) && defined(Q_OS_LINUX)
    const QString parentProc = QString("/proc/") + QString::number(getppid());
    const QFileInfo parentProcExe(parentProc + QString("/exe"));
 
@@ -166,14 +166,13 @@ QXcbIntegration::QXcbIntegration(const QStringList &parameters, int &argc, char 
    bool underDebugger = runningUnderDebugger();
 
    if (noGrabArg && doGrabArg && underDebugger) {
-      qWarning() << "Both -nograb and -dograb command line arguments specified. Please pick one. -nograb takes prcedence";
+      qWarning() << "QXcbIntegration() Both -nograb and -dograb command line arguments specified, only one can be used at a time";
       doGrabArg = false;
    }
 
-#if defined(QT_DEBUG)
-   if (! noGrabArg && !doGrabArg && underDebugger) {
-      qDebug("Gdb: -nograb added to command-line options.\n"
-         "\t Use the -dograb option to enforce grabbing.");
+#if defined(CS_SHOW_DEBUG_PLATFORM)
+   if (! noGrabArg && ! doGrabArg && underDebugger) {
+      qDebug("QXcbIntegration() Debugger detected, use -dograb option to enable grabbing");
    }
 #endif
 
@@ -188,7 +187,10 @@ QXcbIntegration::QXcbIntegration(const QStringList &parameters, int &argc, char 
    m_connections << new QXcbConnection(m_nativeInterface.data(), m_canGrab, m_defaultVisualId, displayName);
 
    for (int i = 0; i < numParameters - 1; i += 2) {
-      qDebug() << "connecting to additional display: " << parameters.at(i) << parameters.at(i + 1);
+
+#if defined(CS_SHOW_DEBUG_PLATFORM)
+      qDebug() << "QXcbIntegration() Connecting to additional display = " << parameters.at(i) << parameters.at(i + 1);
+#endif
 
       QString display = parameters.at(i) + QLatin1Char(':') + parameters.at(i + 1);
       m_connections << new QXcbConnection(m_nativeInterface.data(), m_canGrab, m_defaultVisualId, display.toLatin1().constData());
@@ -345,7 +347,7 @@ QPlatformAccessibility *QXcbIntegration::accessibility() const
 {
 #ifndef QT_NO_ACCESSIBILITY_ATSPI_BRIDGE
    if (! m_accessibility) {
-      Q_ASSERT_X(QCoreApplication::eventDispatcher(), "QXcbIntegration", "Initializing accessibility without event-dispatcher!");
+      Q_ASSERT_X(QCoreApplication::eventDispatcher(), "QXcbIntegration", "Initializing accessibility without event-dispatcher");
       m_accessibility.reset(new QSpiAccessibleBridge());
    }
 #endif

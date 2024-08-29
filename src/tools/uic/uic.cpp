@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -21,27 +21,27 @@
 *
 ***********************************************************************/
 
-#include <driver.h>
 #include <uic.h>
-#include <ui4.h>
+
+#include <driver.h>
 #include <option.h>
-#include <treewalker.h>
-#include <validator.h>
-
-#ifdef QT_UIC_CPP_GENERATOR
-#include <write_includes.h>
-#include <write_declaration.h>
-#endif
-
-#ifdef QT_UIC_JAVA_GENERATOR
-#include <javawriteincludes.h>
-#include <javawritedeclaration.h>
-#endif
-
 #include <qfileinfo.h>
 #include <qregularexpression.h>
 #include <qtextstream.h>
 #include <qxmlstreamreader.h>
+#include <treewalker.h>
+#include <ui4.h>
+#include <validator.h>
+
+#ifdef QT_UIC_CPP_GENERATOR
+#include <write_declaration.h>
+#include <write_includes.h>
+#endif
+
+#ifdef QT_UIC_JAVA_GENERATOR
+#include <javawritedeclaration.h>
+#include <javawriteincludes.h>
+#endif
 
 Uic::Uic(Driver *d)
    : drv(d), out(d->output()), opt(d->option()), externalPix(true)
@@ -188,8 +188,6 @@ bool Uic::write(QIODevice *in)
    }
 
    QString language = ui->attributeLanguage();
-
-
    bool rtn = false;
 
    if (option().generator == Option::JavaGenerator) {
@@ -200,7 +198,7 @@ bool Uic::write(QIODevice *in)
          return false;
       }
 
-      rtn = jwrite (ui);
+      rtn = jwrite(ui);
 #else
       fprintf(stderr, "Uic: option to generate java code not compiled in\n");
 #endif
@@ -213,9 +211,9 @@ bool Uic::write(QIODevice *in)
          return false;
       }
 
-      rtn = write (ui);
+      rtn = write(ui);
 #else
-      fprintf(stderr, "Uic: option to generate cpp code not compiled in\n");
+      fprintf(stderr, "Uic: option to generate cpp code not compiled into this program\n");
 #endif
    }
 

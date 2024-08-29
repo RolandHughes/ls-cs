@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -63,7 +63,7 @@ class QStringList : public QList<QString>
 
    int Q_CORE_EXPORT removeDuplicates();
    Q_CORE_EXPORT QStringList &replaceInStrings(const QString &before, const QString &after,
-                  Qt::CaseSensitivity cs = Qt::CaseSensitive);
+         Qt::CaseSensitivity cs = Qt::CaseSensitive);
 
    void Q_CORE_EXPORT sort();
 

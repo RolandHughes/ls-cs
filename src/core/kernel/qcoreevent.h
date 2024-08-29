@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -26,8 +26,8 @@
 #ifndef QCOREEVENT_H
 #define QCOREEVENT_H
 
-#include <qnamespace.h>
 #include <qbytearray.h>
+#include <qnamespace.h>
 
 #ifdef Expose
 #undef Expose
@@ -243,6 +243,7 @@ class Q_CORE_EXPORT QEvent           // event base class
 
    explicit QEvent(Type type);
    QEvent(const QEvent &other);
+
    virtual ~QEvent();
 
    QEvent &operator=(const QEvent &other);
@@ -310,10 +311,10 @@ class Q_CORE_EXPORT QTimerEvent : public QEvent
    int timerId() const {
       return id;
    }
+
  protected:
    int id;
 };
-
 
 class Q_CORE_EXPORT QChildEvent : public QEvent
 {
@@ -347,7 +348,7 @@ class Q_CORE_EXPORT QDynamicPropertyChangeEvent : public QEvent
    explicit QDynamicPropertyChangeEvent(const QByteArray &name);
    ~QDynamicPropertyChangeEvent();
 
-   inline QByteArray propertyName() const {
+   QByteArray propertyName() const {
       return n;
    }
 
@@ -358,14 +359,16 @@ class Q_CORE_EXPORT QDynamicPropertyChangeEvent : public QEvent
 class Q_CORE_EXPORT QDeferredDeleteEvent : public QEvent
 {
  public:
-    explicit QDeferredDeleteEvent();
-    ~QDeferredDeleteEvent();
+   explicit QDeferredDeleteEvent();
+   ~QDeferredDeleteEvent();
 
-    int loopLevel() const { return level; }
+   int loopLevel() const {
+      return level;
+   }
 
  private:
-    int level;
-    friend class QCoreApplication;
+   int level;
+   friend class QCoreApplication;
 };
 
 #endif // QCOREEVENT_H

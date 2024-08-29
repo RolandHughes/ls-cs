@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -32,9 +32,7 @@
 
 #ifndef QT_NO_FTP
 
-enum {
-   DefaultFtpPort = 21
-};
+static constexpr const int DefaultFtpPort = 21;
 
 static QByteArray makeCacheKey(const QUrl &url)
 {
@@ -365,7 +363,6 @@ void QNetworkAccessFtpBackend::ftpReadyRead()
 
 void QNetworkAccessFtpBackend::ftpRawCommandReply(int code, const QString &text)
 {
-   //qDebug() << "FTP reply:" << code << text;
    int id = ftp->currentId();
 
    if ((id == helpId) && ((code == 200) || (code == 214))) {     // supported commands

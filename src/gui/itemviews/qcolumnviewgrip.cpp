@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,11 +24,12 @@
 #ifndef QT_NO_QCOLUMNVIEW
 
 #include <qcolumnviewgrip_p.h>
-#include <qstyleoption.h>
-#include <qpainter.h>
+
 #include <qbrush.h>
-#include <qevent.h>
 #include <qdebug.h>
+#include <qevent.h>
+#include <qpainter.h>
+#include <qstyleoption.h>
 
 QColumnViewGrip::QColumnViewGrip(QWidget *parent)
    :  QWidget(*new QColumnViewGripPrivate, parent, Qt::EmptyFlag)
@@ -99,10 +100,6 @@ void QColumnViewGrip::mouseDoubleClickEvent(QMouseEvent *event)
    event->accept();
 }
 
-/*!
-    \reimp
-    Begin watching for mouse movements
-*/
 void QColumnViewGrip::mousePressEvent(QMouseEvent *event)
 {
    Q_D(QColumnViewGrip);
@@ -110,10 +107,6 @@ void QColumnViewGrip::mousePressEvent(QMouseEvent *event)
    event->accept();
 }
 
-/*!
-    \reimp
-    Calculate the movement of the grip and moveGrip() and emit gripMoved
-*/
 void QColumnViewGrip::mouseMoveEvent(QMouseEvent *event)
 {
    Q_D(QColumnViewGrip);
@@ -122,26 +115,16 @@ void QColumnViewGrip::mouseMoveEvent(QMouseEvent *event)
    event->accept();
 }
 
-/*!
-    \reimp
-    Stop watching for mouse movements
-*/
 void QColumnViewGrip::mouseReleaseEvent(QMouseEvent *event)
 {
    Q_D(QColumnViewGrip);
    d->originalXLocation = -1;
    event->accept();
 }
-
-/*
- * private object implementation
- */
 QColumnViewGripPrivate::QColumnViewGripPrivate()
    :  QWidgetPrivate(),
       originalXLocation(-1)
 {
 }
-
-
 
 #endif // QT_NO_QCOLUMNVIEW

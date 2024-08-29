@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -21,11 +21,12 @@
 *
 ***********************************************************************/
 
-#include <qplatformdefs.h>
 #include <qwaitcondition.h>
-#include <qmutex.h>
-#include <qreadwritelock.h>
+
 #include <qatomic.h>
+#include <qmutex.h>
+#include <qplatformdefs.h>
+#include <qreadwritelock.h>
 #include <qstring.h>
 
 #include <qreadwritelock_p.h>
@@ -35,7 +36,7 @@
 static void report_error(int code, const char *where, const char *what)
 {
    if (code != 0) {
-      qWarning("%s: %s failure: %s", where, what, csPrintable(qt_error_string(code)));
+      qWarning("%s() %s failure, %s", where, what, csPrintable(qt_error_string(code)));
    }
 }
 
@@ -49,6 +50,7 @@ class QWaitConditionPrivate
 
    bool wait(unsigned long time) {
       int code;
+
       while (true) {
          if (time != ULONG_MAX) {
             struct timeval tv;
@@ -63,21 +65,25 @@ class QWaitConditionPrivate
          } else {
             code = pthread_cond_wait(&cond, &mutex);
          }
+
          if (code == 0 && wakeups == 0) {
             // many vendors warn of spurios wakeups from
             // pthread_cond_wait(), especially after signal delivery,
             // even though POSIX doesn't allow for it... sigh
             continue;
          }
+
          break;
       }
 
       Q_ASSERT_X(waiters > 0, "QWaitCondition::wait", "internal error (waiters)");
       --waiters;
+
       if (code == 0) {
          Q_ASSERT_X(wakeups > 0, "QWaitCondition::wait", "internal error (wakeups)");
          --wakeups;
       }
+
       report_error(pthread_mutex_unlock(&mutex), "QWaitCondition::wait()", "mutex unlock");
 
       if (code && code != ETIMEDOUT) {
@@ -88,7 +94,6 @@ class QWaitConditionPrivate
    }
 };
 
-
 QWaitCondition::QWaitCondition()
 {
    d = new QWaitConditionPrivate;
@@ -96,7 +101,6 @@ QWaitCondition::QWaitCondition()
    report_error(pthread_cond_init(&d->cond, nullptr), "QWaitCondition", "cv init");
    d->waiters = d->wakeups = 0;
 }
-
 
 QWaitCondition::~QWaitCondition()
 {
@@ -143,8 +147,9 @@ bool QWaitCondition::wait(QReadWriteLock *readWriteLock, unsigned long time)
    if (!readWriteLock || readWriteLock->d->accessCount == 0) {
       return false;
    }
+
    if (readWriteLock->d->accessCount < -1) {
-      qWarning("QWaitCondition: cannot wait on QReadWriteLocks with recursive lockForWrite()");
+      qWarning("QWaitCondition::wait() Unable to wait on QReadWriteLocks with recursive lockForWrite()");
       return false;
    }
 

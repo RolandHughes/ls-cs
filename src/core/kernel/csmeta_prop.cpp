@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -21,15 +21,18 @@
 *
 ***********************************************************************/
 
+// do not move these two includes
 #include <qobject.h>
 #include <csmeta.h>
+
 #include <qmetaobject.h>
 
 QMetaProperty::QMetaProperty(const QString &name, QMetaObject *obj)
    :  m_metaObject(obj), m_name(name),
       m_returnTypeId(typeid(void)), m_returnTypeFuncPtr(nullptr)
 {
-   m_typeName     = QString();
+   m_typeName        = QString();
+   m_writeMethodName = QString();
 
    m_read_able    = false;
    m_write_able   = false;
@@ -61,8 +64,31 @@ bool QMetaProperty::hasNotifySignal() const
 
 bool QMetaProperty::hasStdCppSet() const
 {
-   // internal & undocumented, used to bypass issues
-   return false;
+   // used in CsDesigner
+   // return true if the property named X has a setX() method
+
+   // CORE_CS_PROPERTY_WRITE(objectName, setObjectName)
+   // void setObjectName(const QString &name);
+
+   bool retval = false;
+
+   if (isWritable()) {
+      QString setName = "set" + name();
+      setName.replace(3, 1, setName[3].toUpper());
+
+      if (setName == m_writeMethodName) {
+         retval = true;
+
+      } else {
+         setName.prepend("cs_");
+
+         if (setName == m_writeMethodName) {
+            retval = true;
+         }
+      }
+   }
+
+   return retval;
 }
 
 bool QMetaProperty::isConstant() const
@@ -171,7 +197,7 @@ bool QMetaProperty::isStored(const QObject *object) const
          retval = true;
       }
 
-   } else{
+   } else {
       retval = m_storedJar->run<bool>(object);
    }
 
@@ -235,7 +261,7 @@ QMetaMethod QMetaProperty::notifySignal() const
 
    if (id == -1) {
       return QMetaMethod(str, str, std::vector<QString>(), QMetaMethod::Private, QMetaMethod::Slot,
-                  QMetaMethod::Attributes(), m_metaObject);
+            QMetaMethod::Attributes(), m_metaObject);
 
    } else  {
       return m_metaObject->method(id);
@@ -391,7 +417,7 @@ bool QMetaProperty::write(QObject *object, const QVariant &value) const
 
 // internal
 void QMetaProperty::setReadMethod(std::type_index returnTypeId,
-         QString (*returnTypeFuncPtr)(), JarReadAbstract *jarRead)
+      QString (*returnTypeFuncPtr)(), JarReadAbstract *jarRead)
 {
    if (! jarRead) {
       return;
@@ -405,14 +431,17 @@ void QMetaProperty::setReadMethod(std::type_index returnTypeId,
    m_read_able  = true;
 }
 
-void QMetaProperty::setWriteMethod(JarWriteAbstract *method)
+void QMetaProperty::setWriteMethod(JarWriteAbstract *method, const QString &methodName)
 {
    if (! method)  {
       return;
    }
 
-   m_writeJar   = method;
-   m_write_able = true;
+   m_writeJar    = method;
+   m_write_able  = true;
+
+   // used in hasStdCppSet()
+   m_writeMethodName = methodName;
 }
 
 void QMetaProperty::setDesignable(JarReadAbstract *method)

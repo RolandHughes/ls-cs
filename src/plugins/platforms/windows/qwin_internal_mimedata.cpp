@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -37,7 +37,7 @@ bool QWindowsInternalMimeData::hasFormat_sys(const QString &mime) const
    const bool has = mc.converterToMime(mime, pDataObj) != nullptr;
    releaseDataObject(pDataObj);
 
-#if defined(CS_SHOW_DEBUG)
+#if defined(CS_SHOW_DEBUG_PLATFORM)
    qDebug() << "QWindowsInternalMimeData::hasFormat_sys:" <<  mime << has;
 #endif
 
@@ -55,7 +55,7 @@ QStringList QWindowsInternalMimeData::formats_sys() const
    const QStringList fmts = mc.allMimesForFormats(pDataObj);
    releaseDataObject(pDataObj);
 
-#if defined(CS_SHOW_DEBUG)
+#if defined(CS_SHOW_DEBUG_PLATFORM)
    qDebug() << "QWindowsInternalMimeData::formats_sys:" <<  fmts;
 #endif
 
@@ -75,13 +75,8 @@ QVariant QWindowsInternalMimeData::retrieveData_sys(const QString &mimeType, QVa
    if (const QWindowsMime *converter = mc.converterToMime(mimeType, pDataObj)) {
       result = converter->convertToMime(mimeType, pDataObj, type);
    }
-   releaseDataObject(pDataObj);
 
-   if (QWindowsContext::verbose) {
-      qDebug() << __FUNCTION__ << ' '  << mimeType << ' ' << type
-               << " returns " << result.type()
-               << (result.type() != QVariant::ByteArray ? result.toString() : QString("<data>"));
-   }
+   releaseDataObject(pDataObj);
 
    return result;
 }

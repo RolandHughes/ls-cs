@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,11 +24,12 @@
 #ifndef QFILEINFO_P_H
 #define QFILEINFO_P_H
 
-#include <qfileinfo.h>
 #include <qabstractfileengine.h>
-#include <qdatetime.h>
 #include <qatomic.h>
+#include <qdatetime.h>
+#include <qfileinfo.h>
 #include <qshareddata.h>
+
 #include <qfilesystemengine_p.h>
 #include <qfilesystementry_p.h>
 #include <qfilesystemmetadata_p.h>
@@ -36,10 +37,16 @@
 class QFileInfoPrivate : public QSharedData
 {
  public:
-   enum { CachedFileFlags = 0x01, CachedLinkTypeFlag = 0x02, CachedBundleTypeFlag = 0x04,
-          CachedMTime = 0x10, CachedCTime = 0x20, CachedATime = 0x40,
-          CachedSize = 0x08, CachedPerms = 0x80
-        };
+   enum CachedFlags {
+      CachedFileFlags      = 0x01,
+      CachedLinkTypeFlag   = 0x02,
+      CachedBundleTypeFlag = 0x04,
+      CachedMTime          = 0x10,
+      CachedCTime          = 0x20,
+      CachedATime          = 0x40,
+      CachedSize           = 0x08,
+      CachedPerms          = 0x80
+   };
 
    QFileInfoPrivate()
       : QSharedData(), fileEngine(nullptr), cachedFlags(0), isDefaultConstructed(true),
@@ -79,7 +86,7 @@ class QFileInfoPrivate : public QSharedData
       : QSharedData(), fileEntry(file), metaData(data),
         fileEngine(QFileSystemEngine::resolveEntryAndCreateLegacyEngine(fileEntry, metaData)),
         cachedFlags(0), isDefaultConstructed(false), cache_enabled(true), fileFlags(0), fileSize(0)
-   {
+    {
 
       // If the file engine is not null, this maybe a "mount point" for a custom file engine
       // in which case we can not trust the metadata
@@ -89,7 +96,7 @@ class QFileInfoPrivate : public QSharedData
    }
 
    void clearFlags() const {
-      fileFlags = 0;
+      fileFlags   = 0;
       cachedFlags = 0;
 
       if (fileEngine) {
@@ -122,15 +129,21 @@ class QFileInfoPrivate : public QSharedData
    mutable QString fileNames[QAbstractFileEngine::NFileNames];
    mutable QString fileOwners[2];
 
-   mutable uint cachedFlags : 30;
-   bool const isDefaultConstructed : 1; // QFileInfo is a default constructed instance
+   mutable uint cachedFlags;
+
+   bool const isDefaultConstructed : 1;
    bool cache_enabled : 1;
+
    mutable uint fileFlags;
    mutable qint64 fileSize;
    mutable QDateTime fileTimes[3];
 
    bool getCachedFlag(uint c) const {
-      return cache_enabled ? (cachedFlags & c) : 0;
+      if (cache_enabled) {
+         return (cachedFlags & c);
+      } else {
+         return false;
+      }
    }
 
    void setCachedFlag(uint c) const {

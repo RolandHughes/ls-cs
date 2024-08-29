@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -21,13 +21,14 @@
 *
 ***********************************************************************/
 
+// do not move the order of these two includes
 #include <qobject.h>
 #include <csmeta_callevent.h>
 
 // internal class
-CSMetaCallEvent::CSMetaCallEvent(const CsSignal::Internal::BentoAbstract *bento, 
-                  const CsSignal::Internal::TeaCupAbstract *dataPack, 
-                  const QObject *sender, int signal_index, QSemaphore *semaphore)
+CSMetaCallEvent::CSMetaCallEvent(const CsSignal::Internal::BentoAbstract *bento,
+      const CsSignal::Internal::TeaCupAbstract *dataPack,
+      const QObject *sender, int signal_index, QSemaphore *semaphore)
    : QEvent(MetaCall), m_bento(bento), m_dataPack(dataPack), m_sender(sender),
      m_semaphore(semaphore), m_signal_index(signal_index)
 {

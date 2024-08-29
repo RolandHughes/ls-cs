@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,9 +24,9 @@
 #ifndef QJSONOBJECT_H
 #define QJSONOBJECT_H
 
-#include <qjsonvalue.h>
 #include <qflatmap.h>
 #include <qhash.h>
+#include <qjsonvalue.h>
 #include <qstring.h>
 #include <qstringlist.h>
 #include <qvariant.h>
@@ -49,7 +49,7 @@ class Q_CORE_EXPORT QJsonObject
 
    QJsonObject();
    QJsonObject(const_iterator iter_begin, const_iterator iter_end);
-   QJsonObject(std::initializer_list<QPair<QString, QJsonValue> > list);
+   QJsonObject(std::initializer_list<QPair<QString, QJsonValue>> list);
    QJsonObject(const QJsonObject &other);
    QJsonObject(QJsonObject &&other);
 
@@ -63,7 +63,7 @@ class Q_CORE_EXPORT QJsonObject
       return size();
    }
 
-   inline bool empty() const {
+   bool empty() const {
       return isEmpty();
    }
 
@@ -119,6 +119,5 @@ class Q_CORE_EXPORT QJsonObject
    friend class QJsonValue;
    std::shared_ptr<QJsonDataObject> m_object;
 };
-
 
 #endif

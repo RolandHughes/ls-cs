@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -29,7 +29,6 @@
 #include <qwaitcondition.h>
 #include <qfilesystemwatcher.h>
 #include <qfileiconprovider.h>
-
 #include <qpair.h>
 #include <qstack.h>
 #include <qdatetime.h>
@@ -38,13 +37,16 @@
 
 #include <qfilesystemengine_p.h>
 
-
 class QFileIconProvider;
 
 class QExtendedInformation
 {
  public:
-   enum Type { Dir, File, System };
+   enum Type {
+      Dir,
+      File,
+      System
+   };
 
    QExtendedInformation() {}
    QExtendedInformation(const QFileInfo &info) : mFileInfo(info) {}

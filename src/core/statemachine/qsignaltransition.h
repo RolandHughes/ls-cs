@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -72,7 +72,6 @@ class Q_CORE_EXPORT QSignalTransition : public QAbstractTransition
    QScopedPointer<CsSignal::Internal::BentoAbstract> m_signalBento;
 };
 
-
 template <class SignalClass, class ...SignalArgs>
 QSignalTransition::QSignalTransition(QObject *sender, void (SignalClass::*signal)(SignalArgs...), QState *sourceState)
    : QAbstractTransition(sourceState)
@@ -88,17 +87,17 @@ QSignalTransition *QState::addTransition(QObject *sender, void (SignalClass::*si
       QAbstractState *target)
 {
    if (! sender) {
-      qWarning("QState::addTransition: No sender was specified");
+      qWarning("QState::addTransition() No sender was specified");
       return nullptr;
    }
 
    if (! signal) {
-      qWarning("QState::addTransition: No signal was specified");
+      qWarning("QState::addTransition() No signal was specified");
       return nullptr;
    }
 
    if (! target) {
-      qWarning("QState::addTransition: No target was specified");
+      qWarning("QState::addTransition() No target was specified");
       return nullptr;
    }
 

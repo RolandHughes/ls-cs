@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -35,13 +35,14 @@ class DSImageCaptureControl : public QCameraImageCaptureControl
    DSImageCaptureControl(DSCameraSession *session);
    ~DSImageCaptureControl();
 
-   bool isReadyForCapture() const;
-   int capture(const QString &fileName);
+   bool isReadyForCapture() const override;
+   int capture(const QString &fileName) override;
 
-   QCameraImageCapture::DriveMode driveMode() const;
-   void setDriveMode(QCameraImageCapture::DriveMode mode);
+   QCameraImageCapture::DriveMode driveMode() const override;
+   void setDriveMode(QCameraImageCapture::DriveMode mode) override;
 
-   void cancelCapture() {}
+   void cancelCapture() override {
+   }
 
  private:
    DSCameraSession *m_session;

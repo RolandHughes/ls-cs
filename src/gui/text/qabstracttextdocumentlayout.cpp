@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -206,6 +206,7 @@ QString QAbstractTextDocumentLayout::anchorAt(const QPointF &pos) const
    QTextDocumentPrivate *pieceTable = qobject_cast<const QTextDocument *>(parent())->docHandle();
    QTextDocumentPrivate::FragmentIterator it = pieceTable->find(cursorPos);
    QTextCharFormat fmt = pieceTable->formatCollection()->charFormat(it->format);
+
    return fmt.anchorHref();
 }
 
@@ -238,4 +239,3 @@ QSizeF QAbstractTextDocumentLayout::_q_dynamicDocumentSizeSlot()
    Q_D(QAbstractTextDocumentLayout);
    return d->_q_dynamicDocumentSizeSlot();
 }
-

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -30,7 +30,6 @@
 #include <qdebug.h>
 #include <qevent.h>
 #include <qlineedit.h>
-#include <qlineedit_p.h>
 #include <qlocale.h>
 #include <qpainter.h>
 #include <qlayout.h>
@@ -38,16 +37,9 @@
 #include <qstyle.h>
 #include <qtimezone.h>
 
-#ifndef QT_NO_DATETIMEEDIT
+#include <qlineedit_p.h>
 
-//#define QDATETIMEEDIT_QDTEDEBUG
-#ifdef QDATETIMEEDIT_QDTEDEBUG
-#  define QDTEDEBUG qDebug() << QString::fromLatin1("%1:%2").formatArg(__FILE__).formatArg(__LINE__)
-#  define QDTEDEBUGN qDebug
-#else
-#  define QDTEDEBUG if (false) qDebug()
-#  define QDTEDEBUGN if (false) qDebug
-#endif
+#ifndef QT_NO_DATETIMEEDIT
 
 QDateTimeEdit::QDateTimeEdit(QWidget *parent)
    : QAbstractSpinBox(*new QDateTimeEditPrivate, parent)
@@ -76,7 +68,6 @@ QDateTimeEdit::QDateTimeEdit(const QTime &time, QWidget *parent)
    Q_D(QDateTimeEdit);
    d->init(time.isValid() ? time : QDATETIME_TIME_MIN);
 }
-
 
 QDateTimeEdit::QDateTimeEdit(const QVariant &var, QVariant::Type parserType, QWidget *parent)
    : QAbstractSpinBox(*new QDateTimeEditPrivate, parent)
@@ -345,7 +336,7 @@ void QDateTimeEdit::setCurrentSection(Section section)
       while (index < size) {
          if (d->convertToPublic(d->sectionType(index)) == section) {
             d->edit->setCursorPosition(d->sectionPos(index));
-            QDTEDEBUG << d->sectionPos(index);
+
             return;
          }
 
@@ -482,6 +473,7 @@ void QDateTimeEdit::setDisplayFormat(const QString &format)
             d->displayFormat += d->separators.at(i + 1);
             d->displayFormat += d->sectionNode(i).format();
          }
+
          d->displayFormat += d->separators.at(0);
          d->separators = reverse(d->separators);
          d->sectionNodes = reverse(d->sectionNodes);
@@ -607,13 +599,10 @@ QSize QDateTimeEdit::sizeHint() const
    return d->cachedSizeHint;
 }
 
-/*!
-  \reimp
-*/
-
 bool QDateTimeEdit::event(QEvent *event)
 {
    Q_D(QDateTimeEdit);
+
    switch (event->type()) {
       case QEvent::ApplicationLayoutDirectionChange: {
          const bool was = d->formatExplicitlySet;
@@ -623,9 +612,11 @@ bool QDateTimeEdit::event(QEvent *event)
          d->formatExplicitlySet = was;
          break;
       }
+
       case QEvent::LocaleChange:
          d->updateEdit();
          break;
+
       case QEvent::StyleChange:
 
 #ifdef Q_OS_DARWIN
@@ -633,24 +624,18 @@ bool QDateTimeEdit::event(QEvent *event)
 #endif
          d->setLayoutItemMargins(QStyle::SE_DateTimeEditLayoutItem);
          break;
+
       default:
          break;
    }
    return QAbstractSpinBox::event(event);
 }
 
-/*!
-  \reimp
-*/
-
 void QDateTimeEdit::clear()
 {
    Q_D(QDateTimeEdit);
    d->clearSection(d->currentSectionIndex);
 }
-/*!
-  \reimp
-*/
 
 void QDateTimeEdit::keyPressEvent(QKeyEvent *event)
 {
@@ -669,6 +654,7 @@ void QDateTimeEdit::keyPressEvent(QKeyEvent *event)
             return;
          }
          break;
+
       case Qt::Key_Select:
          if (QApplication::keypadNavigationEnabled()) {
             if (hasEditFocus()) {
@@ -681,6 +667,7 @@ void QDateTimeEdit::keyPressEvent(QKeyEvent *event)
                }
                setEditFocus(false);
                selectAll();
+
             } else {
                setEditFocus(true);
 
@@ -770,7 +757,7 @@ void QDateTimeEdit::keyPressEvent(QKeyEvent *event)
             return;
          }
 #endif
-         //key tab and backtab will be managed thrgout QWidget::event
+         // key tab and backtab will be managed by QWidget::event
          if (event->key() != Qt::Key_Backtab && event->key() != Qt::Key_Tab) {
             focusNextPrevChild(forward);
          }
@@ -789,9 +776,6 @@ void QDateTimeEdit::keyPressEvent(QKeyEvent *event)
          if (validate(str, pos) == QValidator::Acceptable && (d->sectionNodes.at(oldCurrent).count != 1
                || d->sectionMaxSize(oldCurrent) == d->sectionSize(oldCurrent)
                || d->skipToNextSection(oldCurrent, d->value.toDateTime(), d->sectionText(oldCurrent)))) {
-
-            QDTEDEBUG << "Setting currentsection to " << d->closestSection(d->edit->cursorPosition(), true)
-                      << event->key() << oldCurrent << str;
 
             const int tmp = d->closestSection(d->edit->cursorPosition(), true);
 
@@ -886,32 +870,33 @@ bool QDateTimeEdit::focusNextPrevChild(bool next)
       case QDateTimeParser::FirstSection:
       case QDateTimeParser::LastSection:
          return QAbstractSpinBox::focusNextPrevChild(next);
+
       default:
          d->edit->deselect();
          d->edit->setCursorPosition(d->sectionPos(newSection));
-         QDTEDEBUG << d->sectionPos(newSection);
          d->setSelected(newSection, true);
+
          return false;
    }
 }
 
-/*!
-  \reimp
-*/
-
 void QDateTimeEdit::stepBy(int steps)
 {
    Q_D(QDateTimeEdit);
+
 #ifdef QT_KEYPAD_NAVIGATION
    // with keypad navigation and not editFocus, left right change the date/time by a fixed amount.
+
    if (QApplication::keypadNavigationEnabled() && !hasEditFocus()) {
       // if date based, shift by day.  else shift by 15min
       if (d->sections & DateSections_Mask) {
          setDateTime(dateTime().addDays(steps));
+
       } else {
          int minutes = time().hour() * 60 + time().minute();
          int blocks = minutes / 15;
          blocks += steps;
+
          /* rounding involved */
          if (minutes % 15) {
             if (steps < 0) {
@@ -939,6 +924,7 @@ void QDateTimeEdit::stepBy(int steps)
       return;
    }
 #endif
+
    // do not optimize away steps == 0, this is the only way to select the currentSection
 
    if (d->specialValue() && displayedSections() != AmPmSection) {
@@ -1202,18 +1188,14 @@ void QDateTimeEditPrivate::updateEdit()
 #endif
 
       int cursor = sectionPos(currentSectionIndex);
-      QDTEDEBUG << "cursor is " << cursor << currentSectionIndex;
+
       cursor = qBound(0, cursor, displayText().size());
-      QDTEDEBUG << cursor;
 
       if (selsize > 0) {
          edit->setSelection(cursor, selsize);
-         QDTEDEBUG << cursor << selsize;
 
       } else {
          edit->setCursorPosition(cursor);
-         QDTEDEBUG << cursor;
-
       }
    }
 
@@ -1372,10 +1354,9 @@ void QDateTimeEditPrivate::clearSection(int index)
 
    const int size = sectionSize(index);
    t.replace(pos, size, QString().fill(space, size));
+
    edit->setText(t);
    edit->setCursorPosition(cursorPos);
-   QDTEDEBUG << cursorPos;
-
    edit->blockSignals(blocked);
 }
 
@@ -1471,16 +1452,6 @@ QVariant QDateTimeEditPrivate::valueFromText(const QString &f) const
    Q_Q(const QDateTimeEdit);
    return q->dateTimeFromText(f).toTimeZone(m_timeZone);
 }
-
-/*!
-  \internal
-
-  Internal function called by QDateTimeEdit::stepBy(). Also takes a
-  Section for which section to step on and a bool \a test for
-  whether or not to modify the internal cachedDay variable. This is
-  necessary because the function is called from the const function
-  QDateTimeEdit::stepEnabled() as well as QDateTimeEdit::stepBy().
-*/
 
 QDateTime QDateTimeEditPrivate::stepBy(int sectionIndex, int steps, bool test) const
 {
@@ -1688,14 +1659,15 @@ void QDateTimeEditPrivate::_q_editorCursorPositionChanged(int oldpos, int newpos
             setSelected(selSection, true);
          }
          c = -1;
+
       } else {
          int closest = closestSection(newpos, forward);
          c = sectionPos(closest) + (forward ? 0 : qMax(0, sectionSize(closest)));
 
          if (allowChange) {
             edit->setCursorPosition(c);
-            QDTEDEBUG << c;
          }
+
          s = closest;
       }
    }
@@ -1724,11 +1696,6 @@ void QDateTimeEditPrivate::_q_editorCursorPositionChanged(int oldpos, int newpos
    ignoreCursorPositionChanged = false;
 }
 
-/*!
-  \internal
-
-  Try to get the format from the local settings
-*/
 void QDateTimeEditPrivate::readLocaleSettings()
 {
    const QLocale loc;
@@ -1815,14 +1782,11 @@ QDateTimeEdit::Sections QDateTimeEditPrivate::convertSections(QDateTimeParser::S
    return ret;
 }
 
-/*!
-    \reimp
-*/
-
 void QDateTimeEdit::paintEvent(QPaintEvent *event)
 {
    Q_D(QDateTimeEdit);
-   if (!d->calendarPopupEnabled()) {
+
+   if (! d->calendarPopupEnabled()) {
       QAbstractSpinBox::paintEvent(event);
       return;
    }

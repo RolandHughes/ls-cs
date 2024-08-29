@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -638,7 +638,7 @@ class Expression : public QSharedData, public CppCastingHelper<Expression>, publ
    /**
     * Reimplementation of SourceLocationReflection::description().
     */
-   virtual QString description() const override;
+   QString description() const override;
 
    /**
     * When this function is called, it signals that the parent will create

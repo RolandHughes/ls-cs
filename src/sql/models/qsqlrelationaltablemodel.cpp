@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -23,8 +23,8 @@
 
 #include <qsqlrelationaltablemodel.h>
 
+#include <qdebug.h>
 #include <qhash.h>
-#include <qstringlist.h>
 #include <qsqldatabase.h>
 #include <qsqldriver.h>
 #include <qsqlerror.h>
@@ -32,9 +32,9 @@
 #include <qsqlindex.h>
 #include <qsqlquery.h>
 #include <qsqlrecord.h>
+#include <qstringlist.h>
 
 #include <qsqltablemodel_p.h>
-#include <qdebug.h>
 
 class QSqlRelationalTableModelSql: public QSqlTableModelSql
 {
@@ -447,9 +447,6 @@ QSqlTableModel *QSqlRelationalTableModel::relationModel(int column) const
    return relation.model;
 }
 
-/*!
-    \reimp
-*/
 void QSqlRelationalTableModel::revertRow(int row)
 {
    QSqlTableModel::revertRow(row);

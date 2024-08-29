@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2023 Barbara Geller
-* Copyright (c) 2012-2023 Ansel Sermersheim
+* Copyright (c) 2012-2024 Barbara Geller
+* Copyright (c) 2012-2024 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -21,13 +21,15 @@
 *
 ***********************************************************************/
 
+// do not move these two includes
 #include <qobject.h>
 #include <csmeta.h>
+
 #include <qmetaobject.h>
 
 QMetaMethod::QMetaMethod(const QString &typeName, const QString &signature, std::vector<QString> paramNames,
-                  QMetaMethod::Access access, QMetaMethod::MethodType methodType,
-                  QMetaMethod::Attributes attributes, QMetaObject *obj)
+      QMetaMethod::Access access, QMetaMethod::MethodType methodType,
+      QMetaMethod::Attributes attributes, QMetaObject *obj)
    : m_typeName(typeName), m_signature(signature), m_paramNames(paramNames.begin(), paramNames.end()),
      m_access(access), m_methodType(methodType), m_attributes(attributes), m_metaObject(obj)
 {
@@ -38,7 +40,7 @@ QMetaMethod::QMetaMethod(const QString &typeName, const QString &signature, std:
 
 QMetaMethod::QMetaMethod()
 {
-   m_typeName   = "";
+   m_typeName   = QString();
    // m_signature
    // m_paramNames
    m_access     = Private;
@@ -244,4 +246,3 @@ const QString &QMetaMethod::typeName() const
 {
    return m_typeName;
 }
-
