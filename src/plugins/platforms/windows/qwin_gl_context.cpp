@@ -22,14 +22,15 @@
 ***********************************************************************/
 
 #include <qwin_gl_context.h>
-#include <qwin_context.h>
-#include <qwin_window.h>
-#include <qwin_integration.h>
-#include <qdebug.h>
-#include <qsysinfo.h>
+
 #include <qapplication.h>
+#include <qdebug.h>
 #include <qplatform_nativeinterface.h>
+#include <qsysinfo.h>
 #include <qwglnativecontext.h>
+#include <qwin_context.h>
+#include <qwin_integration.h>
+#include <qwin_window.h>
 
 #include <algorithm>
 
@@ -438,20 +439,8 @@ static inline bool isAcceptableFormat(const QWindowsOpenGLAdditionalFormat &addi
    const bool colorOk =  !pixmapRequested || pfd.cColorBits == additional.pixmapDepth;
    const bool glOk = ignoreGLSupport || testFlag(pfd.dwFlags, PFD_SUPPORT_OPENGL);
    const bool overlayOk = hasGLOverlay(pfd) == testFlag(additional.formatFlags, QWindowsGLOverlay);
+
    return pixmapOk && glOk && overlayOk && colorOk;
-}
-
-static void describeFormats(HDC hdc)
-{
-   const int pfiMax = DescribePixelFormat(hdc, 0, 0, nullptr);
-
-   for (int i = 0; i < pfiMax; i++) {
-      PIXELFORMATDESCRIPTOR pfd;
-      initPixelFormatDescriptor(&pfd);
-      DescribePixelFormat(hdc, i, sizeof(PIXELFORMATDESCRIPTOR), &pfd);
-
-
-   }
 }
 
 // Classic GDI API
@@ -1159,6 +1148,18 @@ QOpenGLStaticContext *QOpenGLStaticContext::create(bool softwareRendering)
 
    QOpenGLStaticContext *result = new QOpenGLStaticContext;
 
+   // test OpenGL version
+   const QWindowsOpenGLContextFormat format = QWindowsOpenGLContextFormat::current();
+
+   const int majorVersion = format.m_version >> 8;
+   const int minorVersion = format.m_version & 0xFF;
+
+   if (majorVersion < 2) {
+      qWarning("\n ** QOpenGLWidget::create() OpenGL version %d.%d is too low, update video drivers", majorVersion, minorVersion);
+      delete result;
+
+      return nullptr;
+   }
 
    return result;
 }

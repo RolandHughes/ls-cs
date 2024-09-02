@@ -25,16 +25,16 @@
 #include <qopengl_framebufferobject.h>
 #include <qopengl_framebufferobject_p.h>
 
-#include <qdebug.h>
-#include <qwindow.h>
-#include <qlibrary.h>
-#include <qimage.h>
 #include <qbytearray.h>
+#include <qdebug.h>
+#include <qimage.h>
+#include <qlibrary.h>
+#include <qwindow.h>
 
+#include <qfont_p.h>
+#include <qopengl_extensions_p.h>
 #include <qopengl_p.h>
 #include <qopenglcontext_p.h>
-#include <qopengl_extensions_p.h>
-#include <qfont_p.h>
 
 #if defined(CS_SHOW_DEBUG_GUI_OPENGL)
 #define QT_RESET_GLERROR()                                \
@@ -414,6 +414,10 @@ void QOpenGLFramebufferObjectPrivate::initTexture(int idx)
     funcs.glTexParameteri(target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     funcs.glTexParameteri(target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
+    if (idx < 0 || idx >= colorAttachments.size()) {
+      return;
+    }
+
     ColorAttachment &color(colorAttachments[idx]);
 
     GLuint pixelType = GL_UNSIGNED_BYTE;
@@ -458,6 +462,9 @@ void QOpenGLFramebufferObjectPrivate::initColorBuffer(int idx, GLint *samples)
     QOpenGLContext *ctx = QOpenGLContext::currentContext();
     GLuint color_buffer = 0;
 
+    if (idx < 0 || idx >= colorAttachments.size()) {
+      return;
+    }
 
     ColorAttachment &color(colorAttachments[idx]);
     GLenum storageFormat = color.internalFormat;
@@ -867,7 +874,13 @@ bool QOpenGLFramebufferObject::release()
 GLuint QOpenGLFramebufferObject::texture() const
 {
     Q_D(const QOpenGLFramebufferObject);
-    return d->colorAttachments[0].guard ? d->colorAttachments[0].guard->id() : 0;
+
+    if (d->colorAttachments.isEmpty()) {
+       return 0;
+
+    } else {
+       return d->colorAttachments[0].guard ? d->colorAttachments[0].guard->id() : 0;
+    }
 }
 
 QVector<GLuint> QOpenGLFramebufferObject::textures() const
@@ -958,29 +971,11 @@ static inline QImage qt_gl_read_framebuffer_rgba8(const QSize &size, bool includ
     }
 
 #if Q_BYTE_ORDER == Q_LITTLE_ENDIAN
-    // Without GL_UNSIGNED_INT_8_8_8_8_REV, GL_BGRA only makes sense on little endian.
+    // Without GL_UNSIGNED_INT_8_8_8_8_REV, GL_BGRA only makes sense on little endian
     const bool has_bgra_ext = context->isOpenGLES()
-                              ? context->hasExtension("GL_EXT_read_format_bgra")
-                              : context->hasExtension("GL_EXT_bgra");
+          ? context->hasExtension("GL_EXT_read_format_bgra") : context->hasExtension("GL_EXT_bgra");
 
-#ifndef Q_OS_IOS
-    const char *renderer = reinterpret_cast<const char *>(funcs->glGetString(GL_RENDERER));
-    const char *ver = reinterpret_cast<const char *>(funcs->glGetString(GL_VERSION));
-
-    // Blacklist GPU chipsets that have problems with their BGRA support.
-    const bool blackListed = (qstrcmp(renderer, "PowerVR Rogue G6200") == 0
-                             && ::strstr(ver, "1.3") != nullptr) ||
-                             (qstrcmp(renderer, "Mali-T760") == 0
-                             && ::strstr(ver, "3.1") != nullptr) ||
-                             (qstrcmp(renderer, "Mali-T720") == 0
-                             && ::strstr(ver, "3.1") != nullptr) || qstrcmp(renderer, "PowerVR SGX 554") == 0;
-#else
-    const bool blackListed = true;
-#endif
-
-    const bool supports_bgra = has_bgra_ext && !blackListed;
-
-    if (supports_bgra) {
+    if (has_bgra_ext) {
         QImage img(size, include_alpha ? QImage::Format_ARGB32_Premultiplied : QImage::Format_RGB32);
         funcs->glReadPixels(0, 0, w, h, GL_BGRA, GL_UNSIGNED_BYTE, img.bits());
         return img;
@@ -995,7 +990,7 @@ static inline QImage qt_gl_read_framebuffer_rgba8(const QSize &size, bool includ
 
 static inline QImage qt_gl_read_framebuffer_rgb10a2(const QSize &size, bool include_alpha, QOpenGLContext *context)
 {
-    // assume OpenGL 1.2+ or ES 3.0+ here
+    // assume OpenGL 1.2+ or ES 3.0+
     QImage img(size, include_alpha ? QImage::Format_A2BGR30_Premultiplied : QImage::Format_BGR30);
     context->functions()->glReadPixels(0, 0, size.width(), size.height(), GL_RGBA,
           GL_UNSIGNED_INT_2_10_10_10_REV, img.bits());
