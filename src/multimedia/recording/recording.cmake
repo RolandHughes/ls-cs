@@ -17,7 +17,7 @@ list(APPEND MULTIMEDIA_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/recording/qmediarecorder_p.h
 )
 
-target_sources(CsMultimedia
+target_sources(Ls-CsMultimedia
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/recording/qaudiorecorder.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/recording/qmediaencodersettings.cpp

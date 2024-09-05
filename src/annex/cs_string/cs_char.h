@@ -3,12 +3,12 @@
 * Copyright (c) 2017-2024 Barbara Geller
 * Copyright (c) 2017-2024 Ansel Sermersheim
 *
-* This file is part of CsString.
+* This file is part of LsCsString.
 *
-* CsString is free software, released under the BSD 2-Clause license.
+* LsCsString is free software, released under the BSD 2-Clause license.
 * For license details refer to LICENSE provided with this project.
 *
-* CsString is distributed in the hope that it will be useful,
+* LsCsString is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 *
@@ -24,7 +24,7 @@
 #include <functional>
 #include <memory>
 
-namespace CsString {
+namespace LsCsString {
 
 #ifdef _WIN32
 
@@ -159,9 +159,9 @@ inline uint32_t CsChar::unicode() const
 
 namespace std {
    template<>
-   struct hash<CsString::CsChar>
+   struct hash<LsCsString::CsChar>
    {
-      inline size_t operator()(const CsString::CsChar &key) const
+      inline size_t operator()(const LsCsString::CsChar &key) const
       {
          return key.unicode();
       }

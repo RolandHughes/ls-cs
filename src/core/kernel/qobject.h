@@ -77,7 +77,7 @@ class QTimerInfo
    { }
 };
 
-class Q_CORE_EXPORT QObject : public virtual CsSignal::SignalBase, public virtual CsSignal::SlotBase
+class Q_CORE_EXPORT QObject : public virtual LsCsSignal::SignalBase, public virtual LsCsSignal::SlotBase
 {
  protected:
    // used in the CS_OBJECT macro to define cs_parent (ex:QObject) and cs_class (ex:MyClass)
@@ -281,7 +281,7 @@ class Q_CORE_EXPORT QObject : public virtual CsSignal::SignalBase, public virtua
    void removeObject();
 
    bool compareThreads() const override;
-   void queueSlot(CsSignal::PendingSlot data, CsSignal::ConnectionKind) override;
+   void queueSlot(LsCsSignal::PendingSlot data, LsCsSignal::ConnectionKind) override;
 
    QList<QObject *> receiverList(const QMetaMethod &signalMetaMethod) const;
    QList<QObject *> senderList() const;

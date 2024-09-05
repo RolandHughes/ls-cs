@@ -86,7 +86,7 @@ enum DetailButtonLabel {
 
 void cs_require_version(int argc, char *argv[], const char *str)
 {
-   QString cur_version = QString(CS_VERSION_STR);
+   QString cur_version = QString(LS_CS_VERSION_STR);
    QString req_version = QString::fromLatin1(str);
 
    int current = (cur_version.section('.', 0, 0).toInteger<int>() << 16) +
@@ -107,7 +107,7 @@ void cs_require_version(int argc, char *argv[], const char *str)
       QMessageBox box(QMessageBox::Critical, QApplication::tr("Incompatible Library"),
                errMsg, QMessageBox::Abort, nullptr);
 
-      QIcon icon(":/copperspice/dialogs/images/cslogo-64.png");
+      QIcon icon(":ls-cs/dialogs/images/cslogo-64.png");
       box.setWindowIcon(icon);
       box.exec();
 
@@ -1242,11 +1242,11 @@ void QMessageBox::aboutCs(QWidget *parent, const QString &title)
       aboutBox->setWindowTitle(title);
    }
 
-   QIcon icon(":/copperspice/dialogs/images/cslogo-64.png");
+   QIcon icon(":ls-cs/dialogs/images/cslogo-64.png");
    aboutBox->setWindowIcon(icon);
 
    QLabel *msg1 = new QLabel;
-   msg1->setText(tr("CopperSpice Version %1").formatArg(CS_VERSION_STR));
+   msg1->setText(tr("Ls-Cs Version %1").formatArg(LS_CS_VERSION_STR));
 
    QFont font = msg1->font();
    font.setWeight(QFont::Bold);
@@ -1271,7 +1271,7 @@ void QMessageBox::aboutCs(QWidget *parent, const QString &title)
          "Copyright (c) 2008-2012 Nokia Corporation and/or its subsidiary(-ies)");
 
    QLabel *csImage = nullptr;
-   QPixmap pm(":/copperspice/dialogs/images/cslogo-64.png");
+   QPixmap pm(":ls-cs/dialogs/images/cslogo-64.png");
 
    if (! pm.isNull()) {
       csImage = new QLabel;

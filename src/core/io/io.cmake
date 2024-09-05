@@ -104,7 +104,7 @@ list(APPEND CORE_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/io/qwindowspipewriter_p.h
 )
 
-target_sources(CsCore
+target_sources(Ls-CsCore
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/io/qabstractfileengine.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/io/qbuffer.cpp
@@ -142,7 +142,7 @@ target_sources(CsCore
 )
 
 if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
-   target_sources(CsCore
+   target_sources(Ls-CsCore
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/io/qlockfile_unix.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/io/qfilesystemengine_unix.cpp
@@ -158,7 +158,7 @@ if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
    )
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "Linux")
-   target_sources(CsCore
+   target_sources(Ls-CsCore
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/io/qlockfile_unix.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/io/qfsfileengine_unix.cpp
@@ -172,7 +172,7 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "Linux")
    )
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "(OpenBSD|FreeBSD|NetBSD)")
-   target_sources(CsCore
+   target_sources(Ls-CsCore
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/io/qlockfile_unix.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/io/qfsfileengine_unix.cpp
@@ -185,7 +185,7 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "(OpenBSD|FreeBSD|NetBSD)")
    )
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
-   target_sources(CsCore
+   target_sources(Ls-CsCore
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/io/qlockfile_win.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/io/qwindowspipereader.cpp

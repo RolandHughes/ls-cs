@@ -52,7 +52,7 @@ class Q_CORE_EXPORT QSignalTransition : public QAbstractTransition
    const QObject *senderObject() const;
    void setSenderObject(const QObject *sender);
 
-   CsSignal::Internal::BentoAbstract *get_signalBento() const;
+   LsCsSignal::Internal::BentoAbstract *get_signalBento() const;
 
    void unregister();
    void maybeRegister();
@@ -69,7 +69,7 @@ class Q_CORE_EXPORT QSignalTransition : public QAbstractTransition
    Q_DECLARE_PRIVATE(QSignalTransition)
 
    const QObject *m_sender;
-   QScopedPointer<CsSignal::Internal::BentoAbstract> m_signalBento;
+   QScopedPointer<LsCsSignal::Internal::BentoAbstract> m_signalBento;
 };
 
 template <class SignalClass, class ...SignalArgs>

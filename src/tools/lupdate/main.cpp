@@ -449,7 +449,7 @@ int main(int argc, char **argv)
          continue;
 
       } else if (arg == "-version") {
-         printOut(QString("lupdate version %1\n").formatArg(CS_VERSION_STR));
+         printOut(QString("lupdate version %1\n").formatArg(LS_CS_VERSION_STR));
          return 0;
 
       } else if (arg == "-ts") {

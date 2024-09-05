@@ -27,7 +27,7 @@
 #include <qglobal.h>
 
 // configure generates the following h file and it contains the defines for have_x_h
-#include <cs-config.h>
+#include <ls-cs-config.h>
 
 #ifdef HAVE_FEATURES_H
 #include <features.h>

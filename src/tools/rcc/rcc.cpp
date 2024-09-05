@@ -806,7 +806,7 @@ bool RCCResourceLibrary::writeHeader()
       writeString("** Resource object code\n");
       writeString("**\n");
       writeString("** Created by: CopperSpice Resource Compiler Version ");
-      writeByteArray(CS_VERSION_STR);
+      writeByteArray(LS_CS_VERSION_STR);
       writeString("\n**\n");
       writeString("** WARNING: All changes made in this file will be lost when RCC is run again\n");
       writeString( "*****************************************************************************/\n\n");

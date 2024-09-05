@@ -1,9 +1,9 @@
-add_library(CsGui SHARED "")
-add_library(CopperSpice::CsGui ALIAS CsGui)
+add_library(Ls-CsGui SHARED "")
+add_library(Ls-Cs::Ls-CsGui ALIAS Ls-CsGui)
 
-set_target_properties(CsGui PROPERTIES OUTPUT_NAME CsGui${BUILD_ABI})
+set_target_properties(Ls-CsGui PROPERTIES OUTPUT_NAME Ls-CsGui${BUILD_ABI})
 
-target_compile_definitions(CsGui
+target_compile_definitions(Ls-CsGui
    PRIVATE
    -DQT_BUILD_GUI_LIB
    -DQT_BUILTIN_GIF_READER
@@ -15,7 +15,7 @@ target_compile_definitions(CsGui
 set(EXTRA_GUI_CXXFLAGS)
 set(EXTRA_GUI_LDFLAGS)
 
-target_include_directories(CsGui
+target_include_directories(Ls-CsGui
    PUBLIC
    $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include/QtGui>
    $<INSTALL_INTERFACE:include/QtGui>
@@ -94,7 +94,7 @@ macro_generate_misc("${GUI_PLATFORMHEADERS_INCLUDES}" QtGui/platformheaders)
 
 if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
 
-   target_link_libraries(CsGui
+   target_link_libraries(Ls-CsGui
       PRIVATE
       objc
    )
@@ -108,7 +108,7 @@ if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
 
-   target_link_libraries(CsGui
+   target_link_libraries(Ls-CsGui
       PRIVATE
       ${X11_X11_LIB}
       ${X11_Xrender_LIB}
@@ -147,7 +147,7 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
 
-   target_link_libraries(CsGui
+   target_link_libraries(Ls-CsGui
       PRIVATE
       gdi32
       winmm
@@ -171,48 +171,48 @@ endif()
 function_variable_fixup("${EXTRA_GUI_CXXFLAGS}" EXTRA_GUI_CXXFLAGS)
 function_variable_fixup("${EXTRA_GUI_LDFLAGS}"  EXTRA_GUI_LDFLAGS)
 
-target_sources(CsGui
+target_sources(Ls-CsGui
    PRIVATE
    ${GUI_INCLUDES}
    ${GUI_PLATFORMHEADERS_INCLUDES}
 )
 
-target_include_directories(CsGui
+target_include_directories(Ls-CsGui
    PUBLIC
    ${OPENGL_INCLUDE_DIR}
 )
 
-target_link_libraries(CsGui
+target_link_libraries(Ls-CsGui
    PUBLIC
-   CsCore
+   Ls-CsCore
    ${OPENGL_LIBRARIES}
 )
 
 if (${JPEG_FOUND})
-   target_link_libraries(CsGui
+   target_link_libraries(Ls-CsGui
       PRIVATE
       ${JPEG_LIBRARIES}
    )
 endif()
 
-set_target_properties(CsGui
+set_target_properties(Ls-CsGui
    PROPERTIES
    COMPILE_FLAGS ${EXTRA_GUI_CXXFLAGS}
    LINK_FLAGS ${EXTRA_GUI_LDFLAGS}
 )
 
-function_generate_resources(CsGui)
+function_generate_resources(Ls-CsGui)
 
 macro_generate_package(
-   CsGui
+   Ls-CsGui
    QtGui
    "${EXTRA_GUI_CXXFLAGS}"
-   "CsCore"
+   "Ls-CsCore"
 )
 
 install(
-   TARGETS CsGui
-   EXPORT CopperSpiceLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
+   TARGETS Ls-CsGui
+   EXPORT Ls-CsLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}

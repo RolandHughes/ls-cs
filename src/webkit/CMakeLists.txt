@@ -1,7 +1,7 @@
-add_library(CsWebKit SHARED "")
-add_library(CopperSpice::CsWebKit ALIAS CsWebKit)
+add_library(Ls-CsWebKit SHARED "")
+add_library(Ls-Cs::Ls-CsWebKit ALIAS Ls-CsWebKit)
 
-set_target_properties(CsWebKit PROPERTIES OUTPUT_NAME CsWebKit${BUILD_ABI})
+set_target_properties(Ls-CsWebKit PROPERTIES OUTPUT_NAME Ls-CsWebKit${BUILD_ABI})
 
 add_definitions(
    -DWTF_CHANGES
@@ -36,7 +36,7 @@ if(NOT MSVC)
    set(EXTRA_WEBKIT_CXXFLAGS -O2 -fPIC)
 endif()
 
-target_include_directories(CsWebKit
+target_include_directories(Ls-CsWebKit
    PUBLIC
    $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include/QtWebKit>
    $<INSTALL_INTERFACE:include/QtWebKit>
@@ -230,7 +230,7 @@ list(APPEND WEBKIT_INCLUDES
    ${CMAKE_SOURCE_DIR}/src/3rdparty/webkit/Source/WebKit/qt/Api/qwebview.h
 )
 
-target_sources(CsWebKit
+target_sources(Ls-CsWebKit
    PRIVATE
    ${CMAKE_SOURCE_DIR}/src/3rdparty/webkit/Source/WebKit/qt/Api/qwebframe.cpp
 
@@ -2331,7 +2331,7 @@ target_sources(CsWebKit
 if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
    include_directories(${CMAKE_SOURCE_DIR}/src/3rdparty/webkit/Source/WebCore/platform/mac)
 
-   target_sources(CsWebKit
+   target_sources(Ls-CsWebKit
       PRIVATE
       ${CMAKE_SOURCE_DIR}/src/3rdparty/webkit/Source/JavaScriptCore/wtf/OSAllocatorPosix.cpp
       ${CMAKE_SOURCE_DIR}/src/3rdparty/webkit/Source/WebCore/platform/text/cf/StringCF.cpp
@@ -2360,7 +2360,7 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
      add_definitions(-DHAVE_PTHREAD_NP_H)
    endif()
 
-   target_sources(CsWebKit
+   target_sources(Ls-CsWebKit
       PRIVATE
       ${CMAKE_SOURCE_DIR}/src/3rdparty/webkit/Source/JavaScriptCore/wtf/OSAllocatorPosix.cpp
       ${CMAKE_SOURCE_DIR}/src/3rdparty/webkit/Source/WebCore/plugins/PluginPackageNone.cpp
@@ -2378,7 +2378,7 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
    include_directories(${CMAKE_SOURCE_DIR}/src/3rdparty/webkit/Source/WebCore/platform/graphics/win)
    add_definitions(-DUNICODE)
 
-   target_sources(CsWebKit
+   target_sources(Ls-CsWebKit
       PRIVATE
       ${CMAKE_SOURCE_DIR}/src/3rdparty/webkit/Source/JavaScriptCore/wtf/OSAllocatorWin.cpp
       ${CMAKE_SOURCE_DIR}/src/3rdparty/webkit/Source/WebCore/platform/win/SystemInfo.cpp
@@ -2395,7 +2395,7 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
    if(MSVC)
       # build for 64-bit
       if ("${CMAKE_SIZEOF_VOID_P}" STREQUAL "8")
-         target_sources(CsWebKit
+         target_sources(Ls-CsWebKit
             PRIVATE
             ${CMAKE_SOURCE_DIR}/src/3rdparty/webkit/Source/WebCore/plugins/win/PaintHooks.asm
          )
@@ -2408,7 +2408,7 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
 
    endif()
 
-   target_link_libraries(CsWebKit
+   target_link_libraries(Ls-CsWebKit
       PRIVATE
       gdi32
       winmm
@@ -2424,32 +2424,32 @@ macro_generate_misc("${WEBKIT_INCLUDES}" QtWebKit)
 function_variable_fixup("${EXTRA_WEBKIT_CXXFLAGS}" EXTRA_WEBKIT_CXXFLAGS)
 function_variable_fixup("${EXTRA_WEBKIT_LDFLAGS}"  EXTRA_WEBKIT_LDFLAGS)
 
-target_link_libraries(CsWebKit
+target_link_libraries(Ls-CsWebKit
    PRIVATE
-   CsCore
-   CsGui
-   CsNetwork
-   CsScript
+   Ls-CsCore
+   Ls-CsGui
+   Ls-CsNetwork
+   Ls-CsScript
 )
 
-set_target_properties(CsWebKit
+set_target_properties(Ls-CsWebKit
    PROPERTIES
    COMPILE_FLAGS ${EXTRA_WEBKIT_CXXFLAGS}
    LINK_FLAGS ${EXTRA_WEBKIT_LDFLAGS}
 )
 
-function_generate_resources(CsWebKit)
+function_generate_resources(Ls-CsWebKit)
 
 macro_generate_package(
-   CsWebKit
+   Ls-CsWebKit
    QtWebKit
    "${EXTRA_WEBKIT_CXXFLAGS}"
-   "CsCore CsGui CsNetwork CsScript"
+   "Ls-CsCore Ls-CsGui Ls-CsNetwork Ls-CsScript"
 )
 
 install(
-   TARGETS CsWebKit
-   EXPORT CopperSpiceLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
+   TARGETS Ls-CsWebKit
+   EXPORT Ls-CsLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}

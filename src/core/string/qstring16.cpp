@@ -54,12 +54,12 @@ static QString16 cs_internal_compose(const QString16 &str, QChar32::UnicodeVersi
 #endif
 
 QString16::QString16(QChar32 c)
-   : CsString::CsString_utf16(1, c)
+   : LsCsString::LsCsString_utf16(1, c)
 {
 }
 
 QString16::QString16(size_type numOfChars, QChar32 c)
-   :CsString::CsString_utf16(numOfChars, c)
+   :LsCsString::LsCsString_utf16(numOfChars, c)
 {
 }
 
@@ -602,7 +602,7 @@ QString16 QString16::fromUtf8(const QByteArray &str)
 
 QString16 QString16::fromUtf8(const char *str, size_type numOfChars)
 {
-   return CsString::CsString_utf16::fromUtf8(str, numOfChars);
+   return LsCsString::LsCsString_utf16::fromUtf8(str, numOfChars);
 }
 
 QString16 QString16::fromUtf8(const QString8 &str)
@@ -612,7 +612,7 @@ QString16 QString16::fromUtf8(const QString8 &str)
 
 QString16 QString16::fromUtf16(const char16_t *str, size_type numOfChars)
 {
-   return CsString::CsString_utf16::fromUtf16(str, numOfChars);
+   return LsCsString::LsCsString_utf16::fromUtf16(str, numOfChars);
 }
 
 QString16 QString16::fromStdWString(const std::wstring &str, size_type numOfChars)
@@ -941,7 +941,7 @@ QString16 &QString16::replace(const QString16 &before, const QString16 &after, Q
       auto last = iter + len;
 
       iter = erase(iter, last);
-      iter = CsString::CsString_utf16::insert(iter, after);
+      iter = LsCsString::LsCsString_utf16::insert(iter, after);
       iter = iter.advance_storage(after.size_storage());
 
       iter = indexOfFast(before, iter, cs);
@@ -1081,7 +1081,7 @@ QString16 &QString16::replace(const QRegularExpression16 &regExp, const QString1
          auto last  = match.capturedEnd(0);
 
          auto iter = this->erase(first, last);
-         iter  = CsString::CsString_utf16::insert(iter, after);
+         iter  = LsCsString::LsCsString_utf16::insert(iter, after);
          iter  = iter.advance_storage(after.size_storage());
 
          match = regExp.match(*this, iter);
@@ -1123,47 +1123,47 @@ QString16 &QString16::replace(const QRegularExpression16 &regExp, const QString1
          for (const auto &item : list) {
 
             if (item == u"\\0") {
-               iter = CsString::CsString_utf16::insert(iter, saveCapture[0]);
+               iter = LsCsString::LsCsString_utf16::insert(iter, saveCapture[0]);
                iter = iter.advance_storage(saveCapture[0].size_storage());
 
             } else if (item == u"\\1") {
-               iter = CsString::CsString_utf16::insert(iter, saveCapture[1]);
+               iter = LsCsString::LsCsString_utf16::insert(iter, saveCapture[1]);
                iter = iter.advance_storage(saveCapture[1].size_storage());
 
             } else if (item == u"\\2") {
-               iter = CsString::CsString_utf16::insert(iter, saveCapture[2]);
+               iter = LsCsString::LsCsString_utf16::insert(iter, saveCapture[2]);
                iter = iter.advance_storage(saveCapture[2].size_storage());
 
             } else if (item == u"\\3") {
-               iter = CsString::CsString_utf16::insert(iter, saveCapture[3]);
+               iter = LsCsString::LsCsString_utf16::insert(iter, saveCapture[3]);
                iter = iter.advance_storage(saveCapture[3].size_storage());
 
             } else if (item == u"\\4") {
-               iter = CsString::CsString_utf16::insert(iter, saveCapture[4]);
+               iter = LsCsString::LsCsString_utf16::insert(iter, saveCapture[4]);
                iter = iter.advance_storage(saveCapture[4].size_storage());
 
             } else if (item == u"\\5") {
-               iter = CsString::CsString_utf16::insert(iter, saveCapture[5]);
+               iter = LsCsString::LsCsString_utf16::insert(iter, saveCapture[5]);
                iter = iter.advance_storage(saveCapture[5].size_storage());
 
             } else if (item == u"\\6") {
-               iter = CsString::CsString_utf16::insert(iter, saveCapture[6]);
+               iter = LsCsString::LsCsString_utf16::insert(iter, saveCapture[6]);
                iter = iter.advance_storage(saveCapture[6].size_storage());
 
             } else if (item == u"\\7") {
-               iter = CsString::CsString_utf16::insert(iter, saveCapture[7]);
+               iter = LsCsString::LsCsString_utf16::insert(iter, saveCapture[7]);
                iter = iter.advance_storage(saveCapture[7].size_storage());
 
             } else if (item == u"\\8") {
-               iter = CsString::CsString_utf16::insert(iter, saveCapture[8]);
+               iter = LsCsString::LsCsString_utf16::insert(iter, saveCapture[8]);
                iter = iter.advance_storage(saveCapture[8].size_storage());
 
             } else if (item == u"\\9") {
-               iter = CsString::CsString_utf16::insert(iter, saveCapture[9]);
+               iter = LsCsString::LsCsString_utf16::insert(iter, saveCapture[9]);
                iter = iter.advance_storage(saveCapture[9].size_storage());
 
             } else {
-               iter = CsString::CsString_utf16::insert(iter, item);
+               iter = LsCsString::LsCsString_utf16::insert(iter, item);
                iter = iter.advance_storage(item.size_storage());
 
             }

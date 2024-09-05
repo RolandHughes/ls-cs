@@ -85,7 +85,7 @@ static QPixmap getPixmap(QTextDocument *doc, const QTextImageFormat &format, con
       QImage img;
 
       if (name.isEmpty() || !img.load(name)) {
-         return QPixmap(QLatin1String(":/copperspice/styles/commonstyle/images/file-16.png"));
+         return QPixmap(QLatin1String(":ls-cs/styles/commonstyle/images/file-16.png"));
       }
 
       pm = QPixmap::fromImage(img);
@@ -169,7 +169,7 @@ static QImage getImage(QTextDocument *doc, const QTextImageFormat &format, const
 
    if (image.isNull()) {
       if (name.isEmpty() || !image.load(name)) {
-         return QImage(QLatin1String(":/copperspice/styles/commonstyle/images/file-16.png"));
+         return QImage(QLatin1String(":ls-cs/styles/commonstyle/images/file-16.png"));
       }
 
       doc->addResource(QTextDocument::ImageResource, url, image);

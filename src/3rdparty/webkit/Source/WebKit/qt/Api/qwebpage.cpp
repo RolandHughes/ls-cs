@@ -3868,7 +3868,7 @@ QString QWebPage::userAgentForUrl(const QUrl&) const
             appName.append(QLatin1Char('/') + appVer);
     } else {
         // CS version
-        appName = "CopperSpice/" + QString::fromLatin1(csVersion());
+        appName = "CopperSpice/" + QString::fromLatin1(ls_csVersion());
     }
 
     return firstPart + secondPart + appName + thirdPart;

@@ -144,14 +144,14 @@ class CSReturnArgument<void> : public CSGenericReturnArgument
 {
  public:
    CSReturnArgument();
-   void setData(CsSignal::Internal::CSVoidReturn data);
+   void setData(LsCsSignal::Internal::CSVoidReturn data);
 };
 
 inline CSReturnArgument<void>::CSReturnArgument()
 {
 }
 
-inline void CSReturnArgument<void>::setData(CsSignal::Internal::CSVoidReturn)
+inline void CSReturnArgument<void>::setData(LsCsSignal::Internal::CSVoidReturn)
 {
 }
 
@@ -437,26 +437,26 @@ class Teacup_Data<int,bool>      inherits from Teacup<int,bool>
 */
 
 // ** store method pointer for signals and slots
-class CSBentoAbstract : public virtual CsSignal::Internal::BentoAbstract
+class CSBentoAbstract : public virtual LsCsSignal::Internal::BentoAbstract
 {
  public:
-   using CsSignal::Internal::BentoAbstract::invoke;
-   virtual void invoke(QObject *receiver, const CsSignal::Internal::TeaCupAbstract *dataPack,
+   using LsCsSignal::Internal::BentoAbstract::invoke;
+   virtual void invoke(QObject *receiver, const LsCsSignal::Internal::TeaCupAbstract *dataPack,
          CSGenericReturnArgument *retval = nullptr) const = 0;
 
    virtual bool checkReturnType(CSGenericReturnArgument &retval) const = 0;
 };
 
 template<class T>
-class CSBento : public CSBentoAbstract, public CsSignal::Internal::Bento<T>
+class CSBento : public CSBentoAbstract, public LsCsSignal::Internal::Bento<T>
 {
  public:
    CSBento(T ptr);
 
-   std::unique_ptr<CsSignal::Internal::BentoAbstract> clone() const override;
+   std::unique_ptr<LsCsSignal::Internal::BentoAbstract> clone() const override;
 
-   using CsSignal::Internal::Bento<T>::invoke;
-   void invoke(QObject *receiver, const CsSignal::Internal::TeaCupAbstract *dataPack,
+   using LsCsSignal::Internal::Bento<T>::invoke;
+   void invoke(QObject *receiver, const LsCsSignal::Internal::TeaCupAbstract *dataPack,
          CSGenericReturnArgument *retval = nullptr) const override;
 
    bool checkReturnType(CSGenericReturnArgument &retval) const override;
@@ -464,15 +464,15 @@ class CSBento : public CSBentoAbstract, public CsSignal::Internal::Bento<T>
 
 template<class FunctionReturn, class ...FunctionArgs>
 class CSBento<FunctionReturn (*)(FunctionArgs...)> : public CSBentoAbstract,
-      public CsSignal::Internal::Bento<FunctionReturn (*)(FunctionArgs...)>
+      public LsCsSignal::Internal::Bento<FunctionReturn (*)(FunctionArgs...)>
 {
  public:
    CSBento(FunctionReturn (*ptr)(FunctionArgs...));
 
-   std::unique_ptr<CsSignal::Internal::BentoAbstract> clone() const override;
+   std::unique_ptr<LsCsSignal::Internal::BentoAbstract> clone() const override;
 
-   using CsSignal::Internal::Bento<FunctionReturn (*)(FunctionArgs...)>::invoke;
-   void invoke(QObject *receiver, const CsSignal::Internal::TeaCupAbstract *dataPack,
+   using LsCsSignal::Internal::Bento<FunctionReturn (*)(FunctionArgs...)>::invoke;
+   void invoke(QObject *receiver, const LsCsSignal::Internal::TeaCupAbstract *dataPack,
          CSGenericReturnArgument *retval = nullptr) const override;
 
    bool checkReturnType(CSGenericReturnArgument &retval) const override;
@@ -480,15 +480,15 @@ class CSBento<FunctionReturn (*)(FunctionArgs...)> : public CSBentoAbstract,
 
 template<class MethodClass, class MethodReturn, class...MethodArgs>
 class CSBento<MethodReturn(MethodClass::*)(MethodArgs...)>: public CSBentoAbstract,
-      public CsSignal::Internal::Bento<MethodReturn(MethodClass::*)(MethodArgs...)>
+      public LsCsSignal::Internal::Bento<MethodReturn(MethodClass::*)(MethodArgs...)>
 {
  public:
    CSBento(MethodReturn(MethodClass::*ptr)(MethodArgs...) );
 
-   std::unique_ptr<CsSignal::Internal::BentoAbstract> clone() const override;
+   std::unique_ptr<LsCsSignal::Internal::BentoAbstract> clone() const override;
 
-   using CsSignal::Internal::Bento<MethodReturn(MethodClass::*)(MethodArgs...)>::invoke;
-   void invoke(QObject *receiver, const CsSignal::Internal::TeaCupAbstract *dataPack,
+   using LsCsSignal::Internal::Bento<MethodReturn(MethodClass::*)(MethodArgs...)>::invoke;
+   void invoke(QObject *receiver, const LsCsSignal::Internal::TeaCupAbstract *dataPack,
          CSGenericReturnArgument *retval = nullptr) const override;
 
    bool checkReturnType(CSGenericReturnArgument &retval) const override;
@@ -496,17 +496,17 @@ class CSBento<MethodReturn(MethodClass::*)(MethodArgs...)>: public CSBentoAbstra
 
 template<class MethodClass, class MethodReturn, class...MethodArgs>
 class CSBento<MethodReturn(MethodClass::*)(MethodArgs...) const>: public CSBentoAbstract,
-      public CsSignal::Internal::Bento<MethodReturn(MethodClass::*)(MethodArgs...) const>
+      public LsCsSignal::Internal::Bento<MethodReturn(MethodClass::*)(MethodArgs...) const>
 {
    // specialization, pointer to const method
 
  public:
    CSBento(MethodReturn(MethodClass::*ptr)(MethodArgs...) const);
 
-   std::unique_ptr<CsSignal::Internal::BentoAbstract> clone() const override;
+   std::unique_ptr<LsCsSignal::Internal::BentoAbstract> clone() const override;
 
-   using CsSignal::Internal::Bento<MethodReturn(MethodClass::*)(MethodArgs...) const>::invoke;
-   void invoke(QObject *receiver, const CsSignal::Internal::TeaCupAbstract *dataPack,
+   using LsCsSignal::Internal::Bento<MethodReturn(MethodClass::*)(MethodArgs...) const>::invoke;
+   void invoke(QObject *receiver, const LsCsSignal::Internal::TeaCupAbstract *dataPack,
          CSGenericReturnArgument *retval = nullptr) const override;
 
    bool checkReturnType(CSGenericReturnArgument &retval) const override;
@@ -515,18 +515,18 @@ class CSBento<MethodReturn(MethodClass::*)(MethodArgs...) const>: public CSBento
 // (1) lambda
 template<class T>
 CSBento<T>::CSBento(T lambda)
-   : CsSignal::Internal::Bento<T>(lambda)
+   : LsCsSignal::Internal::Bento<T>(lambda)
 {
 }
 
 template<class T>
-std::unique_ptr<CsSignal::Internal::BentoAbstract> CSBento<T>::clone() const
+std::unique_ptr<LsCsSignal::Internal::BentoAbstract> CSBento<T>::clone() const
 {
    return std::make_unique<CSBento<T>>(*this);
 }
 
 template<class T>
-void CSBento<T>::invoke(QObject *receiver, const CsSignal::Internal::TeaCupAbstract *dataPack,
+void CSBento<T>::invoke(QObject *receiver, const LsCsSignal::Internal::TeaCupAbstract *dataPack,
       CSGenericReturnArgument *retval) const
 {
    (void) receiver;
@@ -554,25 +554,25 @@ bool CSBento<T>::checkReturnType(CSGenericReturnArgument &retval) const
 // (2) specialization, function pointer
 template<class FunctionReturn, class ...FunctionArgs>
 CSBento<FunctionReturn (*)(FunctionArgs...)>::CSBento(FunctionReturn (*ptr)(FunctionArgs...))
-   : CsSignal::Internal::Bento<FunctionReturn (*)(FunctionArgs...)>(ptr)
+   : LsCsSignal::Internal::Bento<FunctionReturn (*)(FunctionArgs...)>(ptr)
 {
 }
 
 template<class FunctionReturn, class ...FunctionArgs>
-std::unique_ptr<CsSignal::Internal::BentoAbstract> CSBento<FunctionReturn (*)(FunctionArgs...)>::clone() const
+std::unique_ptr<LsCsSignal::Internal::BentoAbstract> CSBento<FunctionReturn (*)(FunctionArgs...)>::clone() const
 {
    return std::make_unique<CSBento<FunctionReturn (*)(FunctionArgs...)>>(*this);
 }
 
 template<class FunctionReturn, class ...FunctionArgs>
 void CSBento<FunctionReturn (*)(FunctionArgs...)>::invoke(QObject *,
-      const CsSignal::Internal::TeaCupAbstract *dataPack, CSGenericReturnArgument *retval) const
+      const LsCsSignal::Internal::TeaCupAbstract *dataPack, CSGenericReturnArgument *retval) const
 {
    // no need to verify receiver since it is not used
 
    // dynamic cast will return a valid ptr if the slot has equal or less parameters
    // retrieve ptr to teaCup object, which contains the data
-   const CsSignal::Internal::TeaCup<FunctionArgs...> *teaCup = dynamic_cast<const CsSignal::Internal::TeaCup<FunctionArgs...> *>(dataPack);
+   const LsCsSignal::Internal::TeaCup<FunctionArgs...> *teaCup = dynamic_cast<const LsCsSignal::Internal::TeaCup<FunctionArgs...> *>(dataPack);
 
    if (teaCup) {
       // expand arguments
@@ -582,14 +582,14 @@ void CSBento<FunctionReturn (*)(FunctionArgs...)>::invoke(QObject *,
 
       if (returnData) {
          // unpack the tuple, then call the method or slot
-         returnData->setData(CsSignal::Internal::cs_unpack_function_args(this->m_methodPtr, args));
+         returnData->setData(LsCsSignal::Internal::cs_unpack_function_args(this->m_methodPtr, args));
 
       } else {
          // returnData is a nullptr, therefore retval was null or the wrong type
          // assume user does not want a return value
 
          // unpack the tuple, then call the method or slot
-         CsSignal::Internal::cs_unpack_function_args(this->m_methodPtr, args);
+         LsCsSignal::Internal::cs_unpack_function_args(this->m_methodPtr, args);
       }
    }
 }
@@ -611,19 +611,19 @@ bool CSBento<FunctionReturn (*)(FunctionArgs...)>::checkReturnType(CSGenericRetu
 // (3) specialization, method pointer
 template<class MethodClass, class MethodReturn, class...MethodArgs>
 CSBento<MethodReturn(MethodClass::*)(MethodArgs...)>::CSBento(MethodReturn(MethodClass::*ptr)(MethodArgs...))
-   : CsSignal::Internal::Bento<MethodReturn(MethodClass::*)(MethodArgs...)>(ptr)
+   : LsCsSignal::Internal::Bento<MethodReturn(MethodClass::*)(MethodArgs...)>(ptr)
 {
 }
 
 template<class MethodClass, class MethodReturn, class...MethodArgs>
-std::unique_ptr<CsSignal::Internal::BentoAbstract> CSBento<MethodReturn(MethodClass::*)(MethodArgs...)>::clone() const
+std::unique_ptr<LsCsSignal::Internal::BentoAbstract> CSBento<MethodReturn(MethodClass::*)(MethodArgs...)>::clone() const
 {
    return std::make_unique<CSBento<MethodReturn(MethodClass::*)(MethodArgs...)>>(*this);
 }
 
 template<class MethodClass, class MethodReturn, class ...MethodArgs>
 void CSBento<MethodReturn (MethodClass::*)(MethodArgs...)>::invoke(QObject *receiver,
-      const CsSignal::Internal::TeaCupAbstract *dataPack, CSGenericReturnArgument *retval) const
+      const LsCsSignal::Internal::TeaCupAbstract *dataPack, CSGenericReturnArgument *retval) const
 {
    if (! receiver)  {
       return;
@@ -635,7 +635,7 @@ void CSBento<MethodReturn (MethodClass::*)(MethodArgs...)>::invoke(QObject *rece
 
       // dynamic cast will return a valid ptr if the slot has equal or less parameters
       // retrieve ptr to teaCup object, which contains the data
-      const CsSignal::Internal::TeaCup<MethodArgs...> *teaCup = dynamic_cast<const CsSignal::Internal::TeaCup<MethodArgs...> *>(dataPack);
+      const LsCsSignal::Internal::TeaCup<MethodArgs...> *teaCup = dynamic_cast<const LsCsSignal::Internal::TeaCup<MethodArgs...> *>(dataPack);
 
       if (teaCup) {
          // expand arguments
@@ -645,14 +645,14 @@ void CSBento<MethodReturn (MethodClass::*)(MethodArgs...)>::invoke(QObject *rece
 
          if (returnData) {
             // unpacks the tuple, then calls the method or slot
-            returnData->setData(CsSignal::Internal::cs_unpack_method_args(t_receiver, this->m_methodPtr, args));
+            returnData->setData(LsCsSignal::Internal::cs_unpack_method_args(t_receiver, this->m_methodPtr, args));
 
          } else {
             // returnData is a null pointer, therefore retval was null or the wrong type
             // assume user does not want a return value
 
             // unpacks the tuple, then calls the method or slot
-            CsSignal::Internal::cs_unpack_method_args(t_receiver, this->m_methodPtr, args);
+            LsCsSignal::Internal::cs_unpack_method_args(t_receiver, this->m_methodPtr, args);
          }
 
       }
@@ -676,19 +676,19 @@ bool CSBento<MethodReturn(MethodClass::*)(MethodArgs...)>::checkReturnType(CSGen
 // (4) specialization, pointer to const method
 template<class MethodClass, class MethodReturn, class...MethodArgs>
 CSBento<MethodReturn(MethodClass::*)(MethodArgs...) const>::CSBento(MethodReturn(MethodClass::*ptr)(MethodArgs...) const)
-   : CsSignal::Internal::Bento<MethodReturn(MethodClass::*)(MethodArgs...) const>(ptr)
+   : LsCsSignal::Internal::Bento<MethodReturn(MethodClass::*)(MethodArgs...) const>(ptr)
 {
 }
 
 template<class MethodClass, class MethodReturn, class...MethodArgs>
-std::unique_ptr<CsSignal::Internal::BentoAbstract> CSBento<MethodReturn(MethodClass::*)(MethodArgs...) const>::clone() const
+std::unique_ptr<LsCsSignal::Internal::BentoAbstract> CSBento<MethodReturn(MethodClass::*)(MethodArgs...) const>::clone() const
 {
    return std::make_unique<CSBento<MethodReturn(MethodClass::*)(MethodArgs...) const>>(*this);
 }
 
 template<class MethodClass, class MethodReturn, class ...MethodArgs>
 void CSBento<MethodReturn(MethodClass::*)(MethodArgs...) const>::invoke(QObject *receiver,
-      const CsSignal::Internal::TeaCupAbstract *dataPack, CSGenericReturnArgument *retval) const
+      const LsCsSignal::Internal::TeaCupAbstract *dataPack, CSGenericReturnArgument *retval) const
 {
    if (! receiver)  {
       return;
@@ -700,7 +700,7 @@ void CSBento<MethodReturn(MethodClass::*)(MethodArgs...) const>::invoke(QObject 
       // dynamic cast will return a valid ptr if the slot has equal or less parameters
 
       // retrieve ptr to teaCup object, which contains the data
-      const CsSignal::Internal::TeaCup<MethodArgs...> *teaCup = dynamic_cast<const CsSignal::Internal::TeaCup<MethodArgs...> *>(dataPack);
+      const LsCsSignal::Internal::TeaCup<MethodArgs...> *teaCup = dynamic_cast<const LsCsSignal::Internal::TeaCup<MethodArgs...> *>(dataPack);
 
       if (teaCup) {
          // expand arguments
@@ -710,14 +710,14 @@ void CSBento<MethodReturn(MethodClass::*)(MethodArgs...) const>::invoke(QObject 
 
          if (returnData) {
             // unpacks the tuple, then calls the method or slot
-            returnData->setData(CsSignal::Internal::cs_unpack_method_args(t_receiver, this->m_methodPtr, args));
+            returnData->setData(LsCsSignal::Internal::cs_unpack_method_args(t_receiver, this->m_methodPtr, args));
 
          } else {
             // returnData is a null pointer, therefore retval was null or the wrong type
             // assume user does not want a return value
 
             // unpacks the tuple, then calls the method or slot
-            CsSignal::Internal::cs_unpack_method_args(t_receiver, this->m_methodPtr, args);
+            LsCsSignal::Internal::cs_unpack_method_args(t_receiver, this->m_methodPtr, args);
 
          }
       }

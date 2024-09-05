@@ -52,12 +52,12 @@ list(APPEND PLATFORMS_COCOA_OTHER_PRIVATE_INCLUDES
 
 if(BUILD_PLATFORMS_COCOA_PLUGIN)
 
-   add_library(CsGuiCocoa MODULE "")
-   add_library(CopperSpice::CsGuiCocoa ALIAS CsGuiCocoa )
+   add_library(Ls-CsGuiCocoa MODULE "")
+   add_library(Ls-Cs::Ls-CsGuiCocoa ALIAS Ls-CsGuiCocoa )
 
-   set_target_properties(CsGuiCocoa PROPERTIES OUTPUT_NAME CsGuiCocoa${BUILD_ABI} PREFIX "")
+   set_target_properties(Ls-CsGuiCocoa PROPERTIES OUTPUT_NAME Ls-CsGuiCocoa${BUILD_ABI} PREFIX "")
 
-   target_sources(CsGuiCocoa
+   target_sources(Ls-CsGuiCocoa
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/cocoa/cglconvenience.mm
       ${CMAKE_CURRENT_SOURCE_DIR}/cocoa/messages.cpp
@@ -124,33 +124,33 @@ if(BUILD_PLATFORMS_COCOA_PLUGIN)
    function_variable_fixup("${EXTRA_PLATFORMS_COCOA_CXXFLAGS}" EXTRA_PLATFORMS_COCOA_CXXFLAGS)
    function_variable_fixup("${EXTRA_PLATFORMS_COCOA_LDFLAGS}"  EXTRA_PLATFORMS_COCOA_LDFLAGS)
 
-   target_link_libraries(CsGuiCocoa
+   target_link_libraries(Ls-CsGuiCocoa
       PRIVATE
-      CsCore
-      CsGui
+      Ls-CsCore
+      Ls-CsGui
       -lcups
    )
 
-   target_include_directories(CsGuiCocoa
+   target_include_directories(Ls-CsGuiCocoa
       PRIVATE
       ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/include
       ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/include/freetype
       ${CMAKE_SOURCE_DIR}/src/3rdparty/harbuzz/src
    )
 
-   target_compile_definitions(CsGuiCocoa
+   target_compile_definitions(Ls-CsGuiCocoa
       PRIVATE
       -DQT_PLUGIN
       -DQT_USE_FREETYPE
    )
 
-   set_target_properties(CsGuiCocoa
+   set_target_properties(Ls-CsGuiCocoa
        PROPERTIES
        COMPILE_FLAGS ${EXTRA_PLATFORMS_COCOA_CXXFLAGS}
        LINK_FLAGS ${EXTRA_PLATFORMS_COCOA_LDFLAGS}
    )
 
-   function_generate_resources(CsGuiCocoa)
+   function_generate_resources(Ls-CsGuiCocoa)
 
-   install(TARGETS CsGuiCocoa DESTINATION ${CMAKE_INSTALL_LIBDIR})
+   install(TARGETS Ls-CsGuiCocoa DESTINATION ${CMAKE_INSTALL_LIBDIR})
 endif()

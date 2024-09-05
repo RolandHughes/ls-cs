@@ -25,7 +25,7 @@
 
 const QString &settingsPrefix()
 {
-   static QString prefix = QString("%1.%2/").formatArg((CS_VERSION >> 16) & 0xff).formatArg((CS_VERSION >> 8) & 0xff);
+   static QString prefix = QString("%1.%2/").formatArg((LS_CS_VERSION >> 16) & 0xff).formatArg((LS_CS_VERSION >> 8) & 0xff);
    return prefix;
 }
 

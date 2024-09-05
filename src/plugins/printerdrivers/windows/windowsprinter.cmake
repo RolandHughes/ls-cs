@@ -5,33 +5,33 @@ list(APPEND PRINTERDRIVERS_WIN_PRIVATE_INCLUDES
 
 if(CMAKE_SYSTEM_NAME MATCHES "Windows")
 
-   add_library(CsPrinterDriverWin MODULE "")
-   add_library(CopperSpice::CsPrinterDriverWin ALIAS CsPrinterDriverWin)
+   add_library(Ls-CsPrinterDriverWin MODULE "")
+   add_library(Ls-Cs::Ls-CsPrinterDriverWin ALIAS Ls-CsPrinterDriverWin)
 
-   set_target_properties(CsPrinterDriverWin PROPERTIES OUTPUT_NAME CsPrinterDriverWin${BUILD_ABI} PREFIX "")
+   set_target_properties(Ls-CsPrinterDriverWin PROPERTIES OUTPUT_NAME Ls-CsPrinterDriverWin${BUILD_ABI} PREFIX "")
 
-   target_sources(CsPrinterDriverWin
+   target_sources(Ls-CsPrinterDriverWin
       PRIVATE
    	${CMAKE_SOURCE_DIR}/src/plugins/printerdrivers/windows/main.cpp
    	${CMAKE_SOURCE_DIR}/src/plugins/printerdrivers/windows/qwindowsprintersupport.cpp
    	${CMAKE_SOURCE_DIR}/src/plugins/printerdrivers/windows/qwindowsprintdevice.cpp
    )
 
-   target_link_libraries(CsPrinterDriverWin
+   target_link_libraries(Ls-CsPrinterDriverWin
       PRIVATE
-      CsCore
-      CsGui
+      Ls-CsCore
+      Ls-CsGui
       winspool
       comdlg32
       gdi32
       user32
    )
 
-   target_compile_definitions(CsPrinterDriverWin
+   target_compile_definitions(Ls-CsPrinterDriverWin
       PRIVATE
       -DQT_PLUGIN
    )
 
-   install(TARGETS CsPrinterDriverWin DESTINATION ${CMAKE_INSTALL_LIBDIR})
+   install(TARGETS Ls-CsPrinterDriverWin DESTINATION ${CMAKE_INSTALL_LIBDIR})
 endif()
 

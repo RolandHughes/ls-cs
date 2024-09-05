@@ -21,7 +21,7 @@ list(APPEND MULTIMEDIA_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/playback/playlistfileparser_p.h
 )
 
-target_sources(CsMultimedia
+target_sources(Ls-CsMultimedia
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/playback/qmedianetworkplaylistprovider.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/playback/qmediacontent.cpp

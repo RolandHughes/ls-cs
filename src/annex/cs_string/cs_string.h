@@ -3,12 +3,12 @@
 * Copyright (c) 2017-2024 Barbara Geller
 * Copyright (c) 2017-2024 Ansel Sermersheim
 *
-* This file is part of CsString.
+* This file is part of LsCsString.
 *
-* CsString is free software, released under the BSD 2-Clause license.
+* LsCsString is free software, released under the BSD 2-Clause license.
 * For license details refer to LICENSE provided with this project.
 *
-* CsString is distributed in the hope that it will be useful,
+* LsCsString is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 *
@@ -36,14 +36,14 @@
 
 #define UCHAR(x)   (U ## x)
 
-namespace CsString {
+namespace LsCsString {
 
 template <typename S>
 class CsBasicStringView;
 
-using CsString       = CsBasicString<utf8>;
-using CsString_utf8  = CsBasicString<utf8>;
-using CsString_utf16 = CsBasicString<utf16>;
+using LsCsString       = CsBasicString<utf8>;
+using LsCsString_utf8  = CsBasicString<utf8>;
+using LsCsString_utf16 = CsBasicString<utf16>;
 
 template <typename E, typename A>
 class CsBasicString
@@ -53,10 +53,10 @@ class CsBasicString
       using size_type              = std::ptrdiff_t;
       using value_type             = CsChar;
 
-      using const_iterator         = CsStringIterator<E, A>;
-      using iterator               = CsStringIterator<E, A>;
-      using const_reverse_iterator = CsStringReverseIterator<const_iterator>;
-      using reverse_iterator       = CsStringReverseIterator<iterator>;
+      using const_iterator         = LsCsStringIterator<E, A>;
+      using iterator               = LsCsStringIterator<E, A>;
+      using const_reverse_iterator = LsCsStringReverseIterator<const_iterator>;
+      using reverse_iterator       = LsCsStringReverseIterator<iterator>;
 
       using const_storage_iterator         = typename std::vector<typename E::storage_unit, A>::const_iterator;
       using const_storage_reverse_iterator = typename std::vector<typename E::storage_unit, A>::const_reverse_iterator;
@@ -2711,7 +2711,7 @@ CsBasicString<E, A> &CsBasicString<E, A>::insert(size_type indexStart, size_type
    }
 
    if (i != indexStart) {
-      throw std::out_of_range("CsString::insert index out of range");
+      throw std::out_of_range("LsCsString::insert index out of range");
    }
 
    E::insert(m_string, iter_begin.codePointBegin(), c, count);
@@ -2788,13 +2788,13 @@ CsBasicString<E, A> &CsBasicString<E, A>::insert(size_type indexStart, const CsB
    }
 
    if (i != indexStart) {
-      throw std::out_of_range("CsString::insert index out of range");
+      throw std::out_of_range("LsCsString::insert index out of range");
    }
 
    for (CsChar c : str) {
       str_iter iter_tmp = E::insert(m_string, iter_begin.codePointBegin(), c);
 
-      iter_begin = CsStringIterator<E, A>(iter_tmp);
+      iter_begin = LsCsStringIterator<E, A>(iter_tmp);
       ++iter_begin;
    }
 
@@ -2813,7 +2813,7 @@ CsBasicString<E, A> &CsBasicString<E, A>::insert(size_type indexStart, const CsB
    }
 
    if (i != indexStart) {
-      throw std::out_of_range("CsString::insert index out of range");
+      throw std::out_of_range("LsCsString::insert index out of range");
    }
 
    const_iterator srcIter_begin = str.begin() + srcStart;
@@ -2823,7 +2823,7 @@ CsBasicString<E, A> &CsBasicString<E, A>::insert(size_type indexStart, const CsB
       // *srcIter is a CsChar
       str_iter iter_tmp = E::insert(m_string, iter_begin.codePointBegin(), *srcIter);
 
-      iter_begin = CsStringIterator<E, A>(iter_tmp);
+      iter_begin = LsCsStringIterator<E, A>(iter_tmp);
       ++iter_begin;
    }
 
@@ -2834,14 +2834,14 @@ template <typename E, typename A>
 typename CsBasicString<E, A>::iterator CsBasicString<E, A>::insert(const_iterator posStart, CsChar c)
 {
    str_iter iter_tmp = E::insert(m_string, posStart.codePointBegin(), c);
-   return CsStringIterator<E, A>(iter_tmp);
+   return LsCsStringIterator<E, A>(iter_tmp);
 }
 
 template <typename E, typename A>
 typename CsBasicString<E, A>::iterator CsBasicString<E, A>::insert(const_iterator posStart, size_type count, CsChar c)
 {
    str_iter iter_tmp = E::insert(m_string, posStart.codePointBegin(), c, count);
-   return CsStringIterator<E, A>(iter_tmp);
+   return LsCsStringIterator<E, A>(iter_tmp);
 }
 
 template <typename E, typename A>
@@ -2853,7 +2853,7 @@ typename CsBasicString<E, A>::iterator CsBasicString<E, A>::insert(const_iterato
    for (auto c : str) {
       str_iter iter_tmp = E::insert(m_string, iter.codePointBegin(), c);
 
-      iter = CsStringIterator<E, A>(iter_tmp);
+      iter = LsCsStringIterator<E, A>(iter_tmp);
       ++iter;
 
       ++count;
@@ -2905,7 +2905,7 @@ typename CsBasicString<E, A>::iterator CsBasicString<E, A>::insert(const_iterato
 
       str_iter iter_tmp = E::insert(m_string, iter.codePointBegin(), c);
 
-      iter = CsStringIterator<E, A>(iter_tmp);
+      iter = LsCsStringIterator<E, A>(iter_tmp);
       ++iter;
 
       ++count;
@@ -2930,13 +2930,13 @@ typename CsBasicString<E, A>::iterator CsBasicString<E, A>::insert(size_type ind
    }
 
    if (i != indexStart) {
-      throw std::out_of_range("CsString::insert index out of range");
+      throw std::out_of_range("LsCsString::insert index out of range");
    }
 
    for (CsChar c : str) {
       str_iter iter_tmp = E::insert(m_string, iter_begin.codePointBegin(), c);
 
-      iter_begin = CsStringIterator<E, A>(iter_tmp);
+      iter_begin = LsCsStringIterator<E, A>(iter_tmp);
       ++iter_begin;
    }
 
@@ -2960,7 +2960,7 @@ typename CsBasicString<E, A>::iterator CsBasicString<E, A>::insert(size_type ind
    }
 
    if (i != indexStart) {
-      throw std::out_of_range("CsString::insert index out of range");
+      throw std::out_of_range("LsCsString::insert index out of range");
    }
 
    typename U::const_iterator srcIter_begin = str.begin() + srcStart;
@@ -2970,7 +2970,7 @@ typename CsBasicString<E, A>::iterator CsBasicString<E, A>::insert(size_type ind
       // *srcIter is a CsChar
       str_iter iter_tmp = E::insert(m_string, iter_begin.codePointBegin(), *srcIter);
 
-      iter_begin = CsStringIterator<E, A>(iter_tmp);
+      iter_begin = LsCsStringIterator<E, A>(iter_tmp);
       ++iter_begin;
    }
 
@@ -3012,7 +3012,7 @@ CsBasicString<E, A> &CsBasicString<E, A>::replace(size_type indexStart, size_typ
    }
 
    if (i != indexStart) {
-      throw std::out_of_range("CsString::replace index out of range");
+      throw std::out_of_range("LsCsString::replace index out of range");
    }
 
    if (size >= 0) {
@@ -3055,7 +3055,7 @@ CsBasicString<E, A> &CsBasicString<E, A>::replace(size_type indexStart, size_typ
    }
 
    if (i != indexStart) {
-      throw std::out_of_range("CsString::replace index out of range");
+      throw std::out_of_range("LsCsString::replace index out of range");
    }
 
    if (count >= 0) {
@@ -3195,7 +3195,7 @@ CsBasicString<E, A> &CsBasicString<E, A>::replace(size_type indexStart, size_typ
    }
 
    if (i != indexStart) {
-      throw std::out_of_range("CsString::replace index out of range");
+      throw std::out_of_range("LsCsString::replace index out of range");
    }
 
    if (size >= 0) {
@@ -3362,27 +3362,27 @@ void CsBasicString<E, A>::swap(CsBasicString &str)
 template <typename E, typename A>
 typename CsBasicString<E, A>::const_iterator CsBasicString<E, A>::begin() const
 {
-   return CsStringIterator<E, A> (m_string.begin());
+   return LsCsStringIterator<E, A> (m_string.begin());
 }
 
 template <typename E, typename A>
 typename CsBasicString<E, A>::const_iterator CsBasicString<E, A>::cbegin() const
 {
-   return CsStringIterator<E, A> (m_string.cbegin());
+   return LsCsStringIterator<E, A> (m_string.cbegin());
 }
 
 template <typename E, typename A>
 typename CsBasicString<E, A>::const_iterator CsBasicString<E, A>::end() const
 {
 
-   return CsStringIterator<E, A> (m_string.end() - 1);
+   return LsCsStringIterator<E, A> (m_string.end() - 1);
 }
 
 template <typename E, typename A>
 typename CsBasicString<E, A>::const_iterator CsBasicString<E, A>::cend() const
 {
 
-   return CsStringIterator<E, A> (m_string.cend() - 1);
+   return LsCsStringIterator<E, A> (m_string.cend() - 1);
 }
 
 template <typename E, typename A>
@@ -3483,40 +3483,40 @@ bool operator==(const CsBasicString<E, A> &str1, const CsBasicString<E, A> &str2
    return std::equal(str1.storage_begin(), str1.storage_end(), str2.storage_begin(), str2.storage_end());
 }
 
-inline bool operator==(const CsString_utf8 &str1, const CsString_utf8 &str2)
+inline bool operator==(const LsCsString_utf8 &str1, const LsCsString_utf8 &str2)
 {
    // are the vectors equal
    return std::equal(str1.storage_begin(), str1.storage_end(), str2.storage_begin(), str2.storage_end());
 }
 
-inline bool operator==(const CsString_utf16 &str1, const CsString_utf16 &str2)
+inline bool operator==(const LsCsString_utf16 &str1, const LsCsString_utf16 &str2)
 {
    // are the vectors equal
    return std::equal(str1.storage_begin(), str1.storage_end(), str2.storage_begin(), str2.storage_end());
 }
 
 template <int N>
-inline bool operator==(const CsString_utf8 &str1, const char (& str2)[N])
+inline bool operator==(const LsCsString_utf8 &str1, const char (& str2)[N])
 {
    return std::equal(str1.storage_begin(), str1.storage_end(), str2, str2+N-1,
       [] (auto a, auto b) { return static_cast<uint8_t>(a) == static_cast<uint8_t>(b);} );
 }
 
 template <int N>
-inline bool operator==(const char (& str1)[N], const CsString_utf8 &str2)
+inline bool operator==(const char (& str1)[N], const LsCsString_utf8 &str2)
 {
    return std::equal(str1, str1+N-1, str2.storage_begin(), str2.storage_end(),
       [] (auto a, auto b) { return static_cast<uint8_t>(a) == static_cast<uint8_t>(b);} );
 }
 
 template <int N>
-inline bool operator==(const CsString_utf16 &str1, const char16_t (& str2)[N])
+inline bool operator==(const LsCsString_utf16 &str1, const char16_t (& str2)[N])
 {
    return std::equal(str1.storage_begin(), str1.storage_end(), str2, str2+N-1);
 }
 
 template <int N>
-inline bool operator==(const char16_t (& str1)[N], const CsString_utf16 &str2)
+inline bool operator==(const char16_t (& str1)[N], const LsCsString_utf16 &str2)
 {
    return std::equal(str1, str1+N-1, str2.storage_begin(), str2.storage_end());
 }
@@ -3533,24 +3533,24 @@ bool operator!=(const CsBasicString<E, A> &str1, const CsBasicString<E, A> &str2
    return ! (str1 == str2);
 }
 
-inline bool operator!=(const CsString_utf8 &str1, const CsString_utf8 &str2)
+inline bool operator!=(const LsCsString_utf8 &str1, const LsCsString_utf8 &str2)
 {
    return ! (str1 == str2);
 }
 
-inline bool operator!=(const CsString_utf16 &str1, const CsString_utf16 &str2)
+inline bool operator!=(const LsCsString_utf16 &str1, const LsCsString_utf16 &str2)
 {
    return ! (str1 == str2);
 }
 
-inline CsString_utf8 operator+(CsString_utf8 str1, const CsString_utf8 &str2)
+inline LsCsString_utf8 operator+(LsCsString_utf8 str1, const LsCsString_utf8 &str2)
 {
    str1.append(str2);
 
    return str1;
 }
 
-inline CsString_utf16 operator+(CsString_utf16 str1, const CsString_utf16 &str2)
+inline LsCsString_utf16 operator+(LsCsString_utf16 str1, const LsCsString_utf16 &str2)
 {
    str1.append(str2);
 

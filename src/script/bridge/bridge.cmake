@@ -11,7 +11,7 @@ list(APPEND SCRIPT_PRIVATE_INCLUDES
     ${CMAKE_CURRENT_SOURCE_DIR}/bridge/qscriptdeclarativeclass_p.h
 )
 
-target_sources(CsScript
+target_sources(Ls-CsScript
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/bridge/qscriptfunction.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/bridge/qscriptobject.cpp

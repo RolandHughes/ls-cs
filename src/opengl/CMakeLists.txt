@@ -1,9 +1,9 @@
-add_library(CsOpenGL SHARED "")
-add_library(CopperSpice::CsOpenGL ALIAS CsOpenGL)
+add_library(Ls-CsOpenGL SHARED "")
+add_library(Ls-Cs::Ls-CsOpenGL ALIAS Ls-CsOpenGL)
 
-set_target_properties(CsOpenGL PROPERTIES OUTPUT_NAME CsOpenGL${BUILD_ABI})
+set_target_properties(Ls-CsOpenGL PROPERTIES OUTPUT_NAME Ls-CsOpenGL${BUILD_ABI})
 
-target_compile_definitions(CsOpenGL
+target_compile_definitions(Ls-CsOpenGL
    PRIVATE
    -DQT_BUILD_OPENGL_LIB
    -DQT_NO_EGL
@@ -12,7 +12,7 @@ target_compile_definitions(CsOpenGL
 set(EXTRA_OPENGL_CXXFLAGS)
 set(EXTRA_OPENGL_LDFLAGS)
 
-target_include_directories(CsOpenGL
+target_include_directories(Ls-CsOpenGL
    PUBLIC
    $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include/QtOpenGL>
    $<INSTALL_INTERFACE:include/QtOpenGL>
@@ -73,7 +73,7 @@ list(APPEND OPENGL_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/gl2paintengineex/qtextureglyphcache_gl_p.h
 )
 
-target_sources(CsOpenGL
+target_sources(Ls-CsOpenGL
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/gl2paintengineex/qgl2pexvertexarray.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/gl2paintengineex/qglcustomshaderstage.cpp
@@ -107,7 +107,7 @@ if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
    )
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
-   target_link_libraries(CsOpenGL
+   target_link_libraries(Ls-CsOpenGL
       PUBLIC
       opengl32
       gdi32
@@ -115,7 +115,7 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
       user32
    )
 
-   target_compile_definitions(CsOpenGL
+   target_compile_definitions(Ls-CsOpenGL
       PRIVATE
       -DQT_NO_STYLE_GTK
       -DQT_NO_STYLE_WINDOWSVISTA
@@ -126,31 +126,31 @@ endif()
 function_variable_fixup("${EXTRA_OPENGL_CXXFLAGS}" EXTRA_OPENGL_CXXFLAGS)
 function_variable_fixup("${EXTRA_OPENGL_LDFLAGS}"  EXTRA_OPENGL_LDFLAGS)
 
-target_link_libraries(CsOpenGL
+target_link_libraries(Ls-CsOpenGL
    PUBLIC
-   CsCore
-   CsGui
+   Ls-CsCore
+   Ls-CsGui
    ${OPENGL_LIBRARIES}
 )
 
-set_target_properties(CsOpenGL
+set_target_properties(Ls-CsOpenGL
    PROPERTIES
    COMPILE_FLAGS ${EXTRA_OPENGL_CXXFLAGS}
    LINK_FLAGS ${EXTRA_OPENGL_LDFLAGS}
 )
 
-function_generate_resources(CsOpenGL)
+function_generate_resources(Ls-CsOpenGL)
 
 macro_generate_package(
-   CsOpenGL
+   Ls-CsOpenGL
    QtOpenGL
    ""
-   "CsCore CsGui"
+   "Ls-CsCore Ls-CsGui"
 )
 
 install(
-   TARGETS CsOpenGL
-   EXPORT CopperSpiceLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
+   TARGETS Ls-CsOpenGL
+   EXPORT Ls-CsLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}

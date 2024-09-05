@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/copperspice/windows/cursors">
+    <qresource prefix="Ls-Cs::windows/cursors">
         <file>images/closedhandcursor_32.png</file>
         <file>images/closedhandcursor_48.png</file>
         <file>images/closedhandcursor_64.png</file>

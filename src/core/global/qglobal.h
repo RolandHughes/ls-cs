@@ -25,7 +25,7 @@
 #define QGLOBAL_H
 
 #if ! defined (CS_DOXYPRESS)
-#include <cs_build_info.h>
+#include <ls-cs_build_info.h>
 #endif
 
 #include <qexport.h>
@@ -36,8 +36,8 @@
 #include <stdint.h>
 #include <string.h>
 
-// usage: #if (CS_VERSION >= CS_VERSION_CHECK(1, 1, 0))
-#define CS_VERSION_CHECK(major, minor, patch) ((major<<16)|(minor<<8)|(patch))
+// usage: #if (LS_CS_VERSION >= LS_CS_VERSION_CHECK(1, 1, 0))
+#define LS_CS_VERSION_CHECK(major, minor, patch) ((major<<16)|(minor<<8)|(patch))
 
 #if defined(__cplusplus)
 
@@ -686,7 +686,7 @@ class Q_CORE_EXPORT QSysInfo
    static QString machineHostName();
 };
 
-Q_CORE_EXPORT const char *csVersion();
+Q_CORE_EXPORT const char *ls_csVersion();
 
 // avoid "unused parameter" warnings
 #define Q_UNUSED(x) (void)x;

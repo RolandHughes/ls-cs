@@ -12,7 +12,7 @@ list(APPEND XMLPATTERNS_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/parser/qtokenlookup.cpp
 )
 
-target_sources(CsXmlPatterns
+target_sources(Ls-CsXmlPatterns
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/parser/qquerytransformparser.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/parser/qparsercontext.cpp

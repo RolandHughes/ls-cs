@@ -79,7 +79,7 @@ bool QObject::connect(const Sender *sender, void (SignalClass::*signalMethod)(Si
       return false;
    }
 
-   CsSignal::ConnectionKind kind;
+   LsCsSignal::ConnectionKind kind;
    bool uniqueConnection = false;
 
    if (type & Qt::UniqueConnection) {
@@ -87,9 +87,9 @@ bool QObject::connect(const Sender *sender, void (SignalClass::*signalMethod)(Si
    }
 
    // untangle the type
-   kind = static_cast<CsSignal::ConnectionKind>(type & ~Qt::UniqueConnection);
+   kind = static_cast<LsCsSignal::ConnectionKind>(type & ~Qt::UniqueConnection);
 
-   CsSignal::connect(*sender, signalMethod, *receiver, slotMethod, kind, uniqueConnection);
+   LsCsSignal::connect(*sender, signalMethod, *receiver, slotMethod, kind, uniqueConnection);
    sender->QObject::connectNotify(signalMetaMethod);
 
    return true;
@@ -138,7 +138,7 @@ bool QObject::connect(const Sender *sender, void (SignalClass::*signalMethod)(Si
       return false;
    }
 
-   CsSignal::ConnectionKind kind;
+   LsCsSignal::ConnectionKind kind;
    bool uniqueConnection = false;
 
    if (type & Qt::UniqueConnection) {
@@ -146,9 +146,9 @@ bool QObject::connect(const Sender *sender, void (SignalClass::*signalMethod)(Si
    }
 
    // untangle the type
-   kind = static_cast<CsSignal::ConnectionKind>(type & ~Qt::UniqueConnection);
+   kind = static_cast<LsCsSignal::ConnectionKind>(type & ~Qt::UniqueConnection);
 
-   CsSignal::connect(*sender, signalMethod, *receiver, slotLambda, kind, uniqueConnection);
+   LsCsSignal::connect(*sender, signalMethod, *receiver, slotLambda, kind, uniqueConnection);
    sender->QObject::connectNotify(signalMetaMethod);
 
    return true;
@@ -166,7 +166,7 @@ bool QObject::disconnect(const Sender *sender, void (SignalClass::*signalMethod)
       return false;
    }
 
-   bool retval = CsSignal::disconnect(*sender, signalMethod, *receiver, slotMethod);
+   bool retval = LsCsSignal::disconnect(*sender, signalMethod, *receiver, slotMethod);
 
    if (retval) {
       const QMetaObject *senderMetaObject = sender->metaObject();
@@ -200,7 +200,7 @@ bool QObject::disconnect(const Sender *sender, void (SignalClass::*signalMethod)
       QMetaMethod signalMetaMethod = senderMetaObject->method(signalMethod);
       const CSBentoAbstract *signalMethod_Bento = signalMetaMethod.getBentoBox();
 
-      retval = CsSignal::internal_disconnect(*sender, signalMethod_Bento, receiver, nullptr);
+      retval = LsCsSignal::internal_disconnect(*sender, signalMethod_Bento, receiver, nullptr);
 
       if (retval) {
          const_cast<Sender *>(sender)->QObject::disconnectNotify(signalMetaMethod);
@@ -215,7 +215,7 @@ template<class Sender, class SignalClass, class ...SignalArgs, class Receiver, c
 bool QObject::disconnect(const Sender *sender, void (SignalClass::*signalMethod)(SignalArgs...),
       const Receiver *receiver, T slotMethod)
 {
-   bool retval = CsSignal::disconnect(*sender, signalMethod, *receiver, slotMethod);
+   bool retval = LsCsSignal::disconnect(*sender, signalMethod, *receiver, slotMethod);
 
    if (retval) {
       const QMetaObject *senderMetaObject = sender->metaObject();
@@ -429,7 +429,7 @@ bool QMetaMethod::invoke(QObject *object, Qt::ConnectionType type, CSReturnArgum
    }
 
    // store the signal data, false indicates the data will not be copied
-   CsSignal::Internal::TeaCup_Data<Ts...> dataPack(false, std::forward<Ts>(Vs)...);
+   LsCsSignal::Internal::TeaCup_Data<Ts...> dataPack(false, std::forward<Ts>(Vs)...);
 
    if (type == Qt::DirectConnection) {
       // retval is passed by pointer
@@ -444,7 +444,7 @@ bool QMetaMethod::invoke(QObject *object, Qt::ConnectionType type, CSReturnArgum
 
       // store the signal data, true indicates the data will be copied into a TeaCup Object (stored on the heap)
       CSMetaCallEvent *event = new CSMetaCallEvent(m_bento,
-            new CsSignal::Internal::TeaCup_Data<Ts...>(true, std::forward<Ts>(Vs)...), nullptr, -1);
+            new LsCsSignal::Internal::TeaCup_Data<Ts...>(true, std::forward<Ts>(Vs)...), nullptr, -1);
 
       QCoreApplication::postEvent(object, event);
 
@@ -463,7 +463,7 @@ bool QMetaMethod::invoke(QObject *object, Qt::ConnectionType type, CSReturnArgum
 
       // store the signal data, false indicates the data will not be copied
       CSMetaCallEvent *event = new CSMetaCallEvent(m_bento,
-            new CsSignal::Internal::TeaCup_Data<Ts...>(false, std::forward<Ts>(Vs)...), nullptr, -1, &semaphore);
+            new LsCsSignal::Internal::TeaCup_Data<Ts...>(false, std::forward<Ts>(Vs)...), nullptr, -1, &semaphore);
 
       QCoreApplication::postEvent(object, event);
 
@@ -506,7 +506,7 @@ bool QMetaMethod::invoke(QObject *object, Qt::ConnectionType type, Ts &&...Vs) c
    }
 
    // store the signal data, false indicates the data will not be copied
-   CsSignal::Internal::TeaCup_Data<Ts...> dataPack(false, std::forward<Ts>(Vs)...);
+   LsCsSignal::Internal::TeaCup_Data<Ts...> dataPack(false, std::forward<Ts>(Vs)...);
 
    if (type == Qt::DirectConnection) {
       // invoke calls the method
@@ -517,7 +517,7 @@ bool QMetaMethod::invoke(QObject *object, Qt::ConnectionType type, Ts &&...Vs) c
 
       // store the signal data, false indicates the data will not be copied
       CSMetaCallEvent *event = new CSMetaCallEvent(m_bento,
-            new CsSignal::Internal::TeaCup_Data<Ts...>(true, std::forward<Ts>(Vs)...), nullptr, -1);
+            new LsCsSignal::Internal::TeaCup_Data<Ts...>(true, std::forward<Ts>(Vs)...), nullptr, -1);
       QCoreApplication::postEvent(object, event);
 
    } else {
@@ -532,7 +532,7 @@ bool QMetaMethod::invoke(QObject *object, Qt::ConnectionType type, Ts &&...Vs) c
 
       // store the signal data, false indicates the data will not be copied
       CSMetaCallEvent *event = new CSMetaCallEvent(m_bento,
-            new CsSignal::Internal::TeaCup_Data<Ts...>(false, std::forward<Ts>(Vs)...), nullptr, -1, &semaphore);
+            new LsCsSignal::Internal::TeaCup_Data<Ts...>(false, std::forward<Ts>(Vs)...), nullptr, -1, &semaphore);
       QCoreApplication::postEvent(object, event);
 
       semaphore.acquire();

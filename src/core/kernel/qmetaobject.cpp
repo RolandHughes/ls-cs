@@ -295,7 +295,7 @@ int QMetaObject::indexOfMethod(const QString &method) const
    return retval;
 }
 
-int QMetaObject::indexOfMethod(const CsSignal::Internal::BentoAbstract &temp) const
+int QMetaObject::indexOfMethod(const LsCsSignal::Internal::BentoAbstract &temp) const
 {
    int retval = -1;
 

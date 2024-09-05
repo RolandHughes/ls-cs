@@ -63,7 +63,7 @@ list(APPEND GUI_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/image/qxpmhandler_p.h
 )
 
-target_sources(CsGui
+target_sources(Ls-CsGui
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/image/qbmphandler.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/image/qbitmap.cpp
@@ -169,7 +169,7 @@ target_sources(CsGui
 )
 
 if (NOT ${JPEG_FOUND})
-   target_sources(CsGui
+   target_sources(Ls-CsGui
       PRIVATE
       ${CMAKE_SOURCE_DIR}/src/3rdparty/libjpeg/jaricom.c
       ${CMAKE_SOURCE_DIR}/src/3rdparty/libjpeg/jcapimin.c
@@ -221,7 +221,7 @@ if (NOT ${JPEG_FOUND})
 endif()
 
 if(CMAKE_SYSTEM_PROCESSOR MATCHES "arm")
-   target_sources(CsGui
+   target_sources(Ls-CsGui
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/image/qimage_neon.cpp
 
@@ -232,14 +232,14 @@ if(CMAKE_SYSTEM_PROCESSOR MATCHES "arm")
 endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "Windows")
-   target_sources(CsGui
+   target_sources(Ls-CsGui
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/image/qpixmap_win.cpp
       ${CMAKE_SOURCE_DIR}/src/3rdparty/libtiff/libtiff/tif_win32.c
    )
 
 else()
-   target_sources(CsGui
+   target_sources(Ls-CsGui
       PRIVATE
       ${CMAKE_SOURCE_DIR}/src/3rdparty/libtiff/libtiff/tif_unix.c
     )

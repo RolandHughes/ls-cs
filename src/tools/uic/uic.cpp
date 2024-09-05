@@ -122,7 +122,7 @@ void Uic::writeCopyrightHeader(DomUI *ui)
    out << "/********************************************************************************\n";
    out << "** Form generated from reading the UI file '" << QFileInfo(opt.inputFile).fileName() << "'\n";
    out << "**\n";
-   out << "** Created by: CopperSpice User Interface Compiler, Version " << CS_VERSION_STR << "\n";
+   out << "** Created by: CopperSpice User Interface Compiler, Version " << LS_CS_VERSION_STR << "\n";
    out << "**\n";
    out << "** WARNING! Any changes made to this file will be lost when the UI file is recompiled\n";
    out << "********************************************************************************/\n\n";

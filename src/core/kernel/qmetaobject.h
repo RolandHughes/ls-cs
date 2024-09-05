@@ -66,7 +66,7 @@ class Q_CORE_EXPORT QMetaObject
    int indexOfConstructor(const QString &constructor) const;
    int indexOfEnumerator(const QString &name) const;
    int indexOfMethod(const QString &method) const;
-   int indexOfMethod(const CsSignal::Internal::BentoAbstract &tmp) const;
+   int indexOfMethod(const LsCsSignal::Internal::BentoAbstract &tmp) const;
    int indexOfProperty(const QString &name) const;
    int indexOfSignal(const QString &signal) const;
    int indexOfSlot(const QString &slot) const;

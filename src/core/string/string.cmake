@@ -9,67 +9,67 @@ list(APPEND CORE_PUBLIC_INCLUDES
    QRegularExpression
 )
 
-if (CsString_FOUND)
+if (LsCsString_FOUND)
    # use system headers
 
    if (CS_INSTALL_MODE STREQUAL "Package")
       # package mode, do not copy install headers
 
-      target_link_libraries(CsCore
+      target_link_libraries(Ls-CsCore
          PUBLIC
-         CsString::CsString
+         LsCsString::LsCsString
       )
 
    elseif (CS_INSTALL_MODE STREQUAL "Deploy")
 
       if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
-         target_link_libraries(CsCore
+         target_link_libraries(Ls-CsCore
             PUBLIC
-            $<BUILD_INTERFACE:CsString::CsString>
-            $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/libCsString.dylib>
+            $<BUILD_INTERFACE:LsCsString::LsCsString>
+            $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/libLsCsString.dylib>
          )
 
       elseif (CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
-         target_link_libraries(CsCore
+         target_link_libraries(Ls-CsCore
             PUBLIC
-            $<BUILD_INTERFACE:CsString::CsString>
-            $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/libCsString.so>
+            $<BUILD_INTERFACE:LsCsString::LsCsString>
+            $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/libLsCsString.so>
          )
 
       elseif (CMAKE_SYSTEM_NAME MATCHES "Windows")
          if (MSVC)
-            target_link_libraries(CsCore
+            target_link_libraries(Ls-CsCore
                PUBLIC
-               $<BUILD_INTERFACE:CsString::CsString>
+               $<BUILD_INTERFACE:LsCsString::LsCsString>
 
                # link with import library in CS install lib directory
-               $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/libCsString.lib>
+               $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/libLsCsString.lib>
             )
 
          else()
-            target_link_libraries(CsCore
+            target_link_libraries(Ls-CsCore
                PUBLIC
-               $<BUILD_INTERFACE:CsString::CsString>
+               $<BUILD_INTERFACE:LsCsString::LsCsString>
 
                # link with import library in CS install lib directory
-               $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/libCsString.dll.a>
+               $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/libLsCsString.dll.a>
             )
          endif()
 
       endif()
 
       list(APPEND CORE_INCLUDES
-         ${CsString_INCLUDE_DIR}/cs_string.h
-         ${CsString_INCLUDE_DIR}/cs_string_iterator.h
-         ${CsString_INCLUDE_DIR}/cs_encoding.h
-         ${CsString_INCLUDE_DIR}/cs_char.h
-         ${CsString_INCLUDE_DIR}/cs_string_view.h
+         ${LsCsString_INCLUDE_DIR}/cs_string.h
+         ${LsCsString_INCLUDE_DIR}/cs_string_iterator.h
+         ${LsCsString_INCLUDE_DIR}/cs_encoding.h
+         ${LsCsString_INCLUDE_DIR}/cs_char.h
+         ${LsCsString_INCLUDE_DIR}/cs_string_view.h
       )
    endif()
 
 else()
    # use annex headers
-   target_include_directories(CsCore
+   target_include_directories(Ls-CsCore
       PUBLIC
       $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/annex/cs_string>
    )
@@ -126,7 +126,7 @@ list(APPEND CORE_REGEX_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/string/regex/r_states.h
 )
 
-target_sources(CsCore
+target_sources(Ls-CsCore
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/string/qchar32.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/string/qstring8.cpp
@@ -137,7 +137,7 @@ target_sources(CsCore
 )
 
 if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
-   target_sources(CsCore
+   target_sources(Ls-CsCore
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/string/qstring_mac.mm
    )

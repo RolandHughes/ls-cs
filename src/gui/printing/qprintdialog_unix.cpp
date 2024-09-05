@@ -247,9 +247,9 @@ void QPrintDialogPrivate::init()
    bottom = new QWidget(q);
    options.setupUi(bottom);
    options.color->setIconSize(QSize(32, 32));
-   options.color->setIcon(QIcon(":/copperspice/printing/images/status-color.png"));
+   options.color->setIcon(QIcon(":ls-cs/printing/images/status-color.png"));
    options.grayscale->setIconSize(QSize(32, 32));
-   options.grayscale->setIcon(QIcon(":/copperspice/printing/images/status-gray-scale.png"));
+   options.grayscale->setIcon(QIcon(":ls-cs/printing/images/status-gray-scale.png"));
 
 #ifndef QT_NO_CUPS
    // Add Page Set widget if CUPS is available

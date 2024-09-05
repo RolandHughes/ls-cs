@@ -12,34 +12,34 @@ list(APPEND SQL_INCLUDES
 # if(WITH_OCI_PLUGIN AND OCI_FOUND), unsupported at this time
 if (FALSE)
 
-   add_library(CsSqlOci MODULE "")
-   add_library(CopperSpice::CsSqlOci ALIAS CsSqlOci)
+   add_library(Ls-CsSqlOci MODULE "")
+   add_library(Ls-Cs::Ls-CsSqlOci ALIAS Ls-CsSqlOci)
 
-   set_target_properties(CsSqlOci PROPERTIES OUTPUT_NAME CsSqlOci${BUILD_ABI} PREFIX "")
+   set_target_properties(Ls-CsSqlOci PROPERTIES OUTPUT_NAME Ls-CsSqlOci${BUILD_ABI} PREFIX "")
 
    include_directories(${OCI_INCLUDE_DIRS})
 
-   target_sources(CsSqlOci
+   target_sources(Ls-CsSqlOci
       PRIVATE
       ${CMAKE_SOURCE_DIR}/src/plugins/sqldrivers/oci/qsql_oci.cpp
       ${CMAKE_SOURCE_DIR}/src/plugins/sqldrivers/oci/main.cpp
    )
 
-   target_link_libraries(CsSqlOci
-      CsCore
-      CsSql
+   target_link_libraries(Ls-CsSqlOci
+      Ls-CsCore
+      Ls-CsSql
       ${OCI_LIBRARY}
    )
 
-   target_compile_definitions(CsSqlOci
+   target_compile_definitions(Ls-CsSqlOci
       PRIVATE
       -DIN_TRUE
       -DQT_PLUGIN
    )
 
    if(BUILDING_RPM OR BUILDING_DEBIAN)
-      install(TARGETS CsSqlOci DESTINATION ${CMAKE_INSTALL_LIBDIR}/copperspice/plugins/sqldrivers)
+      install(TARGETS Ls-CsSqlOci DESTINATION ${CMAKE_INSTALL_LIBDIR}/ls-cs/plugins/sqldrivers)
    else()
-      install(TARGETS CsSqlOci DESTINATION ${CMAKE_INSTALL_LIBDIR})
+      install(TARGETS Ls-CsSqlOci DESTINATION ${CMAKE_INSTALL_LIBDIR})
    endif()
 endif()

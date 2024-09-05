@@ -33,12 +33,12 @@ list(APPEND MULTIMEDIA_PRIVATE_INCLUDES
 
 if(CMAKE_SYSTEM_NAME MATCHES "Windows")
 
-   add_library(CsMultimedia_DirectShow MODULE "")
-   add_library(CopperSpice::CsMultimedia_DirectShow ALIAS CsMultimedia_DirectShow)
+   add_library(Ls-CsMultimedia_DirectShow MODULE "")
+   add_library(Ls-Cs::Ls-CsMultimedia_DirectShow ALIAS Ls-CsMultimedia_DirectShow)
 
-   set_target_properties(CsMultimedia_DirectShow PROPERTIES OUTPUT_NAME CsMultimedia_DirectShow${BUILD_ABI} PREFIX "")
+   set_target_properties(Ls-CsMultimedia_DirectShow PROPERTIES OUTPUT_NAME Ls-CsMultimedia_DirectShow${BUILD_ABI} PREFIX "")
 
-   target_sources(CsMultimedia_DirectShow
+   target_sources(Ls-CsMultimedia_DirectShow
       PRIVATE
 
       ${CMAKE_SOURCE_DIR}/src/plugins/multimedia/mediaservices/directshow/directshow_plugin.cpp
@@ -71,11 +71,11 @@ if(CMAKE_SYSTEM_NAME MATCHES "Windows")
       ${CMAKE_SOURCE_DIR}/src/plugins/multimedia/mediaservices/directshow/player/vmr9videowindowcontrol.cpp
     )
 
-    target_link_libraries(CsMultimedia_DirectShow
-       CsCore
-       CsGui
-       CsNetwork
-       CsMultimedia
+    target_link_libraries(Ls-CsMultimedia_DirectShow
+       Ls-CsCore
+       Ls-CsGui
+       Ls-CsNetwork
+       Ls-CsMultimedia
        strmiids
        dmoguids
        uuid
@@ -85,7 +85,7 @@ if(CMAKE_SYSTEM_NAME MATCHES "Windows")
        gdi32
     )
 
-    target_compile_definitions(CsMultimedia_DirectShow
+    target_compile_definitions(Ls-CsMultimedia_DirectShow
        PRIVATE
        -DQT_PLUGIN
        -DQMEDIA_DIRECTSHOW_CAMERA
@@ -94,8 +94,8 @@ if(CMAKE_SYSTEM_NAME MATCHES "Windows")
     )
 
    if(BUILDING_RPM OR BUILDING_DEBIAN)
-      install(TARGETS CsMultimedia_DirectShow DESTINATION ${CMAKE_INSTALL_LIBDIR}/copperspice/plugins/mediaservices)
+      install(TARGETS Ls-CsMultimedia_DirectShow DESTINATION ${CMAKE_INSTALL_LIBDIR}/ls-cs/plugins/mediaservices)
    else()
-      install(TARGETS CsMultimedia_DirectShow DESTINATION ${CMAKE_INSTALL_LIBDIR})
+      install(TARGETS Ls-CsMultimedia_DirectShow DESTINATION ${CMAKE_INSTALL_LIBDIR})
    endif()
 endif()

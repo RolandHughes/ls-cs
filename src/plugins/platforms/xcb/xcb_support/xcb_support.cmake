@@ -1,10 +1,10 @@
 if(BUILD_PLATFORMS_XCB_PLUGIN)
-   add_library(CsXcbSupport SHARED "")
-   add_library(CopperSpice::CsXcbSupport ALIAS CsXcbSupport)
+   add_library(Ls-CsXcbSupport SHARED "")
+   add_library(Ls-Cs::Ls-CsXcbSupport ALIAS Ls-CsXcbSupport)
 
-   set_target_properties(CsXcbSupport PROPERTIES OUTPUT_NAME CsXcbSupport${BUILD_ABI})
+   set_target_properties(Ls-CsXcbSupport PROPERTIES OUTPUT_NAME Ls-CsXcbSupport${BUILD_ABI})
 
-   target_compile_definitions(CsXcbSupport
+   target_compile_definitions(Ls-CsXcbSupport
       PRIVATE
       -DQT_NO_ACCESSIBILITY_ATSPI_BRIDGE
       -DQT_NO_DBUS
@@ -53,7 +53,7 @@ if(BUILD_PLATFORMS_XCB_PLUGIN)
       ${CMAKE_CURRENT_SOURCE_DIR}/xcb/themes/qgenericunix_theme_p.h
    )
 
-   target_sources(CsXcbSupport
+   target_sources(Ls-CsXcbSupport
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/xcb/xcb_support/qxcb_backingstore.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/xcb/xcb_support/qxcb_clipboard.cpp
@@ -89,15 +89,15 @@ if(BUILD_PLATFORMS_XCB_PLUGIN)
 
    macro_generate_misc_private("${XCB_SUPPORT_PRIVATE_INCLUDES}" QtGui/private/platforms)
 
-   target_sources(CsXcbSupport
+   target_sources(Ls-CsXcbSupport
       PRIVATE
       ${XCB_SUPPORT_PRIVATE_INCLUDES}
    )
 
-   target_link_libraries(CsXcbSupport
+   target_link_libraries(Ls-CsXcbSupport
       PRIVATE
-      CsCore
-      CsGui
+      Ls-CsCore
+      Ls-CsGui
       ${FONTCONFIG_LIBRARIES}
       ${XCB_LIB}
       ${XCB_IMAGE_LIB}
@@ -121,7 +121,7 @@ if(BUILD_PLATFORMS_XCB_PLUGIN)
       ${XKBCOMMON_X11_LIB}
    )
 
-   target_include_directories(CsXcbSupport
+   target_include_directories(Ls-CsXcbSupport
       PRIVATE
       ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/include
       ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/include/freetype
@@ -129,27 +129,27 @@ if(BUILD_PLATFORMS_XCB_PLUGIN)
    )
 
    if(GTK2_FOUND)
-      target_link_libraries(CsXcbSupport
+      target_link_libraries(Ls-CsXcbSupport
          PRIVATE
          ${GLIB2_LIBRARIES}
          ${GOBJECT2_LIBRARIES}
       )
 
-      target_sources(CsGuiXcb
+      target_sources(Ls-CsGuiXcb
          PRIVATE
          ${CMAKE_CURRENT_SOURCE_DIR}/xcb/events/qxcb_eventdispatcher_glib.cpp
       )
 
    else()
-      target_compile_definitions(CsXcbSupport
+      target_compile_definitions(Ls-CsXcbSupport
          PRIVATE
          -DQT_NO_GLIB
       )
    endif()
 
    install(
-      TARGETS CsXcbSupport
-      EXPORT CopperSpiceLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
+      TARGETS Ls-CsXcbSupport
+      EXPORT Ls-CsLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
       RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
       LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
       ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}

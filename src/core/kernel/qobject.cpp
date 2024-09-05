@@ -333,7 +333,7 @@ bool QObject::connect(const QObject *sender, const QMetaMethod &signalMetaMethod
       return false;
    }
 
-   CsSignal::ConnectionKind kind;
+   LsCsSignal::ConnectionKind kind;
    bool uniqueConnection = false;
 
    if (type & Qt::UniqueConnection) {
@@ -341,12 +341,12 @@ bool QObject::connect(const QObject *sender, const QMetaMethod &signalMetaMethod
    }
 
    // untangle the type
-   kind = static_cast<CsSignal::ConnectionKind>(type & ~Qt::UniqueConnection);
+   kind = static_cast<LsCsSignal::ConnectionKind>(type & ~Qt::UniqueConnection);
 
-   std::unique_ptr<CsSignal::Internal::BentoAbstract> signalMethod_Bento2 = signalMethod_Bento->clone();
-   std::unique_ptr<CsSignal::Internal::BentoAbstract> slotMethod_Bento2   = slotMethod_Bento->clone();
+   std::unique_ptr<LsCsSignal::Internal::BentoAbstract> signalMethod_Bento2 = signalMethod_Bento->clone();
+   std::unique_ptr<LsCsSignal::Internal::BentoAbstract> slotMethod_Bento2   = slotMethod_Bento->clone();
 
-   CsSignal::connect(*sender, std::move(signalMethod_Bento2), *receiver, std::move(slotMethod_Bento2), kind, uniqueConnection);
+   LsCsSignal::connect(*sender, std::move(signalMethod_Bento2), *receiver, std::move(slotMethod_Bento2), kind, uniqueConnection);
    sender->connectNotify(signalMetaMethod);
 
    return true;
@@ -473,7 +473,7 @@ bool QObject::disconnect(const QObject *sender,   const QString8 &signalMethod,
       slotMethod_Bento = receiverMetaObject->method(slot_index).getBentoBox();
    }
 
-   bool retval = CsSignal::internal_disconnect(*sender, signalMethod_Bento, receiver, slotMethod_Bento);
+   bool retval = LsCsSignal::internal_disconnect(*sender, signalMethod_Bento, receiver, slotMethod_Bento);
 
    if (retval) {
       const QMetaObject *senderMetaObject = sender->metaObject();
@@ -497,7 +497,7 @@ bool QObject::disconnect(const QObject *sender, std::nullptr_t, const QObject *r
    const CSBentoAbstract *signalMethod_Bento = nullptr;
    const CSBentoAbstract *slotMethod_Bento   = nullptr;
 
-   bool retval = CsSignal::internal_disconnect(*sender, signalMethod_Bento, receiver, slotMethod_Bento);
+   bool retval = LsCsSignal::internal_disconnect(*sender, signalMethod_Bento, receiver, slotMethod_Bento);
 
    if (retval) {
       QMetaMethod signalMetaMethod;
@@ -569,7 +569,7 @@ bool QObject::disconnect(const QObject *sender,   const QMetaMethod &signalMetaM
    const CSBentoAbstract *signalMethod_Bento = signalMetaMethod.getBentoBox();
    const CSBentoAbstract *slotMethod_Bento   = slotMetaMethod.getBentoBox();
 
-   bool retval = CsSignal::internal_disconnect(*sender, signalMethod_Bento, receiver, slotMethod_Bento);
+   bool retval = LsCsSignal::internal_disconnect(*sender, signalMethod_Bento, receiver, slotMethod_Bento);
 
    if (retval) {
       const QMetaObject *senderMetaObject = sender->metaObject();
@@ -736,7 +736,7 @@ bool QObject::isSender(const QObject *receiver, const QString8 &signalMethod) co
       QMetaMethod metaMethod = metaObj->method(index);
       const CSBentoAbstract *signalMethod_Bento = metaMethod.getBentoBox();
 
-      int count = CsSignal::SignalBase::internal_cntConnections(receiver, *signalMethod_Bento);
+      int count = LsCsSignal::SignalBase::internal_cntConnections(receiver, *signalMethod_Bento);
 
       if (count > 0) {
          retval = true;
@@ -752,7 +752,7 @@ bool QObject::isSignalConnected(const QMetaMethod &signalMetaMethod) const
 
    const CSBentoAbstract *signalMethod_Bento = signalMetaMethod.getBentoBox();
 
-   int count = CsSignal::SignalBase::internal_cntConnections(nullptr, *signalMethod_Bento);
+   int count = LsCsSignal::SignalBase::internal_cntConnections(nullptr, *signalMethod_Bento);
 
    if (count > 0) {
       retval = true;
@@ -871,21 +871,21 @@ bool QObject::compareThreads() const
    return (currentThreadId == this->m_threadData.load()->threadId);
 }
 
-void QObject::queueSlot(CsSignal::PendingSlot data, CsSignal::ConnectionKind kind)
+void QObject::queueSlot(LsCsSignal::PendingSlot data, LsCsSignal::ConnectionKind kind)
 {
-   std::unique_ptr<CsSignal::Internal::BentoAbstract> slot_Bento = data.internal_moveSlotBento();
-   std::unique_ptr<CsSignal::Internal::TeaCupAbstract> teaCup    = data.internal_moveTeaCup();
+   std::unique_ptr<LsCsSignal::Internal::BentoAbstract> slot_Bento = data.internal_moveSlotBento();
+   std::unique_ptr<LsCsSignal::Internal::TeaCupAbstract> teaCup    = data.internal_moveTeaCup();
 
    QObject *sender  = dynamic_cast<QObject *>(data.sender());
    int signal_index = senderSignalIndex();
 
-   if (kind == CsSignal::ConnectionKind::QueuedConnection)  {
+   if (kind == LsCsSignal::ConnectionKind::QueuedConnection)  {
       CSMetaCallEvent *event = new CSMetaCallEvent(slot_Bento.release(), teaCup.release(),
             sender, signal_index);
 
       QCoreApplication::postEvent(this, event);
 
-   } else if (kind == CsSignal::ConnectionKind::BlockingQueuedConnection) {
+   } else if (kind == LsCsSignal::ConnectionKind::BlockingQueuedConnection) {
       if (compareThreads()) {
 
          qWarning("QObject::activate() Dead lock detected while activating a BlockingQueuedConnection: "
@@ -939,7 +939,7 @@ QList<QObject *> QObject::receiverList(const QMetaMethod &signalMetaMethod) cons
 
    if (signalMetaMethod.isValid()) {
       const CSBentoAbstract *signalMethod_Bento = signalMetaMethod.getBentoBox();
-      std::set<SlotBase *> tmpSet = CsSignal::SignalBase::internal_receiverList(*signalMethod_Bento);
+      std::set<SlotBase *> tmpSet = LsCsSignal::SignalBase::internal_receiverList(*signalMethod_Bento);
 
       for (auto item : tmpSet)  {
          QObject *obj = dynamic_cast<QObject *>(item);
@@ -968,7 +968,7 @@ int QObject::receivers(const QString8 &signalMethod) const
          QMetaMethod signalMetaMethod = metaObj->method(signal_index);
          const CSBentoAbstract *signalMethod_Bento = signalMetaMethod.getBentoBox();
 
-         receivers = CsSignal::SignalBase::internal_cntConnections(nullptr, *signalMethod_Bento);
+         receivers = LsCsSignal::SignalBase::internal_cntConnections(nullptr, *signalMethod_Bento);
       }
    }
 
@@ -1003,7 +1003,7 @@ QList<QObject *> QObject::senderList() const
 {
    QList<QObject *> retval;
 
-   std::set<SignalBase *> tempSet = CsSignal::SlotBase::internal_senderList();
+   std::set<SignalBase *> tempSet = LsCsSignal::SlotBase::internal_senderList();
 
    for (auto item : tempSet)  {
       QObject *obj = dynamic_cast<QObject *>(item);
@@ -1027,7 +1027,7 @@ int QObject::senderSignalIndex() const
       return retval;
    }
 
-   const CsSignal::Internal::BentoAbstract *signalBase = CsSignal::SignalBase::get_threadLocal_currentSignal();
+   const LsCsSignal::Internal::BentoAbstract *signalBase = LsCsSignal::SignalBase::get_threadLocal_currentSignal();
 
    if (signalBase != nullptr) {
       retval = tempSender->metaObject()->indexOfMethod(*signalBase);

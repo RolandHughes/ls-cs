@@ -1,7 +1,7 @@
-add_library(CsXml SHARED "")
-add_library(CopperSpice::CsXml ALIAS CsXml)
+add_library(Ls-CsXml SHARED "")
+add_library(Ls-Cs::Ls-CsXml ALIAS Ls-CsXml)
 
-set_target_properties(CsXml PROPERTIES OUTPUT_NAME CsXml${BUILD_ABI})
+set_target_properties(Ls-CsXml PROPERTIES OUTPUT_NAME Ls-CsXml${BUILD_ABI})
 
 add_definitions(
    -DQT_BUILD_XML_LIB
@@ -10,7 +10,7 @@ add_definitions(
 set(EXTRA_XML_CXXFLAGS)
 set(EXTRA_XML_LDFLAGS)
 
-target_include_directories(CsXml
+target_include_directories(Ls-CsXml
    PUBLIC
    $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include/QtXml>
    $<INSTALL_INTERFACE:include/QtXml>
@@ -37,34 +37,34 @@ macro_generate_misc("${XML_INCLUDES}" QtXml)
 function_variable_fixup("${EXTRA_XML_CXXFLAGS}" EXTRA_XML_CXXFLAGS)
 function_variable_fixup("${EXTRA_XML_LDFLAGS}"  EXTRA_XML_LDFLAGS)
 
-target_sources(CsXml
+target_sources(Ls-CsXml
    PRIVATE
    ${XML_INCLUDES}
 )
 
-target_link_libraries(CsXml
+target_link_libraries(Ls-CsXml
    PUBLIC
-   CsCore
+   Ls-CsCore
 )
 
-set_target_properties(CsXml
+set_target_properties(Ls-CsXml
    PROPERTIES
    COMPILE_FLAGS ${EXTRA_XML_CXXFLAGS}
    LINK_FLAGS ${EXTRA_XML_LDFLAGS}
 )
 
-function_generate_resources(CsXml)
+function_generate_resources(Ls-CsXml)
 
 macro_generate_package(
-   CsXml
+   Ls-CsXml
    QtXml
    "${EXTRA_XML_CXXFLAGS}"
-   "CsCore"
+   "Ls-CsCore"
 )
 
 install(
-   TARGETS CsXml
-   EXPORT CopperSpiceLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
+   TARGETS Ls-CsXml
+   EXPORT Ls-CsLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}

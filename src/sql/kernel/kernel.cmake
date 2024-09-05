@@ -38,7 +38,7 @@ list(APPEND SQL_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qtsql.h
 )
 
-target_sources(CsSql
+target_sources(Ls-CsSql
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qsqlquery.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qsqldatabase.cpp

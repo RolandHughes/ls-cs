@@ -197,7 +197,7 @@ list(APPEND GUI_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/cs_mac_p.h
 )
 
-target_sources(CsGui
+target_sources(Ls-CsGui
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qaction.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qactiongroup.cpp
@@ -251,7 +251,7 @@ if(CMAKE_SYSTEM_NAME MATCHES "Windows")
    add_definitions(-DQT_NO_DIRECTDRAW)
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "Darwin")
-   target_sources(CsGui
+   target_sources(Ls-CsGui
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qmacgesturerecognizer.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/kernel/cs_carbon_wrapper.mm

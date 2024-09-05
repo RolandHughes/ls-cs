@@ -72,12 +72,12 @@ if(WITH_MULTIMEDIA AND GStreamer_FOUND)
    )
 
    # plugin 1
-   add_library(CsMultimedia_gst_audiodecoder MODULE "")
-   add_library(CopperSpice::CsMultimedia_gst_audiodecoder ALIAS CsMultimedia_gst_audiodecoder)
+   add_library(Ls-CsMultimedia_gst_audiodecoder MODULE "")
+   add_library(Ls-Cs::Ls-CsMultimedia_gst_audiodecoder ALIAS Ls-CsMultimedia_gst_audiodecoder)
 
-   set_target_properties(CsMultimedia_gst_audiodecoder PROPERTIES OUTPUT_NAME CsMultimedia_gst_audiodecoder${BUILD_ABI} PREFIX "")
+   set_target_properties(Ls-CsMultimedia_gst_audiodecoder PROPERTIES OUTPUT_NAME Ls-CsMultimedia_gst_audiodecoder${BUILD_ABI} PREFIX "")
 
-   target_sources(CsMultimedia_gst_audiodecoder
+   target_sources(Ls-CsMultimedia_gst_audiodecoder
       PRIVATE
       ${GSTREAMER_TOOLS_SOURCES}
       ${CMAKE_SOURCE_DIR}/src/plugins/multimedia/mediaservices/gstreamer/audiodecoder/qgstreameraudiodecodercontrol.cpp
@@ -88,13 +88,13 @@ if(WITH_MULTIMEDIA AND GStreamer_FOUND)
 
    if (GSTREAMER_ABI_VERSION VERSION_EQUAL "0.10")
 
-      target_sources(CsMultimedia_gst_audiodecoder
+      target_sources(Ls-CsMultimedia_gst_audiodecoder
          PRIVATE
          ${CMAKE_SOURCE_DIR}/src/plugins/multimedia/mediaservices/gstreamer/tools/qvideosurfacegstsink.cpp
       )
 
    else()
-      target_sources(CsMultimedia_gst_audiodecoder
+      target_sources(Ls-CsMultimedia_gst_audiodecoder
          PRIVATE
          ${CMAKE_SOURCE_DIR}/src/plugins/multimedia/mediaservices/gstreamer/tools/qgstvideorendererplugin.cpp
          ${CMAKE_SOURCE_DIR}/src/plugins/multimedia/mediaservices/gstreamer/tools/qgstvideorenderersink.cpp
@@ -102,11 +102,11 @@ if(WITH_MULTIMEDIA AND GStreamer_FOUND)
 
    endif()
 
-   target_link_libraries(CsMultimedia_gst_audiodecoder
-      CsCore
-      CsGui
-      CsNetwork
-      CsMultimedia
+   target_link_libraries(Ls-CsMultimedia_gst_audiodecoder
+      Ls-CsCore
+      Ls-CsGui
+      Ls-CsNetwork
+      Ls-CsMultimedia
       ${GSTREAMER_LIBRARIES}
       ${GSTREAMER_BASE_LIBRARIES}
       ${GSTREAMER_AUDIO_LIBRARIES}
@@ -117,30 +117,30 @@ if(WITH_MULTIMEDIA AND GStreamer_FOUND)
    )
 
    if (GSTREAMER_ABI_VERSION VERSION_EQUAL "0.10")
-      target_link_libraries(CsMultimedia_gst_audiodecoder
+      target_link_libraries(Ls-CsMultimedia_gst_audiodecoder
          ${GSTREAMER_INTERFACES_LIBRARIES}
       )
    endif()
 
    target_include_directories(
-      CsMultimedia_gst_audiodecoder
+      Ls-CsMultimedia_gst_audiodecoder
       PRIVATE
       ${GSTREAMER_INCLUDE_DIR}
       ${GLIB2_INCLUDES}
    )
 
-   target_compile_definitions(CsMultimedia_gst_audiodecoder
+   target_compile_definitions(Ls-CsMultimedia_gst_audiodecoder
       PRIVATE
       -DQT_PLUGIN
    )
 
    # plugin 2
-   add_library(CsMultimedia_gst_camerabin MODULE "")
-   add_library(CopperSpice::CsMultimedia_gst_camerabin ALIAS CsMultimedia_gst_camerabin)
+   add_library(Ls-CsMultimedia_gst_camerabin MODULE "")
+   add_library(Ls-Cs::Ls-CsMultimedia_gst_camerabin ALIAS Ls-CsMultimedia_gst_camerabin)
 
-   set_target_properties(CsMultimedia_gst_camerabin PROPERTIES OUTPUT_NAME CsMultimedia_gst_camerabin${BUILD_ABI} PREFIX "")
+   set_target_properties(Ls-CsMultimedia_gst_camerabin PROPERTIES OUTPUT_NAME Ls-CsMultimedia_gst_camerabin${BUILD_ABI} PREFIX "")
 
-   target_sources(CsMultimedia_gst_camerabin
+   target_sources(Ls-CsMultimedia_gst_camerabin
       PRIVATE
       ${GSTREAMER_TOOLS_SOURCES}
       ${CMAKE_SOURCE_DIR}/src/plugins/multimedia/mediaservices/gstreamer/camera/camera_serviceplugin.cpp
@@ -168,24 +168,24 @@ if(WITH_MULTIMEDIA AND GStreamer_FOUND)
 
    if (GSTREAMER_ABI_VERSION VERSION_EQUAL "0.10")
 
-      target_sources(CsMultimedia_gst_camerabin
+      target_sources(Ls-CsMultimedia_gst_camerabin
          PRIVATE
          ${CMAKE_SOURCE_DIR}/src/plugins/multimedia/mediaservices/gstreamer/tools/qvideosurfacegstsink.cpp
       )
 
    else()
-      target_sources(CsMultimedia_gst_camerabin
+      target_sources(Ls-CsMultimedia_gst_camerabin
          PRIVATE
          ${CMAKE_SOURCE_DIR}/src/plugins/multimedia/mediaservices/gstreamer/tools/qgstvideorenderersink.cpp
       )
 
    endif()
 
-   target_link_libraries(CsMultimedia_gst_camerabin
-      CsCore
-      CsGui
-      CsNetwork
-      CsMultimedia
+   target_link_libraries(Ls-CsMultimedia_gst_camerabin
+      Ls-CsCore
+      Ls-CsGui
+      Ls-CsNetwork
+      Ls-CsMultimedia
       ${GSTREAMER_LIBRARIES}
       ${GSTREAMER_AUDIO_LIBRARIES}
       ${GSTREAMER_VIDEO_LIBRARIES}
@@ -194,7 +194,7 @@ if(WITH_MULTIMEDIA AND GStreamer_FOUND)
    )
 
    if (GSTREAMER_ABI_VERSION VERSION_EQUAL "0.10")
-      target_link_libraries(CsMultimedia_gst_camerabin
+      target_link_libraries(Ls-CsMultimedia_gst_camerabin
       ${GSTREAMER_LIBRARIES}
       ${GSTREAMER_BASE_LIBRARIES}
       ${GSTREAMER_INTERFACES_LIBRARIES}
@@ -202,23 +202,23 @@ if(WITH_MULTIMEDIA AND GStreamer_FOUND)
    endif()
 
    target_include_directories(
-      CsMultimedia_gst_camerabin
+      Ls-CsMultimedia_gst_camerabin
       PRIVATE
       ${GSTREAMER_INCLUDE_DIR}
    )
 
-   target_compile_definitions(CsMultimedia_gst_camerabin
+   target_compile_definitions(Ls-CsMultimedia_gst_camerabin
       PRIVATE
       -DQT_PLUGIN
    )
 
    # plugin 3
-   add_library(CsMultimedia_gst_mediaplayer MODULE "")
-   add_library(CopperSpice::CsMultimedia_gst_mediaplayer ALIAS CsMultimedia_gst_mediaplayer)
+   add_library(Ls-CsMultimedia_gst_mediaplayer MODULE "")
+   add_library(Ls-Cs::Ls-CsMultimedia_gst_mediaplayer ALIAS Ls-CsMultimedia_gst_mediaplayer)
 
-   set_target_properties(CsMultimedia_gst_mediaplayer PROPERTIES OUTPUT_NAME CsMultimedia_gst_mediaplayer${BUILD_ABI} PREFIX "")
+   set_target_properties(Ls-CsMultimedia_gst_mediaplayer PROPERTIES OUTPUT_NAME Ls-CsMultimedia_gst_mediaplayer${BUILD_ABI} PREFIX "")
 
-   target_sources(CsMultimedia_gst_mediaplayer
+   target_sources(Ls-CsMultimedia_gst_mediaplayer
       PRIVATE
       ${GSTREAMER_TOOLS_SOURCES}
       ${CMAKE_SOURCE_DIR}/src/plugins/multimedia/mediaservices/gstreamer/mediaplayer/qgstreamerplayerservice.cpp
@@ -232,7 +232,7 @@ if(WITH_MULTIMEDIA AND GStreamer_FOUND)
 
    if (GSTREAMER_ABI_VERSION VERSION_EQUAL "0.10")
 
-      target_sources(CsMultimedia_gst_mediaplayer
+      target_sources(Ls-CsMultimedia_gst_mediaplayer
          PRIVATE
          ${CMAKE_SOURCE_DIR}/src/plugins/multimedia/mediaservices/gstreamer/tools/qvideosurfacegstsink.cpp
          ${CMAKE_SOURCE_DIR}/src/plugins/multimedia/mediaservices/gstreamer/tools/qgstbufferpoolinterface.cpp
@@ -240,18 +240,18 @@ if(WITH_MULTIMEDIA AND GStreamer_FOUND)
       )
 
    else()
-      target_sources(CsMultimedia_gst_mediaplayer
+      target_sources(Ls-CsMultimedia_gst_mediaplayer
          PRIVATE
          ${CMAKE_SOURCE_DIR}/src/plugins/multimedia/mediaservices/gstreamer/tools/qgstvideorendererplugin.cpp
          ${CMAKE_SOURCE_DIR}/src/plugins/multimedia/mediaservices/gstreamer/tools/qgstvideorenderersink.cpp
       )
    endif()
 
-   target_link_libraries(CsMultimedia_gst_mediaplayer
-      CsCore
-      CsGui
-      CsNetwork
-      CsMultimedia
+   target_link_libraries(Ls-CsMultimedia_gst_mediaplayer
+      Ls-CsCore
+      Ls-CsGui
+      Ls-CsNetwork
+      Ls-CsMultimedia
       ${GSTREAMER_LIBRARIES}
       ${GSTREAMER_BASE_LIBRARIES}
       ${GSTREAMER_AUDIO_LIBRARIES}
@@ -262,35 +262,35 @@ if(WITH_MULTIMEDIA AND GStreamer_FOUND)
    )
 
    if (GSTREAMER_ABI_VERSION VERSION_EQUAL "0.10")
-      target_link_libraries(CsMultimedia_gst_mediaplayer
+      target_link_libraries(Ls-CsMultimedia_gst_mediaplayer
          ${GSTREAMER_INTERFACES_LIBRARIES}
       )
    endif()
 
    target_include_directories(
-      CsMultimedia_gst_mediaplayer
+      Ls-CsMultimedia_gst_mediaplayer
       PRIVATE
       ${GSTREAMER_INCLUDE_DIR}
       ${GLIB2_INCLUDES}
    )
 
-   target_compile_definitions(CsMultimedia_gst_mediaplayer
+   target_compile_definitions(Ls-CsMultimedia_gst_mediaplayer
       PRIVATE
       -DIN_TRUE
       -DQT_PLUGIN
    )
 
-   set_target_properties(CsMultimedia_gst_audiodecoder PROPERTIES PREFIX "")
-   set_target_properties(CsMultimedia_gst_camerabin    PROPERTIES PREFIX "")
-   set_target_properties(CsMultimedia_gst_mediaplayer  PROPERTIES PREFIX "")
+   set_target_properties(Ls-CsMultimedia_gst_audiodecoder PROPERTIES PREFIX "")
+   set_target_properties(Ls-CsMultimedia_gst_camerabin    PROPERTIES PREFIX "")
+   set_target_properties(Ls-CsMultimedia_gst_mediaplayer  PROPERTIES PREFIX "")
 
    if(BUILDING_RPM OR BUILDING_DEBIAN)
-      install(TARGETS CsMultimedia_gst_audiodecoder DESTINATION ${CMAKE_INSTALL_LIBDIR}/copperspice/plugins/mediaservices)
-      install(TARGETS CsMultimedia_gst_camerabin    DESTINATION ${CMAKE_INSTALL_LIBDIR}/copperspice/plugins/mediaservices)
-      install(TARGETS CsMultimedia_gst_mediaplayer  DESTINATION ${CMAKE_INSTALL_LIBDIR}/copperspice/plugins/mediaservices)
+      install(TARGETS Ls-CsMultimedia_gst_audiodecoder DESTINATION ${CMAKE_INSTALL_LIBDIR}/ls-cs/plugins/mediaservices)
+      install(TARGETS Ls-CsMultimedia_gst_camerabin    DESTINATION ${CMAKE_INSTALL_LIBDIR}/ls-cs/plugins/mediaservices)
+      install(TARGETS Ls-CsMultimedia_gst_mediaplayer  DESTINATION ${CMAKE_INSTALL_LIBDIR}/ls-cs/plugins/mediaservices)
    else()
-      install(TARGETS CsMultimedia_gst_audiodecoder DESTINATION ${CMAKE_INSTALL_LIBDIR})
-      install(TARGETS CsMultimedia_gst_camerabin    DESTINATION ${CMAKE_INSTALL_LIBDIR})
-      install(TARGETS CsMultimedia_gst_mediaplayer  DESTINATION ${CMAKE_INSTALL_LIBDIR})
+      install(TARGETS Ls-CsMultimedia_gst_audiodecoder DESTINATION ${CMAKE_INSTALL_LIBDIR})
+      install(TARGETS Ls-CsMultimedia_gst_camerabin    DESTINATION ${CMAKE_INSTALL_LIBDIR})
+      install(TARGETS Ls-CsMultimedia_gst_mediaplayer  DESTINATION ${CMAKE_INSTALL_LIBDIR})
    endif()
 endif()

@@ -1,10 +1,10 @@
 add_executable(linguist${TOOLS_SUFFIX} "")
-add_executable(CopperSpice::linguist ALIAS linguist${TOOLS_SUFFIX})
+add_executable(Ls-Cs::linguist ALIAS linguist${TOOLS_SUFFIX})
 
 set(EXTRA_LINGUIST_LIBS
-   CsCore
-   CsGui
-   CsXml
+   Ls-CsCore
+   Ls-CsGui
+   Ls-CsXml
 )
 
 set(EXTRA_LINGUIST_CXXFLAGS)
@@ -124,13 +124,13 @@ function_generate_resources(linguist${TOOLS_SUFFIX})
 if(BUILDING_RPM OR BUILDING_DEBIAN)
     install(
        TARGETS linguist${TOOLS_SUFFIX}
-       EXPORT CopperSpiceBinaryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
-       DESTINATION ${CMAKE_INSTALL_LIBDIR}/copperspice/bin
+       EXPORT Ls-CsBinaryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
+       DESTINATION ${CMAKE_INSTALL_LIBDIR}Ls-Cs::bin
     )
 else()
     install(
        TARGETS linguist${TOOLS_SUFFIX}
-       EXPORT CopperSpiceBinaryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
+       EXPORT Ls-CsBinaryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
        DESTINATION ${CMAKE_INSTALL_BINDIR}
     )
 endif()

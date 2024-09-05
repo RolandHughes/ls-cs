@@ -1,9 +1,9 @@
-add_library(CsDeclarative SHARED "")
-add_library(CopperSpice::CsDeclarative ALIAS CsDeclarative)
+add_library(Ls-CsDeclarative SHARED "")
+add_library(Ls-Cs::Ls-CsDeclarative ALIAS Ls-CsDeclarative)
 
-set_target_properties(CsDeclarative PROPERTIES OUTPUT_NAME CsDeclarative${BUILD_ABI})
+set_target_properties(Ls-CsDeclarative PROPERTIES OUTPUT_NAME Ls-CsDeclarative${BUILD_ABI})
 
-target_add_definitions(CsDeclarative
+target_add_definitions(Ls-CsDeclarative
    -DQT_BUILD_DECLARATIVE_LIB
 )
 
@@ -50,13 +50,13 @@ macro_generate_public("${DECLARATIVE_PUBLIC_INCLUDES}" QtDeclarative)
 macro_generate_private("${DECLARATIVE_PRIVATE_INCLUDES}" QtDeclarative)
 macro_generate_misc("${DECLARATIVE_INCLUDES}" QtDeclarative)
 
-set_target_properties(CsDeclarative
+set_target_properties(Ls-CsDeclarative
    PROPERTIES
    COMPILE_FLAGS ${EXTRA_DECLARATIVE_CXXFLAGS}
    LINK_FLAGS ${EXTRA_DECLARATIVE_LDFLAGS}
 )
 
-target_link_libraries(CsDeclarative
+target_link_libraries(Ls-CsDeclarative
    PRIVATE
    ${EXTRA_DECLARATIVE_LIBS}
 )
@@ -64,14 +64,14 @@ target_link_libraries(CsDeclarative
 function_generate_resources("${DECLARATIVE_SOURCES}")
 
 macro_generate_package(
-   CsDeclarative
+   Ls-CsDeclarative
    QtDeclarative
    "${EXTRA_DECLARATIVE_CXXFLAGS}"
-   "CsCore CsGui CsNetwork CsScript"
+   "Ls-CsCore Ls-CsGui Ls-CsNetwork Ls-CsScript"
 )
 
-install(TARGETS CsDeclarative
-   EXPORT CopperSpiceLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
+install(TARGETS Ls-CsDeclarative
+   EXPORT Ls-CsLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}

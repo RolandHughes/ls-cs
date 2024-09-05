@@ -78,7 +78,7 @@ void QSignalTransition::setSenderObject(const QObject *sender)
    maybeRegister();
 }
 
-CsSignal::Internal::BentoAbstract *QSignalTransition::get_signalBento() const
+LsCsSignal::Internal::BentoAbstract *QSignalTransition::get_signalBento() const
 {
    return m_signalBento.data();
 }

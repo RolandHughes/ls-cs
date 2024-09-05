@@ -15,7 +15,7 @@ if (false)
 
 else()
    # use annex headers
-   target_include_directories(CsCore
+   target_include_directories(Ls-CsCore
       PUBLIC
       $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/annex/cs_pointer>
    )
@@ -40,7 +40,7 @@ list(APPEND CORE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/pointer/qweakpointer.h
 )
 
-target_sources(CsCore
+target_sources(Ls-CsCore
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/pointer/qpointer.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/pointer/qscopedvaluerollback.cpp

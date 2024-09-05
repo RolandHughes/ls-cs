@@ -3,12 +3,12 @@
 * Copyright (c) 2017-2024 Barbara Geller
 * Copyright (c) 2017-2024 Ansel Sermersheim
 *
-* This file is part of CsString.
+* This file is part of LsCsString.
 *
-* CsString is free software, released under the BSD 2-Clause license.
+* LsCsString is free software, released under the BSD 2-Clause license.
 * For license details refer to LICENSE provided with this project.
 *
-* CsString is distributed in the hope that it will be useful,
+* LsCsString is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 *
@@ -24,7 +24,7 @@
 
 #include <cs_char.h>
 
-namespace CsString {
+namespace LsCsString {
 
 class LIB_CS_STRING_EXPORT utf8
 {

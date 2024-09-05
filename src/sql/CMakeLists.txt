@@ -1,9 +1,9 @@
-add_library(CsSql SHARED "")
-add_library(CopperSpice::CsSql ALIAS CsSql)
+add_library(Ls-CsSql SHARED "")
+add_library(Ls-Cs::Ls-CsSql ALIAS Ls-CsSql)
 
-set_target_properties(CsSql PROPERTIES OUTPUT_NAME CsSql${BUILD_ABI})
+set_target_properties(Ls-CsSql PROPERTIES OUTPUT_NAME Ls-CsSql${BUILD_ABI})
 
-target_compile_definitions(CsSql
+target_compile_definitions(Ls-CsSql
    PRIVATE
    -DQT_BUILD_SQL_LIB
    -DQT_SQL_SQLITE
@@ -12,7 +12,7 @@ target_compile_definitions(CsSql
 set(EXTRA_SQL_CXXFLAGS)
 set(EXTRA_SQL_LDFLAGS)
 
-target_include_directories(CsSql
+target_include_directories(Ls-CsSql
    PUBLIC
    $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include/QtSql>
    $<INSTALL_INTERFACE:include/QtSql>
@@ -54,7 +54,7 @@ if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
    add_definitions(-DENABLE_JSC_MULTIPLE_THREADS=0)
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
-   target_link_libraries(CsSql
+   target_link_libraries(Ls-CsSql
       PRIVATE
       ws2_32
    )
@@ -64,34 +64,34 @@ endif()
 function_variable_fixup("${EXTRA_SQL_CXXFLAGS}" EXTRA_SQL_CXXFLAGS)
 function_variable_fixup("${EXTRA_SQL_LDFLAGS}"  EXTRA_SQL_LDFLAGS)
 
-target_sources(CsSql
+target_sources(Ls-CsSql
    PRIVATE
    ${SQL_INCLUDES}
 )
 
-target_link_libraries(CsSql
+target_link_libraries(Ls-CsSql
    PRIVATE
-   CsCore
+   Ls-CsCore
 )
 
-set_target_properties(CsSql
+set_target_properties(Ls-CsSql
    PROPERTIES
    COMPILE_FLAGS ${EXTRA_SQL_CXXFLAGS}
    LINK_FLAGS ${EXTRA_SQL_LDFLAGS}
 )
 
-function_generate_resources(CsSql)
+function_generate_resources(Ls-CsSql)
 
 macro_generate_package(
-   CsSql
+   Ls-CsSql
    QtSql
    "${EXTRA_SQL_CXXFLAGS}"
-   "CsCore"
+   "Ls-CsCore"
 )
 
 install(
-   TARGETS CsSql
-   EXPORT CopperSpiceLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
+   TARGETS Ls-CsSql
+   EXPORT Ls-CsLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}

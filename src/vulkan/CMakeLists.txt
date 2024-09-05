@@ -1,9 +1,9 @@
-add_library(CsVulkan SHARED "")
-add_library(CopperSpice::CsVulkan ALIAS CsVulkan)
+add_library(Ls-CsVulkan SHARED "")
+add_library(Ls-Cs::Ls-CsVulkan ALIAS Ls-CsVulkan)
 
-set_target_properties(CsVulkan PROPERTIES OUTPUT_NAME CsVulkan${BUILD_ABI})
+set_target_properties(Ls-CsVulkan PROPERTIES OUTPUT_NAME Ls-CsVulkan${BUILD_ABI})
 
-target_compile_definitions(CsVulkan
+target_compile_definitions(Ls-CsVulkan
    PRIVATE
    -DQT_BUILD_VULKAN_LIB
 )
@@ -11,7 +11,7 @@ target_compile_definitions(CsVulkan
 set(EXTRA_VULKAN_CXXFLAGS)
 set(EXTRA_VULKAN_LDFLAGS)
 
-target_include_directories(CsVulkan
+target_include_directories(Ls-CsVulkan
    PUBLIC
    $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include/QtVulkan>
    $<INSTALL_INTERFACE:include/QtVulkan>
@@ -47,7 +47,7 @@ list(APPEND VULKAN_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/qvulkan_window_renderer.h
 )
 
-target_sources(CsVulkan
+target_sources(Ls-CsVulkan
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/qvulkan_device_functions.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/qvulkan_functions.cpp
@@ -63,50 +63,50 @@ macro_generate_misc("${VULKAN_INCLUDES}" QtVulkan)
 function_variable_fixup("${EXTRA_VULKAN_CXXFLAGS}" EXTRA_VULKAN_CXXFLAGS)
 function_variable_fixup("${EXTRA_VULKAN_LDFLAGS}"  EXTRA_VULKAN_LDFLAGS)
 
-target_link_libraries(CsVulkan
+target_link_libraries(Ls-CsVulkan
    PUBLIC
-   CsCore
-   CsGui
+   Ls-CsCore
+   Ls-CsGui
    Vulkan::Vulkan
 )
 
-set_target_properties(CsVulkan
+set_target_properties(Ls-CsVulkan
    PROPERTIES
    COMPILE_FLAGS ${EXTRA_VULKAN_CXXFLAGS}
    LINK_FLAGS ${EXTRA_VULKAN_LDFLAGS}
 )
 
 if(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
-  target_compile_definitions(CsVulkan
+  target_compile_definitions(Ls-CsVulkan
     PUBLIC
     -DVK_USE_PLATFORM_XCB_KHR
   )
 
-  target_link_libraries(CsVulkan
+  target_link_libraries(Ls-CsVulkan
       PRIVATE
       ${XCB_LIB}
   )
 
 else()
-  target_compile_definitions(CsVulkan
+  target_compile_definitions(Ls-CsVulkan
      PUBLIC
      -DVK_USE_PLATFORM_WIN32_KHR
   )
 
 endif()
 
-function_generate_resources(CsVulkan)
+function_generate_resources(Ls-CsVulkan)
 
 macro_generate_package(
-   CsVulkan
+   Ls-CsVulkan
    QtVulkan
    ""
-   "CsCore CsGui"
+   "Ls-CsCore Ls-CsGui"
 )
 
 install(
-   TARGETS CsVulkan
-   EXPORT CopperSpiceLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
+   TARGETS Ls-CsVulkan
+   EXPORT Ls-CsLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}

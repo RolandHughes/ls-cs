@@ -3,12 +3,12 @@
 * Copyright (c) 2016-2024 Barbara Geller
 * Copyright (c) 2016-2024 Ansel Sermersheim
 *
-* This file is part of CsSignal.
+* This file is part of LsCsSignal.
 *
-* CsSignal is free software, released under the BSD 2-Clause license.
+* LsCsSignal is free software, released under the BSD 2-Clause license.
 * For license details refer to LICENSE provided with this project.
 *
-* CsSignal is distributed in the hope that it will be useful,
+* LsCsSignal is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 *
@@ -18,7 +18,7 @@
 
 #include "cs_signal.h"
 
-CsSignal::SignalBase::~SignalBase()
+LsCsSignal::SignalBase::~SignalBase()
 {
    try {
       auto senderListHandle = m_connectList.lock_read();
@@ -55,33 +55,33 @@ CsSignal::SignalBase::~SignalBase()
    }
 }
 
-CsSignal::Internal::BentoAbstract *&CsSignal::SignalBase::get_threadLocal_currentSignal()
+LsCsSignal::Internal::BentoAbstract *&LsCsSignal::SignalBase::get_threadLocal_currentSignal()
 {
 
 #ifdef __APPLE__
-   static __thread CsSignal::Internal::BentoAbstract *threadLocal_currentSignal = nullptr;
+   static __thread LsCsSignal::Internal::BentoAbstract *threadLocal_currentSignal = nullptr;
 #else
-   static thread_local CsSignal::Internal::BentoAbstract *threadLocal_currentSignal = nullptr;
+   static thread_local LsCsSignal::Internal::BentoAbstract *threadLocal_currentSignal = nullptr;
 #endif
 
    return threadLocal_currentSignal;
 }
 
-std::mutex &CsSignal::SignalBase::get_mutex_beingDestroyed()
+std::mutex &LsCsSignal::SignalBase::get_mutex_beingDestroyed()
 {
    static std::mutex mutex_beingDestroyed;
 
    return mutex_beingDestroyed;
 }
 
-std::unordered_set<const CsSignal::SignalBase *> &CsSignal::SignalBase::get_beingDestroyed()
+std::unordered_set<const LsCsSignal::SignalBase *> &LsCsSignal::SignalBase::get_beingDestroyed()
 {
-   static std::unordered_set<const CsSignal::SignalBase *> beingDestroyed;
+   static std::unordered_set<const LsCsSignal::SignalBase *> beingDestroyed;
 
    return beingDestroyed;
 }
 
-void CsSignal::SignalBase::addConnection(std::unique_ptr<const Internal::BentoAbstract> signalMethod, const SlotBase *receiver,
+void LsCsSignal::SignalBase::addConnection(std::unique_ptr<const Internal::BentoAbstract> signalMethod, const SlotBase *receiver,
                   std::unique_ptr<const Internal::BentoAbstract> slotMethod, ConnectionKind type,
                   libguarded::SharedList<ConnectStruct>::write_handle &senderListHandle) const
 {
@@ -102,11 +102,11 @@ void CsSignal::SignalBase::addConnection(std::unique_ptr<const Internal::BentoAb
    }
 }
 
-void CsSignal::SignalBase::handleException(std::exception_ptr)
+void LsCsSignal::SignalBase::handleException(std::exception_ptr)
 {
 }
 
-int CsSignal::SignalBase::internal_cntConnections(const SlotBase *receiver,
+int LsCsSignal::SignalBase::internal_cntConnections(const SlotBase *receiver,
                   const Internal::BentoAbstract &signalMethod_Bento) const
 {
    int retval = 0;
@@ -129,7 +129,7 @@ int CsSignal::SignalBase::internal_cntConnections(const SlotBase *receiver,
    return retval;
 }
 
-std::set<CsSignal::SlotBase *> CsSignal::SignalBase::internal_receiverList(
+std::set<LsCsSignal::SlotBase *> LsCsSignal::SignalBase::internal_receiverList(
                   const Internal::BentoAbstract &signalMethod_Bento) const
 {
    std::set<SlotBase *> retval;

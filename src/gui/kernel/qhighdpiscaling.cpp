@@ -180,14 +180,14 @@ static inline qreal initialGlobalScaleFactor()
         T toNativePixels(T, QWindow *)
         T fromNativePixels(T, QWindow*)
 
-    The following classes in CsGui use native pixels, for the convenience of the
+    The following classes in Ls-CsGui use native pixels, for the convenience of the
     plataform plugins:
         QPlatformWindow
         QPlatformScreen
         QWindowSystemInterface (API only - Events are in device independent pixels)
 
     As a special consideration platform plugin code should be careful about
-    calling CsGui geometry accessor functions:
+    calling Ls-CsGui geometry accessor functions:
         QRect r = window->geometry();
 
     Here the returned geometry is in device independent pixels. Add a conversion call:

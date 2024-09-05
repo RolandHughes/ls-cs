@@ -1087,7 +1087,7 @@ void QGuiApplicationPrivate::createPlatformIntegration()
          continue;
       }
 
-      const bool isXcb = (platformName.startsWith("CsGuiXcb"));
+      const bool isXcb = (platformName.startsWith("Ls-CsGuiXcb"));
 
       //
       QString arg = QString::fromUtf8(argv[i]);

@@ -219,8 +219,8 @@ class QFontFamilyDelegate : public QAbstractItemDelegate
 QFontFamilyDelegate::QFontFamilyDelegate(QObject *parent)
    : QAbstractItemDelegate(parent)
 {
-   truetype = QIcon(":/copperspice/styles/commonstyle/images/fonttruetype-16.png");
-   bitmap   = QIcon(":/copperspice/styles/commonstyle/images/fontbitmap-16.png");
+   truetype = QIcon(":ls-cs/styles/commonstyle/images/fonttruetype-16.png");
+   bitmap   = QIcon(":ls-cs/styles/commonstyle/images/fontbitmap-16.png");
    writingSystem = QFontDatabase::Any;
 }
 
