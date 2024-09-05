@@ -4,13 +4,13 @@
 # Copyright (c) 2012-2024 Ansel Sermersheim
 # Copyright (c) 2015 Ivailo Monev, <xakepa10@gmail.com>
 #
-# This file is part of CopperSpice.
+# This file is part of ls-cs.
 #
-# CopperSpice is free software. You can redistribute it and/or
+# ls-cs is free software. You can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public License
 # version 2.1 as published by the Free Software Foundation.
 #
-# CopperSpice is distributed in the hope that it will be useful,
+# ls-cs is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 #
@@ -18,24 +18,24 @@
 #
 # ***********************************************************************
 
-macro(COPPERSPICE_RESOURCES RESOURCES)
+macro(LS-CS_RESOURCES RESOURCES)
 
    set(T_PATH "")
 
    if ("${CS_INSTALL_MODE}" STREQUAL "Package")
 
-      if (CsSignal_FOUND)
+      if (LsCsSignal_FOUND)
          # cs was built in package mode
 
          if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
-            set(EXTRA_PATH "$<TARGET_FILE_DIR:CsSignal::CsSignal>;$<TARGET_FILE_DIR:CsString::CsString>")
+            set(EXTRA_PATH "$<TARGET_FILE_DIR:LsCsSignal::LsCsSignal>;$<TARGET_FILE_DIR:LsCsString::LsCsString>")
             set(T_PATH "DYLD_LIBRARY_PATH=$<JOIN:$ENV{DYLD_LIBRARY_PATH};${EXTRA_PATH},:>")
 
          elseif (CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
-            set(T_PATH "LD_LIBRARY_PATH=$<JOIN:$ENV{LD_LIBRARY_PATH};$<TARGET_FILE_DIR:CsSignal::CsSignal>,:>")
+            set(T_PATH "LD_LIBRARY_PATH=$<JOIN:$ENV{LD_LIBRARY_PATH};$<TARGET_FILE_DIR:LsCsSignal::LsCsSignal>,:>")
 
          elseif (CMAKE_SYSTEM_NAME MATCHES "Windows")
-            set(T_PATH "PATH=$<JOIN:$ENV{PATH};$<TARGET_FILE_DIR:CsSignal::CsSignal>,;>")
+            set(T_PATH "PATH=$<JOIN:$ENV{PATH};$<TARGET_FILE_DIR:LsCsSignal::LsCsSignal>,;>")
 
          endif()
       endif()
@@ -52,7 +52,7 @@ macro(COPPERSPICE_RESOURCES RESOURCES)
             if ("${T_PATH}" STREQUAL "")
                add_custom_command(
                   OUTPUT ${rscout}
-                  COMMAND CopperSpice::rcc "${resource}" -o "${rscout}" -name ${rscname}
+                  COMMAND ls-cs::rcc "${resource}" -o "${rscout}" -name ${rscname}
                   MAIN_DEPENDENCY "${resource}"
                )
 
@@ -61,7 +61,7 @@ macro(COPPERSPICE_RESOURCES RESOURCES)
 
                add_custom_command(
                   OUTPUT ${rscout}
-                  COMMAND cmake -E env "${T_PATH}" "$<TARGET_FILE:CopperSpice::rcc>"
+                  COMMAND cmake -E env "${T_PATH}" "$<TARGET_FILE/ls-cs/rcc>"
                         "${resource}" -o "${rscout}" -name ${rscname}
                   MAIN_DEPENDENCY "${resource}"
                )
@@ -80,7 +80,7 @@ macro(COPPERSPICE_RESOURCES RESOURCES)
             if ("${T_PATH}" STREQUAL "")
                add_custom_command(
                   OUTPUT ${rscout}
-                  COMMAND CopperSpice::lrelease "${resource}" -qm "${rscout}"
+                  COMMAND ls-cs::lrelease "${resource}" -qm "${rscout}"
                   MAIN_DEPENDENCY "${resource}"
                )
 
@@ -89,7 +89,7 @@ macro(COPPERSPICE_RESOURCES RESOURCES)
 
                add_custom_command(
                   OUTPUT ${rscout}
-                  COMMAND cmake -E env "$<JOIN:${T_PATH},;>" "$<TARGET_FILE:CopperSpice::lrelease>"
+                  COMMAND cmake -E env "$<JOIN:${T_PATH},;>" "$<TARGET_FILE/ls-cs/lrelease>"
                         "${resource}" -qm "${rscout}"
                   MAIN_DEPENDENCY "${resource}"
                )
@@ -102,7 +102,7 @@ macro(COPPERSPICE_RESOURCES RESOURCES)
          if ("${T_PATH}" STREQUAL "")
             add_custom_command(
                OUTPUT ${rscout}
-               COMMAND CopperSpice::uic "${resource}" -o "${rscout}"
+               COMMAND ls-cs::uic "${resource}" -o "${rscout}"
                MAIN_DEPENDENCY "${resource}"
             )
 
@@ -111,7 +111,7 @@ macro(COPPERSPICE_RESOURCES RESOURCES)
 
             add_custom_command(
                OUTPUT ${rscout}
-               COMMAND cmake -E env "$<JOIN:${T_PATH},;>" "$<TARGET_FILE:CopperSpice::uic>"
+               COMMAND cmake -E env "$<JOIN:${T_PATH},;>" "$<TARGET_FILE/ls-cs/uic>"
                      "${resource}" -o "${rscout}"
                MAIN_DEPENDENCY "${resource}"
             )

@@ -40,12 +40,12 @@ list(APPEND MULTIMEDIA_PRIVATE_INCLUDES
 if(WITH_MULTIMEDIA AND CMAKE_SYSTEM_NAME MATCHES "Darwin")
 
    # plugin 1
-   add_library(CsMultimedia_avf_camera MODULE "")
-   add_library(CopperSpice::CsMultimedia_avf_camera ALIAS CsMultimedia_avf_camera)
+   add_library(Ls-CsMultimedia_avf_camera MODULE "")
+   add_library(Ls-Cs::Ls-CsMultimedia_avf_camera ALIAS Ls-CsMultimedia_avf_camera)
 
-   set_target_properties(CsMultimedia_avf_camera PROPERTIES OUTPUT_NAME CsMultimedia_avf_camera${BUILD_ABI} PREFIX "")
+   set_target_properties(Ls-CsMultimedia_avf_camera PROPERTIES OUTPUT_NAME Ls-CsMultimedia_avf_camera${BUILD_ABI} PREFIX "")
 
-   target_sources(CsMultimedia_avf_camera
+   target_sources(Ls-CsMultimedia_avf_camera
       PRIVATE
       ${CMAKE_SOURCE_DIR}/src/plugins/multimedia/mediaservices/avfoundation/camera/avfcameraserviceplugin.mm
       ${CMAKE_SOURCE_DIR}/src/plugins/multimedia/mediaservices/avfoundation/camera/avfcameracontrol.mm
@@ -71,12 +71,12 @@ if(WITH_MULTIMEDIA AND CMAKE_SYSTEM_NAME MATCHES "Darwin")
       ${CMAKE_SOURCE_DIR}/src/plugins/multimedia/mediaservices/avfoundation/camera/avfmediarecordercontrol.mm
    )
 
-   target_link_libraries(CsMultimedia_avf_camera
+   target_link_libraries(Ls-CsMultimedia_avf_camera
       PRIVATE
-      CsCore
-      CsGui
-      CsNetwork
-      CsMultimedia
+      Ls-CsCore
+      Ls-CsGui
+      Ls-CsNetwork
+      Ls-CsMultimedia
       "-framework AudioToolbox"
       "-framework AVFoundation"
       "-framework Foundation"
@@ -85,19 +85,19 @@ if(WITH_MULTIMEDIA AND CMAKE_SYSTEM_NAME MATCHES "Darwin")
       "-framework QuartzCore"
    )
 
-   target_compile_definitions(CsMultimedia_avf_camera
+   target_compile_definitions(Ls-CsMultimedia_avf_camera
       PRIVATE
       -DQT_PLUGIN
       -DQMEDIA_AVF_CAMERA
    )
 
    # plugin 2
-   add_library(CsMultimedia_avf_mediaplayer MODULE "")
-   add_library(CopperSpice::CsMultimedia_avf_mediaplayer ALIAS CsMultimedia_avf_mediaplayer)
+   add_library(Ls-CsMultimedia_avf_mediaplayer MODULE "")
+   add_library(Ls-Cs::Ls-CsMultimedia_avf_mediaplayer ALIAS Ls-CsMultimedia_avf_mediaplayer)
 
-   set_target_properties(CsMultimedia_avf_mediaplayer PROPERTIES OUTPUT_NAME CsMultimedia_avf_mediaplayer${BUILD_ABI} PREFIX "")
+   set_target_properties(Ls-CsMultimedia_avf_mediaplayer PROPERTIES OUTPUT_NAME Ls-CsMultimedia_avf_mediaplayer${BUILD_ABI} PREFIX "")
 
-   target_sources(CsMultimedia_avf_mediaplayer
+   target_sources(Ls-CsMultimedia_avf_mediaplayer
       PRIVATE
       ${CMAKE_SOURCE_DIR}/src/plugins/multimedia/mediaservices/avfoundation/mediaplayer/avfdisplaylink.mm
       ${CMAKE_SOURCE_DIR}/src/plugins/multimedia/mediaservices/avfoundation/mediaplayer/avfmediaplayercontrol.mm
@@ -113,12 +113,12 @@ if(WITH_MULTIMEDIA AND CMAKE_SYSTEM_NAME MATCHES "Darwin")
       ${CMAKE_SOURCE_DIR}/src/plugins/multimedia/mediaservices/avfoundation/mediaplayer/avfvideoframerenderer.mm
    )
 
-   target_link_libraries(CsMultimedia_avf_mediaplayer
+   target_link_libraries(Ls-CsMultimedia_avf_mediaplayer
       PRIVATE
-      CsCore
-      CsGui
-      CsNetwork
-      CsMultimedia
+      Ls-CsCore
+      Ls-CsGui
+      Ls-CsNetwork
+      Ls-CsMultimedia
       "-framework AVFoundation"
       "-framework CoreMedia"
       "-framework QuartzCore"
@@ -126,17 +126,17 @@ if(WITH_MULTIMEDIA AND CMAKE_SYSTEM_NAME MATCHES "Darwin")
       "-framework OpenGL"
    )
 
-   target_compile_definitions(CsMultimedia_avf_mediaplayer
+   target_compile_definitions(Ls-CsMultimedia_avf_mediaplayer
       PRIVATE
       -DQT_PLUGIN
       -DQMEDIA_AVF_MEDIAPLAYER
    )
 
    if(BUILDING_RPM OR BUILDING_DEBIAN)
-      install(TARGETS CsMultimedia_avf_camera       DESTINATION ${CMAKE_INSTALL_LIBDIR}/copperspice/plugins/mediaservices)
-      install(TARGETS CsMultimedia_avf_mediaplayer  DESTINATION ${CMAKE_INSTALL_LIBDIR}/copperspice/plugins/mediaservices)
+      install(TARGETS Ls-CsMultimedia_avf_camera       DESTINATION ${CMAKE_INSTALL_LIBDIR}/ls-cs/plugins/mediaservices)
+      install(TARGETS Ls-CsMultimedia_avf_mediaplayer  DESTINATION ${CMAKE_INSTALL_LIBDIR}/ls-cs/plugins/mediaservices)
    else()
-      install(TARGETS CsMultimedia_avf_camera       DESTINATION ${CMAKE_INSTALL_LIBDIR})
-      install(TARGETS CsMultimedia_avf_mediaplayer  DESTINATION ${CMAKE_INSTALL_LIBDIR})
+      install(TARGETS Ls-CsMultimedia_avf_camera       DESTINATION ${CMAKE_INSTALL_LIBDIR})
+      install(TARGETS Ls-CsMultimedia_avf_mediaplayer  DESTINATION ${CMAKE_INSTALL_LIBDIR})
    endif()
 endif()

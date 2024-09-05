@@ -1,7 +1,7 @@
-add_library(CsScript SHARED "")
-add_library(CopperSpice::CsScript ALIAS CsScript)
+add_library(Ls-CsScript SHARED "")
+add_library(Ls-Cs::Ls-CsScript ALIAS Ls-CsScript)
 
-set_target_properties(CsScript PROPERTIES OUTPUT_NAME CsScript${BUILD_ABI})
+set_target_properties(Ls-CsScript PROPERTIES OUTPUT_NAME Ls-CsScript${BUILD_ABI})
 
 add_definitions(
     -DQLALR_NO_SCRIPTGRAMMAR_DEBUG_INFO
@@ -23,7 +23,7 @@ add_definitions(
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 
    if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL "7.1.0")
-      set_target_properties(CsScript
+      set_target_properties(Ls-CsScript
          PROPERTIES
          COMPILE_OPTIONS -Wno-expansion-to-defined
       )
@@ -34,7 +34,7 @@ endif()
 set(EXTRA_SCRIPT_CXXFLAGS)
 set(EXTRA_SCRIPT_LDFLAGS)
 
-target_include_directories(CsScript
+target_include_directories(Ls-CsScript
    PUBLIC
    $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include/QtScript>
    $<INSTALL_INTERFACE:include/QtScript>
@@ -373,7 +373,7 @@ list(APPEND JSCORE_SCRIPT_INCLUDES
     ${CMAKE_SOURCE_DIR}/src/3rdparty/javascriptcore/JavaScriptCore/pcre/ucptable.cpp
 )
 
-target_sources(CsScript
+target_sources(Ls-CsScript
    PRIVATE
    ${CMAKE_SOURCE_DIR}/src/3rdparty/javascriptcore/JavaScriptCore/API/JSBase.cpp
    ${CMAKE_SOURCE_DIR}/src/3rdparty/javascriptcore/JavaScriptCore/API/JSCallbackConstructor.cpp
@@ -541,7 +541,7 @@ if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
    )
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
-   target_link_libraries(CsScript
+   target_link_libraries(Ls-CsScript
       PRIVATE
       winmm
    )
@@ -562,34 +562,34 @@ endif()
 function_variable_fixup("${EXTRA_SCRIPT_CXXFLAGS}" EXTRA_SCRIPT_CXXFLAGS)
 function_variable_fixup("${EXTRA_SCRIPT_LDFLAGS}"  EXTRA_SCRIPT_LDFLAGS)
 
-target_sources(CsScript
+target_sources(Ls-CsScript
    PRIVATE
    ${SCRIPT_INCLUDES}
 )
 
-target_link_libraries(CsScript
+target_link_libraries(Ls-CsScript
    PRIVATE
-   CsCore
+   Ls-CsCore
 )
 
-set_target_properties(CsScript
+set_target_properties(Ls-CsScript
    PROPERTIES
    COMPILE_FLAGS ${EXTRA_SCRIPT_CXXFLAGS}
    LINK_FLAGS ${EXTRA_SCRIPT_LDFLAGS}
 )
 
-function_generate_resources(CsScript)
+function_generate_resources(Ls-CsScript)
 
 macro_generate_package(
-   CsScript
+   Ls-CsScript
    QtScript
    "${EXTRA_SCRIPT_CXXFLAGS}"
-   "CsCore"
+   "Ls-CsCore"
 )
 
 install(
-   TARGETS CsScript
-   EXPORT CopperSpiceLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
+   TARGETS Ls-CsScript
+   EXPORT Ls-CsLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}

@@ -33,7 +33,7 @@ list(APPEND CORE_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/xml/qxmlutils_p.h
 )
 
-target_sources(CsCore
+target_sources(Ls-CsCore
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/xml/qxmlstream.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/xml/qxmlutils.cpp

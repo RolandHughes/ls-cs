@@ -1,7 +1,7 @@
-add_library(CsSvg SHARED "")
-add_library(CopperSpice::CsSvg ALIAS CsSvg)
+add_library(Ls-CsSvg SHARED "")
+add_library(Ls-Cs::Ls-CsSvg ALIAS Ls-CsSvg)
 
-set_target_properties(CsSvg PROPERTIES OUTPUT_NAME CsSvg${BUILD_ABI})
+set_target_properties(Ls-CsSvg PROPERTIES OUTPUT_NAME Ls-CsSvg${BUILD_ABI})
 
 add_definitions(
    -DQT_BUILD_SVG_LIB
@@ -10,7 +10,7 @@ add_definitions(
 set(EXTRA_SVG_CXXFLAGS)
 set(EXTRA_SVG_LDFLAGS)
 
-target_include_directories(CsSvg
+target_include_directories(Ls-CsSvg
    PUBLIC
    $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include/QtSvg>
    $<INSTALL_INTERFACE:include/QtSvg>
@@ -51,7 +51,7 @@ list(APPEND SVG_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/qsvgtinydocument_p.h
 )
 
-target_sources(CsSvg
+target_sources(Ls-CsSvg
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/qsvggraphics.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/qsvghandler.cpp
@@ -71,7 +71,7 @@ macro_generate_private("${SVG_PRIVATE_INCLUDES}" QtSvg)
 macro_generate_misc("${SVG_INCLUDES}" QtSvg)
 
 if(CMAKE_SYSTEM_NAME MATCHES "Windows")
-   target_link_libraries(CsSvg
+   target_link_libraries(Ls-CsSvg
       PRIVATE
       ws2_32
    )
@@ -80,30 +80,30 @@ endif()
 function_variable_fixup("${EXTRA_SVG_CXXFLAGS}" EXTRA_SVG_CXXFLAGS)
 function_variable_fixup("${EXTRA_SVG_LDFLAGS}"  EXTRA_SVG_LDFLAGS)
 
-target_sources(CsSvg
+target_sources(Ls-CsSvg
    PRIVATE
    ${SVG_INCLUDES}
 )
 
-target_link_libraries(CsSvg
+target_link_libraries(Ls-CsSvg
    PRIVATE
-   CsCore
-   CsGui
+   Ls-CsCore
+   Ls-CsGui
 )
 
-set_target_properties(CsSvg
+set_target_properties(Ls-CsSvg
    PROPERTIES
    COMPILE_FLAGS ${EXTRA_SVG_CXXFLAGS}
    LINK_FLAGS ${EXTRA_SVG_LDFLAGS}
 )
 
-function_generate_resources(CsSvg)
+function_generate_resources(Ls-CsSvg)
 
 macro_generate_package(
-   CsSvg
+   Ls-CsSvg
    QtSvg
   "${EXTRA_SVG_CXXFLAGS}"
-   "CsCore CsGui"
+   "Ls-CsCore Ls-CsGui"
 )
 
 if(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
@@ -113,8 +113,8 @@ if(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
 endif()
 
 install(
-   TARGETS CsSvg
-   EXPORT CopperSpiceLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
+   TARGETS Ls-CsSvg
+   EXPORT Ls-CsLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}

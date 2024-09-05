@@ -47,10 +47,10 @@ class QStringParser;
 #  endif
 #endif
 
-class Q_CORE_EXPORT QString16 : public CsString::CsString_utf16
+class Q_CORE_EXPORT QString16 : public LsCsString::LsCsString_utf16
 {
    public:
-      class iterator : public CsString::CsString_utf16::iterator
+      class iterator : public LsCsString::LsCsString_utf16::iterator
       {
        public:
          using value_type  = QChar32;
@@ -59,73 +59,73 @@ class Q_CORE_EXPORT QString16 : public CsString::CsString_utf16
 
          iterator() = default;
 
-         iterator(CsString::CsString_utf16::iterator iter)
-            : CsString::CsString_utf16::iterator(std::move(iter)) {
+         iterator(LsCsString::LsCsString_utf16::iterator iter)
+            : LsCsString::LsCsString_utf16::iterator(std::move(iter)) {
          }
 
          // operators
          QChar32 operator*() const {
-            return CsString::CsString_utf16::iterator::operator*();
+            return LsCsString::LsCsString_utf16::iterator::operator*();
          }
 
          QChar32Arrow operator->() const {
-            return CsString::CsString_utf16::iterator::operator->();
+            return LsCsString::LsCsString_utf16::iterator::operator->();
          }
 
          QChar32 operator[](size_type n) const {
-            return CsString::CsString_utf16::iterator::operator[](n);
+            return LsCsString::LsCsString_utf16::iterator::operator[](n);
          }
 
          bool operator==(iterator other) const {
-            return CsString::CsString_utf16::iterator::operator==(other);
+            return LsCsString::LsCsString_utf16::iterator::operator==(other);
          }
 
          bool operator!=(iterator other) const {
-            return CsString::CsString_utf16::iterator::operator!=(other);
+            return LsCsString::LsCsString_utf16::iterator::operator!=(other);
          }
 
          iterator &operator+=(size_type n) {
-            CsString::CsString_utf16::iterator::operator+=(n);
+            LsCsString::LsCsString_utf16::iterator::operator+=(n);
             return *this;
          }
 
          iterator &operator-=(size_type n) {
-            CsString::CsString_utf16::iterator::operator-=(n);
+            LsCsString::LsCsString_utf16::iterator::operator-=(n);
             return *this;
          }
 
          iterator operator+(size_type n) const {
-            return CsString::CsString_utf16::iterator::operator+(n);
+            return LsCsString::LsCsString_utf16::iterator::operator+(n);
          }
 
          iterator operator-(size_type n) const {
-            return CsString::CsString_utf16::iterator::operator-(n);
+            return LsCsString::LsCsString_utf16::iterator::operator-(n);
          }
 
          size_type operator-(iterator other) const {
-            return CsString::CsString_utf16::iterator::operator-(other);
+            return LsCsString::LsCsString_utf16::iterator::operator-(other);
          }
 
          iterator &operator++() {
-            CsString::CsString_utf16::iterator::operator++();
+            LsCsString::LsCsString_utf16::iterator::operator++();
             return *this;
          }
 
          iterator operator++(int n) {
-            return CsString::CsString_utf16::iterator::operator++(n);
+            return LsCsString::LsCsString_utf16::iterator::operator++(n);
          }
 
          iterator &operator--() {
-            CsString::CsString_utf16::iterator::operator--();
+            LsCsString::LsCsString_utf16::iterator::operator--();
             return *this;
          }
 
          iterator operator--(int n) {
-            return CsString::CsString_utf16::iterator::operator--(n);
+            return LsCsString::LsCsString_utf16::iterator::operator--(n);
          }
       };
 
-      class const_iterator : public CsString::CsString_utf16::const_iterator
+      class const_iterator : public LsCsString::LsCsString_utf16::const_iterator
       {
        public:
          using value_type        = const QChar32;
@@ -134,73 +134,73 @@ class Q_CORE_EXPORT QString16 : public CsString::CsString_utf16
 
          const_iterator() = default;
 
-         const_iterator(CsString::CsString_utf16::const_iterator iter)
-            : CsString::CsString_utf16::const_iterator(std::move(iter)) {
+         const_iterator(LsCsString::LsCsString_utf16::const_iterator iter)
+            : LsCsString::LsCsString_utf16::const_iterator(std::move(iter)) {
          }
 
          const_iterator(iterator iter)
-            : CsString::CsString_utf16::const_iterator(std::move(iter)) {
+            : LsCsString::LsCsString_utf16::const_iterator(std::move(iter)) {
          }
 
          // operators
          const QChar32 operator*() const {
-            return CsString::CsString_utf16::const_iterator::operator*();
+            return LsCsString::LsCsString_utf16::const_iterator::operator*();
          }
 
          QChar32Arrow operator->() const {
-            return CsString::CsString_utf16::const_iterator::operator->();
+            return LsCsString::LsCsString_utf16::const_iterator::operator->();
          }
 
          QChar32 operator[](size_type n) const {
-            return CsString::CsString_utf16::const_iterator::operator[](n);
+            return LsCsString::LsCsString_utf16::const_iterator::operator[](n);
          }
 
          bool operator==(const_iterator other) const {
-            return CsString::CsString_utf16::const_iterator::operator==(other);
+            return LsCsString::LsCsString_utf16::const_iterator::operator==(other);
          }
 
          bool operator!=(const_iterator other) const {
-            return CsString::CsString_utf16::const_iterator::operator!=(other);
+            return LsCsString::LsCsString_utf16::const_iterator::operator!=(other);
          }
 
          const_iterator &operator+=(size_type n) {
-            CsString::CsString_utf16::const_iterator::operator+=(n);
+            LsCsString::LsCsString_utf16::const_iterator::operator+=(n);
             return *this;
          }
 
          const_iterator &operator-=(size_type n) {
-            CsString::CsString_utf16::const_iterator::operator-=(n);
+            LsCsString::LsCsString_utf16::const_iterator::operator-=(n);
             return *this;
          }
 
          const_iterator operator+(size_type n) const {
-            return CsString::CsString_utf16::const_iterator::operator+(n);
+            return LsCsString::LsCsString_utf16::const_iterator::operator+(n);
          }
 
          const_iterator operator-(size_type n) const {
-            return CsString::CsString_utf16::const_iterator::operator-(n);
+            return LsCsString::LsCsString_utf16::const_iterator::operator-(n);
          }
 
          size_type operator-(const_iterator other) const {
-            return CsString::CsString_utf16::const_iterator::operator-(other);
+            return LsCsString::LsCsString_utf16::const_iterator::operator-(other);
          }
 
          const_iterator &operator++() {
-            CsString::CsString_utf16::const_iterator::operator++();
+            LsCsString::LsCsString_utf16::const_iterator::operator++();
             return *this;
          }
 
          const_iterator operator++(int n) {
-            return CsString::CsString_utf16::const_iterator::operator++(n);
+            return LsCsString::LsCsString_utf16::const_iterator::operator++(n);
          }
 
          const_iterator &operator--() {
-            CsString::CsString_utf16::const_iterator::operator--();
+            LsCsString::LsCsString_utf16::const_iterator::operator--();
             return *this;
          }
 
          const_iterator operator--(int n) {
-            return CsString::CsString_utf16::const_iterator::operator--(n);
+            return LsCsString::LsCsString_utf16::const_iterator::operator--(n);
          }
       };
 
@@ -216,13 +216,13 @@ class Q_CORE_EXPORT QString16 : public CsString::CsString_utf16
       using size_type       = std::ptrdiff_t;
       using storage_type    = char16_t;
 
-      using reverse_iterator       = CsString::CsStringReverseIterator<iterator>;
-      using const_reverse_iterator = CsString::CsStringReverseIterator<const_iterator>;
+      using reverse_iterator       = LsCsString::LsCsStringReverseIterator<iterator>;
+      using const_reverse_iterator = LsCsString::LsCsStringReverseIterator<const_iterator>;
 
       QString16() = default;
 
       QString16(const char16_t *data)
-         : CsString::CsString_utf16(data)
+         : LsCsString::LsCsString_utf16(data)
       {
       }
 
@@ -248,23 +248,23 @@ class Q_CORE_EXPORT QString16 : public CsString::CsString_utf16
                ++p;
             }
 
-            CsString::CsString_utf16::append(data, p);
+            LsCsString::LsCsString_utf16::append(data, p);
 
          } else {
-            CsString::CsString_utf16::append(data, data + numOfChars);
+            LsCsString::LsCsString_utf16::append(data, data + numOfChars);
 
          }
       }
 
       QString16(const_iterator begin, const_iterator end)
-         : CsString::CsString_utf16(begin, end)
+         : LsCsString::LsCsString_utf16(begin, end)
       {
       }
 
       // for an array of chars
       template <int N>
       QString16(const char (&cStr)[N])
-         : CsString::CsString_utf16(cStr)
+         : LsCsString::LsCsString_utf16(cStr)
       { }
 
 #ifdef CS_STRING_ALLOW_UNSAFE
@@ -275,21 +275,21 @@ class Q_CORE_EXPORT QString16 : public CsString::CsString_utf16
 
       template <typename Iterator>
       QString16(Iterator begin, Iterator end)
-         : CsString::CsString_utf16(begin, end)
+         : LsCsString::LsCsString_utf16(begin, end)
       { }
 
       // internal
-      QString16(const CsString::CsString_utf16 &other)
-         : CsString::CsString_utf16(other)
+      QString16(const LsCsString::LsCsString_utf16 &other)
+         : LsCsString::LsCsString_utf16(other)
       { }
 
       // internal
-      QString16(CsString::CsString_utf16 &&other)
-         : CsString::CsString_utf16(std::move(other))
+      QString16(LsCsString::LsCsString_utf16 &&other)
+         : LsCsString::LsCsString_utf16(std::move(other))
       { }
 
       QString16(QStringView16 str)
-         : CsString::CsString_utf16( str )
+         : LsCsString::LsCsString_utf16( str )
       { }
 
       ~QString16() = default;
@@ -303,58 +303,58 @@ class Q_CORE_EXPORT QString16 : public CsString::CsString_utf16
       static inline QString16 fromUtf8(const char8_t *str, size_type numOfChars = -1);
 #endif
 
-      using CsString::CsString_utf16::append;         // internal
-      using CsString::CsString_utf16::operator=;      // internal
-      using CsString::CsString_utf16::operator+=;     // internal
+      using LsCsString::LsCsString_utf16::append;         // internal
+      using LsCsString::LsCsString_utf16::operator=;      // internal
+      using LsCsString::LsCsString_utf16::operator+=;     // internal
 
       // methods
       QString16 &append(char32_t c)  {
-         CsString::CsString_utf16::append(c);
+         LsCsString::LsCsString_utf16::append(c);
          return *this;
       }
 
       QString16 &append(QChar32 c)  {
-         CsString::CsString_utf16::append(c);
+         LsCsString::LsCsString_utf16::append(c);
          return *this;
       }
 
       QString16 &append(const QString16 &other)  {
-         CsString::CsString_utf16::append(other);
+         LsCsString::LsCsString_utf16::append(other);
          return *this;
       }
 
       QString16 &append(const QChar32 *data, size_type numOfChars)  {
-         CsString::CsString_utf16::append(data, data + numOfChars);
+         LsCsString::LsCsString_utf16::append(data, data + numOfChars);
          return *this;
       }
 
       QString16 &append(const_iterator iter_begin, const_iterator iter_end)  {
-         CsString::CsString_utf16::append(iter_begin, iter_end);
+         LsCsString::LsCsString_utf16::append(iter_begin, iter_end);
          return *this;
       }
 
       QString16 &append(QStringView16 str) {
-         CsString::CsString_utf16::append(str.cbegin(), str.cend());
+         LsCsString::LsCsString_utf16::append(str.cbegin(), str.cend());
          return *this;
       }
 
       QString16 &append(QStringView16 str, size_type indexStart, size_type numOfChars) {
-         CsString::CsString_utf16::append(str, indexStart, numOfChars);
+         LsCsString::LsCsString_utf16::append(str, indexStart, numOfChars);
          return *this;
       }
 
       QChar32 at(size_type index) const {
-         return CsString::CsString_utf16::operator[](index);
+         return LsCsString::LsCsString_utf16::operator[](index);
       }
 
       QChar32 back() const {
-         return CsString::CsString_utf16::back();
+         return LsCsString::LsCsString_utf16::back();
       }
 
       void chop(size_type numOfChars);
 
       void clear() {
-         CsString::CsString_utf16::clear();
+         LsCsString::LsCsString_utf16::clear();
       }
 
       int compare(const QString16 &str, Qt::CaseSensitivity cs = Qt::CaseSensitive) const {
@@ -372,7 +372,7 @@ class Q_CORE_EXPORT QString16 : public CsString::CsString_utf16
       static int compare(QStringView16 str1, QStringView16 str2, Qt::CaseSensitivity cs = Qt::CaseSensitive);
 
       const char16_t *constData() const {
-         return reinterpret_cast<const char16_t *>(CsString::CsString_utf16::constData());
+         return reinterpret_cast<const char16_t *>(LsCsString::LsCsString_utf16::constData());
       }
 
       bool contains(char ch, Qt::CaseSensitivity cs = Qt::CaseSensitive) const {
@@ -388,7 +388,7 @@ class Q_CORE_EXPORT QString16 : public CsString::CsString_utf16
       }
 
       size_type count() const {
-         return CsString::CsString_utf16::size();
+         return LsCsString::LsCsString_utf16::size();
       }
 
       size_type count(QChar32 c, Qt::CaseSensitivity cs = Qt::CaseSensitive) const;
@@ -407,11 +407,11 @@ class Q_CORE_EXPORT QString16 : public CsString::CsString_utf16
       QString16 &fill(QChar32 c, size_type numOfChars = -1);
 
       QChar32 first() const {
-         return CsString::CsString_utf16::front();
+         return LsCsString::LsCsString_utf16::front();
       }
 
       QChar32 front() const {
-         return CsString::CsString_utf16::front();
+         return LsCsString::LsCsString_utf16::front();
       }
 
       // using iterators
@@ -422,7 +422,7 @@ class Q_CORE_EXPORT QString16 : public CsString::CsString_utf16
       const_iterator indexOfFast(QChar32 c, const_iterator from, Qt::CaseSensitivity cs = Qt::CaseSensitive) const {
 
          if (cs == Qt::CaseSensitive) {
-            return CsString::CsString_utf16::find_fast(c, from);
+            return LsCsString::LsCsString_utf16::find_fast(c, from);
 
          } else {
             return cs_internal_find_fast(c, from);
@@ -437,7 +437,7 @@ class Q_CORE_EXPORT QString16 : public CsString::CsString_utf16
       const_iterator indexOfFast(const QString16 &str, const_iterator from, Qt::CaseSensitivity cs = Qt::CaseSensitive) const {
 
          if (cs == Qt::CaseSensitive) {
-            return CsString::CsString_utf16::find_fast(str, from);
+            return LsCsString::LsCsString_utf16::find_fast(str, from);
 
          } else {
             return cs_internal_find_fast(str, from);
@@ -447,7 +447,7 @@ class Q_CORE_EXPORT QString16 : public CsString::CsString_utf16
       const_iterator indexOfFast(QStringView16 str, const_iterator from, Qt::CaseSensitivity cs = Qt::CaseSensitive) const {
 
          if (cs == Qt::CaseSensitive) {
-            return CsString::CsString_utf16::find_fast(str, from);
+            return LsCsString::LsCsString_utf16::find_fast(str, from);
 
          } else {
             return cs_internal_find_fast(str, from);
@@ -468,7 +468,7 @@ class Q_CORE_EXPORT QString16 : public CsString::CsString_utf16
       const_iterator lastIndexOfFast(QChar32 c, const_iterator from, Qt::CaseSensitivity cs = Qt::CaseSensitive) const
       {
          if (cs == Qt::CaseSensitive) {
-            return CsString::CsString_utf16::rfind_fast(c, from);
+            return LsCsString::LsCsString_utf16::rfind_fast(c, from);
 
          } else {
             return cs_internal_rfind_fast(c, from);
@@ -483,7 +483,7 @@ class Q_CORE_EXPORT QString16 : public CsString::CsString_utf16
       const_iterator lastIndexOfFast(const QString16 &str, const_iterator from, Qt::CaseSensitivity cs = Qt::CaseSensitive) const {
 
          if (cs == Qt::CaseSensitive) {
-            return CsString::CsString_utf16::rfind_fast(str, from);
+            return LsCsString::LsCsString_utf16::rfind_fast(str, from);
 
          } else {
             return cs_internal_rfind_fast(str, from);
@@ -493,7 +493,7 @@ class Q_CORE_EXPORT QString16 : public CsString::CsString_utf16
       const_iterator lastIndexOfFast(QStringView16 str, const_iterator from, Qt::CaseSensitivity cs = Qt::CaseSensitive) const {
 
          if (cs == Qt::CaseSensitive) {
-            return CsString::CsString_utf16::rfind_fast(str, from);
+            return LsCsString::LsCsString_utf16::rfind_fast(str, from);
 
          } else {
             return cs_internal_rfind_fast(str, from);
@@ -504,22 +504,22 @@ class Q_CORE_EXPORT QString16 : public CsString::CsString_utf16
       size_type indexOf(QChar32 c, size_type from = 0, Qt::CaseSensitivity cs = Qt::CaseSensitive) const {
 
          if (cs == Qt::CaseSensitive) {
-            return CsString::CsString_utf16::find(c, from);
+            return LsCsString::LsCsString_utf16::find(c, from);
 
          } else {
             QString16 tmp1 = this->toCaseFolded();
-            return tmp1.CsString::CsString_utf16::find(c.toCaseFolded16(), from);
+            return tmp1.LsCsString::LsCsString_utf16::find(c.toCaseFolded16(), from);
          }
       }
 
       size_type indexOf(const QString16 &str, size_type from = 0, Qt::CaseSensitivity cs = Qt::CaseSensitive) const {
 
          if (cs == Qt::CaseSensitive) {
-            return CsString::CsString_utf16::find(str, from);
+            return LsCsString::LsCsString_utf16::find(str, from);
 
          } else {
             QString16 tmp1 = this->toCaseFolded();
-            return tmp1.CsString::CsString_utf16::find(str.toCaseFolded(), from);
+            return tmp1.LsCsString::LsCsString_utf16::find(str.toCaseFolded(), from);
          }
       }
 
@@ -541,64 +541,64 @@ class Q_CORE_EXPORT QString16 : public CsString::CsString_utf16
       size_type lastIndexOf(QChar32 c, size_type from = -1, Qt::CaseSensitivity cs  = Qt::CaseSensitive) const  {
 
          if (cs == Qt::CaseSensitive) {
-            return CsString::CsString_utf16::rfind(c, from);
+            return LsCsString::LsCsString_utf16::rfind(c, from);
 
          } else {
             QString16 tmp1 = this->toCaseFolded();
-            return tmp1.CsString::CsString_utf16::rfind(c.toCaseFolded16(), from);
+            return tmp1.LsCsString::LsCsString_utf16::rfind(c.toCaseFolded16(), from);
          }
       }
 
       size_type lastIndexOf(const QString16 &str, size_type from = -1, Qt::CaseSensitivity cs = Qt::CaseSensitive) const {
 
          if (cs == Qt::CaseSensitive) {
-            return CsString::CsString_utf16::rfind(str, from);
+            return LsCsString::LsCsString_utf16::rfind(str, from);
 
          } else {
             QString16 tmp1 = this->toCaseFolded();
-            return tmp1.CsString::CsString_utf16::rfind(str.toCaseFolded(), from);
+            return tmp1.LsCsString::LsCsString_utf16::rfind(str.toCaseFolded(), from);
          }
       }
 
       //
       QString16 &insert (size_type indexStart, const QString16 &str)  {
-         CsString::CsString_utf16::insert(indexStart, str);
+         LsCsString::LsCsString_utf16::insert(indexStart, str);
          return *this;
       }
 
       QString16 &insert(size_type indexStart, QChar32 c) {
-         CsString::CsString_utf16::insert(indexStart, 1, c);
+         LsCsString::LsCsString_utf16::insert(indexStart, 1, c);
          return *this;
       }
 
       QString16 &insert(size_type indexStart, const QChar32 *data, size_type numOfChars) {
-         CsString::CsString_utf16::insert(begin() + indexStart, data, data + numOfChars);
+         LsCsString::LsCsString_utf16::insert(begin() + indexStart, data, data + numOfChars);
          return *this;
       }
 
       QString16 &insert(const_iterator first, const QString16 &str) {
-         CsString::CsString_utf16::insert(first, str);
+         LsCsString::LsCsString_utf16::insert(first, str);
          return *this;
       }
 
       template <typename Iterator>
       QString16 &insert(const_iterator first, Iterator begin, Iterator end) {
-         CsString::CsString_utf16::insert(first, begin, end);
+         LsCsString::LsCsString_utf16::insert(first, begin, end);
          return *this;
       }
 
       QString16 &insert(size_type indexStart, QStringView16 str) {
-         CsString::CsString_utf16::insert(indexStart, str);
+         LsCsString::LsCsString_utf16::insert(indexStart, str);
          return *this;
       }
 
       QString16 &insert(size_type indexStart, QStringView16 str, size_type srcStart, size_type numOfChars) {
-         CsString::CsString_utf16::insert(indexStart, str, srcStart, numOfChars);
+         LsCsString::LsCsString_utf16::insert(indexStart, str, srcStart, numOfChars);
          return *this;
       }
 
       bool empty() const {
-         return CsString::CsString_utf16::empty();
+         return LsCsString::LsCsString_utf16::empty();
       }
 
       bool isEmpty() const {
@@ -606,7 +606,7 @@ class Q_CORE_EXPORT QString16 : public CsString::CsString_utf16
       }
 
       QChar32 last()const {
-         return CsString::CsString_utf16::back();
+         return LsCsString::LsCsString_utf16::back();
       }
 
       [[nodiscard]] QString16 left(size_type numOfChars) const;
@@ -614,7 +614,7 @@ class Q_CORE_EXPORT QString16 : public CsString::CsString_utf16
       [[nodiscard]] QString16 leftJustified(size_type width, QChar32 fill = UCHAR(' '), bool truncate = false) const;
 
       size_type length() const {
-         return CsString::CsString_utf16::size();
+         return LsCsString::LsCsString_utf16::size();
       }
 
       int localeAwareCompare(const QString16 &str) const {
@@ -641,27 +641,27 @@ class Q_CORE_EXPORT QString16 : public CsString::CsString_utf16
                   QChar32::UnicodeVersion version = QChar32::Unicode_Unassigned) const;
 
       QString16 &prepend(const QString16 &other) {
-         CsString::CsString_utf16::insert(begin(), other);
+         LsCsString::LsCsString_utf16::insert(begin(), other);
          return *this;
       }
 
       QString16 &prepend(char32_t c) {
-         CsString::CsString_utf16::insert(begin(), c);
+         LsCsString::LsCsString_utf16::insert(begin(), c);
          return *this;
       }
 
       QString16 &prepend(QChar32 c) {
-         CsString::CsString_utf16::insert(begin(), c);
+         LsCsString::LsCsString_utf16::insert(begin(), c);
          return *this;
       }
 
       QString16 &prepend(const QChar32 *data, size_type numOfChars)  {
-         CsString::CsString_utf16::insert(begin(), data, data + numOfChars);
+         LsCsString::LsCsString_utf16::insert(begin(), data, data + numOfChars);
          return *this;
       }
 
       QString16 &prepend(const_iterator iter_begin, const_iterator iter_end)  {
-         CsString::CsString_utf16::insert(begin(), iter_begin, iter_end);
+         LsCsString::LsCsString_utf16::insert(begin(), iter_begin, iter_end);
          return *this;
       }
 
@@ -702,7 +702,7 @@ class Q_CORE_EXPORT QString16 : public CsString::CsString_utf16
       QString16 &replace(QChar32 c, const QString16 &after, Qt::CaseSensitivity cs = Qt::CaseSensitive);
 
       QString16 &replace(size_type indexStart, size_type numOfChars, QChar32 c) {
-         CsString::CsString_utf16::replace(indexStart, numOfChars, 1, c);
+         LsCsString::LsCsString_utf16::replace(indexStart, numOfChars, 1, c);
          return *this;
       }
 
@@ -713,35 +713,35 @@ class Q_CORE_EXPORT QString16 : public CsString::CsString_utf16
       }
 
       QString16 &replace(size_type indexStart, size_type numOfChars, const QString16 &str) {
-         CsString::CsString_utf16::replace(indexStart, numOfChars, str);
+         LsCsString::LsCsString_utf16::replace(indexStart, numOfChars, str);
          return *this;
       }
 
       QString16 &replace(size_type indexStart, size_type numOfChars, const QString16 &str, size_type sizeStr)
       {
-         CsString::CsString_utf16::replace(indexStart, numOfChars, str.left(sizeStr));
+         LsCsString::LsCsString_utf16::replace(indexStart, numOfChars, str.left(sizeStr));
          return *this;
       }
 
       template <typename Iterator>
       QString16 &replace(const_iterator first1, const_iterator last1, Iterator first2, Iterator last2) {
-         CsString::CsString_utf16::replace(first1, last1, first2, last2);
+         LsCsString::LsCsString_utf16::replace(first1, last1, first2, last2);
          return *this;
       }
 
       QString16 &replace(const_iterator first, const_iterator last, const QString16 &str) {
-         CsString::CsString_utf16::replace(first, last, str);
+         LsCsString::LsCsString_utf16::replace(first, last, str);
          return *this;
       }
 
       QString16 &replace(const QRegularExpression16 &regExp, const QString16 &after);
 
       void resize(size_type numOfChars) {
-         return CsString::CsString_utf16::resize(numOfChars);
+         return LsCsString::LsCsString_utf16::resize(numOfChars);
       }
 
       void resize(size_type numOfChars, QChar32 c) {
-         return CsString::CsString_utf16::resize(numOfChars, c);
+         return LsCsString::LsCsString_utf16::resize(numOfChars, c);
       }
 
       [[nodiscard]] QString16 right(size_type count) const;
@@ -752,11 +752,11 @@ class Q_CORE_EXPORT QString16 : public CsString::CsString_utf16
       [[nodiscard]] QString16 simplified() &&;
 
       size_type size() const {
-         return CsString::CsString_utf16::size();
+         return LsCsString::LsCsString_utf16::size();
       }
 
       size_type size_storage() const{
-         return CsString::CsString_utf16::size_storage();
+         return LsCsString::LsCsString_utf16::size_storage();
       }
 
       bool startsWith(QChar32 c, Qt::CaseSensitivity cs = Qt::CaseSensitive) const;
@@ -764,11 +764,11 @@ class Q_CORE_EXPORT QString16 : public CsString::CsString_utf16
       bool startsWith(QStringView16 str, Qt::CaseSensitivity cs = Qt::CaseSensitive) const;
 
       void squeeze() {
-         return CsString::CsString_utf16::shrink_to_fit();
+         return LsCsString::LsCsString_utf16::shrink_to_fit();
       }
 
       void swap(QString16 &other) {
-         CsString::CsString_utf16::swap(other);
+         LsCsString::LsCsString_utf16::swap(other);
       }
 
       QString16 toHtmlEscaped() const;
@@ -793,7 +793,7 @@ class Q_CORE_EXPORT QString16 : public CsString::CsString_utf16
       void truncate(size_type length);
 
       const uint16_t *utf16() const {
-         return CsString::CsString_utf16::constData();
+         return LsCsString::LsCsString_utf16::constData();
       }
 
       // static
@@ -882,76 +882,76 @@ class Q_CORE_EXPORT QString16 : public CsString::CsString_utf16
 
       // iterators
       iterator begin() {
-         return CsString::CsString_utf16::begin();
+         return LsCsString::LsCsString_utf16::begin();
       }
 
       const_iterator begin() const {
-         return CsString::CsString_utf16::cbegin();
+         return LsCsString::LsCsString_utf16::cbegin();
       }
 
       const_iterator cbegin() const {
-         return CsString::CsString_utf16::cbegin();
+         return LsCsString::LsCsString_utf16::cbegin();
       }
 
       const_iterator constBegin() const {
-         return CsString::CsString_utf16::cbegin();
+         return LsCsString::LsCsString_utf16::cbegin();
       }
 
       iterator end() {
-         return CsString::CsString_utf16::end();
+         return LsCsString::LsCsString_utf16::end();
       }
 
       const_iterator end() const {
-         return CsString::CsString_utf16::cend();
+         return LsCsString::LsCsString_utf16::cend();
       }
 
       const_iterator cend() const {
-         return CsString::CsString_utf16::cend();
+         return LsCsString::LsCsString_utf16::cend();
       }
 
       const_iterator constEnd() const {
-         return CsString::CsString_utf16::cend();
+         return LsCsString::LsCsString_utf16::cend();
       }
 
       reverse_iterator rbegin()  {
-         return CsString::CsString_utf16::rbegin();
+         return LsCsString::LsCsString_utf16::rbegin();
       }
 
       const_reverse_iterator rbegin() const {
-         return CsString::CsString_utf16::rbegin();
+         return LsCsString::LsCsString_utf16::rbegin();
       }
 
       reverse_iterator rend()  {
-         return CsString::CsString_utf16::rend();
+         return LsCsString::LsCsString_utf16::rend();
       }
 
       const_reverse_iterator rend() const {
-         return CsString::CsString_utf16::rend();
+         return LsCsString::LsCsString_utf16::rend();
       }
 
       const_reverse_iterator crbegin() const {
-         return CsString::CsString_utf16::crbegin();
+         return LsCsString::LsCsString_utf16::crbegin();
       }
 
       const_reverse_iterator crend() const {
-         return CsString::CsString_utf16::crend();
+         return LsCsString::LsCsString_utf16::crend();
       }
 
       // storage iterators
       const_storage_iterator storage_begin() const {
-         return CsString::CsString_utf16::storage_begin();
+         return LsCsString::LsCsString_utf16::storage_begin();
       }
 
       const_storage_iterator storage_end() const {
-         return CsString::CsString_utf16::storage_end();
+         return LsCsString::LsCsString_utf16::storage_end();
       }
 
       const_storage_reverse_iterator storage_rbegin() const {
-         return CsString::CsString_utf16::storage_rbegin();
+         return LsCsString::LsCsString_utf16::storage_rbegin();
       }
 
       const_storage_reverse_iterator storage_rend() const {
-         return CsString::CsString_utf16::storage_rend();
+         return LsCsString::LsCsString_utf16::storage_rend();
       }
 
       // operators
@@ -959,17 +959,17 @@ class Q_CORE_EXPORT QString16 : public CsString::CsString_utf16
       QString16 &operator=(QString16 && other) = default;
 
       QString16 &operator=(QChar32 c)  {
-         CsString::CsString_utf16::operator=(c);
+         LsCsString::LsCsString_utf16::operator=(c);
          return *this;
       }
 
       QString16 &operator=(QStringView16 str) {
-         CsString::CsString_utf16::operator=(str);
+         LsCsString::LsCsString_utf16::operator=(str);
          return *this;
       }
 
       QString16 &operator+=(QChar32 c)  {
-         CsString::CsString_utf16::operator+=(c);
+         LsCsString::LsCsString_utf16::operator+=(c);
          return *this;
       }
 
@@ -979,17 +979,17 @@ class Q_CORE_EXPORT QString16 : public CsString::CsString_utf16
       }
 
       QString16 &operator+= (const QString16 & other) {
-         CsString::CsString_utf16::operator+=(other);
+         LsCsString::LsCsString_utf16::operator+=(other);
          return *this;
       }
 
       QString16 &operator+= (QStringView16 str) {
-         CsString::CsString_utf16::operator+=(str);
+         LsCsString::LsCsString_utf16::operator+=(str);
          return *this;
       }
 
       QChar32 operator[](size_type index) const {
-         return CsString::CsString_utf16::operator[](index);
+         return LsCsString::LsCsString_utf16::operator[](index);
       }
 
 #if defined(Q_OS_DARWIN)
@@ -1010,7 +1010,7 @@ class Q_CORE_EXPORT QString16 : public CsString::CsString_utf16
       const_iterator cs_internal_rfind_fast(const QString16 &str, const_iterator iter_begin) const;
 
       iterator replace(const_iterator iter_begin, const QString16 &str) {
-         auto iter = CsString::CsString_utf16::replace(iter_begin, str);
+         auto iter = LsCsString::LsCsString_utf16::replace(iter_begin, str);
          iter = iter.advance_storage(str.size_storage());
 
          return iter;
@@ -1136,7 +1136,7 @@ inline QString16 operator+(QString16 &&str, const char (&cString)[N])
 
 inline bool operator<(const QString16 &str1, const QString16 &str2)
 {
-   return (static_cast<CsString::CsString_utf16>(str1) < static_cast<CsString::CsString_utf16>(str2));
+   return (static_cast<LsCsString::LsCsString_utf16>(str1) < static_cast<LsCsString::LsCsString_utf16>(str2));
 }
 
 // for an array of chars
@@ -1155,7 +1155,7 @@ inline bool operator<(const QString16 &str, const char (&cString)[N])
 
 inline bool operator<=(const QString16 &str1, const QString16 &str2)
 {
-   return (static_cast<CsString::CsString_utf16>(str1) <= static_cast<CsString::CsString_utf16>(str2));
+   return (static_cast<LsCsString::LsCsString_utf16>(str1) <= static_cast<LsCsString::LsCsString_utf16>(str2));
 }
 
 // for an array of chars
@@ -1174,7 +1174,7 @@ inline bool operator<=(const QString16 &str, const char (&cString)[N])
 
 inline bool operator>(const QString16 &str1, const QString16 &str2)
 {
-   return (static_cast<CsString::CsString_utf16>(str1) > static_cast<CsString::CsString_utf16>(str2));
+   return (static_cast<LsCsString::LsCsString_utf16>(str1) > static_cast<LsCsString::LsCsString_utf16>(str2));
 }
 
 // for an array of chars
@@ -1193,7 +1193,7 @@ inline bool operator>(const QString16 &str, const char (&cString)[N])
 
 inline bool operator>=(const QString16 &str1, const QString16 &str2)
 {
-   return (static_cast<CsString::CsString_utf16>(str1) >= static_cast<CsString::CsString_utf16>(str2));
+   return (static_cast<LsCsString::LsCsString_utf16>(str1) >= static_cast<LsCsString::LsCsString_utf16>(str2));
 }
 
 // for an array of chars
@@ -1232,7 +1232,7 @@ QString16 cs_internal_string_normalize(const QString16 &data, QString16::Normali
 
    inline QString16 QString16::fromUtf8(const char8_t *str, size_type numOfChars)
    {
-      return CsString::CsString_utf16::fromUtf8(str, numOfChars);
+      return LsCsString::LsCsString_utf16::fromUtf8(str, numOfChars);
    }
 #endif
 

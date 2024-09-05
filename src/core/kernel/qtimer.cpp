@@ -142,7 +142,7 @@ void QSingleShotTimer::timerEvent(QTimerEvent *)
       if ( ! m_receiver.isNull() || ! hasValidReceiver) {
          // allocate only the return type, previously checked the function had no arguments
 
-         auto args = CsSignal::Internal::TeaCup_Data<>(false);
+         auto args = LsCsSignal::Internal::TeaCup_Data<>(false);
 
          m_slotBento->invoke(const_cast<QObject *>(m_receiver.data()), &args);
       }

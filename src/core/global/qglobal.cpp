@@ -55,9 +55,9 @@ extern "C" __declspec(dllimport) NTSTATUS NTAPI RtlGetVersion(IN OUT PRTL_OSVERS
 
 #endif
 
-const char *csVersion()
+const char *ls_csVersion()
 {
-   return CS_VERSION_STR;
+   return LS_CS_VERSION_STR;
 }
 
 // ** OSX

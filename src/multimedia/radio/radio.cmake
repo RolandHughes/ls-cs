@@ -9,7 +9,7 @@ list(APPEND MULTIMEDIA_INCLUDES
 list(APPEND MULTIMEDIA_PRIVATE_INCLUDES
 )
 
-target_sources(CsMultimedia
+target_sources(Ls-CsMultimedia
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/radio/qradiodata.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/radio/qradiotuner.cpp

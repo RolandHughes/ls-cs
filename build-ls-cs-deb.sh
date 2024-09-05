@@ -59,22 +59,22 @@ function create_debian_tree()
 
     mkdir -p "$DEBIAN_DIR"/DEBIAN
     mkdir -p "$DEBIAN_DIR"/usr/include/copperspice
-    mkdir -p "$DEBIAN_DIR"/usr/"${LIB_DIR}"/copperspice/bin
+    mkdir -p "$DEBIAN_DIR"/usr/"${LIB_DIR}"Ls-Cs::bin
     #
     #  The plugins should always be here, not copied into the binary install dir
     #
-    mkdir -p "$DEBIAN_DIR"/usr/"${LIB_DIR}"/copperspice/plugins/platforms
-    mkdir -p "$DEBIAN_DIR"/usr/"${LIB_DIR}"/copperspice/plugins/printerdrivers
-    mkdir -p "$DEBIAN_DIR"/usr/"${LIB_DIR}"/copperspice/plugins/xcbglintegrations
-    mkdir -p "$DEBIAN_DIR"/usr/"${LIB_DIR}"/copperspice/plugins/mediaservices
-    mkdir -p "$DEBIAN_DIR"/usr/"${LIB_DIR}"/copperspice/plugins/playlistformats
-    mkdir -p "$DEBIAN_DIR"/usr/"${LIB_DIR}"/copperspice/plugins/iconengines
-    mkdir -p "$DEBIAN_DIR"/usr/"${LIB_DIR}"/copperspice/plugins/imageformats
-    mkdir -p "$DEBIAN_DIR"/usr/"${LIB_DIR}"/copperspice/plugins/pictureformats
-    mkdir -p "$DEBIAN_DIR"/usr/"${LIB_DIR}"/copperspice/plugins/sqldrivers
+    mkdir -p "$DEBIAN_DIR"/usr/"${LIB_DIR}"/ls-cs/plugins/platforms
+    mkdir -p "$DEBIAN_DIR"/usr/"${LIB_DIR}"/ls-cs/plugins/printerdrivers
+    mkdir -p "$DEBIAN_DIR"/usr/"${LIB_DIR}"/ls-cs/plugins/xcbglintegrations
+    mkdir -p "$DEBIAN_DIR"/usr/"${LIB_DIR}"/ls-cs/plugins/mediaservices
+    mkdir -p "$DEBIAN_DIR"/usr/"${LIB_DIR}"/ls-cs/plugins/playlistformats
+    mkdir -p "$DEBIAN_DIR"/usr/"${LIB_DIR}"/ls-cs/plugins/iconengines
+    mkdir -p "$DEBIAN_DIR"/usr/"${LIB_DIR}"/ls-cs/plugins/imageformats
+    mkdir -p "$DEBIAN_DIR"/usr/"${LIB_DIR}"/ls-cs/plugins/pictureformats
+    mkdir -p "$DEBIAN_DIR"/usr/"${LIB_DIR}"/ls-cs/plugins/sqldrivers
     mkdir -p "$DEBIAN_DIR"/usr/"${LIB_DIR}"/cmake/CopperSpice
     mkdir -p "$DEBIAN_DIR"/usr/share/pkgconfig
-    mkdir -p "$DEBIAN_DIR"/usr/share/doc/CopperSpice/license
+    mkdir -p "$DEBIAN_DIR"/usr/share/doc/ls-cs/license
 
 }
 
@@ -113,12 +113,12 @@ function build_from_source()
     #  Step 5: Sweep up what CopperSpice project gets wrong in their
     #          default build.
     cd "$RELEASE_DIR"/lib/cmake/CopperSpice
-    if [ -f "CopperSpiceLibraryTargets.cmake" ]; then
+    if [ -f "Ls-CsLibraryTargets.cmake" ]; then
         echo "*** "
         echo "*** Fixing where cmake looks for Qt and other headers"
         echo "*** "
-        sed -i 's#${_IMPORT_PREFIX}/include;#${_IMPORT_PREFIX}/include/copperspice;#g' CopperSpiceLibraryTargets.cmake
-        sed -i 's#${_IMPORT_PREFIX}/include/Qt#${_IMPORT_PREFIX}/include/copperspice/Qt#g' CopperSpiceLibraryTargets.cmake
+        sed -i 's#${_IMPORT_PREFIX}/include;#${_IMPORT_PREFIX}/include/copperspice;#g' Ls-CsLibraryTargets.cmake
+        sed -i 's#${_IMPORT_PREFIX}/include/Qt#${_IMPORT_PREFIX}/includeLs-Cs::Qt#g' Ls-CsLibraryTargets.cmake
     fi
 
 }

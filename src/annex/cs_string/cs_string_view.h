@@ -3,12 +3,12 @@
 * Copyright (c) 2017-2024 Barbara Geller
 * Copyright (c) 2017-2024 Ansel Sermersheim
 *
-* This file is part of CsString.
+* This file is part of LsCsString.
 *
-* CsString is free software, released under the BSD 2-Clause license.
+* LsCsString is free software, released under the BSD 2-Clause license.
 * For license details refer to LICENSE provided with this project.
 *
-* CsString is distributed in the hope that it will be useful,
+* LsCsString is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 *
@@ -21,14 +21,14 @@
 
 #include <cs_string.h>
 
-namespace CsString {
+namespace LsCsString {
 
 template <typename S>
 class CsBasicStringView;
 
-using CsStringView       = CsBasicStringView<CsBasicString<utf8>>;
-using CsStringView_utf8  = CsBasicStringView<CsBasicString<utf8>>;
-using CsStringView_utf16 = CsBasicStringView<CsBasicString<utf16>>;
+using LsCsStringView       = CsBasicStringView<CsBasicString<utf8>>;
+using LsCsStringView_utf8  = CsBasicStringView<CsBasicString<utf8>>;
+using LsCsStringView_utf16 = CsBasicStringView<CsBasicString<utf16>>;
 
 template <typename S>
 class CsBasicStringView

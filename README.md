@@ -1,35 +1,33 @@
-## LS-CS fork of Copperspice for Debian and RPM packaging
+# LS-CS fork of Copperspice
 
-    This is un-official and not maintained by the CopperSpice project
+*This is un-official and not maintained by the CopperSpice project*
 
-### Introduction
+All library files have been renamed in case CopperSpice project gets
+around to making formal official package releases in the next 15-20 years.
+Another reason for this fork is to stop the maniacal pursuit of newer C++
+standards that have no connection to production realities.
 
-CopperSpice is a set of individual libraries which can be used to develop cross platform software
-applications in C++. It is a totally open source project released under the LGPL V2.1 license and was
-initially derived from the Qt framework. Over the last several years CopperSpice has completely diverged,
-with a goal of providing a first class GUI library to unite the C++ community.
+In particular ***C++20 will never be required/used for this fork***. When
+C++20 and now C++23 forced integer values to be Two's Complement it
+completely ignored the fact that Unisys MainFrames are One's Complement
+and the machines that process the largest amount of financial transactions
+globally. The Internal Revenue Service in America uses them to process
+all tax returns in a timely manner. Nothing else comes close to the raw
+throughput. One's Complement is the most efficient for scaled integer
+add/subtract functions. There is also packed decimal to consider.
 
-Our motivation for developing CopperSpice was to change the fundamental design and turn the existing
-framework into a set of libraries for C++ developers. We are accomplishing this by leveraging modern C++
-functionality, new technology, and modern tooling. CopperSpice currently requires C++17 or newer.
+Many multi-national banks are using these same machines for the very
+same reason. When "front end" systems written in C++ running on "commodity"
+hardware try to pass back "integer" values it reeks havoc. Just ask all of
+the college students whose financial aid applications got jacked up by it
+for the 2024 school year because front ends ass-u-me-d integer was integer.
 
-The libraries available in CopperSpice include:
+You can read the CopperSpice README.md here:
+https://github.com/copperspice/copperspice
 
- * CsCore
- * CsGui
- * CsMultimedia
- * CsNetwork
- * CsOpenGL
- * CsScript
- * CsSql
- * CsSvg
- * CsVulkan
- * CsWebKit
- * CsXml
- * CsXmlPatterns
-
-There are also several open source BSD licensed libraries which are used by CopperSpice and available as stand
-alone libraries for anyone developing C++ applications.
+The original licese was LGPL V2.1 for CopperSpice. Right now not worth the
+pain of trying to flip it to BSD. Oddly enough it included these libraries
+that were BSD.
 
  * CsCrypto
  * CsLibGuarded
@@ -38,129 +36,82 @@ alone libraries for anyone developing C++ applications.
  * CsSignal
  * CsString
 
+Don't worry if you already have them installed. Any included with this
+get Ls- added in front of the Cs so we don't have any naming/linking
+collisions. 
 
-### System Requirements
+**currently requires C++17 or newer.**
 
-To use the CopperSpice libraries a C++17 compiler and a C++17 standard library are required.
+## Introduction
+CopperSpice was a fork of one of the last true OpenSource versions of 
+Qt 4.8.x with most of the QML removed along with other improvements. It 
+also has some academic debacles. One of the main ones is the removal of
+Copy-On-Write. Yes, academics declared CoW bad and incompatible with 
+exceptions but the speed improvement of CoW was and still is dramatic.
+See:
+https://www.logikalsolutions.com/wordpress/information-technology/qlist/
 
-CopperSpice CMake build files are provided with the source distribution. We recommend your projects should also use
-CMake and Ninja for the build system.
+It is theoretically possible to implement CoW using making the existing 
+QString typedef a wrapper class around the current QString8 and 
+QStringView making all pre-existing initial assignments a view until a write
+happens, but no work has been done on that in this library yet.
+https://www.copperspice.com/docs/cs_api/class_qstring8.html
+https://www.copperspice.com/docs/cs_api/class_qstringview.html
 
-For additional information about building from source, refer to our CopperSpice Overview Documentation or the
-KitchenSink demo application for sample CMake project files.
+
+## System Requirements
+
+To use the Ls-Cs libraries a C++17 compiler and a C++17 standard library are 
+required. In the root directory you will find the following to install build
+dependencies:
+
+1. ls-cs-Deb-build-dependencies.sh     - for Debian based distros like Ubuntu
+2. ls-cs-Manjaro-build-dependencies.sh - for Manjaro based distros
+3. ls-cs-RPM-build-dependencies.sh     - for RPM based distros like OpenSuSE
+
+The above install some extra development tools. If you are installing on a 
+distro that is much older (or newer) than currently being used for development
+you might have to tweak a few version numbers. They install everything you need
+to build a package for distribution.
+
+Ls-Cs CMake build files are provided with the source distribution. 
+You will also find:
+
+1. build-ls-cs-deb.sh   -   Build a DEB package
+2. build-ls-cs-rpm.sh   -   Build an RPM package
+3. local-build.sh       -   Build and install into a local directory tree
 
 
 ### Building
 
-The CopperSpice libraries are built using the CMake build system.
+Once you have successfully run a dependency script you can use one of the build
+scripts to build a package or a local development install.
 
 
 ### Using the CopperSpice Libraries
- * Any C++ application using CopperSpice can be built with CMake or any build system which imports CMake files
- * CopperSpice can be linked directly into any standard C++ application
 
+It is highly recommended you steal CMakeLists.txt from bth the root and src
+directories of RedDiamond if you have never used either CMake or Ninja.
+
+https://sourceforge.net/p/reddiamond/code/ci/master/tree/
+
+You will note that project also has build*.sh files Thieving just a few files
+from that project should jumpstart your use of Ls-Cs.
+
+A possibly simpler starting point would be to install CsScintilla and use some
+of the examples found in copperspice_examples.
+
+https://sourceforge.net/p/csscintilla/csscintilla/ci/default/tree/
 
 ### Documentation
 
-###### Overview
+For now there is only the CopperSpice documentation.
 
-The CopperSpice Overview documentation includes information on building CopperSpice, downloading prebuilt binary
-files, package requirements, setting up an application which links with CopperSpice, migrating to CopperSpice, and
-general configuration information.
+https://www.copperspice.com/documentation-copperspice.html
 
-https://www.copperspice.com/docs/cs_overview/index.html
-
-
-###### API
-
-The API contains full class documentation and multiple tutorials for CopperSpice and is available directly on our
-website and from our download page.
-
-https://www.copperspice.com/docs/cs_api/index.html
-
-
-###### Offline
-
-Both the CS Overview and API documentation can be downloaded for offline use. They are available in a compressed tar file
-or zip format.
-
-https://download.copperspice.com/copperspice/documentation
-
-
-### Major Enhancements
-
-* Reflection
-  * No Meta-Object Compiler is required for generating meta data, all references were removed
-  * The functionality provided by moc was replaced with compile time templates
-  * CopperSpice automatically generates meta data for processing Signals/ Slots and Introspection
-  * A template class can now inherit from QObject with no restrictions on types
-  * Complex data types such as **QMap&lt;QString, int&gt;** can be used for signal or slot arguments
-<!-- -->
-* Enhanced Functionality
-  * CopperSpice makes extensive use of modern C++ features
-    * constexpr, lambda expressions, templates, variadic templates, template variables
-    * move semantics, structured bindings, tuple,  decltype, SFINAE, and type traits
-  * Redesigned all container classes to use the C++ standard library containers, iterators, and algorithms
-  * Refactored all Mutex and Lock classes
-  * CopperSpice includes a majority of the Qt 5 classes
-  * Platform independent plugin system based on standard C++
-  * High DPI Rendering Support
-  * Redesigned pointer classes
-<!-- -->
-* Integration of CsLibGuarded
-  * Used to manage shared data
-<!-- -->
-* Integration of CsSignal
-  * Improved thread aware Signal/Slot delivery
-  * Increased efficiency while maintaining the full Signal/Slot API
-  * Deadlocks in Signal/Slot processing have been eliminated
-<!-- -->
-* Integration of CsString
-  * Improved storage to properly represent Unicode strings
-  * QString8 (UTF-8) and QString16 (UTF-16) classes
-  * Added QStringView, QStringParser, and QRegularExpression
-
-
-### Presentations
-
-Our YouTube channel contains videos about C++, graphics, build systems, CopperSpice, DoxyPress, and other
-topics related to software development.
-
-https://www.youtube.com/copperspice
-
-
-Links to technical presentations recorded at CppCon, CppNow, embBO++, MeetingC++, and code::dive, can be
-found on our presentation page.
-
-https://www.copperspice.com/presentations.html
-
-
-### Authors and Key Contributors
-
-The CS team welcomes contributors of all skill levels. When submitting a pull request please observe our
-Coding Style Guidelines.
-
-https://www.copperspice.com/style_guide/source_code_style.html
-
-
-* **Ansel Sermersheim**
-* **Barbara Geller**
-* **Jan Wilmans**
-* **Tim van Deurzen**
-* **Paul Bendixen**
-* **Peter Bindels**
-* **Mortaro Marcello**
-* **Adam Mensel**
-* **Robin Mills**
-* **Ivailo Monev**
-* **Adam Mensel**
-* **Matan Nassaw**
-* **Jeff Cohen**
-* **Daniel Pfeifer**
-* **Zbigniew Skowron**
-* **Johan Förberg**
-* **Dennis Menschel**
-
+You can download from that site for off-line use. At some point we will gen
+our own documentation. Once signigicant changes happen, like changing of
+string classes, that will be a necessity.
 
 ### License
 
@@ -170,13 +121,13 @@ this project.
 
 ### References
 
- * Website:  https://www.copperspice.com
- * Twitter:  https://twitter.com/copperspice_cpp
- * Email:    info@copperspice.com
+ Website:  https://github.com/RolandHughes/ls-cs/tree/master
 
-<!-- -->
- * Github:   https://github.com/copperspice
+ Users who do not know me may register at the forum for my blog to post
+ comments.
 
-<!-- -->
- * Forum:    https://forum.copperspice.com
- * Journal:  https://journal.copperspice.com
+ https://www.logikalsolutions.com/wordpress/forum/
+
+ I guess you could try messaging me on GitHub too, but I don't hang out
+ there.
+

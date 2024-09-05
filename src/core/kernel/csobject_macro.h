@@ -51,7 +51,7 @@ class QMetaObject;
    {  \
       QMetaObject_T<cs_class> &meta = const_cast<QMetaObject_T<cs_class>&>(cs_class::staticMetaObject()); \
       meta.register_classInfo("plugin_iid", data);                                  \
-      meta.register_classInfo("plugin_version", QString::number(CS_VERSION));       \
+      meta.register_classInfo("plugin_version", QString::number(LS_CS_VERSION));       \
       \
       constexpr int cntValue = CS_TOKENPASTE2(cs_counter_value, __LINE__);          \
       \
@@ -453,7 +453,7 @@ class cs_number<0>
 // do not remove the "{", this is required for part two of the macro
 
 #define CS_SIGNAL_2(signalName, ...) \
-   CsSignal::activate(*this, &cs_class::signalName, ##__VA_ARGS__);                 \
+   LsCsSignal::activate(*this, &cs_class::signalName, ##__VA_ARGS__);                 \
    }  \
    static constexpr const int CS_TOKENPASTE2(cs_counter_value, __LINE__) =          \
          decltype(cs_counter(cs_number<255>{}))::value;                             \
@@ -468,7 +468,7 @@ class cs_number<0>
    }  \
 
 #define CS_SIGNAL_OVERLOAD(signalName, argTypes, ...) \
-   CsSignal::activate(*this, static_cast<void (cs_class::*)argTypes>(&cs_class::signalName), ##__VA_ARGS__); \
+   LsCsSignal::activate(*this, static_cast<void (cs_class::*)argTypes>(&cs_class::signalName), ##__VA_ARGS__); \
    }  \
    static constexpr const int CS_TOKENPASTE2(cs_counter_value, __LINE__) =          \
          decltype(cs_counter(cs_number<255>{}))::value;                             \

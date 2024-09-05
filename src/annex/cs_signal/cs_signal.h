@@ -3,12 +3,12 @@
 * Copyright (c) 2016-2024 Barbara Geller
 * Copyright (c) 2016-2024 Ansel Sermersheim
 *
-* This file is part of CsSignal.
+* This file is part of LsCsSignal.
 *
-* CsSignal is free software, released under the BSD 2-Clause license.
+* LsCsSignal is free software, released under the BSD 2-Clause license.
 * For license details refer to LICENSE provided with this project.
 *
-* CsSignal is distributed in the hope that it will be useful,
+* LsCsSignal is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 *
@@ -34,7 +34,7 @@
 #include "cs_rcu_guarded.h"
 #include "cs_rcu_list.h"
 
-namespace CsSignal {
+namespace LsCsSignal {
 
 enum class ConnectionKind {
    AutoConnection,
@@ -156,7 +156,7 @@ void activate(Sender &sender, void (SignalClass::*signal)(SignalArgTypes...), Ts
    const SignalBase *senderPtr = &sender;
 
    // store the signal data, false indicates the data will not be copied
-   CsSignal::Internal::TeaCup_Data<SignalArgTypes...> dataPack(false, std::forward<Ts>(Vs)...);
+   LsCsSignal::Internal::TeaCup_Data<SignalArgTypes...> dataPack(false, std::forward<Ts>(Vs)...);
 
    SignalBase *priorSender = SlotBase::get_threadLocal_currentSender();
    SlotBase::get_threadLocal_currentSender() = &sender;
@@ -177,7 +177,7 @@ void activate(Sender &sender, void (SignalClass::*signal)(SignalArgTypes...), Ts
       SlotBase *receiver = const_cast<SlotBase *>(connection.receiver);
 
       // const reference to a unique ptr
-      const std::unique_ptr<const CsSignal::Internal::BentoAbstract> &slot_Bento = connection.slotMethod;
+      const std::unique_ptr<const LsCsSignal::Internal::BentoAbstract> &slot_Bento = connection.slotMethod;
 
       bool receiverInSameThread = receiver->compareThreads();
 
@@ -191,7 +191,7 @@ void activate(Sender &sender, void (SignalClass::*signal)(SignalArgTypes...), Ts
 
             // passing true indicates the data will be copied (stored on the heap)
             PendingSlot tempObj(&sender, signal_Bento.clone(), receiver, slot_Bento->clone(),
-                  std::make_unique<CsSignal::Internal::TeaCup_Data<SignalArgTypes...>>(true, std::forward<Ts>(Vs)... ));
+                  std::make_unique<LsCsSignal::Internal::TeaCup_Data<SignalArgTypes...>>(true, std::forward<Ts>(Vs)... ));
 
             receiver->queueSlot(std::move(tempObj), ConnectionKind::QueuedConnection);
 
@@ -199,7 +199,7 @@ void activate(Sender &sender, void (SignalClass::*signal)(SignalArgTypes...), Ts
 
             // passing false indicates the data will not be copied
             PendingSlot tempObj(&sender, signal_Bento.clone(), receiver, slot_Bento->clone(),
-                  std::make_unique<CsSignal::Internal::TeaCup_Data<SignalArgTypes...>>(false, std::forward<Ts>(Vs)... ));
+                  std::make_unique<LsCsSignal::Internal::TeaCup_Data<SignalArgTypes...>>(false, std::forward<Ts>(Vs)... ));
 
             receiver->queueSlot(std::move(tempObj), ConnectionKind::BlockingQueuedConnection);
 

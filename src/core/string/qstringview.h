@@ -42,7 +42,7 @@ namespace Cs {
 #endif
 
 template <typename S>
-class QStringView : public CsString::CsBasicStringView<S>
+class QStringView : public LsCsString::CsBasicStringView<S>
 {
    public:
       using difference_type = typename S::difference_type;
@@ -58,7 +58,7 @@ class QStringView : public CsString::CsBasicStringView<S>
       QStringView() = default;
 
       QStringView(const_iterator begin, const_iterator end)
-         : CsString::CsBasicStringView<S>(begin, end)
+         : LsCsString::CsBasicStringView<S>(begin, end)
       {
       }
 
@@ -74,11 +74,11 @@ class QStringView : public CsString::CsBasicStringView<S>
 
       // methods
       value_type at(size_type n) const {
-         return CsString::CsBasicStringView<S>::at(n);
+         return LsCsString::CsBasicStringView<S>::at(n);
       }
 
       value_type back() const {
-         return CsString::CsBasicStringView<S>::back();
+         return LsCsString::CsBasicStringView<S>::back();
       }
 
       const typename S::storage_type * charData() const {
@@ -92,7 +92,7 @@ class QStringView : public CsString::CsBasicStringView<S>
       }
 
       size_type count() const {
-         return CsString::CsBasicStringView<S>::size();
+         return LsCsString::CsBasicStringView<S>::size();
       }
 
       size_type count(value_type ch, Qt::CaseSensitivity cs = Qt::CaseSensitive) const;
@@ -109,7 +109,7 @@ class QStringView : public CsString::CsBasicStringView<S>
       }
 
       bool empty() const {
-         return CsString::CsBasicStringView<S>::empty();
+         return LsCsString::CsBasicStringView<S>::empty();
       }
 
       template <typename C = value_type>
@@ -122,15 +122,15 @@ class QStringView : public CsString::CsBasicStringView<S>
       bool endsWith(QStringView str, Qt::CaseSensitivity cs = Qt::CaseSensitive) const;
 
       value_type first() const {
-         return CsString::CsBasicStringView<S>::front();
+         return LsCsString::CsBasicStringView<S>::front();
       }
 
       value_type front() const{
-         return CsString::CsBasicStringView<S>::front();
+         return LsCsString::CsBasicStringView<S>::front();
       }
 
       bool isEmpty() const {
-         return CsString::CsBasicStringView<S>::empty();
+         return LsCsString::CsBasicStringView<S>::empty();
       }
 
       // using iterators
@@ -141,7 +141,7 @@ class QStringView : public CsString::CsBasicStringView<S>
       const_iterator indexOfFast(value_type ch, const_iterator from, Qt::CaseSensitivity cs = Qt::CaseSensitive) const {
 
          if (cs == Qt::CaseSensitive) {
-            return CsString::CsBasicStringView<S>::find_fast(ch, from);
+            return LsCsString::CsBasicStringView<S>::find_fast(ch, from);
 
          } else {
             return cs_internal_find_fast(ch, from);
@@ -156,7 +156,7 @@ class QStringView : public CsString::CsBasicStringView<S>
       const_iterator indexOfFast(const S &str, const_iterator from, Qt::CaseSensitivity cs = Qt::CaseSensitive) const {
 
          if (cs == Qt::CaseSensitive) {
-            return CsString::CsBasicStringView<S>::find_fast(str, from);
+            return LsCsString::CsBasicStringView<S>::find_fast(str, from);
 
          } else {
             return cs_internal_find_fast(str, from);
@@ -166,7 +166,7 @@ class QStringView : public CsString::CsBasicStringView<S>
       const_iterator indexOfFast(QStringView<S> str, const_iterator from, Qt::CaseSensitivity cs = Qt::CaseSensitive) const {
 
          if (cs == Qt::CaseSensitive) {
-            return CsString::CsBasicStringView<S>::find_fast(str, from);
+            return LsCsString::CsBasicStringView<S>::find_fast(str, from);
 
          } else {
             return cs_internal_find_fast(str, from);
@@ -180,7 +180,7 @@ class QStringView : public CsString::CsBasicStringView<S>
       const_iterator lastIndexOfFast(value_type ch, const_iterator from, Qt::CaseSensitivity cs = Qt::CaseSensitive) const
       {
          if (cs == Qt::CaseSensitive) {
-            return CsString::CsBasicStringView<S>::rfind_fast(ch, from);
+            return LsCsString::CsBasicStringView<S>::rfind_fast(ch, from);
 
          } else {
             return cs_internal_rfind_fast(ch, from);
@@ -195,7 +195,7 @@ class QStringView : public CsString::CsBasicStringView<S>
       const_iterator lastIndexOfFast(const S &str, const_iterator from, Qt::CaseSensitivity cs = Qt::CaseSensitive) const {
 
          if (cs == Qt::CaseSensitive) {
-            return CsString::CsBasicStringView<S>::rfind_fast(str, from);
+            return LsCsString::CsBasicStringView<S>::rfind_fast(str, from);
 
          } else {
             return cs_internal_rfind_fast(str, from);
@@ -205,7 +205,7 @@ class QStringView : public CsString::CsBasicStringView<S>
       const_iterator lastIndexOfFast(QStringView<S> str, const_iterator from, Qt::CaseSensitivity cs = Qt::CaseSensitive) const {
 
          if (cs == Qt::CaseSensitive) {
-            return CsString::CsBasicStringView<S>::rfind_fast(str, from);
+            return LsCsString::CsBasicStringView<S>::rfind_fast(str, from);
 
          } else {
             return cs_internal_rfind_fast(str, from);
@@ -213,20 +213,20 @@ class QStringView : public CsString::CsBasicStringView<S>
       }
 
       value_type last() const {
-         return CsString::CsBasicStringView<S>::back();
+         return LsCsString::CsBasicStringView<S>::back();
       }
 
       QStringView<S> left(size_type numOfChars) const;
 
       size_type length() const {
-         return CsString::CsBasicStringView<S>::size();
+         return LsCsString::CsBasicStringView<S>::size();
       }
 
       QStringView<S> mid(size_type indexStart, size_type numOfChars = -1) const;
       QStringView<S> right(size_type numOfChars) const;
 
       size_type size() const{
-         return CsString::CsBasicStringView<S>::size();
+         return LsCsString::CsBasicStringView<S>::size();
       }
 
       size_type size_storage() const{
@@ -282,59 +282,59 @@ class QStringView : public CsString::CsBasicStringView<S>
 
       // iterators
       iterator begin() {
-         return CsString::CsBasicStringView<S>::begin();
+         return LsCsString::CsBasicStringView<S>::begin();
       }
 
       const_iterator begin() const {
-         return CsString::CsBasicStringView<S>::cbegin();
+         return LsCsString::CsBasicStringView<S>::cbegin();
       }
 
       const_iterator cbegin() const {
-         return CsString::CsBasicStringView<S>::cbegin();
+         return LsCsString::CsBasicStringView<S>::cbegin();
       }
 
       const_iterator constBegin() const {
-         return CsString::CsBasicStringView<S>::cbegin();
+         return LsCsString::CsBasicStringView<S>::cbegin();
       }
 
       iterator end() {
-         return CsString::CsBasicStringView<S>::end();
+         return LsCsString::CsBasicStringView<S>::end();
       }
 
       const_iterator end() const {
-         return CsString::CsBasicStringView<S>::cend();
+         return LsCsString::CsBasicStringView<S>::cend();
       }
 
       const_iterator cend() const {
-         return CsString::CsBasicStringView<S>::cend();
+         return LsCsString::CsBasicStringView<S>::cend();
       }
 
       const_iterator constEnd() const {
-         return CsString::CsBasicStringView<S>::cend();
+         return LsCsString::CsBasicStringView<S>::cend();
       }
 
       reverse_iterator rbegin()  {
-         return CsString::CsBasicStringView<S>::rbegin();
+         return LsCsString::CsBasicStringView<S>::rbegin();
       }
 
       const_reverse_iterator rbegin() const {
-         return CsString::CsBasicStringView<S>::rbegin();
+         return LsCsString::CsBasicStringView<S>::rbegin();
       }
 
       reverse_iterator rend()  {
-         return CsString::CsBasicStringView<S>::rend();
+         return LsCsString::CsBasicStringView<S>::rend();
       }
 
       const_reverse_iterator rend() const {
-         return CsString::CsBasicStringView<S>::rend();
+         return LsCsString::CsBasicStringView<S>::rend();
       }
 
       const_reverse_iterator crbegin() const {
-         return CsString::CsBasicStringView<S>::crbegin();
+         return LsCsString::CsBasicStringView<S>::crbegin();
       }
 
       const_reverse_iterator crend() const {
-         return CsString::CsBasicStringView<S>::crend();
+         return LsCsString::CsBasicStringView<S>::crend();
       }
 
    private:
@@ -925,7 +925,7 @@ QByteArray QStringView<S>::toUtf8() const
    QByteArray retval;
 
    for (value_type ch : *this) {
-      CsString::utf8::insert(retval, retval.cend(), ch);
+      LsCsString::utf8::insert(retval, retval.cend(), ch);
    }
 
    return retval;
@@ -977,7 +977,7 @@ QStringView<S> QStringView<S>::trimmed() const
 template <typename S>
 typename QStringView<S>::value_type QStringView<S>::operator[](size_type n) const
 {
-   return CsString::CsBasicStringView<S>::at(n);
+   return LsCsString::CsBasicStringView<S>::at(n);
 }
 
 template <typename S>

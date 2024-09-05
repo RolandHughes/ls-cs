@@ -10,12 +10,12 @@ list(APPEND SQL_INCLUDES
 )
 
 if (SQLite3_FOUND)
-   target_sources(CsSql
+   target_sources(Ls-CsSql
       PRIVATE
       ${CMAKE_SOURCE_DIR}/src/plugins/sqldrivers/sqlite/qsql_sqlite.cpp
    )
 
-   target_link_libraries(CsSql
+   target_link_libraries(Ls-CsSql
       PRIVATE
       SQLite::SQLite3
    )
@@ -25,7 +25,7 @@ else()
       ${CMAKE_SOURCE_DIR}/src/3rdparty/sqlite/sqlite3.h
    )
 
-   target_sources(CsSql
+   target_sources(Ls-CsSql
       PRIVATE
       ${CMAKE_SOURCE_DIR}/src/3rdparty/sqlite/sqlite3.c
       ${CMAKE_SOURCE_DIR}/src/plugins/sqldrivers/sqlite/qsql_sqlite.cpp

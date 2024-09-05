@@ -1,5 +1,5 @@
 add_executable(uic${TOOLS_SUFFIX} "")
-add_executable(CopperSpice::uic ALIAS uic${TOOLS_SUFFIX})
+add_executable(Ls-Cs::uic ALIAS uic${TOOLS_SUFFIX})
 
 add_definitions(
    -DQT_UIC
@@ -7,7 +7,7 @@ add_definitions(
 )
 
 set(EXTRA_UIC_LIBS
-   CsCore
+   Ls-CsCore
 )
 
 set(EXTRA_UIC_CXXFLAGS)
@@ -99,13 +99,13 @@ set_target_properties(uic${TOOLS_SUFFIX}
 if(BUILDING_RPM OR BUILDING_DEBIAN)
     install(
        TARGETS uic${TOOLS_SUFFIX}
-       EXPORT CopperSpiceBinaryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
-       DESTINATION ${CMAKE_INSTALL_LIBDIR}/copperspice/bin
+       EXPORT Ls-CsBinaryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
+       DESTINATION ${CMAKE_INSTALL_LIBDIR}Ls-Cs::bin
     )
 else()
     install(
        TARGETS uic${TOOLS_SUFFIX}
-       EXPORT CopperSpiceBinaryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
+       EXPORT Ls-CsBinaryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
        DESTINATION ${CMAKE_INSTALL_BINDIR}
     )
 endif()

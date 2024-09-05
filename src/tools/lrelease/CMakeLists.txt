@@ -1,9 +1,9 @@
 add_executable(lrelease${TOOLS_SUFFIX} "")
-add_executable(CopperSpice::lrelease ALIAS lrelease${TOOLS_SUFFIX})
+add_executable(Ls-Cs::lrelease ALIAS lrelease${TOOLS_SUFFIX})
 
 set(EXTRA_LRELEASE_LIBS
-   CsCore
-   CsXml
+   Ls-CsCore
+   Ls-CsXml
 )
 
 set(EXTRA_LRELEASE_CXXFLAGS)
@@ -60,13 +60,13 @@ set_target_properties(lrelease${TOOLS_SUFFIX}
 if(BUILDING_RPM OR BUILDING_DEBIAN)
     install(
        TARGETS lrelease${TOOLS_SUFFIX}
-       EXPORT CopperSpiceBinaryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
-       DESTINATION ${CMAKE_INSTALL_LIBDIR}/copperspice/bin
+       EXPORT Ls-CsBinaryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
+       DESTINATION ${CMAKE_INSTALL_LIBDIR}Ls-Cs::bin
     )
 else()
     install(
        TARGETS lrelease${TOOLS_SUFFIX}
-       EXPORT CopperSpiceBinaryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
+       EXPORT Ls-CsBinaryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
        DESTINATION ${CMAKE_INSTALL_BINDIR}
     )
 endif()

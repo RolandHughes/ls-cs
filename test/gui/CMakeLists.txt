@@ -34,8 +34,8 @@ if (CS_INSTALL_MODE STREQUAL "Deploy" AND CMAKE_SYSTEM_NAME MATCHES "Windows")
       "ECHO    Running CsGuiTest may require some of the following libraries. \n"
       "ECHO    Either modify your PATH or copy these libraries to the current folder. \n"
       "ECHO:               \n"
-      "ECHO CsSignal       \n"
-      "ECHO CsString"
+      "ECHO LsCsSignal       \n"
+      "ECHO LsCsString"
    )
 
    file(WRITE ${CMAKE_BINARY_DIR}/bin/test/run_guitest.bat

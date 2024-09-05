@@ -137,7 +137,7 @@ list(APPEND GUI_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/widgets/qtoolbarseparator_p.h
 )
 
-target_sources(CsGui
+target_sources(Ls-CsGui
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/widgets/qbuttongroup.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/widgets/qcalendarwidget.cpp
@@ -191,7 +191,7 @@ target_sources(CsGui
 )
 
 if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
-   target_sources(CsGui
+   target_sources(Ls-CsGui
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/widgets/qmaccocoaviewcontainer_mac.mm
       ${CMAKE_CURRENT_SOURCE_DIR}/widgets/qmacnativewidget_mac.mm

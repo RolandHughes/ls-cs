@@ -95,7 +95,7 @@ list(APPEND GUI_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/painting/qwidgetbackingstore_p.h
 )
 
-target_sources(CsGui
+target_sources(Ls-CsGui
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/painting/qbezier.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/painting/qblendfunctions.cpp
@@ -142,7 +142,7 @@ target_sources(CsGui
 )
 
 if(CMAKE_SYSTEM_PROCESSOR MATCHES "arm")
-   target_sources(CsGui
+   target_sources(Ls-CsGui
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/painting/qdrawhelper_neon.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/painting/qdrawhelper_neon_asm.S

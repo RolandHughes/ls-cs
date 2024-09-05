@@ -36,7 +36,7 @@ class QString16;
 
 inline uint qHash(const QChar32 &key, uint seed = 0);
 
-class Q_CORE_EXPORT QChar32 : public CsString::CsChar
+class Q_CORE_EXPORT QChar32 : public LsCsString::CsChar
 {
   public:
    enum CombiningClass {
@@ -397,31 +397,31 @@ class Q_CORE_EXPORT QChar32 : public CsString::CsChar
    QChar32() = default;
 
    explicit QChar32(char c)
-      : CsString::CsChar(c)
+      : LsCsString::CsChar(c)
    { }
 
    QChar32(char32_t c)
-      : CsString::CsChar(c)
+      : LsCsString::CsChar(c)
    { }
 
    QChar32(char16_t c)
-      : CsString::CsChar(c)
+      : LsCsString::CsChar(c)
    { }
 
    QChar32(int c)
-      : CsString::CsChar(c)
+      : LsCsString::CsChar(c)
    { }
 
-   QChar32(CsString::CsChar c)
-      : CsString::CsChar(c)
+   QChar32(LsCsString::CsChar c)
+      : LsCsString::CsChar(c)
    { }
 
    QChar32(SpecialCharacter c)
-      : CsString::CsChar(static_cast<char32_t>(c))
+      : LsCsString::CsChar(static_cast<char32_t>(c))
    { }
 
    QChar32(const QChar32 &other)
-      : CsString::CsChar(other)
+      : LsCsString::CsChar(other)
    { }
 
    ~QChar32() = default;
@@ -501,31 +501,31 @@ class Q_CORE_EXPORT QChar32 : public CsString::CsChar
    QString8 toTitleCase() const;
 
    uint32_t unicode() const {
-      return CsString::CsChar::unicode();
+      return LsCsString::CsChar::unicode();
    }
 
    UnicodeVersion unicodeVersion() const;
    static UnicodeVersion currentUnicodeVersion();
 
    QChar32 &operator=(QChar32 c) & {
-      CsString::CsChar::operator=(c);
+      LsCsString::CsChar::operator=(c);
       return *this;
    }
 };
 
-class Q_CORE_EXPORT QChar32Arrow : public CsString::CsCharArrow
+class Q_CORE_EXPORT QChar32Arrow : public LsCsString::CsCharArrow
 {
   public:
-   QChar32Arrow (CsString::CsCharArrow c)
-      : CsString::CsCharArrow(c)
+   QChar32Arrow (LsCsString::CsCharArrow c)
+      : LsCsString::CsCharArrow(c)
    {
    }
 
    const QChar32 *operator->() const {
-      static_assert(std::is_standard_layout<CsString::CsChar>::value, "Invalid reinterpret_cast for QChar32Arrow");
-      static_assert(sizeof(QChar32) == sizeof(CsString::CsChar), "Invalid reinterpret_cast for QChar32Arrow");
+      static_assert(std::is_standard_layout<LsCsString::CsChar>::value, "Invalid reinterpret_cast for QChar32Arrow");
+      static_assert(sizeof(QChar32) == sizeof(LsCsString::CsChar), "Invalid reinterpret_cast for QChar32Arrow");
 
-      return reinterpret_cast<const QChar32 *>(CsString::CsCharArrow::operator->());
+      return reinterpret_cast<const QChar32 *>(LsCsString::CsCharArrow::operator->());
    }
 };
 

@@ -30,7 +30,7 @@ class QSemaphore;
 class Q_CORE_EXPORT CSMetaCallEvent : public QEvent
 {
  public:
-   CSMetaCallEvent(const CsSignal::Internal::BentoAbstract *bento, const CsSignal::Internal::TeaCupAbstract *dataPack,
+   CSMetaCallEvent(const LsCsSignal::Internal::BentoAbstract *bento, const LsCsSignal::Internal::TeaCupAbstract *dataPack,
          const QObject *sender, int signal_index, QSemaphore *semaphore = nullptr);
 
    ~CSMetaCallEvent();
@@ -40,8 +40,8 @@ class Q_CORE_EXPORT CSMetaCallEvent : public QEvent
    int signal_index() const;
 
  private:
-   const CsSignal::Internal::BentoAbstract *m_bento;
-   const CsSignal::Internal::TeaCupAbstract *m_dataPack;
+   const LsCsSignal::Internal::BentoAbstract *m_bento;
+   const LsCsSignal::Internal::TeaCupAbstract *m_dataPack;
 
    const QObject *m_sender;
    QSemaphore *m_semaphore;

@@ -210,7 +210,7 @@ int main(int argc, char **argv)
          continue;
 
       } else if (! strcmp(argv[i], "-version")) {
-         printOut(QString("lrelease version %1\n").formatArg(CS_VERSION_STR));
+         printOut(QString("lrelease version %1\n").formatArg(LS_CS_VERSION_STR));
          return 0;
 
       } else if (! strcmp(argv[i], "-qm")) {

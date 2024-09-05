@@ -18,7 +18,7 @@ list(APPEND GUI_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/effects/qgraphicseffect_p.h
 )
 
-target_sources(CsGui
+target_sources(Ls-CsGui
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/effects/qgraphicseffect.cpp
 )

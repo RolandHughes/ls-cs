@@ -1,9 +1,9 @@
-add_library(CsMultimedia SHARED "")
-add_library(CopperSpice::CsMultimedia ALIAS CsMultimedia)
+add_library(Ls-CsMultimedia SHARED "")
+add_library(Ls-Cs::Ls-CsMultimedia ALIAS Ls-CsMultimedia)
 
-set_target_properties(CsMultimedia PROPERTIES OUTPUT_NAME CsMultimedia${BUILD_ABI})
+set_target_properties(Ls-CsMultimedia PROPERTIES OUTPUT_NAME Ls-CsMultimedia${BUILD_ABI})
 
-target_compile_definitions(CsMultimedia
+target_compile_definitions(Ls-CsMultimedia
    PRIVATE
    -DQT_BUILD_MULTIMEDIA_LIB
 )
@@ -11,7 +11,7 @@ target_compile_definitions(CsMultimedia
 set(EXTRA_MULTIMEDIA_CXXFLAGS)
 set(EXTRA_MULTIMEDIA_LDFLAGS)
 
-target_include_directories(CsMultimedia
+target_include_directories(Ls-CsMultimedia
    PUBLIC
    $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include/QtMultimedia>
    $<INSTALL_INTERFACE:include/QtMultimedia>
@@ -60,42 +60,42 @@ endif()
 function_variable_fixup("${EXTRA_MULTIMEDIA_CXXFLAGS}" EXTRA_MULTIMEDIA_CXXFLAGS)
 function_variable_fixup("${EXTRA_MULTIMEDIA_LDFLAGS}"  EXTRA_MULTIMEDIA_LDFLAGS)
 
-target_sources(CsMultimedia
+target_sources(Ls-CsMultimedia
    PRIVATE
    ${MULTIMEDIA_INCLUDES}
 )
 
-target_link_libraries(CsMultimedia
+target_link_libraries(Ls-CsMultimedia
    PUBLIC
-   CsCore
-   CsGui
-   CsNetwork
-   CsOpenGL
+   Ls-CsCore
+   Ls-CsGui
+   Ls-CsNetwork
+   Ls-CsOpenGL
 )
 
-target_include_directories(CsMultimedia
+target_include_directories(Ls-CsMultimedia
    PUBLIC
    ${GSTREAMER_INCLUDE_DIRS}
 )
 
-set_target_properties(CsMultimedia
+set_target_properties(Ls-CsMultimedia
    PROPERTIES
    COMPILE_FLAGS ${EXTRA_MULTIMEDIA_CXXFLAGS}
    LINK_FLAGS ${EXTRA_MULTIMEDIA_LDFLAGS}
 )
 
-function_generate_resources(CsMultimedia)
+function_generate_resources(Ls-CsMultimedia)
 
 macro_generate_package(
-   CsMultimedia
+   Ls-CsMultimedia
    QtMultimedia
    "${EXTRA_MULTIMEDIA_CXXFLAGS}"
-   "CsCore CsGui"
+   "Ls-CsCore Ls-CsGui"
 )
 
 install(
-    TARGETS CsMultimedia
-    EXPORT CopperSpiceLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
+    TARGETS Ls-CsMultimedia
+    EXPORT Ls-CsLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}

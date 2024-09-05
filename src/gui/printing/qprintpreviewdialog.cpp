@@ -351,7 +351,7 @@ void QPrintPreviewDialogPrivate::init(QPrinter *_printer)
 
 static inline void qt_setupActionIcon(QAction *action, const QString &name)
 {
-   static const QString imagePrefix(":/copperspice/printing/images/");
+   static const QString imagePrefix(":ls-cs/printing/images/");
 
    QIcon icon;
    icon.addFile(imagePrefix + name + "-24.png", QSize(24, 24));

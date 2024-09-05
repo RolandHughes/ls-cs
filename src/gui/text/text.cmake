@@ -141,7 +141,7 @@ list(APPEND GUI_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/text/qzipwriter_p.h
 )
 
-target_sources(CsGui
+target_sources(Ls-CsGui
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/text/qcssparser.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/text/qfont.cpp
@@ -286,7 +286,7 @@ target_sources(CsGui
 )
 
 if (GTK2_FOUND)
-   target_sources(CsGui
+   target_sources(Ls-CsGui
       PRIVATE
       ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-glib.cc
       ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-gobject-structs.cc
@@ -294,12 +294,12 @@ if (GTK2_FOUND)
 endif()
 
 if (CMAKE_SYSTEM_NAME MATCHES "Windows")
-   target_sources(CsGui
+   target_sources(Ls-CsGui
       PRIVATE
       ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/src/base/ftsystem.c
    )
 else()
-   target_sources(CsGui
+   target_sources(Ls-CsGui
       PRIVATE
       ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/src/builds/unix/ftsystem.c
    )

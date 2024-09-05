@@ -1,7 +1,7 @@
-add_library(CsXmlPatterns SHARED "")
-add_library(CopperSpice::CsXmlPatterns ALIAS CsXmlPatterns)
+add_library(Ls-CsXmlPatterns SHARED "")
+add_library(Ls-Cs::Ls-CsXmlPatterns ALIAS Ls-CsXmlPatterns)
 
-set_target_properties(CsXmlPatterns PROPERTIES OUTPUT_NAME CsXmlPatterns${BUILD_ABI})
+set_target_properties(Ls-CsXmlPatterns PROPERTIES OUTPUT_NAME Ls-CsXmlPatterns${BUILD_ABI})
 
 add_definitions(
    -DQT_BUILD_XMLPATTERNS_LIB
@@ -10,7 +10,7 @@ add_definitions(
 set(EXTRA_XMLPATTERNS_CXXFLAGS)
 set(EXTRA_XMLPATTERNS_LDFLAGS)
 
-target_include_directories(CsXmlPatterns
+target_include_directories(Ls-CsXmlPatterns
    PUBLIC
    $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include/QtXmlPatterns>
    $<INSTALL_INTERFACE:include/QtXmlPatterns>
@@ -57,35 +57,35 @@ macro_generate_misc("${XMLPATTERNS_INCLUDES}" QtXmlPatterns)
 function_variable_fixup("${EXTRA_XMLPATTERNS_CXXFLAGS}" EXTRA_XMLPATTERNS_CXXFLAGS)
 function_variable_fixup("${EXTRA_XMLPATTERNS_LDFLAGS}" EXTRA_XMLPATTERNS_LDFLAGS)
 
-target_sources(CsXmlPatterns
+target_sources(Ls-CsXmlPatterns
    PRIVATE
    ${XMLPATTERNS_INCLUDES}
 )
 
-target_link_libraries(CsXmlPatterns
+target_link_libraries(Ls-CsXmlPatterns
    PRIVATE
-   CsCore
-   CsNetwork
+   Ls-CsCore
+   Ls-CsNetwork
 )
 
-set_target_properties(CsXmlPatterns
+set_target_properties(Ls-CsXmlPatterns
    PROPERTIES
    COMPILE_FLAGS ${EXTRA_XMLPATTERNS_CXXFLAGS}
    LINK_FLAGS ${EXTRA_XMLPATTERNS_LDFLAGS}
 )
 
-function_generate_resources(CsXmlPatterns)
+function_generate_resources(Ls-CsXmlPatterns)
 
 macro_generate_package(
-   CsXmlPatterns
+   Ls-CsXmlPatterns
    QtXmlPatterns
    "${EXTRA_XMLPATTERNS_CXXFLAGS}"
-   "CsCore CsNetwork"
+   "Ls-CsCore Ls-CsNetwork"
 )
 
 install(
-    TARGETS CsXmlPatterns
-    EXPORT CopperSpiceLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
+    TARGETS Ls-CsXmlPatterns
+    EXPORT Ls-CsLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}

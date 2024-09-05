@@ -8,15 +8,15 @@ list(APPEND PLATFORMS_XCB_GLX_PRIVATE_INCLUDES
 )
 
 if(BUILD_PLATFORMS_XCB_PLUGIN AND XCB_GLX_LIB)
-   add_library(CsGuiXcb_Glx MODULE "")
-   add_library(CopperSpice::CsGuiXcb_Glx ALIAS CsGuiXcb_Glx)
+   add_library(Ls-CsGuiXcb_Glx MODULE "")
+   add_library(Ls-Cs::Ls-CsGuiXcb_Glx ALIAS Ls-CsGuiXcb_Glx)
 
-   set_target_properties(CsGuiXcb_Glx PROPERTIES
-      OUTPUT_NAME CsGuiXcb_Glx${BUILD_ABI} PREFIX ""
+   set_target_properties(Ls-CsGuiXcb_Glx PROPERTIES
+      OUTPUT_NAME Ls-CsGuiXcb_Glx${BUILD_ABI} PREFIX ""
       INSTALL_RPATH "$ORIGIN/.."
    )
 
-   target_sources(CsGuiXcb_Glx
+   target_sources(Ls-CsGuiXcb_Glx
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/xcb/glx/qglx_convenience.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/xcb/glx/qglx_context.cpp
@@ -26,22 +26,22 @@ if(BUILD_PLATFORMS_XCB_PLUGIN AND XCB_GLX_LIB)
       ${CMAKE_CURRENT_SOURCE_DIR}/xcb/glx/qxcb_glx_main.cpp
    )
 
-   target_link_libraries(CsGuiXcb_Glx
+   target_link_libraries(Ls-CsGuiXcb_Glx
       PRIVATE
-      CsCore
-      CsGui
-      CsXcbSupport
+      Ls-CsCore
+      Ls-CsGui
+      Ls-CsXcbSupport
       ${XCB_LIB}
       ${XCB_GLX_LIB}
       ${X11_X11_LIB}
    )
 
-   target_include_directories(CsGuiXcb_Glx
+   target_include_directories(Ls-CsGuiXcb_Glx
       PRIVATE
       ${CMAKE_SOURCE_DIR}/src/plugins/platforms/xcb/glx
    )
 
-   target_compile_definitions(CsGuiXcb_Glx
+   target_compile_definitions(Ls-CsGuiXcb_Glx
       PRIVATE
       -DQT_PLUGIN
       -DQT_NO_XRENDER
@@ -52,8 +52,8 @@ if(BUILD_PLATFORMS_XCB_PLUGIN AND XCB_GLX_LIB)
    )
 
    if(BUILDING_RPM OR BUILDING_DEBIAN)
-      install(TARGETS CsGuiXcb_Glx DESTINATION ${CMAKE_INSTALL_LIBDIR}/copperspice/plugins/xcbglintegrations)
+      install(TARGETS Ls-CsGuiXcb_Glx DESTINATION ${CMAKE_INSTALL_LIBDIR}/ls-cs/plugins/xcbglintegrations)
    else()
-      install(TARGETS CsGuiXcb_Glx DESTINATION ${CMAKE_INSTALL_LIBDIR})
+      install(TARGETS Ls-CsGuiXcb_Glx DESTINATION ${CMAKE_INSTALL_LIBDIR})
    endif()
 endif()

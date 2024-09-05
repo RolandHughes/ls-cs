@@ -63,7 +63,7 @@ QMetaMethod::Attributes QMetaMethod::attributes() const
    return m_attributes;
 }
 
-bool QMetaMethod::compare(const CsSignal::Internal::BentoAbstract &method) const
+bool QMetaMethod::compare(const LsCsSignal::Internal::BentoAbstract &method) const
 {
    bool ok = false;
 

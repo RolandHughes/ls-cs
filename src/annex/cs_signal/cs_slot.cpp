@@ -3,12 +3,12 @@
 * Copyright (c) 2016-2024 Barbara Geller
 * Copyright (c) 2016-2024 Ansel Sermersheim
 *
-* This file is part of CsSignal.
+* This file is part of LsCsSignal.
 *
-* CsSignal is free software, released under the BSD 2-Clause license.
+* LsCsSignal is free software, released under the BSD 2-Clause license.
 * For license details refer to LICENSE provided with this project.
 *
-* CsSignal is distributed in the hope that it will be useful,
+* LsCsSignal is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 *
@@ -19,15 +19,15 @@
 #include "cs_signal.h"
 #include "cs_slot.h"
 
-CsSignal::SlotBase::SlotBase()
+LsCsSignal::SlotBase::SlotBase()
 {
 }
 
-CsSignal::SlotBase::SlotBase(const SlotBase &)
+LsCsSignal::SlotBase::SlotBase(const SlotBase &)
 {
 }
 
-CsSignal::SlotBase::~SlotBase()
+LsCsSignal::SlotBase::~SlotBase()
 {
    try {
       // clean up possible sender connections
@@ -54,34 +54,34 @@ CsSignal::SlotBase::~SlotBase()
    }
 }
 
-CsSignal::SignalBase *&CsSignal::SlotBase::get_threadLocal_currentSender()
+LsCsSignal::SignalBase *&LsCsSignal::SlotBase::get_threadLocal_currentSender()
 {
 #ifdef __APPLE__
-   static __thread CsSignal::SignalBase *threadLocal_currentSender = nullptr;
+   static __thread LsCsSignal::SignalBase *threadLocal_currentSender = nullptr;
 #else
-   static thread_local CsSignal::SignalBase *threadLocal_currentSender = nullptr;
+   static thread_local LsCsSignal::SignalBase *threadLocal_currentSender = nullptr;
 #endif
 
    return threadLocal_currentSender;
 }
 
-bool CsSignal::SlotBase::compareThreads() const
+bool LsCsSignal::SlotBase::compareThreads() const
 {
    return true;
 }
 
-void CsSignal::SlotBase::queueSlot(PendingSlot data, ConnectionKind)
+void LsCsSignal::SlotBase::queueSlot(PendingSlot data, ConnectionKind)
 {
    // calls the slot immediately
    data();
 }
 
-CsSignal::SignalBase *CsSignal::SlotBase::sender() const
+LsCsSignal::SignalBase *LsCsSignal::SlotBase::sender() const
 {
    return get_threadLocal_currentSender();
 }
 
-std::set<CsSignal::SignalBase *> CsSignal::SlotBase::internal_senderList() const
+std::set<LsCsSignal::SignalBase *> LsCsSignal::SlotBase::internal_senderList() const
 {
    std::set<SignalBase *> retval;
 
@@ -94,7 +94,7 @@ std::set<CsSignal::SignalBase *> CsSignal::SlotBase::internal_senderList() const
    return retval;
 }
 
-CsSignal::PendingSlot::PendingSlot(SignalBase *sender, std::unique_ptr<Internal::BentoAbstract> signal_Bento,
+LsCsSignal::PendingSlot::PendingSlot(SignalBase *sender, std::unique_ptr<Internal::BentoAbstract> signal_Bento,
                   SlotBase *receiver, std::unique_ptr<Internal::BentoAbstract> slot_Bento,
                   std::unique_ptr<Internal::TeaCupAbstract> teaCup_Data)
    : m_sender(sender), m_signal_Bento(std::move(signal_Bento)), m_receiver(receiver),
@@ -102,7 +102,7 @@ CsSignal::PendingSlot::PendingSlot(SignalBase *sender, std::unique_ptr<Internal:
 {
 }
 
-void CsSignal::PendingSlot::operator()() const
+void LsCsSignal::PendingSlot::operator()() const
 {
    // invoke the slot
    m_slot_Bento->invoke(m_receiver, m_teaCup_Data.get());

@@ -1,9 +1,9 @@
-add_library(CsScriptTools SHARED "")
-add_library(CopperSpice::CsScriptTools ALIAS CsScriptTools)
+add_library(Ls-CsScriptTools SHARED "")
+add_library(Ls-Cs::Ls-CsScriptTools ALIAS Ls-CsScriptTools)
 
-set_target_properties(CsScriptTools PROPERTIES OUTPUT_NAME CsScriptTools${BUILD_ABI})
+set_target_properties(Ls-CsScriptTools PROPERTIES OUTPUT_NAME Ls-CsScriptTools${BUILD_ABI})
 
-target_add_definitions(CsScriptTools
+target_add_definitions(Ls-CsScriptTools
    PRIVATE
    -DQT_BUILD_SCRIPTTOOLS_LIB
 )
@@ -31,13 +31,13 @@ macro_generate_misc("${SCRIPTTOOLS_INCLUDES}" QtScriptTools)
 function_variable_fixup("${EXTRA_SCRIPTTOOLS_CXXFLAGS}" EXTRA_SCRIPTTOOLS_CXXFLAGS)
 function_variable_fixup("${EXTRA_SCRIPTTOOLS_LDFLAGS}"  EXTRA_SCRIPTTOOLS_LDFLAGS)
 
-target_link_libraries(CsScriptTools
+target_link_libraries(Ls-CsScriptTools
    PRIVATE
-   CsCore
-   CsScript
+   Ls-CsCore
+   Ls-CsScript
 )
 
-set_target_properties(CsScriptTools
+set_target_properties(Ls-CsScriptTools
    PROPERTIES
    COMPILE_FLAGS ${EXTRA_SCRIPTTOOLS_CXXFLAGS}
    LINK_FLAGS ${EXTRA_SCRIPTTOOLS_LDFLAGS}
@@ -46,15 +46,15 @@ set_target_properties(CsScriptTools
 function_generate_resources("${SCRIPTTOOLS_SOURCES}")
 
 macro_generate_package(
-   CsScriptTools
+   Ls-CsScriptTools
    QtScriptTools
    "${EXTRA_SCRIPTTOOLS_CXXFLAGS}"
-   "CsCore CsGui"
+   "Ls-CsCore Ls-CsGui"
 )
 
 install(
-    TARGETS CsScriptTools
-    EXPORT CopperSpiceLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
+    TARGETS Ls-CsScriptTools
+    EXPORT Ls-CsLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}

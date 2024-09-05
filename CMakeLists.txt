@@ -14,17 +14,22 @@ endif()
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
 
-project(copperspice)
+project(ls-cs)
 
 set(BUILD_MAJOR "1")
 set(BUILD_MINOR "9")
 set(BUILD_MICRO "1")
 
-# used to control RPATH and cmake/pc variables when building RPM
+# used to control cmake/pc variables when building
+# installation packages
+#
 option(BUILDING_RPM "Are we building RPM" OFF)
 option(BUILDING_DEBIAN "Are we building DEBIAN" OFF)
 
 set(BUILD_ABI ${BUILD_MAJOR}.${BUILD_MINOR})
+
+# We don't want to collide with Qt binary names
+set(TOOLS_SUFFIX "_ls")
 
 # enable catch2 unit tests in config
 option(BUILD_TESTS "Enables building the Catch2 Unit Tests" OFF)
@@ -46,30 +51,28 @@ include(TestLargeFiles)
 # location for install or package
 if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
    include(GNUInstallDirs)
-
+   # MAC is not tested as of 20240904
    # rpath used for rcc and uic when compiling a user application
-   file(RELATIVE_PATH CS_BIN_RPATH "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}"
-                                   "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
+   #file(RELATIVE_PATH CS_BIN_RPATH "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}"
+   #                                "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}")
 
-   set(CMAKE_INSTALL_RPATH "@executable_path/${CS_BIN_RPATH}")
+   set(CMAKE_INSTALL_RPATH "@executable_path")
 
 elseif (CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
    include(GNUInstallDirs)
 
-   # rpath used for rcc and uic when compiling a user application
-   file(RELATIVE_PATH CS_BIN_RPATH "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}"
-                                   "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/copperspice/bin")
+   #;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   #  Now that we are naming binaries appropriately and putting them in
+   #  standard locations, all of this RPATH stuff trying to find binaries
+   #  underneath the lib directory tree is unnecessary.
+   #
+   #  One single RPATH definition works for all. Really only need RPATH
+   #  for a development install into a non-system directory.
+   #;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+     
+   set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}/:$ORIGIN/..")
+   set(CMAKE_INSTALL_INCLUDEDIR "${CMAKE_INSTALL_PREFIX}/include/${CMAKE_PROJECT_NAME}")
 
-   if (BUILDING_RPM OR BUILDING_DEBIAN)
-       set(CMAKE_INSTALL_RPATH "$ORIGIN/${CS_BIN_RPATH}:$ORIGIN/..")
-   else()
-       set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/copperspice/bin:$ORIGIN/${CS_BIN_RPATH}:$ORIGIN/..")
-   endif()
-   set(CMAKE_INSTALL_INCLUDEDIR "${CMAKE_INSTALL_PREFIX}/include/copperspice")
-
-   message( STATUS, "CMAKE_INSTALL_RPATH   ${CMAKE_INSTALL_RPATH}" )
-   message( STATUS, "CS_BIN_RPATH          ${CS_BIN_RPATH}" )
-   message( STATUS, "CMAKE_INSTALL_BINDIR  ${CMAKE_INSTALL_BINDIR}" )
 
 elseif (CMAKE_SYSTEM_NAME MATCHES "Windows")
    set(CMAKE_INSTALL_BINDIR bin)
@@ -85,12 +88,9 @@ endif()
 #
 if (BUILDING_RPM OR BUILDING_DEBIAN)
     message(STATUS "** We are building a package ***")
-    #
-    # wish I could get around the hard code 
-    # 
     set(CS_INST_PREFIX  "/usr")    
     set(CS_INST_LIB     "${CS_INST_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
-    set(CS_INST_INCLUDE "${CS_INST_PREFIX}/include/copperspice")
+    set(CS_INST_INCLUDE "${CS_INST_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}")
 else()
     set(CS_INST_PREFIX  "${CMAKE_INSTALL_PREFIX}")    
     set(CS_INST_LIB     "${CMAKE_INSTALL_FULL_LIBDIR}")
@@ -103,10 +103,20 @@ set(prefix "${CS_INST_PREFIX}")
 
 
 message(STATUS "   ***   ")
+message(STATUS "   ***   ")
+message(STATUS "   ***   ")
 message(STATUS "   CS_INST_PREFIX     ${CS_INST_PREFIX}")
 message(STATUS "   CS_INST_LIB        ${CS_INST_LIB}")
 message(STATUS "   CS_INST_INCLUDE    ${CS_INST_INCLUDE}")
 message(STATUS "   CMAKE_BINARY_DIR   ${CMAKE_BINARY_DIR}")
+
+message( STATUS, "CMAKE_INSTALL_RPATH            ${CMAKE_INSTALL_RPATH}" )
+message( STATUS, "CMAKE_INSTALL_BINDIR           ${CMAKE_INSTALL_BINDIR}" )
+message( STATUS, "CMAKE_INSTALL_INCLUDEDIR       ${CMAKE_INSTALL_INCLUDE_DIR}" )
+message( STATUS, "CMAKE_INSTALL_FULL_INCLUDEDIR  ${CMAKE_INSTALL_FULL_INCLUDEDIR}" )
+message(STATUS "   ***   ")
+message(STATUS "   ***   ")
+message(STATUS "   ***   ")
 
 # required libraries
 set(BUILD_COMPONENTS "Core Xml")
@@ -114,13 +124,13 @@ set(BUILD_COMPONENTS "Core Xml")
 # unused at this time: DBus, Declarative, and ScriptTools
 set(CS_OPTIONAL_COMPONENTS Gui Multimedia Network OpenGL Script Sql Svg Vulkan WebKit XmlPatterns)
 
-set(PACKAGE           "copperspice")
-set(PACKAGE_NAME      "CopperSpice")
+set(PACKAGE           "ls-cs")
+set(PACKAGE_NAME      "Ls-Cs")
 set(PACKAGE_VERSION   "${BUILD_MAJOR}.${BUILD_MINOR}.${BUILD_MICRO}")
-set(PACKAGE_STRING    "copperspice ${BUILD_MAJOR}.${BUILD_MINOR}.${BUILD_MICRO}")
-set(PACKAGE_TARNAME   "copperspice")
-set(PACKAGE_BUGREPORT "info@copperspice.com")
-set(PACKAGE_URL       "https://www.copperspice.com/")
+set(PACKAGE_STRING    "ls-cs ${BUILD_MAJOR}.${BUILD_MINOR}.${BUILD_MICRO}")
+set(PACKAGE_TARNAME   "ls-cs")
+set(PACKAGE_BUGREPORT "originalseasonedgeek@gmail.com")
+set(PACKAGE_URL       "https://github.com/RolandHughes/ls-cs")
 
 set(RPM_VERSION       "${BUILD_MAJOR}.${BUILD_MINOR}")
 set(RPM_RELEASE       "${BUILD_MICRO}")
@@ -158,9 +168,9 @@ else()
    set(target "${CMAKE_SYSTEM}")
 endif()
 
-set(CPACK_PACKAGE_NAME    "LS-CS")
+set(CPACK_PACKAGE_NAME    "ls-cs")
 set(CPACK_PACKAGE_VENDOR  "Logikal Solutions")
-set(CPACK_PACKAGE_CONTACT "originalseasonedgeek@gmail.com")
+set(CPACK_PACKAGE_CONTACT "logikalsolutions.com")
 
 set(CPACK_PACKAGE_VERSION_MAJOR ${BUILD_MAJOR})
 set(CPACK_PACKAGE_VERSION_MINOR ${BUILD_MINOR})
@@ -264,7 +274,7 @@ if (NOT HAVE_CXX_ATOMICS_WITHOUT_LIB)
    check_library_exists(atomic __atomic_fetch_add_4 "" HAVE_LIBATOMIC)
 
    if (HAVE_LIBATOMIC)
-      # handled in CsCore cmake file
+      # handled in Ls-CsCore cmake file
    else()
       message(SEND_ERROR "Unable to configure, missing libatomic")
    endif()
@@ -283,7 +293,7 @@ endforeach()
 
 # start output messages
 message("")
-message("Configuring CMake for CopperSpice\n\n")
+message("Configuring CMake for ls-cs\n\n")
 message("-- Searching for required packages\n")
 
 find_package(CsLibGuarded QUIET)
@@ -295,22 +305,22 @@ else()
    message(STATUS "CsLibGuarded was not found, bundled library will be used\n")
 endif()
 
-find_package(CsString QUIET)
+find_package(LsCsString QUIET)
 
-if (CsString_FOUND)
-   message(STATUS "CsString was found \n"
-      " * Path is ${CsString_LIBRARIES}\n")
+if (LsCsString_FOUND)
+   message(STATUS "LsCsString was found \n"
+      " * Path is ${LsCsString_LIBRARIES}\n")
 else()
-   message(STATUS "CsString was not found, bundled library will be used\n")
+   message(STATUS "LsCsString was not found, bundled library will be used\n")
 endif()
 
-find_package(CsSignal QUIET)
+find_package(LsCsSignal QUIET)
 
-if (CsSignal_FOUND)
-   message(STATUS "CsSignal was found \n"
-      " * Path is ${CsSignal_LIBRARIES}\n")
+if (LsCsSignal_FOUND)
+   message(STATUS "LsCsSignal was found \n"
+      " * Path is ${LsCsSignal_LIBRARIES}\n")
 else()
-   message(STATUS "CsSignal was not found, bundled library will be used\n")
+   message(STATUS "LsCsSignal was not found, bundled library will be used\n")
 endif()
 
 find_package(OpenSSL 1.0)
@@ -395,13 +405,13 @@ set_package_properties(PostgreSQL PROPERTIES
 )
 
 if (CMAKE_DISABLE_FIND_PACKAGE_PostgreSQL)
-   message(STATUS "PostgreSQL disabled, CopperSpice plugin will not be built\n")
+   message(STATUS "PostgreSQL disabled, ls-cs plugin will not be built\n")
 
 elseif (NOT PostgreSQL_FOUND)
-   message(STATUS "PostgreSQL was not found, CopperSpice plugin will not be built\n")
+   message(STATUS "PostgreSQL was not found, ls-cs plugin will not be built\n")
 
 else()
-   message(STATUS "PostgreSQL was found, CopperSpice plugin will be built\n")
+   message(STATUS "PostgreSQL was found, ls-cs plugin will be built\n")
 
 endif()
 
@@ -427,7 +437,7 @@ if (PostgreSQL_FOUND AND CMAKE_SYSTEM_NAME MATCHES "Windows" AND NOT MSVC)
          # force to not found
          set(PostgreSQL_FOUND false)
 
-         message(STATUS "PostgreSQL client library was found, CopperSpice plugin will not be built")
+         message(STATUS "PostgreSQL client library was found, ls-cs plugin will not be built")
          message(STATUS "")
       endif()
 
@@ -443,13 +453,13 @@ set_package_properties(MySQL PROPERTIES
 )
 
 if (CMAKE_DISABLE_FIND_PACKAGE_MySQL)
-   message(STATUS "MySQL disabled, CopperSpice plugin will not be built\n")
+   message(STATUS "MySQL disabled, ls-cs plugin will not be built\n")
 
 elseif (NOT MySQL_FOUND)
-   message(STATUS "MySQL was not found, CopperSpice plugin will not be built\n")
+   message(STATUS "MySQL was not found, ls-cs plugin will not be built\n")
 
 else()
-   message(STATUS "MySQL was found, CopperSpice plugin will be built\n")
+   message(STATUS "MySQL was found, ls-cs plugin will be built\n")
 
 endif()
 
@@ -461,13 +471,13 @@ set_package_properties(ODBC PROPERTIES
 )
 
 if (CMAKE_DISABLE_FIND_PACKAGE_ODBC)
-   message(STATUS "ODBC SQL Driver disabled, CopperSpice plugin will not be built\n")
+   message(STATUS "ODBC SQL Driver disabled, ls-cs plugin will not be built\n")
 
 elseif (NOT ODBC_FOUND)
-   message(STATUS "ODBC SQL Driver was not found, CopperSpice plugin will not be built\n")
+   message(STATUS "ODBC SQL Driver was not found, ls-cs plugin will not be built\n")
 
 else()
-   message(STATUS "ODBC SQL Driver was found, CopperSpice plugin will be built\n")
+   message(STATUS "ODBC SQL Driver was found, ls-cs plugin will be built\n")
 
 endif()
 
@@ -493,9 +503,9 @@ if (WITH_VULKAN)
 
       if (Vulkan_FOUND)
          message(STATUS "Partial Vulkan installation exists however the SDK was not found, "
-            "CsVulkan library will not be built\n")
+            "Ls-CsVulkan library will not be built\n")
       else()
-         message(STATUS "Vulkan SDK was not found, CsVulkan library will not be built\n")
+         message(STATUS "Vulkan SDK was not found, Ls-CsVulkan library will not be built\n")
       endif()
 
    endif()
@@ -670,12 +680,12 @@ if (HAVE_LARGEFILESUPPORT)
 endif()
 
 configure_file(
-   ${CMAKE_SOURCE_DIR}/cmake/cs-config.h.cmake
-   ${CMAKE_BINARY_DIR}/include/cs-config.h
+   ${CMAKE_SOURCE_DIR}/cmake/ls-cs-config.h.cmake
+   ${CMAKE_BINARY_DIR}/include/ls-cs-config.h
 )
 configure_file(
-   ${CMAKE_SOURCE_DIR}/src/core/global/cs_build_info.h.in
-   ${CMAKE_BINARY_DIR}/include/QtCore/cs_build_info.h
+   ${CMAKE_SOURCE_DIR}/src/core/global/ls-cs_build_info.h.in
+   ${CMAKE_BINARY_DIR}/include/QtCore/ls-cs_build_info.h
 )
 
 # file locations for building
@@ -689,19 +699,19 @@ set(CMAKE_NINJA_FORCE_RESPONSE_FILE 1)
 
 # check components dependencies
 if (WITH_MULTIMEDIA AND NOT (WITH_GUI AND WITH_NETWORK AND WITH_OPENGL))
-   message(SEND_ERROR "CsMultimedia component requires CsGui, CsNetwork, and CsOpenGL components")
+   message(SEND_ERROR "Ls-CsMultimedia component requires Ls-CsGui, Ls-CsNetwork, and Ls-CsOpenGL components")
 
 elseif (WITH_OPENGL AND NOT WITH_GUI)
-   message(SEND_ERROR "CsOpenGL component requires CsGui component")
+   message(SEND_ERROR "Ls-CsOpenGL component requires Ls-CsGui component")
 
 elseif (WITH_SVG AND NOT WITH_GUI)
-   message(SEND_ERROR "CsSvg component requires CsGui component")
+   message(SEND_ERROR "Ls-CsSvg component requires Ls-CsGui component")
 
 elseif (WITH_XMLPATTERNS AND NOT WITH_NETWORK)
-   message(SEND_ERROR "CsXmlPatterns component requires CsNetwork component")
+   message(SEND_ERROR "Ls-CsXmlPatterns component requires Ls-CsNetwork component")
 
 elseif (WITH_WEBKIT AND NOT (WITH_GUI AND WITH_NETWORK AND WITH_SCRIPT))
-   message(SEND_ERROR "CsWebKit component requires CsGui, CsNetwork, and CsScript components")
+   message(SEND_ERROR "Ls-CsWebKit component requires Ls-CsGui, Ls-CsNetwork, and Ls-CsScript components")
 
 endif()
 
@@ -758,25 +768,25 @@ if (BUILD_TESTS)
 endif()
 
 configure_file(
-   ${CMAKE_SOURCE_DIR}/cmake/CopperSpiceConfig.cmake
-   ${CMAKE_BINARY_DIR}/CopperSpiceConfig.cmake
+   ${CMAKE_SOURCE_DIR}/cmake/ls-csConfig.cmake
+   ${CMAKE_BINARY_DIR}/ls-csConfig.cmake
    @ONLY
 )
 
 configure_file(
-   ${CMAKE_SOURCE_DIR}/cmake/CopperSpiceConfigVersion.cmake
-   ${CMAKE_BINARY_DIR}/CopperSpiceConfigVersion.cmake
+   ${CMAKE_SOURCE_DIR}/cmake/ls-csConfigVersion.cmake
+   ${CMAKE_BINARY_DIR}/ls-csConfigVersion.cmake
    @ONLY
 )
 
 if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
-   set(PKG_PREFIX "CopperSpice.framework/Resources")
+   set(PKG_PREFIX "ls-cs.framework/Resources")
 
 elseif (CMAKE_SYSTEM_NAME MATCHES "Windows")
-   set(PKG_PREFIX "cmake/CopperSpice")
+   set(PKG_PREFIX "cmake/ls-cs")
 
 else()
-   set(PKG_PREFIX "${CMAKE_INSTALL_LIBDIR}/cmake/CopperSpice")
+   set(PKG_PREFIX "${CMAKE_INSTALL_LIBDIR}/cmake/ls-cs")
 
 endif()
 
@@ -801,8 +811,8 @@ if(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
     )
 
     configure_file(
-       ${CMAKE_SOURCE_DIR}/copperspice.spec.in
-       copperspice.spec
+       ${CMAKE_SOURCE_DIR}/ls-cs.spec.in
+       ls-cs.spec
     )
 
     #  postrm has some heavy syntax - just copy
@@ -837,11 +847,11 @@ endif()
 
 install(
    FILES
-      ${CMAKE_BINARY_DIR}/CopperSpiceConfig.cmake
-      ${CMAKE_BINARY_DIR}/CopperSpiceConfigVersion.cmake
+      ${CMAKE_BINARY_DIR}/ls-csConfig.cmake
+      ${CMAKE_BINARY_DIR}/ls-csConfigVersion.cmake
 
-      ${CMAKE_SOURCE_DIR}/cmake/CopperSpiceDeploy.cmake
-      ${CMAKE_SOURCE_DIR}/cmake/CopperSpiceMacros.cmake
+      ${CMAKE_SOURCE_DIR}/cmake/ls-csDeploy.cmake
+      ${CMAKE_SOURCE_DIR}/cmake/ls-csMacros.cmake
       ${CMAKE_SOURCE_DIR}/cmake/InstallMinGW.cmake
    DESTINATION ${PKG_PREFIX}
 )
@@ -857,22 +867,22 @@ install(
 install(
    # generate cmake files containing rules about linking with CS libs
 
-   EXPORT CopperSpiceLibraryTargets
-   NAMESPACE CopperSpice::
-   FILE CopperSpiceLibraryTargets.cmake
+   EXPORT Ls-CsLibraryTargets
+   NAMESPACE Ls-Cs::
+   FILE Ls-CsLibraryTargets.cmake
    DESTINATION ${PKG_PREFIX}
 )
 
 # generate cmake files containing rules about running CS binary tools
 install(
-   EXPORT CopperSpiceBinaryTargets
-   NAMESPACE CopperSpice::
-   FILE CopperSpiceBinaryTargets.cmake
+   EXPORT Ls-CsBinaryTargets
+   NAMESPACE Ls-Cs::
+   FILE Ls-CsBinaryTargets.cmake
    DESTINATION ${PKG_PREFIX}
 )
 
 message("\n")
-message("-- The following CopperSpice libraries will be built:")
+message("-- The following ls-cs libraries will be built:")
 message("\n * ${BUILD_COMPONENTS}\n")
 
 feature_summary(WHAT PACKAGES_FOUND PACKAGES_NOT_FOUND FATAL_ON_MISSING_REQUIRED_PACKAGES)
@@ -884,8 +894,8 @@ else()
 endif()
 
 message("")
-message("CopperSpice configured to run on:  ${CMAKE_SYSTEM_NAME} ${TARGETBITS} bit, ${CMAKE_BUILD_TYPE} Mode")
-message("CopperSpice will be built in:      ${CMAKE_BINARY_DIR}")
-message("CopperSpice will be installed in:  ${CMAKE_INSTALL_PREFIX}")
-message("prefix:                            ${prefix}")
+message("LS-CS configured to run on:  ${CMAKE_SYSTEM_NAME} ${TARGETBITS} bit, ${CMAKE_BUILD_TYPE} Mode")
+message("LS-CS will be built in:      ${CMAKE_BINARY_DIR}")
+message("LS-CS will be installed in:  ${CMAKE_INSTALL_PREFIX}")
+message("prefix:                      ${prefix}")
 message("\n")

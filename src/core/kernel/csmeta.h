@@ -115,7 +115,7 @@ class Q_CORE_EXPORT QMetaMethod
    Access access() const;
    Attributes attributes() const;
 
-   bool compare(const CsSignal::Internal::BentoAbstract &method) const;
+   bool compare(const LsCsSignal::Internal::BentoAbstract &method) const;
 
    template <typename SignalClass, typename ...SignalArgs>
    static QMetaMethod fromSignal(void (SignalClass::* signalMethod)(SignalArgs ...) );
