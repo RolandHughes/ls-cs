@@ -18,6 +18,6 @@ zypper install libxcb-devel libX11-xcb1 xcb-util-wm-devel xcb-util-image-devel \
 zypper install fakeroot hashdeep dpkg-dev cmake ninja \
             mercurial libcups2 libasound2 libxml++-devel libopenssl-devel libpulse-devel git astyle \
             hunspell hunspell-devel libpqxx-devel  unixODBC-devel libmysqlcppconn-devel rpmdevtools \
-            rpm-build postgresql-devel
+            rpm-build postgresql-devel tree
 
 # reboot

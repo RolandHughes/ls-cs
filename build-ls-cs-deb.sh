@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Script to build a debian package for CopperSpice
+# Script to build a debian package for ls-cs
 #
 set -e
 
@@ -15,15 +15,15 @@ echo "MUST BE RUN FROM ROOT OF PROJECT DIRECTORY TREE"
 echo ""
 echo "MUST have fakeroot, hashdeep, and dpkg-deb installed!"
 echo ""
-echo "This script ASSUMES it can create or use copperspice_debian_build and copperspice_debian_release"
+echo "This script ASSUMES it can create or use ls-cs_debian_build and ls-cs_debian_release"
 echo "directories one level up from where this script is being run. If they"
 echo "exist they will be deleted and recreated."
 echo ""
 echo "Script also ASSUMES you are running from the root of the Git directory"
 echo "where all source is in a directory named src at the same level as this file."
 echo ""
-echo "You must have ninja, cmake, and a valid build environment. CopperSpice will be built"
-echo "from source and installed in copperspice_debian_release. We will then create a"
+echo "You must have ninja, cmake, and a valid build environment. Ls-Cs will be built"
+echo "from source and installed in ls-cs_debian_release. We will then create a"
 echo "DEBIAN directory to assemble all files needed for creation of a .deb."
 echo ""
 echo ""
@@ -33,10 +33,10 @@ echo ""
 #
 echo "*** Establishing fresh directories"
 SCRIPT_DIR="$PWD"
-BUILD_DIR="$SCRIPT_DIR/../copperspice_debian_build"
-RELEASE_DIR="$SCRIPT_DIR/../copperspice_debian_release"
-DEBIAN_DIR="$SCRIPT_DIR/../copperspice_debian"
-DEBIAN_WORK_DIR="$SCRIPT_DIR/../copperspice_debian_work"
+BUILD_DIR="$SCRIPT_DIR/../ls-cs_debian_build"
+RELEASE_DIR="$SCRIPT_DIR/../ls-cs_debian_release"
+DEBIAN_DIR="$SCRIPT_DIR/../ls-cs_debian"
+DEBIAN_WORK_DIR="$SCRIPT_DIR/../ls-cs_debian_work"
 
 #
 # Placed here so it can be hacked for those unfortunate distros that default to lib
@@ -58,8 +58,8 @@ function create_debian_tree()
     fi
 
     mkdir -p "$DEBIAN_DIR"/DEBIAN
-    mkdir -p "$DEBIAN_DIR"/usr/include/copperspice
-    mkdir -p "$DEBIAN_DIR"/usr/"${LIB_DIR}"Ls-Cs::bin
+    mkdir -p "$DEBIAN_DIR"/usr/include/ls-cs
+    mkdir -p "$DEBIAN_DIR"/usr/bin
     #
     #  The plugins should always be here, not copied into the binary install dir
     #
@@ -72,7 +72,7 @@ function create_debian_tree()
     mkdir -p "$DEBIAN_DIR"/usr/"${LIB_DIR}"/ls-cs/plugins/imageformats
     mkdir -p "$DEBIAN_DIR"/usr/"${LIB_DIR}"/ls-cs/plugins/pictureformats
     mkdir -p "$DEBIAN_DIR"/usr/"${LIB_DIR}"/ls-cs/plugins/sqldrivers
-    mkdir -p "$DEBIAN_DIR"/usr/"${LIB_DIR}"/cmake/CopperSpice
+    mkdir -p "$DEBIAN_DIR"/usr/"${LIB_DIR}"/cmake/ls-cs
     mkdir -p "$DEBIAN_DIR"/usr/share/pkgconfig
     mkdir -p "$DEBIAN_DIR"/usr/share/doc/ls-cs/license
 
@@ -105,20 +105,20 @@ function build_from_source()
         -DCMAKE_INSTALL_PREFIX="$RELEASE_DIR" \
         "$SCRIPT_DIR"
 
-    #  Step 4: Actually build CopperSpice
+    #  Step 4: Actually build ls-cs
     #
-    echo "*** Building CopperSpice"
+    echo "*** Building Ls-Cs"
     ninja install
 
     #  Step 5: Sweep up what CopperSpice project gets wrong in their
-    #          default build.
-    cd "$RELEASE_DIR"/lib/cmake/CopperSpice
+    #          default build.  TODO:: see if this is still needed
+    cd "$RELEASE_DIR"/lib/cmake/ls-cs
     if [ -f "Ls-CsLibraryTargets.cmake" ]; then
         echo "*** "
         echo "*** Fixing where cmake looks for Qt and other headers"
         echo "*** "
-        sed -i 's#${_IMPORT_PREFIX}/include;#${_IMPORT_PREFIX}/include/copperspice;#g' Ls-CsLibraryTargets.cmake
-        sed -i 's#${_IMPORT_PREFIX}/include/Qt#${_IMPORT_PREFIX}/includeLs-Cs::Qt#g' Ls-CsLibraryTargets.cmake
+        sed -i 's#${_IMPORT_PREFIX}/include;#${_IMPORT_PREFIX}/include/ls-cs;#g' Ls-CsLibraryTargets.cmake
+        sed -i 's#${_IMPORT_PREFIX}/include/Qt#${_IMPORT_PREFIX}/include/ls-cs/Qt#g' Ls-CsLibraryTargets.cmake
     fi
 
 }
@@ -143,26 +143,26 @@ function dev_deb()
     #        I put a placeholder in the project for now because I didn't want to
     #        saddle this build script with git-buildpackage dependencies
     #
-    cp "$SCRIPT_DIR"/changelog "$DEBIAN_DIR"/usr/share/doc/CopperSpice/changelog.Debian
-    cp -Prv "$SCRIPT_DIR"/license/* "$DEBIAN_DIR"/usr/share/doc/CopperSpice/license/
+    cp "$SCRIPT_DIR"/changelog "$DEBIAN_DIR"/usr/share/doc/ls-cs/changelog.Debian
+    cp -Prv "$SCRIPT_DIR"/license/* "$DEBIAN_DIR"/usr/share/doc/ls-cs/license/
 
     echo "*** rsync release_dir with debian"
     rsync -av "$RELEASE_DIR"/ "$DEBIAN_DIR"/usr/
 
     echo "***  chmod changelog"
-    chmod 0664 "$DEBIAN_DIR"/usr/share/doc/CopperSpice/changelog*
+    chmod 0664 "$DEBIAN_DIR"/usr/share/doc/ls-cs/changelog*
 
-    gzip --best --force "$DEBIAN_DIR"/usr/share/doc/CopperSpice/changelog*
+    gzip --best --force "$DEBIAN_DIR"/usr/share/doc/ls-cs/changelog*
 
     #  Step 6 : generate md5sum
     #
     echo "Generating md5sums - must have md5deep installed or will fail"
     cd "$DEBIAN_DIR"
-    md5deep -r  usr/share/doc/CopperSpice/* 2>/dev/null >DEBIAN/md5sums
+    md5deep -r  usr/share/doc/ls-cs/* 2>/dev/null >DEBIAN/md5sums
     # don't currently have any pre files
     # DEBIAN/pre*
     #
-    chmod go-w DEBIAN/md5sums DEBIAN/post* usr usr/share usr/share/doc usr/share/doc/CopperSpice
+    chmod go-w DEBIAN/md5sums DEBIAN/post* usr usr/share usr/share/doc usr/share/doc/ls-cs
 
     # Step 7 : build .deb
     #
@@ -172,14 +172,14 @@ function dev_deb()
     fakeroot dpkg-deb -Zgzip --build "$DEBIAN_DIR"
 
     # Step 8 : rename .deb
-    #          file will be named copperspice_debian.deb and should just be copperspice-version-architecture-dev.deb
+    #          file will be named ls-cs_debian.deb and should just be ls-cs-version-architecture-dev.deb
     #
     D_VERSION=$(grep -i "Version:" "$DEBIAN_DIR"/DEBIAN/control | cut -d' ' -f2)
     D_ARCH=$(grep -i "Architecture:" "$DEBIAN_DIR"/DEBIAN/control | cut -d' ' -f2)
     DEB_NAME="LS-CS-$D_VERSION-$D_ARCH-dev.deb"
     echo "look for:  $DEB_NAME"
 
-    mv copperspice_debian.deb "$DEB_NAME"
+    mv ls-cs_debian.deb "$DEB_NAME"
 
 }
 
@@ -203,24 +203,24 @@ function runtime_deb()
     #        I put a placeholder in the project for now because I didn't want to
     #        saddle this build script with git-buildpackage dependencies
     #
-    cp "$SCRIPT_DIR"/changelog "$DEBIAN_DIR"/usr/share/doc/CopperSpice/changelog.Debian
-    cp -Prv "$SCRIPT_DIR"/license/* "$DEBIAN_DIR"/usr/share/doc/CopperSpice/license/
+    cp "$SCRIPT_DIR"/changelog "$DEBIAN_DIR"/usr/share/doc/ls-cs/changelog.Debian
+    cp -Prv "$SCRIPT_DIR"/license/* "$DEBIAN_DIR"/usr/share/doc/ls-cs/license/
 
-    rsync -av --exclude cmake/ --exclude copperspice/bin "$RELEASE_DIR"/lib/  "$DEBIAN_DIR"/usr/lib/
+    rsync -av --exclude cmake/ "$RELEASE_DIR"/lib/  "$DEBIAN_DIR"/usr/lib/
 
-    chmod 0664 "$DEBIAN_DIR"/usr/share/doc/CopperSpice/changelog*
+    chmod 0664 "$DEBIAN_DIR"/usr/share/doc/ls-cs/changelog*
 
-    gzip --best --force "$DEBIAN_DIR"/usr/share/doc/CopperSpice/changelog*
+    gzip --best --force "$DEBIAN_DIR"/usr/share/doc/ls-cs/changelog*
 
     #  Step 6 : generate md5sum
     #
     echo "Generating md5sums"
     cd "$DEBIAN_DIR"
-    md5deep -r  usr/share/doc/CopperSpice/* 2>/dev/null >DEBIAN/md5sums
+    md5deep -r  usr/share/doc/ls-cs/* 2>/dev/null >DEBIAN/md5sums
     # don't currently have any pre files
     # DEBIAN/pre*
     #
-    chmod go-w DEBIAN/md5sums DEBIAN/post* usr usr/share usr/share/doc usr/share/doc/CopperSpice
+    chmod go-w DEBIAN/md5sums DEBIAN/post* usr usr/share usr/share/doc usr/share/doc/ls-cs
 
     # Step 7 : build .deb
     #
@@ -230,14 +230,14 @@ function runtime_deb()
     fakeroot dpkg-deb -Zgzip --build "$DEBIAN_DIR"
 
     # Step 8 : rename .deb
-    #          file will be named copperspice_debian.deb and should just be copperspice-version-architecture.deb
+    #          file will be named ls-cs_debian.deb and should just be ls-cs-version-architecture.deb
     #
     D_VERSION=$(grep -i "Version:" "$DEBIAN_DIR"/DEBIAN/control | cut -d' ' -f2)
     D_ARCH=$(grep -i "Architecture:" "$DEBIAN_DIR"/DEBIAN/control | cut -d' ' -f2)
     DEB_NAME="LS-CS-$D_VERSION-$D_ARCH.deb"
     echo "look for:  $DEB_NAME"
 
-    mv copperspice_debian.deb "$DEB_NAME"
+    mv ls-cs_debian.deb "$DEB_NAME"
 
 }
 
