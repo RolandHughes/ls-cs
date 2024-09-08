@@ -8,6 +8,7 @@ URL:        https://github.com/RolandHughes/ls-cs
 Vendor:     @CPACK_PACKAGE_CONTACT@
 Packager:   Roland Hughes <roland@logikalsolutions.com>
 
+%define _build_id_links none
 
 %description
 @CPACK_PACKAGE_DESCRIPTION_TEXT@
@@ -52,9 +53,9 @@ ninja install
 #  Sweep up what CopperSpice gets wrong in their default build.
 #  They should not have let CMake generate this file.
 #
-sed -i 's#${_IMPORT_PREFIX}/include;#${_IMPORT_PREFIX}/include/ls-cs;#g' "%{buildroot}/usr/%{_lib}/cmake/ls-cs/ls-csLibraryTargets.cmake"
-sed -i 's#${_IMPORT_PREFIX}/include/Qt#${_IMPORT_PREFIX}/include/ls-cs/Qt#g' "%{buildroot}/usr/%{_lib}/cmake/ls-cs/ls-csLibraryTargets.cmake"
-sed -i 's#/usr/lib64/glib-2.0/include/ls-cs#/usr/lib64/glib-2.0/include#g' "%{buildroot}/usr/%{_lib}/cmake/ls-cs/ls-csLibraryTargets.cmake"
+sed -i 's#${_IMPORT_PREFIX}/include;#${_IMPORT_PREFIX}/include/ls-cs;#g' "%{buildroot}/usr/%{_lib}/cmake/ls-cs/Ls-CsLibraryTargets.cmake"
+sed -i 's#${_IMPORT_PREFIX}/include/Qt#${_IMPORT_PREFIX}/include/ls-cs/Qt#g' "%{buildroot}/usr/%{_lib}/cmake/ls-cs/Ls-CsLibraryTargets.cmake"
+sed -i 's#/usr/lib64/glib-2.0/include/ls-cs#/usr/lib64/glib-2.0/include#g' "%{buildroot}/usr/%{_lib}/cmake/ls-cs/Ls-CsLibraryTargets.cmake"
 
 #
 #  Run-time only
@@ -62,11 +63,10 @@ sed -i 's#/usr/lib64/glib-2.0/include/ls-cs#/usr/lib64/glib-2.0/include#g' "%{bu
 %files
 %exclude %{_libdir}/cmake
 %exclude %{_libdir}/pkgconfig
-%exclude /usr/bin
-%exclude /usr/include
-%exclude /usr/lib
+%exclude %{_includedir}
+%exclude %{_bindir}
 
-%{_libdir}/ls-cs
+%{_libdir}
 %{_datadir}
 
 #
@@ -74,9 +74,8 @@ sed -i 's#/usr/lib64/glib-2.0/include/ls-cs#/usr/lib64/glib-2.0/include#g' "%{bu
 #
 %files devel
 %{_includedir}
-%{_prefix}/lib/.build-id
-%{_libdir}/cmake
-%{_libdir}/ls-cs
+%{_bindir}
+%{_libdir}
 %{_datadir}
 
 %post

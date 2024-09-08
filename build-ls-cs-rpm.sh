@@ -56,9 +56,10 @@ mkdir -p "$BUILD_DIR"
 pushd `pwd`
 
 #  Step 3 : Prepare build directory
-#           We do this just to get ls-cs.spec with all of the CMake variables filled in.
+#           We do this just to get ls-cs.spec with all of the CMake variables filled in
+#           and placed in the build directory where rpmbuild needs to find it.
 #
-echo "*** Prepping build directory"
+# echo "*** Prepping build directory"
 cd "$BUILD_DIR"
 cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Release \
       -DBUILDING_RPM=ON \

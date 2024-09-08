@@ -93,19 +93,8 @@ set_target_properties(uic${TOOLS_SUFFIX}
    EXPORT_NAME uic
 )
 
-#
-#   If the files in bin didn't name collide with Qt binaries we could just leave them.
-#
-if(BUILDING_RPM OR BUILDING_DEBIAN)
-    install(
-       TARGETS uic${TOOLS_SUFFIX}
-       EXPORT Ls-CsBinaryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
-       DESTINATION ${CMAKE_INSTALL_LIBDIR}Ls-Cs::bin
-    )
-else()
-    install(
-       TARGETS uic${TOOLS_SUFFIX}
-       EXPORT Ls-CsBinaryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
-       DESTINATION ${CMAKE_INSTALL_BINDIR}
-    )
-endif()
+install(
+    TARGETS uic${TOOLS_SUFFIX}
+    EXPORT Ls-CsBinaryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
+    DESTINATION ${CMAKE_INSTALL_BINDIR}
+)
