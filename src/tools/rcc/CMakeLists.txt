@@ -56,18 +56,12 @@ set_target_properties(rcc${TOOLS_SUFFIX}
 )
 
 #
-#   If the files in bin didn't name collide with Qt binaries we could just leave them.
+#   Now that binary file names don't collide with
+#   Qt or any version of CopperSpice, we can just
+#   put them in the default binary dir
 #
-if(BUILDING_RPM OR BUILDING_DEBIAN)
-    install(
-       TARGETS rcc${TOOLS_SUFFIX}
-       EXPORT Ls-CsBinaryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
-       DESTINATION ${CMAKE_INSTALL_LIBDIR}Ls-Cs::bin
-    )
-else()
-    install(
-       TARGETS rcc${TOOLS_SUFFIX}
-       EXPORT Ls-CsBinaryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
-       DESTINATION ${CMAKE_INSTALL_BINDIR}
-    )
-endif()
+install(
+    TARGETS rcc${TOOLS_SUFFIX}
+    EXPORT Ls-CsBinaryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
+    DESTINATION ${CMAKE_INSTALL_BINDIR}
+)

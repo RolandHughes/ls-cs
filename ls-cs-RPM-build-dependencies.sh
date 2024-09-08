@@ -2,7 +2,7 @@ zypper install -t pattern devel_basis
 
 # by default only version 7 is installed and you need at least 11 for Scintilla
 #
-zypper install cpp11 gcc11 gcc11-c++ jed jed-common emacs
+zupper install jed jed-common
 
 zypper install freetype-devel fontconfig-devel glib2-devel gstreamer-devel gstreamer-plugins-base-devel \
             libICE-devel Mesa-devel Mesa-libGL-devel glibc-devel libtirpc-devel libnsl2 libSM-devel \
@@ -26,15 +26,25 @@ zypper install fakeroot hashdeep dpkg-dev cmake ninja \
 # Other distros may need to run these as well
 #
 if [[ $MACHTYPE == *"suse"* ]]; then
-    update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 50
+    zypper install cpp13 gcc13 gcc13-c++
+    update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 50
     update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 20
-    update-alternatives --install /usr/bin/cpp cpp /usr/bin/cpp-11 50
+    update-alternatives --install /usr/bin/cpp cpp /usr/bin/cpp-13 50
     update-alternatives --install /usr/bin/cpp cpp /usr/bin/cpp-7 20
-    update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-11 50
+    update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 50
     update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-7 20
     update-alternatives --config g++
     update-alternatives --config gcc
     update-alternatives --config cpp
+    #
+    #  suse inexplicably puts xkbcommon in the wrong place
+    #
+    sudo ln -s /usr/include/libxkbcommon/xkbcommon /usr/include/
+else
+    # The openSuSE repo installs way too much with emacs
+    # It also installs the X11 version and a bunch of terminal
+    # stuff.
+    zupper install emacs
 fi
 
 # reboot
