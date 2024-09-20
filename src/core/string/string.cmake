@@ -15,7 +15,7 @@ if (LsCsString_FOUND)
    if (CS_INSTALL_MODE STREQUAL "Package")
       # package mode, do not copy install headers
 
-      target_link_libraries(Ls-CsCore
+      target_link_libraries(LsCsCore
          PUBLIC
          LsCsString::LsCsString
       )
@@ -23,14 +23,14 @@ if (LsCsString_FOUND)
    elseif (CS_INSTALL_MODE STREQUAL "Deploy")
 
       if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
-         target_link_libraries(Ls-CsCore
+         target_link_libraries(LsCsCore
             PUBLIC
             $<BUILD_INTERFACE:LsCsString::LsCsString>
             $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/libLsCsString.dylib>
          )
 
       elseif (CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
-         target_link_libraries(Ls-CsCore
+         target_link_libraries(LsCsCore
             PUBLIC
             $<BUILD_INTERFACE:LsCsString::LsCsString>
             $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/libLsCsString.so>
@@ -38,7 +38,7 @@ if (LsCsString_FOUND)
 
       elseif (CMAKE_SYSTEM_NAME MATCHES "Windows")
          if (MSVC)
-            target_link_libraries(Ls-CsCore
+            target_link_libraries(LsCsCore
                PUBLIC
                $<BUILD_INTERFACE:LsCsString::LsCsString>
 
@@ -47,7 +47,7 @@ if (LsCsString_FOUND)
             )
 
          else()
-            target_link_libraries(Ls-CsCore
+            target_link_libraries(LsCsCore
                PUBLIC
                $<BUILD_INTERFACE:LsCsString::LsCsString>
 
@@ -69,7 +69,7 @@ if (LsCsString_FOUND)
 
 else()
    # use annex headers
-   target_include_directories(Ls-CsCore
+   target_include_directories(LsCsCore
       PUBLIC
       $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/annex/cs_string>
    )
@@ -126,7 +126,7 @@ list(APPEND CORE_REGEX_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/string/regex/r_states.h
 )
 
-target_sources(Ls-CsCore
+target_sources(LsCsCore
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/string/qchar32.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/string/qstring8.cpp
@@ -137,7 +137,7 @@ target_sources(Ls-CsCore
 )
 
 if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
-   target_sources(Ls-CsCore
+   target_sources(LsCsCore
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/string/qstring_mac.mm
    )

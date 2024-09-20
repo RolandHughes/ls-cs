@@ -25,7 +25,7 @@
 #define QGLOBAL_H
 
 #if ! defined (CS_DOXYPRESS)
-#include <ls-cs_build_info.h>
+#include <LsCs_build_info.h>
 #endif
 
 #include <qexport.h>
@@ -36,8 +36,8 @@
 #include <stdint.h>
 #include <string.h>
 
-// usage: #if (LS_CS_VERSION >= LS_CS_VERSION_CHECK(1, 1, 0))
-#define LS_CS_VERSION_CHECK(major, minor, patch) ((major<<16)|(minor<<8)|(patch))
+// usage: #if (LSCS_VERSION >= LSCS_VERSION_CHECK(1, 1, 0))
+#define LSCS_VERSION_CHECK(major, minor, patch) ((major<<16)|(minor<<8)|(patch))
 
 #if defined(__cplusplus)
 

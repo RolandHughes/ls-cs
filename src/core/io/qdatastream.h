@@ -50,7 +50,7 @@ class Q_CORE_EXPORT QDataStream
 {
  public:
 
-#if LS_CS_VERSION >= 0x011000
+#if LSCS_VERSION >= 0x011000
 #error (CopperSpice compile issue in qdatastream.h) Verify version number is listed in the following enum
 #endif
 

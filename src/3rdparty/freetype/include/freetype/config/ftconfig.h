@@ -38,7 +38,7 @@
 #define FTCONFIG_H_
 
 // sets have_unistd_h
-#include <ls-cs-config.h>
+#include <lscs_config.h>
 
 #include <ft2build.h>
 #include FT_CONFIG_OPTIONS_H

@@ -1,5 +1,5 @@
 <!DOCTYPE RCC><RCC version="1.0">
-<qresource prefix="Ls-Cs::printing">
+<qresource prefix="LsCs::printing">
 <file>images/fit-page-24.png</file>
 <file>images/fit-page-32.png</file>
 <file>images/fit-width-24.png</file>

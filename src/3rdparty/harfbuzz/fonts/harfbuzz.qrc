@@ -1,5 +1,5 @@
 <!DOCTYPE RCC><RCC version="1.0">
-<qresource prefix="Ls-Cs::harfbuzz">
+<qresource prefix="LsCs::harfbuzz">
    <file>DejaVuSans.ttf</file>
 </qresource>
 </RCC>

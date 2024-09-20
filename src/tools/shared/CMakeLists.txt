@@ -29,8 +29,8 @@ target_compile_definitions(sharedtools PRIVATE ${SHAREDTOOLS_DEFINITIONS})
 target_include_directories(sharedtools PRIVATE ${SHAREDTOOLS_INCLUDES})
 
 target_link_libraries(sharedtools
-   Ls-CsCore
-   Ls-CsXml
+   LsCsCore
+   LsCsXml
 )
 
 set_target_properties(sharedtools

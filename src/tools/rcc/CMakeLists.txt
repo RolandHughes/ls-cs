@@ -1,9 +1,9 @@
 add_executable(rcc${TOOLS_SUFFIX} "")
-add_executable(Ls-Cs::rcc ALIAS rcc${TOOLS_SUFFIX})
+add_executable(LsCs::rcc ALIAS rcc${TOOLS_SUFFIX})
 
 set(EXTRA_RCC_LIBS
-   Ls-CsCore
-   Ls-CsXml
+   LsCsCore
+   LsCsXml
 )
 
 set(EXTRA_RCC_CXXFLAGS)
@@ -62,6 +62,6 @@ set_target_properties(rcc${TOOLS_SUFFIX}
 #
 install(
     TARGETS rcc${TOOLS_SUFFIX}
-    EXPORT Ls-CsBinaryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
+    EXPORT LsCsBinaryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
     DESTINATION ${CMAKE_INSTALL_BINDIR}
 )

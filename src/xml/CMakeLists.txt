@@ -1,7 +1,7 @@
-add_library(Ls-CsXml SHARED "")
-add_library(Ls-Cs::Ls-CsXml ALIAS Ls-CsXml)
+add_library(LsCsXml SHARED "")
+add_library(LsCs::LsCsXml ALIAS LsCsXml)
 
-set_target_properties(Ls-CsXml PROPERTIES OUTPUT_NAME Ls-CsXml${BUILD_ABI})
+set_target_properties(LsCsXml PROPERTIES OUTPUT_NAME LsCsXml${BUILD_ABI})
 
 add_definitions(
    -DQT_BUILD_XML_LIB
@@ -10,7 +10,7 @@ add_definitions(
 set(EXTRA_XML_CXXFLAGS)
 set(EXTRA_XML_LDFLAGS)
 
-target_include_directories(Ls-CsXml
+target_include_directories(LsCsXml
    PUBLIC
    $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include/QtXml>
    $<INSTALL_INTERFACE:include/QtXml>
@@ -37,38 +37,48 @@ macro_generate_misc("${XML_INCLUDES}" QtXml)
 function_variable_fixup("${EXTRA_XML_CXXFLAGS}" EXTRA_XML_CXXFLAGS)
 function_variable_fixup("${EXTRA_XML_LDFLAGS}"  EXTRA_XML_LDFLAGS)
 
-target_sources(Ls-CsXml
+target_sources(LsCsXml
    PRIVATE
    ${XML_INCLUDES}
 )
 
-target_link_libraries(Ls-CsXml
+target_link_libraries(LsCsXml
    PUBLIC
-   Ls-CsCore
+   LsCsCore
 )
 
-set_target_properties(Ls-CsXml
+set_target_properties(LsCsXml
    PROPERTIES
    COMPILE_FLAGS ${EXTRA_XML_CXXFLAGS}
    LINK_FLAGS ${EXTRA_XML_LDFLAGS}
 )
 
-function_generate_resources(Ls-CsXml)
+function_generate_resources(LsCsXml)
 
 macro_generate_package(
-   Ls-CsXml
+   LsCsXml
    QtXml
    "${EXTRA_XML_CXXFLAGS}"
-   "Ls-CsCore"
+   "LsCsCore"
 )
 
-install(
-   TARGETS Ls-CsXml
-   EXPORT Ls-CsLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
-   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-)
+if (DEBIAN_FOUND)
+    install(
+        TARGETS LsCsXml
+        EXPORT LsCsLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}
+    )
+else()  
+    install(
+        TARGETS LsCsXml
+        EXPORT LsCsLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    )
+endif()
 
 install(
     DIRECTORY ${CMAKE_BINARY_DIR}/include/QtXml

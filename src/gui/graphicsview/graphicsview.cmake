@@ -94,7 +94,7 @@ list(APPEND GUI_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/graphicsview/qsimplex_p.h
 )
 
-target_sources(Ls-CsGui
+target_sources(LsCsGui
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/graphicsview/qgraphics_anchorlayout.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/graphicsview/qgraphics_anchorlayout_p.cpp

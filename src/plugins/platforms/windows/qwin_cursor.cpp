@@ -494,7 +494,7 @@ QWindowsCursor::PixmapCursor QWindowsCursor::customCursor(Qt::CursorShape cursor
       return PixmapCursor();
    }
 
-   const QPixmap rawImage(":ls-cs/windows/cursors/images/" + QString::fromLatin1(bestFit->fileName));
+   const QPixmap rawImage(":LsCs/windows/cursors/images/" + QString::fromLatin1(bestFit->fileName));
 
    return PixmapCursor(rawImage, QPoint(bestFit->hotSpotX, bestFit->hotSpotY));
 }

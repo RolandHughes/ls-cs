@@ -107,7 +107,7 @@ list(APPEND GENERATE_TABLES_SOURCES
 add_executable(Generate_Tables ${GENERATE_TABLES_SOURCES} )
 
 target_link_libraries(Generate_Tables
-   Ls-Cs::Ls-CsCore
+   LsCs::LsCsCore
 )
 
 if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
@@ -127,4 +127,4 @@ endif()
 install(TARGETS Generate_Tables DESTINATION .)
 
 # install the CopperSpice libraries
-cs_copy_library(Ls-CsCore)
+cs_copy_library(LsCsCore)

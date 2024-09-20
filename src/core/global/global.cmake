@@ -63,7 +63,7 @@ set_property(SOURCE
    BUILD_DATE="${BUILD_DATE}"
 )
 
-target_sources(Ls-CsCore
+target_sources(LsCsCore
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/global/qassert.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/global/qexport.cpp

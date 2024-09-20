@@ -1,7 +1,7 @@
-add_library(Ls-CsXmlPatterns SHARED "")
-add_library(Ls-Cs::Ls-CsXmlPatterns ALIAS Ls-CsXmlPatterns)
+add_library(LsCsXmlPatterns SHARED "")
+add_library(LsCs::LsCsXmlPatterns ALIAS LsCsXmlPatterns)
 
-set_target_properties(Ls-CsXmlPatterns PROPERTIES OUTPUT_NAME Ls-CsXmlPatterns${BUILD_ABI})
+set_target_properties(LsCsXmlPatterns PROPERTIES OUTPUT_NAME LsCsXmlPatterns${BUILD_ABI})
 
 add_definitions(
    -DQT_BUILD_XMLPATTERNS_LIB
@@ -10,7 +10,7 @@ add_definitions(
 set(EXTRA_XMLPATTERNS_CXXFLAGS)
 set(EXTRA_XMLPATTERNS_LDFLAGS)
 
-target_include_directories(Ls-CsXmlPatterns
+target_include_directories(LsCsXmlPatterns
    PUBLIC
    $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include/QtXmlPatterns>
    $<INSTALL_INTERFACE:include/QtXmlPatterns>
@@ -57,39 +57,49 @@ macro_generate_misc("${XMLPATTERNS_INCLUDES}" QtXmlPatterns)
 function_variable_fixup("${EXTRA_XMLPATTERNS_CXXFLAGS}" EXTRA_XMLPATTERNS_CXXFLAGS)
 function_variable_fixup("${EXTRA_XMLPATTERNS_LDFLAGS}" EXTRA_XMLPATTERNS_LDFLAGS)
 
-target_sources(Ls-CsXmlPatterns
+target_sources(LsCsXmlPatterns
    PRIVATE
    ${XMLPATTERNS_INCLUDES}
 )
 
-target_link_libraries(Ls-CsXmlPatterns
+target_link_libraries(LsCsXmlPatterns
    PRIVATE
-   Ls-CsCore
-   Ls-CsNetwork
+   LsCsCore
+   LsCsNetwork
 )
 
-set_target_properties(Ls-CsXmlPatterns
+set_target_properties(LsCsXmlPatterns
    PROPERTIES
    COMPILE_FLAGS ${EXTRA_XMLPATTERNS_CXXFLAGS}
    LINK_FLAGS ${EXTRA_XMLPATTERNS_LDFLAGS}
 )
 
-function_generate_resources(Ls-CsXmlPatterns)
+function_generate_resources(LsCsXmlPatterns)
 
 macro_generate_package(
-   Ls-CsXmlPatterns
+   LsCsXmlPatterns
    QtXmlPatterns
    "${EXTRA_XMLPATTERNS_CXXFLAGS}"
-   "Ls-CsCore Ls-CsNetwork"
+   "LsCsCore LsCsNetwork"
 )
 
-install(
-    TARGETS Ls-CsXmlPatterns
-    EXPORT Ls-CsLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-)
+if (DEBIAN_FOUND)
+    install(
+        TARGETS LsCsXmlPatterns
+        EXPORT LsCsLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}
+    )
+else()  
+    install(
+        TARGETS LsCsXmlPatterns
+        EXPORT LsCsLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    )
+endif()  
 
 install(
     DIRECTORY ${CMAKE_BINARY_DIR}/include/QtXmlPatterns

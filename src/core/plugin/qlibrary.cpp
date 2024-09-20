@@ -451,7 +451,7 @@ void QLibraryHandle::updatePluginState()
    int index   = m_metaObject->indexOfClassInfo("plugin_version");
    int version = m_metaObject->classInfo(index).value().toInteger<int>();
 
-   if ((version & 0x00ff00) > (LS_CS_VERSION & 0x00ff00) || (version & 0xff0000) != (LS_CS_VERSION & 0xff0000)) {
+   if ((version & 0x00ff00) > (LSCS_VERSION & 0x00ff00) || (version & 0xff0000) != (LSCS_VERSION & 0xff0000)) {
       errorString = QLibrary::tr("Plugin '%1' uses an incompatible CopperSpice library (%2.%3.%4)")
             .formatArg(fileName).formatArg((version & 0xff0000) >> 16).formatArg((version & 0xff00) >> 8)
             .formatArg(version & 0xff);

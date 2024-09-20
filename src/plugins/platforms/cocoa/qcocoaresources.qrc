@@ -1,12 +1,12 @@
 <!DOCTYPE RCC><RCC version="1.0">
-<qresource prefix="Ls-Cs::mac/cursors">
+<qresource prefix="LsCs::mac/cursors">
 <file>images/copyarrowcursor.png</file>
 <file>images/forbiddencursor.png</file>
 <file>images/spincursor.png</file>
 <file>images/waitcursor.png</file>
 <file>images/sizeallcursor.png</file>
 </qresource>
-<qresource prefix="Ls-Cs::mac/style">
+<qresource prefix="LsCs::mac/style">
 <file>images/leopard-unified-toolbar-on.png</file>
 </qresource>
 </RCC>

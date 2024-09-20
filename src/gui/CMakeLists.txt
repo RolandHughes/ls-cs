@@ -1,9 +1,9 @@
-add_library(Ls-CsGui SHARED "")
-add_library(Ls-Cs::Ls-CsGui ALIAS Ls-CsGui)
+add_library(LsCsGui SHARED "")
+add_library(LsCs::LsCsGui ALIAS LsCsGui)
 
-set_target_properties(Ls-CsGui PROPERTIES OUTPUT_NAME Ls-CsGui${BUILD_ABI})
+set_target_properties(LsCsGui PROPERTIES OUTPUT_NAME LsCsGui${BUILD_ABI})
 
-target_compile_definitions(Ls-CsGui
+target_compile_definitions(LsCsGui
    PRIVATE
    -DQT_BUILD_GUI_LIB
    -DQT_BUILTIN_GIF_READER
@@ -15,7 +15,7 @@ target_compile_definitions(Ls-CsGui
 set(EXTRA_GUI_CXXFLAGS)
 set(EXTRA_GUI_LDFLAGS)
 
-target_include_directories(Ls-CsGui
+target_include_directories(LsCsGui
    PUBLIC
    $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include/QtGui>
    $<INSTALL_INTERFACE:include/QtGui>
@@ -94,7 +94,7 @@ macro_generate_misc("${GUI_PLATFORMHEADERS_INCLUDES}" QtGui/platformheaders)
 
 if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
 
-   target_link_libraries(Ls-CsGui
+   target_link_libraries(LsCsGui
       PRIVATE
       objc
    )
@@ -108,7 +108,7 @@ if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
 
-   target_link_libraries(Ls-CsGui
+   target_link_libraries(LsCsGui
       PRIVATE
       ${X11_X11_LIB}
       ${X11_Xrender_LIB}
@@ -147,7 +147,7 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
 
-   target_link_libraries(Ls-CsGui
+   target_link_libraries(LsCsGui
       PRIVATE
       gdi32
       winmm
@@ -171,52 +171,62 @@ endif()
 function_variable_fixup("${EXTRA_GUI_CXXFLAGS}" EXTRA_GUI_CXXFLAGS)
 function_variable_fixup("${EXTRA_GUI_LDFLAGS}"  EXTRA_GUI_LDFLAGS)
 
-target_sources(Ls-CsGui
+target_sources(LsCsGui
    PRIVATE
    ${GUI_INCLUDES}
    ${GUI_PLATFORMHEADERS_INCLUDES}
 )
 
-target_include_directories(Ls-CsGui
+target_include_directories(LsCsGui
    PUBLIC
    ${OPENGL_INCLUDE_DIR}
 )
 
-target_link_libraries(Ls-CsGui
+target_link_libraries(LsCsGui
    PUBLIC
-   Ls-CsCore
+   LsCsCore
    ${OPENGL_LIBRARIES}
 )
 
 if (${JPEG_FOUND})
-   target_link_libraries(Ls-CsGui
+   target_link_libraries(LsCsGui
       PRIVATE
       ${JPEG_LIBRARIES}
    )
 endif()
 
-set_target_properties(Ls-CsGui
+set_target_properties(LsCsGui
    PROPERTIES
    COMPILE_FLAGS ${EXTRA_GUI_CXXFLAGS}
    LINK_FLAGS ${EXTRA_GUI_LDFLAGS}
 )
 
-function_generate_resources(Ls-CsGui)
+function_generate_resources(LsCsGui)
 
 macro_generate_package(
-   Ls-CsGui
+   LsCsGui
    QtGui
    "${EXTRA_GUI_CXXFLAGS}"
-   "Ls-CsCore"
+   "LsCsCore"
 )
 
-install(
-   TARGETS Ls-CsGui
-   EXPORT Ls-CsLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
-   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-)
+if (DEBIAN_FOUND)
+    install(
+        TARGETS LsCsGui
+        EXPORT LsCsLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}
+    )
+else()  
+    install(
+        TARGETS LsCsGui
+        EXPORT LsCsLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    )
+endif()
 
 install(
     DIRECTORY ${CMAKE_BINARY_DIR}/include/QtGui

@@ -41,7 +41,7 @@ list(APPEND MULTIMEDIA_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/audio/qwavedecoder_p.h
 )
 
-target_sources(Ls-CsMultimedia
+target_sources(LsCsMultimedia
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/audio/qaudio.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/audio/qaudiobuffer.cpp
@@ -68,12 +68,12 @@ if (PulseAudio_FOUND)
       -DQTM_PULSEAUDIO_DEFAULTBUFFER
    )
 
-   target_link_libraries(Ls-CsMultimedia
+   target_link_libraries(LsCsMultimedia
       PRIVATE
       ${PULSEAUDIO_LIBRARY}
    )
 
-   target_sources(Ls-CsMultimedia
+   target_sources(LsCsMultimedia
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/audio/qsoundeffect_pulse_p.cpp
    )
@@ -84,7 +84,7 @@ else()
       -DQT_MULTIMEDIA_QAUDIO
    )
 
-   target_sources(Ls-CsMultimedia
+   target_sources(LsCsMultimedia
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/audio/qsoundeffect_qaudio_p.cpp
    )
@@ -92,7 +92,7 @@ else()
 endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "Windows")
-   target_link_libraries(Ls-CsMultimedia
+   target_link_libraries(LsCsMultimedia
       PRIVATE
       winmm
    )

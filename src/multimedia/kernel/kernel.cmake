@@ -35,7 +35,7 @@ list(APPEND MULTIMEDIA_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qmultimediautils_p.h
 )
 
-target_sources(Ls-CsMultimedia
+target_sources(LsCsMultimedia
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qmediabindableinterface.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qmediacontrol.cpp

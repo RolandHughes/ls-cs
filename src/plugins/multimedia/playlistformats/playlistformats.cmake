@@ -1,31 +1,31 @@
-add_library(Ls-CsMultimedia_m3u MODULE "")
-add_library(Ls-Cs::Ls-CsMultimedia_m3u ALIAS Ls-CsMultimedia_m3u)
+add_library(LsCsMultimedia_m3u MODULE "")
+add_library(LsCs::LsCsMultimedia_m3u ALIAS LsCsMultimedia_m3u)
 
-set_target_properties(Ls-CsMultimedia_m3u PROPERTIES OUTPUT_NAME Ls-CsMultimedia_m3u${BUILD_ABI} PREFIX "")
+set_target_properties(LsCsMultimedia_m3u PROPERTIES OUTPUT_NAME LsCsMultimedia_m3u${BUILD_ABI} PREFIX "")
 
 
 list(APPEND MULTIMEDIA_PRIVATE_INCLUDES
    ${CMAKE_SOURCE_DIR}/src/plugins/multimedia/playlistformats/qm3u_plugin.h
 )
 
-target_sources(Ls-CsMultimedia_m3u
+target_sources(LsCsMultimedia_m3u
    PRIVATE
    ${CMAKE_SOURCE_DIR}/src/plugins/multimedia/playlistformats/qm3u_plugin.cpp
 )
 
-target_link_libraries(Ls-CsMultimedia_m3u
+target_link_libraries(LsCsMultimedia_m3u
    PRIVATE
-   Ls-CsMultimedia
+   LsCsMultimedia
 )
 
-target_compile_definitions(Ls-CsMultimedia_m3u
+target_compile_definitions(LsCsMultimedia_m3u
    PRIVATE
    -DIN_TRUE
    -DQT_PLUGIN
 )
 
-if(BUILDING_RPM OR BUILDING_DEBIAN)
-  install(TARGETS Ls-CsMultimedia_m3u DESTINATION ${CMAKE_INSTALL_LIBDIR}/ls-cs/plugins/playlistformats)
-else()
-  install(TARGETS Ls-CsMultimedia_m3u DESTINATION ${CMAKE_INSTALL_LIBDIR})
-endif()
+#if(BUILDING_RPM OR BUILDING_DEBIAN)
+  install(TARGETS LsCsMultimedia_m3u DESTINATION ${CMAKE_INSTALL_LIBDIR}/LsCs/plugins/playlistformats)
+#else()
+#  install(TARGETS LsCsMultimedia_m3u DESTINATION ${CMAKE_INSTALL_LIBDIR})
+#endif()

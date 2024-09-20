@@ -43,12 +43,12 @@ list(APPEND PLATFORMS_WIN_OTHER_PRIVATE_INCLUDES
 
 if(BUILD_PLATFORMS_WINDOWS_PLUGIN)
 
-   add_library(Ls-CsGuiWin MODULE "")
-   add_library(Ls-Cs::Ls-CsGuiWin ALIAS Ls-CsGuiWin)
+   add_library(LsCsGuiWin MODULE "")
+   add_library(LsCs::LsCsGuiWin ALIAS LsCsGuiWin)
 
-   set_target_properties(Ls-CsGuiWin PROPERTIES OUTPUT_NAME Ls-CsGuiWin${BUILD_ABI} PREFIX "")
+   set_target_properties(LsCsGuiWin PROPERTIES OUTPUT_NAME LsCsGuiWin${BUILD_ABI} PREFIX "")
 
-   target_sources(Ls-CsGuiWin
+   target_sources(LsCsGuiWin
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/windows/main.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/windows/qwin_backingstore.cpp
@@ -88,16 +88,16 @@ if(BUILD_PLATFORMS_WINDOWS_PLUGIN)
       ${CMAKE_CURRENT_BINARY_DIR}/qrc_cursors.cpp
    )
 
-   target_include_directories(Ls-CsGuiWin
+   target_include_directories(LsCsGuiWin
       PRIVATE
       ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/include
       ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/include/freetype
    )
 
-   target_link_libraries(Ls-CsGuiWin
+   target_link_libraries(LsCsGuiWin
       PRIVATE
-      Ls-CsCore
-      Ls-CsGui
+      LsCsCore
+      LsCsGui
       opengl32
       gdi32
       winmm
@@ -110,14 +110,14 @@ if(BUILD_PLATFORMS_WINDOWS_PLUGIN)
       user32
    )
 
-   target_compile_definitions(Ls-CsGuiWin
+   target_compile_definitions(LsCsGuiWin
       PRIVATE
       -DQT_PLUGIN
       -DQT_USE_FREETYPE
    )
 
-   function_generate_resources(Ls-CsGuiWin)
+   function_generate_resources(LsCsGuiWin)
 
-   install(TARGETS Ls-CsGuiWin DESTINATION ${CMAKE_INSTALL_LIBDIR})
+   install(TARGETS LsCsGuiWin DESTINATION ${CMAKE_INSTALL_LIBDIR})
 endif()
 

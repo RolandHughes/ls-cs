@@ -1,5 +1,5 @@
 add_executable(uic${TOOLS_SUFFIX} "")
-add_executable(Ls-Cs::uic ALIAS uic${TOOLS_SUFFIX})
+add_executable(LsCs::uic ALIAS uic${TOOLS_SUFFIX})
 
 add_definitions(
    -DQT_UIC
@@ -7,7 +7,7 @@ add_definitions(
 )
 
 set(EXTRA_UIC_LIBS
-   Ls-CsCore
+   LsCsCore
 )
 
 set(EXTRA_UIC_CXXFLAGS)
@@ -95,6 +95,6 @@ set_target_properties(uic${TOOLS_SUFFIX}
 
 install(
     TARGETS uic${TOOLS_SUFFIX}
-    EXPORT Ls-CsBinaryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
+    EXPORT LsCsBinaryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
     DESTINATION ${CMAKE_INSTALL_BINDIR}
 )

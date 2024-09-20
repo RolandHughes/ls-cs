@@ -226,7 +226,7 @@ void QFactoryLoader::setup()
 
             int lib_version = version.toInteger<int>();
 
-            if (lib_other == nullptr || (other_version > LS_CS_VERSION && lib_version <= LS_CS_VERSION)) {
+            if (lib_other == nullptr || (other_version > LSCS_VERSION && lib_version <= LSCS_VERSION)) {
                d->libraryMap[item] = library;
                ++keyUsageCount;
             }

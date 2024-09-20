@@ -1,9 +1,9 @@
-add_library(Ls-CsMultimedia SHARED "")
-add_library(Ls-Cs::Ls-CsMultimedia ALIAS Ls-CsMultimedia)
+add_library(LsCsMultimedia SHARED "")
+add_library(LsCs::LsCsMultimedia ALIAS LsCsMultimedia)
 
-set_target_properties(Ls-CsMultimedia PROPERTIES OUTPUT_NAME Ls-CsMultimedia${BUILD_ABI})
+set_target_properties(LsCsMultimedia PROPERTIES OUTPUT_NAME LsCsMultimedia${BUILD_ABI})
 
-target_compile_definitions(Ls-CsMultimedia
+target_compile_definitions(LsCsMultimedia
    PRIVATE
    -DQT_BUILD_MULTIMEDIA_LIB
 )
@@ -11,7 +11,7 @@ target_compile_definitions(Ls-CsMultimedia
 set(EXTRA_MULTIMEDIA_CXXFLAGS)
 set(EXTRA_MULTIMEDIA_LDFLAGS)
 
-target_include_directories(Ls-CsMultimedia
+target_include_directories(LsCsMultimedia
    PUBLIC
    $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include/QtMultimedia>
    $<INSTALL_INTERFACE:include/QtMultimedia>
@@ -60,46 +60,56 @@ endif()
 function_variable_fixup("${EXTRA_MULTIMEDIA_CXXFLAGS}" EXTRA_MULTIMEDIA_CXXFLAGS)
 function_variable_fixup("${EXTRA_MULTIMEDIA_LDFLAGS}"  EXTRA_MULTIMEDIA_LDFLAGS)
 
-target_sources(Ls-CsMultimedia
+target_sources(LsCsMultimedia
    PRIVATE
    ${MULTIMEDIA_INCLUDES}
 )
 
-target_link_libraries(Ls-CsMultimedia
+target_link_libraries(LsCsMultimedia
    PUBLIC
-   Ls-CsCore
-   Ls-CsGui
-   Ls-CsNetwork
-   Ls-CsOpenGL
+   LsCsCore
+   LsCsGui
+   LsCsNetwork
+   LsCsOpenGL
 )
 
-target_include_directories(Ls-CsMultimedia
+target_include_directories(LsCsMultimedia
    PUBLIC
    ${GSTREAMER_INCLUDE_DIRS}
 )
 
-set_target_properties(Ls-CsMultimedia
+set_target_properties(LsCsMultimedia
    PROPERTIES
    COMPILE_FLAGS ${EXTRA_MULTIMEDIA_CXXFLAGS}
    LINK_FLAGS ${EXTRA_MULTIMEDIA_LDFLAGS}
 )
 
-function_generate_resources(Ls-CsMultimedia)
+function_generate_resources(LsCsMultimedia)
 
 macro_generate_package(
-   Ls-CsMultimedia
+   LsCsMultimedia
    QtMultimedia
    "${EXTRA_MULTIMEDIA_CXXFLAGS}"
-   "Ls-CsCore Ls-CsGui"
+   "LsCsCore LsCsGui"
 )
 
-install(
-    TARGETS Ls-CsMultimedia
-    EXPORT Ls-CsLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-)
+if (DEBIAN_FOUND)
+    install(
+        TARGETS LsCsMultimedia
+        EXPORT LsCsLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}
+    )
+else()  
+    install(
+        TARGETS LsCsMultimedia
+        EXPORT LsCsLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    )
+endif()  
 
 install(
     DIRECTORY ${CMAKE_BINARY_DIR}/include/QtMultimedia

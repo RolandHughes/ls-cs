@@ -664,7 +664,7 @@ void QFileDialogPrivate::saveSettings()
    const QMetaEnum &viewModeMeta = q->metaObject()->enumerator(q->metaObject()->indexOfEnumerator("ViewMode"));
 
    settings.setValue("viewMode",  viewModeMeta.key(q->viewMode()));
-   settings.setValue("ls-csVersion", QString(LS_CS_VERSION_STR));
+   settings.setValue("LsCsVersion", QString(LSCS_VERSION_STR));
 }
 
 bool QFileDialogPrivate::restoreFromSettings()

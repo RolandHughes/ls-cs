@@ -1,9 +1,9 @@
 add_executable(lupdate${TOOLS_SUFFIX} "")
-add_executable(Ls-Cs::lupdate ALIAS lupdate${TOOLS_SUFFIX})
+add_executable(LsCs::lupdate ALIAS lupdate${TOOLS_SUFFIX})
 
 set(EXTRA_LUPDATE_LIBS
-   Ls-CsCore
-   Ls-CsXml
+   LsCsCore
+   LsCsXml
 )
 
 set(EXTRA_LUPDATE_CXXFLAGS)
@@ -76,6 +76,6 @@ function_generate_resources(lupdate${TOOLS_SUFFIX})
 #
 install(
     TARGETS lupdate${TOOLS_SUFFIX}
-    EXPORT Ls-CsBinaryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
+    EXPORT LsCsBinaryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
     DESTINATION ${CMAKE_INSTALL_BINDIR}
 )

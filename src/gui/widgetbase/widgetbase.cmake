@@ -40,7 +40,7 @@ list(APPEND GUI_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/widgetbase/qwidgetwindow_p.h
 )
 
-target_sources(Ls-CsGui
+target_sources(LsCsGui
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/widgetbase/qabstractbutton.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/widgetbase/qabstractslider.cpp

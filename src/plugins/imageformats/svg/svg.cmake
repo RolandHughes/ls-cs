@@ -3,35 +3,35 @@ list(APPEND IMAGEFORMATS_SVG_PRIVATE_INCLUDES
 )
 
 if(WITH_SVG)
-   add_library(Ls-CsImageFormatsSvg MODULE "")
-   add_library(Ls-Cs::Ls-CsImageFormatsSvg ALIAS Ls-CsImageFormatsSvg)
+   add_library(LsCsImageFormatsSvg MODULE "")
+   add_library(LsCs::LsCsImageFormatsSvg ALIAS LsCsImageFormatsSvg)
 
-   set_target_properties(Ls-CsImageFormatsSvg PROPERTIES OUTPUT_NAME Ls-CsImageFormatsSvg${BUILD_ABI} PREFIX "")
+   set_target_properties(LsCsImageFormatsSvg PROPERTIES OUTPUT_NAME LsCsImageFormatsSvg${BUILD_ABI} PREFIX "")
 
-   target_sources(Ls-CsImageFormatsSvg
+   target_sources(LsCsImageFormatsSvg
       PRIVATE
       ${CMAKE_SOURCE_DIR}/src/plugins/imageformats/svg/main.cpp
       ${CMAKE_SOURCE_DIR}/src/plugins/imageformats/svg/qsvgiohandler.cpp
    )
 
-   target_link_libraries(Ls-CsImageFormatsSvg
-      Ls-CsCore
-      Ls-CsGui
-      Ls-CsSvg
+   target_link_libraries(LsCsImageFormatsSvg
+      LsCsCore
+      LsCsGui
+      LsCsSvg
    )
 
-   target_compile_definitions(Ls-CsImageFormatsSvg
+   target_compile_definitions(LsCsImageFormatsSvg
       PRIVATE
       -DQT_PLUGIN
    )
 
-   function_generate_resources(Ls-CsImageFormatsSvg)
+   function_generate_resources(LsCsImageFormatsSvg)
 
 
-   if(BUILDING_RPM OR BUILDING_DEBIAN)
-      install(TARGETS Ls-CsImageFormatsSvg DESTINATION ${CMAKE_INSTALL_LIBDIR}/ls-cs/plugins/imageformats)
-   else()
-      install(TARGETS Ls-CsImageFormatsSvg DESTINATION ${CMAKE_INSTALL_LIBDIR})
-   endif()
+#   if(BUILDING_RPM OR BUILDING_DEBIAN)
+      install(TARGETS LsCsImageFormatsSvg DESTINATION ${CMAKE_INSTALL_LIBDIR}/LsCs/plugins/imageformats)
+#   else()
+#      install(TARGETS LsCsImageFormatsSvg DESTINATION ${CMAKE_INSTALL_LIBDIR})
+#   endif()
 endif()
 

@@ -3,13 +3,13 @@
 # Copyright (c) 2012-2024 Barbara Geller
 # Copyright (c) 2012-2024 Ansel Sermersheim
 #
-# This file is part of ls-cs.
+# This file is part of LsCs.
 #
-# ls-cs is free software. You can redistribute it and/or
+# LsCs is free software. You can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public License
 # version 2.1 as published by the Free Software Foundation.
 #
-# ls-cs is distributed in the hope that it will be useful,
+# LsCs is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 #
@@ -17,16 +17,16 @@
 #
 # ***********************************************************************
 
-set(LS_CS_VERSION_MAJOR "@BUILD_MAJOR@" PARENT_SCOPE)
-set(LS_CS_VERSION_MINOR "@BUILD_MINOR@" PARENT_SCOPE)
-set(LS_CS_VERSION_PATCH "@BUILD_MICRO@" PARENT_SCOPE)
+set(LSCS_VERSION_MAJOR "@BUILD_MAJOR@" PARENT_SCOPE)
+set(LSCS_VERSION_MINOR "@BUILD_MINOR@" PARENT_SCOPE)
+set(LSCS_VERSION_PATCH "@BUILD_MICRO@" PARENT_SCOPE)
 
-set(LS_CS_VERSION       "@BUILD_MAJOR@.@BUILD_MINOR@.@BUILD_MICRO@" PARENT_SCOPE)
-set(LS_CS_VERSION_API   "@BUILD_MAJOR@.@BUILD_MINOR@" PARENT_SCOPE)
+set(LSCS_VERSION       "@BUILD_MAJOR@.@BUILD_MINOR@.@BUILD_MICRO@" PARENT_SCOPE)
+set(LSCS_VERSION_API   "@BUILD_MAJOR@.@BUILD_MINOR@" PARENT_SCOPE)
 
 set(PACKAGE_VERSION "@BUILD_MAJOR@.@BUILD_MINOR@.@BUILD_MICRO@")
 
-if (MSVC OR "${CS_CHECK_BUILD_TYPE}")
+if (MSVC OR "${LSCS_CHECK_BUILD_TYPE}")
    # used when a downstream project calls find_package() for cs
    set(PACKAGE_VERSION_COMPATIBLE false)
 

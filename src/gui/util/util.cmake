@@ -31,7 +31,7 @@ list(APPEND GUI_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/util/qundostack_p.h
 )
 
-target_sources(Ls-CsGui
+target_sources(LsCsGui
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/util/qcompleter.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/util/qdesktopservices.cpp
@@ -45,19 +45,19 @@ target_sources(Ls-CsGui
 )
 
 if(CMAKE_SYSTEM_NAME MATCHES "Windows")
-   target_sources(Ls-CsGui
+   target_sources(LsCsGui
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/util/qsystemtrayicon_win.cpp
    )
 
 elseif(X11_FOUND)
-   target_sources(Ls-CsGui
+   target_sources(LsCsGui
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/util/qsystemtrayicon_x11.cpp
    )
 
 else()
-   target_sources(Ls-CsGui
+   target_sources(LsCsGui
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/util/qsystemtrayicon_qpa.cpp
    )

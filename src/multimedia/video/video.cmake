@@ -25,7 +25,7 @@ list(APPEND MULTIMEDIA_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/video/qvideooutputorientationhandler_p.h
 )
 
-target_sources(Ls-CsMultimedia
+target_sources(LsCsMultimedia
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/video/qabstractvideofilter.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/video/qabstractvideobuffer.cpp

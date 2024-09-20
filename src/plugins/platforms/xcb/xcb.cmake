@@ -2,36 +2,36 @@ list(APPEND PLATFORMS_XCB_PRIVATE_INCLUDES
 )
 
 if(BUILD_PLATFORMS_XCB_PLUGIN)
-   add_library(Ls-CsGuiXcb MODULE "")
-   add_library(Ls-Cs::Ls-CsGuiXcb ALIAS Ls-CsGuiXcb)
+   add_library(LsCsGuiXcb MODULE "")
+   add_library(LsCs::LsCsGuiXcb ALIAS LsCsGuiXcb)
 
-   set_target_properties(Ls-CsGuiXcb PROPERTIES
-      OUTPUT_NAME   Ls-CsGuiXcb${BUILD_ABI} PREFIX ""
+   set_target_properties(LsCsGuiXcb PROPERTIES
+      OUTPUT_NAME   LsCsGuiXcb${BUILD_ABI} PREFIX ""
       INSTALL_RPATH "$ORIGIN/.."
    )
 
-   target_sources(Ls-CsGuiXcb
+   target_sources(LsCsGuiXcb
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/xcb/qxcb_main.cpp
    )
 
-   target_link_libraries(Ls-CsGuiXcb
+   target_link_libraries(LsCsGuiXcb
       PRIVATE
-      Ls-CsCore
-      Ls-CsGui
-      Ls-CsXcbSupport
+      LsCsCore
+      LsCsGui
+      LsCsXcbSupport
    )
 
-   target_compile_definitions(Ls-CsGuiXcb
+   target_compile_definitions(LsCsGuiXcb
       PRIVATE
       -DQT_PLUGIN
       -DXCB_USE_XINPUT2
    )
 
-   if(BUILDING_RPM OR BUILDING_DEBIAN)
-      install(TARGETS Ls-CsGuiXcb DESTINATION ${CMAKE_INSTALL_LIBDIR}/ls-cs/plugins/platforms)
-   else()
-      install(TARGETS Ls-CsGuiXcb DESTINATION ${CMAKE_INSTALL_LIBDIR})
-   endif()
+#   if(BUILDING_RPM OR BUILDING_DEBIAN)
+      install(TARGETS LsCsGuiXcb DESTINATION ${CMAKE_INSTALL_LIBDIR}/LsCs/plugins/platforms)
+#   else()
+#      install(TARGETS LsCsGuiXcb DESTINATION ${CMAKE_INSTALL_LIBDIR})
+#   endif()
 endif()
 

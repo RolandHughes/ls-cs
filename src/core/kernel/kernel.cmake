@@ -107,7 +107,7 @@ list(APPEND CORE_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qtranslator_p.h
 )
 
-target_sources(Ls-CsCore
+target_sources(LsCsCore
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qabstracteventdispatcher.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qabstractitemmodel.cpp
@@ -140,7 +140,7 @@ target_sources(Ls-CsCore
 )
 
 if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
-   target_sources(Ls-CsCore
+   target_sources(LsCsCore
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qcfsocketnotifier.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qcore_mac.cpp
@@ -155,7 +155,7 @@ if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
    )
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD)")
-   target_sources(Ls-CsCore
+   target_sources(LsCsCore
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qcore_unix.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qcrashhandler.cpp
@@ -166,14 +166,14 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD)")
    )
 
    if(GTK2_FOUND)
-      target_sources(Ls-CsCore
+      target_sources(LsCsCore
          PRIVATE
          ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qeventdispatcher_glib.cpp
       )
    endif()
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
-   target_sources(Ls-CsCore
+   target_sources(LsCsCore
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qeventdispatcher_win.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qcoreapplication_win.cpp

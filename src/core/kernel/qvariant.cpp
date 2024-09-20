@@ -175,7 +175,7 @@ static const QVariant::NamesAndTypes builtinTypes[] = {
    { "QUuid",                  QVariant::Uuid,                 typeid(QUuid *) },
    { "QUrl",                   QVariant::Url,                  typeid(QUrl *) },
 
-   // Ls-CsGui
+   // LsCsGui
    { "QBitmap",                QVariant::Bitmap,               typeid(QBitmap *) },
    { "QBrush",                 QVariant::Brush,                typeid(QBrush *) },
    { "QColor",                 QVariant::Color,                typeid(QColor *) },

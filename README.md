@@ -1,4 +1,4 @@
-# LS-CS fork of Copperspice
+# LsCs fork of Copperspice
 
 *This is un-official and not maintained by the CopperSpice project*
 
@@ -61,25 +61,25 @@ https://www.copperspice.com/docs/cs_api/class_qstringview.html
 
 ## System Requirements
 
-To use the Ls-Cs libraries a C++17 compiler and a C++17 standard library are 
+To use the LsCs libraries a C++17 compiler and a C++17 standard library are 
 required. In the root directory you will find the following to install build
 dependencies:
 
-1. ls-cs-Deb-build-dependencies.sh     - for Debian based distros like Ubuntu
-2. ls-cs-Manjaro-build-dependencies.sh - for Manjaro based distros
-3. ls-cs-RPM-build-dependencies.sh     - for RPM based distros like OpenSuSE
+1. LsCs-Deb-build-dependencies.sh       - for Debian based distros like Ubuntu
+2. LsCs-Manjaro-build-dependencies.sh - for Manjaro based distros
+3. LsCs-RPM-build-dependencies.sh      - for RPM based distros like OpenSuSE
 
 The above install some extra development tools. If you are installing on a 
 distro that is much older (or newer) than currently being used for development
 you might have to tweak a few version numbers. They install everything you need
 to build a package for distribution.
 
-Ls-Cs CMake build files are provided with the source distribution. 
+LsCs CMake build files are provided with the source distribution. 
 You will also find:
 
-1. build-ls-cs-deb.sh   -   Build a DEB package
-2. build-ls-cs-rpm.sh   -   Build an RPM package
-3. local-build.sh       -   Build and install into a local directory tree
+1. build-LsCs-deb.sh   -   Build a DEB package
+2. build-LsCs-rpm.sh   -   Build an RPM package
+3. local-build.sh           -   Build and install into a local directory tree
 
 
 ### Building
@@ -96,7 +96,7 @@ directories of RedDiamond if you have never used either CMake or Ninja.
 https://sourceforge.net/p/reddiamond/code/ci/master/tree/
 
 You will note that project also has build*.sh files Thieving just a few files
-from that project should jumpstart your use of Ls-Cs.
+from that project should jumpstart your use of LsCs.
 
 A possibly simpler starting point would be to install CsScintilla and use some
 of the examples found in copperspice_examples.

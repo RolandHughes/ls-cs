@@ -1,9 +1,9 @@
-add_library(Ls-CsVulkan SHARED "")
-add_library(Ls-Cs::Ls-CsVulkan ALIAS Ls-CsVulkan)
+add_library(LsCsVulkan SHARED "")
+add_library(LsCs::LsCsVulkan ALIAS LsCsVulkan)
 
-set_target_properties(Ls-CsVulkan PROPERTIES OUTPUT_NAME Ls-CsVulkan${BUILD_ABI})
+set_target_properties(LsCsVulkan PROPERTIES OUTPUT_NAME LsCsVulkan${BUILD_ABI})
 
-target_compile_definitions(Ls-CsVulkan
+target_compile_definitions(LsCsVulkan
    PRIVATE
    -DQT_BUILD_VULKAN_LIB
 )
@@ -11,7 +11,7 @@ target_compile_definitions(Ls-CsVulkan
 set(EXTRA_VULKAN_CXXFLAGS)
 set(EXTRA_VULKAN_LDFLAGS)
 
-target_include_directories(Ls-CsVulkan
+target_include_directories(LsCsVulkan
    PUBLIC
    $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include/QtVulkan>
    $<INSTALL_INTERFACE:include/QtVulkan>
@@ -47,7 +47,7 @@ list(APPEND VULKAN_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/qvulkan_window_renderer.h
 )
 
-target_sources(Ls-CsVulkan
+target_sources(LsCsVulkan
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/qvulkan_device_functions.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/qvulkan_functions.cpp
@@ -63,54 +63,64 @@ macro_generate_misc("${VULKAN_INCLUDES}" QtVulkan)
 function_variable_fixup("${EXTRA_VULKAN_CXXFLAGS}" EXTRA_VULKAN_CXXFLAGS)
 function_variable_fixup("${EXTRA_VULKAN_LDFLAGS}"  EXTRA_VULKAN_LDFLAGS)
 
-target_link_libraries(Ls-CsVulkan
+target_link_libraries(LsCsVulkan
    PUBLIC
-   Ls-CsCore
-   Ls-CsGui
+   LsCsCore
+   LsCsGui
    Vulkan::Vulkan
 )
 
-set_target_properties(Ls-CsVulkan
+set_target_properties(LsCsVulkan
    PROPERTIES
    COMPILE_FLAGS ${EXTRA_VULKAN_CXXFLAGS}
    LINK_FLAGS ${EXTRA_VULKAN_LDFLAGS}
 )
 
 if(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
-  target_compile_definitions(Ls-CsVulkan
+  target_compile_definitions(LsCsVulkan
     PUBLIC
     -DVK_USE_PLATFORM_XCB_KHR
   )
 
-  target_link_libraries(Ls-CsVulkan
+  target_link_libraries(LsCsVulkan
       PRIVATE
       ${XCB_LIB}
   )
 
 else()
-  target_compile_definitions(Ls-CsVulkan
+  target_compile_definitions(LsCsVulkan
      PUBLIC
      -DVK_USE_PLATFORM_WIN32_KHR
   )
 
 endif()
 
-function_generate_resources(Ls-CsVulkan)
+function_generate_resources(LsCsVulkan)
 
 macro_generate_package(
-   Ls-CsVulkan
+   LsCsVulkan
    QtVulkan
    ""
-   "Ls-CsCore Ls-CsGui"
+   "LsCsCore LsCsGui"
 )
 
-install(
-   TARGETS Ls-CsVulkan
-   EXPORT Ls-CsLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
-   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-)
+if (DEBIAN_FOUND)
+    install(
+        TARGETS LsCsVulkan
+        EXPORT LsCsLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}
+    )
+else()  
+    install(
+        TARGETS LsCsVulkan
+        EXPORT LsCsLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    )
+endif()
 
 install(
    DIRECTORY ${CMAKE_BINARY_DIR}/include/QtVulkan

@@ -1,10 +1,10 @@
 add_executable(linguist${TOOLS_SUFFIX} "")
-add_executable(Ls-Cs::linguist ALIAS linguist${TOOLS_SUFFIX})
+add_executable(LsCs::linguist ALIAS linguist${TOOLS_SUFFIX})
 
 set(EXTRA_LINGUIST_LIBS
-   Ls-CsCore
-   Ls-CsGui
-   Ls-CsXml
+   LsCsCore
+   LsCsGui
+   LsCsXml
 )
 
 set(EXTRA_LINGUIST_CXXFLAGS)
@@ -125,7 +125,7 @@ function_generate_resources(linguist${TOOLS_SUFFIX})
 #
 install(
     TARGETS linguist${TOOLS_SUFFIX}
-    EXPORT Ls-CsBinaryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
+    EXPORT LsCsBinaryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
     DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 

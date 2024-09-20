@@ -33,7 +33,7 @@ list(APPEND XML_INCLUDES
     ${CMAKE_CURRENT_SOURCE_DIR}/sax/qxmlsimplereader.h
 )
 
-target_sources(Ls-CsXml
+target_sources(LsCsXml
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/sax/qxml.cpp
 )
