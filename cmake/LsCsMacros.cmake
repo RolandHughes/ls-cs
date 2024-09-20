@@ -4,13 +4,13 @@
 # Copyright (c) 2012-2024 Ansel Sermersheim
 # Copyright (c) 2015 Ivailo Monev, <xakepa10@gmail.com>
 #
-# This file is part of ls-cs.
+# This file is part of LsCs.
 #
-# ls-cs is free software. You can redistribute it and/or
+# LsCs is free software. You can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public License
 # version 2.1 as published by the Free Software Foundation.
 #
-# ls-cs is distributed in the hope that it will be useful,
+# LsCs is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 #
@@ -18,11 +18,11 @@
 #
 # ***********************************************************************
 
-macro(LS-CS_RESOURCES RESOURCES)
+macro(LSCS_RESOURCES RESOURCES)
 
    set(T_PATH "")
 
-   if ("${CS_INSTALL_MODE}" STREQUAL "Package")
+   if ("${LSCS_INSTALL_MODE}" STREQUAL "Package")
 
       if (LsCsSignal_FOUND)
          # cs was built in package mode
@@ -52,7 +52,7 @@ macro(LS-CS_RESOURCES RESOURCES)
             if ("${T_PATH}" STREQUAL "")
                add_custom_command(
                   OUTPUT ${rscout}
-                  COMMAND ls-cs::rcc "${resource}" -o "${rscout}" -name ${rscname}
+                  COMMAND LsCs::rcc "${resource}" -o "${rscout}" -name ${rscname}
                   MAIN_DEPENDENCY "${resource}"
                )
 
@@ -61,7 +61,7 @@ macro(LS-CS_RESOURCES RESOURCES)
 
                add_custom_command(
                   OUTPUT ${rscout}
-                  COMMAND cmake -E env "${T_PATH}" "$<TARGET_FILE/ls-cs/rcc>"
+                  COMMAND cmake -E env "${T_PATH}" "$<TARGET_FILE/LsCs/rcc>"
                         "${resource}" -o "${rscout}" -name ${rscname}
                   MAIN_DEPENDENCY "${resource}"
                )
@@ -80,7 +80,7 @@ macro(LS-CS_RESOURCES RESOURCES)
             if ("${T_PATH}" STREQUAL "")
                add_custom_command(
                   OUTPUT ${rscout}
-                  COMMAND ls-cs::lrelease "${resource}" -qm "${rscout}"
+                  COMMAND LsCs::lrelease "${resource}" -qm "${rscout}"
                   MAIN_DEPENDENCY "${resource}"
                )
 
@@ -89,7 +89,7 @@ macro(LS-CS_RESOURCES RESOURCES)
 
                add_custom_command(
                   OUTPUT ${rscout}
-                  COMMAND cmake -E env "$<JOIN:${T_PATH},;>" "$<TARGET_FILE/ls-cs/lrelease>"
+                  COMMAND cmake -E env "$<JOIN:${T_PATH},;>" "$<TARGET_FILE/LsCs/lrelease>"
                         "${resource}" -qm "${rscout}"
                   MAIN_DEPENDENCY "${resource}"
                )
@@ -102,7 +102,7 @@ macro(LS-CS_RESOURCES RESOURCES)
          if ("${T_PATH}" STREQUAL "")
             add_custom_command(
                OUTPUT ${rscout}
-               COMMAND ls-cs::uic "${resource}" -o "${rscout}"
+               COMMAND LsCs::uic "${resource}" -o "${rscout}"
                MAIN_DEPENDENCY "${resource}"
             )
 
@@ -111,7 +111,7 @@ macro(LS-CS_RESOURCES RESOURCES)
 
             add_custom_command(
                OUTPUT ${rscout}
-               COMMAND cmake -E env "$<JOIN:${T_PATH},;>" "$<TARGET_FILE/ls-cs/uic>"
+               COMMAND cmake -E env "$<JOIN:${T_PATH},;>" "$<TARGET_FILE/LsCs/uic>"
                      "${resource}" -o "${rscout}"
                MAIN_DEPENDENCY "${resource}"
             )

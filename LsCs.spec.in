@@ -53,9 +53,9 @@ ninja install
 #  Sweep up what CopperSpice gets wrong in their default build.
 #  They should not have let CMake generate this file.
 #
-sed -i 's#${_IMPORT_PREFIX}/include;#${_IMPORT_PREFIX}/include/ls-cs;#g' "%{buildroot}/usr/%{_lib}/cmake/ls-cs/Ls-CsLibraryTargets.cmake"
-sed -i 's#${_IMPORT_PREFIX}/include/Qt#${_IMPORT_PREFIX}/include/ls-cs/Qt#g' "%{buildroot}/usr/%{_lib}/cmake/ls-cs/Ls-CsLibraryTargets.cmake"
-sed -i 's#/usr/lib64/glib-2.0/include/ls-cs#/usr/lib64/glib-2.0/include#g' "%{buildroot}/usr/%{_lib}/cmake/ls-cs/Ls-CsLibraryTargets.cmake"
+sed -i 's#${_IMPORT_PREFIX}/include;#${_IMPORT_PREFIX}/include/LsCs;#g' "%{buildroot}/usr/%{_lib}/cmake/LsCs/LsCsLibraryTargets.cmake"
+sed -i 's#${_IMPORT_PREFIX}/include/Qt#${_IMPORT_PREFIX}/include/LsCs/Qt#g' "%{buildroot}/usr/%{_lib}/cmake/LsCs/LsCsLibraryTargets.cmake"
+sed -i 's#/usr/lib64/glib-2.0/include/LsCs#/usr/lib64/glib-2.0/include#g' "%{buildroot}/usr/%{_lib}/cmake/LsCs/LsCsLibraryTargets.cmake"
 
 #
 #  Run-time only

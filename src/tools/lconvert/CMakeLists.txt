@@ -1,5 +1,5 @@
 add_executable(lconvert${TOOLS_SUFFIX} "")
-add_executable(Ls-Cs::lconvert ALIAS lconvert${TOOLS_SUFFIX})
+add_executable(LsCs::lconvert ALIAS lconvert${TOOLS_SUFFIX})
 
 add_definitions(
    -DPROEVALUATOR_CUMULATIVE
@@ -7,8 +7,8 @@ add_definitions(
 )
 
 set(EXTRA_LCONVERT_LIBS
-   Ls-CsCore
-   Ls-CsXml
+   LsCsCore
+   LsCsXml
 )
 
 set(EXTRA_LCONVERT_CXXFLAGS)
@@ -68,6 +68,6 @@ set_target_properties(lconvert${TOOLS_SUFFIX}
 #
 install(
     TARGETS lconvert${TOOLS_SUFFIX}
-    EXPORT Ls-CsBinaryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
+    EXPORT LsCsBinaryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
     DESTINATION ${CMAKE_INSTALL_BINDIR}
 )

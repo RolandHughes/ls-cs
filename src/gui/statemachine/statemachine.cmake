@@ -13,7 +13,7 @@ list(APPEND GUI_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/statemachine/qbasicmouseeventtransition_p.h
 )
 
-target_sources(Ls-CsGui
+target_sources(LsCsGui
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/statemachine/qkeyeventtransition.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/statemachine/qmouseeventtransition.cpp

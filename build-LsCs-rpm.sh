@@ -20,7 +20,7 @@ echo ""
 echo "This script ASSUMES it can create and use copperspice_rpm_build"
 echo "directory one level up from where this script is being run. If directory"
 echo "exist it will be deleted and recreated. The only reason the build directory is"
-echo "created is so cmake can populate variable values in the ls-cs.spec file."
+echo "created is so cmake can populate variable values in the LsCs.spec file."
 echo ""
 echo "Script also ASSUMES you are running from the root of the Git project directory"
 echo "where all source is in a directory named src at the same level as this file."
@@ -56,7 +56,7 @@ mkdir -p "$BUILD_DIR"
 pushd `pwd`
 
 #  Step 3 : Prepare build directory
-#           We do this just to get ls-cs.spec with all of the CMake variables filled in
+#           We do this just to get LsCs.spec with all of the CMake variables filled in
 #           and placed in the build directory where rpmbuild needs to find it.
 #
 # echo "*** Prepping build directory"
@@ -69,7 +69,7 @@ cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Release \
 
 #  Step 4 : build copperpice and generate the RPM
 #
-rpmbuild -ba ls-cs.spec
+rpmbuild -ba LsCs.spec
 
 echo ""
 echo "If this completed without errors you will find the RPM in {$HOME}/rpmbuild/RPMS"

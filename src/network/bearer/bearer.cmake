@@ -20,7 +20,7 @@ list(APPEND NETWORK_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/bearer/qsharednetworksession_p.h
 )
 
-target_sources(Ls-CsNetwork
+target_sources(LsCsNetwork
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/bearer/qnetworksession.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/bearer/qnetworkconfigmanager.cpp

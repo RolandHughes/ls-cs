@@ -19,7 +19,7 @@ list(APPEND CORE_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/plugin/qsystemlibrary_p.h
 )
 
-target_sources(Ls-CsCore
+target_sources(LsCsCore
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/plugin/qfactoryloader.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/plugin/qfactoryinterface.cpp
@@ -29,14 +29,14 @@ target_sources(Ls-CsCore
 )
 
 if(CMAKE_SYSTEM_NAME MATCHES "Windows")
-   target_sources(Ls-CsCore
+   target_sources(LsCsCore
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/plugin/qlibrary_win.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/plugin/qsystemlibrary.cpp
    )
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "(Linux|Darwin|OpenBSD|FreeBSD|NetBSD)")
-   target_sources(Ls-CsCore
+   target_sources(LsCsCore
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/plugin/qlibrary_unix.cpp
   )

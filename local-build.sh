@@ -9,8 +9,8 @@ echo "will perform the actual build."
 #
 echo "*** Establishing fresh directories"
 SCRIPT_DIR="$PWD"
-BUILD_DIR="$SCRIPT_DIR/../ls-cs_build"
-RELEASE_DIR="$SCRIPT_DIR/../ls-cs_release"
+BUILD_DIR="$SCRIPT_DIR/../LsCs_build"
+RELEASE_DIR="$SCRIPT_DIR/../LsCs_release"
 #
 # Placed here so it can be hacked for those unfortunate distros that default to lib
 # containing 32-bit libraries and lib64 for 64-bit even though they are 64-bit platforms
@@ -51,7 +51,7 @@ cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Release \
 
 #  Step 4 : Actually build the library
 #
-echo "*** Building LS-CS"
+echo "*** Building LSCS"
 ninja install
 
 exit

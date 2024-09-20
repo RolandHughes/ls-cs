@@ -33,12 +33,12 @@ list(APPEND MULTIMEDIA_PRIVATE_INCLUDES
 
 if(CMAKE_SYSTEM_NAME MATCHES "Windows")
 
-   add_library(Ls-CsMultimedia_DirectShow MODULE "")
-   add_library(Ls-Cs::Ls-CsMultimedia_DirectShow ALIAS Ls-CsMultimedia_DirectShow)
+   add_library(LsCsMultimedia_DirectShow MODULE "")
+   add_library(LsCs::LsCsMultimedia_DirectShow ALIAS LsCsMultimedia_DirectShow)
 
-   set_target_properties(Ls-CsMultimedia_DirectShow PROPERTIES OUTPUT_NAME Ls-CsMultimedia_DirectShow${BUILD_ABI} PREFIX "")
+   set_target_properties(LsCsMultimedia_DirectShow PROPERTIES OUTPUT_NAME LsCsMultimedia_DirectShow${BUILD_ABI} PREFIX "")
 
-   target_sources(Ls-CsMultimedia_DirectShow
+   target_sources(LsCsMultimedia_DirectShow
       PRIVATE
 
       ${CMAKE_SOURCE_DIR}/src/plugins/multimedia/mediaservices/directshow/directshow_plugin.cpp
@@ -71,11 +71,11 @@ if(CMAKE_SYSTEM_NAME MATCHES "Windows")
       ${CMAKE_SOURCE_DIR}/src/plugins/multimedia/mediaservices/directshow/player/vmr9videowindowcontrol.cpp
     )
 
-    target_link_libraries(Ls-CsMultimedia_DirectShow
-       Ls-CsCore
-       Ls-CsGui
-       Ls-CsNetwork
-       Ls-CsMultimedia
+    target_link_libraries(LsCsMultimedia_DirectShow
+       LsCsCore
+       LsCsGui
+       LsCsNetwork
+       LsCsMultimedia
        strmiids
        dmoguids
        uuid
@@ -85,7 +85,7 @@ if(CMAKE_SYSTEM_NAME MATCHES "Windows")
        gdi32
     )
 
-    target_compile_definitions(Ls-CsMultimedia_DirectShow
+    target_compile_definitions(LsCsMultimedia_DirectShow
        PRIVATE
        -DQT_PLUGIN
        -DQMEDIA_DIRECTSHOW_CAMERA
@@ -93,9 +93,9 @@ if(CMAKE_SYSTEM_NAME MATCHES "Windows")
        -DNO_DSHOW_STRSAFE
     )
 
-   if(BUILDING_RPM OR BUILDING_DEBIAN)
-      install(TARGETS Ls-CsMultimedia_DirectShow DESTINATION ${CMAKE_INSTALL_LIBDIR}/ls-cs/plugins/mediaservices)
-   else()
-      install(TARGETS Ls-CsMultimedia_DirectShow DESTINATION ${CMAKE_INSTALL_LIBDIR})
-   endif()
+#   if(BUILDING_RPM OR BUILDING_DEBIAN)
+      install(TARGETS LsCsMultimedia_DirectShow DESTINATION ${CMAKE_INSTALL_LIBDIR}/LsCs/plugins/mediaservices)
+#   else()
+#      install(TARGETS LsCsMultimedia_DirectShow DESTINATION ${CMAKE_INSTALL_LIBDIR})
+#   endif()
 endif()

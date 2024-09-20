@@ -61,7 +61,7 @@ list(APPEND XMLPATTERNS_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/api/qreferencecountedvalue_p.h
 )
 
-target_sources(Ls-CsXmlPatterns
+target_sources(LsCsXmlPatterns
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/api/qvariableloader.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/api/qabstractmessagehandler.cpp

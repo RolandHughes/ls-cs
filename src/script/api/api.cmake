@@ -46,7 +46,7 @@ list(APPEND SCRIPT_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/api/qscriptvalue_p.h
 )
 
-target_sources(Ls-CsScript
+target_sources(LsCsScript
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/api/qscriptclass.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/api/qscriptclasspropertyiterator.cpp

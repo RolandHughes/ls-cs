@@ -11,40 +11,40 @@ list(APPEND SQL_INCLUDES
 
 if(WITH_MYSQL_PLUGIN AND MySQL_FOUND)
 
-   add_library(Ls-CsSqlMySql MODULE "")
-   add_library(Ls-Cs::Ls-CsSqlMySql ALIAS Ls-CsSqlMySql)
+   add_library(LsCsSqlMySql MODULE "")
+   add_library(LsCs::LsCsSqlMySql ALIAS LsCsSqlMySql)
 
-   set_target_properties(Ls-CsSqlMySql PROPERTIES OUTPUT_NAME Ls-CsSqlMySql${BUILD_ABI} PREFIX "")
+   set_target_properties(LsCsSqlMySql PROPERTIES OUTPUT_NAME LsCsSqlMySql${BUILD_ABI} PREFIX "")
 
    include_directories(${MySQL_INCLUDE_DIRS})
 
-   target_sources(Ls-CsSqlMySql
+   target_sources(LsCsSqlMySql
       PRIVATE
       ${CMAKE_SOURCE_DIR}/src/plugins/sqldrivers/mysql/qsql_mysql.cpp
       ${CMAKE_SOURCE_DIR}/src/plugins/sqldrivers/mysql/main.cpp
     )
 
-   target_link_libraries(Ls-CsSqlMySql
-      Ls-CsCore
-      Ls-CsSql
+   target_link_libraries(LsCsSqlMySql
+      LsCsCore
+      LsCsSql
       ${MySQL_LIBRARIES}
    )
 
    if(ZLIB_FOUND)
-      target_link_libraries(Ls-CsSqlMySql
+      target_link_libraries(LsCsSqlMySql
          ${ZLIB_LIBRARIES}
       )
    endif()
 
-   target_compile_definitions(Ls-CsSqlMySql
+   target_compile_definitions(LsCsSqlMySql
       PRIVATE
       -DIN_TRUE
       -DQT_PLUGIN
    )
 
-   if(BUILDING_RPM OR BUILDING_DEBIAN)
-      install(TARGETS Ls-CsSqlMySql DESTINATION ${CMAKE_INSTALL_LIBDIR}/ls-cs/plugins/sqldrivers)
-   else()
-      install(TARGETS Ls-CsSqlMySql DESTINATION ${CMAKE_INSTALL_LIBDIR})
-   endif()
+#   if(BUILDING_RPM OR BUILDING_DEBIAN)
+      install(TARGETS LsCsSqlMySql DESTINATION ${CMAKE_INSTALL_LIBDIR}/LsCs/plugins/sqldrivers)
+#   else()
+#      install(TARGETS LsCsSqlMySql DESTINATION ${CMAKE_INSTALL_LIBDIR})
+#   endif()
 endif()

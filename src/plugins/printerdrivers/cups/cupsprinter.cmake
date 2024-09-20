@@ -5,12 +5,12 @@ list(APPEND PRINTERDRIVERS_CUPS_PRIVATE_INCLUDES
 )
 
 if(Cups_FOUND)
-   add_library(Ls-CsPrinterDriverCups MODULE "")
-   add_library(Ls-CS::Ls-CsPrinterDriverCups ALIAS Ls-CsPrinterDriverCups)
+   add_library(LsCsPrinterDriverCups MODULE "")
+   add_library(LsCs::LsCsPrinterDriverCups ALIAS LsCsPrinterDriverCups)
 
-   set_target_properties(Ls-CsPrinterDriverCups PROPERTIES OUTPUT_NAME Ls-CsPrinterDriverCups${BUILD_ABI} PREFIX "")
+   set_target_properties(LsCsPrinterDriverCups PROPERTIES OUTPUT_NAME LsCsPrinterDriverCups${BUILD_ABI} PREFIX "")
 
-   target_sources(Ls-CsPrinterDriverCups
+   target_sources(LsCsPrinterDriverCups
       PRIVATE
    	${CMAKE_SOURCE_DIR}/src/plugins/printerdrivers/cups/main.cpp
    	${CMAKE_SOURCE_DIR}/src/plugins/printerdrivers/cups/qppdprintdevice.cpp
@@ -18,29 +18,29 @@ if(Cups_FOUND)
    	${CMAKE_SOURCE_DIR}/src/plugins/printerdrivers/cups/qcupsprintersupport.cpp
    )
 
-   target_include_directories(Ls-CsPrinterDriverCups
+   target_include_directories(LsCsPrinterDriverCups
       PRIVATE
       ${CUPS_INCLUDE_DIRS}
    )
 
-   target_link_libraries(Ls-CsPrinterDriverCups
-      Ls-CsCore
-      Ls-CsGui
+   target_link_libraries(LsCsPrinterDriverCups
+      LsCsCore
+      LsCsGui
       ${CUPS_LIBRARIES}
    )
 
-   target_compile_definitions(Ls-CsPrinterDriverCups
+   target_compile_definitions(LsCsPrinterDriverCups
       PRIVATE
       -DCS_BUILDING_CUPS
       -DQT_PLUGIN
    )
 
-   function_generate_resources(Ls-CsPrinterDriverCups)
+   function_generate_resources(LsCsPrinterDriverCups)
 
    if(BUILDING_RPM OR BUILDING_DEBIAN)
-      install(TARGETS Ls-CsPrinterDriverCups DESTINATION ${CMAKE_INSTALL_LIBDIR}/ls-cs/plugins/printerdrivers)
+      install(TARGETS LsCsPrinterDriverCups DESTINATION ${CMAKE_INSTALL_LIBDIR}/LsCs/plugins/printerdrivers)
    else()
-      install(TARGETS Ls-CsPrinterDriverCups DESTINATION ${CMAKE_INSTALL_LIBDIR})
+      install(TARGETS LsCsPrinterDriverCups DESTINATION ${CMAKE_INSTALL_LIBDIR})
    endif()
 endif()
 

@@ -14,7 +14,7 @@ endif()
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
 
-project(ls-cs)
+project(LsCs)
 
 set(BUILD_MAJOR "1")
 set(BUILD_MINOR "9")
@@ -53,13 +53,31 @@ if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
    include(GNUInstallDirs)
    # MAC is not tested as of 20240904
    # rpath used for rcc and uic when compiling a user application
-   #file(RELATIVE_PATH CS_BIN_RPATH "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}"
+   #file(RELATIVE_PATH LSCS_BIN_RPATH "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}"
    #                                "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}")
 
    set(CMAKE_INSTALL_RPATH "@executable_path")
 
 elseif (CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
    include(GNUInstallDirs)
+
+   # this architecture value is only used on the control file for a debian package.
+   # if the value is bogus or empty on other platforms it simply doesn't matter.
+   #
+   EXECUTE_PROCESS( COMMAND arch  OUTPUT_STRIP_TRAILING_WHITESPACE OUTPUT_VARIABLE CPACK_PACKAGE_ARCHITECTURE)
+
+   find_file (DEBIAN_FOUND debian_version debconf.conf
+      PATHS /etc /usr/share/debconf
+   )
+   
+   if (DEBIAN_FOUND)
+      set (CMAKE_OS_NAME "Debian" CACHE STRING "Operating system name" FORCE)
+      
+      set(DEBIAN_BINARY_DIR "lib/${CPACK_PACKAGE_ARCHITECTURE}-linux-gnu")
+   endif (DEBIAN_FOUND)
+
+   message("CMAKE_OS_NAME after test: ${CMAKE_OS_NAME}\n")
+   
 
    #;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
    #  Now that we are naming binaries appropriately and putting them in
@@ -70,8 +88,8 @@ elseif (CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
    #  for a development install into a non-system directory.
    #;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
      
-   set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}/:$ORIGIN/..")
-   set(CMAKE_INSTALL_INCLUDEDIR "${CMAKE_INSTALL_PREFIX}/include/${CMAKE_PROJECT_NAME}")
+   # set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}/:$ORIGIN/..")
+   set(CMAKE_INSTALL_INCLUDEDIR "include/${CMAKE_PROJECT_NAME}")
 
 
 elseif (CMAKE_SYSTEM_NAME MATCHES "Windows")
@@ -86,49 +104,67 @@ endif()
 # fakeroot or buildroot during build. We don't want
 # the build install path but the system target path.
 #
-if (BUILDING_RPM OR BUILDING_DEBIAN)
-    message(STATUS "** We are building a package ***")
-    set(CS_INST_PREFIX  "/usr")    
-    set(CS_INST_LIB     "${CS_INST_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
-    set(CS_INST_INCLUDE "${CS_INST_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}")
+if (BUILDING_DEBIAN)
+    message(STATUS "** We are building Debian package ***")
+    set(LSCS_INST_PREFIX  "/usr")    
+    set(LSCS_INST_LIB     "${LSCS_INST_PREFIX}/${DEBIAN_BINARY_DIR}")
+    set(LSCS_INST_INCLUDE "${LSCS_INST_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}")
+    set(CMAKE_INSTALL_FULL_LIBDIR "${CMAKE_INSTALL_PREFIX}/${DEBIAN_BINARY_DIR}" )
+elseif (BUILDING_RPM)
+    message(STATUS "** We are building RPMa package ***")
+    set(LSCS_INST_PREFIX  "/usr")    
+    set(LSCS_INST_LIB     "${LSCS_INST_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
+    set(LSCS_INST_INCLUDE "${LSCS_INST_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}")
 else()
-    set(CS_INST_PREFIX  "${CMAKE_INSTALL_PREFIX}")    
-    set(CS_INST_LIB     "${CMAKE_INSTALL_FULL_LIBDIR}")
-    set(CS_INST_INCLUDE "${CMAKE_INSTALL_FULL_INCLUDEDIR}")
+    set(LSCS_INST_PREFIX  "${CMAKE_INSTALL_PREFIX}")    
+    set(LSCS_INST_LIB     "${CMAKE_INSTALL_FULL_LIBDIR}")
+    set(LSCS_INST_INCLUDE "${CMAKE_INSTALL_FULL_INCLUDEDIR}")
 endif()
 
 # Note: webkit2.pc.in also uses prefix
 #
-set(prefix "${CS_INST_PREFIX}")
+set(prefix "${LSCS_INST_PREFIX}")
 
 
 message(STATUS "   ***   ")
 message(STATUS "   ***   ")
 message(STATUS "   ***   ")
-message(STATUS "   CS_INST_PREFIX     ${CS_INST_PREFIX}")
-message(STATUS "   CS_INST_LIB        ${CS_INST_LIB}")
-message(STATUS "   CS_INST_INCLUDE    ${CS_INST_INCLUDE}")
-message(STATUS "   CMAKE_BINARY_DIR   ${CMAKE_BINARY_DIR}")
+message(STATUS "   LSCS_INST_PREFIX     ${LSCS_INST_PREFIX}")
+message(STATUS "   LSCS_INST_LIB        ${LSCS_INST_LIB}")
+message(STATUS "   LSCS_INST_INCLUDE    ${LSCS_INST_INCLUDE}")
+message(STATUS "   CMAKE_BINARY_DIR     ${CMAKE_BINARY_DIR}")
 
 message( STATUS, "CMAKE_INSTALL_RPATH            ${CMAKE_INSTALL_RPATH}" )
 message( STATUS, "CMAKE_INSTALL_BINDIR           ${CMAKE_INSTALL_BINDIR}" )
 message( STATUS, "CMAKE_INSTALL_INCLUDEDIR       ${CMAKE_INSTALL_INCLUDE_DIR}" )
+message( STATUS, "CMAKE_INSTALL_FULL_LIBDIR      ${CMAKE_INSTALL_FULL_LIBDIR}" )
 message( STATUS, "CMAKE_INSTALL_FULL_INCLUDEDIR  ${CMAKE_INSTALL_FULL_INCLUDEDIR}" )
-message(STATUS "   ***   ")
-message(STATUS "   ***   ")
-message(STATUS "   ***   ")
+message( STATUS, "CMAKE_INSTALL_LIBDIR           ${CMAKE_INSTALL_LIBDIR}" )
+message(STATUS "   ***      ***      ***      ***      ***      ***      ***   ")
+message(STATUS "   ***      ***      ***      ***      ***      ***      ***   ")
+message(STATUS "   ***      ***      ***      ***      ***      ***      ***   ")
+
+# get_cmake_property(_variableNames VARIABLES)
+# list (SORT _variableNames)
+# foreach (_variableName ${_variableNames})
+#     message(STATUS "${_variableName}=${${_variableName}}")
+# endforeach()
+
+message(STATUS "   ***      ***      ***      ***      ***      ***      ***   ")
+message(STATUS "   ***      ***      ***      ***      ***      ***      ***   ")
+message(STATUS "   ***      ***      ***      ***      ***      ***      ***   ")
 
 # required libraries
 set(BUILD_COMPONENTS "Core Xml")
 
 # unused at this time: DBus, Declarative, and ScriptTools
-set(CS_OPTIONAL_COMPONENTS Gui Multimedia Network OpenGL Script Sql Svg Vulkan WebKit XmlPatterns)
+set(LSCS_OPTIONAL_COMPONENTS Gui Multimedia Network OpenGL Script Sql Svg Vulkan WebKit XmlPatterns)
 
-set(PACKAGE           "ls-cs")
-set(PACKAGE_NAME      "Ls-Cs")
+set(PACKAGE           "lscs")
+set(PACKAGE_NAME      "LsCs")
 set(PACKAGE_VERSION   "${BUILD_MAJOR}.${BUILD_MINOR}.${BUILD_MICRO}")
-set(PACKAGE_STRING    "ls-cs ${BUILD_MAJOR}.${BUILD_MINOR}.${BUILD_MICRO}")
-set(PACKAGE_TARNAME   "ls-cs")
+set(PACKAGE_STRING    "lscs ${BUILD_MAJOR}.${BUILD_MINOR}.${BUILD_MICRO}")
+set(PACKAGE_TARNAME   "lscs")
 set(PACKAGE_BUGREPORT "originalseasonedgeek@gmail.com")
 set(PACKAGE_URL       "https://github.com/RolandHughes/ls-cs")
 
@@ -136,7 +172,7 @@ set(RPM_VERSION       "${BUILD_MAJOR}.${BUILD_MINOR}")
 set(RPM_RELEASE       "${BUILD_MICRO}")
 
 
-# values used in cs_build_info.h.in
+# values used in LsCs_build_info.h.in
 set(HEX_VERSION "0x0${BUILD_MAJOR}0${BUILD_MINOR}0${BUILD_MICRO}")
 set(VERSION     "${PACKAGE_VERSION}")
 
@@ -168,7 +204,7 @@ else()
    set(target "${CMAKE_SYSTEM}")
 endif()
 
-set(CPACK_PACKAGE_NAME    "ls-cs")
+set(CPACK_PACKAGE_NAME    ${PROJECT_NAME})
 set(CPACK_PACKAGE_VENDOR  "Logikal Solutions")
 set(CPACK_PACKAGE_CONTACT "logikalsolutions.com")
 
@@ -274,7 +310,7 @@ if (NOT HAVE_CXX_ATOMICS_WITHOUT_LIB)
    check_library_exists(atomic __atomic_fetch_add_4 "" HAVE_LIBATOMIC)
 
    if (HAVE_LIBATOMIC)
-      # handled in Ls-CsCore cmake file
+      # handled in LsCsCore cmake file
    else()
       message(SEND_ERROR "Unable to configure, missing libatomic")
    endif()
@@ -286,14 +322,14 @@ option(WITH_MYSQL_PLUGIN "Build MySQL database plugin (if possible)" ON)
 
 option(WITH_ODBC_PLUGIN "Build ODBC database plugin (if possible)" ON)
 
-foreach(component ${CS_OPTIONAL_COMPONENTS})
+foreach(component ${LSCS_OPTIONAL_COMPONENTS})
    string(TOUPPER ${component} uppercomp)
    option(WITH_${uppercomp} "Build ${component} component" ON)
 endforeach()
 
 # start output messages
 message("")
-message("Configuring CMake for ls-cs\n\n")
+message("Configuring CMake for lscs\n\n")
 message("-- Searching for required packages\n")
 
 find_package(CsLibGuarded QUIET)
@@ -405,13 +441,13 @@ set_package_properties(PostgreSQL PROPERTIES
 )
 
 if (CMAKE_DISABLE_FIND_PACKAGE_PostgreSQL)
-   message(STATUS "PostgreSQL disabled, ls-cs plugin will not be built\n")
+   message(STATUS "PostgreSQL disabled, lscs plugin will not be built\n")
 
 elseif (NOT PostgreSQL_FOUND)
-   message(STATUS "PostgreSQL was not found, ls-cs plugin will not be built\n")
+   message(STATUS "PostgreSQL was not found, lscs plugin will not be built\n")
 
 else()
-   message(STATUS "PostgreSQL was found, ls-cs plugin will be built\n")
+   message(STATUS "PostgreSQL was found, lscs plugin will be built\n")
 
 endif()
 
@@ -437,7 +473,7 @@ if (PostgreSQL_FOUND AND CMAKE_SYSTEM_NAME MATCHES "Windows" AND NOT MSVC)
          # force to not found
          set(PostgreSQL_FOUND false)
 
-         message(STATUS "PostgreSQL client library was found, ls-cs plugin will not be built")
+         message(STATUS "PostgreSQL client library was found, lscs plugin will not be built")
          message(STATUS "")
       endif()
 
@@ -453,13 +489,13 @@ set_package_properties(MySQL PROPERTIES
 )
 
 if (CMAKE_DISABLE_FIND_PACKAGE_MySQL)
-   message(STATUS "MySQL disabled, ls-cs plugin will not be built\n")
+   message(STATUS "MySQL disabled, lscs plugin will not be built\n")
 
 elseif (NOT MySQL_FOUND)
-   message(STATUS "MySQL was not found, ls-cs plugin will not be built\n")
+   message(STATUS "MySQL was not found, lscs plugin will not be built\n")
 
 else()
-   message(STATUS "MySQL was found, ls-cs plugin will be built\n")
+   message(STATUS "MySQL was found, lscs plugin will be built\n")
 
 endif()
 
@@ -471,13 +507,13 @@ set_package_properties(ODBC PROPERTIES
 )
 
 if (CMAKE_DISABLE_FIND_PACKAGE_ODBC)
-   message(STATUS "ODBC SQL Driver disabled, ls-cs plugin will not be built\n")
+   message(STATUS "ODBC SQL Driver disabled, lscs plugin will not be built\n")
 
 elseif (NOT ODBC_FOUND)
-   message(STATUS "ODBC SQL Driver was not found, ls-cs plugin will not be built\n")
+   message(STATUS "ODBC SQL Driver was not found, lscs plugin will not be built\n")
 
 else()
-   message(STATUS "ODBC SQL Driver was found, ls-cs plugin will be built\n")
+   message(STATUS "ODBC SQL Driver was found, lscs plugin will be built\n")
 
 endif()
 
@@ -503,9 +539,9 @@ if (WITH_VULKAN)
 
       if (Vulkan_FOUND)
          message(STATUS "Partial Vulkan installation exists however the SDK was not found, "
-            "Ls-CsVulkan library will not be built\n")
+            "LsCsVulkan library will not be built\n")
       else()
-         message(STATUS "Vulkan SDK was not found, Ls-CsVulkan library will not be built\n")
+         message(STATUS "Vulkan SDK was not found, LsCsVulkan library will not be built\n")
       endif()
 
    endif()
@@ -680,17 +716,24 @@ if (HAVE_LARGEFILESUPPORT)
 endif()
 
 configure_file(
-   ${CMAKE_SOURCE_DIR}/cmake/ls-cs-config.h.cmake
-   ${CMAKE_BINARY_DIR}/include/ls-cs-config.h
+   ${CMAKE_SOURCE_DIR}/cmake/lscs_config.h.cmake
+   ${CMAKE_BINARY_DIR}/include/lscs_config.h
 )
 configure_file(
-   ${CMAKE_SOURCE_DIR}/src/core/global/ls-cs_build_info.h.in
-   ${CMAKE_BINARY_DIR}/include/QtCore/ls-cs_build_info.h
+   ${CMAKE_SOURCE_DIR}/src/core/global/LsCs_build_info.h.in
+   ${CMAKE_BINARY_DIR}/include/QtCore/LsCs_build_info.h
 )
 
 # file locations for building
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+if (DEBIAN_FOUND)
+    # Multi-Architecture library directories for Debian based distros
+    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${DEBIAN_BINARY_DIR})
+    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${DEBIAN_BINARY_DIR})
+else()
+    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+endif()
+
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 # Ninja generator does not yet know how to build archives in pieces, so response
@@ -699,26 +742,26 @@ set(CMAKE_NINJA_FORCE_RESPONSE_FILE 1)
 
 # check components dependencies
 if (WITH_MULTIMEDIA AND NOT (WITH_GUI AND WITH_NETWORK AND WITH_OPENGL))
-   message(SEND_ERROR "Ls-CsMultimedia component requires Ls-CsGui, Ls-CsNetwork, and Ls-CsOpenGL components")
+   message(SEND_ERROR "LsCsMultimedia component requires LsCsGui, LsCsNetwork, and LsCsOpenGL components")
 
 elseif (WITH_OPENGL AND NOT WITH_GUI)
-   message(SEND_ERROR "Ls-CsOpenGL component requires Ls-CsGui component")
+   message(SEND_ERROR "LsCsOpenGL component requires LsCsGui component")
 
 elseif (WITH_SVG AND NOT WITH_GUI)
-   message(SEND_ERROR "Ls-CsSvg component requires Ls-CsGui component")
+   message(SEND_ERROR "LsCsSvg component requires LsCsGui component")
 
 elseif (WITH_XMLPATTERNS AND NOT WITH_NETWORK)
-   message(SEND_ERROR "Ls-CsXmlPatterns component requires Ls-CsNetwork component")
+   message(SEND_ERROR "LsCsXmlPatterns component requires LsCsNetwork component")
 
 elseif (WITH_WEBKIT AND NOT (WITH_GUI AND WITH_NETWORK AND WITH_SCRIPT))
-   message(SEND_ERROR "Ls-CsWebKit component requires Ls-CsGui, Ls-CsNetwork, and Ls-CsScript components")
+   message(SEND_ERROR "LsCsWebKit component requires LsCsGui, LsCsNetwork, and LsCsScript components")
 
 endif()
 
 add_subdirectory(src/core)
 add_subdirectory(src/xml)
 
-foreach(component ${CS_OPTIONAL_COMPONENTS})
+foreach(component ${LSCS_OPTIONAL_COMPONENTS})
    string(TOUPPER ${component} uppercomp)
 
    if (WITH_${uppercomp})
@@ -768,25 +811,25 @@ if (BUILD_TESTS)
 endif()
 
 configure_file(
-   ${CMAKE_SOURCE_DIR}/cmake/ls-csConfig.cmake
-   ${CMAKE_BINARY_DIR}/ls-csConfig.cmake
+   ${CMAKE_SOURCE_DIR}/cmake/LsCsConfig.cmake
+   ${CMAKE_BINARY_DIR}/LsCsConfig.cmake
    @ONLY
 )
 
 configure_file(
-   ${CMAKE_SOURCE_DIR}/cmake/ls-csConfigVersion.cmake
-   ${CMAKE_BINARY_DIR}/ls-csConfigVersion.cmake
+   ${CMAKE_SOURCE_DIR}/cmake/LsCsConfigVersion.cmake
+   ${CMAKE_BINARY_DIR}/LsCsConfigVersion.cmake
    @ONLY
 )
 
 if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
-   set(PKG_PREFIX "ls-cs.framework/Resources")
+   set(PKG_PREFIX "lscs.framework/Resources")
 
 elseif (CMAKE_SYSTEM_NAME MATCHES "Windows")
-   set(PKG_PREFIX "cmake/ls-cs")
+   set(PKG_PREFIX "cmake/lscs")
 
 else()
-   set(PKG_PREFIX "${CMAKE_INSTALL_LIBDIR}/cmake/ls-cs")
+   set(PKG_PREFIX "${CMAKE_INSTALL_LIBDIR}/cmake/lscs")
 
 endif()
 
@@ -796,10 +839,6 @@ if(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
     #
    set(CPACK_PACKAGE_INSTALLED_SIZE "173793313")
 
-   # this architecture value is only used on the control file for a debian package.
-   # if the value is bogus or empty on other platforms it simply doesn't matter.
-   #
-   EXECUTE_PROCESS( COMMAND dpkg --print-architecture  OUTPUT_STRIP_TRAILING_WHITESPACE OUTPUT_VARIABLE CPACK_PACKAGE_ARCHITECTURE)
 
 
    message( STATUS "Architecture: ${CPACK_PACKAGE_ARCHITECTURE}")
@@ -811,8 +850,8 @@ if(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
     )
 
     configure_file(
-       ${CMAKE_SOURCE_DIR}/ls-cs.spec.in
-       ls-cs.spec
+       ${CMAKE_SOURCE_DIR}/LsCs.spec.in
+       LsCs.spec
     )
 
     #  postrm has some heavy syntax - just copy
@@ -844,17 +883,30 @@ if(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
 endif()
 
 
-
+if (BUILDING_DEBIAN)
 install(
    FILES
-      ${CMAKE_BINARY_DIR}/ls-csConfig.cmake
-      ${CMAKE_BINARY_DIR}/ls-csConfigVersion.cmake
+      ${CMAKE_BINARY_DIR}/LsCsConfig.cmake
+      ${CMAKE_BINARY_DIR}/LsCsConfigVersion.cmake
 
-      ${CMAKE_SOURCE_DIR}/cmake/ls-csDeploy.cmake
-      ${CMAKE_SOURCE_DIR}/cmake/ls-csMacros.cmake
+      ${CMAKE_SOURCE_DIR}/cmake/LsCsDeploy.cmake
+      ${CMAKE_SOURCE_DIR}/cmake/LsCsMacros.cmake
+      ${CMAKE_SOURCE_DIR}/cmake/InstallMinGW.cmake
+   DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}/cmake/${CMAKE_PROJECT_NAME}
+)
+
+else()
+install(
+   FILES
+      ${CMAKE_BINARY_DIR}/LsCsConfig.cmake
+      ${CMAKE_BINARY_DIR}/LsCsConfigVersion.cmake
+
+      ${CMAKE_SOURCE_DIR}/cmake/LsCsDeploy.cmake
+      ${CMAKE_SOURCE_DIR}/cmake/LsCsMacros.cmake
       ${CMAKE_SOURCE_DIR}/cmake/InstallMinGW.cmake
    DESTINATION ${PKG_PREFIX}
 )
+endif()
 
 install(
     FILES
@@ -867,22 +919,22 @@ install(
 install(
    # generate cmake files containing rules about linking with CS libs
 
-   EXPORT Ls-CsLibraryTargets
-   NAMESPACE Ls-Cs::
-   FILE Ls-CsLibraryTargets.cmake
+   EXPORT LsCsLibraryTargets
+   NAMESPACE LsCs::
+   FILE LsCsLibraryTargets.cmake
    DESTINATION ${PKG_PREFIX}
 )
 
 # generate cmake files containing rules about running CS binary tools
 install(
-   EXPORT Ls-CsBinaryTargets
-   NAMESPACE Ls-Cs::
-   FILE Ls-CsBinaryTargets.cmake
+   EXPORT LsCsBinaryTargets
+   NAMESPACE LsCs::
+   FILE LsCsBinaryTargets.cmake
    DESTINATION ${PKG_PREFIX}
 )
 
 message("\n")
-message("-- The following ls-cs libraries will be built:")
+message("-- The following lscs libraries will be built:")
 message("\n * ${BUILD_COMPONENTS}\n")
 
 feature_summary(WHAT PACKAGES_FOUND PACKAGES_NOT_FOUND FATAL_ON_MISSING_REQUIRED_PACKAGES)
@@ -894,8 +946,8 @@ else()
 endif()
 
 message("")
-message("LS-CS configured to run on:  ${CMAKE_SYSTEM_NAME} ${TARGETBITS} bit, ${CMAKE_BUILD_TYPE} Mode")
-message("LS-CS will be built in:      ${CMAKE_BINARY_DIR}")
-message("LS-CS will be installed in:  ${CMAKE_INSTALL_PREFIX}")
-message("prefix:                      ${prefix}")
+message("LsCs configured to run on:  ${CMAKE_SYSTEM_NAME} ${TARGETBITS} bit, ${CMAKE_BUILD_TYPE} Mode")
+message("LsCs will be built in:      ${CMAKE_BINARY_DIR}")
+message("LsCs will be installed in:  ${CMAKE_INSTALL_PREFIX}")
+message("prefix:                     ${prefix}")
 message("\n")

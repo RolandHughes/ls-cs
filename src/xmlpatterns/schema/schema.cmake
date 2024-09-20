@@ -49,7 +49,7 @@ list(APPEND XMLPATTERNS_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/schema/qxsdschemachecker_helper.cpp
 )
 
-target_sources(Ls-CsXmlPatterns
+target_sources(LsCsXmlPatterns
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/schema/qnamespacesupport.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/schema/qxsdalternative.cpp

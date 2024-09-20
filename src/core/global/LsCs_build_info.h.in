@@ -7,13 +7,13 @@
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
 * Copyright (c) 2008-2012 Nokia Corporation and/or its subsidiary(-ies).
 *
-* This file is part of ls-cs.
+* This file is part of LsCs.
 *
-* ls-cs is free software. You can redistribute it and/or
+* LsCs is free software. You can redistribute it and/or
 * modify it under the terms of the GNU Lesser General Public License
 * version 2.1 as published by the Free Software Foundation.
 *
-* ls-cs is distributed in the hope that it will be useful,
+* LsCs is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 *
@@ -21,14 +21,14 @@
 *
 ***********************************************************************/
 
-#ifndef LS_CS_BUILD_INFO_H_IN
-#define LS_CS_BUILD_INFO_H_IN
+#ifndef LSCS_BUILD_INFO_H_IN
+#define LSCS_BUILD_INFO_H_IN
 
-// LS-CS Version  "1.0.0"
-#define LS_CS_VERSION_STR  "@PACKAGE_VERSION@"
+// LSCS Version  "1.0.0"
+#define LSCS_VERSION_STR  "@PACKAGE_VERSION@"
 
-// LS-CS Version  0x010000  (major << 16) + (minor << 8) + patch
-#define LS_CS_VERSION      @HEX_VERSION@
+// LSCS Version  0x010000  (major << 16) + (minor << 8) + patch
+#define LSCS_VERSION      @HEX_VERSION@
 
 #if defined(__cplusplus)
    struct CsLibraryInfo {

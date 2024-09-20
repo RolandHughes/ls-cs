@@ -11,34 +11,34 @@ list(APPEND SQL_INCLUDES
 
 if(WITH_PSQL_PLUGIN AND PostgreSQL_FOUND)
 
-   add_library(Ls-CsSqlPsql MODULE "")
-   add_library(Ls-Cs::CsSqlPsql ALIAS Ls-CsSqlPsql)
+   add_library(LsCsSqlPsql MODULE "")
+   add_library(LsCs::CsSqlPsql ALIAS LsCsSqlPsql)
 
-   set_target_properties(Ls-CsSqlPsql PROPERTIES OUTPUT_NAME Ls-CsSqlPsql${BUILD_ABI} PREFIX "")
+   set_target_properties(LsCsSqlPsql PROPERTIES OUTPUT_NAME LsCsSqlPsql${BUILD_ABI} PREFIX "")
 
    include_directories(${PostgreSQL_INCLUDE_DIRS})
 
-   target_sources(Ls-CsSqlPsql
+   target_sources(LsCsSqlPsql
       PRIVATE
       ${CMAKE_SOURCE_DIR}/src/plugins/sqldrivers/psql/qsql_psql.cpp
       ${CMAKE_SOURCE_DIR}/src/plugins/sqldrivers/psql/main.cpp
    )
 
-   target_link_libraries(Ls-CsSqlPsql
-      Ls-CsCore
-      Ls-CsSql
+   target_link_libraries(LsCsSqlPsql
+      LsCsCore
+      LsCsSql
       ${PostgreSQL_LIBRARY}
    )
 
-   target_compile_definitions(Ls-CsSqlPsql
+   target_compile_definitions(LsCsSqlPsql
       PRIVATE
       -DIN_TRUE
       -DQT_PLUGIN
    )
 
-   if(BUILDING_RPM OR BUILDING_DEBIAN)
-      install(TARGETS Ls-CsSqlPsql DESTINATION ${CMAKE_INSTALL_LIBDIR}/ls-cs/plugins/sqldrivers)
-   else()
-      install(TARGETS Ls-CsSqlPsql DESTINATION ${CMAKE_INSTALL_LIBDIR})
-   endif()
+#   if(BUILDING_RPM OR BUILDING_DEBIAN)
+      install(TARGETS LsCsSqlPsql DESTINATION ${CMAKE_INSTALL_LIBDIR}/LsCs/plugins/sqldrivers)
+#   else()
+#      install(TARGETS LsCsSqlPsql DESTINATION ${CMAKE_INSTALL_LIBDIR})
+#   endif()
 endif()

@@ -1,7 +1,7 @@
-add_library(Ls-CsScript SHARED "")
-add_library(Ls-Cs::Ls-CsScript ALIAS Ls-CsScript)
+add_library(LsCsScript SHARED "")
+add_library(LsCs::LsCsScript ALIAS LsCsScript)
 
-set_target_properties(Ls-CsScript PROPERTIES OUTPUT_NAME Ls-CsScript${BUILD_ABI})
+set_target_properties(LsCsScript PROPERTIES OUTPUT_NAME LsCsScript${BUILD_ABI})
 
 add_definitions(
     -DQLALR_NO_SCRIPTGRAMMAR_DEBUG_INFO
@@ -23,7 +23,7 @@ add_definitions(
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 
    if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL "7.1.0")
-      set_target_properties(Ls-CsScript
+      set_target_properties(LsCsScript
          PROPERTIES
          COMPILE_OPTIONS -Wno-expansion-to-defined
       )
@@ -34,7 +34,7 @@ endif()
 set(EXTRA_SCRIPT_CXXFLAGS)
 set(EXTRA_SCRIPT_LDFLAGS)
 
-target_include_directories(Ls-CsScript
+target_include_directories(LsCsScript
    PUBLIC
    $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include/QtScript>
    $<INSTALL_INTERFACE:include/QtScript>
@@ -373,7 +373,7 @@ list(APPEND JSCORE_SCRIPT_INCLUDES
     ${CMAKE_SOURCE_DIR}/src/3rdparty/javascriptcore/JavaScriptCore/pcre/ucptable.cpp
 )
 
-target_sources(Ls-CsScript
+target_sources(LsCsScript
    PRIVATE
    ${CMAKE_SOURCE_DIR}/src/3rdparty/javascriptcore/JavaScriptCore/API/JSBase.cpp
    ${CMAKE_SOURCE_DIR}/src/3rdparty/javascriptcore/JavaScriptCore/API/JSCallbackConstructor.cpp
@@ -541,7 +541,7 @@ if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
    )
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
-   target_link_libraries(Ls-CsScript
+   target_link_libraries(LsCsScript
       PRIVATE
       winmm
    )
@@ -562,38 +562,48 @@ endif()
 function_variable_fixup("${EXTRA_SCRIPT_CXXFLAGS}" EXTRA_SCRIPT_CXXFLAGS)
 function_variable_fixup("${EXTRA_SCRIPT_LDFLAGS}"  EXTRA_SCRIPT_LDFLAGS)
 
-target_sources(Ls-CsScript
+target_sources(LsCsScript
    PRIVATE
    ${SCRIPT_INCLUDES}
 )
 
-target_link_libraries(Ls-CsScript
+target_link_libraries(LsCsScript
    PRIVATE
-   Ls-CsCore
+   LsCsCore
 )
 
-set_target_properties(Ls-CsScript
+set_target_properties(LsCsScript
    PROPERTIES
    COMPILE_FLAGS ${EXTRA_SCRIPT_CXXFLAGS}
    LINK_FLAGS ${EXTRA_SCRIPT_LDFLAGS}
 )
 
-function_generate_resources(Ls-CsScript)
+function_generate_resources(LsCsScript)
 
 macro_generate_package(
-   Ls-CsScript
+   LsCsScript
    QtScript
    "${EXTRA_SCRIPT_CXXFLAGS}"
-   "Ls-CsCore"
+   "LsCsCore"
 )
 
-install(
-   TARGETS Ls-CsScript
-   EXPORT Ls-CsLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
-   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-)
+if (DEBIAN_FOUND)
+    install(
+        TARGETS LsCsScript
+        EXPORT LsCsLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}
+    )
+else()  
+    install(
+        TARGETS LsCsScript
+        EXPORT LsCsLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    )
+endif()
 
 install(
    DIRECTORY ${CMAKE_BINARY_DIR}/include/QtScript

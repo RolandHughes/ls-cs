@@ -1,9 +1,9 @@
 add_executable(lrelease${TOOLS_SUFFIX} "")
-add_executable(Ls-Cs::lrelease ALIAS lrelease${TOOLS_SUFFIX})
+add_executable(LsCs::lrelease ALIAS lrelease${TOOLS_SUFFIX})
 
 set(EXTRA_LRELEASE_LIBS
-   Ls-CsCore
-   Ls-CsXml
+   LsCsCore
+   LsCsXml
 )
 
 set(EXTRA_LRELEASE_CXXFLAGS)
@@ -61,6 +61,6 @@ set_target_properties(lrelease${TOOLS_SUFFIX}
 #
 install(
     TARGETS lrelease${TOOLS_SUFFIX}
-    EXPORT Ls-CsBinaryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
+    EXPORT LsCsBinaryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
     DESTINATION ${CMAKE_INSTALL_BINDIR}
 )

@@ -31,7 +31,7 @@ list(APPEND CORE_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/statemachine/qstatemachine_p.h
 )
 
-target_sources(Ls-CsCore
+target_sources(LsCsCore
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/statemachine/qstatemachine.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/statemachine/qabstractstate.cpp

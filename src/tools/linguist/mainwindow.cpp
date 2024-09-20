@@ -1474,7 +1474,7 @@ void MainWindow::about()
    QMessageBox box(this);
    box.setTextFormat(Qt::RichText);
 
-   QString version = tr("Version %1").formatArg(LS_CS_VERSION_STR);
+   QString version = tr("Version %1").formatArg(LSCS_VERSION_STR);
 
    box.setText(tr("<p>Linguist is a program to add or modify translations in a TS file. The compiled file "
             "can be used in CopperSpice applications to provide internationalization.</p>"

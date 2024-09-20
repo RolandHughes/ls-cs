@@ -13,34 +13,34 @@ list(APPEND SQL_INCLUDES
 if (FALSE)
 
    add_library(CsSqlDb2 MODULE "")
-   add_library(Ls-Cs::Ls-CsSqlDb2 ALIAS Ls-CsSqlDb2)
+   add_library(LsCs::LsCsSqlDb2 ALIAS LsCsSqlDb2)
 
-   set_target_properties(Ls-CsSqlDb2 PROPERTIES OUTPUT_NAME Ls-CsSqlDb2${BUILD_ABI} PREFIX "")
+   set_target_properties(LsCsSqlDb2 PROPERTIES OUTPUT_NAME LsCsSqlDb2${BUILD_ABI} PREFIX "")
 
    include_directories(${DB2_INCLUDE_DIRS})
 
-   target_sources(Ls-CsSqlDb2
+   target_sources(LsCsSqlDb2
       PRIVATE
       ${CMAKE_SOURCE_DIR}/src/plugins/sqldrivers/db2/main.cpp
       ${CMAKE_SOURCE_DIR}/src/plugins/sqldrivers/db2/qsql_db2.cpp
    )
 
-   target_link_libraries(Ls-CsSqlDb2
-      Ls-CsCore
-      Ls-CsSql
+   target_link_libraries(LsCsSqlDb2
+      LsCsCore
+      LsCsSql
       ${DB2_LIBRARY}
    )
 
-   target_compile_definitions(Ls-CsSqlDb2
+   target_compile_definitions(LsCsSqlDb2
       PRIVATE
       -DIN_TRUE
       -DQT_PLUGIN
    )
 
-   if(BUILDING_RPM OR BUILDING_DEBAIN)
-      install(TARGETS Ls-CsSqlDb2 DESTINATION ${CMAKE_INSTALL_LIBDIR}/ls-cs/plugins/sqldrivers)
-   else()
-      install(TARGETS Ls-CsSqlDb2 DESTINATION ${CMAKE_INSTALL_LIBDIR})
-   endif()
+#   if(BUILDING_RPM OR BUILDING_DEBAIN)
+      install(TARGETS LsCsSqlDb2 DESTINATION ${CMAKE_INSTALL_LIBDIR}/LsCs/plugins/sqldrivers)
+#   else()
+#      install(TARGETS LsCsSqlDb2 DESTINATION ${CMAKE_INSTALL_LIBDIR})
+#   endif()
 endif()
 

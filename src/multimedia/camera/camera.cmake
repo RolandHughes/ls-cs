@@ -22,7 +22,7 @@ list(APPEND MULTIMEDIA_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/camera/qcamera_p.h
 )
 
-target_sources(Ls-CsMultimedia
+target_sources(LsCsMultimedia
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/camera/qcamera.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/camera/qcameraexposure.cpp

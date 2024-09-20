@@ -1,4 +1,4 @@
-LS-CS is a port of CopperSpice C++ cross platform GUI library
+LSCS is a port of CopperSpice C++ cross platform GUI library
  Originally this port focuses on building Debian and RPM 
  packages for both run-time and development. Now it will follow
  own path forward. Use a graphical software installer to get 

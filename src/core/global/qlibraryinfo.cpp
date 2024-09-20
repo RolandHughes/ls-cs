@@ -30,7 +30,7 @@
 #include <qsettings.h>
 #include <qstringlist.h>
 
-#include <ls-cs_build_info.h>
+#include <LsCs_build_info.h>
 
 #ifdef Q_OS_DARWIN
 #  include <qcore_mac_p.h>
@@ -330,12 +330,12 @@ Q_CORE_EXPORT void cs_print_build_info()
 {
    QDate build_Date = QLibraryInfo::buildDate();
 
-   printf("Ls-Cs Build Information: \n"
+   printf("LsCs Build Information: \n"
           "   Version:          %s\n"
           "   Build Date:       %s\n"
           "   Install Prefix:   %s\n"
           "   Built For:        %s\n",
-          LS_CS_VERSION_STR,
+          LSCS_VERSION_STR,
           build_Date.toString("MM/dd/yyyy").toLatin1().constData(),
           CsLibraryInfo::install_prefix,
           CsLibraryInfo::built_for);

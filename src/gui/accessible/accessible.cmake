@@ -49,7 +49,7 @@ list(APPEND GUI_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/accessible/qaccessiblewidget_views_p.h
 )
 
-target_sources(Ls-CsGui
+target_sources(LsCsGui
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/accessible/qaccessible.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/accessible/qaccessiblebridge.cpp
@@ -67,7 +67,7 @@ target_sources(Ls-CsGui
 )
 
 if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
-   target_sources(Ls-CsGui
+   target_sources(LsCsGui
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/accessible/qaccessiblecache_mac.mm
    )

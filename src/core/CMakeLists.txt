@@ -1,9 +1,9 @@
-add_library(Ls-CsCore SHARED "")
-add_library(Ls-Cs::Ls-CsCore ALIAS Ls-CsCore)
+add_library(LsCsCore SHARED "")
+add_library(LsCs::LsCsCore ALIAS LsCsCore)
 
-set_target_properties(Ls-CsCore PROPERTIES OUTPUT_NAME Ls-CsCore${BUILD_ABI})
+set_target_properties(LsCsCore PROPERTIES OUTPUT_NAME LsCsCore${BUILD_ABI})
 
-target_compile_definitions(Ls-CsCore
+target_compile_definitions(LsCsCore
    PRIVATE
    -DQT_BUILD_CORE_LIB
    -DBUILDING_LIB_CS_SIGNAL
@@ -11,7 +11,7 @@ target_compile_definitions(Ls-CsCore
 )
 
 if (GTK2_FOUND)
-   target_link_libraries(Ls-CsCore
+   target_link_libraries(LsCsCore
       PRIVATE
       ${GLIB2_LIBRARIES}
       ${GOBJECT2_LIBRARIES}
@@ -22,7 +22,7 @@ else()
 
 endif()
 
-target_include_directories(Ls-CsCore
+target_include_directories(LsCsCore
    PUBLIC
    $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include>
    $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include/QtCore>
@@ -73,13 +73,13 @@ if (CsLibGuarded_FOUND)
 
    if (CS_INSTALL_MODE STREQUAL "Package")
       # package mode, do not copy install headers
-      target_link_libraries(Ls-CsCore
+      target_link_libraries(LsCsCore
          PUBLIC
          CsLibGuarded::CsLibGuarded
       )
 
    elseif (CS_INSTALL_MODE STREQUAL "Deploy")
-      target_link_libraries(Ls-CsCore
+      target_link_libraries(LsCsCore
          PUBLIC
          $<BUILD_INTERFACE:CsLibGuarded::CsLibGuarded>
       )
@@ -93,7 +93,7 @@ if (CsLibGuarded_FOUND)
 
 else()
    # use annex headers
-   target_include_directories(Ls-CsCore
+   target_include_directories(LsCsCore
       PUBLIC
       $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/annex/cs_libguarded>
    )
@@ -110,7 +110,7 @@ if (LsCsSignal_FOUND)
 
    if (CS_INSTALL_MODE STREQUAL "Package")
       # package mode, do not copy install headers
-      target_link_libraries(Ls-CsCore
+      target_link_libraries(LsCsCore
          PUBLIC
          LsCsSignal::LsCsSignal
       )
@@ -118,14 +118,14 @@ if (LsCsSignal_FOUND)
    elseif (CS_INSTALL_MODE STREQUAL "Deploy")
 
       if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
-         target_link_libraries(Ls-CsCore
+         target_link_libraries(LsCsCore
             PUBLIC
             $<BUILD_INTERFACE:LsCsSignal::LsCsSignal>
             $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/libLsCsSignal.dylib>
          )
 
       elseif (CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
-         target_link_libraries(Ls-CsCore
+         target_link_libraries(LsCsCore
             PUBLIC
             $<BUILD_INTERFACE:LsCsSignal::LsCsSignal>
             $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/libLsCsSignal.so>
@@ -135,7 +135,7 @@ if (LsCsSignal_FOUND)
          # link with import library in CS install lib directory
 
          if (MSVC)
-            target_link_libraries(Ls-CsCore
+            target_link_libraries(LsCsCore
                PUBLIC
                $<BUILD_INTERFACE:LsCsSignal::LsCsSignal>
 
@@ -144,7 +144,7 @@ if (LsCsSignal_FOUND)
             )
 
          else()
-            target_link_libraries(Ls-CsCore
+            target_link_libraries(LsCsCore
                PUBLIC
                $<BUILD_INTERFACE:LsCsSignal::LsCsSignal>
 
@@ -166,7 +166,7 @@ if (LsCsSignal_FOUND)
 
 else()
    # use annex headers
-   target_include_directories(Ls-CsCore
+   target_include_directories(LsCsCore
       PUBLIC
       $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/annex/cs_signal>
    )
@@ -178,7 +178,7 @@ else()
       ${CMAKE_CURRENT_SOURCE_DIR}/../annex/cs_signal/cs_slot.h
    )
 
-   target_sources(Ls-CsCore
+   target_sources(LsCsCore
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/../annex/cs_signal/cs_signal.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/../annex/cs_signal/cs_slot.cpp
@@ -186,18 +186,18 @@ else()
 endif()
 
 if (ZLIB_FOUND)
-   target_link_libraries(Ls-CsCore
+   target_link_libraries(LsCsCore
       PUBLIC
       ${ZLIB_LIBRARIES}
    )
 
-   target_include_directories(Ls-CsCore
+   target_include_directories(LsCsCore
       PRIVATE
       ${ZLIB_INCLUDE_DIR}
    )
 
 else()
-   target_sources(Ls-CsCore
+   target_sources(LsCsCore
       PRIVATE
       ${CMAKE_SOURCE_DIR}/src/3rdparty/zlib/adler32.c
       ${CMAKE_SOURCE_DIR}/src/3rdparty/zlib/compress.c
@@ -237,7 +237,7 @@ if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
    install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/global/Info.plist.app DESTINATION mac)
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "Linux")
-   target_link_libraries(Ls-CsCore
+   target_link_libraries(LsCsCore
       PUBLIC
       dl
       ${CMAKE_THREAD_LIBS_INIT}
@@ -245,14 +245,14 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "Linux")
    include_directories(${CMAKE_SOURCE_DIR}/src/3rdparty/forkfd)
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "(OpenBSD|FreeBSD|NetBSD|DragonFly)")
-   target_link_libraries(Ls-CsCore
+   target_link_libraries(LsCsCore
       PRIVATE
       ${CMAKE_THREAD_LIBS_INIT}
    )
    include_directories(${CMAKE_SOURCE_DIR}/src/3rdparty/forkfd)
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
-   target_link_libraries(Ls-CsCore
+   target_link_libraries(LsCsCore
       PRIVATE
       ntdll
       ole32
@@ -264,7 +264,7 @@ endif()
 
 # Raspberry Pi does not have built in atomic support
 if (HAVE_LIBATOMIC)
-   target_link_libraries(Ls-CsCore
+   target_link_libraries(LsCsCore
       PUBLIC
       atomic
    )
@@ -273,14 +273,14 @@ endif()
 function_variable_fixup("${EXTRA_CORE_CXXFLAGS}" EXTRA_CORE_CXXFLAGS)
 function_variable_fixup("${EXTRA_CORE_LDFLAGS}"  EXTRA_CORE_LDFLAGS)
 
-target_sources(Ls-CsCore
+target_sources(LsCsCore
    PRIVATE
    ${CORE_INCLUDES}
    ${CORE_REGEX_INCLUDES}
 )
 
 if(MSVC)
-   target_compile_options(Ls-CsCore
+   target_compile_options(LsCsCore
       PUBLIC
       /bigobj
       /DNOMINMAX
@@ -288,7 +288,7 @@ if(MSVC)
 
    if (${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.13.0")
       # ensure method pointers have a unique address
-      target_link_options(Ls-CsCore
+      target_link_options(LsCsCore
          PUBLIC
          /OPT:REF,NOICF
       )
@@ -298,28 +298,42 @@ if(MSVC)
    endif()
 endif()
 
-set_target_properties(Ls-CsCore
+set_target_properties(LsCsCore
    PROPERTIES
    COMPILE_FLAGS ${EXTRA_CORE_CXXFLAGS}
    LINK_FLAGS    ${EXTRA_CORE_LDFLAGS}
 )
 
-function_generate_resources(Ls-CsCore)
+function_generate_resources(LsCsCore)
 
 macro_generate_package(
-   Ls-CsCore
+   LsCsCore
    QtCore
    "${EXTRA_CORE_CXXFLAGS}"
    ""
 )
 
-install(
-   TARGETS Ls-CsCore
-   EXPORT Ls-CsLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
-   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+# multi-arch Debian has an extra director after /lib
+# for 64-bit x86 is is x86_64-linux-gnu
+# various ARM platforms will have other directories.
+#
+if (DEBIAN_FOUND)
+    install(
+        TARGETS LsCsCore
+        EXPORT LsCsLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}
+    )
+else()
+    install(
+        TARGETS LsCsCore
+        EXPORT LsCsLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )
+endif()
 
 install(
    DIRECTORY ${CMAKE_BINARY_DIR}/include/QtCore
@@ -327,14 +341,14 @@ install(
    COMPONENT Devel
 )
 
-install(FILES ${CMAKE_BINARY_DIR}/include/ls-cs-config.h  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} )
+install(FILES ${CMAKE_BINARY_DIR}/include/lscs_config.h  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} )
 
 if (LsCsSignal_FOUND)
 
    if (CS_INSTALL_MODE STREQUAL "Deploy")
 
       if (CMAKE_SYSTEM_NAME MATCHES "Windows")
-         # install system library to Ls-Cs install directory
+         # install system library to LsCs install directory
          install(FILES ${LsCsSignal_LIBRARIES} DESTINATION ${CMAKE_INSTALL_BINDIR})
 
          # install import library to CS install lib directory
@@ -346,7 +360,11 @@ if (LsCsSignal_FOUND)
          # darwin and unix
 
          # install system library to CS install directory
-         install(FILES ${LsCsSignal_LIBRARIES} DESTINATION ${CMAKE_INSTALL_LIBDIR})
+         if (DEBIAN_FOUND)
+             install(FILES ${LsCsSignal_LIBRARIES} DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR})
+         else()
+             install(FILES ${LsCsSignal_LIBRARIES} DESTINATION ${CMAKE_INSTALL_LIBDIR})
+         endif()
       endif()
 
    endif()
@@ -369,7 +387,11 @@ if (LsCsString_FOUND)
          # darwin and unix
 
          # install system library to CS install directory
-         install(FILES ${LsCsString_LIBRARIES} DESTINATION ${CMAKE_INSTALL_LIBDIR})
+         if (DEBIAN_FOUND)
+             install(FILES ${LsCsString_LIBRARIES} DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR})
+         else()
+             install(FILES ${LsCsString_LIBRARIES} DESTINATION ${CMAKE_INSTALL_LIBDIR})
+         endif()
       endif()
 
    endif()

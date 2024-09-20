@@ -11,4 +11,4 @@ apt-get install libxcb1-dev libx11-xcb-dev libxcb-glx0-dev libxcb-icccm4-dev lib
 #
 apt-get install fakeroot hashdeep dpkg-dev cmake ninja-build g++ build-essential \
 mercurial mercurial-common libcups2-dev libasound2-dev libxml++2.6-dev libssl-dev libpulse-dev git astyle \
-hunspell libhunspell-dev libpqxx-dev libpq-dev unixodbc-dev libmysql++-dev tree
+hunspell libhunspell-dev libpqxx-dev libpq-dev unixodbc-dev libmysql++-dev tree libvulkan-dev

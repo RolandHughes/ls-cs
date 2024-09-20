@@ -19,7 +19,7 @@ list(APPEND CORE_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/datetime/qtimezone_data_p.h
 )
 
-target_sources(Ls-CsCore
+target_sources(LsCsCore
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/datetime/qdatetime.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/datetime/qdatetimeparser.cpp
@@ -27,20 +27,20 @@ target_sources(Ls-CsCore
 )
 
 if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
-   target_sources(Ls-CsCore
+   target_sources(LsCsCore
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/datetime/qdatetime_mac.mm
       ${CMAKE_CURRENT_SOURCE_DIR}/datetime/qtimezone_mac.mm
    )
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD)")
-   target_sources(Ls-CsCore
+   target_sources(LsCsCore
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/datetime/qtimezone_unix.cpp
    )
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
-   target_sources(Ls-CsCore
+   target_sources(LsCsCore
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/datetime/qtimezone_win.cpp
    )

@@ -95,7 +95,7 @@ list(APPEND GUI_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/opengl/qrbtree_p.h
 )
 
-target_sources(Ls-CsGui
+target_sources(LsCsGui
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/opengl/qopengl.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/opengl/qopengl_buffer.cpp

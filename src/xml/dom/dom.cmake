@@ -39,7 +39,7 @@ list(APPEND XML_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/dom/qdomtext.h
 )
 
-target_sources(Ls-CsXml
+target_sources(LsCsXml
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/dom/qdom.cpp
 )
