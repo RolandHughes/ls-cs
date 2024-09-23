@@ -44,11 +44,6 @@ DEBIAN_WORK_DIR="$SCRIPT_DIR/../lscs_debian_work"
 # themselves.
 #
 LIB_DIR="lib"
-TARGET_ARCH=$(arch | tr -d [:space:])
-
-if [ "$TARGET_ARCH" != "" ]; then
-    LIB_DIR="lib/$TARGET_ARCH-linux-gnu"
-fi
 
 echo "SCRIPT_DIR  $SCRIPT_DIR"
 echo "BUILD_DIR   $BUILD_DIR"
@@ -184,7 +179,7 @@ function dev_deb()
     DEB_NAME="LsCs-$D_VERSION-$D_ARCH-dev.deb"
     echo "look for:  $DEB_NAME"
 
-    mv LsCs_debian.deb "$DEB_NAME"
+    mv lscs_debian.deb "$DEB_NAME"
 
 }
 
@@ -242,7 +237,7 @@ function runtime_deb()
     DEB_NAME="LsCs-$D_VERSION-$D_ARCH.deb"
     echo "look for:  $DEB_NAME"
 
-    mv LsCs_debian.deb "$DEB_NAME"
+    mv lscs_debian.deb "$DEB_NAME"
 
 }
 

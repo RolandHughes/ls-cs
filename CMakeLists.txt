@@ -16,8 +16,8 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
 
 project(LsCs)
 
-set(BUILD_MAJOR "1")
-set(BUILD_MINOR "9")
+set(BUILD_MAJOR "0")
+set(BUILD_MINOR "1")
 set(BUILD_MICRO "1")
 
 # used to control cmake/pc variables when building
@@ -64,7 +64,10 @@ elseif (CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
    # this architecture value is only used on the control file for a debian package.
    # if the value is bogus or empty on other platforms it simply doesn't matter.
    #
-   EXECUTE_PROCESS( COMMAND arch  OUTPUT_STRIP_TRAILING_WHITESPACE OUTPUT_VARIABLE CPACK_PACKAGE_ARCHITECTURE)
+   # TODO:: See what we get when cross compiling for Arm or other targets.
+   #
+   EXECUTE_PROCESS( COMMAND dpkg --print-architecture  OUTPUT_STRIP_TRAILING_WHITESPACE OUTPUT_VARIABLE CPACK_PACKAGE_ARCHITECTURE)
+   EXECUTE_PROCESS( COMMAND arch  OUTPUT_STRIP_TRAILING_WHITESPACE OUTPUT_VARIABLE LIB_ARCHITECTURE)
 
    find_file (DEBIAN_FOUND debian_version debconf.conf
       PATHS /etc /usr/share/debconf
@@ -73,10 +76,10 @@ elseif (CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
    if (DEBIAN_FOUND)
       set (CMAKE_OS_NAME "Debian" CACHE STRING "Operating system name" FORCE)
       
-      set(DEBIAN_BINARY_DIR "lib/${CPACK_PACKAGE_ARCHITECTURE}-linux-gnu")
+      set(DEBIAN_BINARY_DIR "lib/${LIB_ARCHITECTURE}-linux-gnu")
    endif (DEBIAN_FOUND)
 
-   message("CMAKE_OS_NAME after test: ${CMAKE_OS_NAME}\n")
+   message(STATUS "CMAKE_OS_NAME after test: ${CMAKE_OS_NAME}\n")
    
 
    #;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -111,7 +114,7 @@ if (BUILDING_DEBIAN)
     set(LSCS_INST_INCLUDE "${LSCS_INST_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}")
     set(CMAKE_INSTALL_FULL_LIBDIR "${CMAKE_INSTALL_PREFIX}/${DEBIAN_BINARY_DIR}" )
 elseif (BUILDING_RPM)
-    message(STATUS "** We are building RPMa package ***")
+    message(STATUS "** We are building RPM package ***")
     set(LSCS_INST_PREFIX  "/usr")    
     set(LSCS_INST_LIB     "${LSCS_INST_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
     set(LSCS_INST_INCLUDE "${LSCS_INST_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}")
@@ -140,6 +143,8 @@ message( STATUS, "CMAKE_INSTALL_INCLUDEDIR       ${CMAKE_INSTALL_INCLUDE_DIR}" )
 message( STATUS, "CMAKE_INSTALL_FULL_LIBDIR      ${CMAKE_INSTALL_FULL_LIBDIR}" )
 message( STATUS, "CMAKE_INSTALL_FULL_INCLUDEDIR  ${CMAKE_INSTALL_FULL_INCLUDEDIR}" )
 message( STATUS, "CMAKE_INSTALL_LIBDIR           ${CMAKE_INSTALL_LIBDIR}" )
+message( STATUS, "LIB_ARCHITECTURE               ${LIB_ARCHITECTURE}" )
+message( STATUS, "CPACK_PACKAGE_ARCHITECTURE     ${CPACK_PACKAGE_ARCHITECTURE}" )
 message(STATUS "   ***      ***      ***      ***      ***      ***      ***   ")
 message(STATUS "   ***      ***      ***      ***      ***      ***      ***   ")
 message(STATUS "   ***      ***      ***      ***      ***      ***      ***   ")
@@ -826,10 +831,10 @@ if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
    set(PKG_PREFIX "lscs.framework/Resources")
 
 elseif (CMAKE_SYSTEM_NAME MATCHES "Windows")
-   set(PKG_PREFIX "cmake/lscs")
+   set(PKG_PREFIX "cmake/LsCs")
 
 else()
-   set(PKG_PREFIX "${CMAKE_INSTALL_LIBDIR}/cmake/lscs")
+   set(PKG_PREFIX "${CMAKE_INSTALL_LIBDIR}/cmake/LsCs")
 
 endif()
 
@@ -917,7 +922,7 @@ install(
 )
 
 install(
-   # generate cmake files containing rules about linking with CS libs
+   # generate cmake files containing rules about linking with LsCs libs
 
    EXPORT LsCsLibraryTargets
    NAMESPACE LsCs::
@@ -925,7 +930,7 @@ install(
    DESTINATION ${PKG_PREFIX}
 )
 
-# generate cmake files containing rules about running CS binary tools
+# generate cmake files containing rules about running LsCs binary tools
 install(
    EXPORT LsCsBinaryTargets
    NAMESPACE LsCs::
