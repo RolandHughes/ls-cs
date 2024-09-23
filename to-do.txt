@@ -1,6 +1,0 @@
-
-*)  Fix .cmake files for tests and get tests working
-*)  Build and test for Windows
-*)  Find someone to build and test for Mac
-*)  Find someone that does Wayland to add Wayland support.
-*)  Build for a Toradex ARM computer and test.
