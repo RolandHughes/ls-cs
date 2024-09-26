@@ -1,6 +1,7 @@
-# LsCs fork of Copperspice
+# Ls-Cs Cross Platform Library for Desktops and Embedded Systems Development
 
-*This is un-official and not maintained by the CopperSpice project*
+*This is project is not maintained by the CopperSpice project and we no longer
+accept code from them.*
 
 All library files have been renamed in case CopperSpice project gets
 around to making formal official package releases in the next 15-20 years.
@@ -22,6 +23,10 @@ hardware try to pass back "integer" values it reeks havoc. Just ask all of
 the college students whose financial aid applications got jacked up by it
 for the 2024 school year because front ends ass-u-me-d integer was integer.
 
+Initially we will focus on formal packaging: Deb, RPM, Manjaro as well as
+ArmV8 for embedded systems. Toradex will be target of choice because it is
+what we have. All NXP derived ArmV8 should be able to utilize the code.
+
 You can read the CopperSpice README.md here:
 https://github.com/copperspice/copperspice
 
@@ -37,7 +42,7 @@ that were BSD.
  * CsString
 
 Don't worry if you already have them installed. Any included with this
-get Ls- added in front of the Cs so we don't have any naming/linking
+get Ls added in front of the Cs so we don't have any naming/linking
 collisions. 
 
 **currently requires C++17 or newer.**
@@ -51,13 +56,19 @@ exceptions but the speed improvement of CoW was and still is dramatic.
 See:
 https://www.logikalsolutions.com/wordpress/information-technology/qlist/
 
-It is theoretically possible to implement CoW using making the existing 
+It is theoretically possible to implement CoW making the existing 
 QString typedef a wrapper class around the current QString8 and 
 QStringView making all pre-existing initial assignments a view until a write
 happens, but no work has been done on that in this library yet.
 https://www.copperspice.com/docs/cs_api/class_qstring8.html
 https://www.copperspice.com/docs/cs_api/class_qstringview.html
 
+### Contributing
+This is a young project with an old base. As such there is much along the lines of "grunt work" which would be great for beginning coders who need to how to use tools and get their feet wet with real projects. Must follow the [coding standard](https://lscs-software.com/LsCs-CodingStandard.html). In fact one of the early grunt work projects is converting the code base to the new coding standard prefered by embedded systems projects. In fact, fixing QComboBox should be a quick hit for one with just a bit of coding experience.
+
+Purging the legacy display plugins making GLFW the singular graphics layer this library communicates with will require someone with a bit more skill.
+
+Keep in mind this project cares primarily about embedded systems and secondarily about desktops. It will _never_ care about phones.
 
 ## System Requirements
 
@@ -88,20 +99,15 @@ Once you have successfully run a dependency script you can use one of the build
 scripts to build a package or a local development install.
 
 
-### Using the CopperSpice Libraries
+### Using the Ls-Cs Libraries
 
-It is highly recommended you steal CMakeLists.txt from bth the root and src
-directories of RedDiamond if you have never used either CMake or Ninja.
-
+In a few weeks RedDiamond should be ported to use Ls-Cs instead of CopperSpice.
 https://sourceforge.net/p/reddiamond/code/ci/master/tree/
 
 You will note that project also has build*.sh files Thieving just a few files
 from that project should jumpstart your use of LsCs.
 
-A possibly simpler starting point would be to install CsScintilla and use some
-of the examples found in copperspice_examples.
-
-https://sourceforge.net/p/csscintilla/csscintilla/ci/default/tree/
+As time allows examples will be added to this code base and instructions for them added to [the primary Web site](https://lscs-software.com/).
 
 ### Documentation
 
@@ -109,8 +115,10 @@ For now there is only the CopperSpice documentation.
 
 https://www.copperspice.com/documentation-copperspice.html
 
+You could also run Doxygen against the source to generate local documentation.
+
 You can download from that site for off-line use. At some point we will gen
-our own documentation. Once signigicant changes happen, like changing of
+our own documentation. Once significant changes happen, like changing of
 string classes, that will be a necessity.
 
 ### License
@@ -121,7 +129,8 @@ this project.
 
 ### References
 
- Website:  https://github.com/RolandHughes/ls-cs/tree/master
+ Code:  https://github.com/RolandHughes/ls-cs
+ Website: https://lscs-software.com/
 
  Users who do not know me may register at the forum for my blog to post
  comments.
