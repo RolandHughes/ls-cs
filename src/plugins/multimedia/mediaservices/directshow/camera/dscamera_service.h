@@ -36,23 +36,23 @@ class DSCameraImageProcessingControl;
 
 class DSCameraService : public QMediaService
 {
-   CS_OBJECT(DSCameraService)
+    CS_OBJECT( DSCameraService )
 
- public:
-   DSCameraService(QObject *parent = nullptr);
-   ~DSCameraService();
+public:
+    DSCameraService( QObject *parent = nullptr );
+    ~DSCameraService();
 
-   QMediaControl *requestControl(const QString &name) override;
-   void releaseControl(QMediaControl *control) override;
+    QMediaControl *requestControl( const QString &name ) override;
+    void releaseControl( QMediaControl *control ) override;
 
- private:
-   DSCameraControl        *m_control;
-   DSCameraSession        *m_session;
-   DSVideoDeviceControl   *m_videoDevice;
-   QMediaControl          *m_videoRenderer;
-   DSImageCaptureControl  *m_imageCapture;
-   DSCameraViewfinderSettingsControl *m_viewfinderSettings;
-   DSCameraImageProcessingControl *m_imageProcessingControl;
+private:
+    DSCameraControl        *m_control;
+    DSCameraSession        *m_session;
+    DSVideoDeviceControl   *m_videoDevice;
+    QMediaControl          *m_videoRenderer;
+    DSImageCaptureControl  *m_imageCapture;
+    DSCameraViewfinderSettingsControl *m_viewfinderSettings;
+    DSCameraImageProcessingControl *m_imageProcessingControl;
 };
 
 #endif

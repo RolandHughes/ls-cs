@@ -34,34 +34,56 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
-    class FormState;
-    class NavigationAction;
+namespace WebCore
+{
+class FormState;
+class NavigationAction;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 class WebFrame;
 
-class InjectedBundleNavigationAction : public APIObject {
+class InjectedBundleNavigationAction : public APIObject
+{
 public:
     static const Type APIType = TypeBundleNavigationAction;
 
-    static PassRefPtr<InjectedBundleNavigationAction> create(WebFrame*, const WebCore::NavigationAction&, PassRefPtr<WebCore::FormState>);
+    static PassRefPtr<InjectedBundleNavigationAction> create( WebFrame *, const WebCore::NavigationAction &,
+            PassRefPtr<WebCore::FormState> );
 
-    static WebEvent::Modifiers modifiersForNavigationAction(const WebCore::NavigationAction&);
-    static WebMouseEvent::Button mouseButtonForNavigationAction(const WebCore::NavigationAction&);
+    static WebEvent::Modifiers modifiersForNavigationAction( const WebCore::NavigationAction & );
+    static WebMouseEvent::Button mouseButtonForNavigationAction( const WebCore::NavigationAction & );
 
-    WebCore::NavigationType navigationType() const { return m_navigationType; }
-    WebEvent::Modifiers modifiers() const { return m_modifiers; }
-    WebMouseEvent::Button mouseButton() const { return m_mouseButton; }
-    InjectedBundleHitTestResult* hitTestResult() const { return m_hitTestResult.get(); }
-    InjectedBundleNodeHandle* formElement() const { return m_formElement.get(); }
+    WebCore::NavigationType navigationType() const
+    {
+        return m_navigationType;
+    }
+    WebEvent::Modifiers modifiers() const
+    {
+        return m_modifiers;
+    }
+    WebMouseEvent::Button mouseButton() const
+    {
+        return m_mouseButton;
+    }
+    InjectedBundleHitTestResult *hitTestResult() const
+    {
+        return m_hitTestResult.get();
+    }
+    InjectedBundleNodeHandle *formElement() const
+    {
+        return m_formElement.get();
+    }
 
 private:
-    InjectedBundleNavigationAction(WebFrame*, const WebCore::NavigationAction&, PassRefPtr<WebCore::FormState>);
+    InjectedBundleNavigationAction( WebFrame *, const WebCore::NavigationAction &, PassRefPtr<WebCore::FormState> );
 
-    virtual Type type() const { return APIType; }
+    virtual Type type() const
+    {
+        return APIType;
+    }
 
     WebCore::NavigationType m_navigationType;
     WebEvent::Modifiers m_modifiers;

@@ -33,20 +33,22 @@
 
 #include <wtf/OwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class ActiveDOMObjectCallbackImpl;
 class ScriptExecutionContext;
 
 // A class that allows callbacks to behave like ActiveDOMObjects, and also
 // be destroyed on the context thread or any other thread.
-class ActiveDOMCallback {
+class ActiveDOMCallback
+{
 public:
-    ActiveDOMCallback(ScriptExecutionContext* context);
+    ActiveDOMCallback( ScriptExecutionContext *context );
     ~ActiveDOMCallback();
 
     bool canInvokeCallback() const;
-    ScriptExecutionContext* scriptExecutionContext() const;
+    ScriptExecutionContext *scriptExecutionContext() const;
 
 private:
     // The ActiveDOMObject part of the callback.

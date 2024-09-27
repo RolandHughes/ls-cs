@@ -21,7 +21,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef SVGImage_h
@@ -31,16 +31,18 @@
 
 #include "Image.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Page;
 class SVGImageChromeClient;
 
-class SVGImage : public Image {
+class SVGImage : public Image
+{
 public:
-    static PassRefPtr<SVGImage> create(ImageObserver* observer)
+    static PassRefPtr<SVGImage> create( ImageObserver *observer )
     {
-        return adoptRef(new SVGImage(observer));
+        return adoptRef( new SVGImage( observer ) );
     }
 
 private:
@@ -48,24 +50,31 @@ private:
 
     virtual String filenameExtension() const;
 
-    virtual void setContainerSize(const IntSize&);
+    virtual void setContainerSize( const IntSize & );
     virtual bool usesContainerSize() const;
     virtual bool hasRelativeWidth() const;
     virtual bool hasRelativeHeight() const;
 
     virtual IntSize size() const;
 
-    virtual bool dataChanged(bool allDataReceived);
+    virtual bool dataChanged( bool allDataReceived );
 
     // FIXME: SVGImages are underreporting decoded sizes and will be unable
     // to prune because these functions are not implemented yet.
-    virtual void destroyDecodedData(bool) { }
-    virtual unsigned decodedSize() const { return 0; }
+    virtual void destroyDecodedData( bool ) { }
+    virtual unsigned decodedSize() const
+    {
+        return 0;
+    }
 
-    virtual NativeImagePtr frameAtIndex(size_t) { return 0; }
+    virtual NativeImagePtr frameAtIndex( size_t )
+    {
+        return 0;
+    }
 
-    SVGImage(ImageObserver*);
-    virtual void draw(GraphicsContext*, const FloatRect& fromRect, const FloatRect& toRect, ColorSpace styleColorSpace, CompositeOperator);
+    SVGImage( ImageObserver * );
+    virtual void draw( GraphicsContext *, const FloatRect &fromRect, const FloatRect &toRect, ColorSpace styleColorSpace,
+                       CompositeOperator );
 
     virtual NativeImagePtr nativeImageForCurrentFrame();
 

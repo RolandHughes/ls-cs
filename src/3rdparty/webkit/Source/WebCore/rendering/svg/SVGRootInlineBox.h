@@ -28,36 +28,53 @@
 #include "SVGRenderSupport.h"
 #include "SVGTextLayoutEngine.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SVGInlineTextBox;
 
-class SVGRootInlineBox : public RootInlineBox {
+class SVGRootInlineBox : public RootInlineBox
+{
 public:
-    SVGRootInlineBox(RenderBlock* block)
-        : RootInlineBox(block)
-        , m_logicalHeight(0)
+    SVGRootInlineBox( RenderBlock *block )
+        : RootInlineBox( block )
+        , m_logicalHeight( 0 )
     {
     }
 
-    virtual bool isSVGRootInlineBox() const { return true; }
+    virtual bool isSVGRootInlineBox() const
+    {
+        return true;
+    }
 
-    virtual int virtualLogicalHeight() const { return m_logicalHeight; }
-    void setLogicalHeight(int height) { m_logicalHeight = height; }
+    virtual int virtualLogicalHeight() const
+    {
+        return m_logicalHeight;
+    }
+    void setLogicalHeight( int height )
+    {
+        m_logicalHeight = height;
+    }
 
-    virtual void paint(PaintInfo&, int tx, int ty, int lineTop, int lineBottom);
+    virtual void paint( PaintInfo &, int tx, int ty, int lineTop, int lineBottom );
 
     void computePerCharacterLayoutInformation();
 
-    virtual FloatRect objectBoundingBox() const { return FloatRect(); }
-    virtual FloatRect repaintRectInLocalCoordinates() const { return FloatRect(); }
+    virtual FloatRect objectBoundingBox() const
+    {
+        return FloatRect();
+    }
+    virtual FloatRect repaintRectInLocalCoordinates() const
+    {
+        return FloatRect();
+    }
 
-    InlineBox* closestLeafChildForPosition(const IntPoint&);
+    InlineBox *closestLeafChildForPosition( const IntPoint & );
 
 private:
-    void reorderValueLists(Vector<SVGTextLayoutAttributes>&);
-    void layoutCharactersInTextBoxes(InlineFlowBox*, SVGTextLayoutEngine&);
-    void layoutChildBoxes(InlineFlowBox*);
+    void reorderValueLists( Vector<SVGTextLayoutAttributes> & );
+    void layoutCharactersInTextBoxes( InlineFlowBox *, SVGTextLayoutEngine & );
+    void layoutChildBoxes( InlineFlowBox * );
     void layoutRootBox();
 
 private:

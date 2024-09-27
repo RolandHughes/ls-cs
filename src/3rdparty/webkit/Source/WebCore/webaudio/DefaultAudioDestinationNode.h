@@ -29,29 +29,34 @@
 #include "AudioDestinationNode.h"
 #include <wtf/OwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class AudioContext;
-    
-class DefaultAudioDestinationNode : public AudioDestinationNode {
+
+class DefaultAudioDestinationNode : public AudioDestinationNode
+{
 public:
-    static PassRefPtr<DefaultAudioDestinationNode> create(AudioContext* context)
+    static PassRefPtr<DefaultAudioDestinationNode> create( AudioContext *context )
     {
-        return adoptRef(new DefaultAudioDestinationNode(context));     
+        return adoptRef( new DefaultAudioDestinationNode( context ) );
     }
 
     virtual ~DefaultAudioDestinationNode();
-    
-    // AudioNode   
+
+    // AudioNode
     virtual void initialize();
     virtual void uninitialize();
-    
-    double sampleRate() const { return m_destination->sampleRate(); }
+
+    double sampleRate() const
+    {
+        return m_destination->sampleRate();
+    }
 
     virtual void startRendering();
-    
+
 private:
-    DefaultAudioDestinationNode(AudioContext*);
+    DefaultAudioDestinationNode( AudioContext * );
 
     OwnPtr<AudioDestination> m_destination;
 };

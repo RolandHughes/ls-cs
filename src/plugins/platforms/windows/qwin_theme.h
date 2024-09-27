@@ -32,53 +32,58 @@ class QWindow;
 
 class QWindowsTheme : public QPlatformTheme
 {
- public:
-   QWindowsTheme();
-   ~QWindowsTheme();
+public:
+    QWindowsTheme();
+    ~QWindowsTheme();
 
-   static QWindowsTheme *instance() {
-      return m_instance;
-   }
+    static QWindowsTheme *instance()
+    {
+        return m_instance;
+    }
 
-   bool usePlatformNativeDialog(DialogType type) const override;
-   QPlatformDialogHelper *createPlatformDialogHelper(DialogType type) const override;
-   QVariant themeHint(ThemeHint) const override;
+    bool usePlatformNativeDialog( DialogType type ) const override;
+    QPlatformDialogHelper *createPlatformDialogHelper( DialogType type ) const override;
+    QVariant themeHint( ThemeHint ) const override;
 
-   const QPalette *palette(Palette type = SystemPalette) const override {
-      return m_palettes[type];
-   }
+    const QPalette *palette( Palette type = SystemPalette ) const override
+    {
+        return m_palettes[type];
+    }
 
-   const QFont *font(Font type = SystemFont) const override {
-      return m_fonts[type];
-   }
+    const QFont *font( Font type = SystemFont ) const override
+    {
+        return m_fonts[type];
+    }
 
-   QPixmap standardPixmap(StandardPixmap sp, const QSizeF &size) const override;
-   QPixmap fileIconPixmap(const QFileInfo &fileInfo, const QSizeF &size,
-      QPlatformTheme::IconOptions iconOptions = Qt::EmptyFlag) const override;
+    QPixmap standardPixmap( StandardPixmap sp, const QSizeF &size ) const override;
+    QPixmap fileIconPixmap( const QFileInfo &fileInfo, const QSizeF &size,
+                            QPlatformTheme::IconOptions iconOptions = Qt::EmptyFlag ) const override;
 
-   void windowsThemeChanged(QWindow *window);
-   void displayChanged() {
-      refreshIconPixmapSizes();
-   }
+    void windowsThemeChanged( QWindow *window );
+    void displayChanged()
+    {
+        refreshIconPixmapSizes();
+    }
 
-   static QString name;
+    static QString name;
 
- private:
-   void refresh() {
-      refreshPalettes();
-      refreshFonts();
-   }
-   void clearPalettes();
-   void refreshPalettes();
-   void clearFonts();
-   void refreshFonts();
-   void refreshIconPixmapSizes();
+private:
+    void refresh()
+    {
+        refreshPalettes();
+        refreshFonts();
+    }
+    void clearPalettes();
+    void refreshPalettes();
+    void clearFonts();
+    void refreshFonts();
+    void refreshIconPixmapSizes();
 
-   static QWindowsTheme *m_instance;
-   QPalette *m_palettes[NPalettes];
-   QFont *m_fonts[NFonts];
-   mutable QWindowsThreadPoolRunner m_threadPoolRunner;
-   QVariant m_fileIconSizes;
+    static QWindowsTheme *m_instance;
+    QPalette *m_palettes[NPalettes];
+    QFont *m_fonts[NFonts];
+    mutable QWindowsThreadPoolRunner m_threadPoolRunner;
+    QVariant m_fileIconSizes;
 };
 
 #endif

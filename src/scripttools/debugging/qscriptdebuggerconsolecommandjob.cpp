@@ -26,9 +26,7 @@
 
 #include <QtCore/qdebug.h>
 
-QT_BEGIN_NAMESPACE
-
-QScriptDebuggerConsoleCommandJobPrivate::QScriptDebuggerConsoleCommandJobPrivate()
+QT_BEGIN_NAMESPACE QScriptDebuggerConsoleCommandJobPrivate::QScriptDebuggerConsoleCommandJobPrivate()
 {
 }
 
@@ -37,15 +35,15 @@ QScriptDebuggerConsoleCommandJobPrivate::~QScriptDebuggerConsoleCommandJobPrivat
 }
 
 QScriptDebuggerConsoleCommandJob::QScriptDebuggerConsoleCommandJob(
-   QScriptDebuggerConsole *console,
-   QScriptMessageHandlerInterface *messageHandler,
-   QScriptDebuggerCommandSchedulerInterface *scheduler)
-   : QScriptDebuggerCommandSchedulerJob(*new QScriptDebuggerConsoleCommandJobPrivate,
-                                        scheduler)
+    QScriptDebuggerConsole *console,
+    QScriptMessageHandlerInterface *messageHandler,
+    QScriptDebuggerCommandSchedulerInterface *scheduler )
+    : QScriptDebuggerCommandSchedulerJob( *new QScriptDebuggerConsoleCommandJobPrivate,
+                                          scheduler )
 {
-   Q_D(QScriptDebuggerConsoleCommandJob);
-   d->console = console;
-   d->messageHandler = messageHandler;
+    Q_D( QScriptDebuggerConsoleCommandJob );
+    d->console = console;
+    d->messageHandler = messageHandler;
 }
 
 QScriptDebuggerConsoleCommandJob::~QScriptDebuggerConsoleCommandJob()
@@ -53,15 +51,15 @@ QScriptDebuggerConsoleCommandJob::~QScriptDebuggerConsoleCommandJob()
 }
 
 QScriptDebuggerConsoleCommandJob::QScriptDebuggerConsoleCommandJob(
-   QScriptDebuggerConsoleCommandJobPrivate &dd,
-   QScriptDebuggerConsole *console,
-   QScriptMessageHandlerInterface *messageHandler,
-   QScriptDebuggerCommandSchedulerInterface *scheduler)
-   : QScriptDebuggerCommandSchedulerJob(dd, scheduler)
+    QScriptDebuggerConsoleCommandJobPrivate &dd,
+    QScriptDebuggerConsole *console,
+    QScriptMessageHandlerInterface *messageHandler,
+    QScriptDebuggerCommandSchedulerInterface *scheduler )
+    : QScriptDebuggerCommandSchedulerJob( dd, scheduler )
 {
-   Q_D(QScriptDebuggerConsoleCommandJob);
-   d->console = console;
-   d->messageHandler = messageHandler;
+    Q_D( QScriptDebuggerConsoleCommandJob );
+    d->console = console;
+    d->messageHandler = messageHandler;
 }
 
 QT_END_NAMESPACE

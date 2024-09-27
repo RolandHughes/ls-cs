@@ -40,133 +40,155 @@
 #include "webkitglobalsprivate.h"
 #include "webkitmarshal.h"
 
-namespace WebKit {
-    
-WebKitDOMTestSerializedScriptValueInterface* kit(WebCore::TestSerializedScriptValueInterface* obj)
+namespace WebKit
 {
-    g_return_val_if_fail(obj, 0);
 
-    if (gpointer ret = DOMObjectCache::get(obj))
-        return static_cast<WebKitDOMTestSerializedScriptValueInterface*>(ret);
+WebKitDOMTestSerializedScriptValueInterface *kit( WebCore::TestSerializedScriptValueInterface *obj )
+{
+    g_return_val_if_fail( obj, 0 );
 
-    return static_cast<WebKitDOMTestSerializedScriptValueInterface*>(DOMObjectCache::put(obj, WebKit::wrapTestSerializedScriptValueInterface(obj)));
+    if ( gpointer ret = DOMObjectCache::get( obj ) )
+    {
+        return static_cast<WebKitDOMTestSerializedScriptValueInterface *>( ret );
+    }
+
+    return static_cast<WebKitDOMTestSerializedScriptValueInterface *>( DOMObjectCache::put( obj,
+            WebKit::wrapTestSerializedScriptValueInterface( obj ) ) );
 }
-    
+
 } // namespace WebKit //
 
-WebKitDOMSerializedScriptValue*
-webkit_dom_test_serialized_script_value_interface_get_value(WebKitDOMTestSerializedScriptValueInterface* self)
+WebKitDOMSerializedScriptValue *webkit_dom_test_serialized_script_value_interface_get_value(
+    WebKitDOMTestSerializedScriptValueInterface *self )
 {
-    g_return_val_if_fail(self, 0);
+    g_return_val_if_fail( self, 0 );
     WebCore::JSMainThreadNullState state;
-    WebCore::TestSerializedScriptValueInterface * item = WebKit::core(self);
-    PassRefPtr<WebCore::SerializedScriptValue> g_res = WTF::getPtr(item->value());
-    WebKitDOMSerializedScriptValue* res = WebKit::kit(g_res.get());
+    WebCore::TestSerializedScriptValueInterface *item = WebKit::core( self );
+    PassRefPtr<WebCore::SerializedScriptValue> g_res = WTF::getPtr( item->value() );
+    WebKitDOMSerializedScriptValue *res = WebKit::kit( g_res.get() );
     return res;
 }
 
 
-G_DEFINE_TYPE(WebKitDOMTestSerializedScriptValueInterface, webkit_dom_test_serialized_script_value_interface, WEBKIT_TYPE_DOM_OBJECT)
+G_DEFINE_TYPE( WebKitDOMTestSerializedScriptValueInterface, webkit_dom_test_serialized_script_value_interface,
+               WEBKIT_TYPE_DOM_OBJECT )
 
-namespace WebKit {
-
-WebCore::TestSerializedScriptValueInterface* core(WebKitDOMTestSerializedScriptValueInterface* request)
+namespace WebKit
 {
-    g_return_val_if_fail(request, 0);
 
-    WebCore::TestSerializedScriptValueInterface* coreObject = static_cast<WebCore::TestSerializedScriptValueInterface*>(WEBKIT_DOM_OBJECT(request)->coreObject);
-    g_return_val_if_fail(coreObject, 0);
+WebCore::TestSerializedScriptValueInterface *core( WebKitDOMTestSerializedScriptValueInterface *request )
+{
+    g_return_val_if_fail( request, 0 );
+
+    WebCore::TestSerializedScriptValueInterface *coreObject = static_cast<WebCore::TestSerializedScriptValueInterface *>
+            ( WEBKIT_DOM_OBJECT( request )->coreObject );
+    g_return_val_if_fail( coreObject, 0 );
 
     return coreObject;
 }
 
 } // namespace WebKit
-enum {
+enum
+{
     PROP_0,
     PROP_VALUE,
 };
 
 
-static void webkit_dom_test_serialized_script_value_interface_finalize(GObject* object)
+static void webkit_dom_test_serialized_script_value_interface_finalize( GObject *object )
 {
-    WebKitDOMObject* dom_object = WEBKIT_DOM_OBJECT(object);
-    
-    if (dom_object->coreObject) {
-        WebCore::TestSerializedScriptValueInterface* coreObject = static_cast<WebCore::TestSerializedScriptValueInterface *>(dom_object->coreObject);
+    WebKitDOMObject *dom_object = WEBKIT_DOM_OBJECT( object );
 
-        WebKit::DOMObjectCache::forget(coreObject);
+    if ( dom_object->coreObject )
+    {
+        WebCore::TestSerializedScriptValueInterface *coreObject = static_cast<WebCore::TestSerializedScriptValueInterface *>
+                ( dom_object->coreObject );
+
+        WebKit::DOMObjectCache::forget( coreObject );
         coreObject->deref();
 
         dom_object->coreObject = NULL;
     }
 
-    G_OBJECT_CLASS(webkit_dom_test_serialized_script_value_interface_parent_class)->finalize(object);
+    G_OBJECT_CLASS( webkit_dom_test_serialized_script_value_interface_parent_class )->finalize( object );
 }
 
-static void webkit_dom_test_serialized_script_value_interface_set_property(GObject* object, guint prop_id, const GValue* value, GParamSpec* pspec)
+static void webkit_dom_test_serialized_script_value_interface_set_property( GObject *object, guint prop_id, const GValue *value,
+        GParamSpec *pspec )
 {
     WebCore::JSMainThreadNullState state;
-    switch (prop_id) {
-    default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
-        break;
-    }
-}
 
-
-static void webkit_dom_test_serialized_script_value_interface_get_property(GObject* object, guint prop_id, GValue* value, GParamSpec* pspec)
-{
-    WebCore::JSMainThreadNullState state;
-    WebKitDOMTestSerializedScriptValueInterface* self = WEBKIT_DOM_TEST_SERIALIZED_SCRIPT_VALUE_INTERFACE(object);
-    WebCore::TestSerializedScriptValueInterface* coreSelf = WebKit::core(self);
-    switch (prop_id) {
-    case PROP_VALUE:
+    switch ( prop_id )
     {
-        RefPtr<WebCore::SerializedScriptValue> ptr = coreSelf->value();
-        g_value_set_object(value, WebKit::kit(ptr.get()));
-        break;
-    }
-    default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
-        break;
+        default:
+            G_OBJECT_WARN_INVALID_PROPERTY_ID( object, prop_id, pspec );
+            break;
     }
 }
 
 
-static void webkit_dom_test_serialized_script_value_interface_constructed(GObject* object)
+static void webkit_dom_test_serialized_script_value_interface_get_property( GObject *object, guint prop_id, GValue *value,
+        GParamSpec *pspec )
 {
+    WebCore::JSMainThreadNullState state;
+    WebKitDOMTestSerializedScriptValueInterface *self = WEBKIT_DOM_TEST_SERIALIZED_SCRIPT_VALUE_INTERFACE( object );
+    WebCore::TestSerializedScriptValueInterface *coreSelf = WebKit::core( self );
 
-    if (G_OBJECT_CLASS(webkit_dom_test_serialized_script_value_interface_parent_class)->constructed)
-        G_OBJECT_CLASS(webkit_dom_test_serialized_script_value_interface_parent_class)->constructed(object);
+    switch ( prop_id )
+    {
+        case PROP_VALUE:
+        {
+            RefPtr<WebCore::SerializedScriptValue> ptr = coreSelf->value();
+            g_value_set_object( value, WebKit::kit( ptr.get() ) );
+            break;
+        }
+
+        default:
+            G_OBJECT_WARN_INVALID_PROPERTY_ID( object, prop_id, pspec );
+            break;
+    }
 }
 
-static void webkit_dom_test_serialized_script_value_interface_class_init(WebKitDOMTestSerializedScriptValueInterfaceClass* requestClass)
+
+static void webkit_dom_test_serialized_script_value_interface_constructed( GObject *object )
 {
-    GObjectClass *gobjectClass = G_OBJECT_CLASS(requestClass);
+
+    if ( G_OBJECT_CLASS( webkit_dom_test_serialized_script_value_interface_parent_class )->constructed )
+    {
+        G_OBJECT_CLASS( webkit_dom_test_serialized_script_value_interface_parent_class )->constructed( object );
+    }
+}
+
+static void webkit_dom_test_serialized_script_value_interface_class_init( WebKitDOMTestSerializedScriptValueInterfaceClass
+        *requestClass )
+{
+    GObjectClass *gobjectClass = G_OBJECT_CLASS( requestClass );
     gobjectClass->finalize = webkit_dom_test_serialized_script_value_interface_finalize;
     gobjectClass->set_property = webkit_dom_test_serialized_script_value_interface_set_property;
     gobjectClass->get_property = webkit_dom_test_serialized_script_value_interface_get_property;
     gobjectClass->constructed = webkit_dom_test_serialized_script_value_interface_constructed;
 
-    g_object_class_install_property(gobjectClass,
-                                    PROP_VALUE,
-                                    g_param_spec_object("value", /* name */
-                                                           "test_serialized_script_value_interface_value", /* short description */
-                                                           "read-only  WebKitDOMSerializedScriptValue* TestSerializedScriptValueInterface.value", /* longer - could do with some extra doc stuff here */
-                                                           WEBKIT_TYPE_DOM_SERIALIZED_SCRIPT_VALUE, /* gobject type */
-                                                           WEBKIT_PARAM_READABLE));
+    g_object_class_install_property( gobjectClass,
+                                     PROP_VALUE,
+                                     g_param_spec_object( "value", /* name */
+                                             "test_serialized_script_value_interface_value", /* short description */
+                                             "read-only  WebKitDOMSerializedScriptValue* TestSerializedScriptValueInterface.value", /* longer - could do with some extra doc stuff here */
+                                             WEBKIT_TYPE_DOM_SERIALIZED_SCRIPT_VALUE, /* gobject type */
+                                             WEBKIT_PARAM_READABLE ) );
 
 
 }
 
-static void webkit_dom_test_serialized_script_value_interface_init(WebKitDOMTestSerializedScriptValueInterface* request)
+static void webkit_dom_test_serialized_script_value_interface_init( WebKitDOMTestSerializedScriptValueInterface *request )
 {
 }
 
-namespace WebKit {
-WebKitDOMTestSerializedScriptValueInterface* wrapTestSerializedScriptValueInterface(WebCore::TestSerializedScriptValueInterface* coreObject)
+namespace WebKit
 {
-    g_return_val_if_fail(coreObject, 0);
+WebKitDOMTestSerializedScriptValueInterface *wrapTestSerializedScriptValueInterface( WebCore::TestSerializedScriptValueInterface
+        *coreObject )
+{
+    g_return_val_if_fail( coreObject, 0 );
 
     /* We call ref() rather than using a C++ smart pointer because we can't store a C++ object
      * in a C-allocated GObject structure.  See the finalize() code for the
@@ -174,8 +196,8 @@ WebKitDOMTestSerializedScriptValueInterface* wrapTestSerializedScriptValueInterf
      */
     coreObject->ref();
 
-    return  WEBKIT_DOM_TEST_SERIALIZED_SCRIPT_VALUE_INTERFACE(g_object_new(WEBKIT_TYPE_DOM_TEST_SERIALIZED_SCRIPT_VALUE_INTERFACE,
-                                               "core-object", coreObject, NULL));
+    return  WEBKIT_DOM_TEST_SERIALIZED_SCRIPT_VALUE_INTERFACE( g_object_new( WEBKIT_TYPE_DOM_TEST_SERIALIZED_SCRIPT_VALUE_INTERFACE,
+            "core-object", coreObject, NULL ) );
 }
 } // namespace WebKit
 #endif /* ENABLE(Condition1) || ENABLE(Condition2) */

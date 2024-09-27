@@ -33,51 +33,52 @@ class QLayoutItem;
 
 class Q_GUI_EXPORT QLayoutPrivate
 {
-   Q_DECLARE_PUBLIC(QLayout)
+    Q_DECLARE_PUBLIC( QLayout )
 
- public:
-   QLayoutPrivate();
+public:
+    QLayoutPrivate();
 
-   virtual ~QLayoutPrivate()
-   {
-   }
+    virtual ~QLayoutPrivate()
+    {
+    }
 
-   void getMargin(int *result, int userMargin, QStyle::PixelMetric pm) const;
-   void doResize(const QSize &);
-   void reparentChildWidgets(QWidget *mw);
-   bool checkWidget(QWidget *widget) const;
-   bool checkLayout(QLayout *otherLayout) const;
+    void getMargin( int *result, int userMargin, QStyle::PixelMetric pm ) const;
+    void doResize( const QSize & );
+    void reparentChildWidgets( QWidget *mw );
+    bool checkWidget( QWidget *widget ) const;
+    bool checkLayout( QLayout *otherLayout ) const;
 
-   static QWidgetItem *createWidgetItem(const QLayout *layout, QWidget *widget);
+    static QWidgetItem *createWidgetItem( const QLayout *layout, QWidget *widget );
 
-   static QSpacerItem *createSpacerItem(const QLayout *layout, int w, int h,
-      QSizePolicy::Policy hPolicy = QSizePolicy::Minimum, QSizePolicy::Policy vPolicy = QSizePolicy::Minimum);
+    static QSpacerItem *createSpacerItem( const QLayout *layout, int w, int h,
+                                          QSizePolicy::Policy hPolicy = QSizePolicy::Minimum, QSizePolicy::Policy vPolicy = QSizePolicy::Minimum );
 
-   virtual QLayoutItem *replaceAt(int index, QLayoutItem *newitem) {
-      (void) index;
-      (void) newitem;
+    virtual QLayoutItem *replaceAt( int index, QLayoutItem *newitem )
+    {
+        ( void ) index;
+        ( void ) newitem;
 
-      return nullptr;
-   }
+        return nullptr;
+    }
 
-   static QLayout::QWidgetItemFactory widgetItemFactory;
-   static QLayout::QSpacerItemFactory spacerItemFactory;
+    static QLayout::QWidgetItemFactory widgetItemFactory;
+    static QLayout::QSpacerItemFactory spacerItemFactory;
 
-   int insideSpacing;
-   int userLeftMargin;
-   int userTopMargin;
-   int userRightMargin;
-   int userBottomMargin;
-   uint topLevel : 1;
-   uint enabled : 1;
-   uint activated : 1;
-   uint autoNewChild : 1;
-   QLayout::SizeConstraint constraint;
-   QRect rect;
-   QWidget *menubar;
+    int insideSpacing;
+    int userLeftMargin;
+    int userTopMargin;
+    int userRightMargin;
+    int userBottomMargin;
+    uint topLevel : 1;
+    uint enabled : 1;
+    uint activated : 1;
+    uint autoNewChild : 1;
+    QLayout::SizeConstraint constraint;
+    QRect rect;
+    QWidget *menubar;
 
- protected:
-   QLayout *q_ptr;
+protected:
+    QLayout *q_ptr;
 
 };
 

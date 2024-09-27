@@ -27,21 +27,23 @@
 #include <qurl.h>
 
 // in qurlrecode.cpp
-extern int qt_urlRecode(QString &appendTo, QString::const_iterator begin, QString::const_iterator end,
-      QUrl::FormattingOptions encoding, const ushort *tableModifications = nullptr);
+extern int qt_urlRecode( QString &appendTo, QString::const_iterator begin, QString::const_iterator end,
+                         QUrl::FormattingOptions encoding, const ushort *tableModifications = nullptr );
 
 // in qurlidna.cpp
-enum AceLeadingDot {
-   AllowLeadingDot,
-   ForbidLeadingDot
+enum AceLeadingDot
+{
+    AllowLeadingDot,
+    ForbidLeadingDot
 };
 
-enum AceOperation {
-   ToAceOnly,
-   NormalizeAce
+enum AceOperation
+{
+    ToAceOnly,
+    NormalizeAce
 };
 
-QString qt_ACE_do(QStringView domain, AceOperation op, AceLeadingDot dot);
-QString qt_urlRecodeByteArray(const QByteArray &ba);
+QString qt_ACE_do( QStringView domain, AceOperation op, AceLeadingDot dot );
+QString qt_urlRecodeByteArray( const QByteArray &ba );
 
 #endif

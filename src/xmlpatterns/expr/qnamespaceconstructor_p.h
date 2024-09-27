@@ -26,39 +26,41 @@
 
 #include <qemptycontainer_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 class NamespaceConstructor : public EmptyContainer
 {
- public:
-   NamespaceConstructor(const QXmlName nb);
+public:
+    NamespaceConstructor( const QXmlName nb );
 
-   void evaluateToSequenceReceiver(const DynamicContext::Ptr &context) const override;
+    void evaluateToSequenceReceiver( const DynamicContext::Ptr &context ) const override;
 
-   /**
-    * @returns a list containing one CommonSequenceTypes::ExactlyOneString instance.
-    */
-   SequenceType::List expectedOperandTypes() const override;
+    /**
+     * @returns a list containing one CommonSequenceTypes::ExactlyOneString instance.
+     */
+    SequenceType::List expectedOperandTypes() const override;
 
-   /**
-    * The static type is exactly one attribute node. It's unclear what
-    * affects the static type has, but specifying anything else could lead
-    * to complications wrt. node order, XQTY0024. Of course, it's not
-    * conceptually correct, since a namespace node isn't an attribute
-    * node.
-    */
-   SequenceType::Ptr staticType() const override;
+    /**
+     * The static type is exactly one attribute node. It's unclear what
+     * affects the static type has, but specifying anything else could lead
+     * to complications wrt. node order, XQTY0024. Of course, it's not
+     * conceptually correct, since a namespace node isn't an attribute
+     * node.
+     */
+    SequenceType::Ptr staticType() const override;
 
-   ExpressionVisitorResult::Ptr accept(const ExpressionVisitor::Ptr &visitor) const override;
-   Expression::Properties properties() const override;
+    ExpressionVisitorResult::Ptr accept( const ExpressionVisitor::Ptr &visitor ) const override;
+    Expression::Properties properties() const override;
 
-   const QXmlName &namespaceBinding() const {
-      return m_binding;
-   }
+    const QXmlName &namespaceBinding() const
+    {
+        return m_binding;
+    }
 
-   ID id() const override;
+    ID id() const override;
 
- private:
-   const QXmlName m_binding;
+private:
+    const QXmlName m_binding;
 };
 }
 

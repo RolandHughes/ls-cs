@@ -33,7 +33,8 @@
 
 #include <wtf/PassOwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class EventHandler;
 class PlatformGestureRecognizer;
@@ -43,7 +44,8 @@ class PlatformTouchEvent;
 // In response to a given touch event, the GestureRecognizer, updates
 // its internal state and optionally dispatches synthetic events to the
 // invoking EventHandler instance.
-class PlatformGestureRecognizer {
+class PlatformGestureRecognizer
+{
 protected:
     PlatformGestureRecognizer();
 
@@ -56,7 +58,7 @@ public:
     // be the target of any generated synthetic event. Finally, |handled|
     // specifies if the |event| was actually handled by |source| (by the JavaScript)
     // Returns true if the event resulted in firing a synthetic event.
-    virtual bool processTouchEventForGesture(const PlatformTouchEvent&, EventHandler*, bool handled) = 0;
+    virtual bool processTouchEventForGesture( const PlatformTouchEvent &, EventHandler *, bool handled ) = 0;
 };
 
 } // namespace WebCore

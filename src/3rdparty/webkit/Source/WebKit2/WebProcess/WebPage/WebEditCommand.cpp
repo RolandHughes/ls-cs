@@ -26,7 +26,8 @@
 #include "config.h"
 #include "WebEditCommand.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
 static uint64_t generateCommandID()
 {
@@ -34,9 +35,9 @@ static uint64_t generateCommandID()
     return uniqueCommandID++;
 }
 
-PassRefPtr<WebEditCommand> WebEditCommand::create(PassRefPtr<WebCore::EditCommand> command)
+PassRefPtr<WebEditCommand> WebEditCommand::create( PassRefPtr<WebCore::EditCommand> command )
 {
-    return adoptRef(new WebEditCommand(command, generateCommandID()));
+    return adoptRef( new WebEditCommand( command, generateCommandID() ) );
 }
 
 } // namespace WebKit

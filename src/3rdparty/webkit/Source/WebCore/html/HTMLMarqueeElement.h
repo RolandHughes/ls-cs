@@ -26,42 +26,47 @@
 #include "ActiveDOMObject.h"
 #include "HTMLElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class RenderMarquee;
 
-class HTMLMarqueeElement : public HTMLElement, private ActiveDOMObject {
+class HTMLMarqueeElement : public HTMLElement, private ActiveDOMObject
+{
 public:
-    static PassRefPtr<HTMLMarqueeElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<HTMLMarqueeElement> create( const QualifiedName &, Document * );
 
-    int minimumDelay() const { return m_minimumDelay; }
+    int minimumDelay() const
+    {
+        return m_minimumDelay;
+    }
 
     // DOM Functions
 
     void start();
     void stop();
-    
-    int scrollAmount() const;
-    void setScrollAmount(int, ExceptionCode&);
-    
-    int scrollDelay() const;
-    void setScrollDelay(int, ExceptionCode&);
-    
-    int loop() const;
-    void setLoop(int, ExceptionCode&);
-    
-private:
-    HTMLMarqueeElement(const QualifiedName&, Document*);
 
-    virtual bool mapToEntry(const QualifiedName&, MappedAttributeEntry&) const;
-    virtual void parseMappedAttribute(Attribute*);
+    int scrollAmount() const;
+    void setScrollAmount( int, ExceptionCode & );
+
+    int scrollDelay() const;
+    void setScrollDelay( int, ExceptionCode & );
+
+    int loop() const;
+    void setLoop( int, ExceptionCode & );
+
+private:
+    HTMLMarqueeElement( const QualifiedName &, Document * );
+
+    virtual bool mapToEntry( const QualifiedName &, MappedAttributeEntry & ) const;
+    virtual void parseMappedAttribute( Attribute * );
 
     // ActiveDOMObject
     virtual bool canSuspend() const;
-    virtual void suspend(ReasonForSuspension);
+    virtual void suspend( ReasonForSuspension );
     virtual void resume();
 
-    RenderMarquee* renderMarquee() const;
+    RenderMarquee *renderMarquee() const;
 
     int m_minimumDelay;
 };

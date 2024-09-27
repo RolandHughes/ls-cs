@@ -28,10 +28,11 @@
 
 #if ENABLE(INDEXED_DATABASE)
 
-namespace WebCore {
+namespace WebCore
+{
 
 IDBKey::IDBKey()
-    : m_type(NullType)
+    : m_type( NullType )
 {
 }
 
@@ -39,43 +40,59 @@ IDBKey::~IDBKey()
 {
 }
 
-bool IDBKey::isLessThan(const IDBKey* other) const
+bool IDBKey::isLessThan( const IDBKey *other ) const
 {
-    ASSERT(other);
-    if (other->m_type < m_type)
-        return true;
-    if (other->m_type > m_type)
-        return false;
+    ASSERT( other );
 
-    switch (m_type) {
-    case StringType:
-        return codePointCompare(other->m_string, m_string) > 0;
-    case DateType:
-        return other->m_date > m_date;
-    case NumberType:
-        return other->m_number > m_number;
-    case NullType:
+    if ( other->m_type < m_type )
+    {
         return true;
+    }
+
+    if ( other->m_type > m_type )
+    {
+        return false;
+    }
+
+    switch ( m_type )
+    {
+        case StringType:
+            return codePointCompare( other->m_string, m_string ) > 0;
+
+        case DateType:
+            return other->m_date > m_date;
+
+        case NumberType:
+            return other->m_number > m_number;
+
+        case NullType:
+            return true;
     }
 
     ASSERT_NOT_REACHED();
     return false;
 }
 
-bool IDBKey::isEqual(const IDBKey* other) const
+bool IDBKey::isEqual( const IDBKey *other ) const
 {
-    if (!other || other->m_type != m_type)
+    if ( !other || other->m_type != m_type )
+    {
         return false;
+    }
 
-    switch (m_type) {
-    case StringType:
-        return other->m_string == m_string;
-    case DateType:
-        return other->m_date == m_date;
-    case NumberType:
-        return other->m_number == m_number;
-    case NullType:
-        return true;
+    switch ( m_type )
+    {
+        case StringType:
+            return other->m_string == m_string;
+
+        case DateType:
+            return other->m_date == m_date;
+
+        case NumberType:
+            return other->m_number == m_number;
+
+        case NullType:
+            return true;
     }
 
     ASSERT_NOT_REACHED();

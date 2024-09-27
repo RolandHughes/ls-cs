@@ -28,123 +28,157 @@
 #include <wtf/MathExtras.h>
 #include <wtf/text/StringConcatenate.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 SVGAngle::SVGAngle()
-    : m_unitType(SVG_ANGLETYPE_UNSPECIFIED)
-    , m_valueInSpecifiedUnits(0)
+    : m_unitType( SVG_ANGLETYPE_UNSPECIFIED )
+    , m_valueInSpecifiedUnits( 0 )
 {
 }
 
 float SVGAngle::value() const
 {
-    switch (m_unitType) {
-    case SVG_ANGLETYPE_GRAD:
-        return grad2deg(m_valueInSpecifiedUnits);
-    case SVG_ANGLETYPE_RAD:
-        return rad2deg(m_valueInSpecifiedUnits);
-    case SVG_ANGLETYPE_UNSPECIFIED:
-    case SVG_ANGLETYPE_UNKNOWN:
-    case SVG_ANGLETYPE_DEG:
-        return m_valueInSpecifiedUnits;
+    switch ( m_unitType )
+    {
+        case SVG_ANGLETYPE_GRAD:
+            return grad2deg( m_valueInSpecifiedUnits );
+
+        case SVG_ANGLETYPE_RAD:
+            return rad2deg( m_valueInSpecifiedUnits );
+
+        case SVG_ANGLETYPE_UNSPECIFIED:
+        case SVG_ANGLETYPE_UNKNOWN:
+        case SVG_ANGLETYPE_DEG:
+            return m_valueInSpecifiedUnits;
     }
 
     ASSERT_NOT_REACHED();
     return 0;
 }
 
-void SVGAngle::setValue(float value)
+void SVGAngle::setValue( float value )
 {
-    switch (m_unitType) {
-    case SVG_ANGLETYPE_GRAD:
-        m_valueInSpecifiedUnits = deg2grad(value);
-        break;
-    case SVG_ANGLETYPE_RAD:
-        m_valueInSpecifiedUnits = deg2rad(value);
-        break;
-    case SVG_ANGLETYPE_UNSPECIFIED:
-    case SVG_ANGLETYPE_UNKNOWN:
-    case SVG_ANGLETYPE_DEG:
-        m_valueInSpecifiedUnits = value;
-        break;
+    switch ( m_unitType )
+    {
+        case SVG_ANGLETYPE_GRAD:
+            m_valueInSpecifiedUnits = deg2grad( value );
+            break;
+
+        case SVG_ANGLETYPE_RAD:
+            m_valueInSpecifiedUnits = deg2rad( value );
+            break;
+
+        case SVG_ANGLETYPE_UNSPECIFIED:
+        case SVG_ANGLETYPE_UNKNOWN:
+        case SVG_ANGLETYPE_DEG:
+            m_valueInSpecifiedUnits = value;
+            break;
     }
 }
 
-inline SVGAngle::SVGAngleType stringToAngleType(const UChar*& ptr, const UChar* end)
+inline SVGAngle::SVGAngleType stringToAngleType( const UChar *&ptr, const UChar *end )
 {
     // If there's no unit given, the angle type is unspecified.
-    if (ptr == end)
+    if ( ptr == end )
+    {
         return SVGAngle::SVG_ANGLETYPE_UNSPECIFIED;
+    }
 
     const UChar firstChar = *ptr;
-    
+
     // If the unit contains only one character, the angle type is unknown.
     ++ptr;
-    if (ptr == end)
+
+    if ( ptr == end )
+    {
         return SVGAngle::SVG_ANGLETYPE_UNKNOWN;
+    }
 
     const UChar secondChar = *ptr;
- 
+
     // If the unit contains only two characters, the angle type is unknown.
     ++ptr;
-    if (ptr == end)
+
+    if ( ptr == end )
+    {
         return SVGAngle::SVG_ANGLETYPE_UNKNOWN;
+    }
 
     const UChar thirdChar = *ptr;
-    if (firstChar == 'd' && secondChar == 'e' && thirdChar == 'g')
+
+    if ( firstChar == 'd' && secondChar == 'e' && thirdChar == 'g' )
+    {
         return SVGAngle::SVG_ANGLETYPE_DEG;
-    if (firstChar == 'r' && secondChar == 'a' && thirdChar == 'd')
+    }
+
+    if ( firstChar == 'r' && secondChar == 'a' && thirdChar == 'd' )
+    {
         return SVGAngle::SVG_ANGLETYPE_RAD;
+    }
 
     // If the unit contains three characters, but is not deg or rad, then it's unknown.
     ++ptr;
-    if (ptr == end)
+
+    if ( ptr == end )
+    {
         return SVGAngle::SVG_ANGLETYPE_UNKNOWN;
+    }
 
     const UChar fourthChar = *ptr;
 
-    if (firstChar == 'g' && secondChar == 'r' && thirdChar == 'a' && fourthChar == 'd')
+    if ( firstChar == 'g' && secondChar == 'r' && thirdChar == 'a' && fourthChar == 'd' )
+    {
         return SVGAngle::SVG_ANGLETYPE_GRAD;
+    }
 
     return SVGAngle::SVG_ANGLETYPE_UNKNOWN;
 }
 
 String SVGAngle::valueAsString() const
 {
-    switch (m_unitType) {
-    case SVG_ANGLETYPE_DEG:
-        return makeString(String::number(m_valueInSpecifiedUnits), "deg");
-    case SVG_ANGLETYPE_RAD:
-        return makeString(String::number(m_valueInSpecifiedUnits), "rad");
-    case SVG_ANGLETYPE_GRAD:
-        return makeString(String::number(m_valueInSpecifiedUnits), "grad");
-    case SVG_ANGLETYPE_UNSPECIFIED:
-    case SVG_ANGLETYPE_UNKNOWN:
-        return makeString(String::number(m_valueInSpecifiedUnits));
+    switch ( m_unitType )
+    {
+        case SVG_ANGLETYPE_DEG:
+            return makeString( String::number( m_valueInSpecifiedUnits ), "deg" );
+
+        case SVG_ANGLETYPE_RAD:
+            return makeString( String::number( m_valueInSpecifiedUnits ), "rad" );
+
+        case SVG_ANGLETYPE_GRAD:
+            return makeString( String::number( m_valueInSpecifiedUnits ), "grad" );
+
+        case SVG_ANGLETYPE_UNSPECIFIED:
+        case SVG_ANGLETYPE_UNKNOWN:
+            return makeString( String::number( m_valueInSpecifiedUnits ) );
     }
 
     ASSERT_NOT_REACHED();
     return String();
 }
 
-void SVGAngle::setValueAsString(const String& value, ExceptionCode& ec)
+void SVGAngle::setValueAsString( const String &value, ExceptionCode &ec )
 {
-    if (value.isEmpty()) {
+    if ( value.isEmpty() )
+    {
         m_unitType = SVG_ANGLETYPE_UNSPECIFIED;
         return;
     }
 
     float valueInSpecifiedUnits = 0;
-    const UChar* ptr = value.characters();
-    const UChar* end = ptr + value.length();
+    const UChar *ptr = value.characters();
+    const UChar *end = ptr + value.length();
 
-    if (!parseNumber(ptr, end, valueInSpecifiedUnits, false)) {
+    if ( !parseNumber( ptr, end, valueInSpecifiedUnits, false ) )
+    {
         ec = SYNTAX_ERR;
         return;
     }
 
-    SVGAngleType unitType = stringToAngleType(ptr, end);
-    if (unitType == SVG_ANGLETYPE_UNKNOWN) {
+    SVGAngleType unitType = stringToAngleType( ptr, end );
+
+    if ( unitType == SVG_ANGLETYPE_UNKNOWN )
+    {
         ec = SYNTAX_ERR;
         return;
     }
@@ -153,84 +187,108 @@ void SVGAngle::setValueAsString(const String& value, ExceptionCode& ec)
     m_valueInSpecifiedUnits = valueInSpecifiedUnits;
 }
 
-void SVGAngle::newValueSpecifiedUnits(unsigned short unitType, float valueInSpecifiedUnits, ExceptionCode& ec)
+void SVGAngle::newValueSpecifiedUnits( unsigned short unitType, float valueInSpecifiedUnits, ExceptionCode &ec )
 {
-    if (unitType == SVG_ANGLETYPE_UNKNOWN || unitType > SVG_ANGLETYPE_GRAD) {
+    if ( unitType == SVG_ANGLETYPE_UNKNOWN || unitType > SVG_ANGLETYPE_GRAD )
+    {
         ec = NOT_SUPPORTED_ERR;
         return;
     }
 
-    if (unitType != m_unitType)
-        m_unitType = static_cast<SVGAngleType>(unitType);
+    if ( unitType != m_unitType )
+    {
+        m_unitType = static_cast<SVGAngleType>( unitType );
+    }
 
     m_valueInSpecifiedUnits = valueInSpecifiedUnits;
 }
 
-void SVGAngle::convertToSpecifiedUnits(unsigned short unitType, ExceptionCode& ec)
+void SVGAngle::convertToSpecifiedUnits( unsigned short unitType, ExceptionCode &ec )
 {
-    if (unitType == SVG_ANGLETYPE_UNKNOWN || m_unitType == SVG_ANGLETYPE_UNKNOWN || unitType > SVG_ANGLETYPE_GRAD) {
+    if ( unitType == SVG_ANGLETYPE_UNKNOWN || m_unitType == SVG_ANGLETYPE_UNKNOWN || unitType > SVG_ANGLETYPE_GRAD )
+    {
         ec = NOT_SUPPORTED_ERR;
         return;
     }
 
-    if (unitType == m_unitType)
+    if ( unitType == m_unitType )
+    {
         return;
-
-    switch (m_unitType) {
-    case SVG_ANGLETYPE_RAD:
-        switch (unitType) {
-        case SVG_ANGLETYPE_GRAD:
-            m_valueInSpecifiedUnits = rad2grad(m_valueInSpecifiedUnits);
-            break;
-        case SVG_ANGLETYPE_UNSPECIFIED:
-        case SVG_ANGLETYPE_DEG:
-            m_valueInSpecifiedUnits = rad2deg(m_valueInSpecifiedUnits);
-            break;
-        case SVG_ANGLETYPE_RAD:
-        case SVG_ANGLETYPE_UNKNOWN:
-            ASSERT_NOT_REACHED();
-            break;
-        }
-        break;
-    case SVG_ANGLETYPE_GRAD:
-        switch (unitType) {
-        case SVG_ANGLETYPE_RAD:
-            m_valueInSpecifiedUnits = grad2rad(m_valueInSpecifiedUnits);
-            break;
-        case SVG_ANGLETYPE_UNSPECIFIED:
-        case SVG_ANGLETYPE_DEG:
-            m_valueInSpecifiedUnits = grad2deg(m_valueInSpecifiedUnits);
-            break;
-        case SVG_ANGLETYPE_GRAD:
-        case SVG_ANGLETYPE_UNKNOWN:
-            ASSERT_NOT_REACHED();
-            break;
-        }
-        break;
-    case SVG_ANGLETYPE_UNSPECIFIED:
-        // Spec: For angles, a unitless value is treated the same as if degrees were specified.
-    case SVG_ANGLETYPE_DEG:
-        switch (unitType) {
-        case SVG_ANGLETYPE_RAD:
-            m_valueInSpecifiedUnits = deg2rad(m_valueInSpecifiedUnits);
-            break;
-        case SVG_ANGLETYPE_GRAD:
-            m_valueInSpecifiedUnits = deg2grad(m_valueInSpecifiedUnits);
-            break;
-        case SVG_ANGLETYPE_UNSPECIFIED:
-            break;
-        case SVG_ANGLETYPE_DEG:
-        case SVG_ANGLETYPE_UNKNOWN:
-            ASSERT_NOT_REACHED();
-            break;
-        }
-        break;
-    case SVG_ANGLETYPE_UNKNOWN:
-        ASSERT_NOT_REACHED();
-        break;
     }
 
-    m_unitType = static_cast<SVGAngleType>(unitType);
+    switch ( m_unitType )
+    {
+        case SVG_ANGLETYPE_RAD:
+            switch ( unitType )
+            {
+                case SVG_ANGLETYPE_GRAD:
+                    m_valueInSpecifiedUnits = rad2grad( m_valueInSpecifiedUnits );
+                    break;
+
+                case SVG_ANGLETYPE_UNSPECIFIED:
+                case SVG_ANGLETYPE_DEG:
+                    m_valueInSpecifiedUnits = rad2deg( m_valueInSpecifiedUnits );
+                    break;
+
+                case SVG_ANGLETYPE_RAD:
+                case SVG_ANGLETYPE_UNKNOWN:
+                    ASSERT_NOT_REACHED();
+                    break;
+            }
+
+            break;
+
+        case SVG_ANGLETYPE_GRAD:
+            switch ( unitType )
+            {
+                case SVG_ANGLETYPE_RAD:
+                    m_valueInSpecifiedUnits = grad2rad( m_valueInSpecifiedUnits );
+                    break;
+
+                case SVG_ANGLETYPE_UNSPECIFIED:
+                case SVG_ANGLETYPE_DEG:
+                    m_valueInSpecifiedUnits = grad2deg( m_valueInSpecifiedUnits );
+                    break;
+
+                case SVG_ANGLETYPE_GRAD:
+                case SVG_ANGLETYPE_UNKNOWN:
+                    ASSERT_NOT_REACHED();
+                    break;
+            }
+
+            break;
+
+        case SVG_ANGLETYPE_UNSPECIFIED:
+
+        // Spec: For angles, a unitless value is treated the same as if degrees were specified.
+        case SVG_ANGLETYPE_DEG:
+            switch ( unitType )
+            {
+                case SVG_ANGLETYPE_RAD:
+                    m_valueInSpecifiedUnits = deg2rad( m_valueInSpecifiedUnits );
+                    break;
+
+                case SVG_ANGLETYPE_GRAD:
+                    m_valueInSpecifiedUnits = deg2grad( m_valueInSpecifiedUnits );
+                    break;
+
+                case SVG_ANGLETYPE_UNSPECIFIED:
+                    break;
+
+                case SVG_ANGLETYPE_DEG:
+                case SVG_ANGLETYPE_UNKNOWN:
+                    ASSERT_NOT_REACHED();
+                    break;
+            }
+
+            break;
+
+        case SVG_ANGLETYPE_UNKNOWN:
+            ASSERT_NOT_REACHED();
+            break;
+    }
+
+    m_unitType = static_cast<SVGAngleType>( unitType );
 }
 
 }

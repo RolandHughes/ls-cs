@@ -24,15 +24,16 @@
 #include <glib-object.h>
 #include <webkit/WebKitDOMObject.h>
 #include "TestObj.h"
-namespace WebKit {
-    WebKitDOMTestObj *
-    wrapTestObj(WebCore::TestObj *coreObject);
+namespace WebKit
+{
+WebKitDOMTestObj *
+wrapTestObj( WebCore::TestObj *coreObject );
 
-    WebCore::TestObj *
-    core(WebKitDOMTestObj *request);
+WebCore::TestObj *
+core( WebKitDOMTestObj *request );
 
-    WebKitDOMTestObj*
-    kit(WebCore::TestObj* node);
+WebKitDOMTestObj *
+kit( WebCore::TestObj *node );
 
 } // namespace WebKit
 

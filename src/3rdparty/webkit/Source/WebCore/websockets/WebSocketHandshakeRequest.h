@@ -37,27 +37,30 @@
 #include "KURL.h"
 #include "PlatformString.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class WebSocketHandshakeRequest {
+class WebSocketHandshakeRequest
+{
 public:
-    WebSocketHandshakeRequest(const String& requestMethod, const KURL&);
+    WebSocketHandshakeRequest( const String &requestMethod, const KURL & );
     ~WebSocketHandshakeRequest();
 
     String requestMethod() const;
     KURL url() const;
 
-    const HTTPHeaderMap& headerFields() const;
-    void addHeaderField(const char* name, const String& value);
+    const HTTPHeaderMap &headerFields() const;
+    void addHeaderField( const char *name, const String &value );
 
-    struct Key3 {
+    struct Key3
+    {
         unsigned char value[8];
 
         Key3();
-        void set(const unsigned char key3[8]);
+        void set( const unsigned char key3[8] );
     };
     Key3 key3() const;
-    void setKey3(const unsigned char key3[8]);
+    void setKey3( const unsigned char key3[8] );
 
 private:
     KURL m_url;

@@ -34,20 +34,34 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Frame;
 
-class MemoryInfo : public RefCounted<MemoryInfo> {
+class MemoryInfo : public RefCounted<MemoryInfo>
+{
 public:
-    static PassRefPtr<MemoryInfo> create(Frame* frame) { return adoptRef(new MemoryInfo(frame)); }
+    static PassRefPtr<MemoryInfo> create( Frame *frame )
+    {
+        return adoptRef( new MemoryInfo( frame ) );
+    }
 
-    size_t totalJSHeapSize() const { return m_totalJSHeapSize; }
-    size_t usedJSHeapSize() const { return m_usedJSHeapSize; }
-    size_t jsHeapSizeLimit() const { return m_jsHeapSizeLimit; }
+    size_t totalJSHeapSize() const
+    {
+        return m_totalJSHeapSize;
+    }
+    size_t usedJSHeapSize() const
+    {
+        return m_usedJSHeapSize;
+    }
+    size_t jsHeapSizeLimit() const
+    {
+        return m_jsHeapSizeLimit;
+    }
 
 private:
-    MemoryInfo(Frame*);
+    MemoryInfo( Frame * );
 
     size_t m_totalJSHeapSize;
     size_t m_usedJSHeapSize;

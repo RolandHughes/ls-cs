@@ -28,13 +28,13 @@ QT_BEGIN_NAMESPACE
 
 class QDeclarativeApplicationPrivate
 {
-   Q_DECLARE_PUBLIC(QDeclarativeApplication)
+    Q_DECLARE_PUBLIC( QDeclarativeApplication )
 
- public:
-   QDeclarativeApplicationPrivate() : active(QApplication::activeWindow() != 0),
-      layoutDirection(QApplication::layoutDirection()) {}
-   bool active;
-   Qt::LayoutDirection layoutDirection;
+public:
+    QDeclarativeApplicationPrivate() : active( QApplication::activeWindow() != 0 ),
+        layoutDirection( QApplication::layoutDirection() ) {}
+    bool active;
+    Qt::LayoutDirection layoutDirection;
 };
 
 /*
@@ -42,12 +42,13 @@ class QDeclarativeApplicationPrivate
     in qdeclarativengine.cpp
 */
 
-QDeclarativeApplication::QDeclarativeApplication(QObject *parent) : QObject(*new QDeclarativeApplicationPrivate(),
-         parent)
+QDeclarativeApplication::QDeclarativeApplication( QObject *parent ) : QObject( *new QDeclarativeApplicationPrivate(),
+            parent )
 {
-   if (qApp) {
-      qApp->installEventFilter(this);
-   }
+    if ( qApp )
+    {
+        qApp->installEventFilter( this );
+    }
 }
 
 QDeclarativeApplication::~QDeclarativeApplication()
@@ -56,42 +57,54 @@ QDeclarativeApplication::~QDeclarativeApplication()
 
 bool QDeclarativeApplication::active() const
 {
-   Q_D(const QDeclarativeApplication);
-   return d->active;
+    Q_D( const QDeclarativeApplication );
+    return d->active;
 }
 
 Qt::LayoutDirection QDeclarativeApplication::layoutDirection() const
 {
-   Q_D(const QDeclarativeApplication);
-   return d->layoutDirection;
+    Q_D( const QDeclarativeApplication );
+    return d->layoutDirection;
 }
 
-bool QDeclarativeApplication::eventFilter(QObject *obj, QEvent *event)
+bool QDeclarativeApplication::eventFilter( QObject *obj, QEvent *event )
 {
-   Q_UNUSED(obj)
-   Q_D(QDeclarativeApplication);
-   if (event->type() == QEvent::ApplicationActivate
-         || event->type() == QEvent::ApplicationDeactivate) {
-      bool active = d->active;
-      if (event->type() == QEvent::ApplicationActivate) {
-         active  = true;
-      } else if (event->type() == QEvent::ApplicationDeactivate) {
-         active  = false;
-      }
+    Q_UNUSED( obj )
+    Q_D( QDeclarativeApplication );
 
-      if (d->active != active) {
-         d->active = active;
-         emit activeChanged();
-      }
-   }
-   if (event->type() == QEvent::LayoutDirectionChange) {
-      Qt::LayoutDirection direction = QApplication::layoutDirection();
-      if (d->layoutDirection != direction) {
-         d->layoutDirection = direction;
-         emit layoutDirectionChanged();
-      }
-   }
-   return false;
+    if ( event->type() == QEvent::ApplicationActivate
+            || event->type() == QEvent::ApplicationDeactivate )
+    {
+        bool active = d->active;
+
+        if ( event->type() == QEvent::ApplicationActivate )
+        {
+            active  = true;
+        }
+        else if ( event->type() == QEvent::ApplicationDeactivate )
+        {
+            active  = false;
+        }
+
+        if ( d->active != active )
+        {
+            d->active = active;
+            emit activeChanged();
+        }
+    }
+
+    if ( event->type() == QEvent::LayoutDirectionChange )
+    {
+        Qt::LayoutDirection direction = QApplication::layoutDirection();
+
+        if ( d->layoutDirection != direction )
+        {
+            d->layoutDirection = direction;
+            emit layoutDirectionChanged();
+        }
+    }
+
+    return false;
 }
 
 QT_END_NAMESPACE

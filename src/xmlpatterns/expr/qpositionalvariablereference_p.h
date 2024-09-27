@@ -26,31 +26,32 @@
 
 #include <qvariablereference_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class PositionalVariableReference : public VariableReference
 {
- public:
-   typedef QExplicitlySharedDataPointer<PositionalVariableReference> Ptr;
-   PositionalVariableReference(const VariableSlotID slot);
+public:
+    typedef QExplicitlySharedDataPointer<PositionalVariableReference> Ptr;
+    PositionalVariableReference( const VariableSlotID slot );
 
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
 
-   /**
-    * Returns always @c true, since a positional variable is always one or more, and the
-    * Effective %Boolean Value for that range is always @c true.
-    *
-    * @returns always @c true
-    */
-   bool evaluateEBV(const DynamicContext::Ptr &context) const override;
+    /**
+     * Returns always @c true, since a positional variable is always one or more, and the
+     * Effective %Boolean Value for that range is always @c true.
+     *
+     * @returns always @c true
+     */
+    bool evaluateEBV( const DynamicContext::Ptr &context ) const override;
 
-   /**
-    * @returns always CommonSequenceTypes::ExactlyOneInteger
-    */
-   SequenceType::Ptr staticType() const override;
+    /**
+     * @returns always CommonSequenceTypes::ExactlyOneInteger
+     */
+    SequenceType::Ptr staticType() const override;
 
-   ExpressionVisitorResult::Ptr accept(const ExpressionVisitor::Ptr &visitor) const override;
-   Properties properties() const override;
+    ExpressionVisitorResult::Ptr accept( const ExpressionVisitor::Ptr &visitor ) const override;
+    Properties properties() const override;
 };
 
 }

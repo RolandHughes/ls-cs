@@ -31,83 +31,99 @@
 #include "Parser.h"
 #include "StringBuilder.h"
 
-namespace JSC {
-
-ASSERT_CLASS_FITS_IN_CELL(FunctionConstructor);
-
-FunctionConstructor::FunctionConstructor(ExecState* exec, NonNullPassRefPtr<Structure> structure, FunctionPrototype* functionPrototype)
-    : InternalFunction(&exec->globalData(), structure, Identifier(exec, functionPrototype->classInfo()->className))
+namespace JSC
 {
-    putDirectWithoutTransition(exec->propertyNames().prototype, functionPrototype, DontEnum | DontDelete | ReadOnly);
+
+ASSERT_CLASS_FITS_IN_CELL( FunctionConstructor );
+
+FunctionConstructor::FunctionConstructor( ExecState *exec, NonNullPassRefPtr<Structure> structure,
+        FunctionPrototype *functionPrototype )
+    : InternalFunction( &exec->globalData(), structure, Identifier( exec, functionPrototype->classInfo()->className ) )
+{
+    putDirectWithoutTransition( exec->propertyNames().prototype, functionPrototype, DontEnum | DontDelete | ReadOnly );
 
     // Number of arguments for constructor
-    putDirectWithoutTransition(exec->propertyNames().length, jsNumber(exec, 1), ReadOnly | DontDelete | DontEnum);
+    putDirectWithoutTransition( exec->propertyNames().length, jsNumber( exec, 1 ), ReadOnly | DontDelete | DontEnum );
 }
 
-static JSObject* constructWithFunctionConstructor(ExecState* exec, JSObject*, const ArgList& args)
+static JSObject *constructWithFunctionConstructor( ExecState *exec, JSObject *, const ArgList &args )
 {
-    return constructFunction(exec, args);
+    return constructFunction( exec, args );
 }
 
-ConstructType FunctionConstructor::getConstructData(ConstructData& constructData)
+ConstructType FunctionConstructor::getConstructData( ConstructData &constructData )
 {
     constructData.native.function = constructWithFunctionConstructor;
     return ConstructTypeHost;
 }
 
-static JSValue JSC_HOST_CALL callFunctionConstructor(ExecState* exec, JSObject*, JSValue, const ArgList& args)
+static JSValue JSC_HOST_CALL callFunctionConstructor( ExecState *exec, JSObject *, JSValue, const ArgList &args )
 {
-    return constructFunction(exec, args);
+    return constructFunction( exec, args );
 }
 
 // ECMA 15.3.1 The Function Constructor Called as a Function
-CallType FunctionConstructor::getCallData(CallData& callData)
+CallType FunctionConstructor::getCallData( CallData &callData )
 {
     callData.native.function = callFunctionConstructor;
     return CallTypeHost;
 }
 
 // ECMA 15.3.2 The Function Constructor
-JSObject* constructFunction(ExecState* exec, const ArgList& args, const Identifier& functionName, const UString& sourceURL, int lineNumber)
+JSObject *constructFunction( ExecState *exec, const ArgList &args, const Identifier &functionName, const UString &sourceURL,
+                             int lineNumber )
 {
     // Functions need to have a space following the opening { due to for web compatibility
     // see https://bugs.webkit.org/show_bug.cgi?id=24350
     // We also need \n before the closing } to handle // comments at the end of the last line
     UString program;
-    if (args.isEmpty())
+
+    if ( args.isEmpty() )
+    {
         program = "(function() { \n})";
-    else if (args.size() == 1)
-        program = makeString("(function() { ", args.at(0).toString(exec), "\n})");
-    else {
+    }
+    else if ( args.size() == 1 )
+    {
+        program = makeString( "(function() { ", args.at( 0 ).toString( exec ), "\n})" );
+    }
+    else
+    {
         StringBuilder builder;
-        builder.append("(function(");
-        builder.append(args.at(0).toString(exec));
-        for (size_t i = 1; i < args.size() - 1; i++) {
-            builder.append(",");
-            builder.append(args.at(i).toString(exec));
+        builder.append( "(function(" );
+        builder.append( args.at( 0 ).toString( exec ) );
+
+        for ( size_t i = 1; i < args.size() - 1; i++ )
+        {
+            builder.append( "," );
+            builder.append( args.at( i ).toString( exec ) );
         }
-        builder.append(") { ");
-        builder.append(args.at(args.size() - 1).toString(exec));
-        builder.append("\n})");
+
+        builder.append( ") { " );
+        builder.append( args.at( args.size() - 1 ).toString( exec ) );
+        builder.append( "\n})" );
         program = builder.release();
     }
 
     int errLine;
     UString errMsg;
-    SourceCode source = makeSource(program, sourceURL, lineNumber);
-    RefPtr<FunctionExecutable> function = FunctionExecutable::fromGlobalCode(functionName, exec, exec->dynamicGlobalObject()->debugger(), source, &errLine, &errMsg);
-    if (!function)
-        return throwError(exec, SyntaxError, errMsg, errLine, source.provider()->asID(), source.provider()->url());
+    SourceCode source = makeSource( program, sourceURL, lineNumber );
+    RefPtr<FunctionExecutable> function = FunctionExecutable::fromGlobalCode( functionName, exec,
+                                          exec->dynamicGlobalObject()->debugger(), source, &errLine, &errMsg );
 
-    JSGlobalObject* globalObject = exec->lexicalGlobalObject();
-    ScopeChain scopeChain(globalObject, globalObject->globalData(), globalObject, exec->globalThisValue());
-    return new (exec) JSFunction(exec, function, scopeChain.node());
+    if ( !function )
+    {
+        return throwError( exec, SyntaxError, errMsg, errLine, source.provider()->asID(), source.provider()->url() );
+    }
+
+    JSGlobalObject *globalObject = exec->lexicalGlobalObject();
+    ScopeChain scopeChain( globalObject, globalObject->globalData(), globalObject, exec->globalThisValue() );
+    return new ( exec ) JSFunction( exec, function, scopeChain.node() );
 }
 
 // ECMA 15.3.2 The Function Constructor
-JSObject* constructFunction(ExecState* exec, const ArgList& args)
+JSObject *constructFunction( ExecState *exec, const ArgList &args )
 {
-    return constructFunction(exec, args, Identifier(exec, "anonymous"), UString(), 1);
+    return constructFunction( exec, args, Identifier( exec, "anonymous" ), UString(), 1 );
 }
 
 } // namespace JSC

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef PageGroup_h
@@ -33,107 +33,134 @@
 #include "UserStyleSheet.h"
 #include <wtf/text/StringHash.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class KURL;
-    class GroupSettings;
-    class IDBFactoryBackendInterface;
-    class Page;
-    class SecurityOrigin;
-    class StorageNamespace;
+class KURL;
+class GroupSettings;
+class IDBFactoryBackendInterface;
+class Page;
+class SecurityOrigin;
+class StorageNamespace;
 
-    class PageGroup {
-        WTF_MAKE_NONCOPYABLE(PageGroup); WTF_MAKE_FAST_ALLOCATED;
-    public:
-        PageGroup(const String& name);
-        PageGroup(Page*);
-        ~PageGroup();
+class PageGroup
+{
+    WTF_MAKE_NONCOPYABLE( PageGroup );
+    WTF_MAKE_FAST_ALLOCATED;
+public:
+    PageGroup( const String &name );
+    PageGroup( Page * );
+    ~PageGroup();
 
-        static PageGroup* pageGroup(const String& groupName);
+    static PageGroup *pageGroup( const String &groupName );
 
-        static void closeLocalStorage();
+    static void closeLocalStorage();
 
 #if ENABLE(DOM_STORAGE)
-        static void clearLocalStorageForAllOrigins();
-        static void clearLocalStorageForOrigin(SecurityOrigin*);
-        // DumpRenderTree helper that triggers a StorageArea sync.
-        static void syncLocalStorage();
+    static void clearLocalStorageForAllOrigins();
+    static void clearLocalStorageForOrigin( SecurityOrigin * );
+    // DumpRenderTree helper that triggers a StorageArea sync.
+    static void syncLocalStorage();
 #endif
-        static unsigned numberOfPageGroups();
-        
-        const HashSet<Page*>& pages() const { return m_pages; }
+    static unsigned numberOfPageGroups();
 
-        void addPage(Page*);
-        void removePage(Page*);
+    const HashSet<Page *> &pages() const
+    {
+        return m_pages;
+    }
 
-        bool isLinkVisited(LinkHash);
+    void addPage( Page * );
+    void removePage( Page * );
 
-        void addVisitedLink(const KURL&);
-        void addVisitedLink(const UChar*, size_t);
-        void addVisitedLinkHash(LinkHash);
-        void removeVisitedLinks();
+    bool isLinkVisited( LinkHash );
 
-        static void setShouldTrackVisitedLinks(bool);
-        static void removeAllVisitedLinks();
+    void addVisitedLink( const KURL & );
+    void addVisitedLink( const UChar *, size_t );
+    void addVisitedLinkHash( LinkHash );
+    void removeVisitedLinks();
 
-        const String& name() { return m_name; }
-        unsigned identifier() { return m_identifier; }
+    static void setShouldTrackVisitedLinks( bool );
+    static void removeAllVisitedLinks();
+
+    const String &name()
+    {
+        return m_name;
+    }
+    unsigned identifier()
+    {
+        return m_identifier;
+    }
 
 #if ENABLE(DOM_STORAGE)
-        StorageNamespace* localStorage();
-        bool hasLocalStorage() { return m_localStorage; }
+    StorageNamespace *localStorage();
+    bool hasLocalStorage()
+    {
+        return m_localStorage;
+    }
 #endif
 #if ENABLE(INDEXED_DATABASE)
-        IDBFactoryBackendInterface* idbFactory();
-        bool hasIDBFactory() { return m_factoryBackend; }
+    IDBFactoryBackendInterface *idbFactory();
+    bool hasIDBFactory()
+    {
+        return m_factoryBackend;
+    }
 #endif
 
-        void addUserScriptToWorld(DOMWrapperWorld*, const String& source, const KURL&,
-                                  PassOwnPtr<Vector<String> > whitelist, PassOwnPtr<Vector<String> > blacklist,
-                                  UserScriptInjectionTime, UserContentInjectedFrames);
-        void addUserStyleSheetToWorld(DOMWrapperWorld*, const String& source, const KURL&,
-                                      PassOwnPtr<Vector<String> > whitelist, PassOwnPtr<Vector<String> > blacklist,
-                                      UserContentInjectedFrames,
-                                      UserStyleLevel level = UserStyleUserLevel,
-                                      UserStyleInjectionTime injectionTime = InjectInExistingDocuments);
-        void removeUserScriptFromWorld(DOMWrapperWorld*, const KURL&);
-        void removeUserStyleSheetFromWorld(DOMWrapperWorld*, const KURL&);
+    void addUserScriptToWorld( DOMWrapperWorld *, const String &source, const KURL &,
+                               PassOwnPtr<Vector<String> > whitelist, PassOwnPtr<Vector<String> > blacklist,
+                               UserScriptInjectionTime, UserContentInjectedFrames );
+    void addUserStyleSheetToWorld( DOMWrapperWorld *, const String &source, const KURL &,
+                                   PassOwnPtr<Vector<String> > whitelist, PassOwnPtr<Vector<String> > blacklist,
+                                   UserContentInjectedFrames,
+                                   UserStyleLevel level = UserStyleUserLevel,
+                                   UserStyleInjectionTime injectionTime = InjectInExistingDocuments );
+    void removeUserScriptFromWorld( DOMWrapperWorld *, const KURL & );
+    void removeUserStyleSheetFromWorld( DOMWrapperWorld *, const KURL & );
 
-        void removeUserScriptsFromWorld(DOMWrapperWorld*);
-        void removeUserStyleSheetsFromWorld(DOMWrapperWorld*);
+    void removeUserScriptsFromWorld( DOMWrapperWorld * );
+    void removeUserStyleSheetsFromWorld( DOMWrapperWorld * );
 
-        void removeAllUserContent();
+    void removeAllUserContent();
 
-        const UserScriptMap* userScripts() const { return m_userScripts.get(); }
-        const UserStyleSheetMap* userStyleSheets() const { return m_userStyleSheets.get(); }
+    const UserScriptMap *userScripts() const
+    {
+        return m_userScripts.get();
+    }
+    const UserStyleSheetMap *userStyleSheets() const
+    {
+        return m_userStyleSheets.get();
+    }
 
-        GroupSettings* groupSettings() const { return m_groupSettings.get(); }
+    GroupSettings *groupSettings() const
+    {
+        return m_groupSettings.get();
+    }
 
-    private:
-        void addVisitedLink(LinkHash stringHash);
-        void resetUserStyleCacheInAllFrames();
-  
-        String m_name;
+private:
+    void addVisitedLink( LinkHash stringHash );
+    void resetUserStyleCacheInAllFrames();
 
-        HashSet<Page*> m_pages;
+    String m_name;
 
-        HashSet<LinkHash, LinkHashHash> m_visitedLinkHashes;
-        bool m_visitedLinksPopulated;
+    HashSet<Page *> m_pages;
 
-        unsigned m_identifier;
+    HashSet<LinkHash, LinkHashHash> m_visitedLinkHashes;
+    bool m_visitedLinksPopulated;
+
+    unsigned m_identifier;
 #if ENABLE(DOM_STORAGE)
-        RefPtr<StorageNamespace> m_localStorage;
+    RefPtr<StorageNamespace> m_localStorage;
 #endif
 #if ENABLE(INDEXED_DATABASE)
-        RefPtr<IDBFactoryBackendInterface> m_factoryBackend;
+    RefPtr<IDBFactoryBackendInterface> m_factoryBackend;
 #endif
 
-        OwnPtr<UserScriptMap> m_userScripts;
-        OwnPtr<UserStyleSheetMap> m_userStyleSheets;
+    OwnPtr<UserScriptMap> m_userScripts;
+    OwnPtr<UserStyleSheetMap> m_userStyleSheets;
 
-        OwnPtr<GroupSettings> m_groupSettings;
-    };
+    OwnPtr<GroupSettings> m_groupSettings;
+};
 
 } // namespace WebCore
-    
+
 #endif // PageGroup_h

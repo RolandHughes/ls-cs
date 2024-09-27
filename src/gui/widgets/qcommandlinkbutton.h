@@ -30,36 +30,36 @@ class QCommandLinkButtonPrivate;
 
 class Q_GUI_EXPORT QCommandLinkButton: public QPushButton
 {
-   GUI_CS_OBJECT(QCommandLinkButton)
+    GUI_CS_OBJECT( QCommandLinkButton )
 
-   GUI_CS_PROPERTY_READ(description, description)
-   GUI_CS_PROPERTY_WRITE(description, setDescription)
-   GUI_CS_PROPERTY_READ(flat, isFlat)
-   GUI_CS_PROPERTY_WRITE(flat, setFlat)
-   GUI_CS_PROPERTY_DESIGNABLE(flat, false)
+    GUI_CS_PROPERTY_READ( description, description )
+    GUI_CS_PROPERTY_WRITE( description, setDescription )
+    GUI_CS_PROPERTY_READ( flat, isFlat )
+    GUI_CS_PROPERTY_WRITE( flat, setFlat )
+    GUI_CS_PROPERTY_DESIGNABLE( flat, false )
 
- public:
-   explicit QCommandLinkButton(QWidget *parent = nullptr);
-   explicit QCommandLinkButton(const QString &text, QWidget *parent = nullptr);
-   QCommandLinkButton(const QString &text, const QString &description, QWidget *parent = nullptr);
+public:
+    explicit QCommandLinkButton( QWidget *parent = nullptr );
+    explicit QCommandLinkButton( const QString &text, QWidget *parent = nullptr );
+    QCommandLinkButton( const QString &text, const QString &description, QWidget *parent = nullptr );
 
-   QCommandLinkButton(const QCommandLinkButton &) = delete;
-   QCommandLinkButton &operator=(const QCommandLinkButton &) = delete;
+    QCommandLinkButton( const QCommandLinkButton & ) = delete;
+    QCommandLinkButton &operator=( const QCommandLinkButton & ) = delete;
 
-   ~QCommandLinkButton();
+    ~QCommandLinkButton();
 
-   QString description() const;
-   void setDescription(const QString &description);
+    QString description() const;
+    void setDescription( const QString &description );
 
- protected:
-   QSize sizeHint() const override;
-   int heightForWidth(int width) const override;
-   QSize minimumSizeHint() const override;
-   bool event(QEvent *event) override;
-   void paintEvent(QPaintEvent *event) override;
+protected:
+    QSize sizeHint() const override;
+    int heightForWidth( int width ) const override;
+    QSize minimumSizeHint() const override;
+    bool event( QEvent *event ) override;
+    void paintEvent( QPaintEvent *event ) override;
 
- private:
-   Q_DECLARE_PRIVATE(QCommandLinkButton)
+private:
+    Q_DECLARE_PRIVATE( QCommandLinkButton )
 };
 
 #endif

@@ -32,36 +32,39 @@ class QMediaServicePrivate;
 
 class Q_MULTIMEDIA_EXPORT QMediaService : public QObject
 {
-   MULTI_CS_OBJECT(QMediaService)
+    MULTI_CS_OBJECT( QMediaService )
 
- public:
-   ~QMediaService();
+public:
+    ~QMediaService();
 
-   virtual QMediaControl *requestControl(const QString &name) = 0;
+    virtual QMediaControl *requestControl( const QString &name ) = 0;
 
-   template <typename T>
-   T requestControl() {
-      if (QMediaControl *control = requestControl(qobject_interface_iid<T>())) {
-         if (T typedControl = dynamic_cast<T>(control)) {
-            return typedControl;
-         }
+    template <typename T>
+    T requestControl()
+    {
+        if ( QMediaControl *control = requestControl( qobject_interface_iid<T>() ) )
+        {
+            if ( T typedControl = dynamic_cast<T>( control ) )
+            {
+                return typedControl;
+            }
 
-         releaseControl(control);
-      }
+            releaseControl( control );
+        }
 
-      return nullptr;
-   }
+        return nullptr;
+    }
 
-   virtual void releaseControl(QMediaControl *control) = 0;
+    virtual void releaseControl( QMediaControl *control ) = 0;
 
- protected:
-   QMediaService(QObject *parent);
-   QMediaService(QMediaServicePrivate &dd, QObject *parent);
+protected:
+    QMediaService( QObject *parent );
+    QMediaService( QMediaServicePrivate &dd, QObject *parent );
 
-   QMediaServicePrivate *d_ptr;
+    QMediaServicePrivate *d_ptr;
 
- private:
-   Q_DECLARE_PRIVATE(QMediaService)
+private:
+    Q_DECLARE_PRIVATE( QMediaService )
 };
 
 #endif

@@ -25,19 +25,21 @@
 #include "MediaQueryListListener.h"
 #include "MediaQueryMatcher.h"
 
-namespace WebCore {
-
-PassRefPtr<MediaQueryList> MediaQueryList::create(PassRefPtr<MediaQueryMatcher> vector, PassRefPtr<MediaList> media, bool matches)
+namespace WebCore
 {
-    return adoptRef(new MediaQueryList(vector, media, matches));
+
+PassRefPtr<MediaQueryList> MediaQueryList::create( PassRefPtr<MediaQueryMatcher> vector, PassRefPtr<MediaList> media,
+        bool matches )
+{
+    return adoptRef( new MediaQueryList( vector, media, matches ) );
 }
 
-MediaQueryList::MediaQueryList(PassRefPtr<MediaQueryMatcher> vector, PassRefPtr<MediaList> media, bool matches)
-    : m_matcher(vector)
-    , m_media(media)
-    , m_evaluationRound(m_matcher->evaluationRound())
-    , m_changeRound(m_evaluationRound - 1) // m_evaluationRound and m_changeRound initial values must be different.
-    , m_matches(matches)
+MediaQueryList::MediaQueryList( PassRefPtr<MediaQueryMatcher> vector, PassRefPtr<MediaList> media, bool matches )
+    : m_matcher( vector )
+    , m_media( media )
+    , m_evaluationRound( m_matcher->evaluationRound() )
+    , m_changeRound( m_evaluationRound - 1 ) // m_evaluationRound and m_changeRound initial values must be different.
+    , m_matches( matches )
 {
 }
 
@@ -50,35 +52,44 @@ String MediaQueryList::media() const
     return m_media->mediaText();
 }
 
-void MediaQueryList::addListener(PassRefPtr<MediaQueryListListener> listener)
+void MediaQueryList::addListener( PassRefPtr<MediaQueryListListener> listener )
 {
-    if (!listener)
+    if ( !listener )
+    {
         return;
+    }
 
-    m_matcher->addListener(listener, this);
+    m_matcher->addListener( listener, this );
 }
 
-void MediaQueryList::removeListener(PassRefPtr<MediaQueryListListener> listener)
+void MediaQueryList::removeListener( PassRefPtr<MediaQueryListListener> listener )
 {
-    if (!listener)
+    if ( !listener )
+    {
         return;
+    }
 
-    m_matcher->removeListener(listener.get(), this);
+    m_matcher->removeListener( listener.get(), this );
 }
 
-void MediaQueryList::evaluate(MediaQueryEvaluator* evaluator, bool& notificationNeeded)
+void MediaQueryList::evaluate( MediaQueryEvaluator *evaluator, bool &notificationNeeded )
 {
-    if (m_evaluationRound != m_matcher->evaluationRound() && evaluator)
-        setMatches(evaluator->eval(m_media.get()));
+    if ( m_evaluationRound != m_matcher->evaluationRound() && evaluator )
+    {
+        setMatches( evaluator->eval( m_media.get() ) );
+    }
+
     notificationNeeded = m_changeRound == m_matcher->evaluationRound();
 }
 
-void MediaQueryList::setMatches(bool newValue)
+void MediaQueryList::setMatches( bool newValue )
 {
     m_evaluationRound = m_matcher->evaluationRound();
 
-    if (newValue == m_matches)
+    if ( newValue == m_matches )
+    {
         return;
+    }
 
     m_matches = newValue;
     m_changeRound = m_evaluationRound;
@@ -86,8 +97,11 @@ void MediaQueryList::setMatches(bool newValue)
 
 bool MediaQueryList::matches()
 {
-    if (m_evaluationRound != m_matcher->evaluationRound())
-        setMatches(m_matcher->evaluate(m_media.get()));
+    if ( m_evaluationRound != m_matcher->evaluationRound() )
+    {
+        setMatches( m_matcher->evaluate( m_media.get() ) );
+    }
+
     return m_matches;
 }
 

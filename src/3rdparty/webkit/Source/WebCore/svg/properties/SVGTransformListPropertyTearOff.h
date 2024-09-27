@@ -24,54 +24,64 @@
 #include "SVGListPropertyTearOff.h"
 #include "SVGTransformList.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 // SVGTransformList contains two additional methods, that can be exposed to the bindings.
-class SVGTransformListPropertyTearOff : public SVGListPropertyTearOff<SVGTransformList> {
+class SVGTransformListPropertyTearOff : public SVGListPropertyTearOff<SVGTransformList>
+{
 public:
     typedef SVGAnimatedListPropertyTearOff<SVGTransformList> AnimatedListPropertyTearOff;
     typedef SVGAnimatedListPropertyTearOff<SVGTransformList>::ListWrapperCache ListWrapperCache;
 
-    static PassRefPtr<SVGListPropertyTearOff<SVGTransformList> > create(AnimatedListPropertyTearOff* animatedProperty, SVGPropertyRole role)
+    static PassRefPtr<SVGListPropertyTearOff<SVGTransformList> > create( AnimatedListPropertyTearOff *animatedProperty,
+            SVGPropertyRole role )
     {
-        ASSERT(animatedProperty);
-        return adoptRef(new SVGTransformListPropertyTearOff(animatedProperty, role));
+        ASSERT( animatedProperty );
+        return adoptRef( new SVGTransformListPropertyTearOff( animatedProperty, role ) );
     }
 
-    PassRefPtr<SVGPropertyTearOff<SVGTransform> > createSVGTransformFromMatrix(SVGPropertyTearOff<SVGMatrix>* matrix, ExceptionCode& ec)
+    PassRefPtr<SVGPropertyTearOff<SVGTransform> > createSVGTransformFromMatrix( SVGPropertyTearOff<SVGMatrix> *matrix,
+            ExceptionCode &ec )
     {
-        if (!matrix) {
+        if ( !matrix )
+        {
             ec = TYPE_MISMATCH_ERR;
             return 0;
         }
-        SVGTransformList& values = m_animatedProperty->values();
-        return SVGPropertyTearOff<SVGTransform>::create(values.createSVGTransformFromMatrix(matrix->propertyReference()));
+
+        SVGTransformList &values = m_animatedProperty->values();
+        return SVGPropertyTearOff<SVGTransform>::create( values.createSVGTransformFromMatrix( matrix->propertyReference() ) );
     }
 
-    PassRefPtr<SVGPropertyTearOff<SVGTransform> > consolidate(ExceptionCode& ec)
+    PassRefPtr<SVGPropertyTearOff<SVGTransform> > consolidate( ExceptionCode &ec )
     {
-        if (!canAlterList(ec))
+        if ( !canAlterList( ec ) )
+        {
             return 0;
+        }
 
-        SVGTransformList& values = m_animatedProperty->values();
-        ListWrapperCache& wrappers = m_animatedProperty->wrappers();
-        ASSERT(values.size() == wrappers.size());
+        SVGTransformList &values = m_animatedProperty->values();
+        ListWrapperCache &wrappers = m_animatedProperty->wrappers();
+        ASSERT( values.size() == wrappers.size() );
 
         // Spec: If the list was empty, then a value of null is returned.
-        if (values.isEmpty())
+        if ( values.isEmpty() )
+        {
             return 0;
+        }
 
-        m_animatedProperty->detachListWrappers(0);
-        RefPtr<SVGPropertyTearOff<SVGTransform> > wrapper = SVGPropertyTearOff<SVGTransform>::create(values.consolidate());
-        wrappers.append(wrapper);
+        m_animatedProperty->detachListWrappers( 0 );
+        RefPtr<SVGPropertyTearOff<SVGTransform> > wrapper = SVGPropertyTearOff<SVGTransform>::create( values.consolidate() );
+        wrappers.append( wrapper );
 
-        ASSERT(values.size() == wrappers.size());
+        ASSERT( values.size() == wrappers.size() );
         return wrapper.release();
     }
 
 private:
-    SVGTransformListPropertyTearOff(AnimatedListPropertyTearOff* animatedProperty, SVGPropertyRole role)
-        : SVGListPropertyTearOff<SVGTransformList>(animatedProperty, role)
+    SVGTransformListPropertyTearOff( AnimatedListPropertyTearOff *animatedProperty, SVGPropertyRole role )
+        : SVGListPropertyTearOff<SVGTransformList>( animatedProperty, role )
     {
     }
 

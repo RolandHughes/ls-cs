@@ -39,47 +39,56 @@
 #include <wtf/text/StringHash.h>
 #include <wtf/text/WTFString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class HRTFKernel;
 
-class HRTFDatabase {
-    WTF_MAKE_NONCOPYABLE(HRTFDatabase);
+class HRTFDatabase
+{
+    WTF_MAKE_NONCOPYABLE( HRTFDatabase );
 public:
-    static PassOwnPtr<HRTFDatabase> create(double sampleRate);
+    static PassOwnPtr<HRTFDatabase> create( double sampleRate );
 
     // getKernelsFromAzimuthElevation() returns a left and right ear kernel, and an interpolated left and right frame delay for the given azimuth and elevation.
     // azimuthBlend must be in the range 0 -> 1.
     // Valid values for azimuthIndex are 0 -> HRTFElevation::NumberOfTotalAzimuths - 1 (corresponding to angles of 0 -> 360).
     // Valid values for elevationAngle are MinElevation -> MaxElevation.
-    void getKernelsFromAzimuthElevation(double azimuthBlend, unsigned azimuthIndex, double elevationAngle, HRTFKernel* &kernelL, HRTFKernel* &kernelR, double& frameDelayL, double& frameDelayR);
+    void getKernelsFromAzimuthElevation( double azimuthBlend, unsigned azimuthIndex, double elevationAngle, HRTFKernel *&kernelL,
+                                         HRTFKernel *&kernelR, double &frameDelayL, double &frameDelayR );
 
     // Returns the number of different azimuth angles.
-    static unsigned numberOfAzimuths() { return HRTFElevation::NumberOfTotalAzimuths; }
+    static unsigned numberOfAzimuths()
+    {
+        return HRTFElevation::NumberOfTotalAzimuths;
+    }
 
-    double sampleRate() const { return m_sampleRate; }
-    
+    double sampleRate() const
+    {
+        return m_sampleRate;
+    }
+
 private:
-    explicit HRTFDatabase(double sampleRate);
+    explicit HRTFDatabase( double sampleRate );
 
     // Minimum and maximum elevation angles (inclusive) for a HRTFDatabase.
     static const int MinElevation;
     static const int MaxElevation;
     static const unsigned RawElevationAngleSpacing;
-    
+
     // Number of elevations loaded from resource.
     static const unsigned NumberOfRawElevations;
 
     // Interpolates by this factor to get the total number of elevations from every elevation loaded from resource.
     static const unsigned InterpolationFactor;
-    
+
     // Total number of elevations after interpolation.
     static const unsigned NumberOfTotalElevations;
 
     // Returns the index for the correct HRTFElevation given the elevation angle.
-    static unsigned indexFromElevationAngle(double);
+    static unsigned indexFromElevationAngle( double );
 
-    Vector<OwnPtr<HRTFElevation> > m_elevations;                                            
+    Vector<OwnPtr<HRTFElevation> > m_elevations;
     double m_sampleRate;
 };
 

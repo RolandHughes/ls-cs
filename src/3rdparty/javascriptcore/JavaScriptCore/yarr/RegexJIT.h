@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef RegexJIT_h
@@ -43,55 +43,77 @@ struct JSRegExp; // temporary, remove when fallback is removed.
 #define YARR_CALL
 #endif
 
-namespace JSC {
+namespace JSC
+{
 
 class JSGlobalData;
 class ExecutablePool;
 
-namespace Yarr {
+namespace Yarr
+{
 
-class RegexCodeBlock {
-    typedef int (*RegexJITCode)(const UChar* input, unsigned start, unsigned length, int* output) YARR_CALL;
+class RegexCodeBlock
+{
+    typedef int ( *RegexJITCode )( const UChar *input, unsigned start, unsigned length, int *output ) YARR_CALL;
 
 public:
     RegexCodeBlock()
-        : m_fallback(0)
+        : m_fallback( 0 )
     {
     }
 
     ~RegexCodeBlock()
     {
-        if (m_fallback)
-            jsRegExpFree(m_fallback);
+        if ( m_fallback )
+        {
+            jsRegExpFree( m_fallback );
+        }
     }
 
-    JSRegExp* getFallback() { return m_fallback; }
-    void setFallback(JSRegExp* fallback) { m_fallback = fallback; }
-
-    bool operator!() { return !m_ref.m_code.executableAddress(); }
-    void set(MacroAssembler::CodeRef ref) { m_ref = ref; }
-
-    int execute(const UChar* input, unsigned start, unsigned length, int* output)
+    JSRegExp *getFallback()
     {
-        return ((RegexJITCode)(m_ref.m_code.executableAddress()))(input, start, length, output);
+        return m_fallback;
+    }
+    void setFallback( JSRegExp *fallback )
+    {
+        m_fallback = fallback;
+    }
+
+    bool operator!()
+    {
+        return !m_ref.m_code.executableAddress();
+    }
+    void set( MacroAssembler::CodeRef ref )
+    {
+        m_ref = ref;
+    }
+
+    int execute( const UChar *input, unsigned start, unsigned length, int *output )
+    {
+        return ( ( RegexJITCode )( m_ref.m_code.executableAddress() ) )( input, start, length, output );
     }
 
 private:
     MacroAssembler::CodeRef m_ref;
-    JSRegExp* m_fallback;
+    JSRegExp *m_fallback;
 };
 
-void jitCompileRegex(JSGlobalData* globalData, RegexCodeBlock& jitObject, const UString& pattern, unsigned& numSubpatterns, const char*& error, bool ignoreCase = false, bool multiline = false);
+void jitCompileRegex( JSGlobalData *globalData, RegexCodeBlock &jitObject, const UString &pattern, unsigned &numSubpatterns,
+                      const char *&error, bool ignoreCase = false, bool multiline = false );
 
-inline int executeRegex(RegexCodeBlock& jitObject, const UChar* input, unsigned start, unsigned length, int* output, int outputArraySize)
+inline int executeRegex( RegexCodeBlock &jitObject, const UChar *input, unsigned start, unsigned length, int *output,
+                         int outputArraySize )
 {
-    if (JSRegExp* fallback = jitObject.getFallback())
-        return (jsRegExpExecute(fallback, input, length, start, output, outputArraySize) < 0) ? -1 : output[0];
+    if ( JSRegExp *fallback = jitObject.getFallback() )
+    {
+        return ( jsRegExpExecute( fallback, input, length, start, output, outputArraySize ) < 0 ) ? -1 : output[0];
+    }
 
-    return jitObject.execute(input, start, length, output);
+    return jitObject.execute( input, start, length, output );
 }
 
-} } // namespace JSC::Yarr
+}
+} // namespace JSC::Yarr
 
 #endif
 

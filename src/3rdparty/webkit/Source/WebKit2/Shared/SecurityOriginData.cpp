@@ -33,38 +33,45 @@
 
 using namespace WebCore;
 
-namespace WebKit {
-
-void SecurityOriginData::encode(CoreIPC::ArgumentEncoder* encoder) const
+namespace WebKit
 {
-    encoder->encode(CoreIPC::In(protocol, host, port));
+
+void SecurityOriginData::encode( CoreIPC::ArgumentEncoder *encoder ) const
+{
+    encoder->encode( CoreIPC::In( protocol, host, port ) );
 }
 
-bool SecurityOriginData::decode(CoreIPC::ArgumentDecoder* decoder, SecurityOriginData& securityOriginData)
+bool SecurityOriginData::decode( CoreIPC::ArgumentDecoder *decoder, SecurityOriginData &securityOriginData )
 {
-    return decoder->decode(CoreIPC::Out(securityOriginData.protocol, securityOriginData.host, securityOriginData.port));
+    return decoder->decode( CoreIPC::Out( securityOriginData.protocol, securityOriginData.host, securityOriginData.port ) );
 }
 
-void performAPICallbackWithSecurityOriginDataVector(const Vector<SecurityOriginData>& originDatas, ArrayCallback* callback)
+void performAPICallbackWithSecurityOriginDataVector( const Vector<SecurityOriginData> &originDatas, ArrayCallback *callback )
 {
-    if (!callback) {
+    if ( !callback )
+    {
         // FIXME: Log error or assert.
         return;
     }
-    
+
     size_t originDataCount = originDatas.size();
     Vector<RefPtr<APIObject> > securityOrigins;
-    securityOrigins.reserveCapacity(originDataCount);
+    securityOrigins.reserveCapacity( originDataCount );
 
-    for (size_t i = 0; i < originDataCount; ++i) {
+    for ( size_t i = 0; i < originDataCount; ++i )
+    {
         SecurityOriginData originData = originDatas[i];
-        RefPtr<APIObject> origin = WebSecurityOrigin::create(originData.protocol, originData.host, originData.port);
-        if (!origin)
+        RefPtr<APIObject> origin = WebSecurityOrigin::create( originData.protocol, originData.host, originData.port );
+
+        if ( !origin )
+        {
             continue;
-        securityOrigins.uncheckedAppend(origin);
+        }
+
+        securityOrigins.uncheckedAppend( origin );
     }
 
-    callback->performCallbackWithReturnValue(ImmutableArray::adopt(securityOrigins).get());
+    callback->performCallbackWithReturnValue( ImmutableArray::adopt( securityOrigins ).get() );
 }
 
 } // namespace WebKit

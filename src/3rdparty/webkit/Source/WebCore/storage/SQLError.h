@@ -34,16 +34,28 @@
 #include "PlatformString.h"
 #include <wtf/ThreadSafeRefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SQLError : public ThreadSafeRefCounted<SQLError> {
+class SQLError : public ThreadSafeRefCounted<SQLError>
+{
 public:
-    static PassRefPtr<SQLError> create(unsigned code, const String& message) { return adoptRef(new SQLError(code, message)); }
+    static PassRefPtr<SQLError> create( unsigned code, const String &message )
+    {
+        return adoptRef( new SQLError( code, message ) );
+    }
 
-    unsigned code() const { return m_code; }
-    String message() const { return m_message.threadsafeCopy(); }
+    unsigned code() const
+    {
+        return m_code;
+    }
+    String message() const
+    {
+        return m_message.threadsafeCopy();
+    }
 
-    enum SQLErrorCode {
+    enum SQLErrorCode
+    {
         UNKNOWN_ERR = 0,
         DATABASE_ERR = 1,
         VERSION_ERR = 2,
@@ -55,7 +67,7 @@ public:
     };
 
 private:
-    SQLError(unsigned code, const String& message) : m_code(code), m_message(message.threadsafeCopy()) { }
+    SQLError( unsigned code, const String &message ) : m_code( code ), m_message( message.threadsafeCopy() ) { }
     unsigned m_code;
     String m_message;
 };

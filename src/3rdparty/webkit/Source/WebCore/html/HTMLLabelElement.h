@@ -27,31 +27,33 @@
 #include "HTMLElement.h"
 #include "HTMLFormControlElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class HTMLLabelElement : public HTMLElement {
+class HTMLLabelElement : public HTMLElement
+{
 public:
-    static PassRefPtr<HTMLLabelElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<HTMLLabelElement> create( const QualifiedName &, Document * );
 
-    HTMLFormControlElement* control();
+    HTMLFormControlElement *control();
 
 private:
-    HTMLLabelElement(const QualifiedName&, Document*);
+    HTMLLabelElement( const QualifiedName &, Document * );
 
     virtual bool isFocusable() const;
 
-    virtual void accessKeyAction(bool sendToAnyElement);
+    virtual void accessKeyAction( bool sendToAnyElement );
 
     // Overridden to update the hover/active state of the corresponding control.
-    virtual void setActive(bool = true, bool pause = false);
-    virtual void setHovered(bool = true);
+    virtual void setActive( bool = true, bool pause = false );
+    virtual void setHovered( bool = true );
 
     // Overridden to either click() or focus() the corresponding control.
-    virtual void defaultEventHandler(Event*);
+    virtual void defaultEventHandler( Event * );
 
-    void focus(bool restorePreviousSelection = true);
+    void focus( bool restorePreviousSelection = true );
 
-    virtual void parseMappedAttribute(Attribute*);
+    virtual void parseMappedAttribute( Attribute * );
 };
 
 } //namespace

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef APIShims_h
@@ -31,18 +31,24 @@
 #include "JSLock.h"
 #include <wtf/WTFThreadData.h>
 
-namespace JSC {
+namespace JSC
+{
 
-class APIEntryShimWithoutLock {
+class APIEntryShimWithoutLock
+{
 protected:
-    APIEntryShimWithoutLock(JSGlobalData* globalData, bool registerThread)
-        : m_globalData(globalData)
-        , m_entryIdentifierTable(wtfThreadData().setCurrentIdentifierTable(globalData->identifierTable))
+    APIEntryShimWithoutLock( JSGlobalData *globalData, bool registerThread )
+        : m_globalData( globalData )
+        , m_entryIdentifierTable( wtfThreadData().setCurrentIdentifierTable( globalData->identifierTable ) )
     {
-        UNUSED_PARAM(registerThread);
+        UNUSED_PARAM( registerThread );
 #if ENABLE(JSC_MULTIPLE_THREADS)
-        if (registerThread)
+
+        if ( registerThread )
+        {
             globalData->heap.machineThreads().addCurrentThread();
+        }
+
 #endif
         m_globalData->heap.activityCallback()->synchronize();
         m_globalData->timeoutChecker.start();
@@ -51,27 +57,28 @@ protected:
     ~APIEntryShimWithoutLock()
     {
         m_globalData->timeoutChecker.stop();
-        wtfThreadData().setCurrentIdentifierTable(m_entryIdentifierTable);
+        wtfThreadData().setCurrentIdentifierTable( m_entryIdentifierTable );
     }
 
 private:
-    JSGlobalData* m_globalData;
-    IdentifierTable* m_entryIdentifierTable;
+    JSGlobalData *m_globalData;
+    IdentifierTable *m_entryIdentifierTable;
 };
 
-class APIEntryShim : public APIEntryShimWithoutLock {
+class APIEntryShim : public APIEntryShimWithoutLock
+{
 public:
     // Normal API entry
-    APIEntryShim(ExecState* exec, bool registerThread = true)
-        : APIEntryShimWithoutLock(&exec->globalData(), registerThread)
-        , m_lock(exec)
+    APIEntryShim( ExecState *exec, bool registerThread = true )
+        : APIEntryShimWithoutLock( &exec->globalData(), registerThread )
+        , m_lock( exec )
     {
     }
 
     // JSPropertyNameAccumulator only has a globalData.
-    APIEntryShim(JSGlobalData* globalData, bool registerThread = true)
-        : APIEntryShimWithoutLock(globalData, registerThread)
-        , m_lock(globalData->isSharedInstance() ? LockForReal : SilenceAssertionsOnly)
+    APIEntryShim( JSGlobalData *globalData, bool registerThread = true )
+        : APIEntryShimWithoutLock( globalData, registerThread )
+        , m_lock( globalData->isSharedInstance() ? LockForReal : SilenceAssertionsOnly )
     {
     }
 
@@ -79,11 +86,12 @@ private:
     JSLock m_lock;
 };
 
-class APICallbackShim {
+class APICallbackShim
+{
 public:
-    APICallbackShim(ExecState* exec)
-        : m_dropAllLocks(exec)
-        , m_globalData(&exec->globalData())
+    APICallbackShim( ExecState *exec )
+        : m_dropAllLocks( exec )
+        , m_globalData( &exec->globalData() )
     {
         wtfThreadData().resetCurrentIdentifierTable();
     }
@@ -91,12 +99,12 @@ public:
     ~APICallbackShim()
     {
         m_globalData->heap.activityCallback()->synchronize();
-        wtfThreadData().setCurrentIdentifierTable(m_globalData->identifierTable);
+        wtfThreadData().setCurrentIdentifierTable( m_globalData->identifierTable );
     }
 
 private:
     JSLock::DropAllLocks m_dropAllLocks;
-    JSGlobalData* m_globalData;
+    JSGlobalData *m_globalData;
 };
 
 }

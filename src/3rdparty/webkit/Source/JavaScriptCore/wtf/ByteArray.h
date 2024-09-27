@@ -31,72 +31,95 @@
 #include <wtf/Platform.h>
 #include <wtf/RefCounted.h>
 
-namespace WTF {
-    class ByteArray : public RefCountedBase {
-    public:
-        unsigned length() const { return m_size; }
+namespace WTF
+{
+class ByteArray : public RefCountedBase
+{
+public:
+    unsigned length() const
+    {
+        return m_size;
+    }
 
-        void set(unsigned index, double value)
+    void set( unsigned index, double value )
+    {
+        if ( index >= m_size )
         {
-            if (index >= m_size)
-                return;
-            if (!(value > 0)) // Clamp NaN to 0
-                value = 0;
-            else if (value > 255)
-                value = 255;
-            m_data[index] = static_cast<unsigned char>(value + 0.5);
+            return;
         }
 
-        void set(unsigned index, unsigned char value)
+        if ( !( value > 0 ) ) // Clamp NaN to 0
         {
-            if (index >= m_size)
-                return;
-            m_data[index] = value;
+            value = 0;
+        }
+        else if ( value > 255 )
+        {
+            value = 255;
         }
 
-        bool get(unsigned index, unsigned char& result) const
+        m_data[index] = static_cast<unsigned char>( value + 0.5 );
+    }
+
+    void set( unsigned index, unsigned char value )
+    {
+        if ( index >= m_size )
         {
-            if (index >= m_size)
-                return false;
-            result = m_data[index];
-            return true;
+            return;
         }
 
-        unsigned char get(unsigned index) const
+        m_data[index] = value;
+    }
+
+    bool get( unsigned index, unsigned char &result ) const
+    {
+        if ( index >= m_size )
         {
-            ASSERT(index < m_size);
-            return m_data[index];
+            return false;
         }
 
-        unsigned char* data() { return m_data; }
+        result = m_data[index];
+        return true;
+    }
 
-        void deref()
+    unsigned char get( unsigned index ) const
+    {
+        ASSERT( index < m_size );
+        return m_data[index];
+    }
+
+    unsigned char *data()
+    {
+        return m_data;
+    }
+
+    void deref()
+    {
+        if ( derefBase() )
         {
-            if (derefBase()) {
-                // We allocated with new unsigned char[] in create(),
-                // and then used placement new to construct the object.
-                this->~ByteArray();
-                delete[] reinterpret_cast<unsigned char*>(this);
-            }
+            // We allocated with new unsigned char[] in create(),
+            // and then used placement new to construct the object.
+            this->~ByteArray();
+            delete[] reinterpret_cast<unsigned char *>( this );
         }
+    }
 
-        static PassRefPtr<ByteArray> create(size_t size);
+    static PassRefPtr<ByteArray> create( size_t size );
 
-    private:
-        ByteArray(size_t size)
-            : m_size(size)
-        {
-        }
-        size_t m_size;
+private:
+    ByteArray( size_t size )
+        : m_size( size )
+    {
+    }
+    size_t m_size;
 // MSVC can't handle correctly unsized array.
 // warning C4200: nonstandard extension used : zero-sized array in struct/union
 // Cannot generate copy-ctor or copy-assignment operator when UDT contains a zero-sized array
 #if COMPILER(MSVC) && !COMPILER(INTEL)
-        unsigned char m_data[INT_MAX];
+    unsigned char m_data[INT_MAX];
 #else
-        unsigned char m_data[];
+    unsigned char m_data[];
 #endif
-    };
+};
 } // namespace WTF
 
 using WTF::ByteArray;

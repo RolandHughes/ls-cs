@@ -26,7 +26,8 @@
 
 #include <wtf/Noncopyable.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 #if PLATFORM(EGL)
 class EGLDisplayOpenVG;
@@ -42,16 +43,18 @@ class IntSize;
  * of #ifdefs and should make it easy to add different surface/context
  * implementations than EGL.
  */
-class SurfaceOpenVG {
-    WTF_MAKE_NONCOPYABLE(SurfaceOpenVG);
+class SurfaceOpenVG
+{
+    WTF_MAKE_NONCOPYABLE( SurfaceOpenVG );
 public:
-    enum MakeCurrentMode {
+    enum MakeCurrentMode
+    {
         ApplyPainterStateOnSurfaceSwitch,
         DontApplyPainterState,
         DontSaveOrApplyPainterState
     };
 
-    static SurfaceOpenVG* currentSurface();
+    static SurfaceOpenVG *currentSurface();
 
 #if PLATFORM(EGL)
     friend class EGLDisplayOpenVG;
@@ -66,7 +69,7 @@ public:
      * a non-zero pointer as errorCode parameter. The error code returned by
      * eglGetError() will be written to that variable.
      */
-    SurfaceOpenVG(const IntSize& size, const EGLDisplay& display, EGLConfig* config = 0, EGLint* errorCode = 0);
+    SurfaceOpenVG( const IntSize &size, const EGLDisplay &display, EGLConfig *config = 0, EGLint *errorCode = 0 );
 
     /**
      * Create a new EGL pbuffer surface that will be bound to the given
@@ -85,19 +88,28 @@ public:
      * a non-zero pointer as errorCode parameter. The error code returned by
      * eglGetError() will be written to that variable.
      */
-    SurfaceOpenVG(EGLClientBuffer buffer, EGLenum bufferType,
-        const EGLDisplay& display, EGLConfig* config = 0, EGLint* errorCode = 0);
+    SurfaceOpenVG( EGLClientBuffer buffer, EGLenum bufferType,
+                   const EGLDisplay &display, EGLConfig *config = 0, EGLint *errorCode = 0 );
 
     /**
      * Create a new EGL window surface with the specified native window handle
      * and config on the given display. If config is not specified, the
      * display's default window config is used.
      */
-    SurfaceOpenVG(EGLNativeWindowType window, const EGLDisplay& display, EGLConfig* config = 0);
+    SurfaceOpenVG( EGLNativeWindowType window, const EGLDisplay &display, EGLConfig *config = 0 );
 
-    EGLDisplay eglDisplay() const { return m_eglDisplay; }
-    EGLSurface eglSurface() const { return m_eglSurface; }
-    EGLContext eglContext() const { return m_eglContext; }
+    EGLDisplay eglDisplay() const
+    {
+        return m_eglDisplay;
+    }
+    EGLSurface eglSurface() const
+    {
+        return m_eglSurface;
+    }
+    EGLContext eglContext() const
+    {
+        return m_eglContext;
+    }
 #endif
 
     ~SurfaceOpenVG();
@@ -111,13 +123,13 @@ public:
     int width() const;
     int height() const;
 
-    SurfaceOpenVG* sharedSurface() const;
+    SurfaceOpenVG *sharedSurface() const;
 
     /**
      * Make the associated GL/EGL context the current one, so that subsequent
      * OpenVG commands apply to it.
      */
-    void makeCurrent(MakeCurrentMode mode = ApplyPainterStateOnSurfaceSwitch);
+    void makeCurrent( MakeCurrentMode mode = ApplyPainterStateOnSurfaceSwitch );
 
     /**
      * Make a surface/context combination current that is "compatible"
@@ -137,12 +149,12 @@ public:
      */
     void flush();
 
-    void setActivePainter(PainterOpenVG*);
-    PainterOpenVG* activePainter();
+    void setActivePainter( PainterOpenVG * );
+    PainterOpenVG *activePainter();
 
 private:
-    PainterOpenVG* m_activePainter;
-    static PainterOpenVG* s_currentPainter; // global currently active painter
+    PainterOpenVG *m_activePainter;
+    static PainterOpenVG *s_currentPainter; // global currently active painter
 
 #if PLATFORM(EGL)
     SurfaceOpenVG(); // for EGLDisplayOpenVG

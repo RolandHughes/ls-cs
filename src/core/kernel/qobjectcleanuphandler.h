@@ -28,22 +28,22 @@
 
 class Q_CORE_EXPORT QObjectCleanupHandler : public QObject
 {
-   CORE_CS_OBJECT(QObjectCleanupHandler)
+    CORE_CS_OBJECT( QObjectCleanupHandler )
 
- public:
-   QObjectCleanupHandler();
-   ~QObjectCleanupHandler();
+public:
+    QObjectCleanupHandler();
+    ~QObjectCleanupHandler();
 
-   QObject *add(QObject *object);
-   void remove(QObject *object);
-   bool isEmpty() const;
-   void clear();
+    QObject *add( QObject *object );
+    void remove( QObject *object );
+    bool isEmpty() const;
+    void clear();
 
-   QObjectList cleanupObjects;
+    QObjectList cleanupObjects;
 
- private:
-   CORE_CS_SLOT_1(Private, void objectDestroyed(QObject *object))
-   CORE_CS_SLOT_2(objectDestroyed)
+private:
+    CORE_CS_SLOT_1( Private, void objectDestroyed( QObject *object ) )
+    CORE_CS_SLOT_2( objectDestroyed )
 };
 
 #endif

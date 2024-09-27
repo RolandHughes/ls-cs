@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -30,32 +30,46 @@
 #include <CFData.h>
 #include <windows.h>
 
-CFDataRef QTCFPropertyListCreateXMLData(CFAllocatorRef allocator, CFPropertyListRef propertyList)
+CFDataRef QTCFPropertyListCreateXMLData( CFAllocatorRef allocator, CFPropertyListRef propertyList )
 {
 
-    typedef CFDataRef (* pfnCFPropertyListCreateXMLData)(CFAllocatorRef allocator, CFPropertyListRef propertyList);
+    typedef CFDataRef ( * pfnCFPropertyListCreateXMLData )( CFAllocatorRef allocator, CFPropertyListRef propertyList );
     static pfnCFPropertyListCreateXMLData pCFPropertyListCreateXMLData = 0;
-    if (!pCFPropertyListCreateXMLData) {
-        HMODULE qtcfDLL = LoadLibraryW(L"QTCF.dll");
-        if (qtcfDLL)
-            pCFPropertyListCreateXMLData = reinterpret_cast<pfnCFPropertyListCreateXMLData>(GetProcAddress(qtcfDLL, "QTCF_CFPropertyListCreateXMLData"));
+
+    if ( !pCFPropertyListCreateXMLData )
+    {
+        HMODULE qtcfDLL = LoadLibraryW( L"QTCF.dll" );
+
+        if ( qtcfDLL )
+        {
+            pCFPropertyListCreateXMLData = reinterpret_cast<pfnCFPropertyListCreateXMLData>( GetProcAddress( qtcfDLL,
+                                           "QTCF_CFPropertyListCreateXMLData" ) );
+        }
     }
 
-    if (pCFPropertyListCreateXMLData)
-        return pCFPropertyListCreateXMLData(allocator, propertyList);
+    if ( pCFPropertyListCreateXMLData )
+    {
+        return pCFPropertyListCreateXMLData( allocator, propertyList );
+    }
+
     return 0;
 }
 
-CFDictionaryRef QTCFDictionaryCreateCopyWithDataCallback(CFAllocatorRef allocator, CFDictionaryRef dictionary, QTCFDictonaryCreateFromDataCallback callback) 
+CFDictionaryRef QTCFDictionaryCreateCopyWithDataCallback( CFAllocatorRef allocator, CFDictionaryRef dictionary,
+        QTCFDictonaryCreateFromDataCallback callback )
 {
-    ASSERT(dictionary);
-    ASSERT(callback);
+    ASSERT( dictionary );
+    ASSERT( callback );
 
-    CFDataRef data = QTCFPropertyListCreateXMLData(kCFAllocatorDefault, dictionary);
-    if (!data)
+    CFDataRef data = QTCFPropertyListCreateXMLData( kCFAllocatorDefault, dictionary );
+
+    if ( !data )
+    {
         return 0;
-    CFDictionaryRef outputDictionary = callback(allocator, CFDataGetBytePtr(data), CFDataGetLength(data));
-    CFRelease(data);
+    }
+
+    CFDictionaryRef outputDictionary = callback( allocator, CFDataGetBytePtr( data ), CFDataGetLength( data ) );
+    CFRelease( data );
 
     return outputDictionary;
 }

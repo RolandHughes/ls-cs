@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -31,27 +31,28 @@
 #include "HTMLNames.h"
 #include "HTMLOptionElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
 AccessibilityMenuListOption::AccessibilityMenuListOption()
-    : m_popup(0)
+    : m_popup( 0 )
 {
 }
 
-void AccessibilityMenuListOption::setElement(HTMLElement* element)
+void AccessibilityMenuListOption::setElement( HTMLElement *element )
 {
-    ASSERT_ARG(element, element->hasTagName(optionTag));
+    ASSERT_ARG( element, element->hasTagName( optionTag ) );
     m_element = element;
 }
 
-Element* AccessibilityMenuListOption::actionElement() const
+Element *AccessibilityMenuListOption::actionElement() const
 {
     return m_element.get();
 }
 
-AccessibilityObject* AccessibilityMenuListOption::parentObject() const
+AccessibilityObject *AccessibilityMenuListOption::parentObject() const
 {
     return m_popup;
 }
@@ -60,7 +61,7 @@ bool AccessibilityMenuListOption::isEnabled() const
 {
     // disabled() returns true if the parent <select> element is disabled,
     // which we don't want.
-    return !static_cast<HTMLOptionElement*>(m_element.get())->ownElementDisabled();
+    return !static_cast<HTMLOptionElement *>( m_element.get() )->ownElementDisabled();
 }
 
 bool AccessibilityMenuListOption::isVisible() const
@@ -78,15 +79,17 @@ bool AccessibilityMenuListOption::isOffScreen() const
 
 bool AccessibilityMenuListOption::isSelected() const
 {
-    return static_cast<HTMLOptionElement*>(m_element.get())->selected();
+    return static_cast<HTMLOptionElement *>( m_element.get() )->selected();
 }
 
-void AccessibilityMenuListOption::setSelected(bool b)
+void AccessibilityMenuListOption::setSelected( bool b )
 {
-    if (!canSetSelectedAttribute())
+    if ( !canSetSelectedAttribute() )
+    {
         return;
+    }
 
-    static_cast<HTMLOptionElement*>(m_element.get())->setSelected(b);
+    static_cast<HTMLOptionElement *>( m_element.get() )->setSelected( b );
 }
 
 String AccessibilityMenuListOption::nameForMSAA() const
@@ -101,18 +104,18 @@ bool AccessibilityMenuListOption::canSetSelectedAttribute() const
 
 IntRect AccessibilityMenuListOption::elementRect() const
 {
-    AccessibilityObject* parent = parentObject();
-    ASSERT(parent->isMenuListPopup());
+    AccessibilityObject *parent = parentObject();
+    ASSERT( parent->isMenuListPopup() );
 
-    AccessibilityObject* grandparent = parent->parentObject();
-    ASSERT(grandparent->isMenuList());
+    AccessibilityObject *grandparent = parent->parentObject();
+    ASSERT( grandparent->isMenuList() );
 
     return grandparent->elementRect();
 }
 
 String AccessibilityMenuListOption::stringValue() const
 {
-    return static_cast<HTMLOptionElement*>(m_element.get())->text();
+    return static_cast<HTMLOptionElement *>( m_element.get() )->text();
 }
 
 } // namespace WebCore

@@ -35,20 +35,21 @@ class QScreen;
 
 class Q_GUI_EXPORT QCursor
 {
- public:
-   static QPoint pos();
-   static QPoint pos(const QScreen *screen);
+public:
+    static QPoint pos();
+    static QPoint pos( const QScreen *screen );
 
-   static void setPos(int x, int y);
+    static void setPos( int x, int y );
 
-   static void setPos(QScreen *screen, int x, int y);
+    static void setPos( QScreen *screen, int x, int y );
 
-   static void setPos(const QPoint &p) {
-      setPos(p.x(), p.y());
-   }
+    static void setPos( const QPoint &p )
+    {
+        setPos( p.x(), p.y() );
+    }
 
- private:
-   QCursor();
+private:
+    QCursor();
 };
 
 #endif
@@ -62,67 +63,73 @@ class QPixmap;
 
 class Q_GUI_EXPORT QCursor
 {
- public:
-   QCursor();
-   QCursor(Qt::CursorShape shape);
-   QCursor(const QBitmap &bitmap, const QBitmap &mask, int hotX = -1, int hotY = -1);
-   QCursor(const QPixmap &pixmap, int hotX = -1, int hotY = -1);
-   QCursor(const QCursor &other);
+public:
+    QCursor();
+    QCursor( Qt::CursorShape shape );
+    QCursor( const QBitmap &bitmap, const QBitmap &mask, int hotX = -1, int hotY = -1 );
+    QCursor( const QPixmap &pixmap, int hotX = -1, int hotY = -1 );
+    QCursor( const QCursor &other );
 
-   QCursor(QCursor &&other) : d(other.d) {
-      other.d = nullptr;
-   }
+    QCursor( QCursor &&other ) : d( other.d )
+    {
+        other.d = nullptr;
+    }
 
-   ~QCursor();
+    ~QCursor();
 
-   QCursor &operator=(const QCursor &cursor);
+    QCursor &operator=( const QCursor &cursor );
 
-   QCursor &operator=(QCursor &&other) {
-      qSwap(d, other.d);
-      return *this;
-   }
+    QCursor &operator=( QCursor &&other )
+    {
+        qSwap( d, other.d );
+        return *this;
+    }
 
-   operator QVariant() const;
+    operator QVariant() const;
 
-   Qt::CursorShape shape() const;
-   void setShape(Qt::CursorShape newShape);
+    Qt::CursorShape shape() const;
+    void setShape( Qt::CursorShape newShape );
 
-   const QBitmap *bitmap() const;
-   const QBitmap *mask() const;
-   QPixmap pixmap() const;
-   QPoint hotSpot() const;
+    const QBitmap *bitmap() const;
+    const QBitmap *mask() const;
+    QPixmap pixmap() const;
+    QPoint hotSpot() const;
 
-   static QPoint pos();
-   static QPoint pos(const QScreen *screen);
-   static void setPos(int x, int y);
+    static QPoint pos();
+    static QPoint pos( const QScreen *screen );
+    static void setPos( int x, int y );
 
-   static void setPos(QScreen *screen, int x, int y);
+    static void setPos( QScreen *screen, int x, int y );
 
-   static void setPos(const QPoint &p) {
-      setPos(p.x(), p.y());
-   }
+    static void setPos( const QPoint &p )
+    {
+        setPos( p.x(), p.y() );
+    }
 
-   static void setPos(QScreen *screen, const QPoint &p) {
-      setPos(screen, p.x(), p.y());
-   }
+    static void setPos( QScreen *screen, const QPoint &p )
+    {
+        setPos( screen, p.x(), p.y() );
+    }
 
- private:
-   QCursorData *d;
+private:
+    QCursorData *d;
 
 };
 
-Q_GUI_EXPORT QDataStream &operator<<(QDataStream &outS, const QCursor &cursor);
-Q_GUI_EXPORT QDataStream &operator>>(QDataStream &inS, QCursor &cursor);
+Q_GUI_EXPORT QDataStream &operator<<( QDataStream &outS, const QCursor &cursor );
+Q_GUI_EXPORT QDataStream &operator>>( QDataStream &inS, QCursor &cursor );
 
 template <>
-inline bool CustomType_T<QCursor>::compare(const CustomType &other) const {
-   auto ptr = dynamic_cast<const CustomType_T<QCursor>*>(&other);
+inline bool CustomType_T<QCursor>::compare( const CustomType &other ) const
+{
+    auto ptr = dynamic_cast<const CustomType_T<QCursor>*>( &other );
 
-   if (ptr != nullptr) {
-      return m_value.shape() == (ptr->m_value).shape();
-   }
+    if ( ptr != nullptr )
+    {
+        return m_value.shape() == ( ptr->m_value ).shape();
+    }
 
-   return false;
+    return false;
 }
 
 #endif // QT_NO_CURSOR

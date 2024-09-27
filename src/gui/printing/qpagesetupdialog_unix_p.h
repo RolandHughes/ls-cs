@@ -37,58 +37,58 @@ class QPagePreview;
 
 class QPageSetupWidget : public QWidget
 {
-   GUI_CS_OBJECT(QPageSetupWidget)
+    GUI_CS_OBJECT( QPageSetupWidget )
 
- public:
-   explicit QPageSetupWidget(QWidget *parent = nullptr);
-   explicit QPageSetupWidget(QPrinter *printer, QWidget *parent = nullptr);
+public:
+    explicit QPageSetupWidget( QWidget *parent = nullptr );
+    explicit QPageSetupWidget( QPrinter *printer, QWidget *parent = nullptr );
 
-   void setPrinter(QPrinter *printer);
-   void selectPrinter(QPrinter::OutputFormat outputFormat, const QString &printerName);
-   void setupPrinter() const;
+    void setPrinter( QPrinter *printer );
+    void selectPrinter( QPrinter::OutputFormat outputFormat, const QString &printerName );
+    void setupPrinter() const;
 
- private:
-   GUI_CS_SLOT_1(Private, void pageOrientationChanged())
-   GUI_CS_SLOT_2(pageOrientationChanged)
+private:
+    GUI_CS_SLOT_1( Private, void pageOrientationChanged() )
+    GUI_CS_SLOT_2( pageOrientationChanged )
 
-   GUI_CS_SLOT_1(Private, void pageSizeChanged())
-   GUI_CS_SLOT_2(pageSizeChanged)
+    GUI_CS_SLOT_1( Private, void pageSizeChanged() )
+    GUI_CS_SLOT_2( pageSizeChanged )
 
-   GUI_CS_SLOT_1(Private, void pagesPerSheetChanged())
-   GUI_CS_SLOT_2(pagesPerSheetChanged)
+    GUI_CS_SLOT_1( Private, void pagesPerSheetChanged() )
+    GUI_CS_SLOT_2( pagesPerSheetChanged )
 
-   GUI_CS_SLOT_1(Private, void unitChanged())
-   GUI_CS_SLOT_2(unitChanged)
+    GUI_CS_SLOT_1( Private, void unitChanged() )
+    GUI_CS_SLOT_2( unitChanged )
 
-   GUI_CS_SLOT_1(Private, void topMarginChanged(double newValue))
-   GUI_CS_SLOT_2(topMarginChanged)
+    GUI_CS_SLOT_1( Private, void topMarginChanged( double newValue ) )
+    GUI_CS_SLOT_2( topMarginChanged )
 
-   GUI_CS_SLOT_1(Private, void bottomMarginChanged(double newValue))
-   GUI_CS_SLOT_2(bottomMarginChanged)
+    GUI_CS_SLOT_1( Private, void bottomMarginChanged( double newValue ) )
+    GUI_CS_SLOT_2( bottomMarginChanged )
 
-   GUI_CS_SLOT_1(Private, void leftMarginChanged(double newValue))
-   GUI_CS_SLOT_2(leftMarginChanged)
+    GUI_CS_SLOT_1( Private, void leftMarginChanged( double newValue ) )
+    GUI_CS_SLOT_2( leftMarginChanged )
 
-   GUI_CS_SLOT_1(Private, void rightMarginChanged(double newValue))
-   GUI_CS_SLOT_2(rightMarginChanged)
+    GUI_CS_SLOT_1( Private, void rightMarginChanged( double newValue ) )
+    GUI_CS_SLOT_2( rightMarginChanged )
 
-   friend class QUnixPrintWidgetPrivate;  // Needed by checkFields()
+    friend class QUnixPrintWidgetPrivate;  // Needed by checkFields()
 
-   void updateWidget();
-   void initUnits();
-   void initPagesPerSheet();
-   void initPageSizes();
+    void updateWidget();
+    void initUnits();
+    void initPagesPerSheet();
+    void initPageSizes();
 
-   Ui::QPageSetupWidget m_ui;
-   QPagePreview *m_pagePreview;
-   QPrinter *m_printer;
+    Ui::QPageSetupWidget m_ui;
+    QPagePreview *m_pagePreview;
+    QPrinter *m_printer;
 
-   QPrinter::OutputFormat m_outputFormat;
+    QPrinter::OutputFormat m_outputFormat;
 
-   QString m_printerName;
-   QPageLayout m_pageLayout;
-   QPageLayout::Unit m_units;
-   bool m_blockSignals;
+    QString m_printerName;
+    QPageLayout m_pageLayout;
+    QPageLayout::Unit m_units;
+    bool m_blockSignals;
 };
 
 #endif // QT_NO_PRINTDIALOG

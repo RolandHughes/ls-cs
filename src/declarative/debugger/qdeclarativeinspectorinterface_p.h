@@ -30,15 +30,15 @@ QT_BEGIN_NAMESPACE
 
 class Q_DECLARATIVE_EXPORT QDeclarativeInspectorInterface
 {
- public:
-   QDeclarativeInspectorInterface() {}
-   virtual ~QDeclarativeInspectorInterface() {}
+public:
+    QDeclarativeInspectorInterface() {}
+    virtual ~QDeclarativeInspectorInterface() {}
 
-   virtual void activate() = 0;
-   virtual void deactivate() = 0;
+    virtual void activate() = 0;
+    virtual void deactivate() = 0;
 };
 
-CS_DECLARE_INTERFACE(QDeclarativeInspectorInterface, "com.copperspice.QDeclarativeInspectorInterface/1.0")
+CS_DECLARE_INTERFACE( QDeclarativeInspectorInterface, "com.copperspice.QDeclarativeInspectorInterface/1.0" )
 
 QT_END_NAMESPACE
 

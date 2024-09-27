@@ -31,62 +31,70 @@
 
 class QMimeData;
 
-namespace WebCore {
+namespace WebCore
+{
 
 class CachedImage;
 
 // State available during IE's events for drag and drop and copy/paste
-class ClipboardQt : public Clipboard, public CachedResourceClient {
+class ClipboardQt : public Clipboard, public CachedResourceClient
+{
     WTF_MAKE_FAST_ALLOCATED;
 public:
-    static PassRefPtr<ClipboardQt> create(ClipboardAccessPolicy policy, const QMimeData* readableClipboard, Frame* frame)
+    static PassRefPtr<ClipboardQt> create( ClipboardAccessPolicy policy, const QMimeData *readableClipboard, Frame *frame )
     {
-        return adoptRef(new ClipboardQt(policy, readableClipboard, frame));
+        return adoptRef( new ClipboardQt( policy, readableClipboard, frame ) );
     }
-    static PassRefPtr<ClipboardQt> create(ClipboardAccessPolicy policy, Frame *frame, ClipboardType clipboardType = CopyAndPaste)
+    static PassRefPtr<ClipboardQt> create( ClipboardAccessPolicy policy, Frame *frame, ClipboardType clipboardType = CopyAndPaste )
     {
-        return adoptRef(new ClipboardQt(policy, clipboardType, frame));
+        return adoptRef( new ClipboardQt( policy, clipboardType, frame ) );
     }
     virtual ~ClipboardQt();
 
-    void clearData(const String& type);
+    void clearData( const String &type );
     void clearAllData();
-    String getData(const String& type, bool& success) const;
-    bool setData(const String& type, const String& data);
+    String getData( const String &type, bool &success ) const;
+    bool setData( const String &type, const String &data );
 
     // extensions beyond IE's API
     virtual HashSet<String> types() const;
     virtual PassRefPtr<FileList> files() const;
 
-    void setDragImage(CachedImage*, const IntPoint&);
-    void setDragImageElement(Node*, const IntPoint&);
+    void setDragImage( CachedImage *, const IntPoint & );
+    void setDragImageElement( Node *, const IntPoint & );
 
-    virtual DragImageRef createDragImage(IntPoint& dragLoc) const;
-    virtual void declareAndWriteDragImage(Element*, const KURL&, const String& title, Frame*);
-    virtual void writeURL(const KURL&, const String&, Frame*);
-    virtual void writeRange(Range*, Frame*);
-    virtual void writePlainText(const String&);
+    virtual DragImageRef createDragImage( IntPoint &dragLoc ) const;
+    virtual void declareAndWriteDragImage( Element *, const KURL &, const String &title, Frame * );
+    virtual void writeURL( const KURL &, const String &, Frame * );
+    virtual void writeRange( Range *, Frame * );
+    virtual void writePlainText( const String & );
 
     virtual bool hasData();
 
-    QMimeData* clipboardData() const { return m_writableData; }
-    void invalidateWritableData() { m_writableData = 0; }
+    QMimeData *clipboardData() const
+    {
+        return m_writableData;
+    }
+    void invalidateWritableData()
+    {
+        m_writableData = 0;
+    }
 
 #if ENABLE(DATA_TRANSFER_ITEMS)
     virtual PassRefPtr<DataTransferItems> items();
 #endif
 
 private:
-    ClipboardQt(ClipboardAccessPolicy, const QMimeData* readableClipboard, Frame*);
+    ClipboardQt( ClipboardAccessPolicy, const QMimeData *readableClipboard, Frame * );
 
     // Clipboard is writable so it will create its own QMimeData object
-    ClipboardQt(ClipboardAccessPolicy, ClipboardType, Frame*);
+    ClipboardQt( ClipboardAccessPolicy, ClipboardType, Frame * );
 
-    void setDragImage(CachedImage*, Node*, const IntPoint& loc);
+    void setDragImage( CachedImage *, Node *, const IntPoint &loc );
 
-    const QMimeData* m_readableData;
-    QMimeData* m_writableData;
-    Frame* m_frame;
+    const QMimeData *m_readableData;
+    QMimeData *m_writableData;
+    Frame *m_frame;
 };
 }
 

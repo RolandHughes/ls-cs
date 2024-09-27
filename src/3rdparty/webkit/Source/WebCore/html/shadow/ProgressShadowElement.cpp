@@ -36,44 +36,45 @@
 #include "HTMLProgressElement.h"
 #include "RenderObject.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-ProgressShadowElement::ProgressShadowElement(Document* document) 
-    : HTMLDivElement(HTMLNames::divTag, document)
+ProgressShadowElement::ProgressShadowElement( Document *document )
+    : HTMLDivElement( HTMLNames::divTag, document )
 {
 }
 
-HTMLProgressElement* ProgressShadowElement::progressElement() const
+HTMLProgressElement *ProgressShadowElement::progressElement() const
 {
-    Node* node = const_cast<ProgressShadowElement*>(this)->shadowAncestorNode();
-    ASSERT(!node || progressTag == toElement(node)->tagQName());
-    return static_cast<HTMLProgressElement*>(node);
+    Node *node = const_cast<ProgressShadowElement *>( this )->shadowAncestorNode();
+    ASSERT( !node || progressTag == toElement( node )->tagQName() );
+    return static_cast<HTMLProgressElement *>( node );
 }
 
-bool ProgressShadowElement::rendererIsNeeded(RenderStyle* style)
+bool ProgressShadowElement::rendererIsNeeded( RenderStyle *style )
 {
-    RenderObject* progressRenderer = progressElement()->renderer();
-    return progressRenderer && !progressRenderer->style()->hasAppearance() && HTMLDivElement::rendererIsNeeded(style);
+    RenderObject *progressRenderer = progressElement()->renderer();
+    return progressRenderer && !progressRenderer->style()->hasAppearance() && HTMLDivElement::rendererIsNeeded( style );
 }
 
-const AtomicString& ProgressBarElement::shadowPseudoId() const
+const AtomicString &ProgressBarElement::shadowPseudoId() const
 {
-    DEFINE_STATIC_LOCAL(AtomicString, pseudId, ("-webkit-progress-bar"));
+    DEFINE_STATIC_LOCAL( AtomicString, pseudId, ( "-webkit-progress-bar" ) );
     return pseudId;
 }
 
 
-const AtomicString& ProgressValueElement::shadowPseudoId() const
+const AtomicString &ProgressValueElement::shadowPseudoId() const
 {
-    DEFINE_STATIC_LOCAL(AtomicString, pseudId, ("-webkit-progress-value"));
+    DEFINE_STATIC_LOCAL( AtomicString, pseudId, ( "-webkit-progress-value" ) );
     return pseudId;
 }
 
-void ProgressValueElement::setWidthPercentage(double width)
+void ProgressValueElement::setWidthPercentage( double width )
 {
-    getInlineStyleDecl()->setProperty(CSSPropertyWidth, width, CSSPrimitiveValue::CSS_PERCENTAGE);
+    getInlineStyleDecl()->setProperty( CSSPropertyWidth, width, CSSPrimitiveValue::CSS_PERCENTAGE );
 }
 
 }

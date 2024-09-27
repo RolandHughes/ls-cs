@@ -31,15 +31,18 @@
 #include "SpaceSplitString.h"
 #include <wtf/text/StringBuilder.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-ClassList::ClassList(Element* element)
-    : m_element(element)
+ClassList::ClassList( Element *element )
+    : m_element( element )
 {
-    if (m_element->document()->inQuirksMode())
-        m_classNamesForQuirksMode.set(m_element->fastGetAttribute(classAttr), false);
+    if ( m_element->document()->inQuirksMode() )
+    {
+        m_classNamesForQuirksMode.set( m_element->fastGetAttribute( classAttr ), false );
+    }
 }
 
 void ClassList::ref()
@@ -57,89 +60,118 @@ unsigned ClassList::length() const
     return m_element->hasClass() ? classNames().size() : 0;
 }
 
-const AtomicString ClassList::item(unsigned index) const
+const AtomicString ClassList::item( unsigned index ) const
 {
-    if (index >= length())
+    if ( index >= length() )
+    {
         return AtomicString();
+    }
+
     return classNames()[index];
 }
 
-bool ClassList::contains(const AtomicString& token, ExceptionCode& ec) const
+bool ClassList::contains( const AtomicString &token, ExceptionCode &ec ) const
 {
-    if (!validateToken(token, ec))
+    if ( !validateToken( token, ec ) )
+    {
         return false;
-    return containsInternal(token);
+    }
+
+    return containsInternal( token );
 }
 
-bool ClassList::containsInternal(const AtomicString& token) const
+bool ClassList::containsInternal( const AtomicString &token ) const
 {
-    return m_element->hasClass() && classNames().contains(token);
+    return m_element->hasClass() && classNames().contains( token );
 }
 
-void ClassList::add(const AtomicString& token, ExceptionCode& ec)
+void ClassList::add( const AtomicString &token, ExceptionCode &ec )
 {
-    if (!validateToken(token, ec))
+    if ( !validateToken( token, ec ) )
+    {
         return;
-    addInternal(token);
+    }
+
+    addInternal( token );
 }
 
-void ClassList::addInternal(const AtomicString& token)
+void ClassList::addInternal( const AtomicString &token )
 {
-    const AtomicString& oldClassName(m_element->fastGetAttribute(classAttr));
-    if (oldClassName.isEmpty())
-        m_element->setAttribute(classAttr, token);
-    else if (!containsInternal(token)) {
-        const AtomicString& newClassName(addToken(oldClassName, token));
-        m_element->setAttribute(classAttr, newClassName);
+    const AtomicString &oldClassName( m_element->fastGetAttribute( classAttr ) );
+
+    if ( oldClassName.isEmpty() )
+    {
+        m_element->setAttribute( classAttr, token );
+    }
+    else if ( !containsInternal( token ) )
+    {
+        const AtomicString &newClassName( addToken( oldClassName, token ) );
+        m_element->setAttribute( classAttr, newClassName );
     }
 }
 
-void ClassList::remove(const AtomicString& token, ExceptionCode& ec)
+void ClassList::remove( const AtomicString &token, ExceptionCode &ec )
 {
-    if (!validateToken(token, ec))
+    if ( !validateToken( token, ec ) )
+    {
         return;
-    removeInternal(token);
+    }
+
+    removeInternal( token );
 }
 
-void ClassList::removeInternal(const AtomicString& token)
+void ClassList::removeInternal( const AtomicString &token )
 {
     // Check using contains first since it uses AtomicString comparisons instead
     // of character by character testing.
-    if (!containsInternal(token))
+    if ( !containsInternal( token ) )
+    {
         return;
-    const AtomicString& newClassName(removeToken(m_element->fastGetAttribute(classAttr), token));
-    m_element->setAttribute(classAttr, newClassName);
+    }
+
+    const AtomicString &newClassName( removeToken( m_element->fastGetAttribute( classAttr ), token ) );
+    m_element->setAttribute( classAttr, newClassName );
 }
 
-bool ClassList::toggle(const AtomicString& token, ExceptionCode& ec)
+bool ClassList::toggle( const AtomicString &token, ExceptionCode &ec )
 {
-    if (!validateToken(token, ec))
-        return false;
-
-    if (containsInternal(token)) {
-        removeInternal(token);
+    if ( !validateToken( token, ec ) )
+    {
         return false;
     }
-    addInternal(token);
+
+    if ( containsInternal( token ) )
+    {
+        removeInternal( token );
+        return false;
+    }
+
+    addInternal( token );
     return true;
 }
 
 String ClassList::toString() const
 {
-    return m_element->fastGetAttribute(classAttr);
+    return m_element->fastGetAttribute( classAttr );
 }
 
-void ClassList::reset(const String& newClassName)
+void ClassList::reset( const String &newClassName )
 {
-    if (!m_classNamesForQuirksMode.isNull())
-        m_classNamesForQuirksMode.set(newClassName, false);
+    if ( !m_classNamesForQuirksMode.isNull() )
+    {
+        m_classNamesForQuirksMode.set( newClassName, false );
+    }
 }
 
-const SpaceSplitString& ClassList::classNames() const
+const SpaceSplitString &ClassList::classNames() const
 {
-    ASSERT(m_element->hasClass());
-    if (!m_classNamesForQuirksMode.isNull())
+    ASSERT( m_element->hasClass() );
+
+    if ( !m_classNamesForQuirksMode.isNull() )
+    {
         return m_classNamesForQuirksMode;
+    }
+
     return m_element->attributeMap()->classNames();
 }
 

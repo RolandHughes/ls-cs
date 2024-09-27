@@ -26,7 +26,8 @@
 #include "config.h"
 #include "DOMStringMap.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 DOMStringMap::~DOMStringMap()
 {

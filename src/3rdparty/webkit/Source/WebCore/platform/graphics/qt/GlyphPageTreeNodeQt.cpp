@@ -29,35 +29,42 @@
 #include <QTextLayout>
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
 #if HAVE(QRAWFONT)
-bool GlyphPage::fill(unsigned offset, unsigned length, UChar* buffer, unsigned bufferLength, const SimpleFontData* fontData)
+bool GlyphPage::fill( unsigned offset, unsigned length, UChar *buffer, unsigned bufferLength, const SimpleFontData *fontData )
 {
     QRawFont rawFont = fontData->platformData().rawFont();
-    QString qstring = QString::fromRawData(reinterpret_cast<const QChar*>(buffer), static_cast<int>(bufferLength));
-    QVector<quint32> indexes = rawFont.glyphIndexesForString(qstring);
+    QString qstring = QString::fromRawData( reinterpret_cast<const QChar *>( buffer ), static_cast<int>( bufferLength ) );
+    QVector<quint32> indexes = rawFont.glyphIndexesForString( qstring );
 
     bool haveGlyphs = false;
 
-    for (unsigned i = 0; i < length; ++i) {
-        Glyph glyph = (i < indexes.size()) ? indexes.at(i) : 0;
-        if (!glyph)
-            setGlyphDataForIndex(offset + i, 0, 0);
-        else {
+    for ( unsigned i = 0; i < length; ++i )
+    {
+        Glyph glyph = ( i < indexes.size() ) ? indexes.at( i ) : 0;
+
+        if ( !glyph )
+        {
+            setGlyphDataForIndex( offset + i, 0, 0 );
+        }
+        else
+        {
             haveGlyphs = true;
-            setGlyphDataForIndex(offset + i, glyph, fontData);
+            setGlyphDataForIndex( offset + i, glyph, fontData );
         }
     }
+
     return haveGlyphs;
 }
 #else
 
-void GlyphPageTreeNode::pruneTreeCustomFontData(const FontData*)
+void GlyphPageTreeNode::pruneTreeCustomFontData( const FontData * )
 {
 }
 
-void GlyphPageTreeNode::pruneTreeFontData(const WebCore::SimpleFontData*)
+void GlyphPageTreeNode::pruneTreeFontData( const WebCore::SimpleFontData * )
 {
 }
 #endif // HAVE(QRAWFONT)

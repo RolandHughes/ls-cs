@@ -32,29 +32,29 @@ class QScriptDebuggerLocalsWidgetPrivate;
 
 class QScriptDebuggerLocalsWidget : public QScriptDebuggerLocalsWidgetInterface
 {
-   SCRIPT_T_CS_OBJECT(QScriptDebuggerLocalsWidget)
+    SCRIPT_T_CS_OBJECT( QScriptDebuggerLocalsWidget )
 
- public:
-   QScriptDebuggerLocalsWidget(QWidget *parent = nullptr);
-   ~QScriptDebuggerLocalsWidget();
+public:
+    QScriptDebuggerLocalsWidget( QWidget *parent = nullptr );
+    ~QScriptDebuggerLocalsWidget();
 
-   QScriptDebuggerLocalsModel *localsModel() const;
-   void setLocalsModel(QScriptDebuggerLocalsModel *model);
+    QScriptDebuggerLocalsModel *localsModel() const;
+    void setLocalsModel( QScriptDebuggerLocalsModel *model );
 
-   void expand(const QModelIndex &index);
+    void expand( const QModelIndex &index );
 
- private:
-   Q_DECLARE_PRIVATE(QScriptDebuggerLocalsWidget)
-   Q_DISABLE_COPY(QScriptDebuggerLocalsWidget)
- 
-   CS_SLOT_1(Private, void _q_onCompletionTaskFinished())
-   CS_SLOT_2(_q_onCompletionTaskFinished)
-  
-   CS_SLOT_1(Private, void _q_insertCompletion(const QString &un_named_arg1))
-   CS_SLOT_2(_q_insertCompletion)
+private:
+    Q_DECLARE_PRIVATE( QScriptDebuggerLocalsWidget )
+    Q_DISABLE_COPY( QScriptDebuggerLocalsWidget )
 
-   CS_SLOT_1(Private, void _q_expandIndex(const QModelIndex &un_named_arg1))
-   CS_SLOT_2(_q_expandIndex)
+    CS_SLOT_1( Private, void _q_onCompletionTaskFinished() )
+    CS_SLOT_2( _q_onCompletionTaskFinished )
+
+    CS_SLOT_1( Private, void _q_insertCompletion( const QString &un_named_arg1 ) )
+    CS_SLOT_2( _q_insertCompletion )
+
+    CS_SLOT_1( Private, void _q_expandIndex( const QModelIndex &un_named_arg1 ) )
+    CS_SLOT_2( _q_expandIndex )
 
 };
 

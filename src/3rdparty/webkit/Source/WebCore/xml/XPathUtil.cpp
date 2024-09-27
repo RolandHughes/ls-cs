@@ -5,13 +5,13 @@
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
  * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
@@ -31,17 +31,20 @@
 
 #include "ContainerNode.h"
 
-namespace WebCore {
-namespace XPath {
-        
-bool isRootDomNode(Node* node)
+namespace WebCore
+{
+namespace XPath
+{
+
+bool isRootDomNode( Node *node )
 {
     return node && !node->parentNode();
 }
 
-String stringValue(Node* node)
+String stringValue( Node *node )
 {
-    switch (node->nodeType()) {
+    switch ( node->nodeType() )
+    {
         case Node::ATTRIBUTE_NODE:
         case Node::PROCESSING_INSTRUCTION_NODE:
         case Node::COMMENT_NODE:
@@ -49,30 +52,38 @@ String stringValue(Node* node)
         case Node::CDATA_SECTION_NODE:
         case Node::XPATH_NAMESPACE_NODE:
             return node->nodeValue();
-        default:
-            if (isRootDomNode(node) || node->nodeType() == Node::ELEMENT_NODE) {
-                Vector<UChar> result;
-                result.reserveCapacity(1024);
 
-                for (Node* n = node->firstChild(); n; n = n->traverseNextNode(node)) {
-                    if (n->isTextNode()) {
-                        const String& nodeValue = n->nodeValue();
-                        result.append(nodeValue.characters(), nodeValue.length());
+        default:
+            if ( isRootDomNode( node ) || node->nodeType() == Node::ELEMENT_NODE )
+            {
+                Vector<UChar> result;
+                result.reserveCapacity( 1024 );
+
+                for ( Node *n = node->firstChild(); n; n = n->traverseNextNode( node ) )
+                {
+                    if ( n->isTextNode() )
+                    {
+                        const String &nodeValue = n->nodeValue();
+                        result.append( nodeValue.characters(), nodeValue.length() );
                     }
                 }
 
-                return String::adopt(result);
+                return String::adopt( result );
             }
     }
-    
+
     return String();
 }
 
-bool isValidContextNode(Node* node)
+bool isValidContextNode( Node *node )
 {
-    if (!node)
+    if ( !node )
+    {
         return false;
-    switch (node->nodeType()) {
+    }
+
+    switch ( node->nodeType() )
+    {
         case Node::ATTRIBUTE_NODE:
         case Node::CDATA_SECTION_NODE:
         case Node::COMMENT_NODE:
@@ -81,6 +92,7 @@ bool isValidContextNode(Node* node)
         case Node::PROCESSING_INSTRUCTION_NODE:
         case Node::XPATH_NAMESPACE_NODE:
             return true;
+
         case Node::DOCUMENT_FRAGMENT_NODE:
         case Node::DOCUMENT_TYPE_NODE:
         case Node::ENTITY_NODE:
@@ -88,9 +100,11 @@ bool isValidContextNode(Node* node)
         case Node::NOTATION_NODE:
         case Node::SHADOW_ROOT_NODE:
             return false;
+
         case Node::TEXT_NODE:
-            return !(node->parentNode() && node->parentNode()->isAttributeNode());
+            return !( node->parentNode() && node->parentNode()->isAttributeNode() );
     }
+
     ASSERT_NOT_REACHED();
     return false;
 }

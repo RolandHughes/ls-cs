@@ -40,111 +40,140 @@
 
 #ifndef QT_NO_DBUS
 
-QT_BEGIN_NAMESPACE
-
-QDBusArgumentPrivate::~QDBusArgumentPrivate()
+QT_BEGIN_NAMESPACE QDBusArgumentPrivate::~QDBusArgumentPrivate()
 {
-    if (message)
-        q_dbus_message_unref(message);
+    if ( message )
+    {
+        q_dbus_message_unref( message );
+    }
 }
 
-QByteArray QDBusArgumentPrivate::createSignature(int id)
+QByteArray QDBusArgumentPrivate::createSignature( int id )
 {
-    if (!qdbus_loadLibDBus())
+    if ( !qdbus_loadLibDBus() )
+    {
         return "";
+    }
 
     QByteArray signature;
-    QDBusMarshaller *marshaller = new QDBusMarshaller(0);
+    QDBusMarshaller *marshaller = new QDBusMarshaller( 0 );
     marshaller->ba = &signature;
 
     // run it
     void *null = 0;
-    QVariant v(id, null);
-    QDBusArgument arg(marshaller);
-    QDBusMetaType::marshall(arg, v.userType(), v.constData());
+    QVariant v( id, null );
+    QDBusArgument arg( marshaller );
+    QDBusMetaType::marshall( arg, v.userType(), v.constData() );
     arg.d = 0;
 
     // delete it
     bool ok = marshaller->ok;
     delete marshaller;
 
-    if (signature.isEmpty() || !ok || !QDBusUtil::isValidSingleSignature(QString::fromLatin1(signature))) {
-        qWarning("QDBusMarshaller: type `%s' produces invalid D-BUS signature `%s' "
-                 "(Did you forget to call beginStructure() ?)",
-                 QVariant::typeToName( QVariant::Type(id) ),
-                 signature.isEmpty() ? "<empty>" : signature.constData());
-        return "";
-    } else if ((signature.at(0) != DBUS_TYPE_ARRAY && signature.at(0) != DBUS_STRUCT_BEGIN_CHAR) ||
-               (signature.at(0) == DBUS_TYPE_ARRAY && (signature.at(1) == DBUS_TYPE_BYTE ||
-                                                       signature.at(1) == DBUS_TYPE_STRING))) {
-        qWarning("QDBusMarshaller: type `%s' attempts to redefine basic D-BUS type '%s' (%s) "
-                 "(Did you forget to call beginStructure() ?)",
-                 QVariant::typeToName( QVariant::Type(id) ),
-                 signature.constData(),
-                 QVariant::typeToName( QVariant::Type(QDBusMetaType::signatureToType(signature))) );
+    if ( signature.isEmpty() || !ok || !QDBusUtil::isValidSingleSignature( QString::fromLatin1( signature ) ) )
+    {
+        qWarning( "QDBusMarshaller: type `%s' produces invalid D-BUS signature `%s' "
+                  "(Did you forget to call beginStructure() ?)",
+                  QVariant::typeToName( QVariant::Type( id ) ),
+                  signature.isEmpty() ? "<empty>" : signature.constData() );
         return "";
     }
+    else if ( ( signature.at( 0 ) != DBUS_TYPE_ARRAY && signature.at( 0 ) != DBUS_STRUCT_BEGIN_CHAR ) ||
+              ( signature.at( 0 ) == DBUS_TYPE_ARRAY && ( signature.at( 1 ) == DBUS_TYPE_BYTE ||
+                      signature.at( 1 ) == DBUS_TYPE_STRING ) ) )
+    {
+        qWarning( "QDBusMarshaller: type `%s' attempts to redefine basic D-BUS type '%s' (%s) "
+                  "(Did you forget to call beginStructure() ?)",
+                  QVariant::typeToName( QVariant::Type( id ) ),
+                  signature.constData(),
+                  QVariant::typeToName( QVariant::Type( QDBusMetaType::signatureToType( signature ) ) ) );
+        return "";
+    }
+
     return signature;
 }
 
-bool QDBusArgumentPrivate::checkWrite(QDBusArgumentPrivate *&d)
+bool QDBusArgumentPrivate::checkWrite( QDBusArgumentPrivate *&d )
 {
-    if (!d)
+    if ( !d )
+    {
         return false;
-    if (d->direction == Marshalling) {
-        if (!d->marshaller()->ok)
+    }
+
+    if ( d->direction == Marshalling )
+    {
+        if ( !d->marshaller()->ok )
+        {
             return false;
+        }
 
-        if (d->message && d->ref != 1) {
-            QDBusMarshaller *dd = new QDBusMarshaller(d->capabilities);
-            dd->message = q_dbus_message_copy(d->message);
-            q_dbus_message_iter_init_append(dd->message, &dd->iterator);
+        if ( d->message && d->ref != 1 )
+        {
+            QDBusMarshaller *dd = new QDBusMarshaller( d->capabilities );
+            dd->message = q_dbus_message_copy( d->message );
+            q_dbus_message_iter_init_append( dd->message, &dd->iterator );
 
-            if (!d->ref.deref())
+            if ( !d->ref.deref() )
+            {
                 delete d;
+            }
+
             d = dd;
         }
+
         return true;
     }
 
 #ifdef QT_DEBUG
-    qFatal("QDBusArgument: write from a read-only object");
+    qFatal( "QDBusArgument: write from a read-only object" );
 #else
-    qWarning("QDBusArgument: write from a read-only object");
+    qWarning( "QDBusArgument: write from a read-only object" );
 #endif
     return false;
 }
 
-bool QDBusArgumentPrivate::checkRead(QDBusArgumentPrivate *d)
+bool QDBusArgumentPrivate::checkRead( QDBusArgumentPrivate *d )
 {
-    if (!d)
+    if ( !d )
+    {
         return false;
-    if (d->direction == Demarshalling)
+    }
+
+    if ( d->direction == Demarshalling )
+    {
         return true;
+    }
 
 #ifdef QT_DEBUG
-    qFatal("QDBusArgument: read from a write-only object");
+    qFatal( "QDBusArgument: read from a write-only object" );
 #else
-    qWarning("QDBusArgument: read from a write-only object");
+    qWarning( "QDBusArgument: read from a write-only object" );
 #endif
 
     return false;
 }
 
-bool QDBusArgumentPrivate::checkReadAndDetach(QDBusArgumentPrivate *&d)
+bool QDBusArgumentPrivate::checkReadAndDetach( QDBusArgumentPrivate *&d )
 {
-    if (!checkRead(d))
-        return false;           //  don't bother
+    if ( !checkRead( d ) )
+    {
+        return false;    //  don't bother
+    }
 
-    if (d->ref == 1)
-        return true;            // no need to detach
+    if ( d->ref == 1 )
+    {
+        return true;    // no need to detach
+    }
 
-    QDBusDemarshaller *dd = new QDBusDemarshaller(d->capabilities);
-    dd->message = q_dbus_message_ref(d->message);
-    dd->iterator = static_cast<QDBusDemarshaller*>(d)->iterator;
+    QDBusDemarshaller *dd = new QDBusDemarshaller( d->capabilities );
+    dd->message = q_dbus_message_ref( d->message );
+    dd->iterator = static_cast<QDBusDemarshaller *>( d )->iterator;
 
-    if (!d->ref.deref())
+    if ( !d->ref.deref() )
+    {
         delete d;
+    }
+
     d = dd;
     return true;
 }
@@ -272,17 +301,18 @@ bool QDBusArgumentPrivate::checkReadAndDetach(QDBusArgumentPrivate *&d)
 */
 QDBusArgument::QDBusArgument()
 {
-    if (!qdbus_loadLibDBus()) {
+    if ( !qdbus_loadLibDBus() )
+    {
         d = 0;
         return;
     }
 
-    QDBusMarshaller *dd = new QDBusMarshaller(0);
+    QDBusMarshaller *dd = new QDBusMarshaller( 0 );
     d = dd;
 
     // create a new message with any type, we won't sent it anyways
-    dd->message = q_dbus_message_new(DBUS_MESSAGE_TYPE_METHOD_CALL);
-    q_dbus_message_iter_init_append(dd->message, &dd->iterator);
+    dd->message = q_dbus_message_new( DBUS_MESSAGE_TYPE_METHOD_CALL );
+    q_dbus_message_iter_init_append( dd->message, &dd->iterator );
 }
 
 /*!
@@ -292,18 +322,20 @@ QDBusArgument::QDBusArgument()
     forward. QDBusArguments are explicitly shared and, therefore, any
     modification to either copy will affect the other one too.
 */
-QDBusArgument::QDBusArgument(const QDBusArgument &other)
-    : d(other.d)
+QDBusArgument::QDBusArgument( const QDBusArgument &other )
+    : d( other.d )
 {
-    if (d)
+    if ( d )
+    {
         d->ref.ref();
+    }
 }
 
 /*!
     \internal
 */
-QDBusArgument::QDBusArgument(QDBusArgumentPrivate *dd)
-    : d(dd)
+QDBusArgument::QDBusArgument( QDBusArgumentPrivate *dd )
+    : d( dd )
 {
 }
 
@@ -314,9 +346,9 @@ QDBusArgument::QDBusArgument(QDBusArgumentPrivate *dd)
     forward. QDBusArguments are explicitly shared and, therefore, any
     modification to either copy will affect the other one too.
 */
-QDBusArgument &QDBusArgument::operator=(const QDBusArgument &other)
+QDBusArgument &QDBusArgument::operator=( const QDBusArgument &other )
 {
-    qAtomicAssign(d, other.d);
+    qAtomicAssign( d, other.d );
     return *this;
 }
 
@@ -326,17 +358,22 @@ QDBusArgument &QDBusArgument::operator=(const QDBusArgument &other)
 */
 QDBusArgument::~QDBusArgument()
 {
-    if (d && !d->ref.deref())
+    if ( d && !d->ref.deref() )
+    {
         delete d;
+    }
 }
 
 /*!
     Appends the primitive value \a arg of type \c{BYTE} to the D-Bus stream.
 */
-QDBusArgument &QDBusArgument::operator<<(uchar arg)
+QDBusArgument &QDBusArgument::operator<<( uchar arg )
 {
-    if (QDBusArgumentPrivate::checkWrite(d))
-        d->marshaller()->append(arg);
+    if ( QDBusArgumentPrivate::checkWrite( d ) )
+    {
+        d->marshaller()->append( arg );
+    }
+
     return *this;
 }
 
@@ -344,10 +381,13 @@ QDBusArgument &QDBusArgument::operator<<(uchar arg)
     \overload
     Appends the primitive value \a arg of type \c{BOOLEAN} to the D-Bus stream.
 */
-QDBusArgument &QDBusArgument::operator<<(bool arg)
+QDBusArgument &QDBusArgument::operator<<( bool arg )
 {
-    if (QDBusArgumentPrivate::checkWrite(d))
-        d->marshaller()->append(arg);
+    if ( QDBusArgumentPrivate::checkWrite( d ) )
+    {
+        d->marshaller()->append( arg );
+    }
+
     return *this;
 }
 
@@ -355,10 +395,13 @@ QDBusArgument &QDBusArgument::operator<<(bool arg)
     \overload
     Appends the primitive value \a arg of type \c{INT16} to the D-Bus stream.
 */
-QDBusArgument &QDBusArgument::operator<<(short arg)
+QDBusArgument &QDBusArgument::operator<<( short arg )
 {
-    if (QDBusArgumentPrivate::checkWrite(d))
-        d->marshaller()->append(arg);
+    if ( QDBusArgumentPrivate::checkWrite( d ) )
+    {
+        d->marshaller()->append( arg );
+    }
+
     return *this;
 }
 
@@ -366,10 +409,13 @@ QDBusArgument &QDBusArgument::operator<<(short arg)
     \overload
     Appends the primitive value \a arg of type \c{UINT16} to the D-Bus stream.
 */
-QDBusArgument &QDBusArgument::operator<<(ushort arg)
+QDBusArgument &QDBusArgument::operator<<( ushort arg )
 {
-    if (QDBusArgumentPrivate::checkWrite(d))
-        d->marshaller()->append(arg);
+    if ( QDBusArgumentPrivate::checkWrite( d ) )
+    {
+        d->marshaller()->append( arg );
+    }
+
     return *this;
 }
 
@@ -377,10 +423,13 @@ QDBusArgument &QDBusArgument::operator<<(ushort arg)
     \overload
     Appends the primitive value \a arg of type \c{INT32} to the D-Bus stream.
 */
-QDBusArgument &QDBusArgument::operator<<(int arg)
+QDBusArgument &QDBusArgument::operator<<( int arg )
 {
-    if (QDBusArgumentPrivate::checkWrite(d))
-        d->marshaller()->append(arg);
+    if ( QDBusArgumentPrivate::checkWrite( d ) )
+    {
+        d->marshaller()->append( arg );
+    }
+
     return *this;
 }
 
@@ -388,10 +437,13 @@ QDBusArgument &QDBusArgument::operator<<(int arg)
     \overload
     Appends the primitive value \a arg of type \c{UINT32} to the D-Bus stream.
 */
-QDBusArgument &QDBusArgument::operator<<(uint arg)
+QDBusArgument &QDBusArgument::operator<<( uint arg )
 {
-    if (QDBusArgumentPrivate::checkWrite(d))
-        d->marshaller()->append(arg);
+    if ( QDBusArgumentPrivate::checkWrite( d ) )
+    {
+        d->marshaller()->append( arg );
+    }
+
     return *this;
 }
 
@@ -399,10 +451,13 @@ QDBusArgument &QDBusArgument::operator<<(uint arg)
     \overload
     Appends the primitive value \a arg of type \c{INT64} to the D-Bus stream.
 */
-QDBusArgument &QDBusArgument::operator<<(qint64 arg)
+QDBusArgument &QDBusArgument::operator<<( qint64 arg )
 {
-    if (QDBusArgumentPrivate::checkWrite(d))
-        d->marshaller()->append(arg);
+    if ( QDBusArgumentPrivate::checkWrite( d ) )
+    {
+        d->marshaller()->append( arg );
+    }
+
     return *this;
 }
 
@@ -410,10 +465,13 @@ QDBusArgument &QDBusArgument::operator<<(qint64 arg)
     \overload
     Appends the primitive value \a arg of type \c{UINT64} to the D-Bus stream.
 */
-QDBusArgument &QDBusArgument::operator<<(quint64 arg)
+QDBusArgument &QDBusArgument::operator<<( quint64 arg )
 {
-    if (QDBusArgumentPrivate::checkWrite(d))
-        d->marshaller()->append(arg);
+    if ( QDBusArgumentPrivate::checkWrite( d ) )
+    {
+        d->marshaller()->append( arg );
+    }
+
     return *this;
 }
 
@@ -422,10 +480,13 @@ QDBusArgument &QDBusArgument::operator<<(quint64 arg)
     Appends the primitive value \a arg of type \c{DOUBLE} (double-precision
     floating-point) to the D-Bus stream.
 */
-QDBusArgument &QDBusArgument::operator<<(double arg)
+QDBusArgument &QDBusArgument::operator<<( double arg )
 {
-    if (QDBusArgumentPrivate::checkWrite(d))
-        d->marshaller()->append(arg);
+    if ( QDBusArgumentPrivate::checkWrite( d ) )
+    {
+        d->marshaller()->append( arg );
+    }
+
     return *this;
 }
 
@@ -434,10 +495,13 @@ QDBusArgument &QDBusArgument::operator<<(double arg)
     Appends the primitive value \a arg of type \c{STRING} (Unicode character
     string) to the D-Bus stream.
 */
-QDBusArgument &QDBusArgument::operator<<(const QString &arg)
+QDBusArgument &QDBusArgument::operator<<( const QString &arg )
 {
-    if (QDBusArgumentPrivate::checkWrite(d))
-        d->marshaller()->append(arg);
+    if ( QDBusArgumentPrivate::checkWrite( d ) )
+    {
+        d->marshaller()->append( arg );
+    }
+
     return *this;
 }
 
@@ -447,10 +511,13 @@ QDBusArgument &QDBusArgument::operator<<(const QString &arg)
     Appends the primitive value \a arg of type \c{OBJECT_PATH} (path to a D-Bus
     object) to the D-Bus stream.
 */
-QDBusArgument &QDBusArgument::operator<<(const QDBusObjectPath &arg)
+QDBusArgument &QDBusArgument::operator<<( const QDBusObjectPath &arg )
 {
-    if (QDBusArgumentPrivate::checkWrite(d))
-        d->marshaller()->append(arg);
+    if ( QDBusArgumentPrivate::checkWrite( d ) )
+    {
+        d->marshaller()->append( arg );
+    }
+
     return *this;
 }
 
@@ -460,10 +527,13 @@ QDBusArgument &QDBusArgument::operator<<(const QDBusObjectPath &arg)
     Appends the primitive value \a arg of type \c{SIGNATURE} (D-Bus type
     signature) to the D-Bus stream.
 */
-QDBusArgument &QDBusArgument::operator<<(const QDBusSignature &arg)
+QDBusArgument &QDBusArgument::operator<<( const QDBusSignature &arg )
 {
-    if (QDBusArgumentPrivate::checkWrite(d))
-        d->marshaller()->append(arg);
+    if ( QDBusArgumentPrivate::checkWrite( d ) )
+    {
+        d->marshaller()->append( arg );
+    }
+
     return *this;
 }
 
@@ -474,10 +544,13 @@ QDBusArgument &QDBusArgument::operator<<(const QDBusSignature &arg)
     Appends the primitive value \a arg of type \c{UNIX_FILE_DESCRIPTOR} (Unix
     File Descriptor) to the D-Bus stream.
 */
-QDBusArgument &QDBusArgument::operator<<(const QDBusUnixFileDescriptor &arg)
+QDBusArgument &QDBusArgument::operator<<( const QDBusUnixFileDescriptor &arg )
 {
-    if (QDBusArgumentPrivate::checkWrite(d))
-        d->marshaller()->append(arg);
+    if ( QDBusArgumentPrivate::checkWrite( d ) )
+    {
+        d->marshaller()->append( arg );
+    }
+
     return *this;
 }
 
@@ -488,10 +561,13 @@ QDBusArgument &QDBusArgument::operator<<(const QDBusUnixFileDescriptor &arg)
     A D-Bus variant type can contain any type, including other
     variants. It is similar to the Qt QVariant type.
 */
-QDBusArgument &QDBusArgument::operator<<(const QDBusVariant &arg)
+QDBusArgument &QDBusArgument::operator<<( const QDBusVariant &arg )
 {
-    if (QDBusArgumentPrivate::checkWrite(d))
-        d->marshaller()->append(arg);
+    if ( QDBusArgumentPrivate::checkWrite( d ) )
+    {
+        d->marshaller()->append( arg );
+    }
+
     return *this;
 }
 
@@ -506,10 +582,13 @@ QDBusArgument &QDBusArgument::operator<<(const QDBusVariant &arg)
 
     Other arrays are supported through compound types in QtDBus.
 */
-QDBusArgument &QDBusArgument::operator<<(const QStringList &arg)
+QDBusArgument &QDBusArgument::operator<<( const QStringList &arg )
 {
-    if (QDBusArgumentPrivate::checkWrite(d))
-        d->marshaller()->append(arg);
+    if ( QDBusArgumentPrivate::checkWrite( d ) )
+    {
+        d->marshaller()->append( arg );
+    }
+
     return *this;
 }
 
@@ -524,10 +603,13 @@ QDBusArgument &QDBusArgument::operator<<(const QStringList &arg)
 
     Other arrays are supported through compound types in QtDBus.
 */
-QDBusArgument &QDBusArgument::operator<<(const QByteArray &arg)
+QDBusArgument &QDBusArgument::operator<<( const QByteArray &arg )
 {
-    if (QDBusArgumentPrivate::checkWrite(d))
-        d->marshaller()->append(arg);
+    if ( QDBusArgumentPrivate::checkWrite( d ) )
+    {
+        d->marshaller()->append( arg );
+    }
+
     return *this;
 }
 
@@ -539,10 +621,12 @@ QDBusArgument &QDBusArgument::operator<<(const QByteArray &arg)
 
     \sa asVariant()
 */
-void QDBusArgument::appendVariant(const QVariant &v)
+void QDBusArgument::appendVariant( const QVariant &v )
 {
-    if (QDBusArgumentPrivate::checkWrite(d))
-        d->marshaller()->appendVariantInternal(v);
+    if ( QDBusArgumentPrivate::checkWrite( d ) )
+    {
+        d->marshaller()->appendVariantInternal( v );
+    }
 }
 
 /*!
@@ -552,12 +636,19 @@ void QDBusArgument::appendVariant(const QVariant &v)
 */
 QString QDBusArgument::currentSignature() const
 {
-    if (!d)
+    if ( !d )
+    {
         return QString();
-    if (d->direction == QDBusArgumentPrivate::Demarshalling)
+    }
+
+    if ( d->direction == QDBusArgumentPrivate::Demarshalling )
+    {
         return d->demarshaller()->currentSignature();
+    }
     else
+    {
         return d->marshaller()->currentSignature();
+    }
 }
 
 /*!
@@ -571,10 +662,16 @@ QString QDBusArgument::currentSignature() const
 */
 QDBusArgument::ElementType QDBusArgument::currentType() const
 {
-    if (!d)
+    if ( !d )
+    {
         return UnknownType;
-    if (d->direction == QDBusArgumentPrivate::Demarshalling)
+    }
+
+    if ( d->direction == QDBusArgumentPrivate::Demarshalling )
+    {
         return d->demarshaller()->currentType();
+    }
+
     return UnknownType;
 }
 
@@ -582,10 +679,13 @@ QDBusArgument::ElementType QDBusArgument::currentType() const
     Extracts one D-BUS primitive argument of type \c{BYTE} from the
     D-BUS stream and puts it into \a arg.
 */
-const QDBusArgument &QDBusArgument::operator>>(uchar &arg) const
+const QDBusArgument &QDBusArgument::operator>>( uchar &arg ) const
 {
-    if (QDBusArgumentPrivate::checkReadAndDetach(d))
+    if ( QDBusArgumentPrivate::checkReadAndDetach( d ) )
+    {
         arg = d->demarshaller()->toByte();
+    }
+
     return *this;
 }
 
@@ -594,10 +694,13 @@ const QDBusArgument &QDBusArgument::operator>>(uchar &arg) const
     Extracts one D-Bus primitive argument of type \c{BOOLEAN} from the
     D-Bus stream.
 */
-const QDBusArgument &QDBusArgument::operator>>(bool &arg) const
+const QDBusArgument &QDBusArgument::operator>>( bool &arg ) const
 {
-    if (QDBusArgumentPrivate::checkReadAndDetach(d))
+    if ( QDBusArgumentPrivate::checkReadAndDetach( d ) )
+    {
         arg = d->demarshaller()->toBool();
+    }
+
     return *this;
 }
 
@@ -606,10 +709,13 @@ const QDBusArgument &QDBusArgument::operator>>(bool &arg) const
     Extracts one D-Bus primitive argument of type \c{UINT16} from the
     D-Bus stream.
 */
-const QDBusArgument &QDBusArgument::operator>>(ushort &arg) const
+const QDBusArgument &QDBusArgument::operator>>( ushort &arg ) const
 {
-    if (QDBusArgumentPrivate::checkReadAndDetach(d))
+    if ( QDBusArgumentPrivate::checkReadAndDetach( d ) )
+    {
         arg = d->demarshaller()->toUShort();
+    }
+
     return *this;
 }
 
@@ -618,10 +724,13 @@ const QDBusArgument &QDBusArgument::operator>>(ushort &arg) const
     Extracts one D-Bus primitive argument of type \c{INT16} from the
     D-Bus stream.
 */
-const QDBusArgument &QDBusArgument::operator>>(short &arg) const
+const QDBusArgument &QDBusArgument::operator>>( short &arg ) const
 {
-    if (QDBusArgumentPrivate::checkReadAndDetach(d))
+    if ( QDBusArgumentPrivate::checkReadAndDetach( d ) )
+    {
         arg = d->demarshaller()->toShort();
+    }
+
     return *this;
 }
 
@@ -630,10 +739,13 @@ const QDBusArgument &QDBusArgument::operator>>(short &arg) const
     Extracts one D-Bus primitive argument of type \c{INT32} from the
     D-Bus stream.
 */
-const QDBusArgument &QDBusArgument::operator>>(int &arg) const
+const QDBusArgument &QDBusArgument::operator>>( int &arg ) const
 {
-    if (QDBusArgumentPrivate::checkReadAndDetach(d))
+    if ( QDBusArgumentPrivate::checkReadAndDetach( d ) )
+    {
         arg = d->demarshaller()->toInt();
+    }
+
     return *this;
 }
 
@@ -642,10 +754,13 @@ const QDBusArgument &QDBusArgument::operator>>(int &arg) const
     Extracts one D-Bus primitive argument of type \c{UINT32} from the
     D-Bus stream.
 */
-const QDBusArgument &QDBusArgument::operator>>(uint &arg) const
+const QDBusArgument &QDBusArgument::operator>>( uint &arg ) const
 {
-    if (QDBusArgumentPrivate::checkReadAndDetach(d))
+    if ( QDBusArgumentPrivate::checkReadAndDetach( d ) )
+    {
         arg = d->demarshaller()->toUInt();
+    }
+
     return *this;
 }
 
@@ -654,10 +769,13 @@ const QDBusArgument &QDBusArgument::operator>>(uint &arg) const
     Extracts one D-Bus primitive argument of type \c{INT64} from the
     D-Bus stream.
 */
-const QDBusArgument &QDBusArgument::operator>>(qint64 &arg) const
+const QDBusArgument &QDBusArgument::operator>>( qint64 &arg ) const
 {
-    if (QDBusArgumentPrivate::checkReadAndDetach(d))
+    if ( QDBusArgumentPrivate::checkReadAndDetach( d ) )
+    {
         arg = d->demarshaller()->toLongLong();
+    }
+
     return *this;
 }
 
@@ -666,10 +784,13 @@ const QDBusArgument &QDBusArgument::operator>>(qint64 &arg) const
     Extracts one D-Bus primitive argument of type \c{UINT64} from the
     D-Bus stream.
 */
-const QDBusArgument &QDBusArgument::operator>>(quint64 &arg) const
+const QDBusArgument &QDBusArgument::operator>>( quint64 &arg ) const
 {
-    if (QDBusArgumentPrivate::checkReadAndDetach(d))
+    if ( QDBusArgumentPrivate::checkReadAndDetach( d ) )
+    {
         arg = d->demarshaller()->toULongLong();
+    }
+
     return *this;
 }
 
@@ -678,10 +799,13 @@ const QDBusArgument &QDBusArgument::operator>>(quint64 &arg) const
     Extracts one D-Bus primitive argument of type \c{DOUBLE}
     (double-precision floating pount) from the D-Bus stream.
 */
-const QDBusArgument &QDBusArgument::operator>>(double &arg) const
+const QDBusArgument &QDBusArgument::operator>>( double &arg ) const
 {
-    if (QDBusArgumentPrivate::checkReadAndDetach(d))
+    if ( QDBusArgumentPrivate::checkReadAndDetach( d ) )
+    {
         arg = d->demarshaller()->toDouble();
+    }
+
     return *this;
 }
 
@@ -690,10 +814,13 @@ const QDBusArgument &QDBusArgument::operator>>(double &arg) const
     Extracts one D-Bus primitive argument of type \c{STRING} (Unicode
     character string) from the D-Bus stream.
 */
-const QDBusArgument &QDBusArgument::operator>>(QString &arg) const
+const QDBusArgument &QDBusArgument::operator>>( QString &arg ) const
 {
-    if (QDBusArgumentPrivate::checkReadAndDetach(d))
+    if ( QDBusArgumentPrivate::checkReadAndDetach( d ) )
+    {
         arg = d->demarshaller()->toString();
+    }
+
     return *this;
 }
 
@@ -703,10 +830,13 @@ const QDBusArgument &QDBusArgument::operator>>(QString &arg) const
     Extracts one D-Bus primitive argument of type \c{OBJECT_PATH}
     (D-Bus path to an object) from the D-Bus stream.
 */
-const QDBusArgument &QDBusArgument::operator>>(QDBusObjectPath &arg) const
+const QDBusArgument &QDBusArgument::operator>>( QDBusObjectPath &arg ) const
 {
-    if (QDBusArgumentPrivate::checkReadAndDetach(d))
+    if ( QDBusArgumentPrivate::checkReadAndDetach( d ) )
+    {
         arg = d->demarshaller()->toObjectPath();
+    }
+
     return *this;
 }
 
@@ -716,10 +846,13 @@ const QDBusArgument &QDBusArgument::operator>>(QDBusObjectPath &arg) const
     Extracts one D-Bus primitive argument of type \c{SIGNATURE} (D-Bus
     type signature) from the D-Bus stream.
 */
-const QDBusArgument &QDBusArgument::operator>>(QDBusSignature &arg) const
+const QDBusArgument &QDBusArgument::operator>>( QDBusSignature &arg ) const
 {
-    if (QDBusArgumentPrivate::checkReadAndDetach(d))
+    if ( QDBusArgumentPrivate::checkReadAndDetach( d ) )
+    {
         arg = d->demarshaller()->toSignature();
+    }
+
     return *this;
 }
 
@@ -730,10 +863,13 @@ const QDBusArgument &QDBusArgument::operator>>(QDBusSignature &arg) const
     Extracts one D-Bus primitive argument of type \c{UNIX_FILE_DESCRIPTOR}
     (Unix file descriptor) from the D-Bus stream.
 */
-const QDBusArgument &QDBusArgument::operator>>(QDBusUnixFileDescriptor &arg) const
+const QDBusArgument &QDBusArgument::operator>>( QDBusUnixFileDescriptor &arg ) const
 {
-    if (QDBusArgumentPrivate::checkReadAndDetach(d))
+    if ( QDBusArgumentPrivate::checkReadAndDetach( d ) )
+    {
         arg = d->demarshaller()->toUnixFileDescriptor();
+    }
+
     return *this;
 }
 
@@ -750,10 +886,13 @@ const QDBusArgument &QDBusArgument::operator>>(QDBusUnixFileDescriptor &arg) con
     another QDBusArgument. It is your responsibility to further
     demarshall it into another type.
 */
-const QDBusArgument &QDBusArgument::operator>>(QDBusVariant &arg) const
+const QDBusArgument &QDBusArgument::operator>>( QDBusVariant &arg ) const
 {
-    if (QDBusArgumentPrivate::checkReadAndDetach(d))
+    if ( QDBusArgumentPrivate::checkReadAndDetach( d ) )
+    {
         arg = d->demarshaller()->toVariant();
+    }
+
     return *this;
 }
 
@@ -768,10 +907,13 @@ const QDBusArgument &QDBusArgument::operator>>(QDBusVariant &arg) const
 
     Other arrays are supported through compound types in QtDBus.
 */
-const QDBusArgument &QDBusArgument::operator>>(QStringList &arg) const
+const QDBusArgument &QDBusArgument::operator>>( QStringList &arg ) const
 {
-    if (QDBusArgumentPrivate::checkReadAndDetach(d))
+    if ( QDBusArgumentPrivate::checkReadAndDetach( d ) )
+    {
         arg = d->demarshaller()->toStringList();
+    }
+
     return *this;
 }
 
@@ -786,10 +928,13 @@ const QDBusArgument &QDBusArgument::operator>>(QStringList &arg) const
 
     Other arrays are supported through compound types in QtDBus.
 */
-const QDBusArgument &QDBusArgument::operator>>(QByteArray &arg) const
+const QDBusArgument &QDBusArgument::operator>>( QByteArray &arg ) const
 {
-    if (QDBusArgumentPrivate::checkReadAndDetach(d))
+    if ( QDBusArgumentPrivate::checkReadAndDetach( d ) )
+    {
         arg = d->demarshaller()->toByteArray();
+    }
+
     return *this;
 }
 
@@ -810,8 +955,10 @@ const QDBusArgument &QDBusArgument::operator>>(QByteArray &arg) const
 */
 void QDBusArgument::beginStructure()
 {
-    if (QDBusArgumentPrivate::checkWrite(d))
+    if ( QDBusArgumentPrivate::checkWrite( d ) )
+    {
         d = d->marshaller()->beginStructure();
+    }
 }
 
 /*!
@@ -822,8 +969,10 @@ void QDBusArgument::beginStructure()
 */
 void QDBusArgument::endStructure()
 {
-    if (QDBusArgumentPrivate::checkWrite(d))
+    if ( QDBusArgumentPrivate::checkWrite( d ) )
+    {
         d = d->marshaller()->endStructure();
+    }
 }
 
 /*!
@@ -843,10 +992,12 @@ void QDBusArgument::endStructure()
 
     \sa endArray(), beginStructure(), beginMap()
 */
-void QDBusArgument::beginArray(int id)
+void QDBusArgument::beginArray( int id )
 {
-    if (QDBusArgumentPrivate::checkWrite(d))
-        d = d->marshaller()->beginArray(id);
+    if ( QDBusArgumentPrivate::checkWrite( d ) )
+    {
+        d = d->marshaller()->beginArray( id );
+    }
 }
 
 /*!
@@ -857,8 +1008,10 @@ void QDBusArgument::beginArray(int id)
 */
 void QDBusArgument::endArray()
 {
-    if (QDBusArgumentPrivate::checkWrite(d))
+    if ( QDBusArgumentPrivate::checkWrite( d ) )
+    {
         d = d->marshaller()->endArray();
+    }
 }
 
 /*!
@@ -879,10 +1032,12 @@ void QDBusArgument::endArray()
 
     \sa endMap(), beginStructure(), beginArray(), beginMapEntry()
 */
-void QDBusArgument::beginMap(int kid, int vid)
+void QDBusArgument::beginMap( int kid, int vid )
 {
-    if (QDBusArgumentPrivate::checkWrite(d))
-        d = d->marshaller()->beginMap(kid, vid);
+    if ( QDBusArgumentPrivate::checkWrite( d ) )
+    {
+        d = d->marshaller()->beginMap( kid, vid );
+    }
 }
 
 /*!
@@ -893,8 +1048,10 @@ void QDBusArgument::beginMap(int kid, int vid)
 */
 void QDBusArgument::endMap()
 {
-    if (QDBusArgumentPrivate::checkWrite(d))
+    if ( QDBusArgumentPrivate::checkWrite( d ) )
+    {
         d = d->marshaller()->endMap();
+    }
 }
 
 /*!
@@ -908,8 +1065,10 @@ void QDBusArgument::endMap()
 */
 void QDBusArgument::beginMapEntry()
 {
-    if (QDBusArgumentPrivate::checkWrite(d))
+    if ( QDBusArgumentPrivate::checkWrite( d ) )
+    {
         d = d->marshaller()->beginMapEntry();
+    }
 }
 
 /*!
@@ -920,8 +1079,10 @@ void QDBusArgument::beginMapEntry()
 */
 void QDBusArgument::endMapEntry()
 {
-    if (QDBusArgumentPrivate::checkWrite(d))
+    if ( QDBusArgumentPrivate::checkWrite( d ) )
+    {
         d = d->marshaller()->endMapEntry();
+    }
 }
 
 /*!
@@ -936,8 +1097,10 @@ void QDBusArgument::endMapEntry()
 */
 void QDBusArgument::beginStructure() const
 {
-    if (QDBusArgumentPrivate::checkReadAndDetach(d))
+    if ( QDBusArgumentPrivate::checkReadAndDetach( d ) )
+    {
         d = d->demarshaller()->beginStructure();
+    }
 }
 
 /*!
@@ -948,8 +1111,10 @@ void QDBusArgument::beginStructure() const
 */
 void QDBusArgument::endStructure() const
 {
-    if (QDBusArgumentPrivate::checkReadAndDetach(d))
+    if ( QDBusArgumentPrivate::checkReadAndDetach( d ) )
+    {
         d = d->demarshaller()->endStructure();
+    }
 }
 
 /*!
@@ -972,8 +1137,10 @@ void QDBusArgument::endStructure() const
 */
 void QDBusArgument::beginArray() const
 {
-    if (QDBusArgumentPrivate::checkReadAndDetach(d))
+    if ( QDBusArgumentPrivate::checkReadAndDetach( d ) )
+    {
         d = d->demarshaller()->beginArray();
+    }
 }
 
 /*!
@@ -984,8 +1151,10 @@ void QDBusArgument::beginArray() const
 */
 void QDBusArgument::endArray() const
 {
-    if (QDBusArgumentPrivate::checkReadAndDetach(d))
+    if ( QDBusArgumentPrivate::checkReadAndDetach( d ) )
+    {
         d = d->demarshaller()->endArray();
+    }
 }
 
 /*!
@@ -1005,8 +1174,10 @@ void QDBusArgument::endArray() const
 */
 void QDBusArgument::beginMap() const
 {
-    if (QDBusArgumentPrivate::checkReadAndDetach(d))
+    if ( QDBusArgumentPrivate::checkReadAndDetach( d ) )
+    {
         d = d->demarshaller()->beginMap();
+    }
 }
 
 /*!
@@ -1017,8 +1188,10 @@ void QDBusArgument::beginMap() const
 */
 void QDBusArgument::endMap() const
 {
-    if (QDBusArgumentPrivate::checkReadAndDetach(d))
+    if ( QDBusArgumentPrivate::checkReadAndDetach( d ) )
+    {
         d = d->demarshaller()->endMap();
+    }
 }
 
 /*!
@@ -1031,8 +1204,10 @@ void QDBusArgument::endMap() const
 */
 void QDBusArgument::beginMapEntry() const
 {
-    if (QDBusArgumentPrivate::checkReadAndDetach(d))
+    if ( QDBusArgumentPrivate::checkReadAndDetach( d ) )
+    {
         d = d->demarshaller()->beginMapEntry();
+    }
 }
 
 /*!
@@ -1043,8 +1218,10 @@ void QDBusArgument::beginMapEntry() const
 */
 void QDBusArgument::endMapEntry() const
 {
-    if (QDBusArgumentPrivate::checkReadAndDetach(d))
+    if ( QDBusArgumentPrivate::checkReadAndDetach( d ) )
+    {
         d = d->demarshaller()->endMapEntry();
+    }
 }
 
 /*!
@@ -1054,8 +1231,10 @@ void QDBusArgument::endMapEntry() const
 */
 bool QDBusArgument::atEnd() const
 {
-    if (QDBusArgumentPrivate::checkRead(d))
+    if ( QDBusArgumentPrivate::checkRead( d ) )
+    {
         return d->demarshaller()->atEnd();
+    }
 
     return true;                // at least, stop reading
 }
@@ -1082,8 +1261,10 @@ bool QDBusArgument::atEnd() const
 */
 QVariant QDBusArgument::asVariant() const
 {
-    if (QDBusArgumentPrivate::checkRead(d))
+    if ( QDBusArgumentPrivate::checkRead( d ) )
+    {
         return d->demarshaller()->toVariantInternal();
+    }
 
     return QVariant();
 }
@@ -1098,7 +1279,7 @@ QT_BEGIN_NAMESPACE
 
 // QDBusArgument operators
 
-const QDBusArgument &operator>>(const QDBusArgument &a, QVariant &v)
+const QDBusArgument &operator>>( const QDBusArgument &a, QVariant &v )
 {
     QDBusVariant dbv;
     a >> dbv;
@@ -1108,57 +1289,79 @@ const QDBusArgument &operator>>(const QDBusArgument &a, QVariant &v)
 
 // QVariant types
 #ifndef QDBUS_NO_SPECIALTYPES
-const QDBusArgument &operator>>(const QDBusArgument &a, QDate &date)
+const QDBusArgument &operator>>( const QDBusArgument &a, QDate &date )
 {
     int y, m, d;
     a.beginStructure();
     a >> y >> m >> d;
     a.endStructure();
 
-    if (y != 0 && m != 0 && d != 0)
-        date.setYMD(y, m, d);
+    if ( y != 0 && m != 0 && d != 0 )
+    {
+        date.setYMD( y, m, d );
+    }
     else
+    {
         date = QDate();
+    }
+
     return a;
 }
 
-QDBusArgument &operator<<(QDBusArgument &a, const QDate &date)
+QDBusArgument &operator<<( QDBusArgument &a, const QDate &date )
 {
     a.beginStructure();
-    if (date.isValid())
+
+    if ( date.isValid() )
+    {
         a << date.year() << date.month() << date.day();
+    }
     else
+    {
         a << 0 << 0 << 0;
+    }
+
     a.endStructure();
     return a;
 }
 
-const QDBusArgument &operator>>(const QDBusArgument &a, QTime &time)
+const QDBusArgument &operator>>( const QDBusArgument &a, QTime &time )
 {
     int h, m, s, ms;
     a.beginStructure();
     a >> h >> m >> s >> ms;
     a.endStructure();
 
-    if (h < 0)
+    if ( h < 0 )
+    {
         time = QTime();
+    }
     else
-        time.setHMS(h, m, s, ms);
+    {
+        time.setHMS( h, m, s, ms );
+    }
+
     return a;
 }
 
-QDBusArgument &operator<<(QDBusArgument &a, const QTime &time)
+QDBusArgument &operator<<( QDBusArgument &a, const QTime &time )
 {
     a.beginStructure();
-    if (time.isValid())
+
+    if ( time.isValid() )
+    {
         a << time.hour() << time.minute() << time.second() << time.msec();
+    }
     else
+    {
         a << -1 << -1 << -1 << -1;
+    }
+
     a.endStructure();
     return a;
 }
 
-const QDBusArgument &operator>>(const QDBusArgument &a, QDateTime &dt)
+const QDBusArgument &operator>>( const QDBusArgument &a, QDateTime &dt )
 {
     QDate date;
     QTime time;
@@ -1168,30 +1371,30 @@ const QDBusArgument &operator>>(const QDBusArgument &a, QDateTime &dt)
     a >> date >> time >> timespec;
     a.endStructure();
 
-    dt = QDateTime(date, time, Qt::TimeSpec(timespec));
+    dt = QDateTime( date, time, Qt::TimeSpec( timespec ) );
     return a;
 }
 
-QDBusArgument &operator<<(QDBusArgument &a, const QDateTime &dt)
+QDBusArgument &operator<<( QDBusArgument &a, const QDateTime &dt )
 {
     a.beginStructure();
-    a << dt.date() << dt.time() << int(dt.timeSpec());
+    a << dt.date() << dt.time() << int( dt.timeSpec() );
     a.endStructure();
     return a;
 }
 
-const QDBusArgument &operator>>(const QDBusArgument &a, QRect &rect)
+const QDBusArgument &operator>>( const QDBusArgument &a, QRect &rect )
 {
     int x, y, width, height;
     a.beginStructure();
     a >> x >> y >> width >> height;
     a.endStructure();
 
-    rect.setRect(x, y, width, height);
+    rect.setRect( x, y, width, height );
     return a;
 }
 
-QDBusArgument &operator<<(QDBusArgument &a, const QRect &rect)
+QDBusArgument &operator<<( QDBusArgument &a, const QRect &rect )
 {
     a.beginStructure();
     a << rect.x() << rect.y() << rect.width() << rect.height();
@@ -1200,27 +1403,27 @@ QDBusArgument &operator<<(QDBusArgument &a, const QRect &rect)
     return a;
 }
 
-const QDBusArgument &operator>>(const QDBusArgument &a, QRectF &rect)
+const QDBusArgument &operator>>( const QDBusArgument &a, QRectF &rect )
 {
     double x, y, width, height;
     a.beginStructure();
     a >> x >> y >> width >> height;
     a.endStructure();
 
-    rect.setRect(qreal(x), qreal(y), qreal(width), qreal(height));
+    rect.setRect( qreal( x ), qreal( y ), qreal( width ), qreal( height ) );
     return a;
 }
 
-QDBusArgument &operator<<(QDBusArgument &a, const QRectF &rect)
+QDBusArgument &operator<<( QDBusArgument &a, const QRectF &rect )
 {
     a.beginStructure();
-    a << double(rect.x()) << double(rect.y()) << double(rect.width()) << double(rect.height());
+    a << double( rect.x() ) << double( rect.y() ) << double( rect.width() ) << double( rect.height() );
     a.endStructure();
 
     return a;
 }
 
-const QDBusArgument &operator>>(const QDBusArgument &a, QSize &size)
+const QDBusArgument &operator>>( const QDBusArgument &a, QSize &size )
 {
     a.beginStructure();
     a >> size.rwidth() >> size.rheight();
@@ -1229,7 +1432,7 @@ const QDBusArgument &operator>>(const QDBusArgument &a, QSize &size)
     return a;
 }
 
-QDBusArgument &operator<<(QDBusArgument &a, const QSize &size)
+QDBusArgument &operator<<( QDBusArgument &a, const QSize &size )
 {
     a.beginStructure();
     a << size.width() << size.height();
@@ -1238,28 +1441,28 @@ QDBusArgument &operator<<(QDBusArgument &a, const QSize &size)
     return a;
 }
 
-const QDBusArgument &operator>>(const QDBusArgument &a, QSizeF &size)
+const QDBusArgument &operator>>( const QDBusArgument &a, QSizeF &size )
 {
     double width, height;
     a.beginStructure();
     a >> width >> height;
     a.endStructure();
 
-    size.setWidth(qreal(width));
-    size.setHeight(qreal(height));
+    size.setWidth( qreal( width ) );
+    size.setHeight( qreal( height ) );
     return a;
 }
 
-QDBusArgument &operator<<(QDBusArgument &a, const QSizeF &size)
+QDBusArgument &operator<<( QDBusArgument &a, const QSizeF &size )
 {
     a.beginStructure();
-    a << double(size.width()) << double(size.height());
+    a << double( size.width() ) << double( size.height() );
     a.endStructure();
 
     return a;
 }
 
-const QDBusArgument &operator>>(const QDBusArgument &a, QPoint &pt)
+const QDBusArgument &operator>>( const QDBusArgument &a, QPoint &pt )
 {
     a.beginStructure();
     a >> pt.rx() >> pt.ry();
@@ -1268,7 +1471,7 @@ const QDBusArgument &operator>>(const QDBusArgument &a, QPoint &pt)
     return a;
 }
 
-QDBusArgument &operator<<(QDBusArgument &a, const QPoint &pt)
+QDBusArgument &operator<<( QDBusArgument &a, const QPoint &pt )
 {
     a.beginStructure();
     a << pt.x() << pt.y();
@@ -1277,39 +1480,39 @@ QDBusArgument &operator<<(QDBusArgument &a, const QPoint &pt)
     return a;
 }
 
-const QDBusArgument &operator>>(const QDBusArgument &a, QPointF &pt)
+const QDBusArgument &operator>>( const QDBusArgument &a, QPointF &pt )
 {
     double x, y;
     a.beginStructure();
     a >> x >> y;
     a.endStructure();
 
-    pt.setX(qreal(x));
-    pt.setY(qreal(y));
+    pt.setX( qreal( x ) );
+    pt.setY( qreal( y ) );
     return a;
 }
 
-QDBusArgument &operator<<(QDBusArgument &a, const QPointF &pt)
+QDBusArgument &operator<<( QDBusArgument &a, const QPointF &pt )
 {
     a.beginStructure();
-    a << double(pt.x()) << double(pt.y());
+    a << double( pt.x() ) << double( pt.y() );
     a.endStructure();
 
     return a;
 }
 
-const QDBusArgument &operator>>(const QDBusArgument &a, QLine &line)
+const QDBusArgument &operator>>( const QDBusArgument &a, QLine &line )
 {
     QPoint p1, p2;
     a.beginStructure();
     a >> p1 >> p2;
     a.endStructure();
 
-    line = QLine(p1, p2);
+    line = QLine( p1, p2 );
     return a;
 }
 
-QDBusArgument &operator<<(QDBusArgument &a, const QLine &line)
+QDBusArgument &operator<<( QDBusArgument &a, const QLine &line )
 {
     a.beginStructure();
     a << line.p1() << line.p2();
@@ -1318,18 +1521,18 @@ QDBusArgument &operator<<(QDBusArgument &a, const QLine &line)
     return a;
 }
 
-const QDBusArgument &operator>>(const QDBusArgument &a, QLineF &line)
+const QDBusArgument &operator>>( const QDBusArgument &a, QLineF &line )
 {
     QPointF p1, p2;
     a.beginStructure();
     a >> p1 >> p2;
     a.endStructure();
 
-    line = QLineF(p1, p2);
+    line = QLineF( p1, p2 );
     return a;
 }
 
-QDBusArgument &operator<<(QDBusArgument &a, const QLineF &line)
+QDBusArgument &operator<<( QDBusArgument &a, const QLineF &line )
 {
     a.beginStructure();
     a << line.p1() << line.p2();

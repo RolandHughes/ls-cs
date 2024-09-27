@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006 Lars Knoll 
+ * Copyright (C) 2006 Lars Knoll
  * Copyright (C) 2007 Apple Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or
@@ -29,151 +29,180 @@
 
 using namespace std;
 
-namespace WebCore {
-
-static TextBreakIterator* setUpIterator(bool& createdIterator, TextBreakIterator*& iterator,
-    UBreakIteratorType type, const UChar* string, int length)
+namespace WebCore
 {
-    if (!string)
-        return 0;
 
-    if (!createdIterator) {
-        UErrorCode openStatus = U_ZERO_ERROR;
-        iterator = reinterpret_cast<TextBreakIterator*>(ubrk_open(type, currentTextBreakLocaleID(), 0, 0, &openStatus));
-        createdIterator = true;
-        ASSERT_WITH_MESSAGE(U_SUCCESS(openStatus), "ICU could not open a break iterator: %s (%d)", u_errorName(openStatus), openStatus);
-    }
-    if (!iterator)
+static TextBreakIterator *setUpIterator( bool &createdIterator, TextBreakIterator *&iterator,
+        UBreakIteratorType type, const UChar *string, int length )
+{
+    if ( !string )
+    {
         return 0;
+    }
+
+    if ( !createdIterator )
+    {
+        UErrorCode openStatus = U_ZERO_ERROR;
+        iterator = reinterpret_cast<TextBreakIterator *>( ubrk_open( type, currentTextBreakLocaleID(), 0, 0, &openStatus ) );
+        createdIterator = true;
+        ASSERT_WITH_MESSAGE( U_SUCCESS( openStatus ), "ICU could not open a break iterator: %s (%d)", u_errorName( openStatus ),
+                             openStatus );
+    }
+
+    if ( !iterator )
+    {
+        return 0;
+    }
 
     UErrorCode setTextStatus = U_ZERO_ERROR;
-    ubrk_setText(reinterpret_cast<UBreakIterator*>(iterator), string, length, &setTextStatus);
-    if (U_FAILURE(setTextStatus))
+    ubrk_setText( reinterpret_cast<UBreakIterator *>( iterator ), string, length, &setTextStatus );
+
+    if ( U_FAILURE( setTextStatus ) )
+    {
         return 0;
+    }
 
     return iterator;
 }
 
-TextBreakIterator* characterBreakIterator(const UChar* string, int length)
+TextBreakIterator *characterBreakIterator( const UChar *string, int length )
 {
     static bool createdCharacterBreakIterator = false;
-    static TextBreakIterator* staticCharacterBreakIterator;
-    return setUpIterator(createdCharacterBreakIterator,
-        staticCharacterBreakIterator, UBRK_CHARACTER, string, length);
+    static TextBreakIterator *staticCharacterBreakIterator;
+    return setUpIterator( createdCharacterBreakIterator,
+                          staticCharacterBreakIterator, UBRK_CHARACTER, string, length );
 }
 
-TextBreakIterator* wordBreakIterator(const UChar* string, int length)
+TextBreakIterator *wordBreakIterator( const UChar *string, int length )
 {
     static bool createdWordBreakIterator = false;
-    static TextBreakIterator* staticWordBreakIterator;
-    return setUpIterator(createdWordBreakIterator,
-        staticWordBreakIterator, UBRK_WORD, string, length);
+    static TextBreakIterator *staticWordBreakIterator;
+    return setUpIterator( createdWordBreakIterator,
+                          staticWordBreakIterator, UBRK_WORD, string, length );
 }
 
 static bool createdLineBreakIterator = false;
-static TextBreakIterator* staticLineBreakIterator;
+static TextBreakIterator *staticLineBreakIterator;
 
-TextBreakIterator* acquireLineBreakIterator(const UChar* string, int length)
+TextBreakIterator *acquireLineBreakIterator( const UChar *string, int length )
 {
-    TextBreakIterator* lineBreakIterator = 0;
-    if (!createdLineBreakIterator || staticLineBreakIterator) {
-        setUpIterator(createdLineBreakIterator, staticLineBreakIterator, UBRK_LINE, string, length);
-        swap(staticLineBreakIterator, lineBreakIterator);
+    TextBreakIterator *lineBreakIterator = 0;
+
+    if ( !createdLineBreakIterator || staticLineBreakIterator )
+    {
+        setUpIterator( createdLineBreakIterator, staticLineBreakIterator, UBRK_LINE, string, length );
+        swap( staticLineBreakIterator, lineBreakIterator );
     }
 
-    if (!lineBreakIterator) {
+    if ( !lineBreakIterator )
+    {
         bool createdNewLineBreakIterator = false;
-        setUpIterator(createdNewLineBreakIterator, lineBreakIterator, UBRK_LINE, string, length);
+        setUpIterator( createdNewLineBreakIterator, lineBreakIterator, UBRK_LINE, string, length );
     }
 
     return lineBreakIterator;
 }
 
-void releaseLineBreakIterator(TextBreakIterator* iterator)
+void releaseLineBreakIterator( TextBreakIterator *iterator )
 {
-    ASSERT(createdLineBreakIterator);
-    ASSERT(iterator);
+    ASSERT( createdLineBreakIterator );
+    ASSERT( iterator );
 
-    if (!staticLineBreakIterator)
+    if ( !staticLineBreakIterator )
+    {
         staticLineBreakIterator = iterator;
+    }
     else
-        ubrk_close(reinterpret_cast<UBreakIterator*>(iterator));
+    {
+        ubrk_close( reinterpret_cast<UBreakIterator *>( iterator ) );
+    }
 }
 
-TextBreakIterator* sentenceBreakIterator(const UChar* string, int length)
+TextBreakIterator *sentenceBreakIterator( const UChar *string, int length )
 {
     static bool createdSentenceBreakIterator = false;
-    static TextBreakIterator* staticSentenceBreakIterator;
-    return setUpIterator(createdSentenceBreakIterator,
-        staticSentenceBreakIterator, UBRK_SENTENCE, string, length);
+    static TextBreakIterator *staticSentenceBreakIterator;
+    return setUpIterator( createdSentenceBreakIterator,
+                          staticSentenceBreakIterator, UBRK_SENTENCE, string, length );
 }
 
-int textBreakFirst(TextBreakIterator* iterator)
+int textBreakFirst( TextBreakIterator *iterator )
 {
-    return ubrk_first(reinterpret_cast<UBreakIterator*>(iterator));
+    return ubrk_first( reinterpret_cast<UBreakIterator *>( iterator ) );
 }
 
-int textBreakLast(TextBreakIterator* iterator)
+int textBreakLast( TextBreakIterator *iterator )
 {
-    return ubrk_last(reinterpret_cast<UBreakIterator*>(iterator));
+    return ubrk_last( reinterpret_cast<UBreakIterator *>( iterator ) );
 }
 
-int textBreakNext(TextBreakIterator* iterator)
+int textBreakNext( TextBreakIterator *iterator )
 {
-    return ubrk_next(reinterpret_cast<UBreakIterator*>(iterator));
+    return ubrk_next( reinterpret_cast<UBreakIterator *>( iterator ) );
 }
 
-int textBreakPrevious(TextBreakIterator* iterator)
+int textBreakPrevious( TextBreakIterator *iterator )
 {
-    return ubrk_previous(reinterpret_cast<UBreakIterator*>(iterator));
+    return ubrk_previous( reinterpret_cast<UBreakIterator *>( iterator ) );
 }
 
-int textBreakPreceding(TextBreakIterator* iterator, int pos)
+int textBreakPreceding( TextBreakIterator *iterator, int pos )
 {
-    return ubrk_preceding(reinterpret_cast<UBreakIterator*>(iterator), pos);
+    return ubrk_preceding( reinterpret_cast<UBreakIterator *>( iterator ), pos );
 }
 
-int textBreakFollowing(TextBreakIterator* iterator, int pos)
+int textBreakFollowing( TextBreakIterator *iterator, int pos )
 {
-    return ubrk_following(reinterpret_cast<UBreakIterator*>(iterator), pos);
+    return ubrk_following( reinterpret_cast<UBreakIterator *>( iterator ), pos );
 }
 
-int textBreakCurrent(TextBreakIterator* iterator)
+int textBreakCurrent( TextBreakIterator *iterator )
 {
-    return ubrk_current(reinterpret_cast<UBreakIterator*>(iterator));
+    return ubrk_current( reinterpret_cast<UBreakIterator *>( iterator ) );
 }
 
-bool isTextBreak(TextBreakIterator* iterator, int position)
+bool isTextBreak( TextBreakIterator *iterator, int position )
 {
-    return ubrk_isBoundary(reinterpret_cast<UBreakIterator*>(iterator), position);
+    return ubrk_isBoundary( reinterpret_cast<UBreakIterator *>( iterator ), position );
 }
 
-static TextBreakIterator* setUpIteratorWithRules(bool& createdIterator, TextBreakIterator*& iterator,
-    const char* breakRules, const UChar* string, int length)
+static TextBreakIterator *setUpIteratorWithRules( bool &createdIterator, TextBreakIterator *&iterator,
+        const char *breakRules, const UChar *string, int length )
 {
-    if (!string)
+    if ( !string )
+    {
         return 0;
+    }
 
-    if (!createdIterator) {
+    if ( !createdIterator )
+    {
         UParseError parseStatus;
         UErrorCode openStatus = U_ZERO_ERROR;
-        String rules(breakRules);
-        iterator = reinterpret_cast<TextBreakIterator*>(ubrk_openRules(rules.characters(), rules.length(), 0, 0, &parseStatus, &openStatus));
+        String rules( breakRules );
+        iterator = reinterpret_cast<TextBreakIterator *>( ubrk_openRules( rules.characters(), rules.length(), 0, 0, &parseStatus,
+                   &openStatus ) );
         createdIterator = true;
-        ASSERT_WITH_MESSAGE(U_SUCCESS(openStatus), "ICU could not open a break iterator: %s (%d)", u_errorName(openStatus), openStatus);
+        ASSERT_WITH_MESSAGE( U_SUCCESS( openStatus ), "ICU could not open a break iterator: %s (%d)", u_errorName( openStatus ),
+                             openStatus );
     }
-    if (!iterator)
+
+    if ( !iterator )
+    {
         return 0;
+    }
 
     UErrorCode setTextStatus = U_ZERO_ERROR;
-    ubrk_setText(reinterpret_cast<UBreakIterator*>(iterator), string, length, &setTextStatus);
-    if (U_FAILURE(setTextStatus))
+    ubrk_setText( reinterpret_cast<UBreakIterator *>( iterator ), string, length, &setTextStatus );
+
+    if ( U_FAILURE( setTextStatus ) )
+    {
         return 0;
+    }
 
     return iterator;
 }
 
-TextBreakIterator* cursorMovementIterator(const UChar* string, int length)
+TextBreakIterator *cursorMovementIterator( const UChar *string, int length )
 {
     // This rule set is based on character-break iterator rules of ICU 4.0
     // <http://source.icu-project.org/repos/icu/icu/tags/release-4-0/source/data/brkitr/char.txt>.
@@ -182,7 +211,7 @@ TextBreakIterator* cursorMovementIterator(const UChar* string, int length)
     // * Removed rules that prevent a cursor from moving after prepend characters (Bug 24342);
     // * Added rules that prevent a cursor from moving after virama signs of Indic languages except Tamil (Bug 15790), and;
     // * Added rules that prevent a cursor from moving before Japanese half-width katakara voiced marks.
-    static const char* kRules =
+    static const char *kRules =
         "$CR      = [\\p{Grapheme_Cluster_Break = CR}];"
         "$LF      = [\\p{Grapheme_Cluster_Break = LF}];"
         "$Control = [\\p{Grapheme_Cluster_Break = Control}];"
@@ -252,8 +281,8 @@ TextBreakIterator* cursorMovementIterator(const UChar* string, int length)
         "!!safe_reverse;"
         "!!safe_forward;";
     static bool createdCursorMovementIterator = false;
-    static TextBreakIterator* staticCursorMovementIterator;
-    return setUpIteratorWithRules(createdCursorMovementIterator, staticCursorMovementIterator, kRules, string, length);
+    static TextBreakIterator *staticCursorMovementIterator;
+    return setUpIteratorWithRules( createdCursorMovementIterator, staticCursorMovementIterator, kRules, string, length );
 }
 
 }

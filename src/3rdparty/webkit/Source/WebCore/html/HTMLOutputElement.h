@@ -35,31 +35,40 @@
 #include "HTMLFormControlElement.h"
 #include <wtf/OwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class HTMLOutputElement : public HTMLFormControlElement {
+class HTMLOutputElement : public HTMLFormControlElement
+{
 public:
-    static PassRefPtr<HTMLOutputElement> create(const QualifiedName&, Document*, HTMLFormElement*);
+    static PassRefPtr<HTMLOutputElement> create( const QualifiedName &, Document *, HTMLFormElement * );
 
-    virtual bool willValidate() const { return false; }
+    virtual bool willValidate() const
+    {
+        return false;
+    }
 
     String value() const;
-    void setValue(const String&);
+    void setValue( const String & );
     String defaultValue() const;
-    void setDefaultValue(const String&);
-    void setFor(const String&);
-    DOMSettableTokenList* htmlFor() const;
+    void setDefaultValue( const String & );
+    void setFor( const String & );
+    DOMSettableTokenList *htmlFor() const;
 
 private:
-    HTMLOutputElement(const QualifiedName&, Document*, HTMLFormElement*);
+    HTMLOutputElement( const QualifiedName &, Document *, HTMLFormElement * );
 
-    virtual void parseMappedAttribute(Attribute*);
-    virtual const AtomicString& formControlType() const;
-    virtual bool isEnumeratable() const { return true; }
-    virtual void childrenChanged(bool createdByParser = false, Node* beforeChange = 0, Node* afterChange = 0, int childCountDelta = 0);
+    virtual void parseMappedAttribute( Attribute * );
+    virtual const AtomicString &formControlType() const;
+    virtual bool isEnumeratable() const
+    {
+        return true;
+    }
+    virtual void childrenChanged( bool createdByParser = false, Node *beforeChange = 0, Node *afterChange = 0,
+                                  int childCountDelta = 0 );
     virtual void reset();
 
-    void setTextContentInternal(const String&);
+    void setTextContentInternal( const String & );
 
     bool m_isDefaultValueMode;
     bool m_isSetTextContentInProgress;

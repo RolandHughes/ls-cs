@@ -20,18 +20,19 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
 #include "DragController.h"
 
 #include "DragData.h"
-#include "windows.h" 
+#include "windows.h"
 #include "SelectionController.h"
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 const int DragController::LinkDragBorderInset = 2;
 const int DragController::MaxOriginalImageArea = 1500 * 1500;
@@ -40,25 +41,25 @@ const int DragController::DragIconBottomInset = 3;
 
 const float DragController::DragImageAlpha = 0.75f;
 
-DragOperation DragController::dragOperation(DragData* dragData)
+DragOperation DragController::dragOperation( DragData *dragData )
 {
     //FIXME: to match the macos behaviour we should return DragOperationNone
     //if we are a modal window, we are the drag source, or the window is an attached sheet
-    //If this can be determined from within WebCore operationForDrag can be pulled into 
+    //If this can be determined from within WebCore operationForDrag can be pulled into
     //WebCore itself
-    ASSERT(dragData);
-    return dragData->containsURL(0) && !m_didInitiateDrag ? DragOperationCopy : DragOperationNone;
+    ASSERT( dragData );
+    return dragData->containsURL( 0 ) && !m_didInitiateDrag ? DragOperationCopy : DragOperationNone;
 }
 
-bool DragController::isCopyKeyDown(DragData*)
+bool DragController::isCopyKeyDown( DragData * )
 {
-    return ::GetAsyncKeyState(VK_CONTROL);
+    return ::GetAsyncKeyState( VK_CONTROL );
 }
-    
-const IntSize& DragController::maxDragImageSize()
+
+const IntSize &DragController::maxDragImageSize()
 {
-    static const IntSize maxDragImageSize(200, 200);
-    
+    static const IntSize maxDragImageSize( 200, 200 );
+
     return maxDragImageSize;
 }
 

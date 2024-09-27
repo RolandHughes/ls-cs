@@ -30,31 +30,31 @@
 
 class QScrollerPropertiesPrivate
 {
- public:
-   static QScrollerPropertiesPrivate *defaults();
+public:
+    static QScrollerPropertiesPrivate *defaults();
 
-   bool operator==(const QScrollerPropertiesPrivate &) const;
+    bool operator==( const QScrollerPropertiesPrivate & ) const;
 
-   qreal mousePressEventDelay;
-   qreal dragStartDistance;
-   qreal dragVelocitySmoothingFactor;
-   qreal axisLockThreshold;
-   QEasingCurve scrollingCurve;
-   qreal decelerationFactor;
-   qreal minimumVelocity;
-   qreal maximumVelocity;
-   qreal maximumClickThroughVelocity;
-   qreal acceleratingFlickMaximumTime;
-   qreal acceleratingFlickSpeedupFactor;
-   qreal snapPositionRatio;
-   qreal snapTime;
-   qreal overshootDragResistanceFactor;
-   qreal overshootDragDistanceFactor;
-   qreal overshootScrollDistanceFactor;
-   qreal overshootScrollTime;
-   QScrollerProperties::OvershootPolicy hOvershootPolicy;
-   QScrollerProperties::OvershootPolicy vOvershootPolicy;
-   QScrollerProperties::FrameRates frameRate;
+    qreal mousePressEventDelay;
+    qreal dragStartDistance;
+    qreal dragVelocitySmoothingFactor;
+    qreal axisLockThreshold;
+    QEasingCurve scrollingCurve;
+    qreal decelerationFactor;
+    qreal minimumVelocity;
+    qreal maximumVelocity;
+    qreal maximumClickThroughVelocity;
+    qreal acceleratingFlickMaximumTime;
+    qreal acceleratingFlickSpeedupFactor;
+    qreal snapPositionRatio;
+    qreal snapTime;
+    qreal overshootDragResistanceFactor;
+    qreal overshootDragDistanceFactor;
+    qreal overshootScrollDistanceFactor;
+    qreal overshootScrollTime;
+    QScrollerProperties::OvershootPolicy hOvershootPolicy;
+    QScrollerProperties::OvershootPolicy vOvershootPolicy;
+    QScrollerProperties::FrameRates frameRate;
 };
 
 #endif // QSCROLLERPROPERTIES_P_H

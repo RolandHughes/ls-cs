@@ -26,18 +26,18 @@
 QT_BEGIN_NAMESPACE
 
 
-/*! \internal */
-QDeclarativeParserStatus::QDeclarativeParserStatus()
-   : d(0)
+/*! \internal */ QDeclarativeParserStatus::QDeclarativeParserStatus()
+    : d( 0 )
 {
 }
 
 /*! \internal */
 QDeclarativeParserStatus::~QDeclarativeParserStatus()
 {
-   if (d) {
-      (*d) = 0;
-   }
+    if ( d )
+    {
+        ( *d ) = 0;
+    }
 }
 
 

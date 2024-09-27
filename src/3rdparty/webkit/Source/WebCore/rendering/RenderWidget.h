@@ -26,73 +26,88 @@
 #include "RenderReplaced.h"
 #include "Widget.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class RenderWidget : public RenderReplaced, private OverlapTestRequestClient {
+class RenderWidget : public RenderReplaced, private OverlapTestRequestClient
+{
 public:
     virtual ~RenderWidget();
 
-    Widget* widget() const { return m_widget.get(); }
-    virtual void setWidget(PassRefPtr<Widget>);
+    Widget *widget() const
+    {
+        return m_widget.get();
+    }
+    virtual void setWidget( PassRefPtr<Widget> );
 
-    static RenderWidget* find(const Widget*);
+    static RenderWidget *find( const Widget * );
 
     void updateWidgetPosition();
     void widgetPositionsUpdated();
     IntRect windowClipRect() const;
 
-    void showSubstituteImage(PassRefPtr<Image>);
+    void showSubstituteImage( PassRefPtr<Image> );
 
-    void notifyWidget(WidgetNotification);
-    
+    void notifyWidget( WidgetNotification );
+
     static void suspendWidgetHierarchyUpdates();
     static void resumeWidgetHierarchyUpdates();
 
-    RenderArena* ref() { ++m_refCount; return renderArena(); }
-    void deref(RenderArena*);
+    RenderArena *ref()
+    {
+        ++m_refCount;
+        return renderArena();
+    }
+    void deref( RenderArena * );
 
 protected:
-    RenderWidget(Node*);
+    RenderWidget( Node * );
 
-    FrameView* frameView() const { return m_frameView; }
+    FrameView *frameView() const
+    {
+        return m_frameView;
+    }
 
     void clearWidget();
 
-    virtual void styleDidChange(StyleDifference, const RenderStyle* oldStyle);
+    virtual void styleDidChange( StyleDifference, const RenderStyle *oldStyle );
     virtual void layout();
-    virtual void paint(PaintInfo&, int x, int y);
+    virtual void paint( PaintInfo &, int x, int y );
 
 private:
-    virtual bool isWidget() const { return true; }
+    virtual bool isWidget() const
+    {
+        return true;
+    }
 
     virtual void destroy();
-    virtual void setSelectionState(SelectionState);
-    virtual bool nodeAtPoint(const HitTestRequest&, HitTestResult&, int x, int y, int tx, int ty, HitTestAction);
-    virtual void setOverlapTestResult(bool);
+    virtual void setSelectionState( SelectionState );
+    virtual bool nodeAtPoint( const HitTestRequest &, HitTestResult &, int x, int y, int tx, int ty, HitTestAction );
+    virtual void setOverlapTestResult( bool );
 
-    bool setWidgetGeometry(const IntRect&, const IntSize&);
+    bool setWidgetGeometry( const IntRect &, const IntSize & );
 
     RefPtr<Widget> m_widget;
     RefPtr<Image> m_substituteImage;
-    FrameView* m_frameView;
+    FrameView *m_frameView;
     IntRect m_clipRect; // The rectangle needs to remain correct after scrolling, so it is stored in content view coordinates, and not clipped to window.
     int m_refCount;
 };
 
-inline RenderWidget* toRenderWidget(RenderObject* object)
+inline RenderWidget *toRenderWidget( RenderObject *object )
 {
-    ASSERT(!object || object->isWidget());
-    return static_cast<RenderWidget*>(object);
+    ASSERT( !object || object->isWidget() );
+    return static_cast<RenderWidget *>( object );
 }
 
-inline const RenderWidget* toRenderWidget(const RenderObject* object)
+inline const RenderWidget *toRenderWidget( const RenderObject *object )
 {
-    ASSERT(!object || object->isWidget());
-    return static_cast<const RenderWidget*>(object);
+    ASSERT( !object || object->isWidget() );
+    return static_cast<const RenderWidget *>( object );
 }
 
 // This will catch anyone doing an unnecessary cast.
-void toRenderWidget(const RenderWidget*);
+void toRenderWidget( const RenderWidget * );
 
 } // namespace WebCore
 

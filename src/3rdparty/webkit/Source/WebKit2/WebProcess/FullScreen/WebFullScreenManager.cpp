@@ -39,105 +39,110 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
-WebFullScreenManager::WebFullScreenManager(WebPage* page)
-    : m_page(page)
+WebFullScreenManager::WebFullScreenManager( WebPage *page )
+    : m_page( page )
 {
 }
-    
+
 WebFullScreenManager::~WebFullScreenManager()
 {
-    
+
 }
 
-WebCore::Element* WebFullScreenManager::element() 
-{ 
-    return m_element.get(); 
-}
-
-void WebFullScreenManager::didReceiveMessage(CoreIPC::Connection* connection, CoreIPC::MessageID messageID, CoreIPC::ArgumentDecoder* arguments)
+WebCore::Element *WebFullScreenManager::element()
 {
-    didReceiveWebFullScreenManagerMessage(connection, messageID, arguments);
+    return m_element.get();
 }
 
-bool WebFullScreenManager::supportsFullScreen(bool withKeyboard)
+void WebFullScreenManager::didReceiveMessage( CoreIPC::Connection *connection, CoreIPC::MessageID messageID,
+        CoreIPC::ArgumentDecoder *arguments )
 {
-    if (!m_page->corePage()->settings()->fullScreenEnabled())
+    didReceiveWebFullScreenManagerMessage( connection, messageID, arguments );
+}
+
+bool WebFullScreenManager::supportsFullScreen( bool withKeyboard )
+{
+    if ( !m_page->corePage()->settings()->fullScreenEnabled() )
+    {
         return false;
+    }
 
-    return m_page->injectedBundleFullScreenClient().supportsFullScreen(m_page.get(), withKeyboard);
+    return m_page->injectedBundleFullScreenClient().supportsFullScreen( m_page.get(), withKeyboard );
 
 }
 
-void WebFullScreenManager::enterFullScreenForElement(WebCore::Element* element)
+void WebFullScreenManager::enterFullScreenForElement( WebCore::Element *element )
 {
-    ASSERT(element);
+    ASSERT( element );
     m_element = element;
     m_initialFrame = m_element->screenRect();
-    m_page->injectedBundleFullScreenClient().enterFullScreenForElement(m_page.get(), element);
+    m_page->injectedBundleFullScreenClient().enterFullScreenForElement( m_page.get(), element );
 }
 
-void WebFullScreenManager::exitFullScreenForElement(WebCore::Element* element)
+void WebFullScreenManager::exitFullScreenForElement( WebCore::Element *element )
 {
-    ASSERT(element);
-    ASSERT(m_element == element);
-    m_page->injectedBundleFullScreenClient().exitFullScreenForElement(m_page.get(), element);
+    ASSERT( element );
+    ASSERT( m_element == element );
+    m_page->injectedBundleFullScreenClient().exitFullScreenForElement( m_page.get(), element );
 }
 
 void WebFullScreenManager::beganEnterFullScreenAnimation()
 {
-    m_page->send(Messages::WebFullScreenManagerProxy::BeganEnterFullScreenAnimation());
+    m_page->send( Messages::WebFullScreenManagerProxy::BeganEnterFullScreenAnimation() );
 }
 
-void WebFullScreenManager::finishedEnterFullScreenAnimation(bool completed)
+void WebFullScreenManager::finishedEnterFullScreenAnimation( bool completed )
 {
-    m_page->send(Messages::WebFullScreenManagerProxy::FinishedEnterFullScreenAnimation(completed));
+    m_page->send( Messages::WebFullScreenManagerProxy::FinishedEnterFullScreenAnimation( completed ) );
 }
 
 void WebFullScreenManager::beganExitFullScreenAnimation()
 {
-    m_page->send(Messages::WebFullScreenManagerProxy::BeganExitFullScreenAnimation());
+    m_page->send( Messages::WebFullScreenManagerProxy::BeganExitFullScreenAnimation() );
 }
 
-void WebFullScreenManager::finishedExitFullScreenAnimation(bool completed)
+void WebFullScreenManager::finishedExitFullScreenAnimation( bool completed )
 {
-    m_page->send(Messages::WebFullScreenManagerProxy::FinishedExitFullScreenAnimation(completed));
+    m_page->send( Messages::WebFullScreenManagerProxy::FinishedExitFullScreenAnimation( completed ) );
 }
-    
+
 IntRect WebFullScreenManager::getFullScreenRect()
 {
     IntRect rect;
-    m_page->sendSync(Messages::WebFullScreenManagerProxy::GetFullScreenRect(), Messages::WebFullScreenManagerProxy::GetFullScreenRect::Reply(rect));
+    m_page->sendSync( Messages::WebFullScreenManagerProxy::GetFullScreenRect(),
+                      Messages::WebFullScreenManagerProxy::GetFullScreenRect::Reply( rect ) );
     return rect;
 }
 
 void WebFullScreenManager::willEnterFullScreen()
 {
-    ASSERT(m_element);
-    m_element->document()->webkitWillEnterFullScreenForElement(m_element.get());
-    m_element->document()->setFullScreenRendererBackgroundColor(Color::transparent);
+    ASSERT( m_element );
+    m_element->document()->webkitWillEnterFullScreenForElement( m_element.get() );
+    m_element->document()->setFullScreenRendererBackgroundColor( Color::transparent );
 }
 
 void WebFullScreenManager::didEnterFullScreen()
 {
-    ASSERT(m_element);
-    m_element->document()->webkitDidEnterFullScreenForElement(m_element.get());
-    m_element->document()->setFullScreenRendererBackgroundColor(Color::black);
+    ASSERT( m_element );
+    m_element->document()->webkitDidEnterFullScreenForElement( m_element.get() );
+    m_element->document()->setFullScreenRendererBackgroundColor( Color::black );
 }
 
 void WebFullScreenManager::willExitFullScreen()
 {
-    ASSERT(m_element);
-    m_element->document()->webkitWillExitFullScreenForElement(m_element.get());
-    m_element->document()->setFullScreenRendererBackgroundColor(Color::transparent);
+    ASSERT( m_element );
+    m_element->document()->webkitWillExitFullScreenForElement( m_element.get() );
+    m_element->document()->setFullScreenRendererBackgroundColor( Color::transparent );
 }
 
 void WebFullScreenManager::didExitFullScreen()
 {
-    ASSERT(m_element);
-    m_element->document()->webkitDidExitFullScreenForElement(m_element.get());
-    m_element->document()->setFullScreenRendererBackgroundColor(Color::black);
+    ASSERT( m_element );
+    m_element->document()->webkitDidExitFullScreenForElement( m_element.get() );
+    m_element->document()->setFullScreenRendererBackgroundColor( Color::black );
 }
 
 

@@ -45,20 +45,20 @@ QT_BEGIN_NAMESPACE
 // helper class that's used to handle our custom Qt events
 class QScriptDebuggerFrontendEventReceiver : public QObject
 {
- public:
-   QScriptDebuggerFrontendEventReceiver(QScriptDebuggerFrontendPrivate *frontend,
-                                        QObject *parent = nullptr);
-   ~QScriptDebuggerFrontendEventReceiver();
+public:
+    QScriptDebuggerFrontendEventReceiver( QScriptDebuggerFrontendPrivate *frontend,
+                                          QObject *parent = nullptr );
+    ~QScriptDebuggerFrontendEventReceiver();
 
-   bool event(QEvent *);
+    bool event( QEvent * );
 
- private:
-   QScriptDebuggerFrontendPrivate *m_frontend;
+private:
+    QScriptDebuggerFrontendPrivate *m_frontend;
 };
 
 QScriptDebuggerFrontendEventReceiver::QScriptDebuggerFrontendEventReceiver(
-   QScriptDebuggerFrontendPrivate *frontend, QObject *parent)
-   : QObject(parent), m_frontend(frontend)
+    QScriptDebuggerFrontendPrivate *frontend, QObject *parent )
+    : QObject( parent ), m_frontend( frontend )
 {
 }
 
@@ -66,83 +66,93 @@ QScriptDebuggerFrontendEventReceiver::~QScriptDebuggerFrontendEventReceiver()
 {
 }
 
-bool QScriptDebuggerFrontendEventReceiver::event(QEvent *e)
+bool QScriptDebuggerFrontendEventReceiver::event( QEvent *e )
 {
-   return m_frontend->event(e);
+    return m_frontend->event( e );
 }
 
 
 QScriptDebuggerFrontendPrivate::QScriptDebuggerFrontendPrivate()
 {
-   eventHandler = 0;
-   nextCommandId = 0;
-   eventReceiver = new QScriptDebuggerFrontendEventReceiver(this);
+    eventHandler = 0;
+    nextCommandId = 0;
+    eventReceiver = new QScriptDebuggerFrontendEventReceiver( this );
 }
 
 QScriptDebuggerFrontendPrivate::~QScriptDebuggerFrontendPrivate()
 {
-   delete eventReceiver;
+    delete eventReceiver;
 }
 
-void QScriptDebuggerFrontendPrivate::postEvent(QEvent *e)
+void QScriptDebuggerFrontendPrivate::postEvent( QEvent *e )
 {
-   QCoreApplication::postEvent(eventReceiver, e);
+    QCoreApplication::postEvent( eventReceiver, e );
 }
 
-bool QScriptDebuggerFrontendPrivate::event(QEvent *e)
+bool QScriptDebuggerFrontendPrivate::event( QEvent *e )
 {
-   Q_Q(QScriptDebuggerFrontend);
-   if (e->type() == QEvent::User + 1) {
-      QScriptDebuggerEventEvent *de = static_cast<QScriptDebuggerEventEvent *>(e);
-      bool handled = q->notifyEvent(de->event());
-      if (handled) {
-         q->scheduleCommand(QScriptDebuggerCommand::resumeCommand(),
-                            /*responseHandler=*/0);
-      }
-      return true;
-   } else if (e->type() == QEvent::User + 2) {
-      processCommands();
-      return true;
-   }
-   return false;
+    Q_Q( QScriptDebuggerFrontend );
+
+    if ( e->type() == QEvent::User + 1 )
+    {
+        QScriptDebuggerEventEvent *de = static_cast<QScriptDebuggerEventEvent *>( e );
+        bool handled = q->notifyEvent( de->event() );
+
+        if ( handled )
+        {
+            q->scheduleCommand( QScriptDebuggerCommand::resumeCommand(),
+                                /*responseHandler=*/0 );
+        }
+
+        return true;
+    }
+    else if ( e->type() == QEvent::User + 2 )
+    {
+        processCommands();
+        return true;
+    }
+
+    return false;
 }
 
 void QScriptDebuggerFrontendPrivate::processCommands()
 {
-   Q_Q(QScriptDebuggerFrontend);
-   while (!pendingCommands.isEmpty()) {
-      QScriptDebuggerCommand command(pendingCommands.takeFirst());
-      int id = pendingCommandIds.takeFirst();
-      q->processCommand(id, command);
-   }
+    Q_Q( QScriptDebuggerFrontend );
+
+    while ( !pendingCommands.isEmpty() )
+    {
+        QScriptDebuggerCommand command( pendingCommands.takeFirst() );
+        int id = pendingCommandIds.takeFirst();
+        q->processCommand( id, command );
+    }
 }
 
 QScriptDebuggerFrontend::QScriptDebuggerFrontend()
-   : d_ptr(new QScriptDebuggerFrontendPrivate())
+    : d_ptr( new QScriptDebuggerFrontendPrivate() )
 {
-   d_ptr->q_ptr = this;
+    d_ptr->q_ptr = this;
 }
 
 QScriptDebuggerFrontend::~QScriptDebuggerFrontend()
 {
 }
 
-QScriptDebuggerFrontend::QScriptDebuggerFrontend(QScriptDebuggerFrontendPrivate &dd)
-   : d_ptr(&dd)
+QScriptDebuggerFrontend::QScriptDebuggerFrontend( QScriptDebuggerFrontendPrivate &dd )
+    : d_ptr( &dd )
 {
-   d_ptr->q_ptr = this;
+    d_ptr->q_ptr = this;
 }
 
 QScriptDebuggerEventHandlerInterface *QScriptDebuggerFrontend::eventHandler() const
 {
-   Q_D(const QScriptDebuggerFrontend);
-   return d->eventHandler;
+    Q_D( const QScriptDebuggerFrontend );
+    return d->eventHandler;
 }
 
-void QScriptDebuggerFrontend::setEventHandler(QScriptDebuggerEventHandlerInterface *eventHandler)
+void QScriptDebuggerFrontend::setEventHandler( QScriptDebuggerEventHandlerInterface *eventHandler )
 {
-   Q_D(QScriptDebuggerFrontend);
-   d->eventHandler = eventHandler;
+    Q_D( QScriptDebuggerFrontend );
+    d->eventHandler = eventHandler;
 }
 
 /*!
@@ -154,21 +164,26 @@ void QScriptDebuggerFrontend::setEventHandler(QScriptDebuggerEventHandlerInterfa
   \sa notifyCommandFinished()
 */
 int QScriptDebuggerFrontend::scheduleCommand(
-   const QScriptDebuggerCommand &command,
-   QScriptDebuggerResponseHandlerInterface *responseHandler)
+    const QScriptDebuggerCommand &command,
+    QScriptDebuggerResponseHandlerInterface *responseHandler )
 {
-   Q_D(QScriptDebuggerFrontend);
-   int id = ++d->nextCommandId;
-   d->pendingCommands.append(command);
-   d->pendingCommandIds.append(id);
-   if (responseHandler) {
-      d->responseHandlers.insert(id, responseHandler);
-   }
-   if (d->pendingCommands.size() == 1) {
-      QEvent *e = new QEvent(QEvent::Type(QEvent::User + 2)); // ProcessCommands
-      d->postEvent(e);
-   }
-   return id;
+    Q_D( QScriptDebuggerFrontend );
+    int id = ++d->nextCommandId;
+    d->pendingCommands.append( command );
+    d->pendingCommandIds.append( id );
+
+    if ( responseHandler )
+    {
+        d->responseHandlers.insert( id, responseHandler );
+    }
+
+    if ( d->pendingCommands.size() == 1 )
+    {
+        QEvent *e = new QEvent( QEvent::Type( QEvent::User + 2 ) ); // ProcessCommands
+        d->postEvent( e );
+    }
+
+    return id;
 }
 
 /*!
@@ -177,14 +192,16 @@ int QScriptDebuggerFrontend::scheduleCommand(
 
   \sa processCommand(), notifyEvent()
 */
-void QScriptDebuggerFrontend::notifyCommandFinished(int id, const QScriptDebuggerResponse &response)
+void QScriptDebuggerFrontend::notifyCommandFinished( int id, const QScriptDebuggerResponse &response )
 {
-   Q_D(QScriptDebuggerFrontend);
-   if (d->responseHandlers.contains(id)) {
-      QScriptDebuggerResponseHandlerInterface *handler = d->responseHandlers.take(id);
-      Q_ASSERT(handler != 0);
-      handler->handleResponse(response, id);
-   }
+    Q_D( QScriptDebuggerFrontend );
+
+    if ( d->responseHandlers.contains( id ) )
+    {
+        QScriptDebuggerResponseHandlerInterface *handler = d->responseHandlers.take( id );
+        Q_ASSERT( handler != 0 );
+        handler->handleResponse( response, id );
+    }
 }
 
 /*!
@@ -193,19 +210,22 @@ void QScriptDebuggerFrontend::notifyCommandFinished(int id, const QScriptDebugge
 
   \sa notifyCommandFinished(), QScriptDebuggerBackend::event()
 */
-bool QScriptDebuggerFrontend::notifyEvent(const QScriptDebuggerEvent &event)
+bool QScriptDebuggerFrontend::notifyEvent( const QScriptDebuggerEvent &event )
 {
-   Q_D(QScriptDebuggerFrontend);
-   if (d->eventHandler) {
-      return d->eventHandler->debuggerEvent(event);
-   }
-   return false;
+    Q_D( QScriptDebuggerFrontend );
+
+    if ( d->eventHandler )
+    {
+        return d->eventHandler->debuggerEvent( event );
+    }
+
+    return false;
 }
 
 int QScriptDebuggerFrontend::scheduledCommandCount() const
 {
-   Q_D(const QScriptDebuggerFrontend);
-   return d->nextCommandId;
+    Q_D( const QScriptDebuggerFrontend );
+    return d->nextCommandId;
 }
 
 /*!

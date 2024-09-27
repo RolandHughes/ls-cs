@@ -33,20 +33,22 @@
 
 #include "InputType.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Base of button, file, image, reset, and submit types.
-class BaseButtonInputType : public InputType {
+class BaseButtonInputType : public InputType
+{
 protected:
-    BaseButtonInputType(HTMLInputElement* element) : InputType(element) { }
+    BaseButtonInputType( HTMLInputElement *element ) : InputType( element ) { }
 
 private:
-    virtual bool appendFormData(FormDataList&, bool) const;
-    virtual void handleKeydownEvent(KeyboardEvent*);
-    virtual void handleKeypressEvent(KeyboardEvent*);
-    virtual void handleKeyupEvent(KeyboardEvent*);
-    virtual RenderObject* createRenderer(RenderArena*, RenderStyle*) const;
-    virtual void accessKeyAction(bool sendToAnyElement);
+    virtual bool appendFormData( FormDataList &, bool ) const;
+    virtual void handleKeydownEvent( KeyboardEvent * );
+    virtual void handleKeypressEvent( KeyboardEvent * );
+    virtual void handleKeyupEvent( KeyboardEvent * );
+    virtual RenderObject *createRenderer( RenderArena *, RenderStyle * ) const;
+    virtual void accessKeyAction( bool sendToAnyElement );
     virtual bool storesValueSeparateFromAttribute();
 };
 

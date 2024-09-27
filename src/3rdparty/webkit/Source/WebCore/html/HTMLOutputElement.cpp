@@ -34,56 +34,65 @@
 #include "HTMLFormElement.h"
 #include "HTMLNames.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-inline HTMLOutputElement::HTMLOutputElement(const QualifiedName& tagName, Document* document, HTMLFormElement* form)
-    : HTMLFormControlElement(tagName, document, form)
-    , m_isDefaultValueMode(true)
-    , m_isSetTextContentInProgress(false)
-    , m_defaultValue("")
-    , m_tokens(DOMSettableTokenList::create())
+inline HTMLOutputElement::HTMLOutputElement( const QualifiedName &tagName, Document *document, HTMLFormElement *form )
+    : HTMLFormControlElement( tagName, document, form )
+    , m_isDefaultValueMode( true )
+    , m_isSetTextContentInProgress( false )
+    , m_defaultValue( "" )
+    , m_tokens( DOMSettableTokenList::create() )
 {
 }
 
-PassRefPtr<HTMLOutputElement> HTMLOutputElement::create(const QualifiedName& tagName, Document* document, HTMLFormElement* form)
+PassRefPtr<HTMLOutputElement> HTMLOutputElement::create( const QualifiedName &tagName, Document *document, HTMLFormElement *form )
 {
-    return adoptRef(new HTMLOutputElement(tagName, document, form));
+    return adoptRef( new HTMLOutputElement( tagName, document, form ) );
 }
 
-const AtomicString& HTMLOutputElement::formControlType() const
+const AtomicString &HTMLOutputElement::formControlType() const
 {
-    DEFINE_STATIC_LOCAL(const AtomicString, output, ("output"));
+    DEFINE_STATIC_LOCAL( const AtomicString, output, ( "output" ) );
     return output;
 }
 
-void HTMLOutputElement::parseMappedAttribute(Attribute* attr)
+void HTMLOutputElement::parseMappedAttribute( Attribute *attr )
 {
-    if (attr->name() == HTMLNames::forAttr)
-        setFor(attr->value());
+    if ( attr->name() == HTMLNames::forAttr )
+    {
+        setFor( attr->value() );
+    }
     else
-        HTMLFormControlElement::parseMappedAttribute(attr);
+    {
+        HTMLFormControlElement::parseMappedAttribute( attr );
+    }
 }
 
-DOMSettableTokenList* HTMLOutputElement::htmlFor() const
+DOMSettableTokenList *HTMLOutputElement::htmlFor() const
 {
     return m_tokens.get();
 }
 
-void HTMLOutputElement::setFor(const String& value)
+void HTMLOutputElement::setFor( const String &value )
 {
-    m_tokens->setValue(value);
+    m_tokens->setValue( value );
 }
 
-void HTMLOutputElement::childrenChanged(bool createdByParser, Node* beforeChange, Node* afterChange, int childCountDelta)
+void HTMLOutputElement::childrenChanged( bool createdByParser, Node *beforeChange, Node *afterChange, int childCountDelta )
 {
-    if (createdByParser || m_isSetTextContentInProgress) {
+    if ( createdByParser || m_isSetTextContentInProgress )
+    {
         m_isSetTextContentInProgress = false;
         return;
     }
 
-    if (m_isDefaultValueMode)
+    if ( m_isDefaultValueMode )
+    {
         m_defaultValue = textContent();
-    HTMLFormControlElement::childrenChanged(createdByParser, beforeChange, afterChange, childCountDelta);
+    }
+
+    HTMLFormControlElement::childrenChanged( createdByParser, beforeChange, afterChange, childCountDelta );
 }
 
 void HTMLOutputElement::reset()
@@ -92,9 +101,13 @@ void HTMLOutputElement::reset()
     // value mode flag to "default" and then to set the element's textContent
     // attribute to the default value.
     m_isDefaultValueMode = true;
-    if (m_defaultValue == value())
+
+    if ( m_defaultValue == value() )
+    {
         return;
-    setTextContentInternal(m_defaultValue);
+    }
+
+    setTextContentInternal( m_defaultValue );
 }
 
 String HTMLOutputElement::value() const
@@ -102,13 +115,17 @@ String HTMLOutputElement::value() const
     return textContent();
 }
 
-void HTMLOutputElement::setValue(const String& value)
+void HTMLOutputElement::setValue( const String &value )
 {
     // The value mode flag set to "value" when the value attribute is set.
     m_isDefaultValueMode = false;
-    if (value == this->value())
+
+    if ( value == this->value() )
+    {
         return;
-    setTextContentInternal(value);
+    }
+
+    setTextContentInternal( value );
 }
 
 String HTMLOutputElement::defaultValue() const
@@ -116,23 +133,29 @@ String HTMLOutputElement::defaultValue() const
     return m_defaultValue;
 }
 
-void HTMLOutputElement::setDefaultValue(const String& value)
+void HTMLOutputElement::setDefaultValue( const String &value )
 {
-    if (m_defaultValue == value)
+    if ( m_defaultValue == value )
+    {
         return;
+    }
+
     m_defaultValue = value;
+
     // The spec requires the value attribute set to the default value
     // when the element's value mode flag to "default".
-    if (m_isDefaultValueMode)
-        setTextContentInternal(value);
+    if ( m_isDefaultValueMode )
+    {
+        setTextContentInternal( value );
+    }
 }
 
-void HTMLOutputElement::setTextContentInternal(const String& value)
+void HTMLOutputElement::setTextContentInternal( const String &value )
 {
-    ASSERT(!m_isSetTextContentInProgress);
+    ASSERT( !m_isSetTextContentInProgress );
     ExceptionCode ec;
     m_isSetTextContentInProgress = true;
-    setTextContent(value, ec);
+    setTextContent( value, ec );
 }
 
 } // namespace

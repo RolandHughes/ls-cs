@@ -23,7 +23,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef MediaQuery_h
@@ -34,29 +34,45 @@
 #include <wtf/Vector.h>
 #include <wtf/text/StringHash.h>
 
-namespace WebCore {
+namespace WebCore
+{
 class MediaQueryExp;
 
-class MediaQuery {
-    WTF_MAKE_NONCOPYABLE(MediaQuery); WTF_MAKE_FAST_ALLOCATED;
+class MediaQuery
+{
+    WTF_MAKE_NONCOPYABLE( MediaQuery );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
-    enum Restrictor {
+    enum Restrictor
+    {
         Only, Not, None
     };
 
     typedef Vector<OwnPtr<MediaQueryExp> > ExpressionVector;
 
-    MediaQuery(Restrictor, const String& mediaType, PassOwnPtr<ExpressionVector> exprs);
+    MediaQuery( Restrictor, const String &mediaType, PassOwnPtr<ExpressionVector> exprs );
     ~MediaQuery();
 
-    Restrictor restrictor() const { return m_restrictor; }
-    const Vector<OwnPtr<MediaQueryExp> >* expressions() const { return m_expressions.get(); }
-    String mediaType() const { return m_mediaType; }
-    bool operator==(const MediaQuery& other) const;
+    Restrictor restrictor() const
+    {
+        return m_restrictor;
+    }
+    const Vector<OwnPtr<MediaQueryExp> > *expressions() const
+    {
+        return m_expressions.get();
+    }
+    String mediaType() const
+    {
+        return m_mediaType;
+    }
+    bool operator==( const MediaQuery &other ) const;
     String cssText() const;
-    bool ignored() const { return m_ignored; }
+    bool ignored() const
+    {
+        return m_ignored;
+    }
 
- private:
+private:
     Restrictor m_restrictor;
     String m_mediaType;
     OwnPtr<ExpressionVector> m_expressions;

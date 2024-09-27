@@ -36,24 +36,38 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class WebKitFlags : public RefCounted<WebKitFlags> {
+class WebKitFlags : public RefCounted<WebKitFlags>
+{
 public:
-    static PassRefPtr<WebKitFlags> create(bool create = false, bool exclusive = false)
+    static PassRefPtr<WebKitFlags> create( bool create = false, bool exclusive = false )
     {
-        return adoptRef(new WebKitFlags(create, exclusive));
+        return adoptRef( new WebKitFlags( create, exclusive ) );
     }
 
-    bool isCreate() const { return m_create; }
-    void setCreate(bool create) { m_create = create; }
-    bool isExclusive() const { return m_exclusive; }
-    void setExclusive(bool exclusive) { m_exclusive = exclusive; }
+    bool isCreate() const
+    {
+        return m_create;
+    }
+    void setCreate( bool create )
+    {
+        m_create = create;
+    }
+    bool isExclusive() const
+    {
+        return m_exclusive;
+    }
+    void setExclusive( bool exclusive )
+    {
+        m_exclusive = exclusive;
+    }
 
 private:
-    WebKitFlags(bool create, bool exclusive)
-        : m_create(create)
-        , m_exclusive(exclusive)
+    WebKitFlags( bool create, bool exclusive )
+        : m_create( create )
+        , m_exclusive( exclusive )
     {
     }
     bool m_create;

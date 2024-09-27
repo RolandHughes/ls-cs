@@ -38,58 +38,59 @@ QT_BEGIN_NAMESPACE
 class QScriptDebuggerAgent;
 class QScriptDebuggerAgentPrivate
 {
- public:
-   enum State {
-      NoState,
-      SteppingIntoState,
-      SteppedIntoState,
-      SteppingOverState,
-      SteppedOverState,
-      SteppingOutState,
-      SteppedOutState,
-      RunningToLocationState,
-      ReachedLocationState,
-      InterruptingState,
-      InterruptedState,
-      BreakpointState,
-      ReturningByForceState,
-      ReturnedByForceState
-   };
+public:
+    enum State
+    {
+        NoState,
+        SteppingIntoState,
+        SteppedIntoState,
+        SteppingOverState,
+        SteppedOverState,
+        SteppingOutState,
+        SteppedOutState,
+        RunningToLocationState,
+        ReachedLocationState,
+        InterruptingState,
+        InterruptedState,
+        BreakpointState,
+        ReturningByForceState,
+        ReturnedByForceState
+    };
 
-   QScriptDebuggerAgentPrivate();
-   ~QScriptDebuggerAgentPrivate();
+    QScriptDebuggerAgentPrivate();
+    ~QScriptDebuggerAgentPrivate();
 
-   static QScriptDebuggerAgentPrivate *get(QScriptDebuggerAgent *);
+    static QScriptDebuggerAgentPrivate *get( QScriptDebuggerAgent * );
 
-   State state;
-   int stepDepth;
-   int stepCount;
-   int targetScriptId;
-   QString targetFileName;
-   int targetLineNumber;
-   QScriptValue stepResult;
-   int returnCounter;
-   QScriptValue returnValue;
+    State state;
+    int stepDepth;
+    int stepCount;
+    int targetScriptId;
+    QString targetFileName;
+    int targetLineNumber;
+    QScriptValue stepResult;
+    int returnCounter;
+    QScriptValue returnValue;
 
-   int nextBreakpointId;
-   QHash<qint64, QList<int> > resolvedBreakpoints;
-   QHash<QString, QList<int> > unresolvedBreakpoints;
-   QScriptBreakpointMap breakpoints;
-   int hitBreakpointId;
+    int nextBreakpointId;
+    QHash<qint64, QList<int> > resolvedBreakpoints;
+    QHash<QString, QList<int> > unresolvedBreakpoints;
+    QScriptBreakpointMap breakpoints;
+    int hitBreakpointId;
 
-   QScriptScriptMap scripts;
-   QScriptScriptMap checkpointScripts;
-   QScriptScriptMap previousCheckpointScripts;
-   QList<QList<qint64> > scriptIdStack;
+    QScriptScriptMap scripts;
+    QScriptScriptMap checkpointScripts;
+    QScriptScriptMap previousCheckpointScripts;
+    QList<QList<qint64> > scriptIdStack;
 
-   QList<qint64> contextIdStack;
-   QList<qint64> checkpointContextIdStack;
-   qint64 nextContextId;
+    QList<qint64> contextIdStack;
+    QList<qint64> checkpointContextIdStack;
+    qint64 nextContextId;
 
-   QTime processEventsTimer;
-   int statementCounter;
+    QTime processEventsTimer;
+    int statementCounter;
 
-   QScriptDebuggerBackendPrivate *backend;
+    QScriptDebuggerBackendPrivate *backend;
 };
 
 QT_END_NAMESPACE

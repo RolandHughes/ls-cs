@@ -41,17 +41,25 @@ extern "C" {
 #endif
 
 // Page overlay client.
-typedef void (*WKBundlePageOverlayWillMoveToPageCallback)(WKBundlePageOverlayRef pageOverlay, WKBundlePageRef page, const void* clientInfo);
-typedef void (*WKBundlePageOverlayDidMoveToPageCallback)(WKBundlePageOverlayRef pageOverlay, WKBundlePageRef page, const void* clientInfo);
-typedef void (*WKBundlePageOverlayDrawRectCallback)(WKBundlePageOverlayRef pageOverlay, void* graphicsContext, WKRect dirtyRect, const void* clientInfo);
-typedef bool (*WKBundlePageOverlayMouseDownCallback)(WKBundlePageOverlayRef pageOverlay, WKPoint position, WKEventMouseButton mouseButton, const void* clientInfo);
-typedef bool (*WKBundlePageOverlayMouseUpCallback)(WKBundlePageOverlayRef pageOverlay, WKPoint position, WKEventMouseButton mouseButton, const void* clientInfo);
-typedef bool (*WKBundlePageOverlayMouseMovedCallback)(WKBundlePageOverlayRef pageOverlay, WKPoint position, const void* clientInfo);
-typedef bool (*WKBundlePageOverlayMouseDraggedCallback)(WKBundlePageOverlayRef pageOverlay, WKPoint position, WKEventMouseButton mouseButton, const void* clientInfo);
+typedef void ( *WKBundlePageOverlayWillMoveToPageCallback )( WKBundlePageOverlayRef pageOverlay, WKBundlePageRef page,
+        const void *clientInfo );
+typedef void ( *WKBundlePageOverlayDidMoveToPageCallback )( WKBundlePageOverlayRef pageOverlay, WKBundlePageRef page,
+        const void *clientInfo );
+typedef void ( *WKBundlePageOverlayDrawRectCallback )( WKBundlePageOverlayRef pageOverlay, void *graphicsContext,
+        WKRect dirtyRect, const void *clientInfo );
+typedef bool ( *WKBundlePageOverlayMouseDownCallback )( WKBundlePageOverlayRef pageOverlay, WKPoint position,
+        WKEventMouseButton mouseButton, const void *clientInfo );
+typedef bool ( *WKBundlePageOverlayMouseUpCallback )( WKBundlePageOverlayRef pageOverlay, WKPoint position,
+        WKEventMouseButton mouseButton, const void *clientInfo );
+typedef bool ( *WKBundlePageOverlayMouseMovedCallback )( WKBundlePageOverlayRef pageOverlay, WKPoint position,
+        const void *clientInfo );
+typedef bool ( *WKBundlePageOverlayMouseDraggedCallback )( WKBundlePageOverlayRef pageOverlay, WKPoint position,
+        WKEventMouseButton mouseButton, const void *clientInfo );
 
-struct WKBundlePageOverlayClient {
+struct WKBundlePageOverlayClient
+{
     int                                                                 version;
-    const void *                                                        clientInfo;
+    const void                                                         *clientInfo;
     WKBundlePageOverlayWillMoveToPageCallback                           willMoveToPage;
     WKBundlePageOverlayDidMoveToPageCallback                            didMoveToPage;
     WKBundlePageOverlayDrawRectCallback                                 drawRect;
@@ -61,12 +69,12 @@ struct WKBundlePageOverlayClient {
     WKBundlePageOverlayMouseDraggedCallback                             mouseDragged;
 };
 typedef struct WKBundlePageOverlayClient WKBundlePageOverlayClient;
-    
+
 WK_EXPORT WKTypeID WKBundlePageOverlayGetTypeID();
 
-WK_EXPORT WKBundlePageOverlayRef WKBundlePageOverlayCreate(WKBundlePageOverlayClient* client);
-WK_EXPORT void WKBundlePageOverlaySetNeedsDisplay(WKBundlePageOverlayRef bundlePageOverlay, WKRect rect);
-WK_EXPORT float WKBundlePageOverlayFractionFadedIn(WKBundlePageOverlayRef bundlePageOverlay);
+WK_EXPORT WKBundlePageOverlayRef WKBundlePageOverlayCreate( WKBundlePageOverlayClient *client );
+WK_EXPORT void WKBundlePageOverlaySetNeedsDisplay( WKBundlePageOverlayRef bundlePageOverlay, WKRect rect );
+WK_EXPORT float WKBundlePageOverlayFractionFadedIn( WKBundlePageOverlayRef bundlePageOverlay );
 
 #ifdef __cplusplus
 }

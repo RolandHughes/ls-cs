@@ -26,51 +26,54 @@
 #include "private/qdeclarativeengine_p.h"
 #include "private/qdeclarativeproperty_p.h"
 
-QT_BEGIN_NAMESPACE
-
-QDeclarativeListReferencePrivate::QDeclarativeListReferencePrivate()
-   : propertyType(-1), refCount(1)
+QT_BEGIN_NAMESPACE QDeclarativeListReferencePrivate::QDeclarativeListReferencePrivate()
+    : propertyType( -1 ), refCount( 1 )
 {
 }
 
-QDeclarativeListReference QDeclarativeListReferencePrivate::init(const QDeclarativeListProperty<QObject> &prop,
-      int propType, QDeclarativeEngine *engine)
+QDeclarativeListReference QDeclarativeListReferencePrivate::init( const QDeclarativeListProperty<QObject> &prop,
+        int propType, QDeclarativeEngine *engine )
 {
-   QDeclarativeListReference rv;
+    QDeclarativeListReference rv;
 
-   if (!prop.object) {
-      return rv;
-   }
+    if ( !prop.object )
+    {
+        return rv;
+    }
 
-   QDeclarativeEnginePrivate *p = engine ? QDeclarativeEnginePrivate::get(engine) : 0;
+    QDeclarativeEnginePrivate *p = engine ? QDeclarativeEnginePrivate::get( engine ) : 0;
 
-   int listType = p ? p->listType(propType) : QDeclarativeMetaType::listType(propType);
-   if (listType == -1) {
-      return rv;
-   }
+    int listType = p ? p->listType( propType ) : QDeclarativeMetaType::listType( propType );
 
-   rv.d = new QDeclarativeListReferencePrivate;
-   rv.d->object = prop.object;
-   rv.d->elementType = p ? p->rawMetaObjectForType(listType) : QDeclarativeMetaType::qmlType(listType)->baseMetaObject();
-   rv.d->property = prop;
-   rv.d->propertyType = propType;
+    if ( listType == -1 )
+    {
+        return rv;
+    }
 
-   return rv;
+    rv.d = new QDeclarativeListReferencePrivate;
+    rv.d->object = prop.object;
+    rv.d->elementType = p ? p->rawMetaObjectForType( listType ) : QDeclarativeMetaType::qmlType( listType )->baseMetaObject();
+    rv.d->property = prop;
+    rv.d->propertyType = propType;
+
+    return rv;
 }
 
 void QDeclarativeListReferencePrivate::addref()
 {
-   Q_ASSERT(refCount > 0);
-   ++refCount;
+    Q_ASSERT( refCount > 0 );
+    ++refCount;
 }
 
 void QDeclarativeListReferencePrivate::release()
 {
-   Q_ASSERT(refCount > 0);
-   --refCount;
-   if (!refCount) {
-      delete this;
-   }
+    Q_ASSERT( refCount > 0 );
+    --refCount;
+
+    if ( !refCount )
+    {
+        delete this;
+    }
 }
 
 /*!
@@ -105,7 +108,7 @@ that it does not request an out of range element using the count() method before
 Constructs an invalid instance.
 */
 QDeclarativeListReference::QDeclarativeListReference()
-   : d(0)
+    : d( 0 )
 {
 }
 
@@ -118,65 +121,75 @@ QDeclarativeListReference instances even after \a object is deleted.
 Passing \a engine is required to access some QML created list properties.  If in doubt, and an engine
 is available, pass it.
 */
-QDeclarativeListReference::QDeclarativeListReference(QObject *object, const char *property, QDeclarativeEngine *engine)
-   : d(0)
+QDeclarativeListReference::QDeclarativeListReference( QObject *object, const char *property, QDeclarativeEngine *engine )
+    : d( 0 )
 {
-   if (!object || !property) {
-      return;
-   }
+    if ( !object || !property )
+    {
+        return;
+    }
 
-   QDeclarativePropertyCache::Data local;
-   QDeclarativePropertyCache::Data *data =
-      QDeclarativePropertyCache::property(engine, object, QLatin1String(property), local);
+    QDeclarativePropertyCache::Data local;
+    QDeclarativePropertyCache::Data *data =
+        QDeclarativePropertyCache::property( engine, object, QLatin1String( property ), local );
 
-   if (!data || !(data->flags & QDeclarativePropertyCache::Data::IsQList)) {
-      return;
-   }
+    if ( !data || !( data->flags & QDeclarativePropertyCache::Data::IsQList ) )
+    {
+        return;
+    }
 
-   QDeclarativeEnginePrivate *p = engine ? QDeclarativeEnginePrivate::get(engine) : 0;
+    QDeclarativeEnginePrivate *p = engine ? QDeclarativeEnginePrivate::get( engine ) : 0;
 
-   int listType = p ? p->listType(data->propType) : QDeclarativeMetaType::listType(data->propType);
-   if (listType == -1) {
-      return;
-   }
+    int listType = p ? p->listType( data->propType ) : QDeclarativeMetaType::listType( data->propType );
 
-   d = new QDeclarativeListReferencePrivate;
-   d->object = object;
-   d->elementType = p ? p->rawMetaObjectForType(listType) : QDeclarativeMetaType::qmlType(listType)->baseMetaObject();
-   d->propertyType = data->propType;
+    if ( listType == -1 )
+    {
+        return;
+    }
 
-   void *args[] = { &d->property, 0 };
-   QMetaObject::metacall(object, QMetaObject::ReadProperty, data->coreIndex, args);
+    d = new QDeclarativeListReferencePrivate;
+    d->object = object;
+    d->elementType = p ? p->rawMetaObjectForType( listType ) : QDeclarativeMetaType::qmlType( listType )->baseMetaObject();
+    d->propertyType = data->propType;
+
+    void *args[] = { &d->property, 0 };
+    QMetaObject::metacall( object, QMetaObject::ReadProperty, data->coreIndex, args );
 }
 
 /*! \internal */
-QDeclarativeListReference::QDeclarativeListReference(const QDeclarativeListReference &o)
-   : d(o.d)
+QDeclarativeListReference::QDeclarativeListReference( const QDeclarativeListReference &o )
+    : d( o.d )
 {
-   if (d) {
-      d->addref();
-   }
+    if ( d )
+    {
+        d->addref();
+    }
 }
 
 /*! \internal */
-QDeclarativeListReference &QDeclarativeListReference::operator=(const QDeclarativeListReference &o)
+QDeclarativeListReference &QDeclarativeListReference::operator=( const QDeclarativeListReference &o )
 {
-   if (o.d) {
-      o.d->addref();
-   }
-   if (d) {
-      d->release();
-   }
-   d = o.d;
-   return *this;
+    if ( o.d )
+    {
+        o.d->addref();
+    }
+
+    if ( d )
+    {
+        d->release();
+    }
+
+    d = o.d;
+    return *this;
 }
 
 /*! \internal */
 QDeclarativeListReference::~QDeclarativeListReference()
 {
-   if (d) {
-      d->release();
-   }
+    if ( d )
+    {
+        d->release();
+    }
 }
 
 /*!
@@ -184,7 +197,7 @@ Returns true if the instance refers to a valid list property, otherwise false.
 */
 bool QDeclarativeListReference::isValid() const
 {
-   return d && d->object;
+    return d && d->object;
 }
 
 /*!
@@ -192,11 +205,14 @@ Returns the list property's object.  Returns 0 if the reference is invalid.
 */
 QObject *QDeclarativeListReference::object() const
 {
-   if (isValid()) {
-      return d->object;
-   } else {
-      return 0;
-   }
+    if ( isValid() )
+    {
+        return d->object;
+    }
+    else
+    {
+        return 0;
+    }
 }
 
 /*!
@@ -208,11 +224,14 @@ to a list.
 */
 const QMetaObject *QDeclarativeListReference::listElementType() const
 {
-   if (isValid()) {
-      return d->elementType;
-   } else {
-      return 0;
-   }
+    if ( isValid() )
+    {
+        return d->elementType;
+    }
+    else
+    {
+        return 0;
+    }
 }
 
 /*!
@@ -223,7 +242,7 @@ reference is invalid.
 */
 bool QDeclarativeListReference::canAppend() const
 {
-   return (isValid() && d->property.append);
+    return ( isValid() && d->property.append );
 }
 
 /*!
@@ -234,7 +253,7 @@ reference is invalid.
 */
 bool QDeclarativeListReference::canAt() const
 {
-   return (isValid() && d->property.at);
+    return ( isValid() && d->property.at );
 }
 
 /*!
@@ -245,7 +264,7 @@ reference is invalid.
 */
 bool QDeclarativeListReference::canClear() const
 {
-   return (isValid() && d->property.clear);
+    return ( isValid() && d->property.clear );
 }
 
 /*!
@@ -256,7 +275,7 @@ Returns false if the reference is invalid.
 */
 bool QDeclarativeListReference::canCount() const
 {
-   return (isValid() && d->property.count);
+    return ( isValid() && d->property.count );
 }
 
 /*!
@@ -264,19 +283,21 @@ Appends \a object to the list.  Returns true if the operation succeeded, otherwi
 
 \sa canAppend()
 */
-bool QDeclarativeListReference::append(QObject *object) const
+bool QDeclarativeListReference::append( QObject *object ) const
 {
-   if (!canAppend()) {
-      return false;
-   }
+    if ( !canAppend() )
+    {
+        return false;
+    }
 
-   if (object && !QDeclarativePropertyPrivate::canConvert(object->metaObject(), d->elementType)) {
-      return false;
-   }
+    if ( object && !QDeclarativePropertyPrivate::canConvert( object->metaObject(), d->elementType ) )
+    {
+        return false;
+    }
 
-   d->property.append(&d->property, object);
+    d->property.append( &d->property, object );
 
-   return true;
+    return true;
 }
 
 /*!
@@ -284,13 +305,14 @@ Returns the list element at \a index, or 0 if the operation failed.
 
 \sa canAt()
 */
-QObject *QDeclarativeListReference::at(int index) const
+QObject *QDeclarativeListReference::at( int index ) const
 {
-   if (!canAt()) {
-      return 0;
-   }
+    if ( !canAt() )
+    {
+        return 0;
+    }
 
-   return d->property.at(&d->property, index);
+    return d->property.at( &d->property, index );
 }
 
 /*!
@@ -300,13 +322,14 @@ Clears the list.  Returns true if the operation succeeded, otherwise false.
 */
 bool QDeclarativeListReference::clear() const
 {
-   if (!canClear()) {
-      return false;
-   }
+    if ( !canClear() )
+    {
+        return false;
+    }
 
-   d->property.clear(&d->property);
+    d->property.clear( &d->property );
 
-   return true;
+    return true;
 }
 
 /*!
@@ -314,11 +337,12 @@ Returns the number of objects in the list, or 0 if the operation failed.
 */
 int QDeclarativeListReference::count() const
 {
-   if (!canCount()) {
-      return 0;
-   }
+    if ( !canCount() )
+    {
+        return 0;
+    }
 
-   return d->property.count(&d->property);
+    return d->property.count( &d->property );
 }
 
 /*!

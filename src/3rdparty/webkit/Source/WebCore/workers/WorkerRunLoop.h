@@ -1,10 +1,10 @@
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  *     * Redistributions of source code must retain the above copyright
  * notice, this list of conditions and the following disclaimer.
  *     * Redistributions in binary form must reproduce the above
@@ -14,7 +14,7 @@
  *     * Neither the name of Google Inc. nor the names of its
  * contributors may be used to endorse or promote products derived from
  * this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -38,57 +38,70 @@
 #include <wtf/OwnPtr.h>
 #include <wtf/PassOwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class ModePredicate;
-    class WorkerContext;
-    class WorkerSharedTimer;
+class ModePredicate;
+class WorkerContext;
+class WorkerSharedTimer;
 
-    class WorkerRunLoop {
+class WorkerRunLoop
+{
+public:
+    WorkerRunLoop();
+    ~WorkerRunLoop();
+
+    // Blocking call. Waits for tasks and timers, invokes the callbacks.
+    void run( WorkerContext * );
+
+    // Waits for a single task and returns.
+    MessageQueueWaitResult runInMode( WorkerContext *, const String &mode );
+
+    void terminate();
+    bool terminated()
+    {
+        return m_messageQueue.killed();
+    }
+
+    void postTask( PassOwnPtr<ScriptExecutionContext::Task> );
+    void postTaskForMode( PassOwnPtr<ScriptExecutionContext::Task>, const String &mode );
+
+    unsigned long createUniqueId()
+    {
+        return ++m_uniqueId;
+    }
+
+    static String defaultMode();
+
+    class Task
+    {
+        WTF_MAKE_NONCOPYABLE( Task );
+        WTF_MAKE_FAST_ALLOCATED;
     public:
-        WorkerRunLoop();
-        ~WorkerRunLoop();
-        
-        // Blocking call. Waits for tasks and timers, invokes the callbacks.
-        void run(WorkerContext*);
-
-        // Waits for a single task and returns.
-        MessageQueueWaitResult runInMode(WorkerContext*, const String& mode);
-
-        void terminate();
-        bool terminated() { return m_messageQueue.killed(); }
-
-        void postTask(PassOwnPtr<ScriptExecutionContext::Task>);
-        void postTaskForMode(PassOwnPtr<ScriptExecutionContext::Task>, const String& mode);
-
-        unsigned long createUniqueId() { return ++m_uniqueId; }
-
-        static String defaultMode();
-
-        class Task {
-            WTF_MAKE_NONCOPYABLE(Task); WTF_MAKE_FAST_ALLOCATED;
-        public:
-            static PassOwnPtr<Task> create(PassOwnPtr<ScriptExecutionContext::Task> task, const String& mode);
-            ~Task() { }
-            const String& mode() const { return m_mode; }
-            void performTask(ScriptExecutionContext* context);
-
-        private:
-            Task(PassOwnPtr<ScriptExecutionContext::Task> task, const String& mode);
-        
-            OwnPtr<ScriptExecutionContext::Task> m_task;
-            String m_mode;
-        };
+        static PassOwnPtr<Task> create( PassOwnPtr<ScriptExecutionContext::Task> task, const String &mode );
+        ~Task() { }
+        const String &mode() const
+        {
+            return m_mode;
+        }
+        void performTask( ScriptExecutionContext *context );
 
     private:
-        friend class RunLoopSetup;
-        MessageQueueWaitResult runInMode(WorkerContext*, const ModePredicate&);
+        Task( PassOwnPtr<ScriptExecutionContext::Task> task, const String &mode );
 
-        MessageQueue<Task> m_messageQueue;
-        OwnPtr<WorkerSharedTimer> m_sharedTimer;
-        int m_nestedCount;
-        unsigned long m_uniqueId;
+        OwnPtr<ScriptExecutionContext::Task> m_task;
+        String m_mode;
     };
+
+private:
+    friend class RunLoopSetup;
+    MessageQueueWaitResult runInMode( WorkerContext *, const ModePredicate & );
+
+    MessageQueue<Task> m_messageQueue;
+    OwnPtr<WorkerSharedTimer> m_sharedTimer;
+    int m_nestedCount;
+    unsigned long m_uniqueId;
+};
 
 } // namespace WebCore
 

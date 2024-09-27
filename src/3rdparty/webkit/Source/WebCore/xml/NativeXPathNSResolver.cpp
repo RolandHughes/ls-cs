@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -32,10 +32,11 @@
 #include "PlatformString.h"
 #include "XMLNames.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-NativeXPathNSResolver::NativeXPathNSResolver(PassRefPtr<Node> node)
-    : m_node(node)
+NativeXPathNSResolver::NativeXPathNSResolver( PassRefPtr<Node> node )
+    : m_node( node )
 {
 }
 
@@ -43,14 +44,16 @@ NativeXPathNSResolver::~NativeXPathNSResolver()
 {
 }
 
-String NativeXPathNSResolver::lookupNamespaceURI(const String& prefix)
+String NativeXPathNSResolver::lookupNamespaceURI( const String &prefix )
 {
     // This is not done by Node::lookupNamespaceURI as per the DOM3 Core spec,
     // but the XPath spec says that we should do it for XPathNSResolver.
-    if (prefix == "xml")
+    if ( prefix == "xml" )
+    {
         return XMLNames::xmlNamespaceURI;
-    
-    return m_node ? m_node->lookupNamespaceURI(prefix) : String();
+    }
+
+    return m_node ? m_node->lookupNamespaceURI( prefix ) : String();
 }
 
 } // namespace WebCore

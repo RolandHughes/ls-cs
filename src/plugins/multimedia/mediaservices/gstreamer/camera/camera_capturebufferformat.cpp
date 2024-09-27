@@ -24,8 +24,8 @@
 #include <camera_capturebufferformat.h>
 #include <camera_session.h>
 
-CameraBinCaptureBufferFormat::CameraBinCaptureBufferFormat(CameraBinSession *session)
-   : QCameraCaptureBufferFormatControl(session), m_session(session), m_format(QVideoFrame::Format_Jpeg)
+CameraBinCaptureBufferFormat::CameraBinCaptureBufferFormat( CameraBinSession *session )
+    : QCameraCaptureBufferFormatControl( session ), m_session( session ), m_format( QVideoFrame::Format_Jpeg )
 {
 }
 
@@ -35,20 +35,21 @@ CameraBinCaptureBufferFormat::~CameraBinCaptureBufferFormat()
 
 QList<QVideoFrame::PixelFormat> CameraBinCaptureBufferFormat::supportedBufferFormats() const
 {
-   //the exact YUV format is unknown with camerabin until the first capture is requested
-   return QList<QVideoFrame::PixelFormat>() << QVideoFrame::Format_Jpeg;
+    //the exact YUV format is unknown with camerabin until the first capture is requested
+    return QList<QVideoFrame::PixelFormat>() << QVideoFrame::Format_Jpeg;
 }
 
 QVideoFrame::PixelFormat CameraBinCaptureBufferFormat::bufferFormat() const
 {
-   return m_format;
+    return m_format;
 }
 
-void CameraBinCaptureBufferFormat::setBufferFormat(QVideoFrame::PixelFormat format)
+void CameraBinCaptureBufferFormat::setBufferFormat( QVideoFrame::PixelFormat format )
 {
-   if (m_format != format) {
-      m_format = format;
-      emit bufferFormatChanged(format);
-   }
+    if ( m_format != format )
+    {
+        m_format = format;
+        emit bufferFormatChanged( format );
+    }
 }
 

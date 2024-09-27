@@ -29,52 +29,59 @@
 template <typename T, int Prealloc>
 class QPodList : public QVarLengthArray<T, Prealloc>
 {
-   using QVarLengthArray<T, Prealloc>::s;
-   using QVarLengthArray<T, Prealloc>::a;
-   using QVarLengthArray<T, Prealloc>::ptr;
-   using QVarLengthArray<T, Prealloc>::realloc;
+    using QVarLengthArray<T, Prealloc>::s;
+    using QVarLengthArray<T, Prealloc>::a;
+    using QVarLengthArray<T, Prealloc>::ptr;
+    using QVarLengthArray<T, Prealloc>::realloc;
 
- public:
-   explicit QPodList(int size = 0)
-      : QVarLengthArray<T, Prealloc>(size)
-   {
-   }
+public:
+    explicit QPodList( int size = 0 )
+        : QVarLengthArray<T, Prealloc>( size )
+    {
+    }
 
-   void insert(int idx, const T &t) {
-      const int sz = s++;
+    void insert( int idx, const T &t )
+    {
+        const int sz = s++;
 
-      if (s == a) {
-         realloc(s, s << 1);
-      }
+        if ( s == a )
+        {
+            realloc( s, s << 1 );
+        }
 
-      ::memmove(ptr + idx + 1, ptr + idx, (sz - idx) * sizeof(T));
-      ptr[idx] = t;
-   }
+        ::memmove( ptr + idx + 1, ptr + idx, ( sz - idx ) * sizeof( T ) );
+        ptr[idx] = t;
+    }
 
-   void removeAll(const T &t) {
-      int i = 0;
+    void removeAll( const T &t )
+    {
+        int i = 0;
 
-      for (int j = 0; j < s; ++j) {
-         if (ptr[j] != t) {
-            ptr[i++] = ptr[j];
-         }
-      }
+        for ( int j = 0; j < s; ++j )
+        {
+            if ( ptr[j] != t )
+            {
+                ptr[i++] = ptr[j];
+            }
+        }
 
-      s = i;
-   }
+        s = i;
+    }
 
-   void removeAt(int idx) {
-      Q_ASSERT(idx >= 0 && idx < s);
-      ::memmove(ptr + idx, ptr + idx + 1, (s - idx - 1) * sizeof(T));
-      --s;
-   }
+    void removeAt( int idx )
+    {
+        Q_ASSERT( idx >= 0 && idx < s );
+        ::memmove( ptr + idx, ptr + idx + 1, ( s - idx - 1 ) * sizeof( T ) );
+        --s;
+    }
 
-   T takeFirst() {
-      Q_ASSERT(s > 0);
-      T tmp = ptr[0];
-      removeAt(0);
-      return tmp;
-   }
+    T takeFirst()
+    {
+        Q_ASSERT( s > 0 );
+        T tmp = ptr[0];
+        removeAt( 0 );
+        return tmp;
+    }
 };
 
 #endif // QPODLIST_P_H

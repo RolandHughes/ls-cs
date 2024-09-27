@@ -33,17 +33,19 @@
 #include "PlatformString.h"
 #include <wtf/ThreadSafeRefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Document;
 class KURL;
 
-class SecurityOrigin : public ThreadSafeRefCounted<SecurityOrigin> {
+class SecurityOrigin : public ThreadSafeRefCounted<SecurityOrigin>
+{
 public:
-    static PassRefPtr<SecurityOrigin> createFromDatabaseIdentifier(const String&);
-    static PassRefPtr<SecurityOrigin> createFromString(const String&);
-    static PassRefPtr<SecurityOrigin> create(const String& protocol, const String& host, int port);
-    static PassRefPtr<SecurityOrigin> create(const KURL&, SandboxFlags = SandboxNone);
+    static PassRefPtr<SecurityOrigin> createFromDatabaseIdentifier( const String & );
+    static PassRefPtr<SecurityOrigin> createFromString( const String & );
+    static PassRefPtr<SecurityOrigin> create( const String &protocol, const String &host, int port );
+    static PassRefPtr<SecurityOrigin> create( const KURL &, SandboxFlags = SandboxNone );
     static PassRefPtr<SecurityOrigin> createEmpty();
 
     // Create a deep copy of this SecurityOrigin. This method is useful
@@ -53,42 +55,57 @@ public:
     // Set the domain property of this security origin to newDomain. This
     // function does not check whether newDomain is a suffix of the current
     // domain. The caller is responsible for validating newDomain.
-    void setDomainFromDOM(const String& newDomain);
-    bool domainWasSetInDOM() const { return m_domainWasSetInDOM; }
+    void setDomainFromDOM( const String &newDomain );
+    bool domainWasSetInDOM() const
+    {
+        return m_domainWasSetInDOM;
+    }
 
-    static void setDomainRelaxationForbiddenForURLScheme(bool forbidden, const String&);
-    static bool isDomainRelaxationForbiddenForURLScheme(const String&);
+    static void setDomainRelaxationForbiddenForURLScheme( bool forbidden, const String & );
+    static bool isDomainRelaxationForbiddenForURLScheme( const String & );
 
-    String protocol() const { return m_protocol; }
-    String host() const { return m_host; }
-    String domain() const { return m_domain; }
-    unsigned short port() const { return m_port; }
+    String protocol() const
+    {
+        return m_protocol;
+    }
+    String host() const
+    {
+        return m_host;
+    }
+    String domain() const
+    {
+        return m_domain;
+    }
+    unsigned short port() const
+    {
+        return m_port;
+    }
 
     // Returns true if this SecurityOrigin can script objects in the given
     // SecurityOrigin. For example, call this function before allowing
     // script from one security origin to read or write objects from
     // another SecurityOrigin.
-    bool canAccess(const SecurityOrigin*) const;
+    bool canAccess( const SecurityOrigin * ) const;
 
     // Returns true if this SecurityOrigin can read content retrieved from
     // the given URL. For example, call this function before issuing
     // XMLHttpRequests.
-    bool canRequest(const KURL&) const;
+    bool canRequest( const KURL & ) const;
 
     // Returns true if drawing an image from this URL taints a canvas from
     // this security origin. For example, call this function before
     // drawing an image onto an HTML canvas element with the drawImage API.
-    bool taintsCanvas(const KURL&) const;
+    bool taintsCanvas( const KURL & ) const;
 
     // Returns true if this SecurityOrigin can receive drag content from the
     // initiator. For example, call this function before allowing content to be
     // dropped onto a target.
-    bool canReceiveDragData(const SecurityOrigin* dragInitiator) const;    
+    bool canReceiveDragData( const SecurityOrigin *dragInitiator ) const;
 
     // Returns true if |document| can display content from the given URL (e.g.,
     // in an iframe or as an image). For example, web sites generally cannot
     // display content from the user's files system.
-    bool canDisplay(const KURL&) const;
+    bool canDisplay( const KURL & ) const;
 
     // Returns true if this SecurityOrigin can load local resources, such
     // as images, iframes, and style sheets, and can link to local URLs.
@@ -99,7 +116,10 @@ public:
     //       without being able to issue an XMLHttpRequest for a local URL.
     //       To determine whether the SecurityOrigin can issue an
     //       XMLHttpRequest for a URL, call canRequest(url).
-    bool canLoadLocalResources() const { return m_canLoadLocalResources; }
+    bool canLoadLocalResources() const
+    {
+        return m_canLoadLocalResources;
+    }
 
     // Explicitly grant the ability to load local resources to this
     // SecurityOrigin.
@@ -113,20 +133,41 @@ public:
     // WARNING: This is an extremely powerful ability. Use with caution!
     void grantUniversalAccess();
 
-    bool isSandboxed(SandboxFlags mask) const { return m_sandboxFlags & mask; }
+    bool isSandboxed( SandboxFlags mask ) const
+    {
+        return m_sandboxFlags & mask;
+    }
 
-    bool canAccessDatabase() const { return !isUnique(); }
-    bool canAccessLocalStorage() const { return !isUnique(); }
-    bool canAccessCookies() const { return !isUnique(); }
-    bool canAccessPasswordManager() const { return !isUnique(); }
-    bool canAccessFileSystem() const { return !isUnique(); }
+    bool canAccessDatabase() const
+    {
+        return !isUnique();
+    }
+    bool canAccessLocalStorage() const
+    {
+        return !isUnique();
+    }
+    bool canAccessCookies() const
+    {
+        return !isUnique();
+    }
+    bool canAccessPasswordManager() const
+    {
+        return !isUnique();
+    }
+    bool canAccessFileSystem() const
+    {
+        return !isUnique();
+    }
 
     // Technically, we should always allow access to sessionStorage, but we
     // currently don't handle creating a sessionStorage area for unique
     // origins.
-    bool canAccessSessionStorage() const { return !isUnique(); }
+    bool canAccessSessionStorage() const
+    {
+        return !isUnique();
+    }
 
-    bool isSecureTransitionTo(const KURL&) const;
+    bool isSecureTransitionTo( const KURL & ) const;
 
     // The local SecurityOrigin is the most privileged SecurityOrigin.
     // The local SecurityOrigin can script any document, navigate to local
@@ -139,7 +180,10 @@ public:
     // There's a subtle difference between a unique origin and an origin that
     // has the SandboxOrigin flag set. The latter implies the former, and, in
     // addition, the SandboxOrigin flag is inherited by iframes.
-    bool isUnique() const { return m_isUnique; }
+    bool isUnique() const
+    {
+        return m_isUnique;
+    }
 
     // The empty SecurityOrigin is a unique security orign (in the sense of
     // isUnique above) that was created for a "blank" document, such about
@@ -172,36 +216,39 @@ public:
     // For access checks, use canAccess().
     // FIXME: If this method is really only useful for hash table keys, it
     // should be refactored into SecurityOriginHash.
-    bool equal(const SecurityOrigin*) const;
+    bool equal( const SecurityOrigin * ) const;
 
     // This method checks for equality, ignoring the value of document.domain
     // (and whether it was set) but considering the host. It is used for postMessage.
-    bool isSameSchemeHostPort(const SecurityOrigin*) const;
+    bool isSameSchemeHostPort( const SecurityOrigin * ) const;
 
-    static bool shouldHideReferrer(const KURL&, const String& referrer);
+    static bool shouldHideReferrer( const KURL &, const String &referrer );
 
-    enum LocalLoadPolicy {
+    enum LocalLoadPolicy
+    {
         AllowLocalLoadsForAll, // No restriction on local loads.
         AllowLocalLoadsForLocalAndSubstituteData,
         AllowLocalLoadsForLocalOnly,
     };
-    static void setLocalLoadPolicy(LocalLoadPolicy);
+    static void setLocalLoadPolicy( LocalLoadPolicy );
     static bool restrictAccessToLocal();
     static bool allowSubstituteDataAccessToLocal();
 
-    static void addOriginAccessWhitelistEntry(const SecurityOrigin& sourceOrigin, const String& destinationProtocol, const String& destinationDomains, bool allowDestinationSubdomains);
-    static void removeOriginAccessWhitelistEntry(const SecurityOrigin& sourceOrigin, const String& destinationProtocol, const String& destinationDomains, bool allowDestinationSubdomains);
+    static void addOriginAccessWhitelistEntry( const SecurityOrigin &sourceOrigin, const String &destinationProtocol,
+            const String &destinationDomains, bool allowDestinationSubdomains );
+    static void removeOriginAccessWhitelistEntry( const SecurityOrigin &sourceOrigin, const String &destinationProtocol,
+            const String &destinationDomains, bool allowDestinationSubdomains );
     static void resetOriginAccessWhitelists();
 
 private:
-    SecurityOrigin(const KURL&, SandboxFlags);
-    explicit SecurityOrigin(const SecurityOrigin*);
+    SecurityOrigin( const KURL &, SandboxFlags );
+    explicit SecurityOrigin( const SecurityOrigin * );
 
     // FIXME: Rename this function to something more semantic.
-    bool passesFileCheck(const SecurityOrigin*) const;
+    bool passesFileCheck( const SecurityOrigin * ) const;
 
-    bool isAccessWhiteListed(const SecurityOrigin*) const;
-    bool isAccessToURLWhiteListed(const KURL&) const;
+    bool isAccessWhiteListed( const SecurityOrigin * ) const;
+    bool isAccessToURLWhiteListed( const KURL & ) const;
 
     SandboxFlags m_sandboxFlags;
     String m_protocol;

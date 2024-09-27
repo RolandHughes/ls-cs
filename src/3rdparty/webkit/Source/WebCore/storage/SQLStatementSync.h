@@ -39,16 +39,18 @@
 #include <wtf/Forward.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class DatabaseSync;
 class SQLResultSet;
 
-class SQLStatementSync {
+class SQLStatementSync
+{
 public:
-    SQLStatementSync(const String& statement, const Vector<SQLValue>& arguments, int permissions);
+    SQLStatementSync( const String &statement, const Vector<SQLValue> &arguments, int permissions );
 
-    PassRefPtr<SQLResultSet> execute(DatabaseSync*, ExceptionCode&);
+    PassRefPtr<SQLResultSet> execute( DatabaseSync *, ExceptionCode & );
 
 private:
     String m_statement;

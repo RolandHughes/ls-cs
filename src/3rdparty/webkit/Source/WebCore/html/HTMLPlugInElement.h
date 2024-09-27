@@ -30,41 +30,49 @@
 struct NPObject;
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
 class RenderEmbeddedObject;
 class RenderWidget;
 class Widget;
 
-class HTMLPlugInElement : public HTMLFrameOwnerElement {
+class HTMLPlugInElement : public HTMLFrameOwnerElement
+{
 public:
     virtual ~HTMLPlugInElement();
 
     PassScriptInstance getInstance() const;
 
-    Widget* pluginWidget() const;
+    Widget *pluginWidget() const;
 
 #if ENABLE(NETSCAPE_PLUGIN_API)
-    NPObject* getNPObject();
+    NPObject *getNPObject();
 #endif
 
-    bool isCapturingMouseEvents() const { return m_isCapturingMouseEvents; }
-    void setIsCapturingMouseEvents(bool capturing) { m_isCapturingMouseEvents = capturing; }
+    bool isCapturingMouseEvents() const
+    {
+        return m_isCapturingMouseEvents;
+    }
+    void setIsCapturingMouseEvents( bool capturing )
+    {
+        m_isCapturingMouseEvents = capturing;
+    }
 
 protected:
-    HTMLPlugInElement(const QualifiedName& tagName, Document*);
+    HTMLPlugInElement( const QualifiedName &tagName, Document * );
 
     virtual void detach();
 
-    virtual bool mapToEntry(const QualifiedName& attrName, MappedAttributeEntry& result) const;
-    virtual void parseMappedAttribute(Attribute*);
+    virtual bool mapToEntry( const QualifiedName &attrName, MappedAttributeEntry &result ) const;
+    virtual void parseMappedAttribute( Attribute * );
 
     bool m_inBeforeLoadEventHandler;
 
 private:
-    virtual void defaultEventHandler(Event*);
+    virtual void defaultEventHandler( Event * );
 
-    virtual RenderWidget* renderWidgetForJSBindings() const = 0;
+    virtual RenderWidget *renderWidgetForJSBindings() const = 0;
 
 protected:
     AtomicString m_name;
@@ -72,7 +80,7 @@ protected:
 private:
     mutable ScriptInstance m_instance;
 #if ENABLE(NETSCAPE_PLUGIN_API)
-    NPObject* m_NPObject;
+    NPObject *m_NPObject;
 #endif
     bool m_isCapturingMouseEvents;
 };

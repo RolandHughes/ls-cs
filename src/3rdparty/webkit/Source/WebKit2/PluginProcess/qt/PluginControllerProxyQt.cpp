@@ -33,7 +33,8 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
 void PluginControllerProxy::platformInitialize()
 {
@@ -45,7 +46,7 @@ void PluginControllerProxy::platformDestroy()
     notImplemented();
 }
 
-void PluginControllerProxy::platformGeometryDidChange(const IntRect& frameRect, const IntRect&)
+void PluginControllerProxy::platformGeometryDidChange( const IntRect &frameRect, const IntRect & )
 {
     notImplemented();
 }

@@ -34,9 +34,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSDOMURL);
+ASSERT_CLASS_FITS_IN_CELL( JSDOMURL );
 
 /* Hash table for prototype */
 #if ENABLE(JIT)
@@ -47,88 +48,104 @@ ASSERT_CLASS_FITS_IN_CELL(JSDOMURL);
 
 static const HashTableValue JSDOMURLPrototypeTableValues[3] =
 {
-    { "createObjectURL", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDOMURLPrototypeFunctionCreateObjectURL), (intptr_t)1 THUNK_GENERATOR(0) },
-    { "revokeObjectURL", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDOMURLPrototypeFunctionRevokeObjectURL), (intptr_t)1 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "createObjectURL", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDOMURLPrototypeFunctionCreateObjectURL ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { "revokeObjectURL", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDOMURLPrototypeFunctionRevokeObjectURL ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSDOMURLPrototypeTable = { 4, 3, JSDOMURLPrototypeTableValues, 0 };
-static const HashTable* getJSDOMURLPrototypeTable(ExecState* exec)
+static const HashTable *getJSDOMURLPrototypeTable( ExecState *exec )
 {
-    return getHashTableForGlobalData(exec->globalData(), &JSDOMURLPrototypeTable);
+    return getHashTableForGlobalData( exec->globalData(), &JSDOMURLPrototypeTable );
 }
 
 const ClassInfo JSDOMURLPrototype::s_info = { "DOMURLPrototype", &JSC::JSObjectWithGlobalObject::s_info, 0, getJSDOMURLPrototypeTable };
 
-JSObject* JSDOMURLPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSDOMURLPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSDOMURL>(exec, globalObject);
+    return getDOMPrototype<JSDOMURL>( exec, globalObject );
 }
 
-bool JSDOMURLPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSDOMURLPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticFunctionSlot<JSObject>(exec, getJSDOMURLPrototypeTable(exec), this, propertyName, slot);
+    return getStaticFunctionSlot<JSObject>( exec, getJSDOMURLPrototypeTable( exec ), this, propertyName, slot );
 }
 
-bool JSDOMURLPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSDOMURLPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticFunctionDescriptor<JSObject>(exec, getJSDOMURLPrototypeTable(exec), this, propertyName, descriptor);
+    return getStaticFunctionDescriptor<JSObject>( exec, getJSDOMURLPrototypeTable( exec ), this, propertyName, descriptor );
 }
 
 const ClassInfo JSDOMURL::s_info = { "DOMURL", &JSDOMWrapper::s_info, 0, 0 };
 
-JSDOMURL::JSDOMURL(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<DOMURL> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSDOMURL::JSDOMURL( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<DOMURL> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSDOMURL::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSDOMURL::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSDOMURLPrototype(exec->globalData(), globalObject, JSDOMURLPrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSDOMURLPrototype( exec->globalData(), globalObject,
+                                           JSDOMURLPrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsDOMURLPrototypeFunctionCreateObjectURL(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsDOMURLPrototypeFunctionCreateObjectURL( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSDOMURL::s_info))
-        return throwVMTypeError(exec);
-    JSDOMURL* castedThis = static_cast<JSDOMURL*>(asObject(thisValue));
-    DOMURL* imp = static_cast<DOMURL*>(castedThis->impl());
-    Blob* blob(toBlob(exec->argument(0)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+
+    if ( !thisValue.inherits( &JSDOMURL::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSDOMURL *castedThis = static_cast<JSDOMURL *>( asObject( thisValue ) );
+    DOMURL *imp = static_cast<DOMURL *>( castedThis->impl() );
+    Blob *blob( toBlob( exec->argument( 0 ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
 
 
-    JSC::JSValue result = jsStringOrUndefined(exec, imp->createObjectURL(blob));
-    return JSValue::encode(result);
+    JSC::JSValue result = jsStringOrUndefined( exec, imp->createObjectURL( blob ) );
+    return JSValue::encode( result );
 }
 
-EncodedJSValue JSC_HOST_CALL jsDOMURLPrototypeFunctionRevokeObjectURL(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsDOMURLPrototypeFunctionRevokeObjectURL( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSDOMURL::s_info))
-        return throwVMTypeError(exec);
-    JSDOMURL* castedThis = static_cast<JSDOMURL*>(asObject(thisValue));
-    DOMURL* imp = static_cast<DOMURL*>(castedThis->impl());
-    const String& url(ustringToString(exec->argument(0).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
 
-    imp->revokeObjectURL(url);
-    return JSValue::encode(jsUndefined());
+    if ( !thisValue.inherits( &JSDOMURL::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSDOMURL *castedThis = static_cast<JSDOMURL *>( asObject( thisValue ) );
+    DOMURL *imp = static_cast<DOMURL *>( castedThis->impl() );
+    const String &url( ustringToString( exec->argument( 0 ).toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->revokeObjectURL( url );
+    return JSValue::encode( jsUndefined() );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, DOMURL* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, DOMURL *impl )
 {
-    return wrap<JSDOMURL>(exec, globalObject, impl);
+    return wrap<JSDOMURL>( exec, globalObject, impl );
 }
 
-DOMURL* toDOMURL(JSC::JSValue value)
+DOMURL *toDOMURL( JSC::JSValue value )
 {
-    return value.inherits(&JSDOMURL::s_info) ? static_cast<JSDOMURL*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSDOMURL::s_info ) ? static_cast<JSDOMURL *>( asObject( value ) )->impl() : 0;
 }
 
 }

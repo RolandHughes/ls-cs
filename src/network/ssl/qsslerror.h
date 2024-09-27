@@ -35,71 +35,75 @@ class QSslErrorPrivate;
 class Q_NETWORK_EXPORT QSslError
 {
 public:
-   enum SslError {
-      NoError,
-      UnableToGetIssuerCertificate,
-      UnableToDecryptCertificateSignature,
-      UnableToDecodeIssuerPublicKey,
-      CertificateSignatureFailed,
-      CertificateNotYetValid,
-      CertificateExpired,
-      InvalidNotBeforeField,
-      InvalidNotAfterField,
-      SelfSignedCertificate,
-      SelfSignedCertificateInChain,
-      UnableToGetLocalIssuerCertificate,
-      UnableToVerifyFirstCertificate,
-      CertificateRevoked,
-      InvalidCaCertificate,
-      PathLengthExceeded,
-      InvalidPurpose,
-      CertificateUntrusted,
-      CertificateRejected,
-      SubjectIssuerMismatch, // hostname mismatch?
-      AuthorityIssuerSerialNumberMismatch,
-      NoPeerCertificate,
-      HostNameMismatch,
-      NoSslSupport,
-      CertificateBlacklisted,
-      UnspecifiedError = -1
-   };
+    enum SslError
+    {
+        NoError,
+        UnableToGetIssuerCertificate,
+        UnableToDecryptCertificateSignature,
+        UnableToDecodeIssuerPublicKey,
+        CertificateSignatureFailed,
+        CertificateNotYetValid,
+        CertificateExpired,
+        InvalidNotBeforeField,
+        InvalidNotAfterField,
+        SelfSignedCertificate,
+        SelfSignedCertificateInChain,
+        UnableToGetLocalIssuerCertificate,
+        UnableToVerifyFirstCertificate,
+        CertificateRevoked,
+        InvalidCaCertificate,
+        PathLengthExceeded,
+        InvalidPurpose,
+        CertificateUntrusted,
+        CertificateRejected,
+        SubjectIssuerMismatch, // hostname mismatch?
+        AuthorityIssuerSerialNumberMismatch,
+        NoPeerCertificate,
+        HostNameMismatch,
+        NoSslSupport,
+        CertificateBlacklisted,
+        UnspecifiedError = -1
+    };
 
-   QSslError();
-   QSslError(SslError error);
-   QSslError(SslError error, const QSslCertificate &certificate);
-   QSslError(const QSslError &other);
+    QSslError();
+    QSslError( SslError error );
+    QSslError( SslError error, const QSslCertificate &certificate );
+    QSslError( const QSslError &other );
 
-   ~QSslError();
+    ~QSslError();
 
-   SslError error() const;
-   QString errorString() const;
+    SslError error() const;
+    QString errorString() const;
 
-   QSslCertificate certificate() const;
+    QSslCertificate certificate() const;
 
-   void swap(QSslError &other)  {
-      qSwap(d, other.d);
-   }
+    void swap( QSslError &other )
+    {
+        qSwap( d, other.d );
+    }
 
-   QSslError &operator=(const QSslError &other);
-   bool operator==(const QSslError &other) const;
+    QSslError &operator=( const QSslError &other );
+    bool operator==( const QSslError &other ) const;
 
-   bool operator!=(const QSslError &other) const {
-      return !(*this == other);
-   }
+    bool operator!=( const QSslError &other ) const
+    {
+        return !( *this == other );
+    }
 
-   QSslError &operator=(QSslError &&other)  {
-      swap(other);
-      return *this;
-   }
+    QSslError &operator=( QSslError &&other )
+    {
+        swap( other );
+        return *this;
+    }
 
 private:
-   QScopedPointer<QSslErrorPrivate> d;
+    QScopedPointer<QSslErrorPrivate> d;
 };
 
-Q_NETWORK_EXPORT uint qHash(const QSslError &key, uint seed = 0);
+Q_NETWORK_EXPORT uint qHash( const QSslError &key, uint seed = 0 );
 
-Q_NETWORK_EXPORT QDebug operator<<(QDebug debug, const QSslError &error);
-Q_NETWORK_EXPORT QDebug operator<<(QDebug debug, const QSslError::SslError &error);
+Q_NETWORK_EXPORT QDebug operator<<( QDebug debug, const QSslError &error );
+Q_NETWORK_EXPORT QDebug operator<<( QDebug debug, const QSslError::SslError &error );
 
 #else
 

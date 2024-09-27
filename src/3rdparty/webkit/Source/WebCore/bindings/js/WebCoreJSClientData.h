@@ -27,54 +27,60 @@
 #include <wtf/HashSet.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class WebCoreJSClientData : public JSC::JSGlobalData::ClientData {
-    WTF_MAKE_NONCOPYABLE(WebCoreJSClientData); WTF_MAKE_FAST_ALLOCATED;
+class WebCoreJSClientData : public JSC::JSGlobalData::ClientData
+{
+    WTF_MAKE_NONCOPYABLE( WebCoreJSClientData );
+    WTF_MAKE_FAST_ALLOCATED;
     friend class JSGlobalDataWorldIterator;
-    friend void initNormalWorldClientData(JSC::JSGlobalData*);
+    friend void initNormalWorldClientData( JSC::JSGlobalData * );
 
 public:
     WebCoreJSClientData() { }
     virtual ~WebCoreJSClientData()
     {
-        ASSERT(m_worldSet.contains(m_normalWorld.get()));
-        ASSERT(m_worldSet.size() == 1);
-        ASSERT(m_normalWorld->hasOneRef());
+        ASSERT( m_worldSet.contains( m_normalWorld.get() ) );
+        ASSERT( m_worldSet.size() == 1 );
+        ASSERT( m_normalWorld->hasOneRef() );
         m_normalWorld.clear();
-        ASSERT(m_worldSet.isEmpty());
+        ASSERT( m_worldSet.isEmpty() );
     }
 
-    DOMWrapperWorld* normalWorld() { return m_normalWorld.get(); }
-
-    void getAllWorlds(Vector<DOMWrapperWorld*>& worlds)
+    DOMWrapperWorld *normalWorld()
     {
-        copyToVector(m_worldSet, worlds);
+        return m_normalWorld.get();
     }
 
-    void rememberWorld(DOMWrapperWorld* world)
+    void getAllWorlds( Vector<DOMWrapperWorld *> &worlds )
     {
-        ASSERT(!m_worldSet.contains(world));
-        m_worldSet.add(world);
+        copyToVector( m_worldSet, worlds );
     }
-    void forgetWorld(DOMWrapperWorld* world)
+
+    void rememberWorld( DOMWrapperWorld *world )
     {
-        ASSERT(m_worldSet.contains(world));
-        m_worldSet.remove(world);
+        ASSERT( !m_worldSet.contains( world ) );
+        m_worldSet.add( world );
+    }
+    void forgetWorld( DOMWrapperWorld *world )
+    {
+        ASSERT( m_worldSet.contains( world ) );
+        m_worldSet.remove( world );
     }
 
     DOMObjectHashTableMap hashTableMap;
 
 private:
-    HashSet<DOMWrapperWorld*> m_worldSet;
+    HashSet<DOMWrapperWorld *> m_worldSet;
     RefPtr<DOMWrapperWorld> m_normalWorld;
 };
 
-inline void initNormalWorldClientData(JSC::JSGlobalData* globalData)
+inline void initNormalWorldClientData( JSC::JSGlobalData *globalData )
 {
-    WebCoreJSClientData* webCoreJSClientData = new WebCoreJSClientData;
+    WebCoreJSClientData *webCoreJSClientData = new WebCoreJSClientData;
     globalData->clientData = webCoreJSClientData; // ~JSGlobalData deletes this pointer.
-    webCoreJSClientData->m_normalWorld = DOMWrapperWorld::create(globalData, true);
+    webCoreJSClientData->m_normalWorld = DOMWrapperWorld::create( globalData, true );
 }
 
 } // namespace WebCore

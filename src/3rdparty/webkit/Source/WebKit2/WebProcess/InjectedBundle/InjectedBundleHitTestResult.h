@@ -32,22 +32,27 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefPtr.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 class InjectedBundleNodeHandle;
 class WebFrame;
 
-class InjectedBundleHitTestResult : public APIObject {
+class InjectedBundleHitTestResult : public APIObject
+{
 public:
     static const Type APIType = TypeBundleHitTestResult;
 
-    static PassRefPtr<InjectedBundleHitTestResult> create(const WebCore::HitTestResult&);
+    static PassRefPtr<InjectedBundleHitTestResult> create( const WebCore::HitTestResult & );
 
-    const WebCore::HitTestResult& coreHitTestResult() const { return m_hitTestResult; }
+    const WebCore::HitTestResult &coreHitTestResult() const
+    {
+        return m_hitTestResult;
+    }
 
-    PassRefPtr<InjectedBundleNodeHandle> nodeHandle() const; 
-    WebFrame* frame() const;
-    WebFrame* targetFrame() const;
+    PassRefPtr<InjectedBundleNodeHandle> nodeHandle() const;
+    WebFrame *frame() const;
+    WebFrame *targetFrame() const;
 
     String absoluteImageURL() const;
     String absoluteLinkURL() const;
@@ -55,18 +60,21 @@ public:
 
     String linkLabel() const;
     String linkTitle() const;
-    
+
     WebCore::IntRect imageRect() const;
-    
+
     bool isSelected() const;
 
 private:
-    explicit InjectedBundleHitTestResult(const WebCore::HitTestResult& hitTestResult)
-        : m_hitTestResult(hitTestResult)
+    explicit InjectedBundleHitTestResult( const WebCore::HitTestResult &hitTestResult )
+        : m_hitTestResult( hitTestResult )
     {
     }
 
-    virtual Type type() const { return APIType; }
+    virtual Type type() const
+    {
+        return APIType;
+    }
 
     WebCore::HitTestResult m_hitTestResult;
 };

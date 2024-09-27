@@ -28,60 +28,84 @@
 #include <wtf/Forward.h>
 #include <wtf/RefCounted.h>
 
-namespace JSC {
+namespace JSC
+{
 
-    struct RegExpRepresentation;
-    class JSGlobalData;
+struct RegExpRepresentation;
+class JSGlobalData;
 
-    RegExpFlags regExpFlags(const UString&);
+RegExpFlags regExpFlags( const UString & );
 
-    class RegExp : public RefCounted<RegExp> {
-    public:
-        static PassRefPtr<RegExp> create(JSGlobalData* globalData, const UString& pattern, RegExpFlags);
-        ~RegExp();
+class RegExp : public RefCounted<RegExp>
+{
+public:
+    static PassRefPtr<RegExp> create( JSGlobalData *globalData, const UString &pattern, RegExpFlags );
+    ~RegExp();
 
-        bool global() const { return m_flags & FlagGlobal; }
-        bool ignoreCase() const { return m_flags & FlagIgnoreCase; }
-        bool multiline() const { return m_flags & FlagMultiline; }
+    bool global() const
+    {
+        return m_flags & FlagGlobal;
+    }
+    bool ignoreCase() const
+    {
+        return m_flags & FlagIgnoreCase;
+    }
+    bool multiline() const
+    {
+        return m_flags & FlagMultiline;
+    }
 
-        const UString& pattern() const { return m_patternString; }
+    const UString &pattern() const
+    {
+        return m_patternString;
+    }
 
-        bool isValid() const { return !m_constructionError && m_flags != InvalidFlags; }
-        const char* errorMessage() const { return m_constructionError; }
+    bool isValid() const
+    {
+        return !m_constructionError && m_flags != InvalidFlags;
+    }
+    const char *errorMessage() const
+    {
+        return m_constructionError;
+    }
 
-        int match(const UString&, int startOffset, Vector<int, 32>* ovector = 0);
-        unsigned numSubpatterns() const { return m_numSubpatterns; }
-        
+    int match( const UString &, int startOffset, Vector<int, 32> *ovector = 0 );
+    unsigned numSubpatterns() const
+    {
+        return m_numSubpatterns;
+    }
+
 #if ENABLE(REGEXP_TRACING)
-        void printTraceData();
+    void printTraceData();
 #endif
 
-    private:
-        RegExp(JSGlobalData* globalData, const UString& pattern, RegExpFlags);
+private:
+    RegExp( JSGlobalData *globalData, const UString &pattern, RegExpFlags );
 
-        enum RegExpState {
-            ParseError,
-            JITCode,
-            ByteCode
-        } m_state;
+    enum RegExpState
+    {
+        ParseError,
+        JITCode,
+        ByteCode
+    } m_state;
 
-        RegExpState compile(JSGlobalData*);
+    RegExpState compile( JSGlobalData * );
 
 #if ENABLE(YARR_JIT_DEBUG)
-        void matchCompareWithInterpreter(const UString&, int startOffset, int* offsetVector, int jitResult);
+    void matchCompareWithInterpreter( const UString &, int startOffset, int *offsetVector, int jitResult );
 #endif
 
-        UString m_patternString;
-        RegExpFlags m_flags;
-        const char* m_constructionError;
-        unsigned m_numSubpatterns;
+    UString m_patternString;
+    RegExpFlags m_flags;
+    const char *m_constructionError;
+    unsigned m_numSubpatterns;
 #if ENABLE(REGEXP_TRACING)
-        unsigned m_rtMatchCallCount;
-        unsigned m_rtMatchFoundCount;
+    unsigned m_rtMatchCallCount;
+    unsigned m_rtMatchFoundCount;
 #endif
 
-        OwnPtr<RegExpRepresentation> m_representation;
-    };
+    OwnPtr<RegExpRepresentation> m_representation;
+};
 
 } // namespace JSC
 

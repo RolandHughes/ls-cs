@@ -39,31 +39,39 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
 static String userVisibleWebKitVersionString()
 {
     LPWSTR buildNumberStringPtr;
-    if (!::LoadStringW(instanceHandle(), BUILD_NUMBER, reinterpret_cast<LPWSTR>(&buildNumberStringPtr), 0) || !buildNumberStringPtr)
+
+    if ( !::LoadStringW( instanceHandle(), BUILD_NUMBER, reinterpret_cast<LPWSTR>( &buildNumberStringPtr ), 0 )
+            || !buildNumberStringPtr )
+    {
         return "534+";
+    }
 
     return buildNumberStringPtr;
 }
 
-String WebPageProxy::standardUserAgent(const String& applicationNameForUserAgent)
+String WebPageProxy::standardUserAgent( const String &applicationNameForUserAgent )
 {
-    DEFINE_STATIC_LOCAL(String, osVersion, (windowsVersionForUAString()));
-    DEFINE_STATIC_LOCAL(String, webKitVersion, (userVisibleWebKitVersionString()));
+    DEFINE_STATIC_LOCAL( String, osVersion, ( windowsVersionForUAString() ) );
+    DEFINE_STATIC_LOCAL( String, webKitVersion, ( userVisibleWebKitVersionString() ) );
 
-    return makeString("Mozilla/5.0 (", osVersion, ") AppleWebKit/", webKitVersion, " (KHTML, like Gecko)", applicationNameForUserAgent.isEmpty() ? "" : " ", applicationNameForUserAgent);
+    return makeString( "Mozilla/5.0 (", osVersion, ") AppleWebKit/", webKitVersion, " (KHTML, like Gecko)",
+                       applicationNameForUserAgent.isEmpty() ? "" : " ", applicationNameForUserAgent );
 }
 
-void WebPageProxy::setPopupMenuSelectedIndex(int32_t selectedIndex)
+void WebPageProxy::setPopupMenuSelectedIndex( int32_t selectedIndex )
 {
-    if (!m_activePopupMenu)
+    if ( !m_activePopupMenu )
+    {
         return;
+    }
 
-    static_cast<WebPopupMenuProxyWin*>(m_activePopupMenu.get())->setFocusedIndex(selectedIndex);
+    static_cast<WebPopupMenuProxyWin *>( m_activePopupMenu.get() )->setFocusedIndex( selectedIndex );
 }
 
 HWND WebPageProxy::nativeWindow() const
@@ -71,15 +79,17 @@ HWND WebPageProxy::nativeWindow() const
     return m_pageClient->nativeWindow();
 }
 
-void WebPageProxy::scheduleChildWindowGeometryUpdate(uint64_t window, const IntRect& rectInParentClientCoordinates, const IntRect& clipRectInChildClientCoordinates)
+void WebPageProxy::scheduleChildWindowGeometryUpdate( uint64_t window, const IntRect &rectInParentClientCoordinates,
+        const IntRect &clipRectInChildClientCoordinates )
 {
-    m_pageClient->scheduleChildWindowGeometryUpdate(reinterpret_cast<HWND>(window), rectInParentClientCoordinates, clipRectInChildClientCoordinates);
+    m_pageClient->scheduleChildWindowGeometryUpdate( reinterpret_cast<HWND>( window ), rectInParentClientCoordinates,
+            clipRectInChildClientCoordinates );
 }
 
-void WebPageProxy::wheelEventNotHandled(NativeWebWheelEvent& event) const
+void WebPageProxy::wheelEventNotHandled( NativeWebWheelEvent &event ) const
 {
-    const MSG* msg = event.nativeEvent();
-    ::PostMessage(::GetParent(nativeWindow()), msg->message, msg->wParam, msg->lParam);
+    const MSG *msg = event.nativeEvent();
+    ::PostMessage( ::GetParent( nativeWindow() ), msg->message, msg->wParam, msg->lParam );
 }
 
 } // namespace WebKit

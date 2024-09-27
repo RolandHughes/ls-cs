@@ -33,41 +33,43 @@
 #include "SVGLangSpace.h"
 #include "SVGURIReference.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SVGFEImageElement : public SVGFilterPrimitiveStandardAttributes,
-                          public SVGURIReference,
-                          public SVGLangSpace,
-                          public SVGExternalResourcesRequired,
-                          public CachedResourceClient {
+    public SVGURIReference,
+    public SVGLangSpace,
+    public SVGExternalResourcesRequired,
+    public CachedResourceClient
+{
 public:
-    static PassRefPtr<SVGFEImageElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<SVGFEImageElement> create( const QualifiedName &, Document * );
 
     virtual ~SVGFEImageElement();
 
 private:
-    SVGFEImageElement(const QualifiedName&, Document*);
+    SVGFEImageElement( const QualifiedName &, Document * );
 
-    virtual void parseMappedAttribute(Attribute*);
-    virtual void svgAttributeChanged(const QualifiedName&);
-    virtual void synchronizeProperty(const QualifiedName&);
+    virtual void parseMappedAttribute( Attribute * );
+    virtual void svgAttributeChanged( const QualifiedName & );
+    virtual void synchronizeProperty( const QualifiedName & );
     virtual void fillAttributeToPropertyTypeMap();
-    virtual AttributeToPropertyTypeMap& attributeToPropertyTypeMap();
-    virtual void notifyFinished(CachedResource*);
+    virtual AttributeToPropertyTypeMap &attributeToPropertyTypeMap();
+    virtual void notifyFinished( CachedResource * );
 
-    virtual void addSubresourceAttributeURLs(ListHashSet<KURL>&) const;
-    virtual PassRefPtr<FilterEffect> build(SVGFilterBuilder*, Filter*);
+    virtual void addSubresourceAttributeURLs( ListHashSet<KURL> & ) const;
+    virtual PassRefPtr<FilterEffect> build( SVGFilterBuilder *, Filter * );
 
     void requestImageResource();
 
     // Animated property declarations
-    DECLARE_ANIMATED_PRESERVEASPECTRATIO(PreserveAspectRatio, preserveAspectRatio)
+    DECLARE_ANIMATED_PRESERVEASPECTRATIO( PreserveAspectRatio, preserveAspectRatio )
 
     // SVGURIReference
-    DECLARE_ANIMATED_STRING(Href, href)
+    DECLARE_ANIMATED_STRING( Href, href )
 
     // SVGExternalResourcesRequired
-    DECLARE_ANIMATED_BOOLEAN(ExternalResourcesRequired, externalResourcesRequired)
+    DECLARE_ANIMATED_BOOLEAN( ExternalResourcesRequired, externalResourcesRequired )
 
     CachedResourceHandle<CachedImage> m_cachedImage;
     OwnPtr<ImageBuffer> m_targetImage;

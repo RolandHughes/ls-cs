@@ -30,47 +30,48 @@
 #include <qreportcontext_p.h>
 #include <qschematype_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class ComparisonFactory
 {
- public:
-   /**
-    * @short Returns the result of evaluating operator @p op applied to the atomic
-    * values @p operand1 and @p operand2.
-    *
-    * The caller guarantees that both values are of type @p type.
-    *
-    * ComparisonFactory does not take ownership of @p sourceLocationReflection.
-    */
-   static bool compare(const AtomicValue::Ptr &operand1,
-                       const AtomicComparator::Operator op,
-                       const AtomicValue::Ptr &operand2,
-                       const SchemaType::Ptr &type,
-                       const ReportContext::Ptr &context,
-                       const SourceLocationReflection *const sourceLocationReflection);
+public:
+    /**
+     * @short Returns the result of evaluating operator @p op applied to the atomic
+     * values @p operand1 and @p operand2.
+     *
+     * The caller guarantees that both values are of type @p type.
+     *
+     * ComparisonFactory does not take ownership of @p sourceLocationReflection.
+     */
+    static bool compare( const AtomicValue::Ptr &operand1,
+                         const AtomicComparator::Operator op,
+                         const AtomicValue::Ptr &operand2,
+                         const SchemaType::Ptr &type,
+                         const ReportContext::Ptr &context,
+                         const SourceLocationReflection *const sourceLocationReflection );
 
-   /**
-    * @short Returns the result of evaluating operator @p op applied to the atomic
-    * values @p operand1 and @p operand2.
-    *
-    * In opposite to compare() it converts the operands from string type
-    * to @p type and compares these constructed types.
-    *
-    * The caller guarantees that both values are of type @p type.
-    *
-    * ComparisonFactory does not take ownership of @p sourceLocationReflection.
-    */
-   static bool constructAndCompare(const DerivedString<TypeString>::Ptr &operand1,
-                                   const AtomicComparator::Operator op,
-                                   const DerivedString<TypeString>::Ptr &operand2,
-                                   const SchemaType::Ptr &type,
-                                   const ReportContext::Ptr &context,
-                                   const SourceLocationReflection *const sourceLocationReflection);
+    /**
+     * @short Returns the result of evaluating operator @p op applied to the atomic
+     * values @p operand1 and @p operand2.
+     *
+     * In opposite to compare() it converts the operands from string type
+     * to @p type and compares these constructed types.
+     *
+     * The caller guarantees that both values are of type @p type.
+     *
+     * ComparisonFactory does not take ownership of @p sourceLocationReflection.
+     */
+    static bool constructAndCompare( const DerivedString<TypeString>::Ptr &operand1,
+                                     const AtomicComparator::Operator op,
+                                     const DerivedString<TypeString>::Ptr &operand2,
+                                     const SchemaType::Ptr &type,
+                                     const ReportContext::Ptr &context,
+                                     const SourceLocationReflection *const sourceLocationReflection );
 
- private:
-   ComparisonFactory(const ComparisonFactory &) = delete;
-   ComparisonFactory &operator=(const ComparisonFactory &) = delete;
+private:
+    ComparisonFactory( const ComparisonFactory & ) = delete;
+    ComparisonFactory &operator=( const ComparisonFactory & ) = delete;
 };
 }
 

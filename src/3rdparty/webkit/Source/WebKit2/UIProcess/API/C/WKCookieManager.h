@@ -32,7 +32,8 @@
 extern "C" {
 #endif
 
-enum {
+enum
+{
     kWKHTTPCookieAcceptPolicyAlways = 0,
     kWKHTTPCookieAcceptPolicyNever = 1,
     kWKHTTPCookieAcceptPolicyOnlyFromMainDocumentDomain = 2
@@ -40,31 +41,34 @@ enum {
 typedef uint32_t WKHTTPCookieAcceptPolicy;
 
 // Cookie Manager Client
-typedef void (*WKCookieManagerCookiesDidChangeCallback)(WKCookieManagerRef cookieManager, const void *clientInfo);
+typedef void ( *WKCookieManagerCookiesDidChangeCallback )( WKCookieManagerRef cookieManager, const void *clientInfo );
 
-struct WKCookieManagerClient {
+struct WKCookieManagerClient
+{
     int                                                                 version;
-    const void *                                                        clientInfo;
+    const void                                                         *clientInfo;
     WKCookieManagerCookiesDidChangeCallback                             cookiesDidChange;
 };
 typedef struct WKCookieManagerClient WKCookieManagerClient;
 
 WK_EXPORT WKTypeID WKCookieManagerGetTypeID();
 
-WK_EXPORT void WKCookieManagerSetClient(WKCookieManagerRef cookieManager, const WKCookieManagerClient* client);
+WK_EXPORT void WKCookieManagerSetClient( WKCookieManagerRef cookieManager, const WKCookieManagerClient *client );
 
-typedef void (*WKCookieManagerGetCookieHostnamesFunction)(WKArrayRef, WKErrorRef, void*);
-WK_EXPORT void WKCookieManagerGetHostnamesWithCookies(WKCookieManagerRef cookieManager, void* context, WKCookieManagerGetCookieHostnamesFunction function);
+typedef void ( *WKCookieManagerGetCookieHostnamesFunction )( WKArrayRef, WKErrorRef, void * );
+WK_EXPORT void WKCookieManagerGetHostnamesWithCookies( WKCookieManagerRef cookieManager, void *context,
+        WKCookieManagerGetCookieHostnamesFunction function );
 
-WK_EXPORT void WKCookieManagerDeleteCookiesForHostname(WKCookieManagerRef cookieManager, WKStringRef hostname);
-WK_EXPORT void WKCookieManagerDeleteAllCookies(WKCookieManagerRef cookieManager);
+WK_EXPORT void WKCookieManagerDeleteCookiesForHostname( WKCookieManagerRef cookieManager, WKStringRef hostname );
+WK_EXPORT void WKCookieManagerDeleteAllCookies( WKCookieManagerRef cookieManager );
 
-WK_EXPORT void WKCookieManagerSetHTTPCookieAcceptPolicy(WKCookieManagerRef cookieManager, WKHTTPCookieAcceptPolicy policy);
-typedef void (*WKCookieManagerGetHTTPCookieAcceptPolicyFunction)(WKHTTPCookieAcceptPolicy, WKErrorRef, void*);
-WK_EXPORT void WKCookieManagerGetHTTPCookieAcceptPolicy(WKCookieManagerRef cookieManager, void* context, WKCookieManagerGetHTTPCookieAcceptPolicyFunction callback);
+WK_EXPORT void WKCookieManagerSetHTTPCookieAcceptPolicy( WKCookieManagerRef cookieManager, WKHTTPCookieAcceptPolicy policy );
+typedef void ( *WKCookieManagerGetHTTPCookieAcceptPolicyFunction )( WKHTTPCookieAcceptPolicy, WKErrorRef, void * );
+WK_EXPORT void WKCookieManagerGetHTTPCookieAcceptPolicy( WKCookieManagerRef cookieManager, void *context,
+        WKCookieManagerGetHTTPCookieAcceptPolicyFunction callback );
 
-WK_EXPORT void WKCookieManagerStartObservingCookieChanges(WKCookieManagerRef cookieManager);
-WK_EXPORT void WKCookieManagerStopObservingCookieChanges(WKCookieManagerRef cookieManager);
+WK_EXPORT void WKCookieManagerStartObservingCookieChanges( WKCookieManagerRef cookieManager );
+WK_EXPORT void WKCookieManagerStopObservingCookieChanges( WKCookieManagerRef cookieManager );
 
 #ifdef __cplusplus
 }

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef ApplicationCacheGroup_h
@@ -39,7 +39,8 @@
 #include <wtf/HashMap.h>
 #include <wtf/HashSet.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class ApplicationCache;
 class ApplicationCacheResource;
@@ -48,133 +49,174 @@ class DocumentLoader;
 class Frame;
 class SecurityOrigin;
 
-enum ApplicationCacheUpdateOption {
+enum ApplicationCacheUpdateOption
+{
     ApplicationCacheUpdateWithBrowsingContext,
     ApplicationCacheUpdateWithoutBrowsingContext
 };
 
-class ApplicationCacheGroup : ResourceHandleClient {
-    WTF_MAKE_NONCOPYABLE(ApplicationCacheGroup); WTF_MAKE_FAST_ALLOCATED;
+class ApplicationCacheGroup : ResourceHandleClient
+{
+    WTF_MAKE_NONCOPYABLE( ApplicationCacheGroup );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
-    ApplicationCacheGroup(const KURL& manifestURL, bool isCopy = false);    
+    ApplicationCacheGroup( const KURL &manifestURL, bool isCopy = false );
     ~ApplicationCacheGroup();
-    
+
     enum UpdateStatus { Idle, Checking, Downloading };
 
-    static ApplicationCache* cacheForMainRequest(const ResourceRequest&, DocumentLoader*);
-    static ApplicationCache* fallbackCacheForMainRequest(const ResourceRequest&, DocumentLoader*);
-    
-    static void selectCache(Frame*, const KURL& manifestURL);
-    static void selectCacheWithoutManifestURL(Frame*);
-    
-    const KURL& manifestURL() const { return m_manifestURL; }
-    const SecurityOrigin* origin() const { return m_origin.get(); }
-    UpdateStatus updateStatus() const { return m_updateStatus; }
-    void setUpdateStatus(UpdateStatus status);
+    static ApplicationCache *cacheForMainRequest( const ResourceRequest &, DocumentLoader * );
+    static ApplicationCache *fallbackCacheForMainRequest( const ResourceRequest &, DocumentLoader * );
 
-    void setStorageID(unsigned storageID) { m_storageID = storageID; }
-    unsigned storageID() const { return m_storageID; }
+    static void selectCache( Frame *, const KURL &manifestURL );
+    static void selectCacheWithoutManifestURL( Frame * );
+
+    const KURL &manifestURL() const
+    {
+        return m_manifestURL;
+    }
+    const SecurityOrigin *origin() const
+    {
+        return m_origin.get();
+    }
+    UpdateStatus updateStatus() const
+    {
+        return m_updateStatus;
+    }
+    void setUpdateStatus( UpdateStatus status );
+
+    void setStorageID( unsigned storageID )
+    {
+        m_storageID = storageID;
+    }
+    unsigned storageID() const
+    {
+        return m_storageID;
+    }
     void clearStorageID();
-    
-    void update(Frame*, ApplicationCacheUpdateOption); // FIXME: Frame should not be needed when updating without browsing context.
-    void cacheDestroyed(ApplicationCache*);
 
-    bool cacheIsBeingUpdated(const ApplicationCache* cache) const { return cache == m_cacheBeingUpdated; }
+    void update( Frame *, ApplicationCacheUpdateOption ); // FIXME: Frame should not be needed when updating without browsing context.
+    void cacheDestroyed( ApplicationCache * );
 
-    void stopLoadingInFrame(Frame*);
+    bool cacheIsBeingUpdated( const ApplicationCache *cache ) const
+    {
+        return cache == m_cacheBeingUpdated;
+    }
 
-    ApplicationCache* newestCache() const { return m_newestCache.get(); }
-    void setNewestCache(PassRefPtr<ApplicationCache>);
+    void stopLoadingInFrame( Frame * );
+
+    ApplicationCache *newestCache() const
+    {
+        return m_newestCache.get();
+    }
+    void setNewestCache( PassRefPtr<ApplicationCache> );
 
     void makeObsolete();
-    bool isObsolete() const { return m_isObsolete; }
+    bool isObsolete() const
+    {
+        return m_isObsolete;
+    }
 
-    void finishedLoadingMainResource(DocumentLoader*);
-    void failedLoadingMainResource(DocumentLoader*);
+    void finishedLoadingMainResource( DocumentLoader * );
+    void failedLoadingMainResource( DocumentLoader * );
 
-    void disassociateDocumentLoader(DocumentLoader*);
+    void disassociateDocumentLoader( DocumentLoader * );
 
-    bool isCopy() const { return m_isCopy; }
+    bool isCopy() const
+    {
+        return m_isCopy;
+    }
 
 private:
-    static void postListenerTask(ApplicationCacheHost::EventID id, const HashSet<DocumentLoader*>& set) { postListenerTask(id, 0, 0, set); }
-    static void postListenerTask(ApplicationCacheHost::EventID id, DocumentLoader* loader)  { postListenerTask(id, 0, 0, loader); }
-    static void postListenerTask(ApplicationCacheHost::EventID, int progressTotal, int progressDone, const HashSet<DocumentLoader*>&);
-    static void postListenerTask(ApplicationCacheHost::EventID, int progressTotal, int progressDone, DocumentLoader*);
+    static void postListenerTask( ApplicationCacheHost::EventID id, const HashSet<DocumentLoader *> &set )
+    {
+        postListenerTask( id, 0, 0, set );
+    }
+    static void postListenerTask( ApplicationCacheHost::EventID id, DocumentLoader *loader )
+    {
+        postListenerTask( id, 0, 0, loader );
+    }
+    static void postListenerTask( ApplicationCacheHost::EventID, int progressTotal, int progressDone,
+                                  const HashSet<DocumentLoader *> & );
+    static void postListenerTask( ApplicationCacheHost::EventID, int progressTotal, int progressDone, DocumentLoader * );
 
     void scheduleReachedMaxAppCacheSizeCallback();
     void scheduleReachedOriginQuotaCallback();
 
-    PassRefPtr<ResourceHandle> createResourceHandle(const KURL&, ApplicationCacheResource* newestCachedResource);
+    PassRefPtr<ResourceHandle> createResourceHandle( const KURL &, ApplicationCacheResource *newestCachedResource );
 
     // For normal resource loading, WebKit client is asked about each resource individually. Since application cache does not belong to any particular document,
     // the existing client callback cannot be used, so assume that any client that enables application cache also wants it to use credential storage.
-    virtual bool shouldUseCredentialStorage(ResourceHandle*) { return true; }
+    virtual bool shouldUseCredentialStorage( ResourceHandle * )
+    {
+        return true;
+    }
 
-    virtual void didReceiveResponse(ResourceHandle*, const ResourceResponse&);
-    virtual void didReceiveData(ResourceHandle*, const char*, int length, int encodedDataLength);
-    virtual void didFinishLoading(ResourceHandle*, double finishTime);
-    virtual void didFail(ResourceHandle*, const ResourceError&);
+    virtual void didReceiveResponse( ResourceHandle *, const ResourceResponse & );
+    virtual void didReceiveData( ResourceHandle *, const char *, int length, int encodedDataLength );
+    virtual void didFinishLoading( ResourceHandle *, double finishTime );
+    virtual void didFail( ResourceHandle *, const ResourceError & );
 
-    void didReceiveManifestResponse(const ResourceResponse&);
-    void didReceiveManifestData(const char*, int);
+    void didReceiveManifestResponse( const ResourceResponse & );
+    void didReceiveManifestData( const char *, int );
     void didFinishLoadingManifest();
     void didReachMaxAppCacheSize();
-    void didReachOriginQuota(PassRefPtr<Frame> frame);
-    
+    void didReachOriginQuota( PassRefPtr<Frame> frame );
+
     void startLoadingEntry();
     void deliverDelayedMainResources();
     void checkIfLoadIsComplete();
     void cacheUpdateFailed();
     void cacheUpdateFailedDueToOriginQuota();
     void manifestNotFound();
-    
-    void addEntry(const String&, unsigned type);
-    
-    void associateDocumentLoaderWithCache(DocumentLoader*, ApplicationCache*);
-    
+
+    void addEntry( const String &, unsigned type );
+
+    void associateDocumentLoaderWithCache( DocumentLoader *, ApplicationCache * );
+
     void stopLoading();
-    
+
     KURL m_manifestURL;
     RefPtr<SecurityOrigin> m_origin;
     UpdateStatus m_updateStatus;
-    
+
     // This is the newest complete cache in the group.
     RefPtr<ApplicationCache> m_newestCache;
-    
+
     // All complete caches in this cache group.
-    HashSet<ApplicationCache*> m_caches;
-    
+    HashSet<ApplicationCache *> m_caches;
+
     // The cache being updated (if any). Note that cache updating does not immediately create a new
     // ApplicationCache object, so this may be null even when update status is not Idle.
     RefPtr<ApplicationCache> m_cacheBeingUpdated;
 
     // List of pending master entries, used during the update process to ensure that new master entries are cached.
-    HashSet<DocumentLoader*> m_pendingMasterResourceLoaders;
+    HashSet<DocumentLoader *> m_pendingMasterResourceLoaders;
     // How many of the above pending master entries have not yet finished downloading.
     int m_downloadingPendingMasterResourceLoadersCount;
-    
+
     // These are all the document loaders that are associated with a cache in this group.
-    HashSet<DocumentLoader*> m_associatedDocumentLoaders;
+    HashSet<DocumentLoader *> m_associatedDocumentLoaders;
 
     // The URLs and types of pending cache entries.
     typedef HashMap<String, unsigned> EntryMap;
     EntryMap m_pendingEntries;
-    
+
     // The total number of items to be processed to update the cache group and the number that have been done.
     int m_progressTotal;
     int m_progressDone;
 
     // Frame used for fetching resources when updating.
     // FIXME: An update started by a particular frame should not stop if it is destroyed, but there are other frames associated with the same cache group.
-    Frame* m_frame;
-  
+    Frame *m_frame;
+
     // An obsolete cache group is never stored, but the opposite is not true - storing may fail for multiple reasons, such as exceeding disk quota.
     unsigned m_storageID;
     bool m_isObsolete;
 
     // During update, this is used to handle asynchronously arriving results.
-    enum CompletionType {
+    enum CompletionType
+    {
         None,
         NoUpdate,
         Failure,
@@ -189,7 +231,7 @@ private:
     // due to reaching the maximum size of the application cache database file. This flag is used by ApplicationCacheGroup::checkIfLoadIsComplete() to decide
     // the course of action in case of this failure (i.e. call the ChromeClient callback or run the failure steps).
     bool m_calledReachedMaxAppCacheSize;
-    
+
     RefPtr<ResourceHandle> m_currentHandle;
     RefPtr<ApplicationCacheResource> m_currentResource;
 

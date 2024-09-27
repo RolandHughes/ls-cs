@@ -28,37 +28,42 @@
 #include "BidiResolver.h"
 #include "RenderText.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class BidiContext;
 class InlineBox;
 
-struct BidiRun : BidiCharacterRun {
-    BidiRun(int start, int stop, RenderObject* object, BidiContext* context, WTF::Unicode::Direction dir)
-        : BidiCharacterRun(start, stop, context, dir)
-        , m_object(object)
-        , m_box(0)
-        , m_hasHyphen(false)
+struct BidiRun : BidiCharacterRun
+{
+    BidiRun( int start, int stop, RenderObject *object, BidiContext *context, WTF::Unicode::Direction dir )
+        : BidiCharacterRun( start, stop, context, dir )
+        , m_object( object )
+        , m_box( 0 )
+        , m_hasHyphen( false )
     {
     }
 
     void destroy();
 
     // Overloaded new operator.
-    void* operator new(size_t, RenderArena*) throw();
+    void *operator new ( size_t, RenderArena * ) throw();
 
     // Overridden to prevent the normal delete from being called.
-    void operator delete(void*, size_t);
+    void operator delete ( void *, size_t );
 
-    BidiRun* next() { return static_cast<BidiRun*>(m_next); }
+    BidiRun *next()
+    {
+        return static_cast<BidiRun *>( m_next );
+    }
 
 private:
     // The normal operator new is disallowed.
-    void* operator new(size_t) throw();
+    void *operator new ( size_t ) throw();
 
 public:
-    RenderObject* m_object;
-    InlineBox* m_box;
+    RenderObject *m_object;
+    InlineBox *m_box;
     bool m_hasHyphen;
 };
 

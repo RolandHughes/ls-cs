@@ -23,54 +23,66 @@
 
 #include "JSWrapperObject.h"
 
-namespace WTF {
-    struct GregorianDateTime;
+namespace WTF
+{
+struct GregorianDateTime;
 }
 
-namespace JSC {
+namespace JSC
+{
 
-    class DateInstance : public JSWrapperObject {
-    public:
-        DateInstance(ExecState*, Structure*, double);
-        explicit DateInstance(ExecState*, Structure*);
+class DateInstance : public JSWrapperObject
+{
+public:
+    DateInstance( ExecState *, Structure *, double );
+    explicit DateInstance( ExecState *, Structure * );
 
-        double internalNumber() const { return internalValue().uncheckedGetNumber(); }
-
-        static JS_EXPORTDATA const ClassInfo s_info;
-
-        const GregorianDateTime* gregorianDateTime(ExecState* exec) const
-        {
-            if (m_data && m_data->m_gregorianDateTimeCachedForMS == internalNumber())
-                return &m_data->m_cachedGregorianDateTime;
-            return calculateGregorianDateTime(exec);
-        }
-        
-        const GregorianDateTime* gregorianDateTimeUTC(ExecState* exec) const
-        {
-            if (m_data && m_data->m_gregorianDateTimeUTCCachedForMS == internalNumber())
-                return &m_data->m_cachedGregorianDateTimeUTC;
-            return calculateGregorianDateTimeUTC(exec);
-        }
-
-        static Structure* createStructure(JSGlobalData& globalData, JSValue prototype)
-        {
-            return Structure::create(globalData, prototype, TypeInfo(ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
-        }
-
-    private:
-        const GregorianDateTime* calculateGregorianDateTime(ExecState*) const;
-        const GregorianDateTime* calculateGregorianDateTimeUTC(ExecState*) const;
-
-        mutable RefPtr<DateInstanceData> m_data;
-    };
-
-    DateInstance* asDateInstance(JSValue);
-
-    inline DateInstance* asDateInstance(JSValue value)
+    double internalNumber() const
     {
-        ASSERT(asObject(value)->inherits(&DateInstance::s_info));
-        return static_cast<DateInstance*>(asObject(value));
+        return internalValue().uncheckedGetNumber();
     }
+
+    static JS_EXPORTDATA const ClassInfo s_info;
+
+    const GregorianDateTime *gregorianDateTime( ExecState *exec ) const
+    {
+        if ( m_data && m_data->m_gregorianDateTimeCachedForMS == internalNumber() )
+        {
+            return &m_data->m_cachedGregorianDateTime;
+        }
+
+        return calculateGregorianDateTime( exec );
+    }
+
+    const GregorianDateTime *gregorianDateTimeUTC( ExecState *exec ) const
+    {
+        if ( m_data && m_data->m_gregorianDateTimeUTCCachedForMS == internalNumber() )
+        {
+            return &m_data->m_cachedGregorianDateTimeUTC;
+        }
+
+        return calculateGregorianDateTimeUTC( exec );
+    }
+
+    static Structure *createStructure( JSGlobalData &globalData, JSValue prototype )
+    {
+        return Structure::create( globalData, prototype, TypeInfo( ObjectType, StructureFlags ), AnonymousSlotCount, &s_info );
+    }
+
+private:
+    const GregorianDateTime *calculateGregorianDateTime( ExecState * ) const;
+    const GregorianDateTime *calculateGregorianDateTimeUTC( ExecState * ) const;
+
+    mutable RefPtr<DateInstanceData> m_data;
+};
+
+DateInstance *asDateInstance( JSValue );
+
+inline DateInstance *asDateInstance( JSValue value )
+{
+    ASSERT( asObject( value )->inherits( &DateInstance::s_info ) );
+    return static_cast<DateInstance *>( asObject( value ) );
+}
 
 } // namespace JSC
 

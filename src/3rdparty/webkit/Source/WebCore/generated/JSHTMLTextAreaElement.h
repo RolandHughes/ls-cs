@@ -24,91 +24,97 @@
 #include "JSHTMLElement.h"
 #include <runtime/JSObjectWithGlobalObject.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class HTMLTextAreaElement;
 
-class JSHTMLTextAreaElement : public JSHTMLElement {
+class JSHTMLTextAreaElement : public JSHTMLElement
+{
     typedef JSHTMLElement Base;
 public:
-    JSHTMLTextAreaElement(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<HTMLTextAreaElement>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
-    virtual void put(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::JSValue, JSC::PutPropertySlot&);
+    JSHTMLTextAreaElement( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<HTMLTextAreaElement> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
+    virtual void put( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::JSValue, JSC::PutPropertySlot & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 
-class JSHTMLTextAreaElementPrototype : public JSC::JSObjectWithGlobalObject {
+class JSHTMLTextAreaElementPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSHTMLTextAreaElementPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSHTMLTextAreaElementPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                                    JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsHTMLTextAreaElementPrototypeFunctionSelect(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsHTMLTextAreaElementPrototypeFunctionCheckValidity(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsHTMLTextAreaElementPrototypeFunctionSetCustomValidity(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsHTMLTextAreaElementPrototypeFunctionSetSelectionRange(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsHTMLTextAreaElementPrototypeFunctionSelect( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsHTMLTextAreaElementPrototypeFunctionCheckValidity( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsHTMLTextAreaElementPrototypeFunctionSetCustomValidity( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsHTMLTextAreaElementPrototypeFunctionSetSelectionRange( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsHTMLTextAreaElementDefaultValue(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLTextAreaElementDefaultValue(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLTextAreaElementForm(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLTextAreaElementValidity(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLTextAreaElementAccessKey(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLTextAreaElementAccessKey(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLTextAreaElementCols(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLTextAreaElementCols(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLTextAreaElementDisabled(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLTextAreaElementDisabled(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLTextAreaElementAutofocus(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLTextAreaElementAutofocus(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLTextAreaElementMaxLength(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLTextAreaElementMaxLength(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLTextAreaElementName(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLTextAreaElementName(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLTextAreaElementPlaceholder(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLTextAreaElementPlaceholder(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLTextAreaElementReadOnly(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLTextAreaElementReadOnly(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLTextAreaElementRequired(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLTextAreaElementRequired(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLTextAreaElementRows(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLTextAreaElementRows(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLTextAreaElementType(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLTextAreaElementValue(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLTextAreaElementValue(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLTextAreaElementTextLength(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLTextAreaElementWillValidate(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLTextAreaElementValidationMessage(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLTextAreaElementSelectionStart(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLTextAreaElementSelectionStart(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLTextAreaElementSelectionEnd(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLTextAreaElementSelectionEnd(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLTextAreaElementLabels(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLTextAreaElementConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsHTMLTextAreaElementDefaultValue( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLTextAreaElementDefaultValue( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLTextAreaElementForm( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLTextAreaElementValidity( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLTextAreaElementAccessKey( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLTextAreaElementAccessKey( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLTextAreaElementCols( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLTextAreaElementCols( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLTextAreaElementDisabled( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLTextAreaElementDisabled( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLTextAreaElementAutofocus( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLTextAreaElementAutofocus( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLTextAreaElementMaxLength( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLTextAreaElementMaxLength( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLTextAreaElementName( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLTextAreaElementName( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLTextAreaElementPlaceholder( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLTextAreaElementPlaceholder( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLTextAreaElementReadOnly( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLTextAreaElementReadOnly( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLTextAreaElementRequired( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLTextAreaElementRequired( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLTextAreaElementRows( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLTextAreaElementRows( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLTextAreaElementType( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLTextAreaElementValue( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLTextAreaElementValue( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLTextAreaElementTextLength( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLTextAreaElementWillValidate( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLTextAreaElementValidationMessage( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLTextAreaElementSelectionStart( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLTextAreaElementSelectionStart( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLTextAreaElementSelectionEnd( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLTextAreaElementSelectionEnd( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLTextAreaElementLabels( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLTextAreaElementConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

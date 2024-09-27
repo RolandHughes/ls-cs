@@ -26,15 +26,16 @@
 #include "config.h"
 #include "CSSPrimitiveValueCache.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 CSSPrimitiveValueCache::CSSPrimitiveValueCache()
-    : m_colorTransparent(CSSPrimitiveValue::createColor(Color::transparent))
-    , m_colorWhite(CSSPrimitiveValue::createColor(Color::white))
-    , m_colorBlack(CSSPrimitiveValue::createColor(Color::black))
-    , m_pixelZero(CSSPrimitiveValue::create(0, CSSPrimitiveValue::CSS_PX))
-    , m_percentZero(CSSPrimitiveValue::create(0, CSSPrimitiveValue::CSS_PERCENTAGE))
-    , m_numberZero(CSSPrimitiveValue::create(0, CSSPrimitiveValue::CSS_NUMBER))
+    : m_colorTransparent( CSSPrimitiveValue::createColor( Color::transparent ) )
+    , m_colorWhite( CSSPrimitiveValue::createColor( Color::white ) )
+    , m_colorBlack( CSSPrimitiveValue::createColor( Color::black ) )
+    , m_pixelZero( CSSPrimitiveValue::create( 0, CSSPrimitiveValue::CSS_PX ) )
+    , m_percentZero( CSSPrimitiveValue::create( 0, CSSPrimitiveValue::CSS_PERCENTAGE ) )
+    , m_numberZero( CSSPrimitiveValue::create( 0, CSSPrimitiveValue::CSS_NUMBER ) )
 {
 }
 
@@ -42,77 +43,122 @@ CSSPrimitiveValueCache::~CSSPrimitiveValueCache()
 {
 }
 
-PassRefPtr<CSSPrimitiveValue> CSSPrimitiveValueCache::createIdentifierValue(int ident)
+PassRefPtr<CSSPrimitiveValue> CSSPrimitiveValueCache::createIdentifierValue( int ident )
 {
-    if (ident <= 0 || ident >= numCSSValueKeywords)
-        return CSSPrimitiveValue::createIdentifier(ident);
-
-    RefPtr<CSSPrimitiveValue> dummyValue;
-    pair<IdentifierValueCache::iterator, bool> entry = m_identifierValueCache.add(ident, dummyValue);
-    if (entry.second)
-        entry.first->second = CSSPrimitiveValue::createIdentifier(ident);
-    return entry.first->second;
-}
-
-PassRefPtr<CSSPrimitiveValue> CSSPrimitiveValueCache::createColorValue(unsigned rgbValue)
-{
-    // These are the empty and deleted values of the hash table.
-    if (rgbValue == Color::transparent)
-        return m_colorTransparent;
-    if (rgbValue == Color::white)
-        return m_colorWhite;
-    // Just because it is common.
-    if (rgbValue == Color::black)
-        return m_colorBlack;
-    
-    // Just wipe out the cache and start rebuilding if it gets too big.
-    const int maximumColorCacheSize = 512;
-    if (m_colorValueCache.size() > maximumColorCacheSize)
-        m_colorValueCache.clear();
-
-    RefPtr<CSSPrimitiveValue> dummyValue;
-    pair<ColorValueCache::iterator, bool> entry = m_colorValueCache.add(rgbValue, dummyValue);
-    if (entry.second)
-        entry.first->second = CSSPrimitiveValue::createColor(rgbValue);
-    return entry.first->second;
-}
-
-PassRefPtr<CSSPrimitiveValue> CSSPrimitiveValueCache::createValue(double value, CSSPrimitiveValue::UnitTypes type)
-{
-    // Small positive integers repeat often.
-    static const int maximumCacheableValue = 256;
-    if (value < 0 || value > maximumCacheableValue)
-        return CSSPrimitiveValue::create(value, type);
-
-    int intValue = static_cast<int>(value);
-    if (value != intValue)
-        return CSSPrimitiveValue::create(value, type);
-    
-    IntegerValueCache* cache;
-    switch (type) {
-    case CSSPrimitiveValue::CSS_PX:
-        if (intValue == 0)
-            return m_pixelZero;
-        cache = &m_pixelValueCache;
-        break;
-    case CSSPrimitiveValue::CSS_PERCENTAGE:
-        if (intValue == 0)
-            return m_percentZero;
-        cache = &m_percentValueCache;
-        break;
-    case CSSPrimitiveValue::CSS_NUMBER:
-        if (intValue == 0)
-            return m_numberZero;
-        cache = &m_numberValueCache;
-        break;
-    default:
-        return CSSPrimitiveValue::create(value, type);
+    if ( ident <= 0 || ident >= numCSSValueKeywords )
+    {
+        return CSSPrimitiveValue::createIdentifier( ident );
     }
 
     RefPtr<CSSPrimitiveValue> dummyValue;
-    pair<IntegerValueCache::iterator, bool> entry = cache->add(intValue, dummyValue);
-    if (entry.second)
-        entry.first->second = CSSPrimitiveValue::create(value, type);
+    pair<IdentifierValueCache::iterator, bool> entry = m_identifierValueCache.add( ident, dummyValue );
+
+    if ( entry.second )
+    {
+        entry.first->second = CSSPrimitiveValue::createIdentifier( ident );
+    }
+
+    return entry.first->second;
+}
+
+PassRefPtr<CSSPrimitiveValue> CSSPrimitiveValueCache::createColorValue( unsigned rgbValue )
+{
+    // These are the empty and deleted values of the hash table.
+    if ( rgbValue == Color::transparent )
+    {
+        return m_colorTransparent;
+    }
+
+    if ( rgbValue == Color::white )
+    {
+        return m_colorWhite;
+    }
+
+    // Just because it is common.
+    if ( rgbValue == Color::black )
+    {
+        return m_colorBlack;
+    }
+
+    // Just wipe out the cache and start rebuilding if it gets too big.
+    const int maximumColorCacheSize = 512;
+
+    if ( m_colorValueCache.size() > maximumColorCacheSize )
+    {
+        m_colorValueCache.clear();
+    }
+
+    RefPtr<CSSPrimitiveValue> dummyValue;
+    pair<ColorValueCache::iterator, bool> entry = m_colorValueCache.add( rgbValue, dummyValue );
+
+    if ( entry.second )
+    {
+        entry.first->second = CSSPrimitiveValue::createColor( rgbValue );
+    }
+
+    return entry.first->second;
+}
+
+PassRefPtr<CSSPrimitiveValue> CSSPrimitiveValueCache::createValue( double value, CSSPrimitiveValue::UnitTypes type )
+{
+    // Small positive integers repeat often.
+    static const int maximumCacheableValue = 256;
+
+    if ( value < 0 || value > maximumCacheableValue )
+    {
+        return CSSPrimitiveValue::create( value, type );
+    }
+
+    int intValue = static_cast<int>( value );
+
+    if ( value != intValue )
+    {
+        return CSSPrimitiveValue::create( value, type );
+    }
+
+    IntegerValueCache *cache;
+
+    switch ( type )
+    {
+        case CSSPrimitiveValue::CSS_PX:
+            if ( intValue == 0 )
+            {
+                return m_pixelZero;
+            }
+
+            cache = &m_pixelValueCache;
+            break;
+
+        case CSSPrimitiveValue::CSS_PERCENTAGE:
+            if ( intValue == 0 )
+            {
+                return m_percentZero;
+            }
+
+            cache = &m_percentValueCache;
+            break;
+
+        case CSSPrimitiveValue::CSS_NUMBER:
+            if ( intValue == 0 )
+            {
+                return m_numberZero;
+            }
+
+            cache = &m_numberValueCache;
+            break;
+
+        default:
+            return CSSPrimitiveValue::create( value, type );
+    }
+
+    RefPtr<CSSPrimitiveValue> dummyValue;
+    pair<IntegerValueCache::iterator, bool> entry = cache->add( intValue, dummyValue );
+
+    if ( entry.second )
+    {
+        entry.first->second = CSSPrimitiveValue::create( value, type );
+    }
+
     return entry.first->second;
 }
 

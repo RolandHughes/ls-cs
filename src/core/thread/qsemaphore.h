@@ -30,24 +30,24 @@ class QSemaphorePrivate;
 
 class Q_CORE_EXPORT QSemaphore
 {
- public:
-   explicit QSemaphore(int n = 0);
+public:
+    explicit QSemaphore( int n = 0 );
 
-   QSemaphore(const QSemaphore &) = delete;
-   QSemaphore &operator=(const QSemaphore &) = delete;
+    QSemaphore( const QSemaphore & ) = delete;
+    QSemaphore &operator=( const QSemaphore & ) = delete;
 
-   ~QSemaphore();
+    ~QSemaphore();
 
-   void acquire(int n = 1);
-   bool tryAcquire(int n = 1);
-   bool tryAcquire(int n, int timeout);
+    void acquire( int n = 1 );
+    bool tryAcquire( int n = 1 );
+    bool tryAcquire( int n, int timeout );
 
-   void release(int n = 1);
+    void release( int n = 1 );
 
-   int available() const;
+    int available() const;
 
- private:
-   QSemaphorePrivate *d;
+private:
+    QSemaphorePrivate *d;
 };
 
 #endif

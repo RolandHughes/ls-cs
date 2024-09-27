@@ -32,74 +32,82 @@
 #include <qsvgstyle_p.h>
 #include <qsvgtinydocument_p.h>
 
-QSvgG::QSvgG(QSvgNode *parent)
-   : QSvgStructureNode(parent)
+QSvgG::QSvgG( QSvgNode *parent )
+    : QSvgStructureNode( parent )
 {
 }
 
 QSvgStructureNode::~QSvgStructureNode()
 {
-   qDeleteAll(m_renderers);
+    qDeleteAll( m_renderers );
 }
 
-void QSvgG::draw(QPainter *p, QSvgExtraStates &states)
+void QSvgG::draw( QPainter *p, QSvgExtraStates &states )
 {
-   QList<QSvgNode *>::iterator itr = m_renderers.begin();
-   applyStyle(p, states);
+    QList<QSvgNode *>::iterator itr = m_renderers.begin();
+    applyStyle( p, states );
 
-   while (itr != m_renderers.end()) {
-      QSvgNode *node = *itr;
-      if ((node->isVisible()) && (node->displayMode() != QSvgNode::NoneMode)) {
-         node->draw(p, states);
-      }
-      ++itr;
-   }
-   revertStyle(p, states);
+    while ( itr != m_renderers.end() )
+    {
+        QSvgNode *node = *itr;
+
+        if ( ( node->isVisible() ) && ( node->displayMode() != QSvgNode::NoneMode ) )
+        {
+            node->draw( p, states );
+        }
+
+        ++itr;
+    }
+
+    revertStyle( p, states );
 }
 
 QSvgNode::Type QSvgG::type() const
 {
-   return G;
+    return G;
 }
 
-QSvgStructureNode::QSvgStructureNode(QSvgNode *parent)
-   : QSvgNode(parent)
+QSvgStructureNode::QSvgStructureNode( QSvgNode *parent )
+    : QSvgNode( parent )
 {
 
 }
 
-QSvgNode *QSvgStructureNode::scopeNode(const QString &id) const
+QSvgNode *QSvgStructureNode::scopeNode( const QString &id ) const
 {
-   QSvgTinyDocument *doc = document();
-   return doc ? doc->namedNode(id) : nullptr;
+    QSvgTinyDocument *doc = document();
+    return doc ? doc->namedNode( id ) : nullptr;
 }
 
-void QSvgStructureNode::addChild(QSvgNode *child, const QString &id)
+void QSvgStructureNode::addChild( QSvgNode *child, const QString &id )
 {
-   m_renderers.append(child);
+    m_renderers.append( child );
 
-   if (id.isEmpty()) {
-      return;   //we can't add it to scope without id
-   }
+    if ( id.isEmpty() )
+    {
+        return;   //we can't add it to scope without id
+    }
 
-   QSvgTinyDocument *doc = document();
-   if (doc) {
-      doc->addNamedNode(id, child);
-   }
+    QSvgTinyDocument *doc = document();
+
+    if ( doc )
+    {
+        doc->addNamedNode( id, child );
+    }
 }
 
-QSvgDefs::QSvgDefs(QSvgNode *parent)
-   : QSvgStructureNode(parent)
+QSvgDefs::QSvgDefs( QSvgNode *parent )
+    : QSvgStructureNode( parent )
 {
 }
 
-void QSvgDefs::draw(QPainter *, QSvgExtraStates &)
+void QSvgDefs::draw( QPainter *, QSvgExtraStates & )
 {
 }
 
 QSvgNode::Type QSvgDefs::type() const
 {
-   return DEFS;
+    return DEFS;
 }
 
 /*
@@ -160,206 +168,239 @@ QSvgNode::Type QSvgDefs::type() const
 #error "gperf generated tables do not work with this execution character set. Report to <bug-gnu-gperf@gnu.org>."
 #endif
 
-enum {
-   TOTAL_KEYWORDS = 20,
-   MIN_WORD_LENGTH = 47,
-   MAX_WORD_LENGTH = 78,
-   MIN_HASH_VALUE = 48,
-   MAX_HASH_VALUE = 88
+enum
+{
+    TOTAL_KEYWORDS = 20,
+    MIN_WORD_LENGTH = 47,
+    MAX_WORD_LENGTH = 78,
+    MIN_HASH_VALUE = 48,
+    MAX_HASH_VALUE = 88
 };
 /* maximum key range = 41, duplicates = 0 */
 
-static inline bool isSupportedSvgFeature(const QString &str)
+static inline bool isSupportedSvgFeature( const QString &str )
 {
-   static const unsigned char asso_values[] = {
-      89, 89, 89, 89, 89, 89, 89, 89, 89, 89,
-      89, 89, 89, 89, 89, 89, 89, 89, 89, 89,
-      89, 89, 89, 89, 89, 89, 89, 89, 89, 89,
-      89, 89, 89, 89, 89, 89, 89, 89, 89, 89,
-      89, 89, 89, 89, 89, 89, 89, 89, 89, 89,
-      89, 89, 89, 89, 89, 89, 89, 89, 89, 89,
-      89, 89, 89, 89, 89, 89, 89,  0, 89,  5,
-      15,  5,  0, 10, 89, 89, 89, 89, 89,  0,
-      15, 89, 89,  0,  0, 89,  5, 89,  0, 89,
-      89, 89, 89, 89, 89, 89, 89,  0, 89, 89,
-      89,  0, 89, 89,  0, 89, 89, 89,  0,  5,
-      89,  0,  0, 89,  5, 89,  0, 89, 89, 89,
-      5,  0, 89, 89, 89, 89, 89, 89, 89, 89,
-      89, 89, 89, 89, 89, 89, 89, 89, 89, 89,
-      89, 89, 89, 89, 89, 89, 89, 89, 89, 89,
-      89, 89, 89, 89, 89, 89, 89, 89, 89, 89,
-      89, 89, 89, 89, 89, 89, 89, 89, 89, 89,
-      89, 89, 89, 89, 89, 89, 89, 89, 89, 89,
-      89, 89, 89, 89, 89, 89, 89, 89, 89, 89,
-      89, 89, 89, 89, 89, 89, 89, 89, 89, 89,
-      89, 89, 89, 89, 89, 89, 89, 89, 89, 89,
-      89, 89, 89, 89, 89, 89, 89, 89, 89, 89,
-      89, 89, 89, 89, 89, 89, 89, 89, 89, 89,
-      89, 89, 89, 89, 89, 89, 89, 89, 89, 89,
-      89, 89, 89, 89, 89, 89, 89, 89, 89, 89,
-      89, 89, 89, 89, 89, 89
-   };
+    static const unsigned char asso_values[] =
+    {
+        89, 89, 89, 89, 89, 89, 89, 89, 89, 89,
+        89, 89, 89, 89, 89, 89, 89, 89, 89, 89,
+        89, 89, 89, 89, 89, 89, 89, 89, 89, 89,
+        89, 89, 89, 89, 89, 89, 89, 89, 89, 89,
+        89, 89, 89, 89, 89, 89, 89, 89, 89, 89,
+        89, 89, 89, 89, 89, 89, 89, 89, 89, 89,
+        89, 89, 89, 89, 89, 89, 89,  0, 89,  5,
+        15,  5,  0, 10, 89, 89, 89, 89, 89,  0,
+        15, 89, 89,  0,  0, 89,  5, 89,  0, 89,
+        89, 89, 89, 89, 89, 89, 89,  0, 89, 89,
+        89,  0, 89, 89,  0, 89, 89, 89,  0,  5,
+        89,  0,  0, 89,  5, 89,  0, 89, 89, 89,
+        5,  0, 89, 89, 89, 89, 89, 89, 89, 89,
+        89, 89, 89, 89, 89, 89, 89, 89, 89, 89,
+        89, 89, 89, 89, 89, 89, 89, 89, 89, 89,
+        89, 89, 89, 89, 89, 89, 89, 89, 89, 89,
+        89, 89, 89, 89, 89, 89, 89, 89, 89, 89,
+        89, 89, 89, 89, 89, 89, 89, 89, 89, 89,
+        89, 89, 89, 89, 89, 89, 89, 89, 89, 89,
+        89, 89, 89, 89, 89, 89, 89, 89, 89, 89,
+        89, 89, 89, 89, 89, 89, 89, 89, 89, 89,
+        89, 89, 89, 89, 89, 89, 89, 89, 89, 89,
+        89, 89, 89, 89, 89, 89, 89, 89, 89, 89,
+        89, 89, 89, 89, 89, 89, 89, 89, 89, 89,
+        89, 89, 89, 89, 89, 89, 89, 89, 89, 89,
+        89, 89, 89, 89, 89, 89
+    };
 
-   static const char *wordlist[] = {
-      "", "", "", "", "", "", "", "", "",
-      "", "", "", "", "", "", "", "", "",
-      "", "", "", "", "", "", "", "", "",
-      "", "", "", "", "", "", "", "", "",
-      "", "", "", "", "", "", "", "", "",
-      "", "", "",
-      "http://www.w3.org/Graphics/SVG/feature/1.2/#Text",
-      "http://www.w3.org/Graphics/SVG/feature/1.2/#Shape",
-      "", "",
-      "http://www.w3.org/Graphics/SVG/feature/1.2/#SVG",
-      "http://www.w3.org/Graphics/SVG/feature/1.2/#Structure",
-      "http://www.w3.org/Graphics/SVG/feature/1.2/#SolidColor",
-      "",
-      "http://www.w3.org/Graphics/SVG/feature/1.2/#Hyperlinking",
-      "http://www.w3.org/Graphics/SVG/feature/1.2/#CoreAttribute",
-      "http://www.w3.org/Graphics/SVG/feature/1.2/#XlinkAttribute",
-      "http://www.w3.org/Graphics/SVG/feature/1.2/#SVG-static",
-      "http://www.w3.org/Graphics/SVG/feature/1.2/#OpacityAttribute",
-      "",
-      "http://www.w3.org/Graphics/SVG/feature/1.2/#Gradient",
-      "http://www.w3.org/Graphics/SVG/feature/1.2/#Font",
-      "http://www.w3.org/Graphics/SVG/feature/1.2/#Image",
-      "http://www.w3.org/Graphics/SVG/feature/1.2/#ConditionalProcessing",
-      "",
-      "http://www.w3.org/Graphics/SVG/feature/1.2/#Extensibility",
-      "", "", "",
-      "http://www.w3.org/Graphics/SVG/feature/1.2/#GraphicsAttribute",
-      "http://www.w3.org/Graphics/SVG/feature/1.2/#Prefetch",
-      "http://www.w3.org/Graphics/SVG/feature/1.2/#PaintAttribute",
-      "http://www.w3.org/Graphics/SVG/feature/1.2/#ConditionalProcessingAttribute",
-      "", "", "", "", "", "", "", "", "",
-      "", "", "", "",
-      "http://www.w3.org/Graphics/SVG/feature/1.2/#ExternalResourcesRequiredAttribute"
-   };
+    static const char *wordlist[] =
+    {
+        "", "", "", "", "", "", "", "", "",
+        "", "", "", "", "", "", "", "", "",
+        "", "", "", "", "", "", "", "", "",
+        "", "", "", "", "", "", "", "", "",
+        "", "", "", "", "", "", "", "", "",
+        "", "", "",
+        "http://www.w3.org/Graphics/SVG/feature/1.2/#Text",
+        "http://www.w3.org/Graphics/SVG/feature/1.2/#Shape",
+        "", "",
+        "http://www.w3.org/Graphics/SVG/feature/1.2/#SVG",
+        "http://www.w3.org/Graphics/SVG/feature/1.2/#Structure",
+        "http://www.w3.org/Graphics/SVG/feature/1.2/#SolidColor",
+        "",
+        "http://www.w3.org/Graphics/SVG/feature/1.2/#Hyperlinking",
+        "http://www.w3.org/Graphics/SVG/feature/1.2/#CoreAttribute",
+        "http://www.w3.org/Graphics/SVG/feature/1.2/#XlinkAttribute",
+        "http://www.w3.org/Graphics/SVG/feature/1.2/#SVG-static",
+        "http://www.w3.org/Graphics/SVG/feature/1.2/#OpacityAttribute",
+        "",
+        "http://www.w3.org/Graphics/SVG/feature/1.2/#Gradient",
+        "http://www.w3.org/Graphics/SVG/feature/1.2/#Font",
+        "http://www.w3.org/Graphics/SVG/feature/1.2/#Image",
+        "http://www.w3.org/Graphics/SVG/feature/1.2/#ConditionalProcessing",
+        "",
+        "http://www.w3.org/Graphics/SVG/feature/1.2/#Extensibility",
+        "", "", "",
+        "http://www.w3.org/Graphics/SVG/feature/1.2/#GraphicsAttribute",
+        "http://www.w3.org/Graphics/SVG/feature/1.2/#Prefetch",
+        "http://www.w3.org/Graphics/SVG/feature/1.2/#PaintAttribute",
+        "http://www.w3.org/Graphics/SVG/feature/1.2/#ConditionalProcessingAttribute",
+        "", "", "", "", "", "", "", "", "",
+        "", "", "", "",
+        "http://www.w3.org/Graphics/SVG/feature/1.2/#ExternalResourcesRequiredAttribute"
+    };
 
-   if (str.length() <= MAX_WORD_LENGTH && str.length() >= MIN_WORD_LENGTH) {
-      const int key = str.length() + asso_values[str.at(45).unicode()] + asso_values[str.at(44).unicode()];
+    if ( str.length() <= MAX_WORD_LENGTH && str.length() >= MIN_WORD_LENGTH )
+    {
+        const int key = str.length() + asso_values[str.at( 45 ).unicode()] + asso_values[str.at( 44 ).unicode()];
 
-      if (key <= MAX_HASH_VALUE && key >= 0) {
-         return str == QString::fromLatin1(wordlist[key]);
-      }
-   }
-   return false;
+        if ( key <= MAX_HASH_VALUE && key >= 0 )
+        {
+            return str == QString::fromLatin1( wordlist[key] );
+        }
+    }
+
+    return false;
 }
 
 // ----- end of generated code -----
 
-static inline bool isSupportedSvgExtension(const QString &)
+static inline bool isSupportedSvgExtension( const QString & )
 {
-   return false;
+    return false;
 }
 
 
-QSvgSwitch::QSvgSwitch(QSvgNode *parent)
-   : QSvgStructureNode(parent)
+QSvgSwitch::QSvgSwitch( QSvgNode *parent )
+    : QSvgStructureNode( parent )
 {
-   init();
+    init();
 }
 
-void QSvgSwitch::draw(QPainter *p, QSvgExtraStates &states)
+void QSvgSwitch::draw( QPainter *p, QSvgExtraStates &states )
 {
-   QList<QSvgNode *>::iterator itr = m_renderers.begin();
-   applyStyle(p, states);
+    QList<QSvgNode *>::iterator itr = m_renderers.begin();
+    applyStyle( p, states );
 
-   while (itr != m_renderers.end()) {
-      QSvgNode *node = *itr;
-      if (node->isVisible() && (node->displayMode() != QSvgNode::NoneMode)) {
-         const QStringList &features  = node->requiredFeatures();
-         const QStringList &extensions = node->requiredExtensions();
-         const QStringList &languages = node->requiredLanguages();
-         const QStringList &formats = node->requiredFormats();
-         const QStringList &fonts = node->requiredFonts();
+    while ( itr != m_renderers.end() )
+    {
+        QSvgNode *node = *itr;
 
-         bool okToRender = true;
-         if (!features.isEmpty()) {
-            QStringList::const_iterator sitr = features.constBegin();
-            for (; sitr != features.constEnd(); ++sitr) {
-               if (!isSupportedSvgFeature(*sitr)) {
-                  okToRender = false;
-                  break;
-               }
+        if ( node->isVisible() && ( node->displayMode() != QSvgNode::NoneMode ) )
+        {
+            const QStringList &features  = node->requiredFeatures();
+            const QStringList &extensions = node->requiredExtensions();
+            const QStringList &languages = node->requiredLanguages();
+            const QStringList &formats = node->requiredFormats();
+            const QStringList &fonts = node->requiredFonts();
+
+            bool okToRender = true;
+
+            if ( !features.isEmpty() )
+            {
+                QStringList::const_iterator sitr = features.constBegin();
+
+                for ( ; sitr != features.constEnd(); ++sitr )
+                {
+                    if ( !isSupportedSvgFeature( *sitr ) )
+                    {
+                        okToRender = false;
+                        break;
+                    }
+                }
             }
-         }
 
-         if (okToRender && !extensions.isEmpty()) {
-            QStringList::const_iterator sitr = extensions.constBegin();
-            for (; sitr != extensions.constEnd(); ++sitr) {
-               if (!isSupportedSvgExtension(*sitr)) {
-                  okToRender = false;
-                  break;
-               }
+            if ( okToRender && !extensions.isEmpty() )
+            {
+                QStringList::const_iterator sitr = extensions.constBegin();
+
+                for ( ; sitr != extensions.constEnd(); ++sitr )
+                {
+                    if ( !isSupportedSvgExtension( *sitr ) )
+                    {
+                        okToRender = false;
+                        break;
+                    }
+                }
             }
-         }
 
-         if (okToRender && !languages.isEmpty()) {
-            QStringList::const_iterator sitr = languages.constBegin();
-            okToRender = false;
-            for (; sitr != languages.constEnd(); ++sitr) {
-               if ((*sitr).startsWith(m_systemLanguagePrefix)) {
-                  okToRender = true;
-                  break;
-               }
+            if ( okToRender && !languages.isEmpty() )
+            {
+                QStringList::const_iterator sitr = languages.constBegin();
+                okToRender = false;
+
+                for ( ; sitr != languages.constEnd(); ++sitr )
+                {
+                    if ( ( *sitr ).startsWith( m_systemLanguagePrefix ) )
+                    {
+                        okToRender = true;
+                        break;
+                    }
+                }
             }
-         }
 
-         if (okToRender && !formats.isEmpty()) {
-            okToRender = false;
-         }
+            if ( okToRender && !formats.isEmpty() )
+            {
+                okToRender = false;
+            }
 
-         if (okToRender && !fonts.isEmpty()) {
-            okToRender = false;
-         }
+            if ( okToRender && !fonts.isEmpty() )
+            {
+                okToRender = false;
+            }
 
-         if (okToRender) {
-            node->draw(p, states);
-            break;
-         }
-      }
-      ++itr;
-   }
-   revertStyle(p, states);
+            if ( okToRender )
+            {
+                node->draw( p, states );
+                break;
+            }
+        }
+
+        ++itr;
+    }
+
+    revertStyle( p, states );
 }
 
 QSvgNode::Type QSvgSwitch::type() const
 {
-   return SWITCH;
+    return SWITCH;
 }
 
 void QSvgSwitch::init()
 {
-   QLocale locale;
-   m_systemLanguage = locale.name().replace(QLatin1Char('_'), QLatin1Char('-'));
-   int idx = m_systemLanguage.indexOf(QLatin1Char('-'));
-   m_systemLanguagePrefix = m_systemLanguage.mid(0, idx);
+    QLocale locale;
+    m_systemLanguage = locale.name().replace( QLatin1Char( '_' ), QLatin1Char( '-' ) );
+    int idx = m_systemLanguage.indexOf( QLatin1Char( '-' ) );
+    m_systemLanguagePrefix = m_systemLanguage.mid( 0, idx );
 }
 
-QRectF QSvgStructureNode::bounds(QPainter *p, QSvgExtraStates &states) const
+QRectF QSvgStructureNode::bounds( QPainter *p, QSvgExtraStates &states ) const
 {
-   QRectF bounds;
-   for (QSvgNode * node : m_renderers) {
-      bounds |= node->transformedBounds(p, states);
-   }
+    QRectF bounds;
 
-   return bounds;
+    for ( QSvgNode *node : m_renderers )
+    {
+        bounds |= node->transformedBounds( p, states );
+    }
+
+    return bounds;
 }
 
-QSvgNode *QSvgStructureNode::previousSiblingNode(QSvgNode *n) const
+QSvgNode *QSvgStructureNode::previousSiblingNode( QSvgNode *n ) const
 {
-   QSvgNode *prev = nullptr;
-   QList<QSvgNode *>::const_iterator itr = m_renderers.constBegin();
+    QSvgNode *prev = nullptr;
+    QList<QSvgNode *>::const_iterator itr = m_renderers.constBegin();
 
-   for (; itr != m_renderers.constEnd(); ++itr) {
-      QSvgNode *node = *itr;
-      if (node == n) {
-         return prev;
-      }
-      prev = node;
-   }
+    for ( ; itr != m_renderers.constEnd(); ++itr )
+    {
+        QSvgNode *node = *itr;
 
-   return prev;
+        if ( node == n )
+        {
+            return prev;
+        }
+
+        prev = node;
+    }
+
+    return prev;
 }
 

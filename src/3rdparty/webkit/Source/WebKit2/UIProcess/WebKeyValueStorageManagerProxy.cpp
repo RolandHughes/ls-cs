@@ -31,15 +31,16 @@
 #include "WebContext.h"
 #include "WebSecurityOrigin.h"
 
-namespace WebKit {
-
-PassRefPtr<WebKeyValueStorageManagerProxy> WebKeyValueStorageManagerProxy::create(WebContext* context)
+namespace WebKit
 {
-    return adoptRef(new WebKeyValueStorageManagerProxy(context));
+
+PassRefPtr<WebKeyValueStorageManagerProxy> WebKeyValueStorageManagerProxy::create( WebContext *context )
+{
+    return adoptRef( new WebKeyValueStorageManagerProxy( context ) );
 }
 
-WebKeyValueStorageManagerProxy::WebKeyValueStorageManagerProxy(WebContext* context)
-    : m_webContext(context)
+WebKeyValueStorageManagerProxy::WebKeyValueStorageManagerProxy( WebContext *context )
+    : m_webContext( context )
 {
 }
 
@@ -49,36 +50,39 @@ WebKeyValueStorageManagerProxy::~WebKeyValueStorageManagerProxy()
 
 void WebKeyValueStorageManagerProxy::invalidate()
 {
-    invalidateCallbackMap(m_arrayCallbacks);
+    invalidateCallbackMap( m_arrayCallbacks );
 }
 
-bool WebKeyValueStorageManagerProxy::shouldTerminate(WebProcessProxy*) const
+bool WebKeyValueStorageManagerProxy::shouldTerminate( WebProcessProxy * ) const
 {
     return m_arrayCallbacks.isEmpty();
 }
 
-void WebKeyValueStorageManagerProxy::didReceiveMessage(CoreIPC::Connection* connection, CoreIPC::MessageID messageID, CoreIPC::ArgumentDecoder* arguments)
+void WebKeyValueStorageManagerProxy::didReceiveMessage( CoreIPC::Connection *connection, CoreIPC::MessageID messageID,
+        CoreIPC::ArgumentDecoder *arguments )
 {
-    didReceiveWebKeyValueStorageManagerProxyMessage(connection, messageID, arguments);
+    didReceiveWebKeyValueStorageManagerProxyMessage( connection, messageID, arguments );
 }
 
-void WebKeyValueStorageManagerProxy::getKeyValueStorageOrigins(PassRefPtr<ArrayCallback> prpCallback)
+void WebKeyValueStorageManagerProxy::getKeyValueStorageOrigins( PassRefPtr<ArrayCallback> prpCallback )
 {
     RefPtr<ArrayCallback> callback = prpCallback;
     uint64_t callbackID = callback->callbackID();
-    m_arrayCallbacks.set(callbackID, callback.release());
+    m_arrayCallbacks.set( callbackID, callback.release() );
 
     // FIXME (Multi-WebProcess): Should key-value storage be handled in the web process?
-    m_webContext->sendToAllProcessesRelaunchingThemIfNecessary(Messages::WebKeyValueStorageManager::GetKeyValueStorageOrigins(callbackID));
-}
-    
-void WebKeyValueStorageManagerProxy::didGetKeyValueStorageOrigins(const Vector<SecurityOriginData>& originDatas, uint64_t callbackID)
-{
-    RefPtr<ArrayCallback> callback = m_arrayCallbacks.take(callbackID);
-    performAPICallbackWithSecurityOriginDataVector(originDatas, callback.get());
+    m_webContext->sendToAllProcessesRelaunchingThemIfNecessary( Messages::WebKeyValueStorageManager::GetKeyValueStorageOrigins(
+                callbackID ) );
 }
 
-void WebKeyValueStorageManagerProxy::deleteEntriesForOrigin(WebSecurityOrigin* origin)
+void WebKeyValueStorageManagerProxy::didGetKeyValueStorageOrigins( const Vector<SecurityOriginData> &originDatas,
+        uint64_t callbackID )
+{
+    RefPtr<ArrayCallback> callback = m_arrayCallbacks.take( callbackID );
+    performAPICallbackWithSecurityOriginDataVector( originDatas, callback.get() );
+}
+
+void WebKeyValueStorageManagerProxy::deleteEntriesForOrigin( WebSecurityOrigin *origin )
 {
     SecurityOriginData securityOriginData;
     securityOriginData.protocol = origin->protocol();
@@ -86,13 +90,14 @@ void WebKeyValueStorageManagerProxy::deleteEntriesForOrigin(WebSecurityOrigin* o
     securityOriginData.port = origin->port();
 
     // FIXME (Multi-WebProcess): Should key-value storage be handled in the web process?
-    m_webContext->sendToAllProcessesRelaunchingThemIfNecessary(Messages::WebKeyValueStorageManager::DeleteEntriesForOrigin(securityOriginData));
+    m_webContext->sendToAllProcessesRelaunchingThemIfNecessary( Messages::WebKeyValueStorageManager::DeleteEntriesForOrigin(
+                securityOriginData ) );
 }
 
 void WebKeyValueStorageManagerProxy::deleteAllEntries()
 {
     // FIXME (Multi-WebProcess): Should key-value storage be handled in the web process?
-    m_webContext->sendToAllProcessesRelaunchingThemIfNecessary(Messages::WebKeyValueStorageManager::DeleteAllEntries());
+    m_webContext->sendToAllProcessesRelaunchingThemIfNecessary( Messages::WebKeyValueStorageManager::DeleteAllEntries() );
 }
 
 } // namespace WebKit

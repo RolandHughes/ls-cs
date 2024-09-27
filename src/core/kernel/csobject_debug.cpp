@@ -23,116 +23,132 @@
 
 #include <qobject.h>
 
-static void dumpRecursive(int level, QObject *object)
+static void dumpRecursive( int level, QObject *object )
 {
 
 #if defined(CS_SHOW_DEBUG_CORE)
-   if (object) {
-      QByteArray buffer;
 
-      buffer.fill(' ', level / 2 * 8);
+    if ( object )
+    {
+        QByteArray buffer;
 
-      if (level % 2) {
-         buffer += "    ";
-      }
+        buffer.fill( ' ', level / 2 * 8 );
 
-      qDebug("%s%s::%s", buffer.constData(), csPrintable(object->metaObject()->className()),
-            csPrintable(object->objectName()) );
+        if ( level % 2 )
+        {
+            buffer += "    ";
+        }
 
-      QList<QObject *> children = object->children();
+        qDebug( "%s%s::%s", buffer.constData(), csPrintable( object->metaObject()->className() ),
+                csPrintable( object->objectName() ) );
 
-      if (! children.isEmpty()) {
-         for (int i = 0; i < children.size(); ++i) {
-            dumpRecursive(level + 1, children.at(i));
-         }
-      }
-   }
+        QList<QObject *> children = object->children();
+
+        if ( ! children.isEmpty() )
+        {
+            for ( int i = 0; i < children.size(); ++i )
+            {
+                dumpRecursive( level + 1, children.at( i ) );
+            }
+        }
+    }
+
 #else
-   (void) level;
-   (void) object;
+    ( void ) level;
+    ( void ) object;
 #endif
 
 }
 
 void QObject::dumpObjectTree()
 {
-   qDebug("\n--  dumpObjectTree  --\n");
-   dumpRecursive(0, this);
-   qDebug("--\n");
+    qDebug( "\n--  dumpObjectTree  --\n" );
+    dumpRecursive( 0, this );
+    qDebug( "--\n" );
 }
 
 void QObject::dumpObjectInfo()
 {
 
 #if defined(CS_SHOW_DEBUG_CORE)
-   qDebug("\n--  dumpObjectInfo  --\n");
-   qDebug("  OBJECT %s::%s", csPrintable(this->metaObject()->className()), objectName().isEmpty() ? "unnamed" :
-         csPrintable(objectName()) );
+    qDebug( "\n--  dumpObjectInfo  --\n" );
+    qDebug( "  OBJECT %s::%s", csPrintable( this->metaObject()->className() ), objectName().isEmpty() ? "unnamed" :
+            csPrintable( objectName() ) );
 
-   qDebug("  SIGNAL LIST - CONNECTED TO WHICH RECEIVERS");
+    qDebug( "  SIGNAL LIST - CONNECTED TO WHICH RECEIVERS" );
 
-   const QMetaObject *metaObject = this->metaObject();
+    const QMetaObject *metaObject = this->metaObject();
 
-   for (int index = 0; index < metaObject->methodCount(); ++index)  {
-      // iterate over the signals in "this"
+    for ( int index = 0; index < metaObject->methodCount(); ++index )
+    {
+        // iterate over the signals in "this"
 
-      QMetaMethod signalMetaMethod = metaObject->method(index);
+        QMetaMethod signalMetaMethod = metaObject->method( index );
 
-      if (signalMetaMethod.methodType() != QMetaMethod::Signal)  {
-         continue;
-      }
+        if ( signalMetaMethod.methodType() != QMetaMethod::Signal )
+        {
+            continue;
+        }
 
-      const CSBentoAbstract *signalMethod_Bento = signalMetaMethod.getBentoBox();
-      std::set<SlotBase *> receiverList = internal_receiverList(*signalMethod_Bento);
+        const CSBentoAbstract *signalMethod_Bento = signalMetaMethod.getBentoBox();
+        std::set<SlotBase *> receiverList = internal_receiverList( *signalMethod_Bento );
 
-      // look for connections where "this" object is the sender
-      for (auto receiver : receiverList) {
-         qDebug("        signal name: %s", csPrintable(signalMetaMethod.methodSignature()) );
+        // look for connections where "this" object is the sender
+        for ( auto receiver : receiverList )
+        {
+            qDebug( "        signal name: %s", csPrintable( signalMetaMethod.methodSignature() ) );
 
-         QObject *obj = dynamic_cast<QObject *>(receiver);
+            QObject *obj = dynamic_cast<QObject *>( receiver );
 
-         if (obj) {
-            const QMetaObject *receiverMetaObject = obj->metaObject();
+            if ( obj )
+            {
+                const QMetaObject *receiverMetaObject = obj->metaObject();
 
-            // emerald - hold, ok
-            // const QMetaMethod slotMetaMethod = receiverMetaObject->method(*temp.slotMethod);
+                // emerald - hold, ok
+                // const QMetaMethod slotMetaMethod = receiverMetaObject->method(*temp.slotMethod);
 
-            qDebug("          --> %s::%s", csPrintable(receiverMetaObject->className()),
-                  obj->objectName().isEmpty() ? "unnamed" : csPrintable(obj->objectName()) );
+                qDebug( "          --> %s::%s", csPrintable( receiverMetaObject->className() ),
+                        obj->objectName().isEmpty() ? "unnamed" : csPrintable( obj->objectName() ) );
 
-         } else {
-            // receiver does not inherit from QObject
-            qDebug("          --> %s", typeid (*receiver).name() );
-         }
-      }
-   }
+            }
+            else
+            {
+                // receiver does not inherit from QObject
+                qDebug( "          --> %s", typeid ( *receiver ).name() );
+            }
+        }
+    }
 
-   // look for connections where this object is the receiver
-   qDebug("\n  SIGNAL LIST - RECEIVER HAS CONNECTION TO WHICH SENDERS");
+    // look for connections where this object is the receiver
+    qDebug( "\n  SIGNAL LIST - RECEIVER HAS CONNECTION TO WHICH SENDERS" );
 
-   std::set<SignalBase *> senderList = internal_senderList();
+    std::set<SignalBase *> senderList = internal_senderList();
 
-   for (auto sender : senderList) {
+    for ( auto sender : senderList )
+    {
 
-      // review again (can wait)
-      // const QMetaMethod slot = metaObject()->method(*temp.slotMethod);
+        // review again (can wait)
+        // const QMetaMethod slot = metaObject()->method(*temp.slotMethod);
 
-      QObject *obj = dynamic_cast<QObject *>(sender);
+        QObject *obj = dynamic_cast<QObject *>( sender );
 
-      if (obj) {
-         const QMetaObject *senderMetaObject = obj->metaObject();
+        if ( obj )
+        {
+            const QMetaObject *senderMetaObject = obj->metaObject();
 
-         qDebug("          <-- %s::%s", csPrintable(senderMetaObject->className()),
-               obj->objectName().isEmpty() ? "unnamed" : csPrintable(obj->objectName()));
+            qDebug( "          <-- %s::%s", csPrintable( senderMetaObject->className() ),
+                    obj->objectName().isEmpty() ? "unnamed" : csPrintable( obj->objectName() ) );
 
-      } else {
-         // sender does not inherit from QObject
-         qDebug("          --> %s", typeid (*sender).name() );
+        }
+        else
+        {
+            // sender does not inherit from QObject
+            qDebug( "          --> %s", typeid ( *sender ).name() );
 
-      }
-   }
+        }
+    }
 
-   qDebug("--\n");
+    qDebug( "--\n" );
 #endif
 
 }

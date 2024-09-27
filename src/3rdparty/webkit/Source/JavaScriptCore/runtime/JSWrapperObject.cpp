@@ -22,15 +22,19 @@
 #include "config.h"
 #include "JSWrapperObject.h"
 
-namespace JSC {
-
-ASSERT_CLASS_FITS_IN_CELL(JSWrapperObject);
-
-void JSWrapperObject::visitChildren(SlotVisitor& visitor) 
+namespace JSC
 {
-    JSObject::visitChildren(visitor);
-    if (m_internalValue)
-        visitor.append(&m_internalValue);
+
+ASSERT_CLASS_FITS_IN_CELL( JSWrapperObject );
+
+void JSWrapperObject::visitChildren( SlotVisitor &visitor )
+{
+    JSObject::visitChildren( visitor );
+
+    if ( m_internalValue )
+    {
+        visitor.append( &m_internalValue );
+    }
 }
 
 } // namespace JSC

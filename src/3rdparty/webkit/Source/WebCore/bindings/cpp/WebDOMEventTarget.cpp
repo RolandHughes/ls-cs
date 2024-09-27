@@ -52,9 +52,10 @@
 
 #include <wtf/RefPtr.h>
 
-struct WebDOMEventTarget::WebDOMEventTargetPrivate {
-    WebDOMEventTargetPrivate(WebCore::EventTarget* object = 0)
-        : impl(object)
+struct WebDOMEventTarget::WebDOMEventTargetPrivate
+{
+    WebDOMEventTargetPrivate( WebCore::EventTarget *object = 0 )
+        : impl( object )
     {
     }
 
@@ -63,20 +64,20 @@ struct WebDOMEventTarget::WebDOMEventTargetPrivate {
 
 WebDOMEventTarget::WebDOMEventTarget()
     : WebDOMObject()
-    , m_impl(0)
+    , m_impl( 0 )
 {
 }
 
-WebDOMEventTarget::WebDOMEventTarget(WebCore::EventTarget* impl)
+WebDOMEventTarget::WebDOMEventTarget( WebCore::EventTarget *impl )
     : WebDOMObject()
-    , m_impl(new WebDOMEventTargetPrivate(impl))
+    , m_impl( new WebDOMEventTargetPrivate( impl ) )
 {
 }
 
-WebDOMEventTarget::WebDOMEventTarget(const WebDOMEventTarget& copy)
+WebDOMEventTarget::WebDOMEventTarget( const WebDOMEventTarget &copy )
     : WebDOMObject()
 {
-    m_impl = copy.impl() ? new WebDOMEventTargetPrivate(copy.impl()) : 0;
+    m_impl = copy.impl() ? new WebDOMEventTargetPrivate( copy.impl() ) : 0;
 }
 
 WebDOMEventTarget::~WebDOMEventTarget()
@@ -85,7 +86,7 @@ WebDOMEventTarget::~WebDOMEventTarget()
     m_impl = 0;
 }
 
-WebCore::EventTarget* WebDOMEventTarget::impl() const
+WebCore::EventTarget *WebDOMEventTarget::impl() const
 {
     return m_impl ? m_impl->impl.get() : 0;
 }
@@ -97,110 +98,152 @@ WebDOM##type WebDOMEventTarget::to##type() \
     return WebDOM##type(target ? target->to##type() : 0); \
 }
 
-ConvertTo(Node)
-ConvertTo(DOMWindow)
-ConvertTo(XMLHttpRequest)
-ConvertTo(XMLHttpRequestUpload)
-ConvertTo(MessagePort)
+ConvertTo( Node )
+ConvertTo( DOMWindow )
+ConvertTo( XMLHttpRequest )
+ConvertTo( XMLHttpRequestUpload )
+ConvertTo( MessagePort )
 
 #if ENABLE(EVENTSOURCE)
-ConvertTo(EventSource)
+ConvertTo( EventSource )
 #endif
 
 #if ENABLE(OFFLINE_WEB_APPLICATIONS)
-ConvertTo(DOMApplicationCache)
+ConvertTo( DOMApplicationCache )
 #endif
 
 #if ENABLE(WORKERS)
-ConvertTo(Worker)
-ConvertTo(DedicatedWorkerContext)
+ConvertTo( Worker )
+ConvertTo( DedicatedWorkerContext )
 #endif
 
 #if ENABLE(SHARED_WORKERS)
-ConvertTo(SharedWorker)
-ConvertTo(SharedWorkerContext)
+ConvertTo( SharedWorker )
+ConvertTo( SharedWorkerContext )
 #endif
 
 #if ENABLE(NOTIFICATIONS)
-ConvertTo(Notification)
+ConvertTo( Notification )
 #endif
 
 #if ENABLE(WEB_SOCKETS)
-ConvertTo(WebSocket)
+ConvertTo( WebSocket )
 #endif
 
-WebCore::EventTarget* toWebCore(const WebDOMEventTarget& wrapper)
+WebCore::EventTarget *toWebCore( const WebDOMEventTarget &wrapper )
 {
     return wrapper.impl();
 }
 
-WebDOMEventTarget toWebKit(WebCore::EventTarget* value)
+WebDOMEventTarget toWebKit( WebCore::EventTarget *value )
 {
-    if (WebCore::Node* node = value->toNode())
-        return toWebKit(node);
+    if ( WebCore::Node *node = value->toNode() )
+    {
+        return toWebKit( node );
+    }
 
-    if (WebCore::DOMWindow* window = value->toDOMWindow())
-        return toWebKit(window);
+    if ( WebCore::DOMWindow *window = value->toDOMWindow() )
+    {
+        return toWebKit( window );
+    }
 
-    if (WebCore::XMLHttpRequest* xhr = value->toXMLHttpRequest())
-        return toWebKit(xhr);
+    if ( WebCore::XMLHttpRequest *xhr = value->toXMLHttpRequest() )
+    {
+        return toWebKit( xhr );
+    }
 
-    if (WebCore::XMLHttpRequestUpload* upload = value->toXMLHttpRequestUpload())
-        return toWebKit(upload);
+    if ( WebCore::XMLHttpRequestUpload *upload = value->toXMLHttpRequestUpload() )
+    {
+        return toWebKit( upload );
+    }
 
-    if (WebCore::MessagePort* messagePort = value->toMessagePort())
-        return toWebKit(messagePort);
+    if ( WebCore::MessagePort *messagePort = value->toMessagePort() )
+    {
+        return toWebKit( messagePort );
+    }
 
 #if ENABLE(EVENTSOURCE)
-    if (WebCore::EventSource* eventSource = value->toEventSource())
-        return toWebKit(eventSource);
+
+    if ( WebCore::EventSource *eventSource = value->toEventSource() )
+    {
+        return toWebKit( eventSource );
+    }
+
 #endif
 
 #if ENABLE(SVG) && 0
+
     // FIXME: Enable once SVG bindings are generated.
     // SVGElementInstance supports both toSVGElementInstance and toNode since so much mouse handling code depends on toNode returning a valid node.
-    if (WebCore::SVGElementInstance* instance = value->toSVGElementInstance())
-        return toWebKit(instance);
+    if ( WebCore::SVGElementInstance *instance = value->toSVGElementInstance() )
+    {
+        return toWebKit( instance );
+    }
+
 #endif
 
 #if ENABLE(OFFLINE_WEB_APPLICATIONS)
-    if (WebCore::DOMApplicationCache* cache = value->toDOMApplicationCache())
-        return toWebKit(cache);
+
+    if ( WebCore::DOMApplicationCache *cache = value->toDOMApplicationCache() )
+    {
+        return toWebKit( cache );
+    }
+
 #endif
 
 #if ENABLE(WORKERS)
-    if (WebCore::Worker* worker = value->toWorker())
-        return toWebKit(worker);
 
-    if (WebCore::DedicatedWorkerContext* workerContext = value->toDedicatedWorkerContext())
-        return toWebKit(workerContext);
+    if ( WebCore::Worker *worker = value->toWorker() )
+    {
+        return toWebKit( worker );
+    }
+
+    if ( WebCore::DedicatedWorkerContext *workerContext = value->toDedicatedWorkerContext() )
+    {
+        return toWebKit( workerContext );
+    }
+
 #endif
 
 #if ENABLE(SHARED_WORKERS)
-    if (WebCore::SharedWorker* sharedWorker = value->toSharedWorker())
-        return toWebKit(sharedWorker);
 
-    if (WebCore::SharedWorkerContext* workerContext = value->toSharedWorkerContext())
-        return toWebKit(workerContext);
+    if ( WebCore::SharedWorker *sharedWorker = value->toSharedWorker() )
+    {
+        return toWebKit( sharedWorker );
+    }
+
+    if ( WebCore::SharedWorkerContext *workerContext = value->toSharedWorkerContext() )
+    {
+        return toWebKit( workerContext );
+    }
+
 #endif
 
 #if ENABLE(NOTIFICATIONS)
-    if (WebCore::Notification* notification = value->toNotification())
-        return toWebKit(notification);
+
+    if ( WebCore::Notification *notification = value->toNotification() )
+    {
+        return toWebKit( notification );
+    }
+
 #endif
 
 #if ENABLE(WEB_SOCKETS)
-    if (WebCore::WebSocket* webSocket = value->toWebSocket())
-        return toWebKit(webSocket);
+
+    if ( WebCore::WebSocket *webSocket = value->toWebSocket() )
+    {
+        return toWebKit( webSocket );
+    }
+
 #endif
 
     ASSERT_NOT_REACHED();
     return WebDOMEventTarget();
 }
 
-WebDOMEventTarget& WebDOMEventTarget::operator=(const WebDOMEventTarget& copy)
+WebDOMEventTarget &WebDOMEventTarget::operator=( const WebDOMEventTarget &copy )
 {
     delete m_impl;
-    m_impl = copy.impl() ? new WebDOMEventTargetPrivate(copy.impl()) : 0;
+    m_impl = copy.impl() ? new WebDOMEventTargetPrivate( copy.impl() ) : 0;
     return *this;
 }

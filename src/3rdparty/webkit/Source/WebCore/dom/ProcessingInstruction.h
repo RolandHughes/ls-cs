@@ -26,42 +26,65 @@
 #include "CachedResourceHandle.h"
 #include "ContainerNode.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class StyleSheet;
 class CSSStyleSheet;
 
-class ProcessingInstruction : public ContainerNode, private CachedResourceClient {
+class ProcessingInstruction : public ContainerNode, private CachedResourceClient
+{
 public:
-    static PassRefPtr<ProcessingInstruction> create(Document*, const String& target, const String& data);
+    static PassRefPtr<ProcessingInstruction> create( Document *, const String &target, const String &data );
     virtual ~ProcessingInstruction();
 
-    const String& target() const { return m_target; }
-    const String& data() const { return m_data; }
-    void setData(const String&, ExceptionCode&);
+    const String &target() const
+    {
+        return m_target;
+    }
+    const String &data() const
+    {
+        return m_data;
+    }
+    void setData( const String &, ExceptionCode & );
 
-    void setCreatedByParser(bool createdByParser) { m_createdByParser = createdByParser; }
+    void setCreatedByParser( bool createdByParser )
+    {
+        m_createdByParser = createdByParser;
+    }
 
     virtual void finishParsingChildren();
 
-    const String& localHref() const { return m_localHref; }
-    StyleSheet* sheet() const { return m_sheet.get(); }
-    void setCSSStyleSheet(PassRefPtr<CSSStyleSheet>);
+    const String &localHref() const
+    {
+        return m_localHref;
+    }
+    StyleSheet *sheet() const
+    {
+        return m_sheet.get();
+    }
+    void setCSSStyleSheet( PassRefPtr<CSSStyleSheet> );
 
-    bool isCSS() const { return m_isCSS; }
+    bool isCSS() const
+    {
+        return m_isCSS;
+    }
 #if ENABLE(XSLT)
-    bool isXSL() const { return m_isXSL; }
+    bool isXSL() const
+    {
+        return m_isXSL;
+    }
 #endif
 
 private:
-    ProcessingInstruction(Document*, const String& target, const String& data);
+    ProcessingInstruction( Document *, const String &target, const String &data );
 
     virtual String nodeName() const;
     virtual NodeType nodeType() const;
     virtual String nodeValue() const;
-    virtual void setNodeValue(const String&, ExceptionCode&);
-    virtual PassRefPtr<Node> cloneNode(bool deep);
-    virtual bool childTypeAllowed(NodeType) const;
+    virtual void setNodeValue( const String &, ExceptionCode & );
+    virtual PassRefPtr<Node> cloneNode( bool deep );
+    virtual bool childTypeAllowed( NodeType ) const;
     virtual bool offsetInCharacters() const;
     virtual int maxCharacterOffset() const;
 
@@ -69,17 +92,17 @@ private:
     virtual void removedFromDocument();
 
     void checkStyleSheet();
-    virtual void setCSSStyleSheet(const String& href, const KURL& baseURL, const String& charset, const CachedCSSStyleSheet*);
+    virtual void setCSSStyleSheet( const String &href, const KURL &baseURL, const String &charset, const CachedCSSStyleSheet * );
 #if ENABLE(XSLT)
-    virtual void setXSLStyleSheet(const String& href, const KURL& baseURL, const String& sheet);
+    virtual void setXSLStyleSheet( const String &href, const KURL &baseURL, const String &sheet );
 #endif
 
     bool isLoading() const;
     virtual bool sheetLoaded();
 
-    virtual void addSubresourceAttributeURLs(ListHashSet<KURL>&) const;
+    virtual void addSubresourceAttributeURLs( ListHashSet<KURL> & ) const;
 
-    void parseStyleSheet(const String& sheet);
+    void parseStyleSheet( const String &sheet );
 
     String m_target;
     String m_data;

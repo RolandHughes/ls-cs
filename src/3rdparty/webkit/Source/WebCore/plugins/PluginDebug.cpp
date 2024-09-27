@@ -30,9 +30,11 @@
 
 #if !LOG_DISABLED
 
-namespace WebCore {
+namespace WebCore
+{
 
-static const char* const errorStrings[] = {
+static const char *const errorStrings[] =
+{
     "No errors occurred.", /* NPERR_NO_ERROR */
     "Error with no specific error code occurred.", /* NPERR_GENERIC_ERROR */
     "Invalid instance passed to the plug-in.", /* NPERR_INVALID_INSTANCE_ERROR */
@@ -51,124 +53,212 @@ static const char* const errorStrings[] = {
 };
 
 #ifdef XP_MACOSX
-static const char* const drawingModels[] = {
+static const char *const drawingModels[] =
+{
     "NPDrawingModelQuickDraw",
     "NPDrawingModelCoreGraphics",
     "NPDrawingModelOpenGL",
     "NPDrawingModelCoreAnimation"
 };
 
-static const char* const eventModels[] = {
+static const char *const eventModels[] =
+{
     "NPEventModelCarbon",
     "NPEventModelCocoa"
 };
 #endif //XP_MACOSX
 
-const char* prettyNameForNPError(NPError error)
+const char *prettyNameForNPError( NPError error )
 {
     return errorStrings[error];
 }
 
 #ifdef XP_MACOSX
-const char* prettyNameForDrawingModel(NPDrawingModel drawingModel)
+const char *prettyNameForDrawingModel( NPDrawingModel drawingModel )
 {
     return drawingModels[drawingModel];
 }
 
-const char* prettyNameForEventModel(NPEventModel eventModel)
+const char *prettyNameForEventModel( NPEventModel eventModel )
 {
     return eventModels[eventModel];
 }
 #endif //XP_MACOSX
 
-CString prettyNameForNPNVariable(NPNVariable variable)
+CString prettyNameForNPNVariable( NPNVariable variable )
 {
-    switch (variable) {
-    case NPNVxDisplay: return "NPNVxDisplay";
-    case NPNVxtAppContext: return "NPNVxtAppContext";
-    case NPNVnetscapeWindow: return "NPNVnetscapeWindow";
-    case NPNVjavascriptEnabledBool: return "NPNVjavascriptEnabledBool";
-    case NPNVasdEnabledBool: return "NPNVasdEnabledBool";
-    case NPNVisOfflineBool: return "NPNVisOfflineBool";
+    switch ( variable )
+    {
+        case NPNVxDisplay:
+            return "NPNVxDisplay";
 
-    case NPNVserviceManager: return "NPNVserviceManager (not supported)";
-    case NPNVDOMElement: return "NPNVDOMElement (not supported)";
-    case NPNVDOMWindow: return "NPNVDOMWindow (not supported)";
-    case NPNVToolkit: return "NPNVToolkit (not supported)";
-    case NPNVSupportsXEmbedBool: return "NPNVSupportsXEmbedBool (not supported)";
+        case NPNVxtAppContext:
+            return "NPNVxtAppContext";
 
-    case NPNVWindowNPObject: return "NPNVWindowNPObject";
-    case NPNVPluginElementNPObject: return "NPNVPluginElementNPObject";
-    case NPNVSupportsWindowless: return "NPNVSupportsWindowless";
-    case NPNVprivateModeBool: return "NPNVprivateModeBool";
+        case NPNVnetscapeWindow:
+            return "NPNVnetscapeWindow";
+
+        case NPNVjavascriptEnabledBool:
+            return "NPNVjavascriptEnabledBool";
+
+        case NPNVasdEnabledBool:
+            return "NPNVasdEnabledBool";
+
+        case NPNVisOfflineBool:
+            return "NPNVisOfflineBool";
+
+        case NPNVserviceManager:
+            return "NPNVserviceManager (not supported)";
+
+        case NPNVDOMElement:
+            return "NPNVDOMElement (not supported)";
+
+        case NPNVDOMWindow:
+            return "NPNVDOMWindow (not supported)";
+
+        case NPNVToolkit:
+            return "NPNVToolkit (not supported)";
+
+        case NPNVSupportsXEmbedBool:
+            return "NPNVSupportsXEmbedBool (not supported)";
+
+        case NPNVWindowNPObject:
+            return "NPNVWindowNPObject";
+
+        case NPNVPluginElementNPObject:
+            return "NPNVPluginElementNPObject";
+
+        case NPNVSupportsWindowless:
+            return "NPNVSupportsWindowless";
+
+        case NPNVprivateModeBool:
+            return "NPNVprivateModeBool";
 
 #ifdef XP_MACOSX
-    case NPNVpluginDrawingModel: return "NPNVpluginDrawingModel";
+
+        case NPNVpluginDrawingModel:
+            return "NPNVpluginDrawingModel";
 #ifndef NP_NO_QUICKDRAW
-    case NPNVsupportsQuickDrawBool: return "NPNVsupportsQuickDrawBool";
-#endif
-    case NPNVsupportsCoreGraphicsBool: return "NPNVsupportsCoreGraphicsBool";
-    case NPNVsupportsOpenGLBool: return "NPNVsupportsOpenGLBool";
-    case NPNVsupportsCoreAnimationBool: return "NPNVsupportsCoreAnimationBool";
-#ifndef NP_NO_CARBON
-    case NPNVsupportsCarbonBool: return "NPNVsupportsCarbonBool";
-#endif
-    case NPNVsupportsCocoaBool: return "NPNVsupportsCocoaBool";
+
+        case NPNVsupportsQuickDrawBool:
+            return "NPNVsupportsQuickDrawBool";
 #endif
 
-    default: return "Unknown variable";
+        case NPNVsupportsCoreGraphicsBool:
+            return "NPNVsupportsCoreGraphicsBool";
+
+        case NPNVsupportsOpenGLBool:
+            return "NPNVsupportsOpenGLBool";
+
+        case NPNVsupportsCoreAnimationBool:
+            return "NPNVsupportsCoreAnimationBool";
+#ifndef NP_NO_CARBON
+
+        case NPNVsupportsCarbonBool:
+            return "NPNVsupportsCarbonBool";
+#endif
+
+        case NPNVsupportsCocoaBool:
+            return "NPNVsupportsCocoaBool";
+#endif
+
+        default:
+            return "Unknown variable";
     }
 }
 
-CString prettyNameForNPPVariable(NPPVariable variable, void* value)
+CString prettyNameForNPPVariable( NPPVariable variable, void *value )
 {
-    switch (variable) {
-    case NPPVpluginNameString: return "NPPVpluginNameString";
-    case NPPVpluginDescriptionString: return "NPPVpluginDescriptionString";
-    case NPPVpluginWindowBool: return "NPPVpluginWindowBool";
-    case NPPVpluginTransparentBool: return "NPPVpluginTransparentBool";
+    switch ( variable )
+    {
+        case NPPVpluginNameString:
+            return "NPPVpluginNameString";
 
-    case NPPVjavaClass: return "NPPVjavaClass (not supported)";
-    case NPPVpluginWindowSize: return "NPPVpluginWindowSize (not supported)";
-    case NPPVpluginTimerInterval: return "NPPVpluginTimerInterval (not supported)";
-    case NPPVpluginScriptableInstance: return "NPPVpluginScriptableInstance (not supported)";
-    case NPPVpluginScriptableIID: return "NPPVpluginScriptableIID (not supported)";
-    case NPPVjavascriptPushCallerBool: return "NPPVjavascriptPushCallerBool (not supported)";
-    case NPPVpluginKeepLibraryInMemory: return "NPPVpluginKeepLibraryInMemory (not supported)";
-    case NPPVpluginNeedsXEmbed: return "NPPVpluginNeedsXEmbed (not supported)";
+        case NPPVpluginDescriptionString:
+            return "NPPVpluginDescriptionString";
 
-    case NPPVpluginScriptableNPObject: return "NPPVpluginScriptableNPObject";
+        case NPPVpluginWindowBool:
+            return "NPPVpluginWindowBool";
 
-    case NPPVformValue: return "NPPVformValue (not supported)";
-    case NPPVpluginUrlRequestsDisplayedBool: return "NPPVpluginUrlRequestsDisplayedBool (not supported)";
+        case NPPVpluginTransparentBool:
+            return "NPPVpluginTransparentBool";
 
-    case NPPVpluginWantsAllNetworkStreams: return "NPPVpluginWantsAllNetworkStreams";
-    case NPPVpluginCancelSrcStream: return "NPPVpluginCancelSrcStream";
+        case NPPVjavaClass:
+            return "NPPVjavaClass (not supported)";
+
+        case NPPVpluginWindowSize:
+            return "NPPVpluginWindowSize (not supported)";
+
+        case NPPVpluginTimerInterval:
+            return "NPPVpluginTimerInterval (not supported)";
+
+        case NPPVpluginScriptableInstance:
+            return "NPPVpluginScriptableInstance (not supported)";
+
+        case NPPVpluginScriptableIID:
+            return "NPPVpluginScriptableIID (not supported)";
+
+        case NPPVjavascriptPushCallerBool:
+            return "NPPVjavascriptPushCallerBool (not supported)";
+
+        case NPPVpluginKeepLibraryInMemory:
+            return "NPPVpluginKeepLibraryInMemory (not supported)";
+
+        case NPPVpluginNeedsXEmbed:
+            return "NPPVpluginNeedsXEmbed (not supported)";
+
+        case NPPVpluginScriptableNPObject:
+            return "NPPVpluginScriptableNPObject";
+
+        case NPPVformValue:
+            return "NPPVformValue (not supported)";
+
+        case NPPVpluginUrlRequestsDisplayedBool:
+            return "NPPVpluginUrlRequestsDisplayedBool (not supported)";
+
+        case NPPVpluginWantsAllNetworkStreams:
+            return "NPPVpluginWantsAllNetworkStreams";
+
+        case NPPVpluginCancelSrcStream:
+            return "NPPVpluginCancelSrcStream";
 
 #ifdef XP_MACOSX
-    case NPPVpluginDrawingModel: {
-        String result("NPPVpluginDrawingModel, ");
-        result.append(prettyNameForDrawingModel(NPDrawingModel(uintptr_t(value))));
-        return result.latin1();
-    }
-    case NPPVpluginEventModel: {
-        String result("NPPVpluginEventModel, ");
-        result.append(prettyNameForEventModel(NPEventModel(uintptr_t(value))));
-        return result.latin1();
-    }
-    case NPPVpluginCoreAnimationLayer: return "NPPVpluginCoreAnimationLayer";
+
+        case NPPVpluginDrawingModel:
+        {
+            String result( "NPPVpluginDrawingModel, " );
+            result.append( prettyNameForDrawingModel( NPDrawingModel( uintptr_t( value ) ) ) );
+            return result.latin1();
+        }
+
+        case NPPVpluginEventModel:
+        {
+            String result( "NPPVpluginEventModel, " );
+            result.append( prettyNameForEventModel( NPEventModel( uintptr_t( value ) ) ) );
+            return result.latin1();
+        }
+
+        case NPPVpluginCoreAnimationLayer:
+            return "NPPVpluginCoreAnimationLayer";
 #endif
 
-    default: return "Unknown variable";
+        default:
+            return "Unknown variable";
     }
 }
 
-CString prettyNameForNPNURLVariable(NPNURLVariable variable)
+CString prettyNameForNPNURLVariable( NPNURLVariable variable )
 {
-    switch (variable) {
-    case NPNURLVCookie: return "NPNURLVCookie";
-    case NPNURLVProxy: return "NPNURLVProxy";
-    default: return "Unknown variable";
+    switch ( variable )
+    {
+        case NPNURLVCookie:
+            return "NPNURLVCookie";
+
+        case NPNURLVProxy:
+            return "NPNURLVProxy";
+
+        default:
+            return "Unknown variable";
     }
 }
 } // namespace WebCore

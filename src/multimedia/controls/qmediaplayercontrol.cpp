@@ -30,8 +30,8 @@ QMediaPlayerControl::~QMediaPlayerControl()
 {
 }
 
-QMediaPlayerControl::QMediaPlayerControl(QObject *parent)
-   : QMediaControl(*new QMediaControlPrivate, parent)
+QMediaPlayerControl::QMediaPlayerControl( QObject *parent )
+    : QMediaControl( *new QMediaControlPrivate, parent )
 {
 }
 

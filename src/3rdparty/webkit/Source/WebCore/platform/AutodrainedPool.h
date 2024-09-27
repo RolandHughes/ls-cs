@@ -6,13 +6,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -37,26 +37,28 @@
 class NSAutoreleasePool;
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
-class AutodrainedPool {
-    WTF_MAKE_NONCOPYABLE(AutodrainedPool);
+class AutodrainedPool
+{
+    WTF_MAKE_NONCOPYABLE( AutodrainedPool );
 public:
-    AutodrainedPool(int iterationLimit = 1);
+    AutodrainedPool( int iterationLimit = 1 );
     ~AutodrainedPool();
-    
+
     void cycle();
-    
+
 private:
 #if PLATFORM(MAC)
     int m_iterationLimit;
     int m_iterationCount;
-    NSAutoreleasePool* m_pool;
+    NSAutoreleasePool *m_pool;
 #endif
 };
 
 #if !PLATFORM(MAC)
-inline AutodrainedPool::AutodrainedPool(int) { }
+inline AutodrainedPool::AutodrainedPool( int ) { }
 inline AutodrainedPool::~AutodrainedPool() { }
 inline void AutodrainedPool::cycle() { }
 #endif

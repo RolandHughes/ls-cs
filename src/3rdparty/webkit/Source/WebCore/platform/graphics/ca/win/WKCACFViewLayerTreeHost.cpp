@@ -33,83 +33,100 @@
 #include <wtf/CurrentTime.h>
 #include <wtf/Threading.h>
 
-typedef struct _CACFLayer* CACFLayerRef;
+typedef struct _CACFLayer *CACFLayerRef;
 
-namespace WebCore {
+namespace WebCore
+{
 
 #ifdef DEBUG_ALL
-SOFT_LINK_DEBUG_LIBRARY(WebKitQuartzCoreAdditions)
+SOFT_LINK_DEBUG_LIBRARY( WebKitQuartzCoreAdditions )
 #else
-SOFT_LINK_LIBRARY(WebKitQuartzCoreAdditions)
+SOFT_LINK_LIBRARY( WebKitQuartzCoreAdditions )
 #endif
 
-enum WKCACFViewDrawingDestination {
+enum WKCACFViewDrawingDestination
+{
     kWKCACFViewDrawingDestinationWindow = 0,
     kWKCACFViewDrawingDestinationImage,
 };
 typedef enum WKCACFViewDrawingDestination WKCACFViewDrawingDestination;
 
-SOFT_LINK(WebKitQuartzCoreAdditions, WKCACFViewCreate, WKCACFViewRef, __cdecl, (WKCACFViewDrawingDestination destination), (destination))
-SOFT_LINK(WebKitQuartzCoreAdditions, WKCACFViewSetLayer, void, __cdecl, (WKCACFViewRef view, CACFLayerRef layer), (view, layer))
-SOFT_LINK(WebKitQuartzCoreAdditions, WKCACFViewUpdate, void, __cdecl, (WKCACFViewRef view, HWND window, const CGRect* bounds), (view, window, bounds))
-SOFT_LINK(WebKitQuartzCoreAdditions, WKCACFViewCanDraw, bool, __cdecl, (WKCACFViewRef view), (view))
-SOFT_LINK(WebKitQuartzCoreAdditions, WKCACFViewDraw, void, __cdecl, (WKCACFViewRef view), (view))
-SOFT_LINK(WebKitQuartzCoreAdditions, WKCACFViewFlushContext, void, __cdecl, (WKCACFViewRef view), (view))
-SOFT_LINK(WebKitQuartzCoreAdditions, WKCACFViewInvalidateRects, void, __cdecl, (WKCACFViewRef view, const CGRect rects[], size_t count), (view, rects, count))
-typedef void (*WKCACFViewContextDidChangeCallback)(WKCACFViewRef view, void* info);
-SOFT_LINK(WebKitQuartzCoreAdditions, WKCACFViewSetContextDidChangeCallback, void, __cdecl, (WKCACFViewRef view, WKCACFViewContextDidChangeCallback callback, void* info), (view, callback, info))
-SOFT_LINK(WebKitQuartzCoreAdditions, WKCACFViewGetLastCommitTime, CFTimeInterval, __cdecl, (WKCACFViewRef view), (view))
-SOFT_LINK(WebKitQuartzCoreAdditions, WKCACFViewSetContextUserData, void, __cdecl, (WKCACFViewRef view, void* userData), (view, userData))
+SOFT_LINK( WebKitQuartzCoreAdditions, WKCACFViewCreate, WKCACFViewRef, __cdecl, ( WKCACFViewDrawingDestination destination ),
+           ( destination ) )
+SOFT_LINK( WebKitQuartzCoreAdditions, WKCACFViewSetLayer, void, __cdecl, ( WKCACFViewRef view, CACFLayerRef layer ), ( view,
+           layer ) )
+SOFT_LINK( WebKitQuartzCoreAdditions, WKCACFViewUpdate, void, __cdecl, ( WKCACFViewRef view, HWND window, const CGRect *bounds ),
+           ( view, window, bounds ) )
+SOFT_LINK( WebKitQuartzCoreAdditions, WKCACFViewCanDraw, bool, __cdecl, ( WKCACFViewRef view ), ( view ) )
+SOFT_LINK( WebKitQuartzCoreAdditions, WKCACFViewDraw, void, __cdecl, ( WKCACFViewRef view ), ( view ) )
+SOFT_LINK( WebKitQuartzCoreAdditions, WKCACFViewFlushContext, void, __cdecl, ( WKCACFViewRef view ), ( view ) )
+SOFT_LINK( WebKitQuartzCoreAdditions, WKCACFViewInvalidateRects, void, __cdecl, ( WKCACFViewRef view, const CGRect rects[],
+           size_t count ), ( view, rects, count ) )
+typedef void ( *WKCACFViewContextDidChangeCallback )( WKCACFViewRef view, void *info );
+SOFT_LINK( WebKitQuartzCoreAdditions, WKCACFViewSetContextDidChangeCallback, void, __cdecl, ( WKCACFViewRef view,
+           WKCACFViewContextDidChangeCallback callback, void *info ), ( view, callback, info ) )
+SOFT_LINK( WebKitQuartzCoreAdditions, WKCACFViewGetLastCommitTime, CFTimeInterval, __cdecl, ( WKCACFViewRef view ), ( view ) )
+SOFT_LINK( WebKitQuartzCoreAdditions, WKCACFViewSetContextUserData, void, __cdecl, ( WKCACFViewRef view, void *userData ), ( view,
+           userData ) )
 
 PassRefPtr<WKCACFViewLayerTreeHost> WKCACFViewLayerTreeHost::create()
 {
-    if (!WebKitQuartzCoreAdditionsLibrary())
+    if ( !WebKitQuartzCoreAdditionsLibrary() )
+    {
         return 0;
+    }
 
-    return adoptRef(new WKCACFViewLayerTreeHost);
+    return adoptRef( new WKCACFViewLayerTreeHost );
 }
 
 WKCACFViewLayerTreeHost::WKCACFViewLayerTreeHost()
-    : m_view(AdoptCF, WKCACFViewCreate(kWKCACFViewDrawingDestinationWindow))
-    , m_viewNeedsUpdate(true)
+    : m_view( AdoptCF, WKCACFViewCreate( kWKCACFViewDrawingDestinationWindow ) )
+    , m_viewNeedsUpdate( true )
 {
 }
 
 void WKCACFViewLayerTreeHost::updateViewIfNeeded()
 {
-    if (!m_viewNeedsUpdate)
+    if ( !m_viewNeedsUpdate )
+    {
         return;
+    }
+
     m_viewNeedsUpdate = false;
 
     CGRect layerBounds = rootLayer()->bounds();
 
     CGRect bounds = this->bounds();
-    WKCACFViewUpdate(m_view.get(), window(), &bounds);
+    WKCACFViewUpdate( m_view.get(), window(), &bounds );
 
-    if (CGRectEqualToRect(layerBounds, rootLayer()->bounds()))
+    if ( CGRectEqualToRect( layerBounds, rootLayer()->bounds() ) )
+    {
         return;
+    }
 
     // Flush the context so the layer's rendered bounds will match our bounds.
     flushContext();
 }
 
-void WKCACFViewLayerTreeHost::contextDidChangeCallback(WKCACFViewRef view, void* info)
+void WKCACFViewLayerTreeHost::contextDidChangeCallback( WKCACFViewRef view, void *info )
 {
-    ASSERT_ARG(view, view);
-    ASSERT_ARG(info, info);
+    ASSERT_ARG( view, view );
+    ASSERT_ARG( info, info );
 
-    WKCACFViewLayerTreeHost* host = static_cast<WKCACFViewLayerTreeHost*>(info);
-    ASSERT_ARG(view, view == host->m_view);
+    WKCACFViewLayerTreeHost *host = static_cast<WKCACFViewLayerTreeHost *>( info );
+    ASSERT_ARG( view, view == host->m_view );
     host->contextDidChange();
 }
 
 void WKCACFViewLayerTreeHost::contextDidChange()
 {
-    // This should only be called on a background thread when no changes have actually 
+    // This should only be called on a background thread when no changes have actually
     // been committed to the context, eg. when a video frame has been added to an image
     // queue, so return without triggering animations etc.
-    if (!isMainThread())
+    if ( !isMainThread() )
+    {
         return;
+    }
 
     // Tell the WKCACFView to start rendering now that we have some contents to render.
     updateViewIfNeeded();
@@ -117,11 +134,11 @@ void WKCACFViewLayerTreeHost::contextDidChange()
     CACFLayerTreeHost::contextDidChange();
 }
 
-void WKCACFViewLayerTreeHost::initializeContext(void* userData, PlatformCALayer* layer)
+void WKCACFViewLayerTreeHost::initializeContext( void *userData, PlatformCALayer *layer )
 {
-    WKCACFViewSetContextUserData(m_view.get(), userData);
-    WKCACFViewSetLayer(m_view.get(), layer->platformLayer());
-    WKCACFViewSetContextDidChangeCallback(m_view.get(), contextDidChangeCallback, this);
+    WKCACFViewSetContextUserData( m_view.get(), userData );
+    WKCACFViewSetLayer( m_view.get(), layer->platformLayer() );
+    WKCACFViewSetContextDidChangeCallback( m_view.get(), contextDidChangeCallback, this );
 }
 
 void WKCACFViewLayerTreeHost::resize()
@@ -132,28 +149,28 @@ void WKCACFViewLayerTreeHost::resize()
 bool WKCACFViewLayerTreeHost::createRenderer()
 {
     updateViewIfNeeded();
-    return WKCACFViewCanDraw(m_view.get());
+    return WKCACFViewCanDraw( m_view.get() );
 }
 
 void WKCACFViewLayerTreeHost::destroyRenderer()
 {
     m_viewNeedsUpdate = true;
-    WKCACFViewUpdate(m_view.get(), 0, 0);
-    WKCACFViewSetContextUserData(m_view.get(), 0);
-    WKCACFViewSetLayer(m_view.get(), 0);
-    WKCACFViewSetContextDidChangeCallback(m_view.get(), 0, 0);
+    WKCACFViewUpdate( m_view.get(), 0, 0 );
+    WKCACFViewSetContextUserData( m_view.get(), 0 );
+    WKCACFViewSetLayer( m_view.get(), 0 );
+    WKCACFViewSetContextDidChangeCallback( m_view.get(), 0, 0 );
 
     CACFLayerTreeHost::destroyRenderer();
 }
 
 CFTimeInterval WKCACFViewLayerTreeHost::lastCommitTime() const
 {
-    return WKCACFViewGetLastCommitTime(m_view.get());
+    return WKCACFViewGetLastCommitTime( m_view.get() );
 }
 
 void WKCACFViewLayerTreeHost::flushContext()
 {
-    WKCACFViewFlushContext(m_view.get());
+    WKCACFViewFlushContext( m_view.get() );
 }
 
 void WKCACFViewLayerTreeHost::paint()
@@ -162,10 +179,10 @@ void WKCACFViewLayerTreeHost::paint()
     CACFLayerTreeHost::paint();
 }
 
-void WKCACFViewLayerTreeHost::render(const Vector<CGRect>& dirtyRects)
+void WKCACFViewLayerTreeHost::render( const Vector<CGRect> &dirtyRects )
 {
-    WKCACFViewInvalidateRects(m_view.get(), dirtyRects.data(), dirtyRects.size());
-    WKCACFViewDraw(m_view.get());
+    WKCACFViewInvalidateRects( m_view.get(), dirtyRects.data(), dirtyRects.size() );
+    WKCACFViewDraw( m_view.get() );
 }
 
 } // namespace WebCore

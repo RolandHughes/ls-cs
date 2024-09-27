@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 #ifndef NavigatorBase_h
@@ -28,26 +28,28 @@
 
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class NavigatorBase {
-    public:
-        String appName() const;
-        String appVersion() const;
-        virtual String userAgent() const = 0;
-        String platform() const;
+class NavigatorBase
+{
+public:
+    String appName() const;
+    String appVersion() const;
+    virtual String userAgent() const = 0;
+    String platform() const;
 
-        String appCodeName() const;
-        String product() const;
-        String productSub() const;
-        String vendor() const;
-        String vendorSub() const;
+    String appCodeName() const;
+    String product() const;
+    String productSub() const;
+    String vendor() const;
+    String vendorSub() const;
 
-        bool onLine() const;
+    bool onLine() const;
 
-    protected:
-        virtual ~NavigatorBase();
-    };
+protected:
+    virtual ~NavigatorBase();
+};
 
 } // namespace WebCore
 

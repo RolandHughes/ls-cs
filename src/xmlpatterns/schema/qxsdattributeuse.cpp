@@ -25,96 +25,100 @@
 
 using namespace QPatternist;
 
-void XsdAttributeUse::ValueConstraint::setVariety(Variety variety)
+void XsdAttributeUse::ValueConstraint::setVariety( Variety variety )
 {
-   m_variety = variety;
+    m_variety = variety;
 }
 
 XsdAttributeUse::ValueConstraint::Variety XsdAttributeUse::ValueConstraint::variety() const
 {
-   return m_variety;
+    return m_variety;
 }
 
-void XsdAttributeUse::ValueConstraint::setValue(const QString &value)
+void XsdAttributeUse::ValueConstraint::setValue( const QString &value )
 {
-   m_value = value;
+    m_value = value;
 }
 
 QString XsdAttributeUse::ValueConstraint::value() const
 {
-   return m_value;
+    return m_value;
 }
 
-void XsdAttributeUse::ValueConstraint::setLexicalForm(const QString &form)
+void XsdAttributeUse::ValueConstraint::setLexicalForm( const QString &form )
 {
-   m_lexicalForm = form;
+    m_lexicalForm = form;
 }
 
 QString XsdAttributeUse::ValueConstraint::lexicalForm() const
 {
-   return m_lexicalForm;
+    return m_lexicalForm;
 }
 
 XsdAttributeUse::ValueConstraint::Ptr XsdAttributeUse::ValueConstraint::fromAttributeValueConstraint(
-   const XsdAttribute::ValueConstraint::Ptr &constraint)
+    const XsdAttribute::ValueConstraint::Ptr &constraint )
 {
-   XsdAttributeUse::ValueConstraint::Ptr newConstraint(new XsdAttributeUse::ValueConstraint());
-   switch (constraint->variety()) {
-      case XsdAttribute::ValueConstraint::Fixed:
-         newConstraint->setVariety(Fixed);
-         break;
-      case XsdAttribute::ValueConstraint::Default:
-         newConstraint->setVariety(Default);
-         break;
-   }
-   newConstraint->setValue(constraint->value());
-   newConstraint->setLexicalForm(constraint->lexicalForm());
+    XsdAttributeUse::ValueConstraint::Ptr newConstraint( new XsdAttributeUse::ValueConstraint() );
 
-   return newConstraint;
+    switch ( constraint->variety() )
+    {
+        case XsdAttribute::ValueConstraint::Fixed:
+            newConstraint->setVariety( Fixed );
+            break;
+
+        case XsdAttribute::ValueConstraint::Default:
+            newConstraint->setVariety( Default );
+            break;
+    }
+
+    newConstraint->setValue( constraint->value() );
+    newConstraint->setLexicalForm( constraint->lexicalForm() );
+
+    return newConstraint;
 }
 
 XsdAttributeUse::XsdAttributeUse()
-   : m_useType(OptionalUse)
+    : m_useType( OptionalUse )
 {
 }
 
 bool XsdAttributeUse::isAttributeUse() const
 {
-   return true;
+    return true;
 }
 
-void XsdAttributeUse::setUseType(UseType type)
+void XsdAttributeUse::setUseType( UseType type )
 {
-   m_useType = type;
+    m_useType = type;
 }
 
 XsdAttributeUse::UseType XsdAttributeUse::useType() const
 {
-   return m_useType;
+    return m_useType;
 }
 
 bool XsdAttributeUse::isRequired() const
 {
-   return (m_useType == RequiredUse);
+    return ( m_useType == RequiredUse );
 }
 
-void XsdAttributeUse::setAttribute(const XsdAttribute::Ptr &attribute)
+void XsdAttributeUse::setAttribute( const XsdAttribute::Ptr &attribute )
 {
-   m_attribute = attribute;
+    m_attribute = attribute;
 }
 
 XsdAttribute::Ptr XsdAttributeUse::attribute() const
 {
-   return m_attribute;
+    return m_attribute;
 }
 
-void XsdAttributeUse::setValueConstraint(const ValueConstraint::Ptr &constraint)
+void XsdAttributeUse::setValueConstraint( const ValueConstraint::Ptr &constraint )
 {
-   m_valueConstraint = constraint;
+    m_valueConstraint = constraint;
 }
 
 XsdAttributeUse::ValueConstraint::Ptr XsdAttributeUse::valueConstraint() const
 {
-   return m_valueConstraint;
+    return m_valueConstraint;
 }
 

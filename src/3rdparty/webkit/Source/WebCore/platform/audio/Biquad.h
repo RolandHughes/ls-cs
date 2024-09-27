@@ -33,26 +33,28 @@
 #include <sys/types.h>
 #include <wtf/Complex.h>
 #include <wtf/Platform.h>
- 
-namespace WebCore {
+
+namespace WebCore
+{
 
 // A basic biquad (two-zero / two-pole digital filter)
 //
 // It can be configured to a number of common and very useful filters:
 //    lowpass, highpass, shelving, parameteric, notch, allpass, ...
 
-class Biquad {
-public:   
+class Biquad
+{
+public:
     Biquad();
     virtual ~Biquad() { }
 
-    void process(const float* sourceP, float* destP, size_t framesToProcess);
+    void process( const float *sourceP, float *destP, size_t framesToProcess );
 
     // cutoff is 0-1 normalized, resonance is in dB >= 0.0
-    void setLowpassParams(double cutoff, double resonance);
-    void setHighpassParams(double cutoff, double resonance);
+    void setLowpassParams( double cutoff, double resonance );
+    void setHighpassParams( double cutoff, double resonance );
 
-    void setLowShelfParams(double cutoff, double dbGain);
+    void setLowShelfParams( double cutoff, double dbGain );
 
     // FIXME: need to implement a few more common filters
     // void setHighShelfParams(double cutoff, double dbGain);
@@ -60,11 +62,11 @@ public:
 
     // Set the biquad coefficients given a single zero (other zero will be conjugate)
     // and a single pole (other pole will be conjugate)
-    void setZeroPolePairs(const Complex& zero, const Complex& pole);
+    void setZeroPolePairs( const Complex &zero, const Complex &pole );
 
     // Set the biquad coefficients given a single pole (other pole will be conjugate)
     // (The zeroes will be the inverse of the poles)
-    void setAllpassPole(const Complex& pole);
+    void setAllpassPole( const Complex &pole );
 
     // Resets filter state
     void reset();
@@ -86,8 +88,8 @@ private:
     double m_y2; // output delayed by 2 samples
 
 #if OS(DARWIN)
-    void processFast(const float* sourceP, float* destP, size_t framesToProcess);
-    void processSliceFast(double* sourceP, double* destP, double* coefficientsP, size_t framesToProcess);
+    void processFast( const float *sourceP, float *destP, size_t framesToProcess );
+    void processSliceFast( double *sourceP, double *destP, double *coefficientsP, size_t framesToProcess );
 
     AudioDoubleArray m_inputBuffer;
     AudioDoubleArray m_outputBuffer;

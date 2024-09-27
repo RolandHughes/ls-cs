@@ -23,17 +23,19 @@
 #if ENABLE(SVG)
 #include "ImageLoader.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SVGImageElement;
 
-class SVGImageLoader : public ImageLoader {
+class SVGImageLoader : public ImageLoader
+{
 public:
-    SVGImageLoader(SVGImageElement*);
+    SVGImageLoader( SVGImageElement * );
 
 private:
     virtual void dispatchLoadEvent();
-    virtual String sourceURI(const AtomicString&) const;
+    virtual String sourceURI( const AtomicString & ) const;
 };
 
 } // namespace WebCore

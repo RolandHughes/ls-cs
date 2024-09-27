@@ -25,17 +25,19 @@
 
 #include "ImageLoader.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class HTMLImageLoader : public ImageLoader {
+class HTMLImageLoader : public ImageLoader
+{
 public:
-    HTMLImageLoader(Element*);
+    HTMLImageLoader( Element * );
     virtual ~HTMLImageLoader();
 
     virtual void dispatchLoadEvent();
-    virtual String sourceURI(const AtomicString&) const;
+    virtual String sourceURI( const AtomicString & ) const;
 
-    virtual void notifyFinished(CachedResource*);
+    virtual void notifyFinished( CachedResource * );
 };
 
 }

@@ -28,40 +28,51 @@
 
 #include <inttypes.h>
 
-namespace CoreIPC {
+namespace CoreIPC
+{
 
 class ArgumentDecoder;
 class ArgumentEncoder;
-    
-class DataReference {
+
+class DataReference
+{
 public:
     DataReference()
-        : m_data(0)
-        , m_size(0)
+        : m_data( 0 )
+        , m_size( 0 )
     {
     }
 
-    DataReference(const uint8_t* data, size_t size)
-        : m_data(data)
-        , m_size(size)
+    DataReference( const uint8_t *data, size_t size )
+        : m_data( data )
+        , m_size( size )
     {
     }
 
-    bool isEmpty() const { return size() == 0; }
+    bool isEmpty() const
+    {
+        return size() == 0;
+    }
 
-    size_t size() const { return m_size; }
-    const uint8_t* data() const 
-    { 
-        if (isEmpty())
+    size_t size() const
+    {
+        return m_size;
+    }
+    const uint8_t *data() const
+    {
+        if ( isEmpty() )
+        {
             return 0;
-        return m_data; 
+        }
+
+        return m_data;
     }
 
-    void encode(ArgumentEncoder* encoder) const;
-    static bool decode(ArgumentDecoder* decoder, DataReference& dataReference);
+    void encode( ArgumentEncoder *encoder ) const;
+    static bool decode( ArgumentDecoder *decoder, DataReference &dataReference );
 
 private:
-    const uint8_t* m_data;
+    const uint8_t *m_data;
     size_t m_size;
 };
 

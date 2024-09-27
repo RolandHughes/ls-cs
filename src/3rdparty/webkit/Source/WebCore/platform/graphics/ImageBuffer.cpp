@@ -30,40 +30,54 @@
 
 #include <math.h>
 
-namespace WebCore {
-
-void ImageBuffer::transformColorSpace(ColorSpace srcColorSpace, ColorSpace dstColorSpace)
+namespace WebCore
 {
-    if (srcColorSpace == dstColorSpace)
+
+void ImageBuffer::transformColorSpace( ColorSpace srcColorSpace, ColorSpace dstColorSpace )
+{
+    if ( srcColorSpace == dstColorSpace )
+    {
         return;
+    }
 
     // only sRGB <-> linearRGB are supported at the moment
-    if ((srcColorSpace != ColorSpaceLinearRGB && srcColorSpace != ColorSpaceDeviceRGB) 
-        || (dstColorSpace != ColorSpaceLinearRGB && dstColorSpace != ColorSpaceDeviceRGB))
+    if ( ( srcColorSpace != ColorSpaceLinearRGB && srcColorSpace != ColorSpaceDeviceRGB )
+            || ( dstColorSpace != ColorSpaceLinearRGB && dstColorSpace != ColorSpaceDeviceRGB ) )
+    {
         return;
+    }
 
-    if (dstColorSpace == ColorSpaceLinearRGB) {
-        if (m_linearRgbLUT.isEmpty()) {
-            for (unsigned i = 0; i < 256; i++) {
+    if ( dstColorSpace == ColorSpaceLinearRGB )
+    {
+        if ( m_linearRgbLUT.isEmpty() )
+        {
+            for ( unsigned i = 0; i < 256; i++ )
+            {
                 float color = i  / 255.0f;
-                color = (color <= 0.04045f ? color / 12.92f : pow((color + 0.055f) / 1.055f, 2.4f));
-                color = std::max(0.0f, color);
-                color = std::min(1.0f, color);
-                m_linearRgbLUT.append(static_cast<int>(color * 255));
+                color = ( color <= 0.04045f ? color / 12.92f : pow( ( color + 0.055f ) / 1.055f, 2.4f ) );
+                color = std::max( 0.0f, color );
+                color = std::min( 1.0f, color );
+                m_linearRgbLUT.append( static_cast<int>( color * 255 ) );
             }
         }
-        platformTransformColorSpace(m_linearRgbLUT);
-    } else if (dstColorSpace == ColorSpaceDeviceRGB) {
-        if (m_deviceRgbLUT.isEmpty()) {
-            for (unsigned i = 0; i < 256; i++) {
+
+        platformTransformColorSpace( m_linearRgbLUT );
+    }
+    else if ( dstColorSpace == ColorSpaceDeviceRGB )
+    {
+        if ( m_deviceRgbLUT.isEmpty() )
+        {
+            for ( unsigned i = 0; i < 256; i++ )
+            {
                 float color = i / 255.0f;
-                color = (powf(color, 1.0f / 2.4f) * 1.055f) - 0.055f;
-                color = std::max(0.0f, color);
-                color = std::min(1.0f, color);
-                m_deviceRgbLUT.append(static_cast<int>(color * 255));
+                color = ( powf( color, 1.0f / 2.4f ) * 1.055f ) - 0.055f;
+                color = std::max( 0.0f, color );
+                color = std::min( 1.0f, color );
+                m_deviceRgbLUT.append( static_cast<int>( color * 255 ) );
             }
         }
-        platformTransformColorSpace(m_deviceRgbLUT);
+
+        platformTransformColorSpace( m_deviceRgbLUT );
     }
 }
 

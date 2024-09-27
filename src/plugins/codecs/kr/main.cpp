@@ -40,8 +40,8 @@ public:
     QList<QByteArray> aliases() const;
     QList<int> mibEnums() const;
 
-    QTextCodec *createForMib(int);
-    QTextCodec *createForName(const QByteArray &);
+    QTextCodec *createForMib( int );
+    QTextCodec *createForName( const QByteArray & );
 };
 
 QList<QByteArray> KRTextCodecs::names() const
@@ -77,36 +77,58 @@ QList<int> KRTextCodecs::mibEnums() const
     return list;
 }
 
-QTextCodec *KRTextCodecs::createForMib(int mib)
+QTextCodec *KRTextCodecs::createForMib( int mib )
 {
-    if (mib == QEucKrCodec::_mibEnum())
+    if ( mib == QEucKrCodec::_mibEnum() )
+    {
         return new QEucKrCodec;
+    }
+
 #ifdef Q_WS_X11
-    if (mib == QFontKsc5601Codec::_mibEnum())
+
+    if ( mib == QFontKsc5601Codec::_mibEnum() )
+    {
         return new QFontKsc5601Codec;
+    }
+
 #endif
-    if (mib == QCP949Codec::_mibEnum())
+
+    if ( mib == QCP949Codec::_mibEnum() )
+    {
         return new QCP949Codec;
+    }
+
     return 0;
 }
 
 
-QTextCodec *KRTextCodecs::createForName(const QByteArray &name)
+QTextCodec *KRTextCodecs::createForName( const QByteArray &name )
 {
-    if (name == QEucKrCodec::_name() || QEucKrCodec::_aliases().contains(name))
+    if ( name == QEucKrCodec::_name() || QEucKrCodec::_aliases().contains( name ) )
+    {
         return new QEucKrCodec;
+    }
+
 #ifdef Q_WS_X11
-    if (name == QFontKsc5601Codec::_name() || QFontKsc5601Codec::_aliases().contains(name))
+
+    if ( name == QFontKsc5601Codec::_name() || QFontKsc5601Codec::_aliases().contains( name ) )
+    {
         return new QFontKsc5601Codec;
+    }
+
 #endif
-    if (name == QCP949Codec::_name() || QCP949Codec::_aliases().contains(name))
+
+    if ( name == QCP949Codec::_name() || QCP949Codec::_aliases().contains( name ) )
+    {
         return new QCP949Codec;
+    }
+
     return 0;
 }
 
 
-Q_EXPORT_STATIC_PLUGIN(KRTextCodecs);
-Q_EXPORT_PLUGIN2(qkrcodecs, KRTextCodecs);
+Q_EXPORT_STATIC_PLUGIN( KRTextCodecs );
+Q_EXPORT_PLUGIN2( qkrcodecs, KRTextCodecs );
 
 #endif // QT_NO_TEXTCODECPLUGIN
 

@@ -29,17 +29,20 @@
 #include "EditCommand.h"
 #include "SelectionController.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SetSelectionCommand : public SimpleEditCommand {
+class SetSelectionCommand : public SimpleEditCommand
+{
 public:
-    static PassRefPtr<SetSelectionCommand> create(const VisibleSelection& selection, SelectionController::SetSelectionOptions options)
+    static PassRefPtr<SetSelectionCommand> create( const VisibleSelection &selection,
+            SelectionController::SetSelectionOptions options )
     {
-        return adoptRef(new SetSelectionCommand(selection, options));
+        return adoptRef( new SetSelectionCommand( selection, options ) );
     }
 
 private:
-    SetSelectionCommand(const VisibleSelection&, SelectionController::SetSelectionOptions);
+    SetSelectionCommand( const VisibleSelection &, SelectionController::SetSelectionOptions );
     virtual void doApply();
     virtual void doUnapply();
 

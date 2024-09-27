@@ -20,39 +20,45 @@
 #ifndef HashTools_h
 #define HashTools_h
 
-namespace WebCore {
+namespace WebCore
+{
 
-struct PubIDInfo {
-    enum eMode {
+struct PubIDInfo
+{
+    enum eMode
+    {
         eQuirks,
         eQuirks3,
         eAlmostStandards
     };
 
-    const char* name;
+    const char *name;
     eMode mode_if_no_sysid;
     eMode mode_if_sysid;
 };
 
-struct NamedColor {
-    const char* name;
+struct NamedColor
+{
+    const char *name;
     unsigned ARGBValue;
 };
 
-struct Property {
-    const char* name;
+struct Property
+{
+    const char *name;
     int id;
 };
 
-struct Value {
-    const char* name;
+struct Value
+{
+    const char *name;
     int id;
 };
 
-const PubIDInfo* findDoctypeEntry(const char* str, unsigned int len);
-const NamedColor* findColor(const char* str, unsigned int len);
-const Property* findProperty(const char* str, unsigned int len);
-const Value* findValue(const char* str, unsigned int len);
+const PubIDInfo *findDoctypeEntry( const char *str, unsigned int len );
+const NamedColor *findColor( const char *str, unsigned int len );
+const Property *findProperty( const char *str, unsigned int len );
+const Value *findValue( const char *str, unsigned int len );
 
 } // namespace WebCore
 

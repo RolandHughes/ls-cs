@@ -46,7 +46,8 @@
 #include <wtf/MathExtras.h>
 #include <wtf/PassOwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 using namespace std;
@@ -56,9 +57,9 @@ static const double rangeDefaultMaximum = 100.0;
 static const double rangeDefaultStep = 1.0;
 static const double rangeStepScaleFactor = 1.0;
 
-PassOwnPtr<InputType> RangeInputType::create(HTMLInputElement* element)
+PassOwnPtr<InputType> RangeInputType::create( HTMLInputElement *element )
 {
-    return adoptPtr(new RangeInputType(element));
+    return adoptPtr( new RangeInputType( element ) );
 }
 
 bool RangeInputType::isRangeControl() const
@@ -66,19 +67,19 @@ bool RangeInputType::isRangeControl() const
     return true;
 }
 
-const AtomicString& RangeInputType::formControlType() const
+const AtomicString &RangeInputType::formControlType() const
 {
     return InputTypeNames::range();
 }
 
 double RangeInputType::valueAsNumber() const
 {
-    return parseToDouble(element()->value(), numeric_limits<double>::quiet_NaN());
+    return parseToDouble( element()->value(), numeric_limits<double>::quiet_NaN() );
 }
 
-void RangeInputType::setValueAsNumber(double newValue, ExceptionCode&) const
+void RangeInputType::setValueAsNumber( double newValue, ExceptionCode & ) const
 {
-    element()->setValue(serialize(newValue));
+    element()->setValue( serialize( newValue ) );
 }
 
 bool RangeInputType::supportsRequired() const
@@ -86,17 +87,17 @@ bool RangeInputType::supportsRequired() const
     return false;
 }
 
-bool RangeInputType::rangeUnderflow(const String& value) const
+bool RangeInputType::rangeUnderflow( const String &value ) const
 {
     // Guaranteed by sanitization.
-    ASSERT_UNUSED(value, parseToDouble(value, numeric_limits<double>::quiet_NaN()) >= minimum());
+    ASSERT_UNUSED( value, parseToDouble( value, numeric_limits<double>::quiet_NaN() ) >= minimum() );
     return false;
 }
 
-bool RangeInputType::rangeOverflow(const String& value) const
+bool RangeInputType::rangeOverflow( const String &value ) const
 {
     // Guaranteed by sanitization.
-    ASSERT_UNUSED(value, parseToDouble(value, numeric_limits<double>::quiet_NaN()) <= maximum());
+    ASSERT_UNUSED( value, parseToDouble( value, numeric_limits<double>::quiet_NaN() ) <= maximum() );
     return false;
 }
 
@@ -107,17 +108,21 @@ bool RangeInputType::supportsRangeLimitation() const
 
 double RangeInputType::minimum() const
 {
-    return parseToDouble(element()->fastGetAttribute(minAttr), rangeDefaultMinimum);
+    return parseToDouble( element()->fastGetAttribute( minAttr ), rangeDefaultMinimum );
 }
 
 double RangeInputType::maximum() const
 {
-    double max = parseToDouble(element()->fastGetAttribute(maxAttr), rangeDefaultMaximum);
+    double max = parseToDouble( element()->fastGetAttribute( maxAttr ), rangeDefaultMaximum );
     // A remedy for the inconsistent min/max values.
     // Sets the maximum to the default or the minimum value.
     double min = minimum();
-    if (max < min)
-        max = std::max(min, rangeDefaultMaximum);
+
+    if ( max < min )
+    {
+        max = std::max( min, rangeDefaultMaximum );
+    }
+
     return max;
 }
 
@@ -126,7 +131,7 @@ bool RangeInputType::isSteppable() const
     return true;
 }
 
-bool RangeInputType::stepMismatch(const String&, double) const
+bool RangeInputType::stepMismatch( const String &, double ) const
 {
     // stepMismatch doesn't occur for type=range. RenderSlider guarantees the
     // value matches to step on user input, and sanitization takes care
@@ -149,92 +154,126 @@ double RangeInputType::stepScaleFactor() const
     return rangeStepScaleFactor;
 }
 
-void RangeInputType::handleMouseDownEvent(MouseEvent* event)
+void RangeInputType::handleMouseDownEvent( MouseEvent *event )
 {
-    if (event->button() != LeftButton || event->target() != element())
+    if ( event->button() != LeftButton || event->target() != element() )
+    {
         return;
+    }
 
-    if (SliderThumbElement* thumb = shadowSliderThumb())
-        thumb->dragFrom(event->absoluteLocation());
+    if ( SliderThumbElement *thumb = shadowSliderThumb() )
+    {
+        thumb->dragFrom( event->absoluteLocation() );
+    }
 }
 
-void RangeInputType::handleKeydownEvent(KeyboardEvent* event)
+void RangeInputType::handleKeydownEvent( KeyboardEvent *event )
 {
-    if (element()->disabled() || element()->readOnly())
+    if ( element()->disabled() || element()->readOnly() )
+    {
         return;
-    const String& key = event->keyIdentifier();
-    if (key != "Up" && key != "Right" && key != "Down" && key != "Left")
+    }
+
+    const String &key = event->keyIdentifier();
+
+    if ( key != "Up" && key != "Right" && key != "Down" && key != "Left" )
+    {
         return;
+    }
 
     ExceptionCode ec;
-    if (equalIgnoringCase(element()->fastGetAttribute(stepAttr), "any")) {
+
+    if ( equalIgnoringCase( element()->fastGetAttribute( stepAttr ), "any" ) )
+    {
         double min = minimum();
         double max = maximum();
         // FIXME: We can't use stepUp() for the step value "any". So, we increase
         // or decrease the value by 1/100 of the value range. Is it reasonable?
-        double step = (max - min) / 100;
-        double current = parseToDouble(element()->value(), numeric_limits<double>::quiet_NaN());
-        ASSERT(isfinite(current));
+        double step = ( max - min ) / 100;
+        double current = parseToDouble( element()->value(), numeric_limits<double>::quiet_NaN() );
+        ASSERT( isfinite( current ) );
         // Stepping-up and -down for step="any" are special cases for type="range" from renderer for convenient.
         // No stepping normally for step="any". They cannot be handled by stepUp()/stepDown()/stepUpFromRenderer().
         // So calculating values stepped-up or -down here.
         double newValue;
-        if (key == "Up" || key == "Right") {
+
+        if ( key == "Up" || key == "Right" )
+        {
             newValue = current + step;
-            if (newValue > max)
+
+            if ( newValue > max )
+            {
                 newValue = max;
-        } else {
-            newValue = current - step;
-            if (newValue < min)
-                newValue = min;
+            }
         }
-        if (newValue != current) {
-            setValueAsNumber(newValue, ec);
+        else
+        {
+            newValue = current - step;
+
+            if ( newValue < min )
+            {
+                newValue = min;
+            }
+        }
+
+        if ( newValue != current )
+        {
+            setValueAsNumber( newValue, ec );
             element()->dispatchFormControlChangeEvent();
         }
-    } else {
-        int stepMagnification = (key == "Up" || key == "Right") ? 1 : -1;
-        // Reasonable stepping-up/-down by stepUpFromRenderer() unless step="any"
-        element()->stepUpFromRenderer(stepMagnification);
     }
+    else
+    {
+        int stepMagnification = ( key == "Up" || key == "Right" ) ? 1 : -1;
+        // Reasonable stepping-up/-down by stepUpFromRenderer() unless step="any"
+        element()->stepUpFromRenderer( stepMagnification );
+    }
+
     event->setDefaultHandled();
 }
 
 void RangeInputType::createShadowSubtree()
 {
     ExceptionCode ec = 0;
-    element()->ensureShadowRoot()->appendChild(SliderThumbElement::create(element()->document()), ec);
+    element()->ensureShadowRoot()->appendChild( SliderThumbElement::create( element()->document() ), ec );
 }
 
-RenderObject* RangeInputType::createRenderer(RenderArena* arena, RenderStyle*) const
+RenderObject *RangeInputType::createRenderer( RenderArena *arena, RenderStyle * ) const
 {
-    return new (arena) RenderSlider(element());
+    return new ( arena ) RenderSlider( element() );
 }
 
-double RangeInputType::parseToDouble(const String& src, double defaultValue) const
+double RangeInputType::parseToDouble( const String &src, double defaultValue ) const
 {
     double numberValue;
-    if (!parseToDoubleForNumberType(src, &numberValue))
+
+    if ( !parseToDoubleForNumberType( src, &numberValue ) )
+    {
         return defaultValue;
-    ASSERT(isfinite(numberValue));
+    }
+
+    ASSERT( isfinite( numberValue ) );
     return numberValue;
 }
 
-String RangeInputType::serialize(double value) const
+String RangeInputType::serialize( double value ) const
 {
-    if (!isfinite(value))
+    if ( !isfinite( value ) )
+    {
         return String();
-    return serializeForNumberType(value);
+    }
+
+    return serializeForNumberType( value );
 }
 
 // FIXME: Could share this with BaseButtonInputType and BaseCheckableInputType if we had a common base class.
-void RangeInputType::accessKeyAction(bool sendToAnyElement)
+void RangeInputType::accessKeyAction( bool sendToAnyElement )
 {
-    InputType::accessKeyAction(sendToAnyElement);
+    InputType::accessKeyAction( sendToAnyElement );
 
     // Send mouse button events if the caller specified sendToAnyElement.
     // FIXME: The comment above is no good. It says what we do, but not why.
-    element()->dispatchSimulatedClick(0, sendToAnyElement);
+    element()->dispatchSimulatedClick( 0, sendToAnyElement );
 }
 
 void RangeInputType::minOrMaxAttributeChanged()
@@ -242,7 +281,7 @@ void RangeInputType::minOrMaxAttributeChanged()
     InputType::minOrMaxAttributeChanged();
 
     // Sanitize the value.
-    element()->setValue(element()->value());
+    element()->setValue( element()->value() );
     element()->setNeedsStyleRecalc();
 }
 
@@ -253,18 +292,20 @@ void RangeInputType::valueChanged()
 
 String RangeInputType::fallbackValue()
 {
-    return serializeForNumberType(StepRange(element()).defaultValue());
+    return serializeForNumberType( StepRange( element() ).defaultValue() );
 }
 
-String RangeInputType::sanitizeValue(const String& proposedValue)
+String RangeInputType::sanitizeValue( const String &proposedValue )
 {
     // If the proposedValue is null than this is a reset scenario and we
     // want the range input's value attribute to take priority over the
     // calculated default (middle) value.
-    if (proposedValue.isNull())
+    if ( proposedValue.isNull() )
+    {
         return proposedValue;
+    }
 
-    return serializeForNumberType(StepRange(element()).clampValue(proposedValue));
+    return serializeForNumberType( StepRange( element() ).clampValue( proposedValue ) );
 }
 
 bool RangeInputType::shouldRespectListAttribute()
@@ -272,10 +313,10 @@ bool RangeInputType::shouldRespectListAttribute()
     return true;
 }
 
-SliderThumbElement* RangeInputType::shadowSliderThumb() const
+SliderThumbElement *RangeInputType::shadowSliderThumb() const
 {
-    Node* shadow = element()->shadowRoot();
-    return shadow ? toSliderThumbElement(shadow->firstChild()) : 0;
+    Node *shadow = element()->shadowRoot();
+    return shadow ? toSliderThumbElement( shadow->firstChild() ) : 0;
 }
 
 } // namespace WebCore

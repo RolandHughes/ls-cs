@@ -50,50 +50,53 @@ class QOutputStrategy;
 
 class QTextOdfWriter
 {
- public:
-   QTextOdfWriter(const QTextDocument &document, QIODevice *device);
-   bool writeAll();
+public:
+    QTextOdfWriter( const QTextDocument &document, QIODevice *device );
+    bool writeAll();
 
-   void setCodec(QTextCodec *codec) {
-      m_codec = codec;
-   }
+    void setCodec( QTextCodec *codec )
+    {
+        m_codec = codec;
+    }
 
-   void setCreateArchive(bool on) {
-      m_createArchive = on;
-   }
+    void setCreateArchive( bool on )
+    {
+        m_createArchive = on;
+    }
 
-   bool createArchive() const {
-      return m_createArchive;
-   }
+    bool createArchive() const
+    {
+        return m_createArchive;
+    }
 
-   void writeBlock(QXmlStreamWriter &writer, const QTextBlock &block);
-   void writeFormats(QXmlStreamWriter &writer, const QSet<int> &formatIds) const;
-   void writeBlockFormat(QXmlStreamWriter &writer, QTextBlockFormat format, int formatIndex) const;
-   void writeCharacterFormat(QXmlStreamWriter &writer, QTextCharFormat format, int formatIndex) const;
-   void writeListFormat(QXmlStreamWriter &writer, QTextListFormat format, int formatIndex) const;
-   void writeFrameFormat(QXmlStreamWriter &writer, QTextFrameFormat format, int formatIndex) const;
-   void writeTableCellFormat(QXmlStreamWriter &writer, QTextTableCellFormat format, int formatIndex) const;
-   void writeFrame(QXmlStreamWriter &writer, const QTextFrame *frame);
-   void writeInlineCharacter(QXmlStreamWriter &writer, const QTextFragment &fragment) const;
+    void writeBlock( QXmlStreamWriter &writer, const QTextBlock &block );
+    void writeFormats( QXmlStreamWriter &writer, const QSet<int> &formatIds ) const;
+    void writeBlockFormat( QXmlStreamWriter &writer, QTextBlockFormat format, int formatIndex ) const;
+    void writeCharacterFormat( QXmlStreamWriter &writer, QTextCharFormat format, int formatIndex ) const;
+    void writeListFormat( QXmlStreamWriter &writer, QTextListFormat format, int formatIndex ) const;
+    void writeFrameFormat( QXmlStreamWriter &writer, QTextFrameFormat format, int formatIndex ) const;
+    void writeTableCellFormat( QXmlStreamWriter &writer, QTextTableCellFormat format, int formatIndex ) const;
+    void writeFrame( QXmlStreamWriter &writer, const QTextFrame *frame );
+    void writeInlineCharacter( QXmlStreamWriter &writer, const QTextFragment &fragment ) const;
 
-   const QString officeNS;
-   const QString textNS;
-   const QString styleNS;
-   const QString foNS;
-   const QString tableNS;
-   const QString drawNS;
-   const QString xlinkNS;
-   const QString svgNS;
+    const QString officeNS;
+    const QString textNS;
+    const QString styleNS;
+    const QString foNS;
+    const QString tableNS;
+    const QString drawNS;
+    const QString xlinkNS;
+    const QString svgNS;
 
- private:
-   const QTextDocument *m_document;
-   QIODevice *m_device;
+private:
+    const QTextDocument *m_document;
+    QIODevice *m_device;
 
-   QOutputStrategy *m_strategy;
-   QTextCodec *m_codec;
-   bool m_createArchive;
+    QOutputStrategy *m_strategy;
+    QTextCodec *m_codec;
+    bool m_createArchive;
 
-   QStack<QTextList *> m_listStack;
+    QStack<QTextList *> m_listStack;
 };
 
 

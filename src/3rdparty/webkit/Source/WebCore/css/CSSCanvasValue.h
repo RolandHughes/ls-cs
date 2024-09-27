@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef CSSCanvasValue_h
@@ -29,39 +29,50 @@
 #include "CSSImageGeneratorValue.h"
 #include "HTMLCanvasElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Document;
 
-class CSSCanvasValue : public CSSImageGeneratorValue, private CanvasObserver {
+class CSSCanvasValue : public CSSImageGeneratorValue, private CanvasObserver
+{
 public:
-    static PassRefPtr<CSSCanvasValue> create() { return adoptRef(new CSSCanvasValue); }
+    static PassRefPtr<CSSCanvasValue> create()
+    {
+        return adoptRef( new CSSCanvasValue );
+    }
     virtual ~CSSCanvasValue();
 
     virtual String cssText() const;
 
-    virtual PassRefPtr<Image> image(RenderObject*, const IntSize&);
-    virtual bool isFixedSize() const { return true; }
-    virtual IntSize fixedSize(const RenderObject*);
+    virtual PassRefPtr<Image> image( RenderObject *, const IntSize & );
+    virtual bool isFixedSize() const
+    {
+        return true;
+    }
+    virtual IntSize fixedSize( const RenderObject * );
 
-    void setName(const String& name) { m_name = name; }
+    void setName( const String &name )
+    {
+        m_name = name;
+    }
 
 private:
     CSSCanvasValue()
-        : m_element(0)
+        : m_element( 0 )
     {
     }
 
-    virtual void canvasChanged(HTMLCanvasElement*, const FloatRect& changedRect);
-    virtual void canvasResized(HTMLCanvasElement*);
-    virtual void canvasDestroyed(HTMLCanvasElement*);
+    virtual void canvasChanged( HTMLCanvasElement *, const FloatRect &changedRect );
+    virtual void canvasResized( HTMLCanvasElement * );
+    virtual void canvasDestroyed( HTMLCanvasElement * );
 
-    HTMLCanvasElement* element(Document*);
-     
+    HTMLCanvasElement *element( Document * );
+
     // The name of the canvas.
     String m_name;
     // The document supplies the element and owns it.
-    HTMLCanvasElement* m_element;
+    HTMLCanvasElement *m_element;
 };
 
 } // namespace WebCore

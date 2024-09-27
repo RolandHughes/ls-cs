@@ -29,34 +29,35 @@
 #include <wtf/CurrentTime.h>
 #include <wtf/text/AtomicString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 Event::Event()
-    : m_canBubble(false)
-    , m_cancelable(false)
-    , m_propagationStopped(false)
-    , m_immediatePropagationStopped(false)
-    , m_defaultPrevented(false)
-    , m_defaultHandled(false)
-    , m_cancelBubble(false)
-    , m_eventPhase(0)
-    , m_currentTarget(0)
-    , m_createTime(convertSecondsToDOMTimeStamp(currentTime()))
+    : m_canBubble( false )
+    , m_cancelable( false )
+    , m_propagationStopped( false )
+    , m_immediatePropagationStopped( false )
+    , m_defaultPrevented( false )
+    , m_defaultHandled( false )
+    , m_cancelBubble( false )
+    , m_eventPhase( 0 )
+    , m_currentTarget( 0 )
+    , m_createTime( convertSecondsToDOMTimeStamp( currentTime() ) )
 {
 }
 
-Event::Event(const AtomicString& eventType, bool canBubbleArg, bool cancelableArg)
-    : m_type(eventType)
-    , m_canBubble(canBubbleArg)
-    , m_cancelable(cancelableArg)
-    , m_propagationStopped(false)
-    , m_immediatePropagationStopped(false)
-    , m_defaultPrevented(false)
-    , m_defaultHandled(false)
-    , m_cancelBubble(false)
-    , m_eventPhase(0)
-    , m_currentTarget(0)
-    , m_createTime(convertSecondsToDOMTimeStamp(currentTime()))
+Event::Event( const AtomicString &eventType, bool canBubbleArg, bool cancelableArg )
+    : m_type( eventType )
+    , m_canBubble( canBubbleArg )
+    , m_cancelable( cancelableArg )
+    , m_propagationStopped( false )
+    , m_immediatePropagationStopped( false )
+    , m_defaultPrevented( false )
+    , m_defaultHandled( false )
+    , m_cancelBubble( false )
+    , m_eventPhase( 0 )
+    , m_currentTarget( 0 )
+    , m_createTime( convertSecondsToDOMTimeStamp( currentTime() ) )
 {
 }
 
@@ -64,10 +65,12 @@ Event::~Event()
 {
 }
 
-void Event::initEvent(const AtomicString& eventTypeArg, bool canBubbleArg, bool cancelableArg)
+void Event::initEvent( const AtomicString &eventTypeArg, bool canBubbleArg, bool cancelableArg )
 {
-    if (dispatched())
+    if ( dispatched() )
+    {
         return;
+    }
 
     m_type = eventTypeArg;
     m_canBubble = canBubbleArg;
@@ -245,14 +248,16 @@ bool Event::isSpeechInputEvent() const
 
 bool Event::fromUserGesture()
 {
-    if (!UserGestureIndicator::processingUserGesture())
+    if ( !UserGestureIndicator::processingUserGesture() )
+    {
         return false;
+    }
 
-    const AtomicString& type = this->type();
+    const AtomicString &type = this->type();
     return
         // mouse events
-        type == eventNames().clickEvent || type == eventNames().mousedownEvent 
-        || type == eventNames().mouseupEvent || type == eventNames().dblclickEvent 
+        type == eventNames().clickEvent || type == eventNames().mousedownEvent
+        || type == eventNames().mouseupEvent || type == eventNames().dblclickEvent
         // keyboard events
         || type == eventNames().keydownEvent || type == eventNames().keypressEvent
         || type == eventNames().keyupEvent
@@ -272,35 +277,43 @@ bool Event::storesResultAsString() const
     return false;
 }
 
-void Event::storeResult(const String&)
+void Event::storeResult( const String & )
 {
 }
 
-void Event::setTarget(PassRefPtr<EventTarget> target)
+void Event::setTarget( PassRefPtr<EventTarget> target )
 {
-    if (m_target == target)
+    if ( m_target == target )
+    {
         return;
+    }
 
     m_target = target;
-    if (m_target)
+
+    if ( m_target )
+    {
         receivedTarget();
+    }
 }
 
 void Event::receivedTarget()
 {
 }
 
-void Event::setUnderlyingEvent(PassRefPtr<Event> ue)
+void Event::setUnderlyingEvent( PassRefPtr<Event> ue )
 {
     // Prohibit creation of a cycle -- just do nothing in that case.
-    for (Event* e = ue.get(); e; e = e->underlyingEvent())
-        if (e == this)
+    for ( Event *e = ue.get(); e; e = e->underlyingEvent() )
+        if ( e == this )
+        {
             return;
+        }
+
     m_underlyingEvent = ue;
 }
 
-EventDispatchMediator::EventDispatchMediator(PassRefPtr<Event> event)
-    : m_event(event)
+EventDispatchMediator::EventDispatchMediator( PassRefPtr<Event> event )
+    : m_event( event )
 {
 }
 
@@ -308,9 +321,9 @@ EventDispatchMediator::~EventDispatchMediator()
 {
 }
 
-bool EventDispatchMediator::dispatchEvent(EventDispatcher* dispatcher) const
+bool EventDispatchMediator::dispatchEvent( EventDispatcher *dispatcher ) const
 {
-    return dispatcher->dispatchEvent(m_event.get());
+    return dispatcher->dispatchEvent( m_event.get() );
 }
 
 } // namespace WebCore

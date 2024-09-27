@@ -34,23 +34,26 @@
 #include "TextIterator.h"
 #include "markup.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 #if SUPPORT_AUTOCORRECTION_PANEL
 // On Mac OS X, we use this command to keep track of user undoing a correction for the first time.
 // This information is needed by spell checking service to update user specific data.
-class SpellingCorrectionRecordUndoCommand : public SimpleEditCommand {
+class SpellingCorrectionRecordUndoCommand : public SimpleEditCommand
+{
 public:
-    static PassRefPtr<SpellingCorrectionRecordUndoCommand> create(Document* document, const String& corrected, const String& correction)
+    static PassRefPtr<SpellingCorrectionRecordUndoCommand> create( Document *document, const String &corrected,
+            const String &correction )
     {
-        return adoptRef(new SpellingCorrectionRecordUndoCommand(document, corrected, correction));
+        return adoptRef( new SpellingCorrectionRecordUndoCommand( document, corrected, correction ) );
     }
 private:
-    SpellingCorrectionRecordUndoCommand(Document* document, const String& corrected, const String& correction)
-        : SimpleEditCommand(document)
-        , m_corrected(corrected)
-        , m_correction(correction)
-        , m_hasBeenUndone(false)
+    SpellingCorrectionRecordUndoCommand( Document *document, const String &corrected, const String &correction )
+        : SimpleEditCommand( document )
+        , m_corrected( corrected )
+        , m_correction( correction )
+        , m_hasBeenUndone( false )
     {
     }
 
@@ -60,11 +63,12 @@ private:
 
     virtual void doUnapply()
     {
-        if (!m_hasBeenUndone) {
-            document()->frame()->editor()->unappliedSpellCorrection(startingSelection(), m_corrected, m_correction);
+        if ( !m_hasBeenUndone )
+        {
+            document()->frame()->editor()->unappliedSpellCorrection( startingSelection(), m_corrected, m_correction );
             m_hasBeenUndone = true;
         }
-        
+
     }
 
     String m_corrected;
@@ -73,32 +77,42 @@ private:
 };
 #endif
 
-SpellingCorrectionCommand::SpellingCorrectionCommand(PassRefPtr<Range> rangeToBeCorrected, const String& correction)
-    : CompositeEditCommand(rangeToBeCorrected->startContainer()->document())
-    , m_rangeToBeCorrected(rangeToBeCorrected)
-    , m_selectionToBeCorrected(m_rangeToBeCorrected.get())
-    , m_correction(correction)
+SpellingCorrectionCommand::SpellingCorrectionCommand( PassRefPtr<Range> rangeToBeCorrected, const String &correction )
+    : CompositeEditCommand( rangeToBeCorrected->startContainer()->document() )
+    , m_rangeToBeCorrected( rangeToBeCorrected )
+    , m_selectionToBeCorrected( m_rangeToBeCorrected.get() )
+    , m_correction( correction )
 {
 }
 
 void SpellingCorrectionCommand::doApply()
 {
-    m_corrected = plainText(m_rangeToBeCorrected.get());
-    if (!m_corrected.length())
-        return;
+    m_corrected = plainText( m_rangeToBeCorrected.get() );
 
-    if (!document()->frame()->selection()->shouldChangeSelection(m_selectionToBeCorrected))
+    if ( !m_corrected.length() )
+    {
         return;
+    }
 
-    RefPtr<DocumentFragment> fragment = createFragmentFromText(m_rangeToBeCorrected.get(), m_correction);
-    if (!fragment)
+    if ( !document()->frame()->selection()->shouldChangeSelection( m_selectionToBeCorrected ) )
+    {
         return;
+    }
 
-    applyCommandToComposite(SetSelectionCommand::create(m_selectionToBeCorrected, SelectionController::SpellCorrectionTriggered | SelectionController::CloseTyping | SelectionController::ClearTypingStyle));
+    RefPtr<DocumentFragment> fragment = createFragmentFromText( m_rangeToBeCorrected.get(), m_correction );
+
+    if ( !fragment )
+    {
+        return;
+    }
+
+    applyCommandToComposite( SetSelectionCommand::create( m_selectionToBeCorrected,
+                             SelectionController::SpellCorrectionTriggered | SelectionController::CloseTyping | SelectionController::ClearTypingStyle ) );
 #if SUPPORT_AUTOCORRECTION_PANEL
-    applyCommandToComposite(SpellingCorrectionRecordUndoCommand::create(document(), m_corrected, m_correction));
+    applyCommandToComposite( SpellingCorrectionRecordUndoCommand::create( document(), m_corrected, m_correction ) );
 #endif
-    applyCommandToComposite(ReplaceSelectionCommand::create(document(), fragment, ReplaceSelectionCommand::MatchStyle | ReplaceSelectionCommand::PreventNesting, EditActionPaste));
+    applyCommandToComposite( ReplaceSelectionCommand::create( document(), fragment,
+                             ReplaceSelectionCommand::MatchStyle | ReplaceSelectionCommand::PreventNesting, EditActionPaste ) );
 }
 
 bool SpellingCorrectionCommand::shouldRetainAutocorrectionIndicator() const

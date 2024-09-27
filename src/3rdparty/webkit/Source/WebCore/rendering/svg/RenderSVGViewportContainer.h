@@ -26,39 +26,50 @@
 #if ENABLE(SVG)
 #include "RenderSVGContainer.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 // This is used for non-root <svg> elements and <marker> elements, neither of which are SVGTransformable
 // thus we inherit from RenderSVGContainer instead of RenderSVGTransformableContainer
-class RenderSVGViewportContainer : public RenderSVGContainer {
+class RenderSVGViewportContainer : public RenderSVGContainer
+{
 public:
-    explicit RenderSVGViewportContainer(SVGStyledElement*);
+    explicit RenderSVGViewportContainer( SVGStyledElement * );
 
 private:
-    virtual bool isSVGContainer() const { return true; }
-    virtual bool isSVGViewportContainer() const { return true; }
-    virtual const char* renderName() const { return "RenderSVGViewportContainer"; }
+    virtual bool isSVGContainer() const
+    {
+        return true;
+    }
+    virtual bool isSVGViewportContainer() const
+    {
+        return true;
+    }
+    virtual const char *renderName() const
+    {
+        return "RenderSVGViewportContainer";
+    }
 
     AffineTransform viewportTransform() const;
-    virtual const AffineTransform& localToParentTransform() const;
+    virtual const AffineTransform &localToParentTransform() const;
 
     virtual void calcViewport();
 
-    virtual void applyViewportClip(PaintInfo&);
-    virtual bool pointIsInsideViewportClip(const FloatPoint& pointInParent);
+    virtual void applyViewportClip( PaintInfo & );
+    virtual bool pointIsInsideViewportClip( const FloatPoint &pointInParent );
 
     FloatRect m_viewport;
     mutable AffineTransform m_localToParentTransform;
 };
-  
-inline RenderSVGViewportContainer* toRenderSVGViewportContainer(RenderObject* object)
+
+inline RenderSVGViewportContainer *toRenderSVGViewportContainer( RenderObject *object )
 {
-    ASSERT(!object || !strcmp(object->renderName(), "RenderSVGViewportContainer"));
-    return static_cast<RenderSVGViewportContainer*>(object);
+    ASSERT( !object || !strcmp( object->renderName(), "RenderSVGViewportContainer" ) );
+    return static_cast<RenderSVGViewportContainer *>( object );
 }
 
 // This will catch anyone doing an unnecessary cast.
-void toRenderSVGViewportContainer(const RenderSVGViewportContainer*);
+void toRenderSVGViewportContainer( const RenderSVGViewportContainer * );
 
 } // namespace WebCore
 

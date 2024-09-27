@@ -30,48 +30,54 @@
 
 using namespace QPatternist;
 
-AndExpression::AndExpression(const Expression::Ptr &operand1,
-                             const Expression::Ptr &operand2) : PairContainer(operand1, operand2)
+AndExpression::AndExpression( const Expression::Ptr &operand1,
+                              const Expression::Ptr &operand2 ) : PairContainer( operand1, operand2 )
 {
 }
 
-bool AndExpression::evaluateEBV(const DynamicContext::Ptr &context) const
+bool AndExpression::evaluateEBV( const DynamicContext::Ptr &context ) const
 {
-   return m_operand1->evaluateEBV(context) && m_operand2->evaluateEBV(context);
+    return m_operand1->evaluateEBV( context ) && m_operand2->evaluateEBV( context );
 }
 
-Expression::Ptr AndExpression::compress(const StaticContext::Ptr &context)
+Expression::Ptr AndExpression::compress( const StaticContext::Ptr &context )
 {
-   const Expression::Ptr newMe(PairContainer::compress(context));
+    const Expression::Ptr newMe( PairContainer::compress( context ) );
 
-   if (newMe != this) {
-      return newMe;
-   }
+    if ( newMe != this )
+    {
+        return newMe;
+    }
 
-   /* Both operands mustn't be evaluated in order to be able to compress. */
-   if (m_operand1->isEvaluated() && !m_operand1->evaluateEBV(context->dynamicContext())) {
-      return wrapLiteral(CommonValues::BooleanFalse, context, this);
-   } else if (m_operand2->isEvaluated() && !m_operand2->evaluateEBV(context->dynamicContext())) {
-      return wrapLiteral(CommonValues::BooleanFalse, context, this);
-   } else {
-      return Expression::Ptr(this);
-   }
+    /* Both operands mustn't be evaluated in order to be able to compress. */
+    if ( m_operand1->isEvaluated() && !m_operand1->evaluateEBV( context->dynamicContext() ) )
+    {
+        return wrapLiteral( CommonValues::BooleanFalse, context, this );
+    }
+    else if ( m_operand2->isEvaluated() && !m_operand2->evaluateEBV( context->dynamicContext() ) )
+    {
+        return wrapLiteral( CommonValues::BooleanFalse, context, this );
+    }
+    else
+    {
+        return Expression::Ptr( this );
+    }
 }
 
 SequenceType::List AndExpression::expectedOperandTypes() const
 {
-   SequenceType::List result;
-   result.append(CommonSequenceTypes::EBV);
-   result.append(CommonSequenceTypes::EBV);
-   return result;
+    SequenceType::List result;
+    result.append( CommonSequenceTypes::EBV );
+    result.append( CommonSequenceTypes::EBV );
+    return result;
 }
 
 SequenceType::Ptr AndExpression::staticType() const
 {
-   return CommonSequenceTypes::ExactlyOneBoolean;
+    return CommonSequenceTypes::ExactlyOneBoolean;
 }
 
-ExpressionVisitorResult::Ptr AndExpression::accept(const ExpressionVisitor::Ptr &visitor) const
+ExpressionVisitorResult::Ptr AndExpression::accept( const ExpressionVisitor::Ptr &visitor ) const
 {
-   return visitor->visit(this);
+    return visitor->visit( this );
 }

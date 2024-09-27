@@ -26,30 +26,36 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class WebKitAnimation;
 
-class JSWebKitAnimation : public JSDOMWrapper {
+class JSWebKitAnimation : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSWebKitAnimation(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<WebKitAnimation>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
-    virtual void put(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::JSValue, JSC::PutPropertySlot&);
+    JSWebKitAnimation( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<WebKitAnimation> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
+    virtual void put( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::JSValue, JSC::PutPropertySlot & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
 
     // Custom attributes
-    JSC::JSValue iterationCount(JSC::ExecState*) const;
-    WebKitAnimation* impl() const { return m_impl.get(); }
+    JSC::JSValue iterationCount( JSC::ExecState * ) const;
+    WebKitAnimation *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<WebKitAnimation> m_impl;
@@ -57,50 +63,53 @@ protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, WebKitAnimation*);
-WebKitAnimation* toWebKitAnimation(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, WebKitAnimation * );
+WebKitAnimation *toWebKitAnimation( JSC::JSValue );
 
-class JSWebKitAnimationPrototype : public JSC::JSObjectWithGlobalObject {
+class JSWebKitAnimationPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSWebKitAnimationPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSWebKitAnimationPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                                JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsWebKitAnimationPrototypeFunctionPlay(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsWebKitAnimationPrototypeFunctionPause(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsWebKitAnimationPrototypeFunctionPlay( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsWebKitAnimationPrototypeFunctionPause( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsWebKitAnimationName(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsWebKitAnimationDuration(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsWebKitAnimationElapsedTime(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSWebKitAnimationElapsedTime(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsWebKitAnimationDelay(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsWebKitAnimationIterationCount(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsWebKitAnimationPaused(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsWebKitAnimationEnded(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsWebKitAnimationDirection(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsWebKitAnimationFillMode(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsWebKitAnimationConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsWebKitAnimationName( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsWebKitAnimationDuration( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsWebKitAnimationElapsedTime( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSWebKitAnimationElapsedTime( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsWebKitAnimationDelay( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsWebKitAnimationIterationCount( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsWebKitAnimationPaused( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsWebKitAnimationEnded( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsWebKitAnimationDirection( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsWebKitAnimationFillMode( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsWebKitAnimationConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 // Constants
 
-JSC::JSValue jsWebKitAnimationDIRECTION_NORMAL(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsWebKitAnimationDIRECTION_ALTERNATE(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsWebKitAnimationFILL_NONE(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsWebKitAnimationFILL_BACKWARDS(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsWebKitAnimationFILL_FORWARDS(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsWebKitAnimationFILL_BOTH(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsWebKitAnimationDIRECTION_NORMAL( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsWebKitAnimationDIRECTION_ALTERNATE( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsWebKitAnimationFILL_NONE( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsWebKitAnimationFILL_BACKWARDS( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsWebKitAnimationFILL_FORWARDS( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsWebKitAnimationFILL_BOTH( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

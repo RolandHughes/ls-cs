@@ -39,7 +39,8 @@ class QOpenGLPixelTransferOptions;
 class Q_GUI_EXPORT QOpenGLTexture
 {
 public:
-    enum Target {
+    enum Target
+    {
         Target1D                   = 0x0DE0,    // GL_TEXTURE_1D
         Target1DArray              = 0x8C18,    // GL_TEXTURE_1D_ARRAY
         Target2D                   = 0x0DE1,    // GL_TEXTURE_2D
@@ -53,7 +54,8 @@ public:
         TargetBuffer               = 0x8C2A     // GL_TEXTURE_BUFFER
     };
 
-    enum BindingTarget {
+    enum BindingTarget
+    {
         BindingTarget1D                    = 0x8068,   // GL_TEXTURE_BINDING_1D
         BindingTarget1DArray               = 0x8C1C,   // GL_TEXTURE_BINDING_1D_ARRAY
         BindingTarget2D                    = 0x8069,   // GL_TEXTURE_BINDING_2D
@@ -67,17 +69,20 @@ public:
         BindingTargetBuffer                = 0x8C2C    // GL_TEXTURE_BINDING_BUFFER
     };
 
-    enum MipMapGeneration {
+    enum MipMapGeneration
+    {
         GenerateMipMaps,
         DontGenerateMipMaps
     };
 
-    enum TextureUnitReset {
+    enum TextureUnitReset
+    {
         ResetTextureUnit,
         DontResetTextureUnit
     };
 
-    enum TextureFormat {
+    enum TextureFormat
+    {
         NoFormat               = 0,         // GL_NONE
 
         // Unsigned normalized formats
@@ -207,7 +212,8 @@ public:
 
 #ifndef CS_DOXYPRESS
     // not used externally, allows checking of compatibility between texture formats
-    enum TextureFormatClass {
+    enum TextureFormatClass
+    {
         NoFormatClass,
         FormatClass_128Bit,
         FormatClass_96Bit,
@@ -229,7 +235,8 @@ public:
     };
 #endif
 
-    enum CubeMapFace {
+    enum CubeMapFace
+    {
         CubeMapPositiveX = 0x8515,  // GL_TEXTURE_CUBE_MAP_POSITIVE_X
         CubeMapNegativeX = 0x8516,  // GL_TEXTURE_CUBE_MAP_NEGATIVE_X
         CubeMapPositiveY = 0x8517,  // GL_TEXTURE_CUBE_MAP_POSITIVE_Y
@@ -238,7 +245,8 @@ public:
         CubeMapNegativeZ = 0x851A   // GL_TEXTURE_CUBE_MAP_NEGATIVE_Z
     };
 
-    enum PixelFormat {
+    enum PixelFormat
+    {
         NoSourceFormat = 0,         // GL_NONE
         Red            = 0x1903,    // GL_RED
         RG             = 0x8227,    // GL_RG
@@ -260,7 +268,8 @@ public:
         LuminanceAlpha = 0x190A     // GL_LUMINANCE_ALPHA
     };
 
-    enum PixelType {
+    enum PixelType
+    {
         NoPixelType        = 0,         // GL_NONE
         Int8               = 0x1400,    // GL_BYTE
         UInt8              = 0x1401,    // GL_UNSIGNED_BYTE
@@ -289,14 +298,16 @@ public:
         Float32_D32_UInt32_S8_X24 = 0x8DAD // GL_FLOAT_32_UNSIGNED_INT_24_8_REV
     };
 
-    enum SwizzleComponent {
+    enum SwizzleComponent
+    {
         SwizzleRed   = 0x8E42,  // GL_TEXTURE_SWIZZLE_R
         SwizzleGreen = 0x8E43,  // GL_TEXTURE_SWIZZLE_G
         SwizzleBlue  = 0x8E44,  // GL_TEXTURE_SWIZZLE_B
         SwizzleAlpha = 0x8E45   // GL_TEXTURE_SWIZZLE_A
     };
 
-    enum SwizzleValue {
+    enum SwizzleValue
+    {
         RedValue   = 0x1903, // GL_RED
         GreenValue = 0x1904, // GL_GREEN
         BlueValue  = 0x1905, // GL_BLUE
@@ -305,21 +316,24 @@ public:
         OneValue   = 1       // GL_ONE
     };
 
-    enum WrapMode {
+    enum WrapMode
+    {
         Repeat         = 0x2901, // GL_REPEAT
         MirroredRepeat = 0x8370, // GL_MIRRORED_REPEAT
         ClampToEdge    = 0x812F, // GL_CLAMP_TO_EDGE
         ClampToBorder  = 0x812D  // GL_CLAMP_TO_BORDER
     };
 
-    enum CoordinateDirection {
+    enum CoordinateDirection
+    {
         DirectionS = 0x2802, // GL_TEXTURE_WRAP_S
         DirectionT = 0x2803, // GL_TEXTURE_WRAP_T
         DirectionR = 0x8072  // GL_TEXTURE_WRAP_R
     };
 
     // Features
-    enum Feature {
+    enum Feature
+    {
         ImmutableStorage            = 0x00000001,
         ImmutableMultisampleStorage = 0x00000002,
         TextureRectangle            = 0x00000004,
@@ -342,12 +356,14 @@ public:
     };
     using Features = QFlags<Feature>;
 
-    enum DepthStencilMode {
+    enum DepthStencilMode
+    {
         DepthMode   = 0x1902,   // GL_DEPTH_COMPONENT
         StencilMode = 0x1901    // GL_STENCIL_INDEX
     };
 
-    enum ComparisonFunction {
+    enum ComparisonFunction
+    {
         CompareLessEqual    = 0x0203,   // GL_LEQUAL
         CompareGreaterEqual = 0x0206,   // GL_GEQUAL
         CompareLess         = 0x0201,   // GL_LESS
@@ -358,13 +374,15 @@ public:
         CompareNever        = 0x0200    // GL_NEVER
     };
 
-    enum ComparisonMode {
+    enum ComparisonMode
+    {
         CompareRefToTexture = 0x884E,   // GL_COMPARE_REF_TO_TEXTURE
         CompareNone         = 0x0000    // GL_NONE
     };
 
     // Sampling Parameters
-    enum Filter {
+    enum Filter
+    {
         Nearest                 = 0x2600,   // GL_NEAREST
         Linear                  = 0x2601,   // GL_LINEAR
         NearestMipMapNearest    = 0x2700,   // GL_NEAREST_MIPMAP_NEAREST
@@ -373,11 +391,11 @@ public:
         LinearMipMapLinear      = 0x2703    // GL_LINEAR_MIPMAP_LINEAR
     };
 
-    explicit QOpenGLTexture(Target target);
-    explicit QOpenGLTexture(const QImage& image, MipMapGeneration genMipMaps = GenerateMipMaps);
+    explicit QOpenGLTexture( Target target );
+    explicit QOpenGLTexture( const QImage &image, MipMapGeneration genMipMaps = GenerateMipMaps );
 
-    QOpenGLTexture(const QOpenGLTexture &) = delete;
-    QOpenGLTexture &operator=(const QOpenGLTexture &) = delete;
+    QOpenGLTexture( const QOpenGLTexture & ) = delete;
+    QOpenGLTexture &operator=( const QOpenGLTexture & ) = delete;
 
     ~QOpenGLTexture();
 
@@ -391,140 +409,140 @@ public:
 
     // Binding and releasing
     void bind();
-    void bind(uint unit, TextureUnitReset reset = DontResetTextureUnit);
+    void bind( uint unit, TextureUnitReset reset = DontResetTextureUnit );
     void release();
-    void release(uint unit, TextureUnitReset reset = DontResetTextureUnit);
+    void release( uint unit, TextureUnitReset reset = DontResetTextureUnit );
 
     bool isBound() const;
-    bool isBound(uint unit);
-    static GLuint boundTextureId(BindingTarget target);
-    static GLuint boundTextureId(uint unit, BindingTarget target);
+    bool isBound( uint unit );
+    static GLuint boundTextureId( BindingTarget target );
+    static GLuint boundTextureId( uint unit, BindingTarget target );
 
     // Storage allocation
-    void setFormat(TextureFormat format);
+    void setFormat( TextureFormat format );
     TextureFormat format() const;
-    void setSize(int width, int height = 1, int depth = 1);
+    void setSize( int width, int height = 1, int depth = 1 );
     int width() const;
     int height() const;
     int depth() const;
-    void setMipLevels(int levels);
+    void setMipLevels( int levels );
     int mipLevels() const;
     int maximumMipLevels() const;
-    void setLayers(int layers);
+    void setLayers( int layers );
     int layers() const;
     int faces() const;
-    void setSamples(int samples);
+    void setSamples( int samples );
     int samples() const;
-    void setFixedSamplePositions(bool fixed);
+    void setFixedSamplePositions( bool fixed );
     bool isFixedSamplePositions() const;
     void allocateStorage();
-    void allocateStorage(PixelFormat pixelFormat, PixelType pixelType);
+    void allocateStorage( PixelFormat pixelFormat, PixelType pixelType );
     bool isStorageAllocated() const;
 
-    QOpenGLTexture *createTextureView(Target target, TextureFormat viewFormat,
-               int minimumMipmapLevel, int maximumMipmapLevel,
-               int minimumLayer, int maximumLayer) const;
+    QOpenGLTexture *createTextureView( Target target, TextureFormat viewFormat,
+                                       int minimumMipmapLevel, int maximumMipmapLevel,
+                                       int minimumLayer, int maximumLayer ) const;
 
     bool isTextureView() const;
 
     // Pixel transfer
-    void setData(int mipLevel, int layer, CubeMapFace cubeFace,
-                 PixelFormat sourceFormat, PixelType sourceType,
-                 const void *data, const QOpenGLPixelTransferOptions * const options = nullptr);
-    void setData(int mipLevel, int layer,
-                 PixelFormat sourceFormat, PixelType sourceType,
-                 const void *data, const QOpenGLPixelTransferOptions * const options = nullptr);
-    void setData(int mipLevel,
-                 PixelFormat sourceFormat, PixelType sourceType,
-                 const void *data, const QOpenGLPixelTransferOptions * const options = nullptr);
-    void setData(PixelFormat sourceFormat, PixelType sourceType,
-                 const void *data, const QOpenGLPixelTransferOptions * const options = nullptr);
+    void setData( int mipLevel, int layer, CubeMapFace cubeFace,
+                  PixelFormat sourceFormat, PixelType sourceType,
+                  const void *data, const QOpenGLPixelTransferOptions *const options = nullptr );
+    void setData( int mipLevel, int layer,
+                  PixelFormat sourceFormat, PixelType sourceType,
+                  const void *data, const QOpenGLPixelTransferOptions *const options = nullptr );
+    void setData( int mipLevel,
+                  PixelFormat sourceFormat, PixelType sourceType,
+                  const void *data, const QOpenGLPixelTransferOptions *const options = nullptr );
+    void setData( PixelFormat sourceFormat, PixelType sourceType,
+                  const void *data, const QOpenGLPixelTransferOptions *const options = nullptr );
 
     // Compressed data upload
-    void setCompressedData(int mipLevel, int layer, CubeMapFace cubeFace,
-                           int dataSize, const void *data,
-                           const QOpenGLPixelTransferOptions * const options = nullptr);
-    void setCompressedData(int mipLevel, int layer,
-                           int dataSize, const void *data,
-                           const QOpenGLPixelTransferOptions * const options = nullptr);
-    void setCompressedData(int mipLevel, int dataSize, const void *data,
-                           const QOpenGLPixelTransferOptions * const options = nullptr);
-    void setCompressedData(int dataSize, const void *data,
-                           const QOpenGLPixelTransferOptions * const options = nullptr);
+    void setCompressedData( int mipLevel, int layer, CubeMapFace cubeFace,
+                            int dataSize, const void *data,
+                            const QOpenGLPixelTransferOptions *const options = nullptr );
+    void setCompressedData( int mipLevel, int layer,
+                            int dataSize, const void *data,
+                            const QOpenGLPixelTransferOptions *const options = nullptr );
+    void setCompressedData( int mipLevel, int dataSize, const void *data,
+                            const QOpenGLPixelTransferOptions *const options = nullptr );
+    void setCompressedData( int dataSize, const void *data,
+                            const QOpenGLPixelTransferOptions *const options = nullptr );
 
     // Helpful overloads for setData
-    void setData(const QImage& image, MipMapGeneration genMipMaps = GenerateMipMaps);
+    void setData( const QImage &image, MipMapGeneration genMipMaps = GenerateMipMaps );
 
-    static bool hasFeature(Feature feature);
+    static bool hasFeature( Feature feature );
 
     // Texture Parameters
-    void setMipBaseLevel(int baseLevel);
+    void setMipBaseLevel( int baseLevel );
     int mipBaseLevel() const;
-    void setMipMaxLevel(int maxLevel);
+    void setMipMaxLevel( int maxLevel );
     int mipMaxLevel() const;
-    void setMipLevelRange(int baseLevel, int maxLevel);
+    void setMipLevelRange( int baseLevel, int maxLevel );
     QPair<int, int> mipLevelRange() const;
 
-    void setAutoMipMapGenerationEnabled(bool enabled);
+    void setAutoMipMapGenerationEnabled( bool enabled );
     bool isAutoMipMapGenerationEnabled() const;
 
     void generateMipMaps();
-    void generateMipMaps(int baseLevel, bool resetBaseLevel = true);
+    void generateMipMaps( int baseLevel, bool resetBaseLevel = true );
 
-    void setSwizzleMask(SwizzleComponent component, SwizzleValue value);
-    void setSwizzleMask(SwizzleValue r, SwizzleValue g,
-                        SwizzleValue b, SwizzleValue a);
-    SwizzleValue swizzleMask(SwizzleComponent component) const;
+    void setSwizzleMask( SwizzleComponent component, SwizzleValue value );
+    void setSwizzleMask( SwizzleValue r, SwizzleValue g,
+                         SwizzleValue b, SwizzleValue a );
+    SwizzleValue swizzleMask( SwizzleComponent component ) const;
 
 
-    void setDepthStencilMode(DepthStencilMode mode);
+    void setDepthStencilMode( DepthStencilMode mode );
     DepthStencilMode depthStencilMode() const;
 
-    void setComparisonFunction(ComparisonFunction function);
+    void setComparisonFunction( ComparisonFunction function );
     ComparisonFunction comparisonFunction() const;
 
-    void setComparisonMode(ComparisonMode mode);
+    void setComparisonMode( ComparisonMode mode );
     ComparisonMode comparisonMode() const;
 
-    void setMinificationFilter(Filter filter);
+    void setMinificationFilter( Filter filter );
     Filter minificationFilter() const;
-    void setMagnificationFilter(Filter filter);
+    void setMagnificationFilter( Filter filter );
     Filter magnificationFilter() const;
-    void setMinMagFilters(Filter minificationFilter,
-                          Filter magnificationFilter);
+    void setMinMagFilters( Filter minificationFilter,
+                           Filter magnificationFilter );
     QPair<Filter, Filter> minMagFilters() const;
-    void setMaximumAnisotropy(float anisotropy);
+    void setMaximumAnisotropy( float anisotropy );
     float maximumAnisotropy() const;
 
-    void setWrapMode(WrapMode mode);
-    void setWrapMode(CoordinateDirection direction, WrapMode mode);
-    WrapMode wrapMode(CoordinateDirection direction) const;
+    void setWrapMode( WrapMode mode );
+    void setWrapMode( CoordinateDirection direction, WrapMode mode );
+    WrapMode wrapMode( CoordinateDirection direction ) const;
 
-    void setBorderColor(QColor color);
-    void setBorderColor(float r, float g, float b, float a);
-    void setBorderColor(int r, int g, int b, int a);
-    void setBorderColor(uint r, uint g, uint b, uint a);
+    void setBorderColor( QColor color );
+    void setBorderColor( float r, float g, float b, float a );
+    void setBorderColor( int r, int g, int b, int a );
+    void setBorderColor( uint r, uint g, uint b, uint a );
 
     QColor borderColor() const;
-    void borderColor(float *border) const;
-    void borderColor(int *border) const;
-    void borderColor(unsigned int *border) const;
+    void borderColor( float *border ) const;
+    void borderColor( int *border ) const;
+    void borderColor( unsigned int *border ) const;
 
-    void setMinimumLevelOfDetail(float value);
+    void setMinimumLevelOfDetail( float value );
     float minimumLevelOfDetail() const;
-    void setMaximumLevelOfDetail(float value);
+    void setMaximumLevelOfDetail( float value );
     float maximumLevelOfDetail() const;
-    void setLevelOfDetailRange(float min, float max);
+    void setLevelOfDetailRange( float min, float max );
     QPair<float, float> levelOfDetailRange() const;
-    void setLevelofDetailBias(float bias);
+    void setLevelofDetailBias( float bias );
     float levelofDetailBias() const;
 
- private:
-    Q_DECLARE_PRIVATE(QOpenGLTexture)
+private:
+    Q_DECLARE_PRIVATE( QOpenGLTexture )
     QScopedPointer<QOpenGLTexturePrivate> d_ptr;
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(QOpenGLTexture::Features)
+Q_DECLARE_OPERATORS_FOR_FLAGS( QOpenGLTexture::Features )
 
 #endif // QT_NO_OPENGL
 

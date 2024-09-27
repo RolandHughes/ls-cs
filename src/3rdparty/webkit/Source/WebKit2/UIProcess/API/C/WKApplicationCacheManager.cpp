@@ -33,20 +33,22 @@ using namespace WebKit;
 
 WKTypeID WKApplicationCacheManagerGetTypeID()
 {
-    return toAPI(WebApplicationCacheManagerProxy::APIType);
+    return toAPI( WebApplicationCacheManagerProxy::APIType );
 }
 
-void WKApplicationCacheManagerGetApplicationCacheOrigins(WKApplicationCacheManagerRef applicationCacheManagerRef, void* context, WKApplicationCacheManagerGetApplicationCacheOriginsFunction callback)
+void WKApplicationCacheManagerGetApplicationCacheOrigins( WKApplicationCacheManagerRef applicationCacheManagerRef, void *context,
+        WKApplicationCacheManagerGetApplicationCacheOriginsFunction callback )
 {
-    toImpl(applicationCacheManagerRef)->getApplicationCacheOrigins(ArrayCallback::create(context, callback));
+    toImpl( applicationCacheManagerRef )->getApplicationCacheOrigins( ArrayCallback::create( context, callback ) );
 }
 
-void WKApplicationCacheManagerDeleteEntriesForOrigin(WKApplicationCacheManagerRef applicationCacheManagerRef, WKSecurityOriginRef originRef)
+void WKApplicationCacheManagerDeleteEntriesForOrigin( WKApplicationCacheManagerRef applicationCacheManagerRef,
+        WKSecurityOriginRef originRef )
 {
-    toImpl(applicationCacheManagerRef)->deleteEntriesForOrigin(toImpl(originRef));
+    toImpl( applicationCacheManagerRef )->deleteEntriesForOrigin( toImpl( originRef ) );
 }
 
-void WKApplicationCacheManagerDeleteAllEntries(WKApplicationCacheManagerRef applicationCacheManagerRef)
+void WKApplicationCacheManagerDeleteAllEntries( WKApplicationCacheManagerRef applicationCacheManagerRef )
 {
-    toImpl(applicationCacheManagerRef)->deleteAllEntries();
+    toImpl( applicationCacheManagerRef )->deleteAllEntries();
 }

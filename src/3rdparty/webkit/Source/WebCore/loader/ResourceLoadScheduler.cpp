@@ -39,7 +39,8 @@
 
 #define REQUEST_MANAGEMENT_ENABLED 1
 
-namespace WebCore {
+namespace WebCore
+{
 
 #if REQUEST_MANAGEMENT_ENABLED
 static const unsigned maxRequestsInFlightForNonHTTPProtocols = 20;
@@ -50,154 +51,200 @@ static const unsigned maxRequestsInFlightForNonHTTPProtocols = 10000;
 static const unsigned maxRequestsInFlightPerHost = 10000;
 #endif
 
-ResourceLoadScheduler::HostInformation* ResourceLoadScheduler::hostForURL(const KURL& url, CreateHostPolicy createHostPolicy)
+ResourceLoadScheduler::HostInformation *ResourceLoadScheduler::hostForURL( const KURL &url, CreateHostPolicy createHostPolicy )
 {
-    if (!url.protocolInHTTPFamily())
+    if ( !url.protocolInHTTPFamily() )
+    {
         return m_nonHTTPProtocolHost;
+    }
 
     m_hosts.checkConsistency();
     String hostName = url.host();
-    HostInformation* host = m_hosts.get(hostName);
-    if (!host && createHostPolicy == CreateIfNotFound) {
-        host = new HostInformation(hostName, maxRequestsInFlightPerHost);
-        m_hosts.add(hostName, host);
+    HostInformation *host = m_hosts.get( hostName );
+
+    if ( !host && createHostPolicy == CreateIfNotFound )
+    {
+        host = new HostInformation( hostName, maxRequestsInFlightPerHost );
+        m_hosts.add( hostName, host );
     }
+
     return host;
 }
 
-ResourceLoadScheduler* resourceLoadScheduler()
+ResourceLoadScheduler *resourceLoadScheduler()
 {
-    ASSERT(isMainThread());
-    DEFINE_STATIC_LOCAL(ResourceLoadScheduler, resourceLoadScheduler, ());
+    ASSERT( isMainThread() );
+    DEFINE_STATIC_LOCAL( ResourceLoadScheduler, resourceLoadScheduler, () );
     return &resourceLoadScheduler;
 }
 
 ResourceLoadScheduler::ResourceLoadScheduler()
-    : m_nonHTTPProtocolHost(new HostInformation(String(), maxRequestsInFlightForNonHTTPProtocols))
-    , m_requestTimer(this, &ResourceLoadScheduler::requestTimerFired)
-    , m_isSuspendingPendingRequests(false)
-    , m_isSerialLoadingEnabled(false)
+    : m_nonHTTPProtocolHost( new HostInformation( String(), maxRequestsInFlightForNonHTTPProtocols ) )
+    , m_requestTimer( this, &ResourceLoadScheduler::requestTimerFired )
+    , m_isSuspendingPendingRequests( false )
+    , m_isSerialLoadingEnabled( false )
 {
 #if REQUEST_MANAGEMENT_ENABLED
     maxRequestsInFlightPerHost = initializeMaximumHTTPConnectionCountPerHost();
 #endif
 }
 
-PassRefPtr<SubresourceLoader> ResourceLoadScheduler::scheduleSubresourceLoad(Frame* frame, SubresourceLoaderClient* client, const ResourceRequest& request, ResourceLoadPriority priority, SecurityCheckPolicy securityCheck,
-                                                                             bool sendResourceLoadCallbacks, bool shouldContentSniff, const String& optionalOutgoingReferrer)
+PassRefPtr<SubresourceLoader> ResourceLoadScheduler::scheduleSubresourceLoad( Frame *frame, SubresourceLoaderClient *client,
+        const ResourceRequest &request, ResourceLoadPriority priority, SecurityCheckPolicy securityCheck,
+        bool sendResourceLoadCallbacks, bool shouldContentSniff, const String &optionalOutgoingReferrer )
 {
-    RefPtr<SubresourceLoader> loader = SubresourceLoader::create(frame, client, request, securityCheck, sendResourceLoadCallbacks, shouldContentSniff, optionalOutgoingReferrer);
-    if (loader)
-        scheduleLoad(loader.get(), priority);
+    RefPtr<SubresourceLoader> loader = SubresourceLoader::create( frame, client, request, securityCheck, sendResourceLoadCallbacks,
+                                       shouldContentSniff, optionalOutgoingReferrer );
+
+    if ( loader )
+    {
+        scheduleLoad( loader.get(), priority );
+    }
+
     return loader.release();
 }
 
-PassRefPtr<NetscapePlugInStreamLoader> ResourceLoadScheduler::schedulePluginStreamLoad(Frame* frame, NetscapePlugInStreamLoaderClient* client, const ResourceRequest& request)
+PassRefPtr<NetscapePlugInStreamLoader> ResourceLoadScheduler::schedulePluginStreamLoad( Frame *frame,
+        NetscapePlugInStreamLoaderClient *client, const ResourceRequest &request )
 {
-    PassRefPtr<NetscapePlugInStreamLoader> loader = NetscapePlugInStreamLoader::create(frame, client, request);
-    if (loader)
-        scheduleLoad(loader.get(), ResourceLoadPriorityLow);
+    PassRefPtr<NetscapePlugInStreamLoader> loader = NetscapePlugInStreamLoader::create( frame, client, request );
+
+    if ( loader )
+    {
+        scheduleLoad( loader.get(), ResourceLoadPriorityLow );
+    }
+
     return loader;
 }
 
-void ResourceLoadScheduler::addMainResourceLoad(ResourceLoader* resourceLoader)
+void ResourceLoadScheduler::addMainResourceLoad( ResourceLoader *resourceLoader )
 {
-    hostForURL(resourceLoader->url(), CreateIfNotFound)->addLoadInProgress(resourceLoader);
+    hostForURL( resourceLoader->url(), CreateIfNotFound )->addLoadInProgress( resourceLoader );
 }
 
-void ResourceLoadScheduler::scheduleLoad(ResourceLoader* resourceLoader, ResourceLoadPriority priority)
+void ResourceLoadScheduler::scheduleLoad( ResourceLoader *resourceLoader, ResourceLoadPriority priority )
 {
-    ASSERT(resourceLoader);
-    ASSERT(priority != ResourceLoadPriorityUnresolved);
+    ASSERT( resourceLoader );
+    ASSERT( priority != ResourceLoadPriorityUnresolved );
 #if !REQUEST_MANAGEMENT_ENABLED
     priority = ResourceLoadPriorityHighest;
 #endif
 
-    LOG(ResourceLoading, "ResourceLoadScheduler::load resource %p '%s'", resourceLoader, resourceLoader->url().string().latin1().data());
-    HostInformation* host = hostForURL(resourceLoader->url(), CreateIfNotFound);    
+    LOG( ResourceLoading, "ResourceLoadScheduler::load resource %p '%s'", resourceLoader,
+         resourceLoader->url().string().latin1().data() );
+    HostInformation *host = hostForURL( resourceLoader->url(), CreateIfNotFound );
     bool hadRequests = host->hasRequests();
-    host->schedule(resourceLoader, priority);
+    host->schedule( resourceLoader, priority );
 
-    if (priority > ResourceLoadPriorityLow || !resourceLoader->url().protocolInHTTPFamily() || (priority == ResourceLoadPriorityLow && !hadRequests)) {
+    if ( priority > ResourceLoadPriorityLow || !resourceLoader->url().protocolInHTTPFamily() || ( priority == ResourceLoadPriorityLow
+            && !hadRequests ) )
+    {
         // Try to request important resources immediately.
-        servePendingRequests(host, priority);
+        servePendingRequests( host, priority );
         return;
     }
 
     // Handle asynchronously so early low priority requests don't get scheduled before later high priority ones.
-    InspectorInstrumentation::didScheduleResourceRequest(resourceLoader->frameLoader() ? resourceLoader->frameLoader()->frame()->document() : 0, resourceLoader->url());
+    InspectorInstrumentation::didScheduleResourceRequest( resourceLoader->frameLoader() ?
+            resourceLoader->frameLoader()->frame()->document() : 0, resourceLoader->url() );
     scheduleServePendingRequests();
 }
 
-void ResourceLoadScheduler::remove(ResourceLoader* resourceLoader)
+void ResourceLoadScheduler::remove( ResourceLoader *resourceLoader )
 {
-    ASSERT(resourceLoader);
+    ASSERT( resourceLoader );
 
-    HostInformation* host = hostForURL(resourceLoader->url());
-    if (host)
-        host->remove(resourceLoader);
+    HostInformation *host = hostForURL( resourceLoader->url() );
+
+    if ( host )
+    {
+        host->remove( resourceLoader );
+    }
+
     scheduleServePendingRequests();
 }
 
-void ResourceLoadScheduler::crossOriginRedirectReceived(ResourceLoader* resourceLoader, const KURL& redirectURL)
+void ResourceLoadScheduler::crossOriginRedirectReceived( ResourceLoader *resourceLoader, const KURL &redirectURL )
 {
-    HostInformation* oldHost = hostForURL(resourceLoader->url());
-    ASSERT(oldHost);
-    HostInformation* newHost = hostForURL(redirectURL, CreateIfNotFound);
+    HostInformation *oldHost = hostForURL( resourceLoader->url() );
+    ASSERT( oldHost );
+    HostInformation *newHost = hostForURL( redirectURL, CreateIfNotFound );
 
-    if (oldHost->name() == newHost->name())
+    if ( oldHost->name() == newHost->name() )
+    {
         return;
-    
-    newHost->addLoadInProgress(resourceLoader);
-    oldHost->remove(resourceLoader);
+    }
+
+    newHost->addLoadInProgress( resourceLoader );
+    oldHost->remove( resourceLoader );
 }
 
-void ResourceLoadScheduler::servePendingRequests(ResourceLoadPriority minimumPriority)
+void ResourceLoadScheduler::servePendingRequests( ResourceLoadPriority minimumPriority )
 {
-    LOG(ResourceLoading, "ResourceLoadScheduler::servePendingRequests. m_isSuspendingPendingRequests=%d", m_isSuspendingPendingRequests); 
-    if (m_isSuspendingPendingRequests)
+    LOG( ResourceLoading, "ResourceLoadScheduler::servePendingRequests. m_isSuspendingPendingRequests=%d",
+         m_isSuspendingPendingRequests );
+
+    if ( m_isSuspendingPendingRequests )
+    {
         return;
+    }
 
     m_requestTimer.stop();
-    
-    servePendingRequests(m_nonHTTPProtocolHost, minimumPriority);
 
-    Vector<HostInformation*> hostsToServe;
+    servePendingRequests( m_nonHTTPProtocolHost, minimumPriority );
+
+    Vector<HostInformation *> hostsToServe;
     m_hosts.checkConsistency();
     HostMap::iterator end = m_hosts.end();
-    for (HostMap::iterator iter = m_hosts.begin(); iter != end; ++iter)
-        hostsToServe.append(iter->second);
+
+    for ( HostMap::iterator iter = m_hosts.begin(); iter != end; ++iter )
+    {
+        hostsToServe.append( iter->second );
+    }
 
     int size = hostsToServe.size();
-    for (int i = 0; i < size; ++i) {
-        HostInformation* host = hostsToServe[i];
-        if (host->hasRequests())
-            servePendingRequests(host, minimumPriority);
+
+    for ( int i = 0; i < size; ++i )
+    {
+        HostInformation *host = hostsToServe[i];
+
+        if ( host->hasRequests() )
+        {
+            servePendingRequests( host, minimumPriority );
+        }
         else
-            delete m_hosts.take(host->name());
+        {
+            delete m_hosts.take( host->name() );
+        }
     }
 }
 
-void ResourceLoadScheduler::servePendingRequests(HostInformation* host, ResourceLoadPriority minimumPriority)
+void ResourceLoadScheduler::servePendingRequests( HostInformation *host, ResourceLoadPriority minimumPriority )
 {
-    LOG(ResourceLoading, "ResourceLoadScheduler::servePendingRequests HostInformation.m_name='%s'", host->name().latin1().data());
+    LOG( ResourceLoading, "ResourceLoadScheduler::servePendingRequests HostInformation.m_name='%s'", host->name().latin1().data() );
 
-    for (int priority = ResourceLoadPriorityHighest; priority >= minimumPriority; --priority) {
-        HostInformation::RequestQueue& requestsPending = host->requestsPending(ResourceLoadPriority(priority));
+    for ( int priority = ResourceLoadPriorityHighest; priority >= minimumPriority; --priority )
+    {
+        HostInformation::RequestQueue &requestsPending = host->requestsPending( ResourceLoadPriority( priority ) );
 
-        while (!requestsPending.isEmpty()) {
+        while ( !requestsPending.isEmpty() )
+        {
             RefPtr<ResourceLoader> resourceLoader = requestsPending.first();
 
             // For named hosts - which are only http(s) hosts - we should always enforce the connection limit.
-            // For non-named hosts - everything but http(s) - we should only enforce the limit if the document isn't done parsing 
+            // For non-named hosts - everything but http(s) - we should only enforce the limit if the document isn't done parsing
             // and we don't know all stylesheets yet.
-            Document* document = resourceLoader->frameLoader() ? resourceLoader->frameLoader()->frame()->document() : 0;
-            bool shouldLimitRequests = !host->name().isNull() || (document && (document->parsing() || !document->haveStylesheetsLoaded()));
-            if (shouldLimitRequests && host->limitRequests(ResourceLoadPriority(priority)))
+            Document *document = resourceLoader->frameLoader() ? resourceLoader->frameLoader()->frame()->document() : 0;
+            bool shouldLimitRequests = !host->name().isNull() || ( document && ( document->parsing()
+                                       || !document->haveStylesheetsLoaded() ) );
+
+            if ( shouldLimitRequests && host->limitRequests( ResourceLoadPriority( priority ) ) )
+            {
                 return;
+            }
 
             requestsPending.removeFirst();
-            host->addLoadInProgress(resourceLoader.get());
+            host->addLoadInProgress( resourceLoader.get() );
             resourceLoader->start();
         }
     }
@@ -205,67 +252,83 @@ void ResourceLoadScheduler::servePendingRequests(HostInformation* host, Resource
 
 void ResourceLoadScheduler::suspendPendingRequests()
 {
-    ASSERT(!m_isSuspendingPendingRequests);
+    ASSERT( !m_isSuspendingPendingRequests );
     m_isSuspendingPendingRequests = true;
 }
 
 void ResourceLoadScheduler::resumePendingRequests()
 {
-    ASSERT(m_isSuspendingPendingRequests);
+    ASSERT( m_isSuspendingPendingRequests );
     m_isSuspendingPendingRequests = false;
-    if (!m_hosts.isEmpty() || m_nonHTTPProtocolHost->hasRequests())
+
+    if ( !m_hosts.isEmpty() || m_nonHTTPProtocolHost->hasRequests() )
+    {
         scheduleServePendingRequests();
-}
-    
-void ResourceLoadScheduler::scheduleServePendingRequests()
-{
-    LOG(ResourceLoading, "ResourceLoadScheduler::scheduleServePendingRequests, m_requestTimer.isActive()=%u", m_requestTimer.isActive());
-    if (!m_requestTimer.isActive())
-        m_requestTimer.startOneShot(0);
+    }
 }
 
-void ResourceLoadScheduler::requestTimerFired(Timer<ResourceLoadScheduler>*) 
+void ResourceLoadScheduler::scheduleServePendingRequests()
 {
-    LOG(ResourceLoading, "ResourceLoadScheduler::requestTimerFired\n");
+    LOG( ResourceLoading, "ResourceLoadScheduler::scheduleServePendingRequests, m_requestTimer.isActive()=%u",
+         m_requestTimer.isActive() );
+
+    if ( !m_requestTimer.isActive() )
+    {
+        m_requestTimer.startOneShot( 0 );
+    }
+}
+
+void ResourceLoadScheduler::requestTimerFired( Timer<ResourceLoadScheduler> * )
+{
+    LOG( ResourceLoading, "ResourceLoadScheduler::requestTimerFired\n" );
     servePendingRequests();
 }
 
-ResourceLoadScheduler::HostInformation::HostInformation(const String& name, unsigned maxRequestsInFlight)
-    : m_name(name)
-    , m_maxRequestsInFlight(maxRequestsInFlight)
+ResourceLoadScheduler::HostInformation::HostInformation( const String &name, unsigned maxRequestsInFlight )
+    : m_name( name )
+    , m_maxRequestsInFlight( maxRequestsInFlight )
 {
 }
 
 ResourceLoadScheduler::HostInformation::~HostInformation()
 {
-    ASSERT(m_requestsLoading.isEmpty());
-    for (unsigned p = 0; p <= ResourceLoadPriorityHighest; p++)
-        ASSERT(m_requestsPending[p].isEmpty());
+    ASSERT( m_requestsLoading.isEmpty() );
+
+    for ( unsigned p = 0; p <= ResourceLoadPriorityHighest; p++ )
+    {
+        ASSERT( m_requestsPending[p].isEmpty() );
+    }
 }
-    
-void ResourceLoadScheduler::HostInformation::schedule(ResourceLoader* resourceLoader, ResourceLoadPriority priority)
+
+void ResourceLoadScheduler::HostInformation::schedule( ResourceLoader *resourceLoader, ResourceLoadPriority priority )
 {
-    m_requestsPending[priority].append(resourceLoader);
+    m_requestsPending[priority].append( resourceLoader );
 }
-    
-void ResourceLoadScheduler::HostInformation::addLoadInProgress(ResourceLoader* resourceLoader)
+
+void ResourceLoadScheduler::HostInformation::addLoadInProgress( ResourceLoader *resourceLoader )
 {
-    LOG(ResourceLoading, "HostInformation '%s' loading '%s'. Current count %d", m_name.latin1().data(), resourceLoader->url().string().latin1().data(), m_requestsLoading.size());
-    m_requestsLoading.add(resourceLoader);
+    LOG( ResourceLoading, "HostInformation '%s' loading '%s'. Current count %d", m_name.latin1().data(),
+         resourceLoader->url().string().latin1().data(), m_requestsLoading.size() );
+    m_requestsLoading.add( resourceLoader );
 }
-    
-void ResourceLoadScheduler::HostInformation::remove(ResourceLoader* resourceLoader)
+
+void ResourceLoadScheduler::HostInformation::remove( ResourceLoader *resourceLoader )
 {
-    if (m_requestsLoading.contains(resourceLoader)) {
-        m_requestsLoading.remove(resourceLoader);
+    if ( m_requestsLoading.contains( resourceLoader ) )
+    {
+        m_requestsLoading.remove( resourceLoader );
         return;
     }
-    
-    for (int priority = ResourceLoadPriorityHighest; priority >= ResourceLoadPriorityLowest; --priority) {  
+
+    for ( int priority = ResourceLoadPriorityHighest; priority >= ResourceLoadPriorityLowest; --priority )
+    {
         RequestQueue::iterator end = m_requestsPending[priority].end();
-        for (RequestQueue::iterator it = m_requestsPending[priority].begin(); it != end; ++it) {
-            if (*it == resourceLoader) {
-                m_requestsPending[priority].remove(it);
+
+        for ( RequestQueue::iterator it = m_requestsPending[priority].begin(); it != end; ++it )
+        {
+            if ( *it == resourceLoader )
+            {
+                m_requestsPending[priority].remove( it );
                 return;
             }
         }
@@ -274,20 +337,30 @@ void ResourceLoadScheduler::HostInformation::remove(ResourceLoader* resourceLoad
 
 bool ResourceLoadScheduler::HostInformation::hasRequests() const
 {
-    if (!m_requestsLoading.isEmpty())
+    if ( !m_requestsLoading.isEmpty() )
+    {
         return true;
-    for (unsigned p = 0; p <= ResourceLoadPriorityHighest; p++) {
-        if (!m_requestsPending[p].isEmpty())
-            return true;
     }
+
+    for ( unsigned p = 0; p <= ResourceLoadPriorityHighest; p++ )
+    {
+        if ( !m_requestsPending[p].isEmpty() )
+        {
+            return true;
+        }
+    }
+
     return false;
 }
 
-bool ResourceLoadScheduler::HostInformation::limitRequests(ResourceLoadPriority priority) const 
+bool ResourceLoadScheduler::HostInformation::limitRequests( ResourceLoadPriority priority ) const
 {
-    if (priority == ResourceLoadPriorityVeryLow && !m_requestsLoading.isEmpty())
+    if ( priority == ResourceLoadPriorityVeryLow && !m_requestsLoading.isEmpty() )
+    {
         return true;
-    return m_requestsLoading.size() >= (resourceLoadScheduler()->isSerialLoadingEnabled() ? 1 : m_maxRequestsInFlight);
+    }
+
+    return m_requestsLoading.size() >= ( resourceLoadScheduler()->isSerialLoadingEnabled() ? 1 : m_maxRequestsInFlight );
 }
 
 } // namespace WebCore

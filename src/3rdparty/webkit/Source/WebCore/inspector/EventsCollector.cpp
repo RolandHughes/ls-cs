@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -31,27 +31,32 @@
 #include "InspectorFrontendChannel.h"
 #include "PlatformString.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 EventsCollector::EventsCollector()
-    : m_totalLength(0)
+    : m_totalLength( 0 )
 {
 }
 
-void EventsCollector::addEvent(const String& message)
+void EventsCollector::addEvent( const String &message )
 {
     m_totalLength += message.length();
-    m_events.append(message);
-    while (m_totalLength > maxCapacity) {
+    m_events.append( message );
+
+    while ( m_totalLength > maxCapacity )
+    {
         m_totalLength -= m_events[0].length();
-        m_events.remove(0);
+        m_events.remove( 0 );
     }
 }
 
-void EventsCollector::sendCollectedEvents(InspectorFrontendChannel* receiver)
+void EventsCollector::sendCollectedEvents( InspectorFrontendChannel *receiver )
 {
-    for (Vector<String>::iterator it = m_events.begin(); it != m_events.end(); ++it)
-        receiver->sendMessageToFrontend(*it);
+    for ( Vector<String>::iterator it = m_events.begin(); it != m_events.end(); ++it )
+    {
+        receiver->sendMessageToFrontend( *it );
+    }
 }
 
 } // namespace WebCore

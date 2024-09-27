@@ -25,47 +25,50 @@
 
 using namespace QPatternist;
 
-ExpressionVariableReference::ExpressionVariableReference(const VariableSlotID slotP,
-      const VariableDeclaration *varDecl) : VariableReference(slotP)
-   , m_varDecl(varDecl)
+ExpressionVariableReference::ExpressionVariableReference( const VariableSlotID slotP,
+        const VariableDeclaration *varDecl ) : VariableReference( slotP )
+    , m_varDecl( varDecl )
 {
 }
 
-bool ExpressionVariableReference::evaluateEBV(const DynamicContext::Ptr &context) const
+bool ExpressionVariableReference::evaluateEBV( const DynamicContext::Ptr &context ) const
 {
-   return context->expressionVariable(slot())->evaluateEBV(context);
+    return context->expressionVariable( slot() )->evaluateEBV( context );
 }
 
-Item ExpressionVariableReference::evaluateSingleton(const DynamicContext::Ptr &context) const
+Item ExpressionVariableReference::evaluateSingleton( const DynamicContext::Ptr &context ) const
 {
-   return context->expressionVariable(slot())->evaluateSingleton(context);
+    return context->expressionVariable( slot() )->evaluateSingleton( context );
 }
 
-Item::Iterator::Ptr ExpressionVariableReference::evaluateSequence(const DynamicContext::Ptr &context) const
+Item::Iterator::Ptr ExpressionVariableReference::evaluateSequence( const DynamicContext::Ptr &context ) const
 {
-   return context->expressionVariable(slot())->evaluateSequence(context);
+    return context->expressionVariable( slot() )->evaluateSequence( context );
 }
-Expression::Ptr ExpressionVariableReference::typeCheck(const StaticContext::Ptr &context,
-      const SequenceType::Ptr &reqType)
+Expression::Ptr ExpressionVariableReference::typeCheck( const StaticContext::Ptr &context,
+        const SequenceType::Ptr &reqType )
 {
-   if (m_varDecl->canSourceRewrite) {
-      return m_varDecl->expression()->typeCheck(context, reqType);
-   } else {
-      return VariableReference::typeCheck(context, reqType);
-   }
+    if ( m_varDecl->canSourceRewrite )
+    {
+        return m_varDecl->expression()->typeCheck( context, reqType );
+    }
+    else
+    {
+        return VariableReference::typeCheck( context, reqType );
+    }
 }
 
 Expression::ID ExpressionVariableReference::id() const
 {
-   return IDExpressionVariableReference;
+    return IDExpressionVariableReference;
 }
 
-ExpressionVisitorResult::Ptr ExpressionVariableReference::accept(const ExpressionVisitor::Ptr &visitor) const
+ExpressionVisitorResult::Ptr ExpressionVariableReference::accept( const ExpressionVisitor::Ptr &visitor ) const
 {
-   return visitor->visit(this);
+    return visitor->visit( this );
 }
 
 SequenceType::Ptr ExpressionVariableReference::staticType() const
 {
-   return m_varDecl->expression()->staticType();
+    return m_varDecl->expression()->staticType();
 }

@@ -32,9 +32,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSDedicatedWorkerContext);
+ASSERT_CLASS_FITS_IN_CELL( JSDedicatedWorkerContext );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -45,8 +46,8 @@ ASSERT_CLASS_FITS_IN_CELL(JSDedicatedWorkerContext);
 
 static const HashTableValue JSDedicatedWorkerContextTableValues[2] =
 {
-    { "onmessage", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDedicatedWorkerContextOnmessage), (intptr_t)setJSDedicatedWorkerContextOnmessage THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "onmessage", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDedicatedWorkerContextOnmessage ), ( intptr_t )setJSDedicatedWorkerContextOnmessage THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -60,97 +61,114 @@ static JSC_CONST_HASHTABLE HashTable JSDedicatedWorkerContextTable = { 2, 1, JSD
 
 static const HashTableValue JSDedicatedWorkerContextPrototypeTableValues[2] =
 {
-    { "postMessage", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDedicatedWorkerContextPrototypeFunctionPostMessage), (intptr_t)2 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "postMessage", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDedicatedWorkerContextPrototypeFunctionPostMessage ), ( intptr_t )2 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSDedicatedWorkerContextPrototypeTable = { 2, 1, JSDedicatedWorkerContextPrototypeTableValues, 0 };
-static const HashTable* getJSDedicatedWorkerContextPrototypeTable(ExecState* exec)
+static const HashTable *getJSDedicatedWorkerContextPrototypeTable( ExecState *exec )
 {
-    return getHashTableForGlobalData(exec->globalData(), &JSDedicatedWorkerContextPrototypeTable);
+    return getHashTableForGlobalData( exec->globalData(), &JSDedicatedWorkerContextPrototypeTable );
 }
 
 const ClassInfo JSDedicatedWorkerContextPrototype::s_info = { "DedicatedWorkerContextPrototype", &JSC::JSObjectWithGlobalObject::s_info, 0, getJSDedicatedWorkerContextPrototypeTable };
 
-void* JSDedicatedWorkerContextPrototype::operator new(size_t size, JSGlobalData* globalData)
+void *JSDedicatedWorkerContextPrototype::operator new ( size_t size, JSGlobalData *globalData )
 {
-    return globalData->heap.allocate(size);
+    return globalData->heap.allocate( size );
 }
 
-bool JSDedicatedWorkerContextPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSDedicatedWorkerContextPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticFunctionSlot<JSObject>(exec, getJSDedicatedWorkerContextPrototypeTable(exec), this, propertyName, slot);
+    return getStaticFunctionSlot<JSObject>( exec, getJSDedicatedWorkerContextPrototypeTable( exec ), this, propertyName, slot );
 }
 
-bool JSDedicatedWorkerContextPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSDedicatedWorkerContextPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticFunctionDescriptor<JSObject>(exec, getJSDedicatedWorkerContextPrototypeTable(exec), this, propertyName, descriptor);
+    return getStaticFunctionDescriptor<JSObject>( exec, getJSDedicatedWorkerContextPrototypeTable( exec ), this, propertyName,
+            descriptor );
 }
 
-static const HashTable* getJSDedicatedWorkerContextTable(ExecState* exec)
+static const HashTable *getJSDedicatedWorkerContextTable( ExecState *exec )
 {
-    return getHashTableForGlobalData(exec->globalData(), &JSDedicatedWorkerContextTable);
+    return getHashTableForGlobalData( exec->globalData(), &JSDedicatedWorkerContextTable );
 }
 
 const ClassInfo JSDedicatedWorkerContext::s_info = { "DedicatedWorkerContext", &JSWorkerContext::s_info, 0, getJSDedicatedWorkerContextTable };
 
-JSDedicatedWorkerContext::JSDedicatedWorkerContext(JSGlobalData& globalData, Structure* structure, PassRefPtr<DedicatedWorkerContext> impl)
-    : JSWorkerContext(globalData, structure, impl)
+JSDedicatedWorkerContext::JSDedicatedWorkerContext( JSGlobalData &globalData, Structure *structure,
+        PassRefPtr<DedicatedWorkerContext> impl )
+    : JSWorkerContext( globalData, structure, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-bool JSDedicatedWorkerContext::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSDedicatedWorkerContext::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSDedicatedWorkerContext, Base>(exec, getJSDedicatedWorkerContextTable(exec), this, propertyName, slot);
+    return getStaticValueSlot<JSDedicatedWorkerContext, Base>( exec, getJSDedicatedWorkerContextTable( exec ), this, propertyName,
+            slot );
 }
 
-bool JSDedicatedWorkerContext::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSDedicatedWorkerContext::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSDedicatedWorkerContext, Base>(exec, getJSDedicatedWorkerContextTable(exec), this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSDedicatedWorkerContext, Base>( exec, getJSDedicatedWorkerContextTable( exec ), this,
+            propertyName, descriptor );
 }
 
-JSValue jsDedicatedWorkerContextOnmessage(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDedicatedWorkerContextOnmessage( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDedicatedWorkerContext* castedThis = static_cast<JSDedicatedWorkerContext*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    DedicatedWorkerContext* imp = static_cast<DedicatedWorkerContext*>(castedThis->impl());
-    if (EventListener* listener = imp->onmessage()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp))
+    JSDedicatedWorkerContext *castedThis = static_cast<JSDedicatedWorkerContext *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    DedicatedWorkerContext *imp = static_cast<DedicatedWorkerContext *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onmessage() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-void JSDedicatedWorkerContext::put(ExecState* exec, const Identifier& propertyName, JSValue value, PutPropertySlot& slot)
+void JSDedicatedWorkerContext::put( ExecState *exec, const Identifier &propertyName, JSValue value, PutPropertySlot &slot )
 {
-    lookupPut<JSDedicatedWorkerContext, Base>(exec, propertyName, value, getJSDedicatedWorkerContextTable(exec), this, slot);
+    lookupPut<JSDedicatedWorkerContext, Base>( exec, propertyName, value, getJSDedicatedWorkerContextTable( exec ), this, slot );
 }
 
-void setJSDedicatedWorkerContextOnmessage(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDedicatedWorkerContextOnmessage( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    UNUSED_PARAM(exec);
-    JSDedicatedWorkerContext* castedThis = static_cast<JSDedicatedWorkerContext*>(thisObject);
-    DedicatedWorkerContext* imp = static_cast<DedicatedWorkerContext*>(castedThis->impl());
-    imp->setOnmessage(createJSAttributeEventListener(exec, value, thisObject));
+    UNUSED_PARAM( exec );
+    JSDedicatedWorkerContext *castedThis = static_cast<JSDedicatedWorkerContext *>( thisObject );
+    DedicatedWorkerContext *imp = static_cast<DedicatedWorkerContext *>( castedThis->impl() );
+    imp->setOnmessage( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-EncodedJSValue JSC_HOST_CALL jsDedicatedWorkerContextPrototypeFunctionPostMessage(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsDedicatedWorkerContextPrototypeFunctionPostMessage( ExecState *exec )
 {
-    JSDedicatedWorkerContext* castedThis = toJSDedicatedWorkerContext(exec->hostThisValue().toThisObject(exec));
-    if (!castedThis)
-        return throwVMTypeError(exec);
-    return JSValue::encode(castedThis->postMessage(exec));
+    JSDedicatedWorkerContext *castedThis = toJSDedicatedWorkerContext( exec->hostThisValue().toThisObject( exec ) );
+
+    if ( !castedThis )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    return JSValue::encode( castedThis->postMessage( exec ) );
 }
 
-DedicatedWorkerContext* toDedicatedWorkerContext(JSC::JSValue value)
+DedicatedWorkerContext *toDedicatedWorkerContext( JSC::JSValue value )
 {
-    return value.inherits(&JSDedicatedWorkerContext::s_info) ? static_cast<JSDedicatedWorkerContext*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSDedicatedWorkerContext::s_info ) ? static_cast<JSDedicatedWorkerContext *>( asObject(
+                value ) )->impl() : 0;
 }
 
 }

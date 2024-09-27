@@ -33,48 +33,48 @@
 
 using namespace QPatternist;
 
-Item PositionFN::evaluateSingleton(const DynamicContext::Ptr &context) const
+Item PositionFN::evaluateSingleton( const DynamicContext::Ptr &context ) const
 {
-   Q_ASSERT(context);
-   return Integer::fromValue(context->contextPosition());
+    Q_ASSERT( context );
+    return Integer::fromValue( context->contextPosition() );
 }
 
-Item LastFN::evaluateSingleton(const DynamicContext::Ptr &context) const
+Item LastFN::evaluateSingleton( const DynamicContext::Ptr &context ) const
 {
-   Q_ASSERT(context);
-   return Integer::fromValue(context->contextSize());
+    Q_ASSERT( context );
+    return Integer::fromValue( context->contextSize() );
 }
 
-Item ImplicitTimezoneFN::evaluateSingleton(const DynamicContext::Ptr &context) const
+Item ImplicitTimezoneFN::evaluateSingleton( const DynamicContext::Ptr &context ) const
 {
-   return toItem(context->implicitTimezone());
+    return toItem( context->implicitTimezone() );
 }
 
-Item CurrentDateTimeFN::evaluateSingleton(const DynamicContext::Ptr &context) const
+Item CurrentDateTimeFN::evaluateSingleton( const DynamicContext::Ptr &context ) const
 {
-   return toItem(DateTime::fromDateTime(context->currentDateTime()));
+    return toItem( DateTime::fromDateTime( context->currentDateTime() ) );
 }
 
-Item CurrentDateFN::evaluateSingleton(const DynamicContext::Ptr &context) const
+Item CurrentDateFN::evaluateSingleton( const DynamicContext::Ptr &context ) const
 {
-   return toItem(Date::fromDateTime(context->currentDateTime()));
+    return toItem( Date::fromDateTime( context->currentDateTime() ) );
 }
 
-Item CurrentTimeFN::evaluateSingleton(const DynamicContext::Ptr &context) const
+Item CurrentTimeFN::evaluateSingleton( const DynamicContext::Ptr &context ) const
 {
-   return toItem(SchemaTime::fromDateTime(context->currentDateTime()));
+    return toItem( SchemaTime::fromDateTime( context->currentDateTime() ) );
 }
 
-Expression::Ptr StaticBaseURIFN::typeCheck(const StaticContext::Ptr &context,
-      const SequenceType::Ptr &reqType)
+Expression::Ptr StaticBaseURIFN::typeCheck( const StaticContext::Ptr &context,
+        const SequenceType::Ptr &reqType )
 {
-   /* Our base URI can never be undefined. */
-   return wrapLiteral(toItem(AnyURI::fromValue(context->baseURI())), context, this)->typeCheck(context, reqType);
+    /* Our base URI can never be undefined. */
+    return wrapLiteral( toItem( AnyURI::fromValue( context->baseURI() ) ), context, this )->typeCheck( context, reqType );
 }
 
-Expression::Ptr DefaultCollationFN::typeCheck(const StaticContext::Ptr &context,
-      const SequenceType::Ptr &reqType)
+Expression::Ptr DefaultCollationFN::typeCheck( const StaticContext::Ptr &context,
+        const SequenceType::Ptr &reqType )
 {
-   return wrapLiteral(AtomicString::fromValue(context->defaultCollation().toString()), context, this)->typeCheck(context,
-          reqType);
+    return wrapLiteral( AtomicString::fromValue( context->defaultCollation().toString() ), context, this )->typeCheck( context,
+            reqType );
 }

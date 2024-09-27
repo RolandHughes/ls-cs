@@ -24,12 +24,13 @@
 #include "WebContext.h"
 #include <wtf/RefPtr.h>
 
-class QWKContextPrivate {
+class QWKContextPrivate
+{
 public:
-    QWKContextPrivate(QWKContext*);
+    QWKContextPrivate( QWKContext * );
     ~QWKContextPrivate();
 
-    QWKContext* q;
+    QWKContext *q;
 
     RefPtr<WebKit::WebContext> context;
 };

@@ -20,9 +20,9 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 #ifndef UserStyleSheet_h
 #define UserStyleSheet_h
 
@@ -33,29 +33,50 @@
 #include <wtf/PassOwnPtr.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class UserStyleSheet {
-    WTF_MAKE_NONCOPYABLE(UserStyleSheet); WTF_MAKE_FAST_ALLOCATED;
+class UserStyleSheet
+{
+    WTF_MAKE_NONCOPYABLE( UserStyleSheet );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
-    UserStyleSheet(const String& source, const KURL& url,
-                   PassOwnPtr<Vector<String> > whitelist, PassOwnPtr<Vector<String> > blacklist,
-                   UserContentInjectedFrames injectedFrames, UserStyleLevel level)
-        : m_source(source)
-        , m_url(url)
-        , m_whitelist(whitelist)
-        , m_blacklist(blacklist)
-        , m_injectedFrames(injectedFrames)
-        , m_level(level)
+    UserStyleSheet( const String &source, const KURL &url,
+                    PassOwnPtr<Vector<String> > whitelist, PassOwnPtr<Vector<String> > blacklist,
+                    UserContentInjectedFrames injectedFrames, UserStyleLevel level )
+        : m_source( source )
+        , m_url( url )
+        , m_whitelist( whitelist )
+        , m_blacklist( blacklist )
+        , m_injectedFrames( injectedFrames )
+        , m_level( level )
     {
     }
 
-    const String& source() const { return m_source; }
-    const KURL& url() const { return m_url; }
-    const Vector<String>* whitelist() const { return m_whitelist.get(); }
-    const Vector<String>* blacklist() const { return m_blacklist.get(); }
-    UserContentInjectedFrames injectedFrames() const { return m_injectedFrames; }
-    UserStyleLevel level() const { return m_level; }
+    const String &source() const
+    {
+        return m_source;
+    }
+    const KURL &url() const
+    {
+        return m_url;
+    }
+    const Vector<String> *whitelist() const
+    {
+        return m_whitelist.get();
+    }
+    const Vector<String> *blacklist() const
+    {
+        return m_blacklist.get();
+    }
+    UserContentInjectedFrames injectedFrames() const
+    {
+        return m_injectedFrames;
+    }
+    UserStyleLevel level() const
+    {
+        return m_level;
+    }
 
 private:
     String m_source;
@@ -67,5 +88,5 @@ private:
 };
 
 } // namespace WebCore
- 
+
 #endif // UserStyleSheet_h

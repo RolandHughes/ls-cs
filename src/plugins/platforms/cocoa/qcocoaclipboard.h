@@ -31,25 +31,25 @@
 
 class QCocoaClipboard : public QObject, public QPlatformClipboard
 {
-   CS_OBJECT_MULTIPLE(QCocoaClipboard, QObject)
+    CS_OBJECT_MULTIPLE( QCocoaClipboard, QObject )
 
- public:
-   QCocoaClipboard();
+public:
+    QCocoaClipboard();
 
-   QMimeData *mimeData(QClipboard::Mode mode = QClipboard::Clipboard) override;
-   void setMimeData(QMimeData *data, QClipboard::Mode mode = QClipboard::Clipboard) override;
-   bool supportsMode(QClipboard::Mode mode) const override;
-   bool ownsMode(QClipboard::Mode mode) const override;
+    QMimeData *mimeData( QClipboard::Mode mode = QClipboard::Clipboard ) override;
+    void setMimeData( QMimeData *data, QClipboard::Mode mode = QClipboard::Clipboard ) override;
+    bool supportsMode( QClipboard::Mode mode ) const override;
+    bool ownsMode( QClipboard::Mode mode ) const override;
 
- protected:
-   QMacPasteboard *pasteboardForMode(QClipboard::Mode mode) const;
+protected:
+    QMacPasteboard *pasteboardForMode( QClipboard::Mode mode ) const;
 
- private:
-   QScopedPointer<QMacPasteboard> m_clipboard;
-   QScopedPointer<QMacPasteboard> m_find;
+private:
+    QScopedPointer<QMacPasteboard> m_clipboard;
+    QScopedPointer<QMacPasteboard> m_find;
 
-   CS_SLOT_1(Private, void handleApplicationStateChanged(Qt::ApplicationState state))
-   CS_SLOT_2(handleApplicationStateChanged)
+    CS_SLOT_1( Private, void handleApplicationStateChanged( Qt::ApplicationState state ) )
+    CS_SLOT_2( handleApplicationStateChanged )
 };
 
 #endif

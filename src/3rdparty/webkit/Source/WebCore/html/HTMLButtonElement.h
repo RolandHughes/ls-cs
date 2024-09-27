@@ -26,39 +26,50 @@
 
 #include "HTMLFormControlElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class HTMLButtonElement : public HTMLFormControlElement {
+class HTMLButtonElement : public HTMLFormControlElement
+{
 public:
-    static PassRefPtr<HTMLButtonElement> create(const QualifiedName&, Document*, HTMLFormElement*);
+    static PassRefPtr<HTMLButtonElement> create( const QualifiedName &, Document *, HTMLFormElement * );
 
     String value() const;
 
 private:
-    HTMLButtonElement(const QualifiedName& tagName, Document*, HTMLFormElement*);
+    HTMLButtonElement( const QualifiedName &tagName, Document *, HTMLFormElement * );
 
     enum Type { SUBMIT, RESET, BUTTON };
 
-    virtual const AtomicString& formControlType() const;
-        
-    virtual RenderObject* createRenderer(RenderArena*, RenderStyle*);
+    virtual const AtomicString &formControlType() const;
 
-    virtual void parseMappedAttribute(Attribute*);
-    virtual void defaultEventHandler(Event*);
-    virtual bool appendFormData(FormDataList&, bool);
+    virtual RenderObject *createRenderer( RenderArena *, RenderStyle * );
 
-    virtual bool isEnumeratable() const { return true; } 
+    virtual void parseMappedAttribute( Attribute * );
+    virtual void defaultEventHandler( Event * );
+    virtual bool appendFormData( FormDataList &, bool );
+
+    virtual bool isEnumeratable() const
+    {
+        return true;
+    }
 
     virtual bool isSuccessfulSubmitButton() const;
     virtual bool isActivatedSubmit() const;
-    virtual void setActivatedSubmit(bool flag);
+    virtual void setActivatedSubmit( bool flag );
 
-    virtual void accessKeyAction(bool sendToAnyElement);
-    virtual bool isURLAttribute(Attribute*) const;
+    virtual void accessKeyAction( bool sendToAnyElement );
+    virtual bool isURLAttribute( Attribute * ) const;
 
-    virtual bool canStartSelection() const { return false; }
+    virtual bool canStartSelection() const
+    {
+        return false;
+    }
 
-    virtual bool isOptionalFormControl() const { return true; }
+    virtual bool isOptionalFormControl() const
+    {
+        return true;
+    }
     virtual bool recalcWillValidate() const;
 
     Type m_type;

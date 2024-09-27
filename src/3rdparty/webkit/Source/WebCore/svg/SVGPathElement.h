@@ -31,7 +31,8 @@
 #include "SVGStyledTransformableElement.h"
 #include "SVGTests.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SVGPathSegArcAbs;
 class SVGPathSegArcRel;
@@ -54,65 +55,90 @@ class SVGPathSegCurvetoQuadraticSmoothAbs;
 class SVGPathSegCurvetoQuadraticSmoothRel;
 
 class SVGPathElement : public SVGStyledTransformableElement,
-                       public SVGTests,
-                       public SVGLangSpace,
-                       public SVGExternalResourcesRequired {
+    public SVGTests,
+    public SVGLangSpace,
+    public SVGExternalResourcesRequired
+{
 public:
-    static PassRefPtr<SVGPathElement> create(const QualifiedName&, Document*);
-    
-    float getTotalLength();
-    FloatPoint getPointAtLength(float distance);
-    unsigned long getPathSegAtLength(float distance);
+    static PassRefPtr<SVGPathElement> create( const QualifiedName &, Document * );
 
-    PassRefPtr<SVGPathSegClosePath> createSVGPathSegClosePath(SVGPathSegRole role = PathSegUndefinedRole);
-    PassRefPtr<SVGPathSegMovetoAbs> createSVGPathSegMovetoAbs(float x, float y, SVGPathSegRole role = PathSegUndefinedRole);
-    PassRefPtr<SVGPathSegMovetoRel> createSVGPathSegMovetoRel(float x, float y, SVGPathSegRole role = PathSegUndefinedRole);
-    PassRefPtr<SVGPathSegLinetoAbs> createSVGPathSegLinetoAbs(float x, float y, SVGPathSegRole role = PathSegUndefinedRole);
-    PassRefPtr<SVGPathSegLinetoRel> createSVGPathSegLinetoRel(float x, float y, SVGPathSegRole role = PathSegUndefinedRole);
-    PassRefPtr<SVGPathSegCurvetoCubicAbs> createSVGPathSegCurvetoCubicAbs(float x, float y, float x1, float y1, float x2, float y2, SVGPathSegRole role = PathSegUndefinedRole);
-    PassRefPtr<SVGPathSegCurvetoCubicRel> createSVGPathSegCurvetoCubicRel(float x, float y, float x1, float y1, float x2, float y2, SVGPathSegRole role = PathSegUndefinedRole);
-    PassRefPtr<SVGPathSegCurvetoQuadraticAbs> createSVGPathSegCurvetoQuadraticAbs(float x, float y, float x1, float y1, SVGPathSegRole role = PathSegUndefinedRole);
-    PassRefPtr<SVGPathSegCurvetoQuadraticRel> createSVGPathSegCurvetoQuadraticRel(float x, float y, float x1, float y1, SVGPathSegRole role = PathSegUndefinedRole);
-    PassRefPtr<SVGPathSegArcAbs> createSVGPathSegArcAbs(float x, float y, float r1, float r2, float angle, bool largeArcFlag, bool sweepFlag, SVGPathSegRole role = PathSegUndefinedRole);
-    PassRefPtr<SVGPathSegArcRel> createSVGPathSegArcRel(float x, float y, float r1, float r2, float angle, bool largeArcFlag, bool sweepFlag, SVGPathSegRole role = PathSegUndefinedRole);
-    PassRefPtr<SVGPathSegLinetoHorizontalAbs> createSVGPathSegLinetoHorizontalAbs(float x, SVGPathSegRole role = PathSegUndefinedRole);
-    PassRefPtr<SVGPathSegLinetoHorizontalRel> createSVGPathSegLinetoHorizontalRel(float x, SVGPathSegRole role = PathSegUndefinedRole);
-    PassRefPtr<SVGPathSegLinetoVerticalAbs> createSVGPathSegLinetoVerticalAbs(float y, SVGPathSegRole role = PathSegUndefinedRole);
-    PassRefPtr<SVGPathSegLinetoVerticalRel> createSVGPathSegLinetoVerticalRel(float y, SVGPathSegRole role = PathSegUndefinedRole);
-    PassRefPtr<SVGPathSegCurvetoCubicSmoothAbs> createSVGPathSegCurvetoCubicSmoothAbs(float x, float y, float x2, float y2, SVGPathSegRole role = PathSegUndefinedRole);
-    PassRefPtr<SVGPathSegCurvetoCubicSmoothRel> createSVGPathSegCurvetoCubicSmoothRel(float x, float y, float x2, float y2, SVGPathSegRole role = PathSegUndefinedRole);
-    PassRefPtr<SVGPathSegCurvetoQuadraticSmoothAbs> createSVGPathSegCurvetoQuadraticSmoothAbs(float x, float y, SVGPathSegRole role = PathSegUndefinedRole);
-    PassRefPtr<SVGPathSegCurvetoQuadraticSmoothRel> createSVGPathSegCurvetoQuadraticSmoothRel(float x, float y, SVGPathSegRole role = PathSegUndefinedRole);
+    float getTotalLength();
+    FloatPoint getPointAtLength( float distance );
+    unsigned long getPathSegAtLength( float distance );
+
+    PassRefPtr<SVGPathSegClosePath> createSVGPathSegClosePath( SVGPathSegRole role = PathSegUndefinedRole );
+    PassRefPtr<SVGPathSegMovetoAbs> createSVGPathSegMovetoAbs( float x, float y, SVGPathSegRole role = PathSegUndefinedRole );
+    PassRefPtr<SVGPathSegMovetoRel> createSVGPathSegMovetoRel( float x, float y, SVGPathSegRole role = PathSegUndefinedRole );
+    PassRefPtr<SVGPathSegLinetoAbs> createSVGPathSegLinetoAbs( float x, float y, SVGPathSegRole role = PathSegUndefinedRole );
+    PassRefPtr<SVGPathSegLinetoRel> createSVGPathSegLinetoRel( float x, float y, SVGPathSegRole role = PathSegUndefinedRole );
+    PassRefPtr<SVGPathSegCurvetoCubicAbs> createSVGPathSegCurvetoCubicAbs( float x, float y, float x1, float y1, float x2, float y2,
+            SVGPathSegRole role = PathSegUndefinedRole );
+    PassRefPtr<SVGPathSegCurvetoCubicRel> createSVGPathSegCurvetoCubicRel( float x, float y, float x1, float y1, float x2, float y2,
+            SVGPathSegRole role = PathSegUndefinedRole );
+    PassRefPtr<SVGPathSegCurvetoQuadraticAbs> createSVGPathSegCurvetoQuadraticAbs( float x, float y, float x1, float y1,
+            SVGPathSegRole role = PathSegUndefinedRole );
+    PassRefPtr<SVGPathSegCurvetoQuadraticRel> createSVGPathSegCurvetoQuadraticRel( float x, float y, float x1, float y1,
+            SVGPathSegRole role = PathSegUndefinedRole );
+    PassRefPtr<SVGPathSegArcAbs> createSVGPathSegArcAbs( float x, float y, float r1, float r2, float angle, bool largeArcFlag,
+            bool sweepFlag, SVGPathSegRole role = PathSegUndefinedRole );
+    PassRefPtr<SVGPathSegArcRel> createSVGPathSegArcRel( float x, float y, float r1, float r2, float angle, bool largeArcFlag,
+            bool sweepFlag, SVGPathSegRole role = PathSegUndefinedRole );
+    PassRefPtr<SVGPathSegLinetoHorizontalAbs> createSVGPathSegLinetoHorizontalAbs( float x,
+            SVGPathSegRole role = PathSegUndefinedRole );
+    PassRefPtr<SVGPathSegLinetoHorizontalRel> createSVGPathSegLinetoHorizontalRel( float x,
+            SVGPathSegRole role = PathSegUndefinedRole );
+    PassRefPtr<SVGPathSegLinetoVerticalAbs> createSVGPathSegLinetoVerticalAbs( float y, SVGPathSegRole role = PathSegUndefinedRole );
+    PassRefPtr<SVGPathSegLinetoVerticalRel> createSVGPathSegLinetoVerticalRel( float y, SVGPathSegRole role = PathSegUndefinedRole );
+    PassRefPtr<SVGPathSegCurvetoCubicSmoothAbs> createSVGPathSegCurvetoCubicSmoothAbs( float x, float y, float x2, float y2,
+            SVGPathSegRole role = PathSegUndefinedRole );
+    PassRefPtr<SVGPathSegCurvetoCubicSmoothRel> createSVGPathSegCurvetoCubicSmoothRel( float x, float y, float x2, float y2,
+            SVGPathSegRole role = PathSegUndefinedRole );
+    PassRefPtr<SVGPathSegCurvetoQuadraticSmoothAbs> createSVGPathSegCurvetoQuadraticSmoothAbs( float x, float y,
+            SVGPathSegRole role = PathSegUndefinedRole );
+    PassRefPtr<SVGPathSegCurvetoQuadraticSmoothRel> createSVGPathSegCurvetoQuadraticSmoothRel( float x, float y,
+            SVGPathSegRole role = PathSegUndefinedRole );
 
     // Used in the bindings only.
-    SVGPathSegListPropertyTearOff* pathSegList();
-    SVGPathSegListPropertyTearOff* animatedPathSegList();
-    SVGPathSegListPropertyTearOff* normalizedPathSegList();
-    SVGPathSegListPropertyTearOff* animatedNormalizedPathSegList();
+    SVGPathSegListPropertyTearOff *pathSegList();
+    SVGPathSegListPropertyTearOff *animatedPathSegList();
+    SVGPathSegListPropertyTearOff *normalizedPathSegList();
+    SVGPathSegListPropertyTearOff *animatedNormalizedPathSegList();
 
-    SVGPathByteStream* pathByteStream() const { return m_pathByteStream.get(); }
-    SVGAnimatedProperty* animatablePathSegList() const { return m_animatablePathSegList.get(); }
+    SVGPathByteStream *pathByteStream() const
+    {
+        return m_pathByteStream.get();
+    }
+    SVGAnimatedProperty *animatablePathSegList() const
+    {
+        return m_animatablePathSegList.get();
+    }
 
-    virtual void toPathData(Path&) const;
-    void pathSegListChanged(SVGPathSegRole);
+    virtual void toPathData( Path & ) const;
+    void pathSegListChanged( SVGPathSegRole );
 
 private:
-    SVGPathElement(const QualifiedName&, Document*);
+    SVGPathElement( const QualifiedName &, Document * );
 
-    virtual bool isValid() const { return SVGTests::isValid(); }
+    virtual bool isValid() const
+    {
+        return SVGTests::isValid();
+    }
 
-    virtual void parseMappedAttribute(Attribute*);
-    virtual void synchronizeProperty(const QualifiedName&);
-    virtual void svgAttributeChanged(const QualifiedName&);
+    virtual void parseMappedAttribute( Attribute * );
+    virtual void synchronizeProperty( const QualifiedName & );
+    virtual void svgAttributeChanged( const QualifiedName & );
     virtual void fillAttributeToPropertyTypeMap();
-    virtual AttributeToPropertyTypeMap& attributeToPropertyTypeMap();
-    virtual bool supportsMarkers() const { return true; }
+    virtual AttributeToPropertyTypeMap &attributeToPropertyTypeMap();
+    virtual bool supportsMarkers() const
+    {
+        return true;
+    }
 
     // Animated property declarations
-    DECLARE_ANIMATED_NUMBER(PathLength, pathLength)
+    DECLARE_ANIMATED_NUMBER( PathLength, pathLength )
 
     // SVGExternalResourcesRequired
-    DECLARE_ANIMATED_BOOLEAN(ExternalResourcesRequired, externalResourcesRequired)
+    DECLARE_ANIMATED_BOOLEAN( ExternalResourcesRequired, externalResourcesRequired )
 
     void synchronizeD();
 

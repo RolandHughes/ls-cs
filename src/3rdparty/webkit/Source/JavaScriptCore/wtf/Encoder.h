@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef Encoder_h
@@ -28,26 +28,28 @@
 
 #include <stdint.h>
 
-namespace WTF {
+namespace WTF
+{
 
 class String;
 
-class Encoder {
+class Encoder
+{
 protected:
     Encoder() { }
     virtual ~Encoder() { }
-    
-public:
-    virtual void encodeBytes(const uint8_t*, size_t) = 0;
 
-    virtual void encodeBool(bool) = 0;
-    virtual void encodeUInt32(uint32_t) = 0;
-    virtual void encodeUInt64(uint64_t) = 0;
-    virtual void encodeInt32(int32_t) = 0;
-    virtual void encodeInt64(int64_t) = 0;
-    virtual void encodeFloat(float) = 0;
-    virtual void encodeDouble(double) = 0;
-    virtual void encodeString(const String&) = 0;
+public:
+    virtual void encodeBytes( const uint8_t *, size_t ) = 0;
+
+    virtual void encodeBool( bool ) = 0;
+    virtual void encodeUInt32( uint32_t ) = 0;
+    virtual void encodeUInt64( uint64_t ) = 0;
+    virtual void encodeInt32( int32_t ) = 0;
+    virtual void encodeInt64( int64_t ) = 0;
+    virtual void encodeFloat( float ) = 0;
+    virtual void encodeDouble( double ) = 0;
+    virtual void encodeString( const String & ) = 0;
 };
 
 } // namespace WTF

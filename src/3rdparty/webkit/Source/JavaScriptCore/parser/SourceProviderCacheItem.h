@@ -27,35 +27,37 @@
 #include <wtf/Vector.h>
 #include <wtf/text/WTFString.h>
 
-namespace JSC {
+namespace JSC
+{
 
-class SourceProviderCacheItem {
+class SourceProviderCacheItem
+{
 public:
-    SourceProviderCacheItem(int closeBraceLine, int closeBracePos)
-        : closeBraceLine(closeBraceLine) 
-        , closeBracePos(closeBracePos)
+    SourceProviderCacheItem( int closeBraceLine, int closeBracePos )
+        : closeBraceLine( closeBraceLine )
+        , closeBracePos( closeBracePos )
     {
     }
     unsigned approximateByteSize() const
     {
         // The identifiers are uniqued strings so most likely there are few names that actually use any additional memory.
-        static const unsigned assummedAverageIdentifierSize = sizeof(RefPtr<StringImpl>) + 2;
-        unsigned size = sizeof(*this);
+        static const unsigned assummedAverageIdentifierSize = sizeof( RefPtr<StringImpl> ) + 2;
+        unsigned size = sizeof( *this );
         size += usedVariables.size() * assummedAverageIdentifierSize;
         size += writtenVariables.size() * assummedAverageIdentifierSize;
         return size;
     }
-    JSToken closeBraceToken() const 
+    JSToken closeBraceToken() const
     {
         JSToken token;
         token.m_type = CLOSEBRACE;
         token.m_data.intValue = closeBracePos;
         token.m_info.startOffset = closeBracePos;
         token.m_info.endOffset = closeBracePos + 1;
-        token.m_info.line = closeBraceLine; 
+        token.m_info.line = closeBraceLine;
         return token;
     }
-    
+
     int closeBraceLine;
     int closeBracePos;
     bool usesEval;

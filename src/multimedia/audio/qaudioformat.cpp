@@ -27,51 +27,54 @@
 
 class QAudioFormatPrivate : public QSharedData
 {
- public:
-   QAudioFormatPrivate() {
-      sampleRate = -1;
-      channels   = -1;
-      sampleSize = -1;
-      byteOrder  = QAudioFormat::Endian(QSysInfo::ByteOrder);
-      sampleType = QAudioFormat::Unknown;
-   }
+public:
+    QAudioFormatPrivate()
+    {
+        sampleRate = -1;
+        channels   = -1;
+        sampleSize = -1;
+        byteOrder  = QAudioFormat::Endian( QSysInfo::ByteOrder );
+        sampleType = QAudioFormat::Unknown;
+    }
 
-   QAudioFormatPrivate(const QAudioFormatPrivate &other):
-      QSharedData(other),
-      codec(other.codec),
-      byteOrder(other.byteOrder),
-      sampleType(other.sampleType),
-      sampleRate(other.sampleRate),
-      channels(other.channels),
-      sampleSize(other.sampleSize) {
-   }
+    QAudioFormatPrivate( const QAudioFormatPrivate &other ):
+        QSharedData( other ),
+        codec( other.codec ),
+        byteOrder( other.byteOrder ),
+        sampleType( other.sampleType ),
+        sampleRate( other.sampleRate ),
+        channels( other.channels ),
+        sampleSize( other.sampleSize )
+    {
+    }
 
-   QAudioFormatPrivate &operator=(const QAudioFormatPrivate &other) {
-      codec      = other.codec;
-      byteOrder  = other.byteOrder;
-      sampleType = other.sampleType;
-      sampleRate = other.sampleRate;
-      channels   = other.channels;
-      sampleSize = other.sampleSize;
+    QAudioFormatPrivate &operator=( const QAudioFormatPrivate &other )
+    {
+        codec      = other.codec;
+        byteOrder  = other.byteOrder;
+        sampleType = other.sampleType;
+        sampleRate = other.sampleRate;
+        channels   = other.channels;
+        sampleSize = other.sampleSize;
 
-      return *this;
-   }
+        return *this;
+    }
 
-   QString codec;
-   QAudioFormat::Endian byteOrder;
-   QAudioFormat::SampleType sampleType;
-   int sampleRate;
-   int channels;
-   int sampleSize;
+    QString codec;
+    QAudioFormat::Endian byteOrder;
+    QAudioFormat::SampleType sampleType;
+    int sampleRate;
+    int channels;
+    int sampleSize;
 };
 
 QAudioFormat::QAudioFormat():
-   d(new QAudioFormatPrivate)
+    d( new QAudioFormatPrivate )
 {
 }
 
-QAudioFormat::QAudioFormat(const QAudioFormat &other):
-   d(other.d)
+QAudioFormat::QAudioFormat( const QAudioFormat &other ):
+    d( other.d )
 {
 }
 
@@ -79,68 +82,68 @@ QAudioFormat::~QAudioFormat()
 {
 }
 
-QAudioFormat &QAudioFormat::operator=(const QAudioFormat &other)
+QAudioFormat &QAudioFormat::operator=( const QAudioFormat &other )
 {
-   d = other.d;
-   return *this;
+    d = other.d;
+    return *this;
 }
 
 
-bool QAudioFormat::operator==(const QAudioFormat &other) const
+bool QAudioFormat::operator==( const QAudioFormat &other ) const
 {
-   return d->sampleRate == other.d->sampleRate &&
-      d->channels == other.d->channels &&
-      d->sampleSize == other.d->sampleSize &&
-      d->byteOrder == other.d->byteOrder &&
-      d->codec == other.d->codec &&
-      d->sampleType == other.d->sampleType;
+    return d->sampleRate == other.d->sampleRate &&
+           d->channels == other.d->channels &&
+           d->sampleSize == other.d->sampleSize &&
+           d->byteOrder == other.d->byteOrder &&
+           d->codec == other.d->codec &&
+           d->sampleType == other.d->sampleType;
 }
 
-bool QAudioFormat::operator!=(const QAudioFormat &other) const
+bool QAudioFormat::operator!=( const QAudioFormat &other ) const
 {
-   return !(*this == other);
+    return !( *this == other );
 }
 
 bool QAudioFormat::isValid() const
 {
-   return d->sampleRate != -1 && d->channels != -1 && d->sampleSize != -1 &&
-      d->sampleType != QAudioFormat::Unknown && !d->codec.isEmpty();
+    return d->sampleRate != -1 && d->channels != -1 && d->sampleSize != -1 &&
+           d->sampleType != QAudioFormat::Unknown && !d->codec.isEmpty();
 }
 
-void QAudioFormat::setSampleRate(int samplerate)
+void QAudioFormat::setSampleRate( int samplerate )
 {
-   d->sampleRate = samplerate;
+    d->sampleRate = samplerate;
 }
 
 int QAudioFormat::sampleRate() const
 {
-   return d->sampleRate;
+    return d->sampleRate;
 }
 
-void QAudioFormat::setChannelCount(int channels)
+void QAudioFormat::setChannelCount( int channels )
 {
-   d->channels = channels;
+    d->channels = channels;
 }
 
 int QAudioFormat::channelCount() const
 {
-   return d->channels;
+    return d->channels;
 }
 
 
-void QAudioFormat::setSampleSize(int sampleSize)
+void QAudioFormat::setSampleSize( int sampleSize )
 {
-   d->sampleSize = sampleSize;
+    d->sampleSize = sampleSize;
 }
 
 int QAudioFormat::sampleSize() const
 {
-   return d->sampleSize;
+    return d->sampleSize;
 }
 
-void QAudioFormat::setCodec(const QString &codec)
+void QAudioFormat::setCodec( const QString &codec )
 {
-   d->codec = codec;
+    d->codec = codec;
 }
 
 /*!
@@ -151,16 +154,16 @@ void QAudioFormat::setCodec(const QString &codec)
 
 QString QAudioFormat::codec() const
 {
-   return d->codec;
+    return d->codec;
 }
 
 /*!
    Sets the byteOrder to \a byteOrder.
 */
 
-void QAudioFormat::setByteOrder(QAudioFormat::Endian byteOrder)
+void QAudioFormat::setByteOrder( QAudioFormat::Endian byteOrder )
 {
-   d->byteOrder = byteOrder;
+    d->byteOrder = byteOrder;
 }
 
 /*!
@@ -169,16 +172,16 @@ void QAudioFormat::setByteOrder(QAudioFormat::Endian byteOrder)
 
 QAudioFormat::Endian QAudioFormat::byteOrder() const
 {
-   return d->byteOrder;
+    return d->byteOrder;
 }
 
 /*!
    Sets the sampleType to \a sampleType.
 */
 
-void QAudioFormat::setSampleType(QAudioFormat::SampleType sampleType)
+void QAudioFormat::setSampleType( QAudioFormat::SampleType sampleType )
 {
-   d->sampleType = sampleType;
+    d->sampleType = sampleType;
 }
 
 /*!
@@ -187,104 +190,121 @@ void QAudioFormat::setSampleType(QAudioFormat::SampleType sampleType)
 
 QAudioFormat::SampleType QAudioFormat::sampleType() const
 {
-   return d->sampleType;
+    return d->sampleType;
 }
 
 
-qint32 QAudioFormat::bytesForDuration(qint64 duration) const
+qint32 QAudioFormat::bytesForDuration( qint64 duration ) const
 {
-   return bytesPerFrame() * framesForDuration(duration);
+    return bytesPerFrame() * framesForDuration( duration );
 }
-qint64 QAudioFormat::durationForBytes(qint32 bytes) const
+qint64 QAudioFormat::durationForBytes( qint32 bytes ) const
 {
-   if (!isValid() || bytes <= 0) {
-      return 0;
-   }
+    if ( !isValid() || bytes <= 0 )
+    {
+        return 0;
+    }
 
-   // We round the byte count to ensure whole frames
-   return qint64(1000000LL * (bytes / bytesPerFrame())) / sampleRate();
+    // We round the byte count to ensure whole frames
+    return qint64( 1000000LL * ( bytes / bytesPerFrame() ) ) / sampleRate();
 }
-qint32 QAudioFormat::bytesForFrames(qint32 frameCount) const
+qint32 QAudioFormat::bytesForFrames( qint32 frameCount ) const
 {
-   return frameCount * bytesPerFrame();
+    return frameCount * bytesPerFrame();
 }
-qint32 QAudioFormat::framesForBytes(qint32 byteCount) const
+qint32 QAudioFormat::framesForBytes( qint32 byteCount ) const
 {
-   int size = bytesPerFrame();
-   if (size > 0) {
-      return byteCount / size;
-   }
-   return 0;
-}
-qint32 QAudioFormat::framesForDuration(qint64 duration) const
-{
-   if (!isValid()) {
-      return 0;
-   }
+    int size = bytesPerFrame();
 
-   return qint32((duration * sampleRate()) / 1000000LL);
-}
-qint64 QAudioFormat::durationForFrames(qint32 frameCount) const
-{
-   if (!isValid() || frameCount <= 0) {
-      return 0;
-   }
+    if ( size > 0 )
+    {
+        return byteCount / size;
+    }
 
-   return (frameCount * 1000000LL) / sampleRate();
+    return 0;
+}
+qint32 QAudioFormat::framesForDuration( qint64 duration ) const
+{
+    if ( !isValid() )
+    {
+        return 0;
+    }
+
+    return qint32( ( duration * sampleRate() ) / 1000000LL );
+}
+qint64 QAudioFormat::durationForFrames( qint32 frameCount ) const
+{
+    if ( !isValid() || frameCount <= 0 )
+    {
+        return 0;
+    }
+
+    return ( frameCount * 1000000LL ) / sampleRate();
 }
 int QAudioFormat::bytesPerFrame() const
 {
-   if (!isValid()) {
-      return 0;
-   }
+    if ( !isValid() )
+    {
+        return 0;
+    }
 
-   return (sampleSize() * channelCount()) / 8;
+    return ( sampleSize() * channelCount() ) / 8;
 }
-QDebug operator<<(QDebug dbg, QAudioFormat::Endian endian)
+QDebug operator<<( QDebug dbg, QAudioFormat::Endian endian )
 {
-   QDebugStateSaver saver(dbg);
-   dbg.nospace();
-   switch (endian) {
-      case QAudioFormat::BigEndian:
-         dbg << "BigEndian";
-         break;
-      case QAudioFormat::LittleEndian:
-         dbg << "LittleEndian";
-         break;
-   }
-   return dbg;
-}
+    QDebugStateSaver saver( dbg );
+    dbg.nospace();
 
-QDebug operator<<(QDebug dbg, QAudioFormat::SampleType type)
-{
-   QDebugStateSaver saver(dbg);
-   dbg.nospace();
-   switch (type) {
-      case QAudioFormat::SignedInt:
-         dbg << "SignedInt";
-         break;
-      case QAudioFormat::UnSignedInt:
-         dbg << "UnSignedInt";
-         break;
-      case QAudioFormat::Float:
-         dbg << "Float";
-         break;
-      default:
-         dbg << "Unknown";
-         break;
-   }
-   return dbg;
+    switch ( endian )
+    {
+        case QAudioFormat::BigEndian:
+            dbg << "BigEndian";
+            break;
+
+        case QAudioFormat::LittleEndian:
+            dbg << "LittleEndian";
+            break;
+    }
+
+    return dbg;
 }
 
-QDebug operator<<(QDebug dbg, const QAudioFormat &f)
+QDebug operator<<( QDebug dbg, QAudioFormat::SampleType type )
 {
-   QDebugStateSaver saver(dbg);
-   dbg.nospace();
-   dbg << "QAudioFormat(" << f.sampleRate() << "Hz, "
-      << f.sampleSize() << "bit, channelCount=" << f.channelCount()
-      << ", sampleType=" << f.sampleType() << ", byteOrder=" << f.byteOrder()
-      << ", codec=" << f.codec() << ')';
+    QDebugStateSaver saver( dbg );
+    dbg.nospace();
 
-   return dbg;
+    switch ( type )
+    {
+        case QAudioFormat::SignedInt:
+            dbg << "SignedInt";
+            break;
+
+        case QAudioFormat::UnSignedInt:
+            dbg << "UnSignedInt";
+            break;
+
+        case QAudioFormat::Float:
+            dbg << "Float";
+            break;
+
+        default:
+            dbg << "Unknown";
+            break;
+    }
+
+    return dbg;
+}
+
+QDebug operator<<( QDebug dbg, const QAudioFormat &f )
+{
+    QDebugStateSaver saver( dbg );
+    dbg.nospace();
+    dbg << "QAudioFormat(" << f.sampleRate() << "Hz, "
+        << f.sampleSize() << "bit, channelCount=" << f.channelCount()
+        << ", sampleType=" << f.sampleType() << ", byteOrder=" << f.byteOrder()
+        << ", codec=" << f.codec() << ')';
+
+    return dbg;
 }
 

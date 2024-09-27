@@ -37,22 +37,36 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class EntryArray : public RefCounted<EntryArray> {
+class EntryArray : public RefCounted<EntryArray>
+{
 public:
     static PassRefPtr<EntryArray> create()
     {
-        return adoptRef(new EntryArray());
+        return adoptRef( new EntryArray() );
     }
 
-    unsigned length() const { return m_entries.size(); }
-    Entry* item(unsigned index) const;
-    void set(unsigned index, PassRefPtr<Entry> entry);
+    unsigned length() const
+    {
+        return m_entries.size();
+    }
+    Entry *item( unsigned index ) const;
+    void set( unsigned index, PassRefPtr<Entry> entry );
 
-    bool isEmpty() const { return m_entries.isEmpty(); }
-    void clear() { m_entries.clear(); }
-    void append(PassRefPtr<Entry> entry) { m_entries.append(entry); }
+    bool isEmpty() const
+    {
+        return m_entries.isEmpty();
+    }
+    void clear()
+    {
+        m_entries.clear();
+    }
+    void append( PassRefPtr<Entry> entry )
+    {
+        m_entries.append( entry );
+    }
 
 private:
     EntryArray();

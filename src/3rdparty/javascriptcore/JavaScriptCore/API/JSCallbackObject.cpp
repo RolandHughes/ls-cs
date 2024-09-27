@@ -21,7 +21,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -29,10 +29,11 @@
 
 #include "Collector.h"
 
-namespace JSC {
+namespace JSC
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSCallbackObject<JSObject>);
-ASSERT_CLASS_FITS_IN_CELL(JSCallbackObject<JSGlobalObject>);
+ASSERT_CLASS_FITS_IN_CELL( JSCallbackObject<JSObject> );
+ASSERT_CLASS_FITS_IN_CELL( JSCallbackObject<JSGlobalObject> );
 
 // Define the two types of JSCallbackObjects we support.
 template <> const ClassInfo JSCallbackObject<JSObject>::info = { "CallbackObject", 0, 0, 0 };

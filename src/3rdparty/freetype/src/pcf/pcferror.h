@@ -16,11 +16,11 @@
  */
 
 
-  /**************************************************************************
-   *
-   * This file is used to define the PCF error enumeration constants.
-   *
-   */
+/**************************************************************************
+ *
+ * This file is used to define the PCF error enumeration constants.
+ *
+ */
 
 #ifndef PCFERROR_H_
 #define PCFERROR_H_

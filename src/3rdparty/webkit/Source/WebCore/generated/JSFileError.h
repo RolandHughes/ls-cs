@@ -28,26 +28,32 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class FileError;
 
-class JSFileError : public JSDOMWrapper {
+class JSFileError : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSFileError(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<FileError>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
+    JSFileError( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<FileError> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
-    FileError* impl() const { return m_impl.get(); }
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
+    FileError *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<FileError> m_impl;
@@ -55,43 +61,46 @@ protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, FileError*);
-FileError* toFileError(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, FileError * );
+FileError *toFileError( JSC::JSValue );
 
-class JSFileErrorPrototype : public JSC::JSObjectWithGlobalObject {
+class JSFileErrorPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSFileErrorPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSFileErrorPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                          JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Attributes
 
-JSC::JSValue jsFileErrorCode(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsFileErrorConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsFileErrorCode( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsFileErrorConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 // Constants
 
-JSC::JSValue jsFileErrorNOT_FOUND_ERR(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsFileErrorSECURITY_ERR(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsFileErrorABORT_ERR(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsFileErrorNOT_READABLE_ERR(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsFileErrorENCODING_ERR(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsFileErrorNO_MODIFICATION_ALLOWED_ERR(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsFileErrorINVALID_STATE_ERR(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsFileErrorSYNTAX_ERR(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsFileErrorINVALID_MODIFICATION_ERR(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsFileErrorQUOTA_EXCEEDED_ERR(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsFileErrorTYPE_MISMATCH_ERR(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsFileErrorPATH_EXISTS_ERR(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsFileErrorNOT_FOUND_ERR( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsFileErrorSECURITY_ERR( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsFileErrorABORT_ERR( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsFileErrorNOT_READABLE_ERR( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsFileErrorENCODING_ERR( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsFileErrorNO_MODIFICATION_ALLOWED_ERR( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsFileErrorINVALID_STATE_ERR( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsFileErrorSYNTAX_ERR( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsFileErrorINVALID_MODIFICATION_ERR( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsFileErrorQUOTA_EXCEEDED_ERR( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsFileErrorTYPE_MISMATCH_ERR( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsFileErrorPATH_EXISTS_ERR( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

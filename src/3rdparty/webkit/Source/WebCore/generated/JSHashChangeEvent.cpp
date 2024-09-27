@@ -31,9 +31,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSHashChangeEvent);
+ASSERT_CLASS_FITS_IN_CELL( JSHashChangeEvent );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -44,10 +45,10 @@ ASSERT_CLASS_FITS_IN_CELL(JSHashChangeEvent);
 
 static const HashTableValue JSHashChangeEventTableValues[4] =
 {
-    { "oldURL", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHashChangeEventOldURL), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "newURL", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHashChangeEventNewURL), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHashChangeEventConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "oldURL", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHashChangeEventOldURL ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "newURL", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHashChangeEventNewURL ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHashChangeEventConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -61,43 +62,51 @@ static JSC_CONST_HASHTABLE HashTable JSHashChangeEventTable = { 8, 7, JSHashChan
 
 static const HashTableValue JSHashChangeEventConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSHashChangeEventConstructorTable = { 1, 0, JSHashChangeEventConstructorTableValues, 0 };
-class JSHashChangeEventConstructor : public DOMConstructorObject {
+class JSHashChangeEventConstructor : public DOMConstructorObject
+{
 public:
-    JSHashChangeEventConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSHashChangeEventConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSHashChangeEventConstructor::s_info = { "HashChangeEventConstructor", &DOMConstructorObject::s_info, &JSHashChangeEventConstructorTable, 0 };
 
-JSHashChangeEventConstructor::JSHashChangeEventConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSHashChangeEventConstructor::JSHashChangeEventConstructor( ExecState *exec, Structure *structure,
+        JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSHashChangeEventPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSHashChangeEventPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSHashChangeEventConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSHashChangeEventConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSHashChangeEventConstructor, JSDOMWrapper>(exec, &JSHashChangeEventConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSHashChangeEventConstructor, JSDOMWrapper>( exec, &JSHashChangeEventConstructorTable, this,
+            propertyName, slot );
 }
 
-bool JSHashChangeEventConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSHashChangeEventConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSHashChangeEventConstructor, JSDOMWrapper>(exec, &JSHashChangeEventConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSHashChangeEventConstructor, JSDOMWrapper>( exec, &JSHashChangeEventConstructorTable, this,
+            propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -109,108 +118,134 @@ bool JSHashChangeEventConstructor::getOwnPropertyDescriptor(ExecState* exec, con
 
 static const HashTableValue JSHashChangeEventPrototypeTableValues[2] =
 {
-    { "initHashChangeEvent", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsHashChangeEventPrototypeFunctionInitHashChangeEvent), (intptr_t)5 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "initHashChangeEvent", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsHashChangeEventPrototypeFunctionInitHashChangeEvent ), ( intptr_t )5 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSHashChangeEventPrototypeTable = { 2, 1, JSHashChangeEventPrototypeTableValues, 0 };
 const ClassInfo JSHashChangeEventPrototype::s_info = { "HashChangeEventPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSHashChangeEventPrototypeTable, 0 };
 
-JSObject* JSHashChangeEventPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSHashChangeEventPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSHashChangeEvent>(exec, globalObject);
+    return getDOMPrototype<JSHashChangeEvent>( exec, globalObject );
 }
 
-bool JSHashChangeEventPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSHashChangeEventPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticFunctionSlot<JSObject>(exec, &JSHashChangeEventPrototypeTable, this, propertyName, slot);
+    return getStaticFunctionSlot<JSObject>( exec, &JSHashChangeEventPrototypeTable, this, propertyName, slot );
 }
 
-bool JSHashChangeEventPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSHashChangeEventPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticFunctionDescriptor<JSObject>(exec, &JSHashChangeEventPrototypeTable, this, propertyName, descriptor);
+    return getStaticFunctionDescriptor<JSObject>( exec, &JSHashChangeEventPrototypeTable, this, propertyName, descriptor );
 }
 
 const ClassInfo JSHashChangeEvent::s_info = { "HashChangeEvent", &JSEvent::s_info, &JSHashChangeEventTable, 0 };
 
-JSHashChangeEvent::JSHashChangeEvent(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<HashChangeEvent> impl)
-    : JSEvent(structure, globalObject, impl)
+JSHashChangeEvent::JSHashChangeEvent( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<HashChangeEvent> impl )
+    : JSEvent( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSHashChangeEvent::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSHashChangeEvent::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSHashChangeEventPrototype(exec->globalData(), globalObject, JSHashChangeEventPrototype::createStructure(exec->globalData(), JSEventPrototype::self(exec, globalObject)));
+    return new ( exec ) JSHashChangeEventPrototype( exec->globalData(), globalObject,
+            JSHashChangeEventPrototype::createStructure( exec->globalData(), JSEventPrototype::self( exec, globalObject ) ) );
 }
 
-bool JSHashChangeEvent::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSHashChangeEvent::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSHashChangeEvent, Base>(exec, &JSHashChangeEventTable, this, propertyName, slot);
+    return getStaticValueSlot<JSHashChangeEvent, Base>( exec, &JSHashChangeEventTable, this, propertyName, slot );
 }
 
-bool JSHashChangeEvent::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSHashChangeEvent::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSHashChangeEvent, Base>(exec, &JSHashChangeEventTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSHashChangeEvent, Base>( exec, &JSHashChangeEventTable, this, propertyName, descriptor );
 }
 
-JSValue jsHashChangeEventOldURL(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHashChangeEventOldURL( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHashChangeEvent* castedThis = static_cast<JSHashChangeEvent*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HashChangeEvent* imp = static_cast<HashChangeEvent*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->oldURL());
+    JSHashChangeEvent *castedThis = static_cast<JSHashChangeEvent *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HashChangeEvent *imp = static_cast<HashChangeEvent *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->oldURL() );
     return result;
 }
 
 
-JSValue jsHashChangeEventNewURL(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHashChangeEventNewURL( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHashChangeEvent* castedThis = static_cast<JSHashChangeEvent*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HashChangeEvent* imp = static_cast<HashChangeEvent*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->newURL());
+    JSHashChangeEvent *castedThis = static_cast<JSHashChangeEvent *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HashChangeEvent *imp = static_cast<HashChangeEvent *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->newURL() );
     return result;
 }
 
 
-JSValue jsHashChangeEventConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHashChangeEventConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHashChangeEvent* domObject = static_cast<JSHashChangeEvent*>(asObject(slotBase));
-    return JSHashChangeEvent::getConstructor(exec, domObject->globalObject());
+    JSHashChangeEvent *domObject = static_cast<JSHashChangeEvent *>( asObject( slotBase ) );
+    return JSHashChangeEvent::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSHashChangeEvent::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSHashChangeEvent::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSHashChangeEventConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSHashChangeEventConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsHashChangeEventPrototypeFunctionInitHashChangeEvent(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsHashChangeEventPrototypeFunctionInitHashChangeEvent( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSHashChangeEvent::s_info))
-        return throwVMTypeError(exec);
-    JSHashChangeEvent* castedThis = static_cast<JSHashChangeEvent*>(asObject(thisValue));
-    HashChangeEvent* imp = static_cast<HashChangeEvent*>(castedThis->impl());
-    const String& type(ustringToString(exec->argument(0).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    bool canBubble(exec->argument(1).toBoolean(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    bool cancelable(exec->argument(2).toBoolean(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    const String& oldURL(ustringToString(exec->argument(3).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    const String& newURL(ustringToString(exec->argument(4).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
 
-    imp->initHashChangeEvent(type, canBubble, cancelable, oldURL, newURL);
-    return JSValue::encode(jsUndefined());
+    if ( !thisValue.inherits( &JSHashChangeEvent::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSHashChangeEvent *castedThis = static_cast<JSHashChangeEvent *>( asObject( thisValue ) );
+    HashChangeEvent *imp = static_cast<HashChangeEvent *>( castedThis->impl() );
+    const String &type( ustringToString( exec->argument( 0 ).toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    bool canBubble( exec->argument( 1 ).toBoolean( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    bool cancelable( exec->argument( 2 ).toBoolean( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    const String &oldURL( ustringToString( exec->argument( 3 ).toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    const String &newURL( ustringToString( exec->argument( 4 ).toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->initHashChangeEvent( type, canBubble, cancelable, oldURL, newURL );
+    return JSValue::encode( jsUndefined() );
 }
 
 

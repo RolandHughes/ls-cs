@@ -29,7 +29,8 @@
 #include <wtf/HashMap.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Element;
 class Node;
@@ -37,48 +38,58 @@ class NodeList;
 
 struct CollectionCache;
 
-class HTMLCollection : public RefCounted<HTMLCollection> {
+class HTMLCollection : public RefCounted<HTMLCollection>
+{
 public:
-    static PassRefPtr<HTMLCollection> create(PassRefPtr<Node> base, CollectionType);
+    static PassRefPtr<HTMLCollection> create( PassRefPtr<Node> base, CollectionType );
     virtual ~HTMLCollection();
-    
+
     unsigned length() const;
-    
-    virtual Node* item(unsigned index) const;
-    virtual Node* nextItem() const;
 
-    virtual Node* namedItem(const AtomicString& name) const;
-    virtual Node* nextNamedItem(const AtomicString& name) const; // In case of multiple items named the same way
+    virtual Node *item( unsigned index ) const;
+    virtual Node *nextItem() const;
 
-    Node* firstItem() const;
+    virtual Node *namedItem( const AtomicString &name ) const;
+    virtual Node *nextNamedItem( const AtomicString &name ) const; // In case of multiple items named the same way
 
-    void namedItems(const AtomicString& name, Vector<RefPtr<Node> >&) const;
+    Node *firstItem() const;
 
-    PassRefPtr<NodeList> tags(const String&);
+    void namedItems( const AtomicString &name, Vector<RefPtr<Node> > & ) const;
 
-    Node* base() const { return m_base.get(); }
-    CollectionType type() const { return m_type; }
+    PassRefPtr<NodeList> tags( const String & );
+
+    Node *base() const
+    {
+        return m_base.get();
+    }
+    CollectionType type() const
+    {
+        return m_type;
+    }
 
 protected:
-    HTMLCollection(PassRefPtr<Node> base, CollectionType, CollectionCache*);
-    HTMLCollection(PassRefPtr<Node> base, CollectionType);
+    HTMLCollection( PassRefPtr<Node> base, CollectionType, CollectionCache * );
+    HTMLCollection( PassRefPtr<Node> base, CollectionType );
 
-    CollectionCache* info() const { return m_info; }
+    CollectionCache *info() const
+    {
+        return m_info;
+    }
     void resetCollectionInfo() const;
 
     mutable bool m_idsDone; // for nextNamedItem()
 
 private:
-    virtual Element* itemAfter(Element*) const;
+    virtual Element *itemAfter( Element * ) const;
     virtual unsigned calcLength() const;
     virtual void updateNameCache() const;
 
-    bool checkForNameMatch(Element*, bool checkName, const AtomicString& name) const;
+    bool checkForNameMatch( Element *, bool checkName, const AtomicString &name ) const;
 
     RefPtr<Node> m_base;
     CollectionType m_type;
 
-    mutable CollectionCache* m_info;
+    mutable CollectionCache *m_info;
     mutable bool m_ownsInfo;
 };
 

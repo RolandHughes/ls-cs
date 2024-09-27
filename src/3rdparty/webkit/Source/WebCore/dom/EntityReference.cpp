@@ -23,17 +23,18 @@
 
 #include "Document.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-inline EntityReference::EntityReference(Document* document, const String& entityName)
-    : ContainerNode(document)
-    , m_entityName(entityName)
+inline EntityReference::EntityReference( Document *document, const String &entityName )
+    : ContainerNode( document )
+    , m_entityName( entityName )
 {
 }
 
-PassRefPtr<EntityReference> EntityReference::create(Document* document, const String& entityName)
+PassRefPtr<EntityReference> EntityReference::create( Document *document, const String &entityName )
 {
-    return adoptRef(new EntityReference(document, entityName));
+    return adoptRef( new EntityReference( document, entityName ) );
 }
 
 String EntityReference::nodeName() const
@@ -46,9 +47,9 @@ Node::NodeType EntityReference::nodeType() const
     return ENTITY_REFERENCE_NODE;
 }
 
-PassRefPtr<Node> EntityReference::cloneNode(bool)
+PassRefPtr<Node> EntityReference::cloneNode( bool )
 {
-    return create(document(), m_entityName);
+    return create( document(), m_entityName );
 }
 
 } // namespace

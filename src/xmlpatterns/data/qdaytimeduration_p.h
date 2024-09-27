@@ -27,79 +27,80 @@
 #include <qabstractduration_p.h>
 #include <qitem_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 class DayTimeDuration : public AbstractDuration
 {
- public:
+public:
 
-   typedef QExplicitlySharedDataPointer<DayTimeDuration> Ptr;
+    typedef QExplicitlySharedDataPointer<DayTimeDuration> Ptr;
 
-   /**
-    * Creates an instance from the lexical representation @p string.
-    */
-   static DayTimeDuration::Ptr fromLexical(const QString &string);
+    /**
+     * Creates an instance from the lexical representation @p string.
+     */
+    static DayTimeDuration::Ptr fromLexical( const QString &string );
 
-   static DayTimeDuration::Ptr fromComponents(const bool isPositive,
-         const DayCountProperty days,
-         const HourProperty hours,
-         const MinuteProperty minutes,
-         const SecondProperty seconds,
-         const MSecondProperty mseconds);
-   /**
-    * Creates a DayTimeDuration that has the value expressed in seconds @p secs
-    * and milli seconds @p msecs. The signedness of @p secs communicates
-    * whether this DayTimeDuration is positive or negative. @p msecs must always
-    * be positive.
-    */
-   static DayTimeDuration::Ptr fromSeconds(const SecondCountProperty secs, const MSecondProperty msecs = 0);
+    static DayTimeDuration::Ptr fromComponents( const bool isPositive,
+            const DayCountProperty days,
+            const HourProperty hours,
+            const MinuteProperty minutes,
+            const SecondProperty seconds,
+            const MSecondProperty mseconds );
+    /**
+     * Creates a DayTimeDuration that has the value expressed in seconds @p secs
+     * and milli seconds @p msecs. The signedness of @p secs communicates
+     * whether this DayTimeDuration is positive or negative. @p msecs must always
+     * be positive.
+     */
+    static DayTimeDuration::Ptr fromSeconds( const SecondCountProperty secs, const MSecondProperty msecs = 0 );
 
-   ItemType::Ptr type() const override;
-   QString stringValue() const override;
+    ItemType::Ptr type() const override;
+    QString stringValue() const override;
 
-   /**
-    * @returns always 0.
-    */
-   YearProperty years() const override;
+    /**
+     * @returns always 0.
+     */
+    YearProperty years() const override;
 
-   /**
-    * @returns always 0.
-    */
-   MonthProperty months() const override;
-   DayCountProperty days() const override;
-   HourProperty hours() const override;
-   MinuteProperty minutes() const override;
-   MSecondProperty mseconds() const override;
-   SecondProperty seconds() const override;
+    /**
+     * @returns always 0.
+     */
+    MonthProperty months() const override;
+    DayCountProperty days() const override;
+    HourProperty hours() const override;
+    MinuteProperty minutes() const override;
+    MSecondProperty mseconds() const override;
+    SecondProperty seconds() const override;
 
-   /**
-    * @returns the value of this xs:dayTimeDuration
-    * in milli seconds.
-    * @see <a href="http://www.w3.org/TR/xpath-functions/#dt-dayTimeDuration">XQuery 1.0
-    * and XPath 2.0 Functions and Operators, 10.3.2.2 Calculating the value of a
-    * xs:dayTimeDuration from the lexical representation</a>
-    */
-   Value value() const override;
+    /**
+     * @returns the value of this xs:dayTimeDuration
+     * in milli seconds.
+     * @see <a href="http://www.w3.org/TR/xpath-functions/#dt-dayTimeDuration">XQuery 1.0
+     * and XPath 2.0 Functions and Operators, 10.3.2.2 Calculating the value of a
+     * xs:dayTimeDuration from the lexical representation</a>
+     */
+    Value value() const override;
 
-   /**
-    * Creates a DayTimeDuration containing the value @p val. @p val is
-    * expressed in milli seconds.
-    *
-    * If @p val is zero, is CommonValues::DayTimeDurationZero returned.
-    */
-   Item fromValue(const Value val) const override;
+    /**
+     * Creates a DayTimeDuration containing the value @p val. @p val is
+     * expressed in milli seconds.
+     *
+     * If @p val is zero, is CommonValues::DayTimeDurationZero returned.
+     */
+    Item fromValue( const Value val ) const override;
 
- protected:
-   friend class CommonValues;
+protected:
+    friend class CommonValues;
 
-   DayTimeDuration(const bool isPositive, const DayCountProperty days, const HourProperty hours,
-                  const MinuteProperty minutes, const SecondProperty seconds, const MSecondProperty mseconds);
+    DayTimeDuration( const bool isPositive, const DayCountProperty days, const HourProperty hours,
+                     const MinuteProperty minutes, const SecondProperty seconds, const MSecondProperty mseconds );
 
- private:
-   const DayCountProperty  m_days;
-   const HourProperty      m_hours;
-   const MinuteProperty    m_minutes;
-   const SecondProperty    m_seconds;
-   const MSecondProperty   m_mseconds;
+private:
+    const DayCountProperty  m_days;
+    const HourProperty      m_hours;
+    const MinuteProperty    m_minutes;
+    const SecondProperty    m_seconds;
+    const MSecondProperty   m_mseconds;
 };
 }
 

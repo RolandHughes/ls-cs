@@ -26,47 +26,50 @@
 
 using namespace QPatternist;
 
-Expression::Ptr AbstractFunctionFactory::createFunctionCall(const QXmlName name, const Expression::List &args,
-      const StaticContext::Ptr &context, const SourceLocationReflection *const r)
+Expression::Ptr AbstractFunctionFactory::createFunctionCall( const QXmlName name, const Expression::List &args,
+        const StaticContext::Ptr &context, const SourceLocationReflection *const r )
 {
-   const FunctionSignature::Ptr sign(retrieveFunctionSignature(context->namePool(), name));
+    const FunctionSignature::Ptr sign( retrieveFunctionSignature( context->namePool(), name ) );
 
-   if (! sign) {
-      // The function doesn't exist(at least not in this factory).
-      return Expression::Ptr();
-   }
+    if ( ! sign )
+    {
+        // The function doesn't exist(at least not in this factory).
+        return Expression::Ptr();
+    }
 
-   /* May throw. */
-   verifyArity(sign, context, args.count(), r);
+    /* May throw. */
+    verifyArity( sign, context, args.count(), r );
 
-   /* Ok, the function does exist and the arity is correct. */
-   return retrieveExpression(name, args, sign);
+    /* Ok, the function does exist and the arity is correct. */
+    return retrieveExpression( name, args, sign );
 }
 
-void AbstractFunctionFactory::verifyArity(const FunctionSignature::Ptr &s, const StaticContext::Ptr &context,
-      const xsInteger arity, const SourceLocationReflection *const r) const
+void AbstractFunctionFactory::verifyArity( const FunctionSignature::Ptr &s, const StaticContext::Ptr &context,
+        const xsInteger arity, const SourceLocationReflection *const r ) const
 {
-   /* Same code in both branches, but more specific error messages in order
-    * to improve usability. */
+    /* Same code in both branches, but more specific error messages in order
+     * to improve usability. */
 
-   if (s->maximumArguments() != FunctionSignature::UnlimitedArity && arity > s->maximumArguments()) {
+    if ( s->maximumArguments() != FunctionSignature::UnlimitedArity && arity > s->maximumArguments() )
+    {
 
-      context->error(QtXmlPatterns::tr("%1 takes at most %n argument(s), %2 is therefore invalid.", nullptr, s->maximumArguments())
-              .formatArg(formatFunction(context->namePool(), s)).formatArg(arity), ReportContext::XPST0017, r);
-      return;
-   }
+        context->error( QtXmlPatterns::tr( "%1 takes at most %n argument(s), %2 is therefore invalid.", nullptr, s->maximumArguments() )
+                        .formatArg( formatFunction( context->namePool(), s ) ).formatArg( arity ), ReportContext::XPST0017, r );
+        return;
+    }
 
-   if (arity < s->minimumArguments()) {
-      context->error(QtXmlPatterns::tr("%1 requires at least %n argument(s), %2 is therefore invalid.",
-               nullptr, s->minimumArguments())
-              .formatArg(formatFunction(context->namePool(), s)).formatArg(arity), ReportContext::XPST0017, r);
+    if ( arity < s->minimumArguments() )
+    {
+        context->error( QtXmlPatterns::tr( "%1 requires at least %n argument(s), %2 is therefore invalid.",
+                                           nullptr, s->minimumArguments() )
+                        .formatArg( formatFunction( context->namePool(), s ) ).formatArg( arity ), ReportContext::XPST0017, r );
 
-      return;
-   }
+        return;
+    }
 }
 
 FunctionSignature::Hash AbstractFunctionFactory::functionSignatures() const
 {
-   return m_signatures;
+    return m_signatures;
 }
 

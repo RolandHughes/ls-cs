@@ -36,21 +36,22 @@
 #include "File.h"
 #include "FileWriterSync.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-FileEntrySync::FileEntrySync(PassRefPtr<DOMFileSystemBase> fileSystem, const String& fullPath)
-    : EntrySync(fileSystem, fullPath)
+FileEntrySync::FileEntrySync( PassRefPtr<DOMFileSystemBase> fileSystem, const String &fullPath )
+    : EntrySync( fileSystem, fullPath )
 {
 }
 
-PassRefPtr<File> FileEntrySync::file(ExceptionCode& ec)
+PassRefPtr<File> FileEntrySync::file( ExceptionCode &ec )
 {
-    return filesystem()->createFile(this, ec);
+    return filesystem()->createFile( this, ec );
 }
 
-PassRefPtr<FileWriterSync> FileEntrySync::createWriter(ExceptionCode& ec)
+PassRefPtr<FileWriterSync> FileEntrySync::createWriter( ExceptionCode &ec )
 {
-    return filesystem()->createWriter(this, ec);
+    return filesystem()->createWriter( this, ec );
 }
 
 }

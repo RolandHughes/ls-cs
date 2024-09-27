@@ -28,56 +28,57 @@
 
 #include "WebCoreArgumentCoders.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
-DecoderAdapter::DecoderAdapter(const uint8_t* buffer, size_t bufferSize)
-    : m_decoder(buffer, bufferSize)
+DecoderAdapter::DecoderAdapter( const uint8_t *buffer, size_t bufferSize )
+    : m_decoder( buffer, bufferSize )
 {
 }
 
-bool DecoderAdapter::decodeBytes(Vector<uint8_t>& bytes)
+bool DecoderAdapter::decodeBytes( Vector<uint8_t> &bytes )
 {
-    return m_decoder.decodeBytes(bytes);
+    return m_decoder.decodeBytes( bytes );
 }
 
-bool DecoderAdapter::decodeBool(bool& value)
+bool DecoderAdapter::decodeBool( bool &value )
 {
-    return m_decoder.decodeBool(value);
+    return m_decoder.decodeBool( value );
 }
 
-bool DecoderAdapter::decodeUInt32(uint32_t& value)
+bool DecoderAdapter::decodeUInt32( uint32_t &value )
 {
-    return m_decoder.decodeUInt32(value);
+    return m_decoder.decodeUInt32( value );
 }
 
-bool DecoderAdapter::decodeUInt64(uint64_t& value)
+bool DecoderAdapter::decodeUInt64( uint64_t &value )
 {
-    return m_decoder.decodeUInt64(value);
+    return m_decoder.decodeUInt64( value );
 }
 
-bool DecoderAdapter::decodeInt32(int32_t& value)
+bool DecoderAdapter::decodeInt32( int32_t &value )
 {
-    return m_decoder.decodeInt32(value);
+    return m_decoder.decodeInt32( value );
 }
 
-bool DecoderAdapter::decodeInt64(int64_t& value)
+bool DecoderAdapter::decodeInt64( int64_t &value )
 {
-    return m_decoder.decodeInt64(value);
+    return m_decoder.decodeInt64( value );
 }
 
-bool DecoderAdapter::decodeFloat(float& value)
+bool DecoderAdapter::decodeFloat( float &value )
 {
-    return m_decoder.decodeFloat(value);
+    return m_decoder.decodeFloat( value );
 }
 
-bool DecoderAdapter::decodeDouble(double& value)
+bool DecoderAdapter::decodeDouble( double &value )
 {
-    return m_decoder.decodeDouble(value);
+    return m_decoder.decodeDouble( value );
 }
 
-bool DecoderAdapter::decodeString(String& value)
+bool DecoderAdapter::decodeString( String &value )
 {
-    return m_decoder.decode(value);
+    return m_decoder.decode( value );
 }
 
 }

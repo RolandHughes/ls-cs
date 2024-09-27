@@ -36,57 +36,61 @@ class QPlatformCursor;
 
 class Q_GUI_EXPORT QPlatformCursorImage
 {
- public:
-   QPlatformCursorImage(const uchar *data, const uchar *mask, int width, int height, int hotSpot_x, int hotSpot_y) {
-      set(data, mask, width, height, hotSpot_x, hotSpot_y);
-   }
+public:
+    QPlatformCursorImage( const uchar *data, const uchar *mask, int width, int height, int hotSpot_x, int hotSpot_y )
+    {
+        set( data, mask, width, height, hotSpot_x, hotSpot_y );
+    }
 
-   QImage *image() {
-      return &cursorImage;
-   }
+    QImage *image()
+    {
+        return &cursorImage;
+    }
 
-   QPoint hotspot() const {
-      return m_hotSpot;
-   }
+    QPoint hotspot() const
+    {
+        return m_hotSpot;
+    }
 
-   void set(const uchar *data, const uchar *mask, int width, int height, int hotSpot_x, int hotSpot_y);
-   void set(const QImage &image, int hotSpot_x, int hotSpot_y);
-   void set(Qt::CursorShape cursorId);
+    void set( const uchar *data, const uchar *mask, int width, int height, int hotSpot_x, int hotSpot_y );
+    void set( const QImage &image, int hotSpot_x, int hotSpot_y );
+    void set( Qt::CursorShape cursorId );
 
- private:
-   static void createSystemCursor(int id);
-   QImage cursorImage;
-   QPoint m_hotSpot;
+private:
+    static void createSystemCursor( int id );
+    QImage cursorImage;
+    QPoint m_hotSpot;
 };
 
 class QPlatformCursorPrivate
 {
- public:
-   static QList<QPlatformCursor *> getInstances();
+public:
+    static QList<QPlatformCursor *> getInstances();
 };
 
 class Q_GUI_EXPORT QPlatformCursor : public QObject
 {
- public:
-   QPlatformCursor();
+public:
+    QPlatformCursor();
 
-   // input methods
-   virtual void pointerEvent(const QMouseEvent &event) {
-      (void) event;
-   }
+    // input methods
+    virtual void pointerEvent( const QMouseEvent &event )
+    {
+        ( void ) event;
+    }
 
-   virtual void changeCursor(QCursor *windowCursor, QWindow *window) = 0;
-   virtual QPoint pos() const;
-   virtual void setPos(const QPoint &pos);
+    virtual void changeCursor( QCursor *windowCursor, QWindow *window ) = 0;
+    virtual QPoint pos() const;
+    virtual void setPos( const QPoint &pos );
 
- protected:
-   QScopedPointer<QPlatformCursorPrivate> d_ptr;
+protected:
+    QScopedPointer<QPlatformCursorPrivate> d_ptr;
 
- private:
-   Q_DECLARE_PRIVATE(QPlatformCursor)
+private:
+    Q_DECLARE_PRIVATE( QPlatformCursor )
 
-   friend void cs_internal_set_cursor(QWidget *w, bool force);
-   friend class QApplicationPrivate;
+    friend void cs_internal_set_cursor( QWidget *w, bool force );
+    friend class QApplicationPrivate;
 };
 
 #endif

@@ -33,66 +33,76 @@
 
 class QRadioTunerPrivate : public QMediaObjectPrivate
 {
- public:
+public:
     QRadioTunerPrivate()
-      : provider(nullptr), control(nullptr), radioData(nullptr)
+        : provider( nullptr ), control( nullptr ), radioData( nullptr )
     {
     }
 
     QMediaServiceProvider *provider;
-    QRadioTunerControl* control;
+    QRadioTunerControl *control;
     QRadioData *radioData;
 };
 
-QRadioTuner::QRadioTuner(QObject *parent)
-   : QMediaObject(*new QRadioTunerPrivate, parent,
-     QMediaServiceProvider::defaultServiceProvider()->requestService(Q_MEDIASERVICE_RADIO))
+QRadioTuner::QRadioTuner( QObject *parent )
+    : QMediaObject( *new QRadioTunerPrivate, parent,
+                    QMediaServiceProvider::defaultServiceProvider()->requestService( Q_MEDIASERVICE_RADIO ) )
 {
-    Q_D(QRadioTuner);
+    Q_D( QRadioTuner );
 
     d->provider = QMediaServiceProvider::defaultServiceProvider();
 
-    if (d->service != nullptr) {
-        d->control = dynamic_cast<QRadioTunerControl *>(d->service->requestControl(QRadioTunerControl_iid));
+    if ( d->service != nullptr )
+    {
+        d->control = dynamic_cast<QRadioTunerControl *>( d->service->requestControl( QRadioTunerControl_iid ) );
 
-        if (d->control != nullptr) {
-            connect(d->control, &QRadioTunerControl::stateChanged,            this, &QRadioTuner::stateChanged);
-            connect(d->control, &QRadioTunerControl::bandChanged,             this, &QRadioTuner::bandChanged);
-            connect(d->control, &QRadioTunerControl::frequencyChanged,        this, &QRadioTuner::frequencyChanged);
-            connect(d->control, &QRadioTunerControl::stereoStatusChanged,     this, &QRadioTuner::stereoStatusChanged);
-            connect(d->control, &QRadioTunerControl::searchingChanged,        this, &QRadioTuner::searchingChanged);
-            connect(d->control, &QRadioTunerControl::signalStrengthChanged,   this, &QRadioTuner::signalStrengthChanged);
-            connect(d->control, &QRadioTunerControl::volumeChanged,           this, &QRadioTuner::volumeChanged);
-            connect(d->control, &QRadioTunerControl::mutedChanged,            this, &QRadioTuner::mutedChanged);
-            connect(d->control, &QRadioTunerControl::stationFound,            this, &QRadioTuner::stationFound);
-            connect(d->control, &QRadioTunerControl::antennaConnectedChanged, this, &QRadioTuner::antennaConnectedChanged);
-            connect(d->control, &QRadioTunerControl::error,                   this, &QRadioTuner::error);
+        if ( d->control != nullptr )
+        {
+            connect( d->control, &QRadioTunerControl::stateChanged,            this, &QRadioTuner::stateChanged );
+            connect( d->control, &QRadioTunerControl::bandChanged,             this, &QRadioTuner::bandChanged );
+            connect( d->control, &QRadioTunerControl::frequencyChanged,        this, &QRadioTuner::frequencyChanged );
+            connect( d->control, &QRadioTunerControl::stereoStatusChanged,     this, &QRadioTuner::stereoStatusChanged );
+            connect( d->control, &QRadioTunerControl::searchingChanged,        this, &QRadioTuner::searchingChanged );
+            connect( d->control, &QRadioTunerControl::signalStrengthChanged,   this, &QRadioTuner::signalStrengthChanged );
+            connect( d->control, &QRadioTunerControl::volumeChanged,           this, &QRadioTuner::volumeChanged );
+            connect( d->control, &QRadioTunerControl::mutedChanged,            this, &QRadioTuner::mutedChanged );
+            connect( d->control, &QRadioTunerControl::stationFound,            this, &QRadioTuner::stationFound );
+            connect( d->control, &QRadioTunerControl::antennaConnectedChanged, this, &QRadioTuner::antennaConnectedChanged );
+            connect( d->control, &QRadioTunerControl::error,                   this, &QRadioTuner::error );
         }
 
-        d->radioData = new QRadioData(this, this);
+        d->radioData = new QRadioData( this, this );
     }
 }
 
 QRadioTuner::~QRadioTuner()
 {
-    Q_D(QRadioTuner);
+    Q_D( QRadioTuner );
 
-    if (d->radioData)
+    if ( d->radioData )
+    {
         delete d->radioData;
+    }
 
-    if (d->service && d->control)
-        d->service->releaseControl(d->control);
+    if ( d->service && d->control )
+    {
+        d->service->releaseControl( d->control );
+    }
 
-    d->provider->releaseService(d->service);
+    d->provider->releaseService( d->service );
 }
 
 QMultimedia::AvailabilityStatus QRadioTuner::availability() const
 {
-    if (d_func()->control == nullptr)
+    if ( d_func()->control == nullptr )
+    {
         return QMultimedia::ServiceMissing;
+    }
 
-    if (! d_func()->control->isAntennaConnected())
+    if ( ! d_func()->control->isAntennaConnected() )
+    {
         return QMultimedia::ResourceError;
+    }
 
     return QMediaObject::availability();
 }
@@ -104,9 +114,10 @@ QRadioTuner::State QRadioTuner::state() const
 
 QRadioTuner::Band QRadioTuner::band() const
 {
-    Q_D(const QRadioTuner);
+    Q_D( const QRadioTuner );
 
-    if (d->control != nullptr) {
+    if ( d->control != nullptr )
+    {
         return d->control->band();
     }
 
@@ -115,42 +126,46 @@ QRadioTuner::Band QRadioTuner::band() const
 
 int QRadioTuner::frequency() const
 {
-    Q_D(const QRadioTuner);
+    Q_D( const QRadioTuner );
 
-    if (d->control != nullptr) {
+    if ( d->control != nullptr )
+    {
         return d->control->frequency();
     }
 
     return 0;
 }
 
-int QRadioTuner::frequencyStep(QRadioTuner::Band band) const
+int QRadioTuner::frequencyStep( QRadioTuner::Band band ) const
 {
-    Q_D(const QRadioTuner);
+    Q_D( const QRadioTuner );
 
-    if (d->control != nullptr) {
-        return d->control->frequencyStep(band);
+    if ( d->control != nullptr )
+    {
+        return d->control->frequencyStep( band );
     }
 
     return 0;
 }
 
-QPair<int,int> QRadioTuner::frequencyRange(QRadioTuner::Band band) const
+QPair<int,int> QRadioTuner::frequencyRange( QRadioTuner::Band band ) const
 {
-    Q_D(const QRadioTuner);
+    Q_D( const QRadioTuner );
 
-    if (d->control != nullptr) {
-        return d->control->frequencyRange(band);
+    if ( d->control != nullptr )
+    {
+        return d->control->frequencyRange( band );
     }
 
-    return qMakePair<int,int>(0,0);
+    return qMakePair<int,int>( 0,0 );
 }
 
 bool QRadioTuner::isStereo() const
 {
-    Q_D(const QRadioTuner);
+    Q_D( const QRadioTuner );
 
-    if (d->control != nullptr) {
+    if ( d->control != nullptr )
+    {
         return d->control->isStereo();
     }
 
@@ -159,30 +174,33 @@ bool QRadioTuner::isStereo() const
 
 QRadioTuner::StereoMode QRadioTuner::stereoMode() const
 {
-    Q_D(const QRadioTuner);
+    Q_D( const QRadioTuner );
 
-    if (d->control != nullptr) {
+    if ( d->control != nullptr )
+    {
         return d->control->stereoMode();
     }
 
     return QRadioTuner::Auto;
 }
 
-void QRadioTuner::setStereoMode(QRadioTuner::StereoMode mode)
+void QRadioTuner::setStereoMode( QRadioTuner::StereoMode mode )
 {
-    Q_D(QRadioTuner);
+    Q_D( QRadioTuner );
 
-    if (d->control != nullptr) {
-        return d->control->setStereoMode(mode);
+    if ( d->control != nullptr )
+    {
+        return d->control->setStereoMode( mode );
     }
 }
 
-bool QRadioTuner::isBandSupported(QRadioTuner::Band band) const
+bool QRadioTuner::isBandSupported( QRadioTuner::Band band ) const
 {
-    Q_D(const QRadioTuner);
+    Q_D( const QRadioTuner );
 
-    if (d->control != nullptr) {
-        return d->control->isBandSupported(band);
+    if ( d->control != nullptr )
+    {
+        return d->control->isBandSupported( band );
     }
 
     return false;
@@ -190,27 +208,30 @@ bool QRadioTuner::isBandSupported(QRadioTuner::Band band) const
 
 void QRadioTuner::start()
 {
-    Q_D(const QRadioTuner);
+    Q_D( const QRadioTuner );
 
-    if (d->control != nullptr) {
+    if ( d->control != nullptr )
+    {
         d->control->start();
     }
 }
 
 void QRadioTuner::stop()
 {
-    Q_D(const QRadioTuner);
+    Q_D( const QRadioTuner );
 
-    if (d->control != nullptr) {
+    if ( d->control != nullptr )
+    {
         d->control->stop();
     }
 }
 
 int QRadioTuner::signalStrength() const
 {
-    Q_D(const QRadioTuner);
+    Q_D( const QRadioTuner );
 
-    if (d->control != nullptr) {
+    if ( d->control != nullptr )
+    {
         return d->control->signalStrength();
     }
 
@@ -219,9 +240,10 @@ int QRadioTuner::signalStrength() const
 
 int QRadioTuner::volume() const
 {
-    Q_D(const QRadioTuner);
+    Q_D( const QRadioTuner );
 
-    if (d->control != nullptr) {
+    if ( d->control != nullptr )
+    {
         return d->control->volume();
     }
 
@@ -230,56 +252,62 @@ int QRadioTuner::volume() const
 
 bool QRadioTuner::isMuted() const
 {
-    Q_D(const QRadioTuner);
+    Q_D( const QRadioTuner );
 
-    if (d->control != nullptr) {
+    if ( d->control != nullptr )
+    {
         return d->control->isMuted();
     }
 
     return false;
 }
 
-void QRadioTuner::setBand(QRadioTuner::Band band)
+void QRadioTuner::setBand( QRadioTuner::Band band )
 {
-    Q_D(QRadioTuner);
+    Q_D( QRadioTuner );
 
-    if (d->control != nullptr) {
-        d->control->setBand(band);
+    if ( d->control != nullptr )
+    {
+        d->control->setBand( band );
     }
 }
 
-void QRadioTuner::setFrequency(int frequency)
+void QRadioTuner::setFrequency( int frequency )
 {
-    Q_D(QRadioTuner);
+    Q_D( QRadioTuner );
 
-    if (d->control != nullptr) {
-        d->control->setFrequency(frequency);
+    if ( d->control != nullptr )
+    {
+        d->control->setFrequency( frequency );
     }
 }
 
-void QRadioTuner::setVolume(int volume)
+void QRadioTuner::setVolume( int volume )
 {
-    Q_D(QRadioTuner);
+    Q_D( QRadioTuner );
 
-    if (d->control != nullptr) {
-        d->control->setVolume(volume);
+    if ( d->control != nullptr )
+    {
+        d->control->setVolume( volume );
     }
 }
 
-void QRadioTuner::setMuted(bool muted)
+void QRadioTuner::setMuted( bool muted )
 {
-    Q_D(QRadioTuner);
+    Q_D( QRadioTuner );
 
-    if (d->control != nullptr) {
-        d->control->setMuted(muted);
+    if ( d->control != nullptr )
+    {
+        d->control->setMuted( muted );
     }
 }
 
 bool QRadioTuner::isSearching() const
 {
-    Q_D(const QRadioTuner);
+    Q_D( const QRadioTuner );
 
-    if (d->control != nullptr) {
+    if ( d->control != nullptr )
+    {
         return d->control->isSearching();
     }
 
@@ -288,9 +316,10 @@ bool QRadioTuner::isSearching() const
 
 bool QRadioTuner::isAntennaConnected() const
 {
-    Q_D(const QRadioTuner);
+    Q_D( const QRadioTuner );
 
-    if (d->control != nullptr) {
+    if ( d->control != nullptr )
+    {
         return d->control->isAntennaConnected();
     }
 
@@ -299,45 +328,50 @@ bool QRadioTuner::isAntennaConnected() const
 
 void QRadioTuner::searchForward()
 {
-    Q_D(QRadioTuner);
+    Q_D( QRadioTuner );
 
-    if (d->control != nullptr) {
+    if ( d->control != nullptr )
+    {
         d->control->searchForward();
     }
 }
 
 void QRadioTuner::searchBackward()
 {
-    Q_D(QRadioTuner);
+    Q_D( QRadioTuner );
 
-    if (d->control != nullptr) {
+    if ( d->control != nullptr )
+    {
         d->control->searchBackward();
     }
 }
 
-void QRadioTuner::searchAllStations(QRadioTuner::SearchMode searchMode)
+void QRadioTuner::searchAllStations( QRadioTuner::SearchMode searchMode )
 {
-    Q_D(const QRadioTuner);
+    Q_D( const QRadioTuner );
 
-    if (d->control != nullptr) {
-        d->control->searchAllStations(searchMode);
+    if ( d->control != nullptr )
+    {
+        d->control->searchAllStations( searchMode );
     }
 }
 
 void QRadioTuner::cancelSearch()
 {
-    Q_D(QRadioTuner);
+    Q_D( QRadioTuner );
 
-    if (d->control != nullptr) {
+    if ( d->control != nullptr )
+    {
         d->control->cancelSearch();
     }
 }
 
 QRadioTuner::Error QRadioTuner::error() const
 {
-    Q_D(const QRadioTuner);
+    Q_D( const QRadioTuner );
 
-    if (d->control != nullptr) {
+    if ( d->control != nullptr )
+    {
         return d->control->error();
     }
 
@@ -346,9 +380,10 @@ QRadioTuner::Error QRadioTuner::error() const
 
 QString QRadioTuner::errorString() const
 {
-    Q_D(const QRadioTuner);
+    Q_D( const QRadioTuner );
 
-    if (d->control != nullptr) {
+    if ( d->control != nullptr )
+    {
         return d->control->errorString();
     }
 

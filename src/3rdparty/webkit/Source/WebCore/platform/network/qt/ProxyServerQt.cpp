@@ -35,36 +35,44 @@
 #include <QNetworkProxyQuery>
 #include <QUrl>
 
-namespace WebCore {
+namespace WebCore
+{
 
-Vector<ProxyServer> proxyServersForURL(const KURL& url, const NetworkingContext* context)
+Vector<ProxyServer> proxyServersForURL( const KURL &url, const NetworkingContext *context )
 {
     Vector<ProxyServer> servers;
 
-    const QNetworkAccessManager* accessManager = context ? context->networkAccessManager() : 0;
-    QNetworkProxyFactory* proxyFactory = accessManager ? accessManager->proxyFactory() : 0;
+    const QNetworkAccessManager *accessManager = context ? context->networkAccessManager() : 0;
+    QNetworkProxyFactory *proxyFactory = accessManager ? accessManager->proxyFactory() : 0;
 
-    if (proxyFactory) {
-        const QList<QNetworkProxy> proxies = proxyFactory->queryProxy(QNetworkProxyQuery(url));
+    if ( proxyFactory )
+    {
+        const QList<QNetworkProxy> proxies = proxyFactory->queryProxy( QNetworkProxyQuery( url ) );
 
-        for (const QNetworkProxy& proxy : proxies) {
+        for ( const QNetworkProxy &proxy : proxies )
+        {
             ProxyServer::Type proxyType;
-            switch (proxy.type()) {
-            case QNetworkProxy::Socks5Proxy:
-                proxyType = ProxyServer::SOCKS;
-                break;
-            case QNetworkProxy::HttpProxy:
-            case QNetworkProxy::HttpCachingProxy:
-            case QNetworkProxy::FtpCachingProxy:
-                proxyType = ProxyServer::HTTP;
-                break;
-            case QNetworkProxy::DefaultProxy:
-            case QNetworkProxy::NoProxy:
-            default:
-                proxyType = ProxyServer::Direct;
-                break;
+
+            switch ( proxy.type() )
+            {
+                case QNetworkProxy::Socks5Proxy:
+                    proxyType = ProxyServer::SOCKS;
+                    break;
+
+                case QNetworkProxy::HttpProxy:
+                case QNetworkProxy::HttpCachingProxy:
+                case QNetworkProxy::FtpCachingProxy:
+                    proxyType = ProxyServer::HTTP;
+                    break;
+
+                case QNetworkProxy::DefaultProxy:
+                case QNetworkProxy::NoProxy:
+                default:
+                    proxyType = ProxyServer::Direct;
+                    break;
             }
-            servers.append(ProxyServer(proxyType, proxy.hostName(), proxy.port()));
+
+            servers.append( ProxyServer( proxyType, proxy.hostName(), proxy.port() ) );
         }
     }
 

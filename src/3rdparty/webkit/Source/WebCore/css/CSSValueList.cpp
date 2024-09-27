@@ -25,20 +25,25 @@
 #include "PlatformString.h"
 #include <wtf/PassOwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-CSSValueList::CSSValueList(bool isSpaceSeparated)
-    : m_isSpaceSeparated(isSpaceSeparated)
+CSSValueList::CSSValueList( bool isSpaceSeparated )
+    : m_isSpaceSeparated( isSpaceSeparated )
 {
 }
 
-CSSValueList::CSSValueList(CSSParserValueList* list)
-    : m_isSpaceSeparated(true)
+CSSValueList::CSSValueList( CSSParserValueList *list )
+    : m_isSpaceSeparated( true )
 {
-    if (list) {
+    if ( list )
+    {
         size_t size = list->size();
-        for (unsigned i = 0; i < size; ++i)
-            append(list->valueAt(i)->createCSSValue());
+
+        for ( unsigned i = 0; i < size; ++i )
+        {
+            append( list->valueAt( i )->createCSSValue() );
+        }
     }
 }
 
@@ -46,10 +51,13 @@ CSSValueList::~CSSValueList()
 {
 }
 
-CSSValue* CSSValueList::item(unsigned index)
+CSSValue *CSSValueList::item( unsigned index )
 {
-    if (index >= m_values.size())
+    if ( index >= m_values.size() )
+    {
         return 0;
+    }
+
     return m_values[index].get();
 }
 
@@ -58,47 +66,58 @@ unsigned short CSSValueList::cssValueType() const
     return CSS_VALUE_LIST;
 }
 
-void CSSValueList::append(PassRefPtr<CSSValue> val)
+void CSSValueList::append( PassRefPtr<CSSValue> val )
 {
-    m_values.append(val);
+    m_values.append( val );
 }
 
-void CSSValueList::prepend(PassRefPtr<CSSValue> val)
+void CSSValueList::prepend( PassRefPtr<CSSValue> val )
 {
-    m_values.prepend(val);
+    m_values.prepend( val );
 }
 
-bool CSSValueList::removeAll(CSSValue* val)
+bool CSSValueList::removeAll( CSSValue *val )
 {
     bool found = false;
+
     // FIXME: we should be implementing operator== to CSSValue and its derived classes
     // to make comparison more flexible and fast.
-    for (size_t index = 0; index < m_values.size(); index++) {
-        if (m_values.at(index)->cssText() == val->cssText()) {
-            m_values.remove(index);
+    for ( size_t index = 0; index < m_values.size(); index++ )
+    {
+        if ( m_values.at( index )->cssText() == val->cssText() )
+        {
+            m_values.remove( index );
             found = true;
         }
     }
-    
+
     return found;
 }
-    
-bool CSSValueList::hasValue(CSSValue* val)
+
+bool CSSValueList::hasValue( CSSValue *val )
 {
     // FIXME: we should be implementing operator== to CSSValue and its derived classes
     // to make comparison more flexible and fast.
-    for (size_t index = 0; index < m_values.size(); index++) {
-        if (m_values.at(index)->cssText() == val->cssText())
+    for ( size_t index = 0; index < m_values.size(); index++ )
+    {
+        if ( m_values.at( index )->cssText() == val->cssText() )
+        {
             return true;
+        }
     }
+
     return false;
 }
 
 PassRefPtr<CSSValueList> CSSValueList::copy()
 {
     PassRefPtr<CSSValueList> newList = m_isSpaceSeparated ? createSpaceSeparated() : createCommaSeparated();
-    for (size_t index = 0; index < m_values.size(); index++)
-        newList->append(item(index));
+
+    for ( size_t index = 0; index < m_values.size(); index++ )
+    {
+        newList->append( item( index ) );
+    }
+
     return newList;
 }
 
@@ -107,24 +126,35 @@ String CSSValueList::cssText() const
     String result = "";
 
     unsigned size = m_values.size();
-    for (unsigned i = 0; i < size; i++) {
-        if (!result.isEmpty()) {
-            if (m_isSpaceSeparated)
+
+    for ( unsigned i = 0; i < size; i++ )
+    {
+        if ( !result.isEmpty() )
+        {
+            if ( m_isSpaceSeparated )
+            {
                 result += " ";
+            }
             else
+            {
                 result += ", ";
+            }
         }
+
         result += m_values[i]->cssText();
     }
 
     return result;
 }
 
-void CSSValueList::addSubresourceStyleURLs(ListHashSet<KURL>& urls, const CSSStyleSheet* styleSheet)
+void CSSValueList::addSubresourceStyleURLs( ListHashSet<KURL> &urls, const CSSStyleSheet *styleSheet )
 {
     size_t size = m_values.size();
-    for (size_t i = 0; i < size; ++i)
-        m_values[i]->addSubresourceStyleURLs(urls, styleSheet);
+
+    for ( size_t i = 0; i < size; ++i )
+    {
+        m_values[i]->addSubresourceStyleURLs( urls, styleSheet );
+    }
 }
 
 } // namespace WebCore

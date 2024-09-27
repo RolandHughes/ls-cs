@@ -21,7 +21,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
 
@@ -37,48 +37,62 @@
 #include "ThreadableLoader.h"
 #include "ThreadableLoaderClient.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class ScriptExecutionContext;
-    class WorkerScriptLoaderClient;
+class ScriptExecutionContext;
+class WorkerScriptLoaderClient;
 
-    class WorkerScriptLoader : public ThreadableLoaderClient {
-    public:
-        explicit WorkerScriptLoader(ResourceRequestBase::TargetType);
+class WorkerScriptLoader : public ThreadableLoaderClient
+{
+public:
+    explicit WorkerScriptLoader( ResourceRequestBase::TargetType );
 
-        void loadSynchronously(ScriptExecutionContext*, const KURL&, CrossOriginRequestPolicy);
-        void loadAsynchronously(ScriptExecutionContext*, const KURL&, CrossOriginRequestPolicy, WorkerScriptLoaderClient*);
+    void loadSynchronously( ScriptExecutionContext *, const KURL &, CrossOriginRequestPolicy );
+    void loadAsynchronously( ScriptExecutionContext *, const KURL &, CrossOriginRequestPolicy, WorkerScriptLoaderClient * );
 
-        void notifyError();
+    void notifyError();
 
-        const String& script() const { return m_script; }
-        const KURL& url() const { return m_url; }
-        const KURL& responseURL() const;
-        bool failed() const { return m_failed; }
-        unsigned long identifier() const { return m_identifier; }
+    const String &script() const
+    {
+        return m_script;
+    }
+    const KURL &url() const
+    {
+        return m_url;
+    }
+    const KURL &responseURL() const;
+    bool failed() const
+    {
+        return m_failed;
+    }
+    unsigned long identifier() const
+    {
+        return m_identifier;
+    }
 
-        virtual void didReceiveResponse(const ResourceResponse&);
-        virtual void didReceiveData(const char* data, int dataLength);
-        virtual void didFinishLoading(unsigned long identifier, double);
-        virtual void didFail(const ResourceError&);
-        virtual void didFailRedirectCheck();
-        virtual void didReceiveAuthenticationCancellation(const ResourceResponse&);
+    virtual void didReceiveResponse( const ResourceResponse & );
+    virtual void didReceiveData( const char *data, int dataLength );
+    virtual void didFinishLoading( unsigned long identifier, double );
+    virtual void didFail( const ResourceError & );
+    virtual void didFailRedirectCheck();
+    virtual void didReceiveAuthenticationCancellation( const ResourceResponse & );
 
-    private:
-        PassOwnPtr<ResourceRequest> createResourceRequest();
-        void notifyFinished();
+private:
+    PassOwnPtr<ResourceRequest> createResourceRequest();
+    void notifyFinished();
 
-        WorkerScriptLoaderClient* m_client;
-        RefPtr<ThreadableLoader> m_threadableLoader;
-        String m_responseEncoding;        
-        RefPtr<TextResourceDecoder> m_decoder;
-        String m_script;
-        KURL m_url;
-        KURL m_responseURL;
-        bool m_failed;
-        unsigned long m_identifier;
-        ResourceRequestBase::TargetType m_targetType;
-    };
+    WorkerScriptLoaderClient *m_client;
+    RefPtr<ThreadableLoader> m_threadableLoader;
+    String m_responseEncoding;
+    RefPtr<TextResourceDecoder> m_decoder;
+    String m_script;
+    KURL m_url;
+    KURL m_responseURL;
+    bool m_failed;
+    unsigned long m_identifier;
+    ResourceRequestBase::TargetType m_targetType;
+};
 
 } // namespace WebCore
 

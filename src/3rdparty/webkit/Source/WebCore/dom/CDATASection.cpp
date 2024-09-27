@@ -24,16 +24,17 @@
 
 #include "Document.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-inline CDATASection::CDATASection(Document* document, const String& data)
-    : Text(document, data)
+inline CDATASection::CDATASection( Document *document, const String &data )
+    : Text( document, data )
 {
 }
 
-PassRefPtr<CDATASection> CDATASection::create(Document* document, const String& data)
+PassRefPtr<CDATASection> CDATASection::create( Document *document, const String &data )
 {
-    return adoptRef(new CDATASection(document, data));
+    return adoptRef( new CDATASection( document, data ) );
 }
 
 String CDATASection::nodeName() const
@@ -46,19 +47,19 @@ Node::NodeType CDATASection::nodeType() const
     return CDATA_SECTION_NODE;
 }
 
-PassRefPtr<Node> CDATASection::cloneNode(bool /*deep*/)
+PassRefPtr<Node> CDATASection::cloneNode( bool /*deep*/ )
 {
-    return create(document(), data());
+    return create( document(), data() );
 }
 
-bool CDATASection::childTypeAllowed(NodeType) const
+bool CDATASection::childTypeAllowed( NodeType ) const
 {
     return false;
 }
 
-PassRefPtr<Text> CDATASection::virtualCreate(const String& data)
+PassRefPtr<Text> CDATASection::virtualCreate( const String &data )
 {
-    return create(document(), data);
+    return create( document(), data );
 }
 
 } // namespace WebCore

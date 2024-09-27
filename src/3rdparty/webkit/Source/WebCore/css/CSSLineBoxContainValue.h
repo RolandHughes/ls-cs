@@ -30,32 +30,41 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class CSSPrimitiveValue;
 
 enum LineBoxContainFlags { LineBoxContainNone = 0x0, LineBoxContainBlock = 0x1, LineBoxContainInline = 0x2, LineBoxContainFont = 0x4, LineBoxContainGlyphs = 0x8,
-                           LineBoxContainReplaced = 0x10, LineBoxContainInlineBox = 0x20 };
+                           LineBoxContainReplaced = 0x10, LineBoxContainInlineBox = 0x20
+                         };
 typedef unsigned LineBoxContain;
 
 // Used for text-CSSLineBoxContain and box-CSSLineBoxContain
-class CSSLineBoxContainValue : public CSSValue {
+class CSSLineBoxContainValue : public CSSValue
+{
 public:
-    static PassRefPtr<CSSLineBoxContainValue> create(LineBoxContain value)
+    static PassRefPtr<CSSLineBoxContainValue> create( LineBoxContain value )
     {
-        return adoptRef(new CSSLineBoxContainValue(value));
+        return adoptRef( new CSSLineBoxContainValue( value ) );
     }
 
     virtual String cssText() const;
 
-    LineBoxContain value() const { return m_value; }
+    LineBoxContain value() const
+    {
+        return m_value;
+    }
 
 private:
     LineBoxContain m_value;
 
 private:
-    CSSLineBoxContainValue(LineBoxContain);
-    virtual bool isCSSLineBoxContainValue() const { return true; }
+    CSSLineBoxContainValue( LineBoxContain );
+    virtual bool isCSSLineBoxContainValue() const
+    {
+        return true;
+    }
 };
 
 } // namespace

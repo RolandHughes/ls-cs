@@ -30,42 +30,43 @@
 #include <qdynamiccontext_p.h>
 #include <qsourcelocationreflection_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class OutputValidator : public QAbstractXmlReceiver, public DelegatingSourceLocationReflection
 {
- public:
-   OutputValidator(QAbstractXmlReceiver *const receiver, const DynamicContext::Ptr &context,
-                  const SourceLocationReflection *const r, const bool isXSLT);
+public:
+    OutputValidator( QAbstractXmlReceiver *const receiver, const DynamicContext::Ptr &context,
+                     const SourceLocationReflection *const r, const bool isXSLT );
 
-   void namespaceBinding(const QXmlName &nb) override;
+    void namespaceBinding( const QXmlName &nb ) override;
 
-   void characters(QStringView value) override;
-   void comment(const QString &value) override;
+    void characters( QStringView value ) override;
+    void comment( const QString &value ) override;
 
-   void startElement(const QXmlName &name) override;
-   void endElement() override;
+    void startElement( const QXmlName &name ) override;
+    void endElement() override;
 
-   void attribute(const QXmlName &name, QStringView value) override;
-   void processingInstruction(const QXmlName &name, const QString &value) override;
-   void item(const Item &item) override;
+    void attribute( const QXmlName &name, QStringView value ) override;
+    void processingInstruction( const QXmlName &name, const QString &value ) override;
+    void item( const Item &item ) override;
 
-   void startDocument() override;
-   void endDocument() override;
-   void atomicValue(const QVariant &value) override;
-   void endOfSequence() override;
-   void startOfSequence() override;
+    void startDocument() override;
+    void endDocument() override;
+    void atomicValue( const QVariant &value ) override;
+    void endOfSequence() override;
+    void startOfSequence() override;
 
- private:
-   bool m_hasReceivedChildren;
-   QAbstractXmlReceiver *const m_receiver;
-   const DynamicContext::Ptr m_context;
+private:
+    bool m_hasReceivedChildren;
+    QAbstractXmlReceiver *const m_receiver;
+    const DynamicContext::Ptr m_context;
 
-   /**
-    * Keeps the current received attributes, in order to check uniqueness.
-    */
-   QSet<QXmlName> m_attributes;
-   const bool m_isXSLT;
+    /**
+     * Keeps the current received attributes, in order to check uniqueness.
+     */
+    QSet<QXmlName> m_attributes;
+    const bool m_isXSLT;
 };
 }
 

@@ -37,7 +37,8 @@
 #include "png.h"
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Encoder --------------------------------------------------------------------
 //
@@ -46,80 +47,92 @@ namespace WebCore {
 
 // Passed around as the io_ptr in the png structs so our callbacks know where
 // to write data.
-struct PNGEncoderState {
-    PNGEncoderState(Vector<char>* o) : m_dump(o) {}
-    Vector<char>* m_dump;
+struct PNGEncoderState
+{
+    PNGEncoderState( Vector<char> *o ) : m_dump( o ) {}
+    Vector<char> *m_dump;
 };
 
 // Called by libpng to flush its internal buffer to ours.
-void encoderWriteCallback(png_structp png, png_bytep data, png_size_t size)
+void encoderWriteCallback( png_structp png, png_bytep data, png_size_t size )
 {
-    PNGEncoderState* state = static_cast<PNGEncoderState*>(png_get_io_ptr(png));
-    ASSERT(state->m_dump);
+    PNGEncoderState *state = static_cast<PNGEncoderState *>( png_get_io_ptr( png ) );
+    ASSERT( state->m_dump );
 
     size_t oldSize = state->m_dump->size();
-    state->m_dump->resize(oldSize + size);
-    char* destination = state->m_dump->data() + oldSize;
-    memcpy(destination, data, size);
+    state->m_dump->resize( oldSize + size );
+    char *destination = state->m_dump->data() + oldSize;
+    memcpy( destination, data, size );
 }
 
 // Automatically destroys the given write structs on destruction to make
 // cleanup and error handling code cleaner.
-class PNGWriteStructDestroyer {
+class PNGWriteStructDestroyer
+{
 public:
-    PNGWriteStructDestroyer(png_struct** ps, png_info** pi)
-        : m_pngStruct(ps)
-        , m_pngInfo(pi)
+    PNGWriteStructDestroyer( png_struct **ps, png_info **pi )
+        : m_pngStruct( ps )
+        , m_pngInfo( pi )
     {
     }
 
     ~PNGWriteStructDestroyer()
     {
-        png_destroy_write_struct(m_pngStruct, m_pngInfo);
+        png_destroy_write_struct( m_pngStruct, m_pngInfo );
     }
 
 private:
-    png_struct** m_pngStruct;
-    png_info** m_pngInfo;
+    png_struct **m_pngStruct;
+    png_info **m_pngInfo;
 };
 
-bool compressRGBABigEndianToPNG(unsigned char* rgbaBigEndianData, const IntSize& size, Vector<char>& pngData)
+bool compressRGBABigEndianToPNG( unsigned char *rgbaBigEndianData, const IntSize &size, Vector<char> &pngData )
 {
-    png_struct* pngPtr = png_create_write_struct(PNG_LIBPNG_VER_STRING, png_voidp_NULL, png_error_ptr_NULL, png_error_ptr_NULL);
-    if (!pngPtr)
-        return false;
+    png_struct *pngPtr = png_create_write_struct( PNG_LIBPNG_VER_STRING, png_voidp_NULL, png_error_ptr_NULL, png_error_ptr_NULL );
 
-    png_info* infoPtr = png_create_info_struct(pngPtr);
-    if (!infoPtr) {
-        png_destroy_write_struct(&pngPtr, 0);
+    if ( !pngPtr )
+    {
         return false;
     }
-    PNGWriteStructDestroyer destroyer(&pngPtr, &infoPtr);
+
+    png_info *infoPtr = png_create_info_struct( pngPtr );
+
+    if ( !infoPtr )
+    {
+        png_destroy_write_struct( &pngPtr, 0 );
+        return false;
+    }
+
+    PNGWriteStructDestroyer destroyer( &pngPtr, &infoPtr );
 
     // The destroyer will ensure that the structures are cleaned up in this
     // case, even though we may get here as a jump from random parts of the
     // PNG library called below.
-    if (setjmp(png_jmpbuf(pngPtr)))
+    if ( setjmp( png_jmpbuf( pngPtr ) ) )
+    {
         return false;
+    }
 
     // Set our callback for libpng to give us the data.
-    PNGEncoderState state(&pngData);
-    png_set_write_fn(pngPtr, &state, encoderWriteCallback, 0);
+    PNGEncoderState state( &pngData );
+    png_set_write_fn( pngPtr, &state, encoderWriteCallback, 0 );
 
     int pngOutputColorType = PNG_COLOR_TYPE_RGB_ALPHA;
 
-    png_set_IHDR(pngPtr, infoPtr, size.width(), size.height(), 8, pngOutputColorType,
-                 PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT,
-                 PNG_FILTER_TYPE_DEFAULT);
-    png_write_info(pngPtr, infoPtr);
+    png_set_IHDR( pngPtr, infoPtr, size.width(), size.height(), 8, pngOutputColorType,
+                  PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT,
+                  PNG_FILTER_TYPE_DEFAULT );
+    png_write_info( pngPtr, infoPtr );
 
     unsigned bytesPerRow = size.width() * 4;
-    for (unsigned y = 0; y < size.height(); ++y) {
-        png_write_row(pngPtr, rgbaBigEndianData);
+
+    for ( unsigned y = 0; y < size.height(); ++y )
+    {
+        png_write_row( pngPtr, rgbaBigEndianData );
         rgbaBigEndianData += bytesPerRow;
     }
 
-    png_write_end(pngPtr, infoPtr);
+    png_write_end( pngPtr, infoPtr );
     return true;
 }
 

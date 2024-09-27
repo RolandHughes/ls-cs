@@ -26,15 +26,16 @@
 
 class QXcbGlxIntegrationPlugin : public QXcbGlIntegrationPlugin
 {
-   CS_OBJECT(QXcbGlxIntegrationPlugin)
+    CS_OBJECT( QXcbGlxIntegrationPlugin )
 
-   CS_PLUGIN_IID(QXcbGlIntegrationInterface_ID)
-   CS_PLUGIN_KEY("xcb_glx")
+    CS_PLUGIN_IID( QXcbGlIntegrationInterface_ID )
+    CS_PLUGIN_KEY( "xcb_glx" )
 
- public:
-   QXcbGlIntegration *create() override {
-      return new QXcbGlxIntegration();
-   }
+public:
+    QXcbGlIntegration *create() override
+    {
+        return new QXcbGlxIntegration();
+    }
 };
 
-CS_PLUGIN_REGISTER(QXcbGlxIntegrationPlugin)
+CS_PLUGIN_REGISTER( QXcbGlxIntegrationPlugin )

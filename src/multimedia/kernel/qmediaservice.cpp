@@ -26,22 +26,22 @@
 
 #include <qtimer.h>
 
-QMediaService::QMediaService(QObject *parent)
-   : QObject(parent), d_ptr(new QMediaServicePrivate)
+QMediaService::QMediaService( QObject *parent )
+    : QObject( parent ), d_ptr( new QMediaServicePrivate )
 {
-   d_ptr->q_ptr = this;
+    d_ptr->q_ptr = this;
 }
 
 // internal
-QMediaService::QMediaService(QMediaServicePrivate &dd, QObject *parent)
-   : QObject(parent)
-   , d_ptr(&dd)
+QMediaService::QMediaService( QMediaServicePrivate &dd, QObject *parent )
+    : QObject( parent )
+    , d_ptr( &dd )
 {
-   d_ptr->q_ptr = this;
+    d_ptr->q_ptr = this;
 }
 
 QMediaService::~QMediaService()
 {
-   delete d_ptr;
+    delete d_ptr;
 }
 

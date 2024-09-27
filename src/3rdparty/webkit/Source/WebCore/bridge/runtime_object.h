@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef KJS_RUNTIME_OBJECT_H
@@ -30,53 +30,60 @@
 #include <runtime/JSGlobalObject.h>
 #include <runtime/JSObjectWithGlobalObject.h>
 
-namespace JSC {
-namespace Bindings {
+namespace JSC
+{
+namespace Bindings
+{
 
-class RuntimeObject : public JSObjectWithGlobalObject {
+class RuntimeObject : public JSObjectWithGlobalObject
+{
 public:
-    RuntimeObject(ExecState*, JSGlobalObject*, Structure*, PassRefPtr<Instance>);
+    RuntimeObject( ExecState *, JSGlobalObject *, Structure *, PassRefPtr<Instance> );
     virtual ~RuntimeObject();
 
-    virtual bool getOwnPropertySlot(ExecState*, const Identifier& propertyName, PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(ExecState*, const Identifier& propertyName, PropertyDescriptor&);
-    virtual void put(ExecState*, const Identifier& propertyName, JSValue, PutPropertySlot&);
-    virtual bool deleteProperty(ExecState*, const Identifier& propertyName);
-    virtual JSValue defaultValue(ExecState*, PreferredPrimitiveType) const;
-    virtual CallType getCallData(CallData&);
-    virtual ConstructType getConstructData(ConstructData&);
+    virtual bool getOwnPropertySlot( ExecState *, const Identifier &propertyName, PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( ExecState *, const Identifier &propertyName, PropertyDescriptor & );
+    virtual void put( ExecState *, const Identifier &propertyName, JSValue, PutPropertySlot & );
+    virtual bool deleteProperty( ExecState *, const Identifier &propertyName );
+    virtual JSValue defaultValue( ExecState *, PreferredPrimitiveType ) const;
+    virtual CallType getCallData( CallData & );
+    virtual ConstructType getConstructData( ConstructData & );
 
-    virtual void getOwnPropertyNames(ExecState*, PropertyNameArray&, EnumerationMode mode = ExcludeDontEnumProperties);
+    virtual void getOwnPropertyNames( ExecState *, PropertyNameArray &, EnumerationMode mode = ExcludeDontEnumProperties );
 
     void invalidate();
 
-    Instance* getInternalInstance() const { return m_instance.get(); }
+    Instance *getInternalInstance() const
+    {
+        return m_instance.get();
+    }
 
-    static JSObject* throwInvalidAccessError(ExecState*);
+    static JSObject *throwInvalidAccessError( ExecState * );
 
     static const ClassInfo s_info;
 
-    static ObjectPrototype* createPrototype(ExecState*, JSGlobalObject* globalObject)
+    static ObjectPrototype *createPrototype( ExecState *, JSGlobalObject *globalObject )
     {
         return globalObject->objectPrototype();
     }
 
-    static Structure* createStructure(JSGlobalData& globalData, JSValue prototype)
+    static Structure *createStructure( JSGlobalData &globalData, JSValue prototype )
     {
-        return Structure::create(globalData, prototype, TypeInfo(ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return Structure::create( globalData, prototype, TypeInfo( ObjectType, StructureFlags ), AnonymousSlotCount, &s_info );
     }
 
 protected:
-    static const unsigned StructureFlags = OverridesGetOwnPropertySlot | OverridesGetPropertyNames | JSObjectWithGlobalObject::StructureFlags;
+    static const unsigned StructureFlags = OverridesGetOwnPropertySlot | OverridesGetPropertyNames |
+                                           JSObjectWithGlobalObject::StructureFlags;
 
 private:
-    static JSValue fallbackObjectGetter(ExecState*, JSValue, const Identifier&);
-    static JSValue fieldGetter(ExecState*, JSValue, const Identifier&);
-    static JSValue methodGetter(ExecState*, JSValue, const Identifier&);
+    static JSValue fallbackObjectGetter( ExecState *, JSValue, const Identifier & );
+    static JSValue fieldGetter( ExecState *, JSValue, const Identifier & );
+    static JSValue methodGetter( ExecState *, JSValue, const Identifier & );
 
     RefPtr<Instance> m_instance;
 };
-    
+
 }
 }
 

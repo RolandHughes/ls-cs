@@ -34,11 +34,12 @@ extern "C" {
 
 WK_EXPORT WKTypeID WKMediaCacheManagerGetTypeID();
 
-typedef void (*WKMediaCacheManagerGetHostnamesWithMediaCacheFunction)(WKArrayRef, WKErrorRef, void*);
-WK_EXPORT void WKMediaCacheManagerGetHostnamesWithMediaCache(WKMediaCacheManagerRef mediaCacheManager, void* context, WKMediaCacheManagerGetHostnamesWithMediaCacheFunction function);
+typedef void ( *WKMediaCacheManagerGetHostnamesWithMediaCacheFunction )( WKArrayRef, WKErrorRef, void * );
+WK_EXPORT void WKMediaCacheManagerGetHostnamesWithMediaCache( WKMediaCacheManagerRef mediaCacheManager, void *context,
+        WKMediaCacheManagerGetHostnamesWithMediaCacheFunction function );
 
-WK_EXPORT void WKMediaCacheManagerClearCacheForHostname(WKMediaCacheManagerRef mediaCacheManager, WKStringRef hostname);
-WK_EXPORT void WKMediaCacheManagerClearCacheForAllHostnames(WKMediaCacheManagerRef mediaCacheManager);
+WK_EXPORT void WKMediaCacheManagerClearCacheForHostname( WKMediaCacheManagerRef mediaCacheManager, WKStringRef hostname );
+WK_EXPORT void WKMediaCacheManagerClearCacheForAllHostnames( WKMediaCacheManagerRef mediaCacheManager );
 
 #ifdef __cplusplus
 }

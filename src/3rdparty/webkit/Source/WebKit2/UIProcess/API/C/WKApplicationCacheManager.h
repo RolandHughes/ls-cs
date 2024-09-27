@@ -34,11 +34,13 @@ extern "C" {
 
 WK_EXPORT WKTypeID WKApplicationCacheManagerGetTypeID();
 
-typedef void (*WKApplicationCacheManagerGetApplicationCacheOriginsFunction)(WKArrayRef, WKErrorRef, void*);
-WK_EXPORT void WKApplicationCacheManagerGetApplicationCacheOrigins(WKApplicationCacheManagerRef applicationCacheManager, void* context, WKApplicationCacheManagerGetApplicationCacheOriginsFunction function);
+typedef void ( *WKApplicationCacheManagerGetApplicationCacheOriginsFunction )( WKArrayRef, WKErrorRef, void * );
+WK_EXPORT void WKApplicationCacheManagerGetApplicationCacheOrigins( WKApplicationCacheManagerRef applicationCacheManager,
+        void *context, WKApplicationCacheManagerGetApplicationCacheOriginsFunction function );
 
-WK_EXPORT void WKApplicationCacheManagerDeleteEntriesForOrigin(WKApplicationCacheManagerRef applicationCacheManager, WKSecurityOriginRef origin);
-WK_EXPORT void WKApplicationCacheManagerDeleteAllEntries(WKApplicationCacheManagerRef applicationCacheManager);
+WK_EXPORT void WKApplicationCacheManagerDeleteEntriesForOrigin( WKApplicationCacheManagerRef applicationCacheManager,
+        WKSecurityOriginRef origin );
+WK_EXPORT void WKApplicationCacheManagerDeleteAllEntries( WKApplicationCacheManagerRef applicationCacheManager );
 
 #ifdef __cplusplus
 }

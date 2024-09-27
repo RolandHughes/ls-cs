@@ -32,48 +32,49 @@ QT_BEGIN_NAMESPACE
 struct QDeclarativeBindingCompilerPrivate;
 class QDeclarativeBindingCompiler
 {
- public:
-   QDeclarativeBindingCompiler();
-   ~QDeclarativeBindingCompiler();
+public:
+    QDeclarativeBindingCompiler();
+    ~QDeclarativeBindingCompiler();
 
-   // Returns true if bindings were compiled
-   bool isValid() const;
+    // Returns true if bindings were compiled
+    bool isValid() const;
 
-   struct Expression {
-      QDeclarativeParser::Object *component;
-      QDeclarativeParser::Object *context;
-      QDeclarativeParser::Property *property;
-      QDeclarativeParser::Variant expression;
-      QHash<QString, QDeclarativeParser::Object *> ids;
-      QDeclarativeImports imports;
-   };
+    struct Expression
+    {
+        QDeclarativeParser::Object *component;
+        QDeclarativeParser::Object *context;
+        QDeclarativeParser::Property *property;
+        QDeclarativeParser::Variant expression;
+        QHash<QString, QDeclarativeParser::Object *> ids;
+        QDeclarativeImports imports;
+    };
 
-   // -1 on failure, otherwise the binding index to use
-   int compile(const Expression &, QDeclarativeEnginePrivate *);
+    // -1 on failure, otherwise the binding index to use
+    int compile( const Expression &, QDeclarativeEnginePrivate * );
 
-   // Returns the compiled program
-   QByteArray program() const;
+    // Returns the compiled program
+    QByteArray program() const;
 
-   static void dump(const QByteArray &);
- private:
-   QDeclarativeBindingCompilerPrivate *d;
+    static void dump( const QByteArray & );
+private:
+    QDeclarativeBindingCompilerPrivate *d;
 };
 
 class QDeclarativeCompiledBindingsPrivate;
 class QDeclarativeCompiledBindings : public QObject, public QDeclarativeAbstractExpression, public QDeclarativeRefCount
 {
- public:
-   QDeclarativeCompiledBindings(const char *program, QDeclarativeContextData *context, QDeclarativeRefCount *);
-   virtual ~QDeclarativeCompiledBindings();
+public:
+    QDeclarativeCompiledBindings( const char *program, QDeclarativeContextData *context, QDeclarativeRefCount * );
+    virtual ~QDeclarativeCompiledBindings();
 
-   QDeclarativeAbstractBinding *configBinding(int index, QObject *target, QObject *scope, int property);
+    QDeclarativeAbstractBinding *configBinding( int index, QObject *target, QObject *scope, int property );
 
- protected:
-   int qt_metacall(QMetaObject::Call, int, void **);
+protected:
+    int qt_metacall( QMetaObject::Call, int, void ** );
 
- private:
-   Q_DISABLE_COPY(QDeclarativeCompiledBindings)
-   Q_DECLARE_PRIVATE(QDeclarativeCompiledBindings)
+private:
+    Q_DISABLE_COPY( QDeclarativeCompiledBindings )
+    Q_DECLARE_PRIVATE( QDeclarativeCompiledBindings )
 };
 
 QT_END_NAMESPACE

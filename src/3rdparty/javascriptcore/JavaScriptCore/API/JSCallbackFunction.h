@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef JSCallbackFunction_h
@@ -29,26 +29,31 @@
 #include "InternalFunction.h"
 #include "JSObjectRef.h"
 
-namespace JSC {
+namespace JSC
+{
 
-class JSCallbackFunction : public InternalFunction {
+class JSCallbackFunction : public InternalFunction
+{
 public:
-    JSCallbackFunction(ExecState*, JSObjectCallAsFunctionCallback, const Identifier& name);
+    JSCallbackFunction( ExecState *, JSObjectCallAsFunctionCallback, const Identifier &name );
 
     static const ClassInfo info;
-    
-    // InternalFunction mish-mashes constructor and function behavior -- we should 
+
+    // InternalFunction mish-mashes constructor and function behavior -- we should
     // refactor the code so this override isn't necessary
-    static PassRefPtr<Structure> createStructure(JSValue proto) 
-    { 
-        return Structure::create(proto, TypeInfo(ObjectType, StructureFlags)); 
+    static PassRefPtr<Structure> createStructure( JSValue proto )
+    {
+        return Structure::create( proto, TypeInfo( ObjectType, StructureFlags ) );
     }
 
 private:
-    virtual CallType getCallData(CallData&);
-    virtual const ClassInfo* classInfo() const { return &info; }
+    virtual CallType getCallData( CallData & );
+    virtual const ClassInfo *classInfo() const
+    {
+        return &info;
+    }
 
-    static JSValue JSC_HOST_CALL call(ExecState*, JSObject*, JSValue, const ArgList&);
+    static JSValue JSC_HOST_CALL call( ExecState *, JSObject *, JSValue, const ArgList & );
 
     JSObjectCallAsFunctionCallback m_callback;
 };

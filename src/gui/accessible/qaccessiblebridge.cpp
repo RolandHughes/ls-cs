@@ -25,8 +25,8 @@
 
 #ifndef QT_NO_ACCESSIBILITY
 
-QAccessibleBridgePlugin::QAccessibleBridgePlugin(QObject *parent)
-   : QObject(parent)
+QAccessibleBridgePlugin::QAccessibleBridgePlugin( QObject *parent )
+    : QObject( parent )
 {
 
 }

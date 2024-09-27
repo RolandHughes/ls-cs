@@ -21,42 +21,43 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
 #include "Uint16Array.h"
 
-namespace WebCore {
-
-PassRefPtr<Uint16Array> Uint16Array::create(unsigned length)
+namespace WebCore
 {
-    return TypedArrayBase<unsigned short>::create<Uint16Array>(length);
+
+PassRefPtr<Uint16Array> Uint16Array::create( unsigned length )
+{
+    return TypedArrayBase<unsigned short>::create<Uint16Array>( length );
 }
 
-PassRefPtr<Uint16Array> Uint16Array::create(unsigned short* array, unsigned length)
+PassRefPtr<Uint16Array> Uint16Array::create( unsigned short *array, unsigned length )
 {
-    return TypedArrayBase<unsigned short>::create<Uint16Array>(array, length);
+    return TypedArrayBase<unsigned short>::create<Uint16Array>( array, length );
 }
 
-PassRefPtr<Uint16Array> Uint16Array::create(PassRefPtr<ArrayBuffer> buffer, unsigned byteOffset, unsigned length)
+PassRefPtr<Uint16Array> Uint16Array::create( PassRefPtr<ArrayBuffer> buffer, unsigned byteOffset, unsigned length )
 {
-    return TypedArrayBase<unsigned short>::create<Uint16Array>(buffer, byteOffset, length);
+    return TypedArrayBase<unsigned short>::create<Uint16Array>( buffer, byteOffset, length );
 }
 
-Uint16Array::Uint16Array(PassRefPtr<ArrayBuffer> buffer, unsigned byteOffset, unsigned length)
-    : IntegralTypedArrayBase<unsigned short>(buffer, byteOffset, length)
+Uint16Array::Uint16Array( PassRefPtr<ArrayBuffer> buffer, unsigned byteOffset, unsigned length )
+    : IntegralTypedArrayBase<unsigned short>( buffer, byteOffset, length )
 {
 }
 
-PassRefPtr<Uint16Array> Uint16Array::subarray(int start) const
+PassRefPtr<Uint16Array> Uint16Array::subarray( int start ) const
 {
-    return subarray(start, length());
+    return subarray( start, length() );
 }
 
-PassRefPtr<Uint16Array> Uint16Array::subarray(int start, int end) const
+PassRefPtr<Uint16Array> Uint16Array::subarray( int start, int end ) const
 {
-    return subarrayImpl<Uint16Array>(start, end);
+    return subarrayImpl<Uint16Array>( start, end );
 }
 
 }

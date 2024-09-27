@@ -26,6 +26,6 @@
 #ifndef QACCESSIBLEWIDGETFACTORY_H
 #define QACCESSIBLEWIDGETFACTORY_H
 
-QAccessibleInterface *qAccessibleFactory(const QString &classname, QObject *object);
+QAccessibleInterface *qAccessibleFactory( const QString &classname, QObject *object );
 
 #endif

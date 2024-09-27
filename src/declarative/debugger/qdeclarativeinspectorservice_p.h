@@ -35,34 +35,35 @@ class QDeclarativeInspectorInterface;
 
 class Q_DECLARATIVE_EXPORT QDeclarativeInspectorService : public QDeclarativeDebugService
 {
-   DECL_CS_OBJECT(QDeclarativeInspectorService)
+    DECL_CS_OBJECT( QDeclarativeInspectorService )
 
- public:
-   QDeclarativeInspectorService();
-   static QDeclarativeInspectorService *instance();
+public:
+    QDeclarativeInspectorService();
+    static QDeclarativeInspectorService *instance();
 
-   void addView(QDeclarativeView *);
-   void removeView(QDeclarativeView *);
-   QList<QDeclarativeView *> views() const {
-      return m_views;
-   }
+    void addView( QDeclarativeView * );
+    void removeView( QDeclarativeView * );
+    QList<QDeclarativeView *> views() const
+    {
+        return m_views;
+    }
 
-   void sendMessage(const QByteArray &message);
+    void sendMessage( const QByteArray &message );
 
-   DECL_CS_SIGNAL_1(Public, void gotMessage(const QByteArray &message))
-   DECL_CS_SIGNAL_2(gotMessage, message)
+    DECL_CS_SIGNAL_1( Public, void gotMessage( const QByteArray &message ) )
+    DECL_CS_SIGNAL_2( gotMessage, message )
 
- protected:
-   virtual void statusChanged(Status status);
-   virtual void messageReceived(const QByteArray &);
+protected:
+    virtual void statusChanged( Status status );
+    virtual void messageReceived( const QByteArray & );
 
- private:
-   void updateStatus();
+private:
+    void updateStatus();
 
-   static QDeclarativeInspectorInterface *loadInspectorPlugin();
+    static QDeclarativeInspectorInterface *loadInspectorPlugin();
 
-   QList<QDeclarativeView *> m_views;
-   QDeclarativeInspectorInterface *m_inspectorPlugin;
+    QList<QDeclarativeView *> m_views;
+    QDeclarativeInspectorInterface *m_inspectorPlugin;
 };
 
 QT_END_NAMESPACE

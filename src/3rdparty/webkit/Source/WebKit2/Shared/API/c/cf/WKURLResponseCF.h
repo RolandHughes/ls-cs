@@ -33,8 +33,8 @@
 extern "C" {
 #endif
 
-WK_EXPORT WKURLResponseRef WKURLResponseCreateWithCFURLResponse(CFURLResponseRef urlResponse);
-WK_EXPORT CFURLResponseRef WKURLResponseCopyCFURLResponse(CFAllocatorRef alloc, WKURLResponseRef urlResponse);
+WK_EXPORT WKURLResponseRef WKURLResponseCreateWithCFURLResponse( CFURLResponseRef urlResponse );
+WK_EXPORT CFURLResponseRef WKURLResponseCopyCFURLResponse( CFAllocatorRef alloc, WKURLResponseRef urlResponse );
 
 #ifdef __cplusplus
 }

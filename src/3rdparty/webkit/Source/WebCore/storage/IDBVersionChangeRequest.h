@@ -30,19 +30,21 @@
 
 #include "IDBRequest.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class IDBVersionChangeRequest : public IDBRequest {
+class IDBVersionChangeRequest : public IDBRequest
+{
 public:
-    static PassRefPtr<IDBVersionChangeRequest> create(ScriptExecutionContext*, PassRefPtr<IDBAny> source, const String& version);
+    static PassRefPtr<IDBVersionChangeRequest> create( ScriptExecutionContext *, PassRefPtr<IDBAny> source, const String &version );
     virtual ~IDBVersionChangeRequest();
 
     virtual void onBlocked();
 
-    DEFINE_ATTRIBUTE_EVENT_LISTENER(blocked);
+    DEFINE_ATTRIBUTE_EVENT_LISTENER( blocked );
 
 private:
-    IDBVersionChangeRequest(ScriptExecutionContext*, PassRefPtr<IDBAny> source, const String& version);
+    IDBVersionChangeRequest( ScriptExecutionContext *, PassRefPtr<IDBAny> source, const String &version );
 
     String m_version;
 };

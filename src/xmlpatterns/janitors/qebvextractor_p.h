@@ -27,31 +27,36 @@
 #include <qcommonsequencetypes_p.h>
 #include <qsinglecontainer_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class EBVExtractor : public SingleContainer
 {
- public:
-   EBVExtractor(const Expression::Ptr &operand);
+public:
+    EBVExtractor( const Expression::Ptr &operand );
 
-   bool evaluateEBV(const DynamicContext::Ptr &context) const override;
-   SequenceType::List expectedOperandTypes() const override;
-   const SourceLocationReflection *actualReflection() const override;
-   Expression::Ptr typeCheck(const StaticContext::Ptr &context, const SequenceType::Ptr &reqType) override;
-   ExpressionVisitorResult::Ptr accept(const ExpressionVisitor::Ptr &visitor) const override;
+    bool evaluateEBV( const DynamicContext::Ptr &context ) const override;
+    SequenceType::List expectedOperandTypes() const override;
+    const SourceLocationReflection *actualReflection() const override;
+    Expression::Ptr typeCheck( const StaticContext::Ptr &context, const SequenceType::Ptr &reqType ) override;
+    ExpressionVisitorResult::Ptr accept( const ExpressionVisitor::Ptr &visitor ) const override;
 
-   SequenceType::Ptr staticType() const override;
+    SequenceType::Ptr staticType() const override;
 
-   template<typename TSubClass, typename ThisType>
-   static Expression::Ptr typeCheck(const StaticContext::Ptr &context,
-                  const SequenceType::Ptr &reqType, ThisType *const caller) {
+    template<typename TSubClass, typename ThisType>
+    static Expression::Ptr typeCheck( const StaticContext::Ptr &context,
+                                      const SequenceType::Ptr &reqType, ThisType *const caller )
+    {
 
-      if (*CommonSequenceTypes::EBV->itemType() == *reqType->itemType()) {
-         return caller->operands().first()->typeCheck(context, reqType);
-      } else {
-         return caller->TSubClass::typeCheck(context, reqType);
-      }
-   }
+        if ( *CommonSequenceTypes::EBV->itemType() == *reqType->itemType() )
+        {
+            return caller->operands().first()->typeCheck( context, reqType );
+        }
+        else
+        {
+            return caller->TSubClass::typeCheck( context, reqType );
+        }
+    }
 
 };
 

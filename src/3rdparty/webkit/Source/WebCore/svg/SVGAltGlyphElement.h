@@ -26,37 +26,39 @@
 #include "SVGTextPositioningElement.h"
 #include "SVGURIReference.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SVGGlyphElement;
 
 class SVGAltGlyphElement : public SVGTextPositioningElement,
-                           public SVGURIReference {
+    public SVGURIReference
+{
 public:
-    static PassRefPtr<SVGAltGlyphElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<SVGAltGlyphElement> create( const QualifiedName &, Document * );
 
-    const AtomicString& glyphRef() const;
-    void setGlyphRef(const AtomicString&, ExceptionCode&);
-    const AtomicString& format() const;
-    void setFormat(const AtomicString&, ExceptionCode&);
+    const AtomicString &glyphRef() const;
+    void setGlyphRef( const AtomicString &, ExceptionCode & );
+    const AtomicString &format() const;
+    void setFormat( const AtomicString &, ExceptionCode & );
 
-    SVGGlyphElement* glyphElement() const;
+    SVGGlyphElement *glyphElement() const;
 
 private:
-    SVGAltGlyphElement(const QualifiedName&, Document*);
+    SVGAltGlyphElement( const QualifiedName &, Document * );
 
-    virtual void synchronizeProperty(const QualifiedName&);
+    virtual void synchronizeProperty( const QualifiedName & );
 
     virtual void fillAttributeToPropertyTypeMap();
-    virtual AttributeToPropertyTypeMap& attributeToPropertyTypeMap();
+    virtual AttributeToPropertyTypeMap &attributeToPropertyTypeMap();
 
-    virtual RenderObject* createRenderer(RenderArena*, RenderStyle*);
-    virtual bool childShouldCreateRenderer(Node*) const;
+    virtual RenderObject *createRenderer( RenderArena *, RenderStyle * );
+    virtual bool childShouldCreateRenderer( Node * ) const;
 
     // Animated property declarations
 
     // SVGURIReference
-    DECLARE_ANIMATED_STRING(Href, href)
+    DECLARE_ANIMATED_STRING( Href, href )
 };
 
 } // namespace WebCore

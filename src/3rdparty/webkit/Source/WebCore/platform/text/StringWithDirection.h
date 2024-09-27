@@ -34,7 +34,8 @@
 #include "PlatformString.h"
 #include "TextDirection.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 // In some circumstances we want to store a String along with the TextDirection
 // of the String as learned from the context of the String. For example,
@@ -44,30 +45,46 @@ namespace WebCore {
 // Note that is explicitly *not* the direction of the string as learned
 // from the characters of the string; it's extra metadata we have external
 // to the string.
-class StringWithDirection {
+class StringWithDirection
+{
 public:
     StringWithDirection()
-        : m_direction(LTR)
+        : m_direction( LTR )
     {
     }
 
-    StringWithDirection(const String& string, TextDirection dir)
-        : m_string(string)
-        , m_direction(dir)
+    StringWithDirection( const String &string, TextDirection dir )
+        : m_string( string )
+        , m_direction( dir )
     {
     }
 
-    const String& string() const { return m_string; }
-    TextDirection direction() const { return m_direction; }
+    const String &string() const
+    {
+        return m_string;
+    }
+    TextDirection direction() const
+    {
+        return m_direction;
+    }
 
-    bool isEmpty() const { return m_string.isEmpty(); }
-    bool isNull() const { return m_string.isNull(); }
+    bool isEmpty() const
+    {
+        return m_string.isEmpty();
+    }
+    bool isNull() const
+    {
+        return m_string.isNull();
+    }
 
-    bool operator==(const StringWithDirection& other) const
+    bool operator==( const StringWithDirection &other ) const
     {
         return other.m_string == m_string && other.m_direction == m_direction;
     }
-    bool operator!=(const StringWithDirection& other) const { return !((*this) == other); }
+    bool operator!=( const StringWithDirection &other ) const
+    {
+        return !( ( *this ) == other );
+    }
 
 private:
     String m_string;

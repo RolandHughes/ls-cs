@@ -26,30 +26,31 @@
 
 #include <qemptycontainer_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class LiteralSequence : public EmptyContainer
 {
- public:
-   /**
-    * Creates a LiteralSequence that represents @p item.
-    *
-    * @param list the list of item. No entry may be @c null. The list
-    * must at least be two entries large.
-    */
-   LiteralSequence(const Item::List &list);
+public:
+    /**
+     * Creates a LiteralSequence that represents @p item.
+     *
+     * @param list the list of item. No entry may be @c null. The list
+     * must at least be two entries large.
+     */
+    LiteralSequence( const Item::List &list );
 
-   Item::Iterator::Ptr evaluateSequence(const DynamicContext::Ptr &context) const override;
-   SequenceType::Ptr staticType() const override;
+    Item::Iterator::Ptr evaluateSequence( const DynamicContext::Ptr &context ) const override;
+    SequenceType::Ptr staticType() const override;
 
-   ExpressionVisitorResult::Ptr accept(const ExpressionVisitor::Ptr &visitor) const override;
+    ExpressionVisitorResult::Ptr accept( const ExpressionVisitor::Ptr &visitor ) const override;
 
-   ID id() const override;
+    ID id() const override;
 
-   Properties properties() const override;
+    Properties properties() const override;
 
- private:
-   const Item::List m_list;
+private:
+    const Item::List m_list;
 };
 
 }

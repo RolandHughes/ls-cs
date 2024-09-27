@@ -1,10 +1,10 @@
 /*
  * Copyright (c) 2009 Google Inc. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  *     * Redistributions of source code must retain the above copyright
  * notice, this list of conditions and the following disclaimer.
  *     * Redistributions in binary form must reproduce the above
@@ -14,7 +14,7 @@
  *     * Neither the name of Google Inc. nor the names of its
  * contributors may be used to endorse or promote products derived from
  * this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -37,52 +37,64 @@
 
 #include <wtf/Assertions.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-ReplaceNodeWithSpanCommand::ReplaceNodeWithSpanCommand(PassRefPtr<HTMLElement> element)
-    : SimpleEditCommand(element->document())
-    , m_elementToReplace(element)
+ReplaceNodeWithSpanCommand::ReplaceNodeWithSpanCommand( PassRefPtr<HTMLElement> element )
+    : SimpleEditCommand( element->document() )
+    , m_elementToReplace( element )
 {
-    ASSERT(m_elementToReplace);
+    ASSERT( m_elementToReplace );
 }
 
-static void swapInNodePreservingAttributesAndChildren(HTMLElement* newNode, HTMLElement* nodeToReplace)
+static void swapInNodePreservingAttributesAndChildren( HTMLElement *newNode, HTMLElement *nodeToReplace )
 {
-    ASSERT(nodeToReplace->inDocument());
+    ASSERT( nodeToReplace->inDocument() );
     ExceptionCode ec = 0;
-    ContainerNode* parentNode = nodeToReplace->parentNode();
-    parentNode->insertBefore(newNode, nodeToReplace, ec);
-    ASSERT(!ec);
+    ContainerNode *parentNode = nodeToReplace->parentNode();
+    parentNode->insertBefore( newNode, nodeToReplace, ec );
+    ASSERT( !ec );
 
     RefPtr<Node> nextChild;
-    for (Node* child = nodeToReplace->firstChild(); child; child = nextChild.get()) {
+
+    for ( Node *child = nodeToReplace->firstChild(); child; child = nextChild.get() )
+    {
         nextChild = child->nextSibling();
-        newNode->appendChild(child, ec);
-        ASSERT(!ec);
+        newNode->appendChild( child, ec );
+        ASSERT( !ec );
     }
 
-    newNode->attributes()->setAttributes(*nodeToReplace->attributes());
+    newNode->attributes()->setAttributes( *nodeToReplace->attributes() );
 
-    parentNode->removeChild(nodeToReplace, ec);
-    ASSERT(!ec);
+    parentNode->removeChild( nodeToReplace, ec );
+    ASSERT( !ec );
 }
 
 void ReplaceNodeWithSpanCommand::doApply()
 {
-    if (!m_elementToReplace->inDocument())
+    if ( !m_elementToReplace->inDocument() )
+    {
         return;
-    if (!m_spanElement)
-        m_spanElement = createHTMLElement(m_elementToReplace->document(), spanTag);
-    swapInNodePreservingAttributesAndChildren(m_spanElement.get(), m_elementToReplace.get());
+    }
+
+    if ( !m_spanElement )
+    {
+        m_spanElement = createHTMLElement( m_elementToReplace->document(), spanTag );
+    }
+
+    swapInNodePreservingAttributesAndChildren( m_spanElement.get(), m_elementToReplace.get() );
 }
 
 void ReplaceNodeWithSpanCommand::doUnapply()
 {
-    if (!m_spanElement->inDocument())
+    if ( !m_spanElement->inDocument() )
+    {
         return;
-    swapInNodePreservingAttributesAndChildren(m_elementToReplace.get(), m_spanElement.get());
+    }
+
+    swapInNodePreservingAttributesAndChildren( m_elementToReplace.get(), m_spanElement.get() );
 }
 
 } // namespace WebCore

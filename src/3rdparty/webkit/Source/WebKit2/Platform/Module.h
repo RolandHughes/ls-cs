@@ -41,12 +41,14 @@
 typedef struct _GModule GModule;
 #endif
 
-namespace WebKit {
+namespace WebKit
+{
 
-class Module {
-    WTF_MAKE_NONCOPYABLE(Module);
+class Module
+{
+    WTF_MAKE_NONCOPYABLE( Module );
 public:
-    Module(const String& path);
+    Module( const String &path );
     ~Module();
 
     bool load();
@@ -54,18 +56,18 @@ public:
     // live Objective-C objects whose methods come from that bundle.
     void unload();
 
-    template<typename FunctionType> FunctionType functionPointer(const char* functionName) const;
+    template<typename FunctionType> FunctionType functionPointer( const char *functionName ) const;
 
 #if PLATFORM(MAC) && !defined(__LP64__)
     CFBundleRefNum bundleResourceMap();
 #endif
 
 #if PLATFORM(WIN)
-    void installIATHook(const char* importDLLName, const char* importFunctionName, const void* hookFunction);
+    void installIATHook( const char *importDLLName, const char *importFunctionName, const void *hookFunction );
 #endif
 
 private:
-    void* platformFunctionPointer(const char* functionName) const;
+    void *platformFunctionPointer( const char *functionName ) const;
 
     String m_path;
 #if PLATFORM(MAC)
@@ -78,13 +80,13 @@ private:
 #elif PLATFORM(QT)
     QLibrary m_lib;
 #elif PLATFORM(GTK)
-    GModule* m_handle;
+    GModule *m_handle;
 #endif
 };
 
-template<typename FunctionType> FunctionType Module::functionPointer(const char* functionName) const
+template<typename FunctionType> FunctionType Module::functionPointer( const char *functionName ) const
 {
-    return reinterpret_cast<FunctionType>(platformFunctionPointer(functionName));
+    return reinterpret_cast<FunctionType>( platformFunctionPointer( functionName ) );
 }
 
 }

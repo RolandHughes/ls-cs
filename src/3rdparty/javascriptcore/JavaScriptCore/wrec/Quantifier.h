@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef Quantifier_h
@@ -33,33 +33,39 @@
 #include <wtf/Assertions.h>
 #include <limits.h>
 
-namespace JSC { namespace WREC {
+namespace JSC
+{
+namespace WREC
+{
 
-    struct Quantifier {
-        enum Type {
-            None,
-            Greedy,
-            NonGreedy,
-            Error,
-        };
-
-        Quantifier(Type type = None, unsigned min = 0, unsigned max = Infinity)
-            : type(type)
-            , min(min)
-            , max(max)
-        {
-            ASSERT(min <= max);
-        }
-
-        Type type;
-
-        unsigned min;
-        unsigned max;
-
-        static const unsigned Infinity = UINT_MAX;
+struct Quantifier
+{
+    enum Type
+    {
+        None,
+        Greedy,
+        NonGreedy,
+        Error,
     };
 
-} } // namespace JSC::WREC
+    Quantifier( Type type = None, unsigned min = 0, unsigned max = Infinity )
+        : type( type )
+        , min( min )
+        , max( max )
+    {
+        ASSERT( min <= max );
+    }
+
+    Type type;
+
+    unsigned min;
+    unsigned max;
+
+    static const unsigned Infinity = UINT_MAX;
+};
+
+}
+} // namespace JSC::WREC
 
 #endif // ENABLE(WREC)
 

@@ -30,32 +30,37 @@
 #include <wtf/Vector.h>
 #include <wtf/text/WTFString.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 // This class is a hack to work around the fact that the IPC message generator
 // cannot deal with class templates with more than one paramter.
-class StringPairVector {
+class StringPairVector
+{
 public:
     StringPairVector()
     {
     }
 
-    StringPairVector(Vector<std::pair<String, String> > stringPairVector)
+    StringPairVector( Vector<std::pair<String, String> > stringPairVector )
     {
-        m_stringPairVector.swap(stringPairVector);
+        m_stringPairVector.swap( stringPairVector );
     }
 
-    void encode(CoreIPC::ArgumentEncoder* encoder) const
+    void encode( CoreIPC::ArgumentEncoder *encoder ) const
     {
-        encoder->encode(m_stringPairVector);
+        encoder->encode( m_stringPairVector );
     }
 
-    static bool decode(CoreIPC::ArgumentDecoder* decoder, StringPairVector& stringPairVector)
+    static bool decode( CoreIPC::ArgumentDecoder *decoder, StringPairVector &stringPairVector )
     {
-        return decoder->decode(stringPairVector.m_stringPairVector);
+        return decoder->decode( stringPairVector.m_stringPairVector );
     }
 
-    const Vector<std::pair<String, String> >& stringPairVector() const { return m_stringPairVector; }
+    const Vector<std::pair<String, String> > &stringPairVector() const
+    {
+        return m_stringPairVector;
+    }
 
 private:
     Vector<std::pair<String, String> > m_stringPairVector;

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -32,15 +32,16 @@
 
 using std::min;
 
-namespace WebCore {
+namespace WebCore
+{
 
-HBITMAP imageFromSelection(Frame* frame, bool forceBlackText)
+HBITMAP imageFromSelection( Frame *frame, bool forceBlackText )
 {
     notImplemented();
     return 0;
 }
 
-DragImageRef Frame::nodeImage(Node*)
+DragImageRef Frame::nodeImage( Node * )
 {
     notImplemented();
     return 0;

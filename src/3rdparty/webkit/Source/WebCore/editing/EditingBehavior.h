@@ -23,13 +23,15 @@
 
 #include "EditingBehaviorTypes.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class EditingBehavior {
+class EditingBehavior
+{
 
 public:
-    EditingBehavior(EditingBehaviorType type)
-        : m_type(type)
+    EditingBehavior( EditingBehaviorType type )
+        : m_type( type )
     {
     }
 
@@ -39,26 +41,44 @@ public:
     // When extending a selection beyond the top or bottom boundary of an editable area,
     // maintain the horizontal position on Windows but extend it to the boundary of the editable
     // content on Mac.
-    bool shouldMoveCaretToHorizontalBoundaryWhenPastTopOrBottom() const { return m_type != EditingWindowsBehavior; }
+    bool shouldMoveCaretToHorizontalBoundaryWhenPastTopOrBottom() const
+    {
+        return m_type != EditingWindowsBehavior;
+    }
 
     // On Windows, selections should always be considered as directional, regardless if it is
     // mouse-based or keyboard-based.
-    bool shouldConsiderSelectionAsDirectional() const { return m_type != EditingMacBehavior; }
+    bool shouldConsiderSelectionAsDirectional() const
+    {
+        return m_type != EditingMacBehavior;
+    }
 
     // On Mac, when revealing a selection (for example as a result of a Find operation on the Browser),
     // content should be scrolled such that the selection gets certer aligned.
-    bool shouldCenterAlignWhenSelectionIsRevealed() const { return m_type == EditingMacBehavior; }
+    bool shouldCenterAlignWhenSelectionIsRevealed() const
+    {
+        return m_type == EditingMacBehavior;
+    }
 
     // On Mac, style is considered present when present at the beginning of selection. On other platforms,
     // style has to be present throughout the selection.
-    bool shouldToggleStyleBasedOnStartOfSelection() const { return m_type == EditingMacBehavior; }
+    bool shouldToggleStyleBasedOnStartOfSelection() const
+    {
+        return m_type == EditingMacBehavior;
+    }
 
     // Standard Mac behavior when extending to a boundary is grow the selection rather than leaving the base
     // in place and moving the extent. Matches NSTextView.
-    bool shouldAlwaysGrowSelectionWhenExtendingToBoundary() const { return m_type == EditingMacBehavior; }
+    bool shouldAlwaysGrowSelectionWhenExtendingToBoundary() const
+    {
+        return m_type == EditingMacBehavior;
+    }
 
     // On Mac, when processing a contextual click, the object being clicked upon should be selected.
-    bool shouldSelectOnContextualMenuClick() const { return m_type == EditingMacBehavior; }
+    bool shouldSelectOnContextualMenuClick() const
+    {
+        return m_type == EditingMacBehavior;
+    }
 
 private:
     EditingBehaviorType m_type;

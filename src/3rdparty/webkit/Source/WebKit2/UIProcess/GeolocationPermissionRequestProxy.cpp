@@ -28,29 +28,35 @@
 
 #include "GeolocationPermissionRequestManagerProxy.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
-GeolocationPermissionRequestProxy::GeolocationPermissionRequestProxy(GeolocationPermissionRequestManagerProxy* manager, uint64_t geolocationID)
-    : m_manager(manager)
-    , m_geolocationID(geolocationID)
+GeolocationPermissionRequestProxy::GeolocationPermissionRequestProxy( GeolocationPermissionRequestManagerProxy *manager,
+        uint64_t geolocationID )
+    : m_manager( manager )
+    , m_geolocationID( geolocationID )
 {
 }
 
 void GeolocationPermissionRequestProxy::allow()
 {
-    if (!m_manager)
+    if ( !m_manager )
+    {
         return;
+    }
 
-    m_manager->didReceiveGeolocationPermissionDecision(m_geolocationID, true);
+    m_manager->didReceiveGeolocationPermissionDecision( m_geolocationID, true );
     m_manager = 0;
 }
 
 void GeolocationPermissionRequestProxy::deny()
 {
-    if (!m_manager)
+    if ( !m_manager )
+    {
         return;
-    
-    m_manager->didReceiveGeolocationPermissionDecision(m_geolocationID, false);
+    }
+
+    m_manager->didReceiveGeolocationPermissionDecision( m_geolocationID, false );
     m_manager = 0;
 }
 

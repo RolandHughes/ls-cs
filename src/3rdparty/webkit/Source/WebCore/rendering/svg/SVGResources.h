@@ -26,7 +26,8 @@
 #include <wtf/OwnPtr.h>
 #include <wtf/PassOwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Document;
 class RenderObject;
@@ -38,38 +39,67 @@ class RenderSVGResourceMasker;
 class SVGRenderStyle;
 
 // Holds a set of resources associated with a RenderObject
-class SVGResources {
-    WTF_MAKE_NONCOPYABLE(SVGResources); WTF_MAKE_FAST_ALLOCATED;
+class SVGResources
+{
+    WTF_MAKE_NONCOPYABLE( SVGResources );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
     SVGResources();
 
-    bool buildCachedResources(const RenderObject*, const SVGRenderStyle*);
+    bool buildCachedResources( const RenderObject *, const SVGRenderStyle * );
 
     // Ordinary resources
-    RenderSVGResourceClipper* clipper() const { return m_clipperFilterMaskerData ? m_clipperFilterMaskerData->clipper : 0; }
+    RenderSVGResourceClipper *clipper() const
+    {
+        return m_clipperFilterMaskerData ? m_clipperFilterMaskerData->clipper : 0;
+    }
 #if ENABLE(FILTERS)
-    RenderSVGResourceFilter* filter() const { return m_clipperFilterMaskerData ? m_clipperFilterMaskerData->filter : 0; }
+    RenderSVGResourceFilter *filter() const
+    {
+        return m_clipperFilterMaskerData ? m_clipperFilterMaskerData->filter : 0;
+    }
 #endif
-    RenderSVGResourceMarker* markerStart() const { return m_markerData ? m_markerData->markerStart : 0; }
-    RenderSVGResourceMarker* markerMid() const { return m_markerData ? m_markerData->markerMid : 0; }
-    RenderSVGResourceMarker* markerEnd() const { return m_markerData ? m_markerData->markerEnd : 0; }
-    RenderSVGResourceMasker* masker() const { return m_clipperFilterMaskerData ? m_clipperFilterMaskerData->masker : 0; }
+    RenderSVGResourceMarker *markerStart() const
+    {
+        return m_markerData ? m_markerData->markerStart : 0;
+    }
+    RenderSVGResourceMarker *markerMid() const
+    {
+        return m_markerData ? m_markerData->markerMid : 0;
+    }
+    RenderSVGResourceMarker *markerEnd() const
+    {
+        return m_markerData ? m_markerData->markerEnd : 0;
+    }
+    RenderSVGResourceMasker *masker() const
+    {
+        return m_clipperFilterMaskerData ? m_clipperFilterMaskerData->masker : 0;
+    }
 
     // Paint servers
-    RenderSVGResourceContainer* fill() const { return m_fillStrokeData ? m_fillStrokeData->fill : 0; }
-    RenderSVGResourceContainer* stroke() const { return m_fillStrokeData ? m_fillStrokeData->stroke : 0; }
+    RenderSVGResourceContainer *fill() const
+    {
+        return m_fillStrokeData ? m_fillStrokeData->fill : 0;
+    }
+    RenderSVGResourceContainer *stroke() const
+    {
+        return m_fillStrokeData ? m_fillStrokeData->stroke : 0;
+    }
 
     // Chainable resources - linked through xlink:href
-    RenderSVGResourceContainer* linkedResource() const { return m_linkedResource; }
+    RenderSVGResourceContainer *linkedResource() const
+    {
+        return m_linkedResource;
+    }
 
-    void buildSetOfResources(HashSet<RenderSVGResourceContainer*>&);
+    void buildSetOfResources( HashSet<RenderSVGResourceContainer *> & );
 
     // Methods operating on all cached resources
-    void removeClientFromCache(RenderObject*, bool markForInvalidation = true) const;
-    void resourceDestroyed(RenderSVGResourceContainer*);
+    void removeClientFromCache( RenderObject *, bool markForInvalidation = true ) const;
+    void resourceDestroyed( RenderSVGResourceContainer * );
 
 #ifndef NDEBUG
-    void dump(const RenderObject*);
+    void dump( const RenderObject * );
 #endif
 
 private:
@@ -89,89 +119,92 @@ private:
     void resetLinkedResource();
 
 private:
-    bool setClipper(RenderSVGResourceClipper*);
+    bool setClipper( RenderSVGResourceClipper * );
 #if ENABLE(FILTERS)
-    bool setFilter(RenderSVGResourceFilter*);
+    bool setFilter( RenderSVGResourceFilter * );
 #endif
-    bool setMarkerStart(RenderSVGResourceMarker*);
-    bool setMarkerMid(RenderSVGResourceMarker*);
-    bool setMarkerEnd(RenderSVGResourceMarker*);
-    bool setMasker(RenderSVGResourceMasker*);
-    bool setFill(RenderSVGResourceContainer*);
-    bool setStroke(RenderSVGResourceContainer*);
-    bool setLinkedResource(RenderSVGResourceContainer*);
+    bool setMarkerStart( RenderSVGResourceMarker * );
+    bool setMarkerMid( RenderSVGResourceMarker * );
+    bool setMarkerEnd( RenderSVGResourceMarker * );
+    bool setMasker( RenderSVGResourceMasker * );
+    bool setFill( RenderSVGResourceContainer * );
+    bool setStroke( RenderSVGResourceContainer * );
+    bool setLinkedResource( RenderSVGResourceContainer * );
 
     // From SVG 1.1 2nd Edition
     // clipper: 'container elements' and 'graphics elements'
     // filter:  'container elements' and 'graphics elements'
     // masker:  'container elements' and 'graphics elements'
     // -> a, circle, defs, ellipse, glyph, g, image, line, marker, mask, missing-glyph, path, pattern, polygon, polyline, rect, svg, switch, symbol, text, use
-    struct ClipperFilterMaskerData {
+    struct ClipperFilterMaskerData
+    {
         ClipperFilterMaskerData()
-            : clipper(0)
+            : clipper( 0 )
 #if ENABLE(FILTERS)
-            , filter(0)
+            , filter( 0 )
 #endif
-            , masker(0)
+            , masker( 0 )
         {
         }
 
         static PassOwnPtr<ClipperFilterMaskerData> create()
         {
-            return adoptPtr(new ClipperFilterMaskerData);
+            return adoptPtr( new ClipperFilterMaskerData );
         }
 
-        RenderSVGResourceClipper* clipper;
+        RenderSVGResourceClipper *clipper;
 #if ENABLE(FILTERS)
-        RenderSVGResourceFilter* filter;
+        RenderSVGResourceFilter *filter;
 #endif
-        RenderSVGResourceMasker* masker;
+        RenderSVGResourceMasker *masker;
     };
 
     // From SVG 1.1 2nd Edition
     // marker: line, path, polygon, polyline
-    struct MarkerData {
+    struct MarkerData
+    {
         MarkerData()
-            : markerStart(0)
-            , markerMid(0)
-            , markerEnd(0)
+            : markerStart( 0 )
+            , markerMid( 0 )
+            , markerEnd( 0 )
         {
         }
 
         static PassOwnPtr<MarkerData> create()
         {
-            return adoptPtr(new MarkerData);
+            return adoptPtr( new MarkerData );
         }
 
-        RenderSVGResourceMarker* markerStart;
-        RenderSVGResourceMarker* markerMid;
-        RenderSVGResourceMarker* markerEnd;
+        RenderSVGResourceMarker *markerStart;
+        RenderSVGResourceMarker *markerMid;
+        RenderSVGResourceMarker *markerEnd;
     };
 
     // From SVG 1.1 2nd Edition
     // fill:       'shapes' and 'text content elements'
     // stroke:     'shapes' and 'text content elements'
     // -> altGlyph, circle, ellipse, line, path, polygon, polyline, rect, text, textPath, tref, tspan
-    struct FillStrokeData {
+    struct FillStrokeData
+    {
         FillStrokeData()
-            : fill(0)
-            , stroke(0)
+            : fill( 0 )
+            , stroke( 0 )
         {
         }
 
         static PassOwnPtr<FillStrokeData> create()
         {
-            return adoptPtr(new FillStrokeData);
+            return adoptPtr( new FillStrokeData );
         }
 
-        RenderSVGResourceContainer* fill;
-        RenderSVGResourceContainer* stroke;
+        RenderSVGResourceContainer *fill;
+        RenderSVGResourceContainer *stroke;
     };
 
     OwnPtr<ClipperFilterMaskerData> m_clipperFilterMaskerData;
     OwnPtr<MarkerData> m_markerData;
     OwnPtr<FillStrokeData> m_fillStrokeData;
-    RenderSVGResourceContainer* m_linkedResource;
+    RenderSVGResourceContainer *m_linkedResource;
 };
 
 }

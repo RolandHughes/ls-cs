@@ -29,165 +29,188 @@
 
 #include <algorithm>
 
-bool QStringList::contains(const QString &str, Qt::CaseSensitivity cs) const
+bool QStringList::contains( const QString &str, Qt::CaseSensitivity cs ) const
 {
-   for (int i = 0; i < this->size(); ++i) {
-      const QString &string = this->at(i);
+    for ( int i = 0; i < this->size(); ++i )
+    {
+        const QString &string = this->at( i );
 
-      if (string.length() == str.length() && str.compare(string, cs) == 0) {
-         return true;
-      }
-   }
+        if ( string.length() == str.length() && str.compare( string, cs ) == 0 )
+        {
+            return true;
+        }
+    }
 
-   return false;
+    return false;
 }
 
-QStringList QStringList::filter(const QString &str, Qt::CaseSensitivity cs) const
+QStringList QStringList::filter( const QString &str, Qt::CaseSensitivity cs ) const
 {
-   QStringList res;
+    QStringList res;
 
-   for (int i = 0; i < this->size(); ++i) {
+    for ( int i = 0; i < this->size(); ++i )
+    {
 
-      if (this->at(i).indexOf(str, cs) != -1) {
-         res << this->at(i);
-      }
-   }
+        if ( this->at( i ).indexOf( str, cs ) != -1 )
+        {
+            res << this->at( i );
+        }
+    }
 
-   return res;
+    return res;
 }
 
-QStringList &QStringList::replaceInStrings(const QString &before, const QString &after, Qt::CaseSensitivity cs)
+QStringList &QStringList::replaceInStrings( const QString &before, const QString &after, Qt::CaseSensitivity cs )
 {
-   for (int i = 0; i < this->size(); ++i) {
-      (*this)[i].replace(before, after, cs);
-   }
+    for ( int i = 0; i < this->size(); ++i )
+    {
+        ( *this )[i].replace( before, after, cs );
+    }
 
-   return *this;
+    return *this;
 }
 
-QString QStringList::join(const QString &sep) const
+QString QStringList::join( const QString &sep ) const
 {
-   QString retval;
+    QString retval;
 
-   if (this->isEmpty()) {
-      return retval;
-   }
+    if ( this->isEmpty() )
+    {
+        return retval;
+    }
 
-   for (int i = 0; i < this->size(); ++i) {
-      if (i) {
-         retval += sep;
-      }
+    for ( int i = 0; i < this->size(); ++i )
+    {
+        if ( i )
+        {
+            retval += sep;
+        }
 
-      retval += this->at(i);
-   }
+        retval += this->at( i );
+    }
 
-   return retval;
+    return retval;
 }
 
 void QStringList::sort()
 {
-   std::sort(this->begin(), this->end());
+    std::sort( this->begin(), this->end() );
 }
 
-QStringList QStringList::filter(const QRegularExpression8 &rx) const
+QStringList QStringList::filter( const QRegularExpression8 &rx ) const
 {
-   QStringList res;
+    QStringList res;
 
-   for (int i = 0; i < this->size(); ++i) {
-      if (this->at(i).contains(rx)) {
-         res << this->at(i);
-      }
-   }
+    for ( int i = 0; i < this->size(); ++i )
+    {
+        if ( this->at( i ).contains( rx ) )
+        {
+            res << this->at( i );
+        }
+    }
 
-   return res;
+    return res;
 }
 
-QStringList &QStringList::replaceInStrings(const QRegularExpression8 &rx, const QString &after)
+QStringList &QStringList::replaceInStrings( const QRegularExpression8 &rx, const QString &after )
 {
-   for (int i = 0; i < this->size(); ++i) {
-      (*this)[i].replace(rx, after);
-   }
+    for ( int i = 0; i < this->size(); ++i )
+    {
+        ( *this )[i].replace( rx, after );
+    }
 
-   return *this;
+    return *this;
 }
 
-int QStringList::indexOf(const QRegularExpression8 &regExp, int from) const
+int QStringList::indexOf( const QRegularExpression8 &regExp, int from ) const
 {
-   if (from < 0) {
-      from = qMax(from + this->size(), 0);
-   }
+    if ( from < 0 )
+    {
+        from = qMax( from + this->size(), 0 );
+    }
 
-   QPatternOptionFlags options = QPatternOption::ExactMatchOption | regExp.patternOptions();
-   QRegularExpression8 re(regExp.pattern(), options);
+    QPatternOptionFlags options = QPatternOption::ExactMatchOption | regExp.patternOptions();
+    QRegularExpression8 re( regExp.pattern(), options );
 
-   for (int i = from; i < this->size(); ++i) {
+    for ( int i = from; i < this->size(); ++i )
+    {
 
-      if (re.match(this->at(i)).hasMatch()) {
-         return i;
-      }
-   }
+        if ( re.match( this->at( i ) ).hasMatch() )
+        {
+            return i;
+        }
+    }
 
-   return -1;
+    return -1;
 }
 
-int QStringList::lastIndexOf( const QRegularExpression8 &regExp, int from) const
+int QStringList::lastIndexOf( const QRegularExpression8 &regExp, int from ) const
 {
-   if (from < 0) {
-      from += this->size();
+    if ( from < 0 )
+    {
+        from += this->size();
 
-   } else if (from >= this->size()) {
-      from = this->size() - 1;
-   }
+    }
+    else if ( from >= this->size() )
+    {
+        from = this->size() - 1;
+    }
 
-   QPatternOptionFlags options = QPatternOption::ExactMatchOption | regExp.patternOptions();
-   QRegularExpression8 re(regExp.pattern(), options);
+    QPatternOptionFlags options = QPatternOption::ExactMatchOption | regExp.patternOptions();
+    QRegularExpression8 re( regExp.pattern(), options );
 
-   for (int i = from; i >= 0; --i) {
-      if (re.match(this->at(i)).hasMatch()) {
-         return i;
-      }
-   }
+    for ( int i = from; i >= 0; --i )
+    {
+        if ( re.match( this->at( i ) ).hasMatch() )
+        {
+            return i;
+        }
+    }
 
-   return -1;
+    return -1;
 }
 
 int QStringList::removeDuplicates()
 {
-   int n = this->size();
-   int j = 0;
+    int n = this->size();
+    int j = 0;
 
-   QSet<QString> seen;
-   seen.reserve(n);
+    QSet<QString> seen;
+    seen.reserve( n );
 
-   for (int i = 0; i < n; ++i) {
-      const QString &s = this->at(i);
+    for ( int i = 0; i < n; ++i )
+    {
+        const QString &s = this->at( i );
 
-      if (seen.contains(s)) {
-         continue;
-      }
+        if ( seen.contains( s ) )
+        {
+            continue;
+        }
 
-      seen.insert(s);
+        seen.insert( s );
 
-      if (j != i) {
-         (*this)[j] = s;
-      }
+        if ( j != i )
+        {
+            ( *this )[j] = s;
+        }
 
-      ++j;
-   }
+        ++j;
+    }
 
-   if (n != j) {
-      this->erase(this->begin() + j, this->end());
-   }
+    if ( n != j )
+    {
+        this->erase( this->begin() + j, this->end() );
+    }
 
-   return n - j;
+    return n - j;
 }
 
-QDataStream &operator>>(QDataStream &stream, QStringList &list)
+QDataStream &operator>>( QDataStream &stream, QStringList &list )
 {
-   return operator>>(stream, static_cast<QList<QString> &>(list));
+    return operator>>( stream, static_cast<QList<QString> &>( list ) );
 }
 
-QDataStream &operator<<(QDataStream &stream, const QStringList &list)
+QDataStream &operator<<( QDataStream &stream, const QStringList &list )
 {
-   return operator<<(stream, static_cast<const QList<QString> &>(list));
+    return operator<<( stream, static_cast<const QList<QString> &>( list ) );
 }

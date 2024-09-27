@@ -37,7 +37,7 @@ public:
     ~QNetworkManagerEnginePlugin();
 
     QStringList keys() const;
-    QBearerEngine *create(const QString &key) const;
+    QBearerEngine *create( const QString &key ) const;
 };
 
 QNetworkManagerEnginePlugin::QNetworkManagerEnginePlugin()
@@ -50,24 +50,30 @@ QNetworkManagerEnginePlugin::~QNetworkManagerEnginePlugin()
 
 QStringList QNetworkManagerEnginePlugin::keys() const
 {
-    return QStringList() << QLatin1String("networkmanager");
+    return QStringList() << QLatin1String( "networkmanager" );
 }
 
-QBearerEngine *QNetworkManagerEnginePlugin::create(const QString &key) const
+QBearerEngine *QNetworkManagerEnginePlugin::create( const QString &key ) const
 {
-    if (key == QLatin1String("networkmanager")) {
+    if ( key == QLatin1String( "networkmanager" ) )
+    {
         QNetworkManagerEngine *engine = new QNetworkManagerEngine;
-        if (engine->networkManagerAvailable())
+
+        if ( engine->networkManagerAvailable() )
+        {
             return engine;
+        }
         else
+        {
             delete engine;
+        }
     }
 
     return 0;
 }
 
-Q_EXPORT_STATIC_PLUGIN(QNetworkManagerEnginePlugin)
-Q_EXPORT_PLUGIN2(qnmbearer, QNetworkManagerEnginePlugin)
+Q_EXPORT_STATIC_PLUGIN( QNetworkManagerEnginePlugin )
+Q_EXPORT_PLUGIN2( qnmbearer, QNetworkManagerEnginePlugin )
 
 QT_END_NAMESPACE
 

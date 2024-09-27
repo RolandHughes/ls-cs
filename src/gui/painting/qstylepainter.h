@@ -30,77 +30,82 @@
 
 class QStylePainter : public QPainter
 {
- public:
-   QStylePainter()
-      : QPainter(), m_widget(nullptr), m_wstyle(nullptr)
-   {
-   }
+public:
+    QStylePainter()
+        : QPainter(), m_widget( nullptr ), m_wstyle( nullptr )
+    {
+    }
 
-   explicit QStylePainter(QWidget *widget) {
-      begin(widget, widget);
-   }
+    explicit QStylePainter( QWidget *widget )
+    {
+        begin( widget, widget );
+    }
 
-   QStylePainter(QPaintDevice *device, QWidget *widget) {
-      begin(device, widget);
-   }
+    QStylePainter( QPaintDevice *device, QWidget *widget )
+    {
+        begin( device, widget );
+    }
 
-   QStylePainter(const QStylePainter &) = delete;
-   QStylePainter &operator=(const QStylePainter &) = delete;
+    QStylePainter( const QStylePainter & ) = delete;
+    QStylePainter &operator=( const QStylePainter & ) = delete;
 
-   bool begin(QWidget *widget) {
-      return begin(widget, widget);
-   }
+    bool begin( QWidget *widget )
+    {
+        return begin( widget, widget );
+    }
 
-   bool begin(QPaintDevice *device, QWidget *widget) {
-      Q_ASSERT_X(widget, "QStylePainter::QStylePainter", "Widget must be non-zero");
+    bool begin( QPaintDevice *device, QWidget *widget )
+    {
+        Q_ASSERT_X( widget, "QStylePainter::QStylePainter", "Widget must be non-zero" );
 
-      m_widget = widget;
-      m_wstyle = widget->style();
+        m_widget = widget;
+        m_wstyle = widget->style();
 
-      return QPainter::begin(device);
-   };
+        return QPainter::begin( device );
+    };
 
-   inline void drawPrimitive(QStyle::PrimitiveElement pe, const QStyleOption &option);
-   inline void drawControl(QStyle::ControlElement ce, const QStyleOption &option);
-   inline void drawComplexControl(QStyle::ComplexControl cc, const QStyleOptionComplex &option);
-   inline void drawItemText(const QRect &rect, int flags, const QPalette &palette, bool enabled,
-      const QString &text, QPalette::ColorRole textRole = QPalette::NoRole);
+    inline void drawPrimitive( QStyle::PrimitiveElement pe, const QStyleOption &option );
+    inline void drawControl( QStyle::ControlElement ce, const QStyleOption &option );
+    inline void drawComplexControl( QStyle::ComplexControl cc, const QStyleOptionComplex &option );
+    inline void drawItemText( const QRect &rect, int flags, const QPalette &palette, bool enabled,
+                              const QString &text, QPalette::ColorRole textRole = QPalette::NoRole );
 
-   inline void drawItemPixmap(const QRect &rect, int flags, const QPixmap &pixmap);
+    inline void drawItemPixmap( const QRect &rect, int flags, const QPixmap &pixmap );
 
-   QStyle *style() const {
-      return m_wstyle;
-   }
+    QStyle *style() const
+    {
+        return m_wstyle;
+    }
 
- private:
-   QWidget *m_widget;
-   QStyle  *m_wstyle;
+private:
+    QWidget *m_widget;
+    QStyle  *m_wstyle;
 };
 
-void QStylePainter::drawPrimitive(QStyle::PrimitiveElement pe, const QStyleOption &option)
+void QStylePainter::drawPrimitive( QStyle::PrimitiveElement pe, const QStyleOption &option )
 {
-   m_wstyle->drawPrimitive(pe, &option, this, m_widget);
+    m_wstyle->drawPrimitive( pe, &option, this, m_widget );
 }
 
-void QStylePainter::drawControl(QStyle::ControlElement ce, const QStyleOption &option)
+void QStylePainter::drawControl( QStyle::ControlElement ce, const QStyleOption &option )
 {
-   m_wstyle->drawControl(ce, &option, this, m_widget);
+    m_wstyle->drawControl( ce, &option, this, m_widget );
 }
 
-void QStylePainter::drawComplexControl(QStyle::ComplexControl cc, const QStyleOptionComplex &option)
+void QStylePainter::drawComplexControl( QStyle::ComplexControl cc, const QStyleOptionComplex &option )
 {
-   m_wstyle->drawComplexControl(cc, &option, this, m_widget);
+    m_wstyle->drawComplexControl( cc, &option, this, m_widget );
 }
 
-void QStylePainter::drawItemText(const QRect &rect, int flags, const QPalette &pal, bool enabled,
-            const QString &text, QPalette::ColorRole textRole)
+void QStylePainter::drawItemText( const QRect &rect, int flags, const QPalette &pal, bool enabled,
+                                  const QString &text, QPalette::ColorRole textRole )
 {
-   m_wstyle->drawItemText(this, rect, flags, pal, enabled, text, textRole);
+    m_wstyle->drawItemText( this, rect, flags, pal, enabled, text, textRole );
 }
 
-void QStylePainter::drawItemPixmap(const QRect &rect, int flags, const QPixmap &pixmap)
+void QStylePainter::drawItemPixmap( const QRect &rect, int flags, const QPixmap &pixmap )
 {
-   m_wstyle->drawItemPixmap(this, rect, flags, pixmap);
+    m_wstyle->drawItemPixmap( this, rect, flags, pixmap );
 }
 
 #endif // QSTYLEPAINTER_H

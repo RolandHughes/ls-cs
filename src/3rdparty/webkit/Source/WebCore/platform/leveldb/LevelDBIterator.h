@@ -33,26 +33,29 @@
 #include <OwnPtr.h>
 #include <Vector.h>
 
-namespace leveldb {
+namespace leveldb
+{
 class Iterator;
 }
 
-namespace WebCore {
+namespace WebCore
+{
 
-class LevelDBIterator {
+class LevelDBIterator
+{
 public:
     ~LevelDBIterator();
 
     bool isValid() const;
     void seekToLast();
-    void seek(const Vector<char>& target);
+    void seek( const Vector<char> &target );
     void next();
     void prev();
     LevelDBSlice key() const;
     LevelDBSlice value() const;
 
 private:
-    LevelDBIterator(PassOwnPtr<leveldb::Iterator>);
+    LevelDBIterator( PassOwnPtr<leveldb::Iterator> );
     friend class LevelDBDatabase;
 
     OwnPtr<leveldb::Iterator> m_iterator;

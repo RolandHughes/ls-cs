@@ -32,35 +32,36 @@
 
 class QGstreamerVideoRenderer : public QVideoRendererControl, public QGstreamerVideoRendererInterface
 {
-   CS_OBJECT_MULTIPLE(QGstreamerVideoRenderer, QVideoRendererControl)
-   CS_INTERFACES(QGstreamerVideoRendererInterface)
+    CS_OBJECT_MULTIPLE( QGstreamerVideoRenderer, QVideoRendererControl )
+    CS_INTERFACES( QGstreamerVideoRendererInterface )
 
- public:
-   QGstreamerVideoRenderer(QObject *parent = nullptr);
-   virtual ~QGstreamerVideoRenderer();
+public:
+    QGstreamerVideoRenderer( QObject *parent = nullptr );
+    virtual ~QGstreamerVideoRenderer();
 
-   QAbstractVideoSurface *surface() const override;
-   void setSurface(QAbstractVideoSurface *surface) override;
+    QAbstractVideoSurface *surface() const override;
+    void setSurface( QAbstractVideoSurface *surface ) override;
 
-   GstElement *videoSink() override;
+    GstElement *videoSink() override;
 
-   void stopRenderer() override;
-   bool isReady() const override {
-      return m_surface != nullptr;
-   }
+    void stopRenderer() override;
+    bool isReady() const override
+    {
+        return m_surface != nullptr;
+    }
 
-   CS_SIGNAL_1(Public, void sinkChanged())
-   CS_SIGNAL_2(sinkChanged)
+    CS_SIGNAL_1( Public, void sinkChanged() )
+    CS_SIGNAL_2( sinkChanged )
 
-   CS_SIGNAL_1(Public, void readyChanged(bool isReady))
-   CS_SIGNAL_2(readyChanged, isReady)
+    CS_SIGNAL_1( Public, void readyChanged( bool isReady ) )
+    CS_SIGNAL_2( readyChanged, isReady )
 
- private:
-   CS_SLOT_1(Private, void handleFormatChange())
-   CS_SLOT_2(handleFormatChange)
+private:
+    CS_SLOT_1( Private, void handleFormatChange() )
+    CS_SLOT_2( handleFormatChange )
 
-   QVideoSurfaceGstSink *m_videoSink;
-   QPointer<QAbstractVideoSurface> m_surface;
+    QVideoSurfaceGstSink *m_videoSink;
+    QPointer<QAbstractVideoSurface> m_surface;
 };
 
 #endif

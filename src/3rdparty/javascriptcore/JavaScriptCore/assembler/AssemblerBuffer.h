@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef AssemblerBuffer_h
@@ -36,135 +36,160 @@
 #include <wtf/Assertions.h>
 #include <wtf/FastMalloc.h>
 
-namespace JSC {
+namespace JSC
+{
 
-    class AssemblerBuffer {
-        static const int inlineCapacity = 256;
-    public:
-        AssemblerBuffer()
-            : m_buffer(m_inlineBuffer)
-            , m_capacity(inlineCapacity)
-            , m_size(0)
+class AssemblerBuffer
+{
+    static const int inlineCapacity = 256;
+public:
+    AssemblerBuffer()
+        : m_buffer( m_inlineBuffer )
+        , m_capacity( inlineCapacity )
+        , m_size( 0 )
+    {
+    }
+
+    ~AssemblerBuffer()
+    {
+        if ( m_buffer != m_inlineBuffer )
         {
+            fastFree( m_buffer );
+        }
+    }
+
+    void ensureSpace( int space )
+    {
+        if ( m_size > m_capacity - space )
+        {
+            grow();
+        }
+    }
+
+    bool isAligned( int alignment ) const
+    {
+        return !( m_size & ( alignment - 1 ) );
+    }
+
+    void putByteUnchecked( int value )
+    {
+        ASSERT( !( m_size > m_capacity - 4 ) );
+        m_buffer[m_size] = value;
+        m_size++;
+    }
+
+    void putByte( int value )
+    {
+        if ( m_size > m_capacity - 4 )
+        {
+            grow();
         }
 
-        ~AssemblerBuffer()
+        putByteUnchecked( value );
+    }
+
+    void putShortUnchecked( int value )
+    {
+        ASSERT( !( m_size > m_capacity - 4 ) );
+        *reinterpret_cast<short *>( &m_buffer[m_size] ) = value;
+        m_size += 2;
+    }
+
+    void putShort( int value )
+    {
+        if ( m_size > m_capacity - 4 )
         {
-            if (m_buffer != m_inlineBuffer)
-                fastFree(m_buffer);
+            grow();
         }
 
-        void ensureSpace(int space)
+        putShortUnchecked( value );
+    }
+
+    void putIntUnchecked( int value )
+    {
+        ASSERT( !( m_size > m_capacity - 4 ) );
+        *reinterpret_cast<int *>( &m_buffer[m_size] ) = value;
+        m_size += 4;
+    }
+
+    void putInt64Unchecked( int64_t value )
+    {
+        ASSERT( !( m_size > m_capacity - 8 ) );
+        *reinterpret_cast<int64_t *>( &m_buffer[m_size] ) = value;
+        m_size += 8;
+    }
+
+    void putInt( int value )
+    {
+        if ( m_size > m_capacity - 4 )
         {
-            if (m_size > m_capacity - space)
-                grow();
+            grow();
         }
 
-        bool isAligned(int alignment) const
+        putIntUnchecked( value );
+    }
+
+    void *data() const
+    {
+        return m_buffer;
+    }
+
+    int size() const
+    {
+        return m_size;
+    }
+
+    void *executableCopy( ExecutablePool *allocator )
+    {
+        if ( !m_size )
         {
-            return !(m_size & (alignment - 1));
+            return 0;
         }
 
-        void putByteUnchecked(int value)
+        void *result = allocator->alloc( m_size );
+
+        if ( !result )
         {
-            ASSERT(!(m_size > m_capacity - 4));
-            m_buffer[m_size] = value;
-            m_size++;
+            return 0;
         }
 
-        void putByte(int value)
+        ExecutableAllocator::makeWritable( result, m_size );
+
+        return memcpy( result, m_buffer, m_size );
+    }
+
+protected:
+    void append( const char *data, int size )
+    {
+        if ( m_size > m_capacity - size )
         {
-            if (m_size > m_capacity - 4)
-                grow();
-            putByteUnchecked(value);
+            grow( size );
         }
 
-        void putShortUnchecked(int value)
+        memcpy( m_buffer + m_size, data, size );
+        m_size += size;
+    }
+
+    void grow( int extraCapacity = 0 )
+    {
+        m_capacity += m_capacity / 2 + extraCapacity;
+
+        if ( m_buffer == m_inlineBuffer )
         {
-            ASSERT(!(m_size > m_capacity - 4));
-            *reinterpret_cast<short*>(&m_buffer[m_size]) = value;
-            m_size += 2;
+            char *newBuffer = static_cast<char *>( fastMalloc( m_capacity ) );
+            m_buffer = static_cast<char *>( memcpy( newBuffer, m_buffer, m_size ) );
         }
-
-        void putShort(int value)
+        else
         {
-            if (m_size > m_capacity - 4)
-                grow();
-            putShortUnchecked(value);
+            m_buffer = static_cast<char *>( fastRealloc( m_buffer, m_capacity ) );
         }
+    }
 
-        void putIntUnchecked(int value)
-        {
-            ASSERT(!(m_size > m_capacity - 4));
-            *reinterpret_cast<int*>(&m_buffer[m_size]) = value;
-            m_size += 4;
-        }
-
-        void putInt64Unchecked(int64_t value)
-        {
-            ASSERT(!(m_size > m_capacity - 8));
-            *reinterpret_cast<int64_t*>(&m_buffer[m_size]) = value;
-            m_size += 8;
-        }
-
-        void putInt(int value)
-        {
-            if (m_size > m_capacity - 4)
-                grow();
-            putIntUnchecked(value);
-        }
-
-        void* data() const
-        {
-            return m_buffer;
-        }
-
-        int size() const
-        {
-            return m_size;
-        }
-
-        void* executableCopy(ExecutablePool* allocator)
-        {
-            if (!m_size)
-                return 0;
-
-            void* result = allocator->alloc(m_size);
-
-            if (!result)
-                return 0;
-
-            ExecutableAllocator::makeWritable(result, m_size);
-
-            return memcpy(result, m_buffer, m_size);
-        }
-
-    protected:
-        void append(const char* data, int size)
-        {
-            if (m_size > m_capacity - size)
-                grow(size);
-
-            memcpy(m_buffer + m_size, data, size);
-            m_size += size;
-        }
-
-        void grow(int extraCapacity = 0)
-        {
-            m_capacity += m_capacity / 2 + extraCapacity;
-
-            if (m_buffer == m_inlineBuffer) {
-                char* newBuffer = static_cast<char*>(fastMalloc(m_capacity));
-                m_buffer = static_cast<char*>(memcpy(newBuffer, m_buffer, m_size));
-            } else
-                m_buffer = static_cast<char*>(fastRealloc(m_buffer, m_capacity));
-        }
-
-        char m_inlineBuffer[inlineCapacity];
-        char* m_buffer;
-        int m_capacity;
-        int m_size;
-    };
+    char m_inlineBuffer[inlineCapacity];
+    char *m_buffer;
+    int m_capacity;
+    int m_size;
+};
 
 } // namespace JSC
 

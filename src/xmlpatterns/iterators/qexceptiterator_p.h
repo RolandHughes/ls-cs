@@ -26,28 +26,29 @@
 
 #include <qitem_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class ExceptIterator : public Item::Iterator
 {
- public:
+public:
 
-   ExceptIterator(const Item::Iterator::Ptr &it1, const Item::Iterator::Ptr &it2);
+    ExceptIterator( const Item::Iterator::Ptr &it1, const Item::Iterator::Ptr &it2 );
 
-   Item next() override;
-   Item current() const override;
-   xsInteger position() const override;
-   Item::Iterator::Ptr copy() const override;
+    Item next() override;
+    Item current() const override;
+    xsInteger position() const override;
+    Item::Iterator::Ptr copy() const override;
 
- private:
-   inline Item fromFirstOperand();
+private:
+    inline Item fromFirstOperand();
 
-   const Item::Iterator::Ptr m_it1;
-   const Item::Iterator::Ptr m_it2;
-   Item m_current;
-   xsInteger m_position;
-   Item m_node1;
-   Item m_node2;
+    const Item::Iterator::Ptr m_it1;
+    const Item::Iterator::Ptr m_it2;
+    Item m_current;
+    xsInteger m_position;
+    Item m_node1;
+    Item m_node2;
 };
 
 }

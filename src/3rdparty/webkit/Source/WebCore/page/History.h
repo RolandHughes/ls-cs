@@ -31,41 +31,48 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Frame;
 class ScriptExecutionContext;
 class SerializedScriptValue;
 typedef int ExceptionCode;
 
-class History : public RefCounted<History> {
+class History : public RefCounted<History>
+{
 public:
-    static PassRefPtr<History> create(Frame* frame) { return adoptRef(new History(frame)); }
-    
-    Frame* frame() const;
+    static PassRefPtr<History> create( Frame *frame )
+    {
+        return adoptRef( new History( frame ) );
+    }
+
+    Frame *frame() const;
     void disconnectFrame();
 
     unsigned length() const;
     void back();
     void forward();
-    void go(int distance);
+    void go( int distance );
 
-    void back(ScriptExecutionContext*);
-    void forward(ScriptExecutionContext*);
-    void go(ScriptExecutionContext*, int distance);
+    void back( ScriptExecutionContext * );
+    void forward( ScriptExecutionContext * );
+    void go( ScriptExecutionContext *, int distance );
 
-    enum StateObjectType {
+    enum StateObjectType
+    {
         StateObjectPush,
         StateObjectReplace
     };
-    void stateObjectAdded(PassRefPtr<SerializedScriptValue>, const String& title, const String& url, StateObjectType, ExceptionCode&);
+    void stateObjectAdded( PassRefPtr<SerializedScriptValue>, const String &title, const String &url, StateObjectType,
+                           ExceptionCode & );
 
 private:
-    History(Frame*);
+    History( Frame * );
 
-    KURL urlForState(const String& url);
+    KURL urlForState( const String &url );
 
-    Frame* m_frame;
+    Frame *m_frame;
 };
 
 } // namespace WebCore

@@ -33,22 +33,22 @@ class QXmlResultItemsPrivate;
 
 class Q_XMLPATTERNS_EXPORT QXmlResultItems
 {
- public:
-   QXmlResultItems();
-   virtual ~QXmlResultItems();
+public:
+    QXmlResultItems();
+    virtual ~QXmlResultItems();
 
-   bool hasError() const;
-   QXmlItem next();
-   QXmlItem current() const;
+    bool hasError() const;
+    QXmlItem next();
+    QXmlItem current() const;
 
- private:
-   friend class QXmlQuery;
-   Q_DECLARE_PRIVATE(QXmlResultItems)
+private:
+    friend class QXmlQuery;
+    Q_DECLARE_PRIVATE( QXmlResultItems )
 
-   QXmlResultItems(const QXmlResultItems &) = delete;
-   QXmlResultItems &operator=(const QXmlResultItems &) = delete;
+    QXmlResultItems( const QXmlResultItems & ) = delete;
+    QXmlResultItems &operator=( const QXmlResultItems & ) = delete;
 
-   QScopedPointer<QXmlResultItemsPrivate> d_ptr;
+    QScopedPointer<QXmlResultItemsPrivate> d_ptr;
 };
 
 #endif

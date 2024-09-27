@@ -35,36 +35,48 @@
 
 #include "WorkerContext.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class MessageEvent;
-    class SharedWorkerThread;
+class MessageEvent;
+class SharedWorkerThread;
 
-    class SharedWorkerContext : public WorkerContext {
-    public:
-        typedef WorkerContext Base;
-        static PassRefPtr<SharedWorkerContext> create(const String& name, const KURL& url, const String& userAgent, SharedWorkerThread* thread)
-        {
-            return adoptRef(new SharedWorkerContext(name, url, userAgent, thread));
-        }
-        virtual ~SharedWorkerContext();
+class SharedWorkerContext : public WorkerContext
+{
+public:
+    typedef WorkerContext Base;
+    static PassRefPtr<SharedWorkerContext> create( const String &name, const KURL &url, const String &userAgent,
+            SharedWorkerThread *thread )
+    {
+        return adoptRef( new SharedWorkerContext( name, url, userAgent, thread ) );
+    }
+    virtual ~SharedWorkerContext();
 
-        virtual bool isSharedWorkerContext() const { return true; }
+    virtual bool isSharedWorkerContext() const
+    {
+        return true;
+    }
 
-        // EventTarget
-        virtual SharedWorkerContext* toSharedWorkerContext() { return this; }
+    // EventTarget
+    virtual SharedWorkerContext *toSharedWorkerContext()
+    {
+        return this;
+    }
 
-        // Setters/Getters for attributes in SharedWorkerContext.idl
-        DEFINE_ATTRIBUTE_EVENT_LISTENER(connect);
-        String name() const { return m_name; }
+    // Setters/Getters for attributes in SharedWorkerContext.idl
+    DEFINE_ATTRIBUTE_EVENT_LISTENER( connect );
+    String name() const
+    {
+        return m_name;
+    }
 
-        SharedWorkerThread* thread();
-    private:
-        SharedWorkerContext(const String& name, const KURL&, const String&, SharedWorkerThread*);
-        String m_name;
-    };
+    SharedWorkerThread *thread();
+private:
+    SharedWorkerContext( const String &name, const KURL &, const String &, SharedWorkerThread * );
+    String m_name;
+};
 
-    PassRefPtr<MessageEvent> createConnectEvent(PassRefPtr<MessagePort>);
+PassRefPtr<MessageEvent> createConnectEvent( PassRefPtr<MessagePort> );
 
 } // namespace WebCore
 

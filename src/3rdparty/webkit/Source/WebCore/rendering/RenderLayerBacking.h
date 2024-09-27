@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef RenderLayerBacking_h
@@ -35,12 +35,14 @@
 #include "RenderLayer.h"
 #include "TransformationMatrix.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class KeyframeList;
 class RenderLayerCompositor;
 
-enum CompositingLayerType {
+enum CompositingLayerType
+{
     NormalCompositingLayer, // non-tiled layer with backing store
     TiledCompositingLayer, // tiled layer (always has backing store)
     MediaCompositingLayer, // layer that contains an image, video, webGL or plugin
@@ -50,44 +52,79 @@ enum CompositingLayerType {
 // RenderLayerBacking controls the compositing behavior for a single RenderLayer.
 // It holds the various GraphicsLayers, and makes decisions about intra-layer rendering
 // optimizations.
-// 
+//
 // There is one RenderLayerBacking for each RenderLayer that is composited.
 
-class RenderLayerBacking : public GraphicsLayerClient {
-    WTF_MAKE_NONCOPYABLE(RenderLayerBacking); WTF_MAKE_FAST_ALLOCATED;
+class RenderLayerBacking : public GraphicsLayerClient
+{
+    WTF_MAKE_NONCOPYABLE( RenderLayerBacking );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
-    RenderLayerBacking(RenderLayer*);
+    RenderLayerBacking( RenderLayer * );
     ~RenderLayerBacking();
 
-    RenderLayer* owningLayer() const { return m_owningLayer; }
+    RenderLayer *owningLayer() const
+    {
+        return m_owningLayer;
+    }
 
     enum UpdateDepth { CompositingChildren, AllDescendants };
-    void updateAfterLayout(UpdateDepth, bool isUpdateRoot);
-    
+    void updateAfterLayout( UpdateDepth, bool isUpdateRoot );
+
     // Returns true if layer configuration changed.
     bool updateGraphicsLayerConfiguration();
     // Update graphics layer position and bounds.
     void updateGraphicsLayerGeometry(); // make private
     // Update contents and clipping structure.
     void updateDrawsContent();
-    
-    GraphicsLayer* graphicsLayer() const { return m_graphicsLayer.get(); }
+
+    GraphicsLayer *graphicsLayer() const
+    {
+        return m_graphicsLayer.get();
+    }
 
     // Layer to clip children
-    bool hasClippingLayer() const { return m_clippingLayer != 0; }
-    GraphicsLayer* clippingLayer() const { return m_clippingLayer.get(); }
+    bool hasClippingLayer() const
+    {
+        return m_clippingLayer != 0;
+    }
+    GraphicsLayer *clippingLayer() const
+    {
+        return m_clippingLayer.get();
+    }
 
     // Layer to get clipped by ancestor
-    bool hasAncestorClippingLayer() const { return m_ancestorClippingLayer != 0; }
-    GraphicsLayer* ancestorClippingLayer() const { return m_ancestorClippingLayer.get(); }
+    bool hasAncestorClippingLayer() const
+    {
+        return m_ancestorClippingLayer != 0;
+    }
+    GraphicsLayer *ancestorClippingLayer() const
+    {
+        return m_ancestorClippingLayer.get();
+    }
 
-    bool hasContentsLayer() const { return m_foregroundLayer != 0; }
-    GraphicsLayer* foregroundLayer() const { return m_foregroundLayer.get(); }
-    
-    bool hasMaskLayer() const { return m_maskLayer != 0; }
+    bool hasContentsLayer() const
+    {
+        return m_foregroundLayer != 0;
+    }
+    GraphicsLayer *foregroundLayer() const
+    {
+        return m_foregroundLayer.get();
+    }
 
-    GraphicsLayer* parentForSublayers() const { return m_clippingLayer ? m_clippingLayer.get() : m_graphicsLayer.get(); }
-    GraphicsLayer* childForSuperlayers() const { return m_ancestorClippingLayer ? m_ancestorClippingLayer.get() : m_graphicsLayer.get(); }
+    bool hasMaskLayer() const
+    {
+        return m_maskLayer != 0;
+    }
+
+    GraphicsLayer *parentForSublayers() const
+    {
+        return m_clippingLayer ? m_clippingLayer.get() : m_graphicsLayer.get();
+    }
+    GraphicsLayer *childForSuperlayers() const
+    {
+        return m_ancestorClippingLayer ? m_ancestorClippingLayer.get() : m_graphicsLayer.get();
+    }
 
     // RenderLayers with backing normally short-circuit paintLayer() because
     // their content is rendered via callbacks from GraphicsLayer. However, the document
@@ -99,79 +136,95 @@ public:
 
     void setContentsNeedDisplay();
     // r is in the coordinate space of the layer's render object
-    void setContentsNeedDisplayInRect(const IntRect& r);
+    void setContentsNeedDisplayInRect( const IntRect &r );
 
     // Notification from the renderer that its content changed.
-    void contentChanged(RenderLayer::ContentChangeType);
+    void contentChanged( RenderLayer::ContentChangeType );
 
     // Interface to start, finish, suspend and resume animations and transitions
-    bool startTransition(double timeOffset, int property, const RenderStyle* fromStyle, const RenderStyle* toStyle);
-    void transitionPaused(double timeOffset, int property);
-    void transitionFinished(int property);
+    bool startTransition( double timeOffset, int property, const RenderStyle *fromStyle, const RenderStyle *toStyle );
+    void transitionPaused( double timeOffset, int property );
+    void transitionFinished( int property );
 
-    bool startAnimation(double timeOffset, const Animation* anim, const KeyframeList& keyframes);
-    void animationPaused(double timeOffset, const String& name);
-    void animationFinished(const String& name);
+    bool startAnimation( double timeOffset, const Animation *anim, const KeyframeList &keyframes );
+    void animationPaused( double timeOffset, const String &name );
+    void animationFinished( const String &name );
 
-    void suspendAnimations(double time = 0);
+    void suspendAnimations( double time = 0 );
     void resumeAnimations();
 
     IntRect compositedBounds() const;
-    void setCompositedBounds(const IntRect&);
+    void setCompositedBounds( const IntRect & );
     void updateCompositedBounds();
-    
+
     void updateAfterWidgetResize();
 
     // GraphicsLayerClient interface
-    virtual void notifyAnimationStarted(const GraphicsLayer*, double startTime);
-    virtual void notifySyncRequired(const GraphicsLayer*);
+    virtual void notifyAnimationStarted( const GraphicsLayer *, double startTime );
+    virtual void notifySyncRequired( const GraphicsLayer * );
 
-    virtual void paintContents(const GraphicsLayer*, GraphicsContext&, GraphicsLayerPaintingPhase, const IntRect& clip);
+    virtual void paintContents( const GraphicsLayer *, GraphicsContext &, GraphicsLayerPaintingPhase, const IntRect &clip );
 
     virtual bool showDebugBorders() const;
     virtual bool showRepaintCounter() const;
 
     IntRect contentsBox() const;
-    
+
     // For informative purposes only.
     CompositingLayerType compositingLayerType() const;
-    
-    void updateContentsScale(float);
 
-    GraphicsLayer* layerForHorizontalScrollbar() const { return m_layerForHorizontalScrollbar.get(); }
-    GraphicsLayer* layerForVerticalScrollbar() const { return m_layerForVerticalScrollbar.get(); }
-    GraphicsLayer* layerForScrollCorner() const { return m_layerForScrollCorner.get(); }
+    void updateContentsScale( float );
+
+    GraphicsLayer *layerForHorizontalScrollbar() const
+    {
+        return m_layerForHorizontalScrollbar.get();
+    }
+    GraphicsLayer *layerForVerticalScrollbar() const
+    {
+        return m_layerForVerticalScrollbar.get();
+    }
+    GraphicsLayer *layerForScrollCorner() const
+    {
+        return m_layerForScrollCorner.get();
+    }
 
 private:
     void createGraphicsLayer();
     void destroyGraphicsLayer();
 
-    RenderBoxModelObject* renderer() const { return m_owningLayer->renderer(); }
-    RenderLayerCompositor* compositor() const { return m_owningLayer->compositor(); }
+    RenderBoxModelObject *renderer() const
+    {
+        return m_owningLayer->renderer();
+    }
+    RenderLayerCompositor *compositor() const
+    {
+        return m_owningLayer->compositor();
+    }
 
     void updateInternalHierarchy();
-    bool updateClippingLayers(bool needsAncestorClip, bool needsDescendantClip);
-    bool updateOverflowControlsLayers(bool needsHorizontalScrollbarLayer, bool needsVerticalScrollbarLayer, bool needsScrollCornerLayer);
-    bool updateForegroundLayer(bool needsForegroundLayer);
-    bool updateMaskLayer(bool needsMaskLayer);
+    bool updateClippingLayers( bool needsAncestorClip, bool needsDescendantClip );
+    bool updateOverflowControlsLayers( bool needsHorizontalScrollbarLayer, bool needsVerticalScrollbarLayer,
+                                       bool needsScrollCornerLayer );
+    bool updateForegroundLayer( bool needsForegroundLayer );
+    bool updateMaskLayer( bool needsMaskLayer );
     bool requiresHorizontalScrollbarLayer() const;
     bool requiresVerticalScrollbarLayer() const;
     bool requiresScrollCornerLayer() const;
 
     GraphicsLayerPaintingPhase paintingPhaseForPrimaryLayer() const;
-    
+
     IntSize contentOffsetInCompostingLayer() const;
     // Result is transform origin in pixels.
-    FloatPoint3D computeTransformOrigin(const IntRect& borderBox) const;
+    FloatPoint3D computeTransformOrigin( const IntRect &borderBox ) const;
     // Result is perspective origin in pixels.
-    FloatPoint computePerspectiveOrigin(const IntRect& borderBox) const;
+    FloatPoint computePerspectiveOrigin( const IntRect &borderBox ) const;
 
-    void updateLayerOpacity(const RenderStyle*);
-    void updateLayerTransform(const RenderStyle*);
+    void updateLayerOpacity( const RenderStyle * );
+    void updateLayerTransform( const RenderStyle * );
 
     // Return the opacity value that this layer should use for compositing.
-    float compositingOpacity(float rendererOpacity) const;
-    
+    float compositingOpacity( float rendererOpacity ) const;
+
     // Returns true if this compositing layer has no visible content.
     bool isSimpleContainerCompositingLayer() const;
     // Returns true if this layer has content that needs to be rendered by painting into the backing store.
@@ -184,19 +237,19 @@ private:
     const Color rendererBackgroundColor() const;
 
     bool hasNonCompositingDescendants() const;
-    
-    void paintIntoLayer(RenderLayer* rootLayer, GraphicsContext*, const IntRect& paintDirtyRect,
-                    PaintBehavior paintBehavior, GraphicsLayerPaintingPhase, RenderObject* paintingRoot);
 
-    static int graphicsLayerToCSSProperty(AnimatedPropertyID);
-    static AnimatedPropertyID cssToGraphicsLayerProperty(int);
+    void paintIntoLayer( RenderLayer *rootLayer, GraphicsContext *, const IntRect &paintDirtyRect,
+                         PaintBehavior paintBehavior, GraphicsLayerPaintingPhase, RenderObject *paintingRoot );
+
+    static int graphicsLayerToCSSProperty( AnimatedPropertyID );
+    static AnimatedPropertyID cssToGraphicsLayerProperty( int );
 
 #ifndef NDEBUG
     String nameForLayer() const;
 #endif
 
 private:
-    RenderLayer* m_owningLayer;
+    RenderLayer *m_owningLayer;
 
     OwnPtr<GraphicsLayer> m_ancestorClippingLayer; // only used if we are clipped by an ancestor which is not a stacking context
     OwnPtr<GraphicsLayer> m_graphicsLayer;

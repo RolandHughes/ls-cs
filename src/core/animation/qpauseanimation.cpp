@@ -29,21 +29,22 @@
 
 class QPauseAnimationPrivate : public QAbstractAnimationPrivate
 {
- public:
-   QPauseAnimationPrivate() : QAbstractAnimationPrivate(), duration(250) {
-      isPause = true;
-   }
+public:
+    QPauseAnimationPrivate() : QAbstractAnimationPrivate(), duration( 250 )
+    {
+        isPause = true;
+    }
 
-   int duration;
+    int duration;
 };
 
-QPauseAnimation::QPauseAnimation(QObject *parent) : QAbstractAnimation(*new QPauseAnimationPrivate, parent)
+QPauseAnimation::QPauseAnimation( QObject *parent ) : QAbstractAnimation( *new QPauseAnimationPrivate, parent )
 {
 }
 
-QPauseAnimation::QPauseAnimation(int msecs, QObject *parent) : QAbstractAnimation(*new QPauseAnimationPrivate, parent)
+QPauseAnimation::QPauseAnimation( int msecs, QObject *parent ) : QAbstractAnimation( *new QPauseAnimationPrivate, parent )
 {
-   setDuration(msecs);
+    setDuration( msecs );
 }
 
 QPauseAnimation::~QPauseAnimation()
@@ -52,27 +53,28 @@ QPauseAnimation::~QPauseAnimation()
 
 int QPauseAnimation::duration() const
 {
-   Q_D(const QPauseAnimation);
-   return d->duration;
+    Q_D( const QPauseAnimation );
+    return d->duration;
 }
 
-void QPauseAnimation::setDuration(int msecs)
+void QPauseAnimation::setDuration( int msecs )
 {
-   if (msecs < 0) {
-      qWarning("QPauseAnimation::setDuration() Unable to set a negative duration");
-      return;
-   }
+    if ( msecs < 0 )
+    {
+        qWarning( "QPauseAnimation::setDuration() Unable to set a negative duration" );
+        return;
+    }
 
-   Q_D(QPauseAnimation);
-   d->duration = msecs;
+    Q_D( QPauseAnimation );
+    d->duration = msecs;
 }
 
-bool QPauseAnimation::event(QEvent *e)
+bool QPauseAnimation::event( QEvent *e )
 {
-   return QAbstractAnimation::event(e);
+    return QAbstractAnimation::event( e );
 }
 
-void QPauseAnimation::updateCurrentTime(int)
+void QPauseAnimation::updateCurrentTime( int )
 {
 }
 

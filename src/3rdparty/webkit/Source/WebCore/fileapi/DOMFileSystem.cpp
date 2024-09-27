@@ -48,17 +48,18 @@
 #include "ScriptExecutionContext.h"
 #include <wtf/OwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-DOMFileSystem::DOMFileSystem(ScriptExecutionContext* context, const String& name, PassOwnPtr<AsyncFileSystem> asyncFileSystem)
-    : DOMFileSystemBase(context, name, asyncFileSystem)
-    , ActiveDOMObject(context, this)
+DOMFileSystem::DOMFileSystem( ScriptExecutionContext *context, const String &name, PassOwnPtr<AsyncFileSystem> asyncFileSystem )
+    : DOMFileSystemBase( context, name, asyncFileSystem )
+    , ActiveDOMObject( context, this )
 {
 }
 
 PassRefPtr<DirectoryEntry> DOMFileSystem::root()
 {
-    return DirectoryEntry::create(this, DOMFilePath::root);
+    return DirectoryEntry::create( this, DOMFilePath::root );
 }
 
 void DOMFileSystem::stop()
@@ -77,22 +78,24 @@ void DOMFileSystem::contextDestroyed()
     ActiveDOMObject::contextDestroyed();
 }
 
-namespace {
+namespace
+{
 
-class ConvertToFileWriterCallback : public FileWriterBaseCallback {
+class ConvertToFileWriterCallback : public FileWriterBaseCallback
+{
 public:
-    static PassRefPtr<ConvertToFileWriterCallback> create(PassRefPtr<FileWriterCallback> callback)
+    static PassRefPtr<ConvertToFileWriterCallback> create( PassRefPtr<FileWriterCallback> callback )
     {
-        return adoptRef(new ConvertToFileWriterCallback(callback));
+        return adoptRef( new ConvertToFileWriterCallback( callback ) );
     }
 
-    bool handleEvent(FileWriterBase* fileWriterBase)
+    bool handleEvent( FileWriterBase *fileWriterBase )
     {
-        return m_callback->handleEvent(static_cast<FileWriter*>(fileWriterBase));
+        return m_callback->handleEvent( static_cast<FileWriter *>( fileWriterBase ) );
     }
 private:
-    ConvertToFileWriterCallback(PassRefPtr<FileWriterCallback> callback)
-        : m_callback(callback)
+    ConvertToFileWriterCallback( PassRefPtr<FileWriterCallback> callback )
+        : m_callback( callback )
     {
     }
     RefPtr<FileWriterCallback> m_callback;
@@ -100,41 +103,48 @@ private:
 
 }
 
-void DOMFileSystem::createWriter(const FileEntry* fileEntry, PassRefPtr<FileWriterCallback> successCallback, PassRefPtr<ErrorCallback> errorCallback)
+void DOMFileSystem::createWriter( const FileEntry *fileEntry, PassRefPtr<FileWriterCallback> successCallback,
+                                  PassRefPtr<ErrorCallback> errorCallback )
 {
-    ASSERT(fileEntry);
+    ASSERT( fileEntry );
 
-    String platformPath = m_asyncFileSystem->virtualToPlatformPath(fileEntry->fullPath());
+    String platformPath = m_asyncFileSystem->virtualToPlatformPath( fileEntry->fullPath() );
 
-    RefPtr<FileWriter> fileWriter = FileWriter::create(scriptExecutionContext());
-    RefPtr<FileWriterBaseCallback> conversionCallback = ConvertToFileWriterCallback::create(successCallback);
-    OwnPtr<FileWriterBaseCallbacks> callbacks = FileWriterBaseCallbacks::create(fileWriter, conversionCallback, errorCallback);
-    m_asyncFileSystem->createWriter(fileWriter.get(), platformPath, callbacks.release());
+    RefPtr<FileWriter> fileWriter = FileWriter::create( scriptExecutionContext() );
+    RefPtr<FileWriterBaseCallback> conversionCallback = ConvertToFileWriterCallback::create( successCallback );
+    OwnPtr<FileWriterBaseCallbacks> callbacks = FileWriterBaseCallbacks::create( fileWriter, conversionCallback, errorCallback );
+    m_asyncFileSystem->createWriter( fileWriter.get(), platformPath, callbacks.release() );
 }
 
-namespace {
+namespace
+{
 
-class GetPathCallback : public FileSystemCallbacksBase {
+class GetPathCallback : public FileSystemCallbacksBase
+{
 public:
-    static PassOwnPtr<GetPathCallback> create(PassRefPtr<DOMFileSystem> filesystem, const String& path, PassRefPtr<FileCallback> successCallback, PassRefPtr<ErrorCallback> errorCallback)
+    static PassOwnPtr<GetPathCallback> create( PassRefPtr<DOMFileSystem> filesystem, const String &path,
+            PassRefPtr<FileCallback> successCallback, PassRefPtr<ErrorCallback> errorCallback )
     {
-        return adoptPtr(new GetPathCallback(filesystem, path, successCallback, errorCallback));
+        return adoptPtr( new GetPathCallback( filesystem, path, successCallback, errorCallback ) );
     }
 
-    virtual void didReadMetadata(const FileMetadata& metadata)
+    virtual void didReadMetadata( const FileMetadata &metadata )
     {
-        if (!metadata.platformPath.isEmpty())
+        if ( !metadata.platformPath.isEmpty() )
+        {
             m_path = metadata.platformPath;
+        }
 
-        m_filesystem->scheduleCallback(m_successCallback.release(), File::create(m_path));
+        m_filesystem->scheduleCallback( m_successCallback.release(), File::create( m_path ) );
     }
 
 private:
-    GetPathCallback(PassRefPtr<DOMFileSystem> filesystem, const String& path, PassRefPtr<FileCallback> successCallback, PassRefPtr<ErrorCallback> errorCallback)
-        : FileSystemCallbacksBase(errorCallback)
-        , m_filesystem(filesystem)
-        , m_path(path)
-        , m_successCallback(successCallback)
+    GetPathCallback( PassRefPtr<DOMFileSystem> filesystem, const String &path, PassRefPtr<FileCallback> successCallback,
+                     PassRefPtr<ErrorCallback> errorCallback )
+        : FileSystemCallbacksBase( errorCallback )
+        , m_filesystem( filesystem )
+        , m_path( path )
+        , m_successCallback( successCallback )
     {
     }
 
@@ -145,11 +155,12 @@ private:
 
 } // namespace
 
-void DOMFileSystem::createFile(const FileEntry* fileEntry, PassRefPtr<FileCallback> successCallback, PassRefPtr<ErrorCallback> errorCallback)
+void DOMFileSystem::createFile( const FileEntry *fileEntry, PassRefPtr<FileCallback> successCallback,
+                                PassRefPtr<ErrorCallback> errorCallback )
 {
-    String platformPath = m_asyncFileSystem->virtualToPlatformPath(fileEntry->fullPath());
+    String platformPath = m_asyncFileSystem->virtualToPlatformPath( fileEntry->fullPath() );
 
-    m_asyncFileSystem->readMetadata(platformPath, GetPathCallback::create(this, platformPath, successCallback, errorCallback));
+    m_asyncFileSystem->readMetadata( platformPath, GetPathCallback::create( this, platformPath, successCallback, errorCallback ) );
 }
 
 } // namespace WebCore

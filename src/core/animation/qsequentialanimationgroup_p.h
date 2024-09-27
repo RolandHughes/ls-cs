@@ -32,51 +32,53 @@
 
 class QSequentialAnimationGroupPrivate : public QAnimationGroupPrivate
 {
-   Q_DECLARE_PUBLIC(QSequentialAnimationGroup)
+    Q_DECLARE_PUBLIC( QSequentialAnimationGroup )
 
- public:
-   QSequentialAnimationGroupPrivate()
-      : currentAnimation(nullptr), currentAnimationIndex(-1), lastLoop(0) {
-   }
+public:
+    QSequentialAnimationGroupPrivate()
+        : currentAnimation( nullptr ), currentAnimationIndex( -1 ), lastLoop( 0 )
+    {
+    }
 
-   struct AnimationIndex {
-      AnimationIndex()
-         : index(0), timeOffset(0)
-      {}
+    struct AnimationIndex
+    {
+        AnimationIndex()
+            : index( 0 ), timeOffset( 0 )
+        {}
 
-      // index points to the animation at timeOffset, skipping 0 duration animations.
-      // Note that the index semantic is slightly different depending on the direction.
+        // index points to the animation at timeOffset, skipping 0 duration animations.
+        // Note that the index semantic is slightly different depending on the direction.
 
-      int index;       // the index of the animation in timeOffset
-      int timeOffset;  // time offset when the animation at index starts.
-   };
+        int index;       // the index of the animation in timeOffset
+        int timeOffset;  // time offset when the animation at index starts.
+    };
 
-   int animationActualTotalDuration(int index) const;
-   AnimationIndex indexForCurrentTime() const;
+    int animationActualTotalDuration( int index ) const;
+    AnimationIndex indexForCurrentTime() const;
 
-   void setCurrentAnimation(int index, bool intermediate = false);
-   void activateCurrentAnimation(bool intermediate = false);
+    void setCurrentAnimation( int index, bool intermediate = false );
+    void activateCurrentAnimation( bool intermediate = false );
 
-   void animationInsertedAt(int index) override;
-   void animationRemoved(int index, QAbstractAnimation *anim) override;
+    void animationInsertedAt( int index ) override;
+    void animationRemoved( int index, QAbstractAnimation *anim ) override;
 
-   void restart();
-   bool atEnd() const;
+    void restart();
+    bool atEnd() const;
 
-   // handle time changes
-   void rewindForwards(const AnimationIndex &newAnimationIndex);
-   void advanceForwards(const AnimationIndex &newAnimationIndex);
+    // handle time changes
+    void rewindForwards( const AnimationIndex &newAnimationIndex );
+    void advanceForwards( const AnimationIndex &newAnimationIndex );
 
-   void _q_uncontrolledAnimationFinished();
+    void _q_uncontrolledAnimationFinished();
 
-   QAbstractAnimation *currentAnimation;
-   int currentAnimationIndex;
+    QAbstractAnimation *currentAnimation;
+    int currentAnimationIndex;
 
-   // this is the actual duration of uncontrolled animations
-   // it helps seeking and even going forward
-   QList<int> actualDuration;
+    // this is the actual duration of uncontrolled animations
+    // it helps seeking and even going forward
+    QList<int> actualDuration;
 
-   int lastLoop;
+    int lastLoop;
 };
 
 #endif //QT_NO_ANIMATION

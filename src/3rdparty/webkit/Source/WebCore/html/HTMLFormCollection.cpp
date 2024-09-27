@@ -29,28 +29,32 @@
 #include "HTMLImageElement.h"
 #include "HTMLNames.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
 // Since the collections are to be "live", we have to do the
 // calculation every time if anything has changed.
 
-inline CollectionCache* HTMLFormCollection::formCollectionInfo(HTMLFormElement* form)
+inline CollectionCache *HTMLFormCollection::formCollectionInfo( HTMLFormElement *form )
 {
-    if (!form->m_collectionCache)
-        form->m_collectionCache = adoptPtr(new CollectionCache);
+    if ( !form->m_collectionCache )
+    {
+        form->m_collectionCache = adoptPtr( new CollectionCache );
+    }
+
     return form->m_collectionCache.get();
 }
 
-HTMLFormCollection::HTMLFormCollection(PassRefPtr<HTMLFormElement> form)
-    : HTMLCollection(form.get(), OtherCollection, formCollectionInfo(form.get()))
+HTMLFormCollection::HTMLFormCollection( PassRefPtr<HTMLFormElement> form )
+    : HTMLCollection( form.get(), OtherCollection, formCollectionInfo( form.get() ) )
 {
 }
 
-PassRefPtr<HTMLFormCollection> HTMLFormCollection::create(PassRefPtr<HTMLFormElement> form)
+PassRefPtr<HTMLFormCollection> HTMLFormCollection::create( PassRefPtr<HTMLFormElement> form )
 {
-    return adoptRef(new HTMLFormCollection(form));
+    return adoptRef( new HTMLFormCollection( form ) );
 }
 
 HTMLFormCollection::~HTMLFormCollection()
@@ -59,32 +63,41 @@ HTMLFormCollection::~HTMLFormCollection()
 
 unsigned HTMLFormCollection::calcLength() const
 {
-    return static_cast<HTMLFormElement*>(base())->length();
+    return static_cast<HTMLFormElement *>( base() )->length();
 }
 
-Node* HTMLFormCollection::item(unsigned index) const
+Node *HTMLFormCollection::item( unsigned index ) const
 {
     resetCollectionInfo();
 
-    if (info()->current && info()->position == index)
+    if ( info()->current && info()->position == index )
+    {
         return info()->current;
+    }
 
-    if (info()->hasLength && info()->length <= index)
+    if ( info()->hasLength && info()->length <= index )
+    {
         return 0;
+    }
 
-    if (!info()->current || info()->position > index) {
+    if ( !info()->current || info()->position > index )
+    {
         info()->current = 0;
         info()->position = 0;
         info()->elementsArrayPosition = 0;
     }
 
-    Vector<FormAssociatedElement*>& elementsArray = static_cast<HTMLFormElement*>(base())->m_associatedElements;
+    Vector<FormAssociatedElement *> &elementsArray = static_cast<HTMLFormElement *>( base() )->m_associatedElements;
     unsigned currentIndex = info()->position;
-    
-    for (unsigned i = info()->elementsArrayPosition; i < elementsArray.size(); i++) {
-        if (elementsArray[i]->isEnumeratable()) {
-            HTMLElement* element = toHTMLElement(elementsArray[i]);
-            if (index == currentIndex) {
+
+    for ( unsigned i = info()->elementsArrayPosition; i < elementsArray.size(); i++ )
+    {
+        if ( elementsArray[i]->isEnumeratable() )
+        {
+            HTMLElement *element = toHTMLElement( elementsArray[i] );
+
+            if ( index == currentIndex )
+            {
                 info()->position = index;
                 info()->current = element;
                 info()->elementsArrayPosition = i;
@@ -98,34 +111,49 @@ Node* HTMLFormCollection::item(unsigned index) const
     return 0;
 }
 
-Element* HTMLFormCollection::getNamedItem(const QualifiedName& attrName, const AtomicString& name) const
+Element *HTMLFormCollection::getNamedItem( const QualifiedName &attrName, const AtomicString &name ) const
 {
     info()->position = 0;
-    return getNamedFormItem(attrName, name, 0);
+    return getNamedFormItem( attrName, name, 0 );
 }
 
-Element* HTMLFormCollection::getNamedFormItem(const QualifiedName& attrName, const String& name, int duplicateNumber) const
+Element *HTMLFormCollection::getNamedFormItem( const QualifiedName &attrName, const String &name, int duplicateNumber ) const
 {
-    HTMLFormElement* form = static_cast<HTMLFormElement*>(base());
+    HTMLFormElement *form = static_cast<HTMLFormElement *>( base() );
 
     bool foundInputElements = false;
-    for (unsigned i = 0; i < form->m_associatedElements.size(); ++i) {
-        FormAssociatedElement* associatedElement = form->m_associatedElements[i];
-        HTMLElement* element = toHTMLElement(associatedElement);
-        if (associatedElement->isEnumeratable() && element->getAttribute(attrName) == name) {
+
+    for ( unsigned i = 0; i < form->m_associatedElements.size(); ++i )
+    {
+        FormAssociatedElement *associatedElement = form->m_associatedElements[i];
+        HTMLElement *element = toHTMLElement( associatedElement );
+
+        if ( associatedElement->isEnumeratable() && element->getAttribute( attrName ) == name )
+        {
             foundInputElements = true;
-            if (!duplicateNumber)
+
+            if ( !duplicateNumber )
+            {
                 return element;
+            }
+
             --duplicateNumber;
         }
     }
 
-    if (!foundInputElements) {
-        for (unsigned i = 0; i < form->m_imageElements.size(); ++i) {
-            HTMLImageElement* element = form->m_imageElements[i];
-            if (element->getAttribute(attrName) == name) {
-                if (!duplicateNumber)
+    if ( !foundInputElements )
+    {
+        for ( unsigned i = 0; i < form->m_imageElements.size(); ++i )
+        {
+            HTMLImageElement *element = form->m_imageElements[i];
+
+            if ( element->getAttribute( attrName ) == name )
+            {
+                if ( !duplicateNumber )
+                {
                     return element;
+                }
+
                 --duplicateNumber;
             }
         }
@@ -134,24 +162,31 @@ Element* HTMLFormCollection::getNamedFormItem(const QualifiedName& attrName, con
     return 0;
 }
 
-Node* HTMLFormCollection::nextItem() const
+Node *HTMLFormCollection::nextItem() const
 {
-    return item(info()->position + 1);
+    return item( info()->position + 1 );
 }
 
-Element* HTMLFormCollection::nextNamedItemInternal(const String &name) const
+Element *HTMLFormCollection::nextNamedItemInternal( const String &name ) const
 {
-    Element* retval = getNamedFormItem(m_idsDone ? nameAttr : idAttr, name, ++info()->position);
-    if (retval)
+    Element *retval = getNamedFormItem( m_idsDone ? nameAttr : idAttr, name, ++info()->position );
+
+    if ( retval )
+    {
         return retval;
-    if (m_idsDone) // we're done
+    }
+
+    if ( m_idsDone ) // we're done
+    {
         return 0;
+    }
+
     // After doing id, do name
     m_idsDone = true;
-    return getNamedItem(nameAttr, name);
+    return getNamedItem( nameAttr, name );
 }
 
-Node* HTMLFormCollection::namedItem(const AtomicString& name) const
+Node *HTMLFormCollection::namedItem( const AtomicString &name ) const
 {
     // http://msdn.microsoft.com/workshop/author/dhtml/reference/methods/nameditem.asp
     // This method first searches for an object with a matching id
@@ -160,87 +195,122 @@ Node* HTMLFormCollection::namedItem(const AtomicString& name) const
     // that are allowed a name attribute.
     resetCollectionInfo();
     m_idsDone = false;
-    info()->current = getNamedItem(idAttr, name);
-    if (info()->current)
+    info()->current = getNamedItem( idAttr, name );
+
+    if ( info()->current )
+    {
         return info()->current;
+    }
+
     m_idsDone = true;
-    info()->current = getNamedItem(nameAttr, name);
+    info()->current = getNamedItem( nameAttr, name );
     return info()->current;
 }
 
-Node* HTMLFormCollection::nextNamedItem(const AtomicString& name) const
+Node *HTMLFormCollection::nextNamedItem( const AtomicString &name ) const
 {
     // The nextNamedItemInternal function can return the same item twice if it has
     // both an id and name that are equal to the name parameter. So this function
     // checks if we are on the nameAttr half of the iteration and skips over any
     // that also have the same idAttributeName.
-    Element* impl = nextNamedItemInternal(name);
-    if (m_idsDone) {
-        while (impl && impl->getIdAttribute() == name)
-            impl = nextNamedItemInternal(name);
+    Element *impl = nextNamedItemInternal( name );
+
+    if ( m_idsDone )
+    {
+        while ( impl && impl->getIdAttribute() == name )
+        {
+            impl = nextNamedItemInternal( name );
+        }
     }
+
     return impl;
 }
 
 void HTMLFormCollection::updateNameCache() const
 {
-    if (info()->hasNameCache)
+    if ( info()->hasNameCache )
+    {
         return;
+    }
 
-    HashSet<AtomicStringImpl*> foundInputElements;
+    HashSet<AtomicStringImpl *> foundInputElements;
 
-    HTMLFormElement* f = static_cast<HTMLFormElement*>(base());
+    HTMLFormElement *f = static_cast<HTMLFormElement *>( base() );
 
-    for (unsigned i = 0; i < f->m_associatedElements.size(); ++i) {
-        FormAssociatedElement* associatedElement = f->m_associatedElements[i];
-        if (associatedElement->isEnumeratable()) {
-            HTMLElement* element = toHTMLElement(associatedElement);
-            const AtomicString& idAttrVal = element->getIdAttribute();
-            const AtomicString& nameAttrVal = element->getAttribute(nameAttr);
-            if (!idAttrVal.isEmpty()) {
+    for ( unsigned i = 0; i < f->m_associatedElements.size(); ++i )
+    {
+        FormAssociatedElement *associatedElement = f->m_associatedElements[i];
+
+        if ( associatedElement->isEnumeratable() )
+        {
+            HTMLElement *element = toHTMLElement( associatedElement );
+            const AtomicString &idAttrVal = element->getIdAttribute();
+            const AtomicString &nameAttrVal = element->getAttribute( nameAttr );
+
+            if ( !idAttrVal.isEmpty() )
+            {
                 // add to id cache
-                Vector<Element*>* idVector = info()->idCache.get(idAttrVal.impl());
-                if (!idVector) {
-                    idVector = new Vector<Element*>;
-                    info()->idCache.add(idAttrVal.impl(), idVector);
+                Vector<Element *> *idVector = info()->idCache.get( idAttrVal.impl() );
+
+                if ( !idVector )
+                {
+                    idVector = new Vector<Element *>;
+                    info()->idCache.add( idAttrVal.impl(), idVector );
                 }
-                idVector->append(element);
-                foundInputElements.add(idAttrVal.impl());
+
+                idVector->append( element );
+                foundInputElements.add( idAttrVal.impl() );
             }
-            if (!nameAttrVal.isEmpty() && idAttrVal != nameAttrVal) {
+
+            if ( !nameAttrVal.isEmpty() && idAttrVal != nameAttrVal )
+            {
                 // add to name cache
-                Vector<Element*>* nameVector = info()->nameCache.get(nameAttrVal.impl());
-                if (!nameVector) {
-                    nameVector = new Vector<Element*>;
-                    info()->nameCache.add(nameAttrVal.impl(), nameVector);
+                Vector<Element *> *nameVector = info()->nameCache.get( nameAttrVal.impl() );
+
+                if ( !nameVector )
+                {
+                    nameVector = new Vector<Element *>;
+                    info()->nameCache.add( nameAttrVal.impl(), nameVector );
                 }
-                nameVector->append(element);
-                foundInputElements.add(nameAttrVal.impl());
+
+                nameVector->append( element );
+                foundInputElements.add( nameAttrVal.impl() );
             }
         }
     }
 
-    for (unsigned i = 0; i < f->m_imageElements.size(); ++i) {
-        HTMLImageElement* element = f->m_imageElements[i];
-        const AtomicString& idAttrVal = element->getIdAttribute();
-        const AtomicString& nameAttrVal = element->getAttribute(nameAttr);
-        if (!idAttrVal.isEmpty() && !foundInputElements.contains(idAttrVal.impl())) {
+    for ( unsigned i = 0; i < f->m_imageElements.size(); ++i )
+    {
+        HTMLImageElement *element = f->m_imageElements[i];
+        const AtomicString &idAttrVal = element->getIdAttribute();
+        const AtomicString &nameAttrVal = element->getAttribute( nameAttr );
+
+        if ( !idAttrVal.isEmpty() && !foundInputElements.contains( idAttrVal.impl() ) )
+        {
             // add to id cache
-            Vector<Element*>* idVector = info()->idCache.get(idAttrVal.impl());
-            if (!idVector) {
-                idVector = new Vector<Element*>;
-                info()->idCache.add(idAttrVal.impl(), idVector);
+            Vector<Element *> *idVector = info()->idCache.get( idAttrVal.impl() );
+
+            if ( !idVector )
+            {
+                idVector = new Vector<Element *>;
+                info()->idCache.add( idAttrVal.impl(), idVector );
             }
-            idVector->append(element);
+
+            idVector->append( element );
         }
-        if (!nameAttrVal.isEmpty() && idAttrVal != nameAttrVal && !foundInputElements.contains(nameAttrVal.impl())) {
+
+        if ( !nameAttrVal.isEmpty() && idAttrVal != nameAttrVal && !foundInputElements.contains( nameAttrVal.impl() ) )
+        {
             // add to name cache
-            Vector<Element*>* nameVector = info()->nameCache.get(nameAttrVal.impl());
-            if (!nameVector) {
-                nameVector = new Vector<Element*>;
-                info()->nameCache.add(nameAttrVal.impl(), nameVector);
+            Vector<Element *> *nameVector = info()->nameCache.get( nameAttrVal.impl() );
+
+            if ( !nameVector )
+            {
+                nameVector = new Vector<Element *>;
+                info()->nameCache.add( nameAttrVal.impl(), nameVector );
             }
-            nameVector->append(element);
+
+            nameVector->append( element );
         }
     }
 

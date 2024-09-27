@@ -35,16 +35,17 @@ using namespace WebCore;
 
 static cairo_format_t imageFormat = CAIRO_FORMAT_ARGB32;
 
-namespace WebKit {
+namespace WebKit
+{
 
 UpdateChunk::UpdateChunk()
-    : m_sharedMemory(0)
+    : m_sharedMemory( 0 )
 {
 }
 
-UpdateChunk::UpdateChunk(const IntRect& rect)
-    : m_rect(rect)
-    , m_sharedMemory(SharedMemory::create(size()))
+UpdateChunk::UpdateChunk( const IntRect &rect )
+    : m_rect( rect )
+    , m_sharedMemory( SharedMemory::create( size() ) )
 {
 }
 
@@ -54,63 +55,83 @@ UpdateChunk::~UpdateChunk()
 
 size_t UpdateChunk::size() const
 {
-    return cairo_format_stride_for_width(imageFormat, m_rect.width()) * m_rect.height();
+    return cairo_format_stride_for_width( imageFormat, m_rect.width() ) * m_rect.height();
 }
 
-void UpdateChunk::encode(CoreIPC::ArgumentEncoder* encoder) const
+void UpdateChunk::encode( CoreIPC::ArgumentEncoder *encoder ) const
 {
-    encoder->encode(m_rect);
-    if (!m_sharedMemory) {
-        encoder->encode(false);
+    encoder->encode( m_rect );
+
+    if ( !m_sharedMemory )
+    {
+        encoder->encode( false );
         return;
     }
 
     SharedMemory::Handle handle;
-    if (m_sharedMemory->createHandle(handle, SharedMemory::ReadOnly)) {
-        encoder->encode(true);
-        encoder->encode(handle);
-    } else
-        encoder->encode(false);
+
+    if ( m_sharedMemory->createHandle( handle, SharedMemory::ReadOnly ) )
+    {
+        encoder->encode( true );
+        encoder->encode( handle );
+    }
+    else
+    {
+        encoder->encode( false );
+    }
 
     m_sharedMemory = 0;
 }
 
-bool UpdateChunk::decode(CoreIPC::ArgumentDecoder* decoder, UpdateChunk& chunk)
+bool UpdateChunk::decode( CoreIPC::ArgumentDecoder *decoder, UpdateChunk &chunk )
 {
-    ASSERT_ARG(chunk, chunk.isEmpty());
+    ASSERT_ARG( chunk, chunk.isEmpty() );
 
     IntRect rect;
-    if (!decoder->decode(rect))
+
+    if ( !decoder->decode( rect ) )
+    {
         return false;
+    }
 
     chunk.m_rect = rect;
 
     bool hasSharedMemory;
-    if (!decoder->decode(hasSharedMemory))
-        return false;
 
-    if (!hasSharedMemory) {
+    if ( !decoder->decode( hasSharedMemory ) )
+    {
+        return false;
+    }
+
+    if ( !hasSharedMemory )
+    {
         chunk.m_sharedMemory = 0;
         return true;
     }
 
     SharedMemory::Handle handle;
-    if (!decoder->decode(handle))
-        return false;
 
-    chunk.m_sharedMemory = SharedMemory::create(handle, SharedMemory::ReadOnly);
+    if ( !decoder->decode( handle ) )
+    {
+        return false;
+    }
+
+    chunk.m_sharedMemory = SharedMemory::create( handle, SharedMemory::ReadOnly );
     return true;
 }
 
-cairo_surface_t* UpdateChunk::createImage() const
+cairo_surface_t *UpdateChunk::createImage() const
 {
-    ASSERT(m_sharedMemory);
-    if (!m_sharedMemory)
-        return 0;
+    ASSERT( m_sharedMemory );
 
-    int stride = cairo_format_stride_for_width(imageFormat, m_rect.width());
-    return cairo_image_surface_create_for_data(static_cast<unsigned char*>(m_sharedMemory->data()),
-                                               imageFormat, m_rect.width(), m_rect.height(), stride);
+    if ( !m_sharedMemory )
+    {
+        return 0;
+    }
+
+    int stride = cairo_format_stride_for_width( imageFormat, m_rect.width() );
+    return cairo_image_surface_create_for_data( static_cast<unsigned char *>( m_sharedMemory->data() ),
+            imageFormat, m_rect.width(), m_rect.height(), stride );
 }
 
 } // namespace WebKit

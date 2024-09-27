@@ -28,24 +28,29 @@
 
 #include "ImmutableDictionary.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
 // MutableDictionary - A mutable dictionary type suitable for vending to an API.
 
-class MutableDictionary : public ImmutableDictionary {
+class MutableDictionary : public ImmutableDictionary
+{
 public:
     static PassRefPtr<MutableDictionary> create()
     {
-        return adoptRef(new MutableDictionary);
+        return adoptRef( new MutableDictionary );
     }
 
     ~MutableDictionary();
 
-    bool add(const String& key, APIObject*);
-    bool set(const String& key, APIObject*);
-    void remove(const String& key);
+    bool add( const String &key, APIObject * );
+    bool set( const String &key, APIObject * );
+    void remove( const String &key );
 
-    virtual bool isMutable() { return true; }
+    virtual bool isMutable()
+    {
+        return true;
+    }
 
 private:
     MutableDictionary();

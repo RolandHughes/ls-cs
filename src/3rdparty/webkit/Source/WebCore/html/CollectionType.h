@@ -23,9 +23,11 @@
 #ifndef CollectionType_h
 #define CollectionType_h
 
-namespace WebCore {
+namespace WebCore
+{
 
-enum CollectionType {
+enum CollectionType
+{
     // unnamed collection types cached in the document
 
     DocImages,    // all <img> elements in the document

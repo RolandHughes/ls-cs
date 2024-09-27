@@ -31,16 +31,17 @@
 #include "AudioBuffer.h"
 #include "EventNames.h"
 
-namespace WebCore {
-
-PassRefPtr<OfflineAudioCompletionEvent> OfflineAudioCompletionEvent::create(PassRefPtr<AudioBuffer> renderedBuffer)
+namespace WebCore
 {
-    return adoptRef(new OfflineAudioCompletionEvent(renderedBuffer));
+
+PassRefPtr<OfflineAudioCompletionEvent> OfflineAudioCompletionEvent::create( PassRefPtr<AudioBuffer> renderedBuffer )
+{
+    return adoptRef( new OfflineAudioCompletionEvent( renderedBuffer ) );
 }
 
-OfflineAudioCompletionEvent::OfflineAudioCompletionEvent(PassRefPtr<AudioBuffer> renderedBuffer)
-    : Event(eventNames().completeEvent, true, false)
-    , m_renderedBuffer(renderedBuffer)
+OfflineAudioCompletionEvent::OfflineAudioCompletionEvent( PassRefPtr<AudioBuffer> renderedBuffer )
+    : Event( eventNames().completeEvent, true, false )
+    , m_renderedBuffer( renderedBuffer )
 {
 }
 

@@ -33,57 +33,66 @@ AtomicComparator::AtomicComparator()
 AtomicComparator::~AtomicComparator()
 { }
 
-AtomicComparator::ComparisonResult
-AtomicComparator::compare(const Item &, const AtomicComparator::Operator, const Item &) const
+AtomicComparator::ComparisonResult AtomicComparator::compare( const Item &, const AtomicComparator::Operator, const Item & ) const
 {
-   Q_ASSERT_X(false, Q_FUNC_INFO, "This function should never be called.");
-   return LessThan;
+    Q_ASSERT_X( false, Q_FUNC_INFO, "This function should never be called." );
+    return LessThan;
 }
 
-QString AtomicComparator::displayName(const AtomicComparator::Operator op, const ComparisonType type)
+QString AtomicComparator::displayName( const AtomicComparator::Operator op, const ComparisonType type )
 {
-   Q_ASSERT(type == AsGeneralComparison || type == AsValueComparison);
-   if (type == AsGeneralComparison) {
-      switch (op) {
-         case OperatorEqual:
-            return QLatin1String("=");
-         case OperatorGreaterOrEqual:
-            return QLatin1String("<=");
-         case OperatorGreaterThan:
-            return QLatin1String("<");
-         case OperatorLessOrEqual:
-            return QLatin1String(">=");
+    Q_ASSERT( type == AsGeneralComparison || type == AsValueComparison );
 
-         case OperatorLessThanNaNLeast:
-         case OperatorLessThanNaNGreatest:
-         case OperatorLessThan:
-            return QLatin1String(">");
+    if ( type == AsGeneralComparison )
+    {
+        switch ( op )
+        {
+            case OperatorEqual:
+                return QLatin1String( "=" );
 
-         case OperatorNotEqual:
-            return QLatin1String("!=");
-      }
-   }
+            case OperatorGreaterOrEqual:
+                return QLatin1String( "<=" );
 
-   switch (op) {
-      case OperatorEqual:
-         return QLatin1String("eq");
-      case OperatorGreaterOrEqual:
-         return QLatin1String("ge");
-      case OperatorGreaterThan:
-         return QLatin1String("gt");
-      case OperatorLessOrEqual:
-         return QLatin1String("le");
+            case OperatorGreaterThan:
+                return QLatin1String( "<" );
 
-      case OperatorLessThanNaNLeast:
-      case OperatorLessThanNaNGreatest:
-      case OperatorLessThan:
-         return QLatin1String("lt");
+            case OperatorLessOrEqual:
+                return QLatin1String( ">=" );
 
-      case OperatorNotEqual:
-         return QLatin1String("ne");
-   }
+            case OperatorLessThanNaNLeast:
+            case OperatorLessThanNaNGreatest:
+            case OperatorLessThan:
+                return QLatin1String( ">" );
 
-   Q_ASSERT(false);
-   return QString(); /* GCC unbarfer. */
+            case OperatorNotEqual:
+                return QLatin1String( "!=" );
+        }
+    }
+
+    switch ( op )
+    {
+        case OperatorEqual:
+            return QLatin1String( "eq" );
+
+        case OperatorGreaterOrEqual:
+            return QLatin1String( "ge" );
+
+        case OperatorGreaterThan:
+            return QLatin1String( "gt" );
+
+        case OperatorLessOrEqual:
+            return QLatin1String( "le" );
+
+        case OperatorLessThanNaNLeast:
+        case OperatorLessThanNaNGreatest:
+        case OperatorLessThan:
+            return QLatin1String( "lt" );
+
+        case OperatorNotEqual:
+            return QLatin1String( "ne" );
+    }
+
+    Q_ASSERT( false );
+    return QString(); /* GCC unbarfer. */
 }
 

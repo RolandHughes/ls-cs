@@ -32,16 +32,19 @@
 
 #include <wtf/Noncopyable.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class FloatPoint;
 
 // Classifies cubic curves into specific types.
-class LoopBlinnClassifier {
-    WTF_MAKE_NONCOPYABLE(LoopBlinnClassifier);
+class LoopBlinnClassifier
+{
+    WTF_MAKE_NONCOPYABLE( LoopBlinnClassifier );
 public:
     // The types of cubic curves.
-    enum CurveType {
+    enum CurveType
+    {
         kSerpentine,
         kCusp,
         kLoop,
@@ -51,13 +54,14 @@ public:
     };
 
     // The result of the classifier.
-    struct Result {
+    struct Result
+    {
     public:
-        Result(CurveType inputCurveType, float inputD1, float inputD2, float inputD3)
-            : curveType(inputCurveType)
-            , d1(inputD1)
-            , d2(inputD2)
-            , d3(inputD3) { }
+        Result( CurveType inputCurveType, float inputD1, float inputD2, float inputD3 )
+            : curveType( inputCurveType )
+            , d1( inputD1 )
+            , d2( inputD2 )
+            , d3( inputD3 ) { }
 
         CurveType curveType;
 
@@ -70,10 +74,10 @@ public:
 
     // Classifies the given cubic bezier curve starting at c0, ending
     // at c3, and affected by control points c1 and c2.
-    static Result classify(const FloatPoint& c0,
-                           const FloatPoint& c1,
-                           const FloatPoint& c2,
-                           const FloatPoint& c3);
+    static Result classify( const FloatPoint &c0,
+                            const FloatPoint &c1,
+                            const FloatPoint &c2,
+                            const FloatPoint &c3 );
 
 private:
     // This class does not need to be instantiated.

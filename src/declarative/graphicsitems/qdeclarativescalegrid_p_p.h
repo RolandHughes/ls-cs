@@ -35,94 +35,100 @@ QT_BEGIN_NAMESPACE
 
 class Q_DECLARATIVE_PRIVATE_EXPORT QDeclarativeScaleGrid : public QObject
 {
-   DECL_CS_OBJECT(QDeclarativeScaleGrid)
-   CS_ENUM(TileRule)
+    DECL_CS_OBJECT( QDeclarativeScaleGrid )
+    CS_ENUM( TileRule )
 
-   DECL_CS_PROPERTY_READ(left, left)
-   DECL_CS_PROPERTY_WRITE(left, setLeft)
-   DECL_CS_PROPERTY_NOTIFY(left, borderChanged)
-   DECL_CS_PROPERTY_READ(top, top)
-   DECL_CS_PROPERTY_WRITE(top, setTop)
-   DECL_CS_PROPERTY_NOTIFY(top, borderChanged)
-   DECL_CS_PROPERTY_READ(right, right)
-   DECL_CS_PROPERTY_WRITE(right, setRight)
-   DECL_CS_PROPERTY_NOTIFY(right, borderChanged)
-   DECL_CS_PROPERTY_READ(bottom, bottom)
-   DECL_CS_PROPERTY_WRITE(bottom, setBottom)
-   DECL_CS_PROPERTY_NOTIFY(bottom, borderChanged)
+    DECL_CS_PROPERTY_READ( left, left )
+    DECL_CS_PROPERTY_WRITE( left, setLeft )
+    DECL_CS_PROPERTY_NOTIFY( left, borderChanged )
+    DECL_CS_PROPERTY_READ( top, top )
+    DECL_CS_PROPERTY_WRITE( top, setTop )
+    DECL_CS_PROPERTY_NOTIFY( top, borderChanged )
+    DECL_CS_PROPERTY_READ( right, right )
+    DECL_CS_PROPERTY_WRITE( right, setRight )
+    DECL_CS_PROPERTY_NOTIFY( right, borderChanged )
+    DECL_CS_PROPERTY_READ( bottom, bottom )
+    DECL_CS_PROPERTY_WRITE( bottom, setBottom )
+    DECL_CS_PROPERTY_NOTIFY( bottom, borderChanged )
 
- public:
-   QDeclarativeScaleGrid(QObject *parent = nullptr);
-   ~QDeclarativeScaleGrid();
+public:
+    QDeclarativeScaleGrid( QObject *parent = nullptr );
+    ~QDeclarativeScaleGrid();
 
-   bool isNull() const;
+    bool isNull() const;
 
-   int left() const {
-      return _left;
-   }
-   void setLeft(int);
+    int left() const
+    {
+        return _left;
+    }
+    void setLeft( int );
 
-   int top() const {
-      return _top;
-   }
-   void setTop(int);
+    int top() const
+    {
+        return _top;
+    }
+    void setTop( int );
 
-   int right() const {
-      return _right;
-   }
-   void setRight(int);
+    int right() const
+    {
+        return _right;
+    }
+    void setRight( int );
 
-   int  bottom() const {
-      return _bottom;
-   }
-   void setBottom(int);
+    int  bottom() const
+    {
+        return _bottom;
+    }
+    void setBottom( int );
 
- public:
-   DECL_CS_SIGNAL_1(Public, void borderChanged())
-   DECL_CS_SIGNAL_2(borderChanged)
+public:
+    DECL_CS_SIGNAL_1( Public, void borderChanged() )
+    DECL_CS_SIGNAL_2( borderChanged )
 
- private:
-   int _left;
-   int _top;
-   int _right;
-   int _bottom;
+private:
+    int _left;
+    int _top;
+    int _right;
+    int _bottom;
 };
 
 class Q_DECLARATIVE_PRIVATE_EXPORT QDeclarativeGridScaledImage
 {
- public:
-   QDeclarativeGridScaledImage();
-   QDeclarativeGridScaledImage(const QDeclarativeGridScaledImage &);
-   QDeclarativeGridScaledImage(QIODevice *);
-   QDeclarativeGridScaledImage &operator=(const QDeclarativeGridScaledImage &);
-   bool isValid() const;
-   int gridLeft() const;
-   int gridRight() const;
-   int gridTop() const;
-   int gridBottom() const;
-   QDeclarativeBorderImage::TileMode horizontalTileRule() const {
-      return _h;
-   }
-   QDeclarativeBorderImage::TileMode verticalTileRule() const {
-      return _v;
-   }
+public:
+    QDeclarativeGridScaledImage();
+    QDeclarativeGridScaledImage( const QDeclarativeGridScaledImage & );
+    QDeclarativeGridScaledImage( QIODevice * );
+    QDeclarativeGridScaledImage &operator=( const QDeclarativeGridScaledImage & );
+    bool isValid() const;
+    int gridLeft() const;
+    int gridRight() const;
+    int gridTop() const;
+    int gridBottom() const;
+    QDeclarativeBorderImage::TileMode horizontalTileRule() const
+    {
+        return _h;
+    }
+    QDeclarativeBorderImage::TileMode verticalTileRule() const
+    {
+        return _v;
+    }
 
-   QString pixmapUrl() const;
+    QString pixmapUrl() const;
 
- private:
-   static QDeclarativeBorderImage::TileMode stringToRule(const QString &);
+private:
+    static QDeclarativeBorderImage::TileMode stringToRule( const QString & );
 
-   int _l;
-   int _r;
-   int _t;
-   int _b;
-   QDeclarativeBorderImage::TileMode _h;
-   QDeclarativeBorderImage::TileMode _v;
-   QString _pix;
+    int _l;
+    int _r;
+    int _t;
+    int _b;
+    QDeclarativeBorderImage::TileMode _h;
+    QDeclarativeBorderImage::TileMode _v;
+    QString _pix;
 };
 
 QT_END_NAMESPACE
 
-QML_DECLARE_TYPE(QDeclarativeScaleGrid)
+QML_DECLARE_TYPE( QDeclarativeScaleGrid )
 
 #endif // QDECLARATIVESCALEGRID_H

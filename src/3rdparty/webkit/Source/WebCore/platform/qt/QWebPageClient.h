@@ -39,55 +39,72 @@
 
 class QStyle;
 
-class QWebPageClient {
+class QWebPageClient
+{
 public:
     virtual ~QWebPageClient() { }
 
-    virtual bool isQWidgetClient() const { return false; }
+    virtual bool isQWidgetClient() const
+    {
+        return false;
+    }
 
-    virtual void scroll(int dx, int dy, const QRect&) = 0;
-    virtual void update(const QRect&) = 0;
-    virtual void setInputMethodEnabled(bool enable) = 0;
+    virtual void scroll( int dx, int dy, const QRect & ) = 0;
+    virtual void update( const QRect & ) = 0;
+    virtual void setInputMethodEnabled( bool enable ) = 0;
     virtual bool inputMethodEnabled() const = 0;
 #if USE(ACCELERATED_COMPOSITING)
-    virtual void setRootGraphicsLayer(WebCore::PlatformLayer* layer) { }
+    virtual void setRootGraphicsLayer( WebCore::PlatformLayer *layer ) { }
 
     // this gets called when the compositor wants us to sync the layers
     // if scheduleSync is true, we schedule a sync ourselves. otherwise,
     // we wait for the next update and sync the layers then.
-    virtual void markForSync(bool scheduleSync = false) {}
-    virtual bool allowsAcceleratedCompositing() const { return false; }
+    virtual void markForSync( bool scheduleSync = false ) {}
+    virtual bool allowsAcceleratedCompositing() const
+    {
+        return false;
+    }
 #endif
 
-    virtual void setInputMethodHints(Qt::InputMethodHints hint) = 0;
+    virtual void setInputMethodHints( Qt::InputMethodHints hint ) = 0;
 
 #ifndef QT_NO_CURSOR
     inline void resetCursor()
     {
-        if (!cursor().bitmap() && cursor().shape() == m_lastCursor.shape())
+        if ( !cursor().bitmap() && cursor().shape() == m_lastCursor.shape() )
+        {
             return;
-        updateCursor(m_lastCursor);
+        }
+
+        updateCursor( m_lastCursor );
     }
 
-    inline void setCursor(const QCursor& cursor)
+    inline void setCursor( const QCursor &cursor )
     {
         m_lastCursor = cursor;
-        if (!cursor.bitmap() && cursor.shape() == this->cursor().shape())
+
+        if ( !cursor.bitmap() && cursor.shape() == this->cursor().shape() )
+        {
             return;
-        updateCursor(cursor);
+        }
+
+        updateCursor( cursor );
     }
 #endif
 
     virtual QPalette palette() const = 0;
     virtual int screenNumber() const = 0;
-    virtual QWidget* ownerWidget() const = 0;
+    virtual QWidget *ownerWidget() const = 0;
     virtual QRect geometryRelativeToOwnerWidget() const = 0;
 
-    virtual QObject* pluginParent() const = 0;
+    virtual QObject *pluginParent() const = 0;
 
-    virtual QStyle* style() const = 0;
+    virtual QStyle *style() const = 0;
 
-    virtual QRectF graphicsItemVisibleRect() const { return QRectF(); }
+    virtual QRectF graphicsItemVisibleRect() const
+    {
+        return QRectF();
+    }
 
     virtual bool viewResizesToContentsEnabled() const = 0;
 
@@ -96,7 +113,7 @@ public:
 protected:
 #ifndef QT_NO_CURSOR
     virtual QCursor cursor() const = 0;
-    virtual void updateCursor(const QCursor& cursor) = 0;
+    virtual void updateCursor( const QCursor &cursor ) = 0;
 #endif
 
 private:

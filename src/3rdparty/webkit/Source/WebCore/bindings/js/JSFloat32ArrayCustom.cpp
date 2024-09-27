@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -31,31 +31,36 @@
 
 using namespace JSC;
 
-namespace WebCore {
-
-void JSFloat32Array::indexSetter(JSC::ExecState* exec, unsigned index, JSC::JSValue value)
+namespace WebCore
 {
-    impl()->set(index, static_cast<float>(value.toNumber(exec)));
+
+void JSFloat32Array::indexSetter( JSC::ExecState *exec, unsigned index, JSC::JSValue value )
+{
+    impl()->set( index, static_cast<float>( value.toNumber( exec ) ) );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, Float32Array* object)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, Float32Array *object )
 {
-    return toJSArrayBufferView<JSFloat32Array>(exec, globalObject, object);
+    return toJSArrayBufferView<JSFloat32Array>( exec, globalObject, object );
 }
 
-JSC::JSValue JSFloat32Array::set(JSC::ExecState* exec)
+JSC::JSValue JSFloat32Array::set( JSC::ExecState *exec )
 {
-    return setWebGLArrayHelper(exec, impl(), toFloat32Array);
+    return setWebGLArrayHelper( exec, impl(), toFloat32Array );
 }
 
-EncodedJSValue JSC_HOST_CALL JSFloat32ArrayConstructor::constructJSFloat32Array(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL JSFloat32ArrayConstructor::constructJSFloat32Array( ExecState *exec )
 {
-    JSFloat32ArrayConstructor* jsConstructor = static_cast<JSFloat32ArrayConstructor*>(exec->callee());
-    RefPtr<Float32Array> array = constructArrayBufferView<Float32Array, float>(exec);
-    if (!array.get())
+    JSFloat32ArrayConstructor *jsConstructor = static_cast<JSFloat32ArrayConstructor *>( exec->callee() );
+    RefPtr<Float32Array> array = constructArrayBufferView<Float32Array, float>( exec );
+
+    if ( !array.get() )
         // Exception has already been thrown.
-        return JSValue::encode(JSValue());
-    return JSValue::encode(asObject(toJS(exec, jsConstructor->globalObject(), array.get())));
+    {
+        return JSValue::encode( JSValue() );
+    }
+
+    return JSValue::encode( asObject( toJS( exec, jsConstructor->globalObject(), array.get() ) ) );
 }
 
 } // namespace WebCore

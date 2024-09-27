@@ -21,16 +21,17 @@
 #include "config.h"
 #include "BooleanObject.h"
 
-namespace JSC {
+namespace JSC
+{
 
-ASSERT_CLASS_FITS_IN_CELL(BooleanObject);
+ASSERT_CLASS_FITS_IN_CELL( BooleanObject );
 
 const ClassInfo BooleanObject::s_info = { "Boolean", &JSWrapperObject::s_info, 0, 0 };
 
-BooleanObject::BooleanObject(JSGlobalData& globalData, Structure* structure)
-    : JSWrapperObject(globalData, structure)
+BooleanObject::BooleanObject( JSGlobalData &globalData, Structure *structure )
+    : JSWrapperObject( globalData, structure )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
 } // namespace JSC

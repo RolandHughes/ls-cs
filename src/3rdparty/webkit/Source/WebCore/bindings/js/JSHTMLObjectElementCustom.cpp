@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -29,28 +29,30 @@
 #include "HTMLObjectElement.h"
 #include "JSPluginElementFunctions.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace JSC;
 
-bool JSHTMLObjectElement::getOwnPropertySlotDelegate(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSHTMLObjectElement::getOwnPropertySlotDelegate( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return runtimeObjectCustomGetOwnPropertySlot(exec, propertyName, slot, this);
+    return runtimeObjectCustomGetOwnPropertySlot( exec, propertyName, slot, this );
 }
 
-bool JSHTMLObjectElement::getOwnPropertyDescriptorDelegate(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSHTMLObjectElement::getOwnPropertyDescriptorDelegate( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return runtimeObjectCustomGetOwnPropertyDescriptor(exec, propertyName, descriptor, this);
+    return runtimeObjectCustomGetOwnPropertyDescriptor( exec, propertyName, descriptor, this );
 }
 
-bool JSHTMLObjectElement::putDelegate(ExecState* exec, const Identifier& propertyName, JSValue value, PutPropertySlot& slot)
+bool JSHTMLObjectElement::putDelegate( ExecState *exec, const Identifier &propertyName, JSValue value, PutPropertySlot &slot )
 {
-    return runtimeObjectCustomPut(exec, propertyName, value, this, slot);
+    return runtimeObjectCustomPut( exec, propertyName, value, this, slot );
 }
 
-CallType JSHTMLObjectElement::getCallData(CallData& callData)
+CallType JSHTMLObjectElement::getCallData( CallData &callData )
 {
-    return runtimeObjectGetCallData(this, callData);
+    return runtimeObjectGetCallData( this, callData );
 }
 
 } // namespace WebCore

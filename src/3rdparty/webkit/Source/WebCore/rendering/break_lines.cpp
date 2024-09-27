@@ -34,19 +34,23 @@
 #include <CoreServices/CoreServices.h>
 #endif
 
-namespace WebCore {
-
-static inline bool isBreakableSpace(UChar ch, bool treatNoBreakSpaceAsBreak)
+namespace WebCore
 {
-    switch (ch) {
-    case ' ':
-    case '\n':
-    case '\t':
-        return true;
-    case noBreakSpace:
-        return treatNoBreakSpaceAsBreak;
-    default:
-        return false;
+
+static inline bool isBreakableSpace( UChar ch, bool treatNoBreakSpaceAsBreak )
+{
+    switch ( ch )
+    {
+        case ' ':
+        case '\n':
+        case '\t':
+            return true;
+
+        case noBreakSpace:
+            return treatNoBreakSpaceAsBreak;
+
+        default:
+            return false;
     }
 }
 
@@ -70,44 +74,45 @@ static const UChar asciiLineBreakTableLastChar = 127;
 // - after '-' and '?' (backward-compatible, and compatible with Internet Explorer).
 // Please refer to <https://bugs.webkit.org/show_bug.cgi?id=37698> for line breaking matrixes of different browsers
 // and the ICU standard.
-static const unsigned char asciiLineBreakTable[][(asciiLineBreakTableLastChar - asciiLineBreakTableFirstChar) / 8 + 1] = {
+static const unsigned char asciiLineBreakTable[][( asciiLineBreakTableLastChar - asciiLineBreakTableFirstChar ) / 8 + 1] =
+{
     //  !  "  #  $  %  &  '  (     )  *  +  ,  -  .  /  0  1-8   9  :  ;  <  =  >  ?  @     A-X      Y  Z  [  \  ]  ^  _  `     a-x      y  z  {  |  }  ~  DEL
-    { B(0, 0, 0, 0, 0, 0, 0, 1), B(0, 0, 0, 0, 0, 0, 0, 0), 0, B(0, 0, 0, 1, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 1, 0, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 1, 0, 0, 0, 0, 0) }, // !
-    { B(0, 0, 0, 0, 0, 0, 0, 1), B(0, 0, 0, 0, 0, 0, 0, 0), 0, B(0, 0, 0, 1, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 1, 0, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 1, 0, 0, 0, 0, 0) }, // "
-    { B(0, 0, 0, 0, 0, 0, 0, 1), B(0, 0, 0, 0, 0, 0, 0, 0), 0, B(0, 0, 0, 1, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 1, 0, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 1, 0, 0, 0, 0, 0) }, // #
-    { B(0, 0, 0, 0, 0, 0, 0, 0), B(0, 0, 0, 0, 0, 0, 0, 0), 0, B(0, 0, 0, 0, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 0, 0, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 0, 0, 0, 0, 0, 0) }, // $
-    { B(0, 0, 0, 0, 0, 0, 0, 1), B(0, 0, 0, 0, 0, 0, 0, 0), 0, B(0, 0, 0, 1, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 1, 0, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 1, 0, 0, 0, 0, 0) }, // %
-    { B(0, 0, 0, 0, 0, 0, 0, 1), B(0, 0, 0, 0, 0, 0, 0, 0), 0, B(0, 0, 0, 1, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 1, 0, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 1, 0, 0, 0, 0, 0) }, // &
-    { B(0, 0, 0, 0, 0, 0, 0, 0), B(0, 0, 0, 0, 0, 0, 0, 0), 0, B(0, 0, 0, 0, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 0, 0, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 0, 0, 0, 0, 0, 0) }, // '
-    { B(0, 0, 0, 0, 0, 0, 0, 0), B(0, 0, 0, 0, 0, 0, 0, 0), 0, B(0, 0, 0, 0, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 0, 0, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 0, 0, 0, 0, 0, 0) }, // (
-    { B(0, 0, 0, 0, 0, 0, 0, 1), B(0, 0, 0, 0, 0, 0, 0, 0), 0, B(0, 0, 0, 1, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 1, 0, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 1, 0, 0, 0, 0, 0) }, // )
-    { B(0, 0, 0, 0, 0, 0, 0, 1), B(0, 0, 0, 0, 0, 0, 0, 0), 0, B(0, 0, 0, 1, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 1, 0, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 1, 0, 0, 0, 0, 0) }, // *
-    { B(0, 0, 0, 0, 0, 0, 0, 1), B(0, 0, 0, 0, 0, 0, 0, 0), 0, B(0, 0, 0, 1, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 1, 0, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 1, 0, 0, 0, 0, 0) }, // +
-    { B(0, 0, 0, 0, 0, 0, 0, 1), B(0, 0, 0, 0, 0, 0, 0, 0), 0, B(0, 0, 0, 1, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 1, 0, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 1, 0, 0, 0, 0, 0) }, // ,
-    { B(1, 1, 1, 1, 1, 1, 1, 1), B(1, 1, 1, 1, 1, 1, 1, 1), F, B(1, 1, 1, 1, 1, 1, 1, 1), F, F, F, B(1, 1, 1, 1, 1, 1, 1, 1), F, F, F, B(1, 1, 1, 1, 1, 1, 1, 1) }, // -
-    { B(0, 0, 0, 0, 0, 0, 0, 1), B(0, 0, 0, 0, 0, 0, 0, 0), 0, B(0, 0, 0, 1, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 1, 0, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 1, 0, 0, 0, 0, 0) }, // .
-    { B(0, 0, 0, 0, 0, 0, 0, 0), B(0, 0, 0, 0, 0, 0, 0, 0), 0, B(0, 0, 0, 0, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 0, 0, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 0, 0, 0, 0, 0, 0) }, // /
+    { B( 0, 0, 0, 0, 0, 0, 0, 1 ), B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, B( 0, 0, 0, 1, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 1, 0, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 1, 0, 0, 0, 0, 0 ) }, // !
+    { B( 0, 0, 0, 0, 0, 0, 0, 1 ), B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, B( 0, 0, 0, 1, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 1, 0, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 1, 0, 0, 0, 0, 0 ) }, // "
+    { B( 0, 0, 0, 0, 0, 0, 0, 1 ), B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, B( 0, 0, 0, 1, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 1, 0, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 1, 0, 0, 0, 0, 0 ) }, // #
+    { B( 0, 0, 0, 0, 0, 0, 0, 0 ), B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 0, 0, 0, 0, 0, 0 ) }, // $
+    { B( 0, 0, 0, 0, 0, 0, 0, 1 ), B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, B( 0, 0, 0, 1, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 1, 0, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 1, 0, 0, 0, 0, 0 ) }, // %
+    { B( 0, 0, 0, 0, 0, 0, 0, 1 ), B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, B( 0, 0, 0, 1, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 1, 0, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 1, 0, 0, 0, 0, 0 ) }, // &
+    { B( 0, 0, 0, 0, 0, 0, 0, 0 ), B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 0, 0, 0, 0, 0, 0 ) }, // '
+    { B( 0, 0, 0, 0, 0, 0, 0, 0 ), B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 0, 0, 0, 0, 0, 0 ) }, // (
+    { B( 0, 0, 0, 0, 0, 0, 0, 1 ), B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, B( 0, 0, 0, 1, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 1, 0, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 1, 0, 0, 0, 0, 0 ) }, // )
+    { B( 0, 0, 0, 0, 0, 0, 0, 1 ), B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, B( 0, 0, 0, 1, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 1, 0, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 1, 0, 0, 0, 0, 0 ) }, // *
+    { B( 0, 0, 0, 0, 0, 0, 0, 1 ), B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, B( 0, 0, 0, 1, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 1, 0, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 1, 0, 0, 0, 0, 0 ) }, // +
+    { B( 0, 0, 0, 0, 0, 0, 0, 1 ), B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, B( 0, 0, 0, 1, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 1, 0, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 1, 0, 0, 0, 0, 0 ) }, // ,
+    { B( 1, 1, 1, 1, 1, 1, 1, 1 ), B( 1, 1, 1, 1, 1, 1, 1, 1 ), F, B( 1, 1, 1, 1, 1, 1, 1, 1 ), F, F, F, B( 1, 1, 1, 1, 1, 1, 1, 1 ), F, F, F, B( 1, 1, 1, 1, 1, 1, 1, 1 ) }, // -
+    { B( 0, 0, 0, 0, 0, 0, 0, 1 ), B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, B( 0, 0, 0, 1, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 1, 0, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 1, 0, 0, 0, 0, 0 ) }, // .
+    { B( 0, 0, 0, 0, 0, 0, 0, 0 ), B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 0, 0, 0, 0, 0, 0 ) }, // /
     DI,  DI,  DI,  DI,  DI,  DI,  DI,  DI,  DI,  DI, // 0-9
-    { B(0, 0, 0, 0, 0, 0, 0, 1), B(0, 0, 0, 0, 0, 0, 0, 0), 0, B(0, 0, 0, 1, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 1, 0, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 1, 0, 0, 0, 0, 0) }, // :
-    { B(0, 0, 0, 0, 0, 0, 0, 1), B(0, 0, 0, 0, 0, 0, 0, 0), 0, B(0, 0, 0, 1, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 1, 0, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 1, 0, 0, 0, 0, 0) }, // ;
-    { B(0, 0, 0, 0, 0, 0, 0, 0), B(0, 0, 0, 0, 0, 0, 0, 0), 0, B(0, 0, 0, 0, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 0, 0, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 0, 0, 0, 0, 0, 0) }, // <
-    { B(0, 0, 0, 0, 0, 0, 0, 1), B(0, 0, 0, 0, 0, 0, 0, 0), 0, B(0, 0, 0, 1, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 1, 0, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 1, 0, 0, 0, 0, 0) }, // =
-    { B(0, 0, 0, 0, 0, 0, 0, 1), B(0, 0, 0, 0, 0, 0, 0, 0), 0, B(0, 0, 0, 1, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 1, 0, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 1, 0, 0, 0, 0, 0) }, // >
-    { B(0, 0, 1, 1, 1, 1, 0, 1), B(0, 1, 1, 0, 1, 0, 0, 1), F, B(1, 0, 0, 1, 1, 1, 0, 1), F, F, F, B(1, 1, 1, 1, 0, 1, 1, 1), F, F, F, B(1, 1, 1, 1, 0, 1, 1, 0) }, // ?
-    { B(0, 0, 0, 0, 0, 0, 0, 0), B(0, 0, 0, 0, 0, 0, 0, 0), 0, B(0, 0, 0, 0, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 0, 0, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 0, 0, 0, 0, 0, 0) }, // @
+    { B( 0, 0, 0, 0, 0, 0, 0, 1 ), B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, B( 0, 0, 0, 1, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 1, 0, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 1, 0, 0, 0, 0, 0 ) }, // :
+    { B( 0, 0, 0, 0, 0, 0, 0, 1 ), B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, B( 0, 0, 0, 1, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 1, 0, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 1, 0, 0, 0, 0, 0 ) }, // ;
+    { B( 0, 0, 0, 0, 0, 0, 0, 0 ), B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 0, 0, 0, 0, 0, 0 ) }, // <
+    { B( 0, 0, 0, 0, 0, 0, 0, 1 ), B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, B( 0, 0, 0, 1, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 1, 0, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 1, 0, 0, 0, 0, 0 ) }, // =
+    { B( 0, 0, 0, 0, 0, 0, 0, 1 ), B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, B( 0, 0, 0, 1, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 1, 0, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 1, 0, 0, 0, 0, 0 ) }, // >
+    { B( 0, 0, 1, 1, 1, 1, 0, 1 ), B( 0, 1, 1, 0, 1, 0, 0, 1 ), F, B( 1, 0, 0, 1, 1, 1, 0, 1 ), F, F, F, B( 1, 1, 1, 1, 0, 1, 1, 1 ), F, F, F, B( 1, 1, 1, 1, 0, 1, 1, 0 ) }, // ?
+    { B( 0, 0, 0, 0, 0, 0, 0, 0 ), B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 0, 0, 0, 0, 0, 0 ) }, // @
     AL,  AL,  AL,  AL,  AL,  AL,  AL,  AL,  AL,  AL,  AL,  AL,  AL,  AL,  AL,  AL,  AL,  AL,  AL,  AL,  AL,  AL,  AL,  AL,  AL,  AL, // A-Z
-    { B(0, 0, 0, 0, 0, 0, 0, 0), B(0, 0, 0, 0, 0, 0, 0, 0), 0, B(0, 0, 0, 0, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 0, 0, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 0, 0, 0, 0, 0, 0) }, // [
-    { B(0, 0, 0, 0, 0, 0, 0, 1), B(0, 0, 0, 0, 0, 0, 0, 0), 0, B(0, 0, 0, 1, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 1, 0, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 1, 0, 0, 0, 0, 0) }, // '\'
-    { B(0, 0, 0, 0, 0, 0, 0, 1), B(0, 0, 0, 0, 0, 0, 0, 0), 0, B(0, 0, 0, 1, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 1, 0, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 1, 0, 0, 0, 0, 0) }, // ]
-    { B(0, 0, 0, 0, 0, 0, 0, 0), B(0, 0, 0, 0, 0, 0, 0, 0), 0, B(0, 0, 0, 0, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 0, 0, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 0, 0, 0, 0, 0, 0) }, // ^
-    { B(0, 0, 0, 0, 0, 0, 0, 0), B(0, 0, 0, 0, 0, 0, 0, 0), 0, B(0, 0, 0, 0, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 0, 0, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 0, 0, 0, 0, 0, 0) }, // _
-    { B(0, 0, 0, 0, 0, 0, 0, 0), B(0, 0, 0, 0, 0, 0, 0, 0), 0, B(0, 0, 0, 0, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 0, 0, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 0, 0, 0, 0, 0, 0) }, // `
+    { B( 0, 0, 0, 0, 0, 0, 0, 0 ), B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 0, 0, 0, 0, 0, 0 ) }, // [
+    { B( 0, 0, 0, 0, 0, 0, 0, 1 ), B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, B( 0, 0, 0, 1, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 1, 0, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 1, 0, 0, 0, 0, 0 ) }, // '\'
+    { B( 0, 0, 0, 0, 0, 0, 0, 1 ), B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, B( 0, 0, 0, 1, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 1, 0, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 1, 0, 0, 0, 0, 0 ) }, // ]
+    { B( 0, 0, 0, 0, 0, 0, 0, 0 ), B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 0, 0, 0, 0, 0, 0 ) }, // ^
+    { B( 0, 0, 0, 0, 0, 0, 0, 0 ), B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 0, 0, 0, 0, 0, 0 ) }, // _
+    { B( 0, 0, 0, 0, 0, 0, 0, 0 ), B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 0, 0, 0, 0, 0, 0 ) }, // `
     AL,  AL,  AL,  AL,  AL,  AL,  AL,  AL,  AL,  AL,  AL,  AL,  AL,  AL,  AL,  AL,  AL,  AL,  AL,  AL,  AL,  AL,  AL,  AL,  AL,  AL, // a-z
-    { B(0, 0, 0, 0, 0, 0, 0, 0), B(0, 0, 0, 0, 0, 0, 0, 0), 0, B(0, 0, 0, 0, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 0, 0, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 0, 0, 0, 0, 0, 0) }, // {
-    { B(0, 0, 0, 0, 0, 0, 0, 1), B(0, 0, 0, 0, 0, 0, 0, 0), 0, B(0, 0, 0, 1, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 1, 0, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 1, 0, 0, 0, 0, 0) }, // |
-    { B(0, 0, 0, 0, 0, 0, 0, 1), B(0, 0, 0, 0, 0, 0, 0, 0), 0, B(0, 0, 0, 1, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 1, 0, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 1, 0, 0, 0, 0, 0) }, // }
-    { B(0, 0, 0, 0, 0, 0, 0, 1), B(0, 0, 0, 0, 0, 0, 0, 0), 0, B(0, 0, 0, 1, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 1, 0, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 1, 0, 0, 0, 0, 0) }, // ~
-    { B(0, 0, 0, 0, 0, 0, 0, 0), B(0, 0, 0, 0, 0, 0, 0, 0), 0, B(0, 0, 0, 0, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 0, 0, 0, 0, 0, 0), 0, 0, 0, B(0, 0, 0, 0, 0, 0, 0, 0) }, // DEL
+    { B( 0, 0, 0, 0, 0, 0, 0, 0 ), B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 0, 0, 0, 0, 0, 0 ) }, // {
+    { B( 0, 0, 0, 0, 0, 0, 0, 1 ), B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, B( 0, 0, 0, 1, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 1, 0, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 1, 0, 0, 0, 0, 0 ) }, // |
+    { B( 0, 0, 0, 0, 0, 0, 0, 1 ), B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, B( 0, 0, 0, 1, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 1, 0, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 1, 0, 0, 0, 0, 0 ) }, // }
+    { B( 0, 0, 0, 0, 0, 0, 0, 1 ), B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, B( 0, 0, 0, 1, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 1, 0, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 1, 0, 0, 0, 0, 0 ) }, // ~
+    { B( 0, 0, 0, 0, 0, 0, 0, 0 ), B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 0, 0, 0, 0, 0, 0 ), 0, 0, 0, B( 0, 0, 0, 0, 0, 0, 0, 0 ) }, // DEL
 };
 
 #undef B
@@ -115,57 +120,75 @@ static const unsigned char asciiLineBreakTable[][(asciiLineBreakTableLastChar - 
 #undef DI
 #undef AL
 
-COMPILE_ASSERT(WTF_ARRAY_LENGTH(asciiLineBreakTable) == asciiLineBreakTableLastChar - asciiLineBreakTableFirstChar + 1, TestLineBreakTableConsistency);
+COMPILE_ASSERT( WTF_ARRAY_LENGTH( asciiLineBreakTable ) == asciiLineBreakTableLastChar - asciiLineBreakTableFirstChar + 1,
+                TestLineBreakTableConsistency );
 
-static inline bool shouldBreakAfter(UChar ch, UChar nextCh)
+static inline bool shouldBreakAfter( UChar ch, UChar nextCh )
 {
-    switch (ch) {
-    case ideographicComma:
-    case ideographicFullStop:
-        // FIXME: cases for ideographicComma and ideographicFullStop are a workaround for an issue in Unicode 5.0
-        // which is likely to be resolved in Unicode 5.1 <http://bugs.webkit.org/show_bug.cgi?id=17411>.
-        // We may want to remove or conditionalize this workaround at some point.
-        return true;
-    default:
-        // If both ch and nextCh are ASCII characters, use a lookup table for enhanced speed and for compatibility
-        // with other browsers (see comments for asciiLineBreakTable for details).
-        if (ch >= asciiLineBreakTableFirstChar && ch <= asciiLineBreakTableLastChar
-                && nextCh >= asciiLineBreakTableFirstChar && nextCh <= asciiLineBreakTableLastChar) {
-            const unsigned char* tableRow = asciiLineBreakTable[ch - asciiLineBreakTableFirstChar];
-            int nextChIndex = nextCh - asciiLineBreakTableFirstChar;
-            return tableRow[nextChIndex / 8] & (1 << (nextChIndex % 8));
-        }
-        // Otherwise defer to the Unicode algorithm by returning false.
-        return false;
+    switch ( ch )
+    {
+        case ideographicComma:
+        case ideographicFullStop:
+            // FIXME: cases for ideographicComma and ideographicFullStop are a workaround for an issue in Unicode 5.0
+            // which is likely to be resolved in Unicode 5.1 <http://bugs.webkit.org/show_bug.cgi?id=17411>.
+            // We may want to remove or conditionalize this workaround at some point.
+            return true;
+
+        default:
+
+            // If both ch and nextCh are ASCII characters, use a lookup table for enhanced speed and for compatibility
+            // with other browsers (see comments for asciiLineBreakTable for details).
+            if ( ch >= asciiLineBreakTableFirstChar && ch <= asciiLineBreakTableLastChar
+                    && nextCh >= asciiLineBreakTableFirstChar && nextCh <= asciiLineBreakTableLastChar )
+            {
+                const unsigned char *tableRow = asciiLineBreakTable[ch - asciiLineBreakTableFirstChar];
+                int nextChIndex = nextCh - asciiLineBreakTableFirstChar;
+                return tableRow[nextChIndex / 8] & ( 1 << ( nextChIndex % 8 ) );
+            }
+
+            // Otherwise defer to the Unicode algorithm by returning false.
+            return false;
     }
 }
 
-static inline bool needsLineBreakIterator(UChar ch)
+static inline bool needsLineBreakIterator( UChar ch )
 {
     return ch > asciiLineBreakTableLastChar && ch != noBreakSpace;
 }
 
-int nextBreakablePosition(LazyLineBreakIterator& lazyBreakIterator, int pos, bool treatNoBreakSpaceAsBreak)
+int nextBreakablePosition( LazyLineBreakIterator &lazyBreakIterator, int pos, bool treatNoBreakSpaceAsBreak )
 {
-    const UChar* str = lazyBreakIterator.string();
+    const UChar *str = lazyBreakIterator.string();
     int len = lazyBreakIterator.length();
     int nextBreak = -1;
 
     UChar lastCh = pos > 0 ? str[pos - 1] : 0;
-    for (int i = pos; i < len; i++) {
+
+    for ( int i = pos; i < len; i++ )
+    {
         UChar ch = str[i];
 
-        if (isBreakableSpace(ch, treatNoBreakSpaceAsBreak) || shouldBreakAfter(lastCh, ch))
+        if ( isBreakableSpace( ch, treatNoBreakSpaceAsBreak ) || shouldBreakAfter( lastCh, ch ) )
+        {
             return i;
+        }
 
-        if (needsLineBreakIterator(ch) || needsLineBreakIterator(lastCh)) {
-            if (nextBreak < i && i) {
-                TextBreakIterator* breakIterator = lazyBreakIterator.get();
-                if (breakIterator)
-                    nextBreak = textBreakFollowing(breakIterator, i - 1);
+        if ( needsLineBreakIterator( ch ) || needsLineBreakIterator( lastCh ) )
+        {
+            if ( nextBreak < i && i )
+            {
+                TextBreakIterator *breakIterator = lazyBreakIterator.get();
+
+                if ( breakIterator )
+                {
+                    nextBreak = textBreakFollowing( breakIterator, i - 1 );
+                }
             }
-            if (i == nextBreak && !isBreakableSpace(lastCh, treatNoBreakSpaceAsBreak))
+
+            if ( i == nextBreak && !isBreakableSpace( lastCh, treatNoBreakSpaceAsBreak ) )
+            {
                 return i;
+            }
         }
 
         lastCh = ch;

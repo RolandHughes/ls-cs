@@ -29,12 +29,15 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class DeviceOrientation : public RefCounted<DeviceOrientation> {
+class DeviceOrientation : public RefCounted<DeviceOrientation>
+{
 public:
     static PassRefPtr<DeviceOrientation> create();
-    static PassRefPtr<DeviceOrientation> create(bool canProvideAlpha, double alpha, bool canProvideBeta, double beta, bool canProvideGamma, double gamma);
+    static PassRefPtr<DeviceOrientation> create( bool canProvideAlpha, double alpha, bool canProvideBeta, double beta,
+            bool canProvideGamma, double gamma );
 
     double alpha() const;
     double beta() const;
@@ -45,7 +48,7 @@ public:
 
 private:
     DeviceOrientation();
-    DeviceOrientation(bool canProvideAlpha, double alpha, bool canProvideBeta, double beta, bool canProvideGamma, double gamma);
+    DeviceOrientation( bool canProvideAlpha, double alpha, bool canProvideBeta, double beta, bool canProvideGamma, double gamma );
 
     bool m_canProvideAlpha;
     bool m_canProvideBeta;

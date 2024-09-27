@@ -24,7 +24,8 @@
 #include "FileChooser.h"
 #include "RenderBlock.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Chrome;
 class HTMLInputElement;
@@ -33,66 +34,79 @@ class HTMLInputElement;
 // sufficient space to draw a file icon and filename. The RenderButton has a shadow node
 // associated with it to receive click/hover events.
 
-class RenderFileUploadControl : public RenderBlock, private FileChooserClient {
+class RenderFileUploadControl : public RenderBlock, private FileChooserClient
+{
 public:
-    RenderFileUploadControl(HTMLInputElement*);
+    RenderFileUploadControl( HTMLInputElement * );
     virtual ~RenderFileUploadControl();
 
-    virtual bool isFileUploadControl() const { return true; }
+    virtual bool isFileUploadControl() const
+    {
+        return true;
+    }
 
     void click();
 
-    void receiveDroppedFiles(const Vector<String>&);
+    void receiveDroppedFiles( const Vector<String> & );
 
     String buttonValue();
     String fileTextValue() const;
-    
+
 private:
-    virtual const char* renderName() const { return "RenderFileUploadControl"; }
+    virtual const char *renderName() const
+    {
+        return "RenderFileUploadControl";
+    }
 
     virtual void updateFromElement();
     virtual void computePreferredLogicalWidths();
-    virtual void paintObject(PaintInfo&, int tx, int ty);
+    virtual void paintObject( PaintInfo &, int tx, int ty );
 
-    virtual void styleDidChange(StyleDifference, const RenderStyle* oldStyle);
+    virtual void styleDidChange( StyleDifference, const RenderStyle *oldStyle );
 
-    virtual bool requiresForcedStyleRecalcPropagation() const { return true; }
+    virtual bool requiresForcedStyleRecalcPropagation() const
+    {
+        return true;
+    }
 
     // FileChooserClient methods.
     void valueChanged();
-    void repaint() { RenderBlock::repaint(); }
+    void repaint()
+    {
+        RenderBlock::repaint();
+    }
     bool allowsMultipleFiles();
 #if ENABLE(DIRECTORY_UPLOAD)
     bool allowsDirectoryUpload();
-    void receiveDropForDirectoryUpload(const Vector<String>&);
+    void receiveDropForDirectoryUpload( const Vector<String> & );
 #endif
     String acceptTypes();
-    void chooseIconForFiles(FileChooser*, const Vector<String>&);
+    void chooseIconForFiles( FileChooser *, const Vector<String> & );
 
-    Chrome* chrome() const;
+    Chrome *chrome() const;
     int maxFilenameWidth() const;
-    PassRefPtr<RenderStyle> createButtonStyle(const RenderStyle* parentStyle) const;
-    
-    virtual VisiblePosition positionForPoint(const IntPoint&);
+    PassRefPtr<RenderStyle> createButtonStyle( const RenderStyle *parentStyle ) const;
+
+    virtual VisiblePosition positionForPoint( const IntPoint & );
 
     RefPtr<HTMLInputElement> m_button;
     RefPtr<FileChooser> m_fileChooser;
 };
 
-inline RenderFileUploadControl* toRenderFileUploadControl(RenderObject* object)
+inline RenderFileUploadControl *toRenderFileUploadControl( RenderObject *object )
 {
-    ASSERT(!object || object->isFileUploadControl());
-    return static_cast<RenderFileUploadControl*>(object);
+    ASSERT( !object || object->isFileUploadControl() );
+    return static_cast<RenderFileUploadControl *>( object );
 }
 
-inline const RenderFileUploadControl* toRenderFileUploadControl(const RenderObject* object)
+inline const RenderFileUploadControl *toRenderFileUploadControl( const RenderObject *object )
 {
-    ASSERT(!object || object->isFileUploadControl());
-    return static_cast<const RenderFileUploadControl*>(object);
+    ASSERT( !object || object->isFileUploadControl() );
+    return static_cast<const RenderFileUploadControl *>( object );
 }
 
 // This will catch anyone doing an unnecessary cast.
-void toRenderFileUploadControl(const RenderFileUploadControl*);
+void toRenderFileUploadControl( const RenderFileUploadControl * );
 
 } // namespace WebCore
 

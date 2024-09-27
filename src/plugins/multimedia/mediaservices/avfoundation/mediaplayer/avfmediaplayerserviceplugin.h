@@ -29,30 +29,30 @@
 #include <qmediaplayercontrol.h>
 
 class AVFMediaPlayerServicePlugin
-   : public QMediaServiceProviderPlugin, public QMediaServiceSupportedFormatsInterface
-   , public QMediaServiceFeaturesInterface
+    : public QMediaServiceProviderPlugin, public QMediaServiceSupportedFormatsInterface
+    , public QMediaServiceFeaturesInterface
 {
-   CS_OBJECT_MULTIPLE(AVFMediaPlayerServicePlugin, QMediaServiceProviderPlugin)
+    CS_OBJECT_MULTIPLE( AVFMediaPlayerServicePlugin, QMediaServiceProviderPlugin )
 
-   CS_PLUGIN_IID(QMediaServiceProviderInterface_ID)
-   CS_PLUGIN_KEY(QMediaPlayerControl_Key)
+    CS_PLUGIN_IID( QMediaServiceProviderInterface_ID )
+    CS_PLUGIN_KEY( QMediaPlayerControl_Key )
 
-   CS_INTERFACES(QMediaServiceSupportedFormatsInterface, QMediaServiceFeaturesInterface)
+    CS_INTERFACES( QMediaServiceSupportedFormatsInterface, QMediaServiceFeaturesInterface )
 
- public:
-   explicit AVFMediaPlayerServicePlugin();
+public:
+    explicit AVFMediaPlayerServicePlugin();
 
-   QMediaService *create(const QString &key) override;
-   void release(QMediaService *service) override;
+    QMediaService *create( const QString &key ) override;
+    void release( QMediaService *service ) override;
 
-   QMediaServiceProviderHint::Features supportedFeatures(const QString &service) const override;
-   QMultimedia::SupportEstimate hasSupport(const QString &mimeType, const QStringList &codecs) const override;
-   QStringList supportedMimeTypes() const override;
+    QMediaServiceProviderHint::Features supportedFeatures( const QString &service ) const override;
+    QMultimedia::SupportEstimate hasSupport( const QString &mimeType, const QStringList &codecs ) const override;
+    QStringList supportedMimeTypes() const override;
 
- private:
-   void buildSupportedTypes();
+private:
+    void buildSupportedTypes();
 
-   QStringList m_supportedMimeTypes;
+    QStringList m_supportedMimeTypes;
 };
 
 #endif

@@ -33,23 +33,23 @@ class QScriptablePrivate;
 
 class Q_SCRIPT_EXPORT QScriptable
 {
- public:
-   QScriptable();
+public:
+    QScriptable();
 
-   QScriptable(const QScriptable &) = delete;
-   QScriptable &operator=(const QScriptable &) = delete;
+    QScriptable( const QScriptable & ) = delete;
+    QScriptable &operator=( const QScriptable & ) = delete;
 
-   ~QScriptable();
+    ~QScriptable();
 
-   QScriptEngine *engine() const;
-   QScriptContext *context() const;
-   QScriptValue thisObject() const;
-   int argumentCount() const;
-   QScriptValue argument(int index) const;
+    QScriptEngine *engine() const;
+    QScriptContext *context() const;
+    QScriptValue thisObject() const;
+    int argumentCount() const;
+    QScriptValue argument( int index ) const;
 
- private:
-   Q_DECLARE_PRIVATE(QScriptable)
-   QScopedPointer<QScriptablePrivate> d_ptr;
+private:
+    Q_DECLARE_PRIVATE( QScriptable )
+    QScopedPointer<QScriptablePrivate> d_ptr;
 };
 
 #endif

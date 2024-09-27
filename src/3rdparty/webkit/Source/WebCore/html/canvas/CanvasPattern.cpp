@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -29,37 +29,47 @@
 #include "ExceptionCode.h"
 #include "PlatformString.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-void CanvasPattern::parseRepetitionType(const String& type, bool& repeatX, bool& repeatY, ExceptionCode& ec)
+void CanvasPattern::parseRepetitionType( const String &type, bool &repeatX, bool &repeatY, ExceptionCode &ec )
 {
     ec = 0;
-    if (type.isEmpty() || type == "repeat") {
+
+    if ( type.isEmpty() || type == "repeat" )
+    {
         repeatX = true;
         repeatY = true;
         return;
     }
-    if (type == "no-repeat") {
+
+    if ( type == "no-repeat" )
+    {
         repeatX = false;
         repeatY = false;
         return;
     }
-    if (type == "repeat-x") {
+
+    if ( type == "repeat-x" )
+    {
         repeatX = true;
         repeatY = false;
         return;
     }
-    if (type == "repeat-y") {
+
+    if ( type == "repeat-y" )
+    {
         repeatX = false;
         repeatY = true;
         return;
     }
+
     ec = SYNTAX_ERR;
 }
 
-CanvasPattern::CanvasPattern(PassRefPtr<Image> image, bool repeatX, bool repeatY, bool originClean)
-    : m_pattern(Pattern::create(image, repeatX, repeatY))
-    , m_originClean(originClean)
+CanvasPattern::CanvasPattern( PassRefPtr<Image> image, bool repeatX, bool repeatY, bool originClean )
+    : m_pattern( Pattern::create( image, repeatX, repeatY ) )
+    , m_originClean( originClean )
 {
 }
 

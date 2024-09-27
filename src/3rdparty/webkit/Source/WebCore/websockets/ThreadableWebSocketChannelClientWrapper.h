@@ -40,13 +40,15 @@
 #include <wtf/Threading.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class ThreadableWebSocketChannelClientWrapper : public ThreadSafeRefCounted<ThreadableWebSocketChannelClientWrapper> {
+class ThreadableWebSocketChannelClientWrapper : public ThreadSafeRefCounted<ThreadableWebSocketChannelClientWrapper>
+{
 public:
-    static PassRefPtr<ThreadableWebSocketChannelClientWrapper> create(WebSocketChannelClient* client)
+    static PassRefPtr<ThreadableWebSocketChannelClientWrapper> create( WebSocketChannelClient *client )
     {
-        return adoptRef(new ThreadableWebSocketChannelClientWrapper(client));
+        return adoptRef( new ThreadableWebSocketChannelClientWrapper( client ) );
     }
 
     void clearSyncMethodDone()
@@ -67,7 +69,7 @@ public:
     {
         return m_sent;
     }
-    void setSent(bool sent)
+    void setSent( bool sent )
     {
         m_sent = sent;
         m_syncMethodDone = true;
@@ -77,7 +79,7 @@ public:
     {
         return m_bufferedAmount;
     }
-    void setBufferedAmount(unsigned long bufferedAmount)
+    void setBufferedAmount( unsigned long bufferedAmount )
     {
         m_bufferedAmount = bufferedAmount;
         m_syncMethodDone = true;
@@ -91,23 +93,32 @@ public:
     void didConnect()
     {
         m_pendingConnected = true;
-        if (!m_suspended)
+
+        if ( !m_suspended )
+        {
             processPendingEvents();
+        }
     }
 
-    void didReceiveMessage(const String& msg)
+    void didReceiveMessage( const String &msg )
     {
-        m_pendingMessages.append(msg);
-        if (!m_suspended)
+        m_pendingMessages.append( msg );
+
+        if ( !m_suspended )
+        {
             processPendingEvents();
+        }
     }
 
-    void didClose(unsigned long unhandledBufferedAmount)
+    void didClose( unsigned long unhandledBufferedAmount )
     {
         m_pendingClosed = true;
         m_bufferedAmount = unhandledBufferedAmount;
-        if (!m_suspended)
+
+        if ( !m_suspended )
+        {
             processPendingEvents();
+        }
     }
 
     void suspend()
@@ -122,41 +133,54 @@ public:
     }
 
 protected:
-    ThreadableWebSocketChannelClientWrapper(WebSocketChannelClient* client)
-        : m_client(client)
-        , m_syncMethodDone(false)
-        , m_sent(false)
-        , m_bufferedAmount(0)
-        , m_suspended(false)
-        , m_pendingConnected(false)
-        , m_pendingClosed(false)
+    ThreadableWebSocketChannelClientWrapper( WebSocketChannelClient *client )
+        : m_client( client )
+        , m_syncMethodDone( false )
+        , m_sent( false )
+        , m_bufferedAmount( 0 )
+        , m_suspended( false )
+        , m_pendingConnected( false )
+        , m_pendingClosed( false )
     {
     }
 
     void processPendingEvents()
     {
-        ASSERT(!m_suspended);
-        if (m_pendingConnected) {
+        ASSERT( !m_suspended );
+
+        if ( m_pendingConnected )
+        {
             m_pendingConnected = false;
-            if (m_client)
+
+            if ( m_client )
+            {
                 m_client->didConnect();
+            }
         }
 
         Vector<String> messages;
-        messages.swap(m_pendingMessages);
-        for (Vector<String>::const_iterator iter = messages.begin(); iter != messages.end(); ++iter) {
-            if (m_client)
-                m_client->didReceiveMessage(*iter);
+        messages.swap( m_pendingMessages );
+
+        for ( Vector<String>::const_iterator iter = messages.begin(); iter != messages.end(); ++iter )
+        {
+            if ( m_client )
+            {
+                m_client->didReceiveMessage( *iter );
+            }
         }
 
-        if (m_pendingClosed) {
+        if ( m_pendingClosed )
+        {
             m_pendingClosed = false;
-            if (m_client)
-                m_client->didClose(m_bufferedAmount);
+
+            if ( m_client )
+            {
+                m_client->didClose( m_bufferedAmount );
+            }
         }
     }
 
-    WebSocketChannelClient* m_client;
+    WebSocketChannelClient *m_client;
     bool m_syncMethodDone;
     bool m_sent;
     unsigned long m_bufferedAmount;

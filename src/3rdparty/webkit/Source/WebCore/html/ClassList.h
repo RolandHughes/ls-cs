@@ -30,42 +30,47 @@
 #include "SpaceSplitString.h"
 #include <wtf/PassOwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Element;
 
-class ClassList : public DOMTokenList {
+class ClassList : public DOMTokenList
+{
 public:
-    static PassOwnPtr<ClassList> create(Element* element)
+    static PassOwnPtr<ClassList> create( Element *element )
     {
-        return adoptPtr(new ClassList(element));
+        return adoptPtr( new ClassList( element ) );
     }
 
     virtual void ref();
     virtual void deref();
 
     virtual unsigned length() const;
-    virtual const AtomicString item(unsigned index) const;
-    virtual bool contains(const AtomicString&, ExceptionCode&) const;
-    virtual void add(const AtomicString&, ExceptionCode&);
-    virtual void remove(const AtomicString&, ExceptionCode&);
-    virtual bool toggle(const AtomicString&, ExceptionCode&);
+    virtual const AtomicString item( unsigned index ) const;
+    virtual bool contains( const AtomicString &, ExceptionCode & ) const;
+    virtual void add( const AtomicString &, ExceptionCode & );
+    virtual void remove( const AtomicString &, ExceptionCode & );
+    virtual bool toggle( const AtomicString &, ExceptionCode & );
     virtual String toString() const;
 
-    virtual Element* element() { return m_element; }
+    virtual Element *element()
+    {
+        return m_element;
+    }
 
-    void reset(const String&);
+    void reset( const String & );
 
 private:
-    ClassList(Element*);
+    ClassList( Element * );
 
-    void addInternal(const AtomicString&);
-    bool containsInternal(const AtomicString&) const;
-    void removeInternal(const AtomicString&);
+    void addInternal( const AtomicString & );
+    bool containsInternal( const AtomicString & ) const;
+    void removeInternal( const AtomicString & );
 
-    const SpaceSplitString& classNames() const;
+    const SpaceSplitString &classNames() const;
 
-    Element* m_element;
+    Element *m_element;
     SpaceSplitString m_classNamesForQuirksMode;
 };
 

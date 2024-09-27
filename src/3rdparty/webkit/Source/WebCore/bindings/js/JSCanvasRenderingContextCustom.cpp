@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -37,26 +37,33 @@
 
 using namespace JSC;
 
-namespace WebCore {
-
-void JSCanvasRenderingContext::visitChildren(SlotVisitor& visitor)
+namespace WebCore
 {
-    Base::visitChildren(visitor);
 
-    visitor.addOpaqueRoot(root(impl()->canvas()));
+void JSCanvasRenderingContext::visitChildren( SlotVisitor &visitor )
+{
+    Base::visitChildren( visitor );
+
+    visitor.addOpaqueRoot( root( impl()->canvas() ) );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, CanvasRenderingContext* object)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, CanvasRenderingContext *object )
 {
-    if (!object)
+    if ( !object )
+    {
         return jsUndefined();
+    }
 
 #if ENABLE(WEBGL)
-    if (object->is3d())
-        return wrap<JSWebGLRenderingContext>(exec, globalObject, static_cast<WebGLRenderingContext*>(object));
+
+    if ( object->is3d() )
+    {
+        return wrap<JSWebGLRenderingContext>( exec, globalObject, static_cast<WebGLRenderingContext *>( object ) );
+    }
+
 #endif
-    ASSERT(object->is2d());
-    return wrap<JSCanvasRenderingContext2D>(exec, globalObject, static_cast<CanvasRenderingContext2D*>(object));
+    ASSERT( object->is2d() );
+    return wrap<JSCanvasRenderingContext2D>( exec, globalObject, static_cast<CanvasRenderingContext2D *>( object ) );
 }
 
 } // namespace WebCore

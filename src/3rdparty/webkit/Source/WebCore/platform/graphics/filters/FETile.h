@@ -26,23 +26,31 @@
 #include "FilterEffect.h"
 #include "Filter.h"
 
-namespace WebCore {
-    
-class FETile : public FilterEffect {
+namespace WebCore
+{
+
+class FETile : public FilterEffect
+{
 public:
-    static PassRefPtr<FETile> create(Filter* filter);
+    static PassRefPtr<FETile> create( Filter *filter );
 
     virtual void apply();
     virtual void dump();
 
-    virtual void determineAbsolutePaintRect() { setAbsolutePaintRect(maxEffectRect()); }
+    virtual void determineAbsolutePaintRect()
+    {
+        setAbsolutePaintRect( maxEffectRect() );
+    }
 
-    virtual FilterEffectType filterEffectType() const { return FilterEffectTypeTile; }
+    virtual FilterEffectType filterEffectType() const
+    {
+        return FilterEffectTypeTile;
+    }
 
-    virtual TextStream& externalRepresentation(TextStream&, int indention) const;
+    virtual TextStream &externalRepresentation( TextStream &, int indention ) const;
 
 private:
-    FETile(Filter*);
+    FETile( Filter * );
 };
 
 } // namespace WebCore

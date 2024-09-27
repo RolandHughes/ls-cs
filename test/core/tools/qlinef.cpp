@@ -21,80 +21,80 @@
 
 #include <cs_catch2.h>
 
-TEST_CASE("QLineF traits", "[qlinef]")
+TEST_CASE( "QLineF traits", "[qlinef]" )
 {
-   REQUIRE(std::is_copy_constructible_v<QLineF> == true);
-   REQUIRE(std::is_move_constructible_v<QLineF> == true);
+    REQUIRE( std::is_copy_constructible_v<QLineF> == true );
+    REQUIRE( std::is_move_constructible_v<QLineF> == true );
 
-   REQUIRE(std::is_copy_assignable_v<QLineF> == true);
-   REQUIRE(std::is_move_assignable_v<QLineF> == true);
+    REQUIRE( std::is_copy_assignable_v<QLineF> == true );
+    REQUIRE( std::is_move_assignable_v<QLineF> == true );
 
-   REQUIRE(std::has_virtual_destructor_v<QLineF> == false);
+    REQUIRE( std::has_virtual_destructor_v<QLineF> == false );
 }
 
-TEST_CASE("QLineF constructor", "[qlinef]")
+TEST_CASE( "QLineF constructor", "[qlinef]" )
 {
-   QLineF data(5, 10, 100, 200);
+    QLineF data( 5, 10, 100, 200 );
 
-   REQUIRE(! data.isNull());
+    REQUIRE( ! data.isNull() );
 
-   REQUIRE(data.x1() == 5);
-   REQUIRE(data.y1() == 10);
-   REQUIRE(data.x2() == 100);
-   REQUIRE(data.y2() == 200);
+    REQUIRE( data.x1() == 5 );
+    REQUIRE( data.y1() == 10 );
+    REQUIRE( data.x2() == 100 );
+    REQUIRE( data.y2() == 200 );
 }
 
-TEST_CASE("QLineF empty", "[qlinef]")
+TEST_CASE( "QLineF empty", "[qlinef]" )
 {
-   QLineF data;
+    QLineF data;
 
-   REQUIRE(data.isNull());
+    REQUIRE( data.isNull() );
 }
 
-TEST_CASE("QLineF dx_dy", "[qlinef]")
+TEST_CASE( "QLineF dx_dy", "[qlinef]" )
 {
-   QLineF data;
+    QLineF data;
 
-   {
-      data.setLine(5.5, 50, 25, 85.5);
+    {
+        data.setLine( 5.5, 50, 25, 85.5 );
 
-      REQUIRE(data.dx() == 19.50);
-      REQUIRE(data.dy() == 35.5 );
-   }
+        REQUIRE( data.dx() == 19.50 );
+        REQUIRE( data.dy() == 35.5 );
+    }
 }
 
-TEST_CASE("QLineF set_line", "[qlinef]")
+TEST_CASE( "QLineF set_line", "[qlinef]" )
 {
-   QLineF data;
+    QLineF data;
 
-   {
-      data.setLine(5, 10, 100, 200);
+    {
+        data.setLine( 5, 10, 100, 200 );
 
-      REQUIRE(data.p1() == QPointF(5, 10));
-      REQUIRE(data.p2() == QPointF(100, 200));
-   }
+        REQUIRE( data.p1() == QPointF( 5, 10 ) );
+        REQUIRE( data.p2() == QPointF( 100, 200 ) );
+    }
 }
 
-TEST_CASE("QLineF set_p1", "[qlinef]")
+TEST_CASE( "QLineF set_p1", "[qlinef]" )
 {
-   QLineF data;
+    QLineF data;
 
-   {
-      data.setP1(QPointF(5, 10));
+    {
+        data.setP1( QPointF( 5, 10 ) );
 
-      REQUIRE(data.p1() == QPoint(5, 10));
-      REQUIRE(data.p2() == QPoint(0, 0));
-   }
+        REQUIRE( data.p1() == QPoint( 5, 10 ) );
+        REQUIRE( data.p2() == QPoint( 0, 0 ) );
+    }
 }
 
-TEST_CASE("QLineF set_p2", "[qlinef]")
+TEST_CASE( "QLineF set_p2", "[qlinef]" )
 {
-   QLineF data;
+    QLineF data;
 
-   {
-      data.setP2(QPointF(100, 200));
+    {
+        data.setP2( QPointF( 100, 200 ) );
 
-      REQUIRE(data.p1() == QPointF(0, 0));
-      REQUIRE(data.p2() == QPointF(100, 200));
-   }
+        REQUIRE( data.p1() == QPointF( 0, 0 ) );
+        REQUIRE( data.p2() == QPointF( 100, 200 ) );
+    }
 }

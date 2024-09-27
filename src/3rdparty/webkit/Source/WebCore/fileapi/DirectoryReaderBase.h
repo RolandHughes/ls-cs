@@ -38,18 +38,26 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class DirectoryReaderBase : public RefCounted<DirectoryReaderBase> {
+class DirectoryReaderBase : public RefCounted<DirectoryReaderBase>
+{
 public:
-    DOMFileSystemBase* filesystem() const { return m_fileSystem.get(); }
-    void setHasMoreEntries(bool hasMoreEntries) { m_hasMoreEntries = hasMoreEntries; }
+    DOMFileSystemBase *filesystem() const
+    {
+        return m_fileSystem.get();
+    }
+    void setHasMoreEntries( bool hasMoreEntries )
+    {
+        m_hasMoreEntries = hasMoreEntries;
+    }
 
 protected:
-    DirectoryReaderBase(PassRefPtr<DOMFileSystemBase> fileSystem, const String& fullPath)
-        : m_fileSystem(fileSystem)
-        , m_fullPath(fullPath)
-        , m_hasMoreEntries(true)
+    DirectoryReaderBase( PassRefPtr<DOMFileSystemBase> fileSystem, const String &fullPath )
+        : m_fileSystem( fileSystem )
+        , m_fullPath( fullPath )
+        , m_hasMoreEntries( true )
     {
     }
 

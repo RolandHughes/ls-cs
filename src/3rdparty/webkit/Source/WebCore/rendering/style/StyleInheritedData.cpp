@@ -25,14 +25,15 @@
 #include "RenderStyle.h"
 #include "StyleImage.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 StyleInheritedData::StyleInheritedData()
-    : line_height(RenderStyle::initialLineHeight())
-    , list_style_image(RenderStyle::initialListStyleImage())
-    , color(RenderStyle::initialColor())
-    , horizontal_border_spacing(RenderStyle::initialHorizontalBorderSpacing())
-    , vertical_border_spacing(RenderStyle::initialVerticalBorderSpacing())
+    : line_height( RenderStyle::initialLineHeight() )
+    , list_style_image( RenderStyle::initialListStyleImage() )
+    , color( RenderStyle::initialColor() )
+    , horizontal_border_spacing( RenderStyle::initialHorizontalBorderSpacing() )
+    , vertical_border_spacing( RenderStyle::initialVerticalBorderSpacing() )
 {
 }
 
@@ -40,22 +41,22 @@ StyleInheritedData::~StyleInheritedData()
 {
 }
 
-StyleInheritedData::StyleInheritedData(const StyleInheritedData& o)
+StyleInheritedData::StyleInheritedData( const StyleInheritedData &o )
     : RefCounted<StyleInheritedData>()
-    , line_height(o.line_height)
-    , list_style_image(o.list_style_image)
-    , font(o.font)
-    , color(o.color)
-    , horizontal_border_spacing(o.horizontal_border_spacing)
-    , vertical_border_spacing(o.vertical_border_spacing)
+    , line_height( o.line_height )
+    , list_style_image( o.list_style_image )
+    , font( o.font )
+    , color( o.color )
+    , horizontal_border_spacing( o.horizontal_border_spacing )
+    , vertical_border_spacing( o.vertical_border_spacing )
 {
 }
 
-bool StyleInheritedData::operator==(const StyleInheritedData& o) const
+bool StyleInheritedData::operator==( const StyleInheritedData &o ) const
 {
     return
         line_height == o.line_height &&
-        StyleImage::imagesEquivalent(list_style_image.get(), o.list_style_image.get()) &&
+        StyleImage::imagesEquivalent( list_style_image.get(), o.list_style_image.get() ) &&
         font == o.font &&
         color == o.color &&
         horizontal_border_spacing == o.horizontal_border_spacing &&

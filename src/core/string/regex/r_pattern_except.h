@@ -32,49 +32,58 @@
 #include <stdexcept>
 #include <cstddef>
 
-namespace cs_regex_ns {
+namespace cs_regex_ns
+{
 
 class LIB_CS_STRING_EXPORT regex_error : public std::runtime_error
 {
- public:
-   explicit regex_error(const std::string &s, regex_constants::error_type err = regex_constants::error_unknown, std::ptrdiff_t pos = 0)
-      : std::runtime_error(s), m_error_code(err), m_position(pos) {
-   }
+public:
+    explicit regex_error( const std::string &s, regex_constants::error_type err = regex_constants::error_unknown,
+                          std::ptrdiff_t pos = 0 )
+        : std::runtime_error( s ), m_error_code( err ), m_position( pos )
+    {
+    }
 
-   explicit regex_error(regex_constants::error_type err)
-      : std::runtime_error(cs_regex_ns::cs_regex_detail_ns::get_default_error_string(err)), m_error_code(err), m_position(0) {
-   }
+    explicit regex_error( regex_constants::error_type err )
+        : std::runtime_error( cs_regex_ns::cs_regex_detail_ns::get_default_error_string( err ) ), m_error_code( err ), m_position( 0 )
+    {
+    }
 
-   ~regex_error() noexcept {
-   }
+    ~regex_error() noexcept
+    {
+    }
 
-   regex_constants::error_type code() const {
-      return m_error_code;
-   }
+    regex_constants::error_type code() const
+    {
+        return m_error_code;
+    }
 
-   std::ptrdiff_t position() const {
-      return m_position;
-   }
+    std::ptrdiff_t position() const
+    {
+        return m_position;
+    }
 
-   void raise() const {
-      throw *this;
-   }
+    void raise() const
+    {
+        throw *this;
+    }
 
- private:
-   regex_constants::error_type m_error_code;
-   std::ptrdiff_t m_position;
+private:
+    regex_constants::error_type m_error_code;
+    std::ptrdiff_t m_position;
 };
 
 using bad_pattern    = regex_error;
 using bad_expression = regex_error;
 
-namespace cs_regex_detail_ns {
+namespace cs_regex_detail_ns
+{
 
 template <class traits>
-void raise_error(const traits &t, regex_constants::error_type code)
+void raise_error( const traits &t, regex_constants::error_type code )
 {
-   std::runtime_error err(t.error_string(code));
-   throw (err);
+    std::runtime_error err( t.error_string( code ) );
+    throw ( err );
 }
 
 }   // end namespace

@@ -29,22 +29,30 @@
 #include "AudioDSPKernel.h"
 #include "DelayProcessor.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class DelayProcessor;
-    
-class DelayDSPKernel : public AudioDSPKernel {
-public:  
-    DelayDSPKernel(DelayProcessor*);
-    DelayDSPKernel(double maxDelayTime, double sampleRate);
-    
-    virtual void process(const float* source, float* destination, size_t framesToProcess);
+
+class DelayDSPKernel : public AudioDSPKernel
+{
+public:
+    DelayDSPKernel( DelayProcessor * );
+    DelayDSPKernel( double maxDelayTime, double sampleRate );
+
+    virtual void process( const float *source, float *destination, size_t framesToProcess );
     virtual void reset();
-    
-    double maxDelayTime() const { return m_maxDelayTime; }
-    
-    void setDelayFrames(double numberOfFrames) { m_desiredDelayFrames = numberOfFrames; }
-    
+
+    double maxDelayTime() const
+    {
+        return m_maxDelayTime;
+    }
+
+    void setDelayFrames( double numberOfFrames )
+    {
+        m_desiredDelayFrames = numberOfFrames;
+    }
+
 private:
     AudioFloatArray m_buffer;
     double m_maxDelayTime;
@@ -54,7 +62,10 @@ private:
     bool m_firstTime;
     double m_desiredDelayFrames;
 
-    DelayProcessor* delayProcessor() { return static_cast<DelayProcessor*>(processor()); }
+    DelayProcessor *delayProcessor()
+    {
+        return static_cast<DelayProcessor *>( processor() );
+    }
 };
 
 } // namespace WebCore

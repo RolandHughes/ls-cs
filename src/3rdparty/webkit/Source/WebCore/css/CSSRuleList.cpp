@@ -27,22 +27,30 @@
 #include "StyleList.h"
 #include "WebKitCSSKeyframeRule.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 CSSRuleList::CSSRuleList()
 {
 }
 
-CSSRuleList::CSSRuleList(StyleList* list, bool omitCharsetRules)
+CSSRuleList::CSSRuleList( StyleList *list, bool omitCharsetRules )
 {
     m_list = list;
-    if (list && omitCharsetRules) {
+
+    if ( list && omitCharsetRules )
+    {
         m_list = 0;
         unsigned len = list->length();
-        for (unsigned i = 0; i < len; ++i) {
-            StyleBase* style = list->item(i);
-            if (style->isRule() && !style->isCharsetRule())
-                append(static_cast<CSSRule*>(style));
+
+        for ( unsigned i = 0; i < len; ++i )
+        {
+            StyleBase *style = list->item( i );
+
+            if ( style->isRule() && !style->isCharsetRule() )
+            {
+                append( static_cast<CSSRule *>( style ) );
+            }
         }
     }
 }
@@ -56,62 +64,75 @@ unsigned CSSRuleList::length() const
     return m_list ? m_list->length() : m_lstCSSRules.size();
 }
 
-CSSRule* CSSRuleList::item(unsigned index)
+CSSRule *CSSRuleList::item( unsigned index )
 {
-    if (m_list) {
-        StyleBase* rule = m_list->item(index);
-        ASSERT(!rule || rule->isRule());
-        return static_cast<CSSRule*>(rule);
+    if ( m_list )
+    {
+        StyleBase *rule = m_list->item( index );
+        ASSERT( !rule || rule->isRule() );
+        return static_cast<CSSRule *>( rule );
     }
 
-    if (index < m_lstCSSRules.size())
+    if ( index < m_lstCSSRules.size() )
+    {
         return m_lstCSSRules[index].get();
+    }
+
     return 0;
 }
 
-void CSSRuleList::deleteRule(unsigned index)
+void CSSRuleList::deleteRule( unsigned index )
 {
-    ASSERT(!m_list);
+    ASSERT( !m_list );
 
-    if (index >= m_lstCSSRules.size()) {
+    if ( index >= m_lstCSSRules.size() )
+    {
         // FIXME: Should we throw an INDEX_SIZE_ERR exception here?
         return;
     }
 
-    if (m_lstCSSRules[index]->isKeyframeRule()) {
-        if (CSSMutableStyleDeclaration* style = static_cast<WebKitCSSKeyframeRule*>(m_lstCSSRules[index].get())->style())
-            style->setParent(0);
+    if ( m_lstCSSRules[index]->isKeyframeRule() )
+    {
+        if ( CSSMutableStyleDeclaration *style = static_cast<WebKitCSSKeyframeRule *>( m_lstCSSRules[index].get() )->style() )
+        {
+            style->setParent( 0 );
+        }
     }
 
-    m_lstCSSRules[index]->setParent(0);
-    m_lstCSSRules.remove(index);
+    m_lstCSSRules[index]->setParent( 0 );
+    m_lstCSSRules.remove( index );
 }
 
-void CSSRuleList::append(CSSRule* rule)
+void CSSRuleList::append( CSSRule *rule )
 {
-    ASSERT(!m_list);
-    if (!rule) {
+    ASSERT( !m_list );
+
+    if ( !rule )
+    {
         // FIXME: Should we throw an exception?
         return;
     }
 
-    m_lstCSSRules.append(rule);
+    m_lstCSSRules.append( rule );
 }
 
-unsigned CSSRuleList::insertRule(CSSRule* rule, unsigned index)
+unsigned CSSRuleList::insertRule( CSSRule *rule, unsigned index )
 {
-    ASSERT(!m_list);
-    if (!rule) {
+    ASSERT( !m_list );
+
+    if ( !rule )
+    {
         // FIXME: Should we throw an exception?
         return 0;
     }
 
-    if (index > m_lstCSSRules.size()) {
+    if ( index > m_lstCSSRules.size() )
+    {
         // FIXME: Should we throw an INDEX_SIZE_ERR exception here?
         return 0;
     }
 
-    m_lstCSSRules.insert(index, rule);
+    m_lstCSSRules.insert( index, rule );
     return index;
 }
 

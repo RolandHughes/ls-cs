@@ -21,42 +21,42 @@
 
 #include <cs_catch2.h>
 
-TEST_CASE("QLockFile traits", "[qlockfile]")
+TEST_CASE( "QLockFile traits", "[qlockfile]" )
 {
-   REQUIRE(std::is_copy_constructible_v<QLockFile> == false);
-   REQUIRE(std::is_move_constructible_v<QLockFile> == false);
+    REQUIRE( std::is_copy_constructible_v<QLockFile> == false );
+    REQUIRE( std::is_move_constructible_v<QLockFile> == false );
 
-   REQUIRE(std::is_copy_assignable_v<QLockFile> == false);
-   REQUIRE(std::is_move_assignable_v<QLockFile> == false);
+    REQUIRE( std::is_copy_assignable_v<QLockFile> == false );
+    REQUIRE( std::is_move_assignable_v<QLockFile> == false );
 
-   REQUIRE(std::has_virtual_destructor_v<QLockFile> == false);
+    REQUIRE( std::has_virtual_destructor_v<QLockFile> == false );
 }
 
-TEST_CASE("QLockFile basic", "[qlockfile]")
+TEST_CASE( "QLockFile basic", "[qlockfile]" )
 {
-  QLockFile f("testfile");
+    QLockFile f( "testfile" );
 
-  REQUIRE(f.error() == QLockFile::NoError);
-  REQUIRE(f.isLocked() == false);
+    REQUIRE( f.error() == QLockFile::NoError );
+    REQUIRE( f.isLocked() == false );
 
-  REQUIRE(f.lock() == true);
-  REQUIRE(f.isLocked() == true);
+    REQUIRE( f.lock() == true );
+    REQUIRE( f.isLocked() == true );
 
-  REQUIRE(f.tryLock() == false);
-  REQUIRE(f.isLocked() == true);
+    REQUIRE( f.tryLock() == false );
+    REQUIRE( f.isLocked() == true );
 
-  f.unlock();
+    f.unlock();
 
-  REQUIRE(f.isLocked() == false);
-  REQUIRE(f.tryLock() == true);
-  REQUIRE(f.isLocked() == true);
+    REQUIRE( f.isLocked() == false );
+    REQUIRE( f.tryLock() == true );
+    REQUIRE( f.isLocked() == true );
 }
 
-TEST_CASE("QLockFile stale_lock_time", "[qlockfile]")
+TEST_CASE( "QLockFile stale_lock_time", "[qlockfile]" )
 {
-   QLockFile f("testfile");
+    QLockFile f( "testfile" );
 
-   f.setStaleLockTime(45);
+    f.setStaleLockTime( 45 );
 
-   REQUIRE(f.staleLockTime() == 45);
+    REQUIRE( f.staleLockTime() == 45 );
 }

@@ -33,23 +33,32 @@
 
 #include "PlatformString.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class ScriptHeapSnapshot : public RefCounted<ScriptHeapSnapshot> {
+class ScriptHeapSnapshot : public RefCounted<ScriptHeapSnapshot>
+{
 public:
-    class OutputStream {
+    class OutputStream
+    {
     public:
         virtual ~OutputStream() { }
-        virtual void Write(const String& chunk) = 0;
+        virtual void Write( const String &chunk ) = 0;
         virtual void Close() = 0;
     };
 
     virtual ~ScriptHeapSnapshot() { }
 
-    String title() const { return ""; }
-    unsigned int uid() const { return 0; }
+    String title() const
+    {
+        return "";
+    }
+    unsigned int uid() const
+    {
+        return 0;
+    }
 
-    void writeJSON(OutputStream*) { }
+    void writeJSON( OutputStream * ) { }
 
 private:
     ScriptHeapSnapshot() { }

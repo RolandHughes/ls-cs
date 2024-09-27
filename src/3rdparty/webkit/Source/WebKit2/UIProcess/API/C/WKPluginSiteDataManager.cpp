@@ -35,31 +35,42 @@ using namespace std;
 
 WKTypeID WKPluginSiteDataManagerGetTypeID()
 {
-    return toAPI(WebPluginSiteDataManager::APIType);
+    return toAPI( WebPluginSiteDataManager::APIType );
 }
 
-void WKPluginSiteDataManagerGetSitesWithData(WKPluginSiteDataManagerRef managerRef, void* context, WKPluginSiteDataManagerGetSitesWithDataFunction callback)
+void WKPluginSiteDataManagerGetSitesWithData( WKPluginSiteDataManagerRef managerRef, void *context,
+        WKPluginSiteDataManagerGetSitesWithDataFunction callback )
 {
-    toImpl(managerRef)->getSitesWithData(ArrayCallback::create(context, callback));
+    toImpl( managerRef )->getSitesWithData( ArrayCallback::create( context, callback ) );
 }
 
-static uint64_t toNPClearSiteDataFlags(WKClearSiteDataFlags flags)
+static uint64_t toNPClearSiteDataFlags( WKClearSiteDataFlags flags )
 {
-    if (flags == kWKClearSiteDataFlagsClearAll)
+    if ( flags == kWKClearSiteDataFlagsClearAll )
+    {
         return NP_CLEAR_ALL;
+    }
 
     uint64_t result = 0;
-    if (flags & kWKClearSiteDataFlagsClearCache)
+
+    if ( flags & kWKClearSiteDataFlagsClearCache )
+    {
         result |= NP_CLEAR_CACHE;
+    }
+
     return result;
 }
 
-void WKPluginSiteDataManagerClearSiteData(WKPluginSiteDataManagerRef managerRef, WKArrayRef sitesRef, WKClearSiteDataFlags flags, uint64_t maxAgeInSeconds, void* context, WKPluginSiteDataManagerClearSiteDataFunction function)
+void WKPluginSiteDataManagerClearSiteData( WKPluginSiteDataManagerRef managerRef, WKArrayRef sitesRef, WKClearSiteDataFlags flags,
+        uint64_t maxAgeInSeconds, void *context, WKPluginSiteDataManagerClearSiteDataFunction function )
 {
-    toImpl(managerRef)->clearSiteData(toImpl(sitesRef), toNPClearSiteDataFlags(flags), maxAgeInSeconds, VoidCallback::create(context, function));
+    toImpl( managerRef )->clearSiteData( toImpl( sitesRef ), toNPClearSiteDataFlags( flags ), maxAgeInSeconds,
+                                         VoidCallback::create( context, function ) );
 }
 
-void WKPluginSiteDataManagerClearAllSiteData(WKPluginSiteDataManagerRef managerRef, void* context, WKPluginSiteDataManagerClearSiteDataFunction function)
+void WKPluginSiteDataManagerClearAllSiteData( WKPluginSiteDataManagerRef managerRef, void *context,
+        WKPluginSiteDataManagerClearSiteDataFunction function )
 {
-    toImpl(managerRef)->clearSiteData(0, NP_CLEAR_ALL, numeric_limits<uint64_t>::max(), VoidCallback::create(context, function));
+    toImpl( managerRef )->clearSiteData( 0, NP_CLEAR_ALL, numeric_limits<uint64_t>::max(), VoidCallback::create( context,
+                                         function ) );
 }

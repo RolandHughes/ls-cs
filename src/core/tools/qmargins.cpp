@@ -25,57 +25,57 @@
 #include <qdebug.h>
 #include <qmargins.h>
 
-QDataStream &operator<<(QDataStream &stream, const QMargins &margin)
+QDataStream &operator<<( QDataStream &stream, const QMargins &margin )
 {
-   stream << margin.left() << margin.top() << margin.right() << margin.bottom();
+    stream << margin.left() << margin.top() << margin.right() << margin.bottom();
 
-   return stream;
+    return stream;
 }
 
-QDataStream &operator>>(QDataStream &stream, QMargins &margin)
+QDataStream &operator>>( QDataStream &stream, QMargins &margin )
 {
-   int left, top, right, bottom;
+    int left, top, right, bottom;
 
-   stream >> left;
-   margin.setLeft(left);
+    stream >> left;
+    margin.setLeft( left );
 
-   stream >> top;
-   margin.setTop(top);
+    stream >> top;
+    margin.setTop( top );
 
-   stream >> right;
-   margin.setRight(right);
+    stream >> right;
+    margin.setRight( right );
 
-   stream >> bottom;
-   margin.setBottom(bottom);
+    stream >> bottom;
+    margin.setBottom( bottom );
 
-   return stream;
+    return stream;
 }
 
-QDataStream &operator<<(QDataStream &stream, const QMarginsF &marginF)
+QDataStream &operator<<( QDataStream &stream, const QMarginsF &marginF )
 {
-   stream << double(marginF.left()) << double(marginF.top()) << double(marginF.right()) << double(marginF.bottom());
+    stream << double( marginF.left() ) << double( marginF.top() ) << double( marginF.right() ) << double( marginF.bottom() );
 
-   return stream;
+    return stream;
 }
 
-QDataStream &operator>>(QDataStream &stream, QMarginsF &marginF)
+QDataStream &operator>>( QDataStream &stream, QMarginsF &marginF )
 {
-   double left, top, right, bottom;
+    double left, top, right, bottom;
 
-   stream >> left;
-   stream >> top;
-   stream >> right;
-   stream >> bottom;
+    stream >> left;
+    stream >> top;
+    stream >> right;
+    stream >> bottom;
 
-   marginF = QMarginsF(qreal(left), qreal(top), qreal(right), qreal(bottom));
+    marginF = QMarginsF( qreal( left ), qreal( top ), qreal( right ), qreal( bottom ) );
 
-   return stream;
+    return stream;
 }
 
-QDebug operator<<(QDebug dbg, const QMargins &m)
+QDebug operator<<( QDebug dbg, const QMargins &m )
 {
-   dbg.nospace() << "QMargins(" << m.left() << ", "
-         << m.top() << ", " << m.right() << ", " << m.bottom() << ')';
+    dbg.nospace() << "QMargins(" << m.left() << ", "
+                  << m.top() << ", " << m.right() << ", " << m.bottom() << ')';
 
-   return dbg.space();
+    return dbg.space();
 }

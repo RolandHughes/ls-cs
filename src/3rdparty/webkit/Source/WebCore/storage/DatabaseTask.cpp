@@ -33,12 +33,13 @@
 #include "Database.h"
 #include "Logging.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 DatabaseTaskSynchronizer::DatabaseTaskSynchronizer()
-    : m_taskCompleted(false)
+    : m_taskCompleted( false )
 #ifndef NDEBUG
-    , m_hasCheckedForTermination(false)
+    , m_hasCheckedForTermination( false )
 #endif
 {
 }
@@ -46,8 +47,12 @@ DatabaseTaskSynchronizer::DatabaseTaskSynchronizer()
 void DatabaseTaskSynchronizer::waitForTaskCompletion()
 {
     m_synchronousMutex.lock();
-    if (!m_taskCompleted)
-        m_synchronousCondition.wait(m_synchronousMutex);
+
+    if ( !m_taskCompleted )
+    {
+        m_synchronousCondition.wait( m_synchronousMutex );
+    }
+
     m_synchronousMutex.unlock();
 }
 
@@ -59,32 +64,34 @@ void DatabaseTaskSynchronizer::taskCompleted()
     m_synchronousMutex.unlock();
 }
 
-DatabaseTask::DatabaseTask(Database* database, DatabaseTaskSynchronizer* synchronizer)
-    : m_database(database)
-    , m_synchronizer(synchronizer)
+DatabaseTask::DatabaseTask( Database *database, DatabaseTaskSynchronizer *synchronizer )
+    : m_database( database )
+    , m_synchronizer( synchronizer )
 #ifndef NDEBUG
-    , m_complete(false)
+    , m_complete( false )
 #endif
 {
 }
 
 DatabaseTask::~DatabaseTask()
 {
-    ASSERT(m_complete || !m_synchronizer);
+    ASSERT( m_complete || !m_synchronizer );
 }
 
 void DatabaseTask::performTask()
 {
     // Database tasks are meant to be used only once, so make sure this one hasn't been performed before.
-    ASSERT(!m_complete);
+    ASSERT( !m_complete );
 
-    LOG(StorageAPI, "Performing %s %p\n", debugTaskName(), this);
+    LOG( StorageAPI, "Performing %s %p\n", debugTaskName(), this );
 
     m_database->resetAuthorizer();
     doPerformTask();
 
-    if (m_synchronizer)
+    if ( m_synchronizer )
+    {
         m_synchronizer->taskCompleted();
+    }
 
 #ifndef NDEBUG
     m_complete = true;
@@ -94,22 +101,23 @@ void DatabaseTask::performTask()
 // *** DatabaseOpenTask ***
 // Opens the database file and verifies the version matches the expected version.
 
-Database::DatabaseOpenTask::DatabaseOpenTask(Database* database, bool setVersionInNewDatabase, DatabaseTaskSynchronizer* synchronizer, ExceptionCode& code, bool& success)
-    : DatabaseTask(database, synchronizer)
-    , m_setVersionInNewDatabase(setVersionInNewDatabase)
-    , m_code(code)
-    , m_success(success)
+Database::DatabaseOpenTask::DatabaseOpenTask( Database *database, bool setVersionInNewDatabase,
+        DatabaseTaskSynchronizer *synchronizer, ExceptionCode &code, bool &success )
+    : DatabaseTask( database, synchronizer )
+    , m_setVersionInNewDatabase( setVersionInNewDatabase )
+    , m_code( code )
+    , m_success( success )
 {
-    ASSERT(synchronizer); // A task with output parameters is supposed to be synchronous.
+    ASSERT( synchronizer ); // A task with output parameters is supposed to be synchronous.
 }
 
 void Database::DatabaseOpenTask::doPerformTask()
 {
-    m_success = database()->performOpenAndVerify(m_setVersionInNewDatabase, m_code);
+    m_success = database()->performOpenAndVerify( m_setVersionInNewDatabase, m_code );
 }
 
 #ifndef NDEBUG
-const char* Database::DatabaseOpenTask::debugTaskName() const
+const char *Database::DatabaseOpenTask::debugTaskName() const
 {
     return "DatabaseOpenTask";
 }
@@ -118,8 +126,8 @@ const char* Database::DatabaseOpenTask::debugTaskName() const
 // *** DatabaseCloseTask ***
 // Closes the database.
 
-Database::DatabaseCloseTask::DatabaseCloseTask(Database* database, DatabaseTaskSynchronizer* synchronizer)
-    : DatabaseTask(database, synchronizer)
+Database::DatabaseCloseTask::DatabaseCloseTask( Database *database, DatabaseTaskSynchronizer *synchronizer )
+    : DatabaseTask( database, synchronizer )
 {
 }
 
@@ -129,7 +137,7 @@ void Database::DatabaseCloseTask::doPerformTask()
 }
 
 #ifndef NDEBUG
-const char* Database::DatabaseCloseTask::debugTaskName() const
+const char *Database::DatabaseCloseTask::debugTaskName() const
 {
     return "DatabaseCloseTask";
 }
@@ -138,20 +146,22 @@ const char* Database::DatabaseCloseTask::debugTaskName() const
 // *** DatabaseTransactionTask ***
 // Starts a transaction that will report its results via a callback.
 
-Database::DatabaseTransactionTask::DatabaseTransactionTask(PassRefPtr<SQLTransaction> transaction)
-    : DatabaseTask(transaction->database(), 0)
-    , m_transaction(transaction)
+Database::DatabaseTransactionTask::DatabaseTransactionTask( PassRefPtr<SQLTransaction> transaction )
+    : DatabaseTask( transaction->database(), 0 )
+    , m_transaction( transaction )
 {
 }
 
 void Database::DatabaseTransactionTask::doPerformTask()
 {
-    if (m_transaction->performNextStep())
+    if ( m_transaction->performNextStep() )
+    {
         m_transaction->database()->inProgressTransactionCompleted();
+    }
 }
 
 #ifndef NDEBUG
-const char* Database::DatabaseTransactionTask::debugTaskName() const
+const char *Database::DatabaseTransactionTask::debugTaskName() const
 {
     return "DatabaseTransactionTask";
 }
@@ -160,11 +170,12 @@ const char* Database::DatabaseTransactionTask::debugTaskName() const
 // *** DatabaseTableNamesTask ***
 // Retrieves a list of all tables in the database - for WebInspector support.
 
-Database::DatabaseTableNamesTask::DatabaseTableNamesTask(Database* database, DatabaseTaskSynchronizer* synchronizer, Vector<String>& names)
-    : DatabaseTask(database, synchronizer)
-    , m_tableNames(names)
+Database::DatabaseTableNamesTask::DatabaseTableNamesTask( Database *database, DatabaseTaskSynchronizer *synchronizer,
+        Vector<String> &names )
+    : DatabaseTask( database, synchronizer )
+    , m_tableNames( names )
 {
-    ASSERT(synchronizer); // A task with output parameters is supposed to be synchronous.
+    ASSERT( synchronizer ); // A task with output parameters is supposed to be synchronous.
 }
 
 void Database::DatabaseTableNamesTask::doPerformTask()
@@ -173,7 +184,7 @@ void Database::DatabaseTableNamesTask::doPerformTask()
 }
 
 #ifndef NDEBUG
-const char* Database::DatabaseTableNamesTask::debugTaskName() const
+const char *Database::DatabaseTableNamesTask::debugTaskName() const
 {
     return "DatabaseTableNamesTask";
 }

@@ -31,56 +31,72 @@
 #include "SimpleFontData.h"
 #include "XMLNames.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace SVGNames;
 
-inline SVGHKernElement::SVGHKernElement(const QualifiedName& tagName, Document* document)
-    : SVGElement(tagName, document)
+inline SVGHKernElement::SVGHKernElement( const QualifiedName &tagName, Document *document )
+    : SVGElement( tagName, document )
 {
 }
 
-PassRefPtr<SVGHKernElement> SVGHKernElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<SVGHKernElement> SVGHKernElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new SVGHKernElement(tagName, document));
+    return adoptRef( new SVGHKernElement( tagName, document ) );
 }
 
 void SVGHKernElement::insertedIntoDocument()
 {
-    ContainerNode* fontNode = parentNode();
-    if (fontNode && fontNode->hasTagName(SVGNames::fontTag)) {
-        if (SVGFontElement* element = static_cast<SVGFontElement*>(fontNode))
+    ContainerNode *fontNode = parentNode();
+
+    if ( fontNode && fontNode->hasTagName( SVGNames::fontTag ) )
+    {
+        if ( SVGFontElement *element = static_cast<SVGFontElement *>( fontNode ) )
+        {
             element->invalidateGlyphCache();
+        }
     }
+
     SVGElement::insertedIntoDocument();
 }
 
 void SVGHKernElement::removedFromDocument()
 {
-    ContainerNode* fontNode = parentNode();
-    if (fontNode && fontNode->hasTagName(SVGNames::fontTag)) {
-        if (SVGFontElement* element = static_cast<SVGFontElement*>(fontNode))
+    ContainerNode *fontNode = parentNode();
+
+    if ( fontNode && fontNode->hasTagName( SVGNames::fontTag ) )
+    {
+        if ( SVGFontElement *element = static_cast<SVGFontElement *>( fontNode ) )
+        {
             element->invalidateGlyphCache();
+        }
     }
+
     SVGElement::removedFromDocument();
 }
 
-void SVGHKernElement::buildHorizontalKerningPair(KerningPairVector& kerningPairs)
+void SVGHKernElement::buildHorizontalKerningPair( KerningPairVector &kerningPairs )
 {
-    String u1 = getAttribute(u1Attr);
-    String g1 = getAttribute(g1Attr);
-    String u2 = getAttribute(u2Attr);
-    String g2 = getAttribute(g2Attr);
-    if ((u1.isEmpty() && g1.isEmpty()) || (u2.isEmpty() && g2.isEmpty()))
+    String u1 = getAttribute( u1Attr );
+    String g1 = getAttribute( g1Attr );
+    String u2 = getAttribute( u2Attr );
+    String g2 = getAttribute( g2Attr );
+
+    if ( ( u1.isEmpty() && g1.isEmpty() ) || ( u2.isEmpty() && g2.isEmpty() ) )
+    {
         return;
+    }
 
     SVGKerningPair kerningPair;
-    if (parseGlyphName(g1, kerningPair.glyphName1)
-        && parseGlyphName(g2, kerningPair.glyphName2)
-        && parseKerningUnicodeString(u1, kerningPair.unicodeRange1, kerningPair.unicodeName1)
-        && parseKerningUnicodeString(u2, kerningPair.unicodeRange2, kerningPair.unicodeName2)) {
-        kerningPair.kerning = getAttribute(kAttr).string().toFloat();
-        kerningPairs.append(kerningPair);
+
+    if ( parseGlyphName( g1, kerningPair.glyphName1 )
+            && parseGlyphName( g2, kerningPair.glyphName2 )
+            && parseKerningUnicodeString( u1, kerningPair.unicodeRange1, kerningPair.unicodeName1 )
+            && parseKerningUnicodeString( u2, kerningPair.unicodeRange2, kerningPair.unicodeName2 ) )
+    {
+        kerningPair.kerning = getAttribute( kAttr ).string().toFloat();
+        kerningPairs.append( kerningPair );
     }
 }
 

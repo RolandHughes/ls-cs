@@ -31,24 +31,30 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class JSSVGPathSegList : public JSDOMWrapper {
+class JSSVGPathSegList : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSSVGPathSegList(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<SVGPathSegListPropertyTearOff >);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
+    JSSVGPathSegList( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<SVGPathSegListPropertyTearOff > );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
-    SVGPathSegListPropertyTearOff * impl() const { return m_impl.get(); }
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
+    SVGPathSegListPropertyTearOff *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<SVGPathSegListPropertyTearOff > m_impl;
@@ -56,38 +62,41 @@ protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, SVGPathSegListPropertyTearOff *);
-SVGPathSegListPropertyTearOff * toSVGPathSegList(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, SVGPathSegListPropertyTearOff * );
+SVGPathSegListPropertyTearOff *toSVGPathSegList( JSC::JSValue );
 
-class JSSVGPathSegListPrototype : public JSC::JSObjectWithGlobalObject {
+class JSSVGPathSegListPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSSVGPathSegListPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSSVGPathSegListPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                               JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsSVGPathSegListPrototypeFunctionClear(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsSVGPathSegListPrototypeFunctionInitialize(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsSVGPathSegListPrototypeFunctionGetItem(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsSVGPathSegListPrototypeFunctionInsertItemBefore(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsSVGPathSegListPrototypeFunctionReplaceItem(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsSVGPathSegListPrototypeFunctionRemoveItem(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsSVGPathSegListPrototypeFunctionAppendItem(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsSVGPathSegListPrototypeFunctionClear( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsSVGPathSegListPrototypeFunctionInitialize( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsSVGPathSegListPrototypeFunctionGetItem( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsSVGPathSegListPrototypeFunctionInsertItemBefore( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsSVGPathSegListPrototypeFunctionReplaceItem( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsSVGPathSegListPrototypeFunctionRemoveItem( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsSVGPathSegListPrototypeFunctionAppendItem( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsSVGPathSegListNumberOfItems(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGPathSegListConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsSVGPathSegListNumberOfItems( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGPathSegListConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

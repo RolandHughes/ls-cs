@@ -35,25 +35,27 @@
 #include "InspectorDebuggerAgent.h"
 #include "PageScriptDebugServer.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Page;
 class PageScriptDebugServer;
 
-class PageDebuggerAgent : public InspectorDebuggerAgent {
-    WTF_MAKE_NONCOPYABLE(PageDebuggerAgent);
+class PageDebuggerAgent : public InspectorDebuggerAgent
+{
+    WTF_MAKE_NONCOPYABLE( PageDebuggerAgent );
     WTF_MAKE_FAST_ALLOCATED;
 public:
-    static PassOwnPtr<PageDebuggerAgent> create(InstrumentingAgents*, InspectorState*, Page*, InjectedScriptManager*);
+    static PassOwnPtr<PageDebuggerAgent> create( InstrumentingAgents *, InspectorState *, Page *, InjectedScriptManager * );
     virtual ~PageDebuggerAgent();
 
 private:
     virtual void startListeningScriptDebugServer();
     virtual void stopListeningScriptDebugServer();
-    virtual PageScriptDebugServer& scriptDebugServer();
+    virtual PageScriptDebugServer &scriptDebugServer();
 
-    PageDebuggerAgent(InstrumentingAgents*, InspectorState*, Page*, InjectedScriptManager*);
-    Page* const m_inspectedPage;
+    PageDebuggerAgent( InstrumentingAgents *, InspectorState *, Page *, InjectedScriptManager * );
+    Page *const m_inspectedPage;
 };
 
 } // namespace WebCore

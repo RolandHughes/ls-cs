@@ -30,7 +30,7 @@ public:
     QTsLibPlugin();
 
     QStringList keys() const;
-    QObject* create(const QString &key, const QString &specification);
+    QObject *create( const QString &key, const QString &specification );
 };
 
 QTsLibPlugin::QTsLibPlugin()
@@ -40,16 +40,18 @@ QTsLibPlugin::QTsLibPlugin()
 
 QStringList QTsLibPlugin::keys() const
 {
-    return (QStringList() << "Tslib" << "TslibRaw");
+    return ( QStringList() << "Tslib" << "TslibRaw" );
 }
 
-QObject* QTsLibPlugin::create(const QString &key, const QString &specification)
+QObject *QTsLibPlugin::create( const QString &key, const QString &specification )
 {
-    if (! key.compare("Tslib", Qt::CaseInsensitive) || ! key.compare("TslibRaw", Qt::CaseInsensitive))
-        return new QTsLibMouseHandler(key, specification);
+    if ( ! key.compare( "Tslib", Qt::CaseInsensitive ) || ! key.compare( "TslibRaw", Qt::CaseInsensitive ) )
+    {
+        return new QTsLibMouseHandler( key, specification );
+    }
 
     return 0;
 }
 
-Q_EXPORT_PLUGIN2(qtslibplugin, QTsLibPlugin)
+Q_EXPORT_PLUGIN2( qtslibplugin, QTsLibPlugin )
 

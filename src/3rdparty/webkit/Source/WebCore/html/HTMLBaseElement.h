@@ -25,18 +25,20 @@
 
 #include "HTMLElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class HTMLBaseElement : public HTMLElement {
+class HTMLBaseElement : public HTMLElement
+{
 public:
-    static PassRefPtr<HTMLBaseElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<HTMLBaseElement> create( const QualifiedName &, Document * );
 
 private:
-    HTMLBaseElement(const QualifiedName&, Document*);
+    HTMLBaseElement( const QualifiedName &, Document * );
 
     virtual String target() const;
-    virtual bool isURLAttribute(Attribute*) const;
-    virtual void parseMappedAttribute(Attribute*);
+    virtual bool isURLAttribute( Attribute * ) const;
+    virtual void parseMappedAttribute( Attribute * );
     virtual void insertedIntoDocument();
     virtual void removedFromDocument();
 };

@@ -34,33 +34,33 @@ class QScreen;
 
 class QXcbSystemTrayTracker : public QObject, public QXcbWindowEventListener
 {
-   CS_OBJECT_MULTIPLE(QXcbSystemTrayTracker, QObject)
+    CS_OBJECT_MULTIPLE( QXcbSystemTrayTracker, QObject )
 
- public:
-   static QXcbSystemTrayTracker *create(QXcbConnection *connection);
+public:
+    static QXcbSystemTrayTracker *create( QXcbConnection *connection );
 
-   xcb_window_t trayWindow();
-   void requestSystemTrayWindowDock(xcb_window_t window) const;
-   QRect systemTrayWindowGlobalGeometry(xcb_window_t window) const;
+    xcb_window_t trayWindow();
+    void requestSystemTrayWindowDock( xcb_window_t window ) const;
+    QRect systemTrayWindowGlobalGeometry( xcb_window_t window ) const;
 
-   void notifyManagerClientMessageEvent(const xcb_client_message_event_t *);
+    void notifyManagerClientMessageEvent( const xcb_client_message_event_t * );
 
-   void handleDestroyNotifyEvent(const xcb_destroy_notify_event_t *) override;
+    void handleDestroyNotifyEvent( const xcb_destroy_notify_event_t * ) override;
 
-   bool visualHasAlphaChannel();
+    bool visualHasAlphaChannel();
 
-   CS_SIGNAL_1(Public, void systemTrayWindowChanged(QScreen *screen))
-   CS_SIGNAL_2(systemTrayWindowChanged, screen)
+    CS_SIGNAL_1( Public, void systemTrayWindowChanged( QScreen *screen ) )
+    CS_SIGNAL_2( systemTrayWindowChanged, screen )
 
- private:
-   explicit QXcbSystemTrayTracker(QXcbConnection *connection, xcb_atom_t trayAtom, xcb_atom_t selection);
-   static xcb_window_t locateTrayWindow(const QXcbConnection *connection, xcb_atom_t selection);
-   void emitSystemTrayWindowChanged();
+private:
+    explicit QXcbSystemTrayTracker( QXcbConnection *connection, xcb_atom_t trayAtom, xcb_atom_t selection );
+    static xcb_window_t locateTrayWindow( const QXcbConnection *connection, xcb_atom_t selection );
+    void emitSystemTrayWindowChanged();
 
-   const xcb_atom_t m_selection;
-   const xcb_atom_t m_trayAtom;
-   QXcbConnection *m_connection;
-   xcb_window_t m_trayWindow;
+    const xcb_atom_t m_selection;
+    const xcb_atom_t m_trayAtom;
+    QXcbConnection *m_connection;
+    xcb_window_t m_trayWindow;
 };
 
 #endif

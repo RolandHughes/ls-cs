@@ -32,9 +32,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSAudioNode);
+ASSERT_CLASS_FITS_IN_CELL( JSAudioNode );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -45,11 +46,11 @@ ASSERT_CLASS_FITS_IN_CELL(JSAudioNode);
 
 static const HashTableValue JSAudioNodeTableValues[5] =
 {
-    { "context", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsAudioNodeContext), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "numberOfInputs", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsAudioNodeNumberOfInputs), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "numberOfOutputs", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsAudioNodeNumberOfOutputs), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsAudioNodeConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "context", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsAudioNodeContext ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "numberOfInputs", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsAudioNodeNumberOfInputs ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "numberOfOutputs", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsAudioNodeNumberOfOutputs ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsAudioNodeConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -63,43 +64,49 @@ static JSC_CONST_HASHTABLE HashTable JSAudioNodeTable = { 8, 7, JSAudioNodeTable
 
 static const HashTableValue JSAudioNodeConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSAudioNodeConstructorTable = { 1, 0, JSAudioNodeConstructorTableValues, 0 };
-class JSAudioNodeConstructor : public DOMConstructorObject {
+class JSAudioNodeConstructor : public DOMConstructorObject
+{
 public:
-    JSAudioNodeConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSAudioNodeConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSAudioNodeConstructor::s_info = { "AudioNodeConstructor", &DOMConstructorObject::s_info, &JSAudioNodeConstructorTable, 0 };
 
-JSAudioNodeConstructor::JSAudioNodeConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSAudioNodeConstructor::JSAudioNodeConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSAudioNodePrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSAudioNodePrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSAudioNodeConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSAudioNodeConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSAudioNodeConstructor, JSDOMWrapper>(exec, &JSAudioNodeConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSAudioNodeConstructor, JSDOMWrapper>( exec, &JSAudioNodeConstructorTable, this, propertyName, slot );
 }
 
-bool JSAudioNodeConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSAudioNodeConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSAudioNodeConstructor, JSDOMWrapper>(exec, &JSAudioNodeConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSAudioNodeConstructor, JSDOMWrapper>( exec, &JSAudioNodeConstructorTable, this, propertyName,
+            descriptor );
 }
 
 /* Hash table for prototype */
@@ -111,121 +118,131 @@ bool JSAudioNodeConstructor::getOwnPropertyDescriptor(ExecState* exec, const Ide
 
 static const HashTableValue JSAudioNodePrototypeTableValues[3] =
 {
-    { "connect", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsAudioNodePrototypeFunctionConnect), (intptr_t)3 THUNK_GENERATOR(0) },
-    { "disconnect", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsAudioNodePrototypeFunctionDisconnect), (intptr_t)1 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "connect", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsAudioNodePrototypeFunctionConnect ), ( intptr_t )3 THUNK_GENERATOR( 0 ) },
+    { "disconnect", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsAudioNodePrototypeFunctionDisconnect ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSAudioNodePrototypeTable = { 4, 3, JSAudioNodePrototypeTableValues, 0 };
 const ClassInfo JSAudioNodePrototype::s_info = { "AudioNodePrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSAudioNodePrototypeTable, 0 };
 
-JSObject* JSAudioNodePrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSAudioNodePrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSAudioNode>(exec, globalObject);
+    return getDOMPrototype<JSAudioNode>( exec, globalObject );
 }
 
-bool JSAudioNodePrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSAudioNodePrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticFunctionSlot<JSObject>(exec, &JSAudioNodePrototypeTable, this, propertyName, slot);
+    return getStaticFunctionSlot<JSObject>( exec, &JSAudioNodePrototypeTable, this, propertyName, slot );
 }
 
-bool JSAudioNodePrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSAudioNodePrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticFunctionDescriptor<JSObject>(exec, &JSAudioNodePrototypeTable, this, propertyName, descriptor);
+    return getStaticFunctionDescriptor<JSObject>( exec, &JSAudioNodePrototypeTable, this, propertyName, descriptor );
 }
 
 const ClassInfo JSAudioNode::s_info = { "AudioNode", &JSDOMWrapper::s_info, &JSAudioNodeTable, 0 };
 
-JSAudioNode::JSAudioNode(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<AudioNode> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSAudioNode::JSAudioNode( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<AudioNode> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSAudioNode::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSAudioNode::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSAudioNodePrototype(exec->globalData(), globalObject, JSAudioNodePrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSAudioNodePrototype( exec->globalData(), globalObject,
+            JSAudioNodePrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSAudioNode::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSAudioNode::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSAudioNode, Base>(exec, &JSAudioNodeTable, this, propertyName, slot);
+    return getStaticValueSlot<JSAudioNode, Base>( exec, &JSAudioNodeTable, this, propertyName, slot );
 }
 
-bool JSAudioNode::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSAudioNode::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSAudioNode, Base>(exec, &JSAudioNodeTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSAudioNode, Base>( exec, &JSAudioNodeTable, this, propertyName, descriptor );
 }
 
-JSValue jsAudioNodeContext(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsAudioNodeContext( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSAudioNode* castedThis = static_cast<JSAudioNode*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    AudioNode* imp = static_cast<AudioNode*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->context()));
+    JSAudioNode *castedThis = static_cast<JSAudioNode *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    AudioNode *imp = static_cast<AudioNode *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->context() ) );
     return result;
 }
 
 
-JSValue jsAudioNodeNumberOfInputs(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsAudioNodeNumberOfInputs( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSAudioNode* castedThis = static_cast<JSAudioNode*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    AudioNode* imp = static_cast<AudioNode*>(castedThis->impl());
-    JSValue result = jsNumber(imp->numberOfInputs());
+    JSAudioNode *castedThis = static_cast<JSAudioNode *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    AudioNode *imp = static_cast<AudioNode *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->numberOfInputs() );
     return result;
 }
 
 
-JSValue jsAudioNodeNumberOfOutputs(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsAudioNodeNumberOfOutputs( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSAudioNode* castedThis = static_cast<JSAudioNode*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    AudioNode* imp = static_cast<AudioNode*>(castedThis->impl());
-    JSValue result = jsNumber(imp->numberOfOutputs());
+    JSAudioNode *castedThis = static_cast<JSAudioNode *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    AudioNode *imp = static_cast<AudioNode *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->numberOfOutputs() );
     return result;
 }
 
 
-JSValue jsAudioNodeConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsAudioNodeConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSAudioNode* domObject = static_cast<JSAudioNode*>(asObject(slotBase));
-    return JSAudioNode::getConstructor(exec, domObject->globalObject());
+    JSAudioNode *domObject = static_cast<JSAudioNode *>( asObject( slotBase ) );
+    return JSAudioNode::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSAudioNode::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSAudioNode::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSAudioNodeConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSAudioNodeConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsAudioNodePrototypeFunctionConnect(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsAudioNodePrototypeFunctionConnect( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSAudioNode::s_info))
-        return throwVMTypeError(exec);
-    JSAudioNode* castedThis = static_cast<JSAudioNode*>(asObject(thisValue));
-    return JSValue::encode(castedThis->connect(exec));
+
+    if ( !thisValue.inherits( &JSAudioNode::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSAudioNode *castedThis = static_cast<JSAudioNode *>( asObject( thisValue ) );
+    return JSValue::encode( castedThis->connect( exec ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsAudioNodePrototypeFunctionDisconnect(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsAudioNodePrototypeFunctionDisconnect( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSAudioNode::s_info))
-        return throwVMTypeError(exec);
-    JSAudioNode* castedThis = static_cast<JSAudioNode*>(asObject(thisValue));
-    return JSValue::encode(castedThis->disconnect(exec));
+
+    if ( !thisValue.inherits( &JSAudioNode::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSAudioNode *castedThis = static_cast<JSAudioNode *>( asObject( thisValue ) );
+    return JSValue::encode( castedThis->disconnect( exec ) );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, AudioNode* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, AudioNode *impl )
 {
-    return wrap<JSAudioNode>(exec, globalObject, impl);
+    return wrap<JSAudioNode>( exec, globalObject, impl );
 }
 
-AudioNode* toAudioNode(JSC::JSValue value)
+AudioNode *toAudioNode( JSC::JSValue value )
 {
-    return value.inherits(&JSAudioNode::s_info) ? static_cast<JSAudioNode*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSAudioNode::s_info ) ? static_cast<JSAudioNode *>( asObject( value ) )->impl() : 0;
 }
 
 }

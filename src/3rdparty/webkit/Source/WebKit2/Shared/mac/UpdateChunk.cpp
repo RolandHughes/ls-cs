@@ -36,57 +36,68 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
 UpdateChunk::UpdateChunk()
-    : m_data(0)
-    , m_size(0)
+    : m_data( 0 )
+    , m_size( 0 )
 {
 }
 
-UpdateChunk::UpdateChunk(const IntRect& rect)
-    : m_rect(rect)
-    , m_size(size())
+UpdateChunk::UpdateChunk( const IntRect &rect )
+    : m_rect( rect )
+    , m_size( size() )
 {
-    vm_allocate(mach_task_self(), reinterpret_cast<vm_address_t*>(&m_data), m_size, VM_FLAGS_ANYWHERE);
+    vm_allocate( mach_task_self(), reinterpret_cast<vm_address_t *>( &m_data ), m_size, VM_FLAGS_ANYWHERE );
 }
 
 UpdateChunk::~UpdateChunk()
 {
-    if (m_data)
-        vm_deallocate(mach_task_self(), reinterpret_cast<vm_address_t>(m_data), m_size);
+    if ( m_data )
+    {
+        vm_deallocate( mach_task_self(), reinterpret_cast<vm_address_t>( m_data ), m_size );
+    }
 }
 
 RetainPtr<CGImageRef> UpdateChunk::createImage()
 {
-    RetainPtr<CGDataProviderRef> provider(AdoptCF, CGDataProviderCreateWithData(0, m_data, size(), 0));
-    RetainPtr<CGColorSpaceRef> colorSpace(AdoptCF, CGColorSpaceCreateDeviceRGB());
-    RetainPtr<CGImageRef> image(AdoptCF, CGImageCreate(m_rect.width(), m_rect.height(), 8, 32, m_rect.width() * 4, colorSpace.get(), kCGImageAlphaPremultipliedFirst | kCGBitmapByteOrder32Host, provider.get(), 0, false, kCGRenderingIntentDefault));
-    
+    RetainPtr<CGDataProviderRef> provider( AdoptCF, CGDataProviderCreateWithData( 0, m_data, size(), 0 ) );
+    RetainPtr<CGColorSpaceRef> colorSpace( AdoptCF, CGColorSpaceCreateDeviceRGB() );
+    RetainPtr<CGImageRef> image( AdoptCF, CGImageCreate( m_rect.width(), m_rect.height(), 8, 32, m_rect.width() * 4, colorSpace.get(),
+                                 kCGImageAlphaPremultipliedFirst | kCGBitmapByteOrder32Host, provider.get(), 0, false, kCGRenderingIntentDefault ) );
+
     return image;
 }
 
-void UpdateChunk::encode(CoreIPC::ArgumentEncoder* encoder) const
+void UpdateChunk::encode( CoreIPC::ArgumentEncoder *encoder ) const
 {
-    encoder->encode(m_rect);
-    encoder->encode(CoreIPC::Attachment(m_data, size(), MACH_MSG_VIRTUAL_COPY, true));
-    
+    encoder->encode( m_rect );
+    encoder->encode( CoreIPC::Attachment( m_data, size(), MACH_MSG_VIRTUAL_COPY, true ) );
+
     m_data = 0;
 }
 
-bool UpdateChunk::decode(CoreIPC::ArgumentDecoder* decoder, UpdateChunk& chunk)
+bool UpdateChunk::decode( CoreIPC::ArgumentDecoder *decoder, UpdateChunk &chunk )
 {
     IntRect rect;
-    if (!decoder->decode(rect))
+
+    if ( !decoder->decode( rect ) )
+    {
         return false;
+    }
+
     chunk.m_rect = rect;
-    
+
     CoreIPC::Attachment attachment;
-    if (!decoder->decode(attachment))
+
+    if ( !decoder->decode( attachment ) )
+    {
         return false;
+    }
 
     chunk.m_size = attachment.size();
-    chunk.m_data = reinterpret_cast<uint8_t*>(attachment.address());
+    chunk.m_data = reinterpret_cast<uint8_t *>( attachment.address() );
     return true;
 }
 

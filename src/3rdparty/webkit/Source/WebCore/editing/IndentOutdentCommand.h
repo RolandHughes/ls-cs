@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef IndentOutdentCommand_h
@@ -29,31 +29,40 @@
 #include "ApplyBlockElementCommand.h"
 #include "CompositeEditCommand.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class IndentOutdentCommand : public ApplyBlockElementCommand {
+class IndentOutdentCommand : public ApplyBlockElementCommand
+{
 public:
     enum EIndentType { Indent, Outdent };
-    static PassRefPtr<IndentOutdentCommand> create(Document* document, EIndentType type, int marginInPixels = 0)
+    static PassRefPtr<IndentOutdentCommand> create( Document *document, EIndentType type, int marginInPixels = 0 )
     {
-        return adoptRef(new IndentOutdentCommand(document, type, marginInPixels));
+        return adoptRef( new IndentOutdentCommand( document, type, marginInPixels ) );
     }
 
-    virtual bool preservesTypingStyle() const { return true; }
+    virtual bool preservesTypingStyle() const
+    {
+        return true;
+    }
 
 private:
-    IndentOutdentCommand(Document*, EIndentType, int marginInPixels);
+    IndentOutdentCommand( Document *, EIndentType, int marginInPixels );
 
-    virtual EditAction editingAction() const { return m_typeOfAction == Indent ? EditActionIndent : EditActionOutdent; }
+    virtual EditAction editingAction() const
+    {
+        return m_typeOfAction == Indent ? EditActionIndent : EditActionOutdent;
+    }
 
-    void indentRegion(const VisiblePosition&, const VisiblePosition&);
-    void outdentRegion(const VisiblePosition&, const VisiblePosition&);
+    void indentRegion( const VisiblePosition &, const VisiblePosition & );
+    void outdentRegion( const VisiblePosition &, const VisiblePosition & );
     void outdentParagraph();
-    bool tryIndentingAsListItem(const Position&, const Position&);
-    void indentIntoBlockquote(const Position&, const Position&, RefPtr<Element>&);
+    bool tryIndentingAsListItem( const Position &, const Position & );
+    void indentIntoBlockquote( const Position &, const Position &, RefPtr<Element> & );
 
-    void formatSelection(const VisiblePosition& startOfSelection, const VisiblePosition& endOfSelection);
-    void formatRange(const Position& start, const Position& end, const Position& endOfSelection, RefPtr<Element>& blockquoteForNextIndent);
+    void formatSelection( const VisiblePosition &startOfSelection, const VisiblePosition &endOfSelection );
+    void formatRange( const Position &start, const Position &end, const Position &endOfSelection,
+                      RefPtr<Element> &blockquoteForNextIndent );
 
     EIndentType m_typeOfAction;
     int m_marginInPixels;

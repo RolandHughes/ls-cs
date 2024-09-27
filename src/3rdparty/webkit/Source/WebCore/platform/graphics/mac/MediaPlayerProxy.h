@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef MediaPlayerProxy_h
@@ -32,17 +32,18 @@
 class WebMediaPlayerProxy;
 #endif
 
-enum MediaPlayerProxyNotificationType {
+enum MediaPlayerProxyNotificationType
+{
 
     MediaPlayerNotificationMediaValidated = 1,
     MediaPlayerNotificationMediaFailedToValidate,
-    
+
     MediaPlayerNotificationStartUsingNetwork,
     MediaPlayerNotificationStopUsingNetwork,
 
     MediaPlayerNotificationEnteredFullscreen,
     MediaPlayerNotificationExitedFullscreen,
-    
+
     MediaPlayerNotificationReadyForInspection,
     MediaPlayerNotificationReadyForPlayback,
     MediaPlayerNotificationDidPlayToTheEnd,
@@ -59,58 +60,58 @@ enum MediaPlayerProxyNotificationType {
     MediaPlayerNotificationVolumeDidChange,
     MediaPlayerNotificationMutedDidChange,
     MediaPlayerNotificationTimeJumped,
-    
+
     MediaPlayerNotificationPlayPauseButtonPressed,
 };
 
 #ifdef __OBJC__
-@interface NSObject (WebMediaPlayerProxy)
+@interface NSObject ( WebMediaPlayerProxy )
 
-- (int)_interfaceVersion;
+- ( int )_interfaceVersion;
 
-- (void)_disconnect;
+- ( void )_disconnect;
 
-- (void)_load:(NSURL *)url;
-- (void)_cancelLoad;
+- ( void )_load:( NSURL * )url;
+- ( void )_cancelLoad;
 
-- (void)_setPoster:(NSURL *)url;
+- ( void )_setPoster:( NSURL * )url;
 
-- (void)_play;
-- (void)_pause;
+- ( void )_play;
+- ( void )_pause;
 
-- (NSSize)_naturalSize;
+- ( NSSize )_naturalSize;
 
-- (BOOL)_hasVideo;
-- (BOOL)_hasAudio;
+- ( BOOL )_hasVideo;
+- ( BOOL )_hasAudio;
 
-- (NSTimeInterval)_duration;
+- ( NSTimeInterval )_duration;
 
-- (double)_currentTime;
-- (void)_setCurrentTime:(double)time;
-- (BOOL)_seeking;
+- ( double )_currentTime;
+- ( void )_setCurrentTime:( double )time;
+- ( BOOL )_seeking;
 
-- (void)_setEndTime:(double)time;
+- ( void )_setEndTime:( double )time;
 
-- (float)_rate;
-- (void)_setRate:(float)rate;
+- ( float )_rate;
+- ( void )_setRate:( float )rate;
 
-- (float)_volume;
-- (void)_setVolume:(float)newVolume;
+- ( float )_volume;
+- ( void )_setVolume:( float )newVolume;
 
-- (BOOL)_muted;
-- (void)_setMuted:(BOOL)muted;
+- ( BOOL )_muted;
+- ( void )_setMuted:( BOOL )muted;
 
-- (float)_maxTimeBuffered;
-- (float)_maxTimeSeekable;
-- (NSArray *)_bufferedTimeRanges;
+- ( float )_maxTimeBuffered;
+- ( float )_maxTimeSeekable;
+- ( NSArray * )_bufferedTimeRanges;
 
-- (int)_dataRate;
+- ( int )_dataRate;
 
-- (BOOL)_totalBytesKnown;
-- (unsigned)_totalBytes;
-- (unsigned)_bytesLoaded;
+- ( BOOL )_totalBytesKnown;
+- ( unsigned )_totalBytes;
+- ( unsigned )_bytesLoaded;
 
-- (NSArray *)_mimeTypes;
+- ( NSArray * )_mimeTypes;
 
 @end
 #endif

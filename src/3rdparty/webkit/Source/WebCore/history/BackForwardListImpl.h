@@ -22,7 +22,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef BackForwardListImpl_h
@@ -32,7 +32,8 @@
 #include <wtf/HashSet.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Page;
 
@@ -41,46 +42,56 @@ typedef HashSet<RefPtr<HistoryItem> > HistoryItemHashSet;
 
 // FIXME: After renaming BackForwardList to BackForwardClient,
 // rename this to BackForwardList.
-class BackForwardListImpl : public BackForwardList {
-public: 
-    static PassRefPtr<BackForwardListImpl> create(Page* page) { return adoptRef(new BackForwardListImpl(page)); }
+class BackForwardListImpl : public BackForwardList
+{
+public:
+    static PassRefPtr<BackForwardListImpl> create( Page *page )
+    {
+        return adoptRef( new BackForwardListImpl( page ) );
+    }
     virtual ~BackForwardListImpl();
 
-    Page* page() { return m_page; }
-    
-    virtual void addItem(PassRefPtr<HistoryItem>);
+    Page *page()
+    {
+        return m_page;
+    }
+
+    virtual void addItem( PassRefPtr<HistoryItem> );
     void goBack();
     void goForward();
-    virtual void goToItem(HistoryItem*);
-        
-    HistoryItem* backItem();
-    HistoryItem* currentItem();
-    HistoryItem* forwardItem();
-    virtual HistoryItem* itemAtIndex(int);
+    virtual void goToItem( HistoryItem * );
 
-    void backListWithLimit(int, HistoryItemVector&);
-    void forwardListWithLimit(int, HistoryItemVector&);
+    HistoryItem *backItem();
+    HistoryItem *currentItem();
+    HistoryItem *forwardItem();
+    virtual HistoryItem *itemAtIndex( int );
+
+    void backListWithLimit( int, HistoryItemVector & );
+    void forwardListWithLimit( int, HistoryItemVector & );
 
     int capacity();
-    void setCapacity(int);
+    void setCapacity( int );
     bool enabled();
-    void setEnabled(bool);
+    void setEnabled( bool );
     virtual int backListCount();
     virtual int forwardListCount();
-    bool containsItem(HistoryItem*);
+    bool containsItem( HistoryItem * );
 
     virtual void close();
     bool closed();
 
-    void removeItem(HistoryItem*);
-    HistoryItemVector& entries();
+    void removeItem( HistoryItem * );
+    HistoryItemVector &entries();
 
 private:
-    BackForwardListImpl(Page*);
+    BackForwardListImpl( Page * );
 
-    virtual bool isActive() { return enabled() && capacity(); }
+    virtual bool isActive()
+    {
+        return enabled() && capacity();
+    }
 
-    Page* m_page;
+    Page *m_page;
     HistoryItemVector m_entries;
     HistoryItemHashSet m_entryHash;
     unsigned m_current;
@@ -88,7 +99,7 @@ private:
     bool m_closed;
     bool m_enabled;
 };
-    
+
 } // namespace WebCore
 
 #endif // BackForwardListImpl_h

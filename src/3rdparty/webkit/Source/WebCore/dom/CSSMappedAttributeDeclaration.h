@@ -29,18 +29,20 @@
 #include "MappedAttributeEntry.h"
 #include "QualifiedName.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class CSSMappedAttributeDeclaration : public CSSMutableStyleDeclaration {
+class CSSMappedAttributeDeclaration : public CSSMutableStyleDeclaration
+{
 public:
     static PassRefPtr<CSSMappedAttributeDeclaration> create()
     {
-        return adoptRef(new CSSMappedAttributeDeclaration(0));
+        return adoptRef( new CSSMappedAttributeDeclaration( 0 ) );
     }
 
     virtual ~CSSMappedAttributeDeclaration();
 
-    void setMappedState(MappedAttributeEntry type, const QualifiedName& name, const AtomicString& val)
+    void setMappedState( MappedAttributeEntry type, const QualifiedName &name, const AtomicString &val )
     {
         m_entryType = type;
         m_attrName = name;
@@ -48,13 +50,13 @@ public:
     }
 
 private:
-    CSSMappedAttributeDeclaration(CSSRule* parentRule)
-        : CSSMutableStyleDeclaration(parentRule)
-        , m_entryType(eNone)
-        , m_attrName(anyQName())
+    CSSMappedAttributeDeclaration( CSSRule *parentRule )
+        : CSSMutableStyleDeclaration( parentRule )
+        , m_entryType( eNone )
+        , m_attrName( anyQName() )
     {
     }
-    
+
     MappedAttributeEntry m_entryType;
     QualifiedName m_attrName;
     AtomicString m_attrValue;

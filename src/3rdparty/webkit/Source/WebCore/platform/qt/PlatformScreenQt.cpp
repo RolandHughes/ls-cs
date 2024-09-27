@@ -40,65 +40,78 @@
 #include <QApplication>
 #include <QDesktopWidget>
 
-namespace WebCore {
-
-static int screenNumber(Widget* w)
+namespace WebCore
 {
-    if (!w)
-        return 0;
 
-    QWebPageClient* client = w->root()->hostWindow()->platformPageClient();
+static int screenNumber( Widget *w )
+{
+    if ( !w )
+    {
+        return 0;
+    }
+
+    QWebPageClient *client = w->root()->hostWindow()->platformPageClient();
     return client ? client->screenNumber() : 0;
 }
 
-int screenDepth(Widget* w)
+int screenDepth( Widget *w )
 {
-    return QApplication::desktop()->screen(screenNumber(w))->depth();
+    return QApplication::desktop()->screen( screenNumber( w ) )->depth();
 }
 
-int screenDepthPerComponent(Widget* w)
+int screenDepthPerComponent( Widget *w )
 {
-    int depth = QApplication::desktop()->screen(0)->depth();
-    if (w) {
-        QWebPageClient* client = w->root()->hostWindow()->platformPageClient();
+    int depth = QApplication::desktop()->screen( 0 )->depth();
 
-        if (client) {
-            QWidget* view = client->ownerWidget();
-            if (view)
+    if ( w )
+    {
+        QWebPageClient *client = w->root()->hostWindow()->platformPageClient();
+
+        if ( client )
+        {
+            QWidget *view = client->ownerWidget();
+
+            if ( view )
+            {
                 depth = view->depth();
+            }
         }
     }
+
     // An interface to establish the actual number of bits per color
     // doesn't exist in Qt, or probably at all, so use common-sense
     // values for each screen depth and assume RGB/RGBA where appropriate.
     // Per http://www.w3.org/TR/css3-mediaqueries/#color, 'If different color
     // components are represented by different number of bits, the smallest
     // number is used.'
-    switch (depth) {
-    case 8:
-        return 2;
-    case 32:
-        return 8;
-    default:
-        return depth/3;
+    switch ( depth )
+    {
+        case 8:
+            return 2;
+
+        case 32:
+            return 8;
+
+        default:
+            return depth/3;
     }
 }
 
-bool screenIsMonochrome(Widget* w)
+bool screenIsMonochrome( Widget *w )
 {
-    return QApplication::desktop()->screen(screenNumber(w))->colorCount() == 2;
+    return QApplication::desktop()->screen( screenNumber( w ) )->colorCount() == 2;
 }
 
-FloatRect screenRect(Widget* w)
+FloatRect screenRect( Widget *w )
 {
-    QRect r = QApplication::desktop()->screenGeometry(screenNumber(w));
-    return FloatRect(r.x(), r.y(), r.width(), r.height());
+    QRect r = QApplication::desktop()->screenGeometry( screenNumber( w ) );
+    return FloatRect( r.x(), r.y(), r.width(), r.height() );
 }
 
-FloatRect screenAvailableRect(Widget* w)
+FloatRect screenAvailableRect( Widget *w )
 {
-    QRect r = QApplication::desktop()->availableGeometry(screenNumber(w));
-    return FloatRect(r.x(), r.y(), r.width(), r.height());
+    QRect r = QApplication::desktop()->availableGeometry( screenNumber( w ) );
+    return FloatRect( r.x(), r.y(), r.width(), r.height() );
 }
 
 } // namespace WebCore

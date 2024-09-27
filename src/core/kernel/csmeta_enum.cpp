@@ -29,144 +29,159 @@
 #include <qstringlist.h>
 #include <qstringparser.h>
 
-QMetaEnum::QMetaEnum(const QString &name, const QString &scope, bool isFlag)
-   : m_name(name), m_scope(scope), m_flag(isFlag)
+QMetaEnum::QMetaEnum( const QString &name, const QString &scope, bool isFlag )
+    : m_name( name ), m_scope( scope ), m_flag( isFlag )
 {
 }
 
 QMetaEnum::QMetaEnum()
 {
-   m_name  = QString();
-   m_scope = QString();
-   m_flag  = false;
+    m_name  = QString();
+    m_scope = QString();
+    m_flag  = false;
 }
 
 bool QMetaEnum::isFlag() const
 {
-   return m_flag;
+    return m_flag;
 }
 
 bool QMetaEnum::isValid() const
 {
-   return ! m_name.isEmpty();
+    return ! m_name.isEmpty();
 }
 
-const QString &QMetaEnum::key(int index) const
+const QString &QMetaEnum::key( int index ) const
 {
-   if (index < 0 || index >= m_data.size() ) {
+    if ( index < 0 || index >= m_data.size() )
+    {
 
-      if (m_data.isEmpty()) {
-         qWarning("QMetaEnum::key() Enum %s may not be registered", csPrintable(m_name));
-      }
+        if ( m_data.isEmpty() )
+        {
+            qWarning( "QMetaEnum::key() Enum %s may not be registered", csPrintable( m_name ) );
+        }
 
-      static QString retval;
+        static QString retval;
 
-      return retval;
-   }
+        return retval;
+    }
 
-   auto elem = m_data.begin();
-   elem += index;
+    auto elem = m_data.begin();
+    elem += index;
 
-   return elem.key();
+    return elem.key();
 }
 
 int QMetaEnum::keyCount() const
 {
-   int count = m_data.size();
-   return count;
+    int count = m_data.size();
+    return count;
 }
 
-int QMetaEnum::keyToValue(const QString &key) const
+int QMetaEnum::keyToValue( const QString &key ) const
 {
-   if (key.isEmpty()) {
-      return -1;
-   }
+    if ( key.isEmpty() )
+    {
+        return -1;
+    }
 
-   int retval;
-   auto elem = m_data.find(key);
+    int retval;
+    auto elem = m_data.find( key );
 
-   if (elem == m_data.end()) {
-      retval = -1;
+    if ( elem == m_data.end() )
+    {
+        retval = -1;
 
-   } else {
-      retval = elem.value();
+    }
+    else
+    {
+        retval = elem.value();
 
-   }
+    }
 
-   return retval;
+    return retval;
 }
 
-int QMetaEnum::keysToValue(const QString &keys) const
+int QMetaEnum::keysToValue( const QString &keys ) const
 {
-   int value = 0;
-   QList<QString> list = keys.split('|');
+    int value = 0;
+    QList<QString> list = keys.split( '|' );
 
-   for (auto elem : list) {
-      value |= keyToValue(elem.trimmed());
-   }
+    for ( auto elem : list )
+    {
+        value |= keyToValue( elem.trimmed() );
+    }
 
-   return value;
+    return value;
 }
 
 const QString &QMetaEnum::name() const
 {
-   return m_name;
+    return m_name;
 }
 
 // internal
-void QMetaEnum::setData(QMap<QString, int> valueMap)
+void QMetaEnum::setData( QMap<QString, int> valueMap )
 {
-   m_data = valueMap;
+    m_data = valueMap;
 }
 
 const QString &QMetaEnum::scope() const
 {
-   return m_scope;
+    return m_scope;
 }
 
-int QMetaEnum::value(int index) const
+int QMetaEnum::value( int index ) const
 {
-   if (index < 0 || index >= m_data.size() ) {
-      return -1;
-   }
+    if ( index < 0 || index >= m_data.size() )
+    {
+        return -1;
+    }
 
-   auto elem = m_data.begin();
-   elem += index;
+    auto elem = m_data.begin();
+    elem += index;
 
-   return elem.value();
+    return elem.value();
 }
 
-const QString &QMetaEnum::valueToKey(int value) const
+const QString &QMetaEnum::valueToKey( int value ) const
 {
-   for (auto elem = m_data.begin(); elem != m_data.end(); ++elem) {
+    for ( auto elem = m_data.begin(); elem != m_data.end(); ++elem )
+    {
 
-      if (elem.value() == value) {
-         return elem.key();
-      }
-   }
+        if ( elem.value() == value )
+        {
+            return elem.key();
+        }
+    }
 
-   static const QString retval;
+    static const QString retval;
 
-   return retval;
+    return retval;
 }
 
-QString QMetaEnum::valueToKeys(int value) const
+QString QMetaEnum::valueToKeys( int value ) const
 {
-   QString keys;
+    QString keys;
 
-   for (auto elem = m_data.begin(); elem != m_data.end(); ++elem) {
+    for ( auto elem = m_data.begin(); elem != m_data.end(); ++elem )
+    {
 
-      if (elem.value() & value) {
+        if ( elem.value() & value )
+        {
 
-         if (keys.isEmpty()) {
-            keys = elem.key();
+            if ( keys.isEmpty() )
+            {
+                keys = elem.key();
 
-         } else  {
-            keys = keys + '|' + elem.key();
+            }
+            else
+            {
+                keys = keys + '|' + elem.key();
 
-         }
-      }
-   }
+            }
+        }
+    }
 
-   return keys;
+    return keys;
 }

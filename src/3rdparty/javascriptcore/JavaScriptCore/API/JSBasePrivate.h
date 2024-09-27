@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef JSBasePrivate_h
@@ -43,7 +43,7 @@ owns a large non-GC memory region. Calling this function will encourage the
 garbage collector to collect soon, hoping to reclaim that large non-GC memory
 region.
 */
-JS_EXPORT void JSReportExtraMemoryCost(JSContextRef ctx, size_t size) AVAILABLE_IN_WEBKIT_VERSION_4_0;
+JS_EXPORT void JSReportExtraMemoryCost( JSContextRef ctx, size_t size ) AVAILABLE_IN_WEBKIT_VERSION_4_0;
 
 #ifdef __cplusplus
 }

@@ -31,44 +31,44 @@ class QStyleOptionButton;
 
 class Q_GUI_EXPORT QCheckBox : public QAbstractButton
 {
-   GUI_CS_OBJECT(QCheckBox)
+    GUI_CS_OBJECT( QCheckBox )
 
-   GUI_CS_PROPERTY_READ(tristate, isTristate)
-   GUI_CS_PROPERTY_WRITE(tristate, setTristate)
+    GUI_CS_PROPERTY_READ( tristate, isTristate )
+    GUI_CS_PROPERTY_WRITE( tristate, setTristate )
 
- public:
-   explicit QCheckBox(QWidget *parent = nullptr);
-   explicit QCheckBox(const QString &text, QWidget *parent = nullptr);
+public:
+    explicit QCheckBox( QWidget *parent = nullptr );
+    explicit QCheckBox( const QString &text, QWidget *parent = nullptr );
 
-   QCheckBox(const QCheckBox &other) = delete;
-   QCheckBox &operator=(const QCheckBox &other) = delete;
+    QCheckBox( const QCheckBox &other ) = delete;
+    QCheckBox &operator=( const QCheckBox &other ) = delete;
 
-   ~QCheckBox();
+    ~QCheckBox();
 
-   QSize sizeHint() const override;
-   QSize minimumSizeHint() const override;
+    QSize sizeHint() const override;
+    QSize minimumSizeHint() const override;
 
-   void setTristate(bool enable = true);
-   bool isTristate() const;
+    void setTristate( bool enable = true );
+    bool isTristate() const;
 
-   Qt::CheckState checkState() const;
-   void setCheckState(Qt::CheckState state);
+    Qt::CheckState checkState() const;
+    void setCheckState( Qt::CheckState state );
 
-   GUI_CS_SIGNAL_1(Public, void stateChanged(int state))
-   GUI_CS_SIGNAL_2(stateChanged, state)
+    GUI_CS_SIGNAL_1( Public, void stateChanged( int state ) )
+    GUI_CS_SIGNAL_2( stateChanged, state )
 
- protected:
-   bool event(QEvent *event) override;
-   bool hitButton(const QPoint &pos) const override;
-   void checkStateSet() override;
-   void nextCheckState() override;
-   void paintEvent(QPaintEvent *event) override;
-   void mouseMoveEvent(QMouseEvent *event) override;
-   void initStyleOption(QStyleOptionButton *option) const;
+protected:
+    bool event( QEvent *event ) override;
+    bool hitButton( const QPoint &pos ) const override;
+    void checkStateSet() override;
+    void nextCheckState() override;
+    void paintEvent( QPaintEvent *event ) override;
+    void mouseMoveEvent( QMouseEvent *event ) override;
+    void initStyleOption( QStyleOptionButton *option ) const;
 
- private:
-   Q_DECLARE_PRIVATE(QCheckBox)
-   friend class QAccessibleButton;
+private:
+    Q_DECLARE_PRIVATE( QCheckBox )
+    friend class QAccessibleButton;
 };
 
 #endif // QCHECKBOX_H

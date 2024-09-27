@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -29,28 +29,35 @@
 #include "Node.h"
 #include <wtf/Assertions.h>
 
-namespace WebCore {
-
-RemoveNodePreservingChildrenCommand::RemoveNodePreservingChildrenCommand(PassRefPtr<Node> node)
-    : CompositeEditCommand(node->document())
-    , m_node(node)
+namespace WebCore
 {
-    ASSERT(m_node);
+
+RemoveNodePreservingChildrenCommand::RemoveNodePreservingChildrenCommand( PassRefPtr<Node> node )
+    : CompositeEditCommand( node->document() )
+    , m_node( node )
+{
+    ASSERT( m_node );
 }
 
 void RemoveNodePreservingChildrenCommand::doApply()
 {
     Vector<RefPtr<Node> > children;
-    for (Node* child = m_node->firstChild(); child; child = child->nextSibling())
-        children.append(child);
+
+    for ( Node *child = m_node->firstChild(); child; child = child->nextSibling() )
+    {
+        children.append( child );
+    }
 
     size_t size = children.size();
-    for (size_t i = 0; i < size; ++i) {
+
+    for ( size_t i = 0; i < size; ++i )
+    {
         RefPtr<Node> child = children[i].release();
-        removeNode(child);
-        insertNodeBefore(child.release(), m_node);
+        removeNode( child );
+        insertNodeBefore( child.release(), m_node );
     }
-    removeNode(m_node);
+
+    removeNode( m_node );
 }
 
 }

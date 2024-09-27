@@ -32,45 +32,52 @@
 
 class QSystemLibrary
 {
- public:
-   explicit QSystemLibrary(const QString &libraryName) {
-      m_libraryName = libraryName;
-      m_handle      = nullptr;
-      m_didLoad     = false;
-   }
+public:
+    explicit QSystemLibrary( const QString &libraryName )
+    {
+        m_libraryName = libraryName;
+        m_handle      = nullptr;
+        m_didLoad     = false;
+    }
 
-   bool load(bool onlySystemDirectory = true) {
-      m_handle = load(m_libraryName, onlySystemDirectory);
-      m_didLoad = true;
-      return (m_handle != nullptr);
-   }
+    bool load( bool onlySystemDirectory = true )
+    {
+        m_handle = load( m_libraryName, onlySystemDirectory );
+        m_didLoad = true;
+        return ( m_handle != nullptr );
+    }
 
-   bool isLoaded() {
-      return (m_handle != nullptr);
-   }
+    bool isLoaded()
+    {
+        return ( m_handle != nullptr );
+    }
 
-   void *resolve(const char *symbol) {
-      if (! m_didLoad) {
-         load();
-      }
+    void *resolve( const char *symbol )
+    {
+        if ( ! m_didLoad )
+        {
+            load();
+        }
 
-      if (! m_handle) {
-         return nullptr;
-      }
+        if ( ! m_handle )
+        {
+            return nullptr;
+        }
 
-      return (void *)GetProcAddress(m_handle, symbol);
-   }
+        return ( void * )GetProcAddress( m_handle, symbol );
+    }
 
-   static void *resolve(const QString &libraryName, const char *symbol) {
-      return QSystemLibrary(libraryName).resolve(symbol);
-   }
+    static void *resolve( const QString &libraryName, const char *symbol )
+    {
+        return QSystemLibrary( libraryName ).resolve( symbol );
+    }
 
-   static Q_CORE_EXPORT HINSTANCE load(const QString &libraryName, bool onlySystemDirectory = true);
+    static Q_CORE_EXPORT HINSTANCE load( const QString &libraryName, bool onlySystemDirectory = true );
 
- private:
-   HINSTANCE m_handle;
-   QString   m_libraryName;
-   bool      m_didLoad;
+private:
+    HINSTANCE m_handle;
+    QString   m_libraryName;
+    bool      m_didLoad;
 };
 
 #endif // Q_OS_WIN

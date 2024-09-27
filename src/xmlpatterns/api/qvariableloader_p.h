@@ -31,48 +31,49 @@
 #include <qdynamiccontext_p.h>
 #include <qexternalvariableloader_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class VariableLoader : public ExternalVariableLoader
 {
- public:
-   typedef QHash<QXmlName, QVariant> BindingHash;
-   typedef QExplicitlySharedDataPointer<VariableLoader> Ptr;
+public:
+    typedef QHash<QXmlName, QVariant> BindingHash;
+    typedef QExplicitlySharedDataPointer<VariableLoader> Ptr;
 
-   inline VariableLoader(const NamePool::Ptr &np,
-                  const VariableLoader::Ptr &previousLoader = VariableLoader::Ptr())
-                  : m_namePool(np), m_previousLoader(previousLoader)
-   {
-   }
+    inline VariableLoader( const NamePool::Ptr &np,
+                           const VariableLoader::Ptr &previousLoader = VariableLoader::Ptr() )
+        : m_namePool( np ), m_previousLoader( previousLoader )
+    {
+    }
 
-   QPatternist::SequenceType::Ptr announceExternalVariable(const QXmlName name,
-                  const QPatternist::SequenceType::Ptr &declaredType) override;
+    QPatternist::SequenceType::Ptr announceExternalVariable( const QXmlName name,
+            const QPatternist::SequenceType::Ptr &declaredType ) override;
 
-   virtual QPatternist::Item::Iterator::Ptr evaluateSequence(const QXmlName name,
-                  const QPatternist::DynamicContext::Ptr &) override;
+    virtual QPatternist::Item::Iterator::Ptr evaluateSequence( const QXmlName name,
+            const QPatternist::DynamicContext::Ptr & ) override;
 
-   virtual QPatternist::Item evaluateSingleton(const QXmlName name,
-                  const QPatternist::DynamicContext::Ptr &) override;
+    virtual QPatternist::Item evaluateSingleton( const QXmlName name,
+            const QPatternist::DynamicContext::Ptr & ) override;
 
-   void removeBinding(const QXmlName &name);
-   bool hasBinding(const QXmlName &name) const;
-   QVariant valueFor(const QXmlName &name) const;
-   void addBinding(const QXmlName &name, const QVariant &value);
+    void removeBinding( const QXmlName &name );
+    bool hasBinding( const QXmlName &name ) const;
+    QVariant valueFor( const QXmlName &name ) const;
+    void addBinding( const QXmlName &name, const QVariant &value );
 
-   bool isSameType(const QVariant &v1, const QVariant &v2) const;
+    bool isSameType( const QVariant &v1, const QVariant &v2 ) const;
 
-   bool invalidationRequired(const QXmlName &name, const QVariant &variant) const;
+    bool invalidationRequired( const QXmlName &name, const QVariant &variant ) const;
 
- private:
+private:
 
-   inline QPatternist::Item itemForName(const QXmlName &name) const;
+    inline QPatternist::Item itemForName( const QXmlName &name ) const;
 
-   const NamePool::Ptr                 m_namePool;
-   VariableLoader::Ptr                 m_previousLoader;
-   BindingHash                         m_bindingHash;
+    const NamePool::Ptr                 m_namePool;
+    VariableLoader::Ptr                 m_previousLoader;
+    BindingHash                         m_bindingHash;
 };
 }
 
-CS_DECLARE_METATYPE(QXmlQuery)
+CS_DECLARE_METATYPE( QXmlQuery )
 
 #endif

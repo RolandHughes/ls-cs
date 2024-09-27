@@ -28,50 +28,52 @@
 #include <qfunctionfactory_p.h>
 #include <qfunctionsignature_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 class AbstractFunctionFactory : public FunctionFactory
 {
- public:
-   Expression::Ptr createFunctionCall(const QXmlName name, const Expression::List &arguments, const StaticContext::Ptr &context,
-                  const SourceLocationReflection *const r) override;
+public:
+    Expression::Ptr createFunctionCall( const QXmlName name, const Expression::List &arguments, const StaticContext::Ptr &context,
+                                        const SourceLocationReflection *const r ) override;
 
-   FunctionSignature::Hash functionSignatures() const override;
+    FunctionSignature::Hash functionSignatures() const override;
 
- protected:
-   virtual Expression::Ptr retrieveExpression(const QXmlName name,
-                  const Expression::List &args, const FunctionSignature::Ptr &sign) const = 0;
+protected:
+    virtual Expression::Ptr retrieveExpression( const QXmlName name,
+            const Expression::List &args, const FunctionSignature::Ptr &sign ) const = 0;
 
-   FunctionSignature::Ptr addFunction(const QXmlName::LocalNameCode localName,
-                  const FunctionSignature::Arity minArgs, const FunctionSignature::Arity maxArgs,
-                  const SequenceType::Ptr &returnType, const Expression::Properties props)
-   {
-      return addFunction(localName, minArgs, maxArgs, returnType, Expression::IDIgnorableExpression, props);
-   }
+    FunctionSignature::Ptr addFunction( const QXmlName::LocalNameCode localName,
+                                        const FunctionSignature::Arity minArgs, const FunctionSignature::Arity maxArgs,
+                                        const SequenceType::Ptr &returnType, const Expression::Properties props )
+    {
+        return addFunction( localName, minArgs, maxArgs, returnType, Expression::IDIgnorableExpression, props );
+    }
 
-   FunctionSignature::Ptr addFunction(const QXmlName::LocalNameCode &localName,
-                  const FunctionSignature::Arity minArgs, const FunctionSignature::Arity maxArgs,
-                  const SequenceType::Ptr &returnType,
-                  const Expression::ID id = Expression::IDIgnorableExpression,
-                  const Expression::Properties props = Expression::Properties(),
-                  const StandardNamespaces::ID ns = StandardNamespaces::fn)
-   {
-      const QXmlName name(ns, localName);
+    FunctionSignature::Ptr addFunction( const QXmlName::LocalNameCode &localName,
+                                        const FunctionSignature::Arity minArgs, const FunctionSignature::Arity maxArgs,
+                                        const SequenceType::Ptr &returnType,
+                                        const Expression::ID id = Expression::IDIgnorableExpression,
+                                        const Expression::Properties props = Expression::Properties(),
+                                        const StandardNamespaces::ID ns = StandardNamespaces::fn )
+    {
+        const QXmlName name( ns, localName );
 
-      const FunctionSignature::Ptr s(new FunctionSignature(name, minArgs, maxArgs, returnType, props, id));
+        const FunctionSignature::Ptr s( new FunctionSignature( name, minArgs, maxArgs, returnType, props, id ) );
 
-      m_signatures.insert(name, s);
-      return s;
-   }
+        m_signatures.insert( name, s );
+        return s;
+    }
 
-   static inline QXmlName::LocalNameCode argument(const NamePool::Ptr &np, const QString &name) {
-      return np->allocateLocalName(name);
-   }
+    static inline QXmlName::LocalNameCode argument( const NamePool::Ptr &np, const QString &name )
+    {
+        return np->allocateLocalName( name );
+    }
 
-   FunctionSignature::Hash m_signatures;
+    FunctionSignature::Hash m_signatures;
 
- private:
-   void verifyArity(const FunctionSignature::Ptr &sign, const StaticContext::Ptr &context,
-                    const xsInteger arity, const SourceLocationReflection *const r) const;
+private:
+    void verifyArity( const FunctionSignature::Ptr &sign, const StaticContext::Ptr &context,
+                      const xsInteger arity, const SourceLocationReflection *const r ) const;
 
 };
 }

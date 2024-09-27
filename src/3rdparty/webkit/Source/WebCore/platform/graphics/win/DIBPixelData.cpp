@@ -26,44 +26,48 @@
 #include "config.h"
 #include "DIBPixelData.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 static const WORD bitmapType = 0x4d42; // BMP format
 static const WORD bitmapPixelsPerMeter = 2834; // 72 dpi
 
-DIBPixelData::DIBPixelData(HBITMAP bitmap)
+DIBPixelData::DIBPixelData( HBITMAP bitmap )
 {
-    initialize(bitmap);
+    initialize( bitmap );
 }
 
-void DIBPixelData::initialize(HBITMAP bitmap)
+void DIBPixelData::initialize( HBITMAP bitmap )
 {
     BITMAP bmpInfo;
-    GetObject(bitmap, sizeof(bmpInfo), &bmpInfo);
+    GetObject( bitmap, sizeof( bmpInfo ), &bmpInfo );
 
-    m_bitmapBuffer = reinterpret_cast<UInt8*>(bmpInfo.bmBits);
+    m_bitmapBuffer = reinterpret_cast<UInt8 *>( bmpInfo.bmBits );
     m_bitmapBufferLength = bmpInfo.bmWidthBytes * bmpInfo.bmHeight;
-    m_size = IntSize(bmpInfo.bmWidth, bmpInfo.bmHeight);
+    m_size = IntSize( bmpInfo.bmWidth, bmpInfo.bmHeight );
     m_bytesPerRow = bmpInfo.bmWidthBytes;
     m_bitsPerPixel = bmpInfo.bmBitsPixel;
 }
 
 #ifndef NDEBUG
-void DIBPixelData::writeToFile(LPCWSTR filePath)
+void DIBPixelData::writeToFile( LPCWSTR filePath )
 {
-    HANDLE hFile = ::CreateFile(filePath, GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
-    if (INVALID_HANDLE_VALUE == hFile)
+    HANDLE hFile = ::CreateFile( filePath, GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0 );
+
+    if ( INVALID_HANDLE_VALUE == hFile )
+    {
         return;
+    }
 
     BITMAPFILEHEADER header;
     header.bfType = bitmapType;
-    header.bfOffBits = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER);
+    header.bfOffBits = sizeof( BITMAPFILEHEADER ) + sizeof( BITMAPINFOHEADER );
     header.bfReserved1 = 0;
     header.bfReserved2 = 0;
-    header.bfSize = sizeof(BITMAPFILEHEADER);
+    header.bfSize = sizeof( BITMAPFILEHEADER );
 
     BITMAPINFOHEADER info;
-    info.biSize = sizeof(BITMAPINFOHEADER);
+    info.biSize = sizeof( BITMAPINFOHEADER );
     info.biWidth = m_size.width();
     info.biHeight = m_size.height();
     info.biPlanes = 1;
@@ -76,11 +80,11 @@ void DIBPixelData::writeToFile(LPCWSTR filePath)
     info.biClrImportant = 0;
 
     DWORD bytesWritten = 0;
-    ::WriteFile(hFile, &header, sizeof(header), &bytesWritten, 0);
-    ::WriteFile(hFile, &info, sizeof(info), &bytesWritten, 0);
-    ::WriteFile(hFile, buffer(), bufferLength(), &bytesWritten, 0);
+    ::WriteFile( hFile, &header, sizeof( header ), &bytesWritten, 0 );
+    ::WriteFile( hFile, &info, sizeof( info ), &bytesWritten, 0 );
+    ::WriteFile( hFile, buffer(), bufferLength(), &bytesWritten, 0 );
 
-    ::CloseHandle(hFile);
+    ::CloseHandle( hFile );
 }
 #endif
 

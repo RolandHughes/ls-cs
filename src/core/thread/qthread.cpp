@@ -34,350 +34,372 @@
 #include <qmutexpool_p.h>
 #include <qthread_p.h>
 
-QThreadData::QThreadData(int initialRefCount)
-   : thread(nullptr), threadId(nullptr), eventDispatcher(nullptr), loopLevel(0),
-     quitNow(false), canWait(true), isAdopted(false), requiresCoreApplication(true), m_ref(initialRefCount)
+QThreadData::QThreadData( int initialRefCount )
+    : thread( nullptr ), threadId( nullptr ), eventDispatcher( nullptr ), loopLevel( 0 ),
+      quitNow( false ), canWait( true ), isAdopted( false ), requiresCoreApplication( true ), m_ref( initialRefCount )
 {
-   // fprintf(stderr, "QThreadData %p created\n", this);
+    // fprintf(stderr, "QThreadData %p created\n", this);
 }
 
 QThreadData::~QThreadData()
 {
-   Q_ASSERT(m_ref.load() == 0);
+    Q_ASSERT( m_ref.load() == 0 );
 
-   // In the odd case we are running on a secondary thread, the main
-   // thread instance will have been dereffed asunder because of the deref in
-   // QThreadData::current() and the deref in the pthread_destroy. To avoid
-   // crashing during QCoreApplicationData's global static cleanup we need to
-   // safeguard the main thread here.
+    // In the odd case we are running on a secondary thread, the main
+    // thread instance will have been dereffed asunder because of the deref in
+    // QThreadData::current() and the deref in the pthread_destroy. To avoid
+    // crashing during QCoreApplicationData's global static cleanup we need to
+    // safeguard the main thread here.
 
-   if (this->thread == QCoreApplicationPrivate::theMainThread) {
-      QCoreApplicationPrivate::theMainThread = nullptr;
-      QThreadData::clearCurrentThreadData();
-   }
+    if ( this->thread == QCoreApplicationPrivate::theMainThread )
+    {
+        QCoreApplicationPrivate::theMainThread = nullptr;
+        QThreadData::clearCurrentThreadData();
+    }
 
-   QThread *t = thread;
-   thread = nullptr;
-   delete t;
+    QThread *t = thread;
+    thread = nullptr;
+    delete t;
 
-   for (int i = 0; i < postEventList.size(); ++i) {
-      const QPostEvent &pe = postEventList.at(i);
+    for ( int i = 0; i < postEventList.size(); ++i )
+    {
+        const QPostEvent &pe = postEventList.at( i );
 
-      if (pe.event) {
-         CSInternalEvents::decr_PostedEvents(pe.receiver);
-         pe.event->posted = false;
+        if ( pe.event )
+        {
+            CSInternalEvents::decr_PostedEvents( pe.receiver );
+            pe.event->posted = false;
 
-         delete pe.event;
-      }
-   }
+            delete pe.event;
+        }
+    }
 
-   // fprintf(stderr, "QThreadData %p destroyed\n", this);
+    // fprintf(stderr, "QThreadData %p destroyed\n", this);
 }
 
 void QThreadData::ref()
 {
-   m_ref.ref();
-   Q_ASSERT(m_ref.load() != 0);
+    m_ref.ref();
+    Q_ASSERT( m_ref.load() != 0 );
 }
 
 void QThreadData::deref()
 {
-   if (! m_ref.deref()) {
-      delete this;
-   }
+    if ( ! m_ref.deref() )
+    {
+        delete this;
+    }
 }
 
 QThreadPrivate *QThreadData::get_QThreadPrivate() const
 {
-   return this->thread.load()->d_func();
+    return this->thread.load()->d_func();
 }
 
-QAdoptedThread::QAdoptedThread(QThreadData *data)
-   : QThread(*new QThreadPrivate(data))
+QAdoptedThread::QAdoptedThread( QThreadData *data )
+    : QThread( *new QThreadPrivate( data ) )
 {
-   // thread should be running and not finished for the lifetime
-   // of the application (even if QCoreApplication goes away)
+    // thread should be running and not finished for the lifetime
+    // of the application (even if QCoreApplication goes away)
 
-   d_func()->running = true;
-   d_func()->finished = false;
+    d_func()->running = true;
+    d_func()->finished = false;
 
-   init();
+    init();
 
-   // fprintf(stderr, "new QAdoptedThread = %p\n", this);
+    // fprintf(stderr, "new QAdoptedThread = %p\n", this);
 }
 
 QAdoptedThread::~QAdoptedThread()
 {
-   // fprintf(stderr, "~QAdoptedThread = %p\n", this);
+    // fprintf(stderr, "~QAdoptedThread = %p\n", this);
 }
 
 void QAdoptedThread::run()
 {
-   // this function should never be called
-   qFatal("QAdoptedThread::run(): Internal error, this implementation should never be called");
+    // this function should never be called
+    qFatal( "QAdoptedThread::run(): Internal error, this implementation should never be called" );
 }
 
-QThreadPrivate::QThreadPrivate(QThreadData *d)
-   : running(false), finished(false), isInFinish(false),
-     interruptionRequested(false), exited(false), returnCode(-1),
-     stackSize(0), priority(QThread::InheritPriority), data(d)
+QThreadPrivate::QThreadPrivate( QThreadData *d )
+    : running( false ), finished( false ), isInFinish( false ),
+      interruptionRequested( false ), exited( false ), returnCode( -1 ),
+      stackSize( 0 ), priority( QThread::InheritPriority ), data( d )
 {
 
 #if defined (Q_OS_WIN)
-   handle  = nullptr;
-   id      = 0;
-   waiters = 0;
+    handle  = nullptr;
+    id      = 0;
+    waiters = 0;
 
-   terminationEnabled = true;
-   terminatePending = false;
+    terminationEnabled = true;
+    terminatePending = false;
 #endif
 
-   if (! data) {
-      data = new QThreadData;
-   }
+    if ( ! data )
+    {
+        data = new QThreadData;
+    }
 }
 
 QThreadPrivate::~QThreadPrivate()
 {
-   data->deref();
+    data->deref();
 }
 
 QThread *QThread::currentThread()
 {
-   QThreadData *data = QThreadData::current();
-   Q_ASSERT(data != nullptr);
-   return data->thread;
+    QThreadData *data = QThreadData::current();
+    Q_ASSERT( data != nullptr );
+    return data->thread;
 }
 
-QThread::QThread(QObject *parent)
-   : QObject(parent), d_ptr(new QThreadPrivate)
+QThread::QThread( QObject *parent )
+    : QObject( parent ), d_ptr( new QThreadPrivate )
 {
-   d_ptr->q_ptr = this;
+    d_ptr->q_ptr = this;
 
-   Q_D(QThread);
+    Q_D( QThread );
 
-   // fprintf(stderr, "QThreadData %p created for thread %p\n", d->data, this);
-   d->data->thread = this;
+    // fprintf(stderr, "QThreadData %p created for thread %p\n", d->data, this);
+    d->data->thread = this;
 }
 
-QThread::QThread(QThreadPrivate &dd, QObject *parent)
-   : QObject(parent), d_ptr(&dd)
+QThread::QThread( QThreadPrivate &dd, QObject *parent )
+    : QObject( parent ), d_ptr( &dd )
 {
-   d_ptr->q_ptr = this;
+    d_ptr->q_ptr = this;
 
-   Q_D(QThread);
+    Q_D( QThread );
 
-   // fprintf(stderr, "QThreadData %p taken from private data for thread %p\n", d->data, this);
-   d->data->thread = this;
+    // fprintf(stderr, "QThreadData %p taken from private data for thread %p\n", d->data, this);
+    d->data->thread = this;
 }
 
 QThread::~QThread()
 {
-   Q_D(QThread);
-   {
-      QMutexLocker locker(&d->mutex);
+    Q_D( QThread );
+    {
+        QMutexLocker locker( &d->mutex );
 
-      if (d->isInFinish) {
-         locker.unlock();
-         wait();
-         locker.relock();
-      }
+        if ( d->isInFinish )
+        {
+            locker.unlock();
+            wait();
+            locker.relock();
+        }
 
-      if (d->running && ! d->finished && ! d->data->isAdopted) {
-         qWarning("QThread() Destroyed while thread is still running");
-      }
+        if ( d->running && ! d->finished && ! d->data->isAdopted )
+        {
+            qWarning( "QThread() Destroyed while thread is still running" );
+        }
 
-      d->data->thread = nullptr;
-   }
+        d->data->thread = nullptr;
+    }
 }
 
 bool QThread::isFinished() const
 {
-   Q_D(const QThread);
-   QMutexLocker locker(&d->mutex);
-   return d->finished || d->isInFinish;
+    Q_D( const QThread );
+    QMutexLocker locker( &d->mutex );
+    return d->finished || d->isInFinish;
 }
 
 bool QThread::isRunning() const
 {
-   Q_D(const QThread);
-   QMutexLocker locker(&d->mutex);
+    Q_D( const QThread );
+    QMutexLocker locker( &d->mutex );
 
-   return d->running && ! d->isInFinish;
+    return d->running && ! d->isInFinish;
 }
 
-void QThread::setStackSize(uint stackSize)
+void QThread::setStackSize( uint stackSize )
 {
-   Q_D(QThread);
-   QMutexLocker locker(&d->mutex);
+    Q_D( QThread );
+    QMutexLocker locker( &d->mutex );
 
-   Q_ASSERT_X(! d->running, "QThread::setStackSize", "Unable to change stack size while the thread is running");
+    Q_ASSERT_X( ! d->running, "QThread::setStackSize", "Unable to change stack size while the thread is running" );
 
-   d->stackSize = stackSize;
+    d->stackSize = stackSize;
 }
 
 uint QThread::stackSize() const
 {
-   Q_D(const QThread);
-   QMutexLocker locker(&d->mutex);
-   return d->stackSize;
+    Q_D( const QThread );
+    QMutexLocker locker( &d->mutex );
+    return d->stackSize;
 }
 
 int QThread::exec()
 {
-   Q_D(QThread);
+    Q_D( QThread );
 
-   QMutexLocker locker(&d->mutex);
-   d->data->quitNow = false;
+    QMutexLocker locker( &d->mutex );
+    d->data->quitNow = false;
 
-   if (d->exited) {
-      d->exited = false;
-      return d->returnCode;
-   }
+    if ( d->exited )
+    {
+        d->exited = false;
+        return d->returnCode;
+    }
 
-   locker.unlock();
+    locker.unlock();
 
-   QEventLoop eventLoop;
-   int returnCode = eventLoop.exec();
+    QEventLoop eventLoop;
+    int returnCode = eventLoop.exec();
 
-   locker.relock();
-   d->exited = false;
-   d->returnCode = -1;
-   return returnCode;
+    locker.relock();
+    d->exited = false;
+    d->returnCode = -1;
+    return returnCode;
 }
 
-void QThread::exit(int returnCode)
+void QThread::exit( int returnCode )
 {
-   Q_D(QThread);
-   QMutexLocker locker(&d->mutex);
+    Q_D( QThread );
+    QMutexLocker locker( &d->mutex );
 
-   d->exited = true;
-   d->returnCode = returnCode;
-   d->data->quitNow = true;
+    d->exited = true;
+    d->returnCode = returnCode;
+    d->data->quitNow = true;
 
-   for (int i = 0; i < d->data->eventLoops.size(); ++i) {
-      QEventLoop *eventLoop = d->data->eventLoops.at(i);
-      eventLoop->exit(returnCode);
-   }
+    for ( int i = 0; i < d->data->eventLoops.size(); ++i )
+    {
+        QEventLoop *eventLoop = d->data->eventLoops.at( i );
+        eventLoop->exit( returnCode );
+    }
 }
 
 void QThread::quit()
 {
-   exit();
+    exit();
 }
 
 void QThread::run()
 {
-   (void) exec();
+    ( void ) exec();
 }
 
-void QThread::setPriority(Priority priority)
+void QThread::setPriority( Priority priority )
 {
-   Q_D(QThread);
-   QMutexLocker locker(&d->mutex);
+    Q_D( QThread );
+    QMutexLocker locker( &d->mutex );
 
-   if (! d->running) {
-      qWarning("QThread::setPriority() Unable to set priority while thread is not running");
-      return;
-   }
+    if ( ! d->running )
+    {
+        qWarning( "QThread::setPriority() Unable to set priority while thread is not running" );
+        return;
+    }
 
-   d->setPriority(priority);
+    d->setPriority( priority );
 }
 
 QThread::Priority QThread::priority() const
 {
-   Q_D(const QThread);
-   QMutexLocker locker(&d->mutex);
+    Q_D( const QThread );
+    QMutexLocker locker( &d->mutex );
 
-   // mask off the high bits that are used for flags
-   return Priority(d->priority & 0xffff);
+    // mask off the high bits that are used for flags
+    return Priority( d->priority & 0xffff );
 }
 
 int QThread::loopLevel() const
 {
-   Q_D(const QThread);
-   return d->data->eventLoops.size();
+    Q_D( const QThread );
+    return d->data->eventLoops.size();
 }
 
 QAbstractEventDispatcher *QThread::eventDispatcher() const
 {
-   Q_D(const QThread);
-   return d->data->eventDispatcher.load();
+    Q_D( const QThread );
+    return d->data->eventDispatcher.load();
 }
 
-void QThread::setEventDispatcher(QAbstractEventDispatcher *eventDispatcher)
+void QThread::setEventDispatcher( QAbstractEventDispatcher *eventDispatcher )
 {
-   Q_D(QThread);
+    Q_D( QThread );
 
-   if (d->data->hasEventDispatcher()) {
-      qWarning("QThread::setEventDispatcher() Event dispatcher has already been created for this thread");
-   } else {
-      eventDispatcher->moveToThread(this);
+    if ( d->data->hasEventDispatcher() )
+    {
+        qWarning( "QThread::setEventDispatcher() Event dispatcher has already been created for this thread" );
+    }
+    else
+    {
+        eventDispatcher->moveToThread( this );
 
-      if (eventDispatcher->thread() == this)  {
-         // was the move successful?
-         d->data->eventDispatcher = eventDispatcher;
-      } else {
-         qWarning("QThread::setEventDispatcher() Unable to move event dispatcher to target thread");
-      }
-   }
+        if ( eventDispatcher->thread() == this )
+        {
+            // was the move successful?
+            d->data->eventDispatcher = eventDispatcher;
+        }
+        else
+        {
+            qWarning( "QThread::setEventDispatcher() Unable to move event dispatcher to target thread" );
+        }
+    }
 }
 
-bool QThread::event(QEvent *event)
+bool QThread::event( QEvent *event )
 {
-   if (event->type() == QEvent::Quit) {
-      quit();
-      return true;
-   } else {
-      return QObject::event(event);
-   }
+    if ( event->type() == QEvent::Quit )
+    {
+        quit();
+        return true;
+    }
+    else
+    {
+        return QObject::event( event );
+    }
 }
 
 void QThread::requestInterruption()
 {
-   Q_D(QThread);
-   QMutexLocker locker(&d->mutex);
+    Q_D( QThread );
+    QMutexLocker locker( &d->mutex );
 
-   if (! d->running || d->finished || d->isInFinish) {
-      return;
-   }
+    if ( ! d->running || d->finished || d->isInFinish )
+    {
+        return;
+    }
 
-   if (this == QCoreApplicationPrivate::theMainThread) {
-      qWarning("QThread::requestInterruption() Unable to interrupt main thread");
-      return;
-   }
+    if ( this == QCoreApplicationPrivate::theMainThread )
+    {
+        qWarning( "QThread::requestInterruption() Unable to interrupt main thread" );
+        return;
+    }
 
-   d->interruptionRequested = true;
+    d->interruptionRequested = true;
 }
 
 bool QThread::isInterruptionRequested() const
 {
-   Q_D(const QThread);
-   QMutexLocker locker(&d->mutex);
+    Q_D( const QThread );
+    QMutexLocker locker( &d->mutex );
 
-   if (! d->running || d->finished || d->isInFinish) {
-      return false;
-   }
+    if ( ! d->running || d->finished || d->isInFinish )
+    {
+        return false;
+    }
 
-   return d->interruptionRequested;
+    return d->interruptionRequested;
 }
 
 static void setThreadDoesNotRequireCoreApplication()
 {
-   QThreadData::current()->requiresCoreApplication = false;
+    QThreadData::current()->requiresCoreApplication = false;
 }
 
-QDaemonThread::QDaemonThread(QObject *parent)
-   : QThread(parent)
+QDaemonThread::QDaemonThread( QObject *parent )
+    : QThread( parent )
 {
-   connect(this, &QThread::started, this, setThreadDoesNotRequireCoreApplication);
+    connect( this, &QThread::started, this, setThreadDoesNotRequireCoreApplication );
 }
 
 QDaemonThread::~QDaemonThread()
 {
 }
 
-QThreadPrivate *QThreadPrivate::cs_getPrivate(QThread *object)
+QThreadPrivate *QThreadPrivate::cs_getPrivate( QThread *object )
 {
-   return object->d_ptr.data();
+    return object->d_ptr.data();
 }

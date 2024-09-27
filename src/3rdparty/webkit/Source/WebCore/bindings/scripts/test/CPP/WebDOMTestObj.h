@@ -26,7 +26,8 @@
 #include <WebDOMObject.h>
 #include <WebDOMString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 class TestObj;
 };
 
@@ -36,15 +37,17 @@ class WebDOMOptionsObject;
 class WebDOMString;
 class WebDOMTestObj;
 
-class WebDOMTestObj : public WebDOMObject {
+class WebDOMTestObj : public WebDOMObject
+{
 public:
     WebDOMTestObj();
-    explicit WebDOMTestObj(WebCore::TestObj*);
-    WebDOMTestObj(const WebDOMTestObj&);
-    WebDOMTestObj& operator=(const WebDOMTestObj&);
+    explicit WebDOMTestObj( WebCore::TestObj * );
+    WebDOMTestObj( const WebDOMTestObj & );
+    WebDOMTestObj &operator=( const WebDOMTestObj & );
     virtual ~WebDOMTestObj();
 
-    enum {
+    enum
+    {
         WEBDOM_CONST_VALUE_0 = 0,
         WEBDOM_CONST_VALUE_1 = 1,
         WEBDOM_CONST_VALUE_2 = 2,
@@ -62,113 +65,113 @@ public:
     WebDOMString readOnlyStringAttr() const;
     WebDOMTestObj readOnlyTestObjAttr() const;
     short shortAttr() const;
-    void setShortAttr(short);
+    void setShortAttr( short );
     unsigned short unsignedShortAttr() const;
-    void setUnsignedShortAttr(unsigned short);
+    void setUnsignedShortAttr( unsigned short );
     int intAttr() const;
-    void setIntAttr(int);
+    void setIntAttr( int );
     long long longLongAttr() const;
-    void setLongLongAttr(long long);
+    void setLongLongAttr( long long );
     unsigned long long unsignedLongLongAttr() const;
-    void setUnsignedLongLongAttr(unsigned long long);
+    void setUnsignedLongLongAttr( unsigned long long );
     WebDOMString stringAttr() const;
-    void setStringAttr(const WebDOMString&);
+    void setStringAttr( const WebDOMString & );
     WebDOMTestObj testObjAttr() const;
-    void setTestObjAttr(const WebDOMTestObj&);
+    void setTestObjAttr( const WebDOMTestObj & );
     WebDOMTestObj XMLObjAttr() const;
-    void setXMLObjAttr(const WebDOMTestObj&);
+    void setXMLObjAttr( const WebDOMTestObj & );
     bool create() const;
-    void setCreate(bool);
+    void setCreate( bool );
     WebDOMString reflectedStringAttr() const;
-    void setReflectedStringAttr(const WebDOMString&);
+    void setReflectedStringAttr( const WebDOMString & );
     int reflectedIntegralAttr() const;
-    void setReflectedIntegralAttr(int);
+    void setReflectedIntegralAttr( int );
     unsigned reflectedUnsignedIntegralAttr() const;
-    void setReflectedUnsignedIntegralAttr(unsigned);
+    void setReflectedUnsignedIntegralAttr( unsigned );
     bool reflectedBooleanAttr() const;
-    void setReflectedBooleanAttr(bool);
+    void setReflectedBooleanAttr( bool );
     WebDOMString reflectedURLAttr() const;
-    void setReflectedURLAttr(const WebDOMString&);
+    void setReflectedURLAttr( const WebDOMString & );
     WebDOMString reflectedNonEmptyURLAttr() const;
-    void setReflectedNonEmptyURLAttr(const WebDOMString&);
+    void setReflectedNonEmptyURLAttr( const WebDOMString & );
     WebDOMString reflectedStringAttr() const;
-    void setReflectedStringAttr(const WebDOMString&);
+    void setReflectedStringAttr( const WebDOMString & );
     int reflectedCustomIntegralAttr() const;
-    void setReflectedCustomIntegralAttr(int);
+    void setReflectedCustomIntegralAttr( int );
     bool reflectedCustomBooleanAttr() const;
-    void setReflectedCustomBooleanAttr(bool);
+    void setReflectedCustomBooleanAttr( bool );
     WebDOMString reflectedCustomURLAttr() const;
-    void setReflectedCustomURLAttr(const WebDOMString&);
+    void setReflectedCustomURLAttr( const WebDOMString & );
     WebDOMString reflectedCustomNonEmptyURLAttr() const;
-    void setReflectedCustomNonEmptyURLAttr(const WebDOMString&);
+    void setReflectedCustomNonEmptyURLAttr( const WebDOMString & );
     int attrWithGetterException() const;
-    void setAttrWithGetterException(int);
+    void setAttrWithGetterException( int );
     int attrWithSetterException() const;
-    void setAttrWithSetterException(int);
+    void setAttrWithSetterException( int );
     WebDOMString stringAttrWithGetterException() const;
-    void setStringAttrWithGetterException(const WebDOMString&);
+    void setStringAttrWithGetterException( const WebDOMString & );
     WebDOMString stringAttrWithSetterException() const;
-    void setStringAttrWithSetterException(const WebDOMString&);
+    void setStringAttrWithSetterException( const WebDOMString & );
     int customAttr() const;
-    void setCustomAttr(int);
+    void setCustomAttr( int );
     WebDOMString scriptStringAttr() const;
 #if ENABLE(Condition1)
     int conditionalAttr1() const;
-    void setConditionalAttr1(int);
+    void setConditionalAttr1( int );
 #endif
 #if ENABLE(Condition1) && ENABLE(Condition2)
     int conditionalAttr2() const;
-    void setConditionalAttr2(int);
+    void setConditionalAttr2( int );
 #endif
 #if ENABLE(Condition1) || ENABLE(Condition2)
     int conditionalAttr3() const;
-    void setConditionalAttr3(int);
+    void setConditionalAttr3( int );
 #endif
     int description() const;
     int id() const;
-    void setId(int);
+    void setId( int );
     WebDOMString hash() const;
 
     void voidMethod();
-    void voidMethodWithArgs(int intArg, const WebDOMString& strArg, const WebDOMTestObj& objArg);
+    void voidMethodWithArgs( int intArg, const WebDOMString &strArg, const WebDOMTestObj &objArg );
     int intMethod();
-    int intMethodWithArgs(int intArg, const WebDOMString& strArg, const WebDOMTestObj& objArg);
+    int intMethodWithArgs( int intArg, const WebDOMString &strArg, const WebDOMTestObj &objArg );
     WebDOMTestObj objMethod();
-    WebDOMTestObj objMethodWithArgs(int intArg, const WebDOMString& strArg, const WebDOMTestObj& objArg);
-    WebDOMTestObj methodThatRequiresAllArgs(const WebDOMString& strArg, const WebDOMTestObj& objArg);
-    WebDOMTestObj methodThatRequiresAllArgsAndThrows(const WebDOMString& strArg, const WebDOMTestObj& objArg);
-    void serializedValue(const WebDOMString& serializedArg);
-    void idbKey(const WebDOMIDBKey& key);
-    void optionsObject(const WebDOMOptionsObject& oo, const WebDOMOptionsObject& ooo);
+    WebDOMTestObj objMethodWithArgs( int intArg, const WebDOMString &strArg, const WebDOMTestObj &objArg );
+    WebDOMTestObj methodThatRequiresAllArgs( const WebDOMString &strArg, const WebDOMTestObj &objArg );
+    WebDOMTestObj methodThatRequiresAllArgsAndThrows( const WebDOMString &strArg, const WebDOMTestObj &objArg );
+    void serializedValue( const WebDOMString &serializedArg );
+    void idbKey( const WebDOMIDBKey &key );
+    void optionsObject( const WebDOMOptionsObject &oo, const WebDOMOptionsObject &ooo );
     void methodWithException();
     void customMethod();
-    void customMethodWithArgs(int intArg, const WebDOMString& strArg, const WebDOMTestObj& objArg);
-    void addEventListener(const WebDOMString& type, const WebDOMEventListener& listener, bool useCapture);
-    void removeEventListener(const WebDOMString& type, const WebDOMEventListener& listener, bool useCapture);
+    void customMethodWithArgs( int intArg, const WebDOMString &strArg, const WebDOMTestObj &objArg );
+    void addEventListener( const WebDOMString &type, const WebDOMEventListener &listener, bool useCapture );
+    void removeEventListener( const WebDOMString &type, const WebDOMEventListener &listener, bool useCapture );
     void withDynamicFrame();
-    void withDynamicFrameAndArg(int intArg);
-    void withDynamicFrameAndOptionalArg(int intArg, int optionalArg);
-    void withDynamicFrameAndUserGesture(int intArg);
-    void withDynamicFrameAndUserGestureASAD(int intArg, int optionalArg);
+    void withDynamicFrameAndArg( int intArg );
+    void withDynamicFrameAndOptionalArg( int intArg, int optionalArg );
+    void withDynamicFrameAndUserGesture( int intArg );
+    void withDynamicFrameAndUserGestureASAD( int intArg, int optionalArg );
     void withScriptStateVoid();
     WebDOMTestObj withScriptStateObj();
     void withScriptStateVoidException();
     WebDOMTestObj withScriptStateObjException();
     void withScriptExecutionContext();
-    void methodWithOptionalArg(int opt);
-    void methodWithNonOptionalArgAndOptionalArg(int nonOpt, int opt);
-    void methodWithNonOptionalArgAndTwoOptionalArgs(int nonOpt, int opt1, int opt2);
+    void methodWithOptionalArg( int opt );
+    void methodWithNonOptionalArgAndOptionalArg( int nonOpt, int opt );
+    void methodWithNonOptionalArgAndTwoOptionalArgs( int nonOpt, int opt1, int opt2 );
     void classMethod();
-    int classMethodWithOptional(int arg);
+    int classMethodWithOptional( int arg );
 
-    WebCore::TestObj* impl() const;
+    WebCore::TestObj *impl() const;
 
 protected:
     struct WebDOMTestObjPrivate;
-    WebDOMTestObjPrivate* m_impl;
+    WebDOMTestObjPrivate *m_impl;
 };
 
-WebCore::TestObj* toWebCore(const WebDOMTestObj&);
-WebDOMTestObj toWebKit(WebCore::TestObj*);
+WebCore::TestObj *toWebCore( const WebDOMTestObj & );
+WebDOMTestObj toWebKit( WebCore::TestObj * );
 
 #endif

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef HTMLAllCollection_h
@@ -28,15 +28,17 @@
 
 #include "HTMLCollection.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class HTMLAllCollection : public HTMLCollection {
+class HTMLAllCollection : public HTMLCollection
+{
 public:
-    static PassRefPtr<HTMLAllCollection> create(PassRefPtr<Node>);
+    static PassRefPtr<HTMLAllCollection> create( PassRefPtr<Node> );
     virtual ~HTMLAllCollection();
 
 private:
-    HTMLAllCollection(PassRefPtr<Node>);
+    HTMLAllCollection( PassRefPtr<Node> );
 };
 
 } // namespace WebCore

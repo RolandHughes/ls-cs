@@ -27,23 +27,24 @@
 
 class QWindowsIntegrationPlugin : public QPlatformIntegrationPlugin
 {
-   CS_OBJECT(QWindowsIntegrationPlugin)
+    CS_OBJECT( QWindowsIntegrationPlugin )
 
-   CS_PLUGIN_IID(QPlatformIntegrationInterface_ID)
-   CS_PLUGIN_KEY("windows")
+    CS_PLUGIN_IID( QPlatformIntegrationInterface_ID )
+    CS_PLUGIN_KEY( "windows" )
 
- public:
-   QPlatformIntegration *create(const QString &, const QStringList &, int &, char **) override;
+public:
+    QPlatformIntegration *create( const QString &, const QStringList &, int &, char ** ) override;
 };
 
-CS_PLUGIN_REGISTER(QWindowsIntegrationPlugin)
+CS_PLUGIN_REGISTER( QWindowsIntegrationPlugin )
 
-QPlatformIntegration *QWindowsIntegrationPlugin::create(const QString &system, const QStringList &paramList, int &, char **)
+QPlatformIntegration *QWindowsIntegrationPlugin::create( const QString &system, const QStringList &paramList, int &, char ** )
 {
-   if (system.compare(system, "windows", Qt::CaseInsensitive) == 0) {
-      return new QWindowsGdiIntegration(paramList);
-   }
+    if ( system.compare( system, "windows", Qt::CaseInsensitive ) == 0 )
+    {
+        return new QWindowsGdiIntegration( paramList );
+    }
 
-   return nullptr;
+    return nullptr;
 }
 

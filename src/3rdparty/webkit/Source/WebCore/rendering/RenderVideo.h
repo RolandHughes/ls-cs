@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef RenderVideo_h
@@ -30,14 +30,16 @@
 
 #include "RenderMedia.h"
 
-namespace WebCore {
-    
+namespace WebCore
+{
+
 class HTMLMediaElement;
 class HTMLVideoElement;
 
-class RenderVideo : public RenderMedia {
+class RenderVideo : public RenderMedia
+{
 public:
-    RenderVideo(HTMLVideoElement*);
+    RenderVideo( HTMLVideoElement * );
     virtual ~RenderVideo();
 
     IntRect videoBox() const;
@@ -53,24 +55,33 @@ public:
 
 private:
     virtual void updateFromElement();
-    inline HTMLVideoElement* videoElement() const;
+    inline HTMLVideoElement *videoElement() const;
 
     virtual void intrinsicSizeChanged();
     IntSize calculateIntrinsicSize();
     void updateIntrinsicSize();
 
-    virtual void imageChanged(WrappedImagePtr, const IntRect*);
+    virtual void imageChanged( WrappedImagePtr, const IntRect * );
 
-    virtual const char* renderName() const { return "RenderVideo"; }
+    virtual const char *renderName() const
+    {
+        return "RenderVideo";
+    }
 
-    virtual bool requiresLayer() const { return true; }
-    virtual bool isVideo() const { return true; }
+    virtual bool requiresLayer() const
+    {
+        return true;
+    }
+    virtual bool isVideo() const
+    {
+        return true;
+    }
 
-    virtual void paintReplaced(PaintInfo&, int tx, int ty);
+    virtual void paintReplaced( PaintInfo &, int tx, int ty );
 
     virtual void layout();
 
-    virtual int computeReplacedLogicalWidth(bool includeMaxWidth = true) const;
+    virtual int computeReplacedLogicalWidth( bool includeMaxWidth = true ) const;
     virtual int computeReplacedLogicalHeight() const;
     virtual int minimumReplacedHeight() const;
 
@@ -79,14 +90,14 @@ private:
     IntSize m_cachedImageSize;
 };
 
-inline RenderVideo* toRenderVideo(RenderObject* object)
+inline RenderVideo *toRenderVideo( RenderObject *object )
 {
-    ASSERT(!object || object->isVideo());
-    return static_cast<RenderVideo*>(object);
+    ASSERT( !object || object->isVideo() );
+    return static_cast<RenderVideo *>( object );
 }
 
 // This will catch anyone doing an unnecessary cast.
-void toRenderVideo(const RenderVideo*);
+void toRenderVideo( const RenderVideo * );
 
 } // namespace WebCore
 

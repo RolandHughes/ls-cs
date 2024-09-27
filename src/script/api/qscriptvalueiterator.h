@@ -33,38 +33,38 @@ class QScriptValueIteratorPrivate;
 
 class Q_SCRIPT_EXPORT QScriptValueIterator
 {
- public:
-   QScriptValueIterator(const QScriptValue &value);
+public:
+    QScriptValueIterator( const QScriptValue &value );
 
-   QScriptValueIterator(const QScriptValueIterator &) = delete;
-   QScriptValueIterator &operator=(const QScriptValueIterator &) = delete;
+    QScriptValueIterator( const QScriptValueIterator & ) = delete;
+    QScriptValueIterator &operator=( const QScriptValueIterator & ) = delete;
 
-   ~QScriptValueIterator();
+    ~QScriptValueIterator();
 
-   bool hasNext() const;
-   void next();
+    bool hasNext() const;
+    void next();
 
-   bool hasPrevious() const;
-   void previous();
+    bool hasPrevious() const;
+    void previous();
 
-   QString name() const;
-   QScriptString scriptName() const;
+    QString name() const;
+    QScriptString scriptName() const;
 
-   QScriptValue value() const;
-   void setValue(const QScriptValue &value);
+    QScriptValue value() const;
+    void setValue( const QScriptValue &value );
 
-   QScriptValue::PropertyFlags flags() const;
+    QScriptValue::PropertyFlags flags() const;
 
-   void remove();
+    void remove();
 
-   void toFront();
-   void toBack();
+    void toFront();
+    void toBack();
 
-   QScriptValueIterator &operator=(QScriptValue &value);
+    QScriptValueIterator &operator=( QScriptValue &value );
 
- private:
-   Q_DECLARE_PRIVATE(QScriptValueIterator)
-   QScopedPointer<QScriptValueIteratorPrivate> d_ptr;
+private:
+    Q_DECLARE_PRIVATE( QScriptValueIterator )
+    QScopedPointer<QScriptValueIteratorPrivate> d_ptr;
 };
 
 #endif

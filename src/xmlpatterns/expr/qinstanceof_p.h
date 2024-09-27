@@ -26,28 +26,29 @@
 
 #include <qsinglecontainer_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class InstanceOf : public SingleContainer
 {
- public:
-   InstanceOf(const Expression::Ptr &operand, const SequenceType::Ptr &targetType);
+public:
+    InstanceOf( const Expression::Ptr &operand, const SequenceType::Ptr &targetType );
 
-   bool evaluateEBV(const DynamicContext::Ptr &) const override;
+    bool evaluateEBV( const DynamicContext::Ptr & ) const override;
 
-   SequenceType::List expectedOperandTypes() const override;
-   SequenceType::Ptr staticType() const override;
-   Expression::Ptr compress(const StaticContext::Ptr &context) override;
-   ExpressionVisitorResult::Ptr accept(const ExpressionVisitor::Ptr &visitor) const override;
+    SequenceType::List expectedOperandTypes() const override;
+    SequenceType::Ptr staticType() const override;
+    Expression::Ptr compress( const StaticContext::Ptr &context ) override;
+    ExpressionVisitorResult::Ptr accept( const ExpressionVisitor::Ptr &visitor ) const override;
 
-   /**
-    * @returns the SequenceType that this <tt>instance of</tt> Expression
-    * is testing its operand against.
-    */
-   SequenceType::Ptr targetType() const;
+    /**
+     * @returns the SequenceType that this <tt>instance of</tt> Expression
+     * is testing its operand against.
+     */
+    SequenceType::Ptr targetType() const;
 
- private:
-   const SequenceType::Ptr m_targetType;
+private:
+    const SequenceType::Ptr m_targetType;
 };
 
 }

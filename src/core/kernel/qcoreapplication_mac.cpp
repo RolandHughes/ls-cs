@@ -28,20 +28,23 @@
 
 QString qAppFileName()
 {
-   static QString appFileName;
+    static QString appFileName;
 
-   if (appFileName.isEmpty()) {
-      QCFType<CFURLRef> bundleURL(CFBundleCopyExecutableURL(CFBundleGetMainBundle()));
+    if ( appFileName.isEmpty() )
+    {
+        QCFType<CFURLRef> bundleURL( CFBundleCopyExecutableURL( CFBundleGetMainBundle() ) );
 
-      if (bundleURL) {
-         QCFString cfPath(CFURLCopyFileSystemPath(bundleURL, kCFURLPOSIXPathStyle));
+        if ( bundleURL )
+        {
+            QCFString cfPath( CFURLCopyFileSystemPath( bundleURL, kCFURLPOSIXPathStyle ) );
 
-         if (cfPath.toCFStringRef() != nullptr) {
-            appFileName = cfPath.toQString();
-         }
-      }
-   }
+            if ( cfPath.toCFStringRef() != nullptr )
+            {
+                appFileName = cfPath.toQString();
+            }
+        }
+    }
 
-   return appFileName;
+    return appFileName;
 }
 

@@ -27,42 +27,48 @@
 #include "CSSPropertyNames.h"
 #include "HTMLNames.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-HTMLUListElement::HTMLUListElement(const QualifiedName& tagName, Document* document)
-    : HTMLElement(tagName, document)
+HTMLUListElement::HTMLUListElement( const QualifiedName &tagName, Document *document )
+    : HTMLElement( tagName, document )
 {
-    ASSERT(hasTagName(ulTag));
+    ASSERT( hasTagName( ulTag ) );
 }
 
-PassRefPtr<HTMLUListElement> HTMLUListElement::create(Document* document)
+PassRefPtr<HTMLUListElement> HTMLUListElement::create( Document *document )
 {
-    return adoptRef(new HTMLUListElement(ulTag, document));
+    return adoptRef( new HTMLUListElement( ulTag, document ) );
 }
 
-PassRefPtr<HTMLUListElement> HTMLUListElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<HTMLUListElement> HTMLUListElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new HTMLUListElement(tagName, document));
+    return adoptRef( new HTMLUListElement( tagName, document ) );
 }
 
-bool HTMLUListElement::mapToEntry(const QualifiedName& attrName, MappedAttributeEntry& result) const
+bool HTMLUListElement::mapToEntry( const QualifiedName &attrName, MappedAttributeEntry &result ) const
 {
-    if (attrName == typeAttr) {
+    if ( attrName == typeAttr )
+    {
         result = eUnorderedList;
         return false;
     }
-    
-    return HTMLElement::mapToEntry(attrName, result);
+
+    return HTMLElement::mapToEntry( attrName, result );
 }
 
-void HTMLUListElement::parseMappedAttribute(Attribute* attr)
+void HTMLUListElement::parseMappedAttribute( Attribute *attr )
 {
-    if (attr->name() == typeAttr)
-        addCSSProperty(attr, CSSPropertyListStyleType, attr->value());
+    if ( attr->name() == typeAttr )
+    {
+        addCSSProperty( attr, CSSPropertyListStyleType, attr->value() );
+    }
     else
-        HTMLElement::parseMappedAttribute(attr);
+    {
+        HTMLElement::parseMappedAttribute( attr );
+    }
 }
 
 }

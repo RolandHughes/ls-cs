@@ -26,9 +26,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSComment);
+ASSERT_CLASS_FITS_IN_CELL( JSComment );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -39,8 +40,8 @@ ASSERT_CLASS_FITS_IN_CELL(JSComment);
 
 static const HashTableValue JSCommentTableValues[2] =
 {
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsCommentConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsCommentConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -54,43 +55,49 @@ static JSC_CONST_HASHTABLE HashTable JSCommentTable = { 2, 1, JSCommentTableValu
 
 static const HashTableValue JSCommentConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSCommentConstructorTable = { 1, 0, JSCommentConstructorTableValues, 0 };
-class JSCommentConstructor : public DOMConstructorObject {
+class JSCommentConstructor : public DOMConstructorObject
+{
 public:
-    JSCommentConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSCommentConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSCommentConstructor::s_info = { "CommentConstructor", &DOMConstructorObject::s_info, &JSCommentConstructorTable, 0 };
 
-JSCommentConstructor::JSCommentConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSCommentConstructor::JSCommentConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSCommentPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSCommentPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSCommentConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSCommentConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSCommentConstructor, JSDOMWrapper>(exec, &JSCommentConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSCommentConstructor, JSDOMWrapper>( exec, &JSCommentConstructorTable, this, propertyName, slot );
 }
 
-bool JSCommentConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSCommentConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSCommentConstructor, JSDOMWrapper>(exec, &JSCommentConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSCommentConstructor, JSDOMWrapper>( exec, &JSCommentConstructorTable, this, propertyName,
+            descriptor );
 }
 
 /* Hash table for prototype */
@@ -102,50 +109,51 @@ bool JSCommentConstructor::getOwnPropertyDescriptor(ExecState* exec, const Ident
 
 static const HashTableValue JSCommentPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSCommentPrototypeTable = { 1, 0, JSCommentPrototypeTableValues, 0 };
 const ClassInfo JSCommentPrototype::s_info = { "CommentPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSCommentPrototypeTable, 0 };
 
-JSObject* JSCommentPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSCommentPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSComment>(exec, globalObject);
+    return getDOMPrototype<JSComment>( exec, globalObject );
 }
 
 const ClassInfo JSComment::s_info = { "Comment", &JSCharacterData::s_info, &JSCommentTable, 0 };
 
-JSComment::JSComment(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<Comment> impl)
-    : JSCharacterData(structure, globalObject, impl)
+JSComment::JSComment( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<Comment> impl )
+    : JSCharacterData( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSComment::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSComment::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSCommentPrototype(exec->globalData(), globalObject, JSCommentPrototype::createStructure(exec->globalData(), JSCharacterDataPrototype::self(exec, globalObject)));
+    return new ( exec ) JSCommentPrototype( exec->globalData(), globalObject, JSCommentPrototype::createStructure( exec->globalData(),
+                                            JSCharacterDataPrototype::self( exec, globalObject ) ) );
 }
 
-bool JSComment::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSComment::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSComment, Base>(exec, &JSCommentTable, this, propertyName, slot);
+    return getStaticValueSlot<JSComment, Base>( exec, &JSCommentTable, this, propertyName, slot );
 }
 
-bool JSComment::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSComment::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSComment, Base>(exec, &JSCommentTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSComment, Base>( exec, &JSCommentTable, this, propertyName, descriptor );
 }
 
-JSValue jsCommentConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsCommentConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSComment* domObject = static_cast<JSComment*>(asObject(slotBase));
-    return JSComment::getConstructor(exec, domObject->globalObject());
+    JSComment *domObject = static_cast<JSComment *>( asObject( slotBase ) );
+    return JSComment::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSComment::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSComment::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSCommentConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSCommentConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
 

@@ -26,19 +26,20 @@
 
 #include <qatomicstring_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class UntypedAtomic : public AtomicString
 {
- public:
-   friend class CommonValues;
+public:
+    friend class CommonValues;
 
-   static UntypedAtomic::Ptr fromValue(const QString &value);
+    static UntypedAtomic::Ptr fromValue( const QString &value );
 
-   ItemType::Ptr type() const override;
+    ItemType::Ptr type() const override;
 
- protected:
-   UntypedAtomic(const QString &value);
+protected:
+    UntypedAtomic( const QString &value );
 };
 }
 

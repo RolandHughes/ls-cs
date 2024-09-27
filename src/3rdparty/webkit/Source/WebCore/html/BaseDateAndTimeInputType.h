@@ -35,39 +35,41 @@
 #include "TextFieldInputType.h"
 #include <wtf/unicode/Unicode.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 // A super class of date, datetime, datetime-local, month, time, and week types.
-class BaseDateAndTimeInputType : public TextFieldInputType {
+class BaseDateAndTimeInputType : public TextFieldInputType
+{
 protected:
-    BaseDateAndTimeInputType(HTMLInputElement* element) : TextFieldInputType(element) { }
-    virtual double parseToDouble(const String&, double) const;
-    virtual bool parseToDateComponents(const String&, DateComponents*) const;
-    String serializeWithComponents(const DateComponents&) const;
+    BaseDateAndTimeInputType( HTMLInputElement *element ) : TextFieldInputType( element ) { }
+    virtual double parseToDouble( const String &, double ) const;
+    virtual bool parseToDateComponents( const String &, DateComponents * ) const;
+    String serializeWithComponents( const DateComponents & ) const;
 
 private:
-    virtual bool parseToDateComponentsInternal(const UChar*, unsigned length, DateComponents*) const = 0;
-    virtual bool setMillisecondToDateComponents(double, DateComponents*) const = 0;
+    virtual bool parseToDateComponentsInternal( const UChar *, unsigned length, DateComponents * ) const = 0;
+    virtual bool setMillisecondToDateComponents( double, DateComponents * ) const = 0;
     virtual DateComponents::Type dateType() const = 0;
     virtual double valueAsDate() const;
-    virtual void setValueAsDate(double, ExceptionCode&) const;
+    virtual void setValueAsDate( double, ExceptionCode & ) const;
     virtual double valueAsNumber() const;
-    virtual void setValueAsNumber(double, ExceptionCode&) const;
-    virtual bool typeMismatchFor(const String&) const;
+    virtual void setValueAsNumber( double, ExceptionCode & ) const;
+    virtual bool typeMismatchFor( const String & ) const;
     virtual bool typeMismatch() const;
-    virtual bool rangeUnderflow(const String&) const;
-    virtual bool rangeOverflow(const String&) const;
+    virtual bool rangeUnderflow( const String & ) const;
+    virtual bool rangeOverflow( const String & ) const;
     virtual bool supportsRangeLimitation() const;
     virtual double defaultValueForStepUp() const;
     virtual bool isSteppable() const;
-    virtual bool stepMismatch(const String&, double) const;
+    virtual bool stepMismatch( const String &, double ) const;
     virtual double stepBase() const;
-    virtual void handleKeydownEvent(KeyboardEvent*);
-    virtual void handleWheelEvent(WheelEvent*);
-    virtual String serialize(double) const;
-    virtual String serializeWithMilliseconds(double) const;
+    virtual void handleKeydownEvent( KeyboardEvent * );
+    virtual void handleWheelEvent( WheelEvent * );
+    virtual String serialize( double ) const;
+    virtual String serializeWithMilliseconds( double ) const;
     virtual String visibleValue() const;
-    virtual String convertFromVisibleValue(const String&) const;
+    virtual String convertFromVisibleValue( const String & ) const;
 };
 
 } // namespace WebCore

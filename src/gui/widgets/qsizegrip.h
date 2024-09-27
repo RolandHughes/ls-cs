@@ -32,36 +32,36 @@ class QSizeGripPrivate;
 
 class Q_GUI_EXPORT QSizeGrip : public QWidget
 {
-   GUI_CS_OBJECT(QSizeGrip)
+    GUI_CS_OBJECT( QSizeGrip )
 
- public:
-   explicit QSizeGrip(QWidget *parent);
+public:
+    explicit QSizeGrip( QWidget *parent );
 
-   QSizeGrip(const QSizeGrip &) = delete;
-   QSizeGrip &operator=(const QSizeGrip &) = delete;
+    QSizeGrip( const QSizeGrip & ) = delete;
+    QSizeGrip &operator=( const QSizeGrip & ) = delete;
 
-   ~QSizeGrip();
+    ~QSizeGrip();
 
-   QSize sizeHint() const override;
-   void setVisible(bool visible) override;
+    QSize sizeHint() const override;
+    void setVisible( bool visible ) override;
 
- protected:
-   void paintEvent(QPaintEvent *event) override;
-   void mousePressEvent(QMouseEvent *event) override;
-   void mouseMoveEvent(QMouseEvent *event) override;
-   void mouseReleaseEvent(QMouseEvent *event) override;
-   void moveEvent(QMoveEvent *event) override;
-   void showEvent(QShowEvent *event) override;
-   void hideEvent(QHideEvent *event) override;
-   bool eventFilter(QObject *object, QEvent *event) override;
+protected:
+    void paintEvent( QPaintEvent *event ) override;
+    void mousePressEvent( QMouseEvent *event ) override;
+    void mouseMoveEvent( QMouseEvent *event ) override;
+    void mouseReleaseEvent( QMouseEvent *event ) override;
+    void moveEvent( QMoveEvent *event ) override;
+    void showEvent( QShowEvent *event ) override;
+    void hideEvent( QHideEvent *event ) override;
+    bool eventFilter( QObject *object, QEvent *event ) override;
 
-   bool event(QEvent *event) override;
+    bool event( QEvent *event ) override;
 
- private:
-   Q_DECLARE_PRIVATE(QSizeGrip)
+private:
+    Q_DECLARE_PRIVATE( QSizeGrip )
 
-   GUI_CS_SLOT_1(Private, void _q_showIfNotHidden())
-   GUI_CS_SLOT_2(_q_showIfNotHidden)
+    GUI_CS_SLOT_1( Private, void _q_showIfNotHidden() )
+    GUI_CS_SLOT_2( _q_showIfNotHidden )
 };
 
 #endif // QT_NO_SIZEGRIP

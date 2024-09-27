@@ -28,20 +28,21 @@
 
 #include <WebCore/NotImplemented.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
-String WebPageProxy::standardUserAgent(const String& applicationNameForUserAgent)
+String WebPageProxy::standardUserAgent( const String &applicationNameForUserAgent )
 {
     // FIXME: This should not be hard coded.
     return "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6) AppleWebKit/531.4 (KHTML, like Gecko) Version/4.0.3 Safari/531.4";
 }
 
-void WebPageProxy::saveRecentSearches(const String&, const Vector<String>&)
+void WebPageProxy::saveRecentSearches( const String &, const Vector<String> & )
 {
     notImplemented();
 }
 
-void WebPageProxy::loadRecentSearches(const String&, Vector<String>&)
+void WebPageProxy::loadRecentSearches( const String &, Vector<String> & )
 {
     notImplemented();
 }

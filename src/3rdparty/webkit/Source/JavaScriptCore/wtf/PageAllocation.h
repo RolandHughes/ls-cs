@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef PageAllocation_h
@@ -61,7 +61,8 @@
 #include <unistd.h>
 #endif
 
-namespace WTF {
+namespace WTF
+{
 
 /*
     PageAllocation
@@ -79,7 +80,8 @@ namespace WTF {
     specifying the required protection (defaulting to writable, non-executable).
 */
 
-class PageAllocation : private PageBlock {
+class PageAllocation : private PageBlock
+{
 public:
     PageAllocation()
     {
@@ -93,13 +95,17 @@ public:
 #else
     // FIXME: This is a workaround for <rdar://problem/8876150>, wherein Clang incorrectly emits an access
     // control warning when a client tries to use operator bool exposed above via "using PageBlock::operator bool".
-    operator bool() const { return PageBlock::operator bool(); }
+    operator bool() const
+    {
+        return PageBlock::operator bool();
+    }
 #endif
 
-    static PageAllocation allocate(size_t size, OSAllocator::Usage usage = OSAllocator::UnknownUsage, bool writable = true, bool executable = false)
+    static PageAllocation allocate( size_t size, OSAllocator::Usage usage = OSAllocator::UnknownUsage, bool writable = true,
+                                    bool executable = false )
     {
-        ASSERT(isPageAligned(size));
-        return PageAllocation(OSAllocator::reserveAndCommit(size, usage, writable, executable), size);
+        ASSERT( isPageAligned( size ) );
+        return PageAllocation( OSAllocator::reserveAndCommit( size, usage, writable, executable ), size );
     }
 
     void deallocate()
@@ -107,17 +113,17 @@ public:
         // Clear base & size before calling release; if this is *inside* allocation
         // then we won't be able to clear then after deallocating the memory.
         PageAllocation tmp;
-        std::swap(tmp, *this);
+        std::swap( tmp, *this );
 
-        ASSERT(tmp);
-        ASSERT(!*this);
+        ASSERT( tmp );
+        ASSERT( !*this );
 
-        OSAllocator::decommitAndRelease(tmp.base(), tmp.size());
+        OSAllocator::decommitAndRelease( tmp.base(), tmp.size() );
     }
 
 private:
-    PageAllocation(void* base, size_t size)
-        : PageBlock(base, size)
+    PageAllocation( void *base, size_t size )
+        : PageBlock( base, size )
     {
     }
 };

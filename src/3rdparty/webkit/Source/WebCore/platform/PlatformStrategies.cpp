@@ -31,30 +31,32 @@
 
 #include "DefaultLocalizationStrategy.h"
 
-namespace WebCore {
-
-static PlatformStrategies* s_platformStrategies;
-
-PlatformStrategies* platformStrategies()
+namespace WebCore
 {
-    ASSERT(s_platformStrategies);
-    
+
+static PlatformStrategies *s_platformStrategies;
+
+PlatformStrategies *platformStrategies()
+{
+    ASSERT( s_platformStrategies );
+
     return s_platformStrategies;
 }
 
-void setPlatformStrategies(PlatformStrategies* platformStrategies)
+void setPlatformStrategies( PlatformStrategies *platformStrategies )
 {
-    if (!s_platformStrategies) {
+    if ( !s_platformStrategies )
+    {
         s_platformStrategies = platformStrategies;
         return;
     }
-    
+
     // FIXME: This happens when mixing different platform strategies, and we should probably
     // throw an exception here in release builds.
-    ASSERT(platformStrategies != s_platformStrategies);
+    ASSERT( platformStrategies != s_platformStrategies );
 }
 
-LocalizationStrategy* PlatformStrategies::createLocalizationStrategy()
+LocalizationStrategy *PlatformStrategies::createLocalizationStrategy()
 {
     return new DefaultLocalizationStrategy;
 }

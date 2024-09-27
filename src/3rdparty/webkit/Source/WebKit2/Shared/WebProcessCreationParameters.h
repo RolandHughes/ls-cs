@@ -36,25 +36,28 @@
 #include "MachPort.h"
 #endif
 
-namespace CoreIPC {
-    class ArgumentDecoder;
-    class ArgumentEncoder;
+namespace CoreIPC
+{
+class ArgumentDecoder;
+class ArgumentEncoder;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
-struct WebProcessCreationParameters {
+struct WebProcessCreationParameters
+{
     WebProcessCreationParameters();
 
-    void encode(CoreIPC::ArgumentEncoder*) const;
-    static bool decode(CoreIPC::ArgumentDecoder*, WebProcessCreationParameters&);
+    void encode( CoreIPC::ArgumentEncoder * ) const;
+    static bool decode( CoreIPC::ArgumentDecoder *, WebProcessCreationParameters & );
 
     String injectedBundlePath;
     SandboxExtension::Handle injectedBundlePathExtensionHandle;
 
     String applicationCacheDirectory;
     SandboxExtension::Handle applicationCacheDirectoryExtensionHandle;
-    
+
     String databaseDirectory;
     String localStorageDirectory;
     Vector<String> urlSchemesRegistererdAsEmptyDocument;

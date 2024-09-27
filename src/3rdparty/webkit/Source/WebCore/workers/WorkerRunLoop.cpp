@@ -1,10 +1,10 @@
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  *     * Redistributions of source code must retain the above copyright
  * notice, this list of conditions and the following disclaimer.
  *     * Redistributions in binary form must reproduce the above
@@ -14,7 +14,7 @@
  *     * Neither the name of Google Inc. nor the names of its
  * contributors may be used to endorse or promote products derived from
  * this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -27,7 +27,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 #include "config.h"
 
 #if ENABLE(WORKERS)
@@ -40,35 +40,56 @@
 #include "WorkerContext.h"
 #include "WorkerThread.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class WorkerSharedTimer : public SharedTimer {
+class WorkerSharedTimer : public SharedTimer
+{
 public:
     WorkerSharedTimer()
-        : m_sharedTimerFunction(0)
-        , m_nextFireTime(0)
+        : m_sharedTimerFunction( 0 )
+        , m_nextFireTime( 0 )
     {
     }
 
     // SharedTimer interface.
-    virtual void setFiredFunction(void (*function)()) { m_sharedTimerFunction = function; }
-    virtual void setFireTime(double fireTime) { m_nextFireTime = fireTime; }
-    virtual void stop() { m_nextFireTime = 0; }
+    virtual void setFiredFunction( void ( *function )() )
+    {
+        m_sharedTimerFunction = function;
+    }
+    virtual void setFireTime( double fireTime )
+    {
+        m_nextFireTime = fireTime;
+    }
+    virtual void stop()
+    {
+        m_nextFireTime = 0;
+    }
 
-    bool isActive() { return m_sharedTimerFunction && m_nextFireTime; }
-    double fireTime() { return m_nextFireTime; }
-    void fire() { m_sharedTimerFunction(); }
+    bool isActive()
+    {
+        return m_sharedTimerFunction && m_nextFireTime;
+    }
+    double fireTime()
+    {
+        return m_nextFireTime;
+    }
+    void fire()
+    {
+        m_sharedTimerFunction();
+    }
 
 private:
-    void (*m_sharedTimerFunction)();
+    void ( *m_sharedTimerFunction )();
     double m_nextFireTime;
 };
 
-class ModePredicate {
+class ModePredicate
+{
 public:
-    ModePredicate(const String& mode)
-        : m_mode(mode)
-        , m_defaultMode(mode == WorkerRunLoop::defaultMode())
+    ModePredicate( const String &mode )
+        : m_mode( mode )
+        , m_defaultMode( mode == WorkerRunLoop::defaultMode() )
     {
     }
 
@@ -77,7 +98,7 @@ public:
         return m_defaultMode;
     }
 
-    bool operator()(WorkerRunLoop::Task* task) const
+    bool operator()( WorkerRunLoop::Task *task ) const
     {
         return m_defaultMode || m_mode == task->mode();
     }
@@ -88,15 +109,15 @@ private:
 };
 
 WorkerRunLoop::WorkerRunLoop()
-    : m_sharedTimer(adoptPtr(new WorkerSharedTimer))
-    , m_nestedCount(0)
-    , m_uniqueId(0)
+    : m_sharedTimer( adoptPtr( new WorkerSharedTimer ) )
+    , m_nestedCount( 0 )
+    , m_uniqueId( 0 )
 {
 }
 
 WorkerRunLoop::~WorkerRunLoop()
 {
-    ASSERT(!m_nestedCount);
+    ASSERT( !m_nestedCount );
 }
 
 String WorkerRunLoop::defaultMode()
@@ -104,69 +125,84 @@ String WorkerRunLoop::defaultMode()
     return String();
 }
 
-class RunLoopSetup {
-    WTF_MAKE_NONCOPYABLE(RunLoopSetup);
+class RunLoopSetup
+{
+    WTF_MAKE_NONCOPYABLE( RunLoopSetup );
 public:
-    RunLoopSetup(WorkerRunLoop& runLoop)
-        : m_runLoop(runLoop)
+    RunLoopSetup( WorkerRunLoop &runLoop )
+        : m_runLoop( runLoop )
     {
-        if (!m_runLoop.m_nestedCount)
-            threadGlobalData().threadTimers().setSharedTimer(m_runLoop.m_sharedTimer.get());
+        if ( !m_runLoop.m_nestedCount )
+        {
+            threadGlobalData().threadTimers().setSharedTimer( m_runLoop.m_sharedTimer.get() );
+        }
+
         m_runLoop.m_nestedCount++;
     }
 
     ~RunLoopSetup()
     {
         m_runLoop.m_nestedCount--;
-        if (!m_runLoop.m_nestedCount)
-            threadGlobalData().threadTimers().setSharedTimer(0);
+
+        if ( !m_runLoop.m_nestedCount )
+        {
+            threadGlobalData().threadTimers().setSharedTimer( 0 );
+        }
     }
 private:
-    WorkerRunLoop& m_runLoop;
+    WorkerRunLoop &m_runLoop;
 };
 
-void WorkerRunLoop::run(WorkerContext* context)
+void WorkerRunLoop::run( WorkerContext *context )
 {
-    RunLoopSetup setup(*this);
-    ModePredicate modePredicate(defaultMode());
+    RunLoopSetup setup( *this );
+    ModePredicate modePredicate( defaultMode() );
     MessageQueueWaitResult result;
-    do {
-        result = runInMode(context, modePredicate);
-    } while (result != MessageQueueTerminated);
+
+    do
+    {
+        result = runInMode( context, modePredicate );
+    }
+    while ( result != MessageQueueTerminated );
 }
 
-MessageQueueWaitResult WorkerRunLoop::runInMode(WorkerContext* context, const String& mode)
+MessageQueueWaitResult WorkerRunLoop::runInMode( WorkerContext *context, const String &mode )
 {
-    RunLoopSetup setup(*this);
-    ModePredicate modePredicate(mode);
-    MessageQueueWaitResult result = runInMode(context, modePredicate);
+    RunLoopSetup setup( *this );
+    ModePredicate modePredicate( mode );
+    MessageQueueWaitResult result = runInMode( context, modePredicate );
     return result;
 }
 
-MessageQueueWaitResult WorkerRunLoop::runInMode(WorkerContext* context, const ModePredicate& predicate)
+MessageQueueWaitResult WorkerRunLoop::runInMode( WorkerContext *context, const ModePredicate &predicate )
 {
-    ASSERT(context);
-    ASSERT(context->thread());
-    ASSERT(context->thread()->threadID() == currentThread());
+    ASSERT( context );
+    ASSERT( context->thread() );
+    ASSERT( context->thread()->threadID() == currentThread() );
 
-    double absoluteTime = (predicate.isDefaultMode() && m_sharedTimer->isActive()) ? m_sharedTimer->fireTime() : MessageQueue<Task>::infiniteTime();
+    double absoluteTime = ( predicate.isDefaultMode()
+                            && m_sharedTimer->isActive() ) ? m_sharedTimer->fireTime() : MessageQueue<Task>::infiniteTime();
     MessageQueueWaitResult result;
-    OwnPtr<WorkerRunLoop::Task> task = m_messageQueue.waitForMessageFilteredWithTimeout(result, predicate, absoluteTime);
+    OwnPtr<WorkerRunLoop::Task> task = m_messageQueue.waitForMessageFilteredWithTimeout( result, predicate, absoluteTime );
 
     // If the context is closing, don't execute any further JavaScript tasks (per section 4.1.1 of the Web Workers spec).  However, there may be implementation cleanup tasks in the queue, so keep running through it.
 
-    switch (result) {
-    case MessageQueueTerminated:
-        break;
+    switch ( result )
+    {
+        case MessageQueueTerminated:
+            break;
 
-    case MessageQueueMessageReceived:
-        task->performTask(context);
-        break;
+        case MessageQueueMessageReceived:
+            task->performTask( context );
+            break;
 
-    case MessageQueueTimeout:
-        if (!context->isClosing())
-            m_sharedTimer->fire();
-        break;
+        case MessageQueueTimeout:
+            if ( !context->isClosing() )
+            {
+                m_sharedTimer->fire();
+            }
+
+            break;
     }
 
     return result;
@@ -177,31 +213,34 @@ void WorkerRunLoop::terminate()
     m_messageQueue.kill();
 }
 
-void WorkerRunLoop::postTask(PassOwnPtr<ScriptExecutionContext::Task> task)
+void WorkerRunLoop::postTask( PassOwnPtr<ScriptExecutionContext::Task> task )
 {
-    postTaskForMode(task, defaultMode());
+    postTaskForMode( task, defaultMode() );
 }
 
-void WorkerRunLoop::postTaskForMode(PassOwnPtr<ScriptExecutionContext::Task> task, const String& mode)
+void WorkerRunLoop::postTaskForMode( PassOwnPtr<ScriptExecutionContext::Task> task, const String &mode )
 {
-    m_messageQueue.append(Task::create(task, mode.crossThreadString()));
+    m_messageQueue.append( Task::create( task, mode.crossThreadString() ) );
 }
 
-PassOwnPtr<WorkerRunLoop::Task> WorkerRunLoop::Task::create(PassOwnPtr<ScriptExecutionContext::Task> task, const String& mode)
+PassOwnPtr<WorkerRunLoop::Task> WorkerRunLoop::Task::create( PassOwnPtr<ScriptExecutionContext::Task> task, const String &mode )
 {
-    return adoptPtr(new Task(task, mode));
+    return adoptPtr( new Task( task, mode ) );
 }
 
-void WorkerRunLoop::Task::performTask(ScriptExecutionContext* context)
+void WorkerRunLoop::Task::performTask( ScriptExecutionContext *context )
 {
-    WorkerContext* workerContext = static_cast<WorkerContext *>(context);
-    if (!workerContext->isClosing() || m_task->isCleanupTask())
-        m_task->performTask(context);
+    WorkerContext *workerContext = static_cast<WorkerContext *>( context );
+
+    if ( !workerContext->isClosing() || m_task->isCleanupTask() )
+    {
+        m_task->performTask( context );
+    }
 }
 
-WorkerRunLoop::Task::Task(PassOwnPtr<ScriptExecutionContext::Task> task, const String& mode)
-    : m_task(task)
-    , m_mode(mode.crossThreadString())
+WorkerRunLoop::Task::Task( PassOwnPtr<ScriptExecutionContext::Task> task, const String &mode )
+    : m_task( task )
+    , m_mode( mode.crossThreadString() )
 {
 }
 

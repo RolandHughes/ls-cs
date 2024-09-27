@@ -32,22 +32,22 @@ QT_BEGIN_NAMESPACE
 
 class QDeclarativeBindingPrivate : public QDeclarativeExpressionPrivate
 {
-   Q_DECLARE_PUBLIC(QDeclarativeBinding)
- public:
-   QDeclarativeBindingPrivate();
-   ~QDeclarativeBindingPrivate();
+    Q_DECLARE_PUBLIC( QDeclarativeBinding )
+public:
+    QDeclarativeBindingPrivate();
+    ~QDeclarativeBindingPrivate();
 
-   virtual void emitValueChanged();
+    virtual void emitValueChanged();
 
- protected:
-   virtual void refresh();
+protected:
+    virtual void refresh();
 
- private:
-   bool updating: 1;
-   bool enabled: 1;
-   QDeclarativeProperty property;
+private:
+    bool updating: 1;
+    bool enabled: 1;
+    QDeclarativeProperty property;
 
-   bool *deleted;
+    bool *deleted;
 };
 
 QT_END_NAMESPACE

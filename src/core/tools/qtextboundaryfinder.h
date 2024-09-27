@@ -31,67 +31,70 @@ class QTextBoundaryFinderPrivate;
 
 class Q_CORE_EXPORT QTextBoundaryFinder
 {
- public:
-   enum BoundaryType {
-      Grapheme,
-      Word,
-      Sentence,
-      Line
-   };
+public:
+    enum BoundaryType
+    {
+        Grapheme,
+        Word,
+        Sentence,
+        Line
+    };
 
-   enum BoundaryReason {
-      NotAtBoundary      = 0,
-      BreakOpportunity   = 0x1f,
-      StartOfItem        = 0x20,
-      EndOfItem          = 0x40,
-      MandatoryBreak     = 0x80,
-      SoftHyphen         = 0x100
-   };
-   using BoundaryReasons = QFlags<BoundaryReason>;
+    enum BoundaryReason
+    {
+        NotAtBoundary      = 0,
+        BreakOpportunity   = 0x1f,
+        StartOfItem        = 0x20,
+        EndOfItem          = 0x40,
+        MandatoryBreak     = 0x80,
+        SoftHyphen         = 0x100
+    };
+    using BoundaryReasons = QFlags<BoundaryReason>;
 
-   QTextBoundaryFinder();
+    QTextBoundaryFinder();
 
-   QTextBoundaryFinder(const QTextBoundaryFinder &other);
-   QTextBoundaryFinder(QTextBoundaryFinder &&other);
+    QTextBoundaryFinder( const QTextBoundaryFinder &other );
+    QTextBoundaryFinder( QTextBoundaryFinder &&other );
 
-   QTextBoundaryFinder(BoundaryType type, const QString &str);
+    QTextBoundaryFinder( BoundaryType type, const QString &str );
 
-   ~QTextBoundaryFinder();
+    ~QTextBoundaryFinder();
 
-   QTextBoundaryFinder &operator=(const QTextBoundaryFinder &other);
-   QTextBoundaryFinder &operator=(QTextBoundaryFinder &&other);
+    QTextBoundaryFinder &operator=( const QTextBoundaryFinder &other );
+    QTextBoundaryFinder &operator=( QTextBoundaryFinder &&other );
 
-   BoundaryType type() const {
-      return m_type;
-   }
+    BoundaryType type() const
+    {
+        return m_type;
+    }
 
-   QString string() const;
+    QString string() const;
 
-   void toStart();
-   void toEnd();
-   int position() const;
-   void setPosition(int position);
+    void toStart();
+    void toEnd();
+    int position() const;
+    void setPosition( int position );
 
-   int toNextBoundary();
-   int toPreviousBoundary();
+    int toNextBoundary();
+    int toPreviousBoundary();
 
-   bool isAtBoundary() const;
-   BoundaryReasons boundaryReasons() const;
+    bool isAtBoundary() const;
+    BoundaryReasons boundaryReasons() const;
 
- private:
-   BoundaryType m_type;
+private:
+    BoundaryType m_type;
 
-   QString m_str;
-   QString::const_iterator iter_pos;
+    QString m_str;
+    QString::const_iterator iter_pos;
 
-   bool m_valid = true;
+    bool m_valid = true;
 
-   uint freePrivate : 1;
+    uint freePrivate : 1;
 
-   QTextBoundaryFinderPrivate *d;
+    QTextBoundaryFinderPrivate *d;
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(QTextBoundaryFinder::BoundaryReasons)
+Q_DECLARE_OPERATORS_FOR_FLAGS( QTextBoundaryFinder::BoundaryReasons )
 
 #endif
 

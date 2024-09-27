@@ -34,57 +34,57 @@ class QPrinter;
 
 class Q_GUI_EXPORT QPrintDialog : public QAbstractPrintDialog
 {
-   GUI_CS_OBJECT(QPrintDialog)
-   Q_DECLARE_PRIVATE(QPrintDialog)
+    GUI_CS_OBJECT( QPrintDialog )
+    Q_DECLARE_PRIVATE( QPrintDialog )
 
-   GUI_CS_ENUM(PrintDialogOption)
+    GUI_CS_ENUM( PrintDialogOption )
 
-   GUI_CS_PROPERTY_READ(options,  options)
-   GUI_CS_PROPERTY_WRITE(options, setOptions)
+    GUI_CS_PROPERTY_READ( options,  options )
+    GUI_CS_PROPERTY_WRITE( options, setOptions )
 
- public:
-   explicit QPrintDialog(QPrinter *printer, QWidget *parent = nullptr);
-   explicit QPrintDialog(QWidget *parent = nullptr);
-   ~QPrintDialog();
+public:
+    explicit QPrintDialog( QPrinter *printer, QWidget *parent = nullptr );
+    explicit QPrintDialog( QWidget *parent = nullptr );
+    ~QPrintDialog();
 
-   int exec() override;
+    int exec() override;
 
 #if defined (Q_OS_UNIX) && ! defined(Q_OS_DARWIN)
-   void accept() override;
+    void accept() override;
 #endif
 
-   void done(int result) override;
-   void setOption(PrintDialogOption option, bool on = true);
-   bool testOption(PrintDialogOption option) const;
-   void setOptions(PrintDialogOptions options);
+    void done( int result ) override;
+    void setOption( PrintDialogOption option, bool on = true );
+    bool testOption( PrintDialogOption option ) const;
+    void setOptions( PrintDialogOptions options );
 
-   PrintDialogOptions options() const;
+    PrintDialogOptions options() const;
 
 #if defined(Q_OS_UNIX) || defined(Q_OS_WIN)
-   void setVisible(bool visible) override;
+    void setVisible( bool visible ) override;
 #endif
 
-   using QDialog::open;
-   void open(QObject *receiver, const QString &member);
+    using QDialog::open;
+    void open( QObject *receiver, const QString &member );
 
-   using QDialog::accepted;
-   GUI_CS_SIGNAL_1(Public, void accepted(QPrinter *printer))
-   GUI_CS_SIGNAL_OVERLOAD(accepted, (QPrinter *), printer)
+    using QDialog::accepted;
+    GUI_CS_SIGNAL_1( Public, void accepted( QPrinter *printer ) )
+    GUI_CS_SIGNAL_OVERLOAD( accepted, ( QPrinter * ), printer )
 
- private:
+private:
 
 #if defined (Q_OS_UNIX) && ! defined (Q_OS_DARWIN)
 
-   GUI_CS_SLOT_1(Private, void _q_togglePageSetCombo(bool arg1))
-   GUI_CS_SLOT_2(_q_togglePageSetCombo)
+    GUI_CS_SLOT_1( Private, void _q_togglePageSetCombo( bool arg1 ) )
+    GUI_CS_SLOT_2( _q_togglePageSetCombo )
 
-   GUI_CS_SLOT_1(Private, void _q_collapseOrExpandDialog())
-   GUI_CS_SLOT_2(_q_collapseOrExpandDialog)
+    GUI_CS_SLOT_1( Private, void _q_collapseOrExpandDialog() )
+    GUI_CS_SLOT_2( _q_collapseOrExpandDialog )
 
-   GUI_CS_SLOT_1(Private, void _q_checkFields())
-   GUI_CS_SLOT_2(_q_checkFields)
+    GUI_CS_SLOT_1( Private, void _q_checkFields() )
+    GUI_CS_SLOT_2( _q_checkFields )
 
-   friend class QUnixPrintWidget;
+    friend class QUnixPrintWidget;
 #endif
 
 };

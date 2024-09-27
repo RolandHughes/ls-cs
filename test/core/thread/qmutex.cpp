@@ -23,99 +23,101 @@
 
 #include <cs_catch2.h>
 
-TEST_CASE("QMutex traits", "[qmutex]")
+TEST_CASE( "QMutex traits", "[qmutex]" )
 {
-   REQUIRE(std::is_copy_constructible_v<QMutex> == false);
-   REQUIRE(std::is_move_constructible_v<QMutex> == false);
+    REQUIRE( std::is_copy_constructible_v<QMutex> == false );
+    REQUIRE( std::is_move_constructible_v<QMutex> == false );
 
-   REQUIRE(std::is_copy_assignable_v<QMutex> == false);
-   REQUIRE(std::is_move_assignable_v<QMutex> == false);
+    REQUIRE( std::is_copy_assignable_v<QMutex> == false );
+    REQUIRE( std::is_move_assignable_v<QMutex> == false );
 
-   REQUIRE(std::has_virtual_destructor_v<QMutex> == false);
+    REQUIRE( std::has_virtual_destructor_v<QMutex> == false );
 }
 
-TEST_CASE("QRecursiveMutex traits", "[qrecursivemutex]")
+TEST_CASE( "QRecursiveMutex traits", "[qrecursivemutex]" )
 {
-   REQUIRE(std::is_copy_constructible_v<QRecursiveMutex> == false);
-   REQUIRE(std::is_move_constructible_v<QRecursiveMutex> == false);
+    REQUIRE( std::is_copy_constructible_v<QRecursiveMutex> == false );
+    REQUIRE( std::is_move_constructible_v<QRecursiveMutex> == false );
 
-   REQUIRE(std::is_copy_assignable_v<QRecursiveMutex> == false);
-   REQUIRE(std::is_move_assignable_v<QRecursiveMutex> == false);
+    REQUIRE( std::is_copy_assignable_v<QRecursiveMutex> == false );
+    REQUIRE( std::is_move_assignable_v<QRecursiveMutex> == false );
 
-   REQUIRE(std::has_virtual_destructor_v<QRecursiveMutex> == false);
+    REQUIRE( std::has_virtual_destructor_v<QRecursiveMutex> == false );
 }
 
-TEST_CASE("QMutex basic", "[qmutex]")
+TEST_CASE( "QMutex basic", "[qmutex]" )
 {
-   QMutex m;
+    QMutex m;
 
-   REQUIRE(m.tryLock(10) == true);
+    REQUIRE( m.tryLock( 10 ) == true );
 
-   m.unlock();
+    m.unlock();
 }
 
-TEST_CASE("QRecursiveMutex recursive", "[qrecursivemutex]")
+TEST_CASE( "QRecursiveMutex recursive", "[qrecursivemutex]" )
 {
-   // QMutex data(QMutex::Recursive);     retain to test compile assert
-   QRecursiveMutex data;
+    // QMutex data(QMutex::Recursive);     retain to test compile assert
+    QRecursiveMutex data;
 
-   REQUIRE(data.tryLock(10) == true);
-   REQUIRE(data.tryLock(10) == true);
+    REQUIRE( data.tryLock( 10 ) == true );
+    REQUIRE( data.tryLock( 10 ) == true );
 
-   data.unlock();
-   data.unlock();
+    data.unlock();
+    data.unlock();
 
-   data.lock();
+    data.lock();
 
-   REQUIRE(data.tryLock(10) == true);
-   REQUIRE(data.tryLock(10) == true);
+    REQUIRE( data.tryLock( 10 ) == true );
+    REQUIRE( data.tryLock( 10 ) == true );
 
-   data.unlock();
-   data.unlock();
-   data.unlock();
+    data.unlock();
+    data.unlock();
+    data.unlock();
 }
 
-TEST_CASE("QMutex thread_trylock", "[qmutex]")
+TEST_CASE( "QMutex thread_trylock", "[qmutex]" )
 {
-   QMutex data;
-   QAtomicInt count = 0;
+    QMutex data;
+    QAtomicInt count = 0;
 
-   auto lamb = [&data, &count] ()
-      {
-         if (data.tryLock(10) == true) {
+    auto lamb = [&data, &count] ()
+    {
+        if ( data.tryLock( 10 ) == true )
+        {
             ++count;
-         }
+        }
 
-         data.unlock();
-      };
+        data.unlock();
+    };
 
-   std::thread workerA(lamb);
-   workerA.join();
+    std::thread workerA( lamb );
+    workerA.join();
 
-   REQUIRE(count.load() == 1);
+    REQUIRE( count.load() == 1 );
 }
 
-TEST_CASE("QMutex thread_stress", "[qmutex]")
+TEST_CASE( "QMutex thread_stress", "[qmutex]" )
 {
-   QMutex data;
-   int count = 0;
+    QMutex data;
+    int count = 0;
 
-   auto lamb = [&data, &count] ()
-      {
-         for (int i = 0; i < 500; ++i) {
+    auto lamb = [&data, &count] ()
+    {
+        for ( int i = 0; i < 500; ++i )
+        {
 
             data.lock();
             ++count;
 
             data.unlock();
-         }
-      };
+        }
+    };
 
-   std::thread workerA(lamb);
-   std::thread workerB(lamb);
+    std::thread workerA( lamb );
+    std::thread workerB( lamb );
 
-   workerA.join();
-   workerB.join();
+    workerA.join();
+    workerB.join();
 
-   REQUIRE(count == 1000);
+    REQUIRE( count == 1000 );
 }

@@ -26,10 +26,11 @@
 #include "config.h"
 #include "PluginPackage.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 #ifdef never
-void PluginPackage::determineQuirks(const String&)
+void PluginPackage::determineQuirks( const String & )
 {
 }
 #endif
@@ -44,7 +45,7 @@ bool PluginPackage::load()
     return false;
 }
 
-void PluginPackage::setMIMEDescription(const String& mimeDescription)
+void PluginPackage::setMIMEDescription( const String &mimeDescription )
 {
 }
 

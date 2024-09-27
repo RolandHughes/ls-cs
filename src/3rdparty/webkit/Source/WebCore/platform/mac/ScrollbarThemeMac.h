@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef ScrollbarThemeMac_h
@@ -32,18 +32,23 @@
 typedef struct __WKScrollbarPainter *WKScrollbarPainterRef;
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
-class ScrollbarThemeMac : public ScrollbarThemeComposite {
+class ScrollbarThemeMac : public ScrollbarThemeComposite
+{
 public:
     ScrollbarThemeMac();
     virtual ~ScrollbarThemeMac();
 
-    virtual bool paint(Scrollbar*, GraphicsContext* context, const IntRect& damageRect);
+    virtual bool paint( Scrollbar *, GraphicsContext *context, const IntRect &damageRect );
 
-    virtual int scrollbarThickness(ScrollbarControlSize = RegularScrollbar);
-    
-    virtual bool supportsControlTints() const { return true; }
+    virtual int scrollbarThickness( ScrollbarControlSize = RegularScrollbar );
+
+    virtual bool supportsControlTints() const
+    {
+        return true;
+    }
     virtual bool usesOverlayScrollbars() const;
 
     virtual double initialAutoscrollTimerDelay();
@@ -51,29 +56,32 @@ public:
 
     virtual ScrollbarButtonsPlacement buttonsPlacement() const;
 
-    virtual void registerScrollbar(Scrollbar*);
-    virtual void unregisterScrollbar(Scrollbar*);
+    virtual void registerScrollbar( Scrollbar * );
+    virtual void unregisterScrollbar( Scrollbar * );
 
 #if USE(WK_SCROLLBAR_PAINTER)
-    void setNewPainterForScrollbar(Scrollbar*, WKScrollbarPainterRef);
-    WKScrollbarPainterRef painterForScrollbar(Scrollbar*);
+    void setNewPainterForScrollbar( Scrollbar *, WKScrollbarPainterRef );
+    WKScrollbarPainterRef painterForScrollbar( Scrollbar * );
 #endif
 
 protected:
-    virtual bool hasButtons(Scrollbar*);
-    virtual bool hasThumb(Scrollbar*);
+    virtual bool hasButtons( Scrollbar * );
+    virtual bool hasThumb( Scrollbar * );
 
-    virtual IntRect backButtonRect(Scrollbar*, ScrollbarPart, bool painting = false);
-    virtual IntRect forwardButtonRect(Scrollbar*, ScrollbarPart, bool painting = false);
-    virtual IntRect trackRect(Scrollbar*, bool painting = false);
+    virtual IntRect backButtonRect( Scrollbar *, ScrollbarPart, bool painting = false );
+    virtual IntRect forwardButtonRect( Scrollbar *, ScrollbarPart, bool painting = false );
+    virtual IntRect trackRect( Scrollbar *, bool painting = false );
 
-    virtual int maxOverlapBetweenPages() { return 40; }
+    virtual int maxOverlapBetweenPages()
+    {
+        return 40;
+    }
 
-    virtual int minimumThumbLength(Scrollbar*);
-    
-    virtual bool shouldCenterOnThumb(Scrollbar*, const PlatformMouseEvent&);
-    virtual bool shouldDragDocumentInsteadOfThumb(Scrollbar*, const PlatformMouseEvent&);
-    
+    virtual int minimumThumbLength( Scrollbar * );
+
+    virtual bool shouldCenterOnThumb( Scrollbar *, const PlatformMouseEvent & );
+    virtual bool shouldDragDocumentInsteadOfThumb( Scrollbar *, const PlatformMouseEvent & );
+
 public:
     void preferencesChanged();
 };

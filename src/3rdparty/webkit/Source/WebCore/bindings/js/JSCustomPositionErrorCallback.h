@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef JSCustomPositionErrorCallback_h
@@ -30,24 +30,26 @@
 #include "PositionErrorCallback.h"
 #include <wtf/Forward.h>
 
-namespace WebCore {
-    
+namespace WebCore
+{
+
 class PositionError;
 
-class JSCustomPositionErrorCallback : public PositionErrorCallback {
+class JSCustomPositionErrorCallback : public PositionErrorCallback
+{
 public:
-    static PassRefPtr<JSCustomPositionErrorCallback> create(JSC::JSObject* callback, JSDOMGlobalObject* globalObject)
+    static PassRefPtr<JSCustomPositionErrorCallback> create( JSC::JSObject *callback, JSDOMGlobalObject *globalObject )
     {
-        return adoptRef(new JSCustomPositionErrorCallback(callback, globalObject));
+        return adoptRef( new JSCustomPositionErrorCallback( callback, globalObject ) );
     }
-    
+
 private:
-    JSCustomPositionErrorCallback(JSC::JSObject* callback, JSDOMGlobalObject* globalObject);
-    virtual void handleEvent(PositionError*);
-    
+    JSCustomPositionErrorCallback( JSC::JSObject *callback, JSDOMGlobalObject *globalObject );
+    virtual void handleEvent( PositionError * );
+
     JSCallbackData m_data;
 };
-    
+
 } // namespace WebCore
 
 #endif // JSCustomPositionErrorCallback_h

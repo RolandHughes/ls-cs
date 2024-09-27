@@ -53,7 +53,8 @@
 // from qapplication_cs.cpp
 Q_GUI_EXPORT extern bool qt_tab_all_widgets();
 
-namespace WebCore {
+namespace WebCore
+{
 
 #if defined(Q_OS_DARWIN)
 const double EventHandler::TextDragDelay = 0.15;
@@ -61,26 +62,30 @@ const double EventHandler::TextDragDelay = 0.15;
 const double EventHandler::TextDragDelay = 0.0;
 #endif
 
-bool EventHandler::tabsToAllFormControls(KeyboardEvent* event) const
+bool EventHandler::tabsToAllFormControls( KeyboardEvent *event ) const
 {
-    return (isKeyboardOptionTab(event) ? ! qt_tab_all_widgets() : qt_tab_all_widgets() );
+    return ( isKeyboardOptionTab( event ) ? ! qt_tab_all_widgets() : qt_tab_all_widgets() );
 }
 
 void EventHandler::focusDocumentView()
 {
-    Page* page = m_frame->page();
-    if (!page)
+    Page *page = m_frame->page();
+
+    if ( !page )
+    {
         return;
-    page->focusController()->setFocusedFrame(m_frame);
+    }
+
+    page->focusController()->setFocusedFrame( m_frame );
 }
 
-bool EventHandler::passWidgetMouseDownEventToWidget(const MouseEventWithHitTestResults&)
+bool EventHandler::passWidgetMouseDownEventToWidget( const MouseEventWithHitTestResults & )
 {
     notImplemented();
     return false;
 }
 
-bool EventHandler::eventActivatedView(const PlatformMouseEvent&) const
+bool EventHandler::eventActivatedView( const PlatformMouseEvent & ) const
 {
     // Qt has an activation event which is sent independently
     //   of mouse event so this thing will be a snafu to implement
@@ -88,35 +93,38 @@ bool EventHandler::eventActivatedView(const PlatformMouseEvent&) const
     return false;
 }
 
-bool EventHandler::passWheelEventToWidget(PlatformWheelEvent& event, Widget* widget)
+bool EventHandler::passWheelEventToWidget( PlatformWheelEvent &event, Widget *widget )
 {
-    Q_ASSERT(widget);
-    if (!widget->isFrameView())
-        return false;
+    Q_ASSERT( widget );
 
-    return static_cast<FrameView*>(widget)->frame()->eventHandler()->handleWheelEvent(event);
+    if ( !widget->isFrameView() )
+    {
+        return false;
+    }
+
+    return static_cast<FrameView *>( widget )->frame()->eventHandler()->handleWheelEvent( event );
 }
 
 PassRefPtr<Clipboard> EventHandler::createDraggingClipboard() const
 {
-    return ClipboardQt::create(ClipboardWritable, m_frame, Clipboard::DragAndDrop);
+    return ClipboardQt::create( ClipboardWritable, m_frame, Clipboard::DragAndDrop );
 }
 
-bool EventHandler::passMousePressEventToSubframe(MouseEventWithHitTestResults& mev, Frame* subframe)
+bool EventHandler::passMousePressEventToSubframe( MouseEventWithHitTestResults &mev, Frame *subframe )
 {
-    subframe->eventHandler()->handleMousePressEvent(mev.event());
+    subframe->eventHandler()->handleMousePressEvent( mev.event() );
     return true;
 }
 
-bool EventHandler::passMouseMoveEventToSubframe(MouseEventWithHitTestResults& mev, Frame* subframe, HitTestResult* hoveredNode)
+bool EventHandler::passMouseMoveEventToSubframe( MouseEventWithHitTestResults &mev, Frame *subframe, HitTestResult *hoveredNode )
 {
-    subframe->eventHandler()->handleMouseMoveEvent(mev.event(), hoveredNode);
+    subframe->eventHandler()->handleMouseMoveEvent( mev.event(), hoveredNode );
     return true;
 }
 
-bool EventHandler::passMouseReleaseEventToSubframe(MouseEventWithHitTestResults& mev, Frame* subframe)
+bool EventHandler::passMouseReleaseEventToSubframe( MouseEventWithHitTestResults &mev, Frame *subframe )
 {
-    subframe->eventHandler()->handleMouseReleaseEvent(mev.event());
+    subframe->eventHandler()->handleMouseReleaseEvent( mev.event() );
     return true;
 }
 

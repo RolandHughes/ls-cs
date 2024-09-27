@@ -29,35 +29,41 @@
 template <class T>
 class QQueue : public QList<T>
 {
- public:
-   QQueue()  = default;
-   ~QQueue() = default;
+public:
+    QQueue()  = default;
+    ~QQueue() = default;
 
-   // methods
-   T dequeue() {
-      return QList<T>::takeFirst();
-   }
+    // methods
+    T dequeue()
+    {
+        return QList<T>::takeFirst();
+    }
 
-   void enqueue(const T &value) {
-      QList<T>::append(value);
-   }
+    void enqueue( const T &value )
+    {
+        QList<T>::append( value );
+    }
 
-   void enqueue(T &&value) {
-      QList<T>::append(std::move(value));
-   }
+    void enqueue( T &&value )
+    {
+        QList<T>::append( std::move( value ) );
+    }
 
-   T &head() {
-      return QList<T>::first();
-   }
+    T &head()
+    {
+        return QList<T>::first();
+    }
 
-   const T &head() const {
-      return QList<T>::first();
-   }
+    const T &head() const
+    {
+        return QList<T>::first();
+    }
 
-   void swap(QQueue<T> &other) {
-      // prevent QList / QQueue swaps, must be a QQueue / QQueue swap
-      QList<T>::swap(other);
-   }
+    void swap( QQueue<T> &other )
+    {
+        // prevent QList / QQueue swaps, must be a QQueue / QQueue swap
+        QList<T>::swap( other );
+    }
 
 };
 

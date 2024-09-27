@@ -33,10 +33,10 @@ using namespace WebKit;
 
 WKTypeID WKOpenPanelParametersGetTypeID()
 {
-    return toAPI(WebOpenPanelParameters::APIType);
+    return toAPI( WebOpenPanelParameters::APIType );
 }
 
-bool WKOpenPanelParametersGetAllowsMultipleFiles(WKOpenPanelParametersRef parametersRef)
+bool WKOpenPanelParametersGetAllowsMultipleFiles( WKOpenPanelParametersRef parametersRef )
 {
-    return toImpl(parametersRef)->allowMultipleFiles();
+    return toImpl( parametersRef )->allowMultipleFiles();
 }

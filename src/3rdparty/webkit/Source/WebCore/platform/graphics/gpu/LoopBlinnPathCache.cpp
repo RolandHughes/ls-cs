@@ -27,7 +27,8 @@
 
 #include "LoopBlinnPathCache.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 LoopBlinnPathCache::LoopBlinnPathCache()
 {
@@ -37,14 +38,14 @@ LoopBlinnPathCache::~LoopBlinnPathCache()
 {
 }
 
-void LoopBlinnPathCache::addVertex(float x, float y,
-                                   float k, float l, float m)
+void LoopBlinnPathCache::addVertex( float x, float y,
+                                    float k, float l, float m )
 {
-    m_vertices.append(x);
-    m_vertices.append(y);
-    m_texcoords.append(k);
-    m_texcoords.append(l);
-    m_texcoords.append(m);
+    m_vertices.append( x );
+    m_vertices.append( y );
+    m_texcoords.append( k );
+    m_texcoords.append( l );
+    m_texcoords.append( m );
 }
 
 void LoopBlinnPathCache::clear()
@@ -57,10 +58,10 @@ void LoopBlinnPathCache::clear()
 #endif // LOOP_BLINN_PATH_CACHE_DEBUG_INTERIOR_EDGES
 }
 
-void LoopBlinnPathCache::addInteriorVertex(float x, float y)
+void LoopBlinnPathCache::addInteriorVertex( float x, float y )
 {
-    m_interiorVertices.append(x);
-    m_interiorVertices.append(y);
+    m_interiorVertices.append( x );
+    m_interiorVertices.append( y );
 }
 
 #ifdef LOOP_BLINN_PATH_CACHE_DEBUG_INTERIOR_EDGES
@@ -69,17 +70,20 @@ unsigned LoopBlinnPathCache::numberOfInteriorEdgeVertices() const
     return m_interiorEdgeVertices.size() / 2;
 }
 
-const float* LoopBlinnPathCache::interiorEdgeVertices() const
+const float *LoopBlinnPathCache::interiorEdgeVertices() const
 {
-    if (!numberOfInteriorEdgeVertices())
+    if ( !numberOfInteriorEdgeVertices() )
+    {
         return 0;
+    }
+
     return m_interiorEdgeVertices.data();
 }
 
-void LoopBlinnPathCache::addInteriorEdgeVertex(float x, float y)
+void LoopBlinnPathCache::addInteriorEdgeVertex( float x, float y )
 {
-    m_interiorEdgeVertices.append(x);
-    m_interiorEdgeVertices.append(y);
+    m_interiorEdgeVertices.append( x );
+    m_interiorEdgeVertices.append( y );
 }
 #endif // LOOP_BLINN_PATH_CACHE_DEBUG_INTERIOR_EDGES
 

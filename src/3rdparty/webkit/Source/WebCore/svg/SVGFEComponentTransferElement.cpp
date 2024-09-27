@@ -32,77 +32,97 @@
 #include "SVGFilterBuilder.h"
 #include "SVGNames.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Animated property declarations
-DEFINE_ANIMATED_STRING(SVGFEComponentTransferElement, SVGNames::inAttr, In1, in1)
+DEFINE_ANIMATED_STRING( SVGFEComponentTransferElement, SVGNames::inAttr, In1, in1 )
 
-inline SVGFEComponentTransferElement::SVGFEComponentTransferElement(const QualifiedName& tagName, Document* document)
-    : SVGFilterPrimitiveStandardAttributes(tagName, document)
+inline SVGFEComponentTransferElement::SVGFEComponentTransferElement( const QualifiedName &tagName, Document *document )
+    : SVGFilterPrimitiveStandardAttributes( tagName, document )
 {
 }
 
-PassRefPtr<SVGFEComponentTransferElement> SVGFEComponentTransferElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<SVGFEComponentTransferElement> SVGFEComponentTransferElement::create( const QualifiedName &tagName,
+        Document *document )
 {
-    return adoptRef(new SVGFEComponentTransferElement(tagName, document));
+    return adoptRef( new SVGFEComponentTransferElement( tagName, document ) );
 }
 
-void SVGFEComponentTransferElement::parseMappedAttribute(Attribute* attr)
+void SVGFEComponentTransferElement::parseMappedAttribute( Attribute *attr )
 {
-    const String& value = attr->value();
-    if (attr->name() == SVGNames::inAttr)
-        setIn1BaseValue(value);
+    const String &value = attr->value();
+
+    if ( attr->name() == SVGNames::inAttr )
+    {
+        setIn1BaseValue( value );
+    }
     else
-        SVGFilterPrimitiveStandardAttributes::parseMappedAttribute(attr);
+    {
+        SVGFilterPrimitiveStandardAttributes::parseMappedAttribute( attr );
+    }
 }
 
-void SVGFEComponentTransferElement::synchronizeProperty(const QualifiedName& attrName)
+void SVGFEComponentTransferElement::synchronizeProperty( const QualifiedName &attrName )
 {
-    SVGFilterPrimitiveStandardAttributes::synchronizeProperty(attrName);
+    SVGFilterPrimitiveStandardAttributes::synchronizeProperty( attrName );
 
-    if (attrName == anyQName() || attrName == SVGNames::inAttr)
+    if ( attrName == anyQName() || attrName == SVGNames::inAttr )
+    {
         synchronizeIn1();
+    }
 }
 
-AttributeToPropertyTypeMap& SVGFEComponentTransferElement::attributeToPropertyTypeMap()
+AttributeToPropertyTypeMap &SVGFEComponentTransferElement::attributeToPropertyTypeMap()
 {
-    DEFINE_STATIC_LOCAL(AttributeToPropertyTypeMap, s_attributeToPropertyTypeMap, ());
+    DEFINE_STATIC_LOCAL( AttributeToPropertyTypeMap, s_attributeToPropertyTypeMap, () );
     return s_attributeToPropertyTypeMap;
 }
 
 void SVGFEComponentTransferElement::fillAttributeToPropertyTypeMap()
 {
-    AttributeToPropertyTypeMap& attributeToPropertyTypeMap = this->attributeToPropertyTypeMap();
+    AttributeToPropertyTypeMap &attributeToPropertyTypeMap = this->attributeToPropertyTypeMap();
 
-    SVGFilterPrimitiveStandardAttributes::fillPassedAttributeToPropertyTypeMap(attributeToPropertyTypeMap);
-    attributeToPropertyTypeMap.set(SVGNames::inAttr, AnimatedString);
+    SVGFilterPrimitiveStandardAttributes::fillPassedAttributeToPropertyTypeMap( attributeToPropertyTypeMap );
+    attributeToPropertyTypeMap.set( SVGNames::inAttr, AnimatedString );
 }
 
-PassRefPtr<FilterEffect> SVGFEComponentTransferElement::build(SVGFilterBuilder* filterBuilder, Filter* filter)
+PassRefPtr<FilterEffect> SVGFEComponentTransferElement::build( SVGFilterBuilder *filterBuilder, Filter *filter )
 {
-    FilterEffect* input1 = filterBuilder->getEffectById(in1());
-    
-    if (!input1)
+    FilterEffect *input1 = filterBuilder->getEffectById( in1() );
+
+    if ( !input1 )
+    {
         return 0;
+    }
 
     ComponentTransferFunction red;
     ComponentTransferFunction green;
     ComponentTransferFunction blue;
     ComponentTransferFunction alpha;
-    
-    for (Node* node = firstChild(); node; node = node->nextSibling()) {
-        if (node->hasTagName(SVGNames::feFuncRTag))
-            red = static_cast<SVGFEFuncRElement*>(node)->transferFunction();
-        else if (node->hasTagName(SVGNames::feFuncGTag))
-            green = static_cast<SVGFEFuncGElement*>(node)->transferFunction();
-        else if (node->hasTagName(SVGNames::feFuncBTag))
-           blue = static_cast<SVGFEFuncBElement*>(node)->transferFunction();
-        else if (node->hasTagName(SVGNames::feFuncATag))
-            alpha = static_cast<SVGFEFuncAElement*>(node)->transferFunction();
+
+    for ( Node *node = firstChild(); node; node = node->nextSibling() )
+    {
+        if ( node->hasTagName( SVGNames::feFuncRTag ) )
+        {
+            red = static_cast<SVGFEFuncRElement *>( node )->transferFunction();
+        }
+        else if ( node->hasTagName( SVGNames::feFuncGTag ) )
+        {
+            green = static_cast<SVGFEFuncGElement *>( node )->transferFunction();
+        }
+        else if ( node->hasTagName( SVGNames::feFuncBTag ) )
+        {
+            blue = static_cast<SVGFEFuncBElement *>( node )->transferFunction();
+        }
+        else if ( node->hasTagName( SVGNames::feFuncATag ) )
+        {
+            alpha = static_cast<SVGFEFuncAElement *>( node )->transferFunction();
+        }
     }
-    
-    RefPtr<FilterEffect> effect = FEComponentTransfer::create(filter, red, green, blue, alpha);
-    effect->inputEffects().append(input1);
+
+    RefPtr<FilterEffect> effect = FEComponentTransfer::create( filter, red, green, blue, alpha );
+    effect->inputEffects().append( input1 );
     return effect.release();
 }
 

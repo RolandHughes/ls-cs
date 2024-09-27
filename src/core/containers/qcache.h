@@ -29,252 +29,281 @@
 template <class Key, class T>
 class QCache
 {
-   struct Node {
-      Node()
-         : keyPtr(0)
-      {
-      }
+    struct Node
+    {
+        Node()
+            : keyPtr( 0 )
+        {
+        }
 
-      Node(T *data, int cost)
-         : keyPtr(nullptr), t(data), c(cost), p(nullptr), n(nullptr)
-      {
-      }
+        Node( T *data, int cost )
+            : keyPtr( nullptr ), t( data ), c( cost ), p( nullptr ), n( nullptr )
+        {
+        }
 
-      const Key *keyPtr;
-      T *t;
-      int c;
-      Node *p;
-      Node *n;
-   };
+        const Key *keyPtr;
+        T *t;
+        int c;
+        Node *p;
+        Node *n;
+    };
 
-   QHash<Key, Node> hash;
+    QHash<Key, Node> hash;
 
-   Node *f;
-   Node *l;
+    Node *f;
+    Node *l;
 
-   int mx;
-   int total;
+    int mx;
+    int total;
 
-   void unlink(Node &n) {
-      if (n.p) {
-         n.p->n = n.n;
-      }
-
-      if (n.n) {
-         n.n->p = n.p;
-      }
-
-      if (l == &n) {
-         l = n.p;
-      }
-
-      if (f == &n) {
-         f = n.n;
-      }
-
-      total -= n.c;
-      T *obj = n.t;
-
-      hash.remove(*n.keyPtr);
-      delete obj;
-   }
-
-   T *relink(const Key &key) {
-      typename QHash<Key, Node>::iterator i = hash.find(key);
-
-      if (typename QHash<Key, Node>::const_iterator(i) == hash.constEnd()) {
-         return nullptr;
-      }
-
-      Node &n = *i;
-
-      if (f != &n) {
-         if (n.p) {
+    void unlink( Node &n )
+    {
+        if ( n.p )
+        {
             n.p->n = n.n;
-         }
+        }
 
-         if (n.n) {
+        if ( n.n )
+        {
             n.n->p = n.p;
-         }
+        }
 
-         if (l == &n) {
+        if ( l == &n )
+        {
             l = n.p;
-         }
+        }
 
-         n.p = nullptr;
-         n.n = f;
-         f->p = &n;
-         f = &n;
-      }
+        if ( f == &n )
+        {
+            f = n.n;
+        }
 
-      return n.t;
-   }
+        total -= n.c;
+        T *obj = n.t;
 
- public:
-   inline explicit QCache(int maxCost = 100);
+        hash.remove( *n.keyPtr );
+        delete obj;
+    }
 
-   QCache(const QCache &) = delete;
-   QCache &operator=(const QCache &) = delete;
+    T *relink( const Key &key )
+    {
+        typename QHash<Key, Node>::iterator i = hash.find( key );
 
-   ~QCache() {
-      clear();
-   }
+        if ( typename QHash<Key, Node>::const_iterator( i ) == hash.constEnd() )
+        {
+            return nullptr;
+        }
 
-   int maxCost() const {
-      return mx;
-   }
+        Node &n = *i;
 
-   void setMaxCost(int cost);
-   int totalCost() const {
-      return total;
-   }
+        if ( f != &n )
+        {
+            if ( n.p )
+            {
+                n.p->n = n.n;
+            }
 
-   int size() const {
-      return hash.size();
-   }
+            if ( n.n )
+            {
+                n.n->p = n.p;
+            }
 
-   int count() const {
-      return hash.size();
-   }
+            if ( l == &n )
+            {
+                l = n.p;
+            }
 
-   bool isEmpty() const {
-      return hash.isEmpty();
-   }
+            n.p = nullptr;
+            n.n = f;
+            f->p = &n;
+            f = &n;
+        }
 
-   QList<Key> keys() const {
-      return hash.keys();
-   }
+        return n.t;
+    }
 
-   void clear();
+public:
+    inline explicit QCache( int maxCost = 100 );
 
-   bool insert(const Key &key, T *object, int cost = 1);
-   T *object(const Key &key) const;
+    QCache( const QCache & ) = delete;
+    QCache &operator=( const QCache & ) = delete;
 
-   bool contains(const Key &key) const {
-      return hash.contains(key);
-   }
+    ~QCache()
+    {
+        clear();
+    }
 
-   T *operator[](const Key &key) const;
+    int maxCost() const
+    {
+        return mx;
+    }
 
-   bool remove(const Key &key);
-   T *take(const Key &key);
+    void setMaxCost( int cost );
+    int totalCost() const
+    {
+        return total;
+    }
 
- private:
-   void trim(int m);
+    int size() const
+    {
+        return hash.size();
+    }
+
+    int count() const
+    {
+        return hash.size();
+    }
+
+    bool isEmpty() const
+    {
+        return hash.isEmpty();
+    }
+
+    QList<Key> keys() const
+    {
+        return hash.keys();
+    }
+
+    void clear();
+
+    bool insert( const Key &key, T *object, int cost = 1 );
+    T *object( const Key &key ) const;
+
+    bool contains( const Key &key ) const
+    {
+        return hash.contains( key );
+    }
+
+    T *operator[]( const Key &key ) const;
+
+    bool remove( const Key &key );
+    T *take( const Key &key );
+
+private:
+    void trim( int m );
 
 };
 
 template <class Key, class T>
-inline QCache<Key, T>::QCache(int maxCost)
-   : f(nullptr), l(nullptr), mx(maxCost), total(0)
+inline QCache<Key, T>::QCache( int maxCost )
+    : f( nullptr ), l( nullptr ), mx( maxCost ), total( 0 )
 {
 }
 
 template <class Key, class T>
 inline void QCache<Key, T>::clear()
 {
-   while (f) {
-      delete f->t;
-      f = f->n;
-   }
+    while ( f )
+    {
+        delete f->t;
+        f = f->n;
+    }
 
-   hash.clear();
-   l     = nullptr;
-   total = 0;
+    hash.clear();
+    l     = nullptr;
+    total = 0;
 }
 
 template <class Key, class T>
-inline void QCache<Key, T>::setMaxCost(int cost)
+inline void QCache<Key, T>::setMaxCost( int cost )
 {
-   mx = cost;
-   trim(mx);
+    mx = cost;
+    trim( mx );
 }
 
 template <class Key, class T>
-inline T *QCache<Key, T>::object(const Key &key) const
+inline T *QCache<Key, T>::object( const Key &key ) const
 {
-   return const_cast<QCache<Key, T>*>(this)->relink(key);
+    return const_cast<QCache<Key, T>*>( this )->relink( key );
 }
 
 template <class Key, class T>
-inline T *QCache<Key, T>::operator[](const Key &key) const
+inline T *QCache<Key, T>::operator[]( const Key &key ) const
 {
-   return object(key);
+    return object( key );
 }
 
 template <class Key, class T>
-inline bool QCache<Key, T>::remove(const Key &key)
+inline bool QCache<Key, T>::remove( const Key &key )
 {
-   typename QHash<Key, Node>::iterator i = hash.find(key);
+    typename QHash<Key, Node>::iterator i = hash.find( key );
 
-   if (typename QHash<Key, Node>::const_iterator(i) == hash.constEnd()) {
-      return false;
-   } else {
-      unlink(*i);
-      return true;
-   }
+    if ( typename QHash<Key, Node>::const_iterator( i ) == hash.constEnd() )
+    {
+        return false;
+    }
+    else
+    {
+        unlink( *i );
+        return true;
+    }
 }
 
 template <class Key, class T>
-inline T *QCache<Key, T>::take(const Key &key)
+inline T *QCache<Key, T>::take( const Key &key )
 {
-   typename QHash<Key, Node>::iterator i = hash.find(key);
+    typename QHash<Key, Node>::iterator i = hash.find( key );
 
-   if (i == hash.end()) {
-      return nullptr;
-   }
+    if ( i == hash.end() )
+    {
+        return nullptr;
+    }
 
-   Node &n = *i;
-   T *t = n.t;
-   n.t = nullptr;
-   unlink(n);
+    Node &n = *i;
+    T *t = n.t;
+    n.t = nullptr;
+    unlink( n );
 
-   return t;
+    return t;
 }
 
 template <class Key, class T>
-bool QCache<Key, T>::insert(const Key &key, T *object, int cost)
+bool QCache<Key, T>::insert( const Key &key, T *object, int cost )
 {
-   remove(key);
+    remove( key );
 
-   if (cost > mx) {
-      delete object;
-      return false;
-   }
+    if ( cost > mx )
+    {
+        delete object;
+        return false;
+    }
 
-   trim(mx - cost);
-   Node sn(object, cost);
+    trim( mx - cost );
+    Node sn( object, cost );
 
-   typename QHash<Key, Node>::iterator i = hash.insert(key, sn);
+    typename QHash<Key, Node>::iterator i = hash.insert( key, sn );
 
-   total    += cost;
-   Node *n   = &i.value();
-   n->keyPtr = &i.key();
+    total    += cost;
+    Node *n   = &i.value();
+    n->keyPtr = &i.key();
 
-   if (f) {
-      f->p = n;
-   }
+    if ( f )
+    {
+        f->p = n;
+    }
 
-   n->n = f;
-   f = n;
+    n->n = f;
+    f = n;
 
-   if (!l) {
-      l = f;
-   }
+    if ( !l )
+    {
+        l = f;
+    }
 
-   return true;
+    return true;
 }
 
 template <class Key, class T>
-void QCache<Key, T>::trim(int m)
+void QCache<Key, T>::trim( int m )
 {
-   Node *n = l;
+    Node *n = l;
 
-   while (n && total > m) {
-      Node *u = n;
-      n = n->p;
-      unlink(*u);
-   }
+    while ( n && total > m )
+    {
+        Node *u = n;
+        n = n->p;
+        unlink( *u );
+    }
 }
 
 #endif

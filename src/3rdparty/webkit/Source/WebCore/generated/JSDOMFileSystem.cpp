@@ -33,9 +33,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSDOMFileSystem);
+ASSERT_CLASS_FITS_IN_CELL( JSDOMFileSystem );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -46,10 +47,10 @@ ASSERT_CLASS_FITS_IN_CELL(JSDOMFileSystem);
 
 static const HashTableValue JSDOMFileSystemTableValues[4] =
 {
-    { "name", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMFileSystemName), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "root", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMFileSystemRoot), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMFileSystemConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "name", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMFileSystemName ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "root", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMFileSystemRoot ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMFileSystemConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -63,43 +64,50 @@ static JSC_CONST_HASHTABLE HashTable JSDOMFileSystemTable = { 9, 7, JSDOMFileSys
 
 static const HashTableValue JSDOMFileSystemConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSDOMFileSystemConstructorTable = { 1, 0, JSDOMFileSystemConstructorTableValues, 0 };
-class JSDOMFileSystemConstructor : public DOMConstructorObject {
+class JSDOMFileSystemConstructor : public DOMConstructorObject
+{
 public:
-    JSDOMFileSystemConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSDOMFileSystemConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSDOMFileSystemConstructor::s_info = { "DOMFileSystemConstructor", &DOMConstructorObject::s_info, &JSDOMFileSystemConstructorTable, 0 };
 
-JSDOMFileSystemConstructor::JSDOMFileSystemConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSDOMFileSystemConstructor::JSDOMFileSystemConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSDOMFileSystemPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSDOMFileSystemPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSDOMFileSystemConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSDOMFileSystemConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSDOMFileSystemConstructor, JSDOMWrapper>(exec, &JSDOMFileSystemConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSDOMFileSystemConstructor, JSDOMWrapper>( exec, &JSDOMFileSystemConstructorTable, this, propertyName,
+            slot );
 }
 
-bool JSDOMFileSystemConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSDOMFileSystemConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSDOMFileSystemConstructor, JSDOMWrapper>(exec, &JSDOMFileSystemConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSDOMFileSystemConstructor, JSDOMWrapper>( exec, &JSDOMFileSystemConstructorTable, this,
+            propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -111,116 +119,127 @@ bool JSDOMFileSystemConstructor::getOwnPropertyDescriptor(ExecState* exec, const
 
 static const HashTableValue JSDOMFileSystemPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSDOMFileSystemPrototypeTable = { 1, 0, JSDOMFileSystemPrototypeTableValues, 0 };
-static const HashTable* getJSDOMFileSystemPrototypeTable(ExecState* exec)
+static const HashTable *getJSDOMFileSystemPrototypeTable( ExecState *exec )
 {
-    return getHashTableForGlobalData(exec->globalData(), &JSDOMFileSystemPrototypeTable);
+    return getHashTableForGlobalData( exec->globalData(), &JSDOMFileSystemPrototypeTable );
 }
 
 const ClassInfo JSDOMFileSystemPrototype::s_info = { "DOMFileSystemPrototype", &JSC::JSObjectWithGlobalObject::s_info, 0, getJSDOMFileSystemPrototypeTable };
 
-JSObject* JSDOMFileSystemPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSDOMFileSystemPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSDOMFileSystem>(exec, globalObject);
+    return getDOMPrototype<JSDOMFileSystem>( exec, globalObject );
 }
 
-static const HashTable* getJSDOMFileSystemTable(ExecState* exec)
+static const HashTable *getJSDOMFileSystemTable( ExecState *exec )
 {
-    return getHashTableForGlobalData(exec->globalData(), &JSDOMFileSystemTable);
+    return getHashTableForGlobalData( exec->globalData(), &JSDOMFileSystemTable );
 }
 
 const ClassInfo JSDOMFileSystem::s_info = { "DOMFileSystem", &JSDOMWrapper::s_info, 0, getJSDOMFileSystemTable };
 
-JSDOMFileSystem::JSDOMFileSystem(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<DOMFileSystem> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSDOMFileSystem::JSDOMFileSystem( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<DOMFileSystem> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSDOMFileSystem::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSDOMFileSystem::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSDOMFileSystemPrototype(exec->globalData(), globalObject, JSDOMFileSystemPrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSDOMFileSystemPrototype( exec->globalData(), globalObject,
+            JSDOMFileSystemPrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSDOMFileSystem::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSDOMFileSystem::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSDOMFileSystem, Base>(exec, getJSDOMFileSystemTable(exec), this, propertyName, slot);
+    return getStaticValueSlot<JSDOMFileSystem, Base>( exec, getJSDOMFileSystemTable( exec ), this, propertyName, slot );
 }
 
-bool JSDOMFileSystem::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSDOMFileSystem::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSDOMFileSystem, Base>(exec, getJSDOMFileSystemTable(exec), this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSDOMFileSystem, Base>( exec, getJSDOMFileSystemTable( exec ), this, propertyName, descriptor );
 }
 
-JSValue jsDOMFileSystemName(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMFileSystemName( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMFileSystem* castedThis = static_cast<JSDOMFileSystem*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    DOMFileSystem* imp = static_cast<DOMFileSystem*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->name());
+    JSDOMFileSystem *castedThis = static_cast<JSDOMFileSystem *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    DOMFileSystem *imp = static_cast<DOMFileSystem *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->name() );
     return result;
 }
 
 
-JSValue jsDOMFileSystemRoot(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMFileSystemRoot( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMFileSystem* castedThis = static_cast<JSDOMFileSystem*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    DOMFileSystem* imp = static_cast<DOMFileSystem*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->root()));
+    JSDOMFileSystem *castedThis = static_cast<JSDOMFileSystem *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    DOMFileSystem *imp = static_cast<DOMFileSystem *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->root() ) );
     return result;
 }
 
 
-JSValue jsDOMFileSystemConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMFileSystemConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMFileSystem* domObject = static_cast<JSDOMFileSystem*>(asObject(slotBase));
-    return JSDOMFileSystem::getConstructor(exec, domObject->globalObject());
+    JSDOMFileSystem *domObject = static_cast<JSDOMFileSystem *>( asObject( slotBase ) );
+    return JSDOMFileSystem::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSDOMFileSystem::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSDOMFileSystem::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSDOMFileSystemConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSDOMFileSystemConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-static inline bool isObservable(JSDOMFileSystem* jsDOMFileSystem)
+static inline bool isObservable( JSDOMFileSystem *jsDOMFileSystem )
 {
-    if (jsDOMFileSystem->hasCustomProperties())
+    if ( jsDOMFileSystem->hasCustomProperties() )
+    {
         return true;
+    }
+
     return false;
 }
 
-bool JSDOMFileSystemOwner::isReachableFromOpaqueRoots(JSC::Handle<JSC::Unknown> handle, void*, SlotVisitor& visitor)
+bool JSDOMFileSystemOwner::isReachableFromOpaqueRoots( JSC::Handle<JSC::Unknown> handle, void *, SlotVisitor &visitor )
 {
-    JSDOMFileSystem* jsDOMFileSystem = static_cast<JSDOMFileSystem*>(handle.get().asCell());
-    if (jsDOMFileSystem->impl()->hasPendingActivity())
+    JSDOMFileSystem *jsDOMFileSystem = static_cast<JSDOMFileSystem *>( handle.get().asCell() );
+
+    if ( jsDOMFileSystem->impl()->hasPendingActivity() )
+    {
         return true;
-    if (!isObservable(jsDOMFileSystem))
+    }
+
+    if ( !isObservable( jsDOMFileSystem ) )
+    {
         return false;
-    UNUSED_PARAM(visitor);
+    }
+
+    UNUSED_PARAM( visitor );
     return false;
 }
 
-void JSDOMFileSystemOwner::finalize(JSC::Handle<JSC::Unknown> handle, void* context)
+void JSDOMFileSystemOwner::finalize( JSC::Handle<JSC::Unknown> handle, void *context )
 {
-    JSDOMFileSystem* jsDOMFileSystem = static_cast<JSDOMFileSystem*>(handle.get().asCell());
-    DOMWrapperWorld* world = static_cast<DOMWrapperWorld*>(context);
-    uncacheWrapper(world, jsDOMFileSystem->impl(), jsDOMFileSystem);
+    JSDOMFileSystem *jsDOMFileSystem = static_cast<JSDOMFileSystem *>( handle.get().asCell() );
+    DOMWrapperWorld *world = static_cast<DOMWrapperWorld *>( context );
+    uncacheWrapper( world, jsDOMFileSystem->impl(), jsDOMFileSystem );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, DOMFileSystem* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, DOMFileSystem *impl )
 {
-    return wrap<JSDOMFileSystem>(exec, globalObject, impl);
+    return wrap<JSDOMFileSystem>( exec, globalObject, impl );
 }
 
-DOMFileSystem* toDOMFileSystem(JSC::JSValue value)
+DOMFileSystem *toDOMFileSystem( JSC::JSValue value )
 {
-    return value.inherits(&JSDOMFileSystem::s_info) ? static_cast<JSDOMFileSystem*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSDOMFileSystem::s_info ) ? static_cast<JSDOMFileSystem *>( asObject( value ) )->impl() : 0;
 }
 
 }

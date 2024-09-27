@@ -49,269 +49,279 @@
 
 using namespace QPatternist;
 
-Item ToUntypedAtomicCaster::castFrom(const Item &from,
-                                     const QExplicitlySharedDataPointer<DynamicContext> &) const
+Item ToUntypedAtomicCaster::castFrom( const Item &from,
+                                      const QExplicitlySharedDataPointer<DynamicContext> & ) const
 {
-   return UntypedAtomic::fromValue(from.stringValue());
+    return UntypedAtomic::fromValue( from.stringValue() );
 }
 
-Item ToAnyURICaster::castFrom(const Item &from,
-                              const QExplicitlySharedDataPointer<DynamicContext> &) const
+Item ToAnyURICaster::castFrom( const Item &from,
+                               const QExplicitlySharedDataPointer<DynamicContext> & ) const
 {
-   return toItem(AnyURI::fromLexical(from.stringValue()));
+    return toItem( AnyURI::fromLexical( from.stringValue() ) );
 }
 
-Item Base64BinaryToHexBinaryCaster::castFrom(const Item &from,
-      const QExplicitlySharedDataPointer<DynamicContext> &) const
+Item Base64BinaryToHexBinaryCaster::castFrom( const Item &from,
+        const QExplicitlySharedDataPointer<DynamicContext> & ) const
 {
-   return HexBinary::fromValue(from.as<Base64Binary>()->asByteArray());
+    return HexBinary::fromValue( from.as<Base64Binary>()->asByteArray() );
 }
 
-Item StringToHexBinaryCaster::castFrom(const Item &from,
-                                       const QExplicitlySharedDataPointer<DynamicContext> &context) const
+Item StringToHexBinaryCaster::castFrom( const Item &from,
+                                        const QExplicitlySharedDataPointer<DynamicContext> &context ) const
 {
-   return HexBinary::fromLexical(context->namePool(), from.stringValue());
+    return HexBinary::fromLexical( context->namePool(), from.stringValue() );
 }
 
-Item HexBinaryToBase64BinaryCaster::castFrom(const Item &from,
-      const QExplicitlySharedDataPointer<DynamicContext> &) const
+Item HexBinaryToBase64BinaryCaster::castFrom( const Item &from,
+        const QExplicitlySharedDataPointer<DynamicContext> & ) const
 {
-   return Base64Binary::fromValue(from.as<Base64Binary>()->asByteArray());
+    return Base64Binary::fromValue( from.as<Base64Binary>()->asByteArray() );
 }
 
-Item StringToBase64BinaryCaster::castFrom(const Item &from,
-      const QExplicitlySharedDataPointer<DynamicContext> &) const
+Item StringToBase64BinaryCaster::castFrom( const Item &from,
+        const QExplicitlySharedDataPointer<DynamicContext> & ) const
 {
-   return Base64Binary::fromLexical(from.stringValue());
+    return Base64Binary::fromLexical( from.stringValue() );
 }
 
-Item NumericToBooleanCaster::castFrom(const Item &from,
-                                      const QExplicitlySharedDataPointer<DynamicContext> &) const
+Item NumericToBooleanCaster::castFrom( const Item &from,
+                                       const QExplicitlySharedDataPointer<DynamicContext> & ) const
 {
-   const xsDouble val = from.as<Numeric>()->toDouble();
-   if (Double::isEqual(val, 0.0) || qIsNaN(val)) {
-      return CommonValues::BooleanFalse;
-   } else {
-      return CommonValues::BooleanTrue;
-   }
+    const xsDouble val = from.as<Numeric>()->toDouble();
+
+    if ( Double::isEqual( val, 0.0 ) || qIsNaN( val ) )
+    {
+        return CommonValues::BooleanFalse;
+    }
+    else
+    {
+        return CommonValues::BooleanTrue;
+    }
 }
 
-Item StringToBooleanCaster::castFrom(const Item &from,
-                                     const QExplicitlySharedDataPointer<DynamicContext> &) const
+Item StringToBooleanCaster::castFrom( const Item &from,
+                                      const QExplicitlySharedDataPointer<DynamicContext> & ) const
 {
-   return Boolean::fromLexical(from.stringValue());
+    return Boolean::fromLexical( from.stringValue() );
 }
 
-Item StringToDecimalCaster::castFrom(const Item &from,
-                                     const QExplicitlySharedDataPointer<DynamicContext> &) const
+Item StringToDecimalCaster::castFrom( const Item &from,
+                                      const QExplicitlySharedDataPointer<DynamicContext> & ) const
 {
-   return Decimal::fromLexical(from.stringValue());
+    return Decimal::fromLexical( from.stringValue() );
 }
 
-Item StringToIntegerCaster::castFrom(const Item &from,
-                                     const QExplicitlySharedDataPointer<DynamicContext> &) const
+Item StringToIntegerCaster::castFrom( const Item &from,
+                                      const QExplicitlySharedDataPointer<DynamicContext> & ) const
 {
-   return Integer::fromLexical(from.stringValue());
+    return Integer::fromLexical( from.stringValue() );
 }
 
-Item BooleanToDecimalCaster::castFrom(const Item &from,
-                                      const QExplicitlySharedDataPointer<DynamicContext> &context) const
+Item BooleanToDecimalCaster::castFrom( const Item &from,
+                                       const QExplicitlySharedDataPointer<DynamicContext> &context ) const
 {
-   if (from.as<AtomicValue>()->evaluateEBV(context)) {
-      return CommonValues::DecimalOne;
-   } else {
-      return CommonValues::DecimalZero;
-   }
+    if ( from.as<AtomicValue>()->evaluateEBV( context ) )
+    {
+        return CommonValues::DecimalOne;
+    }
+    else
+    {
+        return CommonValues::DecimalZero;
+    }
 }
 
-Item BooleanToIntegerCaster::castFrom(const Item &from,
-                                      const QExplicitlySharedDataPointer<DynamicContext> &context) const
+Item BooleanToIntegerCaster::castFrom( const Item &from,
+                                       const QExplicitlySharedDataPointer<DynamicContext> &context ) const
 {
-   if (from.as<AtomicValue>()->evaluateEBV(context)) {
-      return CommonValues::IntegerOne;
-   } else {
-      return CommonValues::IntegerZero;
-   }
+    if ( from.as<AtomicValue>()->evaluateEBV( context ) )
+    {
+        return CommonValues::IntegerOne;
+    }
+    else
+    {
+        return CommonValues::IntegerZero;
+    }
 }
 
-Item SelfToSelfCaster::castFrom(const Item &from,
-                                const QExplicitlySharedDataPointer<DynamicContext> &) const
+Item SelfToSelfCaster::castFrom( const Item &from,
+                                 const QExplicitlySharedDataPointer<DynamicContext> & ) const
 {
-   return from;
+    return from;
 }
 
-Item StringToGYearCaster::castFrom(const Item &from,
-                                   const QExplicitlySharedDataPointer<DynamicContext> &) const
+Item StringToGYearCaster::castFrom( const Item &from,
+                                    const QExplicitlySharedDataPointer<DynamicContext> & ) const
 {
-   return GYear::fromLexical(from.stringValue());
+    return GYear::fromLexical( from.stringValue() );
 }
 
-Item StringToGDayCaster::castFrom(const Item &from,
-                                  const QExplicitlySharedDataPointer<DynamicContext> &) const
+Item StringToGDayCaster::castFrom( const Item &from,
+                                   const QExplicitlySharedDataPointer<DynamicContext> & ) const
 {
-   return GDay::fromLexical(from.stringValue());
+    return GDay::fromLexical( from.stringValue() );
 }
 
-Item StringToGMonthCaster::castFrom(const Item &from,
-                                    const QExplicitlySharedDataPointer<DynamicContext> &) const
+Item StringToGMonthCaster::castFrom( const Item &from,
+                                     const QExplicitlySharedDataPointer<DynamicContext> & ) const
 {
-   return GMonth::fromLexical(from.stringValue());
+    return GMonth::fromLexical( from.stringValue() );
 }
 
-Item StringToGYearMonthCaster::castFrom(const Item &from,
-                                        const QExplicitlySharedDataPointer<DynamicContext> &) const
+Item StringToGYearMonthCaster::castFrom( const Item &from,
+        const QExplicitlySharedDataPointer<DynamicContext> & ) const
 {
-   return GYearMonth::fromLexical(from.stringValue());
+    return GYearMonth::fromLexical( from.stringValue() );
 }
 
-Item StringToGMonthDayCaster::castFrom(const Item &from,
-                                       const QExplicitlySharedDataPointer<DynamicContext> &) const
+Item StringToGMonthDayCaster::castFrom( const Item &from,
+                                        const QExplicitlySharedDataPointer<DynamicContext> & ) const
 {
-   return GMonthDay::fromLexical(from.stringValue());
+    return GMonthDay::fromLexical( from.stringValue() );
 }
 
-Item StringToDateTimeCaster::castFrom(const Item &from,
-                                      const QExplicitlySharedDataPointer<DynamicContext> &) const
+Item StringToDateTimeCaster::castFrom( const Item &from,
+                                       const QExplicitlySharedDataPointer<DynamicContext> & ) const
 {
-   return DateTime::fromLexical(from.stringValue());
+    return DateTime::fromLexical( from.stringValue() );
 }
 
-Item StringToTimeCaster::castFrom(const Item &from,
-                                  const QExplicitlySharedDataPointer<DynamicContext> &) const
+Item StringToTimeCaster::castFrom( const Item &from,
+                                   const QExplicitlySharedDataPointer<DynamicContext> & ) const
 {
-   return SchemaTime::fromLexical(from.stringValue());
+    return SchemaTime::fromLexical( from.stringValue() );
 }
 
-Item StringToDateCaster::castFrom(const Item &from,
-                                  const QExplicitlySharedDataPointer<DynamicContext> &) const
+Item StringToDateCaster::castFrom( const Item &from,
+                                   const QExplicitlySharedDataPointer<DynamicContext> & ) const
 {
-   return Date::fromLexical(from.stringValue());
+    return Date::fromLexical( from.stringValue() );
 }
 
-Item StringToDurationCaster::castFrom(const Item &from,
-                                      const QExplicitlySharedDataPointer<DynamicContext> &) const
+Item StringToDurationCaster::castFrom( const Item &from,
+                                       const QExplicitlySharedDataPointer<DynamicContext> & ) const
 {
-   return Duration::fromLexical(from.stringValue());
+    return Duration::fromLexical( from.stringValue() );
 }
 
-Item StringToDayTimeDurationCaster::castFrom(const Item &from,
-      const QExplicitlySharedDataPointer<DynamicContext> &) const
+Item StringToDayTimeDurationCaster::castFrom( const Item &from,
+        const QExplicitlySharedDataPointer<DynamicContext> & ) const
 {
-   return toItem(DayTimeDuration::fromLexical(from.stringValue()));
+    return toItem( DayTimeDuration::fromLexical( from.stringValue() ) );
 }
 
-Item AbstractDurationToDayTimeDurationCaster::castFrom(const Item &from,
-      const QExplicitlySharedDataPointer<DynamicContext> &) const
+Item AbstractDurationToDayTimeDurationCaster::castFrom( const Item &from,
+        const QExplicitlySharedDataPointer<DynamicContext> & ) const
 {
-   const AbstractDuration *const val = from.as<AbstractDuration>();
+    const AbstractDuration *const val = from.as<AbstractDuration>();
 
-   return toItem(DayTimeDuration::fromComponents(val->isPositive(),
-                 val->days(),
-                 val->hours(),
-                 val->minutes(),
-                 val->seconds(),
-                 val->mseconds()));
+    return toItem( DayTimeDuration::fromComponents( val->isPositive(),
+                   val->days(),
+                   val->hours(),
+                   val->minutes(),
+                   val->seconds(),
+                   val->mseconds() ) );
 }
 
-Item AbstractDurationToYearMonthDurationCaster::castFrom(const Item &from,
-      const QExplicitlySharedDataPointer<DynamicContext> &) const
+Item AbstractDurationToYearMonthDurationCaster::castFrom( const Item &from,
+        const QExplicitlySharedDataPointer<DynamicContext> & ) const
 {
-   const AbstractDuration *const val = from.as<AbstractDuration>();
+    const AbstractDuration *const val = from.as<AbstractDuration>();
 
-   return toItem(YearMonthDuration::fromComponents(val->isPositive(),
-                 val->years(),
-                 val->months()));
+    return toItem( YearMonthDuration::fromComponents( val->isPositive(),
+                   val->years(),
+                   val->months() ) );
 }
 
-Item AbstractDurationToDurationCaster::castFrom(const Item &from,
-      const QExplicitlySharedDataPointer<DynamicContext> &) const
+Item AbstractDurationToDurationCaster::castFrom( const Item &from,
+        const QExplicitlySharedDataPointer<DynamicContext> & ) const
 {
-   const AbstractDuration *const val = from.as<AbstractDuration>();
+    const AbstractDuration *const val = from.as<AbstractDuration>();
 
-   return Duration::fromComponents(val->isPositive(),
-                                   val->years(),
-                                   val->months(),
-                                   val->days(),
-                                   val->hours(),
-                                   val->minutes(),
-                                   val->seconds(),
-                                   val->mseconds());
+    return Duration::fromComponents( val->isPositive(),
+                                     val->years(),
+                                     val->months(),
+                                     val->days(),
+                                     val->hours(),
+                                     val->minutes(),
+                                     val->seconds(),
+                                     val->mseconds() );
 }
 
-Item StringToYearMonthDurationCaster::castFrom(const Item &from,
-      const QExplicitlySharedDataPointer<DynamicContext> &) const
+Item StringToYearMonthDurationCaster::castFrom( const Item &from,
+        const QExplicitlySharedDataPointer<DynamicContext> & ) const
 {
-   return YearMonthDuration::fromLexical(from.stringValue());
+    return YearMonthDuration::fromLexical( from.stringValue() );
 }
 
-Item AbstractDateTimeToGYearCaster::castFrom(const Item &from,
-      const QExplicitlySharedDataPointer<DynamicContext> &) const
+Item AbstractDateTimeToGYearCaster::castFrom( const Item &from,
+        const QExplicitlySharedDataPointer<DynamicContext> & ) const
 {
-   QDateTime dt(from.as<AbstractDateTime>()->toDateTime());
-   // TODO DT dt.setDateOnly(true);
+    QDateTime dt( from.as<AbstractDateTime>()->toDateTime() );
+    // TODO DT dt.setDateOnly(true);
 
-   return GYear::fromDateTime(dt);
+    return GYear::fromDateTime( dt );
 }
 
-Item AbstractDateTimeToGYearMonthCaster::castFrom(const Item &from,
-      const QExplicitlySharedDataPointer<DynamicContext> &) const
+Item AbstractDateTimeToGYearMonthCaster::castFrom( const Item &from,
+        const QExplicitlySharedDataPointer<DynamicContext> & ) const
 {
-   QDateTime dt(from.as<AbstractDateTime>()->toDateTime());
-   // TODO DT dt.setDateOnly(true);
+    QDateTime dt( from.as<AbstractDateTime>()->toDateTime() );
+    // TODO DT dt.setDateOnly(true);
 
-   return GYearMonth::fromDateTime(dt);
+    return GYearMonth::fromDateTime( dt );
 }
 
-Item AbstractDateTimeToGMonthCaster::castFrom(const Item &from,
-      const QExplicitlySharedDataPointer<DynamicContext> &) const
+Item AbstractDateTimeToGMonthCaster::castFrom( const Item &from,
+        const QExplicitlySharedDataPointer<DynamicContext> & ) const
 {
-   QDateTime dt(from.as<AbstractDateTime>()->toDateTime());
-   // TODO DT dt.setDateOnly(true);
+    QDateTime dt( from.as<AbstractDateTime>()->toDateTime() );
+    // TODO DT dt.setDateOnly(true);
 
-   return GMonth::fromDateTime(dt);
+    return GMonth::fromDateTime( dt );
 }
 
-Item AbstractDateTimeToGMonthDayCaster::castFrom(const Item &from,
-      const QExplicitlySharedDataPointer<DynamicContext> &) const
+Item AbstractDateTimeToGMonthDayCaster::castFrom( const Item &from,
+        const QExplicitlySharedDataPointer<DynamicContext> & ) const
 {
-   QDateTime dt(from.as<AbstractDateTime>()->toDateTime());
-   // TODO DT dt.setDateOnly(true);
+    QDateTime dt( from.as<AbstractDateTime>()->toDateTime() );
+    // TODO DT dt.setDateOnly(true);
 
-   return GMonthDay::fromDateTime(dt);
+    return GMonthDay::fromDateTime( dt );
 }
 
-Item AbstractDateTimeToGDayCaster::castFrom(const Item &from,
-      const QExplicitlySharedDataPointer<DynamicContext> &) const
+Item AbstractDateTimeToGDayCaster::castFrom( const Item &from,
+        const QExplicitlySharedDataPointer<DynamicContext> & ) const
 {
-   QDateTime dt(from.as<AbstractDateTime>()->toDateTime());
-   // TODO DT dt.setDateOnly(true);
+    QDateTime dt( from.as<AbstractDateTime>()->toDateTime() );
+    // TODO DT dt.setDateOnly(true);
 
-   return GDay::fromDateTime(dt);
+    return GDay::fromDateTime( dt );
 }
 
-Item AbstractDateTimeToDateTimeCaster::castFrom(const Item &from,
-      const QExplicitlySharedDataPointer<DynamicContext> &) const
+Item AbstractDateTimeToDateTimeCaster::castFrom( const Item &from,
+        const QExplicitlySharedDataPointer<DynamicContext> & ) const
 {
-   QDateTime dt(from.as<AbstractDateTime>()->toDateTime());
-   // TODO DT dt.setDateOnly(false);
+    QDateTime dt( from.as<AbstractDateTime>()->toDateTime() );
+    // TODO DT dt.setDateOnly(false);
 
-   return DateTime::fromDateTime(dt);
+    return DateTime::fromDateTime( dt );
 }
 
-Item AbstractDateTimeToDateCaster::castFrom(const Item &from,
-      const QExplicitlySharedDataPointer<DynamicContext> &) const
+Item AbstractDateTimeToDateCaster::castFrom( const Item &from,
+        const QExplicitlySharedDataPointer<DynamicContext> & ) const
 {
-   QDateTime dt(from.as<AbstractDateTime>()->toDateTime());
-   // TODO DT dt.setDateOnly(true);
+    QDateTime dt( from.as<AbstractDateTime>()->toDateTime() );
+    // TODO DT dt.setDateOnly(true);
 
-   return Date::fromDateTime(dt);
+    return Date::fromDateTime( dt );
 }
 
-Item AbstractDateTimeToTimeCaster::castFrom(const Item &from,
-      const QExplicitlySharedDataPointer<DynamicContext> &) const
+Item AbstractDateTimeToTimeCaster::castFrom( const Item &from,
+        const QExplicitlySharedDataPointer<DynamicContext> & ) const
 {
-   QDateTime dt(from.as<AbstractDateTime>()->toDateTime());
-   // TODO DT dt.setDateOnly(false);
+    QDateTime dt( from.as<AbstractDateTime>()->toDateTime() );
+    // TODO DT dt.setDateOnly(false);
 
-   return SchemaTime::fromDateTime(dt);
+    return SchemaTime::fromDateTime( dt );
 }

@@ -34,13 +34,15 @@
 #include <wtf/RefPtr.h>
 #include <wtf/Vector.h>
 
-namespace CoreIPC {
-    class ArgumentDecoder;
-    class Connection;
-    class MessageID;
+namespace CoreIPC
+{
+class ArgumentDecoder;
+class Connection;
+class MessageID;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 struct SecurityOriginData;
 class WebContext;
@@ -49,34 +51,41 @@ class WebSecurityOrigin;
 
 typedef GenericCallback<WKArrayRef> ArrayCallback;
 
-class WebApplicationCacheManagerProxy : public APIObject {
+class WebApplicationCacheManagerProxy : public APIObject
+{
 public:
     static const Type APIType = TypeApplicationCacheManager;
 
-    static PassRefPtr<WebApplicationCacheManagerProxy> create(WebContext*);
+    static PassRefPtr<WebApplicationCacheManagerProxy> create( WebContext * );
     virtual ~WebApplicationCacheManagerProxy();
 
     void invalidate();
-    void clearContext() { m_webContext = 0; }
-    
-    void getApplicationCacheOrigins(PassRefPtr<ArrayCallback>);
-    void deleteEntriesForOrigin(WebSecurityOrigin*);
+    void clearContext()
+    {
+        m_webContext = 0;
+    }
+
+    void getApplicationCacheOrigins( PassRefPtr<ArrayCallback> );
+    void deleteEntriesForOrigin( WebSecurityOrigin * );
     void deleteAllEntries();
 
-    void didReceiveMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*);
+    void didReceiveMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * );
 
-    bool shouldTerminate(WebProcessProxy*) const;
+    bool shouldTerminate( WebProcessProxy * ) const;
 
 private:
-    WebApplicationCacheManagerProxy(WebContext*);
+    WebApplicationCacheManagerProxy( WebContext * );
 
-    virtual Type type() const { return APIType; }
+    virtual Type type() const
+    {
+        return APIType;
+    }
 
-    void didGetApplicationCacheOrigins(const Vector<SecurityOriginData>&, uint64_t callbackID);
-    
-    void didReceiveWebApplicationCacheManagerProxyMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*);
+    void didGetApplicationCacheOrigins( const Vector<SecurityOriginData> &, uint64_t callbackID );
 
-    WebContext* m_webContext;
+    void didReceiveWebApplicationCacheManagerProxyMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * );
+
+    WebContext *m_webContext;
     HashMap<uint64_t, RefPtr<ArrayCallback> > m_arrayCallbacks;
 };
 

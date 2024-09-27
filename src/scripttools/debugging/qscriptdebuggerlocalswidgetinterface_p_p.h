@@ -32,14 +32,14 @@ class QScriptCompletionProviderInterface;
 class QScriptDebuggerLocalsWidgetInterface;
 
 class QScriptDebuggerLocalsWidgetInterfacePrivate
-   : public QWidgetPrivate
+    : public QWidgetPrivate
 {
-   Q_DECLARE_PUBLIC(QScriptDebuggerLocalsWidgetInterface)
- public:
-   QScriptDebuggerLocalsWidgetInterfacePrivate();
-   ~QScriptDebuggerLocalsWidgetInterfacePrivate();
+    Q_DECLARE_PUBLIC( QScriptDebuggerLocalsWidgetInterface )
+public:
+    QScriptDebuggerLocalsWidgetInterfacePrivate();
+    ~QScriptDebuggerLocalsWidgetInterfacePrivate();
 
-   QScriptCompletionProviderInterface *completionProvider;
+    QScriptCompletionProviderInterface *completionProvider;
 };
 
 QT_END_NAMESPACE

@@ -212,7 +212,7 @@
 #endif
 
 #if defined(__cplusplus)
-   Q_CORE_EXPORT bool qSharedBuild();
+Q_CORE_EXPORT bool qSharedBuild();
 #endif
 
 #endif

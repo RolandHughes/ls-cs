@@ -24,31 +24,34 @@
 
 void registerGuiVariant();
 
-TEST_CASE("QVariant convert_color", "[qvariant_gui]")
+TEST_CASE( "QVariant convert_color", "[qvariant_gui]" )
 {
-   registerGuiVariant();
+    registerGuiVariant();
 
-   QVariant data = QString("blue");
+    QVariant data = QString( "blue" );
 
-   REQUIRE(data.isValid());
-   REQUIRE(data.type() == QVariant::String);
+    REQUIRE( data.isValid() );
+    REQUIRE( data.type() == QVariant::String );
 
-   SECTION ("bool") {
-      REQUIRE(data.convert<bool>() == true);
-      REQUIRE(data.type() == QVariant::Bool);
-      REQUIRE(data.toBool() == true);
-   }
+    SECTION ( "bool" )
+    {
+        REQUIRE( data.convert<bool>() == true );
+        REQUIRE( data.type() == QVariant::Bool );
+        REQUIRE( data.toBool() == true );
+    }
 
-   SECTION ("brush") {
-      REQUIRE(data.convert<QBrush>() == false);
-      REQUIRE(data.type() == QVariant::Brush);
-      REQUIRE(data.value<QBrush>() == QBrush());
-   }
+    SECTION ( "brush" )
+    {
+        REQUIRE( data.convert<QBrush>() == false );
+        REQUIRE( data.type() == QVariant::Brush );
+        REQUIRE( data.value<QBrush>() == QBrush() );
+    }
 
-   SECTION ("color") {
-      REQUIRE(data.convert<QColor>() == true);
-      REQUIRE(data.type() == QVariant::Color);
-      REQUIRE(data.value<QColor>() == QColor("blue"));
-   }
+    SECTION ( "color" )
+    {
+        REQUIRE( data.convert<QColor>() == true );
+        REQUIRE( data.type() == QVariant::Color );
+        REQUIRE( data.value<QColor>() == QColor( "blue" ) );
+    }
 
 }

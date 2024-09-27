@@ -7,13 +7,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -39,7 +39,8 @@
 #include <wtf/RefCounted.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Database;
 class InjectedScript;
@@ -60,15 +61,15 @@ public:
     static PassRefPtr<InjectedScriptHost> create();
     ~InjectedScriptHost();
 
-    void init(InspectorAgent* inspectorAgent
-            , InspectorConsoleAgent* consoleAgent
+    void init( InspectorAgent *inspectorAgent
+               , InspectorConsoleAgent *consoleAgent
 #if ENABLE(DATABASE)
-            , InspectorDatabaseAgent* databaseAgent
+               , InspectorDatabaseAgent *databaseAgent
 #endif
 #if ENABLE(DOM_STORAGE)
-            , InspectorDOMStorageAgent* domStorageAgent
+               , InspectorDOMStorageAgent *domStorageAgent
 #endif
-        )
+             )
     {
         m_inspectorAgent = inspectorAgent;
         m_consoleAgent = consoleAgent;
@@ -79,45 +80,51 @@ public:
         m_domStorageAgent = domStorageAgent;
 #endif
     }
-    void setFrontend(InspectorFrontend* frontend) { m_frontend = frontend; }
-    void clearFrontend() { m_frontend = 0; }
+    void setFrontend( InspectorFrontend *frontend )
+    {
+        m_frontend = frontend;
+    }
+    void clearFrontend()
+    {
+        m_frontend = 0;
+    }
 
-    static Node* scriptValueAsNode(ScriptValue);
-    static ScriptValue nodeAsScriptValue(ScriptState*, Node*);
+    static Node *scriptValueAsNode( ScriptValue );
+    static ScriptValue nodeAsScriptValue( ScriptState *, Node * );
 
     void disconnect();
 
-    void addInspectedNode(Node*);
+    void addInspectedNode( Node * );
     void clearInspectedNodes();
 
-    void inspectImpl(PassRefPtr<InspectorValue> objectToInspect, PassRefPtr<InspectorValue> hints);
+    void inspectImpl( PassRefPtr<InspectorValue> objectToInspect, PassRefPtr<InspectorValue> hints );
     void clearConsoleMessages();
-    void copyText(const String& text);
-    Node* inspectedNode(unsigned int num);
+    void copyText( const String &text );
+    Node *inspectedNode( unsigned int num );
 #if ENABLE(DATABASE)
-    int databaseIdImpl(Database*);
+    int databaseIdImpl( Database * );
 #endif
 #if ENABLE(DOM_STORAGE)
-    int storageIdImpl(Storage*);
+    int storageIdImpl( Storage * );
 #endif
 #if ENABLE(WORKERS)
     long nextWorkerId();
-    void didCreateWorker(long id, const String& url, bool isSharedWorker);
-    void didDestroyWorker(long id);
+    void didCreateWorker( long id, const String &url, bool isSharedWorker );
+    void didDestroyWorker( long id );
 #endif
 
 private:
     InjectedScriptHost();
 
-    InspectorAgent* m_inspectorAgent;
-    InspectorConsoleAgent* m_consoleAgent;
+    InspectorAgent *m_inspectorAgent;
+    InspectorConsoleAgent *m_consoleAgent;
 #if ENABLE(DATABASE)
-    InspectorDatabaseAgent* m_databaseAgent;
+    InspectorDatabaseAgent *m_databaseAgent;
 #endif
 #if ENABLE(DOM_STORAGE)
-    InspectorDOMStorageAgent* m_domStorageAgent;
+    InspectorDOMStorageAgent *m_domStorageAgent;
 #endif
-    InspectorFrontend* m_frontend;
+    InspectorFrontend *m_frontend;
     long m_lastWorkerId;
     Vector<RefPtr<Node> > m_inspectedNodes;
 };

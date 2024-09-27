@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef AssemblerBuffer_h
@@ -35,147 +35,188 @@
 #include <wtf/FastMalloc.h>
 #include <wtf/StdLibExtras.h>
 
-namespace JSC {
+namespace JSC
+{
 
-    struct AssemblerLabel {
-        AssemblerLabel()
-            : m_offset(std::numeric_limits<uint32_t>::max())
+struct AssemblerLabel
+{
+    AssemblerLabel()
+        : m_offset( std::numeric_limits<uint32_t>::max() )
+    {
+    }
+
+    explicit AssemblerLabel( uint32_t offset )
+        : m_offset( offset )
+    {
+    }
+
+    bool isSet() const
+    {
+        return ( m_offset != std::numeric_limits<uint32_t>::max() );
+    }
+
+    AssemblerLabel labelAtOffset( int offset ) const
+    {
+        return AssemblerLabel( m_offset + offset );
+    }
+
+    uint32_t m_offset;
+};
+
+class AssemblerBuffer
+{
+    static const int inlineCapacity = 128;
+public:
+    AssemblerBuffer()
+        : m_storage( inlineCapacity )
+        , m_buffer( m_storage.begin() )
+        , m_capacity( inlineCapacity )
+        , m_index( 0 )
+    {
+    }
+
+    ~AssemblerBuffer()
+    {
+    }
+
+    bool isAvailable( int space )
+    {
+        return m_index + space <= m_capacity;
+    }
+
+    void ensureSpace( int space )
+    {
+        if ( !isAvailable( space ) )
         {
+            grow();
+        }
+    }
+
+    bool isAligned( int alignment ) const
+    {
+        return !( m_index & ( alignment - 1 ) );
+    }
+
+    template<typename IntegralType>
+    void putIntegral( IntegralType value )
+    {
+        ensureSpace( sizeof( IntegralType ) );
+        putIntegralUnchecked( value );
+    }
+
+    template<typename IntegralType>
+    void putIntegralUnchecked( IntegralType value )
+    {
+        ASSERT( isAvailable( sizeof( IntegralType ) ) );
+        *reinterpret_cast_ptr<IntegralType *>( m_buffer + m_index ) = value;
+        m_index += sizeof( IntegralType );
+    }
+
+    void putByteUnchecked( int8_t value )
+    {
+        putIntegralUnchecked( value );
+    }
+    void putByte( int8_t value )
+    {
+        putIntegral( value );
+    }
+    void putShortUnchecked( int16_t value )
+    {
+        putIntegralUnchecked( value );
+    }
+    void putShort( int16_t value )
+    {
+        putIntegral( value );
+    }
+    void putIntUnchecked( int32_t value )
+    {
+        putIntegralUnchecked( value );
+    }
+    void putInt( int32_t value )
+    {
+        putIntegral( value );
+    }
+    void putInt64Unchecked( int64_t value )
+    {
+        putIntegralUnchecked( value );
+    }
+    void putInt64( int64_t value )
+    {
+        putIntegral( value );
+    }
+
+    void *data() const
+    {
+        return m_buffer;
+    }
+
+    size_t codeSize() const
+    {
+        return m_index;
+    }
+
+    AssemblerLabel label() const
+    {
+        return AssemblerLabel( m_index );
+    }
+
+    void *executableCopy( ExecutablePool *allocator )
+    {
+        if ( !m_index )
+        {
+            return 0;
         }
 
-        explicit AssemblerLabel(uint32_t offset)
-            : m_offset(offset)
+        void *result = allocator->alloc( m_index );
+
+        if ( !result )
         {
+            return 0;
         }
 
-        bool isSet() const { return (m_offset != std::numeric_limits<uint32_t>::max()); }
+        ExecutableAllocator::makeWritable( result, m_index );
 
-        AssemblerLabel labelAtOffset(int offset) const
-        {
-            return AssemblerLabel(m_offset + offset);
-        }
+        return memcpy( result, m_buffer, m_index );
+    }
 
-        uint32_t m_offset;
-    };
-
-    class AssemblerBuffer {
-        static const int inlineCapacity = 128;
-    public:
-        AssemblerBuffer()
-            : m_storage(inlineCapacity)
-            , m_buffer(m_storage.begin())
-            , m_capacity(inlineCapacity)
-            , m_index(0)
-        {
-        }
-
-        ~AssemblerBuffer()
-        {
-        }
-
-        bool isAvailable(int space)
-        {
-            return m_index + space <= m_capacity;
-        }
-
-        void ensureSpace(int space)
-        {
-            if (!isAvailable(space))
-                grow();
-        }
-
-        bool isAligned(int alignment) const
-        {
-            return !(m_index & (alignment - 1));
-        }
-
-        template<typename IntegralType>
-        void putIntegral(IntegralType value)
-        {
-            ensureSpace(sizeof(IntegralType));
-            putIntegralUnchecked(value);
-        }
-
-        template<typename IntegralType>
-        void putIntegralUnchecked(IntegralType value)
-        {
-            ASSERT(isAvailable(sizeof(IntegralType)));
-            *reinterpret_cast_ptr<IntegralType*>(m_buffer + m_index) = value;
-            m_index += sizeof(IntegralType);
-        }
-
-        void putByteUnchecked(int8_t value) { putIntegralUnchecked(value); }
-        void putByte(int8_t value) { putIntegral(value); }
-        void putShortUnchecked(int16_t value) { putIntegralUnchecked(value); }
-        void putShort(int16_t value) { putIntegral(value); }
-        void putIntUnchecked(int32_t value) { putIntegralUnchecked(value); }
-        void putInt(int32_t value) { putIntegral(value); }
-        void putInt64Unchecked(int64_t value) { putIntegralUnchecked(value); }
-        void putInt64(int64_t value) { putIntegral(value); }
-
-        void* data() const
-        {
-            return m_buffer;
-        }
-
-        size_t codeSize() const
-        {
-            return m_index;
-        }
-
-        AssemblerLabel label() const
-        {
-            return AssemblerLabel(m_index);
-        }
-
-        void* executableCopy(ExecutablePool* allocator)
-        {
-            if (!m_index)
-                return 0;
-
-            void* result = allocator->alloc(m_index);
-
-            if (!result)
-                return 0;
-
-            ExecutableAllocator::makeWritable(result, m_index);
-
-            return memcpy(result, m_buffer, m_index);
-        }
-
-        void rewindToLabel(AssemblerLabel label)
-        {
-            m_index = label.m_offset;
-        }
+    void rewindToLabel( AssemblerLabel label )
+    {
+        m_index = label.m_offset;
+    }
 
 #ifndef NDEBUG
-        unsigned debugOffset() { return m_index; }
+    unsigned debugOffset()
+    {
+        return m_index;
+    }
 #endif
 
-    protected:
-        void append(const char* data, int size)
+protected:
+    void append( const char *data, int size )
+    {
+        if ( !isAvailable( size ) )
         {
-            if (!isAvailable(size))
-                grow(size);
-
-            memcpy(m_buffer + m_index, data, size);
-            m_index += size;
+            grow( size );
         }
 
-        void grow(int extraCapacity = 0)
-        {
-            m_capacity += m_capacity / 2 + extraCapacity;
+        memcpy( m_buffer + m_index, data, size );
+        m_index += size;
+    }
 
-            m_storage.grow(m_capacity);
-            m_buffer = m_storage.begin();
-        }
+    void grow( int extraCapacity = 0 )
+    {
+        m_capacity += m_capacity / 2 + extraCapacity;
 
-    private:
-        Vector<char, inlineCapacity> m_storage;
-        char* m_buffer;
-        int m_capacity;
-        int m_index;
-    };
+        m_storage.grow( m_capacity );
+        m_buffer = m_storage.begin();
+    }
+
+private:
+    Vector<char, inlineCapacity> m_storage;
+    char *m_buffer;
+    int m_capacity;
+    int m_index;
+};
 
 } // namespace JSC
 

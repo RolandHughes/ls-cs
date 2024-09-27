@@ -38,30 +38,32 @@ class QXcbEglNativeInterfaceHandler;
 
 class QXcbEglIntegration : public QXcbGlIntegration
 {
- public:
-   QXcbEglIntegration();
-   ~QXcbEglIntegration();
+public:
+    QXcbEglIntegration();
+    ~QXcbEglIntegration();
 
-   bool initialize(QXcbConnection *connection) override;
+    bool initialize( QXcbConnection *connection ) override;
 
-   QXcbWindow *createWindow(QWindow *window) const override;
-   QPlatformOpenGLContext *createPlatformOpenGLContext(QOpenGLContext *context) const override;
-   QPlatformOffscreenSurface *createPlatformOffscreenSurface(QOffscreenSurface *surface) const override;
+    QXcbWindow *createWindow( QWindow *window ) const override;
+    QPlatformOpenGLContext *createPlatformOpenGLContext( QOpenGLContext *context ) const override;
+    QPlatformOffscreenSurface *createPlatformOffscreenSurface( QOffscreenSurface *surface ) const override;
 
-   bool supportsThreadedOpenGL() const override {
-      return true;
-   }
+    bool supportsThreadedOpenGL() const override
+    {
+        return true;
+    }
 
-   EGLDisplay eglDisplay() const {
-      return m_egl_display;
-   }
-   void *xlib_display() const;
+    EGLDisplay eglDisplay() const
+    {
+        return m_egl_display;
+    }
+    void *xlib_display() const;
 
- private:
-   QXcbConnection *m_connection;
-   EGLDisplay m_egl_display;
+private:
+    QXcbConnection *m_connection;
+    EGLDisplay m_egl_display;
 
-   QScopedPointer<QXcbEglNativeInterfaceHandler> m_native_interface_handler;
+    QScopedPointer<QXcbEglNativeInterfaceHandler> m_native_interface_handler;
 };
 
 #endif //QXCBEGLINTEGRATION_H

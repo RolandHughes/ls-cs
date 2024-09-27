@@ -24,11 +24,14 @@
 
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SVGUnitTypes : public RefCounted<SVGUnitTypes> {
+class SVGUnitTypes : public RefCounted<SVGUnitTypes>
+{
 public:
-    enum SVGUnitType {
+    enum SVGUnitType
+    {
         SVG_UNIT_TYPE_UNKNOWN               = 0,
         SVG_UNIT_TYPE_USERSPACEONUSE        = 1,
         SVG_UNIT_TYPE_OBJECTBOUNDINGBOX     = 2
@@ -38,7 +41,10 @@ private:
     SVGUnitTypes() { }
 };
 
-static inline SVGUnitTypes::SVGUnitType toUnitType(int type) { return static_cast<SVGUnitTypes::SVGUnitType>(type); }
+static inline SVGUnitTypes::SVGUnitType toUnitType( int type )
+{
+    return static_cast<SVGUnitTypes::SVGUnitType>( type );
+}
 
 }
 

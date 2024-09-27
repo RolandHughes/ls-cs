@@ -28,7 +28,8 @@
 
 #include "AndroidThreading.h"
 
-namespace WTF {
+namespace WTF
+{
 
 void initializeMainThreadPlatform()
 {

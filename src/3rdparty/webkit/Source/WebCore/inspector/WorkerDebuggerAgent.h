@@ -35,26 +35,29 @@
 #include "InspectorDebuggerAgent.h"
 #include "WorkerScriptDebugServer.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class WorkerContext;
 
-class WorkerDebuggerAgent : public InspectorDebuggerAgent {
-    WTF_MAKE_NONCOPYABLE(WorkerDebuggerAgent);
+class WorkerDebuggerAgent : public InspectorDebuggerAgent
+{
+    WTF_MAKE_NONCOPYABLE( WorkerDebuggerAgent );
     WTF_MAKE_FAST_ALLOCATED;
 public:
-    static PassOwnPtr<WorkerDebuggerAgent> create(InstrumentingAgents*, InspectorState*, WorkerContext*, InjectedScriptManager*);
+    static PassOwnPtr<WorkerDebuggerAgent> create( InstrumentingAgents *, InspectorState *, WorkerContext *,
+            InjectedScriptManager * );
     virtual ~WorkerDebuggerAgent();
 
 private:
-    WorkerDebuggerAgent(InstrumentingAgents*, InspectorState*, WorkerContext*, InjectedScriptManager*);
+    WorkerDebuggerAgent( InstrumentingAgents *, InspectorState *, WorkerContext *, InjectedScriptManager * );
 
     virtual void startListeningScriptDebugServer();
     virtual void stopListeningScriptDebugServer();
-    virtual WorkerScriptDebugServer& scriptDebugServer();
+    virtual WorkerScriptDebugServer &scriptDebugServer();
 
     WorkerScriptDebugServer m_scriptDebugServer;
-    WorkerContext* m_inspectedWorkerContext;
+    WorkerContext *m_inspectedWorkerContext;
 };
 
 } // namespace WebCore

@@ -36,34 +36,40 @@
 #include "ScriptExecutionContext.h"
 #include <runtime/JSLock.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace JSC;
 
-bool JSSQLStatementErrorCallback::handleEvent(SQLTransaction* transaction, SQLError* error)
+bool JSSQLStatementErrorCallback::handleEvent( SQLTransaction *transaction, SQLError *error )
 {
-    if (!m_data || !m_data->globalObject() || !canInvokeCallback())
+    if ( !m_data || !m_data->globalObject() || !canInvokeCallback() )
+    {
         return true;
+    }
 
-    RefPtr<JSSQLStatementErrorCallback> protect(this);
+    RefPtr<JSSQLStatementErrorCallback> protect( this );
 
-    JSC::JSLock lock(SilenceAssertionsOnly);
+    JSC::JSLock lock( SilenceAssertionsOnly );
 
-    ExecState* exec = m_data->globalObject()->globalExec();
+    ExecState *exec = m_data->globalObject()->globalExec();
     MarkedArgumentBuffer args;
-    args.append(toJS(exec, m_data->globalObject(), transaction));
-    args.append(toJS(exec, m_data->globalObject(), error));
+    args.append( toJS( exec, m_data->globalObject(), transaction ) );
+    args.append( toJS( exec, m_data->globalObject(), error ) );
 
     bool raisedException = false;
-    JSValue result = m_data->invokeCallback(args, &raisedException);
-    if (raisedException) {
+    JSValue result = m_data->invokeCallback( args, &raisedException );
+
+    if ( raisedException )
+    {
         // The spec says:
         // "If the error callback returns false, then move on to the next statement..."
         // "Otherwise, the error callback did not return false, or there was no error callback"
         // Therefore an exception and returning true are the same thing - so, return true on an exception
         return true;
     }
-    return result.toBoolean(exec);
+
+    return result.toBoolean( exec );
 }
 
 }

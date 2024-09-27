@@ -34,33 +34,33 @@ class QBasicKeyEventTransitionPrivate;
 
 class QBasicKeyEventTransition : public QAbstractTransition
 {
-   GUI_CS_OBJECT(QBasicKeyEventTransition)
+    GUI_CS_OBJECT( QBasicKeyEventTransition )
 
- public:
-   QBasicKeyEventTransition(QState *sourceState = nullptr);
-   QBasicKeyEventTransition(QEvent::Type type, int key, QState *sourceState = nullptr);
-   QBasicKeyEventTransition(QEvent::Type type, int key, Qt::KeyboardModifiers modifierMask, QState *sourceState = nullptr);
+public:
+    QBasicKeyEventTransition( QState *sourceState = nullptr );
+    QBasicKeyEventTransition( QEvent::Type type, int key, QState *sourceState = nullptr );
+    QBasicKeyEventTransition( QEvent::Type type, int key, Qt::KeyboardModifiers modifierMask, QState *sourceState = nullptr );
 
-   QBasicKeyEventTransition(const QBasicKeyEventTransition &) = delete;
-   QBasicKeyEventTransition &operator=(const QBasicKeyEventTransition &) = delete;
+    QBasicKeyEventTransition( const QBasicKeyEventTransition & ) = delete;
+    QBasicKeyEventTransition &operator=( const QBasicKeyEventTransition & ) = delete;
 
-   ~QBasicKeyEventTransition();
+    ~QBasicKeyEventTransition();
 
-   QEvent::Type eventType() const;
-   void setEventType(QEvent::Type type);
+    QEvent::Type eventType() const;
+    void setEventType( QEvent::Type type );
 
-   int key() const;
-   void setKey(int key);
+    int key() const;
+    void setKey( int key );
 
-   Qt::KeyboardModifiers modifierMask() const;
-   void setModifierMask(Qt::KeyboardModifiers modifiers);
+    Qt::KeyboardModifiers modifierMask() const;
+    void setModifierMask( Qt::KeyboardModifiers modifiers );
 
- protected:
-   bool eventTest(QEvent *event) override;
-   void onTransition(QEvent *) override;
+protected:
+    bool eventTest( QEvent *event ) override;
+    void onTransition( QEvent * ) override;
 
- private:
-   Q_DECLARE_PRIVATE(QBasicKeyEventTransition)
+private:
+    Q_DECLARE_PRIVATE( QBasicKeyEventTransition )
 };
 
 #endif //QT_NO_STATEMACHINE

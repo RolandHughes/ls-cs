@@ -34,30 +34,51 @@
 
 #include <wtf/text/CString.h>
 
-namespace JSC {
+namespace JSC
+{
 
-namespace Bindings {
+namespace Bindings
+{
 
-class JavaMethodJobject : public JavaMethod {
+class JavaMethodJobject : public JavaMethod
+{
 public:
-    JavaMethodJobject(JNIEnv*, jobject);
+    JavaMethodJobject( JNIEnv *, jobject );
     virtual ~JavaMethodJobject();
 
     // JavaMethod implementation
-    virtual String name() const { return m_name.impl(); }
-    virtual RuntimeType returnTypeClassName() const { return m_returnTypeClassName.utf8(); }
-    virtual String parameterAt(int i) const { return m_parameters[i]; }
-    virtual const char* signature() const;
-    virtual JavaType returnType() const { return m_returnType; }
-    virtual bool isStatic() const { return m_isStatic; }
+    virtual String name() const
+    {
+        return m_name.impl();
+    }
+    virtual RuntimeType returnTypeClassName() const
+    {
+        return m_returnTypeClassName.utf8();
+    }
+    virtual String parameterAt( int i ) const
+    {
+        return m_parameters[i];
+    }
+    virtual const char *signature() const;
+    virtual JavaType returnType() const
+    {
+        return m_returnType;
+    }
+    virtual bool isStatic() const
+    {
+        return m_isStatic;
+    }
 
     // Method implementation
-    virtual int numParameters() const { return m_parameters.size(); }
+    virtual int numParameters() const
+    {
+        return m_parameters.size();
+    }
 
 private:
     Vector<String> m_parameters;
     JavaString m_name;
-    mutable char* m_signature;
+    mutable char *m_signature;
     JavaString m_returnTypeClassName;
     JavaType m_returnType;
     bool m_isStatic;

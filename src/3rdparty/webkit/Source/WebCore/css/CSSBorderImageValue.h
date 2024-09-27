@@ -25,23 +25,29 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Rect;
 
-class CSSBorderImageValue : public CSSValue {
+class CSSBorderImageValue : public CSSValue
+{
 public:
-    static PassRefPtr<CSSBorderImageValue> create(PassRefPtr<CSSValue> image, PassRefPtr<Rect> sliceRect, int horizontalRule, int verticalRule)
+    static PassRefPtr<CSSBorderImageValue> create( PassRefPtr<CSSValue> image, PassRefPtr<Rect> sliceRect, int horizontalRule,
+            int verticalRule )
     {
-        return adoptRef(new CSSBorderImageValue(image, sliceRect, horizontalRule, verticalRule));
+        return adoptRef( new CSSBorderImageValue( image, sliceRect, horizontalRule, verticalRule ) );
     }
     virtual ~CSSBorderImageValue();
 
     virtual String cssText() const;
 
-    CSSValue* imageValue() const { return m_image.get(); }
+    CSSValue *imageValue() const
+    {
+        return m_image.get();
+    }
 
-    virtual void addSubresourceStyleURLs(ListHashSet<KURL>&, const CSSStyleSheet*);
+    virtual void addSubresourceStyleURLs( ListHashSet<KURL> &, const CSSStyleSheet * );
 
     // The border image.
     RefPtr<CSSValue> m_image;
@@ -55,8 +61,11 @@ public:
     int m_verticalSizeRule; // Rule for how to adjust the heights of the left/middle/right
 
 private:
-    CSSBorderImageValue(PassRefPtr<CSSValue> image, PassRefPtr<Rect> sliceRect, int horizontalRule, int verticalRule);
-    virtual bool isBorderImageValue() const { return true; }
+    CSSBorderImageValue( PassRefPtr<CSSValue> image, PassRefPtr<Rect> sliceRect, int horizontalRule, int verticalRule );
+    virtual bool isBorderImageValue() const
+    {
+        return true;
+    }
 };
 
 } // namespace WebCore

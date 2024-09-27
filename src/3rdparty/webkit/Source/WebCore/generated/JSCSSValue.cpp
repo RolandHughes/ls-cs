@@ -27,9 +27,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSCSSValue);
+ASSERT_CLASS_FITS_IN_CELL( JSCSSValue );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -40,10 +41,10 @@ ASSERT_CLASS_FITS_IN_CELL(JSCSSValue);
 
 static const HashTableValue JSCSSValueTableValues[4] =
 {
-    { "cssText", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsCSSValueCssText), (intptr_t)setJSCSSValueCssText THUNK_GENERATOR(0) },
-    { "cssValueType", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsCSSValueCssValueType), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsCSSValueConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "cssText", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsCSSValueCssText ), ( intptr_t )setJSCSSValueCssText THUNK_GENERATOR( 0 ) },
+    { "cssValueType", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsCSSValueCssValueType ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsCSSValueConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -57,53 +58,59 @@ static JSC_CONST_HASHTABLE HashTable JSCSSValueTable = { 8, 7, JSCSSValueTableVa
 
 static const HashTableValue JSCSSValueConstructorTableValues[5] =
 {
-    { "CSS_INHERIT", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsCSSValueCSS_INHERIT), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "CSS_PRIMITIVE_VALUE", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsCSSValueCSS_PRIMITIVE_VALUE), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "CSS_VALUE_LIST", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsCSSValueCSS_VALUE_LIST), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "CSS_CUSTOM", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsCSSValueCSS_CUSTOM), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "CSS_INHERIT", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsCSSValueCSS_INHERIT ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "CSS_PRIMITIVE_VALUE", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsCSSValueCSS_PRIMITIVE_VALUE ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "CSS_VALUE_LIST", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsCSSValueCSS_VALUE_LIST ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "CSS_CUSTOM", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsCSSValueCSS_CUSTOM ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSCSSValueConstructorTable = { 8, 7, JSCSSValueConstructorTableValues, 0 };
 
-COMPILE_ASSERT(0 == CSSValue::CSS_INHERIT, CSSValueEnumCSS_INHERITIsWrongUseDontCheckEnums);
-COMPILE_ASSERT(1 == CSSValue::CSS_PRIMITIVE_VALUE, CSSValueEnumCSS_PRIMITIVE_VALUEIsWrongUseDontCheckEnums);
-COMPILE_ASSERT(2 == CSSValue::CSS_VALUE_LIST, CSSValueEnumCSS_VALUE_LISTIsWrongUseDontCheckEnums);
-COMPILE_ASSERT(3 == CSSValue::CSS_CUSTOM, CSSValueEnumCSS_CUSTOMIsWrongUseDontCheckEnums);
+COMPILE_ASSERT( 0 == CSSValue::CSS_INHERIT, CSSValueEnumCSS_INHERITIsWrongUseDontCheckEnums );
+COMPILE_ASSERT( 1 == CSSValue::CSS_PRIMITIVE_VALUE, CSSValueEnumCSS_PRIMITIVE_VALUEIsWrongUseDontCheckEnums );
+COMPILE_ASSERT( 2 == CSSValue::CSS_VALUE_LIST, CSSValueEnumCSS_VALUE_LISTIsWrongUseDontCheckEnums );
+COMPILE_ASSERT( 3 == CSSValue::CSS_CUSTOM, CSSValueEnumCSS_CUSTOMIsWrongUseDontCheckEnums );
 
-class JSCSSValueConstructor : public DOMConstructorObject {
+class JSCSSValueConstructor : public DOMConstructorObject
+{
 public:
-    JSCSSValueConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSCSSValueConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSCSSValueConstructor::s_info = { "CSSValueConstructor", &DOMConstructorObject::s_info, &JSCSSValueConstructorTable, 0 };
 
-JSCSSValueConstructor::JSCSSValueConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSCSSValueConstructor::JSCSSValueConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSCSSValuePrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSCSSValuePrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSCSSValueConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSCSSValueConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSCSSValueConstructor, JSDOMWrapper>(exec, &JSCSSValueConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSCSSValueConstructor, JSDOMWrapper>( exec, &JSCSSValueConstructorTable, this, propertyName, slot );
 }
 
-bool JSCSSValueConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSCSSValueConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSCSSValueConstructor, JSDOMWrapper>(exec, &JSCSSValueConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSCSSValueConstructor, JSDOMWrapper>( exec, &JSCSSValueConstructorTable, this, propertyName,
+            descriptor );
 }
 
 /* Hash table for prototype */
@@ -115,131 +122,133 @@ bool JSCSSValueConstructor::getOwnPropertyDescriptor(ExecState* exec, const Iden
 
 static const HashTableValue JSCSSValuePrototypeTableValues[5] =
 {
-    { "CSS_INHERIT", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsCSSValueCSS_INHERIT), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "CSS_PRIMITIVE_VALUE", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsCSSValueCSS_PRIMITIVE_VALUE), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "CSS_VALUE_LIST", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsCSSValueCSS_VALUE_LIST), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "CSS_CUSTOM", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsCSSValueCSS_CUSTOM), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "CSS_INHERIT", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsCSSValueCSS_INHERIT ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "CSS_PRIMITIVE_VALUE", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsCSSValueCSS_PRIMITIVE_VALUE ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "CSS_VALUE_LIST", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsCSSValueCSS_VALUE_LIST ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "CSS_CUSTOM", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsCSSValueCSS_CUSTOM ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSCSSValuePrototypeTable = { 8, 7, JSCSSValuePrototypeTableValues, 0 };
 const ClassInfo JSCSSValuePrototype::s_info = { "CSSValuePrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSCSSValuePrototypeTable, 0 };
 
-JSObject* JSCSSValuePrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSCSSValuePrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSCSSValue>(exec, globalObject);
+    return getDOMPrototype<JSCSSValue>( exec, globalObject );
 }
 
-bool JSCSSValuePrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSCSSValuePrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSCSSValuePrototype, JSObject>(exec, &JSCSSValuePrototypeTable, this, propertyName, slot);
+    return getStaticValueSlot<JSCSSValuePrototype, JSObject>( exec, &JSCSSValuePrototypeTable, this, propertyName, slot );
 }
 
-bool JSCSSValuePrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSCSSValuePrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSCSSValuePrototype, JSObject>(exec, &JSCSSValuePrototypeTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSCSSValuePrototype, JSObject>( exec, &JSCSSValuePrototypeTable, this, propertyName, descriptor );
 }
 
 const ClassInfo JSCSSValue::s_info = { "CSSValue", &JSDOMWrapper::s_info, &JSCSSValueTable, 0 };
 
-JSCSSValue::JSCSSValue(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<CSSValue> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSCSSValue::JSCSSValue( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<CSSValue> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSCSSValue::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSCSSValue::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSCSSValuePrototype(exec->globalData(), globalObject, JSCSSValuePrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSCSSValuePrototype( exec->globalData(), globalObject,
+            JSCSSValuePrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSCSSValue::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSCSSValue::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSCSSValue, Base>(exec, &JSCSSValueTable, this, propertyName, slot);
+    return getStaticValueSlot<JSCSSValue, Base>( exec, &JSCSSValueTable, this, propertyName, slot );
 }
 
-bool JSCSSValue::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSCSSValue::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSCSSValue, Base>(exec, &JSCSSValueTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSCSSValue, Base>( exec, &JSCSSValueTable, this, propertyName, descriptor );
 }
 
-JSValue jsCSSValueCssText(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsCSSValueCssText( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSCSSValue* castedThis = static_cast<JSCSSValue*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    CSSValue* imp = static_cast<CSSValue*>(castedThis->impl());
-    JSValue result = jsStringOrNull(exec, imp->cssText());
+    JSCSSValue *castedThis = static_cast<JSCSSValue *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    CSSValue *imp = static_cast<CSSValue *>( castedThis->impl() );
+    JSValue result = jsStringOrNull( exec, imp->cssText() );
     return result;
 }
 
 
-JSValue jsCSSValueCssValueType(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsCSSValueCssValueType( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSCSSValue* castedThis = static_cast<JSCSSValue*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    CSSValue* imp = static_cast<CSSValue*>(castedThis->impl());
-    JSValue result = jsNumber(imp->cssValueType());
+    JSCSSValue *castedThis = static_cast<JSCSSValue *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    CSSValue *imp = static_cast<CSSValue *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->cssValueType() );
     return result;
 }
 
 
-JSValue jsCSSValueConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsCSSValueConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSCSSValue* domObject = static_cast<JSCSSValue*>(asObject(slotBase));
-    return JSCSSValue::getConstructor(exec, domObject->globalObject());
+    JSCSSValue *domObject = static_cast<JSCSSValue *>( asObject( slotBase ) );
+    return JSCSSValue::getConstructor( exec, domObject->globalObject() );
 }
 
-void JSCSSValue::put(ExecState* exec, const Identifier& propertyName, JSValue value, PutPropertySlot& slot)
+void JSCSSValue::put( ExecState *exec, const Identifier &propertyName, JSValue value, PutPropertySlot &slot )
 {
-    lookupPut<JSCSSValue, Base>(exec, propertyName, value, &JSCSSValueTable, this, slot);
+    lookupPut<JSCSSValue, Base>( exec, propertyName, value, &JSCSSValueTable, this, slot );
 }
 
-void setJSCSSValueCssText(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSCSSValueCssText( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSCSSValue* castedThis = static_cast<JSCSSValue*>(thisObject);
-    CSSValue* imp = static_cast<CSSValue*>(castedThis->impl());
+    JSCSSValue *castedThis = static_cast<JSCSSValue *>( thisObject );
+    CSSValue *imp = static_cast<CSSValue *>( castedThis->impl() );
     ExceptionCode ec = 0;
-    imp->setCssText(valueToStringWithNullCheck(exec, value), ec);
-    setDOMException(exec, ec);
+    imp->setCssText( valueToStringWithNullCheck( exec, value ), ec );
+    setDOMException( exec, ec );
 }
 
 
-JSValue JSCSSValue::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSCSSValue::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSCSSValueConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSCSSValueConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
 // Constant getters
 
-JSValue jsCSSValueCSS_INHERIT(ExecState* exec, JSValue, const Identifier&)
+JSValue jsCSSValueCSS_INHERIT( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(0));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 0 ) );
 }
 
-JSValue jsCSSValueCSS_PRIMITIVE_VALUE(ExecState* exec, JSValue, const Identifier&)
+JSValue jsCSSValueCSS_PRIMITIVE_VALUE( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(1));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 1 ) );
 }
 
-JSValue jsCSSValueCSS_VALUE_LIST(ExecState* exec, JSValue, const Identifier&)
+JSValue jsCSSValueCSS_VALUE_LIST( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(2));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 2 ) );
 }
 
-JSValue jsCSSValueCSS_CUSTOM(ExecState* exec, JSValue, const Identifier&)
+JSValue jsCSSValueCSS_CUSTOM( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(3));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 3 ) );
 }
 
-CSSValue* toCSSValue(JSC::JSValue value)
+CSSValue *toCSSValue( JSC::JSValue value )
 {
-    return value.inherits(&JSCSSValue::s_info) ? static_cast<JSCSSValue*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSCSSValue::s_info ) ? static_cast<JSCSSValue *>( asObject( value ) )->impl() : 0;
 }
 
 }

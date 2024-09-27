@@ -38,12 +38,12 @@ class Q_GUI_EXPORT QBasicFontDatabase : public QPlatformFontDatabase
 {
 public:
     void populateFontDatabase() override;
-    QFontEngine *fontEngine(const QFontDef &fontDef, void *handle) override;
-    QFontEngine *fontEngine(const QByteArray &fontData, qreal pixelSize, QFont::HintingPreference hintingPreference) override;
-    QStringList addApplicationFont(const QByteArray &fontData, const QString &fileName) override;
-    void releaseHandle(void *handle) override;
+    QFontEngine *fontEngine( const QFontDef &fontDef, void *handle ) override;
+    QFontEngine *fontEngine( const QByteArray &fontData, qreal pixelSize, QFont::HintingPreference hintingPreference ) override;
+    QStringList addApplicationFont( const QByteArray &fontData, const QString &fileName ) override;
+    void releaseHandle( void *handle ) override;
 
-    static QStringList addTTFile(const QByteArray &fontData, const QByteArray &file);
+    static QStringList addTTFile( const QByteArray &fontData, const QByteArray &file );
 };
 
 #endif

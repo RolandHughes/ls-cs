@@ -21,7 +21,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef TypedArrayBase_h
@@ -30,26 +30,31 @@
 #include "ArrayBuffer.h"
 #include "ArrayBufferView.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 template <typename T>
-class TypedArrayBase : public ArrayBufferView {
-  public:
-    T* data() const { return static_cast<T*>(baseAddress()); }
-
-    void set(TypedArrayBase<T>* array, unsigned offset, ExceptionCode& ec)
+class TypedArrayBase : public ArrayBufferView
+{
+public:
+    T *data() const
     {
-        setImpl(array, offset * sizeof(T), ec);
+        return static_cast<T *>( baseAddress() );
     }
 
-    void setRange(const T* data, size_t dataLength, unsigned offset, ExceptionCode& ec)
+    void set( TypedArrayBase<T> *array, unsigned offset, ExceptionCode &ec )
     {
-        setRangeImpl(reinterpret_cast<const char*>(data), dataLength * sizeof(T), offset * sizeof(T), ec);
+        setImpl( array, offset * sizeof( T ), ec );
     }
 
-    void zeroRange(unsigned offset, size_t length, ExceptionCode& ec)
+    void setRange( const T *data, size_t dataLength, unsigned offset, ExceptionCode &ec )
     {
-        zeroRangeImpl(offset * sizeof(T), length * sizeof(T), ec);
+        setRangeImpl( reinterpret_cast<const char *>( data ), dataLength * sizeof( T ), offset * sizeof( T ), ec );
+    }
+
+    void zeroRange( unsigned offset, size_t length, ExceptionCode &ec )
+    {
+        zeroRangeImpl( offset * sizeof( T ), length * sizeof( T ), ec );
     }
 
     // Overridden from ArrayBufferView. This must be public because of
@@ -62,54 +67,65 @@ class TypedArrayBase : public ArrayBufferView {
 
     virtual unsigned byteLength() const
     {
-        return m_length * sizeof(T);
+        return m_length * sizeof( T );
     }
 
 protected:
-    TypedArrayBase(PassRefPtr<ArrayBuffer> buffer, unsigned byteOffset, unsigned length)
-        : ArrayBufferView(buffer, byteOffset)
-        , m_length(length)
+    TypedArrayBase( PassRefPtr<ArrayBuffer> buffer, unsigned byteOffset, unsigned length )
+        : ArrayBufferView( buffer, byteOffset )
+        , m_length( length )
     {
     }
 
     template <class Subclass>
-    static PassRefPtr<Subclass> create(unsigned length)
+    static PassRefPtr<Subclass> create( unsigned length )
     {
-        RefPtr<ArrayBuffer> buffer = ArrayBuffer::create(length, sizeof(T));
-        if (!buffer.get())
+        RefPtr<ArrayBuffer> buffer = ArrayBuffer::create( length, sizeof( T ) );
+
+        if ( !buffer.get() )
+        {
             return 0;
-        return create<Subclass>(buffer, 0, length);
+        }
+
+        return create<Subclass>( buffer, 0, length );
     }
 
     template <class Subclass>
-    static PassRefPtr<Subclass> create(const T* array, unsigned length)
+    static PassRefPtr<Subclass> create( const T *array, unsigned length )
     {
-        RefPtr<Subclass> a = create<Subclass>(length);
-        if (a)
-            for (unsigned i = 0; i < length; ++i)
-                a->set(i, array[i]);
+        RefPtr<Subclass> a = create<Subclass>( length );
+
+        if ( a )
+            for ( unsigned i = 0; i < length; ++i )
+            {
+                a->set( i, array[i] );
+            }
+
         return a;
     }
 
     template <class Subclass>
-    static PassRefPtr<Subclass> create(PassRefPtr<ArrayBuffer> buffer,
-                                       unsigned byteOffset,
-                                       unsigned length)
+    static PassRefPtr<Subclass> create( PassRefPtr<ArrayBuffer> buffer,
+                                        unsigned byteOffset,
+                                        unsigned length )
     {
-        RefPtr<ArrayBuffer> buf(buffer);
-        if (!verifySubRange<T>(buf, byteOffset, length))
-            return 0;
+        RefPtr<ArrayBuffer> buf( buffer );
 
-        return adoptRef(new Subclass(buf, byteOffset, length));
+        if ( !verifySubRange<T>( buf, byteOffset, length ) )
+        {
+            return 0;
+        }
+
+        return adoptRef( new Subclass( buf, byteOffset, length ) );
     }
 
     template <class Subclass>
-    PassRefPtr<Subclass> subarrayImpl(int start, int end) const
+    PassRefPtr<Subclass> subarrayImpl( int start, int end ) const
     {
         unsigned offset, length;
-        calculateOffsetAndLength(start, end, m_length, &offset, &length);
-        clampOffsetAndNumElements<T>(buffer(), m_byteOffset, &offset, &length);
-        return create<Subclass>(buffer(), offset, length);
+        calculateOffsetAndLength( start, end, m_length, &offset, &length );
+        clampOffsetAndNumElements<T>( buffer(), m_byteOffset, &offset, &length );
+        return create<Subclass>( buffer(), offset, length );
     }
 
     // We do not want to have to access this via a virtual function in subclasses,

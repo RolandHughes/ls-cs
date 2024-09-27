@@ -26,48 +26,54 @@
 #include "config.h"
 #include "BinarySemaphore.h"
 
-namespace CoreIPC {
+namespace CoreIPC
+{
 
 BinarySemaphore::BinarySemaphore()
-    : m_event(::CreateEventW(0, FALSE, FALSE, 0))
+    : m_event( ::CreateEventW( 0, FALSE, FALSE, 0 ) )
 {
 }
 
 BinarySemaphore::~BinarySemaphore()
 {
-    ::CloseHandle(m_event);
+    ::CloseHandle( m_event );
 }
 
 void BinarySemaphore::signal()
 {
-    ::SetEvent(m_event);
+    ::SetEvent( m_event );
 }
 
-bool BinarySemaphore::wait(double absoluteTime)
+bool BinarySemaphore::wait( double absoluteTime )
 {
-    DWORD interval = absoluteTimeToWaitTimeoutInterval(absoluteTime);
-    if (!interval) {
+    DWORD interval = absoluteTimeToWaitTimeoutInterval( absoluteTime );
+
+    if ( !interval )
+    {
         // Consider the wait to have timed out, even if the event has already been signaled, to
         // match the WTF::ThreadCondition implementation.
         return false;
     }
 
-    DWORD result = ::WaitForSingleObjectEx(m_event, interval, FALSE);
-    switch (result) {
-    case WAIT_OBJECT_0:
-        // The event was signaled.
-        return true;
+    DWORD result = ::WaitForSingleObjectEx( m_event, interval, FALSE );
 
-    case WAIT_TIMEOUT:
-        // The wait timed out.
-        return false;
+    switch ( result )
+    {
+        case WAIT_OBJECT_0:
+            // The event was signaled.
+            return true;
 
-    case WAIT_FAILED:
-        ASSERT_WITH_MESSAGE(false, "::WaitForSingleObjectEx failed with error %lu", ::GetLastError());
-        return false;
-    default:
-        ASSERT_WITH_MESSAGE(false, "::WaitForSingleObjectEx returned unexpected result %lu", result);
-        return false;
+        case WAIT_TIMEOUT:
+            // The wait timed out.
+            return false;
+
+        case WAIT_FAILED:
+            ASSERT_WITH_MESSAGE( false, "::WaitForSingleObjectEx failed with error %lu", ::GetLastError() );
+            return false;
+
+        default:
+            ASSERT_WITH_MESSAGE( false, "::WaitForSingleObjectEx returned unexpected result %lu", result );
+            return false;
     }
 }
 

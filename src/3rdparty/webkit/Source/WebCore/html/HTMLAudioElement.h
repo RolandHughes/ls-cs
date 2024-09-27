@@ -31,19 +31,24 @@
 
 #include "HTMLMediaElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Document;
 
-class HTMLAudioElement : public HTMLMediaElement {
+class HTMLAudioElement : public HTMLMediaElement
+{
 public:
-    static PassRefPtr<HTMLAudioElement> create(const QualifiedName&, Document*);
-    static PassRefPtr<HTMLAudioElement> createForJSConstructor(Document*, const String& src);
+    static PassRefPtr<HTMLAudioElement> create( const QualifiedName &, Document * );
+    static PassRefPtr<HTMLAudioElement> createForJSConstructor( Document *, const String &src );
 
 private:
-    HTMLAudioElement(const QualifiedName&, Document*);
+    HTMLAudioElement( const QualifiedName &, Document * );
 
-    virtual bool isVideo() const { return false; }
+    virtual bool isVideo() const
+    {
+        return false;
+    }
 };
 
 } //namespace

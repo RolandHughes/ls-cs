@@ -30,42 +30,42 @@
 
 class Q_GUI_EXPORT QPagedPaintDevice : public QPaintDevice
 {
- public:
-   QPagedPaintDevice();
-   ~QPagedPaintDevice();
+public:
+    QPagedPaintDevice();
+    ~QPagedPaintDevice();
 
-   virtual bool newPage() = 0;
+    virtual bool newPage() = 0;
 
-   virtual bool setPageLayout(const QPageLayout &pageLayout);
-   virtual QPageLayout pageLayout() const;
+    virtual bool setPageLayout( const QPageLayout &pageLayout );
+    virtual QPageLayout pageLayout() const;
 
-   virtual bool setPageOrientation(QPageLayout::Orientation orientation);
+    virtual bool setPageOrientation( QPageLayout::Orientation orientation );
 
-   virtual bool setPageSize(const QPageSize &size);
-   virtual void setPageSize(QPageSize::PageSizeId sizeId);    // not sure about this method
-   QPageSize::PageSizeId pageSize() const;
+    virtual bool setPageSize( const QPageSize &size );
+    virtual void setPageSize( QPageSize::PageSizeId sizeId );  // not sure about this method
+    QPageSize::PageSizeId pageSize() const;
 
-   virtual void setPageSizeMM(const QSizeF &size);
-   QSizeF pageSizeMM() const;
+    virtual void setPageSizeMM( const QSizeF &size );
+    QSizeF pageSizeMM() const;
 
-   virtual bool setPageMargins(const QMarginsF &margins);
-   virtual bool setPageMargins(const QMarginsF &margins, QPageLayout::Unit units);
+    virtual bool setPageMargins( const QMarginsF &margins );
+    virtual bool setPageMargins( const QMarginsF &margins, QPageLayout::Unit units );
 
-   virtual void setMargins(const QMarginsF &margins);
-   QMarginsF margins() const;
+    virtual void setMargins( const QMarginsF &margins );
+    QMarginsF margins() const;
 
-   int fromPage() const;
-   int toPage() const;
-   bool printSelectionOnly() const;
+    int fromPage() const;
+    int toPage() const;
+    bool printSelectionOnly() const;
 
- protected:
-   QPageLayout m_pageLayout;
+protected:
+    QPageLayout m_pageLayout;
 
-   // required to keep QPrinter working in QTextDocument::print()
-   int  m_fromPage;
-   int  m_toPage;
-   bool m_pageOrderAscending;
-   bool m_printSelectionOnly;
+    // required to keep QPrinter working in QTextDocument::print()
+    int  m_fromPage;
+    int  m_toPage;
+    bool m_pageOrderAscending;
+    bool m_printSelectionOnly;
 };
 
 #endif

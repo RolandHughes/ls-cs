@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -29,29 +29,31 @@
 #include "CSSMutableStyleDeclaration.h"
 #include <wtf/Assertions.h>
 
-namespace WebCore {
-
-RemoveCSSPropertyCommand::RemoveCSSPropertyCommand(Document* document, PassRefPtr<StyledElement> element, CSSPropertyID property)
-    : SimpleEditCommand(document)
-    , m_element(element)
-    , m_property(property)
-    , m_important(false)
+namespace WebCore
 {
-    ASSERT(m_element);
+
+RemoveCSSPropertyCommand::RemoveCSSPropertyCommand( Document *document, PassRefPtr<StyledElement> element,
+        CSSPropertyID property )
+    : SimpleEditCommand( document )
+    , m_element( element )
+    , m_property( property )
+    , m_important( false )
+{
+    ASSERT( m_element );
 }
 
 void RemoveCSSPropertyCommand::doApply()
 {
-    CSSMutableStyleDeclaration* style = m_element->inlineStyleDecl();
-    m_oldValue = style->getPropertyValue(m_property);
-    m_important = style->getPropertyPriority(m_property);
-    style->removeProperty(m_property);
+    CSSMutableStyleDeclaration *style = m_element->inlineStyleDecl();
+    m_oldValue = style->getPropertyValue( m_property );
+    m_important = style->getPropertyPriority( m_property );
+    style->removeProperty( m_property );
 }
 
 void RemoveCSSPropertyCommand::doUnapply()
 {
-    CSSMutableStyleDeclaration* style = m_element->inlineStyleDecl();
-    style->setProperty(m_property, m_oldValue, m_important);
+    CSSMutableStyleDeclaration *style = m_element->inlineStyleDecl();
+    style->setProperty( m_property, m_oldValue, m_important );
 }
 
 } // namespace WebCore

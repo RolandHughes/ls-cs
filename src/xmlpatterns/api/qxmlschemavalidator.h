@@ -38,34 +38,34 @@ class QXmlSchemaValidatorPrivate;
 
 class Q_XMLPATTERNS_EXPORT QXmlSchemaValidator
 {
- public:
-   QXmlSchemaValidator();
-   QXmlSchemaValidator(const QXmlSchema &schema);
-   ~QXmlSchemaValidator();
+public:
+    QXmlSchemaValidator();
+    QXmlSchemaValidator( const QXmlSchema &schema );
+    ~QXmlSchemaValidator();
 
-   void setSchema(const QXmlSchema &schema);
+    void setSchema( const QXmlSchema &schema );
 
-   bool validate(const QUrl &source) const;
-   bool validate(QIODevice *source, const QUrl &documentUri = QUrl()) const;
-   bool validate(const QByteArray &data, const QUrl &documentUri = QUrl()) const;
+    bool validate( const QUrl &source ) const;
+    bool validate( QIODevice *source, const QUrl &documentUri = QUrl() ) const;
+    bool validate( const QByteArray &data, const QUrl &documentUri = QUrl() ) const;
 
-   QXmlNamePool namePool() const;
-   QXmlSchema schema() const;
+    QXmlNamePool namePool() const;
+    QXmlSchema schema() const;
 
-   void setMessageHandler(QAbstractMessageHandler *handler);
-   QAbstractMessageHandler *messageHandler() const;
+    void setMessageHandler( QAbstractMessageHandler *handler );
+    QAbstractMessageHandler *messageHandler() const;
 
-   void setUriResolver(const QAbstractUriResolver *resolver);
-   const QAbstractUriResolver *uriResolver() const;
+    void setUriResolver( const QAbstractUriResolver *resolver );
+    const QAbstractUriResolver *uriResolver() const;
 
-   void setNetworkAccessManager(QNetworkAccessManager *manager);
-   QNetworkAccessManager *networkAccessManager() const;
+    void setNetworkAccessManager( QNetworkAccessManager *manager );
+    QNetworkAccessManager *networkAccessManager() const;
 
- private:
-   QXmlSchemaValidator(const QXmlSchemaValidator &) = delete;
-   QXmlSchemaValidator &operator=(const QXmlSchemaValidator &) = delete;
+private:
+    QXmlSchemaValidator( const QXmlSchemaValidator & ) = delete;
+    QXmlSchemaValidator &operator=( const QXmlSchemaValidator & ) = delete;
 
-   QXmlSchemaValidatorPrivate *const d;
+    QXmlSchemaValidatorPrivate *const d;
 };
 
 #endif

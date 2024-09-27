@@ -33,16 +33,16 @@
 
 #ifndef QT_NO_BEARERMANAGEMENT
 
-uint qHash(const QNetworkConfiguration &config);
+uint qHash( const QNetworkConfiguration &config );
 
 class QSharedNetworkSessionManager
 {
- public:
-   static QSharedPointer<QNetworkSession> getSession(QNetworkConfiguration config);
-   static void setSession(QNetworkConfiguration config, QSharedPointer<QNetworkSession> session);
+public:
+    static QSharedPointer<QNetworkSession> getSession( QNetworkConfiguration config );
+    static void setSession( QNetworkConfiguration config, QSharedPointer<QNetworkSession> session );
 
- private:
-   QHash<QNetworkConfiguration, QWeakPointer<QNetworkSession> > sessions;
+private:
+    QHash<QNetworkConfiguration, QWeakPointer<QNetworkSession> > sessions;
 };
 
 #endif // QT_NO_BEARERMANAGEMENT

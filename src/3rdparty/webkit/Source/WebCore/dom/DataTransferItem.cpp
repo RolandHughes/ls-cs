@@ -35,35 +35,40 @@
 
 #if ENABLE(DATA_TRANSFER_ITEMS)
 
-namespace WebCore {
+namespace WebCore
+{
 
 const char DataTransferItem::kindString[] = "string";
 const char DataTransferItem::kindFile[] = "file";
 
-DataTransferItem::DataTransferItem(RefPtr<Clipboard> owner, const String& kind, const String& type)
-    : m_owner(owner)
-    , m_kind(kind)
-    , m_type(type)
+DataTransferItem::DataTransferItem( RefPtr<Clipboard> owner, const String &kind, const String &type )
+    : m_owner( owner )
+    , m_kind( kind )
+    , m_type( type )
 {
 }
 
-Clipboard* DataTransferItem::owner()
+Clipboard *DataTransferItem::owner()
 {
     return m_owner.get();
 }
 
 String DataTransferItem::kind() const
 {
-    if (m_owner->policy() == ClipboardNumb)
+    if ( m_owner->policy() == ClipboardNumb )
+    {
         return String();
+    }
 
     return m_kind;
 }
 
 String DataTransferItem::type() const
 {
-    if (m_owner->policy() == ClipboardNumb)
+    if ( m_owner->policy() == ClipboardNumb )
+    {
         return String();
+    }
 
     return m_type;
 }

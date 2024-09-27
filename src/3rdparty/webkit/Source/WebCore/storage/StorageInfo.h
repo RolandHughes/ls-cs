@@ -36,28 +36,33 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class ScriptExecutionContext;
 class StorageInfoErrorCallback;
 class StorageInfoQuotaCallback;
 class StorageInfoUsageCallback;
 
-class StorageInfo : public RefCounted<StorageInfo> {
+class StorageInfo : public RefCounted<StorageInfo>
+{
 public:
-    enum {
+    enum
+    {
         TEMPORARY,
         PERSISTENT,
     };
 
     static PassRefPtr<StorageInfo> create()
     {
-        return adoptRef(new StorageInfo());
+        return adoptRef( new StorageInfo() );
     }
 
-    void queryUsageAndQuota(ScriptExecutionContext*, int storageType, PassRefPtr<StorageInfoUsageCallback>, PassRefPtr<StorageInfoErrorCallback>);
+    void queryUsageAndQuota( ScriptExecutionContext *, int storageType, PassRefPtr<StorageInfoUsageCallback>,
+                             PassRefPtr<StorageInfoErrorCallback> );
 
-    void requestQuota(ScriptExecutionContext*, int storageType, unsigned long long newQuotaInBytes, PassRefPtr<StorageInfoQuotaCallback>, PassRefPtr<StorageInfoErrorCallback>);
+    void requestQuota( ScriptExecutionContext *, int storageType, unsigned long long newQuotaInBytes,
+                       PassRefPtr<StorageInfoQuotaCallback>, PassRefPtr<StorageInfoErrorCallback> );
 
     ~StorageInfo();
 

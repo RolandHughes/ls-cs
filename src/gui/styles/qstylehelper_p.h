@@ -38,27 +38,28 @@ class QStyleOptionSlider;
 class QStyleOption;
 class QWindow;
 
-namespace QStyleHelper {
+namespace QStyleHelper
+{
 
-QString uniqueName(const QString &key, const QStyleOption *option, const QSize &size);
-qreal dpiScaled(qreal value);
+QString uniqueName( const QString &key, const QStyleOption *option, const QSize &size );
+qreal dpiScaled( qreal value );
 
 #ifndef QT_NO_DIAL
-qreal angle(const QPointF &p1, const QPointF &p2);
-QPolygonF calcLines(const QStyleOptionSlider *dial);
-int calcBigLineSize(int radius);
-void drawDial(const QStyleOptionSlider *dial, QPainter *painter);
+qreal angle( const QPointF &p1, const QPointF &p2 );
+QPolygonF calcLines( const QStyleOptionSlider *dial );
+int calcBigLineSize( int radius );
+void drawDial( const QStyleOptionSlider *dial, QPainter *painter );
 #endif
 
-void drawBorderPixmap(const QPixmap &pixmap, QPainter *painter, const QRect &rect,
-   int left = 0, int top = 0, int right = 0, int bottom = 0);
+void drawBorderPixmap( const QPixmap &pixmap, QPainter *painter, const QRect &rect,
+                       int left = 0, int top = 0, int right = 0, int bottom = 0 );
 #ifndef QT_NO_ACCESSIBILITY
-bool isInstanceOf(QObject *obj, QAccessible::Role role);
-bool hasAncestor(QObject *obj, QAccessible::Role role);
+bool isInstanceOf( QObject *obj, QAccessible::Role role );
+bool hasAncestor( QObject *obj, QAccessible::Role role );
 #endif
 
-QColor backgroundColor(const QPalette &pal, const QWidget *widget = nullptr);
-QWindow *styleObjectWindow(QObject *so);
+QColor backgroundColor( const QPalette &pal, const QWidget *widget = nullptr );
+QWindow *styleObjectWindow( QObject *so );
 
 }
 

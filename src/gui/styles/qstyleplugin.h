@@ -33,13 +33,13 @@ class QStyle;
 
 class Q_GUI_EXPORT QStylePlugin : public QObject
 {
-   GUI_CS_OBJECT(QStylePlugin)
+    GUI_CS_OBJECT( QStylePlugin )
 
- public:
-   explicit QStylePlugin(QObject *parent = nullptr);
-   ~QStylePlugin();
+public:
+    explicit QStylePlugin( QObject *parent = nullptr );
+    ~QStylePlugin();
 
-   virtual QStyle *create(const QString &key) = 0;
+    virtual QStyle *create( const QString &key ) = 0;
 };
 
 #endif

@@ -29,43 +29,46 @@
 
 #ifndef QT_NO_TOOLBUTTON
 
-QToolBarExtension::QToolBarExtension(QWidget *parent)
-   : QToolButton(parent)
+QToolBarExtension::QToolBarExtension( QWidget *parent )
+    : QToolButton( parent )
 {
-   setObjectName(QLatin1String("qt_toolbar_ext_button"));
-   setAutoRaise(true);
-   setOrientation(Qt::Horizontal);
-   setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-   setCheckable(true);
+    setObjectName( QLatin1String( "qt_toolbar_ext_button" ) );
+    setAutoRaise( true );
+    setOrientation( Qt::Horizontal );
+    setSizePolicy( QSizePolicy::Minimum, QSizePolicy::Minimum );
+    setCheckable( true );
 }
 
-void QToolBarExtension::setOrientation(Qt::Orientation o)
+void QToolBarExtension::setOrientation( Qt::Orientation o )
 {
-   QStyleOption opt;
-   opt.initFrom(this);
+    QStyleOption opt;
+    opt.initFrom( this );
 
-   if (o == Qt::Horizontal) {
-      setIcon(style()->standardIcon(QStyle::SP_ToolBarHorizontalExtensionButton, &opt));
-   } else {
-      setIcon(style()->standardIcon(QStyle::SP_ToolBarVerticalExtensionButton, &opt));
-   }
+    if ( o == Qt::Horizontal )
+    {
+        setIcon( style()->standardIcon( QStyle::SP_ToolBarHorizontalExtensionButton, &opt ) );
+    }
+    else
+    {
+        setIcon( style()->standardIcon( QStyle::SP_ToolBarVerticalExtensionButton, &opt ) );
+    }
 }
 
-void QToolBarExtension::paintEvent(QPaintEvent *)
+void QToolBarExtension::paintEvent( QPaintEvent * )
 {
-   QStylePainter p(this);
-   QStyleOptionToolButton opt;
-   initStyleOption(&opt);
-   // We do not need to draw both extension arrows
-   opt.features &= ~QStyleOptionToolButton::HasMenu;
-   p.drawComplexControl(QStyle::CC_ToolButton, opt);
+    QStylePainter p( this );
+    QStyleOptionToolButton opt;
+    initStyleOption( &opt );
+    // We do not need to draw both extension arrows
+    opt.features &= ~QStyleOptionToolButton::HasMenu;
+    p.drawComplexControl( QStyle::CC_ToolButton, opt );
 }
 
 
 QSize QToolBarExtension::sizeHint() const
 {
-   int ext = style()->pixelMetric(QStyle::PM_ToolBarExtensionExtent);
-   return QSize(ext, ext);
+    int ext = style()->pixelMetric( QStyle::PM_ToolBarExtensionExtent );
+    return QSize( ext, ext );
 }
 
 

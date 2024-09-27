@@ -24,39 +24,75 @@
 #if ENABLE(SVG)
 #include <wtf/text/WTFString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 template<typename PropertyType>
 struct SVGPropertyTraits { };
 
 template<>
-struct SVGPropertyTraits<bool> {
-    static bool initialValue() { return false; }
-    static String toString(bool type) { return type ? "true" : "false"; }
+struct SVGPropertyTraits<bool>
+{
+    static bool initialValue()
+    {
+        return false;
+    }
+    static String toString( bool type )
+    {
+        return type ? "true" : "false";
+    }
 };
 
 template<>
-struct SVGPropertyTraits<int> {
-    static int initialValue() { return 0; }
-    static String toString(int type) { return String::number(type); }
+struct SVGPropertyTraits<int>
+{
+    static int initialValue()
+    {
+        return 0;
+    }
+    static String toString( int type )
+    {
+        return String::number( type );
+    }
 };
 
 template<>
-struct SVGPropertyTraits<long> {
-    static long initialValue() { return 0; }
-    static String toString(long type) { return String::number(type); }
+struct SVGPropertyTraits<long>
+{
+    static long initialValue()
+    {
+        return 0;
+    }
+    static String toString( long type )
+    {
+        return String::number( type );
+    }
 };
 
 template<>
-struct SVGPropertyTraits<float> {
-    static float initialValue() { return 0; }
-    static String toString(float type) { return String::number(type); }
+struct SVGPropertyTraits<float>
+{
+    static float initialValue()
+    {
+        return 0;
+    }
+    static String toString( float type )
+    {
+        return String::number( type );
+    }
 };
 
 template<>
-struct SVGPropertyTraits<String> {
-    static String initialValue() { return String(); }
-    static String toString(const String& type) { return type; }
+struct SVGPropertyTraits<String>
+{
+    static String initialValue()
+    {
+        return String();
+    }
+    static String toString( const String &type )
+    {
+        return type;
+    }
 };
 
 }

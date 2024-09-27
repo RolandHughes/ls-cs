@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -29,54 +29,66 @@
 #include "AXObjectCache.h"
 #include "htmlediting.h"
 
-namespace WebCore {
-
-AppendNodeCommand::AppendNodeCommand(PassRefPtr<ContainerNode> parent, PassRefPtr<Node> node)
-    : SimpleEditCommand(parent->document())
-    , m_parent(parent)
-    , m_node(node)
+namespace WebCore
 {
-    ASSERT(m_parent);
-    ASSERT(m_node);
-    ASSERT(!m_node->parentNode());
 
-    ASSERT(m_parent->rendererIsEditable() || !m_parent->attached());
+AppendNodeCommand::AppendNodeCommand( PassRefPtr<ContainerNode> parent, PassRefPtr<Node> node )
+    : SimpleEditCommand( parent->document() )
+    , m_parent( parent )
+    , m_node( node )
+{
+    ASSERT( m_parent );
+    ASSERT( m_node );
+    ASSERT( !m_node->parentNode() );
+
+    ASSERT( m_parent->rendererIsEditable() || !m_parent->attached() );
 }
 
-static void sendAXTextChangedIgnoringLineBreaks(Node* node, AXObjectCache::AXTextChange textChange)
+static void sendAXTextChangedIgnoringLineBreaks( Node *node, AXObjectCache::AXTextChange textChange )
 {
     String nodeValue = node->nodeValue();
     unsigned len = nodeValue.length();
-    // Don't consider linebreaks in this command
-    if (nodeValue == "\n")
-      return;
 
-    node->document()->axObjectCache()->nodeTextChangeNotification(node->renderer(), textChange, 0, len);
+    // Don't consider linebreaks in this command
+    if ( nodeValue == "\n" )
+    {
+        return;
+    }
+
+    node->document()->axObjectCache()->nodeTextChangeNotification( node->renderer(), textChange, 0, len );
 }
 
 void AppendNodeCommand::doApply()
 {
-    if (!m_parent->rendererIsEditable() && m_parent->attached())
+    if ( !m_parent->rendererIsEditable() && m_parent->attached() )
+    {
         return;
-        
-    ExceptionCode ec;
-    m_parent->appendChild(m_node.get(), ec);
+    }
 
-    if (AXObjectCache::accessibilityEnabled())
-        sendAXTextChangedIgnoringLineBreaks(m_node.get(), AXObjectCache::AXTextInserted);
+    ExceptionCode ec;
+    m_parent->appendChild( m_node.get(), ec );
+
+    if ( AXObjectCache::accessibilityEnabled() )
+    {
+        sendAXTextChangedIgnoringLineBreaks( m_node.get(), AXObjectCache::AXTextInserted );
+    }
 }
 
 void AppendNodeCommand::doUnapply()
 {
-    if (!m_parent->rendererIsEditable())
+    if ( !m_parent->rendererIsEditable() )
+    {
         return;
-        
+    }
+
     // Need to notify this before actually deleting the text
-    if (AXObjectCache::accessibilityEnabled())
-        sendAXTextChangedIgnoringLineBreaks(m_node.get(), AXObjectCache::AXTextDeleted);
+    if ( AXObjectCache::accessibilityEnabled() )
+    {
+        sendAXTextChangedIgnoringLineBreaks( m_node.get(), AXObjectCache::AXTextDeleted );
+    }
 
     ExceptionCode ec;
-    m_node->remove(ec);
+    m_node->remove( ec );
 }
 
 } // namespace WebCore

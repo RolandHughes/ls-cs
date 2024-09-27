@@ -33,28 +33,36 @@
 #include <wtf/Forward.h>
 #include <wtf/Noncopyable.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 class WebPage;
 struct WebPageCreationParameters;
 
-class WebInspector : public APIObject {
+class WebInspector : public APIObject
+{
 public:
     static const Type APIType = TypeBundleInspector;
 
-    static PassRefPtr<WebInspector> create(WebPage*);
+    static PassRefPtr<WebInspector> create( WebPage * );
 
-    WebPage* page() const { return m_page; }
-    WebPage* inspectorPage() const { return m_inspectorPage; }
+    WebPage *page() const
+    {
+        return m_page;
+    }
+    WebPage *inspectorPage() const
+    {
+        return m_inspectorPage;
+    }
 
     // Implemented in generated WebInspectorMessageReceiver.cpp
-    void didReceiveWebInspectorMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*);
+    void didReceiveWebInspectorMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * );
 
     // Called by WebInspector messages
     void show();
     void close();
 
-    void evaluateScriptForTest(long callID, const String& script);
+    void evaluateScriptForTest( long callID, const String &script );
 
     void startPageProfiling();
     void stopPageProfiling();
@@ -63,23 +71,26 @@ private:
     friend class WebInspectorClient;
     friend class WebInspectorFrontendClient;
 
-    explicit WebInspector(WebPage*);
+    explicit WebInspector( WebPage * );
 
-    virtual Type type() const { return APIType; }
+    virtual Type type() const
+    {
+        return APIType;
+    }
 
     // Called from WebInspectorClient
-    WebPage* createInspectorPage();
+    WebPage *createInspectorPage();
 
     // Called from WebInspectorFrontendClient
     void didLoadInspectorPage();
     void didClose();
     void bringToFront();
-    void inspectedURLChanged(const String&);
+    void inspectedURLChanged( const String & );
 
     void attach();
     void detach();
 
-    void setAttachedWindowHeight(unsigned);
+    void setAttachedWindowHeight( unsigned );
 
     // Implemented in platform WebInspector file
     String localizedStringsURL() const;
@@ -92,8 +103,8 @@ private:
     void startJavaScriptProfiling();
     void stopJavaScriptProfiling();
 
-    WebPage* m_page;
-    WebPage* m_inspectorPage;
+    WebPage *m_page;
+    WebPage *m_inspectorPage;
 };
 
 } // namespace WebKit

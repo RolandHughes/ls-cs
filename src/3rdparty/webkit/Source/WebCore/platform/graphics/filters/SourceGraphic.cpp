@@ -30,46 +30,53 @@
 
 #include <wtf/StdLibExtras.h>
 
-namespace WebCore {
-
-PassRefPtr<SourceGraphic> SourceGraphic::create(Filter* filter)
+namespace WebCore
 {
-    return adoptRef(new SourceGraphic(filter));
+
+PassRefPtr<SourceGraphic> SourceGraphic::create( Filter *filter )
+{
+    return adoptRef( new SourceGraphic( filter ) );
 }
 
-const AtomicString& SourceGraphic::effectName()
+const AtomicString &SourceGraphic::effectName()
 {
-    DEFINE_STATIC_LOCAL(const AtomicString, s_effectName, ("SourceGraphic"));
+    DEFINE_STATIC_LOCAL( const AtomicString, s_effectName, ( "SourceGraphic" ) );
     return s_effectName;
 }
 
 void SourceGraphic::determineAbsolutePaintRect()
 {
-    Filter* filter = this->filter();
+    Filter *filter = this->filter();
     FloatRect paintRect = filter->sourceImageRect();
-    paintRect.scale(filter->filterResolution().width(), filter->filterResolution().height());
-    setAbsolutePaintRect(enclosingIntRect(paintRect));
+    paintRect.scale( filter->filterResolution().width(), filter->filterResolution().height() );
+    setAbsolutePaintRect( enclosingIntRect( paintRect ) );
 }
 
 void SourceGraphic::apply()
 {
-    if (hasResult())
+    if ( hasResult() )
+    {
         return;
-    ImageBuffer* resultImage = createImageBufferResult();
-    Filter* filter = this->filter();
-    if (!resultImage || !filter->sourceImage())
-        return;
+    }
 
-    resultImage->context()->drawImageBuffer(filter->sourceImage(), ColorSpaceDeviceRGB, IntPoint());
+    ImageBuffer *resultImage = createImageBufferResult();
+    Filter *filter = this->filter();
+
+    if ( !resultImage || !filter->sourceImage() )
+    {
+        return;
+    }
+
+    resultImage->context()->drawImageBuffer( filter->sourceImage(), ColorSpaceDeviceRGB, IntPoint() );
 }
 
 void SourceGraphic::dump()
 {
 }
 
-TextStream& SourceGraphic::externalRepresentation(TextStream& ts, int indent) const
+TextStream &SourceGraphic::externalRepresentation( TextStream &ts, int indent ) const
 {
-    writeIndent(ts, indent);
+    writeIndent( ts, indent );
     ts << "[SourceGraphic]\n";
     return ts;
 }

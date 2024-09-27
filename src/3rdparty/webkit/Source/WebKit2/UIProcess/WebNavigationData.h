@@ -30,26 +30,37 @@
 #include "WebNavigationDataStore.h"
 #include <wtf/PassRefPtr.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
-class WebNavigationData : public APIObject {
+class WebNavigationData : public APIObject
+{
 public:
     static const Type APIType = TypeNavigationData;
 
-    static PassRefPtr<WebNavigationData> create(const WebNavigationDataStore& store)
+    static PassRefPtr<WebNavigationData> create( const WebNavigationDataStore &store )
     {
-        return adoptRef(new WebNavigationData(store));
+        return adoptRef( new WebNavigationData( store ) );
     }
 
     virtual ~WebNavigationData();
 
-    String title() const { return m_store.title; }
-    String url() const { return m_store.url; }
+    String title() const
+    {
+        return m_store.title;
+    }
+    String url() const
+    {
+        return m_store.url;
+    }
 
 private:
-    WebNavigationData(const WebNavigationDataStore&);
+    WebNavigationData( const WebNavigationDataStore & );
 
-    virtual Type type() const { return APIType; }
+    virtual Type type() const
+    {
+        return APIType;
+    }
 
     WebNavigationDataStore m_store;
 };

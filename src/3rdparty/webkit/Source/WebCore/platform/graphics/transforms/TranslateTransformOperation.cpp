@@ -23,23 +23,28 @@
 #include "TranslateTransformOperation.h"
 #include "FloatConversion.h"
 
-namespace WebCore {
-
-PassRefPtr<TransformOperation> TranslateTransformOperation::blend(const TransformOperation* from, double progress, bool blendToIdentity)
+namespace WebCore
 {
-    if (from && !from->isSameType(*this))
-        return this;
-    
-    if (blendToIdentity)
-        return TranslateTransformOperation::create(Length(m_x.type()).blend(m_x, narrowPrecisionToFloat(progress)), 
-                                                   Length(m_y.type()).blend(m_y, narrowPrecisionToFloat(progress)), 
-                                                   Length(m_z.type()).blend(m_z, narrowPrecisionToFloat(progress)), m_type);
 
-    const TranslateTransformOperation* fromOp = static_cast<const TranslateTransformOperation*>(from);
-    Length fromX = fromOp ? fromOp->m_x : Length(m_x.type());
-    Length fromY = fromOp ? fromOp->m_y : Length(m_y.type());
-    Length fromZ = fromOp ? fromOp->m_z : Length(m_z.type());
-    return TranslateTransformOperation::create(m_x.blend(fromX, narrowPrecisionToFloat(progress)), m_y.blend(fromY, narrowPrecisionToFloat(progress)), m_z.blend(fromZ, narrowPrecisionToFloat(progress)), m_type);
+PassRefPtr<TransformOperation> TranslateTransformOperation::blend( const TransformOperation *from, double progress,
+        bool blendToIdentity )
+{
+    if ( from && !from->isSameType( *this ) )
+    {
+        return this;
+    }
+
+    if ( blendToIdentity )
+        return TranslateTransformOperation::create( Length( m_x.type() ).blend( m_x, narrowPrecisionToFloat( progress ) ),
+                Length( m_y.type() ).blend( m_y, narrowPrecisionToFloat( progress ) ),
+                Length( m_z.type() ).blend( m_z, narrowPrecisionToFloat( progress ) ), m_type );
+
+    const TranslateTransformOperation *fromOp = static_cast<const TranslateTransformOperation *>( from );
+    Length fromX = fromOp ? fromOp->m_x : Length( m_x.type() );
+    Length fromY = fromOp ? fromOp->m_y : Length( m_y.type() );
+    Length fromZ = fromOp ? fromOp->m_z : Length( m_z.type() );
+    return TranslateTransformOperation::create( m_x.blend( fromX, narrowPrecisionToFloat( progress ) ), m_y.blend( fromY,
+            narrowPrecisionToFloat( progress ) ), m_z.blend( fromZ, narrowPrecisionToFloat( progress ) ), m_type );
 }
 
 } // namespace WebCore

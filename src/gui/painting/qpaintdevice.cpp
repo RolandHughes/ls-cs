@@ -26,67 +26,78 @@
 
 QPaintDevice::QPaintDevice()
 {
-   reserved = nullptr;
-   painters = 0;
+    reserved = nullptr;
+    painters = 0;
 }
 
 QPaintDevice::~QPaintDevice()
 {
-   if (paintingActive()) {
-      qWarning("QPaintDevice::~QPaintDevice() Unable to destroy a paint device while it is being painted");
-   }
+    if ( paintingActive() )
+    {
+        qWarning( "QPaintDevice::~QPaintDevice() Unable to destroy a paint device while it is being painted" );
+    }
 }
 
-void QPaintDevice::initPainter(QPainter *) const
+void QPaintDevice::initPainter( QPainter * ) const
 {
 }
 
 // internal
-QPaintDevice *QPaintDevice::redirected(QPoint *) const
+QPaintDevice *QPaintDevice::redirected( QPoint * ) const
 {
-   return nullptr;
+    return nullptr;
 }
 
 // internal
 QPainter *QPaintDevice::sharedPainter() const
 {
-   return nullptr;
+    return nullptr;
 }
 
-Q_GUI_EXPORT int qt_paint_device_metric(const QPaintDevice *device, QPaintDevice::PaintDeviceMetric metric)
+Q_GUI_EXPORT int qt_paint_device_metric( const QPaintDevice *device, QPaintDevice::PaintDeviceMetric metric )
 {
-   return device->metric(metric);
+    return device->metric( metric );
 }
 
-int QPaintDevice::metric(PaintDeviceMetric m) const
+int QPaintDevice::metric( PaintDeviceMetric m ) const
 {
-   // Fallback: subclass has not implemented
-   // PdmDevicePixelRatioScaled but might have implemented PdmDevicePixelRatio
+    // Fallback: subclass has not implemented
+    // PdmDevicePixelRatioScaled but might have implemented PdmDevicePixelRatio
 
-   if (m == PdmDevicePixelRatioScaled) {
-      return this->metric(PdmDevicePixelRatio) * devicePixelRatioFScale();
-   }
+    if ( m == PdmDevicePixelRatioScaled )
+    {
+        return this->metric( PdmDevicePixelRatio ) * devicePixelRatioFScale();
+    }
 
-   qWarning("QPaintDevice::metric() Device has no metric information");
+    qWarning( "QPaintDevice::metric() Device has no metric information" );
 
-   if (m == PdmDpiX) {
-      return 72;
+    if ( m == PdmDpiX )
+    {
+        return 72;
 
-   } else if (m == PdmDpiY) {
-      return 72;
+    }
+    else if ( m == PdmDpiY )
+    {
+        return 72;
 
-   } else if (m == PdmNumColors) {
-      // does this need to be a real value?
-      return 256;
+    }
+    else if ( m == PdmNumColors )
+    {
+        // does this need to be a real value?
+        return 256;
 
-   } else if (m == PdmDevicePixelRatio) {
-      return 1;
+    }
+    else if ( m == PdmDevicePixelRatio )
+    {
+        return 1;
 
-   } else {
+    }
+    else
+    {
 
 #if defined(CS_SHOW_DEBUG_GUI_PAINTING)
-      qDebug("Unrecognised metric %d", m);
+        qDebug( "Unrecognised metric %d", m );
 #endif
-      return 0;
-   }
+        return 0;
+    }
 }

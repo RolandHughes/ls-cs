@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef WebKitCSSKeyframesRule_h
@@ -31,61 +31,72 @@
 #include <wtf/RefPtr.h>
 #include <wtf/text/AtomicString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class CSSRuleList;
 class WebKitCSSKeyframeRule;
 
 typedef int ExceptionCode;
 
-class WebKitCSSKeyframesRule : public CSSRule {
+class WebKitCSSKeyframesRule : public CSSRule
+{
 public:
     static PassRefPtr<WebKitCSSKeyframesRule> create()
     {
-        return adoptRef(new WebKitCSSKeyframesRule(0));
+        return adoptRef( new WebKitCSSKeyframesRule( 0 ) );
     }
-    static PassRefPtr<WebKitCSSKeyframesRule> create(CSSStyleSheet* parent)
+    static PassRefPtr<WebKitCSSKeyframesRule> create( CSSStyleSheet *parent )
     {
-        return adoptRef(new WebKitCSSKeyframesRule(parent));
+        return adoptRef( new WebKitCSSKeyframesRule( parent ) );
     }
 
     ~WebKitCSSKeyframesRule();
 
-    virtual bool isKeyframesRule() { return true; }
+    virtual bool isKeyframesRule()
+    {
+        return true;
+    }
 
     // Inherited from CSSRule
-    virtual unsigned short type() const { return WEBKIT_KEYFRAMES_RULE; }
+    virtual unsigned short type() const
+    {
+        return WEBKIT_KEYFRAMES_RULE;
+    }
 
     String name() const;
-    void setName(const String&);
-    
+    void setName( const String & );
+
     // This version of setName does not call styleSheetChanged to avoid
     // unnecessary work. It assumes callers will either make that call
     // themselves, or know that it will get called later.
-    void setNameInternal(const String& name)
-    {   
-        m_name = AtomicString(name);
+    void setNameInternal( const String &name )
+    {
+        m_name = AtomicString( name );
     }
 
-    CSSRuleList* cssRules() { return m_lstCSSRules.get(); }
+    CSSRuleList *cssRules()
+    {
+        return m_lstCSSRules.get();
+    }
 
-    void insertRule(const String& rule);
-    void deleteRule(const String& key);
-    WebKitCSSKeyframeRule* findRule(const String& key);
+    void insertRule( const String &rule );
+    void deleteRule( const String &key );
+    WebKitCSSKeyframeRule *findRule( const String &key );
 
     virtual String cssText() const;
 
     /* not part of the DOM */
     unsigned length() const;
-    WebKitCSSKeyframeRule*        item(unsigned index);
-    const WebKitCSSKeyframeRule*  item(unsigned index) const;
-    void append(WebKitCSSKeyframeRule* rule);
+    WebKitCSSKeyframeRule        *item( unsigned index );
+    const WebKitCSSKeyframeRule  *item( unsigned index ) const;
+    void append( WebKitCSSKeyframeRule *rule );
 
 private:
-    WebKitCSSKeyframesRule(CSSStyleSheet* parent);
+    WebKitCSSKeyframesRule( CSSStyleSheet *parent );
 
-    int findRuleIndex(const String& key) const;
-    
+    int findRuleIndex( const String &key ) const;
+
     RefPtr<CSSRuleList> m_lstCSSRules;
     AtomicString m_name;
 };

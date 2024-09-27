@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -32,46 +32,58 @@
 #include "PendingScript.h"
 #include "ScriptElement.h"
 
-namespace WebCore {
-
-ScriptRunner::ScriptRunner(Document* document)
-    : m_document(document)
-    , m_timer(this, &ScriptRunner::timerFired)
+namespace WebCore
 {
-    ASSERT(document);
+
+ScriptRunner::ScriptRunner( Document *document )
+    : m_document( document )
+    , m_timer( this, &ScriptRunner::timerFired )
+{
+    ASSERT( document );
 }
 
 ScriptRunner::~ScriptRunner()
 {
-    for (size_t i = 0; i < m_scriptsToExecuteSoon.size(); ++i)
+    for ( size_t i = 0; i < m_scriptsToExecuteSoon.size(); ++i )
+    {
         m_document->decrementLoadEventDelayCount();
-    for (size_t i = 0; i < m_scriptsToExecuteInOrder.size(); ++i)
+    }
+
+    for ( size_t i = 0; i < m_scriptsToExecuteInOrder.size(); ++i )
+    {
         m_document->decrementLoadEventDelayCount();
+    }
 }
 
-void ScriptRunner::queueScriptForExecution(ScriptElement* scriptElement, CachedResourceHandle<CachedScript> cachedScript, ExecutionType executionType)
+void ScriptRunner::queueScriptForExecution( ScriptElement *scriptElement, CachedResourceHandle<CachedScript> cachedScript,
+        ExecutionType executionType )
 {
-    ASSERT(scriptElement);
+    ASSERT( scriptElement );
 
-    Element* element = scriptElement->element();
-    ASSERT(element);
-    ASSERT(element->inDocument());
+    Element *element = scriptElement->element();
+    ASSERT( element );
+    ASSERT( element->inDocument() );
 
     m_document->incrementLoadEventDelayCount();
 
-    switch (executionType) {
-    case ASYNC_EXECUTION:
-        m_scriptsToExecuteSoon.append(PendingScript(element, cachedScript.get()));
-        if (!m_timer.isActive())
-            m_timer.startOneShot(0);
-        break;
+    switch ( executionType )
+    {
+        case ASYNC_EXECUTION:
+            m_scriptsToExecuteSoon.append( PendingScript( element, cachedScript.get() ) );
 
-    case IN_ORDER_EXECUTION:
-        m_scriptsToExecuteInOrder.append(PendingScript(element, cachedScript.get()));
-        break;
+            if ( !m_timer.isActive() )
+            {
+                m_timer.startOneShot( 0 );
+            }
 
-    default:
-        ASSERT_NOT_REACHED();
+            break;
+
+        case IN_ORDER_EXECUTION:
+            m_scriptsToExecuteInOrder.append( PendingScript( element, cachedScript.get() ) );
+            break;
+
+        default:
+            ASSERT_NOT_REACHED();
     }
 }
 
@@ -82,36 +94,47 @@ void ScriptRunner::suspend()
 
 void ScriptRunner::resume()
 {
-    if (hasPendingScripts())
-        m_timer.startOneShot(0);
+    if ( hasPendingScripts() )
+    {
+        m_timer.startOneShot( 0 );
+    }
 }
 
 void ScriptRunner::notifyInOrderScriptReady()
 {
-    ASSERT(!m_scriptsToExecuteInOrder.isEmpty());
-    m_timer.startOneShot(0);
+    ASSERT( !m_scriptsToExecuteInOrder.isEmpty() );
+    m_timer.startOneShot( 0 );
 }
 
-void ScriptRunner::timerFired(Timer<ScriptRunner>* timer)
+void ScriptRunner::timerFired( Timer<ScriptRunner> *timer )
 {
-    ASSERT_UNUSED(timer, timer == &m_timer);
+    ASSERT_UNUSED( timer, timer == &m_timer );
 
-    RefPtr<Document> protect(m_document);
+    RefPtr<Document> protect( m_document );
 
     Vector<PendingScript> scripts;
-    scripts.swap(m_scriptsToExecuteSoon);
+    scripts.swap( m_scriptsToExecuteSoon );
 
     size_t numInOrderScriptsToExecute = 0;
-    for (; numInOrderScriptsToExecute < m_scriptsToExecuteInOrder.size() && m_scriptsToExecuteInOrder[numInOrderScriptsToExecute].cachedScript()->isLoaded(); ++numInOrderScriptsToExecute)
-        scripts.append(m_scriptsToExecuteInOrder[numInOrderScriptsToExecute]);
-    if (numInOrderScriptsToExecute)
-        m_scriptsToExecuteInOrder.remove(0, numInOrderScriptsToExecute);
+
+    for ( ; numInOrderScriptsToExecute < m_scriptsToExecuteInOrder.size()
+            && m_scriptsToExecuteInOrder[numInOrderScriptsToExecute].cachedScript()->isLoaded(); ++numInOrderScriptsToExecute )
+    {
+        scripts.append( m_scriptsToExecuteInOrder[numInOrderScriptsToExecute] );
+    }
+
+    if ( numInOrderScriptsToExecute )
+    {
+        m_scriptsToExecuteInOrder.remove( 0, numInOrderScriptsToExecute );
+    }
 
     size_t size = scripts.size();
-    for (size_t i = 0; i < size; ++i) {
-        CachedScript* cachedScript = scripts[i].cachedScript();
+
+    for ( size_t i = 0; i < size; ++i )
+    {
+        CachedScript *cachedScript = scripts[i].cachedScript();
         RefPtr<Element> element = scripts[i].releaseElementAndClear();
-        toScriptElement(element.get())->execute(cachedScript);
+        toScriptElement( element.get() )->execute( cachedScript );
         m_document->decrementLoadEventDelayCount();
     }
 }

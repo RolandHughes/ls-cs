@@ -37,25 +37,30 @@
 #include "AutodrainedPool.h"
 #include "Logging.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 FileThread::FileThread()
-    : m_threadID(0)
+    : m_threadID( 0 )
 {
     m_selfRef = this;
 }
 
 FileThread::~FileThread()
 {
-    ASSERT(m_queue.killed());
+    ASSERT( m_queue.killed() );
 }
 
 bool FileThread::start()
 {
-    MutexLocker lock(m_threadCreationMutex);
-    if (m_threadID)
+    MutexLocker lock( m_threadCreationMutex );
+
+    if ( m_threadID )
+    {
         return true;
-    m_threadID = createThread(FileThread::fileThreadStart, this, "WebCore: File");
+    }
+
+    m_threadID = createThread( FileThread::fileThreadStart, this, "WebCore: File" );
     return m_threadID;
 }
 
@@ -64,49 +69,56 @@ void FileThread::stop()
     m_queue.kill();
 }
 
-void FileThread::postTask(PassOwnPtr<Task> task)
+void FileThread::postTask( PassOwnPtr<Task> task )
 {
-    m_queue.append(task);
+    m_queue.append( task );
 }
 
-class SameInstancePredicate {
+class SameInstancePredicate
+{
 public:
-    SameInstancePredicate(const void* instance) : m_instance(instance) { }
-    bool operator()(FileThread::Task* task) const { return task->instance() == m_instance; }
+    SameInstancePredicate( const void *instance ) : m_instance( instance ) { }
+    bool operator()( FileThread::Task *task ) const
+    {
+        return task->instance() == m_instance;
+    }
 private:
-    const void* m_instance;
+    const void *m_instance;
 };
 
-void FileThread::unscheduleTasks(const void* instance)
+void FileThread::unscheduleTasks( const void *instance )
 {
-    SameInstancePredicate predicate(instance);
-    m_queue.removeIf(predicate);
+    SameInstancePredicate predicate( instance );
+    m_queue.removeIf( predicate );
 }
 
-void* FileThread::fileThreadStart(void* arg)
+void *FileThread::fileThreadStart( void *arg )
 {
-    FileThread* fileThread = static_cast<FileThread*>(arg);
+    FileThread *fileThread = static_cast<FileThread *>( arg );
     return fileThread->runLoop();
 }
 
-void* FileThread::runLoop()
+void *FileThread::runLoop()
 {
     {
         // Wait for FileThread::start() to complete to have m_threadID
         // established before starting the main loop.
-        MutexLocker lock(m_threadCreationMutex);
-        LOG(FileAPI, "Started FileThread %p", this);
+        MutexLocker lock( m_threadCreationMutex );
+        LOG( FileAPI, "Started FileThread %p", this );
     }
 
     AutodrainedPool pool;
-    while (OwnPtr<Task> task = m_queue.waitForMessage()) {
+
+    while ( OwnPtr<Task> task = m_queue.waitForMessage() )
+    {
         task->performTask();
         pool.cycle();
     }
 
-    LOG(FileAPI, "About to detach thread %i and clear the ref to FileThread %p, which currently has %i ref(s)", m_threadID, this, refCount());
+    LOG( FileAPI, "About to detach thread %i and clear the ref to FileThread %p, which currently has %i ref(s)", m_threadID, this,
+         refCount() );
 
-    detachThread(m_threadID);
+    detachThread( m_threadID );
 
     // Clear the self refptr, possibly resulting in deletion
     m_selfRef = 0;

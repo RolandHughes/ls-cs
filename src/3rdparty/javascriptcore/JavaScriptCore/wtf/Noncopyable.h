@@ -26,23 +26,26 @@
 
 #include "FastAllocBase.h"
 
-namespace WTFNoncopyable {
+namespace WTFNoncopyable
+{
 
-    class Noncopyable : public FastAllocBase {
-        Noncopyable(const Noncopyable&);
-        Noncopyable& operator=(const Noncopyable&);
-    protected:
-        Noncopyable() { }
-        ~Noncopyable() { }
-    };
+class Noncopyable : public FastAllocBase
+{
+    Noncopyable( const Noncopyable & );
+    Noncopyable &operator=( const Noncopyable & );
+protected:
+    Noncopyable() { }
+    ~Noncopyable() { }
+};
 
-    class NoncopyableCustomAllocated {
-        NoncopyableCustomAllocated(const NoncopyableCustomAllocated&);
-        NoncopyableCustomAllocated& operator=(const NoncopyableCustomAllocated&);
-    protected:
-        NoncopyableCustomAllocated() { }
-        ~NoncopyableCustomAllocated() { }
-    };
+class NoncopyableCustomAllocated
+{
+    NoncopyableCustomAllocated( const NoncopyableCustomAllocated & );
+    NoncopyableCustomAllocated &operator=( const NoncopyableCustomAllocated & );
+protected:
+    NoncopyableCustomAllocated() { }
+    ~NoncopyableCustomAllocated() { }
+};
 
 } // namespace WTFNoncopyable
 

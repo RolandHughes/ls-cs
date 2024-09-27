@@ -36,7 +36,7 @@ public:
     ~QCoreWlanEnginePlugin();
 
     QStringList keys() const;
-    QBearerEngine *create(const QString &key) const;
+    QBearerEngine *create( const QString &key ) const;
 };
 
 QCoreWlanEnginePlugin::QCoreWlanEnginePlugin()
@@ -49,19 +49,23 @@ QCoreWlanEnginePlugin::~QCoreWlanEnginePlugin()
 
 QStringList QCoreWlanEnginePlugin::keys() const
 {
-    return QStringList() << QLatin1String("corewlan");
+    return QStringList() << QLatin1String( "corewlan" );
 }
 
-QBearerEngine *QCoreWlanEnginePlugin::create(const QString &key) const
+QBearerEngine *QCoreWlanEnginePlugin::create( const QString &key ) const
 {
-    if (key == QLatin1String("corewlan"))
+    if ( key == QLatin1String( "corewlan" ) )
+    {
         return new QCoreWlanEngine;
+    }
     else
+    {
         return 0;
+    }
 }
 
-Q_EXPORT_STATIC_PLUGIN(QCoreWlanEnginePlugin)
-Q_EXPORT_PLUGIN2(qcorewlanbearer, QCoreWlanEnginePlugin)
+Q_EXPORT_STATIC_PLUGIN( QCoreWlanEnginePlugin )
+Q_EXPORT_PLUGIN2( qcorewlanbearer, QCoreWlanEnginePlugin )
 
 QT_END_NAMESPACE
 

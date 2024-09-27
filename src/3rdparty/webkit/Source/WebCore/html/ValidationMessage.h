@@ -37,27 +37,32 @@
 #include <wtf/RefPtr.h>
 #include <wtf/text/WTFString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class FormAssociatedElement;
 class HTMLElement;
 
-class ValidationMessage {
-    WTF_MAKE_NONCOPYABLE(ValidationMessage);
+class ValidationMessage
+{
+    WTF_MAKE_NONCOPYABLE( ValidationMessage );
 public:
-    static PassOwnPtr<ValidationMessage> create(FormAssociatedElement*);
+    static PassOwnPtr<ValidationMessage> create( FormAssociatedElement * );
     ~ValidationMessage();
-    String message() const { return m_message; }
-    void setMessage(const String&);
+    String message() const
+    {
+        return m_message;
+    }
+    void setMessage( const String & );
     void requestToHideMessage();
 
 private:
-    ValidationMessage(FormAssociatedElement*);
-    void setMessageDOMAndStartTimer(Timer<ValidationMessage>* = 0);
-    void buildBubbleTree(Timer<ValidationMessage>*);
-    void deleteBubbleTree(Timer<ValidationMessage>* = 0);
+    ValidationMessage( FormAssociatedElement * );
+    void setMessageDOMAndStartTimer( Timer<ValidationMessage> * = 0 );
+    void buildBubbleTree( Timer<ValidationMessage> * );
+    void deleteBubbleTree( Timer<ValidationMessage> * = 0 );
 
-    FormAssociatedElement* m_element;
+    FormAssociatedElement *m_element;
     String m_message;
     OwnPtr<Timer<ValidationMessage> > m_timer;
     RefPtr<HTMLElement> m_bubble;

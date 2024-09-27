@@ -27,28 +27,35 @@
 #include "Element.h"
 #include <wtf/Assertions.h>
 
-namespace WebCore {
-
-TagNodeList::TagNodeList(PassRefPtr<Node> rootNode, const AtomicString& namespaceURI, const AtomicString& localName)
-    : DynamicNodeList(rootNode)
-    , m_namespaceURI(namespaceURI)
-    , m_localName(localName)
+namespace WebCore
 {
-    ASSERT(m_namespaceURI.isNull() || !m_namespaceURI.isEmpty());
+
+TagNodeList::TagNodeList( PassRefPtr<Node> rootNode, const AtomicString &namespaceURI, const AtomicString &localName )
+    : DynamicNodeList( rootNode )
+    , m_namespaceURI( namespaceURI )
+    , m_localName( localName )
+{
+    ASSERT( m_namespaceURI.isNull() || !m_namespaceURI.isEmpty() );
 }
 
 TagNodeList::~TagNodeList()
 {
-    if (m_namespaceURI == starAtom)
-        m_rootNode->removeCachedTagNodeList(this, m_localName);
+    if ( m_namespaceURI == starAtom )
+    {
+        m_rootNode->removeCachedTagNodeList( this, m_localName );
+    }
     else
-        m_rootNode->removeCachedTagNodeList(this, QualifiedName(nullAtom, m_localName, m_namespaceURI));
+    {
+        m_rootNode->removeCachedTagNodeList( this, QualifiedName( nullAtom, m_localName, m_namespaceURI ) );
+    }
 }
 
-bool TagNodeList::nodeMatches(Element* testNode) const
+bool TagNodeList::nodeMatches( Element *testNode ) const
 {
-    if (m_namespaceURI != starAtom && m_namespaceURI != testNode->namespaceURI())
+    if ( m_namespaceURI != starAtom && m_namespaceURI != testNode->namespaceURI() )
+    {
         return false;
+    }
 
     return m_localName == starAtom || m_localName == testNode->localName();
 }

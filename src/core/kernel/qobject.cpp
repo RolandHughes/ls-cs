@@ -32,961 +32,1079 @@
 #include <qorderedmutexlocker_p.h>
 #include <qthread_p.h>
 
-QObject::QObject(QObject *t_parent)
+QObject::QObject( QObject *t_parent )
 {
 
-   m_parent                   = nullptr;     // no parent yet, set by setParent()
-   m_currentChildBeingDeleted = nullptr;
-   m_declarativeData          = nullptr;
-   m_postedEvents             = 0;
-   m_sharedRefCount           = nullptr;
+    m_parent                   = nullptr;     // no parent yet, set by setParent()
+    m_currentChildBeingDeleted = nullptr;
+    m_declarativeData          = nullptr;
+    m_postedEvents             = 0;
+    m_sharedRefCount           = nullptr;
 
-   m_pendTimer                = false;       // no timers yet
-   m_wasDeleted               = false;       // double delete flag
-   m_sentChildRemoved         = false;
-   m_sendChildEvents          = true;        // should send ChildInsert and ChildRemove events to parent
-   m_receiveChildEvents       = true;
+    m_pendTimer                = false;       // no timers yet
+    m_wasDeleted               = false;       // double delete flag
+    m_sentChildRemoved         = false;
+    m_sendChildEvents          = true;        // should send ChildInsert and ChildRemove events to parent
+    m_receiveChildEvents       = true;
 
-   // atomics
-   m_inThreadChangeEvent      = false;
-   m_blockSig                 = false;       // allow signal to be emitted
+    // atomics
+    m_inThreadChangeEvent      = false;
+    m_blockSig                 = false;       // allow signal to be emitted
 
-   //
-   if (t_parent && ! t_parent->thread()) {
-      m_threadData.store(t_parent->m_threadData.load());
-   } else {
-      m_threadData.store(QThreadData::current());
-   }
+    //
+    if ( t_parent && ! t_parent->thread() )
+    {
+        m_threadData.store( t_parent->m_threadData.load() );
+    }
+    else
+    {
+        m_threadData.store( QThreadData::current() );
+    }
 
-   m_threadData.load()->ref();
+    m_threadData.load()->ref();
 
-   if (t_parent) {
-      try {
+    if ( t_parent )
+    {
+        try
+        {
 
-         if (! this->check_parent_thread(t_parent, t_parent->m_threadData, m_threadData)) {
-            t_parent = nullptr;
-         }
+            if ( ! this->check_parent_thread( t_parent, t_parent->m_threadData, m_threadData ) )
+            {
+                t_parent = nullptr;
+            }
 
-         this->setParent(t_parent);
+            this->setParent( t_parent );
 
-      } catch (...) {
-         m_threadData.load()->deref();
-         throw;
-      }
-   }
+        }
+        catch ( ... )
+        {
+            m_threadData.load()->deref();
+            throw;
+        }
+    }
 }
 
 QObject::~QObject()
 {
-   this->m_blockSig = false;    // unblock signals so we always emit destroyed()
+    this->m_blockSig = false;    // unblock signals so we always emit destroyed()
 
-   // this code comes before anything else since a signal can not be emited from a dead object
-   try {
-      emit destroyed(this);
+    // this code comes before anything else since a signal can not be emited from a dead object
+    try
+    {
+        emit destroyed( this );
 
-   } catch (...) {
-      // all signal/slots connections are still in place
-      // program will crash soon
+    }
+    catch ( ... )
+    {
+        // all signal/slots connections are still in place
+        // program will crash soon
 
-      qWarning("QObject:~QObject() Detected an unexpected exception while emitting destroyed()");
-   }
+        qWarning( "QObject:~QObject() Detected an unexpected exception while emitting destroyed()" );
+    }
 
-   // this line needs to be located after the emit destroyed
-   this->m_wasDeleted = true;
+    // this line needs to be located after the emit destroyed
+    this->m_wasDeleted = true;
 
-   QtSharedPointer::ExternalRefCountData *sharedRefCount = m_sharedRefCount.exchange(nullptr);
+    QtSharedPointer::ExternalRefCountData *sharedRefCount = m_sharedRefCount.exchange( nullptr );
 
-   if (sharedRefCount) {
+    if ( sharedRefCount )
+    {
 
-      if (sharedRefCount->strongref.load() > 0) {
-         // continue deleting, unclear what else to do
-         qWarning("QObject:~QObject() Shared QObject was deleted directly, application may crash.");
-      }
+        if ( sharedRefCount->strongref.load() > 0 )
+        {
+            // continue deleting, unclear what else to do
+            qWarning( "QObject:~QObject() Shared QObject was deleted directly, application may crash." );
+        }
 
-      // indicate to all QWeakPointers QObject has now been deleted
-      sharedRefCount->strongref.store(0);
+        // indicate to all QWeakPointers QObject has now been deleted
+        sharedRefCount->strongref.store( 0 );
 
-      if (! sharedRefCount->weakref.deref()) {
-         delete sharedRefCount;
-      }
-   }
+        if ( ! sharedRefCount->weakref.deref() )
+        {
+            delete sharedRefCount;
+        }
+    }
 
-   //
-   if (this->m_declarativeData) {
-      CSAbstractDeclarativeData::destroyed(this->m_declarativeData, this);
-   }
+    //
+    if ( this->m_declarativeData )
+    {
+        CSAbstractDeclarativeData::destroyed( this->m_declarativeData, this );
+    }
 
-   if (! this->m_children.isEmpty()) {
-      this->deleteChildren();
-   }
+    if ( ! this->m_children.isEmpty() )
+    {
+        this->deleteChildren();
+    }
 
-   this->removeObject();
+    this->removeObject();
 
-   if (this->m_parent)  {
-      // remove 'this' from parent object
-      this->setParent(nullptr);
-   }
+    if ( this->m_parent )
+    {
+        // remove 'this' from parent object
+        this->setParent( nullptr );
+    }
 
-   QThreadData *threadData = m_threadData.load();
+    QThreadData *threadData = m_threadData.load();
 
-   if (m_pendTimer) {
-      if (threadData->thread == QThread::currentThread()) {
+    if ( m_pendTimer )
+    {
+        if ( threadData->thread == QThread::currentThread() )
+        {
 
-         // unregister pending timers
-         auto tmp = threadData->eventDispatcher.load();
+            // unregister pending timers
+            auto tmp = threadData->eventDispatcher.load();
 
-         if (tmp) {
-            tmp->unregisterTimers(this);
-         }
-      }
-   }
+            if ( tmp )
+            {
+                tmp->unregisterTimers( this );
+            }
+        }
+    }
 
-   if (m_postedEvents) {
-      QCoreApplication::removePostedEvents(this, 0);
-   }
+    if ( m_postedEvents )
+    {
+        QCoreApplication::removePostedEvents( this, 0 );
+    }
 
-   if (threadData)  {
-      threadData->deref();
-   }
+    if ( threadData )
+    {
+        threadData->deref();
+    }
 }
 
-bool QObject::blockSignals(bool block)
+bool QObject::blockSignals( bool block )
 {
-   bool oldValue = m_blockSig.exchange(block);
-   return oldValue;
+    bool oldValue = m_blockSig.exchange( block );
+    return oldValue;
 }
 
 // check the constructor's parent thread arguments
-bool QObject::check_parent_thread(QObject *parent, QThreadData *parentThreadData, QThreadData *currentThreadData)
+bool QObject::check_parent_thread( QObject *parent, QThreadData *parentThreadData, QThreadData *currentThreadData )
 {
-   if (parent && parentThreadData != currentThreadData) {
+    if ( parent && parentThreadData != currentThreadData )
+    {
 
-      QThread *parentThread  = parentThreadData->thread;
-      QThread *currentThread = currentThreadData->thread;
+        QThread *parentThread  = parentThreadData->thread;
+        QThread *currentThread = currentThreadData->thread;
 
-      qWarning("QObject:check_parent_thread() Unable to create children for a parent in a different thread.\n"
-            "(Parent is %s(%p), parent's thread is %s(%p), current thread is %s(%p)",
-            csPrintable(parent->metaObject()->className()), static_cast<void *>(parent),
-            parentThread ? csPrintable(parentThread->metaObject()->className()) : "QThread",
-            static_cast<void *>(parentThread),
-            currentThread ? csPrintable(currentThread->metaObject()->className()) : "QThread",
-            static_cast<void *>(currentThread));
+        qWarning( "QObject:check_parent_thread() Unable to create children for a parent in a different thread.\n"
+                  "(Parent is %s(%p), parent's thread is %s(%p), current thread is %s(%p)",
+                  csPrintable( parent->metaObject()->className() ), static_cast<void *>( parent ),
+                  parentThread ? csPrintable( parentThread->metaObject()->className() ) : "QThread",
+                  static_cast<void *>( parentThread ),
+                  currentThread ? csPrintable( currentThread->metaObject()->className() ) : "QThread",
+                  static_cast<void *>( currentThread ) );
 
-      return false;
-   }
+        return false;
+    }
 
-   return true;
+    return true;
 }
 
 const QList<QObject *> &QObject::children() const
 {
-   return m_children;
+    return m_children;
 }
 
-void QObject::childEvent(QChildEvent *)
+void QObject::childEvent( QChildEvent * )
 {
-   // no code should appear here
+    // no code should appear here
 }
 
-bool QObject::connect(const QObject *sender, const QString8 &signalMethod, const QString8 &location,
-      const QString8 &slotMethod, Qt::ConnectionType type)
+bool QObject::connect( const QObject *sender, const QString8 &signalMethod, const QString8 &location,
+                       const QString8 &slotMethod, Qt::ConnectionType type )
 {
-   // default third param (receiver)
-   return connect(sender, signalMethod, this, slotMethod, type, location);
+    // default third param (receiver)
+    return connect( sender, signalMethod, this, slotMethod, type, location );
 }
 
-bool QObject::connect(const QObject *sender, const QString8 &signalMethod, const QString8 &location,
-      const QObject *receiver, const QString8 &slotMethod, Qt::ConnectionType type)
+bool QObject::connect( const QObject *sender, const QString8 &signalMethod, const QString8 &location,
+                       const QObject *receiver, const QString8 &slotMethod, Qt::ConnectionType type )
 {
-   // location is generated by the SIGNAL macro, indicates where connect() was called
-   return connect(sender, signalMethod, receiver, slotMethod, type, location);
+    // location is generated by the SIGNAL macro, indicates where connect() was called
+    return connect( sender, signalMethod, receiver, slotMethod, type, location );
 }
 
-bool QObject::connect(const QObject *sender, const QString8 &signalMethod, const QObject *receiver,
-      const QString8 &slotMethod, Qt::ConnectionType type, const QString8 &location)
+bool QObject::connect( const QObject *sender, const QString8 &signalMethod, const QObject *receiver,
+                       const QString8 &slotMethod, Qt::ConnectionType type, const QString8 &location )
 {
-   const QMetaObject *senderMetaObject = sender->metaObject();
-   int sIndex = senderMetaObject->indexOfSignal(signalMethod);
+    const QMetaObject *senderMetaObject = sender->metaObject();
+    int sIndex = senderMetaObject->indexOfSignal( signalMethod );
 
-   const QMetaObject *receiverMetaObject = receiver->metaObject();
-   int rIndex = receiverMetaObject->indexOfMethod(slotMethod);
+    const QMetaObject *receiverMetaObject = receiver->metaObject();
+    int rIndex = receiverMetaObject->indexOfMethod( slotMethod );
 
-   if (sIndex == -1 || rIndex == -1)  {
-      const QString8 &senderClass   = senderMetaObject->className();
-      const QString8 &receiverClass = receiverMetaObject->className();
+    if ( sIndex == -1 || rIndex == -1 )
+    {
+        const QString8 &senderClass   = senderMetaObject->className();
+        const QString8 &receiverClass = receiverMetaObject->className();
 
-      if (location.isEmpty()) {
-         qWarning("%s%s%s%s%s%s%s%s%s %s%d%s%d", "QObject::connect() ", csPrintable(senderClass), "::", csPrintable(signalMethod),
-               " Unable to connect to receiver in ", csPrintable(receiverClass), " (", csPrintable(location), ")",
-               " Signal Index: ", sIndex, " Slot Index: ", rIndex);
+        if ( location.isEmpty() )
+        {
+            qWarning( "%s%s%s%s%s%s%s%s%s %s%d%s%d", "QObject::connect() ", csPrintable( senderClass ), "::", csPrintable( signalMethod ),
+                      " Unable to connect to receiver in ", csPrintable( receiverClass ), " (", csPrintable( location ), ")",
+                      " Signal Index: ", sIndex, " Slot Index: ", rIndex );
 
-      } else {
-         qWarning("%s%s%s%s%s%s %s%d%s%d", "QObject::connect() ", csPrintable(senderClass), "::", csPrintable(signalMethod),
-               " Unable to connect to receiver in ", csPrintable(receiverClass),
-               " Signal Index: ", sIndex, " Slot Index: ", rIndex);
-      }
+        }
+        else
+        {
+            qWarning( "%s%s%s%s%s%s %s%d%s%d", "QObject::connect() ", csPrintable( senderClass ), "::", csPrintable( signalMethod ),
+                      " Unable to connect to receiver in ", csPrintable( receiverClass ),
+                      " Signal Index: ", sIndex, " Slot Index: ", rIndex );
+        }
 
 #if defined(CS_INTERNAL_DEBUG)
-      qDebug("");
+        qDebug( "" );
 
-      for (int k = 0; k < senderMetaObject->methodCount(); ++k) {
-         qDebug("QObject::connect()  Class %s has method %s", csPrintable(senderMetaObject->className()),
-               csPrintable(senderMetaObject->method(k).methodSignature()) );
-      }
+        for ( int k = 0; k < senderMetaObject->methodCount(); ++k )
+        {
+            qDebug( "QObject::connect()  Class %s has method %s", csPrintable( senderMetaObject->className() ),
+                    csPrintable( senderMetaObject->method( k ).methodSignature() ) );
+        }
 
-      qDebug("");
+        qDebug( "" );
 #endif
 
-      return false;
-   }
+        return false;
+    }
 
-   return QObject::connect(sender, senderMetaObject->method(sIndex), receiver, receiverMetaObject->method(rIndex), type);
+    return QObject::connect( sender, senderMetaObject->method( sIndex ), receiver, receiverMetaObject->method( rIndex ), type );
 }
 
 // signal & slot are QMetaMethod
-bool QObject::connect(const QObject *sender, const QMetaMethod &signalMetaMethod, const QObject *receiver,
-      const QMetaMethod &slotMetaMethod, Qt::ConnectionType type)
+bool QObject::connect( const QObject *sender, const QMetaMethod &signalMetaMethod, const QObject *receiver,
+                       const QMetaMethod &slotMetaMethod, Qt::ConnectionType type )
 {
-   if (sender == nullptr) {
-      qWarning("QObject::connect() Can not connect, sender is null");
-      return false;
-   }
+    if ( sender == nullptr )
+    {
+        qWarning( "QObject::connect() Can not connect, sender is null" );
+        return false;
+    }
 
-   if (receiver == nullptr) {
-      qWarning("QObject::connect() Can not connect, receiver is null");
-      return false;
-   }
+    if ( receiver == nullptr )
+    {
+        qWarning( "QObject::connect() Can not connect, receiver is null" );
+        return false;
+    }
 
-   // get signal name
-   const QString8 &senderClass   = sender->metaObject()->className();
-   const QString8 &receiverClass = receiver->metaObject()->className();
+    // get signal name
+    const QString8 &senderClass   = sender->metaObject()->className();
+    const QString8 &receiverClass = receiver->metaObject()->className();
 
-   const QString8 &signalName    = signalMetaMethod.methodSignature();
-   const QString8 &slotName      = slotMetaMethod.methodSignature();
+    const QString8 &signalName    = signalMetaMethod.methodSignature();
+    const QString8 &slotName      = slotMetaMethod.methodSignature();
 
-   if (signalName.isEmpty())  {
-      qWarning("%s%s%s%s%s", "QObject::connect() ", csPrintable(senderClass), "::<Invalid Signal> ",
-            " Unable to connect to receiver in ", csPrintable(receiverClass));
+    if ( signalName.isEmpty() )
+    {
+        qWarning( "%s%s%s%s%s", "QObject::connect() ", csPrintable( senderClass ), "::<Invalid Signal> ",
+                  " Unable to connect to receiver in ", csPrintable( receiverClass ) );
 
-      return false;
-   }
+        return false;
+    }
 
-   if (slotName.isEmpty())  {
-      qWarning("%s%s%s%s%s%s%s", "QObject::connect() ", csPrintable(senderClass), "::", csPrintable(signalName),
-            " Unable to connect to receiver in ", csPrintable(receiverClass), "::<Invalid Slot>");
-      return false;
-   }
+    if ( slotName.isEmpty() )
+    {
+        qWarning( "%s%s%s%s%s%s%s", "QObject::connect() ", csPrintable( senderClass ), "::", csPrintable( signalName ),
+                  " Unable to connect to receiver in ", csPrintable( receiverClass ), "::<Invalid Slot>" );
+        return false;
+    }
 
-   // is signalMethod a signal
-   if (signalMetaMethod.methodType() != QMetaMethod::Signal) {
-      qWarning("%s%s%s%s%s", "QObject::connect() ", csPrintable(senderClass), "::", csPrintable(signalName),
-            ": Is not a valid signal");
-      return false;
-   }
+    // is signalMethod a signal
+    if ( signalMetaMethod.methodType() != QMetaMethod::Signal )
+    {
+        qWarning( "%s%s%s%s%s", "QObject::connect() ", csPrintable( senderClass ), "::", csPrintable( signalName ),
+                  ": Is not a valid signal" );
+        return false;
+    }
 
-   // is slotMethod a clone, then there is a defualt parameter
-   if (slotMetaMethod.attributes() & QMetaMethod::Cloned) {
-      qWarning("%s%s%s%s%s", "QObject::connect() ", csPrintable(receiverClass), "::", csPrintable(slotName),
-            ": Unable to connect to a slot with a default parameter");
-      return false;
-   }
+    // is slotMethod a clone, then there is a defualt parameter
+    if ( slotMetaMethod.attributes() & QMetaMethod::Cloned )
+    {
+        qWarning( "%s%s%s%s%s", "QObject::connect() ", csPrintable( receiverClass ), "::", csPrintable( slotName ),
+                  ": Unable to connect to a slot with a default parameter" );
+        return false;
+    }
 
-   // test arguments
-   bool err = false;
-   QList<QString8> typesSignal = signalMetaMethod.parameterTypes();
-   QList<QString8> typesSlot   = slotMetaMethod.parameterTypes();
+    // test arguments
+    bool err = false;
+    QList<QString8> typesSignal = signalMetaMethod.parameterTypes();
+    QList<QString8> typesSlot   = slotMetaMethod.parameterTypes();
 
-   if (typesSignal.count() < typesSlot.count() )  {
-      err = true;
+    if ( typesSignal.count() < typesSlot.count() )
+    {
+        err = true;
 
-   } else {
+    }
+    else
+    {
 
-      for (int index = 0; index != typesSlot.count(); ++index)   {
+        for ( int index = 0; index != typesSlot.count(); ++index )
+        {
 
-         if (typesSignal.at(index) != typesSlot.at(index)) {
-            // unable to test if typeDefs are used
-            err = true;
-            break;
-         }
-      }
-   }
+            if ( typesSignal.at( index ) != typesSlot.at( index ) )
+            {
+                // unable to test if typeDefs are used
+                err = true;
+                break;
+            }
+        }
+    }
 
-   if (err) {
-      qWarning("%s%s%s%s%s%s%s%s", "QObject::connect() ", csPrintable(senderClass), "::", csPrintable(signalName),
-            ": Incompatible signal/slot arguments ", csPrintable(receiverClass), "::", csPrintable(slotName));
-      return false;
-   }
+    if ( err )
+    {
+        qWarning( "%s%s%s%s%s%s%s%s", "QObject::connect() ", csPrintable( senderClass ), "::", csPrintable( signalName ),
+                  ": Incompatible signal/slot arguments ", csPrintable( receiverClass ), "::", csPrintable( slotName ) );
+        return false;
+    }
 
-   //
-   const CSBentoAbstract *signalMethod_Bento = signalMetaMethod.getBentoBox();
-   const CSBentoAbstract *slotMethod_Bento   = slotMetaMethod.getBentoBox();
+    //
+    const CSBentoAbstract *signalMethod_Bento = signalMetaMethod.getBentoBox();
+    const CSBentoAbstract *slotMethod_Bento   = slotMetaMethod.getBentoBox();
 
-   if (! signalMethod_Bento) {
-      qWarning("%s%s%s%s%s", "QObject::connect() ", csPrintable(senderClass), "::", csPrintable(signalName),
-            " Unable to locate the requested signal, verify connect arguments and signal declaration");
-      return false;
-   }
+    if ( ! signalMethod_Bento )
+    {
+        qWarning( "%s%s%s%s%s", "QObject::connect() ", csPrintable( senderClass ), "::", csPrintable( signalName ),
+                  " Unable to locate the requested signal, verify connect arguments and signal declaration" );
+        return false;
+    }
 
-   if (! slotMethod_Bento) {
-      qWarning("%s%s%s%s%s", "QObject::connect() ", csPrintable(receiverClass), "::", csPrintable(slotName),
-            " Unable to locate the requested slot, verify connect arguments and slot declaration");
-      return false;
-   }
+    if ( ! slotMethod_Bento )
+    {
+        qWarning( "%s%s%s%s%s", "QObject::connect() ", csPrintable( receiverClass ), "::", csPrintable( slotName ),
+                  " Unable to locate the requested slot, verify connect arguments and slot declaration" );
+        return false;
+    }
 
-   LsCsSignal::ConnectionKind kind;
-   bool uniqueConnection = false;
+    LsCsSignal::ConnectionKind kind;
+    bool uniqueConnection = false;
 
-   if (type & Qt::UniqueConnection) {
-      uniqueConnection = true;
-   }
+    if ( type & Qt::UniqueConnection )
+    {
+        uniqueConnection = true;
+    }
 
-   // untangle the type
-   kind = static_cast<LsCsSignal::ConnectionKind>(type & ~Qt::UniqueConnection);
+    // untangle the type
+    kind = static_cast<LsCsSignal::ConnectionKind>( type & ~Qt::UniqueConnection );
 
-   std::unique_ptr<LsCsSignal::Internal::BentoAbstract> signalMethod_Bento2 = signalMethod_Bento->clone();
-   std::unique_ptr<LsCsSignal::Internal::BentoAbstract> slotMethod_Bento2   = slotMethod_Bento->clone();
+    std::unique_ptr<LsCsSignal::Internal::BentoAbstract> signalMethod_Bento2 = signalMethod_Bento->clone();
+    std::unique_ptr<LsCsSignal::Internal::BentoAbstract> slotMethod_Bento2   = slotMethod_Bento->clone();
 
-   LsCsSignal::connect(*sender, std::move(signalMethod_Bento2), *receiver, std::move(slotMethod_Bento2), kind, uniqueConnection);
-   sender->connectNotify(signalMetaMethod);
+    LsCsSignal::connect( *sender, std::move( signalMethod_Bento2 ), *receiver, std::move( slotMethod_Bento2 ), kind,
+                         uniqueConnection );
+    sender->connectNotify( signalMetaMethod );
 
-   return true;
+    return true;
 }
 
-bool QObject::connect(const QObject *sender, const QString8 &signalMethod, const QString8 &slotMethod, Qt::ConnectionType type)
+bool QObject::connect( const QObject *sender, const QString8 &signalMethod, const QString8 &slotMethod, Qt::ConnectionType type )
 {
-   return QObject::connect(sender, signalMethod, this, slotMethod, type);
+    return QObject::connect( sender, signalMethod, this, slotMethod, type );
 }
 
-void QObject::connectNotify(const QMetaMethod &) const
+void QObject::connectNotify( const QMetaMethod & ) const
 {
-   // no code should appear here
+    // no code should appear here
 }
 
-void QObject::customEvent(QEvent *)
+void QObject::customEvent( QEvent * )
 {
-   // no code should appear here
+    // no code should appear here
 }
 
 void QObject::deleteChildren()
 {
-   const bool reallyWasDeleted = m_wasDeleted;
-   m_wasDeleted = true;
+    const bool reallyWasDeleted = m_wasDeleted;
+    m_wasDeleted = true;
 
-   // do not use qDeleteAll as the destructor of the child might delete siblings
+    // do not use qDeleteAll as the destructor of the child might delete siblings
 
-   for (int i = 0; i < m_children.count(); ++i) {
-      m_currentChildBeingDeleted = m_children.at(i);
-      m_children[i] = nullptr;
-      delete m_currentChildBeingDeleted;
-   }
+    for ( int i = 0; i < m_children.count(); ++i )
+    {
+        m_currentChildBeingDeleted = m_children.at( i );
+        m_children[i] = nullptr;
+        delete m_currentChildBeingDeleted;
+    }
 
-   m_children.clear();
-   m_currentChildBeingDeleted = nullptr;
+    m_children.clear();
+    m_currentChildBeingDeleted = nullptr;
 
-   m_wasDeleted = reallyWasDeleted;
+    m_wasDeleted = reallyWasDeleted;
 }
 
 void QObject::deleteLater()
 {
-   QCoreApplication::postEvent(this, new QDeferredDeleteEvent());
+    QCoreApplication::postEvent( this, new QDeferredDeleteEvent() );
 }
 
 // signal & slot are strings
-bool QObject::disconnect(const QObject *sender,   const QString8 &signalMethod,
-      const QObject *receiver, const QString8 &slotMethod)
+bool QObject::disconnect( const QObject *sender,   const QString8 &signalMethod,
+                          const QObject *receiver, const QString8 &slotMethod )
 {
-   if (sender == nullptr) {
-      qWarning("QObject::disconnect() Can not disconnect as sender is null");
-      return false;
+    if ( sender == nullptr )
+    {
+        qWarning( "QObject::disconnect() Can not disconnect as sender is null" );
+        return false;
 
-   } else if (receiver == nullptr && ! slotMethod.isEmpty()) {
-      qWarning("QObject::disconnect() Can not disconnect as the receiver is null and a slot method was specified");
-      return false;
-   }
+    }
+    else if ( receiver == nullptr && ! slotMethod.isEmpty() )
+    {
+        qWarning( "QObject::disconnect() Can not disconnect as the receiver is null and a slot method was specified" );
+        return false;
+    }
 
-   // normalize the signal and slot method names or signatures
-   QString8 signalNormalized;
-   QString8 slotNormalized;
+    // normalize the signal and slot method names or signatures
+    QString8 signalNormalized;
+    QString8 slotNormalized;
 
-   if (! signalMethod.isEmpty()) {
+    if ( ! signalMethod.isEmpty() )
+    {
 
-      try {
-         signalNormalized = QMetaObject::normalizedSignature(signalMethod);
+        try
+        {
+            signalNormalized = QMetaObject::normalizedSignature( signalMethod );
 
-      } catch (const std::bad_alloc &) {
-         // if the signal is already normalized, we can continue
-         if (sender->metaObject()->indexOfSignal(signalMethod) == -1) {
-            throw;
-         }
+        }
+        catch ( const std::bad_alloc & )
+        {
+            // if the signal is already normalized, we can continue
+            if ( sender->metaObject()->indexOfSignal( signalMethod ) == -1 )
+            {
+                throw;
+            }
 
-         signalNormalized = signalMethod;
-      }
-   }
+            signalNormalized = signalMethod;
+        }
+    }
 
-   if (! slotMethod.isEmpty()) {
+    if ( ! slotMethod.isEmpty() )
+    {
 
-      try {
-         slotNormalized = QMetaObject::normalizedSignature(slotMethod);
+        try
+        {
+            slotNormalized = QMetaObject::normalizedSignature( slotMethod );
 
-      } catch (const std::bad_alloc &) {
-         // if the method is already normalized, we can continue
-         if (receiver->metaObject()->indexOfMethod(slotMethod) == -1) {
-            throw;
-         }
+        }
+        catch ( const std::bad_alloc & )
+        {
+            // if the method is already normalized, we can continue
+            if ( receiver->metaObject()->indexOfMethod( slotMethod ) == -1 )
+            {
+                throw;
+            }
 
-         slotNormalized = slotMethod;
-      }
-   }
+            slotNormalized = slotMethod;
+        }
+    }
 
-   const QMetaObject *senderMetaObject   = sender->metaObject();
-   const QMetaObject *receiverMetaObject = nullptr;
+    const QMetaObject *senderMetaObject   = sender->metaObject();
+    const QMetaObject *receiverMetaObject = nullptr;
 
-   if (receiver) {
-      receiverMetaObject = receiver->metaObject();
-   }
+    if ( receiver )
+    {
+        receiverMetaObject = receiver->metaObject();
+    }
 
-   // retrieve signal bento object from QMetaMethod
-   int signal_index = -1;
+    // retrieve signal bento object from QMetaMethod
+    int signal_index = -1;
 
-   if (! signalNormalized.isEmpty()) {
-      signal_index = senderMetaObject->indexOfSignal(signalNormalized);
-   }
+    if ( ! signalNormalized.isEmpty() )
+    {
+        signal_index = senderMetaObject->indexOfSignal( signalNormalized );
+    }
 
-   const CSBentoAbstract *signalMethod_Bento = nullptr;
-   QMetaMethod signalMetaMethod;
+    const CSBentoAbstract *signalMethod_Bento = nullptr;
+    QMetaMethod signalMetaMethod;
 
-   if (signal_index != -1) {
-      signalMetaMethod   = senderMetaObject->method(signal_index);
-      signalMethod_Bento = signalMetaMethod.getBentoBox();
-   }
+    if ( signal_index != -1 )
+    {
+        signalMetaMethod   = senderMetaObject->method( signal_index );
+        signalMethod_Bento = signalMetaMethod.getBentoBox();
+    }
 
-   // retrieve slot bento object from QMetaMethod
-   int slot_index = -1;
+    // retrieve slot bento object from QMetaMethod
+    int slot_index = -1;
 
-   if (! slotNormalized.isEmpty()) {
-      slot_index = receiverMetaObject->indexOfSlot(slotNormalized);
-   }
+    if ( ! slotNormalized.isEmpty() )
+    {
+        slot_index = receiverMetaObject->indexOfSlot( slotNormalized );
+    }
 
-   const CSBentoAbstract *slotMethod_Bento = nullptr;
+    const CSBentoAbstract *slotMethod_Bento = nullptr;
 
-   if (slot_index != -1) {
-      slotMethod_Bento = receiverMetaObject->method(slot_index).getBentoBox();
-   }
+    if ( slot_index != -1 )
+    {
+        slotMethod_Bento = receiverMetaObject->method( slot_index ).getBentoBox();
+    }
 
-   bool retval = LsCsSignal::internal_disconnect(*sender, signalMethod_Bento, receiver, slotMethod_Bento);
+    bool retval = LsCsSignal::internal_disconnect( *sender, signalMethod_Bento, receiver, slotMethod_Bento );
 
-   if (retval) {
-      const QMetaObject *senderMetaObject = sender->metaObject();
+    if ( retval )
+    {
+        const QMetaObject *senderMetaObject = sender->metaObject();
 
-      if (senderMetaObject) {
-         const_cast<QObject *>(sender)->disconnectNotify(signalMetaMethod);
-      }
-   }
+        if ( senderMetaObject )
+        {
+            const_cast<QObject *>( sender )->disconnectNotify( signalMetaMethod );
+        }
+    }
 
-   return retval;
+    return retval;
 }
 
 // signal & slot are both a nullptr
-bool QObject::disconnect(const QObject *sender, std::nullptr_t, const QObject *receiver, std::nullptr_t)
+bool QObject::disconnect( const QObject *sender, std::nullptr_t, const QObject *receiver, std::nullptr_t )
 {
-   if (sender == nullptr) {
-      qWarning("QObject::disconnect() Can not disconnect as sender is null");
-      return false;
-   }
+    if ( sender == nullptr )
+    {
+        qWarning( "QObject::disconnect() Can not disconnect as sender is null" );
+        return false;
+    }
 
-   const CSBentoAbstract *signalMethod_Bento = nullptr;
-   const CSBentoAbstract *slotMethod_Bento   = nullptr;
+    const CSBentoAbstract *signalMethod_Bento = nullptr;
+    const CSBentoAbstract *slotMethod_Bento   = nullptr;
 
-   bool retval = LsCsSignal::internal_disconnect(*sender, signalMethod_Bento, receiver, slotMethod_Bento);
+    bool retval = LsCsSignal::internal_disconnect( *sender, signalMethod_Bento, receiver, slotMethod_Bento );
 
-   if (retval) {
-      QMetaMethod signalMetaMethod;
+    if ( retval )
+    {
+        QMetaMethod signalMetaMethod;
 
-      const QMetaObject *senderMetaObject = sender->metaObject();
+        const QMetaObject *senderMetaObject = sender->metaObject();
 
-      if (senderMetaObject) {
-         const_cast<QObject *>(sender)->disconnectNotify(signalMetaMethod);
-      }
-   }
+        if ( senderMetaObject )
+        {
+            const_cast<QObject *>( sender )->disconnectNotify( signalMetaMethod );
+        }
+    }
 
-   return retval;
+    return retval;
 }
 
 // signal & slot QMetaMethods
-bool QObject::disconnect(const QObject *sender,   const QMetaMethod &signalMetaMethod,
-      const QObject *receiver, const QMetaMethod &slotMetaMethod)
+bool QObject::disconnect( const QObject *sender,   const QMetaMethod &signalMetaMethod,
+                          const QObject *receiver, const QMetaMethod &slotMetaMethod )
 {
-   const QMetaObject *signalMetaObject = signalMetaMethod.getMetaObject();
-   const QMetaObject *slotMetaObject   = slotMetaMethod.getMetaObject();
+    const QMetaObject *signalMetaObject = signalMetaMethod.getMetaObject();
+    const QMetaObject *slotMetaObject   = slotMetaMethod.getMetaObject();
 
-   if (sender == nullptr) {
-      qWarning("QObject::disconnect() Unable to disconnect as sender is null");
-      return false;
+    if ( sender == nullptr )
+    {
+        qWarning( "QObject::disconnect() Unable to disconnect as sender is null" );
+        return false;
 
-   } else if (receiver == nullptr && slotMetaObject != nullptr) {
-      qWarning("QObject::disconnect() Unable to disconnect as receiver is null and slot was specified");
-      return false;
-   }
+    }
+    else if ( receiver == nullptr && slotMetaObject != nullptr )
+    {
+        qWarning( "QObject::disconnect() Unable to disconnect as receiver is null and slot was specified" );
+        return false;
+    }
 
-   if (signalMetaObject) {
+    if ( signalMetaObject )
+    {
 
-      if (signalMetaMethod.methodType() != QMetaMethod::Signal) {
-         qWarning("QObject::disconnect() Unable to disconnect %s::%s, is not a signal",
-               csPrintable(sender->metaObject()->className()), csPrintable(signalMetaMethod.methodSignature()));
-         return false;
-      }
-   }
+        if ( signalMetaMethod.methodType() != QMetaMethod::Signal )
+        {
+            qWarning( "QObject::disconnect() Unable to disconnect %s::%s, is not a signal",
+                      csPrintable( sender->metaObject()->className() ), csPrintable( signalMetaMethod.methodSignature() ) );
+            return false;
+        }
+    }
 
-   if (slotMetaObject) {
+    if ( slotMetaObject )
+    {
 
-      if (slotMetaMethod.methodType() == QMetaMethod::Constructor) {
-         qWarning("QObject::disconnect() Unable to use constructor as an argument %s::%s",
-               csPrintable(receiver->metaObject()->className()), csPrintable(slotMetaMethod.methodSignature()));
-         return false;
-      }
-   }
+        if ( slotMetaMethod.methodType() == QMetaMethod::Constructor )
+        {
+            qWarning( "QObject::disconnect() Unable to use constructor as an argument %s::%s",
+                      csPrintable( receiver->metaObject()->className() ), csPrintable( slotMetaMethod.methodSignature() ) );
+            return false;
+        }
+    }
 
-   int signal_index = sender->metaObject()->indexOfSignal(signalMetaMethod.methodSignature());
+    int signal_index = sender->metaObject()->indexOfSignal( signalMetaMethod.methodSignature() );
 
-   // if signalMethod is not empty and signal_index is -1, then signal is not a member of sender
-   if (signalMetaObject != nullptr && signal_index == -1) {
-      qWarning("QObject::disconnect() Signal %s was not found in class %s",
-            csPrintable(signalMetaMethod.methodSignature()), csPrintable(sender->metaObject()->className()));
-      return false;
-   }
+    // if signalMethod is not empty and signal_index is -1, then signal is not a member of sender
+    if ( signalMetaObject != nullptr && signal_index == -1 )
+    {
+        qWarning( "QObject::disconnect() Signal %s was not found in class %s",
+                  csPrintable( signalMetaMethod.methodSignature() ), csPrintable( sender->metaObject()->className() ) );
+        return false;
+    }
 
-   // slot method is not a member of receiver
-   if (receiver) {
-      int slot_index = receiver->metaObject()->indexOfMethod(slotMetaMethod.methodSignature());
+    // slot method is not a member of receiver
+    if ( receiver )
+    {
+        int slot_index = receiver->metaObject()->indexOfMethod( slotMetaMethod.methodSignature() );
 
-      if (slotMetaObject && slot_index == -1) {
-         qWarning("QObject::disconnect() Method %s was not found in class %s",
-               csPrintable(slotMetaMethod.methodSignature()), csPrintable(receiver->metaObject()->className()));
-         return false;
-      }
-   }
+        if ( slotMetaObject && slot_index == -1 )
+        {
+            qWarning( "QObject::disconnect() Method %s was not found in class %s",
+                      csPrintable( slotMetaMethod.methodSignature() ), csPrintable( receiver->metaObject()->className() ) );
+            return false;
+        }
+    }
 
-   const CSBentoAbstract *signalMethod_Bento = signalMetaMethod.getBentoBox();
-   const CSBentoAbstract *slotMethod_Bento   = slotMetaMethod.getBentoBox();
+    const CSBentoAbstract *signalMethod_Bento = signalMetaMethod.getBentoBox();
+    const CSBentoAbstract *slotMethod_Bento   = slotMetaMethod.getBentoBox();
 
-   bool retval = LsCsSignal::internal_disconnect(*sender, signalMethod_Bento, receiver, slotMethod_Bento);
+    bool retval = LsCsSignal::internal_disconnect( *sender, signalMethod_Bento, receiver, slotMethod_Bento );
 
-   if (retval) {
-      const QMetaObject *senderMetaObject = sender->metaObject();
+    if ( retval )
+    {
+        const QMetaObject *senderMetaObject = sender->metaObject();
 
-      if (senderMetaObject) {
-         const_cast<QObject *>(sender)->disconnectNotify(signalMetaMethod);
-      }
-   }
+        if ( senderMetaObject )
+        {
+            const_cast<QObject *>( sender )->disconnectNotify( signalMetaMethod );
+        }
+    }
 
-   return true;
+    return true;
 }
 
-bool QObject::disconnect(const QObject *sender,   const QString8 &signalMethod, const QString8 &,
-      const QObject *receiver, const QString8 &slotMethod)
+bool QObject::disconnect( const QObject *sender,   const QString8 &signalMethod, const QString8 &,
+                          const QObject *receiver, const QString8 &slotMethod )
 {
-   return QObject::disconnect(sender, signalMethod, receiver, slotMethod);
+    return QObject::disconnect( sender, signalMethod, receiver, slotMethod );
 }
 
-bool QObject::disconnect(const QString8 &signalMethod, const QObject *receiver, const QString8 &slotMethod) const
+bool QObject::disconnect( const QString8 &signalMethod, const QObject *receiver, const QString8 &slotMethod ) const
 {
-   return QObject::disconnect(this, signalMethod, receiver, slotMethod);
+    return QObject::disconnect( this, signalMethod, receiver, slotMethod );
 }
 
-bool QObject::disconnect(const QString8 &signalMethod, const QString8 &, const QObject *receiver,
-      const QString8 &slotMethod) const
+bool QObject::disconnect( const QString8 &signalMethod, const QString8 &, const QObject *receiver,
+                          const QString8 &slotMethod ) const
 {
-   return QObject::disconnect(this, signalMethod, receiver, slotMethod);
+    return QObject::disconnect( this, signalMethod, receiver, slotMethod );
 }
 
-bool QObject::disconnect(const QObject *receiver, const QString8 &slotMethod) const
+bool QObject::disconnect( const QObject *receiver, const QString8 &slotMethod ) const
 {
-   return QObject::disconnect(this, QString8(), receiver, slotMethod);
+    return QObject::disconnect( this, QString8(), receiver, slotMethod );
 }
 
-void QObject::disconnectNotify(const QMetaMethod &) const
+void QObject::disconnectNotify( const QMetaMethod & ) const
 {
-   // no code should appear here
+    // no code should appear here
 }
 
 QList<QString8> QObject::dynamicPropertyNames() const
 {
-   return m_extra_propertyNames;
+    return m_extra_propertyNames;
 }
 
-bool QObject::event(QEvent *e)
+bool QObject::event( QEvent *e )
 {
-   switch (e->type()) {
+    switch ( e->type() )
+    {
 
-      case QEvent::Timer:
-         timerEvent((QTimerEvent *) e);
-         break;
-
-      case QEvent::ChildAdded:
-      case QEvent::ChildPolished:
-      case QEvent::ChildRemoved:
-         childEvent((QChildEvent *)e);
-         break;
-
-      case QEvent::DeferredDelete:
-         delete this;
-         break;
-
-      case QEvent::MetaCall: {
-         CSMetaCallEvent *metaCallEvent = dynamic_cast<CSMetaCallEvent *>(e);
-         metaCallEvent->placeMetaCall(this);
-
-         break;
-      }
-
-      case QEvent::ThreadChange: {
-         QThreadData *threadData = m_threadData;
-         QAbstractEventDispatcher *eventDispatcher = threadData->eventDispatcher.load();
-
-         if (eventDispatcher) {
-            QList<QTimerInfo> timers = eventDispatcher->registeredTimers(this);
-
-            if (! timers.isEmpty()) {
-               // set m_inThreadChangeEvent to true tells the dispatcher not to release timer
-               // ids back to the pool (since the timer ids are moving to a new thread)
-
-               m_inThreadChangeEvent = true;
-               eventDispatcher->unregisterTimers(this);
-               m_inThreadChangeEvent = false;
-
-               // using csArgument directly since the datatype contains a comma
-               QMetaObject::invokeMethod(this, "internal_reregisterTimers", Qt::QueuedConnection,
-                     CSArgument<QList<QTimerInfo>> (timers) );
-            }
-         }
-
-         break;
-      }
-
-      default:
-         if (e->type() >= QEvent::User) {
-            customEvent(e);
+        case QEvent::Timer:
+            timerEvent( ( QTimerEvent * ) e );
             break;
-         }
 
-         return false;
-   }
+        case QEvent::ChildAdded:
+        case QEvent::ChildPolished:
+        case QEvent::ChildRemoved:
+            childEvent( ( QChildEvent * )e );
+            break;
 
-   return true;
+        case QEvent::DeferredDelete:
+            delete this;
+            break;
+
+        case QEvent::MetaCall:
+        {
+            CSMetaCallEvent *metaCallEvent = dynamic_cast<CSMetaCallEvent *>( e );
+            metaCallEvent->placeMetaCall( this );
+
+            break;
+        }
+
+        case QEvent::ThreadChange:
+        {
+            QThreadData *threadData = m_threadData;
+            QAbstractEventDispatcher *eventDispatcher = threadData->eventDispatcher.load();
+
+            if ( eventDispatcher )
+            {
+                QList<QTimerInfo> timers = eventDispatcher->registeredTimers( this );
+
+                if ( ! timers.isEmpty() )
+                {
+                    // set m_inThreadChangeEvent to true tells the dispatcher not to release timer
+                    // ids back to the pool (since the timer ids are moving to a new thread)
+
+                    m_inThreadChangeEvent = true;
+                    eventDispatcher->unregisterTimers( this );
+                    m_inThreadChangeEvent = false;
+
+                    // using csArgument directly since the datatype contains a comma
+                    QMetaObject::invokeMethod( this, "internal_reregisterTimers", Qt::QueuedConnection,
+                                               CSArgument<QList<QTimerInfo>> ( timers ) );
+                }
+            }
+
+            break;
+        }
+
+        default:
+            if ( e->type() >= QEvent::User )
+            {
+                customEvent( e );
+                break;
+            }
+
+            return false;
+    }
+
+    return true;
 }
 
-bool QObject::eventFilter(QObject *, QEvent *)
+bool QObject::eventFilter( QObject *, QEvent * )
 {
-   // no code should appear here
-   return false;
+    // no code should appear here
+    return false;
 }
 
-void QObject::installEventFilter(QObject *obj)
+void QObject::installEventFilter( QObject *obj )
 {
-   if (! obj)  {
-      return;
-   }
+    if ( ! obj )
+    {
+        return;
+    }
 
-   if (m_threadData.load() != obj->m_threadData.load()) {
-      qWarning("QObject::installEventFilter() Can not filter events for objects in a different thread");
-      return;
-   }
+    if ( m_threadData.load() != obj->m_threadData.load() )
+    {
+        qWarning( "QObject::installEventFilter() Can not filter events for objects in a different thread" );
+        return;
+    }
 
-   // clean up unused items in the list
-   m_eventFilters.removeAll( QPointer<QObject>(nullptr) );
+    // clean up unused items in the list
+    m_eventFilters.removeAll( QPointer<QObject>( nullptr ) );
 
-   m_eventFilters.removeAll(obj);
-   m_eventFilters.prepend(obj);
+    m_eventFilters.removeAll( obj );
+    m_eventFilters.prepend( obj );
 }
 
-bool QObject::inherits(const QString8 &classname) const
+bool QObject::inherits( const QString8 &classname ) const
 {
-   bool retval = false;
-   const QMetaObject *metaObj = this->metaObject();
+    bool retval = false;
+    const QMetaObject *metaObj = this->metaObject();
 
-   while (metaObj)  {
+    while ( metaObj )
+    {
 
-      if (metaObj->className() == classname)  {
-         retval = true;
-         break;
-      }
+        if ( metaObj->className() == classname )
+        {
+            retval = true;
+            break;
+        }
 
-      // get parent
-      metaObj = metaObj->superClass();
-   }
+        // get parent
+        metaObj = metaObj->superClass();
+    }
 
-   return retval;
+    return retval;
 }
 
 // used by QAccessibleWidget
-bool QObject::isSender(const QObject *receiver, const QString8 &signalMethod) const
+bool QObject::isSender( const QObject *receiver, const QString8 &signalMethod ) const
 {
-   bool retval = false;
+    bool retval = false;
 
-   if (! signalMethod.isEmpty()) {
-      QString8 signal_name = QMetaObject::normalizedSignature(signalMethod);
-      const QMetaObject *metaObj = this->metaObject();
+    if ( ! signalMethod.isEmpty() )
+    {
+        QString8 signal_name = QMetaObject::normalizedSignature( signalMethod );
+        const QMetaObject *metaObj = this->metaObject();
 
-      int index = metaObj->indexOfSignal(signal_name);
+        int index = metaObj->indexOfSignal( signal_name );
 
-      if (index == -1)  {
-         return false;
-      }
+        if ( index == -1 )
+        {
+            return false;
+        }
 
-      QMetaMethod metaMethod = metaObj->method(index);
-      const CSBentoAbstract *signalMethod_Bento = metaMethod.getBentoBox();
+        QMetaMethod metaMethod = metaObj->method( index );
+        const CSBentoAbstract *signalMethod_Bento = metaMethod.getBentoBox();
 
-      int count = LsCsSignal::SignalBase::internal_cntConnections(receiver, *signalMethod_Bento);
+        int count = LsCsSignal::SignalBase::internal_cntConnections( receiver, *signalMethod_Bento );
 
-      if (count > 0) {
-         retval = true;
-      }
-   }
+        if ( count > 0 )
+        {
+            retval = true;
+        }
+    }
 
-   return retval;
+    return retval;
 }
 
-bool QObject::isSignalConnected(const QMetaMethod &signalMetaMethod) const
+bool QObject::isSignalConnected( const QMetaMethod &signalMetaMethod ) const
 {
-   bool retval = false;
+    bool retval = false;
 
-   const CSBentoAbstract *signalMethod_Bento = signalMetaMethod.getBentoBox();
+    const CSBentoAbstract *signalMethod_Bento = signalMetaMethod.getBentoBox();
 
-   int count = LsCsSignal::SignalBase::internal_cntConnections(nullptr, *signalMethod_Bento);
+    int count = LsCsSignal::SignalBase::internal_cntConnections( nullptr, *signalMethod_Bento );
 
-   if (count > 0) {
-      retval = true;
-   }
+    if ( count > 0 )
+    {
+        retval = true;
+    }
 
-   return retval;
+    return retval;
 }
 
 bool QObject::isWidgetType() const
 {
-   return cs_isWidgetType();
+    return cs_isWidgetType();
 }
 bool QObject::cs_isWidgetType() const
 {
-   return false;
+    return false;
 }
 
 bool QObject::isWindowType() const
 {
-   return cs_isWindowType();
+    return cs_isWindowType();
 }
 
 bool QObject::cs_isWindowType() const
 {
-   return false;
+    return false;
 }
 
-void QObject::killTimer(int id)
+void QObject::killTimer( int id )
 {
-   QThreadData *threadData = m_threadData.load();
-   auto tmp = threadData->eventDispatcher.load();
+    QThreadData *threadData = m_threadData.load();
+    auto tmp = threadData->eventDispatcher.load();
 
-   if (tmp) {
-      tmp->unregisterTimer(id);
-   }
+    if ( tmp )
+    {
+        tmp->unregisterTimer( id );
+    }
 }
 
 QString8 QObject::objectName() const
 {
-   return m_objectName;
+    return m_objectName;
 }
 
-void QObject::moveToThread(QThread *targetThread)
+void QObject::moveToThread( QThread *targetThread )
 {
-   if (m_threadData.load()->thread == targetThread) {
-      // object is already in this thread
-      return;
-   }
+    if ( m_threadData.load()->thread == targetThread )
+    {
+        // object is already in this thread
+        return;
+    }
 
-   if (m_parent != nullptr) {
-      qWarning("QObject::moveToThread() Unble to not move an object with a parent");
-      return;
-   }
+    if ( m_parent != nullptr )
+    {
+        qWarning( "QObject::moveToThread() Unble to not move an object with a parent" );
+        return;
+    }
 
-   if (isWidgetType()) {
-      qWarning("QObject::moveToThread() Widgets can not be moved to a new thread");
-      return;
-   }
+    if ( isWidgetType() )
+    {
+        qWarning( "QObject::moveToThread() Widgets can not be moved to a new thread" );
+        return;
+    }
 
-   QThreadData *currentData = QThreadData::current();
-   QThreadData *targetData = targetThread ? QThreadData::get2(targetThread) : new QThreadData(0);
+    QThreadData *currentData = QThreadData::current();
+    QThreadData *targetData = targetThread ? QThreadData::get2( targetThread ) : new QThreadData( 0 );
 
-   QThreadData *threadData = m_threadData.load();
+    QThreadData *threadData = m_threadData.load();
 
-   if (threadData->thread == nullptr && currentData == targetData) {
-      // exception: allow moving objects with no thread affinity to the current thread
-      currentData = threadData;
+    if ( threadData->thread == nullptr && currentData == targetData )
+    {
+        // exception: allow moving objects with no thread affinity to the current thread
+        currentData = threadData;
 
-   } else if (threadData != currentData) {
+    }
+    else if ( threadData != currentData )
+    {
 
-      qWarning("QObject::moveToThread() Current thread (%p) does not match thread for the current object (%p),\n"
-            "unable to move to target thread (%p)\n",
-            static_cast<void *>(currentData->thread.load()), static_cast<void *>(threadData->thread.load()),
-            targetData ? static_cast<void *>(targetData->thread.load()) : nullptr);
+        qWarning( "QObject::moveToThread() Current thread (%p) does not match thread for the current object (%p),\n"
+                  "unable to move to target thread (%p)\n",
+                  static_cast<void *>( currentData->thread.load() ), static_cast<void *>( threadData->thread.load() ),
+                  targetData ? static_cast<void *>( targetData->thread.load() ) : nullptr );
 
 #ifdef Q_OS_DARWIN
 
-      qWarning("QObject::moveToThread() Multiple libraries might be loaded in the same process. Verify all plugins "
-            "are linked with the correct binaries. Set DYLD_PRINT_LIBRARIES=1 and verify only one set of "
-            "binaries are loaded.");
+        qWarning( "QObject::moveToThread() Multiple libraries might be loaded in the same process. Verify all plugins "
+                  "are linked with the correct binaries. Set DYLD_PRINT_LIBRARIES=1 and verify only one set of "
+                  "binaries are loaded." );
 #endif
 
-      return;
-   }
+        return;
+    }
 
-   // prepare to move
-   this->moveToThread_helper();
+    // prepare to move
+    this->moveToThread_helper();
 
-   QOrderedMutexLocker locker(&currentData->postEventList.mutex, &targetData->postEventList.mutex);
+    QOrderedMutexLocker locker( &currentData->postEventList.mutex, &targetData->postEventList.mutex );
 
-   // keep currentData alive
-   currentData->ref();
+    // keep currentData alive
+    currentData->ref();
 
-   // move the object
-   this->setThreadData_helper(currentData, targetData);
+    // move the object
+    this->setThreadData_helper( currentData, targetData );
 
-   locker.unlock();
-   currentData->deref();
+    locker.unlock();
+    currentData->deref();
 }
 
 void QObject::moveToThread_helper()
 {
-   QEvent event(QEvent::ThreadChange);
-   QCoreApplication::sendEvent(this, &event);
+    QEvent event( QEvent::ThreadChange );
+    QCoreApplication::sendEvent( this, &event );
 
-   for (int k = 0; k < m_children.size(); ++k) {
-      QObject *child = m_children.at(k);
-      child->moveToThread_helper();
-   }
+    for ( int k = 0; k < m_children.size(); ++k )
+    {
+        QObject *child = m_children.at( k );
+        child->moveToThread_helper();
+    }
 }
 
 bool QObject::compareThreads() const
 {
-   Qt::HANDLE currentThreadId = QThread::currentThreadId();
+    Qt::HANDLE currentThreadId = QThread::currentThreadId();
 
-   return (currentThreadId == this->m_threadData.load()->threadId);
+    return ( currentThreadId == this->m_threadData.load()->threadId );
 }
 
-void QObject::queueSlot(LsCsSignal::PendingSlot data, LsCsSignal::ConnectionKind kind)
+void QObject::queueSlot( LsCsSignal::PendingSlot data, LsCsSignal::ConnectionKind kind )
 {
-   std::unique_ptr<LsCsSignal::Internal::BentoAbstract> slot_Bento = data.internal_moveSlotBento();
-   std::unique_ptr<LsCsSignal::Internal::TeaCupAbstract> teaCup    = data.internal_moveTeaCup();
+    std::unique_ptr<LsCsSignal::Internal::BentoAbstract> slot_Bento = data.internal_moveSlotBento();
+    std::unique_ptr<LsCsSignal::Internal::TeaCupAbstract> teaCup    = data.internal_moveTeaCup();
 
-   QObject *sender  = dynamic_cast<QObject *>(data.sender());
-   int signal_index = senderSignalIndex();
+    QObject *sender  = dynamic_cast<QObject *>( data.sender() );
+    int signal_index = senderSignalIndex();
 
-   if (kind == LsCsSignal::ConnectionKind::QueuedConnection)  {
-      CSMetaCallEvent *event = new CSMetaCallEvent(slot_Bento.release(), teaCup.release(),
-            sender, signal_index);
+    if ( kind == LsCsSignal::ConnectionKind::QueuedConnection )
+    {
+        CSMetaCallEvent *event = new CSMetaCallEvent( slot_Bento.release(), teaCup.release(),
+                sender, signal_index );
 
-      QCoreApplication::postEvent(this, event);
+        QCoreApplication::postEvent( this, event );
 
-   } else if (kind == LsCsSignal::ConnectionKind::BlockingQueuedConnection) {
-      if (compareThreads()) {
+    }
+    else if ( kind == LsCsSignal::ConnectionKind::BlockingQueuedConnection )
+    {
+        if ( compareThreads() )
+        {
 
-         qWarning("QObject::activate() Dead lock detected while activating a BlockingQueuedConnection: "
-               "Sender is %s(%p), receiver is %s(%p)", csPrintable(sender->metaObject()->className()),
-               static_cast<void *>(sender),
-               csPrintable(this->metaObject()->className()), static_cast<void *>(this) );
-      }
+            qWarning( "QObject::activate() Dead lock detected while activating a BlockingQueuedConnection: "
+                      "Sender is %s(%p), receiver is %s(%p)", csPrintable( sender->metaObject()->className() ),
+                      static_cast<void *>( sender ),
+                      csPrintable( this->metaObject()->className() ), static_cast<void *>( this ) );
+        }
 
-      QSemaphore semaphore;
+        QSemaphore semaphore;
 
-      // store the signal data, false indicates the data will not be copied
-      CSMetaCallEvent *event = new CSMetaCallEvent(slot_Bento.release(), teaCup.release(),
-            sender, signal_index, &semaphore);
+        // store the signal data, false indicates the data will not be copied
+        CSMetaCallEvent *event = new CSMetaCallEvent( slot_Bento.release(), teaCup.release(),
+                sender, signal_index, &semaphore );
 
-      QCoreApplication::postEvent(this, event);
+        QCoreApplication::postEvent( this, event );
 
-      semaphore.acquire();
-   }
+        semaphore.acquire();
+    }
 }
 
-QDebug operator<<(QDebug debug, const QObject *object)
+QDebug operator<<( QDebug debug, const QObject *object )
 {
-   QString8 msg;
+    QString8 msg;
 
-   if (object == nullptr) {
-      msg = "QObject(nullptr) ";
+    if ( object == nullptr )
+    {
+        msg = "QObject(nullptr) ";
 
-   } else {
-      msg =  object->metaObject()->className() + "(";
-      msg += QString8::number(bit_cast<quintptr>(object), 16);
+    }
+    else
+    {
+        msg =  object->metaObject()->className() + "(";
+        msg += QString8::number( bit_cast<quintptr>( object ), 16 );
 
-      if (! object->objectName().isEmpty())  {
-         msg += ", name = " + object->objectName();
-      }
+        if ( ! object->objectName().isEmpty() )
+        {
+            msg += ", name = " + object->objectName();
+        }
 
-      msg += ")";
-   }
+        msg += ")";
+    }
 
-   return debug << msg;
+    return debug << msg;
 }
 
 QObject *QObject::parent() const
 {
-   return m_parent;
+    return m_parent;
 }
 
 // used by QAccessibleWidget
-QList<QObject *> QObject::receiverList(const QMetaMethod &signalMetaMethod) const
+QList<QObject *> QObject::receiverList( const QMetaMethod &signalMetaMethod ) const
 {
-   QList<QObject *> retval;
+    QList<QObject *> retval;
 
-   if (signalMetaMethod.isValid()) {
-      const CSBentoAbstract *signalMethod_Bento = signalMetaMethod.getBentoBox();
-      std::set<SlotBase *> tmpSet = LsCsSignal::SignalBase::internal_receiverList(*signalMethod_Bento);
+    if ( signalMetaMethod.isValid() )
+    {
+        const CSBentoAbstract *signalMethod_Bento = signalMetaMethod.getBentoBox();
+        std::set<SlotBase *> tmpSet = LsCsSignal::SignalBase::internal_receiverList( *signalMethod_Bento );
 
-      for (auto item : tmpSet)  {
-         QObject *obj = dynamic_cast<QObject *>(item);
+        for ( auto item : tmpSet )
+        {
+            QObject *obj = dynamic_cast<QObject *>( item );
 
-         if (obj != nullptr) {
-            retval.append(obj);
-         }
-      }
-   }
+            if ( obj != nullptr )
+            {
+                retval.append( obj );
+            }
+        }
+    }
 
-   return retval;
+    return retval;
 }
 
-int QObject::receivers(const QString8 &signalMethod) const
+int QObject::receivers( const QString8 &signalMethod ) const
 {
-   int receivers    = 0;
-   int signal_index = -1;
+    int receivers    = 0;
+    int signal_index = -1;
 
-   if (! signalMethod.isEmpty()) {
-      QString8 signal_name = QMetaObject::normalizedSignature(signalMethod);
-      const QMetaObject *metaObj = this->metaObject();
+    if ( ! signalMethod.isEmpty() )
+    {
+        QString8 signal_name = QMetaObject::normalizedSignature( signalMethod );
+        const QMetaObject *metaObj = this->metaObject();
 
-      signal_index = metaObj->indexOfSignal(signal_name);
+        signal_index = metaObj->indexOfSignal( signal_name );
 
-      if (signal_index != -1)  {
-         QMetaMethod signalMetaMethod = metaObj->method(signal_index);
-         const CSBentoAbstract *signalMethod_Bento = signalMetaMethod.getBentoBox();
+        if ( signal_index != -1 )
+        {
+            QMetaMethod signalMetaMethod = metaObj->method( signal_index );
+            const CSBentoAbstract *signalMethod_Bento = signalMetaMethod.getBentoBox();
 
-         receivers = LsCsSignal::SignalBase::internal_cntConnections(nullptr, *signalMethod_Bento);
-      }
-   }
+            receivers = LsCsSignal::SignalBase::internal_cntConnections( nullptr, *signalMethod_Bento );
+        }
+    }
 
-   if (m_declarativeData && CSAbstractDeclarativeData::receivers) {
-      receivers += CSAbstractDeclarativeData::receivers(m_declarativeData, this, signal_index);
-   }
+    if ( m_declarativeData && CSAbstractDeclarativeData::receivers )
+    {
+        receivers += CSAbstractDeclarativeData::receivers( m_declarativeData, this, signal_index );
+    }
 
-   return receivers;
+    return receivers;
 }
 
-void QObject::removeEventFilter(QObject *obj)
+void QObject::removeEventFilter( QObject *obj )
 {
-   for (int i = 0; i < m_eventFilters.count(); ++i) {
+    for ( int i = 0; i < m_eventFilters.count(); ++i )
+    {
 
-      if (m_eventFilters.at(i) == obj) {
-         m_eventFilters[i] = nullptr;
-      }
-   }
+        if ( m_eventFilters.at( i ) == obj )
+        {
+            m_eventFilters[i] = nullptr;
+        }
+    }
 }
 
 void QObject::removeObject()
@@ -995,306 +1113,349 @@ void QObject::removeObject()
 
 QObject *QObject::sender() const
 {
-   return dynamic_cast<QObject *>(SlotBase::sender());
+    return dynamic_cast<QObject *>( SlotBase::sender() );
 }
 
 // used by QAccessibleWidget
 QList<QObject *> QObject::senderList() const
 {
-   QList<QObject *> retval;
+    QList<QObject *> retval;
 
-   std::set<SignalBase *> tempSet = LsCsSignal::SlotBase::internal_senderList();
+    std::set<SignalBase *> tempSet = LsCsSignal::SlotBase::internal_senderList();
 
-   for (auto item : tempSet)  {
-      QObject *obj = dynamic_cast<QObject *>(item);
+    for ( auto item : tempSet )
+    {
+        QObject *obj = dynamic_cast<QObject *>( item );
 
-      if (obj) {
-         retval.append(obj);
-      }
-   }
+        if ( obj )
+        {
+            retval.append( obj );
+        }
+    }
 
-   return retval;
+    return retval;
 }
 
 // only vaild when called from the slot in a direct connection
 int QObject::senderSignalIndex() const
 {
-   int retval = -1;
+    int retval = -1;
 
-   QObject *tempSender = sender();
+    QObject *tempSender = sender();
 
-   if (tempSender == nullptr) {
-      return retval;
-   }
+    if ( tempSender == nullptr )
+    {
+        return retval;
+    }
 
-   const LsCsSignal::Internal::BentoAbstract *signalBase = LsCsSignal::SignalBase::get_threadLocal_currentSignal();
+    const LsCsSignal::Internal::BentoAbstract *signalBase = LsCsSignal::SignalBase::get_threadLocal_currentSignal();
 
-   if (signalBase != nullptr) {
-      retval = tempSender->metaObject()->indexOfMethod(*signalBase);
-   }
+    if ( signalBase != nullptr )
+    {
+        retval = tempSender->metaObject()->indexOfMethod( *signalBase );
+    }
 
-   return retval;
+    return retval;
 }
 
-void QObject::setObjectName(const QString8 &name)
+void QObject::setObjectName( const QString8 &name )
 {
-   if (m_objectName != name)   {
-      m_objectName = name;
-      emit objectNameChanged(m_objectName);
-   }
+    if ( m_objectName != name )
+    {
+        m_objectName = name;
+        emit objectNameChanged( m_objectName );
+    }
 }
 
 void QObject::cs_forceRemoveChild()
 {
-   if (m_parent && m_parent->m_receiveChildEvents) {
-      QChildEvent e(QEvent::ChildRemoved, this);
-      QCoreApplication::sendEvent(m_parent, &e);
+    if ( m_parent && m_parent->m_receiveChildEvents )
+    {
+        QChildEvent e( QEvent::ChildRemoved, this );
+        QCoreApplication::sendEvent( m_parent, &e );
 
-      m_sentChildRemoved = true;
-   }
+        m_sentChildRemoved = true;
+    }
 }
 
-void QObject::setParent(QObject *newParent)
+void QObject::setParent( QObject *newParent )
 {
-   // QWidget overrides this methods
+    // QWidget overrides this methods
 
-   if (newParent == m_parent) {
-      return;
-   }
+    if ( newParent == m_parent )
+    {
+        return;
+    }
 
-   if (m_parent) {
-      // remove the current object from the old m_parent m_children list
+    if ( m_parent )
+    {
+        // remove the current object from the old m_parent m_children list
 
-      if (m_parent->m_wasDeleted && m_wasDeleted && m_parent->m_currentChildBeingDeleted == this) {
-         // QObject::deleteChildren() cleared our entry for m_parent->m_children
+        if ( m_parent->m_wasDeleted && m_wasDeleted && m_parent->m_currentChildBeingDeleted == this )
+        {
+            // QObject::deleteChildren() cleared our entry for m_parent->m_children
 
-      } else {
-         const int index = m_parent->m_children.indexOf(this);
+        }
+        else
+        {
+            const int index = m_parent->m_children.indexOf( this );
 
-         if (m_parent->m_wasDeleted) {
-            m_parent->m_children[index] = nullptr;
+            if ( m_parent->m_wasDeleted )
+            {
+                m_parent->m_children[index] = nullptr;
 
-         } else {
-            m_parent->m_children.removeAt(index);
-
-            if (m_sendChildEvents && m_parent->m_receiveChildEvents && ! m_sentChildRemoved) {
-               QChildEvent e(QEvent::ChildRemoved, this);
-               QCoreApplication::sendEvent(m_parent, &e);
             }
-         }
-      }
-   }
+            else
+            {
+                m_parent->m_children.removeAt( index );
 
-   m_parent = newParent;
+                if ( m_sendChildEvents && m_parent->m_receiveChildEvents && ! m_sentChildRemoved )
+                {
+                    QChildEvent e( QEvent::ChildRemoved, this );
+                    QCoreApplication::sendEvent( m_parent, &e );
+                }
+            }
+        }
+    }
 
-   if (m_parent) {
-      // object hierarchies are constrained to a single thread
+    m_parent = newParent;
 
-      if (m_threadData.load() != m_parent->m_threadData.load()) {
-         qWarning("QObject::setParent() Unable to set parent, new parent is in a different thread");
-         m_parent = nullptr;
-         return;
-      }
+    if ( m_parent )
+    {
+        // object hierarchies are constrained to a single thread
 
-      m_parent->m_children.append(this);
+        if ( m_threadData.load() != m_parent->m_threadData.load() )
+        {
+            qWarning( "QObject::setParent() Unable to set parent, new parent is in a different thread" );
+            m_parent = nullptr;
+            return;
+        }
 
-      if (m_sendChildEvents && m_parent->m_receiveChildEvents) {
-         if (! isWidgetType()) {
-            QChildEvent e(QEvent::ChildAdded, this);
-            QCoreApplication::sendEvent(m_parent, &e);
-         }
-      }
-   }
+        m_parent->m_children.append( this );
 
-   if (! m_wasDeleted && m_declarativeData) {
-      CSAbstractDeclarativeData::parentChanged(m_declarativeData, this, newParent);
-   }
+        if ( m_sendChildEvents && m_parent->m_receiveChildEvents )
+        {
+            if ( ! isWidgetType() )
+            {
+                QChildEvent e( QEvent::ChildAdded, this );
+                QCoreApplication::sendEvent( m_parent, &e );
+            }
+        }
+    }
+
+    if ( ! m_wasDeleted && m_declarativeData )
+    {
+        CSAbstractDeclarativeData::parentChanged( m_declarativeData, this, newParent );
+    }
 }
 
-bool QObject::setProperty(const QString8 &name, const QVariant &value)
+bool QObject::setProperty( const QString8 &name, const QVariant &value )
 {
-   const QMetaObject *metaObj = metaObject();
+    const QMetaObject *metaObj = metaObject();
 
-   if (name.isEmpty() || ! metaObj) {
-      return false;
-   }
+    if ( name.isEmpty() || ! metaObj )
+    {
+        return false;
+    }
 
-   int index = metaObj->indexOfProperty(name);
+    int index = metaObj->indexOfProperty( name );
 
-   if (index < 0) {
-      const int k = m_extra_propertyNames.indexOf(name);
+    if ( index < 0 )
+    {
+        const int k = m_extra_propertyNames.indexOf( name );
 
-      if (value.isValid()) {
-         // add or update dynamic property
+        if ( value.isValid() )
+        {
+            // add or update dynamic property
 
-         if (k == -1) {
-            m_extra_propertyNames.append(name);
-            m_extra_propertyValues.append(value);
+            if ( k == -1 )
+            {
+                m_extra_propertyNames.append( name );
+                m_extra_propertyValues.append( value );
 
-         } else {
-            m_extra_propertyValues[k] = value;
+            }
+            else
+            {
+                m_extra_propertyValues[k] = value;
 
-         }
+            }
 
-      } else {
-         // remove dynamic property
+        }
+        else
+        {
+            // remove dynamic property
 
-         if (k == -1) {
-            return false;
-         }
+            if ( k == -1 )
+            {
+                return false;
+            }
 
-         m_extra_propertyNames.removeAt(k);
-         m_extra_propertyValues.removeAt(k);
-      }
+            m_extra_propertyNames.removeAt( k );
+            m_extra_propertyValues.removeAt( k );
+        }
 
-      QDynamicPropertyChangeEvent event(name.toUtf8());
-      QCoreApplication::sendEvent(this, &event);
+        QDynamicPropertyChangeEvent event( name.toUtf8() );
+        QCoreApplication::sendEvent( this, &event );
 
-      return false;
-   }
+        return false;
+    }
 
-   QMetaProperty p = metaObj->property(index);
+    QMetaProperty p = metaObj->property( index );
 
-   if (! p.isWritable()) {
-      qWarning("%s::setProperty() Property \"%s\" is invalid, read only, or does not exist",
-            csPrintable(metaObj->className()), csPrintable(name));
-   }
+    if ( ! p.isWritable() )
+    {
+        qWarning( "%s::setProperty() Property \"%s\" is invalid, read only, or does not exist",
+                  csPrintable( metaObj->className() ), csPrintable( name ) );
+    }
 
-   bool retval = p.write(this, value);
+    bool retval = p.write( this, value );
 
-   if (! retval) {
-      qWarning("%s::setProperty() Set property \"%s\" failed. Passed value is of type %s, property is of type %s",
-            csPrintable(metaObj->className()), csPrintable(name), csPrintable(value.typeName()),
-            csPrintable(p.typeName()));
-   }
+    if ( ! retval )
+    {
+        qWarning( "%s::setProperty() Set property \"%s\" failed. Passed value is of type %s, property is of type %s",
+                  csPrintable( metaObj->className() ), csPrintable( name ), csPrintable( value.typeName() ),
+                  csPrintable( p.typeName() ) );
+    }
 
-   return retval;
+    return retval;
 }
 
-void QObject::setThreadData_helper(QThreadData *currentData, QThreadData *targetData)
+void QObject::setThreadData_helper( QThreadData *currentData, QThreadData *targetData )
 {
-   // move posted events
-   int eventsMoved = 0;
+    // move posted events
+    int eventsMoved = 0;
 
-   for (int i = 0; i < currentData->postEventList.size(); ++i) {
-      const QPostEvent &postedEvent = currentData->postEventList.at(i);
+    for ( int i = 0; i < currentData->postEventList.size(); ++i )
+    {
+        const QPostEvent &postedEvent = currentData->postEventList.at( i );
 
-      if (! postedEvent.event) {
-         continue;
-      }
+        if ( ! postedEvent.event )
+        {
+            continue;
+        }
 
-      if (postedEvent.receiver == this) {
-         // move this post event to the targetList
-         targetData->postEventList.addEvent(postedEvent);
-         const_cast<QPostEvent &>(postedEvent).event = nullptr;
-         ++eventsMoved;
-      }
-   }
+        if ( postedEvent.receiver == this )
+        {
+            // move this post event to the targetList
+            targetData->postEventList.addEvent( postedEvent );
+            const_cast<QPostEvent &>( postedEvent ).event = nullptr;
+            ++eventsMoved;
+        }
+    }
 
-   if (eventsMoved > 0 && targetData->eventDispatcher) {
-      targetData->canWait = false;
-      targetData->eventDispatcher.load()->wakeUp();
-   }
+    if ( eventsMoved > 0 && targetData->eventDispatcher )
+    {
+        targetData->canWait = false;
+        targetData->eventDispatcher.load()->wakeUp();
+    }
 
-   // set new thread data
-   targetData->ref();
+    // set new thread data
+    targetData->ref();
 
-   QThreadData *threadData = m_threadData.exchange(targetData);
-   threadData->deref();
+    QThreadData *threadData = m_threadData.exchange( targetData );
+    threadData->deref();
 
-   for (int k = 0; k < m_children.size(); ++k) {
-      QObject *child = m_children.at(k);
-      child->setThreadData_helper(currentData, targetData);
-   }
+    for ( int k = 0; k < m_children.size(); ++k )
+    {
+        QObject *child = m_children.at( k );
+        child->setThreadData_helper( currentData, targetData );
+    }
 }
 
 bool QObject::signalsBlocked() const
 {
-   return m_blockSig;
+    return m_blockSig;
 }
 
-int QObject::startTimer(int interval, Qt::TimerType timerType)
+int QObject::startTimer( int interval, Qt::TimerType timerType )
 {
-   if (interval < 0) {
-      qWarning("QObject::startTimer() QTimer can not have a negative interval");
-      return 0;
-   }
+    if ( interval < 0 )
+    {
+        qWarning( "QObject::startTimer() QTimer can not have a negative interval" );
+        return 0;
+    }
 
-   // set timer flag
-   m_pendTimer = true;
+    // set timer flag
+    m_pendTimer = true;
 
-   QThreadData *threadData = m_threadData.load();
-   auto tmp = threadData->eventDispatcher.load();
+    QThreadData *threadData = m_threadData.load();
+    auto tmp = threadData->eventDispatcher.load();
 
-   if (! tmp ) {
-      qWarning("QObject::startTimer() QTimer can only be used with threads started with QThread");
-      return 0;
-   }
+    if ( ! tmp )
+    {
+        qWarning( "QObject::startTimer() QTimer can only be used with threads started with QThread" );
+        return 0;
+    }
 
-   if (thread() != QThread::currentThread()) {
-      qWarning("QObject::startTimer() Timers can not be started from another thread");
-      return 0;
-   }
+    if ( thread() != QThread::currentThread() )
+    {
+        qWarning( "QObject::startTimer() Timers can not be started from another thread" );
+        return 0;
+    }
 
-   return tmp->registerTimer(interval, timerType, this);
+    return tmp->registerTimer( interval, timerType, this );
 }
 
 QThread *QObject::thread() const
 {
-   return m_threadData.load()->thread;
+    return m_threadData.load()->thread;
 }
 
-void QObject::timerEvent(QTimerEvent *)
+void QObject::timerEvent( QTimerEvent * )
 {
-   // no code should appear here
+    // no code should appear here
 }
 
-bool QObject::cs_InstanceOf(const QString8 &iid)
+bool QObject::cs_InstanceOf( const QString8 &iid )
 {
-   // check if the iid is part of this class
+    // check if the iid is part of this class
 
-   if (iid.isEmpty()) {
-      return false;
-   }
+    if ( iid.isEmpty() )
+    {
+        return false;
+    }
 
-   const QMetaObject *metaObject = this->metaObject();
+    const QMetaObject *metaObject = this->metaObject();
 
-   while (metaObject != nullptr)  {
-      // test 1
-      if (iid == metaObject->className()) {
-         return true;
-      }
+    while ( metaObject != nullptr )
+    {
+        // test 1
+        if ( iid == metaObject->className() )
+        {
+            return true;
+        }
 
-      metaObject = metaObject->superClass();
-   }
+        metaObject = metaObject->superClass();
+    }
 
-   // test 2
-   if (this->cs_interface_query(iid)) {
-      return true;
-   }
+    // test 2
+    if ( this->cs_interface_query( iid ) )
+    {
+        return true;
+    }
 
-   return false;
+    return false;
 }
 
-bool QObject::cs_interface_query(const QString8 &) const
+bool QObject::cs_interface_query( const QString8 & ) const
 {
-   return false;
+    return false;
 }
 
 QMap<std::type_index, QMetaObject *> &QObject::m_metaObjectsAll()
 {
-   static QMap<std::type_index, QMetaObject *> metaObjects;
-   return metaObjects;
+    static QMap<std::type_index, QMetaObject *> metaObjects;
+    return metaObjects;
 }
 
 std::recursive_mutex &QObject::m_metaObjectMutex()
 {
-   static std::recursive_mutex metaObjectMutex;
-   return metaObjectMutex;
+    static std::recursive_mutex metaObjectMutex;
+    return metaObjectMutex;
 }
 
 // **
-void (*CSAbstractDeclarativeData::destroyed)(CSAbstractDeclarativeData *, QObject *) = nullptr;
-void (*CSAbstractDeclarativeData::parentChanged)(CSAbstractDeclarativeData *, QObject *, QObject *) = nullptr;
-void (*CSAbstractDeclarativeData::signalEmitted)(CSAbstractDeclarativeData *, QObject *, int, void **) = nullptr;
-int  (*CSAbstractDeclarativeData::receivers)(CSAbstractDeclarativeData *, const QObject *, int) = nullptr;
+void ( *CSAbstractDeclarativeData::destroyed )( CSAbstractDeclarativeData *, QObject * ) = nullptr;
+void ( *CSAbstractDeclarativeData::parentChanged )( CSAbstractDeclarativeData *, QObject *, QObject * ) = nullptr;
+void ( *CSAbstractDeclarativeData::signalEmitted )( CSAbstractDeclarativeData *, QObject *, int, void ** ) = nullptr;
+int  ( *CSAbstractDeclarativeData::receivers )( CSAbstractDeclarativeData *, const QObject *, int ) = nullptr;

@@ -33,7 +33,8 @@
 #include <wtf/HashMap.h>
 #include <wtf/PassOwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Frame;
 class InspectorArray;
@@ -46,43 +47,44 @@ class StorageArea;
 
 typedef String ErrorString;
 
-class InspectorDOMStorageAgent {
+class InspectorDOMStorageAgent
+{
 public:
-    static PassOwnPtr<InspectorDOMStorageAgent> create(InstrumentingAgents* instrumentingAgents, InspectorState* state)
+    static PassOwnPtr<InspectorDOMStorageAgent> create( InstrumentingAgents *instrumentingAgents, InspectorState *state )
     {
-        return adoptPtr(new InspectorDOMStorageAgent(instrumentingAgents, state));
+        return adoptPtr( new InspectorDOMStorageAgent( instrumentingAgents, state ) );
     }
     ~InspectorDOMStorageAgent();
 
-    void setFrontend(InspectorFrontend*);
+    void setFrontend( InspectorFrontend * );
     void clearFrontend();
 
     void clearResources();
     void restore();
 
     // Called from the front-end.
-    void enable(ErrorString*);
-    void disable(ErrorString*);
-    void getDOMStorageEntries(ErrorString*, int storageId, RefPtr<InspectorArray>* entries);
-    void setDOMStorageItem(ErrorString*, int storageId, const String& key, const String& value, bool* success);
-    void removeDOMStorageItem(ErrorString*, int storageId, const String& key, bool* success);
+    void enable( ErrorString * );
+    void disable( ErrorString * );
+    void getDOMStorageEntries( ErrorString *, int storageId, RefPtr<InspectorArray> *entries );
+    void setDOMStorageItem( ErrorString *, int storageId, const String &key, const String &value, bool *success );
+    void removeDOMStorageItem( ErrorString *, int storageId, const String &key, bool *success );
 
     // Called from the injected script.
-    int storageId(Storage*);
+    int storageId( Storage * );
 
     // Called from InspectorInstrumentation
-    void didUseDOMStorage(StorageArea*, bool isLocalStorage, Frame*);
+    void didUseDOMStorage( StorageArea *, bool isLocalStorage, Frame * );
 
 private:
-    InspectorDOMStorageAgent(InstrumentingAgents*, InspectorState*);
+    InspectorDOMStorageAgent( InstrumentingAgents *, InspectorState * );
 
-    InspectorDOMStorageResource* getDOMStorageResourceForId(int storageId);
+    InspectorDOMStorageResource *getDOMStorageResourceForId( int storageId );
 
-    InstrumentingAgents* m_instrumentingAgents;
-    InspectorState* m_inspectorState;
+    InstrumentingAgents *m_instrumentingAgents;
+    InspectorState *m_inspectorState;
     typedef HashMap<int, RefPtr<InspectorDOMStorageResource> > DOMStorageResourcesMap;
     DOMStorageResourcesMap m_resources;
-    InspectorFrontend* m_frontend;
+    InspectorFrontend *m_frontend;
     bool m_enabled;
 };
 

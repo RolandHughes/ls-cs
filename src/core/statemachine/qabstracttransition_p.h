@@ -35,32 +35,32 @@ class QAbstractTransition;
 
 class Q_CORE_EXPORT QAbstractTransitionPrivate
 {
-   Q_DECLARE_PUBLIC(QAbstractTransition)
+    Q_DECLARE_PUBLIC( QAbstractTransition )
 
- public:
-   QAbstractTransitionPrivate();
+public:
+    QAbstractTransitionPrivate();
 
-   virtual ~QAbstractTransitionPrivate()
-   { }
+    virtual ~QAbstractTransitionPrivate()
+    { }
 
-   static QAbstractTransitionPrivate *get(QAbstractTransition *q);
+    static QAbstractTransitionPrivate *get( QAbstractTransition *q );
 
-   bool callEventTest(QEvent *e);
-   virtual void callOnTransition(QEvent *e);
+    bool callEventTest( QEvent *e );
+    virtual void callOnTransition( QEvent *e );
 
-   QState *sourceState() const;
-   QStateMachine *machine() const;
-   void emitTriggered();
+    QState *sourceState() const;
+    QStateMachine *machine() const;
+    void emitTriggered();
 
-   QVector<QPointer<QAbstractState>> targetStates;
-   QAbstractTransition::TransitionType transitionType;
+    QVector<QPointer<QAbstractState>> targetStates;
+    QAbstractTransition::TransitionType transitionType;
 
 #ifndef QT_NO_ANIMATION
-   QList<QAbstractAnimation *> animations;
+    QList<QAbstractAnimation *> animations;
 #endif
 
- protected:
-   QAbstractTransition *q_ptr;
+protected:
+    QAbstractTransition *q_ptr;
 };
 
 #endif

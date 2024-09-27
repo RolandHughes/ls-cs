@@ -36,61 +36,79 @@
 #include "TextEncoding.h"
 #include <wtf/text/CString.h>
 
-namespace WebCore {
-
-void handleDataURL(ResourceHandle* handle)
+namespace WebCore
 {
-    ASSERT(handle->firstRequest().url().protocolIs("data"));
+
+void handleDataURL( ResourceHandle *handle )
+{
+    ASSERT( handle->firstRequest().url().protocolIs( "data" ) );
     String url = handle->firstRequest().url().string();
 
-    int index = url.find(',');
-    if (index == -1) {
-        handle->client()->cannotShowURL(handle);
+    int index = url.find( ',' );
+
+    if ( index == -1 )
+    {
+        handle->client()->cannotShowURL( handle );
         return;
     }
 
-    String mediaType = url.substring(5, index - 5);
-    String data = url.substring(index + 1);
+    String mediaType = url.substring( 5, index - 5 );
+    String data = url.substring( index + 1 );
 
-    bool base64 = mediaType.endsWith(";base64", false);
-    if (base64)
-        mediaType = mediaType.left(mediaType.length() - 7);
+    bool base64 = mediaType.endsWith( ";base64", false );
 
-    if (mediaType.isEmpty())
-        mediaType = "text/plain";
-
-    String mimeType = extractMIMETypeFromMediaType(mediaType);
-    String charset = extractCharsetFromMediaType(mediaType);
-
-    if (charset.isEmpty())
-        charset = "US-ASCII";
-
-    ResourceResponse response;
-    response.setMimeType(mimeType);
-    response.setTextEncodingName(charset);
-    response.setURL(handle->firstRequest().url());
-
-    if (base64) {
-        data = decodeURLEscapeSequences(data);
-        handle->client()->didReceiveResponse(handle, response);
-
-        Vector<char> out;
-        if (base64Decode(data, out, IgnoreWhitespace) && out.size() > 0) {
-            response.setExpectedContentLength(out.size());
-            handle->client()->didReceiveData(handle, out.data(), out.size(), 0);
-        }
-    } else {
-        TextEncoding encoding(charset);
-        data = decodeURLEscapeSequences(data, encoding);
-        handle->client()->didReceiveResponse(handle, response);
-
-        CString encodedData = encoding.encode(data.characters(), data.length(), URLEncodedEntitiesForUnencodables);
-        response.setExpectedContentLength(encodedData.length());
-        if (encodedData.length())
-            handle->client()->didReceiveData(handle, encodedData.data(), encodedData.length(), 0);
+    if ( base64 )
+    {
+        mediaType = mediaType.left( mediaType.length() - 7 );
     }
 
-    handle->client()->didFinishLoading(handle, 0);
+    if ( mediaType.isEmpty() )
+    {
+        mediaType = "text/plain";
+    }
+
+    String mimeType = extractMIMETypeFromMediaType( mediaType );
+    String charset = extractCharsetFromMediaType( mediaType );
+
+    if ( charset.isEmpty() )
+    {
+        charset = "US-ASCII";
+    }
+
+    ResourceResponse response;
+    response.setMimeType( mimeType );
+    response.setTextEncodingName( charset );
+    response.setURL( handle->firstRequest().url() );
+
+    if ( base64 )
+    {
+        data = decodeURLEscapeSequences( data );
+        handle->client()->didReceiveResponse( handle, response );
+
+        Vector<char> out;
+
+        if ( base64Decode( data, out, IgnoreWhitespace ) && out.size() > 0 )
+        {
+            response.setExpectedContentLength( out.size() );
+            handle->client()->didReceiveData( handle, out.data(), out.size(), 0 );
+        }
+    }
+    else
+    {
+        TextEncoding encoding( charset );
+        data = decodeURLEscapeSequences( data, encoding );
+        handle->client()->didReceiveResponse( handle, response );
+
+        CString encodedData = encoding.encode( data.characters(), data.length(), URLEncodedEntitiesForUnencodables );
+        response.setExpectedContentLength( encodedData.length() );
+
+        if ( encodedData.length() )
+        {
+            handle->client()->didReceiveData( handle, encodedData.data(), encodedData.length(), 0 );
+        }
+    }
+
+    handle->client()->didFinishLoading( handle, 0 );
 }
 
 } // namespace WebCore

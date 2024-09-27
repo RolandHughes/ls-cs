@@ -22,20 +22,22 @@
 
 #include <WebCore/FrameNetworkingContext.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class WebFrameNetworkingContext : public FrameNetworkingContext {
+class WebFrameNetworkingContext : public FrameNetworkingContext
+{
 public:
-    static PassRefPtr<WebFrameNetworkingContext> create(Frame*);
+    static PassRefPtr<WebFrameNetworkingContext> create( Frame * );
 
 private:
-    WebFrameNetworkingContext(Frame*);
+    WebFrameNetworkingContext( Frame * );
 
-    virtual QObject* originatingObject() const;
-    virtual QNetworkAccessManager* networkAccessManager() const;
+    virtual QObject *originatingObject() const;
+    virtual QNetworkAccessManager *networkAccessManager() const;
     virtual bool mimeSniffingEnabled() const;
 
-    QObject* m_originatingObject;
+    QObject *m_originatingObject;
     bool m_mimeSniffingEnabled;
 };
 

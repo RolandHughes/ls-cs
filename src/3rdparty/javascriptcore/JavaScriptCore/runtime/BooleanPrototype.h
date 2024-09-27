@@ -23,12 +23,14 @@
 
 #include "BooleanObject.h"
 
-namespace JSC {
+namespace JSC
+{
 
-    class BooleanPrototype : public BooleanObject {
-    public:
-        BooleanPrototype(ExecState*, NonNullPassRefPtr<Structure>, Structure* prototypeFunctionStructure);
-    };
+class BooleanPrototype : public BooleanObject
+{
+public:
+    BooleanPrototype( ExecState *, NonNullPassRefPtr<Structure>, Structure *prototypeFunctionStructure );
+};
 
 } // namespace JSC
 

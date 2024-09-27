@@ -24,37 +24,42 @@
 #include "RenderStyleConstants.h"
 #include "RenderText.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class RenderQuote : public RenderText {
+class RenderQuote : public RenderText
+{
 public:
-    RenderQuote(Document*, const QuoteType);
+    RenderQuote( Document *, const QuoteType );
     virtual ~RenderQuote();
 
-    static void rendererSubtreeAttached(RenderObject*);
-    static void rendererRemovedFromTree(RenderObject*);
+    static void rendererSubtreeAttached( RenderObject * );
+    static void rendererRemovedFromTree( RenderObject * );
 protected:
-    virtual void styleDidChange(StyleDifference, const RenderStyle* oldStyle);
+    virtual void styleDidChange( StyleDifference, const RenderStyle *oldStyle );
 private:
-    virtual const char* renderName() const;
-    virtual bool isQuote() const { return true; };
+    virtual const char *renderName() const;
+    virtual bool isQuote() const
+    {
+        return true;
+    };
     virtual PassRefPtr<StringImpl> originalText() const;
-    virtual void computePreferredLogicalWidths(float leadWidth);
+    virtual void computePreferredLogicalWidths( float leadWidth );
     QuoteType m_type;
     int m_depth;
-    RenderQuote* m_next;
-    RenderQuote* m_previous;
+    RenderQuote *m_next;
+    RenderQuote *m_previous;
     void placeQuote();
 };
 
-inline RenderQuote* toRenderQuote(RenderObject* object)
+inline RenderQuote *toRenderQuote( RenderObject *object )
 {
-    ASSERT(!object || object->isQuote());
-    return static_cast<RenderQuote*>(object);
+    ASSERT( !object || object->isQuote() );
+    return static_cast<RenderQuote *>( object );
 }
 
 // This will catch anyone doing an unnecessary cast.
-void toRenderQuote(const RenderQuote*);
+void toRenderQuote( const RenderQuote * );
 
 } // namespace WebCore
 

@@ -40,109 +40,120 @@
 template <typename T>
 class Q_CORE_EXPORT QCFType
 {
- public:
-   QCFType(const T &t = nullptr)
-      : m_type(t)
-   {
-   }
+public:
+    QCFType( const T &t = nullptr )
+        : m_type( t )
+    {
+    }
 
-   QCFType(const QCFType &helper)
-      : m_type(helper.m_type)
-   {
-      if (m_type) {
-         CFRetain(m_type);
-      }
-   }
+    QCFType( const QCFType &helper )
+        : m_type( helper.m_type )
+    {
+        if ( m_type )
+        {
+            CFRetain( m_type );
+        }
+    }
 
-   ~QCFType() {
-      if (m_type) {
-         CFRelease(m_type);
-      }
-   }
+    ~QCFType()
+    {
+        if ( m_type )
+        {
+            CFRelease( m_type );
+        }
+    }
 
-   operator T() {
-      return m_type;
-   }
+    operator T()
+    {
+        return m_type;
+    }
 
-   QCFType operator =(const QCFType &helper) {
-      if (helper.m_type) {
-         CFRetain(helper.m_type);
-      }
+    QCFType operator =( const QCFType &helper )
+    {
+        if ( helper.m_type )
+        {
+            CFRetain( helper.m_type );
+        }
 
-      CFTypeRef refType = m_type;
-      m_type = helper.m_type;
+        CFTypeRef refType = m_type;
+        m_type = helper.m_type;
 
-      if (refType) {
-         CFRelease(refType);
-      }
+        if ( refType )
+        {
+            CFRelease( refType );
+        }
 
-      return *this;
-   }
+        return *this;
+    }
 
-   T *operator &() {
-      return &m_type;
-   }
+    T *operator &()
+    {
+        return &m_type;
+    }
 
-   template <typename U>
-   U as() const {
-      return reinterpret_cast<U>(m_type);
-   }
+    template <typename U>
+    U as() const
+    {
+        return reinterpret_cast<U>( m_type );
+    }
 
-   static QCFType constructFromGet(const T &t) {
-      CFRetain(t);
-      return QCFType<T>(t);
-   }
+    static QCFType constructFromGet( const T &t )
+    {
+        CFRetain( t );
+        return QCFType<T>( t );
+    }
 
- protected:
-   T m_type;
+protected:
+    T m_type;
 };
 
 class Q_CORE_EXPORT QCFString : public QCFType<CFStringRef>
 {
- public:
-   QCFString(const QString &str)
-      : QCFType<CFStringRef>(nullptr), m_string(str)
-   {
-   }
+public:
+    QCFString( const QString &str )
+        : QCFType<CFStringRef>( nullptr ), m_string( str )
+    {
+    }
 
-   QCFString(const CFStringRef cfstr = nullptr)
-      : QCFType<CFStringRef>(cfstr)
-   {
-   }
+    QCFString( const CFStringRef cfstr = nullptr )
+        : QCFType<CFStringRef>( cfstr )
+    {
+    }
 
-   QCFString(const QCFType<CFStringRef> &other)
-      : QCFType<CFStringRef>(other)
-   {
-   }
+    QCFString( const QCFType<CFStringRef> &other )
+        : QCFType<CFStringRef>( other )
+    {
+    }
 
-   QString toQString() const;
-   CFStringRef toCFStringRef() const;
+    QString toQString() const;
+    CFStringRef toCFStringRef() const;
 
-   operator CFStringRef() = delete;
+    operator CFStringRef() = delete;
 
-   static QString toQString(CFStringRef cfstr);
-   static CFStringRef toCFStringRef(const QString &str);
+    static QString toQString( CFStringRef cfstr );
+    static CFStringRef toCFStringRef( const QString &str );
 
 #ifdef __OBJC__
-   static QString toQString(const NSString *nsstr);
-   static NSString *toNSString(const QString &string);
+    static QString toQString( const NSString *nsstr );
+    static NSString *toNSString( const QString &string );
 #endif
 
- private:
-   QString m_string;
+private:
+    QString m_string;
 };
 
-struct QAppleOperatingSystemVersion {
-   int major;
-   int minor;
-   int patch;
+struct QAppleOperatingSystemVersion
+{
+    int major;
+    int minor;
+    int patch;
 };
 
 QAppleOperatingSystemVersion qt_apple_os_version();
 
 #if defined(Q_OS_DARWIN)
-Q_CORE_EXPORT QChar qt_mac_qtKey2CocoaKey(Qt::Key key);
-Q_CORE_EXPORT Qt::Key qt_mac_cocoaKey2QtKey(QChar keyCode);
+Q_CORE_EXPORT QChar qt_mac_qtKey2CocoaKey( Qt::Key key );
+Q_CORE_EXPORT Qt::Key qt_mac_cocoaKey2QtKey( QChar keyCode );
 #endif
 
 #endif

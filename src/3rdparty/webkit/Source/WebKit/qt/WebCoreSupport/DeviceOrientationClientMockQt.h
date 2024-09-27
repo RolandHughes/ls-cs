@@ -25,35 +25,37 @@
 
 #include <QObject>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class DeviceOrientation;
 class DeviceOrientationClientMock;
 class DeviceOrientationController;
 
-class DeviceOrientationClientMockQt : public QObject, public DeviceOrientationClient {
-    WEB_CS_OBJECT(DeviceOrientationClientMockQt)
+class DeviceOrientationClientMockQt : public QObject, public DeviceOrientationClient
+{
+    WEB_CS_OBJECT( DeviceOrientationClientMockQt )
 public:
-    static DeviceOrientationClientMockQt* client();
+    static DeviceOrientationClientMockQt *client();
     virtual ~DeviceOrientationClientMockQt();
 
-    virtual void setController(DeviceOrientationController*);
+    virtual void setController( DeviceOrientationController * );
     virtual void startUpdating();
     virtual void stopUpdating();
-    virtual DeviceOrientation* lastOrientation() const;
+    virtual DeviceOrientation *lastOrientation() const;
     virtual void deviceOrientationControllerDestroyed();
-    void setOrientation(bool canProvideAlpha, double alpha, bool canProvideBeta, double beta, bool canProvideGamma, double gamma);
+    void setOrientation( bool canProvideAlpha, double alpha, bool canProvideBeta, double beta, bool canProvideGamma, double gamma );
     static bool mockIsActive;
 
 public:
-    WEB_CS_SIGNAL_1(Public, void mockOrientationChanged(DeviceOrientation *orientation))
-    WEB_CS_SIGNAL_2(mockOrientationChanged,orientation)
+    WEB_CS_SIGNAL_1( Public, void mockOrientationChanged( DeviceOrientation *orientation ) )
+    WEB_CS_SIGNAL_2( mockOrientationChanged,orientation )
 
 private:
     DeviceOrientationClientMockQt();
 
-    DeviceOrientationClientMock* m_clientMock;
-    DeviceOrientationController* m_controller;
+    DeviceOrientationClientMock *m_clientMock;
+    DeviceOrientationController *m_controller;
     RefPtr<DeviceOrientation> m_orientation;
 };
 

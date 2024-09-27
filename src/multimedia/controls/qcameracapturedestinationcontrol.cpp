@@ -25,8 +25,8 @@
 #include <qstringlist.h>
 
 
-QCameraCaptureDestinationControl::QCameraCaptureDestinationControl(QObject *parent)
-   : QMediaControl(parent)
+QCameraCaptureDestinationControl::QCameraCaptureDestinationControl( QObject *parent )
+    : QMediaControl( parent )
 {
 }
 

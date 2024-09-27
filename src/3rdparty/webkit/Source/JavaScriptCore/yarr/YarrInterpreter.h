@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef YarrInterpreter_h
@@ -30,17 +30,23 @@
 #include <wtf/PassOwnPtr.h>
 #include <wtf/unicode/Unicode.h>
 
-namespace WTF {
+namespace WTF
+{
 class BumpPointerAllocator;
 }
 using WTF::BumpPointerAllocator;
 
-namespace JSC { namespace Yarr {
+namespace JSC
+{
+namespace Yarr
+{
 
 class ByteDisjunction;
 
-struct ByteTerm {
-    enum Type {
+struct ByteTerm
+{
+    enum Type
+    {
         TypeBodyAlternativeBegin,
         TypeBodyAlternativeDisjunction,
         TypeBodyAlternativeEnd,
@@ -72,25 +78,31 @@ struct ByteTerm {
         TypeCheckInput,
         TypeUncheckInput,
     } type;
-    union {
-        struct {
-            union {
+    union
+    {
+        struct
+        {
+            union
+            {
                 UChar patternCharacter;
-                struct {
+                struct
+                {
                     UChar lo;
                     UChar hi;
                 } casedCharacter;
-                CharacterClass* characterClass;
+                CharacterClass *characterClass;
                 unsigned subpatternId;
             };
-            union {
-                ByteDisjunction* parenthesesDisjunction;
+            union
+            {
+                ByteDisjunction *parenthesesDisjunction;
                 unsigned parenthesesWidth;
             };
             QuantifierType quantityType;
             unsigned quantityCount;
         } atom;
-        struct {
+        struct
+        {
             int next;
             int end;
             bool onceThrough;
@@ -102,21 +114,24 @@ struct ByteTerm {
     bool m_invert : 1;
     int inputPosition;
 
-    ByteTerm(UChar ch, int inputPos, unsigned frameLocation, unsigned quantityCount, QuantifierType quantityType)
-        : frameLocation(frameLocation)
-        , m_capture(false)
-        , m_invert(false)
+    ByteTerm( UChar ch, int inputPos, unsigned frameLocation, unsigned quantityCount, QuantifierType quantityType )
+        : frameLocation( frameLocation )
+        , m_capture( false )
+        , m_invert( false )
     {
-        switch (quantityType) {
-        case QuantifierFixedCount:
-            type = (quantityCount == 1) ? ByteTerm::TypePatternCharacterOnce : ByteTerm::TypePatternCharacterFixed;
-            break;
-        case QuantifierGreedy:
-            type = ByteTerm::TypePatternCharacterGreedy;
-            break;
-        case QuantifierNonGreedy:
-            type = ByteTerm::TypePatternCharacterNonGreedy;
-            break;
+        switch ( quantityType )
+        {
+            case QuantifierFixedCount:
+                type = ( quantityCount == 1 ) ? ByteTerm::TypePatternCharacterOnce : ByteTerm::TypePatternCharacterFixed;
+                break;
+
+            case QuantifierGreedy:
+                type = ByteTerm::TypePatternCharacterGreedy;
+                break;
+
+            case QuantifierNonGreedy:
+                type = ByteTerm::TypePatternCharacterNonGreedy;
+                break;
         }
 
         atom.patternCharacter = ch;
@@ -125,21 +140,24 @@ struct ByteTerm {
         inputPosition = inputPos;
     }
 
-    ByteTerm(UChar lo, UChar hi, int inputPos, unsigned frameLocation, unsigned quantityCount, QuantifierType quantityType)
-        : frameLocation(frameLocation)
-        , m_capture(false)
-        , m_invert(false)
+    ByteTerm( UChar lo, UChar hi, int inputPos, unsigned frameLocation, unsigned quantityCount, QuantifierType quantityType )
+        : frameLocation( frameLocation )
+        , m_capture( false )
+        , m_invert( false )
     {
-        switch (quantityType) {
-        case QuantifierFixedCount:
-            type = (quantityCount == 1) ? ByteTerm::TypePatternCasedCharacterOnce : ByteTerm::TypePatternCasedCharacterFixed;
-            break;
-        case QuantifierGreedy:
-            type = ByteTerm::TypePatternCasedCharacterGreedy;
-            break;
-        case QuantifierNonGreedy:
-            type = ByteTerm::TypePatternCasedCharacterNonGreedy;
-            break;
+        switch ( quantityType )
+        {
+            case QuantifierFixedCount:
+                type = ( quantityCount == 1 ) ? ByteTerm::TypePatternCasedCharacterOnce : ByteTerm::TypePatternCasedCharacterFixed;
+                break;
+
+            case QuantifierGreedy:
+                type = ByteTerm::TypePatternCasedCharacterGreedy;
+                break;
+
+            case QuantifierNonGreedy:
+                type = ByteTerm::TypePatternCasedCharacterNonGreedy;
+                break;
         }
 
         atom.casedCharacter.lo = lo;
@@ -149,10 +167,10 @@ struct ByteTerm {
         inputPosition = inputPos;
     }
 
-    ByteTerm(CharacterClass* characterClass, bool invert, int inputPos)
-        : type(ByteTerm::TypeCharacterClass)
-        , m_capture(false)
-        , m_invert(invert)
+    ByteTerm( CharacterClass *characterClass, bool invert, int inputPos )
+        : type( ByteTerm::TypeCharacterClass )
+        , m_capture( false )
+        , m_invert( invert )
     {
         atom.characterClass = characterClass;
         atom.quantityType = QuantifierFixedCount;
@@ -160,10 +178,10 @@ struct ByteTerm {
         inputPosition = inputPos;
     }
 
-    ByteTerm(Type type, unsigned subpatternId, ByteDisjunction* parenthesesInfo, bool capture, int inputPos)
-        : type(type)
-        , m_capture(capture)
-        , m_invert(false)
+    ByteTerm( Type type, unsigned subpatternId, ByteDisjunction *parenthesesInfo, bool capture, int inputPos )
+        : type( type )
+        , m_capture( capture )
+        , m_invert( false )
     {
         atom.subpatternId = subpatternId;
         atom.parenthesesDisjunction = parenthesesInfo;
@@ -171,20 +189,20 @@ struct ByteTerm {
         atom.quantityCount = 1;
         inputPosition = inputPos;
     }
-    
-    ByteTerm(Type type, bool invert = false)
-        : type(type)
-        , m_capture(false)
-        , m_invert(invert)
+
+    ByteTerm( Type type, bool invert = false )
+        : type( type )
+        , m_capture( false )
+        , m_invert( invert )
     {
         atom.quantityType = QuantifierFixedCount;
         atom.quantityCount = 1;
     }
 
-    ByteTerm(Type type, unsigned subpatternId, bool capture, bool invert, int inputPos)
-        : type(type)
-        , m_capture(capture)
-        , m_invert(invert)
+    ByteTerm( Type type, unsigned subpatternId, bool capture, bool invert, int inputPos )
+        : type( type )
+        , m_capture( capture )
+        , m_invert( invert )
     {
         atom.subpatternId = subpatternId;
         atom.quantityType = QuantifierFixedCount;
@@ -192,58 +210,58 @@ struct ByteTerm {
         inputPosition = inputPos;
     }
 
-    static ByteTerm BOL(int inputPos)
+    static ByteTerm BOL( int inputPos )
     {
-        ByteTerm term(TypeAssertionBOL);
+        ByteTerm term( TypeAssertionBOL );
         term.inputPosition = inputPos;
         return term;
     }
 
-    static ByteTerm CheckInput(unsigned count)
+    static ByteTerm CheckInput( unsigned count )
     {
-        ByteTerm term(TypeCheckInput);
+        ByteTerm term( TypeCheckInput );
         term.checkInputCount = count;
         return term;
     }
 
-    static ByteTerm UncheckInput(unsigned count)
+    static ByteTerm UncheckInput( unsigned count )
     {
-        ByteTerm term(TypeUncheckInput);
+        ByteTerm term( TypeUncheckInput );
         term.checkInputCount = count;
         return term;
     }
-    
-    static ByteTerm EOL(int inputPos)
+
+    static ByteTerm EOL( int inputPos )
     {
-        ByteTerm term(TypeAssertionEOL);
+        ByteTerm term( TypeAssertionEOL );
         term.inputPosition = inputPos;
         return term;
     }
 
-    static ByteTerm WordBoundary(bool invert, int inputPos)
+    static ByteTerm WordBoundary( bool invert, int inputPos )
     {
-        ByteTerm term(TypeAssertionWordBoundary, invert);
+        ByteTerm term( TypeAssertionWordBoundary, invert );
         term.inputPosition = inputPos;
         return term;
     }
-    
-    static ByteTerm BackReference(unsigned subpatternId, int inputPos)
+
+    static ByteTerm BackReference( unsigned subpatternId, int inputPos )
     {
-        return ByteTerm(TypeBackReference, subpatternId, false, false, inputPos);
+        return ByteTerm( TypeBackReference, subpatternId, false, false, inputPos );
     }
 
-    static ByteTerm BodyAlternativeBegin(bool onceThrough)
+    static ByteTerm BodyAlternativeBegin( bool onceThrough )
     {
-        ByteTerm term(TypeBodyAlternativeBegin);
+        ByteTerm term( TypeBodyAlternativeBegin );
         term.alternative.next = 0;
         term.alternative.end = 0;
         term.alternative.onceThrough = onceThrough;
         return term;
     }
 
-    static ByteTerm BodyAlternativeDisjunction(bool onceThrough)
+    static ByteTerm BodyAlternativeDisjunction( bool onceThrough )
     {
-        ByteTerm term(TypeBodyAlternativeDisjunction);
+        ByteTerm term( TypeBodyAlternativeDisjunction );
         term.alternative.next = 0;
         term.alternative.end = 0;
         term.alternative.onceThrough = onceThrough;
@@ -252,7 +270,7 @@ struct ByteTerm {
 
     static ByteTerm BodyAlternativeEnd()
     {
-        ByteTerm term(TypeBodyAlternativeEnd);
+        ByteTerm term( TypeBodyAlternativeEnd );
         term.alternative.next = 0;
         term.alternative.end = 0;
         term.alternative.onceThrough = false;
@@ -261,7 +279,7 @@ struct ByteTerm {
 
     static ByteTerm AlternativeBegin()
     {
-        ByteTerm term(TypeAlternativeBegin);
+        ByteTerm term( TypeAlternativeBegin );
         term.alternative.next = 0;
         term.alternative.end = 0;
         term.alternative.onceThrough = false;
@@ -270,7 +288,7 @@ struct ByteTerm {
 
     static ByteTerm AlternativeDisjunction()
     {
-        ByteTerm term(TypeAlternativeDisjunction);
+        ByteTerm term( TypeAlternativeDisjunction );
         term.alternative.next = 0;
         term.alternative.end = 0;
         term.alternative.onceThrough = false;
@@ -279,7 +297,7 @@ struct ByteTerm {
 
     static ByteTerm AlternativeEnd()
     {
-        ByteTerm term(TypeAlternativeEnd);
+        ByteTerm term( TypeAlternativeEnd );
         term.alternative.next = 0;
         term.alternative.end = 0;
         term.alternative.onceThrough = false;
@@ -288,12 +306,12 @@ struct ByteTerm {
 
     static ByteTerm SubpatternBegin()
     {
-        return ByteTerm(TypeSubpatternBegin);
+        return ByteTerm( TypeSubpatternBegin );
     }
 
     static ByteTerm SubpatternEnd()
     {
-        return ByteTerm(TypeSubpatternEnd);
+        return ByteTerm( TypeSubpatternEnd );
     }
 
     bool invert()
@@ -307,12 +325,13 @@ struct ByteTerm {
     }
 };
 
-class ByteDisjunction {
+class ByteDisjunction
+{
     WTF_MAKE_FAST_ALLOCATED;
 public:
-    ByteDisjunction(unsigned numSubpatterns, unsigned frameSize)
-        : m_numSubpatterns(numSubpatterns)
-        , m_frameSize(frameSize)
+    ByteDisjunction( unsigned numSubpatterns, unsigned frameSize )
+        : m_numSubpatterns( numSubpatterns )
+        , m_frameSize( frameSize )
     {
     }
 
@@ -321,33 +340,35 @@ public:
     unsigned m_frameSize;
 };
 
-struct BytecodePattern {
+struct BytecodePattern
+{
     WTF_MAKE_FAST_ALLOCATED;
 public:
-    BytecodePattern(PassOwnPtr<ByteDisjunction> body, Vector<ByteDisjunction*> allParenthesesInfo, YarrPattern& pattern, BumpPointerAllocator* allocator)
-        : m_body(body)
-        , m_ignoreCase(pattern.m_ignoreCase)
-        , m_multiline(pattern.m_multiline)
-        , m_containsBeginChars(pattern.m_containsBeginChars)
-        , m_allocator(allocator)
+    BytecodePattern( PassOwnPtr<ByteDisjunction> body, Vector<ByteDisjunction *> allParenthesesInfo, YarrPattern &pattern,
+                     BumpPointerAllocator *allocator )
+        : m_body( body )
+        , m_ignoreCase( pattern.m_ignoreCase )
+        , m_multiline( pattern.m_multiline )
+        , m_containsBeginChars( pattern.m_containsBeginChars )
+        , m_allocator( allocator )
     {
         newlineCharacterClass = pattern.newlineCharacterClass();
         wordcharCharacterClass = pattern.wordcharCharacterClass();
 
-        m_allParenthesesInfo.append(allParenthesesInfo);
-        m_userCharacterClasses.append(pattern.m_userCharacterClasses);
+        m_allParenthesesInfo.append( allParenthesesInfo );
+        m_userCharacterClasses.append( pattern.m_userCharacterClasses );
         // 'Steal' the YarrPattern's CharacterClasses!  We clear its
         // array, so that it won't delete them on destruction.  We'll
         // take responsibility for that.
         pattern.m_userCharacterClasses.clear();
 
-        m_beginChars.append(pattern.m_beginChars);
+        m_beginChars.append( pattern.m_beginChars );
     }
 
     ~BytecodePattern()
     {
-        deleteAllValues(m_allParenthesesInfo);
-        deleteAllValues(m_userCharacterClasses);
+        deleteAllValues( m_allParenthesesInfo );
+        deleteAllValues( m_userCharacterClasses );
     }
 
     OwnPtr<ByteDisjunction> m_body;
@@ -356,18 +377,19 @@ public:
     bool m_containsBeginChars;
     // Each BytecodePattern is associated with a RegExp, each RegExp is associated
     // with a JSGlobalData.  Cache a pointer to out JSGlobalData's m_regExpAllocator.
-    BumpPointerAllocator* m_allocator;
+    BumpPointerAllocator *m_allocator;
 
-    CharacterClass* newlineCharacterClass;
-    CharacterClass* wordcharCharacterClass;
+    CharacterClass *newlineCharacterClass;
+    CharacterClass *wordcharCharacterClass;
 
     Vector<BeginChar> m_beginChars;
 
 private:
-    Vector<ByteDisjunction*> m_allParenthesesInfo;
-    Vector<CharacterClass*> m_userCharacterClasses;
+    Vector<ByteDisjunction *> m_allParenthesesInfo;
+    Vector<CharacterClass *> m_userCharacterClasses;
 };
 
-} } // namespace JSC::Yarr
+}
+} // namespace JSC::Yarr
 
 #endif // YarrInterpreter_h

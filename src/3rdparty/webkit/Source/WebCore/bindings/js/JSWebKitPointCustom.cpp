@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -30,23 +30,33 @@
 
 using namespace JSC;
 
-namespace WebCore {
-
-EncodedJSValue JSC_HOST_CALL JSWebKitPointConstructor::constructJSWebKitPoint(ExecState* exec)
+namespace WebCore
 {
-    JSWebKitPointConstructor* jsConstructor = static_cast<JSWebKitPointConstructor*>(exec->callee());
+
+EncodedJSValue JSC_HOST_CALL JSWebKitPointConstructor::constructJSWebKitPoint( ExecState *exec )
+{
+    JSWebKitPointConstructor *jsConstructor = static_cast<JSWebKitPointConstructor *>( exec->callee() );
 
     float x = 0;
     float y = 0;
-    if (exec->argumentCount() >= 2) {
-        x = static_cast<float>(exec->argument(0).toNumber(exec));
-        y = static_cast<float>(exec->argument(1).toNumber(exec));
-        if (std::isnan(x))
+
+    if ( exec->argumentCount() >= 2 )
+    {
+        x = static_cast<float>( exec->argument( 0 ).toNumber( exec ) );
+        y = static_cast<float>( exec->argument( 1 ).toNumber( exec ) );
+
+        if ( std::isnan( x ) )
+        {
             x = 0;
-        if (std::isnan(y))
+        }
+
+        if ( std::isnan( y ) )
+        {
             y = 0;
+        }
     }
-    return JSValue::encode(asObject(toJS(exec, jsConstructor->globalObject(), WebKitPoint::create(x, y))));
+
+    return JSValue::encode( asObject( toJS( exec, jsConstructor->globalObject(), WebKitPoint::create( x, y ) ) ) );
 }
 
 } // namespace WebCore

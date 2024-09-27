@@ -31,55 +31,70 @@
 #include "MediaStreamFrameController.h"
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class MediaStreamController::Request {
+class MediaStreamController::Request
+{
 public:
     Request()
-        : m_localId(0)
-        , m_frameController(0) { }
+        : m_localId( 0 )
+        , m_frameController( 0 ) { }
 
-    Request(int localId, MediaStreamFrameController* frameController)
-        : m_localId(localId)
-        , m_frameController(frameController) { }
+    Request( int localId, MediaStreamFrameController *frameController )
+        : m_localId( localId )
+        , m_frameController( frameController ) { }
 
-    int localId() const { return m_localId; }
-    MediaStreamFrameController* frameController() const { return m_frameController; }
+    int localId() const
+    {
+        return m_localId;
+    }
+    MediaStreamFrameController *frameController() const
+    {
+        return m_frameController;
+    }
 
 private:
     int m_localId;
-    MediaStreamFrameController* m_frameController;
+    MediaStreamFrameController *m_frameController;
 };
 
-MediaStreamController::MediaStreamController(MediaStreamClient* client)
-    : m_client(client)
-    , m_nextGlobalRequestId(1)
+MediaStreamController::MediaStreamController( MediaStreamClient *client )
+    : m_client( client )
+    , m_nextGlobalRequestId( 1 )
 {
 }
 
 MediaStreamController::~MediaStreamController()
 {
-    if (m_client)
+    if ( m_client )
+    {
         m_client->mediaStreamDestroyed();
+    }
 }
 
-void MediaStreamController::unregisterFrameController(MediaStreamFrameController* frameController)
+void MediaStreamController::unregisterFrameController( MediaStreamFrameController *frameController )
 {
-    ASSERT(frameController);
+    ASSERT( frameController );
 
     // Done in two steps to avoid problems about iterators being invalidated while removing.
     Vector<int> frameRequests;
-    for (RequestMap::iterator it = m_requests.begin(); it != m_requests.end(); ++it)
-        if (it->second.frameController() == frameController)
-            frameRequests.append(it->first);
 
-    for (Vector<int>::iterator it = frameRequests.begin(); it != frameRequests.end(); ++it)
-        m_requests.remove(*it);
+    for ( RequestMap::iterator it = m_requests.begin(); it != m_requests.end(); ++it )
+        if ( it->second.frameController() == frameController )
+        {
+            frameRequests.append( it->first );
+        }
+
+    for ( Vector<int>::iterator it = frameRequests.begin(); it != frameRequests.end(); ++it )
+    {
+        m_requests.remove( *it );
+    }
 }
 
-int MediaStreamController::registerRequest(int localId, MediaStreamFrameController* frameController)
+int MediaStreamController::registerRequest( int localId, MediaStreamFrameController *frameController )
 {
-    m_requests.add(m_nextGlobalRequestId, Request(localId, frameController));
+    m_requests.add( m_nextGlobalRequestId, Request( localId, frameController ) );
     return m_nextGlobalRequestId++;
 }
 

@@ -26,42 +26,44 @@
 
 #include <qemptycontainer_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class Literal : public EmptyContainer
 {
- public:
-   /**
-    * Creates a Literal that represents @p item.
-    *
-    * @param item must be non-null and cannot be a QXmlNodeModelIndex.
-    */
-   Literal(const Item &item);
+public:
+    /**
+     * Creates a Literal that represents @p item.
+     *
+     * @param item must be non-null and cannot be a QXmlNodeModelIndex.
+     */
+    Literal( const Item &item );
 
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
-   bool evaluateEBV(const DynamicContext::Ptr &context) const override;
-   void evaluateToSequenceReceiver(const DynamicContext::Ptr &context) const override;
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
+    bool evaluateEBV( const DynamicContext::Ptr &context ) const override;
+    void evaluateToSequenceReceiver( const DynamicContext::Ptr &context ) const override;
 
-   SequenceType::Ptr staticType() const override;
-   ExpressionVisitorResult::Ptr accept(const ExpressionVisitor::Ptr &visitor) const override;
-   ID id() const override;
-   QString description() const override;
+    SequenceType::Ptr staticType() const override;
+    ExpressionVisitorResult::Ptr accept( const ExpressionVisitor::Ptr &visitor ) const override;
+    ID id() const override;
+    QString description() const override;
 
-   /**
-    * @returns Expression::DisableElimination and Expression::IsEvaluated
-    */
-   Properties properties() const override;
+    /**
+     * @returns Expression::DisableElimination and Expression::IsEvaluated
+     */
+    Properties properties() const override;
 
-   /**
-    * Declaring the return value of this function a const reference, leads
-    * to crashes in patternistview, for a to me unknown reason.
-    */
-   Item item() const {
-      return m_item;
-   }
+    /**
+     * Declaring the return value of this function a const reference, leads
+     * to crashes in patternistview, for a to me unknown reason.
+     */
+    Item item() const
+    {
+        return m_item;
+    }
 
- private:
-   const Item m_item;
+private:
+    const Item m_item;
 };
 
 /**
@@ -84,16 +86,16 @@ class Literal : public EmptyContainer
  *
  * @relates Literal
  */
-inline Expression::Ptr wrapLiteral(const Item &item,
-                                   const StaticContext::Ptr &context,
-                                   const SourceLocationReflection *const r)
+inline Expression::Ptr wrapLiteral( const Item &item,
+                                    const StaticContext::Ptr &context,
+                                    const SourceLocationReflection *const r )
 {
-   Q_ASSERT(item);
+    Q_ASSERT( item );
 
-   const Expression::Ptr retval(new Literal(item));
-   context->addLocation(retval.data(), context->locationFor(r));
+    const Expression::Ptr retval( new Literal( item ) );
+    context->addLocation( retval.data(), context->locationFor( r ) );
 
-   return retval;
+    return retval;
 }
 
 }

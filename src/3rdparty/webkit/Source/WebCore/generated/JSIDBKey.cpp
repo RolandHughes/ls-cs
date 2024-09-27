@@ -29,9 +29,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSIDBKey);
+ASSERT_CLASS_FITS_IN_CELL( JSIDBKey );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -42,8 +43,8 @@ ASSERT_CLASS_FITS_IN_CELL(JSIDBKey);
 
 static const HashTableValue JSIDBKeyTableValues[2] =
 {
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsIDBKeyConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsIDBKeyConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -57,43 +58,49 @@ static JSC_CONST_HASHTABLE HashTable JSIDBKeyTable = { 2, 1, JSIDBKeyTableValues
 
 static const HashTableValue JSIDBKeyConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSIDBKeyConstructorTable = { 1, 0, JSIDBKeyConstructorTableValues, 0 };
-class JSIDBKeyConstructor : public DOMConstructorObject {
+class JSIDBKeyConstructor : public DOMConstructorObject
+{
 public:
-    JSIDBKeyConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSIDBKeyConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSIDBKeyConstructor::s_info = { "IDBKeyConstructor", &DOMConstructorObject::s_info, &JSIDBKeyConstructorTable, 0 };
 
-JSIDBKeyConstructor::JSIDBKeyConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSIDBKeyConstructor::JSIDBKeyConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSIDBKeyPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSIDBKeyPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSIDBKeyConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSIDBKeyConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSIDBKeyConstructor, JSDOMWrapper>(exec, &JSIDBKeyConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSIDBKeyConstructor, JSDOMWrapper>( exec, &JSIDBKeyConstructorTable, this, propertyName, slot );
 }
 
-bool JSIDBKeyConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSIDBKeyConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSIDBKeyConstructor, JSDOMWrapper>(exec, &JSIDBKeyConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSIDBKeyConstructor, JSDOMWrapper>( exec, &JSIDBKeyConstructorTable, this, propertyName,
+            descriptor );
 }
 
 /* Hash table for prototype */
@@ -105,56 +112,57 @@ bool JSIDBKeyConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identi
 
 static const HashTableValue JSIDBKeyPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSIDBKeyPrototypeTable = { 1, 0, JSIDBKeyPrototypeTableValues, 0 };
 const ClassInfo JSIDBKeyPrototype::s_info = { "IDBKeyPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSIDBKeyPrototypeTable, 0 };
 
-JSObject* JSIDBKeyPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSIDBKeyPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSIDBKey>(exec, globalObject);
+    return getDOMPrototype<JSIDBKey>( exec, globalObject );
 }
 
 const ClassInfo JSIDBKey::s_info = { "IDBKey", &JSDOMWrapper::s_info, &JSIDBKeyTable, 0 };
 
-JSIDBKey::JSIDBKey(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<IDBKey> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSIDBKey::JSIDBKey( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<IDBKey> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSIDBKey::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSIDBKey::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSIDBKeyPrototype(exec->globalData(), globalObject, JSIDBKeyPrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSIDBKeyPrototype( exec->globalData(), globalObject,
+                                           JSIDBKeyPrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSIDBKey::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSIDBKey::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSIDBKey, Base>(exec, &JSIDBKeyTable, this, propertyName, slot);
+    return getStaticValueSlot<JSIDBKey, Base>( exec, &JSIDBKeyTable, this, propertyName, slot );
 }
 
-bool JSIDBKey::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSIDBKey::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSIDBKey, Base>(exec, &JSIDBKeyTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSIDBKey, Base>( exec, &JSIDBKeyTable, this, propertyName, descriptor );
 }
 
-JSValue jsIDBKeyConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsIDBKeyConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSIDBKey* domObject = static_cast<JSIDBKey*>(asObject(slotBase));
-    return JSIDBKey::getConstructor(exec, domObject->globalObject());
+    JSIDBKey *domObject = static_cast<JSIDBKey *>( asObject( slotBase ) );
+    return JSIDBKey::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSIDBKey::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSIDBKey::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSIDBKeyConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSIDBKeyConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-IDBKey* toIDBKey(JSC::JSValue value)
+IDBKey *toIDBKey( JSC::JSValue value )
 {
-    return value.inherits(&JSIDBKey::s_info) ? static_cast<JSIDBKey*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSIDBKey::s_info ) ? static_cast<JSIDBKey *>( asObject( value ) )->impl() : 0;
 }
 
 }

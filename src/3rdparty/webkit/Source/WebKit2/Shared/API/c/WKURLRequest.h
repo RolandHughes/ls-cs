@@ -34,11 +34,11 @@ extern "C" {
 
 WK_EXPORT WKTypeID WKURLRequestGetTypeID();
 
-WK_EXPORT WKURLRequestRef WKURLRequestCreateWithWKURL(WKURLRef);
+WK_EXPORT WKURLRequestRef WKURLRequestCreateWithWKURL( WKURLRef );
 
-WK_EXPORT WKURLRef WKURLRequestCopyURL(WKURLRequestRef);
+WK_EXPORT WKURLRef WKURLRequestCopyURL( WKURLRequestRef );
 
-WK_EXPORT void WKURLRequestSetDefaultTimeoutInterval(double);
+WK_EXPORT void WKURLRequestSetDefaultTimeoutInterval( double );
 
 #ifdef __cplusplus
 }

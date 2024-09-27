@@ -30,9 +30,9 @@ QT_BEGIN_NAMESPACE
 
 class QDeclarativeItemModule
 {
- public:
-   static void defineModule();
-   static void defineModuleCompat();
+public:
+    static void defineModule();
+    static void defineModuleCompat();
 };
 
 QT_END_NAMESPACE

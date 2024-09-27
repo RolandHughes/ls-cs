@@ -30,73 +30,98 @@
 #include "SVGNames.h"
 #include "SVGStyledLocatableElement.h"
 
-namespace WebCore {
-
-static bool isViewportElement(Node* node)
+namespace WebCore
 {
-    return (node->hasTagName(SVGNames::svgTag)
-        || node->hasTagName(SVGNames::symbolTag)
+
+static bool isViewportElement( Node *node )
+{
+    return ( node->hasTagName( SVGNames::svgTag )
+             || node->hasTagName( SVGNames::symbolTag )
 #if ENABLE(SVG_FOREIGN_OBJECT)
-        || node->hasTagName(SVGNames::foreignObjectTag)
+             || node->hasTagName( SVGNames::foreignObjectTag )
 #endif
-        || node->hasTagName(SVGNames::imageTag));
+             || node->hasTagName( SVGNames::imageTag ) );
 }
 
-SVGElement* SVGLocatable::nearestViewportElement(const SVGElement* element)
+SVGElement *SVGLocatable::nearestViewportElement( const SVGElement *element )
 {
-    ASSERT(element);
-    for (ContainerNode* n = element->parentNode(); n; n = n->parentNode()) {
-        if (isViewportElement(n))
-            return static_cast<SVGElement*>(n);
+    ASSERT( element );
+
+    for ( ContainerNode *n = element->parentNode(); n; n = n->parentNode() )
+    {
+        if ( isViewportElement( n ) )
+        {
+            return static_cast<SVGElement *>( n );
+        }
     }
 
     return 0;
 }
 
-SVGElement* SVGLocatable::farthestViewportElement(const SVGElement* element)
+SVGElement *SVGLocatable::farthestViewportElement( const SVGElement *element )
 {
-    ASSERT(element);
-    SVGElement* farthest = 0;
-    for (ContainerNode* n = element->parentNode(); n; n = n->parentNode()) {
-        if (isViewportElement(n))
-            farthest = static_cast<SVGElement*>(n);
+    ASSERT( element );
+    SVGElement *farthest = 0;
+
+    for ( ContainerNode *n = element->parentNode(); n; n = n->parentNode() )
+    {
+        if ( isViewportElement( n ) )
+        {
+            farthest = static_cast<SVGElement *>( n );
+        }
     }
+
     return farthest;
 }
 
-FloatRect SVGLocatable::getBBox(const SVGElement* element, StyleUpdateStrategy styleUpdateStrategy)
+FloatRect SVGLocatable::getBBox( const SVGElement *element, StyleUpdateStrategy styleUpdateStrategy )
 {
-    ASSERT(element);
-    if (styleUpdateStrategy == AllowStyleUpdate)
+    ASSERT( element );
+
+    if ( styleUpdateStrategy == AllowStyleUpdate )
+    {
         element->document()->updateLayoutIgnorePendingStylesheets();
+    }
 
     // FIXME: Eventually we should support getBBox for detached elements.
-    if (!element->renderer())
+    if ( !element->renderer() )
+    {
         return FloatRect();
+    }
 
     return element->renderer()->objectBoundingBox();
 }
 
-AffineTransform SVGLocatable::computeCTM(const SVGElement* element, CTMScope mode, StyleUpdateStrategy styleUpdateStrategy)
+AffineTransform SVGLocatable::computeCTM( const SVGElement *element, CTMScope mode, StyleUpdateStrategy styleUpdateStrategy )
 {
-    ASSERT(element);
-    if (styleUpdateStrategy == AllowStyleUpdate)
+    ASSERT( element );
+
+    if ( styleUpdateStrategy == AllowStyleUpdate )
+    {
         element->document()->updateLayoutIgnorePendingStylesheets();
+    }
 
     AffineTransform ctm;
 
-    SVGElement* stopAtElement = mode == NearestViewportScope ? nearestViewportElement(element) : 0;
+    SVGElement *stopAtElement = mode == NearestViewportScope ? nearestViewportElement( element ) : 0;
 
-    Node* current = const_cast<SVGElement*>(element);
-    while (current && current->isSVGElement()) {
-        SVGElement* currentElement = static_cast<SVGElement*>(current);
-        if (currentElement->isStyled())
+    Node *current = const_cast<SVGElement *>( element );
+
+    while ( current && current->isSVGElement() )
+    {
+        SVGElement *currentElement = static_cast<SVGElement *>( current );
+
+        if ( currentElement->isStyled() )
             // note that this modifies the AffineTransform returned by localCoordinateSpaceTransform(mode) too.
-            ctm = static_cast<SVGStyledElement*>(currentElement)->localCoordinateSpaceTransform(mode).multiply(ctm);
+        {
+            ctm = static_cast<SVGStyledElement *>( currentElement )->localCoordinateSpaceTransform( mode ).multiply( ctm );
+        }
 
         // For getCTM() computation, stop at the nearest viewport element
-        if (currentElement == stopAtElement)
+        if ( currentElement == stopAtElement )
+        {
             break;
+        }
 
         current = current->parentOrHostNode();
     }
@@ -104,16 +129,21 @@ AffineTransform SVGLocatable::computeCTM(const SVGElement* element, CTMScope mod
     return ctm;
 }
 
-AffineTransform SVGLocatable::getTransformToElement(SVGElement* target, ExceptionCode& ec, StyleUpdateStrategy styleUpdateStrategy) const
+AffineTransform SVGLocatable::getTransformToElement( SVGElement *target, ExceptionCode &ec,
+        StyleUpdateStrategy styleUpdateStrategy ) const
 {
-    AffineTransform ctm = getCTM(styleUpdateStrategy);
+    AffineTransform ctm = getCTM( styleUpdateStrategy );
 
-    if (target && target->isStyledLocatable()) {
-        AffineTransform targetCTM = static_cast<SVGStyledLocatableElement*>(target)->getCTM(styleUpdateStrategy);
-        if (!targetCTM.isInvertible()) {
+    if ( target && target->isStyledLocatable() )
+    {
+        AffineTransform targetCTM = static_cast<SVGStyledLocatableElement *>( target )->getCTM( styleUpdateStrategy );
+
+        if ( !targetCTM.isInvertible() )
+        {
             ec = SVGException::SVG_MATRIX_NOT_INVERTABLE;
             return ctm;
         }
+
         ctm = targetCTM.inverse() * ctm;
     }
 

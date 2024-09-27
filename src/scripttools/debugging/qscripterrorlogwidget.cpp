@@ -32,35 +32,38 @@
 
 QT_BEGIN_NAMESPACE
 
-namespace {
+namespace
+{
 
 class QScriptErrorLogWidgetOutputEdit : public QTextEdit
 {
- public:
-   QScriptErrorLogWidgetOutputEdit(QWidget *parent = nullptr)
-      : QTextEdit(parent) {
-      setReadOnly(true);
-      //        setFocusPolicy(Qt::NoFocus);
-      document()->setMaximumBlockCount(255);
-   }
+public:
+    QScriptErrorLogWidgetOutputEdit( QWidget *parent = nullptr )
+        : QTextEdit( parent )
+    {
+        setReadOnly( true );
+        //        setFocusPolicy(Qt::NoFocus);
+        document()->setMaximumBlockCount( 255 );
+    }
 
-   void scrollToBottom() {
-      QScrollBar *bar = verticalScrollBar();
-      bar->setValue(bar->maximum());
-   }
+    void scrollToBottom()
+    {
+        QScrollBar *bar = verticalScrollBar();
+        bar->setValue( bar->maximum() );
+    }
 };
 
 } // namespace
 
 class QScriptErrorLogWidgetPrivate
-   : public QScriptErrorLogWidgetInterfacePrivate
+    : public QScriptErrorLogWidgetInterfacePrivate
 {
-   Q_DECLARE_PUBLIC(QScriptErrorLogWidget)
- public:
-   QScriptErrorLogWidgetPrivate();
-   ~QScriptErrorLogWidgetPrivate();
+    Q_DECLARE_PUBLIC( QScriptErrorLogWidget )
+public:
+    QScriptErrorLogWidgetPrivate();
+    ~QScriptErrorLogWidgetPrivate();
 
-   QScriptErrorLogWidgetOutputEdit *outputEdit;
+    QScriptErrorLogWidgetOutputEdit *outputEdit;
 };
 
 QScriptErrorLogWidgetPrivate::QScriptErrorLogWidgetPrivate()
@@ -71,18 +74,18 @@ QScriptErrorLogWidgetPrivate::~QScriptErrorLogWidgetPrivate()
 {
 }
 
-QScriptErrorLogWidget::QScriptErrorLogWidget(QWidget *parent)
-   : QScriptErrorLogWidgetInterface(*new QScriptErrorLogWidgetPrivate, parent, 0)
+QScriptErrorLogWidget::QScriptErrorLogWidget( QWidget *parent )
+    : QScriptErrorLogWidgetInterface( *new QScriptErrorLogWidgetPrivate, parent, 0 )
 {
-   Q_D(QScriptErrorLogWidget);
-   d->outputEdit = new QScriptErrorLogWidgetOutputEdit();
-   QVBoxLayout *vbox = new QVBoxLayout(this);
-   vbox->setMargin(0);
-   vbox->setSpacing(0);
-   vbox->addWidget(d->outputEdit);
+    Q_D( QScriptErrorLogWidget );
+    d->outputEdit = new QScriptErrorLogWidgetOutputEdit();
+    QVBoxLayout *vbox = new QVBoxLayout( this );
+    vbox->setMargin( 0 );
+    vbox->setSpacing( 0 );
+    vbox->addWidget( d->outputEdit );
 
-   //    QString sheet = QString::fromLatin1("font-size: 14px; font-family: \"Monospace\";");
-   //    setStyleSheet(sheet);
+    //    QString sheet = QString::fromLatin1("font-size: 14px; font-family: \"Monospace\";");
+    //    setStyleSheet(sheet);
 }
 
 QScriptErrorLogWidget::~QScriptErrorLogWidget()
@@ -90,26 +93,26 @@ QScriptErrorLogWidget::~QScriptErrorLogWidget()
 }
 
 void QScriptErrorLogWidget::message(
-   QtMsgType type, const QString &text, const QString &fileName,
-   int lineNumber, int columnNumber, const QVariant &/*data*/)
+    QtMsgType type, const QString &text, const QString &fileName,
+    int lineNumber, int columnNumber, const QVariant &/*data*/ )
 {
-   // ### we need the error message rather than Error.toString()
-   Q_UNUSED(type);
-   Q_UNUSED(fileName);
-   Q_UNUSED(lineNumber);
-   Q_UNUSED(columnNumber);
-   Q_D(QScriptErrorLogWidget);
-   QString html;
-   html.append(QString::fromLatin1("<b>%0</b> %1<br>")
-               .arg(QDateTime::currentDateTime().toString()).arg(Qt::escape(text)));
-   d->outputEdit->insertHtml(html);
-   d->outputEdit->scrollToBottom();
+    // ### we need the error message rather than Error.toString()
+    Q_UNUSED( type );
+    Q_UNUSED( fileName );
+    Q_UNUSED( lineNumber );
+    Q_UNUSED( columnNumber );
+    Q_D( QScriptErrorLogWidget );
+    QString html;
+    html.append( QString::fromLatin1( "<b>%0</b> %1<br>" )
+                 .arg( QDateTime::currentDateTime().toString() ).arg( Qt::escape( text ) ) );
+    d->outputEdit->insertHtml( html );
+    d->outputEdit->scrollToBottom();
 }
 
 void QScriptErrorLogWidget::clear()
 {
-   Q_D(QScriptErrorLogWidget);
-   d->outputEdit->clear();
+    Q_D( QScriptErrorLogWidget );
+    d->outputEdit->clear();
 }
 
 QT_END_NAMESPACE

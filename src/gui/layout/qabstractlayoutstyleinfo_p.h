@@ -30,43 +30,47 @@
 
 class Q_GUI_EXPORT QAbstractLayoutStyleInfo
 {
- public:
-   QAbstractLayoutStyleInfo()
-      : m_isWindow(false)
-   { }
+public:
+    QAbstractLayoutStyleInfo()
+        : m_isWindow( false )
+    { }
 
-   virtual ~QAbstractLayoutStyleInfo()
-   { }
+    virtual ~QAbstractLayoutStyleInfo()
+    { }
 
-   virtual qreal combinedLayoutSpacing(QLayoutPolicy::ControlTypes, QLayoutPolicy::ControlTypes,
-         Qt::Orientation) const {
-      return -1;
-   }
+    virtual qreal combinedLayoutSpacing( QLayoutPolicy::ControlTypes, QLayoutPolicy::ControlTypes,
+                                         Qt::Orientation ) const
+    {
+        return -1;
+    }
 
-   virtual qreal perItemSpacing(QLayoutPolicy::ControlType, QLayoutPolicy::ControlType,
-         Qt::Orientation) const {
-      return -1;
-   }
+    virtual qreal perItemSpacing( QLayoutPolicy::ControlType, QLayoutPolicy::ControlType,
+                                  Qt::Orientation ) const
+    {
+        return -1;
+    }
 
-   virtual qreal spacing(Qt::Orientation orientation) const = 0;
+    virtual qreal spacing( Qt::Orientation orientation ) const = 0;
 
-   virtual bool hasChangedCore() const {
-      return false;   // ### Remove when usage is gone from subclasses
-   }
+    virtual bool hasChangedCore() const
+    {
+        return false;   // ### Remove when usage is gone from subclasses
+    }
 
-   virtual void invalidate() { }
+    virtual void invalidate() { }
 
-   virtual qreal windowMargin(Qt::Orientation orientation) const = 0;
+    virtual qreal windowMargin( Qt::Orientation orientation ) const = 0;
 
-   bool isWindow() const {
-      return m_isWindow;
-   }
+    bool isWindow() const
+    {
+        return m_isWindow;
+    }
 
- protected:
-   unsigned m_isWindow : 1;
-   mutable unsigned m_hSpacingState: 2;
-   mutable unsigned m_vSpacingState: 2;
-   mutable qreal m_spacing[2];
+protected:
+    unsigned m_isWindow : 1;
+    mutable unsigned m_hSpacingState: 2;
+    mutable unsigned m_vSpacingState: 2;
+    mutable qreal m_spacing[2];
 };
 
 #endif

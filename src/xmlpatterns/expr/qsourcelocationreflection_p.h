@@ -26,46 +26,51 @@
 
 #include <qstringfwd.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class SourceLocationReflection
 {
- public:
-   inline SourceLocationReflection() {
-   }
+public:
+    inline SourceLocationReflection()
+    {
+    }
 
-   virtual ~SourceLocationReflection() {
-   }
+    virtual ~SourceLocationReflection()
+    {
+    }
 
-   virtual const SourceLocationReflection *actualReflection() const = 0;
+    virtual const SourceLocationReflection *actualReflection() const = 0;
 
-   /**
-    * A description of what represents the source code location, for
-    * human consumption. Must be translated, as appropriate.
-    */
-   virtual QString description() const {
-      return QString();
-   }
+    /**
+     * A description of what represents the source code location, for
+     * human consumption. Must be translated, as appropriate.
+     */
+    virtual QString description() const
+    {
+        return QString();
+    }
 
-   virtual QSourceLocation sourceLocation() const;
+    virtual QSourceLocation sourceLocation() const;
 
- private:
-   SourceLocationReflection(const SourceLocationReflection &) = delete;
-   SourceLocationReflection &operator=(const SourceLocationReflection &) = delete;
+private:
+    SourceLocationReflection( const SourceLocationReflection & ) = delete;
+    SourceLocationReflection &operator=( const SourceLocationReflection & ) = delete;
 };
 
 class DelegatingSourceLocationReflection : public SourceLocationReflection
 {
- public:
-   inline DelegatingSourceLocationReflection(const SourceLocationReflection *const r) : m_r(r) {
-      Q_ASSERT(r);
-   }
+public:
+    inline DelegatingSourceLocationReflection( const SourceLocationReflection *const r ) : m_r( r )
+    {
+        Q_ASSERT( r );
+    }
 
-   const SourceLocationReflection *actualReflection() const override;
-   QString description() const override;
+    const SourceLocationReflection *actualReflection() const override;
+    QString description() const override;
 
- private:
-   const SourceLocationReflection *const m_r;
+private:
+    const SourceLocationReflection *const m_r;
 };
 
 }

@@ -32,36 +32,38 @@
 #include <wtf/Forward.h>
 #include <wtf/Threading.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class IDBKey : public ThreadSafeRefCounted<IDBKey> {
+class IDBKey : public ThreadSafeRefCounted<IDBKey>
+{
 public:
     static PassRefPtr<IDBKey> createNull()
     {
-        RefPtr<IDBKey> idbKey(new IDBKey());
+        RefPtr<IDBKey> idbKey( new IDBKey() );
         idbKey->m_type = NullType;
         return idbKey.release();
     }
 
-    static PassRefPtr<IDBKey> createNumber(double number)
+    static PassRefPtr<IDBKey> createNumber( double number )
     {
-        RefPtr<IDBKey> idbKey(new IDBKey());
+        RefPtr<IDBKey> idbKey( new IDBKey() );
         idbKey->m_type = NumberType;
         idbKey->m_number = number;
         return idbKey.release();
     }
 
-    static PassRefPtr<IDBKey> createString(const String& string)
+    static PassRefPtr<IDBKey> createString( const String &string )
     {
-        RefPtr<IDBKey> idbKey(new IDBKey());
+        RefPtr<IDBKey> idbKey( new IDBKey() );
         idbKey->m_type = StringType;
         idbKey->m_string = string;
         return idbKey.release();
     }
 
-    static PassRefPtr<IDBKey> createDate(double date)
+    static PassRefPtr<IDBKey> createDate( double date )
     {
-        RefPtr<IDBKey> idbKey(new IDBKey());
+        RefPtr<IDBKey> idbKey( new IDBKey() );
         idbKey->m_type = DateType;
         idbKey->m_date = date;
         return idbKey.release();
@@ -70,35 +72,39 @@ public:
     ~IDBKey();
 
     // In order of the least to the highest precedent in terms of sort order.
-    enum Type {
+    enum Type
+    {
         NullType = 0, // FIXME: Phase out support for null keys.
         StringType,
         DateType,
         NumberType
     };
 
-    Type type() const { return m_type; }
-
-    const String& string() const
+    Type type() const
     {
-        ASSERT(m_type == StringType);
+        return m_type;
+    }
+
+    const String &string() const
+    {
+        ASSERT( m_type == StringType );
         return m_string;
     }
 
     double date() const
     {
-        ASSERT(m_type == DateType);
+        ASSERT( m_type == DateType );
         return m_date;
     }
 
     double number() const
     {
-        ASSERT(m_type == NumberType);
+        ASSERT( m_type == NumberType );
         return m_number;
     }
 
-    bool isLessThan(const IDBKey* other) const;
-    bool isEqual(const IDBKey* other) const;
+    bool isLessThan( const IDBKey *other ) const;
+    bool isEqual( const IDBKey *other ) const;
 
     using ThreadSafeRefCounted<IDBKey>::ref;
     using ThreadSafeRefCounted<IDBKey>::deref;

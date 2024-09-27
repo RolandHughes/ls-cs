@@ -29,60 +29,66 @@
 #include <wtf/HashMap.h>
 #include <wtf/UnusedParam.h>
 
-namespace WebCore {
-
-typedef HashMap<Attribute*, Attr*> AttributeAttrMap;
-static AttributeAttrMap& attributeAttrMap()
+namespace WebCore
 {
-    DEFINE_STATIC_LOCAL(AttributeAttrMap, map, ());
+
+typedef HashMap<Attribute *, Attr *> AttributeAttrMap;
+static AttributeAttrMap &attributeAttrMap()
+{
+    DEFINE_STATIC_LOCAL( AttributeAttrMap, map, () );
     return map;
 }
 
 PassRefPtr<Attribute> Attribute::clone() const
 {
-    return adoptRef(new Attribute(m_name, m_value, m_isMappedAttribute, m_styleDecl.get()));
+    return adoptRef( new Attribute( m_name, m_value, m_isMappedAttribute, m_styleDecl.get() ) );
 }
 
-Attr* Attribute::attr() const
+Attr *Attribute::attr() const
 {
-    if (m_hasAttr) {
-        ASSERT(attributeAttrMap().contains(const_cast<Attribute*>(this)));
-        return attributeAttrMap().get(const_cast<Attribute*>(this));
+    if ( m_hasAttr )
+    {
+        ASSERT( attributeAttrMap().contains( const_cast<Attribute *>( this ) ) );
+        return attributeAttrMap().get( const_cast<Attribute *>( this ) );
     }
 
-    ASSERT(!attributeAttrMap().contains(const_cast<Attribute*>(this)));
+    ASSERT( !attributeAttrMap().contains( const_cast<Attribute *>( this ) ) );
     return 0;
 }
 
-PassRefPtr<Attr> Attribute::createAttrIfNeeded(Element* e)
+PassRefPtr<Attr> Attribute::createAttrIfNeeded( Element *e )
 {
     RefPtr<Attr> r;
-    if (m_hasAttr) {
-        ASSERT(attributeAttrMap().contains(this));
-        r = attributeAttrMap().get(this);
-    } else {
-        ASSERT(!attributeAttrMap().contains(this));
-        r = Attr::create(e, e->document(), this); // This will end up calling Attribute::bindAttr.
-        ASSERT(attributeAttrMap().contains(this));
+
+    if ( m_hasAttr )
+    {
+        ASSERT( attributeAttrMap().contains( this ) );
+        r = attributeAttrMap().get( this );
+    }
+    else
+    {
+        ASSERT( !attributeAttrMap().contains( this ) );
+        r = Attr::create( e, e->document(), this ); // This will end up calling Attribute::bindAttr.
+        ASSERT( attributeAttrMap().contains( this ) );
     }
 
     return r.release();
 }
 
-void Attribute::bindAttr(Attr* attr)
+void Attribute::bindAttr( Attr *attr )
 {
-    ASSERT(!m_hasAttr);
-    ASSERT(!attributeAttrMap().contains(this));
-    attributeAttrMap().set(this, attr);
+    ASSERT( !m_hasAttr );
+    ASSERT( !attributeAttrMap().contains( this ) );
+    attributeAttrMap().set( this, attr );
     m_hasAttr = true;
 }
 
-void Attribute::unbindAttr(Attr* attr)
+void Attribute::unbindAttr( Attr *attr )
 {
-    ASSERT(m_hasAttr);
-    ASSERT(attributeAttrMap().contains(this));
-    ASSERT_UNUSED(attr, attributeAttrMap().get(this) == attr);
-    attributeAttrMap().remove(this);
+    ASSERT( m_hasAttr );
+    ASSERT( attributeAttrMap().contains( this ) );
+    ASSERT_UNUSED( attr, attributeAttrMap().get( this ) == attr );
+    attributeAttrMap().remove( this );
     m_hasAttr = false;
 }
 

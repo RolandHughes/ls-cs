@@ -24,21 +24,25 @@
 #include "DeviceOrientationClientMock.h"
 #include "DeviceOrientationController.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 bool DeviceOrientationClientMockQt::mockIsActive = false;
 
-DeviceOrientationClientMockQt* DeviceOrientationClientMockQt::client()
+DeviceOrientationClientMockQt *DeviceOrientationClientMockQt::client()
 {
-    static DeviceOrientationClientMockQt* client = 0;
-    if (!client)
+    static DeviceOrientationClientMockQt *client = 0;
+
+    if ( !client )
+    {
         client = new DeviceOrientationClientMockQt;
+    }
 
     return client;
 }
 
 DeviceOrientationClientMockQt::DeviceOrientationClientMockQt()
-    : m_clientMock(new DeviceOrientationClientMock())
+    : m_clientMock( new DeviceOrientationClientMock() )
 {
     m_orientation = DeviceOrientation::create();
 }
@@ -48,9 +52,9 @@ DeviceOrientationClientMockQt::~DeviceOrientationClientMockQt()
     delete m_clientMock;
 }
 
-void DeviceOrientationClientMockQt::setController(DeviceOrientationController* controller)
+void DeviceOrientationClientMockQt::setController( DeviceOrientationController *controller )
 {
-    m_clientMock->setController(m_controller);
+    m_clientMock->setController( m_controller );
 }
 
 void DeviceOrientationClientMockQt::startUpdating()
@@ -63,7 +67,7 @@ void DeviceOrientationClientMockQt::stopUpdating()
     m_clientMock->stopUpdating();
 }
 
-DeviceOrientation* DeviceOrientationClientMockQt::lastOrientation() const
+DeviceOrientation *DeviceOrientationClientMockQt::lastOrientation() const
 {
     return m_orientation.get();
 }
@@ -73,14 +77,15 @@ void DeviceOrientationClientMockQt::deviceOrientationControllerDestroyed()
     delete this;
 }
 
-void DeviceOrientationClientMockQt::setOrientation(bool canProvideAlpha, double alpha, bool canProvideBeta, double beta, bool canProvideGamma, double gamma)
+void DeviceOrientationClientMockQt::setOrientation( bool canProvideAlpha, double alpha, bool canProvideBeta, double beta,
+        bool canProvideGamma, double gamma )
 {
-    m_orientation = DeviceOrientation::create(canProvideAlpha, alpha,
-            canProvideBeta, beta,
-            canProvideGamma, gamma);
-    m_clientMock->setOrientation(m_orientation);
+    m_orientation = DeviceOrientation::create( canProvideAlpha, alpha,
+                    canProvideBeta, beta,
+                    canProvideGamma, gamma );
+    m_clientMock->setOrientation( m_orientation );
 
-    emit mockOrientationChanged(m_orientation.get());
+    emit mockOrientationChanged( m_orientation.get() );
 }
 
 } // namespace WebCore

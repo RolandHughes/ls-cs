@@ -30,11 +30,13 @@
 #include "IntSize.h"
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Document;
 
-enum ViewportErrorCode {
+enum ViewportErrorCode
+{
     UnrecognizedViewportArgumentKeyError,
     UnrecognizedViewportArgumentValueError,
     TruncatedViewportArgumentValueError,
@@ -42,7 +44,8 @@ enum ViewportErrorCode {
     TargetDensityDpiTooSmallOrLargeError
 };
 
-struct ViewportAttributes {
+struct ViewportAttributes
+{
     IntSize layoutSize;
 
     float devicePixelRatio;
@@ -54,9 +57,11 @@ struct ViewportAttributes {
     float userScalable;
 };
 
-struct ViewportArguments {
+struct ViewportArguments
+{
 
-    enum {
+    enum
+    {
         ValueAuto = -1,
         ValueDesktopWidth = -2,
         ValueDeviceWidth = -3,
@@ -68,13 +73,13 @@ struct ViewportArguments {
     };
 
     ViewportArguments()
-        : initialScale(ValueAuto)
-        , minimumScale(ValueAuto)
-        , maximumScale(ValueAuto)
-        , width(ValueAuto)
-        , height(ValueAuto)
-        , targetDensityDpi(ValueAuto)
-        , userScalable(ValueAuto)
+        : initialScale( ValueAuto )
+        , minimumScale( ValueAuto )
+        , maximumScale( ValueAuto )
+        , width( ValueAuto )
+        , height( ValueAuto )
+        , targetDensityDpi( ValueAuto )
+        , userScalable( ValueAuto )
     {
     }
 
@@ -86,22 +91,23 @@ struct ViewportArguments {
     float targetDensityDpi;
     float userScalable;
 
-    bool operator==(const ViewportArguments& other) const
+    bool operator==( const ViewportArguments &other ) const
     {
         return initialScale == other.initialScale
-            && minimumScale == other.minimumScale
-            && maximumScale == other.maximumScale
-            && width == other.width
-            && height == other.height
-            && targetDensityDpi == other.targetDensityDpi
-            && userScalable == other.userScalable;
+               && minimumScale == other.minimumScale
+               && maximumScale == other.maximumScale
+               && width == other.width
+               && height == other.height
+               && targetDensityDpi == other.targetDensityDpi
+               && userScalable == other.userScalable;
     }
 };
 
-ViewportAttributes computeViewportAttributes(ViewportArguments args, int desktopWidth, int deviceWidth, int deviceHeight, int deviceDPI, IntSize visibleViewport);
+ViewportAttributes computeViewportAttributes( ViewportArguments args, int desktopWidth, int deviceWidth, int deviceHeight,
+        int deviceDPI, IntSize visibleViewport );
 
-void setViewportFeature(const String& keyString, const String& valueString, Document*, void* data);
-void reportViewportWarning(Document*, ViewportErrorCode, const String& replacement1, const String& replacement2);
+void setViewportFeature( const String &keyString, const String &valueString, Document *, void *data );
+void reportViewportWarning( Document *, ViewportErrorCode, const String &replacement1, const String &replacement2 );
 
 } // namespace WebCore
 

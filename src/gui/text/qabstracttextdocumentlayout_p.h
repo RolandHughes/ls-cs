@@ -26,56 +26,61 @@
 
 #include <qhash.h>
 
-struct QTextObjectHandler {
-   QTextObjectHandler() : iface(nullptr)
-   {
-   }
+struct QTextObjectHandler
+{
+    QTextObjectHandler() : iface( nullptr )
+    {
+    }
 
-   QTextObjectInterface *iface;
-   QPointer<QObject> component;
+    QTextObjectInterface *iface;
+    QPointer<QObject> component;
 };
 typedef QHash<int, QTextObjectHandler> HandlerHash;
 
 class QAbstractTextDocumentLayoutPrivate
 {
 
- public:
-   Q_DECLARE_PUBLIC(QAbstractTextDocumentLayout)
+public:
+    Q_DECLARE_PUBLIC( QAbstractTextDocumentLayout )
 
-   inline QAbstractTextDocumentLayoutPrivate()
-      : paintDevice(nullptr)
-   {
-   }
+    inline QAbstractTextDocumentLayoutPrivate()
+        : paintDevice( nullptr )
+    {
+    }
 
-   virtual ~QAbstractTextDocumentLayoutPrivate();
+    virtual ~QAbstractTextDocumentLayoutPrivate();
 
-   inline void setDocument(QTextDocument *doc) {
-      document   = doc;
-      docPrivate = nullptr;
+    inline void setDocument( QTextDocument *doc )
+    {
+        document   = doc;
+        docPrivate = nullptr;
 
-      if (doc) {
-         docPrivate = doc->docHandle();
-      }
-   }
+        if ( doc )
+        {
+            docPrivate = doc->docHandle();
+        }
+    }
 
-   inline int _q_dynamicPageCountSlot() const {
-      return q_func()->pageCount();
-   }
+    inline int _q_dynamicPageCountSlot() const
+    {
+        return q_func()->pageCount();
+    }
 
-   inline QSizeF _q_dynamicDocumentSizeSlot() const {
-      return q_func()->documentSize();
-   }
+    inline QSizeF _q_dynamicDocumentSizeSlot() const
+    {
+        return q_func()->documentSize();
+    }
 
-   HandlerHash handlers;
+    HandlerHash handlers;
 
-   void _q_handlerDestroyed(QObject *obj);
-   QPaintDevice *paintDevice;
+    void _q_handlerDestroyed( QObject *obj );
+    QPaintDevice *paintDevice;
 
-   QTextDocument *document;
-   QTextDocumentPrivate *docPrivate;
+    QTextDocument *document;
+    QTextDocumentPrivate *docPrivate;
 
- protected:
-   QAbstractTextDocumentLayout *q_ptr;
+protected:
+    QAbstractTextDocumentLayout *q_ptr;
 
 };
 

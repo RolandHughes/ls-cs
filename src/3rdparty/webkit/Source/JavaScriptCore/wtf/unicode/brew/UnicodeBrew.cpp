@@ -26,155 +26,183 @@
 #include <wchar.h>
 #include <wctype.h>
 
-namespace WTF {
-namespace Unicode {
-
-UChar toLower(UChar c)
+namespace WTF
 {
-    return towlower(c);
+namespace Unicode
+{
+
+UChar toLower( UChar c )
+{
+    return towlower( c );
 }
 
-UChar toUpper(UChar c)
+UChar toUpper( UChar c )
 {
-    return towupper(c);
+    return towupper( c );
 }
 
-UChar foldCase(UChar c)
+UChar foldCase( UChar c )
 {
-    return towlower(c);
+    return towlower( c );
 }
 
-bool isPrintableChar(UChar c)
+bool isPrintableChar( UChar c )
 {
-    return !!iswprint(c);
+    return !!iswprint( c );
 }
 
-bool isUpper(UChar c)
+bool isUpper( UChar c )
 {
-    return !!iswupper(c);
+    return !!iswupper( c );
 }
 
-bool isLower(UChar c)
+bool isLower( UChar c )
 {
-    return !!iswlower(c);
+    return !!iswlower( c );
 }
 
-bool isDigit(UChar c)
+bool isDigit( UChar c )
 {
-    return !!iswdigit(c);
+    return !!iswdigit( c );
 }
 
-bool isPunct(UChar c)
+bool isPunct( UChar c )
 {
-    return !!iswpunct(c);
+    return !!iswpunct( c );
 }
 
-bool isAlphanumeric(UChar c)
+bool isAlphanumeric( UChar c )
 {
-    return !!iswalnum(c);
+    return !!iswalnum( c );
 }
 
-int toLower(UChar* result, int resultLength, const UChar* source, int sourceLength, bool* isError)
+int toLower( UChar *result, int resultLength, const UChar *source, int sourceLength, bool *isError )
 {
-    const UChar* sourceIterator = source;
-    const UChar* sourceEnd = source + sourceLength;
-    UChar* resultIterator = result;
-    UChar* resultEnd = result + resultLength;
+    const UChar *sourceIterator = source;
+    const UChar *sourceEnd = source + sourceLength;
+    UChar *resultIterator = result;
+    UChar *resultEnd = result + resultLength;
 
-    if (sourceLength <= resultLength) {
-        while (sourceIterator < sourceEnd)
-            *resultIterator++ = towlower(*sourceIterator++);
-    } else {
-        while (resultIterator < resultEnd)
-            *resultIterator++ = towlower(*sourceIterator++);
+    if ( sourceLength <= resultLength )
+    {
+        while ( sourceIterator < sourceEnd )
+        {
+            *resultIterator++ = towlower( *sourceIterator++ );
+        }
+    }
+    else
+    {
+        while ( resultIterator < resultEnd )
+        {
+            *resultIterator++ = towlower( *sourceIterator++ );
+        }
     }
 
     int remainingCharacters = sourceIterator < sourceEnd ? sourceEnd - sourceIterator : 0;
     *isError = !!remainingCharacters;
-    if (resultIterator < resultEnd)
-        *resultIterator = 0;
 
-    return (resultIterator - result) + remainingCharacters;
+    if ( resultIterator < resultEnd )
+    {
+        *resultIterator = 0;
+    }
+
+    return ( resultIterator - result ) + remainingCharacters;
 }
 
-int toUpper(UChar* result, int resultLength, const UChar* source, int sourceLength, bool* isError)
+int toUpper( UChar *result, int resultLength, const UChar *source, int sourceLength, bool *isError )
 {
-    const UChar* sourceIterator = source;
-    const UChar* sourceEnd = source + sourceLength;
-    UChar* resultIterator = result;
-    UChar* resultEnd = result + resultLength;
+    const UChar *sourceIterator = source;
+    const UChar *sourceEnd = source + sourceLength;
+    UChar *resultIterator = result;
+    UChar *resultEnd = result + resultLength;
 
-    if (sourceLength <= resultLength) {
-        while (sourceIterator < sourceEnd)
-            *resultIterator++ = towupper(*sourceIterator++);
-    } else {
-        while (resultIterator < resultEnd)
-            *resultIterator++ = towupper(*sourceIterator++);
+    if ( sourceLength <= resultLength )
+    {
+        while ( sourceIterator < sourceEnd )
+        {
+            *resultIterator++ = towupper( *sourceIterator++ );
+        }
+    }
+    else
+    {
+        while ( resultIterator < resultEnd )
+        {
+            *resultIterator++ = towupper( *sourceIterator++ );
+        }
     }
 
     int remainingCharacters = sourceIterator < sourceEnd ? sourceEnd - sourceIterator : 0;
     *isError = !!remainingCharacters;
-    if (resultIterator < resultEnd)
-        *resultIterator = 0;
 
-    return (resultIterator - result) + remainingCharacters;
+    if ( resultIterator < resultEnd )
+    {
+        *resultIterator = 0;
+    }
+
+    return ( resultIterator - result ) + remainingCharacters;
 }
 
-int foldCase(UChar* result, int resultLength, const UChar* source, int sourceLength, bool* isError)
+int foldCase( UChar *result, int resultLength, const UChar *source, int sourceLength, bool *isError )
 {
     *isError = false;
-    if (resultLength < sourceLength) {
+
+    if ( resultLength < sourceLength )
+    {
         *isError = true;
         return sourceLength;
     }
-    for (int i = 0; i < sourceLength; ++i)
-        result[i] = foldCase(source[i]);
+
+    for ( int i = 0; i < sourceLength; ++i )
+    {
+        result[i] = foldCase( source[i] );
+    }
+
     return sourceLength;
 }
 
-UChar toTitleCase(UChar c)
+UChar toTitleCase( UChar c )
 {
-    return towupper(c);
+    return towupper( c );
 }
 
-Direction direction(UChar32 c)
+Direction direction( UChar32 c )
 {
-    return static_cast<Direction>(ICU::direction(c));
+    return static_cast<Direction>( ICU::direction( c ) );
 }
 
-CharCategory category(unsigned int c)
+CharCategory category( unsigned int c )
 {
-    return static_cast<CharCategory>(TO_MASK((int8_t) ICU::category(c)));
+    return static_cast<CharCategory>( TO_MASK( ( int8_t ) ICU::category( c ) ) );
 }
 
-DecompositionType decompositionType(UChar32 c)
+DecompositionType decompositionType( UChar32 c )
 {
-    return static_cast<DecompositionType>(ICU::decompositionType(c));
+    return static_cast<DecompositionType>( ICU::decompositionType( c ) );
 }
 
-unsigned char combiningClass(UChar32 c)
+unsigned char combiningClass( UChar32 c )
 {
-    return ICU::combiningClass(c);
+    return ICU::combiningClass( c );
 }
 
-UChar mirroredChar(UChar32 c)
+UChar mirroredChar( UChar32 c )
 {
-    return ICU::mirroredChar(c);
+    return ICU::mirroredChar( c );
 }
 
-int digitValue(UChar c)
+int digitValue( UChar c )
 {
-    return ICU::digitValue(c);
+    return ICU::digitValue( c );
 }
 
-bool isSpace(UChar c)
+bool isSpace( UChar c )
 {
-    return !!iswspace(c);
+    return !!iswspace( c );
 }
 
-bool isLetter(UChar c)
+bool isLetter( UChar c )
 {
-    return !!iswalpha(c);
+    return !!iswalpha( c );
 }
 
 } // namespace Unicode

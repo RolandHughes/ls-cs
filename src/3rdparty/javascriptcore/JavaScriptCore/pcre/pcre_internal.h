@@ -117,95 +117,96 @@ defined here. */
 offsets changes. There are used for repeat counts and for other things such as
 capturing parenthesis numbers in back references. */
 
-static inline void put2ByteValue(unsigned char* opcodePtr, int value)
+static inline void put2ByteValue( unsigned char *opcodePtr, int value )
 {
-    ASSERT(value >= 0 && value <= 0xFFFF);
+    ASSERT( value >= 0 && value <= 0xFFFF );
     opcodePtr[0] = value >> 8;
     opcodePtr[1] = value;
 }
 
-static inline void put3ByteValue(unsigned char* opcodePtr, int value)
+static inline void put3ByteValue( unsigned char *opcodePtr, int value )
 {
-    ASSERT(value >= 0 && value <= 0xFFFFFF);
+    ASSERT( value >= 0 && value <= 0xFFFFFF );
     opcodePtr[0] = value >> 16;
     opcodePtr[1] = value >> 8;
     opcodePtr[2] = value;
 }
 
-static inline int get2ByteValue(const unsigned char* opcodePtr)
+static inline int get2ByteValue( const unsigned char *opcodePtr )
 {
-    return (opcodePtr[0] << 8) | opcodePtr[1];
+    return ( opcodePtr[0] << 8 ) | opcodePtr[1];
 }
 
-static inline int get3ByteValue(const unsigned char* opcodePtr)
+static inline int get3ByteValue( const unsigned char *opcodePtr )
 {
-    return (opcodePtr[0] << 16) | (opcodePtr[1] << 8) | opcodePtr[2];
+    return ( opcodePtr[0] << 16 ) | ( opcodePtr[1] << 8 ) | opcodePtr[2];
 }
 
-static inline void put2ByteValueAndAdvance(unsigned char*& opcodePtr, int value)
+static inline void put2ByteValueAndAdvance( unsigned char *&opcodePtr, int value )
 {
-    put2ByteValue(opcodePtr, value);
+    put2ByteValue( opcodePtr, value );
     opcodePtr += 2;
 }
 
-static inline void put3ByteValueAndAdvance(unsigned char*& opcodePtr, int value)
+static inline void put3ByteValueAndAdvance( unsigned char *&opcodePtr, int value )
 {
-    put3ByteValue(opcodePtr, value);
+    put3ByteValue( opcodePtr, value );
     opcodePtr += 3;
 }
 
-static inline void putLinkValueAllowZero(unsigned char* opcodePtr, int value)
+static inline void putLinkValueAllowZero( unsigned char *opcodePtr, int value )
 {
 #if LINK_SIZE == 3
-    put3ByteValue(opcodePtr, value);
+    put3ByteValue( opcodePtr, value );
 #elif LINK_SIZE == 2
-    put2ByteValue(opcodePtr, value);
+    put2ByteValue( opcodePtr, value );
 #else
 #   error LINK_SIZE not supported.
 #endif
 }
 
-static inline int getLinkValueAllowZero(const unsigned char* opcodePtr)
+static inline int getLinkValueAllowZero( const unsigned char *opcodePtr )
 {
 #if LINK_SIZE == 3
-    return get3ByteValue(opcodePtr);
+    return get3ByteValue( opcodePtr );
 #elif LINK_SIZE == 2
-    return get2ByteValue(opcodePtr);
+    return get2ByteValue( opcodePtr );
 #else
 #   error LINK_SIZE not supported.
 #endif
 }
 
 #define MAX_PATTERN_SIZE 1024 * 1024 // Derived by empirical testing of compile time in PCRE and WREC.
-COMPILE_ASSERT(MAX_PATTERN_SIZE < (1 << (8 * LINK_SIZE)), pcre_max_pattern_fits_in_bytecode);
+COMPILE_ASSERT( MAX_PATTERN_SIZE < ( 1 << ( 8 * LINK_SIZE ) ), pcre_max_pattern_fits_in_bytecode );
 
-static inline void putLinkValue(unsigned char* opcodePtr, int value)
+static inline void putLinkValue( unsigned char *opcodePtr, int value )
 {
-    ASSERT(value);
-    putLinkValueAllowZero(opcodePtr, value);
+    ASSERT( value );
+    putLinkValueAllowZero( opcodePtr, value );
 }
 
-static inline int getLinkValue(const unsigned char* opcodePtr)
+static inline int getLinkValue( const unsigned char *opcodePtr )
 {
-    int value = getLinkValueAllowZero(opcodePtr);
-    ASSERT(value);
+    int value = getLinkValueAllowZero( opcodePtr );
+    ASSERT( value );
     return value;
 }
 
-static inline void putLinkValueAndAdvance(unsigned char*& opcodePtr, int value)
+static inline void putLinkValueAndAdvance( unsigned char *&opcodePtr, int value )
 {
-    putLinkValue(opcodePtr, value);
+    putLinkValue( opcodePtr, value );
     opcodePtr += LINK_SIZE;
 }
 
-static inline void putLinkValueAllowZeroAndAdvance(unsigned char*& opcodePtr, int value)
+static inline void putLinkValueAllowZeroAndAdvance( unsigned char *&opcodePtr, int value )
 {
-    putLinkValueAllowZero(opcodePtr, value);
+    putLinkValueAllowZero( opcodePtr, value );
     opcodePtr += LINK_SIZE;
 }
 
 // FIXME: These are really more of a "compiled regexp state" than "regexp options"
-enum RegExpOptions {
+enum RegExpOptions
+{
     UseFirstByteOptimizationOption = 0x40000000,  /* firstByte is set */
     UseRequiredByteOptimizationOption = 0x20000000,  /* reqByte is set */
     UseMultiLineFirstByteOptimizationOption = 0x10000000,  /* start after \n for multiline */
@@ -333,7 +334,7 @@ must also be updated to match. */
     macro(BRA)
 
 #define OPCODE_ENUM_VALUE(opcode) OP_##opcode,
-enum { FOR_EACH_OPCODE(OPCODE_ENUM_VALUE) };
+enum { FOR_EACH_OPCODE( OPCODE_ENUM_VALUE ) };
 
 /* WARNING WARNING WARNING: There is an implicit assumption in pcre.c and
 study.c that all opcodes are less than 128 in value. This makes handling UTF-8
@@ -352,12 +353,13 @@ are in conflict! */
 
 /* The code vector runs on as long as necessary after the end. */
 
-struct JSRegExp {
+struct JSRegExp
+{
     unsigned options;
 
     unsigned short topBracket;
     unsigned short topBackref;
-    
+
     unsigned short firstByte;
     unsigned short reqByte;
 
@@ -381,72 +383,80 @@ extern const unsigned char jsc_pcre_utf8_table4[0x40];
 
 extern const unsigned char jsc_pcre_default_tables[tables_length];
 
-static inline unsigned char toLowerCase(unsigned char c)
+static inline unsigned char toLowerCase( unsigned char c )
 {
-    static const unsigned char* lowerCaseChars = jsc_pcre_default_tables + lcc_offset;
+    static const unsigned char *lowerCaseChars = jsc_pcre_default_tables + lcc_offset;
     return lowerCaseChars[c];
 }
 
-static inline unsigned char flipCase(unsigned char c)
+static inline unsigned char flipCase( unsigned char c )
 {
-    static const unsigned char* flippedCaseChars = jsc_pcre_default_tables + fcc_offset;
+    static const unsigned char *flippedCaseChars = jsc_pcre_default_tables + fcc_offset;
     return flippedCaseChars[c];
 }
 
-static inline unsigned char classBitmapForChar(unsigned char c)
+static inline unsigned char classBitmapForChar( unsigned char c )
 {
-    static const unsigned char* charClassBitmaps = jsc_pcre_default_tables + cbits_offset;
+    static const unsigned char *charClassBitmaps = jsc_pcre_default_tables + cbits_offset;
     return charClassBitmaps[c];
 }
 
-static inline unsigned char charTypeForChar(unsigned char c)
+static inline unsigned char charTypeForChar( unsigned char c )
 {
-    const unsigned char* charTypeMap = jsc_pcre_default_tables + ctypes_offset;
+    const unsigned char *charTypeMap = jsc_pcre_default_tables + ctypes_offset;
     return charTypeMap[c];
 }
 
-static inline bool isWordChar(UChar c)
+static inline bool isWordChar( UChar c )
 {
-    return c < 128 && (charTypeForChar(c) & ctype_word);
+    return c < 128 && ( charTypeForChar( c ) & ctype_word );
 }
 
-static inline bool isSpaceChar(UChar c)
+static inline bool isSpaceChar( UChar c )
 {
-    return (c < 128 && (charTypeForChar(c) & ctype_space)) || c == 0x00A0;
+    return ( c < 128 && ( charTypeForChar( c ) & ctype_space ) ) || c == 0x00A0;
 }
 
-static inline bool isNewline(UChar nl)
+static inline bool isNewline( UChar nl )
 {
-    return (nl == 0xA || nl == 0xD || nl == 0x2028 || nl == 0x2029);
+    return ( nl == 0xA || nl == 0xD || nl == 0x2028 || nl == 0x2029 );
 }
 
-static inline bool isBracketStartOpcode(unsigned char opcode)
+static inline bool isBracketStartOpcode( unsigned char opcode )
 {
-    if (opcode >= OP_BRA)
+    if ( opcode >= OP_BRA )
+    {
         return true;
-    switch (opcode) {
+    }
+
+    switch ( opcode )
+    {
         case OP_ASSERT:
         case OP_ASSERT_NOT:
             return true;
+
         default:
             return false;
     }
 }
 
-static inline void advanceToEndOfBracket(const unsigned char*& opcodePtr)
+static inline void advanceToEndOfBracket( const unsigned char *&opcodePtr )
 {
-    ASSERT(isBracketStartOpcode(*opcodePtr) || *opcodePtr == OP_ALT);
+    ASSERT( isBracketStartOpcode( *opcodePtr ) || *opcodePtr == OP_ALT );
+
     do
-        opcodePtr += getLinkValue(opcodePtr + 1);
-    while (*opcodePtr == OP_ALT);
+    {
+        opcodePtr += getLinkValue( opcodePtr + 1 );
+    }
+    while ( *opcodePtr == OP_ALT );
 }
 
 /* Internal shared functions. These are functions that are used in more
 that one of the source files. They have to have external linkage, but
 but are not part of the public API and so not exported from the library. */
 
-extern int jsc_pcre_ucp_othercase(unsigned);
-extern bool jsc_pcre_xclass(int, const unsigned char*);
+extern int jsc_pcre_ucp_othercase( unsigned );
+extern bool jsc_pcre_xclass( int, const unsigned char * );
 
 #endif
 

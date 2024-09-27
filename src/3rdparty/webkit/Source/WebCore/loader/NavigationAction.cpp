@@ -6,13 +6,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -32,51 +32,64 @@
 #include "Event.h"
 #include "FrameLoader.h"
 
-namespace WebCore {
-
-static NavigationType navigationType(FrameLoadType frameLoadType, bool isFormSubmission, bool haveEvent)
+namespace WebCore
 {
-    if (isFormSubmission)
+
+static NavigationType navigationType( FrameLoadType frameLoadType, bool isFormSubmission, bool haveEvent )
+{
+    if ( isFormSubmission )
+    {
         return NavigationTypeFormSubmitted;
-    if (haveEvent)
+    }
+
+    if ( haveEvent )
+    {
         return NavigationTypeLinkClicked;
-    if (frameLoadType == FrameLoadTypeReload || frameLoadType == FrameLoadTypeReloadFromOrigin)
+    }
+
+    if ( frameLoadType == FrameLoadTypeReload || frameLoadType == FrameLoadTypeReloadFromOrigin )
+    {
         return NavigationTypeReload;
-    if (isBackForwardLoadType(frameLoadType))
+    }
+
+    if ( isBackForwardLoadType( frameLoadType ) )
+    {
         return NavigationTypeBackForward;
+    }
+
     return NavigationTypeOther;
 }
 
 NavigationAction::NavigationAction()
-    : m_type(NavigationTypeOther)
+    : m_type( NavigationTypeOther )
 {
 }
 
-NavigationAction::NavigationAction(const KURL& url, NavigationType type)
-    : m_URL(url)
-    , m_type(type)
+NavigationAction::NavigationAction( const KURL &url, NavigationType type )
+    : m_URL( url )
+    , m_type( type )
 {
 }
 
-NavigationAction::NavigationAction(const KURL& url, FrameLoadType frameLoadType,
-        bool isFormSubmission)
-    : m_URL(url)
-    , m_type(navigationType(frameLoadType, isFormSubmission, 0))
+NavigationAction::NavigationAction( const KURL &url, FrameLoadType frameLoadType,
+                                    bool isFormSubmission )
+    : m_URL( url )
+    , m_type( navigationType( frameLoadType, isFormSubmission, 0 ) )
 {
 }
 
-NavigationAction::NavigationAction(const KURL& url, NavigationType type, PassRefPtr<Event> event)
-    : m_URL(url)
-    , m_type(type)
-    , m_event(event)
+NavigationAction::NavigationAction( const KURL &url, NavigationType type, PassRefPtr<Event> event )
+    : m_URL( url )
+    , m_type( type )
+    , m_event( event )
 {
 }
 
-NavigationAction::NavigationAction(const KURL& url, FrameLoadType frameLoadType,
-        bool isFormSubmission, PassRefPtr<Event> event)
-    : m_URL(url)
-    , m_type(navigationType(frameLoadType, isFormSubmission, event))
-    , m_event(event)
+NavigationAction::NavigationAction( const KURL &url, FrameLoadType frameLoadType,
+                                    bool isFormSubmission, PassRefPtr<Event> event )
+    : m_URL( url )
+    , m_type( navigationType( frameLoadType, isFormSubmission, event ) )
+    , m_event( event )
 {
 }
 

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -38,76 +38,80 @@
 
 using std::min;
 
-namespace WebCore {
+namespace WebCore
+{
 
-static void drawRectIntoContext(IntRect rect, FrameView* view, GraphicsContext* gc)
+static void drawRectIntoContext( IntRect rect, FrameView *view, GraphicsContext *gc )
 {
     IntSize offset = view->scrollOffset();
-    rect.move(-offset.width(), -offset.height());
-    rect = view->convertToContainingWindow(rect);
+    rect.move( -offset.width(), -offset.height() );
+    rect = view->convertToContainingWindow( rect );
 
-    gc->concatCTM(AffineTransform().translate(-rect.x(), -rect.y()));
+    gc->concatCTM( AffineTransform().translate( -rect.x(), -rect.y() ) );
 
-    view->paint(gc, rect);
+    view->paint( gc, rect );
 }
 
-static HBITMAP imageFromRect(const Frame* frame, IntRect& ir)
+static HBITMAP imageFromRect( const Frame *frame, IntRect &ir )
 {
     PaintBehavior oldPaintBehavior = frame->view()->paintBehavior();
-    frame->view()->setPaintBehavior(oldPaintBehavior | PaintBehaviorFlattenCompositingLayers);
+    frame->view()->setPaintBehavior( oldPaintBehavior | PaintBehaviorFlattenCompositingLayers );
 
-    void* bits;
-    HDC hdc = CreateCompatibleDC(0);
+    void *bits;
+    HDC hdc = CreateCompatibleDC( 0 );
     int w = ir.width();
     int h = ir.height();
-    BitmapInfo bmp = BitmapInfo::create(IntSize(w, h));
+    BitmapInfo bmp = BitmapInfo::create( IntSize( w, h ) );
 
-    HBITMAP hbmp = CreateDIBSection(0, &bmp, DIB_RGB_COLORS, static_cast<void**>(&bits), 0, 0);
-    HBITMAP hbmpOld = static_cast<HBITMAP>(SelectObject(hdc, hbmp));
-    CGContextRef context = CGBitmapContextCreate(static_cast<void*>(bits), w, h,
-        8, w * sizeof(RGBQUAD), deviceRGBColorSpaceRef(), kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedFirst);
-    CGContextSaveGState(context);
+    HBITMAP hbmp = CreateDIBSection( 0, &bmp, DIB_RGB_COLORS, static_cast<void **>( &bits ), 0, 0 );
+    HBITMAP hbmpOld = static_cast<HBITMAP>( SelectObject( hdc, hbmp ) );
+    CGContextRef context = CGBitmapContextCreate( static_cast<void *>( bits ), w, h,
+                           8, w * sizeof( RGBQUAD ), deviceRGBColorSpaceRef(), kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedFirst );
+    CGContextSaveGState( context );
 
-    GraphicsContext gc(context);
+    GraphicsContext gc( context );
 
-    drawRectIntoContext(ir, frame->view(), &gc);
+    drawRectIntoContext( ir, frame->view(), &gc );
 
-    CGContextRelease(context);
-    SelectObject(hdc, hbmpOld);
-    DeleteDC(hdc);
+    CGContextRelease( context );
+    SelectObject( hdc, hbmpOld );
+    DeleteDC( hdc );
 
-    frame->view()->setPaintBehavior(oldPaintBehavior);
+    frame->view()->setPaintBehavior( oldPaintBehavior );
 
     return hbmp;
 }
 
-HBITMAP imageFromSelection(Frame* frame, bool forceBlackText)
+HBITMAP imageFromSelection( Frame *frame, bool forceBlackText )
 {
     frame->document()->updateLayout();
 
-    frame->view()->setPaintBehavior(PaintBehaviorSelectionOnly | (forceBlackText ? PaintBehaviorForceBlackText : 0));
+    frame->view()->setPaintBehavior( PaintBehaviorSelectionOnly | ( forceBlackText ? PaintBehaviorForceBlackText : 0 ) );
     FloatRect fr = frame->selection()->bounds();
-    IntRect ir(static_cast<int>(fr.x()), static_cast<int>(fr.y()),
-               static_cast<int>(fr.width()), static_cast<int>(fr.height()));
-    HBITMAP image = imageFromRect(frame, ir);
-    frame->view()->setPaintBehavior(PaintBehaviorNormal);
+    IntRect ir( static_cast<int>( fr.x() ), static_cast<int>( fr.y() ),
+                static_cast<int>( fr.width() ), static_cast<int>( fr.height() ) );
+    HBITMAP image = imageFromRect( frame, ir );
+    frame->view()->setPaintBehavior( PaintBehaviorNormal );
     return image;
 }
 
-DragImageRef Frame::nodeImage(Node* node)
+DragImageRef Frame::nodeImage( Node *node )
 {
-    RenderObject* renderer = node->renderer();
-    if (!renderer)
+    RenderObject *renderer = node->renderer();
+
+    if ( !renderer )
+    {
         return 0;
+    }
 
     IntRect topLevelRect;
-    IntRect paintingRect = renderer->paintingRootRect(topLevelRect);
+    IntRect paintingRect = renderer->paintingRootRect( topLevelRect );
 
     document()->updateLayout();
 
-    m_view->setNodeToDraw(node); // invoke special sub-tree drawing mode
-    HBITMAP result = imageFromRect(this, paintingRect);
-    m_view->setNodeToDraw(0);
+    m_view->setNodeToDraw( node ); // invoke special sub-tree drawing mode
+    HBITMAP result = imageFromRect( this, paintingRect );
+    m_view->setNodeToDraw( 0 );
 
     return result;
 }

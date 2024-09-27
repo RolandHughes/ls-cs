@@ -43,82 +43,100 @@ const LPCWSTR webKitDLLName = L"WebKit_debug.dll";
 const LPCWSTR webKitDLLName = L"WebKit.dll";
 #endif
 
-namespace WebKit {
+namespace WebKit
+{
 
 void ProcessLauncher::launchProcess()
 {
     // First, create the server and client identifiers.
     HANDLE serverIdentifier, clientIdentifier;
-    if (!CoreIPC::Connection::createServerAndClientIdentifiers(serverIdentifier, clientIdentifier)) {
+
+    if ( !CoreIPC::Connection::createServerAndClientIdentifiers( serverIdentifier, clientIdentifier ) )
+    {
         // FIXME: What should we do here?
         ASSERT_NOT_REACHED();
     }
 
     // Ensure that the child process inherits the client identifier.
-    ::SetHandleInformation(clientIdentifier, HANDLE_FLAG_INHERIT, HANDLE_FLAG_INHERIT);
+    ::SetHandleInformation( clientIdentifier, HANDLE_FLAG_INHERIT, HANDLE_FLAG_INHERIT );
 
     // To get the full file path to WebKit2WebProcess.exe, we fild the location of WebKit.dll,
     // remove the last path component, and then append WebKit2WebProcess(_debug).exe.
-    HMODULE webKitModule = ::GetModuleHandleW(webKitDLLName);
-    ASSERT(webKitModule);
-    if (!webKitModule)
+    HMODULE webKitModule = ::GetModuleHandleW( webKitDLLName );
+    ASSERT( webKitModule );
+
+    if ( !webKitModule )
+    {
         return;
+    }
 
     WCHAR pathStr[MAX_PATH];
-    if (!::GetModuleFileNameW(webKitModule, pathStr, WTF_ARRAY_LENGTH(pathStr)))
-        return;
 
-    ::PathRemoveFileSpecW(pathStr);
-    if (!::PathAppendW(pathStr, webProcessName))
+    if ( !::GetModuleFileNameW( webKitModule, pathStr, WTF_ARRAY_LENGTH( pathStr ) ) )
+    {
         return;
+    }
 
-    String commandLine(pathStr);
+    ::PathRemoveFileSpecW( pathStr );
+
+    if ( !::PathAppendW( pathStr, webProcessName ) )
+    {
+        return;
+    }
+
+    String commandLine( pathStr );
 
     // FIXME: It would be nice if we could just create a CommandLine object and output a command line vector from it.
     Vector<UChar> commandLineVector;
-    append(commandLineVector, "\"");
-    append(commandLineVector, commandLine);
-    append(commandLineVector, "\"");
-    append(commandLineVector, " -type webprocess");
-    append(commandLineVector, " -clientIdentifier ");
-    append(commandLineVector, String::number(reinterpret_cast<uintptr_t>(clientIdentifier)));
-    commandLineVector.append('\0');
+    append( commandLineVector, "\"" );
+    append( commandLineVector, commandLine );
+    append( commandLineVector, "\"" );
+    append( commandLineVector, " -type webprocess" );
+    append( commandLineVector, " -clientIdentifier " );
+    append( commandLineVector, String::number( reinterpret_cast<uintptr_t>( clientIdentifier ) ) );
+    commandLineVector.append( '\0' );
 
     STARTUPINFO startupInfo = { 0 };
-    startupInfo.cb = sizeof(startupInfo);
+    startupInfo.cb = sizeof( startupInfo );
     PROCESS_INFORMATION processInformation = { 0 };
-    BOOL result = ::CreateProcessW(0, commandLineVector.data(), 0, 0, true, 0, 0, 0, &startupInfo, &processInformation);
+    BOOL result = ::CreateProcessW( 0, commandLineVector.data(), 0, 0, true, 0, 0, 0, &startupInfo, &processInformation );
 
     // We can now close the client identifier handle.
-    ::CloseHandle(clientIdentifier);
+    ::CloseHandle( clientIdentifier );
 
-    if (!result) {
+    if ( !result )
+    {
         // FIXME: What should we do here?
         DWORD error = ::GetLastError();
         ASSERT_NOT_REACHED();
     }
 
     // Don't leak the thread handle.
-    ::CloseHandle(processInformation.hThread);
+    ::CloseHandle( processInformation.hThread );
 
     // We've finished launching the process, message back to the run loop.
-    RunLoop::main()->scheduleWork(WorkItem::create(this, &ProcessLauncher::didFinishLaunchingProcess, processInformation.hProcess, serverIdentifier));
+    RunLoop::main()->scheduleWork( WorkItem::create( this, &ProcessLauncher::didFinishLaunchingProcess, processInformation.hProcess,
+                                   serverIdentifier ) );
 }
 
 void ProcessLauncher::terminateProcess()
 {
-    if (!m_processIdentifier)
+    if ( !m_processIdentifier )
+    {
         return;
+    }
 
-    ::TerminateProcess(m_processIdentifier, 0);
+    ::TerminateProcess( m_processIdentifier, 0 );
 }
 
 void ProcessLauncher::platformInvalidate()
 {
-    if (!m_processIdentifier)
+    if ( !m_processIdentifier )
+    {
         return;
+    }
 
-    ::CloseHandle(m_processIdentifier);
+    ::CloseHandle( m_processIdentifier );
     m_processIdentifier = 0;
 }
 

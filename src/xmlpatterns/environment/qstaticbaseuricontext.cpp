@@ -25,17 +25,17 @@
 
 using namespace QPatternist;
 
-StaticBaseURIContext::StaticBaseURIContext(const QUrl &bURI,
-      const StaticContext::Ptr &prevContext) : DelegatingStaticContext(prevContext)
-   , m_baseURI(bURI)
+StaticBaseURIContext::StaticBaseURIContext( const QUrl &bURI,
+        const StaticContext::Ptr &prevContext ) : DelegatingStaticContext( prevContext )
+    , m_baseURI( bURI )
 {
-   Q_ASSERT(m_baseURI.isValid());
-   Q_ASSERT(!m_baseURI.isRelative());
-   Q_ASSERT(prevContext);
+    Q_ASSERT( m_baseURI.isValid() );
+    Q_ASSERT( !m_baseURI.isRelative() );
+    Q_ASSERT( prevContext );
 }
 
 QUrl StaticBaseURIContext::baseURI() const
 {
-   return m_baseURI;
+    return m_baseURI;
 }
 

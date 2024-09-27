@@ -34,26 +34,27 @@
 
 class QExpandingLineEdit : public QLineEdit
 {
-   GUI_CS_OBJECT(QExpandingLineEdit)
+    GUI_CS_OBJECT( QExpandingLineEdit )
 
- public:
-   QExpandingLineEdit(QWidget *parent);
+public:
+    QExpandingLineEdit( QWidget *parent );
 
-   void setWidgetOwnsGeometry(bool value) {
-      widgetOwnsGeometry = value;
-   }
+    void setWidgetOwnsGeometry( bool value )
+    {
+        widgetOwnsGeometry = value;
+    }
 
-   GUI_CS_SLOT_1(Public, void resizeToContents())
-   GUI_CS_SLOT_2(resizeToContents)
+    GUI_CS_SLOT_1( Public, void resizeToContents() )
+    GUI_CS_SLOT_2( resizeToContents )
 
- protected:
-   void changeEvent(QEvent *event) override;
+protected:
+    void changeEvent( QEvent *event ) override;
 
- private:
-   void updateMinimumWidth();
+private:
+    void updateMinimumWidth();
 
-   int originalWidth;
-   bool widgetOwnsGeometry;
+    int originalWidth;
+    bool widgetOwnsGeometry;
 };
 
 

@@ -32,11 +32,12 @@
 #include "RenderImageResourceStyleImage.h"
 #include "RenderObject.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 RenderImageResource::RenderImageResource()
-    : m_renderer(0)
-    , m_cachedImage(0)
+    : m_renderer( 0 )
+    , m_cachedImage( 0 )
 {
 }
 
@@ -44,62 +45,80 @@ RenderImageResource::~RenderImageResource()
 {
 }
 
-void RenderImageResource::initialize(RenderObject* renderer)
+void RenderImageResource::initialize( RenderObject *renderer )
 {
-    ASSERT(!m_renderer);
-    ASSERT(renderer);
+    ASSERT( !m_renderer );
+    ASSERT( renderer );
     m_renderer = renderer;
 }
 
 void RenderImageResource::shutdown()
 {
-    ASSERT(m_renderer);
+    ASSERT( m_renderer );
 
-    if (m_cachedImage)
-        m_cachedImage->removeClient(m_renderer);
+    if ( m_cachedImage )
+    {
+        m_cachedImage->removeClient( m_renderer );
+    }
 }
 
-void RenderImageResource::setCachedImage(CachedImage* newImage)
+void RenderImageResource::setCachedImage( CachedImage *newImage )
 {
-    ASSERT(m_renderer);
+    ASSERT( m_renderer );
 
-    if (m_cachedImage == newImage)
+    if ( m_cachedImage == newImage )
+    {
         return;
+    }
 
-    if (m_cachedImage)
-        m_cachedImage->removeClient(m_renderer);
+    if ( m_cachedImage )
+    {
+        m_cachedImage->removeClient( m_renderer );
+    }
+
     m_cachedImage = newImage;
-    if (m_cachedImage) {
-        m_cachedImage->addClient(m_renderer);
-        if (m_cachedImage->errorOccurred())
-            m_renderer->imageChanged(m_cachedImage.get());
+
+    if ( m_cachedImage )
+    {
+        m_cachedImage->addClient( m_renderer );
+
+        if ( m_cachedImage->errorOccurred() )
+        {
+            m_renderer->imageChanged( m_cachedImage.get() );
+        }
     }
 }
 
 void RenderImageResource::resetAnimation()
 {
-    ASSERT(m_renderer);
+    ASSERT( m_renderer );
 
-    if (!m_cachedImage)
+    if ( !m_cachedImage )
+    {
         return;
+    }
 
     image()->resetAnimation();
 
-    if (!m_renderer->needsLayout())
+    if ( !m_renderer->needsLayout() )
+    {
         m_renderer->repaint();
+    }
 }
 
-void RenderImageResource::setImageContainerSize(const IntSize& size) const
+void RenderImageResource::setImageContainerSize( const IntSize &size ) const
 {
-    ASSERT(m_renderer);
+    ASSERT( m_renderer );
 
-    if (!m_cachedImage)
+    if ( !m_cachedImage )
+    {
         return;
+    }
 
-    m_cachedImage->setImageContainerSize(size);
+    m_cachedImage->setImageContainerSize( size );
 }
 
-Image* RenderImageResource::nullImage()
+Image *RenderImageResource::nullImage()
 {
     return Image::nullImage();
 }

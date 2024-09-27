@@ -34,83 +34,84 @@ class QMenuBarExtension;
 
 class QMenuBarPrivate : public QWidgetPrivate
 {
-   Q_DECLARE_PUBLIC(QMenuBar)
+    Q_DECLARE_PUBLIC( QMenuBar )
 
- public:
-   QMenuBarPrivate()
-      : itemsDirty(0), currentAction(nullptr), mouseDown(0),
-        closePopupMode(0), defaultPopDown(1), popupState(0), keyboardState(0), altPressed(0),
-        doChildEffects(false), platformMenuBar(nullptr)
-   {
-   }
+public:
+    QMenuBarPrivate()
+        : itemsDirty( 0 ), currentAction( nullptr ), mouseDown( 0 ),
+          closePopupMode( 0 ), defaultPopDown( 1 ), popupState( 0 ), keyboardState( 0 ), altPressed( 0 ),
+          doChildEffects( false ), platformMenuBar( nullptr )
+    {
+    }
 
-   ~QMenuBarPrivate()
-   {
-      delete platformMenuBar;
-   }
+    ~QMenuBarPrivate()
+    {
+        delete platformMenuBar;
+    }
 
-   void init();
-   QAction *getNextAction(const int start, const int increment) const;
+    void init();
+    QAction *getNextAction( const int start, const int increment ) const;
 
-   //item calculations
-   uint itemsDirty : 1;
+    //item calculations
+    uint itemsDirty : 1;
 
-   QVector<int> shortcutIndexMap;
-   mutable QVector<QRect> actionRects;
-   void calcActionRects(int max_width, int start) const;
-   QRect actionRect(QAction *) const;
-   void updateGeometries();
+    QVector<int> shortcutIndexMap;
+    mutable QVector<QRect> actionRects;
+    void calcActionRects( int max_width, int start ) const;
+    QRect actionRect( QAction * ) const;
+    void updateGeometries();
 
-   //selection
-   QPointer<QAction>currentAction;
-   uint mouseDown : 1, closePopupMode : 1, defaultPopDown;
-   QAction *actionAt(QPoint p) const;
-   void setCurrentAction(QAction *, bool = false, bool = false);
-   void popupAction(QAction *, bool);
+    //selection
+    QPointer<QAction>currentAction;
+    uint mouseDown : 1, closePopupMode : 1, defaultPopDown;
+    QAction *actionAt( QPoint p ) const;
+    void setCurrentAction( QAction *, bool = false, bool = false );
+    void popupAction( QAction *, bool );
 
-   //active popup state
-   uint popupState : 1;
-   QPointer<QMenu> activeMenu;
+    //active popup state
+    uint popupState : 1;
+    QPointer<QMenu> activeMenu;
 
-   //keyboard mode for keyboard navigation
-   void focusFirstAction();
-   void setKeyboardMode(bool);
-   uint keyboardState : 1, altPressed : 1;
-   QPointer<QWidget> keyboardFocusWidget;
+    //keyboard mode for keyboard navigation
+    void focusFirstAction();
+    void setKeyboardMode( bool );
+    uint keyboardState : 1, altPressed : 1;
+    QPointer<QWidget> keyboardFocusWidget;
 
-   //firing of events
-   void activateAction(QAction *, QAction::ActionEvent);
+    //firing of events
+    void activateAction( QAction *, QAction::ActionEvent );
 
-   void _q_actionTriggered();
-   void _q_actionHovered();
-   void _q_internalShortcutActivated(int);
-   void _q_updateLayout();
+    void _q_actionTriggered();
+    void _q_actionHovered();
+    void _q_internalShortcutActivated( int );
+    void _q_updateLayout();
 
-   //extra widgets in the menubar
-   QPointer<QWidget> leftWidget, rightWidget;
-   QMenuBarExtension *extension;
-   bool isVisible(QAction *action);
+    //extra widgets in the menubar
+    QPointer<QWidget> leftWidget, rightWidget;
+    QMenuBarExtension *extension;
+    bool isVisible( QAction *action );
 
-   //menu fading/scrolling effects
-   bool doChildEffects;
+    //menu fading/scrolling effects
+    bool doChildEffects;
 
-   QRect menuRect(bool) const;
+    QRect menuRect( bool ) const;
 
-   // reparenting
-   void handleReparent();
-   QVector<QPointer<QWidget>> oldParents;
+    // reparenting
+    void handleReparent();
+    QVector<QPointer<QWidget>> oldParents;
 
-   QList<QAction *> hiddenActions;
+    QList<QAction *> hiddenActions;
 
-   //default action
-   QPointer<QAction> defaultAction;
+    //default action
+    QPointer<QAction> defaultAction;
 
-   QBasicTimer autoReleaseTimer;
+    QBasicTimer autoReleaseTimer;
 
-   QPlatformMenuBar *platformMenuBar;
-   int indexOf(QAction *act) const {
-      return q_func()->actions().indexOf(act);
-   }
+    QPlatformMenuBar *platformMenuBar;
+    int indexOf( QAction *act ) const
+    {
+        return q_func()->actions().indexOf( act );
+    }
 };
 
 #endif // QT_NO_MENUBAR

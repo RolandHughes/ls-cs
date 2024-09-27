@@ -32,62 +32,66 @@
 struct NPObject;
 typedef struct _NPVariant NPVariant;
 
-namespace JSC {
-    class ExecState;
-    class JSGlobalData;
-    class JSGlobalObject;
-    class JSObject;
-    class JSValue;
+namespace JSC
+{
+class ExecState;
+class JSGlobalData;
+class JSGlobalObject;
+class JSObject;
+class JSValue;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 class JSNPObject;
 class NPJSObject;
 class PluginView;
 
 // A per plug-in map of NPObjects that wrap JavaScript objects.
-class NPRuntimeObjectMap {
+class NPRuntimeObjectMap
+{
 public:
-    explicit NPRuntimeObjectMap(PluginView*);
+    explicit NPRuntimeObjectMap( PluginView * );
 
-    class PluginProtector {
+    class PluginProtector
+    {
     public:
-        explicit PluginProtector(NPRuntimeObjectMap* npRuntimeObjectMap);
+        explicit PluginProtector( NPRuntimeObjectMap *npRuntimeObjectMap );
         ~PluginProtector();
-        
+
     private:
         RefPtr<PluginView> m_pluginView;
     };
 
     // Returns an NPObject that wraps the given JSObject object. If there is already an NPObject that wraps this JSObject, it will
     // retain it and return it.
-    NPObject* getOrCreateNPObject(JSC::JSGlobalData&, JSC::JSObject*);
-    void npJSObjectDestroyed(NPJSObject*);
+    NPObject *getOrCreateNPObject( JSC::JSGlobalData &, JSC::JSObject * );
+    void npJSObjectDestroyed( NPJSObject * );
 
     // Returns a JSObject object that wraps the given NPObject.
-    JSC::JSObject* getOrCreateJSObject(JSC::JSGlobalObject*, NPObject*);
-    void jsNPObjectDestroyed(JSNPObject*);
+    JSC::JSObject *getOrCreateJSObject( JSC::JSGlobalObject *, NPObject * );
+    void jsNPObjectDestroyed( JSNPObject * );
 
-    void convertJSValueToNPVariant(JSC::ExecState*, JSC::JSValue, NPVariant&);
-    JSC::JSValue convertNPVariantToJSValue(JSC::ExecState*, JSC::JSGlobalObject*, const NPVariant&);
+    void convertJSValueToNPVariant( JSC::ExecState *, JSC::JSValue, NPVariant & );
+    JSC::JSValue convertNPVariantToJSValue( JSC::ExecState *, JSC::JSGlobalObject *, const NPVariant & );
 
-    bool evaluate(NPObject*, const String& scriptString, NPVariant* result);
+    bool evaluate( NPObject *, const String &scriptString, NPVariant *result );
 
     // Called when the plug-in is destroyed. Will invalidate all the NPObjects.
     void invalidate();
 
-    JSC::JSGlobalObject* globalObject() const;
-    JSC::ExecState* globalExec() const;
+    JSC::JSGlobalObject *globalObject() const;
+    JSC::ExecState *globalExec() const;
 
-    static void setGlobalException(const String& exceptionString);
-    static void moveGlobalExceptionToExecState(JSC::ExecState*);
+    static void setGlobalException( const String &exceptionString );
+    static void moveGlobalExceptionToExecState( JSC::ExecState * );
 
 private:
-    PluginView* m_pluginView;
+    PluginView *m_pluginView;
 
-    HashMap<JSC::JSObject*, NPJSObject*> m_npJSObjects;
-    HashMap<NPObject*, JSNPObject*> m_jsNPObjects;
+    HashMap<JSC::JSObject *, NPJSObject *> m_npJSObjects;
+    HashMap<NPObject *, JSNPObject *> m_jsNPObjects;
 };
 
 } // namespace WebKit

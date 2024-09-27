@@ -26,23 +26,25 @@
 #ifndef SinglyLinkedList_h
 #define SinglyLinkedList_h
 
-namespace WTF {
+namespace WTF
+{
 
-template <typename Node> class SinglyLinkedList {
+template <typename Node> class SinglyLinkedList
+{
 public:
     SinglyLinkedList();
-    
+
     bool isEmpty();
 
-    void push(Node*);
-    Node* pop();
+    void push( Node * );
+    Node *pop();
 
 private:
-    Node* m_head;
+    Node *m_head;
 };
 
 template <typename Node> inline SinglyLinkedList<Node>::SinglyLinkedList()
-    : m_head(0)
+    : m_head( 0 )
 {
 }
 
@@ -51,16 +53,16 @@ template <typename Node> inline bool SinglyLinkedList<Node>::isEmpty()
     return !m_head;
 }
 
-template <typename Node> inline void SinglyLinkedList<Node>::push(Node* node)
+template <typename Node> inline void SinglyLinkedList<Node>::push( Node *node )
 {
-    ASSERT(node);
-    node->setNext(m_head);
+    ASSERT( node );
+    node->setNext( m_head );
     m_head = node;
 }
 
-template <typename Node> inline Node* SinglyLinkedList<Node>::pop()
+template <typename Node> inline Node *SinglyLinkedList<Node>::pop()
 {
-    Node* tmp = m_head;
+    Node *tmp = m_head;
     m_head = m_head->next();
     return tmp;
 }

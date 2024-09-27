@@ -28,28 +28,30 @@
 
 #include "JSGlobalObject.h"
 
-namespace JSC {
+namespace JSC
+{
 
 class JSGlobalObject;
 
-class JSObjectWithGlobalObject : public JSNonFinalObject {
+class JSObjectWithGlobalObject : public JSNonFinalObject
+{
 public:
-    static Structure* createStructure(JSGlobalData& globalData, JSValue proto)
+    static Structure *createStructure( JSGlobalData &globalData, JSValue proto )
     {
-        return Structure::create(globalData, proto, TypeInfo(ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return Structure::create( globalData, proto, TypeInfo( ObjectType, StructureFlags ), AnonymousSlotCount, &s_info );
     }
 
-    JSGlobalObject* globalObject() const
+    JSGlobalObject *globalObject() const
     {
-        return asGlobalObject((getAnonymousValue(GlobalObjectSlot).asCell()));
+        return asGlobalObject( ( getAnonymousValue( GlobalObjectSlot ).asCell() ) );
     }
 
 protected:
-    JSObjectWithGlobalObject(JSGlobalObject*, Structure*);
-    JSObjectWithGlobalObject(JSGlobalData&, JSGlobalObject*, Structure*);
+    JSObjectWithGlobalObject( JSGlobalObject *, Structure * );
+    JSObjectWithGlobalObject( JSGlobalData &, JSGlobalObject *, Structure * );
 
-    JSObjectWithGlobalObject(VPtrStealingHackType)
-        : JSNonFinalObject(VPtrStealingHack)
+    JSObjectWithGlobalObject( VPtrStealingHackType )
+        : JSNonFinalObject( VPtrStealingHack )
     {
         // Should only be used by JSFunction when we aquire the JSFunction vptr.
     }

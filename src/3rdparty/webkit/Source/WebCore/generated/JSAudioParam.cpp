@@ -31,9 +31,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSAudioParam);
+ASSERT_CLASS_FITS_IN_CELL( JSAudioParam );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -44,14 +45,14 @@ ASSERT_CLASS_FITS_IN_CELL(JSAudioParam);
 
 static const HashTableValue JSAudioParamTableValues[8] =
 {
-    { "value", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsAudioParamValue), (intptr_t)setJSAudioParamValue THUNK_GENERATOR(0) },
-    { "minValue", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsAudioParamMinValue), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "maxValue", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsAudioParamMaxValue), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "defaultValue", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsAudioParamDefaultValue), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "name", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsAudioParamName), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "units", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsAudioParamUnits), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsAudioParamConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "value", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsAudioParamValue ), ( intptr_t )setJSAudioParamValue THUNK_GENERATOR( 0 ) },
+    { "minValue", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsAudioParamMinValue ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "maxValue", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsAudioParamMaxValue ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "defaultValue", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsAudioParamDefaultValue ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "name", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsAudioParamName ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "units", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsAudioParamUnits ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsAudioParamConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -65,43 +66,49 @@ static JSC_CONST_HASHTABLE HashTable JSAudioParamTable = { 18, 15, JSAudioParamT
 
 static const HashTableValue JSAudioParamConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSAudioParamConstructorTable = { 1, 0, JSAudioParamConstructorTableValues, 0 };
-class JSAudioParamConstructor : public DOMConstructorObject {
+class JSAudioParamConstructor : public DOMConstructorObject
+{
 public:
-    JSAudioParamConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSAudioParamConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSAudioParamConstructor::s_info = { "AudioParamConstructor", &DOMConstructorObject::s_info, &JSAudioParamConstructorTable, 0 };
 
-JSAudioParamConstructor::JSAudioParamConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSAudioParamConstructor::JSAudioParamConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSAudioParamPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSAudioParamPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSAudioParamConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSAudioParamConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSAudioParamConstructor, JSDOMWrapper>(exec, &JSAudioParamConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSAudioParamConstructor, JSDOMWrapper>( exec, &JSAudioParamConstructorTable, this, propertyName, slot );
 }
 
-bool JSAudioParamConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSAudioParamConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSAudioParamConstructor, JSDOMWrapper>(exec, &JSAudioParamConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSAudioParamConstructor, JSDOMWrapper>( exec, &JSAudioParamConstructorTable, this, propertyName,
+            descriptor );
 }
 
 /* Hash table for prototype */
@@ -113,134 +120,135 @@ bool JSAudioParamConstructor::getOwnPropertyDescriptor(ExecState* exec, const Id
 
 static const HashTableValue JSAudioParamPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSAudioParamPrototypeTable = { 1, 0, JSAudioParamPrototypeTableValues, 0 };
 const ClassInfo JSAudioParamPrototype::s_info = { "AudioParamPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSAudioParamPrototypeTable, 0 };
 
-JSObject* JSAudioParamPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSAudioParamPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSAudioParam>(exec, globalObject);
+    return getDOMPrototype<JSAudioParam>( exec, globalObject );
 }
 
 const ClassInfo JSAudioParam::s_info = { "AudioParam", &JSDOMWrapper::s_info, &JSAudioParamTable, 0 };
 
-JSAudioParam::JSAudioParam(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<AudioParam> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSAudioParam::JSAudioParam( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<AudioParam> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSAudioParam::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSAudioParam::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSAudioParamPrototype(exec->globalData(), globalObject, JSAudioParamPrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSAudioParamPrototype( exec->globalData(), globalObject,
+            JSAudioParamPrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSAudioParam::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSAudioParam::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSAudioParam, Base>(exec, &JSAudioParamTable, this, propertyName, slot);
+    return getStaticValueSlot<JSAudioParam, Base>( exec, &JSAudioParamTable, this, propertyName, slot );
 }
 
-bool JSAudioParam::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSAudioParam::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSAudioParam, Base>(exec, &JSAudioParamTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSAudioParam, Base>( exec, &JSAudioParamTable, this, propertyName, descriptor );
 }
 
-JSValue jsAudioParamValue(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsAudioParamValue( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSAudioParam* castedThis = static_cast<JSAudioParam*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    AudioParam* imp = static_cast<AudioParam*>(castedThis->impl());
-    JSValue result = jsNumber(imp->value());
+    JSAudioParam *castedThis = static_cast<JSAudioParam *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    AudioParam *imp = static_cast<AudioParam *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->value() );
     return result;
 }
 
 
-JSValue jsAudioParamMinValue(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsAudioParamMinValue( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSAudioParam* castedThis = static_cast<JSAudioParam*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    AudioParam* imp = static_cast<AudioParam*>(castedThis->impl());
-    JSValue result = jsNumber(imp->minValue());
+    JSAudioParam *castedThis = static_cast<JSAudioParam *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    AudioParam *imp = static_cast<AudioParam *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->minValue() );
     return result;
 }
 
 
-JSValue jsAudioParamMaxValue(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsAudioParamMaxValue( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSAudioParam* castedThis = static_cast<JSAudioParam*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    AudioParam* imp = static_cast<AudioParam*>(castedThis->impl());
-    JSValue result = jsNumber(imp->maxValue());
+    JSAudioParam *castedThis = static_cast<JSAudioParam *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    AudioParam *imp = static_cast<AudioParam *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->maxValue() );
     return result;
 }
 
 
-JSValue jsAudioParamDefaultValue(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsAudioParamDefaultValue( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSAudioParam* castedThis = static_cast<JSAudioParam*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    AudioParam* imp = static_cast<AudioParam*>(castedThis->impl());
-    JSValue result = jsNumber(imp->defaultValue());
+    JSAudioParam *castedThis = static_cast<JSAudioParam *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    AudioParam *imp = static_cast<AudioParam *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->defaultValue() );
     return result;
 }
 
 
-JSValue jsAudioParamName(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsAudioParamName( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSAudioParam* castedThis = static_cast<JSAudioParam*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    AudioParam* imp = static_cast<AudioParam*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->name());
+    JSAudioParam *castedThis = static_cast<JSAudioParam *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    AudioParam *imp = static_cast<AudioParam *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->name() );
     return result;
 }
 
 
-JSValue jsAudioParamUnits(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsAudioParamUnits( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSAudioParam* castedThis = static_cast<JSAudioParam*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    AudioParam* imp = static_cast<AudioParam*>(castedThis->impl());
-    JSValue result = jsNumber(imp->units());
+    JSAudioParam *castedThis = static_cast<JSAudioParam *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    AudioParam *imp = static_cast<AudioParam *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->units() );
     return result;
 }
 
 
-JSValue jsAudioParamConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsAudioParamConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSAudioParam* domObject = static_cast<JSAudioParam*>(asObject(slotBase));
-    return JSAudioParam::getConstructor(exec, domObject->globalObject());
+    JSAudioParam *domObject = static_cast<JSAudioParam *>( asObject( slotBase ) );
+    return JSAudioParam::getConstructor( exec, domObject->globalObject() );
 }
 
-void JSAudioParam::put(ExecState* exec, const Identifier& propertyName, JSValue value, PutPropertySlot& slot)
+void JSAudioParam::put( ExecState *exec, const Identifier &propertyName, JSValue value, PutPropertySlot &slot )
 {
-    lookupPut<JSAudioParam, Base>(exec, propertyName, value, &JSAudioParamTable, this, slot);
+    lookupPut<JSAudioParam, Base>( exec, propertyName, value, &JSAudioParamTable, this, slot );
 }
 
-void setJSAudioParamValue(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSAudioParamValue( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSAudioParam* castedThis = static_cast<JSAudioParam*>(thisObject);
-    AudioParam* imp = static_cast<AudioParam*>(castedThis->impl());
-    imp->setValue(value.toFloat(exec));
+    JSAudioParam *castedThis = static_cast<JSAudioParam *>( thisObject );
+    AudioParam *imp = static_cast<AudioParam *>( castedThis->impl() );
+    imp->setValue( value.toFloat( exec ) );
 }
 
 
-JSValue JSAudioParam::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSAudioParam::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSAudioParamConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSAudioParamConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, AudioParam* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, AudioParam *impl )
 {
-    return wrap<JSAudioParam>(exec, globalObject, impl);
+    return wrap<JSAudioParam>( exec, globalObject, impl );
 }
 
-AudioParam* toAudioParam(JSC::JSValue value)
+AudioParam *toAudioParam( JSC::JSValue value )
 {
-    return value.inherits(&JSAudioParam::s_info) ? static_cast<JSAudioParam*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSAudioParam::s_info ) ? static_cast<JSAudioParam *>( asObject( value ) )->impl() : 0;
 }
 
 }

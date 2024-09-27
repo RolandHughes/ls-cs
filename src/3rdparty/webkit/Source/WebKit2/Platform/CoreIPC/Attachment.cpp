@@ -29,23 +29,24 @@
 #include "ArgumentDecoder.h"
 #include "ArgumentEncoder.h"
 
-namespace CoreIPC {
+namespace CoreIPC
+{
 
 Attachment::Attachment()
-    : m_type(Uninitialized)
+    : m_type( Uninitialized )
 {
 }
 
 #if PLATFORM(MAC)
-Attachment::Attachment(mach_port_name_t port, mach_msg_type_name_t disposition)
-    : m_type(MachPortType)
+Attachment::Attachment( mach_port_name_t port, mach_msg_type_name_t disposition )
+    : m_type( MachPortType )
 {
     m_port.port = port;
     m_port.disposition = disposition;
 }
 
-Attachment::Attachment(void* address, mach_msg_size_t size, mach_msg_copy_options_t copyOptions, bool deallocate)
-    : m_type(MachOOLMemoryType)
+Attachment::Attachment( void *address, mach_msg_size_t size, mach_msg_copy_options_t copyOptions, bool deallocate )
+    : m_type( MachOOLMemoryType )
 {
     m_oolMemory.address = address;
     m_oolMemory.size = size;
@@ -59,15 +60,18 @@ void Attachment::release()
 }
 #endif
 
-void Attachment::encode(ArgumentEncoder* encoder) const
+void Attachment::encode( ArgumentEncoder *encoder ) const
 {
-    encoder->addAttachment(*this);
+    encoder->addAttachment( *this );
 }
 
-bool Attachment::decode(ArgumentDecoder* decoder, Attachment& attachment)
+bool Attachment::decode( ArgumentDecoder *decoder, Attachment &attachment )
 {
-    if (!decoder->removeAttachment(attachment))
+    if ( !decoder->removeAttachment( attachment ) )
+    {
         return false;
+    }
+
     return true;
 }
 

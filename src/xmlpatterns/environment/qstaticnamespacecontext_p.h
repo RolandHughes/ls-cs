@@ -26,20 +26,21 @@
 
 #include <qdelegatingstaticcontext_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class StaticNamespaceContext : public DelegatingStaticContext
 {
- public:
-   StaticNamespaceContext(const NamespaceResolver::Ptr &resolver, const StaticContext::Ptr &context);
+public:
+    StaticNamespaceContext( const NamespaceResolver::Ptr &resolver, const StaticContext::Ptr &context );
 
-   /**
-    * @returns the resolver passed in the constructor.
-    */
-   NamespaceResolver::Ptr namespaceBindings() const override;
+    /**
+     * @returns the resolver passed in the constructor.
+     */
+    NamespaceResolver::Ptr namespaceBindings() const override;
 
- private:
-   const NamespaceResolver::Ptr m_namespaceBindings;
+private:
+    const NamespaceResolver::Ptr m_namespaceBindings;
 };
 }
 

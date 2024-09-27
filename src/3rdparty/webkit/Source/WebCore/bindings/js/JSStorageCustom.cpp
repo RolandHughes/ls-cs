@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -34,65 +34,84 @@
 
 using namespace JSC;
 
-namespace WebCore {
-
-bool JSStorage::canGetItemsForName(ExecState*, Storage* impl, const Identifier& propertyName)
+namespace WebCore
 {
-    return impl->contains(identifierToString(propertyName));
+
+bool JSStorage::canGetItemsForName( ExecState *, Storage *impl, const Identifier &propertyName )
+{
+    return impl->contains( identifierToString( propertyName ) );
 }
 
-JSValue JSStorage::nameGetter(ExecState* exec, JSValue slotBase, const Identifier& propertyName)
+JSValue JSStorage::nameGetter( ExecState *exec, JSValue slotBase, const Identifier &propertyName )
 {
-    JSStorage* thisObj = static_cast<JSStorage*>(asObject(slotBase));
-    return jsStringOrNull(exec, thisObj->impl()->getItem(identifierToString(propertyName)));
+    JSStorage *thisObj = static_cast<JSStorage *>( asObject( slotBase ) );
+    return jsStringOrNull( exec, thisObj->impl()->getItem( identifierToString( propertyName ) ) );
 }
 
-bool JSStorage::deleteProperty(ExecState* exec, const Identifier& propertyName)
+bool JSStorage::deleteProperty( ExecState *exec, const Identifier &propertyName )
 {
     // Only perform the custom delete if the object doesn't have a native property by this name.
     // Since hasProperty() would end up calling canGetItemsForName() and be fooled, we need to check
     // the native property slots manually.
     PropertySlot slot;
-    if (getStaticValueSlot<JSStorage, Base>(exec, s_info.propHashTable(exec), this, propertyName, slot))
-        return false;
-        
-    JSValue prototype = this->prototype();
-    if (prototype.isObject() && asObject(prototype)->hasProperty(exec, propertyName))
-        return false;
 
-    m_impl->removeItem(identifierToString(propertyName));
+    if ( getStaticValueSlot<JSStorage, Base>( exec, s_info.propHashTable( exec ), this, propertyName, slot ) )
+    {
+        return false;
+    }
+
+    JSValue prototype = this->prototype();
+
+    if ( prototype.isObject() && asObject( prototype )->hasProperty( exec, propertyName ) )
+    {
+        return false;
+    }
+
+    m_impl->removeItem( identifierToString( propertyName ) );
     return true;
 }
 
-void JSStorage::getOwnPropertyNames(ExecState* exec, PropertyNameArray& propertyNames, EnumerationMode mode)
+void JSStorage::getOwnPropertyNames( ExecState *exec, PropertyNameArray &propertyNames, EnumerationMode mode )
 {
     unsigned length = m_impl->length();
-    for (unsigned i = 0; i < length; ++i)
-        propertyNames.add(Identifier(exec, stringToUString(m_impl->key(i))));
-        
-    Base::getOwnPropertyNames(exec, propertyNames, mode);
+
+    for ( unsigned i = 0; i < length; ++i )
+    {
+        propertyNames.add( Identifier( exec, stringToUString( m_impl->key( i ) ) ) );
+    }
+
+    Base::getOwnPropertyNames( exec, propertyNames, mode );
 }
 
-bool JSStorage::putDelegate(ExecState* exec, const Identifier& propertyName, JSValue value, PutPropertySlot&)
+bool JSStorage::putDelegate( ExecState *exec, const Identifier &propertyName, JSValue value, PutPropertySlot & )
 {
     // Only perform the custom put if the object doesn't have a native property by this name.
     // Since hasProperty() would end up calling canGetItemsForName() and be fooled, we need to check
     // the native property slots manually.
     PropertySlot slot;
-    if (getStaticValueSlot<JSStorage, Base>(exec, s_info.propHashTable(exec), this, propertyName, slot))
+
+    if ( getStaticValueSlot<JSStorage, Base>( exec, s_info.propHashTable( exec ), this, propertyName, slot ) )
+    {
         return false;
-        
+    }
+
     JSValue prototype = this->prototype();
-    if (prototype.isObject() && asObject(prototype)->hasProperty(exec, propertyName))
+
+    if ( prototype.isObject() && asObject( prototype )->hasProperty( exec, propertyName ) )
+    {
         return false;
-    
-    String stringValue = ustringToString(value.toString(exec));
-    if (exec->hadException())
+    }
+
+    String stringValue = ustringToString( value.toString( exec ) );
+
+    if ( exec->hadException() )
+    {
         return true;
-    
+    }
+
     ExceptionCode ec = 0;
-    impl()->setItem(identifierToString(propertyName), stringValue, ec);
-    setDOMException(exec, ec);
+    impl()->setItem( identifierToString( propertyName ), stringValue, ec );
+    setDOMException( exec, ec );
 
     return true;
 }

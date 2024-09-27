@@ -26,17 +26,18 @@
 
 class QWKContextPrivate;
 
-class QWEBKIT_EXPORT QWKContext : public QObject {
+class QWEBKIT_EXPORT QWKContext : public QObject
+{
     Q_OBJECT
 public:
-    QWKContext(QObject* parent = 0);
+    QWKContext( QObject *parent = 0 );
     virtual ~QWKContext();
 
     // Bridge from the C API
-    QWKContext(WKContextRef contextRef, QObject* parent = 0);
+    QWKContext( WKContextRef contextRef, QObject *parent = 0 );
 
 private:
-    QWKContextPrivate* d;
+    QWKContextPrivate *d;
 
     friend class QWKPagePrivate;
 };

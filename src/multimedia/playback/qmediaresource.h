@@ -30,67 +30,68 @@
 
 class Q_MULTIMEDIA_EXPORT QMediaResource
 {
- public:
-   QMediaResource();
-   QMediaResource(const QUrl &url, const QString &mimeType = QString());
-   QMediaResource(const QNetworkRequest &request, const QString &mimeType = QString());
-   QMediaResource(const QMediaResource &other);
-   QMediaResource &operator =(const QMediaResource &other);
-   ~QMediaResource();
+public:
+    QMediaResource();
+    QMediaResource( const QUrl &url, const QString &mimeType = QString() );
+    QMediaResource( const QNetworkRequest &request, const QString &mimeType = QString() );
+    QMediaResource( const QMediaResource &other );
+    QMediaResource &operator =( const QMediaResource &other );
+    ~QMediaResource();
 
-   bool isNull() const;
+    bool isNull() const;
 
-   bool operator ==(const QMediaResource &other) const;
-   bool operator !=(const QMediaResource &other) const;
+    bool operator ==( const QMediaResource &other ) const;
+    bool operator !=( const QMediaResource &other ) const;
 
-   QUrl url() const;
-   QNetworkRequest request() const;
-   QString mimeType() const;
+    QUrl url() const;
+    QNetworkRequest request() const;
+    QString mimeType() const;
 
-   QString language() const;
-   void setLanguage(const QString &language);
+    QString language() const;
+    void setLanguage( const QString &language );
 
-   QString audioCodec() const;
-   void setAudioCodec(const QString &codec);
+    QString audioCodec() const;
+    void setAudioCodec( const QString &codec );
 
-   QString videoCodec() const;
-   void setVideoCodec(const QString &codec);
+    QString videoCodec() const;
+    void setVideoCodec( const QString &codec );
 
-   qint64 dataSize() const;
-   void setDataSize(const qint64 size);
+    qint64 dataSize() const;
+    void setDataSize( const qint64 size );
 
-   int audioBitRate() const;
-   void setAudioBitRate(int rate);
+    int audioBitRate() const;
+    void setAudioBitRate( int rate );
 
-   int sampleRate() const;
-   void setSampleRate(int sampleRate);
+    int sampleRate() const;
+    void setSampleRate( int sampleRate );
 
-   int channelCount() const;
-   void setChannelCount(int channels);
+    int channelCount() const;
+    void setChannelCount( int channels );
 
-   int videoBitRate() const;
-   void setVideoBitRate(int rate);
+    int videoBitRate() const;
+    void setVideoBitRate( int rate );
 
-   QSize resolution() const;
-   void setResolution(const QSize &resolution);
-   void setResolution(int width, int height);
+    QSize resolution() const;
+    void setResolution( const QSize &resolution );
+    void setResolution( int width, int height );
 
- private:
-   enum Property {
-      Url,
-      Request,
-      MimeType,
-      Language,
-      AudioCodec,
-      VideoCodec,
-      DataSize,
-      AudioBitRate,
-      VideoBitRate,
-      SampleRate,
-      ChannelCount,
-      Resolution
-   };
-   QMap<int, QVariant> values;
+private:
+    enum Property
+    {
+        Url,
+        Request,
+        MimeType,
+        Language,
+        AudioCodec,
+        VideoCodec,
+        DataSize,
+        AudioBitRate,
+        VideoBitRate,
+        SampleRate,
+        ChannelCount,
+        Resolution
+    };
+    QMap<int, QVariant> values;
 };
 
 #endif

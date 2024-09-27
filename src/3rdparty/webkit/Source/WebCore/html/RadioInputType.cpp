@@ -32,23 +32,24 @@
 #include "SpatialNavigation.h"
 #include <wtf/PassOwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-PassOwnPtr<InputType> RadioInputType::create(HTMLInputElement* element)
+PassOwnPtr<InputType> RadioInputType::create( HTMLInputElement *element )
 {
-    return adoptPtr(new RadioInputType(element));
+    return adoptPtr( new RadioInputType( element ) );
 }
 
-const AtomicString& RadioInputType::formControlType() const
+const AtomicString &RadioInputType::formControlType() const
 {
     return InputTypeNames::radio();
 }
 
-bool RadioInputType::valueMissing(const String&) const
+bool RadioInputType::valueMissing( const String & ) const
 {
-    return !element()->checkedRadioButtons().checkedButtonForGroup(element()->name());
+    return !element()->checkedRadioButtons().checkedButtonForGroup( element()->name() );
 }
 
 String RadioInputType::valueMissingText() const
@@ -56,82 +57,120 @@ String RadioInputType::valueMissingText() const
     return validationMessageValueMissingForRadioText();
 }
 
-void RadioInputType::handleClickEvent(MouseEvent* event)
+void RadioInputType::handleClickEvent( MouseEvent *event )
 {
     event->setDefaultHandled();
 }
 
-void RadioInputType::handleKeydownEvent(KeyboardEvent* event)
+void RadioInputType::handleKeydownEvent( KeyboardEvent *event )
 {
-    BaseCheckableInputType::handleKeydownEvent(event);
-    if (event->defaultHandled())
+    BaseCheckableInputType::handleKeydownEvent( event );
+
+    if ( event->defaultHandled() )
+    {
         return;
-    const String& key = event->keyIdentifier();
-    if (key != "Up" && key != "Down" && key != "Left" && key != "Right")
+    }
+
+    const String &key = event->keyIdentifier();
+
+    if ( key != "Up" && key != "Down" && key != "Left" && key != "Right" )
+    {
         return;
+    }
 
     // Left and up mean "previous radio button".
     // Right and down mean "next radio button".
     // Tested in WinIE, and even for RTL, left still means previous radio button (and so moves
     // to the right).  Seems strange, but we'll match it.
     // However, when using Spatial Navigation, we need to be able to navigate without changing the selection.
-    Document* document = element()->document();
-    if (isSpatialNavigationEnabled(document->frame()))
+    Document *document = element()->document();
+
+    if ( isSpatialNavigationEnabled( document->frame() ) )
+    {
         return;
-    bool forward = (key == "Down" || key == "Right");
+    }
+
+    bool forward = ( key == "Down" || key == "Right" );
 
     // We can only stay within the form's children if the form hasn't been demoted to a leaf because
     // of malformed HTML.
-    Node* node = element();
-    while ((node = (forward ? node->traverseNextNode() : node->traversePreviousNode()))) {
+    Node *node = element();
+
+    while ( ( node = ( forward ? node->traverseNextNode() : node->traversePreviousNode() ) ) )
+    {
         // Once we encounter a form element, we know we're through.
-        if (node->hasTagName(formTag))
+        if ( node->hasTagName( formTag ) )
+        {
             break;
+        }
+
         // Look for more radio buttons.
-        if (!node->hasTagName(inputTag))
+        if ( !node->hasTagName( inputTag ) )
+        {
             continue;
-        HTMLInputElement* inputElement = static_cast<HTMLInputElement*>(node);
-        if (inputElement->form() != element()->form())
+        }
+
+        HTMLInputElement *inputElement = static_cast<HTMLInputElement *>( node );
+
+        if ( inputElement->form() != element()->form() )
+        {
             break;
-        if (inputElement->isRadioButton() && inputElement->name() == element()->name() && inputElement->isFocusable()) {
-            inputElement->setChecked(true);
-            document->setFocusedNode(inputElement);
-            inputElement->dispatchSimulatedClick(event, false, false);
+        }
+
+        if ( inputElement->isRadioButton() && inputElement->name() == element()->name() && inputElement->isFocusable() )
+        {
+            inputElement->setChecked( true );
+            document->setFocusedNode( inputElement );
+            inputElement->dispatchSimulatedClick( event, false, false );
             event->setDefaultHandled();
             return;
         }
     }
 }
 
-void RadioInputType::handleKeyupEvent(KeyboardEvent* event)
+void RadioInputType::handleKeyupEvent( KeyboardEvent *event )
 {
-    const String& key = event->keyIdentifier();
-    if (key != "U+0020")
+    const String &key = event->keyIdentifier();
+
+    if ( key != "U+0020" )
+    {
         return;
+    }
+
     // If an unselected radio is tabbed into (because the entire group has nothing
     // checked, or because of some explicit .focus() call), then allow space to check it.
-    if (element()->checked())
+    if ( element()->checked() )
+    {
         return;
-    dispatchSimulatedClickIfActive(event);
+    }
+
+    dispatchSimulatedClickIfActive( event );
 }
 
 bool RadioInputType::isKeyboardFocusable() const
 {
     // When using Spatial Navigation, every radio button should be focusable.
-    if (isSpatialNavigationEnabled(element()->document()->frame()))
+    if ( isSpatialNavigationEnabled( element()->document()->frame() ) )
+    {
         return true;
+    }
 
     // Never allow keyboard tabbing to leave you in the same radio group.  Always
     // skip any other elements in the group.
-    Node* currentFocusedNode = element()->document()->focusedNode();
-    if (currentFocusedNode && currentFocusedNode->hasTagName(inputTag)) {
-        HTMLInputElement* focusedInput = static_cast<HTMLInputElement*>(currentFocusedNode);
-        if (focusedInput->isRadioButton() && focusedInput->form() == element()->form() && focusedInput->name() == element()->name())
+    Node *currentFocusedNode = element()->document()->focusedNode();
+
+    if ( currentFocusedNode && currentFocusedNode->hasTagName( inputTag ) )
+    {
+        HTMLInputElement *focusedInput = static_cast<HTMLInputElement *>( currentFocusedNode );
+
+        if ( focusedInput->isRadioButton() && focusedInput->form() == element()->form() && focusedInput->name() == element()->name() )
+        {
             return false;
+        }
     }
 
     // Allow keyboard focus if we're checked or if nothing in the group is checked.
-    return element()->checked() || !element()->checkedRadioButtons().checkedButtonForGroup(element()->name());
+    return element()->checked() || !element()->checkedRadioButtons().checkedButtonForGroup( element()->name() );
 }
 
 void RadioInputType::attach()
@@ -156,32 +195,39 @@ PassOwnPtr<ClickHandlingState> RadioInputType::willDispatchClick()
     // Therefore if nothing is currently selected, we won't allow the upcoming action to be "undone", since
     // we want some object in the radio group to actually get selected.
 
-    OwnPtr<ClickHandlingState> state = adoptPtr(new ClickHandlingState);
+    OwnPtr<ClickHandlingState> state = adoptPtr( new ClickHandlingState );
 
     state->checked = element()->checked();
     state->indeterminate = element()->indeterminate();
-    state->checkedRadioButton = element()->checkedRadioButtons().checkedButtonForGroup(element()->name());
+    state->checkedRadioButton = element()->checkedRadioButtons().checkedButtonForGroup( element()->name() );
 
-    if (element()->indeterminate())
-        element()->setIndeterminate(false);
-    element()->setChecked(true, true);
+    if ( element()->indeterminate() )
+    {
+        element()->setIndeterminate( false );
+    }
+
+    element()->setChecked( true, true );
 
     return state.release();
 }
 
-void RadioInputType::didDispatchClick(Event* event, const ClickHandlingState& state)
+void RadioInputType::didDispatchClick( Event *event, const ClickHandlingState &state )
 {
-    if (event->defaultPrevented() || event->defaultHandled()) {
+    if ( event->defaultPrevented() || event->defaultHandled() )
+    {
         // Restore the original selected radio button if possible.
         // Make sure it is still a radio button and only do the restoration if it still belongs to our group.
-        HTMLInputElement* checkedRadioButton = state.checkedRadioButton.get();
-        if (checkedRadioButton
+        HTMLInputElement *checkedRadioButton = state.checkedRadioButton.get();
+
+        if ( checkedRadioButton
                 && checkedRadioButton->isRadioButton()
                 && checkedRadioButton->form() == element()->form()
-                && checkedRadioButton->name() == element()->name()) {
-            checkedRadioButton->setChecked(true);
+                && checkedRadioButton->name() == element()->name() )
+        {
+            checkedRadioButton->setChecked( true );
         }
-        element()->setIndeterminate(state.indeterminate);
+
+        element()->setIndeterminate( state.indeterminate );
     }
 
     // The work we did in willDispatchClick was default handling.

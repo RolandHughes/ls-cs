@@ -28,9 +28,11 @@
 
 #if USE(PLATFORM_STRATEGIES)
 
-namespace WebCore {
+namespace WebCore
+{
 
-class CookiesStrategy {
+class CookiesStrategy
+{
 public:
     virtual void notifyCookiesChanged() = 0;
 

@@ -24,7 +24,8 @@
 #include "CSSRuleList.h"
 #include "StyleSheet.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 struct CSSNamespace;
 class CSSParser;
@@ -34,83 +35,121 @@ class Document;
 
 typedef int ExceptionCode;
 
-class CSSStyleSheet : public StyleSheet {
+class CSSStyleSheet : public StyleSheet
+{
 public:
     static PassRefPtr<CSSStyleSheet> create()
     {
-        return adoptRef(new CSSStyleSheet(static_cast<CSSStyleSheet*>(0), String(), KURL(), String()));
+        return adoptRef( new CSSStyleSheet( static_cast<CSSStyleSheet *>( 0 ), String(), KURL(), String() ) );
     }
-    static PassRefPtr<CSSStyleSheet> create(Node* ownerNode)
+    static PassRefPtr<CSSStyleSheet> create( Node *ownerNode )
     {
-        return adoptRef(new CSSStyleSheet(ownerNode, String(), KURL(), String()));
+        return adoptRef( new CSSStyleSheet( ownerNode, String(), KURL(), String() ) );
     }
-    static PassRefPtr<CSSStyleSheet> create(Node* ownerNode, const String& originalURL, const KURL& finalURL)
+    static PassRefPtr<CSSStyleSheet> create( Node *ownerNode, const String &originalURL, const KURL &finalURL )
     {
-        return adoptRef(new CSSStyleSheet(ownerNode, originalURL, finalURL, String()));
+        return adoptRef( new CSSStyleSheet( ownerNode, originalURL, finalURL, String() ) );
     }
-    static PassRefPtr<CSSStyleSheet> create(Node* ownerNode, const String& originalURL, const KURL& finalURL, const String& charset)
+    static PassRefPtr<CSSStyleSheet> create( Node *ownerNode, const String &originalURL, const KURL &finalURL, const String &charset )
     {
-        return adoptRef(new CSSStyleSheet(ownerNode, originalURL, finalURL, charset));
+        return adoptRef( new CSSStyleSheet( ownerNode, originalURL, finalURL, charset ) );
     }
-    static PassRefPtr<CSSStyleSheet> create(CSSRule* ownerRule, const String& originalURL, const KURL& finalURL, const String& charset)
+    static PassRefPtr<CSSStyleSheet> create( CSSRule *ownerRule, const String &originalURL, const KURL &finalURL,
+            const String &charset )
     {
-        return adoptRef(new CSSStyleSheet(ownerRule, originalURL, finalURL, charset));
+        return adoptRef( new CSSStyleSheet( ownerRule, originalURL, finalURL, charset ) );
     }
-    static PassRefPtr<CSSStyleSheet> createInline(Node* ownerNode, const KURL& finalURL)
+    static PassRefPtr<CSSStyleSheet> createInline( Node *ownerNode, const KURL &finalURL )
     {
-        return adoptRef(new CSSStyleSheet(ownerNode, finalURL.string(), finalURL, String()));
+        return adoptRef( new CSSStyleSheet( ownerNode, finalURL.string(), finalURL, String() ) );
     }
 
     virtual ~CSSStyleSheet();
 
-    CSSRule* ownerRule() const;
-    PassRefPtr<CSSRuleList> cssRules(bool omitCharsetRules = false);
-    unsigned insertRule(const String& rule, unsigned index, ExceptionCode&);
-    void deleteRule(unsigned index, ExceptionCode&);
+    CSSRule *ownerRule() const;
+    PassRefPtr<CSSRuleList> cssRules( bool omitCharsetRules = false );
+    unsigned insertRule( const String &rule, unsigned index, ExceptionCode & );
+    void deleteRule( unsigned index, ExceptionCode & );
 
     // IE Extensions
-    PassRefPtr<CSSRuleList> rules() { return cssRules(true); }
-    int addRule(const String& selector, const String& style, int index, ExceptionCode&);
-    int addRule(const String& selector, const String& style, ExceptionCode&);
-    void removeRule(unsigned index, ExceptionCode& ec) { deleteRule(index, ec); }
+    PassRefPtr<CSSRuleList> rules()
+    {
+        return cssRules( true );
+    }
+    int addRule( const String &selector, const String &style, int index, ExceptionCode & );
+    int addRule( const String &selector, const String &style, ExceptionCode & );
+    void removeRule( unsigned index, ExceptionCode &ec )
+    {
+        deleteRule( index, ec );
+    }
 
-    void addNamespace(CSSParser*, const AtomicString& prefix, const AtomicString& uri);
-    const AtomicString& determineNamespace(const AtomicString& prefix);
+    void addNamespace( CSSParser *, const AtomicString &prefix, const AtomicString &uri );
+    const AtomicString &determineNamespace( const AtomicString &prefix );
 
     virtual void styleSheetChanged();
 
-    virtual bool parseString(const String&, bool strict = true);
+    virtual bool parseString( const String &, bool strict = true );
 
-    bool parseStringAtLine(const String&, bool strict, int startLineNumber);
+    bool parseStringAtLine( const String &, bool strict, int startLineNumber );
 
     virtual bool isLoading();
 
     virtual void checkLoaded();
 
-    Document* document();
+    Document *document();
 
-    const String& charset() const { return m_charset; }
+    const String &charset() const
+    {
+        return m_charset;
+    }
 
-    bool loadCompleted() const { return m_loadCompleted; }
+    bool loadCompleted() const
+    {
+        return m_loadCompleted;
+    }
 
-    virtual KURL completeURL(const String& url) const;
-    virtual void addSubresourceStyleURLs(ListHashSet<KURL>&);
+    virtual KURL completeURL( const String &url ) const;
+    virtual void addSubresourceStyleURLs( ListHashSet<KURL> & );
 
-    void setStrictParsing(bool b) { m_strictParsing = b; }
-    bool useStrictParsing() const { return m_strictParsing; }
+    void setStrictParsing( bool b )
+    {
+        m_strictParsing = b;
+    }
+    bool useStrictParsing() const
+    {
+        return m_strictParsing;
+    }
 
-    void setIsUserStyleSheet(bool b) { m_isUserStyleSheet = b; }
-    bool isUserStyleSheet() const { return m_isUserStyleSheet; }
-    void setHasSyntacticallyValidCSSHeader(bool b) { m_hasSyntacticallyValidCSSHeader = b; }
-    bool hasSyntacticallyValidCSSHeader() const { return m_hasSyntacticallyValidCSSHeader; }
+    void setIsUserStyleSheet( bool b )
+    {
+        m_isUserStyleSheet = b;
+    }
+    bool isUserStyleSheet() const
+    {
+        return m_isUserStyleSheet;
+    }
+    void setHasSyntacticallyValidCSSHeader( bool b )
+    {
+        m_hasSyntacticallyValidCSSHeader = b;
+    }
+    bool hasSyntacticallyValidCSSHeader() const
+    {
+        return m_hasSyntacticallyValidCSSHeader;
+    }
 
 private:
-    CSSStyleSheet(Node* ownerNode, const String& originalURL, const KURL& finalURL, const String& charset);
-    CSSStyleSheet(CSSStyleSheet* parentSheet, const String& originalURL, const KURL& finalURL, const String& charset);
-    CSSStyleSheet(CSSRule* ownerRule, const String& originalURL, const KURL& finalURL, const String& charset);
+    CSSStyleSheet( Node *ownerNode, const String &originalURL, const KURL &finalURL, const String &charset );
+    CSSStyleSheet( CSSStyleSheet *parentSheet, const String &originalURL, const KURL &finalURL, const String &charset );
+    CSSStyleSheet( CSSRule *ownerRule, const String &originalURL, const KURL &finalURL, const String &charset );
 
-    virtual bool isCSSStyleSheet() const { return true; }
-    virtual String type() const { return "text/css"; }
+    virtual bool isCSSStyleSheet() const
+    {
+        return true;
+    }
+    virtual String type() const
+    {
+        return "text/css";
+    }
 
     OwnPtr<CSSNamespace> m_namespaces;
     String m_charset;

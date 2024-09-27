@@ -30,40 +30,43 @@
 #include <wtf/Noncopyable.h>
 #include <wtf/text/WTFString.h>
 
-namespace CoreIPC {
-    class ArgumentDecoder;
-    class Connection;
-    class MessageID;
+namespace CoreIPC
+{
+class ArgumentDecoder;
+class Connection;
+class MessageID;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
-class WebCookieManager {
-    WTF_MAKE_NONCOPYABLE(WebCookieManager);
+class WebCookieManager
+{
+    WTF_MAKE_NONCOPYABLE( WebCookieManager );
 public:
-    static WebCookieManager& shared();
+    static WebCookieManager &shared();
 
-    void didReceiveMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*);
-    
+    void didReceiveMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * );
+
     void dispatchCookiesDidChange();
 
-    void setHTTPCookieAcceptPolicy(HTTPCookieAcceptPolicy);
+    void setHTTPCookieAcceptPolicy( HTTPCookieAcceptPolicy );
 
 private:
     WebCookieManager();
-    
-    void getHostnamesWithCookies(uint64_t callbackID);
-    void deleteCookiesForHostname(const String&);
+
+    void getHostnamesWithCookies( uint64_t callbackID );
+    void deleteCookiesForHostname( const String & );
     void deleteAllCookies();
 
-    void platformSetHTTPCookieAcceptPolicy(HTTPCookieAcceptPolicy);
-    void getHTTPCookieAcceptPolicy(uint64_t callbackID);
+    void platformSetHTTPCookieAcceptPolicy( HTTPCookieAcceptPolicy );
+    void getHTTPCookieAcceptPolicy( uint64_t callbackID );
     HTTPCookieAcceptPolicy platformGetHTTPCookieAcceptPolicy();
 
     void startObservingCookieChanges();
     void stopObservingCookieChanges();
 
-    void didReceiveWebCookieManagerMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*);
+    void didReceiveWebCookieManagerMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * );
 };
 
 } // namespace WebKit

@@ -33,16 +33,17 @@
 extern "C" {
 #endif
 
-enum {
+enum
+{
     kWKImageOptionsShareable = 1 << 0,
 };
 typedef uint32_t WKImageOptions;
 
 WK_EXPORT WKTypeID WKImageGetTypeID();
 
-WK_EXPORT WKImageRef WKImageCreate(WKSize size, WKImageOptions options);
+WK_EXPORT WKImageRef WKImageCreate( WKSize size, WKImageOptions options );
 
-WK_EXPORT WKSize WKImageGetSize(WKImageRef image);
+WK_EXPORT WKSize WKImageGetSize( WKImageRef image );
 
 #ifdef __cplusplus
 }

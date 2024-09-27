@@ -40,35 +40,35 @@ class QSaveFilePrivate;
 
 class Q_CORE_EXPORT QSaveFile : public QFileDevice
 {
-   CORE_CS_OBJECT(QSaveFile)
-   Q_DECLARE_PRIVATE(QSaveFile)
+    CORE_CS_OBJECT( QSaveFile )
+    Q_DECLARE_PRIVATE( QSaveFile )
 
- public:
-   explicit QSaveFile(const QString &name);
-   explicit QSaveFile(QObject *parent = nullptr);
-   explicit QSaveFile(const QString &name, QObject *parent);
+public:
+    explicit QSaveFile( const QString &name );
+    explicit QSaveFile( QObject *parent = nullptr );
+    explicit QSaveFile( const QString &name, QObject *parent );
 
-   QSaveFile(const QSaveFile &) = delete;
-   QSaveFile &operator=(const QSaveFile &) = delete;
+    QSaveFile( const QSaveFile & ) = delete;
+    QSaveFile &operator=( const QSaveFile & ) = delete;
 
-   ~QSaveFile();
+    ~QSaveFile();
 
-   QString fileName() const override;
-   void setFileName(const QString &name);
+    QString fileName() const override;
+    void setFileName( const QString &name );
 
-   bool open(OpenMode mode) override;
-   bool commit();
+    bool open( OpenMode mode ) override;
+    bool commit();
 
-   void cancelWriting();
+    void cancelWriting();
 
-   void setDirectWriteFallback(bool enabled);
-   bool directWriteFallback() const;
+    void setDirectWriteFallback( bool enabled );
+    bool directWriteFallback() const;
 
- protected:
-   qint64 writeData(const char *data, qint64 len) override;
+protected:
+    qint64 writeData( const char *data, qint64 len ) override;
 
- private:
-   void close() override;
+private:
+    void close() override;
 };
 
 #endif

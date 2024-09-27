@@ -20,10 +20,11 @@
 #include "config.h"
 #include "TransformSource.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-TransformSource::TransformSource(const PlatformTransformSource& source)
-    : m_source(source)
+TransformSource::TransformSource( const PlatformTransformSource &source )
+    : m_source( source )
 {
 }
 

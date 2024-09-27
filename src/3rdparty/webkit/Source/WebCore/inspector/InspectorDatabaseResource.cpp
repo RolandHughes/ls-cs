@@ -36,32 +36,35 @@
 #include "InspectorFrontend.h"
 #include "InspectorValues.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 static int nextUnusedId = 1;
 
-PassRefPtr<InspectorDatabaseResource> InspectorDatabaseResource::create(PassRefPtr<Database> database, const String& domain, const String& name, const String& version)
+PassRefPtr<InspectorDatabaseResource> InspectorDatabaseResource::create( PassRefPtr<Database> database, const String &domain,
+        const String &name, const String &version )
 {
-    return adoptRef(new InspectorDatabaseResource(database, domain, name, version));
+    return adoptRef( new InspectorDatabaseResource( database, domain, name, version ) );
 }
 
-InspectorDatabaseResource::InspectorDatabaseResource(PassRefPtr<Database> database, const String& domain, const String& name, const String& version)
-    : m_database(database)
-    , m_id(nextUnusedId++)
-    , m_domain(domain)
-    , m_name(name)
-    , m_version(version)
+InspectorDatabaseResource::InspectorDatabaseResource( PassRefPtr<Database> database, const String &domain, const String &name,
+        const String &version )
+    : m_database( database )
+    , m_id( nextUnusedId++ )
+    , m_domain( domain )
+    , m_name( name )
+    , m_version( version )
 {
 }
 
-void InspectorDatabaseResource::bind(InspectorFrontend::Database* frontend)
+void InspectorDatabaseResource::bind( InspectorFrontend::Database *frontend )
 {
     RefPtr<InspectorObject> jsonObject = InspectorObject::create();
-    jsonObject->setNumber("id", m_id);
-    jsonObject->setString("domain", m_domain);
-    jsonObject->setString("name", m_name);
-    jsonObject->setString("version", m_version);
-    frontend->addDatabase(jsonObject);
+    jsonObject->setNumber( "id", m_id );
+    jsonObject->setString( "domain", m_domain );
+    jsonObject->setString( "name", m_name );
+    jsonObject->setString( "version", m_version );
+    frontend->addDatabase( jsonObject );
 }
 
 } // namespace WebCore

@@ -29,78 +29,87 @@
 
 #include <gst/gst.h>
 
-QGstreamerVideoRenderer::QGstreamerVideoRenderer(QObject *parent)
-   : QVideoRendererControl(parent), m_videoSink(nullptr), m_surface(nullptr)
+QGstreamerVideoRenderer::QGstreamerVideoRenderer( QObject *parent )
+    : QVideoRendererControl( parent ), m_videoSink( nullptr ), m_surface( nullptr )
 {
 }
 
 QGstreamerVideoRenderer::~QGstreamerVideoRenderer()
 {
-   if (m_videoSink) {
-      gst_object_unref(GST_OBJECT(m_videoSink));
-   }
+    if ( m_videoSink )
+    {
+        gst_object_unref( GST_OBJECT( m_videoSink ) );
+    }
 }
 
 GstElement *QGstreamerVideoRenderer::videoSink()
 {
-   if (!m_videoSink && m_surface) {
-      m_videoSink = QVideoSurfaceGstSink::createSink(m_surface);
-      qt_gst_object_ref_sink(GST_OBJECT(m_videoSink)); //Take ownership
-   }
+    if ( !m_videoSink && m_surface )
+    {
+        m_videoSink = QVideoSurfaceGstSink::createSink( m_surface );
+        qt_gst_object_ref_sink( GST_OBJECT( m_videoSink ) ); //Take ownership
+    }
 
-   return reinterpret_cast<GstElement *>(m_videoSink);
+    return reinterpret_cast<GstElement *>( m_videoSink );
 }
 
 void QGstreamerVideoRenderer::stopRenderer()
 {
-   if (m_surface) {
-      m_surface->stop();
-   }
+    if ( m_surface )
+    {
+        m_surface->stop();
+    }
 }
 
 QAbstractVideoSurface *QGstreamerVideoRenderer::surface() const
 {
-   return m_surface;
+    return m_surface;
 }
 
-void QGstreamerVideoRenderer::setSurface(QAbstractVideoSurface *surface)
+void QGstreamerVideoRenderer::setSurface( QAbstractVideoSurface *surface )
 {
-   if (m_surface != surface) {
-      //qDebug() << Q_FUNC_INFO << surface;
-      if (m_videoSink) {
-         gst_object_unref(GST_OBJECT(m_videoSink));
-      }
+    if ( m_surface != surface )
+    {
+        //qDebug() << Q_FUNC_INFO << surface;
+        if ( m_videoSink )
+        {
+            gst_object_unref( GST_OBJECT( m_videoSink ) );
+        }
 
-      m_videoSink = nullptr;
+        m_videoSink = nullptr;
 
-      if (m_surface) {
-         disconnect(m_surface.data(), SIGNAL(supportedFormatsChanged()), this, SLOT(handleFormatChange()));
-      }
+        if ( m_surface )
+        {
+            disconnect( m_surface.data(), SIGNAL( supportedFormatsChanged() ), this, SLOT( handleFormatChange() ) );
+        }
 
-      bool wasReady = isReady();
+        bool wasReady = isReady();
 
-      m_surface = surface;
+        m_surface = surface;
 
-      if (m_surface) {
-         connect(m_surface.data(), SIGNAL(supportedFormatsChanged()), this, SLOT(handleFormatChange()));
-      }
+        if ( m_surface )
+        {
+            connect( m_surface.data(), SIGNAL( supportedFormatsChanged() ), this, SLOT( handleFormatChange() ) );
+        }
 
-      if (wasReady != isReady()) {
-         emit readyChanged(isReady());
-      }
+        if ( wasReady != isReady() )
+        {
+            emit readyChanged( isReady() );
+        }
 
-      emit sinkChanged();
-   }
+        emit sinkChanged();
+    }
 }
 
 void QGstreamerVideoRenderer::handleFormatChange()
 {
-   //qDebug() << "Supported formats list has changed, reload video output";
+    //qDebug() << "Supported formats list has changed, reload video output";
 
-   if (m_videoSink) {
-      gst_object_unref(GST_OBJECT(m_videoSink));
-   }
+    if ( m_videoSink )
+    {
+        gst_object_unref( GST_OBJECT( m_videoSink ) );
+    }
 
-   m_videoSink = nullptr;
-   emit sinkChanged();
+    m_videoSink = nullptr;
+    emit sinkChanged();
 }

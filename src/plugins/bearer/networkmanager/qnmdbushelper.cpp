@@ -36,10 +36,8 @@
 
 #ifndef QT_NO_DBUS
 
-QT_BEGIN_NAMESPACE
-
-QNmDBusHelper::QNmDBusHelper(QObject * parent)
-        : QObject(parent)
+QT_BEGIN_NAMESPACE QNmDBusHelper::QNmDBusHelper( QObject *parent )
+    : QObject( parent )
 {
 }
 
@@ -47,56 +45,70 @@ QNmDBusHelper::~QNmDBusHelper()
 {
 }
 
-void QNmDBusHelper::deviceStateChanged(quint32 state)
- {
-    QDBusMessage msg = this->message();
-    if(state == NM_DEVICE_STATE_ACTIVATED
-       || state == NM_DEVICE_STATE_DISCONNECTED
-       || state == NM_DEVICE_STATE_UNAVAILABLE
-       || state == NM_DEVICE_STATE_FAILED) {
-        emit pathForStateChanged(msg.path(), state);
-    }
- }
-
-void QNmDBusHelper::slotAccessPointAdded(QDBusObjectPath path)
+void QNmDBusHelper::deviceStateChanged( quint32 state )
 {
-    if(path.path().length() > 2) {
-        QDBusMessage msg = this->message();
-        emit pathForAccessPointAdded(msg.path(), path);
+    QDBusMessage msg = this->message();
+
+    if ( state == NM_DEVICE_STATE_ACTIVATED
+            || state == NM_DEVICE_STATE_DISCONNECTED
+            || state == NM_DEVICE_STATE_UNAVAILABLE
+            || state == NM_DEVICE_STATE_FAILED )
+    {
+        emit pathForStateChanged( msg.path(), state );
     }
 }
 
-void QNmDBusHelper::slotAccessPointRemoved(QDBusObjectPath path)
+void QNmDBusHelper::slotAccessPointAdded( QDBusObjectPath path )
 {
-    if(path.path().length() > 2) {
+    if ( path.path().length() > 2 )
+    {
         QDBusMessage msg = this->message();
-        emit pathForAccessPointRemoved(msg.path(), path);
+        emit pathForAccessPointAdded( msg.path(), path );
     }
 }
 
-void QNmDBusHelper::slotPropertiesChanged(QMap<QString,QVariant> map)
+void QNmDBusHelper::slotAccessPointRemoved( QDBusObjectPath path )
+{
+    if ( path.path().length() > 2 )
+    {
+        QDBusMessage msg = this->message();
+        emit pathForAccessPointRemoved( msg.path(), path );
+    }
+}
+
+void QNmDBusHelper::slotPropertiesChanged( QMap<QString,QVariant> map )
 {
     QDBusMessage msg = this->message();
-    QMapIterator<QString, QVariant> i(map);
-    while (i.hasNext()) {
+    QMapIterator<QString, QVariant> i( map );
+
+    while ( i.hasNext() )
+    {
         i.next();
-        if( i.key() == "State") { //state only applies to device interfaces
+
+        if ( i.key() == "State" ) //state only applies to device interfaces
+        {
             quint32 state = i.value().toUInt();
-            if( state == NM_DEVICE_STATE_ACTIVATED
-                || state == NM_DEVICE_STATE_DISCONNECTED
-                || state == NM_DEVICE_STATE_UNAVAILABLE
-                || state == NM_DEVICE_STATE_FAILED) {
-                emit  pathForPropertiesChanged( msg.path(), map);
+
+            if ( state == NM_DEVICE_STATE_ACTIVATED
+                    || state == NM_DEVICE_STATE_DISCONNECTED
+                    || state == NM_DEVICE_STATE_UNAVAILABLE
+                    || state == NM_DEVICE_STATE_FAILED )
+            {
+                emit  pathForPropertiesChanged( msg.path(), map );
             }
-        } else if( i.key() == "ActiveAccessPoint") {
-            emit pathForPropertiesChanged(msg.path(), map);
+        }
+        else if ( i.key() == "ActiveAccessPoint" )
+        {
+            emit pathForPropertiesChanged( msg.path(), map );
             //            qWarning()  << __PRETTY_FUNCTION__ << i.key() << ": " << i.value().value<QDBusObjectPath>().path();
             //      } else if( i.key() == "Strength")
             //            qWarning()  << __PRETTY_FUNCTION__ << i.key() << ": " << i.value().toUInt();
             //   else
             //            qWarning()  << __PRETTY_FUNCTION__ << i.key() << ": " << i.value();
-        } else if (i.key() == "ActiveConnections") {
-            emit pathForPropertiesChanged(msg.path(), map);
+        }
+        else if ( i.key() == "ActiveConnections" )
+        {
+            emit pathForPropertiesChanged( msg.path(), map );
         }
     }
 }
@@ -104,7 +116,7 @@ void QNmDBusHelper::slotPropertiesChanged(QMap<QString,QVariant> map)
 void QNmDBusHelper::slotSettingsRemoved()
 {
     QDBusMessage msg = this->message();
-    emit pathForSettingsRemoved(msg.path());
+    emit pathForSettingsRemoved( msg.path() );
 }
 
 QT_END_NAMESPACE

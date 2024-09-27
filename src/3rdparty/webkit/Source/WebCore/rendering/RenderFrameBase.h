@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef RenderFrameBase_h
@@ -28,15 +28,17 @@
 
 #include "RenderPart.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Base class for RenderFrame and RenderIFrame
-class RenderFrameBase : public RenderPart {
+class RenderFrameBase : public RenderPart
+{
 protected:
-    explicit RenderFrameBase(Element*);
+    explicit RenderFrameBase( Element * );
 
 public:
-    void layoutWithFlattening(bool fixedWidth, bool fixedHeight);
+    void layoutWithFlattening( bool fixedWidth, bool fixedHeight );
 };
 
 } // namespace WebCore

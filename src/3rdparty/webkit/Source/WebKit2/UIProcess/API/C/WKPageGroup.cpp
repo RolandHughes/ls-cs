@@ -34,26 +34,26 @@ using namespace WebKit;
 
 WKTypeID WKPageGroupGetTypeID()
 {
-    return toAPI(WebPageGroup::APIType);
+    return toAPI( WebPageGroup::APIType );
 }
 
-WKPageGroupRef WKPageGroupCreateWithIdentifier(WKStringRef identifier)
+WKPageGroupRef WKPageGroupCreateWithIdentifier( WKStringRef identifier )
 {
-    RefPtr<WebPageGroup> pageGroup = WebPageGroup::create(toWTFString(identifier));
-    return toAPI(pageGroup.release().leakRef());
+    RefPtr<WebPageGroup> pageGroup = WebPageGroup::create( toWTFString( identifier ) );
+    return toAPI( pageGroup.release().leakRef() );
 }
 
-WKStringRef WKPageGroupCopyIdentifier(WKPageGroupRef pageGroupRef)
+WKStringRef WKPageGroupCopyIdentifier( WKPageGroupRef pageGroupRef )
 {
-    return toCopiedAPI(toImpl(pageGroupRef)->identifier());
+    return toCopiedAPI( toImpl( pageGroupRef )->identifier() );
 }
 
-void WKPageGroupSetPreferences(WKPageGroupRef pageGroupRef, WKPreferencesRef preferencesRef)
+void WKPageGroupSetPreferences( WKPageGroupRef pageGroupRef, WKPreferencesRef preferencesRef )
 {
-    toImpl(pageGroupRef)->setPreferences(toImpl(preferencesRef));
+    toImpl( pageGroupRef )->setPreferences( toImpl( preferencesRef ) );
 }
 
-WKPreferencesRef WKPageGroupGetPreferences(WKPageGroupRef pageGroupRef)
+WKPreferencesRef WKPageGroupGetPreferences( WKPageGroupRef pageGroupRef )
 {
-    return toAPI(toImpl(pageGroupRef)->preferences());
+    return toAPI( toImpl( pageGroupRef )->preferences() );
 }

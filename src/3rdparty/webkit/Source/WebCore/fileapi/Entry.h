@@ -38,7 +38,8 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class DirectoryEntry;
 class EntryCallback;
@@ -47,18 +48,24 @@ class ErrorCallback;
 class MetadataCallback;
 class VoidCallback;
 
-class Entry : public EntryBase {
+class Entry : public EntryBase
+{
 public:
-    DOMFileSystem* filesystem() const { return static_cast<DOMFileSystem*>(m_fileSystem.get()); }
+    DOMFileSystem *filesystem() const
+    {
+        return static_cast<DOMFileSystem *>( m_fileSystem.get() );
+    }
 
-    void getMetadata(PassRefPtr<MetadataCallback> successCallback = 0, PassRefPtr<ErrorCallback> errorCallback = 0);
-    void moveTo(PassRefPtr<DirectoryEntry> parent, const String& name = String(), PassRefPtr<EntryCallback> successCallback = 0, PassRefPtr<ErrorCallback> errorCallback = 0) const;
-    void copyTo(PassRefPtr<DirectoryEntry> parent, const String& name = String(), PassRefPtr<EntryCallback> successCallback = 0, PassRefPtr<ErrorCallback> errorCallback = 0) const;
-    void remove(PassRefPtr<VoidCallback> successCallback = 0, PassRefPtr<ErrorCallback> errorCallback = 0) const;
-    void getParent(PassRefPtr<EntryCallback> successCallback = 0, PassRefPtr<ErrorCallback> errorCallback = 0) const;
+    void getMetadata( PassRefPtr<MetadataCallback> successCallback = 0, PassRefPtr<ErrorCallback> errorCallback = 0 );
+    void moveTo( PassRefPtr<DirectoryEntry> parent, const String &name = String(), PassRefPtr<EntryCallback> successCallback = 0,
+                 PassRefPtr<ErrorCallback> errorCallback = 0 ) const;
+    void copyTo( PassRefPtr<DirectoryEntry> parent, const String &name = String(), PassRefPtr<EntryCallback> successCallback = 0,
+                 PassRefPtr<ErrorCallback> errorCallback = 0 ) const;
+    void remove( PassRefPtr<VoidCallback> successCallback = 0, PassRefPtr<ErrorCallback> errorCallback = 0 ) const;
+    void getParent( PassRefPtr<EntryCallback> successCallback = 0, PassRefPtr<ErrorCallback> errorCallback = 0 ) const;
 
 protected:
-    Entry(PassRefPtr<DOMFileSystemBase>, const String& fullPath);
+    Entry( PassRefPtr<DOMFileSystemBase>, const String &fullPath );
 };
 
 } // namespace WebCore

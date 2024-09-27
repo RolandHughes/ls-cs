@@ -26,7 +26,8 @@
 #include "NumberObject.h"
 #include "UString.h"
 
-namespace JSC {
+namespace JSC
+{
 
 const ClassInfo JSAPIValueWrapper::s_info = { "API Wrapper", 0, 0, 0 };
 

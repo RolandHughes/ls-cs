@@ -37,107 +37,122 @@ class FlatListScriptClass;
 
 class QDeclarativeListModelWorkerAgent : public QObject
 {
-   DECL_CS_OBJECT(QDeclarativeListModelWorkerAgent)
-   DECL_CS_PROPERTY_READ(count, count)
+    DECL_CS_OBJECT( QDeclarativeListModelWorkerAgent )
+    DECL_CS_PROPERTY_READ( count, count )
 
- public:
-   QDeclarativeListModelWorkerAgent(QDeclarativeListModel *);
-   ~QDeclarativeListModelWorkerAgent();
+public:
+    QDeclarativeListModelWorkerAgent( QDeclarativeListModel * );
+    ~QDeclarativeListModelWorkerAgent();
 
-   void setScriptEngine(QScriptEngine *eng);
-   QScriptEngine *scriptEngine() const;
+    void setScriptEngine( QScriptEngine *eng );
+    QScriptEngine *scriptEngine() const;
 
-   void addref();
-   void release();
+    void addref();
+    void release();
 
-   int count() const;
+    int count() const;
 
-   Q_INVOKABLE void clear();
-   Q_INVOKABLE void remove(int index);
-   Q_INVOKABLE void append(const QScriptValue &);
-   Q_INVOKABLE void insert(int index, const QScriptValue &);
-   Q_INVOKABLE QScriptValue get(int index) const;
-   Q_INVOKABLE void set(int index, const QScriptValue &);
-   Q_INVOKABLE void setProperty(int index, const QString &property, const QVariant &value);
-   Q_INVOKABLE void move(int from, int to, int count);
-   Q_INVOKABLE void sync();
+    Q_INVOKABLE void clear();
+    Q_INVOKABLE void remove( int index );
+    Q_INVOKABLE void append( const QScriptValue & );
+    Q_INVOKABLE void insert( int index, const QScriptValue & );
+    Q_INVOKABLE QScriptValue get( int index ) const;
+    Q_INVOKABLE void set( int index, const QScriptValue & );
+    Q_INVOKABLE void setProperty( int index, const QString &property, const QVariant &value );
+    Q_INVOKABLE void move( int from, int to, int count );
+    Q_INVOKABLE void sync();
 
-   struct VariantRef {
-      VariantRef() : a(0) {}
-      VariantRef(const VariantRef &r) : a(r.a) {
-         if (a) {
-            a->addref();
-         }
-      }
-      VariantRef(QDeclarativeListModelWorkerAgent *_a) : a(_a) {
-         if (a) {
-            a->addref();
-         }
-      }
-      ~VariantRef() {
-         if (a) {
-            a->release();
-         }
-      }
+    struct VariantRef
+    {
+        VariantRef() : a( 0 ) {}
+        VariantRef( const VariantRef &r ) : a( r.a )
+        {
+            if ( a )
+            {
+                a->addref();
+            }
+        }
+        VariantRef( QDeclarativeListModelWorkerAgent *_a ) : a( _a )
+        {
+            if ( a )
+            {
+                a->addref();
+            }
+        }
+        ~VariantRef()
+        {
+            if ( a )
+            {
+                a->release();
+            }
+        }
 
-      VariantRef &operator=(const VariantRef &o) {
-         if (o.a) {
-            o.a->addref();
-         }
-         if (a) {
-            a->release();
-         }
-         a = o.a;
-         return *this;
-      }
+        VariantRef &operator=( const VariantRef &o )
+        {
+            if ( o.a )
+            {
+                o.a->addref();
+            }
 
-      QDeclarativeListModelWorkerAgent *a;
-   };
- protected:
-   virtual bool event(QEvent *);
+            if ( a )
+            {
+                a->release();
+            }
 
- private:
-   friend class QDeclarativeWorkerScriptEnginePrivate;
-   friend class FlatListScriptClass;
-   QScriptEngine *m_engine;
+            a = o.a;
+            return *this;
+        }
 
-   struct Change {
-      enum { Inserted, Removed, Moved, Changed } type;
-      int index; // Inserted/Removed/Moved/Changed
-      int count; // Inserted/Removed/Moved/Changed
-      int to;    // Moved
-      QList<int> roles;
-   };
+        QDeclarativeListModelWorkerAgent *a;
+    };
+protected:
+    virtual bool event( QEvent * );
 
-   struct Data {
-      QList<Change> changes;
+private:
+    friend class QDeclarativeWorkerScriptEnginePrivate;
+    friend class FlatListScriptClass;
+    QScriptEngine *m_engine;
 
-      void clearChange();
-      void insertChange(int index, int count);
-      void removeChange(int index, int count);
-      void moveChange(int index, int count, int to);
-      void changedChange(int index, int count, const QList<int> &roles);
-   };
-   Data data;
+    struct Change
+    {
+        enum { Inserted, Removed, Moved, Changed } type;
+        int index; // Inserted/Removed/Moved/Changed
+        int count; // Inserted/Removed/Moved/Changed
+        int to;    // Moved
+        QList<int> roles;
+    };
 
-   struct Sync : public QEvent {
-      Sync() : QEvent(QEvent::User) {}
-      Data data;
-      QDeclarativeListModel *list;
-   };
+    struct Data
+    {
+        QList<Change> changes;
 
-   void changedData(int index, int count, const QList<int> &roles);
+        void clearChange();
+        void insertChange( int index, int count );
+        void removeChange( int index, int count );
+        void moveChange( int index, int count, int to );
+        void changedChange( int index, int count, const QList<int> &roles );
+    };
+    Data data;
 
-   QAtomicInt m_ref;
-   QDeclarativeListModel *m_orig;
-   QDeclarativeListModel *m_copy;
-   QMutex mutex;
-   QWaitCondition syncDone;
+    struct Sync : public QEvent
+    {
+        Sync() : QEvent( QEvent::User ) {}
+        Data data;
+        QDeclarativeListModel *list;
+    };
+
+    void changedData( int index, int count, const QList<int> &roles );
+
+    QAtomicInt m_ref;
+    QDeclarativeListModel *m_orig;
+    QDeclarativeListModel *m_copy;
+    QMutex mutex;
+    QWaitCondition syncDone;
 };
 
 QT_END_NAMESPACE
 
-Q_DECLARE_METATYPE(QDeclarativeListModelWorkerAgent::VariantRef)
+Q_DECLARE_METATYPE( QDeclarativeListModelWorkerAgent::VariantRef )
 
 #endif // QDECLARATIVEWORKERSCRIPT_P_H
 

@@ -29,40 +29,64 @@
 #include <WebCore/ContextMenuItem.h>
 #include <wtf/text/WTFString.h>
 
-namespace CoreIPC {
-    class ArgumentDecoder;
-    class ArgumentEncoder;
+namespace CoreIPC
+{
+class ArgumentDecoder;
+class ArgumentEncoder;
 }
 
-namespace WebCore {
-    class ContextMenu;
+namespace WebCore
+{
+class ContextMenu;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 class APIObject;
 
-class WebContextMenuItemData {
+class WebContextMenuItemData
+{
 public:
     WebContextMenuItemData();
-    WebContextMenuItemData(const WebCore::ContextMenuItem&, WebCore::ContextMenu* menu);
-    WebContextMenuItemData(WebCore::ContextMenuItemType, WebCore::ContextMenuAction, const String& title, bool enabled, bool checked);
-    WebContextMenuItemData(WebCore::ContextMenuAction, const String& title, bool enabled, const Vector<WebContextMenuItemData>& submenu);
+    WebContextMenuItemData( const WebCore::ContextMenuItem &, WebCore::ContextMenu *menu );
+    WebContextMenuItemData( WebCore::ContextMenuItemType, WebCore::ContextMenuAction, const String &title, bool enabled,
+                            bool checked );
+    WebContextMenuItemData( WebCore::ContextMenuAction, const String &title, bool enabled,
+                            const Vector<WebContextMenuItemData> &submenu );
 
-    WebCore::ContextMenuItemType type() const { return m_type; }
-    WebCore::ContextMenuAction action() const { return m_action; }
-    const String& title() const { return m_title; }
-    bool enabled() const { return m_enabled; }
-    bool checked() const { return m_checked; }
-    const Vector<WebContextMenuItemData>& submenu() const { return m_submenu; }
-    
+    WebCore::ContextMenuItemType type() const
+    {
+        return m_type;
+    }
+    WebCore::ContextMenuAction action() const
+    {
+        return m_action;
+    }
+    const String &title() const
+    {
+        return m_title;
+    }
+    bool enabled() const
+    {
+        return m_enabled;
+    }
+    bool checked() const
+    {
+        return m_checked;
+    }
+    const Vector<WebContextMenuItemData> &submenu() const
+    {
+        return m_submenu;
+    }
+
     WebCore::ContextMenuItem core() const;
-    
-    APIObject* userData() const;
-    void setUserData(APIObject*);
-    
-    void encode(CoreIPC::ArgumentEncoder*) const;
-    static bool decode(CoreIPC::ArgumentDecoder*, WebContextMenuItemData&);
+
+    APIObject *userData() const;
+    void setUserData( APIObject * );
+
+    void encode( CoreIPC::ArgumentEncoder * ) const;
+    static bool decode( CoreIPC::ArgumentDecoder *, WebContextMenuItemData & );
 
 private:
     WebCore::ContextMenuItemType m_type;
@@ -74,8 +98,8 @@ private:
     RefPtr<APIObject> m_userData;
 };
 
-Vector<WebContextMenuItemData> kitItems(const Vector<WebCore::ContextMenuItem>&, WebCore::ContextMenu*);
-Vector<WebCore::ContextMenuItem> coreItems(const Vector<WebContextMenuItemData>&);
+Vector<WebContextMenuItemData> kitItems( const Vector<WebCore::ContextMenuItem> &, WebCore::ContextMenu * );
+Vector<WebCore::ContextMenuItem> coreItems( const Vector<WebContextMenuItemData> & );
 
 } // namespace WebKit
 

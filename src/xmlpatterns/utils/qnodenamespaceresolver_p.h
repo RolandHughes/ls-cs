@@ -30,19 +30,20 @@
 
 #include <qitem_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class NodeNamespaceResolver : public NamespaceResolver
 {
- public:
-   NodeNamespaceResolver(const Item &item);
+public:
+    NodeNamespaceResolver( const Item &item );
 
-   void addBinding(const QXmlName nb) override;
-   QXmlName::NamespaceCode lookupNamespaceURI(const QXmlName::PrefixCode prefix) const override;
-   Bindings bindings() const override;
+    void addBinding( const QXmlName nb ) override;
+    QXmlName::NamespaceCode lookupNamespaceURI( const QXmlName::PrefixCode prefix ) const override;
+    Bindings bindings() const override;
 
- private:
-   const QXmlNodeModelIndex m_node;
+private:
+    const QXmlNodeModelIndex m_node;
 };
 }
 

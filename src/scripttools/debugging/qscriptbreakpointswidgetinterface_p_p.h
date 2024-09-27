@@ -30,12 +30,12 @@ QT_BEGIN_NAMESPACE
 
 class QScriptBreakpointsWidgetInterface;
 class QScriptBreakpointsWidgetInterfacePrivate
-   : public QWidgetPrivate
+    : public QWidgetPrivate
 {
-   Q_DECLARE_PUBLIC(QScriptBreakpointsWidgetInterface)
- public:
-   QScriptBreakpointsWidgetInterfacePrivate();
-   ~QScriptBreakpointsWidgetInterfacePrivate();
+    Q_DECLARE_PUBLIC( QScriptBreakpointsWidgetInterface )
+public:
+    QScriptBreakpointsWidgetInterfacePrivate();
+    ~QScriptBreakpointsWidgetInterfacePrivate();
 };
 
 QT_END_NAMESPACE

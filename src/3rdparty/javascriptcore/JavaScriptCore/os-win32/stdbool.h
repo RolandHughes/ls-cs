@@ -36,9 +36,9 @@ typedef unsigned char bool;
 #define CASSERT(exp, name) typedef int dummy##name [(exp) ? 1 : -1];
 #endif
 
-CASSERT(sizeof(bool) == 1, bool_is_one_byte)
-CASSERT(true, true_is_true)
-CASSERT(!false, false_is_false)
+CASSERT( sizeof( bool ) == 1, bool_is_one_byte )
+CASSERT( true, true_is_true )
+CASSERT( !false, false_is_false )
 
 #endif
 

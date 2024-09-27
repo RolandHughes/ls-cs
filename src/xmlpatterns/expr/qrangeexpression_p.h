@@ -26,38 +26,39 @@
 
 #include <qpaircontainer_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class RangeExpression : public PairContainer
 {
- public:
-   RangeExpression(const Expression::Ptr &operand1, const Expression::Ptr &operand2);
+public:
+    RangeExpression( const Expression::Ptr &operand1, const Expression::Ptr &operand2 );
 
-   Item::Iterator::Ptr evaluateSequence(const DynamicContext::Ptr &) const override;
-   /**
-    * It's likely that this function gets called if staticType() inferred
-    * the cardinality to an exact number. In that case, we know that the
-    * first arguments is the same as the second argument.
-    */
-   Item evaluateSingleton(const DynamicContext::Ptr &) const override;
+    Item::Iterator::Ptr evaluateSequence( const DynamicContext::Ptr & ) const override;
+    /**
+     * It's likely that this function gets called if staticType() inferred
+     * the cardinality to an exact number. In that case, we know that the
+     * first arguments is the same as the second argument.
+     */
+    Item evaluateSingleton( const DynamicContext::Ptr & ) const override;
 
-   SequenceType::List expectedOperandTypes() const override;
+    SequenceType::List expectedOperandTypes() const override;
 
-   /**
-    * @returns always CommonSequenceTypes::ZeroOrMoreIntegers
-    */
-   SequenceType::Ptr staticType() const override;
+    /**
+     * @returns always CommonSequenceTypes::ZeroOrMoreIntegers
+     */
+    SequenceType::Ptr staticType() const override;
 
-   /**
-    * Disables compression for optimization reasons. For example, the
-    * expression "1 to 1000" would consume thousand allocated instances
-    * of Integer, and RangeIterator is well suited for dynamic evaluation.
-    *
-    * @returns Expression::DisableElimination
-    */
-   Expression::Properties properties() const override;
+    /**
+     * Disables compression for optimization reasons. For example, the
+     * expression "1 to 1000" would consume thousand allocated instances
+     * of Integer, and RangeIterator is well suited for dynamic evaluation.
+     *
+     * @returns Expression::DisableElimination
+     */
+    Expression::Properties properties() const override;
 
-   ExpressionVisitorResult::Ptr accept(const ExpressionVisitor::Ptr &visitor) const override;
+    ExpressionVisitorResult::Ptr accept( const ExpressionVisitor::Ptr &visitor ) const override;
 };
 
 }

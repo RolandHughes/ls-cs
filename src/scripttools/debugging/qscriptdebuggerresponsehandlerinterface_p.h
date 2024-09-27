@@ -32,10 +32,10 @@ class QScriptDebuggerResponse;
 
 class QScriptDebuggerResponseHandlerInterface
 {
- public:
-   virtual ~QScriptDebuggerResponseHandlerInterface() {}
+public:
+    virtual ~QScriptDebuggerResponseHandlerInterface() {}
 
-   virtual void handleResponse(const QScriptDebuggerResponse &response, int commandId) = 0;
+    virtual void handleResponse( const QScriptDebuggerResponse &response, int commandId ) = 0;
 };
 
 QT_END_NAMESPACE

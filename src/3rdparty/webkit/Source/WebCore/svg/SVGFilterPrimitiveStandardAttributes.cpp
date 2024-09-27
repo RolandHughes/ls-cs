@@ -33,67 +33,84 @@
 #include "SVGStyledElement.h"
 #include "SVGUnitTypes.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Animated property definitions
-DEFINE_ANIMATED_LENGTH(SVGFilterPrimitiveStandardAttributes, SVGNames::xAttr, X, x)
-DEFINE_ANIMATED_LENGTH(SVGFilterPrimitiveStandardAttributes, SVGNames::yAttr, Y, y)
-DEFINE_ANIMATED_LENGTH(SVGFilterPrimitiveStandardAttributes, SVGNames::widthAttr, Width, width)
-DEFINE_ANIMATED_LENGTH(SVGFilterPrimitiveStandardAttributes, SVGNames::heightAttr, Height, height)
-DEFINE_ANIMATED_STRING(SVGFilterPrimitiveStandardAttributes, SVGNames::resultAttr, Result, result)
+DEFINE_ANIMATED_LENGTH( SVGFilterPrimitiveStandardAttributes, SVGNames::xAttr, X, x )
+DEFINE_ANIMATED_LENGTH( SVGFilterPrimitiveStandardAttributes, SVGNames::yAttr, Y, y )
+DEFINE_ANIMATED_LENGTH( SVGFilterPrimitiveStandardAttributes, SVGNames::widthAttr, Width, width )
+DEFINE_ANIMATED_LENGTH( SVGFilterPrimitiveStandardAttributes, SVGNames::heightAttr, Height, height )
+DEFINE_ANIMATED_STRING( SVGFilterPrimitiveStandardAttributes, SVGNames::resultAttr, Result, result )
 
-SVGFilterPrimitiveStandardAttributes::SVGFilterPrimitiveStandardAttributes(const QualifiedName& tagName, Document* document)
-    : SVGStyledElement(tagName, document)
-    , m_x(LengthModeWidth, "0%")
-    , m_y(LengthModeHeight, "0%")
-    , m_width(LengthModeWidth, "100%")
-    , m_height(LengthModeHeight, "100%")
+SVGFilterPrimitiveStandardAttributes::SVGFilterPrimitiveStandardAttributes( const QualifiedName &tagName, Document *document )
+    : SVGStyledElement( tagName, document )
+    , m_x( LengthModeWidth, "0%" )
+    , m_y( LengthModeHeight, "0%" )
+    , m_width( LengthModeWidth, "100%" )
+    , m_height( LengthModeHeight, "100%" )
 {
     // Spec: If the x/y attribute is not specified, the effect is as if a value of "0%" were specified.
     // Spec: If the width/height attribute is not specified, the effect is as if a value of "100%" were specified.
 }
 
-void SVGFilterPrimitiveStandardAttributes::parseMappedAttribute(Attribute* attr)
+void SVGFilterPrimitiveStandardAttributes::parseMappedAttribute( Attribute *attr )
 {
-    const AtomicString& value = attr->value();
-    if (attr->name() == SVGNames::xAttr)
-        setXBaseValue(SVGLength(LengthModeWidth, value));
-    else if (attr->name() == SVGNames::yAttr)
-        setYBaseValue(SVGLength(LengthModeHeight, value));
-    else if (attr->name() == SVGNames::widthAttr)
-        setWidthBaseValue(SVGLength(LengthModeWidth, value));
-    else if (attr->name() == SVGNames::heightAttr)
-        setHeightBaseValue(SVGLength(LengthModeHeight, value));
-    else if (attr->name() == SVGNames::resultAttr)
-        setResultBaseValue(value);
+    const AtomicString &value = attr->value();
+
+    if ( attr->name() == SVGNames::xAttr )
+    {
+        setXBaseValue( SVGLength( LengthModeWidth, value ) );
+    }
+    else if ( attr->name() == SVGNames::yAttr )
+    {
+        setYBaseValue( SVGLength( LengthModeHeight, value ) );
+    }
+    else if ( attr->name() == SVGNames::widthAttr )
+    {
+        setWidthBaseValue( SVGLength( LengthModeWidth, value ) );
+    }
+    else if ( attr->name() == SVGNames::heightAttr )
+    {
+        setHeightBaseValue( SVGLength( LengthModeHeight, value ) );
+    }
+    else if ( attr->name() == SVGNames::resultAttr )
+    {
+        setResultBaseValue( value );
+    }
     else
-        return SVGStyledElement::parseMappedAttribute(attr);
+    {
+        return SVGStyledElement::parseMappedAttribute( attr );
+    }
 }
 
-bool SVGFilterPrimitiveStandardAttributes::setFilterEffectAttribute(FilterEffect*, const QualifiedName&)
+bool SVGFilterPrimitiveStandardAttributes::setFilterEffectAttribute( FilterEffect *, const QualifiedName & )
 {
     // When all filters support this method, it will be changed to a pure virtual method.
     ASSERT_NOT_REACHED();
     return false;
 }
 
-void SVGFilterPrimitiveStandardAttributes::svgAttributeChanged(const QualifiedName& attrName)
+void SVGFilterPrimitiveStandardAttributes::svgAttributeChanged( const QualifiedName &attrName )
 {
-    SVGStyledElement::svgAttributeChanged(attrName);
+    SVGStyledElement::svgAttributeChanged( attrName );
 
-    if (attrName == SVGNames::xAttr
-        || attrName == SVGNames::yAttr
-        || attrName == SVGNames::widthAttr
-        || attrName == SVGNames::heightAttr
-        || attrName == SVGNames::resultAttr)
+    if ( attrName == SVGNames::xAttr
+            || attrName == SVGNames::yAttr
+            || attrName == SVGNames::widthAttr
+            || attrName == SVGNames::heightAttr
+            || attrName == SVGNames::resultAttr )
+    {
         invalidate();
+    }
 }
 
-void SVGFilterPrimitiveStandardAttributes::synchronizeProperty(const QualifiedName& attrName)
+void SVGFilterPrimitiveStandardAttributes::synchronizeProperty( const QualifiedName &attrName )
 {
-    SVGStyledElement::synchronizeProperty(attrName);
+    SVGStyledElement::synchronizeProperty( attrName );
 
-    if (attrName == anyQName()) {
+    if ( attrName == anyQName() )
+    {
         synchronizeX();
         synchronizeY();
         synchronizeWidth();
@@ -102,76 +119,108 @@ void SVGFilterPrimitiveStandardAttributes::synchronizeProperty(const QualifiedNa
         return;
     }
 
-    if (attrName == SVGNames::xAttr)
+    if ( attrName == SVGNames::xAttr )
+    {
         synchronizeX();
-    else if (attrName == SVGNames::yAttr)
+    }
+    else if ( attrName == SVGNames::yAttr )
+    {
         synchronizeY();
-    else if (attrName == SVGNames::widthAttr)
+    }
+    else if ( attrName == SVGNames::widthAttr )
+    {
         synchronizeWidth();
-    else if (attrName == SVGNames::heightAttr)
+    }
+    else if ( attrName == SVGNames::heightAttr )
+    {
         synchronizeHeight();
-    else if (attrName == SVGNames::resultAttr)
+    }
+    else if ( attrName == SVGNames::resultAttr )
+    {
         synchronizeResult();
+    }
 }
 
-void SVGFilterPrimitiveStandardAttributes::childrenChanged(bool changedByParser, Node* beforeChange, Node* afterChange, int childCountDelta)
+void SVGFilterPrimitiveStandardAttributes::childrenChanged( bool changedByParser, Node *beforeChange, Node *afterChange,
+        int childCountDelta )
 {
-    SVGStyledElement::childrenChanged(changedByParser, beforeChange, afterChange, childCountDelta);
+    SVGStyledElement::childrenChanged( changedByParser, beforeChange, afterChange, childCountDelta );
 
-    if (!changedByParser)
+    if ( !changedByParser )
+    {
         invalidate();
+    }
 }
 
-void SVGFilterPrimitiveStandardAttributes::setStandardAttributes(bool primitiveBoundingBoxMode, FilterEffect* filterEffect) const
+void SVGFilterPrimitiveStandardAttributes::setStandardAttributes( bool primitiveBoundingBoxMode,
+        FilterEffect *filterEffect ) const
 {
-    ASSERT(filterEffect);
-    if (!filterEffect)
-        return;
+    ASSERT( filterEffect );
 
-    if (this->hasAttribute(SVGNames::xAttr))
-        filterEffect->setHasX(true);
-    if (this->hasAttribute(SVGNames::yAttr))
-        filterEffect->setHasY(true);
-    if (this->hasAttribute(SVGNames::widthAttr))
-        filterEffect->setHasWidth(true);
-    if (this->hasAttribute(SVGNames::heightAttr))
-        filterEffect->setHasHeight(true);
+    if ( !filterEffect )
+    {
+        return;
+    }
+
+    if ( this->hasAttribute( SVGNames::xAttr ) )
+    {
+        filterEffect->setHasX( true );
+    }
+
+    if ( this->hasAttribute( SVGNames::yAttr ) )
+    {
+        filterEffect->setHasY( true );
+    }
+
+    if ( this->hasAttribute( SVGNames::widthAttr ) )
+    {
+        filterEffect->setHasWidth( true );
+    }
+
+    if ( this->hasAttribute( SVGNames::heightAttr ) )
+    {
+        filterEffect->setHasHeight( true );
+    }
 
     FloatRect effectBBox;
-    if (primitiveBoundingBoxMode)
-        effectBBox = FloatRect(x().valueAsPercentage(),
-                               y().valueAsPercentage(),
-                               width().valueAsPercentage(),
-                               height().valueAsPercentage());
+
+    if ( primitiveBoundingBoxMode )
+        effectBBox = FloatRect( x().valueAsPercentage(),
+                                y().valueAsPercentage(),
+                                width().valueAsPercentage(),
+                                height().valueAsPercentage() );
     else
-        effectBBox = FloatRect(x().value(this),
-                               y().value(this),
-                               width().value(this),
-                               height().value(this));
+        effectBBox = FloatRect( x().value( this ),
+                                y().value( this ),
+                                width().value( this ),
+                                height().value( this ) );
 
-    filterEffect->setEffectBoundaries(effectBBox);
+    filterEffect->setEffectBoundaries( effectBBox );
 }
 
-void SVGFilterPrimitiveStandardAttributes::fillPassedAttributeToPropertyTypeMap(AttributeToPropertyTypeMap& attributeToPropertyTypeMap)
+void SVGFilterPrimitiveStandardAttributes::fillPassedAttributeToPropertyTypeMap( AttributeToPropertyTypeMap
+        &attributeToPropertyTypeMap )
 {
-    SVGStyledElement::fillPassedAttributeToPropertyTypeMap(attributeToPropertyTypeMap);
-    
-    attributeToPropertyTypeMap.set(SVGNames::xAttr, AnimatedLength);
-    attributeToPropertyTypeMap.set(SVGNames::yAttr, AnimatedLength);
-    attributeToPropertyTypeMap.set(SVGNames::widthAttr, AnimatedLength);
-    attributeToPropertyTypeMap.set(SVGNames::heightAttr, AnimatedLength);
-    attributeToPropertyTypeMap.set(SVGNames::resultAttr, AnimatedString);
+    SVGStyledElement::fillPassedAttributeToPropertyTypeMap( attributeToPropertyTypeMap );
+
+    attributeToPropertyTypeMap.set( SVGNames::xAttr, AnimatedLength );
+    attributeToPropertyTypeMap.set( SVGNames::yAttr, AnimatedLength );
+    attributeToPropertyTypeMap.set( SVGNames::widthAttr, AnimatedLength );
+    attributeToPropertyTypeMap.set( SVGNames::heightAttr, AnimatedLength );
+    attributeToPropertyTypeMap.set( SVGNames::resultAttr, AnimatedString );
 }
 
-RenderObject* SVGFilterPrimitiveStandardAttributes::createRenderer(RenderArena* arena, RenderStyle*)
+RenderObject *SVGFilterPrimitiveStandardAttributes::createRenderer( RenderArena *arena, RenderStyle * )
 {
-    return new (arena) RenderSVGResourceFilterPrimitive(this);
+    return new ( arena ) RenderSVGResourceFilterPrimitive( this );
 }
 
-bool SVGFilterPrimitiveStandardAttributes::rendererIsNeeded(RenderStyle* style)
+bool SVGFilterPrimitiveStandardAttributes::rendererIsNeeded( RenderStyle *style )
 {
-    if (parentNode() && (parentNode()->hasTagName(SVGNames::filterTag)))
-        return SVGStyledElement::rendererIsNeeded(style);
+    if ( parentNode() && ( parentNode()->hasTagName( SVGNames::filterTag ) ) )
+    {
+        return SVGStyledElement::rendererIsNeeded( style );
+    }
 
     return false;
 }

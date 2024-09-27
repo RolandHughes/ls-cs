@@ -37,15 +37,16 @@
 
 // Utilities for CSSOM http://dev.w3.org/csswg/cssom/
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Common serializing methods. See: http://dev.w3.org/csswg/cssom/#common-serializing-idioms
-void serializeCharacter(UChar32, Vector<UChar>& appendTo);
-void serializeCharacterAsCodePoint(UChar32, Vector<UChar>& appendTo);
-void serializeIdentifier(const String& identifier, String& appendTo);
-void serializeIdentifier(const String& identifier, Vector<UChar>& appendTo);
-void serializeString(const String& string, String& appendTo);
-void serializeString(const String& string, Vector<UChar>& appendTo);
+void serializeCharacter( UChar32, Vector<UChar> &appendTo );
+void serializeCharacterAsCodePoint( UChar32, Vector<UChar> &appendTo );
+void serializeIdentifier( const String &identifier, String &appendTo );
+void serializeIdentifier( const String &identifier, Vector<UChar> &appendTo );
+void serializeString( const String &string, String &appendTo );
+void serializeString( const String &string, Vector<UChar> &appendTo );
 
 } // namespace WebCore
 

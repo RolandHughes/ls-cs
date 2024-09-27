@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -34,31 +34,41 @@
 #include "JSGlobalObject.h"
 #endif
 
-namespace JSC {
+namespace JSC
+{
 
 #ifdef QT_BUILD_SCRIPT_LIB
-JSObject* JSC::NativeConstrWrapper::operator() (ExecState* exec, JSObject* jsobj, const ArgList& argList) const
+JSObject *JSC::NativeConstrWrapper::operator() ( ExecState *exec, JSObject *jsobj, const ArgList &argList ) const
 {
-    Debugger* debugger = exec->lexicalGlobalObject()->debugger();
-    if (debugger)
-        debugger->callEvent(DebuggerCallFrame(exec), -1, -1);
+    Debugger *debugger = exec->lexicalGlobalObject()->debugger();
 
-    JSObject* returnValue = ptr(exec, jsobj, argList);
+    if ( debugger )
+    {
+        debugger->callEvent( DebuggerCallFrame( exec ), -1, -1 );
+    }
 
-    if ((debugger) && (callDebuggerFunctionExit))
-        debugger->functionExit(JSValue(returnValue), -1);
+    JSObject *returnValue = ptr( exec, jsobj, argList );
+
+    if ( ( debugger ) && ( callDebuggerFunctionExit ) )
+    {
+        debugger->functionExit( JSValue( returnValue ), -1 );
+    }
 
     return returnValue;
 }
 #endif
 
-JSObject* construct(ExecState* exec, JSValue object, ConstructType constructType, const ConstructData& constructData, const ArgList& args)
+JSObject *construct( ExecState *exec, JSValue object, ConstructType constructType, const ConstructData &constructData,
+                     const ArgList &args )
 {
-    if (constructType == ConstructTypeHost)
-        return constructData.native.function(exec, asObject(object), args);
-    ASSERT(constructType == ConstructTypeJS);
+    if ( constructType == ConstructTypeHost )
+    {
+        return constructData.native.function( exec, asObject( object ), args );
+    }
+
+    ASSERT( constructType == ConstructTypeJS );
     // FIXME: Can this be done more efficiently using the constructData?
-    return asFunction(object)->construct(exec, args);
+    return asFunction( object )->construct( exec, args );
 }
 
 } // namespace JSC

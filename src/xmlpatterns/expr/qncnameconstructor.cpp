@@ -29,47 +29,50 @@
 
 using namespace QPatternist;
 
-NCNameConstructor::NCNameConstructor(const Expression::Ptr &source) : SingleContainer(source)
+NCNameConstructor::NCNameConstructor( const Expression::Ptr &source ) : SingleContainer( source )
 {
 }
 
-Item NCNameConstructor::evaluateSingleton(const DynamicContext::Ptr &context) const
+Item NCNameConstructor::evaluateSingleton( const DynamicContext::Ptr &context ) const
 {
-   Q_ASSERT(context);
+    Q_ASSERT( context );
 
-   /* Apply the whitespace facet for when casting to xs:NCName. */
-   const QString lexNCName(m_operand->evaluateSingleton(context).stringValue().trimmed());
+    /* Apply the whitespace facet for when casting to xs:NCName. */
+    const QString lexNCName( m_operand->evaluateSingleton( context ).stringValue().trimmed() );
 
-   validateTargetName<DynamicContext::Ptr, ReportContext::XQDY0064, ReportContext::XQDY0041>(lexNCName, context, this);
-   return AtomicString::fromValue(lexNCName);
+    validateTargetName<DynamicContext::Ptr, ReportContext::XQDY0064, ReportContext::XQDY0041>( lexNCName, context, this );
+    return AtomicString::fromValue( lexNCName );
 }
 
-Expression::Ptr NCNameConstructor::typeCheck(const StaticContext::Ptr &context,
-      const SequenceType::Ptr &reqType)
+Expression::Ptr NCNameConstructor::typeCheck( const StaticContext::Ptr &context,
+        const SequenceType::Ptr &reqType )
 {
-   if (BuiltinTypes::xsNCName->xdtTypeMatches(m_operand->staticType()->itemType())) {
-      return m_operand->typeCheck(context, reqType);
-   } else {
-      return SingleContainer::typeCheck(context, reqType);
-   }
+    if ( BuiltinTypes::xsNCName->xdtTypeMatches( m_operand->staticType()->itemType() ) )
+    {
+        return m_operand->typeCheck( context, reqType );
+    }
+    else
+    {
+        return SingleContainer::typeCheck( context, reqType );
+    }
 }
 
 SequenceType::Ptr NCNameConstructor::staticType() const
 {
-   return CommonSequenceTypes::ExactlyOneString;
+    return CommonSequenceTypes::ExactlyOneString;
 }
 
 SequenceType::List NCNameConstructor::expectedOperandTypes() const
 {
-   SequenceType::List result;
-   result.append(CommonSequenceTypes::ExactlyOneString);
+    SequenceType::List result;
+    result.append( CommonSequenceTypes::ExactlyOneString );
 
-   return result;
+    return result;
 }
 
-ExpressionVisitorResult::Ptr NCNameConstructor::accept(const ExpressionVisitor::Ptr &visitor) const
+ExpressionVisitorResult::Ptr NCNameConstructor::accept( const ExpressionVisitor::Ptr &visitor ) const
 {
-   return visitor->visit(this);
+    return visitor->visit( this );
 }
 
 

@@ -36,60 +36,74 @@
 #include "SecurityOrigin.h"
 #include "SpeechInputListener.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 SpeechInputClientMock::SpeechInputClientMock()
-    : m_recording(false)
-    , m_timer(this, &SpeechInputClientMock::timerFired)
-    , m_listener(0)
-    , m_requestId(0)
+    : m_recording( false )
+    , m_timer( this, &SpeechInputClientMock::timerFired )
+    , m_listener( 0 )
+    , m_requestId( 0 )
 {
 }
 
-void SpeechInputClientMock::setListener(SpeechInputListener* listener)
+void SpeechInputClientMock::setListener( SpeechInputListener *listener )
 {
     m_listener = listener;
 }
 
-bool SpeechInputClientMock::startRecognition(int requestId, const IntRect& elementRect, const AtomicString& language, const String& grammar, SecurityOrigin* origin)
+bool SpeechInputClientMock::startRecognition( int requestId, const IntRect &elementRect, const AtomicString &language,
+        const String &grammar, SecurityOrigin *origin )
 {
-    if (m_timer.isActive())
+    if ( m_timer.isActive() )
+    {
         return false;
+    }
+
     m_requestId = requestId;
     m_recording = true;
     m_language = language;
-    m_timer.startOneShot(0);
+    m_timer.startOneShot( 0 );
     return true;
 }
 
-void SpeechInputClientMock::stopRecording(int requestId)
+void SpeechInputClientMock::stopRecording( int requestId )
 {
-    ASSERT(requestId == m_requestId);
-    if (m_timer.isActive() && m_recording) {
+    ASSERT( requestId == m_requestId );
+
+    if ( m_timer.isActive() && m_recording )
+    {
         m_timer.stop();
-        timerFired(&m_timer);
+        timerFired( &m_timer );
     }
 }
 
-void SpeechInputClientMock::cancelRecognition(int requestId)
+void SpeechInputClientMock::cancelRecognition( int requestId )
 {
-    if (m_timer.isActive()) {
-        ASSERT(requestId == m_requestId);
+    if ( m_timer.isActive() )
+    {
+        ASSERT( requestId == m_requestId );
         m_timer.stop();
         m_recording = false;
-        m_listener->didCompleteRecognition(m_requestId);
+        m_listener->didCompleteRecognition( m_requestId );
         m_requestId = 0;
     }
 }
 
-void SpeechInputClientMock::addRecognitionResult(const String& result, double confidence, const AtomicString& language)
+void SpeechInputClientMock::addRecognitionResult( const String &result, double confidence, const AtomicString &language )
 {
-    if (language.isEmpty())
-        m_resultsForEmptyLanguage.append(SpeechInputResult::create(result, confidence));
-    else {
-        if (!m_recognitionResults.contains(language))
-            m_recognitionResults.set(language, SpeechInputResultArray());
-        m_recognitionResults.find(language)->second.append(SpeechInputResult::create(result, confidence));
+    if ( language.isEmpty() )
+    {
+        m_resultsForEmptyLanguage.append( SpeechInputResult::create( result, confidence ) );
+    }
+    else
+    {
+        if ( !m_recognitionResults.contains( language ) )
+        {
+            m_recognitionResults.set( language, SpeechInputResultArray() );
+        }
+
+        m_recognitionResults.find( language )->second.append( SpeechInputResult::create( result, confidence ) );
     }
 }
 
@@ -99,13 +113,16 @@ void SpeechInputClientMock::clearResults()
     m_recognitionResults.clear();
 }
 
-void SpeechInputClientMock::timerFired(WebCore::Timer<SpeechInputClientMock>*)
+void SpeechInputClientMock::timerFired( WebCore::Timer<SpeechInputClientMock> * )
 {
-    if (m_recording) {
+    if ( m_recording )
+    {
         m_recording = false;
-        m_listener->didCompleteRecording(m_requestId);
-        m_timer.startOneShot(0);
-    } else {
+        m_listener->didCompleteRecording( m_requestId );
+        m_timer.startOneShot( 0 );
+    }
+    else
+    {
         bool noResultsFound = false;
 
         // We take a copy of the requestId here so that if scripts destroyed the input element
@@ -114,30 +131,42 @@ void SpeechInputClientMock::timerFired(WebCore::Timer<SpeechInputClientMock>*)
         m_requestId = 0;
 
         // Empty language case must be handled separately to avoid problems with HashMap and empty keys.
-        if (m_language.isEmpty()) {
-            if (!m_resultsForEmptyLanguage.isEmpty())
-                m_listener->setRecognitionResult(requestId, m_resultsForEmptyLanguage);
+        if ( m_language.isEmpty() )
+        {
+            if ( !m_resultsForEmptyLanguage.isEmpty() )
+            {
+                m_listener->setRecognitionResult( requestId, m_resultsForEmptyLanguage );
+            }
             else
+            {
                 noResultsFound = true;
-        } else {
-            if (m_recognitionResults.contains(m_language))
-                m_listener->setRecognitionResult(requestId, m_recognitionResults.get(m_language));
+            }
+        }
+        else
+        {
+            if ( m_recognitionResults.contains( m_language ) )
+            {
+                m_listener->setRecognitionResult( requestId, m_recognitionResults.get( m_language ) );
+            }
             else
+            {
                 noResultsFound = true;
+            }
         }
 
-        if (noResultsFound) {
+        if ( noResultsFound )
+        {
             // Can't avoid setting a result even if no result was set for the given language.
             // This would avoid generating the events used to check the results and the test would timeout.
-            String error("error: no result found for language '");
-            error.append(m_language);
-            error.append("'");
+            String error( "error: no result found for language '" );
+            error.append( m_language );
+            error.append( "'" );
             SpeechInputResultArray results;
-            results.append(SpeechInputResult::create(error, 1.0));
-            m_listener->setRecognitionResult(requestId, results);
+            results.append( SpeechInputResult::create( error, 1.0 ) );
+            m_listener->setRecognitionResult( requestId, results );
         }
 
-        m_listener->didCompleteRecognition(requestId);
+        m_listener->didCompleteRecognition( requestId );
     }
 }
 

@@ -28,14 +28,14 @@
 
 class QXmlPatternistCLI
 {
- public:
-   Q_DECLARE_TR_FUNCTIONS(QXmlPatternistCLI)
+public:
+    Q_DECLARE_TR_FUNCTIONS( QXmlPatternistCLI )
 
- private:
-   inline QXmlPatternistCLI();
+private:
+    inline QXmlPatternistCLI();
 
-   QXmlPatternistCLI(const QXmlPatternistCLI &) = delete;
-   QXmlPatternistCLI &operator=(const QXmlPatternistCLI &) = delete;
+    QXmlPatternistCLI( const QXmlPatternistCLI & ) = delete;
+    QXmlPatternistCLI &operator=( const QXmlPatternistCLI & ) = delete;
 };
 
 #endif

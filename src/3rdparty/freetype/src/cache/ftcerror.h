@@ -16,12 +16,12 @@
  */
 
 
-  /**************************************************************************
-   *
-   * This file is used to define the caching sub-system error enumeration
-   * constants.
-   *
-   */
+/**************************************************************************
+ *
+ * This file is used to define the caching sub-system error enumeration
+ * constants.
+ *
+ */
 
 #ifndef FTCERROR_H_
 #define FTCERROR_H_

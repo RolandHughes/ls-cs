@@ -34,9 +34,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSDocumentFragment);
+ASSERT_CLASS_FITS_IN_CELL( JSDocumentFragment );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -47,8 +48,8 @@ ASSERT_CLASS_FITS_IN_CELL(JSDocumentFragment);
 
 static const HashTableValue JSDocumentFragmentTableValues[2] =
 {
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDocumentFragmentConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDocumentFragmentConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -62,43 +63,51 @@ static JSC_CONST_HASHTABLE HashTable JSDocumentFragmentTable = { 2, 1, JSDocumen
 
 static const HashTableValue JSDocumentFragmentConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSDocumentFragmentConstructorTable = { 1, 0, JSDocumentFragmentConstructorTableValues, 0 };
-class JSDocumentFragmentConstructor : public DOMConstructorObject {
+class JSDocumentFragmentConstructor : public DOMConstructorObject
+{
 public:
-    JSDocumentFragmentConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSDocumentFragmentConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSDocumentFragmentConstructor::s_info = { "DocumentFragmentConstructor", &DOMConstructorObject::s_info, &JSDocumentFragmentConstructorTable, 0 };
 
-JSDocumentFragmentConstructor::JSDocumentFragmentConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSDocumentFragmentConstructor::JSDocumentFragmentConstructor( ExecState *exec, Structure *structure,
+        JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSDocumentFragmentPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSDocumentFragmentPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSDocumentFragmentConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSDocumentFragmentConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSDocumentFragmentConstructor, JSDOMWrapper>(exec, &JSDocumentFragmentConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSDocumentFragmentConstructor, JSDOMWrapper>( exec, &JSDocumentFragmentConstructorTable, this,
+            propertyName, slot );
 }
 
-bool JSDocumentFragmentConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSDocumentFragmentConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSDocumentFragmentConstructor, JSDOMWrapper>(exec, &JSDocumentFragmentConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSDocumentFragmentConstructor, JSDOMWrapper>( exec, &JSDocumentFragmentConstructorTable, this,
+            propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -110,102 +119,127 @@ bool JSDocumentFragmentConstructor::getOwnPropertyDescriptor(ExecState* exec, co
 
 static const HashTableValue JSDocumentFragmentPrototypeTableValues[3] =
 {
-    { "querySelector", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDocumentFragmentPrototypeFunctionQuerySelector), (intptr_t)1 THUNK_GENERATOR(0) },
-    { "querySelectorAll", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDocumentFragmentPrototypeFunctionQuerySelectorAll), (intptr_t)1 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "querySelector", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDocumentFragmentPrototypeFunctionQuerySelector ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { "querySelectorAll", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDocumentFragmentPrototypeFunctionQuerySelectorAll ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSDocumentFragmentPrototypeTable = { 4, 3, JSDocumentFragmentPrototypeTableValues, 0 };
 const ClassInfo JSDocumentFragmentPrototype::s_info = { "DocumentFragmentPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSDocumentFragmentPrototypeTable, 0 };
 
-JSObject* JSDocumentFragmentPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSDocumentFragmentPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSDocumentFragment>(exec, globalObject);
+    return getDOMPrototype<JSDocumentFragment>( exec, globalObject );
 }
 
-bool JSDocumentFragmentPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSDocumentFragmentPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticFunctionSlot<JSObject>(exec, &JSDocumentFragmentPrototypeTable, this, propertyName, slot);
+    return getStaticFunctionSlot<JSObject>( exec, &JSDocumentFragmentPrototypeTable, this, propertyName, slot );
 }
 
-bool JSDocumentFragmentPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSDocumentFragmentPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticFunctionDescriptor<JSObject>(exec, &JSDocumentFragmentPrototypeTable, this, propertyName, descriptor);
+    return getStaticFunctionDescriptor<JSObject>( exec, &JSDocumentFragmentPrototypeTable, this, propertyName, descriptor );
 }
 
 const ClassInfo JSDocumentFragment::s_info = { "DocumentFragment", &JSNode::s_info, &JSDocumentFragmentTable, 0 };
 
-JSDocumentFragment::JSDocumentFragment(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<DocumentFragment> impl)
-    : JSNode(structure, globalObject, impl)
+JSDocumentFragment::JSDocumentFragment( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<DocumentFragment> impl )
+    : JSNode( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSDocumentFragment::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSDocumentFragment::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSDocumentFragmentPrototype(exec->globalData(), globalObject, JSDocumentFragmentPrototype::createStructure(exec->globalData(), JSNodePrototype::self(exec, globalObject)));
+    return new ( exec ) JSDocumentFragmentPrototype( exec->globalData(), globalObject,
+            JSDocumentFragmentPrototype::createStructure( exec->globalData(), JSNodePrototype::self( exec, globalObject ) ) );
 }
 
-bool JSDocumentFragment::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSDocumentFragment::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSDocumentFragment, Base>(exec, &JSDocumentFragmentTable, this, propertyName, slot);
+    return getStaticValueSlot<JSDocumentFragment, Base>( exec, &JSDocumentFragmentTable, this, propertyName, slot );
 }
 
-bool JSDocumentFragment::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSDocumentFragment::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSDocumentFragment, Base>(exec, &JSDocumentFragmentTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSDocumentFragment, Base>( exec, &JSDocumentFragmentTable, this, propertyName, descriptor );
 }
 
-JSValue jsDocumentFragmentConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDocumentFragmentConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDocumentFragment* domObject = static_cast<JSDocumentFragment*>(asObject(slotBase));
-    return JSDocumentFragment::getConstructor(exec, domObject->globalObject());
+    JSDocumentFragment *domObject = static_cast<JSDocumentFragment *>( asObject( slotBase ) );
+    return JSDocumentFragment::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSDocumentFragment::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSDocumentFragment::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSDocumentFragmentConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSDocumentFragmentConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsDocumentFragmentPrototypeFunctionQuerySelector(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsDocumentFragmentPrototypeFunctionQuerySelector( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSDocumentFragment::s_info))
-        return throwVMTypeError(exec);
-    JSDocumentFragment* castedThis = static_cast<JSDocumentFragment*>(asObject(thisValue));
-    DocumentFragment* imp = static_cast<DocumentFragment*>(castedThis->impl());
-    if (exec->argumentCount() < 1)
-        return throwVMError(exec, createSyntaxError(exec, "Not enough arguments"));
+
+    if ( !thisValue.inherits( &JSDocumentFragment::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSDocumentFragment *castedThis = static_cast<JSDocumentFragment *>( asObject( thisValue ) );
+    DocumentFragment *imp = static_cast<DocumentFragment *>( castedThis->impl() );
+
+    if ( exec->argumentCount() < 1 )
+    {
+        return throwVMError( exec, createSyntaxError( exec, "Not enough arguments" ) );
+    }
+
     ExceptionCode ec = 0;
-    const String& selectors(ustringToString(exec->argument(0).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+    const String &selectors( ustringToString( exec->argument( 0 ).toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
 
 
-    JSC::JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->querySelector(selectors, ec)));
-    setDOMException(exec, ec);
-    return JSValue::encode(result);
+    JSC::JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->querySelector( selectors, ec ) ) );
+    setDOMException( exec, ec );
+    return JSValue::encode( result );
 }
 
-EncodedJSValue JSC_HOST_CALL jsDocumentFragmentPrototypeFunctionQuerySelectorAll(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsDocumentFragmentPrototypeFunctionQuerySelectorAll( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSDocumentFragment::s_info))
-        return throwVMTypeError(exec);
-    JSDocumentFragment* castedThis = static_cast<JSDocumentFragment*>(asObject(thisValue));
-    DocumentFragment* imp = static_cast<DocumentFragment*>(castedThis->impl());
-    if (exec->argumentCount() < 1)
-        return throwVMError(exec, createSyntaxError(exec, "Not enough arguments"));
+
+    if ( !thisValue.inherits( &JSDocumentFragment::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSDocumentFragment *castedThis = static_cast<JSDocumentFragment *>( asObject( thisValue ) );
+    DocumentFragment *imp = static_cast<DocumentFragment *>( castedThis->impl() );
+
+    if ( exec->argumentCount() < 1 )
+    {
+        return throwVMError( exec, createSyntaxError( exec, "Not enough arguments" ) );
+    }
+
     ExceptionCode ec = 0;
-    const String& selectors(ustringToString(exec->argument(0).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+    const String &selectors( ustringToString( exec->argument( 0 ).toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
 
 
-    JSC::JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->querySelectorAll(selectors, ec)));
-    setDOMException(exec, ec);
-    return JSValue::encode(result);
+    JSC::JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->querySelectorAll( selectors, ec ) ) );
+    setDOMException( exec, ec );
+    return JSValue::encode( result );
 }
 
 

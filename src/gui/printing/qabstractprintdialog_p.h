@@ -37,29 +37,29 @@ class QPrinterPrivate;
 
 class QAbstractPrintDialogPrivate : public QDialogPrivate
 {
-   Q_DECLARE_PUBLIC(QAbstractPrintDialog)
+    Q_DECLARE_PUBLIC( QAbstractPrintDialog )
 
- public:
-   QAbstractPrintDialogPrivate()
-      : printer(nullptr), pd(nullptr), ownsPrinter(false)
-      , options(QAbstractPrintDialog::PrintToFile | QAbstractPrintDialog::PrintPageRange |
-                QAbstractPrintDialog::PrintCollateCopies | QAbstractPrintDialog::PrintShowPageSize),
-        minPage(0), maxPage(INT_MAX)
-   {  }
+public:
+    QAbstractPrintDialogPrivate()
+        : printer( nullptr ), pd( nullptr ), ownsPrinter( false )
+        , options( QAbstractPrintDialog::PrintToFile | QAbstractPrintDialog::PrintPageRange |
+                   QAbstractPrintDialog::PrintCollateCopies | QAbstractPrintDialog::PrintShowPageSize ),
+          minPage( 0 ), maxPage( INT_MAX )
+    {  }
 
 
-   QPrinter *printer;
-   QPrinterPrivate *pd;
-   bool ownsPrinter;
-   QPointer<QObject> receiverToDisconnectOnClose;
-   QString memberToDisconnectOnClose;
+    QPrinter *printer;
+    QPrinterPrivate *pd;
+    bool ownsPrinter;
+    QPointer<QObject> receiverToDisconnectOnClose;
+    QString memberToDisconnectOnClose;
 
-   QAbstractPrintDialog::PrintDialogOptions options;
+    QAbstractPrintDialog::PrintDialogOptions options;
 
-   virtual void setTabs(const QList<QWidget *> &) {}
-   void setPrinter(QPrinter *newPrinter);
-   int minPage;
-   int maxPage;
+    virtual void setTabs( const QList<QWidget *> & ) {}
+    void setPrinter( QPrinter *newPrinter );
+    int minPage;
+    int maxPage;
 };
 
 #endif //QT_NO_PRINTER

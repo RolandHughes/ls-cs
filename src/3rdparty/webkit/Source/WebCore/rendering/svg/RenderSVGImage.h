@@ -31,44 +31,79 @@
 #include "SVGPreserveAspectRatio.h"
 #include "SVGRenderSupport.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class RenderImageResource;
 class SVGImageElement;
 
-class RenderSVGImage : public RenderSVGModelObject {
+class RenderSVGImage : public RenderSVGModelObject
+{
 public:
-    RenderSVGImage(SVGImageElement*);
+    RenderSVGImage( SVGImageElement * );
     virtual ~RenderSVGImage();
 
-    virtual void setNeedsTransformUpdate() { m_needsTransformUpdate = true; }
+    virtual void setNeedsTransformUpdate()
+    {
+        m_needsTransformUpdate = true;
+    }
     virtual void updateFromElement();
 
-    RenderImageResource* imageResource() { return m_imageResource.get(); }
-    const RenderImageResource* imageResource() const { return m_imageResource.get(); }
+    RenderImageResource *imageResource()
+    {
+        return m_imageResource.get();
+    }
+    const RenderImageResource *imageResource() const
+    {
+        return m_imageResource.get();
+    }
 
 private:
-    virtual const char* renderName() const { return "RenderSVGImage"; }
-    virtual bool isSVGImage() const { return true; }
+    virtual const char *renderName() const
+    {
+        return "RenderSVGImage";
+    }
+    virtual bool isSVGImage() const
+    {
+        return true;
+    }
 
-    virtual const AffineTransform& localToParentTransform() const { return m_localTransform; }
+    virtual const AffineTransform &localToParentTransform() const
+    {
+        return m_localTransform;
+    }
 
-    virtual FloatRect objectBoundingBox() const { return m_objectBoundingBox; }
-    virtual FloatRect strokeBoundingBox() const { return m_objectBoundingBox; }
-    virtual FloatRect repaintRectInLocalCoordinates() const { return m_repaintBoundingBox; }
+    virtual FloatRect objectBoundingBox() const
+    {
+        return m_objectBoundingBox;
+    }
+    virtual FloatRect strokeBoundingBox() const
+    {
+        return m_objectBoundingBox;
+    }
+    virtual FloatRect repaintRectInLocalCoordinates() const
+    {
+        return m_repaintBoundingBox;
+    }
 
-    virtual void addFocusRingRects(Vector<IntRect>&, int tx, int ty);
+    virtual void addFocusRingRects( Vector<IntRect> &, int tx, int ty );
 
-    virtual void imageChanged(WrappedImagePtr, const IntRect* = 0);
+    virtual void imageChanged( WrappedImagePtr, const IntRect * = 0 );
 
     virtual void layout();
-    virtual void paint(PaintInfo&, int parentX, int parentY);
+    virtual void paint( PaintInfo &, int parentX, int parentY );
 
-    virtual bool requiresLayer() const { return false; }
+    virtual bool requiresLayer() const
+    {
+        return false;
+    }
 
-    virtual bool nodeAtFloatPoint(const HitTestRequest&, HitTestResult&, const FloatPoint& pointInParent, HitTestAction);
+    virtual bool nodeAtFloatPoint( const HitTestRequest &, HitTestResult &, const FloatPoint &pointInParent, HitTestAction );
 
-    virtual AffineTransform localTransform() const { return m_localTransform; }
+    virtual AffineTransform localTransform() const
+    {
+        return m_localTransform;
+    }
 
     bool m_updateCachedRepaintRect : 1;
     bool m_needsTransformUpdate : 1;
@@ -78,20 +113,20 @@ private:
     OwnPtr<RenderImageResource> m_imageResource;
 };
 
-inline RenderSVGImage* toRenderSVGImage(RenderObject* object)
+inline RenderSVGImage *toRenderSVGImage( RenderObject *object )
 {
-    ASSERT(!object || object->isSVGImage());
-    return static_cast<RenderSVGImage*>(object);
+    ASSERT( !object || object->isSVGImage() );
+    return static_cast<RenderSVGImage *>( object );
 }
 
-inline const RenderSVGImage* toRenderSVGImage(const RenderObject* object)
+inline const RenderSVGImage *toRenderSVGImage( const RenderObject *object )
 {
-    ASSERT(!object || object->isSVGImage());
-    return static_cast<const RenderSVGImage*>(object);
+    ASSERT( !object || object->isSVGImage() );
+    return static_cast<const RenderSVGImage *>( object );
 }
 
 // This will catch anyone doing an unnecessary cast.
-void toRenderSVGImage(const RenderSVGImage*);
+void toRenderSVGImage( const RenderSVGImage * );
 
 } // namespace WebCore
 

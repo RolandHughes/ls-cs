@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef TextBoundaries_h
@@ -28,18 +28,19 @@
 
 #include <wtf/unicode/Unicode.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    inline bool requiresContextForWordBoundary(UChar32 ch)
-    {
-        return WTF::Unicode::hasLineBreakingPropertyComplexContext(ch);
-    }
+inline bool requiresContextForWordBoundary( UChar32 ch )
+{
+    return WTF::Unicode::hasLineBreakingPropertyComplexContext( ch );
+}
 
-    int endOfFirstWordBoundaryContext(const UChar* characters, int length);
-    int startOfLastWordBoundaryContext(const UChar* characters, int length);
+int endOfFirstWordBoundaryContext( const UChar *characters, int length );
+int startOfLastWordBoundaryContext( const UChar *characters, int length );
 
-    void findWordBoundary(const UChar*, int len, int position, int* start, int* end);
-    int findNextWordFromIndex(const UChar*, int len, int position, bool forward);
+void findWordBoundary( const UChar *, int len, int position, int *start, int *end );
+int findNextWordFromIndex( const UChar *, int len, int position, bool forward );
 
 }
 

@@ -21,7 +21,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -32,14 +32,17 @@
 
 using namespace JSC::Bindings;
 
-namespace WebCore {
-
-PassRefPtr<JSC::Bindings::Instance> ScriptController::createScriptInstanceForWidget(Widget* widget)
+namespace WebCore
 {
-    if (!widget->isPluginView())
-        return 0;
 
-    return static_cast<PluginView*>(widget)->bindingInstance();
+PassRefPtr<JSC::Bindings::Instance> ScriptController::createScriptInstanceForWidget( Widget *widget )
+{
+    if ( !widget->isPluginView() )
+    {
+        return 0;
+    }
+
+    return static_cast<PluginView *>( widget )->bindingInstance();
 }
 
 } // namespace WebCore

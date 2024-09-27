@@ -33,7 +33,8 @@
 
 #include "PlatformString.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Creates a UUID that consists of 32 hexadecimal digits and returns its canonical form.
 // The canonical form is displayed in 5 groups separated by hyphens, in the form 8-4-4-4-12 for a total of 36 characters.

@@ -35,53 +35,73 @@
 
 typedef struct _FcFontSet FcFontSet;
 
-namespace WebCore {
+namespace WebCore
+{
 
-class FontPlatformData {
+class FontPlatformData
+{
 public:
-    FontPlatformData(WTF::HashTableDeletedValueType)
-        : m_fallbacks(0)
-        , m_size(0)
-        , m_syntheticBold(false)
-        , m_syntheticOblique(false)
-        , m_scaledFont(hashTableDeletedFontValue())
-        { }
+    FontPlatformData( WTF::HashTableDeletedValueType )
+        : m_fallbacks( 0 )
+        , m_size( 0 )
+        , m_syntheticBold( false )
+        , m_syntheticOblique( false )
+        , m_scaledFont( hashTableDeletedFontValue() )
+    { }
 
     FontPlatformData()
-        : m_fallbacks(0)
-        , m_size(0)
-        , m_syntheticBold(false)
-        , m_syntheticOblique(false)
-        , m_scaledFont(0)
-        { }
+        : m_fallbacks( 0 )
+        , m_size( 0 )
+        , m_syntheticBold( false )
+        , m_syntheticOblique( false )
+        , m_scaledFont( 0 )
+    { }
 
-    FontPlatformData(FcPattern*, const FontDescription&);
-    FontPlatformData(cairo_font_face_t* fontFace, float size, bool bold, bool italic);
-    FontPlatformData(float size, bool bold, bool italic);
-    FontPlatformData(const FontPlatformData&);
-    FontPlatformData(const FontPlatformData&, float size);
+    FontPlatformData( FcPattern *, const FontDescription & );
+    FontPlatformData( cairo_font_face_t *fontFace, float size, bool bold, bool italic );
+    FontPlatformData( float size, bool bold, bool italic );
+    FontPlatformData( const FontPlatformData & );
+    FontPlatformData( const FontPlatformData &, float size );
 
     ~FontPlatformData();
 
     bool isFixedPitch();
-    float size() const { return m_size; }
-    void setSize(float size) { m_size = size; }
-    bool syntheticBold() const { return m_syntheticBold; }
-    bool syntheticOblique() const { return m_syntheticOblique; }
+    float size() const
+    {
+        return m_size;
+    }
+    void setSize( float size )
+    {
+        m_size = size;
+    }
+    bool syntheticBold() const
+    {
+        return m_syntheticBold;
+    }
+    bool syntheticOblique() const
+    {
+        return m_syntheticOblique;
+    }
     bool hasCompatibleCharmap();
 
-    FontOrientation orientation() const { return Horizontal; } // FIXME: Implement.
-    void setOrientation(FontOrientation) { } // FIXME: Implement.
+    FontOrientation orientation() const
+    {
+        return Horizontal;    // FIXME: Implement.
+    }
+    void setOrientation( FontOrientation ) { } // FIXME: Implement.
 
-    cairo_scaled_font_t* scaledFont() const { return m_scaledFont; }
+    cairo_scaled_font_t *scaledFont() const
+    {
+        return m_scaledFont;
+    }
 
     unsigned hash() const
     {
-        return PtrHash<cairo_scaled_font_t*>::hash(m_scaledFont);
+        return PtrHash<cairo_scaled_font_t *>::hash( m_scaledFont );
     }
 
-    bool operator==(const FontPlatformData&) const;
-    FontPlatformData& operator=(const FontPlatformData&);
+    bool operator==( const FontPlatformData & ) const;
+    FontPlatformData &operator=( const FontPlatformData & );
     bool isHashTableDeletedValue() const
     {
         return m_scaledFont == hashTableDeletedFontValue();
@@ -92,16 +112,19 @@ public:
 #endif
 
     RefPtr<FcPattern> m_pattern;
-    mutable FcFontSet* m_fallbacks; // Initialized lazily.
+    mutable FcFontSet *m_fallbacks; // Initialized lazily.
     float m_size;
     bool m_syntheticBold;
     bool m_syntheticOblique;
     bool m_fixedWidth;
-    cairo_scaled_font_t* m_scaledFont;
+    cairo_scaled_font_t *m_scaledFont;
 
 private:
-    void initializeWithFontFace(cairo_font_face_t*);
-    static cairo_scaled_font_t* hashTableDeletedFontValue() { return reinterpret_cast<cairo_scaled_font_t*>(-1); }
+    void initializeWithFontFace( cairo_font_face_t * );
+    static cairo_scaled_font_t *hashTableDeletedFontValue()
+    {
+        return reinterpret_cast<cairo_scaled_font_t *>( -1 );
+    }
 };
 
 }

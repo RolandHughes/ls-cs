@@ -26,26 +26,27 @@
 
 using namespace QPatternist;
 
-bool XSLTNodeTest::xdtTypeMatches(const ItemType::Ptr &other) const
+bool XSLTNodeTest::xdtTypeMatches( const ItemType::Ptr &other ) const
 {
-   if (!other->isNodeType()) {
-      return false;
-   }
+    if ( !other->isNodeType() )
+    {
+        return false;
+    }
 
-   return *static_cast<const XSLTNodeTest *>(other.data()) == *this
-          ? true
-          : xdtTypeMatches(other->xdtSuperType());
+    return *static_cast<const XSLTNodeTest *>( other.data() ) == *this
+           ? true
+           : xdtTypeMatches( other->xdtSuperType() );
 }
 
-bool XSLTNodeTest::itemMatches(const Item &item) const
+bool XSLTNodeTest::itemMatches( const Item &item ) const
 {
-   Q_ASSERT(item);
+    Q_ASSERT( item );
 
-   return item.isNode() &&
-          item.asNode().kind() != QXmlNodeModelIndex::Document;
+    return item.isNode() &&
+           item.asNode().kind() != QXmlNodeModelIndex::Document;
 }
 
 ItemType::Ptr XSLTNodeTest::xdtSuperType() const
 {
-   return BuiltinTypes::node;
+    return BuiltinTypes::node;
 }

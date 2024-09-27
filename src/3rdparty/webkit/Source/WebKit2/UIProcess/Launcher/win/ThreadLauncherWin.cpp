@@ -33,17 +33,18 @@
 
 using namespace WebCore;
 
-namespace WebKit {
-
-static void* webThreadBody(void* context)
+namespace WebKit
 {
-    HANDLE clientIdentifier = reinterpret_cast<HANDLE>(context);
+
+static void *webThreadBody( void *context )
+{
+    HANDLE clientIdentifier = reinterpret_cast<HANDLE>( context );
 
     // Initialization
     JSC::initializeThreading();
     WTF::initializeMainThread();
 
-    WebProcess::shared().initialize(clientIdentifier, RunLoop::current());
+    WebProcess::shared().initialize( clientIdentifier, RunLoop::current() );
     RunLoop::run();
 
     return 0;
@@ -53,14 +54,17 @@ CoreIPC::Connection::Identifier ThreadLauncher::createWebThread()
 {
     // First, create the server and client identifiers.
     HANDLE serverIdentifier, clientIdentifier;
-    if (!CoreIPC::Connection::createServerAndClientIdentifiers(serverIdentifier, clientIdentifier)) {
+
+    if ( !CoreIPC::Connection::createServerAndClientIdentifiers( serverIdentifier, clientIdentifier ) )
+    {
         // FIXME: What should we do here?
         ASSERT_NOT_REACHED();
     }
 
-    if (!createThread(webThreadBody, reinterpret_cast<void*>(clientIdentifier), "WebKit2: WebThread")) {
-        ::CloseHandle(serverIdentifier);
-        ::CloseHandle(clientIdentifier);
+    if ( !createThread( webThreadBody, reinterpret_cast<void *>( clientIdentifier ), "WebKit2: WebThread" ) )
+    {
+        ::CloseHandle( serverIdentifier );
+        ::CloseHandle( clientIdentifier );
         return 0;
     }
 

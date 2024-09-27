@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -33,19 +33,20 @@
 
 using namespace JSC;
 
-namespace WebCore {
-
-bool JSStyleSheetList::canGetItemsForName(ExecState*, StyleSheetList* styleSheetList, const Identifier& propertyName)
+namespace WebCore
 {
-    return styleSheetList->getNamedItem(identifierToString(propertyName));
+
+bool JSStyleSheetList::canGetItemsForName( ExecState *, StyleSheetList *styleSheetList, const Identifier &propertyName )
+{
+    return styleSheetList->getNamedItem( identifierToString( propertyName ) );
 }
 
-JSValue JSStyleSheetList::nameGetter(ExecState* exec, JSValue slotBase, const Identifier& propertyName)
+JSValue JSStyleSheetList::nameGetter( ExecState *exec, JSValue slotBase, const Identifier &propertyName )
 {
-    JSStyleSheetList* thisObj = static_cast<JSStyleSheetList*>(asObject(slotBase));
-    HTMLStyleElement* element = thisObj->impl()->getNamedItem(identifierToString(propertyName));
-    ASSERT(element);
-    return toJS(exec, thisObj->globalObject(), element->sheet());
+    JSStyleSheetList *thisObj = static_cast<JSStyleSheetList *>( asObject( slotBase ) );
+    HTMLStyleElement *element = thisObj->impl()->getNamedItem( identifierToString( propertyName ) );
+    ASSERT( element );
+    return toJS( exec, thisObj->globalObject(), element->sheet() );
 }
 
 } // namespace WebCore

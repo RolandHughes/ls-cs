@@ -36,18 +36,24 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Frame;
 
-class PerformanceNavigation : public RefCounted<PerformanceNavigation> {
+class PerformanceNavigation : public RefCounted<PerformanceNavigation>
+{
 public:
-    static PassRefPtr<PerformanceNavigation> create(Frame* frame) { return adoptRef(new PerformanceNavigation(frame)); }
+    static PassRefPtr<PerformanceNavigation> create( Frame *frame )
+    {
+        return adoptRef( new PerformanceNavigation( frame ) );
+    }
 
-    Frame* frame() const;
+    Frame *frame() const;
     void disconnectFrame();
 
-    enum PerformanceNavigationType {
+    enum PerformanceNavigationType
+    {
         TYPE_NAVIGATE,
         TYPE_RELOAD,
         TYPE_BACK_FORWARD,
@@ -58,9 +64,9 @@ public:
     unsigned short redirectCount() const;
 
 private:
-    PerformanceNavigation(Frame*);
+    PerformanceNavigation( Frame * );
 
-    Frame* m_frame;
+    Frame *m_frame;
 };
 
 }

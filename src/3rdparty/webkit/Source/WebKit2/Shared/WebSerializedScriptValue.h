@@ -31,50 +31,65 @@
 #include <WebCore/SerializedScriptValue.h>
 #include <wtf/RefPtr.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
-class WebSerializedScriptValue : public APIObject {
+class WebSerializedScriptValue : public APIObject
+{
 public:
     static const Type APIType = TypeSerializedScriptValue;
-    
-    static PassRefPtr<WebSerializedScriptValue> create(WebCore::SerializedScriptValue* serializedValue)
-    {
-        return adoptRef(new WebSerializedScriptValue(serializedValue));
-    }
-    
-    static PassRefPtr<WebSerializedScriptValue> create(JSContextRef context, JSValueRef value, JSValueRef* exception)
-    {
-        RefPtr<WebCore::SerializedScriptValue> serializedValue = WebCore::SerializedScriptValue::create(context, value, exception);
-        if (!serializedValue)
-            return 0;
-        return adoptRef(new WebSerializedScriptValue(serializedValue.get()));
-    }
-    
-    static PassRefPtr<WebSerializedScriptValue> adopt(Vector<uint8_t>& buffer)
-    {
-        return adoptRef(new WebSerializedScriptValue(WebCore::SerializedScriptValue::adopt(buffer)));
-    }
-    
-    JSValueRef deserialize(JSContextRef context, JSValueRef* exception)
-    {
-        return m_serializedScriptValue->deserialize(context, exception);
-    }
-    
-    const Vector<uint8_t>& data() { return m_serializedScriptValue->data(); }
 
-    void* internalRepresentation() { return m_serializedScriptValue.get(); }
+    static PassRefPtr<WebSerializedScriptValue> create( WebCore::SerializedScriptValue *serializedValue )
+    {
+        return adoptRef( new WebSerializedScriptValue( serializedValue ) );
+    }
+
+    static PassRefPtr<WebSerializedScriptValue> create( JSContextRef context, JSValueRef value, JSValueRef *exception )
+    {
+        RefPtr<WebCore::SerializedScriptValue> serializedValue = WebCore::SerializedScriptValue::create( context, value, exception );
+
+        if ( !serializedValue )
+        {
+            return 0;
+        }
+
+        return adoptRef( new WebSerializedScriptValue( serializedValue.get() ) );
+    }
+
+    static PassRefPtr<WebSerializedScriptValue> adopt( Vector<uint8_t> &buffer )
+    {
+        return adoptRef( new WebSerializedScriptValue( WebCore::SerializedScriptValue::adopt( buffer ) ) );
+    }
+
+    JSValueRef deserialize( JSContextRef context, JSValueRef *exception )
+    {
+        return m_serializedScriptValue->deserialize( context, exception );
+    }
+
+    const Vector<uint8_t> &data()
+    {
+        return m_serializedScriptValue->data();
+    }
+
+    void *internalRepresentation()
+    {
+        return m_serializedScriptValue.get();
+    }
 
 private:
-    explicit WebSerializedScriptValue(PassRefPtr<WebCore::SerializedScriptValue> serializedScriptValue)
-        : m_serializedScriptValue(serializedScriptValue)
+    explicit WebSerializedScriptValue( PassRefPtr<WebCore::SerializedScriptValue> serializedScriptValue )
+        : m_serializedScriptValue( serializedScriptValue )
     {
     }
-    
-    virtual Type type() const { return APIType; }
-    
+
+    virtual Type type() const
+    {
+        return APIType;
+    }
+
     RefPtr<WebCore::SerializedScriptValue> m_serializedScriptValue;
 };
-    
+
 }
 
 #endif // WebSerializedScriptValue_h

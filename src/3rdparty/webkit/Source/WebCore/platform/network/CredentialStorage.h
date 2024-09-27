@@ -20,32 +20,35 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef CredentialStorage_h
 #define CredentialStorage_h
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Credential;
 class KURL;
 class ProtectionSpace;
 
-class CredentialStorage {
+class CredentialStorage
+{
 public:
     // WebCore session credential storage.
-    static void set(const Credential&, const ProtectionSpace&, const KURL&);
-    static Credential get(const ProtectionSpace&);
-    static void remove(const ProtectionSpace&);
+    static void set( const Credential &, const ProtectionSpace &, const KURL & );
+    static Credential get( const ProtectionSpace & );
+    static void remove( const ProtectionSpace & );
 
     // OS persistent storage.
-    static Credential getFromPersistentStorage(const ProtectionSpace&);
+    static Credential getFromPersistentStorage( const ProtectionSpace & );
 
     // These methods work for authentication schemes that support sending credentials without waiting for a request. E.g., for HTTP Basic authentication scheme
     // a client should assume that all paths at or deeper than the depth of a known protected resource share are within the same protection space.
-    static bool set(const Credential&, const KURL&); // Returns true if the URL corresponds to a known protection space, so credentials could be updated.
-    static Credential get(const KURL&);
+    static bool set( const Credential &, const KURL
+                     & ); // Returns true if the URL corresponds to a known protection space, so credentials could be updated.
+    static Credential get( const KURL & );
 };
 
 } // namespace WebCore

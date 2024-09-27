@@ -24,18 +24,23 @@
 #if ENABLE(SVG)
 #include "SVGPathSegWithContext.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SVGPathSegLinetoHorizontal : public SVGPathSegWithContext {
+class SVGPathSegLinetoHorizontal : public SVGPathSegWithContext
+{
 public:
-    SVGPathSegLinetoHorizontal(SVGPathElement* element, SVGPathSegRole role, float x)
-        : SVGPathSegWithContext(element, role)
-        , m_x(x)
+    SVGPathSegLinetoHorizontal( SVGPathElement *element, SVGPathSegRole role, float x )
+        : SVGPathSegWithContext( element, role )
+        , m_x( x )
     {
     }
 
-    float x() const { return m_x; }
-    void setX(float x)
+    float x() const
+    {
+        return m_x;
+    }
+    void setX( float x )
     {
         m_x = x;
         commitChange();
@@ -45,38 +50,52 @@ private:
     float m_x;
 };
 
-class SVGPathSegLinetoHorizontalAbs : public SVGPathSegLinetoHorizontal {
+class SVGPathSegLinetoHorizontalAbs : public SVGPathSegLinetoHorizontal
+{
 public:
-    static PassRefPtr<SVGPathSegLinetoHorizontalAbs> create(SVGPathElement* element, SVGPathSegRole role, float x)
+    static PassRefPtr<SVGPathSegLinetoHorizontalAbs> create( SVGPathElement *element, SVGPathSegRole role, float x )
     {
-        return adoptRef(new SVGPathSegLinetoHorizontalAbs(element, role, x));
+        return adoptRef( new SVGPathSegLinetoHorizontalAbs( element, role, x ) );
     }
 
 private:
-    SVGPathSegLinetoHorizontalAbs(SVGPathElement* element, SVGPathSegRole role, float x)
-        : SVGPathSegLinetoHorizontal(element, role, x)
+    SVGPathSegLinetoHorizontalAbs( SVGPathElement *element, SVGPathSegRole role, float x )
+        : SVGPathSegLinetoHorizontal( element, role, x )
     {
     }
 
-    virtual unsigned short pathSegType() const { return PATHSEG_LINETO_HORIZONTAL_ABS; }
-    virtual String pathSegTypeAsLetter() const { return "H"; }
+    virtual unsigned short pathSegType() const
+    {
+        return PATHSEG_LINETO_HORIZONTAL_ABS;
+    }
+    virtual String pathSegTypeAsLetter() const
+    {
+        return "H";
+    }
 };
 
-class SVGPathSegLinetoHorizontalRel : public SVGPathSegLinetoHorizontal {
+class SVGPathSegLinetoHorizontalRel : public SVGPathSegLinetoHorizontal
+{
 public:
-    static PassRefPtr<SVGPathSegLinetoHorizontalRel> create(SVGPathElement* element, SVGPathSegRole role, float x)
+    static PassRefPtr<SVGPathSegLinetoHorizontalRel> create( SVGPathElement *element, SVGPathSegRole role, float x )
     {
-        return adoptRef(new SVGPathSegLinetoHorizontalRel(element, role, x));
+        return adoptRef( new SVGPathSegLinetoHorizontalRel( element, role, x ) );
     }
 
 private:
-    SVGPathSegLinetoHorizontalRel(SVGPathElement* element, SVGPathSegRole role, float x)
-        : SVGPathSegLinetoHorizontal(element, role, x)
+    SVGPathSegLinetoHorizontalRel( SVGPathElement *element, SVGPathSegRole role, float x )
+        : SVGPathSegLinetoHorizontal( element, role, x )
     {
     }
 
-    virtual unsigned short pathSegType() const { return PATHSEG_LINETO_HORIZONTAL_REL; }
-    virtual String pathSegTypeAsLetter() const { return "h"; }
+    virtual unsigned short pathSegType() const
+    {
+        return PATHSEG_LINETO_HORIZONTAL_REL;
+    }
+    virtual String pathSegTypeAsLetter() const
+    {
+        return "h";
+    }
 };
 
 } // namespace WebCore

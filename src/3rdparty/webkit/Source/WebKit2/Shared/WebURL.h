@@ -33,23 +33,34 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/text/WTFString.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 // WebURL - A URL type suitable for vending to an API.
 
-class WebURL : public APIObject {
+class WebURL : public APIObject
+{
 public:
     static const Type APIType = TypeURL;
 
-    static PassRefPtr<WebURL> create(const String& string)
+    static PassRefPtr<WebURL> create( const String &string )
     {
-        return adoptRef(new WebURL(string));
+        return adoptRef( new WebURL( string ) );
     }
 
-    bool isNull() const { return m_string.isNull(); }
-    bool isEmpty() const { return m_string.isEmpty(); }
+    bool isNull() const
+    {
+        return m_string.isNull();
+    }
+    bool isEmpty() const
+    {
+        return m_string.isEmpty();
+    }
 
-    const String& string() const { return m_string; }
+    const String &string() const
+    {
+        return m_string;
+    }
 
     String host() const
     {
@@ -64,19 +75,25 @@ public:
     }
 
 private:
-    WebURL(const String& string)
-        : m_string(string)
+    WebURL( const String &string )
+        : m_string( string )
     {
     }
 
     void parseURLIfNecessary() const
     {
-        if (m_parsedURL)
+        if ( m_parsedURL )
+        {
             return;
-        m_parsedURL = WTF::adoptPtr(new WebCore::KURL(WebCore::KURL(), m_string));
+        }
+
+        m_parsedURL = WTF::adoptPtr( new WebCore::KURL( WebCore::KURL(), m_string ) );
     }
 
-    virtual Type type() const { return APIType; }
+    virtual Type type() const
+    {
+        return APIType;
+    }
 
     String m_string;
     mutable OwnPtr<WebCore::KURL> m_parsedURL;

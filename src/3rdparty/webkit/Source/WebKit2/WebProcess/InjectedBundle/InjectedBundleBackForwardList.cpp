@@ -34,46 +34,75 @@
 
 using namespace WebCore;
 
-namespace WebKit {
-
-PassRefPtr<InjectedBundleBackForwardListItem> InjectedBundleBackForwardList::itemAtIndex(int index) const
+namespace WebKit
 {
-    if (!m_page)
+
+PassRefPtr<InjectedBundleBackForwardListItem> InjectedBundleBackForwardList::itemAtIndex( int index ) const
+{
+    if ( !m_page )
+    {
         return 0;
-    Page* page = m_page->corePage();
-    if (!page)
+    }
+
+    Page *page = m_page->corePage();
+
+    if ( !page )
+    {
         return 0;
-    return InjectedBundleBackForwardListItem::create(page->backForward()->itemAtIndex(index));
+    }
+
+    return InjectedBundleBackForwardListItem::create( page->backForward()->itemAtIndex( index ) );
 }
 
 int InjectedBundleBackForwardList::backListCount() const
 {
-    if (!m_page)
+    if ( !m_page )
+    {
         return 0;
-    Page* page = m_page->corePage();
-    if (!page)
+    }
+
+    Page *page = m_page->corePage();
+
+    if ( !page )
+    {
         return 0;
+    }
+
     return page->backForward()->backCount();
 }
 
 int InjectedBundleBackForwardList::forwardListCount() const
 {
-    if (!m_page)
+    if ( !m_page )
+    {
         return 0;
-    Page* page = m_page->corePage();
-    if (!page)
+    }
+
+    Page *page = m_page->corePage();
+
+    if ( !page )
+    {
         return 0;
+    }
+
     return page->backForward()->forwardCount();
 }
 
 void InjectedBundleBackForwardList::clear()
 {
-    if (!m_page)
+    if ( !m_page )
+    {
         return;
-    Page* page = m_page->corePage();
-    if (!page)
+    }
+
+    Page *page = m_page->corePage();
+
+    if ( !page )
+    {
         return;
-    static_cast<WebBackForwardListProxy*>(page->backForward()->client())->clear();
+    }
+
+    static_cast<WebBackForwardListProxy *>( page->backForward()->client() )->clear();
 }
 
 } // namespace WebKit

@@ -38,39 +38,39 @@ class QScriptScriptDataPrivate;
 
 class QScriptScriptData
 {
- public:
-   friend QDataStream &operator<<(QDataStream &, const QScriptScriptData &);
-   friend QDataStream &operator>>(QDataStream &, QScriptScriptData &);
+public:
+    friend QDataStream &operator<<( QDataStream &, const QScriptScriptData & );
+    friend QDataStream &operator>>( QDataStream &, QScriptScriptData & );
 
-   QScriptScriptData();
-   QScriptScriptData(const QString &contents, const QString &fileName,
-                     int baseLineNumber, const QDateTime &timeStamp = QDateTime());
-   QScriptScriptData(const QScriptScriptData &other);
-   ~QScriptScriptData();
+    QScriptScriptData();
+    QScriptScriptData( const QString &contents, const QString &fileName,
+                       int baseLineNumber, const QDateTime &timeStamp = QDateTime() );
+    QScriptScriptData( const QScriptScriptData &other );
+    ~QScriptScriptData();
 
-   QString contents() const;
-   QStringList lines(int startLineNumber, int count) const;
-   QString fileName() const;
-   int baseLineNumber() const;
-   QDateTime timeStamp() const;
+    QString contents() const;
+    QStringList lines( int startLineNumber, int count ) const;
+    QString fileName() const;
+    int baseLineNumber() const;
+    QDateTime timeStamp() const;
 
-   bool isValid() const;
+    bool isValid() const;
 
-   QScriptScriptData &operator=(const QScriptScriptData &other);
+    QScriptScriptData &operator=( const QScriptScriptData &other );
 
-   bool operator==(const QScriptScriptData &other) const;
-   bool operator!=(const QScriptScriptData &other) const;
+    bool operator==( const QScriptScriptData &other ) const;
+    bool operator!=( const QScriptScriptData &other ) const;
 
- private:
-   QScopedSharedPointer<QScriptScriptDataPrivate> d_ptr;
+private:
+    QScopedSharedPointer<QScriptScriptDataPrivate> d_ptr;
 
-   Q_DECLARE_PRIVATE(QScriptScriptData)
+    Q_DECLARE_PRIVATE( QScriptScriptData )
 };
 
 typedef QMap<qint64, QScriptScriptData> QScriptScriptMap;
 
-QDataStream &operator<<(QDataStream &, const QScriptScriptData &);
-QDataStream &operator>>(QDataStream &, QScriptScriptData &);
+QDataStream &operator<<( QDataStream &, const QScriptScriptData & );
+QDataStream &operator>>( QDataStream &, QScriptScriptData & );
 
 QT_END_NAMESPACE
 

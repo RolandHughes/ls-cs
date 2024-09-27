@@ -26,33 +26,35 @@
 #include "SVGAnimatedNumber.h"
 #include "SVGFilterPrimitiveStandardAttributes.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SVGFEMorphologyElement : public SVGFilterPrimitiveStandardAttributes {
+class SVGFEMorphologyElement : public SVGFilterPrimitiveStandardAttributes
+{
 public:
-    static PassRefPtr<SVGFEMorphologyElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<SVGFEMorphologyElement> create( const QualifiedName &, Document * );
 
-    void setRadius(float radiusX, float radiusY);
+    void setRadius( float radiusX, float radiusY );
 
 private:
-    SVGFEMorphologyElement(const QualifiedName&, Document*);
+    SVGFEMorphologyElement( const QualifiedName &, Document * );
 
-    virtual void parseMappedAttribute(Attribute*);
-    virtual bool setFilterEffectAttribute(FilterEffect*, const QualifiedName&);
-    virtual void svgAttributeChanged(const QualifiedName&);
-    virtual void synchronizeProperty(const QualifiedName&);
+    virtual void parseMappedAttribute( Attribute * );
+    virtual bool setFilterEffectAttribute( FilterEffect *, const QualifiedName & );
+    virtual void svgAttributeChanged( const QualifiedName & );
+    virtual void synchronizeProperty( const QualifiedName & );
     virtual void fillAttributeToPropertyTypeMap();
-    virtual AttributeToPropertyTypeMap& attributeToPropertyTypeMap();
-    virtual PassRefPtr<FilterEffect> build(SVGFilterBuilder*, Filter*);
+    virtual AttributeToPropertyTypeMap &attributeToPropertyTypeMap();
+    virtual PassRefPtr<FilterEffect> build( SVGFilterBuilder *, Filter * );
 
-    static const AtomicString& radiusXIdentifier();
-    static const AtomicString& radiusYIdentifier();
+    static const AtomicString &radiusXIdentifier();
+    static const AtomicString &radiusYIdentifier();
 
     // Animated property declarations
-    DECLARE_ANIMATED_STRING(In1, in1)
-    DECLARE_ANIMATED_ENUMERATION(_operator, _operator)
-    DECLARE_ANIMATED_NUMBER(RadiusX, radiusX)
-    DECLARE_ANIMATED_NUMBER(RadiusY, radiusY)
+    DECLARE_ANIMATED_STRING( In1, in1 )
+    DECLARE_ANIMATED_ENUMERATION( _operator, _operator )
+    DECLARE_ANIMATED_NUMBER( RadiusX, radiusX )
+    DECLARE_ANIMATED_NUMBER( RadiusY, radiusY )
 };
 
 } // namespace WebCore

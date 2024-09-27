@@ -49,822 +49,978 @@
 
 class CapabilitiesToStateMask
 {
- public:
-   CapabilitiesToStateMask(QBlittable::Capabilities capabilities)
-      : m_capabilities(capabilities)
-      , fillRectMask(0)
-      , drawRectMask(0)
-      , drawPixmapMask(0)
-      , alphaFillRectMask(0)
-      , opacityPixmapMask(0)
-      , capabillitiesState(0) {
-      if (capabilities & QBlittable::SolidRectCapability) {
-         setFillRectMask();
-      }
-      if (capabilities & QBlittable::SourcePixmapCapability) {
-         setSourcePixmapMask();
-      }
-      if (capabilities & QBlittable::SourceOverPixmapCapability) {
-         setSourceOverPixmapMask();
-      }
-      if (capabilities & QBlittable::SourceOverScaledPixmapCapability) {
-         setSourceOverScaledPixmapMask();
-      }
-      if (capabilities & QBlittable::AlphaFillRectCapability) {
-         setAlphaFillRectMask();
-      }
-      if (capabilities & QBlittable::OpacityPixmapCapability) {
-         setOpacityPixmapMask();
-      }
-   }
+public:
+    CapabilitiesToStateMask( QBlittable::Capabilities capabilities )
+        : m_capabilities( capabilities )
+        , fillRectMask( 0 )
+        , drawRectMask( 0 )
+        , drawPixmapMask( 0 )
+        , alphaFillRectMask( 0 )
+        , opacityPixmapMask( 0 )
+        , capabillitiesState( 0 )
+    {
+        if ( capabilities & QBlittable::SolidRectCapability )
+        {
+            setFillRectMask();
+        }
 
-   inline bool canBlitterFillRect() const {
-      return checkStateAgainstMask(capabillitiesState, fillRectMask);
-   }
+        if ( capabilities & QBlittable::SourcePixmapCapability )
+        {
+            setSourcePixmapMask();
+        }
 
-   inline bool canBlitterAlphaFillRect() const {
-      return checkStateAgainstMask(capabillitiesState, alphaFillRectMask);
-   }
+        if ( capabilities & QBlittable::SourceOverPixmapCapability )
+        {
+            setSourceOverPixmapMask();
+        }
 
-   inline bool canBlitterDrawRectMask() const {
-      return checkStateAgainstMask(capabillitiesState, drawRectMask);
-   }
+        if ( capabilities & QBlittable::SourceOverScaledPixmapCapability )
+        {
+            setSourceOverScaledPixmapMask();
+        }
 
-   bool canBlitterDrawPixmap(const QRectF &r, const QPixmap &pm, const QRectF &sr) const {
-      if (pm.handle()->classId() != QPlatformPixmap::ClassId::BlitterClass) {
-         return false;
-      }
+        if ( capabilities & QBlittable::AlphaFillRectCapability )
+        {
+            setAlphaFillRectMask();
+        }
 
-      if (checkStateAgainstMask(capabillitiesState, drawPixmapMask)) {
-         if (m_capabilities & (QBlittable::SourceOverPixmapCapability
-               | QBlittable::SourceOverScaledPixmapCapability)) {
-            if (r.size() != sr.size()) {
-               return m_capabilities & QBlittable::SourceOverScaledPixmapCapability;
-            } else {
-               return m_capabilities & QBlittable::SourceOverPixmapCapability;
+        if ( capabilities & QBlittable::OpacityPixmapCapability )
+        {
+            setOpacityPixmapMask();
+        }
+    }
+
+    inline bool canBlitterFillRect() const
+    {
+        return checkStateAgainstMask( capabillitiesState, fillRectMask );
+    }
+
+    inline bool canBlitterAlphaFillRect() const
+    {
+        return checkStateAgainstMask( capabillitiesState, alphaFillRectMask );
+    }
+
+    inline bool canBlitterDrawRectMask() const
+    {
+        return checkStateAgainstMask( capabillitiesState, drawRectMask );
+    }
+
+    bool canBlitterDrawPixmap( const QRectF &r, const QPixmap &pm, const QRectF &sr ) const
+    {
+        if ( pm.handle()->classId() != QPlatformPixmap::ClassId::BlitterClass )
+        {
+            return false;
+        }
+
+        if ( checkStateAgainstMask( capabillitiesState, drawPixmapMask ) )
+        {
+            if ( m_capabilities & ( QBlittable::SourceOverPixmapCapability
+                                    | QBlittable::SourceOverScaledPixmapCapability ) )
+            {
+                if ( r.size() != sr.size() )
+                {
+                    return m_capabilities & QBlittable::SourceOverScaledPixmapCapability;
+                }
+                else
+                {
+                    return m_capabilities & QBlittable::SourceOverPixmapCapability;
+                }
             }
-         }
-         if ((m_capabilities & QBlittable::SourcePixmapCapability) && r.size() == sr.size() && !pm.hasAlphaChannel()) {
-            return m_capabilities & QBlittable::SourcePixmapCapability;
-         }
-      }
-      return false;
-   }
 
-   bool canBlitterDrawPixmapOpacity(const QPixmap &pm) const {
-      if (pm.handle()->classId() != QPlatformPixmap::ClassId::BlitterClass) {
-         return false;
-      }
+            if ( ( m_capabilities & QBlittable::SourcePixmapCapability ) && r.size() == sr.size() && !pm.hasAlphaChannel() )
+            {
+                return m_capabilities & QBlittable::SourcePixmapCapability;
+            }
+        }
 
-      return checkStateAgainstMask(capabillitiesState, opacityPixmapMask);
-   }
+        return false;
+    }
 
-   bool canBlitterDrawCachedGlyphs(const QTransform &transform, QFontEngine::GlyphFormat requestedGlyphFormat, bool complexClip) const {
-      if (transform.type() > QTransform::TxScale) {
-         return false;
-      }
-      if (!(m_capabilities & QBlittable::DrawScaledCachedGlyphsCapability)) {
-         return false;
-      }
-      if (requestedGlyphFormat == QFontEngine::Format_ARGB && !(m_capabilities & QBlittable::SubPixelGlyphsCapability)) {
-         return false;
-      }
-      if (complexClip && !(m_capabilities & QBlittable::ComplexClipCapability)) {
-         return false;
-      }
-      return true;
-   }
-   inline void updateState(uint mask, bool on) {
-      updateStateBits(&capabillitiesState, mask, on);
-   }
+    bool canBlitterDrawPixmapOpacity( const QPixmap &pm ) const
+    {
+        if ( pm.handle()->classId() != QPlatformPixmap::ClassId::BlitterClass )
+        {
+            return false;
+        }
 
- private:
+        return checkStateAgainstMask( capabillitiesState, opacityPixmapMask );
+    }
 
-   static inline void updateStateBits(uint *state, uint mask, bool on) {
-      *state = on ? (*state | mask) : (*state & ~mask);
-   }
+    bool canBlitterDrawCachedGlyphs( const QTransform &transform, QFontEngine::GlyphFormat requestedGlyphFormat,
+                                     bool complexClip ) const
+    {
+        if ( transform.type() > QTransform::TxScale )
+        {
+            return false;
+        }
 
-   static inline bool checkStateAgainstMask(uint state, uint mask) {
-      return !state || (state & mask && !(state & ~mask));
-   }
+        if ( !( m_capabilities & QBlittable::DrawScaledCachedGlyphsCapability ) )
+        {
+            return false;
+        }
 
-   void setFillRectMask() {
-      updateStateBits(&fillRectMask, STATE_XFORM_SCALE, false);
-      updateStateBits(&fillRectMask, STATE_XFORM_COMPLEX, false);
+        if ( requestedGlyphFormat == QFontEngine::Format_ARGB && !( m_capabilities & QBlittable::SubPixelGlyphsCapability ) )
+        {
+            return false;
+        }
 
-      updateStateBits(&fillRectMask, STATE_BRUSH_PATTERN, false);
-      updateStateBits(&fillRectMask, STATE_BRUSH_ALPHA, false);
+        if ( complexClip && !( m_capabilities & QBlittable::ComplexClipCapability ) )
+        {
+            return false;
+        }
 
-      updateStateBits(&fillRectMask, STATE_PEN_ENABLED, true);
+        return true;
+    }
+    inline void updateState( uint mask, bool on )
+    {
+        updateStateBits( &capabillitiesState, mask, on );
+    }
 
-      //Sub-pixel aliasing should not be sent to the blitter
-      updateStateBits(&fillRectMask, STATE_ANTIALIASING, true);
-      updateStateBits(&fillRectMask, STATE_ALPHA, false);
-      updateStateBits(&fillRectMask, STATE_BLENDING_COMPLEX, false);
+private:
 
-      updateStateBits(&fillRectMask, STATE_CLIPSYS_COMPLEX, false);
-      updateStateBits(&fillRectMask, STATE_CLIP_COMPLEX, false);
-   }
+    static inline void updateStateBits( uint *state, uint mask, bool on )
+    {
+        *state = on ? ( *state | mask ) : ( *state & ~mask );
+    }
 
-   void setAlphaFillRectMask() {
-      updateStateBits(&alphaFillRectMask, STATE_XFORM_SCALE, false);
-      updateStateBits(&alphaFillRectMask, STATE_XFORM_COMPLEX, false);
+    static inline bool checkStateAgainstMask( uint state, uint mask )
+    {
+        return !state || ( state & mask && !( state & ~mask ) );
+    }
 
-      updateStateBits(&alphaFillRectMask, STATE_BRUSH_PATTERN, false);
-      updateStateBits(&alphaFillRectMask, STATE_BRUSH_ALPHA, true);
+    void setFillRectMask()
+    {
+        updateStateBits( &fillRectMask, STATE_XFORM_SCALE, false );
+        updateStateBits( &fillRectMask, STATE_XFORM_COMPLEX, false );
 
-      updateStateBits(&alphaFillRectMask, STATE_PEN_ENABLED, true);
+        updateStateBits( &fillRectMask, STATE_BRUSH_PATTERN, false );
+        updateStateBits( &fillRectMask, STATE_BRUSH_ALPHA, false );
 
-      //Sub-pixel aliasing should not be sent to the blitter
-      updateStateBits(&alphaFillRectMask, STATE_ANTIALIASING, true);
-      updateStateBits(&alphaFillRectMask, STATE_ALPHA, false);
-      updateStateBits(&alphaFillRectMask, STATE_BLENDING_COMPLEX, false);
+        updateStateBits( &fillRectMask, STATE_PEN_ENABLED, true );
 
-      updateStateBits(&alphaFillRectMask, STATE_CLIPSYS_COMPLEX, false);
-      updateStateBits(&alphaFillRectMask, STATE_CLIP_COMPLEX, false);
-   }
+        //Sub-pixel aliasing should not be sent to the blitter
+        updateStateBits( &fillRectMask, STATE_ANTIALIASING, true );
+        updateStateBits( &fillRectMask, STATE_ALPHA, false );
+        updateStateBits( &fillRectMask, STATE_BLENDING_COMPLEX, false );
 
-   void setSourcePixmapMask() {
-      updateStateBits(&drawPixmapMask, STATE_XFORM_SCALE, true);
-      updateStateBits(&drawPixmapMask, STATE_XFORM_COMPLEX, false);
+        updateStateBits( &fillRectMask, STATE_CLIPSYS_COMPLEX, false );
+        updateStateBits( &fillRectMask, STATE_CLIP_COMPLEX, false );
+    }
 
-      updateStateBits(&drawPixmapMask, STATE_BRUSH_PATTERN, true);
-      updateStateBits(&drawPixmapMask, STATE_BRUSH_ALPHA, false);
+    void setAlphaFillRectMask()
+    {
+        updateStateBits( &alphaFillRectMask, STATE_XFORM_SCALE, false );
+        updateStateBits( &alphaFillRectMask, STATE_XFORM_COMPLEX, false );
 
-      updateStateBits(&drawPixmapMask, STATE_PEN_ENABLED, true);
+        updateStateBits( &alphaFillRectMask, STATE_BRUSH_PATTERN, false );
+        updateStateBits( &alphaFillRectMask, STATE_BRUSH_ALPHA, true );
 
-      updateStateBits(&drawPixmapMask, STATE_ANTIALIASING, true);
-      updateStateBits(&drawPixmapMask, STATE_ALPHA, false);
-      updateStateBits(&drawPixmapMask, STATE_BLENDING_COMPLEX, false);
+        updateStateBits( &alphaFillRectMask, STATE_PEN_ENABLED, true );
 
-      updateStateBits(&drawPixmapMask, STATE_CLIPSYS_COMPLEX, false);
-      updateStateBits(&drawPixmapMask, STATE_CLIP_COMPLEX, false);
-   }
+        //Sub-pixel aliasing should not be sent to the blitter
+        updateStateBits( &alphaFillRectMask, STATE_ANTIALIASING, true );
+        updateStateBits( &alphaFillRectMask, STATE_ALPHA, false );
+        updateStateBits( &alphaFillRectMask, STATE_BLENDING_COMPLEX, false );
 
-   void setSourceOverPixmapMask() {
-      setSourcePixmapMask();
-   }
+        updateStateBits( &alphaFillRectMask, STATE_CLIPSYS_COMPLEX, false );
+        updateStateBits( &alphaFillRectMask, STATE_CLIP_COMPLEX, false );
+    }
 
-   void setSourceOverScaledPixmapMask() {
-      setSourceOverPixmapMask();
-      updateStateBits(&drawRectMask, STATE_XFORM_SCALE, true);
-   }
+    void setSourcePixmapMask()
+    {
+        updateStateBits( &drawPixmapMask, STATE_XFORM_SCALE, true );
+        updateStateBits( &drawPixmapMask, STATE_XFORM_COMPLEX, false );
 
-   void setOpacityPixmapMask() {
-      updateStateBits(&opacityPixmapMask, STATE_XFORM_SCALE, true);
-      updateStateBits(&opacityPixmapMask, STATE_XFORM_COMPLEX, false);
+        updateStateBits( &drawPixmapMask, STATE_BRUSH_PATTERN, true );
+        updateStateBits( &drawPixmapMask, STATE_BRUSH_ALPHA, false );
 
-      updateStateBits(&opacityPixmapMask, STATE_BRUSH_PATTERN, true);
-      updateStateBits(&opacityPixmapMask, STATE_BRUSH_ALPHA, true);
+        updateStateBits( &drawPixmapMask, STATE_PEN_ENABLED, true );
 
-      updateStateBits(&opacityPixmapMask, STATE_PEN_ENABLED, true);
+        updateStateBits( &drawPixmapMask, STATE_ANTIALIASING, true );
+        updateStateBits( &drawPixmapMask, STATE_ALPHA, false );
+        updateStateBits( &drawPixmapMask, STATE_BLENDING_COMPLEX, false );
 
-      updateStateBits(&opacityPixmapMask, STATE_ANTIALIASING, true);
-      updateStateBits(&opacityPixmapMask, STATE_ALPHA, true);
-      updateStateBits(&opacityPixmapMask, STATE_BLENDING_COMPLEX, false);
+        updateStateBits( &drawPixmapMask, STATE_CLIPSYS_COMPLEX, false );
+        updateStateBits( &drawPixmapMask, STATE_CLIP_COMPLEX, false );
+    }
 
-      updateStateBits(&opacityPixmapMask, STATE_CLIPSYS_COMPLEX, false);
-      updateStateBits(&opacityPixmapMask, STATE_CLIP_COMPLEX, false);
-   }
+    void setSourceOverPixmapMask()
+    {
+        setSourcePixmapMask();
+    }
 
-   QBlittable::Capabilities m_capabilities;
-   uint fillRectMask;
-   uint drawRectMask;
-   uint drawPixmapMask;
-   uint alphaFillRectMask;
-   uint opacityPixmapMask;
-   uint capabillitiesState;
+    void setSourceOverScaledPixmapMask()
+    {
+        setSourceOverPixmapMask();
+        updateStateBits( &drawRectMask, STATE_XFORM_SCALE, true );
+    }
+
+    void setOpacityPixmapMask()
+    {
+        updateStateBits( &opacityPixmapMask, STATE_XFORM_SCALE, true );
+        updateStateBits( &opacityPixmapMask, STATE_XFORM_COMPLEX, false );
+
+        updateStateBits( &opacityPixmapMask, STATE_BRUSH_PATTERN, true );
+        updateStateBits( &opacityPixmapMask, STATE_BRUSH_ALPHA, true );
+
+        updateStateBits( &opacityPixmapMask, STATE_PEN_ENABLED, true );
+
+        updateStateBits( &opacityPixmapMask, STATE_ANTIALIASING, true );
+        updateStateBits( &opacityPixmapMask, STATE_ALPHA, true );
+        updateStateBits( &opacityPixmapMask, STATE_BLENDING_COMPLEX, false );
+
+        updateStateBits( &opacityPixmapMask, STATE_CLIPSYS_COMPLEX, false );
+        updateStateBits( &opacityPixmapMask, STATE_CLIP_COMPLEX, false );
+    }
+
+    QBlittable::Capabilities m_capabilities;
+    uint fillRectMask;
+    uint drawRectMask;
+    uint drawPixmapMask;
+    uint alphaFillRectMask;
+    uint opacityPixmapMask;
+    uint capabillitiesState;
 };
 
 class QBlitterPaintEnginePrivate : public QRasterPaintEnginePrivate
 {
-   Q_DECLARE_PUBLIC(QBlitterPaintEngine)
+    Q_DECLARE_PUBLIC( QBlitterPaintEngine )
 
- public:
-   QBlitterPaintEnginePrivate(QBlittablePlatformPixmap *p)
-      : QRasterPaintEnginePrivate()
-      , pmData(p)
-      , caps(pmData->blittable()->capabilities())
-      , hasXForm(false)
+public:
+    QBlitterPaintEnginePrivate( QBlittablePlatformPixmap *p )
+        : QRasterPaintEnginePrivate()
+        , pmData( p )
+        , caps( pmData->blittable()->capabilities() )
+        , hasXForm( false )
 
-   {}
+    {}
 
-   void lock();
-   void unlock();
-   void fillRect(const QRectF &rect, const QColor &color, bool alpha);
-   void clipAndDrawPixmap(const QRectF &clip, const QRectF &target, const QPixmap &pm, const QRectF &sr, bool opacity);
+    void lock();
+    void unlock();
+    void fillRect( const QRectF &rect, const QColor &color, bool alpha );
+    void clipAndDrawPixmap( const QRectF &clip, const QRectF &target, const QPixmap &pm, const QRectF &sr, bool opacity );
 
-   void updateCompleteState(QPainterState *s);
-   void updatePenState(QPainterState *s);
-   void updateBrushState(QPainterState *s);
-   void updateOpacityState(QPainterState *s);
-   void updateCompositionModeState(QPainterState *s);
-   void updateRenderHintsState(QPainterState *s);
-   void updateTransformState(QPainterState *s);
-   void updateClipState(QPainterState *s);
+    void updateCompleteState( QPainterState *s );
+    void updatePenState( QPainterState *s );
+    void updateBrushState( QPainterState *s );
+    void updateOpacityState( QPainterState *s );
+    void updateCompositionModeState( QPainterState *s );
+    void updateRenderHintsState( QPainterState *s );
+    void updateTransformState( QPainterState *s );
+    void updateClipState( QPainterState *s );
 
-   QBlittablePlatformPixmap *pmData;
-   CapabilitiesToStateMask caps;
-   uint hasXForm;
+    QBlittablePlatformPixmap *pmData;
+    CapabilitiesToStateMask caps;
+    uint hasXForm;
 };
 
 inline void QBlitterPaintEnginePrivate::lock()
 {
-   if (!pmData->blittable()->isLocked()) {
-      rasterBuffer->prepare(pmData->buffer());
-   }
+    if ( !pmData->blittable()->isLocked() )
+    {
+        rasterBuffer->prepare( pmData->buffer() );
+    }
 }
 
 inline void QBlitterPaintEnginePrivate::unlock()
 {
-   pmData->blittable()->unlock();
+    pmData->blittable()->unlock();
 }
 
 // State tracking to make decisions
-void QBlitterPaintEnginePrivate::updateCompleteState(QPainterState *s)
+void QBlitterPaintEnginePrivate::updateCompleteState( QPainterState *s )
 {
-   updatePenState(s);
-   updateBrushState(s);
-   updateOpacityState(s);
-   updateCompositionModeState(s);
-   updateRenderHintsState(s);
-   updateTransformState(s);
-   updateClipState(s);
+    updatePenState( s );
+    updateBrushState( s );
+    updateOpacityState( s );
+    updateCompositionModeState( s );
+    updateRenderHintsState( s );
+    updateTransformState( s );
+    updateClipState( s );
 }
 
-void QBlitterPaintEnginePrivate::updatePenState(QPainterState *s)
+void QBlitterPaintEnginePrivate::updatePenState( QPainterState *s )
 {
-   caps.updateState(STATE_PEN_ENABLED, qpen_style(s->pen) != Qt::NoPen);
+    caps.updateState( STATE_PEN_ENABLED, qpen_style( s->pen ) != Qt::NoPen );
 }
 
-void QBlitterPaintEnginePrivate::updateBrushState(QPainterState *s)
+void QBlitterPaintEnginePrivate::updateBrushState( QPainterState *s )
 {
-   Qt::BrushStyle style = qbrush_style(s->brush);
+    Qt::BrushStyle style = qbrush_style( s->brush );
 
-   caps.updateState(STATE_BRUSH_PATTERN, style > Qt::SolidPattern);
-   caps.updateState(STATE_BRUSH_ALPHA,
-      qbrush_color(s->brush).alpha() < 255);
+    caps.updateState( STATE_BRUSH_PATTERN, style > Qt::SolidPattern );
+    caps.updateState( STATE_BRUSH_ALPHA,
+                      qbrush_color( s->brush ).alpha() < 255 );
 }
 
-void QBlitterPaintEnginePrivate::updateOpacityState(QPainterState *s)
+void QBlitterPaintEnginePrivate::updateOpacityState( QPainterState *s )
 {
-   bool translucent = s->opacity < 1;
-   caps.updateState(STATE_ALPHA, translucent);
+    bool translucent = s->opacity < 1;
+    caps.updateState( STATE_ALPHA, translucent );
 }
 
-void QBlitterPaintEnginePrivate::updateCompositionModeState(QPainterState *s)
+void QBlitterPaintEnginePrivate::updateCompositionModeState( QPainterState *s )
 {
-   bool nonTrivial = s->composition_mode != QPainter::CompositionMode_SourceOver
-      && s->composition_mode != QPainter::CompositionMode_Source;
+    bool nonTrivial = s->composition_mode != QPainter::CompositionMode_SourceOver
+                      && s->composition_mode != QPainter::CompositionMode_Source;
 
-   caps.updateState(STATE_BLENDING_COMPLEX, nonTrivial);
+    caps.updateState( STATE_BLENDING_COMPLEX, nonTrivial );
 }
 
-void QBlitterPaintEnginePrivate::updateRenderHintsState(QPainterState *s)
+void QBlitterPaintEnginePrivate::updateRenderHintsState( QPainterState *s )
 {
-   bool aa = s->renderHints & QPainter::Antialiasing;
-   caps.updateState(STATE_ANTIALIASING, aa);
+    bool aa = s->renderHints & QPainter::Antialiasing;
+    caps.updateState( STATE_ANTIALIASING, aa );
 }
 
-void QBlitterPaintEnginePrivate::updateTransformState(QPainterState *s)
+void QBlitterPaintEnginePrivate::updateTransformState( QPainterState *s )
 {
-   QTransform::TransformationType type = s->matrix.type();
+    QTransform::TransformationType type = s->matrix.type();
 
-   // consider scaling operations with a negative factor as "complex" for now.
-   // as some blitters could handle axisymmetrical operations, we should improve blitter
-   // paint engine to handle them as a capability
-   caps.updateState(STATE_XFORM_COMPLEX, (type > QTransform::TxScale) ||
-      ((type == QTransform::TxScale) && ((s->matrix.m11() < 0.0) || (s->matrix.m22() < 0.0))));
-   caps.updateState(STATE_XFORM_SCALE, type > QTransform::TxTranslate);
+    // consider scaling operations with a negative factor as "complex" for now.
+    // as some blitters could handle axisymmetrical operations, we should improve blitter
+    // paint engine to handle them as a capability
+    caps.updateState( STATE_XFORM_COMPLEX, ( type > QTransform::TxScale ) ||
+                      ( ( type == QTransform::TxScale ) && ( ( s->matrix.m11() < 0.0 ) || ( s->matrix.m22() < 0.0 ) ) ) );
+    caps.updateState( STATE_XFORM_SCALE, type > QTransform::TxTranslate );
 
-   hasXForm = type >= QTransform::TxTranslate;
+    hasXForm = type >= QTransform::TxTranslate;
 }
 
-void QBlitterPaintEnginePrivate::updateClipState(QPainterState *)
+void QBlitterPaintEnginePrivate::updateClipState( QPainterState * )
 {
-   const QClipData *clipData = clip();
-   bool complexClip = clipData && !(clipData->hasRectClip || clipData->hasRegionClip);
-   caps.updateState(STATE_CLIP_COMPLEX, complexClip);
+    const QClipData *clipData = clip();
+    bool complexClip = clipData && !( clipData->hasRectClip || clipData->hasRegionClip );
+    caps.updateState( STATE_CLIP_COMPLEX, complexClip );
 }
 
-void QBlitterPaintEnginePrivate::fillRect(const QRectF &rect, const QColor &color, bool alpha)
+void QBlitterPaintEnginePrivate::fillRect( const QRectF &rect, const QColor &color, bool alpha )
 {
-   Q_Q(QBlitterPaintEngine);
+    Q_Q( QBlitterPaintEngine );
 
-   pmData->unmarkRasterOverlay(rect);
-   QRectF targetRect = rect;
+    pmData->unmarkRasterOverlay( rect );
+    QRectF targetRect = rect;
 
-   if (hasXForm) {
-      targetRect = q->state()->matrix.mapRect(rect);
-   }
+    if ( hasXForm )
+    {
+        targetRect = q->state()->matrix.mapRect( rect );
+    }
 
-   const QClipData *clipData = clip();
+    const QClipData *clipData = clip();
 
-   if (clipData) {
-      if (clipData->hasRectClip) {
-         unlock();
-         if (alpha) {
-            pmData->blittable()->alphaFillRect(targetRect & clipData->clipRect, color, q->state()->compositionMode());
-         } else {
-            pmData->blittable()->fillRect(targetRect & clipData->clipRect, color);
-         }
+    if ( clipData )
+    {
+        if ( clipData->hasRectClip )
+        {
+            unlock();
 
-      } else if (clipData->hasRegionClip) {
-         QVector<QRect> rects = clipData->clipRegion.rects();
-
-         for (int i = 0; i < rects.size(); ++i) {
-            QRect intersectRect = rects.at(i).intersected(targetRect.toRect());
-
-            if (! intersectRect.isEmpty()) {
-               unlock();
-               if (alpha) {
-                  pmData->blittable()->alphaFillRect(intersectRect, color, q->state()->compositionMode());
-               } else {
-                  pmData->blittable()->fillRect(intersectRect, color);
-               }
+            if ( alpha )
+            {
+                pmData->blittable()->alphaFillRect( targetRect & clipData->clipRect, color, q->state()->compositionMode() );
             }
-         }
-      }
+            else
+            {
+                pmData->blittable()->fillRect( targetRect & clipData->clipRect, color );
+            }
 
-   } else {
-      if (targetRect.x() >= 0 && targetRect.y() >= 0
-         && targetRect.width() <= q->paintDevice()->width()
-         && targetRect.height() <= q->paintDevice()->height()) {
-         unlock();
+        }
+        else if ( clipData->hasRegionClip )
+        {
+            QVector<QRect> rects = clipData->clipRegion.rects();
 
-         if (alpha) {
-            pmData->blittable()->alphaFillRect(targetRect, color, q->state()->compositionMode());
-         } else {
-            pmData->blittable()->fillRect(targetRect, color);
-         }
+            for ( int i = 0; i < rects.size(); ++i )
+            {
+                QRect intersectRect = rects.at( i ).intersected( targetRect.toRect() );
 
-      } else {
-         QRectF deviceRect(0, 0, q->paintDevice()->width(), q->paintDevice()->height());
-         unlock();
-         if (alpha) {
-            pmData->blittable()->alphaFillRect(deviceRect & targetRect, color, q->state()->compositionMode());
-         } else {
-            pmData->blittable()->fillRect(deviceRect & targetRect, color);
-         }
-      }
-   }
+                if ( ! intersectRect.isEmpty() )
+                {
+                    unlock();
+
+                    if ( alpha )
+                    {
+                        pmData->blittable()->alphaFillRect( intersectRect, color, q->state()->compositionMode() );
+                    }
+                    else
+                    {
+                        pmData->blittable()->fillRect( intersectRect, color );
+                    }
+                }
+            }
+        }
+
+    }
+    else
+    {
+        if ( targetRect.x() >= 0 && targetRect.y() >= 0
+                && targetRect.width() <= q->paintDevice()->width()
+                && targetRect.height() <= q->paintDevice()->height() )
+        {
+            unlock();
+
+            if ( alpha )
+            {
+                pmData->blittable()->alphaFillRect( targetRect, color, q->state()->compositionMode() );
+            }
+            else
+            {
+                pmData->blittable()->fillRect( targetRect, color );
+            }
+
+        }
+        else
+        {
+            QRectF deviceRect( 0, 0, q->paintDevice()->width(), q->paintDevice()->height() );
+            unlock();
+
+            if ( alpha )
+            {
+                pmData->blittable()->alphaFillRect( deviceRect & targetRect, color, q->state()->compositionMode() );
+            }
+            else
+            {
+                pmData->blittable()->fillRect( deviceRect & targetRect, color );
+            }
+        }
+    }
 }
 
-void QBlitterPaintEnginePrivate::clipAndDrawPixmap(const QRectF &clip, const QRectF &target, const QPixmap &pm,
-   const QRectF &sr, bool opacity)
+void QBlitterPaintEnginePrivate::clipAndDrawPixmap( const QRectF &clip, const QRectF &target, const QPixmap &pm,
+        const QRectF &sr, bool opacity )
 {
-   Q_Q(QBlitterPaintEngine);
-   QRectF intersectedRect = clip.intersected(target);
+    Q_Q( QBlitterPaintEngine );
+    QRectF intersectedRect = clip.intersected( target );
 
-   if (intersectedRect.isEmpty()) {
-      return;
-   }
+    if ( intersectedRect.isEmpty() )
+    {
+        return;
+    }
 
-   QRectF source = sr;
-   if (intersectedRect.size() != target.size()) {
-      if (sr.size() == target.size()) {
-         // no resize
-         qreal deltaTop = target.top() - intersectedRect.top();
-         qreal deltaLeft = target.left() - intersectedRect.left();
-         qreal deltaBottom = target.bottom() - intersectedRect.bottom();
-         qreal deltaRight = target.right() - intersectedRect.right();
-         source.adjust(-deltaLeft, -deltaTop, -deltaRight, -deltaBottom);
-      } else {
-         // resize case
-         qreal hFactor = sr.size().width() / target.size().width();
-         qreal vFactor = sr.size().height() / target.size().height();
-         qreal deltaTop = (target.top() - intersectedRect.top()) * vFactor;
-         qreal deltaLeft = (target.left() - intersectedRect.left()) * hFactor;
-         qreal deltaBottom = (target.bottom() - intersectedRect.bottom()) * vFactor;
-         qreal deltaRight = (target.right() - intersectedRect.right()) * hFactor;
-         source.adjust(-deltaLeft, -deltaTop, -deltaRight, -deltaBottom);
-      }
-   }
+    QRectF source = sr;
 
-   pmData->unmarkRasterOverlay(intersectedRect);
-   if (opacity) {
-      pmData->blittable()->drawPixmapOpacity(intersectedRect, pm, source, q->state()->compositionMode(),
-         q->state()->opacity);
-   } else {
-      pmData->blittable()->drawPixmap(intersectedRect, pm, source);
-   }
+    if ( intersectedRect.size() != target.size() )
+    {
+        if ( sr.size() == target.size() )
+        {
+            // no resize
+            qreal deltaTop = target.top() - intersectedRect.top();
+            qreal deltaLeft = target.left() - intersectedRect.left();
+            qreal deltaBottom = target.bottom() - intersectedRect.bottom();
+            qreal deltaRight = target.right() - intersectedRect.right();
+            source.adjust( -deltaLeft, -deltaTop, -deltaRight, -deltaBottom );
+        }
+        else
+        {
+            // resize case
+            qreal hFactor = sr.size().width() / target.size().width();
+            qreal vFactor = sr.size().height() / target.size().height();
+            qreal deltaTop = ( target.top() - intersectedRect.top() ) * vFactor;
+            qreal deltaLeft = ( target.left() - intersectedRect.left() ) * hFactor;
+            qreal deltaBottom = ( target.bottom() - intersectedRect.bottom() ) * vFactor;
+            qreal deltaRight = ( target.right() - intersectedRect.right() ) * hFactor;
+            source.adjust( -deltaLeft, -deltaTop, -deltaRight, -deltaBottom );
+        }
+    }
+
+    pmData->unmarkRasterOverlay( intersectedRect );
+
+    if ( opacity )
+    {
+        pmData->blittable()->drawPixmapOpacity( intersectedRect, pm, source, q->state()->compositionMode(),
+                                                q->state()->opacity );
+    }
+    else
+    {
+        pmData->blittable()->drawPixmap( intersectedRect, pm, source );
+    }
 }
 
-QBlitterPaintEngine::QBlitterPaintEngine(QBlittablePlatformPixmap *p)
-   : QRasterPaintEngine(*(new QBlitterPaintEnginePrivate(p)), p->buffer())
+QBlitterPaintEngine::QBlitterPaintEngine( QBlittablePlatformPixmap *p )
+    : QRasterPaintEngine( *( new QBlitterPaintEnginePrivate( p ) ), p->buffer() )
 {}
 
 // State tracking
 void QBlitterPaintEngine::penChanged()
 {
-   Q_D(QBlitterPaintEngine);
+    Q_D( QBlitterPaintEngine );
 
-   QRasterPaintEngine::penChanged();
-   d->updatePenState(state());
+    QRasterPaintEngine::penChanged();
+    d->updatePenState( state() );
 }
 
 void QBlitterPaintEngine::brushChanged()
 {
-   Q_D(QBlitterPaintEngine);
+    Q_D( QBlitterPaintEngine );
 
-   QRasterPaintEngine::brushChanged();
-   d->updateBrushState(state());
+    QRasterPaintEngine::brushChanged();
+    d->updateBrushState( state() );
 }
 
 void QBlitterPaintEngine::opacityChanged()
 {
-   Q_D(QBlitterPaintEngine);
+    Q_D( QBlitterPaintEngine );
 
-   QRasterPaintEngine::opacityChanged();
-   d->updateOpacityState(state());
+    QRasterPaintEngine::opacityChanged();
+    d->updateOpacityState( state() );
 }
 
 void QBlitterPaintEngine::compositionModeChanged()
 {
-   Q_D(QBlitterPaintEngine);
+    Q_D( QBlitterPaintEngine );
 
-   QRasterPaintEngine::compositionModeChanged();
-   d->updateCompositionModeState(state());
+    QRasterPaintEngine::compositionModeChanged();
+    d->updateCompositionModeState( state() );
 }
 
 void QBlitterPaintEngine::renderHintsChanged()
 {
-   Q_D(QBlitterPaintEngine);
+    Q_D( QBlitterPaintEngine );
 
-   QRasterPaintEngine::renderHintsChanged();
-   d->updateRenderHintsState(state());
+    QRasterPaintEngine::renderHintsChanged();
+    d->updateRenderHintsState( state() );
 }
 
 void QBlitterPaintEngine::transformChanged()
 {
-   Q_D(QBlitterPaintEngine);
+    Q_D( QBlitterPaintEngine );
 
-   QRasterPaintEngine::transformChanged();
-   d->updateTransformState(state());
+    QRasterPaintEngine::transformChanged();
+    d->updateTransformState( state() );
 }
 
 void QBlitterPaintEngine::clipEnabledChanged()
 {
-   Q_D(QBlitterPaintEngine);
-   QRasterPaintEngine::clipEnabledChanged();
-   d->updateClipState(state());
+    Q_D( QBlitterPaintEngine );
+    QRasterPaintEngine::clipEnabledChanged();
+    d->updateClipState( state() );
 }
 
-bool QBlitterPaintEngine::begin(QPaintDevice *pdev)
+bool QBlitterPaintEngine::begin( QPaintDevice *pdev )
 {
-   Q_D(QBlitterPaintEngine);
-   bool ok = QRasterPaintEngine::begin(pdev);
+    Q_D( QBlitterPaintEngine );
+    bool ok = QRasterPaintEngine::begin( pdev );
 
 #ifdef QT_BLITTER_RASTEROVERLAY
-   d->pmData->unmergeOverlay();
+    d->pmData->unmergeOverlay();
 #endif
 
-   d->pdev = pdev;
-   return ok;
+    d->pdev = pdev;
+    return ok;
 }
 
 bool QBlitterPaintEngine::end()
 {
 #ifdef QT_BLITTER_RASTEROVERLAY
-   Q_D(QBlitterPaintEngine);
-   d->pmData->mergeOverlay();
+    Q_D( QBlitterPaintEngine );
+    d->pmData->mergeOverlay();
 #endif
 
-   return QRasterPaintEngine::end();
+    return QRasterPaintEngine::end();
 }
 
-void QBlitterPaintEngine::setState(QPainterState *s)
+void QBlitterPaintEngine::setState( QPainterState *s )
 {
-   Q_D(QBlitterPaintEngine);
+    Q_D( QBlitterPaintEngine );
 
-   QRasterPaintEngine::setState(s);
-   d->updateCompleteState(s);
+    QRasterPaintEngine::setState( s );
+    d->updateCompleteState( s );
 }
 
 // Accelerated paths
-void QBlitterPaintEngine::fill(const QVectorPath &path, const QBrush &brush)
+void QBlitterPaintEngine::fill( const QVectorPath &path, const QBrush &brush )
 {
-   Q_D(QBlitterPaintEngine);
-   if (path.shape() == QVectorPath::RectangleHint) {
-      QRectF rect(((const QPointF *) path.points())[0], ((const QPointF *) path.points())[2]);
-      fillRect(rect, brush);
-   } else {
-      d->lock();
-      d->pmData->markRasterOverlay(path);
-      QRasterPaintEngine::fill(path, brush);
-   }
+    Q_D( QBlitterPaintEngine );
+
+    if ( path.shape() == QVectorPath::RectangleHint )
+    {
+        QRectF rect( ( ( const QPointF * ) path.points() )[0], ( ( const QPointF * ) path.points() )[2] );
+        fillRect( rect, brush );
+    }
+    else
+    {
+        d->lock();
+        d->pmData->markRasterOverlay( path );
+        QRasterPaintEngine::fill( path, brush );
+    }
 }
 
-void QBlitterPaintEngine::fillRect(const QRectF &rect, const QColor &color)
+void QBlitterPaintEngine::fillRect( const QRectF &rect, const QColor &color )
 {
-   Q_D(QBlitterPaintEngine);
-   if (d->caps.canBlitterAlphaFillRect()) {
-      d->fillRect(rect, color, true);
-   } else if (d->caps.canBlitterFillRect() && color.alpha() == 0xff) {
-      d->fillRect(rect, color, false);
-   } else {
-      d->lock();
-      d->pmData->markRasterOverlay(rect);
-      QRasterPaintEngine::fillRect(rect, color);
-   }
+    Q_D( QBlitterPaintEngine );
+
+    if ( d->caps.canBlitterAlphaFillRect() )
+    {
+        d->fillRect( rect, color, true );
+    }
+    else if ( d->caps.canBlitterFillRect() && color.alpha() == 0xff )
+    {
+        d->fillRect( rect, color, false );
+    }
+    else
+    {
+        d->lock();
+        d->pmData->markRasterOverlay( rect );
+        QRasterPaintEngine::fillRect( rect, color );
+    }
 }
 
-void QBlitterPaintEngine::fillRect(const QRectF &rect, const QBrush &brush)
+void QBlitterPaintEngine::fillRect( const QRectF &rect, const QBrush &brush )
 {
-   if (rect.size().isEmpty()) {
-      return;
-   }
+    if ( rect.size().isEmpty() )
+    {
+        return;
+    }
 
-   Q_D(QBlitterPaintEngine);
+    Q_D( QBlitterPaintEngine );
 
-   if (qbrush_style(brush) == Qt::SolidPattern
-      && d->caps.canBlitterAlphaFillRect()) {
-      d->fillRect(rect, qbrush_color(brush), true);
-   } else if (qbrush_style(brush) == Qt::SolidPattern
-      && qbrush_color(brush).alpha() == 0xff
-      && d->caps.canBlitterFillRect()) {
-      d->fillRect(rect, qbrush_color(brush), false);
-   } else if ((brush.style() == Qt::TexturePattern) &&
-      (brush.transform().type() <= QTransform::TxTranslate) &&
-      ((d->caps.canBlitterDrawPixmapOpacity(brush.texture())) ||
-         (d->caps.canBlitterDrawPixmap(rect, brush.texture(), rect)))) {
-      bool rectIsFilled = false;
-      QRectF transformedRect = state()->matrix.mapRect(rect);
-      qreal x = transformedRect.x();
-      qreal y = transformedRect.y();
-      QPixmap pm = brush.texture();
-      d->unlock();
+    if ( qbrush_style( brush ) == Qt::SolidPattern
+            && d->caps.canBlitterAlphaFillRect() )
+    {
+        d->fillRect( rect, qbrush_color( brush ), true );
+    }
+    else if ( qbrush_style( brush ) == Qt::SolidPattern
+              && qbrush_color( brush ).alpha() == 0xff
+              && d->caps.canBlitterFillRect() )
+    {
+        d->fillRect( rect, qbrush_color( brush ), false );
+    }
+    else if ( ( brush.style() == Qt::TexturePattern ) &&
+              ( brush.transform().type() <= QTransform::TxTranslate ) &&
+              ( ( d->caps.canBlitterDrawPixmapOpacity( brush.texture() ) ) ||
+                ( d->caps.canBlitterDrawPixmap( rect, brush.texture(), rect ) ) ) )
+    {
+        bool rectIsFilled = false;
+        QRectF transformedRect = state()->matrix.mapRect( rect );
+        qreal x = transformedRect.x();
+        qreal y = transformedRect.y();
+        QPixmap pm = brush.texture();
+        d->unlock();
 
-      int srcX = int(rect.x() - state()->brushOrigin.x() - brush.transform().dx()) % pm.width();
+        int srcX = int( rect.x() - state()->brushOrigin.x() - brush.transform().dx() ) % pm.width();
 
-      if (srcX < 0) {
-         srcX = pm.width() + srcX;
-      }
+        if ( srcX < 0 )
+        {
+            srcX = pm.width() + srcX;
+        }
 
-      const int startX = srcX;
-      int srcY = int(rect.y() - state()->brushOrigin.y() - brush.transform().dy()) % pm.height();
-      if (srcY < 0) {
-         srcY = pm.height() + srcY;
-      }
+        const int startX = srcX;
+        int srcY = int( rect.y() - state()->brushOrigin.y() - brush.transform().dy() ) % pm.height();
 
-      while (!rectIsFilled) {
-         qreal blitWidth = (pm.width() ) - srcX;
-         qreal blitHeight = (pm.height() ) - srcY;
-         if (x + blitWidth > transformedRect.right()) {
-            blitWidth = transformedRect.right() - x;
-         }
-         if (y + blitHeight > transformedRect.bottom()) {
-            blitHeight = transformedRect.bottom() - y;
-         }
-         const QClipData *clipData = d->clip();
-         if (clipData->hasRectClip) {
-            QRect targetRect = QRect(x, y, blitWidth, blitHeight).intersected(clipData->clipRect);
-            if (targetRect.isValid()) {
-               int tmpSrcX  = srcX + (targetRect.x() - x);
-               int tmpSrcY = srcY + (targetRect.y() - y);
-               QRect srcRect(tmpSrcX, tmpSrcY, targetRect.width(), targetRect.height());
-               d->pmData->blittable()->drawPixmap(targetRect, pm, srcRect);
+        if ( srcY < 0 )
+        {
+            srcY = pm.height() + srcY;
+        }
+
+        while ( !rectIsFilled )
+        {
+            qreal blitWidth = ( pm.width() ) - srcX;
+            qreal blitHeight = ( pm.height() ) - srcY;
+
+            if ( x + blitWidth > transformedRect.right() )
+            {
+                blitWidth = transformedRect.right() - x;
             }
 
-         } else if (clipData->hasRegionClip) {
-
-            QRect unclippedTargetRect(x, y, blitWidth, blitHeight);
-            const QVector<QRect> intersectedRects = clipData->clipRegion.intersected(unclippedTargetRect).rects();
-            const int intersectedSize = intersectedRects.size();
-
-            for (int i = 0; i < intersectedSize; ++i) {
-               const QRect &targetRect = intersectedRects.at(i);
-
-               if (!targetRect.isValid() || targetRect.isEmpty()) {
-                  continue;
-               }
-
-               int tmpSrcX = srcX + (targetRect.x() - x);
-               int tmpSrcY = srcY + (targetRect.y() - y);
-               QRect srcRect(tmpSrcX, tmpSrcY, targetRect.width(), targetRect.height());
-               d->pmData->blittable()->drawPixmap(targetRect, pm, srcRect);
-            }
-         }
-
-         x += blitWidth;
-         if (qFuzzyCompare(x, transformedRect.right())) {
-            x = transformedRect.x();
-            srcX = startX;
-            srcY = 0;
-            y += blitHeight;
-            if (qFuzzyCompare(y, transformedRect.bottom())) {
-               rectIsFilled = true;
+            if ( y + blitHeight > transformedRect.bottom() )
+            {
+                blitHeight = transformedRect.bottom() - y;
             }
 
-         } else {
-            srcX = 0;
-         }
-      }
+            const QClipData *clipData = d->clip();
 
-   } else {
-      d->lock();
-      d->pmData->markRasterOverlay(rect);
-      QRasterPaintEngine::fillRect(rect, brush);
-   }
-}
+            if ( clipData->hasRectClip )
+            {
+                QRect targetRect = QRect( x, y, blitWidth, blitHeight ).intersected( clipData->clipRect );
 
-void QBlitterPaintEngine::drawRects(const QRect *rectPtr, int rectCount)
-{
-   Q_D(QBlitterPaintEngine);
+                if ( targetRect.isValid() )
+                {
+                    int tmpSrcX  = srcX + ( targetRect.x() - x );
+                    int tmpSrcY = srcY + ( targetRect.y() - y );
+                    QRect srcRect( tmpSrcX, tmpSrcY, targetRect.width(), targetRect.height() );
+                    d->pmData->blittable()->drawPixmap( targetRect, pm, srcRect );
+                }
 
-   if (d->caps.canBlitterDrawRectMask()) {
-      for (int i = 0; i < rectCount; ++i) {
-         d->fillRect(rectPtr[i], qbrush_color(state()->brush), false);
-      }
-
-   } else {
-      d->pmData->markRasterOverlay(rectPtr, rectCount);
-      QRasterPaintEngine::drawRects(rectPtr, rectCount);
-   }
-}
-
-void QBlitterPaintEngine::drawRects(const QRectF *rectPtr, int rectCount)
-{
-   Q_D(QBlitterPaintEngine);
-
-   if (d->caps.canBlitterDrawRectMask()) {
-      for (int i = 0; i < rectCount; ++i) {
-         d->fillRect(rectPtr[i], qbrush_color(state()->brush), false);
-      }
-
-   } else {
-      d->pmData->markRasterOverlay(rectPtr, rectCount);
-      QRasterPaintEngine::drawRects(rectPtr, rectCount);
-   }
-}
-
-void QBlitterPaintEngine::drawPixmap(const QPointF &pos, const QPixmap &pm)
-{
-   drawPixmap(QRectF(pos, pm.size()), pm, pm.rect());
-}
-
-void QBlitterPaintEngine::drawPixmap(const QRectF &r, const QPixmap &pm, const QRectF &sr)
-{
-   Q_D(QBlitterPaintEngine);
-   bool canDrawOpacity;
-
-   canDrawOpacity = d->caps.canBlitterDrawPixmapOpacity(pm);
-   if (canDrawOpacity || (d->caps.canBlitterDrawPixmap(r, pm, sr))) {
-
-      d->unlock();
-      QRectF targetRect = r;
-      if (d->hasXForm) {
-         targetRect = state()->matrix.mapRect(r);
-      }
-      const QClipData *clipData = d->clip();
-      if (clipData) {
-         if (clipData->hasRectClip) {
-            d->clipAndDrawPixmap(clipData->clipRect, targetRect, pm, sr, canDrawOpacity);
-         } else if (clipData->hasRegionClip) {
-            QVector<QRect>rects = clipData->clipRegion.rects();
-            for (int i = 0; i < rects.size(); ++i) {
-               d->clipAndDrawPixmap(rects.at(i), targetRect, pm, sr, canDrawOpacity);
             }
-         }
-      } else {
-         QRectF deviceRect(0, 0, paintDevice()->width(), paintDevice()->height());
-         d->clipAndDrawPixmap(deviceRect, targetRect, pm, sr, canDrawOpacity);
-      }
-   } else {
-      d->lock();
-      d->pmData->markRasterOverlay(r);
-      QRasterPaintEngine::drawPixmap(r, pm, sr);
-   }
+            else if ( clipData->hasRegionClip )
+            {
+
+                QRect unclippedTargetRect( x, y, blitWidth, blitHeight );
+                const QVector<QRect> intersectedRects = clipData->clipRegion.intersected( unclippedTargetRect ).rects();
+                const int intersectedSize = intersectedRects.size();
+
+                for ( int i = 0; i < intersectedSize; ++i )
+                {
+                    const QRect &targetRect = intersectedRects.at( i );
+
+                    if ( !targetRect.isValid() || targetRect.isEmpty() )
+                    {
+                        continue;
+                    }
+
+                    int tmpSrcX = srcX + ( targetRect.x() - x );
+                    int tmpSrcY = srcY + ( targetRect.y() - y );
+                    QRect srcRect( tmpSrcX, tmpSrcY, targetRect.width(), targetRect.height() );
+                    d->pmData->blittable()->drawPixmap( targetRect, pm, srcRect );
+                }
+            }
+
+            x += blitWidth;
+
+            if ( qFuzzyCompare( x, transformedRect.right() ) )
+            {
+                x = transformedRect.x();
+                srcX = startX;
+                srcY = 0;
+                y += blitHeight;
+
+                if ( qFuzzyCompare( y, transformedRect.bottom() ) )
+                {
+                    rectIsFilled = true;
+                }
+
+            }
+            else
+            {
+                srcX = 0;
+            }
+        }
+
+    }
+    else
+    {
+        d->lock();
+        d->pmData->markRasterOverlay( rect );
+        QRasterPaintEngine::fillRect( rect, brush );
+    }
+}
+
+void QBlitterPaintEngine::drawRects( const QRect *rectPtr, int rectCount )
+{
+    Q_D( QBlitterPaintEngine );
+
+    if ( d->caps.canBlitterDrawRectMask() )
+    {
+        for ( int i = 0; i < rectCount; ++i )
+        {
+            d->fillRect( rectPtr[i], qbrush_color( state()->brush ), false );
+        }
+
+    }
+    else
+    {
+        d->pmData->markRasterOverlay( rectPtr, rectCount );
+        QRasterPaintEngine::drawRects( rectPtr, rectCount );
+    }
+}
+
+void QBlitterPaintEngine::drawRects( const QRectF *rectPtr, int rectCount )
+{
+    Q_D( QBlitterPaintEngine );
+
+    if ( d->caps.canBlitterDrawRectMask() )
+    {
+        for ( int i = 0; i < rectCount; ++i )
+        {
+            d->fillRect( rectPtr[i], qbrush_color( state()->brush ), false );
+        }
+
+    }
+    else
+    {
+        d->pmData->markRasterOverlay( rectPtr, rectCount );
+        QRasterPaintEngine::drawRects( rectPtr, rectCount );
+    }
+}
+
+void QBlitterPaintEngine::drawPixmap( const QPointF &pos, const QPixmap &pm )
+{
+    drawPixmap( QRectF( pos, pm.size() ), pm, pm.rect() );
+}
+
+void QBlitterPaintEngine::drawPixmap( const QRectF &r, const QPixmap &pm, const QRectF &sr )
+{
+    Q_D( QBlitterPaintEngine );
+    bool canDrawOpacity;
+
+    canDrawOpacity = d->caps.canBlitterDrawPixmapOpacity( pm );
+
+    if ( canDrawOpacity || ( d->caps.canBlitterDrawPixmap( r, pm, sr ) ) )
+    {
+
+        d->unlock();
+        QRectF targetRect = r;
+
+        if ( d->hasXForm )
+        {
+            targetRect = state()->matrix.mapRect( r );
+        }
+
+        const QClipData *clipData = d->clip();
+
+        if ( clipData )
+        {
+            if ( clipData->hasRectClip )
+            {
+                d->clipAndDrawPixmap( clipData->clipRect, targetRect, pm, sr, canDrawOpacity );
+            }
+            else if ( clipData->hasRegionClip )
+            {
+                QVector<QRect>rects = clipData->clipRegion.rects();
+
+                for ( int i = 0; i < rects.size(); ++i )
+                {
+                    d->clipAndDrawPixmap( rects.at( i ), targetRect, pm, sr, canDrawOpacity );
+                }
+            }
+        }
+        else
+        {
+            QRectF deviceRect( 0, 0, paintDevice()->width(), paintDevice()->height() );
+            d->clipAndDrawPixmap( deviceRect, targetRect, pm, sr, canDrawOpacity );
+        }
+    }
+    else
+    {
+        d->lock();
+        d->pmData->markRasterOverlay( r );
+        QRasterPaintEngine::drawPixmap( r, pm, sr );
+    }
 }
 
 // Overriden methods to lock the graphics memory
-void QBlitterPaintEngine::drawPolygon(const QPointF *pointPtr, int pointCount, PolygonDrawMode mode)
+void QBlitterPaintEngine::drawPolygon( const QPointF *pointPtr, int pointCount, PolygonDrawMode mode )
 {
-   Q_D(QBlitterPaintEngine);
-   d->lock();
-   d->pmData->markRasterOverlay(pointPtr, pointCount);
-   QRasterPaintEngine::drawPolygon(pointPtr, pointCount, mode);
+    Q_D( QBlitterPaintEngine );
+    d->lock();
+    d->pmData->markRasterOverlay( pointPtr, pointCount );
+    QRasterPaintEngine::drawPolygon( pointPtr, pointCount, mode );
 }
 
-void QBlitterPaintEngine::drawPolygon(const QPoint *pointPtr, int pointCount, PolygonDrawMode mode)
+void QBlitterPaintEngine::drawPolygon( const QPoint *pointPtr, int pointCount, PolygonDrawMode mode )
 {
-   Q_D(QBlitterPaintEngine);
-   d->lock();
-   d->pmData->markRasterOverlay(pointPtr, pointCount);
-   QRasterPaintEngine::drawPolygon(pointPtr, pointCount, mode);
+    Q_D( QBlitterPaintEngine );
+    d->lock();
+    d->pmData->markRasterOverlay( pointPtr, pointCount );
+    QRasterPaintEngine::drawPolygon( pointPtr, pointCount, mode );
 }
 
-void QBlitterPaintEngine::fillPath(const QPainterPath &path, QSpanData *fillData)
+void QBlitterPaintEngine::fillPath( const QPainterPath &path, QSpanData *fillData )
 {
-   Q_D(QBlitterPaintEngine);
-   d->lock();
-   d->pmData->markRasterOverlay(path);
-   QRasterPaintEngine::fillPath(path, fillData);
+    Q_D( QBlitterPaintEngine );
+    d->lock();
+    d->pmData->markRasterOverlay( path );
+    QRasterPaintEngine::fillPath( path, fillData );
 }
 
-void QBlitterPaintEngine::fillPolygon(const QPointF *pointPtr, int pointCount, PolygonDrawMode mode)
+void QBlitterPaintEngine::fillPolygon( const QPointF *pointPtr, int pointCount, PolygonDrawMode mode )
 {
-   Q_D(QBlitterPaintEngine);
-   d->lock();
-   d->pmData->markRasterOverlay(pointPtr, pointCount);
-   QRasterPaintEngine::fillPolygon(pointPtr, pointCount, mode);
+    Q_D( QBlitterPaintEngine );
+    d->lock();
+    d->pmData->markRasterOverlay( pointPtr, pointCount );
+    QRasterPaintEngine::fillPolygon( pointPtr, pointCount, mode );
 }
 
-void QBlitterPaintEngine::drawEllipse(const QRectF &r)
+void QBlitterPaintEngine::drawEllipse( const QRectF &r )
 {
-   Q_D(QBlitterPaintEngine);
-   d->lock();
-   d->pmData->markRasterOverlay(r);
-   QRasterPaintEngine::drawEllipse(r);
+    Q_D( QBlitterPaintEngine );
+    d->lock();
+    d->pmData->markRasterOverlay( r );
+    QRasterPaintEngine::drawEllipse( r );
 }
 
-void QBlitterPaintEngine::drawImage(const QPointF &pos, const QImage &image)
+void QBlitterPaintEngine::drawImage( const QPointF &pos, const QImage &image )
 {
-   drawImage(QRectF(pos, image.size()), image, image.rect());
+    drawImage( QRectF( pos, image.size() ), image, image.rect() );
 }
 
-void QBlitterPaintEngine::drawImage(const QRectF &r, const QImage &pm, const QRectF &sr,
-   Qt::ImageConversionFlags flags)
+void QBlitterPaintEngine::drawImage( const QRectF &r, const QImage &pm, const QRectF &sr,
+                                     Qt::ImageConversionFlags flags )
 {
-   Q_D(QBlitterPaintEngine);
-   d->lock();
-   d->pmData->markRasterOverlay(r);
-   QRasterPaintEngine::drawImage(r, pm, sr, flags);
+    Q_D( QBlitterPaintEngine );
+    d->lock();
+    d->pmData->markRasterOverlay( r );
+    QRasterPaintEngine::drawImage( r, pm, sr, flags );
 }
 
-void QBlitterPaintEngine::drawTiledPixmap(const QRectF &r, const QPixmap &pm, const QPointF &sr)
+void QBlitterPaintEngine::drawTiledPixmap( const QRectF &r, const QPixmap &pm, const QPointF &sr )
 {
-   Q_D(QBlitterPaintEngine);
-   d->lock();
-   d->pmData->markRasterOverlay(r);
-   QRasterPaintEngine::drawTiledPixmap(r, pm, sr);
+    Q_D( QBlitterPaintEngine );
+    d->lock();
+    d->pmData->markRasterOverlay( r );
+    QRasterPaintEngine::drawTiledPixmap( r, pm, sr );
 }
 
-void QBlitterPaintEngine::drawTextItem(const QPointF &pos, const QTextItem &ti)
+void QBlitterPaintEngine::drawTextItem( const QPointF &pos, const QTextItem &ti )
 {
-   Q_D(QBlitterPaintEngine);
-   d->lock();
-   d->pmData->markRasterOverlay(pos, ti);
-   QRasterPaintEngine::drawTextItem(pos, ti);
+    Q_D( QBlitterPaintEngine );
+    d->lock();
+    d->pmData->markRasterOverlay( pos, ti );
+    QRasterPaintEngine::drawTextItem( pos, ti );
 }
 
-void QBlitterPaintEngine::drawPoints(const QPointF *pointPtr, int pointCount)
+void QBlitterPaintEngine::drawPoints( const QPointF *pointPtr, int pointCount )
 {
-   Q_D(QBlitterPaintEngine);
-   d->lock();
-   d->pmData->markRasterOverlay(pointPtr, pointCount);
-   QRasterPaintEngine::drawPoints(pointPtr, pointCount);
+    Q_D( QBlitterPaintEngine );
+    d->lock();
+    d->pmData->markRasterOverlay( pointPtr, pointCount );
+    QRasterPaintEngine::drawPoints( pointPtr, pointCount );
 }
 
-void QBlitterPaintEngine::drawPoints(const QPoint *pointPtr, int pointCount)
+void QBlitterPaintEngine::drawPoints( const QPoint *pointPtr, int pointCount )
 {
-   Q_D(QBlitterPaintEngine);
-   d->lock();
-   d->pmData->markRasterOverlay(pointPtr, pointCount);
-   QRasterPaintEngine::drawPoints(pointPtr, pointCount);
+    Q_D( QBlitterPaintEngine );
+    d->lock();
+    d->pmData->markRasterOverlay( pointPtr, pointCount );
+    QRasterPaintEngine::drawPoints( pointPtr, pointCount );
 }
 
-void QBlitterPaintEngine::stroke(const QVectorPath &path, const QPen &pen)
+void QBlitterPaintEngine::stroke( const QVectorPath &path, const QPen &pen )
 {
-   Q_D(QBlitterPaintEngine);
-   d->lock();
-   d->pmData->markRasterOverlay(path);
-   QRasterPaintEngine::stroke(path, pen);
+    Q_D( QBlitterPaintEngine );
+    d->lock();
+    d->pmData->markRasterOverlay( path );
+    QRasterPaintEngine::stroke( path, pen );
 }
 
-void QBlitterPaintEngine::drawStaticTextItem(QStaticTextItem *sti)
+void QBlitterPaintEngine::drawStaticTextItem( QStaticTextItem *sti )
 {
-   Q_D(QBlitterPaintEngine);
-   d->lock();
-   QRasterPaintEngine::drawStaticTextItem(sti);
+    Q_D( QBlitterPaintEngine );
+    d->lock();
+    QRasterPaintEngine::drawStaticTextItem( sti );
 
 #ifdef QT_BLITTER_RASTEROVERLAY
-   //#### d->pmData->markRasterOverlay(sti);
-   qWarning("QBlitterPaintEngine::drawStaticTextItem() Unable to draw a QStaticTextItem");
+    //#### d->pmData->markRasterOverlay(sti);
+    qWarning( "QBlitterPaintEngine::drawStaticTextItem() Unable to draw a QStaticTextItem" );
 #endif
 }
 
-bool QBlitterPaintEngine::drawCachedGlyphs(int numGlyphs, const glyph_t *glyphs, const QFixedPoint *positions, QFontEngine *fontEngine)
+bool QBlitterPaintEngine::drawCachedGlyphs( int numGlyphs, const glyph_t *glyphs, const QFixedPoint *positions,
+        QFontEngine *fontEngine )
 {
-   Q_D(QBlitterPaintEngine);
-   QFontEngine::GlyphFormat glyphFormat = d->glyphCacheFormat;
-   if (fontEngine->glyphFormat != QFontEngine::Format_None) {
-      glyphFormat = fontEngine->glyphFormat;
-   }
+    Q_D( QBlitterPaintEngine );
+    QFontEngine::GlyphFormat glyphFormat = d->glyphCacheFormat;
 
-   const QClipData *clipData = d->clip();
-   const bool complexClip = clipData && !clipData->hasRectClip;
+    if ( fontEngine->glyphFormat != QFontEngine::Format_None )
+    {
+        glyphFormat = fontEngine->glyphFormat;
+    }
 
-   const QPainterState *s = state();
-   if (d->caps.canBlitterDrawCachedGlyphs(s->transform(), glyphFormat, complexClip)) {
-      d->unlock();
-      const bool result = d->pmData->blittable()->drawCachedGlyphs(s, glyphFormat, numGlyphs, glyphs, positions, fontEngine);
-      // Lock again as the raster paint engine might draw decorations now.
-      d->lock();
-      return result;
-   } else {
-      return QRasterPaintEngine::drawCachedGlyphs(numGlyphs, glyphs, positions, fontEngine);
-   }
+    const QClipData *clipData = d->clip();
+    const bool complexClip = clipData && !clipData->hasRectClip;
+
+    const QPainterState *s = state();
+
+    if ( d->caps.canBlitterDrawCachedGlyphs( s->transform(), glyphFormat, complexClip ) )
+    {
+        d->unlock();
+        const bool result = d->pmData->blittable()->drawCachedGlyphs( s, glyphFormat, numGlyphs, glyphs, positions, fontEngine );
+        // Lock again as the raster paint engine might draw decorations now.
+        d->lock();
+        return result;
+    }
+    else
+    {
+        return QRasterPaintEngine::drawCachedGlyphs( numGlyphs, glyphs, positions, fontEngine );
+    }
 }
 #endif //QT_NO_BLITTABLE
 

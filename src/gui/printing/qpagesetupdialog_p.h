@@ -36,17 +36,17 @@ class QPrinter;
 
 class QPageSetupDialogPrivate : public QDialogPrivate
 {
-   Q_DECLARE_PUBLIC(QPageSetupDialog)
+    Q_DECLARE_PUBLIC( QPageSetupDialog )
 
- public:
-   QPageSetupDialogPrivate(QPrinter *printer);
+public:
+    QPageSetupDialogPrivate( QPrinter *printer );
 
-   void setPrinter(QPrinter *newPrinter);
+    void setPrinter( QPrinter *newPrinter );
 
-   QPrinter *printer;
-   bool ownsPrinter;
-   QPointer<QObject> receiverToDisconnectOnClose;
-   QString memberToDisconnectOnClose;
+    QPrinter *printer;
+    bool ownsPrinter;
+    QPointer<QObject> receiverToDisconnectOnClose;
+    QString memberToDisconnectOnClose;
 };
 
 #endif // QT_NO_PRINTDIALOG

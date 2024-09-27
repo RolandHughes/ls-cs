@@ -32,54 +32,62 @@
 #include <wtf/HashMap.h>
 #include <wtf/PassRefPtr.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 class WebContext;
 class WebProcessProxy;
 
 typedef GenericCallback<WKArrayRef> ArrayCallback;
 
-class WebPluginSiteDataManager : public APIObject {
+class WebPluginSiteDataManager : public APIObject
+{
 public:
     static const Type APIType = TypePluginSiteDataManager;
 
-    static PassRefPtr<WebPluginSiteDataManager> create(WebContext*);
+    static PassRefPtr<WebPluginSiteDataManager> create( WebContext * );
     virtual ~WebPluginSiteDataManager();
 
     void invalidate();
-    void clearContext() { m_webContext = 0; }
+    void clearContext()
+    {
+        m_webContext = 0;
+    }
 
-    void getSitesWithData(PassRefPtr<ArrayCallback>);
-    void didGetSitesWithData(const Vector<String>& sites, uint64_t callbackID);
+    void getSitesWithData( PassRefPtr<ArrayCallback> );
+    void didGetSitesWithData( const Vector<String> &sites, uint64_t callbackID );
 
-    void clearSiteData(ImmutableArray* sites, uint64_t flags, uint64_t maxAgeInSeconds, PassRefPtr<VoidCallback>);
-    void didClearSiteData(uint64_t callbackID);
+    void clearSiteData( ImmutableArray *sites, uint64_t flags, uint64_t maxAgeInSeconds, PassRefPtr<VoidCallback> );
+    void didClearSiteData( uint64_t callbackID );
 
 #if ENABLE(PLUGIN_PROCESS)
-    void didGetSitesWithDataForSinglePlugin(const Vector<String>& sites, uint64_t callbackID);
-    void didClearSiteDataForSinglePlugin(uint64_t callbackID);    
+    void didGetSitesWithDataForSinglePlugin( const Vector<String> &sites, uint64_t callbackID );
+    void didClearSiteDataForSinglePlugin( uint64_t callbackID );
 #endif
 
-    bool shouldTerminate(WebProcessProxy*) const;
+    bool shouldTerminate( WebProcessProxy * ) const;
 
 private:
-    explicit WebPluginSiteDataManager(WebContext*);
+    explicit WebPluginSiteDataManager( WebContext * );
 
-    virtual Type type() const { return APIType; }
+    virtual Type type() const
+    {
+        return APIType;
+    }
 
-    WebContext* m_webContext;
+    WebContext *m_webContext;
     HashMap<uint64_t, RefPtr<ArrayCallback> > m_arrayCallbacks;
     HashMap<uint64_t, RefPtr<VoidCallback> > m_voidCallbacks;
 
 #if ENABLE(PLUGIN_PROCESS)
-    void didGetSitesWithDataForAllPlugins(const Vector<String>& sites, uint64_t callbackID);
-    void didClearSiteDataForAllPlugins(uint64_t callbackID);
+    void didGetSitesWithDataForAllPlugins( const Vector<String> &sites, uint64_t callbackID );
+    void didClearSiteDataForAllPlugins( uint64_t callbackID );
 
     class GetSitesWithDataState;
-    HashMap<uint64_t, GetSitesWithDataState*> m_pendingGetSitesWithData;
+    HashMap<uint64_t, GetSitesWithDataState *> m_pendingGetSitesWithData;
 
     class ClearSiteDataState;
-    HashMap<uint64_t, ClearSiteDataState*> m_pendingClearSiteData;
+    HashMap<uint64_t, ClearSiteDataState *> m_pendingClearSiteData;
 #endif
 };
 

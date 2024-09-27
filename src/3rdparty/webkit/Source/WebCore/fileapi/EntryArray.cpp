@@ -33,16 +33,20 @@
 
 #if ENABLE(FILE_SYSTEM)
 
-namespace WebCore {
+namespace WebCore
+{
 
 EntryArray::EntryArray()
 {
 }
 
-Entry* EntryArray::item(unsigned index) const
+Entry *EntryArray::item( unsigned index ) const
 {
-    if (index >= m_entries.size())
+    if ( index >= m_entries.size() )
+    {
         return 0;
+    }
+
     return m_entries[index].get();
 }
 

@@ -38,37 +38,37 @@ using iconv_t = void *;
 
 class QIconvCodec: public QTextCodec
 {
- private:
-   mutable QTextCodec *utf16Codec;
+private:
+    mutable QTextCodec *utf16Codec;
 
- public:
-   QIconvCodec();
-   ~QIconvCodec();
+public:
+    QIconvCodec();
+    ~QIconvCodec();
 
-   QString convertToUnicode(const char *, int, ConverterState *) const override;
-   QByteArray convertFromUnicode(QStringView str, ConverterState *) const override;
+    QString convertToUnicode( const char *, int, ConverterState * ) const override;
+    QByteArray convertFromUnicode( QStringView str, ConverterState * ) const override;
 
-   QString name() const override;
-   int mibEnum() const override;
+    QString name() const override;
+    int mibEnum() const override;
 
-   static iconv_t createIconv_t(const char *to, const char *from);
+    static iconv_t createIconv_t( const char *to, const char *from );
 
-   class IconvState
-   {
+    class IconvState
+    {
     public:
-      IconvState(iconv_t x);
-      ~IconvState();
+        IconvState( iconv_t x );
+        ~IconvState();
 
-      ConverterState internalState;
+        ConverterState internalState;
 
-      char *buffer;
-      int bufferLen;
-      iconv_t cd;
+        char *buffer;
+        int bufferLen;
+        iconv_t cd;
 
-      char array[8];
+        char array[8];
 
-      void saveChars(const char *c, int count);
-   };
+        void saveChars( const char *c, int count );
+    };
 };
 
 #endif // Q_OS_UNIX && !QT_NO_ICONV

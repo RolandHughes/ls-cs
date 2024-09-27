@@ -44,307 +44,362 @@
 
 bool QLocalServerPrivate::addListener()
 {
-   // The object must not change its address once the
-   // contained OVERLAPPED struct is passed to Windows.
-   listeners << Listener();
-   Listener &listener = listeners.last();
-   SECURITY_ATTRIBUTES sa;
-   sa.nLength = sizeof(SECURITY_ATTRIBUTES);
-   sa.bInheritHandle = false;                  // non inheritable handle, same as default
-   sa.lpSecurityDescriptor = nullptr;         // default security descriptor
-   QScopedPointer<SECURITY_DESCRIPTOR> pSD;
-   PSID worldSID = nullptr;
-   QByteArray aclBuffer;
-   QByteArray tokenUserBuffer;
-   QByteArray tokenGroupBuffer;
+    // The object must not change its address once the
+    // contained OVERLAPPED struct is passed to Windows.
+    listeners << Listener();
+    Listener &listener = listeners.last();
+    SECURITY_ATTRIBUTES sa;
+    sa.nLength = sizeof( SECURITY_ATTRIBUTES );
+    sa.bInheritHandle = false;                  // non inheritable handle, same as default
+    sa.lpSecurityDescriptor = nullptr;         // default security descriptor
+    QScopedPointer<SECURITY_DESCRIPTOR> pSD;
+    PSID worldSID = nullptr;
+    QByteArray aclBuffer;
+    QByteArray tokenUserBuffer;
+    QByteArray tokenGroupBuffer;
 
-   // create security descriptor if access options were specified
-   if ((socketOptions & QLocalServer::WorldAccessOption)) {
-      pSD.reset(new SECURITY_DESCRIPTOR);
+    // create security descriptor if access options were specified
+    if ( ( socketOptions & QLocalServer::WorldAccessOption ) )
+    {
+        pSD.reset( new SECURITY_DESCRIPTOR );
 
-      if (! InitializeSecurityDescriptor(pSD.data(), SECURITY_DESCRIPTOR_REVISION)) {
-         setError("QLocalServerPrivate::addListener");
-         return false;
-      }
+        if ( ! InitializeSecurityDescriptor( pSD.data(), SECURITY_DESCRIPTOR_REVISION ) )
+        {
+            setError( "QLocalServerPrivate::addListener" );
+            return false;
+        }
 
-      HANDLE hToken = nullptr;
-      if (! OpenProcessToken(GetCurrentProcess(), TOKEN_QUERY, &hToken)) {
-         return false;
-      }
+        HANDLE hToken = nullptr;
 
-      DWORD dwBufferSize = 0;
-      GetTokenInformation(hToken, TokenUser, nullptr, 0, &dwBufferSize);
-      tokenUserBuffer.fill(0, dwBufferSize);
-      PTOKEN_USER pTokenUser = (PTOKEN_USER)tokenUserBuffer.data();
+        if ( ! OpenProcessToken( GetCurrentProcess(), TOKEN_QUERY, &hToken ) )
+        {
+            return false;
+        }
 
-      if (!GetTokenInformation(hToken, TokenUser, pTokenUser, dwBufferSize, &dwBufferSize)) {
-         setError("QLocalServerPrivate::addListener");
-         CloseHandle(hToken);
+        DWORD dwBufferSize = 0;
+        GetTokenInformation( hToken, TokenUser, nullptr, 0, &dwBufferSize );
+        tokenUserBuffer.fill( 0, dwBufferSize );
+        PTOKEN_USER pTokenUser = ( PTOKEN_USER )tokenUserBuffer.data();
 
-         return false;
-      }
+        if ( !GetTokenInformation( hToken, TokenUser, pTokenUser, dwBufferSize, &dwBufferSize ) )
+        {
+            setError( "QLocalServerPrivate::addListener" );
+            CloseHandle( hToken );
 
-      dwBufferSize = 0;
-      GetTokenInformation(hToken, TokenPrimaryGroup, nullptr, 0, &dwBufferSize);
-      tokenGroupBuffer.fill(0, dwBufferSize);
-      PTOKEN_PRIMARY_GROUP pTokenGroup = (PTOKEN_PRIMARY_GROUP)tokenGroupBuffer.data();
+            return false;
+        }
 
-      if (! GetTokenInformation(hToken, TokenPrimaryGroup, pTokenGroup, dwBufferSize, &dwBufferSize)) {
-         setError("QLocalServerPrivate::addListener");
-         CloseHandle(hToken);
-         return false;
-      }
+        dwBufferSize = 0;
+        GetTokenInformation( hToken, TokenPrimaryGroup, nullptr, 0, &dwBufferSize );
+        tokenGroupBuffer.fill( 0, dwBufferSize );
+        PTOKEN_PRIMARY_GROUP pTokenGroup = ( PTOKEN_PRIMARY_GROUP )tokenGroupBuffer.data();
 
-      CloseHandle(hToken);
+        if ( ! GetTokenInformation( hToken, TokenPrimaryGroup, pTokenGroup, dwBufferSize, &dwBufferSize ) )
+        {
+            setError( "QLocalServerPrivate::addListener" );
+            CloseHandle( hToken );
+            return false;
+        }
+
+        CloseHandle( hToken );
 
 #if defined(CS_SHOW_DEBUG_NETWORK)
-      DWORD groupNameSize;
-      DWORD domainNameSize;
-      SID_NAME_USE groupNameUse;
-      LPWSTR groupNameSid;
+        DWORD groupNameSize;
+        DWORD domainNameSize;
+        SID_NAME_USE groupNameUse;
+        LPWSTR groupNameSid;
 
-      LookupAccountSid(nullptr, pTokenGroup->PrimaryGroup, nullptr, &groupNameSize, nullptr, &domainNameSize, &groupNameUse);
+        LookupAccountSid( nullptr, pTokenGroup->PrimaryGroup, nullptr, &groupNameSize, nullptr, &domainNameSize, &groupNameUse );
 
-      std::wstring groupName(groupNameSize, L'0');
-      std::wstring domainName(domainNameSize, L'0');
+        std::wstring groupName( groupNameSize, L'0' );
+        std::wstring domainName( domainNameSize, L'0' );
 
-      if (LookupAccountSid(nullptr, pTokenGroup->PrimaryGroup, groupName.data(), &groupNameSize, domainName.data(),
-            &domainNameSize, &groupNameUse)) {
+        if ( LookupAccountSid( nullptr, pTokenGroup->PrimaryGroup, groupName.data(), &groupNameSize, domainName.data(),
+                               &domainNameSize, &groupNameUse ) )
+        {
 
-         qDebug() << "primary group" << QString::fromStdWString(domainName) << "\\"
-               << QString::fromStdWString(groupName) << "type=" << groupNameUse;
-      }
+            qDebug() << "primary group" << QString::fromStdWString( domainName ) << "\\"
+                     << QString::fromStdWString( groupName ) << "type=" << groupNameUse;
+        }
 
-      if (ConvertSidToStringSid(pTokenGroup->PrimaryGroup, &groupNameSid)) {
-         qDebug() << "primary group SID" << QString::fromStdWString(std::wstring(groupNameSid)) << "valid"
-               << IsValidSid(pTokenGroup->PrimaryGroup);
+        if ( ConvertSidToStringSid( pTokenGroup->PrimaryGroup, &groupNameSid ) )
+        {
+            qDebug() << "primary group SID" << QString::fromStdWString( std::wstring( groupNameSid ) ) << "valid"
+                     << IsValidSid( pTokenGroup->PrimaryGroup );
 
-         LocalFree(groupNameSid);
-      }
+            LocalFree( groupNameSid );
+        }
+
 #endif
 
-      SID_IDENTIFIER_AUTHORITY WorldAuth = { SECURITY_WORLD_SID_AUTHORITY };
+        SID_IDENTIFIER_AUTHORITY WorldAuth = { SECURITY_WORLD_SID_AUTHORITY };
 
-      if (! AllocateAndInitializeSid(&WorldAuth, 1, SECURITY_WORLD_RID, 0, 0, 0, 0, 0, 0, 0, &worldSID)) {
-         setError("QLocalServerPrivate::addListener");
-         return false;
-      }
-
-      DWORD aclSize = sizeof(ACL) + ((sizeof(ACCESS_ALLOWED_ACE)) * 3);
-      aclSize += GetLengthSid(pTokenUser->User.Sid) - sizeof(DWORD);
-      aclSize += GetLengthSid(pTokenGroup->PrimaryGroup) - sizeof(DWORD);
-      aclSize += GetLengthSid(worldSID) - sizeof(DWORD);
-      aclSize = (aclSize + (sizeof(DWORD) - 1)) & 0xfffffffc;
-      aclBuffer.fill(0, aclSize);
-      PACL acl = (PACL)aclBuffer.data();
-      InitializeAcl(acl, aclSize, ACL_REVISION_DS);
-
-      if (socketOptions & QLocalServer::UserAccessOption) {
-         if (! AddAccessAllowedAce(acl, ACL_REVISION, FILE_ALL_ACCESS, pTokenUser->User.Sid)) {
-            setError("QLocalServerPrivate::addListener");
-            FreeSid(worldSID);
-
+        if ( ! AllocateAndInitializeSid( &WorldAuth, 1, SECURITY_WORLD_RID, 0, 0, 0, 0, 0, 0, 0, &worldSID ) )
+        {
+            setError( "QLocalServerPrivate::addListener" );
             return false;
-         }
-      }
-      if (socketOptions & QLocalServer::GroupAccessOption) {
-         if (!AddAccessAllowedAce(acl, ACL_REVISION, FILE_ALL_ACCESS, pTokenGroup->PrimaryGroup)) {
-            setError("QLocalServerPrivate::addListener");
-            FreeSid(worldSID);
+        }
+
+        DWORD aclSize = sizeof( ACL ) + ( ( sizeof( ACCESS_ALLOWED_ACE ) ) * 3 );
+        aclSize += GetLengthSid( pTokenUser->User.Sid ) - sizeof( DWORD );
+        aclSize += GetLengthSid( pTokenGroup->PrimaryGroup ) - sizeof( DWORD );
+        aclSize += GetLengthSid( worldSID ) - sizeof( DWORD );
+        aclSize = ( aclSize + ( sizeof( DWORD ) - 1 ) ) & 0xfffffffc;
+        aclBuffer.fill( 0, aclSize );
+        PACL acl = ( PACL )aclBuffer.data();
+        InitializeAcl( acl, aclSize, ACL_REVISION_DS );
+
+        if ( socketOptions & QLocalServer::UserAccessOption )
+        {
+            if ( ! AddAccessAllowedAce( acl, ACL_REVISION, FILE_ALL_ACCESS, pTokenUser->User.Sid ) )
+            {
+                setError( "QLocalServerPrivate::addListener" );
+                FreeSid( worldSID );
+
+                return false;
+            }
+        }
+
+        if ( socketOptions & QLocalServer::GroupAccessOption )
+        {
+            if ( !AddAccessAllowedAce( acl, ACL_REVISION, FILE_ALL_ACCESS, pTokenGroup->PrimaryGroup ) )
+            {
+                setError( "QLocalServerPrivate::addListener" );
+                FreeSid( worldSID );
+                return false;
+            }
+        }
+
+        if ( socketOptions & QLocalServer::OtherAccessOption )
+        {
+            if ( !AddAccessAllowedAce( acl, ACL_REVISION, FILE_ALL_ACCESS, worldSID ) )
+            {
+                setError( "QLocalServerPrivate::addListener" );
+                FreeSid( worldSID );
+                return false;
+            }
+        }
+
+        SetSecurityDescriptorOwner( pSD.data(), pTokenUser->User.Sid, FALSE );
+        SetSecurityDescriptorGroup( pSD.data(), pTokenGroup->PrimaryGroup, FALSE );
+
+        if ( !SetSecurityDescriptorDacl( pSD.data(), TRUE, acl, FALSE ) )
+        {
+            setError( "QLocalServerPrivate::addListener" );
+            FreeSid( worldSID );
             return false;
-         }
-      }
-      if (socketOptions & QLocalServer::OtherAccessOption) {
-         if (!AddAccessAllowedAce(acl, ACL_REVISION, FILE_ALL_ACCESS, worldSID)) {
-            setError("QLocalServerPrivate::addListener");
-            FreeSid(worldSID);
-            return false;
-         }
-      }
+        }
 
-      SetSecurityDescriptorOwner(pSD.data(), pTokenUser->User.Sid, FALSE);
-      SetSecurityDescriptorGroup(pSD.data(), pTokenGroup->PrimaryGroup, FALSE);
+        sa.lpSecurityDescriptor = pSD.data();
+    }
 
-      if (!SetSecurityDescriptorDacl(pSD.data(), TRUE, acl, FALSE)) {
-         setError("QLocalServerPrivate::addListener");
-         FreeSid(worldSID);
-         return false;
-      }
+    listener.handle = CreateNamedPipe( fullServerName.toStdWString().c_str(), PIPE_ACCESS_DUPLEX | FILE_FLAG_OVERLAPPED,
+                                       PIPE_TYPE_BYTE |          // byte type pipe
+                                       PIPE_READMODE_BYTE |      // byte-read mode
+                                       PIPE_WAIT,                // blocking mode
+                                       PIPE_UNLIMITED_INSTANCES, // max. instances
+                                       BUFSIZE,                  // output buffer size
+                                       BUFSIZE,                  // input buffer size
+                                       3000,                     // client time-out
+                                       &sa );
 
-      sa.lpSecurityDescriptor = pSD.data();
-   }
+    if ( listener.handle == INVALID_HANDLE_VALUE )
+    {
+        setError( "QLocalServerPrivate::addListener" );
+        listeners.removeLast();
 
-   listener.handle = CreateNamedPipe(fullServerName.toStdWString().c_str(), PIPE_ACCESS_DUPLEX | FILE_FLAG_OVERLAPPED,
-                        PIPE_TYPE_BYTE |          // byte type pipe
-                        PIPE_READMODE_BYTE |      // byte-read mode
-                        PIPE_WAIT,                // blocking mode
-                        PIPE_UNLIMITED_INSTANCES, // max. instances
-                        BUFSIZE,                  // output buffer size
-                        BUFSIZE,                  // input buffer size
-                        3000,                     // client time-out
-                        &sa);
+        return false;
+    }
 
-   if (listener.handle == INVALID_HANDLE_VALUE) {
-      setError("QLocalServerPrivate::addListener");
-      listeners.removeLast();
+    if ( worldSID )
+    {
+        FreeSid( worldSID );
+    }
 
-      return false;
-   }
+    memset( &listener.overlapped, 0, sizeof( listener.overlapped ) );
+    listener.overlapped.hEvent = eventHandle;
 
-   if (worldSID) {
-      FreeSid(worldSID);
-   }
-   memset(&listener.overlapped, 0, sizeof(listener.overlapped));
-   listener.overlapped.hEvent = eventHandle;
-   if (!ConnectNamedPipe(listener.handle, &listener.overlapped)) {
-      switch (GetLastError()) {
-         case ERROR_IO_PENDING:
-            listener.connected = false;
-            break;
+    if ( !ConnectNamedPipe( listener.handle, &listener.overlapped ) )
+    {
+        switch ( GetLastError() )
+        {
+            case ERROR_IO_PENDING:
+                listener.connected = false;
+                break;
 
-         case ERROR_PIPE_CONNECTED:
-            listener.connected = true;
-            break;
+            case ERROR_PIPE_CONNECTED:
+                listener.connected = true;
+                break;
 
-         default:
-            CloseHandle(listener.handle);
-            setError(QLatin1String("QLocalServerPrivate::addListener"));
-            listeners.removeLast();
-            return false;
-      }
-   } else {
-      Q_ASSERT_X(false, "QLocalServerPrivate::addListener", "The impossible happened");
-      SetEvent(eventHandle);
-   }
-   return true;
+            default:
+                CloseHandle( listener.handle );
+                setError( QLatin1String( "QLocalServerPrivate::addListener" ) );
+                listeners.removeLast();
+                return false;
+        }
+    }
+    else
+    {
+        Q_ASSERT_X( false, "QLocalServerPrivate::addListener", "The impossible happened" );
+        SetEvent( eventHandle );
+    }
+
+    return true;
 }
 
-void QLocalServerPrivate::setError(const QString &function)
+void QLocalServerPrivate::setError( const QString &function )
 {
-   int windowsError = GetLastError();
-   errorString = QString::fromLatin1("%1: %2").formatArg(function).formatArg(qt_error_string(windowsError));
-   error = QAbstractSocket::UnknownSocketError;
+    int windowsError = GetLastError();
+    errorString = QString::fromLatin1( "%1: %2" ).formatArg( function ).formatArg( qt_error_string( windowsError ) );
+    error = QAbstractSocket::UnknownSocketError;
 }
 
 void QLocalServerPrivate::init()
 {
 }
 
-bool QLocalServerPrivate::removeServer(const QString &name)
+bool QLocalServerPrivate::removeServer( const QString &name )
 {
-   (void) name;
-   return true;
+    ( void ) name;
+    return true;
 }
 
-bool QLocalServerPrivate::listen(const QString &name)
+bool QLocalServerPrivate::listen( const QString &name )
 {
-   Q_Q(QLocalServer);
+    Q_Q( QLocalServer );
 
-   QString pipePath = QString("\\\\.\\pipe\\");
+    QString pipePath = QString( "\\\\.\\pipe\\" );
 
-   if (name.startsWith(pipePath)) {
-      fullServerName = name;
-   } else {
-      fullServerName = pipePath + name;
-   }
+    if ( name.startsWith( pipePath ) )
+    {
+        fullServerName = name;
+    }
+    else
+    {
+        fullServerName = pipePath + name;
+    }
 
-   // Use only one event for all listeners of one socket.
-   // The idea is that listener events are rare, so polling all listeners once in a while is
-   // cheap compared to waiting for N additional events in each iteration of the main loop.
-   eventHandle = CreateEvent(nullptr, TRUE, FALSE, nullptr);
-   connectionEventNotifier = new QWinEventNotifier(eventHandle, q);
+    // Use only one event for all listeners of one socket.
+    // The idea is that listener events are rare, so polling all listeners once in a while is
+    // cheap compared to waiting for N additional events in each iteration of the main loop.
+    eventHandle = CreateEvent( nullptr, TRUE, FALSE, nullptr );
+    connectionEventNotifier = new QWinEventNotifier( eventHandle, q );
 
-   q->connect(connectionEventNotifier, &QWinEventNotifier::activated, q, &QLocalServer::_q_onNewConnection);
+    q->connect( connectionEventNotifier, &QWinEventNotifier::activated, q, &QLocalServer::_q_onNewConnection );
 
-   for (int i = 0; i < SYSTEM_MAX_PENDING_SOCKETS; ++i) {
-      if (! addListener()) {
-         return false;
-      }
-   }
+    for ( int i = 0; i < SYSTEM_MAX_PENDING_SOCKETS; ++i )
+    {
+        if ( ! addListener() )
+        {
+            return false;
+        }
+    }
 
-   _q_onNewConnection();
-   return true;
+    _q_onNewConnection();
+    return true;
 }
 
-bool QLocalServerPrivate::listen(qintptr) {
-   qWarning("QLocalServer::listen() Not supported on Windows");
-   return false;
+bool QLocalServerPrivate::listen( qintptr )
+{
+    qWarning( "QLocalServer::listen() Not supported on Windows" );
+    return false;
 }
 
-void QLocalServerPrivate::_q_onNewConnection() {
-   Q_Q(QLocalServer);
-   DWORD dummy;
+void QLocalServerPrivate::_q_onNewConnection()
+{
+    Q_Q( QLocalServer );
+    DWORD dummy;
 
-   bool tryAgain;
-   do {
-      tryAgain = false;
+    bool tryAgain;
 
-      // Reset first, otherwise we could reset an event which was asserted
-      // immediately after we checked the conn status.
-      ResetEvent(eventHandle);
+    do
+    {
+        tryAgain = false;
 
-      // Testing shows that there is indeed absolutely no guarantee which listener gets
-      // a client connection first, so there is no way around polling all of them.
-      for (int i = 0; i < listeners.size(); ) {
-         HANDLE handle = listeners[i].handle;
+        // Reset first, otherwise we could reset an event which was asserted
+        // immediately after we checked the conn status.
+        ResetEvent( eventHandle );
 
-         if (listeners[i].connected
-               || GetOverlappedResult(handle, &listeners[i].overlapped, &dummy, FALSE)) {
-            listeners.removeAt(i);
-            addListener();
+        // Testing shows that there is indeed absolutely no guarantee which listener gets
+        // a client connection first, so there is no way around polling all of them.
+        for ( int i = 0; i < listeners.size(); )
+        {
+            HANDLE handle = listeners[i].handle;
 
-            if (pendingConnections.size() > maxPendingConnections) {
-               connectionEventNotifier->setEnabled(false);
-            }  else {
-               tryAgain = true;
+            if ( listeners[i].connected
+                    || GetOverlappedResult( handle, &listeners[i].overlapped, &dummy, FALSE ) )
+            {
+                listeners.removeAt( i );
+                addListener();
+
+                if ( pendingConnections.size() > maxPendingConnections )
+                {
+                    connectionEventNotifier->setEnabled( false );
+                }
+                else
+                {
+                    tryAgain = true;
+                }
+
+                // Make this the last thing so connected slots can wreak the least havoc
+                q->incomingConnection( ( quintptr )handle );
+
+            }
+            else
+            {
+                if ( GetLastError() != ERROR_IO_INCOMPLETE )
+                {
+                    q->close();
+                    setError( QLatin1String( "QLocalServerPrivate::_q_onNewConnection" ) );
+                    return;
+                }
+
+                ++i;
             }
 
-            // Make this the last thing so connected slots can wreak the least havoc
-            q->incomingConnection((quintptr)handle);
-
-         } else {
-            if (GetLastError() != ERROR_IO_INCOMPLETE) {
-               q->close();
-               setError(QLatin1String("QLocalServerPrivate::_q_onNewConnection"));
-               return;
-            }
-
-            ++i;
-         }
-
-      }
-   } while (tryAgain);
+        }
+    }
+    while ( tryAgain );
 }
 
-void QLocalServerPrivate::closeServer() {
-   connectionEventNotifier->setEnabled(false); // Otherwise, closed handle is checked before deleter runs
-   connectionEventNotifier->deleteLater();
-   connectionEventNotifier = nullptr;
-   CloseHandle(eventHandle);
+void QLocalServerPrivate::closeServer()
+{
+    connectionEventNotifier->setEnabled( false ); // Otherwise, closed handle is checked before deleter runs
+    connectionEventNotifier->deleteLater();
+    connectionEventNotifier = nullptr;
+    CloseHandle( eventHandle );
 
-   for (int i = 0; i < listeners.size(); ++i) {
-      CloseHandle(listeners[i].handle);
-   }
+    for ( int i = 0; i < listeners.size(); ++i )
+    {
+        CloseHandle( listeners[i].handle );
+    }
 
-   listeners.clear();
+    listeners.clear();
 }
 
-void QLocalServerPrivate::waitForNewConnection(int msecs, bool * timedOut) {
-   Q_Q(QLocalServer);
+void QLocalServerPrivate::waitForNewConnection( int msecs, bool *timedOut )
+{
+    Q_Q( QLocalServer );
 
-   if (!pendingConnections.isEmpty() || !q->isListening()) {
-      return;
-   }
+    if ( !pendingConnections.isEmpty() || !q->isListening() )
+    {
+        return;
+    }
 
-   DWORD result = WaitForSingleObject(eventHandle, (msecs == -1) ? INFINITE : msecs);
-   if (result == WAIT_TIMEOUT) {
-      if (timedOut) {
-         *timedOut = true;
-      }
+    DWORD result = WaitForSingleObject( eventHandle, ( msecs == -1 ) ? INFINITE : msecs );
 
-   } else {
-      _q_onNewConnection();
-   }
+    if ( result == WAIT_TIMEOUT )
+    {
+        if ( timedOut )
+        {
+            *timedOut = true;
+        }
+
+    }
+    else
+    {
+        _q_onNewConnection();
+    }
 }
 
 

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef APIShims_h
@@ -29,43 +29,49 @@
 #include "CallFrame.h"
 #include "JSLock.h"
 
-namespace JSC {
+namespace JSC
+{
 
-class APIEntryShimWithoutLock {
+class APIEntryShimWithoutLock
+{
 protected:
-    APIEntryShimWithoutLock(JSGlobalData* globalData, bool registerThread)
-        : m_globalData(globalData)
-        , m_entryIdentifierTable(setCurrentIdentifierTable(globalData->identifierTable))
+    APIEntryShimWithoutLock( JSGlobalData *globalData, bool registerThread )
+        : m_globalData( globalData )
+        , m_entryIdentifierTable( setCurrentIdentifierTable( globalData->identifierTable ) )
     {
-        if (registerThread)
+        if ( registerThread )
+        {
             globalData->heap.registerThread();
+        }
+
         m_globalData->timeoutChecker->start();
     }
 
     ~APIEntryShimWithoutLock()
     {
         m_globalData->timeoutChecker->stop();
-        setCurrentIdentifierTable(m_entryIdentifierTable);
+        setCurrentIdentifierTable( m_entryIdentifierTable );
     }
 
 private:
-    JSGlobalData* m_globalData;
-    IdentifierTable* m_entryIdentifierTable;
+    JSGlobalData *m_globalData;
+    IdentifierTable *m_entryIdentifierTable;
 };
 
-class APIEntryShim : public APIEntryShimWithoutLock {
+class APIEntryShim : public APIEntryShimWithoutLock
+{
 public:
     // Normal API entry
-    APIEntryShim(ExecState* exec, bool registerThread = true)
-        : APIEntryShimWithoutLock(&exec->globalData(), registerThread)
-        , m_lock(exec)
+    APIEntryShim( ExecState *exec, bool registerThread = true )
+        : APIEntryShimWithoutLock( &exec->globalData(), registerThread )
+        , m_lock( exec )
     {
     }
 
     // JSPropertyNameAccumulator only has a globalData.
-    APIEntryShim(JSGlobalData* globalData, bool registerThread = true)
-        : APIEntryShimWithoutLock(globalData, registerThread)
-        , m_lock(globalData->isSharedInstance ? LockForReal : SilenceAssertionsOnly)
+    APIEntryShim( JSGlobalData *globalData, bool registerThread = true )
+        : APIEntryShimWithoutLock( globalData, registerThread )
+        , m_lock( globalData->isSharedInstance ? LockForReal : SilenceAssertionsOnly )
     {
     }
 
@@ -73,11 +79,12 @@ private:
     JSLock m_lock;
 };
 
-class APICallbackShim {
+class APICallbackShim
+{
 public:
-    APICallbackShim(ExecState* exec)
-        : m_dropAllLocks(exec)
-        , m_globalData(&exec->globalData())
+    APICallbackShim( ExecState *exec )
+        : m_dropAllLocks( exec )
+        , m_globalData( &exec->globalData() )
     {
         resetCurrentIdentifierTable();
         m_globalData->timeoutChecker->start();
@@ -86,12 +93,12 @@ public:
     ~APICallbackShim()
     {
         m_globalData->timeoutChecker->stop();
-        setCurrentIdentifierTable(m_globalData->identifierTable);
+        setCurrentIdentifierTable( m_globalData->identifierTable );
     }
 
 private:
     JSLock::DropAllLocks m_dropAllLocks;
-    JSGlobalData* m_globalData;
+    JSGlobalData *m_globalData;
 };
 
 }

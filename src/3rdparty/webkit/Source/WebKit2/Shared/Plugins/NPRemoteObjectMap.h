@@ -34,48 +34,54 @@
 #include <wtf/HashSet.h>
 #include <wtf/RefCounted.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 class NPObjectMessageReceiver;
 class NPObjectProxy;
 class NPVariantData;
 class Plugin;
 
-class NPRemoteObjectMap : public RefCounted<NPRemoteObjectMap> {
+class NPRemoteObjectMap : public RefCounted<NPRemoteObjectMap>
+{
 public:
-    static PassRefPtr<NPRemoteObjectMap> create(CoreIPC::Connection*);
+    static PassRefPtr<NPRemoteObjectMap> create( CoreIPC::Connection * );
     ~NPRemoteObjectMap();
 
     // Creates an NPObjectProxy wrapper for the remote object with the given remote object ID.
-    NPObject* createNPObjectProxy(uint64_t remoteObjectID, Plugin*);
-    void npObjectProxyDestroyed(NPObject*);
+    NPObject *createNPObjectProxy( uint64_t remoteObjectID, Plugin * );
+    void npObjectProxyDestroyed( NPObject * );
 
     // Expose the given NPObject as a remote object. Returns the objectID.
-    uint64_t registerNPObject(NPObject*, Plugin*);
-    void unregisterNPObject(uint64_t);
+    uint64_t registerNPObject( NPObject *, Plugin * );
+    void unregisterNPObject( uint64_t );
 
     // Given an NPVariant, creates an NPVariantData object (a CoreIPC representation of an NPVariant).
-    NPVariantData npVariantToNPVariantData(const NPVariant&, Plugin*);
+    NPVariantData npVariantToNPVariantData( const NPVariant &, Plugin * );
 
     // Given an NPVariantData, creates an NPVariant object.
-    NPVariant npVariantDataToNPVariant(const NPVariantData&, Plugin*);
+    NPVariant npVariantDataToNPVariant( const NPVariantData &, Plugin * );
 
-    CoreIPC::Connection* connection() const { return m_connection; }
+    CoreIPC::Connection *connection() const
+    {
+        return m_connection;
+    }
 
-    void pluginDestroyed(Plugin*);
+    void pluginDestroyed( Plugin * );
 
-    CoreIPC::SyncReplyMode didReceiveSyncMessage(CoreIPC::Connection* connection, CoreIPC::MessageID messageID, CoreIPC::ArgumentDecoder* arguments, CoreIPC::ArgumentEncoder* reply);
+    CoreIPC::SyncReplyMode didReceiveSyncMessage( CoreIPC::Connection *connection, CoreIPC::MessageID messageID,
+            CoreIPC::ArgumentDecoder *arguments, CoreIPC::ArgumentEncoder *reply );
 
 private:
-    explicit NPRemoteObjectMap(CoreIPC::Connection*);
-    CoreIPC::Connection* m_connection;
+    explicit NPRemoteObjectMap( CoreIPC::Connection * );
+    CoreIPC::Connection *m_connection;
 
     // A map of NPObjectMessageReceiver classes, wrapping objects that we export to the
     // other end of the connection.
-    HashMap<uint64_t, NPObjectMessageReceiver*> m_registeredNPObjects;
+    HashMap<uint64_t, NPObjectMessageReceiver *> m_registeredNPObjects;
 
     // A set of NPObjectProxy objects associated with this map.
-    HashSet<NPObjectProxy*> m_npObjectProxies;
+    HashSet<NPObjectProxy *> m_npObjectProxies;
 };
 
 } // namespace WebKit

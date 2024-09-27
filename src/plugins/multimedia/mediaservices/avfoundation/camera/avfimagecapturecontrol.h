@@ -34,55 +34,59 @@
 
 class AVFImageCaptureControl : public QCameraImageCaptureControl
 {
-   CS_OBJECT(AVFImageCaptureControl)
+    CS_OBJECT( AVFImageCaptureControl )
 
- public:
-   struct CaptureRequest {
-      int captureId;
-      QSemaphore *previewReady;
-   };
+public:
+    struct CaptureRequest
+    {
+        int captureId;
+        QSemaphore *previewReady;
+    };
 
-   AVFImageCaptureControl(AVFCameraService *service, QObject *parent = nullptr);
-   ~AVFImageCaptureControl();
+    AVFImageCaptureControl( AVFCameraService *service, QObject *parent = nullptr );
+    ~AVFImageCaptureControl();
 
-   bool isReadyForCapture() const override;
+    bool isReadyForCapture() const override;
 
-   QCameraImageCapture::DriveMode driveMode() const override {
-      return QCameraImageCapture::SingleImageCapture;
-   }
+    QCameraImageCapture::DriveMode driveMode() const override
+    {
+        return QCameraImageCapture::SingleImageCapture;
+    }
 
-   void setDriveMode(QCameraImageCapture::DriveMode) override {
-   }
+    void setDriveMode( QCameraImageCapture::DriveMode ) override
+    {
+    }
 
-   AVCaptureStillImageOutput *stillImageOutput() const {
-      return m_stillImageOutput;
-   }
+    AVCaptureStillImageOutput *stillImageOutput() const
+    {
+        return m_stillImageOutput;
+    }
 
-   int capture(const QString &fileName) override;
-   void cancelCapture() override;
+    int capture( const QString &fileName ) override;
+    void cancelCapture() override;
 
- private :
-   CS_SLOT_1(Private, void updateCaptureConnection())
-   CS_SLOT_2(updateCaptureConnection)
+private :
+    CS_SLOT_1( Private, void updateCaptureConnection() )
+    CS_SLOT_2( updateCaptureConnection )
 
-   CS_SLOT_1(Private, void updateReadyStatus())
-   CS_SLOT_2(updateReadyStatus)
+    CS_SLOT_1( Private, void updateReadyStatus() )
+    CS_SLOT_2( updateReadyStatus )
 
-   CS_SLOT_1(Private, void onNewViewfinderFrame(const QVideoFrame &frame))
-   CS_SLOT_2(onNewViewfinderFrame)
+    CS_SLOT_1( Private, void onNewViewfinderFrame( const QVideoFrame &frame ) )
+    CS_SLOT_2( onNewViewfinderFrame )
 
-   void makeCapturePreview(CaptureRequest request, const QVideoFrame &frame, int rotation);
+    void makeCapturePreview( CaptureRequest request, const QVideoFrame &frame, int rotation );
 
-   AVFCameraSession *m_session;
-   AVFCameraControl *m_cameraControl;
-   bool m_ready;
-   int m_lastCaptureId;
-   AVCaptureStillImageOutput *m_stillImageOutput;
-   AVCaptureConnection *m_videoConnection;
-   AVFStorageLocation m_storageLocation;
+    AVFCameraSession *m_session;
+    AVFCameraControl *m_cameraControl;
+    bool m_ready;
+    int m_lastCaptureId;
+    AVCaptureStillImageOutput *m_stillImageOutput;
+    AVCaptureConnection *m_videoConnection;
+    AVFStorageLocation m_storageLocation;
 
-   QMutex m_requestsMutex;
-   QQueue<CaptureRequest> m_captureRequests;
+    QMutex m_requestsMutex;
+    QQueue<CaptureRequest> m_captureRequests;
 };
 
 #endif

@@ -35,7 +35,8 @@
 #include <wtf/RefCounted.h>
 #include <wtf/Vector.h>
 
-namespace JSC  {
+namespace JSC
+{
 
 class ArgList;
 class Identifier;
@@ -43,41 +44,49 @@ class JSGlobalObject;
 class PropertyNameArray;
 class RuntimeMethod;
 
-namespace Bindings {
+namespace Bindings
+{
 
 class Instance;
 class Method;
 class RootObject;
 class RuntimeObject;
 
-typedef Vector<Method*> MethodList;
+typedef Vector<Method *> MethodList;
 
-class Field {
+class Field
+{
 public:
-    virtual JSValue valueFromInstance(ExecState*, const Instance*) const = 0;
-    virtual void setValueToInstance(ExecState*, const Instance*, JSValue) const = 0;
+    virtual JSValue valueFromInstance( ExecState *, const Instance * ) const = 0;
+    virtual void setValueToInstance( ExecState *, const Instance *, JSValue ) const = 0;
 
     virtual ~Field() { }
 };
 
-class Class {
-    WTF_MAKE_NONCOPYABLE(Class); WTF_MAKE_FAST_ALLOCATED;
+class Class
+{
+    WTF_MAKE_NONCOPYABLE( Class );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
     Class() { }
-    virtual MethodList methodsNamed(const Identifier&, Instance*) const = 0;
-    virtual Field* fieldNamed(const Identifier&, Instance*) const = 0;
-    virtual JSValue fallbackObject(ExecState*, Instance*, const Identifier&) { return jsUndefined(); }
+    virtual MethodList methodsNamed( const Identifier &, Instance * ) const = 0;
+    virtual Field *fieldNamed( const Identifier &, Instance * ) const = 0;
+    virtual JSValue fallbackObject( ExecState *, Instance *, const Identifier & )
+    {
+        return jsUndefined();
+    }
 
     virtual ~Class() { }
 };
 
-typedef void (*KJSDidExecuteFunctionPtr)(ExecState*, JSObject* rootObject);
+typedef void ( *KJSDidExecuteFunctionPtr )( ExecState *, JSObject *rootObject );
 
-class Instance : public RefCounted<Instance> {
+class Instance : public RefCounted<Instance>
+{
 public:
-    Instance(PassRefPtr<RootObject>);
+    Instance( PassRefPtr<RootObject> );
 
-    static void setDidExecuteFunction(KJSDidExecuteFunctionPtr func);
+    static void setDidExecuteFunction( KJSDidExecuteFunctionPtr func );
     static KJSDidExecuteFunctionPtr didExecuteFunction();
 
     // These functions are called before and after the main entry points into
@@ -86,40 +95,61 @@ public:
     void begin();
     void end();
 
-    virtual Class* getClass() const = 0;
-    JSObject* createRuntimeObject(ExecState*);
+    virtual Class *getClass() const = 0;
+    JSObject *createRuntimeObject( ExecState * );
     void willInvalidateRuntimeObject();
 
     // Returns false if the value was not set successfully.
-    virtual bool setValueOfUndefinedField(ExecState*, const Identifier&, JSValue) { return false; }
+    virtual bool setValueOfUndefinedField( ExecState *, const Identifier &, JSValue )
+    {
+        return false;
+    }
 
-    virtual JSValue getMethod(ExecState* exec, const Identifier& propertyName) = 0;
-    virtual JSValue invokeMethod(ExecState*, RuntimeMethod* method) = 0;
+    virtual JSValue getMethod( ExecState *exec, const Identifier &propertyName ) = 0;
+    virtual JSValue invokeMethod( ExecState *, RuntimeMethod *method ) = 0;
 
-    virtual bool supportsInvokeDefaultMethod() const { return false; }
-    virtual JSValue invokeDefaultMethod(ExecState*) { return jsUndefined(); }
+    virtual bool supportsInvokeDefaultMethod() const
+    {
+        return false;
+    }
+    virtual JSValue invokeDefaultMethod( ExecState * )
+    {
+        return jsUndefined();
+    }
 
-    virtual bool supportsConstruct() const { return false; }
-    virtual JSValue invokeConstruct(ExecState*, const ArgList&) { return JSValue(); }
+    virtual bool supportsConstruct() const
+    {
+        return false;
+    }
+    virtual JSValue invokeConstruct( ExecState *, const ArgList & )
+    {
+        return JSValue();
+    }
 
-    virtual void getPropertyNames(ExecState*, PropertyNameArray&) { }
+    virtual void getPropertyNames( ExecState *, PropertyNameArray & ) { }
 
-    virtual JSValue defaultValue(ExecState*, PreferredPrimitiveType) const = 0;
+    virtual JSValue defaultValue( ExecState *, PreferredPrimitiveType ) const = 0;
 
-    virtual JSValue valueOf(ExecState* exec) const = 0;
+    virtual JSValue valueOf( ExecState *exec ) const = 0;
 
-    RootObject* rootObject() const;
+    RootObject *rootObject() const;
 
     virtual ~Instance();
 
-    virtual bool getOwnPropertySlot(JSObject*, ExecState*, const Identifier&, PropertySlot&) { return false; }
-    virtual bool getOwnPropertyDescriptor(JSObject*, ExecState*, const Identifier&, PropertyDescriptor&) { return false; }
-    virtual void put(JSObject*, ExecState*, const Identifier&, JSValue, PutPropertySlot&) { }
+    virtual bool getOwnPropertySlot( JSObject *, ExecState *, const Identifier &, PropertySlot & )
+    {
+        return false;
+    }
+    virtual bool getOwnPropertyDescriptor( JSObject *, ExecState *, const Identifier &, PropertyDescriptor & )
+    {
+        return false;
+    }
+    virtual void put( JSObject *, ExecState *, const Identifier &, JSValue, PutPropertySlot & ) { }
 
 protected:
     virtual void virtualBegin() { }
     virtual void virtualEnd() { }
-    virtual RuntimeObject* newRuntimeObject(ExecState*);
+    virtual RuntimeObject *newRuntimeObject( ExecState * );
 
     RefPtr<RootObject> m_rootObject;
 
@@ -127,25 +157,26 @@ private:
     Weak<RuntimeObject> m_runtimeObject;
 };
 
-class Array {
-    WTF_MAKE_NONCOPYABLE(Array);
+class Array
+{
+    WTF_MAKE_NONCOPYABLE( Array );
 public:
-    Array(PassRefPtr<RootObject>);
+    Array( PassRefPtr<RootObject> );
     virtual ~Array();
 
-    virtual void setValueAt(ExecState*, unsigned index, JSValue) const = 0;
-    virtual JSValue valueAt(ExecState*, unsigned index) const = 0;
+    virtual void setValueAt( ExecState *, unsigned index, JSValue ) const = 0;
+    virtual JSValue valueAt( ExecState *, unsigned index ) const = 0;
     virtual unsigned int getLength() const = 0;
 
 protected:
     RefPtr<RootObject> m_rootObject;
 };
 
-const char* signatureForParameters(const ArgList&);
+const char *signatureForParameters( const ArgList & );
 
-typedef HashMap<RefPtr<StringImpl>, MethodList*> MethodListMap;
-typedef HashMap<RefPtr<StringImpl>, Method*> MethodMap;
-typedef HashMap<RefPtr<StringImpl>, Field*> FieldMap;
+typedef HashMap<RefPtr<StringImpl>, MethodList *> MethodListMap;
+typedef HashMap<RefPtr<StringImpl>, Method *> MethodMap;
+typedef HashMap<RefPtr<StringImpl>, Field *> FieldMap;
 
 } // namespace Bindings
 

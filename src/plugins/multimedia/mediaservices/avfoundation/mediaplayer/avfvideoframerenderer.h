@@ -39,27 +39,27 @@ class QAbstractVideoSurface;
 
 class AVFVideoFrameRenderer : public QObject
 {
- public:
-   AVFVideoFrameRenderer(QAbstractVideoSurface *surface, QObject *parent = nullptr);
+public:
+    AVFVideoFrameRenderer( QAbstractVideoSurface *surface, QObject *parent = nullptr );
 
-   virtual ~AVFVideoFrameRenderer();
+    virtual ~AVFVideoFrameRenderer();
 
-   GLuint renderLayerToTexture(AVPlayerLayer *layer);
-   QImage renderLayerToImage(AVPlayerLayer *layer);
+    GLuint renderLayerToTexture( AVPlayerLayer *layer );
+    QImage renderLayerToImage( AVPlayerLayer *layer );
 
- private:
-   QOpenGLFramebufferObject *initRenderer(AVPlayerLayer *layer);
-   void renderLayerToFBO(AVPlayerLayer *layer, QOpenGLFramebufferObject *fbo);
+private:
+    QOpenGLFramebufferObject *initRenderer( AVPlayerLayer *layer );
+    void renderLayerToFBO( AVPlayerLayer *layer, QOpenGLFramebufferObject *fbo );
 
-   CARenderer *m_videoLayerRenderer;
-   QAbstractVideoSurface *m_surface;
-   QOpenGLFramebufferObject *m_fbo[2];
-   QWindow *m_offscreenSurface;
-   QOpenGLContext *m_glContext;
-   QSize m_targetSize;
+    CARenderer *m_videoLayerRenderer;
+    QAbstractVideoSurface *m_surface;
+    QOpenGLFramebufferObject *m_fbo[2];
+    QWindow *m_offscreenSurface;
+    QOpenGLContext *m_glContext;
+    QSize m_targetSize;
 
-   uint m_currentBuffer;
-   bool m_isContextShared;
+    uint m_currentBuffer;
+    bool m_isContextShared;
 };
 
 #endif

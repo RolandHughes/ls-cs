@@ -26,6 +26,6 @@
 #ifndef WebSystemInterface_h
 #define WebSystemInterface_h
 
-void InitWebCoreSystemInterface(void);
+void InitWebCoreSystemInterface( void );
 
 #endif /* WebSystemInterface_h */

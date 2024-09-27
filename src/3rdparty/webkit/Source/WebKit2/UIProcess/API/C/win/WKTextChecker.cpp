@@ -32,29 +32,32 @@
 
 using namespace WebKit;
 
-void WKTextCheckerSetClient(const WKTextCheckerClient* wkClient)
+void WKTextCheckerSetClient( const WKTextCheckerClient *wkClient )
 {
-    if (wkClient && wkClient->version)
+    if ( wkClient && wkClient->version )
+    {
         return;
-    WebTextChecker::shared()->setClient(wkClient);
+    }
+
+    WebTextChecker::shared()->setClient( wkClient );
 }
 
-void WKTextCheckerContinuousSpellCheckingEnabledStateChanged(bool enabled)
+void WKTextCheckerContinuousSpellCheckingEnabledStateChanged( bool enabled )
 {
-    WebTextChecker::shared()->continuousSpellCheckingEnabledStateChanged(enabled);
+    WebTextChecker::shared()->continuousSpellCheckingEnabledStateChanged( enabled );
 }
 
-void WKTextCheckerGrammarCheckingEnabledStateChanged(bool enabled)
+void WKTextCheckerGrammarCheckingEnabledStateChanged( bool enabled )
 {
-    WebTextChecker::shared()->grammarCheckingEnabledStateChanged(enabled);
+    WebTextChecker::shared()->grammarCheckingEnabledStateChanged( enabled );
 }
 
-void WKTextCheckerCheckSpelling(WKPageRef page, bool startBeforeSelection)
+void WKTextCheckerCheckSpelling( WKPageRef page, bool startBeforeSelection )
 {
-    WebTextChecker::shared()->checkSpelling(toImpl(page), startBeforeSelection);
+    WebTextChecker::shared()->checkSpelling( toImpl( page ), startBeforeSelection );
 }
 
-void WKTextCheckerChangeSpellingToWord(WKPageRef page, WKStringRef word)
+void WKTextCheckerChangeSpellingToWord( WKPageRef page, WKStringRef word )
 {
-    WebTextChecker::shared()->changeSpellingToWord(toImpl(page), toWTFString(word));
+    WebTextChecker::shared()->changeSpellingToWord( toImpl( page ), toWTFString( word ) );
 }

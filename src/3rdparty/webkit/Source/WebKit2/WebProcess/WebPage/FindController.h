@@ -32,42 +32,45 @@
 #include <wtf/Noncopyable.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
-    class Frame;
-    class IntRect;
+namespace WebCore
+{
+class Frame;
+class IntRect;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 class WebPage;
 
-class FindController : private PageOverlay::Client {
-    WTF_MAKE_NONCOPYABLE(FindController);
+class FindController : private PageOverlay::Client
+{
+    WTF_MAKE_NONCOPYABLE( FindController );
 
 public:
-    explicit FindController(WebPage*);
+    explicit FindController( WebPage * );
     virtual ~FindController();
 
-    void findString(const String&, FindOptions, unsigned maxMatchCount);
+    void findString( const String &, FindOptions, unsigned maxMatchCount );
     void hideFindUI();
-    void countStringMatches(const String&, FindOptions, unsigned maxMatchCount);
-    
+    void countStringMatches( const String &, FindOptions, unsigned maxMatchCount );
+
     void hideFindIndicator();
 
 private:
     // PageOverlay::Client.
-    virtual void pageOverlayDestroyed(PageOverlay*);
-    virtual void willMoveToWebPage(PageOverlay*, WebPage*);
-    virtual void didMoveToWebPage(PageOverlay*, WebPage*);
-    virtual bool mouseEvent(PageOverlay*, const WebMouseEvent&);
-    virtual void drawRect(PageOverlay*, WebCore::GraphicsContext&, const WebCore::IntRect& dirtyRect);
+    virtual void pageOverlayDestroyed( PageOverlay * );
+    virtual void willMoveToWebPage( PageOverlay *, WebPage * );
+    virtual void didMoveToWebPage( PageOverlay *, WebPage * );
+    virtual bool mouseEvent( PageOverlay *, const WebMouseEvent & );
+    virtual void drawRect( PageOverlay *, WebCore::GraphicsContext &, const WebCore::IntRect &dirtyRect );
 
     Vector<WebCore::IntRect> rectsForTextMatches();
-    bool updateFindIndicator(WebCore::Frame* selectedFrame, bool isShowingOverlay);
+    bool updateFindIndicator( WebCore::Frame *selectedFrame, bool isShowingOverlay );
 
 private:
-    WebPage* m_webPage;
-    PageOverlay* m_findPageOverlay;
+    WebPage *m_webPage;
+    PageOverlay *m_findPageOverlay;
 
     // Whether the UI process is showing the find indicator. Note that this can be true even if
     // the find indicator isn't showing, but it will never be false when it is showing.

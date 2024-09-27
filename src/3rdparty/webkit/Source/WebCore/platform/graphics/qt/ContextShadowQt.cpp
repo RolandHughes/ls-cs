@@ -33,35 +33,37 @@
 #include <QPainter>
 #include <QTimerEvent>
 
-namespace WebCore {
+namespace WebCore
+{
 
 // ContextShadow needs a scratch image as the buffer for the blur filter.
 // Instead of creating and destroying the buffer for every operation,
 // we create a buffer which will be automatically purged via a timer.
 
-class ShadowBuffer: public QObject {
+class ShadowBuffer: public QObject
+{
 public:
-    ShadowBuffer(QObject* parent = 0);
+    ShadowBuffer( QObject *parent = 0 );
 
-    QImage* scratchImage(const QSize& size);
+    QImage *scratchImage( const QSize &size );
 
     void schedulePurge();
 
 protected:
-    void timerEvent(QTimerEvent* event);
+    void timerEvent( QTimerEvent *event );
 
 private:
     QImage image;
     int timerId;
 };
 
-ShadowBuffer::ShadowBuffer(QObject* parent)
-    : QObject(parent)
-    , timerId(-1)
+ShadowBuffer::ShadowBuffer( QObject *parent )
+    : QObject( parent )
+    , timerId( -1 )
 {
 }
 
-QImage* ShadowBuffer::scratchImage(const QSize& size)
+QImage *ShadowBuffer::scratchImage( const QSize &size )
 {
     int width = size.width();
     int height = size.height();
@@ -70,94 +72,110 @@ QImage* ShadowBuffer::scratchImage(const QSize& size)
     // larger than the requested size. However, if the requested size is
     // much smaller than our buffer, reduce our buffer so that we will not
     // keep too many allocated pixels for too long.
-    if (!image.isNull() && (image.width() > width) && (image.height() > height))
-        if (((2 * width) > image.width()) && ((2 * height) > image.height())) {
-            image.fill(0);
+    if ( !image.isNull() && ( image.width() > width ) && ( image.height() > height ) )
+        if ( ( ( 2 * width ) > image.width() ) && ( ( 2 * height ) > image.height() ) )
+        {
+            image.fill( 0 );
             return &image;
         }
 
     // Round to the nearest 32 pixels so we do not grow the buffer everytime
     // there is larger request by 1 pixel.
-    width = (1 + (width >> 5)) << 5;
-    height = (1 + (height >> 5)) << 5;
+    width = ( 1 + ( width >> 5 ) ) << 5;
+    height = ( 1 + ( height >> 5 ) ) << 5;
 
-    image = QImage(width, height, QImage::Format_ARGB32_Premultiplied);
-    image.fill(0);
+    image = QImage( width, height, QImage::Format_ARGB32_Premultiplied );
+    image.fill( 0 );
     return &image;
 }
 
 void ShadowBuffer::schedulePurge()
 {
     static const double BufferPurgeDelay = 2; // seconds
-    if (timerId >= 0)
-        killTimer(timerId);
-    timerId = startTimer(BufferPurgeDelay * 1000);
+
+    if ( timerId >= 0 )
+    {
+        killTimer( timerId );
+    }
+
+    timerId = startTimer( BufferPurgeDelay * 1000 );
 }
 
-void ShadowBuffer::timerEvent(QTimerEvent* event)
+void ShadowBuffer::timerEvent( QTimerEvent *event )
 {
-    if (event->timerId() == timerId) {
-        killTimer(timerId);
+    if ( event->timerId() == timerId )
+    {
+        killTimer( timerId );
         image = QImage();
     }
-    QObject::timerEvent(event);
+
+    QObject::timerEvent( event );
 }
 
-Q_GLOBAL_STATIC(ShadowBuffer, scratchShadowBuffer)
+Q_GLOBAL_STATIC( ShadowBuffer, scratchShadowBuffer )
 
-PlatformContext ContextShadow::beginShadowLayer(GraphicsContext* context, const FloatRect& layerArea)
+PlatformContext ContextShadow::beginShadowLayer( GraphicsContext *context, const FloatRect &layerArea )
 {
     // Set m_blurDistance.
-    adjustBlurDistance(context);
+    adjustBlurDistance( context );
 
     PlatformContext p = context->platformContext();
 
     QRect clipRect;
-    if (p->hasClipping())
+
+    if ( p->hasClipping() )
+    {
         clipRect = p->clipBoundingRect().toAlignedRect();
+    }
 
     else
-        clipRect = p->transform().inverted().mapRect(p->window());
+    {
+        clipRect = p->transform().inverted().mapRect( p->window() );
+    }
 
     // Set m_layerOrigin, m_layerContextTranslation, m_sourceRect.
-    IntRect clip(clipRect.x(), clipRect.y(), clipRect.width(), clipRect.height());
-    IntRect layerRect = calculateLayerBoundingRect(context, layerArea, clip);
+    IntRect clip( clipRect.x(), clipRect.y(), clipRect.width(), clipRect.height() );
+    IntRect layerRect = calculateLayerBoundingRect( context, layerArea, clip );
 
     // Don't paint if we are totally outside the clip region.
-    if (layerRect.isEmpty())
+    if ( layerRect.isEmpty() )
+    {
         return 0;
+    }
 
-    ShadowBuffer* shadowBuffer = scratchShadowBuffer();
-    QImage* shadowImage = shadowBuffer->scratchImage(layerRect.size());
-    m_layerImage = QImage(*shadowImage);
+    ShadowBuffer *shadowBuffer = scratchShadowBuffer();
+    QImage *shadowImage = shadowBuffer->scratchImage( layerRect.size() );
+    m_layerImage = QImage( *shadowImage );
 
     m_layerContext = new QPainter;
-    m_layerContext->begin(&m_layerImage);
-    m_layerContext->setFont(p->font());
-    m_layerContext->translate(m_layerContextTranslation);
+    m_layerContext->begin( &m_layerImage );
+    m_layerContext->setFont( p->font() );
+    m_layerContext->translate( m_layerContextTranslation );
     return m_layerContext;
 }
 
-void ContextShadow::endShadowLayer(GraphicsContext* context)
+void ContextShadow::endShadowLayer( GraphicsContext *context )
 {
     m_layerContext->end();
     delete m_layerContext;
     m_layerContext = 0;
 
-    if (m_type == BlurShadow) {
-        blurLayerImage(m_layerImage.bits(), IntSize(m_layerImage.width(), m_layerImage.height()),
-                       m_layerImage.bytesPerLine());
+    if ( m_type == BlurShadow )
+    {
+        blurLayerImage( m_layerImage.bits(), IntSize( m_layerImage.width(), m_layerImage.height() ),
+                        m_layerImage.bytesPerLine() );
     }
 
-    if (m_type != NoShadow) {
+    if ( m_type != NoShadow )
+    {
         // "Colorize" with the right shadow color.
-        QPainter p(&m_layerImage);
-        p.setCompositionMode(QPainter::CompositionMode_SourceIn);
-        p.fillRect(m_layerImage.rect(), m_color.rgb());
+        QPainter p( &m_layerImage );
+        p.setCompositionMode( QPainter::CompositionMode_SourceIn );
+        p.fillRect( m_layerImage.rect(), m_color.rgb() );
         p.end();
     }
 
-    context->platformContext()->drawImage(m_layerOrigin, m_layerImage, m_sourceRect);
+    context->platformContext()->drawImage( m_layerOrigin, m_layerImage, m_sourceRect );
 
     scratchShadowBuffer()->schedulePurge();
 }

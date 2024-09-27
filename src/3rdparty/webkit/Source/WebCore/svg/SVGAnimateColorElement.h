@@ -25,15 +25,17 @@
 
 #include "SVGAnimateElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 // SVGAnimateElement implements superset of the functionality.
-class SVGAnimateColorElement : public SVGAnimateElement {
+class SVGAnimateColorElement : public SVGAnimateElement
+{
 public:
-    static PassRefPtr<SVGAnimateColorElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<SVGAnimateColorElement> create( const QualifiedName &, Document * );
 
 private:
-    SVGAnimateColorElement(const QualifiedName&, Document*);
+    SVGAnimateColorElement( const QualifiedName &, Document * );
 };
 
 } // namespace WebCore

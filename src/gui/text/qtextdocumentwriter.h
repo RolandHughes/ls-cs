@@ -34,36 +34,36 @@ class QTextDocumentFragment;
 
 class Q_GUI_EXPORT QTextDocumentWriter
 {
- public:
-   QTextDocumentWriter();
-   QTextDocumentWriter(QIODevice *device, const QByteArray &format);
-   explicit QTextDocumentWriter(const QString &fileName, const QByteArray &format = QByteArray());
+public:
+    QTextDocumentWriter();
+    QTextDocumentWriter( QIODevice *device, const QByteArray &format );
+    explicit QTextDocumentWriter( const QString &fileName, const QByteArray &format = QByteArray() );
 
-   QTextDocumentWriter(const QTextDocumentWriter &) = delete;
-   QTextDocumentWriter &operator=(const QTextDocumentWriter &) = delete;
+    QTextDocumentWriter( const QTextDocumentWriter & ) = delete;
+    QTextDocumentWriter &operator=( const QTextDocumentWriter & ) = delete;
 
-   ~QTextDocumentWriter();
+    ~QTextDocumentWriter();
 
-   void setFormat (const QByteArray &format);
-   QByteArray format () const;
+    void setFormat ( const QByteArray &format );
+    QByteArray format () const;
 
-   void setDevice (QIODevice *device);
-   QIODevice *device () const;
-   void setFileName (const QString &fileName);
-   QString fileName () const;
+    void setDevice ( QIODevice *device );
+    QIODevice *device () const;
+    void setFileName ( const QString &fileName );
+    QString fileName () const;
 
-   bool write(const QTextDocument *document);
-   bool write(const QTextDocumentFragment &fragment);
+    bool write( const QTextDocument *document );
+    bool write( const QTextDocumentFragment &fragment );
 
 #ifndef QT_NO_TEXTCODEC
-   void setCodec(QTextCodec *codec);
-   QTextCodec *codec() const;
+    void setCodec( QTextCodec *codec );
+    QTextCodec *codec() const;
 #endif
 
-   static QList<QByteArray> supportedDocumentFormats();
+    static QList<QByteArray> supportedDocumentFormats();
 
- private:
-   QTextDocumentWriterPrivate *d;
+private:
+    QTextDocumentWriterPrivate *d;
 };
 
 #endif

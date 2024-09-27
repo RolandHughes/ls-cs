@@ -26,25 +26,27 @@
 
 #include "HTMLFrameElementBase.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class HTMLIFrameElement : public HTMLFrameElementBase {
+class HTMLIFrameElement : public HTMLFrameElementBase
+{
 public:
-    static PassRefPtr<HTMLIFrameElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<HTMLIFrameElement> create( const QualifiedName &, Document * );
 
 private:
-    HTMLIFrameElement(const QualifiedName&, Document*);
+    HTMLIFrameElement( const QualifiedName &, Document * );
 
-    virtual bool mapToEntry(const QualifiedName&, MappedAttributeEntry&) const;
-    virtual void parseMappedAttribute(Attribute*);
+    virtual bool mapToEntry( const QualifiedName &, MappedAttributeEntry & ) const;
+    virtual void parseMappedAttribute( Attribute * );
 
     virtual void insertedIntoDocument();
     virtual void removedFromDocument();
-    
-    virtual bool rendererIsNeeded(RenderStyle*);
-    virtual RenderObject* createRenderer(RenderArena*, RenderStyle*);
-    
-    virtual bool isURLAttribute(Attribute*) const;
+
+    virtual bool rendererIsNeeded( RenderStyle * );
+    virtual RenderObject *createRenderer( RenderArena *, RenderStyle * );
+
+    virtual bool isURLAttribute( Attribute * ) const;
 
     AtomicString m_name;
 };

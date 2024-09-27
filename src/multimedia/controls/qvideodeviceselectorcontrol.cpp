@@ -23,8 +23,8 @@
 
 #include <qvideodeviceselectorcontrol.h>
 
-QVideoDeviceSelectorControl::QVideoDeviceSelectorControl(QObject *parent)
-   : QMediaControl(parent)
+QVideoDeviceSelectorControl::QVideoDeviceSelectorControl( QObject *parent )
+    : QMediaControl( parent )
 {
 }
 

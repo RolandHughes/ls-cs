@@ -26,27 +26,28 @@
 
 #include <qxsdschema_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class XsdSchemaMerger : public QSharedData
 {
- public:
-   typedef QExplicitlySharedDataPointer<XsdSchemaMerger> Ptr;
+public:
+    typedef QExplicitlySharedDataPointer<XsdSchemaMerger> Ptr;
 
-   /**
-    * Creates a new schema merger object that merges @p schema with @p otherSchema.
-    */
-   XsdSchemaMerger(const XsdSchema::Ptr &schema, const XsdSchema::Ptr &otherSchema);
+    /**
+     * Creates a new schema merger object that merges @p schema with @p otherSchema.
+     */
+    XsdSchemaMerger( const XsdSchema::Ptr &schema, const XsdSchema::Ptr &otherSchema );
 
-   /**
-    * Returns the merged schema.
-    */
-   XsdSchema::Ptr mergedSchema() const;
+    /**
+     * Returns the merged schema.
+     */
+    XsdSchema::Ptr mergedSchema() const;
 
- private:
-   void merge(const XsdSchema::Ptr &schema, const XsdSchema::Ptr &otherSchema);
+private:
+    void merge( const XsdSchema::Ptr &schema, const XsdSchema::Ptr &otherSchema );
 
-   XsdSchema::Ptr m_mergedSchema;
+    XsdSchema::Ptr m_mergedSchema;
 };
 
 }

@@ -24,20 +24,21 @@
 #include <qgstreameravailabilitycontrol.h>
 #include <qmediaresourceset_p.h>
 
-QGStreamerAvailabilityControl::QGStreamerAvailabilityControl(QMediaPlayerResourceSetInterface *resources, QObject *parent)
-   : QMediaAvailabilityControl(parent), m_resources(resources)
+QGStreamerAvailabilityControl::QGStreamerAvailabilityControl( QMediaPlayerResourceSetInterface *resources, QObject *parent )
+    : QMediaAvailabilityControl( parent ), m_resources( resources )
 {
-   Q_ASSERT(m_resources);
-   connect(m_resources, &QMediaPlayerResourceSetInterface::availabilityChanged, this, &QGStreamerAvailabilityControl::handleAvailabilityChanged);
+    Q_ASSERT( m_resources );
+    connect( m_resources, &QMediaPlayerResourceSetInterface::availabilityChanged, this,
+             &QGStreamerAvailabilityControl::handleAvailabilityChanged );
 }
 
 void QGStreamerAvailabilityControl::handleAvailabilityChanged()
 {
-   emit availabilityChanged(this->availability());
+    emit availabilityChanged( this->availability() );
 }
 
 QMultimedia::AvailabilityStatus QGStreamerAvailabilityControl::availability() const
 {
-   return m_resources->isAvailable() ? QMultimedia::Available : QMultimedia::Busy;
+    return m_resources->isAvailable() ? QMultimedia::Available : QMultimedia::Busy;
 }
 

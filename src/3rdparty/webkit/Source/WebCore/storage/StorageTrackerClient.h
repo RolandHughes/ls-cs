@@ -22,18 +22,20 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 #ifndef StorageTrackerClient_h
 #define StorageTrackerClient_h
 
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class StorageTrackerClient {
+class StorageTrackerClient
+{
 public:
     virtual ~StorageTrackerClient() { }
-    virtual void dispatchDidModifyOrigin(const String& originIdentifier) = 0;
+    virtual void dispatchDidModifyOrigin( const String &originIdentifier ) = 0;
 };
 
 } // namespace WebCore

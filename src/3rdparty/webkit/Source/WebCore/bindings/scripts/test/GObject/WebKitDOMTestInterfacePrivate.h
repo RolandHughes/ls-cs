@@ -24,15 +24,16 @@
 #include <glib-object.h>
 #include <webkit/WebKitDOMObject.h>
 #include "TestInterface.h"
-namespace WebKit {
-    WebKitDOMTestInterface *
-    wrapTestInterface(WebCore::TestInterface *coreObject);
+namespace WebKit
+{
+WebKitDOMTestInterface *
+wrapTestInterface( WebCore::TestInterface *coreObject );
 
-    WebCore::TestInterface *
-    core(WebKitDOMTestInterface *request);
+WebCore::TestInterface *
+core( WebKitDOMTestInterface *request );
 
-    WebKitDOMTestInterface*
-    kit(WebCore::TestInterface* node);
+WebKitDOMTestInterface *
+kit( WebCore::TestInterface *node );
 
 } // namespace WebKit
 

@@ -34,21 +34,21 @@ using namespace WebKit;
 WKMutableArrayRef WKMutableArrayCreate()
 {
     RefPtr<MutableArray> array = MutableArray::create();
-    return toAPI(array.release().releaseRef());
+    return toAPI( array.release().releaseRef() );
 }
 
-bool WKArrayIsMutable(WKArrayRef arrayRef)
+bool WKArrayIsMutable( WKArrayRef arrayRef )
 {
-    return toImpl(arrayRef)->isMutable();
+    return toImpl( arrayRef )->isMutable();
 }
 
-void WKArrayAppendItem(WKMutableArrayRef arrayRef, WKTypeRef itemRef)
+void WKArrayAppendItem( WKMutableArrayRef arrayRef, WKTypeRef itemRef )
 {
-    toImpl(arrayRef)->append(toImpl(itemRef));
+    toImpl( arrayRef )->append( toImpl( itemRef ) );
 }
 
-void WKArrayRemoveItemAtIndex(WKMutableArrayRef arrayRef, size_t index)
+void WKArrayRemoveItemAtIndex( WKMutableArrayRef arrayRef, size_t index )
 {
-    toImpl(arrayRef)->removeItemAtIndex(index);
+    toImpl( arrayRef )->removeItemAtIndex( index );
 }
 

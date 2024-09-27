@@ -33,47 +33,47 @@ class QThreadPoolPrivate;
 
 class Q_CORE_EXPORT QThreadPool : public QObject
 {
-   CORE_CS_OBJECT(QThreadPool)
+    CORE_CS_OBJECT( QThreadPool )
 
-   Q_DECLARE_PRIVATE(QThreadPool)
+    Q_DECLARE_PRIVATE( QThreadPool )
 
-   CORE_CS_PROPERTY_READ(expiryTimeout, expiryTimeout)
-   CORE_CS_PROPERTY_WRITE(expiryTimeout, setExpiryTimeout)
+    CORE_CS_PROPERTY_READ( expiryTimeout, expiryTimeout )
+    CORE_CS_PROPERTY_WRITE( expiryTimeout, setExpiryTimeout )
 
-   CORE_CS_PROPERTY_READ(maxThreadCount, maxThreadCount)
-   CORE_CS_PROPERTY_WRITE(maxThreadCount, setMaxThreadCount)
+    CORE_CS_PROPERTY_READ( maxThreadCount, maxThreadCount )
+    CORE_CS_PROPERTY_WRITE( maxThreadCount, setMaxThreadCount )
 
-   CORE_CS_PROPERTY_READ(activeThreadCount, activeThreadCount)
+    CORE_CS_PROPERTY_READ( activeThreadCount, activeThreadCount )
 
-   friend class QFutureInterfaceBase;
+    friend class QFutureInterfaceBase;
 
- public:
-   QThreadPool(QObject *parent = nullptr);
-   ~QThreadPool();
+public:
+    QThreadPool( QObject *parent = nullptr );
+    ~QThreadPool();
 
-   static QThreadPool *globalInstance();
+    static QThreadPool *globalInstance();
 
-   void start(QRunnable *runnable, int priority = 0);
-   bool tryStart(QRunnable *runnable);
+    void start( QRunnable *runnable, int priority = 0 );
+    bool tryStart( QRunnable *runnable );
 
-   int expiryTimeout() const;
-   void setExpiryTimeout(int expiryTimeout);
+    int expiryTimeout() const;
+    void setExpiryTimeout( int expiryTimeout );
 
-   int maxThreadCount() const;
-   void setMaxThreadCount(int maxThreadCount);
+    int maxThreadCount() const;
+    void setMaxThreadCount( int maxThreadCount );
 
-   int activeThreadCount() const;
+    int activeThreadCount() const;
 
-   void reserveThread();
-   void releaseThread();
+    void reserveThread();
+    void releaseThread();
 
-   bool waitForDone(int msecs = -1);
+    bool waitForDone( int msecs = -1 );
 
-   void clear();
-   void cancel(QRunnable *runnable);
+    void clear();
+    void cancel( QRunnable *runnable );
 
- protected:
-   QScopedPointer<QThreadPoolPrivate> d_ptr;
+protected:
+    QScopedPointer<QThreadPoolPrivate> d_ptr;
 
 };
 

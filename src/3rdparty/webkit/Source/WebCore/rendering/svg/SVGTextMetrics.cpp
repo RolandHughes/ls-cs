@@ -25,69 +25,70 @@
 #include "RenderSVGInlineText.h"
 #include "TextRun.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 SVGTextMetrics::SVGTextMetrics()
-    : m_width(0)
-    , m_height(0)
-    , m_length(0)
+    : m_width( 0 )
+    , m_height( 0 )
+    , m_length( 0 )
 {
 }
 
-SVGTextMetrics::SVGTextMetrics(RenderSVGInlineText* textRenderer, const TextRun& run, unsigned position, unsigned textLength)
+SVGTextMetrics::SVGTextMetrics( RenderSVGInlineText *textRenderer, const TextRun &run, unsigned position, unsigned textLength )
 {
-    ASSERT(textRenderer);
+    ASSERT( textRenderer );
 
     float scalingFactor = textRenderer->scalingFactor();
-    ASSERT(scalingFactor);
+    ASSERT( scalingFactor );
 
-    const Font& scaledFont = textRenderer->scaledFont();
+    const Font &scaledFont = textRenderer->scaledFont();
 
-    int extraCharsAvailable = textLength - (position + run.length());
+    int extraCharsAvailable = textLength - ( position + run.length() );
     int length = 0;
 
     // Calculate width/height using the scaled font, divide this result by the scalingFactor afterwards.
-    m_width = scaledFont.width(run, extraCharsAvailable, length, m_glyph.name) / scalingFactor;
+    m_width = scaledFont.width( run, extraCharsAvailable, length, m_glyph.name ) / scalingFactor;
     m_height = scaledFont.fontMetrics().floatHeight() / scalingFactor;
 
-    m_glyph.unicodeString = String(run.characters(), length);
+    m_glyph.unicodeString = String( run.characters(), length );
     m_glyph.isValid = true;
 
-    ASSERT(length >= 0);
-    m_length = static_cast<unsigned>(length);
+    ASSERT( length >= 0 );
+    m_length = static_cast<unsigned>( length );
 }
 
-bool SVGTextMetrics::operator==(const SVGTextMetrics& other)
+bool SVGTextMetrics::operator==( const SVGTextMetrics &other )
 {
     return m_width == other.m_width
-        && m_height == other.m_height
-        && m_length == other.m_length
-        && m_glyph == other.m_glyph;
+           && m_height == other.m_height
+           && m_length == other.m_length
+           && m_glyph == other.m_glyph;
 }
 
 SVGTextMetrics SVGTextMetrics::emptyMetrics()
 {
-    DEFINE_STATIC_LOCAL(SVGTextMetrics, s_emptyMetrics, ());
+    DEFINE_STATIC_LOCAL( SVGTextMetrics, s_emptyMetrics, () );
     s_emptyMetrics.m_length = 1;
     return s_emptyMetrics;
 }
 
-static TextRun constructTextRun(RenderSVGInlineText* text, const UChar* characters, unsigned position, unsigned length)
+static TextRun constructTextRun( RenderSVGInlineText *text, const UChar *characters, unsigned position, unsigned length )
 {
-    RenderStyle* style = text->style();
-    ASSERT(style);
+    RenderStyle *style = text->style();
+    ASSERT( style );
 
-    TextRun run(characters + position
-                , length
-                , false /* allowTabs */
-                , 0 /* xPos, only relevant with allowTabs=true */
-                , 0 /* padding, only relevant for justified text, not relevant for SVG */
-                , TextRun::AllowTrailingExpansion
-                , style->direction()
-                , style->unicodeBidi() == Override /* directionalOverride */);
+    TextRun run( characters + position
+                 , length
+                 , false /* allowTabs */
+                 , 0 /* xPos, only relevant with allowTabs=true */
+                 , 0 /* padding, only relevant for justified text, not relevant for SVG */
+                 , TextRun::AllowTrailingExpansion
+                 , style->direction()
+                 , style->unicodeBidi() == Override /* directionalOverride */ );
 
 #if ENABLE(SVG_FONTS)
-    run.setReferencingRenderObject(text);
+    run.setReferencingRenderObject( text );
 #endif
 
     // We handle letter & word spacing ourselves.
@@ -95,11 +96,11 @@ static TextRun constructTextRun(RenderSVGInlineText* text, const UChar* characte
     return run;
 }
 
-SVGTextMetrics SVGTextMetrics::measureCharacterRange(RenderSVGInlineText* text, unsigned position, unsigned length)
+SVGTextMetrics SVGTextMetrics::measureCharacterRange( RenderSVGInlineText *text, unsigned position, unsigned length )
 {
-    ASSERT(text);
-    TextRun run(constructTextRun(text, text->characters(), position, length));
-    return SVGTextMetrics(text, run, position, text->textLength());
+    ASSERT( text );
+    TextRun run( constructTextRun( text, text->characters(), position, length ) );
+    return SVGTextMetrics( text, run, position, text->textLength() );
 }
 
 }

@@ -33,16 +33,18 @@
 
 #if ENABLE(BLOB)
 
-namespace WebCore {
+namespace WebCore
+{
 
-class FileReaderLoaderClient {
+class FileReaderLoaderClient
+{
 public:
     virtual ~FileReaderLoaderClient() {}
 
     virtual void didStartLoading() = 0;
     virtual void didReceiveData() = 0;
     virtual void didFinishLoading() = 0;
-    virtual void didFail(int errorCode) = 0;
+    virtual void didFail( int errorCode ) = 0;
 };
 
 } // namespace WebCore

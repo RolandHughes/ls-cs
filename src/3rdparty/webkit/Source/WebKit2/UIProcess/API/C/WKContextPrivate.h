@@ -33,40 +33,41 @@
 extern "C" {
 #endif
 
-struct WKContextStatistics {
+struct WKContextStatistics
+{
     unsigned wkViewCount;
     unsigned wkPageCount;
     unsigned wkFrameCount;
 };
 typedef struct WKContextStatistics WKContextStatistics;
 
-WK_EXPORT void WKContextGetGlobalStatistics(WKContextStatistics* statistics);
+WK_EXPORT void WKContextGetGlobalStatistics( WKContextStatistics *statistics );
 
 WK_EXPORT WKContextRef WKContextGetSharedThreadContext();
 
-WK_EXPORT void _WKContextSetAdditionalPluginsDirectory(WKContextRef context, WKStringRef pluginsDirectory);
+WK_EXPORT void _WKContextSetAdditionalPluginsDirectory( WKContextRef context, WKStringRef pluginsDirectory );
 
-WK_EXPORT void _WKContextRegisterURLSchemeAsEmptyDocument(WKContextRef context, WKStringRef urlScheme);
+WK_EXPORT void _WKContextRegisterURLSchemeAsEmptyDocument( WKContextRef context, WKStringRef urlScheme );
 
-WK_EXPORT void _WKContextSetAlwaysUsesComplexTextCodePath(WKContextRef context, bool alwaysUseComplexTextCodePath);
+WK_EXPORT void _WKContextSetAlwaysUsesComplexTextCodePath( WKContextRef context, bool alwaysUseComplexTextCodePath );
 
-WK_EXPORT void WKContextRegisterURLSchemeAsSecure(WKContextRef context, WKStringRef urlScheme);
+WK_EXPORT void WKContextRegisterURLSchemeAsSecure( WKContextRef context, WKStringRef urlScheme );
 
-WK_EXPORT void WKContextSetDomainRelaxationForbiddenForURLScheme(WKContextRef context, WKStringRef urlScheme);
+WK_EXPORT void WKContextSetDomainRelaxationForbiddenForURLScheme( WKContextRef context, WKStringRef urlScheme );
 
-WK_EXPORT void WKContextSetIconDatabasePath(WKContextRef context, WKStringRef iconDatabasePath);
+WK_EXPORT void WKContextSetIconDatabasePath( WKContextRef context, WKStringRef iconDatabasePath );
 
 // FIXME: These functions are only effective if called before the Web process is launched. But
 // we should really change these settings to be on WebPreferences and changeable at runtime.
-WK_EXPORT void WKContextSetDatabaseDirectory(WKContextRef context, WKStringRef databaseDirectory);
-WK_EXPORT void WKContextSetLocalStorageDirectory(WKContextRef context, WKStringRef localStorageDirectory);
+WK_EXPORT void WKContextSetDatabaseDirectory( WKContextRef context, WKStringRef databaseDirectory );
+WK_EXPORT void WKContextSetLocalStorageDirectory( WKContextRef context, WKStringRef localStorageDirectory );
 
 // FIXME: This is a workaround for testing purposes only and should be removed once a better
 // solution has been found for testing.
-WK_EXPORT void WKContextDisableProcessTermination(WKContextRef context);
-WK_EXPORT void WKContextEnableProcessTermination(WKContextRef context);
+WK_EXPORT void WKContextDisableProcessTermination( WKContextRef context );
+WK_EXPORT void WKContextEnableProcessTermination( WKContextRef context );
 
-WK_EXPORT void _WKContextSetHTTPPipeliningEnabled(WKContextRef context, bool enabled);
+WK_EXPORT void _WKContextSetHTTPPipeliningEnabled( WKContextRef context, bool enabled );
 
 #ifdef __cplusplus
 }

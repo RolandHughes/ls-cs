@@ -35,23 +35,23 @@ class ShaderEffect : public QGraphicsEffect
     Q_OBJECT
 
 public:
-    ShaderEffect(QObject *parent = nullptr);
+    ShaderEffect( QObject *parent = nullptr );
     ~ShaderEffect();
-    void addRenderTarget(ShaderEffectSource *target);
-    void removeRenderTarget(ShaderEffectSource *target);
+    void addRenderTarget( ShaderEffectSource *target );
+    void removeRenderTarget( ShaderEffectSource *target );
 
-    QVector<ShaderEffectSource*> m_renderTargets;
+    QVector<ShaderEffectSource *> m_renderTargets;
     bool m_changed : 1;
 
 protected:
-    virtual void draw (QPainter *painter);
-    virtual void sourceChanged (ChangeFlags flags);
+    virtual void draw ( QPainter *painter );
+    virtual void sourceChanged ( ChangeFlags flags );
 
 private:
-    void prepareBufferedDraw(QPainter *painter);
+    void prepareBufferedDraw( QPainter *painter );
     void updateRenderTargets();
     bool hideOriginal() const;
-   
+
 };
 
 QT_END_NAMESPACE

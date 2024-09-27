@@ -27,28 +27,28 @@
 
 using namespace QPatternist;
 
-SingleContainer::SingleContainer(const Expression::Ptr &operand) : m_operand(operand)
+SingleContainer::SingleContainer( const Expression::Ptr &operand ) : m_operand( operand )
 {
-   Q_ASSERT(operand);
+    Q_ASSERT( operand );
 }
 
 Expression::List SingleContainer::operands() const
 {
-   Expression::List list;
-   list.append(m_operand);
-   return list;
+    Expression::List list;
+    list.append( m_operand );
+    return list;
 }
 
-void SingleContainer::setOperands(const Expression::List &ops)
+void SingleContainer::setOperands( const Expression::List &ops )
 {
-   Q_ASSERT(ops.count() == 1);
-   m_operand = ops.first();
+    Q_ASSERT( ops.count() == 1 );
+    m_operand = ops.first();
 }
 
-bool SingleContainer::compressOperands(const StaticContext::Ptr &context)
+bool SingleContainer::compressOperands( const StaticContext::Ptr &context )
 {
-   rewrite(m_operand, m_operand->compress(context), context);
+    rewrite( m_operand, m_operand->compress( context ), context );
 
-   return m_operand->isEvaluated();
+    return m_operand->isEvaluated();
 }
 

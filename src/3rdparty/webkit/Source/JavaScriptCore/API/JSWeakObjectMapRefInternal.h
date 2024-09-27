@@ -29,38 +29,43 @@
 #include "WeakGCMap.h"
 #include <wtf/RefCounted.h>
 
-namespace JSC {
+namespace JSC
+{
 
 class JSObject;
 
 }
 
-typedef void (*JSWeakMapDestroyedCallback)(struct OpaqueJSWeakObjectMap*, void*);
+typedef void ( *JSWeakMapDestroyedCallback )( struct OpaqueJSWeakObjectMap *, void * );
 
-typedef JSC::WeakGCMap<void*, JSC::JSObject> WeakMapType;
+typedef JSC::WeakGCMap<void *, JSC::JSObject> WeakMapType;
 
-struct OpaqueJSWeakObjectMap : public RefCounted<OpaqueJSWeakObjectMap> {
+struct OpaqueJSWeakObjectMap : public RefCounted<OpaqueJSWeakObjectMap>
+{
 public:
-    static PassRefPtr<OpaqueJSWeakObjectMap> create(void* data, JSWeakMapDestroyedCallback callback)
+    static PassRefPtr<OpaqueJSWeakObjectMap> create( void *data, JSWeakMapDestroyedCallback callback )
     {
-        return adoptRef(new OpaqueJSWeakObjectMap(data, callback));
+        return adoptRef( new OpaqueJSWeakObjectMap( data, callback ) );
     }
 
-    WeakMapType& map() { return m_map; }
-    
+    WeakMapType &map()
+    {
+        return m_map;
+    }
+
     ~OpaqueJSWeakObjectMap()
     {
-        m_callback(this, m_data);
+        m_callback( this, m_data );
     }
 
 private:
-    OpaqueJSWeakObjectMap(void* data, JSWeakMapDestroyedCallback callback)
-        : m_data(data)
-        , m_callback(callback)
+    OpaqueJSWeakObjectMap( void *data, JSWeakMapDestroyedCallback callback )
+        : m_data( data )
+        , m_callback( callback )
     {
     }
     WeakMapType m_map;
-    void* m_data;
+    void *m_data;
     JSWeakMapDestroyedCallback m_callback;
 };
 

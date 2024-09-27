@@ -26,26 +26,31 @@
 #include "PlatformString.h"
 #include "Filter.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SourceAlpha : public FilterEffect {
-public:        
-    static PassRefPtr<SourceAlpha> create(Filter*);
+class SourceAlpha : public FilterEffect
+{
+public:
+    static PassRefPtr<SourceAlpha> create( Filter * );
 
-    static const AtomicString& effectName();
+    static const AtomicString &effectName();
 
     virtual void apply();
     virtual void dump();
 
     virtual void determineAbsolutePaintRect();
 
-    virtual FilterEffectType filterEffectType() const { return FilterEffectTypeSourceInput; }
+    virtual FilterEffectType filterEffectType() const
+    {
+        return FilterEffectTypeSourceInput;
+    }
 
-    virtual TextStream& externalRepresentation(TextStream&, int indention) const;
+    virtual TextStream &externalRepresentation( TextStream &, int indention ) const;
 
 private:
-    SourceAlpha(Filter* filter)
-        : FilterEffect(filter)
+    SourceAlpha( Filter *filter )
+        : FilterEffect( filter )
     {
     }
 };

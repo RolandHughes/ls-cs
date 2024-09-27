@@ -30,48 +30,49 @@
 
 class QGlyphRunPrivate: public QSharedData
 {
- public:
-   QGlyphRunPrivate()
-      : flags(Qt::EmptyFlag), glyphIndexData(glyphIndexes.constData()), glyphIndexDataSize(0),
-        glyphPositionData(glyphPositions.constData()), glyphPositionDataSize(0),
-        textRangeStart(-1), textRangeEnd(-1)
-   {
-   }
+public:
+    QGlyphRunPrivate()
+        : flags( Qt::EmptyFlag ), glyphIndexData( glyphIndexes.constData() ), glyphIndexDataSize( 0 ),
+          glyphPositionData( glyphPositions.constData() ), glyphPositionDataSize( 0 ),
+          textRangeStart( -1 ), textRangeEnd( -1 )
+    {
+    }
 
-   QGlyphRunPrivate(const QGlyphRunPrivate &other)
-      : QSharedData(other)
-      , glyphIndexes(other.glyphIndexes)
-      , glyphPositions(other.glyphPositions)
-      , rawFont(other.rawFont)
-      , boundingRect(other.boundingRect)
-      , flags(other.flags)
-      , glyphIndexData(other.glyphIndexData)
-      , glyphIndexDataSize(other.glyphIndexDataSize)
-      , glyphPositionData(other.glyphPositionData)
-      , glyphPositionDataSize(other.glyphPositionDataSize)
-      , textRangeStart(other.textRangeStart)
-      , textRangeEnd(other.textRangeEnd)
-   { }
+    QGlyphRunPrivate( const QGlyphRunPrivate &other )
+        : QSharedData( other )
+        , glyphIndexes( other.glyphIndexes )
+        , glyphPositions( other.glyphPositions )
+        , rawFont( other.rawFont )
+        , boundingRect( other.boundingRect )
+        , flags( other.flags )
+        , glyphIndexData( other.glyphIndexData )
+        , glyphIndexDataSize( other.glyphIndexDataSize )
+        , glyphPositionData( other.glyphPositionData )
+        , glyphPositionDataSize( other.glyphPositionDataSize )
+        , textRangeStart( other.textRangeStart )
+        , textRangeEnd( other.textRangeEnd )
+    { }
 
-   QVector<quint32> glyphIndexes;
-   QVector<QPointF> glyphPositions;
-   QRawFont rawFont;
-   QRectF boundingRect;
+    QVector<quint32> glyphIndexes;
+    QVector<QPointF> glyphPositions;
+    QRawFont rawFont;
+    QRectF boundingRect;
 
-   QGlyphRun::GlyphRunFlags flags;
+    QGlyphRun::GlyphRunFlags flags;
 
-   const quint32 *glyphIndexData;
-   int glyphIndexDataSize;
+    const quint32 *glyphIndexData;
+    int glyphIndexDataSize;
 
-   const QPointF *glyphPositionData;
-   int glyphPositionDataSize;
+    const QPointF *glyphPositionData;
+    int glyphPositionDataSize;
 
-   int textRangeStart;
-   int textRangeEnd;
+    int textRangeStart;
+    int textRangeEnd;
 
-   static QGlyphRunPrivate *get(const QGlyphRun &glyphRun) {
-      return glyphRun.d.data();
-   }
+    static QGlyphRunPrivate *get( const QGlyphRun &glyphRun )
+    {
+        return glyphRun.d.data();
+    }
 };
 
 #endif

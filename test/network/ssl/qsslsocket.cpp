@@ -21,18 +21,18 @@
 
 #include <cs_catch2.h>
 
-TEST_CASE("QSslSocket traits", "[qsslsocket]")
+TEST_CASE( "QSslSocket traits", "[qsslsocket]" )
 {
 #ifdef QT_SSL
-   REQUIRE(std::is_copy_constructible_v<QSslSocket> == false);
-   REQUIRE(std::is_move_constructible_v<QSslSocket> == false);
+    REQUIRE( std::is_copy_constructible_v<QSslSocket> == false );
+    REQUIRE( std::is_move_constructible_v<QSslSocket> == false );
 
-   REQUIRE(std::is_copy_assignable_v<QSslSocket> == false);
-   REQUIRE(std::is_move_assignable_v<QSslSocket> == false);
+    REQUIRE( std::is_copy_assignable_v<QSslSocket> == false );
+    REQUIRE( std::is_move_assignable_v<QSslSocket> == false );
 
-   REQUIRE(std::is_nothrow_move_constructible_v<QSslSocket> == false);
-   REQUIRE(std::is_nothrow_move_assignable_v<QSslSocket> == false);
+    REQUIRE( std::is_nothrow_move_constructible_v<QSslSocket> == false );
+    REQUIRE( std::is_nothrow_move_assignable_v<QSslSocket> == false );
 
-   REQUIRE(std::has_virtual_destructor_v<QSslSocket> == true);
+    REQUIRE( std::has_virtual_destructor_v<QSslSocket> == true );
 #endif
 }

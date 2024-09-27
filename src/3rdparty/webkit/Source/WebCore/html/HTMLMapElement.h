@@ -25,29 +25,34 @@
 
 #include "HTMLElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class IntSize;
 class HitTestResult;
 class HTMLImageElement;
-    
-class HTMLMapElement : public HTMLElement {
+
+class HTMLMapElement : public HTMLElement
+{
 public:
-    static PassRefPtr<HTMLMapElement> create(Document*);
-    static PassRefPtr<HTMLMapElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<HTMLMapElement> create( Document * );
+    static PassRefPtr<HTMLMapElement> create( const QualifiedName &, Document * );
     virtual ~HTMLMapElement();
 
-    const AtomicString& getName() const { return m_name; }
+    const AtomicString &getName() const
+    {
+        return m_name;
+    }
 
-    bool mapMouseEvent(int x, int y, const IntSize&, HitTestResult&);
-    
-    HTMLImageElement* imageElement() const;
+    bool mapMouseEvent( int x, int y, const IntSize &, HitTestResult & );
+
+    HTMLImageElement *imageElement() const;
     PassRefPtr<HTMLCollection> areas();
 
 private:
-    HTMLMapElement(const QualifiedName&, Document*);
+    HTMLMapElement( const QualifiedName &, Document * );
 
-    virtual void parseMappedAttribute(Attribute*);
+    virtual void parseMappedAttribute( Attribute * );
 
     virtual void insertedIntoDocument();
     virtual void removedFromDocument();

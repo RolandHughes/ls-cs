@@ -31,15 +31,18 @@
 
 #include "URLComponent.h"
 
-namespace WTF {
+namespace WTF
+{
 
 // A structure that holds the identified parts of an input URL. This structure
 // does NOT store the URL itself. The caller will have to store the URL text
 // and its corresponding Parsed structure separately.
-class URLSegments {
+class URLSegments
+{
 public:
     // Identifies different components.
-    enum ComponentType {
+    enum ComponentType
+    {
         Scheme,
         Username,
         Password,
@@ -86,7 +89,7 @@ public:
     //      *Query: 14                   15 <-
     //        *Fragment: 20                   20
     //
-    int charactersBefore(ComponentType, bool includeDelimiter) const;
+    int charactersBefore( ComponentType, bool includeDelimiter ) const;
 
     // Each component excludes the related delimiters and has a length of -1
     // if that component is absent but 0 if the component exists but is empty.

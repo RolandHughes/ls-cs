@@ -30,153 +30,170 @@
 
 #include <qreadwritelock_p.h>
 
-QReadWriteLock::QReadWriteLock(RecursionMode recursionMode)
-   : d(new QReadWriteLockPrivate(recursionMode))
+QReadWriteLock::QReadWriteLock( RecursionMode recursionMode )
+    : d( new QReadWriteLockPrivate( recursionMode ) )
 {
 }
 
 QReadWriteLock::~QReadWriteLock()
 {
-   delete d;
+    delete d;
 }
 
 void QReadWriteLock::lockForRead()
 {
-   QMutexLocker lock(&d->mutex);
+    QMutexLocker lock( &d->mutex );
 
-   Qt::HANDLE self = nullptr;
+    Qt::HANDLE self = nullptr;
 
-   if (d->recursive) {
-      self = QThread::currentThreadId();
+    if ( d->recursive )
+    {
+        self = QThread::currentThreadId();
 
-      QHash<Qt::HANDLE, int>::iterator it = d->currentReaders.find(self);
+        QHash<Qt::HANDLE, int>::iterator it = d->currentReaders.find( self );
 
-      if (it != d->currentReaders.end()) {
-         ++it.value();
-         ++d->accessCount;
-         Q_ASSERT_X(d->accessCount > 0, "QReadWriteLock::lockForRead()",
-               "Overflow in lock counter");
-         return;
-      }
-   }
+        if ( it != d->currentReaders.end() )
+        {
+            ++it.value();
+            ++d->accessCount;
+            Q_ASSERT_X( d->accessCount > 0, "QReadWriteLock::lockForRead()",
+                        "Overflow in lock counter" );
+            return;
+        }
+    }
 
-   while (d->accessCount < 0 || d->waitingWriters) {
-      ++d->waitingReaders;
-      d->readerWait.wait(&d->mutex);
-      --d->waitingReaders;
-   }
+    while ( d->accessCount < 0 || d->waitingWriters )
+    {
+        ++d->waitingReaders;
+        d->readerWait.wait( &d->mutex );
+        --d->waitingReaders;
+    }
 
-   if (d->recursive) {
-      d->currentReaders.insert(self, 1);
-   }
+    if ( d->recursive )
+    {
+        d->currentReaders.insert( self, 1 );
+    }
 
-   ++d->accessCount;
-   Q_ASSERT_X(d->accessCount > 0, "QReadWriteLock::lockForRead()", "Overflow in lock counter");
+    ++d->accessCount;
+    Q_ASSERT_X( d->accessCount > 0, "QReadWriteLock::lockForRead()", "Overflow in lock counter" );
 }
 
 bool QReadWriteLock::tryLockForRead()
 {
-   QMutexLocker lock(&d->mutex);
+    QMutexLocker lock( &d->mutex );
 
-   Qt::HANDLE self = nullptr;
+    Qt::HANDLE self = nullptr;
 
-   if (d->recursive) {
-      self = QThread::currentThreadId();
+    if ( d->recursive )
+    {
+        self = QThread::currentThreadId();
 
-      QHash<Qt::HANDLE, int>::iterator it = d->currentReaders.find(self);
+        QHash<Qt::HANDLE, int>::iterator it = d->currentReaders.find( self );
 
-      if (it != d->currentReaders.end()) {
-         ++it.value();
-         ++d->accessCount;
-         Q_ASSERT_X(d->accessCount > 0, "QReadWriteLock::tryLockForRead()",
-               "Overflow in lock counter");
-         return true;
-      }
-   }
+        if ( it != d->currentReaders.end() )
+        {
+            ++it.value();
+            ++d->accessCount;
+            Q_ASSERT_X( d->accessCount > 0, "QReadWriteLock::tryLockForRead()",
+                        "Overflow in lock counter" );
+            return true;
+        }
+    }
 
-   if (d->accessCount < 0) {
-      return false;
-   }
+    if ( d->accessCount < 0 )
+    {
+        return false;
+    }
 
-   if (d->recursive) {
-      d->currentReaders.insert(self, 1);
-   }
+    if ( d->recursive )
+    {
+        d->currentReaders.insert( self, 1 );
+    }
 
-   ++d->accessCount;
-   Q_ASSERT_X(d->accessCount > 0, "QReadWriteLock::tryLockForRead()", "Overflow in lock counter");
+    ++d->accessCount;
+    Q_ASSERT_X( d->accessCount > 0, "QReadWriteLock::tryLockForRead()", "Overflow in lock counter" );
 
-   return true;
+    return true;
 }
 
-bool QReadWriteLock::tryLockForRead(int timeout)
+bool QReadWriteLock::tryLockForRead( int timeout )
 {
-   QMutexLocker lock(&d->mutex);
+    QMutexLocker lock( &d->mutex );
 
-   Qt::HANDLE self = nullptr;
+    Qt::HANDLE self = nullptr;
 
-   if (d->recursive) {
-      self = QThread::currentThreadId();
+    if ( d->recursive )
+    {
+        self = QThread::currentThreadId();
 
-      QHash<Qt::HANDLE, int>::iterator it = d->currentReaders.find(self);
+        QHash<Qt::HANDLE, int>::iterator it = d->currentReaders.find( self );
 
-      if (it != d->currentReaders.end()) {
-         ++it.value();
-         ++d->accessCount;
-         Q_ASSERT_X(d->accessCount > 0, "QReadWriteLock::tryLockForRead()",
-               "Overflow in lock counter");
-         return true;
-      }
-   }
+        if ( it != d->currentReaders.end() )
+        {
+            ++it.value();
+            ++d->accessCount;
+            Q_ASSERT_X( d->accessCount > 0, "QReadWriteLock::tryLockForRead()",
+                        "Overflow in lock counter" );
+            return true;
+        }
+    }
 
-   while (d->accessCount < 0 || d->waitingWriters) {
-      ++d->waitingReaders;
-      bool success = d->readerWait.wait(&d->mutex, timeout < 0 ? ULONG_MAX : ulong(timeout));
-      --d->waitingReaders;
+    while ( d->accessCount < 0 || d->waitingWriters )
+    {
+        ++d->waitingReaders;
+        bool success = d->readerWait.wait( &d->mutex, timeout < 0 ? ULONG_MAX : ulong( timeout ) );
+        --d->waitingReaders;
 
-      if (!success) {
-         return false;
-      }
-   }
+        if ( !success )
+        {
+            return false;
+        }
+    }
 
-   if (d->recursive) {
-      d->currentReaders.insert(self, 1);
-   }
+    if ( d->recursive )
+    {
+        d->currentReaders.insert( self, 1 );
+    }
 
-   ++d->accessCount;
-   Q_ASSERT_X(d->accessCount > 0, "QReadWriteLock::tryLockForRead()", "Overflow in lock counter");
+    ++d->accessCount;
+    Q_ASSERT_X( d->accessCount > 0, "QReadWriteLock::tryLockForRead()", "Overflow in lock counter" );
 
-   return true;
+    return true;
 }
 
 void QReadWriteLock::lockForWrite()
 {
-   QMutexLocker lock(&d->mutex);
+    QMutexLocker lock( &d->mutex );
 
-   Qt::HANDLE self = nullptr;
+    Qt::HANDLE self = nullptr;
 
-   if (d->recursive) {
-      self = QThread::currentThreadId();
+    if ( d->recursive )
+    {
+        self = QThread::currentThreadId();
 
-      if (d->currentWriter == self) {
-         --d->accessCount;
-         Q_ASSERT_X(d->accessCount < 0, "QReadWriteLock::lockForWrite()",
-               "Overflow in lock counter");
-         return;
-      }
-   }
+        if ( d->currentWriter == self )
+        {
+            --d->accessCount;
+            Q_ASSERT_X( d->accessCount < 0, "QReadWriteLock::lockForWrite()",
+                        "Overflow in lock counter" );
+            return;
+        }
+    }
 
-   while (d->accessCount != 0) {
-      ++d->waitingWriters;
-      d->writerWait.wait(&d->mutex);
-      --d->waitingWriters;
-   }
+    while ( d->accessCount != 0 )
+    {
+        ++d->waitingWriters;
+        d->writerWait.wait( &d->mutex );
+        --d->waitingWriters;
+    }
 
-   if (d->recursive) {
-      d->currentWriter = self;
-   }
+    if ( d->recursive )
+    {
+        d->currentWriter = self;
+    }
 
-   --d->accessCount;
-   Q_ASSERT_X(d->accessCount < 0, "QReadWriteLock::lockForWrite()", "Overflow in lock counter");
+    --d->accessCount;
+    Q_ASSERT_X( d->accessCount < 0, "QReadWriteLock::lockForWrite()", "Overflow in lock counter" );
 }
 
 /*!
@@ -193,34 +210,38 @@ void QReadWriteLock::lockForWrite()
 */
 bool QReadWriteLock::tryLockForWrite()
 {
-   QMutexLocker lock(&d->mutex);
+    QMutexLocker lock( &d->mutex );
 
-   Qt::HANDLE self = nullptr;
+    Qt::HANDLE self = nullptr;
 
-   if (d->recursive) {
-      self = QThread::currentThreadId();
+    if ( d->recursive )
+    {
+        self = QThread::currentThreadId();
 
-      if (d->currentWriter == self) {
-         --d->accessCount;
-         Q_ASSERT_X(d->accessCount < 0, "QReadWriteLock::lockForWrite()",
-               "Overflow in lock counter");
-         return true;
-      }
-   }
+        if ( d->currentWriter == self )
+        {
+            --d->accessCount;
+            Q_ASSERT_X( d->accessCount < 0, "QReadWriteLock::lockForWrite()",
+                        "Overflow in lock counter" );
+            return true;
+        }
+    }
 
-   if (d->accessCount != 0) {
-      return false;
-   }
+    if ( d->accessCount != 0 )
+    {
+        return false;
+    }
 
-   if (d->recursive) {
-      d->currentWriter = self;
-   }
+    if ( d->recursive )
+    {
+        d->currentWriter = self;
+    }
 
-   --d->accessCount;
-   Q_ASSERT_X(d->accessCount < 0, "QReadWriteLock::tryLockForWrite()",
-         "Overflow in lock counter");
+    --d->accessCount;
+    Q_ASSERT_X( d->accessCount < 0, "QReadWriteLock::tryLockForWrite()",
+                "Overflow in lock counter" );
 
-   return true;
+    return true;
 }
 
 /*! \overload
@@ -239,77 +260,92 @@ bool QReadWriteLock::tryLockForWrite()
 
     \sa unlock() lockForWrite()
 */
-bool QReadWriteLock::tryLockForWrite(int timeout)
+bool QReadWriteLock::tryLockForWrite( int timeout )
 {
-   QMutexLocker lock(&d->mutex);
+    QMutexLocker lock( &d->mutex );
 
-   Qt::HANDLE self = nullptr;
+    Qt::HANDLE self = nullptr;
 
-   if (d->recursive) {
-      self = QThread::currentThreadId();
+    if ( d->recursive )
+    {
+        self = QThread::currentThreadId();
 
-      if (d->currentWriter == self) {
-         --d->accessCount;
-         Q_ASSERT_X(d->accessCount < 0, "QReadWriteLock::lockForWrite()",
-               "Overflow in lock counter");
-         return true;
-      }
-   }
+        if ( d->currentWriter == self )
+        {
+            --d->accessCount;
+            Q_ASSERT_X( d->accessCount < 0, "QReadWriteLock::lockForWrite()",
+                        "Overflow in lock counter" );
+            return true;
+        }
+    }
 
-   while (d->accessCount != 0) {
-      ++d->waitingWriters;
-      bool success = d->writerWait.wait(&d->mutex, timeout < 0 ? ULONG_MAX : ulong(timeout));
-      --d->waitingWriters;
+    while ( d->accessCount != 0 )
+    {
+        ++d->waitingWriters;
+        bool success = d->writerWait.wait( &d->mutex, timeout < 0 ? ULONG_MAX : ulong( timeout ) );
+        --d->waitingWriters;
 
-      if (!success) {
-         return false;
-      }
-   }
+        if ( !success )
+        {
+            return false;
+        }
+    }
 
-   if (d->recursive) {
-      d->currentWriter = self;
-   }
+    if ( d->recursive )
+    {
+        d->currentWriter = self;
+    }
 
-   --d->accessCount;
-   Q_ASSERT_X(d->accessCount < 0, "QReadWriteLock::tryLockForWrite()",
-         "Overflow in lock counter");
+    --d->accessCount;
+    Q_ASSERT_X( d->accessCount < 0, "QReadWriteLock::tryLockForWrite()",
+                "Overflow in lock counter" );
 
-   return true;
+    return true;
 }
 
 void QReadWriteLock::unlock()
 {
-   QMutexLocker lock(&d->mutex);
+    QMutexLocker lock( &d->mutex );
 
-   Q_ASSERT_X(d->accessCount != 0, "QReadWriteLock::unlock()", "Cannot unlock an unlocked lock");
+    Q_ASSERT_X( d->accessCount != 0, "QReadWriteLock::unlock()", "Cannot unlock an unlocked lock" );
 
-   bool unlocked = false;
+    bool unlocked = false;
 
-   if (d->accessCount > 0) {
-      // releasing a read lock
-      if (d->recursive) {
-         Qt::HANDLE self = QThread::currentThreadId();
-         QHash<Qt::HANDLE, int>::iterator it = d->currentReaders.find(self);
+    if ( d->accessCount > 0 )
+    {
+        // releasing a read lock
+        if ( d->recursive )
+        {
+            Qt::HANDLE self = QThread::currentThreadId();
+            QHash<Qt::HANDLE, int>::iterator it = d->currentReaders.find( self );
 
-         if (it != d->currentReaders.end()) {
-            if (--it.value() <= 0) {
-               d->currentReaders.erase(it);
+            if ( it != d->currentReaders.end() )
+            {
+                if ( --it.value() <= 0 )
+                {
+                    d->currentReaders.erase( it );
+                }
             }
-         }
-      }
+        }
 
-      unlocked = --d->accessCount == 0;
-   } else if (d->accessCount < 0 && ++d->accessCount == 0) {
-      // released a write lock
-      unlocked = true;
-      d->currentWriter = nullptr;
-   }
+        unlocked = --d->accessCount == 0;
+    }
+    else if ( d->accessCount < 0 && ++d->accessCount == 0 )
+    {
+        // released a write lock
+        unlocked = true;
+        d->currentWriter = nullptr;
+    }
 
-   if (unlocked) {
-      if (d->waitingWriters) {
-         d->writerWait.wakeOne();
-      } else if (d->waitingReaders) {
-         d->readerWait.wakeAll();
-      }
-   }
+    if ( unlocked )
+    {
+        if ( d->waitingWriters )
+        {
+            d->writerWait.wakeOne();
+        }
+        else if ( d->waitingReaders )
+        {
+            d->readerWait.wakeAll();
+        }
+    }
 }

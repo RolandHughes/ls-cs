@@ -25,22 +25,22 @@
 
 using namespace QPatternist;
 
-CallSite::CallSite(const QXmlName &name)
-   : m_isRecursive(false), m_name(name)
+CallSite::CallSite( const QXmlName &name )
+    : m_isRecursive( false ), m_name( name )
 {
 }
 
 QXmlName CallSite::name() const
 {
-   return m_name;
+    return m_name;
 }
 
 bool CallSite::isRecursive() const
 {
-   return m_isRecursive;
+    return m_isRecursive;
 }
 
-void CallSite::setIsRecursive(const bool value)
+void CallSite::setIsRecursive( const bool value )
 {
-   m_isRecursive = value;
+    m_isRecursive = value;
 }

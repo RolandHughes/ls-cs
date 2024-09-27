@@ -121,19 +121,24 @@ extern "C" {
 
 typedef enum { WTFLogChannelOff, WTFLogChannelOn } WTFLogChannelState;
 
-typedef struct {
+typedef struct
+{
     unsigned mask;
     const char *defaultName;
     WTFLogChannelState state;
 } WTFLogChannel;
 
-void WTFReportAssertionFailure(const char* file, int line, const char* function, const char* assertion);
-void WTFReportAssertionFailureWithMessage(const char* file, int line, const char* function, const char* assertion, const char* format, ...) WTF_ATTRIBUTE_PRINTF(5, 6);
-void WTFReportArgumentAssertionFailure(const char* file, int line, const char* function, const char* argName, const char* assertion);
-void WTFReportFatalError(const char* file, int line, const char* function, const char* format, ...) WTF_ATTRIBUTE_PRINTF(4, 5);
-void WTFReportError(const char* file, int line, const char* function, const char* format, ...) WTF_ATTRIBUTE_PRINTF(4, 5);
-void WTFLog(WTFLogChannel* channel, const char* format, ...) WTF_ATTRIBUTE_PRINTF(2, 3);
-void WTFLogVerbose(const char* file, int line, const char* function, WTFLogChannel* channel, const char* format, ...) WTF_ATTRIBUTE_PRINTF(5, 6);
+void WTFReportAssertionFailure( const char *file, int line, const char *function, const char *assertion );
+void WTFReportAssertionFailureWithMessage( const char *file, int line, const char *function, const char *assertion,
+        const char *format, ... ) WTF_ATTRIBUTE_PRINTF( 5, 6 );
+void WTFReportArgumentAssertionFailure( const char *file, int line, const char *function, const char *argName,
+                                        const char *assertion );
+void WTFReportFatalError( const char *file, int line, const char *function, const char *format, ... ) WTF_ATTRIBUTE_PRINTF( 4,
+        5 );
+void WTFReportError( const char *file, int line, const char *function, const char *format, ... ) WTF_ATTRIBUTE_PRINTF( 4, 5 );
+void WTFLog( WTFLogChannel *channel, const char *format, ... ) WTF_ATTRIBUTE_PRINTF( 2, 3 );
+void WTFLogVerbose( const char *file, int line, const char *function, WTFLogChannel *channel, const char *format,
+                    ... ) WTF_ATTRIBUTE_PRINTF( 5, 6 );
 
 #ifdef __cplusplus
 }

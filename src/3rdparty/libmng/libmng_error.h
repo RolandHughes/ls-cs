@@ -59,15 +59,15 @@
 /* *                                                                        * */
 /* ************************************************************************** */
 
-mng_bool mng_store_error   (mng_datap   pData,
-                            mng_retcode iError,
-                            mng_retcode iExtra1,
-                            mng_retcode iExtra2);
+mng_bool mng_store_error   ( mng_datap   pData,
+                             mng_retcode iError,
+                             mng_retcode iExtra1,
+                             mng_retcode iExtra2 );
 
-mng_bool mng_process_error (mng_datap   pData,
-                            mng_retcode iError,
-                            mng_retcode iExtra1,
-                            mng_retcode iExtra2);
+mng_bool mng_process_error ( mng_datap   pData,
+                             mng_retcode iError,
+                             mng_retcode iExtra1,
+                             mng_retcode iExtra2 );
 
 /* ************************************************************************** */
 /* *                                                                        * */
@@ -104,11 +104,12 @@ mng_bool mng_process_error (mng_datap   pData,
 /* *                                                                        * */
 /* ************************************************************************** */
 
-typedef struct {
-                 mng_retcode iError;
-                 mng_pchar   zErrortext;
-               } mng_error_entry;
-typedef mng_error_entry const * mng_error_entryp;
+typedef struct
+{
+    mng_retcode iError;
+    mng_pchar   zErrortext;
+} mng_error_entry;
+typedef mng_error_entry const *mng_error_entryp;
 
 /* ************************************************************************** */
 

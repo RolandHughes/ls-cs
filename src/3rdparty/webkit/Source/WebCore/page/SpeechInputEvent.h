@@ -35,19 +35,27 @@
 #include <wtf/RefCounted.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SpeechInputEvent : public Event {
+class SpeechInputEvent : public Event
+{
 public:
-    static PassRefPtr<SpeechInputEvent> create(const AtomicString& eventType, const SpeechInputResultArray& results);
+    static PassRefPtr<SpeechInputEvent> create( const AtomicString &eventType, const SpeechInputResultArray &results );
     ~SpeechInputEvent();
 
-    virtual bool isSpeechInputEvent() const { return true; }
+    virtual bool isSpeechInputEvent() const
+    {
+        return true;
+    }
 
-    SpeechInputResultList* results() const { return m_results.get(); }
+    SpeechInputResultList *results() const
+    {
+        return m_results.get();
+    }
 
 private:
-    SpeechInputEvent(const AtomicString& eventType, const SpeechInputResultArray& results);
+    SpeechInputEvent( const AtomicString &eventType, const SpeechInputResultArray &results );
 
     RefPtr<SpeechInputResultList> m_results;
 };

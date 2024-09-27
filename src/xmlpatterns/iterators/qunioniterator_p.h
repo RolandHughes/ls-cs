@@ -26,33 +26,35 @@
 
 #include <qitem_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class UnionIterator : public Item::Iterator
 {
- public:
+public:
 
-   UnionIterator(const Item::Iterator::Ptr &it1, const Item::Iterator::Ptr &it2);
+    UnionIterator( const Item::Iterator::Ptr &it1, const Item::Iterator::Ptr &it2 );
 
-   Item next() override;
-   Item current() const override;
-   xsInteger position() const override;
-   Item::Iterator::Ptr copy() const override;
+    Item next() override;
+    Item current() const override;
+    xsInteger position() const override;
+    Item::Iterator::Ptr copy() const override;
 
- private:
-   inline Item nextFromFirstOperand() {
-      ++m_position;
-      m_current = m_node1;
-      m_node1 = m_it1->next();
-      return m_current;
-   }
+private:
+    inline Item nextFromFirstOperand()
+    {
+        ++m_position;
+        m_current = m_node1;
+        m_node1 = m_it1->next();
+        return m_current;
+    }
 
-   const Item::Iterator::Ptr   m_it1;
-   const Item::Iterator::Ptr   m_it2;
-   Item m_current;
-   xsInteger m_position;
-   Item m_node1;
-   Item m_node2;
+    const Item::Iterator::Ptr   m_it1;
+    const Item::Iterator::Ptr   m_it2;
+    Item m_current;
+    xsInteger m_position;
+    Item m_node1;
+    Item m_node2;
 };
 
 }

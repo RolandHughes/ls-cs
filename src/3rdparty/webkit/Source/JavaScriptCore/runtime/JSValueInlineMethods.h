@@ -28,506 +28,538 @@
 
 #include "JSValue.h"
 
-namespace JSC {
+namespace JSC
+{
 
-    ALWAYS_INLINE int32_t JSValue::toInt32(ExecState* exec) const
+ALWAYS_INLINE int32_t JSValue::toInt32( ExecState *exec ) const
+{
+    if ( isInt32() )
     {
-        if (isInt32())
-            return asInt32();
-        return JSC::toInt32(toNumber(exec));
-    }
-
-    inline uint32_t JSValue::toUInt32(ExecState* exec) const
-    {
-        // See comment on JSC::toUInt32, above.
-        return toInt32(exec);
-    }
-
-    inline bool JSValue::isUInt32() const
-    {
-        return isInt32() && asInt32() >= 0;
-    }
-
-    inline uint32_t JSValue::asUInt32() const
-    {
-        ASSERT(isUInt32());
         return asInt32();
     }
 
-    inline double JSValue::uncheckedGetNumber() const
+    return JSC::toInt32( toNumber( exec ) );
+}
+
+inline uint32_t JSValue::toUInt32( ExecState *exec ) const
+{
+    // See comment on JSC::toUInt32, above.
+    return toInt32( exec );
+}
+
+inline bool JSValue::isUInt32() const
+{
+    return isInt32() && asInt32() >= 0;
+}
+
+inline uint32_t JSValue::asUInt32() const
+{
+    ASSERT( isUInt32() );
+    return asInt32();
+}
+
+inline double JSValue::uncheckedGetNumber() const
+{
+    ASSERT( isNumber() );
+    return isInt32() ? asInt32() : asDouble();
+}
+
+ALWAYS_INLINE JSValue JSValue::toJSNumber( ExecState *exec ) const
+{
+    return isNumber() ? asValue() : jsNumber( this->toNumber( exec ) );
+}
+
+inline JSValue jsNaN()
+{
+    return JSValue( nonInlineNaN() );
+}
+
+inline bool JSValue::getNumber( double &result ) const
+{
+    if ( isInt32() )
     {
-        ASSERT(isNumber());
-        return isInt32() ? asInt32() : asDouble();
+        result = asInt32();
+        return true;
     }
 
-    ALWAYS_INLINE JSValue JSValue::toJSNumber(ExecState* exec) const
+    if ( isDouble() )
     {
-        return isNumber() ? asValue() : jsNumber(this->toNumber(exec));
+        result = asDouble();
+        return true;
     }
 
-    inline JSValue jsNaN()
+    return false;
+}
+
+inline bool JSValue::getBoolean( bool &v ) const
+{
+    if ( isTrue() )
     {
-        return JSValue(nonInlineNaN());
+        v = true;
+        return true;
     }
 
-    inline bool JSValue::getNumber(double& result) const
+    if ( isFalse() )
     {
-        if (isInt32()) {
-            result = asInt32();
-            return true;
-        }
-        if (isDouble()) {
-            result = asDouble();
-            return true;
-        }
-        return false;
+        v = false;
+        return true;
     }
 
-    inline bool JSValue::getBoolean(bool& v) const
-    {
-        if (isTrue()) {
-            v = true;
-            return true;
-        }
-        if (isFalse()) {
-            v = false;
-            return true;
-        }
+    return false;
+}
 
-        return false;
+inline JSValue::JSValue( char i )
+{
+    *this = JSValue( static_cast<int32_t>( i ) );
+}
+
+inline JSValue::JSValue( unsigned char i )
+{
+    *this = JSValue( static_cast<int32_t>( i ) );
+}
+
+inline JSValue::JSValue( short i )
+{
+    *this = JSValue( static_cast<int32_t>( i ) );
+}
+
+inline JSValue::JSValue( unsigned short i )
+{
+    *this = JSValue( static_cast<int32_t>( i ) );
+}
+
+inline JSValue::JSValue( unsigned i )
+{
+    if ( static_cast<int32_t>( i ) < 0 )
+    {
+        *this = JSValue( EncodeAsDouble, static_cast<double>( i ) );
+        return;
     }
 
-    inline JSValue::JSValue(char i)
+    *this = JSValue( static_cast<int32_t>( i ) );
+}
+
+inline JSValue::JSValue( long i )
+{
+    if ( static_cast<int32_t>( i ) != i )
     {
-        *this = JSValue(static_cast<int32_t>(i));
+        *this = JSValue( EncodeAsDouble, static_cast<double>( i ) );
+        return;
     }
 
-    inline JSValue::JSValue(unsigned char i)
+    *this = JSValue( static_cast<int32_t>( i ) );
+}
+
+inline JSValue::JSValue( unsigned long i )
+{
+    if ( static_cast<uint32_t>( i ) != i )
     {
-        *this = JSValue(static_cast<int32_t>(i));
+        *this = JSValue( EncodeAsDouble, static_cast<double>( i ) );
+        return;
     }
 
-    inline JSValue::JSValue(short i)
+    *this = JSValue( static_cast<uint32_t>( i ) );
+}
+
+inline JSValue::JSValue( long long i )
+{
+    if ( static_cast<int32_t>( i ) != i )
     {
-        *this = JSValue(static_cast<int32_t>(i));
+        *this = JSValue( EncodeAsDouble, static_cast<double>( i ) );
+        return;
     }
 
-    inline JSValue::JSValue(unsigned short i)
+    *this = JSValue( static_cast<int32_t>( i ) );
+}
+
+inline JSValue::JSValue( unsigned long long i )
+{
+    if ( static_cast<uint32_t>( i ) != i )
     {
-        *this = JSValue(static_cast<int32_t>(i));
+        *this = JSValue( EncodeAsDouble, static_cast<double>( i ) );
+        return;
     }
 
-    inline JSValue::JSValue(unsigned i)
+    *this = JSValue( static_cast<uint32_t>( i ) );
+}
+
+inline JSValue::JSValue( double d )
+{
+    const int32_t asInt32 = static_cast<int32_t>( d );
+
+    if ( asInt32 != d || ( !asInt32 && std::signbit( d ) ) ) // true for -0.0
     {
-        if (static_cast<int32_t>(i) < 0) {
-            *this = JSValue(EncodeAsDouble, static_cast<double>(i));
-            return;
-        }
-        *this = JSValue(static_cast<int32_t>(i));
+        *this = JSValue( EncodeAsDouble, d );
+        return;
     }
 
-    inline JSValue::JSValue(long i)
-    {
-        if (static_cast<int32_t>(i) != i) {
-            *this = JSValue(EncodeAsDouble, static_cast<double>(i));
-            return;
-        }
-        *this = JSValue(static_cast<int32_t>(i));
-    }
-
-    inline JSValue::JSValue(unsigned long i)
-    {
-        if (static_cast<uint32_t>(i) != i) {
-            *this = JSValue(EncodeAsDouble, static_cast<double>(i));
-            return;
-        }
-        *this = JSValue(static_cast<uint32_t>(i));
-    }
-
-    inline JSValue::JSValue(long long i)
-    {
-        if (static_cast<int32_t>(i) != i) {
-            *this = JSValue(EncodeAsDouble, static_cast<double>(i));
-            return;
-        }
-        *this = JSValue(static_cast<int32_t>(i));
-    }
-
-    inline JSValue::JSValue(unsigned long long i)
-    {
-        if (static_cast<uint32_t>(i) != i) {
-            *this = JSValue(EncodeAsDouble, static_cast<double>(i));
-            return;
-        }
-        *this = JSValue(static_cast<uint32_t>(i));
-    }
-
-    inline JSValue::JSValue(double d)
-    {
-        const int32_t asInt32 = static_cast<int32_t>(d);
-        if (asInt32 != d || (!asInt32 && std::signbit(d))) { // true for -0.0
-            *this = JSValue(EncodeAsDouble, d);
-            return;
-        }
-        *this = JSValue(static_cast<int32_t>(d));
-    }
+    *this = JSValue( static_cast<int32_t>( d ) );
+}
 
 #if USE(JSVALUE32_64)
-    inline EncodedJSValue JSValue::encode(JSValue value)
-    {
-        return value.u.asInt64;
-    }
+inline EncodedJSValue JSValue::encode( JSValue value )
+{
+    return value.u.asInt64;
+}
 
-    inline JSValue JSValue::decode(EncodedJSValue encodedJSValue)
-    {
-        JSValue v;
-        v.u.asInt64 = encodedJSValue;
-        return v;
-    }
+inline JSValue JSValue::decode( EncodedJSValue encodedJSValue )
+{
+    JSValue v;
+    v.u.asInt64 = encodedJSValue;
+    return v;
+}
 
-    inline JSValue::JSValue()
+inline JSValue::JSValue()
+{
+    u.asBits.tag = EmptyValueTag;
+    u.asBits.payload = 0;
+}
+
+inline JSValue::JSValue( JSNullTag )
+{
+    u.asBits.tag = NullTag;
+    u.asBits.payload = 0;
+}
+
+inline JSValue::JSValue( JSUndefinedTag )
+{
+    u.asBits.tag = UndefinedTag;
+    u.asBits.payload = 0;
+}
+
+inline JSValue::JSValue( JSTrueTag )
+{
+    u.asBits.tag = BooleanTag;
+    u.asBits.payload = 1;
+}
+
+inline JSValue::JSValue( JSFalseTag )
+{
+    u.asBits.tag = BooleanTag;
+    u.asBits.payload = 0;
+}
+
+inline JSValue::JSValue( HashTableDeletedValueTag )
+{
+    u.asBits.tag = DeletedValueTag;
+    u.asBits.payload = 0;
+}
+
+inline JSValue::JSValue( JSCell *ptr )
+{
+    if ( ptr )
+    {
+        u.asBits.tag = CellTag;
+    }
+    else
     {
         u.asBits.tag = EmptyValueTag;
-        u.asBits.payload = 0;
     }
 
-    inline JSValue::JSValue(JSNullTag)
-    {
-        u.asBits.tag = NullTag;
-        u.asBits.payload = 0;
-    }
-
-    inline JSValue::JSValue(JSUndefinedTag)
-    {
-        u.asBits.tag = UndefinedTag;
-        u.asBits.payload = 0;
-    }
-
-    inline JSValue::JSValue(JSTrueTag)
-    {
-        u.asBits.tag = BooleanTag;
-        u.asBits.payload = 1;
-    }
-
-    inline JSValue::JSValue(JSFalseTag)
-    {
-        u.asBits.tag = BooleanTag;
-        u.asBits.payload = 0;
-    }
-
-    inline JSValue::JSValue(HashTableDeletedValueTag)
-    {
-        u.asBits.tag = DeletedValueTag;
-        u.asBits.payload = 0;
-    }
-
-    inline JSValue::JSValue(JSCell* ptr)
-    {
-        if (ptr)
-            u.asBits.tag = CellTag;
-        else
-            u.asBits.tag = EmptyValueTag;
-
-        u.asBits.payload = reinterpret_cast<int32_t>(ptr);
+    u.asBits.payload = reinterpret_cast<int32_t>( ptr );
 
 #if ENABLE(JSC_ZOMBIES)
-        ASSERT(!isZombie());
+    ASSERT( !isZombie() );
 #endif
+}
+
+inline JSValue::JSValue( const JSCell *ptr )
+{
+    if ( ptr )
+    {
+        u.asBits.tag = CellTag;
+    }
+    else
+    {
+        u.asBits.tag = EmptyValueTag;
     }
 
-    inline JSValue::JSValue(const JSCell* ptr)
-    {
-        if (ptr)
-            u.asBits.tag = CellTag;
-        else
-            u.asBits.tag = EmptyValueTag;
-
-        u.asBits.payload = reinterpret_cast<int32_t>(const_cast<JSCell*>(ptr));
+    u.asBits.payload = reinterpret_cast<int32_t>( const_cast<JSCell *>( ptr ) );
 
 #if ENABLE(JSC_ZOMBIES)
-        ASSERT(!isZombie());
+    ASSERT( !isZombie() );
 #endif
-    }
+}
 
-    inline JSValue::operator bool() const
-    {
-        ASSERT(tag() != DeletedValueTag);
-        return tag() != EmptyValueTag;
-    }
+inline JSValue::operator bool() const
+{
+    ASSERT( tag() != DeletedValueTag );
+    return tag() != EmptyValueTag;
+}
 
-    inline bool JSValue::operator==(const JSValue& other) const
-    {
-        return u.asInt64 == other.u.asInt64;
-    }
+inline bool JSValue::operator==( const JSValue &other ) const
+{
+    return u.asInt64 == other.u.asInt64;
+}
 
-    inline bool JSValue::operator!=(const JSValue& other) const
-    {
-        return u.asInt64 != other.u.asInt64;
-    }
+inline bool JSValue::operator!=( const JSValue &other ) const
+{
+    return u.asInt64 != other.u.asInt64;
+}
 
-    inline bool JSValue::isUndefined() const
-    {
-        return tag() == UndefinedTag;
-    }
+inline bool JSValue::isUndefined() const
+{
+    return tag() == UndefinedTag;
+}
 
-    inline bool JSValue::isNull() const
-    {
-        return tag() == NullTag;
-    }
+inline bool JSValue::isNull() const
+{
+    return tag() == NullTag;
+}
 
-    inline bool JSValue::isUndefinedOrNull() const
-    {
-        return isUndefined() || isNull();
-    }
+inline bool JSValue::isUndefinedOrNull() const
+{
+    return isUndefined() || isNull();
+}
 
-    inline bool JSValue::isCell() const
-    {
-        return tag() == CellTag;
-    }
+inline bool JSValue::isCell() const
+{
+    return tag() == CellTag;
+}
 
-    inline bool JSValue::isInt32() const
-    {
-        return tag() == Int32Tag;
-    }
+inline bool JSValue::isInt32() const
+{
+    return tag() == Int32Tag;
+}
 
-    inline bool JSValue::isDouble() const
-    {
-        return tag() < LowestTag;
-    }
+inline bool JSValue::isDouble() const
+{
+    return tag() < LowestTag;
+}
 
-    inline bool JSValue::isTrue() const
-    {
-        return tag() == BooleanTag && payload();
-    }
+inline bool JSValue::isTrue() const
+{
+    return tag() == BooleanTag && payload();
+}
 
-    inline bool JSValue::isFalse() const
-    {
-        return tag() == BooleanTag && !payload();
-    }
+inline bool JSValue::isFalse() const
+{
+    return tag() == BooleanTag && !payload();
+}
 
-    inline uint32_t JSValue::tag() const
-    {
-        return u.asBits.tag;
-    }
+inline uint32_t JSValue::tag() const
+{
+    return u.asBits.tag;
+}
 
-    inline int32_t JSValue::payload() const
-    {
-        return u.asBits.payload;
-    }
+inline int32_t JSValue::payload() const
+{
+    return u.asBits.payload;
+}
 
-    inline int32_t JSValue::asInt32() const
-    {
-        ASSERT(isInt32());
-        return u.asBits.payload;
-    }
+inline int32_t JSValue::asInt32() const
+{
+    ASSERT( isInt32() );
+    return u.asBits.payload;
+}
 
-    inline double JSValue::asDouble() const
-    {
-        ASSERT(isDouble());
-        return u.asDouble;
-    }
+inline double JSValue::asDouble() const
+{
+    ASSERT( isDouble() );
+    return u.asDouble;
+}
 
-    ALWAYS_INLINE JSCell* JSValue::asCell() const
-    {
-        ASSERT(isCell());
-        return reinterpret_cast<JSCell*>(u.asBits.payload);
-    }
+ALWAYS_INLINE JSCell *JSValue::asCell() const
+{
+    ASSERT( isCell() );
+    return reinterpret_cast<JSCell *>( u.asBits.payload );
+}
 
-    ALWAYS_INLINE JSValue::JSValue(EncodeAsDoubleTag, double d)
-    {
-        u.asDouble = d;
-    }
+ALWAYS_INLINE JSValue::JSValue( EncodeAsDoubleTag, double d )
+{
+    u.asDouble = d;
+}
 
-    inline JSValue::JSValue(int i)
-    {
-        u.asBits.tag = Int32Tag;
-        u.asBits.payload = i;
-    }
+inline JSValue::JSValue( int i )
+{
+    u.asBits.tag = Int32Tag;
+    u.asBits.payload = i;
+}
 
-    inline bool JSValue::isNumber() const
-    {
-        return isInt32() || isDouble();
-    }
+inline bool JSValue::isNumber() const
+{
+    return isInt32() || isDouble();
+}
 
-    inline bool JSValue::isBoolean() const
-    {
-        return isTrue() || isFalse();
-    }
+inline bool JSValue::isBoolean() const
+{
+    return isTrue() || isFalse();
+}
 
-    inline bool JSValue::getBoolean() const
-    {
-        ASSERT(isBoolean());
-        return payload();
-    }
+inline bool JSValue::getBoolean() const
+{
+    ASSERT( isBoolean() );
+    return payload();
+}
 
 #else // USE(JSVALUE32_64)
 
-    // JSValue member functions.
-    inline EncodedJSValue JSValue::encode(JSValue value)
-    {
-        return value.u.ptr;
-    }
+// JSValue member functions.
+inline EncodedJSValue JSValue::encode( JSValue value )
+{
+    return value.u.ptr;
+}
 
-    inline JSValue JSValue::decode(EncodedJSValue ptr)
-    {
-        return JSValue(reinterpret_cast<JSCell*>(ptr));
-    }
+inline JSValue JSValue::decode( EncodedJSValue ptr )
+{
+    return JSValue( reinterpret_cast<JSCell *>( ptr ) );
+}
 
-    // 0x0 can never occur naturally because it has a tag of 00, indicating a pointer value, but a payload of 0x0, which is in the (invalid) zero page.
-    inline JSValue::JSValue()
-    {
-        u.asInt64 = ValueEmpty;
-    }
+// 0x0 can never occur naturally because it has a tag of 00, indicating a pointer value, but a payload of 0x0, which is in the (invalid) zero page.
+inline JSValue::JSValue()
+{
+    u.asInt64 = ValueEmpty;
+}
 
-    // 0x4 can never occur naturally because it has a tag of 00, indicating a pointer value, but a payload of 0x4, which is in the (invalid) zero page.
-    inline JSValue::JSValue(HashTableDeletedValueTag)
-    {
-        u.asInt64 = ValueDeleted;
-    }
+// 0x4 can never occur naturally because it has a tag of 00, indicating a pointer value, but a payload of 0x4, which is in the (invalid) zero page.
+inline JSValue::JSValue( HashTableDeletedValueTag )
+{
+    u.asInt64 = ValueDeleted;
+}
 
-    inline JSValue::JSValue(JSCell* ptr)
-    {
-        u.ptr = ptr;
+inline JSValue::JSValue( JSCell *ptr )
+{
+    u.ptr = ptr;
 #if ENABLE(JSC_ZOMBIES)
-        ASSERT(!isZombie());
+    ASSERT( !isZombie() );
 #endif
-    }
+}
 
-    inline JSValue::JSValue(const JSCell* ptr)
-    {
-        u.ptr = const_cast<JSCell*>(ptr);
+inline JSValue::JSValue( const JSCell *ptr )
+{
+    u.ptr = const_cast<JSCell *>( ptr );
 #if ENABLE(JSC_ZOMBIES)
-        ASSERT(!isZombie());
+    ASSERT( !isZombie() );
 #endif
-    }
+}
 
-    inline JSValue::operator bool() const
-    {
-        return u.ptr;
-    }
+inline JSValue::operator bool() const
+{
+    return u.ptr;
+}
 
-    inline bool JSValue::operator==(const JSValue& other) const
-    {
-        return u.ptr == other.u.ptr;
-    }
+inline bool JSValue::operator==( const JSValue &other ) const
+{
+    return u.ptr == other.u.ptr;
+}
 
-    inline bool JSValue::operator!=(const JSValue& other) const
-    {
-        return u.ptr != other.u.ptr;
-    }
+inline bool JSValue::operator!=( const JSValue &other ) const
+{
+    return u.ptr != other.u.ptr;
+}
 
-    inline bool JSValue::isUndefined() const
-    {
-        return asValue() == jsUndefined();
-    }
+inline bool JSValue::isUndefined() const
+{
+    return asValue() == jsUndefined();
+}
 
-    inline bool JSValue::isNull() const
-    {
-        return asValue() == jsNull();
-    }
+inline bool JSValue::isNull() const
+{
+    return asValue() == jsNull();
+}
 
-    inline bool JSValue::isTrue() const
-    {
-        return asValue() == JSValue(JSTrue);
-    }
+inline bool JSValue::isTrue() const
+{
+    return asValue() == JSValue( JSTrue );
+}
 
-    inline bool JSValue::isFalse() const
-    {
-        return asValue() == JSValue(JSFalse);
-    }
+inline bool JSValue::isFalse() const
+{
+    return asValue() == JSValue( JSFalse );
+}
 
-    inline bool JSValue::getBoolean() const
-    {
-        ASSERT(asValue() == jsBoolean(true) || asValue() == jsBoolean(false));
-        return asValue() == jsBoolean(true);
-    }
+inline bool JSValue::getBoolean() const
+{
+    ASSERT( asValue() == jsBoolean( true ) || asValue() == jsBoolean( false ) );
+    return asValue() == jsBoolean( true );
+}
 
-    inline int32_t JSValue::asInt32() const
-    {
-        ASSERT(isInt32());
-        return static_cast<int32_t>(u.asInt64);
-    }
+inline int32_t JSValue::asInt32() const
+{
+    ASSERT( isInt32() );
+    return static_cast<int32_t>( u.asInt64 );
+}
 
-    inline bool JSValue::isDouble() const
-    {
-        return isNumber() && !isInt32();
-    }
+inline bool JSValue::isDouble() const
+{
+    return isNumber() && !isInt32();
+}
 
-    inline JSValue::JSValue(JSNullTag)
-    {
-        u.asInt64 = ValueNull;
-    }
+inline JSValue::JSValue( JSNullTag )
+{
+    u.asInt64 = ValueNull;
+}
 
-    inline JSValue::JSValue(JSUndefinedTag)
-    {
-        u.asInt64 = ValueUndefined;
-    }
+inline JSValue::JSValue( JSUndefinedTag )
+{
+    u.asInt64 = ValueUndefined;
+}
 
-    inline JSValue::JSValue(JSTrueTag)
-    {
-        u.asInt64 = ValueTrue;
-    }
+inline JSValue::JSValue( JSTrueTag )
+{
+    u.asInt64 = ValueTrue;
+}
 
-    inline JSValue::JSValue(JSFalseTag)
-    {
-        u.asInt64 = ValueFalse;
-    }
+inline JSValue::JSValue( JSFalseTag )
+{
+    u.asInt64 = ValueFalse;
+}
 
-    inline bool JSValue::isUndefinedOrNull() const
-    {
-        // Undefined and null share the same value, bar the 'undefined' bit in the extended tag.
-        return (u.asInt64 & ~TagBitUndefined) == ValueNull;
-    }
+inline bool JSValue::isUndefinedOrNull() const
+{
+    // Undefined and null share the same value, bar the 'undefined' bit in the extended tag.
+    return ( u.asInt64 & ~TagBitUndefined ) == ValueNull;
+}
 
-    inline bool JSValue::isBoolean() const
-    {
-        return (u.asInt64 & ~1) == ValueFalse;
-    }
+inline bool JSValue::isBoolean() const
+{
+    return ( u.asInt64 & ~1 ) == ValueFalse;
+}
 
-    inline bool JSValue::isCell() const
-    {
-        return !(u.asInt64 & TagMask);
-    }
+inline bool JSValue::isCell() const
+{
+    return !( u.asInt64 & TagMask );
+}
 
-    inline bool JSValue::isInt32() const
-    {
-        return (u.asInt64 & TagTypeNumber) == TagTypeNumber;
-    }
+inline bool JSValue::isInt32() const
+{
+    return ( u.asInt64 & TagTypeNumber ) == TagTypeNumber;
+}
 
-    inline intptr_t reinterpretDoubleToIntptr(double value)
-    {
-        return bitwise_cast<intptr_t>(value);
-    }
-    inline double reinterpretIntptrToDouble(intptr_t value)
-    {
-        return bitwise_cast<double>(value);
-    }
+inline intptr_t reinterpretDoubleToIntptr( double value )
+{
+    return bitwise_cast<intptr_t>( value );
+}
+inline double reinterpretIntptrToDouble( intptr_t value )
+{
+    return bitwise_cast<double>( value );
+}
 
-    ALWAYS_INLINE JSValue::JSValue(EncodeAsDoubleTag, double d)
-    {
-        u.asInt64 = reinterpretDoubleToIntptr(d) + DoubleEncodeOffset;
-    }
+ALWAYS_INLINE JSValue::JSValue( EncodeAsDoubleTag, double d )
+{
+    u.asInt64 = reinterpretDoubleToIntptr( d ) + DoubleEncodeOffset;
+}
 
-    inline JSValue::JSValue(int i)
-    {
-        u.asInt64 = TagTypeNumber | static_cast<uint32_t>(i);
-    }
+inline JSValue::JSValue( int i )
+{
+    u.asInt64 = TagTypeNumber | static_cast<uint32_t>( i );
+}
 
-    inline double JSValue::asDouble() const
-    {
-        return reinterpretIntptrToDouble(u.asInt64 - DoubleEncodeOffset);
-    }
+inline double JSValue::asDouble() const
+{
+    return reinterpretIntptrToDouble( u.asInt64 - DoubleEncodeOffset );
+}
 
-    inline bool JSValue::isNumber() const
-    {
-        return u.asInt64 & TagTypeNumber;
-    }
+inline bool JSValue::isNumber() const
+{
+    return u.asInt64 & TagTypeNumber;
+}
 
-    ALWAYS_INLINE JSCell* JSValue::asCell() const
-    {
-        ASSERT(isCell());
-        return u.ptr;
-    }
+ALWAYS_INLINE JSCell *JSValue::asCell() const
+{
+    ASSERT( isCell() );
+    return u.ptr;
+}
 
 #endif // USE(JSVALUE64)
 

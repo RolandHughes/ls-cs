@@ -26,37 +26,40 @@
 
 #include <qfunctionargument_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class WithParam : public FunctionArgument
 {
- public:
-   typedef QExplicitlySharedDataPointer<WithParam> Ptr;
-   typedef QHash<QXmlName, Ptr> Hash;
+public:
+    typedef QExplicitlySharedDataPointer<WithParam> Ptr;
+    typedef QHash<QXmlName, Ptr> Hash;
 
-   inline WithParam(const QXmlName name,
-                    const SequenceType::Ptr &type,
-                    const Expression::Ptr &sourceExpression);
+    inline WithParam( const QXmlName name,
+                      const SequenceType::Ptr &type,
+                      const Expression::Ptr &sourceExpression );
 
-   inline void setSourceExpression(const Expression::Ptr &expr) {
-      Q_ASSERT(expr);
-      m_sourceExpression = expr;
-   }
+    inline void setSourceExpression( const Expression::Ptr &expr )
+    {
+        Q_ASSERT( expr );
+        m_sourceExpression = expr;
+    }
 
-   inline Expression::Ptr sourceExpression() const {
-      return m_sourceExpression;
-   }
+    inline Expression::Ptr sourceExpression() const
+    {
+        return m_sourceExpression;
+    }
 
- private:
-   Expression::Ptr m_sourceExpression;
+private:
+    Expression::Ptr m_sourceExpression;
 };
 
-WithParam::WithParam(const QXmlName name,
-                     const SequenceType::Ptr &type,
-                     const Expression::Ptr &sourceExpression) : FunctionArgument(name, type)
-   , m_sourceExpression(sourceExpression)
+WithParam::WithParam( const QXmlName name,
+                      const SequenceType::Ptr &type,
+                      const Expression::Ptr &sourceExpression ) : FunctionArgument( name, type )
+    , m_sourceExpression( sourceExpression )
 {
-   Q_ASSERT(m_sourceExpression);
+    Q_ASSERT( m_sourceExpression );
 }
 
 }

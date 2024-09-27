@@ -22,7 +22,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef BitmapImage_h
@@ -49,18 +49,21 @@ typedef struct HBITMAP__ *HBITMAP;
 class BBitmap;
 #endif
 
-namespace WebCore {
-    struct FrameData;
+namespace WebCore
+{
+struct FrameData;
 }
 
-namespace WTF {
-    // FIXME: This declaration gives FrameData a default constructor that zeroes
-    // all its data members, even though FrameData's default constructor defined
-    // below does not zero all its data members. One of these must be wrong!
-    template<> struct VectorTraits<WebCore::FrameData> : public SimpleClassVectorTraits { };
+namespace WTF
+{
+// FIXME: This declaration gives FrameData a default constructor that zeroes
+// all its data members, even though FrameData's default constructor defined
+// below does not zero all its data members. One of these must be wrong!
+template<> struct VectorTraits<WebCore::FrameData> : public SimpleClassVectorTraits { };
 }
 
-namespace WebCore {
+namespace WebCore
+{
 
 template <typename T> class Timer;
 
@@ -68,26 +71,27 @@ template <typename T> class Timer;
 // FrameData Class
 // ================================================
 
-struct FrameData {
-    WTF_MAKE_NONCOPYABLE(FrameData);
+struct FrameData
+{
+    WTF_MAKE_NONCOPYABLE( FrameData );
 public:
     FrameData()
-        : m_frame(0)
-        , m_haveMetadata(false)
-        , m_isComplete(false)
-        , m_duration(0)
-        , m_hasAlpha(true) 
+        : m_frame( 0 )
+        , m_haveMetadata( false )
+        , m_isComplete( false )
+        , m_duration( 0 )
+        , m_hasAlpha( true )
     {
     }
 
     ~FrameData()
-    { 
-        clear(true);
+    {
+        clear( true );
     }
 
     // Clear the cached image data on the frame, and (optionally) the metadata.
     // Returns whether there was cached image data to clear.
-    bool clear(bool clearMetadata);
+    bool clear( bool clearMetadata );
 
     NativeImagePtr m_frame;
     bool m_haveMetadata;
@@ -100,65 +104,78 @@ public:
 // BitmapImage Class
 // =================================================
 
-class BitmapImage : public Image {
+class BitmapImage : public Image
+{
     friend class GeneratedImage;
     friend class GraphicsContext;
 public:
-    static PassRefPtr<BitmapImage> create(NativeImagePtr nativeImage, ImageObserver* observer = 0)
+    static PassRefPtr<BitmapImage> create( NativeImagePtr nativeImage, ImageObserver *observer = 0 )
     {
-        return adoptRef(new BitmapImage(nativeImage, observer));
+        return adoptRef( new BitmapImage( nativeImage, observer ) );
     }
-    static PassRefPtr<BitmapImage> create(ImageObserver* observer = 0)
+    static PassRefPtr<BitmapImage> create( ImageObserver *observer = 0 )
     {
-        return adoptRef(new BitmapImage(observer));
+        return adoptRef( new BitmapImage( observer ) );
     }
     ~BitmapImage();
-    
-    virtual bool isBitmapImage() const { return true; }
 
-    virtual bool hasSingleSecurityOrigin() const { return true; }
+    virtual bool isBitmapImage() const
+    {
+        return true;
+    }
+
+    virtual bool hasSingleSecurityOrigin() const
+    {
+        return true;
+    }
 
     virtual IntSize size() const;
     IntSize currentFrameSize() const;
-    virtual bool getHotSpot(IntPoint&) const;
+    virtual bool getHotSpot( IntPoint & ) const;
 
-    virtual bool dataChanged(bool allDataReceived);
-    virtual String filenameExtension() const; 
+    virtual bool dataChanged( bool allDataReceived );
+    virtual String filenameExtension() const;
 
     // It may look unusual that there is no start animation call as public API.  This is because
     // we start and stop animating lazily.  Animation begins whenever someone draws the image.  It will
     // automatically pause once all observers no longer want to render the image anywhere.
     virtual void stopAnimation();
     virtual void resetAnimation();
-    
-    virtual unsigned decodedSize() const { return m_decodedSize; }
+
+    virtual unsigned decodedSize() const
+    {
+        return m_decodedSize;
+    }
 
 #if PLATFORM(MAC)
     // Accessors for native image formats.
-    virtual NSImage* getNSImage();
+    virtual NSImage *getNSImage();
     virtual CFDataRef getTIFFRepresentation();
 #endif
-    
+
 #if USE(CG)
     virtual CGImageRef getCGImageRef();
-    virtual CGImageRef getFirstCGImageRefOfSize(const IntSize&);
+    virtual CGImageRef getFirstCGImageRefOfSize( const IntSize & );
     virtual RetainPtr<CFArrayRef> getCGImageArray();
 #endif
 
 #if PLATFORM(WIN) || (PLATFORM(QT) && OS(WINDOWS))
-    static PassRefPtr<BitmapImage> create(HBITMAP);
+    static PassRefPtr<BitmapImage> create( HBITMAP );
 #endif
 #if PLATFORM(WIN)
-    virtual bool getHBITMAP(HBITMAP);
-    virtual bool getHBITMAPOfSize(HBITMAP, LPSIZE);
+    virtual bool getHBITMAP( HBITMAP );
+    virtual bool getHBITMAPOfSize( HBITMAP, LPSIZE );
 #endif
 
 #if PLATFORM(GTK)
-    virtual GdkPixbuf* getGdkPixbuf();
+    virtual GdkPixbuf *getGdkPixbuf();
 #endif
 
-    virtual NativeImagePtr nativeImageForCurrentFrame() { return frameAtIndex(currentFrame()); }
-    bool frameHasAlphaAtIndex(size_t); 
+    virtual NativeImagePtr nativeImageForCurrentFrame()
+    {
+        return frameAtIndex( currentFrame() );
+    }
+    bool frameHasAlphaAtIndex( size_t );
 
 #if !ASSERT_DISABLED
     bool notSolidColor()
@@ -168,37 +185,43 @@ public:
 #endif
 
 protected:
-    enum RepetitionCountStatus {
-      Unknown,    // We haven't checked the source's repetition count.
-      Uncertain,  // We have a repetition count, but it might be wrong (some GIFs have a count after the image data, and will report "loop once" until all data has been decoded).
-      Certain     // The repetition count is known to be correct.
+    enum RepetitionCountStatus
+    {
+        Unknown,    // We haven't checked the source's repetition count.
+        Uncertain,  // We have a repetition count, but it might be wrong (some GIFs have a count after the image data, and will report "loop once" until all data has been decoded).
+        Certain     // The repetition count is known to be correct.
     };
 
-    BitmapImage(NativeImagePtr, ImageObserver* = 0);
-    BitmapImage(ImageObserver* = 0);
+    BitmapImage( NativeImagePtr, ImageObserver * = 0 );
+    BitmapImage( ImageObserver * = 0 );
 
 #if PLATFORM(WIN)
-    virtual void drawFrameMatchingSourceSize(GraphicsContext*, const FloatRect& dstRect, const IntSize& srcSize, ColorSpace styleColorSpace, CompositeOperator);
+    virtual void drawFrameMatchingSourceSize( GraphicsContext *, const FloatRect &dstRect, const IntSize &srcSize,
+            ColorSpace styleColorSpace, CompositeOperator );
 #endif
-    virtual void draw(GraphicsContext*, const FloatRect& dstRect, const FloatRect& srcRect, ColorSpace styleColorSpace, CompositeOperator);
+    virtual void draw( GraphicsContext *, const FloatRect &dstRect, const FloatRect &srcRect, ColorSpace styleColorSpace,
+                       CompositeOperator );
 
 #if (OS(WINCE) && !PLATFORM(QT))
-    virtual void drawPattern(GraphicsContext*, const FloatRect& srcRect, const AffineTransform& patternTransform,
-                             const FloatPoint& phase, ColorSpace styleColorSpace, CompositeOperator, const FloatRect& destRect);
+    virtual void drawPattern( GraphicsContext *, const FloatRect &srcRect, const AffineTransform &patternTransform,
+                              const FloatPoint &phase, ColorSpace styleColorSpace, CompositeOperator, const FloatRect &destRect );
 #endif
 
 #if PLATFORM(HAIKU)
-    virtual BBitmap* getBBitmap() const;
+    virtual BBitmap *getBBitmap() const;
 #endif
 
-    size_t currentFrame() const { return m_currentFrame; }
+    size_t currentFrame() const
+    {
+        return m_currentFrame;
+    }
     size_t frameCount();
-    NativeImagePtr frameAtIndex(size_t);
-    bool frameIsCompleteAtIndex(size_t);
-    float frameDurationAtIndex(size_t);
+    NativeImagePtr frameAtIndex( size_t );
+    bool frameIsCompleteAtIndex( size_t );
+    float frameDurationAtIndex( size_t );
 
     // Decodes and caches a frame. Never accessed except internally.
-    void cacheFrame(size_t index);
+    void cacheFrame( size_t index );
 
     // Called to invalidate cached data.  When |destroyAll| is true, we wipe out
     // the entire frame buffer cache and tell the image source to destroy
@@ -206,18 +229,18 @@ protected:
     // cache.  If |destroyAll| is false, we only delete frames up to the current
     // one; this is used while animating large images to keep memory footprint
     // low without redecoding the whole image on every frame.
-    virtual void destroyDecodedData(bool destroyAll = true);
+    virtual void destroyDecodedData( bool destroyAll = true );
 
     // If the image is large enough, calls destroyDecodedData() and passes
     // |destroyAll| along.
-    void destroyDecodedDataIfNecessary(bool destroyAll);
+    void destroyDecodedDataIfNecessary( bool destroyAll );
 
     // Generally called by destroyDecodedData(), destroys whole-image metadata
     // and notifies observers that the memory footprint has (hopefully)
     // decreased by |framesCleared| times the size (in bytes) of a frame.
-    void destroyMetadataAndNotify(int framesCleared);
+    void destroyMetadataAndNotify( int framesCleared );
 
-    // Whether or not size is available yet.    
+    // Whether or not size is available yet.
     bool isSizeAvailable();
 
     // Called after asking the source for any information that may require
@@ -227,48 +250,54 @@ protected:
     void didDecodeProperties() const;
 
     // Animation.
-    int repetitionCount(bool imageKnownToBeComplete);  // |imageKnownToBeComplete| should be set if the caller knows the entire image has been decoded.
+    int repetitionCount( bool
+                         imageKnownToBeComplete ); // |imageKnownToBeComplete| should be set if the caller knows the entire image has been decoded.
     bool shouldAnimate();
-    virtual void startAnimation(bool catchUpIfNecessary = true);
-    void advanceAnimation(Timer<BitmapImage>*);
+    virtual void startAnimation( bool catchUpIfNecessary = true );
+    void advanceAnimation( Timer<BitmapImage> * );
 
     // Function that does the real work of advancing the animation.  When
     // skippingFrames is true, we're in the middle of a loop trying to skip over
     // a bunch of animation frames, so we should not do things like decode each
     // one or notify our observers.
     // Returns whether the animation was advanced.
-    bool internalAdvanceAnimation(bool skippingFrames);
+    bool internalAdvanceAnimation( bool skippingFrames );
 
     // Handle platform-specific data
     void initPlatformData();
     void invalidatePlatformData();
-    
+
     // Checks to see if the image is a 1x1 solid color.  We optimize these images and just do a fill rect instead.
     // This check should happen regardless whether m_checkedForSolidColor is already set, as the frame may have
     // changed.
     void checkForSolidColor();
-    
+
     virtual bool mayFillWithSolidColor()
     {
-        if (!m_checkedForSolidColor && frameCount() > 0) {
+        if ( !m_checkedForSolidColor && frameCount() > 0 )
+        {
             checkForSolidColor();
             // WINCE PORT: checkForSolidColor() doesn't set m_checkedForSolidColor until
             // it gets enough information to make final decision.
 #if !OS(WINCE)
-            ASSERT(m_checkedForSolidColor);
+            ASSERT( m_checkedForSolidColor );
 #endif
         }
+
         return m_isSolidColor && m_currentFrame == 0;
     }
-    virtual Color solidColor() const { return m_solidColor; }
-    
+    virtual Color solidColor() const
+    {
+        return m_solidColor;
+    }
+
     ImageSource m_source;
     mutable IntSize m_size; // The size to use for the overall image (will just be the size of the first image).
-    
+
     size_t m_currentFrame; // The index of the current frame of animation.
     Vector<FrameData> m_frames; // An array of the cached frames of the animation. We have to ref frames to pin them in the cache.
-    
-    Timer<BitmapImage>* m_frameTimer;
+
+    Timer<BitmapImage> *m_frameTimer;
     int m_repetitionCount; // How many total animation loops we should do.  This will be cAnimationNone if this image type is incapable of animation.
     RepetitionCountStatus m_repetitionCountStatus;
     int m_repetitionsComplete;  // How many repetitions we've finished.
@@ -292,7 +321,8 @@ protected:
     mutable bool m_hasUniformFrameSize;
 
     unsigned m_decodedSize; // The current size of all decoded frames.
-    mutable unsigned m_decodedPropertiesSize; // The size of data decoded by the source to determine image properties (e.g. size, frame count, etc).
+    mutable unsigned
+    m_decodedPropertiesSize; // The size of data decoded by the source to determine image properties (e.g. size, frame count, etc).
 
     mutable bool m_haveFrameCount;
     size_t m_frameCount;

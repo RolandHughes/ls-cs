@@ -34,26 +34,28 @@
 #include "HTMLDivElement.h"
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class HTMLSummaryElement;
 
-class DetailsMarkerControl : public HTMLDivElement {
+class DetailsMarkerControl : public HTMLDivElement
+{
 public:
-    DetailsMarkerControl(Document*);
-    static PassRefPtr<DetailsMarkerControl> create(Document*);
+    DetailsMarkerControl( Document * );
+    static PassRefPtr<DetailsMarkerControl> create( Document * );
 
 private:
-    virtual RenderObject* createRenderer(RenderArena*, RenderStyle*);
-    virtual bool rendererIsNeeded(RenderStyle*);
-    virtual const AtomicString& shadowPseudoId() const;
+    virtual RenderObject *createRenderer( RenderArena *, RenderStyle * );
+    virtual bool rendererIsNeeded( RenderStyle * );
+    virtual const AtomicString &shadowPseudoId() const;
 
-    HTMLSummaryElement* summaryElement();
+    HTMLSummaryElement *summaryElement();
 };
 
-inline PassRefPtr<DetailsMarkerControl> DetailsMarkerControl::create(Document* document)
+inline PassRefPtr<DetailsMarkerControl> DetailsMarkerControl::create( Document *document )
 {
-    return adoptRef(new DetailsMarkerControl(document));
+    return adoptRef( new DetailsMarkerControl( document ) );
 }
 
 }

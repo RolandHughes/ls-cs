@@ -44,18 +44,23 @@
 
 using namespace std;
 
-namespace WebCore {
-
-static IDirect3D9* s_d3d = 0;
-static IDirect3D9* d3d()
+namespace WebCore
 {
-    if (s_d3d)
+
+static IDirect3D9 *s_d3d = 0;
+static IDirect3D9 *d3d()
+{
+    if ( s_d3d )
+    {
         return s_d3d;
+    }
 
-    if (!LoadLibrary(TEXT("d3d9.dll")))
+    if ( !LoadLibrary( TEXT( "d3d9.dll" ) ) )
+    {
         return 0;
+    }
 
-    s_d3d = Direct3DCreate9(D3D_SDK_VERSION);
+    s_d3d = Direct3DCreate9( D3D_SDK_VERSION );
 
     return s_d3d;
 }
@@ -73,89 +78,112 @@ static D3DPRESENT_PARAMETERS initialPresentationParameters()
 }
 
 // FIXME: <rdar://6507851> Share this code with CoreAnimation.
-static bool hardwareCapabilitiesIndicateCoreAnimationSupport(const D3DCAPS9& caps)
+static bool hardwareCapabilitiesIndicateCoreAnimationSupport( const D3DCAPS9 &caps )
 {
     // CoreAnimation needs two or more texture units.
-    if (caps.MaxTextureBlendStages < 2)
+    if ( caps.MaxTextureBlendStages < 2 )
+    {
         return false;
+    }
 
     // CoreAnimation needs non-power-of-two textures.
-    if ((caps.TextureCaps & D3DPTEXTURECAPS_POW2) && !(caps.TextureCaps & D3DPTEXTURECAPS_NONPOW2CONDITIONAL))
+    if ( ( caps.TextureCaps & D3DPTEXTURECAPS_POW2 ) && !( caps.TextureCaps & D3DPTEXTURECAPS_NONPOW2CONDITIONAL ) )
+    {
         return false;
+    }
 
     // CoreAnimation needs vertex shader 2.0 or greater.
-    if (D3DSHADER_VERSION_MAJOR(caps.VertexShaderVersion) < 2)
+    if ( D3DSHADER_VERSION_MAJOR( caps.VertexShaderVersion ) < 2 )
+    {
         return false;
+    }
 
     // CoreAnimation needs pixel shader 2.0 or greater.
-    if (D3DSHADER_VERSION_MAJOR(caps.PixelShaderVersion) < 2)
+    if ( D3DSHADER_VERSION_MAJOR( caps.PixelShaderVersion ) < 2 )
+    {
         return false;
+    }
 
     return true;
 }
 
 PassRefPtr<LegacyCACFLayerTreeHost> LegacyCACFLayerTreeHost::create()
 {
-    return adoptRef(new LegacyCACFLayerTreeHost);
+    return adoptRef( new LegacyCACFLayerTreeHost );
 }
 
 LegacyCACFLayerTreeHost::LegacyCACFLayerTreeHost()
-    : m_renderTimer(this, &LegacyCACFLayerTreeHost::renderTimerFired)
-    , m_context(wkCACFContextCreate())
-    , m_mightBeAbleToCreateDeviceLater(true)
-    , m_mustResetLostDeviceBeforeRendering(false)
+    : m_renderTimer( this, &LegacyCACFLayerTreeHost::renderTimerFired )
+    , m_context( wkCACFContextCreate() )
+    , m_mightBeAbleToCreateDeviceLater( true )
+    , m_mustResetLostDeviceBeforeRendering( false )
 {
 #ifndef NDEBUG
-    char* printTreeFlag = getenv("CA_PRINT_TREE");
-    m_printTree = printTreeFlag && atoi(printTreeFlag);
+    char *printTreeFlag = getenv( "CA_PRINT_TREE" );
+    m_printTree = printTreeFlag && atoi( printTreeFlag );
 #endif
 }
 
 LegacyCACFLayerTreeHost::~LegacyCACFLayerTreeHost()
 {
-    wkCACFContextDestroy(m_context);
+    wkCACFContextDestroy( m_context );
 }
 
-void LegacyCACFLayerTreeHost::initializeContext(void* userData, PlatformCALayer* layer)
+void LegacyCACFLayerTreeHost::initializeContext( void *userData, PlatformCALayer *layer )
 {
-    wkCACFContextSetUserData(m_context, userData);
-    wkCACFContextSetLayer(m_context, layer->platformLayer());
+    wkCACFContextSetUserData( m_context, userData );
+    wkCACFContextSetLayer( m_context, layer->platformLayer() );
 }
 
 bool LegacyCACFLayerTreeHost::createRenderer()
 {
-    if (m_d3dDevice || !m_mightBeAbleToCreateDeviceLater)
+    if ( m_d3dDevice || !m_mightBeAbleToCreateDeviceLater )
+    {
         return m_d3dDevice;
+    }
 
     m_mightBeAbleToCreateDeviceLater = false;
     D3DPRESENT_PARAMETERS parameters = initialPresentationParameters();
 
-    if (!d3d() || !::IsWindow(window()))
+    if ( !d3d() || !::IsWindow( window() ) )
+    {
         return false;
+    }
 
     // D3D doesn't like to make back buffers for 0 size windows. We skirt this problem if we make the
     // passed backbuffer width and height non-zero. The window will necessarily get set to a non-zero
     // size eventually, and then the backbuffer size will get reset.
     RECT rect;
-    GetClientRect(window(), &rect);
+    GetClientRect( window(), &rect );
 
-    if (rect.left-rect.right == 0 || rect.bottom-rect.top == 0) {
+    if ( rect.left-rect.right == 0 || rect.bottom-rect.top == 0 )
+    {
         parameters.BackBufferWidth = 1;
         parameters.BackBufferHeight = 1;
     }
 
     D3DCAPS9 d3dCaps;
-    if (FAILED(d3d()->GetDeviceCaps(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, &d3dCaps)))
+
+    if ( FAILED( d3d()->GetDeviceCaps( D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, &d3dCaps ) ) )
+    {
         return false;
+    }
 
     DWORD behaviorFlags = D3DCREATE_FPU_PRESERVE;
-    if ((d3dCaps.DevCaps & D3DDEVCAPS_HWTRANSFORMANDLIGHT) && d3dCaps.VertexProcessingCaps)
+
+    if ( ( d3dCaps.DevCaps & D3DDEVCAPS_HWTRANSFORMANDLIGHT ) && d3dCaps.VertexProcessingCaps )
+    {
         behaviorFlags |= D3DCREATE_HARDWARE_VERTEXPROCESSING;
+    }
     else
+    {
         behaviorFlags |= D3DCREATE_SOFTWARE_VERTEXPROCESSING;
+    }
 
     COMPtr<IDirect3DDevice9> device;
-    if (FAILED(d3d()->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, window(), behaviorFlags, &parameters, &device))) {
+
+    if ( FAILED( d3d()->CreateDevice( D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, window(), behaviorFlags, &parameters, &device ) ) )
+    {
         // In certain situations (e.g., shortly after waking from sleep), Direct3DCreate9() will
         // return an IDirect3D9 for which IDirect3D9::CreateDevice will always fail. In case we
         // have one of these bad IDirect3D9s, get rid of it so we'll fetch a new one the next time
@@ -176,20 +204,26 @@ bool LegacyCACFLayerTreeHost::createRenderer()
     // sometimes be more complete, for example when using software vertex
     // processing.
     D3DCAPS9 deviceCaps;
-    if (FAILED(device->GetDeviceCaps(&deviceCaps)))
-        return false;
 
-    if (!hardwareCapabilitiesIndicateCoreAnimationSupport(deviceCaps))
+    if ( FAILED( device->GetDeviceCaps( &deviceCaps ) ) )
+    {
         return false;
+    }
+
+    if ( !hardwareCapabilitiesIndicateCoreAnimationSupport( deviceCaps ) )
+    {
+        return false;
+    }
 
     m_d3dDevice = device;
 
     initD3DGeometry();
 
-    wkCACFContextSetD3DDevice(m_context, m_d3dDevice.get());
+    wkCACFContextSetD3DDevice( m_context, m_d3dDevice.get() );
 
-    if (IsWindow(window())) {
-        rootLayer()->setBounds(bounds());
+    if ( IsWindow( window() ) )
+    {
+        rootLayer()->setBounds( bounds() );
         flushContext();
     }
 
@@ -198,12 +232,15 @@ bool LegacyCACFLayerTreeHost::createRenderer()
 
 void LegacyCACFLayerTreeHost::destroyRenderer()
 {
-    wkCACFContextSetLayer(m_context, 0);
+    wkCACFContextSetLayer( m_context, 0 );
 
-    wkCACFContextSetD3DDevice(m_context, 0);
+    wkCACFContextSetD3DDevice( m_context, 0 );
     m_d3dDevice = 0;
-    if (s_d3d)
+
+    if ( s_d3d )
+    {
         s_d3d->Release();
+    }
 
     s_d3d = 0;
     m_mightBeAbleToCreateDeviceLater = true;
@@ -213,20 +250,23 @@ void LegacyCACFLayerTreeHost::destroyRenderer()
 
 void LegacyCACFLayerTreeHost::resize()
 {
-    if (!m_d3dDevice)
+    if ( !m_d3dDevice )
+    {
         return;
+    }
 
     // Resetting the device might fail here. But that's OK, because if it does it we will attempt to
     // reset the device the next time we try to render.
-    resetDevice(ChangedWindowSize);
+    resetDevice( ChangedWindowSize );
 
-    if (rootLayer()) {
-        rootLayer()->setBounds(bounds());
+    if ( rootLayer() )
+    {
+        rootLayer()->setBounds( bounds() );
         flushContext();
     }
 }
 
-void LegacyCACFLayerTreeHost::renderTimerFired(Timer<LegacyCACFLayerTreeHost>*)
+void LegacyCACFLayerTreeHost::renderTimerFired( Timer<LegacyCACFLayerTreeHost> * )
 {
     paint();
 }
@@ -234,20 +274,26 @@ void LegacyCACFLayerTreeHost::renderTimerFired(Timer<LegacyCACFLayerTreeHost>*)
 void LegacyCACFLayerTreeHost::paint()
 {
     createRenderer();
-    if (!m_d3dDevice) {
-        if (m_mightBeAbleToCreateDeviceLater)
+
+    if ( !m_d3dDevice )
+    {
+        if ( m_mightBeAbleToCreateDeviceLater )
+        {
             renderSoon();
+        }
+
         return;
     }
 
     CACFLayerTreeHost::paint();
 }
 
-void LegacyCACFLayerTreeHost::render(const Vector<CGRect>& windowDirtyRects)
+void LegacyCACFLayerTreeHost::render( const Vector<CGRect> &windowDirtyRects )
 {
-    ASSERT(m_d3dDevice);
+    ASSERT( m_d3dDevice );
 
-    if (m_mustResetLostDeviceBeforeRendering && !resetDevice(LostDevice)) {
+    if ( m_mustResetLostDeviceBeforeRendering && !resetDevice( LostDevice ) )
+    {
         // We can't reset the device right now. Try again soon.
         renderSoon();
         return;
@@ -258,75 +304,100 @@ void LegacyCACFLayerTreeHost::render(const Vector<CGRect>& windowDirtyRects)
     // Give the renderer some space to use. This needs to be valid until the
     // wkCACFContextFinishUpdate() call below.
     char space[4096];
-    if (!wkCACFContextBeginUpdate(m_context, space, sizeof(space), CACurrentMediaTime(), bounds, windowDirtyRects.data(), windowDirtyRects.size()))
+
+    if ( !wkCACFContextBeginUpdate( m_context, space, sizeof( space ), CACurrentMediaTime(), bounds, windowDirtyRects.data(),
+                                    windowDirtyRects.size() ) )
+    {
         return;
+    }
 
     HRESULT err = S_OK;
     CFTimeInterval timeToNextRender = numeric_limits<CFTimeInterval>::infinity();
 
-    do {
+    do
+    {
         // FIXME: don't need to clear dirty region if layer tree is opaque.
 
-        WKCACFUpdateRectEnumerator* e = wkCACFContextCopyUpdateRectEnumerator(m_context);
-        if (!e)
+        WKCACFUpdateRectEnumerator *e = wkCACFContextCopyUpdateRectEnumerator( m_context );
+
+        if ( !e )
+        {
             break;
+        }
 
         Vector<D3DRECT, 64> rects;
-        for (const CGRect* r = wkCACFUpdateRectEnumeratorNextRect(e); r; r = wkCACFUpdateRectEnumeratorNextRect(e)) {
+
+        for ( const CGRect *r = wkCACFUpdateRectEnumeratorNextRect( e ); r; r = wkCACFUpdateRectEnumeratorNextRect( e ) )
+        {
             D3DRECT rect;
             rect.x1 = r->origin.x;
             rect.x2 = rect.x1 + r->size.width;
-            rect.y1 = bounds.origin.y + bounds.size.height - (r->origin.y + r->size.height);
+            rect.y1 = bounds.origin.y + bounds.size.height - ( r->origin.y + r->size.height );
             rect.y2 = rect.y1 + r->size.height;
 
-            rects.append(rect);
+            rects.append( rect );
         }
-        wkCACFUpdateRectEnumeratorRelease(e);
 
-        timeToNextRender = wkCACFContextGetNextUpdateTime(m_context);
+        wkCACFUpdateRectEnumeratorRelease( e );
 
-        if (rects.isEmpty())
+        timeToNextRender = wkCACFContextGetNextUpdateTime( m_context );
+
+        if ( rects.isEmpty() )
+        {
             break;
+        }
 
-        m_d3dDevice->Clear(rects.size(), rects.data(), D3DCLEAR_TARGET, 0, 1.0f, 0);
+        m_d3dDevice->Clear( rects.size(), rects.data(), D3DCLEAR_TARGET, 0, 1.0f, 0 );
 
         m_d3dDevice->BeginScene();
-        wkCACFContextRenderUpdate(m_context);
+        wkCACFContextRenderUpdate( m_context );
         m_d3dDevice->EndScene();
 
-        err = m_d3dDevice->Present(0, 0, 0, 0);
+        err = m_d3dDevice->Present( 0, 0, 0, 0 );
 
-        if (err == D3DERR_DEVICELOST) {
-            wkCACFContextAddUpdateRect(m_context, bounds);
-            if (!resetDevice(LostDevice)) {
+        if ( err == D3DERR_DEVICELOST )
+        {
+            wkCACFContextAddUpdateRect( m_context, bounds );
+
+            if ( !resetDevice( LostDevice ) )
+            {
                 // We can't reset the device right now. Try again soon.
                 renderSoon();
                 return;
             }
         }
-    } while (err == D3DERR_DEVICELOST);
+    }
+    while ( err == D3DERR_DEVICELOST );
 
-    wkCACFContextFinishUpdate(m_context);
+    wkCACFContextFinishUpdate( m_context );
 
 #ifndef NDEBUG
-    if (m_printTree)
+
+    if ( m_printTree )
+    {
         rootLayer()->printTree();
+    }
+
 #endif
 
     // If timeToNextRender is not infinity, it means animations are running, so queue up to render again
-    if (timeToNextRender != numeric_limits<CFTimeInterval>::infinity())
+    if ( timeToNextRender != numeric_limits<CFTimeInterval>::infinity() )
+    {
         renderSoon();
+    }
 }
 
 void LegacyCACFLayerTreeHost::renderSoon()
 {
-    if (!m_renderTimer.isActive())
-        m_renderTimer.startOneShot(0);
+    if ( !m_renderTimer.isActive() )
+    {
+        m_renderTimer.startOneShot( 0 );
+    }
 }
 
 void LegacyCACFLayerTreeHost::flushContext()
 {
-    wkCACFContextFlush(m_context);
+    wkCACFContextFlush( m_context );
     contextDidChange();
 }
 
@@ -338,12 +409,12 @@ void LegacyCACFLayerTreeHost::contextDidChange()
 
 CFTimeInterval LegacyCACFLayerTreeHost::lastCommitTime() const
 {
-    return wkCACFContextGetLastCommitTime(m_context);
+    return wkCACFContextGetLastCommitTime( m_context );
 }
 
 void LegacyCACFLayerTreeHost::initD3DGeometry()
 {
-    ASSERT(m_d3dDevice);
+    ASSERT( m_d3dDevice );
 
     CGRect bounds = this->bounds();
 
@@ -353,19 +424,20 @@ void LegacyCACFLayerTreeHost::initD3DGeometry()
     float y1 = y0 + bounds.size.height;
 
     D3DXMATRIXA16 projection;
-    D3DXMatrixOrthoOffCenterRH(&projection, x0, x1, y0, y1, -1.0f, 1.0f);
+    D3DXMatrixOrthoOffCenterRH( &projection, x0, x1, y0, y1, -1.0f, 1.0f );
 
-    m_d3dDevice->SetTransform(D3DTS_PROJECTION, &projection);
+    m_d3dDevice->SetTransform( D3DTS_PROJECTION, &projection );
 }
 
-bool LegacyCACFLayerTreeHost::resetDevice(ResetReason reason)
+bool LegacyCACFLayerTreeHost::resetDevice( ResetReason reason )
 {
-    ASSERT(m_d3dDevice);
-    ASSERT(m_context);
+    ASSERT( m_d3dDevice );
+    ASSERT( m_context );
 
     HRESULT hr = m_d3dDevice->TestCooperativeLevel();
 
-    if (hr == D3DERR_DEVICELOST || hr == D3DERR_DRIVERINTERNALERROR) {
+    if ( hr == D3DERR_DEVICELOST || hr == D3DERR_DRIVERINTERNALERROR )
+    {
         // The device cannot be reset at this time. Try again soon.
         m_mustResetLostDeviceBeforeRendering = true;
         return false;
@@ -373,7 +445,8 @@ bool LegacyCACFLayerTreeHost::resetDevice(ResetReason reason)
 
     m_mustResetLostDeviceBeforeRendering = false;
 
-    if (reason == LostDevice && hr == D3D_OK) {
+    if ( reason == LostDevice && hr == D3D_OK )
+    {
         // The device wasn't lost after all.
         return true;
     }
@@ -383,14 +456,14 @@ bool LegacyCACFLayerTreeHost::resetDevice(ResetReason reason)
     // We have to release the context's D3D resrouces whenever we reset the IDirect3DDevice9 in order to
     // destroy any D3DPOOL_DEFAULT resources that Core Animation has allocated (e.g., textures used
     // for mask layers). See <http://msdn.microsoft.com/en-us/library/bb174425(v=VS.85).aspx>.
-    wkCACFContextReleaseD3DResources(m_context);
+    wkCACFContextReleaseD3DResources( m_context );
 
     D3DPRESENT_PARAMETERS parameters = initialPresentationParameters();
-    hr = m_d3dDevice->Reset(&parameters);
+    hr = m_d3dDevice->Reset( &parameters );
 
     // TestCooperativeLevel told us the device may be reset now, so we should
     // not be told here that the device is lost.
-    ASSERT(hr != D3DERR_DEVICELOST);
+    ASSERT( hr != D3DERR_DEVICELOST );
 
     initD3DGeometry();
 

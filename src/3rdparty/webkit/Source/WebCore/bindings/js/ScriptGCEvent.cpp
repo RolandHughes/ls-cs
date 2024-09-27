@@ -38,13 +38,14 @@
 #include <runtime/JSGlobalData.h>
 #include <wtf/CurrentTime.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace JSC;
 
-void ScriptGCEvent::getHeapSize(size_t& usedHeapSize, size_t& totalHeapSize, size_t& heapSizeLimit)
+void ScriptGCEvent::getHeapSize( size_t &usedHeapSize, size_t &totalHeapSize, size_t &heapSizeLimit )
 {
-    JSGlobalData* globalData = JSDOMWindow::commonJSGlobalData();
+    JSGlobalData *globalData = JSDOMWindow::commonJSGlobalData();
     totalHeapSize = globalData->heap.capacity();
     usedHeapSize = globalData->heap.size();
     heapSizeLimit = 0;

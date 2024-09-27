@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef TextStream_h
@@ -30,23 +30,25 @@
 #include <wtf/Vector.h>
 #include <wtf/unicode/Unicode.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class TextStream {
+class TextStream
+{
 public:
-    TextStream& operator<<(bool);
-    TextStream& operator<<(int);
-    TextStream& operator<<(unsigned);
-    TextStream& operator<<(long);
-    TextStream& operator<<(unsigned long);
-    TextStream& operator<<(float);
-    TextStream& operator<<(double);
-    TextStream& operator<<(const char*);
-    TextStream& operator<<(const void*);
-    TextStream& operator<<(const String&);
+    TextStream &operator<<( bool );
+    TextStream &operator<<( int );
+    TextStream &operator<<( unsigned );
+    TextStream &operator<<( long );
+    TextStream &operator<<( unsigned long );
+    TextStream &operator<<( float );
+    TextStream &operator<<( double );
+    TextStream &operator<<( const char * );
+    TextStream &operator<<( const void * );
+    TextStream &operator<<( const String & );
 #if OS(WINDOWS) && CPU(X86_64)
-    TextStream& operator<<(unsigned __int64);
-    TextStream& operator<<(__int64);
+    TextStream &operator<<( unsigned __int64 );
+    TextStream &operator<<( __int64 );
 #endif
 
     String release();

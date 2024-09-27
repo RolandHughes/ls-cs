@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef StructureChain_h
@@ -31,26 +31,34 @@
 #include <wtf/RefCounted.h>
 #include <wtf/RefPtr.h>
 
-namespace JSC {
+namespace JSC
+{
 
-    class Structure;
+class Structure;
 
-    class StructureChain : public RefCounted<StructureChain> {
-        friend class JIT;
+class StructureChain : public RefCounted<StructureChain>
+{
+    friend class JIT;
 
-    public:
+public:
 #if OS(HPUX)
-        static PassRefPtr<StructureChain> create(Structure* head);
+    static PassRefPtr<StructureChain> create( Structure *head );
 #else
-        static PassRefPtr<StructureChain> create(Structure* head) { return adoptRef(new StructureChain(head)); }
+    static PassRefPtr<StructureChain> create( Structure *head )
+    {
+        return adoptRef( new StructureChain( head ) );
+    }
 #endif
-        RefPtr<Structure>* head() { return m_vector.get(); }
+    RefPtr<Structure> *head()
+    {
+        return m_vector.get();
+    }
 
-    private:
-        StructureChain(Structure* head);
+private:
+    StructureChain( Structure *head );
 
-        OwnArrayPtr<RefPtr<Structure> > m_vector;
-    };
+    OwnArrayPtr<RefPtr<Structure> > m_vector;
+};
 
 } // namespace JSC
 

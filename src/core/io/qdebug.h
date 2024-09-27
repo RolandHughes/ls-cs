@@ -39,509 +39,577 @@ class QDebugStateSaverPrivate;
 
 class Q_CORE_EXPORT QDebug
 {
-   struct Stream {
-      static constexpr const int defaultVerbosity = 2;
+    struct Stream
+    {
+        static constexpr const int defaultVerbosity = 2;
 
-      enum FormatFlag {
-         NoQuotes = 0x1
-      };
+        enum FormatFlag
+        {
+            NoQuotes = 0x1
+        };
 
-      Stream(QIODevice *device)
-         : m_addSpace(true), message_output(false), m_flags(0), ref(1), m_verbosity(defaultVerbosity),
-           ts(device), type(QtDebugMsg)
-      { }
+        Stream( QIODevice *device )
+            : m_addSpace( true ), message_output( false ), m_flags( 0 ), ref( 1 ), m_verbosity( defaultVerbosity ),
+              ts( device ), type( QtDebugMsg )
+        { }
 
-      Stream(QString *string)
-         : m_addSpace(true), message_output(false), m_flags(0), ref(1), m_verbosity(defaultVerbosity),
-           ts(string, QIODevice::WriteOnly), type(QtDebugMsg)
-      { }
+        Stream( QString *string )
+            : m_addSpace( true ), message_output( false ), m_flags( 0 ), ref( 1 ), m_verbosity( defaultVerbosity ),
+              ts( string, QIODevice::WriteOnly ), type( QtDebugMsg )
+        { }
 
-      Stream(QtMsgType t)
-         : m_addSpace(true), message_output(true), m_flags(0), ref(1),  m_verbosity(defaultVerbosity),
-           ts(&buffer, QIODevice::WriteOnly), type(t)
-      { }
+        Stream( QtMsgType t )
+            : m_addSpace( true ), message_output( true ), m_flags( 0 ), ref( 1 ),  m_verbosity( defaultVerbosity ),
+              ts( &buffer, QIODevice::WriteOnly ), type( t )
+        { }
 
-      bool testFlag(FormatFlag flag) const {
-         return (m_flags & flag);
-      }
+        bool testFlag( FormatFlag flag ) const
+        {
+            return ( m_flags & flag );
+        }
 
-      void setFlag(FormatFlag flag) {
-         m_flags = m_flags | flag;
-      }
+        void setFlag( FormatFlag flag )
+        {
+            m_flags = m_flags | flag;
+        }
 
-      void unsetFlag(FormatFlag flag) {
-         m_flags = m_flags & (~flag);
-      }
+        void unsetFlag( FormatFlag flag )
+        {
+            m_flags = m_flags & ( ~flag );
+        }
 
-      void setVerbosity(int v) {
-         m_verbosity = v;
-      }
+        void setVerbosity( int v )
+        {
+            m_verbosity = v;
+        }
 
-      int verbosity() const {
-         return m_verbosity;
-      }
+        int verbosity() const
+        {
+            return m_verbosity;
+        }
 
-      bool m_addSpace;
-      bool message_output;
+        bool m_addSpace;
+        bool message_output;
 
-      int m_flags;
-      int ref;
-      int m_verbosity;
+        int m_flags;
+        int ref;
+        int m_verbosity;
 
-      QTextStream ts;
-      QString buffer;
-      QtMsgType type;
-   };
+        QTextStream ts;
+        QString buffer;
+        QtMsgType type;
+    };
 
- public:
-   QDebug(QIODevice *device)
-      : m_stream(new Stream(device))
-   { }
+public:
+    QDebug( QIODevice *device )
+        : m_stream( new Stream( device ) )
+    { }
 
-   QDebug(QString *string)
-      : m_stream(new Stream(string))
-   { }
+    QDebug( QString *string )
+        : m_stream( new Stream( string ) )
+    { }
 
-   QDebug(QtMsgType type)
-      : m_stream(new Stream(type))
-   { }
+    QDebug( QtMsgType type )
+        : m_stream( new Stream( type ) )
+    { }
 
-   QDebug(const QDebug &other)
-      : m_stream(other.m_stream) {
-      ++m_stream->ref;
-   }
+    QDebug( const QDebug &other )
+        : m_stream( other.m_stream )
+    {
+        ++m_stream->ref;
+    }
 
-   ~QDebug();
+    ~QDebug();
 
-   inline QDebug &operator=(const QDebug &other);
+    inline QDebug &operator=( const QDebug &other );
 
-   bool autoInsertSpaces() const {
-      return m_stream->m_addSpace;
-   }
+    bool autoInsertSpaces() const
+    {
+        return m_stream->m_addSpace;
+    }
 
-   void setAutoInsertSpaces(bool enable) {
-      m_stream->m_addSpace = enable;
-   }
+    void setAutoInsertSpaces( bool enable )
+    {
+        m_stream->m_addSpace = enable;
+    }
 
-   QDebug &space() {
-      m_stream->m_addSpace = true;
-      m_stream->ts << ' ';
+    QDebug &space()
+    {
+        m_stream->m_addSpace = true;
+        m_stream->ts << ' ';
 
-      return *this;
-   }
+        return *this;
+    }
 
-   QDebug &nospace() {
-      m_stream->m_addSpace = false;
-      return *this;
-   }
+    QDebug &nospace()
+    {
+        m_stream->m_addSpace = false;
+        return *this;
+    }
 
-   QDebug &maybeSpace() {
-      if (m_stream->m_addSpace) {
-         m_stream->ts << ' ';
-      }
+    QDebug &maybeSpace()
+    {
+        if ( m_stream->m_addSpace )
+        {
+            m_stream->ts << ' ';
+        }
 
-      return *this;
-   }
+        return *this;
+    }
 
-   QDebug &maybeQuote(char c = '"') {
-      if (! (m_stream->testFlag(Stream::NoQuotes))) {
-         m_stream->ts << c;
-      }
+    QDebug &maybeQuote( char c = '"' )
+    {
+        if ( ! ( m_stream->testFlag( Stream::NoQuotes ) ) )
+        {
+            m_stream->ts << c;
+        }
 
-      return *this;
-   }
+        return *this;
+    }
 
-   QDebug &quote()   {
-      m_stream->unsetFlag(Stream::NoQuotes);
-      return *this;
-   }
+    QDebug &quote()
+    {
+        m_stream->unsetFlag( Stream::NoQuotes );
+        return *this;
+    }
 
-   QDebug &noquote() {
-      m_stream->setFlag(Stream::NoQuotes);
-      return *this;
-   }
+    QDebug &noquote()
+    {
+        m_stream->setFlag( Stream::NoQuotes );
+        return *this;
+    }
 
-   QDebug &resetFormat();
+    QDebug &resetFormat();
 
-   void swap(QDebug &other)  {
-      qSwap(m_stream, other.m_stream);
-   }
+    void swap( QDebug &other )
+    {
+        qSwap( m_stream, other.m_stream );
+    }
 
-   int verbosity() const {
-      return m_stream->verbosity();
-   }
+    int verbosity() const
+    {
+        return m_stream->verbosity();
+    }
 
-   void setVerbosity(int verbosityLevel) {
-      m_stream->setVerbosity(verbosityLevel);
-   }
+    void setVerbosity( int verbosityLevel )
+    {
+        m_stream->setVerbosity( verbosityLevel );
+    }
 
-   QDebug &operator<<(bool value) {
-      m_stream->ts << (value ? "true" : "false");
-      return maybeSpace();
-   }
+    QDebug &operator<<( bool value )
+    {
+        m_stream->ts << ( value ? "true" : "false" );
+        return maybeSpace();
+    }
 
-   QDebug &operator<<(char value) {
-      m_stream->ts << value;
-      return maybeSpace();
-   }
+    QDebug &operator<<( char value )
+    {
+        m_stream->ts << value;
+        return maybeSpace();
+    }
 
-   QDebug &operator<<(signed short value) {
-      m_stream->ts << value;
-      return maybeSpace();
-   }
+    QDebug &operator<<( signed short value )
+    {
+        m_stream->ts << value;
+        return maybeSpace();
+    }
 
-   QDebug &operator<<(unsigned short value) {
-      m_stream->ts << value;
-      return maybeSpace();
-   }
+    QDebug &operator<<( unsigned short value )
+    {
+        m_stream->ts << value;
+        return maybeSpace();
+    }
 
-   QDebug &operator<<(char16_t value) {
-      return *this << QChar(value);
-   }
+    QDebug &operator<<( char16_t value )
+    {
+        return *this << QChar( value );
+    }
 
-   QDebug &operator<<(char32_t value) {
-      return *this << QChar(value);
-   }
+    QDebug &operator<<( char32_t value )
+    {
+        return *this << QChar( value );
+    }
 
-   QDebug &operator<<(signed int value) {
-      m_stream->ts << value;
-      return maybeSpace();
-   }
+    QDebug &operator<<( signed int value )
+    {
+        m_stream->ts << value;
+        return maybeSpace();
+    }
 
-   QDebug &operator<<(unsigned int value) {
-      m_stream->ts << value;
-      return maybeSpace();
-   }
+    QDebug &operator<<( unsigned int value )
+    {
+        m_stream->ts << value;
+        return maybeSpace();
+    }
 
-   QDebug &operator<<(signed long value) {
-      m_stream->ts << value;
-      return maybeSpace();
-   }
+    QDebug &operator<<( signed long value )
+    {
+        m_stream->ts << value;
+        return maybeSpace();
+    }
 
-   QDebug &operator<<(unsigned long value) {
-      m_stream->ts << value;
-      return maybeSpace();
-   }
+    QDebug &operator<<( unsigned long value )
+    {
+        m_stream->ts << value;
+        return maybeSpace();
+    }
 
-   QDebug &operator<<(qint64 value) {
-      m_stream->ts << QString::number(value);
-      return maybeSpace();
-   }
+    QDebug &operator<<( qint64 value )
+    {
+        m_stream->ts << QString::number( value );
+        return maybeSpace();
+    }
 
-   QDebug &operator<<(quint64 value) {
-      m_stream->ts << QString::number(value);
-      return maybeSpace();
-   }
+    QDebug &operator<<( quint64 value )
+    {
+        m_stream->ts << QString::number( value );
+        return maybeSpace();
+    }
 
-   QDebug &operator<<(float value) {
-      m_stream->ts << value;
-      return maybeSpace();
-   }
+    QDebug &operator<<( float value )
+    {
+        m_stream->ts << value;
+        return maybeSpace();
+    }
 
-   QDebug &operator<<(double value) {
-      m_stream->ts << value;
-      return maybeSpace();
-   }
+    QDebug &operator<<( double value )
+    {
+        m_stream->ts << value;
+        return maybeSpace();
+    }
 
-   QDebug &operator<<(const char *value) {
-      m_stream->ts << QString::fromUtf8(value);
-      return maybeSpace();
-   }
+    QDebug &operator<<( const char *value )
+    {
+        m_stream->ts << QString::fromUtf8( value );
+        return maybeSpace();
+    }
 
-   QDebug &operator<<(QChar value) {
-      m_stream->ts << '\'' << value << '\'';
-      return maybeSpace();
-   }
+    QDebug &operator<<( QChar value )
+    {
+        m_stream->ts << '\'' << value << '\'';
+        return maybeSpace();
+    }
 
-   QDebug &operator<<(const void *ptr) {
-      m_stream->ts << ptr;
-      return maybeSpace();
-   }
+    QDebug &operator<<( const void *ptr )
+    {
+        m_stream->ts << ptr;
+        return maybeSpace();
+    }
 
-   QDebug &operator<<(std::nullptr_t) {
-      m_stream->ts << "(nullptr)";
-      return maybeSpace();
-   }
+    QDebug &operator<<( std::nullptr_t )
+    {
+        m_stream->ts << "(nullptr)";
+        return maybeSpace();
+    }
 
-   QDebug &operator<<(const QByteArray &str) {
-      putByteArray(str);
-      return maybeSpace();
-   }
+    QDebug &operator<<( const QByteArray &str )
+    {
+        putByteArray( str );
+        return maybeSpace();
+    }
 
-   QDebug &operator<<(const QString &str) {
-      putString(str);
-      return maybeSpace();
-   }
+    QDebug &operator<<( const QString &str )
+    {
+        putString( str );
+        return maybeSpace();
+    }
 
-   QDebug &operator<<(QStringView str) {
-      return operator<<(QString(str));
-   }
+    QDebug &operator<<( QStringView str )
+    {
+        return operator<<( QString( str ) );
+    }
 
-   QDebug &operator<<(const QUrl &url) {
-      m_stream->ts << "QUrl(" << url.toString() << ')';
-      return *this;
-   }
+    QDebug &operator<<( const QUrl &url )
+    {
+        m_stream->ts << "QUrl(" << url.toString() << ')';
+        return *this;
+    }
 
-   QDebug &operator<<(QTextStreamFunction f) {
-      m_stream->ts << f;
-      return *this;
-   }
+    QDebug &operator<<( QTextStreamFunction f )
+    {
+        m_stream->ts << f;
+        return *this;
+    }
 
-   QDebug &operator<<(QTextStreamManipulator m) {
-      m_stream->ts << m;
-      return *this;
-   }
+    QDebug &operator<<( QTextStreamManipulator m )
+    {
+        m_stream->ts << m;
+        return *this;
+    }
 
- private:
-   friend class QDebugStateSaverPrivate;
+private:
+    friend class QDebugStateSaverPrivate;
 
-   Stream *m_stream;
+    Stream *m_stream;
 
-   void putString(QStringView str);
-   void putByteArray(const QByteArray &str);
+    void putString( QStringView str );
+    void putByteArray( const QByteArray &str );
 };
 
 class Q_CORE_EXPORT QDebugStateSaver
 {
- public:
-   QDebugStateSaver(QDebug &debug);
+public:
+    QDebugStateSaver( QDebug &debug );
 
-   QDebugStateSaver(const QDebugStateSaver &) = delete;
-   QDebugStateSaver &operator=(const QDebugStateSaver &) = delete;
+    QDebugStateSaver( const QDebugStateSaver & ) = delete;
+    QDebugStateSaver &operator=( const QDebugStateSaver & ) = delete;
 
-   ~QDebugStateSaver();
+    ~QDebugStateSaver();
 
- protected:
-   QScopedPointer<QDebugStateSaverPrivate> d_ptr;
+protected:
+    QScopedPointer<QDebugStateSaverPrivate> d_ptr;
 };
 
 class QNoDebug
 {
- public:
-   QNoDebug &operator<<(QTextStreamFunction) {
-      return *this;
-   }
+public:
+    QNoDebug &operator<<( QTextStreamFunction )
+    {
+        return *this;
+    }
 
-   QNoDebug &operator<<(QTextStreamManipulator) {
-      return *this;
-   }
+    QNoDebug &operator<<( QTextStreamManipulator )
+    {
+        return *this;
+    }
 
-   QNoDebug &space() {
-      return *this;
-   }
+    QNoDebug &space()
+    {
+        return *this;
+    }
 
-   QNoDebug &nospace() {
-      return *this;
-   }
+    QNoDebug &nospace()
+    {
+        return *this;
+    }
 
-   QNoDebug &maybeSpace() {
-      return *this;
-   }
+    QNoDebug &maybeSpace()
+    {
+        return *this;
+    }
 
-   QNoDebug &quote() {
-      return *this;
-   }
+    QNoDebug &quote()
+    {
+        return *this;
+    }
 
-   QNoDebug &noquote() {
-      return *this;
-   }
+    QNoDebug &noquote()
+    {
+        return *this;
+    }
 
-   QNoDebug &maybeQuote(const char = '"') {
-      return *this;
-   }
+    QNoDebug &maybeQuote( const char = '"' )
+    {
+        return *this;
+    }
 
-   template <typename T>
-   QNoDebug &operator<<(const T &) {
-      return *this;
-   }
+    template <typename T>
+    QNoDebug &operator<<( const T & )
+    {
+        return *this;
+    }
 };
 
-inline QDebug &QDebug::operator=(const QDebug &other)
+inline QDebug &QDebug::operator=( const QDebug &other )
 {
-   if (this != &other) {
-      QDebug copy(other);
-      qSwap(m_stream, copy.m_stream);
-   }
+    if ( this != &other )
+    {
+        QDebug copy( other );
+        qSwap( m_stream, copy.m_stream );
+    }
 
-   return *this;
+    return *this;
 }
 
 template <class T>
-inline QDebug operator<<(QDebug debug, const QList<T> &list)
+inline QDebug operator<<( QDebug debug, const QList<T> &list )
 {
-   const bool oldSetting = debug.autoInsertSpaces();
-   debug.nospace();
+    const bool oldSetting = debug.autoInsertSpaces();
+    debug.nospace();
 
-   debug << '(';
+    debug << '(';
 
-   for (auto cnt = 0; cnt < list.count(); ++cnt) {
-      if (cnt) {
-         debug << ", ";
-      }
+    for ( auto cnt = 0; cnt < list.count(); ++cnt )
+    {
+        if ( cnt )
+        {
+            debug << ", ";
+        }
 
-      debug << list.at(cnt);
-   }
+        debug << list.at( cnt );
+    }
 
-   debug << ')';
-   debug.setAutoInsertSpaces(oldSetting);
+    debug << ')';
+    debug.setAutoInsertSpaces( oldSetting );
 
-   return debug.maybeSpace();
+    return debug.maybeSpace();
 }
 
 template <typename T>
-inline QDebug operator<<(QDebug debug, const QVector<T> &vector)
+inline QDebug operator<<( QDebug debug, const QVector<T> &vector )
 {
-   const bool oldSetting = debug.autoInsertSpaces();
-   debug.nospace() << "QVector";
-   debug.setAutoInsertSpaces(oldSetting);
+    const bool oldSetting = debug.autoInsertSpaces();
+    debug.nospace() << "QVector";
+    debug.setAutoInsertSpaces( oldSetting );
 
-   return operator<<(debug, vector.toList());
+    return operator<<( debug, vector.toList() );
 }
 
 template <class Key, class Val, class C>
-inline QDebug operator<<(QDebug debug, const QMap<Key, Val, C> &map)
+inline QDebug operator<<( QDebug debug, const QMap<Key, Val, C> &map )
 {
-   const bool oldSetting = debug.autoInsertSpaces();
-   debug.nospace() << "QMap(";
+    const bool oldSetting = debug.autoInsertSpaces();
+    debug.nospace() << "QMap(";
 
-   for (auto it = map.constBegin(); it != map.constEnd(); ++it) {
-      debug << '(' << it.key() << ", " << it.value() << ')';
-   }
+    for ( auto it = map.constBegin(); it != map.constEnd(); ++it )
+    {
+        debug << '(' << it.key() << ", " << it.value() << ')';
+    }
 
-   debug << ')';
-   debug.setAutoInsertSpaces(oldSetting);
+    debug << ')';
+    debug.setAutoInsertSpaces( oldSetting );
 
-   return debug.maybeSpace();
+    return debug.maybeSpace();
 }
 
 template <typename Key, typename Val, typename Hash, typename KeyEqual>
-inline QDebug operator<<(QDebug debug, const QHash<Key, Val, Hash, KeyEqual> &hash)
+inline QDebug operator<<( QDebug debug, const QHash<Key, Val, Hash, KeyEqual> &hash )
 {
-   const bool oldSetting = debug.autoInsertSpaces();
-   debug.nospace() << "QHash(";
+    const bool oldSetting = debug.autoInsertSpaces();
+    debug.nospace() << "QHash(";
 
-   for (auto it = hash.constBegin(); it != hash.constEnd(); ++it) {
-      debug << '(' << it.key() << ", " << it.value() << ')';
-   }
+    for ( auto it = hash.constBegin(); it != hash.constEnd(); ++it )
+    {
+        debug << '(' << it.key() << ", " << it.value() << ')';
+    }
 
-   debug << ')';
-   debug.setAutoInsertSpaces(oldSetting);
+    debug << ')';
+    debug.setAutoInsertSpaces( oldSetting );
 
-   return debug.maybeSpace();
+    return debug.maybeSpace();
 }
 
 template <class Key, class Val, class C>
-inline QDebug operator<<(QDebug debug, const QMultiMap<Key, Val, C> &map)
+inline QDebug operator<<( QDebug debug, const QMultiMap<Key, Val, C> &map )
 {
-   const bool oldSetting = debug.autoInsertSpaces();
-   debug.nospace() << "QMultiMap(";
+    const bool oldSetting = debug.autoInsertSpaces();
+    debug.nospace() << "QMultiMap(";
 
-   for (auto it = map.constBegin(); it != map.constEnd(); ++it) {
-      debug << '(' << it.key() << ", " << it.value() << ')';
-   }
+    for ( auto it = map.constBegin(); it != map.constEnd(); ++it )
+    {
+        debug << '(' << it.key() << ", " << it.value() << ')';
+    }
 
-   debug << ')';
-   debug.setAutoInsertSpaces(oldSetting);
+    debug << ')';
+    debug.setAutoInsertSpaces( oldSetting );
 
-   return debug.maybeSpace();
+    return debug.maybeSpace();
 }
 
 template <typename Key, typename Val, typename Hash, typename KeyEqual>
-inline QDebug operator<<(QDebug debug, const QMultiHash<Key, Val, Hash, KeyEqual> &hash)
+inline QDebug operator<<( QDebug debug, const QMultiHash<Key, Val, Hash, KeyEqual> &hash )
 {
-   const bool oldSetting = debug.autoInsertSpaces();
-   debug.nospace() << "QMultiHash(";
+    const bool oldSetting = debug.autoInsertSpaces();
+    debug.nospace() << "QMultiHash(";
 
-   for (auto it = hash.constBegin(); it != hash.constEnd(); ++it) {
-      debug << '(' << it.key() << ", " << it.value() << ')';
-   }
+    for ( auto it = hash.constBegin(); it != hash.constEnd(); ++it )
+    {
+        debug << '(' << it.key() << ", " << it.value() << ')';
+    }
 
-   debug << ')';
-   debug.setAutoInsertSpaces(oldSetting);
+    debug << ')';
+    debug.setAutoInsertSpaces( oldSetting );
 
-   return debug.maybeSpace();
+    return debug.maybeSpace();
 }
 
 template <class T1, class T2>
-inline QDebug operator<<(QDebug debug, const QPair<T1, T2> &pair)
+inline QDebug operator<<( QDebug debug, const QPair<T1, T2> &pair )
 {
-   const bool oldSetting = debug.autoInsertSpaces();
-   debug.nospace() << "QPair(" << pair.first << ',' << pair.second << ')';
-   debug.setAutoInsertSpaces(oldSetting);
+    const bool oldSetting = debug.autoInsertSpaces();
+    debug.nospace() << "QPair(" << pair.first << ',' << pair.second << ')';
+    debug.setAutoInsertSpaces( oldSetting );
 
-   return debug.maybeSpace();
+    return debug.maybeSpace();
 }
 
 template <typename T>
-inline QDebug operator<<(QDebug debug, const QSet<T> &set)
+inline QDebug operator<<( QDebug debug, const QSet<T> &set )
 {
-   const bool oldSetting = debug.autoInsertSpaces();
-   debug.nospace() << "QSet";
-   debug.setAutoInsertSpaces(oldSetting);
+    const bool oldSetting = debug.autoInsertSpaces();
+    debug.nospace() << "QSet";
+    debug.setAutoInsertSpaces( oldSetting );
 
-   return operator<<(debug, set.toList());
+    return operator<<( debug, set.toList() );
 }
 
 template <class T>
-inline QDebug operator<<(QDebug debug, const QContiguousCache<T> &cache)
+inline QDebug operator<<( QDebug debug, const QContiguousCache<T> &cache )
 {
-   const bool oldSetting = debug.autoInsertSpaces();
-   debug.nospace() << "QContiguousCache(";
+    const bool oldSetting = debug.autoInsertSpaces();
+    debug.nospace() << "QContiguousCache(";
 
-   for (int i = cache.firstIndex(); i <= cache.lastIndex(); ++i) {
-      debug << cache[i];
+    for ( int i = cache.firstIndex(); i <= cache.lastIndex(); ++i )
+    {
+        debug << cache[i];
 
-      if (i != cache.lastIndex()) {
-         debug << ", ";
-      }
-   }
+        if ( i != cache.lastIndex() )
+        {
+            debug << ", ";
+        }
+    }
 
-   debug << ')';
-   debug.setAutoInsertSpaces(oldSetting);
+    debug << ')';
+    debug.setAutoInsertSpaces( oldSetting );
 
-   return debug.maybeSpace();
+    return debug.maybeSpace();
 }
 
 template <class T>
-inline QDebug operator<<(QDebug debug, const QFlags<T> &flags)
+inline QDebug operator<<( QDebug debug, const QFlags<T> &flags )
 {
-   QDebugStateSaver saver(debug);
-   debug.resetFormat();
+    QDebugStateSaver saver( debug );
+    debug.resetFormat();
 
-   debug.nospace() << "QFlags(";
-   bool needSeparator = false;
+    debug.nospace() << "QFlags(";
+    bool needSeparator = false;
 
-   for (uint i = 0; i < sizeof(T) * 8; ++i) {
+    for ( uint i = 0; i < sizeof( T ) * 8; ++i )
+    {
 
-      if (flags.testFlag(T(1 << i))) {
-         if (needSeparator) {
-            debug << '|';
-         } else {
-            needSeparator = true;
-         }
+        if ( flags.testFlag( T( 1 << i ) ) )
+        {
+            if ( needSeparator )
+            {
+                debug << '|';
+            }
+            else
+            {
+                needSeparator = true;
+            }
 
-         debug << "0x" << QByteArray::number(T(1 << i), 16).constData();
-      }
-   }
+            debug << "0x" << QByteArray::number( T( 1 << i ), 16 ).constData();
+        }
+    }
 
-   debug << ')';
+    debug << ')';
 
-   return debug;
+    return debug;
 }
 
 inline QDebug qDebug()
 {
-   return QDebug(QtDebugMsg);
+    return QDebug( QtDebugMsg );
 }
 
 inline QDebug qCritical()
 {
-   return QDebug(QtCriticalMsg);
+    return QDebug( QtCriticalMsg );
 }
 
 inline QDebug qWarning()
 {
-   return QDebug(QtWarningMsg);
+    return QDebug( QtWarningMsg );
 }
 
 #ifdef Q_OS_DARWIN
@@ -577,28 +645,28 @@ using CGImageRef      = struct CGImage *;
 using CGFontRef       = struct CGFont *;
 using CGColorRef      = struct CGColor *;
 
-Q_CORE_EXPORT QDebug operator<<(QDebug, CFArrayRef);
-Q_CORE_EXPORT QDebug operator<<(QDebug, CFURLRef);
-Q_CORE_EXPORT QDebug operator<<(QDebug, CFDataRef);
-Q_CORE_EXPORT QDebug operator<<(QDebug, CFNumberRef);
-Q_CORE_EXPORT QDebug operator<<(QDebug, CFDictionaryRef);
-Q_CORE_EXPORT QDebug operator<<(QDebug, CFLocaleRef);
-Q_CORE_EXPORT QDebug operator<<(QDebug, CFBooleanRef);
-Q_CORE_EXPORT QDebug operator<<(QDebug, CFTimeZoneRef);
+Q_CORE_EXPORT QDebug operator<<( QDebug, CFArrayRef );
+Q_CORE_EXPORT QDebug operator<<( QDebug, CFURLRef );
+Q_CORE_EXPORT QDebug operator<<( QDebug, CFDataRef );
+Q_CORE_EXPORT QDebug operator<<( QDebug, CFNumberRef );
+Q_CORE_EXPORT QDebug operator<<( QDebug, CFDictionaryRef );
+Q_CORE_EXPORT QDebug operator<<( QDebug, CFLocaleRef );
+Q_CORE_EXPORT QDebug operator<<( QDebug, CFBooleanRef );
+Q_CORE_EXPORT QDebug operator<<( QDebug, CFTimeZoneRef );
 
-Q_CORE_EXPORT QDebug operator<<(QDebug, CFErrorRef);
-Q_CORE_EXPORT QDebug operator<<(QDebug, CFBundleRef);
+Q_CORE_EXPORT QDebug operator<<( QDebug, CFErrorRef );
+Q_CORE_EXPORT QDebug operator<<( QDebug, CFBundleRef );
 
-Q_CORE_EXPORT QDebug operator<<(QDebug, CGPathRef);
+Q_CORE_EXPORT QDebug operator<<( QDebug, CGPathRef );
 
-Q_CORE_EXPORT QDebug operator<<(QDebug, CGColorSpaceRef);
-Q_CORE_EXPORT QDebug operator<<(QDebug, CGImageRef);
-Q_CORE_EXPORT QDebug operator<<(QDebug, CGFontRef);
-Q_CORE_EXPORT QDebug operator<<(QDebug, CGColorRef);
+Q_CORE_EXPORT QDebug operator<<( QDebug, CGColorSpaceRef );
+Q_CORE_EXPORT QDebug operator<<( QDebug, CGImageRef );
+Q_CORE_EXPORT QDebug operator<<( QDebug, CGFontRef );
+Q_CORE_EXPORT QDebug operator<<( QDebug, CGColorRef );
 
 // Defined in qcore_mac_objc.mm
-Q_CORE_EXPORT QDebug operator<<(QDebug, const NSObject *);
-Q_CORE_EXPORT QDebug operator<<(QDebug, CFStringRef);
+Q_CORE_EXPORT QDebug operator<<( QDebug, const NSObject * );
+Q_CORE_EXPORT QDebug operator<<( QDebug, CFStringRef );
 
 #endif // Q_OS_DARWIN
 

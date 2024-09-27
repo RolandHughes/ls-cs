@@ -1,5 +1,7 @@
-namespace WebCore {
-extern const char htmlUserAgentStyleSheet[14651] = {
+namespace WebCore
+{
+extern const char htmlUserAgentStyleSheet[14651] =
+{
     64, 110, 97, 109, 101, 115, 112, 97, 99, 101, 32, 34, 104, 116, 116, 112,
     58, 47, 47, 119, 119, 119, 46, 119, 51, 46, 111, 114, 103, 47, 49, 57,
     57, 57, 47, 120, 104, 116, 109, 108, 34, 59, 32, 104, 116, 109, 108, 32,
@@ -917,7 +919,8 @@ extern const char htmlUserAgentStyleSheet[14651] = {
     58, 32, 48, 112, 120, 59, 32, 98, 111, 114, 100, 101, 114, 45, 119, 105,
     100, 116, 104, 58, 32, 48, 112, 120, 59, 32, 125
 };
-extern const char quirksUserAgentStyleSheet[351] = {
+extern const char quirksUserAgentStyleSheet[351] =
+{
     105, 109, 103, 91, 97, 108, 105, 103, 110, 61, 34, 108, 101, 102, 116, 34,
     93, 32, 123, 32, 109, 97, 114, 103, 105, 110, 45, 114, 105, 103, 104, 116,
     58, 32, 51, 112, 120, 59, 32, 125, 32, 105, 109, 103, 91, 97, 108, 105,
@@ -941,7 +944,8 @@ extern const char quirksUserAgentStyleSheet[351] = {
     59, 32, 125, 32, 102, 111, 114, 109, 32, 123, 32, 109, 97, 114, 103, 105,
     110, 45, 98, 111, 116, 116, 111, 109, 58, 32, 49, 101, 109, 32, 125
 };
-extern const char mathmlUserAgentStyleSheet[4865] = {
+extern const char mathmlUserAgentStyleSheet[4865] =
+{
     64, 110, 97, 109, 101, 115, 112, 97, 99, 101, 32, 34, 104, 116, 116, 112,
     58, 47, 47, 119, 119, 119, 46, 119, 51, 46, 111, 114, 103, 47, 49, 57,
     57, 56, 47, 77, 97, 116, 104, 47, 77, 97, 116, 104, 77, 76, 34, 59,
@@ -1248,7 +1252,8 @@ extern const char mathmlUserAgentStyleSheet[4865] = {
     100, 105, 115, 112, 108, 97, 121, 58, 32, 98, 108, 111, 99, 107, 59, 32,
     125
 };
-extern const char svgUserAgentStyleSheet[351] = {
+extern const char svgUserAgentStyleSheet[351] =
+{
     64, 110, 97, 109, 101, 115, 112, 97, 99, 101, 32, 34, 104, 116, 116, 112,
     58, 47, 47, 119, 119, 119, 46, 119, 51, 46, 111, 114, 103, 47, 50, 48,
     48, 48, 47, 115, 118, 103, 34, 59, 32, 115, 118, 103, 58, 110, 111, 116,
@@ -1272,7 +1277,8 @@ extern const char svgUserAgentStyleSheet[351] = {
     32, 53, 112, 120, 32, 45, 119, 101, 98, 107, 105, 116, 45, 102, 111, 99,
     117, 115, 45, 114, 105, 110, 103, 45, 99, 111, 108, 111, 114, 32, 125
 };
-extern const char sourceUserAgentStyleSheet[2014] = {
+extern const char sourceUserAgentStyleSheet[2014] =
+{
     98, 111, 100, 121, 32, 123, 32, 109, 97, 114, 103, 105, 110, 58, 32, 48,
     32, 125, 32, 116, 97, 98, 108, 101, 32, 123, 32, 119, 105, 100, 116, 104,
     58, 32, 49, 48, 48, 37, 59, 32, 98, 111, 114, 100, 101, 114, 45, 115,
@@ -1400,7 +1406,8 @@ extern const char sourceUserAgentStyleSheet[2014] = {
     118, 101, 59, 32, 116, 111, 112, 58, 32, 50, 112, 120, 59, 32, 109, 97,
     114, 103, 105, 110, 58, 32, 48, 32, 52, 112, 120, 59, 32, 125
 };
-extern const char mediaControlsUserAgentStyleSheet[4051] = {
+extern const char mediaControlsUserAgentStyleSheet[4051] =
+{
     97, 117, 100, 105, 111, 32, 123, 32, 119, 105, 100, 116, 104, 58, 32, 50,
     48, 48, 112, 120, 59, 32, 104, 101, 105, 103, 104, 116, 58, 32, 49, 54,
     112, 120, 59, 32, 125, 32, 58, 58, 45, 119, 101, 98, 107, 105, 116, 45,
@@ -1656,7 +1663,8 @@ extern const char mediaControlsUserAgentStyleSheet[4051] = {
     32, 123, 32, 100, 105, 115, 112, 108, 97, 121, 58, 32, 110, 111, 110, 101,
     59, 32, 125
 };
-extern const char mediaControlsQtUserAgentStyleSheet[4161] = {
+extern const char mediaControlsQtUserAgentStyleSheet[4161] =
+{
     97, 117, 100, 105, 111, 32, 123, 32, 104, 101, 105, 103, 104, 116, 58, 32,
     51, 52, 112, 120, 59, 32, 119, 105, 100, 116, 104, 58, 32, 52, 48, 48,
     112, 120, 59, 32, 125, 32, 97, 117, 100, 105, 111, 58, 58, 45, 119, 101,
@@ -1919,7 +1927,8 @@ extern const char mediaControlsQtUserAgentStyleSheet[4161] = {
     98, 111, 120, 32, 33, 105, 109, 112, 111, 114, 116, 97, 110, 116, 59, 32,
     125
 };
-extern const char mediaControlsQtFullscreenUserAgentStyleSheet[1434] = {
+extern const char mediaControlsQtFullscreenUserAgentStyleSheet[1434] =
+{
     118, 105, 100, 101, 111, 58, 58, 45, 119, 101, 98, 107, 105, 116, 45, 109,
     101, 100, 105, 97, 45, 99, 111, 110, 116, 114, 111, 108, 115, 45, 112, 97,
     110, 101, 108, 32, 123, 32, 100, 105, 115, 112, 108, 97, 121, 58, 32, 45,
@@ -2011,7 +2020,8 @@ extern const char mediaControlsQtFullscreenUserAgentStyleSheet[1434] = {
     45, 98, 117, 116, 116, 111, 110, 32, 123, 32, 100, 105, 115, 112, 108, 97,
     121, 58, 32, 110, 111, 110, 101, 59, 32, 125
 };
-extern const char themeQtNoListboxesUserAgentStyleSheet[180] = {
+extern const char themeQtNoListboxesUserAgentStyleSheet[180] =
+{
     115, 101, 108, 101, 99, 116, 91, 115, 105, 122, 101, 93, 44, 32, 115, 101,
     108, 101, 99, 116, 91, 109, 117, 108, 116, 105, 112, 108, 101, 93, 44, 32,
     115, 101, 108, 101, 99, 116, 91, 115, 105, 122, 101, 93, 91, 109, 117, 108,

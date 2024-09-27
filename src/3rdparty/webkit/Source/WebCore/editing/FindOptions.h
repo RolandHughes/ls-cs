@@ -26,9 +26,11 @@
 #ifndef FindOptions_h
 #define FindOptions_h
 
-namespace WebCore {
+namespace WebCore
+{
 
-enum FindOptionFlag {
+enum FindOptionFlag
+{
     CaseInsensitive = 1 << 0,
     AtWordStarts = 1 << 1,
     // When combined with AtWordStarts, accepts a match in the middle of a word if the match begins with

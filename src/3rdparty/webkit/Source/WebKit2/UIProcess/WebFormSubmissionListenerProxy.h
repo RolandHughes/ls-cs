@@ -28,25 +28,30 @@
 
 #include "WebFrameListenerProxy.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
 class WebFrameProxy;
 
-class WebFormSubmissionListenerProxy : public WebFrameListenerProxy {
+class WebFormSubmissionListenerProxy : public WebFrameListenerProxy
+{
 public:
     static const Type APIType = TypeFormSubmissionListener;
 
-    static PassRefPtr<WebFormSubmissionListenerProxy> create(WebFrameProxy* frame, uint64_t listenerID)
+    static PassRefPtr<WebFormSubmissionListenerProxy> create( WebFrameProxy *frame, uint64_t listenerID )
     {
-        return adoptRef(new WebFormSubmissionListenerProxy(frame, listenerID));
+        return adoptRef( new WebFormSubmissionListenerProxy( frame, listenerID ) );
     }
 
     void continueSubmission();
 
 private:
-    WebFormSubmissionListenerProxy(WebFrameProxy*, uint64_t listenerID);
+    WebFormSubmissionListenerProxy( WebFrameProxy *, uint64_t listenerID );
 
-    virtual Type type() const { return APIType; }
+    virtual Type type() const
+    {
+        return APIType;
+    }
 };
 
 } // namespace WebKit

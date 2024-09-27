@@ -48,7 +48,8 @@ class QGraphicsWKView;
 #include <QImage>
 #endif
 
-namespace WebKit {
+namespace WebKit
+{
 
 class UpdateChunk;
 class WebPageProxy;
@@ -62,68 +63,78 @@ typedef WebView PlatformWebView;
 typedef QGraphicsWKView PlatformWebView;
 #endif
 
-class TiledDrawingAreaProxy : public DrawingAreaProxy {
+class TiledDrawingAreaProxy : public DrawingAreaProxy
+{
 public:
-    static PassOwnPtr<TiledDrawingAreaProxy> create(PlatformWebView* webView, WebPageProxy*);
+    static PassOwnPtr<TiledDrawingAreaProxy> create( PlatformWebView *webView, WebPageProxy * );
 
-    TiledDrawingAreaProxy(PlatformWebView*, WebPageProxy*);
+    TiledDrawingAreaProxy( PlatformWebView *, WebPageProxy * );
     virtual ~TiledDrawingAreaProxy();
 
-    float contentsScale() const { return m_contentsScale; }
-    void setContentsScale(float);
+    float contentsScale() const
+    {
+        return m_contentsScale;
+    }
+    void setContentsScale( float );
 
     void waitUntilUpdatesComplete();
 
-    void takeSnapshot(const WebCore::IntSize& size, const WebCore::IntRect& contentsRect);
+    void takeSnapshot( const WebCore::IntSize &size, const WebCore::IntRect &contentsRect );
 
 #if USE(ACCELERATED_COMPOSITING)
-    virtual void attachCompositingContext(uint32_t /* contextID */) { }
+    virtual void attachCompositingContext( uint32_t /* contextID */ ) { }
     virtual void detachCompositingContext() { }
 #endif
 
-    void paint(WebCore::GraphicsContext*, const WebCore::IntRect&);
+    void paint( WebCore::GraphicsContext *, const WebCore::IntRect & );
 
-    WebCore::IntSize tileSize() { return m_tileSize; }
-    void setTileSize(const WebCore::IntSize&);
+    WebCore::IntSize tileSize()
+    {
+        return m_tileSize;
+    }
+    void setTileSize( const WebCore::IntSize & );
 
-    double tileCreationDelay() const { return m_tileCreationDelay; }
-    void setTileCreationDelay(double delay);
+    double tileCreationDelay() const
+    {
+        return m_tileCreationDelay;
+    }
+    void setTileCreationDelay( double delay );
 
     // Tiled are dropped outside the keep area, and created for cover area. The values a relative to the viewport size.
-    void getKeepAndCoverAreaMultipliers(WebCore::FloatSize& keepMultiplier, WebCore::FloatSize& coverMultiplier)
+    void getKeepAndCoverAreaMultipliers( WebCore::FloatSize &keepMultiplier, WebCore::FloatSize &coverMultiplier )
     {
         keepMultiplier = m_keepAreaMultiplier;
         coverMultiplier = m_coverAreaMultiplier;
     }
-    void setKeepAndCoverAreaMultipliers(const WebCore::FloatSize& keepMultiplier, const WebCore::FloatSize& coverMultiplier);
+    void setKeepAndCoverAreaMultipliers( const WebCore::FloatSize &keepMultiplier, const WebCore::FloatSize &coverMultiplier );
 
     void tileBufferUpdateComplete();
 
-    WebCore::IntRect mapToContents(const WebCore::IntRect&) const;
-    WebCore::IntRect mapFromContents(const WebCore::IntRect&) const;
+    WebCore::IntRect mapToContents( const WebCore::IntRect & ) const;
+    WebCore::IntRect mapFromContents( const WebCore::IntRect & ) const;
 
     bool hasPendingUpdates() const;
 
 private:
-    WebPageProxy* page();
+    WebPageProxy *page();
     WebCore::IntRect webViewVisibleRect();
-    void updateWebView(const Vector<WebCore::IntRect>& paintedArea);
+    void updateWebView( const Vector<WebCore::IntRect> &paintedArea );
 
-    void snapshotTaken(UpdateChunk&);
+    void snapshotTaken( UpdateChunk & );
 
     // DrawingAreaProxy
-    virtual void didReceiveMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*);
-    virtual bool paint(const WebCore::IntRect&, PlatformDrawingContext);
+    virtual void didReceiveMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * );
+    virtual bool paint( const WebCore::IntRect &, PlatformDrawingContext );
     virtual void sizeDidChange();
-    virtual void setPageIsVisible(bool isVisible);
+    virtual void setPageIsVisible( bool isVisible );
 
-    void didSetSize(const WebCore::IntSize&);
-    void invalidate(const WebCore::IntRect& rect);
+    void didSetSize( const WebCore::IntSize & );
+    void invalidate( const WebCore::IntRect &rect );
     void adjustVisibleRect();
 
-    void requestTileUpdate(int tileID, const WebCore::IntRect& dirtyRect);
+    void requestTileUpdate( int tileID, const WebCore::IntRect &dirtyRect );
 
-    PassRefPtr<TiledDrawingAreaTile> createTile(const TiledDrawingAreaTile::Coordinate&);
+    PassRefPtr<TiledDrawingAreaTile> createTile( const TiledDrawingAreaTile::Coordinate & );
 
     void startTileBufferUpdateTimer();
     void startTileCreationTimer();
@@ -135,21 +146,21 @@ private:
     void createTiles();
 
     bool resizeEdgeTiles();
-    void dropTilesOutsideRect(const WebCore::IntRect&);
+    void dropTilesOutsideRect( const WebCore::IntRect & );
 
-    PassRefPtr<TiledDrawingAreaTile> tileAt(const TiledDrawingAreaTile::Coordinate&) const;
-    void setTile(const TiledDrawingAreaTile::Coordinate& coordinate, RefPtr<TiledDrawingAreaTile> tile);
-    void removeTile(const TiledDrawingAreaTile::Coordinate& coordinate);
+    PassRefPtr<TiledDrawingAreaTile> tileAt( const TiledDrawingAreaTile::Coordinate & ) const;
+    void setTile( const TiledDrawingAreaTile::Coordinate &coordinate, RefPtr<TiledDrawingAreaTile> tile );
+    void removeTile( const TiledDrawingAreaTile::Coordinate &coordinate );
     void removeAllTiles();
 
     WebCore::IntRect contentsRect() const;
 
-    WebCore::IntRect calculateKeepRect(const WebCore::IntRect& visibleRect) const;
-    WebCore::IntRect calculateCoverRect(const WebCore::IntRect& visibleRect) const;
+    WebCore::IntRect calculateKeepRect( const WebCore::IntRect &visibleRect ) const;
+    WebCore::IntRect calculateCoverRect( const WebCore::IntRect &visibleRect ) const;
 
-    WebCore::IntRect tileRectForCoordinate(const TiledDrawingAreaTile::Coordinate&) const;
-    TiledDrawingAreaTile::Coordinate tileCoordinateForPoint(const WebCore::IntPoint&) const;
-    double tileDistance(const WebCore::IntRect& viewport, const TiledDrawingAreaTile::Coordinate&);
+    WebCore::IntRect tileRectForCoordinate( const TiledDrawingAreaTile::Coordinate & ) const;
+    TiledDrawingAreaTile::Coordinate tileCoordinateForPoint( const WebCore::IntPoint & ) const;
+    double tileDistance( const WebCore::IntRect &viewport, const TiledDrawingAreaTile::Coordinate & );
 
 private:
     bool m_isWaitingForDidSetFrameNotification;
@@ -158,12 +169,12 @@ private:
     WebCore::IntSize m_viewSize; // Size of the BackingStore as well.
     WebCore::IntSize m_lastSetViewSize;
 
-    PlatformWebView* m_webView;
+    PlatformWebView *m_webView;
 
     typedef HashMap<TiledDrawingAreaTile::Coordinate, RefPtr<TiledDrawingAreaTile> > TileMap;
     TileMap m_tiles;
 
-    WTF::HashMap<int, TiledDrawingAreaTile*> m_tilesByID;
+    WTF::HashMap<int, TiledDrawingAreaTile *> m_tilesByID;
 
     typedef RunLoop::Timer<TiledDrawingAreaProxy> TileTimer;
     TileTimer m_tileBufferUpdateTimer;

@@ -21,120 +21,120 @@
 
 #include <cs_catch2.h>
 
-TEST_CASE("QSet traits", "[qset]")
+TEST_CASE( "QSet traits", "[qset]" )
 {
-   REQUIRE(std::is_copy_constructible_v<QSet<int>> == true);
-   REQUIRE(std::is_move_constructible_v<QSet<int>> == true);
+    REQUIRE( std::is_copy_constructible_v<QSet<int>> == true );
+    REQUIRE( std::is_move_constructible_v<QSet<int>> == true );
 
-   REQUIRE(std::is_copy_assignable_v<QSet<int>> == true);
-   REQUIRE(std::is_move_assignable_v<QSet<int>> == true);
+    REQUIRE( std::is_copy_assignable_v<QSet<int>> == true );
+    REQUIRE( std::is_move_assignable_v<QSet<int>> == true );
 
-   REQUIRE(std::has_virtual_destructor_v<QSet<int>> == false);
+    REQUIRE( std::has_virtual_destructor_v<QSet<int>> == false );
 }
 
-TEST_CASE("QSet clear", "[qset]")
+TEST_CASE( "QSet clear", "[qset]" )
 {
-   QSet<QString> set = { "watermelon", "apple", "pear", "grapefruit" };
+    QSet<QString> set = { "watermelon", "apple", "pear", "grapefruit" };
 
-   set.clear();
+    set.clear();
 
-   REQUIRE(set.size() == 0);
+    REQUIRE( set.size() == 0 );
 }
 
-TEST_CASE("QSet contains_a", "[qset]")
+TEST_CASE( "QSet contains_a", "[qset]" )
 {
-   QSet<QString> set = { "watermelon", "apple", "pear", "grapefruit" };
+    QSet<QString> set = { "watermelon", "apple", "pear", "grapefruit" };
 
-   REQUIRE(set.contains("pear"));
-   REQUIRE(! set.contains("mango"));
+    REQUIRE( set.contains( "pear" ) );
+    REQUIRE( ! set.contains( "mango" ) );
 }
 
-TEST_CASE("QSet contains_b", "[qset]")
+TEST_CASE( "QSet contains_b", "[qset]" )
 {
-   QSet<QString> set1 = { "watermelon", "apple", "pear", "grapefruit" };
-   QSet<QString> set2 = { "grape", "orange", "apple" };
+    QSet<QString> set1 = { "watermelon", "apple", "pear", "grapefruit" };
+    QSet<QString> set2 = { "grape", "orange", "apple" };
 
-   REQUIRE(set1.contains(set1) == true);
-   REQUIRE(set1.contains(set2) == false);      // FAILS
+    REQUIRE( set1.contains( set1 ) == true );
+    REQUIRE( set1.contains( set2 ) == false );  // FAILS
 
-   set1.insert("orange");
-   set1.insert("grape");
+    set1.insert( "orange" );
+    set1.insert( "grape" );
 
-   REQUIRE(set1.contains(set2) == true);
+    REQUIRE( set1.contains( set2 ) == true );
 }
 
-TEST_CASE("QSet empty", "[qset]")
+TEST_CASE( "QSet empty", "[qset]" )
 {
-   QSet<QString> set;
+    QSet<QString> set;
 
-   REQUIRE(set.isEmpty());
+    REQUIRE( set.isEmpty() );
 }
 
-TEST_CASE("QSet equality", "[qset]")
+TEST_CASE( "QSet equality", "[qset]" )
 {
-   QSet<QString> set1 = { "watermelon", "apple", "pear", "grapefruit" };
-   QSet<QString> set2 = { "watermelon", "apple", "pear", "grapefruit" };
+    QSet<QString> set1 = { "watermelon", "apple", "pear", "grapefruit" };
+    QSet<QString> set2 = { "watermelon", "apple", "pear", "grapefruit" };
 
-   REQUIRE(set1 == set2);
-   REQUIRE(! (set1 != set2));
+    REQUIRE( set1 == set2 );
+    REQUIRE( ! ( set1 != set2 ) );
 }
 
-TEST_CASE("QSet erase", "[qset]")
+TEST_CASE( "QSet erase", "[qset]" )
 {
-   QSet<QString> set = { "watermelon", "apple", "pear", "grapefruit" };
+    QSet<QString> set = { "watermelon", "apple", "pear", "grapefruit" };
 
-   auto iter = set.find("apple");
-   set.erase(iter);
+    auto iter = set.find( "apple" );
+    set.erase( iter );
 
-   REQUIRE(! set.contains("apple"));
+    REQUIRE( ! set.contains( "apple" ) );
 
-   REQUIRE(set.contains("watermelon"));
-   REQUIRE(set.contains("pear"));
-   REQUIRE(set.contains("grapefruit"));
+    REQUIRE( set.contains( "watermelon" ) );
+    REQUIRE( set.contains( "pear" ) );
+    REQUIRE( set.contains( "grapefruit" ) );
 
-   REQUIRE(set.size() == 3);
+    REQUIRE( set.size() == 3 );
 }
 
-TEST_CASE("QSet insert", "[qset]")
+TEST_CASE( "QSet insert", "[qset]" )
 {
-   QSet<QString> set = { "watermelon", "apple", "pear", "grapefruit" };
+    QSet<QString> set = { "watermelon", "apple", "pear", "grapefruit" };
 
-   set.insert("mango");
+    set.insert( "mango" );
 
-   REQUIRE(set.contains("mango"));
-   REQUIRE(set.size() == 5);
+    REQUIRE( set.contains( "mango" ) );
+    REQUIRE( set.size() == 5 );
 }
 
-TEST_CASE("QSet length", "[qset]")
+TEST_CASE( "QSet length", "[qset]" )
 {
-   QSet<QString> set = { "watermelon", "apple", "pear", "grapefruit" };
+    QSet<QString> set = { "watermelon", "apple", "pear", "grapefruit" };
 
-   REQUIRE(set.size() == 4);
+    REQUIRE( set.size() == 4 );
 }
 
-TEST_CASE("QSet remove", "[qset]")
+TEST_CASE( "QSet remove", "[qset]" )
 {
-   QSet<QString> set = { "watermelon", "apple", "pear", "grapefruit" };
+    QSet<QString> set = { "watermelon", "apple", "pear", "grapefruit" };
 
-   set.remove("pear");
+    set.remove( "pear" );
 
-   REQUIRE(! set.contains("pear"));
+    REQUIRE( ! set.contains( "pear" ) );
 
-   REQUIRE(set.contains("watermelon"));
-   REQUIRE(set.contains("apple"));
-   REQUIRE(set.contains("grapefruit"));
+    REQUIRE( set.contains( "watermelon" ) );
+    REQUIRE( set.contains( "apple" ) );
+    REQUIRE( set.contains( "grapefruit" ) );
 
-   REQUIRE(set.size() == 3);
+    REQUIRE( set.size() == 3 );
 }
 
-TEST_CASE("QSet swap", "[qset]")
+TEST_CASE( "QSet swap", "[qset]" )
 {
-   QSet<QString> set1 = { "watermelon", "apple", "pear", "grapefruit" };
-   QSet<QString> set2 = { "grape", "orange", "peach"};
+    QSet<QString> set1 = { "watermelon", "apple", "pear", "grapefruit" };
+    QSet<QString> set2 = { "grape", "orange", "peach"};
 
-   set1.swap(set2);
+    set1.swap( set2 );
 
-   REQUIRE(set1.contains("orange"));
-   REQUIRE(! set2.contains("orange"));
+    REQUIRE( set1.contains( "orange" ) );
+    REQUIRE( ! set2.contains( "orange" ) );
 }
 

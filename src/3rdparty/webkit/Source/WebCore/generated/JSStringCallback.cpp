@@ -27,23 +27,30 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-JSStringCallback::JSStringCallback(JSObject* callback, JSDOMGlobalObject* globalObject)
-    : ActiveDOMCallback(globalObject->scriptExecutionContext())
-    , m_data(new JSCallbackData(callback, globalObject))
+JSStringCallback::JSStringCallback( JSObject *callback, JSDOMGlobalObject *globalObject )
+    : ActiveDOMCallback( globalObject->scriptExecutionContext() )
+    , m_data( new JSCallbackData( callback, globalObject ) )
 {
 }
 
 JSStringCallback::~JSStringCallback()
 {
-    ScriptExecutionContext* context = scriptExecutionContext();
+    ScriptExecutionContext *context = scriptExecutionContext();
+
     // When the context is destroyed, all tasks with a reference to a callback
     // should be deleted. So if the context is 0, we are on the context thread.
-    if (!context || context->isContextThread())
+    if ( !context || context->isContextThread() )
+    {
         delete m_data;
+    }
     else
-        context->postTask(DeleteCallbackDataTask::create(m_data));
+    {
+        context->postTask( DeleteCallbackDataTask::create( m_data ) );
+    }
+
 #ifndef NDEBUG
     m_data = 0;
 #endif
@@ -51,21 +58,23 @@ JSStringCallback::~JSStringCallback()
 
 // Functions
 
-bool JSStringCallback::handleEvent(const String& data)
+bool JSStringCallback::handleEvent( const String &data )
 {
-    if (!canInvokeCallback())
+    if ( !canInvokeCallback() )
+    {
         return true;
+    }
 
-    RefPtr<JSStringCallback> protect(this);
+    RefPtr<JSStringCallback> protect( this );
 
-    JSLock lock(SilenceAssertionsOnly);
+    JSLock lock( SilenceAssertionsOnly );
 
-    ExecState* exec = m_data->globalObject()->globalExec();
+    ExecState *exec = m_data->globalObject()->globalExec();
     MarkedArgumentBuffer args;
-    args.append(jsString(exec, data));
+    args.append( jsString( exec, data ) );
 
     bool raisedException = false;
-    m_data->invokeCallback(args, &raisedException);
+    m_data->invokeCallback( args, &raisedException );
     return !raisedException;
 }
 

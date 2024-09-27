@@ -35,102 +35,117 @@
     create a Local outside of any LocalScope.
 */
 
-namespace JSC {
+namespace JSC
+{
 
-template <typename T> class Local : public Handle<T> {
+template <typename T> class Local : public Handle<T>
+{
     friend class LocalScope;
     using Handle<T>::slot;
 
 public:
     typedef typename Handle<T>::ExternalType ExternalType;
 
-    Local(JSGlobalData&, ExternalType = ExternalType());
-    Local(JSGlobalData&, Handle<T>);
-    Local(const Local<T>&); // Adopting constructor. Used to return a Local to a calling function.
+    Local( JSGlobalData &, ExternalType = ExternalType() );
+    Local( JSGlobalData &, Handle<T> );
+    Local( const Local<T> & ); // Adopting constructor. Used to return a Local to a calling function.
 
-    Local& operator=(ExternalType);
-    Local& operator=(Handle<T>);
+    Local &operator=( ExternalType );
+    Local &operator=( Handle<T> );
 
 private:
-    Local(HandleSlot, ExternalType); // Used by LocalScope::release() to move a Local to a containing scope.
-    void set(ExternalType);
+    Local( HandleSlot, ExternalType ); // Used by LocalScope::release() to move a Local to a containing scope.
+    void set( ExternalType );
 };
 
-template <typename T> inline Local<T>::Local(JSGlobalData& globalData, ExternalType value)
-    : Handle<T>(globalData.allocateLocalHandle())
+template <typename T> inline Local<T>::Local( JSGlobalData &globalData, ExternalType value )
+    : Handle<T>( globalData.allocateLocalHandle() )
 {
-    set(value);
+    set( value );
 }
 
-template <typename T> inline Local<T>::Local(JSGlobalData& globalData, Handle<T> other)
-    : Handle<T>(globalData.allocateLocalHandle())
+template <typename T> inline Local<T>::Local( JSGlobalData &globalData, Handle<T> other )
+    : Handle<T>( globalData.allocateLocalHandle() )
 {
-    set(other.get());
+    set( other.get() );
 }
 
-template <typename T> inline Local<T>::Local(const Local<T>& other)
-    : Handle<T>(other.slot())
+template <typename T> inline Local<T>::Local( const Local<T> &other )
+    : Handle<T>( other.slot() )
 {
-    const_cast<Local<T>&>(other).setSlot(0); // Prevent accidental sharing.
+    const_cast<Local<T>&>( other ).setSlot( 0 ); // Prevent accidental sharing.
 }
 
-template <typename T> inline Local<T>::Local(HandleSlot slot, ExternalType value)
-    : Handle<T>(slot, value)
+template <typename T> inline Local<T>::Local( HandleSlot slot, ExternalType value )
+    : Handle<T>( slot, value )
 {
 }
 
-template <typename T> inline Local<T>& Local<T>::operator=(ExternalType value)
+template <typename T> inline Local<T> &Local<T>::operator=( ExternalType value )
 {
-    set(value);
+    set( value );
     return *this;
 }
 
-template <typename T> inline Local<T>& Local<T>::operator=(Handle<T> other)
+template <typename T> inline Local<T> &Local<T>::operator=( Handle<T> other )
 {
-    set(other.get());
+    set( other.get() );
     return *this;
 }
 
-template <typename T> inline void Local<T>::set(ExternalType externalType)
+template <typename T> inline void Local<T>::set( ExternalType externalType )
 {
-    ASSERT(slot());
-    ASSERT(!HandleTypes<T>::toJSValue(externalType) || !HandleTypes<T>::toJSValue(externalType).isCell() || Heap::isMarked(HandleTypes<T>::toJSValue(externalType).asCell()));
+    ASSERT( slot() );
+    ASSERT( !HandleTypes<T>::toJSValue( externalType ) || !HandleTypes<T>::toJSValue( externalType ).isCell()
+            || Heap::isMarked( HandleTypes<T>::toJSValue( externalType ).asCell() ) );
     *slot() = externalType;
 }
 
 
-template <typename T, unsigned inlineCapacity = 0> class LocalStack {
+template <typename T, unsigned inlineCapacity = 0> class LocalStack
+{
     typedef typename Handle<T>::ExternalType ExternalType;
 public:
-    LocalStack(JSGlobalData& globalData)
-        : m_globalData(&globalData)
-        , m_count(0)
+    LocalStack( JSGlobalData &globalData )
+        : m_globalData( &globalData )
+        , m_count( 0 )
     {
     }
 
     ExternalType peek() const
     {
-        ASSERT(m_count > 0);
+        ASSERT( m_count > 0 );
         return m_stack[m_count - 1].get();
     }
 
     ExternalType pop()
     {
-        ASSERT(m_count > 0);
+        ASSERT( m_count > 0 );
         return m_stack[--m_count].get();
     }
 
-    void push(ExternalType value)
+    void push( ExternalType value )
     {
-        if (m_count == m_stack.size())
-            m_stack.append(Local<T>(*m_globalData, value));
+        if ( m_count == m_stack.size() )
+        {
+            m_stack.append( Local<T>( *m_globalData, value ) );
+        }
         else
+        {
             m_stack[m_count] = value;
+        }
+
         m_count++;
     }
 
-    bool isEmpty() const { return !m_count; }
-    unsigned size() const { return m_count; }
+    bool isEmpty() const
+    {
+        return !m_count;
+    }
+    unsigned size() const
+    {
+        return m_count;
+    }
 
 private:
     RefPtr<JSGlobalData> m_globalData;
@@ -140,9 +155,11 @@ private:
 
 }
 
-namespace WTF {
+namespace WTF
+{
 
-template<typename T> struct VectorTraits<JSC::Local<T> > : SimpleClassVectorTraits {
+template<typename T> struct VectorTraits<JSC::Local<T> > : SimpleClassVectorTraits
+{
     static const bool needsDestruction = false;
     static const bool canInitializeWithMemset = false;
     static const bool canCompareWithMemcmp = false;

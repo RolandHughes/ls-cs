@@ -28,65 +28,87 @@
 
 #include <wtf/text/StringImpl.h>
 
-namespace JSC {
+namespace JSC
+{
 
-class RopeImpl : public StringImplBase {
+class RopeImpl : public StringImplBase
+{
 public:
     // A RopeImpl is composed from a set of smaller strings called Fibers.
     // Each Fiber in a rope is either StringImpl or another RopeImpl.
-    typedef StringImplBase* Fiber;
+    typedef StringImplBase *Fiber;
 
     // Creates a RopeImpl comprising of 'fiberCount' Fibers.
     // The RopeImpl is constructed in an uninitialized state - initialize must be called for each Fiber in the RopeImpl.
-    static PassRefPtr<RopeImpl> tryCreateUninitialized(unsigned fiberCount)
+    static PassRefPtr<RopeImpl> tryCreateUninitialized( unsigned fiberCount )
     {
-        void* allocation;
-        if (tryFastMalloc(sizeof(RopeImpl) + (fiberCount - 1) * sizeof(Fiber)).getValue(allocation))
-            return adoptRef(new (allocation) RopeImpl(fiberCount));
+        void *allocation;
+
+        if ( tryFastMalloc( sizeof( RopeImpl ) + ( fiberCount - 1 ) * sizeof( Fiber ) ).getValue( allocation ) )
+        {
+            return adoptRef( new ( allocation ) RopeImpl( fiberCount ) );
+        }
+
         return nullptr;
     }
 
-    static bool isRope(Fiber fiber)
+    static bool isRope( Fiber fiber )
     {
         return !fiber->isStringImpl();
     }
 
-    static void deref(Fiber fiber)
+    static void deref( Fiber fiber )
     {
-        if (isRope(fiber))
-            static_cast<RopeImpl*>(fiber)->deref();
+        if ( isRope( fiber ) )
+        {
+            static_cast<RopeImpl *>( fiber )->deref();
+        }
         else
-            static_cast<StringImpl*>(fiber)->deref();
+        {
+            static_cast<StringImpl *>( fiber )->deref();
+        }
     }
 
-    void initializeFiber(unsigned &index, Fiber fiber)
+    void initializeFiber( unsigned &index, Fiber fiber )
     {
         m_fibers[index++] = fiber;
         fiber->ref();
         m_length += fiber->length();
     }
 
-    unsigned fiberCount() { return m_size; }
-    Fiber* fibers() { return m_fibers; }
+    unsigned fiberCount()
+    {
+        return m_size;
+    }
+    Fiber *fibers()
+    {
+        return m_fibers;
+    }
 
     ALWAYS_INLINE void deref()
     {
         m_refCountAndFlags -= s_refCountIncrement;
-        if (!(m_refCountAndFlags & s_refCountMask))
+
+        if ( !( m_refCountAndFlags & s_refCountMask ) )
+        {
             destructNonRecursive();
+        }
     }
 
 private:
-    RopeImpl(unsigned fiberCount)
-        : StringImplBase(ConstructNonStringImpl)
-        , m_size(fiberCount)
+    RopeImpl( unsigned fiberCount )
+        : StringImplBase( ConstructNonStringImpl )
+        , m_size( fiberCount )
     {
     }
 
     void destructNonRecursive();
-    void derefFibersNonRecursive(Vector<RopeImpl*, 32>& workQueue);
+    void derefFibersNonRecursive( Vector<RopeImpl *, 32> &workQueue );
 
-    bool hasOneRef() { return (m_refCountAndFlags & s_refCountMask) == s_refCountIncrement; }
+    bool hasOneRef()
+    {
+        return ( m_refCountAndFlags & s_refCountMask ) == s_refCountIncrement;
+    }
 
     unsigned m_size;
     Fiber m_fibers[1];

@@ -37,27 +37,28 @@ QT_BEGIN_NAMESPACE
 
 class QScriptSyntaxHighlighter : public QSyntaxHighlighter
 {
- public:
-   QScriptSyntaxHighlighter(QTextDocument *document = 0);
-   ~QScriptSyntaxHighlighter();
+public:
+    QScriptSyntaxHighlighter( QTextDocument *document = 0 );
+    ~QScriptSyntaxHighlighter();
 
- protected:
-   void highlightBlock(const QString &text);
+protected:
+    void highlightBlock( const QString &text );
 
- private:
-   void highlightWord(int currentPos, const QString &buffer);
+private:
+    void highlightWord( int currentPos, const QString &buffer );
 
-   enum ScriptFormats {
-      ScriptTextFormat, ScriptNumberFormat,
-      ScriptStringFormat, ScriptTypeFormat,
-      ScriptKeywordFormat, ScriptPreprocessorFormat,
-      ScriptLabelFormat, ScriptCommentFormat,
-      NumScriptFormats
-   };
-   QTextCharFormat m_formats[NumScriptFormats];
+    enum ScriptFormats
+    {
+        ScriptTextFormat, ScriptNumberFormat,
+        ScriptStringFormat, ScriptTypeFormat,
+        ScriptKeywordFormat, ScriptPreprocessorFormat,
+        ScriptLabelFormat, ScriptCommentFormat,
+        NumScriptFormats
+    };
+    QTextCharFormat m_formats[NumScriptFormats];
 
- private:
-   Q_DISABLE_COPY(QScriptSyntaxHighlighter)
+private:
+    Q_DISABLE_COPY( QScriptSyntaxHighlighter )
 };
 
 QT_END_NAMESPACE

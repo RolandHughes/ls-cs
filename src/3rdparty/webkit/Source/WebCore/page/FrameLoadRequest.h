@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef FrameLoadRequest_h
@@ -29,43 +29,63 @@
 #include "ResourceRequest.h"
 #include "SecurityOrigin.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-    struct FrameLoadRequest {
-    public:
-        explicit FrameLoadRequest(PassRefPtr<SecurityOrigin> requester)
-            : m_requester(requester)
-        {
-        }
+struct FrameLoadRequest
+{
+public:
+    explicit FrameLoadRequest( PassRefPtr<SecurityOrigin> requester )
+        : m_requester( requester )
+    {
+    }
 
-        FrameLoadRequest(PassRefPtr<SecurityOrigin> requester, const ResourceRequest& resourceRequest)
-            : m_requester(requester)
-            , m_resourceRequest(resourceRequest)
-        {
-        }
+    FrameLoadRequest( PassRefPtr<SecurityOrigin> requester, const ResourceRequest &resourceRequest )
+        : m_requester( requester )
+        , m_resourceRequest( resourceRequest )
+    {
+    }
 
-        FrameLoadRequest(PassRefPtr<SecurityOrigin> requester, const ResourceRequest& resourceRequest, const String& frameName)
-            : m_requester(requester)
-            , m_resourceRequest(resourceRequest)
-            , m_frameName(frameName)
-        {
-        }
+    FrameLoadRequest( PassRefPtr<SecurityOrigin> requester, const ResourceRequest &resourceRequest, const String &frameName )
+        : m_requester( requester )
+        , m_resourceRequest( resourceRequest )
+        , m_frameName( frameName )
+    {
+    }
 
-        bool isEmpty() const { return m_resourceRequest.isEmpty(); }
+    bool isEmpty() const
+    {
+        return m_resourceRequest.isEmpty();
+    }
 
-        const SecurityOrigin* requester() const { return m_requester.get(); }
+    const SecurityOrigin *requester() const
+    {
+        return m_requester.get();
+    }
 
-        ResourceRequest& resourceRequest() { return m_resourceRequest; }
-        const ResourceRequest& resourceRequest() const { return m_resourceRequest; }
+    ResourceRequest &resourceRequest()
+    {
+        return m_resourceRequest;
+    }
+    const ResourceRequest &resourceRequest() const
+    {
+        return m_resourceRequest;
+    }
 
-        const String& frameName() const { return m_frameName; }
-        void setFrameName(const String& frameName) { m_frameName = frameName; }
+    const String &frameName() const
+    {
+        return m_frameName;
+    }
+    void setFrameName( const String &frameName )
+    {
+        m_frameName = frameName;
+    }
 
-    private:
-        RefPtr<SecurityOrigin> m_requester;
-        ResourceRequest m_resourceRequest;
-        String m_frameName;
-    };
+private:
+    RefPtr<SecurityOrigin> m_requester;
+    ResourceRequest m_resourceRequest;
+    String m_frameName;
+};
 
 }
 

@@ -32,12 +32,12 @@
 
 using namespace WebKit;
 
-void WKContextSetShouldPaintNativeControls(WKContextRef contextRef, bool b)
+void WKContextSetShouldPaintNativeControls( WKContextRef contextRef, bool b )
 {
-    toImpl(contextRef)->setShouldPaintNativeControls(b);
+    toImpl( contextRef )->setShouldPaintNativeControls( b );
 }
 
-void WKContextSetInitialHTTPCookieAcceptPolicy(WKContextRef contextRef, WKHTTPCookieAcceptPolicy policy)
+void WKContextSetInitialHTTPCookieAcceptPolicy( WKContextRef contextRef, WKHTTPCookieAcceptPolicy policy )
 {
-    toImpl(contextRef)->setInitialHTTPCookieAcceptPolicy(toHTTPCookieAcceptPolicy(policy));
+    toImpl( contextRef )->setInitialHTTPCookieAcceptPolicy( toHTTPCookieAcceptPolicy( policy ) );
 }

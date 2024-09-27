@@ -50,9 +50,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSSVGDefsElement);
+ASSERT_CLASS_FITS_IN_CELL( JSSVGDefsElement );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -63,19 +64,19 @@ ASSERT_CLASS_FITS_IN_CELL(JSSVGDefsElement);
 
 static const HashTableValue JSSVGDefsElementTableValues[13] =
 {
-    { "requiredFeatures", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGDefsElementRequiredFeatures), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "requiredExtensions", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGDefsElementRequiredExtensions), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "systemLanguage", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGDefsElementSystemLanguage), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "xmllang", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGDefsElementXmllang), (intptr_t)setJSSVGDefsElementXmllang THUNK_GENERATOR(0) },
-    { "xmlspace", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGDefsElementXmlspace), (intptr_t)setJSSVGDefsElementXmlspace THUNK_GENERATOR(0) },
-    { "externalResourcesRequired", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGDefsElementExternalResourcesRequired), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "className", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGDefsElementClassName), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "style", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGDefsElementStyle), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "transform", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGDefsElementTransform), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "nearestViewportElement", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGDefsElementNearestViewportElement), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "farthestViewportElement", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGDefsElementFarthestViewportElement), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGDefsElementConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "requiredFeatures", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGDefsElementRequiredFeatures ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "requiredExtensions", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGDefsElementRequiredExtensions ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "systemLanguage", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGDefsElementSystemLanguage ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "xmllang", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGDefsElementXmllang ), ( intptr_t )setJSSVGDefsElementXmllang THUNK_GENERATOR( 0 ) },
+    { "xmlspace", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGDefsElementXmlspace ), ( intptr_t )setJSSVGDefsElementXmlspace THUNK_GENERATOR( 0 ) },
+    { "externalResourcesRequired", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGDefsElementExternalResourcesRequired ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "className", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGDefsElementClassName ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "style", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGDefsElementStyle ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "transform", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGDefsElementTransform ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "nearestViewportElement", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGDefsElementNearestViewportElement ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "farthestViewportElement", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGDefsElementFarthestViewportElement ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGDefsElementConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -89,43 +90,50 @@ static JSC_CONST_HASHTABLE HashTable JSSVGDefsElementTable = { 34, 31, JSSVGDefs
 
 static const HashTableValue JSSVGDefsElementConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGDefsElementConstructorTable = { 1, 0, JSSVGDefsElementConstructorTableValues, 0 };
-class JSSVGDefsElementConstructor : public DOMConstructorObject {
+class JSSVGDefsElementConstructor : public DOMConstructorObject
+{
 public:
-    JSSVGDefsElementConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSSVGDefsElementConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSSVGDefsElementConstructor::s_info = { "SVGDefsElementConstructor", &DOMConstructorObject::s_info, &JSSVGDefsElementConstructorTable, 0 };
 
-JSSVGDefsElementConstructor::JSSVGDefsElementConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSSVGDefsElementConstructor::JSSVGDefsElementConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSSVGDefsElementPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSSVGDefsElementPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSSVGDefsElementConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGDefsElementConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGDefsElementConstructor, JSDOMWrapper>(exec, &JSSVGDefsElementConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGDefsElementConstructor, JSDOMWrapper>( exec, &JSSVGDefsElementConstructorTable, this, propertyName,
+            slot );
 }
 
-bool JSSVGDefsElementConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGDefsElementConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGDefsElementConstructor, JSDOMWrapper>(exec, &JSSVGDefsElementConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGDefsElementConstructor, JSDOMWrapper>( exec, &JSSVGDefsElementConstructorTable, this,
+            propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -137,289 +145,337 @@ bool JSSVGDefsElementConstructor::getOwnPropertyDescriptor(ExecState* exec, cons
 
 static const HashTableValue JSSVGDefsElementPrototypeTableValues[7] =
 {
-    { "hasExtension", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsSVGDefsElementPrototypeFunctionHasExtension), (intptr_t)1 THUNK_GENERATOR(0) },
-    { "getPresentationAttribute", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsSVGDefsElementPrototypeFunctionGetPresentationAttribute), (intptr_t)1 THUNK_GENERATOR(0) },
-    { "getBBox", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsSVGDefsElementPrototypeFunctionGetBBox), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "getCTM", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsSVGDefsElementPrototypeFunctionGetCTM), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "getScreenCTM", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsSVGDefsElementPrototypeFunctionGetScreenCTM), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "getTransformToElement", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsSVGDefsElementPrototypeFunctionGetTransformToElement), (intptr_t)1 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "hasExtension", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsSVGDefsElementPrototypeFunctionHasExtension ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { "getPresentationAttribute", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsSVGDefsElementPrototypeFunctionGetPresentationAttribute ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { "getBBox", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsSVGDefsElementPrototypeFunctionGetBBox ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "getCTM", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsSVGDefsElementPrototypeFunctionGetCTM ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "getScreenCTM", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsSVGDefsElementPrototypeFunctionGetScreenCTM ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "getTransformToElement", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsSVGDefsElementPrototypeFunctionGetTransformToElement ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGDefsElementPrototypeTable = { 17, 15, JSSVGDefsElementPrototypeTableValues, 0 };
 const ClassInfo JSSVGDefsElementPrototype::s_info = { "SVGDefsElementPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSSVGDefsElementPrototypeTable, 0 };
 
-JSObject* JSSVGDefsElementPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGDefsElementPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSSVGDefsElement>(exec, globalObject);
+    return getDOMPrototype<JSSVGDefsElement>( exec, globalObject );
 }
 
-bool JSSVGDefsElementPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGDefsElementPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticFunctionSlot<JSObject>(exec, &JSSVGDefsElementPrototypeTable, this, propertyName, slot);
+    return getStaticFunctionSlot<JSObject>( exec, &JSSVGDefsElementPrototypeTable, this, propertyName, slot );
 }
 
-bool JSSVGDefsElementPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGDefsElementPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticFunctionDescriptor<JSObject>(exec, &JSSVGDefsElementPrototypeTable, this, propertyName, descriptor);
+    return getStaticFunctionDescriptor<JSObject>( exec, &JSSVGDefsElementPrototypeTable, this, propertyName, descriptor );
 }
 
 const ClassInfo JSSVGDefsElement::s_info = { "SVGDefsElement", &JSSVGElement::s_info, &JSSVGDefsElementTable, 0 };
 
-JSSVGDefsElement::JSSVGDefsElement(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<SVGDefsElement> impl)
-    : JSSVGElement(structure, globalObject, impl)
+JSSVGDefsElement::JSSVGDefsElement( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<SVGDefsElement> impl )
+    : JSSVGElement( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSSVGDefsElement::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGDefsElement::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSSVGDefsElementPrototype(exec->globalData(), globalObject, JSSVGDefsElementPrototype::createStructure(exec->globalData(), JSSVGElementPrototype::self(exec, globalObject)));
+    return new ( exec ) JSSVGDefsElementPrototype( exec->globalData(), globalObject,
+            JSSVGDefsElementPrototype::createStructure( exec->globalData(), JSSVGElementPrototype::self( exec, globalObject ) ) );
 }
 
-bool JSSVGDefsElement::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGDefsElement::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGDefsElement, Base>(exec, &JSSVGDefsElementTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGDefsElement, Base>( exec, &JSSVGDefsElementTable, this, propertyName, slot );
 }
 
-bool JSSVGDefsElement::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGDefsElement::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGDefsElement, Base>(exec, &JSSVGDefsElementTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGDefsElement, Base>( exec, &JSSVGDefsElementTable, this, propertyName, descriptor );
 }
 
-JSValue jsSVGDefsElementRequiredFeatures(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGDefsElementRequiredFeatures( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGDefsElement* castedThis = static_cast<JSSVGDefsElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGDefsElement* imp = static_cast<SVGDefsElement*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(SVGStaticListPropertyTearOff<SVGStringList>::create(GetOwnerElementForType<SVGDefsElement, IsDerivedFromSVGElement<SVGDefsElement>::value>::ownerElement(imp), imp->requiredFeatures())));
+    JSSVGDefsElement *castedThis = static_cast<JSSVGDefsElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGDefsElement *imp = static_cast<SVGDefsElement *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(),
+                           WTF::getPtr( SVGStaticListPropertyTearOff<SVGStringList>::create(
+                                            GetOwnerElementForType<SVGDefsElement, IsDerivedFromSVGElement<SVGDefsElement>::value>::ownerElement( imp ),
+                                            imp->requiredFeatures() ) ) );
     return result;
 }
 
 
-JSValue jsSVGDefsElementRequiredExtensions(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGDefsElementRequiredExtensions( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGDefsElement* castedThis = static_cast<JSSVGDefsElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGDefsElement* imp = static_cast<SVGDefsElement*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(SVGStaticListPropertyTearOff<SVGStringList>::create(GetOwnerElementForType<SVGDefsElement, IsDerivedFromSVGElement<SVGDefsElement>::value>::ownerElement(imp), imp->requiredExtensions())));
+    JSSVGDefsElement *castedThis = static_cast<JSSVGDefsElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGDefsElement *imp = static_cast<SVGDefsElement *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(),
+                           WTF::getPtr( SVGStaticListPropertyTearOff<SVGStringList>::create(
+                                            GetOwnerElementForType<SVGDefsElement, IsDerivedFromSVGElement<SVGDefsElement>::value>::ownerElement( imp ),
+                                            imp->requiredExtensions() ) ) );
     return result;
 }
 
 
-JSValue jsSVGDefsElementSystemLanguage(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGDefsElementSystemLanguage( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGDefsElement* castedThis = static_cast<JSSVGDefsElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGDefsElement* imp = static_cast<SVGDefsElement*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(SVGStaticListPropertyTearOff<SVGStringList>::create(GetOwnerElementForType<SVGDefsElement, IsDerivedFromSVGElement<SVGDefsElement>::value>::ownerElement(imp), imp->systemLanguage())));
+    JSSVGDefsElement *castedThis = static_cast<JSSVGDefsElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGDefsElement *imp = static_cast<SVGDefsElement *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(),
+                           WTF::getPtr( SVGStaticListPropertyTearOff<SVGStringList>::create(
+                                            GetOwnerElementForType<SVGDefsElement, IsDerivedFromSVGElement<SVGDefsElement>::value>::ownerElement( imp ),
+                                            imp->systemLanguage() ) ) );
     return result;
 }
 
 
-JSValue jsSVGDefsElementXmllang(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGDefsElementXmllang( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGDefsElement* castedThis = static_cast<JSSVGDefsElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGDefsElement* imp = static_cast<SVGDefsElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->xmllang());
+    JSSVGDefsElement *castedThis = static_cast<JSSVGDefsElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGDefsElement *imp = static_cast<SVGDefsElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->xmllang() );
     return result;
 }
 
 
-JSValue jsSVGDefsElementXmlspace(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGDefsElementXmlspace( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGDefsElement* castedThis = static_cast<JSSVGDefsElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGDefsElement* imp = static_cast<SVGDefsElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->xmlspace());
+    JSSVGDefsElement *castedThis = static_cast<JSSVGDefsElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGDefsElement *imp = static_cast<SVGDefsElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->xmlspace() );
     return result;
 }
 
 
-JSValue jsSVGDefsElementExternalResourcesRequired(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGDefsElementExternalResourcesRequired( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGDefsElement* castedThis = static_cast<JSSVGDefsElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGDefsElement* imp = static_cast<SVGDefsElement*>(castedThis->impl());
+    JSSVGDefsElement *castedThis = static_cast<JSSVGDefsElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGDefsElement *imp = static_cast<SVGDefsElement *>( castedThis->impl() );
     RefPtr<SVGAnimatedBoolean> obj = imp->externalResourcesRequiredAnimated();
-    JSValue result =  toJS(exec, castedThis->globalObject(), obj.get());
+    JSValue result =  toJS( exec, castedThis->globalObject(), obj.get() );
     return result;
 }
 
 
-JSValue jsSVGDefsElementClassName(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGDefsElementClassName( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGDefsElement* castedThis = static_cast<JSSVGDefsElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGDefsElement* imp = static_cast<SVGDefsElement*>(castedThis->impl());
+    JSSVGDefsElement *castedThis = static_cast<JSSVGDefsElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGDefsElement *imp = static_cast<SVGDefsElement *>( castedThis->impl() );
     RefPtr<SVGAnimatedString> obj = imp->classNameAnimated();
-    JSValue result =  toJS(exec, castedThis->globalObject(), obj.get());
+    JSValue result =  toJS( exec, castedThis->globalObject(), obj.get() );
     return result;
 }
 
 
-JSValue jsSVGDefsElementStyle(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGDefsElementStyle( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGDefsElement* castedThis = static_cast<JSSVGDefsElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGDefsElement* imp = static_cast<SVGDefsElement*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->style()));
+    JSSVGDefsElement *castedThis = static_cast<JSSVGDefsElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGDefsElement *imp = static_cast<SVGDefsElement *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->style() ) );
     return result;
 }
 
 
-JSValue jsSVGDefsElementTransform(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGDefsElementTransform( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGDefsElement* castedThis = static_cast<JSSVGDefsElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGDefsElement* imp = static_cast<SVGDefsElement*>(castedThis->impl());
+    JSSVGDefsElement *castedThis = static_cast<JSSVGDefsElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGDefsElement *imp = static_cast<SVGDefsElement *>( castedThis->impl() );
     RefPtr<SVGAnimatedTransformList> obj = imp->transformAnimated();
-    JSValue result =  toJS(exec, castedThis->globalObject(), obj.get());
+    JSValue result =  toJS( exec, castedThis->globalObject(), obj.get() );
     return result;
 }
 
 
-JSValue jsSVGDefsElementNearestViewportElement(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGDefsElementNearestViewportElement( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGDefsElement* castedThis = static_cast<JSSVGDefsElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGDefsElement* imp = static_cast<SVGDefsElement*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->nearestViewportElement()));
+    JSSVGDefsElement *castedThis = static_cast<JSSVGDefsElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGDefsElement *imp = static_cast<SVGDefsElement *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->nearestViewportElement() ) );
     return result;
 }
 
 
-JSValue jsSVGDefsElementFarthestViewportElement(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGDefsElementFarthestViewportElement( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGDefsElement* castedThis = static_cast<JSSVGDefsElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGDefsElement* imp = static_cast<SVGDefsElement*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->farthestViewportElement()));
+    JSSVGDefsElement *castedThis = static_cast<JSSVGDefsElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGDefsElement *imp = static_cast<SVGDefsElement *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->farthestViewportElement() ) );
     return result;
 }
 
 
-JSValue jsSVGDefsElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGDefsElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGDefsElement* domObject = static_cast<JSSVGDefsElement*>(asObject(slotBase));
-    return JSSVGDefsElement::getConstructor(exec, domObject->globalObject());
+    JSSVGDefsElement *domObject = static_cast<JSSVGDefsElement *>( asObject( slotBase ) );
+    return JSSVGDefsElement::getConstructor( exec, domObject->globalObject() );
 }
 
-void JSSVGDefsElement::put(ExecState* exec, const Identifier& propertyName, JSValue value, PutPropertySlot& slot)
+void JSSVGDefsElement::put( ExecState *exec, const Identifier &propertyName, JSValue value, PutPropertySlot &slot )
 {
-    lookupPut<JSSVGDefsElement, Base>(exec, propertyName, value, &JSSVGDefsElementTable, this, slot);
+    lookupPut<JSSVGDefsElement, Base>( exec, propertyName, value, &JSSVGDefsElementTable, this, slot );
 }
 
-void setJSSVGDefsElementXmllang(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSSVGDefsElementXmllang( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSSVGDefsElement* castedThis = static_cast<JSSVGDefsElement*>(thisObject);
-    SVGDefsElement* imp = static_cast<SVGDefsElement*>(castedThis->impl());
-    imp->setXmllang(ustringToString(value.toString(exec)));
-}
-
-
-void setJSSVGDefsElementXmlspace(ExecState* exec, JSObject* thisObject, JSValue value)
-{
-    JSSVGDefsElement* castedThis = static_cast<JSSVGDefsElement*>(thisObject);
-    SVGDefsElement* imp = static_cast<SVGDefsElement*>(castedThis->impl());
-    imp->setXmlspace(ustringToString(value.toString(exec)));
+    JSSVGDefsElement *castedThis = static_cast<JSSVGDefsElement *>( thisObject );
+    SVGDefsElement *imp = static_cast<SVGDefsElement *>( castedThis->impl() );
+    imp->setXmllang( ustringToString( value.toString( exec ) ) );
 }
 
 
-JSValue JSSVGDefsElement::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+void setJSSVGDefsElementXmlspace( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    return getDOMConstructor<JSSVGDefsElementConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    JSSVGDefsElement *castedThis = static_cast<JSSVGDefsElement *>( thisObject );
+    SVGDefsElement *imp = static_cast<SVGDefsElement *>( castedThis->impl() );
+    imp->setXmlspace( ustringToString( value.toString( exec ) ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsSVGDefsElementPrototypeFunctionHasExtension(ExecState* exec)
+
+JSValue JSSVGDefsElement::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
+{
+    return getDOMConstructor<JSSVGDefsElementConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
+}
+
+EncodedJSValue JSC_HOST_CALL jsSVGDefsElementPrototypeFunctionHasExtension( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSSVGDefsElement::s_info))
-        return throwVMTypeError(exec);
-    JSSVGDefsElement* castedThis = static_cast<JSSVGDefsElement*>(asObject(thisValue));
-    SVGDefsElement* imp = static_cast<SVGDefsElement*>(castedThis->impl());
-    const String& extension(ustringToString(exec->argument(0).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+
+    if ( !thisValue.inherits( &JSSVGDefsElement::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSSVGDefsElement *castedThis = static_cast<JSSVGDefsElement *>( asObject( thisValue ) );
+    SVGDefsElement *imp = static_cast<SVGDefsElement *>( castedThis->impl() );
+    const String &extension( ustringToString( exec->argument( 0 ).toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
 
 
-    JSC::JSValue result = jsBoolean(imp->hasExtension(extension));
-    return JSValue::encode(result);
+    JSC::JSValue result = jsBoolean( imp->hasExtension( extension ) );
+    return JSValue::encode( result );
 }
 
-EncodedJSValue JSC_HOST_CALL jsSVGDefsElementPrototypeFunctionGetPresentationAttribute(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsSVGDefsElementPrototypeFunctionGetPresentationAttribute( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSSVGDefsElement::s_info))
-        return throwVMTypeError(exec);
-    JSSVGDefsElement* castedThis = static_cast<JSSVGDefsElement*>(asObject(thisValue));
-    SVGDefsElement* imp = static_cast<SVGDefsElement*>(castedThis->impl());
-    const String& name(ustringToString(exec->argument(0).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+
+    if ( !thisValue.inherits( &JSSVGDefsElement::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSSVGDefsElement *castedThis = static_cast<JSSVGDefsElement *>( asObject( thisValue ) );
+    SVGDefsElement *imp = static_cast<SVGDefsElement *>( castedThis->impl() );
+    const String &name( ustringToString( exec->argument( 0 ).toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
 
 
-    JSC::JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->getPresentationAttribute(name)));
-    return JSValue::encode(result);
+    JSC::JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->getPresentationAttribute( name ) ) );
+    return JSValue::encode( result );
 }
 
-EncodedJSValue JSC_HOST_CALL jsSVGDefsElementPrototypeFunctionGetBBox(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsSVGDefsElementPrototypeFunctionGetBBox( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSSVGDefsElement::s_info))
-        return throwVMTypeError(exec);
-    JSSVGDefsElement* castedThis = static_cast<JSSVGDefsElement*>(asObject(thisValue));
-    SVGDefsElement* imp = static_cast<SVGDefsElement*>(castedThis->impl());
+
+    if ( !thisValue.inherits( &JSSVGDefsElement::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSSVGDefsElement *castedThis = static_cast<JSSVGDefsElement *>( asObject( thisValue ) );
+    SVGDefsElement *imp = static_cast<SVGDefsElement *>( castedThis->impl() );
 
 
-    JSC::JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(SVGPropertyTearOff<FloatRect>::create(imp->getBBox())));
-    return JSValue::encode(result);
+    JSC::JSValue result = toJS( exec, castedThis->globalObject(),
+                                WTF::getPtr( SVGPropertyTearOff<FloatRect>::create( imp->getBBox() ) ) );
+    return JSValue::encode( result );
 }
 
-EncodedJSValue JSC_HOST_CALL jsSVGDefsElementPrototypeFunctionGetCTM(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsSVGDefsElementPrototypeFunctionGetCTM( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSSVGDefsElement::s_info))
-        return throwVMTypeError(exec);
-    JSSVGDefsElement* castedThis = static_cast<JSSVGDefsElement*>(asObject(thisValue));
-    SVGDefsElement* imp = static_cast<SVGDefsElement*>(castedThis->impl());
+
+    if ( !thisValue.inherits( &JSSVGDefsElement::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSSVGDefsElement *castedThis = static_cast<JSSVGDefsElement *>( asObject( thisValue ) );
+    SVGDefsElement *imp = static_cast<SVGDefsElement *>( castedThis->impl() );
 
 
-    JSC::JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(SVGPropertyTearOff<SVGMatrix>::create(imp->getCTM())));
-    return JSValue::encode(result);
+    JSC::JSValue result = toJS( exec, castedThis->globalObject(),
+                                WTF::getPtr( SVGPropertyTearOff<SVGMatrix>::create( imp->getCTM() ) ) );
+    return JSValue::encode( result );
 }
 
-EncodedJSValue JSC_HOST_CALL jsSVGDefsElementPrototypeFunctionGetScreenCTM(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsSVGDefsElementPrototypeFunctionGetScreenCTM( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSSVGDefsElement::s_info))
-        return throwVMTypeError(exec);
-    JSSVGDefsElement* castedThis = static_cast<JSSVGDefsElement*>(asObject(thisValue));
-    SVGDefsElement* imp = static_cast<SVGDefsElement*>(castedThis->impl());
+
+    if ( !thisValue.inherits( &JSSVGDefsElement::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSSVGDefsElement *castedThis = static_cast<JSSVGDefsElement *>( asObject( thisValue ) );
+    SVGDefsElement *imp = static_cast<SVGDefsElement *>( castedThis->impl() );
 
 
-    JSC::JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(SVGPropertyTearOff<SVGMatrix>::create(imp->getScreenCTM())));
-    return JSValue::encode(result);
+    JSC::JSValue result = toJS( exec, castedThis->globalObject(),
+                                WTF::getPtr( SVGPropertyTearOff<SVGMatrix>::create( imp->getScreenCTM() ) ) );
+    return JSValue::encode( result );
 }
 
-EncodedJSValue JSC_HOST_CALL jsSVGDefsElementPrototypeFunctionGetTransformToElement(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsSVGDefsElementPrototypeFunctionGetTransformToElement( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSSVGDefsElement::s_info))
-        return throwVMTypeError(exec);
-    JSSVGDefsElement* castedThis = static_cast<JSSVGDefsElement*>(asObject(thisValue));
-    SVGDefsElement* imp = static_cast<SVGDefsElement*>(castedThis->impl());
+
+    if ( !thisValue.inherits( &JSSVGDefsElement::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSSVGDefsElement *castedThis = static_cast<JSSVGDefsElement *>( asObject( thisValue ) );
+    SVGDefsElement *imp = static_cast<SVGDefsElement *>( castedThis->impl() );
     ExceptionCode ec = 0;
-    SVGElement* element(toSVGElement(exec->argument(0)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+    SVGElement *element( toSVGElement( exec->argument( 0 ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
 
 
-    JSC::JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(SVGPropertyTearOff<SVGMatrix>::create(imp->getTransformToElement(element, ec))));
-    setDOMException(exec, ec);
-    return JSValue::encode(result);
+    JSC::JSValue result = toJS( exec, castedThis->globalObject(),
+                                WTF::getPtr( SVGPropertyTearOff<SVGMatrix>::create( imp->getTransformToElement( element, ec ) ) ) );
+    setDOMException( exec, ec );
+    return JSValue::encode( result );
 }
 
 

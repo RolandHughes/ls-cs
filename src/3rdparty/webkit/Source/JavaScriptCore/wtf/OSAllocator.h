@@ -30,11 +30,14 @@
 #include <wtf/VMTags.h>
 #include <wtf/VMTags.h>
 
-namespace WTF {
+namespace WTF
+{
 
-class OSAllocator {
+class OSAllocator
+{
 public:
-    enum Usage {
+    enum Usage
+    {
         UnknownUsage = -1,
         FastMallocPages = VM_TAG_FOR_TCMALLOC_MEMORY,
         JSGCHeapPages = VM_TAG_FOR_COLLECTOR_MEMORY,
@@ -45,53 +48,55 @@ public:
     // These methods are symmetric; reserveUncommitted allocates VM in an uncommitted state,
     // releaseDecommitted should be called on a region of VM allocated by a single reservation,
     // the memory must all currently be in a decommitted state.
-    static void* reserveUncommitted(size_t, Usage = UnknownUsage, bool writable = true, bool executable = false);
-    static void releaseDecommitted(void*, size_t);
+    static void *reserveUncommitted( size_t, Usage = UnknownUsage, bool writable = true, bool executable = false );
+    static void releaseDecommitted( void *, size_t );
 
     // These methods are symmetric; they commit or decommit a region of VM (uncommitted VM should
     // never be accessed, since the OS may not have attached physical memory for these regions).
     // Clients should only call commit on uncommitted regions and decommit on committed regions.
-    static void commit(void*, size_t, bool writable, bool executable);
-    static void decommit(void*, size_t);
+    static void commit( void *, size_t, bool writable, bool executable );
+    static void decommit( void *, size_t );
 
     // These methods are symmetric; reserveAndCommit allocates VM in an committed state,
     // decommitAndRelease should be called on a region of VM allocated by a single reservation,
     // the memory must all currently be in a committed state.
-    static void* reserveAndCommit(size_t, Usage = UnknownUsage, bool writable = true, bool executable = false);
-    static void decommitAndRelease(void* base, size_t size);
+    static void *reserveAndCommit( size_t, Usage = UnknownUsage, bool writable = true, bool executable = false );
+    static void decommitAndRelease( void *base, size_t size );
 
     // These methods are akin to reserveAndCommit/decommitAndRelease, above - however rather than
     // committing/decommitting the entire region additional parameters allow a subregion to be
     // specified.
-    static void* reserveAndCommit(size_t reserveSize, size_t commitSize, Usage = UnknownUsage, bool writable = true, bool executable = false);
-    static void decommitAndRelease(void* releaseBase, size_t releaseSize, void* decommitBase, size_t decommitSize);
+    static void *reserveAndCommit( size_t reserveSize, size_t commitSize, Usage = UnknownUsage, bool writable = true,
+                                   bool executable = false );
+    static void decommitAndRelease( void *releaseBase, size_t releaseSize, void *decommitBase, size_t decommitSize );
 };
 
-inline void* OSAllocator::reserveAndCommit(size_t reserveSize, size_t commitSize, Usage usage, bool writable, bool executable)
+inline void *OSAllocator::reserveAndCommit( size_t reserveSize, size_t commitSize, Usage usage, bool writable, bool executable )
 {
-    void* base = reserveUncommitted(reserveSize, usage, writable, executable);
-    commit(base, commitSize, writable, executable);
+    void *base = reserveUncommitted( reserveSize, usage, writable, executable );
+    commit( base, commitSize, writable, executable );
     return base;
 }
 
-inline void OSAllocator::decommitAndRelease(void* releaseBase, size_t releaseSize, void* decommitBase, size_t decommitSize)
+inline void OSAllocator::decommitAndRelease( void *releaseBase, size_t releaseSize, void *decommitBase, size_t decommitSize )
 {
-    ASSERT(decommitBase >= releaseBase && (static_cast<char*>(decommitBase) + decommitSize) <= (static_cast<char*>(releaseBase) + releaseSize));
+    ASSERT( decommitBase >= releaseBase
+            && ( static_cast<char *>( decommitBase ) + decommitSize ) <= ( static_cast<char *>( releaseBase ) + releaseSize ) );
 #if OS(WINCE) || OS(SYMBIAN)
     // On most platforms we can actually skip this final decommit; releasing the VM will
     // implicitly decommit any physical memory in the region. This is not true on WINCE.
     // On Symbian, this makes implementation simpler and better aligned with the RChunk API
-    decommit(decommitBase, decommitSize);
+    decommit( decommitBase, decommitSize );
 #else
-    UNUSED_PARAM(decommitBase);
-    UNUSED_PARAM(decommitSize);
+    UNUSED_PARAM( decommitBase );
+    UNUSED_PARAM( decommitSize );
 #endif
-    releaseDecommitted(releaseBase, releaseSize);
+    releaseDecommitted( releaseBase, releaseSize );
 }
 
-inline void OSAllocator::decommitAndRelease(void* base, size_t size)
+inline void OSAllocator::decommitAndRelease( void *base, size_t size )
 {
-    decommitAndRelease(base, size, base, size);
+    decommitAndRelease( base, size, base, size );
 }
 
 } // namespace WTF

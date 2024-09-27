@@ -38,112 +38,129 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
-LayerTreeHostCA::LayerTreeHostCA(WebPage* webPage)
-    : LayerTreeHost(webPage)
-    , m_isValid(true)
-    , m_notifyAfterScheduledLayerFlush(false)
+LayerTreeHostCA::LayerTreeHostCA( WebPage *webPage )
+    : LayerTreeHost( webPage )
+    , m_isValid( true )
+    , m_notifyAfterScheduledLayerFlush( false )
 {
 }
 
 void LayerTreeHostCA::initialize()
 {
     // Create a root layer.
-    m_rootLayer = GraphicsLayer::create(this);
+    m_rootLayer = GraphicsLayer::create( this );
 #ifndef NDEBUG
-    m_rootLayer->setName("LayerTreeHost root layer");
+    m_rootLayer->setName( "LayerTreeHost root layer" );
 #endif
-    m_rootLayer->setDrawsContent(false);
-    m_rootLayer->setSize(m_webPage->size());
-    static_cast<GraphicsLayerCA*>(m_rootLayer.get())->platformCALayer()->setGeometryFlipped(true);
+    m_rootLayer->setDrawsContent( false );
+    m_rootLayer->setSize( m_webPage->size() );
+    static_cast<GraphicsLayerCA *>( m_rootLayer.get() )->platformCALayer()->setGeometryFlipped( true );
 
-    m_nonCompositedContentLayer = GraphicsLayer::create(this);
-    static_cast<GraphicsLayerCA*>(m_nonCompositedContentLayer.get())->setAllowTiledLayer(false);
+    m_nonCompositedContentLayer = GraphicsLayer::create( this );
+    static_cast<GraphicsLayerCA *>( m_nonCompositedContentLayer.get() )->setAllowTiledLayer( false );
 #ifndef NDEBUG
-    m_nonCompositedContentLayer->setName("LayerTreeHost non-composited content");
+    m_nonCompositedContentLayer->setName( "LayerTreeHost non-composited content" );
 #endif
-    m_nonCompositedContentLayer->setDrawsContent(true);
-    m_nonCompositedContentLayer->setContentsOpaque(m_webPage->drawsBackground() && !m_webPage->drawsTransparentBackground());
-    m_nonCompositedContentLayer->setSize(m_webPage->size());
-    if (m_webPage->corePage()->settings()->acceleratedDrawingEnabled())
-        m_nonCompositedContentLayer->setAcceleratesDrawing(true);
+    m_nonCompositedContentLayer->setDrawsContent( true );
+    m_nonCompositedContentLayer->setContentsOpaque( m_webPage->drawsBackground() && !m_webPage->drawsTransparentBackground() );
+    m_nonCompositedContentLayer->setSize( m_webPage->size() );
 
-    m_rootLayer->addChild(m_nonCompositedContentLayer.get());
+    if ( m_webPage->corePage()->settings()->acceleratedDrawingEnabled() )
+    {
+        m_nonCompositedContentLayer->setAcceleratesDrawing( true );
+    }
 
-    if (m_webPage->hasPageOverlay())
+    m_rootLayer->addChild( m_nonCompositedContentLayer.get() );
+
+    if ( m_webPage->hasPageOverlay() )
+    {
         createPageOverlayLayer();
+    }
 
-    platformInitialize(m_layerTreeContext);
+    platformInitialize( m_layerTreeContext );
 
     scheduleLayerFlush();
 }
 
 LayerTreeHostCA::~LayerTreeHostCA()
 {
-    ASSERT(!m_isValid);
-    ASSERT(!m_rootLayer);
+    ASSERT( !m_isValid );
+    ASSERT( !m_rootLayer );
 }
 
-const LayerTreeContext& LayerTreeHostCA::layerTreeContext()
+const LayerTreeContext &LayerTreeHostCA::layerTreeContext()
 {
     return m_layerTreeContext;
 }
 
-void LayerTreeHostCA::setShouldNotifyAfterNextScheduledLayerFlush(bool notifyAfterScheduledLayerFlush)
+void LayerTreeHostCA::setShouldNotifyAfterNextScheduledLayerFlush( bool notifyAfterScheduledLayerFlush )
 {
     m_notifyAfterScheduledLayerFlush = notifyAfterScheduledLayerFlush;
 }
 
-void LayerTreeHostCA::setRootCompositingLayer(GraphicsLayer* graphicsLayer)
+void LayerTreeHostCA::setRootCompositingLayer( GraphicsLayer *graphicsLayer )
 {
     m_nonCompositedContentLayer->removeAllChildren();
 
     // Add the accelerated layer tree hierarchy.
-    if (graphicsLayer)
-        m_nonCompositedContentLayer->addChild(graphicsLayer);
+    if ( graphicsLayer )
+    {
+        m_nonCompositedContentLayer->addChild( graphicsLayer );
+    }
 }
 
 void LayerTreeHostCA::invalidate()
 {
-    ASSERT(m_isValid);
+    ASSERT( m_isValid );
     m_rootLayer = nullptr;
     m_isValid = false;
 }
 
-void LayerTreeHostCA::setNonCompositedContentsNeedDisplay(const IntRect& rect)
+void LayerTreeHostCA::setNonCompositedContentsNeedDisplay( const IntRect &rect )
 {
-    m_nonCompositedContentLayer->setNeedsDisplayInRect(rect);
-    if (m_pageOverlayLayer)
-        m_pageOverlayLayer->setNeedsDisplayInRect(rect);
+    m_nonCompositedContentLayer->setNeedsDisplayInRect( rect );
+
+    if ( m_pageOverlayLayer )
+    {
+        m_pageOverlayLayer->setNeedsDisplayInRect( rect );
+    }
 
     scheduleLayerFlush();
 }
 
-void LayerTreeHostCA::scrollNonCompositedContents(const IntRect& scrollRect, const IntSize& scrollOffset)
+void LayerTreeHostCA::scrollNonCompositedContents( const IntRect &scrollRect, const IntSize &scrollOffset )
 {
-    setNonCompositedContentsNeedDisplay(scrollRect);
+    setNonCompositedContentsNeedDisplay( scrollRect );
 }
 
-void LayerTreeHostCA::sizeDidChange(const IntSize& newSize)
+void LayerTreeHostCA::sizeDidChange( const IntSize &newSize )
 {
-    m_rootLayer->setSize(newSize);
+    m_rootLayer->setSize( newSize );
 
     // If the newSize exposes new areas of the non-composited content a setNeedsDisplay is needed
     // for those newly exposed areas.
     FloatSize oldSize = m_nonCompositedContentLayer->size();
-    m_nonCompositedContentLayer->setSize(newSize);
+    m_nonCompositedContentLayer->setSize( newSize );
 
-    if (newSize.width() > oldSize.width()) {
-        float height = std::min(static_cast<float>(newSize.height()), oldSize.height());
-        m_nonCompositedContentLayer->setNeedsDisplayInRect(FloatRect(oldSize.width(), 0, newSize.width() - oldSize.width(), height));
+    if ( newSize.width() > oldSize.width() )
+    {
+        float height = std::min( static_cast<float>( newSize.height() ), oldSize.height() );
+        m_nonCompositedContentLayer->setNeedsDisplayInRect( FloatRect( oldSize.width(), 0, newSize.width() - oldSize.width(), height ) );
     }
 
-    if (newSize.height() > oldSize.height())
-        m_nonCompositedContentLayer->setNeedsDisplayInRect(FloatRect(0, oldSize.height(), newSize.width(), newSize.height() - oldSize.height()));
+    if ( newSize.height() > oldSize.height() )
+    {
+        m_nonCompositedContentLayer->setNeedsDisplayInRect( FloatRect( 0, oldSize.height(), newSize.width(),
+                newSize.height() - oldSize.height() ) );
+    }
 
-    if (m_pageOverlayLayer)
-        m_pageOverlayLayer->setSize(newSize);
+    if ( m_pageOverlayLayer )
+    {
+        m_pageOverlayLayer->setSize( newSize );
+    }
 
     scheduleLayerFlush();
     flushPendingLayerChanges();
@@ -153,7 +170,7 @@ void LayerTreeHostCA::forceRepaint()
 {
     scheduleLayerFlush();
     flushPendingLayerChanges();
-}    
+}
 
 void LayerTreeHostCA::didInstallPageOverlay()
 {
@@ -167,30 +184,33 @@ void LayerTreeHostCA::didUninstallPageOverlay()
     scheduleLayerFlush();
 }
 
-void LayerTreeHostCA::setPageOverlayNeedsDisplay(const IntRect& rect)
+void LayerTreeHostCA::setPageOverlayNeedsDisplay( const IntRect &rect )
 {
-    ASSERT(m_pageOverlayLayer);
-    m_pageOverlayLayer->setNeedsDisplayInRect(rect);
+    ASSERT( m_pageOverlayLayer );
+    m_pageOverlayLayer->setNeedsDisplayInRect( rect );
     scheduleLayerFlush();
 }
 
-void LayerTreeHostCA::notifyAnimationStarted(const WebCore::GraphicsLayer*, double time)
+void LayerTreeHostCA::notifyAnimationStarted( const WebCore::GraphicsLayer *, double time )
 {
 }
 
-void LayerTreeHostCA::notifySyncRequired(const WebCore::GraphicsLayer*)
+void LayerTreeHostCA::notifySyncRequired( const WebCore::GraphicsLayer * )
 {
 }
 
-void LayerTreeHostCA::paintContents(const GraphicsLayer* graphicsLayer, GraphicsContext& graphicsContext, GraphicsLayerPaintingPhase, const IntRect& clipRect)
+void LayerTreeHostCA::paintContents( const GraphicsLayer *graphicsLayer, GraphicsContext &graphicsContext,
+                                     GraphicsLayerPaintingPhase, const IntRect &clipRect )
 {
-    if (graphicsLayer == m_nonCompositedContentLayer) {
-        m_webPage->drawRect(graphicsContext, clipRect);
+    if ( graphicsLayer == m_nonCompositedContentLayer )
+    {
+        m_webPage->drawRect( graphicsContext, clipRect );
         return;
     }
 
-    if (graphicsLayer == m_pageOverlayLayer) {
-        m_webPage->drawPageOverlay(graphicsContext, clipRect);
+    if ( graphicsLayer == m_pageOverlayLayer )
+    {
+        m_webPage->drawPageOverlay( graphicsContext, clipRect );
         return;
     }
 }
@@ -208,24 +228,29 @@ bool LayerTreeHostCA::showRepaintCounter() const
 void LayerTreeHostCA::performScheduledLayerFlush()
 {
     {
-        RefPtr<LayerTreeHostCA> protect(this);
+        RefPtr<LayerTreeHostCA> protect( this );
         m_webPage->layoutIfNeeded();
 
-        if (!m_isValid)
+        if ( !m_isValid )
+        {
             return;
+        }
     }
 
-    if (!flushPendingLayerChanges())
+    if ( !flushPendingLayerChanges() )
+    {
         return;
+    }
 
     didPerformScheduledLayerFlush();
 }
 
 void LayerTreeHostCA::didPerformScheduledLayerFlush()
 {
-    if (m_notifyAfterScheduledLayerFlush) {
+    if ( m_notifyAfterScheduledLayerFlush )
+    {
         // Let the drawing area know that we've done a flush of the layer changes.
-        static_cast<DrawingAreaImpl*>(m_webPage->drawingArea())->layerHostDidFlushLayers();
+        static_cast<DrawingAreaImpl *>( m_webPage->drawingArea() )->layerHostDidFlushLayers();
         m_notifyAfterScheduledLayerFlush = false;
     }
 }
@@ -234,30 +259,33 @@ bool LayerTreeHostCA::flushPendingLayerChanges()
 {
     m_rootLayer->syncCompositingStateForThisLayerOnly();
     m_nonCompositedContentLayer->syncCompositingStateForThisLayerOnly();
-    if (m_pageOverlayLayer)
+
+    if ( m_pageOverlayLayer )
+    {
         m_pageOverlayLayer->syncCompositingStateForThisLayerOnly();
+    }
 
     return m_webPage->corePage()->mainFrame()->view()->syncCompositingStateIncludingSubframes();
 }
 
 void LayerTreeHostCA::createPageOverlayLayer()
 {
-    ASSERT(!m_pageOverlayLayer);
+    ASSERT( !m_pageOverlayLayer );
 
-    m_pageOverlayLayer = GraphicsLayer::create(this);
+    m_pageOverlayLayer = GraphicsLayer::create( this );
 #ifndef NDEBUG
-    m_pageOverlayLayer->setName("LayerTreeHost page overlay content");
+    m_pageOverlayLayer->setName( "LayerTreeHost page overlay content" );
 #endif
 
-    m_pageOverlayLayer->setDrawsContent(true);
-    m_pageOverlayLayer->setSize(m_webPage->size());
+    m_pageOverlayLayer->setDrawsContent( true );
+    m_pageOverlayLayer->setSize( m_webPage->size() );
 
-    m_rootLayer->addChild(m_pageOverlayLayer.get());
+    m_rootLayer->addChild( m_pageOverlayLayer.get() );
 }
 
 void LayerTreeHostCA::destroyPageOverlayLayer()
 {
-    ASSERT(m_pageOverlayLayer);
+    ASSERT( m_pageOverlayLayer );
     m_pageOverlayLayer->removeFromParent();
     m_pageOverlayLayer = nullptr;
 }

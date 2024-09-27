@@ -24,9 +24,10 @@
 #include <glib-object.h>
 #include <webkit/WebKitDOMEventTarget.h>
 
-namespace WebKit {
-WebCore::EventTarget*
-core(WebKitDOMEventTarget *request);
+namespace WebKit
+{
+WebCore::EventTarget *
+core( WebKitDOMEventTarget *request );
 } // namespace WebKit
 
 #endif /* WebKitDOMEventTargetPrivate_h */

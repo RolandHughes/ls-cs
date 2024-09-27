@@ -37,81 +37,108 @@
 #include "SchemeRegistry.h"
 #include <wtf/StdLibExtras.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 static SecurityOrigin::LocalLoadPolicy localLoadPolicy = SecurityOrigin::AllowLocalLoadsForLocalOnly;
 const int MaxAllowedPort = 65535;
 
 typedef Vector<OriginAccessEntry> OriginAccessWhiteList;
-typedef HashMap<String, OriginAccessWhiteList*> OriginAccessMap;
+typedef HashMap<String, OriginAccessWhiteList *> OriginAccessMap;
 
-static OriginAccessMap& originAccessMap()
+static OriginAccessMap &originAccessMap()
 {
-    DEFINE_STATIC_LOCAL(OriginAccessMap, originAccessMap, ());
+    DEFINE_STATIC_LOCAL( OriginAccessMap, originAccessMap, () );
     return originAccessMap;
 }
 
-static bool schemeRequiresAuthority(const String& scheme)
+static bool schemeRequiresAuthority( const String &scheme )
 {
-    DEFINE_STATIC_LOCAL(URLSchemesMap, schemes, ());
+    DEFINE_STATIC_LOCAL( URLSchemesMap, schemes, () );
 
-    if (schemes.isEmpty()) {
-        schemes.add("http");
-        schemes.add("https");
-        schemes.add("ftp");
+    if ( schemes.isEmpty() )
+    {
+        schemes.add( "http" );
+        schemes.add( "https" );
+        schemes.add( "ftp" );
     }
 
-    return schemes.contains(scheme);
+    return schemes.contains( scheme );
 }
 
 
-SecurityOrigin::SecurityOrigin(const KURL& url, SandboxFlags sandboxFlags)
-    : m_sandboxFlags(sandboxFlags)
-    , m_protocol(url.protocol().isNull() ? "" : url.protocol().lower())
-    , m_host(url.host().isNull() ? "" : url.host().lower())
-    , m_port(url.port())
-    , m_isUnique(isSandboxed(SandboxOrigin) || SchemeRegistry::shouldTreatURLSchemeAsNoAccess(m_protocol))
-    , m_universalAccess(false)
-    , m_domainWasSetInDOM(false)
-    , m_enforceFilePathSeparation(false)
+SecurityOrigin::SecurityOrigin( const KURL &url, SandboxFlags sandboxFlags )
+    : m_sandboxFlags( sandboxFlags )
+    , m_protocol( url.protocol().isNull() ? "" : url.protocol().lower() )
+    , m_host( url.host().isNull() ? "" : url.host().lower() )
+    , m_port( url.port() )
+    , m_isUnique( isSandboxed( SandboxOrigin ) || SchemeRegistry::shouldTreatURLSchemeAsNoAccess( m_protocol ) )
+    , m_universalAccess( false )
+    , m_domainWasSetInDOM( false )
+    , m_enforceFilePathSeparation( false )
 {
     // These protocols do not create security origins; the owner frame provides the origin
-    if (m_protocol == "about" || m_protocol == "javascript")
+    if ( m_protocol == "about" || m_protocol == "javascript" )
+    {
         m_protocol = "";
+    }
 
 #if ENABLE(BLOB) || ENABLE(FILE_SYSTEM)
     bool isBlobOrFileSystemProtocol = false;
 #if ENABLE(BLOB)
-    if (m_protocol == BlobURL::blobProtocol())
+
+    if ( m_protocol == BlobURL::blobProtocol() )
+    {
         isBlobOrFileSystemProtocol = true;
+    }
+
 #endif
 #if ENABLE(FILE_SYSTEM)
-    if (m_protocol == "filesystem")
+
+    if ( m_protocol == "filesystem" )
+    {
         isBlobOrFileSystemProtocol = true;
+    }
+
 #endif
-    if (isBlobOrFileSystemProtocol) {
-        KURL originURL(ParsedURLString, url.path());
-        if (originURL.isValid()) {
+
+    if ( isBlobOrFileSystemProtocol )
+    {
+        KURL originURL( ParsedURLString, url.path() );
+
+        if ( originURL.isValid() )
+        {
             m_protocol = originURL.protocol().lower();
             m_host = originURL.host().lower();
             m_port = originURL.port();
-        } else
+        }
+        else
+        {
             m_isUnique = true;
+        }
     }
+
 #endif
 
     // For edge case URLs that were probably misparsed, make sure that the origin is unique.
-    if (schemeRequiresAuthority(m_protocol) && m_host.isEmpty())
+    if ( schemeRequiresAuthority( m_protocol ) && m_host.isEmpty() )
+    {
         m_isUnique = true;
-    if (m_protocol.isEmpty())
+    }
+
+    if ( m_protocol.isEmpty() )
+    {
         m_isUnique = true;
+    }
 
     // document.domain starts as m_host, but can be set by the DOM.
     m_domain = m_host;
 
     // By default, only local SecurityOrigins can load local resources.
     m_canLoadLocalResources = isLocal();
-    if (m_canLoadLocalResources) {
+
+    if ( m_canLoadLocalResources )
+    {
         // Directories should never be readable.
         // Note that we do not do this check for blob or filesystem url because its origin is file:/// when it is created from local file urls.
 #if ENABLE(BLOB) || ENABLE(FILE_SYSTEM)
@@ -119,29 +146,35 @@ SecurityOrigin::SecurityOrigin(const KURL& url, SandboxFlags sandboxFlags)
 #else
         bool doDirectoryCheck = true;
 #endif
-        if (doDirectoryCheck && (!url.hasPath() || url.path().endsWith("/")))
+
+        if ( doDirectoryCheck && ( !url.hasPath() || url.path().endsWith( "/" ) ) )
+        {
             m_isUnique = true;
+        }
+
         // Store the path in case we are doing per-file origin checking.
         m_filePath = url.path();
     }
 
-    if (isDefaultPortForProtocol(m_port, m_protocol))
+    if ( isDefaultPortForProtocol( m_port, m_protocol ) )
+    {
         m_port = 0;
+    }
 }
 
-SecurityOrigin::SecurityOrigin(const SecurityOrigin* other)
-    : m_sandboxFlags(other->m_sandboxFlags)
-    , m_protocol(other->m_protocol.threadsafeCopy())
-    , m_host(other->m_host.threadsafeCopy())
-    , m_encodedHost(other->m_encodedHost.threadsafeCopy())
-    , m_domain(other->m_domain.threadsafeCopy())
-    , m_filePath(other->m_filePath.threadsafeCopy())
-    , m_port(other->m_port)
-    , m_isUnique(other->m_isUnique)
-    , m_universalAccess(other->m_universalAccess)
-    , m_domainWasSetInDOM(other->m_domainWasSetInDOM)
-    , m_canLoadLocalResources(other->m_canLoadLocalResources)
-    , m_enforceFilePathSeparation(other->m_enforceFilePathSeparation)
+SecurityOrigin::SecurityOrigin( const SecurityOrigin *other )
+    : m_sandboxFlags( other->m_sandboxFlags )
+    , m_protocol( other->m_protocol.threadsafeCopy() )
+    , m_host( other->m_host.threadsafeCopy() )
+    , m_encodedHost( other->m_encodedHost.threadsafeCopy() )
+    , m_domain( other->m_domain.threadsafeCopy() )
+    , m_filePath( other->m_filePath.threadsafeCopy() )
+    , m_port( other->m_port )
+    , m_isUnique( other->m_isUnique )
+    , m_universalAccess( other->m_universalAccess )
+    , m_domainWasSetInDOM( other->m_domainWasSetInDOM )
+    , m_canLoadLocalResources( other->m_canLoadLocalResources )
+    , m_enforceFilePathSeparation( other->m_enforceFilePathSeparation )
 {
 }
 
@@ -150,64 +183,81 @@ bool SecurityOrigin::isEmpty() const
     return m_protocol.isEmpty();
 }
 
-PassRefPtr<SecurityOrigin> SecurityOrigin::create(const KURL& url, SandboxFlags sandboxFlags)
+PassRefPtr<SecurityOrigin> SecurityOrigin::create( const KURL &url, SandboxFlags sandboxFlags )
 {
-    if (!url.isValid())
-        return adoptRef(new SecurityOrigin(KURL(), sandboxFlags));
-    return adoptRef(new SecurityOrigin(url, sandboxFlags));
+    if ( !url.isValid() )
+    {
+        return adoptRef( new SecurityOrigin( KURL(), sandboxFlags ) );
+    }
+
+    return adoptRef( new SecurityOrigin( url, sandboxFlags ) );
 }
 
 PassRefPtr<SecurityOrigin> SecurityOrigin::createEmpty()
 {
-    return create(KURL());
+    return create( KURL() );
 }
 
 PassRefPtr<SecurityOrigin> SecurityOrigin::threadsafeCopy()
 {
-    return adoptRef(new SecurityOrigin(this));
+    return adoptRef( new SecurityOrigin( this ) );
 }
 
-void SecurityOrigin::setDomainFromDOM(const String& newDomain)
+void SecurityOrigin::setDomainFromDOM( const String &newDomain )
 {
     m_domainWasSetInDOM = true;
     m_domain = newDomain.lower();
 }
 
-static HashSet<String>& schemesForbiddenFromDomainRelaxation()
+static HashSet<String> &schemesForbiddenFromDomainRelaxation()
 {
-    DEFINE_STATIC_LOCAL(HashSet<String>, schemes, ());
+    DEFINE_STATIC_LOCAL( HashSet<String>, schemes, () );
     return schemes;
 }
 
-void SecurityOrigin::setDomainRelaxationForbiddenForURLScheme(bool forbidden, const String& scheme)
+void SecurityOrigin::setDomainRelaxationForbiddenForURLScheme( bool forbidden, const String &scheme )
 {
-    if (scheme.isEmpty())
+    if ( scheme.isEmpty() )
+    {
         return;
+    }
 
-    if (forbidden)
-        schemesForbiddenFromDomainRelaxation().add(scheme);
+    if ( forbidden )
+    {
+        schemesForbiddenFromDomainRelaxation().add( scheme );
+    }
     else
-        schemesForbiddenFromDomainRelaxation().remove(scheme);
+    {
+        schemesForbiddenFromDomainRelaxation().remove( scheme );
+    }
 }
 
-bool SecurityOrigin::isDomainRelaxationForbiddenForURLScheme(const String& scheme)
+bool SecurityOrigin::isDomainRelaxationForbiddenForURLScheme( const String &scheme )
 {
-    if (scheme.isEmpty())
+    if ( scheme.isEmpty() )
+    {
         return false;
+    }
 
-    return schemesForbiddenFromDomainRelaxation().contains(scheme);
+    return schemesForbiddenFromDomainRelaxation().contains( scheme );
 }
 
-bool SecurityOrigin::canAccess(const SecurityOrigin* other) const
+bool SecurityOrigin::canAccess( const SecurityOrigin *other ) const
 {
-    if (m_universalAccess)
+    if ( m_universalAccess )
+    {
         return true;
+    }
 
-    if (this == other)
+    if ( this == other )
+    {
         return true;
+    }
 
-    if (isUnique() || other->isUnique())
+    if ( isUnique() || other->isUnique() )
+    {
         return false;
+    }
 
     // Here are two cases where we should permit access:
     //
@@ -230,60 +280,85 @@ bool SecurityOrigin::canAccess(const SecurityOrigin* other) const
     // this is a security vulnerability.
 
     bool canAccess = false;
-    if (m_protocol == other->m_protocol) {
-        if (!m_domainWasSetInDOM && !other->m_domainWasSetInDOM) {
-            if (m_host == other->m_host && m_port == other->m_port)
+
+    if ( m_protocol == other->m_protocol )
+    {
+        if ( !m_domainWasSetInDOM && !other->m_domainWasSetInDOM )
+        {
+            if ( m_host == other->m_host && m_port == other->m_port )
+            {
                 canAccess = true;
-        } else if (m_domainWasSetInDOM && other->m_domainWasSetInDOM) {
-            if (m_domain == other->m_domain)
+            }
+        }
+        else if ( m_domainWasSetInDOM && other->m_domainWasSetInDOM )
+        {
+            if ( m_domain == other->m_domain )
+            {
                 canAccess = true;
+            }
         }
     }
 
-    if (canAccess && isLocal())
-       canAccess = passesFileCheck(other);
+    if ( canAccess && isLocal() )
+    {
+        canAccess = passesFileCheck( other );
+    }
 
     return canAccess;
 }
 
-bool SecurityOrigin::passesFileCheck(const SecurityOrigin* other) const
+bool SecurityOrigin::passesFileCheck( const SecurityOrigin *other ) const
 {
-    ASSERT(isLocal() && other->isLocal());
+    ASSERT( isLocal() && other->isLocal() );
 
-    if (!m_enforceFilePathSeparation && !other->m_enforceFilePathSeparation)
+    if ( !m_enforceFilePathSeparation && !other->m_enforceFilePathSeparation )
+    {
         return true;
+    }
 
-    return (m_filePath == other->m_filePath);
+    return ( m_filePath == other->m_filePath );
 }
 
-bool SecurityOrigin::canRequest(const KURL& url) const
+bool SecurityOrigin::canRequest( const KURL &url ) const
 {
-    if (m_universalAccess)
+    if ( m_universalAccess )
+    {
         return true;
+    }
 
-    if (isUnique())
+    if ( isUnique() )
+    {
         return false;
+    }
 
-    RefPtr<SecurityOrigin> targetOrigin = SecurityOrigin::create(url);
+    RefPtr<SecurityOrigin> targetOrigin = SecurityOrigin::create( url );
 
-    if (targetOrigin->isUnique())
+    if ( targetOrigin->isUnique() )
+    {
         return false;
+    }
 
     // We call isSameSchemeHostPort here instead of canAccess because we want
     // to ignore document.domain effects.
-    if (isSameSchemeHostPort(targetOrigin.get()))
+    if ( isSameSchemeHostPort( targetOrigin.get() ) )
+    {
         return true;
+    }
 
-    if (isAccessWhiteListed(targetOrigin.get()))
+    if ( isAccessWhiteListed( targetOrigin.get() ) )
+    {
         return true;
+    }
 
     return false;
 }
 
-bool SecurityOrigin::taintsCanvas(const KURL& url) const
+bool SecurityOrigin::taintsCanvas( const KURL &url ) const
 {
-    if (canRequest(url))
+    if ( canRequest( url ) )
+    {
         return false;
+    }
 
     // This function exists because we treat data URLs as having a unique origin,
     // contrary to the current (9/19/2009) draft of the HTML5 specification.
@@ -291,56 +366,73 @@ bool SecurityOrigin::taintsCanvas(const KURL& url) const
     // we special case data URLs below. If we change to match HTML5 w.r.t.
     // data URL security, then we can remove this function in favor of
     // !canRequest.
-    if (url.protocolIsData())
+    if ( url.protocolIsData() )
+    {
         return false;
+    }
 
     return true;
 }
 
-bool SecurityOrigin::canReceiveDragData(const SecurityOrigin* dragInitiator) const
+bool SecurityOrigin::canReceiveDragData( const SecurityOrigin *dragInitiator ) const
 {
-    if (this == dragInitiator)
+    if ( this == dragInitiator )
+    {
         return true;
+    }
 
     // FIXME: Currently we treat data URLs as having a unique origin, contrary to the
     // current (9/19/2009) draft of the HTML5 specification. We still want to allow
     // drop across data URLs, so we special case data URLs below. If we change to
     // match HTML5 w.r.t. data URL security, then we can remove this check.
-    if (m_protocol == "data")
+    if ( m_protocol == "data" )
+    {
         return true;
+    }
 
-    return canAccess(dragInitiator);  
+    return canAccess( dragInitiator );
 }
 
-bool SecurityOrigin::isAccessWhiteListed(const SecurityOrigin* targetOrigin) const
+bool SecurityOrigin::isAccessWhiteListed( const SecurityOrigin *targetOrigin ) const
 {
-    if (OriginAccessWhiteList* list = originAccessMap().get(toString())) {
-        for (size_t i = 0; i < list->size();  ++i) {
-           if (list->at(i).matchesOrigin(*targetOrigin))
-               return true;
-       }
+    if ( OriginAccessWhiteList *list = originAccessMap().get( toString() ) )
+    {
+        for ( size_t i = 0; i < list->size();  ++i )
+        {
+            if ( list->at( i ).matchesOrigin( *targetOrigin ) )
+            {
+                return true;
+            }
+        }
     }
+
     return false;
 }
 
-bool SecurityOrigin::isAccessToURLWhiteListed(const KURL& url) const
+bool SecurityOrigin::isAccessToURLWhiteListed( const KURL &url ) const
 {
-    RefPtr<SecurityOrigin> targetOrigin = SecurityOrigin::create(url);
-    return isAccessWhiteListed(targetOrigin.get());
+    RefPtr<SecurityOrigin> targetOrigin = SecurityOrigin::create( url );
+    return isAccessWhiteListed( targetOrigin.get() );
 }
 
-bool SecurityOrigin::canDisplay(const KURL& url) const
+bool SecurityOrigin::canDisplay( const KURL &url ) const
 {
     String protocol = url.protocol().lower();
 
-    if (SchemeRegistry::canDisplayOnlyIfCanRequest(protocol))
-        return canRequest(url);
+    if ( SchemeRegistry::canDisplayOnlyIfCanRequest( protocol ) )
+    {
+        return canRequest( url );
+    }
 
-    if (SchemeRegistry::shouldTreatURLSchemeAsDisplayIsolated(protocol))
-        return m_protocol == protocol || isAccessToURLWhiteListed(url);
+    if ( SchemeRegistry::shouldTreatURLSchemeAsDisplayIsolated( protocol ) )
+    {
+        return m_protocol == protocol || isAccessToURLWhiteListed( url );
+    }
 
-    if (restrictAccessToLocal() && SchemeRegistry::shouldTreatURLSchemeAsLocal(protocol))
-        return canLoadLocalResources() || isAccessToURLWhiteListed(url);
+    if ( restrictAccessToLocal() && SchemeRegistry::shouldTreatURLSchemeAsLocal( protocol ) )
+    {
+        return canLoadLocalResources() || isAccessToURLWhiteListed( url );
+    }
 
     return true;
 }
@@ -352,7 +444,7 @@ void SecurityOrigin::grantLoadLocalResources()
     // in a SecurityOrigin is a security hazard because the documents without
     // the privilege can obtain the privilege by injecting script into the
     // documents that have been granted the privilege.
-    ASSERT(allowSubstituteDataAccessToLocal());
+    ASSERT( allowSubstituteDataAccessToLocal() );
     m_canLoadLocalResources = true;
 }
 
@@ -363,164 +455,213 @@ void SecurityOrigin::grantUniversalAccess()
 
 void SecurityOrigin::enforceFilePathSeparation()
 {
-    ASSERT(isLocal());
+    ASSERT( isLocal() );
     m_enforceFilePathSeparation = true;
 }
 
 bool SecurityOrigin::isLocal() const
 {
-    return SchemeRegistry::shouldTreatURLSchemeAsLocal(m_protocol);
+    return SchemeRegistry::shouldTreatURLSchemeAsLocal( m_protocol );
 }
 
-bool SecurityOrigin::isSecureTransitionTo(const KURL& url) const
-{ 
+bool SecurityOrigin::isSecureTransitionTo( const KURL &url ) const
+{
     // New window created by the application
-    if (isEmpty())
+    if ( isEmpty() )
+    {
         return true;
+    }
 
-    RefPtr<SecurityOrigin> other = SecurityOrigin::create(url);
-    return canAccess(other.get());
+    RefPtr<SecurityOrigin> other = SecurityOrigin::create( url );
+    return canAccess( other.get() );
 }
 
 String SecurityOrigin::toString() const
 {
-    if (isEmpty())
+    if ( isEmpty() )
+    {
         return "null";
+    }
 
-    if (isUnique())
+    if ( isUnique() )
+    {
         return "null";
+    }
 
-    if (m_protocol == "file") {
-        if (m_enforceFilePathSeparation)
+    if ( m_protocol == "file" )
+    {
+        if ( m_enforceFilePathSeparation )
+        {
             return "null";
+        }
+
         return "file://";
     }
 
     Vector<UChar> result;
-    result.reserveInitialCapacity(m_protocol.length() + m_host.length() + 10);
-    append(result, m_protocol);
-    append(result, "://");
-    append(result, m_host);
+    result.reserveInitialCapacity( m_protocol.length() + m_host.length() + 10 );
+    append( result, m_protocol );
+    append( result, "://" );
+    append( result, m_host );
 
-    if (m_port) {
-        append(result, ":");
-        append(result, String::number(m_port));
+    if ( m_port )
+    {
+        append( result, ":" );
+        append( result, String::number( m_port ) );
     }
 
-    return String::adopt(result);
+    return String::adopt( result );
 }
 
-PassRefPtr<SecurityOrigin> SecurityOrigin::createFromString(const String& originString)
+PassRefPtr<SecurityOrigin> SecurityOrigin::createFromString( const String &originString )
 {
-    return SecurityOrigin::create(KURL(KURL(), originString));
+    return SecurityOrigin::create( KURL( KURL(), originString ) );
 }
 
 static const char SeparatorCharacter = '_';
 
-PassRefPtr<SecurityOrigin> SecurityOrigin::createFromDatabaseIdentifier(const String& databaseIdentifier)
-{ 
+PassRefPtr<SecurityOrigin> SecurityOrigin::createFromDatabaseIdentifier( const String &databaseIdentifier )
+{
     // Make sure there's a first separator
-    size_t separator1 = databaseIdentifier.find(SeparatorCharacter);
-    if (separator1 == notFound)
-        return create(KURL());
-        
+    size_t separator1 = databaseIdentifier.find( SeparatorCharacter );
+
+    if ( separator1 == notFound )
+    {
+        return create( KURL() );
+    }
+
     // Make sure there's a second separator
-    size_t separator2 = databaseIdentifier.reverseFind(SeparatorCharacter);
-    if (separator2 == notFound)
-        return create(KURL());
-        
+    size_t separator2 = databaseIdentifier.reverseFind( SeparatorCharacter );
+
+    if ( separator2 == notFound )
+    {
+        return create( KURL() );
+    }
+
     // Ensure there were at least 2 separator characters. Some hostnames on intranets have
     // underscores in them, so we'll assume that any additional underscores are part of the host.
-    if (separator1 == separator2)
-        return create(KURL());
-        
+    if ( separator1 == separator2 )
+    {
+        return create( KURL() );
+    }
+
     // Make sure the port section is a valid port number or doesn't exist
     bool portOkay;
-    int port = databaseIdentifier.right(databaseIdentifier.length() - separator2 - 1).toInt(&portOkay);
-    bool portAbsent = (separator2 == databaseIdentifier.length() - 1);
-    if (!(portOkay || portAbsent))
-        return create(KURL());
-    
-    if (port < 0 || port > MaxAllowedPort)
-        return create(KURL());
-        
+    int port = databaseIdentifier.right( databaseIdentifier.length() - separator2 - 1 ).toInt( &portOkay );
+    bool portAbsent = ( separator2 == databaseIdentifier.length() - 1 );
+
+    if ( !( portOkay || portAbsent ) )
+    {
+        return create( KURL() );
+    }
+
+    if ( port < 0 || port > MaxAllowedPort )
+    {
+        return create( KURL() );
+    }
+
     // Split out the 3 sections of data
-    String protocol = databaseIdentifier.substring(0, separator1);
-    String host = databaseIdentifier.substring(separator1 + 1, separator2 - separator1 - 1);
-    
-    host = decodeURLEscapeSequences(host);
-    return create(KURL(KURL(), protocol + "://" + host + ":" + String::number(port)));
+    String protocol = databaseIdentifier.substring( 0, separator1 );
+    String host = databaseIdentifier.substring( separator1 + 1, separator2 - separator1 - 1 );
+
+    host = decodeURLEscapeSequences( host );
+    return create( KURL( KURL(), protocol + "://" + host + ":" + String::number( port ) ) );
 }
 
-PassRefPtr<SecurityOrigin> SecurityOrigin::create(const String& protocol, const String& host, int port)
+PassRefPtr<SecurityOrigin> SecurityOrigin::create( const String &protocol, const String &host, int port )
 {
-    if (port < 0 || port > MaxAllowedPort)
-        create(KURL());
-    String decodedHost = decodeURLEscapeSequences(host);
-    return create(KURL(KURL(), protocol + "://" + host + ":" + String::number(port)));
+    if ( port < 0 || port > MaxAllowedPort )
+    {
+        create( KURL() );
+    }
+
+    String decodedHost = decodeURLEscapeSequences( host );
+    return create( KURL( KURL(), protocol + "://" + host + ":" + String::number( port ) ) );
 }
 
-String SecurityOrigin::databaseIdentifier() const 
+String SecurityOrigin::databaseIdentifier() const
 {
-    String separatorString(&SeparatorCharacter, 1);
+    String separatorString( &SeparatorCharacter, 1 );
 
-    if (m_encodedHost.isEmpty())
-        m_encodedHost = encodeForFileName(m_host);
+    if ( m_encodedHost.isEmpty() )
+    {
+        m_encodedHost = encodeForFileName( m_host );
+    }
 
-    return m_protocol + separatorString + m_encodedHost + separatorString + String::number(m_port); 
+    return m_protocol + separatorString + m_encodedHost + separatorString + String::number( m_port );
 }
 
-bool SecurityOrigin::equal(const SecurityOrigin* other) const 
+bool SecurityOrigin::equal( const SecurityOrigin *other ) const
 {
-    if (other == this)
+    if ( other == this )
+    {
         return true;
-    
-    if (!isSameSchemeHostPort(other))
-        return false;
+    }
 
-    if (m_domainWasSetInDOM != other->m_domainWasSetInDOM)
+    if ( !isSameSchemeHostPort( other ) )
+    {
         return false;
+    }
 
-    if (m_domainWasSetInDOM && m_domain != other->m_domain)
+    if ( m_domainWasSetInDOM != other->m_domainWasSetInDOM )
+    {
         return false;
+    }
+
+    if ( m_domainWasSetInDOM && m_domain != other->m_domain )
+    {
+        return false;
+    }
 
     return true;
 }
 
-bool SecurityOrigin::isSameSchemeHostPort(const SecurityOrigin* other) const 
+bool SecurityOrigin::isSameSchemeHostPort( const SecurityOrigin *other ) const
 {
-    if (m_host != other->m_host)
+    if ( m_host != other->m_host )
+    {
         return false;
+    }
 
-    if (m_protocol != other->m_protocol)
+    if ( m_protocol != other->m_protocol )
+    {
         return false;
+    }
 
-    if (m_port != other->m_port)
+    if ( m_port != other->m_port )
+    {
         return false;
+    }
 
-    if (isLocal() && !passesFileCheck(other))
+    if ( isLocal() && !passesFileCheck( other ) )
+    {
         return false;
+    }
 
     return true;
 }
 
-bool SecurityOrigin::shouldHideReferrer(const KURL& url, const String& referrer)
+bool SecurityOrigin::shouldHideReferrer( const KURL &url, const String &referrer )
 {
-    bool referrerIsSecureURL = protocolIs(referrer, "https");
-    bool referrerIsWebURL = referrerIsSecureURL || protocolIs(referrer, "http");
+    bool referrerIsSecureURL = protocolIs( referrer, "https" );
+    bool referrerIsWebURL = referrerIsSecureURL || protocolIs( referrer, "http" );
 
-    if (!referrerIsWebURL)
+    if ( !referrerIsWebURL )
+    {
         return true;
+    }
 
-    if (!referrerIsSecureURL)
+    if ( !referrerIsSecureURL )
+    {
         return false;
+    }
 
-    bool URLIsSecureURL = url.protocolIs("https");
+    bool URLIsSecureURL = url.protocolIs( "https" );
 
     return !URLIsSecureURL;
 }
 
-void SecurityOrigin::setLocalLoadPolicy(LocalLoadPolicy policy)
+void SecurityOrigin::setLocalLoadPolicy( LocalLoadPolicy policy )
 {
     localLoadPolicy = policy;
 }
@@ -535,54 +676,75 @@ bool SecurityOrigin::allowSubstituteDataAccessToLocal()
     return localLoadPolicy != SecurityOrigin::AllowLocalLoadsForLocalOnly;
 }
 
-void SecurityOrigin::addOriginAccessWhitelistEntry(const SecurityOrigin& sourceOrigin, const String& destinationProtocol, const String& destinationDomains, bool allowDestinationSubdomains)
+void SecurityOrigin::addOriginAccessWhitelistEntry( const SecurityOrigin &sourceOrigin, const String &destinationProtocol,
+        const String &destinationDomains, bool allowDestinationSubdomains )
 {
-    ASSERT(isMainThread());
-    ASSERT(!sourceOrigin.isEmpty());
-    if (sourceOrigin.isEmpty())
+    ASSERT( isMainThread() );
+    ASSERT( !sourceOrigin.isEmpty() );
+
+    if ( sourceOrigin.isEmpty() )
+    {
         return;
+    }
 
     String sourceString = sourceOrigin.toString();
-    pair<OriginAccessMap::iterator, bool> result = originAccessMap().add(sourceString, 0);
-    if (result.second)
-        result.first->second = new OriginAccessWhiteList;
+    pair<OriginAccessMap::iterator, bool> result = originAccessMap().add( sourceString, 0 );
 
-    OriginAccessWhiteList* list = result.first->second;
-    list->append(OriginAccessEntry(destinationProtocol, destinationDomains, allowDestinationSubdomains ? OriginAccessEntry::AllowSubdomains : OriginAccessEntry::DisallowSubdomains));
+    if ( result.second )
+    {
+        result.first->second = new OriginAccessWhiteList;
+    }
+
+    OriginAccessWhiteList *list = result.first->second;
+    list->append( OriginAccessEntry( destinationProtocol, destinationDomains,
+                                     allowDestinationSubdomains ? OriginAccessEntry::AllowSubdomains : OriginAccessEntry::DisallowSubdomains ) );
 }
 
-void SecurityOrigin::removeOriginAccessWhitelistEntry(const SecurityOrigin& sourceOrigin, const String& destinationProtocol, const String& destinationDomains, bool allowDestinationSubdomains)
+void SecurityOrigin::removeOriginAccessWhitelistEntry( const SecurityOrigin &sourceOrigin, const String &destinationProtocol,
+        const String &destinationDomains, bool allowDestinationSubdomains )
 {
-    ASSERT(isMainThread());
-    ASSERT(!sourceOrigin.isEmpty());
-    if (sourceOrigin.isEmpty())
+    ASSERT( isMainThread() );
+    ASSERT( !sourceOrigin.isEmpty() );
+
+    if ( sourceOrigin.isEmpty() )
+    {
         return;
+    }
 
     String sourceString = sourceOrigin.toString();
-    OriginAccessMap& map = originAccessMap();
-    OriginAccessMap::iterator it = map.find(sourceString);
-    if (it == map.end())
+    OriginAccessMap &map = originAccessMap();
+    OriginAccessMap::iterator it = map.find( sourceString );
+
+    if ( it == map.end() )
+    {
         return;
+    }
 
-    OriginAccessWhiteList* list = it->second;
-    size_t index = list->find(OriginAccessEntry(destinationProtocol, destinationDomains, allowDestinationSubdomains ? OriginAccessEntry::AllowSubdomains : OriginAccessEntry::DisallowSubdomains));
-    if (index == notFound)
+    OriginAccessWhiteList *list = it->second;
+    size_t index = list->find( OriginAccessEntry( destinationProtocol, destinationDomains,
+                               allowDestinationSubdomains ? OriginAccessEntry::AllowSubdomains : OriginAccessEntry::DisallowSubdomains ) );
+
+    if ( index == notFound )
+    {
         return;
+    }
 
-    list->remove(index);
+    list->remove( index );
 
-    if (!list->isEmpty())
+    if ( !list->isEmpty() )
+    {
         return;
+    }
 
-    map.remove(it);
+    map.remove( it );
     delete list;
 }
 
 void SecurityOrigin::resetOriginAccessWhitelists()
 {
-    ASSERT(isMainThread());
-    OriginAccessMap& map = originAccessMap();
-    deleteAllValues(map);
+    ASSERT( isMainThread() );
+    OriginAccessMap &map = originAccessMap();
+    deleteAllValues( map );
     map.clear();
 }
 

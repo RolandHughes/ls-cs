@@ -24,13 +24,13 @@
 #include <wtf/Platform.h>
 
 #if COMPILER(GCC) || COMPILER(MINGW) || COMPILER(RVCT) || COMPILER(WINSCW) || COMPILER(GCCE)
-    #define WTF_ALIGN_OF(type) __alignof__(type)
-    #define WTF_ALIGNED(variable_type, variable, n) variable_type variable __attribute__((__aligned__(n)))
+#define WTF_ALIGN_OF(type) __alignof__(type)
+#define WTF_ALIGNED(variable_type, variable, n) variable_type variable __attribute__((__aligned__(n)))
 #elif COMPILER(MSVC)
-    #define WTF_ALIGN_OF(type) __alignof(type)
-    #define WTF_ALIGNED(variable_type, variable, n) __declspec(align(n)) variable_type variable
+#define WTF_ALIGN_OF(type) __alignof(type)
+#define WTF_ALIGNED(variable_type, variable, n) __declspec(align(n)) variable_type variable
 #else
-    #error WTF_ALIGN macros need alignment control.
+#error WTF_ALIGN macros need alignment control.
 #endif
 
 #endif // WTF_Alignment_h

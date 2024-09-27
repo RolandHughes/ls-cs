@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef YarrJIT_h
@@ -39,19 +39,22 @@
 #define YARR_CALL
 #endif
 
-namespace JSC {
+namespace JSC
+{
 
 class JSGlobalData;
 class ExecutablePool;
 
-namespace Yarr {
+namespace Yarr
+{
 
-class YarrCodeBlock {
-    typedef int (*YarrJITCode)(const UChar* input, unsigned start, unsigned length, int* output) YARR_CALL;
+class YarrCodeBlock
+{
+    typedef int ( *YarrJITCode )( const UChar *input, unsigned start, unsigned length, int *output ) YARR_CALL;
 
 public:
     YarrCodeBlock()
-        : m_needFallBack(false)
+        : m_needFallBack( false )
     {
     }
 
@@ -59,17 +62,29 @@ public:
     {
     }
 
-    void setFallBack(bool fallback) { m_needFallBack = fallback; }
-    bool isFallBack() { return m_needFallBack; }
-    void set(MacroAssembler::CodeRef ref) { m_ref = ref; }
-
-    int execute(const UChar* input, unsigned start, unsigned length, int* output)
+    void setFallBack( bool fallback )
     {
-        return reinterpret_cast<YarrJITCode>(m_ref.m_code.executableAddress())(input, start, length, output);
+        m_needFallBack = fallback;
+    }
+    bool isFallBack()
+    {
+        return m_needFallBack;
+    }
+    void set( MacroAssembler::CodeRef ref )
+    {
+        m_ref = ref;
+    }
+
+    int execute( const UChar *input, unsigned start, unsigned length, int *output )
+    {
+        return reinterpret_cast<YarrJITCode>( m_ref.m_code.executableAddress() )( input, start, length, output );
     }
 
 #if ENABLE(REGEXP_TRACING)
-    void *getAddr() { return m_ref.m_code.executableAddress(); }
+    void *getAddr()
+    {
+        return m_ref.m_code.executableAddress();
+    }
 #endif
 
 private:
@@ -77,10 +92,11 @@ private:
     bool m_needFallBack;
 };
 
-void jitCompile(YarrPattern&, JSGlobalData*, YarrCodeBlock& jitObject);
-int execute(YarrCodeBlock& jitObject, const UChar* input, unsigned start, unsigned length, int* output);
+void jitCompile( YarrPattern &, JSGlobalData *, YarrCodeBlock &jitObject );
+int execute( YarrCodeBlock &jitObject, const UChar *input, unsigned start, unsigned length, int *output );
 
-} } // namespace JSC::Yarr
+}
+} // namespace JSC::Yarr
 
 #endif
 

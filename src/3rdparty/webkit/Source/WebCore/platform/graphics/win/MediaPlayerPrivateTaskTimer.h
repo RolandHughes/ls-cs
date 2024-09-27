@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef MediaPlayerPrivateTaskTimer_h
@@ -28,19 +28,21 @@
 
 #include "Timer.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class MediaPlayerPrivateTaskTimer : TimerBase {
+class MediaPlayerPrivateTaskTimer : TimerBase
+{
 public:
     static void initialize();
-    
+
 private:
-    static void setDelay(double);
+    static void setDelay( double );
     static void stopTaskTimer();
 
     void fired();
 
-    static MediaPlayerPrivateTaskTimer* s_timer;
+    static MediaPlayerPrivateTaskTimer *s_timer;
 };
 
 }

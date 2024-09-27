@@ -33,45 +33,57 @@
 #include <wtf/HashMap.h>
 #include <wtf/OwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-struct ClipperData {
+struct ClipperData
+{
     WTF_MAKE_FAST_ALLOCATED;
 public:
     OwnPtr<ImageBuffer> clipMaskImage;
 };
 
-class RenderSVGResourceClipper : public RenderSVGResourceContainer {
+class RenderSVGResourceClipper : public RenderSVGResourceContainer
+{
 public:
-    RenderSVGResourceClipper(SVGClipPathElement*);
+    RenderSVGResourceClipper( SVGClipPathElement * );
     virtual ~RenderSVGResourceClipper();
 
-    virtual const char* renderName() const { return "RenderSVGResourceClipper"; }
+    virtual const char *renderName() const
+    {
+        return "RenderSVGResourceClipper";
+    }
 
-    virtual void removeAllClientsFromCache(bool markForInvalidation = true);
-    virtual void removeClientFromCache(RenderObject*, bool markForInvalidation = true);
+    virtual void removeAllClientsFromCache( bool markForInvalidation = true );
+    virtual void removeClientFromCache( RenderObject *, bool markForInvalidation = true );
 
-    virtual bool applyResource(RenderObject*, RenderStyle*, GraphicsContext*&, unsigned short resourceMode);
-    virtual FloatRect resourceBoundingBox(RenderObject*);
+    virtual bool applyResource( RenderObject *, RenderStyle *, GraphicsContext *&, unsigned short resourceMode );
+    virtual FloatRect resourceBoundingBox( RenderObject * );
 
-    virtual RenderSVGResourceType resourceType() const { return ClipperResourceType; }
-    
-    bool hitTestClipContent(const FloatRect&, const FloatPoint&);
+    virtual RenderSVGResourceType resourceType() const
+    {
+        return ClipperResourceType;
+    }
 
-    SVGUnitTypes::SVGUnitType clipPathUnits() const { return toUnitType(static_cast<SVGClipPathElement*>(node())->clipPathUnits()); }
+    bool hitTestClipContent( const FloatRect &, const FloatPoint & );
+
+    SVGUnitTypes::SVGUnitType clipPathUnits() const
+    {
+        return toUnitType( static_cast<SVGClipPathElement *>( node() )->clipPathUnits() );
+    }
 
     static RenderSVGResourceType s_resourceType;
 private:
     // clipPath can be clipped too, but don't have a boundingBox or repaintRect. So we can't call
     // applyResource directly and use the rects from the object, since they are empty for RenderSVGResources
-    bool applyClippingToContext(RenderObject*, const FloatRect&, const FloatRect&, GraphicsContext*);
-    bool pathOnlyClipping(GraphicsContext*, const FloatRect&);
-    bool drawContentIntoMaskImage(ClipperData*, const FloatRect& objectBoundingBox);
+    bool applyClippingToContext( RenderObject *, const FloatRect &, const FloatRect &, GraphicsContext * );
+    bool pathOnlyClipping( GraphicsContext *, const FloatRect & );
+    bool drawContentIntoMaskImage( ClipperData *, const FloatRect &objectBoundingBox );
     void calculateClipContentRepaintRect();
 
     bool m_invalidationBlocked;
     FloatRect m_clipBoundaries;
-    HashMap<RenderObject*, ClipperData*> m_clipper;
+    HashMap<RenderObject *, ClipperData *> m_clipper;
 };
 
 }

@@ -26,30 +26,33 @@
 
 using namespace QPatternist;
 
-Item CurrentFN::evaluateSingleton(const DynamicContext::Ptr &context) const
+Item CurrentFN::evaluateSingleton( const DynamicContext::Ptr &context ) const
 {
-   return context->currentItem();
+    return context->currentItem();
 }
 
-Expression::Ptr CurrentFN::compress(const StaticContext::Ptr &context)
+Expression::Ptr CurrentFN::compress( const StaticContext::Ptr &context )
 {
-   m_itemType = context->currentItemType();
-   return FunctionCall::compress(context);
+    m_itemType = context->currentItemType();
+    return FunctionCall::compress( context );
 }
 
-Expression::Ptr CurrentFN::typeCheck(const StaticContext::Ptr &context,
-                                     const SequenceType::Ptr &reqType)
+Expression::Ptr CurrentFN::typeCheck( const StaticContext::Ptr &context,
+                                      const SequenceType::Ptr &reqType )
 {
-   m_itemType = context->currentItemType();
-   return FunctionCall::typeCheck(context, reqType);
+    m_itemType = context->currentItemType();
+    return FunctionCall::typeCheck( context, reqType );
 }
 
 SequenceType::Ptr CurrentFN::staticType() const
 {
-   if (m_itemType) {
-      return makeGenericSequenceType(m_itemType, Cardinality::exactlyOne());
-   } else {
-      return CommonSequenceTypes::ExactlyOneItem;
-   }
+    if ( m_itemType )
+    {
+        return makeGenericSequenceType( m_itemType, Cardinality::exactlyOne() );
+    }
+    else
+    {
+        return CommonSequenceTypes::ExactlyOneItem;
+    }
 }
 

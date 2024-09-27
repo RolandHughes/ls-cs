@@ -34,14 +34,14 @@ class QScriptDebuggerConsoleCommandJob;
 
 class QScriptDebuggerConsoleCommandJobPrivate : public QScriptDebuggerCommandSchedulerJobPrivate
 {
-   Q_DECLARE_PUBLIC(QScriptDebuggerConsoleCommandJob)
+    Q_DECLARE_PUBLIC( QScriptDebuggerConsoleCommandJob )
 
- public:
-   QScriptDebuggerConsoleCommandJobPrivate();
-   ~QScriptDebuggerConsoleCommandJobPrivate();
+public:
+    QScriptDebuggerConsoleCommandJobPrivate();
+    ~QScriptDebuggerConsoleCommandJobPrivate();
 
-   QScriptDebuggerConsole *console;
-   QScriptMessageHandlerInterface *messageHandler;
+    QScriptDebuggerConsole *console;
+    QScriptMessageHandlerInterface *messageHandler;
 };
 
 QT_END_NAMESPACE

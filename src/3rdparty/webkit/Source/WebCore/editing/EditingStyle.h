@@ -39,7 +39,8 @@
 #include <wtf/RefPtr.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class CSSStyleDeclaration;
 class CSSComputedStyleDeclaration;
@@ -56,7 +57,8 @@ class StyledElement;
 
 enum TriState { FalseTriState, TrueTriState, MixedTriState };
 
-class EditingStyle : public RefCounted<EditingStyle> {
+class EditingStyle : public RefCounted<EditingStyle>
+{
 public:
 
     enum PropertiesToInclude { AllProperties, OnlyInheritableProperties, InheritablePropertiesAndBackgroundColorInEffect };
@@ -66,78 +68,97 @@ public:
 
     static PassRefPtr<EditingStyle> create()
     {
-        return adoptRef(new EditingStyle());
+        return adoptRef( new EditingStyle() );
     }
 
-    static PassRefPtr<EditingStyle> create(Node* node, PropertiesToInclude propertiesToInclude = OnlyInheritableProperties)
+    static PassRefPtr<EditingStyle> create( Node *node, PropertiesToInclude propertiesToInclude = OnlyInheritableProperties )
     {
-        return adoptRef(new EditingStyle(node, propertiesToInclude));
+        return adoptRef( new EditingStyle( node, propertiesToInclude ) );
     }
 
-    static PassRefPtr<EditingStyle> create(const Position& position, PropertiesToInclude propertiesToInclude = OnlyInheritableProperties)
+    static PassRefPtr<EditingStyle> create( const Position &position,
+                                            PropertiesToInclude propertiesToInclude = OnlyInheritableProperties )
     {
-        return adoptRef(new EditingStyle(position, propertiesToInclude));
+        return adoptRef( new EditingStyle( position, propertiesToInclude ) );
     }
 
-    static PassRefPtr<EditingStyle> create(const CSSStyleDeclaration* style)
+    static PassRefPtr<EditingStyle> create( const CSSStyleDeclaration *style )
     {
-        return adoptRef(new EditingStyle(style));
+        return adoptRef( new EditingStyle( style ) );
     }
 
-    static PassRefPtr<EditingStyle> create(int propertyID, const String& value)
+    static PassRefPtr<EditingStyle> create( int propertyID, const String &value )
     {
-        return adoptRef(new EditingStyle(propertyID, value));
+        return adoptRef( new EditingStyle( propertyID, value ) );
     }
 
     ~EditingStyle();
 
-    CSSMutableStyleDeclaration* style() { return m_mutableStyle.get(); }
-    bool textDirection(WritingDirection&) const;
+    CSSMutableStyleDeclaration *style()
+    {
+        return m_mutableStyle.get();
+    }
+    bool textDirection( WritingDirection & ) const;
     bool isEmpty() const;
-    void setStyle(PassRefPtr<CSSMutableStyleDeclaration>);
-    void overrideWithStyle(const CSSMutableStyleDeclaration*);
+    void setStyle( PassRefPtr<CSSMutableStyleDeclaration> );
+    void overrideWithStyle( const CSSMutableStyleDeclaration * );
     void clear();
     PassRefPtr<EditingStyle> copy() const;
     PassRefPtr<EditingStyle> extractAndRemoveBlockProperties();
     PassRefPtr<EditingStyle> extractAndRemoveTextDirection();
     void removeBlockProperties();
-    void removeStyleAddedByNode(Node*);
-    void removeStyleConflictingWithStyleOfNode(Node*);
+    void removeStyleAddedByNode( Node * );
+    void removeStyleConflictingWithStyleOfNode( Node * );
     void removeNonEditingProperties();
     void collapseTextDecorationProperties();
     enum ShouldIgnoreTextOnlyProperties { IgnoreTextOnlyProperties, DoNotIgnoreTextOnlyProperties };
-    TriState triStateOfStyle(CSSStyleDeclaration*, ShouldIgnoreTextOnlyProperties = DoNotIgnoreTextOnlyProperties) const;
-    bool conflictsWithInlineStyleOfElement(StyledElement* element) const { return conflictsWithInlineStyleOfElement(element, 0, 0); }
-    bool conflictsWithInlineStyleOfElement(StyledElement* element, EditingStyle* extractedStyle, Vector<CSSPropertyID>& conflictingProperties) const
+    TriState triStateOfStyle( CSSStyleDeclaration *, ShouldIgnoreTextOnlyProperties = DoNotIgnoreTextOnlyProperties ) const;
+    bool conflictsWithInlineStyleOfElement( StyledElement *element ) const
     {
-        return conflictsWithInlineStyleOfElement(element, extractedStyle, &conflictingProperties);
+        return conflictsWithInlineStyleOfElement( element, 0, 0 );
     }
-    bool conflictsWithImplicitStyleOfElement(HTMLElement*, EditingStyle* extractedStyle = 0, ShouldExtractMatchingStyle = DoNotExtractMatchingStyle) const;
-    bool conflictsWithImplicitStyleOfAttributes(HTMLElement*) const;
-    bool extractConflictingImplicitStyleOfAttributes(HTMLElement*, ShouldPreserveWritingDirection, EditingStyle* extractedStyle,
-            Vector<QualifiedName>& conflictingAttributes, ShouldExtractMatchingStyle) const;
-    bool styleIsPresentInComputedStyleOfNode(Node*) const;
-    void prepareToApplyAt(const Position&, ShouldPreserveWritingDirection = DoNotPreserveWritingDirection);
-    void mergeTypingStyle(Document*);
-    void mergeInlineStyleOfElement(StyledElement*);
+    bool conflictsWithInlineStyleOfElement( StyledElement *element, EditingStyle *extractedStyle,
+                                            Vector<CSSPropertyID> &conflictingProperties ) const
+    {
+        return conflictsWithInlineStyleOfElement( element, extractedStyle, &conflictingProperties );
+    }
+    bool conflictsWithImplicitStyleOfElement( HTMLElement *, EditingStyle *extractedStyle = 0,
+            ShouldExtractMatchingStyle = DoNotExtractMatchingStyle ) const;
+    bool conflictsWithImplicitStyleOfAttributes( HTMLElement * ) const;
+    bool extractConflictingImplicitStyleOfAttributes( HTMLElement *, ShouldPreserveWritingDirection, EditingStyle *extractedStyle,
+            Vector<QualifiedName> &conflictingAttributes, ShouldExtractMatchingStyle ) const;
+    bool styleIsPresentInComputedStyleOfNode( Node * ) const;
+    void prepareToApplyAt( const Position &, ShouldPreserveWritingDirection = DoNotPreserveWritingDirection );
+    void mergeTypingStyle( Document * );
+    void mergeInlineStyleOfElement( StyledElement * );
 
-    float fontSizeDelta() const { return m_fontSizeDelta; }
-    bool hasFontSizeDelta() const { return m_fontSizeDelta != NoFontDelta; }
-    bool shouldUseFixedDefaultFontSize() const { return m_shouldUseFixedDefaultFontSize; }
+    float fontSizeDelta() const
+    {
+        return m_fontSizeDelta;
+    }
+    bool hasFontSizeDelta() const
+    {
+        return m_fontSizeDelta != NoFontDelta;
+    }
+    bool shouldUseFixedDefaultFontSize() const
+    {
+        return m_shouldUseFixedDefaultFontSize;
+    }
 
 private:
     EditingStyle();
-    EditingStyle(Node*, PropertiesToInclude);
-    EditingStyle(const Position&, PropertiesToInclude);
-    EditingStyle(const CSSStyleDeclaration*);
-    EditingStyle(int propertyID, const String& value);
-    void init(Node*, PropertiesToInclude);
-    void removeTextFillAndStrokeColorsIfNeeded(RenderStyle*);
-    void setProperty(int propertyID, const String& value, bool important = false);
-    void replaceFontSizeByKeywordIfPossible(RenderStyle*, CSSComputedStyleDeclaration*);
+    EditingStyle( Node *, PropertiesToInclude );
+    EditingStyle( const Position &, PropertiesToInclude );
+    EditingStyle( const CSSStyleDeclaration * );
+    EditingStyle( int propertyID, const String &value );
+    void init( Node *, PropertiesToInclude );
+    void removeTextFillAndStrokeColorsIfNeeded( RenderStyle * );
+    void setProperty( int propertyID, const String &value, bool important = false );
+    void replaceFontSizeByKeywordIfPossible( RenderStyle *, CSSComputedStyleDeclaration * );
     void extractFontSizeDelta();
-    bool conflictsWithInlineStyleOfElement(StyledElement*, EditingStyle* extractedStyle, Vector<CSSPropertyID>* conflictingProperties) const;
-    void mergeStyle(CSSMutableStyleDeclaration*);
+    bool conflictsWithInlineStyleOfElement( StyledElement *, EditingStyle *extractedStyle,
+                                            Vector<CSSPropertyID> *conflictingProperties ) const;
+    void mergeStyle( CSSMutableStyleDeclaration * );
 
     RefPtr<CSSMutableStyleDeclaration> m_mutableStyle;
     bool m_shouldUseFixedDefaultFontSize;
@@ -147,44 +168,84 @@ private:
     friend class HTMLAttributeEquivalent;
 };
 
-class StyleChange {
+class StyleChange
+{
 public:
-    StyleChange(EditingStyle*, const Position&);
+    StyleChange( EditingStyle *, const Position & );
 
-    String cssStyle() const { return m_cssStyle; }
-    bool applyBold() const { return m_applyBold; }
-    bool applyItalic() const { return m_applyItalic; }
-    bool applyUnderline() const { return m_applyUnderline; }
-    bool applyLineThrough() const { return m_applyLineThrough; }
-    bool applySubscript() const { return m_applySubscript; }
-    bool applySuperscript() const { return m_applySuperscript; }
-    bool applyFontColor() const { return m_applyFontColor.length() > 0; }
-    bool applyFontFace() const { return m_applyFontFace.length() > 0; }
-    bool applyFontSize() const { return m_applyFontSize.length() > 0; }
+    String cssStyle() const
+    {
+        return m_cssStyle;
+    }
+    bool applyBold() const
+    {
+        return m_applyBold;
+    }
+    bool applyItalic() const
+    {
+        return m_applyItalic;
+    }
+    bool applyUnderline() const
+    {
+        return m_applyUnderline;
+    }
+    bool applyLineThrough() const
+    {
+        return m_applyLineThrough;
+    }
+    bool applySubscript() const
+    {
+        return m_applySubscript;
+    }
+    bool applySuperscript() const
+    {
+        return m_applySuperscript;
+    }
+    bool applyFontColor() const
+    {
+        return m_applyFontColor.length() > 0;
+    }
+    bool applyFontFace() const
+    {
+        return m_applyFontFace.length() > 0;
+    }
+    bool applyFontSize() const
+    {
+        return m_applyFontSize.length() > 0;
+    }
 
-    String fontColor() { return m_applyFontColor; }
-    String fontFace() { return m_applyFontFace; }
-    String fontSize() { return m_applyFontSize; }
+    String fontColor()
+    {
+        return m_applyFontColor;
+    }
+    String fontFace()
+    {
+        return m_applyFontFace;
+    }
+    String fontSize()
+    {
+        return m_applyFontSize;
+    }
 
-    bool operator==(const StyleChange& other)
+    bool operator==( const StyleChange &other )
     {
         return m_cssStyle == other.m_cssStyle
-            && m_applyBold == other.m_applyBold
-            && m_applyItalic == other.m_applyItalic
-            && m_applyUnderline == other.m_applyUnderline
-            && m_applyLineThrough == other.m_applyLineThrough
-            && m_applySubscript == other.m_applySubscript
-            && m_applySuperscript == other.m_applySuperscript
-            && m_applyFontColor == other.m_applyFontColor
-            && m_applyFontFace == other.m_applyFontFace
-            && m_applyFontSize == other.m_applyFontSize;
+               && m_applyBold == other.m_applyBold
+               && m_applyItalic == other.m_applyItalic
+               && m_applyUnderline == other.m_applyUnderline
+               && m_applyLineThrough == other.m_applyLineThrough
+               && m_applySubscript == other.m_applySubscript
+               && m_applySuperscript == other.m_applySuperscript
+               && m_applyFontColor == other.m_applyFontColor
+               && m_applyFontFace == other.m_applyFontFace
+               && m_applyFontSize == other.m_applyFontSize;
     }
-    bool operator!=(const StyleChange& other)
+    bool operator!=( const StyleChange &other )
     {
-        return !(*this == other);
+        return !( *this == other );
     }
 private:
-    void extractTextStyles(Document*, CSSMutableStyleDeclaration*, bool shouldUseFixedFontDefaultSize);
+    void extractTextStyles( Document *, CSSMutableStyleDeclaration *, bool shouldUseFixedFontDefaultSize );
 
     String m_cssStyle;
     bool m_applyBold;
@@ -199,11 +260,11 @@ private:
 };
 
 // FIXME: Remove these functions or make them non-global to discourage using CSSStyleDeclaration directly.
-int getIdentifierValue(CSSStyleDeclaration*, int propertyID);
+int getIdentifierValue( CSSStyleDeclaration *, int propertyID );
 enum LegacyFontSizeMode { AlwaysUseLegacyFontSize, UseLegacyFontSizeOnlyIfPixelValuesMatch };
-int legacyFontSizeFromCSSValue(Document*, CSSPrimitiveValue*, bool shouldUseFixedFontDefaultSize, LegacyFontSizeMode);
-bool hasTransparentBackgroundColor(CSSStyleDeclaration*);
-PassRefPtr<CSSValue> backgroundColorInEffect(Node*);
+int legacyFontSizeFromCSSValue( Document *, CSSPrimitiveValue *, bool shouldUseFixedFontDefaultSize, LegacyFontSizeMode );
+bool hasTransparentBackgroundColor( CSSStyleDeclaration * );
+PassRefPtr<CSSValue> backgroundColorInEffect( Node * );
 
 } // namespace WebCore
 

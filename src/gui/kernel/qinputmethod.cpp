@@ -30,7 +30,7 @@
 
 // internal
 QInputMethod::QInputMethod()
-   : d_ptr(new QInputMethodPrivate)
+    : d_ptr( new QInputMethodPrivate )
 {
 }
 
@@ -41,51 +41,56 @@ QInputMethod::~QInputMethod()
 
 QTransform QInputMethod::inputItemTransform() const
 {
-   Q_D(const QInputMethod);
-   return d->inputItemTransform;
+    Q_D( const QInputMethod );
+    return d->inputItemTransform;
 }
 
-void QInputMethod::setInputItemTransform(const QTransform &transform)
+void QInputMethod::setInputItemTransform( const QTransform &transform )
 {
-   Q_D(QInputMethod);
-   if (d->inputItemTransform == transform) {
-      return;
-   }
+    Q_D( QInputMethod );
 
-   d->inputItemTransform = transform;
-   emit cursorRectangleChanged();
+    if ( d->inputItemTransform == transform )
+    {
+        return;
+    }
+
+    d->inputItemTransform = transform;
+    emit cursorRectangleChanged();
 }
 
 QRectF QInputMethod::inputItemRectangle() const
 {
-   Q_D(const QInputMethod);
-   return d->inputRectangle;
+    Q_D( const QInputMethod );
+    return d->inputRectangle;
 }
 
-void QInputMethod::setInputItemRectangle(const QRectF &rect)
+void QInputMethod::setInputItemRectangle( const QRectF &rect )
 {
-   Q_D(QInputMethod);
-   d->inputRectangle = rect;
+    Q_D( QInputMethod );
+    d->inputRectangle = rect;
 }
 
 QRectF QInputMethod::cursorRectangle() const
 {
-   Q_D(const QInputMethod);
+    Q_D( const QInputMethod );
 
-   QObject *focusObject = qGuiApp->focusObject();
-   if (!focusObject) {
-      return QRectF();
-   }
+    QObject *focusObject = qGuiApp->focusObject();
 
-   QInputMethodQueryEvent query(Qt::ImCursorRectangle);
-   QGuiApplication::sendEvent(focusObject, &query);
-   QRectF r = query.value(Qt::ImCursorRectangle).toRectF();
+    if ( !focusObject )
+    {
+        return QRectF();
+    }
 
-   if (!r.isValid()) {
-      return QRectF();
-   }
+    QInputMethodQueryEvent query( Qt::ImCursorRectangle );
+    QGuiApplication::sendEvent( focusObject, &query );
+    QRectF r = query.value( Qt::ImCursorRectangle ).toRectF();
 
-   return d->inputItemTransform.mapRect(r);
+    if ( !r.isValid() )
+    {
+        return QRectF();
+    }
+
+    return d->inputItemTransform.mapRect( r );
 }
 
 /*!
@@ -97,12 +102,15 @@ QRectF QInputMethod::cursorRectangle() const
 */
 QRectF QInputMethod::keyboardRectangle() const
 {
-   Q_D(const QInputMethod);
-   QPlatformInputContext *ic = d->platformInputContext();
-   if (ic) {
-      return ic->keyboardRect();
-   }
-   return QRectF();
+    Q_D( const QInputMethod );
+    QPlatformInputContext *ic = d->platformInputContext();
+
+    if ( ic )
+    {
+        return ic->keyboardRect();
+    }
+
+    return QRectF();
 }
 
 /*!
@@ -116,11 +124,13 @@ QRectF QInputMethod::keyboardRectangle() const
 */
 void QInputMethod::show()
 {
-   Q_D(QInputMethod);
-   QPlatformInputContext *ic = d->platformInputContext();
-   if (ic) {
-      ic->showInputPanel();
-   }
+    Q_D( QInputMethod );
+    QPlatformInputContext *ic = d->platformInputContext();
+
+    if ( ic )
+    {
+        ic->showInputPanel();
+    }
 }
 
 /*!
@@ -132,11 +142,13 @@ void QInputMethod::show()
 */
 void QInputMethod::hide()
 {
-   Q_D(QInputMethod);
-   QPlatformInputContext *ic = d->platformInputContext();
-   if (ic) {
-      ic->hideInputPanel();
-   }
+    Q_D( QInputMethod );
+    QPlatformInputContext *ic = d->platformInputContext();
+
+    if ( ic )
+    {
+        ic->hideInputPanel();
+    }
 }
 
 /*!
@@ -150,12 +162,15 @@ void QInputMethod::hide()
 */
 bool QInputMethod::isVisible() const
 {
-   Q_D(const QInputMethod);
-   QPlatformInputContext *ic = d->platformInputContext();
-   if (ic) {
-      return ic->isInputPanelVisible();
-   }
-   return false;
+    Q_D( const QInputMethod );
+    QPlatformInputContext *ic = d->platformInputContext();
+
+    if ( ic )
+    {
+        return ic->isInputPanelVisible();
+    }
+
+    return false;
 }
 
 /*!
@@ -165,9 +180,9 @@ bool QInputMethod::isVisible() const
 
     \sa show(), hide()
 */
-void QInputMethod::setVisible(bool visible)
+void QInputMethod::setVisible( bool visible )
 {
-   visible ? show() : hide();
+    visible ? show() : hide();
 }
 
 /*!
@@ -182,12 +197,15 @@ void QInputMethod::setVisible(bool visible)
 
 bool QInputMethod::isAnimating() const
 {
-   Q_D(const QInputMethod);
-   QPlatformInputContext *ic = d->platformInputContext();
-   if (ic) {
-      return ic->isAnimating();
-   }
-   return false;
+    Q_D( const QInputMethod );
+    QPlatformInputContext *ic = d->platformInputContext();
+
+    if ( ic )
+    {
+        return ic->isAnimating();
+    }
+
+    return false;
 }
 
 /*!
@@ -196,12 +214,15 @@ bool QInputMethod::isAnimating() const
 */
 QLocale QInputMethod::locale() const
 {
-   Q_D(const QInputMethod);
-   QPlatformInputContext *ic = d->platformInputContext();
-   if (ic) {
-      return ic->locale();
-   }
-   return QLocale::c();
+    Q_D( const QInputMethod );
+    QPlatformInputContext *ic = d->platformInputContext();
+
+    if ( ic )
+    {
+        return ic->locale();
+    }
+
+    return QLocale::c();
 }
 
 /*!
@@ -210,12 +231,15 @@ QLocale QInputMethod::locale() const
 */
 Qt::LayoutDirection QInputMethod::inputDirection() const
 {
-   Q_D(const QInputMethod);
-   QPlatformInputContext *ic = d->platformInputContext();
-   if (ic) {
-      return ic->inputDirection();
-   }
-   return Qt::LeftToRight;
+    Q_D( const QInputMethod );
+    QPlatformInputContext *ic = d->platformInputContext();
+
+    if ( ic )
+    {
+        return ic->inputDirection();
+    }
+
+    return Qt::LeftToRight;
 }
 
 /*!
@@ -229,24 +253,28 @@ Qt::LayoutDirection QInputMethod::inputDirection() const
     to change as well. The attributes that often change together with cursor position
     have been grouped in Qt::ImQueryInput value for convenience.
 */
-void QInputMethod::update(Qt::InputMethodQueries queries)
+void QInputMethod::update( Qt::InputMethodQueries queries )
 {
-   Q_D(QInputMethod);
+    Q_D( QInputMethod );
 
-   if (queries & Qt::ImEnabled) {
-      QObject *focus = qApp->focusObject();
-      bool enabled = d->objectAcceptsInputMethod(focus);
-      QPlatformInputContextPrivate::setInputMethodAccepted(enabled);
-   }
+    if ( queries & Qt::ImEnabled )
+    {
+        QObject *focus = qApp->focusObject();
+        bool enabled = d->objectAcceptsInputMethod( focus );
+        QPlatformInputContextPrivate::setInputMethodAccepted( enabled );
+    }
 
-   QPlatformInputContext *ic = d->platformInputContext();
-   if (ic) {
-      ic->update(queries);
-   }
+    QPlatformInputContext *ic = d->platformInputContext();
 
-   if (queries & Qt::ImCursorRectangle) {
-      emit cursorRectangleChanged();
-   }
+    if ( ic )
+    {
+        ic->update( queries );
+    }
+
+    if ( queries & Qt::ImCursorRectangle )
+    {
+        emit cursorRectangleChanged();
+    }
 }
 
 /*!
@@ -257,11 +285,13 @@ void QInputMethod::update(Qt::InputMethodQueries queries)
 */
 void QInputMethod::reset()
 {
-   Q_D(QInputMethod);
-   QPlatformInputContext *ic = d->platformInputContext();
-   if (ic) {
-      ic->reset();
-   }
+    Q_D( QInputMethod );
+    QPlatformInputContext *ic = d->platformInputContext();
+
+    if ( ic )
+    {
+        ic->reset();
+    }
 }
 
 /*!
@@ -274,53 +304,61 @@ void QInputMethod::reset()
 */
 void QInputMethod::commit()
 {
-   Q_D(QInputMethod);
-   QPlatformInputContext *ic = d->platformInputContext();
-   if (ic) {
-      ic->commit();
-   }
+    Q_D( QInputMethod );
+    QPlatformInputContext *ic = d->platformInputContext();
+
+    if ( ic )
+    {
+        ic->commit();
+    }
 }
 
-void QInputMethod::invokeAction(Action a, int cursorPosition)
+void QInputMethod::invokeAction( Action a, int cursorPosition )
 {
-   Q_D(QInputMethod);
-   QPlatformInputContext *ic = d->platformInputContext();
-   if (ic) {
-      ic->invokeAction(a, cursorPosition);
-   }
+    Q_D( QInputMethod );
+    QPlatformInputContext *ic = d->platformInputContext();
+
+    if ( ic )
+    {
+        ic->invokeAction( a, cursorPosition );
+    }
 }
 
-bool QInputMethodPrivate::objectAcceptsInputMethod(QObject *object)
+bool QInputMethodPrivate::objectAcceptsInputMethod( QObject *object )
 {
-   bool enabled = false;
-   if (object) {
-      QInputMethodQueryEvent query(Qt::ImEnabled);
-      QGuiApplication::sendEvent(object, &query);
-      enabled = query.value(Qt::ImEnabled).toBool();
-   }
+    bool enabled = false;
 
-   return enabled;
+    if ( object )
+    {
+        QInputMethodQueryEvent query( Qt::ImEnabled );
+        QGuiApplication::sendEvent( object, &query );
+        enabled = query.value( Qt::ImEnabled ).toBool();
+    }
+
+    return enabled;
 }
 
-QVariant QInputMethod::queryFocusObject(Qt::InputMethodQuery query, QVariant argument)
+QVariant QInputMethod::queryFocusObject( Qt::InputMethodQuery query, QVariant argument )
 {
-   QVariant retval;
-   QObject *focusObject = qGuiApp->focusObject();
+    QVariant retval;
+    QObject *focusObject = qGuiApp->focusObject();
 
-   if (! focusObject) {
-      return retval;
-   }
+    if ( ! focusObject )
+    {
+        return retval;
+    }
 
-   bool newMethodWorks = QMetaObject::invokeMethod(focusObject, "inputMethodQuery", Qt::DirectConnection,
-                  Q_RETURN_ARG(QVariant, retval), Q_ARG(Qt::InputMethodQuery, query), Q_ARG(QVariant, argument));
+    bool newMethodWorks = QMetaObject::invokeMethod( focusObject, "inputMethodQuery", Qt::DirectConnection,
+                          Q_RETURN_ARG( QVariant, retval ), Q_ARG( Qt::InputMethodQuery, query ), Q_ARG( QVariant, argument ) );
 
-   if (newMethodWorks) {
-      return retval;
-   }
+    if ( newMethodWorks )
+    {
+        return retval;
+    }
 
-   QInputMethodQueryEvent queryEvent(query);
-   QCoreApplication::sendEvent(focusObject, &queryEvent);
+    QInputMethodQueryEvent queryEvent( query );
+    QCoreApplication::sendEvent( focusObject, &queryEvent );
 
-   return queryEvent.value(query);
+    return queryEvent.value( query );
 }
 

@@ -41,59 +41,59 @@ class QUrl;
 
 class AVFMediaRecorderControlIOS : public QMediaRecorderControl
 {
-   CS_OBJECT(AVFMediaRecorderControlIOS)
+    CS_OBJECT( AVFMediaRecorderControlIOS )
 
- public:
-   AVFMediaRecorderControlIOS(AVFCameraService *service, QObject *parent = nullptr);
-   ~AVFMediaRecorderControlIOS();
+public:
+    AVFMediaRecorderControlIOS( AVFCameraService *service, QObject *parent = nullptr );
+    ~AVFMediaRecorderControlIOS();
 
-   QUrl outputLocation() const override;
-   bool setOutputLocation(const QUrl &location) override;
+    QUrl outputLocation() const override;
+    bool setOutputLocation( const QUrl &location ) override;
 
-   QMediaRecorder::State state() const override;
-   QMediaRecorder::Status status() const override;
+    QMediaRecorder::State state() const override;
+    QMediaRecorder::Status status() const override;
 
-   qint64 duration() const override;
+    qint64 duration() const override;
 
-   bool isMuted() const override;
-   qreal volume() const override;
+    bool isMuted() const override;
+    qreal volume() const override;
 
-   void applySettings() override;
-   void unapplySettings();
+    void applySettings() override;
+    void unapplySettings();
 
-   CS_SLOT_1(Public, void setState(QMediaRecorder::State state)override)
-   CS_SLOT_2(setState)
+    CS_SLOT_1( Public, void setState( QMediaRecorder::State state )override )
+    CS_SLOT_2( setState )
 
-   CS_SLOT_1(Public, void setMuted(bool muted)override)
-   CS_SLOT_2(setMuted)
+    CS_SLOT_1( Public, void setMuted( bool muted )override )
+    CS_SLOT_2( setMuted )
 
-   CS_SLOT_1(Public, void setVolume(qreal volume)override)
-   CS_SLOT_2(setVolume)
+    CS_SLOT_1( Public, void setVolume( qreal volume )override )
+    CS_SLOT_2( setVolume )
 
- private:
-   void stopWriter();
+private:
+    void stopWriter();
 
-   AVFCameraService *m_service;
-   AVFScopedPointer<AVFMediaAssetWriter> m_writer;
+    AVFCameraService *m_service;
+    AVFScopedPointer<AVFMediaAssetWriter> m_writer;
 
-   QUrl m_outputLocation;
-   AVFStorageLocation m_storageLocation;
+    QUrl m_outputLocation;
+    AVFStorageLocation m_storageLocation;
 
-   QMediaRecorder::State m_state;
-   QMediaRecorder::Status m_lastStatus;
+    QMediaRecorder::State m_state;
+    QMediaRecorder::Status m_lastStatus;
 
-   NSDictionary *m_audioSettings;
-   NSDictionary *m_videoSettings;
-   QVideoOutputOrientationHandler m_orientationHandler;
+    NSDictionary *m_audioSettings;
+    NSDictionary *m_videoSettings;
+    QVideoOutputOrientationHandler m_orientationHandler;
 
-   Q_INVOKABLE void assetWriterStarted();
-   Q_INVOKABLE void assetWriterFinished();
+    Q_INVOKABLE void assetWriterStarted();
+    Q_INVOKABLE void assetWriterFinished();
 
-   CS_SLOT_1(Private, void captureModeChanged(QCamera::CaptureModes newMode))
-   CS_SLOT_2(captureModeChanged)
+    CS_SLOT_1( Private, void captureModeChanged( QCamera::CaptureModes newMode ) )
+    CS_SLOT_2( captureModeChanged )
 
-   CS_SLOT_1(Private, void cameraStatusChanged(QCamera::Status newStatus))
-   CS_SLOT_2(cameraStatusChanged)
+    CS_SLOT_1( Private, void cameraStatusChanged( QCamera::Status newStatus ) )
+    CS_SLOT_2( cameraStatusChanged )
 };
 
 #endif

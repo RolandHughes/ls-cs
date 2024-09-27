@@ -26,35 +26,49 @@
 #include "RenderWidget.h"
 
 
-namespace WebCore {
+namespace WebCore
+{
 
 class HTMLMeterElement;
 
-class RenderMeter : public RenderBlock {
+class RenderMeter : public RenderBlock
+{
 public:
-    RenderMeter(HTMLMeterElement*);
+    RenderMeter( HTMLMeterElement * );
     virtual ~RenderMeter();
 
 private:
     virtual void computeLogicalWidth();
     virtual void computeLogicalHeight();
 
-    virtual const char* renderName() const { return "RenderMeter"; }
-    virtual bool isMeter() const { return true; }
-    virtual bool requiresForcedStyleRecalcPropagation() const { return true; }
-    virtual bool canHaveChildren() const { return false; }
+    virtual const char *renderName() const
+    {
+        return "RenderMeter";
+    }
+    virtual bool isMeter() const
+    {
+        return true;
+    }
+    virtual bool requiresForcedStyleRecalcPropagation() const
+    {
+        return true;
+    }
+    virtual bool canHaveChildren() const
+    {
+        return false;
+    }
 
     double valueRatio() const;
 };
 
-inline RenderMeter* toRenderMeter(RenderObject* object)
+inline RenderMeter *toRenderMeter( RenderObject *object )
 {
-    ASSERT(!object || object->isMeter());
-    return static_cast<RenderMeter*>(object);
+    ASSERT( !object || object->isMeter() );
+    return static_cast<RenderMeter *>( object );
 }
 
 // This will catch anyone doing an unnecessary cast.
-void toRenderMeter(const RenderMeter*);
+void toRenderMeter( const RenderMeter * );
 
 } // namespace WebCore
 

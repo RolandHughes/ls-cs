@@ -31,7 +31,8 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
 PassOwnPtr<GraphicsContext> ShareableBitmap::createGraphicsContext()
 {
@@ -39,9 +40,9 @@ PassOwnPtr<GraphicsContext> ShareableBitmap::createGraphicsContext()
     return 0;
 }
 
-void ShareableBitmap::paint(GraphicsContext&, const IntPoint&, const IntRect&)
+void ShareableBitmap::paint( GraphicsContext &, const IntPoint &, const IntRect & )
 {
     notImplemented();
 }
-        
+
 } // namespace WebKit

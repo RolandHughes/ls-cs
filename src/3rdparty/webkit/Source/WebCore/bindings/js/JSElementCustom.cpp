@@ -6,13 +6,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -47,28 +47,40 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-JSValue toJSNewlyCreated(ExecState* exec, JSDOMGlobalObject* globalObject, Element* element)
+JSValue toJSNewlyCreated( ExecState *exec, JSDOMGlobalObject *globalObject, Element *element )
 {
-    if (!element)
+    if ( !element )
+    {
         return jsNull();
+    }
 
-    ASSERT(!getCachedWrapper(currentWorld(exec), element));
+    ASSERT( !getCachedWrapper( currentWorld( exec ), element ) );
 
-    JSDOMWrapper* wrapper;        
-    if (element->isHTMLElement())
-        wrapper = createJSHTMLWrapper(exec, globalObject, toHTMLElement(element));
+    JSDOMWrapper *wrapper;
+
+    if ( element->isHTMLElement() )
+    {
+        wrapper = createJSHTMLWrapper( exec, globalObject, toHTMLElement( element ) );
+    }
+
 #if ENABLE(SVG)
-    else if (element->isSVGElement())
-        wrapper = createJSSVGWrapper(exec, globalObject, static_cast<SVGElement*>(element));
+    else if ( element->isSVGElement() )
+    {
+        wrapper = createJSSVGWrapper( exec, globalObject, static_cast<SVGElement *>( element ) );
+    }
+
 #endif
     else
-        wrapper = CREATE_DOM_WRAPPER(exec, globalObject, Element, element);
+    {
+        wrapper = CREATE_DOM_WRAPPER( exec, globalObject, Element, element );
+    }
 
-    return wrapper;    
+    return wrapper;
 }
 
 } // namespace WebCore

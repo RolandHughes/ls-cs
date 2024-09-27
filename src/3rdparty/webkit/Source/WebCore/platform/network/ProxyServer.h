@@ -29,15 +29,18 @@
 #include <wtf/Vector.h>
 #include <wtf/text/WTFString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class KURL;
 class NetworkingContext;
 
 // Represents a single proxy server.
-class ProxyServer {
+class ProxyServer
+{
 public:
-    enum Type {
+    enum Type
+    {
         Direct,
         HTTP,
         HTTPS,
@@ -45,21 +48,30 @@ public:
     };
 
     ProxyServer()
-        : m_type(Direct)
-        , m_port(-1)
+        : m_type( Direct )
+        , m_port( -1 )
     {
     }
 
-    ProxyServer(Type type, const String& hostName, int port)
-        : m_type(type)
-        , m_hostName(hostName)
-        , m_port(port)
+    ProxyServer( Type type, const String &hostName, int port )
+        : m_type( type )
+        , m_hostName( hostName )
+        , m_port( port )
     {
     }
-        
-    Type type() const { return m_type; }
-    const String& hostName() const { return m_hostName; }
-    int port() const { return m_port; }
+
+    Type type() const
+    {
+        return m_type;
+    }
+    const String &hostName() const
+    {
+        return m_hostName;
+    }
+    int port() const
+    {
+        return m_port;
+    }
 
 private:
     Type m_type;
@@ -68,12 +80,12 @@ private:
 };
 
 // Return a vector of proxy servers for the given URL.
-Vector<ProxyServer> proxyServersForURL(const KURL&, const NetworkingContext*);
+Vector<ProxyServer> proxyServersForURL( const KURL &, const NetworkingContext * );
 
 // Converts the given vector of proxy servers to a PAC string, as described in
 // http://web.archive.org/web/20060424005037/wp.netscape.com/eng/mozilla/2.0/relnotes/demo/proxy-live.html
-String toString(const Vector<ProxyServer>&);
-    
+String toString( const Vector<ProxyServer> & );
+
 } // namespace WebCore
 
 #endif // ProxyServer_h

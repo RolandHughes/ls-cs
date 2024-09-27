@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef ClipboardMac_h
@@ -38,55 +38,61 @@ class NSImage;
 class NSPasteboard;
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Frame;
 class FileList;
 
-class ClipboardMac : public Clipboard, public CachedResourceClient {
+class ClipboardMac : public Clipboard, public CachedResourceClient
+{
     WTF_MAKE_FAST_ALLOCATED;
 public:
-    static PassRefPtr<ClipboardMac> create(ClipboardType clipboardType, NSPasteboard *pasteboard, ClipboardAccessPolicy policy, Frame* frame)
+    static PassRefPtr<ClipboardMac> create( ClipboardType clipboardType, NSPasteboard *pasteboard, ClipboardAccessPolicy policy,
+                                            Frame *frame )
     {
-        return adoptRef(new ClipboardMac(clipboardType, pasteboard, policy, frame));
+        return adoptRef( new ClipboardMac( clipboardType, pasteboard, policy, frame ) );
     }
 
     virtual ~ClipboardMac();
-    
-    void clearData(const String& type);
+
+    void clearData( const String &type );
     void clearAllData();
-    String getData(const String& type, bool& success) const;
-    bool setData(const String& type, const String& data);
-    
+    String getData( const String &type, bool &success ) const;
+    bool setData( const String &type, const String &data );
+
     virtual bool hasData();
-    
+
     // extensions beyond IE's API
     virtual HashSet<String> types() const;
     virtual PassRefPtr<FileList> files() const;
 
-    void setDragImage(CachedImage*, const IntPoint&);
-    void setDragImageElement(Node *, const IntPoint&);
-    
-    virtual DragImageRef createDragImage(IntPoint& dragLoc) const;
+    void setDragImage( CachedImage *, const IntPoint & );
+    void setDragImageElement( Node *, const IntPoint & );
+
+    virtual DragImageRef createDragImage( IntPoint &dragLoc ) const;
 #if ENABLE(DRAG_SUPPORT)
-    virtual void declareAndWriteDragImage(Element*, const KURL&, const String& title, Frame*);
+    virtual void declareAndWriteDragImage( Element *, const KURL &, const String &title, Frame * );
 #endif
-    virtual void writeRange(Range*, Frame* frame);
-    virtual void writeURL(const KURL&, const String&, Frame* frame);
-    virtual void writePlainText(const String&);
-    
+    virtual void writeRange( Range *, Frame *frame );
+    virtual void writeURL( const KURL &, const String &, Frame *frame );
+    virtual void writePlainText( const String & );
+
     // Methods for getting info in Cocoa's type system
-    NSImage *dragNSImage(NSPoint&) const; // loc converted from dragLoc, based on whole image size
-    NSPasteboard *pasteboard() { return m_pasteboard.get(); }
+    NSImage *dragNSImage( NSPoint & ) const; // loc converted from dragLoc, based on whole image size
+    NSPasteboard *pasteboard()
+    {
+        return m_pasteboard.get();
+    }
 
 private:
-    ClipboardMac(ClipboardType, NSPasteboard *, ClipboardAccessPolicy, Frame*);
+    ClipboardMac( ClipboardType, NSPasteboard *, ClipboardAccessPolicy, Frame * );
 
-    void setDragImage(CachedImage*, Node*, const IntPoint&);
+    void setDragImage( CachedImage *, Node *, const IntPoint & );
 
     RetainPtr<NSPasteboard> m_pasteboard;
     int m_changeCount;
-    Frame* m_frame; // used on the source side to generate dragging images
+    Frame *m_frame; // used on the source side to generate dragging images
 };
 
 }

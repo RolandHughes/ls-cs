@@ -29,20 +29,22 @@
 #include "HTMLInputStream.h"
 #include "HTMLToken.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class HTMLSourceTracker {
-    WTF_MAKE_NONCOPYABLE(HTMLSourceTracker);
+class HTMLSourceTracker
+{
+    WTF_MAKE_NONCOPYABLE( HTMLSourceTracker );
 public:
     HTMLSourceTracker();
 
     // FIXME: Once we move "end" into HTMLTokenizer, rename "start" to
     // something that makes it obvious that this method can be called multiple
     // times.
-    void start(const HTMLInputStream&, HTMLToken&);
-    void end(const HTMLInputStream&, HTMLToken&);
+    void start( const HTMLInputStream &, HTMLToken & );
+    void end( const HTMLInputStream &, HTMLToken & );
 
-    String sourceForToken(const HTMLToken&);
+    String sourceForToken( const HTMLToken & );
 
 private:
     String m_sourceFromPreviousSegments;

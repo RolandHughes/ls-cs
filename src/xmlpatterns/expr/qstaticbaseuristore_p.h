@@ -26,21 +26,22 @@
 
 #include "qsinglecontainer_p.h"
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class StaticBaseURIStore : public SingleContainer
 {
- public:
+public:
 
-   StaticBaseURIStore(const QUrl &baseURI,const Expression::Ptr &operand);
+    StaticBaseURIStore( const QUrl &baseURI,const Expression::Ptr &operand );
 
-   Expression::Ptr typeCheck(const StaticContext::Ptr &context, const SequenceType::Ptr &reqType) override;
-   SequenceType::Ptr staticType() const override;
-   SequenceType::List expectedOperandTypes() const override;
-   ExpressionVisitorResult::Ptr accept(const ExpressionVisitor::Ptr &visitor) const override;
+    Expression::Ptr typeCheck( const StaticContext::Ptr &context, const SequenceType::Ptr &reqType ) override;
+    SequenceType::Ptr staticType() const override;
+    SequenceType::List expectedOperandTypes() const override;
+    ExpressionVisitorResult::Ptr accept( const ExpressionVisitor::Ptr &visitor ) const override;
 
- private:
-   const QUrl m_baseURI;
+private:
+    const QUrl m_baseURI;
 };
 }
 

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef JSContextRef_h
@@ -56,14 +56,14 @@ JS_EXPORT JSContextGroupRef JSContextGroupCreate() AVAILABLE_IN_WEBKIT_VERSION_4
 @param group The JSContextGroup to retain.
 @result A JSContextGroup that is the same as group.
 */
-JS_EXPORT JSContextGroupRef JSContextGroupRetain(JSContextGroupRef group) AVAILABLE_IN_WEBKIT_VERSION_4_0;
+JS_EXPORT JSContextGroupRef JSContextGroupRetain( JSContextGroupRef group ) AVAILABLE_IN_WEBKIT_VERSION_4_0;
 
 /*
 @function
 @abstract Releases a JavaScript context group.
 @param group The JSContextGroup to release.
 */
-JS_EXPORT void JSContextGroupRelease(JSContextGroupRef group) AVAILABLE_IN_WEBKIT_VERSION_4_0;
+JS_EXPORT void JSContextGroupRelease( JSContextGroupRef group ) AVAILABLE_IN_WEBKIT_VERSION_4_0;
 
 /*
 @function
@@ -74,11 +74,11 @@ JS_EXPORT void JSContextGroupRelease(JSContextGroupRef group) AVAILABLE_IN_WEBKI
  In WebKit version 4.0 and later, the context is created in a unique context group.
  Therefore, scripts may execute in it concurrently with scripts executing in other contexts.
  However, you may not use values created in the context in other contexts.
-@param globalObjectClass The class to use when creating the global object. Pass 
+@param globalObjectClass The class to use when creating the global object. Pass
  NULL to use the default object class.
 @result A JSGlobalContext with a global object of class globalObjectClass.
 */
-JS_EXPORT JSGlobalContextRef JSGlobalContextCreate(JSClassRef globalObjectClass) AVAILABLE_WEBKIT_VERSION_3_0_AND_LATER;
+JS_EXPORT JSGlobalContextRef JSGlobalContextCreate( JSClassRef globalObjectClass ) AVAILABLE_WEBKIT_VERSION_3_0_AND_LATER;
 
 /*
 @function
@@ -92,7 +92,8 @@ JS_EXPORT JSGlobalContextRef JSGlobalContextCreate(JSClassRef globalObjectClass)
 @result A JSGlobalContext with a global object of class globalObjectClass and a context
  group equal to group.
 */
-JS_EXPORT JSGlobalContextRef JSGlobalContextCreateInGroup(JSContextGroupRef group, JSClassRef globalObjectClass) AVAILABLE_IN_WEBKIT_VERSION_4_0;
+JS_EXPORT JSGlobalContextRef JSGlobalContextCreateInGroup( JSContextGroupRef group,
+        JSClassRef globalObjectClass ) AVAILABLE_IN_WEBKIT_VERSION_4_0;
 
 /*
 @function
@@ -100,14 +101,14 @@ JS_EXPORT JSGlobalContextRef JSGlobalContextCreateInGroup(JSContextGroupRef grou
 @param ctx The JSGlobalContext to retain.
 @result A JSGlobalContext that is the same as ctx.
 */
-JS_EXPORT JSGlobalContextRef JSGlobalContextRetain(JSGlobalContextRef ctx);
+JS_EXPORT JSGlobalContextRef JSGlobalContextRetain( JSGlobalContextRef ctx );
 
 /*
 @function
 @abstract Releases a global JavaScript execution context.
 @param ctx The JSGlobalContext to release.
 */
-JS_EXPORT void JSGlobalContextRelease(JSGlobalContextRef ctx);
+JS_EXPORT void JSGlobalContextRelease( JSGlobalContextRef ctx );
 
 /*
 @function
@@ -115,7 +116,7 @@ JS_EXPORT void JSGlobalContextRelease(JSGlobalContextRef ctx);
 @param ctx The JSContext whose global object you want to get.
 @result ctx's global object.
 */
-JS_EXPORT JSObjectRef JSContextGetGlobalObject(JSContextRef ctx);
+JS_EXPORT JSObjectRef JSContextGetGlobalObject( JSContextRef ctx );
 
 /*
 @function
@@ -123,7 +124,7 @@ JS_EXPORT JSObjectRef JSContextGetGlobalObject(JSContextRef ctx);
 @param ctx The JSContext whose group you want to get.
 @result ctx's group.
 */
-JS_EXPORT JSContextGroupRef JSContextGetGroup(JSContextRef ctx) AVAILABLE_IN_WEBKIT_VERSION_4_0;
+JS_EXPORT JSContextGroupRef JSContextGetGroup( JSContextRef ctx ) AVAILABLE_IN_WEBKIT_VERSION_4_0;
 
 #ifdef __cplusplus
 }

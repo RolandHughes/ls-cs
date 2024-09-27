@@ -33,20 +33,22 @@
 #if ENABLE(MATHML)
 #include <wtf/Forward.h>
 
-namespace JSC {
-    class ExecState;
-}                                            
-                                             
-namespace WebCore {
+namespace JSC
+{
+class ExecState;
+}
 
-    class JSDOMWrapper;
-    class JSDOMGlobalObject;
-    class MathMLElement;
+namespace WebCore
+{
 
-    JSDOMWrapper* createJSMathMLWrapper(JSC::ExecState*, JSDOMGlobalObject*, PassRefPtr<MathMLElement>);
+class JSDOMWrapper;
+class JSDOMGlobalObject;
+class MathMLElement;
+
+JSDOMWrapper *createJSMathMLWrapper( JSC::ExecState *, JSDOMGlobalObject *, PassRefPtr<MathMLElement> );
 
 }
- 
+
 #endif // ENABLE(MATHML)
 
 #endif // JSMathMLElementWrapperFactory_h

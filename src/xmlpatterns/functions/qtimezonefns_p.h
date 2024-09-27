@@ -27,33 +27,34 @@
 #include <qatomiccomparator_p.h>
 #include <qfunctioncall_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class AdjustTimezone : public FunctionCall
 {
- public:
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
+public:
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
 
- protected:
-   virtual Item createValue(const QDateTime &dt) const = 0;
+protected:
+    virtual Item createValue( const QDateTime &dt ) const = 0;
 };
 
 class AdjustDateTimeToTimezoneFN : public AdjustTimezone
 {
- protected:
-   Item createValue(const QDateTime &dt) const override;
+protected:
+    Item createValue( const QDateTime &dt ) const override;
 };
 
 class AdjustDateToTimezoneFN : public AdjustTimezone
 {
- protected:
-   Item createValue(const QDateTime &dt) const override;
+protected:
+    Item createValue( const QDateTime &dt ) const override;
 };
 
 class AdjustTimeToTimezoneFN : public AdjustTimezone
 {
- protected:
-   Item createValue(const QDateTime &dt) const override;
+protected:
+    Item createValue( const QDateTime &dt ) const override;
 };
 
 }

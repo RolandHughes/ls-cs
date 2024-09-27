@@ -36,36 +36,44 @@
 #include "MessagePort.h"
 #include "WorkerContext.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class DedicatedWorkerThread;
+class DedicatedWorkerThread;
 
-    class DedicatedWorkerContext : public WorkerContext {
-    public:
-        typedef WorkerContext Base;
-        static PassRefPtr<DedicatedWorkerContext> create(const KURL& url, const String& userAgent, DedicatedWorkerThread* thread)
-        {
-            return adoptRef(new DedicatedWorkerContext(url, userAgent, thread));
-        }
+class DedicatedWorkerContext : public WorkerContext
+{
+public:
+    typedef WorkerContext Base;
+    static PassRefPtr<DedicatedWorkerContext> create( const KURL &url, const String &userAgent, DedicatedWorkerThread *thread )
+    {
+        return adoptRef( new DedicatedWorkerContext( url, userAgent, thread ) );
+    }
 
-        virtual bool isDedicatedWorkerContext() const { return true; }
+    virtual bool isDedicatedWorkerContext() const
+    {
+        return true;
+    }
 
-        // Overridden to allow us to check our pending activity after executing imported script.
-        virtual void importScripts(const Vector<String>& urls, ExceptionCode&);
+    // Overridden to allow us to check our pending activity after executing imported script.
+    virtual void importScripts( const Vector<String> &urls, ExceptionCode & );
 
-        // EventTarget
-        virtual DedicatedWorkerContext* toDedicatedWorkerContext() { return this; }
-        void postMessage(PassRefPtr<SerializedScriptValue>, ExceptionCode&);
-        void postMessage(PassRefPtr<SerializedScriptValue>, const MessagePortArray*, ExceptionCode&);
-        // FIXME: remove this when we update the ObjC bindings (bug #28774).
-        void postMessage(PassRefPtr<SerializedScriptValue>, MessagePort*, ExceptionCode&);
+    // EventTarget
+    virtual DedicatedWorkerContext *toDedicatedWorkerContext()
+    {
+        return this;
+    }
+    void postMessage( PassRefPtr<SerializedScriptValue>, ExceptionCode & );
+    void postMessage( PassRefPtr<SerializedScriptValue>, const MessagePortArray *, ExceptionCode & );
+    // FIXME: remove this when we update the ObjC bindings (bug #28774).
+    void postMessage( PassRefPtr<SerializedScriptValue>, MessagePort *, ExceptionCode & );
 
-        DEFINE_ATTRIBUTE_EVENT_LISTENER(message);
+    DEFINE_ATTRIBUTE_EVENT_LISTENER( message );
 
-        DedicatedWorkerThread* thread();
-    private:
-        DedicatedWorkerContext(const KURL&, const String&, DedicatedWorkerThread*);
-    };
+    DedicatedWorkerThread *thread();
+private:
+    DedicatedWorkerContext( const KURL &, const String &, DedicatedWorkerThread * );
+};
 
 } // namespace WebCore
 

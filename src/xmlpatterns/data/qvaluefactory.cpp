@@ -35,46 +35,50 @@ using namespace QPatternist;
  * @relates ValueFactory
  */
 class PerformValueConstruction : public CastingPlatform<PerformValueConstruction, false>
-   , public SourceLocationReflection
+    , public SourceLocationReflection
 {
- public:
-   PerformValueConstruction(const SourceLocationReflection *const sourceLocationReflection,
-                            const SchemaType::Ptr &toType) : m_sourceReflection(sourceLocationReflection)
-      , m_targetType(AtomicType::Ptr(toType)) {
-      Q_ASSERT(m_sourceReflection);
-   }
+public:
+    PerformValueConstruction( const SourceLocationReflection *const sourceLocationReflection,
+                              const SchemaType::Ptr &toType ) : m_sourceReflection( sourceLocationReflection )
+        , m_targetType( AtomicType::Ptr( toType ) )
+    {
+        Q_ASSERT( m_sourceReflection );
+    }
 
-   AtomicValue::Ptr operator()(const AtomicValue::Ptr &lexicalValue,
-                               const SchemaType::Ptr & /*type*/,
-                               const ReportContext::Ptr &context) {
-      prepareCasting(context, BuiltinTypes::xsString);
-      return AtomicValue::Ptr(const_cast<AtomicValue *>(cast(lexicalValue, context).asAtomicValue()));
-   }
+    AtomicValue::Ptr operator()( const AtomicValue::Ptr &lexicalValue,
+                                 const SchemaType::Ptr & /*type*/,
+                                 const ReportContext::Ptr &context )
+    {
+        prepareCasting( context, BuiltinTypes::xsString );
+        return AtomicValue::Ptr( const_cast<AtomicValue *>( cast( lexicalValue, context ).asAtomicValue() ) );
+    }
 
-   const SourceLocationReflection *actualReflection() const  override {
-      return m_sourceReflection;
-   }
+    const SourceLocationReflection *actualReflection() const  override
+    {
+        return m_sourceReflection;
+    }
 
-   ItemType::Ptr targetType() const {
-      return m_targetType;
-   }
+    ItemType::Ptr targetType() const
+    {
+        return m_targetType;
+    }
 
- private:
-   const SourceLocationReflection *const m_sourceReflection;
-   const ItemType::Ptr                   m_targetType;
+private:
+    const SourceLocationReflection *const m_sourceReflection;
+    const ItemType::Ptr                   m_targetType;
 };
 
-AtomicValue::Ptr ValueFactory::fromLexical(const QString &lexicalValue,
-      const SchemaType::Ptr &type,
-      const ReportContext::Ptr &context,
-      const SourceLocationReflection *const sourceLocationReflection)
+AtomicValue::Ptr ValueFactory::fromLexical( const QString &lexicalValue,
+        const SchemaType::Ptr &type,
+        const ReportContext::Ptr &context,
+        const SourceLocationReflection *const sourceLocationReflection )
 {
-   Q_ASSERT(context);
-   Q_ASSERT(type);
-   Q_ASSERT_X(type->category() == SchemaType::SimpleTypeAtomic, Q_FUNC_INFO,
-              "We can only construct for atomic values.");
+    Q_ASSERT( context );
+    Q_ASSERT( type );
+    Q_ASSERT_X( type->category() == SchemaType::SimpleTypeAtomic, Q_FUNC_INFO,
+                "We can only construct for atomic values." );
 
-   return PerformValueConstruction(sourceLocationReflection, type)(AtomicString::fromValue(lexicalValue),
-          type,
-          context);
+    return PerformValueConstruction( sourceLocationReflection, type )( AtomicString::fromValue( lexicalValue ),
+            type,
+            context );
 }

@@ -27,9 +27,11 @@
 
 #if ENABLE(MEDIA_STREAM)
 
-namespace WebCore {
+namespace WebCore
+{
 
-class MediaStreamClient {
+class MediaStreamClient
+{
 public:
     // Notify the embedder client about the page controller being destroyed.
     virtual void mediaStreamDestroyed() = 0;

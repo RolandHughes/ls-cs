@@ -30,29 +30,32 @@
 #include <wtf/Forward.h>
 #include <wtf/OwnPtr.h>
 
-namespace CoreIPC {
-    class ArgumentEncoder;
-    class DataReference;
+namespace CoreIPC
+{
+class ArgumentEncoder;
+class DataReference;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
-class EncoderAdapter : public Encoder {
+class EncoderAdapter : public Encoder
+{
 public:
     EncoderAdapter();
 
     CoreIPC::DataReference data() const;
 
 private:
-    virtual void encodeBytes(const uint8_t*, size_t);
-    virtual void encodeBool(bool);
-    virtual void encodeUInt32(uint32_t);
-    virtual void encodeUInt64(uint64_t);
-    virtual void encodeInt32(int32_t);
-    virtual void encodeInt64(int64_t);
-    virtual void encodeFloat(float);
-    virtual void encodeDouble(double);
-    virtual void encodeString(const String&);
+    virtual void encodeBytes( const uint8_t *, size_t );
+    virtual void encodeBool( bool );
+    virtual void encodeUInt32( uint32_t );
+    virtual void encodeUInt64( uint64_t );
+    virtual void encodeInt32( int32_t );
+    virtual void encodeInt64( int64_t );
+    virtual void encodeFloat( float );
+    virtual void encodeDouble( double );
+    virtual void encodeString( const String & );
 
     OwnPtr<CoreIPC::ArgumentEncoder> m_encoder;
 };

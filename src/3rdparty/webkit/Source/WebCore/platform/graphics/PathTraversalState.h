@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef PathTraversalState_h
@@ -28,26 +28,29 @@
 
 #include "FloatPoint.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Path;
 
-class PathTraversalState {
+class PathTraversalState
+{
 public:
-    enum PathTraversalAction {
+    enum PathTraversalAction
+    {
         TraversalTotalLength,
         TraversalPointAtLength,
         TraversalSegmentAtLength,
         TraversalNormalAngleAtLength
     };
 
-    PathTraversalState(PathTraversalAction);
+    PathTraversalState( PathTraversalAction );
 
     float closeSubpath();
-    float moveTo(const FloatPoint&);
-    float lineTo(const FloatPoint&);
-    float quadraticBezierTo(const FloatPoint& newControl, const FloatPoint& newEnd);
-    float cubicBezierTo(const FloatPoint& newControl1, const FloatPoint& newControl2, const FloatPoint& newEnd);
+    float moveTo( const FloatPoint & );
+    float lineTo( const FloatPoint & );
+    float quadraticBezierTo( const FloatPoint &newControl, const FloatPoint &newEnd );
+    float cubicBezierTo( const FloatPoint &newControl1, const FloatPoint &newControl2, const FloatPoint &newEnd );
 
 public:
     PathTraversalAction m_action;
@@ -65,7 +68,7 @@ public:
     // For normal calculations
     FloatPoint m_previous;
     float m_normalAngle; // degrees
-};    
+};
 }
 
 #endif

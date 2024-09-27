@@ -25,33 +25,38 @@
 
 #include "Attribute.h"
 
-namespace WebCore {
-
-bool SVGURIReference::parseMappedAttribute(Attribute* attr)
+namespace WebCore
 {
-    if (attr->name().matches(XLinkNames::hrefAttr)) {
-        setHrefBaseValue(attr->value());
+
+bool SVGURIReference::parseMappedAttribute( Attribute *attr )
+{
+    if ( attr->name().matches( XLinkNames::hrefAttr ) )
+    {
+        setHrefBaseValue( attr->value() );
         return true;
     }
 
     return false;
 }
 
-bool SVGURIReference::isKnownAttribute(const QualifiedName& attrName)
+bool SVGURIReference::isKnownAttribute( const QualifiedName &attrName )
 {
-    return attrName.matches(XLinkNames::hrefAttr);
+    return attrName.matches( XLinkNames::hrefAttr );
 }
 
-String SVGURIReference::getTarget(const String& url)
+String SVGURIReference::getTarget( const String &url )
 {
-    if (url.startsWith("url(")) { // URI References, ie. fill:url(#target)
-        size_t start = url.find('#') + 1;
-        size_t end = url.reverseFind(')');
-        return url.substring(start, end - start);
+    if ( url.startsWith( "url(" ) ) // URI References, ie. fill:url(#target)
+    {
+        size_t start = url.find( '#' ) + 1;
+        size_t end = url.reverseFind( ')' );
+        return url.substring( start, end - start );
     }
-    if (url.find('#') != notFound) { // format is #target
-        size_t start = url.find('#') + 1;
-        return url.substring(start, url.length() - start);
+
+    if ( url.find( '#' ) != notFound ) // format is #target
+    {
+        size_t start = url.find( '#' ) + 1;
+        return url.substring( start, url.length() - start );
     }
 
     // The url doesn't have any target.

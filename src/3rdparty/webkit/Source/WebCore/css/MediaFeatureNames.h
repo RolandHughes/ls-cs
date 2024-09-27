@@ -22,8 +22,10 @@
 
 #include <wtf/text/AtomicString.h>
 
-namespace WebCore {
-    namespace MediaFeatureNames {
+namespace WebCore
+{
+namespace MediaFeatureNames
+{
 
 #define CSS_MEDIAQUERY_NAMES_FOR_EACH_MEDIAFEATURE(macro) \
     macro(color, "color") \
@@ -64,14 +66,14 @@ namespace WebCore {
 // end of macro
 
 #ifndef CSS_MEDIAQUERY_NAMES_HIDE_GLOBALS
-    #define CSS_MEDIAQUERY_NAMES_DECLARE(name, str) extern const AtomicString name##MediaFeature;
-    CSS_MEDIAQUERY_NAMES_FOR_EACH_MEDIAFEATURE(CSS_MEDIAQUERY_NAMES_DECLARE)
-    #undef CSS_MEDIAQUERY_NAMES_DECLARE
+#define CSS_MEDIAQUERY_NAMES_DECLARE(name, str) extern const AtomicString name##MediaFeature;
+CSS_MEDIAQUERY_NAMES_FOR_EACH_MEDIAFEATURE( CSS_MEDIAQUERY_NAMES_DECLARE )
+#undef CSS_MEDIAQUERY_NAMES_DECLARE
 #endif
 
-        void init();
+void init();
 
-    } // namespace MediaFeatureNames
+} // namespace MediaFeatureNames
 } // namespace WebCore
 
 #endif // MediaFeatureNames_h

@@ -30,68 +30,83 @@
 #include <wtf/Forward.h>
 #include <wtf/Vector.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 // WebData - A data buffer type suitable for vending to an API.
 
-class WebData : public APIObject {
+class WebData : public APIObject
+{
 public:
     static const Type APIType = TypeData;
 
-    typedef void (*FreeDataFunction)(unsigned char*, const void* context);
+    typedef void ( *FreeDataFunction )( unsigned char *, const void *context );
 
-    static PassRefPtr<WebData> createWithoutCopying(const unsigned char* bytes, size_t size, FreeDataFunction freeDataFunction, const void* context)
+    static PassRefPtr<WebData> createWithoutCopying( const unsigned char *bytes, size_t size, FreeDataFunction freeDataFunction,
+            const void *context )
     {
-        return adoptRef(new WebData(bytes, size, freeDataFunction, context));
+        return adoptRef( new WebData( bytes, size, freeDataFunction, context ) );
     }
 
-    static PassRefPtr<WebData> create(const unsigned char* bytes, size_t size)
+    static PassRefPtr<WebData> create( const unsigned char *bytes, size_t size )
     {
         unsigned char *copiedBytes = 0;
 
-        if (size) {
-            copiedBytes = static_cast<unsigned char*>(fastMalloc(size));
-            memcpy(copiedBytes, bytes, size);
+        if ( size )
+        {
+            copiedBytes = static_cast<unsigned char *>( fastMalloc( size ) );
+            memcpy( copiedBytes, bytes, size );
         }
 
-        return createWithoutCopying(copiedBytes, size, fastFreeBytes, 0);
+        return createWithoutCopying( copiedBytes, size, fastFreeBytes, 0 );
     }
-    
-    static PassRefPtr<WebData> create(const Vector<unsigned char>& buffer)
+
+    static PassRefPtr<WebData> create( const Vector<unsigned char> &buffer )
     {
-        return create(buffer.data(), buffer.size());
+        return create( buffer.data(), buffer.size() );
     }
 
     ~WebData()
     {
-        m_freeDataFunction(const_cast<unsigned char*>(m_bytes), m_context);
+        m_freeDataFunction( const_cast<unsigned char *>( m_bytes ), m_context );
     }
 
-    const unsigned char* bytes() const { return m_bytes; }
-    size_t size() const { return m_size; }
+    const unsigned char *bytes() const
+    {
+        return m_bytes;
+    }
+    size_t size() const
+    {
+        return m_size;
+    }
 
 private:
-    WebData(const unsigned char* bytes, size_t size, FreeDataFunction freeDataFunction, const void* context)
-        : m_bytes(bytes)
-        , m_size(size)
-        , m_freeDataFunction(freeDataFunction)
-        , m_context(context)
+    WebData( const unsigned char *bytes, size_t size, FreeDataFunction freeDataFunction, const void *context )
+        : m_bytes( bytes )
+        , m_size( size )
+        , m_freeDataFunction( freeDataFunction )
+        , m_context( context )
     {
     }
 
-    static void fastFreeBytes(unsigned char* bytes, const void*)
+    static void fastFreeBytes( unsigned char *bytes, const void * )
     {
-        if (bytes)
-            fastFree(static_cast<void*>(bytes));
+        if ( bytes )
+        {
+            fastFree( static_cast<void *>( bytes ) );
+        }
     }
 
-    virtual Type type() const { return APIType; }
+    virtual Type type() const
+    {
+        return APIType;
+    }
 
-    const unsigned char* m_bytes;
+    const unsigned char *m_bytes;
     size_t m_size;
 
     FreeDataFunction m_freeDataFunction;
-    const void* m_context;
+    const void *m_context;
 };
 
 } // namespace WebKit

@@ -30,18 +30,18 @@ class CameraBinSession;
 
 class CameraBinViewfinderSettings2 : public QCameraViewfinderSettingsControl2
 {
-   CS_OBJECT(CameraBinViewfinderSettings2)
+    CS_OBJECT( CameraBinViewfinderSettings2 )
 
- public:
-   CameraBinViewfinderSettings2(CameraBinSession *session);
-   ~CameraBinViewfinderSettings2();
+public:
+    CameraBinViewfinderSettings2( CameraBinSession *session );
+    ~CameraBinViewfinderSettings2();
 
-   QList<QCameraViewfinderSettings> supportedViewfinderSettings() const override;
-   QCameraViewfinderSettings viewfinderSettings() const  override;
-   void setViewfinderSettings(const QCameraViewfinderSettings &settings) override;
+    QList<QCameraViewfinderSettings> supportedViewfinderSettings() const override;
+    QCameraViewfinderSettings viewfinderSettings() const  override;
+    void setViewfinderSettings( const QCameraViewfinderSettings &settings ) override;
 
- private:
-   CameraBinSession *m_session;
+private:
+    CameraBinSession *m_session;
 };
 
 #endif

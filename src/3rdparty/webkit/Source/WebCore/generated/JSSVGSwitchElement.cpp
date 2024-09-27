@@ -50,9 +50,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSSVGSwitchElement);
+ASSERT_CLASS_FITS_IN_CELL( JSSVGSwitchElement );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -63,19 +64,19 @@ ASSERT_CLASS_FITS_IN_CELL(JSSVGSwitchElement);
 
 static const HashTableValue JSSVGSwitchElementTableValues[13] =
 {
-    { "requiredFeatures", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGSwitchElementRequiredFeatures), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "requiredExtensions", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGSwitchElementRequiredExtensions), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "systemLanguage", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGSwitchElementSystemLanguage), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "xmllang", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGSwitchElementXmllang), (intptr_t)setJSSVGSwitchElementXmllang THUNK_GENERATOR(0) },
-    { "xmlspace", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGSwitchElementXmlspace), (intptr_t)setJSSVGSwitchElementXmlspace THUNK_GENERATOR(0) },
-    { "externalResourcesRequired", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGSwitchElementExternalResourcesRequired), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "className", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGSwitchElementClassName), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "style", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGSwitchElementStyle), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "transform", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGSwitchElementTransform), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "nearestViewportElement", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGSwitchElementNearestViewportElement), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "farthestViewportElement", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGSwitchElementFarthestViewportElement), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGSwitchElementConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "requiredFeatures", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGSwitchElementRequiredFeatures ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "requiredExtensions", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGSwitchElementRequiredExtensions ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "systemLanguage", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGSwitchElementSystemLanguage ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "xmllang", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGSwitchElementXmllang ), ( intptr_t )setJSSVGSwitchElementXmllang THUNK_GENERATOR( 0 ) },
+    { "xmlspace", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGSwitchElementXmlspace ), ( intptr_t )setJSSVGSwitchElementXmlspace THUNK_GENERATOR( 0 ) },
+    { "externalResourcesRequired", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGSwitchElementExternalResourcesRequired ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "className", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGSwitchElementClassName ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "style", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGSwitchElementStyle ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "transform", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGSwitchElementTransform ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "nearestViewportElement", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGSwitchElementNearestViewportElement ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "farthestViewportElement", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGSwitchElementFarthestViewportElement ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGSwitchElementConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -89,43 +90,51 @@ static JSC_CONST_HASHTABLE HashTable JSSVGSwitchElementTable = { 34, 31, JSSVGSw
 
 static const HashTableValue JSSVGSwitchElementConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGSwitchElementConstructorTable = { 1, 0, JSSVGSwitchElementConstructorTableValues, 0 };
-class JSSVGSwitchElementConstructor : public DOMConstructorObject {
+class JSSVGSwitchElementConstructor : public DOMConstructorObject
+{
 public:
-    JSSVGSwitchElementConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSSVGSwitchElementConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSSVGSwitchElementConstructor::s_info = { "SVGSwitchElementConstructor", &DOMConstructorObject::s_info, &JSSVGSwitchElementConstructorTable, 0 };
 
-JSSVGSwitchElementConstructor::JSSVGSwitchElementConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSSVGSwitchElementConstructor::JSSVGSwitchElementConstructor( ExecState *exec, Structure *structure,
+        JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSSVGSwitchElementPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSSVGSwitchElementPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSSVGSwitchElementConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGSwitchElementConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGSwitchElementConstructor, JSDOMWrapper>(exec, &JSSVGSwitchElementConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGSwitchElementConstructor, JSDOMWrapper>( exec, &JSSVGSwitchElementConstructorTable, this,
+            propertyName, slot );
 }
 
-bool JSSVGSwitchElementConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGSwitchElementConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGSwitchElementConstructor, JSDOMWrapper>(exec, &JSSVGSwitchElementConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGSwitchElementConstructor, JSDOMWrapper>( exec, &JSSVGSwitchElementConstructorTable, this,
+            propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -137,289 +146,338 @@ bool JSSVGSwitchElementConstructor::getOwnPropertyDescriptor(ExecState* exec, co
 
 static const HashTableValue JSSVGSwitchElementPrototypeTableValues[7] =
 {
-    { "hasExtension", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsSVGSwitchElementPrototypeFunctionHasExtension), (intptr_t)1 THUNK_GENERATOR(0) },
-    { "getPresentationAttribute", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsSVGSwitchElementPrototypeFunctionGetPresentationAttribute), (intptr_t)1 THUNK_GENERATOR(0) },
-    { "getBBox", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsSVGSwitchElementPrototypeFunctionGetBBox), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "getCTM", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsSVGSwitchElementPrototypeFunctionGetCTM), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "getScreenCTM", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsSVGSwitchElementPrototypeFunctionGetScreenCTM), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "getTransformToElement", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsSVGSwitchElementPrototypeFunctionGetTransformToElement), (intptr_t)1 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "hasExtension", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsSVGSwitchElementPrototypeFunctionHasExtension ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { "getPresentationAttribute", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsSVGSwitchElementPrototypeFunctionGetPresentationAttribute ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { "getBBox", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsSVGSwitchElementPrototypeFunctionGetBBox ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "getCTM", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsSVGSwitchElementPrototypeFunctionGetCTM ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "getScreenCTM", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsSVGSwitchElementPrototypeFunctionGetScreenCTM ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "getTransformToElement", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsSVGSwitchElementPrototypeFunctionGetTransformToElement ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGSwitchElementPrototypeTable = { 17, 15, JSSVGSwitchElementPrototypeTableValues, 0 };
 const ClassInfo JSSVGSwitchElementPrototype::s_info = { "SVGSwitchElementPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSSVGSwitchElementPrototypeTable, 0 };
 
-JSObject* JSSVGSwitchElementPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGSwitchElementPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSSVGSwitchElement>(exec, globalObject);
+    return getDOMPrototype<JSSVGSwitchElement>( exec, globalObject );
 }
 
-bool JSSVGSwitchElementPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGSwitchElementPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticFunctionSlot<JSObject>(exec, &JSSVGSwitchElementPrototypeTable, this, propertyName, slot);
+    return getStaticFunctionSlot<JSObject>( exec, &JSSVGSwitchElementPrototypeTable, this, propertyName, slot );
 }
 
-bool JSSVGSwitchElementPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGSwitchElementPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticFunctionDescriptor<JSObject>(exec, &JSSVGSwitchElementPrototypeTable, this, propertyName, descriptor);
+    return getStaticFunctionDescriptor<JSObject>( exec, &JSSVGSwitchElementPrototypeTable, this, propertyName, descriptor );
 }
 
 const ClassInfo JSSVGSwitchElement::s_info = { "SVGSwitchElement", &JSSVGElement::s_info, &JSSVGSwitchElementTable, 0 };
 
-JSSVGSwitchElement::JSSVGSwitchElement(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<SVGSwitchElement> impl)
-    : JSSVGElement(structure, globalObject, impl)
+JSSVGSwitchElement::JSSVGSwitchElement( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<SVGSwitchElement> impl )
+    : JSSVGElement( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSSVGSwitchElement::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGSwitchElement::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSSVGSwitchElementPrototype(exec->globalData(), globalObject, JSSVGSwitchElementPrototype::createStructure(exec->globalData(), JSSVGElementPrototype::self(exec, globalObject)));
+    return new ( exec ) JSSVGSwitchElementPrototype( exec->globalData(), globalObject,
+            JSSVGSwitchElementPrototype::createStructure( exec->globalData(), JSSVGElementPrototype::self( exec, globalObject ) ) );
 }
 
-bool JSSVGSwitchElement::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGSwitchElement::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGSwitchElement, Base>(exec, &JSSVGSwitchElementTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGSwitchElement, Base>( exec, &JSSVGSwitchElementTable, this, propertyName, slot );
 }
 
-bool JSSVGSwitchElement::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGSwitchElement::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGSwitchElement, Base>(exec, &JSSVGSwitchElementTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGSwitchElement, Base>( exec, &JSSVGSwitchElementTable, this, propertyName, descriptor );
 }
 
-JSValue jsSVGSwitchElementRequiredFeatures(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGSwitchElementRequiredFeatures( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGSwitchElement* castedThis = static_cast<JSSVGSwitchElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGSwitchElement* imp = static_cast<SVGSwitchElement*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(SVGStaticListPropertyTearOff<SVGStringList>::create(GetOwnerElementForType<SVGSwitchElement, IsDerivedFromSVGElement<SVGSwitchElement>::value>::ownerElement(imp), imp->requiredFeatures())));
+    JSSVGSwitchElement *castedThis = static_cast<JSSVGSwitchElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGSwitchElement *imp = static_cast<SVGSwitchElement *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(),
+                           WTF::getPtr( SVGStaticListPropertyTearOff<SVGStringList>::create(
+                                            GetOwnerElementForType<SVGSwitchElement, IsDerivedFromSVGElement<SVGSwitchElement>::value>::ownerElement( imp ),
+                                            imp->requiredFeatures() ) ) );
     return result;
 }
 
 
-JSValue jsSVGSwitchElementRequiredExtensions(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGSwitchElementRequiredExtensions( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGSwitchElement* castedThis = static_cast<JSSVGSwitchElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGSwitchElement* imp = static_cast<SVGSwitchElement*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(SVGStaticListPropertyTearOff<SVGStringList>::create(GetOwnerElementForType<SVGSwitchElement, IsDerivedFromSVGElement<SVGSwitchElement>::value>::ownerElement(imp), imp->requiredExtensions())));
+    JSSVGSwitchElement *castedThis = static_cast<JSSVGSwitchElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGSwitchElement *imp = static_cast<SVGSwitchElement *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(),
+                           WTF::getPtr( SVGStaticListPropertyTearOff<SVGStringList>::create(
+                                            GetOwnerElementForType<SVGSwitchElement, IsDerivedFromSVGElement<SVGSwitchElement>::value>::ownerElement( imp ),
+                                            imp->requiredExtensions() ) ) );
     return result;
 }
 
 
-JSValue jsSVGSwitchElementSystemLanguage(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGSwitchElementSystemLanguage( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGSwitchElement* castedThis = static_cast<JSSVGSwitchElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGSwitchElement* imp = static_cast<SVGSwitchElement*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(SVGStaticListPropertyTearOff<SVGStringList>::create(GetOwnerElementForType<SVGSwitchElement, IsDerivedFromSVGElement<SVGSwitchElement>::value>::ownerElement(imp), imp->systemLanguage())));
+    JSSVGSwitchElement *castedThis = static_cast<JSSVGSwitchElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGSwitchElement *imp = static_cast<SVGSwitchElement *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(),
+                           WTF::getPtr( SVGStaticListPropertyTearOff<SVGStringList>::create(
+                                            GetOwnerElementForType<SVGSwitchElement, IsDerivedFromSVGElement<SVGSwitchElement>::value>::ownerElement( imp ),
+                                            imp->systemLanguage() ) ) );
     return result;
 }
 
 
-JSValue jsSVGSwitchElementXmllang(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGSwitchElementXmllang( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGSwitchElement* castedThis = static_cast<JSSVGSwitchElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGSwitchElement* imp = static_cast<SVGSwitchElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->xmllang());
+    JSSVGSwitchElement *castedThis = static_cast<JSSVGSwitchElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGSwitchElement *imp = static_cast<SVGSwitchElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->xmllang() );
     return result;
 }
 
 
-JSValue jsSVGSwitchElementXmlspace(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGSwitchElementXmlspace( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGSwitchElement* castedThis = static_cast<JSSVGSwitchElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGSwitchElement* imp = static_cast<SVGSwitchElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->xmlspace());
+    JSSVGSwitchElement *castedThis = static_cast<JSSVGSwitchElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGSwitchElement *imp = static_cast<SVGSwitchElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->xmlspace() );
     return result;
 }
 
 
-JSValue jsSVGSwitchElementExternalResourcesRequired(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGSwitchElementExternalResourcesRequired( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGSwitchElement* castedThis = static_cast<JSSVGSwitchElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGSwitchElement* imp = static_cast<SVGSwitchElement*>(castedThis->impl());
+    JSSVGSwitchElement *castedThis = static_cast<JSSVGSwitchElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGSwitchElement *imp = static_cast<SVGSwitchElement *>( castedThis->impl() );
     RefPtr<SVGAnimatedBoolean> obj = imp->externalResourcesRequiredAnimated();
-    JSValue result =  toJS(exec, castedThis->globalObject(), obj.get());
+    JSValue result =  toJS( exec, castedThis->globalObject(), obj.get() );
     return result;
 }
 
 
-JSValue jsSVGSwitchElementClassName(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGSwitchElementClassName( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGSwitchElement* castedThis = static_cast<JSSVGSwitchElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGSwitchElement* imp = static_cast<SVGSwitchElement*>(castedThis->impl());
+    JSSVGSwitchElement *castedThis = static_cast<JSSVGSwitchElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGSwitchElement *imp = static_cast<SVGSwitchElement *>( castedThis->impl() );
     RefPtr<SVGAnimatedString> obj = imp->classNameAnimated();
-    JSValue result =  toJS(exec, castedThis->globalObject(), obj.get());
+    JSValue result =  toJS( exec, castedThis->globalObject(), obj.get() );
     return result;
 }
 
 
-JSValue jsSVGSwitchElementStyle(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGSwitchElementStyle( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGSwitchElement* castedThis = static_cast<JSSVGSwitchElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGSwitchElement* imp = static_cast<SVGSwitchElement*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->style()));
+    JSSVGSwitchElement *castedThis = static_cast<JSSVGSwitchElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGSwitchElement *imp = static_cast<SVGSwitchElement *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->style() ) );
     return result;
 }
 
 
-JSValue jsSVGSwitchElementTransform(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGSwitchElementTransform( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGSwitchElement* castedThis = static_cast<JSSVGSwitchElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGSwitchElement* imp = static_cast<SVGSwitchElement*>(castedThis->impl());
+    JSSVGSwitchElement *castedThis = static_cast<JSSVGSwitchElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGSwitchElement *imp = static_cast<SVGSwitchElement *>( castedThis->impl() );
     RefPtr<SVGAnimatedTransformList> obj = imp->transformAnimated();
-    JSValue result =  toJS(exec, castedThis->globalObject(), obj.get());
+    JSValue result =  toJS( exec, castedThis->globalObject(), obj.get() );
     return result;
 }
 
 
-JSValue jsSVGSwitchElementNearestViewportElement(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGSwitchElementNearestViewportElement( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGSwitchElement* castedThis = static_cast<JSSVGSwitchElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGSwitchElement* imp = static_cast<SVGSwitchElement*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->nearestViewportElement()));
+    JSSVGSwitchElement *castedThis = static_cast<JSSVGSwitchElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGSwitchElement *imp = static_cast<SVGSwitchElement *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->nearestViewportElement() ) );
     return result;
 }
 
 
-JSValue jsSVGSwitchElementFarthestViewportElement(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGSwitchElementFarthestViewportElement( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGSwitchElement* castedThis = static_cast<JSSVGSwitchElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGSwitchElement* imp = static_cast<SVGSwitchElement*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->farthestViewportElement()));
+    JSSVGSwitchElement *castedThis = static_cast<JSSVGSwitchElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGSwitchElement *imp = static_cast<SVGSwitchElement *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->farthestViewportElement() ) );
     return result;
 }
 
 
-JSValue jsSVGSwitchElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGSwitchElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGSwitchElement* domObject = static_cast<JSSVGSwitchElement*>(asObject(slotBase));
-    return JSSVGSwitchElement::getConstructor(exec, domObject->globalObject());
+    JSSVGSwitchElement *domObject = static_cast<JSSVGSwitchElement *>( asObject( slotBase ) );
+    return JSSVGSwitchElement::getConstructor( exec, domObject->globalObject() );
 }
 
-void JSSVGSwitchElement::put(ExecState* exec, const Identifier& propertyName, JSValue value, PutPropertySlot& slot)
+void JSSVGSwitchElement::put( ExecState *exec, const Identifier &propertyName, JSValue value, PutPropertySlot &slot )
 {
-    lookupPut<JSSVGSwitchElement, Base>(exec, propertyName, value, &JSSVGSwitchElementTable, this, slot);
+    lookupPut<JSSVGSwitchElement, Base>( exec, propertyName, value, &JSSVGSwitchElementTable, this, slot );
 }
 
-void setJSSVGSwitchElementXmllang(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSSVGSwitchElementXmllang( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSSVGSwitchElement* castedThis = static_cast<JSSVGSwitchElement*>(thisObject);
-    SVGSwitchElement* imp = static_cast<SVGSwitchElement*>(castedThis->impl());
-    imp->setXmllang(ustringToString(value.toString(exec)));
-}
-
-
-void setJSSVGSwitchElementXmlspace(ExecState* exec, JSObject* thisObject, JSValue value)
-{
-    JSSVGSwitchElement* castedThis = static_cast<JSSVGSwitchElement*>(thisObject);
-    SVGSwitchElement* imp = static_cast<SVGSwitchElement*>(castedThis->impl());
-    imp->setXmlspace(ustringToString(value.toString(exec)));
+    JSSVGSwitchElement *castedThis = static_cast<JSSVGSwitchElement *>( thisObject );
+    SVGSwitchElement *imp = static_cast<SVGSwitchElement *>( castedThis->impl() );
+    imp->setXmllang( ustringToString( value.toString( exec ) ) );
 }
 
 
-JSValue JSSVGSwitchElement::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+void setJSSVGSwitchElementXmlspace( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    return getDOMConstructor<JSSVGSwitchElementConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    JSSVGSwitchElement *castedThis = static_cast<JSSVGSwitchElement *>( thisObject );
+    SVGSwitchElement *imp = static_cast<SVGSwitchElement *>( castedThis->impl() );
+    imp->setXmlspace( ustringToString( value.toString( exec ) ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsSVGSwitchElementPrototypeFunctionHasExtension(ExecState* exec)
+
+JSValue JSSVGSwitchElement::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
+{
+    return getDOMConstructor<JSSVGSwitchElementConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
+}
+
+EncodedJSValue JSC_HOST_CALL jsSVGSwitchElementPrototypeFunctionHasExtension( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSSVGSwitchElement::s_info))
-        return throwVMTypeError(exec);
-    JSSVGSwitchElement* castedThis = static_cast<JSSVGSwitchElement*>(asObject(thisValue));
-    SVGSwitchElement* imp = static_cast<SVGSwitchElement*>(castedThis->impl());
-    const String& extension(ustringToString(exec->argument(0).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+
+    if ( !thisValue.inherits( &JSSVGSwitchElement::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSSVGSwitchElement *castedThis = static_cast<JSSVGSwitchElement *>( asObject( thisValue ) );
+    SVGSwitchElement *imp = static_cast<SVGSwitchElement *>( castedThis->impl() );
+    const String &extension( ustringToString( exec->argument( 0 ).toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
 
 
-    JSC::JSValue result = jsBoolean(imp->hasExtension(extension));
-    return JSValue::encode(result);
+    JSC::JSValue result = jsBoolean( imp->hasExtension( extension ) );
+    return JSValue::encode( result );
 }
 
-EncodedJSValue JSC_HOST_CALL jsSVGSwitchElementPrototypeFunctionGetPresentationAttribute(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsSVGSwitchElementPrototypeFunctionGetPresentationAttribute( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSSVGSwitchElement::s_info))
-        return throwVMTypeError(exec);
-    JSSVGSwitchElement* castedThis = static_cast<JSSVGSwitchElement*>(asObject(thisValue));
-    SVGSwitchElement* imp = static_cast<SVGSwitchElement*>(castedThis->impl());
-    const String& name(ustringToString(exec->argument(0).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+
+    if ( !thisValue.inherits( &JSSVGSwitchElement::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSSVGSwitchElement *castedThis = static_cast<JSSVGSwitchElement *>( asObject( thisValue ) );
+    SVGSwitchElement *imp = static_cast<SVGSwitchElement *>( castedThis->impl() );
+    const String &name( ustringToString( exec->argument( 0 ).toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
 
 
-    JSC::JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->getPresentationAttribute(name)));
-    return JSValue::encode(result);
+    JSC::JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->getPresentationAttribute( name ) ) );
+    return JSValue::encode( result );
 }
 
-EncodedJSValue JSC_HOST_CALL jsSVGSwitchElementPrototypeFunctionGetBBox(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsSVGSwitchElementPrototypeFunctionGetBBox( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSSVGSwitchElement::s_info))
-        return throwVMTypeError(exec);
-    JSSVGSwitchElement* castedThis = static_cast<JSSVGSwitchElement*>(asObject(thisValue));
-    SVGSwitchElement* imp = static_cast<SVGSwitchElement*>(castedThis->impl());
+
+    if ( !thisValue.inherits( &JSSVGSwitchElement::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSSVGSwitchElement *castedThis = static_cast<JSSVGSwitchElement *>( asObject( thisValue ) );
+    SVGSwitchElement *imp = static_cast<SVGSwitchElement *>( castedThis->impl() );
 
 
-    JSC::JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(SVGPropertyTearOff<FloatRect>::create(imp->getBBox())));
-    return JSValue::encode(result);
+    JSC::JSValue result = toJS( exec, castedThis->globalObject(),
+                                WTF::getPtr( SVGPropertyTearOff<FloatRect>::create( imp->getBBox() ) ) );
+    return JSValue::encode( result );
 }
 
-EncodedJSValue JSC_HOST_CALL jsSVGSwitchElementPrototypeFunctionGetCTM(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsSVGSwitchElementPrototypeFunctionGetCTM( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSSVGSwitchElement::s_info))
-        return throwVMTypeError(exec);
-    JSSVGSwitchElement* castedThis = static_cast<JSSVGSwitchElement*>(asObject(thisValue));
-    SVGSwitchElement* imp = static_cast<SVGSwitchElement*>(castedThis->impl());
+
+    if ( !thisValue.inherits( &JSSVGSwitchElement::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSSVGSwitchElement *castedThis = static_cast<JSSVGSwitchElement *>( asObject( thisValue ) );
+    SVGSwitchElement *imp = static_cast<SVGSwitchElement *>( castedThis->impl() );
 
 
-    JSC::JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(SVGPropertyTearOff<SVGMatrix>::create(imp->getCTM())));
-    return JSValue::encode(result);
+    JSC::JSValue result = toJS( exec, castedThis->globalObject(),
+                                WTF::getPtr( SVGPropertyTearOff<SVGMatrix>::create( imp->getCTM() ) ) );
+    return JSValue::encode( result );
 }
 
-EncodedJSValue JSC_HOST_CALL jsSVGSwitchElementPrototypeFunctionGetScreenCTM(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsSVGSwitchElementPrototypeFunctionGetScreenCTM( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSSVGSwitchElement::s_info))
-        return throwVMTypeError(exec);
-    JSSVGSwitchElement* castedThis = static_cast<JSSVGSwitchElement*>(asObject(thisValue));
-    SVGSwitchElement* imp = static_cast<SVGSwitchElement*>(castedThis->impl());
+
+    if ( !thisValue.inherits( &JSSVGSwitchElement::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSSVGSwitchElement *castedThis = static_cast<JSSVGSwitchElement *>( asObject( thisValue ) );
+    SVGSwitchElement *imp = static_cast<SVGSwitchElement *>( castedThis->impl() );
 
 
-    JSC::JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(SVGPropertyTearOff<SVGMatrix>::create(imp->getScreenCTM())));
-    return JSValue::encode(result);
+    JSC::JSValue result = toJS( exec, castedThis->globalObject(),
+                                WTF::getPtr( SVGPropertyTearOff<SVGMatrix>::create( imp->getScreenCTM() ) ) );
+    return JSValue::encode( result );
 }
 
-EncodedJSValue JSC_HOST_CALL jsSVGSwitchElementPrototypeFunctionGetTransformToElement(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsSVGSwitchElementPrototypeFunctionGetTransformToElement( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSSVGSwitchElement::s_info))
-        return throwVMTypeError(exec);
-    JSSVGSwitchElement* castedThis = static_cast<JSSVGSwitchElement*>(asObject(thisValue));
-    SVGSwitchElement* imp = static_cast<SVGSwitchElement*>(castedThis->impl());
+
+    if ( !thisValue.inherits( &JSSVGSwitchElement::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSSVGSwitchElement *castedThis = static_cast<JSSVGSwitchElement *>( asObject( thisValue ) );
+    SVGSwitchElement *imp = static_cast<SVGSwitchElement *>( castedThis->impl() );
     ExceptionCode ec = 0;
-    SVGElement* element(toSVGElement(exec->argument(0)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+    SVGElement *element( toSVGElement( exec->argument( 0 ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
 
 
-    JSC::JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(SVGPropertyTearOff<SVGMatrix>::create(imp->getTransformToElement(element, ec))));
-    setDOMException(exec, ec);
-    return JSValue::encode(result);
+    JSC::JSValue result = toJS( exec, castedThis->globalObject(),
+                                WTF::getPtr( SVGPropertyTearOff<SVGMatrix>::create( imp->getTransformToElement( element, ec ) ) ) );
+    setDOMException( exec, ec );
+    return JSValue::encode( result );
 }
 
 

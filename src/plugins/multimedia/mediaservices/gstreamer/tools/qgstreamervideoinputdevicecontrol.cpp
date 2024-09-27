@@ -28,56 +28,59 @@
 
 #include <qgstutils_p.h>
 
-QGstreamerVideoInputDeviceControl::QGstreamerVideoInputDeviceControl(QObject *parent)
-   : QVideoDeviceSelectorControl(parent), m_factory(nullptr), m_selectedDevice(0)
+QGstreamerVideoInputDeviceControl::QGstreamerVideoInputDeviceControl( QObject *parent )
+    : QVideoDeviceSelectorControl( parent ), m_factory( nullptr ), m_selectedDevice( 0 )
 {
 }
 
-QGstreamerVideoInputDeviceControl::QGstreamerVideoInputDeviceControl(GstElementFactory *factory, QObject *parent)
-   : QVideoDeviceSelectorControl(parent), m_factory(factory), m_selectedDevice(0)
+QGstreamerVideoInputDeviceControl::QGstreamerVideoInputDeviceControl( GstElementFactory *factory, QObject *parent )
+    : QVideoDeviceSelectorControl( parent ), m_factory( factory ), m_selectedDevice( 0 )
 {
-   if (m_factory) {
-      gst_object_ref(GST_OBJECT(m_factory));
-   }
+    if ( m_factory )
+    {
+        gst_object_ref( GST_OBJECT( m_factory ) );
+    }
 }
 
 QGstreamerVideoInputDeviceControl::~QGstreamerVideoInputDeviceControl()
 {
-   if (m_factory) {
-      gst_object_unref(GST_OBJECT(m_factory));
-   }
+    if ( m_factory )
+    {
+        gst_object_unref( GST_OBJECT( m_factory ) );
+    }
 }
 
 int QGstreamerVideoInputDeviceControl::deviceCount() const
 {
-   return QGstUtils::enumerateCameras(m_factory).count();
+    return QGstUtils::enumerateCameras( m_factory ).count();
 }
 
-QString QGstreamerVideoInputDeviceControl::deviceName(int index) const
+QString QGstreamerVideoInputDeviceControl::deviceName( int index ) const
 {
-   return QGstUtils::enumerateCameras(m_factory).value(index).name;
+    return QGstUtils::enumerateCameras( m_factory ).value( index ).name;
 }
 
-QString QGstreamerVideoInputDeviceControl::deviceDescription(int index) const
+QString QGstreamerVideoInputDeviceControl::deviceDescription( int index ) const
 {
-   return QGstUtils::enumerateCameras(m_factory).value(index).description;
+    return QGstUtils::enumerateCameras( m_factory ).value( index ).description;
 }
 
 int QGstreamerVideoInputDeviceControl::defaultDevice() const
 {
-   return 0;
+    return 0;
 }
 
 int QGstreamerVideoInputDeviceControl::selectedDevice() const
 {
-   return m_selectedDevice;
+    return m_selectedDevice;
 }
 
-void QGstreamerVideoInputDeviceControl::setSelectedDevice(int index)
+void QGstreamerVideoInputDeviceControl::setSelectedDevice( int index )
 {
-   if (index != m_selectedDevice) {
-      m_selectedDevice = index;
-      emit selectedDeviceChanged(index);
-      emit selectedDeviceChanged(deviceName(index));
-   }
+    if ( index != m_selectedDevice )
+    {
+        m_selectedDevice = index;
+        emit selectedDeviceChanged( index );
+        emit selectedDeviceChanged( deviceName( index ) );
+    }
 }

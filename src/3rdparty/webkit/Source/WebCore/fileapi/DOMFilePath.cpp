@@ -37,128 +37,188 @@
 #include <wtf/Vector.h>
 #include <wtf/text/CString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 const char DOMFilePath::separator = '/';
 const char DOMFilePath::root[] = "/";
 
-String DOMFilePath::append(const String& base, const String& components)
+String DOMFilePath::append( const String &base, const String &components )
 {
-    return ensureDirectoryPath(base) + components;
+    return ensureDirectoryPath( base ) + components;
 }
 
-String DOMFilePath::ensureDirectoryPath(const String& path)
+String DOMFilePath::ensureDirectoryPath( const String &path )
 {
-    if (!DOMFilePath::endsWithSeparator(path)) {
+    if ( !DOMFilePath::endsWithSeparator( path ) )
+    {
         String newPath = path;
-        newPath.append(DOMFilePath::separator);
+        newPath.append( DOMFilePath::separator );
         return newPath;
     }
+
     return path;
 }
 
-String DOMFilePath::getName(const String& path)
+String DOMFilePath::getName( const String &path )
 {
-    int index = path.reverseFind(DOMFilePath::separator);
-    if (index != -1)
-        return path.substring(index + 1);
+    int index = path.reverseFind( DOMFilePath::separator );
+
+    if ( index != -1 )
+    {
+        return path.substring( index + 1 );
+    }
+
     return path;
 }
 
-String DOMFilePath::getDirectory(const String& path)
+String DOMFilePath::getDirectory( const String &path )
 {
-    int index = path.reverseFind(DOMFilePath::separator);
-    if (index == 0)
+    int index = path.reverseFind( DOMFilePath::separator );
+
+    if ( index == 0 )
+    {
         return DOMFilePath::root;
-    if (index != -1)
-        return path.substring(0, index);
+    }
+
+    if ( index != -1 )
+    {
+        return path.substring( 0, index );
+    }
+
     return ".";
 }
 
-bool DOMFilePath::isParentOf(const String& parent, const String& mayBeChild)
+bool DOMFilePath::isParentOf( const String &parent, const String &mayBeChild )
 {
-    ASSERT(DOMFilePath::isAbsolute(parent));
-    ASSERT(DOMFilePath::isAbsolute(mayBeChild));
-    if (parent == DOMFilePath::root && mayBeChild != DOMFilePath::root)
+    ASSERT( DOMFilePath::isAbsolute( parent ) );
+    ASSERT( DOMFilePath::isAbsolute( mayBeChild ) );
+
+    if ( parent == DOMFilePath::root && mayBeChild != DOMFilePath::root )
+    {
         return true;
-    if (parent.length() >= mayBeChild.length() || !mayBeChild.startsWith(parent, false))
+    }
+
+    if ( parent.length() >= mayBeChild.length() || !mayBeChild.startsWith( parent, false ) )
+    {
         return false;
-    if (mayBeChild[parent.length()] != DOMFilePath::separator)
+    }
+
+    if ( mayBeChild[parent.length()] != DOMFilePath::separator )
+    {
         return false;
+    }
+
     return true;
 }
 
-String DOMFilePath::removeExtraParentReferences(const String& path)
+String DOMFilePath::removeExtraParentReferences( const String &path )
 {
-    ASSERT(DOMFilePath::isAbsolute(path));
+    ASSERT( DOMFilePath::isAbsolute( path ) );
     Vector<String> components;
     Vector<String> canonicalized;
-    path.split(DOMFilePath::separator, components);
-    for (size_t i = 0; i < components.size(); ++i) {
-        if (components[i] == ".")
-            continue;
-        if (components[i] == "..") {
-            if (canonicalized.size() > 0)
-                canonicalized.removeLast();
+    path.split( DOMFilePath::separator, components );
+
+    for ( size_t i = 0; i < components.size(); ++i )
+    {
+        if ( components[i] == "." )
+        {
             continue;
         }
-        canonicalized.append(components[i]);
+
+        if ( components[i] == ".." )
+        {
+            if ( canonicalized.size() > 0 )
+            {
+                canonicalized.removeLast();
+            }
+
+            continue;
+        }
+
+        canonicalized.append( components[i] );
     }
-    if (canonicalized.isEmpty())
+
+    if ( canonicalized.isEmpty() )
+    {
         return DOMFilePath::root;
-    String result;
-    for (size_t i = 0; i < canonicalized.size(); ++i) {
-        result.append(DOMFilePath::separator);
-        result.append(canonicalized[i]);
     }
+
+    String result;
+
+    for ( size_t i = 0; i < canonicalized.size(); ++i )
+    {
+        result.append( DOMFilePath::separator );
+        result.append( canonicalized[i] );
+    }
+
     return result;
 }
 
 // Check the naming restrictions defined in FileSystem API 8.3.
 // http://dev.w3.org/2009/dap/file-system/file-dir-sys.html#naming-restrictions
-bool DOMFilePath::isValidPath(const String& path)
+bool DOMFilePath::isValidPath( const String &path )
 {
-    if (path.isEmpty() || path == DOMFilePath::root)
+    if ( path.isEmpty() || path == DOMFilePath::root )
+    {
         return true;
+    }
 
     // Chars 0-31 in UTF-8 prepresentation are not allowed.
-    for (size_t i = 0; i < path.length(); ++i)
-        if (path[i] < 32)
+    for ( size_t i = 0; i < path.length(); ++i )
+        if ( path[i] < 32 )
+        {
             return false;
+        }
 
     // Unallowed names.
-    DEFINE_STATIC_LOCAL(RegularExpression, unallowedNamesRegExp1, ("(/|^)(CON|PRN|AUX|NUL)([\\./]|$)", TextCaseInsensitive));
-    DEFINE_STATIC_LOCAL(RegularExpression, unallowedNamesRegExp2, ("(/|^)(COM|LPT)[1-9]([\\./]|$)", TextCaseInsensitive));
+    DEFINE_STATIC_LOCAL( RegularExpression, unallowedNamesRegExp1, ( "(/|^)(CON|PRN|AUX|NUL)([\\./]|$)", TextCaseInsensitive ) );
+    DEFINE_STATIC_LOCAL( RegularExpression, unallowedNamesRegExp2, ( "(/|^)(COM|LPT)[1-9]([\\./]|$)", TextCaseInsensitive ) );
 
-    if (unallowedNamesRegExp1.match(path) >= 0)
+    if ( unallowedNamesRegExp1.match( path ) >= 0 )
+    {
         return false;
-    if (unallowedNamesRegExp2.match(path) >= 0)
+    }
+
+    if ( unallowedNamesRegExp2.match( path ) >= 0 )
+    {
         return false;
+    }
 
     // Names must not end with period or whitespace.
-    DEFINE_STATIC_LOCAL(RegularExpression, endingRegExp, ("[\\.\\s](/|$)", TextCaseInsensitive));
+    DEFINE_STATIC_LOCAL( RegularExpression, endingRegExp, ( "[\\.\\s](/|$)", TextCaseInsensitive ) );
 
-    if (endingRegExp.match(path) >= 0)
+    if ( endingRegExp.match( path ) >= 0 )
+    {
         return false;
+    }
 
     // Unallowed chars: '\', '<', '>', ':', '?', '*', '"', '|'
     // (We don't check '/' here as this method takes paths as its argument.)
-    DEFINE_STATIC_LOCAL(RegularExpression, unallowedCharsRegExp, ("[\\\\<>:\\?\\*\"|]", TextCaseInsensitive));
+    DEFINE_STATIC_LOCAL( RegularExpression, unallowedCharsRegExp, ( "[\\\\<>:\\?\\*\"|]", TextCaseInsensitive ) );
 
-    if (unallowedCharsRegExp.match(path) >= 0)
+    if ( unallowedCharsRegExp.match( path ) >= 0 )
+    {
         return false;
+    }
 
     return true;
 }
 
-bool DOMFilePath::isValidName(const String& name)
+bool DOMFilePath::isValidName( const String &name )
 {
-    if (name.isEmpty())
+    if ( name.isEmpty() )
+    {
         return true;
+    }
+
     // '/' is not allowed in name.
-    if (name.contains('/'))
+    if ( name.contains( '/' ) )
+    {
         return false;
-    return isValidPath(name);
+    }
+
+    return isValidPath( name );
 }
 
 } // namespace WebCore

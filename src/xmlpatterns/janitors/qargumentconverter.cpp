@@ -28,55 +28,61 @@
 
 using namespace QPatternist;
 
-ArgumentConverter::ArgumentConverter(const Expression::Ptr &operand,
-                                     const ItemType::Ptr &reqType) : UntypedAtomicConverter(operand, reqType)
+ArgumentConverter::ArgumentConverter( const Expression::Ptr &operand,
+                                      const ItemType::Ptr &reqType ) : UntypedAtomicConverter( operand, reqType )
 {
 }
 
-ExpressionVisitorResult::Ptr ArgumentConverter::accept(const ExpressionVisitor::Ptr &visitor) const
+ExpressionVisitorResult::Ptr ArgumentConverter::accept( const ExpressionVisitor::Ptr &visitor ) const
 {
-   return visitor->visit(this);
+    return visitor->visit( this );
 }
 
-Item::Iterator::Ptr ArgumentConverter::mapToSequence(const Item &item,
-      const DynamicContext::Ptr &context) const
+Item::Iterator::Ptr ArgumentConverter::mapToSequence( const Item &item,
+        const DynamicContext::Ptr &context ) const
 {
-   if (item.isAtomicValue() && !BuiltinTypes::xsUntypedAtomic->xdtTypeMatches(item.type())) {
-      return makeSingletonIterator(item);
-   } else {
-      /* We're using UntypedAtomicConverter::mapToItem(). */
-      return makeItemMappingIterator<Item>(ConstPtr(this),
-                                           item.sequencedTypedValue(),
-                                           context);
-   }
+    if ( item.isAtomicValue() && !BuiltinTypes::xsUntypedAtomic->xdtTypeMatches( item.type() ) )
+    {
+        return makeSingletonIterator( item );
+    }
+    else
+    {
+        /* We're using UntypedAtomicConverter::mapToItem(). */
+        return makeItemMappingIterator<Item>( ConstPtr( this ),
+                                              item.sequencedTypedValue(),
+                                              context );
+    }
 }
 
-Item::Iterator::Ptr ArgumentConverter::evaluateSequence(const DynamicContext::Ptr &context) const
+Item::Iterator::Ptr ArgumentConverter::evaluateSequence( const DynamicContext::Ptr &context ) const
 {
-   return makeSequenceMappingIterator<Item>(ConstPtr(this),
-          m_operand->evaluateSequence(context),
-          context);
+    return makeSequenceMappingIterator<Item>( ConstPtr( this ),
+            m_operand->evaluateSequence( context ),
+            context );
 }
 
-Item ArgumentConverter::evaluateSingleton(const DynamicContext::Ptr &context) const
+Item ArgumentConverter::evaluateSingleton( const DynamicContext::Ptr &context ) const
 {
-   const Item item(m_operand->evaluateSingleton(context));
+    const Item item( m_operand->evaluateSingleton( context ) );
 
-   if (item) {
-      return mapToItem(item, context);
-   } else { /* Empty is allowed. ArgumentConverter doesn't care about cardinality. */
-      return Item();
-   }
+    if ( item )
+    {
+        return mapToItem( item, context );
+    }
+    else     /* Empty is allowed. ArgumentConverter doesn't care about cardinality. */
+    {
+        return Item();
+    }
 }
 
 SequenceType::List ArgumentConverter::expectedOperandTypes() const
 {
-   SequenceType::List result;
-   result.append(CommonSequenceTypes::ZeroOrMoreItems);
-   return result;
+    SequenceType::List result;
+    result.append( CommonSequenceTypes::ZeroOrMoreItems );
+    return result;
 }
 
 SequenceType::Ptr ArgumentConverter::staticType() const
 {
-   return CommonSequenceTypes::ZeroOrMoreAtomicTypes;
+    return CommonSequenceTypes::ZeroOrMoreAtomicTypes;
 }

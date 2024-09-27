@@ -31,108 +31,115 @@ QT_BEGIN_NAMESPACE
 
 class QDeclarativeDomDocumentPrivate : public QSharedData
 {
- public:
-   QDeclarativeDomDocumentPrivate();
-   QDeclarativeDomDocumentPrivate(const QDeclarativeDomDocumentPrivate &o)
-      : QSharedData(o) {
-      qFatal("Not impl");
-   }
-   ~QDeclarativeDomDocumentPrivate();
+public:
+    QDeclarativeDomDocumentPrivate();
+    QDeclarativeDomDocumentPrivate( const QDeclarativeDomDocumentPrivate &o )
+        : QSharedData( o )
+    {
+        qFatal( "Not impl" );
+    }
+    ~QDeclarativeDomDocumentPrivate();
 
-   QList<QDeclarativeError> errors;
-   QList<QDeclarativeDomImport> imports;
-   QDeclarativeParser::Object *root;
-   QList<int> automaticSemicolonOffsets;
+    QList<QDeclarativeError> errors;
+    QList<QDeclarativeDomImport> imports;
+    QDeclarativeParser::Object *root;
+    QList<int> automaticSemicolonOffsets;
 };
 
 class QDeclarativeDomObjectPrivate : public QSharedData
 {
- public:
-   QDeclarativeDomObjectPrivate();
-   QDeclarativeDomObjectPrivate(const QDeclarativeDomObjectPrivate &o)
-      : QSharedData(o) {
-      qFatal("Not impl");
-   }
-   ~QDeclarativeDomObjectPrivate();
+public:
+    QDeclarativeDomObjectPrivate();
+    QDeclarativeDomObjectPrivate( const QDeclarativeDomObjectPrivate &o )
+        : QSharedData( o )
+    {
+        qFatal( "Not impl" );
+    }
+    ~QDeclarativeDomObjectPrivate();
 
-   typedef QList<QPair<QDeclarativeParser::Property *, QByteArray> > Properties;
-   Properties properties() const;
-   Properties properties(QDeclarativeParser::Property *) const;
+    typedef QList<QPair<QDeclarativeParser::Property *, QByteArray> > Properties;
+    Properties properties() const;
+    Properties properties( QDeclarativeParser::Property * ) const;
 
-   QDeclarativeParser::Object *object;
+    QDeclarativeParser::Object *object;
 };
 
 class QDeclarativeDomPropertyPrivate : public QSharedData
 {
- public:
-   QDeclarativeDomPropertyPrivate();
-   QDeclarativeDomPropertyPrivate(const QDeclarativeDomPropertyPrivate &o)
-      : QSharedData(o) {
-      qFatal("Not impl");
-   }
-   ~QDeclarativeDomPropertyPrivate();
+public:
+    QDeclarativeDomPropertyPrivate();
+    QDeclarativeDomPropertyPrivate( const QDeclarativeDomPropertyPrivate &o )
+        : QSharedData( o )
+    {
+        qFatal( "Not impl" );
+    }
+    ~QDeclarativeDomPropertyPrivate();
 
-   QByteArray propertyName;
-   QDeclarativeParser::Property *property;
+    QByteArray propertyName;
+    QDeclarativeParser::Property *property;
 };
 
 class QDeclarativeDomDynamicPropertyPrivate : public QSharedData
 {
- public:
-   QDeclarativeDomDynamicPropertyPrivate();
-   QDeclarativeDomDynamicPropertyPrivate(const QDeclarativeDomDynamicPropertyPrivate &o)
-      : QSharedData(o) {
-      qFatal("Not impl");
-   }
-   ~QDeclarativeDomDynamicPropertyPrivate();
+public:
+    QDeclarativeDomDynamicPropertyPrivate();
+    QDeclarativeDomDynamicPropertyPrivate( const QDeclarativeDomDynamicPropertyPrivate &o )
+        : QSharedData( o )
+    {
+        qFatal( "Not impl" );
+    }
+    ~QDeclarativeDomDynamicPropertyPrivate();
 
-   bool valid;
-   QDeclarativeParser::Object::DynamicProperty property;
+    bool valid;
+    QDeclarativeParser::Object::DynamicProperty property;
 };
 
 class QDeclarativeDomValuePrivate : public QSharedData
 {
- public:
-   QDeclarativeDomValuePrivate();
-   QDeclarativeDomValuePrivate(const QDeclarativeDomValuePrivate &o)
-      : QSharedData(o) {
-      qFatal("Not impl");
-   }
-   ~QDeclarativeDomValuePrivate();
+public:
+    QDeclarativeDomValuePrivate();
+    QDeclarativeDomValuePrivate( const QDeclarativeDomValuePrivate &o )
+        : QSharedData( o )
+    {
+        qFatal( "Not impl" );
+    }
+    ~QDeclarativeDomValuePrivate();
 
-   QDeclarativeParser::Property *property;
-   QDeclarativeParser::Value *value;
+    QDeclarativeParser::Property *property;
+    QDeclarativeParser::Value *value;
 };
 
 class QDeclarativeDomBasicValuePrivate : public QSharedData
 {
- public:
-   QDeclarativeDomBasicValuePrivate();
-   QDeclarativeDomBasicValuePrivate(const QDeclarativeDomBasicValuePrivate &o)
-      : QSharedData(o) {
-      qFatal("Not impl");
-   }
-   ~QDeclarativeDomBasicValuePrivate();
+public:
+    QDeclarativeDomBasicValuePrivate();
+    QDeclarativeDomBasicValuePrivate( const QDeclarativeDomBasicValuePrivate &o )
+        : QSharedData( o )
+    {
+        qFatal( "Not impl" );
+    }
+    ~QDeclarativeDomBasicValuePrivate();
 
-   QDeclarativeParser::Value *value;
+    QDeclarativeParser::Value *value;
 };
 
 class QDeclarativeDomImportPrivate : public QSharedData
 {
- public:
-   QDeclarativeDomImportPrivate();
-   QDeclarativeDomImportPrivate(const QDeclarativeDomImportPrivate &o)
-      : QSharedData(o) {
-      qFatal("Not impl");
-   }
-   ~QDeclarativeDomImportPrivate();
+public:
+    QDeclarativeDomImportPrivate();
+    QDeclarativeDomImportPrivate( const QDeclarativeDomImportPrivate &o )
+        : QSharedData( o )
+    {
+        qFatal( "Not impl" );
+    }
+    ~QDeclarativeDomImportPrivate();
 
-   enum Type { Library, File };
+    enum Type { Library, File };
 
-   Type type;
-   QString uri;
-   QString version;
-   QString qualifier;
+    Type type;
+    QString uri;
+    QString version;
+    QString qualifier;
 };
 
 QT_END_NAMESPACE

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef StringBuilder_h
@@ -28,48 +28,68 @@
 
 #include <wtf/Vector.h>
 
-namespace JSC {
+namespace JSC
+{
 
-class StringBuilder {
+class StringBuilder
+{
 public:
-    void append(const UChar u)
+    void append( const UChar u )
     {
-        buffer.append(u);
+        buffer.append( u );
     }
 
-    void append(const char* str)
+    void append( const char *str )
     {
-        buffer.append(str, strlen(str));
+        buffer.append( str, strlen( str ) );
     }
 
-    void append(const char* str, size_t len)
+    void append( const char *str, size_t len )
     {
-        buffer.reserveCapacity(buffer.size() + len);
-        for (size_t i = 0; i < len; i++)
-            buffer.append(static_cast<unsigned char>(str[i]));
+        buffer.reserveCapacity( buffer.size() + len );
+
+        for ( size_t i = 0; i < len; i++ )
+        {
+            buffer.append( static_cast<unsigned char>( str[i] ) );
+        }
     }
 
-    void append(const UChar* str, size_t len)
+    void append( const UChar *str, size_t len )
     {
-        buffer.append(str, len);
+        buffer.append( str, len );
     }
 
-    void append(const UString& str)
+    void append( const UString &str )
     {
-        buffer.append(str.data(), str.size());
+        buffer.append( str.data(), str.size() );
     }
 
-    bool isEmpty() { return buffer.isEmpty(); }
-    void reserveCapacity(size_t newCapacity) { buffer.reserveCapacity(newCapacity); }
-    void resize(size_t size) { buffer.resize(size); }
-    size_t size() const { return buffer.size(); }
+    bool isEmpty()
+    {
+        return buffer.isEmpty();
+    }
+    void reserveCapacity( size_t newCapacity )
+    {
+        buffer.reserveCapacity( newCapacity );
+    }
+    void resize( size_t size )
+    {
+        buffer.resize( size );
+    }
+    size_t size() const
+    {
+        return buffer.size();
+    }
 
-    UChar operator[](size_t i) const { return buffer.at(i); }
+    UChar operator[]( size_t i ) const
+    {
+        return buffer.at( i );
+    }
 
     UString release()
     {
         buffer.shrinkToFit();
-        return UString::adopt(buffer);
+        return UString::adopt( buffer );
     }
 
 private:

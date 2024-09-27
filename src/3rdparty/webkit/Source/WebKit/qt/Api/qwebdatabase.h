@@ -24,17 +24,19 @@
 
 #include "qwebkitglobal.h"
 
-namespace WebCore {
-    class DatabaseDetails;
+namespace WebCore
+{
+class DatabaseDetails;
 }
 
 class QWebDatabasePrivate;
 class QWebSecurityOrigin;
 
-class QWEBKIT_EXPORT QWebDatabase {
+class QWEBKIT_EXPORT QWebDatabase
+{
 public:
-    QWebDatabase(const QWebDatabase& other);
-    QWebDatabase &operator=(const QWebDatabase& other);
+    QWebDatabase( const QWebDatabase &other );
+    QWebDatabase &operator=( const QWebDatabase &other );
     ~QWebDatabase();
 
     QString name() const;
@@ -44,11 +46,11 @@ public:
     QString fileName() const;
     QWebSecurityOrigin origin() const;
 
-    static void removeDatabase(const QWebDatabase &db);
+    static void removeDatabase( const QWebDatabase &db );
     static void removeAllDatabases();
 
 private:
-    QWebDatabase(QWebDatabasePrivate* priv);
+    QWebDatabase( QWebDatabasePrivate *priv );
     friend class QWebSecurityOrigin;
 
 private:

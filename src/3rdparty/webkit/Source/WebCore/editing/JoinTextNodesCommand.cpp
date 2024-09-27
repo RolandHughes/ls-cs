@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -28,51 +28,68 @@
 
 #include "Text.h"
 
-namespace WebCore {
-
-JoinTextNodesCommand::JoinTextNodesCommand(PassRefPtr<Text> text1, PassRefPtr<Text> text2)
-    : SimpleEditCommand(text1->document()), m_text1(text1), m_text2(text2)
+namespace WebCore
 {
-    ASSERT(m_text1);
-    ASSERT(m_text2);
-    ASSERT(m_text1->nextSibling() == m_text2);
-    ASSERT(m_text1->length() > 0);
-    ASSERT(m_text2->length() > 0);
+
+JoinTextNodesCommand::JoinTextNodesCommand( PassRefPtr<Text> text1, PassRefPtr<Text> text2 )
+    : SimpleEditCommand( text1->document() ), m_text1( text1 ), m_text2( text2 )
+{
+    ASSERT( m_text1 );
+    ASSERT( m_text2 );
+    ASSERT( m_text1->nextSibling() == m_text2 );
+    ASSERT( m_text1->length() > 0 );
+    ASSERT( m_text2->length() > 0 );
 }
 
 void JoinTextNodesCommand::doApply()
 {
-    if (m_text1->nextSibling() != m_text2)
+    if ( m_text1->nextSibling() != m_text2 )
+    {
         return;
+    }
 
-    ContainerNode* parent = m_text2->parentNode();
-    if (!parent || !parent->rendererIsEditable())
+    ContainerNode *parent = m_text2->parentNode();
+
+    if ( !parent || !parent->rendererIsEditable() )
+    {
         return;
-    
+    }
+
     ExceptionCode ec = 0;
-    m_text2->insertData(0, m_text1->data(), ec);
-    if (ec)
-        return;
+    m_text2->insertData( 0, m_text1->data(), ec );
 
-    m_text1->remove(ec);
+    if ( ec )
+    {
+        return;
+    }
+
+    m_text1->remove( ec );
 }
 
 void JoinTextNodesCommand::doUnapply()
 {
-    if (m_text1->parentNode())
+    if ( m_text1->parentNode() )
+    {
         return;
+    }
 
-    ContainerNode* parent = m_text2->parentNode();
-    if (!parent || !parent->rendererIsEditable())
+    ContainerNode *parent = m_text2->parentNode();
+
+    if ( !parent || !parent->rendererIsEditable() )
+    {
         return;
+    }
 
     ExceptionCode ec = 0;
 
-    parent->insertBefore(m_text1.get(), m_text2.get(), ec);
-    if (ec)
-        return;
+    parent->insertBefore( m_text1.get(), m_text2.get(), ec );
 
-    m_text2->deleteData(0, m_text1->length(), ec);
+    if ( ec )
+    {
+        return;
+    }
+
+    m_text2->deleteData( 0, m_text1->length(), ec );
 }
 
 } // namespace WebCore

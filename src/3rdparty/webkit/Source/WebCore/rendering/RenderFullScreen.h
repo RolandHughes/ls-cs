@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2010 Apple Inc. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -9,7 +9,7 @@
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
  *     documentation and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY APPLE INC. AND ITS CONTRIBUTORS ``AS IS'' AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -29,31 +29,45 @@
 
 #include "RenderFlexibleBox.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class RenderFullScreen : public RenderFlexibleBox {
+class RenderFullScreen : public RenderFlexibleBox
+{
 public:
-    RenderFullScreen(Node* node) : RenderFlexibleBox(node) { setReplaced(false); }
-    virtual bool isRenderFullScreen() const { return true; }
-    virtual const char* renderName() const { return "RenderFullScreen"; }
-    
-    bool isAnimating() const { return m_isAnimating; }
-    void setAnimating(bool);
-    
+    RenderFullScreen( Node *node ) : RenderFlexibleBox( node )
+    {
+        setReplaced( false );
+    }
+    virtual bool isRenderFullScreen() const
+    {
+        return true;
+    }
+    virtual const char *renderName() const
+    {
+        return "RenderFullScreen";
+    }
+
+    bool isAnimating() const
+    {
+        return m_isAnimating;
+    }
+    void setAnimating( bool );
+
     static PassRefPtr<RenderStyle> createFullScreenStyle();
-    
+
 protected:
     bool m_isAnimating;
 };
-    
-inline RenderFullScreen* toRenderFullScreen(RenderObject* object)
+
+inline RenderFullScreen *toRenderFullScreen( RenderObject *object )
 {
-    ASSERT(object->isRenderFullScreen());
-    return static_cast<RenderFullScreen*>(object);
+    ASSERT( object->isRenderFullScreen() );
+    return static_cast<RenderFullScreen *>( object );
 }
-    
+
 // This will catch anyone doing an unnecessary cast:
-void toRenderFullScreen(RenderFullScreen*);
+void toRenderFullScreen( RenderFullScreen * );
 }
 
 #endif

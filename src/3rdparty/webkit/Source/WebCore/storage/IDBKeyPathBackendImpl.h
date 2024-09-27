@@ -30,15 +30,19 @@
 
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class IDBKey;
 class SerializedScriptValue;
 
-class IDBKeyPathBackendImpl {
+class IDBKeyPathBackendImpl
+{
 public:
-    static void createIDBKeysFromSerializedValuesAndKeyPath(const Vector<RefPtr<SerializedScriptValue>, 0>& values, const String& keyPath, Vector<RefPtr<IDBKey>, 0>& keys);
-    static PassRefPtr<SerializedScriptValue> injectIDBKeyIntoSerializedValue(PassRefPtr<IDBKey>, PassRefPtr<SerializedScriptValue>, const String& keyPath);
+    static void createIDBKeysFromSerializedValuesAndKeyPath( const Vector<RefPtr<SerializedScriptValue>, 0> &values,
+            const String &keyPath, Vector<RefPtr<IDBKey>, 0> &keys );
+    static PassRefPtr<SerializedScriptValue> injectIDBKeyIntoSerializedValue( PassRefPtr<IDBKey>, PassRefPtr<SerializedScriptValue>,
+            const String &keyPath );
 };
 
 }

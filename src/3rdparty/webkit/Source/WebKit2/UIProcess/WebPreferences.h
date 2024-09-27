@@ -37,56 +37,61 @@
     void set##KeyUpper(const Type& value); \
     Type KeyLower() const;
 
-namespace WebKit {
+namespace WebKit
+{
 
 class WebPageGroup;
 
-class WebPreferences : public APIObject {
+class WebPreferences : public APIObject
+{
 public:
     static const Type APIType = TypePreferences;
 
     static PassRefPtr<WebPreferences> create()
     {
-        return adoptRef(new WebPreferences);
+        return adoptRef( new WebPreferences );
     }
 
-    static PassRefPtr<WebPreferences> create(const String& identifier)
+    static PassRefPtr<WebPreferences> create( const String &identifier )
     {
-        return adoptRef(new WebPreferences(identifier));
+        return adoptRef( new WebPreferences( identifier ) );
     }
 
     virtual ~WebPreferences();
 
-    void addPageGroup(WebPageGroup*);
-    void removePageGroup(WebPageGroup*);
+    void addPageGroup( WebPageGroup * );
+    void removePageGroup( WebPageGroup * );
 
-    const WebPreferencesStore& store() const 
-    {    
-      return m_store; 
+    const WebPreferencesStore &store() const
+    {
+        return m_store;
     }
 
-    FOR_EACH_WEBKIT_PREFERENCE(DECLARE_PREFERENCE_GETTER_AND_SETTERS)
+    FOR_EACH_WEBKIT_PREFERENCE( DECLARE_PREFERENCE_GETTER_AND_SETTERS )
 
 private:
     WebPreferences();
-    WebPreferences(const String& identifier);
+    WebPreferences( const String &identifier );
 
     void platformInitializeStore();
 
-    virtual Type type() const { return APIType; }
+    virtual Type type() const
+    {
+        return APIType;
+    }
 
     void update();
 
-    void updateStringValueForKey(const String& key, const String& value);
-    void updateBoolValueForKey(const String& key, bool value);
-    void updateUInt32ValueForKey(const String& key, uint32_t value);
-    void updateDoubleValueForKey(const String& key, double value);
-    void platformUpdateStringValueForKey(const String& key, const String& value);
-    void platformUpdateBoolValueForKey(const String& key, bool value);
-    void platformUpdateUInt32ValueForKey(const String& key, uint32_t value);
-    void platformUpdateDoubleValueForKey(const String& key, double value);
+    void updateStringValueForKey( const String &key, const String &value );
+    void updateBoolValueForKey( const String &key, bool value );
+    void updateUInt32ValueForKey( const String &key, uint32_t value );
+    void updateDoubleValueForKey( const String &key, double value );
+    void platformUpdateStringValueForKey( const String &key, const String &value );
+    void platformUpdateBoolValueForKey( const String &key, bool value );
+    void platformUpdateUInt32ValueForKey( const String &key, uint32_t value );
+    void platformUpdateDoubleValueForKey( const String &key, double value );
 
-    HashSet<WebPageGroup*> m_pageGroups;
+    HashSet<WebPageGroup *> m_pageGroups;
     WebPreferencesStore m_store;
     String m_identifier;
 };

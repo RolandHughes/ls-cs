@@ -32,49 +32,49 @@ class QScrollAreaPrivate;
 
 class Q_GUI_EXPORT QScrollArea : public QAbstractScrollArea
 {
-   GUI_CS_OBJECT(QScrollArea)
+    GUI_CS_OBJECT( QScrollArea )
 
-   GUI_CS_PROPERTY_READ(widgetResizable, widgetResizable)
-   GUI_CS_PROPERTY_WRITE(widgetResizable, setWidgetResizable)
+    GUI_CS_PROPERTY_READ( widgetResizable, widgetResizable )
+    GUI_CS_PROPERTY_WRITE( widgetResizable, setWidgetResizable )
 
-   GUI_CS_PROPERTY_READ(alignment, alignment)
-   GUI_CS_PROPERTY_WRITE(alignment, setAlignment)
+    GUI_CS_PROPERTY_READ( alignment, alignment )
+    GUI_CS_PROPERTY_WRITE( alignment, setAlignment )
 
- public:
-   explicit QScrollArea(QWidget *parent = nullptr);
+public:
+    explicit QScrollArea( QWidget *parent = nullptr );
 
-   QScrollArea(const QScrollArea &) = delete;
-   QScrollArea &operator=(const QScrollArea &) = delete;
+    QScrollArea( const QScrollArea & ) = delete;
+    QScrollArea &operator=( const QScrollArea & ) = delete;
 
-   ~QScrollArea();
+    ~QScrollArea();
 
-   QWidget *widget() const;
-   void setWidget(QWidget *widget);
-   QWidget *takeWidget();
+    QWidget *widget() const;
+    void setWidget( QWidget *widget );
+    QWidget *takeWidget();
 
-   bool widgetResizable() const;
-   void setWidgetResizable(bool resizable);
+    bool widgetResizable() const;
+    void setWidgetResizable( bool resizable );
 
-   QSize sizeHint() const override;
-   bool focusNextPrevChild(bool next) override;
+    QSize sizeHint() const override;
+    bool focusNextPrevChild( bool next ) override;
 
-   Qt::Alignment alignment() const;
-   void setAlignment(Qt::Alignment alignment);
+    Qt::Alignment alignment() const;
+    void setAlignment( Qt::Alignment alignment );
 
-   void ensureVisible(int x, int y, int xmargin = 50, int ymargin = 50);
-   void ensureWidgetVisible(QWidget *childWidget, int xmargin = 50, int ymargin = 50);
+    void ensureVisible( int x, int y, int xmargin = 50, int ymargin = 50 );
+    void ensureWidgetVisible( QWidget *childWidget, int xmargin = 50, int ymargin = 50 );
 
- protected:
-   QScrollArea(QScrollAreaPrivate &dd, QWidget *parent = nullptr);
-   bool event(QEvent *event) override;
-   bool eventFilter(QObject *object, QEvent *event) override;
-   void resizeEvent(QResizeEvent *event) override;
-   void scrollContentsBy(int dx, int dy) override;
+protected:
+    QScrollArea( QScrollAreaPrivate &dd, QWidget *parent = nullptr );
+    bool event( QEvent *event ) override;
+    bool eventFilter( QObject *object, QEvent *event ) override;
+    void resizeEvent( QResizeEvent *event ) override;
+    void scrollContentsBy( int dx, int dy ) override;
 
-   QSize viewportSizeHint() const override;
+    QSize viewportSizeHint() const override;
 
- private:
-   Q_DECLARE_PRIVATE(QScrollArea)
+private:
+    Q_DECLARE_PRIVATE( QScrollArea )
 };
 
 #endif // QT_NO_SCROLLAREA

@@ -28,11 +28,14 @@
 
 #include "MessageID.h"
 
-namespace CoreIPC {
+namespace CoreIPC
+{
 
-namespace CoreIPCMessage {
+namespace CoreIPCMessage
+{
 
-enum Kind {
+enum Kind
+{
     InitializeConnection,
     SyncMessageReply,
 #if PLATFORM(MAC)
@@ -42,10 +45,11 @@ enum Kind {
 
 } // namespace CoreIPCMessage
 
-template<> struct MessageKindTraits<CoreIPCMessage::Kind> { 
+template<> struct MessageKindTraits<CoreIPCMessage::Kind>
+{
     static const MessageClass messageClass = MessageClassCoreIPC;
 };
- 
+
 } // namespace CoreIPC
 
 #endif // CoreIPCMessageKinds_h

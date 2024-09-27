@@ -35,9 +35,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSXSLTProcessor);
+ASSERT_CLASS_FITS_IN_CELL( JSXSLTProcessor );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -48,8 +49,8 @@ ASSERT_CLASS_FITS_IN_CELL(JSXSLTProcessor);
 
 static const HashTableValue JSXSLTProcessorTableValues[2] =
 {
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsXSLTProcessorConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsXSLTProcessorConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -63,31 +64,35 @@ static JSC_CONST_HASHTABLE HashTable JSXSLTProcessorTable = { 2, 1, JSXSLTProces
 
 static const HashTableValue JSXSLTProcessorConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSXSLTProcessorConstructorTable = { 1, 0, JSXSLTProcessorConstructorTableValues, 0 };
 const ClassInfo JSXSLTProcessorConstructor::s_info = { "XSLTProcessorConstructor", &DOMConstructorObject::s_info, &JSXSLTProcessorConstructorTable, 0 };
 
-JSXSLTProcessorConstructor::JSXSLTProcessorConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSXSLTProcessorConstructor::JSXSLTProcessorConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSXSLTProcessorPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSXSLTProcessorPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSXSLTProcessorConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSXSLTProcessorConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSXSLTProcessorConstructor, JSDOMWrapper>(exec, &JSXSLTProcessorConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSXSLTProcessorConstructor, JSDOMWrapper>( exec, &JSXSLTProcessorConstructorTable, this, propertyName,
+            slot );
 }
 
-bool JSXSLTProcessorConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSXSLTProcessorConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSXSLTProcessorConstructor, JSDOMWrapper>(exec, &JSXSLTProcessorConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSXSLTProcessorConstructor, JSDOMWrapper>( exec, &JSXSLTProcessorConstructorTable, this,
+            propertyName, descriptor );
 }
 
-ConstructType JSXSLTProcessorConstructor::getConstructData(ConstructData& constructData)
+ConstructType JSXSLTProcessorConstructor::getConstructData( ConstructData &constructData )
 {
     constructData.native.function = constructJSXSLTProcessor;
     return ConstructTypeHost;
@@ -102,157 +107,191 @@ ConstructType JSXSLTProcessorConstructor::getConstructData(ConstructData& constr
 
 static const HashTableValue JSXSLTProcessorPrototypeTableValues[9] =
 {
-    { "importStylesheet", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsXSLTProcessorPrototypeFunctionImportStylesheet), (intptr_t)1 THUNK_GENERATOR(0) },
-    { "transformToFragment", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsXSLTProcessorPrototypeFunctionTransformToFragment), (intptr_t)2 THUNK_GENERATOR(0) },
-    { "transformToDocument", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsXSLTProcessorPrototypeFunctionTransformToDocument), (intptr_t)1 THUNK_GENERATOR(0) },
-    { "setParameter", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsXSLTProcessorPrototypeFunctionSetParameter), (intptr_t)3 THUNK_GENERATOR(0) },
-    { "getParameter", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsXSLTProcessorPrototypeFunctionGetParameter), (intptr_t)2 THUNK_GENERATOR(0) },
-    { "removeParameter", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsXSLTProcessorPrototypeFunctionRemoveParameter), (intptr_t)2 THUNK_GENERATOR(0) },
-    { "clearParameters", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsXSLTProcessorPrototypeFunctionClearParameters), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "reset", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsXSLTProcessorPrototypeFunctionReset), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "importStylesheet", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsXSLTProcessorPrototypeFunctionImportStylesheet ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { "transformToFragment", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsXSLTProcessorPrototypeFunctionTransformToFragment ), ( intptr_t )2 THUNK_GENERATOR( 0 ) },
+    { "transformToDocument", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsXSLTProcessorPrototypeFunctionTransformToDocument ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { "setParameter", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsXSLTProcessorPrototypeFunctionSetParameter ), ( intptr_t )3 THUNK_GENERATOR( 0 ) },
+    { "getParameter", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsXSLTProcessorPrototypeFunctionGetParameter ), ( intptr_t )2 THUNK_GENERATOR( 0 ) },
+    { "removeParameter", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsXSLTProcessorPrototypeFunctionRemoveParameter ), ( intptr_t )2 THUNK_GENERATOR( 0 ) },
+    { "clearParameters", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsXSLTProcessorPrototypeFunctionClearParameters ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "reset", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsXSLTProcessorPrototypeFunctionReset ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSXSLTProcessorPrototypeTable = { 17, 15, JSXSLTProcessorPrototypeTableValues, 0 };
 const ClassInfo JSXSLTProcessorPrototype::s_info = { "XSLTProcessorPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSXSLTProcessorPrototypeTable, 0 };
 
-JSObject* JSXSLTProcessorPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSXSLTProcessorPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSXSLTProcessor>(exec, globalObject);
+    return getDOMPrototype<JSXSLTProcessor>( exec, globalObject );
 }
 
-bool JSXSLTProcessorPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSXSLTProcessorPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticFunctionSlot<JSObject>(exec, &JSXSLTProcessorPrototypeTable, this, propertyName, slot);
+    return getStaticFunctionSlot<JSObject>( exec, &JSXSLTProcessorPrototypeTable, this, propertyName, slot );
 }
 
-bool JSXSLTProcessorPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSXSLTProcessorPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticFunctionDescriptor<JSObject>(exec, &JSXSLTProcessorPrototypeTable, this, propertyName, descriptor);
+    return getStaticFunctionDescriptor<JSObject>( exec, &JSXSLTProcessorPrototypeTable, this, propertyName, descriptor );
 }
 
 const ClassInfo JSXSLTProcessor::s_info = { "XSLTProcessor", &JSDOMWrapper::s_info, &JSXSLTProcessorTable, 0 };
 
-JSXSLTProcessor::JSXSLTProcessor(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<XSLTProcessor> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSXSLTProcessor::JSXSLTProcessor( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<XSLTProcessor> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSXSLTProcessor::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSXSLTProcessor::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSXSLTProcessorPrototype(exec->globalData(), globalObject, JSXSLTProcessorPrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSXSLTProcessorPrototype( exec->globalData(), globalObject,
+            JSXSLTProcessorPrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSXSLTProcessor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSXSLTProcessor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSXSLTProcessor, Base>(exec, &JSXSLTProcessorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSXSLTProcessor, Base>( exec, &JSXSLTProcessorTable, this, propertyName, slot );
 }
 
-bool JSXSLTProcessor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSXSLTProcessor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSXSLTProcessor, Base>(exec, &JSXSLTProcessorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSXSLTProcessor, Base>( exec, &JSXSLTProcessorTable, this, propertyName, descriptor );
 }
 
-JSValue jsXSLTProcessorConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsXSLTProcessorConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSXSLTProcessor* domObject = static_cast<JSXSLTProcessor*>(asObject(slotBase));
-    return JSXSLTProcessor::getConstructor(exec, domObject->globalObject());
+    JSXSLTProcessor *domObject = static_cast<JSXSLTProcessor *>( asObject( slotBase ) );
+    return JSXSLTProcessor::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSXSLTProcessor::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSXSLTProcessor::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSXSLTProcessorConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSXSLTProcessorConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsXSLTProcessorPrototypeFunctionImportStylesheet(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsXSLTProcessorPrototypeFunctionImportStylesheet( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSXSLTProcessor::s_info))
-        return throwVMTypeError(exec);
-    JSXSLTProcessor* castedThis = static_cast<JSXSLTProcessor*>(asObject(thisValue));
-    return JSValue::encode(castedThis->importStylesheet(exec));
+
+    if ( !thisValue.inherits( &JSXSLTProcessor::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSXSLTProcessor *castedThis = static_cast<JSXSLTProcessor *>( asObject( thisValue ) );
+    return JSValue::encode( castedThis->importStylesheet( exec ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsXSLTProcessorPrototypeFunctionTransformToFragment(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsXSLTProcessorPrototypeFunctionTransformToFragment( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSXSLTProcessor::s_info))
-        return throwVMTypeError(exec);
-    JSXSLTProcessor* castedThis = static_cast<JSXSLTProcessor*>(asObject(thisValue));
-    return JSValue::encode(castedThis->transformToFragment(exec));
+
+    if ( !thisValue.inherits( &JSXSLTProcessor::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSXSLTProcessor *castedThis = static_cast<JSXSLTProcessor *>( asObject( thisValue ) );
+    return JSValue::encode( castedThis->transformToFragment( exec ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsXSLTProcessorPrototypeFunctionTransformToDocument(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsXSLTProcessorPrototypeFunctionTransformToDocument( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSXSLTProcessor::s_info))
-        return throwVMTypeError(exec);
-    JSXSLTProcessor* castedThis = static_cast<JSXSLTProcessor*>(asObject(thisValue));
-    return JSValue::encode(castedThis->transformToDocument(exec));
+
+    if ( !thisValue.inherits( &JSXSLTProcessor::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSXSLTProcessor *castedThis = static_cast<JSXSLTProcessor *>( asObject( thisValue ) );
+    return JSValue::encode( castedThis->transformToDocument( exec ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsXSLTProcessorPrototypeFunctionSetParameter(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsXSLTProcessorPrototypeFunctionSetParameter( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSXSLTProcessor::s_info))
-        return throwVMTypeError(exec);
-    JSXSLTProcessor* castedThis = static_cast<JSXSLTProcessor*>(asObject(thisValue));
-    return JSValue::encode(castedThis->setParameter(exec));
+
+    if ( !thisValue.inherits( &JSXSLTProcessor::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSXSLTProcessor *castedThis = static_cast<JSXSLTProcessor *>( asObject( thisValue ) );
+    return JSValue::encode( castedThis->setParameter( exec ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsXSLTProcessorPrototypeFunctionGetParameter(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsXSLTProcessorPrototypeFunctionGetParameter( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSXSLTProcessor::s_info))
-        return throwVMTypeError(exec);
-    JSXSLTProcessor* castedThis = static_cast<JSXSLTProcessor*>(asObject(thisValue));
-    return JSValue::encode(castedThis->getParameter(exec));
+
+    if ( !thisValue.inherits( &JSXSLTProcessor::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSXSLTProcessor *castedThis = static_cast<JSXSLTProcessor *>( asObject( thisValue ) );
+    return JSValue::encode( castedThis->getParameter( exec ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsXSLTProcessorPrototypeFunctionRemoveParameter(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsXSLTProcessorPrototypeFunctionRemoveParameter( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSXSLTProcessor::s_info))
-        return throwVMTypeError(exec);
-    JSXSLTProcessor* castedThis = static_cast<JSXSLTProcessor*>(asObject(thisValue));
-    return JSValue::encode(castedThis->removeParameter(exec));
+
+    if ( !thisValue.inherits( &JSXSLTProcessor::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSXSLTProcessor *castedThis = static_cast<JSXSLTProcessor *>( asObject( thisValue ) );
+    return JSValue::encode( castedThis->removeParameter( exec ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsXSLTProcessorPrototypeFunctionClearParameters(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsXSLTProcessorPrototypeFunctionClearParameters( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSXSLTProcessor::s_info))
-        return throwVMTypeError(exec);
-    JSXSLTProcessor* castedThis = static_cast<JSXSLTProcessor*>(asObject(thisValue));
-    XSLTProcessor* imp = static_cast<XSLTProcessor*>(castedThis->impl());
+
+    if ( !thisValue.inherits( &JSXSLTProcessor::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSXSLTProcessor *castedThis = static_cast<JSXSLTProcessor *>( asObject( thisValue ) );
+    XSLTProcessor *imp = static_cast<XSLTProcessor *>( castedThis->impl() );
 
     imp->clearParameters();
-    return JSValue::encode(jsUndefined());
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsXSLTProcessorPrototypeFunctionReset(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsXSLTProcessorPrototypeFunctionReset( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSXSLTProcessor::s_info))
-        return throwVMTypeError(exec);
-    JSXSLTProcessor* castedThis = static_cast<JSXSLTProcessor*>(asObject(thisValue));
-    XSLTProcessor* imp = static_cast<XSLTProcessor*>(castedThis->impl());
+
+    if ( !thisValue.inherits( &JSXSLTProcessor::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSXSLTProcessor *castedThis = static_cast<JSXSLTProcessor *>( asObject( thisValue ) );
+    XSLTProcessor *imp = static_cast<XSLTProcessor *>( castedThis->impl() );
 
     imp->reset();
-    return JSValue::encode(jsUndefined());
+    return JSValue::encode( jsUndefined() );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, XSLTProcessor* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, XSLTProcessor *impl )
 {
-    return wrap<JSXSLTProcessor>(exec, globalObject, impl);
+    return wrap<JSXSLTProcessor>( exec, globalObject, impl );
 }
 
-XSLTProcessor* toXSLTProcessor(JSC::JSValue value)
+XSLTProcessor *toXSLTProcessor( JSC::JSValue value )
 {
-    return value.inherits(&JSXSLTProcessor::s_info) ? static_cast<JSXSLTProcessor*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSXSLTProcessor::s_info ) ? static_cast<JSXSLTProcessor *>( asObject( value ) )->impl() : 0;
 }
 
 }

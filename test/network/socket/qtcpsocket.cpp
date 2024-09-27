@@ -23,128 +23,128 @@
 
 #include <cs_catch2.h>
 
-TEST_CASE("QTcpSocket traits", "[qtcpsocket]")
+TEST_CASE( "QTcpSocket traits", "[qtcpsocket]" )
 {
-   REQUIRE(std::is_copy_constructible_v<QTcpSocket> == false);
-   REQUIRE(std::is_move_constructible_v<QTcpSocket> == false);
+    REQUIRE( std::is_copy_constructible_v<QTcpSocket> == false );
+    REQUIRE( std::is_move_constructible_v<QTcpSocket> == false );
 
-   REQUIRE(std::is_copy_assignable_v<QTcpSocket> == false);
-   REQUIRE(std::is_move_assignable_v<QTcpSocket> == false);
+    REQUIRE( std::is_copy_assignable_v<QTcpSocket> == false );
+    REQUIRE( std::is_move_assignable_v<QTcpSocket> == false );
 
-   REQUIRE(std::is_nothrow_move_constructible_v<QTcpSocket> == false);
-   REQUIRE(std::is_nothrow_move_assignable_v<QTcpSocket> == false);
+    REQUIRE( std::is_nothrow_move_constructible_v<QTcpSocket> == false );
+    REQUIRE( std::is_nothrow_move_assignable_v<QTcpSocket> == false );
 
-   REQUIRE(std::has_virtual_destructor_v<QTcpSocket> == true);
+    REQUIRE( std::has_virtual_destructor_v<QTcpSocket> == true );
 }
 
-static QTcpSocket * newSocket()
+static QTcpSocket *newSocket()
 {
-   QTcpSocket *socket;
+    QTcpSocket *socket;
 
 #ifdef QT_SSL
-   // path to openSSL library required
-   socket = new QSslSocket;
+    // path to openSSL library required
+    socket = new QSslSocket;
 #else
-   socket = new QTcpSocket;
+    socket = new QTcpSocket;
 #endif
 
-   return socket;
+    return socket;
 }
 
-TEST_CASE("QTcpSocket constructor", "[qtcpsocket]")
+TEST_CASE( "QTcpSocket constructor", "[qtcpsocket]" )
 {
-   auto testApp = initCoreApp();
+    auto testApp = initCoreApp();
 
-   QTcpSocket *socket = newSocket();
+    QTcpSocket *socket = newSocket();
 
-   REQUIRE(socket->state()        == QTcpSocket::UnconnectedState);
-   REQUIRE(socket->isSequential() == true);
-   REQUIRE(socket->isOpen()       == false);
-   REQUIRE(socket->isValid()      == false);
-   REQUIRE(socket->socketType()   == QTcpSocket::TcpSocket);
+    REQUIRE( socket->state()        == QTcpSocket::UnconnectedState );
+    REQUIRE( socket->isSequential() == true );
+    REQUIRE( socket->isOpen()       == false );
+    REQUIRE( socket->isValid()      == false );
+    REQUIRE( socket->socketType()   == QTcpSocket::TcpSocket );
 
-   char c;
+    char c;
 
-   REQUIRE(socket->getChar(&c)        == false);
-   REQUIRE(socket->bytesAvailable()   == 0);
-   REQUIRE(socket->canReadLine()      == false);
-   REQUIRE(socket->readLine()         == QByteArray());
-   REQUIRE(socket->socketDescriptor() == (qintptr)-1);
-   REQUIRE(socket->localPort()        == 0);
-   REQUIRE(socket->localAddress()     == QHostAddress());
-   REQUIRE(socket->peerPort()         == 0);
-   REQUIRE(socket->peerAddress()      == QHostAddress());
-   REQUIRE(socket->error()            == QTcpSocket::UnknownSocketError);
-   REQUIRE(socket->errorString()      == QString("Unknown error"));
+    REQUIRE( socket->getChar( &c )        == false );
+    REQUIRE( socket->bytesAvailable()   == 0 );
+    REQUIRE( socket->canReadLine()      == false );
+    REQUIRE( socket->readLine()         == QByteArray() );
+    REQUIRE( socket->socketDescriptor() == ( qintptr )-1 );
+    REQUIRE( socket->localPort()        == 0 );
+    REQUIRE( socket->localAddress()     == QHostAddress() );
+    REQUIRE( socket->peerPort()         == 0 );
+    REQUIRE( socket->peerAddress()      == QHostAddress() );
+    REQUIRE( socket->error()            == QTcpSocket::UnknownSocketError );
+    REQUIRE( socket->errorString()      == QString( "Unknown error" ) );
 
-   delete socket;
+    delete socket;
 }
 
-TEST_CASE("QTcpSocket bindThenResolveHost", "[qtcpsocket]")
+TEST_CASE( "QTcpSocket bindThenResolveHost", "[qtcpsocket]" )
 {
-   auto testApp = initCoreApp();
+    auto testApp = initCoreApp();
 
-   QTcpServer server;
+    QTcpServer server;
 
-   QHostAddress serverAddress = QHostAddress::LocalHost;
-   const quint16 port = 11423;
+    QHostAddress serverAddress = QHostAddress::LocalHost;
+    const quint16 port = 11423;
 
-   REQUIRE(server.listen(QHostAddress::Any, port) == true);
-   REQUIRE(server.isListening() == true);
+    REQUIRE( server.listen( QHostAddress::Any, port ) == true );
+    REQUIRE( server.isListening() == true );
 
-   // part one
-   QTcpSocket *socket = newSocket();
+    // part one
+    QTcpSocket *socket = newSocket();
 
-   REQUIRE(socket->bind(QHostAddress(QHostAddress::AnyIPv4), 0) == true);
-   REQUIRE(socket->state() == QAbstractSocket::BoundState);
+    REQUIRE( socket->bind( QHostAddress( QHostAddress::AnyIPv4 ), 0 ) == true );
+    REQUIRE( socket->state() == QAbstractSocket::BoundState );
 
-   quint16 boundPort = socket->localPort();
-   qintptr fd = socket->socketDescriptor();
+    quint16 boundPort = socket->localPort();
+    qintptr fd = socket->socketDescriptor();
 
-   REQUIRE(fd != -1);
+    REQUIRE( fd != -1 );
 
-   // part two
-   socket->connectToHost(serverAddress, port);
+    // part two
+    socket->connectToHost( serverAddress, port );
 
-   REQUIRE((socket->state() == QAbstractSocket::HostLookupState
-         || socket->state() == QAbstractSocket::ConnectingState));
+    REQUIRE( ( socket->state() == QAbstractSocket::HostLookupState
+               || socket->state() == QAbstractSocket::ConnectingState ) );
 
-   REQUIRE(socket->waitForConnected(3000) == true);
+    REQUIRE( socket->waitForConnected( 3000 ) == true );
 
-   REQUIRE(socket->state() == QAbstractSocket::ConnectedState);
+    REQUIRE( socket->state() == QAbstractSocket::ConnectedState );
 
-   REQUIRE(socket->localPort() == boundPort);
-   REQUIRE(socket->socketDescriptor() == fd);
+    REQUIRE( socket->localPort() == boundPort );
+    REQUIRE( socket->socketDescriptor() == fd );
 
-   delete socket;
+    delete socket;
 }
 
-TEST_CASE("QTcpSocket descripter", "[qtcpsocket]")
+TEST_CASE( "QTcpSocket descripter", "[qtcpsocket]" )
 {
-   auto testApp = initCoreApp();
+    auto testApp = initCoreApp();
 
-   QTcpSocket *socket = newSocket();
+    QTcpSocket *socket = newSocket();
 
-   REQUIRE(socket->socketDescriptor() == (qintptr)-1);
+    REQUIRE( socket->socketDescriptor() == ( qintptr )-1 );
 
-   REQUIRE(socket->setSocketDescriptor(-5, QTcpSocket::UnconnectedState) == false);
-   REQUIRE(socket->socketDescriptor() == (qintptr)-1);
+    REQUIRE( socket->setSocketDescriptor( -5, QTcpSocket::UnconnectedState ) == false );
+    REQUIRE( socket->socketDescriptor() == ( qintptr )-1 );
 
-   REQUIRE(socket->error() == QTcpSocket::UnsupportedSocketOperationError);
+    REQUIRE( socket->error() == QTcpSocket::UnsupportedSocketOperationError );
 
-   delete socket;
+    delete socket;
 }
 
-TEST_CASE("QTcpSocket connectToHost", "[qtcpsocket]")
+TEST_CASE( "QTcpSocket connectToHost", "[qtcpsocket]" )
 {
-   auto testApp = initCoreApp();
+    auto testApp = initCoreApp();
 
-   QTcpSocket *socket = newSocket();
-   socket->connectToHost("nosuchserver.copperspice.com", 80);
+    QTcpSocket *socket = newSocket();
+    socket->connectToHost( "nosuchserver.copperspice.com", 80 );
 
-   REQUIRE(socket->waitForConnected() == false);
-   REQUIRE(socket->state() == QTcpSocket::UnconnectedState);
-   REQUIRE(socket->error() == QTcpSocket::HostNotFoundError);
+    REQUIRE( socket->waitForConnected() == false );
+    REQUIRE( socket->state() == QTcpSocket::UnconnectedState );
+    REQUIRE( socket->error() == QTcpSocket::HostNotFoundError );
 
-   delete socket;
+    delete socket;
 }

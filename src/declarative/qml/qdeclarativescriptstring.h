@@ -37,29 +37,29 @@ class QDeclarativeScriptStringPrivate;
 
 class Q_DECLARATIVE_EXPORT QDeclarativeScriptString
 {
- public:
-   QDeclarativeScriptString();
-   QDeclarativeScriptString(const QDeclarativeScriptString &);
-   ~QDeclarativeScriptString();
+public:
+    QDeclarativeScriptString();
+    QDeclarativeScriptString( const QDeclarativeScriptString & );
+    ~QDeclarativeScriptString();
 
-   QDeclarativeScriptString &operator=(const QDeclarativeScriptString &);
+    QDeclarativeScriptString &operator=( const QDeclarativeScriptString & );
 
-   QDeclarativeContext *context() const;
-   void setContext(QDeclarativeContext *);
+    QDeclarativeContext *context() const;
+    void setContext( QDeclarativeContext * );
 
-   QObject *scopeObject() const;
-   void setScopeObject(QObject *);
+    QObject *scopeObject() const;
+    void setScopeObject( QObject * );
 
-   QString script() const;
-   void setScript(const QString &);
+    QString script() const;
+    void setScript( const QString & );
 
- private:
-   QSharedDataPointer<QDeclarativeScriptStringPrivate> d;
+private:
+    QSharedDataPointer<QDeclarativeScriptStringPrivate> d;
 };
 
 QT_END_NAMESPACE
 
-Q_DECLARE_METATYPE(QDeclarativeScriptString)
+Q_DECLARE_METATYPE( QDeclarativeScriptString )
 
 #endif // QDECLARATIVESCRIPTSTRING_H
 

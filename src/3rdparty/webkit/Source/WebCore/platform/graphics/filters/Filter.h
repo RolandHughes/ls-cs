@@ -30,36 +30,62 @@
 #include <wtf/RefPtr.h>
 #include <wtf/text/StringHash.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class FilterEffect;
+class FilterEffect;
 
-    class Filter : public RefCounted<Filter> {
-    public:
-        virtual ~Filter() { }
+class Filter : public RefCounted<Filter>
+{
+public:
+    virtual ~Filter() { }
 
-        void setSourceImage(PassOwnPtr<ImageBuffer> sourceImage) { m_sourceImage = sourceImage; }
-        ImageBuffer* sourceImage() { return m_sourceImage.get(); }
+    void setSourceImage( PassOwnPtr<ImageBuffer> sourceImage )
+    {
+        m_sourceImage = sourceImage;
+    }
+    ImageBuffer *sourceImage()
+    {
+        return m_sourceImage.get();
+    }
 
-        FloatSize filterResolution() const { return m_filterResolution; }
-        void setFilterResolution(const FloatSize& filterResolution) { m_filterResolution = filterResolution; }
+    FloatSize filterResolution() const
+    {
+        return m_filterResolution;
+    }
+    void setFilterResolution( const FloatSize &filterResolution )
+    {
+        m_filterResolution = filterResolution;
+    }
 
-        virtual float applyHorizontalScale(float value) const { return value * m_filterResolution.width(); }
-        virtual float applyVerticalScale(float value) const { return value * m_filterResolution.height(); }
-        
-        virtual FloatRect sourceImageRect() const = 0;
-        virtual FloatRect filterRegion() const = 0;
-        
-        virtual FloatPoint mapAbsolutePointToLocalPoint(const FloatPoint&) const { return FloatPoint(); }
+    virtual float applyHorizontalScale( float value ) const
+    {
+        return value * m_filterResolution.width();
+    }
+    virtual float applyVerticalScale( float value ) const
+    {
+        return value * m_filterResolution.height();
+    }
 
-        virtual FloatRect filterRegionInUserSpace() const { return FloatRect(); }
+    virtual FloatRect sourceImageRect() const = 0;
+    virtual FloatRect filterRegion() const = 0;
 
-        virtual bool effectBoundingBoxMode() const = 0;
+    virtual FloatPoint mapAbsolutePointToLocalPoint( const FloatPoint & ) const
+    {
+        return FloatPoint();
+    }
 
-    private:
-        OwnPtr<ImageBuffer> m_sourceImage;
-        FloatSize m_filterResolution;
-    };
+    virtual FloatRect filterRegionInUserSpace() const
+    {
+        return FloatRect();
+    }
+
+    virtual bool effectBoundingBoxMode() const = 0;
+
+private:
+    OwnPtr<ImageBuffer> m_sourceImage;
+    FloatSize m_filterResolution;
+};
 
 } // namespace WebCore
 

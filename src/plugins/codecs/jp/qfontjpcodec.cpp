@@ -34,7 +34,7 @@ QFontJis0201Codec::QFontJis0201Codec()
 
 QString QFontJis0201Codec::_name()
 {
-    return QString("jisx0201*-0");
+    return QString( "jisx0201*-0" );
 }
 
 int QFontJis0201Codec::_mibEnum()
@@ -42,26 +42,34 @@ int QFontJis0201Codec::_mibEnum()
     return 15;
 }
 
-QByteArray QFontJis0201Codec::convertFromUnicode(const QChar *uc, int len,  ConverterState *) const
+QByteArray QFontJis0201Codec::convertFromUnicode( const QChar *uc, int len,  ConverterState * ) const
 {
     QByteArray rstring;
-    rstring.resize(len);
-    uchar *rdata = (uchar *) rstring.data();
+    rstring.resize( len );
+    uchar *rdata = ( uchar * ) rstring.data();
     const QChar *sdata = uc;
     int i = 0;
-    for (; i < len; ++i, ++sdata, ++rdata) {
-        if (sdata->unicode() < 0x80) {
-            *rdata = (uchar) sdata->unicode();
-        } else if (sdata->unicode() >= 0xff61 && sdata->unicode() <= 0xff9f) {
-            *rdata = (uchar) (sdata->unicode() - 0xff61 + 0xa1);
-        } else {
+
+    for ( ; i < len; ++i, ++sdata, ++rdata )
+    {
+        if ( sdata->unicode() < 0x80 )
+        {
+            *rdata = ( uchar ) sdata->unicode();
+        }
+        else if ( sdata->unicode() >= 0xff61 && sdata->unicode() <= 0xff9f )
+        {
+            *rdata = ( uchar ) ( sdata->unicode() - 0xff61 + 0xa1 );
+        }
+        else
+        {
             *rdata = 0;
         }
     }
+
     return rstring;
 }
 
-QString QFontJis0201Codec::convertToUnicode(const char *, int,  ConverterState *) const
+QString QFontJis0201Codec::convertToUnicode( const char *, int,  ConverterState * ) const
 {
     return QString();
 }
@@ -70,7 +78,7 @@ QString QFontJis0201Codec::convertToUnicode(const char *, int,  ConverterState *
 
 QFontJis0208Codec::QFontJis0208Codec()
 {
-    convJP = QJpUnicodeConv::newConverter(QJpUnicodeConv::Default);
+    convJP = QJpUnicodeConv::newConverter( QJpUnicodeConv::Default );
 }
 
 
@@ -83,7 +91,7 @@ QFontJis0208Codec::~QFontJis0208Codec()
 
 QString QFontJis0208Codec::_name()
 {
-    return QString("jisx0208*-0");
+    return QString( "jisx0208*-0" );
 }
 
 
@@ -93,30 +101,35 @@ int QFontJis0208Codec::_mibEnum()
 }
 
 
-QString QFontJis0208Codec::convertToUnicode(const char* /*chars*/, int /*len*/, ConverterState *) const
+QString QFontJis0208Codec::convertToUnicode( const char * /*chars*/, int /*len*/, ConverterState * ) const
 {
     return QString();
 }
 
-QByteArray QFontJis0208Codec::convertFromUnicode(const QChar *uc, int len, ConverterState *) const
+QByteArray QFontJis0208Codec::convertFromUnicode( const QChar *uc, int len, ConverterState * ) const
 {
     QByteArray result;
-    result.resize(len * 2);
-    uchar *rdata = (uchar *) result.data();
+    result.resize( len * 2 );
+    uchar *rdata = ( uchar * ) result.data();
     const QChar *ucp = uc;
 
-    for (int i = 0; i < len; i++) {
-        QChar ch(*ucp++);
-        ch = convJP->unicodeToJisx0208(ch.unicode());
+    for ( int i = 0; i < len; i++ )
+    {
+        QChar ch( *ucp++ );
+        ch = convJP->unicodeToJisx0208( ch.unicode() );
 
-        if (!ch.isNull()) {
+        if ( !ch.isNull() )
+        {
             *rdata++ = ch.row();
             *rdata++ = ch.cell();
-        } else {
+        }
+        else
+        {
             *rdata++ = 0;
             *rdata++ = 0;
         }
     }
+
     return result;
 }
 

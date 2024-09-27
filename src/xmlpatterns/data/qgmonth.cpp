@@ -27,47 +27,47 @@
 
 using namespace QPatternist;
 
-GMonth::GMonth(const QDateTime &dateTime) : AbstractDateTime(dateTime)
+GMonth::GMonth( const QDateTime &dateTime ) : AbstractDateTime( dateTime )
 {
 }
 
-GMonth::Ptr GMonth::fromLexical(const QString &lexical)
+GMonth::Ptr GMonth::fromLexical( const QString &lexical )
 {
-   static const CaptureTable captureTable( // STATIC DATA
-      /* The extra paranthesis is a build fix for GCC 3.3. */
-      (QRegularExpression(QLatin1String(
-                  "^\\s*"                             /* Any preceding whitespace. */
-                  "--"                                /* Delimier. */
-                  "(\\d{2})"                          /* The month part, "03". */
-                  "(?:(\\+|-)(\\d{2}):(\\d{2})|(Z))?" /* Timezone, "+08:24". */
-                  "\\s*$"                             /* Any terminating whitespace. */))),
-      /*zoneOffsetSignP*/         2,
-      /*zoneOffsetHourP*/         3,
-      /*zoneOffsetMinuteP*/       4,
-      /*zoneOffsetUTCSymbolP*/    5,
-      /*yearP*/                   -1,
-      /*monthP*/                  1);
+    static const CaptureTable captureTable( // STATIC DATA
+        /* The extra paranthesis is a build fix for GCC 3.3. */
+        ( QRegularExpression( QLatin1String(
+                                  "^\\s*"                             /* Any preceding whitespace. */
+                                  "--"                                /* Delimier. */
+                                  "(\\d{2})"                          /* The month part, "03". */
+                                  "(?:(\\+|-)(\\d{2}):(\\d{2})|(Z))?" /* Timezone, "+08:24". */
+                                  "\\s*$"                             /* Any terminating whitespace. */ ) ) ),
+        /*zoneOffsetSignP*/         2,
+        /*zoneOffsetHourP*/         3,
+        /*zoneOffsetMinuteP*/       4,
+        /*zoneOffsetUTCSymbolP*/    5,
+        /*yearP*/                   -1,
+        /*monthP*/                  1 );
 
-   AtomicValue::Ptr err;
-   const QDateTime retval(create(err, lexical, captureTable));
+    AtomicValue::Ptr err;
+    const QDateTime retval( create( err, lexical, captureTable ) );
 
-   return err ? err : GMonth::Ptr(new GMonth(retval));
+    return err ? err : GMonth::Ptr( new GMonth( retval ) );
 }
 
-GMonth::Ptr GMonth::fromDateTime(const QDateTime &dt)
+GMonth::Ptr GMonth::fromDateTime( const QDateTime &dt )
 {
-   QDateTime result(QDate(DefaultYear, dt.date().month(), DefaultDay));
-   copyTimeSpec(dt, result);
+    QDateTime result( QDate( DefaultYear, dt.date().month(), DefaultDay ) );
+    copyTimeSpec( dt, result );
 
-   return GMonth::Ptr(new GMonth(result));
+    return GMonth::Ptr( new GMonth( result ) );
 }
 
 QString GMonth::stringValue() const
 {
-   return m_dateTime.toString(QLatin1String("--MM")) + zoneOffsetToString();
+    return m_dateTime.toString( QLatin1String( "--MM" ) ) + zoneOffsetToString();
 }
 
 ItemType::Ptr GMonth::type() const
 {
-   return BuiltinTypes::xsGMonth;
+    return BuiltinTypes::xsGMonth;
 }

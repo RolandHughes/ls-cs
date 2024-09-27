@@ -29,70 +29,90 @@
 #include "Timer.h"
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class CachedResourceLoader;
 class MemoryCache;
 
-class CachedImage : public CachedResource, public ImageObserver {
+class CachedImage : public CachedResource, public ImageObserver
+{
     friend class MemoryCache;
 
 public:
-    CachedImage(const String& url);
-    CachedImage(Image*);
+    CachedImage( const String &url );
+    CachedImage( Image * );
     virtual ~CachedImage();
-    
-    virtual void load(CachedResourceLoader* cachedResourceLoader);
 
-    Image* image() const; // Returns the nullImage() if the image is not available yet.
-    bool hasImage() const { return m_image.get(); }
+    virtual void load( CachedResourceLoader *cachedResourceLoader );
 
-    bool canRender(float multiplier) const { return !errorOccurred() && !imageSize(multiplier).isEmpty(); }
+    Image *image() const; // Returns the nullImage() if the image is not available yet.
+    bool hasImage() const
+    {
+        return m_image.get();
+    }
+
+    bool canRender( float multiplier ) const
+    {
+        return !errorOccurred() && !imageSize( multiplier ).isEmpty();
+    }
 
     // These are only used for SVGImage right now
-    void setImageContainerSize(const IntSize&);
+    void setImageContainerSize( const IntSize & );
     bool usesImageContainerSize() const;
     bool imageHasRelativeWidth() const;
     bool imageHasRelativeHeight() const;
-    
+
     // Both of these methods take a zoom multiplier that can be used to increase the natural size of the image by the
     // zoom.
-    IntSize imageSize(float multiplier) const;  // returns the size of the complete image.
-    IntRect imageRect(float multiplier) const;  // The size of the currently decoded portion of the image.
+    IntSize imageSize( float multiplier ) const; // returns the size of the complete image.
+    IntRect imageRect( float multiplier ) const; // The size of the currently decoded portion of the image.
 
-    virtual void didAddClient(CachedResourceClient*);
-    
+    virtual void didAddClient( CachedResourceClient * );
+
     virtual void allClientsRemoved();
     virtual void destroyDecodedData();
 
-    virtual void data(PassRefPtr<SharedBuffer> data, bool allDataReceived);
-    virtual void error(CachedResource::Status);
-    
-    // For compatibility, images keep loading even if there are HTTP errors.
-    virtual bool shouldIgnoreHTTPStatusCodeErrors() const { return true; }
+    virtual void data( PassRefPtr<SharedBuffer> data, bool allDataReceived );
+    virtual void error( CachedResource::Status );
 
-    virtual bool isImage() const { return true; }
+    // For compatibility, images keep loading even if there are HTTP errors.
+    virtual bool shouldIgnoreHTTPStatusCodeErrors() const
+    {
+        return true;
+    }
+
+    virtual bool isImage() const
+    {
+        return true;
+    }
 
     void clear();
-    
-    bool stillNeedsLoad() const { return !errorOccurred() && status() == Unknown && !isLoading(); }
+
+    bool stillNeedsLoad() const
+    {
+        return !errorOccurred() && status() == Unknown && !isLoading();
+    }
     void load();
 
     // ImageObserver
-    virtual void decodedSizeChanged(const Image* image, int delta);
-    virtual void didDraw(const Image*);
+    virtual void decodedSizeChanged( const Image *image, int delta );
+    virtual void didDraw( const Image * );
 
-    virtual bool shouldPauseAnimation(const Image*);
-    virtual void animationAdvanced(const Image*);
-    virtual void changedInRect(const Image*, const IntRect&);
+    virtual bool shouldPauseAnimation( const Image * );
+    virtual void animationAdvanced( const Image * );
+    virtual void changedInRect( const Image *, const IntRect & );
 
 private:
     void createImage();
     size_t maximumDecodedImageSize();
     // If not null, changeRect is the changed part of the image.
-    void notifyObservers(const IntRect* changeRect = 0);
-    void decodedDataDeletionTimerFired(Timer<CachedImage>*);
-    virtual PurgePriority purgePriority() const { return PurgeFirst; }
+    void notifyObservers( const IntRect *changeRect = 0 );
+    void decodedDataDeletionTimerFired( Timer<CachedImage> * );
+    virtual PurgePriority purgePriority() const
+    {
+        return PurgeFirst;
+    }
     void checkShouldPaintBrokenImage();
 
     RefPtr<Image> m_image;

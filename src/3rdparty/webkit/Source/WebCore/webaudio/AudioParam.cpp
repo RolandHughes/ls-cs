@@ -31,32 +31,39 @@
 
 #include <wtf/MathExtras.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 const double AudioParam::DefaultSmoothingConstant = 0.05;
 const double AudioParam::SnapThreshold = 0.001;
 
-void AudioParam::setValue(float value)
+void AudioParam::setValue( float value )
 {
     // Check against JavaScript giving us bogus floating-point values.
     // Don't ASSERT, since this can happen if somebody writes bad JS.
-    if (!isnan(value) && !isinf(value))
+    if ( !isnan( value ) && !isinf( value ) )
+    {
         m_value = value;
+    }
 }
 
 bool AudioParam::smooth()
 {
-    if (m_smoothedValue == m_value) {
+    if ( m_smoothedValue == m_value )
+    {
         // Smoothed value has already approached and snapped to value.
         return true;
     }
 
     // Exponential approach
-    m_smoothedValue += (m_value - m_smoothedValue) * m_smoothingConstant;
+    m_smoothedValue += ( m_value - m_smoothedValue ) * m_smoothingConstant;
 
     // If we get close enough then snap to actual value.
-    if (fabs(m_smoothedValue - m_value) < SnapThreshold) // FIXME: the threshold needs to be adjustable depending on range - but this is OK general purpose value.
+    if ( fabs( m_smoothedValue - m_value ) <
+            SnapThreshold ) // FIXME: the threshold needs to be adjustable depending on range - but this is OK general purpose value.
+    {
         m_smoothedValue = m_value;
+    }
 
     return false;
 }

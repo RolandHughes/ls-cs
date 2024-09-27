@@ -27,23 +27,29 @@ class QNetworkReply;
 
 class QtMIMETypeSniffer : public QObject
 {
-    WEB_CS_OBJECT(QtMIMETypeSniffer)
+    WEB_CS_OBJECT( QtMIMETypeSniffer )
 
 public:
-    QtMIMETypeSniffer(QNetworkReply*, const QString& advertisedMimeType, bool isSupportedImageType);
-    QString mimeType() const { return m_mimeType; }
-    bool isFinished() const { return m_isFinished; }
+    QtMIMETypeSniffer( QNetworkReply *, const QString &advertisedMimeType, bool isSupportedImageType );
+    QString mimeType() const
+    {
+        return m_mimeType;
+    }
+    bool isFinished() const
+    {
+        return m_isFinished;
+    }
 
-    WEB_CS_SIGNAL_1(Public,void finished())
-    WEB_CS_SIGNAL_2(finished)
+    WEB_CS_SIGNAL_1( Public,void finished() )
+    WEB_CS_SIGNAL_2( finished )
 
 private:
-    WEB_CS_SLOT_1(Private,void trySniffing())
-    WEB_CS_SLOT_2(trySniffing)
+    WEB_CS_SLOT_1( Private,void trySniffing() )
+    WEB_CS_SLOT_2( trySniffing )
 
     bool sniff();
 
-    QNetworkReply* m_reply;
+    QNetworkReply *m_reply;
     QString m_mimeType;
     MIMESniffer m_sniffer;
     bool m_isFinished;

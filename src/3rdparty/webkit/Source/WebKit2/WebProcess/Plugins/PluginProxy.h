@@ -36,87 +36,99 @@
 OBJC_CLASS CALayer;
 #endif
 
-namespace WebCore {
-    class HTTPHeaderMap;
+namespace WebCore
+{
+class HTTPHeaderMap;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 class ShareableBitmap;
 class NPVariantData;
 class PluginProcessConnection;
 
-class PluginProxy : public Plugin {
+class PluginProxy : public Plugin
+{
 public:
-    static PassRefPtr<PluginProxy> create(const String& pluginPath);
+    static PassRefPtr<PluginProxy> create( const String &pluginPath );
     ~PluginProxy();
 
-    uint64_t pluginInstanceID() const { return m_pluginInstanceID; }
+    uint64_t pluginInstanceID() const
+    {
+        return m_pluginInstanceID;
+    }
     void pluginProcessCrashed();
 
-    void didReceivePluginProxyMessage(CoreIPC::Connection*, CoreIPC::MessageID messageID, CoreIPC::ArgumentDecoder* arguments);
-    CoreIPC::SyncReplyMode didReceiveSyncPluginProxyMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*, CoreIPC::ArgumentEncoder*);
+    void didReceivePluginProxyMessage( CoreIPC::Connection *, CoreIPC::MessageID messageID, CoreIPC::ArgumentDecoder *arguments );
+    CoreIPC::SyncReplyMode didReceiveSyncPluginProxyMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder *,
+            CoreIPC::ArgumentEncoder * );
 
 private:
-    explicit PluginProxy(const String& pluginPath);
+    explicit PluginProxy( const String &pluginPath );
 
     // Plugin
-    virtual bool initialize(PluginController*, const Parameters&);
+    virtual bool initialize( PluginController *, const Parameters & );
     virtual void destroy();
-    virtual void paint(WebCore::GraphicsContext*, const WebCore::IntRect& dirtyRect);
+    virtual void paint( WebCore::GraphicsContext *, const WebCore::IntRect &dirtyRect );
     virtual PassRefPtr<ShareableBitmap> snapshot();
 #if PLATFORM(MAC)
-    virtual PlatformLayer* pluginLayer();
+    virtual PlatformLayer *pluginLayer();
 #endif
     virtual bool isTransparent();
-    virtual void geometryDidChange(const WebCore::IntRect& frameRect, const WebCore::IntRect& clipRect);
-    virtual void frameDidFinishLoading(uint64_t requestID);
-    virtual void frameDidFail(uint64_t requestID, bool wasCancelled);
-    virtual void didEvaluateJavaScript(uint64_t requestID, const WTF::String& requestURLString, const WTF::String& result);
-    virtual void streamDidReceiveResponse(uint64_t streamID, const WebCore::KURL& responseURL, uint32_t streamLength, uint32_t lastModifiedTime, const WTF::String& mimeType, const WTF::String& headers);
-    virtual void streamDidReceiveData(uint64_t streamID, const char* bytes, int length);
-    virtual void streamDidFinishLoading(uint64_t streamID);
-    virtual void streamDidFail(uint64_t streamID, bool wasCancelled);
-    virtual void manualStreamDidReceiveResponse(const WebCore::KURL& responseURL, uint32_t streamLength, uint32_t lastModifiedTime, const WTF::String& mimeType, const WTF::String& headers);
-    virtual void manualStreamDidReceiveData(const char* bytes, int length);
+    virtual void geometryDidChange( const WebCore::IntRect &frameRect, const WebCore::IntRect &clipRect );
+    virtual void frameDidFinishLoading( uint64_t requestID );
+    virtual void frameDidFail( uint64_t requestID, bool wasCancelled );
+    virtual void didEvaluateJavaScript( uint64_t requestID, const WTF::String &requestURLString, const WTF::String &result );
+    virtual void streamDidReceiveResponse( uint64_t streamID, const WebCore::KURL &responseURL, uint32_t streamLength,
+                                           uint32_t lastModifiedTime, const WTF::String &mimeType, const WTF::String &headers );
+    virtual void streamDidReceiveData( uint64_t streamID, const char *bytes, int length );
+    virtual void streamDidFinishLoading( uint64_t streamID );
+    virtual void streamDidFail( uint64_t streamID, bool wasCancelled );
+    virtual void manualStreamDidReceiveResponse( const WebCore::KURL &responseURL, uint32_t streamLength, uint32_t lastModifiedTime,
+            const WTF::String &mimeType, const WTF::String &headers );
+    virtual void manualStreamDidReceiveData( const char *bytes, int length );
     virtual void manualStreamDidFinishLoading();
-    virtual void manualStreamDidFail(bool wasCancelled);
-    
-    virtual bool handleMouseEvent(const WebMouseEvent&);
-    virtual bool handleWheelEvent(const WebWheelEvent&);
-    virtual bool handleMouseEnterEvent(const WebMouseEvent&);
-    virtual bool handleMouseLeaveEvent(const WebMouseEvent&);
-    virtual bool handleKeyboardEvent(const WebKeyboardEvent&);
-    virtual void setFocus(bool);
-    virtual NPObject* pluginScriptableNPObject();
+    virtual void manualStreamDidFail( bool wasCancelled );
+
+    virtual bool handleMouseEvent( const WebMouseEvent & );
+    virtual bool handleWheelEvent( const WebWheelEvent & );
+    virtual bool handleMouseEnterEvent( const WebMouseEvent & );
+    virtual bool handleMouseLeaveEvent( const WebMouseEvent & );
+    virtual bool handleKeyboardEvent( const WebKeyboardEvent & );
+    virtual void setFocus( bool );
+    virtual NPObject *pluginScriptableNPObject();
 #if PLATFORM(MAC)
-    virtual void windowFocusChanged(bool);
-    virtual void windowAndViewFramesChanged(const WebCore::IntRect& windowFrameInScreenCoordinates, const WebCore::IntRect& viewFrameInWindowCoordinates);
-    virtual void windowVisibilityChanged(bool);
+    virtual void windowFocusChanged( bool );
+    virtual void windowAndViewFramesChanged( const WebCore::IntRect &windowFrameInScreenCoordinates,
+            const WebCore::IntRect &viewFrameInWindowCoordinates );
+    virtual void windowVisibilityChanged( bool );
     virtual uint64_t pluginComplexTextInputIdentifier() const;
-    virtual void sendComplexTextInput(const String& textInput);
+    virtual void sendComplexTextInput( const String &textInput );
 #endif
 
-    virtual void privateBrowsingStateChanged(bool);
+    virtual void privateBrowsingStateChanged( bool );
 
-    virtual PluginController* controller();
+    virtual PluginController *controller();
 
     bool needsBackingStore() const;
 
     // Message handlers.
-    void loadURL(uint64_t requestID, const String& method, const String& urlString, const String& target, const WebCore::HTTPHeaderMap& headerFields, const Vector<uint8_t>& httpBody, bool allowPopups);
-    void update(const WebCore::IntRect& paintedRect);
-    void proxiesForURL(const String& urlString, String& proxyString);
-    void cookiesForURL(const String& urlString, String& cookieString);
-    void setCookiesForURL(const String& urlString, const String& cookieString);
-    void getWindowScriptNPObject(uint64_t& windowScriptNPObjectID);
-    void getPluginElementNPObject(uint64_t& pluginElementNPObjectID);
-    void evaluate(const NPVariantData& npObjectAsVariantData, const String& scriptString, bool allowPopups, bool& returnValue, NPVariantData& resultData);
-    void cancelStreamLoad(uint64_t streamID);
+    void loadURL( uint64_t requestID, const String &method, const String &urlString, const String &target,
+                  const WebCore::HTTPHeaderMap &headerFields, const Vector<uint8_t> &httpBody, bool allowPopups );
+    void update( const WebCore::IntRect &paintedRect );
+    void proxiesForURL( const String &urlString, String &proxyString );
+    void cookiesForURL( const String &urlString, String &cookieString );
+    void setCookiesForURL( const String &urlString, const String &cookieString );
+    void getWindowScriptNPObject( uint64_t &windowScriptNPObjectID );
+    void getPluginElementNPObject( uint64_t &pluginElementNPObjectID );
+    void evaluate( const NPVariantData &npObjectAsVariantData, const String &scriptString, bool allowPopups, bool &returnValue,
+                   NPVariantData &resultData );
+    void cancelStreamLoad( uint64_t streamID );
     void cancelManualStreamLoad();
-    void setStatusbarText(const String& statusbarText);
+    void setStatusbarText( const String &statusbarText );
 #if PLATFORM(MAC)
-    void setComplexTextInputEnabled(bool);
+    void setComplexTextInputEnabled( bool );
 #endif
 
     String m_pluginPath;
@@ -124,7 +136,7 @@ private:
     RefPtr<PluginProcessConnection> m_connection;
     uint64_t m_pluginInstanceID;
 
-    PluginController* m_pluginController;
+    PluginController *m_pluginController;
 
     // The plug-in rect in window coordinates.
     WebCore::IntRect m_frameRect;
@@ -135,7 +147,7 @@ private:
     // This is the shared memory backing store that the plug-in paints into. When the plug-in tells us
     // that it's painted something in it, we'll blit from it to our own backing store.
     RefPtr<ShareableBitmap> m_pluginBackingStore;
-    
+
     // Whether all of the plug-in backing store contains valid data.
     bool m_pluginBackingStoreContainsValidData;
 

@@ -23,15 +23,20 @@
 #include <wtf/RefCounted.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Document;
 
-class DOMParser : public RefCounted<DOMParser> {
+class DOMParser : public RefCounted<DOMParser>
+{
 public:
-    static PassRefPtr<DOMParser> create() { return adoptRef(new DOMParser); }
+    static PassRefPtr<DOMParser> create()
+    {
+        return adoptRef( new DOMParser );
+    }
 
-    PassRefPtr<Document> parseFromString(const String&, const String& contentType);
+    PassRefPtr<Document> parseFromString( const String &, const String &contentType );
 
 private:
     DOMParser() { }

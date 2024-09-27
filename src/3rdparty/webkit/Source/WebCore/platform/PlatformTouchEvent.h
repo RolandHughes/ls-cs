@@ -43,45 +43,70 @@ typedef unsigned long int uint32;
 typedef struct _Eina_List Eina_List;
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
-enum TouchEventType {
+enum TouchEventType
+{
     TouchStart
     , TouchMove
     , TouchEnd
     , TouchCancel
 };
 
-class PlatformTouchEvent {
+class PlatformTouchEvent
+{
 public:
     PlatformTouchEvent()
-        : m_type(TouchStart)
-        , m_ctrlKey(false)
-        , m_altKey(false)
-        , m_shiftKey(false)
-        , m_metaKey(false)
-        , m_timestamp(0)
+        : m_type( TouchStart )
+        , m_ctrlKey( false )
+        , m_altKey( false )
+        , m_shiftKey( false )
+        , m_metaKey( false )
+        , m_timestamp( 0 )
     {}
 #if PLATFORM(QT)
-    PlatformTouchEvent(QTouchEvent*);
+    PlatformTouchEvent( QTouchEvent * );
 #elif PLATFORM(ANDROID)
-    PlatformTouchEvent(const Vector<int>&, const Vector<IntPoint>&, TouchEventType, const Vector<PlatformTouchPoint::State>&, int metaState);
+    PlatformTouchEvent( const Vector<int> &, const Vector<IntPoint> &, TouchEventType, const Vector<PlatformTouchPoint::State> &,
+                        int metaState );
 #elif PLATFORM(BREWMP)
-    PlatformTouchEvent(AEEEvent, uint16 wParam, uint32 dwParam);
+    PlatformTouchEvent( AEEEvent, uint16 wParam, uint32 dwParam );
 #elif PLATFORM(EFL)
-    PlatformTouchEvent(Eina_List*, const IntPoint, TouchEventType, int metaState);
+    PlatformTouchEvent( Eina_List *, const IntPoint, TouchEventType, int metaState );
 #endif
 
-    TouchEventType type() const { return m_type; }
-    const Vector<PlatformTouchPoint>& touchPoints() const { return m_touchPoints; }
+    TouchEventType type() const
+    {
+        return m_type;
+    }
+    const Vector<PlatformTouchPoint> &touchPoints() const
+    {
+        return m_touchPoints;
+    }
 
-    bool ctrlKey() const { return m_ctrlKey; }
-    bool altKey() const { return m_altKey; }
-    bool shiftKey() const { return m_shiftKey; }
-    bool metaKey() const { return m_metaKey; }
+    bool ctrlKey() const
+    {
+        return m_ctrlKey;
+    }
+    bool altKey() const
+    {
+        return m_altKey;
+    }
+    bool shiftKey() const
+    {
+        return m_shiftKey;
+    }
+    bool metaKey() const
+    {
+        return m_metaKey;
+    }
 
     // Time in seconds.
-    double timestamp() const { return m_timestamp; }
+    double timestamp() const
+    {
+        return m_timestamp;
+    }
 
 protected:
     TouchEventType m_type;

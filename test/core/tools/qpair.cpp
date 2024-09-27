@@ -22,96 +22,96 @@
 
 #include <cs_catch2.h>
 
-TEST_CASE("QPair traits", "[qpair]")
+TEST_CASE( "QPair traits", "[qpair]" )
 {
-   REQUIRE(std::is_copy_constructible_v<QPair<int, int>> == true);
-   REQUIRE(std::is_move_constructible_v<QPair<int, int>> == true);
+    REQUIRE( std::is_copy_constructible_v<QPair<int, int>> == true );
+    REQUIRE( std::is_move_constructible_v<QPair<int, int>> == true );
 
-   REQUIRE(std::is_copy_assignable_v<QPair<int, int>> == true);
-   REQUIRE(std::is_move_assignable_v<QPair<int, int>> == true);
+    REQUIRE( std::is_copy_assignable_v<QPair<int, int>> == true );
+    REQUIRE( std::is_move_assignable_v<QPair<int, int>> == true );
 
-   REQUIRE(std::has_virtual_destructor_v<QPair<int, int>> == false);
+    REQUIRE( std::has_virtual_destructor_v<QPair<int, int>> == false );
 }
 
-TEST_CASE("QPair construction", "[qpair]")
+TEST_CASE( "QPair construction", "[qpair]" )
 {
-   QPair<QString, QString> pair;
+    QPair<QString, QString> pair;
 
-   REQUIRE(pair.first == "");
-   REQUIRE(pair.second == "");
+    REQUIRE( pair.first == "" );
+    REQUIRE( pair.second == "" );
 }
 
-TEST_CASE("QPair stream", "[qpair]")
+TEST_CASE( "QPair stream", "[qpair]" )
 {
-   QPair<int, int> pair1 = {10, 20};
-   QPair<int, int> pair2;
+    QPair<int, int> pair1 = {10, 20};
+    QPair<int, int> pair2;
 
-   QByteArray buffer;
+    QByteArray buffer;
 
-   QDataStream out(&buffer, QIODevice::WriteOnly);
-   out << pair1;
+    QDataStream out( &buffer, QIODevice::WriteOnly );
+    out << pair1;
 
-   QDataStream in(&buffer, QIODevice::ReadOnly);
-   in >> pair2;
+    QDataStream in( &buffer, QIODevice::ReadOnly );
+    in >> pair2;
 
-   REQUIRE(pair2.first == 10);
-   REQUIRE(pair2.second == 20);
+    REQUIRE( pair2.first == 10 );
+    REQUIRE( pair2.second == 20 );
 }
 
-TEST_CASE("QPair copy", "[qpair]")
+TEST_CASE( "QPair copy", "[qpair]" )
 {
-   QPair<QString, int> pair1 = {"answer", 42};
-   QPair<QString, int> pair2(pair1);
+    QPair<QString, int> pair1 = {"answer", 42};
+    QPair<QString, int> pair2( pair1 );
 
-   REQUIRE(pair2.first == "answer");
-   REQUIRE(pair2.second == 42);
+    REQUIRE( pair2.first == "answer" );
+    REQUIRE( pair2.second == 42 );
 }
 
-TEST_CASE("QPair move", "[qpair]")
+TEST_CASE( "QPair move", "[qpair]" )
 {
-   QPair<QString, int> pair1 = {"answer", 42};
-   QPair<QString, int> pair2(std::move(pair1));
+    QPair<QString, int> pair1 = {"answer", 42};
+    QPair<QString, int> pair2( std::move( pair1 ) );
 
-   REQUIRE(pair2.first == "answer");
-   REQUIRE(pair2.second == 42);
+    REQUIRE( pair2.first == "answer" );
+    REQUIRE( pair2.second == 42 );
 }
 
-TEST_CASE("QPair assign", "[qpair]")
+TEST_CASE( "QPair assign", "[qpair]" )
 {
-   QPair<QString, int> pair1 = {"answer", 42};
-   QPair<QString, int> pair2;
+    QPair<QString, int> pair1 = {"answer", 42};
+    QPair<QString, int> pair2;
 
-   pair2 = pair1;
+    pair2 = pair1;
 
-   REQUIRE(pair2.first == "answer");
-   REQUIRE(pair2.second == 42);
+    REQUIRE( pair2.first == "answer" );
+    REQUIRE( pair2.second == 42 );
 }
 
-TEST_CASE("QPair move assign", "[qpair]")
+TEST_CASE( "QPair move assign", "[qpair]" )
 {
-   QPair<QString, int> pair1 = {"answer", 42};
+    QPair<QString, int> pair1 = {"answer", 42};
 
-   QPair<QString, int> pair2;
-   pair2 = std::move(pair1);
+    QPair<QString, int> pair2;
+    pair2 = std::move( pair1 );
 
-   REQUIRE(pair2.first == "answer");
-   REQUIRE(pair2.second == 42);
+    REQUIRE( pair2.first == "answer" );
+    REQUIRE( pair2.second == 42 );
 }
 
-TEST_CASE("QPair qMakePair", "[qpair]")
+TEST_CASE( "QPair qMakePair", "[qpair]" )
 {
-   QPair<int, int> pair1 = qMakePair(1, 42);
-   QPair<int, int> pair2 = pair1;
+    QPair<int, int> pair1 = qMakePair( 1, 42 );
+    QPair<int, int> pair2 = pair1;
 
-   REQUIRE(pair2.first == 1);
-   REQUIRE(pair2.second == 42);
+    REQUIRE( pair2.first == 1 );
+    REQUIRE( pair2.second == 42 );
 }
 
-TEST_CASE("QPair qMakePair odd", "[qpair]")
+TEST_CASE( "QPair qMakePair odd", "[qpair]" )
 {
-   QPair<int, int> pair1 = qMakePair(65, 42);
-   QPair<QString, int> pair2(pair1);
+    QPair<int, int> pair1 = qMakePair( 65, 42 );
+    QPair<QString, int> pair2( pair1 );
 
-   REQUIRE(pair2.first.at(0) == 'A');
-   REQUIRE(pair2.second == 42);
+    REQUIRE( pair2.first.at( 0 ) == 'A' );
+    REQUIRE( pair2.second == 42 );
 }

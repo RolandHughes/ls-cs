@@ -24,8 +24,8 @@
 #include <camera_session.h>
 #include <camera_viewfindersettings2.h>
 
-CameraBinViewfinderSettings2::CameraBinViewfinderSettings2(CameraBinSession *session)
-   : QCameraViewfinderSettingsControl2(session), m_session(session)
+CameraBinViewfinderSettings2::CameraBinViewfinderSettings2( CameraBinSession *session )
+    : QCameraViewfinderSettingsControl2( session ), m_session( session )
 {
 }
 
@@ -35,16 +35,16 @@ CameraBinViewfinderSettings2::~CameraBinViewfinderSettings2()
 
 QList<QCameraViewfinderSettings> CameraBinViewfinderSettings2::supportedViewfinderSettings() const
 {
-   return m_session->supportedViewfinderSettings();
+    return m_session->supportedViewfinderSettings();
 }
 
 QCameraViewfinderSettings CameraBinViewfinderSettings2::viewfinderSettings() const
 {
-   return m_session->viewfinderSettings();
+    return m_session->viewfinderSettings();
 }
 
-void CameraBinViewfinderSettings2::setViewfinderSettings(const QCameraViewfinderSettings &settings)
+void CameraBinViewfinderSettings2::setViewfinderSettings( const QCameraViewfinderSettings &settings )
 {
-   m_session->setViewfinderSettings(settings);
+    m_session->setViewfinderSettings( settings );
 }
 

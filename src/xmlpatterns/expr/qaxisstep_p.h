@@ -27,74 +27,77 @@
 #include <qemptycontainer_p.h>
 #include <qitem_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class AxisStep : public EmptyContainer
 {
- public:
-   AxisStep(const QXmlNodeModelIndex::Axis axis, const ItemType::Ptr &nodeTest);
+public:
+    AxisStep( const QXmlNodeModelIndex::Axis axis, const ItemType::Ptr &nodeTest );
 
-   Item::Iterator::Ptr evaluateSequence(const DynamicContext::Ptr &) const override;
-   Item evaluateSingleton(const DynamicContext::Ptr &) const override;
+    Item::Iterator::Ptr evaluateSequence( const DynamicContext::Ptr & ) const override;
+    Item evaluateSingleton( const DynamicContext::Ptr & ) const override;
 
-   /**
-    * Returns @p node if it matches the node test this step is using, otherwise @c null.
-    */
-   inline Item mapToItem(const QXmlNodeModelIndex &node,
-                         const DynamicContext::Ptr &context) const;
+    /**
+     * Returns @p node if it matches the node test this step is using, otherwise @c null.
+     */
+    inline Item mapToItem( const QXmlNodeModelIndex &node,
+                           const DynamicContext::Ptr &context ) const;
 
-   SequenceType::List expectedOperandTypes() const override;
-   SequenceType::Ptr staticType() const override;
+    SequenceType::List expectedOperandTypes() const override;
+    SequenceType::Ptr staticType() const override;
 
-   /**
-    * Rewrites to ParentNodeAxis, if possible.
-    */
-   Expression::Ptr typeCheck(const StaticContext::Ptr &context, const SequenceType::Ptr &reqType) override;
+    /**
+     * Rewrites to ParentNodeAxis, if possible.
+     */
+    Expression::Ptr typeCheck( const StaticContext::Ptr &context, const SequenceType::Ptr &reqType ) override;
 
-   /**
-    * @returns always BuiltinTypes::node;
-    */
-   ItemType::Ptr expectedContextItemType() const override;
+    /**
+     * @returns always BuiltinTypes::node;
+     */
+    ItemType::Ptr expectedContextItemType() const override;
 
-   ExpressionVisitorResult::Ptr accept(const ExpressionVisitor::Ptr &visitor) const override;
+    ExpressionVisitorResult::Ptr accept( const ExpressionVisitor::Ptr &visitor ) const override;
 
-   Properties properties() const override;
+    Properties properties() const override;
 
-   /**
-    * @returns the axis this step is using.
-    */
-   QXmlNodeModelIndex::Axis axis() const;
+    /**
+     * @returns the axis this step is using.
+     */
+    QXmlNodeModelIndex::Axis axis() const;
 
-   inline ItemType::Ptr nodeTest() const {
-      return m_nodeTest;
-   }
+    inline ItemType::Ptr nodeTest() const
+    {
+        return m_nodeTest;
+    }
 
-   void setNodeTest(const ItemType::Ptr &nev) {
-      m_nodeTest = nev;
-   }
+    void setNodeTest( const ItemType::Ptr &nev )
+    {
+        m_nodeTest = nev;
+    }
 
-   static QString axisName(const QXmlNodeModelIndex::Axis axis);
+    static QString axisName( const QXmlNodeModelIndex::Axis axis );
 
-   ID id() const override;
-   PatternPriority patternPriority() const override;
+    ID id() const override;
+    PatternPriority patternPriority() const override;
 
-   inline void setAxis(const QXmlNodeModelIndex::Axis newAxis);
+    inline void setAxis( const QXmlNodeModelIndex::Axis newAxis );
 
- private:
-   typedef QExplicitlySharedDataPointer<const AxisStep> ConstPtr;
+private:
+    typedef QExplicitlySharedDataPointer<const AxisStep> ConstPtr;
 
-   static const QXmlNodeModelIndex::NodeKind s_whenAxisNodeKindEmpty[];
+    static const QXmlNodeModelIndex::NodeKind s_whenAxisNodeKindEmpty[];
 
-   static bool isAlwaysEmpty(const QXmlNodeModelIndex::Axis axis, const QXmlNodeModelIndex::NodeKind nodeKind);
+    static bool isAlwaysEmpty( const QXmlNodeModelIndex::Axis axis, const QXmlNodeModelIndex::NodeKind nodeKind );
 
 
-   QXmlNodeModelIndex::Axis m_axis;
-   ItemType::Ptr m_nodeTest;
+    QXmlNodeModelIndex::Axis m_axis;
+    ItemType::Ptr m_nodeTest;
 };
 
-void AxisStep::setAxis(const QXmlNodeModelIndex::Axis newAxis)
+void AxisStep::setAxis( const QXmlNodeModelIndex::Axis newAxis )
 {
-   m_axis = newAxis;
+    m_axis = newAxis;
 }
 
 }

@@ -34,74 +34,94 @@
 #include "Operations.h"
 #include "PropertyNameArray.h"
 
-namespace JSC {
+namespace JSC
+{
 
-    class Identifier;
-    class JSObject;
+class Identifier;
+class JSObject;
 
-    class JSPropertyNameIterator : public JSCell {
-        friend class JIT;
+class JSPropertyNameIterator : public JSCell
+{
+    friend class JIT;
 
-    public:
-        static JSPropertyNameIterator* create(ExecState*, JSObject*);
-        
-        static Structure* createStructure(JSGlobalData& globalData, JSValue prototype)
-        {
-            return Structure::create(globalData, prototype, TypeInfo(CompoundType, OverridesVisitChildren), AnonymousSlotCount, &s_info);
-        }
+public:
+    static JSPropertyNameIterator *create( ExecState *, JSObject * );
 
-        virtual bool isPropertyNameIterator() const { return true; }
-
-        virtual void visitChildren(SlotVisitor&);
-
-        bool getOffset(size_t i, int& offset)
-        {
-            if (i >= m_numCacheableSlots)
-                return false;
-            offset = i;
-            return true;
-        }
-
-        JSValue get(ExecState*, JSObject*, size_t i);
-        size_t size() { return m_jsStringsSize; }
-
-        void setCachedStructure(JSGlobalData& globalData, Structure* structure)
-        {
-            ASSERT(!m_cachedStructure);
-            ASSERT(structure);
-            m_cachedStructure.set(globalData, this, structure);
-        }
-        Structure* cachedStructure() { return m_cachedStructure.get(); }
-
-        void setCachedPrototypeChain(JSGlobalData& globalData, StructureChain* cachedPrototypeChain) { m_cachedPrototypeChain.set(globalData, this, cachedPrototypeChain); }
-        StructureChain* cachedPrototypeChain() { return m_cachedPrototypeChain.get(); }
-
-    private:
-        static const ClassInfo s_info;
-        JSPropertyNameIterator(ExecState*, PropertyNameArrayData* propertyNameArrayData, size_t numCacheableSlot);
-
-        WriteBarrier<Structure> m_cachedStructure;
-        WriteBarrier<StructureChain> m_cachedPrototypeChain;
-        uint32_t m_numCacheableSlots;
-        uint32_t m_jsStringsSize;
-        OwnArrayPtr<WriteBarrier<Unknown> > m_jsStrings;
-    };
-
-    inline void Structure::setEnumerationCache(JSGlobalData& globalData, JSPropertyNameIterator* enumerationCache)
+    static Structure *createStructure( JSGlobalData &globalData, JSValue prototype )
     {
-        ASSERT(!isDictionary());
-        m_enumerationCache.set(globalData, this, enumerationCache);
+        return Structure::create( globalData, prototype, TypeInfo( CompoundType, OverridesVisitChildren ), AnonymousSlotCount, &s_info );
     }
 
-    inline JSPropertyNameIterator* Structure::enumerationCache()
+    virtual bool isPropertyNameIterator() const
     {
-        return m_enumerationCache.get();
+        return true;
     }
 
-    ALWAYS_INLINE JSPropertyNameIterator* Register::propertyNameIterator() const
+    virtual void visitChildren( SlotVisitor & );
+
+    bool getOffset( size_t i, int &offset )
     {
-        return static_cast<JSPropertyNameIterator*>(jsValue().asCell());
+        if ( i >= m_numCacheableSlots )
+        {
+            return false;
+        }
+
+        offset = i;
+        return true;
     }
+
+    JSValue get( ExecState *, JSObject *, size_t i );
+    size_t size()
+    {
+        return m_jsStringsSize;
+    }
+
+    void setCachedStructure( JSGlobalData &globalData, Structure *structure )
+    {
+        ASSERT( !m_cachedStructure );
+        ASSERT( structure );
+        m_cachedStructure.set( globalData, this, structure );
+    }
+    Structure *cachedStructure()
+    {
+        return m_cachedStructure.get();
+    }
+
+    void setCachedPrototypeChain( JSGlobalData &globalData, StructureChain *cachedPrototypeChain )
+    {
+        m_cachedPrototypeChain.set( globalData, this, cachedPrototypeChain );
+    }
+    StructureChain *cachedPrototypeChain()
+    {
+        return m_cachedPrototypeChain.get();
+    }
+
+private:
+    static const ClassInfo s_info;
+    JSPropertyNameIterator( ExecState *, PropertyNameArrayData *propertyNameArrayData, size_t numCacheableSlot );
+
+    WriteBarrier<Structure> m_cachedStructure;
+    WriteBarrier<StructureChain> m_cachedPrototypeChain;
+    uint32_t m_numCacheableSlots;
+    uint32_t m_jsStringsSize;
+    OwnArrayPtr<WriteBarrier<Unknown> > m_jsStrings;
+};
+
+inline void Structure::setEnumerationCache( JSGlobalData &globalData, JSPropertyNameIterator *enumerationCache )
+{
+    ASSERT( !isDictionary() );
+    m_enumerationCache.set( globalData, this, enumerationCache );
+}
+
+inline JSPropertyNameIterator *Structure::enumerationCache()
+{
+    return m_enumerationCache.get();
+}
+
+ALWAYS_INLINE JSPropertyNameIterator *Register::propertyNameIterator() const
+{
+    return static_cast<JSPropertyNameIterator *>( jsValue().asCell() );
+}
 
 } // namespace JSC
 

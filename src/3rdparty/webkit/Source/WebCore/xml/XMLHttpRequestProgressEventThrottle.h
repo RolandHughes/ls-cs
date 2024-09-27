@@ -31,25 +31,28 @@
 #include "wtf/PassRefPtr.h"
 #include "wtf/Vector.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Event;
 class EventTarget;
 
-enum ProgressEventAction {
+enum ProgressEventAction
+{
     DoNotFlushProgressEvent,
     FlushProgressEvent
 };
 
 // This implements the XHR2 progress event dispatching: "dispatch a progress event called progress
 // about every 50ms or for every byte received, whichever is least frequent".
-class XMLHttpRequestProgressEventThrottle : public TimerBase {
+class XMLHttpRequestProgressEventThrottle : public TimerBase
+{
 public:
-    XMLHttpRequestProgressEventThrottle(EventTarget*);
+    XMLHttpRequestProgressEventThrottle( EventTarget * );
     virtual ~XMLHttpRequestProgressEventThrottle();
 
-    void dispatchProgressEvent(bool lengthComputable, unsigned long long loaded, unsigned long long total);
-    void dispatchEvent(PassRefPtr<Event>, ProgressEventAction = DoNotFlushProgressEvent);
+    void dispatchProgressEvent( bool lengthComputable, unsigned long long loaded, unsigned long long total );
+    void dispatchEvent( PassRefPtr<Event>, ProgressEventAction = DoNotFlushProgressEvent );
 
     void suspend();
     void resume();
@@ -59,13 +62,13 @@ private:
     static const double minimumProgressEventDispatchingIntervalInSeconds;
 
     virtual void fired();
-    void dispatchDeferredEvents(Timer<XMLHttpRequestProgressEventThrottle>*);
+    void dispatchDeferredEvents( Timer<XMLHttpRequestProgressEventThrottle> * );
     void flushProgressEvent();
 
     bool hasEventToDispatch() const;
 
     // Weak pointer to our XMLHttpRequest object as it is the one holding us.
-    EventTarget* m_target;
+    EventTarget *m_target;
 
     bool m_lengthComputable;
     unsigned long long m_loaded;

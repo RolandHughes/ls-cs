@@ -29,22 +29,27 @@
 #include "WKAPICast.h"
 #include "WKSharedAPICast.h"
 
-namespace WebKit {
-
-void WebIconDatabaseClient::didChangeIconForPageURL(WebIconDatabase* iconDatabase, WebURL* url)
+namespace WebKit
 {
-    if (!m_client.didChangeIconForPageURL)
+
+void WebIconDatabaseClient::didChangeIconForPageURL( WebIconDatabase *iconDatabase, WebURL *url )
+{
+    if ( !m_client.didChangeIconForPageURL )
+    {
         return;
-    
-    m_client.didChangeIconForPageURL(toAPI(iconDatabase), toAPI(url), m_client.clientInfo);
+    }
+
+    m_client.didChangeIconForPageURL( toAPI( iconDatabase ), toAPI( url ), m_client.clientInfo );
 }
 
-void WebIconDatabaseClient::didRemoveAllIcons(WebIconDatabase* iconDatabase)
+void WebIconDatabaseClient::didRemoveAllIcons( WebIconDatabase *iconDatabase )
 {
-    if (!m_client.didRemoveAllIcons)
+    if ( !m_client.didRemoveAllIcons )
+    {
         return;
-    
-    m_client.didRemoveAllIcons(toAPI(iconDatabase),  m_client.clientInfo);
+    }
+
+    m_client.didRemoveAllIcons( toAPI( iconDatabase ),  m_client.clientInfo );
 }
 
 } // namespace WebKit

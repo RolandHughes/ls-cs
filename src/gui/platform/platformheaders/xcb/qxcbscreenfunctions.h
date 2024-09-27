@@ -31,11 +31,15 @@ class QScreen;
 class QXcbScreenFunctions
 {
 public:
-    typedef bool (*VirtualDesktopNumber)(const QScreen *screen);
-    static const QByteArray virtualDesktopNumberIdentifier() { return QByteArray("XcbVirtualDesktopNumber"); }
-    static int virtualDesktopNumber(const QScreen *screen)
+    typedef bool ( *VirtualDesktopNumber )( const QScreen *screen );
+    static const QByteArray virtualDesktopNumberIdentifier()
     {
-        return QPlatformHeaderHelper::callPlatformFunction<int, VirtualDesktopNumber, const QScreen *>(virtualDesktopNumberIdentifier(), screen);
+        return QByteArray( "XcbVirtualDesktopNumber" );
+    }
+    static int virtualDesktopNumber( const QScreen *screen )
+    {
+        return QPlatformHeaderHelper::callPlatformFunction<int, VirtualDesktopNumber, const QScreen *>( virtualDesktopNumberIdentifier(),
+                screen );
     }
 };
 

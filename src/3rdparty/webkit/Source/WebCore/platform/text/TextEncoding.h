@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef TextEncoding_h
@@ -30,68 +30,91 @@
 #include <wtf/Forward.h>
 #include <wtf/unicode/Unicode.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class TextEncoding {
-    public:
-        TextEncoding() : m_name(0) { }
-        TextEncoding(const char* name);
-        TextEncoding(const String& name);
+class TextEncoding
+{
+public:
+    TextEncoding() : m_name( 0 ) { }
+    TextEncoding( const char *name );
+    TextEncoding( const String &name );
 
-        bool isValid() const { return m_name; }
-        const char* name() const { return m_name; }
-        const char* domName() const; // name exposed via DOM
-        bool usesVisualOrdering() const;
-        bool isJapanese() const;
-        
-        PassRefPtr<StringImpl> displayString(PassRefPtr<StringImpl> str) const
+    bool isValid() const
+    {
+        return m_name;
+    }
+    const char *name() const
+    {
+        return m_name;
+    }
+    const char *domName() const; // name exposed via DOM
+    bool usesVisualOrdering() const;
+    bool isJapanese() const;
+
+    PassRefPtr<StringImpl> displayString( PassRefPtr<StringImpl> str ) const
+    {
+        if ( m_backslashAsCurrencySymbol == '\\' || !str )
         {
-            if (m_backslashAsCurrencySymbol == '\\' || !str)
-                return str;
-            return str->replace('\\', m_backslashAsCurrencySymbol);
+            return str;
         }
-        void displayBuffer(UChar* characters, unsigned len) const
+
+        return str->replace( '\\', m_backslashAsCurrencySymbol );
+    }
+    void displayBuffer( UChar *characters, unsigned len ) const
+    {
+        if ( m_backslashAsCurrencySymbol == '\\' )
         {
-            if (m_backslashAsCurrencySymbol == '\\')
-                return;
-            for (unsigned i = 0; i < len; ++i) {
-                if (characters[i] == '\\')
-                    characters[i] = m_backslashAsCurrencySymbol;
+            return;
+        }
+
+        for ( unsigned i = 0; i < len; ++i )
+        {
+            if ( characters[i] == '\\' )
+            {
+                characters[i] = m_backslashAsCurrencySymbol;
             }
         }
+    }
 
-        const TextEncoding& closestByteBasedEquivalent() const;
-        const TextEncoding& encodingForFormSubmission() const;
+    const TextEncoding &closestByteBasedEquivalent() const;
+    const TextEncoding &encodingForFormSubmission() const;
 
-        String decode(const char* str, size_t length) const
-        {
-            bool ignored;
-            return decode(str, length, false, ignored);
-        }
-        String decode(const char*, size_t length, bool stopOnError, bool& sawError) const;
-        CString encode(const UChar*, size_t length, UnencodableHandling) const;
+    String decode( const char *str, size_t length ) const
+    {
+        bool ignored;
+        return decode( str, length, false, ignored );
+    }
+    String decode( const char *, size_t length, bool stopOnError, bool &sawError ) const;
+    CString encode( const UChar *, size_t length, UnencodableHandling ) const;
 
-        UChar backslashAsCurrencySymbol() const;
+    UChar backslashAsCurrencySymbol() const;
 
-    private:
-        bool isNonByteBasedEncoding() const;
-        bool isUTF7Encoding() const;
+private:
+    bool isNonByteBasedEncoding() const;
+    bool isUTF7Encoding() const;
 
-        const char* m_name;
-        UChar m_backslashAsCurrencySymbol;
-    };
+    const char *m_name;
+    UChar m_backslashAsCurrencySymbol;
+};
 
-    inline bool operator==(const TextEncoding& a, const TextEncoding& b) { return a.name() == b.name(); }
-    inline bool operator!=(const TextEncoding& a, const TextEncoding& b) { return a.name() != b.name(); }
+inline bool operator==( const TextEncoding &a, const TextEncoding &b )
+{
+    return a.name() == b.name();
+}
+inline bool operator!=( const TextEncoding &a, const TextEncoding &b )
+{
+    return a.name() != b.name();
+}
 
-    const TextEncoding& ASCIIEncoding();
-    const TextEncoding& Latin1Encoding();
-    const TextEncoding& UTF16BigEndianEncoding();
-    const TextEncoding& UTF16LittleEndianEncoding();
-    const TextEncoding& UTF32BigEndianEncoding();
-    const TextEncoding& UTF32LittleEndianEncoding();
-    const TextEncoding& UTF8Encoding();
-    const TextEncoding& WindowsLatin1Encoding();
+const TextEncoding &ASCIIEncoding();
+const TextEncoding &Latin1Encoding();
+const TextEncoding &UTF16BigEndianEncoding();
+const TextEncoding &UTF16LittleEndianEncoding();
+const TextEncoding &UTF32BigEndianEncoding();
+const TextEncoding &UTF32LittleEndianEncoding();
+const TextEncoding &UTF8Encoding();
+const TextEncoding &WindowsLatin1Encoding();
 
 } // namespace WebCore
 

@@ -31,34 +31,38 @@
 #include <wtf/Noncopyable.h>
 #include <wtf/PassOwnPtr.h>
 
-namespace CoreIPC {
-    class ArgumentDecoder;
-    class Connection;
-    class MessageID;
+namespace CoreIPC
+{
+class ArgumentDecoder;
+class Connection;
+class MessageID;
 }
 
-namespace WebCore {
-    class GraphicsLayer;
+namespace WebCore
+{
+class GraphicsLayer;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 class WebPage;
 struct WebPageCreationParameters;
 
-class DrawingArea {
-    WTF_MAKE_NONCOPYABLE(DrawingArea);
+class DrawingArea
+{
+    WTF_MAKE_NONCOPYABLE( DrawingArea );
 
 public:
-    static PassOwnPtr<DrawingArea> create(WebPage*, const WebPageCreationParameters&);
+    static PassOwnPtr<DrawingArea> create( WebPage *, const WebPageCreationParameters & );
     virtual ~DrawingArea();
-    
+
 #if PLATFORM(MAC) || PLATFORM(WIN) || PLATFORM(QT)
-    void didReceiveDrawingAreaMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*);
+    void didReceiveDrawingAreaMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * );
 #endif
 
-    virtual void setNeedsDisplay(const WebCore::IntRect&) = 0;
-    virtual void scroll(const WebCore::IntRect& scrollRect, const WebCore::IntSize& scrollOffset) = 0;
+    virtual void setNeedsDisplay( const WebCore::IntRect & ) = 0;
+    virtual void scroll( const WebCore::IntRect &scrollRect, const WebCore::IntSize &scrollOffset ) = 0;
 
     // FIXME: These should be pure virtual.
     virtual void pageBackgroundTransparencyChanged() { }
@@ -66,26 +70,27 @@ public:
 
     virtual void didInstallPageOverlay() { }
     virtual void didUninstallPageOverlay() { }
-    virtual void setPageOverlayNeedsDisplay(const WebCore::IntRect&) { }
+    virtual void setPageOverlayNeedsDisplay( const WebCore::IntRect & ) { }
 
 #if USE(ACCELERATED_COMPOSITING)
-    virtual void setRootCompositingLayer(WebCore::GraphicsLayer*) = 0;
+    virtual void setRootCompositingLayer( WebCore::GraphicsLayer * ) = 0;
     virtual void scheduleCompositingLayerSync() = 0;
     virtual void syncCompositingLayers() = 0;
 #endif
 
-    virtual void didReceiveMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*) = 0;
+    virtual void didReceiveMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * ) = 0;
 
 protected:
-    DrawingArea(DrawingAreaType, WebPage*);
+    DrawingArea( DrawingAreaType, WebPage * );
 
     DrawingAreaType m_type;
-    WebPage* m_webPage;
+    WebPage *m_webPage;
 
 private:
     // CoreIPC message handlers.
     // FIXME: These should be pure virtual.
-    virtual void updateBackingStoreState(uint64_t backingStoreStateID, bool respondImmediately, const WebCore::IntSize& size, const WebCore::IntSize& scrollOffset) { }
+    virtual void updateBackingStoreState( uint64_t backingStoreStateID, bool respondImmediately, const WebCore::IntSize &size,
+                                          const WebCore::IntSize &scrollOffset ) { }
     virtual void didUpdate() { }
     virtual void suspendPainting() { }
     virtual void resumePainting() { }

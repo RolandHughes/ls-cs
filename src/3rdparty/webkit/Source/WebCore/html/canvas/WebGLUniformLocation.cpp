@@ -21,7 +21,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -30,27 +30,31 @@
 
 #include "WebGLUniformLocation.h"
 
-namespace WebCore {
-
-PassRefPtr<WebGLUniformLocation> WebGLUniformLocation::create(WebGLProgram* program, GC3Dint location)
+namespace WebCore
 {
-    return adoptRef(new WebGLUniformLocation(program, location));
+
+PassRefPtr<WebGLUniformLocation> WebGLUniformLocation::create( WebGLProgram *program, GC3Dint location )
+{
+    return adoptRef( new WebGLUniformLocation( program, location ) );
 }
 
-WebGLUniformLocation::WebGLUniformLocation(WebGLProgram* program, GC3Dint location)
-    : m_program(program)
-    , m_location(location)
+WebGLUniformLocation::WebGLUniformLocation( WebGLProgram *program, GC3Dint location )
+    : m_program( program )
+    , m_location( location )
 {
-    ASSERT(m_program);
+    ASSERT( m_program );
     m_linkCount = m_program->getLinkCount();
 }
 
-WebGLProgram* WebGLUniformLocation::program() const
+WebGLProgram *WebGLUniformLocation::program() const
 {
     // If the program has been linked again, then this UniformLocation is no
     // longer valid.
-    if (m_program->getLinkCount() != m_linkCount)
+    if ( m_program->getLinkCount() != m_linkCount )
+    {
         return 0;
+    }
+
     return m_program.get();
 }
 
@@ -58,7 +62,7 @@ GC3Dint WebGLUniformLocation::location() const
 {
     // If the program has been linked again, then this UniformLocation is no
     // longer valid.
-    ASSERT(m_program->getLinkCount() == m_linkCount);
+    ASSERT( m_program->getLinkCount() == m_linkCount );
     return m_location;
 }
 

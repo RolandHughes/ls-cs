@@ -30,67 +30,71 @@
 
 using namespace QPatternist;
 
-ItemVerifier::ItemVerifier(const Expression::Ptr &operand, const ItemType::Ptr &reqType,
-                           const ReportContext::ErrorCode errorCode) : SingleContainer(operand),
-   m_reqType(reqType),
-   m_errorCode(errorCode)
+ItemVerifier::ItemVerifier( const Expression::Ptr &operand, const ItemType::Ptr &reqType,
+                            const ReportContext::ErrorCode errorCode ) : SingleContainer( operand ),
+    m_reqType( reqType ),
+    m_errorCode( errorCode )
 {
-   Q_ASSERT(reqType);
+    Q_ASSERT( reqType );
 }
 
-void ItemVerifier::verifyItem(const Item &item, const DynamicContext::Ptr &context) const
+void ItemVerifier::verifyItem( const Item &item, const DynamicContext::Ptr &context ) const
 {
-   if (m_reqType->itemMatches(item)) {
-      return;
-   }
+    if ( m_reqType->itemMatches( item ) )
+    {
+        return;
+    }
 
-   context->error(QtXmlPatterns::tr("The item %1 did not match the required type %2.")
-                  .formatArgs(formatData(item.stringValue()), formatType(context->namePool(), m_reqType)), m_errorCode, this);
+    context->error( QtXmlPatterns::tr( "The item %1 did not match the required type %2." )
+                    .formatArgs( formatData( item.stringValue() ), formatType( context->namePool(), m_reqType ) ), m_errorCode, this );
 }
 
 const SourceLocationReflection *ItemVerifier::actualReflection() const
 {
-   return m_operand->actualReflection();
+    return m_operand->actualReflection();
 }
 
-Item ItemVerifier::evaluateSingleton(const DynamicContext::Ptr &context) const
+Item ItemVerifier::evaluateSingleton( const DynamicContext::Ptr &context ) const
 {
-   const Item item(m_operand->evaluateSingleton(context));
+    const Item item( m_operand->evaluateSingleton( context ) );
 
-   if (item) {
-      verifyItem(item, context);
-      return item;
-   } else {
-      return Item();
-   }
+    if ( item )
+    {
+        verifyItem( item, context );
+        return item;
+    }
+    else
+    {
+        return Item();
+    }
 }
 
-Item ItemVerifier::mapToItem(const Item &item, const DynamicContext::Ptr &context) const
+Item ItemVerifier::mapToItem( const Item &item, const DynamicContext::Ptr &context ) const
 {
-   verifyItem(item, context);
-   return item;
+    verifyItem( item, context );
+    return item;
 }
 
-Item::Iterator::Ptr ItemVerifier::evaluateSequence(const DynamicContext::Ptr &context) const
+Item::Iterator::Ptr ItemVerifier::evaluateSequence( const DynamicContext::Ptr &context ) const
 {
-   return makeItemMappingIterator<Item>(ConstPtr(this),
-                                        m_operand->evaluateSequence(context),
-                                        context);
+    return makeItemMappingIterator<Item>( ConstPtr( this ),
+                                          m_operand->evaluateSequence( context ),
+                                          context );
 }
 
 SequenceType::Ptr ItemVerifier::staticType() const
 {
-   return makeGenericSequenceType(m_reqType, m_operand->staticType()->cardinality());
+    return makeGenericSequenceType( m_reqType, m_operand->staticType()->cardinality() );
 }
 
 SequenceType::List ItemVerifier::expectedOperandTypes() const
 {
-   SequenceType::List result;
-   result.append(CommonSequenceTypes::ZeroOrMoreItems);
-   return result;
+    SequenceType::List result;
+    result.append( CommonSequenceTypes::ZeroOrMoreItems );
+    return result;
 }
 
-ExpressionVisitorResult::Ptr ItemVerifier::accept(const ExpressionVisitor::Ptr &visitor) const
+ExpressionVisitorResult::Ptr ItemVerifier::accept( const ExpressionVisitor::Ptr &visitor ) const
 {
-   return visitor->visit(this);
+    return visitor->visit( this );
 }

@@ -30,14 +30,14 @@ struct IBaseFilter;
 
 class DirectShowEvrVideoWindowControl : public EvrVideoWindowControl
 {
- public:
-   DirectShowEvrVideoWindowControl(QObject *parent = nullptr);
-   ~DirectShowEvrVideoWindowControl();
+public:
+    DirectShowEvrVideoWindowControl( QObject *parent = nullptr );
+    ~DirectShowEvrVideoWindowControl();
 
-   IBaseFilter *filter();
+    IBaseFilter *filter();
 
- private:
-   IBaseFilter *m_evrFilter;
+private:
+    IBaseFilter *m_evrFilter;
 };
 
 #endif // DIRECTSHOWEVRVIDEOWINDOWCONTROL_H

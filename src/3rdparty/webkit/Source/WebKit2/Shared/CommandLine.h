@@ -30,21 +30,23 @@
 #include <wtf/text/StringHash.h>
 #include <wtf/text/WTFString.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 // Very specialized command line parser. Expects the command line arguments in
 // -key value and will store the parsed arguments in a map.
 
-class CommandLine {
+class CommandLine
+{
 public:
 #if PLATFORM(MAC)
-    bool parse(int argc, char** argv);
+    bool parse( int argc, char **argv );
 #elif PLATFORM(WIN)
-    bool parse(LPTSTR commandLineString);
+    bool parse( LPTSTR commandLineString );
 #endif
-    String operator[](const String& key) const
+    String operator[]( const String &key ) const
     {
-        return m_args.get(key);
+        return m_args.get( key );
     }
 
 private:

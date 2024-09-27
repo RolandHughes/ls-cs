@@ -29,52 +29,62 @@
 
 DatabaseInfo::DatabaseInfo() = default;
 
-void DatabaseInfo::acceptUI(DomUI *node)
+void DatabaseInfo::acceptUI( DomUI *node )
 {
-   m_connections.clear();
-   m_cursors.clear();
-   m_fields.clear();
+    m_connections.clear();
+    m_cursors.clear();
+    m_fields.clear();
 
-   TreeWalker::acceptUI(node);
+    TreeWalker::acceptUI( node );
 
-   m_connections = unique(m_connections);
+    m_connections = unique( m_connections );
 }
 
-void DatabaseInfo::acceptWidget(DomWidget *node)
+void DatabaseInfo::acceptWidget( DomWidget *node )
 {
-   QHash<QString, DomProperty *> properties = propertyMap(node->elementProperty());
+    QHash<QString, DomProperty *> properties = propertyMap( node->elementProperty() );
 
-   DomProperty *frameworkCode = properties.value("frameworkCode", nullptr);
+    DomProperty *frameworkCode = properties.value( "frameworkCode", nullptr );
 
-   if (frameworkCode && toBool(frameworkCode->elementBool()) == false) {
-      return;
-   }
+    if ( frameworkCode && toBool( frameworkCode->elementBool() ) == false )
+    {
+        return;
+    }
 
-   DomProperty *db = properties.value("database", nullptr);
+    DomProperty *db = properties.value( "database", nullptr );
 
-   if (db && db->elementStringList()) {
-      QStringList info = db->elementStringList()->elementString();
+    if ( db && db->elementStringList() )
+    {
+        QStringList info = db->elementStringList()->elementString();
 
-      QString connection = info.size() > 0 ? info.at(0) : QString();
-      if (connection.isEmpty()) {
-         return;
-      }
-      m_connections.append(connection);
+        QString connection = info.size() > 0 ? info.at( 0 ) : QString();
 
-      QString table = info.size() > 1 ? info.at(1) : QString();
-      if (table.isEmpty()) {
-         return;
-      }
-      m_cursors[connection].append(table);
+        if ( connection.isEmpty() )
+        {
+            return;
+        }
 
-      QString field = info.size() > 2 ? info.at(2) : QString();
-      if (field.isEmpty()) {
-         return;
-      }
+        m_connections.append( connection );
 
-      m_fields[connection].append(field);
-   }
+        QString table = info.size() > 1 ? info.at( 1 ) : QString();
 
-   TreeWalker::acceptWidget(node);
+        if ( table.isEmpty() )
+        {
+            return;
+        }
+
+        m_cursors[connection].append( table );
+
+        QString field = info.size() > 2 ? info.at( 2 ) : QString();
+
+        if ( field.isEmpty() )
+        {
+            return;
+        }
+
+        m_fields[connection].append( field );
+    }
+
+    TreeWalker::acceptWidget( node );
 }
 

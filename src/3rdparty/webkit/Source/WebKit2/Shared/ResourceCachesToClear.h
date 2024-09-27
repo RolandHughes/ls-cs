@@ -26,9 +26,11 @@
 #ifndef ResourceCachesToClear_h
 #define ResourceCachesToClear_h
 
-namespace WebKit {
+namespace WebKit
+{
 
-enum ResourceCachesToClear {
+enum ResourceCachesToClear
+{
     AllResourceCaches = 0,
     InMemoryResourceCachesOnly = 1
 };

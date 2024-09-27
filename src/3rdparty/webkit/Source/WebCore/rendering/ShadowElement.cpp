@@ -25,17 +25,18 @@
 #include "RenderTheme.h"
 #include "RenderView.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-PassRefPtr<ShadowInputElement> ShadowInputElement::create(HTMLElement* shadowParent)
+PassRefPtr<ShadowInputElement> ShadowInputElement::create( HTMLElement *shadowParent )
 {
-    return adoptRef(new ShadowInputElement(shadowParent));
+    return adoptRef( new ShadowInputElement( shadowParent ) );
 }
 
-ShadowInputElement::ShadowInputElement(HTMLElement* shadowParent)
-    : ShadowElement<HTMLInputElement>(inputTag, shadowParent, 0, false)
+ShadowInputElement::ShadowInputElement( HTMLElement *shadowParent )
+    : ShadowElement<HTMLInputElement>( inputTag, shadowParent, 0, false )
 {
 }
 

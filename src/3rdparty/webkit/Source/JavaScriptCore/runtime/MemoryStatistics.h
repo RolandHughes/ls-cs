@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (C) 2010 Apple Inc. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,9 +30,11 @@
 
 class JSGlobalData;
 
-namespace JSC {
+namespace JSC
+{
 
-struct GlobalMemoryStatistics {
+struct GlobalMemoryStatistics
+{
     size_t stackBytes;
     size_t JITBytes;
 };

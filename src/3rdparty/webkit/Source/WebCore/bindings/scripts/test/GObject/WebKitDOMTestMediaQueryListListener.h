@@ -35,16 +35,18 @@ G_BEGIN_DECLS
 #define WEBKIT_DOM_IS_TEST_MEDIA_QUERY_LIST_LISTENER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE((klass),  WEBKIT_TYPE_DOM_TEST_MEDIA_QUERY_LIST_LISTENER))
 #define WEBKIT_DOM_TEST_MEDIA_QUERY_LIST_LISTENER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS((obj),  WEBKIT_TYPE_DOM_TEST_MEDIA_QUERY_LIST_LISTENER, WebKitDOMTestMediaQueryListListenerClass))
 
-struct _WebKitDOMTestMediaQueryListListener {
+struct _WebKitDOMTestMediaQueryListListener
+{
     WebKitDOMObject parent_instance;
 };
 
-struct _WebKitDOMTestMediaQueryListListenerClass {
+struct _WebKitDOMTestMediaQueryListListenerClass
+{
     WebKitDOMObjectClass parent_class;
 };
 
 WEBKIT_API GType
-webkit_dom_test_media_query_list_listener_get_type (void);
+webkit_dom_test_media_query_list_listener_get_type ( void );
 
 G_END_DECLS
 

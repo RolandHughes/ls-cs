@@ -23,8 +23,8 @@
 
 #include <qplatform_themeplugin.h>
 
-QPlatformThemePlugin::QPlatformThemePlugin(QObject *parent)
-    : QObject(parent)
+QPlatformThemePlugin::QPlatformThemePlugin( QObject *parent )
+    : QObject( parent )
 {
 }
 

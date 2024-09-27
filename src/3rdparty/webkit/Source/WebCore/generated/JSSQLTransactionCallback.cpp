@@ -31,23 +31,30 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-JSSQLTransactionCallback::JSSQLTransactionCallback(JSObject* callback, JSDOMGlobalObject* globalObject)
-    : ActiveDOMCallback(globalObject->scriptExecutionContext())
-    , m_data(new JSCallbackData(callback, globalObject))
+JSSQLTransactionCallback::JSSQLTransactionCallback( JSObject *callback, JSDOMGlobalObject *globalObject )
+    : ActiveDOMCallback( globalObject->scriptExecutionContext() )
+    , m_data( new JSCallbackData( callback, globalObject ) )
 {
 }
 
 JSSQLTransactionCallback::~JSSQLTransactionCallback()
 {
-    ScriptExecutionContext* context = scriptExecutionContext();
+    ScriptExecutionContext *context = scriptExecutionContext();
+
     // When the context is destroyed, all tasks with a reference to a callback
     // should be deleted. So if the context is 0, we are on the context thread.
-    if (!context || context->isContextThread())
+    if ( !context || context->isContextThread() )
+    {
         delete m_data;
+    }
     else
-        context->postTask(DeleteCallbackDataTask::create(m_data));
+    {
+        context->postTask( DeleteCallbackDataTask::create( m_data ) );
+    }
+
 #ifndef NDEBUG
     m_data = 0;
 #endif
@@ -55,21 +62,23 @@ JSSQLTransactionCallback::~JSSQLTransactionCallback()
 
 // Functions
 
-bool JSSQLTransactionCallback::handleEvent(SQLTransaction* transaction)
+bool JSSQLTransactionCallback::handleEvent( SQLTransaction *transaction )
 {
-    if (!canInvokeCallback())
+    if ( !canInvokeCallback() )
+    {
         return true;
+    }
 
-    RefPtr<JSSQLTransactionCallback> protect(this);
+    RefPtr<JSSQLTransactionCallback> protect( this );
 
-    JSLock lock(SilenceAssertionsOnly);
+    JSLock lock( SilenceAssertionsOnly );
 
-    ExecState* exec = m_data->globalObject()->globalExec();
+    ExecState *exec = m_data->globalObject()->globalExec();
     MarkedArgumentBuffer args;
-    args.append(toJS(exec, m_data->globalObject(), transaction));
+    args.append( toJS( exec, m_data->globalObject(), transaction ) );
 
     bool raisedException = false;
-    m_data->invokeCallback(args, &raisedException);
+    m_data->invokeCallback( args, &raisedException );
     return !raisedException;
 }
 

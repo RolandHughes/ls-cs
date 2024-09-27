@@ -30,100 +30,117 @@
 #include <qfilesystementry_p.h>
 #include <qlibrary_p.h>
 
-extern QString qt_error_string(int code);
+extern QString qt_error_string( int code );
 
-QStringList QLibraryHandle::suffixes_sys(const QString &)
+QStringList QLibraryHandle::suffixes_sys( const QString & )
 {
-   return QStringList(".dll");
+    return QStringList( ".dll" );
 }
 
 QStringList QLibraryHandle::prefixes_sys()
 {
-   return QStringList();
+    return QStringList();
 }
 
 bool QLibraryHandle::load_sys()
 {
-   // avoid 'Bad Image message box
-   UINT oldmode = SetErrorMode(SEM_FAILCRITICALERRORS | SEM_NOOPENFILEERRORBOX);
+    // avoid 'Bad Image message box
+    UINT oldmode = SetErrorMode( SEM_FAILCRITICALERRORS | SEM_NOOPENFILEERRORBOX );
 
-   // if it is a plugin, do not try the ".dll" extension
+    // if it is a plugin, do not try the ".dll" extension
 
-   QStringList attempts;
+    QStringList attempts;
 
-   if (pluginState != IsAPlugin) {
-      attempts.append(fileName + QString(".dll"));
-   }
+    if ( pluginState != IsAPlugin )
+    {
+        attempts.append( fileName + QString( ".dll" ) );
+    }
 
-   QFileSystemEntry fsEntry(fileName);
+    QFileSystemEntry fsEntry( fileName );
 
-   if (fsEntry.isAbsolute()) {
-      attempts.prepend(fileName);
+    if ( fsEntry.isAbsolute() )
+    {
+        attempts.prepend( fileName );
 
-   } else {
-      attempts.append(fileName);
-   }
+    }
+    else
+    {
+        attempts.append( fileName );
+    }
 
-   for (const QString &attempt : attempts) {
-      pHnd = LoadLibrary(&QDir::toNativeSeparators(attempt).toStdWString()[0]);
+    for ( const QString &attempt : attempts )
+    {
+        pHnd = LoadLibrary( &QDir::toNativeSeparators( attempt ).toStdWString()[0] );
 
-      if (pHnd || ::GetLastError() != ERROR_MOD_NOT_FOUND) {
-         // "unable to find the module"
-         break;
-      }
-   }
+        if ( pHnd || ::GetLastError() != ERROR_MOD_NOT_FOUND )
+        {
+            // "unable to find the module"
+            break;
+        }
+    }
 
-   SetErrorMode(oldmode);
+    SetErrorMode( oldmode );
 
-   if (pHnd == nullptr) {
-      errorString = QLibrary::tr("Unable to load library %1: %2").formatArgs(fileName, qt_error_string());
+    if ( pHnd == nullptr )
+    {
+        errorString = QLibrary::tr( "Unable to load library %1: %2" ).formatArgs( fileName, qt_error_string() );
 
-   } else {
-      // Query the actual name of the library which was loaded
-      errorString.clear();
+    }
+    else
+    {
+        // Query the actual name of the library which was loaded
+        errorString.clear();
 
-      std::wstring buffer(MAX_PATH, L'\0');
-      ::GetModuleFileName(pHnd, &buffer[0], MAX_PATH);
+        std::wstring buffer( MAX_PATH, L'\0' );
+        ::GetModuleFileName( pHnd, &buffer[0], MAX_PATH );
 
-      QString moduleFileName = QString::fromStdWString(buffer);
-      moduleFileName.remove(0, 1 + moduleFileName.lastIndexOf('\\'));
+        QString moduleFileName = QString::fromStdWString( buffer );
+        moduleFileName.remove( 0, 1 + moduleFileName.lastIndexOf( '\\' ) );
 
-      const QDir dir(fsEntry.path());
+        const QDir dir( fsEntry.path() );
 
-      if (dir.path() == ".") {
-         qualifiedFileName = moduleFileName;
-      } else {
-         qualifiedFileName = dir.filePath(moduleFileName);
-      }
-   }
+        if ( dir.path() == "." )
+        {
+            qualifiedFileName = moduleFileName;
+        }
+        else
+        {
+            qualifiedFileName = dir.filePath( moduleFileName );
+        }
+    }
 
-   return (pHnd != nullptr);
+    return ( pHnd != nullptr );
 }
 
 bool QLibraryHandle::unload_sys()
 {
-   if (! FreeLibrary(pHnd)) {
-      errorString = QLibrary::tr("Unable to unload library %1: %2").formatArgs(fileName, qt_error_string());
-      return false;
-   }
+    if ( ! FreeLibrary( pHnd ) )
+    {
+        errorString = QLibrary::tr( "Unable to unload library %1: %2" ).formatArgs( fileName, qt_error_string() );
+        return false;
+    }
 
-   errorString.clear();
-   return true;
+    errorString.clear();
+    return true;
 }
 
-void *QLibraryHandle::resolve_sys(const QString &symbol)
+void *QLibraryHandle::resolve_sys( const QString &symbol )
 {
-   void *address = (void *)GetProcAddress(pHnd, symbol.constData() );
+    void *address = ( void * )GetProcAddress( pHnd, symbol.constData() );
 
-   if (! address) {
-      errorString = QLibrary::tr("resolve_sys(): Unable to resolve symbol \"%1\" in %2. %3").formatArgs(symbol, fileName, qt_error_string());
+    if ( ! address )
+    {
+        errorString = QLibrary::tr( "resolve_sys(): Unable to resolve symbol \"%1\" in %2. %3" ).formatArgs( symbol, fileName,
+                      qt_error_string() );
 
-      // show the full error message
-      qWarning("%s", csPrintable(errorString));
+        // show the full error message
+        qWarning( "%s", csPrintable( errorString ) );
 
-   } else {
-      errorString.clear();
-   }
+    }
+    else
+    {
+        errorString.clear();
+    }
 
-   return address;
+    return address;
 }

@@ -30,39 +30,39 @@
 
 using namespace QPatternist;
 
-EBVExtractor::EBVExtractor(const Expression::Ptr &operand) : SingleContainer(operand)
+EBVExtractor::EBVExtractor( const Expression::Ptr &operand ) : SingleContainer( operand )
 {
 }
 
-bool EBVExtractor::evaluateEBV(const DynamicContext::Ptr &context) const
+bool EBVExtractor::evaluateEBV( const DynamicContext::Ptr &context ) const
 {
-   return m_operand->evaluateEBV(context);
+    return m_operand->evaluateEBV( context );
 }
 
-Expression::Ptr EBVExtractor::typeCheck(const StaticContext::Ptr &context,
-                                        const SequenceType::Ptr &reqType)
+Expression::Ptr EBVExtractor::typeCheck( const StaticContext::Ptr &context,
+        const SequenceType::Ptr &reqType )
 {
-   return typeCheck<SingleContainer>(context, reqType, this);
+    return typeCheck<SingleContainer>( context, reqType, this );
 }
 
 SequenceType::Ptr EBVExtractor::staticType() const
 {
-   return makeGenericSequenceType(BuiltinTypes::xsBoolean, Cardinality::exactlyOne());
+    return makeGenericSequenceType( BuiltinTypes::xsBoolean, Cardinality::exactlyOne() );
 }
 
 SequenceType::List EBVExtractor::expectedOperandTypes() const
 {
-   SequenceType::List result;
-   result.append(CommonSequenceTypes::ZeroOrMoreItems);
-   return result;
+    SequenceType::List result;
+    result.append( CommonSequenceTypes::ZeroOrMoreItems );
+    return result;
 }
 
 const SourceLocationReflection *EBVExtractor::actualReflection() const
 {
-   return m_operand->actualReflection();
+    return m_operand->actualReflection();
 }
 
-ExpressionVisitorResult::Ptr EBVExtractor::accept(const ExpressionVisitor::Ptr &visitor) const
+ExpressionVisitorResult::Ptr EBVExtractor::accept( const ExpressionVisitor::Ptr &visitor ) const
 {
-   return visitor->visit(this);
+    return visitor->visit( this );
 }

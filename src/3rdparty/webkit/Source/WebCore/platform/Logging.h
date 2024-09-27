@@ -33,35 +33,36 @@
 #define LOG_CHANNEL_PREFIX Log
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
-    extern WTFLogChannel LogNotYetImplemented;
-    extern WTFLogChannel LogFrames;
-    extern WTFLogChannel LogLoading;
-    extern WTFLogChannel LogPopupBlocking;
-    extern WTFLogChannel LogEvents;
-    extern WTFLogChannel LogEditing;
-    extern WTFLogChannel LogLiveConnect;
-    extern WTFLogChannel LogIconDatabase;
-    extern WTFLogChannel LogSQLDatabase;
-    extern WTFLogChannel LogSpellingAndGrammar;
-    extern WTFLogChannel LogBackForward;
-    extern WTFLogChannel LogHistory;
-    extern WTFLogChannel LogPageCache;
-    extern WTFLogChannel LogPlatformLeaks;
-    extern WTFLogChannel LogResourceLoading;
-    extern WTFLogChannel LogNetwork;
-    extern WTFLogChannel LogFTP;
-    extern WTFLogChannel LogThreading;
-    extern WTFLogChannel LogStorageAPI;
-    extern WTFLogChannel LogMedia;
-    extern WTFLogChannel LogPlugins;
-    extern WTFLogChannel LogArchives;
-    extern WTFLogChannel LogProgress;
-    extern WTFLogChannel LogFileAPI;
+extern WTFLogChannel LogNotYetImplemented;
+extern WTFLogChannel LogFrames;
+extern WTFLogChannel LogLoading;
+extern WTFLogChannel LogPopupBlocking;
+extern WTFLogChannel LogEvents;
+extern WTFLogChannel LogEditing;
+extern WTFLogChannel LogLiveConnect;
+extern WTFLogChannel LogIconDatabase;
+extern WTFLogChannel LogSQLDatabase;
+extern WTFLogChannel LogSpellingAndGrammar;
+extern WTFLogChannel LogBackForward;
+extern WTFLogChannel LogHistory;
+extern WTFLogChannel LogPageCache;
+extern WTFLogChannel LogPlatformLeaks;
+extern WTFLogChannel LogResourceLoading;
+extern WTFLogChannel LogNetwork;
+extern WTFLogChannel LogFTP;
+extern WTFLogChannel LogThreading;
+extern WTFLogChannel LogStorageAPI;
+extern WTFLogChannel LogMedia;
+extern WTFLogChannel LogPlugins;
+extern WTFLogChannel LogArchives;
+extern WTFLogChannel LogProgress;
+extern WTFLogChannel LogFileAPI;
 
-    void InitializeLoggingChannelsIfNecessary();
-    WTFLogChannel* getChannelFromName(const String& channelName);
+void InitializeLoggingChannelsIfNecessary();
+WTFLogChannel *getChannelFromName( const String &channelName );
 }
 
 #endif // Logging_h

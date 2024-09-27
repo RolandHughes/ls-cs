@@ -21,45 +21,45 @@
 
 #include <cs_catch2.h>
 
-TEST_CASE("QWeakPointer traits", "[qweakpointer]")
+TEST_CASE( "QWeakPointer traits", "[qweakpointer]" )
 {
-   REQUIRE(std::is_copy_constructible_v<QWeakPointer<int>> == true);
-   REQUIRE(std::is_move_constructible_v<QWeakPointer<int>> == true);
+    REQUIRE( std::is_copy_constructible_v<QWeakPointer<int>> == true );
+    REQUIRE( std::is_move_constructible_v<QWeakPointer<int>> == true );
 
-   REQUIRE(std::is_copy_assignable_v<QWeakPointer<int>> == true);
-   REQUIRE(std::is_move_assignable_v<QWeakPointer<int>> == true);
+    REQUIRE( std::is_copy_assignable_v<QWeakPointer<int>> == true );
+    REQUIRE( std::is_move_assignable_v<QWeakPointer<int>> == true );
 
-   REQUIRE(std::has_virtual_destructor_v<QWeakPointer<int>> == false);
+    REQUIRE( std::has_virtual_destructor_v<QWeakPointer<int>> == false );
 }
 
-TEST_CASE("QWeakPointer clear", "[qweakpointer]")
+TEST_CASE( "QWeakPointer clear", "[qweakpointer]" )
 {
-   QSharedPointer<int> ptr = QMakeShared<int>();
-   QWeakPointer<int> weakPointer = ptr.toWeakRef();
+    QSharedPointer<int> ptr = QMakeShared<int>();
+    QWeakPointer<int> weakPointer = ptr.toWeakRef();
 
-   weakPointer.clear();
+    weakPointer.clear();
 
-   REQUIRE(weakPointer == nullptr);
-   REQUIRE(weakPointer.isNull() == true);
+    REQUIRE( weakPointer == nullptr );
+    REQUIRE( weakPointer.isNull() == true );
 }
 
-TEST_CASE("QWeakPointer nullptr", "[qweakpointer]")
+TEST_CASE( "QWeakPointer nullptr", "[qweakpointer]" )
 {
-   QSharedPointer<int> ptr = QMakeShared<int>();
+    QSharedPointer<int> ptr = QMakeShared<int>();
 
-   QWeakPointer<int> weakPointer = ptr.toWeakRef();
-   ptr.reset();
+    QWeakPointer<int> weakPointer = ptr.toWeakRef();
+    ptr.reset();
 
-   REQUIRE(static_cast<bool>(weakPointer) == false);
-   REQUIRE(static_cast<bool>(ptr) == false);
+    REQUIRE( static_cast<bool>( weakPointer ) == false );
+    REQUIRE( static_cast<bool>( ptr ) == false );
 
-   REQUIRE(ptr == nullptr);
-   REQUIRE(ptr.isNull() == true);
+    REQUIRE( ptr == nullptr );
+    REQUIRE( ptr.isNull() == true );
 
-   REQUIRE(weakPointer == nullptr);
-   REQUIRE(weakPointer.isNull()  == true);
+    REQUIRE( weakPointer == nullptr );
+    REQUIRE( weakPointer.isNull()  == true );
 
-   REQUIRE(ptr != weakPointer);
-   REQUIRE(weakPointer != ptr);
+    REQUIRE( ptr != weakPointer );
+    REQUIRE( weakPointer != ptr );
 }
 

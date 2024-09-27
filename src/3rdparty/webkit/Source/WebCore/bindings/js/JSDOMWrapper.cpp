@@ -30,7 +30,8 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
 void JSDOMWrapper::virtualFunctionToPreventWeakVtable()
 {

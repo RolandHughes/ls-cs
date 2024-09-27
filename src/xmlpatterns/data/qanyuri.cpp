@@ -28,50 +28,53 @@
 
 using namespace QPatternist;
 
-AnyURI::AnyURI(const QString &s) : AtomicString(s)
+AnyURI::AnyURI( const QString &s ) : AtomicString( s )
 {
 }
 
-AnyURI::Ptr AnyURI::fromValue(const QString &value)
+AnyURI::Ptr AnyURI::fromValue( const QString &value )
 {
-   return AnyURI::Ptr(new AnyURI(value));
+    return AnyURI::Ptr( new AnyURI( value ) );
 }
 
-AnyURI::Ptr AnyURI::fromValue(const QUrl &uri)
+AnyURI::Ptr AnyURI::fromValue( const QUrl &uri )
 {
-   return AnyURI::Ptr(new AnyURI(uri.toString()));
+    return AnyURI::Ptr( new AnyURI( uri.toString() ) );
 }
 
-AnyURI::Ptr AnyURI::resolveURI(const QString &relative, const QString &base)
+AnyURI::Ptr AnyURI::resolveURI( const QString &relative, const QString &base )
 {
-   const QUrl urlBase(base);
-   return AnyURI::fromValue(urlBase.resolved( QUrl(relative) ).toString());
+    const QUrl urlBase( base );
+    return AnyURI::fromValue( urlBase.resolved( QUrl( relative ) ).toString() );
 }
 
 ItemType::Ptr AnyURI::type() const
 {
-   return BuiltinTypes::xsAnyURI;
+    return BuiltinTypes::xsAnyURI;
 }
 
-AnyURI::Ptr AnyURI::fromLexical(const QString &value)
+AnyURI::Ptr AnyURI::fromLexical( const QString &value )
 {
-   bool isValid;
+    bool isValid;
 
-   /* The error code doesn't matter, because we never raise error. */
-   const QUrl retval(toQUrl<ReportContext::FORG0001>(value, DynamicContext::Ptr(), nullptr, &isValid, false));
+    /* The error code doesn't matter, because we never raise error. */
+    const QUrl retval( toQUrl<ReportContext::FORG0001>( value, DynamicContext::Ptr(), nullptr, &isValid, false ) );
 
-   if (isValid) {
-      return fromValue(retval);
-   } else {
-      return ValidationError::createError();
-   }
+    if ( isValid )
+    {
+        return fromValue( retval );
+    }
+    else
+    {
+        return ValidationError::createError();
+    }
 }
 
-bool AnyURI::isValid(const QString &candidate)
+bool AnyURI::isValid( const QString &candidate )
 {
-   bool isOk = false;
-   /* The error code doesn't matter, because we never raise error. */
-   toQUrl<ReportContext::FORG0001>(candidate, ReportContext::Ptr(), nullptr, &isOk, false);
-   return isOk;
+    bool isOk = false;
+    /* The error code doesn't matter, because we never raise error. */
+    toQUrl<ReportContext::FORG0001>( candidate, ReportContext::Ptr(), nullptr, &isOk, false );
+    return isOk;
 }
 

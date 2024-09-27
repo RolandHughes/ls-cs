@@ -30,7 +30,8 @@
 extern "C" {
 #endif
 
-enum {
+enum
+{
     kWKCredentialPersistenceNone,
     kWKCredentialPersistenceForSession,
     kWKCredentialPersistencePermanent

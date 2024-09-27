@@ -31,43 +31,46 @@
 
 #include <windows.h>
 
-namespace WebCore {
-    class PluginView;
+namespace WebCore
+{
+class PluginView;
 
-    struct PluginMessage {
-        HWND hWnd;
-        UINT msg;
-        WPARAM wParam;
-        LPARAM lParam;
+struct PluginMessage
+{
+    HWND hWnd;
+    UINT msg;
+    WPARAM wParam;
+    LPARAM lParam;
 
-        struct PluginMessage* next;
-    };
+    struct PluginMessage *next;
+};
 
-    class PluginMessageThrottlerWin {
-    public:
-        PluginMessageThrottlerWin(PluginView*);
-        ~PluginMessageThrottlerWin();
+class PluginMessageThrottlerWin
+{
+public:
+    PluginMessageThrottlerWin( PluginView * );
+    ~PluginMessageThrottlerWin();
 
-        void appendMessage(HWND, UINT msg, WPARAM, LPARAM);
+    void appendMessage( HWND, UINT msg, WPARAM, LPARAM );
 
-    private:
-        void processQueuedMessage();
-        void messageThrottleTimerFired(Timer<PluginMessageThrottlerWin>*);
-        PluginMessage* allocateMessage();
-        bool isInlineMessage(PluginMessage* message);
-        void freeMessage(PluginMessage* message);
+private:
+    void processQueuedMessage();
+    void messageThrottleTimerFired( Timer<PluginMessageThrottlerWin> * );
+    PluginMessage *allocateMessage();
+    bool isInlineMessage( PluginMessage *message );
+    void freeMessage( PluginMessage *message );
 
-        PluginView* m_pluginView;
-        PluginMessage* m_back;
-        PluginMessage* m_front;
+    PluginView *m_pluginView;
+    PluginMessage *m_back;
+    PluginMessage *m_front;
 
-        static const int NumInlineMessages = 4;
-        PluginMessage m_inlineMessages[NumInlineMessages];
-        PluginMessage* m_freeInlineMessages;
+    static const int NumInlineMessages = 4;
+    PluginMessage m_inlineMessages[NumInlineMessages];
+    PluginMessage *m_freeInlineMessages;
 
-        Timer<PluginMessageThrottlerWin> m_messageThrottleTimer;
-        double m_lastMessageTime;
-    };
+    Timer<PluginMessageThrottlerWin> m_messageThrottleTimer;
+    double m_lastMessageTime;
+};
 
 } // namespace WebCore
 

@@ -26,17 +26,18 @@
 
 #include "qwebkitglobal.h"
 
-class QWEBKIT_EXPORT QWebHistoryInterface : public QObject {
-    WEB_CS_OBJECT(QWebHistoryInterface)
+class QWEBKIT_EXPORT QWebHistoryInterface : public QObject
+{
+    WEB_CS_OBJECT( QWebHistoryInterface )
 public:
-    QWebHistoryInterface(QObject *parent = nullptr);
+    QWebHistoryInterface( QObject *parent = nullptr );
     ~QWebHistoryInterface();
 
-    static void setDefaultInterface(QWebHistoryInterface *defaultInterface);
+    static void setDefaultInterface( QWebHistoryInterface *defaultInterface );
     static QWebHistoryInterface *defaultInterface();
 
-    virtual bool historyContains(const QString &url) const = 0;
-    virtual void addHistoryEntry(const QString &url) = 0;
+    virtual bool historyContains( const QString &url ) const = 0;
+    virtual void addHistoryEntry( const QString &url ) = 0;
 };
 
 #endif

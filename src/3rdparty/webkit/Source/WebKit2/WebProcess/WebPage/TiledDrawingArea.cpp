@@ -41,14 +41,15 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
-TiledDrawingArea::TiledDrawingArea(WebPage* webPage)
-    : DrawingArea(DrawingAreaTypeTiled, webPage)
-    , m_isWaitingForUpdate(false)
-    , m_shouldPaint(true)
-    , m_displayTimer(WebProcess::shared().runLoop(), this, &TiledDrawingArea::display)
-    , m_tileUpdateTimer(WebProcess::shared().runLoop(), this, &TiledDrawingArea::tileUpdateTimerFired)
+TiledDrawingArea::TiledDrawingArea( WebPage *webPage )
+    : DrawingArea( DrawingAreaTypeTiled, webPage )
+    , m_isWaitingForUpdate( false )
+    , m_shouldPaint( true )
+    , m_displayTimer( WebProcess::shared().runLoop(), this, &TiledDrawingArea::display )
+    , m_tileUpdateTimer( WebProcess::shared().runLoop(), this, &TiledDrawingArea::tileUpdateTimerFired )
 {
 }
 
@@ -56,63 +57,73 @@ TiledDrawingArea::~TiledDrawingArea()
 {
 }
 
-void TiledDrawingArea::scroll(const IntRect& scrollRect, const IntSize& scrollDelta)
+void TiledDrawingArea::scroll( const IntRect &scrollRect, const IntSize &scrollDelta )
 {
     // FIXME: Do something much smarter.
-    setNeedsDisplay(scrollRect);
+    setNeedsDisplay( scrollRect );
 }
 
-void TiledDrawingArea::setNeedsDisplay(const IntRect& rect)
+void TiledDrawingArea::setNeedsDisplay( const IntRect &rect )
 {
     // FIXME: Collect a set of rects/region instead of just the union of all rects.
-    m_dirtyRect.unite(rect);
+    m_dirtyRect.unite( rect );
     scheduleDisplay();
 }
 
 void TiledDrawingArea::display()
 {
-    if (!m_shouldPaint)
+    if ( !m_shouldPaint )
+    {
         return;
+    }
 
-    if (m_dirtyRect.isEmpty())
+    if ( m_dirtyRect.isEmpty() )
+    {
         return;
+    }
 
     m_webPage->layoutIfNeeded();
 
     IntRect dirtyRect = m_dirtyRect;
     m_dirtyRect = IntRect();
 
-    WebProcess::shared().connection()->deprecatedSend(DrawingAreaProxyLegacyMessage::Invalidate, m_webPage->pageID(), CoreIPC::In(dirtyRect));
+    WebProcess::shared().connection()->deprecatedSend( DrawingAreaProxyLegacyMessage::Invalidate, m_webPage->pageID(),
+            CoreIPC::In( dirtyRect ) );
 
     m_displayTimer.stop();
 }
 
 void TiledDrawingArea::scheduleDisplay()
 {
-    if (!m_shouldPaint)
+    if ( !m_shouldPaint )
+    {
         return;
+    }
 
-    if (m_displayTimer.isActive())
+    if ( m_displayTimer.isActive() )
+    {
         return;
+    }
 
-    m_displayTimer.startOneShot(0);
+    m_displayTimer.startOneShot( 0 );
 }
 
-void TiledDrawingArea::setSize(const IntSize& viewSize)
+void TiledDrawingArea::setSize( const IntSize &viewSize )
 {
-    ASSERT(m_shouldPaint);
-    ASSERT_ARG(viewSize, !viewSize.isEmpty());
+    ASSERT( m_shouldPaint );
+    ASSERT_ARG( viewSize, !viewSize.isEmpty() );
 
-    m_webPage->setSize(viewSize);
+    m_webPage->setSize( viewSize );
 
     scheduleDisplay();
 
-    WebProcess::shared().connection()->deprecatedSend(DrawingAreaProxyLegacyMessage::DidSetSize, m_webPage->pageID(), CoreIPC::In(viewSize));
+    WebProcess::shared().connection()->deprecatedSend( DrawingAreaProxyLegacyMessage::DidSetSize, m_webPage->pageID(),
+            CoreIPC::In( viewSize ) );
 }
 
 void TiledDrawingArea::suspendPainting()
 {
-    ASSERT(m_shouldPaint);
+    ASSERT( m_shouldPaint );
 
     m_shouldPaint = false;
     m_displayTimer.stop();
@@ -120,7 +131,7 @@ void TiledDrawingArea::suspendPainting()
 
 void TiledDrawingArea::resumePainting()
 {
-    ASSERT(!m_shouldPaint);
+    ASSERT( !m_shouldPaint );
 
     m_shouldPaint = true;
 
@@ -134,100 +145,146 @@ void TiledDrawingArea::didUpdate()
     display();
 }
 
-void TiledDrawingArea::updateTile(int tileID, const IntRect& dirtyRect, float scale)
+void TiledDrawingArea::updateTile( int tileID, const IntRect &dirtyRect, float scale )
 {
     m_webPage->layoutIfNeeded();
 
-    UpdateChunk updateChunk(dirtyRect);
-    paintIntoUpdateChunk(&updateChunk, scale);
+    UpdateChunk updateChunk( dirtyRect );
+    paintIntoUpdateChunk( &updateChunk, scale );
 
     unsigned pendingUpdateCount = m_pendingUpdates.size();
-    WebProcess::shared().connection()->deprecatedSend(DrawingAreaProxyLegacyMessage::TileUpdated, m_webPage->pageID(), CoreIPC::In(tileID, updateChunk, scale, pendingUpdateCount));
+    WebProcess::shared().connection()->deprecatedSend( DrawingAreaProxyLegacyMessage::TileUpdated, m_webPage->pageID(),
+            CoreIPC::In( tileID, updateChunk, scale, pendingUpdateCount ) );
 }
 
 void TiledDrawingArea::tileUpdateTimerFired()
 {
-    ASSERT(!m_pendingUpdates.isEmpty());
+    ASSERT( !m_pendingUpdates.isEmpty() );
 
     UpdateMap::iterator it = m_pendingUpdates.begin();
     TileUpdate update = it->second;
-    m_pendingUpdates.remove(it);
+    m_pendingUpdates.remove( it );
 
-    updateTile(update.tileID, update.dirtyRect, update.scale);
+    updateTile( update.tileID, update.dirtyRect, update.scale );
 
-    if (m_pendingUpdates.isEmpty())
-        WebProcess::shared().connection()->deprecatedSend(DrawingAreaProxyLegacyMessage::AllTileUpdatesProcessed, m_webPage->pageID(), CoreIPC::In());
+    if ( m_pendingUpdates.isEmpty() )
+    {
+        WebProcess::shared().connection()->deprecatedSend( DrawingAreaProxyLegacyMessage::AllTileUpdatesProcessed, m_webPage->pageID(),
+                CoreIPC::In() );
+    }
     else
-        m_tileUpdateTimer.startOneShot(0.001);
+    {
+        m_tileUpdateTimer.startOneShot( 0.001 );
+    }
 }
 
-void TiledDrawingArea::didReceiveMessage(CoreIPC::Connection*, CoreIPC::MessageID messageID, CoreIPC::ArgumentDecoder* arguments)
+void TiledDrawingArea::didReceiveMessage( CoreIPC::Connection *, CoreIPC::MessageID messageID,
+        CoreIPC::ArgumentDecoder *arguments )
 {
-    switch (messageID.get<DrawingAreaLegacyMessage::Kind>()) {
-    case DrawingAreaLegacyMessage::SetSize: {
-        IntSize size;
-        if (!arguments->decode(CoreIPC::Out(size)))
-            return;
+    switch ( messageID.get<DrawingAreaLegacyMessage::Kind>() )
+    {
+        case DrawingAreaLegacyMessage::SetSize:
+        {
+            IntSize size;
 
-        setSize(size);
-        break;
-    }
-    case DrawingAreaLegacyMessage::SuspendPainting:
-        suspendPainting();
-        break;
-    case DrawingAreaLegacyMessage::ResumePainting:
-        resumePainting();
-        break;
-    case DrawingAreaLegacyMessage::CancelTileUpdate: {
-        int tileID;
-        if (!arguments->decode(CoreIPC::Out(tileID)))
-            return;
-        UpdateMap::iterator it = m_pendingUpdates.find(tileID);
-        if (it != m_pendingUpdates.end()) {
-            m_pendingUpdates.remove(it);
-            if (m_pendingUpdates.isEmpty()) {
-                WebProcess::shared().connection()->deprecatedSend(DrawingAreaProxyLegacyMessage::AllTileUpdatesProcessed, m_webPage->pageID(), CoreIPC::In());
-                m_tileUpdateTimer.stop();
+            if ( !arguments->decode( CoreIPC::Out( size ) ) )
+            {
+                return;
             }
+
+            setSize( size );
+            break;
         }
-        break;
-    }
-    case DrawingAreaLegacyMessage::RequestTileUpdate: {
-        TileUpdate update;
-        if (!arguments->decode(CoreIPC::Out(update.tileID, update.dirtyRect, update.scale)))
-            return;
-        UpdateMap::iterator it = m_pendingUpdates.find(update.tileID);
-        if (it != m_pendingUpdates.end())
-            it->second.dirtyRect.unite(update.dirtyRect);
-        else {
-            m_pendingUpdates.add(update.tileID, update);
-            if (!m_tileUpdateTimer.isActive())
-                m_tileUpdateTimer.startOneShot(0);
+
+        case DrawingAreaLegacyMessage::SuspendPainting:
+            suspendPainting();
+            break;
+
+        case DrawingAreaLegacyMessage::ResumePainting:
+            resumePainting();
+            break;
+
+        case DrawingAreaLegacyMessage::CancelTileUpdate:
+        {
+            int tileID;
+
+            if ( !arguments->decode( CoreIPC::Out( tileID ) ) )
+            {
+                return;
+            }
+
+            UpdateMap::iterator it = m_pendingUpdates.find( tileID );
+
+            if ( it != m_pendingUpdates.end() )
+            {
+                m_pendingUpdates.remove( it );
+
+                if ( m_pendingUpdates.isEmpty() )
+                {
+                    WebProcess::shared().connection()->deprecatedSend( DrawingAreaProxyLegacyMessage::AllTileUpdatesProcessed, m_webPage->pageID(),
+                            CoreIPC::In() );
+                    m_tileUpdateTimer.stop();
+                }
+            }
+
+            break;
         }
-        break;
-    }
-    case DrawingAreaLegacyMessage::TakeSnapshot: {
-        IntSize targetSize;
-        IntRect contentsRect;
 
-        if (!arguments->decode(CoreIPC::Out(targetSize, contentsRect)))
-            return;
+        case DrawingAreaLegacyMessage::RequestTileUpdate:
+        {
+            TileUpdate update;
 
-        m_webPage->layoutIfNeeded();
+            if ( !arguments->decode( CoreIPC::Out( update.tileID, update.dirtyRect, update.scale ) ) )
+            {
+                return;
+            }
 
-        contentsRect.intersect(IntRect(IntPoint::zero(), m_webPage->mainFrame()->coreFrame()->view()->contentsSize()));
+            UpdateMap::iterator it = m_pendingUpdates.find( update.tileID );
 
-        float targetScale = float(targetSize.width()) / contentsRect.width();
+            if ( it != m_pendingUpdates.end() )
+            {
+                it->second.dirtyRect.unite( update.dirtyRect );
+            }
+            else
+            {
+                m_pendingUpdates.add( update.tileID, update );
 
-        UpdateChunk updateChunk(IntRect(IntPoint(contentsRect.x() * targetScale, contentsRect.y() * targetScale), targetSize));
-        paintIntoUpdateChunk(&updateChunk, targetScale);
+                if ( !m_tileUpdateTimer.isActive() )
+                {
+                    m_tileUpdateTimer.startOneShot( 0 );
+                }
+            }
 
-        WebProcess::shared().connection()->deprecatedSend(DrawingAreaProxyLegacyMessage::SnapshotTaken, m_webPage->pageID(), CoreIPC::In(updateChunk));
-        break;
-    }
-    default:
-        ASSERT_NOT_REACHED();
-        break;
+            break;
+        }
+
+        case DrawingAreaLegacyMessage::TakeSnapshot:
+        {
+            IntSize targetSize;
+            IntRect contentsRect;
+
+            if ( !arguments->decode( CoreIPC::Out( targetSize, contentsRect ) ) )
+            {
+                return;
+            }
+
+            m_webPage->layoutIfNeeded();
+
+            contentsRect.intersect( IntRect( IntPoint::zero(), m_webPage->mainFrame()->coreFrame()->view()->contentsSize() ) );
+
+            float targetScale = float( targetSize.width() ) / contentsRect.width();
+
+            UpdateChunk updateChunk( IntRect( IntPoint( contentsRect.x() * targetScale, contentsRect.y() * targetScale ), targetSize ) );
+            paintIntoUpdateChunk( &updateChunk, targetScale );
+
+            WebProcess::shared().connection()->deprecatedSend( DrawingAreaProxyLegacyMessage::SnapshotTaken, m_webPage->pageID(),
+                    CoreIPC::In( updateChunk ) );
+            break;
+        }
+
+        default:
+            ASSERT_NOT_REACHED();
+            break;
     }
 }
 

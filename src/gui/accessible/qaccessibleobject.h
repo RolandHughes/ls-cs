@@ -33,47 +33,47 @@ class QObject;
 
 class Q_GUI_EXPORT QAccessibleObject : public QAccessibleInterface
 {
- public:
-   explicit QAccessibleObject(QObject *object);
+public:
+    explicit QAccessibleObject( QObject *object );
 
-   QAccessibleObject(const QAccessibleObject &) = delete;
-   QAccessibleObject &operator=(const QAccessibleObject &) = delete;
+    QAccessibleObject( const QAccessibleObject & ) = delete;
+    QAccessibleObject &operator=( const QAccessibleObject & ) = delete;
 
-   bool isValid() const override;
-   QObject *object() const override;
+    bool isValid() const override;
+    QObject *object() const override;
 
-   // properties
-   QRect rect() const override;
-   void setText(QAccessible::Text text, const QString &str) override;
-   QAccessibleInterface *childAt(int x, int y) const override;
+    // properties
+    QRect rect() const override;
+    void setText( QAccessible::Text text, const QString &str ) override;
+    QAccessibleInterface *childAt( int x, int y ) const override;
 
- protected:
-   virtual ~QAccessibleObject();
+protected:
+    virtual ~QAccessibleObject();
 
- private:
-   QAccessibleObjectPrivate *d;
+private:
+    QAccessibleObjectPrivate *d;
 };
 
 class Q_GUI_EXPORT QAccessibleApplication : public QAccessibleObject
 {
- public:
-   QAccessibleApplication();
+public:
+    QAccessibleApplication();
 
-   QWindow *window() const override;
+    QWindow *window() const override;
 
-   // relations
-   int childCount() const override;
-   int indexOfChild(const QAccessibleInterface *) const override;
-   QAccessibleInterface *focusChild() const override;
+    // relations
+    int childCount() const override;
+    int indexOfChild( const QAccessibleInterface * ) const override;
+    QAccessibleInterface *focusChild() const override;
 
-   // navigation
-   QAccessibleInterface *parent() const override;
-   QAccessibleInterface *child(int index) const override;
+    // navigation
+    QAccessibleInterface *parent() const override;
+    QAccessibleInterface *child( int index ) const override;
 
-   // properties and state
-   QString text(QAccessible::Text t) const override;
-   QAccessible::Role role() const override;
-   QAccessible::State state() const override;
+    // properties and state
+    QString text( QAccessible::Text t ) const override;
+    QAccessible::Role role() const override;
+    QAccessible::State state() const override;
 };
 
 #endif

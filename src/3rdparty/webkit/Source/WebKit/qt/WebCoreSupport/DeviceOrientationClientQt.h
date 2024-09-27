@@ -27,32 +27,34 @@
 
 class QWebPage;
 
-namespace WebCore {
+namespace WebCore
+{
 
 class DeviceOrientationProviderQt;
 
-class DeviceOrientationClientQt : public QObject, public DeviceOrientationClient {
+class DeviceOrientationClientQt : public QObject, public DeviceOrientationClient
+{
 
-    WEB_CS_OBJECT_MULTIPLE(DeviceOrientationClientQt, QObject)
+    WEB_CS_OBJECT_MULTIPLE( DeviceOrientationClientQt, QObject )
 
 public:
-    DeviceOrientationClientQt(QWebPage*);
+    DeviceOrientationClientQt( QWebPage * );
     virtual ~DeviceOrientationClientQt();
 
-    virtual void setController(DeviceOrientationController*);
+    virtual void setController( DeviceOrientationController * );
     virtual void startUpdating();
     virtual void stopUpdating();
-    virtual DeviceOrientation* lastOrientation() const;
+    virtual DeviceOrientation *lastOrientation() const;
     virtual void deviceOrientationControllerDestroyed();
 
 public :
-    WEB_CS_SLOT_1(Public, void changeDeviceOrientation(DeviceOrientation *orientation))
-    WEB_CS_SLOT_2(changeDeviceOrientation)
+    WEB_CS_SLOT_1( Public, void changeDeviceOrientation( DeviceOrientation *orientation ) )
+    WEB_CS_SLOT_2( changeDeviceOrientation )
 
 private:
-    QWebPage* m_page;
-    DeviceOrientationController* m_controller;
-    DeviceOrientationProviderQt* m_provider;
+    QWebPage *m_page;
+    DeviceOrientationController *m_controller;
+    DeviceOrientationProviderQt *m_provider;
 };
 
 } // namespace WebCore

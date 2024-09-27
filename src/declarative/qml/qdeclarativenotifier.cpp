@@ -26,91 +26,104 @@
 
 QT_BEGIN_NAMESPACE
 
-void QDeclarativeNotifier::emitNotify(QDeclarativeNotifierEndpoint *endpoint)
+void QDeclarativeNotifier::emitNotify( QDeclarativeNotifierEndpoint *endpoint )
 {
-   QDeclarativeNotifierEndpoint::Notifier *n = endpoint->asNotifier();
+    QDeclarativeNotifierEndpoint::Notifier *n = endpoint->asNotifier();
 
-   QDeclarativeNotifierEndpoint **oldDisconnected = n->disconnected;
-   n->disconnected = &endpoint;
+    QDeclarativeNotifierEndpoint **oldDisconnected = n->disconnected;
+    n->disconnected = &endpoint;
 
-   if (n->next) {
-      emitNotify(n->next);
-   }
+    if ( n->next )
+    {
+        emitNotify( n->next );
+    }
 
-   if (endpoint) {
-      void *args[] = { 0 };
+    if ( endpoint )
+    {
+        void *args[] = { 0 };
 
-      QMetaObject::metacall(endpoint->target, QMetaObject::InvokeMetaMethod,
-                            endpoint->targetMethod, args);
+        QMetaObject::metacall( endpoint->target, QMetaObject::InvokeMetaMethod,
+                               endpoint->targetMethod, args );
 
-      if (endpoint) {
-         endpoint->asNotifier()->disconnected = oldDisconnected;
-      }
-   }
+        if ( endpoint )
+        {
+            endpoint->asNotifier()->disconnected = oldDisconnected;
+        }
+    }
 
-   if (oldDisconnected) {
-      *oldDisconnected = endpoint;
-   }
+    if ( oldDisconnected )
+    {
+        *oldDisconnected = endpoint;
+    }
 }
 
-void QDeclarativeNotifierEndpoint::connect(QObject *source, int sourceSignal)
+void QDeclarativeNotifierEndpoint::connect( QObject *source, int sourceSignal )
 {
-   Signal *s = toSignal();
+    Signal *s = toSignal();
 
-   if (s->source == source && s->sourceSignal == sourceSignal) {
-      refCount++;
-      return;
-   }
+    if ( s->source == source && s->sourceSignal == sourceSignal )
+    {
+        refCount++;
+        return;
+    }
 
-   disconnect();
+    disconnect();
 
-   QDeclarativePropertyPrivate::connect(source, sourceSignal, target, targetMethod);
+    QDeclarativePropertyPrivate::connect( source, sourceSignal, target, targetMethod );
 
-   s->source = source;
-   s->sourceSignal = sourceSignal;
-   refCount++;
+    s->source = source;
+    s->sourceSignal = sourceSignal;
+    refCount++;
 }
 
-void QDeclarativeNotifierEndpoint::copyAndClear(QDeclarativeNotifierEndpoint &other)
+void QDeclarativeNotifierEndpoint::copyAndClear( QDeclarativeNotifierEndpoint &other )
 {
-   other.disconnect();
+    other.disconnect();
 
-   other.target = target;
-   other.targetMethod = targetMethod;
+    other.target = target;
+    other.targetMethod = targetMethod;
 
-   if (!isConnected()) {
-      return;
-   }
+    if ( !isConnected() )
+    {
+        return;
+    }
 
-   if (SignalType == type) {
-      Signal *other_s = other.toSignal();
-      Signal *s = asSignal();
+    if ( SignalType == type )
+    {
+        Signal *other_s = other.toSignal();
+        Signal *s = asSignal();
 
-      other_s->source = s->source;
-      other_s->sourceSignal = s->sourceSignal;
-      s->source = 0;
-   } else if (NotifierType == type) {
-      Notifier *other_n = other.toNotifier();
-      Notifier *n = asNotifier();
+        other_s->source = s->source;
+        other_s->sourceSignal = s->sourceSignal;
+        s->source = 0;
+    }
+    else if ( NotifierType == type )
+    {
+        Notifier *other_n = other.toNotifier();
+        Notifier *n = asNotifier();
 
-      other_n->notifier = n->notifier;
-      other_n->disconnected = n->disconnected;
-      if (other_n->disconnected) {
-         *other_n->disconnected = &other;
-      }
+        other_n->notifier = n->notifier;
+        other_n->disconnected = n->disconnected;
 
-      if (n->next) {
-         other_n->next = n->next;
-         n->next->asNotifier()->prev = &other_n->next;
-      }
-      other_n->prev = n->prev;
-      *other_n->prev = &other;
+        if ( other_n->disconnected )
+        {
+            *other_n->disconnected = &other;
+        }
 
-      n->prev = 0;
-      n->next = 0;
-      n->disconnected = 0;
-      n->notifier = 0;
-   }
+        if ( n->next )
+        {
+            other_n->next = n->next;
+            n->next->asNotifier()->prev = &other_n->next;
+        }
+
+        other_n->prev = n->prev;
+        *other_n->prev = &other;
+
+        n->prev = 0;
+        n->next = 0;
+        n->disconnected = 0;
+        n->notifier = 0;
+    }
 }
 
 

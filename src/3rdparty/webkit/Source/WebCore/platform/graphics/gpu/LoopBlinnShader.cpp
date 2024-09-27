@@ -29,30 +29,32 @@
 
 #include "GraphicsContext3D.h"
 
-namespace WebCore {
-
-LoopBlinnShader::LoopBlinnShader(GraphicsContext3D* context, unsigned program)
-    : Shader(context, program)
+namespace WebCore
 {
-    m_worldViewProjectionLocation = context->getUniformLocation(program, "worldViewProjection");
-    m_positionLocation = context->getAttribLocation(program, "position");
-    m_klmLocation = context->getAttribLocation(program, "klm");
+
+LoopBlinnShader::LoopBlinnShader( GraphicsContext3D *context, unsigned program )
+    : Shader( context, program )
+{
+    m_worldViewProjectionLocation = context->getUniformLocation( program, "worldViewProjection" );
+    m_positionLocation = context->getAttribLocation( program, "position" );
+    m_klmLocation = context->getAttribLocation( program, "klm" );
 }
 
-void LoopBlinnShader::use(unsigned vertexOffset, unsigned klmOffset, const AffineTransform& transform)
+void LoopBlinnShader::use( unsigned vertexOffset, unsigned klmOffset, const AffineTransform &transform )
 {
-    m_context->useProgram(m_program);
+    m_context->useProgram( m_program );
 
     float matrix[16];
-    affineTo4x4(transform, matrix);
-    m_context->uniformMatrix4fv(m_worldViewProjectionLocation, false /*transpose*/, matrix, 1 /*count*/);
+    affineTo4x4( transform, matrix );
+    m_context->uniformMatrix4fv( m_worldViewProjectionLocation, false /*transpose*/, matrix, 1 /*count*/ );
 
-    m_context->vertexAttribPointer(m_positionLocation, 2, GraphicsContext3D::FLOAT, false, 0, vertexOffset);
-    m_context->enableVertexAttribArray(m_positionLocation);
+    m_context->vertexAttribPointer( m_positionLocation, 2, GraphicsContext3D::FLOAT, false, 0, vertexOffset );
+    m_context->enableVertexAttribArray( m_positionLocation );
 
-    if (m_klmLocation != -1) {
-        m_context->vertexAttribPointer(m_klmLocation, 3, GraphicsContext3D::FLOAT, false, 0, klmOffset);
-        m_context->enableVertexAttribArray(m_klmLocation);
+    if ( m_klmLocation != -1 )
+    {
+        m_context->vertexAttribPointer( m_klmLocation, 3, GraphicsContext3D::FLOAT, false, 0, klmOffset );
+        m_context->enableVertexAttribArray( m_klmLocation );
     }
 }
 

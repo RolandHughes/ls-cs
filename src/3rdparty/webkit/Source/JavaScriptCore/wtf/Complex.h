@@ -32,13 +32,14 @@
 #include <complex>
 #include <wtf/MathExtras.h>
 
-namespace WTF {
+namespace WTF
+{
 
 typedef std::complex<double> Complex;
 
-inline Complex complexFromMagnitudePhase(double magnitude, double phase)
+inline Complex complexFromMagnitudePhase( double magnitude, double phase )
 {
-    return Complex(magnitude * cos(phase), magnitude * sin(phase));
+    return Complex( magnitude * cos( phase ), magnitude * sin( phase ) );
 }
 
 } // namespace WTF

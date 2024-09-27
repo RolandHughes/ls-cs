@@ -20,19 +20,20 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef NativeFunctionWrapper_h
 #define NativeFunctionWrapper_h
 
-namespace JSC {
+namespace JSC
+{
 #if ENABLE(JIT) && ENABLE(JIT_OPTIMIZE_NATIVE_CALL)
-    class JSFunction;
-    typedef JSFunction NativeFunctionWrapper;
+class JSFunction;
+typedef JSFunction NativeFunctionWrapper;
 #else
-    class PrototypeFunction;
-    typedef PrototypeFunction NativeFunctionWrapper;
+class PrototypeFunction;
+typedef PrototypeFunction NativeFunctionWrapper;
 #endif
 }
 

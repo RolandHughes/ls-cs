@@ -34,9 +34,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSRealtimeAnalyserNode);
+ASSERT_CLASS_FITS_IN_CELL( JSRealtimeAnalyserNode );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -47,13 +48,13 @@ ASSERT_CLASS_FITS_IN_CELL(JSRealtimeAnalyserNode);
 
 static const HashTableValue JSRealtimeAnalyserNodeTableValues[7] =
 {
-    { "fftSize", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsRealtimeAnalyserNodeFftSize), (intptr_t)setJSRealtimeAnalyserNodeFftSize THUNK_GENERATOR(0) },
-    { "frequencyBinCount", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsRealtimeAnalyserNodeFrequencyBinCount), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "minDecibels", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsRealtimeAnalyserNodeMinDecibels), (intptr_t)setJSRealtimeAnalyserNodeMinDecibels THUNK_GENERATOR(0) },
-    { "maxDecibels", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsRealtimeAnalyserNodeMaxDecibels), (intptr_t)setJSRealtimeAnalyserNodeMaxDecibels THUNK_GENERATOR(0) },
-    { "smoothingTimeConstant", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsRealtimeAnalyserNodeSmoothingTimeConstant), (intptr_t)setJSRealtimeAnalyserNodeSmoothingTimeConstant THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsRealtimeAnalyserNodeConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "fftSize", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsRealtimeAnalyserNodeFftSize ), ( intptr_t )setJSRealtimeAnalyserNodeFftSize THUNK_GENERATOR( 0 ) },
+    { "frequencyBinCount", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsRealtimeAnalyserNodeFrequencyBinCount ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "minDecibels", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsRealtimeAnalyserNodeMinDecibels ), ( intptr_t )setJSRealtimeAnalyserNodeMinDecibels THUNK_GENERATOR( 0 ) },
+    { "maxDecibels", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsRealtimeAnalyserNodeMaxDecibels ), ( intptr_t )setJSRealtimeAnalyserNodeMaxDecibels THUNK_GENERATOR( 0 ) },
+    { "smoothingTimeConstant", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsRealtimeAnalyserNodeSmoothingTimeConstant ), ( intptr_t )setJSRealtimeAnalyserNodeSmoothingTimeConstant THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsRealtimeAnalyserNodeConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -67,43 +68,51 @@ static JSC_CONST_HASHTABLE HashTable JSRealtimeAnalyserNodeTable = { 17, 15, JSR
 
 static const HashTableValue JSRealtimeAnalyserNodeConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSRealtimeAnalyserNodeConstructorTable = { 1, 0, JSRealtimeAnalyserNodeConstructorTableValues, 0 };
-class JSRealtimeAnalyserNodeConstructor : public DOMConstructorObject {
+class JSRealtimeAnalyserNodeConstructor : public DOMConstructorObject
+{
 public:
-    JSRealtimeAnalyserNodeConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSRealtimeAnalyserNodeConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSRealtimeAnalyserNodeConstructor::s_info = { "RealtimeAnalyserNodeConstructor", &DOMConstructorObject::s_info, &JSRealtimeAnalyserNodeConstructorTable, 0 };
 
-JSRealtimeAnalyserNodeConstructor::JSRealtimeAnalyserNodeConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSRealtimeAnalyserNodeConstructor::JSRealtimeAnalyserNodeConstructor( ExecState *exec, Structure *structure,
+        JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSRealtimeAnalyserNodePrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSRealtimeAnalyserNodePrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSRealtimeAnalyserNodeConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSRealtimeAnalyserNodeConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSRealtimeAnalyserNodeConstructor, JSDOMWrapper>(exec, &JSRealtimeAnalyserNodeConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSRealtimeAnalyserNodeConstructor, JSDOMWrapper>( exec, &JSRealtimeAnalyserNodeConstructorTable, this,
+            propertyName, slot );
 }
 
-bool JSRealtimeAnalyserNodeConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSRealtimeAnalyserNodeConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSRealtimeAnalyserNodeConstructor, JSDOMWrapper>(exec, &JSRealtimeAnalyserNodeConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSRealtimeAnalyserNodeConstructor, JSDOMWrapper>( exec, &JSRealtimeAnalyserNodeConstructorTable,
+            this, propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -115,200 +124,226 @@ bool JSRealtimeAnalyserNodeConstructor::getOwnPropertyDescriptor(ExecState* exec
 
 static const HashTableValue JSRealtimeAnalyserNodePrototypeTableValues[4] =
 {
-    { "getFloatFrequencyData", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsRealtimeAnalyserNodePrototypeFunctionGetFloatFrequencyData), (intptr_t)1 THUNK_GENERATOR(0) },
-    { "getByteFrequencyData", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsRealtimeAnalyserNodePrototypeFunctionGetByteFrequencyData), (intptr_t)1 THUNK_GENERATOR(0) },
-    { "getByteTimeDomainData", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsRealtimeAnalyserNodePrototypeFunctionGetByteTimeDomainData), (intptr_t)1 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "getFloatFrequencyData", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsRealtimeAnalyserNodePrototypeFunctionGetFloatFrequencyData ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { "getByteFrequencyData", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsRealtimeAnalyserNodePrototypeFunctionGetByteFrequencyData ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { "getByteTimeDomainData", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsRealtimeAnalyserNodePrototypeFunctionGetByteTimeDomainData ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSRealtimeAnalyserNodePrototypeTable = { 8, 7, JSRealtimeAnalyserNodePrototypeTableValues, 0 };
 const ClassInfo JSRealtimeAnalyserNodePrototype::s_info = { "RealtimeAnalyserNodePrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSRealtimeAnalyserNodePrototypeTable, 0 };
 
-JSObject* JSRealtimeAnalyserNodePrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSRealtimeAnalyserNodePrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSRealtimeAnalyserNode>(exec, globalObject);
+    return getDOMPrototype<JSRealtimeAnalyserNode>( exec, globalObject );
 }
 
-bool JSRealtimeAnalyserNodePrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSRealtimeAnalyserNodePrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticFunctionSlot<JSObject>(exec, &JSRealtimeAnalyserNodePrototypeTable, this, propertyName, slot);
+    return getStaticFunctionSlot<JSObject>( exec, &JSRealtimeAnalyserNodePrototypeTable, this, propertyName, slot );
 }
 
-bool JSRealtimeAnalyserNodePrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSRealtimeAnalyserNodePrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticFunctionDescriptor<JSObject>(exec, &JSRealtimeAnalyserNodePrototypeTable, this, propertyName, descriptor);
+    return getStaticFunctionDescriptor<JSObject>( exec, &JSRealtimeAnalyserNodePrototypeTable, this, propertyName, descriptor );
 }
 
 const ClassInfo JSRealtimeAnalyserNode::s_info = { "RealtimeAnalyserNode", &JSAudioNode::s_info, &JSRealtimeAnalyserNodeTable, 0 };
 
-JSRealtimeAnalyserNode::JSRealtimeAnalyserNode(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<RealtimeAnalyserNode> impl)
-    : JSAudioNode(structure, globalObject, impl)
+JSRealtimeAnalyserNode::JSRealtimeAnalyserNode( Structure *structure, JSDOMGlobalObject *globalObject,
+        PassRefPtr<RealtimeAnalyserNode> impl )
+    : JSAudioNode( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSRealtimeAnalyserNode::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSRealtimeAnalyserNode::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSRealtimeAnalyserNodePrototype(exec->globalData(), globalObject, JSRealtimeAnalyserNodePrototype::createStructure(exec->globalData(), JSAudioNodePrototype::self(exec, globalObject)));
+    return new ( exec ) JSRealtimeAnalyserNodePrototype( exec->globalData(), globalObject,
+            JSRealtimeAnalyserNodePrototype::createStructure( exec->globalData(), JSAudioNodePrototype::self( exec, globalObject ) ) );
 }
 
-bool JSRealtimeAnalyserNode::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSRealtimeAnalyserNode::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSRealtimeAnalyserNode, Base>(exec, &JSRealtimeAnalyserNodeTable, this, propertyName, slot);
+    return getStaticValueSlot<JSRealtimeAnalyserNode, Base>( exec, &JSRealtimeAnalyserNodeTable, this, propertyName, slot );
 }
 
-bool JSRealtimeAnalyserNode::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSRealtimeAnalyserNode::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSRealtimeAnalyserNode, Base>(exec, &JSRealtimeAnalyserNodeTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSRealtimeAnalyserNode, Base>( exec, &JSRealtimeAnalyserNodeTable, this, propertyName,
+            descriptor );
 }
 
-JSValue jsRealtimeAnalyserNodeFftSize(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsRealtimeAnalyserNodeFftSize( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSRealtimeAnalyserNode* castedThis = static_cast<JSRealtimeAnalyserNode*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    RealtimeAnalyserNode* imp = static_cast<RealtimeAnalyserNode*>(castedThis->impl());
-    JSValue result = jsNumber(imp->fftSize());
+    JSRealtimeAnalyserNode *castedThis = static_cast<JSRealtimeAnalyserNode *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    RealtimeAnalyserNode *imp = static_cast<RealtimeAnalyserNode *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->fftSize() );
     return result;
 }
 
 
-JSValue jsRealtimeAnalyserNodeFrequencyBinCount(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsRealtimeAnalyserNodeFrequencyBinCount( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSRealtimeAnalyserNode* castedThis = static_cast<JSRealtimeAnalyserNode*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    RealtimeAnalyserNode* imp = static_cast<RealtimeAnalyserNode*>(castedThis->impl());
-    JSValue result = jsNumber(imp->frequencyBinCount());
+    JSRealtimeAnalyserNode *castedThis = static_cast<JSRealtimeAnalyserNode *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    RealtimeAnalyserNode *imp = static_cast<RealtimeAnalyserNode *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->frequencyBinCount() );
     return result;
 }
 
 
-JSValue jsRealtimeAnalyserNodeMinDecibels(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsRealtimeAnalyserNodeMinDecibels( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSRealtimeAnalyserNode* castedThis = static_cast<JSRealtimeAnalyserNode*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    RealtimeAnalyserNode* imp = static_cast<RealtimeAnalyserNode*>(castedThis->impl());
-    JSValue result = jsNumber(imp->minDecibels());
+    JSRealtimeAnalyserNode *castedThis = static_cast<JSRealtimeAnalyserNode *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    RealtimeAnalyserNode *imp = static_cast<RealtimeAnalyserNode *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->minDecibels() );
     return result;
 }
 
 
-JSValue jsRealtimeAnalyserNodeMaxDecibels(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsRealtimeAnalyserNodeMaxDecibels( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSRealtimeAnalyserNode* castedThis = static_cast<JSRealtimeAnalyserNode*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    RealtimeAnalyserNode* imp = static_cast<RealtimeAnalyserNode*>(castedThis->impl());
-    JSValue result = jsNumber(imp->maxDecibels());
+    JSRealtimeAnalyserNode *castedThis = static_cast<JSRealtimeAnalyserNode *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    RealtimeAnalyserNode *imp = static_cast<RealtimeAnalyserNode *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->maxDecibels() );
     return result;
 }
 
 
-JSValue jsRealtimeAnalyserNodeSmoothingTimeConstant(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsRealtimeAnalyserNodeSmoothingTimeConstant( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSRealtimeAnalyserNode* castedThis = static_cast<JSRealtimeAnalyserNode*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    RealtimeAnalyserNode* imp = static_cast<RealtimeAnalyserNode*>(castedThis->impl());
-    JSValue result = jsNumber(imp->smoothingTimeConstant());
+    JSRealtimeAnalyserNode *castedThis = static_cast<JSRealtimeAnalyserNode *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    RealtimeAnalyserNode *imp = static_cast<RealtimeAnalyserNode *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->smoothingTimeConstant() );
     return result;
 }
 
 
-JSValue jsRealtimeAnalyserNodeConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsRealtimeAnalyserNodeConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSRealtimeAnalyserNode* domObject = static_cast<JSRealtimeAnalyserNode*>(asObject(slotBase));
-    return JSRealtimeAnalyserNode::getConstructor(exec, domObject->globalObject());
+    JSRealtimeAnalyserNode *domObject = static_cast<JSRealtimeAnalyserNode *>( asObject( slotBase ) );
+    return JSRealtimeAnalyserNode::getConstructor( exec, domObject->globalObject() );
 }
 
-void JSRealtimeAnalyserNode::put(ExecState* exec, const Identifier& propertyName, JSValue value, PutPropertySlot& slot)
+void JSRealtimeAnalyserNode::put( ExecState *exec, const Identifier &propertyName, JSValue value, PutPropertySlot &slot )
 {
-    lookupPut<JSRealtimeAnalyserNode, Base>(exec, propertyName, value, &JSRealtimeAnalyserNodeTable, this, slot);
+    lookupPut<JSRealtimeAnalyserNode, Base>( exec, propertyName, value, &JSRealtimeAnalyserNodeTable, this, slot );
 }
 
-void setJSRealtimeAnalyserNodeFftSize(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSRealtimeAnalyserNodeFftSize( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSRealtimeAnalyserNode* castedThis = static_cast<JSRealtimeAnalyserNode*>(thisObject);
-    RealtimeAnalyserNode* imp = static_cast<RealtimeAnalyserNode*>(castedThis->impl());
-    imp->setFftSize(value.toUInt32(exec));
-}
-
-
-void setJSRealtimeAnalyserNodeMinDecibels(ExecState* exec, JSObject* thisObject, JSValue value)
-{
-    JSRealtimeAnalyserNode* castedThis = static_cast<JSRealtimeAnalyserNode*>(thisObject);
-    RealtimeAnalyserNode* imp = static_cast<RealtimeAnalyserNode*>(castedThis->impl());
-    imp->setMinDecibels(value.toFloat(exec));
+    JSRealtimeAnalyserNode *castedThis = static_cast<JSRealtimeAnalyserNode *>( thisObject );
+    RealtimeAnalyserNode *imp = static_cast<RealtimeAnalyserNode *>( castedThis->impl() );
+    imp->setFftSize( value.toUInt32( exec ) );
 }
 
 
-void setJSRealtimeAnalyserNodeMaxDecibels(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSRealtimeAnalyserNodeMinDecibels( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSRealtimeAnalyserNode* castedThis = static_cast<JSRealtimeAnalyserNode*>(thisObject);
-    RealtimeAnalyserNode* imp = static_cast<RealtimeAnalyserNode*>(castedThis->impl());
-    imp->setMaxDecibels(value.toFloat(exec));
+    JSRealtimeAnalyserNode *castedThis = static_cast<JSRealtimeAnalyserNode *>( thisObject );
+    RealtimeAnalyserNode *imp = static_cast<RealtimeAnalyserNode *>( castedThis->impl() );
+    imp->setMinDecibels( value.toFloat( exec ) );
 }
 
 
-void setJSRealtimeAnalyserNodeSmoothingTimeConstant(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSRealtimeAnalyserNodeMaxDecibels( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSRealtimeAnalyserNode* castedThis = static_cast<JSRealtimeAnalyserNode*>(thisObject);
-    RealtimeAnalyserNode* imp = static_cast<RealtimeAnalyserNode*>(castedThis->impl());
-    imp->setSmoothingTimeConstant(value.toFloat(exec));
+    JSRealtimeAnalyserNode *castedThis = static_cast<JSRealtimeAnalyserNode *>( thisObject );
+    RealtimeAnalyserNode *imp = static_cast<RealtimeAnalyserNode *>( castedThis->impl() );
+    imp->setMaxDecibels( value.toFloat( exec ) );
 }
 
 
-JSValue JSRealtimeAnalyserNode::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+void setJSRealtimeAnalyserNodeSmoothingTimeConstant( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    return getDOMConstructor<JSRealtimeAnalyserNodeConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    JSRealtimeAnalyserNode *castedThis = static_cast<JSRealtimeAnalyserNode *>( thisObject );
+    RealtimeAnalyserNode *imp = static_cast<RealtimeAnalyserNode *>( castedThis->impl() );
+    imp->setSmoothingTimeConstant( value.toFloat( exec ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsRealtimeAnalyserNodePrototypeFunctionGetFloatFrequencyData(ExecState* exec)
+
+JSValue JSRealtimeAnalyserNode::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
+{
+    return getDOMConstructor<JSRealtimeAnalyserNodeConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
+}
+
+EncodedJSValue JSC_HOST_CALL jsRealtimeAnalyserNodePrototypeFunctionGetFloatFrequencyData( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSRealtimeAnalyserNode::s_info))
-        return throwVMTypeError(exec);
-    JSRealtimeAnalyserNode* castedThis = static_cast<JSRealtimeAnalyserNode*>(asObject(thisValue));
-    RealtimeAnalyserNode* imp = static_cast<RealtimeAnalyserNode*>(castedThis->impl());
-    Float32Array* array(toFloat32Array(exec->argument(0)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
 
-    imp->getFloatFrequencyData(array);
-    return JSValue::encode(jsUndefined());
+    if ( !thisValue.inherits( &JSRealtimeAnalyserNode::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSRealtimeAnalyserNode *castedThis = static_cast<JSRealtimeAnalyserNode *>( asObject( thisValue ) );
+    RealtimeAnalyserNode *imp = static_cast<RealtimeAnalyserNode *>( castedThis->impl() );
+    Float32Array *array( toFloat32Array( exec->argument( 0 ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->getFloatFrequencyData( array );
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsRealtimeAnalyserNodePrototypeFunctionGetByteFrequencyData(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsRealtimeAnalyserNodePrototypeFunctionGetByteFrequencyData( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSRealtimeAnalyserNode::s_info))
-        return throwVMTypeError(exec);
-    JSRealtimeAnalyserNode* castedThis = static_cast<JSRealtimeAnalyserNode*>(asObject(thisValue));
-    RealtimeAnalyserNode* imp = static_cast<RealtimeAnalyserNode*>(castedThis->impl());
-    Uint8Array* array(toUint8Array(exec->argument(0)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
 
-    imp->getByteFrequencyData(array);
-    return JSValue::encode(jsUndefined());
+    if ( !thisValue.inherits( &JSRealtimeAnalyserNode::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSRealtimeAnalyserNode *castedThis = static_cast<JSRealtimeAnalyserNode *>( asObject( thisValue ) );
+    RealtimeAnalyserNode *imp = static_cast<RealtimeAnalyserNode *>( castedThis->impl() );
+    Uint8Array *array( toUint8Array( exec->argument( 0 ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->getByteFrequencyData( array );
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsRealtimeAnalyserNodePrototypeFunctionGetByteTimeDomainData(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsRealtimeAnalyserNodePrototypeFunctionGetByteTimeDomainData( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSRealtimeAnalyserNode::s_info))
-        return throwVMTypeError(exec);
-    JSRealtimeAnalyserNode* castedThis = static_cast<JSRealtimeAnalyserNode*>(asObject(thisValue));
-    RealtimeAnalyserNode* imp = static_cast<RealtimeAnalyserNode*>(castedThis->impl());
-    Uint8Array* array(toUint8Array(exec->argument(0)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
 
-    imp->getByteTimeDomainData(array);
-    return JSValue::encode(jsUndefined());
+    if ( !thisValue.inherits( &JSRealtimeAnalyserNode::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSRealtimeAnalyserNode *castedThis = static_cast<JSRealtimeAnalyserNode *>( asObject( thisValue ) );
+    RealtimeAnalyserNode *imp = static_cast<RealtimeAnalyserNode *>( castedThis->impl() );
+    Uint8Array *array( toUint8Array( exec->argument( 0 ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->getByteTimeDomainData( array );
+    return JSValue::encode( jsUndefined() );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, RealtimeAnalyserNode* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, RealtimeAnalyserNode *impl )
 {
-    return wrap<JSRealtimeAnalyserNode>(exec, globalObject, impl);
+    return wrap<JSRealtimeAnalyserNode>( exec, globalObject, impl );
 }
 
 

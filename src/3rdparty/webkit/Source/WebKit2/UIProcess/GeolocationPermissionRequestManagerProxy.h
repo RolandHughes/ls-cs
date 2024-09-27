@@ -29,26 +29,28 @@
 #include "GeolocationPermissionRequestProxy.h"
 #include <wtf/HashMap.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 class WebPageProxy;
 
-class GeolocationPermissionRequestManagerProxy {
+class GeolocationPermissionRequestManagerProxy
+{
 public:
-    explicit GeolocationPermissionRequestManagerProxy(WebPageProxy*);
+    explicit GeolocationPermissionRequestManagerProxy( WebPageProxy * );
 
     void invalidateRequests();
 
     // Create a request to be presented to the user.
-    PassRefPtr<GeolocationPermissionRequestProxy> createRequest(uint64_t geolocationID);
-    
+    PassRefPtr<GeolocationPermissionRequestProxy> createRequest( uint64_t geolocationID );
+
     // Called by GeolocationPermissionRequestProxy when a decision is made by the user.
-    void didReceiveGeolocationPermissionDecision(uint64_t, bool allow);
+    void didReceiveGeolocationPermissionDecision( uint64_t, bool allow );
 
 private:
     typedef HashMap<uint64_t, RefPtr<GeolocationPermissionRequestProxy> > PendingRequestMap;
     PendingRequestMap m_pendingRequests;
-    WebPageProxy* m_page;
+    WebPageProxy *m_page;
 };
 
 } // namespace WebKit

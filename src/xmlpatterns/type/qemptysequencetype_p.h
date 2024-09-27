@@ -27,53 +27,54 @@
 #include <qatomictype_p.h>
 #include <qsequencetype_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class EmptySequenceType : public ItemType, public SequenceType
 {
- public:
-   typedef QExplicitlySharedDataPointer<EmptySequenceType> Ptr;
+public:
+    typedef QExplicitlySharedDataPointer<EmptySequenceType> Ptr;
 
-   /**
-    * Possibly surprisingly, this function also returns true for the @c none type.
-    *
-    * @returns @c true if @p other is NoneType or EmptySequenceType, otherwise @c false.
-    */
-   bool xdtTypeMatches(const ItemType::Ptr &other) const override;
+    /**
+     * Possibly surprisingly, this function also returns true for the @c none type.
+     *
+     * @returns @c true if @p other is NoneType or EmptySequenceType, otherwise @c false.
+     */
+    bool xdtTypeMatches( const ItemType::Ptr &other ) const override;
 
-   /**
-    * @returns always @c false
-    */
-   bool itemMatches(const Item &item) const override;
+    /**
+     * @returns always @c false
+     */
+    bool itemMatches( const Item &item ) const override;
 
-   /**
-    * @returns always "empty-sequence()"
-    */
-   QString displayName(const NamePool::Ptr &np) const override;
+    /**
+     * @returns always "empty-sequence()"
+     */
+    QString displayName( const NamePool::Ptr &np ) const override;
 
-   ItemType::Ptr xdtSuperType() const override;
+    ItemType::Ptr xdtSuperType() const override;
 
-   bool isNodeType() const override;
-   bool isAtomicType() const override;
+    bool isNodeType() const override;
+    bool isAtomicType() const override;
 
-   /**
-    * @return always Cardinality::empty()
-    */
-   Cardinality cardinality() const override;
+    /**
+     * @return always Cardinality::empty()
+     */
+    Cardinality cardinality() const override;
 
-   /**
-    * @returns always 'this' since it is also an ItemType
-    */
-   ItemType::Ptr itemType() const override;
+    /**
+     * @returns always 'this' since it is also an ItemType
+     */
+    ItemType::Ptr itemType() const override;
 
-   /**
-    * @returns always @c xs:anyAtomicType
-    */
-   ItemType::Ptr atomizedType() const override;
+    /**
+     * @returns always @c xs:anyAtomicType
+     */
+    ItemType::Ptr atomizedType() const override;
 
- protected:
-   friend class CommonSequenceTypes;
-   EmptySequenceType();
+protected:
+    friend class CommonSequenceTypes;
+    EmptySequenceType();
 };
 
 }

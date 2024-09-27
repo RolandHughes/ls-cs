@@ -25,21 +25,23 @@
 
 #include "qwebkitglobal.h"
 
-namespace WebCore {
-    class DOMWrapperWorld;
+namespace WebCore
+{
+class DOMWrapperWorld;
 }
 
 class QWebScriptWorldPrivate;
 class QWebFrame;
 
-class QWEBKIT_EXPORT QWebScriptWorld {
+class QWEBKIT_EXPORT QWebScriptWorld
+{
 public:
     QWebScriptWorld();
-    QWebScriptWorld(const QWebScriptWorld&);
-    QWebScriptWorld &operator=(const QWebScriptWorld&);
+    QWebScriptWorld( const QWebScriptWorld & );
+    QWebScriptWorld &operator=( const QWebScriptWorld & );
     ~QWebScriptWorld();
 
-    WebCore::DOMWrapperWorld* world() const;
+    WebCore::DOMWrapperWorld *world() const;
 
 private:
     QExplicitlySharedDataPointer<QWebScriptWorldPrivate> d;

@@ -32,47 +32,59 @@
 #include "WTFThreadData.h"
 #include <stdio.h>
 
-namespace JSC {
-
-Completion checkSyntax(ExecState* exec, const SourceCode& source)
+namespace JSC
 {
-    JSLock lock(exec);
-    ASSERT(exec->globalData().identifierTable == wtfThreadData().currentIdentifierTable());
 
-    ProgramExecutable* program = ProgramExecutable::create(exec, source);
-    JSObject* error = program->checkSyntax(exec);
-    if (error)
-        return Completion(Throw, error);
-
-    return Completion(Normal);
-}
-
-Completion evaluate(ExecState* exec, ScopeChainNode* scopeChain, const SourceCode& source, JSValue thisValue)
+Completion checkSyntax( ExecState *exec, const SourceCode &source )
 {
-    JSLock lock(exec);
-    ASSERT(exec->globalData().identifierTable == wtfThreadData().currentIdentifierTable());
+    JSLock lock( exec );
+    ASSERT( exec->globalData().identifierTable == wtfThreadData().currentIdentifierTable() );
 
-    ProgramExecutable* program = ProgramExecutable::create(exec, source);
-    if (!program) {
-        JSValue exception = exec->globalData().exception;
-        exec->globalData().exception = JSValue();
-        return Completion(Throw, exception);
+    ProgramExecutable *program = ProgramExecutable::create( exec, source );
+    JSObject *error = program->checkSyntax( exec );
+
+    if ( error )
+    {
+        return Completion( Throw, error );
     }
 
-    JSObject* thisObj = (!thisValue || thisValue.isUndefinedOrNull()) ? exec->dynamicGlobalObject() : thisValue.toObject(exec);
+    return Completion( Normal );
+}
 
-    JSValue result = exec->interpreter()->execute(program, exec, scopeChain, thisObj);
+Completion evaluate( ExecState *exec, ScopeChainNode *scopeChain, const SourceCode &source, JSValue thisValue )
+{
+    JSLock lock( exec );
+    ASSERT( exec->globalData().identifierTable == wtfThreadData().currentIdentifierTable() );
 
-    if (exec->hadException()) {
+    ProgramExecutable *program = ProgramExecutable::create( exec, source );
+
+    if ( !program )
+    {
+        JSValue exception = exec->globalData().exception;
+        exec->globalData().exception = JSValue();
+        return Completion( Throw, exception );
+    }
+
+    JSObject *thisObj = ( !thisValue || thisValue.isUndefinedOrNull() ) ? exec->dynamicGlobalObject() : thisValue.toObject( exec );
+
+    JSValue result = exec->interpreter()->execute( program, exec, scopeChain, thisObj );
+
+    if ( exec->hadException() )
+    {
         JSValue exception = exec->exception();
         exec->clearException();
 
         ComplType exceptionType = Throw;
-        if (exception.isObject())
-            exceptionType = asObject(exception)->exceptionType();
-        return Completion(exceptionType, exception);
+
+        if ( exception.isObject() )
+        {
+            exceptionType = asObject( exception )->exceptionType();
+        }
+
+        return Completion( exceptionType, exception );
     }
-    return Completion(Normal, result);
+
+    return Completion( Normal, result );
 }
 
 } // namespace JSC

@@ -33,47 +33,48 @@ class QResourcePrivate;
 
 class Q_CORE_EXPORT QResource
 {
- public:
-   QResource(const QString &file = QString(), const QLocale &locale = QLocale());
-   ~QResource();
+public:
+    QResource( const QString &file = QString(), const QLocale &locale = QLocale() );
+    ~QResource();
 
-   void setFileName(const QString &file);
-   QString fileName() const;
-   QString absoluteFilePath() const;
+    void setFileName( const QString &file );
+    QString fileName() const;
+    QString absoluteFilePath() const;
 
-   void setLocale(const QLocale &locale);
-   QLocale locale() const;
+    void setLocale( const QLocale &locale );
+    QLocale locale() const;
 
-   bool isValid() const;
+    bool isValid() const;
 
-   bool isCompressed() const;
-   qint64 size() const;
-   const uchar *data() const;
+    bool isCompressed() const;
+    qint64 size() const;
+    const uchar *data() const;
 
-   static void addSearchPath(const QString &path);
-   static QStringList searchPaths();
+    static void addSearchPath( const QString &path );
+    static QStringList searchPaths();
 
-   static bool registerResource(const QString &fileName, const QString &resourceRoot = QString());
-   static bool unregisterResource(const QString &fileName, const QString &resourceRoot = QString());
+    static bool registerResource( const QString &fileName, const QString &resourceRoot = QString() );
+    static bool unregisterResource( const QString &fileName, const QString &resourceRoot = QString() );
 
-   static bool registerResource(const uchar *rccData, const QString &resourceRoot = QString());
-   static bool unregisterResource(const uchar *rccData, const QString &resourceRoot = QString());
+    static bool registerResource( const uchar *rccData, const QString &resourceRoot = QString() );
+    static bool unregisterResource( const uchar *rccData, const QString &resourceRoot = QString() );
 
- protected:
-   friend class QResourceFileEngine;
-   friend class QResourceFileEngineIterator;
-   bool isDir() const;
+protected:
+    friend class QResourceFileEngine;
+    friend class QResourceFileEngineIterator;
+    bool isDir() const;
 
-   bool isFile() const {
-      return !isDir();
-   }
+    bool isFile() const
+    {
+        return !isDir();
+    }
 
-   QStringList children() const;
+    QStringList children() const;
 
-   QScopedPointer<QResourcePrivate> d_ptr;
+    QScopedPointer<QResourcePrivate> d_ptr;
 
- private:
-   Q_DECLARE_PRIVATE(QResource)
+private:
+    Q_DECLARE_PRIVATE( QResource )
 };
 
 #endif

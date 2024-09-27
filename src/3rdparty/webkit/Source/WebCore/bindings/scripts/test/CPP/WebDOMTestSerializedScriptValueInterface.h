@@ -28,31 +28,33 @@
 #include <WebDOMObject.h>
 #include <WebDOMString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 class TestSerializedScriptValueInterface;
 };
 
 class WebDOMString;
 
-class WebDOMTestSerializedScriptValueInterface : public WebDOMObject {
+class WebDOMTestSerializedScriptValueInterface : public WebDOMObject
+{
 public:
     WebDOMTestSerializedScriptValueInterface();
-    explicit WebDOMTestSerializedScriptValueInterface(WebCore::TestSerializedScriptValueInterface*);
-    WebDOMTestSerializedScriptValueInterface(const WebDOMTestSerializedScriptValueInterface&);
-    WebDOMTestSerializedScriptValueInterface& operator=(const WebDOMTestSerializedScriptValueInterface&);
+    explicit WebDOMTestSerializedScriptValueInterface( WebCore::TestSerializedScriptValueInterface * );
+    WebDOMTestSerializedScriptValueInterface( const WebDOMTestSerializedScriptValueInterface & );
+    WebDOMTestSerializedScriptValueInterface &operator=( const WebDOMTestSerializedScriptValueInterface & );
     virtual ~WebDOMTestSerializedScriptValueInterface();
 
     WebDOMString value() const;
 
-    WebCore::TestSerializedScriptValueInterface* impl() const;
+    WebCore::TestSerializedScriptValueInterface *impl() const;
 
 protected:
     struct WebDOMTestSerializedScriptValueInterfacePrivate;
-    WebDOMTestSerializedScriptValueInterfacePrivate* m_impl;
+    WebDOMTestSerializedScriptValueInterfacePrivate *m_impl;
 };
 
-WebCore::TestSerializedScriptValueInterface* toWebCore(const WebDOMTestSerializedScriptValueInterface&);
-WebDOMTestSerializedScriptValueInterface toWebKit(WebCore::TestSerializedScriptValueInterface*);
+WebCore::TestSerializedScriptValueInterface *toWebCore( const WebDOMTestSerializedScriptValueInterface & );
+WebDOMTestSerializedScriptValueInterface toWebKit( WebCore::TestSerializedScriptValueInterface * );
 
 #endif
 #endif // ENABLE(Condition1) || ENABLE(Condition2)

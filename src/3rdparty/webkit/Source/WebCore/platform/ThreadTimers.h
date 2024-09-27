@@ -21,7 +21,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef ThreadTimers_h
@@ -31,35 +31,41 @@
 #include <wtf/HashSet.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class SharedTimer;
-    class TimerBase;
+class SharedTimer;
+class TimerBase;
 
-    // A collection of timers per thread. Kept in ThreadGlobalData.
-    class ThreadTimers {
-        WTF_MAKE_NONCOPYABLE(ThreadTimers); WTF_MAKE_FAST_ALLOCATED;
-    public:
-        ThreadTimers();
+// A collection of timers per thread. Kept in ThreadGlobalData.
+class ThreadTimers
+{
+    WTF_MAKE_NONCOPYABLE( ThreadTimers );
+    WTF_MAKE_FAST_ALLOCATED;
+public:
+    ThreadTimers();
 
-        // On a thread different then main, we should set the thread's instance of the SharedTimer.
-        void setSharedTimer(SharedTimer*);
+    // On a thread different then main, we should set the thread's instance of the SharedTimer.
+    void setSharedTimer( SharedTimer * );
 
-        Vector<TimerBase*>& timerHeap() { return m_timerHeap; }
+    Vector<TimerBase *> &timerHeap()
+    {
+        return m_timerHeap;
+    }
 
-        void updateSharedTimer();
-        void fireTimersInNestedEventLoop();
+    void updateSharedTimer();
+    void fireTimersInNestedEventLoop();
 
-    private:
-        static void sharedTimerFired();
+private:
+    static void sharedTimerFired();
 
-        void sharedTimerFiredInternal();
-        void fireTimersInNestedEventLoopInternal();
+    void sharedTimerFiredInternal();
+    void fireTimersInNestedEventLoopInternal();
 
-        Vector<TimerBase*> m_timerHeap;
-        SharedTimer* m_sharedTimer; // External object, can be a run loop on a worker thread. Normally set/reset by worker thread.
-        bool m_firingTimers; // Reentrancy guard.
-    };
+    Vector<TimerBase *> m_timerHeap;
+    SharedTimer *m_sharedTimer; // External object, can be a run loop on a worker thread. Normally set/reset by worker thread.
+    bool m_firingTimers; // Reentrancy guard.
+};
 
 }
 

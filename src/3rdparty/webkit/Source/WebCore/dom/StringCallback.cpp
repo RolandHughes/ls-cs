@@ -34,26 +34,29 @@
 #include "ScriptExecutionContext.h"
 #include <wtf/text/WTFString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-namespace {
+namespace
+{
 
-class DispatchCallbackTask : public ScriptExecutionContext::Task {
+class DispatchCallbackTask : public ScriptExecutionContext::Task
+{
 public:
-    static PassOwnPtr<DispatchCallbackTask> create(PassRefPtr<StringCallback> callback, const String& data)
+    static PassOwnPtr<DispatchCallbackTask> create( PassRefPtr<StringCallback> callback, const String &data )
     {
-        return adoptPtr(new DispatchCallbackTask(callback, data));
+        return adoptPtr( new DispatchCallbackTask( callback, data ) );
     }
 
-    virtual void performTask(ScriptExecutionContext*)
+    virtual void performTask( ScriptExecutionContext * )
     {
-        m_callback->handleEvent(m_data);
+        m_callback->handleEvent( m_data );
     }
 
 private:
-    DispatchCallbackTask(PassRefPtr<StringCallback> callback, const String& data)
-        : m_callback(callback)
-        , m_data(data)
+    DispatchCallbackTask( PassRefPtr<StringCallback> callback, const String &data )
+        : m_callback( callback )
+        , m_data( data )
     {
     }
 
@@ -63,9 +66,9 @@ private:
 
 } // namespace
 
-void StringCallback::scheduleCallback(ScriptExecutionContext* context, const String& data)
+void StringCallback::scheduleCallback( ScriptExecutionContext *context, const String &data )
 {
-    context->postTask(DispatchCallbackTask::create(this, data));
+    context->postTask( DispatchCallbackTask::create( this, data ) );
 }
 
 } // namespace WebCore

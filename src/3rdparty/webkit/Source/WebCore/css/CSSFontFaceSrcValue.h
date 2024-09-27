@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef CSSFontFaceSrcValue_h
@@ -34,46 +34,66 @@
 #include "SVGFontFaceElement.h"
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
-class CSSFontFaceSrcValue : public CSSValue {
+class CSSFontFaceSrcValue : public CSSValue
+{
 public:
-    static PassRefPtr<CSSFontFaceSrcValue> create(const String& resource)
+    static PassRefPtr<CSSFontFaceSrcValue> create( const String &resource )
     {
-        return adoptRef(new CSSFontFaceSrcValue(resource, false));
+        return adoptRef( new CSSFontFaceSrcValue( resource, false ) );
     }
-    static PassRefPtr<CSSFontFaceSrcValue> createLocal(const String& resource)
+    static PassRefPtr<CSSFontFaceSrcValue> createLocal( const String &resource )
     {
-        return adoptRef(new CSSFontFaceSrcValue(resource, true));
+        return adoptRef( new CSSFontFaceSrcValue( resource, true ) );
     }
 
     virtual ~CSSFontFaceSrcValue();
 
-    const String& resource() const { return m_resource; }
-    const String& format() const { return m_format; }
-    bool isLocal() const { return m_isLocal; }
+    const String &resource() const
+    {
+        return m_resource;
+    }
+    const String &format() const
+    {
+        return m_format;
+    }
+    bool isLocal() const
+    {
+        return m_isLocal;
+    }
 
-    void setFormat(const String& format) { m_format = format; }
+    void setFormat( const String &format )
+    {
+        m_format = format;
+    }
 
     bool isSupportedFormat() const;
 
 #if ENABLE(SVG_FONTS)
     bool isSVGFontFaceSrc() const;
 
-    SVGFontFaceElement* svgFontFaceElement() const { return m_svgFontFaceElement; }
-    void setSVGFontFaceElement(SVGFontFaceElement* element) { m_svgFontFaceElement = element; }
+    SVGFontFaceElement *svgFontFaceElement() const
+    {
+        return m_svgFontFaceElement;
+    }
+    void setSVGFontFaceElement( SVGFontFaceElement *element )
+    {
+        m_svgFontFaceElement = element;
+    }
 #endif
 
     virtual String cssText() const;
 
-    virtual void addSubresourceStyleURLs(ListHashSet<KURL>&, const CSSStyleSheet*);
+    virtual void addSubresourceStyleURLs( ListHashSet<KURL> &, const CSSStyleSheet * );
 
 private:
-    CSSFontFaceSrcValue(const String& resource, bool local)
-        : m_resource(resource)
-        , m_isLocal(local)
+    CSSFontFaceSrcValue( const String &resource, bool local )
+        : m_resource( resource )
+        , m_isLocal( local )
 #if ENABLE(SVG_FONTS)
-        , m_svgFontFaceElement(0)
+        , m_svgFontFaceElement( 0 )
 #endif
     {
     }
@@ -83,7 +103,7 @@ private:
     bool m_isLocal;
 
 #if ENABLE(SVG_FONTS)
-    SVGFontFaceElement* m_svgFontFaceElement;
+    SVGFontFaceElement *m_svgFontFaceElement;
 #endif
 };
 

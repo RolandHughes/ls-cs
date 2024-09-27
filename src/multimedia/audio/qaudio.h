@@ -28,45 +28,50 @@
 #include <qmultimedia.h>
 #include <qstring.h>
 
-namespace QAudio {
+namespace QAudio
+{
 
-enum Error {
-   NoError,
-   OpenError,
-   IOError,
-   UnderrunError,
-   FatalError
+enum Error
+{
+    NoError,
+    OpenError,
+    IOError,
+    UnderrunError,
+    FatalError
 };
 
-enum State {
-   ActiveState,
-   SuspendedState,
-   StoppedState,
-   IdleState
+enum State
+{
+    ActiveState,
+    SuspendedState,
+    StoppedState,
+    IdleState
 };
 
-enum Mode  {
-   AudioInput,
-   AudioOutput
+enum Mode
+{
+    AudioInput,
+    AudioOutput
 };
 
-enum Role {
-   UnknownRole,
-   MusicRole,
-   VideoRole,
-   VoiceCommunicationRole,
-   AlarmRole,
-   NotificationRole,
-   RingtoneRole,
-   AccessibilityRole,
-   SonificationRole,
-   GameRole
+enum Role
+{
+    UnknownRole,
+    MusicRole,
+    VideoRole,
+    VoiceCommunicationRole,
+    AlarmRole,
+    NotificationRole,
+    RingtoneRole,
+    AccessibilityRole,
+    SonificationRole,
+    GameRole
 };
 }
 
-Q_MULTIMEDIA_EXPORT QDebug operator<<(QDebug dbg, QAudio::Error error);
-Q_MULTIMEDIA_EXPORT QDebug operator<<(QDebug dbg, QAudio::State state);
-Q_MULTIMEDIA_EXPORT QDebug operator<<(QDebug dbg, QAudio::Mode mode);
-Q_MULTIMEDIA_EXPORT QDebug operator<<(QDebug dbg, QAudio::Role role);
+Q_MULTIMEDIA_EXPORT QDebug operator<<( QDebug dbg, QAudio::Error error );
+Q_MULTIMEDIA_EXPORT QDebug operator<<( QDebug dbg, QAudio::State state );
+Q_MULTIMEDIA_EXPORT QDebug operator<<( QDebug dbg, QAudio::Mode mode );
+Q_MULTIMEDIA_EXPORT QDebug operator<<( QDebug dbg, QAudio::Role role );
 
 #endif

@@ -21,7 +21,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -32,7 +32,8 @@
 #include "PlatformStrategies.h"
 #include "PlatformString.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 #if USE(PLATFORM_STRATEGIES)
 
@@ -190,9 +191,9 @@ String contextMenuItemTagSearchWeb()
     return platformStrategies()->localizationStrategy()->contextMenuItemTagSearchWeb();
 }
 
-String contextMenuItemTagLookUpInDictionary(const String& selectedString)
+String contextMenuItemTagLookUpInDictionary( const String &selectedString )
 {
-    return platformStrategies()->localizationStrategy()->contextMenuItemTagLookUpInDictionary(selectedString);
+    return platformStrategies()->localizationStrategy()->contextMenuItemTagLookUpInDictionary( selectedString );
 }
 
 String contextMenuItemTagOpenLink()
@@ -210,9 +211,9 @@ String contextMenuItemTagSpellingMenu()
     return platformStrategies()->localizationStrategy()->contextMenuItemTagSpellingMenu();
 }
 
-String contextMenuItemTagShowSpellingPanel(bool show)
+String contextMenuItemTagShowSpellingPanel( bool show )
 {
-    return platformStrategies()->localizationStrategy()->contextMenuItemTagShowSpellingPanel(show);
+    return platformStrategies()->localizationStrategy()->contextMenuItemTagShowSpellingPanel( show );
 }
 
 String contextMenuItemTagCheckSpelling()
@@ -326,9 +327,9 @@ String contextMenuItemTagSubstitutionsMenu()
     return platformStrategies()->localizationStrategy()->contextMenuItemTagSubstitutionsMenu();
 }
 
-String contextMenuItemTagShowSubstitutions(bool show)
+String contextMenuItemTagShowSubstitutions( bool show )
 {
-    return platformStrategies()->localizationStrategy()->contextMenuItemTagShowSubstitutions(show);
+    return platformStrategies()->localizationStrategy()->contextMenuItemTagShowSubstitutions( show );
 }
 
 String contextMenuItemTagSmartCopyPaste()
@@ -376,9 +377,9 @@ String contextMenuItemTagCapitalize()
     return platformStrategies()->localizationStrategy()->contextMenuItemTagCapitalize();
 }
 
-String contextMenuItemTagChangeBack(const String& replacedString)
+String contextMenuItemTagChangeBack( const String &replacedString )
 {
-    return platformStrategies()->localizationStrategy()->contextMenuItemTagChangeBack(replacedString);
+    return platformStrategies()->localizationStrategy()->contextMenuItemTagChangeBack( replacedString );
 }
 
 #endif // PLATFORM(MAC)
@@ -432,7 +433,7 @@ String contextMenuItemTagMediaMute()
 {
     return platformStrategies()->localizationStrategy()->contextMenuItemTagMediaMute();
 }
-    
+
 String contextMenuItemTagInspectElement()
 {
     return platformStrategies()->localizationStrategy()->contextMenuItemTagInspectElement();
@@ -491,12 +492,12 @@ String AXDefinitionListDefinitionText()
 }
 
 #if PLATFORM(MAC)
-String AXARIAContentGroupText(const String& ariaType)
+String AXARIAContentGroupText( const String &ariaType )
 {
-    return platformStrategies()->localizationStrategy()->AXARIAContentGroupText(ariaType);
+    return platformStrategies()->localizationStrategy()->AXARIAContentGroupText( ariaType );
 }
 #endif
-    
+
 String AXButtonActionVerb()
 {
     return platformStrategies()->localizationStrategy()->AXButtonActionVerb();
@@ -547,9 +548,9 @@ String crashedPluginText()
     return platformStrategies()->localizationStrategy()->crashedPluginText();
 }
 
-String multipleFileUploadText(unsigned numberOfFiles)
+String multipleFileUploadText( unsigned numberOfFiles )
 {
-    return platformStrategies()->localizationStrategy()->multipleFileUploadText(numberOfFiles);
+    return platformStrategies()->localizationStrategy()->multipleFileUploadText( numberOfFiles );
 }
 
 String unknownFileSizeText()
@@ -585,16 +586,16 @@ String keygenMenuItem2048()
     return platformStrategies()->localizationStrategy()->keygenMenuItem2048();
 }
 
-String keygenKeychainItemName(const String& host)
+String keygenKeychainItemName( const String &host )
 {
-    return platformStrategies()->localizationStrategy()->keygenKeychainItemName(host);
+    return platformStrategies()->localizationStrategy()->keygenKeychainItemName( host );
 }
 
 #endif
 
-String imageTitle(const String& filename, const IntSize& size)
+String imageTitle( const String &filename, const IntSize &size )
 {
-    return platformStrategies()->localizationStrategy()->imageTitle(filename, size);
+    return platformStrategies()->localizationStrategy()->imageTitle( filename, size );
 }
 
 String mediaElementLoadingStateText()
@@ -607,19 +608,19 @@ String mediaElementLiveBroadcastStateText()
     return platformStrategies()->localizationStrategy()->mediaElementLiveBroadcastStateText();
 }
 
-String localizedMediaControlElementString(const String& controlName)
+String localizedMediaControlElementString( const String &controlName )
 {
-    return platformStrategies()->localizationStrategy()->localizedMediaControlElementString(controlName);
+    return platformStrategies()->localizationStrategy()->localizedMediaControlElementString( controlName );
 }
 
-String localizedMediaControlElementHelpText(const String& controlName)
+String localizedMediaControlElementHelpText( const String &controlName )
 {
-    return platformStrategies()->localizationStrategy()->localizedMediaControlElementHelpText(controlName);
+    return platformStrategies()->localizationStrategy()->localizedMediaControlElementHelpText( controlName );
 }
 
-String localizedMediaTimeDescription(float time)
+String localizedMediaTimeDescription( float time )
 {
-    return platformStrategies()->localizationStrategy()->localizedMediaTimeDescription(time);
+    return platformStrategies()->localizationStrategy()->localizedMediaTimeDescription( time );
 }
 
 String validationMessageValueMissingText()
@@ -677,22 +678,22 @@ String validationMessagePatternMismatchText()
     return platformStrategies()->localizationStrategy()->validationMessagePatternMismatchText();
 }
 
-String validationMessageTooLongText(int, int)
+String validationMessageTooLongText( int, int )
 {
     return platformStrategies()->localizationStrategy()->validationMessageTooLongText();
 }
 
-String validationMessageRangeUnderflowText(const String&)
+String validationMessageRangeUnderflowText( const String & )
 {
     return platformStrategies()->localizationStrategy()->validationMessageRangeUnderflowText();
 }
 
-String validationMessageRangeOverflowText(const String&)
+String validationMessageRangeOverflowText( const String & )
 {
     return platformStrategies()->localizationStrategy()->validationMessageRangeOverflowText();
 }
 
-String validationMessageStepMismatchText(const String&, const String&)
+String validationMessageStepMismatchText( const String &, const String & )
 {
     return platformStrategies()->localizationStrategy()->validationMessageStepMismatchText();
 }
@@ -700,9 +701,9 @@ String validationMessageStepMismatchText(const String&, const String&)
 #endif // USE(PLATFORM_STRATEGIES)
 
 #if !PLATFORM(MAC) && !PLATFORM(WIN)
-String localizedString(const char* key)
+String localizedString( const char *key )
 {
-    return String::fromUTF8(key, strlen(key));
+    return String::fromUTF8( key, strlen( key ) );
 }
 #endif
 

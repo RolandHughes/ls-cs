@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include "config.h"
 
@@ -39,26 +39,29 @@
 
 class MyObject : public QObject
 {
-    Q_OBJECT
-    Q_PROPERTY(QString testString READ testString WRITE setTestString)
-    Q_PROPERTY(int testInt READ testInt WRITE setTestInt)
+    Q_OBJECT Q_PROPERTY( QString testString READ testString WRITE setTestString )
+    Q_PROPERTY( int testInt READ testInt WRITE setTestInt )
 
 public:
-    MyObject() : QObject(0), integer(0){}
+    MyObject() : QObject( 0 ), integer( 0 ) {}
 
-    void setTestString(const QString &str) {
+    void setTestString( const QString &str )
+    {
         qDebug() << "called setTestString" << str;
         string = str;
     }
-    void setTestInt(int i) {
+    void setTestInt( int i )
+    {
         qDebug() << "called setTestInt" << i;
         integer = i;
     }
-    QString testString() const {
+    QString testString() const
+    {
         qDebug() << "called testString" << string;
         return string;
     }
-    int testInt() const {
+    int testInt() const
+    {
         qDebug() << "called testInt" << integer;
         return integer;
     }
@@ -66,7 +69,10 @@ public:
     int integer;
 
 public slots:
-    void foo() { qDebug() << "foo invoked"; }
+    void foo()
+    {
+        qDebug() << "foo invoked";
+    }
 };
 
 // --------------------------------------------------------
@@ -74,9 +80,13 @@ public slots:
 using namespace JSC;
 using namespace JSC::Bindings;
 
-class Global : public JSNonFinalObject {
+class Global : public JSNonFinalObject
+{
 public:
-  virtual UString className() const { return "global"; }
+    virtual UString className() const
+    {
+        return "global";
+    }
 };
 
 static char code[] =
@@ -86,52 +96,66 @@ static char code[] =
     "myInterface.testInt = 10;\n"
     "i = myInterface.testInt;\n";
 
-int main(int argc, char** argv)
+int main( int argc, char **argv )
 {
     // expecting a filename
     bool ret = true;
     {
         JSLock lock;
-        
+
         // create interpreter w/ global object
-        Global* global = new Global();
+        Global *global = new Global();
 
         // create interpreter
-        RefPtr<Interpreter> interp = new Interpreter(global);
-        ExecState* exec = interp->globalExec();
-        
-        MyObject* myObject = new MyObject;
-        
-        global->put(exec, Identifier("myInterface"), Instance::createRuntimeObject(Instance::QtLanguage, (void*)myObject));
-        
-        
-        if (code) {
+        RefPtr<Interpreter> interp = new Interpreter( global );
+        ExecState *exec = interp->globalExec();
+
+        MyObject *myObject = new MyObject;
+
+        global->put( exec, Identifier( "myInterface" ), Instance::createRuntimeObject( Instance::QtLanguage, ( void * )myObject ) );
+
+
+        if ( code )
+        {
             // run
-            Completion comp(interp->evaluate("", 0, code));
-            
-            if (comp.complType() == Throw) {
+            Completion comp( interp->evaluate( "", 0, code ) );
+
+            if ( comp.complType() == Throw )
+            {
                 qDebug() << "exception thrown";
-                JSValue* exVal = comp.value();
-                char* msg = exVal->toString(exec).ascii();
+                JSValue *exVal = comp.value();
+                char *msg = exVal->toString( exec ).ascii();
                 int lineno = -1;
-                if (exVal->type() == ObjectType) {
-                    JSValue* lineVal = exVal->getObject()->get(exec, Identifier("line"));
-                    if (lineVal->type() == NumberType)
-                        lineno = int(lineVal->toNumber(exec));
+
+                if ( exVal->type() == ObjectType )
+                {
+                    JSValue *lineVal = exVal->getObject()->get( exec, Identifier( "line" ) );
+
+                    if ( lineVal->type() == NumberType )
+                    {
+                        lineno = int( lineVal->toNumber( exec ) );
+                    }
                 }
-                if (lineno != -1)
-                    fprintf(stderr,"Exception, line %d: %s\n",lineno,msg);
+
+                if ( lineno != -1 )
+                {
+                    fprintf( stderr,"Exception, line %d: %s\n",lineno,msg );
+                }
                 else
-                    fprintf(stderr,"Exception: %s\n",msg);
+                {
+                    fprintf( stderr,"Exception: %s\n",msg );
+                }
+
                 ret = false;
             }
-            else if (comp.complType() == ReturnValue) {
-                char* msg = comp.value()->toString(interp->globalExec()).ascii();
-                fprintf(stderr,"Return value: %s\n",msg);
+            else if ( comp.complType() == ReturnValue )
+            {
+                char *msg = comp.value()->toString( interp->globalExec() ).ascii();
+                fprintf( stderr,"Return value: %s\n",msg );
             }
         }
-        
+
     } // end block, so that Interpreter and global get deleted
-    
+
     return ret ? 0 : 1;
 }

@@ -32,16 +32,16 @@
 
 class QCocoaPrinterSupport : public QPlatformPrinterSupport
 {
- public:
-   QCocoaPrinterSupport();
-   ~QCocoaPrinterSupport();
+public:
+    QCocoaPrinterSupport();
+    ~QCocoaPrinterSupport();
 
-   QPrintEngine *createNativePrintEngine(QPrinter::PrinterMode printerMode) override;
-   QPaintEngine *createPaintEngine(QPrintEngine *, QPrinter::PrinterMode printerMode) override;
+    QPrintEngine *createNativePrintEngine( QPrinter::PrinterMode printerMode ) override;
+    QPaintEngine *createPaintEngine( QPrintEngine *, QPrinter::PrinterMode printerMode ) override;
 
-   QPrintDevice createPrintDevice(const QString &id) override;
-   QStringList availablePrintDeviceIds() const override;
-   QString defaultPrintDeviceId() const override;
+    QPrintDevice createPrintDevice( const QString &id ) override;
+    QStringList availablePrintDeviceIds() const override;
+    QString defaultPrintDeviceId() const override;
 };
 
 #endif // QT_NO_PRINTER

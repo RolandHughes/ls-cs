@@ -27,48 +27,52 @@
 #include <wtf/PassOwnPtr.h>
 #include <wtf/Vector.h>
 
-namespace JSC {
-    class JSGlobalObject;
+namespace JSC
+{
+class JSGlobalObject;
 }
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class Document;
-    class ContentSecurityPolicy;
-    class ScriptExecutionContext;
-    class WorkerContext;
+class Document;
+class ContentSecurityPolicy;
+class ScriptExecutionContext;
+class WorkerContext;
 
-   /* An action (either function or string) to be executed after a specified
-    * time interval, either once or repeatedly. Used for window.setTimeout()
-    * and window.setInterval()
-    */
-    class ScheduledAction {
-        WTF_MAKE_NONCOPYABLE(ScheduledAction); WTF_MAKE_FAST_ALLOCATED;
-    public:
-        static PassOwnPtr<ScheduledAction> create(JSC::ExecState*, DOMWrapperWorld* isolatedWorld, ContentSecurityPolicy*);
+/* An action (either function or string) to be executed after a specified
+ * time interval, either once or repeatedly. Used for window.setTimeout()
+ * and window.setInterval()
+ */
+class ScheduledAction
+{
+    WTF_MAKE_NONCOPYABLE( ScheduledAction );
+    WTF_MAKE_FAST_ALLOCATED;
+public:
+    static PassOwnPtr<ScheduledAction> create( JSC::ExecState *, DOMWrapperWorld *isolatedWorld, ContentSecurityPolicy * );
 
-        void execute(ScriptExecutionContext*);
+    void execute( ScriptExecutionContext * );
 
-    private:
-        ScheduledAction(JSC::ExecState*, JSC::JSValue function, DOMWrapperWorld* isolatedWorld);
-        ScheduledAction(const String& code, DOMWrapperWorld* isolatedWorld)
-            : m_function(*isolatedWorld->globalData())
-            , m_code(code)
-            , m_isolatedWorld(isolatedWorld)
-        {
-        }
+private:
+    ScheduledAction( JSC::ExecState *, JSC::JSValue function, DOMWrapperWorld *isolatedWorld );
+    ScheduledAction( const String &code, DOMWrapperWorld *isolatedWorld )
+        : m_function( *isolatedWorld->globalData() )
+        , m_code( code )
+        , m_isolatedWorld( isolatedWorld )
+    {
+    }
 
-        void executeFunctionInContext(JSC::JSGlobalObject*, JSC::JSValue thisValue, ScriptExecutionContext*);
-        void execute(Document*);
+    void executeFunctionInContext( JSC::JSGlobalObject *, JSC::JSValue thisValue, ScriptExecutionContext * );
+    void execute( Document * );
 #if ENABLE(WORKERS)
-        void execute(WorkerContext*);
+    void execute( WorkerContext * );
 #endif
 
-        JSC::Strong<JSC::Unknown> m_function;
-        Vector<JSC::Strong<JSC::Unknown> > m_args;
-        String m_code;
-        RefPtr<DOMWrapperWorld> m_isolatedWorld;
-    };
+    JSC::Strong<JSC::Unknown> m_function;
+    Vector<JSC::Strong<JSC::Unknown> > m_args;
+    String m_code;
+    RefPtr<DOMWrapperWorld> m_isolatedWorld;
+};
 
 } // namespace WebCore
 

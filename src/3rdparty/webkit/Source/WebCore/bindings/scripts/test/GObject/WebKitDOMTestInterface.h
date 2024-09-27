@@ -35,16 +35,18 @@ G_BEGIN_DECLS
 #define WEBKIT_DOM_IS_TEST_INTERFACE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE((klass),  WEBKIT_TYPE_DOM_TEST_INTERFACE))
 #define WEBKIT_DOM_TEST_INTERFACE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS((obj),  WEBKIT_TYPE_DOM_TEST_INTERFACE, WebKitDOMTestInterfaceClass))
 
-struct _WebKitDOMTestInterface {
+struct _WebKitDOMTestInterface
+{
     WebKitDOMObject parent_instance;
 };
 
-struct _WebKitDOMTestInterfaceClass {
+struct _WebKitDOMTestInterfaceClass
+{
     WebKitDOMObjectClass parent_class;
 };
 
 WEBKIT_API GType
-webkit_dom_test_interface_get_type (void);
+webkit_dom_test_interface_get_type ( void );
 
 G_END_DECLS
 

@@ -28,87 +28,88 @@
 #include "qexpression_p.h"
 #include "qoptimizerframework_p.h"
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class ByIDIdentifier : public ExpressionIdentifier
 {
- public:
-   ByIDIdentifier(const Expression::ID id);
-   bool matches(const Expression::Ptr &expr) const override;
+public:
+    ByIDIdentifier( const Expression::ID id );
+    bool matches( const Expression::Ptr &expr ) const override;
 
- private:
-   const Expression::ID m_id;
+private:
+    const Expression::ID m_id;
 };
 
 class BySequenceTypeIdentifier : public ExpressionIdentifier
 {
- public:
-   BySequenceTypeIdentifier(const SequenceType::Ptr &seqType);
+public:
+    BySequenceTypeIdentifier( const SequenceType::Ptr &seqType );
 
-   /**
-    * @returns @c true, if the static type of @p expr is matches
-    * the SequenceType passed in the BySequenceTypeIdentifier()
-    * constructor, otherwise @c false.
-    */
-   bool matches(const Expression::Ptr &expr) const override;
+    /**
+     * @returns @c true, if the static type of @p expr is matches
+     * the SequenceType passed in the BySequenceTypeIdentifier()
+     * constructor, otherwise @c false.
+     */
+    bool matches( const Expression::Ptr &expr ) const override;
 
- private:
-   const SequenceType::Ptr m_seqType;
+private:
+    const SequenceType::Ptr m_seqType;
 };
 
 class ComparisonIdentifier : public ExpressionIdentifier
 {
- public:
+public:
 
-   ComparisonIdentifier(const QVector<Expression::ID> comparatorHosts, const AtomicComparator::Operator op);
+    ComparisonIdentifier( const QVector<Expression::ID> comparatorHosts, const AtomicComparator::Operator op );
 
-   bool matches(const Expression::Ptr &expr) const override;
+    bool matches( const Expression::Ptr &expr ) const override;
 
- private:
-   const QVector<Expression::ID> m_hosts;
-   const AtomicComparator::Operator m_op;
+private:
+    const QVector<Expression::ID> m_hosts;
+    const AtomicComparator::Operator m_op;
 };
 
 
 class IntegerIdentifier : public ExpressionIdentifier
 {
- public:
-   IntegerIdentifier(const xsInteger num);
-   bool matches(const Expression::Ptr &expr) const override;
+public:
+    IntegerIdentifier( const xsInteger num );
+    bool matches( const Expression::Ptr &expr ) const override;
 
- private:
-   const xsInteger m_num;
+private:
+    const xsInteger m_num;
 };
 
 class BooleanIdentifier : public ExpressionIdentifier
 {
- public:
-   BooleanIdentifier(const bool value);
-   bool matches(const Expression::Ptr &expr) const override;
+public:
+    BooleanIdentifier( const bool value );
+    bool matches( const Expression::Ptr &expr ) const override;
 
- private:
-   const bool m_value;
+private:
+    const bool m_value;
 };
 
 class ByIDCreator : public ExpressionCreator
 {
- public:
-   /**
-    * Creates a ByIDCreator that creates expressions
-    * of the type that @p id identifies.
-    */
-   ByIDCreator(const Expression::ID id);
-   Expression::Ptr create(const Expression::List &operands, const StaticContext::Ptr &context,
-                  const SourceLocationReflection *const r) const override;
+public:
+    /**
+     * Creates a ByIDCreator that creates expressions
+     * of the type that @p id identifies.
+     */
+    ByIDCreator( const Expression::ID id );
+    Expression::Ptr create( const Expression::List &operands, const StaticContext::Ptr &context,
+                            const SourceLocationReflection *const r ) const override;
 
-   /**
-    * Creates an expression by id @p id with the arguments @p operands.
-    */
-   static Expression::Ptr create(const Expression::ID id, const Expression::List &operands,
-                  const StaticContext::Ptr &context, const SourceLocationReflection *const r);
+    /**
+     * Creates an expression by id @p id with the arguments @p operands.
+     */
+    static Expression::Ptr create( const Expression::ID id, const Expression::List &operands,
+                                   const StaticContext::Ptr &context, const SourceLocationReflection *const r );
 
- private:
-   const Expression::ID m_id;
+private:
+    const Expression::ID m_id;
 };
 
 }

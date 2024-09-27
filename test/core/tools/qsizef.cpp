@@ -21,56 +21,58 @@
 
 #include <cs_catch2.h>
 
-TEST_CASE("QSizeF traits", "[qsizef]")
+TEST_CASE( "QSizeF traits", "[qsizef]" )
 {
-   REQUIRE(std::is_copy_constructible_v<QSizeF> == true);
-   REQUIRE(std::is_move_constructible_v<QSizeF> == true);
+    REQUIRE( std::is_copy_constructible_v<QSizeF> == true );
+    REQUIRE( std::is_move_constructible_v<QSizeF> == true );
 
-   REQUIRE(std::is_copy_assignable_v<QSizeF> == true);
-   REQUIRE(std::is_move_assignable_v<QSizeF> == true);
+    REQUIRE( std::is_copy_assignable_v<QSizeF> == true );
+    REQUIRE( std::is_move_assignable_v<QSizeF> == true );
 
-   REQUIRE(std::has_virtual_destructor_v<QSizeF> == false);
+    REQUIRE( std::has_virtual_destructor_v<QSizeF> == false );
 }
 
-TEST_CASE("QSizeF constructor", "[qsizef]")
+TEST_CASE( "QSizeF constructor", "[qsizef]" )
 {
-   QSizeF data(50, 125);
+    QSizeF data( 50, 125 );
 
-   REQUIRE(! data.isEmpty());
-   REQUIRE(! data.isNull());
+    REQUIRE( ! data.isEmpty() );
+    REQUIRE( ! data.isNull() );
 
-   REQUIRE(data.isValid());
+    REQUIRE( data.isValid() );
 
-   REQUIRE(data.width()  == 50);
-   REQUIRE(data.height() == 125);
+    REQUIRE( data.width()  == 50 );
+    REQUIRE( data.height() == 125 );
 }
 
-TEST_CASE("QSizeF empty", "[qsizef]")
+TEST_CASE( "QSizeF empty", "[qsizef]" )
 {
-   QSizeF data;
+    QSizeF data;
 
-   REQUIRE(data.isEmpty());
-   REQUIRE(! data.isNull());     // default constructed (-1, -1)
+    REQUIRE( data.isEmpty() );
+    REQUIRE( ! data.isNull() );   // default constructed (-1, -1)
 
-   REQUIRE(! data.isValid());
+    REQUIRE( ! data.isValid() );
 }
 
-TEST_CASE("QSizeF operators", "[qsizef]")
+TEST_CASE( "QSizeF operators", "[qsizef]" )
 {
-   QSizeF data1(50, 125);
-   QSizeF data2(10, 20);
+    QSizeF data1( 50, 125 );
+    QSizeF data2( 10, 20 );
 
-   SECTION("plus") {
-      data1 += data2;
+    SECTION( "plus" )
+    {
+        data1 += data2;
 
-      REQUIRE(data1.width()  == 60);
-      REQUIRE(data1.height() == 145);
-   }
+        REQUIRE( data1.width()  == 60 );
+        REQUIRE( data1.height() == 145 );
+    }
 
-   SECTION("minus") {
-      data1 -= data2;
+    SECTION( "minus" )
+    {
+        data1 -= data2;
 
-      REQUIRE(data1.width()  == 40);
-      REQUIRE(data1.height() == 105);
-   }
+        REQUIRE( data1.width()  == 40 );
+        REQUIRE( data1.height() == 105 );
+    }
 }

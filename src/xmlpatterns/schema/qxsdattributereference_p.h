@@ -27,67 +27,69 @@
 #include <qxsdattributeuse_p.h>
 #include <QSourceLocation>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class XsdAttributeReference : public XsdAttributeUse
 {
- public:
-   typedef QExplicitlySharedDataPointer<XsdAttributeReference> Ptr;
+public:
+    typedef QExplicitlySharedDataPointer<XsdAttributeReference> Ptr;
 
-   /**
-    * Describes the type of the attribute reference.
-    */
-   enum Type {
-      AttributeUse,   ///< The reference points to an attribute use.
-      AttributeGroup  ///< The reference points to an attribute group.
-   };
+    /**
+     * Describes the type of the attribute reference.
+     */
+    enum Type
+    {
+        AttributeUse,   ///< The reference points to an attribute use.
+        AttributeGroup  ///< The reference points to an attribute group.
+    };
 
-   /**
-    * Always returns false, used to avoid dynamic casts.
-    */
-   bool isAttributeUse() const override;
+    /**
+     * Always returns false, used to avoid dynamic casts.
+     */
+    bool isAttributeUse() const override;
 
-   /**
-    * Always returns true, used to avoid dynamic casts.
-    */
-   bool isReference() const override;
+    /**
+     * Always returns true, used to avoid dynamic casts.
+     */
+    bool isReference() const override;
 
-   /**
-    * Sets the @p type of the attribute reference.
-    */
-   void setType(Type type);
+    /**
+     * Sets the @p type of the attribute reference.
+     */
+    void setType( Type type );
 
-   /**
-    * Returns the type of the attribute reference.
-    */
-   Type type() const;
+    /**
+     * Returns the type of the attribute reference.
+     */
+    Type type() const;
 
-   /**
-    * Sets the @p name of the attribute or attribute group the
-    * attribute reference refers to.
-    */
-   void setReferenceName(const QXmlName &name);
+    /**
+     * Sets the @p name of the attribute or attribute group the
+     * attribute reference refers to.
+     */
+    void setReferenceName( const QXmlName &name );
 
-   /**
-    * Returns the name of the attribute or attribute group the
-    * attribute reference refers to.
-    */
-   QXmlName referenceName() const;
+    /**
+     * Returns the name of the attribute or attribute group the
+     * attribute reference refers to.
+     */
+    QXmlName referenceName() const;
 
-   /**
-    * Sets the source @p location where the reference is located.
-    */
-   void setSourceLocation(const QSourceLocation &location);
+    /**
+     * Sets the source @p location where the reference is located.
+     */
+    void setSourceLocation( const QSourceLocation &location );
 
-   /**
-    * Returns the source location where the reference is located.
-    */
-   QSourceLocation sourceLocation() const;
+    /**
+     * Returns the source location where the reference is located.
+     */
+    QSourceLocation sourceLocation() const;
 
- private:
-   Type            m_type;
-   QXmlName        m_referenceName;
-   QSourceLocation m_sourceLocation;
+private:
+    Type            m_type;
+    QXmlName        m_referenceName;
+    QSourceLocation m_sourceLocation;
 };
 
 }

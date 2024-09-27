@@ -28,36 +28,46 @@
 #include "SVGShadowTreeElements.h"
 #include "SVGStyledTransformableElement.h"
 
-namespace WebCore {
-    
-RenderSVGTransformableContainer::RenderSVGTransformableContainer(SVGStyledTransformableElement* node)
-    : RenderSVGContainer(node)
-    , m_needsTransformUpdate(true)
+namespace WebCore
+{
+
+RenderSVGTransformableContainer::RenderSVGTransformableContainer( SVGStyledTransformableElement *node )
+    : RenderSVGContainer( node )
+    , m_needsTransformUpdate( true )
 {
 }
 
 bool RenderSVGTransformableContainer::calculateLocalTransform()
 {
-    SVGStyledTransformableElement* element = static_cast<SVGStyledTransformableElement*>(node());
+    SVGStyledTransformableElement *element = static_cast<SVGStyledTransformableElement *>( node() );
 
     bool needsUpdate = m_needsTransformUpdate;
-    if (needsUpdate) {
+
+    if ( needsUpdate )
+    {
         m_localTransform = element->animatedLocalTransform();
         m_needsTransformUpdate = false;
     }
 
-    if (!element->hasTagName(SVGNames::gTag) || !static_cast<SVGGElement*>(element)->isShadowTreeContainerElement())
+    if ( !element->hasTagName( SVGNames::gTag ) || !static_cast<SVGGElement *>( element )->isShadowTreeContainerElement() )
+    {
         return needsUpdate;
+    }
 
-    FloatSize translation = static_cast<SVGShadowTreeContainerElement*>(element)->containerTranslation();
-    if (!translation.width() && !translation.height())
+    FloatSize translation = static_cast<SVGShadowTreeContainerElement *>( element )->containerTranslation();
+
+    if ( !translation.width() && !translation.height() )
+    {
         return needsUpdate;
+    }
 
     // FIXME: Could optimize this case for use to avoid refetching the animatedLocalTransform() here, if only the containerTranslation() changed.
-    if (!needsUpdate)
+    if ( !needsUpdate )
+    {
         m_localTransform = element->animatedLocalTransform();
+    }
 
-    m_localTransform.translate(translation.width(), translation.height());
+    m_localTransform.translate( translation.width(), translation.height() );
     return true;
 }
 

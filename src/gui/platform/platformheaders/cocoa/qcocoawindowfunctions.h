@@ -30,16 +30,18 @@ class QWindow;
 
 class QCocoaWindowFunctions
 {
- public:
-   typedef QPoint (*BottomLeftClippedByNSWindowOffset)(QWindow *window);
+public:
+    typedef QPoint ( *BottomLeftClippedByNSWindowOffset )( QWindow *window );
 
-   static const QByteArray bottomLeftClippedByNSWindowOffsetIdentifier() {
-      return QByteArray("CocoaBottomLeftClippedByNSWindowOffset");
-   }
+    static const QByteArray bottomLeftClippedByNSWindowOffsetIdentifier()
+    {
+        return QByteArray( "CocoaBottomLeftClippedByNSWindowOffset" );
+    }
 
-   static QPoint bottomLeftClippedByNSWindowOffset(QWindow *window) {
-      return QPlatformHeaderHelper::callPlatformFunction<QPoint,
-            BottomLeftClippedByNSWindowOffset>(bottomLeftClippedByNSWindowOffsetIdentifier(),window);
+    static QPoint bottomLeftClippedByNSWindowOffset( QWindow *window )
+    {
+        return QPlatformHeaderHelper::callPlatformFunction<QPoint,
+               BottomLeftClippedByNSWindowOffset>( bottomLeftClippedByNSWindowOffsetIdentifier(),window );
     }
 };
 

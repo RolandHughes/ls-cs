@@ -33,16 +33,16 @@ using namespace WebKit;
 
 WKTypeID WKUserContentURLPatternGetTypeID()
 {
-    return toAPI(WebUserContentURLPattern::APIType);
+    return toAPI( WebUserContentURLPattern::APIType );
 }
 
-WKUserContentURLPatternRef WKUserContentURLPatternCreate(WKStringRef patternRef)
+WKUserContentURLPatternRef WKUserContentURLPatternCreate( WKStringRef patternRef )
 {
-    RefPtr<WebUserContentURLPattern> userContentURLPattern = WebUserContentURLPattern::create(toImpl(patternRef)->string());
-    return toAPI(userContentURLPattern.release().leakRef());
+    RefPtr<WebUserContentURLPattern> userContentURLPattern = WebUserContentURLPattern::create( toImpl( patternRef )->string() );
+    return toAPI( userContentURLPattern.release().leakRef() );
 }
 
-bool WKUserContentURLPatternMatchesURL(WKUserContentURLPatternRef urlPatternRef, WKURLRef urlRef)
+bool WKUserContentURLPatternMatchesURL( WKUserContentURLPatternRef urlPatternRef, WKURLRef urlRef )
 {
-    return toImpl(urlPatternRef)->matchesURL(toWTFString(urlRef));
+    return toImpl( urlPatternRef )->matchesURL( toWTFString( urlRef ) );
 }

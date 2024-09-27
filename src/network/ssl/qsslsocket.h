@@ -42,204 +42,206 @@ class QSslSocketPrivate;
 
 class Q_NETWORK_EXPORT QSslSocket : public QTcpSocket
 {
-   NET_CS_OBJECT(QSslSocket)
+    NET_CS_OBJECT( QSslSocket )
 
- public:
-   enum SslMode {
-      UnencryptedMode,
-      SslClientMode,
-      SslServerMode
-   };
+public:
+    enum SslMode
+    {
+        UnencryptedMode,
+        SslClientMode,
+        SslServerMode
+    };
 
-   enum PeerVerifyMode {
-      VerifyNone,
-      QueryPeer,
-      VerifyPeer,
-      AutoVerifyPeer
-   };
+    enum PeerVerifyMode
+    {
+        VerifyNone,
+        QueryPeer,
+        VerifyPeer,
+        AutoVerifyPeer
+    };
 
-   QSslSocket(QObject *parent = nullptr);
+    QSslSocket( QObject *parent = nullptr );
 
-   QSslSocket(const QSslSocket &) = delete;
-   QSslSocket &operator=(const QSslSocket &) = delete;
+    QSslSocket( const QSslSocket & ) = delete;
+    QSslSocket &operator=( const QSslSocket & ) = delete;
 
-   ~QSslSocket();
+    ~QSslSocket();
 
-   void resume() override;
+    void resume() override;
 
-   // Autostarting the SSL client handshake.
-   void connectToHostEncrypted(const QString &hostName, quint16 port, OpenMode mode = ReadWrite,
-         NetworkLayerProtocol protocol = AnyIPProtocol);
+    // Autostarting the SSL client handshake.
+    void connectToHostEncrypted( const QString &hostName, quint16 port, OpenMode mode = ReadWrite,
+                                 NetworkLayerProtocol protocol = AnyIPProtocol );
 
-   void connectToHostEncrypted(const QString &hostName, quint16 port, const QString &sslPeerName,
-         OpenMode mode = ReadWrite, NetworkLayerProtocol protocol = AnyIPProtocol);
+    void connectToHostEncrypted( const QString &hostName, quint16 port, const QString &sslPeerName,
+                                 OpenMode mode = ReadWrite, NetworkLayerProtocol protocol = AnyIPProtocol );
 
-   bool setSocketDescriptor(qintptr socketDescriptor, SocketState state = ConnectedState,
-         OpenMode openMode = ReadWrite) override;
+    bool setSocketDescriptor( qintptr socketDescriptor, SocketState state = ConnectedState,
+                              OpenMode openMode = ReadWrite ) override;
 
-   using QAbstractSocket::connectToHost;
-   void connectToHost(const QString &hostName, quint16 port, OpenMode openMode = ReadWrite,
-         NetworkLayerProtocol protocol = AnyIPProtocol) override;
+    using QAbstractSocket::connectToHost;
+    void connectToHost( const QString &hostName, quint16 port, OpenMode openMode = ReadWrite,
+                        NetworkLayerProtocol protocol = AnyIPProtocol ) override;
 
-   void disconnectFromHost() override;
+    void disconnectFromHost() override;
 
-   void setSocketOption(QAbstractSocket::SocketOption option, const QVariant &value) override;
-   QVariant socketOption(QAbstractSocket::SocketOption option) override;
+    void setSocketOption( QAbstractSocket::SocketOption option, const QVariant &value ) override;
+    QVariant socketOption( QAbstractSocket::SocketOption option ) override;
 
-   SslMode mode() const;
-   bool isEncrypted() const;
+    SslMode mode() const;
+    bool isEncrypted() const;
 
-   QSsl::SslProtocol protocol() const;
-   void setProtocol(QSsl::SslProtocol protocol);
+    QSsl::SslProtocol protocol() const;
+    void setProtocol( QSsl::SslProtocol protocol );
 
-   QSslSocket::PeerVerifyMode peerVerifyMode() const;
-   void setPeerVerifyMode(QSslSocket::PeerVerifyMode mode);
+    QSslSocket::PeerVerifyMode peerVerifyMode() const;
+    void setPeerVerifyMode( QSslSocket::PeerVerifyMode mode );
 
-   int peerVerifyDepth() const;
-   void setPeerVerifyDepth(int depth);
+    int peerVerifyDepth() const;
+    void setPeerVerifyDepth( int depth );
 
-   QString peerVerifyName() const;
-   void setPeerVerifyName(const QString &hostName);
+    QString peerVerifyName() const;
+    void setPeerVerifyName( const QString &hostName );
 
-   // From QIODevice
-   qint64 bytesAvailable() const override;
-   qint64 bytesToWrite() const override;
-   bool canReadLine() const override;
-   void close() override;
-   bool atEnd() const override;
-   bool flush();
-   void abort();
+    // From QIODevice
+    qint64 bytesAvailable() const override;
+    qint64 bytesToWrite() const override;
+    bool canReadLine() const override;
+    void close() override;
+    bool atEnd() const override;
+    bool flush();
+    void abort();
 
-   // From QAbstractSocket:
-   void setReadBufferSize(qint64 size) override;
+    // From QAbstractSocket:
+    void setReadBufferSize( qint64 size ) override;
 
-   // Similar to QIODevice's:
-   qint64 encryptedBytesAvailable() const;
-   qint64 encryptedBytesToWrite() const;
+    // Similar to QIODevice's:
+    qint64 encryptedBytesAvailable() const;
+    qint64 encryptedBytesToWrite() const;
 
-   // SSL configuration
-   QSslConfiguration sslConfiguration() const;
-   void setSslConfiguration(const QSslConfiguration &configuration);
+    // SSL configuration
+    QSslConfiguration sslConfiguration() const;
+    void setSslConfiguration( const QSslConfiguration &configuration );
 
-   // Certificate & cipher accessors.
-   void setLocalCertificateChain(const QList<QSslCertificate> &localChain);
-   QList<QSslCertificate> localCertificateChain() const;
+    // Certificate & cipher accessors.
+    void setLocalCertificateChain( const QList<QSslCertificate> &localChain );
+    QList<QSslCertificate> localCertificateChain() const;
 
-   void setLocalCertificate(const QSslCertificate &certificate);
-   void setLocalCertificate(const QString &fileName, QSsl::EncodingFormat format = QSsl::Pem);
+    void setLocalCertificate( const QSslCertificate &certificate );
+    void setLocalCertificate( const QString &fileName, QSsl::EncodingFormat format = QSsl::Pem );
 
-   QSslCertificate localCertificate() const;
-   QSslCertificate peerCertificate() const;
-   QList<QSslCertificate> peerCertificateChain() const;
-   QSslCipher sessionCipher() const;
-   QSsl::SslProtocol sessionProtocol() const;
+    QSslCertificate localCertificate() const;
+    QSslCertificate peerCertificate() const;
+    QList<QSslCertificate> peerCertificateChain() const;
+    QSslCipher sessionCipher() const;
+    QSsl::SslProtocol sessionProtocol() const;
 
-   // Private keys, for server sockets
-   void setPrivateKey(const QSslKey &key);
-   void setPrivateKey(const QString &fileName, QSsl::KeyAlgorithm algorithm = QSsl::Rsa,
-         QSsl::EncodingFormat format = QSsl::Pem, const QByteArray &passPhrase = QByteArray());
+    // Private keys, for server sockets
+    void setPrivateKey( const QSslKey &key );
+    void setPrivateKey( const QString &fileName, QSsl::KeyAlgorithm algorithm = QSsl::Rsa,
+                        QSsl::EncodingFormat format = QSsl::Pem, const QByteArray &passPhrase = QByteArray() );
 
-   QSslKey privateKey() const;
+    QSslKey privateKey() const;
 
-   // CA settings
-   bool addCaCertificates(const QString &path, QSsl::EncodingFormat format = QSsl::Pem,
-         QPatternOption syntax = QPatternOption::FixedStringOption);
+    // CA settings
+    bool addCaCertificates( const QString &path, QSsl::EncodingFormat format = QSsl::Pem,
+                            QPatternOption syntax = QPatternOption::FixedStringOption );
 
-   void addCaCertificate(const QSslCertificate &certificate);
-   void addCaCertificates(const QList<QSslCertificate> &certificates);
+    void addCaCertificate( const QSslCertificate &certificate );
+    void addCaCertificates( const QList<QSslCertificate> &certificates );
 
-   static bool addDefaultCaCertificates(const QString &path, QSsl::EncodingFormat format = QSsl::Pem,
-         QPatternOption syntax = QPatternOption::FixedStringOption);
+    static bool addDefaultCaCertificates( const QString &path, QSsl::EncodingFormat format = QSsl::Pem,
+                                          QPatternOption syntax = QPatternOption::FixedStringOption );
 
-   static void addDefaultCaCertificate(const QSslCertificate &certificate);
-   static void addDefaultCaCertificates(const QList<QSslCertificate> &certificates);
+    static void addDefaultCaCertificate( const QSslCertificate &certificate );
+    static void addDefaultCaCertificates( const QList<QSslCertificate> &certificates );
 
-   bool waitForConnected(int msecs = 30000) override;
-   bool waitForEncrypted(int msecs = 30000);
-   bool waitForReadyRead(int msecs = 30000) override;
-   bool waitForBytesWritten(int msecs = 30000) override;
-   bool waitForDisconnected(int msecs = 30000) override;
+    bool waitForConnected( int msecs = 30000 ) override;
+    bool waitForEncrypted( int msecs = 30000 );
+    bool waitForReadyRead( int msecs = 30000 ) override;
+    bool waitForBytesWritten( int msecs = 30000 ) override;
+    bool waitForDisconnected( int msecs = 30000 ) override;
 
-   QList<QSslError> sslErrors() const;
+    QList<QSslError> sslErrors() const;
 
-   static bool supportsSsl();
-   static long sslLibraryVersionNumber();
-   static QString sslLibraryVersionString();
-   static long sslLibraryBuildVersionNumber();
-   static QString sslLibraryBuildVersionString();
+    static bool supportsSsl();
+    static long sslLibraryVersionNumber();
+    static QString sslLibraryVersionString();
+    static long sslLibraryBuildVersionNumber();
+    static QString sslLibraryBuildVersionString();
 
-   void ignoreSslErrors(const QList<QSslError> &errors);
+    void ignoreSslErrors( const QList<QSslError> &errors );
 
-   NET_CS_SLOT_1(Public, void startClientEncryption())
-   NET_CS_SLOT_2(startClientEncryption)
+    NET_CS_SLOT_1( Public, void startClientEncryption() )
+    NET_CS_SLOT_2( startClientEncryption )
 
-   NET_CS_SLOT_1(Public, void startServerEncryption())
-   NET_CS_SLOT_2(startServerEncryption)
+    NET_CS_SLOT_1( Public, void startServerEncryption() )
+    NET_CS_SLOT_2( startServerEncryption )
 
-   NET_CS_SLOT_1(Public, void ignoreSslErrors())
-   NET_CS_SLOT_OVERLOAD(ignoreSslErrors, ())
+    NET_CS_SLOT_1( Public, void ignoreSslErrors() )
+    NET_CS_SLOT_OVERLOAD( ignoreSslErrors, () )
 
-   NET_CS_SIGNAL_1(Public, void encrypted())
-   NET_CS_SIGNAL_2(encrypted)
+    NET_CS_SIGNAL_1( Public, void encrypted() )
+    NET_CS_SIGNAL_2( encrypted )
 
-   NET_CS_SIGNAL_1(Public, void peerVerifyError(const QSslError &error))
-   NET_CS_SIGNAL_2(peerVerifyError, error)
+    NET_CS_SIGNAL_1( Public, void peerVerifyError( const QSslError &error ) )
+    NET_CS_SIGNAL_2( peerVerifyError, error )
 
-   NET_CS_SIGNAL_1(Public, void sslErrors(const QList <QSslError> &errors))
-   NET_CS_SIGNAL_OVERLOAD(sslErrors, (const QList <QSslError> &), errors)
+    NET_CS_SIGNAL_1( Public, void sslErrors( const QList <QSslError> &errors ) )
+    NET_CS_SIGNAL_OVERLOAD( sslErrors, ( const QList <QSslError> & ), errors )
 
-   NET_CS_SIGNAL_1(Public, void modeChanged(QSslSocket::SslMode newMode))
-   NET_CS_SIGNAL_2(modeChanged, newMode)
+    NET_CS_SIGNAL_1( Public, void modeChanged( QSslSocket::SslMode newMode ) )
+    NET_CS_SIGNAL_2( modeChanged, newMode )
 
-   NET_CS_SIGNAL_1(Public, void encryptedBytesWritten(qint64 totalBytes))
-   NET_CS_SIGNAL_2(encryptedBytesWritten, totalBytes)
+    NET_CS_SIGNAL_1( Public, void encryptedBytesWritten( qint64 totalBytes ) )
+    NET_CS_SIGNAL_2( encryptedBytesWritten, totalBytes )
 
-   NET_CS_SIGNAL_1(Public, void preSharedKeyAuthenticationRequired(QSslPreSharedKeyAuthenticator *authenticator))
-   NET_CS_SIGNAL_2(preSharedKeyAuthenticationRequired, authenticator)
+    NET_CS_SIGNAL_1( Public, void preSharedKeyAuthenticationRequired( QSslPreSharedKeyAuthenticator *authenticator ) )
+    NET_CS_SIGNAL_2( preSharedKeyAuthenticationRequired, authenticator )
 
- protected:
-   qint64 readData(char *data, qint64 maxlen) override;
-   qint64 writeData(const char *data, qint64 len) override;
+protected:
+    qint64 readData( char *data, qint64 maxlen ) override;
+    qint64 writeData( const char *data, qint64 len ) override;
 
- private:
-   Q_DECLARE_PRIVATE(QSslSocket)
+private:
+    Q_DECLARE_PRIVATE( QSslSocket )
 
-   NET_CS_SLOT_1(Private, void _q_connectedSlot())
-   NET_CS_SLOT_2(_q_connectedSlot)
+    NET_CS_SLOT_1( Private, void _q_connectedSlot() )
+    NET_CS_SLOT_2( _q_connectedSlot )
 
-   NET_CS_SLOT_1(Private, void _q_hostFoundSlot())
-   NET_CS_SLOT_2(_q_hostFoundSlot)
+    NET_CS_SLOT_1( Private, void _q_hostFoundSlot() )
+    NET_CS_SLOT_2( _q_hostFoundSlot )
 
-   NET_CS_SLOT_1(Private, void _q_disconnectedSlot())
-   NET_CS_SLOT_2(_q_disconnectedSlot)
+    NET_CS_SLOT_1( Private, void _q_disconnectedSlot() )
+    NET_CS_SLOT_2( _q_disconnectedSlot )
 
-   NET_CS_SLOT_1(Private, void _q_stateChangedSlot(QAbstractSocket::SocketState socketState))
-   NET_CS_SLOT_2(_q_stateChangedSlot)
+    NET_CS_SLOT_1( Private, void _q_stateChangedSlot( QAbstractSocket::SocketState socketState ) )
+    NET_CS_SLOT_2( _q_stateChangedSlot )
 
-   NET_CS_SLOT_1(Private, void _q_errorSlot(QAbstractSocket::SocketError socketError))
-   NET_CS_SLOT_2(_q_errorSlot)
+    NET_CS_SLOT_1( Private, void _q_errorSlot( QAbstractSocket::SocketError socketError ) )
+    NET_CS_SLOT_2( _q_errorSlot )
 
-   NET_CS_SLOT_1(Private, void _q_readyReadSlot())
-   NET_CS_SLOT_2(_q_readyReadSlot)
+    NET_CS_SLOT_1( Private, void _q_readyReadSlot() )
+    NET_CS_SLOT_2( _q_readyReadSlot )
 
-   NET_CS_SLOT_1(Private, void _q_bytesWrittenSlot(qint64 written))
-   NET_CS_SLOT_2(_q_bytesWrittenSlot)
+    NET_CS_SLOT_1( Private, void _q_bytesWrittenSlot( qint64 written ) )
+    NET_CS_SLOT_2( _q_bytesWrittenSlot )
 
-   NET_CS_SLOT_1(Private, void _q_flushWriteBuffer())
-   NET_CS_SLOT_2(_q_flushWriteBuffer)
+    NET_CS_SLOT_1( Private, void _q_flushWriteBuffer() )
+    NET_CS_SLOT_2( _q_flushWriteBuffer )
 
-   NET_CS_SLOT_1(Private, void _q_flushReadBuffer())
-   NET_CS_SLOT_2(_q_flushReadBuffer)
+    NET_CS_SLOT_1( Private, void _q_flushReadBuffer() )
+    NET_CS_SLOT_2( _q_flushReadBuffer )
 
-   NET_CS_SLOT_1(Private, void _q_resumeImplementation())
-   NET_CS_SLOT_2(_q_resumeImplementation)
+    NET_CS_SLOT_1( Private, void _q_resumeImplementation() )
+    NET_CS_SLOT_2( _q_resumeImplementation )
 
 #if defined(Q_OS_WIN)
-   NET_CS_SLOT_1(Private, void _q_caRootLoaded(QSslCertificate cert, QSslCertificate trustedRoot))
-   NET_CS_SLOT_2(_q_caRootLoaded)
+    NET_CS_SLOT_1( Private, void _q_caRootLoaded( QSslCertificate cert, QSslCertificate trustedRoot ) )
+    NET_CS_SLOT_2( _q_caRootLoaded )
 #endif
 
-   friend class QSslSocketBackendPrivate;
+    friend class QSslSocketBackendPrivate;
 };
 
 #endif

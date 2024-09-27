@@ -25,21 +25,23 @@
 #include "SVGElement.h"
 #include "XLinkNames.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Attribute;
 
-class SVGURIReference {
+class SVGURIReference
+{
 public:
     virtual ~SVGURIReference() { }
 
-    bool parseMappedAttribute(Attribute*);
-    bool isKnownAttribute(const QualifiedName&);
+    bool parseMappedAttribute( Attribute * );
+    bool isKnownAttribute( const QualifiedName & );
 
-    static String getTarget(const String& url);
+    static String getTarget( const String &url );
 
 protected:
-    virtual void setHrefBaseValue(const String&) = 0;
+    virtual void setHrefBaseValue( const String & ) = 0;
 };
 
 } // namespace WebCore

@@ -30,22 +30,22 @@ Q_CORE_EXPORT uint qGlobalPostedEventsCount();
 
 class Q_CORE_EXPORT QAbstractEventDispatcherPrivate
 {
-   Q_DECLARE_PUBLIC(QAbstractEventDispatcher)
+    Q_DECLARE_PUBLIC( QAbstractEventDispatcher )
 
- public:
-   QAbstractEventDispatcherPrivate()
-   { }
+public:
+    QAbstractEventDispatcherPrivate()
+    { }
 
-   virtual ~QAbstractEventDispatcherPrivate()
-   { }
+    virtual ~QAbstractEventDispatcherPrivate()
+    { }
 
-   QList<QAbstractNativeEventFilter *> eventFilters;
+    QList<QAbstractNativeEventFilter *> eventFilters;
 
-   static int allocateTimerId();
-   static void releaseTimerId(int id);
+    static int allocateTimerId();
+    static void releaseTimerId( int id );
 
- protected:
-   QAbstractEventDispatcher *q_ptr;
+protected:
+    QAbstractEventDispatcher *q_ptr;
 };
 
 #endif // QABSTRACTEVENTDISPATCHER_P_H

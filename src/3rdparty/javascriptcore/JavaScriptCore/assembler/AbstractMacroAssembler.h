@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef AbstractMacroAssembler_h
@@ -35,13 +35,15 @@
 
 #if ENABLE(ASSEMBLER)
 
-namespace JSC {
+namespace JSC
+{
 
 class LinkBuffer;
 class RepatchBuffer;
 
 template <class AssemblerType>
-class AbstractMacroAssembler {
+class AbstractMacroAssembler
+{
 public:
     typedef AssemblerType AssemblerType_T;
 
@@ -62,7 +64,8 @@ public:
     // describing immediate  and memory operands to the instructions to be planted.
 
 
-    enum Scale {
+    enum Scale
+    {
         TimesOne,
         TimesTwo,
         TimesFour,
@@ -72,10 +75,11 @@ public:
     // Address:
     //
     // Describes a simple base-offset address.
-    struct Address {
-        explicit Address(RegisterID base, int32_t offset = 0)
-            : base(base)
-            , offset(offset)
+    struct Address
+    {
+        explicit Address( RegisterID base, int32_t offset = 0 )
+            : base( base )
+            , offset( offset )
         {
         }
 
@@ -97,16 +101,17 @@ public:
     //
     // Are equivalent, and the explicit wrapping of the Address in the former
     // is unnecessary.
-    struct ImplicitAddress {
-        ImplicitAddress(RegisterID base)
-            : base(base)
-            , offset(0)
+    struct ImplicitAddress
+    {
+        ImplicitAddress( RegisterID base )
+            : base( base )
+            , offset( 0 )
         {
         }
 
-        ImplicitAddress(Address address)
-            : base(address.base)
-            , offset(address.offset)
+        ImplicitAddress( Address address )
+            : base( address.base )
+            , offset( address.offset )
         {
         }
 
@@ -117,12 +122,13 @@ public:
     // BaseIndex:
     //
     // Describes a complex addressing mode.
-    struct BaseIndex {
-        BaseIndex(RegisterID base, RegisterID index, Scale scale, int32_t offset = 0)
-            : base(base)
-            , index(index)
-            , scale(scale)
-            , offset(offset)
+    struct BaseIndex
+    {
+        BaseIndex( RegisterID base, RegisterID index, Scale scale, int32_t offset = 0 )
+            : base( base )
+            , index( index )
+            , scale( scale )
+            , offset( offset )
         {
         }
 
@@ -136,13 +142,14 @@ public:
     //
     // Describes an memory operand given by a pointer.  For regular load & store
     // operations an unwrapped void* will be used, rather than using this.
-    struct AbsoluteAddress {
-        explicit AbsoluteAddress(void* ptr)
-            : m_ptr(ptr)
+    struct AbsoluteAddress
+    {
+        explicit AbsoluteAddress( void *ptr )
+            : m_ptr( ptr )
         {
         }
 
-        void* m_ptr;
+        void *m_ptr;
     };
 
     // ImmPtr:
@@ -150,18 +157,19 @@ public:
     // A pointer sized immediate operand to an instruction - this is wrapped
     // in a class requiring explicit construction in order to differentiate
     // from pointers used as absolute addresses to memory operations
-    struct ImmPtr {
-        explicit ImmPtr(void* value)
-            : m_value(value)
+    struct ImmPtr
+    {
+        explicit ImmPtr( void *value )
+            : m_value( value )
         {
         }
 
         intptr_t asIntptr()
         {
-            return reinterpret_cast<intptr_t>(m_value);
+            return reinterpret_cast<intptr_t>( m_value );
         }
 
-        void* m_value;
+        void *m_value;
     };
 
     // Imm32:
@@ -170,20 +178,21 @@ public:
     // class requiring explicit construction in order to prevent RegisterIDs
     // (which are implemented as an enum) from accidentally being passed as
     // immediate values.
-    struct Imm32 {
-        explicit Imm32(int32_t value)
-            : m_value(value)
+    struct Imm32
+    {
+        explicit Imm32( int32_t value )
+            : m_value( value )
 #if CPU(ARM)
-            , m_isPointer(false)
+            , m_isPointer( false )
 #endif
         {
         }
 
 #if !CPU(X86_64)
-        explicit Imm32(ImmPtr ptr)
-            : m_value(ptr.asIntptr())
+        explicit Imm32( ImmPtr ptr )
+            : m_value( ptr.asIntptr() )
 #if CPU(ARM)
-            , m_isPointer(true)
+            , m_isPointer( true )
 #endif
         {
         }
@@ -214,7 +223,8 @@ public:
     //
     // A Label records a point in the generated instruction stream, typically such that
     // it may be used as a destination for a jump.
-    class Label {
+    class Label
+    {
         template<class TemplateAssemblerType>
         friend class AbstractMacroAssembler;
         friend class Jump;
@@ -226,13 +236,19 @@ public:
         {
         }
 
-        Label(AbstractMacroAssembler<AssemblerType>* masm)
-            : m_label(masm->m_assembler.label())
+        Label( AbstractMacroAssembler<AssemblerType> *masm )
+            : m_label( masm->m_assembler.label() )
         {
         }
-        
-        bool isUsed() const { return m_label.isUsed(); }
-        void used() { m_label.used(); }
+
+        bool isUsed() const
+        {
+            return m_label.isUsed();
+        }
+        void used()
+        {
+            m_label.used();
+        }
     private:
         JmpDst m_label;
     };
@@ -241,7 +257,8 @@ public:
     //
     // A DataLabelPtr is used to refer to a location in the code containing a pointer to be
     // patched after the code has been generated.
-    class DataLabelPtr {
+    class DataLabelPtr
+    {
         template<class TemplateAssemblerType>
         friend class AbstractMacroAssembler;
         friend class LinkBuffer;
@@ -250,11 +267,11 @@ public:
         {
         }
 
-        DataLabelPtr(AbstractMacroAssembler<AssemblerType>* masm)
-            : m_label(masm->m_assembler.label())
+        DataLabelPtr( AbstractMacroAssembler<AssemblerType> *masm )
+            : m_label( masm->m_assembler.label() )
         {
         }
-        
+
     private:
         JmpDst m_label;
     };
@@ -263,7 +280,8 @@ public:
     //
     // A DataLabelPtr is used to refer to a location in the code containing a pointer to be
     // patched after the code has been generated.
-    class DataLabel32 {
+    class DataLabel32
+    {
         template<class TemplateAssemblerType>
         friend class AbstractMacroAssembler;
         friend class LinkBuffer;
@@ -272,8 +290,8 @@ public:
         {
         }
 
-        DataLabel32(AbstractMacroAssembler<AssemblerType>* masm)
-            : m_label(masm->m_assembler.label())
+        DataLabel32( AbstractMacroAssembler<AssemblerType> *masm )
+            : m_label( masm->m_assembler.label() )
         {
         }
 
@@ -287,12 +305,14 @@ public:
     // into the code buffer - it is typically used to link the call, setting the
     // relative offset such that when executed it will call to the desired
     // destination.
-    class Call {
+    class Call
+    {
         template<class TemplateAssemblerType>
         friend class AbstractMacroAssembler;
 
     public:
-        enum Flags {
+        enum Flags
+        {
             None = 0x0,
             Linkable = 0x1,
             Near = 0x2,
@@ -300,24 +320,24 @@ public:
         };
 
         Call()
-            : m_flags(None)
-        {
-        }
-        
-        Call(JmpSrc jmp, Flags flags)
-            : m_jmp(jmp)
-            , m_flags(flags)
+            : m_flags( None )
         {
         }
 
-        bool isFlagSet(Flags flag)
+        Call( JmpSrc jmp, Flags flags )
+            : m_jmp( jmp )
+            , m_flags( flags )
+        {
+        }
+
+        bool isFlagSet( Flags flag )
         {
             return m_flags & flag;
         }
 
-        static Call fromTailJump(Jump jump)
+        static Call fromTailJump( Jump jump )
         {
-            return Call(jump.m_jmp, Linkable);
+            return Call( jump.m_jmp, Linkable );
         }
 
         JmpSrc m_jmp;
@@ -331,7 +351,8 @@ public:
     // into the code buffer - it is typically used to link the jump, setting the
     // relative offset such that when executed it will jump to the desired
     // destination.
-    class Jump {
+    class Jump
+    {
         template<class TemplateAssemblerType>
         friend class AbstractMacroAssembler;
         friend class Call;
@@ -340,20 +361,20 @@ public:
         Jump()
         {
         }
-        
-        Jump(JmpSrc jmp)    
-            : m_jmp(jmp)
+
+        Jump( JmpSrc jmp )
+            : m_jmp( jmp )
         {
         }
-        
-        void link(AbstractMacroAssembler<AssemblerType>* masm)
+
+        void link( AbstractMacroAssembler<AssemblerType> *masm )
         {
-            masm->m_assembler.linkJump(m_jmp, masm->m_assembler.label());
+            masm->m_assembler.linkJump( m_jmp, masm->m_assembler.label() );
         }
-        
-        void linkTo(Label label, AbstractMacroAssembler<AssemblerType>* masm)
+
+        void linkTo( Label label, AbstractMacroAssembler<AssemblerType> *masm )
         {
-            masm->m_assembler.linkJump(m_jmp, label.m_label);
+            masm->m_assembler.linkJump( m_jmp, label.m_label );
         }
 
     private:
@@ -364,44 +385,56 @@ public:
     //
     // A JumpList is a set of Jump objects.
     // All jumps in the set will be linked to the same destination.
-    class JumpList {
+    class JumpList
+    {
         friend class LinkBuffer;
 
     public:
         typedef Vector<Jump, 16> JumpVector;
 
-        void link(AbstractMacroAssembler<AssemblerType>* masm)
+        void link( AbstractMacroAssembler<AssemblerType> *masm )
         {
             size_t size = m_jumps.size();
-            for (size_t i = 0; i < size; ++i)
-                m_jumps[i].link(masm);
+
+            for ( size_t i = 0; i < size; ++i )
+            {
+                m_jumps[i].link( masm );
+            }
+
             m_jumps.clear();
         }
-        
-        void linkTo(Label label, AbstractMacroAssembler<AssemblerType>* masm)
+
+        void linkTo( Label label, AbstractMacroAssembler<AssemblerType> *masm )
         {
             size_t size = m_jumps.size();
-            for (size_t i = 0; i < size; ++i)
-                m_jumps[i].linkTo(label, masm);
+
+            for ( size_t i = 0; i < size; ++i )
+            {
+                m_jumps[i].linkTo( label, masm );
+            }
+
             m_jumps.clear();
         }
-        
-        void append(Jump jump)
+
+        void append( Jump jump )
         {
-            m_jumps.append(jump);
+            m_jumps.append( jump );
         }
-        
-        void append(JumpList& other)
+
+        void append( JumpList &other )
         {
-            m_jumps.append(other.m_jumps.begin(), other.m_jumps.size());
+            m_jumps.append( other.m_jumps.begin(), other.m_jumps.size() );
         }
 
         bool empty()
         {
             return !m_jumps.size();
         }
-        
-        const JumpVector& jumps() { return m_jumps; }
+
+        const JumpVector &jumps()
+        {
+            return m_jumps;
+        }
 
     private:
         JumpVector m_jumps;
@@ -410,9 +443,9 @@ public:
 
     // Section 3: Misc admin methods
 
-    static CodePtr trampolineAt(CodeRef ref, Label label)
+    static CodePtr trampolineAt( CodeRef ref, Label label )
     {
-        return CodePtr(AssemblerType::getRelocatedAddress(ref.m_code.dataLocation(), label.m_label));
+        return CodePtr( AssemblerType::getRelocatedAddress( ref.m_code.dataLocation(), label.m_label ) );
     }
 
     size_t size()
@@ -422,53 +455,53 @@ public:
 
     Label label()
     {
-        return Label(this);
+        return Label( this );
     }
-    
+
     Label align()
     {
-        m_assembler.align(16);
-        return Label(this);
+        m_assembler.align( 16 );
+        return Label( this );
     }
 
-    ptrdiff_t differenceBetween(Label from, Jump to)
+    ptrdiff_t differenceBetween( Label from, Jump to )
     {
-        return AssemblerType::getDifferenceBetweenLabels(from.m_label, to.m_jmp);
+        return AssemblerType::getDifferenceBetweenLabels( from.m_label, to.m_jmp );
     }
 
-    ptrdiff_t differenceBetween(Label from, Call to)
+    ptrdiff_t differenceBetween( Label from, Call to )
     {
-        return AssemblerType::getDifferenceBetweenLabels(from.m_label, to.m_jmp);
+        return AssemblerType::getDifferenceBetweenLabels( from.m_label, to.m_jmp );
     }
 
-    ptrdiff_t differenceBetween(Label from, Label to)
+    ptrdiff_t differenceBetween( Label from, Label to )
     {
-        return AssemblerType::getDifferenceBetweenLabels(from.m_label, to.m_label);
+        return AssemblerType::getDifferenceBetweenLabels( from.m_label, to.m_label );
     }
 
-    ptrdiff_t differenceBetween(Label from, DataLabelPtr to)
+    ptrdiff_t differenceBetween( Label from, DataLabelPtr to )
     {
-        return AssemblerType::getDifferenceBetweenLabels(from.m_label, to.m_label);
+        return AssemblerType::getDifferenceBetweenLabels( from.m_label, to.m_label );
     }
 
-    ptrdiff_t differenceBetween(Label from, DataLabel32 to)
+    ptrdiff_t differenceBetween( Label from, DataLabel32 to )
     {
-        return AssemblerType::getDifferenceBetweenLabels(from.m_label, to.m_label);
+        return AssemblerType::getDifferenceBetweenLabels( from.m_label, to.m_label );
     }
 
-    ptrdiff_t differenceBetween(DataLabelPtr from, Jump to)
+    ptrdiff_t differenceBetween( DataLabelPtr from, Jump to )
     {
-        return AssemblerType::getDifferenceBetweenLabels(from.m_label, to.m_jmp);
+        return AssemblerType::getDifferenceBetweenLabels( from.m_label, to.m_jmp );
     }
 
-    ptrdiff_t differenceBetween(DataLabelPtr from, DataLabelPtr to)
+    ptrdiff_t differenceBetween( DataLabelPtr from, DataLabelPtr to )
     {
-        return AssemblerType::getDifferenceBetweenLabels(from.m_label, to.m_label);
+        return AssemblerType::getDifferenceBetweenLabels( from.m_label, to.m_label );
     }
 
-    ptrdiff_t differenceBetween(DataLabelPtr from, Call to)
+    ptrdiff_t differenceBetween( DataLabelPtr from, Call to )
     {
-        return AssemblerType::getDifferenceBetweenLabels(from.m_label, to.m_jmp);
+        return AssemblerType::getDifferenceBetweenLabels( from.m_label, to.m_jmp );
     }
 
 protected:
@@ -477,54 +510,54 @@ protected:
     friend class LinkBuffer;
     friend class RepatchBuffer;
 
-    static void linkJump(void* code, Jump jump, CodeLocationLabel target)
+    static void linkJump( void *code, Jump jump, CodeLocationLabel target )
     {
-        AssemblerType::linkJump(code, jump.m_jmp, target.dataLocation());
+        AssemblerType::linkJump( code, jump.m_jmp, target.dataLocation() );
     }
 
-    static void linkPointer(void* code, typename AssemblerType::JmpDst label, void* value)
+    static void linkPointer( void *code, typename AssemblerType::JmpDst label, void *value )
     {
-        AssemblerType::linkPointer(code, label, value);
+        AssemblerType::linkPointer( code, label, value );
     }
 
-    static void* getLinkerAddress(void* code, typename AssemblerType::JmpSrc label)
+    static void *getLinkerAddress( void *code, typename AssemblerType::JmpSrc label )
     {
-        return AssemblerType::getRelocatedAddress(code, label);
+        return AssemblerType::getRelocatedAddress( code, label );
     }
 
-    static void* getLinkerAddress(void* code, typename AssemblerType::JmpDst label)
+    static void *getLinkerAddress( void *code, typename AssemblerType::JmpDst label )
     {
-        return AssemblerType::getRelocatedAddress(code, label);
+        return AssemblerType::getRelocatedAddress( code, label );
     }
 
-    static unsigned getLinkerCallReturnOffset(Call call)
+    static unsigned getLinkerCallReturnOffset( Call call )
     {
-        return AssemblerType::getCallReturnOffset(call.m_jmp);
+        return AssemblerType::getCallReturnOffset( call.m_jmp );
     }
 
-    static void repatchJump(CodeLocationJump jump, CodeLocationLabel destination)
+    static void repatchJump( CodeLocationJump jump, CodeLocationLabel destination )
     {
-        AssemblerType::relinkJump(jump.dataLocation(), destination.dataLocation());
+        AssemblerType::relinkJump( jump.dataLocation(), destination.dataLocation() );
     }
 
-    static void repatchNearCall(CodeLocationNearCall nearCall, CodeLocationLabel destination)
+    static void repatchNearCall( CodeLocationNearCall nearCall, CodeLocationLabel destination )
     {
-        AssemblerType::relinkCall(nearCall.dataLocation(), destination.executableAddress());
+        AssemblerType::relinkCall( nearCall.dataLocation(), destination.executableAddress() );
     }
 
-    static void repatchInt32(CodeLocationDataLabel32 dataLabel32, int32_t value)
+    static void repatchInt32( CodeLocationDataLabel32 dataLabel32, int32_t value )
     {
-        AssemblerType::repatchInt32(dataLabel32.dataLocation(), value);
+        AssemblerType::repatchInt32( dataLabel32.dataLocation(), value );
     }
 
-    static void repatchPointer(CodeLocationDataLabelPtr dataLabelPtr, void* value)
+    static void repatchPointer( CodeLocationDataLabelPtr dataLabelPtr, void *value )
     {
-        AssemblerType::repatchPointer(dataLabelPtr.dataLocation(), value);
+        AssemblerType::repatchPointer( dataLabelPtr.dataLocation(), value );
     }
 
-    static void repatchLoadPtrToLEA(CodeLocationInstruction instruction)
+    static void repatchLoadPtrToLEA( CodeLocationInstruction instruction )
     {
-        AssemblerType::repatchLoadPtrToLEA(instruction.dataLocation());
+        AssemblerType::repatchLoadPtrToLEA( instruction.dataLocation() );
     }
 };
 

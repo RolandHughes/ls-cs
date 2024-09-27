@@ -36,20 +36,20 @@
 // #define CAMEABIN_DEBUG 1
 #define ENUM_NAME(c,e,v) (c::staticMetaObject.enumerator(c::staticMetaObject.indexOfEnumerator(e)).valueToKey((v)))
 
-CameraBinControl::CameraBinControl(CameraBinSession *session)
-   : QCameraControl(session), m_session(session), m_state(QCamera::UnloadedState), m_reloadPending(false)
+CameraBinControl::CameraBinControl( CameraBinSession *session )
+    : QCameraControl( session ), m_session( session ), m_state( QCamera::UnloadedState ), m_reloadPending( false )
 {
-   connect(m_session, &CameraBinSession::statusChanged,     this, &CameraBinControl::statusChanged);
-   connect(m_session, &CameraBinSession::viewfinderChanged, this, &CameraBinControl::reloadLater);
-   connect(m_session, &CameraBinSession::readyChanged,      this, &CameraBinControl::reloadLater);
-   connect(m_session, &CameraBinSession::error,             this, &CameraBinControl::handleCameraError);
-   connect(m_session, &CameraBinSession::busyChanged,       this, &CameraBinControl::handleBusyChanged);
+    connect( m_session, &CameraBinSession::statusChanged,     this, &CameraBinControl::statusChanged );
+    connect( m_session, &CameraBinSession::viewfinderChanged, this, &CameraBinControl::reloadLater );
+    connect( m_session, &CameraBinSession::readyChanged,      this, &CameraBinControl::reloadLater );
+    connect( m_session, &CameraBinSession::error,             this, &CameraBinControl::handleCameraError );
+    connect( m_session, &CameraBinSession::busyChanged,       this, &CameraBinControl::handleBusyChanged );
 
-   m_resourcePolicy = new CamerabinResourcePolicy(this);
+    m_resourcePolicy = new CamerabinResourcePolicy( this );
 
-   connect(m_resourcePolicy, &CamerabinResourcePolicy::resourcesGranted, this, &CameraBinControl::handleResourcesGranted);
-   connect(m_resourcePolicy, &CamerabinResourcePolicy::resourcesDenied,  this, &CameraBinControl::handleResourcesLost);
-   connect(m_resourcePolicy, &CamerabinResourcePolicy::resourcesLost,    this, &CameraBinControl::handleResourcesLost);
+    connect( m_resourcePolicy, &CamerabinResourcePolicy::resourcesGranted, this, &CameraBinControl::handleResourcesGranted );
+    connect( m_resourcePolicy, &CamerabinResourcePolicy::resourcesDenied,  this, &CameraBinControl::handleResourcesLost );
+    connect( m_resourcePolicy, &CamerabinResourcePolicy::resourcesLost,    this, &CameraBinControl::handleResourcesLost );
 }
 
 CameraBinControl::~CameraBinControl()
@@ -58,211 +58,246 @@ CameraBinControl::~CameraBinControl()
 
 QCamera::CaptureModes CameraBinControl::captureMode() const
 {
-   return m_session->captureMode();
+    return m_session->captureMode();
 }
 
-void CameraBinControl::setCaptureMode(QCamera::CaptureModes mode)
+void CameraBinControl::setCaptureMode( QCamera::CaptureModes mode )
 {
-   if (m_session->captureMode() != mode) {
-      m_session->setCaptureMode(mode);
+    if ( m_session->captureMode() != mode )
+    {
+        m_session->setCaptureMode( mode );
 
-      if (m_state == QCamera::ActiveState) {
-         m_resourcePolicy->setResourceSet(
-            captureMode() == QCamera::CaptureStillImage ?
-            CamerabinResourcePolicy::ImageCaptureResources :
-            CamerabinResourcePolicy::VideoCaptureResources);
-      }
-      emit captureModeChanged(mode);
-   }
+        if ( m_state == QCamera::ActiveState )
+        {
+            m_resourcePolicy->setResourceSet(
+                captureMode() == QCamera::CaptureStillImage ?
+                CamerabinResourcePolicy::ImageCaptureResources :
+                CamerabinResourcePolicy::VideoCaptureResources );
+        }
+
+        emit captureModeChanged( mode );
+    }
 }
 
-bool CameraBinControl::isCaptureModeSupported(QCamera::CaptureModes mode) const
+bool CameraBinControl::isCaptureModeSupported( QCamera::CaptureModes mode ) const
 {
-   return mode == QCamera::CaptureStillImage || mode == QCamera::CaptureVideo;
+    return mode == QCamera::CaptureStillImage || mode == QCamera::CaptureVideo;
 }
 
-void CameraBinControl::setState(QCamera::State state)
+void CameraBinControl::setState( QCamera::State state )
 {
 #ifdef CAMEABIN_DEBUG
-   qDebug() << Q_FUNC_INFO << ENUM_NAME(QCamera, "State", state);
+    qDebug() << Q_FUNC_INFO << ENUM_NAME( QCamera, "State", state );
 #endif
-   if (m_state != state) {
-      m_state = state;
 
-      //special case for stopping the camera while it's busy,
-      //it should be delayed until the camera is idle
-      if (state == QCamera::LoadedState &&
-            m_session->status() == QCamera::ActiveStatus &&
-            m_session->isBusy()) {
+    if ( m_state != state )
+    {
+        m_state = state;
+
+        //special case for stopping the camera while it's busy,
+        //it should be delayed until the camera is idle
+        if ( state == QCamera::LoadedState &&
+                m_session->status() == QCamera::ActiveStatus &&
+                m_session->isBusy() )
+        {
 #ifdef CAMEABIN_DEBUG
-         qDebug() << Q_FUNC_INFO << "Camera is busy, QCamera::stop() is delayed";
+            qDebug() << Q_FUNC_INFO << "Camera is busy, QCamera::stop() is delayed";
 #endif
-         emit stateChanged(m_state);
-         return;
-      }
+            emit stateChanged( m_state );
+            return;
+        }
 
-      CamerabinResourcePolicy::ResourceSet resourceSet = CamerabinResourcePolicy::NoResources;
-      switch (state) {
-         case QCamera::UnloadedState:
-            resourceSet = CamerabinResourcePolicy::NoResources;
-            break;
+        CamerabinResourcePolicy::ResourceSet resourceSet = CamerabinResourcePolicy::NoResources;
 
-         case QCamera::LoadedState:
-            resourceSet = CamerabinResourcePolicy::LoadedResources;
-            break;
+        switch ( state )
+        {
+            case QCamera::UnloadedState:
+                resourceSet = CamerabinResourcePolicy::NoResources;
+                break;
 
-         case QCamera::ActiveState:
-            resourceSet = captureMode() == QCamera::CaptureStillImage ?
-                          CamerabinResourcePolicy::ImageCaptureResources :
-                          CamerabinResourcePolicy::VideoCaptureResources;
-            break;
-      }
+            case QCamera::LoadedState:
+                resourceSet = CamerabinResourcePolicy::LoadedResources;
+                break;
 
-      m_resourcePolicy->setResourceSet(resourceSet);
+            case QCamera::ActiveState:
+                resourceSet = captureMode() == QCamera::CaptureStillImage ?
+                              CamerabinResourcePolicy::ImageCaptureResources :
+                              CamerabinResourcePolicy::VideoCaptureResources;
+                break;
+        }
 
-      if (m_resourcePolicy->isResourcesGranted()) {
-         //postpone changing to Active if the session is nor ready yet
-         if (state == QCamera::ActiveState) {
-            if (m_session->isReady()) {
-               m_session->setState(state);
-            } else {
+        m_resourcePolicy->setResourceSet( resourceSet );
+
+        if ( m_resourcePolicy->isResourcesGranted() )
+        {
+            //postpone changing to Active if the session is nor ready yet
+            if ( state == QCamera::ActiveState )
+            {
+                if ( m_session->isReady() )
+                {
+                    m_session->setState( state );
+                }
+                else
+                {
 #ifdef CAMEABIN_DEBUG
-               qDebug() << "Camera session is not ready yet, postpone activating";
+                    qDebug() << "Camera session is not ready yet, postpone activating";
 #endif
+                }
             }
-         } else {
-            m_session->setState(state);
-         }
-      }
+            else
+            {
+                m_session->setState( state );
+            }
+        }
 
-      emit stateChanged(m_state);
-   }
+        emit stateChanged( m_state );
+    }
 }
 
 QCamera::State CameraBinControl::state() const
 {
-   return m_state;
+    return m_state;
 }
 
 QCamera::Status CameraBinControl::status() const
 {
-   return m_session->status();
+    return m_session->status();
 }
 
 void CameraBinControl::reloadLater()
 {
 #ifdef CAMEABIN_DEBUG
-   qDebug() << "CameraBinControl: reload pipeline requested" << ENUM_NAME(QCamera, "State", m_state);
+    qDebug() << "CameraBinControl: reload pipeline requested" << ENUM_NAME( QCamera, "State", m_state );
 #endif
-   if (!m_reloadPending && m_state == QCamera::ActiveState) {
-      m_reloadPending = true;
 
-      if (!m_session->isBusy()) {
-         m_session->setState(QCamera::LoadedState);
-         QMetaObject::invokeMethod(this, "delayedReload", Qt::QueuedConnection);
-      }
-   }
+    if ( !m_reloadPending && m_state == QCamera::ActiveState )
+    {
+        m_reloadPending = true;
+
+        if ( !m_session->isBusy() )
+        {
+            m_session->setState( QCamera::LoadedState );
+            QMetaObject::invokeMethod( this, "delayedReload", Qt::QueuedConnection );
+        }
+    }
 }
 
 void CameraBinControl::handleResourcesLost()
 {
 #ifdef CAMEABIN_DEBUG
-   qDebug() << Q_FUNC_INFO << ENUM_NAME(QCamera, "State", m_state);
+    qDebug() << Q_FUNC_INFO << ENUM_NAME( QCamera, "State", m_state );
 #endif
-   m_session->setState(QCamera::UnloadedState);
+    m_session->setState( QCamera::UnloadedState );
 }
 
 void CameraBinControl::handleResourcesGranted()
 {
 #ifdef CAMEABIN_DEBUG
-   qDebug() << Q_FUNC_INFO << ENUM_NAME(QCamera, "State", m_state);
+    qDebug() << Q_FUNC_INFO << ENUM_NAME( QCamera, "State", m_state );
 #endif
 
-   //camera will be started soon by delayedReload()
-   if (m_reloadPending && m_state == QCamera::ActiveState) {
-      return;
-   }
+    //camera will be started soon by delayedReload()
+    if ( m_reloadPending && m_state == QCamera::ActiveState )
+    {
+        return;
+    }
 
-   if (m_state == QCamera::ActiveState && m_session->isReady()) {
-      m_session->setState(QCamera::ActiveState);
-   } else if (m_state == QCamera::LoadedState) {
-      m_session->setState(QCamera::LoadedState);
-   }
+    if ( m_state == QCamera::ActiveState && m_session->isReady() )
+    {
+        m_session->setState( QCamera::ActiveState );
+    }
+    else if ( m_state == QCamera::LoadedState )
+    {
+        m_session->setState( QCamera::LoadedState );
+    }
 }
 
-void CameraBinControl::handleBusyChanged(bool busy)
+void CameraBinControl::handleBusyChanged( bool busy )
 {
-   if (!busy && m_session->status() == QCamera::ActiveStatus) {
-      if (m_state == QCamera::LoadedState) {
-         //handle delayed stop() because of busy camera
-         m_resourcePolicy->setResourceSet(CamerabinResourcePolicy::LoadedResources);
-         m_session->setState(QCamera::LoadedState);
-      } else if (m_state == QCamera::ActiveState && m_reloadPending) {
-         //handle delayed reload because of busy camera
-         m_session->setState(QCamera::LoadedState);
-         QMetaObject::invokeMethod(this, "delayedReload", Qt::QueuedConnection);
-      }
-   }
+    if ( !busy && m_session->status() == QCamera::ActiveStatus )
+    {
+        if ( m_state == QCamera::LoadedState )
+        {
+            //handle delayed stop() because of busy camera
+            m_resourcePolicy->setResourceSet( CamerabinResourcePolicy::LoadedResources );
+            m_session->setState( QCamera::LoadedState );
+        }
+        else if ( m_state == QCamera::ActiveState && m_reloadPending )
+        {
+            //handle delayed reload because of busy camera
+            m_session->setState( QCamera::LoadedState );
+            QMetaObject::invokeMethod( this, "delayedReload", Qt::QueuedConnection );
+        }
+    }
 }
 
-void CameraBinControl::handleCameraError(int errorCode, const QString &errorString)
+void CameraBinControl::handleCameraError( int errorCode, const QString &errorString )
 {
-   emit error(errorCode, errorString);
-   setState(QCamera::UnloadedState);
+    emit error( errorCode, errorString );
+    setState( QCamera::UnloadedState );
 }
 
 void CameraBinControl::delayedReload()
 {
 #ifdef CAMEABIN_DEBUG
-   qDebug() << "CameraBinControl: reload pipeline";
+    qDebug() << "CameraBinControl: reload pipeline";
 #endif
-   if (m_reloadPending) {
-      m_reloadPending = false;
-      if (m_state == QCamera::ActiveState &&
-            m_session->isReady() &&
-            m_resourcePolicy->isResourcesGranted()) {
-         m_session->setState(QCamera::ActiveState);
-      }
-   }
+
+    if ( m_reloadPending )
+    {
+        m_reloadPending = false;
+
+        if ( m_state == QCamera::ActiveState &&
+                m_session->isReady() &&
+                m_resourcePolicy->isResourcesGranted() )
+        {
+            m_session->setState( QCamera::ActiveState );
+        }
+    }
 }
 
-bool CameraBinControl::canChangeProperty(PropertyChangeType changeType, QCamera::Status status) const
+bool CameraBinControl::canChangeProperty( PropertyChangeType changeType, QCamera::Status status ) const
 {
-   (void) status;
+    ( void ) status;
 
-   switch (changeType) {
-      case QCameraControl::Viewfinder:
-         return true;
-      case QCameraControl::CaptureMode:
-      case QCameraControl::ImageEncodingSettings:
-      case QCameraControl::VideoEncodingSettings:
-      case QCameraControl::ViewfinderSettings:
-      default:
-         return status != QCamera::ActiveStatus;
-   }
+    switch ( changeType )
+    {
+        case QCameraControl::Viewfinder:
+            return true;
+
+        case QCameraControl::CaptureMode:
+        case QCameraControl::ImageEncodingSettings:
+        case QCameraControl::VideoEncodingSettings:
+        case QCameraControl::ViewfinderSettings:
+        default:
+            return status != QCamera::ActiveStatus;
+    }
 }
 
 #define VIEWFINDER_COLORSPACE_CONVERSION 0x00000004
 
 bool CameraBinControl::viewfinderColorSpaceConversion() const
 {
-   gint flags = 0;
-   g_object_get(G_OBJECT(m_session->cameraBin()), "flags", &flags, NULL);
+    gint flags = 0;
+    g_object_get( G_OBJECT( m_session->cameraBin() ), "flags", &flags, NULL );
 
-   return flags & VIEWFINDER_COLORSPACE_CONVERSION;
+    return flags & VIEWFINDER_COLORSPACE_CONVERSION;
 }
 
-void CameraBinControl::setViewfinderColorSpaceConversion(bool enabled)
+void CameraBinControl::setViewfinderColorSpaceConversion( bool enabled )
 {
-   gint flags = 0;
-   g_object_get(G_OBJECT(m_session->cameraBin()), "flags", &flags, NULL);
+    gint flags = 0;
+    g_object_get( G_OBJECT( m_session->cameraBin() ), "flags", &flags, NULL );
 
-   if (enabled) {
-      flags |= VIEWFINDER_COLORSPACE_CONVERSION;
-   } else {
-      flags &= ~VIEWFINDER_COLORSPACE_CONVERSION;
-   }
+    if ( enabled )
+    {
+        flags |= VIEWFINDER_COLORSPACE_CONVERSION;
+    }
+    else
+    {
+        flags &= ~VIEWFINDER_COLORSPACE_CONVERSION;
+    }
 
-   g_object_set(G_OBJECT(m_session->cameraBin()), "flags", flags, NULL);
+    g_object_set( G_OBJECT( m_session->cameraBin() ), "flags", flags, NULL );
 }
 

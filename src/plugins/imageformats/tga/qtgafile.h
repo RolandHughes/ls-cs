@@ -34,12 +34,14 @@ class QIODevice;
 class QTgaFile
 {
 public:
-    enum Compression {
+    enum Compression
+    {
         NoCompression = 0,
         RleCompression = 1
     };
 
-    enum HeaderOffset {
+    enum HeaderOffset
+    {
         IdLength = 0,          /* 00h  Size of Image ID field */
         ColorMapType = 1,      /* 01h  Color map type */
         ImageType = 2,         /* 02h  Image type code */
@@ -55,14 +57,15 @@ public:
         HeaderSize = 18
     };
 
-    enum FooterOffset {
+    enum FooterOffset
+    {
         ExtensionOffset = 0,
         DeveloperOffset = 4,
         SignatureOffset = 8,
         FooterSize = 26
     };
 
-    QTgaFile(QIODevice *);
+    QTgaFile( QIODevice * );
     ~QTgaFile();
 
     inline bool isValid() const;
@@ -76,7 +79,7 @@ public:
     inline Compression compression() const;
 
 private:
-    static inline quint16 littleEndianInt(const unsigned char *d);
+    static inline quint16 littleEndianInt( const unsigned char *d );
 
     QString mErrorMessage;
     unsigned char mHeader[HeaderSize];
@@ -97,34 +100,34 @@ inline QString QTgaFile::errorMessage() const
     \internal
     Returns the integer encoded in the two little endian bytes at \a d.
 */
-inline quint16 QTgaFile::littleEndianInt(const unsigned char *d)
+inline quint16 QTgaFile::littleEndianInt( const unsigned char *d )
 {
     return d[0] + d[1] * 256;
 }
 
 inline int QTgaFile::xOffset() const
 {
-    return littleEndianInt(&mHeader[XOffset]);
+    return littleEndianInt( &mHeader[XOffset] );
 }
 
 inline int QTgaFile::yOffset() const
 {
-    return littleEndianInt(&mHeader[YOffset]);
+    return littleEndianInt( &mHeader[YOffset] );
 }
 
 inline int QTgaFile::width() const
 {
-    return littleEndianInt(&mHeader[Width]);
+    return littleEndianInt( &mHeader[Width] );
 }
 
 inline int QTgaFile::height() const
 {
-    return littleEndianInt(&mHeader[Height]);
+    return littleEndianInt( &mHeader[Height] );
 }
 
 inline QSize QTgaFile::size() const
 {
-    return QSize(width(), height());
+    return QSize( width(), height() );
 }
 
 inline QTgaFile::Compression QTgaFile::compression() const

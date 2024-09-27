@@ -40,8 +40,8 @@ public:
     QList<QByteArray> aliases() const;
     QList<int> mibEnums() const;
 
-    QTextCodec *createForMib(int);
-    QTextCodec *createForName(const QByteArray &);
+    QTextCodec *createForMib( int );
+    QTextCodec *createForName( const QByteArray & );
 };
 
 QList<QByteArray> TWTextCodecs::names() const
@@ -80,40 +80,66 @@ QList<int> TWTextCodecs::mibEnums() const
     return list;
 }
 
-QTextCodec *TWTextCodecs::createForMib(int mib)
+QTextCodec *TWTextCodecs::createForMib( int mib )
 {
-    if (mib == QBig5Codec::_mibEnum())
+    if ( mib == QBig5Codec::_mibEnum() )
+    {
         return new QBig5Codec;
-    if (mib == QBig5hkscsCodec::_mibEnum())
+    }
+
+    if ( mib == QBig5hkscsCodec::_mibEnum() )
+    {
         return new QBig5hkscsCodec;
+    }
+
 #ifdef Q_WS_X11
-    if (mib == QFontBig5hkscsCodec::_mibEnum())
+
+    if ( mib == QFontBig5hkscsCodec::_mibEnum() )
+    {
         return new QFontBig5hkscsCodec;
-    if (mib == QFontBig5Codec::_mibEnum())
+    }
+
+    if ( mib == QFontBig5Codec::_mibEnum() )
+    {
         return new QFontBig5Codec;
+    }
+
 #endif
     return 0;
 }
 
 
-QTextCodec *TWTextCodecs::createForName(const QByteArray &name)
+QTextCodec *TWTextCodecs::createForName( const QByteArray &name )
 {
-    if (name == QBig5Codec::_name() || QBig5Codec::_aliases().contains(name))
+    if ( name == QBig5Codec::_name() || QBig5Codec::_aliases().contains( name ) )
+    {
         return new QBig5Codec;
-    if (name == QBig5hkscsCodec::_name() || QBig5hkscsCodec::_aliases().contains(name))
+    }
+
+    if ( name == QBig5hkscsCodec::_name() || QBig5hkscsCodec::_aliases().contains( name ) )
+    {
         return new QBig5hkscsCodec;
+    }
+
 #ifdef Q_WS_X11
-    if (name == QFontBig5hkscsCodec::_name() || QFontBig5hkscsCodec::_aliases().contains(name))
+
+    if ( name == QFontBig5hkscsCodec::_name() || QFontBig5hkscsCodec::_aliases().contains( name ) )
+    {
         return new QFontBig5hkscsCodec;
-    if (name == QFontBig5Codec::_name() || QFontBig5Codec::_aliases().contains(name))
+    }
+
+    if ( name == QFontBig5Codec::_name() || QFontBig5Codec::_aliases().contains( name ) )
+    {
         return new QFontBig5Codec;
+    }
+
 #endif
     return 0;
 }
 
 
-Q_EXPORT_STATIC_PLUGIN(TWTextCodecs);
-Q_EXPORT_PLUGIN2(qtwcodecs, TWTextCodecs);
+Q_EXPORT_STATIC_PLUGIN( TWTextCodecs );
+Q_EXPORT_PLUGIN2( qtwcodecs, TWTextCodecs );
 
 #endif // QT_NO_TEXTCODECPLUGIN
 

@@ -32,32 +32,32 @@ class AVFCameraService;
 
 class AVFCameraControl : public QCameraControl
 {
-   CS_OBJECT(AVFCameraControl)
+    CS_OBJECT( AVFCameraControl )
 
- public:
-   AVFCameraControl(AVFCameraService *service, QObject *parent = nullptr);
-   ~AVFCameraControl();
+public:
+    AVFCameraControl( AVFCameraService *service, QObject *parent = nullptr );
+    ~AVFCameraControl();
 
-   QCamera::State state() const override;
-   void setState(QCamera::State state) override;
+    QCamera::State state() const override;
+    void setState( QCamera::State state ) override;
 
-   QCamera::Status status() const override;
+    QCamera::Status status() const override;
 
-   QCamera::CaptureModes captureMode() const override;
-   void setCaptureMode(QCamera::CaptureModes) override;
+    QCamera::CaptureModes captureMode() const override;
+    void setCaptureMode( QCamera::CaptureModes ) override;
 
-   bool isCaptureModeSupported(QCamera::CaptureModes mode) const override;
-   bool canChangeProperty(PropertyChangeType changeType, QCamera::Status status) const override;
+    bool isCaptureModeSupported( QCamera::CaptureModes mode ) const override;
+    bool canChangeProperty( PropertyChangeType changeType, QCamera::Status status ) const override;
 
- private:
-   CS_SLOT_1(Private, void updateStatus())
-   CS_SLOT_2(updateStatus)
+private:
+    CS_SLOT_1( Private, void updateStatus() )
+    CS_SLOT_2( updateStatus )
 
-   AVFCameraSession *m_session;
+    AVFCameraSession *m_session;
 
-   QCamera::State m_state;
-   QCamera::Status m_lastStatus;
-   QCamera::CaptureModes m_captureMode;
+    QCamera::State m_state;
+    QCamera::Status m_lastStatus;
+    QCamera::CaptureModes m_captureMode;
 };
 
 #endif

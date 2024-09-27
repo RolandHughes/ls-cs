@@ -32,31 +32,33 @@
 OBJC_CLASS NSPopUpButtonCell;
 OBJC_CLASS WKView;
 
-namespace WebKit {
+namespace WebKit
+{
 
 class WebPageProxy;
 
-class WebContextMenuProxyMac : public WebContextMenuProxy {
+class WebContextMenuProxyMac : public WebContextMenuProxy
+{
 public:
-    static PassRefPtr<WebContextMenuProxyMac> create(WKView* webView, WebPageProxy* page)
+    static PassRefPtr<WebContextMenuProxyMac> create( WKView *webView, WebPageProxy *page )
     {
-        return adoptRef(new WebContextMenuProxyMac(webView, page));
+        return adoptRef( new WebContextMenuProxyMac( webView, page ) );
     }
     ~WebContextMenuProxyMac();
 
-    virtual void showContextMenu(const WebCore::IntPoint&, const Vector<WebContextMenuItemData>&);
+    virtual void showContextMenu( const WebCore::IntPoint &, const Vector<WebContextMenuItemData> & );
     virtual void hideContextMenu();
-    
-    void contextMenuItemSelected(const WebContextMenuItemData&);
+
+    void contextMenuItemSelected( const WebContextMenuItemData & );
 
 private:
-    WebContextMenuProxyMac(WKView*, WebPageProxy*);
+    WebContextMenuProxyMac( WKView *, WebPageProxy * );
 
-    void populate(const Vector<WebContextMenuItemData>&);
+    void populate( const Vector<WebContextMenuItemData> & );
 
     RetainPtr<NSPopUpButtonCell> m_popup;
-    WKView* m_webView;
-    WebPageProxy* m_page;
+    WKView *m_webView;
+    WebPageProxy *m_page;
 };
 
 } // namespace WebKit

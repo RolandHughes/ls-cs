@@ -27,35 +27,40 @@
 #include <qpair.h>
 #include <qstring.h>
 
-namespace QMultimedia {
+namespace QMultimedia
+{
 
-enum SupportEstimate {
-   NotSupported,
-   MaybeSupported,
-   ProbablySupported,
-   PreferredService
+enum SupportEstimate
+{
+    NotSupported,
+    MaybeSupported,
+    ProbablySupported,
+    PreferredService
 };
 
-enum EncodingQuality {
-   VeryLowQuality,
-   LowQuality,
-   NormalQuality,
-   HighQuality,
-   VeryHighQuality
+enum EncodingQuality
+{
+    VeryLowQuality,
+    LowQuality,
+    NormalQuality,
+    HighQuality,
+    VeryHighQuality
 };
 
-enum EncodingMode {
-   ConstantQualityEncoding,
-   ConstantBitRateEncoding,
-   AverageBitRateEncoding,
-   TwoPassEncoding
+enum EncodingMode
+{
+    ConstantQualityEncoding,
+    ConstantBitRateEncoding,
+    AverageBitRateEncoding,
+    TwoPassEncoding
 };
 
-enum AvailabilityStatus {
-   Available,
-   ServiceMissing,
-   Busy,
-   ResourceError
+enum AvailabilityStatus
+{
+    Available,
+    ServiceMissing,
+    Busy,
+    ResourceError
 };
 
 } // namespace

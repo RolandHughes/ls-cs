@@ -29,9 +29,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSHTMLScriptElement);
+ASSERT_CLASS_FITS_IN_CELL( JSHTMLScriptElement );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -42,16 +43,16 @@ ASSERT_CLASS_FITS_IN_CELL(JSHTMLScriptElement);
 
 static const HashTableValue JSHTMLScriptElementTableValues[10] =
 {
-    { "text", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLScriptElementText), (intptr_t)setJSHTMLScriptElementText THUNK_GENERATOR(0) },
-    { "htmlFor", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLScriptElementHtmlFor), (intptr_t)setJSHTMLScriptElementHtmlFor THUNK_GENERATOR(0) },
-    { "event", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLScriptElementEvent), (intptr_t)setJSHTMLScriptElementEvent THUNK_GENERATOR(0) },
-    { "charset", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLScriptElementCharset), (intptr_t)setJSHTMLScriptElementCharset THUNK_GENERATOR(0) },
-    { "async", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLScriptElementAsync), (intptr_t)setJSHTMLScriptElementAsync THUNK_GENERATOR(0) },
-    { "defer", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLScriptElementDefer), (intptr_t)setJSHTMLScriptElementDefer THUNK_GENERATOR(0) },
-    { "src", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLScriptElementSrc), (intptr_t)setJSHTMLScriptElementSrc THUNK_GENERATOR(0) },
-    { "type", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLScriptElementType), (intptr_t)setJSHTMLScriptElementType THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLScriptElementConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "text", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLScriptElementText ), ( intptr_t )setJSHTMLScriptElementText THUNK_GENERATOR( 0 ) },
+    { "htmlFor", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLScriptElementHtmlFor ), ( intptr_t )setJSHTMLScriptElementHtmlFor THUNK_GENERATOR( 0 ) },
+    { "event", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLScriptElementEvent ), ( intptr_t )setJSHTMLScriptElementEvent THUNK_GENERATOR( 0 ) },
+    { "charset", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLScriptElementCharset ), ( intptr_t )setJSHTMLScriptElementCharset THUNK_GENERATOR( 0 ) },
+    { "async", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLScriptElementAsync ), ( intptr_t )setJSHTMLScriptElementAsync THUNK_GENERATOR( 0 ) },
+    { "defer", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLScriptElementDefer ), ( intptr_t )setJSHTMLScriptElementDefer THUNK_GENERATOR( 0 ) },
+    { "src", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLScriptElementSrc ), ( intptr_t )setJSHTMLScriptElementSrc THUNK_GENERATOR( 0 ) },
+    { "type", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLScriptElementType ), ( intptr_t )setJSHTMLScriptElementType THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLScriptElementConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -65,43 +66,51 @@ static JSC_CONST_HASHTABLE HashTable JSHTMLScriptElementTable = { 32, 31, JSHTML
 
 static const HashTableValue JSHTMLScriptElementConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSHTMLScriptElementConstructorTable = { 1, 0, JSHTMLScriptElementConstructorTableValues, 0 };
-class JSHTMLScriptElementConstructor : public DOMConstructorObject {
+class JSHTMLScriptElementConstructor : public DOMConstructorObject
+{
 public:
-    JSHTMLScriptElementConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSHTMLScriptElementConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSHTMLScriptElementConstructor::s_info = { "HTMLScriptElementConstructor", &DOMConstructorObject::s_info, &JSHTMLScriptElementConstructorTable, 0 };
 
-JSHTMLScriptElementConstructor::JSHTMLScriptElementConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSHTMLScriptElementConstructor::JSHTMLScriptElementConstructor( ExecState *exec, Structure *structure,
+        JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSHTMLScriptElementPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSHTMLScriptElementPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSHTMLScriptElementConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSHTMLScriptElementConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSHTMLScriptElementConstructor, JSDOMWrapper>(exec, &JSHTMLScriptElementConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSHTMLScriptElementConstructor, JSDOMWrapper>( exec, &JSHTMLScriptElementConstructorTable, this,
+            propertyName, slot );
 }
 
-bool JSHTMLScriptElementConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSHTMLScriptElementConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSHTMLScriptElementConstructor, JSDOMWrapper>(exec, &JSHTMLScriptElementConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSHTMLScriptElementConstructor, JSDOMWrapper>( exec, &JSHTMLScriptElementConstructorTable, this,
+            propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -113,199 +122,202 @@ bool JSHTMLScriptElementConstructor::getOwnPropertyDescriptor(ExecState* exec, c
 
 static const HashTableValue JSHTMLScriptElementPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSHTMLScriptElementPrototypeTable = { 1, 0, JSHTMLScriptElementPrototypeTableValues, 0 };
 const ClassInfo JSHTMLScriptElementPrototype::s_info = { "HTMLScriptElementPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSHTMLScriptElementPrototypeTable, 0 };
 
-JSObject* JSHTMLScriptElementPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSHTMLScriptElementPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSHTMLScriptElement>(exec, globalObject);
+    return getDOMPrototype<JSHTMLScriptElement>( exec, globalObject );
 }
 
 const ClassInfo JSHTMLScriptElement::s_info = { "HTMLScriptElement", &JSHTMLElement::s_info, &JSHTMLScriptElementTable, 0 };
 
-JSHTMLScriptElement::JSHTMLScriptElement(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<HTMLScriptElement> impl)
-    : JSHTMLElement(structure, globalObject, impl)
+JSHTMLScriptElement::JSHTMLScriptElement( Structure *structure, JSDOMGlobalObject *globalObject,
+        PassRefPtr<HTMLScriptElement> impl )
+    : JSHTMLElement( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSHTMLScriptElement::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSHTMLScriptElement::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSHTMLScriptElementPrototype(exec->globalData(), globalObject, JSHTMLScriptElementPrototype::createStructure(exec->globalData(), JSHTMLElementPrototype::self(exec, globalObject)));
+    return new ( exec ) JSHTMLScriptElementPrototype( exec->globalData(), globalObject,
+            JSHTMLScriptElementPrototype::createStructure( exec->globalData(), JSHTMLElementPrototype::self( exec, globalObject ) ) );
 }
 
-bool JSHTMLScriptElement::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSHTMLScriptElement::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSHTMLScriptElement, Base>(exec, &JSHTMLScriptElementTable, this, propertyName, slot);
+    return getStaticValueSlot<JSHTMLScriptElement, Base>( exec, &JSHTMLScriptElementTable, this, propertyName, slot );
 }
 
-bool JSHTMLScriptElement::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSHTMLScriptElement::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSHTMLScriptElement, Base>(exec, &JSHTMLScriptElementTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSHTMLScriptElement, Base>( exec, &JSHTMLScriptElementTable, this, propertyName, descriptor );
 }
 
-JSValue jsHTMLScriptElementText(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLScriptElementText( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLScriptElement* castedThis = static_cast<JSHTMLScriptElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLScriptElement* imp = static_cast<HTMLScriptElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->text());
+    JSHTMLScriptElement *castedThis = static_cast<JSHTMLScriptElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLScriptElement *imp = static_cast<HTMLScriptElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->text() );
     return result;
 }
 
 
-JSValue jsHTMLScriptElementHtmlFor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLScriptElementHtmlFor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLScriptElement* castedThis = static_cast<JSHTMLScriptElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLScriptElement* imp = static_cast<HTMLScriptElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->getAttribute(WebCore::HTMLNames::forAttr));
+    JSHTMLScriptElement *castedThis = static_cast<JSHTMLScriptElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLScriptElement *imp = static_cast<HTMLScriptElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->getAttribute( WebCore::HTMLNames::forAttr ) );
     return result;
 }
 
 
-JSValue jsHTMLScriptElementEvent(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLScriptElementEvent( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLScriptElement* castedThis = static_cast<JSHTMLScriptElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLScriptElement* imp = static_cast<HTMLScriptElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->getAttribute(WebCore::HTMLNames::eventAttr));
+    JSHTMLScriptElement *castedThis = static_cast<JSHTMLScriptElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLScriptElement *imp = static_cast<HTMLScriptElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->getAttribute( WebCore::HTMLNames::eventAttr ) );
     return result;
 }
 
 
-JSValue jsHTMLScriptElementCharset(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLScriptElementCharset( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLScriptElement* castedThis = static_cast<JSHTMLScriptElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLScriptElement* imp = static_cast<HTMLScriptElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->getAttribute(WebCore::HTMLNames::charsetAttr));
+    JSHTMLScriptElement *castedThis = static_cast<JSHTMLScriptElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLScriptElement *imp = static_cast<HTMLScriptElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->getAttribute( WebCore::HTMLNames::charsetAttr ) );
     return result;
 }
 
 
-JSValue jsHTMLScriptElementAsync(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLScriptElementAsync( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLScriptElement* castedThis = static_cast<JSHTMLScriptElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLScriptElement* imp = static_cast<HTMLScriptElement*>(castedThis->impl());
-    JSValue result = jsBoolean(imp->async());
+    JSHTMLScriptElement *castedThis = static_cast<JSHTMLScriptElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLScriptElement *imp = static_cast<HTMLScriptElement *>( castedThis->impl() );
+    JSValue result = jsBoolean( imp->async() );
     return result;
 }
 
 
-JSValue jsHTMLScriptElementDefer(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLScriptElementDefer( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLScriptElement* castedThis = static_cast<JSHTMLScriptElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLScriptElement* imp = static_cast<HTMLScriptElement*>(castedThis->impl());
-    JSValue result = jsBoolean(imp->hasAttribute(WebCore::HTMLNames::deferAttr));
+    JSHTMLScriptElement *castedThis = static_cast<JSHTMLScriptElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLScriptElement *imp = static_cast<HTMLScriptElement *>( castedThis->impl() );
+    JSValue result = jsBoolean( imp->hasAttribute( WebCore::HTMLNames::deferAttr ) );
     return result;
 }
 
 
-JSValue jsHTMLScriptElementSrc(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLScriptElementSrc( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLScriptElement* castedThis = static_cast<JSHTMLScriptElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLScriptElement* imp = static_cast<HTMLScriptElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->getURLAttribute(WebCore::HTMLNames::srcAttr));
+    JSHTMLScriptElement *castedThis = static_cast<JSHTMLScriptElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLScriptElement *imp = static_cast<HTMLScriptElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->getURLAttribute( WebCore::HTMLNames::srcAttr ) );
     return result;
 }
 
 
-JSValue jsHTMLScriptElementType(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLScriptElementType( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLScriptElement* castedThis = static_cast<JSHTMLScriptElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLScriptElement* imp = static_cast<HTMLScriptElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->getAttribute(WebCore::HTMLNames::typeAttr));
+    JSHTMLScriptElement *castedThis = static_cast<JSHTMLScriptElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLScriptElement *imp = static_cast<HTMLScriptElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->getAttribute( WebCore::HTMLNames::typeAttr ) );
     return result;
 }
 
 
-JSValue jsHTMLScriptElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLScriptElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLScriptElement* domObject = static_cast<JSHTMLScriptElement*>(asObject(slotBase));
-    return JSHTMLScriptElement::getConstructor(exec, domObject->globalObject());
+    JSHTMLScriptElement *domObject = static_cast<JSHTMLScriptElement *>( asObject( slotBase ) );
+    return JSHTMLScriptElement::getConstructor( exec, domObject->globalObject() );
 }
 
-void JSHTMLScriptElement::put(ExecState* exec, const Identifier& propertyName, JSValue value, PutPropertySlot& slot)
+void JSHTMLScriptElement::put( ExecState *exec, const Identifier &propertyName, JSValue value, PutPropertySlot &slot )
 {
-    lookupPut<JSHTMLScriptElement, Base>(exec, propertyName, value, &JSHTMLScriptElementTable, this, slot);
+    lookupPut<JSHTMLScriptElement, Base>( exec, propertyName, value, &JSHTMLScriptElementTable, this, slot );
 }
 
-void setJSHTMLScriptElementText(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSHTMLScriptElementText( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSHTMLScriptElement* castedThis = static_cast<JSHTMLScriptElement*>(thisObject);
-    HTMLScriptElement* imp = static_cast<HTMLScriptElement*>(castedThis->impl());
-    imp->setText(valueToStringWithNullCheck(exec, value));
-}
-
-
-void setJSHTMLScriptElementHtmlFor(ExecState* exec, JSObject* thisObject, JSValue value)
-{
-    JSHTMLScriptElement* castedThis = static_cast<JSHTMLScriptElement*>(thisObject);
-    HTMLScriptElement* imp = static_cast<HTMLScriptElement*>(castedThis->impl());
-    imp->setAttribute(WebCore::HTMLNames::forAttr, valueToStringWithNullCheck(exec, value));
+    JSHTMLScriptElement *castedThis = static_cast<JSHTMLScriptElement *>( thisObject );
+    HTMLScriptElement *imp = static_cast<HTMLScriptElement *>( castedThis->impl() );
+    imp->setText( valueToStringWithNullCheck( exec, value ) );
 }
 
 
-void setJSHTMLScriptElementEvent(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSHTMLScriptElementHtmlFor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSHTMLScriptElement* castedThis = static_cast<JSHTMLScriptElement*>(thisObject);
-    HTMLScriptElement* imp = static_cast<HTMLScriptElement*>(castedThis->impl());
-    imp->setAttribute(WebCore::HTMLNames::eventAttr, valueToStringWithNullCheck(exec, value));
+    JSHTMLScriptElement *castedThis = static_cast<JSHTMLScriptElement *>( thisObject );
+    HTMLScriptElement *imp = static_cast<HTMLScriptElement *>( castedThis->impl() );
+    imp->setAttribute( WebCore::HTMLNames::forAttr, valueToStringWithNullCheck( exec, value ) );
 }
 
 
-void setJSHTMLScriptElementCharset(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSHTMLScriptElementEvent( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSHTMLScriptElement* castedThis = static_cast<JSHTMLScriptElement*>(thisObject);
-    HTMLScriptElement* imp = static_cast<HTMLScriptElement*>(castedThis->impl());
-    imp->setAttribute(WebCore::HTMLNames::charsetAttr, valueToStringWithNullCheck(exec, value));
+    JSHTMLScriptElement *castedThis = static_cast<JSHTMLScriptElement *>( thisObject );
+    HTMLScriptElement *imp = static_cast<HTMLScriptElement *>( castedThis->impl() );
+    imp->setAttribute( WebCore::HTMLNames::eventAttr, valueToStringWithNullCheck( exec, value ) );
 }
 
 
-void setJSHTMLScriptElementAsync(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSHTMLScriptElementCharset( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSHTMLScriptElement* castedThis = static_cast<JSHTMLScriptElement*>(thisObject);
-    HTMLScriptElement* imp = static_cast<HTMLScriptElement*>(castedThis->impl());
-    imp->setAsync(value.toBoolean(exec));
+    JSHTMLScriptElement *castedThis = static_cast<JSHTMLScriptElement *>( thisObject );
+    HTMLScriptElement *imp = static_cast<HTMLScriptElement *>( castedThis->impl() );
+    imp->setAttribute( WebCore::HTMLNames::charsetAttr, valueToStringWithNullCheck( exec, value ) );
 }
 
 
-void setJSHTMLScriptElementDefer(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSHTMLScriptElementAsync( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSHTMLScriptElement* castedThis = static_cast<JSHTMLScriptElement*>(thisObject);
-    HTMLScriptElement* imp = static_cast<HTMLScriptElement*>(castedThis->impl());
-    imp->setBooleanAttribute(WebCore::HTMLNames::deferAttr, value.toBoolean(exec));
+    JSHTMLScriptElement *castedThis = static_cast<JSHTMLScriptElement *>( thisObject );
+    HTMLScriptElement *imp = static_cast<HTMLScriptElement *>( castedThis->impl() );
+    imp->setAsync( value.toBoolean( exec ) );
 }
 
 
-void setJSHTMLScriptElementSrc(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSHTMLScriptElementDefer( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSHTMLScriptElement* castedThis = static_cast<JSHTMLScriptElement*>(thisObject);
-    HTMLScriptElement* imp = static_cast<HTMLScriptElement*>(castedThis->impl());
-    imp->setAttribute(WebCore::HTMLNames::srcAttr, valueToStringWithNullCheck(exec, value));
+    JSHTMLScriptElement *castedThis = static_cast<JSHTMLScriptElement *>( thisObject );
+    HTMLScriptElement *imp = static_cast<HTMLScriptElement *>( castedThis->impl() );
+    imp->setBooleanAttribute( WebCore::HTMLNames::deferAttr, value.toBoolean( exec ) );
 }
 
 
-void setJSHTMLScriptElementType(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSHTMLScriptElementSrc( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSHTMLScriptElement* castedThis = static_cast<JSHTMLScriptElement*>(thisObject);
-    HTMLScriptElement* imp = static_cast<HTMLScriptElement*>(castedThis->impl());
-    imp->setAttribute(WebCore::HTMLNames::typeAttr, valueToStringWithNullCheck(exec, value));
+    JSHTMLScriptElement *castedThis = static_cast<JSHTMLScriptElement *>( thisObject );
+    HTMLScriptElement *imp = static_cast<HTMLScriptElement *>( castedThis->impl() );
+    imp->setAttribute( WebCore::HTMLNames::srcAttr, valueToStringWithNullCheck( exec, value ) );
 }
 
 
-JSValue JSHTMLScriptElement::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+void setJSHTMLScriptElementType( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    return getDOMConstructor<JSHTMLScriptElementConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    JSHTMLScriptElement *castedThis = static_cast<JSHTMLScriptElement *>( thisObject );
+    HTMLScriptElement *imp = static_cast<HTMLScriptElement *>( castedThis->impl() );
+    imp->setAttribute( WebCore::HTMLNames::typeAttr, valueToStringWithNullCheck( exec, value ) );
+}
+
+
+JSValue JSHTMLScriptElement::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
+{
+    return getDOMConstructor<JSHTMLScriptElementConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
 

@@ -28,27 +28,33 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class AudioListener;
 
-class JSAudioListener : public JSDOMWrapper {
+class JSAudioListener : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSAudioListener(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<AudioListener>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
-    virtual void put(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::JSValue, JSC::PutPropertySlot&);
+    JSAudioListener( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<AudioListener> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
+    virtual void put( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::JSValue, JSC::PutPropertySlot & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
-    AudioListener* impl() const { return m_impl.get(); }
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
+    AudioListener *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<AudioListener> m_impl;
@@ -56,37 +62,40 @@ protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, AudioListener*);
-AudioListener* toAudioListener(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, AudioListener * );
+AudioListener *toAudioListener( JSC::JSValue );
 
-class JSAudioListenerPrototype : public JSC::JSObjectWithGlobalObject {
+class JSAudioListenerPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSAudioListenerPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSAudioListenerPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                              JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsAudioListenerPrototypeFunctionSetPosition(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsAudioListenerPrototypeFunctionSetOrientation(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsAudioListenerPrototypeFunctionSetVelocity(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsAudioListenerPrototypeFunctionSetPosition( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsAudioListenerPrototypeFunctionSetOrientation( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsAudioListenerPrototypeFunctionSetVelocity( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsAudioListenerDopplerFactor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSAudioListenerDopplerFactor(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsAudioListenerSpeedOfSound(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSAudioListenerSpeedOfSound(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsAudioListenerConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsAudioListenerDopplerFactor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSAudioListenerDopplerFactor( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsAudioListenerSpeedOfSound( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSAudioListenerSpeedOfSound( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsAudioListenerConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

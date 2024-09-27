@@ -29,7 +29,8 @@
 
 #include <stdint.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Assuming that a pointer is the size of a "machine word", then
 // uintptr_t is an integer type that is also a machine word.
@@ -37,19 +38,28 @@ typedef uintptr_t MachineWord;
 
 // This constant has type uintptr_t since we will use it to align
 // pointers. Not because MachineWord is uintptr_t.
-const uintptr_t machineWordAlignmentMask = sizeof(MachineWord) - 1;
+const uintptr_t machineWordAlignmentMask = sizeof( MachineWord ) - 1;
 
 template<size_t size> struct NonASCIIMask;
-template<> struct NonASCIIMask<4> {
-    static unsigned value() { return 0x80808080U; }
+template<> struct NonASCIIMask<4>
+{
+    static unsigned value()
+    {
+        return 0x80808080U;
+    }
 };
-template<> struct NonASCIIMask<8> {
-    static unsigned long long value() { return 0x8080808080808080ULL; }
+template<> struct NonASCIIMask<8>
+{
+    static unsigned long long value()
+    {
+        return 0x8080808080808080ULL;
+    }
 };
 
 template<size_t size> struct UCharByteFiller;
-template<> struct UCharByteFiller<4> {
-    static void copy(UChar* destination, const uint8_t* source)
+template<> struct UCharByteFiller<4>
+{
+    static void copy( UChar *destination, const uint8_t *source )
     {
         destination[0] = source[0];
         destination[1] = source[1];
@@ -57,8 +67,9 @@ template<> struct UCharByteFiller<4> {
         destination[3] = source[3];
     }
 };
-template<> struct UCharByteFiller<8> {
-    static void copy(UChar* destination, const uint8_t* source)
+template<> struct UCharByteFiller<8>
+{
+    static void copy( UChar *destination, const uint8_t *source )
     {
         destination[0] = source[0];
         destination[1] = source[1];
@@ -71,24 +82,24 @@ template<> struct UCharByteFiller<8> {
     }
 };
 
-inline bool isAllASCII(MachineWord word)
+inline bool isAllASCII( MachineWord word )
 {
-    return !(word & NonASCIIMask<sizeof(MachineWord)>::value());
+    return !( word & NonASCIIMask<sizeof( MachineWord )>::value() );
 }
 
-inline void copyASCIIMachineWord(UChar* destination, const uint8_t* source)
+inline void copyASCIIMachineWord( UChar *destination, const uint8_t *source )
 {
-    UCharByteFiller<sizeof(MachineWord)>::copy(destination, source);
+    UCharByteFiller<sizeof( MachineWord )>::copy( destination, source );
 }
 
-inline bool isAlignedToMachineWord(const void* pointer)
+inline bool isAlignedToMachineWord( const void *pointer )
 {
-    return !(reinterpret_cast<uintptr_t>(pointer) & machineWordAlignmentMask);
+    return !( reinterpret_cast<uintptr_t>( pointer ) & machineWordAlignmentMask );
 }
 
-template<typename T> inline T* alignToMachineWord(T* pointer)
+template<typename T> inline T *alignToMachineWord( T *pointer )
 {
-    return reinterpret_cast<T*>(reinterpret_cast<uintptr_t>(pointer) & ~machineWordAlignmentMask);
+    return reinterpret_cast<T *>( reinterpret_cast<uintptr_t>( pointer ) & ~machineWordAlignmentMask );
 }
 
 } // namespace WebCore

@@ -32,208 +32,224 @@
 
 void QMediaObjectPrivate::_q_notify()
 {
-   for (const auto &callBack : notifyProperties) {
-      callBack();
-   }
+    for ( const auto &callBack : notifyProperties )
+    {
+        callBack();
+    }
 }
 
 void QMediaObjectPrivate::_q_availabilityChanged()
 {
-   Q_Q(QMediaObject);
+    Q_Q( QMediaObject );
 
-   // Really this should not always emit, but we are unable to tell from here (isAvailable
-   // may not have changed, or the mediaobject's overridden availability() may not have changed)
+    // Really this should not always emit, but we are unable to tell from here (isAvailable
+    // may not have changed, or the mediaobject's overridden availability() may not have changed)
 
-   q->availabilityChanged(q->availability());
-   q->availabilityChanged(q->isAvailable());
+    q->availabilityChanged( q->availability() );
+    q->availabilityChanged( q->isAvailable() );
 }
 
 QMediaObject::~QMediaObject()
 {
-   delete d_ptr;
+    delete d_ptr;
 }
 
 QMultimedia::AvailabilityStatus QMediaObject::availability() const
 {
-   if (d_func()->service == nullptr) {
-      return QMultimedia::ServiceMissing;
-   }
+    if ( d_func()->service == nullptr )
+    {
+        return QMultimedia::ServiceMissing;
+    }
 
-   if (d_func()->availabilityControl) {
-      return d_func()->availabilityControl->availability();
-   }
+    if ( d_func()->availabilityControl )
+    {
+        return d_func()->availabilityControl->availability();
+    }
 
-   return QMultimedia::Available;
+    return QMultimedia::Available;
 }
 
 bool QMediaObject::isAvailable() const
 {
-   return availability() == QMultimedia::Available;
+    return availability() == QMultimedia::Available;
 }
 
 QMediaService *QMediaObject::service() const
 {
-   return d_func()->service;
+    return d_func()->service;
 }
 
 int QMediaObject::notifyInterval() const
 {
-   return d_func()->notifyTimer->interval();
+    return d_func()->notifyTimer->interval();
 }
 
-void QMediaObject::setNotifyInterval(int milliSeconds)
+void QMediaObject::setNotifyInterval( int milliSeconds )
 {
-   Q_D(QMediaObject);
+    Q_D( QMediaObject );
 
-   if (d->notifyTimer->interval() != milliSeconds) {
-      d->notifyTimer->setInterval(milliSeconds);
+    if ( d->notifyTimer->interval() != milliSeconds )
+    {
+        d->notifyTimer->setInterval( milliSeconds );
 
-      emit notifyIntervalChanged(milliSeconds);
-   }
+        emit notifyIntervalChanged( milliSeconds );
+    }
 }
 
-bool QMediaObject::bind(QObject *object)
+bool QMediaObject::bind( QObject *object )
 {
-   QMediaBindableInterface *helper = dynamic_cast<QMediaBindableInterface *>(object);
-   if (! helper) {
-      return false;
-   }
+    QMediaBindableInterface *helper = dynamic_cast<QMediaBindableInterface *>( object );
 
-   QMediaObject *currentObject = helper->mediaObject();
+    if ( ! helper )
+    {
+        return false;
+    }
 
-   if (currentObject == this) {
-      return true;
-   }
+    QMediaObject *currentObject = helper->mediaObject();
 
-   if (currentObject) {
-      currentObject->unbind(object);
-   }
+    if ( currentObject == this )
+    {
+        return true;
+    }
 
-   return helper->setMediaObject(this);
+    if ( currentObject )
+    {
+        currentObject->unbind( object );
+    }
+
+    return helper->setMediaObject( this );
 }
 
-void QMediaObject::unbind(QObject *object)
+void QMediaObject::unbind( QObject *object )
 {
-   QMediaBindableInterface *helper = dynamic_cast<QMediaBindableInterface *>(object);
+    QMediaBindableInterface *helper = dynamic_cast<QMediaBindableInterface *>( object );
 
-   if (helper && helper->mediaObject() == this) {
-      helper->setMediaObject(nullptr);
-   } else {
-      qWarning() << "QMediaObject:unbind(): Trying to unbind a helper object which was never bound";
-   }
+    if ( helper && helper->mediaObject() == this )
+    {
+        helper->setMediaObject( nullptr );
+    }
+    else
+    {
+        qWarning() << "QMediaObject:unbind(): Trying to unbind a helper object which was never bound";
+    }
 }
 
-QMediaObject::QMediaObject(QObject *parent, QMediaService *service)
-   : QObject(parent), d_ptr(new QMediaObjectPrivate)
+QMediaObject::QMediaObject( QObject *parent, QMediaService *service )
+    : QObject( parent ), d_ptr( new QMediaObjectPrivate )
 {
-   Q_D(QMediaObject);
+    Q_D( QMediaObject );
 
-   d->q_ptr = this;
+    d->q_ptr = this;
 
-   d->notifyTimer = new QTimer(this);
-   d->notifyTimer->setInterval(1000);
+    d->notifyTimer = new QTimer( this );
+    d->notifyTimer->setInterval( 1000 );
 
-   connect(d->notifyTimer, &QTimer::timeout, this, &QMediaObject::_q_notify);
+    connect( d->notifyTimer, &QTimer::timeout, this, &QMediaObject::_q_notify );
 
-   d->service = service;
+    d->service = service;
 
-   setupControls();
+    setupControls();
 }
 
-QMediaObject::QMediaObject(QMediaObjectPrivate &dd, QObject *parent, QMediaService *service)
-   : QObject(parent), d_ptr(&dd)
+QMediaObject::QMediaObject( QMediaObjectPrivate &dd, QObject *parent, QMediaService *service )
+    : QObject( parent ), d_ptr( &dd )
 {
-   Q_D(QMediaObject);
-   d->q_ptr = this;
+    Q_D( QMediaObject );
+    d->q_ptr = this;
 
-   d->notifyTimer = new QTimer(this);
-   d->notifyTimer->setInterval(1000);
+    d->notifyTimer = new QTimer( this );
+    d->notifyTimer->setInterval( 1000 );
 
-   connect(d->notifyTimer, &QTimer::timeout, this, &QMediaObject::_q_notify);
+    connect( d->notifyTimer, &QTimer::timeout, this, &QMediaObject::_q_notify );
 
-   d->service = service;
+    d->service = service;
 
-   setupControls();
+    setupControls();
 }
 
-void QMediaObject::cs_internal_addPropertyWatch(const QString &name, std::function<void ()> callBack)
+void QMediaObject::cs_internal_addPropertyWatch( const QString &name, std::function<void ()> callBack )
 {
-   Q_D(QMediaObject);
+    Q_D( QMediaObject );
 
-   d->notifyProperties.insert(name, callBack);
+    d->notifyProperties.insert( name, callBack );
 
-   if (! d->notifyTimer->isActive()) {
-      d->notifyTimer->start();
-   }
+    if ( ! d->notifyTimer->isActive() )
+    {
+        d->notifyTimer->start();
+    }
 }
 
-void QMediaObject::removePropertyWatch(const QString &name)
+void QMediaObject::removePropertyWatch( const QString &name )
 {
-   Q_D(QMediaObject);
+    Q_D( QMediaObject );
 
-   d->notifyProperties.remove(name);
+    d->notifyProperties.remove( name );
 
-   if (d->notifyProperties.isEmpty()) {
-      d->notifyTimer->stop();
-   }
+    if ( d->notifyProperties.isEmpty() )
+    {
+        d->notifyTimer->stop();
+    }
 }
 
 bool QMediaObject::isMetaDataAvailable() const
 {
-   Q_D(const QMediaObject);
+    Q_D( const QMediaObject );
 
-   return d->metaDataControl ? d->metaDataControl->isMetaDataAvailable() : false;
+    return d->metaDataControl ? d->metaDataControl->isMetaDataAvailable() : false;
 }
 
-QVariant QMediaObject::metaData(const QString &key) const
+QVariant QMediaObject::metaData( const QString &key ) const
 {
-   Q_D(const QMediaObject);
+    Q_D( const QMediaObject );
 
-   return d->metaDataControl ? d->metaDataControl->metaData(key) : QVariant();
+    return d->metaDataControl ? d->metaDataControl->metaData( key ) : QVariant();
 }
 
 QStringList QMediaObject::availableMetaData() const
 {
-   Q_D(const QMediaObject);
+    Q_D( const QMediaObject );
 
-   return d->metaDataControl ? d->metaDataControl->availableMetaData() : QStringList();
+    return d->metaDataControl ? d->metaDataControl->availableMetaData() : QStringList();
 }
 
 void QMediaObject::setupControls()
 {
-   Q_D(QMediaObject);
+    Q_D( QMediaObject );
 
-   if (d->service != nullptr) {
-      d->metaDataControl = dynamic_cast<QMetaDataReaderControl *>(d->service->requestControl(QMetaDataReaderControl_iid));
+    if ( d->service != nullptr )
+    {
+        d->metaDataControl = dynamic_cast<QMetaDataReaderControl *>( d->service->requestControl( QMetaDataReaderControl_iid ) );
 
-      if (d->metaDataControl) {
+        if ( d->metaDataControl )
+        {
 
-         connect(d->metaDataControl, cs_mp_cast<>(&QMetaDataReaderControl::metaDataChanged),
-               this, cs_mp_cast<>(&QMediaObject::metaDataChanged));
+            connect( d->metaDataControl, cs_mp_cast<>( &QMetaDataReaderControl::metaDataChanged ),
+                     this, cs_mp_cast<>( &QMediaObject::metaDataChanged ) );
 
-         connect(d->metaDataControl, cs_mp_cast<const QString &, const QVariant &>(&QMetaDataReaderControl::metaDataChanged),
-               this, cs_mp_cast<const QString &, const QVariant &>(&QMediaObject::metaDataChanged));
+            connect( d->metaDataControl, cs_mp_cast<const QString &, const QVariant &>( &QMetaDataReaderControl::metaDataChanged ),
+                     this, cs_mp_cast<const QString &, const QVariant &>( &QMediaObject::metaDataChanged ) );
 
-         connect(d->metaDataControl, &QMetaDataReaderControl::metaDataAvailableChanged, this, &QMediaObject::metaDataAvailableChanged);
-      }
+            connect( d->metaDataControl, &QMetaDataReaderControl::metaDataAvailableChanged, this, &QMediaObject::metaDataAvailableChanged );
+        }
 
-      d->availabilityControl = d->service->requestControl<QMediaAvailabilityControl *>();
+        d->availabilityControl = d->service->requestControl<QMediaAvailabilityControl *>();
 
-      if (d->availabilityControl) {
-         connect(d->availabilityControl, &QMediaAvailabilityControl::availabilityChanged, this, &QMediaObject::_q_availabilityChanged);
-      }
-   }
+        if ( d->availabilityControl )
+        {
+            connect( d->availabilityControl, &QMediaAvailabilityControl::availabilityChanged, this, &QMediaObject::_q_availabilityChanged );
+        }
+    }
 }
 
 void QMediaObject::_q_notify()
 {
-   Q_D(QMediaObject);
-   d->_q_notify();
+    Q_D( QMediaObject );
+    d->_q_notify();
 }
 
 void QMediaObject::_q_availabilityChanged()
 {
-   Q_D(QMediaObject);
-   d->_q_availabilityChanged();
+    Q_D( QMediaObject );
+    d->_q_availabilityChanged();
 }
 

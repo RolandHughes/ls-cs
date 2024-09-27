@@ -31,23 +31,24 @@ QT_BEGIN_NAMESPACE
 
 class QDeclarativeListReferencePrivate
 {
- public:
-   QDeclarativeListReferencePrivate();
+public:
+    QDeclarativeListReferencePrivate();
 
-   static QDeclarativeListReference init(const QDeclarativeListProperty<QObject> &, int, QDeclarativeEngine *);
+    static QDeclarativeListReference init( const QDeclarativeListProperty<QObject> &, int, QDeclarativeEngine * );
 
-   QDeclarativeGuard<QObject> object;
-   const QMetaObject *elementType;
-   QDeclarativeListProperty<QObject> property;
-   int propertyType;
+    QDeclarativeGuard<QObject> object;
+    const QMetaObject *elementType;
+    QDeclarativeListProperty<QObject> property;
+    int propertyType;
 
-   void addref();
-   void release();
-   int refCount;
+    void addref();
+    void release();
+    int refCount;
 
-   static inline QDeclarativeListReferencePrivate *get(QDeclarativeListReference *ref) {
-      return ref->d;
-   }
+    static inline QDeclarativeListReferencePrivate *get( QDeclarativeListReference *ref )
+    {
+        return ref->d;
+    }
 };
 
 

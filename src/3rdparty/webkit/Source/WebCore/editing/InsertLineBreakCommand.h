@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef InsertLineBreakCommand_h
@@ -28,25 +28,27 @@
 
 #include "CompositeEditCommand.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class InsertLineBreakCommand : public CompositeEditCommand {
+class InsertLineBreakCommand : public CompositeEditCommand
+{
 public:
-    static PassRefPtr<InsertLineBreakCommand> create(Document* document)
+    static PassRefPtr<InsertLineBreakCommand> create( Document *document )
     {
-        return adoptRef(new InsertLineBreakCommand(document));
+        return adoptRef( new InsertLineBreakCommand( document ) );
     }
 
 private:
-    InsertLineBreakCommand(Document*);
+    InsertLineBreakCommand( Document * );
 
     virtual void doApply();
 
     virtual bool preservesTypingStyle() const;
 
-    void insertNodeAfterPosition(Node*, const Position&);
-    void insertNodeBeforePosition(Node*, const Position&);
-    bool shouldUseBreakElement(const Position&);
+    void insertNodeAfterPosition( Node *, const Position & );
+    void insertNodeBeforePosition( Node *, const Position & );
+    bool shouldUseBreakElement( const Position & );
 };
 
 } // namespace WebCore

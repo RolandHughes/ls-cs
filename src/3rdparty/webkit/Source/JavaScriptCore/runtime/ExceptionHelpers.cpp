@@ -39,112 +39,128 @@
 #include "Nodes.h"
 #include "UStringConcatenate.h"
 
-namespace JSC {
+namespace JSC
+{
 
-class InterruptedExecutionError : public JSNonFinalObject {
+class InterruptedExecutionError : public JSNonFinalObject
+{
 public:
-    InterruptedExecutionError(JSGlobalData* globalData)
-        : JSNonFinalObject(*globalData, globalData->interruptedExecutionErrorStructure.get())
+    InterruptedExecutionError( JSGlobalData *globalData )
+        : JSNonFinalObject( *globalData, globalData->interruptedExecutionErrorStructure.get() )
     {
     }
 
-    virtual ComplType exceptionType() const { return Interrupted; }
+    virtual ComplType exceptionType() const
+    {
+        return Interrupted;
+    }
 
-    virtual UString toString(ExecState*) const { return "JavaScript execution exceeded timeout."; }
+    virtual UString toString( ExecState * ) const
+    {
+        return "JavaScript execution exceeded timeout.";
+    }
 };
 
-JSObject* createInterruptedExecutionException(JSGlobalData* globalData)
+JSObject *createInterruptedExecutionException( JSGlobalData *globalData )
 {
-    return new (globalData) InterruptedExecutionError(globalData);
+    return new ( globalData ) InterruptedExecutionError( globalData );
 }
 
-class TerminatedExecutionError : public JSNonFinalObject {
+class TerminatedExecutionError : public JSNonFinalObject
+{
 public:
-    TerminatedExecutionError(JSGlobalData* globalData)
-        : JSNonFinalObject(*globalData, globalData->terminatedExecutionErrorStructure.get())
+    TerminatedExecutionError( JSGlobalData *globalData )
+        : JSNonFinalObject( *globalData, globalData->terminatedExecutionErrorStructure.get() )
     {
     }
 
-    virtual ComplType exceptionType() const { return Terminated; }
+    virtual ComplType exceptionType() const
+    {
+        return Terminated;
+    }
 
-    virtual UString toString(ExecState*) const { return "JavaScript execution terminated."; }
+    virtual UString toString( ExecState * ) const
+    {
+        return "JavaScript execution terminated.";
+    }
 };
 
-JSObject* createTerminatedExecutionException(JSGlobalData* globalData)
+JSObject *createTerminatedExecutionException( JSGlobalData *globalData )
 {
-    return new (globalData) TerminatedExecutionError(globalData);
+    return new ( globalData ) TerminatedExecutionError( globalData );
 }
 
-JSObject* createStackOverflowError(ExecState* exec)
+JSObject *createStackOverflowError( ExecState *exec )
 {
-    return createRangeError(exec, "Maximum call stack size exceeded.");
+    return createRangeError( exec, "Maximum call stack size exceeded." );
 }
 
-JSObject* createStackOverflowError(JSGlobalObject* globalObject)
+JSObject *createStackOverflowError( JSGlobalObject *globalObject )
 {
-    return createRangeError(globalObject, "Maximum call stack size exceeded.");
+    return createRangeError( globalObject, "Maximum call stack size exceeded." );
 }
 
-JSObject* createUndefinedVariableError(ExecState* exec, const Identifier& ident)
+JSObject *createUndefinedVariableError( ExecState *exec, const Identifier &ident )
 {
-    UString message(makeUString("Can't find variable: ", ident.ustring()));
-    return createReferenceError(exec, message);
+    UString message( makeUString( "Can't find variable: ", ident.ustring() ) );
+    return createReferenceError( exec, message );
 }
-    
-JSObject* createInvalidParamError(ExecState* exec, const char* op, JSValue value)
+
+JSObject *createInvalidParamError( ExecState *exec, const char *op, JSValue value )
 {
-    UString errorMessage = makeUString("'", value.toString(exec), "' is not a valid argument for '", op, "'");
-    JSObject* exception = createTypeError(exec, errorMessage);
-    ASSERT(exception->isErrorInstance());
-    static_cast<ErrorInstance*>(exception)->setAppendSourceToMessage();
+    UString errorMessage = makeUString( "'", value.toString( exec ), "' is not a valid argument for '", op, "'" );
+    JSObject *exception = createTypeError( exec, errorMessage );
+    ASSERT( exception->isErrorInstance() );
+    static_cast<ErrorInstance *>( exception )->setAppendSourceToMessage();
     return exception;
 }
 
-JSObject* createNotAConstructorError(ExecState* exec, JSValue value)
+JSObject *createNotAConstructorError( ExecState *exec, JSValue value )
 {
-    UString errorMessage = makeUString("'", value.toString(exec), "' is not a constructor");
-    JSObject* exception = createTypeError(exec, errorMessage);
-    ASSERT(exception->isErrorInstance());
-    static_cast<ErrorInstance*>(exception)->setAppendSourceToMessage();
+    UString errorMessage = makeUString( "'", value.toString( exec ), "' is not a constructor" );
+    JSObject *exception = createTypeError( exec, errorMessage );
+    ASSERT( exception->isErrorInstance() );
+    static_cast<ErrorInstance *>( exception )->setAppendSourceToMessage();
     return exception;
 }
 
-JSObject* createNotAFunctionError(ExecState* exec, JSValue value)
+JSObject *createNotAFunctionError( ExecState *exec, JSValue value )
 {
-    UString errorMessage = makeUString("'", value.toString(exec), "' is not a function");
-    JSObject* exception = createTypeError(exec, errorMessage);
-    ASSERT(exception->isErrorInstance());
-    static_cast<ErrorInstance*>(exception)->setAppendSourceToMessage();
+    UString errorMessage = makeUString( "'", value.toString( exec ), "' is not a function" );
+    JSObject *exception = createTypeError( exec, errorMessage );
+    ASSERT( exception->isErrorInstance() );
+    static_cast<ErrorInstance *>( exception )->setAppendSourceToMessage();
     return exception;
 }
 
-JSObject* createNotAnObjectError(ExecState* exec, JSValue value)
+JSObject *createNotAnObjectError( ExecState *exec, JSValue value )
 {
-    UString errorMessage = makeUString("'", value.toString(exec), "' is not an object");
-    JSObject* exception = createTypeError(exec, errorMessage);
-    ASSERT(exception->isErrorInstance());
-    static_cast<ErrorInstance*>(exception)->setAppendSourceToMessage();
+    UString errorMessage = makeUString( "'", value.toString( exec ), "' is not an object" );
+    JSObject *exception = createTypeError( exec, errorMessage );
+    ASSERT( exception->isErrorInstance() );
+    static_cast<ErrorInstance *>( exception )->setAppendSourceToMessage();
     return exception;
 }
 
-JSObject* createErrorForInvalidGlobalAssignment(ExecState* exec, const UString& propertyName)
+JSObject *createErrorForInvalidGlobalAssignment( ExecState *exec, const UString &propertyName )
 {
-    return createReferenceError(exec, makeUString("Strict mode forbids implicit creation of global property '", propertyName, "'"));
+    return createReferenceError( exec, makeUString( "Strict mode forbids implicit creation of global property '", propertyName,
+                                 "'" ) );
 }
 
-JSObject* createOutOfMemoryError(JSGlobalObject* globalObject)
+JSObject *createOutOfMemoryError( JSGlobalObject *globalObject )
 {
-    return createError(globalObject, "Out of memory");
+    return createError( globalObject, "Out of memory" );
 }
 
-JSObject* throwOutOfMemoryError(ExecState* exec)
+JSObject *throwOutOfMemoryError( ExecState *exec )
 {
-    return throwError(exec, createOutOfMemoryError(exec->lexicalGlobalObject()));
+    return throwError( exec, createOutOfMemoryError( exec->lexicalGlobalObject() ) );
 }
 
-JSObject* throwStackOverflowError(ExecState* exec)
+JSObject *throwStackOverflowError( ExecState *exec )
 {
-    return throwError(exec, createStackOverflowError(exec));
+    return throwError( exec, createStackOverflowError( exec ) );
 }
 
 } // namespace JSC

@@ -36,17 +36,17 @@ class QMacCocoaViewContainerPrivate;
 
 class Q_GUI_EXPORT QMacCocoaViewContainer : public QWidget
 {
-   GUI_CS_OBJECT(QMacCocoaViewContainer)
+    GUI_CS_OBJECT( QMacCocoaViewContainer )
 
- public:
-    QMacCocoaViewContainer(NSView *cocoaViewToWrap, QWidget *parent = nullptr);
+public:
+    QMacCocoaViewContainer( NSView *cocoaViewToWrap, QWidget *parent = nullptr );
     virtual ~QMacCocoaViewContainer();
 
-    void setCocoaView(NSView *view);
+    void setCocoaView( NSView *view );
     NSView *cocoaView() const;
 
- private:
-   Q_DECLARE_PRIVATE(QMacCocoaViewContainer)
+private:
+    Q_DECLARE_PRIVATE( QMacCocoaViewContainer )
 };
 
 

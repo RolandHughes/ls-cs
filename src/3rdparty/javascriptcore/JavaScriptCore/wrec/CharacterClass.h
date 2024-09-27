@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef CharacterClass_h
@@ -32,36 +32,42 @@
 
 #include <wtf/unicode/Unicode.h>
 
-namespace JSC { namespace WREC {
+namespace JSC
+{
+namespace WREC
+{
 
-    struct CharacterRange {
-        UChar begin;
-        UChar end;
-    };
+struct CharacterRange
+{
+    UChar begin;
+    UChar end;
+};
 
-    struct CharacterClass {
-        static const CharacterClass& newline();
-        static const CharacterClass& digits();
-        static const CharacterClass& spaces();
-        static const CharacterClass& wordchar();
-        static const CharacterClass& nondigits();
-        static const CharacterClass& nonspaces();
-        static const CharacterClass& nonwordchar();
+struct CharacterClass
+{
+    static const CharacterClass &newline();
+    static const CharacterClass &digits();
+    static const CharacterClass &spaces();
+    static const CharacterClass &wordchar();
+    static const CharacterClass &nondigits();
+    static const CharacterClass &nonspaces();
+    static const CharacterClass &nonwordchar();
 
-        const UChar* matches;
-        unsigned numMatches;
+    const UChar *matches;
+    unsigned numMatches;
 
-        const CharacterRange* ranges;
-        unsigned numRanges;
+    const CharacterRange *ranges;
+    unsigned numRanges;
 
-        const UChar* matchesUnicode;
-        unsigned numMatchesUnicode;
+    const UChar *matchesUnicode;
+    unsigned numMatchesUnicode;
 
-        const CharacterRange* rangesUnicode;
-        unsigned numRangesUnicode;
-    };
+    const CharacterRange *rangesUnicode;
+    unsigned numRangesUnicode;
+};
 
-} } // namespace JSC::WREC
+}
+} // namespace JSC::WREC
 
 #endif // ENABLE(WREC)
 

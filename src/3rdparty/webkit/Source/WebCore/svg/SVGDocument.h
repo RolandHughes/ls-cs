@@ -25,35 +25,40 @@
 #include "Document.h"
 #include "FloatPoint.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class DOMImplementation;
 class SVGElement;
 class SVGSVGElement;
 
-class SVGDocument : public Document {
+class SVGDocument : public Document
+{
 public:
-    static PassRefPtr<SVGDocument> create(Frame* frame, const KURL& url)
+    static PassRefPtr<SVGDocument> create( Frame *frame, const KURL &url )
     {
-        return adoptRef(new SVGDocument(frame, url));
+        return adoptRef( new SVGDocument( frame, url ) );
     }
 
-    SVGSVGElement* rootElement() const;
+    SVGSVGElement *rootElement() const;
 
-    void dispatchZoomEvent(float prevScale, float newScale);
+    void dispatchZoomEvent( float prevScale, float newScale );
     void dispatchScrollEvent();
 
     bool zoomAndPanEnabled() const;
 
-    void startPan(const FloatPoint& start);
-    void updatePan(const FloatPoint& pos) const;
+    void startPan( const FloatPoint &start );
+    void updatePan( const FloatPoint &pos ) const;
 
 private:
-    SVGDocument(Frame*, const KURL&);
+    SVGDocument( Frame *, const KURL & );
 
-    virtual bool isSVGDocument() const { return true; }
+    virtual bool isSVGDocument() const
+    {
+        return true;
+    }
 
-    virtual bool childShouldCreateRenderer(Node*) const;
+    virtual bool childShouldCreateRenderer( Node * ) const;
 
     FloatPoint m_translate;
 };

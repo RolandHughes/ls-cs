@@ -36,17 +36,18 @@
 
 #include <wtf/PassRefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class Attribute;
-    class EventListener;
-    class Frame;
-    class Node;
+class Attribute;
+class EventListener;
+class Frame;
+class Node;
 
-    PassRefPtr<JSLazyEventListener> createAttributeEventListener(Node*, Attribute*);
-    PassRefPtr<JSLazyEventListener> createAttributeEventListener(Frame*, Attribute*);
-    String eventListenerHandlerBody(Document*, EventListener*);
-    bool eventListenerHandlerLocation(Document*, EventListener*, String& sourceName, int& lineNumber);
+PassRefPtr<JSLazyEventListener> createAttributeEventListener( Node *, Attribute * );
+PassRefPtr<JSLazyEventListener> createAttributeEventListener( Frame *, Attribute * );
+String eventListenerHandlerBody( Document *, EventListener * );
+bool eventListenerHandlerLocation( Document *, EventListener *, String &sourceName, int &lineNumber );
 } // namespace WebCore
 
 #endif // ScriptEventListener_h

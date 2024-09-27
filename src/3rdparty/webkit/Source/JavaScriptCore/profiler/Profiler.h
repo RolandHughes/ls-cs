@@ -34,46 +34,51 @@
 #include <wtf/RefPtr.h>
 #include <wtf/Vector.h>
 
-namespace JSC {
+namespace JSC
+{
 
-    class ExecState;
-    class JSGlobalData;
-    class JSGlobalObject;
-    class JSObject;
-    class JSValue;
-    class ProfileGenerator;
-    class UString;
-    struct CallIdentifier;    
+class ExecState;
+class JSGlobalData;
+class JSGlobalObject;
+class JSObject;
+class JSValue;
+class ProfileGenerator;
+class UString;
+struct CallIdentifier;
 
-    class Profiler {
-        WTF_MAKE_FAST_ALLOCATED;
-    public:
-        static Profiler** enabledProfilerReference()
-        {
-            return &s_sharedEnabledProfilerReference;
-        }
+class Profiler
+{
+    WTF_MAKE_FAST_ALLOCATED;
+public:
+    static Profiler **enabledProfilerReference()
+    {
+        return &s_sharedEnabledProfilerReference;
+    }
 
-        static Profiler* profiler(); 
-        static CallIdentifier createCallIdentifier(ExecState* exec, JSValue, const UString& sourceURL, int lineNumber);
+    static Profiler *profiler();
+    static CallIdentifier createCallIdentifier( ExecState *exec, JSValue, const UString &sourceURL, int lineNumber );
 
-        void startProfiling(ExecState*, const UString& title);
-        PassRefPtr<Profile> stopProfiling(ExecState*, const UString& title);
-        void stopProfiling(JSGlobalObject*);
+    void startProfiling( ExecState *, const UString &title );
+    PassRefPtr<Profile> stopProfiling( ExecState *, const UString &title );
+    void stopProfiling( JSGlobalObject * );
 
-        void willExecute(ExecState* callerCallFrame, JSValue function);
-        void willExecute(ExecState* callerCallFrame, const UString& sourceURL, int startingLineNumber);
-        void didExecute(ExecState* callerCallFrame, JSValue function);
-        void didExecute(ExecState* callerCallFrame, const UString& sourceURL, int startingLineNumber);
+    void willExecute( ExecState *callerCallFrame, JSValue function );
+    void willExecute( ExecState *callerCallFrame, const UString &sourceURL, int startingLineNumber );
+    void didExecute( ExecState *callerCallFrame, JSValue function );
+    void didExecute( ExecState *callerCallFrame, const UString &sourceURL, int startingLineNumber );
 
-        void exceptionUnwind(ExecState* handlerCallFrame);
+    void exceptionUnwind( ExecState *handlerCallFrame );
 
-        const Vector<RefPtr<ProfileGenerator> >& currentProfiles() { return m_currentProfiles; };
-
-    private:
-        Vector<RefPtr<ProfileGenerator> > m_currentProfiles;
-        static Profiler* s_sharedProfiler;
-        static Profiler* s_sharedEnabledProfilerReference;
+    const Vector<RefPtr<ProfileGenerator> > &currentProfiles()
+    {
+        return m_currentProfiles;
     };
+
+private:
+    Vector<RefPtr<ProfileGenerator> > m_currentProfiles;
+    static Profiler *s_sharedProfiler;
+    static Profiler *s_sharedEnabledProfilerReference;
+};
 
 } // namespace JSC
 

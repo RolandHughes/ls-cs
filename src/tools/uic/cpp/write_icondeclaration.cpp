@@ -29,32 +29,35 @@
 
 #include <qtextstream.h>
 
-namespace CPP {
+namespace CPP
+{
 
-WriteIconDeclaration::WriteIconDeclaration(Uic *uic)
-   : driver(uic->driver()), output(uic->output()), option(uic->option())
+WriteIconDeclaration::WriteIconDeclaration( Uic *uic )
+    : driver( uic->driver() ), output( uic->output() ), option( uic->option() )
 {
 }
 
-void WriteIconDeclaration::acceptUI(DomUI *node)
+void WriteIconDeclaration::acceptUI( DomUI *node )
 {
-   TreeWalker::acceptUI(node);
+    TreeWalker::acceptUI( node );
 }
 
-void WriteIconDeclaration::acceptImages(DomImages *images)
+void WriteIconDeclaration::acceptImages( DomImages *images )
 {
-   TreeWalker::acceptImages(images);
+    TreeWalker::acceptImages( images );
 }
 
-void WriteIconDeclaration::acceptImage(DomImage *image)
+void WriteIconDeclaration::acceptImage( DomImage *image )
 {
-   QString name = image->attributeName();
-   if (name.isEmpty()) {
-      return;
-   }
+    QString name = image->attributeName();
 
-   driver->insertPixmap(name);
-   output << option.indent << option.indent << name << "_ID,\n";
+    if ( name.isEmpty() )
+    {
+        return;
+    }
+
+    driver->insertPixmap( name );
+    output << option.indent << option.indent << name << "_ID,\n";
 }
 
 } // namespace CPP

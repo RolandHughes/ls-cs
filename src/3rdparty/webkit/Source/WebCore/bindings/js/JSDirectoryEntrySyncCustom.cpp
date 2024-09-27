@@ -43,56 +43,74 @@
 
 using namespace JSC;
 
-namespace WebCore {
-
-static PassRefPtr<WebKitFlags> getFlags(ExecState* exec, const JSValue& argument)
+namespace WebCore
 {
-    if (argument.isNull() || argument.isUndefined() || !argument.isObject())
+
+static PassRefPtr<WebKitFlags> getFlags( ExecState *exec, const JSValue &argument )
+{
+    if ( argument.isNull() || argument.isUndefined() || !argument.isObject() )
+    {
         return 0;
-    if (argument.inherits(&JSWebKitFlags::s_info))
-        return toFlags(argument);
+    }
+
+    if ( argument.inherits( &JSWebKitFlags::s_info ) )
+    {
+        return toFlags( argument );
+    }
 
     RefPtr<WebKitFlags> flags;
-    JSObject* object = argument.getObject();
+    JSObject *object = argument.getObject();
     flags = WebKitFlags::create();
-    JSValue jsCreate = object->get(exec, Identifier(exec, "create"));
-    flags->setCreate(jsCreate.toBoolean(exec));
-    JSValue jsExclusive = object->get(exec, Identifier(exec, "exclusive"));
-    flags->setExclusive(jsExclusive.toBoolean(exec));
+    JSValue jsCreate = object->get( exec, Identifier( exec, "create" ) );
+    flags->setCreate( jsCreate.toBoolean( exec ) );
+    JSValue jsExclusive = object->get( exec, Identifier( exec, "exclusive" ) );
+    flags->setExclusive( jsExclusive.toBoolean( exec ) );
     return flags;
 }
 
-JSValue JSDirectoryEntrySync::getFile(ExecState* exec)
+JSValue JSDirectoryEntrySync::getFile( ExecState *exec )
 {
-    DirectoryEntrySync* imp = static_cast<DirectoryEntrySync*>(impl());
-    const String& path = valueToStringWithUndefinedOrNullCheck(exec, exec->argument(0));
-    if (exec->hadException())
-        return jsUndefined();
+    DirectoryEntrySync *imp = static_cast<DirectoryEntrySync *>( impl() );
+    const String &path = valueToStringWithUndefinedOrNullCheck( exec, exec->argument( 0 ) );
 
-    RefPtr<WebKitFlags> flags = getFlags(exec, exec->argument(1));
-    if (exec->hadException())
+    if ( exec->hadException() )
+    {
         return jsUndefined();
+    }
+
+    RefPtr<WebKitFlags> flags = getFlags( exec, exec->argument( 1 ) );
+
+    if ( exec->hadException() )
+    {
+        return jsUndefined();
+    }
 
     ExceptionCode ec = 0;
-    JSC::JSValue result = toJS(exec, this->globalObject(), WTF::getPtr(imp->getFile(path, flags, ec)));
-    setDOMException(exec, ec);
+    JSC::JSValue result = toJS( exec, this->globalObject(), WTF::getPtr( imp->getFile( path, flags, ec ) ) );
+    setDOMException( exec, ec );
     return result;
 }
 
-JSValue JSDirectoryEntrySync::getDirectory(ExecState* exec)
+JSValue JSDirectoryEntrySync::getDirectory( ExecState *exec )
 {
-    DirectoryEntrySync* imp = static_cast<DirectoryEntrySync*>(impl());
-    const String& path = valueToStringWithUndefinedOrNullCheck(exec, exec->argument(0));
-    if (exec->hadException())
-        return jsUndefined();
+    DirectoryEntrySync *imp = static_cast<DirectoryEntrySync *>( impl() );
+    const String &path = valueToStringWithUndefinedOrNullCheck( exec, exec->argument( 0 ) );
 
-    RefPtr<WebKitFlags> flags = getFlags(exec, exec->argument(1));
-    if (exec->hadException())
+    if ( exec->hadException() )
+    {
         return jsUndefined();
+    }
+
+    RefPtr<WebKitFlags> flags = getFlags( exec, exec->argument( 1 ) );
+
+    if ( exec->hadException() )
+    {
+        return jsUndefined();
+    }
 
     ExceptionCode ec = 0;
-    JSC::JSValue result = toJS(exec, this->globalObject(), WTF::getPtr(imp->getDirectory(path, flags, ec)));
-    setDOMException(exec, ec);
+    JSC::JSValue result = toJS( exec, this->globalObject(), WTF::getPtr( imp->getDirectory( path, flags, ec ) ) );
+    setDOMException( exec, ec );
     return result;
 }
 

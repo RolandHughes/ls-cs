@@ -30,20 +30,24 @@
 #include <wtf/Vector.h>
 #include <wtf/text/WTFString.h>
 
-namespace CoreIPC {
-    class ArgumentDecoder;
-    class ArgumentEncoder;
+namespace CoreIPC
+{
+class ArgumentDecoder;
+class ArgumentEncoder;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
-class WebOpenPanelParameters : public APIObject {
+class WebOpenPanelParameters : public APIObject
+{
 public:
     static const Type APIType = TypeOpenPanelParameters;
 
-    struct Data {
-        void encode(CoreIPC::ArgumentEncoder*) const;
-        static bool decode(CoreIPC::ArgumentDecoder*, Data&);
+    struct Data
+    {
+        void encode( CoreIPC::ArgumentEncoder * ) const;
+        static bool decode( CoreIPC::ArgumentDecoder *, Data & );
 
         bool allowMultipleFiles;
         bool allowsDirectoryUpload;
@@ -51,15 +55,21 @@ public:
         Vector<String> filenames;
     };
 
-    static PassRefPtr<WebOpenPanelParameters> create(const Data&);
+    static PassRefPtr<WebOpenPanelParameters> create( const Data & );
     ~WebOpenPanelParameters();
 
-    bool allowMultipleFiles() const { return m_data.allowMultipleFiles; } 
+    bool allowMultipleFiles() const
+    {
+        return m_data.allowMultipleFiles;
+    }
 
 private:
-    explicit WebOpenPanelParameters(const Data&);
+    explicit WebOpenPanelParameters( const Data & );
 
-    virtual Type type() const { return APIType; }
+    virtual Type type() const
+    {
+        return APIType;
+    }
 
     Data m_data;
 };

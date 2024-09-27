@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef ParsedURL_h
@@ -29,13 +29,15 @@
 #include "URLSegments.h"
 #include "URLString.h"
 
-namespace WTF {
+namespace WTF
+{
 
 class URLComponent;
 
-class ParsedURL {
+class ParsedURL
+{
 public:
-    explicit ParsedURL(const URLString&);
+    explicit ParsedURL( const URLString & );
 
     // FIXME: Add a method for parsing non-canonicalized URLs.
 
@@ -48,10 +50,13 @@ public:
     String query() const;
     String fragment() const;
 
-    URLString spec() { return m_spec; }
+    URLString spec()
+    {
+        return m_spec;
+    }
 
 private:
-    inline String segment(const URLComponent&) const;
+    inline String segment( const URLComponent & ) const;
 
     URLString m_spec;
     URLSegments m_segments;

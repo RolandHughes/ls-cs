@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef FrameWin_h
@@ -29,15 +29,17 @@
 #include <wtf/Vector.h>
 
 // Forward declared so we don't need wingdi.h.
-typedef struct HBITMAP__* HBITMAP;
+typedef struct HBITMAP__ *HBITMAP;
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class Frame;
-    class IntRect;
+class Frame;
+class IntRect;
 
-    HBITMAP imageFromSelection(Frame* frame, bool forceWhiteText);
-    void computePageRectsForFrame(Frame*, const IntRect& printRect, float headerHeight, float footerHeight, float userScaleFactor, Vector<IntRect>& outPages, int& outPageHeight);
+HBITMAP imageFromSelection( Frame *frame, bool forceWhiteText );
+void computePageRectsForFrame( Frame *, const IntRect &printRect, float headerHeight, float footerHeight, float userScaleFactor,
+                               Vector<IntRect> &outPages, int &outPageHeight );
 
 }
 

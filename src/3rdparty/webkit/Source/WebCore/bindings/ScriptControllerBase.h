@@ -30,9 +30,11 @@
 #ifndef ScriptControllerBase_h
 #define ScriptControllerBase_h
 
-namespace WebCore {
+namespace WebCore
+{
 
-enum ReasonForCallingCanExecuteScripts {
+enum ReasonForCallingCanExecuteScripts
+{
     AboutToExecuteScript,
     NotAboutToExecuteScript
 };

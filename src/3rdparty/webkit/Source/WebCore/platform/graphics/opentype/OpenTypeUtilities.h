@@ -21,7 +21,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef OpenTypeUtilities_h
@@ -30,7 +30,8 @@
 #include "PlatformString.h"
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 struct BigEndianUShort;
 struct EOTPrefix;
@@ -40,23 +41,33 @@ class SharedBuffer;
 typedef unsigned __int8 UInt8;
 #endif
 
-struct EOTHeader {
+struct EOTHeader
+{
     EOTHeader();
 
-    size_t size() const { return m_buffer.size(); }
-    const uint8_t* data() const { return m_buffer.data(); }
+    size_t size() const
+    {
+        return m_buffer.size();
+    }
+    const uint8_t *data() const
+    {
+        return m_buffer.data();
+    }
 
-    EOTPrefix* prefix() { return reinterpret_cast<EOTPrefix*>(m_buffer.data()); }
-    void updateEOTSize(size_t);
-    void appendBigEndianString(const BigEndianUShort*, unsigned short length);
+    EOTPrefix *prefix()
+    {
+        return reinterpret_cast<EOTPrefix *>( m_buffer.data() );
+    }
+    void updateEOTSize( size_t );
+    void appendBigEndianString( const BigEndianUShort *, unsigned short length );
     void appendPaddingShort();
 
 private:
     Vector<uint8_t, 512> m_buffer;
 };
 
-bool getEOTHeader(SharedBuffer* fontData, EOTHeader& eotHeader, size_t& overlayDst, size_t& overlaySrc, size_t& overlayLength);
-HANDLE renameAndActivateFont(SharedBuffer*, const String&);
+bool getEOTHeader( SharedBuffer *fontData, EOTHeader &eotHeader, size_t &overlayDst, size_t &overlaySrc, size_t &overlayLength );
+HANDLE renameAndActivateFont( SharedBuffer *, const String & );
 
 } // namespace WebCore
 

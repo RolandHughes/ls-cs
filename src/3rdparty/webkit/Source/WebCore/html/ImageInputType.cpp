@@ -30,19 +30,20 @@
 #include "RenderImage.h"
 #include <wtf/PassOwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-inline ImageInputType::ImageInputType(HTMLInputElement* element)
-    : BaseButtonInputType(element)
+inline ImageInputType::ImageInputType( HTMLInputElement *element )
+    : BaseButtonInputType( element )
 {
 }
 
-PassOwnPtr<InputType> ImageInputType::create(HTMLInputElement* element)
+PassOwnPtr<InputType> ImageInputType::create( HTMLInputElement *element )
 {
-    return adoptPtr(new ImageInputType(element));
+    return adoptPtr( new ImageInputType( element ) );
 }
 
-const AtomicString& ImageInputType::formControlType() const
+const AtomicString &ImageInputType::formControlType() const
 {
     return InputTypeNames::image();
 }
@@ -52,15 +53,22 @@ bool ImageInputType::isFormDataAppendable() const
     return true;
 }
 
-bool ImageInputType::appendFormData(FormDataList& encoding, bool) const
+bool ImageInputType::appendFormData( FormDataList &encoding, bool ) const
 {
-    if (!element()->isActivatedSubmit())
+    if ( !element()->isActivatedSubmit() )
+    {
         return false;
-    const AtomicString& name = element()->name();
-    encoding.appendData(name.isEmpty() ? "x" : (name + ".x"), m_clickLocation.x());
-    encoding.appendData(name.isEmpty() ? "y" : (name + ".y"), m_clickLocation.y());
-    if (!name.isEmpty() && !element()->value().isEmpty())
-        encoding.appendData(name, element()->value());
+    }
+
+    const AtomicString &name = element()->name();
+    encoding.appendData( name.isEmpty() ? "x" : ( name + ".x" ), m_clickLocation.x() );
+    encoding.appendData( name.isEmpty() ? "y" : ( name + ".y" ), m_clickLocation.y() );
+
+    if ( !name.isEmpty() && !element()->value().isEmpty() )
+    {
+        encoding.appendData( name, element()->value() );
+    }
+
     return true;
 }
 
@@ -69,43 +77,63 @@ bool ImageInputType::supportsValidation() const
     return false;
 }
 
-void ImageInputType::handleDOMActivateEvent(Event* event)
+void ImageInputType::handleDOMActivateEvent( Event *event )
 {
     RefPtr<HTMLInputElement> element = this->element();
-    if (element->disabled() || !element->form())
+
+    if ( element->disabled() || !element->form() )
+    {
         return;
-    element->setActivatedSubmit(true);
-    if (event->underlyingEvent() && event->underlyingEvent()->isMouseEvent()) {
-        MouseEvent* mouseEvent = static_cast<MouseEvent*>(event->underlyingEvent());
-        m_clickLocation = IntPoint(mouseEvent->offsetX(), mouseEvent->offsetY());
-    } else
+    }
+
+    element->setActivatedSubmit( true );
+
+    if ( event->underlyingEvent() && event->underlyingEvent()->isMouseEvent() )
+    {
+        MouseEvent *mouseEvent = static_cast<MouseEvent *>( event->underlyingEvent() );
+        m_clickLocation = IntPoint( mouseEvent->offsetX(), mouseEvent->offsetY() );
+    }
+    else
+    {
         m_clickLocation = IntPoint();
-    element->form()->prepareForSubmission(event); // Event handlers can run.
-    element->setActivatedSubmit(false);
+    }
+
+    element->form()->prepareForSubmission( event ); // Event handlers can run.
+    element->setActivatedSubmit( false );
     event->setDefaultHandled();
 }
 
-RenderObject* ImageInputType::createRenderer(RenderArena* arena, RenderStyle*) const
+RenderObject *ImageInputType::createRenderer( RenderArena *arena, RenderStyle * ) const
 {
-    RenderImage* image = new (arena) RenderImage(element());
-    image->setImageResource(RenderImageResource::create());
+    RenderImage *image = new ( arena ) RenderImage( element() );
+    image->setImageResource( RenderImageResource::create() );
     return image;
 }
 
 void ImageInputType::altAttributeChanged()
 {
-    RenderImage* image = toRenderImage(element()->renderer());
-    if (!image)
+    RenderImage *image = toRenderImage( element()->renderer() );
+
+    if ( !image )
+    {
         return;
+    }
+
     image->updateAltText();
 }
 
 void ImageInputType::srcAttributeChanged()
 {
-    if (!element()->renderer())
+    if ( !element()->renderer() )
+    {
         return;
-    if (!m_imageLoader)
-        m_imageLoader = adoptPtr(new HTMLImageLoader(element()));
+    }
+
+    if ( !m_imageLoader )
+    {
+        m_imageLoader = adoptPtr( new HTMLImageLoader( element() ) );
+    }
+
     m_imageLoader->updateFromElementIgnoringPreviousError();
 }
 
@@ -113,31 +141,44 @@ void ImageInputType::attach()
 {
     BaseButtonInputType::attach();
 
-    if (!m_imageLoader)
-        m_imageLoader = adoptPtr(new HTMLImageLoader(element()));
+    if ( !m_imageLoader )
+    {
+        m_imageLoader = adoptPtr( new HTMLImageLoader( element() ) );
+    }
+
     m_imageLoader->updateFromElement();
 
-    RenderImage* renderer = toRenderImage(element()->renderer());
-    if (!renderer)
-        return;
+    RenderImage *renderer = toRenderImage( element()->renderer() );
 
-    if (!m_imageLoader->haveFiredBeforeLoadEvent())
+    if ( !renderer )
+    {
         return;
+    }
 
-    RenderImageResource* imageResource = renderer->imageResource();
-    imageResource->setCachedImage(m_imageLoader->image()); 
+    if ( !m_imageLoader->haveFiredBeforeLoadEvent() )
+    {
+        return;
+    }
+
+    RenderImageResource *imageResource = renderer->imageResource();
+    imageResource->setCachedImage( m_imageLoader->image() );
 
     // If we have no image at all because we have no src attribute, set
     // image height and width for the alt text instead.
-    if (!m_imageLoader->image() && !imageResource->cachedImage())
+    if ( !m_imageLoader->image() && !imageResource->cachedImage() )
+    {
         renderer->setImageSizeForAltText();
+    }
 }
 
 void ImageInputType::willMoveToNewOwnerDocument()
 {
     BaseButtonInputType::willMoveToNewOwnerDocument();
-    if (m_imageLoader)
+
+    if ( m_imageLoader )
+    {
         m_imageLoader->elementWillMoveToNewOwnerDocument();
+    }
 }
 
 bool ImageInputType::shouldRespectAlignAttribute()

@@ -30,26 +30,26 @@ class QGLCustomShaderStagePrivate;
 
 class Q_OPENGL_EXPORT QGLCustomShaderStage
 {
-   Q_DECLARE_PRIVATE(QGLCustomShaderStage)
+    Q_DECLARE_PRIVATE( QGLCustomShaderStage )
 
- public:
-   QGLCustomShaderStage();
-   virtual ~QGLCustomShaderStage();
+public:
+    QGLCustomShaderStage();
+    virtual ~QGLCustomShaderStage();
 
-   virtual void setUniforms(QGLShaderProgram *) {}
-   void setUniformsDirty();
+    virtual void setUniforms( QGLShaderProgram * ) {}
+    void setUniformsDirty();
 
-   bool setOnPainter(QPainter *);
-   void removeFromPainter(QPainter *);
-   QString source() const;
+    bool setOnPainter( QPainter * );
+    void removeFromPainter( QPainter * );
+    QString source() const;
 
-   void setInactive();
+    void setInactive();
 
- protected:
-   void setSource(const QString &);
+protected:
+    void setSource( const QString & );
 
- private:
-   QGLCustomShaderStagePrivate *d_ptr;
+private:
+    QGLCustomShaderStagePrivate *d_ptr;
 };
 
 

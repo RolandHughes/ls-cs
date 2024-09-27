@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -32,15 +32,15 @@
 
 using namespace JSC;
 
-void JSStartProfiling(JSContextRef ctx, JSStringRef title)
+void JSStartProfiling( JSContextRef ctx, JSStringRef title )
 {
-    Profiler::profiler()->startProfiling(toJS(ctx), title->ustring());
+    Profiler::profiler()->startProfiling( toJS( ctx ), title->ustring() );
 }
 
-void JSEndProfiling(JSContextRef ctx, JSStringRef title)
+void JSEndProfiling( JSContextRef ctx, JSStringRef title )
 {
-    ExecState* exec = toJS(ctx);
-    Profiler* profiler = Profiler::profiler();
-    profiler->stopProfiling(exec, title->ustring());
+    ExecState *exec = toJS( ctx );
+    Profiler *profiler = Profiler::profiler();
+    profiler->stopProfiling( exec, title->ustring() );
 }
 

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -28,77 +28,96 @@
 
 #include "ArrayBuffer.h"
 
-namespace WebCore {
-
-ArrayBufferView::ArrayBufferView(PassRefPtr<ArrayBuffer> buffer,
-                       unsigned byteOffset)
-        : m_byteOffset(byteOffset)
-        , m_buffer(buffer)
+namespace WebCore
 {
-    m_baseAddress = m_buffer ? (static_cast<char*>(m_buffer->data()) + m_byteOffset) : 0;
+
+ArrayBufferView::ArrayBufferView( PassRefPtr<ArrayBuffer> buffer,
+                                  unsigned byteOffset )
+    : m_byteOffset( byteOffset )
+    , m_buffer( buffer )
+{
+    m_baseAddress = m_buffer ? ( static_cast<char *>( m_buffer->data() ) + m_byteOffset ) : 0;
 }
 
 ArrayBufferView::~ArrayBufferView()
 {
 }
 
-void ArrayBufferView::setImpl(ArrayBufferView* array, unsigned byteOffset, ExceptionCode& ec)
+void ArrayBufferView::setImpl( ArrayBufferView *array, unsigned byteOffset, ExceptionCode &ec )
 {
-    if (byteOffset > byteLength()
-        || byteOffset + array->byteLength() > byteLength()
-        || byteOffset + array->byteLength() < byteOffset) {
+    if ( byteOffset > byteLength()
+            || byteOffset + array->byteLength() > byteLength()
+            || byteOffset + array->byteLength() < byteOffset )
+    {
         // Out of range offset or overflow
         ec = INDEX_SIZE_ERR;
         return;
     }
 
-    char* base = static_cast<char*>(baseAddress());
-    memmove(base + byteOffset, array->baseAddress(), array->byteLength());
+    char *base = static_cast<char *>( baseAddress() );
+    memmove( base + byteOffset, array->baseAddress(), array->byteLength() );
 }
 
-void ArrayBufferView::setRangeImpl(const char* data, size_t dataByteLength, unsigned byteOffset, ExceptionCode& ec)
+void ArrayBufferView::setRangeImpl( const char *data, size_t dataByteLength, unsigned byteOffset, ExceptionCode &ec )
 {
-    if (byteOffset > byteLength()
-        || byteOffset + dataByteLength > byteLength()
-        || byteOffset + dataByteLength < byteOffset) {
+    if ( byteOffset > byteLength()
+            || byteOffset + dataByteLength > byteLength()
+            || byteOffset + dataByteLength < byteOffset )
+    {
         // Out of range offset or overflow
         ec = INDEX_SIZE_ERR;
         return;
     }
 
-    char* base = static_cast<char*>(baseAddress());
-    memmove(base + byteOffset, data, dataByteLength);
+    char *base = static_cast<char *>( baseAddress() );
+    memmove( base + byteOffset, data, dataByteLength );
 }
 
-void ArrayBufferView::zeroRangeImpl(unsigned byteOffset, size_t rangeByteLength, ExceptionCode& ec)
+void ArrayBufferView::zeroRangeImpl( unsigned byteOffset, size_t rangeByteLength, ExceptionCode &ec )
 {
-    if (byteOffset > byteLength()
-        || byteOffset + rangeByteLength > byteLength()
-        || byteOffset + rangeByteLength < byteOffset) {
+    if ( byteOffset > byteLength()
+            || byteOffset + rangeByteLength > byteLength()
+            || byteOffset + rangeByteLength < byteOffset )
+    {
         // Out of range offset or overflow
         ec = INDEX_SIZE_ERR;
         return;
     }
 
-    char* base = static_cast<char*>(baseAddress());
-    memset(base + byteOffset, 0, rangeByteLength);
+    char *base = static_cast<char *>( baseAddress() );
+    memset( base + byteOffset, 0, rangeByteLength );
 }
 
-void ArrayBufferView::calculateOffsetAndLength(int start, int end, unsigned arraySize,
-                                          unsigned* offset, unsigned* length)
+void ArrayBufferView::calculateOffsetAndLength( int start, int end, unsigned arraySize,
+        unsigned *offset, unsigned *length )
 {
-    if (start < 0)
+    if ( start < 0 )
+    {
         start += arraySize;
-    if (start < 0)
+    }
+
+    if ( start < 0 )
+    {
         start = 0;
-    if (end < 0)
+    }
+
+    if ( end < 0 )
+    {
         end += arraySize;
-    if (end < 0)
+    }
+
+    if ( end < 0 )
+    {
         end = 0;
-    if (end < start)
+    }
+
+    if ( end < start )
+    {
         end = start;
-    *offset = static_cast<unsigned>(start);
-    *length = static_cast<unsigned>(end - start);
+    }
+
+    *offset = static_cast<unsigned>( start );
+    *length = static_cast<unsigned>( end - start );
 }
 
 }

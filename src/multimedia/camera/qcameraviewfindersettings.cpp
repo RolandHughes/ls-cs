@@ -25,36 +25,38 @@
 
 class QCameraViewfinderSettingsPrivate  : public QSharedData
 {
- public:
-   QCameraViewfinderSettingsPrivate()
-      : isNull(true), minimumFrameRate(0.0), maximumFrameRate(0.0),
-        pixelFormat(QVideoFrame::Format_Invalid) {
-   }
+public:
+    QCameraViewfinderSettingsPrivate()
+        : isNull( true ), minimumFrameRate( 0.0 ), maximumFrameRate( 0.0 ),
+          pixelFormat( QVideoFrame::Format_Invalid )
+    {
+    }
 
-   QCameraViewfinderSettingsPrivate(const QCameraViewfinderSettingsPrivate &other)
-      : QSharedData(other), isNull(other.isNull), resolution(other.resolution),
-        minimumFrameRate(other.minimumFrameRate), maximumFrameRate(other.maximumFrameRate),
-        pixelFormat(other.pixelFormat), pixelAspectRatio(other.pixelAspectRatio) {
-   }
+    QCameraViewfinderSettingsPrivate( const QCameraViewfinderSettingsPrivate &other )
+        : QSharedData( other ), isNull( other.isNull ), resolution( other.resolution ),
+          minimumFrameRate( other.minimumFrameRate ), maximumFrameRate( other.maximumFrameRate ),
+          pixelFormat( other.pixelFormat ), pixelAspectRatio( other.pixelAspectRatio )
+    {
+    }
 
-   bool isNull;
-   QSize resolution;
-   double minimumFrameRate;
-   double maximumFrameRate;
-   QVideoFrame::PixelFormat pixelFormat;
-   QSize pixelAspectRatio;
+    bool isNull;
+    QSize resolution;
+    double minimumFrameRate;
+    double maximumFrameRate;
+    QVideoFrame::PixelFormat pixelFormat;
+    QSize pixelAspectRatio;
 
- private:
-   QCameraViewfinderSettingsPrivate &operator=(const QCameraViewfinderSettingsPrivate &other);
+private:
+    QCameraViewfinderSettingsPrivate &operator=( const QCameraViewfinderSettingsPrivate &other );
 };
 
 QCameraViewfinderSettings::QCameraViewfinderSettings()
-   : d(new QCameraViewfinderSettingsPrivate)
+    : d( new QCameraViewfinderSettingsPrivate )
 {
 }
 
-QCameraViewfinderSettings::QCameraViewfinderSettings(const QCameraViewfinderSettings &other)
-   : d(other.d)
+QCameraViewfinderSettings::QCameraViewfinderSettings( const QCameraViewfinderSettings &other )
+    : d( other.d )
 {
 }
 
@@ -62,79 +64,79 @@ QCameraViewfinderSettings::~QCameraViewfinderSettings()
 {
 }
 
-QCameraViewfinderSettings &QCameraViewfinderSettings::operator=(const QCameraViewfinderSettings &other)
+QCameraViewfinderSettings &QCameraViewfinderSettings::operator=( const QCameraViewfinderSettings &other )
 {
-   d = other.d;
-   return *this;
+    d = other.d;
+    return *this;
 }
 
-bool QCameraViewfinderSettings::operator==(const QCameraViewfinderSettings &other) const
+bool QCameraViewfinderSettings::operator==( const QCameraViewfinderSettings &other ) const
 {
-   return (d == other.d) ||
-          (d->isNull           == other.d->isNull &&
-           d->resolution       == other.d->resolution &&
-           d->minimumFrameRate == other.d->minimumFrameRate &&
-           d->maximumFrameRate == other.d->maximumFrameRate &&
-           d->pixelFormat      == other.d->pixelFormat &&
-           d->pixelAspectRatio == other.d->pixelAspectRatio);
+    return ( d == other.d ) ||
+           ( d->isNull           == other.d->isNull &&
+             d->resolution       == other.d->resolution &&
+             d->minimumFrameRate == other.d->minimumFrameRate &&
+             d->maximumFrameRate == other.d->maximumFrameRate &&
+             d->pixelFormat      == other.d->pixelFormat &&
+             d->pixelAspectRatio == other.d->pixelAspectRatio );
 }
 
 bool QCameraViewfinderSettings::isNull() const
 {
-   return d->isNull;
+    return d->isNull;
 }
 
 QSize QCameraViewfinderSettings::resolution() const
 {
-   return d->resolution;
+    return d->resolution;
 }
 
-void QCameraViewfinderSettings::setResolution(const QSize &resolution)
+void QCameraViewfinderSettings::setResolution( const QSize &resolution )
 {
-   d->isNull     = false;
-   d->resolution = resolution;
+    d->isNull     = false;
+    d->resolution = resolution;
 }
 
 double QCameraViewfinderSettings::minimumFrameRate() const
 {
-   return d->minimumFrameRate;
+    return d->minimumFrameRate;
 }
 
-void QCameraViewfinderSettings::setMinimumFrameRate(double rate)
+void QCameraViewfinderSettings::setMinimumFrameRate( double rate )
 {
-   d->isNull = false;
-   d->minimumFrameRate = rate;
+    d->isNull = false;
+    d->minimumFrameRate = rate;
 }
 
 double QCameraViewfinderSettings::maximumFrameRate() const
 {
-   return d->maximumFrameRate;
+    return d->maximumFrameRate;
 }
 
-void QCameraViewfinderSettings::setMaximumFrameRate(double rate)
+void QCameraViewfinderSettings::setMaximumFrameRate( double rate )
 {
-   d->isNull = false;
-   d->maximumFrameRate = rate;
+    d->isNull = false;
+    d->maximumFrameRate = rate;
 }
 
 QVideoFrame::PixelFormat QCameraViewfinderSettings::pixelFormat() const
 {
-   return d->pixelFormat;
+    return d->pixelFormat;
 }
 
-void QCameraViewfinderSettings::setPixelFormat(QVideoFrame::PixelFormat format)
+void QCameraViewfinderSettings::setPixelFormat( QVideoFrame::PixelFormat format )
 {
-   d->isNull = false;
-   d->pixelFormat = format;
+    d->isNull = false;
+    d->pixelFormat = format;
 }
 
 QSize QCameraViewfinderSettings::pixelAspectRatio() const
 {
-   return d->pixelAspectRatio;
+    return d->pixelAspectRatio;
 }
 
-void QCameraViewfinderSettings::setPixelAspectRatio(const QSize &ratio)
+void QCameraViewfinderSettings::setPixelAspectRatio( const QSize &ratio )
 {
-   d->isNull = false;
-   d->pixelAspectRatio = ratio;
+    d->isNull = false;
+    d->pixelAspectRatio = ratio;
 }

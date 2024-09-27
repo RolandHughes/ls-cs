@@ -28,9 +28,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSMessageChannel);
+ASSERT_CLASS_FITS_IN_CELL( JSMessageChannel );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -41,10 +42,10 @@ ASSERT_CLASS_FITS_IN_CELL(JSMessageChannel);
 
 static const HashTableValue JSMessageChannelTableValues[4] =
 {
-    { "port1", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsMessageChannelPort1), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "port2", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsMessageChannelPort2), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsMessageChannelConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "port1", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsMessageChannelPort1 ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "port2", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsMessageChannelPort2 ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsMessageChannelConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -58,31 +59,35 @@ static JSC_CONST_HASHTABLE HashTable JSMessageChannelTable = { 8, 7, JSMessageCh
 
 static const HashTableValue JSMessageChannelConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSMessageChannelConstructorTable = { 1, 0, JSMessageChannelConstructorTableValues, 0 };
 const ClassInfo JSMessageChannelConstructor::s_info = { "MessageChannelConstructor", &DOMConstructorObject::s_info, &JSMessageChannelConstructorTable, 0 };
 
-JSMessageChannelConstructor::JSMessageChannelConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSMessageChannelConstructor::JSMessageChannelConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSMessageChannelPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSMessageChannelPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSMessageChannelConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSMessageChannelConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSMessageChannelConstructor, JSDOMWrapper>(exec, &JSMessageChannelConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSMessageChannelConstructor, JSDOMWrapper>( exec, &JSMessageChannelConstructorTable, this, propertyName,
+            slot );
 }
 
-bool JSMessageChannelConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSMessageChannelConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSMessageChannelConstructor, JSDOMWrapper>(exec, &JSMessageChannelConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSMessageChannelConstructor, JSDOMWrapper>( exec, &JSMessageChannelConstructorTable, this,
+            propertyName, descriptor );
 }
 
-ConstructType JSMessageChannelConstructor::getConstructData(ConstructData& constructData)
+ConstructType JSMessageChannelConstructor::getConstructData( ConstructData &constructData )
 {
     constructData.native.function = constructJSMessageChannel;
     return ConstructTypeHost;
@@ -97,91 +102,92 @@ ConstructType JSMessageChannelConstructor::getConstructData(ConstructData& const
 
 static const HashTableValue JSMessageChannelPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSMessageChannelPrototypeTable = { 1, 0, JSMessageChannelPrototypeTableValues, 0 };
-static const HashTable* getJSMessageChannelPrototypeTable(ExecState* exec)
+static const HashTable *getJSMessageChannelPrototypeTable( ExecState *exec )
 {
-    return getHashTableForGlobalData(exec->globalData(), &JSMessageChannelPrototypeTable);
+    return getHashTableForGlobalData( exec->globalData(), &JSMessageChannelPrototypeTable );
 }
 
 const ClassInfo JSMessageChannelPrototype::s_info = { "MessageChannelPrototype", &JSC::JSObjectWithGlobalObject::s_info, 0, getJSMessageChannelPrototypeTable };
 
-JSObject* JSMessageChannelPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSMessageChannelPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSMessageChannel>(exec, globalObject);
+    return getDOMPrototype<JSMessageChannel>( exec, globalObject );
 }
 
-static const HashTable* getJSMessageChannelTable(ExecState* exec)
+static const HashTable *getJSMessageChannelTable( ExecState *exec )
 {
-    return getHashTableForGlobalData(exec->globalData(), &JSMessageChannelTable);
+    return getHashTableForGlobalData( exec->globalData(), &JSMessageChannelTable );
 }
 
 const ClassInfo JSMessageChannel::s_info = { "MessageChannel", &JSDOMWrapper::s_info, 0, getJSMessageChannelTable };
 
-JSMessageChannel::JSMessageChannel(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<MessageChannel> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSMessageChannel::JSMessageChannel( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<MessageChannel> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSMessageChannel::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSMessageChannel::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSMessageChannelPrototype(exec->globalData(), globalObject, JSMessageChannelPrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSMessageChannelPrototype( exec->globalData(), globalObject,
+            JSMessageChannelPrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSMessageChannel::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSMessageChannel::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSMessageChannel, Base>(exec, getJSMessageChannelTable(exec), this, propertyName, slot);
+    return getStaticValueSlot<JSMessageChannel, Base>( exec, getJSMessageChannelTable( exec ), this, propertyName, slot );
 }
 
-bool JSMessageChannel::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSMessageChannel::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSMessageChannel, Base>(exec, getJSMessageChannelTable(exec), this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSMessageChannel, Base>( exec, getJSMessageChannelTable( exec ), this, propertyName, descriptor );
 }
 
-JSValue jsMessageChannelPort1(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsMessageChannelPort1( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSMessageChannel* castedThis = static_cast<JSMessageChannel*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    MessageChannel* imp = static_cast<MessageChannel*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->port1()));
+    JSMessageChannel *castedThis = static_cast<JSMessageChannel *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    MessageChannel *imp = static_cast<MessageChannel *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->port1() ) );
     return result;
 }
 
 
-JSValue jsMessageChannelPort2(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsMessageChannelPort2( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSMessageChannel* castedThis = static_cast<JSMessageChannel*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    MessageChannel* imp = static_cast<MessageChannel*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->port2()));
+    JSMessageChannel *castedThis = static_cast<JSMessageChannel *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    MessageChannel *imp = static_cast<MessageChannel *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->port2() ) );
     return result;
 }
 
 
-JSValue jsMessageChannelConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsMessageChannelConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSMessageChannel* domObject = static_cast<JSMessageChannel*>(asObject(slotBase));
-    return JSMessageChannel::getConstructor(exec, domObject->globalObject());
+    JSMessageChannel *domObject = static_cast<JSMessageChannel *>( asObject( slotBase ) );
+    return JSMessageChannel::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSMessageChannel::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSMessageChannel::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSMessageChannelConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSMessageChannelConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, MessageChannel* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, MessageChannel *impl )
 {
-    return wrap<JSMessageChannel>(exec, globalObject, impl);
+    return wrap<JSMessageChannel>( exec, globalObject, impl );
 }
 
-MessageChannel* toMessageChannel(JSC::JSValue value)
+MessageChannel *toMessageChannel( JSC::JSValue value )
 {
-    return value.inherits(&JSMessageChannel::s_info) ? static_cast<JSMessageChannel*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSMessageChannel::s_info ) ? static_cast<JSMessageChannel *>( asObject( value ) )->impl() : 0;
 }
 
 }

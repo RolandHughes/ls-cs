@@ -20,36 +20,40 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
 
 #include "config.h"
 #include "WTFThreadData.h"
 
-namespace WTF {
+namespace WTF
+{
 
 #if WTFTHREADDATA_MULTITHREADED
-ThreadSpecific<WTFThreadData>* WTFThreadData::staticData;
+ThreadSpecific<WTFThreadData> *WTFThreadData::staticData;
 #else
-WTFThreadData* WTFThreadData::staticData;
+WTFThreadData *WTFThreadData::staticData;
 #endif
 
 WTFThreadData::WTFThreadData()
-    : m_atomicStringTable(0)
-    , m_atomicStringTableDestructor(0)
+    : m_atomicStringTable( 0 )
+    , m_atomicStringTableDestructor( 0 )
 #if USE(JSC)
-    , m_defaultIdentifierTable(new JSC::IdentifierTable())
-    , m_currentIdentifierTable(m_defaultIdentifierTable)
-    , m_stackBounds(StackBounds::currentThreadStackBounds())
+    , m_defaultIdentifierTable( new JSC::IdentifierTable() )
+    , m_currentIdentifierTable( m_defaultIdentifierTable )
+    , m_stackBounds( StackBounds::currentThreadStackBounds() )
 #endif
 {
 }
 
 WTFThreadData::~WTFThreadData()
 {
-    if (m_atomicStringTableDestructor)
-        m_atomicStringTableDestructor(m_atomicStringTable);
+    if ( m_atomicStringTableDestructor )
+    {
+        m_atomicStringTableDestructor( m_atomicStringTable );
+    }
+
 #if USE(JSC)
     delete m_defaultIdentifierTable;
 #endif

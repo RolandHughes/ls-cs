@@ -33,41 +33,41 @@
 
 class QAbstractVideoSurface;
 
-const QString QGstVideoRendererPluginKey("gstvideorenderer");
+const QString QGstVideoRendererPluginKey( "gstvideorenderer" );
 
 class QGstVideoRenderer
 {
- public:
-   virtual ~QGstVideoRenderer() {}
+public:
+    virtual ~QGstVideoRenderer() {}
 
-   virtual GstCaps *getCaps(QAbstractVideoSurface *surface) = 0;
-   virtual bool start(QAbstractVideoSurface *surface, GstCaps *caps) = 0;
-   virtual void stop(QAbstractVideoSurface *surface) = 0;  // surface may be null if unexpectedly deleted.
-   virtual bool proposeAllocation(GstQuery *query) = 0;    // may be called from a thread.
+    virtual GstCaps *getCaps( QAbstractVideoSurface *surface ) = 0;
+    virtual bool start( QAbstractVideoSurface *surface, GstCaps *caps ) = 0;
+    virtual void stop( QAbstractVideoSurface *surface ) = 0; // surface may be null if unexpectedly deleted.
+    virtual bool proposeAllocation( GstQuery *query ) = 0;  // may be called from a thread.
 
-   virtual bool present(QAbstractVideoSurface *surface, GstBuffer *buffer) = 0;
-   virtual void flush(QAbstractVideoSurface *surface) = 0; // surface may be null if unexpectedly deleted.
+    virtual bool present( QAbstractVideoSurface *surface, GstBuffer *buffer ) = 0;
+    virtual void flush( QAbstractVideoSurface *surface ) = 0; // surface may be null if unexpectedly deleted.
 };
 
 class QGstVideoRendererInterface
 {
- public:
-   virtual ~QGstVideoRendererInterface() {}
+public:
+    virtual ~QGstVideoRendererInterface() {}
 
-   virtual QGstVideoRenderer *createRenderer() = 0;
+    virtual QGstVideoRenderer *createRenderer() = 0;
 };
 
 #define QGstVideoRendererInterface_iid "com.copperspice.CS.gstVideoRenderer/1.0"
-CS_DECLARE_INTERFACE(QGstVideoRendererInterface, QGstVideoRendererInterface_iid)
+CS_DECLARE_INTERFACE( QGstVideoRendererInterface, QGstVideoRendererInterface_iid )
 
 class QGstVideoRendererPlugin : public QObject, public QGstVideoRendererInterface
 {
-   CS_OBJECT(QGstVideoRendererPlugin)
-   CS_INTERFACES(QGstVideoRendererInterface)
+    CS_OBJECT( QGstVideoRendererPlugin )
+    CS_INTERFACES( QGstVideoRendererInterface )
 
- public:
-   explicit QGstVideoRendererPlugin(QObject *parent = nullptr);
-   virtual ~QGstVideoRendererPlugin() {}
+public:
+    explicit QGstVideoRendererPlugin( QObject *parent = nullptr );
+    virtual ~QGstVideoRendererPlugin() {}
 };
 
 #endif

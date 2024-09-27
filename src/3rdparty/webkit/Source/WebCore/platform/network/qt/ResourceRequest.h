@@ -32,44 +32,50 @@
 class QNetworkRequest;
 class QObject;
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class ResourceRequest : public ResourceRequestBase {
-    public:
-        ResourceRequest(const String& url)
-            : ResourceRequestBase(KURL(ParsedURLString, url), UseProtocolCachePolicy)
-        {
-        }
+class ResourceRequest : public ResourceRequestBase
+{
+public:
+    ResourceRequest( const String &url )
+        : ResourceRequestBase( KURL( ParsedURLString, url ), UseProtocolCachePolicy )
+    {
+    }
 
-        ResourceRequest(const KURL& url)
-            : ResourceRequestBase(url, UseProtocolCachePolicy)
-        {
-        }
+    ResourceRequest( const KURL &url )
+        : ResourceRequestBase( url, UseProtocolCachePolicy )
+    {
+    }
 
-        ResourceRequest(const KURL& url, const String& referrer, ResourceRequestCachePolicy policy = UseProtocolCachePolicy)
-            : ResourceRequestBase(url, policy)
-        {
-            setHTTPReferrer(referrer);
-        }
+    ResourceRequest( const KURL &url, const String &referrer, ResourceRequestCachePolicy policy = UseProtocolCachePolicy )
+        : ResourceRequestBase( url, policy )
+    {
+        setHTTPReferrer( referrer );
+    }
 
-        ResourceRequest()
-            : ResourceRequestBase(KURL(), UseProtocolCachePolicy)
-        {
-        }
+    ResourceRequest()
+        : ResourceRequestBase( KURL(), UseProtocolCachePolicy )
+    {
+    }
 
-        QNetworkRequest toNetworkRequest(QObject* originatingObject) const;
+    QNetworkRequest toNetworkRequest( QObject *originatingObject ) const;
 
-    private:
-        friend class ResourceRequestBase;
+private:
+    friend class ResourceRequestBase;
 
-        void doUpdatePlatformRequest() {}
-        void doUpdateResourceRequest() {}
+    void doUpdatePlatformRequest() {}
+    void doUpdateResourceRequest() {}
 
-        PassOwnPtr<CrossThreadResourceRequestData> doPlatformCopyData(PassOwnPtr<CrossThreadResourceRequestData> data) const { return data; }
-        void doPlatformAdopt(PassOwnPtr<CrossThreadResourceRequestData>) { }
-    };
+    PassOwnPtr<CrossThreadResourceRequestData> doPlatformCopyData( PassOwnPtr<CrossThreadResourceRequestData> data ) const
+    {
+        return data;
+    }
+    void doPlatformAdopt( PassOwnPtr<CrossThreadResourceRequestData> ) { }
+};
 
-    struct CrossThreadResourceRequestData : public CrossThreadResourceRequestDataBase {
+struct CrossThreadResourceRequestData : public CrossThreadResourceRequestDataBase
+{
 };
 
 }

@@ -23,13 +23,14 @@
 
 #include "Document.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-Notation::Notation(Document* document, const String& name, const String& publicId, const String& systemId)
-    : ContainerNode(document)
-    , m_name(name)
-    , m_publicId(publicId)
-    , m_systemId(systemId)
+Notation::Notation( Document *document, const String &name, const String &publicId, const String &systemId )
+    : ContainerNode( document )
+    , m_name( name )
+    , m_publicId( publicId )
+    , m_systemId( systemId )
 {
 }
 
@@ -43,13 +44,13 @@ Node::NodeType Notation::nodeType() const
     return NOTATION_NODE;
 }
 
-PassRefPtr<Node> Notation::cloneNode(bool /*deep*/)
+PassRefPtr<Node> Notation::cloneNode( bool /*deep*/ )
 {
     // Spec says cloning Notation nodes is "implementation dependent". We do not support it.
     return 0;
 }
 
-bool Notation::childTypeAllowed(NodeType) const
+bool Notation::childTypeAllowed( NodeType ) const
 {
     return false;
 }

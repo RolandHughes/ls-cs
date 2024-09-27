@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef CachedScriptSourceProvider_h
@@ -33,43 +33,60 @@
 #include "ScriptSourceProvider.h"
 #include <parser/SourceCode.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class CachedScriptSourceProvider : public ScriptSourceProvider, public CachedResourceClient {
-        WTF_MAKE_FAST_ALLOCATED;
-    public:
-        static PassRefPtr<CachedScriptSourceProvider> create(CachedScript* cachedScript) { return adoptRef(new CachedScriptSourceProvider(cachedScript)); }
-
-        virtual ~CachedScriptSourceProvider()
-        {
-            m_cachedScript->removeClient(this);
-        }
-
-        JSC::UString getRange(int start, int end) const { return JSC::UString(m_cachedScript->script().characters() + start, end - start); }
-        const UChar* data() const { return m_cachedScript->script().characters(); }
-        int length() const { return m_cachedScript->script().length(); }
-        const String& source() const { return m_cachedScript->script(); }
-
-        virtual void cacheSizeChanged(int delta) 
-        { 
-            m_cachedScript->sourceProviderCacheSizeChanged(delta);
-        }
-
-    private:
-        CachedScriptSourceProvider(CachedScript* cachedScript)
-            : ScriptSourceProvider(stringToUString(cachedScript->response().url()), cachedScript->sourceProviderCache())
-            , m_cachedScript(cachedScript)
-        {
-            m_cachedScript->addClient(this);
-        }
-
-        CachedResourceHandle<CachedScript> m_cachedScript;
-    };
-
-    inline JSC::SourceCode makeSource(CachedScript* cachedScript)
+class CachedScriptSourceProvider : public ScriptSourceProvider, public CachedResourceClient
+{
+    WTF_MAKE_FAST_ALLOCATED;
+public:
+    static PassRefPtr<CachedScriptSourceProvider> create( CachedScript *cachedScript )
     {
-        return JSC::SourceCode(CachedScriptSourceProvider::create(cachedScript));
+        return adoptRef( new CachedScriptSourceProvider( cachedScript ) );
     }
+
+    virtual ~CachedScriptSourceProvider()
+    {
+        m_cachedScript->removeClient( this );
+    }
+
+    JSC::UString getRange( int start, int end ) const
+    {
+        return JSC::UString( m_cachedScript->script().characters() + start, end - start );
+    }
+    const UChar *data() const
+    {
+        return m_cachedScript->script().characters();
+    }
+    int length() const
+    {
+        return m_cachedScript->script().length();
+    }
+    const String &source() const
+    {
+        return m_cachedScript->script();
+    }
+
+    virtual void cacheSizeChanged( int delta )
+    {
+        m_cachedScript->sourceProviderCacheSizeChanged( delta );
+    }
+
+private:
+    CachedScriptSourceProvider( CachedScript *cachedScript )
+        : ScriptSourceProvider( stringToUString( cachedScript->response().url() ), cachedScript->sourceProviderCache() )
+        , m_cachedScript( cachedScript )
+    {
+        m_cachedScript->addClient( this );
+    }
+
+    CachedResourceHandle<CachedScript> m_cachedScript;
+};
+
+inline JSC::SourceCode makeSource( CachedScript *cachedScript )
+{
+    return JSC::SourceCode( CachedScriptSourceProvider::create( cachedScript ) );
+}
 
 } // namespace WebCore
 

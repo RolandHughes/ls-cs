@@ -28,11 +28,12 @@
 
 #include "WebEventFactoryQt.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
-NativeWebKeyboardEvent::NativeWebKeyboardEvent(QKeyEvent* event)
-    : WebKeyboardEvent(WebEventFactory::createWebKeyboardEvent(event))
-    , m_nativeEvent(*event)
+NativeWebKeyboardEvent::NativeWebKeyboardEvent( QKeyEvent *event )
+    : WebKeyboardEvent( WebEventFactory::createWebKeyboardEvent( event ) )
+    , m_nativeEvent( *event )
 {
 }
 

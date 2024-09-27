@@ -26,18 +26,22 @@
 #include "HTMLOptGroupElement.h"
 #include <wtf/Assertions.h>
 
-namespace WebCore {
-
-OptionGroupElement* toOptionGroupElement(Element* element)
+namespace WebCore
 {
-    if (element->isHTMLElement() && element->hasTagName(HTMLNames::optgroupTag))
-        return static_cast<HTMLOptGroupElement*>(element);
+
+OptionGroupElement *toOptionGroupElement( Element *element )
+{
+    if ( element->isHTMLElement() && element->hasTagName( HTMLNames::optgroupTag ) )
+    {
+        return static_cast<HTMLOptGroupElement *>( element );
+    }
+
     return 0;
 }
 
-bool isOptionGroupElement(Element* element)
+bool isOptionGroupElement( Element *element )
 {
-    return element->hasLocalName(HTMLNames::optgroupTag);
+    return element->hasLocalName( HTMLNames::optgroupTag );
 }
 
 }

@@ -28,26 +28,32 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class DataTransferItem;
 
-class JSDataTransferItem : public JSDOMWrapper {
+class JSDataTransferItem : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSDataTransferItem(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<DataTransferItem>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
+    JSDataTransferItem( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<DataTransferItem> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
-    DataTransferItem* impl() const { return m_impl.get(); }
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
+    DataTransferItem *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<DataTransferItem> m_impl;
@@ -55,34 +61,37 @@ protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, DataTransferItem*);
-DataTransferItem* toDataTransferItem(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, DataTransferItem * );
+DataTransferItem *toDataTransferItem( JSC::JSValue );
 
-class JSDataTransferItemPrototype : public JSC::JSObjectWithGlobalObject {
+class JSDataTransferItemPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSDataTransferItemPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSDataTransferItemPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                                 JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsDataTransferItemPrototypeFunctionGetAsString(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsDataTransferItemPrototypeFunctionGetAsFile(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsDataTransferItemPrototypeFunctionGetAsString( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsDataTransferItemPrototypeFunctionGetAsFile( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsDataTransferItemKind(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsDataTransferItemType(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsDataTransferItemConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsDataTransferItemKind( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsDataTransferItemType( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsDataTransferItemConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

@@ -30,49 +30,52 @@
 
 class Q_CORE_EXPORT QElapsedTimer
 {
- public:
-   enum ClockType {
-      SystemTime,
-      MonotonicClock,
-      TickCounter,
-      MachAbsoluteTime,
-      PerformanceCounter
-   };
+public:
+    enum ClockType
+    {
+        SystemTime,
+        MonotonicClock,
+        TickCounter,
+        MachAbsoluteTime,
+        PerformanceCounter
+    };
 
-   constexpr QElapsedTimer()
-      : t1(std::numeric_limits<qint64>::lowest()), t2(std::numeric_limits<qint64>::lowest())
-   {
-   }
+    constexpr QElapsedTimer()
+        : t1( std::numeric_limits<qint64>::lowest() ), t2( std::numeric_limits<qint64>::lowest() )
+    {
+    }
 
-   static ClockType clockType();
-   static bool isMonotonic();
+    static ClockType clockType();
+    static bool isMonotonic();
 
-   void start();
-   qint64 restart();
-   void invalidate();
-   bool isValid() const;
+    void start();
+    qint64 restart();
+    void invalidate();
+    bool isValid() const;
 
-   qint64 nsecsElapsed() const;
-   qint64 elapsed() const;
-   bool hasExpired(qint64 timeout) const;
+    qint64 nsecsElapsed() const;
+    qint64 elapsed() const;
+    bool hasExpired( qint64 timeout ) const;
 
-   qint64 msecsSinceReference() const;
-   qint64 msecsTo(const QElapsedTimer &other) const;
-   qint64 secsTo(const QElapsedTimer &other) const;
+    qint64 msecsSinceReference() const;
+    qint64 msecsTo( const QElapsedTimer &other ) const;
+    qint64 secsTo( const QElapsedTimer &other ) const;
 
-   bool operator==(const QElapsedTimer &other) const {
-      return t1 == other.t1 && t2 == other.t2;
-   }
+    bool operator==( const QElapsedTimer &other ) const
+    {
+        return t1 == other.t1 && t2 == other.t2;
+    }
 
-   bool operator!=(const QElapsedTimer &other) const {
-      return !(*this == other);
-   }
+    bool operator!=( const QElapsedTimer &other ) const
+    {
+        return !( *this == other );
+    }
 
-   friend bool Q_CORE_EXPORT operator<(const QElapsedTimer &v1, const QElapsedTimer &v2);
+    friend bool Q_CORE_EXPORT operator<( const QElapsedTimer &v1, const QElapsedTimer &v2 );
 
- private:
-   qint64 t1;
-   qint64 t2;
+private:
+    qint64 t1;
+    qint64 t2;
 };
 
 #endif

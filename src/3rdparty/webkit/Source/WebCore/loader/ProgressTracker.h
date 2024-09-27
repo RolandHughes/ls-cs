@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef ProgressTracker_h
@@ -30,52 +30,61 @@
 #include <wtf/Noncopyable.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Frame;
 class ResourceResponse;
 struct ProgressItem;
 
-class ProgressTracker {
-    WTF_MAKE_NONCOPYABLE(ProgressTracker); WTF_MAKE_FAST_ALLOCATED;
+class ProgressTracker
+{
+    WTF_MAKE_NONCOPYABLE( ProgressTracker );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
     ProgressTracker();
     ~ProgressTracker();
-    
+
     static unsigned long createUniqueIdentifier();
 
     double estimatedProgress() const;
 
-    void progressStarted(Frame*);
-    void progressCompleted(Frame*);
-    
-    void incrementProgress(unsigned long identifier, const ResourceResponse&);
-    void incrementProgress(unsigned long identifier, const char*, int);
-    void completeProgress(unsigned long identifier);
+    void progressStarted( Frame * );
+    void progressCompleted( Frame * );
 
-    long long totalPageAndResourceBytesToLoad() const { return m_totalPageAndResourceBytesToLoad; }
-    long long totalBytesReceived() const { return m_totalBytesReceived; }
+    void incrementProgress( unsigned long identifier, const ResourceResponse & );
+    void incrementProgress( unsigned long identifier, const char *, int );
+    void completeProgress( unsigned long identifier );
+
+    long long totalPageAndResourceBytesToLoad() const
+    {
+        return m_totalPageAndResourceBytesToLoad;
+    }
+    long long totalBytesReceived() const
+    {
+        return m_totalBytesReceived;
+    }
 
 private:
     void reset();
     void finalProgressComplete();
-    
+
     static unsigned long s_uniqueIdentifier;
-    
+
     long long m_totalPageAndResourceBytesToLoad;
     long long m_totalBytesReceived;
     double m_lastNotifiedProgressValue;
     double m_lastNotifiedProgressTime;
     double m_progressNotificationInterval;
     double m_progressNotificationTimeInterval;
-    bool m_finalProgressChangedSent;    
+    bool m_finalProgressChangedSent;
     double m_progressValue;
     RefPtr<Frame> m_originatingProgressFrame;
-    
+
     int m_numProgressTrackedFrames;
-    HashMap<unsigned long, ProgressItem*> m_progressItems;
+    HashMap<unsigned long, ProgressItem *> m_progressItems;
 };
-    
+
 }
 
 #endif

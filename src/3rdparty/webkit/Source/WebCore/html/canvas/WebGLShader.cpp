@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -31,24 +31,25 @@
 
 #include "WebGLRenderingContext.h"
 
-namespace WebCore {
-
-PassRefPtr<WebGLShader> WebGLShader::create(WebGLRenderingContext* ctx, GC3Denum type)
+namespace WebCore
 {
-    return adoptRef(new WebGLShader(ctx, type));
+
+PassRefPtr<WebGLShader> WebGLShader::create( WebGLRenderingContext *ctx, GC3Denum type )
+{
+    return adoptRef( new WebGLShader( ctx, type ) );
 }
 
-WebGLShader::WebGLShader(WebGLRenderingContext* ctx, GC3Denum type)
-    : WebGLObject(ctx)
-    , m_type(type)
-    , m_source("")
+WebGLShader::WebGLShader( WebGLRenderingContext *ctx, GC3Denum type )
+    : WebGLObject( ctx )
+    , m_type( type )
+    , m_source( "" )
 {
-    setObject(context()->graphicsContext3D()->createShader(type));
+    setObject( context()->graphicsContext3D()->createShader( type ) );
 }
 
-void WebGLShader::deleteObjectImpl(Platform3DObject object)
+void WebGLShader::deleteObjectImpl( Platform3DObject object )
 {
-    context()->graphicsContext3D()->deleteShader(object);
+    context()->graphicsContext3D()->deleteShader( object );
 }
 
 }

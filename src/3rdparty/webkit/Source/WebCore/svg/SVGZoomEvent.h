@@ -18,7 +18,7 @@
  * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301, USA.
  */
- 
+
 #ifndef SVGZoomEvent_h
 #define SVGZoomEvent_h
 #if ENABLE(SVG)
@@ -26,22 +26,27 @@
 #include "FloatRect.h"
 #include "UIEvent.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SVGZoomEvent : public UIEvent {
+class SVGZoomEvent : public UIEvent
+{
 public:
-    static PassRefPtr<SVGZoomEvent> create() { return adoptRef(new SVGZoomEvent); }
+    static PassRefPtr<SVGZoomEvent> create()
+    {
+        return adoptRef( new SVGZoomEvent );
+    }
 
     // 'SVGZoomEvent' functions
     FloatRect zoomRectScreen() const;
 
     float previousScale() const;
-    void setPreviousScale(float);
+    void setPreviousScale( float );
 
     FloatPoint previousTranslate() const;
 
     float newScale() const;
-    void setNewScale(float);
+    void setNewScale( float );
 
     FloatPoint newTranslate() const;
 

@@ -23,8 +23,8 @@
 
 #include <qmedianetworkaccesscontrol.h>
 
-QMediaNetworkAccessControl::QMediaNetworkAccessControl(QObject *parent)
-   : QMediaControl(parent)
+QMediaNetworkAccessControl::QMediaNetworkAccessControl( QObject *parent )
+    : QMediaControl( parent )
 {
 }
 

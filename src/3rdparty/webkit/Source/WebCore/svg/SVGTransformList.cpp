@@ -30,33 +30,42 @@
 #include <wtf/text/StringBuilder.h>
 #include <wtf/text/StringConcatenate.h>
 
-namespace WebCore {
-
-SVGTransform SVGTransformList::createSVGTransformFromMatrix(const SVGMatrix& matrix) const
+namespace WebCore
 {
-    return SVGSVGElement::createSVGTransformFromMatrix(matrix);
+
+SVGTransform SVGTransformList::createSVGTransformFromMatrix( const SVGMatrix &matrix ) const
+{
+    return SVGSVGElement::createSVGTransformFromMatrix( matrix );
 }
 
 SVGTransform SVGTransformList::consolidate()
 {
     AffineTransform matrix;
-    if (!concatenate(matrix))
-        return SVGTransform();
 
-    SVGTransform transform(matrix);
+    if ( !concatenate( matrix ) )
+    {
+        return SVGTransform();
+    }
+
+    SVGTransform transform( matrix );
     clear();
-    append(transform);
+    append( transform );
     return transform;
 }
 
-bool SVGTransformList::concatenate(AffineTransform& result) const
+bool SVGTransformList::concatenate( AffineTransform &result ) const
 {
     unsigned size = this->size();
-    if (!size)
-        return false;
 
-    for (unsigned i = 0; i < size; ++i)
-        result *= at(i).matrix();
+    if ( !size )
+    {
+        return false;
+    }
+
+    for ( unsigned i = 0; i < size; ++i )
+    {
+        result *= at( i ).matrix();
+    }
 
     return true;
 }
@@ -65,11 +74,15 @@ String SVGTransformList::valueAsString() const
 {
     StringBuilder builder;
     unsigned size = this->size();
-    for (unsigned i = 0; i < size; ++i) {
-        if (i > 0)
-            builder.append(' ');
 
-        builder.append(at(i).valueAsString());
+    for ( unsigned i = 0; i < size; ++i )
+    {
+        if ( i > 0 )
+        {
+            builder.append( ' ' );
+        }
+
+        builder.append( at( i ).valueAsString() );
     }
 
     return builder.toString();

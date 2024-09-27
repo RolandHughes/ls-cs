@@ -26,19 +26,20 @@
 
 #include <qsimplecontentconstructor_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class XSLTSimpleContentConstructor : public SimpleContentConstructor
 {
- public:
-   XSLTSimpleContentConstructor(const Expression::Ptr &source);
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
+public:
+    XSLTSimpleContentConstructor( const Expression::Ptr &source );
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
 
-   SequenceType::List expectedOperandTypes() const override;
-   SequenceType::Ptr staticType() const override;
+    SequenceType::List expectedOperandTypes() const override;
+    SequenceType::Ptr staticType() const override;
 
- private:
-   static inline QString processItem(const Item &item, bool &discard, bool &isText);
+private:
+    static inline QString processItem( const Item &item, bool &discard, bool &isText );
 };
 
 }

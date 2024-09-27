@@ -28,13 +28,14 @@
 
 #include "HighPass2FilterNode.h"
 
-namespace WebCore {
-
-HighPass2FilterNode::HighPass2FilterNode(AudioContext* context, double sampleRate)
-    : AudioBasicProcessorNode(context, sampleRate)
+namespace WebCore
 {
-    m_processor = adoptPtr(new BiquadProcessor(BiquadProcessor::HighPass2, sampleRate, 1, false));
-    setType(NodeTypeHighPass2Filter);
+
+HighPass2FilterNode::HighPass2FilterNode( AudioContext *context, double sampleRate )
+    : AudioBasicProcessorNode( context, sampleRate )
+{
+    m_processor = adoptPtr( new BiquadProcessor( BiquadProcessor::HighPass2, sampleRate, 1, false ) );
+    setType( NodeTypeHighPass2Filter );
 }
 
 } // namespace WebCore

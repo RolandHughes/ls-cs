@@ -38,45 +38,50 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class ErrorCallback;
 class FileSystemCallback;
 class ScriptExecutionContext;
 
 // Keeps per-process information and provides an entry point to open a file system.
-class LocalFileSystem {
-    WTF_MAKE_NONCOPYABLE(LocalFileSystem);
+class LocalFileSystem
+{
+    WTF_MAKE_NONCOPYABLE( LocalFileSystem );
 public:
     // Returns a per-process instance of LocalFileSystem.
     // Note that LocalFileSystem::initializeLocalFileSystem must be called before
     // calling this one.
-    static LocalFileSystem& localFileSystem();
+    static LocalFileSystem &localFileSystem();
 
     // Does not create the root path for file system, just reads it if available.
-    void readFileSystem(ScriptExecutionContext*, AsyncFileSystem::Type, PassOwnPtr<AsyncFileSystemCallbacks>, bool synchronous = false);
+    void readFileSystem( ScriptExecutionContext *, AsyncFileSystem::Type, PassOwnPtr<AsyncFileSystemCallbacks>,
+                         bool synchronous = false );
 
-    void requestFileSystem(ScriptExecutionContext*, AsyncFileSystem::Type, long long size, PassOwnPtr<AsyncFileSystemCallbacks>, bool synchronous = false);
+    void requestFileSystem( ScriptExecutionContext *, AsyncFileSystem::Type, long long size, PassOwnPtr<AsyncFileSystemCallbacks>,
+                            bool synchronous = false );
 
 #if !PLATFORM(CHROMIUM)
     // This call is not thread-safe; must be called before any worker threads are created.
-    void initializeLocalFileSystem(const String&);
+    void initializeLocalFileSystem( const String & );
 
     String fileSystemBasePath() const;
 #endif
 
 private:
-    LocalFileSystem(const String& basePath)
-        : m_basePath(basePath)
+    LocalFileSystem( const String &basePath )
+        : m_basePath( basePath )
     {
     }
 
-    static LocalFileSystem* s_instance;
+    static LocalFileSystem *s_instance;
 
     // An inner class that enforces thread-safe string access.
-    class SystemBasePath {
+    class SystemBasePath
+    {
     public:
-        explicit SystemBasePath(const String& path) : m_value(path) { }
+        explicit SystemBasePath( const String &path ) : m_value( path ) { }
         operator String() const
         {
             return m_value.threadsafeCopy();

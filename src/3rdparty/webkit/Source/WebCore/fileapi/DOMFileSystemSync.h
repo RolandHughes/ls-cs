@@ -35,7 +35,8 @@
 
 #include "DOMFileSystemBase.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class DirectoryEntrySync;
 class File;
@@ -44,24 +45,26 @@ class FileWriterSync;
 
 typedef int ExceptionCode;
 
-class DOMFileSystemSync : public DOMFileSystemBase {
+class DOMFileSystemSync : public DOMFileSystemBase
+{
 public:
-    static PassRefPtr<DOMFileSystemSync> create(ScriptExecutionContext* context, const String& name, PassOwnPtr<AsyncFileSystem> asyncFileSystem)
+    static PassRefPtr<DOMFileSystemSync> create( ScriptExecutionContext *context, const String &name,
+            PassOwnPtr<AsyncFileSystem> asyncFileSystem )
     {
-        return adoptRef(new DOMFileSystemSync(context, name, asyncFileSystem));
+        return adoptRef( new DOMFileSystemSync( context, name, asyncFileSystem ) );
     }
 
-    static PassRefPtr<DOMFileSystemSync> create(DOMFileSystemBase*);
+    static PassRefPtr<DOMFileSystemSync> create( DOMFileSystemBase * );
 
     virtual ~DOMFileSystemSync();
 
     PassRefPtr<DirectoryEntrySync> root();
 
-    PassRefPtr<File> createFile(const FileEntrySync*, ExceptionCode&);
-    PassRefPtr<FileWriterSync> createWriter(const FileEntrySync*, ExceptionCode&);
+    PassRefPtr<File> createFile( const FileEntrySync *, ExceptionCode & );
+    PassRefPtr<FileWriterSync> createWriter( const FileEntrySync *, ExceptionCode & );
 
 private:
-    DOMFileSystemSync(ScriptExecutionContext*, const String& name, PassOwnPtr<AsyncFileSystem>);
+    DOMFileSystemSync( ScriptExecutionContext *, const String &name, PassOwnPtr<AsyncFileSystem> );
 };
 
 }

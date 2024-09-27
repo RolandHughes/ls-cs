@@ -39,153 +39,166 @@ extern const CLSID CLSID_VideoInputDeviceCategory;
 
 static QList<DSVideoDeviceInfo> *deviceList()
 {
-   static QList<DSVideoDeviceInfo> retval;
-   return &retval;
+    static QList<DSVideoDeviceInfo> retval;
+    return &retval;
 }
 
-DSVideoDeviceControl::DSVideoDeviceControl(QObject *parent)
-   : QVideoDeviceSelectorControl(parent)
+DSVideoDeviceControl::DSVideoDeviceControl( QObject *parent )
+    : QVideoDeviceSelectorControl( parent )
 {
-   m_session = dynamic_cast<DSCameraSession *>(parent);
-   selected = 0;
+    m_session = dynamic_cast<DSCameraSession *>( parent );
+    selected = 0;
 }
 
 int DSVideoDeviceControl::deviceCount() const
 {
-   updateDevices();
-   return deviceList()->count();
+    updateDevices();
+    return deviceList()->count();
 }
 
-QString DSVideoDeviceControl::deviceName(int index) const
+QString DSVideoDeviceControl::deviceName( int index ) const
 {
-   updateDevices();
+    updateDevices();
 
-   if (index >= 0 && index <= deviceList()->count()) {
-      return QString::fromUtf8(deviceList()->at(index).first.constData());
-   }
+    if ( index >= 0 && index <= deviceList()->count() )
+    {
+        return QString::fromUtf8( deviceList()->at( index ).first.constData() );
+    }
 
-   return QString();
+    return QString();
 }
 
-QString DSVideoDeviceControl::deviceDescription(int index) const
+QString DSVideoDeviceControl::deviceDescription( int index ) const
 {
-   updateDevices();
+    updateDevices();
 
-   if (index >= 0 && index <= deviceList()->count()) {
-      return deviceList()->at(index).second;
-   }
+    if ( index >= 0 && index <= deviceList()->count() )
+    {
+        return deviceList()->at( index ).second;
+    }
 
-   return QString();
+    return QString();
 }
 
 int DSVideoDeviceControl::defaultDevice() const
 {
-   return 0;
+    return 0;
 }
 
 int DSVideoDeviceControl::selectedDevice() const
 {
-   return selected;
+    return selected;
 }
 
-void DSVideoDeviceControl::setSelectedDevice(int index)
+void DSVideoDeviceControl::setSelectedDevice( int index )
 {
-   updateDevices();
+    updateDevices();
 
-   if (index >= 0 && index < deviceList()->count()) {
-      if (m_session) {
-         QString device = deviceList()->at(index).first;
+    if ( index >= 0 && index < deviceList()->count() )
+    {
+        if ( m_session )
+        {
+            QString device = deviceList()->at( index ).first;
 
-         if (device.startsWith("ds:")) {
-            device.remove(0, 3);
-         }
+            if ( device.startsWith( "ds:" ) )
+            {
+                device.remove( 0, 3 );
+            }
 
-         m_session->setDevice(device);
-      }
+            m_session->setDevice( device );
+        }
 
-      selected = index;
-   }
+        selected = index;
+    }
 }
 
 const QList<DSVideoDeviceInfo> &DSVideoDeviceControl::availableDevices()
 {
-   updateDevices();
-   return *deviceList();
+    updateDevices();
+    return *deviceList();
 }
 
 void DSVideoDeviceControl::updateDevices()
 {
-   static QElapsedTimer timer;
-   if (timer.isValid() && timer.elapsed() < 500) { // ms
-      return;
-   }
+    static QElapsedTimer timer;
 
-   deviceList()->clear();
+    if ( timer.isValid() && timer.elapsed() < 500 ) // ms
+    {
+        return;
+    }
 
-   ICreateDevEnum *pDevEnum = nullptr;
-   IEnumMoniker *pEnum = nullptr;
+    deviceList()->clear();
 
-   // Create the System device enumerator
-   HRESULT hr = CoCreateInstance(CLSID_SystemDeviceEnum, nullptr,
-                                 CLSCTX_INPROC_SERVER, IID_ICreateDevEnum, reinterpret_cast<void **>(&pDevEnum));
+    ICreateDevEnum *pDevEnum = nullptr;
+    IEnumMoniker *pEnum = nullptr;
 
-   if (SUCCEEDED(hr)) {
-      // Create the enumerator for the video capture category
-      hr = pDevEnum->CreateClassEnumerator(CLSID_VideoInputDeviceCategory, &pEnum, 0);
+    // Create the System device enumerator
+    HRESULT hr = CoCreateInstance( CLSID_SystemDeviceEnum, nullptr,
+                                   CLSCTX_INPROC_SERVER, IID_ICreateDevEnum, reinterpret_cast<void **>( &pDevEnum ) );
 
-      if (S_OK == hr) {
-         pEnum->Reset();
+    if ( SUCCEEDED( hr ) )
+    {
+        // Create the enumerator for the video capture category
+        hr = pDevEnum->CreateClassEnumerator( CLSID_VideoInputDeviceCategory, &pEnum, 0 );
 
-         // find all video capture devices
-         IMoniker *pMoniker = nullptr;
-         IMalloc *mallocInterface = nullptr;
-         CoGetMalloc(1, (LPMALLOC *)&mallocInterface);
+        if ( S_OK == hr )
+        {
+            pEnum->Reset();
 
-         while (pEnum->Next(1, &pMoniker, nullptr) == S_OK) {
-            BSTR strName = nullptr;
-            hr = pMoniker->GetDisplayName(nullptr, nullptr, &strName);
+            // find all video capture devices
+            IMoniker *pMoniker = nullptr;
+            IMalloc *mallocInterface = nullptr;
+            CoGetMalloc( 1, ( LPMALLOC * )&mallocInterface );
 
-            if (SUCCEEDED(hr)) {
-               std::wstring tmp(strName);
-               QString output = QString::fromStdWString(tmp);
+            while ( pEnum->Next( 1, &pMoniker, nullptr ) == S_OK )
+            {
+                BSTR strName = nullptr;
+                hr = pMoniker->GetDisplayName( nullptr, nullptr, &strName );
 
-               mallocInterface->Free(strName);
+                if ( SUCCEEDED( hr ) )
+                {
+                    std::wstring tmp( strName );
+                    QString output = QString::fromStdWString( tmp );
 
-               DSVideoDeviceInfo devInfo;
-               devInfo.first = output;
+                    mallocInterface->Free( strName );
 
-               IPropertyBag *pPropBag;
-               hr = pMoniker->BindToStorage(nullptr, nullptr, IID_IPropertyBag, (void **)(&pPropBag));
+                    DSVideoDeviceInfo devInfo;
+                    devInfo.first = output;
 
-               if (SUCCEEDED(hr)) {
-                  // Find the description
-                  VARIANT varName;
-                  varName.vt = VT_BSTR;
-                  hr = pPropBag->Read(L"FriendlyName", &varName, nullptr);
+                    IPropertyBag *pPropBag;
+                    hr = pMoniker->BindToStorage( nullptr, nullptr, IID_IPropertyBag, ( void ** )( &pPropBag ) );
 
-                  if (SUCCEEDED(hr)) {
-                     std::wstring tmp(varName.bstrVal);
-                     output = QString::fromStdWString(tmp);
-                  }
+                    if ( SUCCEEDED( hr ) )
+                    {
+                        // Find the description
+                        VARIANT varName;
+                        varName.vt = VT_BSTR;
+                        hr = pPropBag->Read( L"FriendlyName", &varName, nullptr );
 
-                  pPropBag->Release();
-               }
+                        if ( SUCCEEDED( hr ) )
+                        {
+                            std::wstring tmp( varName.bstrVal );
+                            output = QString::fromStdWString( tmp );
+                        }
 
-               devInfo.second = output;
+                        pPropBag->Release();
+                    }
 
-               deviceList()->append(devInfo);
+                    devInfo.second = output;
+
+                    deviceList()->append( devInfo );
+                }
+
+                pMoniker->Release();
             }
 
-            pMoniker->Release();
-         }
+            mallocInterface->Release();
+            pEnum->Release();
+        }
 
-         mallocInterface->Release();
-         pEnum->Release();
-      }
+        pDevEnum->Release();
+    }
 
-      pDevEnum->Release();
-   }
-
-   timer.restart();
+    timer.restart();
 }
 

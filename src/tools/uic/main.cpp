@@ -33,152 +33,193 @@
 
 static const char *error = nullptr;
 
-void showHelp(const char *appName)
+void showHelp( const char *appName )
 {
-   fprintf(stderr, "CopperSpice User Interface Compiler version %s\n", UIC_VERSION_STR);
+    fprintf( stderr, "CopperSpice User Interface Compiler version %s\n", UIC_VERSION_STR );
 
-   if (error) {
-      fprintf(stderr, "%s: %s\n", appName, error);
-   }
+    if ( error )
+    {
+        fprintf( stderr, "%s: %s\n", appName, error );
+    }
 
-   fprintf(stderr, "Usage: %s [options] <uifile>\n\n"
-      "  -h, -help                 display this help and exit\n"
-      "  -v, -version              display version\n"
-      "  -d, -dependencies         display the dependencies\n"
-      "  -o <file>                 place the output into <file>\n"
-      "  -tr <func>                use func() for i18n\n"
-      "  -p, -no-protection        disable header protection\n"
-      "  -n, -no-implicit-includes disable generation of #include-directives\n"
-      "  -g <name>                 change generator\n"
-      "\n", appName);
+    fprintf( stderr, "Usage: %s [options] <uifile>\n\n"
+             "  -h, -help                 display this help and exit\n"
+             "  -v, -version              display version\n"
+             "  -d, -dependencies         display the dependencies\n"
+             "  -o <file>                 place the output into <file>\n"
+             "  -tr <func>                use func() for i18n\n"
+             "  -p, -no-protection        disable header protection\n"
+             "  -n, -no-implicit-includes disable generation of #include-directives\n"
+             "  -g <name>                 change generator\n"
+             "\n", appName );
 }
 
-int runUic(int argc, char *argv[])
+int runUic( int argc, char *argv[] )
 {
-   const char *fileName = nullptr;
+    const char *fileName = nullptr;
 
-   int arg = 1;
-   Driver driver;
+    int arg = 1;
+    Driver driver;
 
-   while (arg < argc) {
-      QString opt = QString::fromUtf8(argv[arg]);
+    while ( arg < argc )
+    {
+        QString opt = QString::fromUtf8( argv[arg] );
 
-      if (opt == "-h" || opt == "-help" || opt == "--help") {
-         showHelp(argv[0]);
-         return 0;
+        if ( opt == "-h" || opt == "-help" || opt == "--help" )
+        {
+            showHelp( argv[0] );
+            return 0;
 
-      } else if (opt == "-d" || opt == "-dependencies") {
-         driver.option().dependencies = true;
+        }
+        else if ( opt == "-d" || opt == "-dependencies" )
+        {
+            driver.option().dependencies = true;
 
-      } else if (opt == "-v" || opt == "-version" || opt == "--version") {
-         fprintf(stderr, "CopperSpice User Interface Compiler version %s\n", UIC_VERSION_STR);
-         return 0;
+        }
+        else if ( opt == "-v" || opt == "-version" || opt == "--version" )
+        {
+            fprintf( stderr, "CopperSpice User Interface Compiler version %s\n", UIC_VERSION_STR );
+            return 0;
 
-      } else if (opt == "-o" || opt == "-output") {
-         ++arg;
+        }
+        else if ( opt == "-o" || opt == "-output" )
+        {
+            ++arg;
 
-         if (! argv[arg]) {
-            showHelp(argv[0]);
+            if ( ! argv[arg] )
+            {
+                showHelp( argv[0] );
+                return 1;
+            }
+
+            driver.option().outputFile = QFile::decodeName( argv[arg] );
+
+        }
+        else if ( opt == "-p" || opt == "-no-protection" )
+        {
+            driver.option().headerProtection = false;
+
+        }
+        else if ( opt == "-n" || opt == "-no-implicit-includes" )
+        {
+            driver.option().implicitIncludes = false;
+
+        }
+        else if ( opt == "-postfix" )
+        {
+            ++arg;
+
+            if ( ! argv[arg] )
+            {
+                showHelp( argv[0] );
+                return 1;
+            }
+
+            driver.option().postfix = QString::fromUtf8( argv[arg] );
+
+        }
+        else if ( opt == "-tr" || opt == "-translate" )
+        {
+            ++arg;
+
+            if ( !argv[arg] )
+            {
+                showHelp( argv[0] );
+                return 1;
+            }
+
+            driver.option().translateFunction = QString::fromUtf8( argv[arg] );
+
+        }
+        else if ( opt == "-g" || opt == "-generator" )
+        {
+            ++arg;
+
+            if ( ! argv[arg] )
+            {
+                showHelp( argv[0] );
+                return 1;
+            }
+
+            QString name = QString::fromUtf8( argv[arg] ).toLower();
+            driver.option().generator = ( name == "java" ) ? Option::JavaGenerator : Option::CppGenerator;
+
+        }
+        else if ( ! fileName )
+        {
+            fileName = argv[arg];
+
+        }
+        else
+        {
+            showHelp( argv[0] );
             return 1;
-         }
-         driver.option().outputFile = QFile::decodeName(argv[arg]);
+        }
 
-      } else if (opt == "-p" || opt == "-no-protection") {
-         driver.option().headerProtection = false;
+        ++arg;
+    }
 
-      } else if (opt == "-n" || opt == "-no-implicit-includes") {
-         driver.option().implicitIncludes = false;
+    QString inputFile;
 
-      } else if (opt == "-postfix") {
-         ++arg;
+    if ( fileName )
+    {
+        inputFile = QString::fromUtf8( fileName );
 
-         if (! argv[arg]) {
-            showHelp(argv[0]);
+    }
+    else
+    {
+        // no file name provide so there is nothing to do
+        showHelp( argv[0] );
+        return 1;
+    }
+
+    if ( driver.option().dependencies )
+    {
+        return ! driver.printDependencies( inputFile );
+    }
+
+    QTextStream *out = nullptr;
+    QFile f;
+
+    if ( driver.option().outputFile.size() )
+    {
+        f.setFileName( driver.option().outputFile );
+
+        if ( ! f.open( QIODevice::WriteOnly | QFile::Text ) )
+        {
+            fprintf( stderr, "Could not create output file %s\n", csPrintable( f.errorString() ) );
             return 1;
-         }
-         driver.option().postfix = QString::fromUtf8(argv[arg]);
+        }
 
-      } else if (opt == "-tr" || opt == "-translate") {
-         ++arg;
-         if (!argv[arg]) {
-            showHelp(argv[0]);
-            return 1;
-         }
+        out = new QTextStream( &f );
+        out->setCodec( QTextCodec::codecForName( "UTF-8" ) );
+    }
 
-         driver.option().translateFunction = QString::fromUtf8(argv[arg]);
+    bool retval = driver.uic( inputFile, out );
+    delete out;
 
-      } else if (opt == "-g" || opt == "-generator") {
-         ++arg;
+    if ( ! retval )
+    {
+        if ( driver.option().outputFile.size() )
+        {
+            f.close();
+            f.remove();
+        }
 
-         if (! argv[arg]) {
-            showHelp(argv[0]);
-            return 1;
-         }
+        if ( inputFile.isEmpty() )
+        {
+            fprintf( stderr, "File '<stdin>' is not valid\n" );
+        }
+        else
+        {
+            fprintf( stderr, "File '%s' is not valid\n", csPrintable( inputFile ) );
+        }
+    }
 
-         QString name = QString::fromUtf8(argv[arg]).toLower();
-         driver.option().generator = (name == "java") ? Option::JavaGenerator : Option::CppGenerator;
-
-      } else if (! fileName) {
-         fileName = argv[arg];
-
-      } else {
-         showHelp(argv[0]);
-         return 1;
-      }
-
-      ++arg;
-   }
-
-   QString inputFile;
-
-   if (fileName) {
-      inputFile = QString::fromUtf8(fileName);
-
-   } else {
-      // no file name provide so there is nothing to do
-      showHelp(argv[0]);
-      return 1;
-   }
-
-   if (driver.option().dependencies) {
-      return ! driver.printDependencies(inputFile);
-   }
-
-   QTextStream *out = nullptr;
-   QFile f;
-
-   if (driver.option().outputFile.size()) {
-      f.setFileName(driver.option().outputFile);
-
-      if (! f.open(QIODevice::WriteOnly | QFile::Text)) {
-         fprintf(stderr, "Could not create output file %s\n", csPrintable(f.errorString()));
-         return 1;
-      }
-
-      out = new QTextStream(&f);
-      out->setCodec(QTextCodec::codecForName("UTF-8"));
-   }
-
-   bool retval = driver.uic(inputFile, out);
-   delete out;
-
-   if (! retval) {
-      if (driver.option().outputFile.size()) {
-         f.close();
-         f.remove();
-      }
-
-      if (inputFile.isEmpty()) {
-         fprintf(stderr, "File '<stdin>' is not valid\n");
-      } else {
-         fprintf(stderr, "File '%s' is not valid\n", csPrintable(inputFile));
-      }
-   }
-
-   return ! retval;
+    return ! retval;
 }
 
-int main(int argc, char *argv[])
+int main( int argc, char *argv[] )
 {
-   return runUic(argc, argv);
+    return runUic( argc, argv );
 }

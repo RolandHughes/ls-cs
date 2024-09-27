@@ -36,7 +36,8 @@
 
 using namespace std;
 
-namespace WebCore {
+namespace WebCore
+{
 
 const int HRTFDatabase::MinElevation = -45;
 const int HRTFDatabase::MaxElevation = 90;
@@ -45,77 +46,94 @@ const unsigned HRTFDatabase::NumberOfRawElevations = 10; // -45 -> +90 (each 15 
 const unsigned HRTFDatabase::InterpolationFactor = 1;
 const unsigned HRTFDatabase::NumberOfTotalElevations = NumberOfRawElevations * InterpolationFactor;
 
-PassOwnPtr<HRTFDatabase> HRTFDatabase::create(double sampleRate)
+PassOwnPtr<HRTFDatabase> HRTFDatabase::create( double sampleRate )
 {
-    OwnPtr<HRTFDatabase> hrtfDatabase = adoptPtr(new HRTFDatabase(sampleRate));
+    OwnPtr<HRTFDatabase> hrtfDatabase = adoptPtr( new HRTFDatabase( sampleRate ) );
     return hrtfDatabase.release();
 }
 
-HRTFDatabase::HRTFDatabase(double sampleRate)
-    : m_elevations(NumberOfTotalElevations)
-    , m_sampleRate(sampleRate)
+HRTFDatabase::HRTFDatabase( double sampleRate )
+    : m_elevations( NumberOfTotalElevations )
+    , m_sampleRate( sampleRate )
 {
     unsigned elevationIndex = 0;
-    for (int elevation = MinElevation; elevation <= MaxElevation; elevation += RawElevationAngleSpacing) {
-        OwnPtr<HRTFElevation> hrtfElevation = HRTFElevation::createForSubject("Composite", elevation, sampleRate);
-        ASSERT(hrtfElevation.get());
-        if (!hrtfElevation.get())
+
+    for ( int elevation = MinElevation; elevation <= MaxElevation; elevation += RawElevationAngleSpacing )
+    {
+        OwnPtr<HRTFElevation> hrtfElevation = HRTFElevation::createForSubject( "Composite", elevation, sampleRate );
+        ASSERT( hrtfElevation.get() );
+
+        if ( !hrtfElevation.get() )
+        {
             return;
-        
+        }
+
         m_elevations[elevationIndex] = hrtfElevation.release();
         elevationIndex += InterpolationFactor;
     }
 
     // Now, go back and interpolate elevations.
-    if (InterpolationFactor > 1) {
-        for (unsigned i = 0; i < NumberOfTotalElevations; i += InterpolationFactor) {
-            unsigned j = (i + InterpolationFactor);
-            if (j >= NumberOfTotalElevations)
-                j = i; // for last elevation interpolate with itself
+    if ( InterpolationFactor > 1 )
+    {
+        for ( unsigned i = 0; i < NumberOfTotalElevations; i += InterpolationFactor )
+        {
+            unsigned j = ( i + InterpolationFactor );
+
+            if ( j >= NumberOfTotalElevations )
+            {
+                j = i;    // for last elevation interpolate with itself
+            }
 
             // Create the interpolated convolution kernels and delays.
-            for (unsigned jj = 1; jj < InterpolationFactor; ++jj) {
-                double x = static_cast<double>(jj) / static_cast<double>(InterpolationFactor);
-                m_elevations[i + jj] = HRTFElevation::createByInterpolatingSlices(m_elevations[i].get(), m_elevations[j].get(), x, sampleRate);
-                ASSERT(m_elevations[i + jj].get());
+            for ( unsigned jj = 1; jj < InterpolationFactor; ++jj )
+            {
+                double x = static_cast<double>( jj ) / static_cast<double>( InterpolationFactor );
+                m_elevations[i + jj] = HRTFElevation::createByInterpolatingSlices( m_elevations[i].get(), m_elevations[j].get(), x, sampleRate );
+                ASSERT( m_elevations[i + jj].get() );
             }
         }
     }
 }
 
-void HRTFDatabase::getKernelsFromAzimuthElevation(double azimuthBlend, unsigned azimuthIndex, double elevationAngle, HRTFKernel* &kernelL, HRTFKernel* &kernelR,
-                                                  double& frameDelayL, double& frameDelayR)
+void HRTFDatabase::getKernelsFromAzimuthElevation( double azimuthBlend, unsigned azimuthIndex, double elevationAngle,
+        HRTFKernel *&kernelL, HRTFKernel *&kernelR,
+        double &frameDelayL, double &frameDelayR )
 {
-    unsigned elevationIndex = indexFromElevationAngle(elevationAngle);
-    ASSERT(elevationIndex < m_elevations.size() && m_elevations.size() > 0);
-    
-    if (!m_elevations.size()) {
-        kernelL = 0;
-        kernelR = 0;
-        return;
-    }
-    
-    if (elevationIndex > m_elevations.size() - 1)
-        elevationIndex = m_elevations.size() - 1;    
-    
-    HRTFElevation* hrtfElevation = m_elevations[elevationIndex].get();
-    ASSERT(hrtfElevation);
-    if (!hrtfElevation) {
-        kernelL = 0;
-        kernelR = 0;
-        return;
-    }
-    
-    hrtfElevation->getKernelsFromAzimuth(azimuthBlend, azimuthIndex, kernelL, kernelR, frameDelayL, frameDelayR);
-}                                                     
+    unsigned elevationIndex = indexFromElevationAngle( elevationAngle );
+    ASSERT( elevationIndex < m_elevations.size() && m_elevations.size() > 0 );
 
-unsigned HRTFDatabase::indexFromElevationAngle(double elevationAngle)
+    if ( !m_elevations.size() )
+    {
+        kernelL = 0;
+        kernelR = 0;
+        return;
+    }
+
+    if ( elevationIndex > m_elevations.size() - 1 )
+    {
+        elevationIndex = m_elevations.size() - 1;
+    }
+
+    HRTFElevation *hrtfElevation = m_elevations[elevationIndex].get();
+    ASSERT( hrtfElevation );
+
+    if ( !hrtfElevation )
+    {
+        kernelL = 0;
+        kernelR = 0;
+        return;
+    }
+
+    hrtfElevation->getKernelsFromAzimuth( azimuthBlend, azimuthIndex, kernelL, kernelR, frameDelayL, frameDelayR );
+}
+
+unsigned HRTFDatabase::indexFromElevationAngle( double elevationAngle )
 {
     // Clamp to allowed range.
-    elevationAngle = max(static_cast<double>(MinElevation), elevationAngle);
-    elevationAngle = min(static_cast<double>(MaxElevation), elevationAngle);
+    elevationAngle = max( static_cast<double>( MinElevation ), elevationAngle );
+    elevationAngle = min( static_cast<double>( MaxElevation ), elevationAngle );
 
-    unsigned elevationIndex = static_cast<int>(InterpolationFactor * (elevationAngle - MinElevation) / RawElevationAngleSpacing);    
+    unsigned elevationIndex = static_cast<int>( InterpolationFactor * ( elevationAngle - MinElevation ) / RawElevationAngleSpacing );
     return elevationIndex;
 }
 

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef JSCustomPositionCallback_h
@@ -30,26 +30,28 @@
 #include "PositionCallback.h"
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Geoposition;
 class JSDOMGlobalObject;
 
-class JSCustomPositionCallback : public PositionCallback {
+class JSCustomPositionCallback : public PositionCallback
+{
 public:
-    static PassRefPtr<JSCustomPositionCallback> create(JSC::JSObject* callback, JSDOMGlobalObject* globalObject)
+    static PassRefPtr<JSCustomPositionCallback> create( JSC::JSObject *callback, JSDOMGlobalObject *globalObject )
     {
-        return adoptRef(new JSCustomPositionCallback(callback, globalObject));
+        return adoptRef( new JSCustomPositionCallback( callback, globalObject ) );
     }
-    
-private:
-    JSCustomPositionCallback(JSC::JSObject* callback, JSDOMGlobalObject*);
 
-    virtual void handleEvent(Geoposition*);
-    
+private:
+    JSCustomPositionCallback( JSC::JSObject *callback, JSDOMGlobalObject * );
+
+    virtual void handleEvent( Geoposition * );
+
     JSCallbackData m_data;
 };
-    
+
 } // namespace WebCore
 
 #endif // JSCustomPositionCallback_h

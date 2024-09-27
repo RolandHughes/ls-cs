@@ -35,31 +35,32 @@ QGestureRecognizer::~QGestureRecognizer()
 {
 }
 
-QGesture *QGestureRecognizer::create(QObject *target)
+QGesture *QGestureRecognizer::create( QObject *target )
 {
-   (void) target;
-   return new QGesture;
+    ( void ) target;
+    return new QGesture;
 }
 
-void QGestureRecognizer::reset(QGesture *gesture)
+void QGestureRecognizer::reset( QGesture *gesture )
 {
-   if (gesture) {
-      QGesturePrivate *d = gesture->d_func();
-      d->state = Qt::NoGesture;
-      d->hotSpot = QPointF();
-      d->sceneHotSpot = QPointF();
-      d->isHotSpotSet = false;
-   }
+    if ( gesture )
+    {
+        QGesturePrivate *d = gesture->d_func();
+        d->state = Qt::NoGesture;
+        d->hotSpot = QPointF();
+        d->sceneHotSpot = QPointF();
+        d->isHotSpotSet = false;
+    }
 }
 
-Qt::GestureType QGestureRecognizer::registerRecognizer(QGestureRecognizer *recognizer)
+Qt::GestureType QGestureRecognizer::registerRecognizer( QGestureRecognizer *recognizer )
 {
-   return QGestureManager::instance()->registerGestureRecognizer(recognizer);
+    return QGestureManager::instance()->registerGestureRecognizer( recognizer );
 }
 
-void QGestureRecognizer::unregisterRecognizer(Qt::GestureType type)
+void QGestureRecognizer::unregisterRecognizer( Qt::GestureType type )
 {
-   QGestureManager::instance()->unregisterGestureRecognizer(type);
+    QGestureManager::instance()->unregisterGestureRecognizer( type );
 }
 
 

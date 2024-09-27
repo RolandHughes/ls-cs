@@ -23,19 +23,25 @@
 #if USE(GSTREAMER)
 #include <gst/gstelement.h>
 
-namespace WTF {
-
-template <> GstElement* refGPtr<GstElement>(GstElement* ptr)
+namespace WTF
 {
-    if (ptr)
-        gst_object_ref(ptr);
+
+template <> GstElement *refGPtr<GstElement>( GstElement *ptr )
+{
+    if ( ptr )
+    {
+        gst_object_ref( ptr );
+    }
+
     return ptr;
 }
 
-template <> void derefGPtr<GstElement>(GstElement* ptr)
+template <> void derefGPtr<GstElement>( GstElement *ptr )
 {
-    if (ptr)
-        gst_object_unref(ptr);
+    if ( ptr )
+    {
+        gst_object_unref( ptr );
+    }
 }
 
 }

@@ -32,31 +32,43 @@
 #include "RenderSVGHiddenContainer.h"
 #include "RenderSVGResourceFilter.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class FilterEffect;
 
-class RenderSVGResourceFilterPrimitive : public RenderSVGHiddenContainer {
+class RenderSVGResourceFilterPrimitive : public RenderSVGHiddenContainer
+{
 public:
-    explicit RenderSVGResourceFilterPrimitive(SVGStyledElement* filterPrimitiveElement)
-        : RenderSVGHiddenContainer(filterPrimitiveElement)
+    explicit RenderSVGResourceFilterPrimitive( SVGStyledElement *filterPrimitiveElement )
+        : RenderSVGHiddenContainer( filterPrimitiveElement )
     {
     }
 
-    virtual void styleDidChange(StyleDifference, const RenderStyle*);
+    virtual void styleDidChange( StyleDifference, const RenderStyle * );
 
-    virtual const char* renderName() const { return "RenderSVGResourceFilterPrimitive"; }
-    virtual bool isSVGResourceFilterPrimitive() const { return true; }
+    virtual const char *renderName() const
+    {
+        return "RenderSVGResourceFilterPrimitive";
+    }
+    virtual bool isSVGResourceFilterPrimitive() const
+    {
+        return true;
+    }
 
     // They depend on the RenderObject argument of RenderSVGResourceFilter::applyResource.
-    static FloatRect determineFilterPrimitiveSubregion(FilterEffect*);
+    static FloatRect determineFilterPrimitiveSubregion( FilterEffect * );
 
-    inline void primitiveAttributeChanged(const QualifiedName& attribute)
+    inline void primitiveAttributeChanged( const QualifiedName &attribute )
     {
-        RenderObject* filter = parent();
-        if (!filter || !filter->isSVGResourceFilter())
+        RenderObject *filter = parent();
+
+        if ( !filter || !filter->isSVGResourceFilter() )
+        {
             return;
-        static_cast<RenderSVGResourceFilter*>(filter)->primitiveAttributeChanged(this, attribute);
+        }
+
+        static_cast<RenderSVGResourceFilter *>( filter )->primitiveAttributeChanged( this, attribute );
     }
 };
 

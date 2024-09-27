@@ -34,21 +34,23 @@ class QMenu;
 class QWKPage;
 class WebContextMenuItemData;
 
-namespace WebKit {
+namespace WebKit
+{
 
-class WebContextMenuProxyQt : public WebContextMenuProxy {
+class WebContextMenuProxyQt : public WebContextMenuProxy
+{
 public:
-    static PassRefPtr<WebContextMenuProxyQt> create(QWKPage*);
+    static PassRefPtr<WebContextMenuProxyQt> create( QWKPage * );
 
 private:
-    WebContextMenuProxyQt(QWKPage*);
+    WebContextMenuProxyQt( QWKPage * );
 
-    virtual void showContextMenu(const WebCore::IntPoint&, const Vector<WebContextMenuItemData>&);
+    virtual void showContextMenu( const WebCore::IntPoint &, const Vector<WebContextMenuItemData> & );
     virtual void hideContextMenu();
 
-    PassOwnPtr<QMenu> createContextMenu(const Vector<WebContextMenuItemData>& items) const;
+    PassOwnPtr<QMenu> createContextMenu( const Vector<WebContextMenuItemData> &items ) const;
 
-    QWKPage* const m_page;
+    QWKPage *const m_page;
 };
 
 } // namespace WebKit

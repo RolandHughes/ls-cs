@@ -27,8 +27,8 @@
 
 using namespace QPatternist;
 
-Item UnparsedEntityPublicIDFN::evaluateSingleton(const DynamicContext::Ptr &context) const
+Item UnparsedEntityPublicIDFN::evaluateSingleton( const DynamicContext::Ptr &context ) const
 {
-   checkTargetNode(context->contextItem().asNode(), context, ReportContext::XTDE1380);
-   return AtomicString::fromValue(QString());
+    checkTargetNode( context->contextItem().asNode(), context, ReportContext::XTDE1380 );
+    return AtomicString::fromValue( QString() );
 }

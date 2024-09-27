@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef HTMLFormattingElementList_h
@@ -30,13 +30,15 @@
 #include <wtf/RefPtr.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Element;
 
 // This may end up merged into HTMLElementStack.
-class HTMLFormattingElementList {
-    WTF_MAKE_NONCOPYABLE(HTMLFormattingElementList);
+class HTMLFormattingElementList
+{
+    WTF_MAKE_NONCOPYABLE( HTMLFormattingElementList );
 public:
     HTMLFormattingElementList();
     ~HTMLFormattingElementList();
@@ -44,88 +46,123 @@ public:
     // Ideally Entry would be private, but HTMLTreeBuilder has to coordinate
     // between the HTMLFormattingElementList and HTMLElementStack and needs
     // access to Entry::isMarker() and Entry::replaceElement() to do so.
-    class Entry {
+    class Entry
+    {
     public:
         // Inline because they're hot and Vector<T> uses them.
-        explicit Entry(Element* element)
-            : m_element(element)
+        explicit Entry( Element *element )
+            : m_element( element )
         {
-            ASSERT(element);
+            ASSERT( element );
         }
         enum MarkerEntryType { MarkerEntry };
-        Entry(MarkerEntryType)
-            : m_element(0)
+        Entry( MarkerEntryType )
+            : m_element( 0 )
         {
         }
         ~Entry() {}
 
-        bool isMarker() const { return !m_element; }
+        bool isMarker() const
+        {
+            return !m_element;
+        }
 
-        Element* element() const
+        Element *element() const
         {
             // The fact that !m_element == isMarker() is an implementation detail
             // callers should check isMarker() before calling element().
-            ASSERT(m_element);
+            ASSERT( m_element );
             return m_element.get();
         }
-        void replaceElement(PassRefPtr<Element> element) { m_element = element; }
+        void replaceElement( PassRefPtr<Element> element )
+        {
+            m_element = element;
+        }
 
         // Needed for use with Vector.  These are super-hot and must be inline.
-        bool operator==(Element* element) const { return m_element == element; }
-        bool operator!=(Element* element) const { return m_element != element; }
+        bool operator==( Element *element ) const
+        {
+            return m_element == element;
+        }
+        bool operator!=( Element *element ) const
+        {
+            return m_element != element;
+        }
 
     private:
         RefPtr<Element> m_element;
     };
 
-    class Bookmark {
+    class Bookmark
+    {
     public:
-        Bookmark(Entry* entry)
-            : m_hasBeenMoved(false)
-            , m_mark(entry)
+        Bookmark( Entry *entry )
+            : m_hasBeenMoved( false )
+            , m_mark( entry )
         {
         }
 
-        void moveToAfter(Entry* before)
+        void moveToAfter( Entry *before )
         {
             m_hasBeenMoved = true;
             m_mark = before;
         }
 
-        bool hasBeenMoved() const { return m_hasBeenMoved; }
-        Entry* mark() const { return m_mark; }
+        bool hasBeenMoved() const
+        {
+            return m_hasBeenMoved;
+        }
+        Entry *mark() const
+        {
+            return m_mark;
+        }
 
     private:
         bool m_hasBeenMoved;
-        Entry* m_mark;
+        Entry *m_mark;
     };
 
-    bool isEmpty() const { return !size(); }
-    size_t size() const { return m_entries.size(); }
+    bool isEmpty() const
+    {
+        return !size();
+    }
+    size_t size() const
+    {
+        return m_entries.size();
+    }
 
-    Element* closestElementInScopeWithName(const AtomicString&);
+    Element *closestElementInScopeWithName( const AtomicString & );
 
-    Entry* find(Element*);
-    bool contains(Element*);
-    void append(Element*);
-    void remove(Element*);
+    Entry *find( Element * );
+    bool contains( Element * );
+    void append( Element * );
+    void remove( Element * );
 
-    Bookmark bookmarkFor(Element*);
-    void swapTo(Element* oldElement, Element* newElement, const Bookmark&);
+    Bookmark bookmarkFor( Element * );
+    void swapTo( Element *oldElement, Element *newElement, const Bookmark & );
 
     void appendMarker();
     // clearToLastMarker also clears the marker (per the HTML5 spec).
     void clearToLastMarker();
 
-    const Entry& at(size_t i) const { return m_entries[i]; }
-    Entry& at(size_t i) { return m_entries[i]; }
+    const Entry &at( size_t i ) const
+    {
+        return m_entries[i];
+    }
+    Entry &at( size_t i )
+    {
+        return m_entries[i];
+    }
 
 #ifndef NDEBUG
     void show();
 #endif
 
 private:
-    Entry* first() { return &at(0); }
+    Entry *first()
+    {
+        return &at( 0 );
+    }
 
     Vector<Entry> m_entries;
 };

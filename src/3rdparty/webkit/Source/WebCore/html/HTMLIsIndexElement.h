@@ -26,19 +26,24 @@
 
 #include "HTMLInputElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class HTMLIsIndexElement : public HTMLInputElement {
+class HTMLIsIndexElement : public HTMLInputElement
+{
 public:
-    static PassRefPtr<HTMLIsIndexElement> create(Document*, HTMLFormElement*);
-    static PassRefPtr<HTMLIsIndexElement> create(const QualifiedName&, Document*, HTMLFormElement*);
+    static PassRefPtr<HTMLIsIndexElement> create( Document *, HTMLFormElement * );
+    static PassRefPtr<HTMLIsIndexElement> create( const QualifiedName &, Document *, HTMLFormElement * );
 
 private:
-    HTMLIsIndexElement(const QualifiedName&, Document*, HTMLFormElement*);
+    HTMLIsIndexElement( const QualifiedName &, Document *, HTMLFormElement * );
 
-    virtual bool canTriggerImplicitSubmission() const { return true; }
+    virtual bool canTriggerImplicitSubmission() const
+    {
+        return true;
+    }
 
-    virtual void parseMappedAttribute(Attribute*);
+    virtual void parseMappedAttribute( Attribute * );
 };
 
 } // namespace

@@ -25,13 +25,14 @@
 
 void registerGuiVariant()
 {
-   static bool isRegistered = false;
+    static bool isRegistered = false;
 
-   if (! isRegistered) {
-      // add gui to the variant system
-      static QVariantGui objVariant;
-      QVariant::registerClient(&objVariant);
+    if ( ! isRegistered )
+    {
+        // add gui to the variant system
+        static QVariantGui objVariant;
+        QVariant::registerClient( &objVariant );
 
-      isRegistered = true;
-   }
+        isRegistered = true;
+    }
 }

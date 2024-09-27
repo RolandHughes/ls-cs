@@ -31,9 +31,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSBeforeProcessEvent);
+ASSERT_CLASS_FITS_IN_CELL( JSBeforeProcessEvent );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -44,9 +45,9 @@ ASSERT_CLASS_FITS_IN_CELL(JSBeforeProcessEvent);
 
 static const HashTableValue JSBeforeProcessEventTableValues[3] =
 {
-    { "text", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsBeforeProcessEventText), (intptr_t)setJSBeforeProcessEventText THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsBeforeProcessEventConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "text", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsBeforeProcessEventText ), ( intptr_t )setJSBeforeProcessEventText THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsBeforeProcessEventConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -60,43 +61,51 @@ static JSC_CONST_HASHTABLE HashTable JSBeforeProcessEventTable = { 4, 3, JSBefor
 
 static const HashTableValue JSBeforeProcessEventConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSBeforeProcessEventConstructorTable = { 1, 0, JSBeforeProcessEventConstructorTableValues, 0 };
-class JSBeforeProcessEventConstructor : public DOMConstructorObject {
+class JSBeforeProcessEventConstructor : public DOMConstructorObject
+{
 public:
-    JSBeforeProcessEventConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSBeforeProcessEventConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSBeforeProcessEventConstructor::s_info = { "BeforeProcessEventConstructor", &DOMConstructorObject::s_info, &JSBeforeProcessEventConstructorTable, 0 };
 
-JSBeforeProcessEventConstructor::JSBeforeProcessEventConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSBeforeProcessEventConstructor::JSBeforeProcessEventConstructor( ExecState *exec, Structure *structure,
+        JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSBeforeProcessEventPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSBeforeProcessEventPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSBeforeProcessEventConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSBeforeProcessEventConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSBeforeProcessEventConstructor, JSDOMWrapper>(exec, &JSBeforeProcessEventConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSBeforeProcessEventConstructor, JSDOMWrapper>( exec, &JSBeforeProcessEventConstructorTable, this,
+            propertyName, slot );
 }
 
-bool JSBeforeProcessEventConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSBeforeProcessEventConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSBeforeProcessEventConstructor, JSDOMWrapper>(exec, &JSBeforeProcessEventConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSBeforeProcessEventConstructor, JSDOMWrapper>( exec, &JSBeforeProcessEventConstructorTable, this,
+            propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -108,105 +117,124 @@ bool JSBeforeProcessEventConstructor::getOwnPropertyDescriptor(ExecState* exec, 
 
 static const HashTableValue JSBeforeProcessEventPrototypeTableValues[2] =
 {
-    { "initBeforeProcessEvent", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsBeforeProcessEventPrototypeFunctionInitBeforeProcessEvent), (intptr_t)3 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "initBeforeProcessEvent", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsBeforeProcessEventPrototypeFunctionInitBeforeProcessEvent ), ( intptr_t )3 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSBeforeProcessEventPrototypeTable = { 2, 1, JSBeforeProcessEventPrototypeTableValues, 0 };
 const ClassInfo JSBeforeProcessEventPrototype::s_info = { "BeforeProcessEventPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSBeforeProcessEventPrototypeTable, 0 };
 
-JSObject* JSBeforeProcessEventPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSBeforeProcessEventPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSBeforeProcessEvent>(exec, globalObject);
+    return getDOMPrototype<JSBeforeProcessEvent>( exec, globalObject );
 }
 
-bool JSBeforeProcessEventPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSBeforeProcessEventPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticFunctionSlot<JSObject>(exec, &JSBeforeProcessEventPrototypeTable, this, propertyName, slot);
+    return getStaticFunctionSlot<JSObject>( exec, &JSBeforeProcessEventPrototypeTable, this, propertyName, slot );
 }
 
-bool JSBeforeProcessEventPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSBeforeProcessEventPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticFunctionDescriptor<JSObject>(exec, &JSBeforeProcessEventPrototypeTable, this, propertyName, descriptor);
+    return getStaticFunctionDescriptor<JSObject>( exec, &JSBeforeProcessEventPrototypeTable, this, propertyName, descriptor );
 }
 
 const ClassInfo JSBeforeProcessEvent::s_info = { "BeforeProcessEvent", &JSEvent::s_info, &JSBeforeProcessEventTable, 0 };
 
-JSBeforeProcessEvent::JSBeforeProcessEvent(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<BeforeProcessEvent> impl)
-    : JSEvent(structure, globalObject, impl)
+JSBeforeProcessEvent::JSBeforeProcessEvent( Structure *structure, JSDOMGlobalObject *globalObject,
+        PassRefPtr<BeforeProcessEvent> impl )
+    : JSEvent( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSBeforeProcessEvent::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSBeforeProcessEvent::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSBeforeProcessEventPrototype(exec->globalData(), globalObject, JSBeforeProcessEventPrototype::createStructure(exec->globalData(), JSEventPrototype::self(exec, globalObject)));
+    return new ( exec ) JSBeforeProcessEventPrototype( exec->globalData(), globalObject,
+            JSBeforeProcessEventPrototype::createStructure( exec->globalData(), JSEventPrototype::self( exec, globalObject ) ) );
 }
 
-bool JSBeforeProcessEvent::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSBeforeProcessEvent::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSBeforeProcessEvent, Base>(exec, &JSBeforeProcessEventTable, this, propertyName, slot);
+    return getStaticValueSlot<JSBeforeProcessEvent, Base>( exec, &JSBeforeProcessEventTable, this, propertyName, slot );
 }
 
-bool JSBeforeProcessEvent::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSBeforeProcessEvent::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSBeforeProcessEvent, Base>(exec, &JSBeforeProcessEventTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSBeforeProcessEvent, Base>( exec, &JSBeforeProcessEventTable, this, propertyName, descriptor );
 }
 
-JSValue jsBeforeProcessEventText(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsBeforeProcessEventText( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSBeforeProcessEvent* castedThis = static_cast<JSBeforeProcessEvent*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    BeforeProcessEvent* imp = static_cast<BeforeProcessEvent*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->text());
+    JSBeforeProcessEvent *castedThis = static_cast<JSBeforeProcessEvent *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    BeforeProcessEvent *imp = static_cast<BeforeProcessEvent *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->text() );
     return result;
 }
 
 
-JSValue jsBeforeProcessEventConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsBeforeProcessEventConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSBeforeProcessEvent* domObject = static_cast<JSBeforeProcessEvent*>(asObject(slotBase));
-    return JSBeforeProcessEvent::getConstructor(exec, domObject->globalObject());
+    JSBeforeProcessEvent *domObject = static_cast<JSBeforeProcessEvent *>( asObject( slotBase ) );
+    return JSBeforeProcessEvent::getConstructor( exec, domObject->globalObject() );
 }
 
-void JSBeforeProcessEvent::put(ExecState* exec, const Identifier& propertyName, JSValue value, PutPropertySlot& slot)
+void JSBeforeProcessEvent::put( ExecState *exec, const Identifier &propertyName, JSValue value, PutPropertySlot &slot )
 {
-    lookupPut<JSBeforeProcessEvent, Base>(exec, propertyName, value, &JSBeforeProcessEventTable, this, slot);
+    lookupPut<JSBeforeProcessEvent, Base>( exec, propertyName, value, &JSBeforeProcessEventTable, this, slot );
 }
 
-void setJSBeforeProcessEventText(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSBeforeProcessEventText( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSBeforeProcessEvent* castedThis = static_cast<JSBeforeProcessEvent*>(thisObject);
-    BeforeProcessEvent* imp = static_cast<BeforeProcessEvent*>(castedThis->impl());
-    imp->setText(ustringToString(value.toString(exec)));
+    JSBeforeProcessEvent *castedThis = static_cast<JSBeforeProcessEvent *>( thisObject );
+    BeforeProcessEvent *imp = static_cast<BeforeProcessEvent *>( castedThis->impl() );
+    imp->setText( ustringToString( value.toString( exec ) ) );
 }
 
 
-JSValue JSBeforeProcessEvent::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSBeforeProcessEvent::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSBeforeProcessEventConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSBeforeProcessEventConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsBeforeProcessEventPrototypeFunctionInitBeforeProcessEvent(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsBeforeProcessEventPrototypeFunctionInitBeforeProcessEvent( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSBeforeProcessEvent::s_info))
-        return throwVMTypeError(exec);
-    JSBeforeProcessEvent* castedThis = static_cast<JSBeforeProcessEvent*>(asObject(thisValue));
-    BeforeProcessEvent* imp = static_cast<BeforeProcessEvent*>(castedThis->impl());
-    const String& type(ustringToString(exec->argument(0).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    bool canBubble(exec->argument(1).toBoolean(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    bool cancelable(exec->argument(2).toBoolean(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
 
-    imp->initBeforeProcessEvent(type, canBubble, cancelable);
-    return JSValue::encode(jsUndefined());
+    if ( !thisValue.inherits( &JSBeforeProcessEvent::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSBeforeProcessEvent *castedThis = static_cast<JSBeforeProcessEvent *>( asObject( thisValue ) );
+    BeforeProcessEvent *imp = static_cast<BeforeProcessEvent *>( castedThis->impl() );
+    const String &type( ustringToString( exec->argument( 0 ).toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    bool canBubble( exec->argument( 1 ).toBoolean( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    bool cancelable( exec->argument( 2 ).toBoolean( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->initBeforeProcessEvent( type, canBubble, cancelable );
+    return JSValue::encode( jsUndefined() );
 }
 
 

@@ -34,33 +34,34 @@ class DirectShowPlayerService;
 
 class DirectShowMetaDataControl : public QMetaDataReaderControl
 {
-   CS_OBJECT(DirectShowMetaDataControl)
+    CS_OBJECT( DirectShowMetaDataControl )
 
- public:
-   DirectShowMetaDataControl(QObject *parent = nullptr);
-   ~DirectShowMetaDataControl();
+public:
+    DirectShowMetaDataControl( QObject *parent = nullptr );
+    ~DirectShowMetaDataControl();
 
-   bool isMetaDataAvailable() const override;
+    bool isMetaDataAvailable() const override;
 
-   QVariant metaData(const QString &key) const override;
-   QStringList availableMetaData() const override;
+    QVariant metaData( const QString &key ) const override;
+    QStringList availableMetaData() const override;
 
-   void reset();
-   void updateMetadata(IFilterGraph2 *graph, IBaseFilter *source,
-      const QString &fileSrc = QString());
+    void reset();
+    void updateMetadata( IFilterGraph2 *graph, IBaseFilter *source,
+                         const QString &fileSrc = QString() );
 
- protected:
-   void customEvent(QEvent *event) override;
+protected:
+    void customEvent( QEvent *event ) override;
 
- private:
-   void setMetadataAvailable(bool available);
+private:
+    void setMetadataAvailable( bool available );
 
-   enum Event {
-      MetaDataChanged = QEvent::User
-   };
+    enum Event
+    {
+        MetaDataChanged = QEvent::User
+    };
 
-   QVariantMap m_metadata;
-   bool m_available;
+    QVariantMap m_metadata;
+    bool m_available;
 };
 
 #endif

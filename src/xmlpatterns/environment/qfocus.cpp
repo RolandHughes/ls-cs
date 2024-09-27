@@ -27,62 +27,67 @@
 
 using namespace QPatternist;
 
-Focus::Focus(const DynamicContext::Ptr &prevContext) : DelegatingDynamicContext(prevContext),
-   m_contextSizeCached(-1)
+Focus::Focus( const DynamicContext::Ptr &prevContext ) : DelegatingDynamicContext( prevContext ),
+    m_contextSizeCached( -1 )
 {
-   Q_ASSERT(prevContext);
-   Q_ASSERT(prevContext != this);
+    Q_ASSERT( prevContext );
+    Q_ASSERT( prevContext != this );
 }
 
 xsInteger Focus::contextPosition() const
 {
-   Q_ASSERT(m_focusIterator);
-   return m_focusIterator->position();
+    Q_ASSERT( m_focusIterator );
+    return m_focusIterator->position();
 }
 
 Item Focus::contextItem() const
 {
-   Q_ASSERT(m_focusIterator);
-   return m_focusIterator->current();
+    Q_ASSERT( m_focusIterator );
+    return m_focusIterator->current();
 }
 
 xsInteger Focus::contextSize()
 {
-   Q_ASSERT(m_focusIterator);
-   if (m_contextSizeCached == -1) {
-      m_contextSizeCached = m_focusIterator->copy()->count();
-   }
+    Q_ASSERT( m_focusIterator );
 
-   Q_ASSERT_X(m_contextSizeCached == m_focusIterator->copy()->count(), Q_FUNC_INFO,
-              "If our cache is not the same as the real count, something is wrong.");
+    if ( m_contextSizeCached == -1 )
+    {
+        m_contextSizeCached = m_focusIterator->copy()->count();
+    }
 
-   return m_contextSizeCached;
+    Q_ASSERT_X( m_contextSizeCached == m_focusIterator->copy()->count(), Q_FUNC_INFO,
+                "If our cache is not the same as the real count, something is wrong." );
+
+    return m_contextSizeCached;
 }
 
-void Focus::setFocusIterator(const Item::Iterator::Ptr &it)
+void Focus::setFocusIterator( const Item::Iterator::Ptr &it )
 {
-   Q_ASSERT(it);
-   m_focusIterator = it;
+    Q_ASSERT( it );
+    m_focusIterator = it;
 }
 
 Item::Iterator::Ptr Focus::focusIterator() const
 {
-   return m_focusIterator;
+    return m_focusIterator;
 }
 
 Item Focus::currentItem() const
 {
-   /* In the case that there is no top level expression that creates a focus,
-    * fn:current() should return the focus. This logic achieves this.
-    * Effectively we traverse up our "context stack" through recursion, and
-    * start returning when we've found the top most focus. */
+    /* In the case that there is no top level expression that creates a focus,
+     * fn:current() should return the focus. This logic achieves this.
+     * Effectively we traverse up our "context stack" through recursion, and
+     * start returning when we've found the top most focus. */
 
-   const Item current(m_prevContext->currentItem());
+    const Item current( m_prevContext->currentItem() );
 
-   if (current.isNull()) {
-      return m_focusIterator->current();
-   } else {
-      return current;
-   }
+    if ( current.isNull() )
+    {
+        return m_focusIterator->current();
+    }
+    else
+    {
+        return current;
+    }
 }
 

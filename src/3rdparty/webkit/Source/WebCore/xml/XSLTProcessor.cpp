@@ -42,80 +42,100 @@
 #include <wtf/Assertions.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-static inline void transformTextStringToXHTMLDocumentString(String& text)
+static inline void transformTextStringToXHTMLDocumentString( String &text )
 {
     // Modify the output so that it is a well-formed XHTML document with a <pre> tag enclosing the text.
-    text.replace('&', "&amp;");
-    text.replace('<', "&lt;");
+    text.replace( '&', "&amp;" );
+    text.replace( '<', "&lt;" );
     text = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-        "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n"
-        "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n"
-        "<head><title/></head>\n"
-        "<body>\n"
-        "<pre>" + text + "</pre>\n"
-        "</body>\n"
-        "</html>\n";
+           "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n"
+           "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n"
+           "<head><title/></head>\n"
+           "<body>\n"
+           "<pre>" + text + "</pre>\n"
+           "</body>\n"
+           "</html>\n";
 }
 
 XSLTProcessor::~XSLTProcessor()
 {
     // Stylesheet shouldn't outlive its root node.
-    ASSERT(!m_stylesheetRootNode || !m_stylesheet || m_stylesheet->hasOneRef());
+    ASSERT( !m_stylesheetRootNode || !m_stylesheet || m_stylesheet->hasOneRef() );
 }
 
-PassRefPtr<Document> XSLTProcessor::createDocumentFromSource(const String& sourceString,
-    const String& sourceEncoding, const String& sourceMIMEType, Node* sourceNode, Frame* frame)
+PassRefPtr<Document> XSLTProcessor::createDocumentFromSource( const String &sourceString,
+        const String &sourceEncoding, const String &sourceMIMEType, Node *sourceNode, Frame *frame )
 {
     RefPtr<Document> ownerDocument = sourceNode->document();
-    bool sourceIsDocument = (sourceNode == ownerDocument.get());
+    bool sourceIsDocument = ( sourceNode == ownerDocument.get() );
     String documentSource = sourceString;
 
     RefPtr<Document> result;
-    if (sourceMIMEType == "text/plain") {
-        result = Document::create(frame, sourceIsDocument ? ownerDocument->url() : KURL());
-        transformTextStringToXHTMLDocumentString(documentSource);
-    } else
-        result = DOMImplementation::createDocument(sourceMIMEType, frame, sourceIsDocument ? ownerDocument->url() : KURL(), false);
+
+    if ( sourceMIMEType == "text/plain" )
+    {
+        result = Document::create( frame, sourceIsDocument ? ownerDocument->url() : KURL() );
+        transformTextStringToXHTMLDocumentString( documentSource );
+    }
+    else
+    {
+        result = DOMImplementation::createDocument( sourceMIMEType, frame, sourceIsDocument ? ownerDocument->url() : KURL(), false );
+    }
 
     // Before parsing, we need to save & detach the old document and get the new document
     // in place. We have to do this only if we're rendering the result document.
-    if (frame) {
-        if (FrameView* view = frame->view())
+    if ( frame )
+    {
+        if ( FrameView *view = frame->view() )
+        {
             view->clear();
-        result->setTransformSourceDocument(frame->document());
-        frame->setDocument(result);
+        }
+
+        result->setTransformSourceDocument( frame->document() );
+        frame->setDocument( result );
     }
 
-    RefPtr<TextResourceDecoder> decoder = TextResourceDecoder::create(sourceMIMEType);
-    decoder->setEncoding(sourceEncoding.isEmpty() ? UTF8Encoding() : TextEncoding(sourceEncoding), TextResourceDecoder::EncodingFromXMLHeader);
-    result->setDecoder(decoder.release());
+    RefPtr<TextResourceDecoder> decoder = TextResourceDecoder::create( sourceMIMEType );
+    decoder->setEncoding( sourceEncoding.isEmpty() ? UTF8Encoding() : TextEncoding( sourceEncoding ),
+                          TextResourceDecoder::EncodingFromXMLHeader );
+    result->setDecoder( decoder.release() );
 
-    result->setContent(documentSource);
+    result->setContent( documentSource );
 
     return result.release();
 }
 
-static inline RefPtr<DocumentFragment> createFragmentFromSource(const String& sourceString, const String& sourceMIMEType, Document* outputDoc)
+static inline RefPtr<DocumentFragment> createFragmentFromSource( const String &sourceString, const String &sourceMIMEType,
+        Document *outputDoc )
 {
     RefPtr<DocumentFragment> fragment = outputDoc->createDocumentFragment();
 
-    if (sourceMIMEType == "text/html") {
+    if ( sourceMIMEType == "text/html" )
+    {
         // As far as I can tell, there isn't a spec for how transformToFragment
         // is supposed to work.  Based on the documentation I can find, it looks
         // like we want to start parsing the fragment in the InBody insertion
         // mode.  Unfortunately, that's an implementation detail of the parser.
         // We achieve that effect here by passing in a fake body element as
         // context for the fragment.
-        RefPtr<HTMLBodyElement> fakeBody = HTMLBodyElement::create(outputDoc);
-        fragment->parseHTML(sourceString, fakeBody.get());
-    } else if (sourceMIMEType == "text/plain")
-        fragment->parserAddChild(Text::create(outputDoc, sourceString));
-    else {
-        bool successfulParse = fragment->parseXML(sourceString, 0);
-        if (!successfulParse)
+        RefPtr<HTMLBodyElement> fakeBody = HTMLBodyElement::create( outputDoc );
+        fragment->parseHTML( sourceString, fakeBody.get() );
+    }
+    else if ( sourceMIMEType == "text/plain" )
+    {
+        fragment->parserAddChild( Text::create( outputDoc, sourceString ) );
+    }
+    else
+    {
+        bool successfulParse = fragment->parseXML( sourceString, 0 );
+
+        if ( !successfulParse )
+        {
             return 0;
+        }
     }
 
     // FIXME: Do we need to mess with URLs here?
@@ -123,49 +143,58 @@ static inline RefPtr<DocumentFragment> createFragmentFromSource(const String& so
     return fragment;
 }
 
-PassRefPtr<Document> XSLTProcessor::transformToDocument(Node* sourceNode)
+PassRefPtr<Document> XSLTProcessor::transformToDocument( Node *sourceNode )
 {
     String resultMIMEType;
     String resultString;
     String resultEncoding;
-    if (!transformToString(sourceNode, resultMIMEType, resultString, resultEncoding))
+
+    if ( !transformToString( sourceNode, resultMIMEType, resultString, resultEncoding ) )
+    {
         return 0;
-    return createDocumentFromSource(resultString, resultEncoding, resultMIMEType, sourceNode, 0);
+    }
+
+    return createDocumentFromSource( resultString, resultEncoding, resultMIMEType, sourceNode, 0 );
 }
 
-PassRefPtr<DocumentFragment> XSLTProcessor::transformToFragment(Node* sourceNode, Document* outputDoc)
+PassRefPtr<DocumentFragment> XSLTProcessor::transformToFragment( Node *sourceNode, Document *outputDoc )
 {
     String resultMIMEType;
     String resultString;
     String resultEncoding;
 
     // If the output document is HTML, default to HTML method.
-    if (outputDoc->isHTMLDocument())
+    if ( outputDoc->isHTMLDocument() )
+    {
         resultMIMEType = "text/html";
+    }
 
-    if (!transformToString(sourceNode, resultMIMEType, resultString, resultEncoding))
+    if ( !transformToString( sourceNode, resultMIMEType, resultString, resultEncoding ) )
+    {
         return 0;
-    return createFragmentFromSource(resultString, resultMIMEType, outputDoc);
+    }
+
+    return createFragmentFromSource( resultString, resultMIMEType, outputDoc );
 }
 
-void XSLTProcessor::setParameter(const String& /*namespaceURI*/, const String& localName, const String& value)
+void XSLTProcessor::setParameter( const String & /*namespaceURI*/, const String &localName, const String &value )
 {
     // FIXME: namespace support?
     // should make a QualifiedName here but we'd have to expose the impl
-    m_parameters.set(localName, value);
+    m_parameters.set( localName, value );
 }
 
-String XSLTProcessor::getParameter(const String& /*namespaceURI*/, const String& localName) const
+String XSLTProcessor::getParameter( const String & /*namespaceURI*/, const String &localName ) const
 {
     // FIXME: namespace support?
     // should make a QualifiedName here but we'd have to expose the impl
-    return m_parameters.get(localName);
+    return m_parameters.get( localName );
 }
 
-void XSLTProcessor::removeParameter(const String& /*namespaceURI*/, const String& localName)
+void XSLTProcessor::removeParameter( const String & /*namespaceURI*/, const String &localName )
 {
     // FIXME: namespace support?
-    m_parameters.remove(localName);
+    m_parameters.remove( localName );
 }
 
 void XSLTProcessor::reset()

@@ -28,43 +28,44 @@
 
 class Q_CORE_EXPORT QSystemError
 {
- public:
-   enum ErrorScope {
-      NoError,
-      StandardLibraryError,
-      NativeError
-   };
+public:
+    enum ErrorScope
+    {
+        NoError,
+        StandardLibraryError,
+        NativeError
+    };
 
-   inline QSystemError(int error, ErrorScope scope);
-   inline QSystemError();
+    inline QSystemError( int error, ErrorScope scope );
+    inline QSystemError();
 
-   QString toString();
-   inline ErrorScope scope();
-   inline int error();
+    QString toString();
+    inline ErrorScope scope();
+    inline int error();
 
-   // data members
-   int errorCode;
-   ErrorScope errorScope;
+    // data members
+    int errorCode;
+    ErrorScope errorScope;
 };
 
-QSystemError::QSystemError(int error, QSystemError::ErrorScope scope)
-   : errorCode(error), errorScope(scope)
+QSystemError::QSystemError( int error, QSystemError::ErrorScope scope )
+    : errorCode( error ), errorScope( scope )
 {
 }
 
 QSystemError::QSystemError()
-   : errorCode(0), errorScope(NoError)
+    : errorCode( 0 ), errorScope( NoError )
 {
 }
 
 QSystemError::ErrorScope QSystemError::scope()
 {
-   return errorScope;
+    return errorScope;
 }
 
 int QSystemError::error()
 {
-   return errorCode;
+    return errorCode;
 }
 
 #endif

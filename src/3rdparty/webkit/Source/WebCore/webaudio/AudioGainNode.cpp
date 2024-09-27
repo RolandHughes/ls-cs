@@ -32,44 +32,51 @@
 #include "AudioNodeInput.h"
 #include "AudioNodeOutput.h"
 
-namespace WebCore {
-
-AudioGainNode::AudioGainNode(AudioContext* context, double sampleRate)
-    : AudioNode(context, sampleRate)
-    , m_lastGain(1.0)
+namespace WebCore
 {
-    m_gain = AudioGain::create("gain", 1.0, 0.0, 1.0);
 
-    addInput(adoptPtr(new AudioNodeInput(this)));
-    addOutput(adoptPtr(new AudioNodeOutput(this, 1)));
-    
-    setType(NodeTypeGain);
-    
+AudioGainNode::AudioGainNode( AudioContext *context, double sampleRate )
+    : AudioNode( context, sampleRate )
+    , m_lastGain( 1.0 )
+{
+    m_gain = AudioGain::create( "gain", 1.0, 0.0, 1.0 );
+
+    addInput( adoptPtr( new AudioNodeInput( this ) ) );
+    addOutput( adoptPtr( new AudioNodeOutput( this, 1 ) ) );
+
+    setType( NodeTypeGain );
+
     initialize();
 }
 
-void AudioGainNode::process(size_t /*framesToProcess*/)
+void AudioGainNode::process( size_t /*framesToProcess*/ )
 {
     // FIXME: there is a nice optimization to avoid processing here, and let the gain change
     // happen in the summing junction input of the AudioNode we're connected to.
     // Then we can avoid all of the following:
 
-    AudioBus* outputBus = output(0)->bus();
-    ASSERT(outputBus);
+    AudioBus *outputBus = output( 0 )->bus();
+    ASSERT( outputBus );
 
     // The realtime thread can't block on this lock, so we call tryLock() instead.
-    if (m_processLock.tryLock()) {
-        if (!isInitialized() || !input(0)->isConnected())
+    if ( m_processLock.tryLock() )
+    {
+        if ( !isInitialized() || !input( 0 )->isConnected() )
+        {
             outputBus->zero();
-        else {
-            AudioBus* inputBus = input(0)->bus();
+        }
+        else
+        {
+            AudioBus *inputBus = input( 0 )->bus();
 
             // Apply the gain with de-zippering into the output bus.
-            outputBus->copyWithGainFrom(*inputBus, &m_lastGain, gain()->value());
+            outputBus->copyWithGainFrom( *inputBus, &m_lastGain, gain()->value() );
         }
 
         m_processLock.unlock();
-    } else {
+    }
+    else
+    {
         // Too bad - the tryLock() failed.  We must be in the middle of re-connecting and were already outputting silence anyway...
         outputBus->zero();
     }
@@ -86,24 +93,29 @@ void AudioGainNode::reset()
 // As soon as we know the channel count of our input, we can lazily initialize.
 // Sometimes this may be called more than once with different channel counts, in which case we must safely
 // uninitialize and then re-initialize with the new channel count.
-void AudioGainNode::checkNumberOfChannelsForInput(AudioNodeInput* input)
+void AudioGainNode::checkNumberOfChannelsForInput( AudioNodeInput *input )
 {
-    ASSERT(input && input == this->input(0));
-    if (input != this->input(0))
-        return;
-        
-    unsigned numberOfChannels = input->numberOfChannels();    
+    ASSERT( input && input == this->input( 0 ) );
 
-    if (isInitialized() && numberOfChannels != output(0)->numberOfChannels()) {
+    if ( input != this->input( 0 ) )
+    {
+        return;
+    }
+
+    unsigned numberOfChannels = input->numberOfChannels();
+
+    if ( isInitialized() && numberOfChannels != output( 0 )->numberOfChannels() )
+    {
         // We're already initialized but the channel count has changed.
         // We need to be careful since we may be actively processing right now, so synchronize with process().
-        MutexLocker locker(m_processLock);
+        MutexLocker locker( m_processLock );
         uninitialize();
     }
 
-    if (!isInitialized()) {
+    if ( !isInitialized() )
+    {
         // This will propagate the channel count to any nodes connected further downstream in the graph.
-        output(0)->setNumberOfChannels(numberOfChannels);
+        output( 0 )->setNumberOfChannels( numberOfChannels );
         initialize();
     }
 }

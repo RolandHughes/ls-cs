@@ -33,13 +33,13 @@ class QScriptDebuggerCommandSchedulerJob;
 
 class QScriptDebuggerCommandSchedulerJobPrivate : public QScriptDebuggerJobPrivate
 {
-   Q_DECLARE_PUBLIC(QScriptDebuggerCommandSchedulerJob)
+    Q_DECLARE_PUBLIC( QScriptDebuggerCommandSchedulerJob )
 
- public:
-   QScriptDebuggerCommandSchedulerJobPrivate();
-   ~QScriptDebuggerCommandSchedulerJobPrivate();
+public:
+    QScriptDebuggerCommandSchedulerJobPrivate();
+    ~QScriptDebuggerCommandSchedulerJobPrivate();
 
-   QScriptDebuggerCommandSchedulerInterface *commandScheduler;
+    QScriptDebuggerCommandSchedulerInterface *commandScheduler;
 };
 
 QT_END_NAMESPACE

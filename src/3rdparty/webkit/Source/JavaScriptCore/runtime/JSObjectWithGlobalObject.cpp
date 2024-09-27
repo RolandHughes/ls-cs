@@ -28,28 +28,39 @@
 
 #include "JSGlobalObject.h"
 
-namespace JSC {
-
-JSObjectWithGlobalObject::JSObjectWithGlobalObject(JSGlobalObject* globalObject, Structure* structure)
-    : JSNonFinalObject(globalObject->globalData(), structure)
+namespace JSC
 {
-    COMPILE_ASSERT(AnonymousSlotCount == 1, AnonymousSlotCount_must_be_one);
-    ASSERT(!globalObject || globalObject->isGlobalObject());
-    if (!globalObject)
-        clearAnonymousValue(GlobalObjectSlot);
+
+JSObjectWithGlobalObject::JSObjectWithGlobalObject( JSGlobalObject *globalObject, Structure *structure )
+    : JSNonFinalObject( globalObject->globalData(), structure )
+{
+    COMPILE_ASSERT( AnonymousSlotCount == 1, AnonymousSlotCount_must_be_one );
+    ASSERT( !globalObject || globalObject->isGlobalObject() );
+
+    if ( !globalObject )
+    {
+        clearAnonymousValue( GlobalObjectSlot );
+    }
     else
-        putAnonymousValue(globalObject->globalData(), GlobalObjectSlot, globalObject);
+    {
+        putAnonymousValue( globalObject->globalData(), GlobalObjectSlot, globalObject );
+    }
 }
 
-JSObjectWithGlobalObject::JSObjectWithGlobalObject(JSGlobalData& globalData, JSGlobalObject* globalObject, Structure* structure)
-    : JSNonFinalObject(globalData, structure)
+JSObjectWithGlobalObject::JSObjectWithGlobalObject( JSGlobalData &globalData, JSGlobalObject *globalObject, Structure *structure )
+    : JSNonFinalObject( globalData, structure )
 {
-    COMPILE_ASSERT(AnonymousSlotCount == 1, AnonymousSlotCount_must_be_one);
-    ASSERT(!globalObject || globalObject->isGlobalObject());
-    if (!globalObject)
-        clearAnonymousValue(GlobalObjectSlot);
+    COMPILE_ASSERT( AnonymousSlotCount == 1, AnonymousSlotCount_must_be_one );
+    ASSERT( !globalObject || globalObject->isGlobalObject() );
+
+    if ( !globalObject )
+    {
+        clearAnonymousValue( GlobalObjectSlot );
+    }
     else
-        putAnonymousValue(globalData, GlobalObjectSlot, globalObject);
+    {
+        putAnonymousValue( globalData, GlobalObjectSlot, globalObject );
+    }
 }
 
 } // namespace JSC

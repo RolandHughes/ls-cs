@@ -33,23 +33,23 @@
 #include "gxvcommn.h"
 
 
-  /*************************************************************************/
-  /*************************************************************************/
-  /*****                                                               *****/
-  /*****                Registry predefined by Apple                   *****/
-  /*****                                                               *****/
-  /*************************************************************************/
-  /*************************************************************************/
+/*************************************************************************/
+/*************************************************************************/
+/*****                                                               *****/
+/*****                Registry predefined by Apple                   *****/
+/*****                                                               *****/
+/*************************************************************************/
+/*************************************************************************/
 
-  /* TODO: More compact format */
-  typedef struct  GXV_Feature_RegistryRec_
-  {
+/* TODO: More compact format */
+typedef struct  GXV_Feature_RegistryRec_
+{
     FT_Bool  existence;
     FT_Bool  apple_reserved;
     FT_Bool  exclusive;
     FT_Byte  nSettings;
 
-  } GX_Feature_RegistryRec;
+} GX_Feature_RegistryRec;
 
 
 #define gxv_feat_registry_length                  \
@@ -57,8 +57,8 @@
               sizeof ( GX_Feature_RegistryRec ) )
 
 
-  static GX_Feature_RegistryRec  gxv_feat_registry[] =
-  {
+static GX_Feature_RegistryRec  gxv_feat_registry[] =
+{
     /* Generated from gxvfgen.c */
     {1, 0, 0,  1},   /* All Typographic Features */
     {1, 0, 0,  8},   /* Ligatures */
@@ -164,7 +164,7 @@
     {1, 0, 1,  2},   /* Kana Spacing */
     {1, 0, 1,  2},   /* Ideographic Spacing */
     {1, 0, 1,  4},   /* CJK Roman Spacing */
-  };
+};
 
 
 #endif /* GXVFEAT_H_ */

@@ -31,13 +31,14 @@
 
 #include <wtf/PassRefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class CSSSelectorList;
-    class Node;
-    class StaticNodeList;
+class CSSSelectorList;
+class Node;
+class StaticNodeList;
 
-    PassRefPtr<StaticNodeList> createSelectorNodeList(Node* rootNode, const CSSSelectorList&);
+PassRefPtr<StaticNodeList> createSelectorNodeList( Node *rootNode, const CSSSelectorList & );
 
 } // namespace WebCore
 

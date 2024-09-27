@@ -29,12 +29,16 @@
 
 #include "TouchList.h"
 
-namespace WebCore {
-
-Touch* TouchList::item(unsigned index)
+namespace WebCore
 {
-    if (index >= m_values.size())
+
+Touch *TouchList::item( unsigned index )
+{
+    if ( index >= m_values.size() )
+    {
         return 0;
+    }
+
     return m_values[index].get();
 }
 

@@ -57,52 +57,64 @@
 
 #define methodDebug() qDebug("EditorClientQt: %s", __FUNCTION__);
 
-static QString dumpPath(WebCore::Node *node)
+static QString dumpPath( WebCore::Node *node )
 {
     QString str = node->nodeName();
 
     WebCore::Node *parent = node->parentNode();
-    while (parent) {
-        str.append(QLatin1String(" > "));
-        str.append(parent->nodeName());
+
+    while ( parent )
+    {
+        str.append( QLatin1String( " > " ) );
+        str.append( parent->nodeName() );
         parent = parent->parentNode();
     }
+
     return str;
 }
 
-static QString dumpRange(WebCore::Range *range)
+static QString dumpRange( WebCore::Range *range )
 {
-    if (!range)
-        return QLatin1String("(null)");
+    if ( !range )
+    {
+        return QLatin1String( "(null)" );
+    }
+
     WebCore::ExceptionCode code;
 
-    QString str = QString::fromLatin1("range from %1 of %2 to %3 of %4")
-            .formatArg(range->startOffset(code)).formatArg(dumpPath(range->startContainer(code)))
-            .formatArg(range->endOffset(code)).formatArg(dumpPath(range->endContainer(code)));
+    QString str = QString::fromLatin1( "range from %1 of %2 to %3 of %4" )
+                  .formatArg( range->startOffset( code ) ).formatArg( dumpPath( range->startContainer( code ) ) )
+                  .formatArg( range->endOffset( code ) ).formatArg( dumpPath( range->endContainer( code ) ) );
 
     return str;
 }
 
 
-namespace WebCore {
+namespace WebCore
+{
 
 bool EditorClientQt::dumpEditingCallbacks = false;
 bool EditorClientQt::acceptsEditing = true;
 
 using namespace HTMLNames;
 
-bool EditorClientQt::shouldDeleteRange(Range* range)
+bool EditorClientQt::shouldDeleteRange( Range *range )
 {
-    if (dumpEditingCallbacks)
-        printf("EDITING DELEGATE: shouldDeleteDOMRange:%s\n", dumpRange(range).toUtf8().constData());
+    if ( dumpEditingCallbacks )
+    {
+        printf( "EDITING DELEGATE: shouldDeleteDOMRange:%s\n", dumpRange( range ).toUtf8().constData() );
+    }
 
     return true;
 }
 
-bool EditorClientQt::shouldShowDeleteInterface(HTMLElement* element)
+bool EditorClientQt::shouldShowDeleteInterface( HTMLElement *element )
 {
-    if (QWebPagePrivate::drtRun)
-        return element->getAttribute(classAttr) == "needsDeletionUI";
+    if ( QWebPagePrivate::drtRun )
+    {
+        return element->getAttribute( classAttr ) == "needsDeletionUI";
+    }
+
     return false;
 }
 
@@ -121,65 +133,80 @@ int EditorClientQt::spellCheckerDocumentTag()
     return 0;
 }
 
-bool EditorClientQt::shouldBeginEditing(WebCore::Range* range)
+bool EditorClientQt::shouldBeginEditing( WebCore::Range *range )
 {
-    if (dumpEditingCallbacks)
-        printf("EDITING DELEGATE: shouldBeginEditingInDOMRange:%s\n", dumpRange(range).toUtf8().constData());
+    if ( dumpEditingCallbacks )
+    {
+        printf( "EDITING DELEGATE: shouldBeginEditingInDOMRange:%s\n", dumpRange( range ).toUtf8().constData() );
+    }
+
     return true;
 }
 
-bool EditorClientQt::shouldEndEditing(WebCore::Range* range)
+bool EditorClientQt::shouldEndEditing( WebCore::Range *range )
 {
-    if (dumpEditingCallbacks)
-        printf("EDITING DELEGATE: shouldEndEditingInDOMRange:%s\n", dumpRange(range).toUtf8().constData());
+    if ( dumpEditingCallbacks )
+    {
+        printf( "EDITING DELEGATE: shouldEndEditingInDOMRange:%s\n", dumpRange( range ).toUtf8().constData() );
+    }
+
     return true;
 }
 
-bool EditorClientQt::shouldInsertText(const String& string, Range* range, EditorInsertAction action)
+bool EditorClientQt::shouldInsertText( const String &string, Range *range, EditorInsertAction action )
 {
-    if (dumpEditingCallbacks) {
-        static const char *insertactionstring[] = {
+    if ( dumpEditingCallbacks )
+    {
+        static const char *insertactionstring[] =
+        {
             "WebViewInsertActionTyped",
             "WebViewInsertActionPasted",
             "WebViewInsertActionDropped",
         };
 
-        printf("EDITING DELEGATE: shouldInsertText:%s replacingDOMRange:%s givenAction:%s\n",
-               QString(string).toUtf8().constData(), dumpRange(range).toUtf8().constData(), insertactionstring[action]);
+        printf( "EDITING DELEGATE: shouldInsertText:%s replacingDOMRange:%s givenAction:%s\n",
+                QString( string ).toUtf8().constData(), dumpRange( range ).toUtf8().constData(), insertactionstring[action] );
     }
+
     return acceptsEditing;
 }
 
-bool EditorClientQt::shouldChangeSelectedRange(Range* currentRange, Range* proposedRange, EAffinity selectionAffinity, bool stillSelecting)
+bool EditorClientQt::shouldChangeSelectedRange( Range *currentRange, Range *proposedRange, EAffinity selectionAffinity,
+        bool stillSelecting )
 {
-    if (dumpEditingCallbacks) {
-        static const char *affinitystring[] = {
+    if ( dumpEditingCallbacks )
+    {
+        static const char *affinitystring[] =
+        {
             "NSSelectionAffinityUpstream",
             "NSSelectionAffinityDownstream"
         };
-        static const char *boolstring[] = {
+        static const char *boolstring[] =
+        {
             "FALSE",
             "TRUE"
         };
 
-        printf("EDITING DELEGATE: shouldChangeSelectedDOMRange:%s toDOMRange:%s affinity:%s stillSelecting:%s\n",
-               dumpRange(currentRange).toUtf8().constData(),
-               dumpRange(proposedRange).toUtf8().constData(),
-               affinitystring[selectionAffinity], boolstring[stillSelecting]);
+        printf( "EDITING DELEGATE: shouldChangeSelectedDOMRange:%s toDOMRange:%s affinity:%s stillSelecting:%s\n",
+                dumpRange( currentRange ).toUtf8().constData(),
+                dumpRange( proposedRange ).toUtf8().constData(),
+                affinitystring[selectionAffinity], boolstring[stillSelecting] );
     }
+
     return acceptsEditing;
 }
 
-bool EditorClientQt::shouldApplyStyle(WebCore::CSSStyleDeclaration* style,
-                                      WebCore::Range* range)
+bool EditorClientQt::shouldApplyStyle( WebCore::CSSStyleDeclaration *style,
+                                       WebCore::Range *range )
 {
-    if (dumpEditingCallbacks)
-        printf("EDITING DELEGATE: shouldApplyStyle:%s toElementsInDOMRange:%s\n",
-               QString(style->cssText()).toUtf8().constData(), dumpRange(range).toUtf8().constData());
+    if ( dumpEditingCallbacks )
+        printf( "EDITING DELEGATE: shouldApplyStyle:%s toElementsInDOMRange:%s\n",
+                QString( style->cssText() ).toUtf8().constData(), dumpRange( range ).toUtf8().constData() );
+
     return acceptsEditing;
 }
 
-bool EditorClientQt::shouldMoveRangeAfterDelete(WebCore::Range*, WebCore::Range*)
+bool EditorClientQt::shouldMoveRangeAfterDelete( WebCore::Range *, WebCore::Range * )
 {
     notImplemented();
     return true;
@@ -187,15 +214,21 @@ bool EditorClientQt::shouldMoveRangeAfterDelete(WebCore::Range*, WebCore::Range*
 
 void EditorClientQt::didBeginEditing()
 {
-    if (dumpEditingCallbacks)
-        printf("EDITING DELEGATE: webViewDidBeginEditing:WebViewDidBeginEditingNotification\n");
+    if ( dumpEditingCallbacks )
+    {
+        printf( "EDITING DELEGATE: webViewDidBeginEditing:WebViewDidBeginEditingNotification\n" );
+    }
+
     m_editing = true;
 }
 
 void EditorClientQt::respondToChangedContents()
 {
-    if (dumpEditingCallbacks)
-        printf("EDITING DELEGATE: webViewDidChange:WebViewDidChangeNotification\n");
+    if ( dumpEditingCallbacks )
+    {
+        printf( "EDITING DELEGATE: webViewDidChange:WebViewDidChangeNotification\n" );
+    }
+
     m_page->d->updateEditorActions();
 
     emit m_page->contentsChanged();
@@ -203,8 +236,11 @@ void EditorClientQt::respondToChangedContents()
 
 void EditorClientQt::respondToChangedSelection()
 {
-    if (dumpEditingCallbacks)
-        printf("EDITING DELEGATE: webViewDidChangeSelection:WebViewDidChangeSelectionNotification\n");
+    if ( dumpEditingCallbacks )
+    {
+        printf( "EDITING DELEGATE: webViewDidChangeSelection:WebViewDidChangeSelectionNotification\n" );
+    }
+
 //     const Selection &selection = m_page->d->page->selection();
 //     char buffer[1024];
 //     selection.formatForDebugger(buffer, sizeof(buffer));
@@ -212,15 +248,21 @@ void EditorClientQt::respondToChangedSelection()
 
     m_page->d->updateEditorActions();
     emit m_page->selectionChanged();
-    Frame* frame = m_page->d->page->focusController()->focusedOrMainFrame();
-    if (!frame->editor()->ignoreCompositionSelectionChange())
+    Frame *frame = m_page->d->page->focusController()->focusedOrMainFrame();
+
+    if ( !frame->editor()->ignoreCompositionSelectionChange() )
+    {
         emit m_page->microFocusChanged();
+    }
 }
 
 void EditorClientQt::didEndEditing()
 {
-    if (dumpEditingCallbacks)
-        printf("EDITING DELEGATE: webViewDidEndEditing:WebViewDidEndEditingNotification\n");
+    if ( dumpEditingCallbacks )
+    {
+        printf( "EDITING DELEGATE: webViewDidEndEditing:WebViewDidEndEditingNotification\n" );
+    }
+
     m_editing = false;
 }
 
@@ -238,17 +280,21 @@ bool EditorClientQt::selectWordBeforeMenuEvent()
     return false;
 }
 
-void EditorClientQt::registerCommandForUndo(WTF::PassRefPtr<WebCore::EditCommand> cmd)
+void EditorClientQt::registerCommandForUndo( WTF::PassRefPtr<WebCore::EditCommand> cmd )
 {
 #ifndef QT_NO_UNDOSTACK
-    Frame* frame = m_page->d->page->focusController()->focusedOrMainFrame();
-    if (m_inUndoRedo || (frame && !frame->editor()->lastEditCommand() /* HACK!! Don't recreate undos */))
+    Frame *frame = m_page->d->page->focusController()->focusedOrMainFrame();
+
+    if ( m_inUndoRedo || ( frame && !frame->editor()->lastEditCommand() /* HACK!! Don't recreate undos */ ) )
+    {
         return;
-    m_page->undoStack()->push(new EditCommandQt(cmd));
+    }
+
+    m_page->undoStack()->push( new EditCommandQt( cmd ) );
 #endif // QT_NO_UNDOSTACK
 }
 
-void EditorClientQt::registerCommandForRedo(WTF::PassRefPtr<WebCore::EditCommand>)
+void EditorClientQt::registerCommandForRedo( WTF::PassRefPtr<WebCore::EditCommand> )
 {
 }
 
@@ -259,12 +305,12 @@ void EditorClientQt::clearUndoRedoOperations()
 #endif
 }
 
-bool EditorClientQt::canCopyCut(WebCore::Frame*, bool defaultValue) const
+bool EditorClientQt::canCopyCut( WebCore::Frame *, bool defaultValue ) const
 {
     return defaultValue;
 }
 
-bool EditorClientQt::canPaste(WebCore::Frame*, bool defaultValue) const
+bool EditorClientQt::canPaste( WebCore::Frame *, bool defaultValue ) const
 {
     return defaultValue;
 }
@@ -305,18 +351,21 @@ void EditorClientQt::redo()
 #endif
 }
 
-bool EditorClientQt::shouldInsertNode(Node* node, Range* range, EditorInsertAction action)
+bool EditorClientQt::shouldInsertNode( Node *node, Range *range, EditorInsertAction action )
 {
-    if (dumpEditingCallbacks) {
-        static const char *insertactionstring[] = {
+    if ( dumpEditingCallbacks )
+    {
+        static const char *insertactionstring[] =
+        {
             "WebViewInsertActionTyped",
             "WebViewInsertActionPasted",
             "WebViewInsertActionDropped",
         };
 
-        printf("EDITING DELEGATE: shouldInsertNode:%s replacingDOMRange:%s givenAction:%s\n", dumpPath(node).toUtf8().constData(),
-               dumpRange(range).toUtf8().constData(), insertactionstring[action]);
+        printf( "EDITING DELEGATE: shouldInsertNode:%s replacingDOMRange:%s givenAction:%s\n", dumpPath( node ).toUtf8().constData(),
+                dumpRange( range ).toUtf8().constData(), insertactionstring[action] );
     }
+
     return acceptsEditing;
 }
 
@@ -355,15 +404,17 @@ static const unsigned CtrlKey = 1 << 0;
 static const unsigned AltKey = 1 << 1;
 static const unsigned ShiftKey = 1 << 2;
 
-struct KeyDownEntry {
+struct KeyDownEntry
+{
     unsigned virtualKey;
     unsigned modifiers;
-    const char* editorCommand;
+    const char *editorCommand;
 };
 
 // Handle here key down events that are needed for spatial navigation and caret browsing, or
 // are not handled by QWebPage.
-static const KeyDownEntry keyDownEntries[] = {
+static const KeyDownEntry keyDownEntries[] =
+{
     // Ones that do not have an associated QAction:
     { VK_DELETE, 0,                  "DeleteForward"                     },
     { VK_BACK,   ShiftKey,           "DeleteBackward"                    },
@@ -380,108 +431,159 @@ static const KeyDownEntry keyDownEntries[] = {
     { VK_DOWN,   0,                  "MoveDown"                          },
 };
 
-const char* editorCommandForKeyDownEvent(const KeyboardEvent* event)
+const char *editorCommandForKeyDownEvent( const KeyboardEvent *event )
 {
-    if (event->type() != eventNames().keydownEvent)
+    if ( event->type() != eventNames().keydownEvent )
+    {
         return "";
+    }
 
-    static HashMap<int, const char*> keyDownCommandsMap;
-    if (keyDownCommandsMap.isEmpty()) {
+    static HashMap<int, const char *> keyDownCommandsMap;
 
-        unsigned numEntries = sizeof(keyDownEntries) / sizeof((keyDownEntries)[0]);
-        for (unsigned i = 0; i < numEntries; i++)
-            keyDownCommandsMap.set(keyDownEntries[i].modifiers << 16 | keyDownEntries[i].virtualKey, keyDownEntries[i].editorCommand);
+    if ( keyDownCommandsMap.isEmpty() )
+    {
+
+        unsigned numEntries = sizeof( keyDownEntries ) / sizeof( ( keyDownEntries )[0] );
+
+        for ( unsigned i = 0; i < numEntries; i++ )
+        {
+            keyDownCommandsMap.set( keyDownEntries[i].modifiers << 16 | keyDownEntries[i].virtualKey, keyDownEntries[i].editorCommand );
+        }
     }
 
     unsigned modifiers = 0;
-    if (event->shiftKey())
+
+    if ( event->shiftKey() )
+    {
         modifiers |= ShiftKey;
-    if (event->altKey())
+    }
+
+    if ( event->altKey() )
+    {
         modifiers |= AltKey;
-    if (event->ctrlKey())
+    }
+
+    if ( event->ctrlKey() )
+    {
         modifiers |= CtrlKey;
+    }
 
     int mapKey = modifiers << 16 | event->keyCode();
-    return mapKey ? keyDownCommandsMap.get(mapKey) : 0;
+    return mapKey ? keyDownCommandsMap.get( mapKey ) : 0;
 }
 
-void EditorClientQt::handleKeyboardEvent(KeyboardEvent* event)
+void EditorClientQt::handleKeyboardEvent( KeyboardEvent *event )
 {
-    Frame* frame = m_page->d->page->focusController()->focusedOrMainFrame();
-    if (!frame)
-        return;
+    Frame *frame = m_page->d->page->focusController()->focusedOrMainFrame();
 
-    const PlatformKeyboardEvent* kevent = event->keyEvent();
-    if (!kevent || kevent->type() == PlatformKeyboardEvent::KeyUp)
+    if ( !frame )
+    {
         return;
+    }
 
-    Node* start = frame->selection()->start().containerNode();
-    if (!start)
+    const PlatformKeyboardEvent *kevent = event->keyEvent();
+
+    if ( !kevent || kevent->type() == PlatformKeyboardEvent::KeyUp )
+    {
         return;
+    }
+
+    Node *start = frame->selection()->start().containerNode();
+
+    if ( !start )
+    {
+        return;
+    }
 
     // FIXME: refactor all of this to use Actions or something like them
-    if (start->isContentEditable()) {
+    if ( start->isContentEditable() )
+    {
         bool doSpatialNavigation = false;
-        if (isSpatialNavigationEnabled(frame)) {
-            if (!kevent->modifiers()) {
-                switch (kevent->windowsVirtualKeyCode()) {
-                case VK_LEFT:
-                case VK_RIGHT:
-                case VK_UP:
-                case VK_DOWN:
-                    doSpatialNavigation = true;
+
+        if ( isSpatialNavigationEnabled( frame ) )
+        {
+            if ( !kevent->modifiers() )
+            {
+                switch ( kevent->windowsVirtualKeyCode() )
+                {
+                    case VK_LEFT:
+                    case VK_RIGHT:
+                    case VK_UP:
+                    case VK_DOWN:
+                        doSpatialNavigation = true;
                 }
             }
         }
 
 #ifndef QT_NO_SHORTCUT
-        QWebPage::WebAction action = QWebPagePrivate::editorActionForKeyEvent(kevent->qtEvent());
-        if (action != QWebPage::NoWebAction && !doSpatialNavigation) {
-            const char* cmd = QWebPagePrivate::editorCommandForWebActions(action);
+        QWebPage::WebAction action = QWebPagePrivate::editorActionForKeyEvent( kevent->qtEvent() );
+
+        if ( action != QWebPage::NoWebAction && !doSpatialNavigation )
+        {
+            const char *cmd = QWebPagePrivate::editorCommandForWebActions( action );
+
             // WebKit doesn't have enough information about mode to decide how commands that just insert text if executed via Editor should be treated,
             // so we leave it upon WebCore to either handle them immediately (e.g. Tab that changes focus) or let a keypress event be generated
             // (e.g. Tab that inserts a Tab character, or Enter).
-            if (cmd && frame->editor()->command(cmd).isTextInsertion()
-                && kevent->type() == PlatformKeyboardEvent::RawKeyDown)
-                return;
-
-            m_page->triggerAction(action);
-            event->setDefaultHandled();
-            return;
-        } else
-#endif // QT_NO_SHORTCUT
-        {
-            String commandName = editorCommandForKeyDownEvent(event);
-            if (!commandName.isEmpty()) {
-                if (frame->editor()->command(commandName).execute()) // Event handled.
-                    event->setDefaultHandled();
+            if ( cmd && frame->editor()->command( cmd ).isTextInsertion()
+                    && kevent->type() == PlatformKeyboardEvent::RawKeyDown )
+            {
                 return;
             }
 
-            if (kevent->windowsVirtualKeyCode() == VK_TAB) {
+            m_page->triggerAction( action );
+            event->setDefaultHandled();
+            return;
+        }
+        else
+#endif // QT_NO_SHORTCUT
+        {
+            String commandName = editorCommandForKeyDownEvent( event );
+
+            if ( !commandName.isEmpty() )
+            {
+                if ( frame->editor()->command( commandName ).execute() ) // Event handled.
+                {
+                    event->setDefaultHandled();
+                }
+
+                return;
+            }
+
+            if ( kevent->windowsVirtualKeyCode() == VK_TAB )
+            {
                 // Do not handle TAB text insertion here.
                 return;
             }
 
             // Text insertion.
             bool shouldInsertText = false;
-            if (kevent->type() != PlatformKeyboardEvent::KeyDown && !kevent->text().isEmpty()) {
 
-                if (kevent->ctrlKey()) {
-                    if (kevent->altKey())
+            if ( kevent->type() != PlatformKeyboardEvent::KeyDown && !kevent->text().isEmpty() )
+            {
+
+                if ( kevent->ctrlKey() )
+                {
+                    if ( kevent->altKey() )
+                    {
                         shouldInsertText = true;
-                } else {
+                    }
+                }
+                else
+                {
 #ifndef Q_OS_DARWIN
-                // We need to exclude checking for Alt because it is just a different Shift
-                if (!kevent->altKey())
+
+                    // We need to exclude checking for Alt because it is just a different Shift
+                    if ( !kevent->altKey() )
 #endif
-                    shouldInsertText = true;
+                        shouldInsertText = true;
 
                 }
             }
 
-            if (shouldInsertText) {
-                frame->editor()->insertText(kevent->text(), event);
+            if ( shouldInsertText )
+            {
+                frame->editor()->insertText( kevent->text(), event );
                 event->setDefaultHandled();
                 return;
             }
@@ -492,29 +594,32 @@ void EditorClientQt::handleKeyboardEvent(KeyboardEvent* event)
     }
 
     // Non editable content.
-    if (m_page->handle()->page->settings()->caretBrowsingEnabled()) {
-        switch (kevent->windowsVirtualKeyCode()) {
-        case VK_LEFT:
-        case VK_RIGHT:
-        case VK_UP:
-        case VK_DOWN:
-        case VK_HOME:
-        case VK_END:
+    if ( m_page->handle()->page->settings()->caretBrowsingEnabled() )
+    {
+        switch ( kevent->windowsVirtualKeyCode() )
+        {
+            case VK_LEFT:
+            case VK_RIGHT:
+            case VK_UP:
+            case VK_DOWN:
+            case VK_HOME:
+            case VK_END:
             {
 #ifndef QT_NO_SHORTCUT
-                QWebPage::WebAction action = QWebPagePrivate::editorActionForKeyEvent(kevent->qtEvent());
-                ASSERT(action != QWebPage::NoWebAction);
-                m_page->triggerAction(action);
+                QWebPage::WebAction action = QWebPagePrivate::editorActionForKeyEvent( kevent->qtEvent() );
+                ASSERT( action != QWebPage::NoWebAction );
+                m_page->triggerAction( action );
                 event->setDefaultHandled();
 #endif
                 return;
             }
-        case VK_PRIOR: // PageUp
-        case VK_NEXT:  // PageDown
+
+            case VK_PRIOR: // PageUp
+            case VK_NEXT:  // PageDown
             {
-                String commandName = editorCommandForKeyDownEvent(event);
-                ASSERT(!commandName.isEmpty());
-                frame->editor()->command(commandName).execute();
+                String commandName = editorCommandForKeyDownEvent( event );
+                ASSERT( !commandName.isEmpty() );
+                frame->editor()->command( commandName ).execute();
                 event->setDefaultHandled();
                 return;
             }
@@ -522,87 +627,90 @@ void EditorClientQt::handleKeyboardEvent(KeyboardEvent* event)
     }
 
 #ifndef QT_NO_SHORTCUT
-    if (kevent->qtEvent() == QKeySequence::Copy) {
-        m_page->triggerAction(QWebPage::Copy);
+
+    if ( kevent->qtEvent() == QKeySequence::Copy )
+    {
+        m_page->triggerAction( QWebPage::Copy );
         event->setDefaultHandled();
         return;
     }
+
 #endif // QT_NO_SHORTCUT
 }
 
-void EditorClientQt::handleInputMethodKeydown(KeyboardEvent*)
+void EditorClientQt::handleInputMethodKeydown( KeyboardEvent * )
 {
 }
 
-EditorClientQt::EditorClientQt(QWebPage* page)
-    : m_page(page), m_editing(false), m_inUndoRedo(false)
+EditorClientQt::EditorClientQt( QWebPage *page )
+    : m_page( page ), m_editing( false ), m_inUndoRedo( false )
 {
 }
 
-void EditorClientQt::textFieldDidBeginEditing(Element*)
+void EditorClientQt::textFieldDidBeginEditing( Element * )
 {
     m_editing = true;
 }
 
-void EditorClientQt::textFieldDidEndEditing(Element*)
+void EditorClientQt::textFieldDidEndEditing( Element * )
 {
     m_editing = false;
 }
 
-void EditorClientQt::textDidChangeInTextField(Element*)
+void EditorClientQt::textDidChangeInTextField( Element * )
 {
 }
 
-bool EditorClientQt::doTextFieldCommandFromEvent(Element*, KeyboardEvent*)
+bool EditorClientQt::doTextFieldCommandFromEvent( Element *, KeyboardEvent * )
 {
     return false;
 }
 
-void EditorClientQt::textWillBeDeletedInTextField(Element*)
+void EditorClientQt::textWillBeDeletedInTextField( Element * )
 {
 }
 
-void EditorClientQt::textDidChangeInTextArea(Element*)
+void EditorClientQt::textDidChangeInTextArea( Element * )
 {
 }
 
-void EditorClientQt::ignoreWordInSpellDocument(const String&)
-{
-    notImplemented();
-}
-
-void EditorClientQt::learnWord(const String&)
+void EditorClientQt::ignoreWordInSpellDocument( const String & )
 {
     notImplemented();
 }
 
-void EditorClientQt::checkSpellingOfString(const UChar*, int, int*, int*)
+void EditorClientQt::learnWord( const String & )
 {
     notImplemented();
 }
 
-String EditorClientQt::getAutoCorrectSuggestionForMisspelledWord(const String&)
+void EditorClientQt::checkSpellingOfString( const UChar *, int, int *, int * )
+{
+    notImplemented();
+}
+
+String EditorClientQt::getAutoCorrectSuggestionForMisspelledWord( const String & )
 {
     notImplemented();
     return String();
 }
 
-void EditorClientQt::checkGrammarOfString(const UChar*, int, Vector<GrammarDetail>&, int*, int*)
+void EditorClientQt::checkGrammarOfString( const UChar *, int, Vector<GrammarDetail> &, int *, int * )
 {
     notImplemented();
 }
 
-void EditorClientQt::updateSpellingUIWithGrammarString(const String&, const GrammarDetail&)
+void EditorClientQt::updateSpellingUIWithGrammarString( const String &, const GrammarDetail & )
 {
     notImplemented();
 }
 
-void EditorClientQt::updateSpellingUIWithMisspelledWord(const String&)
+void EditorClientQt::updateSpellingUIWithMisspelledWord( const String & )
 {
     notImplemented();
 }
 
-void EditorClientQt::showSpellingUI(bool)
+void EditorClientQt::showSpellingUI( bool )
 {
     notImplemented();
 }
@@ -613,7 +721,7 @@ bool EditorClientQt::spellingUIIsShowing()
     return false;
 }
 
-void EditorClientQt::getGuessesForWord(const String& word, const String& context, Vector<String>& guesses)
+void EditorClientQt::getGuessesForWord( const String &word, const String &context, Vector<String> &guesses )
 {
     notImplemented();
 }
@@ -627,40 +735,60 @@ void EditorClientQt::willSetInputMethodState()
 {
 }
 
-void EditorClientQt::setInputMethodState(bool active)
+void EditorClientQt::setInputMethodState( bool active )
 {
-    QWebPageClient* webPageClient = m_page->d->client.get();
-    if (webPageClient) {
+    QWebPageClient *webPageClient = m_page->d->client.get();
+
+    if ( webPageClient )
+    {
         Qt::InputMethodHints hints;
 
-        HTMLInputElement* inputElement = 0;
-        Frame* frame = m_page->d->page->focusController()->focusedOrMainFrame();
-        if (frame && frame->document() && frame->document()->focusedNode())
-            if (frame->document()->focusedNode()->hasTagName(HTMLNames::inputTag))
-                inputElement = static_cast<HTMLInputElement*>(frame->document()->focusedNode());
+        HTMLInputElement *inputElement = 0;
+        Frame *frame = m_page->d->page->focusController()->focusedOrMainFrame();
 
-        if (inputElement) {
+        if ( frame && frame->document() && frame->document()->focusedNode() )
+            if ( frame->document()->focusedNode()->hasTagName( HTMLNames::inputTag ) )
+            {
+                inputElement = static_cast<HTMLInputElement *>( frame->document()->focusedNode() );
+            }
+
+        if ( inputElement )
+        {
             // Set input method hints for "number", "tel", "email", "url" and "password" input elements.
-            if (inputElement->isTelephoneField())
+            if ( inputElement->isTelephoneField() )
+            {
                 hints |= Qt::ImhDialableCharactersOnly;
-            if (inputElement->isNumberField())
+            }
+
+            if ( inputElement->isNumberField() )
+            {
                 hints |= Qt::ImhDigitsOnly;
-            if (inputElement->isEmailField())
+            }
+
+            if ( inputElement->isEmailField() )
+            {
                 hints |= Qt::ImhEmailCharactersOnly;
-            if (inputElement->isURLField())
+            }
+
+            if ( inputElement->isURLField() )
+            {
                 hints |= Qt::ImhUrlCharactersOnly;
+            }
+
             // Setting the Qt::WA_InputMethodEnabled attribute true and Qt::ImhHiddenText flag
             // for password fields. The Qt platform is responsible for determining which widget
             // will receive input method events for password fields.
-            if (inputElement->isPasswordField()) {
+            if ( inputElement->isPasswordField() )
+            {
                 active = true;
                 hints |= Qt::ImhHiddenText;
             }
         }
 
-        webPageClient->setInputMethodHints(hints);
-        webPageClient->setInputMethodEnabled(active);
+        webPageClient->setInputMethodHints( hints );
+        webPageClient->setInputMethodEnabled( active );
     }
+
     emit m_page->microFocusChanged();
 }
 

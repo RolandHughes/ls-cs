@@ -27,137 +27,138 @@
 #include <QByteArray>
 #include <qfunctioncall_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class ConcatFN : public FunctionCall
 {
- public:
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
+public:
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
 };
 
 class StringJoinFN : public FunctionCall
 {
- public:
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
+public:
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
 
-   /**
-    * Optimization: when the cardinality of the sequence of items to join
-    * cannot be two or more, we have no effect and therefore rewrite
-    * ourselves to our first operand.
-    */
-   Expression::Ptr compress(const StaticContext::Ptr &context) override;
+    /**
+     * Optimization: when the cardinality of the sequence of items to join
+     * cannot be two or more, we have no effect and therefore rewrite
+     * ourselves to our first operand.
+     */
+    Expression::Ptr compress( const StaticContext::Ptr &context ) override;
 };
 
 
 class SubstringFN : public FunctionCall
 {
- public:
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
+public:
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
 };
 
 
 class StringLengthFN : public FunctionCall
 {
- public:
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
+public:
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
 };
 
 class NormalizeSpaceFN : public FunctionCall
 {
- public:
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
+public:
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
 };
 
 class NormalizeUnicodeFN : public FunctionCall
 {
- public:
-   /**
-    * Initializes private data.
-    */
-   NormalizeUnicodeFN();
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
-   Expression::Ptr compress(const StaticContext::Ptr &context) override;
+public:
+    /**
+     * Initializes private data.
+     */
+    NormalizeUnicodeFN();
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
+    Expression::Ptr compress( const StaticContext::Ptr &context ) override;
 
- private:
-   int determineNormalizationForm(const DynamicContext::Ptr &context) const;
-   QString::NormalizationForm m_normForm;
+private:
+    int determineNormalizationForm( const DynamicContext::Ptr &context ) const;
+    QString::NormalizationForm m_normForm;
 };
 
 class UpperCaseFN : public FunctionCall
 {
- public:
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
+public:
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
 };
 
 class LowerCaseFN : public FunctionCall
 {
- public:
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
+public:
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
 };
 
 class TranslateFN : public FunctionCall
 {
- public:
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
+public:
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
 };
 
 class EncodeString : public FunctionCall
 {
- public:
-   /**
-    * Evaluates its first operand. If it is the empty sequence, an empty string
-    * is returned. Otherwise, the item's string value is returned percent encoded
-    * as specified in this class's constructor.
-    */
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
+public:
+    /**
+     * Evaluates its first operand. If it is the empty sequence, an empty string
+     * is returned. Otherwise, the item's string value is returned percent encoded
+     * as specified in this class's constructor.
+     */
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
 
- protected:
-   /**
-    * Encodes its operand with QUrl::toPercentEncoding(), with @p includeChars as
-    * the characters to encode, and @p excludeChars as the characters to not encode.
-    */
-   EncodeString(const QByteArray &excludeChars, const QByteArray &includeChars);
+protected:
+    /**
+     * Encodes its operand with QUrl::toPercentEncoding(), with @p includeChars as
+     * the characters to encode, and @p excludeChars as the characters to not encode.
+     */
+    EncodeString( const QByteArray &excludeChars, const QByteArray &includeChars );
 
- private:
-   const QByteArray m_excludeChars;
-   const QByteArray m_includeChars;
+private:
+    const QByteArray m_excludeChars;
+    const QByteArray m_includeChars;
 };
 
 class EncodeForURIFN : public EncodeString
 {
- public:
-   /**
-    * Performs internal initialization.
-    */
-   EncodeForURIFN();
+public:
+    /**
+     * Performs internal initialization.
+     */
+    EncodeForURIFN();
 
- private:
-   static const char *const include;
+private:
+    static const char *const include;
 };
 
 class IriToURIFN : public EncodeString
 {
- public:
-   /**
-    * Performs internal initialization.
-    */
-   IriToURIFN();
+public:
+    /**
+     * Performs internal initialization.
+     */
+    IriToURIFN();
 
- private:
-   static const char *const exclude;
+private:
+    static const char *const exclude;
 };
 
 class EscapeHtmlURIFN : public EncodeString
 {
- public:
-   /**
-    * Performs internal initialization.
-    */
-   EscapeHtmlURIFN();
+public:
+    /**
+     * Performs internal initialization.
+     */
+    EscapeHtmlURIFN();
 
- private:
-   static const char *const include;
-   static const char *const exclude;
+private:
+    static const char *const include;
+    static const char *const exclude;
 };
 
 }

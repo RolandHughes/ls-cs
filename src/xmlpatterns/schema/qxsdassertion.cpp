@@ -25,12 +25,12 @@
 
 using namespace QPatternist;
 
-void XsdAssertion::setTest(const XsdXPathExpression::Ptr &test)
+void XsdAssertion::setTest( const XsdXPathExpression::Ptr &test )
 {
-   m_test = test;
+    m_test = test;
 }
 
 XsdXPathExpression::Ptr XsdAssertion::test() const
 {
-   return m_test;
+    return m_test;
 }

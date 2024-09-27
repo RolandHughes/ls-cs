@@ -25,8 +25,8 @@
 
 #include <qmediacontrol_p.h>
 
-QCameraImageProcessingControl::QCameraImageProcessingControl(QObject *parent)
-   : QMediaControl(*new QMediaControlPrivate, parent)
+QCameraImageProcessingControl::QCameraImageProcessingControl( QObject *parent )
+    : QMediaControl( *new QMediaControlPrivate, parent )
 {
 }
 

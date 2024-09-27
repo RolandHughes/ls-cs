@@ -26,55 +26,61 @@
 #include "JSString.h"
 #include "NativeErrorPrototype.h"
 
-namespace JSC {
+namespace JSC
+{
 
-ASSERT_CLASS_FITS_IN_CELL(NativeErrorConstructor);
+ASSERT_CLASS_FITS_IN_CELL( NativeErrorConstructor );
 
 const ClassInfo NativeErrorConstructor::s_info = { "Function", &InternalFunction::s_info, 0, 0 };
 
-NativeErrorConstructor::NativeErrorConstructor(ExecState* exec, JSGlobalObject* globalObject, Structure* structure, Structure* prototypeStructure, const UString& nameAndMessage)
-    : InternalFunction(&exec->globalData(), globalObject, structure, Identifier(exec, nameAndMessage))
+NativeErrorConstructor::NativeErrorConstructor( ExecState *exec, JSGlobalObject *globalObject, Structure *structure,
+        Structure *prototypeStructure, const UString &nameAndMessage )
+    : InternalFunction( &exec->globalData(), globalObject, structure, Identifier( exec, nameAndMessage ) )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 
-    NativeErrorPrototype* prototype = new (exec) NativeErrorPrototype(exec, globalObject, prototypeStructure, nameAndMessage, this);
+    NativeErrorPrototype *prototype = new ( exec ) NativeErrorPrototype( exec, globalObject, prototypeStructure, nameAndMessage,
+            this );
 
-    putDirect(exec->globalData(), exec->propertyNames().length, jsNumber(1), DontDelete | ReadOnly | DontEnum); // ECMA 15.11.7.5
-    putDirect(exec->globalData(), exec->propertyNames().prototype, prototype, DontDelete | ReadOnly | DontEnum);
-    m_errorStructure.set(exec->globalData(), this, ErrorInstance::createStructure(exec->globalData(), prototype));
-    ASSERT(m_errorStructure);
-    ASSERT(m_errorStructure->typeInfo().type() == ObjectType);
+    putDirect( exec->globalData(), exec->propertyNames().length, jsNumber( 1 ), DontDelete | ReadOnly | DontEnum ); // ECMA 15.11.7.5
+    putDirect( exec->globalData(), exec->propertyNames().prototype, prototype, DontDelete | ReadOnly | DontEnum );
+    m_errorStructure.set( exec->globalData(), this, ErrorInstance::createStructure( exec->globalData(), prototype ) );
+    ASSERT( m_errorStructure );
+    ASSERT( m_errorStructure->typeInfo().type() == ObjectType );
 }
 
-void NativeErrorConstructor::visitChildren(SlotVisitor& visitor)
+void NativeErrorConstructor::visitChildren( SlotVisitor &visitor )
 {
-    InternalFunction::visitChildren(visitor);
-    if (m_errorStructure)
-        visitor.append(&m_errorStructure);
+    InternalFunction::visitChildren( visitor );
+
+    if ( m_errorStructure )
+    {
+        visitor.append( &m_errorStructure );
+    }
 }
 
-static EncodedJSValue JSC_HOST_CALL constructWithNativeErrorConstructor(ExecState* exec)
+static EncodedJSValue JSC_HOST_CALL constructWithNativeErrorConstructor( ExecState *exec )
 {
-    JSValue message = exec->argumentCount() ? exec->argument(0) : jsUndefined();
-    Structure* errorStructure = static_cast<NativeErrorConstructor*>(exec->callee())->errorStructure();
-    ASSERT(errorStructure);
-    return JSValue::encode(ErrorInstance::create(exec, errorStructure, message));
+    JSValue message = exec->argumentCount() ? exec->argument( 0 ) : jsUndefined();
+    Structure *errorStructure = static_cast<NativeErrorConstructor *>( exec->callee() )->errorStructure();
+    ASSERT( errorStructure );
+    return JSValue::encode( ErrorInstance::create( exec, errorStructure, message ) );
 }
 
-ConstructType NativeErrorConstructor::getConstructData(ConstructData& constructData)
+ConstructType NativeErrorConstructor::getConstructData( ConstructData &constructData )
 {
     constructData.native.function = constructWithNativeErrorConstructor;
     return ConstructTypeHost;
 }
-    
-static EncodedJSValue JSC_HOST_CALL callNativeErrorConstructor(ExecState* exec)
+
+static EncodedJSValue JSC_HOST_CALL callNativeErrorConstructor( ExecState *exec )
 {
-    JSValue message = exec->argumentCount() ? exec->argument(0) : jsUndefined();
-    Structure* errorStructure = static_cast<NativeErrorConstructor*>(exec->callee())->errorStructure();
-    return JSValue::encode(ErrorInstance::create(exec, errorStructure, message));
+    JSValue message = exec->argumentCount() ? exec->argument( 0 ) : jsUndefined();
+    Structure *errorStructure = static_cast<NativeErrorConstructor *>( exec->callee() )->errorStructure();
+    return JSValue::encode( ErrorInstance::create( exec, errorStructure, message ) );
 }
 
-CallType NativeErrorConstructor::getCallData(CallData& callData)
+CallType NativeErrorConstructor::getCallData( CallData &callData )
 {
     callData.native.function = callNativeErrorConstructor;
     return CallTypeHost;

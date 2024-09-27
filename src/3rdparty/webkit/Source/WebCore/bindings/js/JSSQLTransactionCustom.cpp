@@ -40,78 +40,114 @@
 
 using namespace JSC;
 
-namespace WebCore {
-
-JSValue JSSQLTransaction::executeSql(ExecState* exec)
+namespace WebCore
 {
-    if (!exec->argumentCount()) {
-        setDOMException(exec, SYNTAX_ERR);
+
+JSValue JSSQLTransaction::executeSql( ExecState *exec )
+{
+    if ( !exec->argumentCount() )
+    {
+        setDOMException( exec, SYNTAX_ERR );
         return jsUndefined();
     }
 
-    String sqlStatement = ustringToString(exec->argument(0).toString(exec));
-    if (exec->hadException())
+    String sqlStatement = ustringToString( exec->argument( 0 ).toString( exec ) );
+
+    if ( exec->hadException() )
+    {
         return jsUndefined();
+    }
 
     // Now assemble the list of SQL arguments
     Vector<SQLValue> sqlValues;
-    if (!exec->argument(1).isUndefinedOrNull()) {
-        JSObject* object = exec->argument(1).getObject();
-        if (!object) {
-            setDOMException(exec, TYPE_MISMATCH_ERR);
+
+    if ( !exec->argument( 1 ).isUndefinedOrNull() )
+    {
+        JSObject *object = exec->argument( 1 ).getObject();
+
+        if ( !object )
+        {
+            setDOMException( exec, TYPE_MISMATCH_ERR );
             return jsUndefined();
         }
 
-        JSValue lengthValue = object->get(exec, exec->propertyNames().length);
-        if (exec->hadException())
-            return jsUndefined();
-        unsigned length = lengthValue.toUInt32(exec);
-        if (exec->hadException())
-            return jsUndefined();
+        JSValue lengthValue = object->get( exec, exec->propertyNames().length );
 
-        for (unsigned i = 0 ; i < length; ++i) {
-            JSValue value = object->get(exec, i);
-            if (exec->hadException())
+        if ( exec->hadException() )
+        {
+            return jsUndefined();
+        }
+
+        unsigned length = lengthValue.toUInt32( exec );
+
+        if ( exec->hadException() )
+        {
+            return jsUndefined();
+        }
+
+        for ( unsigned i = 0 ; i < length; ++i )
+        {
+            JSValue value = object->get( exec, i );
+
+            if ( exec->hadException() )
+            {
                 return jsUndefined();
+            }
 
-            if (value.isUndefinedOrNull())
-                sqlValues.append(SQLValue());
-            else if (value.isNumber())
-                sqlValues.append(value.uncheckedGetNumber());
-            else {
+            if ( value.isUndefinedOrNull() )
+            {
+                sqlValues.append( SQLValue() );
+            }
+            else if ( value.isNumber() )
+            {
+                sqlValues.append( value.uncheckedGetNumber() );
+            }
+            else
+            {
                 // Convert the argument to a string and append it
-                sqlValues.append(ustringToString(value.toString(exec)));
-                if (exec->hadException())
+                sqlValues.append( ustringToString( value.toString( exec ) ) );
+
+                if ( exec->hadException() )
+                {
                     return jsUndefined();
+                }
             }
         }
     }
 
     RefPtr<SQLStatementCallback> callback;
-    if (!exec->argument(2).isUndefinedOrNull()) {
-        JSObject* object = exec->argument(2).getObject();
-        if (!object) {
-            setDOMException(exec, TYPE_MISMATCH_ERR);
+
+    if ( !exec->argument( 2 ).isUndefinedOrNull() )
+    {
+        JSObject *object = exec->argument( 2 ).getObject();
+
+        if ( !object )
+        {
+            setDOMException( exec, TYPE_MISMATCH_ERR );
             return jsUndefined();
         }
 
-        callback = JSSQLStatementCallback::create(object, static_cast<JSDOMGlobalObject*>(globalObject()));
+        callback = JSSQLStatementCallback::create( object, static_cast<JSDOMGlobalObject *>( globalObject() ) );
     }
 
     RefPtr<SQLStatementErrorCallback> errorCallback;
-    if (!exec->argument(3).isUndefinedOrNull()) {
-        JSObject* object = exec->argument(3).getObject();
-        if (!object) {
-            setDOMException(exec, TYPE_MISMATCH_ERR);
+
+    if ( !exec->argument( 3 ).isUndefinedOrNull() )
+    {
+        JSObject *object = exec->argument( 3 ).getObject();
+
+        if ( !object )
+        {
+            setDOMException( exec, TYPE_MISMATCH_ERR );
             return jsUndefined();
         }
 
-        errorCallback = JSSQLStatementErrorCallback::create(object, static_cast<JSDOMGlobalObject*>(globalObject()));
+        errorCallback = JSSQLStatementErrorCallback::create( object, static_cast<JSDOMGlobalObject *>( globalObject() ) );
     }
 
     ExceptionCode ec = 0;
-    m_impl->executeSQL(sqlStatement, sqlValues, callback.release(), errorCallback.release(), ec);
-    setDOMException(exec, ec);
+    m_impl->executeSQL( sqlStatement, sqlValues, callback.release(), errorCallback.release(), ec );
+    setDOMException( exec, ec );
 
     return jsUndefined();
 }

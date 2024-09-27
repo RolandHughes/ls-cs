@@ -28,9 +28,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSCanvasRenderingContext);
+ASSERT_CLASS_FITS_IN_CELL( JSCanvasRenderingContext );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -41,9 +42,9 @@ ASSERT_CLASS_FITS_IN_CELL(JSCanvasRenderingContext);
 
 static const HashTableValue JSCanvasRenderingContextTableValues[3] =
 {
-    { "canvas", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsCanvasRenderingContextCanvas), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsCanvasRenderingContextConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "canvas", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsCanvasRenderingContextCanvas ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsCanvasRenderingContextConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -57,43 +58,52 @@ static JSC_CONST_HASHTABLE HashTable JSCanvasRenderingContextTable = { 4, 3, JSC
 
 static const HashTableValue JSCanvasRenderingContextConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSCanvasRenderingContextConstructorTable = { 1, 0, JSCanvasRenderingContextConstructorTableValues, 0 };
-class JSCanvasRenderingContextConstructor : public DOMConstructorObject {
+class JSCanvasRenderingContextConstructor : public DOMConstructorObject
+{
 public:
-    JSCanvasRenderingContextConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSCanvasRenderingContextConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSCanvasRenderingContextConstructor::s_info = { "CanvasRenderingContextConstructor", &DOMConstructorObject::s_info, &JSCanvasRenderingContextConstructorTable, 0 };
 
-JSCanvasRenderingContextConstructor::JSCanvasRenderingContextConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSCanvasRenderingContextConstructor::JSCanvasRenderingContextConstructor( ExecState *exec, Structure *structure,
+        JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSCanvasRenderingContextPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSCanvasRenderingContextPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSCanvasRenderingContextConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSCanvasRenderingContextConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName,
+        PropertySlot &slot )
 {
-    return getStaticValueSlot<JSCanvasRenderingContextConstructor, JSDOMWrapper>(exec, &JSCanvasRenderingContextConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSCanvasRenderingContextConstructor, JSDOMWrapper>( exec, &JSCanvasRenderingContextConstructorTable,
+            this, propertyName, slot );
 }
 
-bool JSCanvasRenderingContextConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSCanvasRenderingContextConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSCanvasRenderingContextConstructor, JSDOMWrapper>(exec, &JSCanvasRenderingContextConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSCanvasRenderingContextConstructor, JSDOMWrapper>( exec,
+            &JSCanvasRenderingContextConstructorTable, this, propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -105,89 +115,101 @@ bool JSCanvasRenderingContextConstructor::getOwnPropertyDescriptor(ExecState* ex
 
 static const HashTableValue JSCanvasRenderingContextPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSCanvasRenderingContextPrototypeTable = { 1, 0, JSCanvasRenderingContextPrototypeTableValues, 0 };
 const ClassInfo JSCanvasRenderingContextPrototype::s_info = { "CanvasRenderingContextPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSCanvasRenderingContextPrototypeTable, 0 };
 
-JSObject* JSCanvasRenderingContextPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSCanvasRenderingContextPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSCanvasRenderingContext>(exec, globalObject);
+    return getDOMPrototype<JSCanvasRenderingContext>( exec, globalObject );
 }
 
 const ClassInfo JSCanvasRenderingContext::s_info = { "CanvasRenderingContext", &JSDOMWrapper::s_info, &JSCanvasRenderingContextTable, 0 };
 
-JSCanvasRenderingContext::JSCanvasRenderingContext(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<CanvasRenderingContext> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSCanvasRenderingContext::JSCanvasRenderingContext( Structure *structure, JSDOMGlobalObject *globalObject,
+        PassRefPtr<CanvasRenderingContext> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSCanvasRenderingContext::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSCanvasRenderingContext::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSCanvasRenderingContextPrototype(exec->globalData(), globalObject, JSCanvasRenderingContextPrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSCanvasRenderingContextPrototype( exec->globalData(), globalObject,
+            JSCanvasRenderingContextPrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSCanvasRenderingContext::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSCanvasRenderingContext::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSCanvasRenderingContext, Base>(exec, &JSCanvasRenderingContextTable, this, propertyName, slot);
+    return getStaticValueSlot<JSCanvasRenderingContext, Base>( exec, &JSCanvasRenderingContextTable, this, propertyName, slot );
 }
 
-bool JSCanvasRenderingContext::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSCanvasRenderingContext::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSCanvasRenderingContext, Base>(exec, &JSCanvasRenderingContextTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSCanvasRenderingContext, Base>( exec, &JSCanvasRenderingContextTable, this, propertyName,
+            descriptor );
 }
 
-JSValue jsCanvasRenderingContextCanvas(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsCanvasRenderingContextCanvas( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSCanvasRenderingContext* castedThis = static_cast<JSCanvasRenderingContext*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    CanvasRenderingContext* imp = static_cast<CanvasRenderingContext*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->canvas()));
+    JSCanvasRenderingContext *castedThis = static_cast<JSCanvasRenderingContext *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    CanvasRenderingContext *imp = static_cast<CanvasRenderingContext *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->canvas() ) );
     return result;
 }
 
 
-JSValue jsCanvasRenderingContextConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsCanvasRenderingContextConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSCanvasRenderingContext* domObject = static_cast<JSCanvasRenderingContext*>(asObject(slotBase));
-    return JSCanvasRenderingContext::getConstructor(exec, domObject->globalObject());
+    JSCanvasRenderingContext *domObject = static_cast<JSCanvasRenderingContext *>( asObject( slotBase ) );
+    return JSCanvasRenderingContext::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSCanvasRenderingContext::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSCanvasRenderingContext::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSCanvasRenderingContextConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSCanvasRenderingContextConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-static inline bool isObservable(JSCanvasRenderingContext* jsCanvasRenderingContext)
+static inline bool isObservable( JSCanvasRenderingContext *jsCanvasRenderingContext )
 {
-    if (jsCanvasRenderingContext->hasCustomProperties())
+    if ( jsCanvasRenderingContext->hasCustomProperties() )
+    {
         return true;
+    }
+
     return false;
 }
 
-bool JSCanvasRenderingContextOwner::isReachableFromOpaqueRoots(JSC::Handle<JSC::Unknown> handle, void*, SlotVisitor& visitor)
+bool JSCanvasRenderingContextOwner::isReachableFromOpaqueRoots( JSC::Handle<JSC::Unknown> handle, void *, SlotVisitor &visitor )
 {
-    JSCanvasRenderingContext* jsCanvasRenderingContext = static_cast<JSCanvasRenderingContext*>(handle.get().asCell());
-    if (!isObservable(jsCanvasRenderingContext))
+    JSCanvasRenderingContext *jsCanvasRenderingContext = static_cast<JSCanvasRenderingContext *>( handle.get().asCell() );
+
+    if ( !isObservable( jsCanvasRenderingContext ) )
+    {
         return false;
-    void* root = WebCore::root(jsCanvasRenderingContext->impl()->canvas());
-    return visitor.containsOpaqueRoot(root);
+    }
+
+    void *root = WebCore::root( jsCanvasRenderingContext->impl()->canvas() );
+    return visitor.containsOpaqueRoot( root );
 }
 
-void JSCanvasRenderingContextOwner::finalize(JSC::Handle<JSC::Unknown> handle, void* context)
+void JSCanvasRenderingContextOwner::finalize( JSC::Handle<JSC::Unknown> handle, void *context )
 {
-    JSCanvasRenderingContext* jsCanvasRenderingContext = static_cast<JSCanvasRenderingContext*>(handle.get().asCell());
-    DOMWrapperWorld* world = static_cast<DOMWrapperWorld*>(context);
-    uncacheWrapper(world, jsCanvasRenderingContext->impl(), jsCanvasRenderingContext);
+    JSCanvasRenderingContext *jsCanvasRenderingContext = static_cast<JSCanvasRenderingContext *>( handle.get().asCell() );
+    DOMWrapperWorld *world = static_cast<DOMWrapperWorld *>( context );
+    uncacheWrapper( world, jsCanvasRenderingContext->impl(), jsCanvasRenderingContext );
 }
 
-CanvasRenderingContext* toCanvasRenderingContext(JSC::JSValue value)
+CanvasRenderingContext *toCanvasRenderingContext( JSC::JSValue value )
 {
-    return value.inherits(&JSCanvasRenderingContext::s_info) ? static_cast<JSCanvasRenderingContext*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSCanvasRenderingContext::s_info ) ? static_cast<JSCanvasRenderingContext *>( asObject(
+                value ) )->impl() : 0;
 }
 
 }

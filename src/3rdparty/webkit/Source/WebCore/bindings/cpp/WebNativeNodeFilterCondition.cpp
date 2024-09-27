@@ -21,11 +21,11 @@
 
 #include "WebDOMNode.h"
 
-WebNativeNodeFilterCondition::WebNativeNodeFilterCondition(WebUserNodeFilter* filter)
+WebNativeNodeFilterCondition::WebNativeNodeFilterCondition( WebUserNodeFilter *filter )
     : WebCore::NodeFilterCondition()
-    , m_filter(filter)
+    , m_filter( filter )
 {
-    ASSERT(m_filter);
+    ASSERT( m_filter );
     m_filter->ref();
 }
 
@@ -34,7 +34,7 @@ WebNativeNodeFilterCondition::~WebNativeNodeFilterCondition()
     m_filter->deref();
 }
 
-short WebNativeNodeFilterCondition::acceptNode(WebCore::ScriptState*, WebCore::Node* node) const
+short WebNativeNodeFilterCondition::acceptNode( WebCore::ScriptState *, WebCore::Node *node ) const
 {
-    return m_filter->acceptNode(toWebKit(node));
+    return m_filter->acceptNode( toWebKit( node ) );
 }

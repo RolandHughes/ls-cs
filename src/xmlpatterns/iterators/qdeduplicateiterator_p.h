@@ -32,26 +32,27 @@
 #include <qcomparisonplatform_p.h>
 #include <qsourcelocationreflection_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class DeduplicateIterator : public ListIterator<Item>
 {
- public:
-   DeduplicateIterator(const Item::List &source);
+public:
+    DeduplicateIterator( const Item::List &source );
 
-   Item next() override;
-   Item::Iterator::Ptr copy() const override;
-   xsInteger count() override;
+    Item next() override;
+    Item::Iterator::Ptr copy() const override;
+    xsInteger count() override;
 
- private:
-   /**
-    * m_position in ListIteratorPlatform is the position that we
-    * show to the outside through position) but do not correspond
-    * to the position in m_list, since we skip entries in that one.
-    *
-    * However, this guy, m_listPos, is the position into m_list.
-    */
-   int m_listPos;
+private:
+    /**
+     * m_position in ListIteratorPlatform is the position that we
+     * show to the outside through position) but do not correspond
+     * to the position in m_list, since we skip entries in that one.
+     *
+     * However, this guy, m_listPos, is the position into m_list.
+     */
+    int m_listPos;
 };
 
 }

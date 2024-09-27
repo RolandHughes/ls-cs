@@ -40,48 +40,56 @@
 #include <wtf/RefCounted.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class Storage;
-    class Frame;
-    class InspectorFrontend;
+class Storage;
+class Frame;
+class InspectorFrontend;
 
-    class InspectorDOMStorageResource : public EventListener {
-    public:
-        static PassRefPtr<InspectorDOMStorageResource> create(Storage* domStorage, bool isLocalStorage, Frame* frame)
-        {
-            return adoptRef(new InspectorDOMStorageResource(domStorage, isLocalStorage, frame));
-        }
+class InspectorDOMStorageResource : public EventListener
+{
+public:
+    static PassRefPtr<InspectorDOMStorageResource> create( Storage *domStorage, bool isLocalStorage, Frame *frame )
+    {
+        return adoptRef( new InspectorDOMStorageResource( domStorage, isLocalStorage, frame ) );
+    }
 
-        static const InspectorDOMStorageResource* cast(const EventListener* listener)
-        {
-            return listener->type() == InspectorDOMStorageResourceType ? static_cast<const InspectorDOMStorageResource*>(listener) : 0;
-        }
+    static const InspectorDOMStorageResource *cast( const EventListener *listener )
+    {
+        return listener->type() == InspectorDOMStorageResourceType ? static_cast<const InspectorDOMStorageResource *>( listener ) : 0;
+    }
 
-        void bind(InspectorFrontend* frontend);
-        void unbind();
-        void startReportingChangesToFrontend();
+    void bind( InspectorFrontend *frontend );
+    void unbind();
+    void startReportingChangesToFrontend();
 
-        virtual void handleEvent(ScriptExecutionContext*, Event*);
-        virtual bool operator==(const EventListener& listener);
+    virtual void handleEvent( ScriptExecutionContext *, Event * );
+    virtual bool operator==( const EventListener &listener );
 
-        bool isSameHostAndType(Frame*, bool isLocalStorage) const;
-        int id() const { return m_id; }
-        Storage* domStorage() const { return m_domStorage.get(); }
+    bool isSameHostAndType( Frame *, bool isLocalStorage ) const;
+    int id() const
+    {
+        return m_id;
+    }
+    Storage *domStorage() const
+    {
+        return m_domStorage.get();
+    }
 
-    private:
+private:
 
-        InspectorDOMStorageResource(Storage*, bool isLocalStorage, Frame*);
+    InspectorDOMStorageResource( Storage *, bool isLocalStorage, Frame * );
 
-        RefPtr<Storage> m_domStorage;
-        bool m_isLocalStorage;
-        RefPtr<Frame> m_frame;
-        InspectorFrontend::DOMStorage* m_frontend;
-        int m_id;
-        bool m_reportingChangesToFrontend;
+    RefPtr<Storage> m_domStorage;
+    bool m_isLocalStorage;
+    RefPtr<Frame> m_frame;
+    InspectorFrontend::DOMStorage *m_frontend;
+    int m_id;
+    bool m_reportingChangesToFrontend;
 
-        static int s_nextUnusedId;
-    };
+    static int s_nextUnusedId;
+};
 
 } // namespace WebCore
 

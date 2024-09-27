@@ -36,26 +36,27 @@
 #include "KURL.h"
 #include <wtf/PassOwnPtr.h>
 
-namespace WebCore {
-
-PassOwnPtr<InputType> URLInputType::create(HTMLInputElement* element)
+namespace WebCore
 {
-    return adoptPtr(new URLInputType(element));
+
+PassOwnPtr<InputType> URLInputType::create( HTMLInputElement *element )
+{
+    return adoptPtr( new URLInputType( element ) );
 }
 
-const AtomicString& URLInputType::formControlType() const
+const AtomicString &URLInputType::formControlType() const
 {
     return InputTypeNames::url();
 }
 
-bool URLInputType::typeMismatchFor(const String& value) const
+bool URLInputType::typeMismatchFor( const String &value ) const
 {
-    return !value.isEmpty() && !KURL(KURL(), value).isValid();
+    return !value.isEmpty() && !KURL( KURL(), value ).isValid();
 }
 
 bool URLInputType::typeMismatch() const
 {
-    return typeMismatchFor(element()->value());
+    return typeMismatchFor( element()->value() );
 }
 
 String URLInputType::typeMismatchText() const

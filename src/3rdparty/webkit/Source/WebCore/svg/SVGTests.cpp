@@ -30,16 +30,17 @@
 #include "SVGNames.h"
 #include "SVGStringList.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 SVGTests::SVGTests()
-    : m_requiredFeatures(SVGNames::requiredFeaturesAttr)
-    , m_requiredExtensions(SVGNames::requiredExtensionsAttr)
-    , m_systemLanguage(SVGNames::systemLanguageAttr)
+    : m_requiredFeatures( SVGNames::requiredFeaturesAttr )
+    , m_requiredExtensions( SVGNames::requiredExtensionsAttr )
+    , m_systemLanguage( SVGNames::systemLanguageAttr )
 {
 }
 
-bool SVGTests::hasExtension(const String&) const
+bool SVGTests::hasExtension( const String & ) const
 {
     // FIXME: Implement me!
     return false;
@@ -48,120 +49,166 @@ bool SVGTests::hasExtension(const String&) const
 bool SVGTests::isValid() const
 {
     unsigned featuresSize = m_requiredFeatures.value.size();
-    for (unsigned i = 0; i < featuresSize; ++i) {
-        String value = m_requiredFeatures.value.at(i);
-        if (value.isEmpty() || !DOMImplementation::hasFeature(value, String()))
+
+    for ( unsigned i = 0; i < featuresSize; ++i )
+    {
+        String value = m_requiredFeatures.value.at( i );
+
+        if ( value.isEmpty() || !DOMImplementation::hasFeature( value, String() ) )
+        {
             return false;
+        }
     }
 
     unsigned systemLanguageSize = m_systemLanguage.value.size();
-    for (unsigned i = 0; i < systemLanguageSize; ++i) {
-        String value = m_systemLanguage.value.at(i);
-        if (value != defaultLanguage().substring(0, 2))
+
+    for ( unsigned i = 0; i < systemLanguageSize; ++i )
+    {
+        String value = m_systemLanguage.value.at( i );
+
+        if ( value != defaultLanguage().substring( 0, 2 ) )
+        {
             return false;
+        }
     }
 
-    if (!m_requiredExtensions.value.isEmpty())
+    if ( !m_requiredExtensions.value.isEmpty() )
+    {
         return false;
+    }
 
     return true;
 }
 
-bool SVGTests::parseMappedAttribute(Attribute* attr)
+bool SVGTests::parseMappedAttribute( Attribute *attr )
 {
-    if (attr->name() == SVGNames::requiredFeaturesAttr) {
-        m_requiredFeatures.value.reset(attr->value());
+    if ( attr->name() == SVGNames::requiredFeaturesAttr )
+    {
+        m_requiredFeatures.value.reset( attr->value() );
         return true;
     }
-    if (attr->name() == SVGNames::requiredExtensionsAttr) {
-        m_requiredExtensions.value.reset(attr->value());
+
+    if ( attr->name() == SVGNames::requiredExtensionsAttr )
+    {
+        m_requiredExtensions.value.reset( attr->value() );
         return true;
     }
-    if (attr->name() == SVGNames::systemLanguageAttr) {
-        m_systemLanguage.value.reset(attr->value());
+
+    if ( attr->name() == SVGNames::systemLanguageAttr )
+    {
+        m_systemLanguage.value.reset( attr->value() );
         return true;
     }
-    
+
     return false;
 }
 
-bool SVGTests::isKnownAttribute(const QualifiedName& attrName)
+bool SVGTests::isKnownAttribute( const QualifiedName &attrName )
 {
     return attrName == SVGNames::requiredFeaturesAttr
-        || attrName == SVGNames::requiredExtensionsAttr
-        || attrName == SVGNames::systemLanguageAttr;
+           || attrName == SVGNames::requiredExtensionsAttr
+           || attrName == SVGNames::systemLanguageAttr;
 }
 
-bool SVGTests::handleAttributeChange(const SVGElement* targetElement, const QualifiedName& attrName)
+bool SVGTests::handleAttributeChange( const SVGElement *targetElement, const QualifiedName &attrName )
 {
-    if (!isKnownAttribute(attrName))
+    if ( !isKnownAttribute( attrName ) )
+    {
         return false;
-    if (!targetElement->inDocument())
+    }
+
+    if ( !targetElement->inDocument() )
+    {
         return false;
-    SVGElement* svgElement = const_cast<SVGElement*>(targetElement);
-    ASSERT(svgElement);
+    }
+
+    SVGElement *svgElement = const_cast<SVGElement *>( targetElement );
+    ASSERT( svgElement );
     bool valid = svgElement->isValid();
-    if (valid && !svgElement->attached())
+
+    if ( valid && !svgElement->attached() )
+    {
         svgElement->attach();
-    if (!valid && svgElement->attached())
+    }
+
+    if ( !valid && svgElement->attached() )
+    {
         svgElement->detach();
+    }
+
     return true;
 }
 
-void SVGTests::synchronizeProperties(SVGElement* contextElement, const QualifiedName& attrName)
+void SVGTests::synchronizeProperties( SVGElement *contextElement, const QualifiedName &attrName )
 {
-    if (attrName == anyQName()) {
-        synchronizeRequiredFeatures(contextElement);
-        synchronizeRequiredExtensions(contextElement);
-        synchronizeSystemLanguage(contextElement);
+    if ( attrName == anyQName() )
+    {
+        synchronizeRequiredFeatures( contextElement );
+        synchronizeRequiredExtensions( contextElement );
+        synchronizeSystemLanguage( contextElement );
         return;
     }
 
-    if (attrName == SVGNames::requiredFeaturesAttr)
-        synchronizeRequiredFeatures(contextElement);
-    else if (attrName == SVGNames::requiredExtensionsAttr)
-        synchronizeRequiredExtensions(contextElement);
-    else if (attrName == SVGNames::systemLanguageAttr)
-        synchronizeSystemLanguage(contextElement);
+    if ( attrName == SVGNames::requiredFeaturesAttr )
+    {
+        synchronizeRequiredFeatures( contextElement );
+    }
+    else if ( attrName == SVGNames::requiredExtensionsAttr )
+    {
+        synchronizeRequiredExtensions( contextElement );
+    }
+    else if ( attrName == SVGNames::systemLanguageAttr )
+    {
+        synchronizeSystemLanguage( contextElement );
+    }
 }
 
-void SVGTests::synchronizeRequiredFeatures(SVGElement* contextElement)
+void SVGTests::synchronizeRequiredFeatures( SVGElement *contextElement )
 {
-    if (!m_requiredFeatures.shouldSynchronize)
+    if ( !m_requiredFeatures.shouldSynchronize )
+    {
         return;
-    AtomicString value(m_requiredFeatures.value.valueAsString());
-    SVGAnimatedPropertySynchronizer<true>::synchronize(contextElement, SVGNames::requiredFeaturesAttr, value);
+    }
+
+    AtomicString value( m_requiredFeatures.value.valueAsString() );
+    SVGAnimatedPropertySynchronizer<true>::synchronize( contextElement, SVGNames::requiredFeaturesAttr, value );
 }
 
-void SVGTests::synchronizeRequiredExtensions(SVGElement* contextElement)
+void SVGTests::synchronizeRequiredExtensions( SVGElement *contextElement )
 {
-    if (!m_requiredExtensions.shouldSynchronize)
+    if ( !m_requiredExtensions.shouldSynchronize )
+    {
         return;
-    AtomicString value(m_requiredExtensions.value.valueAsString());
-    SVGAnimatedPropertySynchronizer<true>::synchronize(contextElement, SVGNames::requiredExtensionsAttr, value);
+    }
+
+    AtomicString value( m_requiredExtensions.value.valueAsString() );
+    SVGAnimatedPropertySynchronizer<true>::synchronize( contextElement, SVGNames::requiredExtensionsAttr, value );
 }
 
-void SVGTests::synchronizeSystemLanguage(SVGElement* contextElement)
+void SVGTests::synchronizeSystemLanguage( SVGElement *contextElement )
 {
-    if (!m_systemLanguage.shouldSynchronize)
+    if ( !m_systemLanguage.shouldSynchronize )
+    {
         return;
-    AtomicString value(m_systemLanguage.value.valueAsString());
-    SVGAnimatedPropertySynchronizer<true>::synchronize(contextElement, SVGNames::systemLanguageAttr, value);
+    }
+
+    AtomicString value( m_systemLanguage.value.valueAsString() );
+    SVGAnimatedPropertySynchronizer<true>::synchronize( contextElement, SVGNames::systemLanguageAttr, value );
 }
 
-SVGStringList& SVGTests::requiredFeatures()
+SVGStringList &SVGTests::requiredFeatures()
 {
     m_requiredFeatures.shouldSynchronize = true;
     return m_requiredFeatures.value;
 }
 
-SVGStringList& SVGTests::requiredExtensions()
+SVGStringList &SVGTests::requiredExtensions()
 {
-    m_requiredExtensions.shouldSynchronize = true;    
+    m_requiredExtensions.shouldSynchronize = true;
     return m_requiredExtensions.value;
 }
 
-SVGStringList& SVGTests::systemLanguage()
+SVGStringList &SVGTests::systemLanguage()
 {
     m_systemLanguage.shouldSynchronize = true;
     return m_systemLanguage.value;

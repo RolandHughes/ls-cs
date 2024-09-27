@@ -37,35 +37,35 @@
 
 class QXmlSchemaPrivate : public QSharedData
 {
- public:
-   QXmlSchemaPrivate(const QXmlNamePool &namePool);
-   QXmlSchemaPrivate(const QPatternist::XsdSchemaContext::Ptr &schemaContext);
-   QXmlSchemaPrivate(const QXmlSchemaPrivate &other);
+public:
+    QXmlSchemaPrivate( const QXmlNamePool &namePool );
+    QXmlSchemaPrivate( const QPatternist::XsdSchemaContext::Ptr &schemaContext );
+    QXmlSchemaPrivate( const QXmlSchemaPrivate &other );
 
-   void load(const QUrl &source, const QString &targetNamespace);
-   void load(QIODevice *source, const QUrl &documentUri, const QString &targetNamespace);
-   void load(const QByteArray &data, const QUrl &documentUri, const QString &targetNamespace);
-   bool isValid() const;
-   QXmlNamePool namePool() const;
-   QUrl documentUri() const;
-   void setMessageHandler(QAbstractMessageHandler *handler);
-   QAbstractMessageHandler *messageHandler() const;
-   void setUriResolver(const QAbstractUriResolver *resolver);
-   const QAbstractUriResolver *uriResolver() const;
-   void setNetworkAccessManager(QNetworkAccessManager *networkmanager);
-   QNetworkAccessManager *networkAccessManager() const;
+    void load( const QUrl &source, const QString &targetNamespace );
+    void load( QIODevice *source, const QUrl &documentUri, const QString &targetNamespace );
+    void load( const QByteArray &data, const QUrl &documentUri, const QString &targetNamespace );
+    bool isValid() const;
+    QXmlNamePool namePool() const;
+    QUrl documentUri() const;
+    void setMessageHandler( QAbstractMessageHandler *handler );
+    QAbstractMessageHandler *messageHandler() const;
+    void setUriResolver( const QAbstractUriResolver *resolver );
+    const QAbstractUriResolver *uriResolver() const;
+    void setNetworkAccessManager( QNetworkAccessManager *networkmanager );
+    QNetworkAccessManager *networkAccessManager() const;
 
-   QXmlNamePool                                                     m_namePool;
-   QAbstractMessageHandler                                         *m_userMessageHandler;
-   const QAbstractUriResolver                                      *m_uriResolver;
-   QNetworkAccessManager                                           *m_userNetworkAccessManager;
-   QPatternist::ReferenceCountedValue<QAbstractMessageHandler>::Ptr m_messageHandler;
-   QPatternist::ReferenceCountedValue<QNetworkAccessManager>::Ptr   m_networkAccessManager;
+    QXmlNamePool                                                     m_namePool;
+    QAbstractMessageHandler                                         *m_userMessageHandler;
+    const QAbstractUriResolver                                      *m_uriResolver;
+    QNetworkAccessManager                                           *m_userNetworkAccessManager;
+    QPatternist::ReferenceCountedValue<QAbstractMessageHandler>::Ptr m_messageHandler;
+    QPatternist::ReferenceCountedValue<QNetworkAccessManager>::Ptr   m_networkAccessManager;
 
-   QPatternist::XsdSchemaContext::Ptr                               m_schemaContext;
-   QPatternist::XsdSchemaParserContext::Ptr                         m_schemaParserContext;
-   bool                                                             m_schemaIsValid;
-   QUrl                                                             m_documentUri;
+    QPatternist::XsdSchemaContext::Ptr                               m_schemaContext;
+    QPatternist::XsdSchemaParserContext::Ptr                         m_schemaParserContext;
+    bool                                                             m_schemaIsValid;
+    QUrl                                                             m_documentUri;
 };
 
 #endif

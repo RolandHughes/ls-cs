@@ -42,20 +42,21 @@ typedef struct _cairo_surface cairo_surface_t;
 class QPainter;
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
 class AffineTransform;
 class GraphicsContext;
 
 #if USE(CAIRO)
-typedef cairo_surface_t* PlatformImage;
-typedef cairo_t* PlatformContext;
+typedef cairo_surface_t *PlatformImage;
+typedef cairo_t *PlatformContext;
 #elif PLATFORM(QT)
 typedef QImage PlatformImage;
-typedef QPainter* PlatformContext;
+typedef QPainter *PlatformContext;
 #else
-typedef void* PlatformImage;
-typedef void* PlatformContext;
+typedef void *PlatformImage;
+typedef void *PlatformContext;
 #endif
 
 // This is to track and keep the shadow state. We use this rather than
@@ -68,9 +69,11 @@ typedef void* PlatformContext;
 
 // This class is Deprecated. Platforms should migrate to ShadowBlur.
 
-class ContextShadow {
+class ContextShadow
+{
 public:
-    enum {
+    enum
+    {
         NoShadow,
         SolidShadow,
         BlurShadow
@@ -81,9 +84,9 @@ public:
     FloatSize m_offset;
 
     ContextShadow();
-    ContextShadow(const Color&, float radius, const FloatSize& offset);
+    ContextShadow( const Color &, float radius, const FloatSize &offset );
 
-    bool mustUseContextShadow(GraphicsContext*);
+    bool mustUseContextShadow( GraphicsContext * );
     void clear();
 
     // The pair beginShadowLayer and endShadowLayer creates a temporary image
@@ -108,17 +111,28 @@ public:
     // original context. If blur radius is specified, the shadow will be
     // filtered first.
 
-    PlatformContext beginShadowLayer(GraphicsContext*, const FloatRect& layerArea);
-    void endShadowLayer(GraphicsContext*);
+    PlatformContext beginShadowLayer( GraphicsContext *, const FloatRect &layerArea );
+    void endShadowLayer( GraphicsContext * );
     static void purgeScratchBuffer();
 
-    void setShadowsIgnoreTransforms(bool enable) { m_shadowsIgnoreTransforms = enable; }
-    bool shadowsIgnoreTransforms() const { return m_shadowsIgnoreTransforms; }
+    void setShadowsIgnoreTransforms( bool enable )
+    {
+        m_shadowsIgnoreTransforms = enable;
+    }
+    bool shadowsIgnoreTransforms() const
+    {
+        return m_shadowsIgnoreTransforms;
+    }
 #if USE(CAIRO)
-    void drawRectShadow(GraphicsContext* context, const IntRect& rect, const IntSize& topLeftRadius = IntSize(), const IntSize& topRightRadius = IntSize(), const IntSize& bottomLeftRadius = IntSize(), const IntSize& bottomRightRadius = IntSize());
+    void drawRectShadow( GraphicsContext *context, const IntRect &rect, const IntSize &topLeftRadius = IntSize(),
+                         const IntSize &topRightRadius = IntSize(), const IntSize &bottomLeftRadius = IntSize(),
+                         const IntSize &bottomRightRadius = IntSize() );
 #endif
 #if PLATFORM(QT)
-    QPointF offset() const { return QPointF(m_offset.width(), m_offset.height()); }
+    QPointF offset() const
+    {
+        return QPointF( m_offset.width(), m_offset.height() );
+    }
 #endif
 
 private:
@@ -129,12 +143,13 @@ private:
     FloatPoint m_layerContextTranslation; // Translation to apply to m_layerContext for the shadow to be correctly clipped.
     bool m_shadowsIgnoreTransforms;
 
-    void adjustBlurDistance(GraphicsContext*);
-    void blurLayerImage(unsigned char*, const IntSize& imageSize, int stride);
-    IntRect calculateLayerBoundingRect(GraphicsContext*, const FloatRect& layerArea, const IntRect& clipRect);
+    void adjustBlurDistance( GraphicsContext * );
+    void blurLayerImage( unsigned char *, const IntSize &imageSize, int stride );
+    IntRect calculateLayerBoundingRect( GraphicsContext *, const FloatRect &layerArea, const IntRect &clipRect );
 
 #if USE(CAIRO)
-    void drawRectShadowWithoutTiling(GraphicsContext*, const IntRect& shadowRect, const IntSize& topLeftRadius, const IntSize& topRightRadius, const IntSize& bottomLeftRadius, const IntSize& bottomRightRadius, float alpha);
+    void drawRectShadowWithoutTiling( GraphicsContext *, const IntRect &shadowRect, const IntSize &topLeftRadius,
+                                      const IntSize &topRightRadius, const IntSize &bottomLeftRadius, const IntSize &bottomRightRadius, float alpha );
 #endif
 };
 

@@ -37,20 +37,20 @@
 
 @interface QCocoaApplicationDelegate : NSObject <NSApplicationDelegate>
 {
-   bool startedQuit;
-   NSMenu *dockMenu;
-   QCocoaMenuLoader *qtMenuLoader;
-   NSObject <NSApplicationDelegate> *reflectionDelegate;
-   bool inLaunch;
+    bool startedQuit;
+    NSMenu *dockMenu;
+    QCocoaMenuLoader *qtMenuLoader;
+    NSObject <NSApplicationDelegate> *reflectionDelegate;
+    bool inLaunch;
 }
 
-+ (QCocoaApplicationDelegate *)sharedDelegate;
-- (void)setDockMenu: (NSMenu *)newMenu;
-- (void)setMenuLoader: (QCocoaMenuLoader *)menuLoader;
-- (QCocoaMenuLoader *)menuLoader;
-- (void)setReflectionDelegate: (NSObject <NSApplicationDelegate> *)oldDelegate;
-- (void)getUrl: (NSAppleEventDescriptor *)event withReplyEvent: (NSAppleEventDescriptor *)replyEvent;
-- (void) removeAppleEventHandlers;
-- (bool) inLaunch;
++ ( QCocoaApplicationDelegate * )sharedDelegate;
+- ( void )setDockMenu: ( NSMenu * )newMenu;
+- ( void )setMenuLoader: ( QCocoaMenuLoader * )menuLoader;
+- ( QCocoaMenuLoader * )menuLoader;
+- ( void )setReflectionDelegate: ( NSObject <NSApplicationDelegate> * )oldDelegate;
+- ( void )getUrl: ( NSAppleEventDescriptor * )event withReplyEvent: ( NSAppleEventDescriptor * )replyEvent;
+- ( void ) removeAppleEventHandlers;
+- ( bool ) inLaunch;
 @end
 

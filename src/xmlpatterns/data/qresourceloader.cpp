@@ -31,97 +31,97 @@ ResourceLoader::~ResourceLoader()
 {
 }
 
-bool ResourceLoader::isUnparsedTextAvailable(const QUrl &uri,
-      const QString &encoding)
+bool ResourceLoader::isUnparsedTextAvailable( const QUrl &uri,
+        const QString &encoding )
 {
-   Q_ASSERT(uri.isValid());
-   Q_ASSERT(!uri.isRelative());
+    Q_ASSERT( uri.isValid() );
+    Q_ASSERT( !uri.isRelative() );
 
-   (void) uri;
-   (void) encoding;
+    ( void ) uri;
+    ( void ) encoding;
 
-   return false;
+    return false;
 }
 
-ItemType::Ptr ResourceLoader::announceUnparsedText(const QUrl &uri)
+ItemType::Ptr ResourceLoader::announceUnparsedText( const QUrl &uri )
 {
-   Q_ASSERT(uri.isValid());
-   Q_ASSERT(!uri.isRelative());
+    Q_ASSERT( uri.isValid() );
+    Q_ASSERT( !uri.isRelative() );
 
-   (void) uri;
+    ( void ) uri;
 
-   return ItemType::Ptr();
+    return ItemType::Ptr();
 }
 
-Item ResourceLoader::openUnparsedText(const QUrl &uri,
-                                      const QString &encoding,
-                                      const ReportContext::Ptr &context,
-                                      const SourceLocationReflection *const where)
+Item ResourceLoader::openUnparsedText( const QUrl &uri,
+                                       const QString &encoding,
+                                       const ReportContext::Ptr &context,
+                                       const SourceLocationReflection *const where )
 {
-   Q_ASSERT(uri.isValid());
-   Q_ASSERT(!uri.isRelative());
+    Q_ASSERT( uri.isValid() );
+    Q_ASSERT( !uri.isRelative() );
 
-   (void) uri;
-   (void) encoding;
-   (void) context;
-   (void) where;
+    ( void ) uri;
+    ( void ) encoding;
+    ( void ) context;
+    ( void ) where;
 
-   return Item();
+    return Item();
 }
 
-Item ResourceLoader::openDocument(const QUrl &uri, const ReportContext::Ptr &context)
+Item ResourceLoader::openDocument( const QUrl &uri, const ReportContext::Ptr &context )
 {
-   Q_ASSERT(uri.isValid());
-   Q_ASSERT(!uri.isRelative());
+    Q_ASSERT( uri.isValid() );
+    Q_ASSERT( !uri.isRelative() );
 
-   (void) uri;
-   (void) context;
+    ( void ) uri;
+    ( void ) context;
 
-   return Item();
+    return Item();
 }
 
-SequenceType::Ptr ResourceLoader::announceDocument(const QUrl &uri, const Usage)
+SequenceType::Ptr ResourceLoader::announceDocument( const QUrl &uri, const Usage )
 {
-   Q_ASSERT(uri.isValid());
-   Q_ASSERT(!uri.isRelative());
+    Q_ASSERT( uri.isValid() );
+    Q_ASSERT( !uri.isRelative() );
 
-   (void) uri;
+    ( void ) uri;
 
-   return SequenceType::Ptr();
+    return SequenceType::Ptr();
 }
 
-bool ResourceLoader::isDocumentAvailable(const QUrl &uri)
+bool ResourceLoader::isDocumentAvailable( const QUrl &uri )
 {
-   Q_ASSERT(uri.isValid());
-   Q_ASSERT(!uri.isRelative());
+    Q_ASSERT( uri.isValid() );
+    Q_ASSERT( !uri.isRelative() );
 
-   (void) uri;
+    ( void ) uri;
 
-   return false;
+    return false;
 }
 
-Item::Iterator::Ptr ResourceLoader::openCollection(const QUrl &uri)
+Item::Iterator::Ptr ResourceLoader::openCollection( const QUrl &uri )
 {
-   Q_ASSERT(uri.isValid());
-   Q_ASSERT(!uri.isRelative());
+    Q_ASSERT( uri.isValid() );
+    Q_ASSERT( !uri.isRelative() );
 
-   (void) uri;
+    ( void ) uri;
 
-   return Item::Iterator::Ptr();
+    return Item::Iterator::Ptr();
 }
 
-SequenceType::Ptr ResourceLoader::announceCollection(const QUrl &uri)
+SequenceType::Ptr ResourceLoader::announceCollection( const QUrl &uri )
 {
-   Q_ASSERT(uri.isValid());
-   Q_ASSERT(!uri.isRelative());
+    Q_ASSERT( uri.isValid() );
+    Q_ASSERT( !uri.isRelative() );
 
-   (void) uri;
+    ( void ) uri;
 
-   return SequenceType::Ptr();
+    return SequenceType::Ptr();
 }
 
-void ResourceLoader::clear(const QUrl &uri)
+void ResourceLoader::clear( const QUrl &uri )
 {
-   (void) uri;
+    ( void ) uri;
 }
 

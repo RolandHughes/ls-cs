@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef ExecutableAllocator_h
@@ -57,7 +57,7 @@
 #if OS(WINCE)
 // From pkfuncs.h (private header file from the Platform Builder)
 #define CACHE_SYNC_ALL 0x07F
-extern "C" __declspec(dllimport) void CacheRangeFlush(LPVOID pAddr, DWORD dwLength, DWORD dwFlags);
+extern "C" __declspec( dllimport ) void CacheRangeFlush( LPVOID pAddr, DWORD dwLength, DWORD dwFlags );
 #endif
 
 #if PLATFORM(BREWMP)
@@ -77,17 +77,20 @@ extern "C" __declspec(dllimport) void CacheRangeFlush(LPVOID pAddr, DWORD dwLeng
 #define EXECUTABLE_POOL_WRITABLE true
 #endif
 
-namespace JSC {
-
-inline size_t roundUpAllocationSize(size_t request, size_t granularity)
+namespace JSC
 {
-    if ((std::numeric_limits<size_t>::max() - granularity) <= request)
-        CRASH(); // Allocation is too large
-    
+
+inline size_t roundUpAllocationSize( size_t request, size_t granularity )
+{
+    if ( ( std::numeric_limits<size_t>::max() - granularity ) <= request )
+    {
+        CRASH();    // Allocation is too large
+    }
+
     // Round up to next page boundary
-    size_t size = request + (granularity - 1);
-    size = size & ~(granularity - 1);
-    ASSERT(size >= request);
+    size_t size = request + ( granularity - 1 );
+    size = size & ~( granularity - 1 );
+    ASSERT( size >= request );
     return size;
 }
 
@@ -95,98 +98,130 @@ inline size_t roundUpAllocationSize(size_t request, size_t granularity)
 
 #if ENABLE(JIT) && ENABLE(ASSEMBLER)
 
-namespace JSC {
+namespace JSC
+{
 
-class ExecutablePool : public RefCounted<ExecutablePool> {
+class ExecutablePool : public RefCounted<ExecutablePool>
+{
 public:
 #if ENABLE(EXECUTABLE_ALLOCATOR_DEMAND)
     typedef PageAllocation Allocation;
 #else
-    class Allocation {
+    class Allocation
+    {
     public:
-        Allocation(void* base, size_t size)
-            : m_base(base)
-            , m_size(size)
+        Allocation( void *base, size_t size )
+            : m_base( base )
+            , m_size( size )
         {
         }
-        void* base() { return m_base; }
-        size_t size() { return m_size; }
-        bool operator!() const { return !m_base; }
+        void *base()
+        {
+            return m_base;
+        }
+        size_t size()
+        {
+            return m_size;
+        }
+        bool operator!() const
+        {
+            return !m_base;
+        }
 
     private:
-        void* m_base;
+        void *m_base;
         size_t m_size;
     };
 #endif
     typedef Vector<Allocation, 2> AllocationList;
 
-    static PassRefPtr<ExecutablePool> create(size_t n)
+    static PassRefPtr<ExecutablePool> create( size_t n )
     {
-        return adoptRef(new ExecutablePool(n));
+        return adoptRef( new ExecutablePool( n ) );
     }
 
-    void* alloc(size_t n)
+    void *alloc( size_t n )
     {
-        ASSERT(m_freePtr <= m_end);
+        ASSERT( m_freePtr <= m_end );
 
         // Round 'n' up to a multiple of word size; if all allocations are of
         // word sized quantities, then all subsequent allocations will be aligned.
-        n = roundUpAllocationSize(n, sizeof(void*));
+        n = roundUpAllocationSize( n, sizeof( void * ) );
 
-        if (static_cast<ptrdiff_t>(n) < (m_end - m_freePtr)) {
-            void* result = m_freePtr;
+        if ( static_cast<ptrdiff_t>( n ) < ( m_end - m_freePtr ) )
+        {
+            void *result = m_freePtr;
             m_freePtr += n;
             return result;
         }
 
         // Insufficient space to allocate in the existing pool
         // so we need allocate into a new pool
-        return poolAllocate(n);
+        return poolAllocate( n );
     }
-    
-    void tryShrink(void* allocation, size_t oldSize, size_t newSize)
+
+    void tryShrink( void *allocation, size_t oldSize, size_t newSize )
     {
-        if (static_cast<char*>(allocation) + oldSize != m_freePtr)
+        if ( static_cast<char *>( allocation ) + oldSize != m_freePtr )
+        {
             return;
-        m_freePtr = static_cast<char*>(allocation) + roundUpAllocationSize(newSize, sizeof(void*));
+        }
+
+        m_freePtr = static_cast<char *>( allocation ) + roundUpAllocationSize( newSize, sizeof( void * ) );
     }
 
     ~ExecutablePool()
     {
         AllocationList::iterator end = m_pools.end();
-        for (AllocationList::iterator ptr = m_pools.begin(); ptr != end; ++ptr)
-            ExecutablePool::systemRelease(*ptr);
+
+        for ( AllocationList::iterator ptr = m_pools.begin(); ptr != end; ++ptr )
+        {
+            ExecutablePool::systemRelease( *ptr );
+        }
     }
 
-    size_t available() const { return (m_pools.size() > 1) ? 0 : m_end - m_freePtr; }
+    size_t available() const
+    {
+        return ( m_pools.size() > 1 ) ? 0 : m_end - m_freePtr;
+    }
 
 private:
-    static Allocation systemAlloc(size_t n);
-    static void systemRelease(Allocation& alloc);
+    static Allocation systemAlloc( size_t n );
+    static void systemRelease( Allocation &alloc );
 
-    ExecutablePool(size_t n);
+    ExecutablePool( size_t n );
 
-    void* poolAllocate(size_t n);
+    void *poolAllocate( size_t n );
 
-    char* m_freePtr;
-    char* m_end;
+    char *m_freePtr;
+    char *m_end;
     AllocationList m_pools;
 };
 
-class ExecutableAllocator {
+class ExecutableAllocator
+{
     enum ProtectionSetting { Writable, Executable };
 
 public:
     static size_t pageSize;
     ExecutableAllocator()
     {
-        if (!pageSize)
+        if ( !pageSize )
+        {
             intializePageSize();
-        if (isValid())
-            m_smallAllocationPool = ExecutablePool::create(JIT_ALLOCATOR_LARGE_ALLOC_SIZE);
+        }
+
+        if ( isValid() )
+        {
+            m_smallAllocationPool = ExecutablePool::create( JIT_ALLOCATOR_LARGE_ALLOC_SIZE );
+        }
+
 #if !ENABLE(INTERPRETER)
         else
+        {
             CRASH();
+        }
+
 #endif
     }
 
@@ -194,54 +229,62 @@ public:
 
     static bool underMemoryPressure();
 
-    PassRefPtr<ExecutablePool> poolForSize(size_t n)
+    PassRefPtr<ExecutablePool> poolForSize( size_t n )
     {
         // Try to fit in the existing small allocator
-        ASSERT(m_smallAllocationPool);
-        if (n < m_smallAllocationPool->available())
+        ASSERT( m_smallAllocationPool );
+
+        if ( n < m_smallAllocationPool->available() )
+        {
             return m_smallAllocationPool;
+        }
 
         // If the request is large, we just provide a unshared allocator
-        if (n > JIT_ALLOCATOR_LARGE_ALLOC_SIZE)
-            return ExecutablePool::create(n);
+        if ( n > JIT_ALLOCATOR_LARGE_ALLOC_SIZE )
+        {
+            return ExecutablePool::create( n );
+        }
 
         // Create a new allocator
-        RefPtr<ExecutablePool> pool = ExecutablePool::create(JIT_ALLOCATOR_LARGE_ALLOC_SIZE);
+        RefPtr<ExecutablePool> pool = ExecutablePool::create( JIT_ALLOCATOR_LARGE_ALLOC_SIZE );
 
         // If the new allocator will result in more free space than in
         // the current small allocator, then we will use it instead
-        if ((pool->available() - n) > m_smallAllocationPool->available())
+        if ( ( pool->available() - n ) > m_smallAllocationPool->available() )
+        {
             m_smallAllocationPool = pool;
+        }
+
         return pool.release();
     }
 
 #if ENABLE(ASSEMBLER_WX_EXCLUSIVE)
-    static void makeWritable(void* start, size_t size)
+    static void makeWritable( void *start, size_t size )
     {
-        reprotectRegion(start, size, Writable);
+        reprotectRegion( start, size, Writable );
     }
 
-    static void makeExecutable(void* start, size_t size)
+    static void makeExecutable( void *start, size_t size )
     {
-        reprotectRegion(start, size, Executable);
+        reprotectRegion( start, size, Executable );
     }
 #else
-    static void makeWritable(void*, size_t) {}
-    static void makeExecutable(void*, size_t) {}
+    static void makeWritable( void *, size_t ) {}
+    static void makeExecutable( void *, size_t ) {}
 #endif
 
 
 #if CPU(X86) || CPU(X86_64)
-    static void cacheFlush(void*, size_t)
+    static void cacheFlush( void *, size_t )
     {
     }
 #elif CPU(MIPS)
-    static void cacheFlush(void* code, size_t size)
+    static void cacheFlush( void *code, size_t size )
     {
 #if GCC_VERSION_AT_LEAST(4, 3, 0)
 #if WTF_MIPS_ISA_REV(2) && !GCC_VERSION_AT_LEAST(4, 4, 3)
         int lineSize;
-        asm("rdhwr %0, $1" : "=r" (lineSize));
+        asm( "rdhwr %0, $1" : "=r" ( lineSize ) );
         //
         // Modify "start" and "end" to avoid GCC 4.3.0-4.4.2 bug in
         // mips_expand_synci_loop that may execute synci one more time.
@@ -250,24 +293,24 @@ public:
         // Because size is always a multiple of 4, this is safe to set
         // "end" to the last byte.
         //
-        intptr_t start = reinterpret_cast<intptr_t>(code) & (-lineSize);
-        intptr_t end = ((reinterpret_cast<intptr_t>(code) + size - 1) & (-lineSize)) - 1;
-        __builtin___clear_cache(reinterpret_cast<char*>(start), reinterpret_cast<char*>(end));
+        intptr_t start = reinterpret_cast<intptr_t>( code ) & ( -lineSize );
+        intptr_t end = ( ( reinterpret_cast<intptr_t>( code ) + size - 1 ) & ( -lineSize ) ) - 1;
+        __builtin___clear_cache( reinterpret_cast<char *>( start ), reinterpret_cast<char *>( end ) );
 #else
-        intptr_t end = reinterpret_cast<intptr_t>(code) + size;
-        __builtin___clear_cache(reinterpret_cast<char*>(code), reinterpret_cast<char*>(end));
+        intptr_t end = reinterpret_cast<intptr_t>( code ) + size;
+        __builtin___clear_cache( reinterpret_cast<char *>( code ), reinterpret_cast<char *>( end ) );
 #endif
 #else
-        _flush_cache(reinterpret_cast<char*>(code), size, BCACHE);
+        _flush_cache( reinterpret_cast<char *>( code ), size, BCACHE );
 #endif
     }
 #elif CPU(ARM_THUMB2) && OS(IOS)
-    static void cacheFlush(void* code, size_t size)
+    static void cacheFlush( void *code, size_t size )
     {
-        sys_cache_control(kCacheFunctionPrepareForExecution, code, size);
+        sys_cache_control( kCacheFunctionPrepareForExecution, code, size );
     }
 #elif CPU(ARM_THUMB2) && OS(LINUX)
-    static void cacheFlush(void* code, size_t size)
+    static void cacheFlush( void *code, size_t size )
     {
         asm volatile (
             "push    {r7}\n"
@@ -279,18 +322,18 @@ public:
             "svc     0x0\n"
             "pop     {r7}\n"
             :
-            : "r" (code), "r" (reinterpret_cast<char*>(code) + size)
-            : "r0", "r1", "r2");
+            : "r" ( code ), "r" ( reinterpret_cast<char *>( code ) + size )
+            : "r0", "r1", "r2" );
     }
 #elif OS(SYMBIAN)
-    static void cacheFlush(void* code, size_t size)
+    static void cacheFlush( void *code, size_t size )
     {
-        User::IMB_Range(code, static_cast<char*>(code) + size);
+        User::IMB_Range( code, static_cast<char *>( code ) + size );
     }
 #elif CPU(ARM_TRADITIONAL) && OS(LINUX) && COMPILER(RVCT)
-    static __asm void cacheFlush(void* code, size_t size);
+    static __asm void cacheFlush( void *code, size_t size );
 #elif CPU(ARM_TRADITIONAL) && OS(LINUX) && COMPILER(GCC)
-    static void cacheFlush(void* code, size_t size)
+    static void cacheFlush( void *code, size_t size )
     {
         asm volatile (
             "push    {r7}\n"
@@ -302,72 +345,81 @@ public:
             "svc     0x0\n"
             "pop     {r7}\n"
             :
-            : "r" (code), "r" (reinterpret_cast<char*>(code) + size)
-            : "r0", "r1", "r2");
+            : "r" ( code ), "r" ( reinterpret_cast<char *>( code ) + size )
+            : "r0", "r1", "r2" );
     }
 #elif OS(WINCE)
-    static void cacheFlush(void* code, size_t size)
+    static void cacheFlush( void *code, size_t size )
     {
-        CacheRangeFlush(code, size, CACHE_SYNC_ALL);
+        CacheRangeFlush( code, size, CACHE_SYNC_ALL );
     }
 #elif PLATFORM(BREWMP)
-    static void cacheFlush(void* code, size_t size)
+    static void cacheFlush( void *code, size_t size )
     {
-        RefPtr<IMemCache1> memCache = createRefPtrInstance<IMemCache1>(AEECLSID_MemCache1);
-        IMemCache1_ClearCache(memCache.get(), reinterpret_cast<uint32>(code), size, MEMSPACE_CACHE_FLUSH, MEMSPACE_DATACACHE);
-        IMemCache1_ClearCache(memCache.get(), reinterpret_cast<uint32>(code), size, MEMSPACE_CACHE_INVALIDATE, MEMSPACE_INSTCACHE);
+        RefPtr<IMemCache1> memCache = createRefPtrInstance<IMemCache1>( AEECLSID_MemCache1 );
+        IMemCache1_ClearCache( memCache.get(), reinterpret_cast<uint32>( code ), size, MEMSPACE_CACHE_FLUSH, MEMSPACE_DATACACHE );
+        IMemCache1_ClearCache( memCache.get(), reinterpret_cast<uint32>( code ), size, MEMSPACE_CACHE_INVALIDATE, MEMSPACE_INSTCACHE );
     }
 #elif CPU(SH4) && OS(LINUX)
-    static void cacheFlush(void* code, size_t size)
+    static void cacheFlush( void *code, size_t size )
     {
 #ifdef CACHEFLUSH_D_L2
-        syscall(__NR_cacheflush, reinterpret_cast<unsigned>(code), size, CACHEFLUSH_D_WB | CACHEFLUSH_I | CACHEFLUSH_D_L2);
+        syscall( __NR_cacheflush, reinterpret_cast<unsigned>( code ), size, CACHEFLUSH_D_WB | CACHEFLUSH_I | CACHEFLUSH_D_L2 );
 #else
-        syscall(__NR_cacheflush, reinterpret_cast<unsigned>(code), size, CACHEFLUSH_D_WB | CACHEFLUSH_I);
+        syscall( __NR_cacheflush, reinterpret_cast<unsigned>( code ), size, CACHEFLUSH_D_WB | CACHEFLUSH_I );
 #endif
     }
 #else
-    #error "The cacheFlush support is missing on this platform."
+#error "The cacheFlush support is missing on this platform."
 #endif
     static size_t committedByteCount();
 
 private:
 
 #if ENABLE(ASSEMBLER_WX_EXCLUSIVE)
-    static void reprotectRegion(void*, size_t, ProtectionSetting);
+    static void reprotectRegion( void *, size_t, ProtectionSetting );
 #endif
 
     RefPtr<ExecutablePool> m_smallAllocationPool;
     static void intializePageSize();
 };
 
-inline ExecutablePool::ExecutablePool(size_t n)
+inline ExecutablePool::ExecutablePool( size_t n )
 {
-    size_t allocSize = roundUpAllocationSize(n, JIT_ALLOCATOR_PAGE_SIZE);
-    Allocation mem = systemAlloc(allocSize);
-    m_pools.append(mem);
-    m_freePtr = static_cast<char*>(mem.base());
-    if (!m_freePtr)
-        CRASH(); // Failed to allocate
+    size_t allocSize = roundUpAllocationSize( n, JIT_ALLOCATOR_PAGE_SIZE );
+    Allocation mem = systemAlloc( allocSize );
+    m_pools.append( mem );
+    m_freePtr = static_cast<char *>( mem.base() );
+
+    if ( !m_freePtr )
+    {
+        CRASH();    // Failed to allocate
+    }
+
     m_end = m_freePtr + allocSize;
 }
 
-inline void* ExecutablePool::poolAllocate(size_t n)
+inline void *ExecutablePool::poolAllocate( size_t n )
 {
-    size_t allocSize = roundUpAllocationSize(n, JIT_ALLOCATOR_PAGE_SIZE);
-    
-    Allocation result = systemAlloc(allocSize);
-    if (!result.base())
-        CRASH(); // Failed to allocate
-    
-    ASSERT(m_end >= m_freePtr);
-    if ((allocSize - n) > static_cast<size_t>(m_end - m_freePtr)) {
-        // Replace allocation pool
-        m_freePtr = static_cast<char*>(result.base()) + n;
-        m_end = static_cast<char*>(result.base()) + allocSize;
+    size_t allocSize = roundUpAllocationSize( n, JIT_ALLOCATOR_PAGE_SIZE );
+
+    Allocation result = systemAlloc( allocSize );
+
+    if ( !result.base() )
+    {
+        CRASH();    // Failed to allocate
     }
 
-    m_pools.append(result);
+    ASSERT( m_end >= m_freePtr );
+
+    if ( ( allocSize - n ) > static_cast<size_t>( m_end - m_freePtr ) )
+    {
+        // Replace allocation pool
+        m_freePtr = static_cast<char *>( result.base() ) + n;
+        m_end = static_cast<char *>( result.base() ) + allocSize;
+    }
+
+    m_pools.append( result );
     return result.base();
 }
 

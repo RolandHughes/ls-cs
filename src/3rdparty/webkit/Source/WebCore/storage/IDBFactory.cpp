@@ -45,10 +45,11 @@
 #include "PageGroup.h"
 #include "SecurityOrigin.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-IDBFactory::IDBFactory(IDBFactoryBackendInterface* factory)
-    : m_factoryBackend(factory)
+IDBFactory::IDBFactory( IDBFactoryBackendInterface *factory )
+    : m_factoryBackend( factory )
 {
     // We pass a reference to this object before it can be adopted.
     relaxAdoptionRequirement();
@@ -58,25 +59,31 @@ IDBFactory::~IDBFactory()
 {
 }
 
-PassRefPtr<IDBRequest> IDBFactory::open(ScriptExecutionContext* context, const String& name, ExceptionCode& ec)
+PassRefPtr<IDBRequest> IDBFactory::open( ScriptExecutionContext *context, const String &name, ExceptionCode &ec )
 {
-    if (!context->isDocument()) {
+    if ( !context->isDocument() )
+    {
         // FIXME: make this work with workers.
         return 0;
     }
 
-    Document* document = static_cast<Document*>(context);
-    if (!document->frame() || !document->page())
-        return 0;
+    Document *document = static_cast<Document *>( context );
 
-    if (name.isNull()) {
+    if ( !document->frame() || !document->page() )
+    {
+        return 0;
+    }
+
+    if ( name.isNull() )
+    {
         ec = IDBDatabaseException::NON_TRANSIENT_ERR;
         return 0;
     }
 
-    RefPtr<IDBRequest> request = IDBRequest::create(document, IDBAny::create(this), 0);
-    GroupSettings* groupSettings = document->page()->group().groupSettings();
-    m_factoryBackend->open(name, request, document->securityOrigin(), document->frame(), groupSettings->indexedDBDatabasePath(), groupSettings->indexedDBQuotaBytes(), IDBFactoryBackendInterface::DefaultBackingStore);
+    RefPtr<IDBRequest> request = IDBRequest::create( document, IDBAny::create( this ), 0 );
+    GroupSettings *groupSettings = document->page()->group().groupSettings();
+    m_factoryBackend->open( name, request, document->securityOrigin(), document->frame(), groupSettings->indexedDBDatabasePath(),
+                            groupSettings->indexedDBQuotaBytes(), IDBFactoryBackendInterface::DefaultBackingStore );
     return request;
 }
 

@@ -37,19 +37,20 @@
 
 using namespace WebCore;
 
-namespace WebKit {
-
-void ChunkedUpdateDrawingArea::paintIntoUpdateChunk(UpdateChunk* updateChunk)
+namespace WebKit
 {
-    ASSERT(!updateChunk->isEmpty());
+
+void ChunkedUpdateDrawingArea::paintIntoUpdateChunk( UpdateChunk *updateChunk )
+{
+    ASSERT( !updateChunk->isEmpty() );
 
     RefPtr<cairo_surface_t> image = updateChunk->createImage();
-    RefPtr<cairo_t> cr = cairo_create(image.get());
-    GraphicsContext gc(cr.get());
+    RefPtr<cairo_t> cr = cairo_create( image.get() );
+    GraphicsContext gc( cr.get() );
     gc.save();
     IntRect rect = updateChunk->rect();
-    gc.translate(-rect.x(), -rect.y());
-    m_webPage->drawRect(gc, updateChunk->rect());
+    gc.translate( -rect.x(), -rect.y() );
+    m_webPage->drawRect( gc, updateChunk->rect() );
     gc.restore();
 }
 

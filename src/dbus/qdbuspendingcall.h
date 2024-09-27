@@ -42,9 +42,9 @@ class QDBusPendingCallPrivate;
 class Q_DBUS_EXPORT QDBusPendingCall
 {
 public:
-    QDBusPendingCall(const QDBusPendingCall &other);
+    QDBusPendingCall( const QDBusPendingCall &other );
     ~QDBusPendingCall();
-    QDBusPendingCall &operator=(const QDBusPendingCall &other);
+    QDBusPendingCall &operator=( const QDBusPendingCall &other );
 
     bool isFinished() const;
     void waitForFinished();
@@ -54,8 +54,8 @@ public:
     QDBusError error() const;
     QDBusMessage reply() const;
 
-    static QDBusPendingCall fromError(const QDBusError &error);
-    static QDBusPendingCall fromCompletedCall(const QDBusMessage &message);
+    static QDBusPendingCall fromError( const QDBusError &error );
+    static QDBusPendingCall fromCompletedCall( const QDBusMessage &message );
 
 protected:
     QExplicitlySharedDataPointer<QDBusPendingCallPrivate> d;
@@ -63,7 +63,7 @@ protected:
     friend class QDBusPendingCallWatcher;
     friend class QDBusConnection;
 
-    QDBusPendingCall(QDBusPendingCallPrivate *dd);
+    QDBusPendingCall( QDBusPendingCallPrivate *dd );
 
 private:
     QDBusPendingCall();         // not defined
@@ -73,22 +73,22 @@ class QDBusPendingCallWatcherPrivate;
 
 class Q_DBUS_EXPORT QDBusPendingCallWatcher: public QObject, public QDBusPendingCall
 {
-    CS_OBJECT(QDBusPendingCallWatcher)
+    CS_OBJECT( QDBusPendingCallWatcher )
 
 public:
-    QDBusPendingCallWatcher(const QDBusPendingCall &call, QObject *parent = nullptr);
+    QDBusPendingCallWatcher( const QDBusPendingCall &call, QObject *parent = nullptr );
     ~QDBusPendingCallWatcher();
 
     void waitForFinished();     // non-virtual override
 
-    CS_SIGNAL_1(Public, void finished(QDBusPendingCallWatcher * self))
-    CS_SIGNAL_2(finished,self)
+    CS_SIGNAL_1( Public, void finished( QDBusPendingCallWatcher *self ) )
+    CS_SIGNAL_2( finished,self )
 
 private:
-    Q_DECLARE_PRIVATE(QDBusPendingCallWatcher)
+    Q_DECLARE_PRIVATE( QDBusPendingCallWatcher )
 
-    CS_SLOT_1(Private, void _q_finished())
-    CS_SLOT_2(_q_finished)
+    CS_SLOT_1( Private, void _q_finished() )
+    CS_SLOT_2( _q_finished )
 };
 
 QT_END_NAMESPACE

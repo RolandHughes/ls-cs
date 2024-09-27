@@ -26,17 +26,18 @@
 
 #include "qsinglecontainer_p.h"
 
-namespace QPatternist {
+namespace QPatternist
+{
 class AttributeNameValidator : public SingleContainer
 {
- public:
-   AttributeNameValidator(const Expression::Ptr &source);
+public:
+    AttributeNameValidator( const Expression::Ptr &source );
 
-   Item evaluateSingleton(const DynamicContext::Ptr &) const override;
-   SequenceType::List expectedOperandTypes() const override;
-   SequenceType::Ptr staticType() const override;
+    Item evaluateSingleton( const DynamicContext::Ptr & ) const override;
+    SequenceType::List expectedOperandTypes() const override;
+    SequenceType::Ptr staticType() const override;
 
-   ExpressionVisitorResult::Ptr accept(const ExpressionVisitor::Ptr &visitor) const override;
+    ExpressionVisitorResult::Ptr accept( const ExpressionVisitor::Ptr &visitor ) const override;
 };
 
 }

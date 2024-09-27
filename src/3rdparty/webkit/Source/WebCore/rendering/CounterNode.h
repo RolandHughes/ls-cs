@@ -35,43 +35,75 @@
 
 // Not that render tree children are often counter tree siblings due to counter scoping rules.
 
-namespace WebCore {
+namespace WebCore
+{
 
 class RenderObject;
 class RenderCounter;
 
-class CounterNode : public RefCounted<CounterNode> {
+class CounterNode : public RefCounted<CounterNode>
+{
 public:
-    static PassRefPtr<CounterNode> create(RenderObject*, bool isReset, int value);
+    static PassRefPtr<CounterNode> create( RenderObject *, bool isReset, int value );
     ~CounterNode();
-    bool actsAsReset() const { return m_hasResetType || !m_parent; }
-    bool hasResetType() const { return m_hasResetType; }
-    int value() const { return m_value; }
-    int countInParent() const { return m_countInParent; }
-    RenderObject* owner() const { return m_owner; }
-    void addRenderer(RenderCounter*);
-    void removeRenderer(RenderCounter*);
+    bool actsAsReset() const
+    {
+        return m_hasResetType || !m_parent;
+    }
+    bool hasResetType() const
+    {
+        return m_hasResetType;
+    }
+    int value() const
+    {
+        return m_value;
+    }
+    int countInParent() const
+    {
+        return m_countInParent;
+    }
+    RenderObject *owner() const
+    {
+        return m_owner;
+    }
+    void addRenderer( RenderCounter * );
+    void removeRenderer( RenderCounter * );
 
     // Invalidates the text in the renderers of this counter, if any.
     void resetRenderers();
 
-    CounterNode* parent() const { return m_parent; }
-    CounterNode* previousSibling() const { return m_previousSibling; }
-    CounterNode* nextSibling() const { return m_nextSibling; }
-    CounterNode* firstChild() const { return m_firstChild; }
-    CounterNode* lastChild() const { return m_lastChild; }
-    CounterNode* lastDescendant() const;
-    CounterNode* previousInPreOrder() const;
-    CounterNode* nextInPreOrder(const CounterNode* stayWithin = 0) const;
-    CounterNode* nextInPreOrderAfterChildren(const CounterNode* stayWithin = 0) const;
+    CounterNode *parent() const
+    {
+        return m_parent;
+    }
+    CounterNode *previousSibling() const
+    {
+        return m_previousSibling;
+    }
+    CounterNode *nextSibling() const
+    {
+        return m_nextSibling;
+    }
+    CounterNode *firstChild() const
+    {
+        return m_firstChild;
+    }
+    CounterNode *lastChild() const
+    {
+        return m_lastChild;
+    }
+    CounterNode *lastDescendant() const;
+    CounterNode *previousInPreOrder() const;
+    CounterNode *nextInPreOrder( const CounterNode *stayWithin = 0 ) const;
+    CounterNode *nextInPreOrderAfterChildren( const CounterNode *stayWithin = 0 ) const;
 
-    void insertAfter(CounterNode* newChild, CounterNode* beforeChild, const AtomicString& identifier);
+    void insertAfter( CounterNode *newChild, CounterNode *beforeChild, const AtomicString &identifier );
 
     // identifier must match the identifier of this counter.
-    void removeChild(CounterNode*);
+    void removeChild( CounterNode * );
 
 private:
-    CounterNode(RenderObject*, bool isReset, int value);
+    CounterNode( RenderObject *, bool isReset, int value );
     int computeCountInParent() const;
     // Invalidates the text in the renderer of this counter, if any,
     // and in the renderers of all descendants of this counter, if any.
@@ -81,21 +113,21 @@ private:
     bool m_hasResetType;
     int m_value;
     int m_countInParent;
-    RenderObject* m_owner;
-    RenderCounter* m_rootRenderer;
+    RenderObject *m_owner;
+    RenderCounter *m_rootRenderer;
 
-    CounterNode* m_parent;
-    CounterNode* m_previousSibling;
-    CounterNode* m_nextSibling;
-    CounterNode* m_firstChild;
-    CounterNode* m_lastChild;
+    CounterNode *m_parent;
+    CounterNode *m_previousSibling;
+    CounterNode *m_nextSibling;
+    CounterNode *m_firstChild;
+    CounterNode *m_lastChild;
 };
 
 } // namespace WebCore
 
 #ifndef NDEBUG
 // Outside the WebCore namespace for ease of invocation from gdb.
-void showCounterTree(const WebCore::CounterNode*);
+void showCounterTree( const WebCore::CounterNode * );
 #endif
 
 #endif // CounterNode_h

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -34,24 +34,25 @@
 #include <wtf/Assertions.h>
 #include <wtf/text/AtomicString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-XMLHttpRequestUpload::XMLHttpRequestUpload(XMLHttpRequest* xmlHttpRequest)
-    : m_xmlHttpRequest(xmlHttpRequest)
+XMLHttpRequestUpload::XMLHttpRequestUpload( XMLHttpRequest *xmlHttpRequest )
+    : m_xmlHttpRequest( xmlHttpRequest )
 {
 }
 
-ScriptExecutionContext* XMLHttpRequestUpload::scriptExecutionContext() const
+ScriptExecutionContext *XMLHttpRequestUpload::scriptExecutionContext() const
 {
     return m_xmlHttpRequest->scriptExecutionContext();
 }
 
-EventTargetData* XMLHttpRequestUpload::eventTargetData()
+EventTargetData *XMLHttpRequestUpload::eventTargetData()
 {
     return &m_eventTargetData;
 }
 
-EventTargetData* XMLHttpRequestUpload::ensureEventTargetData()
+EventTargetData *XMLHttpRequestUpload::ensureEventTargetData()
 {
     return &m_eventTargetData;
 }

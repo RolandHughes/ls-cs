@@ -22,81 +22,131 @@
 
 #include <wtf/MathExtras.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 const unsigned gDefaultUnitsPerEm = 1000;
 
-class FontMetrics {
+class FontMetrics
+{
 public:
     FontMetrics()
-        : m_unitsPerEm(gDefaultUnitsPerEm)
-        , m_ascent(0)
-        , m_descent(0)
-        , m_lineGap(0)
-        , m_lineSpacing(0)
-        , m_xHeight(0)
+        : m_unitsPerEm( gDefaultUnitsPerEm )
+        , m_ascent( 0 )
+        , m_descent( 0 )
+        , m_lineGap( 0 )
+        , m_lineSpacing( 0 )
+        , m_xHeight( 0 )
     {
     }
 
-    unsigned unitsPerEm() const { return m_unitsPerEm; }
-    void setUnitsPerEm(unsigned unitsPerEm) { m_unitsPerEm = unitsPerEm; }
-
-    float floatAscent(FontBaseline baselineType = AlphabeticBaseline) const
+    unsigned unitsPerEm() const
     {
-        if (baselineType == AlphabeticBaseline)
+        return m_unitsPerEm;
+    }
+    void setUnitsPerEm( unsigned unitsPerEm )
+    {
+        m_unitsPerEm = unitsPerEm;
+    }
+
+    float floatAscent( FontBaseline baselineType = AlphabeticBaseline ) const
+    {
+        if ( baselineType == AlphabeticBaseline )
+        {
             return m_ascent;
+        }
+
         return floatHeight() / 2;
     }
 
-    void setAscent(float ascent) { m_ascent = ascent; }
-
-    float floatDescent(FontBaseline baselineType = AlphabeticBaseline) const
+    void setAscent( float ascent )
     {
-        if (baselineType == AlphabeticBaseline)
+        m_ascent = ascent;
+    }
+
+    float floatDescent( FontBaseline baselineType = AlphabeticBaseline ) const
+    {
+        if ( baselineType == AlphabeticBaseline )
+        {
             return m_descent;
+        }
+
         return floatHeight() / 2;
     }
 
-    void setDescent(float descent) { m_descent = descent; }
-
-    float floatHeight(FontBaseline baselineType = AlphabeticBaseline) const
+    void setDescent( float descent )
     {
-        return floatAscent(baselineType) + floatDescent(baselineType);
+        m_descent = descent;
     }
 
-    float floatLineGap() const { return m_lineGap; }
-    void setLineGap(float lineGap) { m_lineGap = lineGap; }
+    float floatHeight( FontBaseline baselineType = AlphabeticBaseline ) const
+    {
+        return floatAscent( baselineType ) + floatDescent( baselineType );
+    }
 
-    float floatLineSpacing() const { return m_lineSpacing; }
-    void setLineSpacing(float lineSpacing) { m_lineSpacing = lineSpacing; }
+    float floatLineGap() const
+    {
+        return m_lineGap;
+    }
+    void setLineGap( float lineGap )
+    {
+        m_lineGap = lineGap;
+    }
 
-    float xHeight() const { return m_xHeight; }
-    void setXHeight(float xHeight) { m_xHeight = xHeight; }
+    float floatLineSpacing() const
+    {
+        return m_lineSpacing;
+    }
+    void setLineSpacing( float lineSpacing )
+    {
+        m_lineSpacing = lineSpacing;
+    }
+
+    float xHeight() const
+    {
+        return m_xHeight;
+    }
+    void setXHeight( float xHeight )
+    {
+        m_xHeight = xHeight;
+    }
 
     // Integer variants of certain metrics, used for HTML rendering.
-    int ascent(FontBaseline baselineType = AlphabeticBaseline) const
+    int ascent( FontBaseline baselineType = AlphabeticBaseline ) const
     {
-        if (baselineType == AlphabeticBaseline)
-            return lroundf(m_ascent);
+        if ( baselineType == AlphabeticBaseline )
+        {
+            return lroundf( m_ascent );
+        }
+
         return height() - height() / 2;
     }
 
-    int descent(FontBaseline baselineType = AlphabeticBaseline) const
+    int descent( FontBaseline baselineType = AlphabeticBaseline ) const
     {
-        if (baselineType == AlphabeticBaseline)
-            return lroundf(m_descent);
+        if ( baselineType == AlphabeticBaseline )
+        {
+            return lroundf( m_descent );
+        }
+
         return height() / 2;
     }
 
-    int height(FontBaseline baselineType = AlphabeticBaseline) const
+    int height( FontBaseline baselineType = AlphabeticBaseline ) const
     {
-        return ascent(baselineType) + descent(baselineType);
+        return ascent( baselineType ) + descent( baselineType );
     }
 
-    int lineGap() const { return lroundf(m_lineGap); }
-    int lineSpacing() const { return lroundf(m_lineSpacing); }
+    int lineGap() const
+    {
+        return lroundf( m_lineGap );
+    }
+    int lineSpacing() const
+    {
+        return lroundf( m_lineSpacing );
+    }
 
-    bool hasIdenticalAscentDescentAndLineGap(const FontMetrics& other) const
+    bool hasIdenticalAscentDescentAndLineGap( const FontMetrics &other ) const
     {
         return ascent() == other.ascent() && descent() == other.descent() && lineGap() == other.lineGap();
     }

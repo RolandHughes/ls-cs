@@ -34,13 +34,15 @@
 #include <wtf/RefPtr.h>
 #include <wtf/Vector.h>
 
-namespace CoreIPC {
-    class ArgumentDecoder;
-    class Connection;
-    class MessageID;
+namespace CoreIPC
+{
+class ArgumentDecoder;
+class Connection;
+class MessageID;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 struct SecurityOriginData;
 class WebContext;
@@ -49,34 +51,41 @@ class WebSecurityOrigin;
 
 typedef GenericCallback<WKArrayRef> ArrayCallback;
 
-class WebKeyValueStorageManagerProxy : public APIObject {
+class WebKeyValueStorageManagerProxy : public APIObject
+{
 public:
     static const Type APIType = TypeKeyValueStorageManager;
 
-    static PassRefPtr<WebKeyValueStorageManagerProxy> create(WebContext*);
+    static PassRefPtr<WebKeyValueStorageManagerProxy> create( WebContext * );
     virtual ~WebKeyValueStorageManagerProxy();
 
     void invalidate();
-    void clearContext() { m_webContext = 0; }
-    
-    void getKeyValueStorageOrigins(PassRefPtr<ArrayCallback>);
-    void deleteEntriesForOrigin(WebSecurityOrigin*);
+    void clearContext()
+    {
+        m_webContext = 0;
+    }
+
+    void getKeyValueStorageOrigins( PassRefPtr<ArrayCallback> );
+    void deleteEntriesForOrigin( WebSecurityOrigin * );
     void deleteAllEntries();
 
-    void didReceiveMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*);
+    void didReceiveMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * );
 
-    bool shouldTerminate(WebProcessProxy*) const;
+    bool shouldTerminate( WebProcessProxy * ) const;
 
 private:
-    WebKeyValueStorageManagerProxy(WebContext*);
+    WebKeyValueStorageManagerProxy( WebContext * );
 
-    virtual Type type() const { return APIType; }
+    virtual Type type() const
+    {
+        return APIType;
+    }
 
-    void didGetKeyValueStorageOrigins(const Vector<SecurityOriginData>&, uint64_t callbackID);
-    
-    void didReceiveWebKeyValueStorageManagerProxyMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*);
+    void didGetKeyValueStorageOrigins( const Vector<SecurityOriginData> &, uint64_t callbackID );
 
-    WebContext* m_webContext;
+    void didReceiveWebKeyValueStorageManagerProxyMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * );
+
+    WebContext *m_webContext;
     HashMap<uint64_t, RefPtr<ArrayCallback> > m_arrayCallbacks;
 };
 

@@ -27,16 +27,18 @@
 #ifndef StackBounds_h
 #define StackBounds_h
 
-namespace WTF {
+namespace WTF
+{
 
-class StackBounds {
+class StackBounds
+{
     // recursionCheck() / recursionLimit() tests (by default)
     // that we are at least this far from the end of the stack.
     const static size_t s_defaultAvailabilityDelta = 4096;
 
 public:
     StackBounds()
-        : m_origin(nullptr), m_bound(nullptr)
+        : m_origin( nullptr ), m_bound( nullptr )
     {
     }
 
@@ -48,33 +50,33 @@ public:
         return bounds;
     }
 
-    void* origin() const
+    void *origin() const
     {
-        ASSERT(m_origin);
+        ASSERT( m_origin );
         return m_origin;
     }
 
-    void* current() const
+    void *current() const
     {
         checkConsistency();
-        void* currentPosition = &currentPosition;
+        void *currentPosition = &currentPosition;
         return currentPosition;
     }
 
-    void* recursionLimit(size_t minAvailableDelta = s_defaultAvailabilityDelta) const
+    void *recursionLimit( size_t minAvailableDelta = s_defaultAvailabilityDelta ) const
     {
         checkConsistency();
         return isGrowingDownward()
-            ? static_cast<char*>(m_bound) + minAvailableDelta
-            : static_cast<char*>(m_bound) - minAvailableDelta;
+               ? static_cast<char *>( m_bound ) + minAvailableDelta
+               : static_cast<char *>( m_bound ) - minAvailableDelta;
     }
 
-    bool recursionCheck(size_t minAvailableDelta = s_defaultAvailabilityDelta) const
+    bool recursionCheck( size_t minAvailableDelta = s_defaultAvailabilityDelta ) const
     {
         checkConsistency();
         return isGrowingDownward()
-            ? current() >= recursionLimit(minAvailableDelta)
-            : current() <= recursionLimit(minAvailableDelta);
+               ? current() >= recursionLimit( minAvailableDelta )
+               : current() <= recursionLimit( minAvailableDelta );
     }
 
 private:
@@ -83,7 +85,7 @@ private:
 
     bool isGrowingDownward() const
     {
-        ASSERT(m_origin && m_bound);
+        ASSERT( m_origin && m_bound );
 #if OS(WINCE)
         return m_origin > m_bound;
 #else
@@ -94,16 +96,16 @@ private:
     void checkConsistency() const
     {
 #if !ASSERT_DISABLED
-        void* currentPosition = &currentPosition;
-        ASSERT(m_origin != m_bound);
-        ASSERT(isGrowingDownward()
-            ? (currentPosition < m_origin && currentPosition > m_bound)
-            : (currentPosition > m_origin && currentPosition < m_bound));
+        void *currentPosition = &currentPosition;
+        ASSERT( m_origin != m_bound );
+        ASSERT( isGrowingDownward()
+                ? ( currentPosition < m_origin && currentPosition > m_bound )
+                : ( currentPosition > m_origin && currentPosition < m_bound ) );
 #endif
     }
 
-    void* m_origin;
-    void* m_bound;
+    void *m_origin;
+    void *m_bound;
 };
 
 } // namespace WTF

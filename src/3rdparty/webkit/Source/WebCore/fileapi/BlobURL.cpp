@@ -37,40 +37,45 @@
 #include "SecurityOrigin.h"
 #include "UUID.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 const char BlobURL::kBlobProtocol[] = "blob";
 
-KURL BlobURL::createPublicURL(SecurityOrigin* securityOrigin)
+KURL BlobURL::createPublicURL( SecurityOrigin *securityOrigin )
 {
-    ASSERT(securityOrigin);
-    return createBlobURL(securityOrigin->toString());
+    ASSERT( securityOrigin );
+    return createBlobURL( securityOrigin->toString() );
 }
 
 KURL BlobURL::createInternalURL()
 {
-    return createBlobURL("blobinternal://");
+    return createBlobURL( "blobinternal://" );
 }
 
-String BlobURL::getIdentifier(const KURL& url)
+String BlobURL::getIdentifier( const KURL &url )
 {
-    ASSERT(url.protocolIs(kBlobProtocol));
+    ASSERT( url.protocolIs( kBlobProtocol ) );
 
     unsigned startIndex = url.pathAfterLastSlash();
-    return url.string().substring(startIndex);
+    return url.string().substring( startIndex );
 }
 
-KURL BlobURL::createBlobURL(const String& originString)
+KURL BlobURL::createBlobURL( const String &originString )
 {
-    ASSERT(!originString.isEmpty());
-    if (originString == "null")
+    ASSERT( !originString.isEmpty() );
+
+    if ( originString == "null" )
+    {
         return KURL();
+    }
+
     String urlString = kBlobProtocol;
     urlString += ":";
-    urlString += encodeWithURLEscapeSequences(originString);
+    urlString += encodeWithURLEscapeSequences( originString );
     urlString += "/";
     urlString += createCanonicalUUIDString();
-    return KURL(ParsedURLString, urlString);
+    return KURL( ParsedURLString, urlString );
 }
 
 } // namespace WebCore

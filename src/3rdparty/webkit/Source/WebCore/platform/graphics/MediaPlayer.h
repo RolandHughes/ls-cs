@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef MediaPlayer_h
@@ -55,7 +55,8 @@ class QTMovie;
 class QTMovieGWorld;
 class QTMovieVisualContext;
 
-namespace WebCore {
+namespace WebCore
+{
 
 class GStreamerGWorld;
 class MediaPlayerPrivateInterface;
@@ -64,8 +65,10 @@ class MediaPlayerPrivateInterface;
 // types supported by the current media player.
 // We have to do that has multiple media players
 // backend can live at runtime.
-struct PlatformMedia {
-    enum {
+struct PlatformMedia
+{
+    enum
+    {
         None,
         QTMovieType,
         QTMovieGWorldType,
@@ -76,14 +79,15 @@ struct PlatformMedia {
         AVFoundationMediaPlayerType,
     } type;
 
-    union {
-        QTMovie* qtMovie;
-        QTMovieGWorld* qtMovieGWorld;
-        QTMovieVisualContext* qtMovieVisualContext;
-        GStreamerGWorld* gstreamerGWorld;
-        MediaPlayerPrivateInterface* chromiumMediaPlayer;
-        MediaPlayerPrivateInterface* qtMediaPlayer;
-        AVPlayer* avfMediaPlayer;
+    union
+    {
+        QTMovie *qtMovie;
+        QTMovieGWorld *qtMovieGWorld;
+        QTMovieVisualContext *qtMovieVisualContext;
+        GStreamerGWorld *gstreamerGWorld;
+        MediaPlayerPrivateInterface *chromiumMediaPlayer;
+        MediaPlayerPrivateInterface *qtMediaPlayer;
+        AVPlayer *avfMediaPlayer;
     } media;
 };
 
@@ -98,126 +102,144 @@ class MediaPlayer;
 struct MediaPlayerFactory;
 class TimeRanges;
 
-class MediaPlayerClient {
+class MediaPlayerClient
+{
 public:
     virtual ~MediaPlayerClient() { }
 
     // Get the document which the media player is owned by
-    virtual Document* mediaPlayerOwningDocument() { return 0; }
+    virtual Document *mediaPlayerOwningDocument()
+    {
+        return 0;
+    }
 
     // the network state has changed
-    virtual void mediaPlayerNetworkStateChanged(MediaPlayer*) { }
+    virtual void mediaPlayerNetworkStateChanged( MediaPlayer * ) { }
 
     // the ready state has changed
-    virtual void mediaPlayerReadyStateChanged(MediaPlayer*) { }
+    virtual void mediaPlayerReadyStateChanged( MediaPlayer * ) { }
 
     // the volume state has changed
-    virtual void mediaPlayerVolumeChanged(MediaPlayer*) { }
+    virtual void mediaPlayerVolumeChanged( MediaPlayer * ) { }
 
     // the mute state has changed
-    virtual void mediaPlayerMuteChanged(MediaPlayer*) { }
+    virtual void mediaPlayerMuteChanged( MediaPlayer * ) { }
 
     // time has jumped, eg. not as a result of normal playback
-    virtual void mediaPlayerTimeChanged(MediaPlayer*) { }
+    virtual void mediaPlayerTimeChanged( MediaPlayer * ) { }
 
     // the media file duration has changed, or is now known
-    virtual void mediaPlayerDurationChanged(MediaPlayer*) { }
+    virtual void mediaPlayerDurationChanged( MediaPlayer * ) { }
 
     // the playback rate has changed
-    virtual void mediaPlayerRateChanged(MediaPlayer*) { }
+    virtual void mediaPlayerRateChanged( MediaPlayer * ) { }
 
     // the play/pause status changed
-    virtual void mediaPlayerPlaybackStateChanged(MediaPlayer*) { }
+    virtual void mediaPlayerPlaybackStateChanged( MediaPlayer * ) { }
 
     // The MediaPlayer has found potentially problematic media content.
     // This is used internally to trigger swapping from a <video>
     // element to an <embed> in standalone documents
-    virtual void mediaPlayerSawUnsupportedTracks(MediaPlayer*) { }
+    virtual void mediaPlayerSawUnsupportedTracks( MediaPlayer * ) { }
 
 // Presentation-related methods
     // a new frame of video is available
-    virtual void mediaPlayerRepaint(MediaPlayer*) { }
+    virtual void mediaPlayerRepaint( MediaPlayer * ) { }
 
     // the movie size has changed
-    virtual void mediaPlayerSizeChanged(MediaPlayer*) { }
+    virtual void mediaPlayerSizeChanged( MediaPlayer * ) { }
 
-    virtual void mediaPlayerEngineUpdated(MediaPlayer*) { }
+    virtual void mediaPlayerEngineUpdated( MediaPlayer * ) { }
 
     // The first frame of video is available to render. A media engine need only make this callback if the
     // first frame is not available immediately when prepareForRendering is called.
-    virtual void mediaPlayerFirstVideoFrameAvailable(MediaPlayer*) { }
+    virtual void mediaPlayerFirstVideoFrameAvailable( MediaPlayer * ) { }
 
 #if USE(ACCELERATED_COMPOSITING)
     // whether the rendering system can accelerate the display of this MediaPlayer.
-    virtual bool mediaPlayerRenderingCanBeAccelerated(MediaPlayer*) { return false; }
+    virtual bool mediaPlayerRenderingCanBeAccelerated( MediaPlayer * )
+    {
+        return false;
+    }
 
     // called when the media player's rendering mode changed, which indicates a change in the
     // availability of the platformLayer().
-    virtual void mediaPlayerRenderingModeChanged(MediaPlayer*) { }
+    virtual void mediaPlayerRenderingModeChanged( MediaPlayer * ) { }
 #endif
 };
 
-class MediaPlayer {
-    WTF_MAKE_NONCOPYABLE(MediaPlayer); WTF_MAKE_FAST_ALLOCATED;
+class MediaPlayer
+{
+    WTF_MAKE_NONCOPYABLE( MediaPlayer );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
 
-    static PassOwnPtr<MediaPlayer> create(MediaPlayerClient* client)
+    static PassOwnPtr<MediaPlayer> create( MediaPlayerClient *client )
     {
-        return adoptPtr(new MediaPlayer(client));
+        return adoptPtr( new MediaPlayer( client ) );
     }
     virtual ~MediaPlayer();
 
     // Media engine support.
     enum SupportsType { IsNotSupported, IsSupported, MayBeSupported };
-    static MediaPlayer::SupportsType supportsType(const ContentType&);
-    static void getSupportedTypes(HashSet<String>&);
+    static MediaPlayer::SupportsType supportsType( const ContentType & );
+    static void getSupportedTypes( HashSet<String> & );
     static bool isAvailable();
-    static void getSitesInMediaCache(Vector<String>&);
+    static void getSitesInMediaCache( Vector<String> & );
     static void clearMediaCache();
-    static void clearMediaCacheForSite(const String&);
+    static void clearMediaCacheForSite( const String & );
 
     bool supportsFullscreen() const;
     bool supportsSave() const;
     PlatformMedia platformMedia() const;
 #if USE(ACCELERATED_COMPOSITING)
-    PlatformLayer* platformLayer() const;
+    PlatformLayer *platformLayer() const;
 #endif
 
     IntSize naturalSize();
     bool hasVideo() const;
     bool hasAudio() const;
 
-    void setFrameView(FrameView* frameView) { m_frameView = frameView; }
-    FrameView* frameView() { return m_frameView; }
+    void setFrameView( FrameView *frameView )
+    {
+        m_frameView = frameView;
+    }
+    FrameView *frameView()
+    {
+        return m_frameView;
+    }
     bool inMediaDocument();
 
-    IntSize size() const { return m_size; }
-    void setSize(const IntSize& size);
+    IntSize size() const
+    {
+        return m_size;
+    }
+    void setSize( const IntSize &size );
 
-    void load(const String& url, const ContentType&);
+    void load( const String &url, const ContentType & );
     void cancelLoad();
 
     bool visible() const;
-    void setVisible(bool);
+    void setVisible( bool );
 
     void prepareToPlay();
     void play();
-    void pause();    
+    void pause();
 
     bool paused() const;
     bool seeking() const;
 
     float duration() const;
     float currentTime() const;
-    void seek(float time);
+    void seek( float time );
 
     float startTime() const;
 
     float rate() const;
-    void setRate(float);
+    void setRate( float );
 
-    bool preservesPitch() const;    
-    void setPreservesPitch(bool);
+    bool preservesPitch() const;
+    void setPreservesPitch( bool );
 
     PassRefPtr<TimeRanges> buffered();
     float maxTimeSeekable();
@@ -225,19 +247,19 @@ public:
     unsigned bytesLoaded();
 
     float volume() const;
-    void setVolume(float);
+    void setVolume( float );
 
     bool muted() const;
-    void setMuted(bool);
+    void setMuted( bool );
 
     bool hasClosedCaptions() const;
-    void setClosedCaptionsVisible(bool closedCaptionsVisible);
+    void setClosedCaptionsVisible( bool closedCaptionsVisible );
 
-    bool autoplay() const;    
-    void setAutoplay(bool);
+    bool autoplay() const;
+    void setAutoplay( bool );
 
-    void paint(GraphicsContext*, const IntRect&);
-    void paintCurrentFrameInContext(GraphicsContext*, const IntRect&);
+    void paint( GraphicsContext *, const IntRect & );
+    void paintCurrentFrameInContext( GraphicsContext *, const IntRect & );
 
     enum NetworkState { Empty, Idle, Loading, Loaded, FormatError, NetworkError, DecodeError };
     NetworkState networkState();
@@ -250,12 +272,12 @@ public:
 
     enum Preload { None, MetaData, Auto };
     Preload preload() const;
-    void setPreload(Preload);
+    void setPreload( Preload );
 
     void networkStateChanged();
     void readyStateChanged();
-    void volumeChanged(float);
-    void muteChanged(bool);
+    void volumeChanged( float );
+    void muteChanged( bool );
     void timeChanged();
     void sizeChanged();
     void rateChanged();
@@ -265,18 +287,21 @@ public:
 
     void repaint();
 
-    MediaPlayerClient* mediaPlayerClient() const { return m_mediaPlayerClient; }
+    MediaPlayerClient *mediaPlayerClient() const
+    {
+        return m_mediaPlayerClient;
+    }
 
     bool hasAvailableVideoFrame() const;
     void prepareForRendering();
 
     bool canLoadPoster() const;
-    void setPoster(const String&);
+    void setPoster( const String & );
 
 #if ENABLE(PLUGIN_PROXY_FOR_VIDEO)
-    void deliverNotification(MediaPlayerProxyNotificationType notification);
-    void setMediaPlayerProxy(WebMediaPlayerProxy* proxy);
-    void setControls(bool);
+    void deliverNotification( MediaPlayerProxyNotificationType notification );
+    void setMediaPlayerProxy( WebMediaPlayerProxy *proxy );
+    void setControls( bool );
     void enterFullscreen();
     void exitFullscreen();
 #endif
@@ -290,7 +315,7 @@ public:
 
     bool hasSingleSecurityOrigin() const;
 
-    float mediaTimeForTimeValue(float) const;
+    float mediaTimeForTimeValue( float ) const;
 
     double maximumDurationToCacheMediaTime() const;
 
@@ -299,23 +324,23 @@ public:
     unsigned audioDecodedByteCount() const;
     unsigned videoDecodedByteCount() const;
 
-    void setPrivateBrowsingMode(bool);
+    void setPrivateBrowsingMode( bool );
 
 private:
-    MediaPlayer(MediaPlayerClient*);
-    void loadWithNextMediaEngine(MediaPlayerFactory*);
-    void reloadTimerFired(Timer<MediaPlayer>*);
+    MediaPlayer( MediaPlayerClient * );
+    void loadWithNextMediaEngine( MediaPlayerFactory * );
+    void reloadTimerFired( Timer<MediaPlayer> * );
 
     static void initializeMediaEngines();
 
-    MediaPlayerClient* m_mediaPlayerClient;
+    MediaPlayerClient *m_mediaPlayerClient;
     Timer<MediaPlayer> m_reloadTimer;
     OwnPtr<MediaPlayerPrivateInterface> m_private;
-    MediaPlayerFactory* m_currentMediaEngine;
+    MediaPlayerFactory *m_currentMediaEngine;
     String m_url;
     String m_contentMIMEType;
     String m_contentTypeCodecs;
-    FrameView* m_frameView;
+    FrameView *m_frameView;
     IntSize m_size;
     Preload m_preload;
     bool m_visible;
@@ -326,19 +351,19 @@ private:
     bool m_privateBrowsing;
     bool m_shouldPrepareToRender;
 #if ENABLE(PLUGIN_PROXY_FOR_VIDEO)
-    WebMediaPlayerProxy* m_playerProxy;    // not owned or used, passed to m_private
+    WebMediaPlayerProxy *m_playerProxy;    // not owned or used, passed to m_private
 #endif
 };
 
-typedef PassOwnPtr<MediaPlayerPrivateInterface> (*CreateMediaEnginePlayer)(MediaPlayer*);
-typedef void (*MediaEngineSupportedTypes)(HashSet<String>& types);
-typedef MediaPlayer::SupportsType (*MediaEngineSupportsType)(const String& type, const String& codecs);
-typedef void (*MediaEngineGetSitesInMediaCache)(Vector<String>&);
-typedef void (*MediaEngineClearMediaCache)();
-typedef void (*MediaEngineClearMediaCacheForSite)(const String&);
+typedef PassOwnPtr<MediaPlayerPrivateInterface> ( *CreateMediaEnginePlayer )( MediaPlayer * );
+typedef void ( *MediaEngineSupportedTypes )( HashSet<String> &types );
+typedef MediaPlayer::SupportsType ( *MediaEngineSupportsType )( const String &type, const String &codecs );
+typedef void ( *MediaEngineGetSitesInMediaCache )( Vector<String> & );
+typedef void ( *MediaEngineClearMediaCache )();
+typedef void ( *MediaEngineClearMediaCacheForSite )( const String & );
 
-typedef void (*MediaEngineRegistrar)(CreateMediaEnginePlayer, MediaEngineSupportedTypes, MediaEngineSupportsType, 
-    MediaEngineGetSitesInMediaCache, MediaEngineClearMediaCache, MediaEngineClearMediaCacheForSite); 
+typedef void ( *MediaEngineRegistrar )( CreateMediaEnginePlayer, MediaEngineSupportedTypes, MediaEngineSupportsType,
+                                        MediaEngineGetSitesInMediaCache, MediaEngineClearMediaCache, MediaEngineClearMediaCacheForSite );
 
 
 }

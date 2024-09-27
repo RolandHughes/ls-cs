@@ -35,47 +35,48 @@
 
 static const int gHideMouseCursorDelay = 3000;
 
-namespace WebCore {
+namespace WebCore
+{
 
 FullScreenVideoWidget::FullScreenVideoWidget()
     : QVideoWidget()
-    , m_mediaPlayer(0)
+    , m_mediaPlayer( 0 )
 {
-    QPalette palette(this->palette());
-    palette.setColor(QPalette::Base, Qt::black);
-    palette.setColor(QPalette::Background, Qt::black);
-    setPalette(palette);
+    QPalette palette( this->palette() );
+    palette.setColor( QPalette::Base, Qt::black );
+    palette.setColor( QPalette::Background, Qt::black );
+    setPalette( palette );
 
-    setWindowModality(Qt::ApplicationModal);
-    setWindowFlags(windowFlags() | Qt::FramelessWindowHint);
+    setWindowModality( Qt::ApplicationModal );
+    setWindowFlags( windowFlags() | Qt::FramelessWindowHint );
 
-    setGeometry(QApplication::desktop()->screenGeometry());
+    setGeometry( QApplication::desktop()->screenGeometry() );
 
-    m_cursorTimer.setSingleShot(true);
-    connect(&m_cursorTimer, SIGNAL(timeout()), this, SLOT(hideCursor()));
+    m_cursorTimer.setSingleShot( true );
+    connect( &m_cursorTimer, SIGNAL( timeout() ), this, SLOT( hideCursor() ) );
 }
 
 FullScreenVideoWidget::~FullScreenVideoWidget()
 {
 }
 
-void FullScreenVideoWidget::show(QMediaPlayer* player)
+void FullScreenVideoWidget::show( QMediaPlayer *player )
 {
     m_mediaPlayer = player;
     showFullScreen();
-    setMouseTracking(true);
+    setMouseTracking( true );
     raise();
-    m_mediaPlayer->setVideoOutput(this);
+    m_mediaPlayer->setVideoOutput( this );
     setFocus();
     grabMouse();
     hideCursor();
 }
 
-void FullScreenVideoWidget::closeEvent(QCloseEvent* event)
+void FullScreenVideoWidget::closeEvent( QCloseEvent *event )
 {
     m_mediaPlayer = 0;
     m_cursorTimer.stop();
-    setMouseTracking(false);
+    setMouseTracking( false );
     releaseMouse();
     QApplication::restoreOverrideCursor();
     event->ignore();
@@ -83,42 +84,53 @@ void FullScreenVideoWidget::closeEvent(QCloseEvent* event)
     emit didExitFullScreen();
 }
 
-bool FullScreenVideoWidget::event(QEvent* ev)
+bool FullScreenVideoWidget::event( QEvent *ev )
 {
-    switch (ev->type()) {
-    case QEvent::MouseMove:
-        showCursor();
-        ev->accept();
-        return true;
-    case QEvent::MouseButtonDblClick:
-        close();
-        ev->accept();
-        return true;
-    default:
-        return QVideoWidget::event(ev);
+    switch ( ev->type() )
+    {
+        case QEvent::MouseMove:
+            showCursor();
+            ev->accept();
+            return true;
+
+        case QEvent::MouseButtonDblClick:
+            close();
+            ev->accept();
+            return true;
+
+        default:
+            return QVideoWidget::event( ev );
     }
 }
 
-void FullScreenVideoWidget::keyPressEvent(QKeyEvent* ev)
+void FullScreenVideoWidget::keyPressEvent( QKeyEvent *ev )
 {
-    if (m_mediaPlayer && ev->key() == Qt::Key_Space) {
-        if (m_mediaPlayer->state() == QMediaPlayer::PlayingState)
+    if ( m_mediaPlayer && ev->key() == Qt::Key_Space )
+    {
+        if ( m_mediaPlayer->state() == QMediaPlayer::PlayingState )
+        {
             m_mediaPlayer->pause();
+        }
         else
+        {
             m_mediaPlayer->play();
-    } else if (ev->key() == Qt::Key_Escape)
+        }
+    }
+    else if ( ev->key() == Qt::Key_Escape )
+    {
         close();
+    }
 }
 
 void FullScreenVideoWidget::hideCursor()
 {
-    QApplication::setOverrideCursor(QCursor(Qt::BlankCursor));
+    QApplication::setOverrideCursor( QCursor( Qt::BlankCursor ) );
 }
 
 void FullScreenVideoWidget::showCursor()
 {
     QApplication::restoreOverrideCursor();
-    m_cursorTimer.start(gHideMouseCursorDelay);
+    m_cursorTimer.start( gHideMouseCursorDelay );
 }
 
 }

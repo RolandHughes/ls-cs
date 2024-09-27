@@ -30,11 +30,12 @@
 
 #include <wtf/Assertions.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-PainterOpenVG* SurfaceOpenVG::s_currentPainter = 0;
+PainterOpenVG *SurfaceOpenVG::s_currentPainter = 0;
 
-SurfaceOpenVG* SurfaceOpenVG::currentSurface()
+SurfaceOpenVG *SurfaceOpenVG::currentSurface()
 {
 #if PLATFORM(EGL)
     return EGLDisplayOpenVG::currentSurface();
@@ -45,59 +46,64 @@ SurfaceOpenVG* SurfaceOpenVG::currentSurface()
 }
 
 #if PLATFORM(EGL)
-SurfaceOpenVG::SurfaceOpenVG(const IntSize& size, const EGLDisplay& display, EGLConfig* confPtr, EGLint* errorCode)
-    : m_activePainter(0)
-    , m_eglDisplay(display)
-    , m_eglSurface(EGL_NO_SURFACE)
-    , m_eglContext(EGL_NO_CONTEXT)
+SurfaceOpenVG::SurfaceOpenVG( const IntSize &size, const EGLDisplay &display, EGLConfig *confPtr, EGLint *errorCode )
+    : m_activePainter( 0 )
+    , m_eglDisplay( display )
+    , m_eglSurface( EGL_NO_SURFACE )
+    , m_eglContext( EGL_NO_CONTEXT )
 {
-    ASSERT(m_eglDisplay != EGL_NO_DISPLAY);
+    ASSERT( m_eglDisplay != EGL_NO_DISPLAY );
 
-    EGLDisplayOpenVG* displayManager = EGLDisplayOpenVG::forDisplay(m_eglDisplay);
-    EGLConfig config = confPtr ? (*confPtr) : displayManager->defaultPbufferConfig();
-    m_eglSurface = displayManager->createPbufferSurface(size, config, errorCode);
+    EGLDisplayOpenVG *displayManager = EGLDisplayOpenVG::forDisplay( m_eglDisplay );
+    EGLConfig config = confPtr ? ( *confPtr ) : displayManager->defaultPbufferConfig();
+    m_eglSurface = displayManager->createPbufferSurface( size, config, errorCode );
 
-    if (m_eglSurface == EGL_NO_SURFACE)
+    if ( m_eglSurface == EGL_NO_SURFACE )
+    {
         return;
+    }
 
-    m_eglContext = displayManager->contextForSurface(m_eglSurface);
-    EGLDisplayOpenVG::registerPlatformSurface(this);
+    m_eglContext = displayManager->contextForSurface( m_eglSurface );
+    EGLDisplayOpenVG::registerPlatformSurface( this );
 }
 
-SurfaceOpenVG::SurfaceOpenVG(EGLClientBuffer buffer, EGLenum bufferType, const EGLDisplay& display, EGLConfig* confPtr, EGLint* errorCode)
-    : m_activePainter(0)
-    , m_eglDisplay(display)
-    , m_eglSurface(EGL_NO_SURFACE)
-    , m_eglContext(EGL_NO_CONTEXT)
+SurfaceOpenVG::SurfaceOpenVG( EGLClientBuffer buffer, EGLenum bufferType, const EGLDisplay &display, EGLConfig *confPtr,
+                              EGLint *errorCode )
+    : m_activePainter( 0 )
+    , m_eglDisplay( display )
+    , m_eglSurface( EGL_NO_SURFACE )
+    , m_eglContext( EGL_NO_CONTEXT )
 {
-    ASSERT(m_eglDisplay != EGL_NO_DISPLAY);
+    ASSERT( m_eglDisplay != EGL_NO_DISPLAY );
 
-    EGLDisplayOpenVG* displayManager = EGLDisplayOpenVG::forDisplay(m_eglDisplay);
-    EGLConfig config = confPtr ? (*confPtr) : displayManager->defaultPbufferConfig();
-    m_eglSurface = displayManager->createPbufferFromClientBuffer(buffer, bufferType, config, errorCode);
+    EGLDisplayOpenVG *displayManager = EGLDisplayOpenVG::forDisplay( m_eglDisplay );
+    EGLConfig config = confPtr ? ( *confPtr ) : displayManager->defaultPbufferConfig();
+    m_eglSurface = displayManager->createPbufferFromClientBuffer( buffer, bufferType, config, errorCode );
 
-    if (m_eglSurface == EGL_NO_SURFACE)
+    if ( m_eglSurface == EGL_NO_SURFACE )
+    {
         return;
+    }
 
-    m_eglContext = displayManager->contextForSurface(m_eglSurface);
-    EGLDisplayOpenVG::registerPlatformSurface(this);
+    m_eglContext = displayManager->contextForSurface( m_eglSurface );
+    EGLDisplayOpenVG::registerPlatformSurface( this );
 }
 
-SurfaceOpenVG::SurfaceOpenVG(EGLNativeWindowType window, const EGLDisplay& display, EGLConfig* confPtr)
-    : m_activePainter(0)
-    , m_eglDisplay(display)
-    , m_eglSurface(EGL_NO_SURFACE)
-    , m_eglContext(EGL_NO_CONTEXT)
+SurfaceOpenVG::SurfaceOpenVG( EGLNativeWindowType window, const EGLDisplay &display, EGLConfig *confPtr )
+    : m_activePainter( 0 )
+    , m_eglDisplay( display )
+    , m_eglSurface( EGL_NO_SURFACE )
+    , m_eglContext( EGL_NO_CONTEXT )
 {
-    ASSERT(m_eglDisplay != EGL_NO_DISPLAY);
+    ASSERT( m_eglDisplay != EGL_NO_DISPLAY );
 
-    EGLDisplayOpenVG* displayManager = EGLDisplayOpenVG::forDisplay(m_eglDisplay);
-    EGLConfig config = confPtr ? (*confPtr) : displayManager->defaultWindowConfig();
-    m_eglSurface = displayManager->surfaceForWindow(window, config);
-    ASSERT(m_eglSurface != EGL_NO_SURFACE);
+    EGLDisplayOpenVG *displayManager = EGLDisplayOpenVG::forDisplay( m_eglDisplay );
+    EGLConfig config = confPtr ? ( *confPtr ) : displayManager->defaultWindowConfig();
+    m_eglSurface = displayManager->surfaceForWindow( window, config );
+    ASSERT( m_eglSurface != EGL_NO_SURFACE );
 
-    m_eglContext = displayManager->contextForSurface(m_eglSurface);
-    EGLDisplayOpenVG::registerPlatformSurface(this);
+    m_eglContext = displayManager->contextForSurface( m_eglSurface );
+    EGLDisplayOpenVG::registerPlatformSurface( this );
 }
 
 // Constructor only accessible to EGLDisplayOpenVG for shared context
@@ -106,25 +112,29 @@ SurfaceOpenVG::SurfaceOpenVG(EGLNativeWindowType window, const EGLDisplay& displ
 // arguments and EGLDisplayOpenVG basically implements the constructor
 // by itself.
 SurfaceOpenVG::SurfaceOpenVG()
-    : m_activePainter(0)
-    , m_eglDisplay(EGL_NO_DISPLAY)
-    , m_eglSurface(EGL_NO_SURFACE)
-    , m_eglContext(EGL_NO_CONTEXT)
+    : m_activePainter( 0 )
+    , m_eglDisplay( EGL_NO_DISPLAY )
+    , m_eglSurface( EGL_NO_SURFACE )
+    , m_eglContext( EGL_NO_CONTEXT )
 {
 }
 #endif
 
 SurfaceOpenVG::~SurfaceOpenVG()
 {
-    if (!isValid())
+    if ( !isValid() )
+    {
         return;
+    }
 
-    if (m_activePainter && this == m_activePainter->baseSurface())
+    if ( m_activePainter && this == m_activePainter->baseSurface() )
+    {
         m_activePainter->end();
+    }
 
 #if PLATFORM(EGL)
-    EGLDisplayOpenVG::forDisplay(m_eglDisplay)->destroySurface(m_eglSurface);
-    EGLDisplayOpenVG::unregisterPlatformSurface(this);
+    EGLDisplayOpenVG::forDisplay( m_eglDisplay )->destroySurface( m_eglSurface );
+    EGLDisplayOpenVG::unregisterPlatformSurface( this );
 #else
     ASSERT_NOT_REACHED();
 #endif
@@ -133,7 +143,7 @@ SurfaceOpenVG::~SurfaceOpenVG()
 bool SurfaceOpenVG::isValid() const
 {
 #if PLATFORM(EGL)
-    return (m_eglSurface != EGL_NO_SURFACE);
+    return ( m_eglSurface != EGL_NO_SURFACE );
 #else
     ASSERT_NOT_REACHED();
     return false;
@@ -143,10 +153,10 @@ bool SurfaceOpenVG::isValid() const
 int SurfaceOpenVG::width() const
 {
 #if PLATFORM(EGL)
-    ASSERT(m_eglSurface != EGL_NO_SURFACE);
+    ASSERT( m_eglSurface != EGL_NO_SURFACE );
 
     EGLint width;
-    eglQuerySurface(m_eglDisplay, m_eglSurface, EGL_WIDTH, &width);
+    eglQuerySurface( m_eglDisplay, m_eglSurface, EGL_WIDTH, &width );
     ASSERT_EGL_NO_ERROR();
     return width;
 #else
@@ -158,10 +168,10 @@ int SurfaceOpenVG::width() const
 int SurfaceOpenVG::height() const
 {
 #if PLATFORM(EGL)
-    ASSERT(m_eglSurface != EGL_NO_SURFACE);
+    ASSERT( m_eglSurface != EGL_NO_SURFACE );
 
     EGLint height;
-    eglQuerySurface(m_eglDisplay, m_eglSurface, EGL_HEIGHT, &height);
+    eglQuerySurface( m_eglDisplay, m_eglSurface, EGL_HEIGHT, &height );
     ASSERT_EGL_NO_ERROR();
     return height;
 #else
@@ -170,41 +180,46 @@ int SurfaceOpenVG::height() const
 #endif
 }
 
-SurfaceOpenVG* SurfaceOpenVG::sharedSurface() const
+SurfaceOpenVG *SurfaceOpenVG::sharedSurface() const
 {
 #if PLATFORM(EGL)
-    ASSERT(m_eglSurface != EGL_NO_SURFACE);
-    return EGLDisplayOpenVG::forDisplay(m_eglDisplay)->sharedPlatformSurface();
+    ASSERT( m_eglSurface != EGL_NO_SURFACE );
+    return EGLDisplayOpenVG::forDisplay( m_eglDisplay )->sharedPlatformSurface();
 #else
     ASSERT_NOT_REACHED();
     return 0;
 #endif
 }
 
-void SurfaceOpenVG::makeCurrent(MakeCurrentMode mode)
+void SurfaceOpenVG::makeCurrent( MakeCurrentMode mode )
 {
 #if PLATFORM(EGL)
-    ASSERT(m_eglSurface != EGL_NO_SURFACE);
+    ASSERT( m_eglSurface != EGL_NO_SURFACE );
 
-    eglBindAPI(EGL_OPENVG_API);
+    eglBindAPI( EGL_OPENVG_API );
     ASSERT_EGL_NO_ERROR();
-    EGLSurface currentSurface = eglGetCurrentSurface(EGL_DRAW);
+    EGLSurface currentSurface = eglGetCurrentSurface( EGL_DRAW );
     ASSERT_EGL_NO_ERROR();
 
-    if (currentSurface != m_eglSurface) {
+    if ( currentSurface != m_eglSurface )
+    {
         // Save other context before switching over.
-        if (s_currentPainter && mode != DontSaveOrApplyPainterState
-            && s_currentPainter->surface()->m_eglSurface == currentSurface)
-            s_currentPainter->save(PainterOpenVG::KeepCurrentState);
+        if ( s_currentPainter && mode != DontSaveOrApplyPainterState
+                && s_currentPainter->surface()->m_eglSurface == currentSurface )
+        {
+            s_currentPainter->save( PainterOpenVG::KeepCurrentState );
+        }
 
-        eglMakeCurrent(m_eglDisplay, m_eglSurface, m_eglSurface, m_eglContext);
+        eglMakeCurrent( m_eglDisplay, m_eglSurface, m_eglSurface, m_eglContext );
         ASSERT_EGL_NO_ERROR();
         s_currentPainter = 0;
     }
+
 #endif
 
-    if (m_activePainter && mode == ApplyPainterStateOnSurfaceSwitch
-        && s_currentPainter != m_activePainter) {
+    if ( m_activePainter && mode == ApplyPainterStateOnSurfaceSwitch
+            && s_currentPainter != m_activePainter )
+    {
         m_activePainter->applyState();
         s_currentPainter = m_activePainter;
     }
@@ -213,27 +228,34 @@ void SurfaceOpenVG::makeCurrent(MakeCurrentMode mode)
 void SurfaceOpenVG::makeCompatibleCurrent()
 {
 #if PLATFORM(EGL)
-    ASSERT(m_eglSurface != EGL_NO_SURFACE);
+    ASSERT( m_eglSurface != EGL_NO_SURFACE );
 
-    eglBindAPI(EGL_OPENVG_API);
+    eglBindAPI( EGL_OPENVG_API );
     ASSERT_EGL_NO_ERROR();
-    EGLSurface currentSurface = eglGetCurrentSurface(EGL_DRAW);
+    EGLSurface currentSurface = eglGetCurrentSurface( EGL_DRAW );
     ASSERT_EGL_NO_ERROR();
 
-    if (currentSurface == m_eglSurface) {
-        if (m_activePainter && s_currentPainter != m_activePainter) {
+    if ( currentSurface == m_eglSurface )
+    {
+        if ( m_activePainter && s_currentPainter != m_activePainter )
+        {
             m_activePainter->applyState();
             s_currentPainter = m_activePainter;
         }
-    } else if (!EGLDisplayOpenVG::forDisplay(m_eglDisplay)->surfacesCompatible(currentSurface, m_eglSurface)) {
+    }
+    else if ( !EGLDisplayOpenVG::forDisplay( m_eglDisplay )->surfacesCompatible( currentSurface, m_eglSurface ) )
+    {
         // Save other context before switching over.
-        if (s_currentPainter && s_currentPainter->surface()->m_eglSurface == currentSurface)
-            s_currentPainter->save(PainterOpenVG::KeepCurrentState);
+        if ( s_currentPainter && s_currentPainter->surface()->m_eglSurface == currentSurface )
+        {
+            s_currentPainter->save( PainterOpenVG::KeepCurrentState );
+        }
 
-        eglMakeCurrent(m_eglDisplay, m_eglSurface, m_eglSurface, m_eglContext);
+        eglMakeCurrent( m_eglDisplay, m_eglSurface, m_eglSurface, m_eglContext );
         ASSERT_EGL_NO_ERROR();
         s_currentPainter = 0;
     }
+
     // else: surfaces compatible, no need to switch contexts
 #endif
 }
@@ -241,30 +263,32 @@ void SurfaceOpenVG::makeCompatibleCurrent()
 void SurfaceOpenVG::flush()
 {
 #if PLATFORM(EGL)
-    ASSERT(m_eglSurface != EGL_NO_SURFACE);
+    ASSERT( m_eglSurface != EGL_NO_SURFACE );
 
-    eglSwapBuffers(m_eglDisplay, m_eglSurface);
+    eglSwapBuffers( m_eglDisplay, m_eglSurface );
     ASSERT_EGL_NO_ERROR();
 #endif
 }
 
-void SurfaceOpenVG::setActivePainter(PainterOpenVG* painter)
+void SurfaceOpenVG::setActivePainter( PainterOpenVG *painter )
 {
-    ASSERT(isValid());
+    ASSERT( isValid() );
 
     // If painter is non-zero, we want to make sure there was no previous painter set.
-    ASSERT(!painter || !m_activePainter);
+    ASSERT( !painter || !m_activePainter );
 
     // Make sure a disabled painter isn't marked as global current painter anymore.
-    if (!painter && s_currentPainter == m_activePainter)
+    if ( !painter && s_currentPainter == m_activePainter )
+    {
         s_currentPainter = 0;
+    }
 
     m_activePainter = painter;
 }
 
-PainterOpenVG* SurfaceOpenVG::activePainter()
+PainterOpenVG *SurfaceOpenVG::activePainter()
 {
-    ASSERT(isValid());
+    ASSERT( isValid() );
     return m_activePainter;
 }
 

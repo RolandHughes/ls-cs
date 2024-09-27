@@ -66,39 +66,41 @@ const int UndefinedThreadIdentifier = 0xffffffff;
 
 const unsigned MaxNodesToDeletePerQuantum = 10;
 
-namespace WebCore {
-
-PassRefPtr<AudioContext> AudioContext::create(Document* document)
+namespace WebCore
 {
-    return adoptRef(new AudioContext(document));
+
+PassRefPtr<AudioContext> AudioContext::create( Document *document )
+{
+    return adoptRef( new AudioContext( document ) );
 }
 
-PassRefPtr<AudioContext> AudioContext::createOfflineContext(Document* document, unsigned numberOfChannels, size_t numberOfFrames, double sampleRate)
+PassRefPtr<AudioContext> AudioContext::createOfflineContext( Document *document, unsigned numberOfChannels, size_t numberOfFrames,
+        double sampleRate )
 {
-    return adoptRef(new AudioContext(document, numberOfChannels, numberOfFrames, sampleRate));
+    return adoptRef( new AudioContext( document, numberOfChannels, numberOfFrames, sampleRate ) );
 }
 
 // Constructor for rendering to the audio hardware.
-AudioContext::AudioContext(Document* document)
-    : ActiveDOMObject(document, this)
-    , m_isInitialized(false)
-    , m_isAudioThreadFinished(false)
-    , m_document(document)
-    , m_destinationNode(0)
-    , m_connectionCount(0)
-    , m_audioThread(0)
-    , m_graphOwnerThread(UndefinedThreadIdentifier)
-    , m_isOfflineContext(false)
+AudioContext::AudioContext( Document *document )
+    : ActiveDOMObject( document, this )
+    , m_isInitialized( false )
+    , m_isAudioThreadFinished( false )
+    , m_document( document )
+    , m_destinationNode( 0 )
+    , m_connectionCount( 0 )
+    , m_audioThread( 0 )
+    , m_graphOwnerThread( UndefinedThreadIdentifier )
+    , m_isOfflineContext( false )
 {
     constructCommon();
 
-    m_destinationNode = DefaultAudioDestinationNode::create(this);
+    m_destinationNode = DefaultAudioDestinationNode::create( this );
 
     // This sets in motion an asynchronous loading mechanism on another thread.
     // We can check m_hrtfDatabaseLoader->isLoaded() to find out whether or not it has been fully loaded.
     // It's not that useful to have a callback function for this since the audio thread automatically starts rendering on the graph
     // when this has finished (see AudioDestinationNode).
-    m_hrtfDatabaseLoader = HRTFDatabaseLoader::createAndLoadAsynchronouslyIfNecessary(sampleRate());
+    m_hrtfDatabaseLoader = HRTFDatabaseLoader::createAndLoadAsynchronouslyIfNecessary( sampleRate() );
 
     // FIXME: for now default AudioContext does not need an explicit startRendering() call.
     // We may want to consider requiring it for symmetry with OfflineAudioContext
@@ -106,25 +108,25 @@ AudioContext::AudioContext(Document* document)
 }
 
 // Constructor for offline (non-realtime) rendering.
-AudioContext::AudioContext(Document* document, unsigned numberOfChannels, size_t numberOfFrames, double sampleRate)
-    : ActiveDOMObject(document, this)
-    , m_isInitialized(false)
-    , m_isAudioThreadFinished(false)
-    , m_document(document)
-    , m_destinationNode(0)
-    , m_connectionCount(0)
-    , m_audioThread(0)
-    , m_graphOwnerThread(UndefinedThreadIdentifier)
-    , m_isOfflineContext(true)
+AudioContext::AudioContext( Document *document, unsigned numberOfChannels, size_t numberOfFrames, double sampleRate )
+    : ActiveDOMObject( document, this )
+    , m_isInitialized( false )
+    , m_isAudioThreadFinished( false )
+    , m_document( document )
+    , m_destinationNode( 0 )
+    , m_connectionCount( 0 )
+    , m_audioThread( 0 )
+    , m_graphOwnerThread( UndefinedThreadIdentifier )
+    , m_isOfflineContext( true )
 {
     constructCommon();
 
     // FIXME: the passed in sampleRate MUST match the hardware sample-rate since HRTFDatabaseLoader is a singleton.
-    m_hrtfDatabaseLoader = HRTFDatabaseLoader::createAndLoadAsynchronouslyIfNecessary(sampleRate);
+    m_hrtfDatabaseLoader = HRTFDatabaseLoader::createAndLoadAsynchronouslyIfNecessary( sampleRate );
 
     // Create a new destination for offline rendering.
-    m_renderTarget = AudioBuffer::create(numberOfChannels, numberOfFrames, sampleRate);
-    m_destinationNode = OfflineAudioDestinationNode::create(this, m_renderTarget.get());
+    m_renderTarget = AudioBuffer::create( numberOfChannels, numberOfFrames, sampleRate );
+    m_destinationNode = OfflineAudioDestinationNode::create( this, m_renderTarget.get() );
 }
 
 void AudioContext::constructCommon()
@@ -132,36 +134,41 @@ void AudioContext::constructCommon()
     // Note: because adoptRef() won't be called until we leave this constructor, but code in this constructor needs to reference this context,
     // relax the check.
     relaxAdoptionRequirement();
-    
+
     FFTFrame::initialize();
-    
+
     m_listener = AudioListener::create();
-    m_temporaryMonoBus = adoptPtr(new AudioBus(1, AudioNode::ProcessingSizeInFrames));
-    m_temporaryStereoBus = adoptPtr(new AudioBus(2, AudioNode::ProcessingSizeInFrames));
+    m_temporaryMonoBus = adoptPtr( new AudioBus( 1, AudioNode::ProcessingSizeInFrames ) );
+    m_temporaryStereoBus = adoptPtr( new AudioBus( 2, AudioNode::ProcessingSizeInFrames ) );
 }
 
 AudioContext::~AudioContext()
 {
 #if DEBUG_AUDIONODE_REFERENCES
-    printf("%p: AudioContext::~AudioContext()\n", this);
-#endif    
+    printf( "%p: AudioContext::~AudioContext()\n", this );
+#endif
     // AudioNodes keep a reference to their context, so there should be no way to be in the destructor if there are still AudioNodes around.
-    ASSERT(!m_nodesToDelete.size());
-    ASSERT(!m_referencedNodes.size());
-    ASSERT(!m_finishedNodes.size());
+    ASSERT( !m_nodesToDelete.size() );
+    ASSERT( !m_referencedNodes.size() );
+    ASSERT( !m_finishedNodes.size() );
 }
 
 void AudioContext::lazyInitialize()
 {
-    if (!m_isInitialized) {
+    if ( !m_isInitialized )
+    {
         // Don't allow the context to initialize a second time after it's already been explicitly uninitialized.
-        ASSERT(!m_isAudioThreadFinished);
-        if (!m_isAudioThreadFinished) {
-            if (m_destinationNode.get()) {
+        ASSERT( !m_isAudioThreadFinished );
+
+        if ( !m_isAudioThreadFinished )
+        {
+            if ( m_destinationNode.get() )
+            {
                 // This starts the audio thread.  The destination node's provideInput() method will now be called repeatedly to render audio.
                 // Each time provideInput() is called, a portion of the audio stream is rendered.  Let's call this time period a "render quantum".
                 m_destinationNode->initialize();
             }
+
             m_isInitialized = true;
         }
     }
@@ -169,7 +176,8 @@ void AudioContext::lazyInitialize()
 
 void AudioContext::uninitialize()
 {
-    if (m_isInitialized) {    
+    if ( m_isInitialized )
+    {
         // This stops the audio thread and all audio rendering.
         m_destinationNode->uninitialize();
 
@@ -178,17 +186,20 @@ void AudioContext::uninitialize()
 
         // We have to release our reference to the destination node before the context will ever be deleted since the destination node holds a reference to the context.
         m_destinationNode.clear();
-        
+
         // Get rid of the sources which may still be playing.
         derefUnfinishedSourceNodes();
-        
+
         // Because the AudioBuffers are garbage collected, we can't delete them here.
         // Instead, at least release the potentially large amount of allocated memory for the audio data.
         // Note that we do this *after* the context is uninitialized and stops processing audio.
-        for (unsigned i = 0; i < m_allocatedBuffers.size(); ++i)
+        for ( unsigned i = 0; i < m_allocatedBuffers.size(); ++i )
+        {
             m_allocatedBuffers[i]->releaseMemory();
+        }
+
         m_allocatedBuffers.clear();
-    
+
         m_isInitialized = false;
     }
 }
@@ -200,9 +211,11 @@ bool AudioContext::isInitialized() const
 
 bool AudioContext::isRunnable() const
 {
-    if (!isInitialized())
+    if ( !isInitialized() )
+    {
         return false;
-    
+    }
+
     // Check with the HRTF spatialization system to see if it's finished loading.
     return m_hrtfDatabaseLoader->isLoaded();
 }
@@ -213,9 +226,9 @@ void AudioContext::stop()
     uninitialize();
 }
 
-Document* AudioContext::document() const
+Document *AudioContext::document() const
 {
-    ASSERT(m_document);
+    ASSERT( m_document );
     return m_document;
 }
 
@@ -224,142 +237,150 @@ bool AudioContext::hasDocument()
     return m_document;
 }
 
-void AudioContext::refBuffer(PassRefPtr<AudioBuffer> buffer)
+void AudioContext::refBuffer( PassRefPtr<AudioBuffer> buffer )
 {
-    m_allocatedBuffers.append(buffer);
+    m_allocatedBuffers.append( buffer );
 }
 
-PassRefPtr<AudioBuffer> AudioContext::createBuffer(unsigned numberOfChannels, size_t numberOfFrames, double sampleRate)
+PassRefPtr<AudioBuffer> AudioContext::createBuffer( unsigned numberOfChannels, size_t numberOfFrames, double sampleRate )
 {
-    return AudioBuffer::create(numberOfChannels, numberOfFrames, sampleRate);
+    return AudioBuffer::create( numberOfChannels, numberOfFrames, sampleRate );
 }
 
-PassRefPtr<AudioBuffer> AudioContext::createBuffer(ArrayBuffer* arrayBuffer, bool mixToMono)
+PassRefPtr<AudioBuffer> AudioContext::createBuffer( ArrayBuffer *arrayBuffer, bool mixToMono )
 {
-    ASSERT(arrayBuffer);
-    if (!arrayBuffer)
+    ASSERT( arrayBuffer );
+
+    if ( !arrayBuffer )
+    {
         return 0;
-    
-    return AudioBuffer::createFromAudioFileData(arrayBuffer->data(), arrayBuffer->byteLength(), mixToMono, sampleRate());
+    }
+
+    return AudioBuffer::createFromAudioFileData( arrayBuffer->data(), arrayBuffer->byteLength(), mixToMono, sampleRate() );
 }
 
 PassRefPtr<AudioBufferSourceNode> AudioContext::createBufferSource()
 {
-    ASSERT(isMainThread());
+    ASSERT( isMainThread() );
     lazyInitialize();
-    RefPtr<AudioBufferSourceNode> node = AudioBufferSourceNode::create(this, m_destinationNode->sampleRate());
+    RefPtr<AudioBufferSourceNode> node = AudioBufferSourceNode::create( this, m_destinationNode->sampleRate() );
 
-    refNode(node.get()); // context keeps reference until source has finished playing
+    refNode( node.get() ); // context keeps reference until source has finished playing
     return node;
 }
 
-PassRefPtr<JavaScriptAudioNode> AudioContext::createJavaScriptNode(size_t bufferSize)
+PassRefPtr<JavaScriptAudioNode> AudioContext::createJavaScriptNode( size_t bufferSize )
 {
-    ASSERT(isMainThread());
+    ASSERT( isMainThread() );
     lazyInitialize();
-    RefPtr<JavaScriptAudioNode> node = JavaScriptAudioNode::create(this, m_destinationNode->sampleRate(), bufferSize);
+    RefPtr<JavaScriptAudioNode> node = JavaScriptAudioNode::create( this, m_destinationNode->sampleRate(), bufferSize );
 
-    refNode(node.get()); // context keeps reference until we stop making javascript rendering callbacks
+    refNode( node.get() ); // context keeps reference until we stop making javascript rendering callbacks
     return node;
 }
 
 PassRefPtr<LowPass2FilterNode> AudioContext::createLowPass2Filter()
 {
-    ASSERT(isMainThread());
+    ASSERT( isMainThread() );
     lazyInitialize();
-    return LowPass2FilterNode::create(this, m_destinationNode->sampleRate());
+    return LowPass2FilterNode::create( this, m_destinationNode->sampleRate() );
 }
 
 PassRefPtr<HighPass2FilterNode> AudioContext::createHighPass2Filter()
 {
-    ASSERT(isMainThread());
+    ASSERT( isMainThread() );
     lazyInitialize();
-    return HighPass2FilterNode::create(this, m_destinationNode->sampleRate());
+    return HighPass2FilterNode::create( this, m_destinationNode->sampleRate() );
 }
 
 PassRefPtr<AudioPannerNode> AudioContext::createPanner()
 {
-    ASSERT(isMainThread());
+    ASSERT( isMainThread() );
     lazyInitialize();
-    return AudioPannerNode::create(this, m_destinationNode->sampleRate());
+    return AudioPannerNode::create( this, m_destinationNode->sampleRate() );
 }
 
 PassRefPtr<ConvolverNode> AudioContext::createConvolver()
 {
-    ASSERT(isMainThread());
+    ASSERT( isMainThread() );
     lazyInitialize();
-    return ConvolverNode::create(this, m_destinationNode->sampleRate());
+    return ConvolverNode::create( this, m_destinationNode->sampleRate() );
 }
 
 PassRefPtr<RealtimeAnalyserNode> AudioContext::createAnalyser()
 {
-    ASSERT(isMainThread());
+    ASSERT( isMainThread() );
     lazyInitialize();
-    return RealtimeAnalyserNode::create(this, m_destinationNode->sampleRate());
+    return RealtimeAnalyserNode::create( this, m_destinationNode->sampleRate() );
 }
 
 PassRefPtr<AudioGainNode> AudioContext::createGainNode()
 {
-    ASSERT(isMainThread());
+    ASSERT( isMainThread() );
     lazyInitialize();
-    return AudioGainNode::create(this, m_destinationNode->sampleRate());
+    return AudioGainNode::create( this, m_destinationNode->sampleRate() );
 }
 
 PassRefPtr<DelayNode> AudioContext::createDelayNode()
 {
-    ASSERT(isMainThread());
+    ASSERT( isMainThread() );
     lazyInitialize();
-    return DelayNode::create(this, m_destinationNode->sampleRate());
+    return DelayNode::create( this, m_destinationNode->sampleRate() );
 }
 
 PassRefPtr<AudioChannelSplitter> AudioContext::createChannelSplitter()
 {
-    ASSERT(isMainThread());
+    ASSERT( isMainThread() );
     lazyInitialize();
-    return AudioChannelSplitter::create(this, m_destinationNode->sampleRate());
+    return AudioChannelSplitter::create( this, m_destinationNode->sampleRate() );
 }
 
 PassRefPtr<AudioChannelMerger> AudioContext::createChannelMerger()
 {
-    ASSERT(isMainThread());
+    ASSERT( isMainThread() );
     lazyInitialize();
-    return AudioChannelMerger::create(this, m_destinationNode->sampleRate());
+    return AudioChannelMerger::create( this, m_destinationNode->sampleRate() );
 }
 
-void AudioContext::notifyNodeFinishedProcessing(AudioNode* node)
+void AudioContext::notifyNodeFinishedProcessing( AudioNode *node )
 {
-    ASSERT(isAudioThread());
-    m_finishedNodes.append(node);
+    ASSERT( isAudioThread() );
+    m_finishedNodes.append( node );
 }
 
 void AudioContext::derefFinishedSourceNodes()
 {
-    ASSERT(isGraphOwner());
-    ASSERT(isAudioThread() || isAudioThreadFinished());
-    for (unsigned i = 0; i < m_finishedNodes.size(); i++)
-        derefNode(m_finishedNodes[i]);
+    ASSERT( isGraphOwner() );
+    ASSERT( isAudioThread() || isAudioThreadFinished() );
+
+    for ( unsigned i = 0; i < m_finishedNodes.size(); i++ )
+    {
+        derefNode( m_finishedNodes[i] );
+    }
 
     m_finishedNodes.clear();
 }
 
-void AudioContext::refNode(AudioNode* node)
+void AudioContext::refNode( AudioNode *node )
 {
-    ASSERT(isMainThread());
-    AutoLocker locker(this);
-    
-    node->ref(AudioNode::RefTypeConnection);
-    m_referencedNodes.append(node);
+    ASSERT( isMainThread() );
+    AutoLocker locker( this );
+
+    node->ref( AudioNode::RefTypeConnection );
+    m_referencedNodes.append( node );
 }
 
-void AudioContext::derefNode(AudioNode* node)
+void AudioContext::derefNode( AudioNode *node )
 {
-    ASSERT(isGraphOwner());
-    
-    node->deref(AudioNode::RefTypeConnection);
+    ASSERT( isGraphOwner() );
 
-    for (unsigned i = 0; i < m_referencedNodes.size(); ++i) {
-        if (node == m_referencedNodes[i]) {
-            m_referencedNodes.remove(i);
+    node->deref( AudioNode::RefTypeConnection );
+
+    for ( unsigned i = 0; i < m_referencedNodes.size(); ++i )
+    {
+        if ( node == m_referencedNodes[i] )
+        {
+            m_referencedNodes.remove( i );
             break;
         }
     }
@@ -367,24 +388,30 @@ void AudioContext::derefNode(AudioNode* node)
 
 void AudioContext::derefUnfinishedSourceNodes()
 {
-    ASSERT(isMainThread() && isAudioThreadFinished());
-    for (unsigned i = 0; i < m_referencedNodes.size(); ++i)
-        m_referencedNodes[i]->deref(AudioNode::RefTypeConnection);
+    ASSERT( isMainThread() && isAudioThreadFinished() );
+
+    for ( unsigned i = 0; i < m_referencedNodes.size(); ++i )
+    {
+        m_referencedNodes[i]->deref( AudioNode::RefTypeConnection );
+    }
 
     m_referencedNodes.clear();
 }
 
-void AudioContext::lock(bool& mustReleaseLock)
+void AudioContext::lock( bool &mustReleaseLock )
 {
     // Don't allow regular lock in real-time audio thread.
-    ASSERT(isMainThread());
+    ASSERT( isMainThread() );
 
     ThreadIdentifier thisThread = currentThread();
 
-    if (thisThread == m_graphOwnerThread) {
+    if ( thisThread == m_graphOwnerThread )
+    {
         // We already have the lock.
         mustReleaseLock = false;
-    } else {
+    }
+    else
+    {
         // Acquire the lock.
         m_contextGraphMutex.lock();
         m_graphOwnerThread = thisThread;
@@ -392,42 +419,48 @@ void AudioContext::lock(bool& mustReleaseLock)
     }
 }
 
-bool AudioContext::tryLock(bool& mustReleaseLock)
+bool AudioContext::tryLock( bool &mustReleaseLock )
 {
     ThreadIdentifier thisThread = currentThread();
     bool isAudioThread = thisThread == audioThread();
 
     // Try to catch cases of using try lock on main thread - it should use regular lock.
-    ASSERT(isAudioThread || isAudioThreadFinished());
-    
-    if (!isAudioThread) {
+    ASSERT( isAudioThread || isAudioThreadFinished() );
+
+    if ( !isAudioThread )
+    {
         // In release build treat tryLock() as lock() (since above ASSERT(isAudioThread) never fires) - this is the best we can do.
-        lock(mustReleaseLock);
+        lock( mustReleaseLock );
         return true;
     }
-    
+
     bool hasLock;
-    
-    if (thisThread == m_graphOwnerThread) {
+
+    if ( thisThread == m_graphOwnerThread )
+    {
         // Thread already has the lock.
         hasLock = true;
         mustReleaseLock = false;
-    } else {
+    }
+    else
+    {
         // Don't already have the lock - try to acquire it.
         hasLock = m_contextGraphMutex.tryLock();
-        
-        if (hasLock)
+
+        if ( hasLock )
+        {
             m_graphOwnerThread = thisThread;
+        }
 
         mustReleaseLock = hasLock;
     }
-    
+
     return hasLock;
 }
 
 void AudioContext::unlock()
 {
-    ASSERT(currentThread() == m_graphOwnerThread);
+    ASSERT( currentThread() == m_graphOwnerThread );
 
     m_graphOwnerThread = UndefinedThreadIdentifier;
     m_contextGraphMutex.unlock();
@@ -443,38 +476,44 @@ bool AudioContext::isGraphOwner() const
     return currentThread() == m_graphOwnerThread;
 }
 
-void AudioContext::addDeferredFinishDeref(AudioNode* node, AudioNode::RefType refType)
+void AudioContext::addDeferredFinishDeref( AudioNode *node, AudioNode::RefType refType )
 {
-    ASSERT(isAudioThread());
-    m_deferredFinishDerefList.append(AudioContext::RefInfo(node, refType));
+    ASSERT( isAudioThread() );
+    m_deferredFinishDerefList.append( AudioContext::RefInfo( node, refType ) );
 }
 
 void AudioContext::handlePreRenderTasks()
 {
-    ASSERT(isAudioThread());
- 
+    ASSERT( isAudioThread() );
+
     // At the beginning of every render quantum, try to update the internal rendering graph state (from main thread changes).
     // It's OK if the tryLock() fails, we'll just take slightly longer to pick up the changes.
     bool mustReleaseLock;
-    if (tryLock(mustReleaseLock)) {
+
+    if ( tryLock( mustReleaseLock ) )
+    {
         // Fixup the state of any dirty AudioNodeInputs and AudioNodeOutputs.
         handleDirtyAudioNodeInputs();
         handleDirtyAudioNodeOutputs();
-        
-        if (mustReleaseLock)
+
+        if ( mustReleaseLock )
+        {
             unlock();
+        }
     }
 }
 
 void AudioContext::handlePostRenderTasks()
 {
-    ASSERT(isAudioThread());
- 
+    ASSERT( isAudioThread() );
+
     // Must use a tryLock() here too.  Don't worry, the lock will very rarely be contended and this method is called frequently.
     // The worst that can happen is that there will be some nodes which will take slightly longer than usual to be deleted or removed
     // from the render graph (in which case they'll render silence).
     bool mustReleaseLock;
-    if (tryLock(mustReleaseLock)) {
+
+    if ( tryLock( mustReleaseLock ) )
+    {
         // Take care of finishing any derefs where the tryLock() failed previously.
         handleDeferredFinishDerefs();
 
@@ -487,97 +526,115 @@ void AudioContext::handlePostRenderTasks()
         // Fixup the state of any dirty AudioNodeInputs and AudioNodeOutputs.
         handleDirtyAudioNodeInputs();
         handleDirtyAudioNodeOutputs();
-        
-        if (mustReleaseLock)
+
+        if ( mustReleaseLock )
+        {
             unlock();
+        }
     }
 }
 
 void AudioContext::handleDeferredFinishDerefs()
 {
-    ASSERT(isAudioThread() && isGraphOwner());
-    for (unsigned i = 0; i < m_deferredFinishDerefList.size(); ++i) {
-        AudioNode* node = m_deferredFinishDerefList[i].m_node;
+    ASSERT( isAudioThread() && isGraphOwner() );
+
+    for ( unsigned i = 0; i < m_deferredFinishDerefList.size(); ++i )
+    {
+        AudioNode *node = m_deferredFinishDerefList[i].m_node;
         AudioNode::RefType refType = m_deferredFinishDerefList[i].m_refType;
-        node->finishDeref(refType);
+        node->finishDeref( refType );
     }
-    
+
     m_deferredFinishDerefList.clear();
 }
 
-void AudioContext::markForDeletion(AudioNode* node)
+void AudioContext::markForDeletion( AudioNode *node )
 {
-    ASSERT(isGraphOwner());
-    m_nodesToDelete.append(node);
+    ASSERT( isGraphOwner() );
+    m_nodesToDelete.append( node );
 }
 
 void AudioContext::deleteMarkedNodes()
 {
-    ASSERT(isGraphOwner() || isAudioThreadFinished());
+    ASSERT( isGraphOwner() || isAudioThreadFinished() );
 
     // Note: deleting an AudioNode can cause m_nodesToDelete to grow.
     size_t nodesDeleted = 0;
-    while (size_t n = m_nodesToDelete.size()) {
-        AudioNode* node = m_nodesToDelete[n - 1];
+
+    while ( size_t n = m_nodesToDelete.size() )
+    {
+        AudioNode *node = m_nodesToDelete[n - 1];
         m_nodesToDelete.removeLast();
 
         // Before deleting the node, clear out any AudioNodeInputs from m_dirtyAudioNodeInputs.
         unsigned numberOfInputs = node->numberOfInputs();
-        for (unsigned i = 0; i < numberOfInputs; ++i)
-            m_dirtyAudioNodeInputs.remove(node->input(i));
+
+        for ( unsigned i = 0; i < numberOfInputs; ++i )
+        {
+            m_dirtyAudioNodeInputs.remove( node->input( i ) );
+        }
 
         // Before deleting the node, clear out any AudioNodeOutputs from m_dirtyAudioNodeOutputs.
         unsigned numberOfOutputs = node->numberOfOutputs();
-        for (unsigned i = 0; i < numberOfOutputs; ++i)
-            m_dirtyAudioNodeOutputs.remove(node->output(i));
+
+        for ( unsigned i = 0; i < numberOfOutputs; ++i )
+        {
+            m_dirtyAudioNodeOutputs.remove( node->output( i ) );
+        }
 
         // Finally, delete it.
         delete node;
 
         // Don't delete too many nodes per render quantum since we don't want to do too much work in the realtime audio thread.
-        if (++nodesDeleted > MaxNodesToDeletePerQuantum)
+        if ( ++nodesDeleted > MaxNodesToDeletePerQuantum )
+        {
             break;
+        }
     }
 }
 
-void AudioContext::markAudioNodeInputDirty(AudioNodeInput* input)
+void AudioContext::markAudioNodeInputDirty( AudioNodeInput *input )
 {
-    ASSERT(isGraphOwner());    
-    m_dirtyAudioNodeInputs.add(input);
+    ASSERT( isGraphOwner() );
+    m_dirtyAudioNodeInputs.add( input );
 }
 
-void AudioContext::markAudioNodeOutputDirty(AudioNodeOutput* output)
+void AudioContext::markAudioNodeOutputDirty( AudioNodeOutput *output )
 {
-    ASSERT(isGraphOwner());    
-    m_dirtyAudioNodeOutputs.add(output);
+    ASSERT( isGraphOwner() );
+    m_dirtyAudioNodeOutputs.add( output );
 }
 
 void AudioContext::handleDirtyAudioNodeInputs()
 {
-    ASSERT(isGraphOwner());    
+    ASSERT( isGraphOwner() );
 
-    for (HashSet<AudioNodeInput*>::iterator i = m_dirtyAudioNodeInputs.begin(); i != m_dirtyAudioNodeInputs.end(); ++i)
-        (*i)->updateRenderingState();
+    for ( HashSet<AudioNodeInput *>::iterator i = m_dirtyAudioNodeInputs.begin(); i != m_dirtyAudioNodeInputs.end(); ++i )
+    {
+        ( *i )->updateRenderingState();
+    }
 
     m_dirtyAudioNodeInputs.clear();
 }
 
 void AudioContext::handleDirtyAudioNodeOutputs()
 {
-    ASSERT(isGraphOwner());    
+    ASSERT( isGraphOwner() );
 
-    for (HashSet<AudioNodeOutput*>::iterator i = m_dirtyAudioNodeOutputs.begin(); i != m_dirtyAudioNodeOutputs.end(); ++i)
-        (*i)->updateRenderingState();
+    for ( HashSet<AudioNodeOutput *>::iterator i = m_dirtyAudioNodeOutputs.begin(); i != m_dirtyAudioNodeOutputs.end(); ++i )
+    {
+        ( *i )->updateRenderingState();
+    }
 
     m_dirtyAudioNodeOutputs.clear();
 }
 
-ScriptExecutionContext* AudioContext::scriptExecutionContext() const
+ScriptExecutionContext *AudioContext::scriptExecutionContext() const
 {
     return document();
 }
 
-AudioContext* AudioContext::toAudioContext()
+AudioContext *AudioContext::toAudioContext()
 {
     return this;
 }
@@ -589,20 +646,27 @@ void AudioContext::startRendering()
 
 void AudioContext::fireCompletionEvent()
 {
-    ASSERT(isMainThread());
-    if (!isMainThread())
-        return;
-        
-    AudioBuffer* renderedBuffer = m_renderTarget.get();
+    ASSERT( isMainThread() );
 
-    ASSERT(renderedBuffer);
-    if (!renderedBuffer)
+    if ( !isMainThread() )
+    {
         return;
+    }
+
+    AudioBuffer *renderedBuffer = m_renderTarget.get();
+
+    ASSERT( renderedBuffer );
+
+    if ( !renderedBuffer )
+    {
+        return;
+    }
 
     // Avoid firing the event if the document has already gone away.
-    if (hasDocument()) {
+    if ( hasDocument() )
+    {
         // Call the offline rendering completion event listener.
-        dispatchEvent(OfflineAudioCompletionEvent::create(renderedBuffer));
+        dispatchEvent( OfflineAudioCompletionEvent::create( renderedBuffer ) );
     }
 }
 

@@ -24,40 +24,68 @@
 #include "CSSPrimitiveValue.h"
 #include "PlatformString.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 String FontValue::cssText() const
 {
-    // font variant weight size / line-height family 
+    // font variant weight size / line-height family
 
-    String result("");
+    String result( "" );
 
-    if (style)
+    if ( style )
+    {
         result += style->cssText();
-    if (variant) {
-        if (!result.isEmpty())
+    }
+
+    if ( variant )
+    {
+        if ( !result.isEmpty() )
+        {
             result += " ";
+        }
+
         result += variant->cssText();
     }
-    if (weight) {
-        if (!result.isEmpty())
+
+    if ( weight )
+    {
+        if ( !result.isEmpty() )
+        {
             result += " ";
+        }
+
         result += weight->cssText();
     }
-    if (size) {
-        if (!result.isEmpty())
+
+    if ( size )
+    {
+        if ( !result.isEmpty() )
+        {
             result += " ";
+        }
+
         result += size->cssText();
     }
-    if (lineHeight) {
-        if (!size)
+
+    if ( lineHeight )
+    {
+        if ( !size )
+        {
             result += " ";
+        }
+
         result += "/";
         result += lineHeight->cssText();
     }
-    if (family) {
-        if (!result.isEmpty())
+
+    if ( family )
+    {
+        if ( !result.isEmpty() )
+        {
             result += " ";
+        }
+
         result += family->cssText();
     }
 

@@ -37,23 +37,26 @@
 #include "ScriptExecutionContext.h"
 #include "SerializedScriptValue.h"
 
-namespace WebCore {
-
-PassRefPtr<IDBCursor> IDBCursor::create(PassRefPtr<IDBCursorBackendInterface> backend, IDBRequest* request, IDBAny* source, IDBTransaction* transaction)
+namespace WebCore
 {
-    return adoptRef(new IDBCursor(backend, request, source, transaction));
+
+PassRefPtr<IDBCursor> IDBCursor::create( PassRefPtr<IDBCursorBackendInterface> backend, IDBRequest *request, IDBAny *source,
+        IDBTransaction *transaction )
+{
+    return adoptRef( new IDBCursor( backend, request, source, transaction ) );
 }
 
-IDBCursor::IDBCursor(PassRefPtr<IDBCursorBackendInterface> backend, IDBRequest* request, IDBAny* source, IDBTransaction* transaction)
-    : m_backend(backend)
-    , m_request(request)
-    , m_source(source)
-    , m_transaction(transaction)
+IDBCursor::IDBCursor( PassRefPtr<IDBCursorBackendInterface> backend, IDBRequest *request, IDBAny *source,
+                      IDBTransaction *transaction )
+    : m_backend( backend )
+    , m_request( request )
+    , m_source( source )
+    , m_transaction( transaction )
 {
-    ASSERT(m_backend);
-    ASSERT(m_request);
-    ASSERT(m_source->type() == IDBAny::IDBObjectStoreType || m_source->type() == IDBAny::IDBIndexType);
-    ASSERT(m_transaction);
+    ASSERT( m_backend );
+    ASSERT( m_request );
+    ASSERT( m_source->type() == IDBAny::IDBObjectStoreType || m_source->type() == IDBAny::IDBIndexType );
+    ASSERT( m_transaction );
 }
 
 IDBCursor::~IDBCursor()
@@ -80,40 +83,51 @@ PassRefPtr<SerializedScriptValue> IDBCursor::value() const
     return m_backend->value();
 }
 
-IDBAny* IDBCursor::source() const
+IDBAny *IDBCursor::source() const
 {
     return m_source.get();
 }
 
-PassRefPtr<IDBRequest> IDBCursor::update(ScriptExecutionContext* context, PassRefPtr<SerializedScriptValue> value, ExceptionCode& ec)
+PassRefPtr<IDBRequest> IDBCursor::update( ScriptExecutionContext *context, PassRefPtr<SerializedScriptValue> value,
+        ExceptionCode &ec )
 {
-    RefPtr<IDBRequest> request = IDBRequest::create(context, IDBAny::create(this), m_transaction.get());
-    m_backend->update(value, request, ec);
-    if (ec) {
+    RefPtr<IDBRequest> request = IDBRequest::create( context, IDBAny::create( this ), m_transaction.get() );
+    m_backend->update( value, request, ec );
+
+    if ( ec )
+    {
         request->markEarlyDeath();
         return 0;
     }
+
     return request.release();
 }
 
-void IDBCursor::continueFunction(PassRefPtr<IDBKey> key, ExceptionCode& ec)
+void IDBCursor::continueFunction( PassRefPtr<IDBKey> key, ExceptionCode &ec )
 {
     // FIXME: We're not using the context from when continue was called, which means the callback
     //        will be on the original context openCursor was called on. Is this right?
-    if (m_request->resetReadyState(m_transaction.get()))
-        m_backend->continueFunction(key, m_request, ec);
+    if ( m_request->resetReadyState( m_transaction.get() ) )
+    {
+        m_backend->continueFunction( key, m_request, ec );
+    }
     else
+    {
         ec = IDBDatabaseException::NOT_ALLOWED_ERR;
+    }
 }
 
-PassRefPtr<IDBRequest> IDBCursor::deleteFunction(ScriptExecutionContext* context, ExceptionCode& ec)
+PassRefPtr<IDBRequest> IDBCursor::deleteFunction( ScriptExecutionContext *context, ExceptionCode &ec )
 {
-    RefPtr<IDBRequest> request = IDBRequest::create(context, IDBAny::create(this), m_transaction.get());
-    m_backend->deleteFunction(request, ec);
-    if (ec) {
+    RefPtr<IDBRequest> request = IDBRequest::create( context, IDBAny::create( this ), m_transaction.get() );
+    m_backend->deleteFunction( request, ec );
+
+    if ( ec )
+    {
         request->markEarlyDeath();
         return 0;
     }
+
     return request.release();
 }
 

@@ -26,36 +26,62 @@
 #include "PathTraversalState.h"
 #include "SVGPathConsumer.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SVGPathTraversalStateBuilder : public SVGPathConsumer {
+class SVGPathTraversalStateBuilder : public SVGPathConsumer
+{
 public:
     SVGPathTraversalStateBuilder();
 
     unsigned long pathSegmentIndex();
-    void setCurrentTraversalState(PathTraversalState* traversalState) { m_traversalState = traversalState; }
-    void setDesiredLength(float);
+    void setCurrentTraversalState( PathTraversalState *traversalState )
+    {
+        m_traversalState = traversalState;
+    }
+    void setDesiredLength( float );
     virtual void incrementPathSegmentCount();
     virtual bool continueConsuming();
-    virtual void cleanup() { m_traversalState = 0; }
+    virtual void cleanup()
+    {
+        m_traversalState = 0;
+    }
 
 private:
     // Used in UnalteredParisng/NormalizedParsing modes.
-    virtual void moveTo(const FloatPoint&, bool closed, PathCoordinateMode);
-    virtual void lineTo(const FloatPoint&, PathCoordinateMode);
-    virtual void curveToCubic(const FloatPoint&, const FloatPoint&, const FloatPoint&, PathCoordinateMode);
+    virtual void moveTo( const FloatPoint &, bool closed, PathCoordinateMode );
+    virtual void lineTo( const FloatPoint &, PathCoordinateMode );
+    virtual void curveToCubic( const FloatPoint &, const FloatPoint &, const FloatPoint &, PathCoordinateMode );
     virtual void closePath();
 
 private:
     // Not used for PathTraversalState.
-    virtual void lineToHorizontal(float, PathCoordinateMode) { ASSERT_NOT_REACHED(); }
-    virtual void lineToVertical(float, PathCoordinateMode) { ASSERT_NOT_REACHED(); }
-    virtual void curveToCubicSmooth(const FloatPoint&, const FloatPoint&, PathCoordinateMode) { ASSERT_NOT_REACHED(); }
-    virtual void curveToQuadratic(const FloatPoint&, const FloatPoint&, PathCoordinateMode) { ASSERT_NOT_REACHED(); }
-    virtual void curveToQuadraticSmooth(const FloatPoint&, PathCoordinateMode) { ASSERT_NOT_REACHED(); }
-    virtual void arcTo(float, float, float, bool, bool, const FloatPoint&, PathCoordinateMode) { ASSERT_NOT_REACHED(); }
+    virtual void lineToHorizontal( float, PathCoordinateMode )
+    {
+        ASSERT_NOT_REACHED();
+    }
+    virtual void lineToVertical( float, PathCoordinateMode )
+    {
+        ASSERT_NOT_REACHED();
+    }
+    virtual void curveToCubicSmooth( const FloatPoint &, const FloatPoint &, PathCoordinateMode )
+    {
+        ASSERT_NOT_REACHED();
+    }
+    virtual void curveToQuadratic( const FloatPoint &, const FloatPoint &, PathCoordinateMode )
+    {
+        ASSERT_NOT_REACHED();
+    }
+    virtual void curveToQuadraticSmooth( const FloatPoint &, PathCoordinateMode )
+    {
+        ASSERT_NOT_REACHED();
+    }
+    virtual void arcTo( float, float, float, bool, bool, const FloatPoint &, PathCoordinateMode )
+    {
+        ASSERT_NOT_REACHED();
+    }
 
-    PathTraversalState* m_traversalState;
+    PathTraversalState *m_traversalState;
     float m_desiredLength;
 };
 

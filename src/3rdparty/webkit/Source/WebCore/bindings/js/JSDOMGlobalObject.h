@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
 
@@ -29,77 +29,98 @@
 
 #include <runtime/JSGlobalObject.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class Document;
-    class Event;
-    class DOMWrapperWorld;
-    class JSLazyEventListener;
-    class JSEventListener;
-    class ScriptExecutionContext;
+class Document;
+class Event;
+class DOMWrapperWorld;
+class JSLazyEventListener;
+class JSEventListener;
+class ScriptExecutionContext;
 
-    typedef HashMap<const JSC::ClassInfo*, JSC::WriteBarrier<JSC::Structure> > JSDOMStructureMap;
-    typedef HashMap<const JSC::ClassInfo*, JSC::WriteBarrier<JSC::JSObject> > JSDOMConstructorMap;
+typedef HashMap<const JSC::ClassInfo *, JSC::WriteBarrier<JSC::Structure> > JSDOMStructureMap;
+typedef HashMap<const JSC::ClassInfo *, JSC::WriteBarrier<JSC::JSObject> > JSDOMConstructorMap;
 
-    class JSDOMGlobalObject : public JSC::JSGlobalObject {
-        typedef JSC::JSGlobalObject Base;
-    protected:
-        struct JSDOMGlobalObjectData;
+class JSDOMGlobalObject : public JSC::JSGlobalObject
+{
+    typedef JSC::JSGlobalObject Base;
+protected:
+    struct JSDOMGlobalObjectData;
 
-        JSDOMGlobalObject(JSC::JSGlobalData&, JSC::Structure*, PassRefPtr<DOMWrapperWorld>, JSC::JSObject* thisValue);
+    JSDOMGlobalObject( JSC::JSGlobalData &, JSC::Structure *, PassRefPtr<DOMWrapperWorld>, JSC::JSObject *thisValue );
 
-    public:
-        JSDOMStructureMap& structures() { return m_structures; }
-        JSDOMConstructorMap& constructors() { return m_constructors; }
-
-        virtual ScriptExecutionContext* scriptExecutionContext() const = 0;
-
-        // Make binding code generation easier.
-        JSDOMGlobalObject* globalObject() { return this; }
-
-        void setCurrentEvent(Event*);
-        Event* currentEvent() const;
-
-        void setInjectedScript(JSObject*);
-        JSObject* injectedScript() const;
-
-        virtual void visitChildren(JSC::SlotVisitor&);
-
-        DOMWrapperWorld* world() { return m_world.get(); }
-
-        static const JSC::ClassInfo s_info;
-
-        static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
-        {
-            return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
-        }
-
-    protected:
-        JSDOMStructureMap m_structures;
-        JSDOMConstructorMap m_constructors;
-
-        Event* m_currentEvent;
-        RefPtr<DOMWrapperWorld> m_world;
-        JSC::WriteBarrier<JSObject> m_injectedScript;
-    };
-
-    template<class ConstructorClass>
-    inline JSC::JSObject* getDOMConstructor(JSC::ExecState* exec, const JSDOMGlobalObject* globalObject)
+public:
+    JSDOMStructureMap &structures()
     {
-        if (JSC::JSObject* constructor = const_cast<JSDOMGlobalObject*>(globalObject)->constructors().get(&ConstructorClass::s_info).get())
-            return constructor;
-        JSC::JSObject* constructor = new (exec) ConstructorClass(exec, ConstructorClass::createStructure(exec->globalData(), globalObject->objectPrototype()), const_cast<JSDOMGlobalObject*>(globalObject));
-        ASSERT(!const_cast<JSDOMGlobalObject*>(globalObject)->constructors().contains(&ConstructorClass::s_info));
-        JSC::WriteBarrier<JSC::JSObject> temp;
-        const_cast<JSDOMGlobalObject*>(globalObject)->constructors().add(&ConstructorClass::s_info, temp).first->second.set(exec->globalData(), globalObject, constructor);
+        return m_structures;
+    }
+    JSDOMConstructorMap &constructors()
+    {
+        return m_constructors;
+    }
+
+    virtual ScriptExecutionContext *scriptExecutionContext() const = 0;
+
+    // Make binding code generation easier.
+    JSDOMGlobalObject *globalObject()
+    {
+        return this;
+    }
+
+    void setCurrentEvent( Event * );
+    Event *currentEvent() const;
+
+    void setInjectedScript( JSObject * );
+    JSObject *injectedScript() const;
+
+    virtual void visitChildren( JSC::SlotVisitor & );
+
+    DOMWrapperWorld *world()
+    {
+        return m_world.get();
+    }
+
+    static const JSC::ClassInfo s_info;
+
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
+    {
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
+    }
+
+protected:
+    JSDOMStructureMap m_structures;
+    JSDOMConstructorMap m_constructors;
+
+    Event *m_currentEvent;
+    RefPtr<DOMWrapperWorld> m_world;
+    JSC::WriteBarrier<JSObject> m_injectedScript;
+};
+
+template<class ConstructorClass>
+inline JSC::JSObject *getDOMConstructor( JSC::ExecState *exec, const JSDOMGlobalObject *globalObject )
+{
+    if ( JSC::JSObject *constructor = const_cast<JSDOMGlobalObject *>( globalObject )->constructors().get(
+                                          &ConstructorClass::s_info ).get() )
+    {
         return constructor;
     }
 
-    JSDOMGlobalObject* toJSDOMGlobalObject(Document*, JSC::ExecState*);
-    JSDOMGlobalObject* toJSDOMGlobalObject(ScriptExecutionContext*, JSC::ExecState*);
+    JSC::JSObject *constructor = new ( exec ) ConstructorClass( exec, ConstructorClass::createStructure( exec->globalData(),
+            globalObject->objectPrototype() ), const_cast<JSDOMGlobalObject *>( globalObject ) );
+    ASSERT( !const_cast<JSDOMGlobalObject *>( globalObject )->constructors().contains( &ConstructorClass::s_info ) );
+    JSC::WriteBarrier<JSC::JSObject> temp;
+    const_cast<JSDOMGlobalObject *>( globalObject )->constructors().add( &ConstructorClass::s_info,
+            temp ).first->second.set( exec->globalData(), globalObject, constructor );
+    return constructor;
+}
 
-    JSDOMGlobalObject* toJSDOMGlobalObject(Document*, DOMWrapperWorld*);
-    JSDOMGlobalObject* toJSDOMGlobalObject(ScriptExecutionContext*, DOMWrapperWorld*);
+JSDOMGlobalObject *toJSDOMGlobalObject( Document *, JSC::ExecState * );
+JSDOMGlobalObject *toJSDOMGlobalObject( ScriptExecutionContext *, JSC::ExecState * );
+
+JSDOMGlobalObject *toJSDOMGlobalObject( Document *, DOMWrapperWorld * );
+JSDOMGlobalObject *toJSDOMGlobalObject( ScriptExecutionContext *, DOMWrapperWorld * );
 
 } // namespace WebCore
 

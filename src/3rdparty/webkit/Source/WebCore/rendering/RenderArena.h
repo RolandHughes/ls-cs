@@ -39,19 +39,22 @@
 #include <wtf/FastAllocBase.h>
 #include <wtf/Noncopyable.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 static const size_t gMaxRecycledSize = 400;
 
-class RenderArena {
-    WTF_MAKE_NONCOPYABLE(RenderArena); WTF_MAKE_FAST_ALLOCATED;
+class RenderArena
+{
+    WTF_MAKE_NONCOPYABLE( RenderArena );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
-    RenderArena(unsigned arenaSize = 4096);
+    RenderArena( unsigned arenaSize = 4096 );
     ~RenderArena();
 
     // Memory management functions
-    void* allocate(size_t);
-    void free(size_t, void*);
+    void *allocate( size_t );
+    void free( size_t, void * );
 
 private:
     // Underlying arena pool
@@ -59,7 +62,7 @@ private:
 
     // The recycler array is sparse with the indices being multiples of 4,
     // i.e., 0, 4, 8, 12, 16, 20, ...
-    void* m_recyclers[gMaxRecycledSize >> 2];
+    void *m_recyclers[gMaxRecycledSize >> 2];
 };
 
 } // namespace WebCore

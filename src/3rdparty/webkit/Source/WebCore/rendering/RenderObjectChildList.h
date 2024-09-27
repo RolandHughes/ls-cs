@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef RenderObjectChildList_h
@@ -29,39 +29,53 @@
 #include "RenderStyleConstants.h"
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class RenderObject;
 
-class RenderObjectChildList {
+class RenderObjectChildList
+{
 public:
     RenderObjectChildList()
-        : m_firstChild(0)
-        , m_lastChild(0)
+        : m_firstChild( 0 )
+        , m_lastChild( 0 )
     {
     }
 
-    RenderObject* firstChild() const { return m_firstChild; }
-    RenderObject* lastChild() const { return m_lastChild; }
-    
+    RenderObject *firstChild() const
+    {
+        return m_firstChild;
+    }
+    RenderObject *lastChild() const
+    {
+        return m_lastChild;
+    }
+
     // FIXME: Temporary while RenderBox still exists. Eventually this will just happen during insert/append/remove methods on the child list, and nobody
     // will need to manipulate firstChild or lastChild directly.
-    void setFirstChild(RenderObject* child) { m_firstChild = child; }
-    void setLastChild(RenderObject* child) { m_lastChild = child; }
-    
+    void setFirstChild( RenderObject *child )
+    {
+        m_firstChild = child;
+    }
+    void setLastChild( RenderObject *child )
+    {
+        m_lastChild = child;
+    }
+
     void destroyLeftoverChildren();
 
-    RenderObject* removeChildNode(RenderObject* owner, RenderObject*, bool fullRemove = true);
-    void appendChildNode(RenderObject* owner, RenderObject*, bool fullAppend = true);
-    void insertChildNode(RenderObject* owner, RenderObject* child, RenderObject* before, bool fullInsert = true);
+    RenderObject *removeChildNode( RenderObject *owner, RenderObject *, bool fullRemove = true );
+    void appendChildNode( RenderObject *owner, RenderObject *, bool fullAppend = true );
+    void insertChildNode( RenderObject *owner, RenderObject *child, RenderObject *before, bool fullInsert = true );
 
-    void updateBeforeAfterContent(RenderObject* owner, PseudoId type, const RenderObject* styledObject = 0);
-    RenderObject* beforePseudoElementRenderer(const RenderObject* owner) const;
-    RenderObject* afterPseudoElementRenderer(const RenderObject* owner) const;
+    void updateBeforeAfterContent( RenderObject *owner, PseudoId type, const RenderObject *styledObject = 0 );
+    RenderObject *beforePseudoElementRenderer( const RenderObject *owner ) const;
+    RenderObject *afterPseudoElementRenderer( const RenderObject *owner ) const;
 
 private:
-    RenderObject* m_firstChild;
-    RenderObject* m_lastChild;
+    RenderObject *m_firstChild;
+    RenderObject *m_lastChild;
 };
 
 } // namespace WebCore

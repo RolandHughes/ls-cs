@@ -36,220 +36,227 @@ class QNetworkProxy;
 
 class Q_NETWORK_EXPORT QAbstractSocket : public QIODevice
 {
-   NET_CS_OBJECT(QAbstractSocket)
+    NET_CS_OBJECT( QAbstractSocket )
 
-   NET_CS_ENUM(SocketType)
-   NET_CS_ENUM(NetworkLayerProtocol)
-   NET_CS_ENUM(SocketError)
-   NET_CS_ENUM(SocketState)
-   NET_CS_ENUM(SocketOption)
+    NET_CS_ENUM( SocketType )
+    NET_CS_ENUM( NetworkLayerProtocol )
+    NET_CS_ENUM( SocketError )
+    NET_CS_ENUM( SocketState )
+    NET_CS_ENUM( SocketOption )
 
- public:
-   enum SocketType {
-      TcpSocket,
-      UdpSocket,
-      UnknownSocketType = -1
-   };
+public:
+    enum SocketType
+    {
+        TcpSocket,
+        UdpSocket,
+        UnknownSocketType = -1
+    };
 
-   enum NetworkLayerProtocol {
-      IPv4Protocol,
-      IPv6Protocol,
-      AnyIPProtocol,
-      UnknownNetworkLayerProtocol = -1
-   };
+    enum NetworkLayerProtocol
+    {
+        IPv4Protocol,
+        IPv6Protocol,
+        AnyIPProtocol,
+        UnknownNetworkLayerProtocol = -1
+    };
 
-   enum SocketError {
-      ConnectionRefusedError,
-      RemoteHostClosedError,
-      HostNotFoundError,
-      SocketAccessError,
-      SocketResourceError,
-      SocketTimeoutError,                     /* 5 */
-      DatagramTooLargeError,
-      NetworkError,
-      AddressInUseError,
-      SocketAddressNotAvailableError,
-      UnsupportedSocketOperationError,        /* 10 */
-      UnfinishedSocketOperationError,
-      ProxyAuthenticationRequiredError,
-      SslHandshakeFailedError,
-      ProxyConnectionRefusedError,
-      ProxyConnectionClosedError,             /* 15 */
-      ProxyConnectionTimeoutError,
-      ProxyNotFoundError,
-      ProxyProtocolError,
-      OperationError,
-      SslInternalError,                       /* 20 */
-      SslInvalidUserDataError,
-      TemporaryError,
+    enum SocketError
+    {
+        ConnectionRefusedError,
+        RemoteHostClosedError,
+        HostNotFoundError,
+        SocketAccessError,
+        SocketResourceError,
+        SocketTimeoutError,                     /* 5 */
+        DatagramTooLargeError,
+        NetworkError,
+        AddressInUseError,
+        SocketAddressNotAvailableError,
+        UnsupportedSocketOperationError,        /* 10 */
+        UnfinishedSocketOperationError,
+        ProxyAuthenticationRequiredError,
+        SslHandshakeFailedError,
+        ProxyConnectionRefusedError,
+        ProxyConnectionClosedError,             /* 15 */
+        ProxyConnectionTimeoutError,
+        ProxyNotFoundError,
+        ProxyProtocolError,
+        OperationError,
+        SslInternalError,                       /* 20 */
+        SslInvalidUserDataError,
+        TemporaryError,
 
-      UnknownSocketError = -1
-   };
+        UnknownSocketError = -1
+    };
 
-   enum SocketState {
-      UnconnectedState,
-      HostLookupState,
-      ConnectingState,
-      ConnectedState,
-      BoundState,
-      ListeningState,
-      ClosingState
-   };
+    enum SocketState
+    {
+        UnconnectedState,
+        HostLookupState,
+        ConnectingState,
+        ConnectedState,
+        BoundState,
+        ListeningState,
+        ClosingState
+    };
 
-   enum SocketOption {
-      LowDelayOption, // TCP_NODELAY
-      KeepAliveOption, // SO_KEEPALIVE
-      MulticastTtlOption, // IP_MULTICAST_TTL
-      MulticastLoopbackOption, // IP_MULTICAST_LOOPBACK
-      TypeOfServiceOption, //IP_TOS
-      SendBufferSizeSocketOption,    //SO_SNDBUF
-      ReceiveBufferSizeSocketOption  //SO_RCVBUF
-   };
+    enum SocketOption
+    {
+        LowDelayOption, // TCP_NODELAY
+        KeepAliveOption, // SO_KEEPALIVE
+        MulticastTtlOption, // IP_MULTICAST_TTL
+        MulticastLoopbackOption, // IP_MULTICAST_LOOPBACK
+        TypeOfServiceOption, //IP_TOS
+        SendBufferSizeSocketOption,    //SO_SNDBUF
+        ReceiveBufferSizeSocketOption  //SO_RCVBUF
+    };
 
-   enum BindFlag {
-     DefaultForPlatform = 0x0,
-     ShareAddress = 0x1,
-     DontShareAddress = 0x2,
-     ReuseAddressHint = 0x4
-   };
-   using BindMode = QFlags<BindFlag>;
+    enum BindFlag
+    {
+        DefaultForPlatform = 0x0,
+        ShareAddress = 0x1,
+        DontShareAddress = 0x2,
+        ReuseAddressHint = 0x4
+    };
+    using BindMode = QFlags<BindFlag>;
 
-   enum PauseMode {
-       PauseNever = 0x0,
-       PauseOnSslErrors = 0x1
-   };
-   using PauseModes = QFlags<PauseMode>;
+    enum PauseMode
+    {
+        PauseNever = 0x0,
+        PauseOnSslErrors = 0x1
+    };
+    using PauseModes = QFlags<PauseMode>;
 
-   QAbstractSocket(SocketType socketType, QObject *parent);
+    QAbstractSocket( SocketType socketType, QObject *parent );
 
-   QAbstractSocket(const QAbstractSocket &other) = delete;
-   QAbstractSocket &operator=(const QAbstractSocket &other) = delete;
+    QAbstractSocket( const QAbstractSocket &other ) = delete;
+    QAbstractSocket &operator=( const QAbstractSocket &other ) = delete;
 
-   virtual ~QAbstractSocket();
+    virtual ~QAbstractSocket();
 
-   virtual void resume(); // to continue after proxy authentication required, SSL errors etc.
-   PauseModes pauseMode() const;
-   void setPauseMode(PauseModes pauseMode);
+    virtual void resume(); // to continue after proxy authentication required, SSL errors etc.
+    PauseModes pauseMode() const;
+    void setPauseMode( PauseModes pauseMode );
 
-   bool bind(const QHostAddress &address, quint16 port = 0, BindMode mode = DefaultForPlatform);
-   bool bind(quint16 port = 0, BindMode mode = DefaultForPlatform);
+    bool bind( const QHostAddress &address, quint16 port = 0, BindMode mode = DefaultForPlatform );
+    bool bind( quint16 port = 0, BindMode mode = DefaultForPlatform );
 
-   virtual void connectToHost(const QString &hostName, quint16 port, OpenMode openMode = ReadWrite,
-                  NetworkLayerProtocol protocol = AnyIPProtocol);
-   virtual void connectToHost(const QHostAddress &address, quint16 port, OpenMode openMode = ReadWrite);
-   virtual void disconnectFromHost();
+    virtual void connectToHost( const QString &hostName, quint16 port, OpenMode openMode = ReadWrite,
+                                NetworkLayerProtocol protocol = AnyIPProtocol );
+    virtual void connectToHost( const QHostAddress &address, quint16 port, OpenMode openMode = ReadWrite );
+    virtual void disconnectFromHost();
 
-   bool isValid() const;
+    bool isValid() const;
 
-   qint64 bytesAvailable() const override;
-   qint64 bytesToWrite() const override;
+    qint64 bytesAvailable() const override;
+    qint64 bytesToWrite() const override;
 
-   bool canReadLine() const override;
+    bool canReadLine() const override;
 
-   quint16 localPort() const;
-   QHostAddress localAddress() const;
-   quint16 peerPort() const;
-   QHostAddress peerAddress() const;
-   QString peerName() const;
+    quint16 localPort() const;
+    QHostAddress localAddress() const;
+    quint16 peerPort() const;
+    QHostAddress peerAddress() const;
+    QString peerName() const;
 
-   qint64 readBufferSize() const;
-   virtual void setReadBufferSize(qint64 size);
+    qint64 readBufferSize() const;
+    virtual void setReadBufferSize( qint64 size );
 
-   void abort();
+    void abort();
 
-   virtual qintptr socketDescriptor() const;
-   virtual bool setSocketDescriptor(qintptr socketDescriptor, SocketState socketState = ConnectedState,
-                  OpenMode openMode = ReadWrite);
+    virtual qintptr socketDescriptor() const;
+    virtual bool setSocketDescriptor( qintptr socketDescriptor, SocketState socketState = ConnectedState,
+                                      OpenMode openMode = ReadWrite );
 
-   virtual void setSocketOption(QAbstractSocket::SocketOption option, const QVariant &value);
-   virtual QVariant socketOption(QAbstractSocket::SocketOption option);
+    virtual void setSocketOption( QAbstractSocket::SocketOption option, const QVariant &value );
+    virtual QVariant socketOption( QAbstractSocket::SocketOption option );
 
-   SocketType socketType() const;
-   SocketState state() const;
-   SocketError error() const;
+    SocketType socketType() const;
+    SocketState state() const;
+    SocketError error() const;
 
-   // from QIODevice
-   void close() override;
-   bool isSequential() const override;
-   bool atEnd() const override;
-   bool flush();
+    // from QIODevice
+    void close() override;
+    bool isSequential() const override;
+    bool atEnd() const override;
+    bool flush();
 
-   // for synchronous access
-   virtual bool waitForConnected(int msecs = 30000);
-   bool waitForReadyRead(int msecs = 30000) override;
-   bool waitForBytesWritten(int msecs = 30000) override;
-   virtual bool waitForDisconnected(int msecs = 30000);
-
-#ifndef QT_NO_NETWORKPROXY
-   void setProxy(const QNetworkProxy &networkProxy);
-   QNetworkProxy proxy() const;
-#endif
-
-   NET_CS_SIGNAL_1(Public, void hostFound())
-   NET_CS_SIGNAL_2(hostFound)
-
-   NET_CS_SIGNAL_1(Public, void connected())
-   NET_CS_SIGNAL_2(connected)
-
-   NET_CS_SIGNAL_1(Public, void disconnected())
-   NET_CS_SIGNAL_2(disconnected)
-
-   NET_CS_SIGNAL_1(Public, void stateChanged(QAbstractSocket::SocketState socketState))
-   NET_CS_SIGNAL_2(stateChanged, socketState)
-
-   NET_CS_SIGNAL_1(Public, void error(QAbstractSocket::SocketError socketError))
-   NET_CS_SIGNAL_OVERLOAD(error, (QAbstractSocket::SocketError), socketError)
+    // for synchronous access
+    virtual bool waitForConnected( int msecs = 30000 );
+    bool waitForReadyRead( int msecs = 30000 ) override;
+    bool waitForBytesWritten( int msecs = 30000 ) override;
+    virtual bool waitForDisconnected( int msecs = 30000 );
 
 #ifndef QT_NO_NETWORKPROXY
-   NET_CS_SIGNAL_1(Public, void proxyAuthenticationRequired(const QNetworkProxy &proxy, QAuthenticator *authenticator))
-   NET_CS_SIGNAL_2(proxyAuthenticationRequired, proxy, authenticator)
+    void setProxy( const QNetworkProxy &networkProxy );
+    QNetworkProxy proxy() const;
 #endif
 
- protected:
-   qint64 readData(char *data, qint64 maxlen) override;
-   qint64 readLineData(char *data, qint64 maxlen) override;
-   qint64 writeData(const char *data, qint64 len) override;
+    NET_CS_SIGNAL_1( Public, void hostFound() )
+    NET_CS_SIGNAL_2( hostFound )
 
-   void setSocketState(SocketState state);
-   void setSocketError(SocketError socketError);
-   void setLocalPort(quint16 port);
-   void setLocalAddress(const QHostAddress &address);
-   void setPeerPort(quint16 port);
-   void setPeerAddress(const QHostAddress &address);
-   void setPeerName(const QString &name);
+    NET_CS_SIGNAL_1( Public, void connected() )
+    NET_CS_SIGNAL_2( connected )
 
-   QAbstractSocket(SocketType socketType, QAbstractSocketPrivate &dd, QObject *parent = nullptr);
+    NET_CS_SIGNAL_1( Public, void disconnected() )
+    NET_CS_SIGNAL_2( disconnected )
 
- private:
-   Q_DECLARE_PRIVATE(QAbstractSocket)
+    NET_CS_SIGNAL_1( Public, void stateChanged( QAbstractSocket::SocketState socketState ) )
+    NET_CS_SIGNAL_2( stateChanged, socketState )
 
-   NET_CS_SLOT_1(Private, void _q_connectToNextAddress())
-   NET_CS_SLOT_2(_q_connectToNextAddress)
+    NET_CS_SIGNAL_1( Public, void error( QAbstractSocket::SocketError socketError ) )
+    NET_CS_SIGNAL_OVERLOAD( error, ( QAbstractSocket::SocketError ), socketError )
 
-   NET_CS_SLOT_1(Private, void _q_startConnecting(const QHostInfo &hostInfo))
-   NET_CS_SLOT_2(_q_startConnecting)
+#ifndef QT_NO_NETWORKPROXY
+    NET_CS_SIGNAL_1( Public, void proxyAuthenticationRequired( const QNetworkProxy &proxy, QAuthenticator *authenticator ) )
+    NET_CS_SIGNAL_2( proxyAuthenticationRequired, proxy, authenticator )
+#endif
 
-   NET_CS_SLOT_1(Private, void _q_abortConnectionAttempt())
-   NET_CS_SLOT_2(_q_abortConnectionAttempt)
+protected:
+    qint64 readData( char *data, qint64 maxlen ) override;
+    qint64 readLineData( char *data, qint64 maxlen ) override;
+    qint64 writeData( const char *data, qint64 len ) override;
 
-   NET_CS_SLOT_1(Private, void _q_testConnection())
-   NET_CS_SLOT_2(_q_testConnection)
+    void setSocketState( SocketState state );
+    void setSocketError( SocketError socketError );
+    void setLocalPort( quint16 port );
+    void setLocalAddress( const QHostAddress &address );
+    void setPeerPort( quint16 port );
+    void setPeerAddress( const QHostAddress &address );
+    void setPeerName( const QString &name );
 
-   NET_CS_SLOT_1(Private, void _q_forceDisconnect())
-   NET_CS_SLOT_2(_q_forceDisconnect)
+    QAbstractSocket( SocketType socketType, QAbstractSocketPrivate &dd, QObject *parent = nullptr );
+
+private:
+    Q_DECLARE_PRIVATE( QAbstractSocket )
+
+    NET_CS_SLOT_1( Private, void _q_connectToNextAddress() )
+    NET_CS_SLOT_2( _q_connectToNextAddress )
+
+    NET_CS_SLOT_1( Private, void _q_startConnecting( const QHostInfo &hostInfo ) )
+    NET_CS_SLOT_2( _q_startConnecting )
+
+    NET_CS_SLOT_1( Private, void _q_abortConnectionAttempt() )
+    NET_CS_SLOT_2( _q_abortConnectionAttempt )
+
+    NET_CS_SLOT_1( Private, void _q_testConnection() )
+    NET_CS_SLOT_2( _q_testConnection )
+
+    NET_CS_SLOT_1( Private, void _q_forceDisconnect() )
+    NET_CS_SLOT_2( _q_forceDisconnect )
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(QAbstractSocket::BindMode)
-Q_DECLARE_OPERATORS_FOR_FLAGS(QAbstractSocket::PauseModes)
+Q_DECLARE_OPERATORS_FOR_FLAGS( QAbstractSocket::BindMode )
+Q_DECLARE_OPERATORS_FOR_FLAGS( QAbstractSocket::PauseModes )
 
-Q_NETWORK_EXPORT QDebug operator<<(QDebug, QAbstractSocket::SocketError);
-Q_NETWORK_EXPORT QDebug operator<<(QDebug, QAbstractSocket::SocketState);
+Q_NETWORK_EXPORT QDebug operator<<( QDebug, QAbstractSocket::SocketError );
+Q_NETWORK_EXPORT QDebug operator<<( QDebug, QAbstractSocket::SocketState );
 
 // moved here to avoid recursive include issues
 #include <qhostinfo.h>
 
 #ifndef QT_NO_NETWORKPROXY
-   #include <qnetworkproxy.h>
+#include <qnetworkproxy.h>
 #endif
 
 #endif

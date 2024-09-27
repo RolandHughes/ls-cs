@@ -49,24 +49,35 @@
 #include <qnetwork_request.h>
 #include <qnetwork_reply.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class WebCoreSynchronousLoader : public ResourceHandleClient {
+class WebCoreSynchronousLoader : public ResourceHandleClient
+{
 public:
-    WebCoreSynchronousLoader(ResourceError& error, ResourceResponse& response, Vector<char>& data)
-        : m_error(error)
-        , m_response(response)
-        , m_data(data)
+    WebCoreSynchronousLoader( ResourceError &error, ResourceResponse &response, Vector<char> &data )
+        : m_error( error )
+        , m_response( response )
+        , m_data( data )
     {}
 
-    virtual void didReceiveResponse(ResourceHandle*, const ResourceResponse& response) { m_response = response; }
-    virtual void didReceiveData(ResourceHandle*, const char* data, int length, int) { m_data.append(data, length); }
-    virtual void didFinishLoading(ResourceHandle*, double /*finishTime*/) {}
-    virtual void didFail(ResourceHandle*, const ResourceError& error) { m_error = error; }
+    virtual void didReceiveResponse( ResourceHandle *, const ResourceResponse &response )
+    {
+        m_response = response;
+    }
+    virtual void didReceiveData( ResourceHandle *, const char *data, int length, int )
+    {
+        m_data.append( data, length );
+    }
+    virtual void didFinishLoading( ResourceHandle *, double /*finishTime*/ ) {}
+    virtual void didFail( ResourceHandle *, const ResourceError &error )
+    {
+        m_error = error;
+    }
 private:
-    ResourceError& m_error;
-    ResourceResponse& m_response;
-    Vector<char>& m_data;
+    ResourceError &m_error;
+    ResourceResponse &m_response;
+    Vector<char> &m_data;
 };
 
 ResourceHandleInternal::~ResourceHandleInternal()
@@ -75,35 +86,41 @@ ResourceHandleInternal::~ResourceHandleInternal()
 
 ResourceHandle::~ResourceHandle()
 {
-    if (d->m_job)
+    if ( d->m_job )
+    {
         cancel();
+    }
 }
 
-bool ResourceHandle::start(NetworkingContext* context)
+bool ResourceHandle::start( NetworkingContext *context )
 {
     // If NetworkingContext is invalid then we are no longer attached to a Page,
     // this must be an attempted load from an unload event handler, so let's just block it.
-    if (context && !context->isValid())
+    if ( context && !context->isValid() )
+    {
         return false;
+    }
 
-    if (!d->m_user.isEmpty() || !d->m_pass.isEmpty()) {
+    if ( !d->m_user.isEmpty() || !d->m_pass.isEmpty() )
+    {
         // If credentials were specified for this request, add them to the url,
         // so that they will be passed to QNetworkRequest.
-        KURL urlWithCredentials(firstRequest().url());
-        urlWithCredentials.setUser(d->m_user);
-        urlWithCredentials.setPass(d->m_pass);
-        d->m_firstRequest.setURL(urlWithCredentials);
+        KURL urlWithCredentials( firstRequest().url() );
+        urlWithCredentials.setUser( d->m_user );
+        urlWithCredentials.setPass( d->m_pass );
+        d->m_firstRequest.setURL( urlWithCredentials );
     }
 
     getInternal()->m_context = context;
     ResourceHandleInternal *d = getInternal();
-    d->m_job = new QNetworkReplyHandler(this, QNetworkReplyHandler::AsynchronousLoad, d->m_defersLoading);
+    d->m_job = new QNetworkReplyHandler( this, QNetworkReplyHandler::AsynchronousLoad, d->m_defersLoading );
     return true;
 }
 
 void ResourceHandle::cancel()
 {
-    if (d->m_job) {
+    if ( d->m_job )
+    {
         d->m_job->abort();
         d->m_job = 0;
     }
@@ -114,24 +131,32 @@ bool ResourceHandle::loadsBlocked()
     return false;
 }
 
-bool ResourceHandle::willLoadFromCache(ResourceRequest& request, Frame* frame)
+bool ResourceHandle::willLoadFromCache( ResourceRequest &request, Frame *frame )
 {
-    if (!frame)
+    if ( !frame )
+    {
         return false;
+    }
 
-    QNetworkAccessManager* manager = 0;
-    QAbstractNetworkCache* cache = 0;
-    if (frame->loader()->networkingContext()) {
+    QNetworkAccessManager *manager = 0;
+    QAbstractNetworkCache *cache = 0;
+
+    if ( frame->loader()->networkingContext() )
+    {
         manager = frame->loader()->networkingContext()->networkAccessManager();
         cache = manager->cache();
     }
 
-    if (!cache)
+    if ( !cache )
+    {
         return false;
+    }
 
-    QNetworkCacheMetaData data = cache->metaData(request.url());
-    if (data.isValid()) {
-        request.setCachePolicy(ReturnCacheDataDontLoad);
+    QNetworkCacheMetaData data = cache->metaData( request.url() );
+
+    if ( data.isValid() )
+    {
+        request.setCachePolicy( ReturnCacheDataDontLoad );
         return true;
     }
 
@@ -149,32 +174,39 @@ PassRefPtr<SharedBuffer> ResourceHandle::bufferedData()
     return 0;
 }
 
-void ResourceHandle::loadResourceSynchronously(NetworkingContext* context, const ResourceRequest& request, StoredCredentials /*storedCredentials*/, ResourceError& error, ResourceResponse& response, Vector<char>& data)
+void ResourceHandle::loadResourceSynchronously( NetworkingContext *context, const ResourceRequest &request,
+        StoredCredentials /*storedCredentials*/, ResourceError &error, ResourceResponse &response, Vector<char> &data )
 {
-    WebCoreSynchronousLoader syncLoader(error, response, data);
-    RefPtr<ResourceHandle> handle = adoptRef(new ResourceHandle(request, &syncLoader, true, false));
+    WebCoreSynchronousLoader syncLoader( error, response, data );
+    RefPtr<ResourceHandle> handle = adoptRef( new ResourceHandle( request, &syncLoader, true, false ) );
 
-    ResourceHandleInternal* d = handle->getInternal();
-    if (!d->m_user.isEmpty() || !d->m_pass.isEmpty()) {
+    ResourceHandleInternal *d = handle->getInternal();
+
+    if ( !d->m_user.isEmpty() || !d->m_pass.isEmpty() )
+    {
         // If credentials were specified for this request, add them to the url,
         // so that they will be passed to QNetworkRequest.
-        KURL urlWithCredentials(d->m_firstRequest.url());
-        urlWithCredentials.setUser(d->m_user);
-        urlWithCredentials.setPass(d->m_pass);
-        d->m_firstRequest.setURL(urlWithCredentials);
+        KURL urlWithCredentials( d->m_firstRequest.url() );
+        urlWithCredentials.setUser( d->m_user );
+        urlWithCredentials.setPass( d->m_pass );
+        d->m_firstRequest.setURL( urlWithCredentials );
     }
+
     d->m_context = context;
 
     // starting in deferred mode gives d->m_job the chance of being set before sending the request.
-    d->m_job = new QNetworkReplyHandler(handle.get(), QNetworkReplyHandler::SynchronousLoad, true);
-    d->m_job->setLoadingDeferred(false);
+    d->m_job = new QNetworkReplyHandler( handle.get(), QNetworkReplyHandler::SynchronousLoad, true );
+    d->m_job->setLoadingDeferred( false );
 }
 
-void ResourceHandle::platformSetDefersLoading(bool defers)
+void ResourceHandle::platformSetDefersLoading( bool defers )
 {
-    if (!d->m_job)
+    if ( !d->m_job )
+    {
         return;
-    d->m_job->setLoadingDeferred(defers);
+    }
+
+    d->m_job->setLoadingDeferred( defers );
 }
 
 } // namespace WebCore

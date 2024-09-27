@@ -29,35 +29,50 @@
 #include <WebCore/IntRect.h>
 #include <wtf/RetainPtr.h>
 
-namespace CoreIPC {
-    class ArgumentEncoder;
-    class ArgumentDecoder;
+namespace CoreIPC
+{
+class ArgumentEncoder;
+class ArgumentDecoder;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
-class UpdateChunk {
+class UpdateChunk
+{
 public:
     UpdateChunk();
-    UpdateChunk(const WebCore::IntRect&);
+    UpdateChunk( const WebCore::IntRect & );
     ~UpdateChunk();
 
-    uint8_t* data() { return m_data; }
-    const WebCore::IntRect& rect() const { return m_rect; }
-    bool isEmpty() const { return m_rect.isEmpty(); }
+    uint8_t *data()
+    {
+        return m_data;
+    }
+    const WebCore::IntRect &rect() const
+    {
+        return m_rect;
+    }
+    bool isEmpty() const
+    {
+        return m_rect.isEmpty();
+    }
 
-    void encode(CoreIPC::ArgumentEncoder*) const;
-    static bool decode(CoreIPC::ArgumentDecoder*, UpdateChunk&);
+    void encode( CoreIPC::ArgumentEncoder * ) const;
+    static bool decode( CoreIPC::ArgumentDecoder *, UpdateChunk & );
 
     RetainPtr<CGImageRef> createImage();
 
 private:
-    size_t size() const { return m_rect.width() * 4 * m_rect.height(); }
+    size_t size() const
+    {
+        return m_rect.width() * 4 * m_rect.height();
+    }
 
     WebCore::IntRect m_rect;
 
     // This needs to be mutable, because encoding an update chunk will hand over its memory to the target process.
-    mutable uint8_t* m_data;
+    mutable uint8_t *m_data;
     size_t m_size;
 };
 

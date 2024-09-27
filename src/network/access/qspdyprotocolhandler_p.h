@@ -35,33 +35,38 @@
 #ifdef QT_SSL
 
 class QHttpNetworkRequest;
-using HttpMessagePair = QPair<QHttpNetworkRequest, QHttpNetworkReply*>;
+using HttpMessagePair = QPair<QHttpNetworkRequest, QHttpNetworkReply *>;
 
-class QSpdyProtocolHandler : public QObject, public QAbstractProtocolHandler {
-    NET_CS_OBJECT(QSpdyProtocolHandler)
+class QSpdyProtocolHandler : public QObject, public QAbstractProtocolHandler
+{
+    NET_CS_OBJECT( QSpdyProtocolHandler )
 
 public:
-    QSpdyProtocolHandler(QHttpNetworkConnectionChannel *channel);
+    QSpdyProtocolHandler( QHttpNetworkConnectionChannel *channel );
     ~QSpdyProtocolHandler();
 
-    enum DataFrameFlag {
+    enum DataFrameFlag
+    {
         DataFrame_FLAG_FIN = 0x01,
         DataFrame_FLAG_COMPRESS = 0x02
     };
     using DataFrameFlags = QFlags<DataFrameFlag>;
 
-    enum ControlFrameFlag {
+    enum ControlFrameFlag
+    {
         ControlFrame_FLAG_FIN = 0x01,
         ControlFrame_FLAG_UNIDIRECTIONAL = 0x02
     };
     using ControlFrameFlags = QFlags<ControlFrameFlag>;
 
-    enum SETTINGS_Flag {
+    enum SETTINGS_Flag
+    {
         FLAG_SETTINGS_CLEAR_SETTINGS = 0x01
     };
     using SETTINGS_Flags = QFlags<SETTINGS_Flag>;
 
-    enum SETTINGS_ID_Flag {
+    enum SETTINGS_ID_Flag
+    {
         FLAG_SETTINGS_PERSIST_VALUE = 0x01,
         FLAG_SETTINGS_PERSISTED = 0x02
     };
@@ -72,7 +77,8 @@ public:
     bool sendRequest() override;
 
 private:
-    enum FrameType {
+    enum FrameType
+    {
         FrameType_SYN_STREAM = 1,
         FrameType_SYN_REPLY = 2,
         FrameType_RST_STREAM = 3,
@@ -84,7 +90,8 @@ private:
         FrameType_CREDENTIAL // has a special type
     };
 
-    enum StatusCode {
+    enum StatusCode
+    {
         StatusCode_PROTOCOL_ERROR = 1,
         StatusCode_INVALID_STREAM = 2,
         StatusCode_REFUSED_STREAM = 3,
@@ -98,7 +105,8 @@ private:
         StatusCode_FRAME_TOO_LARGE = 11
     };
 
-    enum SETTINGS_ID {
+    enum SETTINGS_ID
+    {
         SETTINGS_UPLOAD_BANDWIDTH = 1,
         SETTINGS_DOWNLOAD_BANDWIDTH = 2,
         SETTINGS_ROUND_TRIP_TIME = 3,
@@ -109,13 +117,15 @@ private:
         SETTINGS_CLIENT_CERTIFICATE_VECTOR_SIZE = 8
     };
 
-    enum GOAWAY_STATUS {
+    enum GOAWAY_STATUS
+    {
         GOAWAY_OK = 0,
         GOAWAY_PROTOCOL_ERROR = 1,
         GOAWAY_INTERNAL_ERROR = 11
     };
 
-    enum RST_STREAM_STATUS_CODE {
+    enum RST_STREAM_STATUS_CODE
+    {
         RST_STREAM_PROTOCOL_ERROR = 1,
         RST_STREAM_INVALID_STREAM = 2,
         RST_STREAM_REFUSED_STREAM = 3,
@@ -130,42 +140,42 @@ private:
     };
 
     quint64 bytesAvailable() const;
-    bool readNextChunk(qint64 length, char *sink);
+    bool readNextChunk( qint64 length, char *sink );
 
-    void sendControlFrame(FrameType type, ControlFrameFlags flags, const char *data, quint32 length);
+    void sendControlFrame( FrameType type, ControlFrameFlags flags, const char *data, quint32 length );
 
-    void sendSYN_STREAM(HttpMessagePair pair, qint32 streamID, qint32 associatedToStreamID);
-    void sendRST_STREAM(qint32 streamID, RST_STREAM_STATUS_CODE statusCode);
-    void sendPING(quint32 pingID);
+    void sendSYN_STREAM( HttpMessagePair pair, qint32 streamID, qint32 associatedToStreamID );
+    void sendRST_STREAM( qint32 streamID, RST_STREAM_STATUS_CODE statusCode );
+    void sendPING( quint32 pingID );
 
-    bool uploadData(qint32 streamID);
+    bool uploadData( qint32 streamID );
 
-    NET_CS_INVOKABLE_METHOD_1(Private, void sendWINDOW_UPDATE(qint32 streamID, quint32 deltaWindowSize));
-    NET_CS_INVOKABLE_METHOD_2(sendWINDOW_UPDATE);
+    NET_CS_INVOKABLE_METHOD_1( Private, void sendWINDOW_UPDATE( qint32 streamID, quint32 deltaWindowSize ) );
+    NET_CS_INVOKABLE_METHOD_2( sendWINDOW_UPDATE );
 
-    qint64 sendDataFrame(qint32 streamID, DataFrameFlags flags, quint32 length, const char *data);
+    qint64 sendDataFrame( qint32 streamID, DataFrameFlags flags, quint32 length, const char *data );
 
-    QByteArray composeHeader(const QHttpNetworkRequest &request);
-    bool uncompressHeader(const QByteArray &input, QByteArray *output);
+    QByteArray composeHeader( const QHttpNetworkRequest &request );
+    bool uncompressHeader( const QByteArray &input, QByteArray *output );
 
-    void handleControlFrame(const QByteArray &frameHeaders);
-    void handleDataFrame(const QByteArray &frameHeaders);
+    void handleControlFrame( const QByteArray &frameHeaders );
+    void handleDataFrame( const QByteArray &frameHeaders );
 
-    void handleSYN_STREAM(char, quint32, const QByteArray &frameData);
-    void handleSYN_REPLY(char flags, quint32, const QByteArray &frameData);
-    void handleRST_STREAM(char flags, quint32 length, const QByteArray &frameData);
-    void handleSETTINGS(char flags, quint32 length, const QByteArray &frameData);
-    void handlePING(char, quint32 length, const QByteArray &frameData);
-    void handleGOAWAY(char flags, quint32, const QByteArray &frameData);
-    void handleHEADERS(char flags, quint32, const QByteArray &frameData);
-    void handleWINDOW_UPDATE(char, quint32, const QByteArray &frameData);
+    void handleSYN_STREAM( char, quint32, const QByteArray &frameData );
+    void handleSYN_REPLY( char flags, quint32, const QByteArray &frameData );
+    void handleRST_STREAM( char flags, quint32 length, const QByteArray &frameData );
+    void handleSETTINGS( char flags, quint32 length, const QByteArray &frameData );
+    void handlePING( char, quint32 length, const QByteArray &frameData );
+    void handleGOAWAY( char flags, quint32, const QByteArray &frameData );
+    void handleHEADERS( char flags, quint32, const QByteArray &frameData );
+    void handleWINDOW_UPDATE( char, quint32, const QByteArray &frameData );
 
     qint32 generateNextStreamID();
-    void parseHttpHeaders(char flags, const QByteArray &frameData);
+    void parseHttpHeaders( char flags, const QByteArray &frameData );
 
-    void replyFinished(QHttpNetworkReply *httpReply, qint32 streamID);
-    void replyFinishedWithError(QHttpNetworkReply *httpReply, qint32 streamID,
-                                QNetworkReply::NetworkError errorCode, const char *errorMessage);
+    void replyFinished( QHttpNetworkReply *httpReply, qint32 streamID );
+    void replyFinishedWithError( QHttpNetworkReply *httpReply, qint32 streamID,
+                                 QNetworkReply::NetworkError errorCode, const char *errorMessage );
 
     qint32 m_nextStreamID;
     QHash<quint32, HttpMessagePair> m_inFlightStreams;
@@ -178,17 +188,17 @@ private:
     z_stream m_deflateStream;
     z_stream m_inflateStream;
 
-    NET_CS_SLOT_1(Private, void _q_uploadDataReadyRead())
-    NET_CS_SLOT_2(_q_uploadDataReadyRead)
+    NET_CS_SLOT_1( Private, void _q_uploadDataReadyRead() )
+    NET_CS_SLOT_2( _q_uploadDataReadyRead )
 
-    NET_CS_SLOT_1(Private, void _q_replyDestroyed(QObject *data))
-    NET_CS_SLOT_2(_q_replyDestroyed)
+    NET_CS_SLOT_1( Private, void _q_replyDestroyed( QObject *data ) )
+    NET_CS_SLOT_2( _q_replyDestroyed )
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(QSpdyProtocolHandler::DataFrameFlags)
-Q_DECLARE_OPERATORS_FOR_FLAGS(QSpdyProtocolHandler::ControlFrameFlags)
-Q_DECLARE_OPERATORS_FOR_FLAGS(QSpdyProtocolHandler::SETTINGS_Flags)
-Q_DECLARE_OPERATORS_FOR_FLAGS(QSpdyProtocolHandler::SETTINGS_ID_Flags)
+Q_DECLARE_OPERATORS_FOR_FLAGS( QSpdyProtocolHandler::DataFrameFlags )
+Q_DECLARE_OPERATORS_FOR_FLAGS( QSpdyProtocolHandler::ControlFrameFlags )
+Q_DECLARE_OPERATORS_FOR_FLAGS( QSpdyProtocolHandler::SETTINGS_Flags )
+Q_DECLARE_OPERATORS_FOR_FLAGS( QSpdyProtocolHandler::SETTINGS_ID_Flags )
 
 
 #endif

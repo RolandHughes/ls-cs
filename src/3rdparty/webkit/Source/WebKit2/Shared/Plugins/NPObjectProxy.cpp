@@ -36,236 +36,307 @@
 #include "NPRuntimeUtilities.h"
 #include "NPVariantData.h"
 
-namespace WebKit {
-
-NPObjectProxy* NPObjectProxy::create(NPRemoteObjectMap* npRemoteObjectMap, Plugin* plugin, uint64_t npObjectID)
+namespace WebKit
 {
-    NPObjectProxy* npObjectProxy = toNPObjectProxy(createNPObject(0, npClass()));
-    npObjectProxy->initialize(npRemoteObjectMap, plugin, npObjectID);
+
+NPObjectProxy *NPObjectProxy::create( NPRemoteObjectMap *npRemoteObjectMap, Plugin *plugin, uint64_t npObjectID )
+{
+    NPObjectProxy *npObjectProxy = toNPObjectProxy( createNPObject( 0, npClass() ) );
+    npObjectProxy->initialize( npRemoteObjectMap, plugin, npObjectID );
 
     return npObjectProxy;
 }
 
 NPObjectProxy::NPObjectProxy()
-    : m_npRemoteObjectMap(0)
-    , m_plugin(0)
-    , m_npObjectID(0)
+    : m_npRemoteObjectMap( 0 )
+    , m_plugin( 0 )
+    , m_npObjectID( 0 )
 {
 }
 
 NPObjectProxy::~NPObjectProxy()
 {
-    if (!m_npRemoteObjectMap)
+    if ( !m_npRemoteObjectMap )
+    {
         return;
+    }
 
-    m_npRemoteObjectMap->npObjectProxyDestroyed(this);
-    m_npRemoteObjectMap->connection()->sendSync(Messages::NPObjectMessageReceiver::Deallocate(), Messages::NPObjectMessageReceiver::Deallocate::Reply(), m_npObjectID);
+    m_npRemoteObjectMap->npObjectProxyDestroyed( this );
+    m_npRemoteObjectMap->connection()->sendSync( Messages::NPObjectMessageReceiver::Deallocate(),
+            Messages::NPObjectMessageReceiver::Deallocate::Reply(), m_npObjectID );
 }
 
-bool NPObjectProxy::isNPObjectProxy(NPObject* npObject)
+bool NPObjectProxy::isNPObjectProxy( NPObject *npObject )
 {
     return npObject->_class == npClass();
 }
 
 void NPObjectProxy::invalidate()
 {
-    ASSERT(m_npRemoteObjectMap);
-    ASSERT(m_plugin);
+    ASSERT( m_npRemoteObjectMap );
+    ASSERT( m_plugin );
 
     m_npRemoteObjectMap = 0;
     m_plugin = 0;
 }
-    
-void NPObjectProxy::initialize(NPRemoteObjectMap* npRemoteObjectMap, Plugin* plugin, uint64_t npObjectID)
-{
-    ASSERT(!m_npRemoteObjectMap);
-    ASSERT(!m_plugin);
-    ASSERT(!m_npObjectID);
 
-    ASSERT(npRemoteObjectMap);
-    ASSERT(plugin);
-    ASSERT(npObjectID);
+void NPObjectProxy::initialize( NPRemoteObjectMap *npRemoteObjectMap, Plugin *plugin, uint64_t npObjectID )
+{
+    ASSERT( !m_npRemoteObjectMap );
+    ASSERT( !m_plugin );
+    ASSERT( !m_npObjectID );
+
+    ASSERT( npRemoteObjectMap );
+    ASSERT( plugin );
+    ASSERT( npObjectID );
 
     m_npRemoteObjectMap = npRemoteObjectMap;
     m_plugin = plugin;
     m_npObjectID = npObjectID;
 }
 
-bool NPObjectProxy::hasMethod(NPIdentifier methodName)
+bool NPObjectProxy::hasMethod( NPIdentifier methodName )
 {
-    if (!m_npRemoteObjectMap)
+    if ( !m_npRemoteObjectMap )
+    {
         return false;
-    
-    NPIdentifierData methodNameData = NPIdentifierData::fromNPIdentifier(methodName);
-    
+    }
+
+    NPIdentifierData methodNameData = NPIdentifierData::fromNPIdentifier( methodName );
+
     bool returnValue = false;
-    
-    if (!m_npRemoteObjectMap->connection()->sendSync(Messages::NPObjectMessageReceiver::HasMethod(methodNameData), Messages::NPObjectMessageReceiver::HasMethod::Reply(returnValue), m_npObjectID))
+
+    if ( !m_npRemoteObjectMap->connection()->sendSync( Messages::NPObjectMessageReceiver::HasMethod( methodNameData ),
+            Messages::NPObjectMessageReceiver::HasMethod::Reply( returnValue ), m_npObjectID ) )
+    {
         return false;
-    
+    }
+
     return returnValue;
 }
 
-bool NPObjectProxy::invoke(NPIdentifier methodName, const NPVariant* arguments, uint32_t argumentCount, NPVariant* result)
+bool NPObjectProxy::invoke( NPIdentifier methodName, const NPVariant *arguments, uint32_t argumentCount, NPVariant *result )
 {
-    if (!m_npRemoteObjectMap)
+    if ( !m_npRemoteObjectMap )
+    {
         return false;
+    }
 
-    NPIdentifierData methodNameData = NPIdentifierData::fromNPIdentifier(methodName);
+    NPIdentifierData methodNameData = NPIdentifierData::fromNPIdentifier( methodName );
     Vector<NPVariantData> argumentsData;
-    for (uint32_t i = 0; i < argumentCount; ++i)
-        argumentsData.append(m_npRemoteObjectMap->npVariantToNPVariantData(arguments[i], m_plugin));
+
+    for ( uint32_t i = 0; i < argumentCount; ++i )
+    {
+        argumentsData.append( m_npRemoteObjectMap->npVariantToNPVariantData( arguments[i], m_plugin ) );
+    }
 
     bool returnValue = false;
     NPVariantData resultData;
-    
-    if (!m_npRemoteObjectMap->connection()->sendSync(Messages::NPObjectMessageReceiver::Invoke(methodNameData, argumentsData), Messages::NPObjectMessageReceiver::Invoke::Reply(returnValue, resultData), m_npObjectID))
+
+    if ( !m_npRemoteObjectMap->connection()->sendSync( Messages::NPObjectMessageReceiver::Invoke( methodNameData, argumentsData ),
+            Messages::NPObjectMessageReceiver::Invoke::Reply( returnValue, resultData ), m_npObjectID ) )
+    {
         return false;
-    
-    if (!returnValue)
+    }
+
+    if ( !returnValue )
+    {
         return false;
-    
-    *result = m_npRemoteObjectMap->npVariantDataToNPVariant(resultData, m_plugin);
+    }
+
+    *result = m_npRemoteObjectMap->npVariantDataToNPVariant( resultData, m_plugin );
     return true;
 }
 
-bool NPObjectProxy::invokeDefault(const NPVariant* arguments, uint32_t argumentCount, NPVariant* result)
+bool NPObjectProxy::invokeDefault( const NPVariant *arguments, uint32_t argumentCount, NPVariant *result )
 {
-    if (!m_npRemoteObjectMap)
+    if ( !m_npRemoteObjectMap )
+    {
         return false;
+    }
 
     Vector<NPVariantData> argumentsData;
-    for (uint32_t i = 0; i < argumentCount; ++i)
-        argumentsData.append(m_npRemoteObjectMap->npVariantToNPVariantData(arguments[i], m_plugin));
+
+    for ( uint32_t i = 0; i < argumentCount; ++i )
+    {
+        argumentsData.append( m_npRemoteObjectMap->npVariantToNPVariantData( arguments[i], m_plugin ) );
+    }
 
     bool returnValue = false;
     NPVariantData resultData;
-    
-    if (!m_npRemoteObjectMap->connection()->sendSync(Messages::NPObjectMessageReceiver::InvokeDefault(argumentsData), Messages::NPObjectMessageReceiver::InvokeDefault::Reply(returnValue, resultData), m_npObjectID))
+
+    if ( !m_npRemoteObjectMap->connection()->sendSync( Messages::NPObjectMessageReceiver::InvokeDefault( argumentsData ),
+            Messages::NPObjectMessageReceiver::InvokeDefault::Reply( returnValue, resultData ), m_npObjectID ) )
+    {
         return false;
-    
-    if (!returnValue)
+    }
+
+    if ( !returnValue )
+    {
         return false;
-    
-    *result = m_npRemoteObjectMap->npVariantDataToNPVariant(resultData, m_plugin);
+    }
+
+    *result = m_npRemoteObjectMap->npVariantDataToNPVariant( resultData, m_plugin );
     return true;
 }
 
-bool NPObjectProxy::hasProperty(NPIdentifier propertyName)
+bool NPObjectProxy::hasProperty( NPIdentifier propertyName )
 {
-    if (!m_npRemoteObjectMap)
+    if ( !m_npRemoteObjectMap )
+    {
         return false;
-    
-    NPIdentifierData propertyNameData = NPIdentifierData::fromNPIdentifier(propertyName);
+    }
+
+    NPIdentifierData propertyNameData = NPIdentifierData::fromNPIdentifier( propertyName );
 
     bool returnValue = false;
-    
-    if (!m_npRemoteObjectMap->connection()->sendSync(Messages::NPObjectMessageReceiver::HasProperty(propertyNameData), Messages::NPObjectMessageReceiver::HasProperty::Reply(returnValue), m_npObjectID))
+
+    if ( !m_npRemoteObjectMap->connection()->sendSync( Messages::NPObjectMessageReceiver::HasProperty( propertyNameData ),
+            Messages::NPObjectMessageReceiver::HasProperty::Reply( returnValue ), m_npObjectID ) )
+    {
         return false;
+    }
 
     return returnValue;
 }
 
-bool NPObjectProxy::getProperty(NPIdentifier propertyName, NPVariant* result)
+bool NPObjectProxy::getProperty( NPIdentifier propertyName, NPVariant *result )
 {
-    if (!m_npRemoteObjectMap)
+    if ( !m_npRemoteObjectMap )
+    {
         return false;
+    }
 
-    NPIdentifierData propertyNameData = NPIdentifierData::fromNPIdentifier(propertyName);
+    NPIdentifierData propertyNameData = NPIdentifierData::fromNPIdentifier( propertyName );
 
     bool returnValue = false;
     NPVariantData resultData;
-    
-    if (!m_npRemoteObjectMap->connection()->sendSync(Messages::NPObjectMessageReceiver::GetProperty(propertyNameData), Messages::NPObjectMessageReceiver::GetProperty::Reply(returnValue, resultData), m_npObjectID))
-        return false;
 
-    if (!returnValue)
+    if ( !m_npRemoteObjectMap->connection()->sendSync( Messages::NPObjectMessageReceiver::GetProperty( propertyNameData ),
+            Messages::NPObjectMessageReceiver::GetProperty::Reply( returnValue, resultData ), m_npObjectID ) )
+    {
         return false;
+    }
 
-    *result = m_npRemoteObjectMap->npVariantDataToNPVariant(resultData, m_plugin);
+    if ( !returnValue )
+    {
+        return false;
+    }
+
+    *result = m_npRemoteObjectMap->npVariantDataToNPVariant( resultData, m_plugin );
     return true;
 }
 
-bool NPObjectProxy::setProperty(NPIdentifier propertyName, const NPVariant* value)
+bool NPObjectProxy::setProperty( NPIdentifier propertyName, const NPVariant *value )
 {
-    if (!m_npRemoteObjectMap)
+    if ( !m_npRemoteObjectMap )
+    {
         return false;
-    
-    NPIdentifierData propertyNameData = NPIdentifierData::fromNPIdentifier(propertyName);
-    NPVariantData propertyValueData = m_npRemoteObjectMap->npVariantToNPVariantData(*value, m_plugin);
+    }
+
+    NPIdentifierData propertyNameData = NPIdentifierData::fromNPIdentifier( propertyName );
+    NPVariantData propertyValueData = m_npRemoteObjectMap->npVariantToNPVariantData( *value, m_plugin );
 
     bool returnValue = false;
 
-    if (!m_npRemoteObjectMap->connection()->sendSync(Messages::NPObjectMessageReceiver::SetProperty(propertyNameData, propertyValueData), Messages::NPObjectMessageReceiver::SetProperty::Reply(returnValue), m_npObjectID))
+    if ( !m_npRemoteObjectMap->connection()->sendSync( Messages::NPObjectMessageReceiver::SetProperty( propertyNameData,
+            propertyValueData ), Messages::NPObjectMessageReceiver::SetProperty::Reply( returnValue ), m_npObjectID ) )
+    {
         return false;
+    }
 
     return returnValue;
 }
 
-bool NPObjectProxy::removeProperty(NPIdentifier propertyName)
+bool NPObjectProxy::removeProperty( NPIdentifier propertyName )
 {
-    if (!m_npRemoteObjectMap)
+    if ( !m_npRemoteObjectMap )
+    {
         return false;
-    
-    NPIdentifierData propertyNameData = NPIdentifierData::fromNPIdentifier(propertyName);
+    }
+
+    NPIdentifierData propertyNameData = NPIdentifierData::fromNPIdentifier( propertyName );
 
     bool returnValue = false;
-    
-    if (!m_npRemoteObjectMap->connection()->sendSync(Messages::NPObjectMessageReceiver::RemoveProperty(propertyNameData), Messages::NPObjectMessageReceiver::RemoveProperty::Reply(returnValue), m_npObjectID))
+
+    if ( !m_npRemoteObjectMap->connection()->sendSync( Messages::NPObjectMessageReceiver::RemoveProperty( propertyNameData ),
+            Messages::NPObjectMessageReceiver::RemoveProperty::Reply( returnValue ), m_npObjectID ) )
+    {
         return false;
+    }
 
     return returnValue;
 }
 
-bool NPObjectProxy::enumerate(NPIdentifier** identifiers, uint32_t* identifierCount)
+bool NPObjectProxy::enumerate( NPIdentifier **identifiers, uint32_t *identifierCount )
 {
-    if (!m_npRemoteObjectMap)
+    if ( !m_npRemoteObjectMap )
+    {
         return false;
+    }
 
     bool returnValue;
     Vector<NPIdentifierData> identifiersData;
 
-    if (!m_npRemoteObjectMap->connection()->sendSync(Messages::NPObjectMessageReceiver::Enumerate(), Messages::NPObjectMessageReceiver::Enumerate::Reply(returnValue, identifiersData), m_npObjectID))
+    if ( !m_npRemoteObjectMap->connection()->sendSync( Messages::NPObjectMessageReceiver::Enumerate(),
+            Messages::NPObjectMessageReceiver::Enumerate::Reply( returnValue, identifiersData ), m_npObjectID ) )
+    {
         return false;
+    }
 
-    if (!returnValue)
+    if ( !returnValue )
+    {
         return false;
+    }
 
-    NPIdentifier* nameIdentifiers = npnMemNewArray<NPIdentifier>(identifiersData.size());
-    
-    for (size_t i = 0; i < identifiersData.size(); ++i)
+    NPIdentifier *nameIdentifiers = npnMemNewArray<NPIdentifier>( identifiersData.size() );
+
+    for ( size_t i = 0; i < identifiersData.size(); ++i )
+    {
         nameIdentifiers[i] = identifiersData[i].createNPIdentifier();
-    
+    }
+
     *identifiers = nameIdentifiers;
     *identifierCount = identifiersData.size();
     return true;
 }
 
-bool NPObjectProxy::construct(const NPVariant* arguments, uint32_t argumentCount, NPVariant* result)
+bool NPObjectProxy::construct( const NPVariant *arguments, uint32_t argumentCount, NPVariant *result )
 {
-    if (!m_npRemoteObjectMap)
+    if ( !m_npRemoteObjectMap )
+    {
         return false;
+    }
 
     Vector<NPVariantData> argumentsData;
-    for (uint32_t i = 0; i < argumentCount; ++i)
-        argumentsData.append(m_npRemoteObjectMap->npVariantToNPVariantData(arguments[i], m_plugin));
+
+    for ( uint32_t i = 0; i < argumentCount; ++i )
+    {
+        argumentsData.append( m_npRemoteObjectMap->npVariantToNPVariantData( arguments[i], m_plugin ) );
+    }
 
     bool returnValue = false;
     NPVariantData resultData;
-    
-    if (!m_npRemoteObjectMap->connection()->sendSync(Messages::NPObjectMessageReceiver::Construct(argumentsData), Messages::NPObjectMessageReceiver::Construct::Reply(returnValue, resultData), m_npObjectID))
+
+    if ( !m_npRemoteObjectMap->connection()->sendSync( Messages::NPObjectMessageReceiver::Construct( argumentsData ),
+            Messages::NPObjectMessageReceiver::Construct::Reply( returnValue, resultData ), m_npObjectID ) )
+    {
         return false;
-    
-    if (!returnValue)
+    }
+
+    if ( !returnValue )
+    {
         return false;
-    
-    *result = m_npRemoteObjectMap->npVariantDataToNPVariant(resultData, m_plugin);
+    }
+
+    *result = m_npRemoteObjectMap->npVariantDataToNPVariant( resultData, m_plugin );
     return true;
 }
 
-NPClass* NPObjectProxy::npClass()
+NPClass *NPObjectProxy::npClass()
 {
-    static NPClass npClass = {
+    static NPClass npClass =
+    {
         NP_CLASS_STRUCT_VERSION,
         NP_Allocate,
         NP_Deallocate,
@@ -284,62 +355,63 @@ NPClass* NPObjectProxy::npClass()
     return &npClass;
 }
 
-NPObject* NPObjectProxy::NP_Allocate(NPP npp, NPClass*)
+NPObject *NPObjectProxy::NP_Allocate( NPP npp, NPClass * )
 {
-    ASSERT_UNUSED(npp, !npp);
+    ASSERT_UNUSED( npp, !npp );
 
     return new NPObjectProxy;
 }
 
-void NPObjectProxy::NP_Deallocate(NPObject* npObject)
+void NPObjectProxy::NP_Deallocate( NPObject *npObject )
 {
-    NPObjectProxy* npObjectProxy = toNPObjectProxy(npObject);
+    NPObjectProxy *npObjectProxy = toNPObjectProxy( npObject );
     delete npObjectProxy;
 }
 
-bool NPObjectProxy::NP_HasMethod(NPObject* npObject, NPIdentifier methodName)
+bool NPObjectProxy::NP_HasMethod( NPObject *npObject, NPIdentifier methodName )
 {
-    return toNPObjectProxy(npObject)->hasMethod(methodName);
+    return toNPObjectProxy( npObject )->hasMethod( methodName );
 }
 
-bool NPObjectProxy::NP_Invoke(NPObject* npObject, NPIdentifier methodName, const NPVariant* arguments, uint32_t argumentCount, NPVariant* result)
+bool NPObjectProxy::NP_Invoke( NPObject *npObject, NPIdentifier methodName, const NPVariant *arguments, uint32_t argumentCount,
+                               NPVariant *result )
 {
-    return toNPObjectProxy(npObject)->invoke(methodName, arguments, argumentCount, result);
+    return toNPObjectProxy( npObject )->invoke( methodName, arguments, argumentCount, result );
 }
 
-bool NPObjectProxy::NP_InvokeDefault(NPObject* npObject, const NPVariant* arguments, uint32_t argumentCount, NPVariant* result)
+bool NPObjectProxy::NP_InvokeDefault( NPObject *npObject, const NPVariant *arguments, uint32_t argumentCount, NPVariant *result )
 {
-    return toNPObjectProxy(npObject)->invokeDefault(arguments, argumentCount, result);
+    return toNPObjectProxy( npObject )->invokeDefault( arguments, argumentCount, result );
 }
 
-bool NPObjectProxy::NP_HasProperty(NPObject* npObject, NPIdentifier propertyName)
+bool NPObjectProxy::NP_HasProperty( NPObject *npObject, NPIdentifier propertyName )
 {
-    return toNPObjectProxy(npObject)->hasProperty(propertyName);
+    return toNPObjectProxy( npObject )->hasProperty( propertyName );
 }
 
-bool NPObjectProxy::NP_GetProperty(NPObject* npObject, NPIdentifier propertyName, NPVariant* result)
+bool NPObjectProxy::NP_GetProperty( NPObject *npObject, NPIdentifier propertyName, NPVariant *result )
 {
-    return toNPObjectProxy(npObject)->getProperty(propertyName, result);
+    return toNPObjectProxy( npObject )->getProperty( propertyName, result );
 }
 
-bool NPObjectProxy::NP_SetProperty(NPObject* npObject, NPIdentifier propertyName, const NPVariant* value)
+bool NPObjectProxy::NP_SetProperty( NPObject *npObject, NPIdentifier propertyName, const NPVariant *value )
 {
-    return toNPObjectProxy(npObject)->setProperty(propertyName, value);
+    return toNPObjectProxy( npObject )->setProperty( propertyName, value );
 }
 
-bool NPObjectProxy::NP_RemoveProperty(NPObject* npObject, NPIdentifier propertyName)
+bool NPObjectProxy::NP_RemoveProperty( NPObject *npObject, NPIdentifier propertyName )
 {
-    return toNPObjectProxy(npObject)->removeProperty(propertyName);
+    return toNPObjectProxy( npObject )->removeProperty( propertyName );
 }
 
-bool NPObjectProxy::NP_Enumerate(NPObject* npObject, NPIdentifier** identifiers, uint32_t* identifierCount)
+bool NPObjectProxy::NP_Enumerate( NPObject *npObject, NPIdentifier **identifiers, uint32_t *identifierCount )
 {
-    return toNPObjectProxy(npObject)->enumerate(identifiers, identifierCount);
+    return toNPObjectProxy( npObject )->enumerate( identifiers, identifierCount );
 }
 
-bool NPObjectProxy::NP_Construct(NPObject* npObject, const NPVariant* arguments, uint32_t argumentCount, NPVariant* result)
+bool NPObjectProxy::NP_Construct( NPObject *npObject, const NPVariant *arguments, uint32_t argumentCount, NPVariant *result )
 {
-    return toNPObjectProxy(npObject)->construct(arguments, argumentCount, result);
+    return toNPObjectProxy( npObject )->construct( arguments, argumentCount, result );
 }
 
 } // namespace WebKit

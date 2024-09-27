@@ -23,23 +23,26 @@
 #include "HitTestRequest.h"
 #include "RenderStyleConstants.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class PointerEventsHitRules {
+class PointerEventsHitRules
+{
 public:
-    enum EHitTesting {
+    enum EHitTesting
+    {
         SVG_IMAGE_HITTESTING,
         SVG_PATH_HITTESTING,
         SVG_TEXT_HITTESTING
     };
 
-    PointerEventsHitRules(EHitTesting, const HitTestRequest&, EPointerEvents);
+    PointerEventsHitRules( EHitTesting, const HitTestRequest &, EPointerEvents );
 
     bool requireVisible;
     bool requireFill;
     bool requireStroke;
     bool canHitStroke;
-    bool canHitFill;  
+    bool canHitFill;
 };
 
 }

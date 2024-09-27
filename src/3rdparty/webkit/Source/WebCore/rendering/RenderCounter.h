@@ -25,52 +25,54 @@
 #include "CounterContent.h"
 #include "RenderText.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class CounterNode;
 
-class RenderCounter : public RenderText {
+class RenderCounter : public RenderText
+{
 public:
-    RenderCounter(Document*, const CounterContent&);
+    RenderCounter( Document *, const CounterContent & );
     virtual ~RenderCounter();
 
-    static void destroyCounterNodes(RenderObject*);
-    static void destroyCounterNode(RenderObject*, const AtomicString& identifier);
-    static void rendererSubtreeAttached(RenderObject*);
-    static void rendererRemovedFromTree(RenderObject*);
-    static void rendererStyleChanged(RenderObject*, const RenderStyle* oldStyle, const RenderStyle* newStyle);
+    static void destroyCounterNodes( RenderObject * );
+    static void destroyCounterNode( RenderObject *, const AtomicString &identifier );
+    static void rendererSubtreeAttached( RenderObject * );
+    static void rendererRemovedFromTree( RenderObject * );
+    static void rendererStyleChanged( RenderObject *, const RenderStyle *oldStyle, const RenderStyle *newStyle );
 
 private:
-    virtual const char* renderName() const;
+    virtual const char *renderName() const;
     virtual bool isCounter() const;
     virtual PassRefPtr<StringImpl> originalText() const;
-    
-    virtual void computePreferredLogicalWidths(float leadWidth);
+
+    virtual void computePreferredLogicalWidths( float leadWidth );
 
     // Removes the reference to the CounterNode associated with this renderer.
     // This is used to cause a counter display update when the CounterNode tree changes.
     void invalidate();
 
     CounterContent m_counter;
-    CounterNode* m_counterNode;
-    RenderCounter* m_nextForSameCounter;
+    CounterNode *m_counterNode;
+    RenderCounter *m_nextForSameCounter;
     friend class CounterNode;
 };
 
-inline RenderCounter* toRenderCounter(RenderObject* object)
+inline RenderCounter *toRenderCounter( RenderObject *object )
 {
-    ASSERT(!object || object->isCounter());
-    return static_cast<RenderCounter*>(object);
+    ASSERT( !object || object->isCounter() );
+    return static_cast<RenderCounter *>( object );
 }
 
 // This will catch anyone doing an unnecessary cast.
-void toRenderCounter(const RenderCounter*);
+void toRenderCounter( const RenderCounter * );
 
 } // namespace WebCore
 
 #ifndef NDEBUG
 // Outside the WebCore namespace for ease of invocation from gdb.
-void showCounterRendererTree(const WebCore::RenderObject*, const char* counterName = 0);
+void showCounterRendererTree( const WebCore::RenderObject *, const char *counterName = 0 );
 #endif
 
 #endif // RenderCounter_h

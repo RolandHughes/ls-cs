@@ -27,31 +27,32 @@
 #include <qabstractnodetest_p.h>
 #include <qcontainerfwd.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class NamespaceNameTest : public AbstractNodeTest
 {
- public:
-   typedef QHash<QString, ItemType::Ptr> Hash;
+public:
+    typedef QHash<QString, ItemType::Ptr> Hash;
 
-   static ItemType::Ptr create(const ItemType::Ptr &primaryType, const QXmlName::NamespaceCode namespaceURI);
+    static ItemType::Ptr create( const ItemType::Ptr &primaryType, const QXmlName::NamespaceCode namespaceURI );
 
-   /**
-    * @note This function assumes that @p item is a QXmlNodeModelIndex.
-    */
-   bool itemMatches(const Item &item) const override;
+    /**
+     * @note This function assumes that @p item is a QXmlNodeModelIndex.
+     */
+    bool itemMatches( const Item &item ) const override;
 
-   QString displayName(const NamePool::Ptr &np) const override;
+    QString displayName( const NamePool::Ptr &np ) const override;
 
-   bool operator==(const ItemType &other) const override;
-   PatternPriority patternPriority() const override;
+    bool operator==( const ItemType &other ) const override;
+    PatternPriority patternPriority() const override;
 
- protected:
-   InstanceOf instanceOf() const override;
+protected:
+    InstanceOf instanceOf() const override;
 
- private:
-   NamespaceNameTest(const ItemType::Ptr &primaryType, const QXmlName::NamespaceCode namespaceURI);
-   const QXmlName::NamespaceCode m_namespaceURI;
+private:
+    NamespaceNameTest( const ItemType::Ptr &primaryType, const QXmlName::NamespaceCode namespaceURI );
+    const QXmlName::NamespaceCode m_namespaceURI;
 };
 
 }

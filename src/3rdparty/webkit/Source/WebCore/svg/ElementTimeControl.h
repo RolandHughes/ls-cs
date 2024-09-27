@@ -21,7 +21,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef ElementTimeControl_h
@@ -31,17 +31,19 @@
 
 #include "ExceptionCode.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class ElementTimeControl {
+class ElementTimeControl
+{
 public:
     virtual ~ElementTimeControl() {}
     virtual void beginElement() = 0;
-    virtual void beginElementAt(float offset) = 0;
+    virtual void beginElementAt( float offset ) = 0;
     virtual void endElement() = 0;
-    virtual void endElementAt(float offset) = 0;
+    virtual void endElementAt( float offset ) = 0;
 };
-        
+
 }
 
 #endif

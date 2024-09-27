@@ -82,23 +82,25 @@
     macro(writable) \
     macro(displayName)
 
-namespace JSC {
+namespace JSC
+{
 
-    class CommonIdentifiers : public Noncopyable {
-    private:
-        CommonIdentifiers(JSGlobalData*);
-        friend class JSGlobalData;
+class CommonIdentifiers : public Noncopyable
+{
+private:
+    CommonIdentifiers( JSGlobalData * );
+    friend class JSGlobalData;
 
-    public:
-        const Identifier nullIdentifier;
-        const Identifier emptyIdentifier;
-        const Identifier underscoreProto;
-        const Identifier thisIdentifier;
+public:
+    const Identifier nullIdentifier;
+    const Identifier emptyIdentifier;
+    const Identifier underscoreProto;
+    const Identifier thisIdentifier;
 
 #define JSC_IDENTIFIER_DECLARE_PROPERTY_NAME_GLOBAL(name) const Identifier name;
-        JSC_COMMON_IDENTIFIERS_EACH_PROPERTY_NAME(JSC_IDENTIFIER_DECLARE_PROPERTY_NAME_GLOBAL)
+    JSC_COMMON_IDENTIFIERS_EACH_PROPERTY_NAME( JSC_IDENTIFIER_DECLARE_PROPERTY_NAME_GLOBAL )
 #undef JSC_IDENTIFIER_DECLARE_PROPERTY_NAME_GLOBAL
-    };
+};
 
 } // namespace JSC
 

@@ -32,25 +32,25 @@ QT_BEGIN_NAMESPACE
 
 class QDeclarativeCustomParserNodePrivate
 {
- public:
-   QByteArray name;
-   QList<QDeclarativeCustomParserProperty> properties;
-   QDeclarativeParser::Location location;
+public:
+    QByteArray name;
+    QList<QDeclarativeCustomParserProperty> properties;
+    QDeclarativeParser::Location location;
 
-   static QDeclarativeCustomParserNode fromObject(QDeclarativeParser::Object *);
-   static QDeclarativeCustomParserProperty fromProperty(QDeclarativeParser::Property *);
+    static QDeclarativeCustomParserNode fromObject( QDeclarativeParser::Object * );
+    static QDeclarativeCustomParserProperty fromProperty( QDeclarativeParser::Property * );
 };
 
 class QDeclarativeCustomParserPropertyPrivate
 {
- public:
-   QDeclarativeCustomParserPropertyPrivate()
-      : isList(false) {}
+public:
+    QDeclarativeCustomParserPropertyPrivate()
+        : isList( false ) {}
 
-   QByteArray name;
-   bool isList;
-   QDeclarativeParser::Location location;
-   QList<QVariant> values;
+    QByteArray name;
+    bool isList;
+    QDeclarativeParser::Location location;
+    QList<QVariant> values;
 };
 
 QT_END_NAMESPACE

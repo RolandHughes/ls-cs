@@ -31,23 +31,25 @@
 #include "IconDatabaseClient.h"
 #include <QObject>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class IconDatabaseClientQt : public QObject, public IconDatabaseClient {
-    WEB_CS_OBJECT(IconDatabaseClientQt)
+class IconDatabaseClientQt : public QObject, public IconDatabaseClient
+{
+    WEB_CS_OBJECT( IconDatabaseClientQt )
 public:
-    static IconDatabaseClientQt* instance();
+    static IconDatabaseClientQt *instance();
 
     virtual bool performImport();
     virtual void didRemoveAllIcons();
-    virtual void didImportIconURLForPageURL(const String&);
-    virtual void didImportIconDataForPageURL(const String&);
-    virtual void didChangeIconForPageURL(const String&);
+    virtual void didImportIconURLForPageURL( const String & );
+    virtual void didImportIconDataForPageURL( const String & );
+    virtual void didChangeIconForPageURL( const String & );
     virtual void didFinishURLImport();
 
 public:
-    WEB_CS_SIGNAL_1(Public, void iconLoadedForPageURL(const QString &url))
-    WEB_CS_SIGNAL_2(iconLoadedForPageURL,url)
+    WEB_CS_SIGNAL_1( Public, void iconLoadedForPageURL( const QString &url ) )
+    WEB_CS_SIGNAL_2( iconLoadedForPageURL,url )
 
 private:
     IconDatabaseClientQt();

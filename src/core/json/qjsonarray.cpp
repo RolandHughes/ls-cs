@@ -29,208 +29,212 @@
 
 QJsonArray::QJsonArray()
 {
-   m_array = std::make_shared<QJsonDataArray>();
+    m_array = std::make_shared<QJsonDataArray>();
 }
 
-QJsonArray::QJsonArray(const_iterator iter_begin, const_iterator iter_end)
+QJsonArray::QJsonArray( const_iterator iter_begin, const_iterator iter_end )
 {
-   m_array = std::make_shared<QJsonDataArray>();
-   m_array->m_vector = QVector<QJsonValue>(iter_begin, iter_end);
+    m_array = std::make_shared<QJsonDataArray>();
+    m_array->m_vector = QVector<QJsonValue>( iter_begin, iter_end );
 }
 
-QJsonArray::QJsonArray(const QJsonArray &other)
+QJsonArray::QJsonArray( const QJsonArray &other )
 {
-   m_array = std::make_shared<QJsonDataArray>(*other.m_array);
+    m_array = std::make_shared<QJsonDataArray>( *other.m_array );
 }
 
-QJsonArray::QJsonArray(QJsonArray &&other)
+QJsonArray::QJsonArray( QJsonArray &&other )
 {
-   m_array = std::move(other.m_array);
+    m_array = std::move( other.m_array );
 }
 
-QJsonArray::QJsonArray(std::initializer_list<QJsonValue> args)
+QJsonArray::QJsonArray( std::initializer_list<QJsonValue> args )
 {
 
-   m_array = std::make_shared<QJsonDataArray>();
+    m_array = std::make_shared<QJsonDataArray>();
 
-   for (const auto &item : args) {
-      append(item);
-   }
+    for ( const auto &item : args )
+    {
+        append( item );
+    }
 }
 
 QJsonArray::~QJsonArray()
 {
 }
 
-void QJsonArray::append(QJsonValue value)
+void QJsonArray::append( QJsonValue value )
 {
-   m_array->m_vector.append(std::move(value));
+    m_array->m_vector.append( std::move( value ) );
 }
 
-QJsonArray &QJsonArray::operator =(const QJsonArray &other)
+QJsonArray &QJsonArray::operator =( const QJsonArray &other )
 {
-   *m_array = *other.m_array;
+    *m_array = *other.m_array;
 
-   return *this;
+    return *this;
 }
 
-const QJsonValue &QJsonArray::at(size_type index) const
+const QJsonValue &QJsonArray::at( size_type index ) const
 {
-   return m_array->m_vector.at(index);
+    return m_array->m_vector.at( index );
 }
 
-bool QJsonArray::contains(const QJsonValue &value) const
+bool QJsonArray::contains( const QJsonValue &value ) const
 {
-   return m_array->m_vector.contains(value);
+    return m_array->m_vector.contains( value );
 }
 
-QJsonArray::iterator QJsonArray::erase(const_iterator iter)
+QJsonArray::iterator QJsonArray::erase( const_iterator iter )
 {
-   return m_array->m_vector.erase(iter);
+    return m_array->m_vector.erase( iter );
 }
 
 const QJsonValue &QJsonArray::first() const
 {
-   return m_array->m_vector.first();
+    return m_array->m_vector.first();
 }
 
-void QJsonArray::insert(size_type index, QJsonValue value)
+void QJsonArray::insert( size_type index, QJsonValue value )
 {
-   return m_array->m_vector.insert(index, std::move(value));
+    return m_array->m_vector.insert( index, std::move( value ) );
 }
 
-QJsonArray::iterator QJsonArray::insert(iterator before, QJsonValue value)
+QJsonArray::iterator QJsonArray::insert( iterator before, QJsonValue value )
 {
-   return m_array->m_vector.insert(before, std::move(value));
+    return m_array->m_vector.insert( before, std::move( value ) );
 }
 
 bool QJsonArray::isEmpty() const
 {
-   return ! m_array->m_vector.size();
+    return ! m_array->m_vector.size();
 }
 
 const QJsonValue &QJsonArray::last() const
 {
-   return m_array->m_vector.last();
+    return m_array->m_vector.last();
 }
 
-void QJsonArray::prepend(QJsonValue value)
+void QJsonArray::prepend( QJsonValue value )
 {
-   m_array->m_vector.append(std::move(value));
+    m_array->m_vector.append( std::move( value ) );
 }
 
-void QJsonArray::removeAt(size_type index)
+void QJsonArray::removeAt( size_type index )
 {
-   m_array->m_vector.removeAt(index);
+    m_array->m_vector.removeAt( index );
 }
 
 QJsonArray::size_type QJsonArray::size() const
 {
-   return m_array->m_vector.size();
+    return m_array->m_vector.size();
 }
 
-QJsonValue QJsonArray::takeAt(size_type index)
+QJsonValue QJsonArray::takeAt( size_type index )
 {
-   return m_array->m_vector.takeAt(index);
+    return m_array->m_vector.takeAt( index );
 }
 
-QJsonArray QJsonArray::fromStringList(const QStringList &list)
+QJsonArray QJsonArray::fromStringList( const QStringList &list )
 {
-   QJsonArray array;
+    QJsonArray array;
 
-   for (const auto &item : list) {
-      array.append(QJsonValue(item));
-   }
+    for ( const auto &item : list )
+    {
+        array.append( QJsonValue( item ) );
+    }
 
-   return array;
+    return array;
 }
 
-QJsonArray QJsonArray::fromVariantList(const QList<QVariant> &list)
+QJsonArray QJsonArray::fromVariantList( const QList<QVariant> &list )
 {
-   QJsonArray array;
+    QJsonArray array;
 
-   for (const auto &item : list) {
-      array.append(QJsonValue::fromVariant(item));
-   }
+    for ( const auto &item : list )
+    {
+        array.append( QJsonValue::fromVariant( item ) );
+    }
 
-   return array;
+    return array;
 }
 
 QList<QVariant> QJsonArray::toVariantList() const
 {
-   QList<QVariant> list;
+    QList<QVariant> list;
 
-   for (const auto &item : *this) {
-      list.append(item.toVariant());
-   }
+    for ( const auto &item : *this )
+    {
+        list.append( item.toVariant() );
+    }
 
-   return list;
+    return list;
 }
 
-void QJsonArray::replace(size_type index, QJsonValue value)
+void QJsonArray::replace( size_type index, QJsonValue value )
 {
-   m_array->m_vector.replace(index, std::move(value));
+    m_array->m_vector.replace( index, std::move( value ) );
 }
 
-QJsonValue &QJsonArray::operator [](size_type index)
+QJsonValue &QJsonArray::operator []( size_type index )
 {
-   return m_array->m_vector[index];
+    return m_array->m_vector[index];
 }
 
-const QJsonValue &QJsonArray::operator[](size_type index) const
+const QJsonValue &QJsonArray::operator[]( size_type index ) const
 {
-   return m_array->m_vector[index];
+    return m_array->m_vector[index];
 }
 
-bool QJsonArray::operator==(const QJsonArray &other) const
+bool QJsonArray::operator==( const QJsonArray &other ) const
 {
-   return m_array->m_vector == other.m_array->m_vector;
+    return m_array->m_vector == other.m_array->m_vector;
 }
 
-bool QJsonArray::operator!=(const QJsonArray &other) const
+bool QJsonArray::operator!=( const QJsonArray &other ) const
 {
-   return !(*this == other);
+    return !( *this == other );
 }
 
-QJsonArray &QJsonArray::operator+=(QJsonValue value)
+QJsonArray &QJsonArray::operator+=( QJsonValue value )
 {
-   m_array->m_vector.append(std::move(value));
-   return *this;
+    m_array->m_vector.append( std::move( value ) );
+    return *this;
 }
 
-QJsonArray &QJsonArray::operator<< (const QJsonValue value)
+QJsonArray &QJsonArray::operator<< ( const QJsonValue value )
 {
-   m_array->m_vector.append(std::move(value));
-   return *this;
+    m_array->m_vector.append( std::move( value ) );
+    return *this;
 }
 
 // iterators
 QJsonArray::iterator QJsonArray::begin()
 {
-   return m_array->m_vector.begin();
+    return m_array->m_vector.begin();
 }
 
 QJsonArray::const_iterator QJsonArray::begin() const
 {
-   return m_array->m_vector.begin();
+    return m_array->m_vector.begin();
 }
 
 QJsonArray::const_iterator QJsonArray::constBegin() const
 {
-   return m_array->m_vector.constBegin();
+    return m_array->m_vector.constBegin();
 }
 
 QJsonArray::iterator QJsonArray::end()
 {
-   return m_array->m_vector.end();
+    return m_array->m_vector.end();
 }
 
 QJsonArray::const_iterator QJsonArray::end() const
 {
-   return m_array->m_vector.end();
+    return m_array->m_vector.end();
 }
 
 QJsonArray::const_iterator QJsonArray::constEnd() const
 {
-   return m_array->m_vector.constEnd();
+    return m_array->m_vector.constEnd();
 }

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef WebGLVertexArrayObjectOES_h
@@ -32,33 +32,40 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class WebGLVertexArrayObjectOES : public WebGLObject {
+class WebGLVertexArrayObjectOES : public WebGLObject
+{
 public:
-    enum VaoType {
+    enum VaoType
+    {
         VaoTypeDefault,
         VaoTypeUser,
     };
-    
-    virtual ~WebGLVertexArrayObjectOES() { deleteObject(); }
 
-    static PassRefPtr<WebGLVertexArrayObjectOES> create(WebGLRenderingContext*, VaoType);
-    
+    virtual ~WebGLVertexArrayObjectOES()
+    {
+        deleteObject();
+    }
+
+    static PassRefPtr<WebGLVertexArrayObjectOES> create( WebGLRenderingContext *, VaoType );
+
     // Cached values for vertex attrib range checks
-    struct VertexAttribState {
+    struct VertexAttribState
+    {
         VertexAttribState()
-            : enabled(false)
-            , bytesPerElement(0)
-            , size(4)
-            , type(GraphicsContext3D::FLOAT)
-            , normalized(false)
-            , stride(16)
-            , originalStride(0)
-            , offset(0)
+            : enabled( false )
+            , bytesPerElement( 0 )
+            , size( 4 )
+            , type( GraphicsContext3D::FLOAT )
+            , normalized( false )
+            , stride( 16 )
+            , originalStride( 0 )
+            , offset( 0 )
         {
         }
-        
+
         bool enabled;
         RefPtr<WebGLBuffer> bufferBinding;
         GC3Dsizei bytesPerElement;
@@ -69,24 +76,45 @@ public:
         GC3Dsizei originalStride;
         GC3Dintptr offset;
     };
-    
-    bool isDefaultObject() const { return m_type == VaoTypeDefault; }
-    
-    bool hasEverBeenBound() const { return object() && m_hasEverBeenBound; }
-    void setHasEverBeenBound() { m_hasEverBeenBound = true; }
-    
-    PassRefPtr<WebGLBuffer> getElementArrayBuffer() const { return m_boundElementArrayBuffer; }
-    void setElementArrayBuffer(PassRefPtr<WebGLBuffer> buffer) { m_boundElementArrayBuffer = buffer; }
-    
-    VertexAttribState& getVertexAttribState(int index) { return m_vertexAttribState[index]; }
+
+    bool isDefaultObject() const
+    {
+        return m_type == VaoTypeDefault;
+    }
+
+    bool hasEverBeenBound() const
+    {
+        return object() && m_hasEverBeenBound;
+    }
+    void setHasEverBeenBound()
+    {
+        m_hasEverBeenBound = true;
+    }
+
+    PassRefPtr<WebGLBuffer> getElementArrayBuffer() const
+    {
+        return m_boundElementArrayBuffer;
+    }
+    void setElementArrayBuffer( PassRefPtr<WebGLBuffer> buffer )
+    {
+        m_boundElementArrayBuffer = buffer;
+    }
+
+    VertexAttribState &getVertexAttribState( int index )
+    {
+        return m_vertexAttribState[index];
+    }
 
 private:
-    WebGLVertexArrayObjectOES(WebGLRenderingContext*, VaoType);
+    WebGLVertexArrayObjectOES( WebGLRenderingContext *, VaoType );
 
-    virtual void deleteObjectImpl(Platform3DObject);
+    virtual void deleteObjectImpl( Platform3DObject );
 
-    virtual bool isVertexArray() const { return true; }
-    
+    virtual bool isVertexArray() const
+    {
+        return true;
+    }
+
     VaoType m_type;
     bool m_hasEverBeenBound;
     RefPtr<WebGLBuffer> m_boundElementArrayBuffer;

@@ -32,12 +32,12 @@ class QString;
 
 class QScriptDebuggerConsoleHistorianInterface
 {
- public:
-   virtual ~QScriptDebuggerConsoleHistorianInterface() {}
+public:
+    virtual ~QScriptDebuggerConsoleHistorianInterface() {}
 
-   virtual int historyCount() const = 0;
-   virtual QString historyAt(int index) const = 0;
-   virtual void changeHistoryAt(int index, const QString &newHistory) = 0;
+    virtual int historyCount() const = 0;
+    virtual QString historyAt( int index ) const = 0;
+    virtual void changeHistoryAt( int index, const QString &newHistory ) = 0;
 };
 
 QT_END_NAMESPACE

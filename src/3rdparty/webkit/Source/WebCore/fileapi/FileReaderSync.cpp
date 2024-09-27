@@ -41,61 +41,73 @@
 #include "FileReaderLoader.h"
 #include <wtf/PassRefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 FileReaderSync::FileReaderSync()
 {
 }
 
-PassRefPtr<ArrayBuffer> FileReaderSync::readAsArrayBuffer(ScriptExecutionContext* scriptExecutionContext, Blob* blob, ExceptionCode& ec)
+PassRefPtr<ArrayBuffer> FileReaderSync::readAsArrayBuffer( ScriptExecutionContext *scriptExecutionContext, Blob *blob,
+        ExceptionCode &ec )
 {
-    if (!blob)
+    if ( !blob )
+    {
         return 0;
+    }
 
-    FileReaderLoader loader(FileReaderLoader::ReadAsArrayBuffer, 0);
-    startLoading(scriptExecutionContext, loader, blob, ec);
+    FileReaderLoader loader( FileReaderLoader::ReadAsArrayBuffer, 0 );
+    startLoading( scriptExecutionContext, loader, blob, ec );
 
     return loader.arrayBufferResult();
 }
 
-String FileReaderSync::readAsBinaryString(ScriptExecutionContext* scriptExecutionContext, Blob* blob, ExceptionCode& ec)
+String FileReaderSync::readAsBinaryString( ScriptExecutionContext *scriptExecutionContext, Blob *blob, ExceptionCode &ec )
 {
-    if (!blob)
+    if ( !blob )
+    {
         return String();
+    }
 
-    FileReaderLoader loader(FileReaderLoader::ReadAsBinaryString, 0);
-    startLoading(scriptExecutionContext, loader, blob, ec);
+    FileReaderLoader loader( FileReaderLoader::ReadAsBinaryString, 0 );
+    startLoading( scriptExecutionContext, loader, blob, ec );
     return loader.stringResult();
 }
 
-String FileReaderSync::readAsText(ScriptExecutionContext* scriptExecutionContext, Blob* blob, const String& encoding, ExceptionCode& ec)
+String FileReaderSync::readAsText( ScriptExecutionContext *scriptExecutionContext, Blob *blob, const String &encoding,
+                                   ExceptionCode &ec )
 {
-    if (!blob)
+    if ( !blob )
+    {
         return String();
+    }
 
-    FileReaderLoader loader(FileReaderLoader::ReadAsText, 0);
-    loader.setEncoding(encoding);
-    startLoading(scriptExecutionContext, loader, blob, ec);
+    FileReaderLoader loader( FileReaderLoader::ReadAsText, 0 );
+    loader.setEncoding( encoding );
+    startLoading( scriptExecutionContext, loader, blob, ec );
     return loader.stringResult();
 }
 
-String FileReaderSync::readAsDataURL(ScriptExecutionContext* scriptExecutionContext, Blob* blob, ExceptionCode& ec)
+String FileReaderSync::readAsDataURL( ScriptExecutionContext *scriptExecutionContext, Blob *blob, ExceptionCode &ec )
 {
-    if (!blob)
+    if ( !blob )
+    {
         return String();
+    }
 
-    FileReaderLoader loader(FileReaderLoader::ReadAsDataURL, 0);
-    loader.setDataType(blob->type());
-    startLoading(scriptExecutionContext, loader, blob, ec);
+    FileReaderLoader loader( FileReaderLoader::ReadAsDataURL, 0 );
+    loader.setDataType( blob->type() );
+    startLoading( scriptExecutionContext, loader, blob, ec );
     return loader.stringResult();
 }
 
-void FileReaderSync::startLoading(ScriptExecutionContext* scriptExecutionContext, FileReaderLoader& loader, Blob* blob, ExceptionCode& ec)
+void FileReaderSync::startLoading( ScriptExecutionContext *scriptExecutionContext, FileReaderLoader &loader, Blob *blob,
+                                   ExceptionCode &ec )
 {
-    loader.start(scriptExecutionContext, blob);
-    ec = FileException::ErrorCodeToExceptionCode(loader.errorCode());
+    loader.start( scriptExecutionContext, blob );
+    ec = FileException::ErrorCodeToExceptionCode( loader.errorCode() );
 }
 
 } // namespace WebCore
- 
+
 #endif // ENABLE(BLOB)

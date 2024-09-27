@@ -37,29 +37,32 @@
 #include "PlatformString.h"
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class WebSocketHandshakeResponse {
+class WebSocketHandshakeResponse
+{
 public:
     WebSocketHandshakeResponse();
     ~WebSocketHandshakeResponse();
 
     int statusCode() const;
-    void setStatusCode(int statusCode);
-    const String& statusText() const;
-    void setStatusText(const String& statusText);
-    const HTTPHeaderMap& headerFields() const;
-    void addHeaderField(const AtomicString& name, const String& value);
+    void setStatusCode( int statusCode );
+    const String &statusText() const;
+    void setStatusText( const String &statusText );
+    const HTTPHeaderMap &headerFields() const;
+    void addHeaderField( const AtomicString &name, const String &value );
     void clearHeaderFields();
 
-    struct ChallengeResponse {
+    struct ChallengeResponse
+    {
         unsigned char value[16];
 
         ChallengeResponse();
-        void set(const unsigned char challengeResponse[16]);
+        void set( const unsigned char challengeResponse[16] );
     };
-    const ChallengeResponse& challengeResponse() const;
-    void setChallengeResponse(const unsigned char challengeResponse[16]);
+    const ChallengeResponse &challengeResponse() const;
+    void setChallengeResponse( const unsigned char challengeResponse[16] );
 
 private:
     int m_statusCode;

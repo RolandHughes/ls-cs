@@ -32,14 +32,16 @@
 
 #if ENABLE(INDEXED_DATABASE)
 
-namespace WebCore {
+namespace WebCore
+{
 
 class IDBCallbacks;
 class IDBKey;
 class IDBKeyRange;
 class IDBTransactionBackendInterface;
 
-class IDBIndexBackendInterface : public ThreadSafeRefCounted<IDBIndexBackendInterface> {
+class IDBIndexBackendInterface : public ThreadSafeRefCounted<IDBIndexBackendInterface>
+{
 public:
     virtual ~IDBIndexBackendInterface() { }
 
@@ -48,10 +50,12 @@ public:
     virtual String keyPath() = 0;
     virtual bool unique() = 0;
 
-    virtual void openCursor(PassRefPtr<IDBKeyRange>, unsigned short direction, PassRefPtr<IDBCallbacks>, IDBTransactionBackendInterface*, ExceptionCode&) = 0;
-    virtual void openKeyCursor(PassRefPtr<IDBKeyRange>, unsigned short direction, PassRefPtr<IDBCallbacks>, IDBTransactionBackendInterface*, ExceptionCode&) = 0;
-    virtual void get(PassRefPtr<IDBKey>, PassRefPtr<IDBCallbacks>, IDBTransactionBackendInterface*, ExceptionCode&) = 0;
-    virtual void getKey(PassRefPtr<IDBKey>, PassRefPtr<IDBCallbacks>, IDBTransactionBackendInterface*, ExceptionCode&) = 0;
+    virtual void openCursor( PassRefPtr<IDBKeyRange>, unsigned short direction, PassRefPtr<IDBCallbacks>,
+                             IDBTransactionBackendInterface *, ExceptionCode & ) = 0;
+    virtual void openKeyCursor( PassRefPtr<IDBKeyRange>, unsigned short direction, PassRefPtr<IDBCallbacks>,
+                                IDBTransactionBackendInterface *, ExceptionCode & ) = 0;
+    virtual void get( PassRefPtr<IDBKey>, PassRefPtr<IDBCallbacks>, IDBTransactionBackendInterface *, ExceptionCode & ) = 0;
+    virtual void getKey( PassRefPtr<IDBKey>, PassRefPtr<IDBCallbacks>, IDBTransactionBackendInterface *, ExceptionCode & ) = 0;
 };
 
 } // namespace WebCore

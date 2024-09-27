@@ -21,7 +21,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef HTMLConstructionSite_h
@@ -35,70 +35,94 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class AtomicHTMLToken;
 class Document;
 class Element;
 
-class HTMLConstructionSite {
-    WTF_MAKE_NONCOPYABLE(HTMLConstructionSite);
+class HTMLConstructionSite
+{
+    WTF_MAKE_NONCOPYABLE( HTMLConstructionSite );
 public:
-    HTMLConstructionSite(Document*);
-    HTMLConstructionSite(DocumentFragment*, FragmentScriptingPermission);
+    HTMLConstructionSite( Document * );
+    HTMLConstructionSite( DocumentFragment *, FragmentScriptingPermission );
     ~HTMLConstructionSite();
 
     void detach();
 
-    void insertDoctype(AtomicHTMLToken&);
-    void insertComment(AtomicHTMLToken&);
-    void insertCommentOnDocument(AtomicHTMLToken&);
-    void insertCommentOnHTMLHtmlElement(AtomicHTMLToken&);
-    void insertHTMLElement(AtomicHTMLToken&);
-    void insertSelfClosingHTMLElement(AtomicHTMLToken&);
-    void insertFormattingElement(AtomicHTMLToken&);
-    void insertHTMLHeadElement(AtomicHTMLToken&);
-    void insertHTMLBodyElement(AtomicHTMLToken&);
-    void insertHTMLFormElement(AtomicHTMLToken&, bool isDemoted = false);
-    void insertScriptElement(AtomicHTMLToken&);
-    void insertTextNode(const String&);
-    void insertForeignElement(AtomicHTMLToken&, const AtomicString& namespaceURI);
+    void insertDoctype( AtomicHTMLToken & );
+    void insertComment( AtomicHTMLToken & );
+    void insertCommentOnDocument( AtomicHTMLToken & );
+    void insertCommentOnHTMLHtmlElement( AtomicHTMLToken & );
+    void insertHTMLElement( AtomicHTMLToken & );
+    void insertSelfClosingHTMLElement( AtomicHTMLToken & );
+    void insertFormattingElement( AtomicHTMLToken & );
+    void insertHTMLHeadElement( AtomicHTMLToken & );
+    void insertHTMLBodyElement( AtomicHTMLToken & );
+    void insertHTMLFormElement( AtomicHTMLToken &, bool isDemoted = false );
+    void insertScriptElement( AtomicHTMLToken & );
+    void insertTextNode( const String & );
+    void insertForeignElement( AtomicHTMLToken &, const AtomicString &namespaceURI );
 
-    void insertHTMLHtmlStartTagBeforeHTML(AtomicHTMLToken&);
-    void insertHTMLHtmlStartTagInBody(AtomicHTMLToken&);
-    void insertHTMLBodyStartTagInBody(AtomicHTMLToken&);
+    void insertHTMLHtmlStartTagBeforeHTML( AtomicHTMLToken & );
+    void insertHTMLHtmlStartTagInBody( AtomicHTMLToken & );
+    void insertHTMLBodyStartTagInBody( AtomicHTMLToken & );
 
-    PassRefPtr<Element> createHTMLElement(AtomicHTMLToken&);
-    PassRefPtr<Element> createHTMLElementFromElementRecord(HTMLElementStack::ElementRecord*);
+    PassRefPtr<Element> createHTMLElement( AtomicHTMLToken & );
+    PassRefPtr<Element> createHTMLElementFromElementRecord( HTMLElementStack::ElementRecord * );
 
     bool shouldFosterParent() const;
-    void fosterParent(Node*);
+    void fosterParent( Node * );
 
-    bool indexOfFirstUnopenFormattingElement(unsigned& firstUnopenElementIndex) const;
+    bool indexOfFirstUnopenFormattingElement( unsigned &firstUnopenElementIndex ) const;
     void reconstructTheActiveFormattingElements();
 
     void generateImpliedEndTags();
-    void generateImpliedEndTagsWithExclusion(const AtomicString& tagName);
+    void generateImpliedEndTagsWithExclusion( const AtomicString &tagName );
 
-    Element* currentElement() const { return m_openElements.top(); }
-    ContainerNode* currentNode() const { return m_openElements.topNode(); }
-    Element* oneBelowTop() const { return m_openElements.oneBelowTop(); }
+    Element *currentElement() const
+    {
+        return m_openElements.top();
+    }
+    ContainerNode *currentNode() const
+    {
+        return m_openElements.topNode();
+    }
+    Element *oneBelowTop() const
+    {
+        return m_openElements.oneBelowTop();
+    }
 
-    HTMLElementStack* openElements() const { return &m_openElements; }
-    HTMLFormattingElementList* activeFormattingElements() const { return &m_activeFormattingElements; }
+    HTMLElementStack *openElements() const
+    {
+        return &m_openElements;
+    }
+    HTMLFormattingElementList *activeFormattingElements() const
+    {
+        return &m_activeFormattingElements;
+    }
 
-    Element* head() const { return m_head.get(); }
+    Element *head() const
+    {
+        return m_head.get();
+    }
 
-    void setForm(HTMLFormElement*);
-    HTMLFormElement* form() const { return m_form.get(); }
+    void setForm( HTMLFormElement * );
+    HTMLFormElement *form() const
+    {
+        return m_form.get();
+    }
     PassRefPtr<HTMLFormElement> takeForm();
 
-    class RedirectToFosterParentGuard {
-        WTF_MAKE_NONCOPYABLE(RedirectToFosterParentGuard);
+    class RedirectToFosterParentGuard
+    {
+        WTF_MAKE_NONCOPYABLE( RedirectToFosterParentGuard );
     public:
-        RedirectToFosterParentGuard(HTMLConstructionSite& tree)
-            : m_tree(tree)
-            , m_wasRedirectingBefore(tree.m_redirectAttachToFosterParent)
+        RedirectToFosterParentGuard( HTMLConstructionSite &tree )
+            : m_tree( tree )
+            , m_wasRedirectingBefore( tree.m_redirectAttachToFosterParent )
         {
             m_tree.m_redirectAttachToFosterParent = true;
         }
@@ -109,36 +133,37 @@ public:
         }
 
     private:
-        HTMLConstructionSite& m_tree;
+        HTMLConstructionSite &m_tree;
         bool m_wasRedirectingBefore;
     };
 
 private:
-    struct AttachmentSite {
-        ContainerNode* parent;
-        Node* nextChild;
+    struct AttachmentSite
+    {
+        ContainerNode *parent;
+        Node *nextChild;
     };
 
     template<typename ChildType>
-    PassRefPtr<ChildType> attach(ContainerNode* parent, PassRefPtr<ChildType> child);
-    PassRefPtr<Element> attachToCurrent(PassRefPtr<Element>);
+    PassRefPtr<ChildType> attach( ContainerNode *parent, PassRefPtr<ChildType> child );
+    PassRefPtr<Element> attachToCurrent( PassRefPtr<Element> );
 
-    void attachAtSite(const AttachmentSite&, PassRefPtr<Node> child);
-    void findFosterSite(AttachmentSite&);
+    void attachAtSite( const AttachmentSite &, PassRefPtr<Node> child );
+    void findFosterSite( AttachmentSite & );
 
-    PassRefPtr<Element> createHTMLElementFromSavedElement(Element*);
-    PassRefPtr<Element> createElement(AtomicHTMLToken&, const AtomicString& namespaceURI);
+    PassRefPtr<Element> createHTMLElementFromSavedElement( Element * );
+    PassRefPtr<Element> createElement( AtomicHTMLToken &, const AtomicString &namespaceURI );
 
-    void mergeAttributesFromTokenIntoElement(AtomicHTMLToken&, Element*);
+    void mergeAttributesFromTokenIntoElement( AtomicHTMLToken &, Element * );
     void dispatchDocumentElementAvailableIfNeeded();
 
-    Document* m_document;
-    
+    Document *m_document;
+
     // This is the root ContainerNode to which the parser attaches all newly
     // constructed nodes. It points to a DocumentFragment when parsing fragments
     // and a Document in all other cases.
-    ContainerNode* m_attachmentRoot;
-    
+    ContainerNode *m_attachmentRoot;
+
     RefPtr<Element> m_head;
     RefPtr<HTMLFormElement> m_form;
     mutable HTMLElementStack m_openElements;

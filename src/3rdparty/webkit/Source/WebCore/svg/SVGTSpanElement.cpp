@@ -27,61 +27,66 @@
 #include "RenderSVGTSpan.h"
 #include "SVGNames.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-inline SVGTSpanElement::SVGTSpanElement(const QualifiedName& tagName, Document* document)
-    : SVGTextPositioningElement(tagName, document)
+inline SVGTSpanElement::SVGTSpanElement( const QualifiedName &tagName, Document *document )
+    : SVGTextPositioningElement( tagName, document )
 {
 }
 
-PassRefPtr<SVGTSpanElement> SVGTSpanElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<SVGTSpanElement> SVGTSpanElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new SVGTSpanElement(tagName, document));
+    return adoptRef( new SVGTSpanElement( tagName, document ) );
 }
 
-RenderObject* SVGTSpanElement::createRenderer(RenderArena* arena, RenderStyle*)
+RenderObject *SVGTSpanElement::createRenderer( RenderArena *arena, RenderStyle * )
 {
-    return new (arena) RenderSVGTSpan(this);
+    return new ( arena ) RenderSVGTSpan( this );
 }
 
-bool SVGTSpanElement::childShouldCreateRenderer(Node* child) const
+bool SVGTSpanElement::childShouldCreateRenderer( Node *child ) const
 {
-    if (child->isTextNode()
-        || child->hasTagName(SVGNames::aTag)
+    if ( child->isTextNode()
+            || child->hasTagName( SVGNames::aTag )
 #if ENABLE(SVG_FONTS)
-        || child->hasTagName(SVGNames::altGlyphTag)
+            || child->hasTagName( SVGNames::altGlyphTag )
 #endif
-        || child->hasTagName(SVGNames::trefTag)
-        || child->hasTagName(SVGNames::tspanTag))
+            || child->hasTagName( SVGNames::trefTag )
+            || child->hasTagName( SVGNames::tspanTag ) )
+    {
         return true;
+    }
 
     return false;
 }
 
-bool SVGTSpanElement::rendererIsNeeded(RenderStyle* style)
+bool SVGTSpanElement::rendererIsNeeded( RenderStyle *style )
 {
-    if (parentNode()
-        && (parentNode()->hasTagName(SVGNames::aTag)
+    if ( parentNode()
+            && ( parentNode()->hasTagName( SVGNames::aTag )
 #if ENABLE(SVG_FONTS)
-            || parentNode()->hasTagName(SVGNames::altGlyphTag)
+                 || parentNode()->hasTagName( SVGNames::altGlyphTag )
 #endif
-            || parentNode()->hasTagName(SVGNames::textTag)
-            || parentNode()->hasTagName(SVGNames::textPathTag)
-            || parentNode()->hasTagName(SVGNames::tspanTag)))
-        return StyledElement::rendererIsNeeded(style);
+                 || parentNode()->hasTagName( SVGNames::textTag )
+                 || parentNode()->hasTagName( SVGNames::textPathTag )
+                 || parentNode()->hasTagName( SVGNames::tspanTag ) ) )
+    {
+        return StyledElement::rendererIsNeeded( style );
+    }
 
     return false;
 }
 
-AttributeToPropertyTypeMap& SVGTSpanElement::attributeToPropertyTypeMap()
+AttributeToPropertyTypeMap &SVGTSpanElement::attributeToPropertyTypeMap()
 {
-    DEFINE_STATIC_LOCAL(AttributeToPropertyTypeMap, s_attributeToPropertyTypeMap, ());
+    DEFINE_STATIC_LOCAL( AttributeToPropertyTypeMap, s_attributeToPropertyTypeMap, () );
     return s_attributeToPropertyTypeMap;
 }
 
 void SVGTSpanElement::fillAttributeToPropertyTypeMap()
-{        
-    SVGTextPositioningElement::fillPassedAttributeToPropertyTypeMap(attributeToPropertyTypeMap());
+{
+    SVGTextPositioningElement::fillPassedAttributeToPropertyTypeMap( attributeToPropertyTypeMap() );
 }
 
 }

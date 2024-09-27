@@ -28,21 +28,23 @@
 #include "RenderTreeAsText.h"
 #include "TextStream.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-FESpecularLighting::FESpecularLighting(Filter* filter, const Color& lightingColor, float surfaceScale,
-    float specularConstant, float specularExponent, float kernelUnitLengthX,
-    float kernelUnitLengthY, PassRefPtr<LightSource> lightSource)
-    : FELighting(filter, SpecularLighting, lightingColor, surfaceScale, 0, specularConstant, specularExponent, kernelUnitLengthX, kernelUnitLengthY, lightSource)
+FESpecularLighting::FESpecularLighting( Filter *filter, const Color &lightingColor, float surfaceScale,
+                                        float specularConstant, float specularExponent, float kernelUnitLengthX,
+                                        float kernelUnitLengthY, PassRefPtr<LightSource> lightSource )
+    : FELighting( filter, SpecularLighting, lightingColor, surfaceScale, 0, specularConstant, specularExponent, kernelUnitLengthX,
+                  kernelUnitLengthY, lightSource )
 {
 }
 
-PassRefPtr<FESpecularLighting> FESpecularLighting::create(Filter* filter, const Color& lightingColor,
-    float surfaceScale, float specularConstant, float specularExponent,
-    float kernelUnitLengthX, float kernelUnitLengthY, PassRefPtr<LightSource> lightSource)
+PassRefPtr<FESpecularLighting> FESpecularLighting::create( Filter *filter, const Color &lightingColor,
+        float surfaceScale, float specularConstant, float specularExponent,
+        float kernelUnitLengthX, float kernelUnitLengthY, PassRefPtr<LightSource> lightSource )
 {
-    return adoptRef(new FESpecularLighting(filter, lightingColor, surfaceScale, specularConstant, specularExponent,
-        kernelUnitLengthX, kernelUnitLengthY, lightSource));
+    return adoptRef( new FESpecularLighting( filter, lightingColor, surfaceScale, specularConstant, specularExponent,
+                     kernelUnitLengthX, kernelUnitLengthY, lightSource ) );
 }
 
 FESpecularLighting::~FESpecularLighting()
@@ -54,10 +56,13 @@ Color FESpecularLighting::lightingColor() const
     return m_lightingColor;
 }
 
-bool FESpecularLighting::setLightingColor(const Color& lightingColor)
+bool FESpecularLighting::setLightingColor( const Color &lightingColor )
 {
-    if (m_lightingColor == lightingColor)
+    if ( m_lightingColor == lightingColor )
+    {
         return false;
+    }
+
     m_lightingColor = lightingColor;
     return true;
 }
@@ -67,10 +72,13 @@ float FESpecularLighting::surfaceScale() const
     return m_surfaceScale;
 }
 
-bool FESpecularLighting::setSurfaceScale(float surfaceScale)
+bool FESpecularLighting::setSurfaceScale( float surfaceScale )
 {
-    if (m_surfaceScale == surfaceScale)
+    if ( m_surfaceScale == surfaceScale )
+    {
         return false;
+    }
+
     m_surfaceScale = surfaceScale;
     return true;
 }
@@ -80,10 +88,13 @@ float FESpecularLighting::specularConstant() const
     return m_specularConstant;
 }
 
-bool FESpecularLighting::setSpecularConstant(float specularConstant)
+bool FESpecularLighting::setSpecularConstant( float specularConstant )
 {
-    if (m_specularConstant == specularConstant)
+    if ( m_specularConstant == specularConstant )
+    {
         return false;
+    }
+
     m_specularConstant = specularConstant;
     return true;
 }
@@ -93,10 +104,13 @@ float FESpecularLighting::specularExponent() const
     return m_specularExponent;
 }
 
-bool FESpecularLighting::setSpecularExponent(float specularExponent)
+bool FESpecularLighting::setSpecularExponent( float specularExponent )
 {
-    if (m_specularExponent == specularExponent)
+    if ( m_specularExponent == specularExponent )
+    {
         return false;
+    }
+
     m_specularExponent = specularExponent;
     return true;
 }
@@ -106,10 +120,13 @@ float FESpecularLighting::kernelUnitLengthX() const
     return m_kernelUnitLengthX;
 }
 
-bool FESpecularLighting::setKernelUnitLengthX(float kernelUnitLengthX)
+bool FESpecularLighting::setKernelUnitLengthX( float kernelUnitLengthX )
 {
-    if (m_kernelUnitLengthX == kernelUnitLengthX)
+    if ( m_kernelUnitLengthX == kernelUnitLengthX )
+    {
         return false;
+    }
+
     m_kernelUnitLengthX = kernelUnitLengthX;
     return true;
 }
@@ -119,20 +136,23 @@ float FESpecularLighting::kernelUnitLengthY() const
     return m_kernelUnitLengthY;
 }
 
-bool FESpecularLighting::setKernelUnitLengthY(float kernelUnitLengthY)
+bool FESpecularLighting::setKernelUnitLengthY( float kernelUnitLengthY )
 {
-    if (m_kernelUnitLengthY == kernelUnitLengthY)
+    if ( m_kernelUnitLengthY == kernelUnitLengthY )
+    {
         return false;
+    }
+
     m_kernelUnitLengthY = kernelUnitLengthY;
     return true;
 }
 
-const LightSource* FESpecularLighting::lightSource() const
+const LightSource *FESpecularLighting::lightSource() const
 {
     return m_lightSource.get();
 }
 
-void FESpecularLighting::setLightSource(PassRefPtr<LightSource> lightSource)
+void FESpecularLighting::setLightSource( PassRefPtr<LightSource> lightSource )
 {
     m_lightSource = lightSource;
 }
@@ -141,15 +161,15 @@ void FESpecularLighting::dump()
 {
 }
 
-TextStream& FESpecularLighting::externalRepresentation(TextStream& ts, int indent) const
+TextStream &FESpecularLighting::externalRepresentation( TextStream &ts, int indent ) const
 {
-    writeIndent(ts, indent);
+    writeIndent( ts, indent );
     ts << "[feSpecularLighting";
-    FilterEffect::externalRepresentation(ts);
+    FilterEffect::externalRepresentation( ts );
     ts << " surfaceScale=\"" << m_surfaceScale << "\" "
        << "specualConstant=\"" << m_specularConstant << "\" "
        << "specularExponent=\"" << m_specularExponent << "\"]\n";
-    inputEffect(0)->externalRepresentation(ts, indent + 1);
+    inputEffect( 0 )->externalRepresentation( ts, indent + 1 );
     return ts;
 }
 

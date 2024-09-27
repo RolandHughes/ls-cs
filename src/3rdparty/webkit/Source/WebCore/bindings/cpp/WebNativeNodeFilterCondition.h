@@ -24,20 +24,21 @@
 #include "NodeFilter.h"
 #include "WebDOMNodeFilter.h"
 
-class WebNativeNodeFilterCondition : public WebCore::NodeFilterCondition {
+class WebNativeNodeFilterCondition : public WebCore::NodeFilterCondition
+{
 public:
-    static PassRefPtr<WebNativeNodeFilterCondition> create(WebUserNodeFilter* filter)
+    static PassRefPtr<WebNativeNodeFilterCondition> create( WebUserNodeFilter *filter )
     {
-        return adoptRef(new WebNativeNodeFilterCondition(filter));
+        return adoptRef( new WebNativeNodeFilterCondition( filter ) );
     }
 
     virtual ~WebNativeNodeFilterCondition();
 
-    virtual short acceptNode(WebCore::ScriptState*, WebCore::Node*) const;
+    virtual short acceptNode( WebCore::ScriptState *, WebCore::Node * ) const;
 
 protected:
-    WebNativeNodeFilterCondition(WebUserNodeFilter*);
-    WebUserNodeFilter* m_filter;
+    WebNativeNodeFilterCondition( WebUserNodeFilter * );
+    WebUserNodeFilter *m_filter;
 };
 
 #endif

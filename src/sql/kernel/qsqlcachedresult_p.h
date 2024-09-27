@@ -33,38 +33,38 @@ class QSqlCachedResultPrivate;
 
 class Q_SQL_EXPORT QSqlCachedResult: public QSqlResult
 {
- public:
-   virtual ~QSqlCachedResult();
+public:
+    virtual ~QSqlCachedResult();
 
-   typedef QVector<QVariant> ValueCache;
+    typedef QVector<QVariant> ValueCache;
 
- protected:
-   QSqlCachedResult(const QSqlDriver *db);
+protected:
+    QSqlCachedResult( const QSqlDriver *db );
 
-   void init(int colCount);
-   void cleanup();
-   void clearValues();
+    void init( int colCount );
+    void cleanup();
+    void clearValues();
 
-   virtual bool gotoNext(ValueCache &values, int index) = 0;
+    virtual bool gotoNext( ValueCache &values, int index ) = 0;
 
-   QVariant data(int i) override;
-   bool isNull(int i) override;
-   bool fetch(int i) override;
-   bool fetchNext() override;
-   bool fetchPrevious() override;
-   bool fetchFirst() override;
-   bool fetchLast() override;
+    QVariant data( int i ) override;
+    bool isNull( int i ) override;
+    bool fetch( int i ) override;
+    bool fetchNext() override;
+    bool fetchPrevious() override;
+    bool fetchFirst() override;
+    bool fetchLast() override;
 
-   int colCount() const;
-   ValueCache &cache();
+    int colCount() const;
+    ValueCache &cache();
 
-   void virtual_hook(int id, void *data) override;
-   void detachFromResultSet() override;
-   void setNumericalPrecisionPolicy(QSql::NumericalPrecisionPolicy policy) override;
+    void virtual_hook( int id, void *data ) override;
+    void detachFromResultSet() override;
+    void setNumericalPrecisionPolicy( QSql::NumericalPrecisionPolicy policy ) override;
 
- private:
-   bool cacheNext();
-   QSqlCachedResultPrivate *d;
+private:
+    bool cacheNext();
+    QSqlCachedResultPrivate *d;
 };
 
 #endif

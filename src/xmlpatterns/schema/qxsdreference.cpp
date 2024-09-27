@@ -27,35 +27,35 @@ using namespace QPatternist;
 
 bool XsdReference::isReference() const
 {
-   return true;
+    return true;
 }
 
-void XsdReference::setType(Type type)
+void XsdReference::setType( Type type )
 {
-   m_type = type;
+    m_type = type;
 }
 
 XsdReference::Type XsdReference::type() const
 {
-   return m_type;
+    return m_type;
 }
 
-void XsdReference::setReferenceName(const QXmlName &referenceName)
+void XsdReference::setReferenceName( const QXmlName &referenceName )
 {
-   m_referenceName = referenceName;
+    m_referenceName = referenceName;
 }
 
 QXmlName XsdReference::referenceName() const
 {
-   return m_referenceName;
+    return m_referenceName;
 }
 
-void XsdReference::setSourceLocation(const QSourceLocation &location)
+void XsdReference::setSourceLocation( const QSourceLocation &location )
 {
-   m_sourceLocation = location;
+    m_sourceLocation = location;
 }
 
 QSourceLocation XsdReference::sourceLocation() const
 {
-   return m_sourceLocation;
+    return m_sourceLocation;
 }

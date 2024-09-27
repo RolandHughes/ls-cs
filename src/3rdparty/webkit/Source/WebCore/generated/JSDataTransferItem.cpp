@@ -37,9 +37,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSDataTransferItem);
+ASSERT_CLASS_FITS_IN_CELL( JSDataTransferItem );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -50,10 +51,10 @@ ASSERT_CLASS_FITS_IN_CELL(JSDataTransferItem);
 
 static const HashTableValue JSDataTransferItemTableValues[4] =
 {
-    { "kind", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDataTransferItemKind), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "type", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDataTransferItemType), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDataTransferItemConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "kind", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDataTransferItemKind ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "type", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDataTransferItemType ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDataTransferItemConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -67,43 +68,51 @@ static JSC_CONST_HASHTABLE HashTable JSDataTransferItemTable = { 8, 7, JSDataTra
 
 static const HashTableValue JSDataTransferItemConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSDataTransferItemConstructorTable = { 1, 0, JSDataTransferItemConstructorTableValues, 0 };
-class JSDataTransferItemConstructor : public DOMConstructorObject {
+class JSDataTransferItemConstructor : public DOMConstructorObject
+{
 public:
-    JSDataTransferItemConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSDataTransferItemConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSDataTransferItemConstructor::s_info = { "DataTransferItemConstructor", &DOMConstructorObject::s_info, &JSDataTransferItemConstructorTable, 0 };
 
-JSDataTransferItemConstructor::JSDataTransferItemConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSDataTransferItemConstructor::JSDataTransferItemConstructor( ExecState *exec, Structure *structure,
+        JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSDataTransferItemPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSDataTransferItemPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSDataTransferItemConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSDataTransferItemConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSDataTransferItemConstructor, JSDOMWrapper>(exec, &JSDataTransferItemConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSDataTransferItemConstructor, JSDOMWrapper>( exec, &JSDataTransferItemConstructorTable, this,
+            propertyName, slot );
 }
 
-bool JSDataTransferItemConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSDataTransferItemConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSDataTransferItemConstructor, JSDOMWrapper>(exec, &JSDataTransferItemConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSDataTransferItemConstructor, JSDOMWrapper>( exec, &JSDataTransferItemConstructorTable, this,
+            propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -115,123 +124,137 @@ bool JSDataTransferItemConstructor::getOwnPropertyDescriptor(ExecState* exec, co
 
 static const HashTableValue JSDataTransferItemPrototypeTableValues[3] =
 {
-    { "getAsString", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDataTransferItemPrototypeFunctionGetAsString), (intptr_t)1 THUNK_GENERATOR(0) },
-    { "getAsFile", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDataTransferItemPrototypeFunctionGetAsFile), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "getAsString", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDataTransferItemPrototypeFunctionGetAsString ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { "getAsFile", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDataTransferItemPrototypeFunctionGetAsFile ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSDataTransferItemPrototypeTable = { 4, 3, JSDataTransferItemPrototypeTableValues, 0 };
 const ClassInfo JSDataTransferItemPrototype::s_info = { "DataTransferItemPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSDataTransferItemPrototypeTable, 0 };
 
-JSObject* JSDataTransferItemPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSDataTransferItemPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSDataTransferItem>(exec, globalObject);
+    return getDOMPrototype<JSDataTransferItem>( exec, globalObject );
 }
 
-bool JSDataTransferItemPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSDataTransferItemPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticFunctionSlot<JSObject>(exec, &JSDataTransferItemPrototypeTable, this, propertyName, slot);
+    return getStaticFunctionSlot<JSObject>( exec, &JSDataTransferItemPrototypeTable, this, propertyName, slot );
 }
 
-bool JSDataTransferItemPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSDataTransferItemPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticFunctionDescriptor<JSObject>(exec, &JSDataTransferItemPrototypeTable, this, propertyName, descriptor);
+    return getStaticFunctionDescriptor<JSObject>( exec, &JSDataTransferItemPrototypeTable, this, propertyName, descriptor );
 }
 
 const ClassInfo JSDataTransferItem::s_info = { "DataTransferItem", &JSDOMWrapper::s_info, &JSDataTransferItemTable, 0 };
 
-JSDataTransferItem::JSDataTransferItem(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<DataTransferItem> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSDataTransferItem::JSDataTransferItem( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<DataTransferItem> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSDataTransferItem::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSDataTransferItem::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSDataTransferItemPrototype(exec->globalData(), globalObject, JSDataTransferItemPrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSDataTransferItemPrototype( exec->globalData(), globalObject,
+            JSDataTransferItemPrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSDataTransferItem::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSDataTransferItem::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSDataTransferItem, Base>(exec, &JSDataTransferItemTable, this, propertyName, slot);
+    return getStaticValueSlot<JSDataTransferItem, Base>( exec, &JSDataTransferItemTable, this, propertyName, slot );
 }
 
-bool JSDataTransferItem::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSDataTransferItem::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSDataTransferItem, Base>(exec, &JSDataTransferItemTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSDataTransferItem, Base>( exec, &JSDataTransferItemTable, this, propertyName, descriptor );
 }
 
-JSValue jsDataTransferItemKind(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDataTransferItemKind( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDataTransferItem* castedThis = static_cast<JSDataTransferItem*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    DataTransferItem* imp = static_cast<DataTransferItem*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->kind());
+    JSDataTransferItem *castedThis = static_cast<JSDataTransferItem *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    DataTransferItem *imp = static_cast<DataTransferItem *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->kind() );
     return result;
 }
 
 
-JSValue jsDataTransferItemType(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDataTransferItemType( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDataTransferItem* castedThis = static_cast<JSDataTransferItem*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    DataTransferItem* imp = static_cast<DataTransferItem*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->type());
+    JSDataTransferItem *castedThis = static_cast<JSDataTransferItem *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    DataTransferItem *imp = static_cast<DataTransferItem *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->type() );
     return result;
 }
 
 
-JSValue jsDataTransferItemConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDataTransferItemConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDataTransferItem* domObject = static_cast<JSDataTransferItem*>(asObject(slotBase));
-    return JSDataTransferItem::getConstructor(exec, domObject->globalObject());
+    JSDataTransferItem *domObject = static_cast<JSDataTransferItem *>( asObject( slotBase ) );
+    return JSDataTransferItem::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSDataTransferItem::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSDataTransferItem::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSDataTransferItemConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSDataTransferItemConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsDataTransferItemPrototypeFunctionGetAsString(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsDataTransferItemPrototypeFunctionGetAsString( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSDataTransferItem::s_info))
-        return throwVMTypeError(exec);
-    JSDataTransferItem* castedThis = static_cast<JSDataTransferItem*>(asObject(thisValue));
-    DataTransferItem* imp = static_cast<DataTransferItem*>(castedThis->impl());
-    if (exec->argumentCount() <= 0 || !exec->argument(0).isObject()) {
-        setDOMException(exec, TYPE_MISMATCH_ERR);
-        return JSValue::encode(jsUndefined());
+
+    if ( !thisValue.inherits( &JSDataTransferItem::s_info ) )
+    {
+        return throwVMTypeError( exec );
     }
-    RefPtr<StringCallback> callback = JSStringCallback::create(asObject(exec->argument(0)), castedThis->globalObject());
 
-    imp->getAsString(callback);
-    return JSValue::encode(jsUndefined());
+    JSDataTransferItem *castedThis = static_cast<JSDataTransferItem *>( asObject( thisValue ) );
+    DataTransferItem *imp = static_cast<DataTransferItem *>( castedThis->impl() );
+
+    if ( exec->argumentCount() <= 0 || !exec->argument( 0 ).isObject() )
+    {
+        setDOMException( exec, TYPE_MISMATCH_ERR );
+        return JSValue::encode( jsUndefined() );
+    }
+
+    RefPtr<StringCallback> callback = JSStringCallback::create( asObject( exec->argument( 0 ) ), castedThis->globalObject() );
+
+    imp->getAsString( callback );
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsDataTransferItemPrototypeFunctionGetAsFile(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsDataTransferItemPrototypeFunctionGetAsFile( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSDataTransferItem::s_info))
-        return throwVMTypeError(exec);
-    JSDataTransferItem* castedThis = static_cast<JSDataTransferItem*>(asObject(thisValue));
-    DataTransferItem* imp = static_cast<DataTransferItem*>(castedThis->impl());
+
+    if ( !thisValue.inherits( &JSDataTransferItem::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSDataTransferItem *castedThis = static_cast<JSDataTransferItem *>( asObject( thisValue ) );
+    DataTransferItem *imp = static_cast<DataTransferItem *>( castedThis->impl() );
 
 
-    JSC::JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->getAsFile()));
-    return JSValue::encode(result);
+    JSC::JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->getAsFile() ) );
+    return JSValue::encode( result );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, DataTransferItem* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, DataTransferItem *impl )
 {
-    return wrap<JSDataTransferItem>(exec, globalObject, impl);
+    return wrap<JSDataTransferItem>( exec, globalObject, impl );
 }
 
-DataTransferItem* toDataTransferItem(JSC::JSValue value)
+DataTransferItem *toDataTransferItem( JSC::JSValue value )
 {
-    return value.inherits(&JSDataTransferItem::s_info) ? static_cast<JSDataTransferItem*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSDataTransferItem::s_info ) ? static_cast<JSDataTransferItem *>( asObject( value ) )->impl() : 0;
 }
 
 }

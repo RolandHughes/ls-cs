@@ -36,88 +36,89 @@ class QSqlDatabasePrivate;
 
 class Q_SQL_EXPORT QSqlDriverCreatorBase
 {
- public:
-   virtual ~QSqlDriverCreatorBase() {}
-   virtual QSqlDriver *createObject() const = 0;
+public:
+    virtual ~QSqlDriverCreatorBase() {}
+    virtual QSqlDriver *createObject() const = 0;
 };
 
 template <class T>
 class QSqlDriverCreator : public QSqlDriverCreatorBase
 {
- public:
-   QSqlDriver *createObject() const override {
-      return new T;
-   }
+public:
+    QSqlDriver *createObject() const override
+    {
+        return new T;
+    }
 };
 
 class Q_SQL_EXPORT QSqlDatabase
 {
- public:
-   QSqlDatabase();
-   QSqlDatabase(const QSqlDatabase &other);
-   ~QSqlDatabase();
+public:
+    QSqlDatabase();
+    QSqlDatabase( const QSqlDatabase &other );
+    ~QSqlDatabase();
 
-   QSqlDatabase &operator=(const QSqlDatabase &other);
+    QSqlDatabase &operator=( const QSqlDatabase &other );
 
-   bool open();
-   bool open(const QString &user, const QString &password);
-   void close();
-   bool isOpen() const;
-   bool isOpenError() const;
-   QStringList tables(QSql::TableType type = QSql::Tables) const;
-   QSqlIndex primaryIndex(const QString &tablename) const;
-   QSqlRecord record(const QString &tablename) const;
+    bool open();
+    bool open( const QString &user, const QString &password );
+    void close();
+    bool isOpen() const;
+    bool isOpenError() const;
+    QStringList tables( QSql::TableType type = QSql::Tables ) const;
+    QSqlIndex primaryIndex( const QString &tablename ) const;
+    QSqlRecord record( const QString &tablename ) const;
 
-   QSqlQuery exec(const QString &query = QString()) const;
-   QSqlError lastError() const;
-   bool isValid() const;
+    QSqlQuery exec( const QString &query = QString() ) const;
+    QSqlError lastError() const;
+    bool isValid() const;
 
-   bool transaction();
-   bool commit();
-   bool rollback();
+    bool transaction();
+    bool commit();
+    bool rollback();
 
-   void setDatabaseName(const QString &name);
-   void setUserName(const QString &name);
-   void setPassword(const QString &password);
-   void setHostName(const QString &host);
-   void setPort(int port);
-   void setConnectOptions(const QString &options = QString());
-   QString databaseName() const;
-   QString userName() const;
-   QString password() const;
-   QString hostName() const;
-   QString driverName() const;
-   int port() const;
-   QString connectOptions() const;
-   QString connectionName() const;
-   void setNumericalPrecisionPolicy(QSql::NumericalPrecisionPolicy precisionPolicy);
-   QSql::NumericalPrecisionPolicy numericalPrecisionPolicy() const;
+    void setDatabaseName( const QString &name );
+    void setUserName( const QString &name );
+    void setPassword( const QString &password );
+    void setHostName( const QString &host );
+    void setPort( int port );
+    void setConnectOptions( const QString &options = QString() );
+    QString databaseName() const;
+    QString userName() const;
+    QString password() const;
+    QString hostName() const;
+    QString driverName() const;
+    int port() const;
+    QString connectOptions() const;
+    QString connectionName() const;
+    void setNumericalPrecisionPolicy( QSql::NumericalPrecisionPolicy precisionPolicy );
+    QSql::NumericalPrecisionPolicy numericalPrecisionPolicy() const;
 
-   QSqlDriver *driver() const;
+    QSqlDriver *driver() const;
 
-   static QString defaultConnection;
+    static QString defaultConnection;
 
-   static QSqlDatabase addDatabase(const QString &type, const QString &connectionName = defaultConnection);
-   static QSqlDatabase addDatabase(QSqlDriver *driver,  const QString &connectionName = defaultConnection);
-   static QSqlDatabase cloneDatabase(const QSqlDatabase &other, const QString &connectionName);
-   static QSqlDatabase database(const QString &connectionName = defaultConnection, bool open = true);
+    static QSqlDatabase addDatabase( const QString &type, const QString &connectionName = defaultConnection );
+    static QSqlDatabase addDatabase( QSqlDriver *driver,  const QString &connectionName = defaultConnection );
+    static QSqlDatabase cloneDatabase( const QSqlDatabase &other, const QString &connectionName );
+    static QSqlDatabase database( const QString &connectionName = defaultConnection, bool open = true );
 
-   static void removeDatabase(const QString &connectionName);
-   static bool contains(const QString &connectionName = defaultConnection);
-   static QStringList drivers();
-   static QStringList connectionNames();
-   static void registerSqlDriver(const QString &name, QSqlDriverCreatorBase *creator);
-   static bool isDriverAvailable(const QString &name);
+    static void removeDatabase( const QString &connectionName );
+    static bool contains( const QString &connectionName = defaultConnection );
+    static QStringList drivers();
+    static QStringList connectionNames();
+    static void registerSqlDriver( const QString &name, QSqlDriverCreatorBase *creator );
+    static bool isDriverAvailable( const QString &name );
 
- protected:
-   explicit QSqlDatabase(const QString &type);
-   explicit QSqlDatabase(QSqlDriver *driver);
+protected:
+    explicit QSqlDatabase( const QString &type );
+    explicit QSqlDatabase( QSqlDriver *driver );
 
- private:
-   friend class QSqlDatabasePrivate;
-   QSqlDatabasePrivate *d;
+private:
+    friend class QSqlDatabasePrivate;
+    QSqlDatabasePrivate *d;
 };
 
-Q_SQL_EXPORT QDebug operator<<(QDebug, const QSqlDatabase &);
+Q_SQL_EXPORT QDebug operator<<( QDebug, const QSqlDatabase & );
 
 #endif

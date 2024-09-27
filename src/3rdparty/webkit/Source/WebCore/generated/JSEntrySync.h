@@ -28,26 +28,32 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class EntrySync;
 
-class JSEntrySync : public JSDOMWrapper {
+class JSEntrySync : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSEntrySync(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<EntrySync>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
+    JSEntrySync( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<EntrySync> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
-    EntrySync* impl() const { return m_impl.get(); }
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
+    EntrySync *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<EntrySync> m_impl;
@@ -55,41 +61,44 @@ protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, EntrySync*);
-EntrySync* toEntrySync(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, EntrySync * );
+EntrySync *toEntrySync( JSC::JSValue );
 
-class JSEntrySyncPrototype : public JSC::JSObjectWithGlobalObject {
+class JSEntrySyncPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSEntrySyncPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSEntrySyncPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                          JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsEntrySyncPrototypeFunctionGetMetadata(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsEntrySyncPrototypeFunctionMoveTo(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsEntrySyncPrototypeFunctionCopyTo(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsEntrySyncPrototypeFunctionToURL(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsEntrySyncPrototypeFunctionRemove(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsEntrySyncPrototypeFunctionGetParent(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsEntrySyncPrototypeFunctionGetMetadata( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsEntrySyncPrototypeFunctionMoveTo( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsEntrySyncPrototypeFunctionCopyTo( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsEntrySyncPrototypeFunctionToURL( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsEntrySyncPrototypeFunctionRemove( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsEntrySyncPrototypeFunctionGetParent( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsEntrySyncIsFile(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsEntrySyncIsDirectory(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsEntrySyncName(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsEntrySyncFullPath(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsEntrySyncFilesystem(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsEntrySyncConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsEntrySyncIsFile( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsEntrySyncIsDirectory( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsEntrySyncName( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsEntrySyncFullPath( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsEntrySyncFilesystem( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsEntrySyncConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

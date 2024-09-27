@@ -28,225 +28,225 @@
 
 #include <cs_catch2.h>
 
-TEST_CASE("QDataStream traits", "[qdatastream]")
+TEST_CASE( "QDataStream traits", "[qdatastream]" )
 {
-   REQUIRE(std::is_copy_constructible_v<QDataStream> == false);
-   REQUIRE(std::is_move_constructible_v<QDataStream> == false);
+    REQUIRE( std::is_copy_constructible_v<QDataStream> == false );
+    REQUIRE( std::is_move_constructible_v<QDataStream> == false );
 
-   REQUIRE(std::is_copy_assignable_v<QDataStream> == false);
-   REQUIRE(std::is_move_assignable_v<QDataStream> == false);
+    REQUIRE( std::is_copy_assignable_v<QDataStream> == false );
+    REQUIRE( std::is_move_assignable_v<QDataStream> == false );
 
-   REQUIRE(std::has_virtual_destructor_v<QDataStream> == true);
+    REQUIRE( std::has_virtual_destructor_v<QDataStream> == true );
 }
 
-TEST_CASE("QDataStream string", "[qdatastream]")
+TEST_CASE( "QDataStream string", "[qdatastream]" )
 {
-   // write
-   QByteArray data;
+    // write
+    QByteArray data;
 
-   QDataStream streamOut(&data, QIODevice::WriteOnly);
+    QDataStream streamOut( &data, QIODevice::WriteOnly );
 
-   QString strOut("On a clear day you see forever");
-   streamOut << strOut;
+    QString strOut( "On a clear day you see forever" );
+    streamOut << strOut;
 
-   QDate dateOut(2017, 4, 1);
-   streamOut << dateOut;
+    QDate dateOut( 2017, 4, 1 );
+    streamOut << dateOut;
 
-   QTime timeOut(10, 17, 0);
-   streamOut << timeOut;
+    QTime timeOut( 10, 17, 0 );
+    streamOut << timeOut;
 
-   double dOut = 5.96;
-   streamOut << dOut;
+    double dOut = 5.96;
+    streamOut << dOut;
 
-   float fOut = 3.14f;
-   streamOut << fOut;
+    float fOut = 3.14f;
+    streamOut << fOut;
 
-   // read
-   QDataStream streamIn(&data, QIODevice::ReadOnly);
+    // read
+    QDataStream streamIn( &data, QIODevice::ReadOnly );
 
-   QString strIn;
-   streamIn >> strIn;
+    QString strIn;
+    streamIn >> strIn;
 
-   QDate dateIn;
-   streamIn >> dateIn;
+    QDate dateIn;
+    streamIn >> dateIn;
 
-   QTime timeIn;
-   streamIn >> timeIn;
+    QTime timeIn;
+    streamIn >> timeIn;
 
-   double dIn;
-   streamIn >> dIn;
+    double dIn;
+    streamIn >> dIn;
 
-   float fIn;
-   streamIn >> fIn;
+    float fIn;
+    streamIn >> fIn;
 
-   REQUIRE(strOut == strIn);
-   REQUIRE(dateOut == dateIn);
-   REQUIRE(timeOut == timeIn);
-   REQUIRE(dOut == dIn);
-   REQUIRE(fOut == fIn);
+    REQUIRE( strOut == strIn );
+    REQUIRE( dateOut == dateIn );
+    REQUIRE( timeOut == timeIn );
+    REQUIRE( dOut == dIn );
+    REQUIRE( fOut == fIn );
 }
 
-TEST_CASE("QDataStream margins", "[qdatastream]")
+TEST_CASE( "QDataStream margins", "[qdatastream]" )
 {
-   QByteArray buffer;
+    QByteArray buffer;
 
-   {
-      // stream out
-      QMargins marginsOut(1000, -20000, 30000, 7000);
-      QDataStream streamOut(&buffer, QIODevice::WriteOnly);
+    {
+        // stream out
+        QMargins marginsOut( 1000, -20000, 30000, 7000 );
+        QDataStream streamOut( &buffer, QIODevice::WriteOnly );
 
-      streamOut << marginsOut;
-   }
+        streamOut << marginsOut;
+    }
 
-   {
-      // stream in
-      QMargins marginsIn;
-      QDataStream streamIn(&buffer, QIODevice::ReadOnly);
+    {
+        // stream in
+        QMargins marginsIn;
+        QDataStream streamIn( &buffer, QIODevice::ReadOnly );
 
-      streamIn >> marginsIn;
+        streamIn >> marginsIn;
 
-      REQUIRE(marginsIn.left() == 1000);
-      REQUIRE(marginsIn.top() == -20000);
-      REQUIRE(marginsIn.right() == 30000);
-      REQUIRE(marginsIn.bottom() == 7000);
-   }
+        REQUIRE( marginsIn.left() == 1000 );
+        REQUIRE( marginsIn.top() == -20000 );
+        REQUIRE( marginsIn.right() == 30000 );
+        REQUIRE( marginsIn.bottom() == 7000 );
+    }
 }
 
-TEST_CASE("QDataStream marginsf", "[qdatastream]")
+TEST_CASE( "QDataStream marginsf", "[qdatastream]" )
 {
-   QByteArray buffer;
+    QByteArray buffer;
 
-   {
-      // stream out
-      QMarginsF marginsOut(1000, -20000, 30000, 7000);
-      QDataStream streamOut(&buffer, QIODevice::WriteOnly);
+    {
+        // stream out
+        QMarginsF marginsOut( 1000, -20000, 30000, 7000 );
+        QDataStream streamOut( &buffer, QIODevice::WriteOnly );
 
-      streamOut << marginsOut;
-   }
+        streamOut << marginsOut;
+    }
 
-   {
-      // stream in
-      QMarginsF marginsIn;
-      QDataStream streamIn(&buffer, QIODevice::ReadOnly);
+    {
+        // stream in
+        QMarginsF marginsIn;
+        QDataStream streamIn( &buffer, QIODevice::ReadOnly );
 
-      streamIn >> marginsIn;
+        streamIn >> marginsIn;
 
-      REQUIRE(marginsIn.left() == 1000);
-      REQUIRE(marginsIn.top() == -20000);
-      REQUIRE(marginsIn.right() == 30000);
-      REQUIRE(marginsIn.bottom() == 7000);
-   }
+        REQUIRE( marginsIn.left() == 1000 );
+        REQUIRE( marginsIn.top() == -20000 );
+        REQUIRE( marginsIn.right() == 30000 );
+        REQUIRE( marginsIn.bottom() == 7000 );
+    }
 }
 
-TEST_CASE("QDataStream point", "[qdatastream]")
+TEST_CASE( "QDataStream point", "[qdatastream]" )
 {
-   QPoint data1(-10000, 30000);
+    QPoint data1( -10000, 30000 );
 
-   QByteArray buffer;
+    QByteArray buffer;
 
-   //
-   QDataStream streamOut(&buffer, QIODevice::WriteOnly);
-   streamOut << data1;
+    //
+    QDataStream streamOut( &buffer, QIODevice::WriteOnly );
+    streamOut << data1;
 
-   //
-   QPoint data2;
+    //
+    QPoint data2;
 
-   QDataStream streamIn(&buffer, QIODevice::ReadOnly);
-   streamIn >> data2;
+    QDataStream streamIn( &buffer, QIODevice::ReadOnly );
+    streamIn >> data2;
 
-   REQUIRE(data1 == data2);
+    REQUIRE( data1 == data2 );
 }
 
-TEST_CASE("QDataStream pointf", "[qdatastream]")
+TEST_CASE( "QDataStream pointf", "[qdatastream]" )
 {
-   QPointF data1(-10000.50, 30000.50);
+    QPointF data1( -10000.50, 30000.50 );
 
-   QByteArray buffer;
+    QByteArray buffer;
 
-   //
-   QDataStream streamOut(&buffer, QIODevice::WriteOnly);
-   streamOut << data1;
+    //
+    QDataStream streamOut( &buffer, QIODevice::WriteOnly );
+    streamOut << data1;
 
-   //
-   QPointF data2;
+    //
+    QPointF data2;
 
-   QDataStream streamIn(&buffer, QIODevice::ReadOnly);
-   streamIn >> data2;
+    QDataStream streamIn( &buffer, QIODevice::ReadOnly );
+    streamIn >> data2;
 
-   REQUIRE(data1 == data2);
+    REQUIRE( data1 == data2 );
 }
 
-TEST_CASE("QDataStream timezone", "[qdatastream]")
+TEST_CASE( "QDataStream timezone", "[qdatastream]" )
 {
-   QByteArray buffer;
+    QByteArray buffer;
 
-   QTimeZone data1("PST", 123456, "CS Standard Time", "CSST", QLocale::UnitedStates, "Some Test");
+    QTimeZone data1( "PST", 123456, "CS Standard Time", "CSST", QLocale::UnitedStates, "Some Test" );
 
-   //
-   QDataStream streamOut(&buffer, QIODevice::WriteOnly);
-   streamOut << data1;
+    //
+    QDataStream streamOut( &buffer, QIODevice::WriteOnly );
+    streamOut << data1;
 
-   //
-   QTimeZone data2;
+    //
+    QTimeZone data2;
 
-   QDataStream streamIn(&buffer, QIODevice::ReadOnly);
-   streamIn >> data2;
+    QDataStream streamIn( &buffer, QIODevice::ReadOnly );
+    streamIn >> data2;
 
-   REQUIRE(data2.id() == QByteArray("PST") );
-   REQUIRE(data2.comment() == "Some Test");
-   REQUIRE(data2.country() == QLocale::UnitedStates);
+    REQUIRE( data2.id() == QByteArray( "PST" ) );
+    REQUIRE( data2.comment() == "Some Test" );
+    REQUIRE( data2.country() == QLocale::UnitedStates );
 
-   REQUIRE(data2.displayName(QTimeZone::StandardTime, QTimeZone::LongName, QString()) == QString("CS Standard Time"));
-   REQUIRE(data2.displayName(QTimeZone::DaylightTime, QTimeZone::LongName, QString()) == QString("CS Standard Time"));
+    REQUIRE( data2.displayName( QTimeZone::StandardTime, QTimeZone::LongName, QString() ) == QString( "CS Standard Time" ) );
+    REQUIRE( data2.displayName( QTimeZone::DaylightTime, QTimeZone::LongName, QString() ) == QString( "CS Standard Time" ) );
 
-   REQUIRE(data2.abbreviation(QDateTime::currentDateTime())  == "CSST");
-   REQUIRE(data2.offsetFromUtc(QDateTime::currentDateTime()) == 123456);
+    REQUIRE( data2.abbreviation( QDateTime::currentDateTime() )  == "CSST" );
+    REQUIRE( data2.offsetFromUtc( QDateTime::currentDateTime() ) == 123456 );
 }
 
-TEST_CASE("QDataStream url_a", "[qdatastream]")
+TEST_CASE( "QDataStream url_a", "[qdatastream]" )
 {
-   QByteArray buffer;
-   QUrl data1("https://copperspice.com/documentation-lib.html");
+    QByteArray buffer;
+    QUrl data1( "https://copperspice.com/documentation-lib.html" );
 
-   QDataStream streamOut(&buffer, QIODevice::WriteOnly);
-   streamOut << data1;
+    QDataStream streamOut( &buffer, QIODevice::WriteOnly );
+    streamOut << data1;
 
-   QDataStream streamIn(buffer);
+    QDataStream streamIn( buffer );
 
-   QUrl data2;
-   streamIn >> data2;
+    QUrl data2;
+    streamIn >> data2;
 
-   REQUIRE(data1.url() == data2.url());
+    REQUIRE( data1.url() == data2.url() );
 }
 
-TEST_CASE("QDataStream url_b", "[qdatastream]")
+TEST_CASE( "QDataStream url_b", "[qdatastream]" )
 {
-   QByteArray buffer;
-   QUrl data1("http://[::ffff:8.8.8.8]:81?query");
+    QByteArray buffer;
+    QUrl data1( "http://[::ffff:8.8.8.8]:81?query" );
 
-   QDataStream streamOut(&buffer, QIODevice::WriteOnly);
-   streamOut << data1;
+    QDataStream streamOut( &buffer, QIODevice::WriteOnly );
+    streamOut << data1;
 
-   QDataStream streamIn(buffer);
+    QDataStream streamIn( buffer );
 
-   QUrl data2;
-   streamIn >> data2;
+    QUrl data2;
+    streamIn >> data2;
 
-   REQUIRE(data1.url() == data2.url());
+    REQUIRE( data1.url() == data2.url() );
 }
 
-TEST_CASE("QDataStream url_c", "[qdatastream]")
+TEST_CASE( "QDataStream url_c", "[qdatastream]" )
 {
-   QByteArray buffer;
-   QUrl data1("ftp://host/path%25path?%3Fque%25ry#%23ref%25");
+    QByteArray buffer;
+    QUrl data1( "ftp://host/path%25path?%3Fque%25ry#%23ref%25" );
 
-   QDataStream streamOut(&buffer, QIODevice::WriteOnly);
-   streamOut << data1;
+    QDataStream streamOut( &buffer, QIODevice::WriteOnly );
+    streamOut << data1;
 
-   QDataStream streamIn(buffer);
+    QDataStream streamIn( buffer );
 
-   QUrl data2;
-   streamIn >> data2;
+    QUrl data2;
+    streamIn >> data2;
 
-   REQUIRE(data1.url() == data2.url());
+    REQUIRE( data1.url() == data2.url() );
 }

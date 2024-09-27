@@ -39,31 +39,35 @@
 
 #include "WebPageCreationParameters.h"
 
-namespace WebKit {
-
-PassOwnPtr<DrawingArea> DrawingArea::create(WebPage* webPage, const WebPageCreationParameters& parameters)
+namespace WebKit
 {
-    switch (parameters.drawingAreaType) {
-    case DrawingAreaTypeImpl:
+
+PassOwnPtr<DrawingArea> DrawingArea::create( WebPage *webPage, const WebPageCreationParameters &parameters )
+{
+    switch ( parameters.drawingAreaType )
+    {
+        case DrawingAreaTypeImpl:
 #if PLATFORM(MAC) || PLATFORM(WIN) || PLATFORM(QT)
-        return DrawingAreaImpl::create(webPage, parameters);
+            return DrawingAreaImpl::create( webPage, parameters );
 #else
-        return nullptr;
+            return nullptr;
 #endif
-    case DrawingAreaTypeChunkedUpdate:
-        return adoptPtr(new ChunkedUpdateDrawingArea(webPage));
+
+        case DrawingAreaTypeChunkedUpdate:
+            return adoptPtr( new ChunkedUpdateDrawingArea( webPage ) );
 #if ENABLE(TILED_BACKING_STORE)
-    case DrawingAreaTypeTiled:
-        return adoptPtr(new TiledDrawingArea(webPage));
+
+        case DrawingAreaTypeTiled:
+            return adoptPtr( new TiledDrawingArea( webPage ) );
 #endif
     }
 
     return nullptr;
 }
 
-DrawingArea::DrawingArea(DrawingAreaType type, WebPage* webPage)
-    : m_type(type)
-    , m_webPage(webPage)
+DrawingArea::DrawingArea( DrawingAreaType type, WebPage *webPage )
+    : m_type( type )
+    , m_webPage( webPage )
 {
 }
 

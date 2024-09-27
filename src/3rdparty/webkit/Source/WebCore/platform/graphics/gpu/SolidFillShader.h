@@ -33,15 +33,17 @@
 
 #include "Shader.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SolidFillShader : public Shader {
+class SolidFillShader : public Shader
+{
 public:
-    static PassOwnPtr<SolidFillShader> create(GraphicsContext3D* context);
-    void use(const AffineTransform& transform, const Color& color);
+    static PassOwnPtr<SolidFillShader> create( GraphicsContext3D *context );
+    void use( const AffineTransform &transform, const Color &color );
 
 private:
-    SolidFillShader(GraphicsContext3D* context, unsigned program);
+    SolidFillShader( GraphicsContext3D *context, unsigned program );
 
     int m_matrixLocation;
     int m_colorLocation;

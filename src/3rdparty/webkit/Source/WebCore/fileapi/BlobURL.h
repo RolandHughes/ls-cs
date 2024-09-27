@@ -33,7 +33,8 @@
 
 #include "KURL.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SecurityOrigin;
 
@@ -46,15 +47,19 @@ class SecurityOrigin;
 // encoded in the public blob url. The origin baked into internal blob urls
 // is a simple constant value, "blobinternal://", internal urls should not
 // be used with ResourceHandle or FileReader.
-class BlobURL {
+class BlobURL
+{
 public:
-    static KURL createPublicURL(SecurityOrigin*);
+    static KURL createPublicURL( SecurityOrigin * );
     static KURL createInternalURL();
-    static String getIdentifier(const KURL&);
-    static const char* blobProtocol() { return kBlobProtocol; }
+    static String getIdentifier( const KURL & );
+    static const char *blobProtocol()
+    {
+        return kBlobProtocol;
+    }
 
 private:
-    static KURL createBlobURL(const String& originString);
+    static KURL createBlobURL( const String &originString );
     static const char kBlobProtocol[];
     BlobURL() { }
 };

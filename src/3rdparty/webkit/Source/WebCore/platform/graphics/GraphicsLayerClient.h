@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef GraphicsLayerClient_h
@@ -28,7 +28,8 @@
 
 #if USE(ACCELERATED_COMPOSITING)
 
-namespace WebCore {
+namespace WebCore
+{
 
 class GraphicsContext;
 class GraphicsLayer;
@@ -36,33 +37,36 @@ class IntPoint;
 class IntRect;
 class FloatPoint;
 
-enum GraphicsLayerPaintingPhase {
-    GraphicsLayerPaintBackground = (1 << 0),
-    GraphicsLayerPaintForeground = (1 << 1),
-    GraphicsLayerPaintMask = (1 << 2),
-    GraphicsLayerPaintAll = (GraphicsLayerPaintBackground | GraphicsLayerPaintForeground | GraphicsLayerPaintMask)
+enum GraphicsLayerPaintingPhase
+{
+    GraphicsLayerPaintBackground = ( 1 << 0 ),
+    GraphicsLayerPaintForeground = ( 1 << 1 ),
+    GraphicsLayerPaintMask = ( 1 << 2 ),
+    GraphicsLayerPaintAll = ( GraphicsLayerPaintBackground | GraphicsLayerPaintForeground | GraphicsLayerPaintMask )
 };
 
-enum AnimatedPropertyID {
+enum AnimatedPropertyID
+{
     AnimatedPropertyInvalid,
     AnimatedPropertyWebkitTransform,
     AnimatedPropertyOpacity,
     AnimatedPropertyBackgroundColor
 };
 
-class GraphicsLayerClient {
+class GraphicsLayerClient
+{
 public:
     virtual ~GraphicsLayerClient() {}
 
     // Callback for when hardware-accelerated animation started.
-    virtual void notifyAnimationStarted(const GraphicsLayer*, double time) = 0;
+    virtual void notifyAnimationStarted( const GraphicsLayer *, double time ) = 0;
 
     // Notification that a layer property changed that requires a subsequent call to syncCompositingState()
     // to appear on the screen.
-    virtual void notifySyncRequired(const GraphicsLayer*) = 0;
-    
-    virtual void paintContents(const GraphicsLayer*, GraphicsContext&, GraphicsLayerPaintingPhase, const IntRect& inClip) = 0;
-    
+    virtual void notifySyncRequired( const GraphicsLayer * ) = 0;
+
+    virtual void paintContents( const GraphicsLayer *, GraphicsContext &, GraphicsLayerPaintingPhase, const IntRect &inClip ) = 0;
+
     virtual bool showDebugBorders() const = 0;
     virtual bool showRepaintCounter() const = 0;
 };

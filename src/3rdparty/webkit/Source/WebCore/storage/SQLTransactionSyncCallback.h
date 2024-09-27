@@ -35,15 +35,17 @@
 
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SQLTransactionSync;
 
 // Instances of this class should be created and used only on the worker's context thread.
-class SQLTransactionSyncCallback : public RefCounted<SQLTransactionSyncCallback> {
+class SQLTransactionSyncCallback : public RefCounted<SQLTransactionSyncCallback>
+{
 public:
     virtual ~SQLTransactionSyncCallback() { }
-    virtual bool handleEvent(SQLTransactionSync*) = 0;
+    virtual bool handleEvent( SQLTransactionSync * ) = 0;
 };
 
 }

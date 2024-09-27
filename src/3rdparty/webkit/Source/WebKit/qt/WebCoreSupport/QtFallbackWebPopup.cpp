@@ -34,15 +34,16 @@
 #include <QMouseEvent>
 #include <QStandardItemModel>
 
-namespace WebCore {
+namespace WebCore
+{
 
-QtFallbackWebPopupCombo::QtFallbackWebPopupCombo(QtFallbackWebPopup& ownerPopup)
-    : m_ownerPopup(ownerPopup)
+QtFallbackWebPopupCombo::QtFallbackWebPopupCombo( QtFallbackWebPopup &ownerPopup )
+    : m_ownerPopup( ownerPopup )
 {
     // Install an event filter on the view inside the combo box popup to make sure we know
     // when the popup got closed. E.g. QComboBox::hidePopup() won't be called when the popup
     // is closed by a mouse wheel event outside its window.
-    view()->installEventFilter(this);
+    view()->installEventFilter( this );
 }
 
 void QtFallbackWebPopupCombo::showPopup()
@@ -56,41 +57,49 @@ void QtFallbackWebPopupCombo::hidePopup()
 #ifndef QT_NO_IM
     QWidget *activeFocus = QApplication::focusWidget();
 
-    if (activeFocus && activeFocus == QComboBox::view()
-        && activeFocus->testAttribute(Qt::WA_InputMethodEnabled)) {
+    if ( activeFocus && activeFocus == QComboBox::view()
+            && activeFocus->testAttribute( Qt::WA_InputMethodEnabled ) )
+    {
 
         QGuiApplication::inputMethod()->hide();
     }
+
 #endif
 
     QComboBox::hidePopup();
 
-    if (! m_ownerPopup.m_popupVisible)
+    if ( ! m_ownerPopup.m_popupVisible )
+    {
         return;
+    }
 
     m_ownerPopup.m_popupVisible = false;
     emit m_ownerPopup.didHide();
     m_ownerPopup.destroyPopup();
 }
 
-bool QtFallbackWebPopupCombo::eventFilter(QObject* watched, QEvent* event)
+bool QtFallbackWebPopupCombo::eventFilter( QObject *watched, QEvent *event )
 {
-    Q_ASSERT(watched == view());
+    Q_ASSERT( watched == view() );
 
-    if (event->type() == QEvent::Show && !m_ownerPopup.m_popupVisible)
+    if ( event->type() == QEvent::Show && !m_ownerPopup.m_popupVisible )
+    {
         showPopup();
-    else if (event->type() == QEvent::Hide && m_ownerPopup.m_popupVisible)
+    }
+    else if ( event->type() == QEvent::Hide && m_ownerPopup.m_popupVisible )
+    {
         hidePopup();
+    }
 
     return false;
 }
 
 // QtFallbackWebPopup
 
-QtFallbackWebPopup::QtFallbackWebPopup(const ChromeClientQt* chromeClient)
-    : m_popupVisible(false)
-    , m_combo(0)
-    , m_chromeClient(chromeClient)
+QtFallbackWebPopup::QtFallbackWebPopup( const ChromeClientQt *chromeClient )
+    : m_popupVisible( false )
+    , m_combo( 0 )
+    , m_chromeClient( chromeClient )
 {
 }
 
@@ -99,32 +108,38 @@ QtFallbackWebPopup::~QtFallbackWebPopup()
     destroyPopup();
 }
 
-void QtFallbackWebPopup::show(const QWebSelectData& data)
+void QtFallbackWebPopup::show( const QWebSelectData &data )
 {
-    if (!pageClient())
+    if ( !pageClient() )
+    {
         return;
+    }
 
     destroyPopup();
-    m_combo = new QtFallbackWebPopupCombo(*this);
-    connect(m_combo, SIGNAL(activated(int)), this, SLOT(activeChanged(int)), Qt::QueuedConnection);
+    m_combo = new QtFallbackWebPopupCombo( *this );
+    connect( m_combo, SIGNAL( activated( int ) ), this, SLOT( activeChanged( int ) ), Qt::QueuedConnection );
 
-    populate(data);
+    populate( data );
 
     QRect rect = geometry();
-    if (QGraphicsWebView *webView = qobject_cast<QGraphicsWebView*>(pageClient()->pluginParent())) {
-        QGraphicsProxyWidget* proxy = new QGraphicsProxyWidget(webView);
-        proxy->setWidget(m_combo);
-        proxy->setGeometry(rect);
-    } else {
-        m_combo->setParent(pageClient()->ownerWidget());
-        m_combo->setGeometry(QRect(rect.left(), rect.top(),
-                               rect.width(), m_combo->sizeHint().height()));
+
+    if ( QGraphicsWebView *webView = qobject_cast<QGraphicsWebView *>( pageClient()->pluginParent() ) )
+    {
+        QGraphicsProxyWidget *proxy = new QGraphicsProxyWidget( webView );
+        proxy->setWidget( m_combo );
+        proxy->setGeometry( rect );
+    }
+    else
+    {
+        m_combo->setParent( pageClient()->ownerWidget() );
+        m_combo->setGeometry( QRect( rect.left(), rect.top(),
+                                     rect.width(), m_combo->sizeHint().height() ) );
 
     }
 
-    QMouseEvent event(QEvent::MouseButtonPress, QCursor::pos(), Qt::LeftButton,
-                      Qt::LeftButton, Qt::NoModifier);
-    QCoreApplication::sendEvent(m_combo, &event);
+    QMouseEvent event( QEvent::MouseButtonPress, QCursor::pos(), Qt::LeftButton,
+                       Qt::LeftButton, Qt::NoModifier );
+    QCoreApplication::sendEvent( m_combo, &event );
 }
 
 void QtFallbackWebPopup::hide()
@@ -136,56 +151,70 @@ void QtFallbackWebPopup::hide()
 
 void QtFallbackWebPopup::destroyPopup()
 {
-    if (m_combo) {
+    if ( m_combo )
+    {
         m_combo->deleteLater();
         m_combo = 0;
     }
 }
 
-void QtFallbackWebPopup::populate(const QWebSelectData& data)
+void QtFallbackWebPopup::populate( const QWebSelectData &data )
 {
-    QStandardItemModel* model = qobject_cast<QStandardItemModel*>(m_combo->model());
-    Q_ASSERT(model);
+    QStandardItemModel *model = qobject_cast<QStandardItemModel *>( m_combo->model() );
+    Q_ASSERT( model );
 
-    m_combo->setFont(font());
+    m_combo->setFont( font() );
 
     int currentIndex = -1;
-    for (int i = 0; i < data.itemCount(); ++i) {
-        switch (data.itemType(i)) {
-        case QWebSelectData::Separator:
-            m_combo->insertSeparator(i);
-            break;
-        case QWebSelectData::Group:
-            m_combo->insertItem(i, data.itemText(i));
-            model->item(i)->setEnabled(false);
-            break;
-        case QWebSelectData::Option:
-            m_combo->insertItem(i, data.itemText(i));
-            model->item(i)->setEnabled(data.itemIsEnabled(i));
+
+    for ( int i = 0; i < data.itemCount(); ++i )
+    {
+        switch ( data.itemType( i ) )
+        {
+            case QWebSelectData::Separator:
+                m_combo->insertSeparator( i );
+                break;
+
+            case QWebSelectData::Group:
+                m_combo->insertItem( i, data.itemText( i ) );
+                model->item( i )->setEnabled( false );
+                break;
+
+            case QWebSelectData::Option:
+                m_combo->insertItem( i, data.itemText( i ) );
+                model->item( i )->setEnabled( data.itemIsEnabled( i ) );
 #ifndef QT_NO_TOOLTIP
-            model->item(i)->setToolTip(data.itemToolTip(i));
+                model->item( i )->setToolTip( data.itemToolTip( i ) );
 #endif
-            model->item(i)->setBackground(data.itemBackgroundColor(i));
-            model->item(i)->setForeground(data.itemForegroundColor(i));
-            if (data.itemIsSelected(i))
-                currentIndex = i;
-            break;
+                model->item( i )->setBackground( data.itemBackgroundColor( i ) );
+                model->item( i )->setForeground( data.itemForegroundColor( i ) );
+
+                if ( data.itemIsSelected( i ) )
+                {
+                    currentIndex = i;
+                }
+
+                break;
         }
     }
 
-    if (currentIndex >= 0)
-        m_combo->setCurrentIndex(currentIndex);
+    if ( currentIndex >= 0 )
+    {
+        m_combo->setCurrentIndex( currentIndex );
+    }
 }
 
-void QtFallbackWebPopup::activeChanged(int index)
+void QtFallbackWebPopup::activeChanged( int index )
 {
-    if (index < 0)
+    if ( index < 0 )
+    {
         return;
+    }
 
-    emit selectItem(index, false, false);
+    emit selectItem( index, false, false );
 }
 
-QWebPageClient* QtFallbackWebPopup::pageClient() const
+QWebPageClient *QtFallbackWebPopup::pageClient() const
 {
     return m_chromeClient->platformPageClient();
 }

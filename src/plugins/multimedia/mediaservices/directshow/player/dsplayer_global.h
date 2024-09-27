@@ -28,44 +28,44 @@
 
 #include <dshow.h>
 
-template <typename T> T *com_cast(IUnknown *unknown, const IID &iid)
+template <typename T> T *com_cast( IUnknown *unknown, const IID &iid )
 {
-   T *iface = nullptr;
-   return unknown && unknown->QueryInterface(iid, reinterpret_cast<void **>(&iface)) == S_OK
-      ? iface : nullptr;
+    T *iface = nullptr;
+    return unknown && unknown->QueryInterface( iid, reinterpret_cast<void **>( &iface ) ) == S_OK
+           ? iface : nullptr;
 }
 
-template <typename T> T *com_new(const IID &clsid)
+template <typename T> T *com_new( const IID &clsid )
 {
-   T *object = nullptr;
-   return CoCreateInstance(
-         clsid,
-         nullptr,
-         CLSCTX_INPROC_SERVER,
-         IID_PPV_ARGS(&object)) == S_OK
-      ? object : nullptr;
+    T *object = nullptr;
+    return CoCreateInstance(
+               clsid,
+               nullptr,
+               CLSCTX_INPROC_SERVER,
+               IID_PPV_ARGS( &object ) ) == S_OK
+           ? object : nullptr;
 }
 
-template <typename T> T *com_new(const IID &clsid, const IID &iid)
+template <typename T> T *com_new( const IID &clsid, const IID &iid )
 {
-   T *object = nullptr;
-   return CoCreateInstance(
-         clsid,
-         nullptr,
-         CLSCTX_INPROC_SERVER,
-         iid,
-         reinterpret_cast<void **>(&object)) == S_OK
-      ? object : nullptr;
+    T *object = nullptr;
+    return CoCreateInstance(
+               clsid,
+               nullptr,
+               CLSCTX_INPROC_SERVER,
+               iid,
+               reinterpret_cast<void **>( &object ) ) == S_OK
+           ? object : nullptr;
 }
 
 #ifndef __IFilterGraph2_INTERFACE_DEFINED__
 #define __IFilterGraph2_INTERFACE_DEFINED__
 #define INTERFACE IFilterGraph2
-DECLARE_INTERFACE_(IFilterGraph2, IGraphBuilder)
+DECLARE_INTERFACE_( IFilterGraph2, IGraphBuilder )
 {
-   STDMETHOD(AddSourceFilterForMoniker)(THIS_ IMoniker *, IBindCtx *, LPCWSTR, IBaseFilter **) PURE;
-   STDMETHOD(ReconnectEx)(THIS_ IPin *, const AM_MEDIA_TYPE *) PURE;
-   STDMETHOD(RenderEx)(IPin *, DWORD, DWORD *) PURE;
+    STDMETHOD( AddSourceFilterForMoniker )( THIS_ IMoniker *, IBindCtx *, LPCWSTR, IBaseFilter ** ) PURE;
+    STDMETHOD( ReconnectEx )( THIS_ IPin *, const AM_MEDIA_TYPE * ) PURE;
+    STDMETHOD( RenderEx )( IPin *, DWORD, DWORD * ) PURE;
 };
 #undef INTERFACE
 #endif
@@ -73,12 +73,12 @@ DECLARE_INTERFACE_(IFilterGraph2, IGraphBuilder)
 #ifndef __IAMFilterMiscFlags_INTERFACE_DEFINED__
 #define __IAMFilterMiscFlags_INTERFACE_DEFINED__
 #define INTERFACE IAMFilterMiscFlags
-DECLARE_INTERFACE_(IAMFilterMiscFlags, IUnknown)
+DECLARE_INTERFACE_( IAMFilterMiscFlags, IUnknown )
 {
-   STDMETHOD(QueryInterface)(THIS_ REFIID, PVOID *) PURE;
-   STDMETHOD_(ULONG, AddRef)(THIS) PURE;
-   STDMETHOD_(ULONG, Release)(THIS) PURE;
-   STDMETHOD_(ULONG, GetMiscFlags)(THIS) PURE;
+    STDMETHOD( QueryInterface )( THIS_ REFIID, PVOID * ) PURE;
+    STDMETHOD_( ULONG, AddRef )( THIS ) PURE;
+    STDMETHOD_( ULONG, Release )( THIS ) PURE;
+    STDMETHOD_( ULONG, GetMiscFlags )( THIS ) PURE;
 };
 #undef INTERFACE
 #endif
@@ -86,13 +86,13 @@ DECLARE_INTERFACE_(IAMFilterMiscFlags, IUnknown)
 #ifndef __IFileSourceFilter_INTERFACE_DEFINED__
 #define __IFileSourceFilter_INTERFACE_DEFINED__
 #define INTERFACE IFileSourceFilter
-DECLARE_INTERFACE_(IFileSourceFilter, IUnknown)
+DECLARE_INTERFACE_( IFileSourceFilter, IUnknown )
 {
-   STDMETHOD(QueryInterface)(THIS_ REFIID, PVOID *) PURE;
-   STDMETHOD_(ULONG, AddRef)(THIS) PURE;
-   STDMETHOD_(ULONG, Release)(THIS) PURE;
-   STDMETHOD(Load)(THIS_ LPCOLESTR, const AM_MEDIA_TYPE *) PURE;
-   STDMETHOD(GetCurFile)(THIS_ LPOLESTR * ppszFileName, AM_MEDIA_TYPE *) PURE;
+    STDMETHOD( QueryInterface )( THIS_ REFIID, PVOID * ) PURE;
+    STDMETHOD_( ULONG, AddRef )( THIS ) PURE;
+    STDMETHOD_( ULONG, Release )( THIS ) PURE;
+    STDMETHOD( Load )( THIS_ LPCOLESTR, const AM_MEDIA_TYPE * ) PURE;
+    STDMETHOD( GetCurFile )( THIS_ LPOLESTR * ppszFileName, AM_MEDIA_TYPE * ) PURE;
 };
 #undef INTERFACE
 #endif
@@ -101,13 +101,13 @@ DECLARE_INTERFACE_(IFileSourceFilter, IUnknown)
 #define __IAMOpenProgress_INTERFACE_DEFINED__
 #undef INTERFACE
 #define INTERFACE IAMOpenProgress
-DECLARE_INTERFACE_(IAMOpenProgress, IUnknown)
+DECLARE_INTERFACE_( IAMOpenProgress, IUnknown )
 {
-   STDMETHOD(QueryInterface)(THIS_ REFIID, PVOID *) PURE;
-   STDMETHOD_(ULONG, AddRef)(THIS) PURE;
-   STDMETHOD_(ULONG, Release)(THIS) PURE;
-   STDMETHOD(QueryProgress)(THIS_ LONGLONG *, LONGLONG *) PURE;
-   STDMETHOD(AbortOperation)(THIS) PURE;
+    STDMETHOD( QueryInterface )( THIS_ REFIID, PVOID * ) PURE;
+    STDMETHOD_( ULONG, AddRef )( THIS ) PURE;
+    STDMETHOD_( ULONG, Release )( THIS ) PURE;
+    STDMETHOD( QueryProgress )( THIS_ LONGLONG *, LONGLONG * ) PURE;
+    STDMETHOD( AbortOperation )( THIS ) PURE;
 };
 #undef INTERFACE
 #endif
@@ -115,15 +115,15 @@ DECLARE_INTERFACE_(IAMOpenProgress, IUnknown)
 #ifndef __IFilterChain_INTERFACE_DEFINED__
 #define __IFilterChain_INTERFACE_DEFINED__
 #define INTERFACE IFilterChain
-DECLARE_INTERFACE_(IFilterChain, IUnknown)
+DECLARE_INTERFACE_( IFilterChain, IUnknown )
 {
-   STDMETHOD(QueryInterface)(THIS_ REFIID, PVOID *) PURE;
-   STDMETHOD_(ULONG, AddRef)(THIS) PURE;
-   STDMETHOD_(ULONG, Release)(THIS) PURE;
-   STDMETHOD(StartChain)(IBaseFilter *, IBaseFilter *) PURE;
-   STDMETHOD(PauseChain)(IBaseFilter *, IBaseFilter *) PURE;
-   STDMETHOD(StopChain)(IBaseFilter *, IBaseFilter *) PURE;
-   STDMETHOD(RemoveChain)(IBaseFilter *, IBaseFilter *) PURE;
+    STDMETHOD( QueryInterface )( THIS_ REFIID, PVOID * ) PURE;
+    STDMETHOD_( ULONG, AddRef )( THIS ) PURE;
+    STDMETHOD_( ULONG, Release )( THIS ) PURE;
+    STDMETHOD( StartChain )( IBaseFilter *, IBaseFilter * ) PURE;
+    STDMETHOD( PauseChain )( IBaseFilter *, IBaseFilter * ) PURE;
+    STDMETHOD( StopChain )( IBaseFilter *, IBaseFilter * ) PURE;
+    STDMETHOD( RemoveChain )( IBaseFilter *, IBaseFilter * ) PURE;
 };
 #undef INTERFACE
 #endif

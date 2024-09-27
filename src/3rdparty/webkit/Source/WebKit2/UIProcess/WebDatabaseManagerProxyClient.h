@@ -30,15 +30,17 @@
 #include "WKDatabaseManager.h"
 #include <wtf/Forward.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 class WebDatabaseManagerProxy;
 class WebSecurityOrigin;
 
-class WebDatabaseManagerProxyClient : public APIClient<WKDatabaseManagerClient> {
+class WebDatabaseManagerProxyClient : public APIClient<WKDatabaseManagerClient>
+{
 public:
-    void didModifyOrigin(WebDatabaseManagerProxy*, WebSecurityOrigin*);
-    void didModifyDatabase(WebDatabaseManagerProxy*, WebSecurityOrigin*, const String& databaseIdentifier);
+    void didModifyOrigin( WebDatabaseManagerProxy *, WebSecurityOrigin * );
+    void didModifyDatabase( WebDatabaseManagerProxy *, WebSecurityOrigin *, const String &databaseIdentifier );
 };
 
 } // namespace WebKit

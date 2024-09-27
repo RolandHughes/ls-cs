@@ -26,32 +26,32 @@
 
 FT_BEGIN_HEADER
 
-  FT_LOCAL( FT_Error )
-  cff_get_glyph_data( TT_Face    face,
-                      FT_UInt    glyph_index,
-                      FT_Byte**  pointer,
-                      FT_ULong*  length );
-  FT_LOCAL( void )
-  cff_free_glyph_data( TT_Face    face,
-                       FT_Byte**  pointer,
-                       FT_ULong   length );
+FT_LOCAL( FT_Error )
+cff_get_glyph_data( TT_Face    face,
+                    FT_UInt    glyph_index,
+                    FT_Byte  **pointer,
+                    FT_ULong  *length );
+FT_LOCAL( void )
+cff_free_glyph_data( TT_Face    face,
+                     FT_Byte  **pointer,
+                     FT_ULong   length );
 
 
 #if 0  /* unused until we support pure CFF fonts */
 
-  /* Compute the maximum advance width of a font through quick parsing */
-  FT_LOCAL( FT_Error )
-  cff_compute_max_advance( TT_Face  face,
-                           FT_Int*  max_advance );
+/* Compute the maximum advance width of a font through quick parsing */
+FT_LOCAL( FT_Error )
+cff_compute_max_advance( TT_Face  face,
+                         FT_Int  *max_advance );
 
 #endif /* 0 */
 
 
-  FT_LOCAL( FT_Error )
-  cff_slot_load( CFF_GlyphSlot  glyph,
-                 CFF_Size       size,
-                 FT_UInt        glyph_index,
-                 FT_Int32       load_flags );
+FT_LOCAL( FT_Error )
+cff_slot_load( CFF_GlyphSlot  glyph,
+               CFF_Size       size,
+               FT_UInt        glyph_index,
+               FT_Int32       load_flags );
 
 
 FT_END_HEADER

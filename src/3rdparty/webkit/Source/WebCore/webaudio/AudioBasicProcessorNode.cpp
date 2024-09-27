@@ -34,23 +34,26 @@
 #include "AudioNodeOutput.h"
 #include "AudioProcessor.h"
 
-namespace WebCore {
-
-AudioBasicProcessorNode::AudioBasicProcessorNode(AudioContext* context, double sampleRate)
-    : AudioNode(context, sampleRate)
+namespace WebCore
 {
-    addInput(adoptPtr(new AudioNodeInput(this)));
-    addOutput(adoptPtr(new AudioNodeOutput(this, 0)));
+
+AudioBasicProcessorNode::AudioBasicProcessorNode( AudioContext *context, double sampleRate )
+    : AudioNode( context, sampleRate )
+{
+    addInput( adoptPtr( new AudioNodeInput( this ) ) );
+    addOutput( adoptPtr( new AudioNodeOutput( this, 0 ) ) );
 
     // The subclass must create m_processor.
 }
 
 void AudioBasicProcessorNode::initialize()
 {
-    if (isInitialized())
+    if ( isInitialized() )
+    {
         return;
+    }
 
-    ASSERT(processor());
+    ASSERT( processor() );
     processor()->initialize();
 
     AudioNode::initialize();
@@ -58,90 +61,110 @@ void AudioBasicProcessorNode::initialize()
 
 void AudioBasicProcessorNode::uninitialize()
 {
-    if (!isInitialized())
+    if ( !isInitialized() )
+    {
         return;
+    }
 
-    ASSERT(processor());
+    ASSERT( processor() );
     processor()->uninitialize();
 
     AudioNode::uninitialize();
 }
 
-void AudioBasicProcessorNode::process(size_t framesToProcess)
+void AudioBasicProcessorNode::process( size_t framesToProcess )
 {
-    AudioBus* destinationBus = output(0)->bus();
-    
+    AudioBus *destinationBus = output( 0 )->bus();
+
     // The realtime thread can't block on this lock, so we call tryLock() instead.
-    if (m_processLock.tryLock()) {
-        if (!isInitialized() || !processor())
+    if ( m_processLock.tryLock() )
+    {
+        if ( !isInitialized() || !processor() )
+        {
             destinationBus->zero();
-        else {
-            AudioBus* sourceBus = input(0)->bus();
+        }
+        else
+        {
+            AudioBus *sourceBus = input( 0 )->bus();
 
             // FIXME: if we take "tail time" into account, then we can avoid calling processor()->process() once the tail dies down.
-            if (!input(0)->isConnected())
+            if ( !input( 0 )->isConnected() )
+            {
                 sourceBus->zero();
-            
-            processor()->process(sourceBus, destinationBus, framesToProcess);  
+            }
+
+            processor()->process( sourceBus, destinationBus, framesToProcess );
         }
 
         m_processLock.unlock();
-    } else {
+    }
+    else
+    {
         // Too bad - the tryLock() failed.  We must be in the middle of re-connecting and were already outputting silence anyway...
         destinationBus->zero();
     }
 }
 
 // Nice optimization in the very common case allowing for "in-place" processing
-void AudioBasicProcessorNode::pullInputs(size_t framesToProcess)
+void AudioBasicProcessorNode::pullInputs( size_t framesToProcess )
 {
     // Render input stream - suggest to the input to render directly into output bus for in-place processing in process() if possible.
-    input(0)->pull(output(0)->bus(), framesToProcess);
+    input( 0 )->pull( output( 0 )->bus(), framesToProcess );
 }
 
 void AudioBasicProcessorNode::reset()
 {
-    if (processor())
+    if ( processor() )
+    {
         processor()->reset();
+    }
 }
 
 // As soon as we know the channel count of our input, we can lazily initialize.
 // Sometimes this may be called more than once with different channel counts, in which case we must safely
 // uninitialize and then re-initialize with the new channel count.
-void AudioBasicProcessorNode::checkNumberOfChannelsForInput(AudioNodeInput* input)
+void AudioBasicProcessorNode::checkNumberOfChannelsForInput( AudioNodeInput *input )
 {
-    ASSERT(context()->isAudioThread() && context()->isGraphOwner());
-    
-    ASSERT(input == this->input(0));
-    if (input != this->input(0))
-        return;
+    ASSERT( context()->isAudioThread() && context()->isGraphOwner() );
 
-    ASSERT(processor());
-    if (!processor())
+    ASSERT( input == this->input( 0 ) );
+
+    if ( input != this->input( 0 ) )
+    {
         return;
+    }
+
+    ASSERT( processor() );
+
+    if ( !processor() )
+    {
+        return;
+    }
 
     unsigned numberOfChannels = input->numberOfChannels();
-    
-    if (isInitialized() && numberOfChannels != output(0)->numberOfChannels()) {
+
+    if ( isInitialized() && numberOfChannels != output( 0 )->numberOfChannels() )
+    {
         // We're already initialized but the channel count has changed.
         // We need to be careful since we may be actively processing right now, so synchronize with process().
-        MutexLocker locker(m_processLock);
+        MutexLocker locker( m_processLock );
         uninitialize();
     }
-    
-    if (!isInitialized()) {
+
+    if ( !isInitialized() )
+    {
         // This will propagate the channel count to any nodes connected further down the chain...
-        output(0)->setNumberOfChannels(numberOfChannels);
+        output( 0 )->setNumberOfChannels( numberOfChannels );
 
         // Re-initialize the processor with the new channel count.
-        processor()->setNumberOfChannels(numberOfChannels);
+        processor()->setNumberOfChannels( numberOfChannels );
         initialize();
     }
 }
 
 unsigned AudioBasicProcessorNode::numberOfChannels()
 {
-    return output(0)->numberOfChannels();
+    return output( 0 )->numberOfChannels();
 }
 
 } // namespace WebCore

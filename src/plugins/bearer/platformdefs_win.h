@@ -36,7 +36,8 @@ QT_BEGIN_NAMESPACE
 #define NS_NLA 15
 
 #ifndef NLA_NAMESPACE_GUID
-enum NLA_BLOB_DATA_TYPE {
+enum NLA_BLOB_DATA_TYPE
+{
     NLA_RAW_DATA = 0,
     NLA_INTERFACE = 1,
     NLA_802_1X_LOCATION = 2,
@@ -44,51 +45,61 @@ enum NLA_BLOB_DATA_TYPE {
     NLA_ICS = 4
 };
 
-enum NLA_CONNECTIVITY_TYPE {
+enum NLA_CONNECTIVITY_TYPE
+{
     NLA_NETWORK_AD_HOC = 0,
     NLA_NETWORK_MANAGED = 1,
     NLA_NETWORK_UNMANAGED = 2,
     NLA_NETWORK_UNKNOWN = 3
 };
 
-enum NLA_INTERNET {
+enum NLA_INTERNET
+{
     NLA_INTERNET_UNKNOWN = 0,
     NLA_INTERNET_NO = 1,
     NLA_INTERNET_YES = 2
 };
 
-struct NLA_BLOB {
-    struct {
+struct NLA_BLOB
+{
+    struct
+    {
         NLA_BLOB_DATA_TYPE type;
         DWORD dwSize;
         DWORD nextOffset;
     } header;
 
-    union {
+    union
+    {
         // NLA_RAW_DATA
         CHAR rawData[1];
 
         // NLA_INTERFACE
-        struct {
+        struct
+        {
             DWORD dwType;
             DWORD dwSpeed;
             CHAR adapterName[1];
         } interfaceData;
 
         // NLA_802_1X_LOCATION
-        struct {
+        struct
+        {
             CHAR information[1];
         } locationData;
 
         // NLA_CONNECTIVITY
-        struct {
+        struct
+        {
             NLA_CONNECTIVITY_TYPE type;
             NLA_INTERNET internet;
         } connectivity;
 
         // NLA_ICS
-        struct {
-            struct {
+        struct
+        {
+            struct
+            {
                 DWORD speed;
                 DWORD type;
                 DWORD state;
@@ -102,11 +113,13 @@ struct NLA_BLOB {
 
 #endif
 
-enum NDIS_MEDIUM {
+enum NDIS_MEDIUM
+{
     NdisMedium802_3 = 0,
 };
 
-enum NDIS_PHYSICAL_MEDIUM {
+enum NDIS_PHYSICAL_MEDIUM
+{
     NdisPhysicalMediumWirelessLan = 1,
     NdisPhysicalMediumBluetooth = 10,
     NdisPhysicalMediumWiMax = 12,

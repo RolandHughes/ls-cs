@@ -34,13 +34,13 @@ class QSqlDriver;
 
 class Q_SQL_EXPORT QSqlDriverPlugin : public QObject
 {
-   SQL_CS_OBJECT(QSqlDriverPlugin)
+    SQL_CS_OBJECT( QSqlDriverPlugin )
 
- public:
-   explicit QSqlDriverPlugin(QObject *parent = nullptr);
-   ~QSqlDriverPlugin();
+public:
+    explicit QSqlDriverPlugin( QObject *parent = nullptr );
+    ~QSqlDriverPlugin();
 
-   virtual QSqlDriver *create(const QString &key) = 0;
+    virtual QSqlDriver *create( const QString &key ) = 0;
 };
 
 

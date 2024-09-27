@@ -32,13 +32,15 @@
 #include <wtf/text/StringHash.h>
 #include <wtf/text/WTFString.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 class ImmutableArray;
 
 // ImmutableDictionary - An immutable dictionary type suitable for vending to an API.
 
-class ImmutableDictionary : public APIObject {
+class ImmutableDictionary : public APIObject
+{
 public:
     static const Type APIType = TypeDictionary;
 
@@ -46,46 +48,63 @@ public:
 
     static PassRefPtr<ImmutableDictionary> create()
     {
-        return adoptRef(new ImmutableDictionary);
+        return adoptRef( new ImmutableDictionary );
     }
-    static PassRefPtr<ImmutableDictionary> adopt(MapType& map)
+    static PassRefPtr<ImmutableDictionary> adopt( MapType &map )
     {
-        return adoptRef(new ImmutableDictionary(map));
+        return adoptRef( new ImmutableDictionary( map ) );
     }
 
     virtual ~ImmutableDictionary();
 
-    virtual bool isMutable() { return false; }
-
-    template<typename T>
-    T* get(const String& key)
+    virtual bool isMutable()
     {
-        RefPtr<APIObject> item = m_map.get(key);
-        if (!item)
-            return 0;
-
-        if (item->type() != T::APIType)
-            return 0;
-
-        return static_cast<T*>(item.get());
+        return false;
     }
 
-    APIObject* get(const String& key)
+    template<typename T>
+    T *get( const String &key )
     {
-        return m_map.get(key).get();
+        RefPtr<APIObject> item = m_map.get( key );
+
+        if ( !item )
+        {
+            return 0;
+        }
+
+        if ( item->type() != T::APIType )
+        {
+            return 0;
+        }
+
+        return static_cast<T *>( item.get() );
+    }
+
+    APIObject *get( const String &key )
+    {
+        return m_map.get( key ).get();
     }
 
     PassRefPtr<ImmutableArray> keys() const;
 
-    size_t size() { return m_map.size(); }
+    size_t size()
+    {
+        return m_map.size();
+    }
 
-    const MapType& map() { return m_map; }
+    const MapType &map()
+    {
+        return m_map;
+    }
 
 protected:
     ImmutableDictionary();
-    ImmutableDictionary(MapType& map);
+    ImmutableDictionary( MapType &map );
 
-    virtual Type type() const { return APIType; }
+    virtual Type type() const
+    {
+        return APIType;
+    }
 
     MapType m_map;
 };

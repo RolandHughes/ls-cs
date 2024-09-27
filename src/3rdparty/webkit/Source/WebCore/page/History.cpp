@@ -36,14 +36,15 @@
 #include "Page.h"
 #include "SecurityOrigin.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-History::History(Frame* frame)
-    : m_frame(frame)
+History::History( Frame *frame )
+    : m_frame( frame )
 {
 }
 
-Frame* History::frame() const
+Frame *History::frame() const
 {
     return m_frame;
 }
@@ -55,89 +56,122 @@ void History::disconnectFrame()
 
 unsigned History::length() const
 {
-    if (!m_frame)
+    if ( !m_frame )
+    {
         return 0;
-    if (!m_frame->page())
+    }
+
+    if ( !m_frame->page() )
+    {
         return 0;
+    }
+
     return m_frame->page()->backForward()->count();
 }
 
 void History::back()
 {
-    go(-1);
+    go( -1 );
 }
 
-void History::back(ScriptExecutionContext* context)
+void History::back( ScriptExecutionContext *context )
 {
-    go(context, -1);
+    go( context, -1 );
 }
 
 void History::forward()
 {
-    go(1);
+    go( 1 );
 }
 
-void History::forward(ScriptExecutionContext* context)
+void History::forward( ScriptExecutionContext *context )
 {
-    go(context, 1);
+    go( context, 1 );
 }
 
-void History::go(int distance)
+void History::go( int distance )
 {
-    if (!m_frame)
+    if ( !m_frame )
+    {
         return;
+    }
 
-    m_frame->navigationScheduler()->scheduleHistoryNavigation(distance);
+    m_frame->navigationScheduler()->scheduleHistoryNavigation( distance );
 }
 
-void History::go(ScriptExecutionContext* context, int distance)
+void History::go( ScriptExecutionContext *context, int distance )
 {
-    if (!m_frame)
+    if ( !m_frame )
+    {
         return;
+    }
 
-    ASSERT(WTF::isMainThread());
-    Frame* activeFrame = static_cast<Document*>(context)->frame();
-    if (!activeFrame)
+    ASSERT( WTF::isMainThread() );
+    Frame *activeFrame = static_cast<Document *>( context )->frame();
+
+    if ( !activeFrame )
+    {
         return;
+    }
 
-    if (!activeFrame->loader()->shouldAllowNavigation(m_frame))
+    if ( !activeFrame->loader()->shouldAllowNavigation( m_frame ) )
+    {
         return;
+    }
 
-    m_frame->navigationScheduler()->scheduleHistoryNavigation(distance);
+    m_frame->navigationScheduler()->scheduleHistoryNavigation( distance );
 }
 
-KURL History::urlForState(const String& urlString)
+KURL History::urlForState( const String &urlString )
 {
     KURL baseURL = m_frame->loader()->baseURL();
-    if (urlString.isEmpty())
+
+    if ( urlString.isEmpty() )
+    {
         return baseURL;
-        
-    return KURL(baseURL, urlString);
+    }
+
+    return KURL( baseURL, urlString );
 }
 
-void History::stateObjectAdded(PassRefPtr<SerializedScriptValue> data, const String& title, const String& urlString, StateObjectType stateObjectType, ExceptionCode& ec)
+void History::stateObjectAdded( PassRefPtr<SerializedScriptValue> data, const String &title, const String &urlString,
+                                StateObjectType stateObjectType, ExceptionCode &ec )
 {
-    if (!m_frame || !m_frame->page())
+    if ( !m_frame || !m_frame->page() )
+    {
         return;
-    
-    KURL fullURL = urlForState(urlString);
-    if (!fullURL.isValid() || !m_frame->document()->securityOrigin()->canRequest(fullURL)) {
+    }
+
+    KURL fullURL = urlForState( urlString );
+
+    if ( !fullURL.isValid() || !m_frame->document()->securityOrigin()->canRequest( fullURL ) )
+    {
         ec = SECURITY_ERR;
         return;
     }
 
-    if (stateObjectType == StateObjectPush)
-        m_frame->loader()->history()->pushState(data, title, fullURL.string());
-    else if (stateObjectType == StateObjectReplace)
-        m_frame->loader()->history()->replaceState(data, title, fullURL.string());
-            
-    if (!urlString.isEmpty())
-        m_frame->document()->updateURLForPushOrReplaceState(fullURL);
+    if ( stateObjectType == StateObjectPush )
+    {
+        m_frame->loader()->history()->pushState( data, title, fullURL.string() );
+    }
+    else if ( stateObjectType == StateObjectReplace )
+    {
+        m_frame->loader()->history()->replaceState( data, title, fullURL.string() );
+    }
 
-    if (stateObjectType == StateObjectPush)
+    if ( !urlString.isEmpty() )
+    {
+        m_frame->document()->updateURLForPushOrReplaceState( fullURL );
+    }
+
+    if ( stateObjectType == StateObjectPush )
+    {
         m_frame->loader()->client()->dispatchDidPushStateWithinPage();
-    else if (stateObjectType == StateObjectReplace)
+    }
+    else if ( stateObjectType == StateObjectReplace )
+    {
         m_frame->loader()->client()->dispatchDidReplaceStateWithinPage();
+    }
 }
 
 } // namespace WebCore

@@ -26,21 +26,25 @@
 #include "config.h"
 #include "ShareableBitmap.h"
 
-namespace WebKit {
-
-static void derefSharedMemory(void* typelessSharedMemory, const void*, size_t)
+namespace WebKit
 {
-    ASSERT_ARG(typelessSharedMemory, typelessSharedMemory);
+
+static void derefSharedMemory( void *typelessSharedMemory, const void *, size_t )
+{
+    ASSERT_ARG( typelessSharedMemory, typelessSharedMemory );
 
     // Balanced by leakRef in makeCGImageCopy.
-    RefPtr<SharedMemory> memory = adoptRef(static_cast<SharedMemory*>(typelessSharedMemory));
+    RefPtr<SharedMemory> memory = adoptRef( static_cast<SharedMemory *>( typelessSharedMemory ) );
 }
 
 RetainPtr<CGImageRef> ShareableBitmap::makeCGImageCopy()
 {
     RetainPtr<CGDataProviderRef> dataProvider;
-    if (isBackedBySharedMemory()) {
-        if (RefPtr<SharedMemory> copyOnWriteMemory = m_sharedMemory->createCopyOnWriteCopy(sizeInBytes())) {
+
+    if ( isBackedBySharedMemory() )
+    {
+        if ( RefPtr<SharedMemory> copyOnWriteMemory = m_sharedMemory->createCopyOnWriteCopy( sizeInBytes() ) )
+        {
             RefPtr<SharedMemory> originalMemory = m_sharedMemory.release();
             // Writes to originalMemory will affect copyOnWriteMemory (until copyOnWriteMemory is
             // written to for the first time), but writes to copyOnWriteMemory will not affect
@@ -48,19 +52,23 @@ RetainPtr<CGImageRef> ShareableBitmap::makeCGImageCopy()
             // it) and use copyOnWriteMemory to back this ShareableBitmap from here on out. That
             // way, writes to this ShareableBitmap will not affect the CGImage.
             m_sharedMemory = copyOnWriteMemory.release();
-            dataProvider.adoptCF(CGDataProviderCreateWithData(originalMemory.get(), originalMemory->data(), sizeInBytes(), derefSharedMemory));
+            dataProvider.adoptCF( CGDataProviderCreateWithData( originalMemory.get(), originalMemory->data(), sizeInBytes(),
+                                  derefSharedMemory ) );
             // Balanced by adoptRef in derefSharedMemory.
             originalMemory.release().leakRef();
         }
     }
-    if (!dataProvider) {
+
+    if ( !dataProvider )
+    {
         // We weren't able to make a copy-on-write copy, so we'll just have to fall back to a
         // normal copy (which is more expensive, but the best we can do).
-        RetainPtr<CFDataRef> cfData(AdoptCF, CFDataCreate(0, static_cast<UInt8*>(data()), sizeInBytes()));
-        dataProvider.adoptCF(CGDataProviderCreateWithCFData(cfData.get()));
+        RetainPtr<CFDataRef> cfData( AdoptCF, CFDataCreate( 0, static_cast<UInt8 *>( data() ), sizeInBytes() ) );
+        dataProvider.adoptCF( CGDataProviderCreateWithCFData( cfData.get() ) );
     }
-    ASSERT(dataProvider);
-    return createCGImage(dataProvider.get());
+
+    ASSERT( dataProvider );
+    return createCGImage( dataProvider.get() );
 }
 
 } // namespace WebKit

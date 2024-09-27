@@ -24,16 +24,17 @@
 
 #include "Document.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-inline Comment::Comment(Document* document, const String& text)
-    : CharacterData(document, text, CreateComment)
+inline Comment::Comment( Document *document, const String &text )
+    : CharacterData( document, text, CreateComment )
 {
 }
 
-PassRefPtr<Comment> Comment::create(Document* document, const String& text)
+PassRefPtr<Comment> Comment::create( Document *document, const String &text )
 {
-    return adoptRef(new Comment(document, text));
+    return adoptRef( new Comment( document, text ) );
 }
 
 String Comment::nodeName() const
@@ -46,12 +47,12 @@ Node::NodeType Comment::nodeType() const
     return COMMENT_NODE;
 }
 
-PassRefPtr<Node> Comment::cloneNode(bool /*deep*/)
+PassRefPtr<Node> Comment::cloneNode( bool /*deep*/ )
 {
-    return create(document(), data());
+    return create( document(), data() );
 }
 
-bool Comment::childTypeAllowed(NodeType) const
+bool Comment::childTypeAllowed( NodeType ) const
 {
     return false;
 }

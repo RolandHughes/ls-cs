@@ -28,42 +28,43 @@
 
 #include <qnamespaceresolver_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 class GenericNamespaceResolver : public NamespaceResolver
 {
- public:
-   GenericNamespaceResolver(const Bindings &list);
-   void addBinding(const QXmlName nb) override;
+public:
+    GenericNamespaceResolver( const Bindings &list );
+    void addBinding( const QXmlName nb ) override;
 
-   QXmlName::NamespaceCode lookupNamespaceURI(const QXmlName::PrefixCode prefix) const override;
+    QXmlName::NamespaceCode lookupNamespaceURI( const QXmlName::PrefixCode prefix ) const override;
 
-   /**
-    * Returns a GenericNamespaceResolver containing the following bindings:
-    *
-    * - <tt>xml</tt> = <tt>http://www.w3.org/XML/1998/namespace</tt>
-    * - <tt>xs</tt> = <tt>http://www.w3.org/2001/XMLSchema</tt>
-    * - <tt>xsi</tt> = <tt>http://www.w3.org/2001/XMLSchema-instance</tt>
-    * - <tt>fn</tt> = <tt>http://www.w3.org/2005/xpath-functions</tt>
-    * - <tt>xdt</tt> = <tt>http://www.w3.org/2005/xpath-datatypes</tt>
-    * - no prefix = empty namespace
-    */
-   static NamespaceResolver::Ptr defaultXQueryBindings();
+    /**
+     * Returns a GenericNamespaceResolver containing the following bindings:
+     *
+     * - <tt>xml</tt> = <tt>http://www.w3.org/XML/1998/namespace</tt>
+     * - <tt>xs</tt> = <tt>http://www.w3.org/2001/XMLSchema</tt>
+     * - <tt>xsi</tt> = <tt>http://www.w3.org/2001/XMLSchema-instance</tt>
+     * - <tt>fn</tt> = <tt>http://www.w3.org/2005/xpath-functions</tt>
+     * - <tt>xdt</tt> = <tt>http://www.w3.org/2005/xpath-datatypes</tt>
+     * - no prefix = empty namespace
+     */
+    static NamespaceResolver::Ptr defaultXQueryBindings();
 
-   /**
-    * Returns a GenericNamespaceResolver containing the following bindings:
-    *
-    * - <tt>xml</tt> = <tt>http://www.w3.org/XML/1998/namespace</tt>
-    * - no prefix = empty namespace
-    */
-   static NamespaceResolver::Ptr defaultXSLTBindings();
+    /**
+     * Returns a GenericNamespaceResolver containing the following bindings:
+     *
+     * - <tt>xml</tt> = <tt>http://www.w3.org/XML/1998/namespace</tt>
+     * - no prefix = empty namespace
+     */
+    static NamespaceResolver::Ptr defaultXSLTBindings();
 
-   Bindings bindings() const override;
+    Bindings bindings() const override;
 
- private:
-   /**
-    * The key is the prefix, the value the namespace URI.
-    */
-   Bindings m_bindings;
+private:
+    /**
+     * The key is the prefix, the value the namespace URI.
+     */
+    Bindings m_bindings;
 };
 }
 

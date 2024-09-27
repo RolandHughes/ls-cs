@@ -29,9 +29,10 @@
 #include <windows.h>
 #include <wtf/RetainPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-RetainPtr<CFDataRef> copyCertificateToData(PCCERT_CONTEXT);
+RetainPtr<CFDataRef> copyCertificateToData( PCCERT_CONTEXT );
 
 } // namespace WebCore
 

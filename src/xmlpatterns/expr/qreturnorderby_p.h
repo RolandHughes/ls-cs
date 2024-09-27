@@ -27,61 +27,65 @@
 #include "qorderby_p.h"
 #include "qunlimitedcontainer_p.h"
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class ReturnOrderBy : public UnlimitedContainer
 {
- public:
-   /**
-    * In @p operands the first item is the return expression, and the
-    * rest, which is at least one, are the sort keys.
-    */
-   ReturnOrderBy(const OrderBy::Stability stability, const OrderBy::OrderSpec::Vector &oSpecs,
-                  const Expression::List &operands);
+public:
+    /**
+     * In @p operands the first item is the return expression, and the
+     * rest, which is at least one, are the sort keys.
+     */
+    ReturnOrderBy( const OrderBy::Stability stability, const OrderBy::OrderSpec::Vector &oSpecs,
+                   const Expression::List &operands );
 
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
-   bool evaluateEBV(const DynamicContext::Ptr &context) const override;
-   SequenceType::Ptr staticType() const override;
-   SequenceType::List expectedOperandTypes() const override;
-   Expression::Ptr compress(const StaticContext::Ptr &context) override;
-   ExpressionVisitorResult::Ptr accept(const ExpressionVisitor::Ptr &visitor) const override;
-   ID id() const override;
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
+    bool evaluateEBV( const DynamicContext::Ptr &context ) const override;
+    SequenceType::Ptr staticType() const override;
+    SequenceType::List expectedOperandTypes() const override;
+    Expression::Ptr compress( const StaticContext::Ptr &context ) override;
+    ExpressionVisitorResult::Ptr accept( const ExpressionVisitor::Ptr &visitor ) const override;
+    ID id() const override;
 
-   OrderBy::OrderSpec::Vector orderSpecs() const {
-      return m_orderSpecs;
-   }
+    OrderBy::OrderSpec::Vector orderSpecs() const
+    {
+        return m_orderSpecs;
+    }
 
-   OrderBy::Stability stability() const {
-      return m_stability;
-   }
+    OrderBy::Stability stability() const
+    {
+        return m_stability;
+    }
 
-   /**
-    * In the case of that we don't have a for-expression beloning us, but
-    * only a let clause, this ReturnOrderBy breaks if it stays in the AST.
-    * So, by default we assume that we should write ourselves away, unless
-    * this function is called. The associated ForClause will call it
-    * during typeCheck(), if it exists.
-    */
-   void setStay(const bool a) {
-      m_flyAway = !a;
-   }
+    /**
+     * In the case of that we don't have a for-expression beloning us, but
+     * only a let clause, this ReturnOrderBy breaks if it stays in the AST.
+     * So, by default we assume that we should write ourselves away, unless
+     * this function is called. The associated ForClause will call it
+     * during typeCheck(), if it exists.
+     */
+    void setStay( const bool a )
+    {
+        m_flyAway = !a;
+    }
 
-   Properties properties() const override;
+    Properties properties() const override;
 
- private:
-   /**
-    * This variable is unfortunately only used at compile time. However,
-    * it's tricky to get rid of it due to how QueryTransformParser would
-    * have to be adapted.
-    */
-   const OrderBy::Stability    m_stability;
+private:
+    /**
+     * This variable is unfortunately only used at compile time. However,
+     * it's tricky to get rid of it due to how QueryTransformParser would
+     * have to be adapted.
+     */
+    const OrderBy::Stability    m_stability;
 
-   OrderBy::OrderSpec::Vector  m_orderSpecs;
+    OrderBy::OrderSpec::Vector  m_orderSpecs;
 
-   /**
-    * @see stay()
-    */
-   bool                        m_flyAway;
+    /**
+     * @see stay()
+     */
+    bool                        m_flyAway;
 };
 
 }

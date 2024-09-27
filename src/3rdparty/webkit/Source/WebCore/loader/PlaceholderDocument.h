@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef PlaceholderDocument_h
@@ -28,19 +28,21 @@
 
 #include "Document.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class PlaceholderDocument : public Document {
+class PlaceholderDocument : public Document
+{
 public:
-    static PassRefPtr<PlaceholderDocument> create(Frame* frame, const KURL& url)
+    static PassRefPtr<PlaceholderDocument> create( Frame *frame, const KURL &url )
     {
-        return adoptRef(new PlaceholderDocument(frame, url));
+        return adoptRef( new PlaceholderDocument( frame, url ) );
     }
 
     virtual void attach();
 
 private:
-    PlaceholderDocument(Frame* frame, const KURL& url) : Document(frame, url, false, false) { }
+    PlaceholderDocument( Frame *frame, const KURL &url ) : Document( frame, url, false, false ) { }
 };
 
 } // namespace WebCore

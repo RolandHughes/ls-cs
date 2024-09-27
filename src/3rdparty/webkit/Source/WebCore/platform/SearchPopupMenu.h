@@ -26,14 +26,16 @@
 #include <wtf/Vector.h>
 #include <wtf/text/WTFString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SearchPopupMenu : public RefCounted<SearchPopupMenu> {
+class SearchPopupMenu : public RefCounted<SearchPopupMenu>
+{
 public:
     virtual ~SearchPopupMenu() {}
-    virtual PopupMenu* popupMenu() = 0;
-    virtual void saveRecentSearches(const AtomicString& name, const Vector<String>& searchItems) = 0;
-    virtual void loadRecentSearches(const AtomicString& name, Vector<String>& searchItems) = 0;
+    virtual PopupMenu *popupMenu() = 0;
+    virtual void saveRecentSearches( const AtomicString &name, const Vector<String> &searchItems ) = 0;
+    virtual void loadRecentSearches( const AtomicString &name, Vector<String> &searchItems ) = 0;
     virtual bool enabled() = 0;
 };
 

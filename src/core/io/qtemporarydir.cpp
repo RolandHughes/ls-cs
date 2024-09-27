@@ -41,20 +41,20 @@
 
 class QTemporaryDirPrivate
 {
- public:
-   QTemporaryDirPrivate();
-   ~QTemporaryDirPrivate();
+public:
+    QTemporaryDirPrivate();
+    ~QTemporaryDirPrivate();
 
-   void create(const QString &templateName);
+    void create( const QString &templateName );
 
-   QString m_pathOrError;
-   bool autoRemove;
-   bool success;
+    QString m_pathOrError;
+    bool autoRemove;
+    bool success;
 };
 
 QTemporaryDirPrivate::QTemporaryDirPrivate()
-   : autoRemove(true),
-     success(false)
+    : autoRemove( true ),
+      success( false )
 {
 }
 
@@ -64,133 +64,149 @@ QTemporaryDirPrivate::~QTemporaryDirPrivate()
 
 static QString defaultTemplateName()
 {
-   QString baseName = QCoreApplication::applicationName();
+    QString baseName = QCoreApplication::applicationName();
 
-   if (baseName.isEmpty()) {
+    if ( baseName.isEmpty() )
+    {
 
-      baseName = "cs_temp";
-   }
+        baseName = "cs_temp";
+    }
 
-   return QDir::tempPath() + '/' + baseName + "-XXXXXX";
+    return QDir::tempPath() + '/' + baseName + "-XXXXXX";
 }
 
-void QTemporaryDirPrivate::create(const QString &templateName)
+void QTemporaryDirPrivate::create( const QString &templateName )
 {
 #ifdef Q_OS_WIN
-   QString buffer = templateName;
+    QString buffer = templateName;
 
-   // Windows mktemp believes 26 temp files per process ought to be enough for everyone
-   // add a few random char, before the XXXXXX template.
+    // Windows mktemp believes 26 temp files per process ought to be enough for everyone
+    // add a few random char, before the XXXXXX template.
 
-   for (int i = 0 ; i < 4 ; ++i) {
-      buffer += QChar((qrand() & 0xffff) % (26) + 'A');
-   }
+    for ( int i = 0 ; i < 4 ; ++i )
+    {
+        buffer += QChar( ( qrand() & 0xffff ) % ( 26 ) + 'A' );
+    }
 
-   if (! buffer.endsWith("XXXXXX")) {
-      buffer += "XXXXXX";
-   }
+    if ( ! buffer.endsWith( "XXXXXX" ) )
+    {
+        buffer += "XXXXXX";
+    }
 
-   QFileSystemEntry baseEntry(buffer);
-   QString basePath = baseEntry.nativeFilePath();
+    QFileSystemEntry baseEntry( buffer );
+    QString basePath = baseEntry.nativeFilePath();
 
-   std::wstring array = basePath.toStdWString();
+    std::wstring array = basePath.toStdWString();
 
-   if (_wmktemp(&array[0]) && ::CreateDirectory(array.c_str(), nullptr)) {
-      success = true;
+    if ( _wmktemp( &array[0] ) && ::CreateDirectory( array.c_str(), nullptr ) )
+    {
+        success = true;
 
-      QFileSystemEntry entry(QString::fromStdWString(array), QFileSystemEntry::FromNativePath());
-      m_pathOrError = entry.filePath();
-   }
+        QFileSystemEntry entry( QString::fromStdWString( array ), QFileSystemEntry::FromNativePath() );
+        m_pathOrError = entry.filePath();
+    }
 
 #else
-   QByteArray buffer = QFile::encodeName(templateName);
+    QByteArray buffer = QFile::encodeName( templateName );
 
-   if (! buffer.endsWith("XXXXXX")) {
-      buffer += "XXXXXX";
-   }
+    if ( ! buffer.endsWith( "XXXXXX" ) )
+    {
+        buffer += "XXXXXX";
+    }
 
-   if (mkdtemp(buffer.data())) {
-      // modifies buffer
-      success = true;
-      m_pathOrError = QFile::decodeName(buffer.constData());
-   }
+    if ( mkdtemp( buffer.data() ) )
+    {
+        // modifies buffer
+        success = true;
+        m_pathOrError = QFile::decodeName( buffer.constData() );
+    }
 
 #endif
 }
 
 QTemporaryDir::QTemporaryDir()
-   : d_ptr(new QTemporaryDirPrivate)
+    : d_ptr( new QTemporaryDirPrivate )
 {
-   d_ptr->create(defaultTemplateName());
+    d_ptr->create( defaultTemplateName() );
 }
 
-QTemporaryDir::QTemporaryDir(const QString &templateName)
-   : d_ptr(new QTemporaryDirPrivate)
+QTemporaryDir::QTemporaryDir( const QString &templateName )
+    : d_ptr( new QTemporaryDirPrivate )
 {
-   if (templateName.isEmpty()) {
-      d_ptr->create(defaultTemplateName());
-   } else {
-      d_ptr->create(templateName);
-   }
+    if ( templateName.isEmpty() )
+    {
+        d_ptr->create( defaultTemplateName() );
+    }
+    else
+    {
+        d_ptr->create( templateName );
+    }
 }
 
 QTemporaryDir::~QTemporaryDir()
 {
-   if (d_ptr->autoRemove) {
-      remove();
-   }
+    if ( d_ptr->autoRemove )
+    {
+        remove();
+    }
 }
 
 bool QTemporaryDir::isValid() const
 {
-   return d_ptr->success;
+    return d_ptr->success;
 }
 
 QString QTemporaryDir::path() const
 {
-   if (d_ptr->success) {
-      return d_ptr->m_pathOrError;
-   } else {
-      return QString();
-   }
+    if ( d_ptr->success )
+    {
+        return d_ptr->m_pathOrError;
+    }
+    else
+    {
+        return QString();
+    }
 }
 
 bool QTemporaryDir::autoRemove() const
 {
-   return d_ptr->autoRemove;
+    return d_ptr->autoRemove;
 }
 
-void QTemporaryDir::setAutoRemove(bool b)
+void QTemporaryDir::setAutoRemove( bool b )
 {
-   d_ptr->autoRemove = b;
+    d_ptr->autoRemove = b;
 }
 
 QString QTemporaryDir::errorString() const
 {
-   if (d_ptr->success) {
-      return QString();
-   }
+    if ( d_ptr->success )
+    {
+        return QString();
+    }
 
-   return d_ptr->m_pathOrError;
+    return d_ptr->m_pathOrError;
 }
 
 bool QTemporaryDir::remove()
 {
-   if (! d_ptr->success) {
-      return false;
-   }
+    if ( ! d_ptr->success )
+    {
+        return false;
+    }
 
-   Q_ASSERT(! path().isEmpty());
-   Q_ASSERT(path() != ".");
+    Q_ASSERT( ! path().isEmpty() );
+    Q_ASSERT( path() != "." );
 
-   const bool result = QDir(path()).removeRecursively();
+    const bool result = QDir( path() ).removeRecursively();
 
-   if (! result) {
-      qWarning() << "QTemporaryDir::remove() Unable to remove path " << QDir::toNativeSeparators(path())
-            << ", verify if there are read only files in this directory";
-   }
+    if ( ! result )
+    {
+        qWarning() << "QTemporaryDir::remove() Unable to remove path " << QDir::toNativeSeparators( path() )
+                   << ", verify if there are read only files in this directory";
+    }
 
-   return result;
+    return result;
 }
 
 #endif // QT_NO_TEMPORARYFILE

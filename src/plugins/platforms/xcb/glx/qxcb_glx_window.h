@@ -29,13 +29,13 @@
 
 class QXcbGlxWindow : public QXcbWindow
 {
- public:
-   QXcbGlxWindow(QWindow *window);
-   ~QXcbGlxWindow();
+public:
+    QXcbGlxWindow( QWindow *window );
+    ~QXcbGlxWindow();
 
- protected:
-   void resolveFormat() override;
-   void *createVisual() override;
+protected:
+    void resolveFormat() override;
+    void *createVisual() override;
 };
 
 #endif

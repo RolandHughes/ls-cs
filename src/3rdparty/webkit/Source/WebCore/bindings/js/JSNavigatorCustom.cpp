@@ -28,28 +28,40 @@
 #include "JSNavigatorUserMediaSuccessCallback.h"
 #include "Navigator.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace JSC;
 
 #if ENABLE(MEDIA_STREAM)
-JSValue JSNavigator::webkitGetUserMedia(ExecState* exec)
+JSValue JSNavigator::webkitGetUserMedia( ExecState *exec )
 {
     // Arguments: Options, successCallback, (optional)errorCallback
 
-    String options = ustringToString(exec->argument(0).toString(exec));
-    if (exec->hadException())
-        return jsUndefined();
+    String options = ustringToString( exec->argument( 0 ).toString( exec ) );
 
-    RefPtr<NavigatorUserMediaSuccessCallback> successCallback = createFunctionOnlyCallback<JSNavigatorUserMediaSuccessCallback>(exec, static_cast<JSDOMGlobalObject*>(exec->lexicalGlobalObject()), exec->argument(1));
-    if (exec->hadException())
+    if ( exec->hadException() )
+    {
         return jsUndefined();
+    }
 
-    RefPtr<NavigatorUserMediaErrorCallback> errorCallback = createFunctionOnlyCallback<JSNavigatorUserMediaErrorCallback>(exec, static_cast<JSDOMGlobalObject*>(exec->lexicalGlobalObject()), exec->argument(2), CallbackAllowUndefined);
-    if (exec->hadException())
+    RefPtr<NavigatorUserMediaSuccessCallback> successCallback = createFunctionOnlyCallback<JSNavigatorUserMediaSuccessCallback>( exec,
+            static_cast<JSDOMGlobalObject *>( exec->lexicalGlobalObject() ), exec->argument( 1 ) );
+
+    if ( exec->hadException() )
+    {
         return jsUndefined();
+    }
 
-    m_impl->webkitGetUserMedia(options, successCallback.release(), errorCallback.release());
+    RefPtr<NavigatorUserMediaErrorCallback> errorCallback = createFunctionOnlyCallback<JSNavigatorUserMediaErrorCallback>( exec,
+            static_cast<JSDOMGlobalObject *>( exec->lexicalGlobalObject() ), exec->argument( 2 ), CallbackAllowUndefined );
+
+    if ( exec->hadException() )
+    {
+        return jsUndefined();
+    }
+
+    m_impl->webkitGetUserMedia( options, successCallback.release(), errorCallback.release() );
     return jsUndefined();
 }
 #endif // ENABLE(MEDIA_STREAM)

@@ -42,26 +42,26 @@ class QPlatformDrag;
 
 class Q_GUI_EXPORT QInternalMimeData : public QMimeData
 {
-   GUI_CS_OBJECT(QInternalMimeData)
+    GUI_CS_OBJECT( QInternalMimeData )
 
- public:
-   QInternalMimeData();
-   ~QInternalMimeData();
+public:
+    QInternalMimeData();
+    ~QInternalMimeData();
 
-   bool hasFormat(const QString &mimeType) const override;
-   QStringList formats() const override;
-   static bool canReadData(const QString &mimeType);
+    bool hasFormat( const QString &mimeType ) const override;
+    QStringList formats() const override;
+    static bool canReadData( const QString &mimeType );
 
-   static QStringList formatsHelper(const QMimeData *data);
-   static bool hasFormatHelper(const QString &mimeType, const QMimeData *data);
-   static QByteArray renderDataHelper(const QString &mimeType, const QMimeData *data);
+    static QStringList formatsHelper( const QMimeData *data );
+    static bool hasFormatHelper( const QString &mimeType, const QMimeData *data );
+    static QByteArray renderDataHelper( const QString &mimeType, const QMimeData *data );
 
- protected:
-   QVariant retrieveData(const QString &mimeType, QVariant::Type type) const override;
+protected:
+    QVariant retrieveData( const QString &mimeType, QVariant::Type type ) const override;
 
-   virtual bool hasFormat_sys(const QString &mimeType) const = 0;
-   virtual QStringList formats_sys() const = 0;
-   virtual QVariant retrieveData_sys(const QString &mimeType, QVariant::Type type) const = 0;
+    virtual bool hasFormat_sys( const QString &mimeType ) const = 0;
+    virtual QStringList formats_sys() const = 0;
+    virtual QVariant retrieveData_sys( const QString &mimeType, QVariant::Type type ) const = 0;
 };
 
 #endif
@@ -70,59 +70,60 @@ class Q_GUI_EXPORT QInternalMimeData : public QMimeData
 
 class QDragPrivate
 {
- public:
+public:
 
-   QDragPrivate()
-      : source(nullptr), target(nullptr), data(nullptr)
-   { }
+    QDragPrivate()
+        : source( nullptr ), target( nullptr ), data( nullptr )
+    { }
 
-   virtual ~QDragPrivate() {};
+    virtual ~QDragPrivate() {};
 
-   QObject *source;
-   QObject *target;
-   QMimeData *data;
-   QPixmap pixmap;
-   QPoint hotspot;
+    QObject *source;
+    QObject *target;
+    QMimeData *data;
+    QPixmap pixmap;
+    QPoint hotspot;
 
-   Qt::DropAction executed_action;
-   Qt::DropActions supported_actions;
-   Qt::DropAction default_action;
+    Qt::DropAction executed_action;
+    Qt::DropActions supported_actions;
+    Qt::DropAction default_action;
 
-   QMap<Qt::DropAction, QPixmap> customCursors;
+    QMap<Qt::DropAction, QPixmap> customCursors;
 };
 
 class QDragManager : public QObject
 {
-   GUI_CS_OBJECT(QDragManager)
+    GUI_CS_OBJECT( QDragManager )
 
- public:
-   QDragManager();
+public:
+    QDragManager();
 
-   QDragManager(const QDragManager &) = delete;
-   QDragManager &operator=(const QDragManager &) = delete;
+    QDragManager( const QDragManager & ) = delete;
+    QDragManager &operator=( const QDragManager & ) = delete;
 
-   ~QDragManager();
+    ~QDragManager();
 
-   static QDragManager *self();
+    static QDragManager *self();
 
-   Qt::DropAction drag(QDrag *);
+    Qt::DropAction drag( QDrag * );
 
-   void setCurrentTarget(QObject *target, bool dropped = false);
-   QObject *currentTarget() const;
+    void setCurrentTarget( QObject *target, bool dropped = false );
+    QObject *currentTarget() const;
 
-   QDrag *object() const {
-      return m_object;
-   }
-   QObject *source() const;
+    QDrag *object() const
+    {
+        return m_object;
+    }
+    QObject *source() const;
 
- private:
-   QMimeData *m_platformDropData;
+private:
+    QMimeData *m_platformDropData;
 
-   QObject *m_currentDropTarget;
-   QPlatformDrag *m_platformDrag;
-   QDrag *m_object;
+    QObject *m_currentDropTarget;
+    QPlatformDrag *m_platformDrag;
+    QDrag *m_object;
 
-   static QDragManager *m_instance;
+    static QDragManager *m_instance;
 };
 
 #endif // ! QT_NO_DRAGANDDROP

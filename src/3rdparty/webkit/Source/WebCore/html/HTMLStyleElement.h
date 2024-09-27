@@ -26,40 +26,49 @@
 #include "HTMLElement.h"
 #include "StyleElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class StyleSheet;
 
-class HTMLStyleElement : public HTMLElement, private StyleElement {
+class HTMLStyleElement : public HTMLElement, private StyleElement
+{
 public:
-    static PassRefPtr<HTMLStyleElement> create(const QualifiedName&, Document*, bool createdByParser);
+    static PassRefPtr<HTMLStyleElement> create( const QualifiedName &, Document *, bool createdByParser );
     virtual ~HTMLStyleElement();
 
-    void setType(const AtomicString&);
+    void setType( const AtomicString & );
 
     using StyleElement::sheet;
 
     bool disabled() const;
-    void setDisabled(bool);
+    void setDisabled( bool );
 
 private:
-    HTMLStyleElement(const QualifiedName&, Document*, bool createdByParser);
+    HTMLStyleElement( const QualifiedName &, Document *, bool createdByParser );
 
     // overload from HTMLElement
-    virtual void parseMappedAttribute(Attribute*);
+    virtual void parseMappedAttribute( Attribute * );
     virtual void insertedIntoDocument();
     virtual void removedFromDocument();
-    virtual void childrenChanged(bool changedByParser = false, Node* beforeChange = 0, Node* afterChange = 0, int childCountDelta = 0);
+    virtual void childrenChanged( bool changedByParser = false, Node *beforeChange = 0, Node *afterChange = 0,
+                                  int childCountDelta = 0 );
 
     virtual void finishParsingChildren();
 
-    virtual bool isLoading() const { return StyleElement::isLoading(); }
-    virtual bool sheetLoaded() { return StyleElement::sheetLoaded(document()); }
+    virtual bool isLoading() const
+    {
+        return StyleElement::isLoading();
+    }
+    virtual bool sheetLoaded()
+    {
+        return StyleElement::sheetLoaded( document() );
+    }
 
-    virtual void addSubresourceAttributeURLs(ListHashSet<KURL>&) const;
+    virtual void addSubresourceAttributeURLs( ListHashSet<KURL> & ) const;
 
-    virtual const AtomicString& media() const;
-    virtual const AtomicString& type() const;
+    virtual const AtomicString &media() const;
+    virtual const AtomicString &type() const;
 };
 
 } //namespace

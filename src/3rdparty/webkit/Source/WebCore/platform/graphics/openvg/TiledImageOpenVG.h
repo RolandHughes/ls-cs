@@ -27,30 +27,38 @@
 #include <openvg.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class FloatRect;
 
-class TiledImageOpenVG : public SharedResourceOpenVG {
+class TiledImageOpenVG : public SharedResourceOpenVG
+{
 public:
-    TiledImageOpenVG(const IntSize& size, const IntSize& tileSize);
-    TiledImageOpenVG(const TiledImageOpenVG&);
+    TiledImageOpenVG( const IntSize &size, const IntSize &tileSize );
+    TiledImageOpenVG( const TiledImageOpenVG & );
     ~TiledImageOpenVG();
 
-    TiledImageOpenVG& operator=(const TiledImageOpenVG&);
+    TiledImageOpenVG &operator=( const TiledImageOpenVG & );
 
-    const IntSize& size() const { return m_size; }
-    const IntSize& maxTileSize() const { return m_maxTileSize; }
+    const IntSize &size() const
+    {
+        return m_size;
+    }
+    const IntSize &maxTileSize() const
+    {
+        return m_maxTileSize;
+    }
 
     int numTiles() const;
     int numColumns() const;
     int numRows() const;
 
-    IntRect tilesInRect(const FloatRect&) const;
+    IntRect tilesInRect( const FloatRect & ) const;
 
-    void setTile(int xIndex, int yIndex, VGImage);
-    VGImage tile(int xIndex, int yIndex) const;
-    IntRect tileRect(int xIndex, int yIndex) const;
+    void setTile( int xIndex, int yIndex, VGImage );
+    VGImage tile( int xIndex, int yIndex ) const;
+    IntRect tileRect( int xIndex, int yIndex ) const;
 
 private:
     void detachTiles();

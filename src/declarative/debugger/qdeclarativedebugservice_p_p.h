@@ -32,17 +32,17 @@ class QDeclarativeDebugServer;
 
 class QDeclarativeDebugServicePrivate
 {
-   Q_DECLARE_PUBLIC(QDeclarativeDebugService)
+    Q_DECLARE_PUBLIC( QDeclarativeDebugService )
 
- public:
-   QDeclarativeDebugServicePrivate();
+public:
+    QDeclarativeDebugServicePrivate();
 
-   QString name;
-   QDeclarativeDebugServer *server;
-   QDeclarativeDebugService::Status status;
+    QString name;
+    QDeclarativeDebugServer *server;
+    QDeclarativeDebugService::Status status;
 
- protected:
-   QDeclarativeDebugService *q_ptr;
+protected:
+    QDeclarativeDebugService *q_ptr;
 
 };
 

@@ -30,9 +30,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSCanvasGradient);
+ASSERT_CLASS_FITS_IN_CELL( JSCanvasGradient );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -43,8 +44,8 @@ ASSERT_CLASS_FITS_IN_CELL(JSCanvasGradient);
 
 static const HashTableValue JSCanvasGradientTableValues[2] =
 {
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsCanvasGradientConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsCanvasGradientConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -58,43 +59,50 @@ static JSC_CONST_HASHTABLE HashTable JSCanvasGradientTable = { 2, 1, JSCanvasGra
 
 static const HashTableValue JSCanvasGradientConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSCanvasGradientConstructorTable = { 1, 0, JSCanvasGradientConstructorTableValues, 0 };
-class JSCanvasGradientConstructor : public DOMConstructorObject {
+class JSCanvasGradientConstructor : public DOMConstructorObject
+{
 public:
-    JSCanvasGradientConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSCanvasGradientConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSCanvasGradientConstructor::s_info = { "CanvasGradientConstructor", &DOMConstructorObject::s_info, &JSCanvasGradientConstructorTable, 0 };
 
-JSCanvasGradientConstructor::JSCanvasGradientConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSCanvasGradientConstructor::JSCanvasGradientConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSCanvasGradientPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSCanvasGradientPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSCanvasGradientConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSCanvasGradientConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSCanvasGradientConstructor, JSDOMWrapper>(exec, &JSCanvasGradientConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSCanvasGradientConstructor, JSDOMWrapper>( exec, &JSCanvasGradientConstructorTable, this, propertyName,
+            slot );
 }
 
-bool JSCanvasGradientConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSCanvasGradientConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSCanvasGradientConstructor, JSDOMWrapper>(exec, &JSCanvasGradientConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSCanvasGradientConstructor, JSDOMWrapper>( exec, &JSCanvasGradientConstructorTable, this,
+            propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -106,92 +114,105 @@ bool JSCanvasGradientConstructor::getOwnPropertyDescriptor(ExecState* exec, cons
 
 static const HashTableValue JSCanvasGradientPrototypeTableValues[2] =
 {
-    { "addColorStop", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsCanvasGradientPrototypeFunctionAddColorStop), (intptr_t)2 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "addColorStop", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsCanvasGradientPrototypeFunctionAddColorStop ), ( intptr_t )2 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSCanvasGradientPrototypeTable = { 2, 1, JSCanvasGradientPrototypeTableValues, 0 };
 const ClassInfo JSCanvasGradientPrototype::s_info = { "CanvasGradientPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSCanvasGradientPrototypeTable, 0 };
 
-JSObject* JSCanvasGradientPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSCanvasGradientPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSCanvasGradient>(exec, globalObject);
+    return getDOMPrototype<JSCanvasGradient>( exec, globalObject );
 }
 
-bool JSCanvasGradientPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSCanvasGradientPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticFunctionSlot<JSObject>(exec, &JSCanvasGradientPrototypeTable, this, propertyName, slot);
+    return getStaticFunctionSlot<JSObject>( exec, &JSCanvasGradientPrototypeTable, this, propertyName, slot );
 }
 
-bool JSCanvasGradientPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSCanvasGradientPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticFunctionDescriptor<JSObject>(exec, &JSCanvasGradientPrototypeTable, this, propertyName, descriptor);
+    return getStaticFunctionDescriptor<JSObject>( exec, &JSCanvasGradientPrototypeTable, this, propertyName, descriptor );
 }
 
 const ClassInfo JSCanvasGradient::s_info = { "CanvasGradient", &JSDOMWrapper::s_info, &JSCanvasGradientTable, 0 };
 
-JSCanvasGradient::JSCanvasGradient(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<CanvasGradient> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSCanvasGradient::JSCanvasGradient( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<CanvasGradient> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSCanvasGradient::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSCanvasGradient::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSCanvasGradientPrototype(exec->globalData(), globalObject, JSCanvasGradientPrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSCanvasGradientPrototype( exec->globalData(), globalObject,
+            JSCanvasGradientPrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSCanvasGradient::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSCanvasGradient::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSCanvasGradient, Base>(exec, &JSCanvasGradientTable, this, propertyName, slot);
+    return getStaticValueSlot<JSCanvasGradient, Base>( exec, &JSCanvasGradientTable, this, propertyName, slot );
 }
 
-bool JSCanvasGradient::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSCanvasGradient::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSCanvasGradient, Base>(exec, &JSCanvasGradientTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSCanvasGradient, Base>( exec, &JSCanvasGradientTable, this, propertyName, descriptor );
 }
 
-JSValue jsCanvasGradientConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsCanvasGradientConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSCanvasGradient* domObject = static_cast<JSCanvasGradient*>(asObject(slotBase));
-    return JSCanvasGradient::getConstructor(exec, domObject->globalObject());
+    JSCanvasGradient *domObject = static_cast<JSCanvasGradient *>( asObject( slotBase ) );
+    return JSCanvasGradient::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSCanvasGradient::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSCanvasGradient::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSCanvasGradientConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSCanvasGradientConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsCanvasGradientPrototypeFunctionAddColorStop(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsCanvasGradientPrototypeFunctionAddColorStop( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSCanvasGradient::s_info))
-        return throwVMTypeError(exec);
-    JSCanvasGradient* castedThis = static_cast<JSCanvasGradient*>(asObject(thisValue));
-    CanvasGradient* imp = static_cast<CanvasGradient*>(castedThis->impl());
+
+    if ( !thisValue.inherits( &JSCanvasGradient::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSCanvasGradient *castedThis = static_cast<JSCanvasGradient *>( asObject( thisValue ) );
+    CanvasGradient *imp = static_cast<CanvasGradient *>( castedThis->impl() );
     ExceptionCode ec = 0;
-    float offset(exec->argument(0).toFloat(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    const String& color(ustringToString(exec->argument(1).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+    float offset( exec->argument( 0 ).toFloat( exec ) );
 
-    imp->addColorStop(offset, color, ec);
-    setDOMException(exec, ec);
-    return JSValue::encode(jsUndefined());
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    const String &color( ustringToString( exec->argument( 1 ).toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->addColorStop( offset, color, ec );
+    setDOMException( exec, ec );
+    return JSValue::encode( jsUndefined() );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, CanvasGradient* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, CanvasGradient *impl )
 {
-    return wrap<JSCanvasGradient>(exec, globalObject, impl);
+    return wrap<JSCanvasGradient>( exec, globalObject, impl );
 }
 
-CanvasGradient* toCanvasGradient(JSC::JSValue value)
+CanvasGradient *toCanvasGradient( JSC::JSValue value )
 {
-    return value.inherits(&JSCanvasGradient::s_info) ? static_cast<JSCanvasGradient*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSCanvasGradient::s_info ) ? static_cast<JSCanvasGradient *>( asObject( value ) )->impl() : 0;
 }
 
 }

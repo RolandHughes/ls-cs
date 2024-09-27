@@ -24,7 +24,8 @@
 #include <functional>
 #include <memory>
 
-namespace LsCsString {
+namespace LsCsString
+{
 
 #ifdef _WIN32
 
@@ -44,128 +45,128 @@ class CsBasicString;
 
 class CsChar
 {
-   public:
-      CsChar()
-         : m_char(0)
-      {
-      }
+public:
+    CsChar()
+        : m_char( 0 )
+    {
+    }
 
-      template <typename T = int>
-      CsChar(char c)
-         : m_char(static_cast<unsigned char>(c))
-      {
+    template <typename T = int> CsChar( char c )
+        : m_char( static_cast<unsigned char>( c ) )
+    {
 #ifndef CS_STRING_ALLOW_UNSAFE
-   static_assert(! std::is_same<T, T>::value, "Unsafe operations not allowed, unknown encoding for this operation");
+        static_assert( ! std::is_same<T, T>::value, "Unsafe operations not allowed, unknown encoding for this operation" );
 #endif
-      }
+    }
 
-      CsChar(char32_t c)
-         : m_char(c)
-      {
-      }
+    CsChar( char32_t c )
+        : m_char( c )
+    {
+    }
 
-      CsChar(int c)
-         : m_char(c)
-      {
-      }
+    CsChar( int c )
+        : m_char( c )
+    {
+    }
 
-      CsChar(const CsChar &other)
-         : m_char(other.m_char)
-      {
-      }
+    CsChar( const CsChar &other )
+        : m_char( other.m_char )
+    {
+    }
 
 #ifdef __cpp_char8_t
-      // support new data type added in C++20
+    // support new data type added in C++20
 
-      CsChar(char8_t c)
-         : m_char(c)
-      {
-      }
+    CsChar( char8_t c )
+        : m_char( c )
+    {
+    }
 #endif
 
-      inline bool operator!=(const CsChar &other) const;
-      inline bool operator==(const CsChar &other) const;
+    inline bool operator!=( const CsChar &other ) const;
+    inline bool operator==( const CsChar &other ) const;
 
-      inline bool operator<(const CsChar &other) const;
-      inline bool operator<=(const CsChar &other) const;
-      inline bool operator>(const CsChar &other) const;
-      inline bool operator>=(const CsChar &other) const;
+    inline bool operator<( const CsChar &other ) const;
+    inline bool operator<=( const CsChar &other ) const;
+    inline bool operator>( const CsChar &other ) const;
+    inline bool operator>=( const CsChar &other ) const;
 
-      inline CsChar &operator=(char c) &;
-      inline CsChar &operator=(char32_t c) &;
-      inline CsChar &operator=(CsChar c) &;
+    inline CsChar &operator=( char c ) &;
+    inline CsChar &operator=( char32_t c ) &;
+    inline CsChar &operator=( CsChar c ) &;
 
-      inline uint32_t unicode() const;
+    inline uint32_t unicode() const;
 
-   private:
-      uint32_t m_char;
+private:
+    uint32_t m_char;
 };
 
 // comparisons
-inline bool CsChar::operator!=(const CsChar &other) const
+inline bool CsChar::operator!=( const CsChar &other ) const
 {
-   return m_char != other.m_char;
+    return m_char != other.m_char;
 }
 
-inline bool CsChar::operator==(const CsChar &other) const
+inline bool CsChar::operator==( const CsChar &other ) const
 {
-   return m_char == other.m_char;
+    return m_char == other.m_char;
 }
 
-inline bool CsChar::operator<(const CsChar &other) const
+inline bool CsChar::operator<( const CsChar &other ) const
 {
-   return m_char < other.m_char;
+    return m_char < other.m_char;
 }
 
-inline bool CsChar::operator<=(const CsChar &other) const
+inline bool CsChar::operator<=( const CsChar &other ) const
 {
-   return m_char <= other.m_char;
+    return m_char <= other.m_char;
 }
 
-inline bool CsChar::operator>(const CsChar &other) const
+inline bool CsChar::operator>( const CsChar &other ) const
 {
-   return m_char > other.m_char;
+    return m_char > other.m_char;
 }
 
-inline bool CsChar::operator>=(const CsChar &other) const
+inline bool CsChar::operator>=( const CsChar &other ) const
 {
-   return m_char >= other.m_char;
+    return m_char >= other.m_char;
 }
 
-inline CsChar &CsChar::operator=(char c) &
+inline CsChar &CsChar::operator=( char c ) &
 {
-   m_char = c;
-   return *this;
+    m_char = c;
+    return *this;
 }
 
-inline CsChar &CsChar::operator=(char32_t c) &
+inline CsChar &CsChar::operator=( char32_t c ) &
 {
-   m_char = c;
-   return *this;
+    m_char = c;
+    return *this;
 }
 
-inline CsChar &CsChar::operator=(CsChar c) &
+inline CsChar &CsChar::operator=( CsChar c ) &
 {
-   m_char = c.m_char;
-   return *this;
+    m_char = c.m_char;
+    return *this;
 }
 
 inline uint32_t CsChar::unicode() const
 {
-   return m_char;
+    return m_char;
 }
 
 } // namespace
 
-namespace std {
-   template<>
-   struct hash<LsCsString::CsChar>
-   {
-      inline size_t operator()(const LsCsString::CsChar &key) const
-      {
-         return key.unicode();
-      }
-   };
+namespace std
+{
+template<>
+struct hash<LsCsString::CsChar>
+{
+    inline size_t operator()( const LsCsString::CsChar &key ) const
+    {
+        return key.unicode();
+    }
+};
 }
 
 #endif

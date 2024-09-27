@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -34,26 +34,38 @@
 
 using namespace JSC;
 
-namespace WebCore {
-
-JSValue toJS(ExecState* exec, JSDOMGlobalObject* globalObject, ImageData* imageData)
+namespace WebCore
 {
-    if (!imageData)
+
+JSValue toJS( ExecState *exec, JSDOMGlobalObject *globalObject, ImageData *imageData )
+{
+    if ( !imageData )
+    {
         return jsNull();
-    
-    JSDOMWrapper* wrapper = getCachedWrapper(currentWorld(exec), imageData);
-    if (wrapper)
+    }
+
+    JSDOMWrapper *wrapper = getCachedWrapper( currentWorld( exec ), imageData );
+
+    if ( wrapper )
+    {
         return wrapper;
-    
-    wrapper = CREATE_DOM_WRAPPER(exec, globalObject, ImageData, imageData);
-    Identifier dataName(exec, "data");
+    }
+
+    wrapper = CREATE_DOM_WRAPPER( exec, globalObject, ImageData, imageData );
+    Identifier dataName( exec, "data" );
     static const ClassInfo cpaClassInfo = { "CanvasPixelArray", &JSByteArray::Base::s_info, 0, 0 };
-    Structure* cpaStructure = getCachedDOMStructure(globalObject, &cpaClassInfo);
-    if (!cpaStructure)
-        cpaStructure = cacheDOMStructure(globalObject, JSByteArray::createStructure(exec->globalData(), jsNull(), &cpaClassInfo), &cpaClassInfo);
-    wrapper->putDirect(exec->globalData(), dataName, new (exec) JSByteArray(exec, cpaStructure, imageData->data()->data()), DontDelete | ReadOnly);
-    exec->heap()->reportExtraMemoryCost(imageData->data()->length());
-    
+    Structure *cpaStructure = getCachedDOMStructure( globalObject, &cpaClassInfo );
+
+    if ( !cpaStructure )
+    {
+        cpaStructure = cacheDOMStructure( globalObject, JSByteArray::createStructure( exec->globalData(), jsNull(), &cpaClassInfo ),
+                                          &cpaClassInfo );
+    }
+
+    wrapper->putDirect( exec->globalData(), dataName, new ( exec ) JSByteArray( exec, cpaStructure, imageData->data()->data() ),
+                        DontDelete | ReadOnly );
+    exec->heap()->reportExtraMemoryCost( imageData->data()->length() );
+
     return wrapper;
 }
 

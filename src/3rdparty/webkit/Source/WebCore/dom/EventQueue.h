@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
 
@@ -33,39 +33,42 @@
 #include <wtf/RefCounted.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Event;
 class EventQueueTimer;
 class Node;
 class ScriptExecutionContext;
 
-class EventQueue : public RefCounted<EventQueue> {
+class EventQueue : public RefCounted<EventQueue>
+{
 public:
-    enum ScrollEventTargetType {
+    enum ScrollEventTargetType
+    {
         ScrollEventDocumentTarget,
         ScrollEventElementTarget
     };
 
-    static PassRefPtr<EventQueue> create(ScriptExecutionContext*);
+    static PassRefPtr<EventQueue> create( ScriptExecutionContext * );
     ~EventQueue();
 
-    void enqueueEvent(PassRefPtr<Event>);
-    void enqueueOrDispatchScrollEvent(PassRefPtr<Node>, ScrollEventTargetType);
-    bool cancelEvent(Event*);
+    void enqueueEvent( PassRefPtr<Event> );
+    void enqueueOrDispatchScrollEvent( PassRefPtr<Node>, ScrollEventTargetType );
+    bool cancelEvent( Event * );
     void cancelQueuedEvents();
 
 private:
-    explicit EventQueue(ScriptExecutionContext*);
+    explicit EventQueue( ScriptExecutionContext * );
 
     void pendingEventTimerFired();
-    void dispatchEvent(PassRefPtr<Event>);
+    void dispatchEvent( PassRefPtr<Event> );
 
     OwnPtr<EventQueueTimer> m_pendingEventTimer;
     ListHashSet<RefPtr<Event> > m_queuedEvents;
-    HashSet<Node*> m_nodesWithQueuedScrollEvents;
-    
-    friend class EventQueueTimer;    
+    HashSet<Node *> m_nodesWithQueuedScrollEvents;
+
+    friend class EventQueueTimer;
 };
 
 }

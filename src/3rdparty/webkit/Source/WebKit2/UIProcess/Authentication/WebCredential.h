@@ -33,40 +33,45 @@
 #include <wtf/PassRefPtr.h>
 
 
-namespace WebKit {
+namespace WebKit
+{
 
 class WebCertificateInfo;
 
-class WebCredential : public APIObject {
+class WebCredential : public APIObject
+{
 public:
     static const Type APIType = TypeCredential;
 
-    static PassRefPtr<WebCredential> create(const WebCore::Credential& credential)
+    static PassRefPtr<WebCredential> create( const WebCore::Credential &credential )
     {
-        return adoptRef(new WebCredential(credential));
-    }
-    
-    static PassRefPtr<WebCredential> create(WebString* username, WebString* password, WebCore::CredentialPersistence persistence)
-    {
-        return adoptRef(new WebCredential(WebCore::Credential(username->string(), password->string(), persistence)));
+        return adoptRef( new WebCredential( credential ) );
     }
 
-    static PassRefPtr<WebCredential> create(WebCertificateInfo* certificateInfo)
+    static PassRefPtr<WebCredential> create( WebString *username, WebString *password, WebCore::CredentialPersistence persistence )
     {
-        return adoptRef(new WebCredential(certificateInfo));
+        return adoptRef( new WebCredential( WebCore::Credential( username->string(), password->string(), persistence ) ) );
     }
-    
-    WebCertificateInfo* certificateInfo();
 
-    const WebCore::Credential& core();
+    static PassRefPtr<WebCredential> create( WebCertificateInfo *certificateInfo )
+    {
+        return adoptRef( new WebCredential( certificateInfo ) );
+    }
 
-    const String& user() const;
-    
+    WebCertificateInfo *certificateInfo();
+
+    const WebCore::Credential &core();
+
+    const String &user() const;
+
 private:
-    WebCredential(const WebCore::Credential&);
-    WebCredential(WebCertificateInfo*);
+    WebCredential( const WebCore::Credential & );
+    WebCredential( WebCertificateInfo * );
 
-    virtual Type type() const { return APIType; }
+    virtual Type type() const
+    {
+        return APIType;
+    }
 
     WebCore::Credential m_coreCredential;
     RefPtr<WebCertificateInfo> m_certificateInfo;

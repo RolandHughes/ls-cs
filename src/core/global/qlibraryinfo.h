@@ -30,25 +30,26 @@
 class QStringList;
 class Q_CORE_EXPORT QLibraryInfo
 {
- public:
-   static QString licensee();
-   static QString licensedProducts();
-   static QDate buildDate();
+public:
+    static QString licensee();
+    static QString licensedProducts();
+    static QDate buildDate();
 
-   enum LibraryLocation {
-      PrefixPath,
-      PluginsPath,
-      ImportsPath,
-      Qml2ImportsPath,
-      TranslationsPath,
-      SettingsPath,
-   };
+    enum LibraryLocation
+    {
+        PrefixPath,
+        PluginsPath,
+        ImportsPath,
+        Qml2ImportsPath,
+        TranslationsPath,
+        SettingsPath,
+    };
 
-   static QString location(LibraryLocation location);
-   static QStringList platformPluginArguments(const QString &platformName);
+    static QString location( LibraryLocation location );
+    static QStringList platformPluginArguments( const QString &platformName );
 
- private:
-   QLibraryInfo();
+private:
+    QLibraryInfo();
 
 };
 

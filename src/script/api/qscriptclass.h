@@ -35,57 +35,59 @@ class QScriptClassPrivate;
 
 class Q_SCRIPT_EXPORT QScriptClass
 {
- public:
-   enum QueryFlag {
-      HandlesReadAccess  = 0x01,
-      HandlesWriteAccess = 0x02
-   };
-   using QueryFlags = QFlags<QueryFlag>;
+public:
+    enum QueryFlag
+    {
+        HandlesReadAccess  = 0x01,
+        HandlesWriteAccess = 0x02
+    };
+    using QueryFlags = QFlags<QueryFlag>;
 
-   enum Extension {
-      Callable,
-      HasInstance
-   };
+    enum Extension
+    {
+        Callable,
+        HasInstance
+    };
 
-   QScriptClass(QScriptEngine *engine);
+    QScriptClass( QScriptEngine *engine );
 
-   QScriptClass(const QScriptClass &) = delete;
-   QScriptClass &operator=(const QScriptClass &) = delete;
+    QScriptClass( const QScriptClass & ) = delete;
+    QScriptClass &operator=( const QScriptClass & ) = delete;
 
-   virtual ~QScriptClass();
+    virtual ~QScriptClass();
 
-   QScriptEngine *engine() const;
+    QScriptEngine *engine() const;
 
-   virtual QueryFlags queryProperty(const QScriptValue &object,
-      const QScriptString &name, QueryFlags flags, uint *id);
+    virtual QueryFlags queryProperty( const QScriptValue &object,
+                                      const QScriptString &name, QueryFlags flags, uint *id );
 
-   virtual QScriptValue property(const QScriptValue &object,
-      const QScriptString &name, uint id);
+    virtual QScriptValue property( const QScriptValue &object,
+                                   const QScriptString &name, uint id );
 
-   virtual void setProperty(QScriptValue &object, const QScriptString &name,
-      uint id, const QScriptValue &value);
+    virtual void setProperty( QScriptValue &object, const QScriptString &name,
+                              uint id, const QScriptValue &value );
 
-   virtual QScriptValue::PropertyFlags propertyFlags(
-      const QScriptValue &object, const QScriptString &name, uint id);
+    virtual QScriptValue::PropertyFlags propertyFlags(
+        const QScriptValue &object, const QScriptString &name, uint id );
 
-   virtual QScriptClassPropertyIterator *newIterator(const QScriptValue &object);
+    virtual QScriptClassPropertyIterator *newIterator( const QScriptValue &object );
 
-   virtual QScriptValue prototype() const;
+    virtual QScriptValue prototype() const;
 
-   virtual QString name() const;
+    virtual QString name() const;
 
-   virtual bool supportsExtension(Extension extension) const;
-   virtual QVariant extension(Extension extension,
-      const QVariant &argument = QVariant());
+    virtual bool supportsExtension( Extension extension ) const;
+    virtual QVariant extension( Extension extension,
+                                const QVariant &argument = QVariant() );
 
- protected:
-   QScriptClass(QScriptEngine *engine, QScriptClassPrivate &dd);
-   QScopedPointer<QScriptClassPrivate> d_ptr;
+protected:
+    QScriptClass( QScriptEngine *engine, QScriptClassPrivate &dd );
+    QScopedPointer<QScriptClassPrivate> d_ptr;
 
- private:
-   Q_DECLARE_PRIVATE(QScriptClass)
+private:
+    Q_DECLARE_PRIVATE( QScriptClass )
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(QScriptClass::QueryFlags)
+Q_DECLARE_OPERATORS_FOR_FLAGS( QScriptClass::QueryFlags )
 
 #endif

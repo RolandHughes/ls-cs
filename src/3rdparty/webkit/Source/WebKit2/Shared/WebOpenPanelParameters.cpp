@@ -28,15 +28,16 @@
 
 #include "WebCoreArgumentCoders.h"
 
-namespace WebKit {
-
-PassRefPtr<WebOpenPanelParameters> WebOpenPanelParameters::create(const Data& data)
+namespace WebKit
 {
-    return adoptRef(new WebOpenPanelParameters(data));
+
+PassRefPtr<WebOpenPanelParameters> WebOpenPanelParameters::create( const Data &data )
+{
+    return adoptRef( new WebOpenPanelParameters( data ) );
 }
 
-WebOpenPanelParameters::WebOpenPanelParameters(const Data& data)
-    : m_data(data)
+WebOpenPanelParameters::WebOpenPanelParameters( const Data &data )
+    : m_data( data )
 {
 }
 
@@ -44,14 +45,15 @@ WebOpenPanelParameters::~WebOpenPanelParameters()
 {
 }
 
-void WebOpenPanelParameters::Data::encode(CoreIPC::ArgumentEncoder* encoder) const
+void WebOpenPanelParameters::Data::encode( CoreIPC::ArgumentEncoder *encoder ) const
 {
-    encoder->encode(CoreIPC::In(allowMultipleFiles, allowsDirectoryUpload, acceptTypes, filenames));
+    encoder->encode( CoreIPC::In( allowMultipleFiles, allowsDirectoryUpload, acceptTypes, filenames ) );
 }
 
-bool WebOpenPanelParameters::Data::decode(CoreIPC::ArgumentDecoder* decoder, Data& result)
+bool WebOpenPanelParameters::Data::decode( CoreIPC::ArgumentDecoder *decoder, Data &result )
 {
-    return decoder->decode(CoreIPC::Out(result.allowMultipleFiles, result.allowsDirectoryUpload, result.acceptTypes, result.filenames));
+    return decoder->decode( CoreIPC::Out( result.allowMultipleFiles, result.allowsDirectoryUpload, result.acceptTypes,
+                                          result.filenames ) );
 }
 
 } // namespace WebCore

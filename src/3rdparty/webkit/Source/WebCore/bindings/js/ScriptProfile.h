@@ -34,29 +34,32 @@
 #include <wtf/RefCounted.h>
 #include <wtf/RefPtr.h>
 
-namespace JSC {
+namespace JSC
+{
 class Profile;
 }
 
-namespace WebCore {
+namespace WebCore
+{
 
 class InspectorObject;
 
-class ScriptProfile : public RefCounted<ScriptProfile> {
+class ScriptProfile : public RefCounted<ScriptProfile>
+{
 public:
-    static PassRefPtr<ScriptProfile> create(PassRefPtr<JSC::Profile> profile);
+    static PassRefPtr<ScriptProfile> create( PassRefPtr<JSC::Profile> profile );
     virtual ~ScriptProfile();
 
     String title() const;
     unsigned int uid() const;
-    ScriptProfileNode* head() const;
+    ScriptProfileNode *head() const;
 
 #if ENABLE(INSPECTOR)
     PassRefPtr<InspectorObject> buildInspectorObjectForHead() const;
 #endif
 
 private:
-    ScriptProfile(PassRefPtr<JSC::Profile> profile);
+    ScriptProfile( PassRefPtr<JSC::Profile> profile );
 
     RefPtr<JSC::Profile> m_profile;
 };

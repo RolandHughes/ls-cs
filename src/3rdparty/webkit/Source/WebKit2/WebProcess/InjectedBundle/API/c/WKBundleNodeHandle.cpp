@@ -36,93 +36,93 @@ using namespace WebKit;
 
 WKTypeID WKBundleNodeHandleGetTypeID()
 {
-    return toAPI(InjectedBundleNodeHandle::APIType);
+    return toAPI( InjectedBundleNodeHandle::APIType );
 }
 
-WKBundleNodeHandleRef WKBundleNodeHandleCreate(JSContextRef contextRef, JSObjectRef objectRef)
+WKBundleNodeHandleRef WKBundleNodeHandleCreate( JSContextRef contextRef, JSObjectRef objectRef )
 {
-    RefPtr<InjectedBundleNodeHandle> nodeHandle = InjectedBundleNodeHandle::getOrCreate(contextRef, objectRef);
-    return toAPI(nodeHandle.release().releaseRef());
+    RefPtr<InjectedBundleNodeHandle> nodeHandle = InjectedBundleNodeHandle::getOrCreate( contextRef, objectRef );
+    return toAPI( nodeHandle.release().releaseRef() );
 }
 
-WKBundleNodeHandleRef WKBundleNodeHandleCopyDocument(WKBundleNodeHandleRef nodeHandleRef)
+WKBundleNodeHandleRef WKBundleNodeHandleCopyDocument( WKBundleNodeHandleRef nodeHandleRef )
 {
-    RefPtr<InjectedBundleNodeHandle> nodeHandle = toImpl(nodeHandleRef)->document();
-    return toAPI(nodeHandle.release().releaseRef());
+    RefPtr<InjectedBundleNodeHandle> nodeHandle = toImpl( nodeHandleRef )->document();
+    return toAPI( nodeHandle.release().releaseRef() );
 }
 
-WKRect WKBundleNodeHandleGetRenderRect(WKBundleNodeHandleRef nodeHandleRef, bool* isReplaced)
+WKRect WKBundleNodeHandleGetRenderRect( WKBundleNodeHandleRef nodeHandleRef, bool *isReplaced )
 {
-    return toAPI(toImpl(nodeHandleRef)->renderRect(isReplaced));
+    return toAPI( toImpl( nodeHandleRef )->renderRect( isReplaced ) );
 }
 
-WKRect WKBundleNodeHandleGetElementBounds(WKBundleNodeHandleRef elementHandleRef)
+WKRect WKBundleNodeHandleGetElementBounds( WKBundleNodeHandleRef elementHandleRef )
 {
-    return toAPI(toImpl(elementHandleRef)->elementBounds());
+    return toAPI( toImpl( elementHandleRef )->elementBounds() );
 }
 
-WKBundleNodeHandleRef WKBundleNodeHandleCopyElementShadowRoot(WKBundleNodeHandleRef elementHandleRef)
+WKBundleNodeHandleRef WKBundleNodeHandleCopyElementShadowRoot( WKBundleNodeHandleRef elementHandleRef )
 {
-    RefPtr<InjectedBundleNodeHandle> nodeHandle = toImpl(elementHandleRef)->elementShadowRoot();
-    return toAPI(nodeHandle.release().releaseRef());
+    RefPtr<InjectedBundleNodeHandle> nodeHandle = toImpl( elementHandleRef )->elementShadowRoot();
+    return toAPI( nodeHandle.release().releaseRef() );
 }
 
-WKBundleNodeHandleRef WKBundleNodeHandleCopyElementEnsureShadowRoot(WKBundleNodeHandleRef elementHandleRef)
+WKBundleNodeHandleRef WKBundleNodeHandleCopyElementEnsureShadowRoot( WKBundleNodeHandleRef elementHandleRef )
 {
-    RefPtr<InjectedBundleNodeHandle> nodeHandle = toImpl(elementHandleRef)->elementEnsureShadowRoot();
-    return toAPI(nodeHandle.release().releaseRef());
+    RefPtr<InjectedBundleNodeHandle> nodeHandle = toImpl( elementHandleRef )->elementEnsureShadowRoot();
+    return toAPI( nodeHandle.release().releaseRef() );
 }
 
-void WKBundleNodeHandleRemoveShadowRoot(WKBundleNodeHandleRef elementHandleRef)
+void WKBundleNodeHandleRemoveShadowRoot( WKBundleNodeHandleRef elementHandleRef )
 {
-    toImpl(elementHandleRef)->elementRemoveShadowRoot();
+    toImpl( elementHandleRef )->elementRemoveShadowRoot();
 }
 
-void WKBundleNodeHandleSetHTMLInputElementValueForUser(WKBundleNodeHandleRef htmlInputElementHandleRef, WKStringRef valueRef)
+void WKBundleNodeHandleSetHTMLInputElementValueForUser( WKBundleNodeHandleRef htmlInputElementHandleRef, WKStringRef valueRef )
 {
-    toImpl(htmlInputElementHandleRef)->setHTMLInputElementValueForUser(toWTFString(valueRef));
+    toImpl( htmlInputElementHandleRef )->setHTMLInputElementValueForUser( toWTFString( valueRef ) );
 }
 
-bool WKBundleNodeHandleGetHTMLInputElementAutofilled(WKBundleNodeHandleRef htmlInputElementHandleRef)
+bool WKBundleNodeHandleGetHTMLInputElementAutofilled( WKBundleNodeHandleRef htmlInputElementHandleRef )
 {
-    return toImpl(htmlInputElementHandleRef)->isHTMLInputElementAutofilled();
+    return toImpl( htmlInputElementHandleRef )->isHTMLInputElementAutofilled();
 }
 
-void WKBundleNodeHandleSetHTMLInputElementAutofilled(WKBundleNodeHandleRef htmlInputElementHandleRef, bool filled)
+void WKBundleNodeHandleSetHTMLInputElementAutofilled( WKBundleNodeHandleRef htmlInputElementHandleRef, bool filled )
 {
-    toImpl(htmlInputElementHandleRef)->setHTMLInputElementAutofilled(filled);
+    toImpl( htmlInputElementHandleRef )->setHTMLInputElementAutofilled( filled );
 }
 
-bool WKBundleNodeHandleGetHTMLInputElementLastChangeWasUserEdit(WKBundleNodeHandleRef htmlInputElementHandleRef)
+bool WKBundleNodeHandleGetHTMLInputElementLastChangeWasUserEdit( WKBundleNodeHandleRef htmlInputElementHandleRef )
 {
-    return toImpl(htmlInputElementHandleRef)->htmlInputElementLastChangeWasUserEdit();
+    return toImpl( htmlInputElementHandleRef )->htmlInputElementLastChangeWasUserEdit();
 }
 
-bool WKBundleNodeHandleGetHTMLTextAreaElementLastChangeWasUserEdit(WKBundleNodeHandleRef htmlTextAreaElementHandleRef)
+bool WKBundleNodeHandleGetHTMLTextAreaElementLastChangeWasUserEdit( WKBundleNodeHandleRef htmlTextAreaElementHandleRef )
 {
-    return toImpl(htmlTextAreaElementHandleRef)->htmlTextAreaElementLastChangeWasUserEdit();
+    return toImpl( htmlTextAreaElementHandleRef )->htmlTextAreaElementLastChangeWasUserEdit();
 }
 
-WKBundleNodeHandleRef WKBundleNodeHandleCopyHTMLTableCellElementCellAbove(WKBundleNodeHandleRef htmlTableCellElementHandleRef)
+WKBundleNodeHandleRef WKBundleNodeHandleCopyHTMLTableCellElementCellAbove( WKBundleNodeHandleRef htmlTableCellElementHandleRef )
 {
-    RefPtr<InjectedBundleNodeHandle> nodeHandle = toImpl(htmlTableCellElementHandleRef)->htmlTableCellElementCellAbove();
-    return toAPI(nodeHandle.release().releaseRef());
+    RefPtr<InjectedBundleNodeHandle> nodeHandle = toImpl( htmlTableCellElementHandleRef )->htmlTableCellElementCellAbove();
+    return toAPI( nodeHandle.release().releaseRef() );
 }
 
-WKBundleFrameRef WKBundleNodeHandleCopyDocumentFrame(WKBundleNodeHandleRef documentHandleRef)
+WKBundleFrameRef WKBundleNodeHandleCopyDocumentFrame( WKBundleNodeHandleRef documentHandleRef )
 {
-    RefPtr<WebFrame> frame = toImpl(documentHandleRef)->documentFrame();
-    return toAPI(frame.release().releaseRef());
+    RefPtr<WebFrame> frame = toImpl( documentHandleRef )->documentFrame();
+    return toAPI( frame.release().releaseRef() );
 }
 
-WKBundleFrameRef WKBundleNodeHandleCopyHTMLFrameElementContentFrame(WKBundleNodeHandleRef htmlFrameElementHandleRef)
+WKBundleFrameRef WKBundleNodeHandleCopyHTMLFrameElementContentFrame( WKBundleNodeHandleRef htmlFrameElementHandleRef )
 {
-    RefPtr<WebFrame> frame = toImpl(htmlFrameElementHandleRef)->htmlFrameElementContentFrame();
-    return toAPI(frame.release().releaseRef());
+    RefPtr<WebFrame> frame = toImpl( htmlFrameElementHandleRef )->htmlFrameElementContentFrame();
+    return toAPI( frame.release().releaseRef() );
 }
 
-WKBundleFrameRef WKBundleNodeHandleCopyHTMLIFrameElementContentFrame(WKBundleNodeHandleRef htmlIFrameElementHandleRef)
+WKBundleFrameRef WKBundleNodeHandleCopyHTMLIFrameElementContentFrame( WKBundleNodeHandleRef htmlIFrameElementHandleRef )
 {
-    RefPtr<WebFrame> frame = toImpl(htmlIFrameElementHandleRef)->htmlIFrameElementContentFrame();
-    return toAPI(frame.release().releaseRef());
+    RefPtr<WebFrame> frame = toImpl( htmlIFrameElementHandleRef )->htmlIFrameElementContentFrame();
+    return toAPI( frame.release().releaseRef() );
 }

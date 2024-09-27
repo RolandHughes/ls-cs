@@ -21,11 +21,12 @@
 #include "config.h"
 #include "CSSCharsetRule.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-CSSCharsetRule::CSSCharsetRule(CSSStyleSheet* parent, const String& encoding)
-    : CSSRule(parent)
-    , m_encoding(encoding)
+CSSCharsetRule::CSSCharsetRule( CSSStyleSheet *parent, const String &encoding )
+    : CSSRule( parent )
+    , m_encoding( encoding )
 {
 }
 

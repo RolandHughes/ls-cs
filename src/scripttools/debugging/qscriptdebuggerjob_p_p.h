@@ -33,16 +33,16 @@ class QScriptDebuggerJob;
 
 class QScriptDebuggerJobPrivate
 {
-   Q_DECLARE_PUBLIC(QScriptDebuggerJob)
+    Q_DECLARE_PUBLIC( QScriptDebuggerJob )
 
- public:
-   QScriptDebuggerJobPrivate();
-   virtual ~QScriptDebuggerJobPrivate();
+public:
+    QScriptDebuggerJobPrivate();
+    virtual ~QScriptDebuggerJobPrivate();
 
-   static QScriptDebuggerJobPrivate *get(QScriptDebuggerJob *q);
+    static QScriptDebuggerJobPrivate *get( QScriptDebuggerJob *q );
 
-   QScriptDebuggerJobSchedulerInterface *jobScheduler;
-   QScriptDebuggerJob *q_ptr;
+    QScriptDebuggerJobSchedulerInterface *jobScheduler;
+    QScriptDebuggerJob *q_ptr;
 };
 
 QT_END_NAMESPACE

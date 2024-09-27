@@ -35,73 +35,77 @@ class QWidget;
 
 class Q_GUI_EXPORT QItemEditorCreatorBase
 {
- public:
-   virtual ~QItemEditorCreatorBase();
+public:
+    virtual ~QItemEditorCreatorBase();
 
-   virtual QWidget *createWidget(QWidget *parent) const = 0;
-   virtual QString valuePropertyName() const = 0;
+    virtual QWidget *createWidget( QWidget *parent ) const = 0;
+    virtual QString valuePropertyName() const = 0;
 };
 
 template <class T>
 class QItemEditorCreator : public QItemEditorCreatorBase
 {
- public:
-   inline explicit QItemEditorCreator(const QString &valuePropertyName);
+public:
+    inline explicit QItemEditorCreator( const QString &valuePropertyName );
 
-   inline QWidget *createWidget(QWidget *parent) const override {
-      return new T(parent);
-   }
+    inline QWidget *createWidget( QWidget *parent ) const override
+    {
+        return new T( parent );
+    }
 
-   inline QString valuePropertyName() const override {
-      return propertyName;
-   }
+    inline QString valuePropertyName() const override
+    {
+        return propertyName;
+    }
 
- private:
-   QString propertyName;
+private:
+    QString propertyName;
 };
 
 template <class T>
 class QStandardItemEditorCreator: public QItemEditorCreatorBase
 {
- public:
-   inline QStandardItemEditorCreator()
-      : propertyName(T::staticMetaObject.userProperty().name()) {
-   }
+public:
+    inline QStandardItemEditorCreator()
+        : propertyName( T::staticMetaObject.userProperty().name() )
+    {
+    }
 
-   inline QWidget *createWidget(QWidget *parent) const override {
-      return new T(parent);
-   }
+    inline QWidget *createWidget( QWidget *parent ) const override
+    {
+        return new T( parent );
+    }
 
-   inline QString valuePropertyName() const override {
-      return propertyName;
-   }
+    inline QString valuePropertyName() const override
+    {
+        return propertyName;
+    }
 
- private:
-   QString propertyName;
+private:
+    QString propertyName;
 };
 
-template <class T>
-QItemEditorCreator<T>::QItemEditorCreator(const QString &valuePropertyName)
-   : propertyName(valuePropertyName)
+template <class T> QItemEditorCreator<T>::QItemEditorCreator( const QString &valuePropertyName )
+    : propertyName( valuePropertyName )
 {
 }
 
 class Q_GUI_EXPORT QItemEditorFactory
 {
- public:
-   inline QItemEditorFactory() {}
-   virtual ~QItemEditorFactory();
+public:
+    inline QItemEditorFactory() {}
+    virtual ~QItemEditorFactory();
 
-   virtual QWidget *createEditor(QVariant::Type type, QWidget *parent) const;
-   virtual QString valuePropertyName(QVariant::Type type) const;
+    virtual QWidget *createEditor( QVariant::Type type, QWidget *parent ) const;
+    virtual QString valuePropertyName( QVariant::Type type ) const;
 
-   void registerEditor(QVariant::Type type, QItemEditorCreatorBase *creator);
+    void registerEditor( QVariant::Type type, QItemEditorCreatorBase *creator );
 
-   static const QItemEditorFactory *defaultFactory();
-   static void setDefaultFactory(QItemEditorFactory *factory);
+    static const QItemEditorFactory *defaultFactory();
+    static void setDefaultFactory( QItemEditorFactory *factory );
 
- private:
-   QHash<QVariant::Type, QItemEditorCreatorBase *> creatorMap;
+private:
+    QHash<QVariant::Type, QItemEditorCreatorBase *> creatorMap;
 };
 
 #endif // QT_NO_ITEMVIEWS

@@ -51,7 +51,7 @@ PCRE code modules. */
 character. */
 
 const int jsc_pcre_utf8_table1[6] =
-  { 0x7f, 0x7ff, 0xffff, 0x1fffff, 0x3ffffff, 0x7fffffff};
+{ 0x7f, 0x7ff, 0xffff, 0x1fffff, 0x3ffffff, 0x7fffffff};
 
 /* These are the indicator bits and the mask for the data bits to set in the
 first byte of a character, indexed by the number of additional bytes. */
@@ -63,10 +63,12 @@ const int jsc_pcre_utf8_table3[6] = { 0xff, 0x1f, 0x0f, 0x07, 0x03, 0x01};
 masked with 0x3f. The highest number for a valid UTF-8 character is in fact
 0x3d. */
 
-const unsigned char jsc_pcre_utf8_table4[0x40] = {
-  1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-  1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-  2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
-  3,3,3,3,3,3,3,3,4,4,4,4,5,5,5,5 };
+const unsigned char jsc_pcre_utf8_table4[0x40] =
+{
+    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+    2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+    3,3,3,3,3,3,3,3,4,4,4,4,5,5,5,5
+};
 
 #include "chartables.c"

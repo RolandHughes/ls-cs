@@ -39,7 +39,8 @@
 #include "StorageInfoQuotaCallback.h"
 #include "StorageInfoUsageCallback.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class ScriptExecutionContext;
 
@@ -52,12 +53,14 @@ StorageInfo::~StorageInfo()
 }
 
 #if !PLATFORM(CHROMIUM)
-void StorageInfo::queryUsageAndQuota(ScriptExecutionContext*, int, PassRefPtr<StorageInfoUsageCallback>, PassRefPtr<StorageInfoErrorCallback>)
+void StorageInfo::queryUsageAndQuota( ScriptExecutionContext *, int, PassRefPtr<StorageInfoUsageCallback>,
+                                      PassRefPtr<StorageInfoErrorCallback> )
 {
     notImplemented();
 }
 
-void StorageInfo::requestQuota(ScriptExecutionContext*, int, unsigned long long, PassRefPtr<StorageInfoQuotaCallback>, PassRefPtr<StorageInfoErrorCallback>)
+void StorageInfo::requestQuota( ScriptExecutionContext *, int, unsigned long long, PassRefPtr<StorageInfoQuotaCallback>,
+                                PassRefPtr<StorageInfoErrorCallback> )
 {
     notImplemented();
 }

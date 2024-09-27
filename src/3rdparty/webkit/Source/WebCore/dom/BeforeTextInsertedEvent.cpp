@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -28,10 +28,11 @@
 
 #include "EventNames.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-BeforeTextInsertedEvent::BeforeTextInsertedEvent(const String& text)
-    : Event(eventNames().webkitBeforeTextInsertedEvent, false, true), m_text(text)
+BeforeTextInsertedEvent::BeforeTextInsertedEvent( const String &text )
+    : Event( eventNames().webkitBeforeTextInsertedEvent, false, true ), m_text( text )
 {
 }
 

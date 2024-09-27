@@ -32,118 +32,146 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
 ShareableBitmap::Handle::Handle()
-    : m_flags(0)
+    : m_flags( 0 )
 {
 }
 
-void ShareableBitmap::Handle::encode(CoreIPC::ArgumentEncoder* encoder) const
+void ShareableBitmap::Handle::encode( CoreIPC::ArgumentEncoder *encoder ) const
 {
-    encoder->encode(m_handle);
-    encoder->encode(m_size);
-    encoder->encode(m_flags);
+    encoder->encode( m_handle );
+    encoder->encode( m_size );
+    encoder->encode( m_flags );
 }
 
-bool ShareableBitmap::Handle::decode(CoreIPC::ArgumentDecoder* decoder, Handle& handle)
+bool ShareableBitmap::Handle::decode( CoreIPC::ArgumentDecoder *decoder, Handle &handle )
 {
-    if (!decoder->decode(handle.m_handle))
+    if ( !decoder->decode( handle.m_handle ) )
+    {
         return false;
-    if (!decoder->decode(handle.m_size))
+    }
+
+    if ( !decoder->decode( handle.m_size ) )
+    {
         return false;
-    if (!decoder->decode(handle.m_flags))
+    }
+
+    if ( !decoder->decode( handle.m_flags ) )
+    {
         return false;
+    }
+
     return true;
 }
 
-PassRefPtr<ShareableBitmap> ShareableBitmap::create(const IntSize& size, Flags flags)
+PassRefPtr<ShareableBitmap> ShareableBitmap::create( const IntSize &size, Flags flags )
 {
-    size_t numBytes = numBytesForSize(size);
-    
-    void* data = 0;
-    if (!tryFastMalloc(numBytes).getValue(data))
+    size_t numBytes = numBytesForSize( size );
+
+    void *data = 0;
+
+    if ( !tryFastMalloc( numBytes ).getValue( data ) )
+    {
         return 0;
+    }
 
-    return adoptRef(new ShareableBitmap(size, flags, data));
+    return adoptRef( new ShareableBitmap( size, flags, data ) );
 }
 
-PassRefPtr<ShareableBitmap> ShareableBitmap::createShareable(const IntSize& size, Flags flags)
+PassRefPtr<ShareableBitmap> ShareableBitmap::createShareable( const IntSize &size, Flags flags )
 {
-    size_t numBytes = numBytesForSize(size);
+    size_t numBytes = numBytesForSize( size );
 
-    RefPtr<SharedMemory> sharedMemory = SharedMemory::create(numBytes);
-    if (!sharedMemory)
+    RefPtr<SharedMemory> sharedMemory = SharedMemory::create( numBytes );
+
+    if ( !sharedMemory )
+    {
         return 0;
+    }
 
-    return adoptRef(new ShareableBitmap(size, flags, sharedMemory));
+    return adoptRef( new ShareableBitmap( size, flags, sharedMemory ) );
 }
 
-PassRefPtr<ShareableBitmap> ShareableBitmap::create(const IntSize& size, Flags flags, PassRefPtr<SharedMemory> sharedMemory)
+PassRefPtr<ShareableBitmap> ShareableBitmap::create( const IntSize &size, Flags flags, PassRefPtr<SharedMemory> sharedMemory )
 {
-    ASSERT(sharedMemory);
+    ASSERT( sharedMemory );
 
-    size_t numBytes = numBytesForSize(size);
-    ASSERT_UNUSED(numBytes, sharedMemory->size() >= numBytes);
-    
-    return adoptRef(new ShareableBitmap(size, flags, sharedMemory));
+    size_t numBytes = numBytesForSize( size );
+    ASSERT_UNUSED( numBytes, sharedMemory->size() >= numBytes );
+
+    return adoptRef( new ShareableBitmap( size, flags, sharedMemory ) );
 }
 
-PassRefPtr<ShareableBitmap> ShareableBitmap::create(const Handle& handle)
+PassRefPtr<ShareableBitmap> ShareableBitmap::create( const Handle &handle )
 {
     // Create the shared memory.
-    RefPtr<SharedMemory> sharedMemory = SharedMemory::create(handle.m_handle, SharedMemory::ReadWrite);
-    if (!sharedMemory)
-        return 0;
+    RefPtr<SharedMemory> sharedMemory = SharedMemory::create( handle.m_handle, SharedMemory::ReadWrite );
 
-    return create(handle.m_size, handle.m_flags, sharedMemory.release());
+    if ( !sharedMemory )
+    {
+        return 0;
+    }
+
+    return create( handle.m_size, handle.m_flags, sharedMemory.release() );
 }
 
-bool ShareableBitmap::createHandle(Handle& handle)
+bool ShareableBitmap::createHandle( Handle &handle )
 {
-    ASSERT(isBackedBySharedMemory());
+    ASSERT( isBackedBySharedMemory() );
 
-    if (!m_sharedMemory->createHandle(handle.m_handle, SharedMemory::ReadWrite))
+    if ( !m_sharedMemory->createHandle( handle.m_handle, SharedMemory::ReadWrite ) )
+    {
         return false;
+    }
+
     handle.m_size = m_size;
     handle.m_flags = m_flags;
     return true;
 }
 
-ShareableBitmap::ShareableBitmap(const IntSize& size, Flags flags, void* data)
-    : m_size(size)
-    , m_flags(flags)
-    , m_data(data)
+ShareableBitmap::ShareableBitmap( const IntSize &size, Flags flags, void *data )
+    : m_size( size )
+    , m_flags( flags )
+    , m_data( data )
 {
 }
 
-ShareableBitmap::ShareableBitmap(const IntSize& size, Flags flags, PassRefPtr<SharedMemory> sharedMemory)
-    : m_size(size)
-    , m_flags(flags)
-    , m_sharedMemory(sharedMemory)
-    , m_data(0)
+ShareableBitmap::ShareableBitmap( const IntSize &size, Flags flags, PassRefPtr<SharedMemory> sharedMemory )
+    : m_size( size )
+    , m_flags( flags )
+    , m_sharedMemory( sharedMemory )
+    , m_data( 0 )
 {
 }
 
 ShareableBitmap::~ShareableBitmap()
 {
-    if (!isBackedBySharedMemory())
-        fastFree(m_data);
+    if ( !isBackedBySharedMemory() )
+    {
+        fastFree( m_data );
+    }
 }
 
-bool ShareableBitmap::resize(const IntSize& size)
+bool ShareableBitmap::resize( const IntSize &size )
 {
     // We can't resize backing stores that are backed by shared memory.
-    ASSERT(!isBackedBySharedMemory());
+    ASSERT( !isBackedBySharedMemory() );
 
-    if (size == m_size)
+    if ( size == m_size )
+    {
         return true;
+    }
 
-    size_t newNumBytes = numBytesForSize(size);
-    
+    size_t newNumBytes = numBytesForSize( size );
+
     // Try to resize.
-    char* newData = 0;
-    if (!tryFastRealloc(m_data, newNumBytes).getValue(newData)) {
+    char *newData = 0;
+
+    if ( !tryFastRealloc( m_data, newNumBytes ).getValue( newData ) )
+    {
         // We failed, but the backing store is still kept in a consistent state.
         return false;
     }
@@ -154,12 +182,14 @@ bool ShareableBitmap::resize(const IntSize& size)
     return true;
 }
 
-void* ShareableBitmap::data() const
+void *ShareableBitmap::data() const
 {
-    if (isBackedBySharedMemory())
+    if ( isBackedBySharedMemory() )
+    {
         return m_sharedMemory->data();
+    }
 
-    ASSERT(m_data);
+    ASSERT( m_data );
     return m_data;
 }
 

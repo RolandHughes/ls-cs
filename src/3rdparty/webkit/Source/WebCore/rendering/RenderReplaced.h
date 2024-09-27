@@ -24,12 +24,14 @@
 
 #include "RenderBox.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class RenderReplaced : public RenderBox {
+class RenderReplaced : public RenderBox
+{
 public:
-    RenderReplaced(Node*);
-    RenderReplaced(Node*, const IntSize& intrinsicSize);
+    RenderReplaced( Node * );
+    RenderReplaced( Node *, const IntSize &intrinsicSize );
     virtual ~RenderReplaced();
 
     virtual void destroy();
@@ -39,44 +41,60 @@ protected:
 
     virtual IntSize intrinsicSize() const;
 
-    virtual int computeReplacedLogicalWidth(bool includeMaxWidth = true) const;
+    virtual int computeReplacedLogicalWidth( bool includeMaxWidth = true ) const;
     virtual int computeReplacedLogicalHeight() const;
-    virtual int minimumReplacedHeight() const { return 0; }
+    virtual int minimumReplacedHeight() const
+    {
+        return 0;
+    }
 
-    virtual void setSelectionState(SelectionState);
+    virtual void setSelectionState( SelectionState );
 
     bool isSelected() const;
 
-    virtual void styleDidChange(StyleDifference, const RenderStyle* oldStyle);
+    virtual void styleDidChange( StyleDifference, const RenderStyle *oldStyle );
 
-    void setIntrinsicSize(const IntSize&);
+    void setIntrinsicSize( const IntSize & );
     virtual void intrinsicSizeChanged();
-    void setHasIntrinsicSize() { m_hasIntrinsicSize = true; }
+    void setHasIntrinsicSize()
+    {
+        m_hasIntrinsicSize = true;
+    }
 
-    virtual void paint(PaintInfo&, int tx, int ty);
-    bool shouldPaint(PaintInfo&, int& tx, int& ty);
-    IntRect localSelectionRect(bool checkWhetherSelected = true) const; // This is in local coordinates, but it's a physical rect (so the top left corner is physical top left).
+    virtual void paint( PaintInfo &, int tx, int ty );
+    bool shouldPaint( PaintInfo &, int &tx, int &ty );
+    IntRect localSelectionRect( bool checkWhetherSelected = true )
+    const; // This is in local coordinates, but it's a physical rect (so the top left corner is physical top left).
 
 private:
-    virtual const char* renderName() const { return "RenderReplaced"; }
+    virtual const char *renderName() const
+    {
+        return "RenderReplaced";
+    }
 
-    virtual bool canHaveChildren() const { return false; }
+    virtual bool canHaveChildren() const
+    {
+        return false;
+    }
 
     virtual void computePreferredLogicalWidths();
 
     int calcAspectRatioLogicalWidth() const;
     int calcAspectRatioLogicalHeight() const;
 
-    virtual void paintReplaced(PaintInfo&, int /*tx*/, int /*ty*/) { }
+    virtual void paintReplaced( PaintInfo &, int /*tx*/, int /*ty*/ ) { }
 
-    virtual IntRect clippedOverflowRectForRepaint(RenderBoxModelObject* repaintContainer);
+    virtual IntRect clippedOverflowRectForRepaint( RenderBoxModelObject *repaintContainer );
 
     virtual unsigned caretMaxRenderedOffset() const;
-    virtual VisiblePosition positionForPoint(const IntPoint&);
-    
-    virtual bool canBeSelectionLeaf() const { return true; }
+    virtual VisiblePosition positionForPoint( const IntPoint & );
 
-    virtual IntRect selectionRectForRepaint(RenderBoxModelObject* repaintContainer, bool clipToVisibleContent = true);
+    virtual bool canBeSelectionLeaf() const
+    {
+        return true;
+    }
+
+    virtual IntRect selectionRectForRepaint( RenderBoxModelObject *repaintContainer, bool clipToVisibleContent = true );
 
     IntSize m_intrinsicSize;
     bool m_hasIntrinsicSize;

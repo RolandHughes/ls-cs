@@ -34,25 +34,25 @@
 
 class QButtonGroupPrivate
 {
-   Q_DECLARE_PUBLIC(QButtonGroup)
+    Q_DECLARE_PUBLIC( QButtonGroup )
 
- public:
-   QButtonGroupPrivate()
-      : exclusive(true)
-   { }
+public:
+    QButtonGroupPrivate()
+        : exclusive( true )
+    { }
 
-   virtual ~QButtonGroupPrivate()
-   { }
+    virtual ~QButtonGroupPrivate()
+    { }
 
-   QList<QAbstractButton *> buttonList;
-   QPointer<QAbstractButton> checkedButton;
-   void detectCheckedButton();
+    QList<QAbstractButton *> buttonList;
+    QPointer<QAbstractButton> checkedButton;
+    void detectCheckedButton();
 
-   bool exclusive;
-   QHash<QAbstractButton *, int> mapping;
+    bool exclusive;
+    QHash<QAbstractButton *, int> mapping;
 
- protected:
-   QButtonGroup *q_ptr;
+protected:
+    QButtonGroup *q_ptr;
 
 };
 

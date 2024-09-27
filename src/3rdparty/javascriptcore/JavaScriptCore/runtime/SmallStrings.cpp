@@ -31,14 +31,19 @@
 
 #include <wtf/Noncopyable.h>
 
-namespace JSC {
+namespace JSC
+{
 static const unsigned numCharactersToStore = 0x100;
 
-class SmallStringsStorage : public Noncopyable {
+class SmallStringsStorage : public Noncopyable
+{
 public:
     SmallStringsStorage();
 
-    UString::Rep* rep(unsigned char character) { return &m_reps[character]; }
+    UString::Rep *rep( unsigned char character )
+    {
+        return &m_reps[character];
+    }
 
 private:
     UString::Rep m_reps[numCharactersToStore];
@@ -46,69 +51,95 @@ private:
 
 SmallStringsStorage::SmallStringsStorage()
 {
-    UChar* characterBuffer = 0;
-    RefPtr<UStringImpl> baseString = UStringImpl::createUninitialized(numCharactersToStore, characterBuffer);
-    for (unsigned i = 0; i < numCharactersToStore; ++i) {
+    UChar *characterBuffer = 0;
+    RefPtr<UStringImpl> baseString = UStringImpl::createUninitialized( numCharactersToStore, characterBuffer );
+
+    for ( unsigned i = 0; i < numCharactersToStore; ++i )
+    {
         characterBuffer[i] = i;
-        new (&m_reps[i]) UString::Rep(&characterBuffer[i], 1, PassRefPtr<UStringImpl>(baseString));
+        new ( &m_reps[i] ) UString::Rep( &characterBuffer[i], 1, PassRefPtr<UStringImpl>( baseString ) );
     }
 }
 
 SmallStrings::SmallStrings()
-    : m_emptyString(0)
-    , m_storage(0)
+    : m_emptyString( 0 )
+    , m_storage( 0 )
 {
-    COMPILE_ASSERT(numCharactersToStore == sizeof(m_singleCharacterStrings) / sizeof(m_singleCharacterStrings[0]), IsNumCharactersConstInSyncWithClassUsage);
+    COMPILE_ASSERT( numCharactersToStore == sizeof( m_singleCharacterStrings ) / sizeof( m_singleCharacterStrings[0] ),
+                    IsNumCharactersConstInSyncWithClassUsage );
 
-    for (unsigned i = 0; i < numCharactersToStore; ++i)
+    for ( unsigned i = 0; i < numCharactersToStore; ++i )
+    {
         m_singleCharacterStrings[i] = 0;
+    }
 }
 
 SmallStrings::~SmallStrings()
 {
 }
 
-void SmallStrings::markChildren(MarkStack& markStack)
+void SmallStrings::markChildren( MarkStack &markStack )
 {
-    if (m_emptyString)
-        markStack.append(m_emptyString);
-    for (unsigned i = 0; i < numCharactersToStore; ++i) {
-        if (m_singleCharacterStrings[i])
-            markStack.append(m_singleCharacterStrings[i]);
+    if ( m_emptyString )
+    {
+        markStack.append( m_emptyString );
+    }
+
+    for ( unsigned i = 0; i < numCharactersToStore; ++i )
+    {
+        if ( m_singleCharacterStrings[i] )
+        {
+            markStack.append( m_singleCharacterStrings[i] );
+        }
     }
 }
 
 unsigned SmallStrings::count() const
 {
     unsigned count = 0;
-    if (m_emptyString)
+
+    if ( m_emptyString )
+    {
         ++count;
-    for (unsigned i = 0; i < numCharactersToStore; ++i) {
-        if (m_singleCharacterStrings[i])
-            ++count;
     }
+
+    for ( unsigned i = 0; i < numCharactersToStore; ++i )
+    {
+        if ( m_singleCharacterStrings[i] )
+        {
+            ++count;
+        }
+    }
+
     return count;
 }
 
-void SmallStrings::createEmptyString(JSGlobalData* globalData)
+void SmallStrings::createEmptyString( JSGlobalData *globalData )
 {
-    ASSERT(!m_emptyString);
-    m_emptyString = new (globalData) JSString(globalData, "", JSString::HasOtherOwner);
+    ASSERT( !m_emptyString );
+    m_emptyString = new ( globalData ) JSString( globalData, "", JSString::HasOtherOwner );
 }
 
-void SmallStrings::createSingleCharacterString(JSGlobalData* globalData, unsigned char character)
+void SmallStrings::createSingleCharacterString( JSGlobalData *globalData, unsigned char character )
 {
-    if (!m_storage)
-        m_storage.set(new SmallStringsStorage);
-    ASSERT(!m_singleCharacterStrings[character]);
-    m_singleCharacterStrings[character] = new (globalData) JSString(globalData, m_storage->rep(character), JSString::HasOtherOwner);
+    if ( !m_storage )
+    {
+        m_storage.set( new SmallStringsStorage );
+    }
+
+    ASSERT( !m_singleCharacterStrings[character] );
+    m_singleCharacterStrings[character] = new ( globalData ) JSString( globalData, m_storage->rep( character ),
+            JSString::HasOtherOwner );
 }
 
-UString::Rep* SmallStrings::singleCharacterStringRep(unsigned char character)
+UString::Rep *SmallStrings::singleCharacterStringRep( unsigned char character )
 {
-    if (!m_storage)
-        m_storage.set(new SmallStringsStorage);
-    return m_storage->rep(character);
+    if ( !m_storage )
+    {
+        m_storage.set( new SmallStringsStorage );
+    }
+
+    return m_storage->rep( character );
 }
 
 } // namespace JSC

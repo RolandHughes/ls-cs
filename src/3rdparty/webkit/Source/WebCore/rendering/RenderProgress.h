@@ -24,31 +24,51 @@
 #if ENABLE(PROGRESS_TAG)
 #include "RenderBlock.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class HTMLProgressElement;
 
-class RenderProgress : public RenderBlock {
+class RenderProgress : public RenderBlock
+{
 public:
-    RenderProgress(HTMLProgressElement*);
+    RenderProgress( HTMLProgressElement * );
     virtual ~RenderProgress();
 
-    double position() const { return m_position; }
+    double position() const
+    {
+        return m_position;
+    }
     double animationProgress() const;
-    double animationStartTime() const { return m_animationStartTime; }
+    double animationStartTime() const
+    {
+        return m_animationStartTime;
+    }
 
     bool isDeterminate() const;
 
-    HTMLProgressElement* progressElement() const;
+    HTMLProgressElement *progressElement() const;
 
 private:
-    virtual const char* renderName() const { return "RenderProgress"; }
-    virtual bool isProgress() const { return true; }
-    virtual bool requiresForcedStyleRecalcPropagation() const { return true; }
-    virtual bool canHaveChildren() const { return false; }
+    virtual const char *renderName() const
+    {
+        return "RenderProgress";
+    }
+    virtual bool isProgress() const
+    {
+        return true;
+    }
+    virtual bool requiresForcedStyleRecalcPropagation() const
+    {
+        return true;
+    }
+    virtual bool canHaveChildren() const
+    {
+        return false;
+    }
     virtual void updateFromElement();
 
-    void animationTimerFired(Timer<RenderProgress>*);
+    void animationTimerFired( Timer<RenderProgress> * );
     void updateAnimationState();
 
     double m_position;
@@ -59,14 +79,14 @@ private:
     Timer<RenderProgress> m_animationTimer;
 };
 
-inline RenderProgress* toRenderProgress(RenderObject* object)
+inline RenderProgress *toRenderProgress( RenderObject *object )
 {
-    ASSERT(!object || object->isProgress());
-    return static_cast<RenderProgress*>(object);
+    ASSERT( !object || object->isProgress() );
+    return static_cast<RenderProgress *>( object );
 }
 
 // This will catch anyone doing an unnecessary cast.
-void toRenderProgress(const RenderProgress*);
+void toRenderProgress( const RenderProgress * );
 
 } // namespace WebCore
 

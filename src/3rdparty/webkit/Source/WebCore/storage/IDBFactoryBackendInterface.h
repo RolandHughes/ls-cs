@@ -36,7 +36,8 @@
 
 #if ENABLE(INDEXED_DATABASE)
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Frame;
 class IDBDatabase;
@@ -46,17 +47,20 @@ class SecurityOrigin;
 // This is implemented by IDBFactoryBackendImpl and optionally others (in order to proxy
 // calls across process barriers). All calls to these classes should be non-blocking and
 // trigger work on a background thread if necessary.
-class IDBFactoryBackendInterface : public ThreadSafeRefCounted<IDBFactoryBackendInterface> {
+class IDBFactoryBackendInterface : public ThreadSafeRefCounted<IDBFactoryBackendInterface>
+{
 public:
     static PassRefPtr<IDBFactoryBackendInterface> create();
     virtual ~IDBFactoryBackendInterface() { }
 
-    enum BackingStoreType {
+    enum BackingStoreType
+    {
         DefaultBackingStore,
         LevelDBBackingStore
     };
 
-    virtual void open(const String& name, PassRefPtr<IDBCallbacks>, PassRefPtr<SecurityOrigin>, Frame*, const String& dataDir, int64_t maximumSize, BackingStoreType) = 0;
+    virtual void open( const String &name, PassRefPtr<IDBCallbacks>, PassRefPtr<SecurityOrigin>, Frame *, const String &dataDir,
+                       int64_t maximumSize, BackingStoreType ) = 0;
 };
 
 } // namespace WebCore

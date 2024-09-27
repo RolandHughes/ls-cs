@@ -26,12 +26,13 @@
 
 #include <qcontextnodechecker_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class UnparsedEntityURIFN : public ContextNodeChecker
 {
- public:
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
+public:
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
 };
 
 }

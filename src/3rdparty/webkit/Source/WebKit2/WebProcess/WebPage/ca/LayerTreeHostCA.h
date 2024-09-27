@@ -31,50 +31,56 @@
 #include <WebCore/GraphicsLayerClient.h>
 #include <wtf/OwnPtr.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
-class LayerTreeHostCA : public LayerTreeHost, WebCore::GraphicsLayerClient {
+class LayerTreeHostCA : public LayerTreeHost, WebCore::GraphicsLayerClient
+{
 public:
     virtual ~LayerTreeHostCA();
-    
-protected:
-    explicit LayerTreeHostCA(WebPage*);
 
-    WebCore::GraphicsLayer* rootLayer() const { return m_rootLayer.get(); }
+protected:
+    explicit LayerTreeHostCA( WebPage * );
+
+    WebCore::GraphicsLayer *rootLayer() const
+    {
+        return m_rootLayer.get();
+    }
 
     void initialize();
     void performScheduledLayerFlush();
 
     // LayerTreeHost.
     virtual void invalidate();
-    virtual void sizeDidChange(const WebCore::IntSize& newSize);
+    virtual void sizeDidChange( const WebCore::IntSize &newSize );
     virtual void forceRepaint();
-    virtual void setRootCompositingLayer(WebCore::GraphicsLayer*);
+    virtual void setRootCompositingLayer( WebCore::GraphicsLayer * );
 
     // LayerTreeHostCA
     virtual void didPerformScheduledLayerFlush();
 
 private:
     // LayerTreeHost.
-    virtual const LayerTreeContext& layerTreeContext();
-    virtual void setShouldNotifyAfterNextScheduledLayerFlush(bool);
+    virtual const LayerTreeContext &layerTreeContext();
+    virtual void setShouldNotifyAfterNextScheduledLayerFlush( bool );
 
-    virtual void setNonCompositedContentsNeedDisplay(const WebCore::IntRect&);
-    virtual void scrollNonCompositedContents(const WebCore::IntRect& scrollRect, const WebCore::IntSize& scrollOffset);
+    virtual void setNonCompositedContentsNeedDisplay( const WebCore::IntRect & );
+    virtual void scrollNonCompositedContents( const WebCore::IntRect &scrollRect, const WebCore::IntSize &scrollOffset );
 
     virtual void didInstallPageOverlay();
     virtual void didUninstallPageOverlay();
-    virtual void setPageOverlayNeedsDisplay(const WebCore::IntRect&);
+    virtual void setPageOverlayNeedsDisplay( const WebCore::IntRect & );
 
     // GraphicsLayerClient
-    virtual void notifyAnimationStarted(const WebCore::GraphicsLayer*, double time);
-    virtual void notifySyncRequired(const WebCore::GraphicsLayer*);
-    virtual void paintContents(const WebCore::GraphicsLayer*, WebCore::GraphicsContext&, WebCore::GraphicsLayerPaintingPhase, const WebCore::IntRect& clipRect);
+    virtual void notifyAnimationStarted( const WebCore::GraphicsLayer *, double time );
+    virtual void notifySyncRequired( const WebCore::GraphicsLayer * );
+    virtual void paintContents( const WebCore::GraphicsLayer *, WebCore::GraphicsContext &, WebCore::GraphicsLayerPaintingPhase,
+                                const WebCore::IntRect &clipRect );
     virtual bool showDebugBorders() const;
     virtual bool showRepaintCounter() const;
 
     // LayerTreeHostCA
-    virtual void platformInitialize(LayerTreeContext&) = 0;
+    virtual void platformInitialize( LayerTreeContext & ) = 0;
 
     bool flushPendingLayerChanges();
 
@@ -85,12 +91,12 @@ private:
     LayerTreeContext m_layerTreeContext;
 
     // Whether the layer tree host is valid or not.
-    bool m_isValid;    
+    bool m_isValid;
 
     // Whether we should let the drawing area know the next time we've flushed
     // layer tree changes.
     bool m_notifyAfterScheduledLayerFlush;
-    
+
     // The root layer.
     OwnPtr<WebCore::GraphicsLayer> m_rootLayer;
 

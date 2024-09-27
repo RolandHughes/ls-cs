@@ -27,21 +27,22 @@
 #include <qabstractfunctionfactory_p.h>
 #include <qschematypefactory_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class ConstructorFunctionsFactory : public AbstractFunctionFactory
 {
- public:
-   ConstructorFunctionsFactory(const NamePool::Ptr &np, const SchemaTypeFactory::Ptr &);
+public:
+    ConstructorFunctionsFactory( const NamePool::Ptr &np, const SchemaTypeFactory::Ptr & );
 
-   FunctionSignature::Ptr retrieveFunctionSignature(const NamePool::Ptr &np, const QXmlName name) override;
+    FunctionSignature::Ptr retrieveFunctionSignature( const NamePool::Ptr &np, const QXmlName name ) override;
 
- protected:
-   Expression::Ptr retrieveExpression(const QXmlName name, const Expression::List &args,
-         const FunctionSignature::Ptr &sign) const override;
+protected:
+    Expression::Ptr retrieveExpression( const QXmlName name, const Expression::List &args,
+                                        const FunctionSignature::Ptr &sign ) const override;
 
- private:
-   const SchemaTypeFactory::Ptr m_typeFactory;
+private:
+    const SchemaTypeFactory::Ptr m_typeFactory;
 };
 
 }

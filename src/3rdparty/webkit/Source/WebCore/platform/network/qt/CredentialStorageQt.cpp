@@ -28,9 +28,10 @@
 
 #include "Credential.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-Credential CredentialStorage::getFromPersistentStorage(const ProtectionSpace&)
+Credential CredentialStorage::getFromPersistentStorage( const ProtectionSpace & )
 {
     return Credential();
 }

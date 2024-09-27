@@ -33,14 +33,15 @@
 
 #include <wtf/PassOwnPtr.h>
 
-namespace WebCore {
-
-PassOwnPtr<InputType> SearchInputType::create(HTMLInputElement* element)
+namespace WebCore
 {
-    return adoptPtr(new SearchInputType(element));
+
+PassOwnPtr<InputType> SearchInputType::create( HTMLInputElement *element )
+{
+    return adoptPtr( new SearchInputType( element ) );
 }
 
-const AtomicString& SearchInputType::formControlType() const
+const AtomicString &SearchInputType::formControlType() const
 {
     return InputTypeNames::search();
 }

@@ -48,11 +48,11 @@ class QNetworkReplyHttpImplPrivate;
 
 class QNetworkReplyHttpImpl: public QNetworkReply
 {
-    NET_CS_OBJECT(QNetworkReplyHttpImpl)
+    NET_CS_OBJECT( QNetworkReplyHttpImpl )
 
 public:
-    QNetworkReplyHttpImpl(QNetworkAccessManager * const, const QNetworkRequest &,
-            QNetworkAccessManager::Operation &, QIODevice *outgoingData);
+    QNetworkReplyHttpImpl( QNetworkAccessManager *const, const QNetworkRequest &,
+                           QNetworkAccessManager::Operation &, QIODevice *outgoingData );
 
     virtual ~QNetworkReplyHttpImpl();
 
@@ -61,136 +61,136 @@ public:
     qint64 bytesAvailable() const override;
     bool isSequential () const override;
     qint64 size() const override;
-    qint64 readData(char *, qint64) override;
-    void setReadBufferSize(qint64 size) override;
+    qint64 readData( char *, qint64 ) override;
+    void setReadBufferSize( qint64 size ) override;
     bool canReadLine () const override;
 
-    NET_CS_SLOT_1(Private, void _q_startOperation())
-    NET_CS_SLOT_2(_q_startOperation)
+    NET_CS_SLOT_1( Private, void _q_startOperation() )
+    NET_CS_SLOT_2( _q_startOperation )
 
-    NET_CS_SLOT_1(Private, bool start(const QNetworkRequest &newHttpRequest))
-    NET_CS_SLOT_2(start)
+    NET_CS_SLOT_1( Private, bool start( const QNetworkRequest &newHttpRequest ) )
+    NET_CS_SLOT_2( start )
 
-    NET_CS_SLOT_1(Private, void _q_cacheLoadReadyRead())
-    NET_CS_SLOT_2(_q_cacheLoadReadyRead)
+    NET_CS_SLOT_1( Private, void _q_cacheLoadReadyRead() )
+    NET_CS_SLOT_2( _q_cacheLoadReadyRead )
 
-    NET_CS_SLOT_1(Private, void _q_bufferOutgoingData())
-    NET_CS_SLOT_2(_q_bufferOutgoingData)
+    NET_CS_SLOT_1( Private, void _q_bufferOutgoingData() )
+    NET_CS_SLOT_2( _q_bufferOutgoingData )
 
-    NET_CS_SLOT_1(Private, void _q_bufferOutgoingDataFinished())
-    NET_CS_SLOT_2(_q_bufferOutgoingDataFinished)
+    NET_CS_SLOT_1( Private, void _q_bufferOutgoingDataFinished() )
+    NET_CS_SLOT_2( _q_bufferOutgoingDataFinished )
 
 #ifndef QT_NO_BEARERMANAGEMENT
-    NET_CS_SLOT_1(Private, void _q_networkSessionConnected())
-    NET_CS_SLOT_2(_q_networkSessionConnected)
+    NET_CS_SLOT_1( Private, void _q_networkSessionConnected() )
+    NET_CS_SLOT_2( _q_networkSessionConnected )
 
-    NET_CS_SLOT_1(Private, void _q_networkSessionFailed())
-    NET_CS_SLOT_2(_q_networkSessionFailed)
+    NET_CS_SLOT_1( Private, void _q_networkSessionFailed() )
+    NET_CS_SLOT_2( _q_networkSessionFailed )
 
-    NET_CS_SLOT_1(Private, void _q_networkSessionStateChanged(QNetworkSession::State sessionState))
-    NET_CS_SLOT_2(_q_networkSessionStateChanged)
+    NET_CS_SLOT_1( Private, void _q_networkSessionStateChanged( QNetworkSession::State sessionState ) )
+    NET_CS_SLOT_2( _q_networkSessionStateChanged )
 
-    NET_CS_SLOT_1(Private, void _q_networkSessionUsagePoliciesChanged(QNetworkSession::UsagePolicies newPolicies))
-    NET_CS_SLOT_2(_q_networkSessionUsagePoliciesChanged)
+    NET_CS_SLOT_1( Private, void _q_networkSessionUsagePoliciesChanged( QNetworkSession::UsagePolicies newPolicies ) )
+    NET_CS_SLOT_2( _q_networkSessionUsagePoliciesChanged )
 #endif
 
-    NET_CS_SLOT_1(Private, void _q_finished())
-    NET_CS_SLOT_2(_q_finished)
+    NET_CS_SLOT_1( Private, void _q_finished() )
+    NET_CS_SLOT_2( _q_finished )
 
-    NET_CS_SLOT_1(Private, void _q_error(QNetworkReply::NetworkError errorCode, const QString &errorMsg))
-    NET_CS_SLOT_2(_q_error)
+    NET_CS_SLOT_1( Private, void _q_error( QNetworkReply::NetworkError errorCode, const QString &errorMsg ) )
+    NET_CS_SLOT_2( _q_error )
 
     // From reply
-    NET_CS_SLOT_1(Private, void replyDownloadData(const QByteArray &data))
-    NET_CS_SLOT_2(replyDownloadData)
+    NET_CS_SLOT_1( Private, void replyDownloadData( const QByteArray &data ) )
+    NET_CS_SLOT_2( replyDownloadData )
 
-    NET_CS_SLOT_1(Private, void replyFinished())
-    NET_CS_SLOT_2(replyFinished)
+    NET_CS_SLOT_1( Private, void replyFinished() )
+    NET_CS_SLOT_2( replyFinished )
 
-    NET_CS_SLOT_1(Private, void replyDownloadMetaData(const QList <QPair <QByteArray,QByteArray>> &headers, int statusCode,
-          const QString &reason, bool isPipelined, QSharedPointer <char> downloadBuffer, qint64 contentLength, bool isSpdy))
-    NET_CS_SLOT_2(replyDownloadMetaData)
+    NET_CS_SLOT_1( Private, void replyDownloadMetaData( const QList <QPair <QByteArray,QByteArray>> &headers, int statusCode,
+                   const QString &reason, bool isPipelined, QSharedPointer <char> downloadBuffer, qint64 contentLength, bool isSpdy ) )
+    NET_CS_SLOT_2( replyDownloadMetaData )
 
-    NET_CS_SLOT_1(Private, void replyDownloadProgressSlot(qint64 bytesReceived, qint64 bytesTotal))
-    NET_CS_SLOT_2(replyDownloadProgressSlot)
+    NET_CS_SLOT_1( Private, void replyDownloadProgressSlot( qint64 bytesReceived, qint64 bytesTotal ) )
+    NET_CS_SLOT_2( replyDownloadProgressSlot )
 
-    NET_CS_SLOT_1(Private, void httpAuthenticationRequired(const QHttpNetworkRequest &request, QAuthenticator *auth))
-    NET_CS_SLOT_2(httpAuthenticationRequired)
+    NET_CS_SLOT_1( Private, void httpAuthenticationRequired( const QHttpNetworkRequest &request, QAuthenticator *auth ) )
+    NET_CS_SLOT_2( httpAuthenticationRequired )
 
-    NET_CS_SLOT_1(Private, void httpError(QNetworkReply::NetworkError errorCode, const QString &errorMsg))
-    NET_CS_SLOT_2(httpError)
+    NET_CS_SLOT_1( Private, void httpError( QNetworkReply::NetworkError errorCode, const QString &errorMsg ) )
+    NET_CS_SLOT_2( httpError )
 
 #ifdef QT_SSL
-    NET_CS_SLOT_1(Private, void replyEncrypted())
-    NET_CS_SLOT_2(replyEncrypted)
+    NET_CS_SLOT_1( Private, void replyEncrypted() )
+    NET_CS_SLOT_2( replyEncrypted )
 
-    NET_CS_SLOT_1(Private, void replySslErrors(const QList<QSslError> &errorList, bool *ignoreAll, QList<QSslError> *toBeIgnored))
-    NET_CS_SLOT_2(replySslErrors)
+    NET_CS_SLOT_1( Private, void replySslErrors( const QList<QSslError> &errorList, bool *ignoreAll, QList<QSslError> *toBeIgnored ) )
+    NET_CS_SLOT_2( replySslErrors )
 
-    NET_CS_SLOT_1(Private, void replySslConfigurationChanged(const QSslConfiguration &sslConfig))
-    NET_CS_SLOT_2(replySslConfigurationChanged)
+    NET_CS_SLOT_1( Private, void replySslConfigurationChanged( const QSslConfiguration &sslConfig ) )
+    NET_CS_SLOT_2( replySslConfigurationChanged )
 
-    NET_CS_SLOT_1(Private, void replyPreSharedKeyAuthenticationRequiredSlot(QSslPreSharedKeyAuthenticator *authenticator))
-    NET_CS_SLOT_2(replyPreSharedKeyAuthenticationRequiredSlot)
+    NET_CS_SLOT_1( Private, void replyPreSharedKeyAuthenticationRequiredSlot( QSslPreSharedKeyAuthenticator *authenticator ) )
+    NET_CS_SLOT_2( replyPreSharedKeyAuthenticationRequiredSlot )
 #endif
 
 #ifndef QT_NO_NETWORKPROXY
-    NET_CS_SLOT_1(Private, void proxyAuthenticationRequired(const QNetworkProxy &proxy, QAuthenticator *auth))
-    NET_CS_SLOT_2(proxyAuthenticationRequired)
+    NET_CS_SLOT_1( Private, void proxyAuthenticationRequired( const QNetworkProxy &proxy, QAuthenticator *auth ) )
+    NET_CS_SLOT_2( proxyAuthenticationRequired )
 #endif
 
-    NET_CS_SLOT_1(Private, void resetUploadDataSlot(bool *r))
-    NET_CS_SLOT_2(resetUploadDataSlot)
+    NET_CS_SLOT_1( Private, void resetUploadDataSlot( bool *r ) )
+    NET_CS_SLOT_2( resetUploadDataSlot )
 
-    NET_CS_SLOT_1(Private, void wantUploadDataSlot(qint64 maxSize))
-    NET_CS_SLOT_2(wantUploadDataSlot)
+    NET_CS_SLOT_1( Private, void wantUploadDataSlot( qint64 maxSize ) )
+    NET_CS_SLOT_2( wantUploadDataSlot )
 
-    NET_CS_SLOT_1(Private, void sentUploadDataSlot(qint64 pos, qint64 amount))
-    NET_CS_SLOT_2(sentUploadDataSlot)
+    NET_CS_SLOT_1( Private, void sentUploadDataSlot( qint64 pos, qint64 amount ) )
+    NET_CS_SLOT_2( sentUploadDataSlot )
 
-    NET_CS_SLOT_1(Private, void uploadByteDeviceReadyReadSlot())
-    NET_CS_SLOT_2(uploadByteDeviceReadyReadSlot)
+    NET_CS_SLOT_1( Private, void uploadByteDeviceReadyReadSlot() )
+    NET_CS_SLOT_2( uploadByteDeviceReadyReadSlot )
 
-    NET_CS_SLOT_1(Private, void emitReplyUploadProgress(qint64 bytesSent, qint64 bytesTotal))
-    NET_CS_SLOT_2(emitReplyUploadProgress)
+    NET_CS_SLOT_1( Private, void emitReplyUploadProgress( qint64 bytesSent, qint64 bytesTotal ) )
+    NET_CS_SLOT_2( emitReplyUploadProgress )
 
-    NET_CS_SLOT_1(Private, void _q_cacheSaveDeviceAboutToClose())
-    NET_CS_SLOT_2(_q_cacheSaveDeviceAboutToClose)
+    NET_CS_SLOT_1( Private, void _q_cacheSaveDeviceAboutToClose() )
+    NET_CS_SLOT_2( _q_cacheSaveDeviceAboutToClose )
 
-    NET_CS_SLOT_1(Private, void _q_metaDataChanged())
-    NET_CS_SLOT_2(_q_metaDataChanged)
+    NET_CS_SLOT_1( Private, void _q_metaDataChanged() )
+    NET_CS_SLOT_2( _q_metaDataChanged )
 
-    NET_CS_SLOT_1(Private, void onRedirected(const QUrl &redirectUrl, int httpStatus, int maxRedirectsRemaining))
-    NET_CS_SLOT_2(onRedirected)
+    NET_CS_SLOT_1( Private, void onRedirected( const QUrl &redirectUrl, int httpStatus, int maxRedirectsRemaining ) )
+    NET_CS_SLOT_2( onRedirected )
 
     // To HTTP thread:
-    NET_CS_SIGNAL_1(Public, void startHttpRequest())
-    NET_CS_SIGNAL_2(startHttpRequest)
+    NET_CS_SIGNAL_1( Public, void startHttpRequest() )
+    NET_CS_SIGNAL_2( startHttpRequest )
 
-    NET_CS_SIGNAL_1(Public, void abortHttpRequest())
-    NET_CS_SIGNAL_2(abortHttpRequest)
+    NET_CS_SIGNAL_1( Public, void abortHttpRequest() )
+    NET_CS_SIGNAL_2( abortHttpRequest )
 
-    NET_CS_SIGNAL_1(Public, void readBufferSizeChanged(qint64 size))
-    NET_CS_SIGNAL_2(readBufferSizeChanged,size)
+    NET_CS_SIGNAL_1( Public, void readBufferSizeChanged( qint64 size ) )
+    NET_CS_SIGNAL_2( readBufferSizeChanged,size )
 
-    NET_CS_SIGNAL_1(Public, void readBufferFreed(qint64 size))
-    NET_CS_SIGNAL_2(readBufferFreed,size)
+    NET_CS_SIGNAL_1( Public, void readBufferFreed( qint64 size ) )
+    NET_CS_SIGNAL_2( readBufferFreed,size )
 
-    NET_CS_SIGNAL_1(Public, void startHttpRequestSynchronously())
-    NET_CS_SIGNAL_2(startHttpRequestSynchronously)
+    NET_CS_SIGNAL_1( Public, void startHttpRequestSynchronously() )
+    NET_CS_SIGNAL_2( startHttpRequestSynchronously )
 
-    NET_CS_SIGNAL_1(Public, void haveUploadData(qint64 pos, const QByteArray &dataArray, bool dataAtEnd, qint64 dataSize))
-    NET_CS_SIGNAL_2(haveUploadData,pos,dataArray,dataAtEnd,dataSize)
+    NET_CS_SIGNAL_1( Public, void haveUploadData( qint64 pos, const QByteArray &dataArray, bool dataAtEnd, qint64 dataSize ) )
+    NET_CS_SIGNAL_2( haveUploadData,pos,dataArray,dataAtEnd,dataSize )
 
-    Q_DECLARE_PRIVATE(QNetworkReplyHttpImpl)
+    Q_DECLARE_PRIVATE( QNetworkReplyHttpImpl )
 
 #ifdef QT_SSL
 
 protected:
     void ignoreSslErrors() override;
-    void ignoreSslErrorsImplementation(const QList<QSslError> &errors) override;
-    void setSslConfigurationImplementation(const QSslConfiguration &configuration) override;
-    void sslConfigurationImplementation(QSslConfiguration &configuration) const override;
+    void ignoreSslErrorsImplementation( const QList<QSslError> &errors ) override;
+    void setSslConfigurationImplementation( const QSslConfiguration &configuration ) override;
+    void sslConfigurationImplementation( QSslConfiguration &configuration ) const override;
 #endif
 
 };
@@ -198,12 +198,12 @@ protected:
 class QNetworkReplyHttpImplPrivate: public QNetworkReplyPrivate
 {
 public:
-    static QHttpNetworkRequest::Priority convert(const QNetworkRequest::Priority &priority);
+    static QHttpNetworkRequest::Priority convert( const QNetworkRequest::Priority &priority );
 
     QNetworkReplyHttpImplPrivate();
     ~QNetworkReplyHttpImplPrivate();
 
-    bool start(const QNetworkRequest &newHttpRequest);
+    bool start( const QNetworkRequest &newHttpRequest );
     void _q_startOperation();
 
     void _q_cacheLoadReadyRead();
@@ -216,18 +216,18 @@ public:
 #ifndef QT_NO_BEARERMANAGEMENT
     void _q_networkSessionConnected();
     void _q_networkSessionFailed();
-    void _q_networkSessionStateChanged(QNetworkSession::State sessionState);
-    void _q_networkSessionUsagePoliciesChanged(QNetworkSession::UsagePolicies);
+    void _q_networkSessionStateChanged( QNetworkSession::State sessionState );
+    void _q_networkSessionUsagePoliciesChanged( QNetworkSession::UsagePolicies );
 #endif
 
     void _q_finished();
 
     void finished();
-    void error(QNetworkReply::NetworkError code, const QString &errorString);
-    void _q_error(QNetworkReply::NetworkError errorCode, const QString &errorMsg);
+    void error( QNetworkReply::NetworkError code, const QString &errorString );
+    void _q_error( QNetworkReply::NetworkError errorCode, const QString &errorMsg );
     void _q_metaDataChanged();
 
-    void checkForRedirect(const int statusCode);
+    void checkForRedirect( const int statusCode );
 
     // incoming from user
     QNetworkAccessManager *manager;
@@ -249,15 +249,15 @@ public:
     QIODevice *outgoingData;
     QSharedPointer<QRingBuffer> outgoingDataBuffer;
 
-    void emitReplyUploadProgress(qint64 bytesSent, qint64 bytesTotal);    // dup?
-    void onRedirected(const QUrl &redirectUrl, int httpStatus, int maxRedirectsRemaining);
+    void emitReplyUploadProgress( qint64 bytesSent, qint64 bytesTotal );  // dup?
+    void onRedirected( const QUrl &redirectUrl, int httpStatus, int maxRedirectsRemaining );
 
     qint64 bytesUploaded;
 
     // cache
     void createCache();
     void completeCacheSave();
-    void setCachingEnabled(bool enable);
+    void setCachingEnabled( bool enable );
     bool isCachingEnabled() const;
     bool isCachingAllowed() const;
     void initCacheSaveDevice();
@@ -275,7 +275,7 @@ public:
 
     bool migrateBackend();
     bool canResume() const;
-    void setResumeOffset(quint64 offset);
+    void setResumeOffset( quint64 offset );
     quint64 resumeOffset;
     qint64 preMigrationDownloaded;
 
@@ -301,44 +301,44 @@ public:
     QList<QSslError> pendingIgnoreSslErrorsList;
 #endif
 
-    bool loadFromCacheIfAllowed(QHttpNetworkRequest &httpRequest);
+    bool loadFromCacheIfAllowed( QHttpNetworkRequest &httpRequest );
     void invalidateCache();
-    bool sendCacheContents(const QNetworkCacheMetaData &metaData);
-    QNetworkCacheMetaData fetchCacheMetaData(const QNetworkCacheMetaData &metaData) const;
+    bool sendCacheContents( const QNetworkCacheMetaData &metaData );
+    QNetworkCacheMetaData fetchCacheMetaData( const QNetworkCacheMetaData &metaData ) const;
 
-    void postRequest(const QNetworkRequest &newHttpRequest);
-    QNetworkAccessManager::Operation getRedirectOperation(QNetworkAccessManager::Operation currentOp, int httpStatus);
-    QNetworkRequest createRedirectRequest(const QNetworkRequest &originalRequests, const QUrl &url, int maxRedirectsRemaining);
+    void postRequest( const QNetworkRequest &newHttpRequest );
+    QNetworkAccessManager::Operation getRedirectOperation( QNetworkAccessManager::Operation currentOp, int httpStatus );
+    QNetworkRequest createRedirectRequest( const QNetworkRequest &originalRequests, const QUrl &url, int maxRedirectsRemaining );
     bool isHttpRedirectResponse() const;
 
     // From HTTP thread:
-    void replyDownloadData(const QByteArray &data);
+    void replyDownloadData( const QByteArray &data );
     void replyFinished();
-    void replyDownloadMetaData(QList<QPair<QByteArray,QByteArray> >, int, QString, bool, QSharedPointer<char>, qint64, bool);
-    void replyDownloadProgressSlot(qint64 bytesReceived, qint64 bytesTotal);
-    void httpAuthenticationRequired(const QHttpNetworkRequest &request, QAuthenticator *auth);
-    void httpError(QNetworkReply::NetworkError errorCode, const QString &errorMsg);
+    void replyDownloadMetaData( QList<QPair<QByteArray,QByteArray> >, int, QString, bool, QSharedPointer<char>, qint64, bool );
+    void replyDownloadProgressSlot( qint64 bytesReceived, qint64 bytesTotal );
+    void httpAuthenticationRequired( const QHttpNetworkRequest &request, QAuthenticator *auth );
+    void httpError( QNetworkReply::NetworkError errorCode, const QString &errorMsg );
 
 #ifdef QT_SSL
     void replyEncrypted();
-    void replySslErrors(const QList<QSslError> &errorList, bool *ignoreAll, QList<QSslError> *toBeIgnored);
-    void replySslConfigurationChanged(QSslConfiguration sslConfig);
-    void replyPreSharedKeyAuthenticationRequiredSlot(QSslPreSharedKeyAuthenticator *authenticator);
+    void replySslErrors( const QList<QSslError> &errorList, bool *ignoreAll, QList<QSslError> *toBeIgnored );
+    void replySslConfigurationChanged( QSslConfiguration sslConfig );
+    void replyPreSharedKeyAuthenticationRequiredSlot( QSslPreSharedKeyAuthenticator *authenticator );
 #endif
 
 #ifndef QT_NO_NETWORKPROXY
-    void proxyAuthenticationRequired(const QNetworkProxy &proxy, QAuthenticator *auth);
+    void proxyAuthenticationRequired( const QNetworkProxy &proxy, QAuthenticator *auth );
 #endif
 
     // From QNonContiguousByteDeviceThreadForwardImpl in HTTP thread:
-    void resetUploadDataSlot(bool *r);
-    void wantUploadDataSlot(qint64 maxSize);
-    void sentUploadDataSlot(qint64 pos, qint64 amount);
+    void resetUploadDataSlot( bool *r );
+    void wantUploadDataSlot( qint64 maxSize );
+    void sentUploadDataSlot( qint64 pos, qint64 amount );
 
     // From user's QNonContiguousByteDevice
     void uploadByteDeviceReadyReadSlot();
 
-    Q_DECLARE_PUBLIC(QNetworkReplyHttpImpl)
+    Q_DECLARE_PUBLIC( QNetworkReplyHttpImpl )
 };
 
 #endif

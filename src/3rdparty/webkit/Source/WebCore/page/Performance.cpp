@@ -39,51 +39,63 @@
 
 #include "Frame.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-Performance::Performance(Frame* frame)
-    : m_frame(frame)
+Performance::Performance( Frame *frame )
+    : m_frame( frame )
 {
 }
 
-Frame* Performance::frame() const
+Frame *Performance::frame() const
 {
     return m_frame;
 }
 
 void Performance::disconnectFrame()
 {
-    if (m_memory)
+    if ( m_memory )
+    {
         m_memory = 0;
-    if (m_navigation) {
+    }
+
+    if ( m_navigation )
+    {
         m_navigation->disconnectFrame();
         m_navigation = 0;
     }
-    if (m_timing) {
+
+    if ( m_timing )
+    {
         m_timing->disconnectFrame();
         m_timing = 0;
     }
+
     m_frame = 0;
 }
 
-MemoryInfo* Performance::memory() const
+MemoryInfo *Performance::memory() const
 {
-    m_memory = MemoryInfo::create(m_frame);
+    m_memory = MemoryInfo::create( m_frame );
     return m_memory.get();
 }
 
-PerformanceNavigation* Performance::navigation() const
+PerformanceNavigation *Performance::navigation() const
 {
-    if (!m_navigation)
-        m_navigation = PerformanceNavigation::create(m_frame);
+    if ( !m_navigation )
+    {
+        m_navigation = PerformanceNavigation::create( m_frame );
+    }
 
     return m_navigation.get();
 }
 
-PerformanceTiming* Performance::timing() const
+PerformanceTiming *Performance::timing() const
 {
-    if (!m_timing)
-        m_timing = PerformanceTiming::create(m_frame);
+    if ( !m_timing )
+    {
+        m_timing = PerformanceTiming::create( m_frame );
+    }
 
     return m_timing.get();
 }

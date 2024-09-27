@@ -37,22 +37,23 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
-void TiledDrawingArea::paintIntoUpdateChunk(UpdateChunk* updateChunk, float scale)
+void TiledDrawingArea::paintIntoUpdateChunk( UpdateChunk *updateChunk, float scale )
 {
     IntRect tileRect = updateChunk->rect();
-    QImage image(updateChunk->createImage());
-    QPainter painter(&image);
+    QImage image( updateChunk->createImage() );
+    QPainter painter( &image );
     // Now paint into the backing store.
-    GraphicsContext graphicsContext(&painter);
-    graphicsContext.translate(-tileRect.x(), -tileRect.y());
-    graphicsContext.scale(FloatSize(scale, scale));
-    IntRect contentRect = enclosingIntRect(FloatRect(tileRect.x() / scale,
-                                                     tileRect.y() / scale,
-                                                     tileRect.width() / scale,
-                                                     tileRect.height() / scale));
-    m_webPage->drawRect(graphicsContext, contentRect);
+    GraphicsContext graphicsContext( &painter );
+    graphicsContext.translate( -tileRect.x(), -tileRect.y() );
+    graphicsContext.scale( FloatSize( scale, scale ) );
+    IntRect contentRect = enclosingIntRect( FloatRect( tileRect.x() / scale,
+                                            tileRect.y() / scale,
+                                            tileRect.width() / scale,
+                                            tileRect.height() / scale ) );
+    m_webPage->drawRect( graphicsContext, contentRect );
 }
 
 } // namespace WebKit

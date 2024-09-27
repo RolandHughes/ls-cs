@@ -22,7 +22,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 #ifndef IntRectHash_h
 #define IntRectHash_h
 
@@ -32,26 +32,40 @@
 #include <wtf/HashMap.h>
 #include <wtf/HashSet.h>
 
-namespace WTF {
+namespace WTF
+{
 
-template<> struct IntHash<WebCore::IntRect> {
-    static unsigned hash(const WebCore::IntRect& key)
+template<> struct IntHash<WebCore::IntRect>
+{
+    static unsigned hash( const WebCore::IntRect &key )
     {
-        return intHash(static_cast<uint64_t>(DefaultHash<WebCore::IntPoint>::Hash::hash(key.location())) << 32 | DefaultHash<WebCore::IntSize>::Hash::hash(key.size()));
+        return intHash( static_cast<uint64_t>( DefaultHash<WebCore::IntPoint>::Hash::hash( key.location() ) ) << 32 |
+                        DefaultHash<WebCore::IntSize>::Hash::hash( key.size() ) );
     }
-    static bool equal(const WebCore::IntRect& a, const WebCore::IntRect& b)
+    static bool equal( const WebCore::IntRect &a, const WebCore::IntRect &b )
     {
-        return DefaultHash<WebCore::IntPoint>::Hash::equal(a.location(), b.location()) && DefaultHash<WebCore::IntSize>::Hash::equal(a.size(), b.size());
+        return DefaultHash<WebCore::IntPoint>::Hash::equal( a.location(), b.location() )
+               && DefaultHash<WebCore::IntSize>::Hash::equal( a.size(), b.size() );
     }
     static const bool safeToCompareToEmptyOrDeleted = true;
 };
-template<> struct DefaultHash<WebCore::IntRect> { typedef IntHash<WebCore::IntRect> Hash; };
+template<> struct DefaultHash<WebCore::IntRect>
+{
+    typedef IntHash<WebCore::IntRect> Hash;
+};
 
-template<> struct HashTraits<WebCore::IntRect> : GenericHashTraits<WebCore::IntRect> {
+template<> struct HashTraits<WebCore::IntRect> : GenericHashTraits<WebCore::IntRect>
+{
     static const bool emptyValueIsZero = true;
     static const bool needsDestruction = false;
-    static void constructDeletedValue(WebCore::IntRect& slot) { new (&slot) WebCore::IntRect(-1, -1, -1, -1); }
-    static bool isDeletedValue(const WebCore::IntRect& value) { return value.x() == -1 && value.y() == -1 && value.width() == -1 && value.height() == -1; }
+    static void constructDeletedValue( WebCore::IntRect &slot )
+    {
+        new ( &slot ) WebCore::IntRect( -1, -1, -1, -1 );
+    }
+    static bool isDeletedValue( const WebCore::IntRect &value )
+    {
+        return value.x() == -1 && value.y() == -1 && value.width() == -1 && value.height() == -1;
+    }
 };
 
 }

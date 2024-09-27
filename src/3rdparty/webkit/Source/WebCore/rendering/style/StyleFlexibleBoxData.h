@@ -28,17 +28,25 @@
 #include <wtf/RefCounted.h>
 #include <wtf/PassRefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class StyleFlexibleBoxData : public RefCounted<StyleFlexibleBoxData> {
+class StyleFlexibleBoxData : public RefCounted<StyleFlexibleBoxData>
+{
 public:
-    static PassRefPtr<StyleFlexibleBoxData> create() { return adoptRef(new StyleFlexibleBoxData); }
-    PassRefPtr<StyleFlexibleBoxData> copy() const { return adoptRef(new StyleFlexibleBoxData(*this)); }
-    
-    bool operator==(const StyleFlexibleBoxData& o) const;
-    bool operator!=(const StyleFlexibleBoxData& o) const
+    static PassRefPtr<StyleFlexibleBoxData> create()
     {
-        return !(*this == o);
+        return adoptRef( new StyleFlexibleBoxData );
+    }
+    PassRefPtr<StyleFlexibleBoxData> copy() const
+    {
+        return adoptRef( new StyleFlexibleBoxData( *this ) );
+    }
+
+    bool operator==( const StyleFlexibleBoxData &o ) const;
+    bool operator!=( const StyleFlexibleBoxData &o ) const
+    {
+        return !( *this == o );
     }
 
     float flex;
@@ -49,10 +57,10 @@ public:
     unsigned pack: 3; // EBoxAlignment
     unsigned orient: 1; // EBoxOrient
     unsigned lines : 1; // EBoxLines
-    
+
 private:
     StyleFlexibleBoxData();
-    StyleFlexibleBoxData(const StyleFlexibleBoxData&);
+    StyleFlexibleBoxData( const StyleFlexibleBoxData & );
 };
 
 } // namespace WebCore

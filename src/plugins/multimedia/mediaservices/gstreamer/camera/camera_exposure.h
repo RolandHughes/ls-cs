@@ -34,22 +34,22 @@ class CameraBinSession;
 
 class Q_MULTIMEDIA_EXPORT CameraBinExposure : public QCameraExposureControl
 {
-   CS_OBJECT(CameraBinExposure)
+    CS_OBJECT( CameraBinExposure )
 
- public:
-   CameraBinExposure(CameraBinSession *session);
-   virtual ~CameraBinExposure();
+public:
+    CameraBinExposure( CameraBinSession *session );
+    virtual ~CameraBinExposure();
 
-   bool isParameterSupported(ExposureParameter parameter) const;
-   QVariantList supportedParameterRange(ExposureParameter parameter, bool *continuous) const;
+    bool isParameterSupported( ExposureParameter parameter ) const;
+    QVariantList supportedParameterRange( ExposureParameter parameter, bool *continuous ) const;
 
-   QVariant requestedValue(ExposureParameter parameter) const;
-   QVariant actualValue(ExposureParameter parameter) const;
-   bool setValue(ExposureParameter parameter, const QVariant &value);
+    QVariant requestedValue( ExposureParameter parameter ) const;
+    QVariant actualValue( ExposureParameter parameter ) const;
+    bool setValue( ExposureParameter parameter, const QVariant &value );
 
- private:
-   CameraBinSession *m_session;
-   QHash<ExposureParameter, QVariant> m_requestedValues;
+private:
+    CameraBinSession *m_session;
+    QHash<ExposureParameter, QVariant> m_requestedValues;
 };
 
 #endif

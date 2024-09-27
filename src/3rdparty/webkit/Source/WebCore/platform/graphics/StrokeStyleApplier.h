@@ -20,18 +20,20 @@
 #ifndef StrokeStyleApplier_h
 #define StrokeStyleApplier_h
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class GraphicsContext;
+class GraphicsContext;
 
-    class StrokeStyleApplier {
-    public:
-        virtual void strokeStyle(GraphicsContext*) = 0;
+class StrokeStyleApplier
+{
+public:
+    virtual void strokeStyle( GraphicsContext * ) = 0;
 
-    protected:
-        StrokeStyleApplier() {}
-        virtual ~StrokeStyleApplier() {}
-    };
+protected:
+    StrokeStyleApplier() {}
+    virtual ~StrokeStyleApplier() {}
+};
 }
 
 #endif

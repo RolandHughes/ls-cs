@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef QTCFDictionary_h
@@ -34,11 +34,12 @@
 
 #include <CoreFoundation/CFBase.h>
 
-typedef const struct __CFDictionary * CFDictionaryRef;
-typedef const struct __CFAllocator * CFAllocatorRef;
+typedef const struct __CFDictionary *CFDictionaryRef;
+typedef const struct __CFAllocator *CFAllocatorRef;
 
-typedef CFDictionaryRef (* QTCFDictonaryCreateFromDataCallback)(CFAllocatorRef, const UInt8*, CFIndex);
+typedef CFDictionaryRef ( * QTCFDictonaryCreateFromDataCallback )( CFAllocatorRef, const UInt8 *, CFIndex );
 
-QTMOVIEWIN_API CFDictionaryRef QTCFDictionaryCreateCopyWithDataCallback(CFAllocatorRef, CFDictionaryRef, QTCFDictonaryCreateFromDataCallback);
+QTMOVIEWIN_API CFDictionaryRef QTCFDictionaryCreateCopyWithDataCallback( CFAllocatorRef, CFDictionaryRef,
+        QTCFDictonaryCreateFromDataCallback );
 
 #endif

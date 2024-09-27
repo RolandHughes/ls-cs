@@ -28,22 +28,28 @@
 
 #include "WKAPICast.h"
 
-namespace WebKit {
-
-void WebDatabaseManagerProxyClient::didModifyOrigin(WebDatabaseManagerProxy* databaseManager, WebSecurityOrigin* origin)
+namespace WebKit
 {
-    if (!m_client.didModifyOrigin)
-        return;
 
-    m_client.didModifyOrigin(toAPI(databaseManager), toAPI(origin), m_client.clientInfo);
+void WebDatabaseManagerProxyClient::didModifyOrigin( WebDatabaseManagerProxy *databaseManager, WebSecurityOrigin *origin )
+{
+    if ( !m_client.didModifyOrigin )
+    {
+        return;
+    }
+
+    m_client.didModifyOrigin( toAPI( databaseManager ), toAPI( origin ), m_client.clientInfo );
 }
 
-void WebDatabaseManagerProxyClient::didModifyDatabase(WebDatabaseManagerProxy* databaseManager, WebSecurityOrigin* origin, const String& databaseIdentifier)
+void WebDatabaseManagerProxyClient::didModifyDatabase( WebDatabaseManagerProxy *databaseManager, WebSecurityOrigin *origin,
+        const String &databaseIdentifier )
 {
-    if (!m_client.didModifyDatabase)
+    if ( !m_client.didModifyDatabase )
+    {
         return;
+    }
 
-    m_client.didModifyDatabase(toAPI(databaseManager), toAPI(origin), toAPI(databaseIdentifier.impl()), m_client.clientInfo);
+    m_client.didModifyDatabase( toAPI( databaseManager ), toAPI( origin ), toAPI( databaseIdentifier.impl() ), m_client.clientInfo );
 }
 
 } // namespace WebKit

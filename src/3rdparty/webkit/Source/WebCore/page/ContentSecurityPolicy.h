@@ -29,21 +29,23 @@
 #include <wtf/Vector.h>
 #include <wtf/text/WTFString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class CSPDirective;
 class Document;
 class KURL;
 
-class ContentSecurityPolicy : public RefCounted<ContentSecurityPolicy> {
+class ContentSecurityPolicy : public RefCounted<ContentSecurityPolicy>
+{
 public:
-    static PassRefPtr<ContentSecurityPolicy> create(Document* document)
+    static PassRefPtr<ContentSecurityPolicy> create( Document *document )
     {
-        return adoptRef(new ContentSecurityPolicy(document));
+        return adoptRef( new ContentSecurityPolicy( document ) );
     }
     ~ContentSecurityPolicy();
 
-    void didReceiveHeader(const String&);
+    void didReceiveHeader( const String & );
 
     bool allowJavaScriptURLs() const;
     bool allowInlineEventHandlers() const;
@@ -51,34 +53,34 @@ public:
     bool allowInlineStyle() const;
     bool allowEval() const;
 
-    bool allowScriptFromSource(const KURL&) const;
-    bool allowObjectFromSource(const KURL&) const;
-    bool allowChildFrameFromSource(const KURL&) const;
-    bool allowImageFromSource(const KURL&) const;
-    bool allowStyleFromSource(const KURL&) const;
-    bool allowFontFromSource(const KURL&) const;
-    bool allowMediaFromSource(const KURL&) const;
+    bool allowScriptFromSource( const KURL & ) const;
+    bool allowObjectFromSource( const KURL & ) const;
+    bool allowChildFrameFromSource( const KURL & ) const;
+    bool allowImageFromSource( const KURL & ) const;
+    bool allowStyleFromSource( const KURL & ) const;
+    bool allowFontFromSource( const KURL & ) const;
+    bool allowMediaFromSource( const KURL & ) const;
 
 private:
-    explicit ContentSecurityPolicy(Document*);
+    explicit ContentSecurityPolicy( Document * );
 
-    void parse(const String&);
-    bool parseDirective(const UChar* begin, const UChar* end, String& name, String& value);
-    void parseReportURI(const String&);
-    void addDirective(const String& name, const String& value);
+    void parse( const String & );
+    bool parseDirective( const UChar *begin, const UChar *end, String &name, String &value );
+    void parseReportURI( const String & );
+    void addDirective( const String &name, const String &value );
 
-    PassOwnPtr<CSPDirective> createCSPDirective(const String& name, const String& value);
+    PassOwnPtr<CSPDirective> createCSPDirective( const String &name, const String &value );
 
-    CSPDirective* operativeDirective(CSPDirective*) const;
-    void reportViolation(const String& directiveText, const String& consoleMessage) const;
-    bool checkEval(CSPDirective*) const;
+    CSPDirective *operativeDirective( CSPDirective * ) const;
+    void reportViolation( const String &directiveText, const String &consoleMessage ) const;
+    bool checkEval( CSPDirective * ) const;
 
-    bool checkInlineAndReportViolation(CSPDirective*, const String& consoleMessage) const;
-    bool checkEvalAndReportViolation(CSPDirective*, const String& consoleMessage) const;
-    bool checkSourceAndReportViolation(CSPDirective*, const KURL&, const String& type) const;
+    bool checkInlineAndReportViolation( CSPDirective *, const String &consoleMessage ) const;
+    bool checkEvalAndReportViolation( CSPDirective *, const String &consoleMessage ) const;
+    bool checkSourceAndReportViolation( CSPDirective *, const KURL &, const String &type ) const;
 
     bool m_havePolicy;
-    Document* m_document;
+    Document *m_document;
 
     OwnPtr<CSPDirective> m_defaultSrc;
     OwnPtr<CSPDirective> m_scriptSrc;

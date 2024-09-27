@@ -28,29 +28,30 @@
 
 class QCupsPrinterSupportPlugin : public QPlatformPrinterSupportPlugin
 {
-   CS_OBJECT(QCupsPrinterSupportPlugin)
+    CS_OBJECT( QCupsPrinterSupportPlugin )
 
-   CS_PLUGIN_IID(QPlatformPrinterSupportPlugin_ID)
-   CS_PLUGIN_KEY("printerdriver_cups")
+    CS_PLUGIN_IID( QPlatformPrinterSupportPlugin_ID )
+    CS_PLUGIN_KEY( "printerdriver_cups" )
 
- public:
-   QStringList keys() const;
-   QPlatformPrinterSupport *create(const QString &) override;
+public:
+    QStringList keys() const;
+    QPlatformPrinterSupport *create( const QString & ) override;
 };
 
-CS_PLUGIN_REGISTER(QCupsPrinterSupportPlugin)
+CS_PLUGIN_REGISTER( QCupsPrinterSupportPlugin )
 
 QStringList QCupsPrinterSupportPlugin::keys() const
 {
-   return QStringList("printerdriver_cups");
+    return QStringList( "printerdriver_cups" );
 }
 
-QPlatformPrinterSupport *QCupsPrinterSupportPlugin::create(const QString &key)
+QPlatformPrinterSupport *QCupsPrinterSupportPlugin::create( const QString &key )
 {
-   if (key.compare(key, "printerdriver_cups", Qt::CaseInsensitive) == 0) {
-      return new QCupsPrinterSupport;
-   }
+    if ( key.compare( key, "printerdriver_cups", Qt::CaseInsensitive ) == 0 )
+    {
+        return new QCupsPrinterSupport;
+    }
 
-   return nullptr;
+    return nullptr;
 }
 

@@ -26,15 +26,26 @@
 
 #include "SVGRenderSupport.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class RenderSVGInline : public RenderInline {
+class RenderSVGInline : public RenderInline
+{
 public:
-    explicit RenderSVGInline(Node*);
+    explicit RenderSVGInline( Node * );
 
-    virtual const char* renderName() const { return "RenderSVGInline"; }
-    virtual bool requiresLayer() const { return false; }
-    virtual bool isSVGInline() const { return true; }
+    virtual const char *renderName() const
+    {
+        return "RenderSVGInline";
+    }
+    virtual bool requiresLayer() const
+    {
+        return false;
+    }
+    virtual bool isSVGInline() const
+    {
+        return true;
+    }
 
     // Chapter 10.4 of the SVG Specification say that we should use the
     // object bounding box of the parent text element.
@@ -45,17 +56,18 @@ public:
     virtual FloatRect strokeBoundingBox() const;
     virtual FloatRect repaintRectInLocalCoordinates() const;
 
-    virtual IntRect clippedOverflowRectForRepaint(RenderBoxModelObject* repaintContainer);
-    virtual void computeRectForRepaint(RenderBoxModelObject* repaintContainer, IntRect&, bool fixed = false);
-    virtual void mapLocalToContainer(RenderBoxModelObject* repaintContainer, bool useTransforms, bool fixed, TransformState&) const;
-    virtual void absoluteQuads(Vector<FloatQuad>&);
+    virtual IntRect clippedOverflowRectForRepaint( RenderBoxModelObject *repaintContainer );
+    virtual void computeRectForRepaint( RenderBoxModelObject *repaintContainer, IntRect &, bool fixed = false );
+    virtual void mapLocalToContainer( RenderBoxModelObject *repaintContainer, bool useTransforms, bool fixed,
+                                      TransformState & ) const;
+    virtual void absoluteQuads( Vector<FloatQuad> & );
 
 private:
-    virtual InlineFlowBox* createInlineFlowBox();
+    virtual InlineFlowBox *createInlineFlowBox();
 
     virtual void destroy();
-    virtual void styleWillChange(StyleDifference, const RenderStyle* newStyle);
-    virtual void styleDidChange(StyleDifference, const RenderStyle* oldStyle);
+    virtual void styleWillChange( StyleDifference, const RenderStyle *newStyle );
+    virtual void styleDidChange( StyleDifference, const RenderStyle *oldStyle );
     virtual void updateFromElement();
 };
 

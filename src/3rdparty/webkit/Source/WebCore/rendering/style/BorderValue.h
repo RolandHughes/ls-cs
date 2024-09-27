@@ -28,20 +28,22 @@
 #include "Color.h"
 #include "RenderStyleConstants.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class BorderValue {
-friend class RenderStyle;
+class BorderValue
+{
+    friend class RenderStyle;
 public:
     BorderValue()
-        : m_width(3)
-        , m_style(BNONE)
+        : m_width( 3 )
+        , m_style( BNONE )
     {
     }
 
-    bool nonZero(bool checkStyle = true) const
+    bool nonZero( bool checkStyle = true ) const
     {
-        return width() && (!checkStyle || m_style != BNONE);
+        return width() && ( !checkStyle || m_style != BNONE );
     }
 
     bool isTransparent() const
@@ -49,29 +51,38 @@ public:
         return m_color.isValid() && !m_color.alpha();
     }
 
-    bool isVisible(bool checkStyle = true) const
+    bool isVisible( bool checkStyle = true ) const
     {
-        return nonZero(checkStyle) && !isTransparent() && (!checkStyle || m_style != BHIDDEN);
+        return nonZero( checkStyle ) && !isTransparent() && ( !checkStyle || m_style != BHIDDEN );
     }
 
-    bool operator==(const BorderValue& o) const
+    bool operator==( const BorderValue &o ) const
     {
         return m_width == o.m_width && m_style == o.m_style && m_color == o.m_color;
     }
 
-    bool operator!=(const BorderValue& o) const
+    bool operator!=( const BorderValue &o ) const
     {
-        return !(*this == o);
+        return !( *this == o );
     }
-    
-    const Color& color() const { return m_color; }
-    unsigned short width() const { return m_width; }
-    EBorderStyle style() const { return static_cast<EBorderStyle>(m_style); }
+
+    const Color &color() const
+    {
+        return m_color;
+    }
+    unsigned short width() const
+    {
+        return m_width;
+    }
+    EBorderStyle style() const
+    {
+        return static_cast<EBorderStyle>( m_style );
+    }
 
 protected:
     Color m_color;
     unsigned m_width : 12;
-    unsigned m_style : 4; // EBorderStyle 
+    unsigned m_style : 4; // EBorderStyle
 };
 
 } // namespace WebCore

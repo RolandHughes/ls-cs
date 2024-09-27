@@ -35,40 +35,42 @@
 #include <wtf/HashSet.h>
 #include <wtf/RetainPtr.h>
 
-typedef struct _WKCACFView* WKCACFViewRef;
+typedef struct _WKCACFView *WKCACFViewRef;
 
-namespace WebKit {
+namespace WebKit
+{
 
-class LayerTreeHostCAWin : public LayerTreeHostCA, private WebCore::AbstractCACFLayerTreeHost {
+class LayerTreeHostCAWin : public LayerTreeHostCA, private WebCore::AbstractCACFLayerTreeHost
+{
 public:
     static bool supportsAcceleratedCompositing();
 
-    static PassRefPtr<LayerTreeHostCAWin> create(WebPage*);
+    static PassRefPtr<LayerTreeHostCAWin> create( WebPage * );
     virtual ~LayerTreeHostCAWin();
 
 private:
-    explicit LayerTreeHostCAWin(WebPage*);
+    explicit LayerTreeHostCAWin( WebPage * );
 
-    static void contextDidChangeCallback(WKCACFViewRef, void* info);
+    static void contextDidChangeCallback( WKCACFViewRef, void *info );
     void contextDidChange();
 
     // LayerTreeHost
     virtual void invalidate();
     virtual void forceRepaint();
-    virtual void sizeDidChange(const WebCore::IntSize& newSize);
+    virtual void sizeDidChange( const WebCore::IntSize &newSize );
     virtual void scheduleLayerFlush();
     virtual bool participatesInDisplay();
     virtual bool needsDisplay();
     virtual double timeUntilNextDisplay();
-    virtual void display(UpdateInfo&);
+    virtual void display( UpdateInfo & );
 
     // LayerTreeHostCA
-    virtual void platformInitialize(LayerTreeContext&);
-    virtual void setRootCompositingLayer(WebCore::GraphicsLayer*);
+    virtual void platformInitialize( LayerTreeContext & );
+    virtual void setRootCompositingLayer( WebCore::GraphicsLayer * );
 
     // AbstractCACFLayerTreeHost
-    virtual WebCore::PlatformCALayer* rootLayer() const;
-    virtual void addPendingAnimatedLayer(PassRefPtr<WebCore::PlatformCALayer>);
+    virtual WebCore::PlatformCALayer *rootLayer() const;
+    virtual void addPendingAnimatedLayer( PassRefPtr<WebCore::PlatformCALayer> );
     virtual void layerTreeDidChange();
     virtual void flushPendingLayerChangesNow();
 

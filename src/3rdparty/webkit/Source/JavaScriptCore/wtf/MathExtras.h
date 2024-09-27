@@ -42,7 +42,7 @@ const double piDouble = 3.14159265358979323846;
 const float piFloat = 3.14159265358979323846f;
 #else
 const double piDouble = M_PI;
-const float piFloat = static_cast<float>(M_PI);
+const float piFloat = static_cast<float>( M_PI );
 #endif
 
 #ifndef M_PI_2
@@ -50,7 +50,7 @@ const double piOverTwoDouble = 1.57079632679489661923;
 const float piOverTwoFloat = 1.57079632679489661923f;
 #else
 const double piOverTwoDouble = M_PI_2;
-const float piOverTwoFloat = static_cast<float>(M_PI_2);
+const float piOverTwoFloat = static_cast<float>( M_PI_2 );
 #endif
 
 #ifndef M_PI_4
@@ -58,80 +58,145 @@ const double piOverFourDouble = 0.785398163397448309616;
 const float piOverFourFloat = 0.785398163397448309616f;
 #else
 const double piOverFourDouble = M_PI_4;
-const float piOverFourFloat = static_cast<float>(M_PI_4);
+const float piOverFourFloat = static_cast<float>( M_PI_4 );
 #endif
 
 #if OS(OPENBSD)
 
 #ifndef isfinite
-inline bool isfinite(double x) { return finite(x); }
+inline bool isfinite( double x )
+{
+    return finite( x );
+}
 #endif
 
 #ifndef signbit
-inline bool signbit(double x) { struct ieee_double *p = (struct ieee_double *)&x; return p->dbl_sign; }
+inline bool signbit( double x )
+{
+    struct ieee_double *p = ( struct ieee_double * )&x;
+    return p->dbl_sign;
+}
 #endif
 
 #endif
 
-inline double deg2rad(double d)  { return d * piDouble / 180.0; }
-inline double rad2deg(double r)  { return r * 180.0 / piDouble; }
-inline double deg2grad(double d) { return d * 400.0 / 360.0; }
-inline double grad2deg(double g) { return g * 360.0 / 400.0; }
-inline double turn2deg(double t) { return t * 360.0; }
-inline double deg2turn(double d) { return d / 360.0; }
-inline double rad2grad(double r) { return r * 200.0 / piDouble; }
-inline double grad2rad(double g) { return g * piDouble / 200.0; }
+inline double deg2rad( double d )
+{
+    return d * piDouble / 180.0;
+}
+inline double rad2deg( double r )
+{
+    return r * 180.0 / piDouble;
+}
+inline double deg2grad( double d )
+{
+    return d * 400.0 / 360.0;
+}
+inline double grad2deg( double g )
+{
+    return g * 360.0 / 400.0;
+}
+inline double turn2deg( double t )
+{
+    return t * 360.0;
+}
+inline double deg2turn( double d )
+{
+    return d / 360.0;
+}
+inline double rad2grad( double r )
+{
+    return r * 200.0 / piDouble;
+}
+inline double grad2rad( double g )
+{
+    return g * piDouble / 200.0;
+}
 
-inline float deg2rad(float d)  { return d * piFloat / 180.0f; }
-inline float rad2deg(float r)  { return r * 180.0f / piFloat; }
-inline float deg2grad(float d) { return d * 400.0f / 360.0f; }
-inline float grad2deg(float g) { return g * 360.0f / 400.0f; }
-inline float turn2deg(float t) { return t * 360.0f; }
-inline float deg2turn(float d) { return d / 360.0f; }
-inline float rad2grad(float r) { return r * 200.0f / piFloat; }
-inline float grad2rad(float g) { return g * piFloat / 200.0f; }
+inline float deg2rad( float d )
+{
+    return d * piFloat / 180.0f;
+}
+inline float rad2deg( float r )
+{
+    return r * 180.0f / piFloat;
+}
+inline float deg2grad( float d )
+{
+    return d * 400.0f / 360.0f;
+}
+inline float grad2deg( float g )
+{
+    return g * 360.0f / 400.0f;
+}
+inline float turn2deg( float t )
+{
+    return t * 360.0f;
+}
+inline float deg2turn( float d )
+{
+    return d / 360.0f;
+}
+inline float rad2grad( float r )
+{
+    return r * 200.0f / piFloat;
+}
+inline float grad2rad( float g )
+{
+    return g * piFloat / 200.0f;
+}
 
-inline int clampToInteger(double d)
+inline int clampToInteger( double d )
 {
     const double minIntAsDouble = std::numeric_limits<int>::min();
     const double maxIntAsDouble = std::numeric_limits<int>::max();
-    return static_cast<int>(std::max(std::min(d, maxIntAsDouble), minIntAsDouble));
+    return static_cast<int>( std::max( std::min( d, maxIntAsDouble ), minIntAsDouble ) );
 }
 
-inline int clampToPositiveInteger(double d)
+inline int clampToPositiveInteger( double d )
 {
     const double maxIntAsDouble = std::numeric_limits<int>::max();
-    return static_cast<int>(std::max<double>(std::min(d, maxIntAsDouble), 0));
+    return static_cast<int>( std::max<double>( std::min( d, maxIntAsDouble ), 0 ) );
 }
 
-inline int clampToInteger(float x)
+inline int clampToInteger( float x )
 {
     static const int s_intMax = std::numeric_limits<int>::max();
     static const int s_intMin = std::numeric_limits<int>::min();
 
-    if (x >= static_cast<float>(s_intMax))
+    if ( x >= static_cast<float>( s_intMax ) )
+    {
         return s_intMax;
+    }
 
-    if (x < static_cast<float>(s_intMin))
+    if ( x < static_cast<float>( s_intMin ) )
+    {
         return s_intMin;
+    }
 
-    return static_cast<int>(x);
+    return static_cast<int>( x );
 }
 
-inline int clampToPositiveInteger(float x)
+inline int clampToPositiveInteger( float x )
 {
     static const int s_intMax = std::numeric_limits<int>::max();
 
-    if (x >= static_cast<float>(s_intMax))
+    if ( x >= static_cast<float>( s_intMax ) )
+    {
         return s_intMax;
-    if (x < 0)
+    }
+
+    if ( x < 0 )
+    {
         return 0;
-    return static_cast<int>(x);
+    }
+
+    return static_cast<int>( x );
 }
 
-inline int clampToInteger(unsigned value)
+inline int clampToInteger( unsigned value )
 {
-    return static_cast<int>(std::min(value, static_cast<unsigned>(std::numeric_limits<int>::max())));
+    return static_cast<int>( std::min( value, static_cast<unsigned>( std::numeric_limits<int>::max() ) ) );
 }
 
 

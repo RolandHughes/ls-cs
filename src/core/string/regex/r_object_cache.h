@@ -33,118 +33,131 @@
 #include <stdexcept>
 #include <string>
 
-namespace cs_regex_ns {
+namespace cs_regex_ns
+{
 
 template <class Key, class Object>
 class object_cache
 {
- public:
-   using value_type    = std::pair< std::shared_ptr<Object const>, Key const *>;
-   using list_type     = std::list<value_type>;
-   using list_iterator = typename list_type::iterator;
-   using map_type      = std::map<Key, list_iterator>;
-   using map_iterator  = typename map_type::iterator;
-   using size_type     = typename list_type::size_type;
+public:
+    using value_type    = std::pair< std::shared_ptr<Object const>, Key const *>;
+    using list_type     = std::list<value_type>;
+    using list_iterator = typename list_type::iterator;
+    using map_type      = std::map<Key, list_iterator>;
+    using map_iterator  = typename map_type::iterator;
+    using size_type     = typename list_type::size_type;
 
-   static std::shared_ptr<Object const> get(const Key &k, size_type l_max_cache_size);
+    static std::shared_ptr<Object const> get( const Key &k, size_type l_max_cache_size );
 
- private:
-   static std::shared_ptr<Object const> do_get(const Key &k, size_type l_max_cache_size);
+private:
+    static std::shared_ptr<Object const> do_get( const Key &k, size_type l_max_cache_size );
 
-   struct data {
-      list_type   cont;
-      map_type    index;
-   };
+    struct data
+    {
+        list_type   cont;
+        map_type    index;
+    };
 
 };
 
 template <class Key, class Object>
-std::shared_ptr<Object const> object_cache<Key, Object>::get(const Key &k, size_type l_max_cache_size)
+std::shared_ptr<Object const> object_cache<Key, Object>::get( const Key &k, size_type l_max_cache_size )
 {
-   static std::mutex mutex;
-   std::lock_guard<std::mutex> l(mutex);
+    static std::mutex mutex;
+    std::lock_guard<std::mutex> l( mutex );
 
-   return do_get(k, l_max_cache_size);
+    return do_get( k, l_max_cache_size );
 }
 
 template <class Key, class Object>
-std::shared_ptr<Object const> object_cache<Key, Object>::do_get(const Key &k, size_type l_max_cache_size)
+std::shared_ptr<Object const> object_cache<Key, Object>::do_get( const Key &k, size_type l_max_cache_size )
 {
-   using object_data   = typename object_cache<Key, Object>::data;
-   using map_size_type = typename map_type::size_type;
+    using object_data   = typename object_cache<Key, Object>::data;
+    using map_size_type = typename map_type::size_type;
 
-   static object_data s_data;
+    static object_data s_data;
 
-   // see if the object is already in the cache:
-   map_iterator mpos = s_data.index.find(k);
+    // see if the object is already in the cache:
+    map_iterator mpos = s_data.index.find( k );
 
-   if (mpos != s_data.index.end()) {
+    if ( mpos != s_data.index.end() )
+    {
 
-      // We have a cached item, bump it up the list and return it:
+        // We have a cached item, bump it up the list and return it:
 
-      if (--(s_data.cont.end()) != mpos->second) {
-         // splice out the item we want to move:
-         list_type temp;
-         temp.splice(temp.end(), s_data.cont, mpos->second);
-         // and now place it at the end of the list:
-         s_data.cont.splice(s_data.cont.end(), temp, temp.begin());
+        if ( --( s_data.cont.end() ) != mpos->second )
+        {
+            // splice out the item we want to move:
+            list_type temp;
+            temp.splice( temp.end(), s_data.cont, mpos->second );
+            // and now place it at the end of the list:
+            s_data.cont.splice( s_data.cont.end(), temp, temp.begin() );
 
-         assert(*(s_data.cont.back().second) == k);
-         // update index with new position:
+            assert( *( s_data.cont.back().second ) == k );
+            // update index with new position:
 
-         mpos->second = --(s_data.cont.end());
-         assert(&(mpos->first) == mpos->second->second);
-         assert(&(mpos->first) == s_data.cont.back().second);
-      }
-      return s_data.cont.back().first;
-   }
-   //
-   // if we get here then the item is not in the cache,
-   // so create it:
-   //
-   std::shared_ptr<Object const> result(new Object(k));
+            mpos->second = --( s_data.cont.end() );
+            assert( &( mpos->first ) == mpos->second->second );
+            assert( &( mpos->first ) == s_data.cont.back().second );
+        }
 
-   //
-   // Add it to the list, and index it:
-   //
-   s_data.cont.push_back(value_type(result, static_cast<Key const *>(0)));
-   s_data.index.insert(std::make_pair(k, --(s_data.cont.end())));
-   s_data.cont.back().second = &(s_data.index.find(k)->first);
-   map_size_type s = s_data.index.size();
+        return s_data.cont.back().first;
+    }
 
-   assert(s_data.index[k]->first.get() == result.get());
-   assert(&(s_data.index.find(k)->first) == s_data.cont.back().second);
-   assert(s_data.index.find(k)->first == k);
+    //
+    // if we get here then the item is not in the cache,
+    // so create it:
+    //
+    std::shared_ptr<Object const> result( new Object( k ) );
 
-   if (s > l_max_cache_size) {
-      //
-      // We have too many items in the list, so we need to start
-      // popping them off the back of the list, but only if they're
-      // being held uniquely by us:
-      //
-      list_iterator pos = s_data.cont.begin();
-      list_iterator last = s_data.cont.end();
-      while ((pos != last) && (s > l_max_cache_size)) {
-         if (pos->first.unique()) {
-            list_iterator condemmed(pos);
-            ++pos;
+    //
+    // Add it to the list, and index it:
+    //
+    s_data.cont.push_back( value_type( result, static_cast<Key const *>( 0 ) ) );
+    s_data.index.insert( std::make_pair( k, --( s_data.cont.end() ) ) );
+    s_data.cont.back().second = &( s_data.index.find( k )->first );
+    map_size_type s = s_data.index.size();
 
-            // now remove the items from our containers,
-            // then order has to be as follows:
-            assert(s_data.index.find(*(condemmed->second)) != s_data.index.end());
-            s_data.index.erase(*(condemmed->second));
-            s_data.cont.erase(condemmed);
-            --s;
-         } else {
-            ++pos;
-         }
-      }
+    assert( s_data.index[k]->first.get() == result.get() );
+    assert( &( s_data.index.find( k )->first ) == s_data.cont.back().second );
+    assert( s_data.index.find( k )->first == k );
 
-      assert(s_data.index[k]->first.get() == result.get());
-      assert(&(s_data.index.find(k)->first) == s_data.cont.back().second);
-      assert(s_data.index.find(k)->first == k);
-   }
-   return result;
+    if ( s > l_max_cache_size )
+    {
+        //
+        // We have too many items in the list, so we need to start
+        // popping them off the back of the list, but only if they're
+        // being held uniquely by us:
+        //
+        list_iterator pos = s_data.cont.begin();
+        list_iterator last = s_data.cont.end();
+
+        while ( ( pos != last ) && ( s > l_max_cache_size ) )
+        {
+            if ( pos->first.unique() )
+            {
+                list_iterator condemmed( pos );
+                ++pos;
+
+                // now remove the items from our containers,
+                // then order has to be as follows:
+                assert( s_data.index.find( *( condemmed->second ) ) != s_data.index.end() );
+                s_data.index.erase( *( condemmed->second ) );
+                s_data.cont.erase( condemmed );
+                --s;
+            }
+            else
+            {
+                ++pos;
+            }
+        }
+
+        assert( s_data.index[k]->first.get() == result.get() );
+        assert( &( s_data.index.find( k )->first ) == s_data.cont.back().second );
+        assert( s_data.index.find( k )->first == k );
+    }
+
+    return result;
 }
 
 }   // end namespace

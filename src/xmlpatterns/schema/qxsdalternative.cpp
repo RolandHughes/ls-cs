@@ -25,22 +25,22 @@
 
 using namespace QPatternist;
 
-void XsdAlternative::setTest(const XsdXPathExpression::Ptr &test)
+void XsdAlternative::setTest( const XsdXPathExpression::Ptr &test )
 {
-   m_test = test;
+    m_test = test;
 }
 
 XsdXPathExpression::Ptr XsdAlternative::test() const
 {
-   return m_test;
+    return m_test;
 }
 
-void XsdAlternative::setType(const SchemaType::Ptr &type)
+void XsdAlternative::setType( const SchemaType::Ptr &type )
 {
-   m_type = type;
+    m_type = type;
 }
 
 SchemaType::Ptr XsdAlternative::type() const
 {
-   return m_type;
+    return m_type;
 }

@@ -28,18 +28,19 @@
 
 class QXcbGlxNativeInterfaceHandler : public QXcbNativeInterfaceHandler
 {
- public:
-   enum ResourceType {
-      GLXConfig,
-      GLXContext,
-   };
+public:
+    enum ResourceType
+    {
+        GLXConfig,
+        GLXContext,
+    };
 
-   QXcbGlxNativeInterfaceHandler(QXcbNativeInterface *nativeInterface);
-   QPlatformNativeInterface::FP_Context nativeResourceFunctionForContext(const QByteArray &resource) const override;
+    QXcbGlxNativeInterfaceHandler( QXcbNativeInterface *nativeInterface );
+    QPlatformNativeInterface::FP_Context nativeResourceFunctionForContext( const QByteArray &resource ) const override;
 
- private:
-   static void *glxContextForContext(QOpenGLContext *context);
-   static void *glxConfigForContext(QOpenGLContext *context);
+private:
+    static void *glxContextForContext( QOpenGLContext *context );
+    static void *glxConfigForContext( QOpenGLContext *context );
 };
 
 #endif

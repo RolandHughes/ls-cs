@@ -33,19 +33,19 @@ class AVFVideoOutput;
 
 class AVFMediaPlayerService : public QMediaService
 {
- public:
-   explicit AVFMediaPlayerService(QObject *parent = nullptr);
-   ~AVFMediaPlayerService();
+public:
+    explicit AVFMediaPlayerService( QObject *parent = nullptr );
+    ~AVFMediaPlayerService();
 
-   QMediaControl *requestControl(const QString &name) override;
-   void releaseControl(QMediaControl *control) override;
+    QMediaControl *requestControl( const QString &name ) override;
+    void releaseControl( QMediaControl *control ) override;
 
- private:
-   AVFMediaPlayerSession *m_session;
-   AVFMediaPlayerControl *m_control;
-   QMediaControl *m_videoOutput;
-   AVFMediaPlayerMetaDataControl *m_playerMetaDataControl;
-   bool m_enableRenderControl;
+private:
+    AVFMediaPlayerSession *m_session;
+    AVFMediaPlayerControl *m_control;
+    QMediaControl *m_videoOutput;
+    AVFMediaPlayerMetaDataControl *m_playerMetaDataControl;
+    bool m_enableRenderControl;
 };
 
 #endif

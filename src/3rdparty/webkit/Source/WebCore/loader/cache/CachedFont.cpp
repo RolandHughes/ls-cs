@@ -21,7 +21,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -53,12 +53,13 @@
 #include "SVGNames.h"
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
-CachedFont::CachedFont(const String &url)
-    : CachedResource(url, FontResource)
-    , m_fontData(0)
-    , m_loadInitiated(false)
+CachedFont::CachedFont( const String &url )
+    : CachedResource( url, FontResource )
+    , m_fontData( 0 )
+    , m_loadInitiated( false )
 {
 }
 
@@ -69,58 +70,75 @@ CachedFont::~CachedFont()
 #endif
 }
 
-void CachedFont::load(CachedResourceLoader*)
+void CachedFont::load( CachedResourceLoader * )
 {
     // Don't load the file yet.  Wait for an access before triggering the load.
-    setLoading(true);
+    setLoading( true );
 }
 
-void CachedFont::didAddClient(CachedResourceClient* c)
+void CachedFont::didAddClient( CachedResourceClient *c )
 {
-    if (!isLoading())
-        c->fontLoaded(this);
+    if ( !isLoading() )
+    {
+        c->fontLoaded( this );
+    }
 }
 
-void CachedFont::data(PassRefPtr<SharedBuffer> data, bool allDataReceived)
+void CachedFont::data( PassRefPtr<SharedBuffer> data, bool allDataReceived )
 {
-    if (!allDataReceived)
+    if ( !allDataReceived )
+    {
         return;
+    }
 
-    m_data = data;     
-    setEncodedSize(m_data.get() ? m_data->size() : 0);
-    setLoading(false);
+    m_data = data;
+    setEncodedSize( m_data.get() ? m_data->size() : 0 );
+    setLoading( false );
     checkNotify();
 }
 
-void CachedFont::beginLoadIfNeeded(CachedResourceLoader* dl)
+void CachedFont::beginLoadIfNeeded( CachedResourceLoader *dl )
 {
-    if (!m_loadInitiated) {
+    if ( !m_loadInitiated )
+    {
         m_loadInitiated = true;
-        dl->load(this, false);
+        dl->load( this, false );
     }
 }
 
 bool CachedFont::ensureCustomFontData()
 {
 #ifdef STORE_FONT_CUSTOM_PLATFORM_DATA
-    if (!m_fontData && !errorOccurred() && !isLoading() && m_data) {
-        m_fontData = createFontCustomPlatformData(m_data.get());
-        if (!m_fontData)
-            setStatus(DecodeError);
+
+    if ( !m_fontData && !errorOccurred() && !isLoading() && m_data )
+    {
+        m_fontData = createFontCustomPlatformData( m_data.get() );
+
+        if ( !m_fontData )
+        {
+            setStatus( DecodeError );
+        }
     }
+
 #endif
     return m_fontData;
 }
 
-FontPlatformData CachedFont::platformDataFromCustomData(float size, bool bold, bool italic, FontOrientation orientation, TextOrientation textOrientation, FontWidthVariant widthVariant, FontRenderingMode renderingMode)
+FontPlatformData CachedFont::platformDataFromCustomData( float size, bool bold, bool italic, FontOrientation orientation,
+        TextOrientation textOrientation, FontWidthVariant widthVariant, FontRenderingMode renderingMode )
 {
 #if ENABLE(SVG_FONTS)
-    if (m_externalSVGDocument)
-        return FontPlatformData(size, bold, italic);
+
+    if ( m_externalSVGDocument )
+    {
+        return FontPlatformData( size, bold, italic );
+    }
+
 #endif
 #ifdef STORE_FONT_CUSTOM_PLATFORM_DATA
-    ASSERT(m_fontData);
-    return m_fontData->fontPlatformData(static_cast<int>(size), bold, italic, orientation, textOrientation, widthVariant, renderingMode);
+    ASSERT( m_fontData );
+    return m_fontData->fontPlatformData( static_cast<int>( size ), bold, italic, orientation, textOrientation, widthVariant,
+                                         renderingMode );
 #else
     return FontPlatformData();
 #endif
@@ -129,46 +147,65 @@ FontPlatformData CachedFont::platformDataFromCustomData(float size, bool bold, b
 #if ENABLE(SVG_FONTS)
 bool CachedFont::ensureSVGFontData()
 {
-    if (!m_externalSVGDocument && !errorOccurred() && !isLoading() && m_data) {
-        m_externalSVGDocument = SVGDocument::create(0, KURL());
+    if ( !m_externalSVGDocument && !errorOccurred() && !isLoading() && m_data )
+    {
+        m_externalSVGDocument = SVGDocument::create( 0, KURL() );
 
-        RefPtr<TextResourceDecoder> decoder = TextResourceDecoder::create("application/xml");
-        String svgSource = decoder->decode(m_data->data(), m_data->size());
+        RefPtr<TextResourceDecoder> decoder = TextResourceDecoder::create( "application/xml" );
+        String svgSource = decoder->decode( m_data->data(), m_data->size() );
         svgSource += decoder->flush();
-        
-        m_externalSVGDocument->setContent(svgSource);
-        
-        if (decoder->sawError())
+
+        m_externalSVGDocument->setContent( svgSource );
+
+        if ( decoder->sawError() )
+        {
             m_externalSVGDocument = 0;
+        }
     }
 
     return m_externalSVGDocument;
 }
 
-SVGFontElement* CachedFont::getSVGFontById(const String& fontName) const
+SVGFontElement *CachedFont::getSVGFontById( const String &fontName ) const
 {
-    RefPtr<NodeList> list = m_externalSVGDocument->getElementsByTagNameNS(SVGNames::fontTag.namespaceURI(), SVGNames::fontTag.localName());
-    if (!list)
+    RefPtr<NodeList> list = m_externalSVGDocument->getElementsByTagNameNS( SVGNames::fontTag.namespaceURI(),
+                            SVGNames::fontTag.localName() );
+
+    if ( !list )
+    {
         return 0;
+    }
 
     unsigned listLength = list->length();
-    if (!listLength)
+
+    if ( !listLength )
+    {
         return 0;
+    }
 
 #ifndef NDEBUG
-    for (unsigned i = 0; i < listLength; ++i) {
-        ASSERT(list->item(i));
-        ASSERT(list->item(i)->hasTagName(SVGNames::fontTag));
+
+    for ( unsigned i = 0; i < listLength; ++i )
+    {
+        ASSERT( list->item( i ) );
+        ASSERT( list->item( i )->hasTagName( SVGNames::fontTag ) );
     }
+
 #endif
 
-    if (fontName.isEmpty())
-        return static_cast<SVGFontElement*>(list->item(0));
+    if ( fontName.isEmpty() )
+    {
+        return static_cast<SVGFontElement *>( list->item( 0 ) );
+    }
 
-    for (unsigned i = 0; i < listLength; ++i) {
-        SVGFontElement* element = static_cast<SVGFontElement*>(list->item(i));
-        if (element->getIdAttribute() == fontName)
+    for ( unsigned i = 0; i < listLength; ++i )
+    {
+        SVGFontElement *element = static_cast<SVGFontElement *>( list->item( i ) );
+
+        if ( element->getIdAttribute() == fontName )
+        {
             return element;
+        }
     }
 
     return 0;
@@ -178,29 +215,37 @@ SVGFontElement* CachedFont::getSVGFontById(const String& fontName) const
 void CachedFont::allClientsRemoved()
 {
 #ifdef STORE_FONT_CUSTOM_PLATFORM_DATA
-    if (m_fontData) {
+
+    if ( m_fontData )
+    {
         delete m_fontData;
         m_fontData = 0;
     }
+
 #endif
 }
 
 void CachedFont::checkNotify()
 {
-    if (isLoading())
+    if ( isLoading() )
+    {
         return;
-    
-    CachedResourceClientWalker w(m_clients);
-    while (CachedResourceClient *c = w.next())
-         c->fontLoaded(this);
+    }
+
+    CachedResourceClientWalker w( m_clients );
+
+    while ( CachedResourceClient *c = w.next() )
+    {
+        c->fontLoaded( this );
+    }
 }
 
 
-void CachedFont::error(CachedResource::Status status)
+void CachedFont::error( CachedResource::Status status )
 {
-    setStatus(status);
-    ASSERT(errorOccurred());
-    setLoading(false);
+    setStatus( status );
+    ASSERT( errorOccurred() );
+    setLoading( false );
     checkNotify();
 }
 

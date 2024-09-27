@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef ProgressEvent_h
@@ -28,33 +28,48 @@
 
 #include "Event.h"
 
-namespace WebCore {
-    
-class ProgressEvent : public Event {
+namespace WebCore
+{
+
+class ProgressEvent : public Event
+{
 public:
     static PassRefPtr<ProgressEvent> create()
     {
-        return adoptRef(new ProgressEvent);
+        return adoptRef( new ProgressEvent );
     }
-    static PassRefPtr<ProgressEvent> create(const AtomicString& type, bool lengthComputable, unsigned long long loaded, unsigned long long total)
+    static PassRefPtr<ProgressEvent> create( const AtomicString &type, bool lengthComputable, unsigned long long loaded,
+            unsigned long long total )
     {
-        return adoptRef(new ProgressEvent(type, lengthComputable, loaded, total));
+        return adoptRef( new ProgressEvent( type, lengthComputable, loaded, total ) );
     }
 
-    void initProgressEvent(const AtomicString& typeArg, bool canBubbleArg, bool cancelableArg,
-        bool lengthComputableArg, unsigned long long loadedArg, unsigned long long totalArg);
+    void initProgressEvent( const AtomicString &typeArg, bool canBubbleArg, bool cancelableArg,
+                            bool lengthComputableArg, unsigned long long loadedArg, unsigned long long totalArg );
 
-    bool lengthComputable() const { return m_lengthComputable; }
-    unsigned long long loaded() const { return m_loaded; }
-    unsigned long long total() const { return m_total; }
+    bool lengthComputable() const
+    {
+        return m_lengthComputable;
+    }
+    unsigned long long loaded() const
+    {
+        return m_loaded;
+    }
+    unsigned long long total() const
+    {
+        return m_total;
+    }
 
 protected:
     ProgressEvent();
-    ProgressEvent(const AtomicString& type, bool lengthComputable, unsigned long long loaded, unsigned long long total);
+    ProgressEvent( const AtomicString &type, bool lengthComputable, unsigned long long loaded, unsigned long long total );
 
 private:
-    virtual bool isProgressEvent() const { return true; }
-    
+    virtual bool isProgressEvent() const
+    {
+        return true;
+    }
+
     bool m_lengthComputable;
     unsigned long long m_loaded;
     unsigned long long m_total;

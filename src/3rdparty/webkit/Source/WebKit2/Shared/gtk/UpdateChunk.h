@@ -33,26 +33,35 @@
 
 #include <cairo.h>
 
-namespace CoreIPC {
+namespace CoreIPC
+{
 class ArgumentEncoder;
 class ArgumentDecoder;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
-class UpdateChunk {
+class UpdateChunk
+{
 public:
     UpdateChunk();
-    UpdateChunk(const WebCore::IntRect&);
+    UpdateChunk( const WebCore::IntRect & );
     ~UpdateChunk();
 
-    const WebCore::IntRect& rect() const { return m_rect; }
-    bool isEmpty() { return m_rect.isEmpty(); }
+    const WebCore::IntRect &rect() const
+    {
+        return m_rect;
+    }
+    bool isEmpty()
+    {
+        return m_rect.isEmpty();
+    }
 
-    void encode(CoreIPC::ArgumentEncoder*) const;
-    static bool decode(CoreIPC::ArgumentDecoder*, UpdateChunk&);
+    void encode( CoreIPC::ArgumentEncoder * ) const;
+    static bool decode( CoreIPC::ArgumentDecoder *, UpdateChunk & );
 
-    cairo_surface_t* createImage() const;
+    cairo_surface_t *createImage() const;
 
 private:
     size_t size() const;

@@ -35,68 +35,87 @@
 #include <wtf/OwnPtr.h>
 #include <wtf/RefPtr.h>
 
-namespace JSC {
+namespace JSC
+{
 
-    class FunctionBodyNode;
-    class ProgramNode;
-    class UString;
+class FunctionBodyNode;
+class ProgramNode;
+class UString;
 
-    template <typename T> struct ParserArenaData : ParserArenaDeletable { T data; };
+template <typename T> struct ParserArenaData : ParserArenaDeletable
+{
+    T data;
+};
 
-    class Parser : public Noncopyable {
-    public:
-        template <class ParsedNode>
-        PassRefPtr<ParsedNode> parse(JSGlobalData* globalData, Debugger*, ExecState*, const SourceCode& source, int* errLine = 0, UString* errMsg = 0);
-
-        void didFinishParsing(SourceElements*, ParserArenaData<DeclarationStacks::VarStack>*, 
-                              ParserArenaData<DeclarationStacks::FunctionStack>*, CodeFeatures features, int lastLine, int numConstants);
-
-        ParserArena& arena() { return m_arena; }
-
-    private:
-        void parse(JSGlobalData*, int* errLine, UString* errMsg);
-
-        ParserArena m_arena;
-        const SourceCode* m_source;
-        SourceElements* m_sourceElements;
-        ParserArenaData<DeclarationStacks::VarStack>* m_varDeclarations;
-        ParserArenaData<DeclarationStacks::FunctionStack>* m_funcDeclarations;
-        CodeFeatures m_features;
-        int m_lastLine;
-        int m_numConstants;
-    };
-
+class Parser : public Noncopyable
+{
+public:
     template <class ParsedNode>
-    PassRefPtr<ParsedNode> Parser::parse(JSGlobalData* globalData, Debugger* debugger, ExecState* debuggerExecState, const SourceCode& source, int* errLine, UString* errMsg)
+    PassRefPtr<ParsedNode> parse( JSGlobalData *globalData, Debugger *, ExecState *, const SourceCode &source, int *errLine = 0,
+                                  UString *errMsg = 0 );
+
+    void didFinishParsing( SourceElements *, ParserArenaData<DeclarationStacks::VarStack> *,
+                           ParserArenaData<DeclarationStacks::FunctionStack> *, CodeFeatures features, int lastLine, int numConstants );
+
+    ParserArena &arena()
     {
-        m_source = &source;
-        if (ParsedNode::scopeIsFunction)
-            globalData->lexer->setIsReparsing();
-        parse(globalData, errLine, errMsg);
-
-        RefPtr<ParsedNode> result;
-        if (m_sourceElements) {
-            result = ParsedNode::create(globalData,
-            m_sourceElements,
-            m_varDeclarations ? &m_varDeclarations->data : 0,
-            m_funcDeclarations ? &m_funcDeclarations->data : 0,
-            source,
-            m_features,
-            m_numConstants);
-            result->setLoc(m_source->firstLine(), m_lastLine);
-        }
-
-        m_arena.reset();
-
-        m_source = 0;
-        m_sourceElements = 0;
-        m_varDeclarations = 0;
-        m_funcDeclarations = 0;
-
-        if (debugger && !ParsedNode::scopeIsFunction)
-            debugger->sourceParsed(debuggerExecState, source, *errLine, *errMsg);
-        return result.release();
+        return m_arena;
     }
+
+private:
+    void parse( JSGlobalData *, int *errLine, UString *errMsg );
+
+    ParserArena m_arena;
+    const SourceCode *m_source;
+    SourceElements *m_sourceElements;
+    ParserArenaData<DeclarationStacks::VarStack> *m_varDeclarations;
+    ParserArenaData<DeclarationStacks::FunctionStack> *m_funcDeclarations;
+    CodeFeatures m_features;
+    int m_lastLine;
+    int m_numConstants;
+};
+
+template <class ParsedNode>
+PassRefPtr<ParsedNode> Parser::parse( JSGlobalData *globalData, Debugger *debugger, ExecState *debuggerExecState,
+                                      const SourceCode &source, int *errLine, UString *errMsg )
+{
+    m_source = &source;
+
+    if ( ParsedNode::scopeIsFunction )
+    {
+        globalData->lexer->setIsReparsing();
+    }
+
+    parse( globalData, errLine, errMsg );
+
+    RefPtr<ParsedNode> result;
+
+    if ( m_sourceElements )
+    {
+        result = ParsedNode::create( globalData,
+                                     m_sourceElements,
+                                     m_varDeclarations ? &m_varDeclarations->data : 0,
+                                     m_funcDeclarations ? &m_funcDeclarations->data : 0,
+                                     source,
+                                     m_features,
+                                     m_numConstants );
+        result->setLoc( m_source->firstLine(), m_lastLine );
+    }
+
+    m_arena.reset();
+
+    m_source = 0;
+    m_sourceElements = 0;
+    m_varDeclarations = 0;
+    m_funcDeclarations = 0;
+
+    if ( debugger && !ParsedNode::scopeIsFunction )
+    {
+        debugger->sourceParsed( debuggerExecState, source, *errLine, *errMsg );
+    }
+
+    return result.release();
+}
 
 } // namespace JSC
 

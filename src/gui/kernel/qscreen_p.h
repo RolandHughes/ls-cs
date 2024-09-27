@@ -31,38 +31,39 @@
 
 class QScreenPrivate
 {
-   Q_DECLARE_PUBLIC(QScreen)
+    Q_DECLARE_PUBLIC( QScreen )
 
- public:
-   QScreenPrivate()
-      : platformScreen(nullptr), orientationUpdateMask(Qt::EmptyFlag)
-   {
-   }
+public:
+    QScreenPrivate()
+        : platformScreen( nullptr ), orientationUpdateMask( Qt::EmptyFlag )
+    {
+    }
 
-   void setPlatformScreen(QPlatformScreen *screen);
+    void setPlatformScreen( QPlatformScreen *screen );
 
-   void updateHighDpi() {
-      geometry          = platformScreen->deviceIndependentGeometry();
-      availableGeometry = QHighDpi::fromNative(platformScreen->availableGeometry(),
-               QHighDpiScaling::factor(platformScreen), geometry.topLeft());
-   }
+    void updateHighDpi()
+    {
+        geometry          = platformScreen->deviceIndependentGeometry();
+        availableGeometry = QHighDpi::fromNative( platformScreen->availableGeometry(),
+                            QHighDpiScaling::factor( platformScreen ), geometry.topLeft() );
+    }
 
-   void updatePrimaryOrientation();
+    void updatePrimaryOrientation();
 
-   QPlatformScreen *platformScreen;
+    QPlatformScreen *platformScreen;
 
-   Qt::ScreenOrientations orientationUpdateMask;
-   Qt::ScreenOrientation  orientation;
-   Qt::ScreenOrientation  filteredOrientation;
-   Qt::ScreenOrientation  primaryOrientation;
+    Qt::ScreenOrientations orientationUpdateMask;
+    Qt::ScreenOrientation  orientation;
+    Qt::ScreenOrientation  filteredOrientation;
+    Qt::ScreenOrientation  primaryOrientation;
 
-   QRect geometry;
-   QRect availableGeometry;
-   QDpi logicalDpi;
-   qreal refreshRate;
+    QRect geometry;
+    QRect availableGeometry;
+    QDpi logicalDpi;
+    qreal refreshRate;
 
- protected:
-   QScreen *q_ptr;
+protected:
+    QScreen *q_ptr;
 
 };
 

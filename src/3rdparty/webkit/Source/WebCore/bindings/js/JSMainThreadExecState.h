@@ -31,52 +31,57 @@
 #include <wtf/MainThread.h>
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
-class JSMainThreadExecState {
-    WTF_MAKE_NONCOPYABLE(JSMainThreadExecState);
+class JSMainThreadExecState
+{
+    WTF_MAKE_NONCOPYABLE( JSMainThreadExecState );
 public:
-    static JSC::ExecState* currentState()
-    { 
-        ASSERT(WTF::isMainThread());
+    static JSC::ExecState *currentState()
+    {
+        ASSERT( WTF::isMainThread() );
         return s_mainThreadState;
     };
-    
-    static JSC::JSValue call(JSC::ExecState* exec, JSC::JSValue functionObject, JSC::CallType callType, const JSC::CallData& callData, JSC::JSValue thisValue, const JSC::ArgList& args)
+
+    static JSC::JSValue call( JSC::ExecState *exec, JSC::JSValue functionObject, JSC::CallType callType,
+                              const JSC::CallData &callData, JSC::JSValue thisValue, const JSC::ArgList &args )
     {
-        JSMainThreadExecState currentState(exec);
-        return JSC::call(exec, functionObject, callType, callData, thisValue, args);
+        JSMainThreadExecState currentState( exec );
+        return JSC::call( exec, functionObject, callType, callData, thisValue, args );
     };
 
-    static JSC::Completion evaluate(JSC::ExecState* exec, JSC::ScopeChainNode* chain, const JSC::SourceCode& source, JSC::JSValue thisValue)
+    static JSC::Completion evaluate( JSC::ExecState *exec, JSC::ScopeChainNode *chain, const JSC::SourceCode &source,
+                                     JSC::JSValue thisValue )
     {
-        JSMainThreadExecState currentState(exec);
-        return JSC::evaluate(exec, chain, source, thisValue);
+        JSMainThreadExecState currentState( exec );
+        return JSC::evaluate( exec, chain, source, thisValue );
     };
 
 protected:
-    explicit JSMainThreadExecState(JSC::ExecState* exec)
-        : m_previousState(s_mainThreadState)
+    explicit JSMainThreadExecState( JSC::ExecState *exec )
+        : m_previousState( s_mainThreadState )
     {
-        ASSERT(WTF::isMainThread());
+        ASSERT( WTF::isMainThread() );
         s_mainThreadState = exec;
     };
-    
+
     ~JSMainThreadExecState()
     {
-        ASSERT(WTF::isMainThread());
+        ASSERT( WTF::isMainThread() );
         s_mainThreadState = m_previousState;
     }
 
 private:
-    static JSC::ExecState* s_mainThreadState;
-    JSC::ExecState* m_previousState;
+    static JSC::ExecState *s_mainThreadState;
+    JSC::ExecState *m_previousState;
 };
 
 // Null state prevents origin security checks.
-class JSMainThreadNullState : private JSMainThreadExecState {
+class JSMainThreadNullState : private JSMainThreadExecState
+{
 public:
-    explicit JSMainThreadNullState() : JSMainThreadExecState(0) {};
+    explicit JSMainThreadNullState() : JSMainThreadExecState( 0 ) {};
 };
 
 } // namespace WebCore

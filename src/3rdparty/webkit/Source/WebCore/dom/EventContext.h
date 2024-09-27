@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
 
@@ -29,20 +29,22 @@
 
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class EventTarget;
 class Event;
 class Node;
 
-class EventContext {
+class EventContext
+{
 public:
     // FIXME: Use ContainerNode instead of Node.
-    EventContext(PassRefPtr<Node>, PassRefPtr<EventTarget> currentTarget, PassRefPtr<EventTarget> target);
+    EventContext( PassRefPtr<Node>, PassRefPtr<EventTarget> currentTarget, PassRefPtr<EventTarget> target );
 
-    Node* node() const;
-    EventTarget* target() const;
-    void handleLocalEvents(Event*) const;
+    Node *node() const;
+    EventTarget *target() const;
+    void handleLocalEvents( Event * ) const;
 
 private:
     RefPtr<Node> m_node;
@@ -50,12 +52,12 @@ private:
     RefPtr<EventTarget> m_target;
 };
 
-inline Node* EventContext::node() const
+inline Node *EventContext::node() const
 {
     return m_node.get();
 }
 
-inline EventTarget* EventContext::target() const
+inline EventTarget *EventContext::target() const
 {
     return m_target.get();
 }

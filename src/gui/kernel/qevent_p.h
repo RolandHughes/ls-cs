@@ -30,58 +30,61 @@
 
 class QTouchEventTouchPointPrivate
 {
- public:
-   QTouchEventTouchPointPrivate(int id)
-      : ref(1), id(id), state(Qt::TouchPointReleased), pressure(qreal(-1.))
-   {
-   }
+public:
+    QTouchEventTouchPointPrivate( int id )
+        : ref( 1 ), id( id ), state( Qt::TouchPointReleased ), pressure( qreal( -1. ) )
+    {
+    }
 
-   QTouchEventTouchPointPrivate *detach() {
-      QTouchEventTouchPointPrivate *d = new QTouchEventTouchPointPrivate(*this);
-      d->ref = 1;
+    QTouchEventTouchPointPrivate *detach()
+    {
+        QTouchEventTouchPointPrivate *d = new QTouchEventTouchPointPrivate( *this );
+        d->ref = 1;
 
-      if (! this->ref.deref()) {
-         delete this;
-      }
-      return d;
-   }
+        if ( ! this->ref.deref() )
+        {
+            delete this;
+        }
 
-   QAtomicInt ref;
-   int id;
-   Qt::TouchPointStates state;
+        return d;
+    }
 
-   QRectF rect;
-   QRectF sceneRect;
-   QRectF screenRect;
+    QAtomicInt ref;
+    int id;
+    Qt::TouchPointStates state;
 
-   QPointF normalizedPos;
-   QPointF startPos;
-   QPointF startScenePos;
-   QPointF startScreenPos;
-   QPointF startNormalizedPos;
-   QPointF lastPos;
-   QPointF lastScenePos;
-   QPointF lastScreenPos;
-   QPointF lastNormalizedPos;
+    QRectF rect;
+    QRectF sceneRect;
+    QRectF screenRect;
 
-   qreal pressure;
+    QPointF normalizedPos;
+    QPointF startPos;
+    QPointF startScenePos;
+    QPointF startScreenPos;
+    QPointF startNormalizedPos;
+    QPointF lastPos;
+    QPointF lastScenePos;
+    QPointF lastScreenPos;
+    QPointF lastNormalizedPos;
 
-   QVector2D velocity;
-   QTouchEvent::TouchPoint::InfoFlags flags;
-   QVector<QPointF> rawScreenPositions;
+    qreal pressure;
+
+    QVector2D velocity;
+    QTouchEvent::TouchPoint::InfoFlags flags;
+    QVector<QPointF> rawScreenPositions;
 };
 
 #ifndef QT_NO_TABLETEVENT
 class QTabletEventPrivate
 {
- public:
-   inline QTabletEventPrivate(Qt::MouseButton button, Qt::MouseButtons buttons)
-      : b(button), buttonState(buttons)
-   {
-   }
+public:
+    inline QTabletEventPrivate( Qt::MouseButton button, Qt::MouseButtons buttons )
+        : b( button ), buttonState( buttons )
+    {
+    }
 
-   Qt::MouseButton b;
-   Qt::MouseButtons buttonState;
+    Qt::MouseButton b;
+    Qt::MouseButtons buttonState;
 };
 #endif // QT_NO_TABLETEVENT
 

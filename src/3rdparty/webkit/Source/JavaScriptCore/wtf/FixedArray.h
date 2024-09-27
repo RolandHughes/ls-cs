@@ -28,24 +28,32 @@
 
 #include <wtf/Assertions.h>
 
-namespace WTF {
+namespace WTF
+{
 
-template <typename T, size_t Size> class FixedArray {
+template <typename T, size_t Size> class FixedArray
+{
 public:
-    T& operator[](size_t i)
+    T &operator[]( size_t i )
     {
-        ASSERT(i < Size);
+        ASSERT( i < Size );
         return m_data[i];
     }
 
-    const T& operator[](size_t i) const
+    const T &operator[]( size_t i ) const
     {
-        ASSERT(i < Size);
+        ASSERT( i < Size );
         return m_data[i];
     }
 
-    T* data() { return m_data; }
-    size_t size() const { return Size; }
+    T *data()
+    {
+        return m_data;
+    }
+    size_t size() const
+    {
+        return Size;
+    }
 
 private:
     T m_data[Size];

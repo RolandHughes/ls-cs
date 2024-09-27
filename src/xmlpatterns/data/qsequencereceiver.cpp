@@ -32,66 +32,80 @@ QAbstractXmlReceiver::~QAbstractXmlReceiver()
 }
 
 template<const QXmlNodeModelIndex::Axis axis>
-void QAbstractXmlReceiver::sendFromAxis(const QXmlNodeModelIndex &node)
+void QAbstractXmlReceiver::sendFromAxis( const QXmlNodeModelIndex &node )
 {
-   Q_ASSERT(!node.isNull());
-   const QXmlNodeModelIndex::Iterator::Ptr it(node.iterate(axis));
-   QXmlNodeModelIndex next(it->next());
+    Q_ASSERT( !node.isNull() );
+    const QXmlNodeModelIndex::Iterator::Ptr it( node.iterate( axis ) );
+    QXmlNodeModelIndex next( it->next() );
 
-   while (!next.isNull()) {
-      sendAsNode(next);
-      next = it->next();
-   }
+    while ( !next.isNull() )
+    {
+        sendAsNode( next );
+        next = it->next();
+    }
 }
 
-void QAbstractXmlReceiver::sendAsNode(const Item &outputItem)
+void QAbstractXmlReceiver::sendAsNode( const Item &outputItem )
 {
-   Q_ASSERT(outputItem);
-   Q_ASSERT(outputItem.isNode());
-   const QXmlNodeModelIndex asNode = outputItem.asNode();
+    Q_ASSERT( outputItem );
+    Q_ASSERT( outputItem.isNode() );
+    const QXmlNodeModelIndex asNode = outputItem.asNode();
 
-   switch (asNode.kind()) {
-      case QXmlNodeModelIndex::Attribute: {
-         attribute(asNode.name(), outputItem.stringValue());
-         break;
-      }
-      case QXmlNodeModelIndex::Element: {
-         startElement(asNode.name());
+    switch ( asNode.kind() )
+    {
+        case QXmlNodeModelIndex::Attribute:
+        {
+            attribute( asNode.name(), outputItem.stringValue() );
+            break;
+        }
 
-         /* First the namespaces, then attributes, then the children. */
-         asNode.sendNamespaces(Ptr(const_cast<QAbstractXmlReceiver *>(this)));
-         sendFromAxis<QXmlNodeModelIndex::AxisAttribute>(asNode);
-         sendFromAxis<QXmlNodeModelIndex::AxisChild>(asNode);
+        case QXmlNodeModelIndex::Element:
+        {
+            startElement( asNode.name() );
 
-         endElement();
+            /* First the namespaces, then attributes, then the children. */
+            asNode.sendNamespaces( Ptr( const_cast<QAbstractXmlReceiver *>( this ) ) );
+            sendFromAxis<QXmlNodeModelIndex::AxisAttribute>( asNode );
+            sendFromAxis<QXmlNodeModelIndex::AxisChild>( asNode );
 
-         break;
-      }
-      case QXmlNodeModelIndex::Text: {
-         characters(outputItem.stringValue());
-         break;
-      }
-      case QXmlNodeModelIndex::ProcessingInstruction: {
-         processingInstruction(asNode.name(), outputItem.stringValue());
-         break;
-      }
-      case QXmlNodeModelIndex::Comment: {
-         comment(outputItem.stringValue());
-         break;
-      }
-      case QXmlNodeModelIndex::Document: {
-         sendFromAxis<QXmlNodeModelIndex::AxisChild>(asNode);
-         break;
-      }
-      case QXmlNodeModelIndex::Namespace:
-         Q_ASSERT_X(false, Q_FUNC_INFO, "QXmlNodeModelIndex::Namespace was not implemented");
-   }
+            endElement();
+
+            break;
+        }
+
+        case QXmlNodeModelIndex::Text:
+        {
+            characters( outputItem.stringValue() );
+            break;
+        }
+
+        case QXmlNodeModelIndex::ProcessingInstruction:
+        {
+            processingInstruction( asNode.name(), outputItem.stringValue() );
+            break;
+        }
+
+        case QXmlNodeModelIndex::Comment:
+        {
+            comment( outputItem.stringValue() );
+            break;
+        }
+
+        case QXmlNodeModelIndex::Document:
+        {
+            sendFromAxis<QXmlNodeModelIndex::AxisChild>( asNode );
+            break;
+        }
+
+        case QXmlNodeModelIndex::Namespace:
+            Q_ASSERT_X( false, Q_FUNC_INFO, "QXmlNodeModelIndex::Namespace was not implemented" );
+    }
 }
 
-void QAbstractXmlReceiver::whitespaceOnly(QStringView value)
+void QAbstractXmlReceiver::whitespaceOnly( QStringView value )
 {
-   Q_ASSERT_X(value.toString().trimmed().isEmpty(), Q_FUNC_INFO,
-              "Only whitespace should be passed, use characters() in other cases.");
+    Q_ASSERT_X( value.toString().trimmed().isEmpty(), Q_FUNC_INFO,
+                "Only whitespace should be passed, use characters() in other cases." );
 
-   characters(value.toString());
+    characters( value.toString() );
 }

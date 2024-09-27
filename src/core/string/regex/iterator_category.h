@@ -29,55 +29,64 @@
 
 #include <iterator>
 
-namespace cs_regex_ns {
+namespace cs_regex_ns
+{
 
-namespace detail {
+namespace detail
+{
 
 template <class I>
-struct is_random_imp {
- private:
-   using cat = typename std::iterator_traits<I>::iterator_category;
+struct is_random_imp
+{
+private:
+    using cat = typename std::iterator_traits<I>::iterator_category;
 
- public:
-   static const bool value = std::is_convertible<cat *, std::random_access_iterator_tag *>::value;
+public:
+    static const bool value = std::is_convertible<cat *, std::random_access_iterator_tag *>::value;
 };
 
 template <class I>
-struct is_random_pointer_imp {
-   static const bool value = true;
+struct is_random_pointer_imp
+{
+    static const bool value = true;
 };
 
 template <bool is_pointer_type>
-struct is_random_imp_selector {
+struct is_random_imp_selector
+{
 
-   template <class I>
-   struct rebind {
-      using type = is_random_imp<I>;
-   };
+    template <class I>
+    struct rebind
+    {
+        using type = is_random_imp<I>;
+    };
 };
 
 template <>
-struct is_random_imp_selector<true> {
+struct is_random_imp_selector<true>
+{
 
-   template <class I>
-   struct rebind {
-      using type = is_random_pointer_imp<I>;
-   };
+    template <class I>
+    struct rebind
+    {
+        using type = is_random_pointer_imp<I>;
+    };
 
 };
 
 }   // end namespace
 
 template <class I>
-struct is_random_access_iterator {
+struct is_random_access_iterator
+{
 
- private:
-   using  selector  = detail::is_random_imp_selector< std::is_pointer<I>::value>;
-   using bound_type = typename selector::template rebind<I>;
-   using answer     = typename bound_type::type ;
+private:
+    using  selector  = detail::is_random_imp_selector< std::is_pointer<I>::value>;
+    using bound_type = typename selector::template rebind<I>;
+    using answer     = typename bound_type::type ;
 
- public:
-   static const bool value = answer::value;
+public:
+    static const bool value = answer::value;
 };
 
 template <class I>

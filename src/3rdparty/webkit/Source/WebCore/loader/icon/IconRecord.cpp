@@ -6,13 +6,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -38,69 +38,81 @@
 
 #include <limits.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-IconRecord::IconRecord(const String& url)
-    : m_iconURL(url)
-    , m_stamp(0)
-    , m_dataSet(false)
+IconRecord::IconRecord( const String &url )
+    : m_iconURL( url )
+    , m_stamp( 0 )
+    , m_dataSet( false )
 {
 
 }
 
 IconRecord::~IconRecord()
 {
-    LOG(IconDatabase, "Destroying IconRecord for icon url %s", m_iconURL.ascii().data());
+    LOG( IconDatabase, "Destroying IconRecord for icon url %s", m_iconURL.ascii().data() );
 }
 
-Image* IconRecord::image(const IntSize&)
+Image *IconRecord::image( const IntSize & )
 {
     // FIXME rdar://4680377 - For size right now, we are returning our one and only image and the Bridge
     // is resizing it in place.  We need to actually store all the original representations here and return a native
     // one, or resize the best one to the requested size and cache that result.
-    
+
     return m_image.get();
 }
 
-void IconRecord::setImageData(PassRefPtr<SharedBuffer> data)
+void IconRecord::setImageData( PassRefPtr<SharedBuffer> data )
 {
     // It's okay to delete the raw image here. Any existing clients using this icon will be
     // managing an image that was created with a copy of this raw image data.
     m_image = BitmapImage::create();
 
     // Copy the provided data into the buffer of the new Image object.
-    if (!m_image->setData(data, true)) {
-        LOG(IconDatabase, "Manual image data for iconURL '%s' FAILED - it was probably invalid image data", m_iconURL.ascii().data());
+    if ( !m_image->setData( data, true ) )
+    {
+        LOG( IconDatabase, "Manual image data for iconURL '%s' FAILED - it was probably invalid image data", m_iconURL.ascii().data() );
         m_image.clear();
     }
-    
+
     m_dataSet = true;
 }
 
-void IconRecord::loadImageFromResource(const char* resource)
+void IconRecord::loadImageFromResource( const char *resource )
 {
-    if (!resource)
+    if ( !resource )
+    {
         return;
-        
-    m_image = Image::loadPlatformResource(resource);
+    }
+
+    m_image = Image::loadPlatformResource( resource );
     m_dataSet = true;
 }
 
 ImageDataStatus IconRecord::imageDataStatus()
 {
-    if (!m_dataSet)
+    if ( !m_dataSet )
+    {
         return ImageDataStatusUnknown;
-    if (!m_image)
+    }
+
+    if ( !m_image )
+    {
         return ImageDataStatusMissing;
+    }
+
     return ImageDataStatusPresent;
 }
 
-IconSnapshot IconRecord::snapshot(bool forDeletion) const
+IconSnapshot IconRecord::snapshot( bool forDeletion ) const
 {
-    if (forDeletion)
-        return IconSnapshot(m_iconURL, 0, 0);
-    
-    return IconSnapshot(m_iconURL, m_stamp, m_image ? m_image->data() : 0);
+    if ( forDeletion )
+    {
+        return IconSnapshot( m_iconURL, 0, 0 );
+    }
+
+    return IconSnapshot( m_iconURL, m_stamp, m_image ? m_image->data() : 0 );
 }
 
-} // namespace WebCore    
+} // namespace WebCore

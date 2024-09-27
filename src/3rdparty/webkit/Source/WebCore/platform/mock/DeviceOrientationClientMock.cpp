@@ -28,20 +28,21 @@
 
 #include "DeviceOrientationController.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 DeviceOrientationClientMock::DeviceOrientationClientMock()
-    : m_controller(0)
-    , m_timer(this, &DeviceOrientationClientMock::timerFired)
-    , m_isUpdating(false)
+    : m_controller( 0 )
+    , m_timer( this, &DeviceOrientationClientMock::timerFired )
+    , m_isUpdating( false )
 {
 }
 
-void DeviceOrientationClientMock::setController(DeviceOrientationController* controller)
+void DeviceOrientationClientMock::setController( DeviceOrientationController *controller )
 {
-    ASSERT(!m_controller);
+    ASSERT( !m_controller );
     m_controller = controller;
-    ASSERT(m_controller);
+    ASSERT( m_controller );
 }
 
 void DeviceOrientationClientMock::startUpdating()
@@ -55,18 +56,21 @@ void DeviceOrientationClientMock::stopUpdating()
     m_timer.stop();
 }
 
-void DeviceOrientationClientMock::setOrientation(PassRefPtr<DeviceOrientation> orientation)
+void DeviceOrientationClientMock::setOrientation( PassRefPtr<DeviceOrientation> orientation )
 {
     m_orientation = orientation;
-    if (m_isUpdating && !m_timer.isActive())
-        m_timer.startOneShot(0);
+
+    if ( m_isUpdating && !m_timer.isActive() )
+    {
+        m_timer.startOneShot( 0 );
+    }
 }
 
-void DeviceOrientationClientMock::timerFired(Timer<DeviceOrientationClientMock>* timer)
+void DeviceOrientationClientMock::timerFired( Timer<DeviceOrientationClientMock> *timer )
 {
-    ASSERT_UNUSED(timer, timer == &m_timer);
+    ASSERT_UNUSED( timer, timer == &m_timer );
     m_timer.stop();
-    m_controller->didChangeDeviceOrientation(m_orientation.get());
+    m_controller->didChangeDeviceOrientation( m_orientation.get() );
 }
 
 } // namespace WebCore

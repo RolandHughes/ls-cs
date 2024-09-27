@@ -26,7 +26,7 @@
 
 #include <qitem_p.h>
 
-QXmlResultItems::QXmlResultItems() : d_ptr(new QXmlResultItemsPrivate())
+QXmlResultItems::QXmlResultItems() : d_ptr( new QXmlResultItemsPrivate() )
 {
 }
 
@@ -36,34 +36,42 @@ QXmlResultItems::~QXmlResultItems()
 
 QXmlItem QXmlResultItems::next()
 {
-   Q_D(QXmlResultItems);
-   if (d->hasError) {
-      return QXmlItem();
-   }
+    Q_D( QXmlResultItems );
 
-   try {
-      d->current = QPatternist::Item::toPublic(d->iterator->next());
-      return d->current;
-   } catch (const QPatternist::Exception) {
-      d->current = QXmlItem();
-      d->hasError = true;
-      return QXmlItem();
-   }
+    if ( d->hasError )
+    {
+        return QXmlItem();
+    }
+
+    try
+    {
+        d->current = QPatternist::Item::toPublic( d->iterator->next() );
+        return d->current;
+    }
+    catch ( const QPatternist::Exception )
+    {
+        d->current = QXmlItem();
+        d->hasError = true;
+        return QXmlItem();
+    }
 }
 
 QXmlItem QXmlResultItems::current() const
 {
-   Q_D(const QXmlResultItems);
+    Q_D( const QXmlResultItems );
 
-   if (d->hasError) {
-      return QXmlItem();
-   } else {
-      return d->current;
-   }
+    if ( d->hasError )
+    {
+        return QXmlItem();
+    }
+    else
+    {
+        return d->current;
+    }
 }
 
 bool QXmlResultItems::hasError() const
 {
-   Q_D(const QXmlResultItems);
-   return d->hasError;
+    Q_D( const QXmlResultItems );
+    return d->hasError;
 }

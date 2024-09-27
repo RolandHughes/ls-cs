@@ -29,9 +29,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSOESTextureFloat);
+ASSERT_CLASS_FITS_IN_CELL( JSOESTextureFloat );
 
 /* Hash table for prototype */
 #if ENABLE(JIT)
@@ -42,63 +43,71 @@ ASSERT_CLASS_FITS_IN_CELL(JSOESTextureFloat);
 
 static const HashTableValue JSOESTextureFloatPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSOESTextureFloatPrototypeTable = { 1, 0, JSOESTextureFloatPrototypeTableValues, 0 };
 const ClassInfo JSOESTextureFloatPrototype::s_info = { "OESTextureFloatPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSOESTextureFloatPrototypeTable, 0 };
 
-JSObject* JSOESTextureFloatPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSOESTextureFloatPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSOESTextureFloat>(exec, globalObject);
+    return getDOMPrototype<JSOESTextureFloat>( exec, globalObject );
 }
 
 const ClassInfo JSOESTextureFloat::s_info = { "OESTextureFloat", &JSDOMWrapper::s_info, 0, 0 };
 
-JSOESTextureFloat::JSOESTextureFloat(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<OESTextureFloat> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSOESTextureFloat::JSOESTextureFloat( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<OESTextureFloat> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSOESTextureFloat::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSOESTextureFloat::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSOESTextureFloatPrototype(exec->globalData(), globalObject, JSOESTextureFloatPrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSOESTextureFloatPrototype( exec->globalData(), globalObject,
+            JSOESTextureFloatPrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-static inline bool isObservable(JSOESTextureFloat* jsOESTextureFloat)
+static inline bool isObservable( JSOESTextureFloat *jsOESTextureFloat )
 {
-    if (jsOESTextureFloat->hasCustomProperties())
+    if ( jsOESTextureFloat->hasCustomProperties() )
+    {
         return true;
+    }
+
     return false;
 }
 
-bool JSOESTextureFloatOwner::isReachableFromOpaqueRoots(JSC::Handle<JSC::Unknown> handle, void*, SlotVisitor& visitor)
+bool JSOESTextureFloatOwner::isReachableFromOpaqueRoots( JSC::Handle<JSC::Unknown> handle, void *, SlotVisitor &visitor )
 {
-    JSOESTextureFloat* jsOESTextureFloat = static_cast<JSOESTextureFloat*>(handle.get().asCell());
-    if (!isObservable(jsOESTextureFloat))
+    JSOESTextureFloat *jsOESTextureFloat = static_cast<JSOESTextureFloat *>( handle.get().asCell() );
+
+    if ( !isObservable( jsOESTextureFloat ) )
+    {
         return false;
-    WebGLRenderingContext* root = jsOESTextureFloat->impl()->context();
-    return visitor.containsOpaqueRoot(root);
+    }
+
+    WebGLRenderingContext *root = jsOESTextureFloat->impl()->context();
+    return visitor.containsOpaqueRoot( root );
 }
 
-void JSOESTextureFloatOwner::finalize(JSC::Handle<JSC::Unknown> handle, void* context)
+void JSOESTextureFloatOwner::finalize( JSC::Handle<JSC::Unknown> handle, void *context )
 {
-    JSOESTextureFloat* jsOESTextureFloat = static_cast<JSOESTextureFloat*>(handle.get().asCell());
-    DOMWrapperWorld* world = static_cast<DOMWrapperWorld*>(context);
-    uncacheWrapper(world, jsOESTextureFloat->impl(), jsOESTextureFloat);
+    JSOESTextureFloat *jsOESTextureFloat = static_cast<JSOESTextureFloat *>( handle.get().asCell() );
+    DOMWrapperWorld *world = static_cast<DOMWrapperWorld *>( context );
+    uncacheWrapper( world, jsOESTextureFloat->impl(), jsOESTextureFloat );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, OESTextureFloat* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, OESTextureFloat *impl )
 {
-    return wrap<JSOESTextureFloat>(exec, globalObject, impl);
+    return wrap<JSOESTextureFloat>( exec, globalObject, impl );
 }
 
-OESTextureFloat* toOESTextureFloat(JSC::JSValue value)
+OESTextureFloat *toOESTextureFloat( JSC::JSValue value )
 {
-    return value.inherits(&JSOESTextureFloat::s_info) ? static_cast<JSOESTextureFloat*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSOESTextureFloat::s_info ) ? static_cast<JSOESTextureFloat *>( asObject( value ) )->impl() : 0;
 }
 
 }

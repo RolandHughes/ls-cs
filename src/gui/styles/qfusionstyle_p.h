@@ -32,60 +32,60 @@ class QFusionStylePrivate;
 
 class QFusionStyle : public QCommonStyle
 {
-   GUI_CS_OBJECT(QFusionStyle)
-   Q_DECLARE_PRIVATE(QFusionStyle)
+    GUI_CS_OBJECT( QFusionStyle )
+    Q_DECLARE_PRIVATE( QFusionStyle )
 
- public:
-   QFusionStyle();
-   ~QFusionStyle();
+public:
+    QFusionStyle();
+    ~QFusionStyle();
 
-   QPalette standardPalette () const override;
-   void drawPrimitive(PrimitiveElement element, const QStyleOption *option, QPainter *painter,
-      const QWidget *widget = nullptr) const override;
+    QPalette standardPalette () const override;
+    void drawPrimitive( PrimitiveElement element, const QStyleOption *option, QPainter *painter,
+                        const QWidget *widget = nullptr ) const override;
 
-   void drawControl(ControlElement element, const QStyleOption *option, QPainter *painter,
-      const QWidget *widget) const override;
+    void drawControl( ControlElement element, const QStyleOption *option, QPainter *painter,
+                      const QWidget *widget ) const override;
 
-   int pixelMetric(PixelMetric metric, const QStyleOption *option = nullptr, const QWidget *widget = nullptr) const override;
-   void drawComplexControl(ComplexControl control, const QStyleOptionComplex *option,
-      QPainter *painter, const QWidget *widget) const override;
+    int pixelMetric( PixelMetric metric, const QStyleOption *option = nullptr, const QWidget *widget = nullptr ) const override;
+    void drawComplexControl( ComplexControl control, const QStyleOptionComplex *option,
+                             QPainter *painter, const QWidget *widget ) const override;
 
-   QRect subElementRect(SubElement element, const QStyleOption *option, const QWidget *widget = nullptr) const override;
+    QRect subElementRect( SubElement element, const QStyleOption *option, const QWidget *widget = nullptr ) const override;
 
-   QSize sizeFromContents(ContentsType type, const QStyleOption *option,
-      const QSize &size, const QWidget *widget) const override;
+    QSize sizeFromContents( ContentsType type, const QStyleOption *option,
+                            const QSize &size, const QWidget *widget ) const override;
 
-   SubControl hitTestComplexControl(ComplexControl control, const QStyleOptionComplex *option,
-      const QPoint &point, const QWidget *widget = nullptr) const override;
+    SubControl hitTestComplexControl( ComplexControl control, const QStyleOptionComplex *option,
+                                      const QPoint &point, const QWidget *widget = nullptr ) const override;
 
-   QRect subControlRect(ComplexControl control, const QStyleOptionComplex *option,
-      SubControl subControl, const QWidget *widget) const override;
+    QRect subControlRect( ComplexControl control, const QStyleOptionComplex *option,
+                          SubControl subControl, const QWidget *widget ) const override;
 
-   QPixmap generatedIconPixmap(QIcon::Mode iconMode, const QPixmap &pixmap, const QStyleOption *option) const override;
+    QPixmap generatedIconPixmap( QIcon::Mode iconMode, const QPixmap &pixmap, const QStyleOption *option ) const override;
 
-   int styleHint(StyleHint hint, const QStyleOption *option = nullptr, const QWidget *widget = nullptr,
-      QStyleHintReturn *styleHintReturn = nullptr) const override;
+    int styleHint( StyleHint hint, const QStyleOption *option = nullptr, const QWidget *widget = nullptr,
+                   QStyleHintReturn *styleHintReturn = nullptr ) const override;
 
-   QRect itemPixmapRect(const QRect &rect, int flags, const QPixmap &pixmap) const override;
-   QIcon standardIcon(StandardPixmap standardIcon, const QStyleOption *option = nullptr,
-      const QWidget *widget = nullptr) const override;
+    QRect itemPixmapRect( const QRect &rect, int flags, const QPixmap &pixmap ) const override;
+    QIcon standardIcon( StandardPixmap standardIcon, const QStyleOption *option = nullptr,
+                        const QWidget *widget = nullptr ) const override;
 
-   QPixmap standardPixmap(StandardPixmap standardPixmap, const QStyleOption *option,
-      const QWidget *widget = nullptr) const override;
+    QPixmap standardPixmap( StandardPixmap standardPixmap, const QStyleOption *option,
+                            const QWidget *widget = nullptr ) const override;
 
-   void drawItemPixmap(QPainter *painter, const QRect &rect, int alignment, const QPixmap &pixmap) const override;
+    void drawItemPixmap( QPainter *painter, const QRect &rect, int alignment, const QPixmap &pixmap ) const override;
 
-   void drawItemText(QPainter *painter, const QRect &rect, int alignment, const QPalette &palette, bool enabled,
-      const QString &text, QPalette::ColorRole textRole = QPalette::NoRole) const override;
+    void drawItemText( QPainter *painter, const QRect &rect, int alignment, const QPalette &palette, bool enabled,
+                       const QString &text, QPalette::ColorRole textRole = QPalette::NoRole ) const override;
 
-   void polish(QWidget *widget) override;
-   void polish(QApplication *app) override;
-   void polish(QPalette &palette) override;
-   void unpolish(QWidget *widget) override;
-   void unpolish(QApplication *app) override;
+    void polish( QWidget *widget ) override;
+    void polish( QApplication *app ) override;
+    void polish( QPalette &palette ) override;
+    void unpolish( QWidget *widget ) override;
+    void unpolish( QApplication *app ) override;
 
- protected:
-   QFusionStyle(QFusionStylePrivate &dd);
+protected:
+    QFusionStyle( QFusionStylePrivate &dd );
 
 };
 

@@ -35,42 +35,46 @@
 #include <QPointer>
 #include <wtf/CurrentTime.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SharedTimerQt : public QObject {
-    WEB_CS_OBJECT(SharedTimerQt)
+class SharedTimerQt : public QObject
+{
+    WEB_CS_OBJECT( SharedTimerQt )
 
-    friend void setSharedTimerFiredFunction(void (*f)());
+    friend void setSharedTimerFiredFunction( void ( *f )() );
 
 public:
-    static SharedTimerQt* inst();
+    static SharedTimerQt *inst();
 
-    void start(double);
+    void start( double );
     void stop();
 
 protected:
-    void timerEvent(QTimerEvent* ev) override;
+    void timerEvent( QTimerEvent *ev ) override;
 
 private:
-    WEB_CS_SLOT_1(Private,void destroy())
-    WEB_CS_SLOT_2(destroy)
+    WEB_CS_SLOT_1( Private,void destroy() )
+    WEB_CS_SLOT_2( destroy )
 
     SharedTimerQt();
     ~SharedTimerQt();
     QBasicTimer m_timer;
-    void (*m_timerFunction)();
+    void ( *m_timerFunction )();
 };
 
 SharedTimerQt::SharedTimerQt()
     : QObject()
-    , m_timerFunction(0)
+    , m_timerFunction( 0 )
 {}
 
 SharedTimerQt::~SharedTimerQt()
 {
-    if (m_timer.isActive()) {
-        if (m_timerFunction) {
-            (m_timerFunction)();
+    if ( m_timer.isActive() )
+    {
+        if ( m_timerFunction )
+        {
+            ( m_timerFunction )();
             m_timerFunction = 0;
         }
     }
@@ -81,29 +85,35 @@ void SharedTimerQt::destroy()
     delete this;
 }
 
-SharedTimerQt* SharedTimerQt::inst()
+SharedTimerQt *SharedTimerQt::inst()
 {
     static QPointer<SharedTimerQt> timer;
-    if (!timer) {
+
+    if ( !timer )
+    {
         timer = new SharedTimerQt();
-        QObject::connect(QCoreApplication::instance(), SIGNAL(aboutToQuit()), timer, SLOT(destroy()));
+        QObject::connect( QCoreApplication::instance(), SIGNAL( aboutToQuit() ), timer, SLOT( destroy() ) );
     }
 
     return timer;
 }
 
-void SharedTimerQt::start(double fireTime)
+void SharedTimerQt::start( double fireTime )
 {
     double interval = fireTime - currentTime();
     unsigned int intervalInMS;
-    if (interval < 0)
+
+    if ( interval < 0 )
+    {
         intervalInMS = 0;
-    else {
+    }
+    else
+    {
         interval *= 1000;
-        intervalInMS = (unsigned int)interval;
+        intervalInMS = ( unsigned int )interval;
     }
 
-    m_timer.start(intervalInMS, this);
+    m_timer.start( intervalInMS, this );
 }
 
 void SharedTimerQt::stop()
@@ -111,35 +121,43 @@ void SharedTimerQt::stop()
     m_timer.stop();
 }
 
-void SharedTimerQt::timerEvent(QTimerEvent* ev)
+void SharedTimerQt::timerEvent( QTimerEvent *ev )
 {
-    if (!m_timerFunction || ev->timerId() != m_timer.timerId())
+    if ( !m_timerFunction || ev->timerId() != m_timer.timerId() )
+    {
         return;
+    }
 
     m_timer.stop();
-    (m_timerFunction)();
+    ( m_timerFunction )();
 }
 
-void setSharedTimerFiredFunction(void (*f)())
+void setSharedTimerFiredFunction( void ( *f )() )
 {
-    if (!QCoreApplication::instance())
+    if ( !QCoreApplication::instance() )
+    {
         return;
+    }
 
     SharedTimerQt::inst()->m_timerFunction = f;
 }
 
-void setSharedTimerFireTime(double fireTime)
+void setSharedTimerFireTime( double fireTime )
 {
-    if (!QCoreApplication::instance())
+    if ( !QCoreApplication::instance() )
+    {
         return;
+    }
 
-    SharedTimerQt::inst()->start(fireTime);
+    SharedTimerQt::inst()->start( fireTime );
 }
 
 void stopSharedTimer()
 {
-    if (!QCoreApplication::instance())
+    if ( !QCoreApplication::instance() )
+    {
         return;
+    }
 
     SharedTimerQt::inst()->stop();
 }

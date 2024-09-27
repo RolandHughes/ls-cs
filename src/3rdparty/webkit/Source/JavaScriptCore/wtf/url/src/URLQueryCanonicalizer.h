@@ -36,67 +36,86 @@
 #include "URLComponent.h"
 #include "URLEscape.h"
 
-namespace WTF {
+namespace WTF
+{
 
-template<typename InChar, typename OutChar, void convertCharset(const InChar*, int length, URLBuffer<char>&)>
-class URLQueryCanonicalizer {
+template<typename InChar, typename OutChar, void convertCharset( const InChar *, int length, URLBuffer<char>& )>
+class URLQueryCanonicalizer
+{
 public:
-    static void canonicalize(const InChar* spec, const URLComponent& query, URLBuffer<OutChar>& buffer, URLComponent& resultQuery)
+    static void canonicalize( const InChar *spec, const URLComponent &query, URLBuffer<OutChar> &buffer, URLComponent &resultQuery )
     {
-        if (query.length() < 0) {
+        if ( query.length() < 0 )
+        {
             resultQuery = URLComponent();
             return;
         }
 
-        buffer->append('?');
-        resultQuery.setBegin(buffer->length());
-        convertToQueryEncoding(spec, query, buffer);
-        resultQuery.setLength(buffer->length() - resultQuery.begin());
+        buffer->append( '?' );
+        resultQuery.setBegin( buffer->length() );
+        convertToQueryEncoding( spec, query, buffer );
+        resultQuery.setLength( buffer->length() - resultQuery.begin() );
     }
 
 private:
-    static bool isAllASCII(const InChar* spec, const URLComponent& query)
+    static bool isAllASCII( const InChar *spec, const URLComponent &query )
     {
         int end = query.end();
-        for (int i = query.begin(); i < end; ++i) {
-            if (static_cast<unsigned>(spec[i]) >= 0x80)
+
+        for ( int i = query.begin(); i < end; ++i )
+        {
+            if ( static_cast<unsigned>( spec[i] ) >= 0x80 )
+            {
                 return false;
+            }
         }
+
         return true;
     }
 
 #ifndef NDEBUG
-    static bool isRaw8Bit(const InChar* source, int length)
+    static bool isRaw8Bit( const InChar *source, int length )
     {
-        for (int i = source; i < length; ++i) {
-            if (source[i] & 0xFF != source[i])
+        for ( int i = source; i < length; ++i )
+        {
+            if ( source[i] & 0xFF != source[i] )
+            {
                 return false;
+            }
         }
+
         return true;
     }
 #endif
 
-    static void appendRaw8BitQueryString(const InChar* source, int length, URLBuffer<OutChar>* buffer)
+    static void appendRaw8BitQueryString( const InChar *source, int length, URLBuffer<OutChar> *buffer )
     {
-        ASSERT(isRaw8Bit(source, length));
-        for (int i = 0; i < length; ++i) {
-            if (!URLCharacterTypes::isQueryChar(source[i]))
-                appendURLEscapedCharacter(static_cast<unsigned char>(source[i]), buffer);
+        ASSERT( isRaw8Bit( source, length ) );
+
+        for ( int i = 0; i < length; ++i )
+        {
+            if ( !URLCharacterTypes::isQueryChar( source[i] ) )
+            {
+                appendURLEscapedCharacter( static_cast<unsigned char>( source[i] ), buffer );
+            }
             else
-                buffer->append(static_cast<char>(source[i]));
+            {
+                buffer->append( static_cast<char>( source[i] ) );
+            }
         }
     }
 
-    static void convertToQueryEncoding(const InChar* spec, const URLComponent& query, URLBuffer<OutChar>& buffer)
+    static void convertToQueryEncoding( const InChar *spec, const URLComponent &query, URLBuffer<OutChar> &buffer )
     {
-        if (isAllASCII(spec, query)) {
-            appendRaw8BitQueryString(&spec[query.begin()], query.length(), buffer);
+        if ( isAllASCII( spec, query ) )
+        {
+            appendRaw8BitQueryString( &spec[query.begin()], query.length(), buffer );
             return;
         }
 
         RawURLBuffer<char, 1024> convertedQuery;
-        convertCharset(spec, query, convertedQuery);
-        appendRaw8BitQueryString(convertedQuery.data(), convertedQuery.length(), buffer);
+        convertCharset( spec, query, convertedQuery );
+        appendRaw8BitQueryString( convertedQuery.data(), convertedQuery.length(), buffer );
     }
 };
 

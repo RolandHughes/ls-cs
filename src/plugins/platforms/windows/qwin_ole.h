@@ -36,66 +36,66 @@ class QWindow;
 
 class QWindowsOleDataObject : public IDataObject
 {
- public:
-   explicit QWindowsOleDataObject(QMimeData *mimeData);
-   virtual ~QWindowsOleDataObject();
+public:
+    explicit QWindowsOleDataObject( QMimeData *mimeData );
+    virtual ~QWindowsOleDataObject();
 
-   void releaseData();
+    void releaseData();
 
-   QMimeData *mimeData() const;
-   DWORD reportedPerformedEffect() const;
+    QMimeData *mimeData() const;
+    DWORD reportedPerformedEffect() const;
 
-   // IUnknown methods
-   STDMETHOD(QueryInterface)(REFIID riid, void FAR *FAR *ppvObj) override;
-   STDMETHOD_(ULONG, AddRef)(void) override;
-   STDMETHOD_(ULONG, Release)(void) override;
+    // IUnknown methods
+    STDMETHOD( QueryInterface )( REFIID riid, void FAR *FAR *ppvObj ) override;
+    STDMETHOD_( ULONG, AddRef )( void ) override;
+    STDMETHOD_( ULONG, Release )( void ) override;
 
-   // IDataObject methods
-   STDMETHOD(GetData)(LPFORMATETC pformatetcIn, LPSTGMEDIUM pmedium) override;
-   STDMETHOD(GetDataHere)(LPFORMATETC pformatetc, LPSTGMEDIUM pmedium) override;
-   STDMETHOD(QueryGetData)(LPFORMATETC pformatetc) override;
-   STDMETHOD(GetCanonicalFormatEtc)(LPFORMATETC pformatetc, LPFORMATETC pformatetcOut) override;
-   STDMETHOD(SetData)(LPFORMATETC pformatetc, STGMEDIUM FAR *pmedium, BOOL fRelease) override;
-   STDMETHOD(EnumFormatEtc)(DWORD dwDirection, LPENUMFORMATETC FAR *ppenumFormatEtc) override;
-   STDMETHOD(DAdvise)(FORMATETC FAR *pFormatetc, DWORD advf, LPADVISESINK pAdvSink, DWORD FAR *pdwConnection) override;
-   STDMETHOD(DUnadvise)(DWORD dwConnection) override;
-   STDMETHOD(EnumDAdvise)(LPENUMSTATDATA FAR *ppenumAdvise) override;
+    // IDataObject methods
+    STDMETHOD( GetData )( LPFORMATETC pformatetcIn, LPSTGMEDIUM pmedium ) override;
+    STDMETHOD( GetDataHere )( LPFORMATETC pformatetc, LPSTGMEDIUM pmedium ) override;
+    STDMETHOD( QueryGetData )( LPFORMATETC pformatetc ) override;
+    STDMETHOD( GetCanonicalFormatEtc )( LPFORMATETC pformatetc, LPFORMATETC pformatetcOut ) override;
+    STDMETHOD( SetData )( LPFORMATETC pformatetc, STGMEDIUM FAR *pmedium, BOOL fRelease ) override;
+    STDMETHOD( EnumFormatEtc )( DWORD dwDirection, LPENUMFORMATETC FAR *ppenumFormatEtc ) override;
+    STDMETHOD( DAdvise )( FORMATETC FAR *pFormatetc, DWORD advf, LPADVISESINK pAdvSink, DWORD FAR *pdwConnection ) override;
+    STDMETHOD( DUnadvise )( DWORD dwConnection ) override;
+    STDMETHOD( EnumDAdvise )( LPENUMSTATDATA FAR *ppenumAdvise ) override;
 
- private:
-   ULONG m_refs;
-   QPointer<QMimeData> data;
-   int CF_PERFORMEDDROPEFFECT;
-   DWORD performedEffect;
+private:
+    ULONG m_refs;
+    QPointer<QMimeData> data;
+    int CF_PERFORMEDDROPEFFECT;
+    DWORD performedEffect;
 };
 
 class QWindowsOleEnumFmtEtc : public IEnumFORMATETC
 {
- public:
-   explicit QWindowsOleEnumFmtEtc(const QVector<FORMATETC> &fmtetcs);
-   explicit QWindowsOleEnumFmtEtc(const QVector<LPFORMATETC> &lpfmtetcs);
+public:
+    explicit QWindowsOleEnumFmtEtc( const QVector<FORMATETC> &fmtetcs );
+    explicit QWindowsOleEnumFmtEtc( const QVector<LPFORMATETC> &lpfmtetcs );
 
-   virtual ~QWindowsOleEnumFmtEtc();
+    virtual ~QWindowsOleEnumFmtEtc();
 
-   bool isNull() const;
+    bool isNull() const;
 
-   // IUnknown methods
-   STDMETHOD(QueryInterface)(REFIID riid, void FAR *FAR *ppvObj) override;
-   STDMETHOD_(ULONG, AddRef)(void) override;
-   STDMETHOD_(ULONG, Release)(void) override;
+    // IUnknown methods
+    STDMETHOD( QueryInterface )( REFIID riid, void FAR *FAR *ppvObj ) override;
+    STDMETHOD_( ULONG, AddRef )( void ) override;
+    STDMETHOD_( ULONG, Release )( void ) override;
 
-   // IEnumFORMATETC methods
-   STDMETHOD(Next)(ULONG celt, LPFORMATETC rgelt, ULONG FAR *pceltFetched) override;
-   STDMETHOD(Skip)(ULONG celt) override;
-   STDMETHOD(Reset)(void) override;
-   STDMETHOD(Clone)(LPENUMFORMATETC FAR *newEnum) override;
+    // IEnumFORMATETC methods
+    STDMETHOD( Next )( ULONG celt, LPFORMATETC rgelt, ULONG FAR *pceltFetched ) override;
+    STDMETHOD( Skip )( ULONG celt ) override;
+    STDMETHOD( Reset )( void ) override;
+    STDMETHOD( Clone )( LPENUMFORMATETC FAR *newEnum ) override;
 
- private:
-   bool copyFormatEtc(LPFORMATETC dest, const FORMATETC *src) const;
+private:
+    bool copyFormatEtc( LPFORMATETC dest, const FORMATETC *src ) const;
 
-   ULONG m_dwRefs;
-   ULONG m_nIndex;
-   QVector<LPFORMATETC> m_lpfmtetcs;
-   bool m_isNull;
+    ULONG m_dwRefs;
+    ULONG m_nIndex;
+    QVector<LPFORMATETC> m_lpfmtetcs;
+    bool m_isNull;
 };
 
 #endif

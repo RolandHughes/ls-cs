@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
 
@@ -40,69 +40,79 @@
 #include <wtf/RefPtr.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class DedicatedWorkerThread;
-    class ScriptExecutionContext;
-    class Worker;
+class DedicatedWorkerThread;
+class ScriptExecutionContext;
+class Worker;
 
-    class WorkerMessagingProxy : public WorkerContextProxy, public WorkerObjectProxy, public WorkerLoaderProxy {
-        WTF_MAKE_NONCOPYABLE(WorkerMessagingProxy); WTF_MAKE_FAST_ALLOCATED;
-    public:
-        WorkerMessagingProxy(Worker*);
+class WorkerMessagingProxy : public WorkerContextProxy, public WorkerObjectProxy, public WorkerLoaderProxy
+{
+    WTF_MAKE_NONCOPYABLE( WorkerMessagingProxy );
+    WTF_MAKE_FAST_ALLOCATED;
+public:
+    WorkerMessagingProxy( Worker * );
 
-        // Implementations of WorkerContextProxy.
-        // (Only use these methods in the worker object thread.)
-        virtual void startWorkerContext(const KURL& scriptURL, const String& userAgent, const String& sourceCode);
-        virtual void terminateWorkerContext();
-        virtual void postMessageToWorkerContext(PassRefPtr<SerializedScriptValue>, PassOwnPtr<MessagePortChannelArray>);
-        virtual bool hasPendingActivity() const;
-        virtual void workerObjectDestroyed();
+    // Implementations of WorkerContextProxy.
+    // (Only use these methods in the worker object thread.)
+    virtual void startWorkerContext( const KURL &scriptURL, const String &userAgent, const String &sourceCode );
+    virtual void terminateWorkerContext();
+    virtual void postMessageToWorkerContext( PassRefPtr<SerializedScriptValue>, PassOwnPtr<MessagePortChannelArray> );
+    virtual bool hasPendingActivity() const;
+    virtual void workerObjectDestroyed();
 
-        // Implementations of WorkerObjectProxy.
-        // (Only use these methods in the worker context thread.)
-        virtual void postMessageToWorkerObject(PassRefPtr<SerializedScriptValue>, PassOwnPtr<MessagePortChannelArray>);
-        virtual void postExceptionToWorkerObject(const String& errorMessage, int lineNumber, const String& sourceURL);
-        virtual void postConsoleMessageToWorkerObject(MessageSource, MessageType, MessageLevel, const String& message, int lineNumber, const String& sourceURL);
-        virtual void confirmMessageFromWorkerObject(bool hasPendingActivity);
-        virtual void reportPendingActivity(bool hasPendingActivity);
-        virtual void workerContextClosed();
-        virtual void workerContextDestroyed();
+    // Implementations of WorkerObjectProxy.
+    // (Only use these methods in the worker context thread.)
+    virtual void postMessageToWorkerObject( PassRefPtr<SerializedScriptValue>, PassOwnPtr<MessagePortChannelArray> );
+    virtual void postExceptionToWorkerObject( const String &errorMessage, int lineNumber, const String &sourceURL );
+    virtual void postConsoleMessageToWorkerObject( MessageSource, MessageType, MessageLevel, const String &message, int lineNumber,
+            const String &sourceURL );
+    virtual void confirmMessageFromWorkerObject( bool hasPendingActivity );
+    virtual void reportPendingActivity( bool hasPendingActivity );
+    virtual void workerContextClosed();
+    virtual void workerContextDestroyed();
 
-        // Implementation of WorkerLoaderProxy.
-        // These methods are called on different threads to schedule loading
-        // requests and to send callbacks back to WorkerContext.
-        virtual void postTaskToLoader(PassOwnPtr<ScriptExecutionContext::Task>);
-        virtual void postTaskForModeToWorkerContext(PassOwnPtr<ScriptExecutionContext::Task>, const String& mode);
+    // Implementation of WorkerLoaderProxy.
+    // These methods are called on different threads to schedule loading
+    // requests and to send callbacks back to WorkerContext.
+    virtual void postTaskToLoader( PassOwnPtr<ScriptExecutionContext::Task> );
+    virtual void postTaskForModeToWorkerContext( PassOwnPtr<ScriptExecutionContext::Task>, const String &mode );
 
-        void workerThreadCreated(PassRefPtr<DedicatedWorkerThread>);
+    void workerThreadCreated( PassRefPtr<DedicatedWorkerThread> );
 
-        // Only use this method on the worker object thread.
-        bool askedToTerminate() const { return m_askedToTerminate; }
+    // Only use this method on the worker object thread.
+    bool askedToTerminate() const
+    {
+        return m_askedToTerminate;
+    }
 
-    private:
-        friend class MessageWorkerTask;
-        friend class WorkerContextDestroyedTask;
-        friend class WorkerExceptionTask;
-        friend class WorkerThreadActivityReportTask;
+private:
+    friend class MessageWorkerTask;
+    friend class WorkerContextDestroyedTask;
+    friend class WorkerExceptionTask;
+    friend class WorkerThreadActivityReportTask;
 
-        virtual ~WorkerMessagingProxy();
+    virtual ~WorkerMessagingProxy();
 
-        void workerContextDestroyedInternal();
-        void reportPendingActivityInternal(bool confirmingMessage, bool hasPendingActivity);
-        Worker* workerObject() const { return m_workerObject; }
+    void workerContextDestroyedInternal();
+    void reportPendingActivityInternal( bool confirmingMessage, bool hasPendingActivity );
+    Worker *workerObject() const
+    {
+        return m_workerObject;
+    }
 
-        RefPtr<ScriptExecutionContext> m_scriptExecutionContext;
-        Worker* m_workerObject;
-        RefPtr<DedicatedWorkerThread> m_workerThread;
+    RefPtr<ScriptExecutionContext> m_scriptExecutionContext;
+    Worker *m_workerObject;
+    RefPtr<DedicatedWorkerThread> m_workerThread;
 
-        unsigned m_unconfirmedMessageCount; // Unconfirmed messages from worker object to worker thread.
-        bool m_workerThreadHadPendingActivity; // The latest confirmation from worker thread reported that it was still active.
+    unsigned m_unconfirmedMessageCount; // Unconfirmed messages from worker object to worker thread.
+    bool m_workerThreadHadPendingActivity; // The latest confirmation from worker thread reported that it was still active.
 
-        bool m_askedToTerminate;
+    bool m_askedToTerminate;
 
-        Vector<OwnPtr<ScriptExecutionContext::Task> > m_queuedEarlyTasks; // Tasks are queued here until there's a thread object created.
-    };
+    Vector<OwnPtr<ScriptExecutionContext::Task> > m_queuedEarlyTasks; // Tasks are queued here until there's a thread object created.
+};
 
 } // namespace WebCore
 

@@ -32,12 +32,13 @@
 #include "SVGStyledElement.h"
 #include "SVGStyledTransformableElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 RenderSVGResourceType RenderSVGResourceMarker::s_resourceType = MarkerResourceType;
 
-RenderSVGResourceMarker::RenderSVGResourceMarker(SVGMarkerElement* node)
-    : RenderSVGResourceContainer(node)
+RenderSVGResourceMarker::RenderSVGResourceMarker( SVGMarkerElement *node )
+    : RenderSVGResourceContainer( node )
 {
 }
 
@@ -48,8 +49,10 @@ RenderSVGResourceMarker::~RenderSVGResourceMarker()
 void RenderSVGResourceMarker::layout()
 {
     // Invalidate all resources if our layout changed.
-    if (m_everHadLayout && selfNeedsLayout())
+    if ( m_everHadLayout && selfNeedsLayout() )
+    {
         removeAllClientsFromCache();
+    }
 
     // RenderSVGHiddenContainer overwrites layout(). We need the
     // layouting of RenderSVGContainer for calculating  local
@@ -57,36 +60,38 @@ void RenderSVGResourceMarker::layout()
     RenderSVGContainer::layout();
 }
 
-void RenderSVGResourceMarker::removeAllClientsFromCache(bool markForInvalidation)
+void RenderSVGResourceMarker::removeAllClientsFromCache( bool markForInvalidation )
 {
-    markAllClientsForInvalidation(markForInvalidation ? LayoutAndBoundariesInvalidation : ParentOnlyInvalidation);
+    markAllClientsForInvalidation( markForInvalidation ? LayoutAndBoundariesInvalidation : ParentOnlyInvalidation );
 }
 
-void RenderSVGResourceMarker::removeClientFromCache(RenderObject* client, bool markForInvalidation)
+void RenderSVGResourceMarker::removeClientFromCache( RenderObject *client, bool markForInvalidation )
 {
-    ASSERT(client);
-    markClientForInvalidation(client, markForInvalidation ? BoundariesInvalidation : ParentOnlyInvalidation);
+    ASSERT( client );
+    markClientForInvalidation( client, markForInvalidation ? BoundariesInvalidation : ParentOnlyInvalidation );
 }
 
-void RenderSVGResourceMarker::applyViewportClip(PaintInfo& paintInfo)
+void RenderSVGResourceMarker::applyViewportClip( PaintInfo &paintInfo )
 {
-    if (SVGRenderSupport::isOverflowHidden(this))
-        paintInfo.context->clip(m_viewport);
+    if ( SVGRenderSupport::isOverflowHidden( this ) )
+    {
+        paintInfo.context->clip( m_viewport );
+    }
 }
 
-FloatRect RenderSVGResourceMarker::markerBoundaries(const AffineTransform& markerTransformation) const
+FloatRect RenderSVGResourceMarker::markerBoundaries( const AffineTransform &markerTransformation ) const
 {
     FloatRect coordinates = RenderSVGContainer::repaintRectInLocalCoordinates();
 
     // Map repaint rect into parent coordinate space, in which the marker boundaries have to be evaluated
-    coordinates = localToParentTransform().mapRect(coordinates);
+    coordinates = localToParentTransform().mapRect( coordinates );
 
-    return markerTransformation.mapRect(coordinates);
+    return markerTransformation.mapRect( coordinates );
 }
 
-const AffineTransform& RenderSVGResourceMarker::localToParentTransform() const
+const AffineTransform &RenderSVGResourceMarker::localToParentTransform() const
 {
-    m_localToParentTransform = AffineTransform::translation(m_viewport.x(), m_viewport.y()) * viewportTransform();
+    m_localToParentTransform = AffineTransform::translation( m_viewport.x(), m_viewport.y() ) * viewportTransform();
     return m_localToParentTransform;
     // If this class were ever given a localTransform(), then the above would read:
     // return viewportTranslation * localTransform() * viewportTransform();
@@ -94,79 +99,89 @@ const AffineTransform& RenderSVGResourceMarker::localToParentTransform() const
 
 FloatPoint RenderSVGResourceMarker::referencePoint() const
 {
-    SVGMarkerElement* marker = static_cast<SVGMarkerElement*>(node());
-    ASSERT(marker);
+    SVGMarkerElement *marker = static_cast<SVGMarkerElement *>( node() );
+    ASSERT( marker );
 
-    return FloatPoint(marker->refX().value(marker), marker->refY().value(marker));
+    return FloatPoint( marker->refX().value( marker ), marker->refY().value( marker ) );
 }
 
 float RenderSVGResourceMarker::angle() const
 {
-    SVGMarkerElement* marker = static_cast<SVGMarkerElement*>(node());
-    ASSERT(marker);
+    SVGMarkerElement *marker = static_cast<SVGMarkerElement *>( node() );
+    ASSERT( marker );
 
     float angle = -1;
-    if (marker->orientType() == SVGMarkerElement::SVG_MARKER_ORIENT_ANGLE)
+
+    if ( marker->orientType() == SVGMarkerElement::SVG_MARKER_ORIENT_ANGLE )
+    {
         angle = marker->orientAngle().value();
+    }
 
     return angle;
 }
 
-AffineTransform RenderSVGResourceMarker::markerTransformation(const FloatPoint& origin, float autoAngle, float strokeWidth) const
+AffineTransform RenderSVGResourceMarker::markerTransformation( const FloatPoint &origin, float autoAngle,
+        float strokeWidth ) const
 {
-    SVGMarkerElement* marker = static_cast<SVGMarkerElement*>(node());
-    ASSERT(marker);
+    SVGMarkerElement *marker = static_cast<SVGMarkerElement *>( node() );
+    ASSERT( marker );
 
     float markerAngle = angle();
-    bool useStrokeWidth = (marker->markerUnits() == SVGMarkerElement::SVG_MARKERUNITS_STROKEWIDTH);
+    bool useStrokeWidth = ( marker->markerUnits() == SVGMarkerElement::SVG_MARKERUNITS_STROKEWIDTH );
 
     AffineTransform transform;
-    transform.translate(origin.x(), origin.y());
-    transform.rotate(markerAngle == -1 ? autoAngle : markerAngle);
-    transform = markerContentTransformation(transform, referencePoint(), useStrokeWidth ? strokeWidth : -1);
+    transform.translate( origin.x(), origin.y() );
+    transform.rotate( markerAngle == -1 ? autoAngle : markerAngle );
+    transform = markerContentTransformation( transform, referencePoint(), useStrokeWidth ? strokeWidth : -1 );
     return transform;
 }
 
-void RenderSVGResourceMarker::draw(PaintInfo& paintInfo, const AffineTransform& transform)
+void RenderSVGResourceMarker::draw( PaintInfo &paintInfo, const AffineTransform &transform )
 {
-    PaintInfo info(paintInfo);
-    GraphicsContextStateSaver stateSaver(*info.context);
-    info.applyTransform(transform);
-    RenderSVGContainer::paint(info, 0, 0);
+    PaintInfo info( paintInfo );
+    GraphicsContextStateSaver stateSaver( *info.context );
+    info.applyTransform( transform );
+    RenderSVGContainer::paint( info, 0, 0 );
 }
 
-AffineTransform RenderSVGResourceMarker::markerContentTransformation(const AffineTransform& contentTransformation, const FloatPoint& origin, float strokeWidth) const
+AffineTransform RenderSVGResourceMarker::markerContentTransformation( const AffineTransform &contentTransformation,
+        const FloatPoint &origin, float strokeWidth ) const
 {
     // The 'origin' coordinate maps to SVGs refX/refY, given in coordinates relative to the viewport established by the marker
-    FloatPoint mappedOrigin = viewportTransform().mapPoint(origin);
+    FloatPoint mappedOrigin = viewportTransform().mapPoint( origin );
 
     AffineTransform transformation = contentTransformation;
-    if (strokeWidth != -1)
-        transformation.scaleNonUniform(strokeWidth, strokeWidth);
 
-    transformation.translate(-mappedOrigin.x(), -mappedOrigin.y());
+    if ( strokeWidth != -1 )
+    {
+        transformation.scaleNonUniform( strokeWidth, strokeWidth );
+    }
+
+    transformation.translate( -mappedOrigin.x(), -mappedOrigin.y() );
     return transformation;
 }
 
 AffineTransform RenderSVGResourceMarker::viewportTransform() const
 {
-    SVGMarkerElement* marker = static_cast<SVGMarkerElement*>(node());
-    ASSERT(marker);
+    SVGMarkerElement *marker = static_cast<SVGMarkerElement *>( node() );
+    ASSERT( marker );
 
-    return marker->viewBoxToViewTransform(m_viewport.width(), m_viewport.height());
+    return marker->viewBoxToViewTransform( m_viewport.width(), m_viewport.height() );
 }
 
 void RenderSVGResourceMarker::calcViewport()
 {
-    if (!selfNeedsLayout())
+    if ( !selfNeedsLayout() )
+    {
         return;
+    }
 
-    SVGMarkerElement* marker = static_cast<SVGMarkerElement*>(node());
-    ASSERT(marker);
+    SVGMarkerElement *marker = static_cast<SVGMarkerElement *>( node() );
+    ASSERT( marker );
 
-    float w = marker->markerWidth().value(marker);
-    float h = marker->markerHeight().value(marker);
-    m_viewport = FloatRect(0, 0, w, h);
+    float w = marker->markerWidth().value( marker );
+    float h = marker->markerHeight().value( marker );
+    m_viewport = FloatRect( 0, 0, w, h );
 }
 
 }

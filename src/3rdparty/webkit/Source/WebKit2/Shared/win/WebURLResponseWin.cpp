@@ -26,10 +26,11 @@
 #include "config.h"
 #include "WebURLResponse.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
-WebURLResponse::WebURLResponse(PlatformResponse platformResponse)
-    : m_response(platformResponse)
+WebURLResponse::WebURLResponse( PlatformResponse platformResponse )
+    : m_response( platformResponse )
 {
 }
 

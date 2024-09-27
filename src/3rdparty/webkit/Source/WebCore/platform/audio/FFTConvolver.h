@@ -32,12 +32,14 @@
 #include "AudioArray.h"
 #include "FFTFrame.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class FFTConvolver {
+class FFTConvolver
+{
 public:
     // fftSize must be a power of two
-    FFTConvolver(size_t fftSize);
+    FFTConvolver( size_t fftSize );
 
     // For now, with multiple calls to Process(), framesToProcess MUST add up EXACTLY to fftSize / 2
     //
@@ -46,11 +48,14 @@ public:
     // The input to output latency is equal to fftSize / 2
     //
     // Processing in-place is allowed...
-    void process(FFTFrame* fftKernel, float* sourceP, float* destP, size_t framesToProcess);
+    void process( FFTFrame *fftKernel, float *sourceP, float *destP, size_t framesToProcess );
 
     void reset();
 
-    size_t fftSize() const { return m_frame.fftSize(); }
+    size_t fftSize() const
+    {
+        return m_frame.fftSize();
+    }
 
 private:
     FFTFrame m_frame;

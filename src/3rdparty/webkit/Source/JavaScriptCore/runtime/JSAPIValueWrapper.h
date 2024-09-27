@@ -27,37 +27,46 @@
 #include "CallFrame.h"
 #include "Structure.h"
 
-namespace JSC {
+namespace JSC
+{
 
-    class JSAPIValueWrapper : public JSCell {
-        friend JSValue jsAPIValueWrapper(ExecState*, JSValue);
-    public:
-        JSValue value() const { return m_value.get(); }
-
-        virtual bool isAPIValueWrapper() const { return true; }
-
-        static Structure* createStructure(JSGlobalData& globalData, JSValue prototype)
-        {
-            return Structure::create(globalData, prototype, TypeInfo(CompoundType, OverridesVisitChildren | OverridesGetPropertyNames), AnonymousSlotCount, &s_info);
-        }
-
-        
-    private:
-        JSAPIValueWrapper(ExecState* exec, JSValue value)
-            : JSCell(exec->globalData(), exec->globalData().apiWrapperStructure.get())
-        {
-            m_value.set(exec->globalData(), this, value);
-            ASSERT(!value.isCell());
-        }
-        static const ClassInfo s_info;
-
-        WriteBarrier<Unknown> m_value;
-    };
-
-    inline JSValue jsAPIValueWrapper(ExecState* exec, JSValue value)
+class JSAPIValueWrapper : public JSCell
+{
+    friend JSValue jsAPIValueWrapper( ExecState *, JSValue );
+public:
+    JSValue value() const
     {
-        return new (exec) JSAPIValueWrapper(exec, value);
+        return m_value.get();
     }
+
+    virtual bool isAPIValueWrapper() const
+    {
+        return true;
+    }
+
+    static Structure *createStructure( JSGlobalData &globalData, JSValue prototype )
+    {
+        return Structure::create( globalData, prototype, TypeInfo( CompoundType, OverridesVisitChildren | OverridesGetPropertyNames ),
+                                  AnonymousSlotCount, &s_info );
+    }
+
+
+private:
+    JSAPIValueWrapper( ExecState *exec, JSValue value )
+        : JSCell( exec->globalData(), exec->globalData().apiWrapperStructure.get() )
+    {
+        m_value.set( exec->globalData(), this, value );
+        ASSERT( !value.isCell() );
+    }
+    static const ClassInfo s_info;
+
+    WriteBarrier<Unknown> m_value;
+};
+
+inline JSValue jsAPIValueWrapper( ExecState *exec, JSValue value )
+{
+    return new ( exec ) JSAPIValueWrapper( exec, value );
+}
 
 } // namespace JSC
 

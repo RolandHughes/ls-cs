@@ -29,35 +29,38 @@
 #include <wtf/Forward.h>
 #include <wtf/Noncopyable.h>
 
-typedef struct CGFont* CGFontRef;
+typedef struct CGFont *CGFontRef;
 typedef UInt32 ATSFontContainerRef;
 typedef UInt32 ATSFontRef;
 
-namespace WebCore {
+namespace WebCore
+{
 
 class FontPlatformData;
 class SharedBuffer;
 
-struct FontCustomPlatformData {
-    WTF_MAKE_NONCOPYABLE(FontCustomPlatformData);
+struct FontCustomPlatformData
+{
+    WTF_MAKE_NONCOPYABLE( FontCustomPlatformData );
 public:
-    FontCustomPlatformData(ATSFontContainerRef container, CGFontRef cgFont)
-        : m_atsContainer(container)
-        , m_cgFont(cgFont)
+    FontCustomPlatformData( ATSFontContainerRef container, CGFontRef cgFont )
+        : m_atsContainer( container )
+        , m_cgFont( cgFont )
     {
     }
 
     ~FontCustomPlatformData();
 
-    FontPlatformData fontPlatformData(int size, bool bold, bool italic, FontOrientation = Horizontal, TextOrientation = TextOrientationVerticalRight, FontWidthVariant = RegularWidth, FontRenderingMode = NormalRenderingMode);
+    FontPlatformData fontPlatformData( int size, bool bold, bool italic, FontOrientation = Horizontal,
+                                       TextOrientation = TextOrientationVerticalRight, FontWidthVariant = RegularWidth, FontRenderingMode = NormalRenderingMode );
 
-    static bool supportsFormat(const String&);
+    static bool supportsFormat( const String & );
 
     ATSFontContainerRef m_atsContainer;
     CGFontRef m_cgFont;
 };
 
-FontCustomPlatformData* createFontCustomPlatformData(SharedBuffer*);
+FontCustomPlatformData *createFontCustomPlatformData( SharedBuffer * );
 
 }
 

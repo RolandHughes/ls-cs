@@ -32,27 +32,31 @@
 #include <wtf/Forward.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
-    class HTMLFormElement;
-    class HTMLInputElement;
-    class HTMLTextAreaElement;
+namespace WebCore
+{
+class HTMLFormElement;
+class HTMLInputElement;
+class HTMLTextAreaElement;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 class APIObject;
 class ImmutableDictionary;
 class WebFrame;
 class WebPage;
 
-class InjectedBundlePageFormClient : public APIClient<WKBundlePageFormClient> {
+class InjectedBundlePageFormClient : public APIClient<WKBundlePageFormClient>
+{
 public:
-    void textFieldDidBeginEditing(WebPage*, WebCore::HTMLInputElement*, WebFrame*);
-    void textFieldDidEndEditing(WebPage*, WebCore::HTMLInputElement*, WebFrame*);
-    void textDidChangeInTextField(WebPage*, WebCore::HTMLInputElement*, WebFrame*);
-    void textDidChangeInTextArea(WebPage*, WebCore::HTMLTextAreaElement*, WebFrame*);
-    bool shouldPerformActionInTextField(WebPage*, WebCore::HTMLInputElement*, WKInputFieldActionType, WebFrame*);    
-    void willSubmitForm(WebPage*, WebCore::HTMLFormElement*, WebFrame*, WebFrame* sourceFrame, const Vector<std::pair<String, String> >&, RefPtr<APIObject>& userData);
+    void textFieldDidBeginEditing( WebPage *, WebCore::HTMLInputElement *, WebFrame * );
+    void textFieldDidEndEditing( WebPage *, WebCore::HTMLInputElement *, WebFrame * );
+    void textDidChangeInTextField( WebPage *, WebCore::HTMLInputElement *, WebFrame * );
+    void textDidChangeInTextArea( WebPage *, WebCore::HTMLTextAreaElement *, WebFrame * );
+    bool shouldPerformActionInTextField( WebPage *, WebCore::HTMLInputElement *, WKInputFieldActionType, WebFrame * );
+    void willSubmitForm( WebPage *, WebCore::HTMLFormElement *, WebFrame *, WebFrame *sourceFrame,
+                         const Vector<std::pair<String, String> > &, RefPtr<APIObject> &userData );
 };
 
 } // namespace WebKit

@@ -26,11 +26,12 @@
 #include "config.h"
 #include "ScriptableDocumentParser.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-ScriptableDocumentParser::ScriptableDocumentParser(Document* document)
-    : DecodedDataDocumentParser(document)
-    , m_wasCreatedByScript(false)
+ScriptableDocumentParser::ScriptableDocumentParser( Document *document )
+    : DecodedDataDocumentParser( document )
+    , m_wasCreatedByScript( false )
 {
 }
 

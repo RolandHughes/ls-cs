@@ -27,8 +27,8 @@
 #define ZOOM_PROPERTY "zoom"
 #define MAX_ZOOM_PROPERTY "max-zoom"
 
-CameraBinZoom::CameraBinZoom(CameraBinSession *session)
-   : QCameraZoomControl(session), m_session(session), m_requestedOpticalZoom(1.0), m_requestedDigitalZoom(1.0)
+CameraBinZoom::CameraBinZoom( CameraBinSession *session )
+    : QCameraZoomControl( session ), m_session( session ), m_requestedOpticalZoom( 1.0 ), m_requestedDigitalZoom( 1.0 )
 {
 }
 
@@ -38,58 +38,62 @@ CameraBinZoom::~CameraBinZoom()
 
 qreal CameraBinZoom::maximumOpticalZoom() const
 {
-   return 1.0;
+    return 1.0;
 }
 
 qreal CameraBinZoom::maximumDigitalZoom() const
 {
-   gfloat zoomFactor = 1.0;
-   g_object_get(GST_BIN(m_session->cameraBin()), MAX_ZOOM_PROPERTY, &zoomFactor, NULL);
-   return zoomFactor;
+    gfloat zoomFactor = 1.0;
+    g_object_get( GST_BIN( m_session->cameraBin() ), MAX_ZOOM_PROPERTY, &zoomFactor, NULL );
+    return zoomFactor;
 }
 
 qreal CameraBinZoom::requestedDigitalZoom() const
 {
-   return m_requestedDigitalZoom;
+    return m_requestedDigitalZoom;
 }
 
 qreal CameraBinZoom::requestedOpticalZoom() const
 {
-   return m_requestedOpticalZoom;
+    return m_requestedOpticalZoom;
 }
 
 qreal CameraBinZoom::currentOpticalZoom() const
 {
-   return 1.0;
+    return 1.0;
 }
 
 qreal CameraBinZoom::currentDigitalZoom() const
 {
-   gfloat zoomFactor = 1.0;
-   g_object_get(GST_BIN(m_session->cameraBin()), ZOOM_PROPERTY, &zoomFactor, NULL);
-   return zoomFactor;
+    gfloat zoomFactor = 1.0;
+    g_object_get( GST_BIN( m_session->cameraBin() ), ZOOM_PROPERTY, &zoomFactor, NULL );
+    return zoomFactor;
 }
 
-void CameraBinZoom::zoomTo(qreal optical, qreal digital)
+void CameraBinZoom::zoomTo( qreal optical, qreal digital )
 {
-   qreal oldDigitalZoom = currentDigitalZoom();
+    qreal oldDigitalZoom = currentDigitalZoom();
 
-   if (m_requestedDigitalZoom != digital) {
-      m_requestedDigitalZoom = digital;
-      emit requestedDigitalZoomChanged(digital);
-   }
+    if ( m_requestedDigitalZoom != digital )
+    {
+        m_requestedDigitalZoom = digital;
+        emit requestedDigitalZoomChanged( digital );
+    }
 
-   if (m_requestedOpticalZoom != optical) {
-      m_requestedOpticalZoom = optical;
-      emit requestedOpticalZoomChanged(optical);
-   }
+    if ( m_requestedOpticalZoom != optical )
+    {
+        m_requestedOpticalZoom = optical;
+        emit requestedOpticalZoomChanged( optical );
+    }
 
-   digital = qBound(qreal(1.0), digital, maximumDigitalZoom());
-   g_object_set(GST_BIN(m_session->cameraBin()), ZOOM_PROPERTY, digital, NULL);
+    digital = qBound( qreal( 1.0 ), digital, maximumDigitalZoom() );
+    g_object_set( GST_BIN( m_session->cameraBin() ), ZOOM_PROPERTY, digital, NULL );
 
-   qreal newDigitalZoom = currentDigitalZoom();
-   if (!qFuzzyCompare(oldDigitalZoom, newDigitalZoom)) {
-      emit currentDigitalZoomChanged(digital);
-   }
+    qreal newDigitalZoom = currentDigitalZoom();
+
+    if ( !qFuzzyCompare( oldDigitalZoom, newDigitalZoom ) )
+    {
+        emit currentDigitalZoomChanged( digital );
+    }
 }
 

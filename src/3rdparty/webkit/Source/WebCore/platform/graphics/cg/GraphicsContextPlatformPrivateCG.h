@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef GraphicsContextPlatformPrivateCG_h
@@ -29,34 +29,37 @@
 #include <wtf/RetainPtr.h>
 #include <CoreGraphics/CGContext.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-enum GraphicsContextCGFlag {
+enum GraphicsContextCGFlag
+{
     IsLayerCGContext = 1 << 0,
     IsAcceleratedCGContext = 1 << 1
 };
 
 typedef unsigned GraphicsContextCGFlags;
 
-class GraphicsContextPlatformPrivate {
+class GraphicsContextPlatformPrivate
+{
 public:
-    GraphicsContextPlatformPrivate(CGContextRef cgContext, GraphicsContextCGFlags flags = 0)
-        : m_cgContext(cgContext)
+    GraphicsContextPlatformPrivate( CGContextRef cgContext, GraphicsContextCGFlags flags = 0 )
+        : m_cgContext( cgContext )
 #if PLATFORM(WIN)
-        , m_hdc(0)
-        , m_shouldIncludeChildWindows(false)
+        , m_hdc( 0 )
+        , m_shouldIncludeChildWindows( false )
 #endif
 #if PLATFORM(WIN) || !ASSERT_DISABLED
-        , m_transparencyCount(0)
+        , m_transparencyCount( 0 )
 #endif
-        , m_userToDeviceTransformKnownToBeIdentity(false)
-        , m_contextFlags(flags)
+        , m_userToDeviceTransformKnownToBeIdentity( false )
+        , m_contextFlags( flags )
     {
     }
-    
+
     ~GraphicsContextPlatformPrivate()
     {
-        ASSERT(!m_transparencyCount);
+        ASSERT( !m_transparencyCount );
     }
 
 #if PLATFORM(MAC) || PLATFORM(CHROMIUM)
@@ -64,13 +67,13 @@ public:
     void save() {}
     void restore() {}
     void flush() {}
-    void clip(const FloatRect&) {}
-    void clip(const Path&) {}
-    void scale(const FloatSize&) {}
-    void rotate(float) {}
-    void translate(float, float) {}
-    void concatCTM(const AffineTransform&) {}
-    void setCTM(const AffineTransform&) {}
+    void clip( const FloatRect & ) {}
+    void clip( const Path & ) {}
+    void scale( const FloatSize & ) {}
+    void rotate( float ) {}
+    void translate( float, float ) {}
+    void concatCTM( const AffineTransform & ) {}
+    void setCTM( const AffineTransform & ) {}
 #endif
 
 #if PLATFORM(WIN)
@@ -78,13 +81,13 @@ public:
     void save();
     void restore();
     void flush();
-    void clip(const FloatRect&);
-    void clip(const Path&);
-    void scale(const FloatSize&);
-    void rotate(float);
-    void translate(float, float);
-    void concatCTM(const AffineTransform&);
-    void setCTM(const AffineTransform&);
+    void clip( const FloatRect & );
+    void clip( const Path & );
+    void scale( const FloatSize & );
+    void rotate( float );
+    void translate( float, float );
+    void concatCTM( const AffineTransform & );
+    void setCTM( const AffineTransform & );
 
     HDC m_hdc;
     bool m_shouldIncludeChildWindows;
@@ -99,7 +102,7 @@ public:
     void endTransparencyLayer()
     {
 #if PLATFORM(WIN) || !ASSERT_DISABLED
-        ASSERT(m_transparencyCount > 0);
+        ASSERT( m_transparencyCount > 0 );
         m_transparencyCount--;
 #endif
     }

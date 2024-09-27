@@ -31,314 +31,340 @@
 
 #include "InternalFunction.h"
 
-namespace QScript {
+namespace QScript
+{
 
-enum AttributeExtension {
-   // ### Make sure there's no conflict with JSC::Attribute
-   QObjectMemberAttribute = 1 << 12
+enum AttributeExtension
+{
+    // ### Make sure there's no conflict with JSC::Attribute
+    QObjectMemberAttribute = 1 << 12
 };
 
 class QObjectDelegate : public QScriptObjectDelegate
 {
- public:
-   struct Data {
-      QPointer<QObject> value;
-      QScriptEngine::ValueOwnership ownership;
-      QScriptEngine::QObjectWrapOptions options;
+public:
+    struct Data
+    {
+        QPointer<QObject> value;
+        QScriptEngine::ValueOwnership ownership;
+        QScriptEngine::QObjectWrapOptions options;
 
-      QHash<QString, JSC::JSValue> cachedMembers;
+        QHash<QString, JSC::JSValue> cachedMembers;
 
-      Data(QObject *o, QScriptEngine::ValueOwnership own, QScriptEngine::QObjectWrapOptions opt)
-         : value(o), ownership(own), options(opt) {}
-   };
+        Data( QObject *o, QScriptEngine::ValueOwnership own, QScriptEngine::QObjectWrapOptions opt )
+            : value( o ), ownership( own ), options( opt ) {}
+    };
 
-   QObjectDelegate(QObject *object, QScriptEngine::ValueOwnership ownership,
-      const QScriptEngine::QObjectWrapOptions &options);
+    QObjectDelegate( QObject *object, QScriptEngine::ValueOwnership ownership,
+                     const QScriptEngine::QObjectWrapOptions &options );
 
-   ~QObjectDelegate();
+    ~QObjectDelegate();
 
-   virtual Type type() const;
+    virtual Type type() const;
 
-   virtual bool getOwnPropertySlot(QScriptObject *, JSC::ExecState *, const JSC::Identifier &propertyName,
-      JSC::PropertySlot &);
+    virtual bool getOwnPropertySlot( QScriptObject *, JSC::ExecState *, const JSC::Identifier &propertyName,
+                                     JSC::PropertySlot & );
 
-   virtual bool getOwnPropertyDescriptor(QScriptObject *, JSC::ExecState *, const JSC::Identifier &propertyName,
-      JSC::PropertyDescriptor &);
+    virtual bool getOwnPropertyDescriptor( QScriptObject *, JSC::ExecState *, const JSC::Identifier &propertyName,
+                                           JSC::PropertyDescriptor & );
 
-   virtual void put(QScriptObject *, JSC::ExecState *exec, const JSC::Identifier &propertyName, JSC::JSValue,
-      JSC::PutPropertySlot &);
+    virtual void put( QScriptObject *, JSC::ExecState *exec, const JSC::Identifier &propertyName, JSC::JSValue,
+                      JSC::PutPropertySlot & );
 
-   virtual bool deleteProperty(QScriptObject *, JSC::ExecState *, const JSC::Identifier &propertyName);
+    virtual bool deleteProperty( QScriptObject *, JSC::ExecState *, const JSC::Identifier &propertyName );
 
-   virtual void getOwnPropertyNames(QScriptObject *, JSC::ExecState *, JSC::PropertyNameArray &,
-      JSC::EnumerationMode mode = JSC::ExcludeDontEnumProperties);
+    virtual void getOwnPropertyNames( QScriptObject *, JSC::ExecState *, JSC::PropertyNameArray &,
+                                      JSC::EnumerationMode mode = JSC::ExcludeDontEnumProperties );
 
-   virtual void markChildren(QScriptObject *, JSC::MarkStack &markStack);
-   virtual bool compareToObject(QScriptObject *, JSC::ExecState *, JSC::JSObject *);
+    virtual void markChildren( QScriptObject *, JSC::MarkStack &markStack );
+    virtual bool compareToObject( QScriptObject *, JSC::ExecState *, JSC::JSObject * );
 
-   inline QObject *value() const {
-      return data->value;
-   }
+    inline QObject *value() const
+    {
+        return data->value;
+    }
 
-   inline void setValue(QObject *value) {
-      data->value = value;
-   }
+    inline void setValue( QObject *value )
+    {
+        data->value = value;
+    }
 
-   inline bool hasParent() const {
-      return data->value && data->value->parent();
-   }
+    inline bool hasParent() const
+    {
+        return data->value && data->value->parent();
+    }
 
-   inline QScriptEngine::ValueOwnership ownership() const {
-      return data->ownership;
-   }
+    inline QScriptEngine::ValueOwnership ownership() const
+    {
+        return data->ownership;
+    }
 
-   inline void setOwnership(QScriptEngine::ValueOwnership ownership) {
-      data->ownership = ownership;
-   }
+    inline void setOwnership( QScriptEngine::ValueOwnership ownership )
+    {
+        data->ownership = ownership;
+    }
 
-   inline QScriptEngine::QObjectWrapOptions options() const {
-      return data->options;
-   }
+    inline QScriptEngine::QObjectWrapOptions options() const
+    {
+        return data->options;
+    }
 
-   inline void setOptions(QScriptEngine::QObjectWrapOptions options) {
-      data->options = options;
-   }
+    inline void setOptions( QScriptEngine::QObjectWrapOptions options )
+    {
+        data->options = options;
+    }
 
- protected:
-   Data *data;
+protected:
+    Data *data;
 };
 
 class QObjectPrototypeObject : public QObject
 {
-   SCRIPT_CS_OBJECT(QObjectPrototypeObject)
+    SCRIPT_CS_OBJECT( QObjectPrototypeObject )
 
- public:
-   QObjectPrototypeObject(QObject *parent = nullptr) : QObject(parent) { }
-   ~QObjectPrototypeObject() { }
+public:
+    QObjectPrototypeObject( QObject *parent = nullptr ) : QObject( parent ) { }
+    ~QObjectPrototypeObject() { }
 };
 
 class QObjectPrototype : public QScriptObject
 {
- public:
-   QObjectPrototype(JSC::ExecState *, WTF::PassRefPtr<JSC::Structure>,
-      JSC::Structure *prototypeFunctionStructure);
+public:
+    QObjectPrototype( JSC::ExecState *, WTF::PassRefPtr<JSC::Structure>,
+                      JSC::Structure *prototypeFunctionStructure );
 };
 
 class QObjectConnectionManager;
 
-struct QObjectWrapperInfo {
-   QObjectWrapperInfo(QScriptObject *obj,
-      QScriptEngine::ValueOwnership own,
-      const QScriptEngine::QObjectWrapOptions &opt)
-      : object(obj), ownership(own), options(opt) {}
+struct QObjectWrapperInfo
+{
+    QObjectWrapperInfo( QScriptObject *obj,
+                        QScriptEngine::ValueOwnership own,
+                        const QScriptEngine::QObjectWrapOptions &opt )
+        : object( obj ), ownership( own ), options( opt ) {}
 
-   QScriptObject *object;
-   QScriptEngine::ValueOwnership ownership;
-   QScriptEngine::QObjectWrapOptions options;
-   // Returns true if this wrapper can be garbage-collected when there are no
-   // other references to it in the JS environment (weak reference), otherwise
-   // returns false (should not be collected).
-   bool isCollectableWhenWeaklyReferenced() const {
-      switch (ownership) {
-         case QScriptEngine::ScriptOwnership:
-            return true;
-         case QScriptEngine::AutoOwnership: {
-            QScriptObjectDelegate *delegate = object->delegate();
-            Q_ASSERT(delegate && (delegate->type() == QScriptObjectDelegate::QtObject));
-            return !static_cast<QObjectDelegate *>(delegate)->hasParent();
-         }
-         default:
-            break;
-      }
-      return false;
-   }
+    QScriptObject *object;
+    QScriptEngine::ValueOwnership ownership;
+    QScriptEngine::QObjectWrapOptions options;
+    // Returns true if this wrapper can be garbage-collected when there are no
+    // other references to it in the JS environment (weak reference), otherwise
+    // returns false (should not be collected).
+    bool isCollectableWhenWeaklyReferenced() const
+    {
+        switch ( ownership )
+        {
+            case QScriptEngine::ScriptOwnership:
+                return true;
+
+            case QScriptEngine::AutoOwnership:
+            {
+                QScriptObjectDelegate *delegate = object->delegate();
+                Q_ASSERT( delegate && ( delegate->type() == QScriptObjectDelegate::QtObject ) );
+                return !static_cast<QObjectDelegate *>( delegate )->hasParent();
+            }
+
+            default:
+                break;
+        }
+
+        return false;
+    }
 };
 
 class QObjectData // : public QObjectUserData
 {
- public:
-   QObjectData(QScriptEnginePrivate *engine);
-   ~QObjectData();
+public:
+    QObjectData( QScriptEnginePrivate *engine );
+    ~QObjectData();
 
-   bool addSignalHandler(QObject *sender,
-      int signalIndex,
-      JSC::JSValue receiver,
-      JSC::JSValue slot,
-      JSC::JSValue senderWrapper,
-      Qt::ConnectionType type);
-   bool removeSignalHandler(QObject *sender,
-      int signalIndex,
-      JSC::JSValue receiver,
-      JSC::JSValue slot);
+    bool addSignalHandler( QObject *sender,
+                           int signalIndex,
+                           JSC::JSValue receiver,
+                           JSC::JSValue slot,
+                           JSC::JSValue senderWrapper,
+                           Qt::ConnectionType type );
+    bool removeSignalHandler( QObject *sender,
+                              int signalIndex,
+                              JSC::JSValue receiver,
+                              JSC::JSValue slot );
 
-   QScriptObject *findWrapper(QScriptEngine::ValueOwnership ownership,
-      const QScriptEngine::QObjectWrapOptions &options) const;
-   void registerWrapper(QScriptObject *wrapper,
-      QScriptEngine::ValueOwnership ownership,
-      const QScriptEngine::QObjectWrapOptions &options);
+    QScriptObject *findWrapper( QScriptEngine::ValueOwnership ownership,
+                                const QScriptEngine::QObjectWrapOptions &options ) const;
+    void registerWrapper( QScriptObject *wrapper,
+                          QScriptEngine::ValueOwnership ownership,
+                          const QScriptEngine::QObjectWrapOptions &options );
 
-   void clearConnectionMarkBits();
-   int markConnections(JSC::MarkStack &);
-   void markWrappers(JSC::MarkStack &);
+    void clearConnectionMarkBits();
+    int markConnections( JSC::MarkStack & );
+    void markWrappers( JSC::MarkStack & );
 
- private:
-   QScriptEnginePrivate *engine;
-   QScript::QObjectConnectionManager *connectionManager;
-   QList<QScript::QObjectWrapperInfo> wrappers;
+private:
+    QScriptEnginePrivate *engine;
+    QScript::QObjectConnectionManager *connectionManager;
+    QList<QScript::QObjectWrapperInfo> wrappers;
 };
 
 class QtFunction: public JSC::InternalFunction
 {
- public:
-   // work around CELL_SIZE limitation
-   struct Data {
-      JSC::JSValue object;
-      int initialIndex;
-      bool maybeOverloaded;
+public:
+    // work around CELL_SIZE limitation
+    struct Data
+    {
+        JSC::JSValue object;
+        int initialIndex;
+        bool maybeOverloaded;
 
-      Data(JSC::JSValue o, int ii, bool mo)
-         : object(o), initialIndex(ii), maybeOverloaded(mo) {}
-   };
+        Data( JSC::JSValue o, int ii, bool mo )
+            : object( o ), initialIndex( ii ), maybeOverloaded( mo ) {}
+    };
 
-   QtFunction(JSC::JSValue object, int initialIndex, bool maybeOverloaded,
-      JSC::JSGlobalData *, WTF::PassRefPtr<JSC::Structure>, const JSC::Identifier &);
-   virtual ~QtFunction();
+    QtFunction( JSC::JSValue object, int initialIndex, bool maybeOverloaded,
+                JSC::JSGlobalData *, WTF::PassRefPtr<JSC::Structure>, const JSC::Identifier & );
+    virtual ~QtFunction();
 
-   virtual JSC::CallType getCallData(JSC::CallData &);
-   virtual void markChildren(JSC::MarkStack &);
+    virtual JSC::CallType getCallData( JSC::CallData & );
+    virtual void markChildren( JSC::MarkStack & );
 
-   virtual const JSC::ClassInfo *classInfo() const {
-      return &info;
-   }
-   static const JSC::ClassInfo info;
+    virtual const JSC::ClassInfo *classInfo() const
+    {
+        return &info;
+    }
+    static const JSC::ClassInfo info;
 
-   static JSC::JSValue JSC_HOST_CALL call(JSC::ExecState *, JSC::JSObject *,
-      JSC::JSValue, const JSC::ArgList &);
+    static JSC::JSValue JSC_HOST_CALL call( JSC::ExecState *, JSC::JSObject *,
+                                            JSC::JSValue, const JSC::ArgList & );
 
-   JSC::JSValue execute(JSC::ExecState *exec, JSC::JSValue thisValue,
-      const JSC::ArgList &args);
+    JSC::JSValue execute( JSC::ExecState *exec, JSC::JSValue thisValue,
+                          const JSC::ArgList &args );
 
-   QScriptObject *wrapperObject() const;
-   QObject *qobject() const;
-   const QMetaObject *metaObject() const;
-   int initialIndex() const;
-   int specificIndex(const QScriptContext *context) const;
-   bool maybeOverloaded() const;
-   int mostGeneralMethod(QMetaMethod *out = nullptr) const;
+    QScriptObject *wrapperObject() const;
+    QObject *qobject() const;
+    const QMetaObject *metaObject() const;
+    int initialIndex() const;
+    int specificIndex( const QScriptContext *context ) const;
+    bool maybeOverloaded() const;
+    int mostGeneralMethod( QMetaMethod *out = nullptr ) const;
 
-   QList<int> overloadedIndexes() const;
+    QList<int> overloadedIndexes() const;
 
- private:
-   Data *data;
+private:
+    Data *data;
 };
 
 class QtPropertyFunction: public JSC::InternalFunction
 {
- public:
-   // work around CELL_SIZE limitation
-   struct Data {
-      const QMetaObject *meta;
-      int index;
+public:
+    // work around CELL_SIZE limitation
+    struct Data
+    {
+        const QMetaObject *meta;
+        int index;
 
-      Data(const QMetaObject *m, int i)
-         : meta(m), index(i) {}
-   };
+        Data( const QMetaObject *m, int i )
+            : meta( m ), index( i ) {}
+    };
 
-   QtPropertyFunction(const QMetaObject *meta, int index,
-      JSC::JSGlobalData *, WTF::PassRefPtr<JSC::Structure>,
-      const JSC::Identifier &);
-   virtual ~QtPropertyFunction();
+    QtPropertyFunction( const QMetaObject *meta, int index,
+                        JSC::JSGlobalData *, WTF::PassRefPtr<JSC::Structure>,
+                        const JSC::Identifier & );
+    virtual ~QtPropertyFunction();
 
-   virtual JSC::CallType getCallData(JSC::CallData &);
+    virtual JSC::CallType getCallData( JSC::CallData & );
 
-   virtual const JSC::ClassInfo *classInfo() const {
-      return &info;
-   }
-   static const JSC::ClassInfo info;
+    virtual const JSC::ClassInfo *classInfo() const
+    {
+        return &info;
+    }
+    static const JSC::ClassInfo info;
 
-   static JSC::JSValue JSC_HOST_CALL call(JSC::ExecState *, JSC::JSObject *,
-      JSC::JSValue, const JSC::ArgList &);
+    static JSC::JSValue JSC_HOST_CALL call( JSC::ExecState *, JSC::JSObject *,
+                                            JSC::JSValue, const JSC::ArgList & );
 
-   JSC::JSValue execute(JSC::ExecState *exec, JSC::JSValue thisValue,
-      const JSC::ArgList &args);
+    JSC::JSValue execute( JSC::ExecState *exec, JSC::JSValue thisValue,
+                          const JSC::ArgList &args );
 
-   const QMetaObject *metaObject() const;
-   int propertyIndex() const;
+    const QMetaObject *metaObject() const;
+    int propertyIndex() const;
 
- private:
-   Data *data;
+private:
+    Data *data;
 };
 
 class QMetaObjectWrapperObject : public JSC::JSObject
 {
- public:
-   // work around CELL_SIZE limitation
-   struct Data {
-      const QMetaObject *value;
-      JSC::JSValue ctor;
-      JSC::JSValue prototype;
+public:
+    // work around CELL_SIZE limitation
+    struct Data
+    {
+        const QMetaObject *value;
+        JSC::JSValue ctor;
+        JSC::JSValue prototype;
 
-      Data(const QMetaObject *mo, JSC::JSValue c)
-         : value(mo), ctor(c) {}
-   };
+        Data( const QMetaObject *mo, JSC::JSValue c )
+            : value( mo ), ctor( c ) {}
+    };
 
-   explicit QMetaObjectWrapperObject(
-      JSC::ExecState *, const QMetaObject *metaobject, JSC::JSValue ctor,
-      WTF::PassRefPtr<JSC::Structure> sid);
+    explicit QMetaObjectWrapperObject(
+        JSC::ExecState *, const QMetaObject *metaobject, JSC::JSValue ctor,
+        WTF::PassRefPtr<JSC::Structure> sid );
 
-   ~QMetaObjectWrapperObject();
+    ~QMetaObjectWrapperObject();
 
-   virtual bool getOwnPropertySlot(JSC::ExecState *,
-      const JSC::Identifier &propertyName,
-      JSC::PropertySlot &);
-   virtual bool getOwnPropertyDescriptor(JSC::ExecState *,
-      const JSC::Identifier &propertyName,
-      JSC::PropertyDescriptor &);
-   virtual void put(JSC::ExecState *exec, const JSC::Identifier &propertyName,
-      JSC::JSValue, JSC::PutPropertySlot &);
-   virtual bool deleteProperty(JSC::ExecState *,
-      const JSC::Identifier &propertyName);
-   virtual void getOwnPropertyNames(JSC::ExecState *, JSC::PropertyNameArray &,
-      JSC::EnumerationMode mode = JSC::ExcludeDontEnumProperties);
-   virtual void markChildren(JSC::MarkStack &markStack);
+    virtual bool getOwnPropertySlot( JSC::ExecState *,
+                                     const JSC::Identifier &propertyName,
+                                     JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *,
+                                           const JSC::Identifier &propertyName,
+                                           JSC::PropertyDescriptor & );
+    virtual void put( JSC::ExecState *exec, const JSC::Identifier &propertyName,
+                      JSC::JSValue, JSC::PutPropertySlot & );
+    virtual bool deleteProperty( JSC::ExecState *,
+                                 const JSC::Identifier &propertyName );
+    virtual void getOwnPropertyNames( JSC::ExecState *, JSC::PropertyNameArray &,
+                                      JSC::EnumerationMode mode = JSC::ExcludeDontEnumProperties );
+    virtual void markChildren( JSC::MarkStack &markStack );
 
-   virtual JSC::CallType getCallData(JSC::CallData &);
-   virtual JSC::ConstructType getConstructData(JSC::ConstructData &);
+    virtual JSC::CallType getCallData( JSC::CallData & );
+    virtual JSC::ConstructType getConstructData( JSC::ConstructData & );
 
-   virtual const JSC::ClassInfo *classInfo() const {
-      return &info;
-   }
-   static const JSC::ClassInfo info;
+    virtual const JSC::ClassInfo *classInfo() const
+    {
+        return &info;
+    }
+    static const JSC::ClassInfo info;
 
-   static JSC::JSValue JSC_HOST_CALL call(JSC::ExecState *, JSC::JSObject *,
-      JSC::JSValue, const JSC::ArgList &);
-   static JSC::JSObject *construct(JSC::ExecState *, JSC::JSObject *, const JSC::ArgList &);
+    static JSC::JSValue JSC_HOST_CALL call( JSC::ExecState *, JSC::JSObject *,
+                                            JSC::JSValue, const JSC::ArgList & );
+    static JSC::JSObject *construct( JSC::ExecState *, JSC::JSObject *, const JSC::ArgList & );
 
-   JSC::JSValue execute(JSC::ExecState *exec, const JSC::ArgList &args);
+    JSC::JSValue execute( JSC::ExecState *exec, const JSC::ArgList &args );
 
-   inline const QMetaObject *value() const {
-      return data->value;
-   }
-   inline void setValue(const QMetaObject *value) {
-      data->value = value;
-   }
+    inline const QMetaObject *value() const
+    {
+        return data->value;
+    }
+    inline void setValue( const QMetaObject *value )
+    {
+        data->value = value;
+    }
 
-   static WTF::PassRefPtr<JSC::Structure> createStructure(JSC::JSValue prototype) {
-      return JSC::Structure::create(prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags));
-   }
+    static WTF::PassRefPtr<JSC::Structure> createStructure( JSC::JSValue prototype )
+    {
+        return JSC::Structure::create( prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ) );
+    }
 
- protected:
-   static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::OverridesMarkChildren |
-      JSC::OverridesGetPropertyNames | JSC::ImplementsHasInstance | JSObject::StructureFlags;
+protected:
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::OverridesMarkChildren |
+                                           JSC::OverridesGetPropertyNames | JSC::ImplementsHasInstance | JSObject::StructureFlags;
 
-   Data *data;
+    Data *data;
 };
 
 class QMetaObjectPrototype : public QMetaObjectWrapperObject
 {
- public:
-   QMetaObjectPrototype(JSC::ExecState *, WTF::PassRefPtr<JSC::Structure>,
-      JSC::Structure *prototypeFunctionStructure);
+public:
+    QMetaObjectPrototype( JSC::ExecState *, WTF::PassRefPtr<JSC::Structure>,
+                          JSC::Structure *prototypeFunctionStructure );
 };
 
 } // namespace QScript

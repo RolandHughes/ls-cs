@@ -29,7 +29,8 @@
 #include <wtf/Noncopyable.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 // A cache of the processed triangle mesh for a given path. Because these
 // might be expensive to allocate (using malloc/free internally), it is
@@ -39,22 +40,29 @@ namespace WebCore {
 // facing the interior region of the mesh.
 // #define LOOP_BLINN_PATH_CACHE_DEBUG_INTERIOR_EDGES
 
-class LoopBlinnPathCache {
-    WTF_MAKE_NONCOPYABLE(LoopBlinnPathCache);
+class LoopBlinnPathCache
+{
+    WTF_MAKE_NONCOPYABLE( LoopBlinnPathCache );
 public:
     LoopBlinnPathCache();
     ~LoopBlinnPathCache();
 
-    unsigned numberOfVertices() const { return m_vertices.size() / 2; }
+    unsigned numberOfVertices() const
+    {
+        return m_vertices.size() / 2;
+    }
 
     // Get the base pointer to the vertex information. There are two
     // coordinates per vertex. This pointer is valid until the cache is
     // cleared or another vertex is added. Returns 0 if there are no
     // vertices in the mesh.
-    const float* vertices() const
+    const float *vertices() const
     {
-        if (!numberOfVertices())
+        if ( !numberOfVertices() )
+        {
             return 0;
+        }
+
         return m_vertices.data();
     }
 
@@ -62,10 +70,13 @@ public:
     // are three coordinates per vertex. This pointer is valid until the
     // cache is cleared or another vertex is added. Returns 0 if
     // there are no vertices in the mesh.
-    const float* texcoords() const
+    const float *texcoords() const
     {
-        if (!numberOfVertices())
+        if ( !numberOfVertices() )
+        {
             return 0;
+        }
+
         return m_texcoords.data();
     }
 
@@ -73,22 +84,28 @@ public:
     // are the x and y coordinates of the vertex on the plane; the last
     // three arguments are the cubic texture coordinates associated with
     // this vertex.
-    void addVertex(float x, float y,
-                   float /*k*/, float /*l*/, float /*m*/);
+    void addVertex( float x, float y,
+                    float /*k*/, float /*l*/, float /*m*/ );
 
-    unsigned numberOfInteriorVertices() const { return m_interiorVertices.size() / 2; }
+    unsigned numberOfInteriorVertices() const
+    {
+        return m_interiorVertices.size() / 2;
+    }
 
     // Base pointer to the interior vertices; two coordinates per
     // vertex, which can be drawn as GL_TRIANGLES. Returns 0 if there
     // are no interior vertices in the mesh.
-    const float* interiorVertices() const
+    const float *interiorVertices() const
     {
-        if (!numberOfInteriorVertices())
+        if ( !numberOfInteriorVertices() )
+        {
             return 0;
+        }
+
         return m_interiorVertices.data();
     }
 
-    void addInteriorVertex(float x, float y);
+    void addInteriorVertex( float x, float y );
 
     // Clears all of the stored vertex information in this cache.
     void clear();
@@ -99,8 +116,8 @@ public:
     // Base pointer to the interior vertices; two coordinates per
     // vertex, which can be drawn as GL_LINES. Returns 0 if there are
     // no interior edge vertices in the mesh.
-    const float* interiorEdgeVertices() const;
-    void addInteriorEdgeVertex(float x, float y);
+    const float *interiorEdgeVertices() const;
+    void addInteriorEdgeVertex( float x, float y );
 #endif // LOOP_BLINN_PATH_CACHE_DEBUG_INTERIOR_EDGES
 
 private:

@@ -30,113 +30,114 @@
 #include <qschematype_p.h>
 #include <qxsdelement_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class XsdValidatedXmlNodeModel : public QAbstractXmlNodeModel
 {
- public:
-   typedef QExplicitlySharedDataPointer<XsdValidatedXmlNodeModel> Ptr;
-   typedef QList<Ptr> List;
+public:
+    typedef QExplicitlySharedDataPointer<XsdValidatedXmlNodeModel> Ptr;
+    typedef QList<Ptr> List;
 
-   /**
-    * Creates a new validated xml node model.
-    */
-   XsdValidatedXmlNodeModel(const QAbstractXmlNodeModel *model);
+    /**
+     * Creates a new validated xml node model.
+     */
+    XsdValidatedXmlNodeModel( const QAbstractXmlNodeModel *model );
 
-   /**
-    * Destroys the validated xml node model.
-    */
-   virtual ~XsdValidatedXmlNodeModel();
+    /**
+     * Destroys the validated xml node model.
+     */
+    virtual ~XsdValidatedXmlNodeModel();
 
-   QUrl baseUri(const QXmlNodeModelIndex &ni) const override;
-   QUrl documentUri(const QXmlNodeModelIndex &ni) const override;
-   QXmlNodeModelIndex::NodeKind kind(const QXmlNodeModelIndex &ni) const override;
+    QUrl baseUri( const QXmlNodeModelIndex &ni ) const override;
+    QUrl documentUri( const QXmlNodeModelIndex &ni ) const override;
+    QXmlNodeModelIndex::NodeKind kind( const QXmlNodeModelIndex &ni ) const override;
 
-   QXmlNodeModelIndex::DocumentOrder compareOrder(const QXmlNodeModelIndex &ni1,
-                  const QXmlNodeModelIndex &ni2) const override;
+    QXmlNodeModelIndex::DocumentOrder compareOrder( const QXmlNodeModelIndex &ni1,
+            const QXmlNodeModelIndex &ni2 ) const override;
 
-   QXmlNodeModelIndex root(const QXmlNodeModelIndex &n) const override;
-   QXmlName name(const QXmlNodeModelIndex &ni) const override;
-   QString stringValue(const QXmlNodeModelIndex &n) const override;
-   QVariant typedValue(const QXmlNodeModelIndex &n) const override;
+    QXmlNodeModelIndex root( const QXmlNodeModelIndex &n ) const override;
+    QXmlName name( const QXmlNodeModelIndex &ni ) const override;
+    QString stringValue( const QXmlNodeModelIndex &n ) const override;
+    QVariant typedValue( const QXmlNodeModelIndex &n ) const override;
 
-   QExplicitlySharedDataPointer<QAbstractXmlForwardIterator<QXmlNodeModelIndex> >
-                  iterate(const QXmlNodeModelIndex &ni, QXmlNodeModelIndex::Axis axis) const override;
+    QExplicitlySharedDataPointer<QAbstractXmlForwardIterator<QXmlNodeModelIndex> >
+    iterate( const QXmlNodeModelIndex &ni, QXmlNodeModelIndex::Axis axis ) const override;
 
-   QPatternist::ItemIteratorPtr sequencedTypedValue(const QXmlNodeModelIndex &ni) const override;
-   QPatternist::ItemType::Ptr type(const QXmlNodeModelIndex &ni) const override;
+    QPatternist::ItemIteratorPtr sequencedTypedValue( const QXmlNodeModelIndex &ni ) const override;
+    QPatternist::ItemType::Ptr type( const QXmlNodeModelIndex &ni ) const override;
 
-   QXmlName::NamespaceCode namespaceForPrefix(const QXmlNodeModelIndex &ni,
-                  const QXmlName::PrefixCode prefix) const override;
+    QXmlName::NamespaceCode namespaceForPrefix( const QXmlNodeModelIndex &ni,
+            const QXmlName::PrefixCode prefix ) const override;
 
-   bool isDeepEqual(const QXmlNodeModelIndex &ni1, const QXmlNodeModelIndex &ni2) const override;
-   void sendNamespaces(const QXmlNodeModelIndex &n, QAbstractXmlReceiver *const receiver) const override;
-   QVector<QXmlName> namespaceBindings(const QXmlNodeModelIndex &n) const override;
-   QXmlNodeModelIndex elementById(const QXmlName &NCName) const override;
-   QVector<QXmlNodeModelIndex> nodesByIdref(const QXmlName &NCName) const override;
+    bool isDeepEqual( const QXmlNodeModelIndex &ni1, const QXmlNodeModelIndex &ni2 ) const override;
+    void sendNamespaces( const QXmlNodeModelIndex &n, QAbstractXmlReceiver *const receiver ) const override;
+    QVector<QXmlName> namespaceBindings( const QXmlNodeModelIndex &n ) const override;
+    QXmlNodeModelIndex elementById( const QXmlName &NCName ) const override;
+    QVector<QXmlNodeModelIndex> nodesByIdref( const QXmlName &NCName ) const override;
 
-   void copyNodeTo(const QXmlNodeModelIndex &node, QAbstractXmlReceiver *const receiver,
-                  const NodeCopySettings &) const override;
+    void copyNodeTo( const QXmlNodeModelIndex &node, QAbstractXmlReceiver *const receiver,
+                     const NodeCopySettings & ) const override;
 
-   /**
-    * Sets the @p element that is assigned to the xml node at @p index.
-    */
-   void setAssignedElement(const QXmlNodeModelIndex &index, const XsdElement::Ptr &element);
+    /**
+     * Sets the @p element that is assigned to the xml node at @p index.
+     */
+    void setAssignedElement( const QXmlNodeModelIndex &index, const XsdElement::Ptr &element );
 
-   /**
-    * Returns the element that is assigned to the xml node at @p index.
-    */
-   XsdElement::Ptr assignedElement(const QXmlNodeModelIndex &index) const;
+    /**
+     * Returns the element that is assigned to the xml node at @p index.
+     */
+    XsdElement::Ptr assignedElement( const QXmlNodeModelIndex &index ) const;
 
-   /**
-    * Sets the @p attribute that is assigned to the xml node at @p index.
-    */
-   void setAssignedAttribute(const QXmlNodeModelIndex &index, const XsdAttribute::Ptr &attribute);
+    /**
+     * Sets the @p attribute that is assigned to the xml node at @p index.
+     */
+    void setAssignedAttribute( const QXmlNodeModelIndex &index, const XsdAttribute::Ptr &attribute );
 
-   /**
-    * Returns the attribute that is assigned to the xml node at @p index.
-    */
-   XsdAttribute::Ptr assignedAttribute(const QXmlNodeModelIndex &index) const;
+    /**
+     * Returns the attribute that is assigned to the xml node at @p index.
+     */
+    XsdAttribute::Ptr assignedAttribute( const QXmlNodeModelIndex &index ) const;
 
-   /**
-    * Sets the @p type that is assigned to the xml node at @p index.
-    *
-    * @note The type can be a different than the type of the element or
-    *       attribute that is assigned to the index, since the instance
-    *       document can overwrite it by xsi:type.
-    */
-   void setAssignedType(const QXmlNodeModelIndex &index, const SchemaType::Ptr &type);
+    /**
+     * Sets the @p type that is assigned to the xml node at @p index.
+     *
+     * @note The type can be a different than the type of the element or
+     *       attribute that is assigned to the index, since the instance
+     *       document can overwrite it by xsi:type.
+     */
+    void setAssignedType( const QXmlNodeModelIndex &index, const SchemaType::Ptr &type );
 
-   /**
-    * Returns the type that is assigned to the xml node at @p index.
-    */
-   SchemaType::Ptr assignedType(const QXmlNodeModelIndex &index) const;
+    /**
+     * Returns the type that is assigned to the xml node at @p index.
+     */
+    SchemaType::Ptr assignedType( const QXmlNodeModelIndex &index ) const;
 
-   /**
-    * Adds the attribute or element @p binding with the given @p id.
-    */
-   void addIdIdRefBinding(const QString &id, const NamedSchemaComponent::Ptr &binding);
+    /**
+     * Adds the attribute or element @p binding with the given @p id.
+     */
+    void addIdIdRefBinding( const QString &id, const NamedSchemaComponent::Ptr &binding );
 
-   /**
-    * Returns a list of all binding ids.
-    */
-   QStringList idIdRefBindingIds() const;
+    /**
+     * Returns a list of all binding ids.
+     */
+    QStringList idIdRefBindingIds() const;
 
-   /**
-    * Returns the set of bindings with the given @p id.
-    */
-   QSet<NamedSchemaComponent::Ptr> idIdRefBindings(const QString &id) const;
+    /**
+     * Returns the set of bindings with the given @p id.
+     */
+    QSet<NamedSchemaComponent::Ptr> idIdRefBindings( const QString &id ) const;
 
- protected:
-   QXmlNodeModelIndex nextFromSimpleAxis(SimpleAxis axis, const QXmlNodeModelIndex &origin) const override;
-   QVector<QXmlNodeModelIndex> attributes(const QXmlNodeModelIndex &element) const override;
+protected:
+    QXmlNodeModelIndex nextFromSimpleAxis( SimpleAxis axis, const QXmlNodeModelIndex &origin ) const override;
+    QVector<QXmlNodeModelIndex> attributes( const QXmlNodeModelIndex &element ) const override;
 
- private:
-   QExplicitlySharedDataPointer<const QAbstractXmlNodeModel> m_internalModel;
-   QHash<QXmlNodeModelIndex, XsdElement::Ptr>                m_assignedElements;
-   QHash<QXmlNodeModelIndex, XsdAttribute::Ptr>              m_assignedAttributes;
-   QHash<QXmlNodeModelIndex, SchemaType::Ptr>                m_assignedTypes;
-   QHash<QString, QSet<NamedSchemaComponent::Ptr> >          m_idIdRefBindings;
+private:
+    QExplicitlySharedDataPointer<const QAbstractXmlNodeModel> m_internalModel;
+    QHash<QXmlNodeModelIndex, XsdElement::Ptr>                m_assignedElements;
+    QHash<QXmlNodeModelIndex, XsdAttribute::Ptr>              m_assignedAttributes;
+    QHash<QXmlNodeModelIndex, SchemaType::Ptr>                m_assignedTypes;
+    QHash<QString, QSet<NamedSchemaComponent::Ptr> >          m_idIdRefBindings;
 };
 
 }

@@ -30,13 +30,15 @@
 #include "WKCookieManager.h"
 #include <wtf/Forward.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 class WebCookieManagerProxy;
 
-class WebCookieManagerProxyClient : public APIClient<WKCookieManagerClient> {
+class WebCookieManagerProxyClient : public APIClient<WKCookieManagerClient>
+{
 public:
-    void cookiesDidChange(WebCookieManagerProxy*);
+    void cookiesDidChange( WebCookieManagerProxy * );
 };
 
 } // namespace WebKit

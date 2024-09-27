@@ -29,9 +29,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSWebGLProgram);
+ASSERT_CLASS_FITS_IN_CELL( JSWebGLProgram );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -42,8 +43,8 @@ ASSERT_CLASS_FITS_IN_CELL(JSWebGLProgram);
 
 static const HashTableValue JSWebGLProgramTableValues[2] =
 {
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsWebGLProgramConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsWebGLProgramConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -57,43 +58,50 @@ static JSC_CONST_HASHTABLE HashTable JSWebGLProgramTable = { 2, 1, JSWebGLProgra
 
 static const HashTableValue JSWebGLProgramConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSWebGLProgramConstructorTable = { 1, 0, JSWebGLProgramConstructorTableValues, 0 };
-class JSWebGLProgramConstructor : public DOMConstructorObject {
+class JSWebGLProgramConstructor : public DOMConstructorObject
+{
 public:
-    JSWebGLProgramConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSWebGLProgramConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSWebGLProgramConstructor::s_info = { "WebGLProgramConstructor", &DOMConstructorObject::s_info, &JSWebGLProgramConstructorTable, 0 };
 
-JSWebGLProgramConstructor::JSWebGLProgramConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSWebGLProgramConstructor::JSWebGLProgramConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSWebGLProgramPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSWebGLProgramPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSWebGLProgramConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSWebGLProgramConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSWebGLProgramConstructor, JSDOMWrapper>(exec, &JSWebGLProgramConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSWebGLProgramConstructor, JSDOMWrapper>( exec, &JSWebGLProgramConstructorTable, this, propertyName,
+            slot );
 }
 
-bool JSWebGLProgramConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSWebGLProgramConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSWebGLProgramConstructor, JSDOMWrapper>(exec, &JSWebGLProgramConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSWebGLProgramConstructor, JSDOMWrapper>( exec, &JSWebGLProgramConstructorTable, this,
+            propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -105,61 +113,62 @@ bool JSWebGLProgramConstructor::getOwnPropertyDescriptor(ExecState* exec, const 
 
 static const HashTableValue JSWebGLProgramPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSWebGLProgramPrototypeTable = { 1, 0, JSWebGLProgramPrototypeTableValues, 0 };
 const ClassInfo JSWebGLProgramPrototype::s_info = { "WebGLProgramPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSWebGLProgramPrototypeTable, 0 };
 
-JSObject* JSWebGLProgramPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSWebGLProgramPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSWebGLProgram>(exec, globalObject);
+    return getDOMPrototype<JSWebGLProgram>( exec, globalObject );
 }
 
 const ClassInfo JSWebGLProgram::s_info = { "WebGLProgram", &JSDOMWrapper::s_info, &JSWebGLProgramTable, 0 };
 
-JSWebGLProgram::JSWebGLProgram(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<WebGLProgram> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSWebGLProgram::JSWebGLProgram( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<WebGLProgram> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSWebGLProgram::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSWebGLProgram::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSWebGLProgramPrototype(exec->globalData(), globalObject, JSWebGLProgramPrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSWebGLProgramPrototype( exec->globalData(), globalObject,
+            JSWebGLProgramPrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSWebGLProgram::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSWebGLProgram::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSWebGLProgram, Base>(exec, &JSWebGLProgramTable, this, propertyName, slot);
+    return getStaticValueSlot<JSWebGLProgram, Base>( exec, &JSWebGLProgramTable, this, propertyName, slot );
 }
 
-bool JSWebGLProgram::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSWebGLProgram::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSWebGLProgram, Base>(exec, &JSWebGLProgramTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSWebGLProgram, Base>( exec, &JSWebGLProgramTable, this, propertyName, descriptor );
 }
 
-JSValue jsWebGLProgramConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsWebGLProgramConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSWebGLProgram* domObject = static_cast<JSWebGLProgram*>(asObject(slotBase));
-    return JSWebGLProgram::getConstructor(exec, domObject->globalObject());
+    JSWebGLProgram *domObject = static_cast<JSWebGLProgram *>( asObject( slotBase ) );
+    return JSWebGLProgram::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSWebGLProgram::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSWebGLProgram::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSWebGLProgramConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSWebGLProgramConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, WebGLProgram* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, WebGLProgram *impl )
 {
-    return wrap<JSWebGLProgram>(exec, globalObject, impl);
+    return wrap<JSWebGLProgram>( exec, globalObject, impl );
 }
 
-WebGLProgram* toWebGLProgram(JSC::JSValue value)
+WebGLProgram *toWebGLProgram( JSC::JSValue value )
 {
-    return value.inherits(&JSWebGLProgram::s_info) ? static_cast<JSWebGLProgram*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSWebGLProgram::s_info ) ? static_cast<JSWebGLProgram *>( asObject( value ) )->impl() : 0;
 }
 
 }

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -30,12 +30,14 @@
 #include "Interpreter.h"
 #include "JSFunction.h"
 
-namespace JSC {
-
-JSValue call(ExecState* exec, JSValue functionObject, CallType callType, const CallData& callData, JSValue thisValue, const ArgList& args)
+namespace JSC
 {
-    ASSERT(callType == CallTypeJS || callType == CallTypeHost);
-    return exec->interpreter()->executeCall(exec, asObject(functionObject), callType, callData, thisValue, args);
+
+JSValue call( ExecState *exec, JSValue functionObject, CallType callType, const CallData &callData, JSValue thisValue,
+              const ArgList &args )
+{
+    ASSERT( callType == CallTypeJS || callType == CallTypeHost );
+    return exec->interpreter()->executeCall( exec, asObject( functionObject ), callType, callData, thisValue, args );
 }
 
 } // namespace JSC

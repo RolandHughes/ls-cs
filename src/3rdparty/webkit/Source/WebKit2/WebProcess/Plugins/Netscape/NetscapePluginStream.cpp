@@ -32,118 +32,132 @@
 using namespace WebCore;
 using namespace std;
 
-namespace WebKit {
+namespace WebKit
+{
 
-NetscapePluginStream::NetscapePluginStream(PassRefPtr<NetscapePlugin> plugin, uint64_t streamID, bool sendNotification, void* notificationData)
-    : m_plugin(plugin)
-    , m_streamID(streamID)
-    , m_sendNotification(sendNotification)
-    , m_notificationData(notificationData)
+NetscapePluginStream::NetscapePluginStream( PassRefPtr<NetscapePlugin> plugin, uint64_t streamID, bool sendNotification,
+        void *notificationData )
+    : m_plugin( plugin )
+    , m_streamID( streamID )
+    , m_sendNotification( sendNotification )
+    , m_notificationData( notificationData )
     , m_npStream()
-    , m_transferMode(NP_NORMAL)
-    , m_offset(0)
-    , m_fileHandle(invalidPlatformFileHandle)
-    , m_isStarted(false)
+    , m_transferMode( NP_NORMAL )
+    , m_offset( 0 )
+    , m_fileHandle( invalidPlatformFileHandle )
+    , m_isStarted( false )
 #if !ASSERT_DISABLED
-    , m_urlNotifyHasBeenCalled(false)
-#endif    
-    , m_deliveryDataTimer(RunLoop::main(), this, &NetscapePluginStream::deliverDataToPlugin)
-    , m_stopStreamWhenDoneDelivering(false)
+    , m_urlNotifyHasBeenCalled( false )
+#endif
+    , m_deliveryDataTimer( RunLoop::main(), this, &NetscapePluginStream::deliverDataToPlugin )
+    , m_stopStreamWhenDoneDelivering( false )
 {
 }
 
 NetscapePluginStream::~NetscapePluginStream()
 {
-    ASSERT(!m_isStarted);
-    ASSERT(!m_sendNotification || m_urlNotifyHasBeenCalled);
-    ASSERT(m_fileHandle == invalidPlatformFileHandle);
+    ASSERT( !m_isStarted );
+    ASSERT( !m_sendNotification || m_urlNotifyHasBeenCalled );
+    ASSERT( m_fileHandle == invalidPlatformFileHandle );
 }
 
-void NetscapePluginStream::didReceiveResponse(const KURL& responseURL, uint32_t streamLength, uint32_t lastModifiedTime, const String& mimeType, const String& headers)
+void NetscapePluginStream::didReceiveResponse( const KURL &responseURL, uint32_t streamLength, uint32_t lastModifiedTime,
+        const String &mimeType, const String &headers )
 {
     // Starting the stream could cause the plug-in stream to go away so we keep a reference to it here.
-    RefPtr<NetscapePluginStream> protect(this);
+    RefPtr<NetscapePluginStream> protect( this );
 
-    start(responseURL, streamLength, lastModifiedTime, mimeType, headers);
+    start( responseURL, streamLength, lastModifiedTime, mimeType, headers );
 }
 
-void NetscapePluginStream::didReceiveData(const char* bytes, int length)
+void NetscapePluginStream::didReceiveData( const char *bytes, int length )
 {
     // Delivering the data could cause the plug-in stream to go away so we keep a reference to it here.
-    RefPtr<NetscapePluginStream> protect(this);
+    RefPtr<NetscapePluginStream> protect( this );
 
-    deliverData(bytes, length);
+    deliverData( bytes, length );
 }
 
 void NetscapePluginStream::didFinishLoading()
 {
     // Stopping the stream could cause the plug-in stream to go away so we keep a reference to it here.
-    RefPtr<NetscapePluginStream> protect(this);
+    RefPtr<NetscapePluginStream> protect( this );
 
-    stop(NPRES_DONE);
+    stop( NPRES_DONE );
 }
 
-void NetscapePluginStream::didFail(bool wasCancelled)
+void NetscapePluginStream::didFail( bool wasCancelled )
 {
     // Stopping the stream could cause the plug-in stream to go away so we keep a reference to it here.
-    RefPtr<NetscapePluginStream> protect(this);
+    RefPtr<NetscapePluginStream> protect( this );
 
-    stop(wasCancelled ? NPRES_USER_BREAK : NPRES_NETWORK_ERR);
+    stop( wasCancelled ? NPRES_USER_BREAK : NPRES_NETWORK_ERR );
 }
-    
-void NetscapePluginStream::sendJavaScriptStream(const String& requestURLString, const String& result)
+
+void NetscapePluginStream::sendJavaScriptStream( const String &requestURLString, const String &result )
 {
     // starting the stream or delivering the data to it might cause the plug-in stream to go away, so we keep
     // a reference to it here.
-    RefPtr<NetscapePluginStream> protect(this);
+    RefPtr<NetscapePluginStream> protect( this );
 
     CString resultCString = requestURLString.utf8();
-    if (resultCString.isNull()) {
+
+    if ( resultCString.isNull() )
+    {
         // There was an error evaluating the JavaScript, call NPP_URLNotify if needed and then destroy the stream.
-        notifyAndDestroyStream(NPRES_NETWORK_ERR);
+        notifyAndDestroyStream( NPRES_NETWORK_ERR );
         return;
     }
 
-    if (!start(requestURLString, resultCString.length(), 0, "text/plain", ""))
+    if ( !start( requestURLString, resultCString.length(), 0, "text/plain", "" ) )
+    {
         return;
+    }
 
-    deliverData(resultCString.data(), resultCString.length());
-    stop(NPRES_DONE);
+    deliverData( resultCString.data(), resultCString.length() );
+    stop( NPRES_DONE );
 }
 
-NPError NetscapePluginStream::destroy(NPReason reason)
+NPError NetscapePluginStream::destroy( NPReason reason )
 {
     // It doesn't make sense to call NPN_DestroyStream on a stream that hasn't been started yet.
-    if (!m_isStarted)
+    if ( !m_isStarted )
+    {
         return NPERR_GENERIC_ERROR;
+    }
 
     // It isn't really valid for a plug-in to call NPN_DestroyStream with NPRES_DONE.
     // (At least not for browser initiated streams, and we don't support plug-in initiated streams).
-    if (reason == NPRES_DONE)
+    if ( reason == NPRES_DONE )
+    {
         return NPERR_INVALID_PARAM;
+    }
 
     cancel();
-    stop(reason);
+    stop( reason );
     return NPERR_NO_ERROR;
 }
 
-static bool isSupportedTransferMode(uint16_t transferMode)
+static bool isSupportedTransferMode( uint16_t transferMode )
 {
-    switch (transferMode) {
-    case NP_ASFILEONLY:
-    case NP_ASFILE:
-    case NP_NORMAL:
-        return true;
-    // FIXME: We don't support seekable streams.
-    case NP_SEEK:
-        return false;
+    switch ( transferMode )
+    {
+        case NP_ASFILEONLY:
+        case NP_ASFILE:
+        case NP_NORMAL:
+            return true;
+
+        // FIXME: We don't support seekable streams.
+        case NP_SEEK:
+            return false;
     }
 
     ASSERT_NOT_REACHED();
     return false;
 }
-    
-bool NetscapePluginStream::start(const String& responseURLString, uint32_t streamLength, uint32_t lastModifiedTime, const String& mimeType, const String& headers)
+
+bool NetscapePluginStream::start( const String &responseURLString, uint32_t streamLength, uint32_t lastModifiedTime,
+                                  const String &mimeType, const String &headers )
 {
     m_responseURL = responseURLString.utf8();
     m_mimeType = mimeType.utf8();
@@ -156,136 +170,168 @@ bool NetscapePluginStream::start(const String& responseURLString, uint32_t strea
     m_npStream.notifyData = m_notificationData;
     m_npStream.headers = m_headers.length() == 0 ? 0 : m_headers.data();
 
-    NPError error = m_plugin->NPP_NewStream(const_cast<char*>(m_mimeType.data()), &m_npStream, false, &m_transferMode);
-    if (error != NPERR_NO_ERROR) {
+    NPError error = m_plugin->NPP_NewStream( const_cast<char *>( m_mimeType.data() ), &m_npStream, false, &m_transferMode );
+
+    if ( error != NPERR_NO_ERROR )
+    {
         // We failed to start the stream, cancel the load and destroy it.
         cancel();
-        notifyAndDestroyStream(NPRES_NETWORK_ERR);
+        notifyAndDestroyStream( NPRES_NETWORK_ERR );
         return false;
     }
 
     // We successfully started the stream.
     m_isStarted = true;
 
-    if (!isSupportedTransferMode(m_transferMode)) {
+    if ( !isSupportedTransferMode( m_transferMode ) )
+    {
         // Cancel the load and stop the stream.
         cancel();
-        stop(NPRES_NETWORK_ERR);
+        stop( NPRES_NETWORK_ERR );
         return false;
     }
 
     return true;
 }
 
-void NetscapePluginStream::deliverData(const char* bytes, int length)
+void NetscapePluginStream::deliverData( const char *bytes, int length )
 {
-    ASSERT(m_isStarted);
+    ASSERT( m_isStarted );
 
-    if (m_transferMode != NP_ASFILEONLY) {
-        if (!m_deliveryData)
-            m_deliveryData = adoptPtr(new Vector<uint8_t>);
+    if ( m_transferMode != NP_ASFILEONLY )
+    {
+        if ( !m_deliveryData )
+        {
+            m_deliveryData = adoptPtr( new Vector<uint8_t> );
+        }
 
-        m_deliveryData->reserveCapacity(m_deliveryData->size() + length);
-        m_deliveryData->append(bytes, length);
-        
+        m_deliveryData->reserveCapacity( m_deliveryData->size() + length );
+        m_deliveryData->append( bytes, length );
+
         deliverDataToPlugin();
     }
 
-    if (m_transferMode == NP_ASFILE || m_transferMode == NP_ASFILEONLY)
-        deliverDataToFile(bytes, length);
+    if ( m_transferMode == NP_ASFILE || m_transferMode == NP_ASFILEONLY )
+    {
+        deliverDataToFile( bytes, length );
+    }
 }
 
 void NetscapePluginStream::deliverDataToPlugin()
 {
-    ASSERT(m_isStarted);
+    ASSERT( m_isStarted );
 
     int32_t numBytesToDeliver = m_deliveryData->size();
     int32_t numBytesDelivered = 0;
 
-    while (numBytesDelivered < numBytesToDeliver) {
-        int32_t numBytesPluginCanHandle = m_plugin->NPP_WriteReady(&m_npStream);
-        
-        // NPP_WriteReady could call NPN_DestroyStream and destroy the stream.
-        if (!m_isStarted)
-            return;
+    while ( numBytesDelivered < numBytesToDeliver )
+    {
+        int32_t numBytesPluginCanHandle = m_plugin->NPP_WriteReady( &m_npStream );
 
-        if (numBytesPluginCanHandle <= 0) {
+        // NPP_WriteReady could call NPN_DestroyStream and destroy the stream.
+        if ( !m_isStarted )
+        {
+            return;
+        }
+
+        if ( numBytesPluginCanHandle <= 0 )
+        {
             // The plug-in can't handle more data, we'll send the rest later
-            m_deliveryDataTimer.startOneShot(0);
+            m_deliveryDataTimer.startOneShot( 0 );
             break;
         }
 
         // Figure out how much data to send to the plug-in.
-        int32_t dataLength = min(numBytesPluginCanHandle, numBytesToDeliver - numBytesDelivered);
-        uint8_t* data = m_deliveryData->data() + numBytesDelivered;
+        int32_t dataLength = min( numBytesPluginCanHandle, numBytesToDeliver - numBytesDelivered );
+        uint8_t *data = m_deliveryData->data() + numBytesDelivered;
 
-        int32_t numBytesWritten = m_plugin->NPP_Write(&m_npStream, m_offset, dataLength, data);
-        if (numBytesWritten < 0) {
+        int32_t numBytesWritten = m_plugin->NPP_Write( &m_npStream, m_offset, dataLength, data );
+
+        if ( numBytesWritten < 0 )
+        {
             cancel();
-            stop(NPRES_NETWORK_ERR);
+            stop( NPRES_NETWORK_ERR );
             return;
         }
 
         // NPP_Write could call NPN_DestroyStream and destroy the stream.
-        if (!m_isStarted)
+        if ( !m_isStarted )
+        {
             return;
+        }
 
-        numBytesWritten = min(numBytesWritten, dataLength);
+        numBytesWritten = min( numBytesWritten, dataLength );
         m_offset += numBytesWritten;
         numBytesDelivered += numBytesWritten;
     }
 
     // We didn't write anything.
-    if (!numBytesDelivered)
+    if ( !numBytesDelivered )
+    {
         return;
+    }
 
-    if (numBytesDelivered < numBytesToDeliver) {
+    if ( numBytesDelivered < numBytesToDeliver )
+    {
         // Remove the bytes that we actually delivered.
-        m_deliveryData->remove(0, numBytesDelivered);
-    } else {
+        m_deliveryData->remove( 0, numBytesDelivered );
+    }
+    else
+    {
         m_deliveryData->clear();
 
-        if (m_stopStreamWhenDoneDelivering)
-            stop(NPRES_DONE);
+        if ( m_stopStreamWhenDoneDelivering )
+        {
+            stop( NPRES_DONE );
+        }
     }
 }
 
-void NetscapePluginStream::deliverDataToFile(const char* bytes, int length)
+void NetscapePluginStream::deliverDataToFile( const char *bytes, int length )
 {
-    if (m_fileHandle == invalidPlatformFileHandle && m_filePath.isNull()) {
+    if ( m_fileHandle == invalidPlatformFileHandle && m_filePath.isNull() )
+    {
         // Create a temporary file.
-        m_filePath = openTemporaryFile("WebKitPluginStream", m_fileHandle);
+        m_filePath = openTemporaryFile( "WebKitPluginStream", m_fileHandle );
 
         // We failed to open the file, stop the stream.
-        if (m_fileHandle == invalidPlatformFileHandle) {
-            stop(NPRES_NETWORK_ERR);
+        if ( m_fileHandle == invalidPlatformFileHandle )
+        {
+            stop( NPRES_NETWORK_ERR );
             return;
         }
     }
 
-    if (!length)
+    if ( !length )
+    {
         return;
+    }
 
-    int byteCount = writeToFile(m_fileHandle, bytes, length);
-    if (byteCount != length) {
+    int byteCount = writeToFile( m_fileHandle, bytes, length );
+
+    if ( byteCount != length )
+    {
         // This happens only rarely, when we are out of disk space or have a disk I/O error.
-        closeFile(m_fileHandle);
+        closeFile( m_fileHandle );
 
-        stop(NPRES_NETWORK_ERR);
+        stop( NPRES_NETWORK_ERR );
     }
 }
 
-void NetscapePluginStream::stop(NPReason reason)
+void NetscapePluginStream::stop( NPReason reason )
 {
     // The stream was stopped before it got a chance to start. This can happen if a stream is cancelled by
     // WebKit before it received a response.
-    if (!m_isStarted)
+    if ( !m_isStarted )
+    {
         return;
+    }
 
-    if (reason == NPRES_DONE && m_deliveryData && !m_deliveryData->isEmpty()) {
+    if ( reason == NPRES_DONE && m_deliveryData && !m_deliveryData->isEmpty() )
+    {
         // There is still data left that the plug-in hasn't been able to consume yet.
-        ASSERT(m_deliveryDataTimer.isActive());
-        
+        ASSERT( m_deliveryDataTimer.isActive() );
+
         // Set m_stopStreamWhenDoneDelivering to true so that the next time the delivery timer fires
         // and calls deliverDataToPlugin the stream will be closed if all the remaining data was
         // successfully delivered.
@@ -296,62 +342,74 @@ void NetscapePluginStream::stop(NPReason reason)
     m_deliveryData = nullptr;
     m_deliveryDataTimer.stop();
 
-    if (m_transferMode == NP_ASFILE || m_transferMode == NP_ASFILEONLY) {
-        if (reason == NPRES_DONE) {
+    if ( m_transferMode == NP_ASFILE || m_transferMode == NP_ASFILEONLY )
+    {
+        if ( reason == NPRES_DONE )
+        {
             // Ensure that the file is created.
-            deliverDataToFile(0, 0);
-            if (m_fileHandle != invalidPlatformFileHandle)
-                closeFile(m_fileHandle);
-            
-            ASSERT(!m_filePath.isNull());
-            
-            m_plugin->NPP_StreamAsFile(&m_npStream, m_filePath.utf8().data());
-        } else {
+            deliverDataToFile( 0, 0 );
+
+            if ( m_fileHandle != invalidPlatformFileHandle )
+            {
+                closeFile( m_fileHandle );
+            }
+
+            ASSERT( !m_filePath.isNull() );
+
+            m_plugin->NPP_StreamAsFile( &m_npStream, m_filePath.utf8().data() );
+        }
+        else
+        {
             // Just close the file.
-            if (m_fileHandle != invalidPlatformFileHandle)
-                closeFile(m_fileHandle);
+            if ( m_fileHandle != invalidPlatformFileHandle )
+            {
+                closeFile( m_fileHandle );
+            }
         }
 
         // Delete the file after calling NPP_StreamAsFile(), instead of in the destructor.  It should be OK
         // to delete the file here -- NPP_StreamAsFile() is always called immediately before NPP_DestroyStream()
         // (the stream destruction function), so there can be no expectation that a plugin will read the stream
         // file asynchronously after NPP_StreamAsFile() is called.
-        deleteFile(m_filePath);
+        deleteFile( m_filePath );
         m_filePath = String();
 
         // NPP_StreamAsFile could call NPN_DestroyStream and destroy the stream.
-        if (!m_isStarted)
+        if ( !m_isStarted )
+        {
             return;
+        }
     }
 
     // Set m_isStarted to false before calling NPP_DestroyStream in case NPP_DestroyStream calls NPN_DestroyStream.
     m_isStarted = false;
 
-    m_plugin->NPP_DestroyStream(&m_npStream, reason);
+    m_plugin->NPP_DestroyStream( &m_npStream, reason );
 
-    notifyAndDestroyStream(reason);
+    notifyAndDestroyStream( reason );
 }
 
 void NetscapePluginStream::cancel()
 {
-    m_plugin->cancelStreamLoad(this);
+    m_plugin->cancelStreamLoad( this );
 }
 
-void NetscapePluginStream::notifyAndDestroyStream(NPReason reason)
+void NetscapePluginStream::notifyAndDestroyStream( NPReason reason )
 {
-    ASSERT(!m_isStarted);
-    ASSERT(!m_deliveryDataTimer.isActive());
-    ASSERT(!m_urlNotifyHasBeenCalled);
-    
-    if (m_sendNotification) {
-        m_plugin->NPP_URLNotify(m_responseURL.data(), reason, m_notificationData);
-    
+    ASSERT( !m_isStarted );
+    ASSERT( !m_deliveryDataTimer.isActive() );
+    ASSERT( !m_urlNotifyHasBeenCalled );
+
+    if ( m_sendNotification )
+    {
+        m_plugin->NPP_URLNotify( m_responseURL.data(), reason, m_notificationData );
+
 #if !ASSERT_DISABLED
         m_urlNotifyHasBeenCalled = true;
-#endif    
+#endif
     }
 
-    m_plugin->removePluginStream(this);
+    m_plugin->removePluginStream( this );
 }
 
 } // namespace WebKit

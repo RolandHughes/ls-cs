@@ -6,13 +6,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -39,7 +39,8 @@
 #include <mlang.h>
 #include <wtf/MathExtras.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 void SimpleFontData::platformInit()
 {
@@ -49,49 +50,56 @@ void SimpleFontData::platformInit()
 
     m_syntheticBoldOffset = m_platformData.syntheticBold() ? 1.0f : 0.f;
 
-    if (m_platformData.useGDI())
-       return initGDIFont();
+    if ( m_platformData.useGDI() )
+    {
+        return initGDIFont();
+    }
 
-    HDC hdc = GetDC(0);
-    SaveDC(hdc);
+    HDC hdc = GetDC( 0 );
+    SaveDC( hdc );
 
-    cairo_scaled_font_t* scaledFont = m_platformData.scaledFont();
-    const double metricsMultiplier = cairo_win32_scaled_font_get_metrics_factor(scaledFont) * m_platformData.size();
+    cairo_scaled_font_t *scaledFont = m_platformData.scaledFont();
+    const double metricsMultiplier = cairo_win32_scaled_font_get_metrics_factor( scaledFont ) * m_platformData.size();
 
-    cairo_win32_scaled_font_select_font(scaledFont, hdc);
+    cairo_win32_scaled_font_select_font( scaledFont, hdc );
 
     TEXTMETRIC textMetrics;
-    GetTextMetrics(hdc, &textMetrics);
+    GetTextMetrics( hdc, &textMetrics );
     float ascent = textMetrics.tmAscent * metricsMultiplier;
     float descent = textMetrics.tmDescent * metricsMultiplier;
     float xHeight = ascent * 0.56f; // Best guess for xHeight for non-Truetype fonts.
     float lineGap = textMetrics.tmExternalLeading * metricsMultiplier;
-    m_fontMetrics.setAscent(ascent);
-    m_fontMetrics.setDescent(descent);
-    m_fontMetrics.setLineGap(lineGap);
-    m_fontMetrics.setLineSpacing(lroundf(ascent) + lroundf(descent) + lroundf(lineGap));
+    m_fontMetrics.setAscent( ascent );
+    m_fontMetrics.setDescent( descent );
+    m_fontMetrics.setLineGap( lineGap );
+    m_fontMetrics.setLineSpacing( lroundf( ascent ) + lroundf( descent ) + lroundf( lineGap ) );
     m_avgCharWidth = textMetrics.tmAveCharWidth * metricsMultiplier;
     m_maxCharWidth = textMetrics.tmMaxCharWidth * metricsMultiplier;
 
     OUTLINETEXTMETRIC metrics;
-    if (GetOutlineTextMetrics(hdc, sizeof(metrics), &metrics) > 0) {
+
+    if ( GetOutlineTextMetrics( hdc, sizeof( metrics ), &metrics ) > 0 )
+    {
         // This is a TrueType font.  We might be able to get an accurate xHeight
         GLYPHMETRICS gm;
         MAT2 mat = { 1, 0, 0, 1 };
-        DWORD len = GetGlyphOutline(hdc, 'x', GGO_METRICS, &gm, 0, 0, &mat);
-        if (len != GDI_ERROR && gm.gmptGlyphOrigin.y > 0)
+        DWORD len = GetGlyphOutline( hdc, 'x', GGO_METRICS, &gm, 0, 0, &mat );
+
+        if ( len != GDI_ERROR && gm.gmptGlyphOrigin.y > 0 )
+        {
             xHeight = gm.gmptGlyphOrigin.y * metricsMultiplier;
+        }
     }
 
-    m_fontMetrics.setXHeight(xHeight);
-    cairo_win32_scaled_font_done_font(scaledFont);
+    m_fontMetrics.setXHeight( xHeight );
+    cairo_win32_scaled_font_done_font( scaledFont );
 
     m_isSystemFont = false;
     m_scriptCache = 0;
     m_scriptFontProperties = 0;
 
-    RestoreDC(hdc, -1);
-    ReleaseDC(0, hdc);
+    RestoreDC( hdc, -1 );
+    ReleaseDC( 0, hdc );
 }
 
 void SimpleFontData::platformCharWidthInit()
@@ -99,34 +107,39 @@ void SimpleFontData::platformCharWidthInit()
     // charwidths are set in platformInit.
 }
 
-FloatRect SimpleFontData::platformBoundsForGlyph(Glyph glyph) const
+FloatRect SimpleFontData::platformBoundsForGlyph( Glyph glyph ) const
 {
-    if (m_platformData.useGDI())
-        return boundsForGDIGlyph(glyph);
+    if ( m_platformData.useGDI() )
+    {
+        return boundsForGDIGlyph( glyph );
+    }
+
     //FIXME: Implement this
     return FloatRect();
 }
-    
-float SimpleFontData::platformWidthForGlyph(Glyph glyph) const
+
+float SimpleFontData::platformWidthForGlyph( Glyph glyph ) const
 {
-    if (m_platformData.useGDI())
-       return widthForGDIGlyph(glyph);
+    if ( m_platformData.useGDI() )
+    {
+        return widthForGDIGlyph( glyph );
+    }
 
-    HDC hdc = GetDC(0);
-    SaveDC(hdc);
+    HDC hdc = GetDC( 0 );
+    SaveDC( hdc );
 
-    cairo_scaled_font_t* scaledFont = m_platformData.scaledFont();
-    cairo_win32_scaled_font_select_font(scaledFont, hdc);
+    cairo_scaled_font_t *scaledFont = m_platformData.scaledFont();
+    cairo_win32_scaled_font_select_font( scaledFont, hdc );
 
     int width;
-    GetCharWidthI(hdc, glyph, 1, 0, &width);
+    GetCharWidthI( hdc, glyph, 1, 0, &width );
 
-    cairo_win32_scaled_font_done_font(scaledFont);
+    cairo_win32_scaled_font_done_font( scaledFont );
 
-    RestoreDC(hdc, -1);
-    ReleaseDC(0, hdc);
+    RestoreDC( hdc, -1 );
+    ReleaseDC( 0, hdc );
 
-    const double metricsMultiplier = cairo_win32_scaled_font_get_metrics_factor(scaledFont) * m_platformData.size();
+    const double metricsMultiplier = cairo_win32_scaled_font_get_metrics_factor( scaledFont ) * m_platformData.size();
     return width * metricsMultiplier;
 }
 

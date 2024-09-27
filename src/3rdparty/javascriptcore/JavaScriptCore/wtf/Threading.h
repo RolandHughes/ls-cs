@@ -99,50 +99,53 @@ class QWaitCondition;
     static T name; \
     WTF::unlockAtomicallyInitializedStaticMutex();
 
-namespace WTF {
+namespace WTF
+{
 
 typedef uint32_t ThreadIdentifier;
-typedef void* (*ThreadFunction)(void* argument);
+typedef void *( *ThreadFunction )( void *argument );
 
 // Returns 0 if thread creation failed.
 // The thread name must be a literal since on some platforms it's passed in to the thread.
-ThreadIdentifier createThread(ThreadFunction, void*, const char* threadName);
+ThreadIdentifier createThread( ThreadFunction, void *, const char *threadName );
 
 // Internal platform-specific createThread implementation.
-ThreadIdentifier createThreadInternal(ThreadFunction, void*, const char* threadName);
+ThreadIdentifier createThreadInternal( ThreadFunction, void *, const char *threadName );
 
 // Called in the thread during initialization.
 // Helpful for platforms where the thread name must be set from within the thread.
-void initializeCurrentThreadInternal(const char* threadName);
+void initializeCurrentThreadInternal( const char *threadName );
 
 ThreadIdentifier currentThread();
 bool isMainThread();
-int waitForThreadCompletion(ThreadIdentifier, void**);
-void detachThread(ThreadIdentifier);
+int waitForThreadCompletion( ThreadIdentifier, void ** );
+void detachThread( ThreadIdentifier );
 
 #if USE(PTHREADS)
 typedef pthread_mutex_t PlatformMutex;
 #if HAVE(PTHREAD_RWLOCK)
 typedef pthread_rwlock_t PlatformReadWriteLock;
 #else
-typedef void* PlatformReadWriteLock;
+typedef void *PlatformReadWriteLock;
 #endif
 typedef pthread_cond_t PlatformCondition;
 #elif PLATFORM(GTK)
 typedef GOwnPtr<GMutex> PlatformMutex;
-typedef void* PlatformReadWriteLock; // FIXME: Implement.
+typedef void *PlatformReadWriteLock; // FIXME: Implement.
 typedef GOwnPtr<GCond> PlatformCondition;
 #elif PLATFORM(QT)
-typedef QT_PREPEND_NAMESPACE(QMutex)* PlatformMutex;
-typedef void* PlatformReadWriteLock; // FIXME: Implement.
-typedef QT_PREPEND_NAMESPACE(QWaitCondition)* PlatformCondition;
+typedef QT_PREPEND_NAMESPACE( QMutex ) *PlatformMutex;
+typedef void *PlatformReadWriteLock; // FIXME: Implement.
+typedef QT_PREPEND_NAMESPACE( QWaitCondition ) *PlatformCondition;
 #elif OS(WINDOWS)
-struct PlatformMutex {
+struct PlatformMutex
+{
     CRITICAL_SECTION m_internalMutex;
     size_t m_recursionCount;
 };
-typedef void* PlatformReadWriteLock; // FIXME: Implement.
-struct PlatformCondition {
+typedef void *PlatformReadWriteLock; // FIXME: Implement.
+struct PlatformCondition
+{
     size_t m_waitersGone;
     size_t m_waitersBlocked;
     size_t m_waitersToUnblock;
@@ -150,16 +153,17 @@ struct PlatformCondition {
     HANDLE m_blockQueue;
     HANDLE m_unblockLock;
 
-    bool timedWait(PlatformMutex&, DWORD durationMilliseconds);
-    void signal(bool unblockAll);
+    bool timedWait( PlatformMutex &, DWORD durationMilliseconds );
+    void signal( bool unblockAll );
 };
 #else
-typedef void* PlatformMutex;
-typedef void* PlatformReadWriteLock;
-typedef void* PlatformCondition;
+typedef void *PlatformMutex;
+typedef void *PlatformReadWriteLock;
+typedef void *PlatformCondition;
 #endif
 
-class Mutex : public Noncopyable {
+class Mutex : public Noncopyable
+{
 public:
     Mutex();
     ~Mutex();
@@ -169,14 +173,18 @@ public:
     void unlock();
 
 public:
-    PlatformMutex& impl() { return m_mutex; }
+    PlatformMutex &impl()
+    {
+        return m_mutex;
+    }
 private:
     PlatformMutex m_mutex;
 };
 
 typedef Locker<Mutex> MutexLocker;
 
-class ReadWriteLock : public Noncopyable {
+class ReadWriteLock : public Noncopyable
+{
 public:
     ReadWriteLock();
     ~ReadWriteLock();
@@ -193,15 +201,16 @@ private:
     PlatformReadWriteLock m_readWriteLock;
 };
 
-class ThreadCondition : public Noncopyable {
+class ThreadCondition : public Noncopyable
+{
 public:
     ThreadCondition();
     ~ThreadCondition();
 
-    void wait(Mutex& mutex);
+    void wait( Mutex &mutex );
     // Returns true if the condition was signaled before absoluteTime, false if the absoluteTime was reached or is in the past.
     // The absoluteTime is in seconds, starting on January 1, 1970. The time is assumed to use the same time zone as WTF::currentTime().
-    bool timedWait(Mutex&, double absoluteTime);
+    bool timedWait( Mutex &, double absoluteTime );
     void signal();
     void broadcast();
 
@@ -213,45 +222,76 @@ private:
 #define WTF_USE_LOCKFREE_THREADSAFESHARED 1
 
 #if COMPILER(MINGW) || COMPILER(MSVC7) || OS(WINCE)
-inline int atomicIncrement(int* addend) { return InterlockedIncrement(reinterpret_cast<long*>(addend)); }
-inline int atomicDecrement(int* addend) { return InterlockedDecrement(reinterpret_cast<long*>(addend)); }
+inline int atomicIncrement( int *addend )
+{
+    return InterlockedIncrement( reinterpret_cast<long *>( addend ) );
+}
+inline int atomicDecrement( int *addend )
+{
+    return InterlockedDecrement( reinterpret_cast<long *>( addend ) );
+}
 #else
-inline int atomicIncrement(int volatile* addend) { return InterlockedIncrement(reinterpret_cast<long volatile*>(addend)); }
-inline int atomicDecrement(int volatile* addend) { return InterlockedDecrement(reinterpret_cast<long volatile*>(addend)); }
+inline int atomicIncrement( int volatile *addend )
+{
+    return InterlockedIncrement( reinterpret_cast<long volatile *>( addend ) );
+}
+inline int atomicDecrement( int volatile *addend )
+{
+    return InterlockedDecrement( reinterpret_cast<long volatile *>( addend ) );
+}
 #endif
 
 #elif OS(ANDROID)
 
-inline int atomicIncrement(int volatile* addend) { return android_atomic_inc(addend); }
-inline int atomicDecrement(int volatile* addend) { return android_atomic_dec(addend); }
+inline int atomicIncrement( int volatile *addend )
+{
+    return android_atomic_inc( addend );
+}
+inline int atomicDecrement( int volatile *addend )
+{
+    return android_atomic_dec( addend );
+}
 
 #elif OS(QNX)
 
 // component functions take and return unsigned
-inline int atomicIncrement(int volatile* addend) { return (int) atomic_add_value((unsigned volatile*)addend, 1); }
-inline int atomicDecrement(int volatile* addend) { return (int) atomic_sub_value((unsigned volatile*)addend, 1); }
+inline int atomicIncrement( int volatile *addend )
+{
+    return ( int ) atomic_add_value( ( unsigned volatile * )addend, 1 );
+}
+inline int atomicDecrement( int volatile *addend )
+{
+    return ( int ) atomic_sub_value( ( unsigned volatile * )addend, 1 );
+}
 
 #elif COMPILER(GCC) && !CPU(SPARC64) && !OS(SYMBIAN) // sizeof(_Atomic_word) != sizeof(int) on sparc64 gcc
 #define WTF_USE_LOCKFREE_THREADSAFESHARED 1
 
-inline int atomicIncrement(int volatile* addend) { return __sync_add_and_fetch(addend, 1); }
-inline int atomicDecrement(int volatile* addend) { return __sync_sub_and_fetch(addend, 1); }
+inline int atomicIncrement( int volatile *addend )
+{
+    return __sync_add_and_fetch( addend, 1 );
+}
+inline int atomicDecrement( int volatile *addend )
+{
+    return __sync_sub_and_fetch( addend, 1 );
+}
 
 #endif
 
-class ThreadSafeSharedBase : public Noncopyable {
+class ThreadSafeSharedBase : public Noncopyable
+{
 public:
-    ThreadSafeSharedBase(int initialRefCount = 1)
-        : m_refCount(initialRefCount)
+    ThreadSafeSharedBase( int initialRefCount = 1 )
+        : m_refCount( initialRefCount )
     {
     }
 
     void ref()
     {
 #if USE(LOCKFREE_THREADSAFESHARED)
-        atomicIncrement(&m_refCount);
+        atomicIncrement( &m_refCount );
 #else
-        MutexLocker locker(m_mutex);
+        MutexLocker locker( m_mutex );
         ++m_refCount;
 #endif
     }
@@ -264,9 +304,9 @@ public:
     int refCount() const
     {
 #if !USE(LOCKFREE_THREADSAFESHARED)
-        MutexLocker locker(m_mutex);
+        MutexLocker locker( m_mutex );
 #endif
-        return static_cast<int const volatile &>(m_refCount);
+        return static_cast<int const volatile &>( m_refCount );
     }
 
 protected:
@@ -274,17 +314,25 @@ protected:
     bool derefBase()
     {
 #if USE(LOCKFREE_THREADSAFESHARED)
-        if (atomicDecrement(&m_refCount) <= 0)
+
+        if ( atomicDecrement( &m_refCount ) <= 0 )
+        {
             return true;
+        }
+
 #else
         int refCount;
         {
-            MutexLocker locker(m_mutex);
+            MutexLocker locker( m_mutex );
             --m_refCount;
             refCount = m_refCount;
         }
-        if (refCount <= 0)
+
+        if ( refCount <= 0 )
+        {
             return true;
+        }
+
 #endif
         return false;
     }
@@ -299,17 +347,20 @@ private:
 #endif
 };
 
-template<class T> class ThreadSafeShared : public ThreadSafeSharedBase {
+template<class T> class ThreadSafeShared : public ThreadSafeSharedBase
+{
 public:
-    ThreadSafeShared(int initialRefCount = 1)
-        : ThreadSafeSharedBase(initialRefCount)
+    ThreadSafeShared( int initialRefCount = 1 )
+        : ThreadSafeSharedBase( initialRefCount )
     {
     }
 
     void deref()
     {
-        if (derefBase())
-            delete static_cast<T*>(this);
+        if ( derefBase() )
+        {
+            delete static_cast<T *>( this );
+        }
     }
 };
 

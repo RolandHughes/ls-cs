@@ -30,33 +30,35 @@
 
 class Q_SQL_EXPORT QSqlIndex : public QSqlRecord
 {
- public:
-   QSqlIndex(const QString &cursorName = QString(), const QString &name = QString());
-   QSqlIndex(const QSqlIndex &other);
-   ~QSqlIndex();
+public:
+    QSqlIndex( const QString &cursorName = QString(), const QString &name = QString() );
+    QSqlIndex( const QSqlIndex &other );
+    ~QSqlIndex();
 
-   QSqlIndex &operator=(const QSqlIndex &other);
-   void setCursorName(const QString &cursorName);
-   inline QString cursorName() const {
-      return cursor;
-   }
+    QSqlIndex &operator=( const QSqlIndex &other );
+    void setCursorName( const QString &cursorName );
+    inline QString cursorName() const
+    {
+        return cursor;
+    }
 
-   void setName(const QString &name);
-   inline QString name() const {
-      return nm;
-   }
+    void setName( const QString &name );
+    inline QString name() const
+    {
+        return nm;
+    }
 
-   void append(const QSqlField &field);
-   void append(const QSqlField &field, bool desc);
+    void append( const QSqlField &field );
+    void append( const QSqlField &field, bool desc );
 
-   bool isDescending(int i) const;
-   void setDescending(int i, bool desc);
+    bool isDescending( int i ) const;
+    void setDescending( int i, bool desc );
 
- private:
-   QString createField(int i, const QString &prefix, bool verbose) const;
-   QString cursor;
-   QString nm;
-   QList<bool> sorts;
+private:
+    QString createField( int i, const QString &prefix, bool verbose ) const;
+    QString cursor;
+    QString nm;
+    QList<bool> sorts;
 };
 
 #endif // QSQLINDEX_H

@@ -26,59 +26,60 @@
 
 #include <qanytype_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class AtomicType;
 
 class AnySimpleType : public AnyType
 {
- public:
-   typedef QExplicitlySharedDataPointer<AnySimpleType> Ptr;
-   typedef QList<AnySimpleType::Ptr> List;
-   friend class BuiltinTypes;
+public:
+    typedef QExplicitlySharedDataPointer<AnySimpleType> Ptr;
+    typedef QList<AnySimpleType::Ptr> List;
+    friend class BuiltinTypes;
 
-   virtual ~AnySimpleType();
+    virtual ~AnySimpleType();
 
-   QXmlName name(const NamePool::Ptr &np) const override;
+    QXmlName name( const NamePool::Ptr &np ) const override;
 
-   /**
-    * @returns always @c xs:anySimpleType
-    */
-   QString displayName(const NamePool::Ptr &np) const override;
+    /**
+     * @returns always @c xs:anySimpleType
+     */
+    QString displayName( const NamePool::Ptr &np ) const override;
 
-   /**
-    * @returns always BuiltinTypes::xsAnyType
-    */
-   SchemaType::Ptr wxsSuperType() const override;
+    /**
+     * @returns always BuiltinTypes::xsAnyType
+     */
+    SchemaType::Ptr wxsSuperType() const override;
 
-   /**
-    * xs:anySimpleType is the special "simple ur-type". Therefore this function
-    * returns SchemaType::None
-    *
-    * @returns SchemaType::None
-    */
-   TypeCategory category() const override;
+    /**
+     * xs:anySimpleType is the special "simple ur-type". Therefore this function
+     * returns SchemaType::None
+     *
+     * @returns SchemaType::None
+     */
+    TypeCategory category() const override;
 
-   /**
-    * The simple ur-type is a "special restriction of the ur-type definition",
-    * according to XML Schema Part 2: Datatypes Second Edition about xs:anySimpleType
-    *
-    * @returns DERIVATION_RESTRICTION
-    */
-   SchemaType::DerivationMethod derivationMethod() const override;
+    /**
+     * The simple ur-type is a "special restriction of the ur-type definition",
+     * according to XML Schema Part 2: Datatypes Second Edition about xs:anySimpleType
+     *
+     * @returns DERIVATION_RESTRICTION
+     */
+    SchemaType::DerivationMethod derivationMethod() const override;
 
-   /**
-    * Always returns @c true.
-    */
-   bool isSimpleType() const override;
+    /**
+     * Always returns @c true.
+     */
+    bool isSimpleType() const override;
 
-   /**
-    * Always returns @c false.
-    */
-   bool isComplexType() const override;
+    /**
+     * Always returns @c false.
+     */
+    bool isComplexType() const override;
 
- protected:
-   AnySimpleType();
+protected:
+    AnySimpleType();
 
 };
 

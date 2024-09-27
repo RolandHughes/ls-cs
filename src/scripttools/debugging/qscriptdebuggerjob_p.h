@@ -35,24 +35,24 @@ class QScriptDebuggerJobPrivate;
 
 class QScriptDebuggerJob
 {
- public:
-   QScriptDebuggerJob();
-   virtual ~QScriptDebuggerJob();
+public:
+    QScriptDebuggerJob();
+    virtual ~QScriptDebuggerJob();
 
-   virtual void start() = 0;
+    virtual void start() = 0;
 
-   void finish();
+    void finish();
 
-   void hibernateUntilEvaluateFinished();
-   virtual void evaluateFinished(const QScriptDebuggerValue &result);
+    void hibernateUntilEvaluateFinished();
+    virtual void evaluateFinished( const QScriptDebuggerValue &result );
 
- protected:
-   QScriptDebuggerJob(QScriptDebuggerJobPrivate &dd);
-   QScopedPointer<QScriptDebuggerJobPrivate> d_ptr;
+protected:
+    QScriptDebuggerJob( QScriptDebuggerJobPrivate &dd );
+    QScopedPointer<QScriptDebuggerJobPrivate> d_ptr;
 
- private:
-   Q_DECLARE_PRIVATE(QScriptDebuggerJob)
-   Q_DISABLE_COPY(QScriptDebuggerJob)
+private:
+    Q_DECLARE_PRIVATE( QScriptDebuggerJob )
+    Q_DISABLE_COPY( QScriptDebuggerJob )
 };
 
 QT_END_NAMESPACE

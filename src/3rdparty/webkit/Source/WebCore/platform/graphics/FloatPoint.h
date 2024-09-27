@@ -56,39 +56,56 @@ class BPoint;
 struct SkPoint;
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
 class AffineTransform;
 class TransformationMatrix;
 class IntPoint;
 
-class FloatPoint {
+class FloatPoint
+{
 public:
-    FloatPoint() : m_x(0), m_y(0) { }
-    FloatPoint(float x, float y) : m_x(x), m_y(y) { }
-    FloatPoint(const IntPoint&);
+    FloatPoint() : m_x( 0 ), m_y( 0 ) { }
+    FloatPoint( float x, float y ) : m_x( x ), m_y( y ) { }
+    FloatPoint( const IntPoint & );
 
 
-    static FloatPoint zero() { return FloatPoint(); }
+    static FloatPoint zero()
+    {
+        return FloatPoint();
+    }
 
-    static FloatPoint narrowPrecision(double x, double y);
+    static FloatPoint narrowPrecision( double x, double y );
 
-    float x() const { return m_x; }
-    float y() const { return m_y; }
+    float x() const
+    {
+        return m_x;
+    }
+    float y() const
+    {
+        return m_y;
+    }
 
-    void setX(float x) { m_x = x; }
-    void setY(float y) { m_y = y; }
-    void set(float x, float y)
+    void setX( float x )
+    {
+        m_x = x;
+    }
+    void setY( float y )
+    {
+        m_y = y;
+    }
+    void set( float x, float y )
     {
         m_x = x;
         m_y = y;
     }
-    void move(float dx, float dy)
+    void move( float dx, float dy )
     {
         m_x += dx;
         m_y += dy;
     }
-    void scale(float sx, float sy)
+    void scale( float sx, float sy )
     {
         m_x *= sx;
         m_y *= sy;
@@ -96,7 +113,7 @@ public:
 
     void normalize();
 
-    float dot(const FloatPoint& a) const
+    float dot( const FloatPoint &a ) const
     {
         return m_x * a.x() + m_y * a.y();
     }
@@ -108,102 +125,103 @@ public:
     }
 
 #if USE(CG) || USE(SKIA_ON_MAC_CHROME)
-    FloatPoint(const CGPoint&);
+    FloatPoint( const CGPoint & );
     operator CGPoint() const;
 #endif
 
 #if (PLATFORM(MAC) && !defined(NSGEOMETRY_TYPES_SAME_AS_CGGEOMETRY_TYPES)) \
         || (PLATFORM(CHROMIUM) && OS(DARWIN))
-    FloatPoint(const NSPoint&);
+    FloatPoint( const NSPoint & );
     operator NSPoint() const;
 #endif
 
 #if PLATFORM(QT)
-    FloatPoint(const QPointF&);
+    FloatPoint( const QPointF & );
     operator QPointF() const;
 #endif
 
 #if PLATFORM(HAIKU)
-    FloatPoint(const BPoint&);
+    FloatPoint( const BPoint & );
     operator BPoint() const;
 #endif
 
 #if USE(SKIA)
     operator SkPoint() const;
-    FloatPoint(const SkPoint&);
+    FloatPoint( const SkPoint & );
 #endif
 
-    FloatPoint matrixTransform(const TransformationMatrix&) const;
-    FloatPoint matrixTransform(const AffineTransform&) const;
+    FloatPoint matrixTransform( const TransformationMatrix & ) const;
+    FloatPoint matrixTransform( const AffineTransform & ) const;
 
 private:
     float m_x, m_y;
 };
 
 
-inline FloatPoint& operator+=(FloatPoint& a, const FloatSize& b)
+inline FloatPoint &operator+=( FloatPoint &a, const FloatSize &b )
 {
-    a.move(b.width(), b.height());
+    a.move( b.width(), b.height() );
     return a;
 }
 
-inline FloatPoint& operator+=(FloatPoint& a, const FloatPoint& b)
+inline FloatPoint &operator+=( FloatPoint &a, const FloatPoint &b )
 {
-    a.move(b.x(), b.y());
+    a.move( b.x(), b.y() );
     return a;
 }
 
-inline FloatPoint& operator-=(FloatPoint& a, const FloatSize& b)
+inline FloatPoint &operator-=( FloatPoint &a, const FloatSize &b )
 {
-    a.move(-b.width(), -b.height());
+    a.move( -b.width(), -b.height() );
     return a;
 }
 
-inline FloatPoint operator+(const FloatPoint& a, const FloatSize& b)
+inline FloatPoint operator+( const FloatPoint &a, const FloatSize &b )
 {
-    return FloatPoint(a.x() + b.width(), a.y() + b.height());
+    return FloatPoint( a.x() + b.width(), a.y() + b.height() );
 }
 
-inline FloatPoint operator+(const FloatPoint& a, const FloatPoint& b)
+inline FloatPoint operator+( const FloatPoint &a, const FloatPoint &b )
 {
-    return FloatPoint(a.x() + b.x(), a.y() + b.y());
+    return FloatPoint( a.x() + b.x(), a.y() + b.y() );
 }
 
-inline FloatSize operator-(const FloatPoint& a, const FloatPoint& b)
+inline FloatSize operator-( const FloatPoint &a, const FloatPoint &b )
 {
-    return FloatSize(a.x() - b.x(), a.y() - b.y());
+    return FloatSize( a.x() - b.x(), a.y() - b.y() );
 }
 
-inline FloatPoint operator-(const FloatPoint& a, const FloatSize& b)
+inline FloatPoint operator-( const FloatPoint &a, const FloatSize &b )
 {
-    return FloatPoint(a.x() - b.width(), a.y() - b.height());
+    return FloatPoint( a.x() - b.width(), a.y() - b.height() );
 }
 
-inline bool operator==(const FloatPoint& a, const FloatPoint& b)
+inline bool operator==( const FloatPoint &a, const FloatPoint &b )
 {
     return a.x() == b.x() && a.y() == b.y();
 }
 
-inline bool operator!=(const FloatPoint& a, const FloatPoint& b)
+inline bool operator!=( const FloatPoint &a, const FloatPoint &b )
 {
     return a.x() != b.x() || a.y() != b.y();
 }
 
-inline float operator*(const FloatPoint& a, const FloatPoint& b)
+inline float operator*( const FloatPoint &a, const FloatPoint &b )
 {
     // dot product
-    return a.dot(b);
+    return a.dot( b );
 }
 
-inline IntPoint roundedIntPoint(const FloatPoint& p)
+inline IntPoint roundedIntPoint( const FloatPoint &p )
 {
-    return IntPoint(static_cast<int>(roundf(p.x())), static_cast<int>(roundf(p.y())));
+    return IntPoint( static_cast<int>( roundf( p.x() ) ), static_cast<int>( roundf( p.y() ) ) );
 }
 
-float findSlope(const FloatPoint& p1, const FloatPoint& p2, float& c);
+float findSlope( const FloatPoint &p1, const FloatPoint &p2, float &c );
 
 // Find point where lines through the two pairs of points intersect. Returns false if the lines don't intersect.
-bool findIntersection(const FloatPoint& p1, const FloatPoint& p2, const FloatPoint& d1, const FloatPoint& d2, FloatPoint& intersection);
+bool findIntersection( const FloatPoint &p1, const FloatPoint &p2, const FloatPoint &d1, const FloatPoint &d2,
+                       FloatPoint &intersection );
 
 }
 

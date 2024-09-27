@@ -29,29 +29,42 @@
 
 #include "ProgressEvent.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class XMLHttpRequestProgressEvent : public ProgressEvent {
+class XMLHttpRequestProgressEvent : public ProgressEvent
+{
 public:
     static PassRefPtr<XMLHttpRequestProgressEvent> create()
     {
-        return adoptRef(new XMLHttpRequestProgressEvent);
+        return adoptRef( new XMLHttpRequestProgressEvent );
     }
-    static PassRefPtr<XMLHttpRequestProgressEvent> create(const AtomicString& type, bool lengthComputable = false, unsigned long long loaded = 0, unsigned long long total = 0)
+    static PassRefPtr<XMLHttpRequestProgressEvent> create( const AtomicString &type, bool lengthComputable = false,
+            unsigned long long loaded = 0, unsigned long long total = 0 )
     {
-        return adoptRef(new XMLHttpRequestProgressEvent(type, lengthComputable, loaded, total));
+        return adoptRef( new XMLHttpRequestProgressEvent( type, lengthComputable, loaded, total ) );
     }
 
     // Those 2 synonyms are included for compatibility with Firefox.
-    unsigned long long position() const { return loaded(); }
-    unsigned long long totalSize() const { return total(); }
+    unsigned long long position() const
+    {
+        return loaded();
+    }
+    unsigned long long totalSize() const
+    {
+        return total();
+    }
 
 private:
-    virtual bool isXMLHttpRequestProgressEvent() const { return true; }
+    virtual bool isXMLHttpRequestProgressEvent() const
+    {
+        return true;
+    }
 
     XMLHttpRequestProgressEvent() { }
-    XMLHttpRequestProgressEvent(const AtomicString& type, bool lengthComputable, unsigned long long loaded, unsigned long long total)
-        : ProgressEvent(type, lengthComputable, loaded, total)
+    XMLHttpRequestProgressEvent( const AtomicString &type, bool lengthComputable, unsigned long long loaded,
+                                 unsigned long long total )
+        : ProgressEvent( type, lengthComputable, loaded, total )
     {
     }
 };

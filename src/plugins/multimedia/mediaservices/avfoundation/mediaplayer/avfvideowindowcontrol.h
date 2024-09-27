@@ -39,61 +39,61 @@ typedef UIView NativeView;
 
 class AVFVideoWindowControl : public QVideoWindowControl, public AVFVideoOutput
 {
-   CS_OBJECT_MULTIPLE(AVFVideoWindowControl,  QVideoWindowControl)
-   CS_INTERFACES(AVFVideoOutput)
+    CS_OBJECT_MULTIPLE( AVFVideoWindowControl,  QVideoWindowControl )
+    CS_INTERFACES( AVFVideoOutput )
 
- public:
-   AVFVideoWindowControl(QObject *parent = nullptr);
-   virtual ~AVFVideoWindowControl();
+public:
+    AVFVideoWindowControl( QObject *parent = nullptr );
+    virtual ~AVFVideoWindowControl();
 
-   // QVideoWindowControl interface
+    // QVideoWindowControl interface
 
-   WId winId() const override;
-   void setWinId(WId id) override;
+    WId winId() const override;
+    void setWinId( WId id ) override;
 
-   QRect displayRect() const override;
-   void setDisplayRect(const QRect &rect) override;
+    QRect displayRect() const override;
+    void setDisplayRect( const QRect &rect ) override;
 
-   bool isFullScreen() const override;
-   void setFullScreen(bool fullScreen) override;
+    bool isFullScreen() const override;
+    void setFullScreen( bool fullScreen ) override;
 
-   void repaint() override;
-   QSize nativeSize() const override;
+    void repaint() override;
+    QSize nativeSize() const override;
 
-   Qt::AspectRatioMode aspectRatioMode() const override;
-   void setAspectRatioMode(Qt::AspectRatioMode mode) override;
+    Qt::AspectRatioMode aspectRatioMode() const override;
+    void setAspectRatioMode( Qt::AspectRatioMode mode ) override;
 
-   int brightness() const override;
-   void setBrightness(int brightness) override;
+    int brightness() const override;
+    void setBrightness( int brightness ) override;
 
-   int contrast() const override;
-   void setContrast(int contrast) override;
+    int contrast() const override;
+    void setContrast( int contrast ) override;
 
-   int hue() const override;
-   void setHue(int hue) override;
+    int hue() const override;
+    void setHue( int hue ) override;
 
-   int saturation() const override;
-   void setSaturation(int saturation) override;
+    int saturation() const override;
+    void setSaturation( int saturation ) override;
 
-   // AVFVideoOutput interface
-   void setLayer(void *playerLayer) override;
+    // AVFVideoOutput interface
+    void setLayer( void *playerLayer ) override;
 
- private:
-   void updateAspectRatio();
-   void updatePlayerLayerBounds();
+private:
+    void updateAspectRatio();
+    void updatePlayerLayerBounds();
 
-   WId m_winId;
-   QRect m_displayRect;
-   bool m_fullscreen;
-   int m_brightness;
-   int m_contrast;
-   int m_hue;
-   int m_saturation;
-   Qt::AspectRatioMode m_aspectRatioMode;
-   QSize m_nativeSize;
+    WId m_winId;
+    QRect m_displayRect;
+    bool m_fullscreen;
+    int m_brightness;
+    int m_contrast;
+    int m_hue;
+    int m_saturation;
+    Qt::AspectRatioMode m_aspectRatioMode;
+    QSize m_nativeSize;
 
-   AVPlayerLayer *m_playerLayer;
-   NativeView *m_nativeView;
+    AVPlayerLayer *m_playerLayer;
+    NativeView *m_nativeView;
 };
 
 #endif

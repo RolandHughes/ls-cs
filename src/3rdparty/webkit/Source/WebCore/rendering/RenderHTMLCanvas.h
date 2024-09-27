@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef RenderHTMLCanvas_h
@@ -28,33 +28,44 @@
 
 #include "RenderReplaced.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class HTMLCanvasElement;
 
-class RenderHTMLCanvas : public RenderReplaced {
+class RenderHTMLCanvas : public RenderReplaced
+{
 public:
-    explicit RenderHTMLCanvas(HTMLCanvasElement*);
+    explicit RenderHTMLCanvas( HTMLCanvasElement * );
 
-    virtual bool isCanvas() const { return true; }
+    virtual bool isCanvas() const
+    {
+        return true;
+    }
     virtual bool requiresLayer() const;
 
     void canvasSizeChanged();
-    
+
 private:
-    virtual const char* renderName() const { return "RenderHTMLCanvas"; }
-    virtual void paintReplaced(PaintInfo&, int tx, int ty);
-    virtual void intrinsicSizeChanged() { canvasSizeChanged(); }
+    virtual const char *renderName() const
+    {
+        return "RenderHTMLCanvas";
+    }
+    virtual void paintReplaced( PaintInfo &, int tx, int ty );
+    virtual void intrinsicSizeChanged()
+    {
+        canvasSizeChanged();
+    }
 };
 
-inline RenderHTMLCanvas* toRenderHTMLCanvas(RenderObject* object)
+inline RenderHTMLCanvas *toRenderHTMLCanvas( RenderObject *object )
 {
-    ASSERT(!object || !strcmp(object->renderName(), "RenderHTMLCanvas"));
-    return static_cast<RenderHTMLCanvas*>(object);
+    ASSERT( !object || !strcmp( object->renderName(), "RenderHTMLCanvas" ) );
+    return static_cast<RenderHTMLCanvas *>( object );
 }
 
 // This will catch anyone doing an unnecessary cast.
-void toRenderHTMLCanvas(const RenderHTMLCanvas*);
+void toRenderHTMLCanvas( const RenderHTMLCanvas * );
 
 } // namespace WebCore
 

@@ -28,150 +28,151 @@
 
 #include <qstring.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 class XSLTTokenLookup
 {
- public:
-   enum NodeName
+public:
+    enum NodeName
 
-   {
-      NoKeyword,
-      AnalyzeString,
-      ApplyTemplates,
-      As,
-      Attribute,
-      AttributeSet,
-      ByteOrderMark,
-      CallTemplate,
-      CaseOrder,
-      CdataSectionElements,
-      Choose,
-      Collation,
-      Comment,
-      Copy,
-      CopyNamespaces,
-      CopyOf,
-      DataType,
-      DefaultCollation,
-      DefaultValidation,
-      DoctypePublic,
-      DoctypeSystem,
-      Document,
-      Element,
-      Elements,
-      Encoding,
-      EscapeUriAttributes,
-      ExcludeResultPrefixes,
-      ExtensionElementPrefixes,
-      Flags,
-      ForEach,
-      Format,
-      Function,
-      Href,
-      Id,
-      If,
-      Import,
-      ImportSchema,
-      Include,
-      IncludeContentType,
-      Indent,
-      InheritNamespaces,
-      InputTypeAnnotations,
-      Key,
-      Lang,
-      Match,
-      MatchingSubstring,
-      MediaType,
-      Message,
-      Method,
-      Mode,
-      Name,
-      Namespace,
-      NonMatchingSubstring,
-      NormalizationForm,
-      OmitXmlDeclaration,
-      Order,
-      Otherwise,
-      Output,
-      OutputVersion,
-      Override,
-      Param,
-      PerformSort,
-      PreserveSpace,
-      Priority,
-      ProcessingInstruction,
-      Regex,
-      Required,
-      ResultDocument,
-      SchemaLocation,
-      Select,
-      Separator,
-      Sequence,
-      Sort,
-      Stable,
-      Standalone,
-      StripSpace,
-      Stylesheet,
-      Template,
-      Terminate,
-      Test,
-      Text,
-      Transform,
-      Tunnel,
-      Type,
-      UndeclarePrefixes,
-      Use,
-      UseAttributeSets,
-      UseCharacterMaps,
-      UseWhen,
-      Validation,
-      ValueOf,
-      Variable,
-      Version,
-      When,
-      WithParam,
-      XpathDefaultNamespace
-   };
+    {
+        NoKeyword,
+        AnalyzeString,
+        ApplyTemplates,
+        As,
+        Attribute,
+        AttributeSet,
+        ByteOrderMark,
+        CallTemplate,
+        CaseOrder,
+        CdataSectionElements,
+        Choose,
+        Collation,
+        Comment,
+        Copy,
+        CopyNamespaces,
+        CopyOf,
+        DataType,
+        DefaultCollation,
+        DefaultValidation,
+        DoctypePublic,
+        DoctypeSystem,
+        Document,
+        Element,
+        Elements,
+        Encoding,
+        EscapeUriAttributes,
+        ExcludeResultPrefixes,
+        ExtensionElementPrefixes,
+        Flags,
+        ForEach,
+        Format,
+        Function,
+        Href,
+        Id,
+        If,
+        Import,
+        ImportSchema,
+        Include,
+        IncludeContentType,
+        Indent,
+        InheritNamespaces,
+        InputTypeAnnotations,
+        Key,
+        Lang,
+        Match,
+        MatchingSubstring,
+        MediaType,
+        Message,
+        Method,
+        Mode,
+        Name,
+        Namespace,
+        NonMatchingSubstring,
+        NormalizationForm,
+        OmitXmlDeclaration,
+        Order,
+        Otherwise,
+        Output,
+        OutputVersion,
+        Override,
+        Param,
+        PerformSort,
+        PreserveSpace,
+        Priority,
+        ProcessingInstruction,
+        Regex,
+        Required,
+        ResultDocument,
+        SchemaLocation,
+        Select,
+        Separator,
+        Sequence,
+        Sort,
+        Stable,
+        Standalone,
+        StripSpace,
+        Stylesheet,
+        Template,
+        Terminate,
+        Test,
+        Text,
+        Transform,
+        Tunnel,
+        Type,
+        UndeclarePrefixes,
+        Use,
+        UseAttributeSets,
+        UseCharacterMaps,
+        UseWhen,
+        Validation,
+        ValueOf,
+        Variable,
+        Version,
+        When,
+        WithParam,
+        XpathDefaultNamespace
+    };
 
-   static inline NodeName toToken(const QString &value);
-   static inline NodeName toToken(QStringView value);
-   static NodeName toToken(QStringView, int length);
+    static inline NodeName toToken( const QString &value );
+    static inline NodeName toToken( QStringView value );
+    static NodeName toToken( QStringView, int length );
 
-   static QString toString(NodeName token);
+    static QString toString( NodeName token );
 
- private:
-   static inline NodeName classifier2(QStringView data);
-   static inline NodeName classifier3(QStringView data);
-   static inline NodeName classifier4(QStringView data);
-   static inline NodeName classifier5(QStringView data);
-   static inline NodeName classifier6(QStringView data);
-   static inline NodeName classifier7(QStringView data);
-   static inline NodeName classifier8(QStringView data);
-   static inline NodeName classifier9(QStringView data);
-   static inline NodeName classifier10(QStringView data);
-   static inline NodeName classifier11(QStringView data);
-   static inline NodeName classifier12(QStringView data);
-   static inline NodeName classifier13(QStringView data);
-   static inline NodeName classifier14(QStringView data);
-   static inline NodeName classifier15(QStringView data);
-   static inline NodeName classifier17(QStringView data);
-   static inline NodeName classifier18(QStringView data);
-   static inline NodeName classifier20(QStringView data);
-   static inline NodeName classifier21(QStringView data);
-   static inline NodeName classifier22(QStringView data);
-   static inline NodeName classifier23(QStringView data);
-   static inline NodeName classifier26(QStringView data);
+private:
+    static inline NodeName classifier2( QStringView data );
+    static inline NodeName classifier3( QStringView data );
+    static inline NodeName classifier4( QStringView data );
+    static inline NodeName classifier5( QStringView data );
+    static inline NodeName classifier6( QStringView data );
+    static inline NodeName classifier7( QStringView data );
+    static inline NodeName classifier8( QStringView data );
+    static inline NodeName classifier9( QStringView data );
+    static inline NodeName classifier10( QStringView data );
+    static inline NodeName classifier11( QStringView data );
+    static inline NodeName classifier12( QStringView data );
+    static inline NodeName classifier13( QStringView data );
+    static inline NodeName classifier14( QStringView data );
+    static inline NodeName classifier15( QStringView data );
+    static inline NodeName classifier17( QStringView data );
+    static inline NodeName classifier18( QStringView data );
+    static inline NodeName classifier20( QStringView data );
+    static inline NodeName classifier21( QStringView data );
+    static inline NodeName classifier22( QStringView data );
+    static inline NodeName classifier23( QStringView data );
+    static inline NodeName classifier26( QStringView data );
 
 };
 
-inline XSLTTokenLookup::NodeName XSLTTokenLookup::toToken(const QString &value)
+inline XSLTTokenLookup::NodeName XSLTTokenLookup::toToken( const QString &value )
 {
-   return toToken(value, value.length());
+    return toToken( value, value.length() );
 }
 
-inline XSLTTokenLookup::NodeName XSLTTokenLookup::toToken(QStringView value)
+inline XSLTTokenLookup::NodeName XSLTTokenLookup::toToken( QStringView value )
 {
-   return toToken(value, value.length());
+    return toToken( value, value.length() );
 }
 
 }

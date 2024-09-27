@@ -47,59 +47,65 @@
 using namespace WebCore;
 using namespace HTMLNames;
 
-namespace WebKit {
-
-typedef HashMap<Node*, InjectedBundleNodeHandle*> DOMHandleCache;
-
-static DOMHandleCache& domHandleCache()
+namespace WebKit
 {
-    DEFINE_STATIC_LOCAL(DOMHandleCache, cache, ());
+
+typedef HashMap<Node *, InjectedBundleNodeHandle *> DOMHandleCache;
+
+static DOMHandleCache &domHandleCache()
+{
+    DEFINE_STATIC_LOCAL( DOMHandleCache, cache, () );
     return cache;
 }
 
-PassRefPtr<InjectedBundleNodeHandle> InjectedBundleNodeHandle::getOrCreate(JSContextRef, JSObjectRef object)
+PassRefPtr<InjectedBundleNodeHandle> InjectedBundleNodeHandle::getOrCreate( JSContextRef, JSObjectRef object )
 {
-    Node* node = toNode(toJS(object));
-    return getOrCreate(node);
+    Node *node = toNode( toJS( object ) );
+    return getOrCreate( node );
 }
 
-PassRefPtr<InjectedBundleNodeHandle> InjectedBundleNodeHandle::getOrCreate(Node* node)
+PassRefPtr<InjectedBundleNodeHandle> InjectedBundleNodeHandle::getOrCreate( Node *node )
 {
-    if (!node)
+    if ( !node )
+    {
         return 0;
+    }
 
-    std::pair<DOMHandleCache::iterator, bool> result = domHandleCache().add(node, 0);
-    if (!result.second)
-        return PassRefPtr<InjectedBundleNodeHandle>(result.first->second);
+    std::pair<DOMHandleCache::iterator, bool> result = domHandleCache().add( node, 0 );
 
-    RefPtr<InjectedBundleNodeHandle> nodeHandle = InjectedBundleNodeHandle::create(node);
+    if ( !result.second )
+    {
+        return PassRefPtr<InjectedBundleNodeHandle>( result.first->second );
+    }
+
+    RefPtr<InjectedBundleNodeHandle> nodeHandle = InjectedBundleNodeHandle::create( node );
     result.first->second = nodeHandle.get();
     return nodeHandle.release();
 }
 
-PassRefPtr<InjectedBundleNodeHandle> InjectedBundleNodeHandle::create(Node* node)
+PassRefPtr<InjectedBundleNodeHandle> InjectedBundleNodeHandle::create( Node *node )
 {
-    return adoptRef(new InjectedBundleNodeHandle(node));
+    return adoptRef( new InjectedBundleNodeHandle( node ) );
 }
 
-InjectedBundleNodeHandle::InjectedBundleNodeHandle(Node* node)
-    : m_node(node)
+InjectedBundleNodeHandle::InjectedBundleNodeHandle( Node *node )
+    : m_node( node )
 {
 }
 
 InjectedBundleNodeHandle::~InjectedBundleNodeHandle()
 {
-    domHandleCache().remove(m_node.get());
+    domHandleCache().remove( m_node.get() );
 }
 
-Node* InjectedBundleNodeHandle::coreNode() const
+Node *InjectedBundleNodeHandle::coreNode() const
 {
     return m_node.get();
 }
 
 PassRefPtr<InjectedBundleNodeHandle> InjectedBundleNodeHandle::document()
 {
-    return getOrCreate(m_node->document());
+    return getOrCreate( m_node->document() );
 }
 
 // Additional DOM Operations
@@ -107,123 +113,158 @@ PassRefPtr<InjectedBundleNodeHandle> InjectedBundleNodeHandle::document()
 
 IntRect InjectedBundleNodeHandle::elementBounds() const
 {
-    if (!m_node->isElementNode())
+    if ( !m_node->isElementNode() )
+    {
         return IntRect();
+    }
 
-    return static_cast<Element*>(m_node.get())->boundsInWindowSpace();
-}
-    
-IntRect InjectedBundleNodeHandle::renderRect(bool* isReplaced) const
-{
-    return m_node.get()->renderRect(isReplaced);
+    return static_cast<Element *>( m_node.get() )->boundsInWindowSpace();
 }
 
-void InjectedBundleNodeHandle::setHTMLInputElementValueForUser(const String& value)
+IntRect InjectedBundleNodeHandle::renderRect( bool *isReplaced ) const
 {
-    if (!m_node->hasTagName(inputTag))
+    return m_node.get()->renderRect( isReplaced );
+}
+
+void InjectedBundleNodeHandle::setHTMLInputElementValueForUser( const String &value )
+{
+    if ( !m_node->hasTagName( inputTag ) )
+    {
         return;
+    }
 
-    static_cast<HTMLInputElement*>(m_node.get())->setValueForUser(value);
+    static_cast<HTMLInputElement *>( m_node.get() )->setValueForUser( value );
 }
 
 bool InjectedBundleNodeHandle::isHTMLInputElementAutofilled() const
 {
-    if (!m_node->hasTagName(inputTag))
+    if ( !m_node->hasTagName( inputTag ) )
+    {
         return false;
-    
-    return static_cast<HTMLInputElement*>(m_node.get())->isAutofilled();
+    }
+
+    return static_cast<HTMLInputElement *>( m_node.get() )->isAutofilled();
 }
 
-void InjectedBundleNodeHandle::setHTMLInputElementAutofilled(bool filled)
+void InjectedBundleNodeHandle::setHTMLInputElementAutofilled( bool filled )
 {
-    if (!m_node->hasTagName(inputTag))
+    if ( !m_node->hasTagName( inputTag ) )
+    {
         return;
+    }
 
-    static_cast<HTMLInputElement*>(m_node.get())->setAutofilled(filled);
+    static_cast<HTMLInputElement *>( m_node.get() )->setAutofilled( filled );
 }
 
 bool InjectedBundleNodeHandle::htmlInputElementLastChangeWasUserEdit()
 {
-    if (!m_node->hasTagName(inputTag))
+    if ( !m_node->hasTagName( inputTag ) )
+    {
         return false;
+    }
 
-    return static_cast<HTMLInputElement*>(m_node.get())->lastChangeWasUserEdit();
+    return static_cast<HTMLInputElement *>( m_node.get() )->lastChangeWasUserEdit();
 }
 
 bool InjectedBundleNodeHandle::htmlTextAreaElementLastChangeWasUserEdit()
 {
-    if (!m_node->hasTagName(textareaTag))
+    if ( !m_node->hasTagName( textareaTag ) )
+    {
         return false;
+    }
 
-    return static_cast<HTMLTextAreaElement*>(m_node.get())->lastChangeWasUserEdit();
+    return static_cast<HTMLTextAreaElement *>( m_node.get() )->lastChangeWasUserEdit();
 }
 
 PassRefPtr<InjectedBundleNodeHandle> InjectedBundleNodeHandle::htmlTableCellElementCellAbove()
 {
-    if (!m_node->hasTagName(tdTag))
+    if ( !m_node->hasTagName( tdTag ) )
+    {
         return 0;
+    }
 
-    return getOrCreate(static_cast<HTMLTableCellElement*>(m_node.get())->cellAbove());
+    return getOrCreate( static_cast<HTMLTableCellElement *>( m_node.get() )->cellAbove() );
 }
 
 PassRefPtr<InjectedBundleNodeHandle> InjectedBundleNodeHandle::elementShadowRoot()
 {
-    if (!m_node->isElementNode())
+    if ( !m_node->isElementNode() )
+    {
         return 0;
+    }
 
-    return getOrCreate(static_cast<Element*>(m_node.get())->shadowRoot());
+    return getOrCreate( static_cast<Element *>( m_node.get() )->shadowRoot() );
 }
 
 PassRefPtr<InjectedBundleNodeHandle> InjectedBundleNodeHandle::elementEnsureShadowRoot()
 {
-    if (!m_node->isElementNode())
+    if ( !m_node->isElementNode() )
+    {
         return 0;
+    }
 
-    return getOrCreate(static_cast<Element*>(m_node.get())->ensureShadowRoot());
+    return getOrCreate( static_cast<Element *>( m_node.get() )->ensureShadowRoot() );
 }
 
 void InjectedBundleNodeHandle::elementRemoveShadowRoot()
 {
-    if (!m_node->isElementNode())
+    if ( !m_node->isElementNode() )
+    {
         return;
+    }
 
-    static_cast<Element*>(m_node.get())->removeShadowRoot();
+    static_cast<Element *>( m_node.get() )->removeShadowRoot();
 }
 
 PassRefPtr<WebFrame> InjectedBundleNodeHandle::documentFrame()
 {
-    if (!m_node->isDocumentNode())
+    if ( !m_node->isDocumentNode() )
+    {
         return 0;
+    }
 
-    Frame* frame = static_cast<Document*>(m_node.get())->frame();
-    if (!frame)
+    Frame *frame = static_cast<Document *>( m_node.get() )->frame();
+
+    if ( !frame )
+    {
         return 0;
+    }
 
-    return static_cast<WebFrameLoaderClient*>(frame->loader()->client())->webFrame();
+    return static_cast<WebFrameLoaderClient *>( frame->loader()->client() )->webFrame();
 }
 
 PassRefPtr<WebFrame> InjectedBundleNodeHandle::htmlFrameElementContentFrame()
 {
-    if (!m_node->hasTagName(frameTag))
+    if ( !m_node->hasTagName( frameTag ) )
+    {
         return 0;
+    }
 
-    Frame* frame = static_cast<HTMLFrameElement*>(m_node.get())->contentFrame();
-    if (!frame)
+    Frame *frame = static_cast<HTMLFrameElement *>( m_node.get() )->contentFrame();
+
+    if ( !frame )
+    {
         return 0;
+    }
 
-    return static_cast<WebFrameLoaderClient*>(frame->loader()->client())->webFrame();
+    return static_cast<WebFrameLoaderClient *>( frame->loader()->client() )->webFrame();
 }
 
 PassRefPtr<WebFrame> InjectedBundleNodeHandle::htmlIFrameElementContentFrame()
 {
-    if (!m_node->hasTagName(iframeTag))
+    if ( !m_node->hasTagName( iframeTag ) )
+    {
         return 0;
+    }
 
-    Frame* frame = static_cast<HTMLIFrameElement*>(m_node.get())->contentFrame();
-    if (!frame)
+    Frame *frame = static_cast<HTMLIFrameElement *>( m_node.get() )->contentFrame();
+
+    if ( !frame )
+    {
         return 0;
+    }
 
-    return static_cast<WebFrameLoaderClient*>(frame->loader()->client())->webFrame();
+    return static_cast<WebFrameLoaderClient *>( frame->loader()->client() )->webFrame();
 }
 
 } // namespace WebKit

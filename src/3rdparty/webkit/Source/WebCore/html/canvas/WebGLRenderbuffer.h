@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef WebGLRenderbuffer_h
@@ -31,46 +31,81 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class WebGLRenderbuffer : public WebGLObject {
+class WebGLRenderbuffer : public WebGLObject
+{
 public:
-    virtual ~WebGLRenderbuffer() { deleteObject(); }
+    virtual ~WebGLRenderbuffer()
+    {
+        deleteObject();
+    }
 
-    static PassRefPtr<WebGLRenderbuffer> create(WebGLRenderingContext*);
+    static PassRefPtr<WebGLRenderbuffer> create( WebGLRenderingContext * );
 
-    void setInternalFormat(GC3Denum internalformat)
+    void setInternalFormat( GC3Denum internalformat )
     {
         m_internalFormat = internalformat;
         m_initialized = false;
     }
-    GC3Denum getInternalFormat() const { return m_internalFormat; }
+    GC3Denum getInternalFormat() const
+    {
+        return m_internalFormat;
+    }
 
-    void setSize(GC3Dsizei width, GC3Dsizei height)
+    void setSize( GC3Dsizei width, GC3Dsizei height )
     {
         m_width = width;
         m_height = height;
     }
-    GC3Dsizei getWidth() const { return m_width; }
-    GC3Dsizei getHeight() const { return m_height; }
+    GC3Dsizei getWidth() const
+    {
+        return m_width;
+    }
+    GC3Dsizei getHeight() const
+    {
+        return m_height;
+    }
 
-    void setIsValid(bool isValid) { m_isValid = isValid; }
-    bool isValid() const { return m_isValid; }
+    void setIsValid( bool isValid )
+    {
+        m_isValid = isValid;
+    }
+    bool isValid() const
+    {
+        return m_isValid;
+    }
 
-    bool isInitialized() const { return m_initialized; }
-    void setInitialized() { m_initialized = true; }
+    bool isInitialized() const
+    {
+        return m_initialized;
+    }
+    void setInitialized()
+    {
+        m_initialized = true;
+    }
 
-    bool hasEverBeenBound() const { return object() && m_hasEverBeenBound; }
+    bool hasEverBeenBound() const
+    {
+        return object() && m_hasEverBeenBound;
+    }
 
-    void setHasEverBeenBound() { m_hasEverBeenBound = true; }
+    void setHasEverBeenBound()
+    {
+        m_hasEverBeenBound = true;
+    }
 
 protected:
-    WebGLRenderbuffer(WebGLRenderingContext*);
+    WebGLRenderbuffer( WebGLRenderingContext * );
 
-    virtual void deleteObjectImpl(Platform3DObject);
+    virtual void deleteObjectImpl( Platform3DObject );
 
 private:
-    virtual bool isRenderbuffer() const { return true; }
+    virtual bool isRenderbuffer() const
+    {
+        return true;
+    }
 
     GC3Denum m_internalFormat;
     bool m_initialized;

@@ -28,90 +28,111 @@
 #include "SVGFilterBuilder.h"
 #include "SVGNames.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Animated property definitions
-DEFINE_ANIMATED_STRING(SVGFEOffsetElement, SVGNames::inAttr, In1, in1)
-DEFINE_ANIMATED_NUMBER(SVGFEOffsetElement, SVGNames::dxAttr, Dx, dx)
-DEFINE_ANIMATED_NUMBER(SVGFEOffsetElement, SVGNames::dyAttr, Dy, dy)
+DEFINE_ANIMATED_STRING( SVGFEOffsetElement, SVGNames::inAttr, In1, in1 )
+DEFINE_ANIMATED_NUMBER( SVGFEOffsetElement, SVGNames::dxAttr, Dx, dx )
+DEFINE_ANIMATED_NUMBER( SVGFEOffsetElement, SVGNames::dyAttr, Dy, dy )
 
-inline SVGFEOffsetElement::SVGFEOffsetElement(const QualifiedName& tagName, Document* document)
-    : SVGFilterPrimitiveStandardAttributes(tagName, document)
+inline SVGFEOffsetElement::SVGFEOffsetElement( const QualifiedName &tagName, Document *document )
+    : SVGFilterPrimitiveStandardAttributes( tagName, document )
 {
 }
 
-PassRefPtr<SVGFEOffsetElement> SVGFEOffsetElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<SVGFEOffsetElement> SVGFEOffsetElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new SVGFEOffsetElement(tagName, document));
+    return adoptRef( new SVGFEOffsetElement( tagName, document ) );
 }
 
-void SVGFEOffsetElement::parseMappedAttribute(Attribute* attr)
+void SVGFEOffsetElement::parseMappedAttribute( Attribute *attr )
 {
-    const String& value = attr->value();
-    if (attr->name() == SVGNames::dxAttr)
-        setDxBaseValue(value.toFloat());
-    else if (attr->name() == SVGNames::dyAttr)
-        setDyBaseValue(value.toFloat());
-    else if (attr->name() == SVGNames::inAttr)
-        setIn1BaseValue(value);
+    const String &value = attr->value();
+
+    if ( attr->name() == SVGNames::dxAttr )
+    {
+        setDxBaseValue( value.toFloat() );
+    }
+    else if ( attr->name() == SVGNames::dyAttr )
+    {
+        setDyBaseValue( value.toFloat() );
+    }
+    else if ( attr->name() == SVGNames::inAttr )
+    {
+        setIn1BaseValue( value );
+    }
     else
-        SVGFilterPrimitiveStandardAttributes::parseMappedAttribute(attr);
+    {
+        SVGFilterPrimitiveStandardAttributes::parseMappedAttribute( attr );
+    }
 }
 
-void SVGFEOffsetElement::svgAttributeChanged(const QualifiedName& attrName)
+void SVGFEOffsetElement::svgAttributeChanged( const QualifiedName &attrName )
 {
-    SVGFilterPrimitiveStandardAttributes::svgAttributeChanged(attrName);
+    SVGFilterPrimitiveStandardAttributes::svgAttributeChanged( attrName );
 
-    if (attrName == SVGNames::inAttr
-        || attrName == SVGNames::dxAttr
-        || attrName == SVGNames::dyAttr)
+    if ( attrName == SVGNames::inAttr
+            || attrName == SVGNames::dxAttr
+            || attrName == SVGNames::dyAttr )
+    {
         invalidate();
+    }
 }
 
-void SVGFEOffsetElement::synchronizeProperty(const QualifiedName& attrName)
+void SVGFEOffsetElement::synchronizeProperty( const QualifiedName &attrName )
 {
-    SVGFilterPrimitiveStandardAttributes::synchronizeProperty(attrName);
+    SVGFilterPrimitiveStandardAttributes::synchronizeProperty( attrName );
 
-    if (attrName == anyQName()) {
+    if ( attrName == anyQName() )
+    {
         synchronizeDx();
         synchronizeDy();
         synchronizeIn1();
         return;
     }
 
-    if (attrName == SVGNames::dxAttr)
+    if ( attrName == SVGNames::dxAttr )
+    {
         synchronizeDx();
-    else if (attrName == SVGNames::dyAttr)
+    }
+    else if ( attrName == SVGNames::dyAttr )
+    {
         synchronizeDy();
-    else if (attrName == SVGNames::inAttr)
+    }
+    else if ( attrName == SVGNames::inAttr )
+    {
         synchronizeIn1();
+    }
 }
 
-AttributeToPropertyTypeMap& SVGFEOffsetElement::attributeToPropertyTypeMap()
+AttributeToPropertyTypeMap &SVGFEOffsetElement::attributeToPropertyTypeMap()
 {
-    DEFINE_STATIC_LOCAL(AttributeToPropertyTypeMap, s_attributeToPropertyTypeMap, ());
+    DEFINE_STATIC_LOCAL( AttributeToPropertyTypeMap, s_attributeToPropertyTypeMap, () );
     return s_attributeToPropertyTypeMap;
 }
 
 void SVGFEOffsetElement::fillAttributeToPropertyTypeMap()
 {
-    AttributeToPropertyTypeMap& attributeToPropertyTypeMap = this->attributeToPropertyTypeMap();
+    AttributeToPropertyTypeMap &attributeToPropertyTypeMap = this->attributeToPropertyTypeMap();
 
-    SVGFilterPrimitiveStandardAttributes::fillPassedAttributeToPropertyTypeMap(attributeToPropertyTypeMap);
-    attributeToPropertyTypeMap.set(SVGNames::inAttr, AnimatedString);
-    attributeToPropertyTypeMap.set(SVGNames::dxAttr, AnimatedNumber);
-    attributeToPropertyTypeMap.set(SVGNames::dyAttr, AnimatedNumber);
+    SVGFilterPrimitiveStandardAttributes::fillPassedAttributeToPropertyTypeMap( attributeToPropertyTypeMap );
+    attributeToPropertyTypeMap.set( SVGNames::inAttr, AnimatedString );
+    attributeToPropertyTypeMap.set( SVGNames::dxAttr, AnimatedNumber );
+    attributeToPropertyTypeMap.set( SVGNames::dyAttr, AnimatedNumber );
 }
 
-PassRefPtr<FilterEffect> SVGFEOffsetElement::build(SVGFilterBuilder* filterBuilder, Filter* filter)
+PassRefPtr<FilterEffect> SVGFEOffsetElement::build( SVGFilterBuilder *filterBuilder, Filter *filter )
 {
-    FilterEffect* input1 = filterBuilder->getEffectById(in1());
+    FilterEffect *input1 = filterBuilder->getEffectById( in1() );
 
-    if (!input1)
+    if ( !input1 )
+    {
         return 0;
+    }
 
-    RefPtr<FilterEffect> effect = FEOffset::create(filter, dx(), dy());
-    effect->inputEffects().append(input1);
+    RefPtr<FilterEffect> effect = FEOffset::create( filter, dx(), dy() );
+    effect->inputEffects().append( input1 );
     return effect.release();
 }
 

@@ -25,28 +25,31 @@
 #define QRasterDefs_P_H
 
 
-typedef struct QT_FT_Vector_ {
-   int  x;
-   int  y;
+typedef struct QT_FT_Vector_
+{
+    int  x;
+    int  y;
 
 } QT_FT_Vector;
 
-typedef struct  QT_FT_BBox_ {
-   int  xMin, yMin;
-   int  xMax, yMax;
+typedef struct  QT_FT_BBox_
+{
+    int  xMin, yMin;
+    int  xMax, yMax;
 
 } QT_FT_BBox;
 
-typedef enum  QT_FT_Pixel_Mode_ {
-   QT_FT_PIXEL_MODE_NONE = 0,
-   QT_FT_PIXEL_MODE_MONO,
-   QT_FT_PIXEL_MODE_GRAY,
-   QT_FT_PIXEL_MODE_GRAY2,
-   QT_FT_PIXEL_MODE_GRAY4,
-   QT_FT_PIXEL_MODE_LCD,
-   QT_FT_PIXEL_MODE_LCD_V,
+typedef enum  QT_FT_Pixel_Mode_
+{
+    QT_FT_PIXEL_MODE_NONE = 0,
+    QT_FT_PIXEL_MODE_MONO,
+    QT_FT_PIXEL_MODE_GRAY,
+    QT_FT_PIXEL_MODE_GRAY2,
+    QT_FT_PIXEL_MODE_GRAY4,
+    QT_FT_PIXEL_MODE_LCD,
+    QT_FT_PIXEL_MODE_LCD_V,
 
-   QT_FT_PIXEL_MODE_MAX      /* do not remove */
+    QT_FT_PIXEL_MODE_MAX      /* do not remove */
 
 } QT_FT_Pixel_Mode;
 
@@ -57,27 +60,29 @@ typedef enum  QT_FT_Pixel_Mode_ {
 #define qt_ft_pixel_mode_pal4   QT_FT_PIXEL_MODE_GRAY4
 
 
-typedef struct  QT_FT_Bitmap_ {
-   int             rows;
-   int             width;
-   int             pitch;
-   unsigned char  *buffer;
-   short           num_grays;
-   char            pixel_mode;
-   char            palette_mode;
-   void           *palette;
+typedef struct  QT_FT_Bitmap_
+{
+    int             rows;
+    int             width;
+    int             pitch;
+    unsigned char  *buffer;
+    short           num_grays;
+    char            pixel_mode;
+    char            palette_mode;
+    void           *palette;
 
 } QT_FT_Bitmap;
 
-typedef struct  QT_FT_Outline_ {
-   int      n_contours;       /* number of contours in glyph        */
-   int      n_points;         /* number of points in the glyph      */
+typedef struct  QT_FT_Outline_
+{
+    int      n_contours;       /* number of contours in glyph        */
+    int      n_points;         /* number of points in the glyph      */
 
-   QT_FT_Vector  *points;     /* the outline's points               */
-   char     *tags;            /* the points flags                   */
-   int      *contours;        /* the contour end points             */
+    QT_FT_Vector  *points;     /* the outline's points               */
+    char     *tags;            /* the points flags                   */
+    int      *contours;        /* the contour end points             */
 
-   int         flags;         /* outline masks                      */
+    int         flags;         /* outline masks                      */
 
 } QT_FT_Outline;
 
@@ -119,39 +124,40 @@ typedef struct  QT_FT_Outline_ {
 
 
 typedef int
-(*QT_FT_Outline_MoveToFunc)( QT_FT_Vector  *to, void *user );
+( *QT_FT_Outline_MoveToFunc )( QT_FT_Vector  *to, void *user );
 
 #define QT_FT_Outline_MoveTo_Func  QT_FT_Outline_MoveToFunc
 
 
 typedef int
-(*QT_FT_Outline_LineToFunc)( QT_FT_Vector  *to, void *user );
+( *QT_FT_Outline_LineToFunc )( QT_FT_Vector  *to, void *user );
 
 #define  QT_FT_Outline_LineTo_Func  QT_FT_Outline_LineToFunc
 
 
 typedef int
-(*QT_FT_Outline_ConicToFunc)( QT_FT_Vector *control, QT_FT_Vector *to, void *user );
+( *QT_FT_Outline_ConicToFunc )( QT_FT_Vector *control, QT_FT_Vector *to, void *user );
 
 #define  QT_FT_Outline_ConicTo_Func  QT_FT_Outline_ConicToFunc
 
 typedef int
-(*QT_FT_Outline_CubicToFunc)( QT_FT_Vector  *control1,
-   QT_FT_Vector  *control2,
-   QT_FT_Vector  *to,
-   void *user );
+( *QT_FT_Outline_CubicToFunc )( QT_FT_Vector  *control1,
+                                QT_FT_Vector  *control2,
+                                QT_FT_Vector  *to,
+                                void *user );
 
 #define  QT_FT_Outline_CubicTo_Func  QT_FT_Outline_CubicToFunc
 
 
-typedef struct  QT_FT_Outline_Funcs_ {
-   QT_FT_Outline_MoveToFunc   move_to;
-   QT_FT_Outline_LineToFunc   line_to;
-   QT_FT_Outline_ConicToFunc  conic_to;
-   QT_FT_Outline_CubicToFunc  cubic_to;
+typedef struct  QT_FT_Outline_Funcs_
+{
+    QT_FT_Outline_MoveToFunc   move_to;
+    QT_FT_Outline_LineToFunc   line_to;
+    QT_FT_Outline_ConicToFunc  conic_to;
+    QT_FT_Outline_CubicToFunc  cubic_to;
 
-   int  shift;
-   int  delta;
+    int  shift;
+    int  delta;
 
 } QT_FT_Outline_Funcs;
 
@@ -165,13 +171,14 @@ typedef struct  QT_FT_Outline_Funcs_ {
 #endif
 
 
-typedef enum  QT_FT_Glyph_Format_ {
-   QT_FT_IMAGE_TAG( QT_FT_GLYPH_FORMAT_NONE, 0, 0, 0, 0 ),
+typedef enum  QT_FT_Glyph_Format_
+{
+    QT_FT_IMAGE_TAG( QT_FT_GLYPH_FORMAT_NONE, 0, 0, 0, 0 ),
 
-   QT_FT_IMAGE_TAG( QT_FT_GLYPH_FORMAT_COMPOSITE, 'c', 'o', 'm', 'p' ),
-   QT_FT_IMAGE_TAG( QT_FT_GLYPH_FORMAT_BITMAP,    'b', 'i', 't', 's' ),
-   QT_FT_IMAGE_TAG( QT_FT_GLYPH_FORMAT_OUTLINE,   'o', 'u', 't', 'l' ),
-   QT_FT_IMAGE_TAG( QT_FT_GLYPH_FORMAT_PLOTTER,   'p', 'l', 'o', 't' )
+    QT_FT_IMAGE_TAG( QT_FT_GLYPH_FORMAT_COMPOSITE, 'c', 'o', 'm', 'p' ),
+    QT_FT_IMAGE_TAG( QT_FT_GLYPH_FORMAT_BITMAP,    'b', 'i', 't', 's' ),
+    QT_FT_IMAGE_TAG( QT_FT_GLYPH_FORMAT_OUTLINE,   'o', 'u', 't', 'l' ),
+    QT_FT_IMAGE_TAG( QT_FT_GLYPH_FORMAT_PLOTTER,   'p', 'l', 'o', 't' )
 
 } QT_FT_Glyph_Format;
 
@@ -184,20 +191,21 @@ typedef enum  QT_FT_Glyph_Format_ {
 
 typedef struct TRaster_ *QT_FT_Raster;
 
-typedef struct  QT_FT_Span_ {
-   short x;
-   unsigned short len;
-   short y;
-   unsigned char coverage;
+typedef struct  QT_FT_Span_
+{
+    short x;
+    unsigned short len;
+    short y;
+    unsigned char coverage;
 } QT_FT_Span;
 
 
-typedef void (*QT_FT_SpanFunc)(int count, const QT_FT_Span *spans, void *worker);
+typedef void ( *QT_FT_SpanFunc )( int count, const QT_FT_Span *spans, void *worker );
 
 #define QT_FT_Raster_Span_Func   QT_FT_SpanFunc
 
-typedef int (*QT_FT_Raster_BitTest_Func)(int y, int x, void *user );
-typedef void (*QT_FT_Raster_BitSet_Func)(int y, int x, void *user );
+typedef int ( *QT_FT_Raster_BitTest_Func )( int y, int x, void *user );
+typedef void ( *QT_FT_Raster_BitSet_Func )( int y, int x, void *user );
 
 
 #define QT_FT_RASTER_FLAG_DEFAULT  0x0
@@ -212,54 +220,56 @@ typedef void (*QT_FT_Raster_BitSet_Func)(int y, int x, void *user );
 #define qt_ft_raster_flag_clip     QT_FT_RASTER_FLAG_CLIP
 
 
-typedef struct  QT_FT_Raster_Params_ {
-   QT_FT_Bitmap  *target;
-   void *source;
-   int flags;
-   QT_FT_SpanFunc gray_spans;
-   QT_FT_SpanFunc black_spans;
-   QT_FT_Raster_BitTest_Func bit_test;     /* doesn't work! */
-   QT_FT_Raster_BitSet_Func  bit_set;      /* doesn't work! */
-   void *user;
-   QT_FT_BBox clip_box;
-   int skip_spans;
+typedef struct  QT_FT_Raster_Params_
+{
+    QT_FT_Bitmap  *target;
+    void *source;
+    int flags;
+    QT_FT_SpanFunc gray_spans;
+    QT_FT_SpanFunc black_spans;
+    QT_FT_Raster_BitTest_Func bit_test;     /* doesn't work! */
+    QT_FT_Raster_BitSet_Func  bit_set;      /* doesn't work! */
+    void *user;
+    QT_FT_BBox clip_box;
+    int skip_spans;
 
 } QT_FT_Raster_Params;
 
 
 typedef int
-(*QT_FT_Raster_NewFunc)( QT_FT_Raster  *raster );
+( *QT_FT_Raster_NewFunc )( QT_FT_Raster  *raster );
 
 #define  QT_FT_Raster_New_Func    QT_FT_Raster_NewFunc
 
 typedef void
-(*QT_FT_Raster_DoneFunc)( QT_FT_Raster  raster );
+( *QT_FT_Raster_DoneFunc )( QT_FT_Raster  raster );
 
 #define  QT_FT_Raster_Done_Func   QT_FT_Raster_DoneFunc
 
 typedef void
-(*QT_FT_Raster_ResetFunc)( QT_FT_Raster raster, unsigned char *pool_base, unsigned long  pool_size );
+( *QT_FT_Raster_ResetFunc )( QT_FT_Raster raster, unsigned char *pool_base, unsigned long  pool_size );
 
 #define  QT_FT_Raster_Reset_Func   QT_FT_Raster_ResetFunc
 
 typedef int
-(*QT_FT_Raster_SetModeFunc)( QT_FT_Raster raster, unsigned long mode, void *args );
+( *QT_FT_Raster_SetModeFunc )( QT_FT_Raster raster, unsigned long mode, void *args );
 
 #define  QT_FT_Raster_Set_Mode_Func  QT_FT_Raster_SetModeFunc
 
 typedef int
-(*QT_FT_Raster_RenderFunc)( QT_FT_Raster raster, QT_FT_Raster_Params  *params );
+( *QT_FT_Raster_RenderFunc )( QT_FT_Raster raster, QT_FT_Raster_Params  *params );
 
 #define  QT_FT_Raster_Render_Func    QT_FT_Raster_RenderFunc
 
 
-typedef struct  QT_FT_Raster_Funcs_ {
-   QT_FT_Glyph_Format         glyph_format;
-   QT_FT_Raster_NewFunc       raster_new;
-   QT_FT_Raster_ResetFunc     raster_reset;
-   QT_FT_Raster_SetModeFunc   raster_set_mode;
-   QT_FT_Raster_RenderFunc    raster_render;
-   QT_FT_Raster_DoneFunc      raster_done;
+typedef struct  QT_FT_Raster_Funcs_
+{
+    QT_FT_Glyph_Format         glyph_format;
+    QT_FT_Raster_NewFunc       raster_new;
+    QT_FT_Raster_ResetFunc     raster_reset;
+    QT_FT_Raster_SetModeFunc   raster_set_mode;
+    QT_FT_Raster_RenderFunc    raster_render;
+    QT_FT_Raster_DoneFunc      raster_done;
 
 } QT_FT_Raster_Funcs;
 

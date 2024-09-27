@@ -35,23 +35,24 @@ using namespace WebKit;
 
 WKTypeID WKCredentialGetTypeID()
 {
-    return toAPI(WebCredential::APIType);
+    return toAPI( WebCredential::APIType );
 }
 
-WKCredentialRef WKCredentialCreate(WKStringRef username, WKStringRef password, WKCredentialPersistence persistence)
+WKCredentialRef WKCredentialCreate( WKStringRef username, WKStringRef password, WKCredentialPersistence persistence )
 {
-    RefPtr<WebCredential> credential = WebCredential::create(toImpl(username), toImpl(password), toCredentialPersistence(persistence));
-    return toAPI(credential.release().releaseRef());
+    RefPtr<WebCredential> credential = WebCredential::create( toImpl( username ), toImpl( password ),
+                                       toCredentialPersistence( persistence ) );
+    return toAPI( credential.release().releaseRef() );
 }
 
-WKCredentialRef WKCredentialCreateWithCertificateInfo(WKCertificateInfoRef certificateInfo)
+WKCredentialRef WKCredentialCreateWithCertificateInfo( WKCertificateInfoRef certificateInfo )
 {
-    RefPtr<WebCredential> credential = WebCredential::create(toImpl(certificateInfo));
-    return toAPI(credential.release().releaseRef());
+    RefPtr<WebCredential> credential = WebCredential::create( toImpl( certificateInfo ) );
+    return toAPI( credential.release().releaseRef() );
 }
 
-WKStringRef WKCredentialCopyUser(WKCredentialRef credentialRef)
+WKStringRef WKCredentialCopyUser( WKCredentialRef credentialRef )
 {
-    return toCopiedAPI(toImpl(credentialRef)->user());
+    return toCopiedAPI( toImpl( credentialRef )->user() );
 }
 

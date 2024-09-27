@@ -28,7 +28,8 @@
 #include "HTMLNames.h"
 #include "RegularExpression.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
@@ -37,15 +38,19 @@ bool BaseTextInputType::isTextType() const
     return true;
 }
 
-bool BaseTextInputType::patternMismatch(const String& value) const
+bool BaseTextInputType::patternMismatch( const String &value ) const
 {
-    const AtomicString& pattern = element()->fastGetAttribute(patternAttr);
+    const AtomicString &pattern = element()->fastGetAttribute( patternAttr );
+
     // Empty values can't be mismatched
-    if (pattern.isEmpty() || value.isEmpty())
+    if ( pattern.isEmpty() || value.isEmpty() )
+    {
         return false;
+    }
+
     int matchLength = 0;
     int valueLength = value.length();
-    int matchOffset = RegularExpression(pattern, TextCaseSensitive).match(value, 0, &matchLength);
+    int matchOffset = RegularExpression( pattern, TextCaseSensitive ).match( value, 0, &matchLength );
     return matchOffset || matchLength != valueLength;
 }
 

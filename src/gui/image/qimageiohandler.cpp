@@ -30,22 +30,22 @@ class QIODevice;
 
 class QImageIOHandlerPrivate
 {
-   Q_DECLARE_PUBLIC(QImageIOHandler)
+    Q_DECLARE_PUBLIC( QImageIOHandler )
 
- public:
-   QImageIOHandlerPrivate(QImageIOHandler *q);
-   virtual ~QImageIOHandlerPrivate();
+public:
+    QImageIOHandlerPrivate( QImageIOHandler *q );
+    virtual ~QImageIOHandlerPrivate();
 
-   QIODevice *device;
-   QString format;
+    QIODevice *device;
+    QString format;
 
-   QImageIOHandler *q_ptr;
+    QImageIOHandler *q_ptr;
 };
 
-QImageIOHandlerPrivate::QImageIOHandlerPrivate(QImageIOHandler *q)
+QImageIOHandlerPrivate::QImageIOHandlerPrivate( QImageIOHandler *q )
 {
-   device = nullptr;
-   q_ptr = q;
+    device = nullptr;
+    q_ptr = q;
 }
 
 QImageIOHandlerPrivate::~QImageIOHandlerPrivate()
@@ -53,12 +53,12 @@ QImageIOHandlerPrivate::~QImageIOHandlerPrivate()
 }
 
 QImageIOHandler::QImageIOHandler()
-   : d_ptr(new QImageIOHandlerPrivate(this))
+    : d_ptr( new QImageIOHandlerPrivate( this ) )
 {
 }
 
-QImageIOHandler::QImageIOHandler(QImageIOHandlerPrivate &dd)
-   : d_ptr(&dd)
+QImageIOHandler::QImageIOHandler( QImageIOHandlerPrivate &dd )
+    : d_ptr( &dd )
 {
 }
 
@@ -66,97 +66,97 @@ QImageIOHandler::~QImageIOHandler()
 {
 }
 
-void QImageIOHandler::setDevice(QIODevice *device)
+void QImageIOHandler::setDevice( QIODevice *device )
 {
-   Q_D(QImageIOHandler);
-   d->device = device;
+    Q_D( QImageIOHandler );
+    d->device = device;
 }
 
 QIODevice *QImageIOHandler::device() const
 {
-   Q_D(const QImageIOHandler);
-   return d->device;
+    Q_D( const QImageIOHandler );
+    return d->device;
 }
 
-void QImageIOHandler::setFormat(const QString &format)
+void QImageIOHandler::setFormat( const QString &format )
 {
-   Q_D(QImageIOHandler);
-   d->format = format;
+    Q_D( QImageIOHandler );
+    d->format = format;
 }
 
 QString QImageIOHandler::format() const
 {
-   Q_D(const QImageIOHandler);
-   return d->format;
+    Q_D( const QImageIOHandler );
+    return d->format;
 }
 
 QString QImageIOHandler::name() const
 {
-   return format();
+    return format();
 }
 
-bool QImageIOHandler::write(const QImage &image)
+bool QImageIOHandler::write( const QImage &image )
 {
-   (void) image;
-   return false;
+    ( void ) image;
+    return false;
 }
 
-void QImageIOHandler::setOption(ImageOption option, const QVariant &value)
+void QImageIOHandler::setOption( ImageOption option, const QVariant &value )
 {
-   (void) option;
-   (void) value;
+    ( void ) option;
+    ( void ) value;
 }
 
-QVariant QImageIOHandler::option(ImageOption option)
+QVariant QImageIOHandler::option( ImageOption option )
 {
-   (void) option;
-   return QVariant();
+    ( void ) option;
+    return QVariant();
 }
 
-bool QImageIOHandler::supportsOption(ImageOption option) const
+bool QImageIOHandler::supportsOption( ImageOption option ) const
 {
-   (void) option;
-   return false;
+    ( void ) option;
+    return false;
 }
 
 int QImageIOHandler::currentImageNumber() const
 {
-   return 0;
+    return 0;
 }
 
 QRect QImageIOHandler::currentImageRect() const
 {
-   return QRect();
+    return QRect();
 }
 
 int QImageIOHandler::imageCount()
 {
-   return canRead() ? 1 : 0;
+    return canRead() ? 1 : 0;
 }
 
 bool QImageIOHandler::jumpToNextImage()
 {
-   return false;
+    return false;
 }
 
-bool QImageIOHandler::jumpToImage(int imageNumber)
+bool QImageIOHandler::jumpToImage( int imageNumber )
 {
-   (void) imageNumber;
-   return false;
+    ( void ) imageNumber;
+    return false;
 }
 
 int QImageIOHandler::loopCount() const
 {
-   return 0;
+    return 0;
 }
 
 int QImageIOHandler::nextImageDelay() const
 {
-   return 0;
+    return 0;
 }
 
-QImageIOPlugin::QImageIOPlugin(QObject *parent)
-   : QObject(parent)
+QImageIOPlugin::QImageIOPlugin( QObject *parent )
+    : QObject( parent )
 {
 }
 

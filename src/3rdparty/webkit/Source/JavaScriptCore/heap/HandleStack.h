@@ -32,32 +32,35 @@
 
 #include <wtf/UnusedParam.h>
 
-namespace JSC {
+namespace JSC
+{
 
 class LocalScope;
 class HeapRootVisitor;
 
-class HandleStack {
+class HandleStack
+{
 public:
-    class Frame {
+    class Frame
+    {
     public:
         HandleSlot m_next;
         HandleSlot m_end;
     };
 
     HandleStack();
-    
-    void enterScope(Frame&);
-    void leaveScope(Frame&);
+
+    void enterScope( Frame & );
+    void leaveScope( Frame & );
 
     HandleSlot push();
 
-    void mark(HeapRootVisitor&);
+    void mark( HeapRootVisitor & );
 
 private:
     void grow();
-    void zapTo(Frame&);
-    HandleSlot findFirstAfter(HandleSlot);
+    void zapTo( Frame & );
+    HandleSlot findFirstAfter( HandleSlot );
 
 #ifndef NDEBUG
     size_t m_scopeDepth;
@@ -66,7 +69,7 @@ private:
     Frame m_frame;
 };
 
-inline void HandleStack::enterScope(Frame& lastFrame)
+inline void HandleStack::enterScope( Frame &lastFrame )
 {
 #ifndef NDEBUG
     ++m_scopeDepth;
@@ -77,50 +80,66 @@ inline void HandleStack::enterScope(Frame& lastFrame)
 
 
 
-inline void HandleStack::zapTo(Frame& lastFrame)
+inline void HandleStack::zapTo( Frame &lastFrame )
 {
 #ifdef NDEBUG
-    UNUSED_PARAM(lastFrame);
+    UNUSED_PARAM( lastFrame );
 #else
-    const Vector<HandleSlot>& blocks = m_blockStack.blocks();
-    
-    if (lastFrame.m_end != m_frame.m_end) { // Zapping to a frame in a different block.
+    const Vector<HandleSlot> &blocks = m_blockStack.blocks();
+
+    if ( lastFrame.m_end != m_frame.m_end ) // Zapping to a frame in a different block.
+    {
         int i = blocks.size() - 1;
-        for ( ; blocks[i] + m_blockStack.blockLength != lastFrame.m_end; --i) {
-            for (int j = m_blockStack.blockLength - 1; j >= 0; --j)
+
+        for ( ; blocks[i] + m_blockStack.blockLength != lastFrame.m_end; --i )
+        {
+            for ( int j = m_blockStack.blockLength - 1; j >= 0; --j )
+            {
                 blocks[i][j] = JSValue();
+            }
         }
-        
-        for (HandleSlot it = blocks[i] + m_blockStack.blockLength - 1; it != lastFrame.m_next - 1; --it)
+
+        for ( HandleSlot it = blocks[i] + m_blockStack.blockLength - 1; it != lastFrame.m_next - 1; --it )
+        {
             *it = JSValue();
-        
+        }
+
         return;
     }
-    
-    for (HandleSlot it = m_frame.m_next - 1; it != lastFrame.m_next - 1; --it)
+
+    for ( HandleSlot it = m_frame.m_next - 1; it != lastFrame.m_next - 1; --it )
+    {
         *it = JSValue();
+    }
+
 #endif
 }
 
-inline void HandleStack::leaveScope(Frame& lastFrame)
+inline void HandleStack::leaveScope( Frame &lastFrame )
 {
 #ifndef NDEBUG
     --m_scopeDepth;
 #endif
 
-    zapTo(lastFrame);
+    zapTo( lastFrame );
 
-    if (lastFrame.m_end != m_frame.m_end) // Popping to a frame in a different block.
-        m_blockStack.shrink(lastFrame.m_end);
+    if ( lastFrame.m_end != m_frame.m_end ) // Popping to a frame in a different block.
+    {
+        m_blockStack.shrink( lastFrame.m_end );
+    }
 
     m_frame = lastFrame;
 }
 
 inline HandleSlot HandleStack::push()
 {
-    ASSERT(m_scopeDepth); // Creating a Local outside of a LocalScope is a memory leak.
-    if (m_frame.m_next == m_frame.m_end)
+    ASSERT( m_scopeDepth ); // Creating a Local outside of a LocalScope is a memory leak.
+
+    if ( m_frame.m_next == m_frame.m_end )
+    {
         grow();
+    }
+
     return m_frame.m_next++;
 }
 

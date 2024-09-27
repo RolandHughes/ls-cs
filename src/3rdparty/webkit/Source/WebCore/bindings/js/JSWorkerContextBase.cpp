@@ -21,7 +21,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
 
@@ -39,73 +39,100 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSWorkerContextBase);
+ASSERT_CLASS_FITS_IN_CELL( JSWorkerContextBase );
 
 const ClassInfo JSWorkerContextBase::s_info = { "WorkerContext", &JSDOMGlobalObject::s_info, 0, 0 };
 
-JSWorkerContextBase::JSWorkerContextBase(JSC::JSGlobalData& globalData, JSC::Structure* structure, PassRefPtr<WorkerContext> impl)
-    : JSDOMGlobalObject(globalData, structure, normalWorld(globalData), this)
-    , m_impl(impl)
+JSWorkerContextBase::JSWorkerContextBase( JSC::JSGlobalData &globalData, JSC::Structure *structure,
+        PassRefPtr<WorkerContext> impl )
+    : JSDOMGlobalObject( globalData, structure, normalWorld( globalData ), this )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
 JSWorkerContextBase::~JSWorkerContextBase()
 {
 }
 
-ScriptExecutionContext* JSWorkerContextBase::scriptExecutionContext() const
+ScriptExecutionContext *JSWorkerContextBase::scriptExecutionContext() const
 {
     return m_impl.get();
 }
 
-JSValue toJS(ExecState* exec, JSDOMGlobalObject*, WorkerContext* workerContext)
+JSValue toJS( ExecState *exec, JSDOMGlobalObject *, WorkerContext *workerContext )
 {
-    return toJS(exec, workerContext);
+    return toJS( exec, workerContext );
 }
 
-JSValue toJS(ExecState*, WorkerContext* workerContext)
+JSValue toJS( ExecState *, WorkerContext *workerContext )
 {
-    if (!workerContext)
+    if ( !workerContext )
+    {
         return jsNull();
-    WorkerScriptController* script = workerContext->script();
-    if (!script)
+    }
+
+    WorkerScriptController *script = workerContext->script();
+
+    if ( !script )
+    {
         return jsNull();
-    JSWorkerContext* contextWrapper = script->workerContextWrapper();
-    ASSERT(contextWrapper);
+    }
+
+    JSWorkerContext *contextWrapper = script->workerContextWrapper();
+    ASSERT( contextWrapper );
     return contextWrapper;
 }
 
-JSDedicatedWorkerContext* toJSDedicatedWorkerContext(JSValue value)
+JSDedicatedWorkerContext *toJSDedicatedWorkerContext( JSValue value )
 {
-    if (!value.isObject())
+    if ( !value.isObject() )
+    {
         return 0;
-    const ClassInfo* classInfo = asObject(value)->classInfo();
-    if (classInfo == &JSDedicatedWorkerContext::s_info)
-        return static_cast<JSDedicatedWorkerContext*>(asObject(value));
+    }
+
+    const ClassInfo *classInfo = asObject( value )->classInfo();
+
+    if ( classInfo == &JSDedicatedWorkerContext::s_info )
+    {
+        return static_cast<JSDedicatedWorkerContext *>( asObject( value ) );
+    }
+
     return 0;
 }
 
 #if ENABLE(SHARED_WORKERS)
-JSSharedWorkerContext* toJSSharedWorkerContext(JSValue value)
+JSSharedWorkerContext *toJSSharedWorkerContext( JSValue value )
 {
-    if (!value.isObject())
+    if ( !value.isObject() )
+    {
         return 0;
-    const ClassInfo* classInfo = asObject(value)->classInfo();
-    if (classInfo == &JSSharedWorkerContext::s_info)
-        return static_cast<JSSharedWorkerContext*>(asObject(value));
+    }
+
+    const ClassInfo *classInfo = asObject( value )->classInfo();
+
+    if ( classInfo == &JSSharedWorkerContext::s_info )
+    {
+        return static_cast<JSSharedWorkerContext *>( asObject( value ) );
+    }
+
     return 0;
 }
 #endif
 
-JSWorkerContext* toJSWorkerContext(JSValue value)
+JSWorkerContext *toJSWorkerContext( JSValue value )
 {
-    JSWorkerContext* context = toJSDedicatedWorkerContext(value);
+    JSWorkerContext *context = toJSDedicatedWorkerContext( value );
 #if ENABLE(SHARED_WORKERS)
-    if (!context)
-        context = toJSSharedWorkerContext(value);
+
+    if ( !context )
+    {
+        context = toJSSharedWorkerContext( value );
+    }
+
 #endif
     return context;
 }

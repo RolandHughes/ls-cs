@@ -32,14 +32,17 @@
 #include "runtime_root.h"
 
 
-namespace WebCore {
-
-PassRefPtr<JSC::Bindings::Instance> ScriptController::createScriptInstanceForWidget(Widget* widget)
+namespace WebCore
 {
-    if (!widget->isPluginView())
-        return 0;
 
-    return static_cast<PluginView*>(widget)->bindingInstance();
+PassRefPtr<JSC::Bindings::Instance> ScriptController::createScriptInstanceForWidget( Widget *widget )
+{
+    if ( !widget->isPluginView() )
+    {
+        return 0;
+    }
+
+    return static_cast<PluginView *>( widget )->bindingInstance();
 }
 
 } // namespace WebCore

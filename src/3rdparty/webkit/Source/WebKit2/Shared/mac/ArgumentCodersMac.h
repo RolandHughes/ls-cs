@@ -28,34 +28,35 @@
 
 #include <wtf/RetainPtr.h>
 
-namespace CoreIPC {
+namespace CoreIPC
+{
 
 class ArgumentEncoder;
 class ArgumentDecoder;
 
 // NSAttributedString
-void encode(ArgumentEncoder*, NSAttributedString *);
-bool decode(ArgumentDecoder*, RetainPtr<NSAttributedString>&);
+void encode( ArgumentEncoder *, NSAttributedString * );
+bool decode( ArgumentDecoder *, RetainPtr<NSAttributedString> & );
 
 // NSColor
-void encode(ArgumentEncoder*, NSColor *);
-bool decode(ArgumentDecoder*, RetainPtr<NSColor>&);
+void encode( ArgumentEncoder *, NSColor * );
+bool decode( ArgumentDecoder *, RetainPtr<NSColor> & );
 
 // NSDictionary
-void encode(ArgumentEncoder*, NSDictionary *);
-bool decode(ArgumentDecoder*, RetainPtr<NSDictionary>&);
+void encode( ArgumentEncoder *, NSDictionary * );
+bool decode( ArgumentDecoder *, RetainPtr<NSDictionary> & );
 
 // NSFont
-void encode(ArgumentEncoder*, NSFont *);
-bool decode(ArgumentDecoder*, RetainPtr<NSFont>&);
+void encode( ArgumentEncoder *, NSFont * );
+bool decode( ArgumentDecoder *, RetainPtr<NSFont> & );
 
 // NSNumber
-void encode(ArgumentEncoder*, NSNumber *);
-bool decode(ArgumentDecoder*, RetainPtr<NSNumber>&);
+void encode( ArgumentEncoder *, NSNumber * );
+bool decode( ArgumentDecoder *, RetainPtr<NSNumber> & );
 
 // NSString
-void encode(ArgumentEncoder*, NSString *);
-bool decode(ArgumentDecoder*, RetainPtr<NSString>&);
+void encode( ArgumentEncoder *, NSString * );
+bool decode( ArgumentDecoder *, RetainPtr<NSString> & );
 
 }
 

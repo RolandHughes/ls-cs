@@ -28,24 +28,26 @@
 #include "StorageInfoUsageCallback.h"
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class JSStorageInfoUsageCallback : public StorageInfoUsageCallback, public ActiveDOMCallback {
+class JSStorageInfoUsageCallback : public StorageInfoUsageCallback, public ActiveDOMCallback
+{
 public:
-    static PassRefPtr<JSStorageInfoUsageCallback> create(JSC::JSObject* callback, JSDOMGlobalObject* globalObject)
+    static PassRefPtr<JSStorageInfoUsageCallback> create( JSC::JSObject *callback, JSDOMGlobalObject *globalObject )
     {
-        return adoptRef(new JSStorageInfoUsageCallback(callback, globalObject));
+        return adoptRef( new JSStorageInfoUsageCallback( callback, globalObject ) );
     }
 
     virtual ~JSStorageInfoUsageCallback();
 
     // Functions
-    virtual bool handleEvent(unsigned long long currentUsageInBytes, unsigned long long currentQuotaInBytes);
+    virtual bool handleEvent( unsigned long long currentUsageInBytes, unsigned long long currentQuotaInBytes );
 
 private:
-    JSStorageInfoUsageCallback(JSC::JSObject* callback, JSDOMGlobalObject*);
+    JSStorageInfoUsageCallback( JSC::JSObject *callback, JSDOMGlobalObject * );
 
-    JSCallbackData* m_data;
+    JSCallbackData *m_data;
 };
 
 } // namespace WebCore

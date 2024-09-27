@@ -40,1222 +40,1414 @@
 class QStringParser;
 
 #ifdef Q_OS_DARWIN
-   using CFStringRef = const struct __CFString *;
+using CFStringRef = const struct __CFString *;
 
 #  ifdef __OBJC__
-      @class NSString;
+@class NSString;
 #  endif
 #endif
 
 class Q_CORE_EXPORT QString8 : public LsCsString::LsCsString
 {
-   public:
-      class iterator : public LsCsString::LsCsString::iterator
-      {
-       public:
-         using value_type  = QChar32;
-         using pointer     = QChar32 *;
-         using reference   = QChar32 &;
+public:
+    class iterator : public LsCsString::LsCsString::iterator
+    {
+    public:
+        using value_type  = QChar32;
+        using pointer     = QChar32 *;
+        using reference   = QChar32 &;
 
-         iterator() = default;
+        iterator() = default;
 
-         iterator(LsCsString::LsCsString::iterator iter)
-            : LsCsString::LsCsString::iterator(std::move(iter)) {
-         }
+        iterator( LsCsString::LsCsString::iterator iter )
+            : LsCsString::LsCsString::iterator( std::move( iter ) )
+        {
+        }
 
-         // operators
-         QChar32 operator*() const {
+        // operators
+        QChar32 operator*() const
+        {
             return LsCsString::LsCsString::iterator::operator*();
-         }
+        }
 
-         QChar32Arrow operator->() const {
+        QChar32Arrow operator->() const
+        {
             return LsCsString::LsCsString::iterator::operator->();
-         }
+        }
 
-         QChar32 operator[](size_type n) const {
-            return LsCsString::LsCsString::iterator::operator[](n);
-         }
+        QChar32 operator[]( size_type n ) const
+        {
+            return LsCsString::LsCsString::iterator::operator[]( n );
+        }
 
-         bool operator==(const iterator &other) const {
-            return LsCsString::LsCsString::iterator::operator==(other);
-         }
+        bool operator==( const iterator &other ) const
+        {
+            return LsCsString::LsCsString::iterator::operator==( other );
+        }
 
-         bool operator!=(const iterator &other) const {
-            return LsCsString::LsCsString::iterator::operator!=(other);
-         }
+        bool operator!=( const iterator &other ) const
+        {
+            return LsCsString::LsCsString::iterator::operator!=( other );
+        }
 
-         iterator &operator+=(size_type n) {
-            LsCsString::LsCsString::iterator::operator+=(n);
+        iterator &operator+=( size_type n )
+        {
+            LsCsString::LsCsString::iterator::operator+=( n );
             return *this;
-         }
+        }
 
-         iterator &operator-=(size_type n) {
-            LsCsString::LsCsString::iterator::operator-=(n);
+        iterator &operator-=( size_type n )
+        {
+            LsCsString::LsCsString::iterator::operator-=( n );
             return *this;
-         }
+        }
 
-         iterator operator+(size_type n) const {
-            return LsCsString::LsCsString::iterator::operator+(n);
-         }
+        iterator operator+( size_type n ) const
+        {
+            return LsCsString::LsCsString::iterator::operator+( n );
+        }
 
-         iterator operator-(size_type n) const {
-            return LsCsString::LsCsString::iterator::operator-(n);
-         }
+        iterator operator-( size_type n ) const
+        {
+            return LsCsString::LsCsString::iterator::operator-( n );
+        }
 
-         size_type operator-(iterator other) const {
-            return LsCsString::LsCsString::iterator::operator-(other);
-         }
+        size_type operator-( iterator other ) const
+        {
+            return LsCsString::LsCsString::iterator::operator-( other );
+        }
 
-         iterator &operator++() {
+        iterator &operator++()
+        {
             LsCsString::LsCsString::iterator::operator++();
             return *this;
-         }
+        }
 
-         iterator operator++(int n) {
-            return LsCsString::LsCsString::iterator::operator++(n);
-         }
+        iterator operator++( int n )
+        {
+            return LsCsString::LsCsString::iterator::operator++( n );
+        }
 
-         iterator &operator--() {
+        iterator &operator--()
+        {
             LsCsString::LsCsString::iterator::operator--();
             return *this;
-         }
+        }
 
-         iterator operator--(int n) {
-            return LsCsString::LsCsString::iterator::operator--(n);
-         }
-      };
+        iterator operator--( int n )
+        {
+            return LsCsString::LsCsString::iterator::operator--( n );
+        }
+    };
 
-      class const_iterator : public LsCsString::LsCsString::const_iterator
-      {
-       public:
-         using value_type        = const QChar32;
-         using pointer           = const QChar32 *;
-         using reference         = const QChar32 &;
+    class const_iterator : public LsCsString::LsCsString::const_iterator
+    {
+    public:
+        using value_type        = const QChar32;
+        using pointer           = const QChar32 *;
+        using reference         = const QChar32 &;
 
-         const_iterator() = default;
+        const_iterator() = default;
 
-         const_iterator(LsCsString::LsCsString::const_iterator iter)
-            : LsCsString::LsCsString::const_iterator(std::move(iter)) {
-         }
+        const_iterator( LsCsString::LsCsString::const_iterator iter )
+            : LsCsString::LsCsString::const_iterator( std::move( iter ) )
+        {
+        }
 
-         const_iterator(iterator iter)
-            : LsCsString::LsCsString::const_iterator(std::move(iter)) {
-         }
+        const_iterator( iterator iter )
+            : LsCsString::LsCsString::const_iterator( std::move( iter ) )
+        {
+        }
 
-         // operators
-         const QChar32 operator*() const {
+        // operators
+        const QChar32 operator*() const
+        {
             return LsCsString::LsCsString::const_iterator::operator*();
-         }
+        }
 
-         QChar32Arrow operator->() const {
+        QChar32Arrow operator->() const
+        {
             return LsCsString::LsCsString::const_iterator::operator->();
-         }
+        }
 
-         QChar32 operator[](size_type n) const {
-            return LsCsString::LsCsString::const_iterator::operator[](n);
-         }
+        QChar32 operator[]( size_type n ) const
+        {
+            return LsCsString::LsCsString::const_iterator::operator[]( n );
+        }
 
-         bool operator==(const const_iterator &other) const {
-            return LsCsString::LsCsString::const_iterator::operator==(other);
-         }
+        bool operator==( const const_iterator &other ) const
+        {
+            return LsCsString::LsCsString::const_iterator::operator==( other );
+        }
 
-         bool operator!=(const const_iterator &other) const {
-            return LsCsString::LsCsString::const_iterator::operator!=(other);
-         }
+        bool operator!=( const const_iterator &other ) const
+        {
+            return LsCsString::LsCsString::const_iterator::operator!=( other );
+        }
 
-         const_iterator &operator+=(size_type n) {
-            LsCsString::LsCsString::const_iterator::operator+=(n);
+        const_iterator &operator+=( size_type n )
+        {
+            LsCsString::LsCsString::const_iterator::operator+=( n );
             return *this;
-         }
+        }
 
-         const_iterator &operator-=(size_type n) {
-            LsCsString::LsCsString::const_iterator::operator-=(n);
+        const_iterator &operator-=( size_type n )
+        {
+            LsCsString::LsCsString::const_iterator::operator-=( n );
             return *this;
-         }
+        }
 
-         const_iterator operator+(size_type n) const {
-            return LsCsString::LsCsString::const_iterator::operator+(n);
-         }
+        const_iterator operator+( size_type n ) const
+        {
+            return LsCsString::LsCsString::const_iterator::operator+( n );
+        }
 
-         const_iterator operator-(size_type n) const {
-            return LsCsString::LsCsString::const_iterator::operator-(n);
-         }
+        const_iterator operator-( size_type n ) const
+        {
+            return LsCsString::LsCsString::const_iterator::operator-( n );
+        }
 
-         size_type operator-(const_iterator other) const {
-            return LsCsString::LsCsString::const_iterator::operator-(other);
-         }
+        size_type operator-( const_iterator other ) const
+        {
+            return LsCsString::LsCsString::const_iterator::operator-( other );
+        }
 
-         const_iterator &operator++() {
+        const_iterator &operator++()
+        {
             LsCsString::LsCsString::const_iterator::operator++();
             return *this;
-         }
+        }
 
-         const_iterator operator++(int n) {
-            return LsCsString::LsCsString::const_iterator::operator++(n);
-         }
+        const_iterator operator++( int n )
+        {
+            return LsCsString::LsCsString::const_iterator::operator++( n );
+        }
 
-         const_iterator &operator--() {
+        const_iterator &operator--()
+        {
             LsCsString::LsCsString::const_iterator::operator--();
             return *this;
-         }
+        }
 
-         const_iterator operator--(int n) {
-            return LsCsString::LsCsString::const_iterator::operator--(n);
-         }
-      };
+        const_iterator operator--( int n )
+        {
+            return LsCsString::LsCsString::const_iterator::operator--( n );
+        }
+    };
 
-      enum NormalizationForm {
-         NormalizationForm_D,
-         NormalizationForm_C,
-         NormalizationForm_KD,
-         NormalizationForm_KC
-      };
+    enum NormalizationForm
+    {
+        NormalizationForm_D,
+        NormalizationForm_C,
+        NormalizationForm_KD,
+        NormalizationForm_KC
+    };
 
-      using difference_type = std::ptrdiff_t;
-      using value_type      = QChar32;
-      using size_type       = std::ptrdiff_t;
-      using storage_type    = char;
+    using difference_type = std::ptrdiff_t;
+    using value_type      = QChar32;
+    using size_type       = std::ptrdiff_t;
+    using storage_type    = char;
 
-      using reverse_iterator       = LsCsString::LsCsStringReverseIterator<iterator>;
-      using const_reverse_iterator = LsCsString::LsCsStringReverseIterator<const_iterator>;
+    using reverse_iterator       = LsCsString::LsCsStringReverseIterator<iterator>;
+    using const_reverse_iterator = LsCsString::LsCsStringReverseIterator<const_iterator>;
 
-      QString8()
-      {
-      }
+    QString8()
+    {
+    }
 
-      QString8(std::nullptr_t) = delete;
+    QString8( std::nullptr_t ) = delete;
 
-      QString8(QChar32 c);
-      QString8(size_type numOfChars, QChar32 c);
+    QString8( QChar32 c );
+    QString8( size_type numOfChars, QChar32 c );
 
-      QString8(QChar32::SpecialCharacter c)
-         : QString8(QChar32(c))
-      {
-      }
+    QString8( QChar32::SpecialCharacter c )
+        : QString8( QChar32( c ) )
+    {
+    }
 
-      QString8(const QChar32 *data, size_type numOfChars = -1)  {
+    QString8( const QChar32 *data, size_type numOfChars = -1 )
+    {
 
-         if (data == nullptr) {
+        if ( data == nullptr )
+        {
             return;
-         }
+        }
 
-         if (numOfChars == -1) {
+        if ( numOfChars == -1 )
+        {
             const QChar32 *p = data;
 
-            while (p->unicode() != 0) {
-               ++p;
+            while ( p->unicode() != 0 )
+            {
+                ++p;
             }
 
-            LsCsString::LsCsString::append(data, p);
+            LsCsString::LsCsString::append( data, p );
 
-         } else {
-            LsCsString::LsCsString::append(data, data + numOfChars);
+        }
+        else
+        {
+            LsCsString::LsCsString::append( data, data + numOfChars );
 
-         }
-      }
+        }
+    }
 
-      QString8(const_iterator begin, const_iterator end)
-         : LsCsString::LsCsString(begin, end)
-      {
-      }
+    QString8( const_iterator begin, const_iterator end )
+        : LsCsString::LsCsString( begin, end )
+    {
+    }
 
-      // for an array of chars
-      template <int N>
-      QString8(const char (&cStr)[N])
-         : LsCsString::LsCsString(cStr)
-      {
-      }
+    // for an array of chars
+    template <int N> QString8( const char ( &cStr )[N] )
+        : LsCsString::LsCsString( cStr )
+    {
+    }
 
 #ifdef CS_STRING_ALLOW_UNSAFE
-      QString8(const QByteArray &str)
-         : QString8(fromUtf8(str))
-      { }
+    QString8( const QByteArray &str )
+        : QString8( fromUtf8( str ) )
+    { }
 #endif
 
-      template <typename Iterator>
-      QString8(Iterator begin, Iterator end)
-         : LsCsString::LsCsString(begin, end)
-      { }
+    template <typename Iterator> QString8( Iterator begin, Iterator end )
+        : LsCsString::LsCsString( begin, end )
+    { }
 
-      // internal
-      QString8(const LsCsString::LsCsString &other)
-         : LsCsString::LsCsString(other)
-      { }
+    // internal
+    QString8( const LsCsString::LsCsString &other )
+        : LsCsString::LsCsString( other )
+    { }
 
-      // internal
-      QString8(LsCsString::LsCsString &&other)
-         : LsCsString::LsCsString(std::move(other))
-      { }
+    // internal
+    QString8( LsCsString::LsCsString &&other )
+        : LsCsString::LsCsString( std::move( other ) )
+    { }
 
-      QString8(QStringView8 str)
-         : LsCsString::LsCsString( str )
-      { }
+    QString8( QStringView8 str )
+        : LsCsString::LsCsString( str )
+    { }
 
-      QString8(const QString8 &other) = default;
-      QString8(QString8 &&other) = default;
+    QString8( const QString8 &other ) = default;
+    QString8( QString8 &&other ) = default;
 
-      ~QString8() = default;
+    ~QString8() = default;
 
 #if defined(__cpp_char8_t)
-      // support new data type added in C++20
+    // support new data type added in C++20
 
-      inline QString8(const char8_t *str);
-      inline QString8(const char8_t *str, size_type size);
+    inline QString8( const char8_t *str );
+    inline QString8( const char8_t *str, size_type size );
 
-      static inline QString8 fromUtf8(const char8_t *str, size_type numOfChars = -1);
+    static inline QString8 fromUtf8( const char8_t *str, size_type numOfChars = -1 );
 #endif
 
-      using LsCsString::LsCsString::append;          // internal
-      using LsCsString::LsCsString::operator=;      // internal
-      using LsCsString::LsCsString::operator+=;     // internal
+    using LsCsString::LsCsString::append;          // internal
+    using LsCsString::LsCsString::operator=;      // internal
+    using LsCsString::LsCsString::operator+=;     // internal
 
-      // methods
-      QString8 &append(char32_t c)  {
-         LsCsString::LsCsString::append(c);
-         return *this;
-      }
+    // methods
+    QString8 &append( char32_t c )
+    {
+        LsCsString::LsCsString::append( c );
+        return *this;
+    }
 
-      QString8 &append(QChar32 c)  {
-         LsCsString::LsCsString::append(c);
-         return *this;
-      }
+    QString8 &append( QChar32 c )
+    {
+        LsCsString::LsCsString::append( c );
+        return *this;
+    }
 
-      QString8 &append(const QString8 &other)  {
-         LsCsString::LsCsString::append(other);
-         return *this;
-      }
+    QString8 &append( const QString8 &other )
+    {
+        LsCsString::LsCsString::append( other );
+        return *this;
+    }
 
-      QString8 &append(const QChar32 *data, size_type numOfChars)  {
-         LsCsString::LsCsString::append(data, data + numOfChars);
-         return *this;
-      }
+    QString8 &append( const QChar32 *data, size_type numOfChars )
+    {
+        LsCsString::LsCsString::append( data, data + numOfChars );
+        return *this;
+    }
 
-      QString8 &append(const_iterator iter_begin, const_iterator iter_end)  {
-         LsCsString::LsCsString::append(iter_begin, iter_end);
-         return *this;
-      }
+    QString8 &append( const_iterator iter_begin, const_iterator iter_end )
+    {
+        LsCsString::LsCsString::append( iter_begin, iter_end );
+        return *this;
+    }
 
-      QString8 &append(QStringView8 str) {
-         LsCsString::LsCsString::append(str.cbegin(), str.cend());
-         return *this;
-      }
+    QString8 &append( QStringView8 str )
+    {
+        LsCsString::LsCsString::append( str.cbegin(), str.cend() );
+        return *this;
+    }
 
-      QString8 &append(QStringView8 str, size_type indexStart, size_type numOfChars) {
-         LsCsString::LsCsString::append(str, indexStart, numOfChars);
-         return *this;
-      }
+    QString8 &append( QStringView8 str, size_type indexStart, size_type numOfChars )
+    {
+        LsCsString::LsCsString::append( str, indexStart, numOfChars );
+        return *this;
+    }
 
-      QChar32 at(size_type index) const {
-         return LsCsString::LsCsString::operator[](index);
-      }
+    QChar32 at( size_type index ) const
+    {
+        return LsCsString::LsCsString::operator[]( index );
+    }
 
-      QChar32 back() const {
-         return LsCsString::LsCsString::back();
-      }
+    QChar32 back() const
+    {
+        return LsCsString::LsCsString::back();
+    }
 
-      void chop(size_type numOfChars);
+    void chop( size_type numOfChars );
 
-      void clear() {
-         LsCsString::LsCsString::clear();
-      }
+    void clear()
+    {
+        LsCsString::LsCsString::clear();
+    }
 
-      int compare(const QString8 &str, Qt::CaseSensitivity cs = Qt::CaseSensitive) const {
-         return compare(QStringView8(*this), QStringView8(str), cs);
-      }
+    int compare( const QString8 &str, Qt::CaseSensitivity cs = Qt::CaseSensitive ) const
+    {
+        return compare( QStringView8( *this ), QStringView8( str ), cs );
+    }
 
-      static int compare(const QString8 &str1, const QString8 &str2, Qt::CaseSensitivity cs = Qt::CaseSensitive) {
-         return compare(QStringView8(str1), QStringView8(str2), cs);
-      }
+    static int compare( const QString8 &str1, const QString8 &str2, Qt::CaseSensitivity cs = Qt::CaseSensitive )
+    {
+        return compare( QStringView8( str1 ), QStringView8( str2 ), cs );
+    }
 
-      int compare(QStringView8 str, Qt::CaseSensitivity cs = Qt::CaseSensitive) const {
-         return compare(QStringView8(*this), str, cs);
-      }
+    int compare( QStringView8 str, Qt::CaseSensitivity cs = Qt::CaseSensitive ) const
+    {
+        return compare( QStringView8( *this ), str, cs );
+    }
 
-      static int compare(QStringView8 str1, QStringView8 str2, Qt::CaseSensitivity cs = Qt::CaseSensitive);
+    static int compare( QStringView8 str1, QStringView8 str2, Qt::CaseSensitivity cs = Qt::CaseSensitive );
 
-      const char *constData() const {
-         return reinterpret_cast<const char *>(LsCsString::LsCsString::constData());
-      }
+    const char *constData() const
+    {
+        return reinterpret_cast<const char *>( LsCsString::LsCsString::constData() );
+    }
 
-      bool contains(char ch, Qt::CaseSensitivity cs = Qt::CaseSensitive) const {
-         return contains(QChar32(ch), cs);
-      }
+    bool contains( char ch, Qt::CaseSensitivity cs = Qt::CaseSensitive ) const
+    {
+        return contains( QChar32( ch ), cs );
+    }
 
-      bool contains(QChar32 c, Qt::CaseSensitivity cs = Qt::CaseSensitive) const;
-      bool contains(const QString8 &str, Qt::CaseSensitivity cs = Qt::CaseSensitive) const;
-      bool contains(QStringView8 str, Qt::CaseSensitivity cs = Qt::CaseSensitive) const;
+    bool contains( QChar32 c, Qt::CaseSensitivity cs = Qt::CaseSensitive ) const;
+    bool contains( const QString8 &str, Qt::CaseSensitivity cs = Qt::CaseSensitive ) const;
+    bool contains( QStringView8 str, Qt::CaseSensitivity cs = Qt::CaseSensitive ) const;
 
-      bool contains(const QRegularExpression8 &regExp) const {
-         return indexOfFast(regExp) != end();
-      }
+    bool contains( const QRegularExpression8 &regExp ) const
+    {
+        return indexOfFast( regExp ) != end();
+    }
 
-      size_type count() const {
-         return LsCsString::LsCsString::size();
-      }
+    size_type count() const
+    {
+        return LsCsString::LsCsString::size();
+    }
 
-      size_type count(QChar32 c, Qt::CaseSensitivity cs = Qt::CaseSensitive) const;
-      size_type count(const QString8 &str, Qt::CaseSensitivity cs = Qt::CaseSensitive) const;
-      size_type count(QStringView8 str, Qt::CaseSensitivity cs = Qt::CaseSensitive) const;
-      size_type count(const QRegularExpression8 &regExp) const;
+    size_type count( QChar32 c, Qt::CaseSensitivity cs = Qt::CaseSensitive ) const;
+    size_type count( const QString8 &str, Qt::CaseSensitivity cs = Qt::CaseSensitive ) const;
+    size_type count( QStringView8 str, Qt::CaseSensitivity cs = Qt::CaseSensitive ) const;
+    size_type count( const QRegularExpression8 &regExp ) const;
 
-      const char *data() const {
-         return constData();
-      }
+    const char *data() const
+    {
+        return constData();
+    }
 
-      bool endsWith(QChar32 c, Qt::CaseSensitivity cs = Qt::CaseSensitive) const;
-      bool endsWith(const QString8 &str, Qt::CaseSensitivity cs = Qt::CaseSensitive) const;
-      bool endsWith(QStringView8 str, Qt::CaseSensitivity cs = Qt::CaseSensitive) const;
+    bool endsWith( QChar32 c, Qt::CaseSensitivity cs = Qt::CaseSensitive ) const;
+    bool endsWith( const QString8 &str, Qt::CaseSensitivity cs = Qt::CaseSensitive ) const;
+    bool endsWith( QStringView8 str, Qt::CaseSensitivity cs = Qt::CaseSensitive ) const;
 
-      QString8 &fill(QChar32 c, size_type numOfChars = -1);
+    QString8 &fill( QChar32 c, size_type numOfChars = -1 );
 
-      QChar32 first() const {
-         return LsCsString::LsCsString::front();
-      }
+    QChar32 first() const
+    {
+        return LsCsString::LsCsString::front();
+    }
 
-      QChar32 front() const {
-         return LsCsString::LsCsString::front();
-      }
+    QChar32 front() const
+    {
+        return LsCsString::LsCsString::front();
+    }
 
-      // using iterators
-      const_iterator indexOfFast(QChar32 c) const {
-         return indexOfFast(c, cbegin(), Qt::CaseSensitive);
-      }
+    // using iterators
+    const_iterator indexOfFast( QChar32 c ) const
+    {
+        return indexOfFast( c, cbegin(), Qt::CaseSensitive );
+    }
 
-      const_iterator indexOfFast(QChar32 c, const_iterator from, Qt::CaseSensitivity cs = Qt::CaseSensitive) const {
+    const_iterator indexOfFast( QChar32 c, const_iterator from, Qt::CaseSensitivity cs = Qt::CaseSensitive ) const
+    {
 
-         if (cs == Qt::CaseSensitive) {
-            return LsCsString::LsCsString::find_fast(c, from);
+        if ( cs == Qt::CaseSensitive )
+        {
+            return LsCsString::LsCsString::find_fast( c, from );
 
-         } else {
-            return cs_internal_find_fast(c, from);
+        }
+        else
+        {
+            return cs_internal_find_fast( c, from );
 
-         }
-      }
+        }
+    }
 
-      const_iterator indexOfFast(const QString8 &str) const {
-         return indexOfFast(str, cbegin(), Qt::CaseSensitive);
-      }
+    const_iterator indexOfFast( const QString8 &str ) const
+    {
+        return indexOfFast( str, cbegin(), Qt::CaseSensitive );
+    }
 
-      const_iterator indexOfFast(const QString8 &str, const_iterator from, Qt::CaseSensitivity cs = Qt::CaseSensitive) const {
+    const_iterator indexOfFast( const QString8 &str, const_iterator from, Qt::CaseSensitivity cs = Qt::CaseSensitive ) const
+    {
 
-         if (cs == Qt::CaseSensitive) {
-            return LsCsString::LsCsString::find_fast(str, from);
+        if ( cs == Qt::CaseSensitive )
+        {
+            return LsCsString::LsCsString::find_fast( str, from );
 
-         } else {
-            return cs_internal_find_fast(str, from);
-         }
-      }
+        }
+        else
+        {
+            return cs_internal_find_fast( str, from );
+        }
+    }
 
-      const_iterator indexOfFast(QStringView8 str, const_iterator from, Qt::CaseSensitivity cs = Qt::CaseSensitive) const {
+    const_iterator indexOfFast( QStringView8 str, const_iterator from, Qt::CaseSensitivity cs = Qt::CaseSensitive ) const
+    {
 
-         if (cs == Qt::CaseSensitive) {
-            return LsCsString::LsCsString::find_fast(str, from);
+        if ( cs == Qt::CaseSensitive )
+        {
+            return LsCsString::LsCsString::find_fast( str, from );
 
-         } else {
-            return cs_internal_find_fast(str, from);
-         }
-      }
+        }
+        else
+        {
+            return cs_internal_find_fast( str, from );
+        }
+    }
 
-      const_iterator indexOfFast(const QRegularExpression8 &regExp) const {
-         return indexOfFast(regExp, begin());
-      }
+    const_iterator indexOfFast( const QRegularExpression8 &regExp ) const
+    {
+        return indexOfFast( regExp, begin() );
+    }
 
-      const_iterator indexOfFast(const QRegularExpression8 &regExp, const_iterator from) const;
+    const_iterator indexOfFast( const QRegularExpression8 &regExp, const_iterator from ) const;
 
-      // using iterators (last)
-      const_iterator lastIndexOfFast(QChar32 c) const {
-         return lastIndexOfFast(c, cend(), Qt::CaseSensitive);
-      }
+    // using iterators (last)
+    const_iterator lastIndexOfFast( QChar32 c ) const
+    {
+        return lastIndexOfFast( c, cend(), Qt::CaseSensitive );
+    }
 
-      const_iterator lastIndexOfFast(QChar32 c, const_iterator from, Qt::CaseSensitivity cs = Qt::CaseSensitive) const
-      {
-         if (cs == Qt::CaseSensitive) {
-            return LsCsString::LsCsString::rfind_fast(c, from);
+    const_iterator lastIndexOfFast( QChar32 c, const_iterator from, Qt::CaseSensitivity cs = Qt::CaseSensitive ) const
+    {
+        if ( cs == Qt::CaseSensitive )
+        {
+            return LsCsString::LsCsString::rfind_fast( c, from );
 
-         } else {
-            return cs_internal_rfind_fast(c, from);
+        }
+        else
+        {
+            return cs_internal_rfind_fast( c, from );
 
-         }
-      }
+        }
+    }
 
-      const_iterator lastIndexOfFast(const QString8 &str) const {
-         return lastIndexOfFast(str, cend(), Qt::CaseSensitive);
-      }
+    const_iterator lastIndexOfFast( const QString8 &str ) const
+    {
+        return lastIndexOfFast( str, cend(), Qt::CaseSensitive );
+    }
 
-      const_iterator lastIndexOfFast(const QString8 &str, const_iterator from, Qt::CaseSensitivity cs = Qt::CaseSensitive) const {
+    const_iterator lastIndexOfFast( const QString8 &str, const_iterator from, Qt::CaseSensitivity cs = Qt::CaseSensitive ) const
+    {
 
-         if (cs == Qt::CaseSensitive) {
-            return LsCsString::LsCsString::rfind_fast(str, from);
+        if ( cs == Qt::CaseSensitive )
+        {
+            return LsCsString::LsCsString::rfind_fast( str, from );
 
-         } else {
-            return cs_internal_rfind_fast(str, from);
-         }
-      }
+        }
+        else
+        {
+            return cs_internal_rfind_fast( str, from );
+        }
+    }
 
-      const_iterator lastIndexOfFast(QStringView8 str, const_iterator from, Qt::CaseSensitivity cs = Qt::CaseSensitive) const {
+    const_iterator lastIndexOfFast( QStringView8 str, const_iterator from, Qt::CaseSensitivity cs = Qt::CaseSensitive ) const
+    {
 
-         if (cs == Qt::CaseSensitive) {
-            return LsCsString::LsCsString::rfind_fast(str, from);
+        if ( cs == Qt::CaseSensitive )
+        {
+            return LsCsString::LsCsString::rfind_fast( str, from );
 
-         } else {
-            return cs_internal_rfind_fast(str, from);
-         }
-      }
+        }
+        else
+        {
+            return cs_internal_rfind_fast( str, from );
+        }
+    }
 
-      // using indexes
-      size_type indexOf(QChar32 c, size_type from = 0, Qt::CaseSensitivity cs = Qt::CaseSensitive) const {
+    // using indexes
+    size_type indexOf( QChar32 c, size_type from = 0, Qt::CaseSensitivity cs = Qt::CaseSensitive ) const
+    {
 
-         if (cs == Qt::CaseSensitive) {
-            return LsCsString::LsCsString::find(c, from);
+        if ( cs == Qt::CaseSensitive )
+        {
+            return LsCsString::LsCsString::find( c, from );
 
-         } else {
+        }
+        else
+        {
             QString8 tmp1 = this->toCaseFolded();
-            return tmp1.LsCsString::LsCsString::find(c.toCaseFolded(), from);
-         }
-      }
+            return tmp1.LsCsString::LsCsString::find( c.toCaseFolded(), from );
+        }
+    }
 
-      size_type indexOf(const QString8 &str, size_type from = 0, Qt::CaseSensitivity cs = Qt::CaseSensitive) const {
+    size_type indexOf( const QString8 &str, size_type from = 0, Qt::CaseSensitivity cs = Qt::CaseSensitive ) const
+    {
 
-         if (cs == Qt::CaseSensitive) {
-            return LsCsString::LsCsString::find(str, from);
+        if ( cs == Qt::CaseSensitive )
+        {
+            return LsCsString::LsCsString::find( str, from );
 
-         } else {
+        }
+        else
+        {
             QString8 tmp1 = this->toCaseFolded();
-            return tmp1.LsCsString::LsCsString::find(str.toCaseFolded(), from);
-         }
-      }
+            return tmp1.LsCsString::LsCsString::find( str.toCaseFolded(), from );
+        }
+    }
 
-      size_type indexOf(const QRegularExpression8 &regExp, size_type from = 0) const {
-         if (from < 0) {
+    size_type indexOf( const QRegularExpression8 &regExp, size_type from = 0 ) const
+    {
+        if ( from < 0 )
+        {
             from = 0;
-         }
+        }
 
-         const_iterator iter = indexOfFast(regExp, begin() + from);
+        const_iterator iter = indexOfFast( regExp, begin() + from );
 
-         if (iter == end()) {
+        if ( iter == end() )
+        {
             return -1;
-         }
+        }
 
-         return iter - begin();
-      }
+        return iter - begin();
+    }
 
-      // using index (last)
-      size_type lastIndexOf(QChar32 c, size_type from = -1, Qt::CaseSensitivity cs  = Qt::CaseSensitive) const  {
+    // using index (last)
+    size_type lastIndexOf( QChar32 c, size_type from = -1, Qt::CaseSensitivity cs  = Qt::CaseSensitive ) const
+    {
 
-         if (cs == Qt::CaseSensitive) {
-            return LsCsString::LsCsString::rfind(c, from);
+        if ( cs == Qt::CaseSensitive )
+        {
+            return LsCsString::LsCsString::rfind( c, from );
 
-         } else {
+        }
+        else
+        {
             QString8 tmp1 = this->toCaseFolded();
-            return tmp1.LsCsString::LsCsString::rfind(c.toCaseFolded(), from);
-         }
-      }
+            return tmp1.LsCsString::LsCsString::rfind( c.toCaseFolded(), from );
+        }
+    }
 
-      size_type lastIndexOf(const QString8 &str, size_type from = -1, Qt::CaseSensitivity cs = Qt::CaseSensitive) const {
+    size_type lastIndexOf( const QString8 &str, size_type from = -1, Qt::CaseSensitivity cs = Qt::CaseSensitive ) const
+    {
 
-         if (cs == Qt::CaseSensitive) {
-            return LsCsString::LsCsString::rfind(str, from);
+        if ( cs == Qt::CaseSensitive )
+        {
+            return LsCsString::LsCsString::rfind( str, from );
 
-         } else {
+        }
+        else
+        {
             QString8 tmp1 = this->toCaseFolded();
-            return tmp1.LsCsString::LsCsString::rfind(str.toCaseFolded(), from);
-         }
-      }
-
-      //
-      QString8 &insert (size_type indexStart, const QString8 &str)  {
-         LsCsString::LsCsString::insert(indexStart, str);
-         return *this;
-      }
-
-      QString8 &insert(size_type indexStart, QChar32 c) {
-         LsCsString::LsCsString::insert(indexStart, 1, c);
-         return *this;
-      }
-
-      QString8 &insert(size_type indexStart, const QChar32 *data, size_type numOfChars) {
-         LsCsString::LsCsString::insert(begin() + indexStart, data, data + numOfChars);
-         return *this;
-      }
-
-      QString8 &insert(const_iterator first, const QString8 &str) {
-         LsCsString::LsCsString::insert(first, str);
-         return *this;
-      }
-
-      template <typename Iterator>
-      QString8 &insert(const_iterator first, Iterator begin, Iterator end) {
-         LsCsString::LsCsString::insert(first, begin, end);
-         return *this;
-      }
-
-      QString8 &insert(size_type indexStart, QStringView8 str) {
-         LsCsString::LsCsString::insert(indexStart, str);
-         return *this;
-      }
-
-      QString8 &insert(size_type indexStart, QStringView8 str, size_type srcStart, size_type numOfChars) {
-         LsCsString::LsCsString::insert(indexStart, str, srcStart, numOfChars);
-         return *this;
-      }
-
-      bool empty() const {
-         return LsCsString::LsCsString::empty();
-      }
-
-      bool isEmpty() const {
-         return empty();
-      }
-
-      QChar32 last()const {
-         return LsCsString::LsCsString::back();
-      }
-
-      [[nodiscard]] QString8 left(size_type numOfChars) const;
-      [[nodiscard]] QStringView8 leftView(size_type numOfChars) const;
-      [[nodiscard]] QString8 leftJustified(size_type width, QChar32 fill = UCHAR(' '), bool truncate = false) const;
-
-      size_type length() const {
-         return LsCsString::LsCsString::size();
-      }
-
-      int localeAwareCompare(const QString8 &str) const {
-         return localeAwareCompare(QStringView8(*this), QStringView8(str));
-      }
-
-      static int localeAwareCompare(const QString8 &str1, const QString8 &str2) {
-         return localeAwareCompare(QStringView8(str1), QStringView8(str2));
-      }
-
-      int localeAwareCompare(QStringView8 str) const {
-         return localeAwareCompare(QStringView8(*this), str);
-      }
-
-      static int localeAwareCompare(QStringView8 str1, QStringView8 str2);
-
-      [[nodiscard]] QString8 mid(size_type indexStart, size_type numOfChars = -1) const;
-      [[nodiscard]] QString8 mid(const_iterator iter, size_type numOfChars = -1) const;
-
-      QStringView8 midView (size_type indexStart, size_type numOfChars = -1) const;
-      QStringView8 midView (const_iterator iter, size_type numOfChars = -1) const;
-
-      [[nodiscard]]QString8 normalized(QString8::NormalizationForm mode,
-                  QChar32::UnicodeVersion version = QChar32::Unicode_Unassigned) const;
-
-      QString8 &prepend(const QString8 &other) {
-         LsCsString::LsCsString::insert(begin(), other);
-         return *this;
-      }
-
-      QString8 &prepend(char32_t c) {
-         LsCsString::LsCsString::insert(begin(), c);
-         return *this;
-      }
-
-      QString8 &prepend(QChar32 c) {
-         LsCsString::LsCsString::insert(begin(), c);
-         return *this;
-      }
-
-      QString8 &prepend(const QChar32 *data, size_type numOfChars)  {
-         LsCsString::LsCsString::insert(begin(), data, data + numOfChars);
-         return *this;
-      }
-
-      QString8 &prepend(const_iterator iter_begin, const_iterator iter_end)  {
-         LsCsString::LsCsString::insert(begin(), iter_begin, iter_end);
-         return *this;
-      }
-
-      void push_back(QChar32 c) {
-         append(c);
-      }
-
-      void push_back(const QString8 &other) {
-         append(other);
-      }
-
-      void push_front(QChar32 c) {
-         prepend(c);
-      }
-
-      void push_front(const QString8 &other) {
-         prepend(other);
-      }
-
-      [[nodiscard]] QString8 repeated(size_type count) const;
-
-      QString8 &remove(size_type indexStart, size_type numOfChars);
-      QString8 &remove(QChar32 c, Qt::CaseSensitivity cs = Qt::CaseSensitive);
-      QString8 &remove(const QString8 &str, Qt::CaseSensitivity cs = Qt::CaseSensitive);
-
-      QString8 &remove(const QRegularExpression8 &regExp) {
-         replace(regExp, QString8());
-         return *this;
-      }
-
-      QString8 &replace(QChar32 before, QChar32 after, Qt::CaseSensitivity cs = Qt::CaseSensitive);
-
-      QString8 &replace(const QChar32 *before, size_type beforeSize, const QChar32 *after, size_type afterSize,
-                  Qt::CaseSensitivity cs = Qt::CaseSensitive);
-
-      QString8 &replace(const QString8 &before, const QString8 &after, Qt::CaseSensitivity cs = Qt::CaseSensitive);
-      QString8 &replace(QChar32 c, const QString8 &after, Qt::CaseSensitivity cs = Qt::CaseSensitive);
-
-      QString8 &replace(size_type indexStart, size_type numOfChars, QChar32 c) {
-         LsCsString::LsCsString::replace(indexStart, numOfChars, 1, c);
-         return *this;
-      }
-
-      QString8 &replace(size_type indexStart, size_type numOfChars, const QChar32 *data, size_type sizeStr)
-      {
-         replace(indexStart, numOfChars, QString8(data, sizeStr));
-         return *this;
-      }
-
-      QString8 &replace(size_type indexStart, size_type numOfChars, const QString8 &str) {
-         LsCsString::LsCsString::replace(indexStart, numOfChars, str);
-         return *this;
-      }
-
-      QString8 &replace(size_type indexStart, size_type numOfChars, const QString8 &str, size_type sizeStr)
-      {
-         LsCsString::LsCsString::replace(indexStart, numOfChars, str.left(sizeStr));
-         return *this;
-      }
-
-      template <typename Iterator>
-      QString8 &replace(const_iterator first1, const_iterator last1, Iterator first2, Iterator last2) {
-         LsCsString::LsCsString::replace(first1, last1, first2, last2);
-         return *this;
-      }
-
-      QString8 &replace(const_iterator first, const_iterator last, const QString8 &str) {
-         LsCsString::LsCsString::replace(first, last, str);
-         return *this;
-      }
-
-      QString8 &replace(const QRegularExpression8 &regExp, const QString8 &after);
-
-      void resize(size_type numOfChars) {
-         return LsCsString::LsCsString::resize(numOfChars);
-      }
-
-      void resize(size_type numOfChars, QChar32 c) {
-         return LsCsString::LsCsString::resize(numOfChars, c);
-      }
-
-      [[nodiscard]] QString8 right(size_type count) const;
-      [[nodiscard]] QStringView8 rightView(size_type count) const;
-      [[nodiscard]] QString8 rightJustified(size_type width, QChar32 fill = UCHAR(' '), bool truncate = false) const;
-
-      [[nodiscard]] QString8 simplified() const &;
-      [[nodiscard]] QString8 simplified() &&;
-
-      size_type size() const {
-         return LsCsString::LsCsString::size();
-      }
-
-      size_type size_storage() const {
-         return LsCsString::LsCsString::size_storage();
-      }
-
-      bool startsWith(QChar32 c, Qt::CaseSensitivity cs = Qt::CaseSensitive) const;
-      bool startsWith(const QString8 &str, Qt::CaseSensitivity cs = Qt::CaseSensitive) const;
-      bool startsWith(QStringView8 str, Qt::CaseSensitivity cs = Qt::CaseSensitive) const;
-
-      void squeeze() {
-         return LsCsString::LsCsString::shrink_to_fit();
-      }
-
-      void swap(QString8 &other) {
-         LsCsString::LsCsString::swap(other);
-      }
-
-      QString8 toHtmlEscaped() const;
-
-      [[nodiscard]] QString8 toCaseFolded() const &;
-      [[nodiscard]] QString8 toCaseFolded() &&;
-
-      [[nodiscard]] QString8 toLower() const &;
-      [[nodiscard]] QString8 toLower() &&;
-
-      [[nodiscard]] QString8 toUpper() const &;
-      [[nodiscard]] QString8 toUpper() &&;
-
-      [[nodiscard]] QByteArray toLatin1() const;
-      [[nodiscard]] QByteArray toUtf8() const;
-      [[nodiscard]] QString16 toUtf16() const;
-
-      std::wstring toStdWString() const;
-
-      std::string toStdString() const {
-         return std::string(cbegin().codePointBegin(), cend().codePointBegin() );
-      }
-
-      [[nodiscard]] QString8 trimmed() const &;
-      [[nodiscard]] QString8 trimmed() &&;
-
-      void truncate(size_type length);
-
-      const uint8_t *utf8() const {
-         return LsCsString::LsCsString::constData();
-      }
-
-      // static
-      static QString8 fromLatin1(const QByteArray &str);
-      static QString8 fromLatin1(const char *str, size_type numOfChars = -1);
-
-      static QString8 fromUtf8(const QByteArray &str);
-      static QString8 fromUtf8(const char *str, size_type numOfChars = -1);
-
-      static QString8 fromUtf16(const char16_t *str, size_type numOfChars = -1);
-      static QString8 fromUtf16(const QString16 &str);
-
-      static QString8 fromStdWString(const std::wstring &str, size_type numOfChars = -1);
-      static QString8 fromStdString(const std::string &str, size_type numOfChars = -1);
-
-      // wrappers
-      template <typename SP = QStringParser, typename ...Ts>
-      [[nodiscard]] QString8 formatArg(Ts &&... args) const
-      {
-         return SP::template formatArg<QString8>(*this, std::forward<Ts>(args)...);
-      }
-
-      template <typename SP = QStringParser, typename ...Ts>
-      [[nodiscard]] QString8 formatArgs(Ts &&... args) const
-      {
-         return SP::template formatArgs<QString8>(*this, std::forward<Ts>(args)...);
-      }
-
-      template <typename V, typename SP = QStringParser>
-      [[nodiscard]] static QString8 number(V value, int base  = 10)
-      {
-         return SP::template number<QString8>(value, base);
-      }
-
-      template <typename SP = QStringParser>
-      [[nodiscard]] static QString8 number(double value, char format = 'g', int precision = 6)
-      {
-         return SP::template number<QString8>(value, format, precision);
-      }
-
-      template <typename SP = QStringParser, typename ...Ts>
-      QString8 section(QChar32 separator, Ts... args) const {
-         return SP::section(*this, QString8(separator), args...);
-      }
-
-      template <typename SP = QStringParser, typename ...Ts>
-      QString8 section(const QString8 &separator, Ts... args) const {
-         return SP::section(*this, separator, args...);
-      }
-
-      template <typename SP = QStringParser, typename ...Ts>
-      auto split(QChar32 separator, Ts... args) const
-      {
-         return SP::split(*this, separator, args...);
-      }
-
-      template <typename SP = QStringParser, typename ...Ts>
-      auto split(const QString8 &separator, Ts... args) const
-      {
-         return SP::split(*this, separator, args...);
-      }
-
-      template <typename SP = QStringParser, typename ...Ts>
-      auto split(const QRegularExpression &separator, Ts... args) const
-      {
-         return SP::split(*this, separator, args...);
-      }
-
-      template <typename R, typename SP = QStringParser>
-      R toInteger(bool *ok = nullptr, int base = 10) const
-      {
-         return SP::template toInteger<R>(*this, ok, base);
-      }
-
-      template <typename SP = QStringParser>
-      double toDouble(bool *ok = nullptr) const
-      {
-         return SP::toDouble(*this, ok);
-      }
-
-      template <typename SP = QStringParser>
-      float toFloat(bool *ok = nullptr) const
-      {
-         return SP::toFloat(*this, ok);
-      }
-
-      template <typename SP = QStringParser>
-      [[deprecated("Use toInteger<int> instead")]] int toInt(bool *ok = nullptr, int base = 10) const
-      {
-         return SP::template toInteger<int>(*this, ok, base);
-      }
-
-      // iterators
-      iterator begin() {
-         return LsCsString::LsCsString::begin();
-      }
-
-      const_iterator begin() const {
-         return LsCsString::LsCsString::cbegin();
-      }
-
-      const_iterator cbegin() const {
-         return LsCsString::LsCsString::cbegin();
-      }
-
-      const_iterator constBegin() const {
-         return LsCsString::LsCsString::cbegin();
-      }
-
-      iterator end() {
-         return LsCsString::LsCsString::end();
-      }
-
-      const_iterator end() const {
-         return LsCsString::LsCsString::cend();
-      }
-
-      const_iterator cend() const {
-         return LsCsString::LsCsString::cend();
-      }
-
-      const_iterator constEnd() const {
-         return LsCsString::LsCsString::cend();
-      }
-
-      reverse_iterator rbegin()  {
-         return LsCsString::LsCsString::rbegin();
-      }
-
-      const_reverse_iterator rbegin() const {
-         return LsCsString::LsCsString::rbegin();
-      }
-
-      reverse_iterator rend()  {
-         return LsCsString::LsCsString::rend();
-      }
-
-      const_reverse_iterator rend() const {
-         return LsCsString::LsCsString::rend();
-      }
-
-      const_reverse_iterator crbegin() const {
-         return LsCsString::LsCsString::crbegin();
-      }
-
-      const_reverse_iterator crend() const {
-         return LsCsString::LsCsString::crend();
-      }
-
-      // storage iterators
-      const_storage_iterator storage_begin() const {
-         return LsCsString::LsCsString::storage_begin();
-      }
-
-      const_storage_iterator storage_end() const {
-         return LsCsString::LsCsString::storage_end();
-      }
-
-      const_storage_reverse_iterator storage_rbegin() const {
-         return LsCsString::LsCsString::storage_rbegin();
-      }
-
-      const_storage_reverse_iterator storage_rend() const {
-         return LsCsString::LsCsString::storage_rend();
-      }
-
-      // operators
-      QString8 &operator=(const QString8 &other) = default;
-      QString8 &operator=(QString8 && other) = default;
-
-      QString8 &operator=(QChar32 c)  {
-         LsCsString::LsCsString::operator=(c);
-         return *this;
-      }
-
-      QString8 &operator=(QStringView8 str) {
-         LsCsString::LsCsString::operator=(str);
-         return *this;
-      }
-
-      QString8 &operator+=(QChar32 c)  {
-         LsCsString::LsCsString::operator+=(c);
-         return *this;
-      }
-
-      QString8 &operator+=(QChar32::SpecialCharacter c) {
-         append(QChar32(c));
-         return *this;
-      }
-
-      QString8 &operator+= (const QString8 & other) {
-         LsCsString::LsCsString::operator+=(other);
-         return *this;
-      }
-
-      QString8 &operator+= (QStringView8 str) {
-         LsCsString::LsCsString::operator+=(str);
-         return *this;
-      }
-
-      QChar32 operator[](size_type index) const {
-         return LsCsString::LsCsString::operator[](index);
-      }
+            return tmp1.LsCsString::LsCsString::rfind( str.toCaseFolded(), from );
+        }
+    }
+
+    //
+    QString8 &insert ( size_type indexStart, const QString8 &str )
+    {
+        LsCsString::LsCsString::insert( indexStart, str );
+        return *this;
+    }
+
+    QString8 &insert( size_type indexStart, QChar32 c )
+    {
+        LsCsString::LsCsString::insert( indexStart, 1, c );
+        return *this;
+    }
+
+    QString8 &insert( size_type indexStart, const QChar32 *data, size_type numOfChars )
+    {
+        LsCsString::LsCsString::insert( begin() + indexStart, data, data + numOfChars );
+        return *this;
+    }
+
+    QString8 &insert( const_iterator first, const QString8 &str )
+    {
+        LsCsString::LsCsString::insert( first, str );
+        return *this;
+    }
+
+    template <typename Iterator>
+    QString8 &insert( const_iterator first, Iterator begin, Iterator end )
+    {
+        LsCsString::LsCsString::insert( first, begin, end );
+        return *this;
+    }
+
+    QString8 &insert( size_type indexStart, QStringView8 str )
+    {
+        LsCsString::LsCsString::insert( indexStart, str );
+        return *this;
+    }
+
+    QString8 &insert( size_type indexStart, QStringView8 str, size_type srcStart, size_type numOfChars )
+    {
+        LsCsString::LsCsString::insert( indexStart, str, srcStart, numOfChars );
+        return *this;
+    }
+
+    bool empty() const
+    {
+        return LsCsString::LsCsString::empty();
+    }
+
+    bool isEmpty() const
+    {
+        return empty();
+    }
+
+    QChar32 last()const
+    {
+        return LsCsString::LsCsString::back();
+    }
+
+    [[nodiscard]] QString8 left( size_type numOfChars ) const;
+    [[nodiscard]] QStringView8 leftView( size_type numOfChars ) const;
+    [[nodiscard]] QString8 leftJustified( size_type width, QChar32 fill = UCHAR( ' ' ), bool truncate = false ) const;
+
+    size_type length() const
+    {
+        return LsCsString::LsCsString::size();
+    }
+
+    int localeAwareCompare( const QString8 &str ) const
+    {
+        return localeAwareCompare( QStringView8( *this ), QStringView8( str ) );
+    }
+
+    static int localeAwareCompare( const QString8 &str1, const QString8 &str2 )
+    {
+        return localeAwareCompare( QStringView8( str1 ), QStringView8( str2 ) );
+    }
+
+    int localeAwareCompare( QStringView8 str ) const
+    {
+        return localeAwareCompare( QStringView8( *this ), str );
+    }
+
+    static int localeAwareCompare( QStringView8 str1, QStringView8 str2 );
+
+    [[nodiscard]] QString8 mid( size_type indexStart, size_type numOfChars = -1 ) const;
+    [[nodiscard]] QString8 mid( const_iterator iter, size_type numOfChars = -1 ) const;
+
+    QStringView8 midView ( size_type indexStart, size_type numOfChars = -1 ) const;
+    QStringView8 midView ( const_iterator iter, size_type numOfChars = -1 ) const;
+
+    [[nodiscard]]QString8 normalized( QString8::NormalizationForm mode,
+                                      QChar32::UnicodeVersion version = QChar32::Unicode_Unassigned ) const;
+
+    QString8 &prepend( const QString8 &other )
+    {
+        LsCsString::LsCsString::insert( begin(), other );
+        return *this;
+    }
+
+    QString8 &prepend( char32_t c )
+    {
+        LsCsString::LsCsString::insert( begin(), c );
+        return *this;
+    }
+
+    QString8 &prepend( QChar32 c )
+    {
+        LsCsString::LsCsString::insert( begin(), c );
+        return *this;
+    }
+
+    QString8 &prepend( const QChar32 *data, size_type numOfChars )
+    {
+        LsCsString::LsCsString::insert( begin(), data, data + numOfChars );
+        return *this;
+    }
+
+    QString8 &prepend( const_iterator iter_begin, const_iterator iter_end )
+    {
+        LsCsString::LsCsString::insert( begin(), iter_begin, iter_end );
+        return *this;
+    }
+
+    void push_back( QChar32 c )
+    {
+        append( c );
+    }
+
+    void push_back( const QString8 &other )
+    {
+        append( other );
+    }
+
+    void push_front( QChar32 c )
+    {
+        prepend( c );
+    }
+
+    void push_front( const QString8 &other )
+    {
+        prepend( other );
+    }
+
+    [[nodiscard]] QString8 repeated( size_type count ) const;
+
+    QString8 &remove( size_type indexStart, size_type numOfChars );
+    QString8 &remove( QChar32 c, Qt::CaseSensitivity cs = Qt::CaseSensitive );
+    QString8 &remove( const QString8 &str, Qt::CaseSensitivity cs = Qt::CaseSensitive );
+
+    QString8 &remove( const QRegularExpression8 &regExp )
+    {
+        replace( regExp, QString8() );
+        return *this;
+    }
+
+    QString8 &replace( QChar32 before, QChar32 after, Qt::CaseSensitivity cs = Qt::CaseSensitive );
+
+    QString8 &replace( const QChar32 *before, size_type beforeSize, const QChar32 *after, size_type afterSize,
+                       Qt::CaseSensitivity cs = Qt::CaseSensitive );
+
+    QString8 &replace( const QString8 &before, const QString8 &after, Qt::CaseSensitivity cs = Qt::CaseSensitive );
+    QString8 &replace( QChar32 c, const QString8 &after, Qt::CaseSensitivity cs = Qt::CaseSensitive );
+
+    QString8 &replace( size_type indexStart, size_type numOfChars, QChar32 c )
+    {
+        LsCsString::LsCsString::replace( indexStart, numOfChars, 1, c );
+        return *this;
+    }
+
+    QString8 &replace( size_type indexStart, size_type numOfChars, const QChar32 *data, size_type sizeStr )
+    {
+        replace( indexStart, numOfChars, QString8( data, sizeStr ) );
+        return *this;
+    }
+
+    QString8 &replace( size_type indexStart, size_type numOfChars, const QString8 &str )
+    {
+        LsCsString::LsCsString::replace( indexStart, numOfChars, str );
+        return *this;
+    }
+
+    QString8 &replace( size_type indexStart, size_type numOfChars, const QString8 &str, size_type sizeStr )
+    {
+        LsCsString::LsCsString::replace( indexStart, numOfChars, str.left( sizeStr ) );
+        return *this;
+    }
+
+    template <typename Iterator>
+    QString8 &replace( const_iterator first1, const_iterator last1, Iterator first2, Iterator last2 )
+    {
+        LsCsString::LsCsString::replace( first1, last1, first2, last2 );
+        return *this;
+    }
+
+    QString8 &replace( const_iterator first, const_iterator last, const QString8 &str )
+    {
+        LsCsString::LsCsString::replace( first, last, str );
+        return *this;
+    }
+
+    QString8 &replace( const QRegularExpression8 &regExp, const QString8 &after );
+
+    void resize( size_type numOfChars )
+    {
+        return LsCsString::LsCsString::resize( numOfChars );
+    }
+
+    void resize( size_type numOfChars, QChar32 c )
+    {
+        return LsCsString::LsCsString::resize( numOfChars, c );
+    }
+
+    [[nodiscard]] QString8 right( size_type count ) const;
+    [[nodiscard]] QStringView8 rightView( size_type count ) const;
+    [[nodiscard]] QString8 rightJustified( size_type width, QChar32 fill = UCHAR( ' ' ), bool truncate = false ) const;
+
+    [[nodiscard]] QString8 simplified() const &;
+    [[nodiscard]] QString8 simplified() &&;
+
+    size_type size() const
+    {
+        return LsCsString::LsCsString::size();
+    }
+
+    size_type size_storage() const
+    {
+        return LsCsString::LsCsString::size_storage();
+    }
+
+    bool startsWith( QChar32 c, Qt::CaseSensitivity cs = Qt::CaseSensitive ) const;
+    bool startsWith( const QString8 &str, Qt::CaseSensitivity cs = Qt::CaseSensitive ) const;
+    bool startsWith( QStringView8 str, Qt::CaseSensitivity cs = Qt::CaseSensitive ) const;
+
+    void squeeze()
+    {
+        return LsCsString::LsCsString::shrink_to_fit();
+    }
+
+    void swap( QString8 &other )
+    {
+        LsCsString::LsCsString::swap( other );
+    }
+
+    QString8 toHtmlEscaped() const;
+
+    [[nodiscard]] QString8 toCaseFolded() const &;
+    [[nodiscard]] QString8 toCaseFolded() &&;
+
+    [[nodiscard]] QString8 toLower() const &;
+    [[nodiscard]] QString8 toLower() &&;
+
+    [[nodiscard]] QString8 toUpper() const &;
+    [[nodiscard]] QString8 toUpper() &&;
+
+    [[nodiscard]] QByteArray toLatin1() const;
+    [[nodiscard]] QByteArray toUtf8() const;
+    [[nodiscard]] QString16 toUtf16() const;
+
+    std::wstring toStdWString() const;
+
+    std::string toStdString() const
+    {
+        return std::string( cbegin().codePointBegin(), cend().codePointBegin() );
+    }
+
+    [[nodiscard]] QString8 trimmed() const &;
+    [[nodiscard]] QString8 trimmed() &&;
+
+    void truncate( size_type length );
+
+    const uint8_t *utf8() const
+    {
+        return LsCsString::LsCsString::constData();
+    }
+
+    // static
+    static QString8 fromLatin1( const QByteArray &str );
+    static QString8 fromLatin1( const char *str, size_type numOfChars = -1 );
+
+    static QString8 fromUtf8( const QByteArray &str );
+    static QString8 fromUtf8( const char *str, size_type numOfChars = -1 );
+
+    static QString8 fromUtf16( const char16_t *str, size_type numOfChars = -1 );
+    static QString8 fromUtf16( const QString16 &str );
+
+    static QString8 fromStdWString( const std::wstring &str, size_type numOfChars = -1 );
+    static QString8 fromStdString( const std::string &str, size_type numOfChars = -1 );
+
+    // wrappers
+    template <typename SP = QStringParser, typename ...Ts>
+    [[nodiscard]] QString8 formatArg( Ts &&... args ) const
+    {
+        return SP::template formatArg<QString8>( *this, std::forward<Ts>( args )... );
+    }
+
+    template <typename SP = QStringParser, typename ...Ts>
+    [[nodiscard]] QString8 formatArgs( Ts &&... args ) const
+    {
+        return SP::template formatArgs<QString8>( *this, std::forward<Ts>( args )... );
+    }
+
+    template <typename V, typename SP = QStringParser>
+    [[nodiscard]] static QString8 number( V value, int base  = 10 )
+    {
+        return SP::template number<QString8>( value, base );
+    }
+
+    template <typename SP = QStringParser>
+    [[nodiscard]] static QString8 number( double value, char format = 'g', int precision = 6 )
+    {
+        return SP::template number<QString8>( value, format, precision );
+    }
+
+    template <typename SP = QStringParser, typename ...Ts>
+    QString8 section( QChar32 separator, Ts... args ) const
+    {
+        return SP::section( *this, QString8( separator ), args... );
+    }
+
+    template <typename SP = QStringParser, typename ...Ts>
+    QString8 section( const QString8 &separator, Ts... args ) const
+    {
+        return SP::section( *this, separator, args... );
+    }
+
+    template <typename SP = QStringParser, typename ...Ts>
+    auto split( QChar32 separator, Ts... args ) const
+    {
+        return SP::split( *this, separator, args... );
+    }
+
+    template <typename SP = QStringParser, typename ...Ts>
+    auto split( const QString8 &separator, Ts... args ) const
+    {
+        return SP::split( *this, separator, args... );
+    }
+
+    template <typename SP = QStringParser, typename ...Ts>
+    auto split( const QRegularExpression &separator, Ts... args ) const
+    {
+        return SP::split( *this, separator, args... );
+    }
+
+    template <typename R, typename SP = QStringParser>
+    R toInteger( bool *ok = nullptr, int base = 10 ) const
+    {
+        return SP::template toInteger<R>( *this, ok, base );
+    }
+
+    template <typename SP = QStringParser>
+    double toDouble( bool *ok = nullptr ) const
+    {
+        return SP::toDouble( *this, ok );
+    }
+
+    template <typename SP = QStringParser>
+    float toFloat( bool *ok = nullptr ) const
+    {
+        return SP::toFloat( *this, ok );
+    }
+
+    template <typename SP = QStringParser>
+    [[deprecated( "Use toInteger<int> instead" )]] int toInt( bool *ok = nullptr, int base = 10 ) const
+    {
+        return SP::template toInteger<int>( *this, ok, base );
+    }
+
+    // iterators
+    iterator begin()
+    {
+        return LsCsString::LsCsString::begin();
+    }
+
+    const_iterator begin() const
+    {
+        return LsCsString::LsCsString::cbegin();
+    }
+
+    const_iterator cbegin() const
+    {
+        return LsCsString::LsCsString::cbegin();
+    }
+
+    const_iterator constBegin() const
+    {
+        return LsCsString::LsCsString::cbegin();
+    }
+
+    iterator end()
+    {
+        return LsCsString::LsCsString::end();
+    }
+
+    const_iterator end() const
+    {
+        return LsCsString::LsCsString::cend();
+    }
+
+    const_iterator cend() const
+    {
+        return LsCsString::LsCsString::cend();
+    }
+
+    const_iterator constEnd() const
+    {
+        return LsCsString::LsCsString::cend();
+    }
+
+    reverse_iterator rbegin()
+    {
+        return LsCsString::LsCsString::rbegin();
+    }
+
+    const_reverse_iterator rbegin() const
+    {
+        return LsCsString::LsCsString::rbegin();
+    }
+
+    reverse_iterator rend()
+    {
+        return LsCsString::LsCsString::rend();
+    }
+
+    const_reverse_iterator rend() const
+    {
+        return LsCsString::LsCsString::rend();
+    }
+
+    const_reverse_iterator crbegin() const
+    {
+        return LsCsString::LsCsString::crbegin();
+    }
+
+    const_reverse_iterator crend() const
+    {
+        return LsCsString::LsCsString::crend();
+    }
+
+    // storage iterators
+    const_storage_iterator storage_begin() const
+    {
+        return LsCsString::LsCsString::storage_begin();
+    }
+
+    const_storage_iterator storage_end() const
+    {
+        return LsCsString::LsCsString::storage_end();
+    }
+
+    const_storage_reverse_iterator storage_rbegin() const
+    {
+        return LsCsString::LsCsString::storage_rbegin();
+    }
+
+    const_storage_reverse_iterator storage_rend() const
+    {
+        return LsCsString::LsCsString::storage_rend();
+    }
+
+    // operators
+    QString8 &operator=( const QString8 &other ) = default;
+    QString8 &operator=( QString8 &&other ) = default;
+
+    QString8 &operator=( QChar32 c )
+    {
+        LsCsString::LsCsString::operator=( c );
+        return *this;
+    }
+
+    QString8 &operator=( QStringView8 str )
+    {
+        LsCsString::LsCsString::operator=( str );
+        return *this;
+    }
+
+    QString8 &operator+=( QChar32 c )
+    {
+        LsCsString::LsCsString::operator+=( c );
+        return *this;
+    }
+
+    QString8 &operator+=( QChar32::SpecialCharacter c )
+    {
+        append( QChar32( c ) );
+        return *this;
+    }
+
+    QString8 &operator+= ( const QString8 &other )
+    {
+        LsCsString::LsCsString::operator+=( other );
+        return *this;
+    }
+
+    QString8 &operator+= ( QStringView8 str )
+    {
+        LsCsString::LsCsString::operator+=( str );
+        return *this;
+    }
+
+    QChar32 operator[]( size_type index ) const
+    {
+        return LsCsString::LsCsString::operator[]( index );
+    }
 
 #if defined(Q_OS_DARWIN)
-    static QString8 fromCFString(CFStringRef string);
+    static QString8 fromCFString( CFStringRef string );
     CFStringRef toCFString() const;
 
 #  if defined(__OBJC__)
-    static QString8 fromNSString(const NSString *string);
+    static QString8 fromNSString( const NSString *string );
     NSString *toNSString() const;
 #  endif
 
 #endif
 
-   private:
-      const_iterator cs_internal_find_fast(QChar32 c, const_iterator iter_begin) const;
-      const_iterator cs_internal_find_fast(const QString8 &str, const_iterator iter_begin) const;
-      const_iterator cs_internal_rfind_fast(QChar32 c, const_iterator iter_begin) const;
-      const_iterator cs_internal_rfind_fast(const QString8 &str, const_iterator iter_begin) const;
+private:
+    const_iterator cs_internal_find_fast( QChar32 c, const_iterator iter_begin ) const;
+    const_iterator cs_internal_find_fast( const QString8 &str, const_iterator iter_begin ) const;
+    const_iterator cs_internal_rfind_fast( QChar32 c, const_iterator iter_begin ) const;
+    const_iterator cs_internal_rfind_fast( const QString8 &str, const_iterator iter_begin ) const;
 
-      iterator replace(const_iterator iter_begin, const QString8 &str) {
-         // returns an iterator to the end of the replacement string
+    iterator replace( const_iterator iter_begin, const QString8 &str )
+    {
+        // returns an iterator to the end of the replacement string
 
-         auto iter = LsCsString::LsCsString::replace(iter_begin, str);
-         iter = iter.advance_storage(str.size_storage());
+        auto iter = LsCsString::LsCsString::replace( iter_begin, str );
+        iter = iter.advance_storage( str.size_storage() );
 
-         return iter;
-      }
+        return iter;
+    }
 };
 
-Q_CORE_EXPORT QDataStream &operator<<(QDataStream &stream, const QString8 &str);
-Q_CORE_EXPORT QDataStream &operator>>(QDataStream &stream, QString8 &str);
+Q_CORE_EXPORT QDataStream &operator<<( QDataStream &stream, const QString8 &str );
+Q_CORE_EXPORT QDataStream &operator>>( QDataStream &stream, QString8 &str );
 
 // free functions, comparisons for string literals
 template <int N>
-inline bool operator==(QStringView8 str1, const char (&str2)[N])
+inline bool operator==( QStringView8 str1, const char ( &str2 )[N] )
 {
-   return std::equal(str1.storage_begin(), str1.storage_end(), str2, str2+N-1,
-      [] (auto a, auto b) { return static_cast<uint8_t>(a) == static_cast<uint8_t>(b);} );
+    return std::equal( str1.storage_begin(), str1.storage_end(), str2, str2+N-1,
+                       [] ( auto a, auto b )
+    {
+        return static_cast<uint8_t>( a ) == static_cast<uint8_t>( b );
+    } );
 }
 
 template <int N>
-inline bool operator==(const char (& str1)[N], QStringView8 str2)
+inline bool operator==( const char ( & str1 )[N], QStringView8 str2 )
 {
-   return std::equal(str1, str1+N-1, str2.storage_begin(), str2.storage_end(),
-      [] (auto a, auto b) { return static_cast<uint8_t>(a) == static_cast<uint8_t>(b);} );
+    return std::equal( str1, str1+N-1, str2.storage_begin(), str2.storage_end(),
+                       [] ( auto a, auto b )
+    {
+        return static_cast<uint8_t>( a ) == static_cast<uint8_t>( b );
+    } );
 }
 
 template <int N>
-inline bool operator==(const QString8 &str1, const char (& str2)[N])
+inline bool operator==( const QString8 &str1, const char ( & str2 )[N] )
 {
-   return std::equal(str1.storage_begin(), str1.storage_end(), str2, str2+N-1,
-      [] (auto a, auto b) { return static_cast<uint8_t>(a) == static_cast<uint8_t>(b);} );
+    return std::equal( str1.storage_begin(), str1.storage_end(), str2, str2+N-1,
+                       [] ( auto a, auto b )
+    {
+        return static_cast<uint8_t>( a ) == static_cast<uint8_t>( b );
+    } );
 }
 
 template <int N>
-inline bool operator==(const char (& str1)[N], const QString8 &str2)
+inline bool operator==( const char ( & str1 )[N], const QString8 &str2 )
 {
-   return std::equal(str1, str1+N-1, str2.storage_begin(), str2.storage_end(),
-      [] (auto a, auto b) { return static_cast<uint8_t>(a) == static_cast<uint8_t>(b);} );
+    return std::equal( str1, str1+N-1, str2.storage_begin(), str2.storage_end(),
+                       [] ( auto a, auto b )
+    {
+        return static_cast<uint8_t>( a ) == static_cast<uint8_t>( b );
+    } );
 }
 
 template <int N>
-inline bool operator!=(QStringView8 str1, const char (&str2)[N])
+inline bool operator!=( QStringView8 str1, const char ( &str2 )[N] )
 {
-   return ! std::equal(str1.storage_begin(), str1.storage_end(), str2, str2+N-1,
-      [] (auto a, auto b) { return static_cast<uint8_t>(a) == static_cast<uint8_t>(b);} );
+    return ! std::equal( str1.storage_begin(), str1.storage_end(), str2, str2+N-1,
+                         [] ( auto a, auto b )
+    {
+        return static_cast<uint8_t>( a ) == static_cast<uint8_t>( b );
+    } );
 }
 
 template <int N>
-inline bool operator!=(const char (& str1)[N], QStringView8 str2)
+inline bool operator!=( const char ( & str1 )[N], QStringView8 str2 )
 {
-   return ! std::equal(str1, str1+N-1, str2.storage_begin(), str2.storage_end(),
-      [] (auto a, auto b) { return static_cast<uint8_t>(a) == static_cast<uint8_t>(b);} );
+    return ! std::equal( str1, str1+N-1, str2.storage_begin(), str2.storage_end(),
+                         [] ( auto a, auto b )
+    {
+        return static_cast<uint8_t>( a ) == static_cast<uint8_t>( b );
+    } );
 }
 
 template <int N>
-inline bool operator!=(QString8 str1, const char (& str2)[N])
+inline bool operator!=( QString8 str1, const char ( & str2 )[N] )
 {
-   return ! std::equal(str1.storage_begin(), str1.storage_end(), str2, str2+N-1,
-      [] (auto a, auto b) { return static_cast<uint8_t>(a) == static_cast<uint8_t>(b);} );
+    return ! std::equal( str1.storage_begin(), str1.storage_end(), str2, str2+N-1,
+                         [] ( auto a, auto b )
+    {
+        return static_cast<uint8_t>( a ) == static_cast<uint8_t>( b );
+    } );
 }
 
 template <int N>
-inline bool operator!=(const char (& str1)[N], QString8 str2)
+inline bool operator!=( const char ( & str1 )[N], QString8 str2 )
 {
-   return ! std::equal(str1, str1+N-1, str2.storage_begin(), str2.storage_end(),
-      [] (auto a, auto b) { return static_cast<uint8_t>(a) == static_cast<uint8_t>(b);} );
+    return ! std::equal( str1, str1+N-1, str2.storage_begin(), str2.storage_end(),
+                         [] ( auto a, auto b )
+    {
+        return static_cast<uint8_t>( a ) == static_cast<uint8_t>( b );
+    } );
 }
 
-inline QString8 operator+(const QString8 &str1, const QString8 &str2)
+inline QString8 operator+( const QString8 &str1, const QString8 &str2 )
 {
-   QString8 t(str1);
-   t += str2;
-   return t;
+    QString8 t( str1 );
+    t += str2;
+    return t;
 }
 
-inline QString8::const_iterator operator+(QString8::size_type n, QString8::const_iterator iter)
+inline QString8::const_iterator operator+( QString8::size_type n, QString8::const_iterator iter )
 {
-   iter += n;
-   return iter;
+    iter += n;
+    return iter;
 }
 
-inline QString8 operator+(QString8 &&str1, const QString8 &str2)
+inline QString8 operator+( QString8 &&str1, const QString8 &str2 )
 {
-   str1 += str2;
-   return std::move(str1);
+    str1 += str2;
+    return std::move( str1 );
 }
 
-inline QString8 operator+(QChar32 c, const QString8 &str)
+inline QString8 operator+( QChar32 c, const QString8 &str )
 {
-   QString8 t = str;
-   t.prepend(c);
-   return t;
+    QString8 t = str;
+    t.prepend( c );
+    return t;
 }
 
-inline QString8 operator+(const QString8 &str, QChar32 c)
+inline QString8 operator+( const QString8 &str, QChar32 c )
 {
-   QString8 t = str;
-   t += c;
-   return t;
+    QString8 t = str;
+    t += c;
+    return t;
 }
 
-inline QString8 operator+(QString8 &&str, QChar32 c)
+inline QString8 operator+( QString8 &&str, QChar32 c )
 {
-   str += c;
-   return std::move(str);
+    str += c;
+    return std::move( str );
 }
 
 // for an array of chars
 template <int N>
-inline const QString8 operator+(const char (&cString)[N], const QString8 &str)
+inline const QString8 operator+( const char ( &cString )[N], const QString8 &str )
 {
-   QString8 t(str);
-   t.prepend(cString);
-   return t;
+    QString8 t( str );
+    t.prepend( cString );
+    return t;
 }
 
 // for an array of chars
 template <int N>
-inline const QString8 operator+(const QString8 &str, const char (&cString)[N])
+inline const QString8 operator+( const QString8 &str, const char ( &cString )[N] )
 {
-   QString8 t(str);
-   t += cString;
-   return t;
+    QString8 t( str );
+    t += cString;
+    return t;
 }
 
 // for an array of chars
 template <int N>
-inline QString8 operator+(QString8 &&str, const char (&cString)[N])
+inline QString8 operator+( QString8 &&str, const char ( &cString )[N] )
 {
-   str += cString;
-   return std::move(str);
+    str += cString;
+    return std::move( str );
 }
 
-inline bool operator<(const QString8 &str1, const QString8 &str2)
+inline bool operator<( const QString8 &str1, const QString8 &str2 )
 {
-   return (static_cast<LsCsString::LsCsString>(str1) < static_cast<LsCsString::LsCsString>(str2));
+    return ( static_cast<LsCsString::LsCsString>( str1 ) < static_cast<LsCsString::LsCsString>( str2 ) );
 }
 
 // for an array of chars
 template <int N>
-inline bool operator<(const char (&cString)[N], const QString8 &str)
+inline bool operator<( const char ( &cString )[N], const QString8 &str )
 {
-   return (QString8(cString) < str);
+    return ( QString8( cString ) < str );
 }
 
 // for an array of chars
 template <int N>
-inline bool operator<(const QString8 &str, const char (&cString)[N])
+inline bool operator<( const QString8 &str, const char ( &cString )[N] )
 {
-   return (str < QString8(cString));
+    return ( str < QString8( cString ) );
 }
 
-inline bool operator<=(const QString8 &str1, const QString8 &str2)
+inline bool operator<=( const QString8 &str1, const QString8 &str2 )
 {
-   return (static_cast<LsCsString::LsCsString>(str1) <= static_cast<LsCsString::LsCsString>(str2));
+    return ( static_cast<LsCsString::LsCsString>( str1 ) <= static_cast<LsCsString::LsCsString>( str2 ) );
 }
 
 // for an array of chars
 template <int N>
-inline bool operator<=(const char (&cString)[N], const QString8 &str)
+inline bool operator<=( const char ( &cString )[N], const QString8 &str )
 {
-   return (QString8(cString) <= str);
+    return ( QString8( cString ) <= str );
 }
 
 // for an array of chars
 template <int N>
-inline bool operator<=(const QString8 &str, const char (&cString)[N])
+inline bool operator<=( const QString8 &str, const char ( &cString )[N] )
 {
-   return (str <= QString8(cString));
+    return ( str <= QString8( cString ) );
 }
 
-inline bool operator>(const QString8 &str1, const QString8 &str2)
+inline bool operator>( const QString8 &str1, const QString8 &str2 )
 {
-   return (static_cast<LsCsString::LsCsString>(str1) > static_cast<LsCsString::LsCsString>(str2));
+    return ( static_cast<LsCsString::LsCsString>( str1 ) > static_cast<LsCsString::LsCsString>( str2 ) );
 }
 
 // for an array of chars
 template <int N>
-inline bool operator>(const char (&cString)[N], const QString8 &str)
+inline bool operator>( const char ( &cString )[N], const QString8 &str )
 {
-   return (QString8(cString) > str);
+    return ( QString8( cString ) > str );
 }
 
 // for an array of chars
 template <int N>
-inline bool operator>(const QString8 &str, const char (&cString)[N])
+inline bool operator>( const QString8 &str, const char ( &cString )[N] )
 {
-   return (str > QString8(cString));
+    return ( str > QString8( cString ) );
 }
 
-inline bool operator>=(const QString8 &str1, const QString8 &str2)
+inline bool operator>=( const QString8 &str1, const QString8 &str2 )
 {
-   return (static_cast<LsCsString::LsCsString>(str1) >= static_cast<LsCsString::LsCsString>(str2));
+    return ( static_cast<LsCsString::LsCsString>( str1 ) >= static_cast<LsCsString::LsCsString>( str2 ) );
 }
 
 // for an array of chars
 template <int N>
-inline bool operator>=(const char (&cString)[N], const QString8 &str)
+inline bool operator>=( const char ( &cString )[N], const QString8 &str )
 {
-   return (QString8(cString) >= str);
+    return ( QString8( cString ) >= str );
 }
 
 // for an array of chars
 template <int N>
-inline bool operator>=(const QString8 &str, const char (&cString)[N])
+inline bool operator>=( const QString8 &str, const char ( &cString )[N] )
 {
-   return (str >= QString8(cString));
+    return ( str >= QString8( cString ) );
 }
 
-inline void swap(QString8 &a, QString8 &b) {
-   a.swap(b);
+inline void swap( QString8 &a, QString8 &b )
+{
+    a.swap( b );
 }
 
-QString8 cs_internal_string_normalize(const QString8 &data, QString8::NormalizationForm mode,
-                  QChar32::UnicodeVersion version, int from);
+QString8 cs_internal_string_normalize( const QString8 &data, QString8::NormalizationForm mode,
+                                       QChar32::UnicodeVersion version, int from );
 
 #if defined(__cpp_char8_t)
-   // support new data type added in C++20
+// support new data type added in C++20
 
-   inline QString8::QString8(const char8_t *str)
-   {
-      *this = QString8::fromUtf8(str, -1);
-   }
+inline QString8::QString8( const char8_t *str )
+{
+    *this = QString8::fromUtf8( str, -1 );
+}
 
-   inline QString8::QString8(const char8_t *str, size_type size)
-   {
-      *this = QString8::fromUtf8(str, size);
-   }
+inline QString8::QString8( const char8_t *str, size_type size )
+{
+    *this = QString8::fromUtf8( str, size );
+}
 
-   inline QString8 QString8::fromUtf8(const char8_t *str, size_type numOfChars)
-   {
-      return LsCsString::LsCsString::fromUtf8(str, numOfChars);
-   }
+inline QString8 QString8::fromUtf8( const char8_t *str, size_type numOfChars )
+{
+    return LsCsString::LsCsString::fromUtf8( str, numOfChars );
+}
 #endif
 
 #endif

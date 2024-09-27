@@ -57,45 +57,50 @@
 using namespace WebCore;
 using namespace JSC;
 
-namespace WebKit {
-
-InjectedBundle::InjectedBundle(const String& path)
-    : m_path(path)
-    , m_platformBundle(0)
+namespace WebKit
 {
-    initializeClient(0);
+
+InjectedBundle::InjectedBundle( const String &path )
+    : m_path( path )
+    , m_platformBundle( 0 )
+{
+    initializeClient( 0 );
 }
 
 InjectedBundle::~InjectedBundle()
 {
 }
 
-void InjectedBundle::initializeClient(WKBundleClient* client)
+void InjectedBundle::initializeClient( WKBundleClient *client )
 {
-    m_client.initialize(client);
+    m_client.initialize( client );
 }
 
-void InjectedBundle::postMessage(const String& messageName, APIObject* messageBody)
+void InjectedBundle::postMessage( const String &messageName, APIObject *messageBody )
 {
-    WebProcess::shared().connection()->deprecatedSend(WebContextLegacyMessage::PostMessage, 0, CoreIPC::In(messageName, InjectedBundleUserMessageEncoder(messageBody)));
+    WebProcess::shared().connection()->deprecatedSend( WebContextLegacyMessage::PostMessage, 0, CoreIPC::In( messageName,
+            InjectedBundleUserMessageEncoder( messageBody ) ) );
 }
 
-void InjectedBundle::postSynchronousMessage(const String& messageName, APIObject* messageBody, RefPtr<APIObject>& returnData)
+void InjectedBundle::postSynchronousMessage( const String &messageName, APIObject *messageBody, RefPtr<APIObject> &returnData )
 {
     RefPtr<APIObject> returnDataTmp;
-    InjectedBundleUserMessageDecoder messageDecoder(returnDataTmp);
-    
-    bool succeeded = WebProcess::shared().connection()->deprecatedSendSync(WebContextLegacyMessage::PostSynchronousMessage, 0, CoreIPC::In(messageName, InjectedBundleUserMessageEncoder(messageBody)), CoreIPC::Out(messageDecoder));
+    InjectedBundleUserMessageDecoder messageDecoder( returnDataTmp );
 
-    if (!succeeded)
+    bool succeeded = WebProcess::shared().connection()->deprecatedSendSync( WebContextLegacyMessage::PostSynchronousMessage, 0,
+                     CoreIPC::In( messageName, InjectedBundleUserMessageEncoder( messageBody ) ), CoreIPC::Out( messageDecoder ) );
+
+    if ( !succeeded )
+    {
         return;
+    }
 
     returnData = returnDataTmp;
 }
 
-void InjectedBundle::setShouldTrackVisitedLinks(bool shouldTrackVisitedLinks)
+void InjectedBundle::setShouldTrackVisitedLinks( bool shouldTrackVisitedLinks )
 {
-    PageGroup::setShouldTrackVisitedLinks(shouldTrackVisitedLinks);
+    PageGroup::setShouldTrackVisitedLinks( shouldTrackVisitedLinks );
 }
 
 void InjectedBundle::removeAllVisitedLinks()
@@ -103,46 +108,62 @@ void InjectedBundle::removeAllVisitedLinks()
     PageGroup::removeAllVisitedLinks();
 }
 
-void InjectedBundle::overrideXSSAuditorEnabledForTestRunner(WebPageGroupProxy* pageGroup, bool enabled)
+void InjectedBundle::overrideXSSAuditorEnabledForTestRunner( WebPageGroupProxy *pageGroup, bool enabled )
 {
     // Override the preference for all future pages.
-    WebPreferencesStore::overrideXSSAuditorEnabledForTestRunner(enabled);
+    WebPreferencesStore::overrideXSSAuditorEnabledForTestRunner( enabled );
 
     // Change the setting for existing ones.
-    const HashSet<Page*>& pages = PageGroup::pageGroup(pageGroup->identifier())->pages();
-    for (HashSet<Page*>::iterator iter = pages.begin(); iter != pages.end(); ++iter)
-        (*iter)->settings()->setXSSAuditorEnabled(enabled);
+    const HashSet<Page *> &pages = PageGroup::pageGroup( pageGroup->identifier() )->pages();
+
+    for ( HashSet<Page *>::iterator iter = pages.begin(); iter != pages.end(); ++iter )
+    {
+        ( *iter )->settings()->setXSSAuditorEnabled( enabled );
+    }
 }
 
-void InjectedBundle::setAllowUniversalAccessFromFileURLs(WebPageGroupProxy* pageGroup, bool enabled)
+void InjectedBundle::setAllowUniversalAccessFromFileURLs( WebPageGroupProxy *pageGroup, bool enabled )
 {
-    const HashSet<Page*>& pages = PageGroup::pageGroup(pageGroup->identifier())->pages();
-    for (HashSet<Page*>::iterator iter = pages.begin(); iter != pages.end(); ++iter)
-        (*iter)->settings()->setAllowUniversalAccessFromFileURLs(enabled);
+    const HashSet<Page *> &pages = PageGroup::pageGroup( pageGroup->identifier() )->pages();
+
+    for ( HashSet<Page *>::iterator iter = pages.begin(); iter != pages.end(); ++iter )
+    {
+        ( *iter )->settings()->setAllowUniversalAccessFromFileURLs( enabled );
+    }
 }
 
-void InjectedBundle::setAllowFileAccessFromFileURLs(WebPageGroupProxy* pageGroup, bool enabled)
+void InjectedBundle::setAllowFileAccessFromFileURLs( WebPageGroupProxy *pageGroup, bool enabled )
 {
-    const HashSet<Page*>& pages = PageGroup::pageGroup(pageGroup->identifier())->pages();
-    for (HashSet<Page*>::iterator iter = pages.begin(); iter != pages.end(); ++iter)
-        (*iter)->settings()->setAllowFileAccessFromFileURLs(enabled);
+    const HashSet<Page *> &pages = PageGroup::pageGroup( pageGroup->identifier() )->pages();
+
+    for ( HashSet<Page *>::iterator iter = pages.begin(); iter != pages.end(); ++iter )
+    {
+        ( *iter )->settings()->setAllowFileAccessFromFileURLs( enabled );
+    }
 }
 
-void InjectedBundle::setFrameFlatteningEnabled(WebPageGroupProxy* pageGroup, bool enabled)
+void InjectedBundle::setFrameFlatteningEnabled( WebPageGroupProxy *pageGroup, bool enabled )
 {
-    const HashSet<Page*>& pages = PageGroup::pageGroup(pageGroup->identifier())->pages();
-    for (HashSet<Page*>::iterator iter = pages.begin(); iter != pages.end(); ++iter)
-        (*iter)->settings()->setFrameFlatteningEnabled(enabled);
+    const HashSet<Page *> &pages = PageGroup::pageGroup( pageGroup->identifier() )->pages();
+
+    for ( HashSet<Page *>::iterator iter = pages.begin(); iter != pages.end(); ++iter )
+    {
+        ( *iter )->settings()->setFrameFlatteningEnabled( enabled );
+    }
 }
 
-void InjectedBundle::addOriginAccessWhitelistEntry(const String& sourceOrigin, const String& destinationProtocol, const String& destinationHost, bool allowDestinationSubdomains)
+void InjectedBundle::addOriginAccessWhitelistEntry( const String &sourceOrigin, const String &destinationProtocol,
+        const String &destinationHost, bool allowDestinationSubdomains )
 {
-    SecurityOrigin::addOriginAccessWhitelistEntry(*SecurityOrigin::createFromString(sourceOrigin), destinationProtocol, destinationHost, allowDestinationSubdomains);
+    SecurityOrigin::addOriginAccessWhitelistEntry( *SecurityOrigin::createFromString( sourceOrigin ), destinationProtocol,
+            destinationHost, allowDestinationSubdomains );
 }
 
-void InjectedBundle::removeOriginAccessWhitelistEntry(const String& sourceOrigin, const String& destinationProtocol, const String& destinationHost, bool allowDestinationSubdomains)
+void InjectedBundle::removeOriginAccessWhitelistEntry( const String &sourceOrigin, const String &destinationProtocol,
+        const String &destinationHost, bool allowDestinationSubdomains )
 {
-    SecurityOrigin::removeOriginAccessWhitelistEntry(*SecurityOrigin::createFromString(sourceOrigin), destinationProtocol, destinationHost, allowDestinationSubdomains);
+    SecurityOrigin::removeOriginAccessWhitelistEntry( *SecurityOrigin::createFromString( sourceOrigin ), destinationProtocol,
+            destinationHost, allowDestinationSubdomains );
 }
 
 void InjectedBundle::resetOriginAccessWhitelists()
@@ -155,116 +176,163 @@ void InjectedBundle::clearAllDatabases()
     WebDatabaseManager::shared().deleteAllDatabases();
 }
 
-void InjectedBundle::setDatabaseQuota(uint64_t quota)
+void InjectedBundle::setDatabaseQuota( uint64_t quota )
 {
-    WebDatabaseManager::shared().setQuotaForOrigin("file:///", quota);
+    WebDatabaseManager::shared().setQuotaForOrigin( "file:///", quota );
 }
 
-int InjectedBundle::numberOfPages(WebFrame* frame, double pageWidthInPixels, double pageHeightInPixels)
+int InjectedBundle::numberOfPages( WebFrame *frame, double pageWidthInPixels, double pageHeightInPixels )
 {
-    Frame* coreFrame = frame ? frame->coreFrame() : 0;
-    if (!coreFrame)
+    Frame *coreFrame = frame ? frame->coreFrame() : 0;
+
+    if ( !coreFrame )
+    {
         return -1;
-    if (!pageWidthInPixels)
+    }
+
+    if ( !pageWidthInPixels )
+    {
         pageWidthInPixels = coreFrame->view()->width();
-    if (!pageHeightInPixels)
-        pageHeightInPixels = coreFrame->view()->height();
+    }
 
-    return PrintContext::numberOfPages(coreFrame, FloatSize(pageWidthInPixels, pageHeightInPixels));
+    if ( !pageHeightInPixels )
+    {
+        pageHeightInPixels = coreFrame->view()->height();
+    }
+
+    return PrintContext::numberOfPages( coreFrame, FloatSize( pageWidthInPixels, pageHeightInPixels ) );
 }
 
-int InjectedBundle::pageNumberForElementById(WebFrame* frame, const String& id, double pageWidthInPixels, double pageHeightInPixels)
+int InjectedBundle::pageNumberForElementById( WebFrame *frame, const String &id, double pageWidthInPixels,
+        double pageHeightInPixels )
 {
-    Frame* coreFrame = frame ? frame->coreFrame() : 0;
-    if (!coreFrame)
-        return -1;
+    Frame *coreFrame = frame ? frame->coreFrame() : 0;
 
-    Element* element = coreFrame->document()->getElementById(AtomicString(id));
-    if (!element)
+    if ( !coreFrame )
+    {
         return -1;
+    }
 
-    if (!pageWidthInPixels)
+    Element *element = coreFrame->document()->getElementById( AtomicString( id ) );
+
+    if ( !element )
+    {
+        return -1;
+    }
+
+    if ( !pageWidthInPixels )
+    {
         pageWidthInPixels = coreFrame->view()->width();
-    if (!pageHeightInPixels)
-        pageHeightInPixels = coreFrame->view()->height();
+    }
 
-    return PrintContext::pageNumberForElement(element, FloatSize(pageWidthInPixels, pageHeightInPixels));
+    if ( !pageHeightInPixels )
+    {
+        pageHeightInPixels = coreFrame->view()->height();
+    }
+
+    return PrintContext::pageNumberForElement( element, FloatSize( pageWidthInPixels, pageHeightInPixels ) );
 }
 
-String InjectedBundle::pageSizeAndMarginsInPixels(WebFrame* frame, int pageIndex, int width, int height, int marginTop, int marginRight, int marginBottom, int marginLeft)
+String InjectedBundle::pageSizeAndMarginsInPixels( WebFrame *frame, int pageIndex, int width, int height, int marginTop,
+        int marginRight, int marginBottom, int marginLeft )
 {
-    Frame* coreFrame = frame ? frame->coreFrame() : 0;
-    if (!coreFrame)
+    Frame *coreFrame = frame ? frame->coreFrame() : 0;
+
+    if ( !coreFrame )
+    {
         return String();
+    }
 
-    return PrintContext::pageSizeAndMarginsInPixels(coreFrame, pageIndex, width, height, marginTop, marginRight, marginBottom, marginLeft);
+    return PrintContext::pageSizeAndMarginsInPixels( coreFrame, pageIndex, width, height, marginTop, marginRight, marginBottom,
+            marginLeft );
 }
 
-bool InjectedBundle::isPageBoxVisible(WebFrame* frame, int pageIndex)
+bool InjectedBundle::isPageBoxVisible( WebFrame *frame, int pageIndex )
 {
-    Frame* coreFrame = frame ? frame->coreFrame() : 0;
-    if (!coreFrame)
+    Frame *coreFrame = frame ? frame->coreFrame() : 0;
+
+    if ( !coreFrame )
+    {
         return false;
+    }
 
-    return PrintContext::isPageBoxVisible(coreFrame, pageIndex);
+    return PrintContext::isPageBoxVisible( coreFrame, pageIndex );
 }
 
-static PassOwnPtr<Vector<String> > toStringVector(ImmutableArray* patterns)
+static PassOwnPtr<Vector<String> > toStringVector( ImmutableArray *patterns )
 {
-    if (!patterns)
+    if ( !patterns )
+    {
         return nullptr;
+    }
 
     size_t size =  patterns->size();
-    if (!size)
-        return nullptr;
 
-    OwnPtr<Vector<String> > patternsVector = adoptPtr(new Vector<String>);
-    patternsVector->reserveInitialCapacity(size);
-    for (size_t i = 0; i < size; ++i) {
-        WebString* entry = patterns->at<WebString>(i);
-        if (entry)
-            patternsVector->uncheckedAppend(entry->string());
+    if ( !size )
+    {
+        return nullptr;
     }
+
+    OwnPtr<Vector<String> > patternsVector = adoptPtr( new Vector<String> );
+    patternsVector->reserveInitialCapacity( size );
+
+    for ( size_t i = 0; i < size; ++i )
+    {
+        WebString *entry = patterns->at<WebString>( i );
+
+        if ( entry )
+        {
+            patternsVector->uncheckedAppend( entry->string() );
+        }
+    }
+
     return patternsVector.release();
 }
 
-void InjectedBundle::addUserScript(WebPageGroupProxy* pageGroup, InjectedBundleScriptWorld* scriptWorld, const String& source, const String& url, ImmutableArray* whitelist, ImmutableArray* blacklist, WebCore::UserScriptInjectionTime injectionTime, WebCore::UserContentInjectedFrames injectedFrames)
+void InjectedBundle::addUserScript( WebPageGroupProxy *pageGroup, InjectedBundleScriptWorld *scriptWorld, const String &source,
+                                    const String &url, ImmutableArray *whitelist, ImmutableArray *blacklist, WebCore::UserScriptInjectionTime injectionTime,
+                                    WebCore::UserContentInjectedFrames injectedFrames )
 {
     // url is not from KURL::string(), i.e. it has not already been parsed by KURL, so we have to use the relative URL constructor for KURL instead of the ParsedURLStringTag version.
-    PageGroup::pageGroup(pageGroup->identifier())->addUserScriptToWorld(scriptWorld->coreWorld(), source, KURL(KURL(), url), toStringVector(whitelist), toStringVector(blacklist), injectionTime, injectedFrames);
+    PageGroup::pageGroup( pageGroup->identifier() )->addUserScriptToWorld( scriptWorld->coreWorld(), source, KURL( KURL(), url ),
+            toStringVector( whitelist ), toStringVector( blacklist ), injectionTime, injectedFrames );
 }
 
-void InjectedBundle::addUserStyleSheet(WebPageGroupProxy* pageGroup, InjectedBundleScriptWorld* scriptWorld, const String& source, const String& url, ImmutableArray* whitelist, ImmutableArray* blacklist, WebCore::UserContentInjectedFrames injectedFrames)
+void InjectedBundle::addUserStyleSheet( WebPageGroupProxy *pageGroup, InjectedBundleScriptWorld *scriptWorld,
+                                        const String &source, const String &url, ImmutableArray *whitelist, ImmutableArray *blacklist,
+                                        WebCore::UserContentInjectedFrames injectedFrames )
 {
     // url is not from KURL::string(), i.e. it has not already been parsed by KURL, so we have to use the relative URL constructor for KURL instead of the ParsedURLStringTag version.
-    PageGroup::pageGroup(pageGroup->identifier())->addUserStyleSheetToWorld(scriptWorld->coreWorld(), source, KURL(KURL(), url), toStringVector(whitelist), toStringVector(blacklist), injectedFrames);
+    PageGroup::pageGroup( pageGroup->identifier() )->addUserStyleSheetToWorld( scriptWorld->coreWorld(), source, KURL( KURL(), url ),
+            toStringVector( whitelist ), toStringVector( blacklist ), injectedFrames );
 }
 
-void InjectedBundle::removeUserScript(WebPageGroupProxy* pageGroup, InjectedBundleScriptWorld* scriptWorld, const String& url)
+void InjectedBundle::removeUserScript( WebPageGroupProxy *pageGroup, InjectedBundleScriptWorld *scriptWorld, const String &url )
 {
     // url is not from KURL::string(), i.e. it has not already been parsed by KURL, so we have to use the relative URL constructor for KURL instead of the ParsedURLStringTag version.
-    PageGroup::pageGroup(pageGroup->identifier())->removeUserScriptFromWorld(scriptWorld->coreWorld(), KURL(KURL(), url));
+    PageGroup::pageGroup( pageGroup->identifier() )->removeUserScriptFromWorld( scriptWorld->coreWorld(), KURL( KURL(), url ) );
 }
 
-void InjectedBundle::removeUserStyleSheet(WebPageGroupProxy* pageGroup, InjectedBundleScriptWorld* scriptWorld, const String& url)
+void InjectedBundle::removeUserStyleSheet( WebPageGroupProxy *pageGroup, InjectedBundleScriptWorld *scriptWorld,
+        const String &url )
 {
     // url is not from KURL::string(), i.e. it has not already been parsed by KURL, so we have to use the relative URL constructor for KURL instead of the ParsedURLStringTag version.
-    PageGroup::pageGroup(pageGroup->identifier())->removeUserStyleSheetFromWorld(scriptWorld->coreWorld(), KURL(KURL(), url));
+    PageGroup::pageGroup( pageGroup->identifier() )->removeUserStyleSheetFromWorld( scriptWorld->coreWorld(), KURL( KURL(), url ) );
 }
 
-void InjectedBundle::removeUserScripts(WebPageGroupProxy* pageGroup, InjectedBundleScriptWorld* scriptWorld)
+void InjectedBundle::removeUserScripts( WebPageGroupProxy *pageGroup, InjectedBundleScriptWorld *scriptWorld )
 {
-    PageGroup::pageGroup(pageGroup->identifier())->removeUserScriptsFromWorld(scriptWorld->coreWorld());
+    PageGroup::pageGroup( pageGroup->identifier() )->removeUserScriptsFromWorld( scriptWorld->coreWorld() );
 }
 
-void InjectedBundle::removeUserStyleSheets(WebPageGroupProxy* pageGroup, InjectedBundleScriptWorld* scriptWorld)
+void InjectedBundle::removeUserStyleSheets( WebPageGroupProxy *pageGroup, InjectedBundleScriptWorld *scriptWorld )
 {
-    PageGroup::pageGroup(pageGroup->identifier())->removeUserStyleSheetsFromWorld(scriptWorld->coreWorld());
+    PageGroup::pageGroup( pageGroup->identifier() )->removeUserStyleSheetsFromWorld( scriptWorld->coreWorld() );
 }
 
-void InjectedBundle::removeAllUserContent(WebPageGroupProxy* pageGroup)
+void InjectedBundle::removeAllUserContent( WebPageGroupProxy *pageGroup )
 {
-    PageGroup::pageGroup(pageGroup->identifier())->removeAllUserContent();
+    PageGroup::pageGroup( pageGroup->identifier() )->removeAllUserContent();
 }
 
 void InjectedBundle::garbageCollectJavaScriptObjects()
@@ -272,63 +340,73 @@ void InjectedBundle::garbageCollectJavaScriptObjects()
     gcController().garbageCollectNow();
 }
 
-void InjectedBundle::garbageCollectJavaScriptObjectsOnAlternateThreadForDebugging(bool waitUntilDone)
+void InjectedBundle::garbageCollectJavaScriptObjectsOnAlternateThreadForDebugging( bool waitUntilDone )
 {
-    gcController().garbageCollectOnAlternateThreadForDebugging(waitUntilDone);
+    gcController().garbageCollectOnAlternateThreadForDebugging( waitUntilDone );
 }
 
 size_t InjectedBundle::javaScriptObjectsCount()
 {
-    JSLock lock(SilenceAssertionsOnly);
+    JSLock lock( SilenceAssertionsOnly );
     return JSDOMWindow::commonJSGlobalData()->heap.objectCount();
 }
 
-void InjectedBundle::reportException(JSContextRef context, JSValueRef exception)
+void InjectedBundle::reportException( JSContextRef context, JSValueRef exception )
 {
-    if (!context || !exception)
+    if ( !context || !exception )
+    {
         return;
+    }
 
-    JSLock lock(JSC::SilenceAssertionsOnly);
-    JSC::ExecState* execState = toJS(context);
+    JSLock lock( JSC::SilenceAssertionsOnly );
+    JSC::ExecState *execState = toJS( context );
 
     // Make sure the context has a DOMWindow global object, otherwise this context didn't originate from a Page.
-    if (!toJSDOMWindow(execState->lexicalGlobalObject()))
+    if ( !toJSDOMWindow( execState->lexicalGlobalObject() ) )
+    {
         return;
+    }
 
-    WebCore::reportException(execState, toJS(execState, exception));
+    WebCore::reportException( execState, toJS( execState, exception ) );
 }
 
-void InjectedBundle::didCreatePage(WebPage* page)
+void InjectedBundle::didCreatePage( WebPage *page )
 {
-    m_client.didCreatePage(this, page);
+    m_client.didCreatePage( this, page );
 }
 
-void InjectedBundle::willDestroyPage(WebPage* page)
+void InjectedBundle::willDestroyPage( WebPage *page )
 {
-    m_client.willDestroyPage(this, page);
+    m_client.willDestroyPage( this, page );
 }
 
-void InjectedBundle::didInitializePageGroup(WebPageGroupProxy* pageGroup)
+void InjectedBundle::didInitializePageGroup( WebPageGroupProxy *pageGroup )
 {
-    m_client.didInitializePageGroup(this, pageGroup);
+    m_client.didInitializePageGroup( this, pageGroup );
 }
 
-void InjectedBundle::didReceiveMessage(const String& messageName, APIObject* messageBody)
+void InjectedBundle::didReceiveMessage( const String &messageName, APIObject *messageBody )
 {
-    m_client.didReceiveMessage(this, messageName, messageBody);
+    m_client.didReceiveMessage( this, messageName, messageBody );
 }
 
-void InjectedBundle::didReceiveMessage(CoreIPC::Connection* connection, CoreIPC::MessageID messageID, CoreIPC::ArgumentDecoder* arguments)
+void InjectedBundle::didReceiveMessage( CoreIPC::Connection *connection, CoreIPC::MessageID messageID,
+                                        CoreIPC::ArgumentDecoder *arguments )
 {
-    switch (messageID.get<InjectedBundleMessage::Kind>()) {
-        case InjectedBundleMessage::PostMessage: {
-            String messageName;            
+    switch ( messageID.get<InjectedBundleMessage::Kind>() )
+    {
+        case InjectedBundleMessage::PostMessage:
+        {
+            String messageName;
             RefPtr<APIObject> messageBody;
-            InjectedBundleUserMessageDecoder messageDecoder(messageBody);
-            if (!arguments->decode(CoreIPC::Out(messageName, messageDecoder)))
-                return;
+            InjectedBundleUserMessageDecoder messageDecoder( messageBody );
 
-            didReceiveMessage(messageName, messageBody.get());
+            if ( !arguments->decode( CoreIPC::Out( messageName, messageDecoder ) ) )
+            {
+                return;
+            }
+
+            didReceiveMessage( messageName, messageBody.get() );
             return;
         }
     }

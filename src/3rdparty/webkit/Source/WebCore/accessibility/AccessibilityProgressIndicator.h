@@ -25,27 +25,35 @@
 
 #include "AccessibilityRenderObject.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class HTMLProgressElement;
 class RenderProgress;
 
-class AccessibilityProgressIndicator : public AccessibilityRenderObject {
+class AccessibilityProgressIndicator : public AccessibilityRenderObject
+{
 public:
-    static PassRefPtr<AccessibilityProgressIndicator> create(RenderProgress*);
+    static PassRefPtr<AccessibilityProgressIndicator> create( RenderProgress * );
 
 private:
-    virtual AccessibilityRole roleValue() const { return ProgressIndicatorRole; }
+    virtual AccessibilityRole roleValue() const
+    {
+        return ProgressIndicatorRole;
+    }
 
-    virtual bool isProgressIndicator() const { return true; }
+    virtual bool isProgressIndicator() const
+    {
+        return true;
+    }
 
     virtual float valueForRange() const;
     virtual float maxValueForRange() const;
     virtual float minValueForRange() const;
 
-    AccessibilityProgressIndicator(RenderProgress*);
+    AccessibilityProgressIndicator( RenderProgress * );
 
-    HTMLProgressElement* element() const;
+    HTMLProgressElement *element() const;
     virtual bool accessibilityIsIgnored() const;
 };
 

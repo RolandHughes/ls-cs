@@ -40,32 +40,39 @@ static const int defaultParserChunkSize = 4096;
 // FIXME: We would like this value to be 0.2.
 static const double defaultParserTimeLimit = 0.500;
 
-namespace WebCore {
+namespace WebCore
+{
 
-static double parserTimeLimit(Page* page)
+static double parserTimeLimit( Page *page )
 {
     // We're using the poorly named customHTMLTokenizerTimeDelay setting.
-    if (page && page->hasCustomHTMLTokenizerTimeDelay())
+    if ( page && page->hasCustomHTMLTokenizerTimeDelay() )
+    {
         return page->customHTMLTokenizerTimeDelay();
+    }
+
     return defaultParserTimeLimit;
 }
 
-static int parserChunkSize(Page* page)
+static int parserChunkSize( Page *page )
 {
     // FIXME: We may need to divide the value from customHTMLTokenizerChunkSize
     // by some constant to translate from the "character" based behavior of the
     // old LegacyHTMLDocumentParser to the token-based behavior of this parser.
-    if (page && page->hasCustomHTMLTokenizerChunkSize())
+    if ( page && page->hasCustomHTMLTokenizerChunkSize() )
+    {
         return page->customHTMLTokenizerChunkSize();
+    }
+
     return defaultParserChunkSize;
 }
 
-HTMLParserScheduler::HTMLParserScheduler(HTMLDocumentParser* parser)
-    : m_parser(parser)
-    , m_parserTimeLimit(parserTimeLimit(m_parser->document()->page()))
-    , m_parserChunkSize(parserChunkSize(m_parser->document()->page()))
-    , m_continueNextChunkTimer(this, &HTMLParserScheduler::continueNextChunkTimerFired)
-    , m_isSuspendedWithActiveTimer(false)
+HTMLParserScheduler::HTMLParserScheduler( HTMLDocumentParser *parser )
+    : m_parser( parser )
+    , m_parserTimeLimit( parserTimeLimit( m_parser->document()->page() ) )
+    , m_parserChunkSize( parserChunkSize( m_parser->document()->page() ) )
+    , m_continueNextChunkTimer( this, &HTMLParserScheduler::continueNextChunkTimerFired )
+    , m_isSuspendedWithActiveTimer( false )
 {
 }
 
@@ -74,50 +81,64 @@ HTMLParserScheduler::~HTMLParserScheduler()
     m_continueNextChunkTimer.stop();
 }
 
-void HTMLParserScheduler::continueNextChunkTimerFired(Timer<HTMLParserScheduler>* timer)
+void HTMLParserScheduler::continueNextChunkTimerFired( Timer<HTMLParserScheduler> *timer )
 {
-    ASSERT_UNUSED(timer, timer == &m_continueNextChunkTimer);
+    ASSERT_UNUSED( timer, timer == &m_continueNextChunkTimer );
+
     // FIXME: The timer class should handle timer priorities instead of this code.
     // If a layout is scheduled, wait again to let the layout timer run first.
-    if (m_parser->document()->isLayoutTimerActive()) {
-        m_continueNextChunkTimer.startOneShot(0);
+    if ( m_parser->document()->isLayoutTimerActive() )
+    {
+        m_continueNextChunkTimer.startOneShot( 0 );
         return;
     }
+
     m_parser->resumeParsingAfterYield();
 }
 
-void HTMLParserScheduler::checkForYieldBeforeScript(PumpSession& session)
+void HTMLParserScheduler::checkForYieldBeforeScript( PumpSession &session )
 {
     // If we've never painted before and a layout is pending, yield prior to running
     // scripts to give the page a chance to paint earlier.
-    Document* document = m_parser->document();
+    Document *document = m_parser->document();
     bool needsFirstPaint = document->view() && !document->view()->hasEverPainted();
-    if (needsFirstPaint && document->isLayoutTimerActive())
+
+    if ( needsFirstPaint && document->isLayoutTimerActive() )
+    {
         session.needsYield = true;
+    }
 }
 
 void HTMLParserScheduler::scheduleForResume()
 {
-    m_continueNextChunkTimer.startOneShot(0);
+    m_continueNextChunkTimer.startOneShot( 0 );
 }
 
 
 void HTMLParserScheduler::suspend()
 {
-    ASSERT(!m_isSuspendedWithActiveTimer);
-    if (!m_continueNextChunkTimer.isActive())
+    ASSERT( !m_isSuspendedWithActiveTimer );
+
+    if ( !m_continueNextChunkTimer.isActive() )
+    {
         return;
+    }
+
     m_isSuspendedWithActiveTimer = true;
     m_continueNextChunkTimer.stop();
 }
 
 void HTMLParserScheduler::resume()
 {
-    ASSERT(!m_continueNextChunkTimer.isActive());
-    if (!m_isSuspendedWithActiveTimer)
+    ASSERT( !m_continueNextChunkTimer.isActive() );
+
+    if ( !m_isSuspendedWithActiveTimer )
+    {
         return;
+    }
+
     m_isSuspendedWithActiveTimer = false;
-    m_continueNextChunkTimer.startOneShot(0);
+    m_continueNextChunkTimer.startOneShot( 0 );
 }
 
 }

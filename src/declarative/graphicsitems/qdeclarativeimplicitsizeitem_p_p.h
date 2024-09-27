@@ -31,27 +31,29 @@ QT_BEGIN_NAMESPACE
 
 class QDeclarativeImplicitSizeItemPrivate : public QDeclarativeItemPrivate
 {
-   Q_DECLARE_PUBLIC(QDeclarativeImplicitSizeItem)
+    Q_DECLARE_PUBLIC( QDeclarativeImplicitSizeItem )
 
- public:
-   QDeclarativeImplicitSizeItemPrivate() {
-   }
+public:
+    QDeclarativeImplicitSizeItemPrivate()
+    {
+    }
 
-   virtual void implicitWidthChanged();
-   virtual void implicitHeightChanged();
+    virtual void implicitWidthChanged();
+    virtual void implicitHeightChanged();
 };
 
 
 class QDeclarativeImplicitSizePaintedItemPrivate : public QDeclarativePaintedItemPrivate
 {
-   Q_DECLARE_PUBLIC(QDeclarativeImplicitSizePaintedItem)
+    Q_DECLARE_PUBLIC( QDeclarativeImplicitSizePaintedItem )
 
- public:
-   QDeclarativeImplicitSizePaintedItemPrivate() {
-   }
+public:
+    QDeclarativeImplicitSizePaintedItemPrivate()
+    {
+    }
 
-   virtual void implicitWidthChanged();
-   virtual void implicitHeightChanged();
+    virtual void implicitWidthChanged();
+    virtual void implicitHeightChanged();
 };
 
 QT_END_NAMESPACE

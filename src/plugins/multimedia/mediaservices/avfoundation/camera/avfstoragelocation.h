@@ -29,18 +29,18 @@
 
 class AVFStorageLocation
 {
- public:
-   AVFStorageLocation();
-   ~AVFStorageLocation();
+public:
+    AVFStorageLocation();
+    ~AVFStorageLocation();
 
-   QString generateFileName(const QString &requestedName, QCamera::CaptureMode mode,
-                            const QString &prefix, const QString &ext) const;
+    QString generateFileName( const QString &requestedName, QCamera::CaptureMode mode,
+                              const QString &prefix, const QString &ext ) const;
 
-   QDir defaultDir(QCamera::CaptureMode mode) const;
-   QString generateFileName(const QString &prefix, const QDir &dir, const QString &ext) const;
+    QDir defaultDir( QCamera::CaptureMode mode ) const;
+    QString generateFileName( const QString &prefix, const QDir &dir, const QString &ext ) const;
 
- private:
-   mutable QMap<QString, int> m_lastUsedIndex;
+private:
+    mutable QMap<QString, int> m_lastUsedIndex;
 };
 
 #endif

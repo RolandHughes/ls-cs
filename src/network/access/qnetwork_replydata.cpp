@@ -28,7 +28,7 @@
 #include <qmetaobject.h>
 
 QNetworkReplyDataImplPrivate::QNetworkReplyDataImplPrivate()
-   : QNetworkReplyPrivate()
+    : QNetworkReplyPrivate()
 {
 }
 
@@ -40,94 +40,99 @@ QNetworkReplyDataImpl::~QNetworkReplyDataImpl()
 {
 }
 
-QNetworkReplyDataImpl::QNetworkReplyDataImpl(QObject *parent, const QNetworkRequest &req, const QNetworkAccessManager::Operation op)
-   : QNetworkReply(*new QNetworkReplyDataImplPrivate(), parent)
+QNetworkReplyDataImpl::QNetworkReplyDataImpl( QObject *parent, const QNetworkRequest &req,
+        const QNetworkAccessManager::Operation op )
+    : QNetworkReply( *new QNetworkReplyDataImplPrivate(), parent )
 {
-   Q_D(QNetworkReplyDataImpl);
+    Q_D( QNetworkReplyDataImpl );
 
-   setRequest(req);
-   setUrl(req.url());
-   setOperation(op);
-   setFinished(true);
+    setRequest( req );
+    setUrl( req.url() );
+    setOperation( op );
+    setFinished( true );
 
-   QNetworkReply::open(QIODevice::ReadOnly);
+    QNetworkReply::open( QIODevice::ReadOnly );
 
-   QUrl url = req.url();
+    QUrl url = req.url();
 
-   QString mimeType;
-   QByteArray payload;
-   bool isValid = false;
+    QString mimeType;
+    QByteArray payload;
+    bool isValid = false;
 
-   if (url.scheme().compare("data", Qt::CaseInsensitive) == 0 && url.host().isEmpty() ) {
-      QPair<QString, QByteArray> retval = qDecodeDataUrl(url);
+    if ( url.scheme().compare( "data", Qt::CaseInsensitive ) == 0 && url.host().isEmpty() )
+    {
+        QPair<QString, QByteArray> retval = qDecodeDataUrl( url );
 
-      mimeType = retval.first;
-      payload  = retval.second;
-      isValid  = true;
-   }
+        mimeType = retval.first;
+        payload  = retval.second;
+        isValid  = true;
+    }
 
-   if (isValid) {
-      qint64 size = payload.size();
+    if ( isValid )
+    {
+        qint64 size = payload.size();
 
-      setHeader(QNetworkRequest::ContentTypeHeader, mimeType);
-      setHeader(QNetworkRequest::ContentLengthHeader, size);
+        setHeader( QNetworkRequest::ContentTypeHeader, mimeType );
+        setHeader( QNetworkRequest::ContentLengthHeader, size );
 
-      QMetaObject::invokeMethod(this, "metaDataChanged", Qt::QueuedConnection);
+        QMetaObject::invokeMethod( this, "metaDataChanged", Qt::QueuedConnection );
 
-      d->decodedData.setData(payload);
-      d->decodedData.open(QIODevice::ReadOnly);
+        d->decodedData.setData( payload );
+        d->decodedData.open( QIODevice::ReadOnly );
 
-      QMetaObject::invokeMethod(this, "downloadProgress", Qt::QueuedConnection, Q_ARG(qint64, size), Q_ARG(qint64, size));
-      QMetaObject::invokeMethod(this, "readyRead", Qt::QueuedConnection);
-      QMetaObject::invokeMethod(this, "finished",  Qt::QueuedConnection);
+        QMetaObject::invokeMethod( this, "downloadProgress", Qt::QueuedConnection, Q_ARG( qint64, size ), Q_ARG( qint64, size ) );
+        QMetaObject::invokeMethod( this, "readyRead", Qt::QueuedConnection );
+        QMetaObject::invokeMethod( this, "finished",  Qt::QueuedConnection );
 
-   } else {
-      // something is wrong with this URL
-      const QString msg = QCoreApplication::translate("QNetworkAccessDataBackend", "Invalid URI: %1").formatArg(url.toString());
+    }
+    else
+    {
+        // something is wrong with this URL
+        const QString msg = QCoreApplication::translate( "QNetworkAccessDataBackend", "Invalid URI: %1" ).formatArg( url.toString() );
 
-      setError(QNetworkReply::ProtocolFailure, msg);
-      QMetaObject::invokeMethod(this, "error", Qt::QueuedConnection,
-                                Q_ARG(QNetworkReply::NetworkError, QNetworkReply::ProtocolFailure));
+        setError( QNetworkReply::ProtocolFailure, msg );
+        QMetaObject::invokeMethod( this, "error", Qt::QueuedConnection,
+                                   Q_ARG( QNetworkReply::NetworkError, QNetworkReply::ProtocolFailure ) );
 
-      QMetaObject::invokeMethod(this, "finished", Qt::QueuedConnection);
-   }
+        QMetaObject::invokeMethod( this, "finished", Qt::QueuedConnection );
+    }
 }
 
 void QNetworkReplyDataImpl::close()
 {
-   QNetworkReply::close();
+    QNetworkReply::close();
 }
 
 void QNetworkReplyDataImpl::abort()
 {
-   QNetworkReply::close();
+    QNetworkReply::close();
 }
 
 qint64 QNetworkReplyDataImpl::bytesAvailable() const
 {
-   Q_D(const QNetworkReplyDataImpl);
-   return QNetworkReply::bytesAvailable() + d->decodedData.bytesAvailable();
+    Q_D( const QNetworkReplyDataImpl );
+    return QNetworkReply::bytesAvailable() + d->decodedData.bytesAvailable();
 }
 
 bool QNetworkReplyDataImpl::isSequential () const
 {
-   return true;
+    return true;
 }
 
 qint64 QNetworkReplyDataImpl::size() const
 {
-   Q_D(const QNetworkReplyDataImpl);
-   return d->decodedData.size();
+    Q_D( const QNetworkReplyDataImpl );
+    return d->decodedData.size();
 }
 
-qint64 QNetworkReplyDataImpl::readData(char *data, qint64 maxlen)
+qint64 QNetworkReplyDataImpl::readData( char *data, qint64 maxlen )
 {
-   Q_D(QNetworkReplyDataImpl);
+    Q_D( QNetworkReplyDataImpl );
 
-   // TODO idea:
-   // Instead of decoding the whole data into new memory, we could decode on demand.
-   // Note that this might be tricky to do.
+    // TODO idea:
+    // Instead of decoding the whole data into new memory, we could decode on demand.
+    // Note that this might be tricky to do.
 
-   return d->decodedData.read(data, maxlen);
+    return d->decodedData.read( data, maxlen );
 }
 

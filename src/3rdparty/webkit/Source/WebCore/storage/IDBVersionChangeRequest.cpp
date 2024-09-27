@@ -31,16 +31,19 @@
 #include "IDBVersionChangeEvent.h"
 #include "ScriptExecutionContext.h"
 
-namespace WebCore {
-
-PassRefPtr<IDBVersionChangeRequest> IDBVersionChangeRequest::create(ScriptExecutionContext* context, PassRefPtr<IDBAny> source, const String& version)
+namespace WebCore
 {
-    return adoptRef(new IDBVersionChangeRequest(context, source, version));
+
+PassRefPtr<IDBVersionChangeRequest> IDBVersionChangeRequest::create( ScriptExecutionContext *context, PassRefPtr<IDBAny> source,
+        const String &version )
+{
+    return adoptRef( new IDBVersionChangeRequest( context, source, version ) );
 }
 
-IDBVersionChangeRequest::IDBVersionChangeRequest(ScriptExecutionContext* context, PassRefPtr<IDBAny> source, const String& version)
-    : IDBRequest(context, source, 0)
-    , m_version(version)
+IDBVersionChangeRequest::IDBVersionChangeRequest( ScriptExecutionContext *context, PassRefPtr<IDBAny> source,
+        const String &version )
+    : IDBRequest( context, source, 0 )
+    , m_version( version )
 {
 }
 
@@ -50,8 +53,8 @@ IDBVersionChangeRequest::~IDBVersionChangeRequest()
 
 void IDBVersionChangeRequest::onBlocked()
 {
-    ASSERT(!m_errorCode && m_errorMessage.isNull() && !m_result);
-    enqueueEvent(IDBVersionChangeEvent::create(m_version, eventNames().blockedEvent));
+    ASSERT( !m_errorCode && m_errorMessage.isNull() && !m_result );
+    enqueueEvent( IDBVersionChangeEvent::create( m_version, eventNames().blockedEvent ) );
 }
 
 } // namespace WebCore

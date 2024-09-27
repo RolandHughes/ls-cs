@@ -22,16 +22,17 @@
 #if ENABLE(SVG_ANIMATION)
 #include "SVGSetElement.h"
 
-namespace WebCore {
-    
-inline SVGSetElement::SVGSetElement(const QualifiedName& tagName, Document* document)
-    : SVGAnimateElement(tagName, document)
+namespace WebCore
+{
+
+inline SVGSetElement::SVGSetElement( const QualifiedName &tagName, Document *document )
+    : SVGAnimateElement( tagName, document )
 {
 }
 
-PassRefPtr<SVGSetElement> SVGSetElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<SVGSetElement> SVGSetElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new SVGSetElement(tagName, document));
+    return adoptRef( new SVGSetElement( tagName, document ) );
 }
 
 }

@@ -23,53 +23,57 @@
 
 #include <find_dialog.h>
 
-FindDialog::FindDialog(QWidget *parent)
-   : QDialog(parent), m_ui(new Ui::FindDialog)
+FindDialog::FindDialog( QWidget *parent )
+    : QDialog( parent ), m_ui( new Ui::FindDialog )
 {
-   m_ui->setupUi(this);
+    m_ui->setupUi( this );
 
-   m_ui->findNxt->setEnabled(false);
+    m_ui->findNxt->setEnabled( false );
 
-   connect(m_ui->findNxt, &QPushButton::clicked,   this, &FindDialog::emitFindNext);
-   connect(m_ui->led,     &QLineEdit::textChanged, this, &FindDialog::verifyText);
+    connect( m_ui->findNxt, &QPushButton::clicked,   this, &FindDialog::emitFindNext );
+    connect( m_ui->led,     &QLineEdit::textChanged, this, &FindDialog::verifyText );
 
-   m_ui->led->setFocus();
+    m_ui->led->setFocus();
 }
 
 FindDialog::~FindDialog()
 {
-   delete m_ui;
+    delete m_ui;
 }
 
-void FindDialog::verifyText(const QString &text)
+void FindDialog::verifyText( const QString &text )
 {
-   m_ui->findNxt->setEnabled(!text.isEmpty());
+    m_ui->findNxt->setEnabled( !text.isEmpty() );
 }
 
 void FindDialog::emitFindNext()
 {
-   DataModel::FindLocation where;
+    DataModel::FindLocation where;
 
-   if (m_ui->sourceText == nullptr) {
-      where = DataModel::Translations;
+    if ( m_ui->sourceText == nullptr )
+    {
+        where = DataModel::Translations;
 
-   } else {
-      where = DataModel::FindLocation(
-               (m_ui->sourceText->isChecked()   ? DataModel::SourceText   : 0) |
-               (m_ui->translations->isChecked() ? DataModel::Translations : 0) |
-               (m_ui->comments->isChecked()     ? DataModel::Comments     : 0));
+    }
+    else
+    {
+        where = DataModel::FindLocation(
+                    ( m_ui->sourceText->isChecked()   ? DataModel::SourceText   : 0 ) |
+                    ( m_ui->translations->isChecked() ? DataModel::Translations : 0 ) |
+                    ( m_ui->comments->isChecked()     ? DataModel::Comments     : 0 ) );
 
-   }
+    }
 
-   emit findNext(m_ui->led->text(), where, m_ui->matchCase->isChecked(), m_ui->ignoreAccelerators->isChecked(), m_ui->skipObsolete->isChecked());
-   m_ui->led->selectAll();
+    emit findNext( m_ui->led->text(), where, m_ui->matchCase->isChecked(), m_ui->ignoreAccelerators->isChecked(),
+                   m_ui->skipObsolete->isChecked() );
+    m_ui->led->selectAll();
 }
 
 void FindDialog::find()
 {
-   m_ui->led->setFocus();
+    m_ui->led->setFocus();
 
-   show();
-   activateWindow();
-   raise();
+    show();
+    activateWindow();
+    raise();
 }

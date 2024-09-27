@@ -34,82 +34,86 @@ class QGlyphRunPrivate;
 class Q_GUI_EXPORT QGlyphRun
 {
 
- public:
-   enum GlyphRunFlag {
-      Overline        = 0x01,
-      Underline       = 0x02,
-      StrikeOut       = 0x04,
-      RightToLeft     = 0x08,
-      SplitLigature   = 0x10
-   };
+public:
+    enum GlyphRunFlag
+    {
+        Overline        = 0x01,
+        Underline       = 0x02,
+        StrikeOut       = 0x04,
+        RightToLeft     = 0x08,
+        SplitLigature   = 0x10
+    };
 
-   using GlyphRunFlags = QFlags<GlyphRunFlag>;
+    using GlyphRunFlags = QFlags<GlyphRunFlag>;
 
-   QGlyphRun();
-   QGlyphRun(const QGlyphRun &other);
+    QGlyphRun();
+    QGlyphRun( const QGlyphRun &other );
 
-   ~QGlyphRun();
+    ~QGlyphRun();
 
 
-   QRawFont rawFont() const;
-   void setRawFont(const QRawFont &rawFont);
+    QRawFont rawFont() const;
+    void setRawFont( const QRawFont &rawFont );
 
-   void setRawData(const quint32 *glyphIndexArray, const QPointF *glyphPositionArray, int size);
+    void setRawData( const quint32 *glyphIndexArray, const QPointF *glyphPositionArray, int size );
 
-   QVector<quint32> glyphIndexes() const;
-   void setGlyphIndexes(const QVector<quint32> &glyphIndexes);
+    QVector<quint32> glyphIndexes() const;
+    void setGlyphIndexes( const QVector<quint32> &glyphIndexes );
 
-   QVector<QPointF> positions() const;
-   void setPositions(const QVector<QPointF> &positions);
+    QVector<QPointF> positions() const;
+    void setPositions( const QVector<QPointF> &positions );
 
-   void clear();
+    void clear();
 
-   void swap(QGlyphRun &other) {
-      qSwap(d, other.d);
-   }
+    void swap( QGlyphRun &other )
+    {
+        qSwap( d, other.d );
+    }
 
-   QGlyphRun &operator=(const QGlyphRun &other);
+    QGlyphRun &operator=( const QGlyphRun &other );
 
-   QGlyphRun &operator=(QGlyphRun &&other) {
-      swap(other);
-      return *this;
-   }
+    QGlyphRun &operator=( QGlyphRun &&other )
+    {
+        swap( other );
+        return *this;
+    }
 
-   bool operator==(const QGlyphRun &other) const;
-   inline bool operator!=(const QGlyphRun &other) const {
-      return !operator==(other);
-   }
+    bool operator==( const QGlyphRun &other ) const;
+    inline bool operator!=( const QGlyphRun &other ) const
+    {
+        return !operator==( other );
+    }
 
-   void setOverline(bool overline);
-   bool overline() const;
+    void setOverline( bool overline );
+    bool overline() const;
 
-   void setUnderline(bool underline);
-   bool underline() const;
+    void setUnderline( bool underline );
+    bool underline() const;
 
-   void setStrikeOut(bool strikeOut);
-   bool strikeOut() const;
+    void setStrikeOut( bool strikeOut );
+    bool strikeOut() const;
 
-   void setRightToLeft(bool rightToLeft);
-   bool isRightToLeft() const;
+    void setRightToLeft( bool rightToLeft );
+    bool isRightToLeft() const;
 
-   void setFlag(GlyphRunFlag flag, bool enabled = true);
-   void setFlags(GlyphRunFlags flags);
-   GlyphRunFlags flags() const;
+    void setFlag( GlyphRunFlag flag, bool enabled = true );
+    void setFlags( GlyphRunFlags flags );
+    GlyphRunFlags flags() const;
 
-   void setBoundingRect(const QRectF &boundingRect);
-   QRectF boundingRect() const;
+    void setBoundingRect( const QRectF &boundingRect );
+    QRectF boundingRect() const;
 
-   bool isEmpty() const;
+    bool isEmpty() const;
 
- private:
-   friend class QGlyphRunPrivate;
-   friend class QTextLine;
+private:
+    friend class QGlyphRunPrivate;
+    friend class QTextLine;
 
-   QGlyphRun operator+(const QGlyphRun &other) const;
-   QGlyphRun &operator+=(const QGlyphRun &other);
+    QGlyphRun operator+( const QGlyphRun &other ) const;
+    QGlyphRun &operator+=( const QGlyphRun &other );
 
-   void detach();
-   QExplicitlySharedDataPointer<QGlyphRunPrivate> d;
+    void detach();
+    QExplicitlySharedDataPointer<QGlyphRunPrivate> d;
 };
 
 #endif

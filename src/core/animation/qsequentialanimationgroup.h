@@ -33,41 +33,41 @@ class QSequentialAnimationGroupPrivate;
 
 class Q_CORE_EXPORT QSequentialAnimationGroup : public QAnimationGroup
 {
-   CORE_CS_OBJECT(QSequentialAnimationGroup)
+    CORE_CS_OBJECT( QSequentialAnimationGroup )
 
-   CORE_CS_PROPERTY_READ(currentAnimation, currentAnimation)
-   CORE_CS_PROPERTY_NOTIFY(currentAnimation, currentAnimationChanged)
+    CORE_CS_PROPERTY_READ( currentAnimation, currentAnimation )
+    CORE_CS_PROPERTY_NOTIFY( currentAnimation, currentAnimationChanged )
 
- public:
-   QSequentialAnimationGroup(QObject *parent = nullptr);
+public:
+    QSequentialAnimationGroup( QObject *parent = nullptr );
 
-   QSequentialAnimationGroup(const QSequentialAnimationGroup &) = delete;
-   QSequentialAnimationGroup &operator=(const QSequentialAnimationGroup &) = delete;
+    QSequentialAnimationGroup( const QSequentialAnimationGroup & ) = delete;
+    QSequentialAnimationGroup &operator=( const QSequentialAnimationGroup & ) = delete;
 
-   ~QSequentialAnimationGroup();
+    ~QSequentialAnimationGroup();
 
-   QPauseAnimation *addPause(int msecs);
-   QPauseAnimation *insertPause(int index, int msecs);
+    QPauseAnimation *addPause( int msecs );
+    QPauseAnimation *insertPause( int index, int msecs );
 
-   QAbstractAnimation *currentAnimation() const;
-   int duration() const override;
+    QAbstractAnimation *currentAnimation() const;
+    int duration() const override;
 
-   CORE_CS_SIGNAL_1(Public, void currentAnimationChanged(QAbstractAnimation *current))
-   CORE_CS_SIGNAL_2(currentAnimationChanged, current)
+    CORE_CS_SIGNAL_1( Public, void currentAnimationChanged( QAbstractAnimation *current ) )
+    CORE_CS_SIGNAL_2( currentAnimationChanged, current )
 
- protected:
-   QSequentialAnimationGroup(QSequentialAnimationGroupPrivate &dd, QObject *parent);
+protected:
+    QSequentialAnimationGroup( QSequentialAnimationGroupPrivate &dd, QObject *parent );
 
-   bool event(QEvent *event) override;
-   void updateCurrentTime(int currentTime) override;
-   void updateState(QAbstractAnimation::State newState, QAbstractAnimation::State oldState) override;
-   void updateDirection(QAbstractAnimation::Direction direction) override;
+    bool event( QEvent *event ) override;
+    void updateCurrentTime( int currentTime ) override;
+    void updateState( QAbstractAnimation::State newState, QAbstractAnimation::State oldState ) override;
+    void updateDirection( QAbstractAnimation::Direction direction ) override;
 
- private:
-   Q_DECLARE_PRIVATE(QSequentialAnimationGroup)
+private:
+    Q_DECLARE_PRIVATE( QSequentialAnimationGroup )
 
-   // slot
-   void _q_uncontrolledAnimationFinished() override;
+    // slot
+    void _q_uncontrolledAnimationFinished() override;
 };
 
 #endif // QT_NO_ANIMATION

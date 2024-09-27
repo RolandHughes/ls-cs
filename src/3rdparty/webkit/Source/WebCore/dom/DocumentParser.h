@@ -26,31 +26,39 @@
 
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Document;
 class DocumentWriter;
 class SegmentedString;
 class ScriptableDocumentParser;
 
-class DocumentParser : public RefCounted<DocumentParser> {
+class DocumentParser : public RefCounted<DocumentParser>
+{
 public:
     virtual ~DocumentParser();
 
-    virtual ScriptableDocumentParser* asScriptableDocumentParser() { return 0; }
+    virtual ScriptableDocumentParser *asScriptableDocumentParser()
+    {
+        return 0;
+    }
 
     // http://www.whatwg.org/specs/web-apps/current-work/#insertion-point
-    virtual bool hasInsertionPoint() { return true; }
+    virtual bool hasInsertionPoint()
+    {
+        return true;
+    }
 
     // insert is used by document.write
-    virtual void insert(const SegmentedString&) = 0;
+    virtual void insert( const SegmentedString & ) = 0;
 
     // appendBytes is used by DocumentWriter (the loader)
-    virtual void appendBytes(DocumentWriter*, const char* bytes, int length, bool flush) = 0;
+    virtual void appendBytes( DocumentWriter *, const char *bytes, int length, bool flush ) = 0;
 
     // FIXME: append() should be private, but DocumentWriter::replaceDocument
     // uses it for now.
-    virtual void append(const SegmentedString&) = 0;
+    virtual void append( const SegmentedString & ) = 0;
 
     virtual void finish() = 0;
     virtual bool finishWasCalled() = 0;
@@ -58,15 +66,34 @@ public:
     // FIXME: processingData() is only used by DocumentLoader::isLoadingInAPISense
     // and is very unclear as to what it actually means.  The LegacyHTMLDocumentParser
     // used to implement it.
-    virtual bool processingData() const { return false; }
+    virtual bool processingData() const
+    {
+        return false;
+    }
 
     // document() will return 0 after detach() is called.
-    Document* document() const { ASSERT(m_document); return m_document; }
+    Document *document() const
+    {
+        ASSERT( m_document );
+        return m_document;
+    }
 
-    bool isParsing() const { return m_state == ParsingState; }
-    bool isStopping() const { return m_state == StoppingState; }
-    bool isStopped() const { return m_state >= StoppedState; }
-    bool isDetached() const { return m_state == DetachedState; }
+    bool isParsing() const
+    {
+        return m_state == ParsingState;
+    }
+    bool isStopping() const
+    {
+        return m_state == StoppingState;
+    }
+    bool isStopped() const
+    {
+        return m_state >= StoppedState;
+    }
+    bool isDetached() const
+    {
+        return m_state == DetachedState;
+    }
 
     // FIXME: Is this necessary? Does XMLDocumentParserLibxml2 really need to set this?
     virtual void startParsing();
@@ -88,18 +115,25 @@ public:
     // detach is called.
     virtual void detach();
 
-    void setDocumentWasLoadedAsPartOfNavigation() { m_documentWasLoadedAsPartOfNavigation = true; }
-    bool documentWasLoadedAsPartOfNavigation() const { return m_documentWasLoadedAsPartOfNavigation; }
+    void setDocumentWasLoadedAsPartOfNavigation()
+    {
+        m_documentWasLoadedAsPartOfNavigation = true;
+    }
+    bool documentWasLoadedAsPartOfNavigation() const
+    {
+        return m_documentWasLoadedAsPartOfNavigation;
+    }
 
     // FIXME: The names are not very accurate :(
     virtual void suspendScheduledTasks();
     virtual void resumeScheduledTasks();
 
 protected:
-    DocumentParser(Document*);
+    DocumentParser( Document * );
 
 private:
-    enum ParserState {
+    enum ParserState
+    {
         ParsingState,
         StoppingState,
         StoppedState,
@@ -110,7 +144,7 @@ private:
 
     // Every DocumentParser needs a pointer back to the document.
     // m_document will be 0 after the parser is stopped.
-    Document* m_document;
+    Document *m_document;
 };
 
 } // namespace WebCore

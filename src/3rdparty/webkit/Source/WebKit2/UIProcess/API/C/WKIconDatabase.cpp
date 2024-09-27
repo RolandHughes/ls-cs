@@ -33,42 +33,45 @@ using namespace WebKit;
 
 WKTypeID WKIconDatabaseGetTypeID()
 {
-    return toAPI(WebIconDatabase::APIType);
+    return toAPI( WebIconDatabase::APIType );
 }
 
-void WKIconDatabaseSetIconDatabaseClient(WKIconDatabaseRef iconDatabaseRef, const WKIconDatabaseClient* wkClient)
+void WKIconDatabaseSetIconDatabaseClient( WKIconDatabaseRef iconDatabaseRef, const WKIconDatabaseClient *wkClient )
 {
-    if (wkClient && wkClient->version)
+    if ( wkClient && wkClient->version )
+    {
         return;
-    toImpl(iconDatabaseRef)->initializeIconDatabaseClient(wkClient);
+    }
+
+    toImpl( iconDatabaseRef )->initializeIconDatabaseClient( wkClient );
 }
 
-void WKIconDatabaseRetainIconForURL(WKIconDatabaseRef iconDatabaseRef, WKURLRef pageURLRef)
+void WKIconDatabaseRetainIconForURL( WKIconDatabaseRef iconDatabaseRef, WKURLRef pageURLRef )
 {
-    toImpl(iconDatabaseRef)->retainIconForPageURL(toWTFString(pageURLRef));
+    toImpl( iconDatabaseRef )->retainIconForPageURL( toWTFString( pageURLRef ) );
 }
 
-void WKIconDatabaseReleaseIconForURL(WKIconDatabaseRef iconDatabaseRef, WKURLRef pageURLRef)
+void WKIconDatabaseReleaseIconForURL( WKIconDatabaseRef iconDatabaseRef, WKURLRef pageURLRef )
 {
-    toImpl(iconDatabaseRef)->releaseIconForPageURL(toWTFString(pageURLRef));
+    toImpl( iconDatabaseRef )->releaseIconForPageURL( toWTFString( pageURLRef ) );
 }
 
-void WKIconDatabaseEnableDatabaseCleanup(WKIconDatabaseRef iconDatabaseRef)
+void WKIconDatabaseEnableDatabaseCleanup( WKIconDatabaseRef iconDatabaseRef )
 {
-    toImpl(iconDatabaseRef)->enableDatabaseCleanup();
+    toImpl( iconDatabaseRef )->enableDatabaseCleanup();
 }
 
-void WKIconDatabaseRemoveAllIcons(WKIconDatabaseRef iconDatabaseRef)
+void WKIconDatabaseRemoveAllIcons( WKIconDatabaseRef iconDatabaseRef )
 {
-    toImpl(iconDatabaseRef)->removeAllIcons();
+    toImpl( iconDatabaseRef )->removeAllIcons();
 }
 
-void WKIconDatabaseCheckIntegrityBeforeOpening(WKIconDatabaseRef iconDatabaseRef)
+void WKIconDatabaseCheckIntegrityBeforeOpening( WKIconDatabaseRef iconDatabaseRef )
 {
-    toImpl(iconDatabaseRef)->checkIntegrityBeforeOpening();
+    toImpl( iconDatabaseRef )->checkIntegrityBeforeOpening();
 }
 
-void WKIconDatabaseClose(WKIconDatabaseRef iconDatabaseRef)
+void WKIconDatabaseClose( WKIconDatabaseRef iconDatabaseRef )
 {
-    toImpl(iconDatabaseRef)->close();
+    toImpl( iconDatabaseRef )->close();
 }

@@ -21,7 +21,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef JSCallbackObject_h
@@ -31,82 +31,92 @@
 #include "JSValueRef.h"
 #include "JSObject.h"
 
-namespace JSC {
+namespace JSC
+{
 
 template <class Base>
-class JSCallbackObject : public Base {
+class JSCallbackObject : public Base
+{
 public:
-    JSCallbackObject(ExecState*, NonNullPassRefPtr<Structure>, JSClassRef, void* data);
-    JSCallbackObject(JSClassRef);
+    JSCallbackObject( ExecState *, NonNullPassRefPtr<Structure>, JSClassRef, void *data );
+    JSCallbackObject( JSClassRef );
     virtual ~JSCallbackObject();
 
-    void setPrivate(void* data);
-    void* getPrivate();
+    void setPrivate( void *data );
+    void *getPrivate();
 
     static const ClassInfo info;
 
-    JSClassRef classRef() const { return m_callbackObjectData->jsClass; }
-    bool inherits(JSClassRef) const;
+    JSClassRef classRef() const
+    {
+        return m_callbackObjectData->jsClass;
+    }
+    bool inherits( JSClassRef ) const;
 
-    static PassRefPtr<Structure> createStructure(JSValue proto) 
-    { 
-        return Structure::create(proto, TypeInfo(ObjectType, StructureFlags)); 
+    static PassRefPtr<Structure> createStructure( JSValue proto )
+    {
+        return Structure::create( proto, TypeInfo( ObjectType, StructureFlags ) );
     }
 
 protected:
-    static const unsigned StructureFlags = OverridesGetOwnPropertySlot | ImplementsHasInstance | OverridesHasInstance | OverridesMarkChildren | OverridesGetPropertyNames | Base::StructureFlags;
+    static const unsigned StructureFlags = OverridesGetOwnPropertySlot | ImplementsHasInstance | OverridesHasInstance |
+                                           OverridesMarkChildren | OverridesGetPropertyNames | Base::StructureFlags;
 
 private:
     virtual UString className() const;
 
-    virtual bool getOwnPropertySlot(ExecState*, const Identifier&, PropertySlot&);
-    virtual bool getOwnPropertySlot(ExecState*, unsigned, PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(ExecState*, const Identifier&, PropertyDescriptor&);
-    
-    virtual void put(ExecState*, const Identifier&, JSValue, PutPropertySlot&);
+    virtual bool getOwnPropertySlot( ExecState *, const Identifier &, PropertySlot & );
+    virtual bool getOwnPropertySlot( ExecState *, unsigned, PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( ExecState *, const Identifier &, PropertyDescriptor & );
 
-    virtual bool deleteProperty(ExecState*, const Identifier&);
-    virtual bool deleteProperty(ExecState*, unsigned);
+    virtual void put( ExecState *, const Identifier &, JSValue, PutPropertySlot & );
 
-    virtual bool hasInstance(ExecState* exec, JSValue value, JSValue proto);
+    virtual bool deleteProperty( ExecState *, const Identifier & );
+    virtual bool deleteProperty( ExecState *, unsigned );
 
-    virtual void getOwnPropertyNames(ExecState*, PropertyNameArray&, EnumerationMode mode = ExcludeDontEnumProperties);
+    virtual bool hasInstance( ExecState *exec, JSValue value, JSValue proto );
 
-    virtual double toNumber(ExecState*) const;
-    virtual UString toString(ExecState*) const;
+    virtual void getOwnPropertyNames( ExecState *, PropertyNameArray &, EnumerationMode mode = ExcludeDontEnumProperties );
 
-    virtual ConstructType getConstructData(ConstructData&);
-    virtual CallType getCallData(CallData&);
-    virtual const ClassInfo* classInfo() const { return &info; }
+    virtual double toNumber( ExecState * ) const;
+    virtual UString toString( ExecState * ) const;
 
-    void init(ExecState*);
- 
-    static JSCallbackObject* asCallbackObject(JSValue);
- 
-    static JSValue JSC_HOST_CALL call(ExecState*, JSObject* functionObject, JSValue thisValue, const ArgList&);
-    static JSObject* construct(ExecState*, JSObject* constructor, const ArgList&);
-   
-    static JSValue staticValueGetter(ExecState*, const Identifier&, const PropertySlot&);
-    static JSValue staticFunctionGetter(ExecState*, const Identifier&, const PropertySlot&);
-    static JSValue callbackGetter(ExecState*, const Identifier&, const PropertySlot&);
+    virtual ConstructType getConstructData( ConstructData & );
+    virtual CallType getCallData( CallData & );
+    virtual const ClassInfo *classInfo() const
+    {
+        return &info;
+    }
 
-    struct JSCallbackObjectData {
-        JSCallbackObjectData(void* privateData, JSClassRef jsClass)
-            : privateData(privateData)
-            , jsClass(jsClass)
+    void init( ExecState * );
+
+    static JSCallbackObject *asCallbackObject( JSValue );
+
+    static JSValue JSC_HOST_CALL call( ExecState *, JSObject *functionObject, JSValue thisValue, const ArgList & );
+    static JSObject *construct( ExecState *, JSObject *constructor, const ArgList & );
+
+    static JSValue staticValueGetter( ExecState *, const Identifier &, const PropertySlot & );
+    static JSValue staticFunctionGetter( ExecState *, const Identifier &, const PropertySlot & );
+    static JSValue callbackGetter( ExecState *, const Identifier &, const PropertySlot & );
+
+    struct JSCallbackObjectData
+    {
+        JSCallbackObjectData( void *privateData, JSClassRef jsClass )
+            : privateData( privateData )
+            , jsClass( jsClass )
         {
-            JSClassRetain(jsClass);
+            JSClassRetain( jsClass );
         }
-        
+
         ~JSCallbackObjectData()
         {
-            JSClassRelease(jsClass);
+            JSClassRelease( jsClass );
         }
-        
-        void* privateData;
+
+        void *privateData;
         JSClassRef jsClass;
     };
-    
+
     OwnPtr<JSCallbackObjectData> m_callbackObjectData;
 };
 

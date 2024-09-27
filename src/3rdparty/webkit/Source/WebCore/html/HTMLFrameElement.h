@@ -26,28 +26,39 @@
 
 #include "HTMLFrameElementBase.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class HTMLFrameElement : public HTMLFrameElementBase {
+class HTMLFrameElement : public HTMLFrameElementBase
+{
 public:
-    static PassRefPtr<HTMLFrameElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<HTMLFrameElement> create( const QualifiedName &, Document * );
 
-    bool hasFrameBorder() const { return m_frameBorder; }
+    bool hasFrameBorder() const
+    {
+        return m_frameBorder;
+    }
 
-    bool noResize() const { return m_noResize; }
+    bool noResize() const
+    {
+        return m_noResize;
+    }
 
 private:
-    HTMLFrameElement(const QualifiedName&, Document*);
+    HTMLFrameElement( const QualifiedName &, Document * );
 
     virtual void attach();
 
-    virtual bool rendererIsNeeded(RenderStyle*);
-    virtual RenderObject* createRenderer(RenderArena*, RenderStyle*);
-    
-    virtual void parseMappedAttribute(Attribute*);
+    virtual bool rendererIsNeeded( RenderStyle * );
+    virtual RenderObject *createRenderer( RenderArena *, RenderStyle * );
+
+    virtual void parseMappedAttribute( Attribute * );
 
 #if ENABLE(FULLSCREEN_API)
-    virtual bool allowFullScreen() const { return false; }
+    virtual bool allowFullScreen() const
+    {
+        return false;
+    }
 #endif
 
     bool m_frameBorder;

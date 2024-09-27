@@ -37,34 +37,42 @@
 #include <wtf/Forward.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class KURL;
 
-class AsyncFileStream : public RefCounted<AsyncFileStream> {
+class AsyncFileStream : public RefCounted<AsyncFileStream>
+{
 public:
     virtual ~AsyncFileStream() { }
 
-    virtual void getSize(const String& path, double expectedModificationTime) = 0;
-    virtual void openForRead(const String& path, long long offset, long long length) = 0;
-    virtual void openForWrite(const String& path) = 0;
+    virtual void getSize( const String &path, double expectedModificationTime ) = 0;
+    virtual void openForRead( const String &path, long long offset, long long length ) = 0;
+    virtual void openForWrite( const String &path ) = 0;
     virtual void close() = 0;
-    virtual void read(char* buffer, int length) = 0;
-    virtual void write(const KURL& blobURL, long long position, int length) = 0;
-    virtual void truncate(long long position) = 0;
+    virtual void read( char *buffer, int length ) = 0;
+    virtual void write( const KURL &blobURL, long long position, int length ) = 0;
+    virtual void truncate( long long position ) = 0;
     virtual void stop() = 0;
 
-    FileStreamClient* client() const { return m_client; }
-    void setClient(FileStreamClient* client) { m_client = client; }
+    FileStreamClient *client() const
+    {
+        return m_client;
+    }
+    void setClient( FileStreamClient *client )
+    {
+        m_client = client;
+    }
 
 protected:
-    AsyncFileStream(FileStreamClient* client)
-        : m_client(client)
+    AsyncFileStream( FileStreamClient *client )
+        : m_client( client )
     {
     }
 
 private:
-    FileStreamClient* m_client;
+    FileStreamClient *m_client;
 };
 
 } // namespace WebCore

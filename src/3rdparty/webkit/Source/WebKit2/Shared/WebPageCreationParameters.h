@@ -33,16 +33,19 @@
 #include <WebCore/IntSize.h>
 #include <wtf/text/WTFString.h>
 
-namespace CoreIPC {
-    class ArgumentDecoder;
-    class ArgumentEncoder;
+namespace CoreIPC
+{
+class ArgumentDecoder;
+class ArgumentEncoder;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
-struct WebPageCreationParameters {
-    void encode(CoreIPC::ArgumentEncoder*) const;
-    static bool decode(CoreIPC::ArgumentDecoder*, WebPageCreationParameters&);
+struct WebPageCreationParameters
+{
+    void encode( CoreIPC::ArgumentEncoder * ) const;
+    static bool decode( CoreIPC::ArgumentDecoder *, WebPageCreationParameters & );
 
     WebCore::IntSize viewSize;
 
@@ -50,7 +53,7 @@ struct WebPageCreationParameters {
     bool isFocused;
     bool isVisible;
     bool isInWindow;
-    
+
     WebPreferencesStore store;
     DrawingAreaType drawingAreaType;
     WebPageGroupData pageGroupData;

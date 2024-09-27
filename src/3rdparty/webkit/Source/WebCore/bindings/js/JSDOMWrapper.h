@@ -25,26 +25,29 @@
 #include "JSDOMGlobalObject.h"
 #include <runtime/JSObjectWithGlobalObject.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class ScriptExecutionContext;
 
-class JSDOMWrapper : public JSC::JSObjectWithGlobalObject {
+class JSDOMWrapper : public JSC::JSObjectWithGlobalObject
+{
 public:
-    JSDOMGlobalObject* globalObject() const
+    JSDOMGlobalObject *globalObject() const
     {
-        return static_cast<JSDOMGlobalObject*>(JSC::JSObjectWithGlobalObject::globalObject());
+        return static_cast<JSDOMGlobalObject *>( JSC::JSObjectWithGlobalObject::globalObject() );
     }
 
-    ScriptExecutionContext* scriptExecutionContext() const
+    ScriptExecutionContext *scriptExecutionContext() const
     {
         // FIXME: Should never be 0, but can be due to bug 27640.
         return globalObject()->scriptExecutionContext();
     }
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
 protected:
@@ -52,8 +55,8 @@ protected:
     // in the class as it results in the vtable being generated as a weak symbol.
     virtual void virtualFunctionToPreventWeakVtable();
 
-    explicit JSDOMWrapper(JSC::Structure* structure, JSC::JSGlobalObject* globalObject) 
-        : JSObjectWithGlobalObject(globalObject, structure)
+    explicit JSDOMWrapper( JSC::Structure *structure, JSC::JSGlobalObject *globalObject )
+        : JSObjectWithGlobalObject( globalObject, structure )
     {
         // FIXME: This ASSERT is valid, but fires in fast/dom/gc-6.html when trying to create
         // new JavaScript objects on detached windows due to DOMWindow::document()

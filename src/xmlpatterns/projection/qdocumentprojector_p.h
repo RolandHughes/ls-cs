@@ -28,37 +28,38 @@
 
 #include <qprojectedexpression_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class DocumentProjector : public QAbstractXmlReceiver
 {
- public:
-   DocumentProjector(const ProjectedExpression::Vector &paths, QAbstractXmlReceiver *const receiver);
+public:
+    DocumentProjector( const ProjectedExpression::Vector &paths, QAbstractXmlReceiver *const receiver );
 
-   void startElement(const QXmlName &name) override;
-   void endElement() override;
+    void startElement( const QXmlName &name ) override;
+    void endElement() override;
 
-   void attribute(const QXmlName &name, QStringView value) override;
+    void attribute( const QXmlName &name, QStringView value ) override;
 
-   void comment(const QString &value) override;
-   void characters(QStringView value) override;
+    void comment( const QString &value ) override;
+    void characters( QStringView value ) override;
 
-   void startDocument() override;
-   void endDocument() override;
+    void startDocument() override;
+    void endDocument() override;
 
-   void processingInstruction(const QXmlName &name, const QString &value) override;
+    void processingInstruction( const QXmlName &name, const QString &value ) override;
 
-   void namespaceBinding(const QXmlName &nb) override;
+    void namespaceBinding( const QXmlName &nb ) override;
 
-   void item(const Item &item) override;
+    void item( const Item &item ) override;
 
-   ProjectedExpression::Vector m_paths;
-   const int m_pathCount;
+    ProjectedExpression::Vector m_paths;
+    const int m_pathCount;
 
-   ProjectedExpression::Action m_action;
-   int m_nodesInProcess;
+    ProjectedExpression::Action m_action;
+    int m_nodesInProcess;
 
-   QAbstractXmlReceiver *const m_receiver;
+    QAbstractXmlReceiver *const m_receiver;
 };
 
 }   // end namespace

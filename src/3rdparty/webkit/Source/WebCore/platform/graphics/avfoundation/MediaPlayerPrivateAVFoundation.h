@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef MediaPlayerPrivateAVFoundation_h
@@ -33,11 +33,13 @@
 #include "Timer.h"
 #include <wtf/RetainPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class ApplicationCacheResource;
 
-class MediaPlayerPrivateAVFoundation : public MediaPlayerPrivateInterface {
+class MediaPlayerPrivateAVFoundation : public MediaPlayerPrivateInterface
+{
 public:
 
     virtual void repaint();
@@ -46,13 +48,15 @@ public:
     virtual void rateChanged();
     virtual void loadedTimeRangesChanged();
     virtual void seekableTimeRangesChanged();
-    virtual void timeChanged(double);
-    virtual void seekCompleted(bool);
+    virtual void timeChanged( double );
+    virtual void seekCompleted( bool );
     virtual void didEnd();
 
-    class Notification {
+    class Notification
+    {
     public:
-        enum Type {
+        enum Type
+        {
             None,
             ItemDidPlayToEndTime,
             ItemTracksChanged,
@@ -69,51 +73,63 @@ public:
             PlayerTimeChanged,
             SeekCompleted,
         };
-        
+
         Notification()
-            : m_type(None)
-            , m_time(0)
-            , m_finished(false)
+            : m_type( None )
+            , m_time( 0 )
+            , m_finished( false )
         {
         }
 
-        Notification(Type type, double time)
-            : m_type(type)
-            , m_time(time)
-            , m_finished(false)
+        Notification( Type type, double time )
+            : m_type( type )
+            , m_time( time )
+            , m_finished( false )
         {
         }
-        
-        Notification(Type type, bool finished)
-        : m_type(type)
-        , m_time(0)
-        , m_finished(finished)
+
+        Notification( Type type, bool finished )
+            : m_type( type )
+            , m_time( 0 )
+            , m_finished( finished )
         {
         }
-        
-        Type type() { return m_type; }
-        bool isValid() { return m_type != None; }
-        double time() { return m_time; }
-        bool finished() { return m_finished; }
-        
+
+        Type type()
+        {
+            return m_type;
+        }
+        bool isValid()
+        {
+            return m_type != None;
+        }
+        double time()
+        {
+            return m_time;
+        }
+        bool finished()
+        {
+            return m_finished;
+        }
+
     private:
         Type m_type;
         double m_time;
         bool m_finished;
     };
 
-    void scheduleMainThreadNotification(Notification);
-    void scheduleMainThreadNotification(Notification::Type, double time = 0);
-    void scheduleMainThreadNotification(Notification::Type, bool completed);
+    void scheduleMainThreadNotification( Notification );
+    void scheduleMainThreadNotification( Notification::Type, double time = 0 );
+    void scheduleMainThreadNotification( Notification::Type, bool completed );
     void dispatchNotification();
     void clearMainThreadPendingFlag();
 
 protected:
-    MediaPlayerPrivateAVFoundation(MediaPlayer*);
+    MediaPlayerPrivateAVFoundation( MediaPlayer * );
     virtual ~MediaPlayerPrivateAVFoundation();
 
     // MediaPlayerPrivatePrivateInterface overrides.
-    virtual void load(const String& url);
+    virtual void load( const String &url );
     virtual void cancelLoad() = 0;
 
     virtual void prepareToPlay();
@@ -123,47 +139,66 @@ protected:
     virtual void pause();
 
     virtual IntSize naturalSize() const;
-    virtual bool hasVideo() const { return m_cachedHasVideo; }
-    virtual bool hasAudio() const { return m_cachedHasAudio; }
-    virtual void setVisible(bool);
+    virtual bool hasVideo() const
+    {
+        return m_cachedHasVideo;
+    }
+    virtual bool hasAudio() const
+    {
+        return m_cachedHasAudio;
+    }
+    virtual void setVisible( bool );
     virtual float duration() const;
     virtual float currentTime() const = 0;
-    virtual void seek(float);
+    virtual void seek( float );
     virtual bool seeking() const;
-    virtual void setRate(float);
+    virtual void setRate( float );
     virtual bool paused() const;
-    virtual void setVolume(float) = 0;
-    virtual bool hasClosedCaptions() const { return m_cachedHasCaptions; }
-    virtual void setClosedCaptionsVisible(bool) = 0;
-    virtual MediaPlayer::NetworkState networkState() const { return m_networkState; }
-    virtual MediaPlayer::ReadyState readyState() const { return m_readyState; }
+    virtual void setVolume( float ) = 0;
+    virtual bool hasClosedCaptions() const
+    {
+        return m_cachedHasCaptions;
+    }
+    virtual void setClosedCaptionsVisible( bool ) = 0;
+    virtual MediaPlayer::NetworkState networkState() const
+    {
+        return m_networkState;
+    }
+    virtual MediaPlayer::ReadyState readyState() const
+    {
+        return m_readyState;
+    }
     virtual float maxTimeSeekable() const;
     virtual PassRefPtr<TimeRanges> buffered() const;
     virtual unsigned bytesLoaded() const;
-    virtual void setSize(const IntSize&);
-    virtual void paint(GraphicsContext*, const IntRect&) = 0;
-    virtual void paintCurrentFrameInContext(GraphicsContext*, const IntRect&) = 0;
-    virtual void setPreload(MediaPlayer::Preload);
+    virtual void setSize( const IntSize & );
+    virtual void paint( GraphicsContext *, const IntRect & ) = 0;
+    virtual void paintCurrentFrameInContext( GraphicsContext *, const IntRect & ) = 0;
+    virtual void setPreload( MediaPlayer::Preload );
 #if USE(ACCELERATED_COMPOSITING)
-    virtual PlatformLayer* platformLayer() const { return 0; }
+    virtual PlatformLayer *platformLayer() const
+    {
+        return 0;
+    }
     virtual bool supportsAcceleratedRendering() const = 0;
     virtual void acceleratedRenderingStateChanged();
 #endif
     virtual MediaPlayer::MovieLoadType movieLoadType() const;
     virtual void prepareForRendering();
-    virtual float mediaTimeForTimeValue(float) const = 0;
+    virtual float mediaTimeForTimeValue( float ) const = 0;
 
     virtual bool supportsFullscreen() const;
 
     // Required interfaces for concrete derived classes.
-    virtual void createAVAssetForURL(const String&) = 0;
+    virtual void createAVAssetForURL( const String & ) = 0;
     virtual void createAVPlayer() = 0;
     virtual void createAVPlayerItem() = 0;
 #if ENABLE(OFFLINE_WEB_APPLICATIONS)
-    virtual void createAVAssetForCacheResource(ApplicationCacheResource*) = 0;
+    virtual void createAVAssetForCacheResource( ApplicationCacheResource * ) = 0;
 #endif
 
-    enum ItemStatus {
+    enum ItemStatus
+    {
         MediaPlayerAVPlayerItemStatusDoesNotExist,
         MediaPlayerAVPlayerItemStatusUnknown,
         MediaPlayerAVPlayerItemStatusFailed,
@@ -174,7 +209,8 @@ protected:
     };
     virtual ItemStatus playerItemStatus() const = 0;
 
-    enum AssetStatus {
+    enum AssetStatus
+    {
         MediaPlayerAVAssetStatusDoesNotExist,
         MediaPlayerAVAssetStatusUnknown,
         MediaPlayerAVAssetStatusLoading,
@@ -185,13 +221,13 @@ protected:
     };
     virtual AssetStatus assetStatus() const = 0;
 
-    virtual void platformSetVisible(bool) = 0;
+    virtual void platformSetVisible( bool ) = 0;
     virtual void platformPlay() = 0;
     virtual void platformPause() = 0;
     virtual void checkPlayability() = 0;
     virtual void updateRate() = 0;
     virtual float rate() const = 0;
-    virtual void seekToTime(float time) = 0;
+    virtual void seekToTime( float time ) = 0;
     virtual unsigned totalBytes() const = 0;
     virtual PassRefPtr<TimeRanges> platformBufferedTimeRanges() const = 0;
     virtual float platformMaxTimeSeekable() const = 0;
@@ -216,33 +252,60 @@ protected:
 protected:
     void updateStates();
 
-    void setHasVideo(bool b) { m_cachedHasVideo = b; };
-    void setHasAudio(bool b) { m_cachedHasAudio = b; }
-    void setHasClosedCaptions(bool b) { m_cachedHasCaptions = b; }
-    void setDelayCallbacks(bool);
-    void setIgnoreLoadStateChanges(bool delay) { m_ignoreLoadStateChanges = delay; }
-    void setNaturalSize(IntSize);
-    bool isLiveStream() const { return isinf(duration()); }
+    void setHasVideo( bool b )
+    {
+        m_cachedHasVideo = b;
+    };
+    void setHasAudio( bool b )
+    {
+        m_cachedHasAudio = b;
+    }
+    void setHasClosedCaptions( bool b )
+    {
+        m_cachedHasCaptions = b;
+    }
+    void setDelayCallbacks( bool );
+    void setIgnoreLoadStateChanges( bool delay )
+    {
+        m_ignoreLoadStateChanges = delay;
+    }
+    void setNaturalSize( IntSize );
+    bool isLiveStream() const
+    {
+        return isinf( duration() );
+    }
 
     enum MediaRenderingMode { MediaRenderingNone, MediaRenderingToContext, MediaRenderingToLayer };
     MediaRenderingMode currentRenderingMode() const;
     MediaRenderingMode preferredRenderingMode() const;
 
-    bool metaDataAvailable() const { return m_readyState >= MediaPlayer::HaveMetadata; }
-    float requestedRate() const { return m_requestedRate; }
+    bool metaDataAvailable() const
+    {
+        return m_readyState >= MediaPlayer::HaveMetadata;
+    }
+    float requestedRate() const
+    {
+        return m_requestedRate;
+    }
     float maxTimeLoaded() const;
     bool isReadyForVideoSetup() const;
     virtual void setUpVideoRendering();
     virtual void tearDownVideoRendering();
     bool hasSetUpVideoRendering() const;
 
-    static void mainThreadCallback(void*);
-    
-    float invalidTime() const { return -1.0f; }
+    static void mainThreadCallback( void * );
 
-    const String& assetURL() const { return m_assetURL; }
+    float invalidTime() const
+    {
+        return -1.0f;
+    }
+
+    const String &assetURL() const
+    {
+        return m_assetURL;
+    }
 private:
-    MediaPlayer* m_player;
+    MediaPlayer *m_player;
 
     Vector<Notification> m_queuedNotifications;
     Mutex m_queueMutex;

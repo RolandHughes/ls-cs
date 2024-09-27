@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -47,9 +47,11 @@
 #include "FileException.h"
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
-static const char* const exceptionNames[] = {
+static const char *const exceptionNames[] =
+{
     "INDEX_SIZE_ERR",
     "DOMSTRING_SIZE_ERR",
     "HIERARCHY_REQUEST_ERR",
@@ -74,7 +76,8 @@ static const char* const exceptionNames[] = {
     "QUOTA_EXCEEDED_ERR"
 };
 
-static const char* const exceptionDescriptions[] = {
+static const char *const exceptionDescriptions[] =
+{
     "Index or size was negative, or greater than the allowed value.",
     "The specified range of text did not fit into a DOMString.",
     "A Node was inserted somewhere it doesn't belong.",
@@ -100,54 +103,64 @@ static const char* const exceptionDescriptions[] = {
     "An attempt was made to add something to storage that exceeded the quota."
 };
 
-static const char* const rangeExceptionNames[] = {
+static const char *const rangeExceptionNames[] =
+{
     "BAD_BOUNDARYPOINTS_ERR",
     "INVALID_NODE_TYPE_ERR"
 };
 
-static const char* const rangeExceptionDescriptions[] = {
+static const char *const rangeExceptionDescriptions[] =
+{
     "The boundary-points of a Range did not meet specific requirements.",
     "The container of an boundary-point of a Range was being set to either a node of an invalid type or a node with an ancestor of an invalid type."
 };
 
-static const char* const eventExceptionNames[] = {
+static const char *const eventExceptionNames[] =
+{
     "UNSPECIFIED_EVENT_TYPE_ERR"
 };
 
-static const char* const eventExceptionDescriptions[] = {
+static const char *const eventExceptionDescriptions[] =
+{
     "The Event's type was not specified by initializing the event before the method was called."
 };
 
-static const char* const xmlHttpRequestExceptionNames[] = {
+static const char *const xmlHttpRequestExceptionNames[] =
+{
     "NETWORK_ERR",
     "ABORT_ERR"
 };
 
-static const char* const xmlHttpRequestExceptionDescriptions[] = {
+static const char *const xmlHttpRequestExceptionDescriptions[] =
+{
     "A network error occured in synchronous requests.",
     "The user aborted a request in synchronous requests."
 };
 
 #if ENABLE(XPATH)
-static const char* const xpathExceptionNames[] = {
+static const char *const xpathExceptionNames[] =
+{
     "INVALID_EXPRESSION_ERR",
     "TYPE_ERR"
 };
 
-static const char* const xpathExceptionDescriptions[] = {
+static const char *const xpathExceptionDescriptions[] =
+{
     "The expression had a syntax error or otherwise is not a legal expression according to the rules of the specific XPathEvaluator.",
     "The expression could not be converted to return the specified type."
 };
 #endif
 
 #if ENABLE(SVG)
-static const char* const svgExceptionNames[] = {
+static const char *const svgExceptionNames[] =
+{
     "SVG_WRONG_TYPE_ERR",
     "SVG_INVALID_VALUE_ERR",
     "SVG_MATRIX_NOT_INVERTABLE"
 };
 
-static const char* const svgExceptionDescriptions[] = {
+static const char *const svgExceptionDescriptions[] =
+{
     "An object of the wrong type was passed to an operation.",
     "An invalid value was passed to an operation or assigned to an attribute.",
     "An attempt was made to invert a matrix that is not invertible."
@@ -155,7 +168,8 @@ static const char* const svgExceptionDescriptions[] = {
 #endif
 
 #if ENABLE(DATABASE)
-static const char* const sqlExceptionNames[] = {
+static const char *const sqlExceptionNames[] =
+{
     "UNKNOWN_ERR",
     "DATABASE_ERR",
     "VERSION_ERR",
@@ -166,7 +180,8 @@ static const char* const sqlExceptionNames[] = {
     "TIMEOUT_ERR"
 };
 
-static const char* const sqlExceptionDescriptions[] = {
+static const char *const sqlExceptionDescriptions[] =
+{
     "The operation failed for reasons unrelated to the database.",
     "The operation failed for some reason related to the database.",
     "The actual database version did not match the expected version.",
@@ -179,7 +194,8 @@ static const char* const sqlExceptionDescriptions[] = {
 #endif
 
 #if ENABLE(BLOB) || ENABLE(FILE_SYSTEM)
-static const char* const fileExceptionNames[] = {
+static const char *const fileExceptionNames[] =
+{
     "NOT_FOUND_ERR",
     "SECURITY_ERR",
     "ABORT_ERR",
@@ -194,7 +210,8 @@ static const char* const fileExceptionNames[] = {
     "PATH_EXISTS_ERR"
 };
 
-static const char* const fileExceptionDescriptions[] = {
+static const char *const fileExceptionDescriptions[] =
+{
     "A requested file or directory could not be found at the time an operation was processed.",
     "It was determined that certain files are unsafe for access within a Web application, or that too many calls are being made on file resources.",
     "An ongoing operation was aborted, typically with a call to abort().",
@@ -211,7 +228,8 @@ static const char* const fileExceptionDescriptions[] = {
 #endif
 
 #if ENABLE(INDEXED_DATABASE)
-static const char* const idbDatabaseExceptionNames[] = {
+static const char *const idbDatabaseExceptionNames[] =
+{
     "UNKNOWN_ERR",
     "NON_TRANSIENT_ERR",
     "NOT_FOUND_ERR",
@@ -227,7 +245,8 @@ static const char* const idbDatabaseExceptionNames[] = {
     "ABORT_ERR"
 };
 
-static const char* const idbDatabaseExceptionDescriptions[] = {
+static const char *const idbDatabaseExceptionDescriptions[] =
+{
     "An unknown error occurred within Indexed Database.",
     "NON_TRANSIENT_ERR", // FIXME: Write a better message if it's ever possible this is thrown.
     "The name supplied does not match any existing item.",
@@ -244,112 +263,131 @@ static const char* const idbDatabaseExceptionDescriptions[] = {
 };
 #endif
 
-void getExceptionCodeDescription(ExceptionCode ec, ExceptionCodeDescription& description)
+void getExceptionCodeDescription( ExceptionCode ec, ExceptionCodeDescription &description )
 {
-    ASSERT(ec);
+    ASSERT( ec );
 
-    const char* typeName;
+    const char *typeName;
     int code = ec;
-    const char* const* nameTable;
-    const char* const* descriptionTable;
+    const char *const *nameTable;
+    const char *const *descriptionTable;
     int nameTableSize;
     int nameTableOffset;
     ExceptionType type;
 
-    if (code >= RangeException::RangeExceptionOffset && code <= RangeException::RangeExceptionMax) {
+    if ( code >= RangeException::RangeExceptionOffset && code <= RangeException::RangeExceptionMax )
+    {
         type = RangeExceptionType;
         typeName = "DOM Range";
         code -= RangeException::RangeExceptionOffset;
         nameTable = rangeExceptionNames;
         descriptionTable = rangeExceptionDescriptions;
-        nameTableSize = WTF_ARRAY_LENGTH(rangeExceptionNames);
+        nameTableSize = WTF_ARRAY_LENGTH( rangeExceptionNames );
         nameTableOffset = RangeException::BAD_BOUNDARYPOINTS_ERR;
-    } else if (code >= EventException::EventExceptionOffset && code <= EventException::EventExceptionMax) {
+    }
+    else if ( code >= EventException::EventExceptionOffset && code <= EventException::EventExceptionMax )
+    {
         type = EventExceptionType;
         typeName = "DOM Events";
         code -= EventException::EventExceptionOffset;
         nameTable = eventExceptionNames;
         descriptionTable = eventExceptionDescriptions;
-        nameTableSize = WTF_ARRAY_LENGTH(eventExceptionNames);
+        nameTableSize = WTF_ARRAY_LENGTH( eventExceptionNames );
         nameTableOffset = EventException::UNSPECIFIED_EVENT_TYPE_ERR;
-    } else if (code >= XMLHttpRequestException::XMLHttpRequestExceptionOffset && code <= XMLHttpRequestException::XMLHttpRequestExceptionMax) {
+    }
+    else if ( code >= XMLHttpRequestException::XMLHttpRequestExceptionOffset
+              && code <= XMLHttpRequestException::XMLHttpRequestExceptionMax )
+    {
         type = XMLHttpRequestExceptionType;
         typeName = "XMLHttpRequest";
         code -= XMLHttpRequestException::XMLHttpRequestExceptionOffset;
         nameTable = xmlHttpRequestExceptionNames;
         descriptionTable = xmlHttpRequestExceptionDescriptions;
-        nameTableSize = WTF_ARRAY_LENGTH(xmlHttpRequestExceptionNames);
+        nameTableSize = WTF_ARRAY_LENGTH( xmlHttpRequestExceptionNames );
         // XMLHttpRequest exception codes start with 101 and we don't want 100 empty elements in the name array
         nameTableOffset = XMLHttpRequestException::NETWORK_ERR;
 #if ENABLE(XPATH)
-    } else if (code >= XPathException::XPathExceptionOffset && code <= XPathException::XPathExceptionMax) {
+    }
+    else if ( code >= XPathException::XPathExceptionOffset && code <= XPathException::XPathExceptionMax )
+    {
         type = XPathExceptionType;
         typeName = "DOM XPath";
         code -= XPathException::XPathExceptionOffset;
         nameTable = xpathExceptionNames;
         descriptionTable = xpathExceptionDescriptions;
-        nameTableSize = WTF_ARRAY_LENGTH(xpathExceptionNames);
+        nameTableSize = WTF_ARRAY_LENGTH( xpathExceptionNames );
         // XPath exception codes start with 51 and we don't want 51 empty elements in the name array
         nameTableOffset = XPathException::INVALID_EXPRESSION_ERR;
 #endif
 #if ENABLE(SVG)
-    } else if (code >= SVGException::SVGExceptionOffset && code <= SVGException::SVGExceptionMax) {
+    }
+    else if ( code >= SVGException::SVGExceptionOffset && code <= SVGException::SVGExceptionMax )
+    {
         type = SVGExceptionType;
         typeName = "DOM SVG";
         code -= SVGException::SVGExceptionOffset;
         nameTable = svgExceptionNames;
         descriptionTable = svgExceptionDescriptions;
-        nameTableSize = WTF_ARRAY_LENGTH(svgExceptionNames);
+        nameTableSize = WTF_ARRAY_LENGTH( svgExceptionNames );
         nameTableOffset = SVGException::SVG_WRONG_TYPE_ERR;
 #endif
 #if ENABLE(DATABASE)
-    } else if (code >= SQLException::SQLExceptionOffset && code <= SQLException::SQLExceptionMax) {
+    }
+    else if ( code >= SQLException::SQLExceptionOffset && code <= SQLException::SQLExceptionMax )
+    {
         type = SQLExceptionType;
         typeName = "DOM SQL";
         code -= SQLException::SQLExceptionOffset;
         nameTable = sqlExceptionNames;
         descriptionTable = sqlExceptionDescriptions;
-        nameTableSize = WTF_ARRAY_LENGTH(sqlExceptionNames);
+        nameTableSize = WTF_ARRAY_LENGTH( sqlExceptionNames );
         nameTableOffset = SQLException::UNKNOWN_ERR;
 #endif
 #if ENABLE(BLOB) || ENABLE(FILE_SYSTEM)
-    } else if (code >= FileException::FileExceptionOffset && code <= FileException::FileExceptionMax) {
+    }
+    else if ( code >= FileException::FileExceptionOffset && code <= FileException::FileExceptionMax )
+    {
         type = FileExceptionType;
         typeName = "DOM File";
         code -= FileException::FileExceptionOffset;
         nameTable = fileExceptionNames;
         descriptionTable = fileExceptionDescriptions;
-        nameTableSize = WTF_ARRAY_LENGTH(fileExceptionNames);
+        nameTableSize = WTF_ARRAY_LENGTH( fileExceptionNames );
         nameTableOffset = FileException::NOT_FOUND_ERR;
 #endif
 #if ENABLE(INDEXED_DATABASE)
-    } else if (code >= IDBDatabaseException::IDBDatabaseExceptionOffset && code <= IDBDatabaseException::IDBDatabaseExceptionMax) {
+    }
+    else if ( code >= IDBDatabaseException::IDBDatabaseExceptionOffset && code <= IDBDatabaseException::IDBDatabaseExceptionMax )
+    {
         type = IDBDatabaseExceptionType;
         typeName = "DOM IDBDatabase";
         code -= IDBDatabaseException::IDBDatabaseExceptionOffset;
         nameTable = idbDatabaseExceptionNames;
         descriptionTable = idbDatabaseExceptionDescriptions;
-        nameTableSize = WTF_ARRAY_LENGTH(idbDatabaseExceptionNames);
+        nameTableSize = WTF_ARRAY_LENGTH( idbDatabaseExceptionNames );
         nameTableOffset = IDBDatabaseException::UNKNOWN_ERR;
 #endif
-    } else {
+    }
+    else
+    {
         type = DOMExceptionType;
         typeName = "DOM";
         nameTable = exceptionNames;
         descriptionTable = exceptionDescriptions;
-        nameTableSize = WTF_ARRAY_LENGTH(exceptionNames);
+        nameTableSize = WTF_ARRAY_LENGTH( exceptionNames );
         nameTableOffset = INDEX_SIZE_ERR;
     }
 
     description.typeName = typeName;
-    description.name = (ec >= nameTableOffset && ec - nameTableOffset < nameTableSize) ? nameTable[ec - nameTableOffset] : 0;
-    description.description = (ec >= nameTableOffset && ec - nameTableOffset < nameTableSize) ? descriptionTable[ec - nameTableOffset] : 0;
+    description.name = ( ec >= nameTableOffset && ec - nameTableOffset < nameTableSize ) ? nameTable[ec - nameTableOffset] : 0;
+    description.description = ( ec >= nameTableOffset
+                                && ec - nameTableOffset < nameTableSize ) ? descriptionTable[ec - nameTableOffset] : 0;
     description.code = code;
     description.type = type;
 
     // All exceptions used in the DOM code should have names.
-    ASSERT(description.name);
-    ASSERT(description.description);
+    ASSERT( description.name );
+    ASSERT( description.description );
 }
 
 } // namespace WebCore

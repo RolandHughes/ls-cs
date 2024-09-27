@@ -28,14 +28,14 @@
 
 class QWindowsGuiEventDispatcher : public QEventDispatcherWin32
 {
-    CS_OBJECT(QWindowsGuiEventDispatcher)
+    CS_OBJECT( QWindowsGuiEventDispatcher )
 
 public:
-    explicit QWindowsGuiEventDispatcher(QObject *parent = nullptr);
+    explicit QWindowsGuiEventDispatcher( QObject *parent = nullptr );
 
-    static const char *windowsMessageName(UINT msg);
+    static const char *windowsMessageName( UINT msg );
 
-    bool QT_ENSURE_STACK_ALIGNED_FOR_SSE processEvents(QEventLoop::ProcessEventsFlags flags) override;
+    bool QT_ENSURE_STACK_ALIGNED_FOR_SSE processEvents( QEventLoop::ProcessEventsFlags flags ) override;
     void sendPostedEvents() override;
 
 private:

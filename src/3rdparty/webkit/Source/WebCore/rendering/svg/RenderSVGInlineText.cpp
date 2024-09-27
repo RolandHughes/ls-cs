@@ -38,18 +38,20 @@
 #include "SVGRootInlineBox.h"
 #include "VisiblePosition.h"
 
-namespace WebCore {
-
-static PassRefPtr<StringImpl> applySVGWhitespaceRules(PassRefPtr<StringImpl> string, bool preserveWhiteSpace)
+namespace WebCore
 {
-    if (preserveWhiteSpace) {
+
+static PassRefPtr<StringImpl> applySVGWhitespaceRules( PassRefPtr<StringImpl> string, bool preserveWhiteSpace )
+{
+    if ( preserveWhiteSpace )
+    {
         // Spec: When xml:space="preserve", the SVG user agent will do the following using a
         // copy of the original character data content. It will convert all newline and tab
         // characters into space characters. Then, it will draw all space characters, including
         // leading, trailing and multiple contiguous space characters.
-        RefPtr<StringImpl> newString = string->replace('\t', ' ');
-        newString = newString->replace('\n', ' ');
-        newString = newString->replace('\r', ' ');
+        RefPtr<StringImpl> newString = string->replace( '\t', ' ' );
+        newString = newString->replace( '\n', ' ' );
+        newString = newString->replace( '\r', ' ' );
         return newString.release();
     }
 
@@ -58,107 +60,136 @@ static PassRefPtr<StringImpl> applySVGWhitespaceRules(PassRefPtr<StringImpl> str
     // characters. Then it will convert all tab characters into space characters.
     // Then, it will strip off all leading and trailing space characters.
     // Then, all contiguous space characters will be consolidated.
-    RefPtr<StringImpl> newString = string->replace('\n', StringImpl::empty());
-    newString = newString->replace('\r', StringImpl::empty());
-    newString = newString->replace('\t', ' ');
+    RefPtr<StringImpl> newString = string->replace( '\n', StringImpl::empty() );
+    newString = newString->replace( '\r', StringImpl::empty() );
+    newString = newString->replace( '\t', ' ' );
     return newString.release();
 }
 
-RenderSVGInlineText::RenderSVGInlineText(Node* n, PassRefPtr<StringImpl> string)
-    : RenderText(n, applySVGWhitespaceRules(string, false))
-    , m_scalingFactor(1)
+RenderSVGInlineText::RenderSVGInlineText( Node *n, PassRefPtr<StringImpl> string )
+    : RenderText( n, applySVGWhitespaceRules( string, false ) )
+    , m_scalingFactor( 1 )
 {
 }
 
 void RenderSVGInlineText::destroy()
 {
-    if (RenderSVGText* textRenderer = RenderSVGText::locateRenderSVGTextAncestor(this))
+    if ( RenderSVGText *textRenderer = RenderSVGText::locateRenderSVGTextAncestor( this ) )
+    {
         textRenderer->setNeedsPositioningValuesUpdate();
+    }
 
     RenderText::destroy();
 }
 
-void RenderSVGInlineText::styleDidChange(StyleDifference diff, const RenderStyle* oldStyle)
+void RenderSVGInlineText::styleDidChange( StyleDifference diff, const RenderStyle *oldStyle )
 {
-    RenderText::styleDidChange(diff, oldStyle);
+    RenderText::styleDidChange( diff, oldStyle );
 
-    if (diff == StyleDifferenceLayout) {
+    if ( diff == StyleDifferenceLayout )
+    {
         // The text metrics may be influenced by style changes.
-        if (RenderSVGText* textRenderer = RenderSVGText::locateRenderSVGTextAncestor(this))
+        if ( RenderSVGText *textRenderer = RenderSVGText::locateRenderSVGTextAncestor( this ) )
+        {
             textRenderer->setNeedsPositioningValuesUpdate();
+        }
 
         updateScaledFont();
     }
 
-    const RenderStyle* newStyle = style();
-    if (!newStyle || newStyle->whiteSpace() != PRE)
-        return;
+    const RenderStyle *newStyle = style();
 
-    if (!oldStyle || oldStyle->whiteSpace() != PRE)
-        setText(applySVGWhitespaceRules(originalText(), true), true);
+    if ( !newStyle || newStyle->whiteSpace() != PRE )
+    {
+        return;
+    }
+
+    if ( !oldStyle || oldStyle->whiteSpace() != PRE )
+    {
+        setText( applySVGWhitespaceRules( originalText(), true ), true );
+    }
 }
 
-InlineTextBox* RenderSVGInlineText::createTextBox()
+InlineTextBox *RenderSVGInlineText::createTextBox()
 {
-    InlineTextBox* box = new (renderArena()) SVGInlineTextBox(this);
+    InlineTextBox *box = new ( renderArena() ) SVGInlineTextBox( this );
     box->setHasVirtualLogicalHeight();
     return box;
 }
 
-IntRect RenderSVGInlineText::localCaretRect(InlineBox* box, int caretOffset, int*)
+IntRect RenderSVGInlineText::localCaretRect( InlineBox *box, int caretOffset, int * )
 {
-    if (!box->isInlineTextBox())
+    if ( !box->isInlineTextBox() )
+    {
         return IntRect();
-
-    InlineTextBox* textBox = static_cast<InlineTextBox*>(box);
-    if (static_cast<unsigned>(caretOffset) < textBox->start() || static_cast<unsigned>(caretOffset) > textBox->start() + textBox->len())
-        return IntRect();
-
-    // Use the edge of the selection rect to determine the caret rect.
-    if (static_cast<unsigned>(caretOffset) < textBox->start() + textBox->len()) {
-        IntRect rect = textBox->selectionRect(0, 0, caretOffset, caretOffset + 1);
-        int x = box->isLeftToRightDirection() ? rect.x() : rect.maxX();
-        return IntRect(x, rect.y(), caretWidth, rect.height());
     }
 
-    IntRect rect = textBox->selectionRect(0, 0, caretOffset - 1, caretOffset);
+    InlineTextBox *textBox = static_cast<InlineTextBox *>( box );
+
+    if ( static_cast<unsigned>( caretOffset ) < textBox->start()
+            || static_cast<unsigned>( caretOffset ) > textBox->start() + textBox->len() )
+    {
+        return IntRect();
+    }
+
+    // Use the edge of the selection rect to determine the caret rect.
+    if ( static_cast<unsigned>( caretOffset ) < textBox->start() + textBox->len() )
+    {
+        IntRect rect = textBox->selectionRect( 0, 0, caretOffset, caretOffset + 1 );
+        int x = box->isLeftToRightDirection() ? rect.x() : rect.maxX();
+        return IntRect( x, rect.y(), caretWidth, rect.height() );
+    }
+
+    IntRect rect = textBox->selectionRect( 0, 0, caretOffset - 1, caretOffset );
     int x = box->isLeftToRightDirection() ? rect.maxX() : rect.x();
-    return IntRect(x, rect.y(), caretWidth, rect.height());
+    return IntRect( x, rect.y(), caretWidth, rect.height() );
 }
 
 IntRect RenderSVGInlineText::linesBoundingBox() const
 {
     IntRect boundingBox;
-    for (InlineTextBox* box = firstTextBox(); box; box = box->nextTextBox())
-        boundingBox.unite(box->calculateBoundaries());
+
+    for ( InlineTextBox *box = firstTextBox(); box; box = box->nextTextBox() )
+    {
+        boundingBox.unite( box->calculateBoundaries() );
+    }
+
     return boundingBox;
 }
 
-bool RenderSVGInlineText::characterStartsNewTextChunk(int position) const
+bool RenderSVGInlineText::characterStartsNewTextChunk( int position ) const
 {
-    ASSERT(m_attributes.xValues().size() == textLength());
-    ASSERT(m_attributes.yValues().size() == textLength());
-    ASSERT(position >= 0);
-    ASSERT(position < static_cast<int>(textLength()));
+    ASSERT( m_attributes.xValues().size() == textLength() );
+    ASSERT( m_attributes.yValues().size() == textLength() );
+    ASSERT( position >= 0 );
+    ASSERT( position < static_cast<int>( textLength() ) );
 
     // Each <textPath> element starts a new text chunk, regardless of any x/y values.
-    if (!position && parent()->isSVGTextPath() && !previousSibling())
+    if ( !position && parent()->isSVGTextPath() && !previousSibling() )
+    {
         return true;
+    }
 
     int currentPosition = 0;
     unsigned size = m_attributes.textMetricsValues().size();
-    for (unsigned i = 0; i < size; ++i) {
-        const SVGTextMetrics& metrics = m_attributes.textMetricsValues().at(i);
+
+    for ( unsigned i = 0; i < size; ++i )
+    {
+        const SVGTextMetrics &metrics = m_attributes.textMetricsValues().at( i );
 
         // We found the desired character.
-        if (currentPosition == position) {
-            return m_attributes.xValues().at(position) != SVGTextLayoutAttributes::emptyValue()
-                || m_attributes.yValues().at(position) != SVGTextLayoutAttributes::emptyValue();
+        if ( currentPosition == position )
+        {
+            return m_attributes.xValues().at( position ) != SVGTextLayoutAttributes::emptyValue()
+                   || m_attributes.yValues().at( position ) != SVGTextLayoutAttributes::emptyValue();
         }
 
         currentPosition += metrics.length();
-        if (currentPosition > position)
+
+        if ( currentPosition > position )
+        {
             break;
+        }
     }
 
     // The desired position is available in the x/y list, but not in the character data values list.
@@ -168,45 +199,57 @@ bool RenderSVGInlineText::characterStartsNewTextChunk(int position) const
     return false;
 }
 
-VisiblePosition RenderSVGInlineText::positionForPoint(const IntPoint& point)
+VisiblePosition RenderSVGInlineText::positionForPoint( const IntPoint &point )
 {
-    if (!firstTextBox() || !textLength())
-        return createVisiblePosition(0, DOWNSTREAM);
+    if ( !firstTextBox() || !textLength() )
+    {
+        return createVisiblePosition( 0, DOWNSTREAM );
+    }
 
     float baseline = m_scaledFont.fontMetrics().floatAscent();
 
-    RenderBlock* containingBlock = this->containingBlock();
-    ASSERT(containingBlock);
+    RenderBlock *containingBlock = this->containingBlock();
+    ASSERT( containingBlock );
 
     // Map local point to absolute point, as the character origins stored in the text fragments use absolute coordinates.
-    FloatPoint absolutePoint(point);
-    absolutePoint.move(containingBlock->x(), containingBlock->y());
+    FloatPoint absolutePoint( point );
+    absolutePoint.move( containingBlock->x(), containingBlock->y() );
 
     float closestDistance = std::numeric_limits<float>::max();
     float closestDistancePosition = 0;
-    const SVGTextFragment* closestDistanceFragment = 0;
-    SVGInlineTextBox* closestDistanceBox = 0;
+    const SVGTextFragment *closestDistanceFragment = 0;
+    SVGInlineTextBox *closestDistanceBox = 0;
 
     AffineTransform fragmentTransform;
-    for (InlineTextBox* box = firstTextBox(); box; box = box->nextTextBox()) {
-        if (!box->isSVGInlineTextBox())
-            continue;
 
-        SVGInlineTextBox* textBox = static_cast<SVGInlineTextBox*>(box);
-        Vector<SVGTextFragment>& fragments = textBox->textFragments();
+    for ( InlineTextBox *box = firstTextBox(); box; box = box->nextTextBox() )
+    {
+        if ( !box->isSVGInlineTextBox() )
+        {
+            continue;
+        }
+
+        SVGInlineTextBox *textBox = static_cast<SVGInlineTextBox *>( box );
+        Vector<SVGTextFragment> &fragments = textBox->textFragments();
 
         unsigned textFragmentsSize = fragments.size();
-        for (unsigned i = 0; i < textFragmentsSize; ++i) {
-            const SVGTextFragment& fragment = fragments.at(i);
-            FloatRect fragmentRect(fragment.x, fragment.y - baseline, fragment.width, fragment.height);
-            fragment.buildFragmentTransform(fragmentTransform);
-            if (!fragmentTransform.isIdentity())
-                fragmentRect = fragmentTransform.mapRect(fragmentRect);
 
-            float distance = powf(fragmentRect.x() - absolutePoint.x(), 2) +
-                             powf(fragmentRect.y() + fragmentRect.height() / 2 - absolutePoint.y(), 2);
+        for ( unsigned i = 0; i < textFragmentsSize; ++i )
+        {
+            const SVGTextFragment &fragment = fragments.at( i );
+            FloatRect fragmentRect( fragment.x, fragment.y - baseline, fragment.width, fragment.height );
+            fragment.buildFragmentTransform( fragmentTransform );
 
-            if (distance < closestDistance) {
+            if ( !fragmentTransform.isIdentity() )
+            {
+                fragmentRect = fragmentTransform.mapRect( fragmentRect );
+            }
+
+            float distance = powf( fragmentRect.x() - absolutePoint.x(), 2 ) +
+                             powf( fragmentRect.y() + fragmentRect.height() / 2 - absolutePoint.y(), 2 );
+
+            if ( distance < closestDistance )
+            {
                 closestDistance = distance;
                 closestDistanceBox = textBox;
                 closestDistanceFragment = &fragment;
@@ -215,44 +258,50 @@ VisiblePosition RenderSVGInlineText::positionForPoint(const IntPoint& point)
         }
     }
 
-    if (!closestDistanceFragment)
-        return createVisiblePosition(0, DOWNSTREAM);
+    if ( !closestDistanceFragment )
+    {
+        return createVisiblePosition( 0, DOWNSTREAM );
+    }
 
-    int offset = closestDistanceBox->offsetForPositionInFragment(*closestDistanceFragment, absolutePoint.x() - closestDistancePosition, true);
-    return createVisiblePosition(offset + closestDistanceBox->start(), offset > 0 ? VP_UPSTREAM_IF_POSSIBLE : DOWNSTREAM);
+    int offset = closestDistanceBox->offsetForPositionInFragment( *closestDistanceFragment,
+                 absolutePoint.x() - closestDistancePosition, true );
+    return createVisiblePosition( offset + closestDistanceBox->start(), offset > 0 ? VP_UPSTREAM_IF_POSSIBLE : DOWNSTREAM );
 }
 
 void RenderSVGInlineText::updateScaledFont()
 {
-    computeNewScaledFontForStyle(this, style(), m_scalingFactor, m_scaledFont);
+    computeNewScaledFontForStyle( this, style(), m_scalingFactor, m_scaledFont );
 }
 
-void RenderSVGInlineText::computeNewScaledFontForStyle(RenderObject* renderer, const RenderStyle* style, float& scalingFactor, Font& scaledFont)
+void RenderSVGInlineText::computeNewScaledFontForStyle( RenderObject *renderer, const RenderStyle *style, float &scalingFactor,
+        Font &scaledFont )
 {
-    ASSERT(style);
-    ASSERT(renderer);
+    ASSERT( style );
+    ASSERT( renderer );
 
-    Document* document = renderer->document();
-    ASSERT(document);
+    Document *document = renderer->document();
+    ASSERT( document );
 
-    CSSStyleSelector* styleSelector = document->styleSelector();
-    ASSERT(styleSelector);
+    CSSStyleSelector *styleSelector = document->styleSelector();
+    ASSERT( styleSelector );
 
     // Alter font-size to the right on-screen value, to avoid scaling the glyphs themselves.
     AffineTransform ctm;
-    SVGImageBufferTools::calculateTransformationToOutermostSVGCoordinateSystem(renderer, ctm);
-    scalingFactor = narrowPrecisionToFloat(sqrt((pow(ctm.xScale(), 2) + pow(ctm.yScale(), 2)) / 2));
-    if (scalingFactor == 1 || !scalingFactor) {
+    SVGImageBufferTools::calculateTransformationToOutermostSVGCoordinateSystem( renderer, ctm );
+    scalingFactor = narrowPrecisionToFloat( sqrt( ( pow( ctm.xScale(), 2 ) + pow( ctm.yScale(), 2 ) ) / 2 ) );
+
+    if ( scalingFactor == 1 || !scalingFactor )
+    {
         scalingFactor = 1;
         scaledFont = style->font();
         return;
     }
 
-    FontDescription fontDescription(style->fontDescription());
-    fontDescription.setComputedSize(fontDescription.computedSize() * scalingFactor);
+    FontDescription fontDescription( style->fontDescription() );
+    fontDescription.setComputedSize( fontDescription.computedSize() * scalingFactor );
 
-    scaledFont = Font(fontDescription, 0, 0);
-    scaledFont.update(styleSelector->fontSelector());
+    scaledFont = Font( fontDescription, 0, 0 );
+    scaledFont.update( styleSelector->fontSelector() );
 }
 
 }

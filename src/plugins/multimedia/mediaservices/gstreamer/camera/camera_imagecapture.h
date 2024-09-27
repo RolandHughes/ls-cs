@@ -36,81 +36,83 @@
 
 class CameraBinImageCapture : public QCameraImageCaptureControl, public QGstreamerBusMessageFilter
 {
-   CS_OBJECT(CameraBinImageCapture)
-   CS_INTERFACES(QGstreamerBusMessageFilter)
+    CS_OBJECT( CameraBinImageCapture )
+    CS_INTERFACES( QGstreamerBusMessageFilter )
 
- public:
-   CameraBinImageCapture(CameraBinSession *session);
-   virtual ~CameraBinImageCapture();
+public:
+    CameraBinImageCapture( CameraBinSession *session );
+    virtual ~CameraBinImageCapture();
 
-   QCameraImageCapture::DriveMode driveMode() const override {
-      return QCameraImageCapture::SingleImageCapture;
-   }
+    QCameraImageCapture::DriveMode driveMode() const override
+    {
+        return QCameraImageCapture::SingleImageCapture;
+    }
 
-   void setDriveMode(QCameraImageCapture::DriveMode) override {
-   }
+    void setDriveMode( QCameraImageCapture::DriveMode ) override
+    {
+    }
 
-   bool isReadyForCapture() const override;
-   int capture(const QString &fileName) override;
-   void cancelCapture() override;
+    bool isReadyForCapture() const override;
+    int capture( const QString &fileName ) override;
+    void cancelCapture() override;
 
-   bool processBusMessage(const QGstreamerMessage &message) override;
+    bool processBusMessage( const QGstreamerMessage &message ) override;
 
- private:
-   CS_SLOT_1(Private, void updateState())
-   CS_SLOT_2(updateState)
-
-#if GST_CHECK_VERSION(1,0,0)
-   static GstPadProbeReturn encoderEventProbe(GstPad *, GstPadProbeInfo *info, gpointer user_data);
-#else
-   static gboolean encoderEventProbe(GstElement *, GstEvent *event, gpointer user_data);
-#endif
-
-   class EncoderProbe : public QGstreamerBufferProbe
-   {
-    public:
-      EncoderProbe(CameraBinImageCapture *capture)
-         : m_capture(capture)
-      { }
-
-      void probeCaps(GstCaps *caps) override;
-      bool probeBuffer(GstBuffer *buffer) override;
-
-    private:
-      CameraBinImageCapture *const m_capture;
-   };
-
-   class MuxerProbe : public QGstreamerBufferProbe
-   {
-    public:
-      MuxerProbe(CameraBinImageCapture *capture)
-         : m_capture(capture)
-      { }
-
-      void probeCaps(GstCaps *caps) override;
-      bool probeBuffer(GstBuffer *buffer) override;
-
-    private:
-      CameraBinImageCapture *const m_capture;
-   };
-
-   EncoderProbe m_encoderProbe;
-   MuxerProbe m_muxerProbe;
-
-   QVideoSurfaceFormat m_bufferFormat;
-   QSize m_jpegResolution;
-   CameraBinSession *m_session;
-   GstElement *m_jpegEncoderElement;
-   GstElement *m_metadataMuxerElement;
+private:
+    CS_SLOT_1( Private, void updateState() )
+    CS_SLOT_2( updateState )
 
 #if GST_CHECK_VERSION(1,0,0)
-   GstVideoInfo m_videoInfo;
+    static GstPadProbeReturn encoderEventProbe( GstPad *, GstPadProbeInfo *info, gpointer user_data );
 #else
-   int m_bytesPerLine;
+    static gboolean encoderEventProbe( GstElement *, GstEvent *event, gpointer user_data );
 #endif
 
-   int m_requestId;
-   bool m_ready;
+    class EncoderProbe : public QGstreamerBufferProbe
+    {
+    public:
+        EncoderProbe( CameraBinImageCapture *capture )
+            : m_capture( capture )
+        { }
+
+        void probeCaps( GstCaps *caps ) override;
+        bool probeBuffer( GstBuffer *buffer ) override;
+
+    private:
+        CameraBinImageCapture *const m_capture;
+    };
+
+    class MuxerProbe : public QGstreamerBufferProbe
+    {
+    public:
+        MuxerProbe( CameraBinImageCapture *capture )
+            : m_capture( capture )
+        { }
+
+        void probeCaps( GstCaps *caps ) override;
+        bool probeBuffer( GstBuffer *buffer ) override;
+
+    private:
+        CameraBinImageCapture *const m_capture;
+    };
+
+    EncoderProbe m_encoderProbe;
+    MuxerProbe m_muxerProbe;
+
+    QVideoSurfaceFormat m_bufferFormat;
+    QSize m_jpegResolution;
+    CameraBinSession *m_session;
+    GstElement *m_jpegEncoderElement;
+    GstElement *m_metadataMuxerElement;
+
+#if GST_CHECK_VERSION(1,0,0)
+    GstVideoInfo m_videoInfo;
+#else
+    int m_bytesPerLine;
+#endif
+
+    int m_requestId;
+    bool m_ready;
 };
 
 #endif

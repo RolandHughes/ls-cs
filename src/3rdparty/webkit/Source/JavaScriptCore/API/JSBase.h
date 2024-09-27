@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef JSBase_h
@@ -33,34 +33,34 @@
 /* JavaScript engine interface */
 
 /* @typedef JSContextGroupRef A group that associates JavaScript contexts with one another. Contexts in the same group may share and exchange JavaScript objects. */
-typedef const struct OpaqueJSContextGroup* JSContextGroupRef;
+typedef const struct OpaqueJSContextGroup *JSContextGroupRef;
 
 /* @typedef JSContextRef A JavaScript execution context. Holds the global object and other execution state. */
-typedef const struct OpaqueJSContext* JSContextRef;
+typedef const struct OpaqueJSContext *JSContextRef;
 
 /* @typedef JSGlobalContextRef A global JavaScript execution context. A JSGlobalContext is a JSContext. */
-typedef struct OpaqueJSContext* JSGlobalContextRef;
+typedef struct OpaqueJSContext *JSGlobalContextRef;
 
 /* @typedef JSStringRef A UTF16 character buffer. The fundamental string representation in JavaScript. */
-typedef struct OpaqueJSString* JSStringRef;
+typedef struct OpaqueJSString *JSStringRef;
 
 /* @typedef JSClassRef A JavaScript class. Used with JSObjectMake to construct objects with custom behavior. */
-typedef struct OpaqueJSClass* JSClassRef;
+typedef struct OpaqueJSClass *JSClassRef;
 
 /* @typedef JSPropertyNameArrayRef An array of JavaScript property names. */
-typedef struct OpaqueJSPropertyNameArray* JSPropertyNameArrayRef;
+typedef struct OpaqueJSPropertyNameArray *JSPropertyNameArrayRef;
 
 /* @typedef JSPropertyNameAccumulatorRef An ordered set used to collect the names of a JavaScript object's properties. */
-typedef struct OpaqueJSPropertyNameAccumulator* JSPropertyNameAccumulatorRef;
+typedef struct OpaqueJSPropertyNameAccumulator *JSPropertyNameAccumulatorRef;
 
 
 /* JavaScript data types */
 
 /* @typedef JSValueRef A JavaScript value. The base type for all JavaScript values, and polymorphic functions on them. */
-typedef const struct OpaqueJSValue* JSValueRef;
+typedef const struct OpaqueJSValue *JSValueRef;
 
 /* @typedef JSObjectRef A JavaScript object. A JSObject is a JSValue. */
-typedef struct OpaqueJSValue* JSObjectRef;
+typedef struct OpaqueJSValue *JSObjectRef;
 
 /* JavaScript symbol exports */
 /* These rules should stay the same as in WebKit2/Shared/API/c/WKBase.h */
@@ -102,7 +102,8 @@ extern "C" {
 @param exception A pointer to a JSValueRef in which to store an exception, if any. Pass NULL if you do not care to store an exception.
 @result The JSValue that results from evaluating script, or NULL if an exception is thrown.
 */
-JS_EXPORT JSValueRef JSEvaluateScript(JSContextRef ctx, JSStringRef script, JSObjectRef thisObject, JSStringRef sourceURL, int startingLineNumber, JSValueRef* exception);
+JS_EXPORT JSValueRef JSEvaluateScript( JSContextRef ctx, JSStringRef script, JSObjectRef thisObject, JSStringRef sourceURL,
+                                       int startingLineNumber, JSValueRef *exception );
 
 /*
 @function JSCheckScriptSyntax
@@ -114,22 +115,23 @@ JS_EXPORT JSValueRef JSEvaluateScript(JSContextRef ctx, JSStringRef script, JSOb
 @param exception A pointer to a JSValueRef in which to store a syntax error exception, if any. Pass NULL if you do not care to store a syntax error exception.
 @result true if the script is syntactically correct, otherwise false.
 */
-JS_EXPORT bool JSCheckScriptSyntax(JSContextRef ctx, JSStringRef script, JSStringRef sourceURL, int startingLineNumber, JSValueRef* exception);
+JS_EXPORT bool JSCheckScriptSyntax( JSContextRef ctx, JSStringRef script, JSStringRef sourceURL, int startingLineNumber,
+                                    JSValueRef *exception );
 
 /*
 @function JSGarbageCollect
-@abstract Performs a JavaScript garbage collection. 
+@abstract Performs a JavaScript garbage collection.
 @param ctx The execution context to use.
-@discussion JavaScript values that are on the machine stack, in a register, 
- protected by JSValueProtect, set as the global object of an execution context, 
+@discussion JavaScript values that are on the machine stack, in a register,
+ protected by JSValueProtect, set as the global object of an execution context,
  or reachable from any such value will not be collected.
 
- During JavaScript execution, you are not required to call this function; the 
+ During JavaScript execution, you are not required to call this function; the
  JavaScript engine will garbage collect as needed. JavaScript values created
  within a context group are automatically destroyed when the last reference
  to the context group is released.
 */
-JS_EXPORT void JSGarbageCollect(JSContextRef ctx);
+JS_EXPORT void JSGarbageCollect( JSContextRef ctx );
 
 #ifdef __cplusplus
 }

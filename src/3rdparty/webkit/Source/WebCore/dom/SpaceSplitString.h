@@ -26,66 +26,113 @@
 #include <wtf/Vector.h>
 #include <wtf/text/AtomicString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class SpaceSplitStringData {
-        WTF_MAKE_NONCOPYABLE(SpaceSplitStringData); WTF_MAKE_FAST_ALLOCATED;
-    public:
-        SpaceSplitStringData(const String& string, bool shouldFoldCase)
-            : m_string(string), m_shouldFoldCase(shouldFoldCase), m_createdVector(false)
-        {
-        }
+class SpaceSplitStringData
+{
+    WTF_MAKE_NONCOPYABLE( SpaceSplitStringData );
+    WTF_MAKE_FAST_ALLOCATED;
+public:
+    SpaceSplitStringData( const String &string, bool shouldFoldCase )
+        : m_string( string ), m_shouldFoldCase( shouldFoldCase ), m_createdVector( false )
+    {
+    }
 
-        bool contains(const AtomicString& string)
+    bool contains( const AtomicString &string )
+    {
+        ensureVector();
+        size_t size = m_vector.size();
+
+        for ( size_t i = 0; i < size; ++i )
         {
-            ensureVector();
-            size_t size = m_vector.size();
-            for (size_t i = 0; i < size; ++i) {
-                if (m_vector[i] == string)
-                    return true;
+            if ( m_vector[i] == string )
+            {
+                return true;
             }
-            return false;
         }
 
-        bool containsAll(SpaceSplitStringData&);
+        return false;
+    }
 
-        void add(const AtomicString&);
-        void remove(const AtomicString&);
+    bool containsAll( SpaceSplitStringData & );
 
-        size_t size() { ensureVector(); return m_vector.size(); }
-        const AtomicString& operator[](size_t i) { ensureVector(); ASSERT(i < size()); return m_vector[i]; }
+    void add( const AtomicString & );
+    void remove( const AtomicString & );
 
-    private:
-        void ensureVector() { if (!m_createdVector) createVector(); }
-        void createVector();
+    size_t size()
+    {
+        ensureVector();
+        return m_vector.size();
+    }
+    const AtomicString &operator[]( size_t i )
+    {
+        ensureVector();
+        ASSERT( i < size() );
+        return m_vector[i];
+    }
 
-        typedef Vector<AtomicString, 8> StringVector;
-        String m_string;
-        StringVector m_vector;
-        bool m_shouldFoldCase;
-        bool m_createdVector;
-    };
+private:
+    void ensureVector()
+    {
+        if ( !m_createdVector )
+        {
+            createVector();
+        }
+    }
+    void createVector();
 
-    class SpaceSplitString {
-    public:
-        SpaceSplitString() { }
-        SpaceSplitString(const String& string, bool shouldFoldCase) : m_data(adoptPtr(new SpaceSplitStringData(string, shouldFoldCase))) { }
+    typedef Vector<AtomicString, 8> StringVector;
+    String m_string;
+    StringVector m_vector;
+    bool m_shouldFoldCase;
+    bool m_createdVector;
+};
 
-        void set(const String& string, bool shouldFoldCase) { m_data = adoptPtr(new SpaceSplitStringData(string, shouldFoldCase)); }
-        void clear() { m_data.clear(); }
+class SpaceSplitString
+{
+public:
+    SpaceSplitString() { }
+    SpaceSplitString( const String &string, bool shouldFoldCase ) : m_data( adoptPtr( new SpaceSplitStringData( string,
+                shouldFoldCase ) ) ) { }
 
-        bool contains(const AtomicString& string) const { return m_data && m_data->contains(string); }
-        bool containsAll(const SpaceSplitString& names) const { return !names.m_data || (m_data && m_data->containsAll(*names.m_data)); }
-        void add(const AtomicString&);
-        void remove(const AtomicString&);
+    void set( const String &string, bool shouldFoldCase )
+    {
+        m_data = adoptPtr( new SpaceSplitStringData( string, shouldFoldCase ) );
+    }
+    void clear()
+    {
+        m_data.clear();
+    }
 
-        size_t size() const { return m_data ? m_data->size() : 0; }
-        bool isNull() const { return !m_data; }
-        const AtomicString& operator[](size_t i) const { ASSERT(i < size()); return (*m_data)[i]; }
+    bool contains( const AtomicString &string ) const
+    {
+        return m_data && m_data->contains( string );
+    }
+    bool containsAll( const SpaceSplitString &names ) const
+    {
+        return !names.m_data || ( m_data && m_data->containsAll( *names.m_data ) );
+    }
+    void add( const AtomicString & );
+    void remove( const AtomicString & );
 
-    private:
-        OwnPtr<SpaceSplitStringData> m_data;
-    };
+    size_t size() const
+    {
+        return m_data ? m_data->size() : 0;
+    }
+    bool isNull() const
+    {
+        return !m_data;
+    }
+    const AtomicString &operator[]( size_t i ) const
+    {
+        ASSERT( i < size() );
+        return ( *m_data )[i];
+    }
+
+private:
+    OwnPtr<SpaceSplitStringData> m_data;
+};
 
 } // namespace WebCore
 

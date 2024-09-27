@@ -28,19 +28,20 @@
 #include <qreportcontext_p.h>
 #include <qschematype_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class ValueFactory
 {
- public:
-   static AtomicValue::Ptr fromLexical(const QString &lexicalValue,
-                                       const SchemaType::Ptr &type,
-                                       const ReportContext::Ptr &context,
-                                       const SourceLocationReflection *const sourceLocationReflection);
+public:
+    static AtomicValue::Ptr fromLexical( const QString &lexicalValue,
+                                         const SchemaType::Ptr &type,
+                                         const ReportContext::Ptr &context,
+                                         const SourceLocationReflection *const sourceLocationReflection );
 
- private:
-   ValueFactory(const ValueFactory &) = delete;
-   ValueFactory &operator=(const ValueFactory &) = delete;
+private:
+    ValueFactory( const ValueFactory & ) = delete;
+    ValueFactory &operator=( const ValueFactory & ) = delete;
 };
 }
 

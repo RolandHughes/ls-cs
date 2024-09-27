@@ -35,19 +35,20 @@ class QNetworkReply;
 
 class QDeclarativeAnimatedImagePrivate : public QDeclarativeImagePrivate
 {
-   Q_DECLARE_PUBLIC(QDeclarativeAnimatedImage)
+    Q_DECLARE_PUBLIC( QDeclarativeAnimatedImage )
 
- public:
-   QDeclarativeAnimatedImagePrivate()
-      : playing(true), paused(false), preset_currentframe(0), _movie(0), reply(0), redirectCount(0) {
-   }
+public:
+    QDeclarativeAnimatedImagePrivate()
+        : playing( true ), paused( false ), preset_currentframe( 0 ), _movie( 0 ), reply( 0 ), redirectCount( 0 )
+    {
+    }
 
-   bool playing;
-   bool paused;
-   int preset_currentframe;
-   QMovie *_movie;
-   QNetworkReply *reply;
-   int redirectCount;
+    bool playing;
+    bool paused;
+    int preset_currentframe;
+    QMovie *_movie;
+    QNetworkReply *reply;
+    int redirectCount;
 };
 
 QT_END_NAMESPACE

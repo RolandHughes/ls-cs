@@ -33,7 +33,8 @@
 
 #include "RenderBlock.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class RenderRubyBase;
 class RenderRubyText;
@@ -41,55 +42,66 @@ class RenderRubyText;
 // RenderRubyRun are 'inline-block/table' like objects,and wrap a single pairing of a ruby base with its ruby text(s).
 // See RenderRuby.h for further comments on the structure
 
-class RenderRubyRun : public RenderBlock {
+class RenderRubyRun : public RenderBlock
+{
 public:
-    RenderRubyRun(Node*);
+    RenderRubyRun( Node * );
     virtual ~RenderRubyRun();
 
     bool hasRubyText() const;
     bool hasRubyBase() const;
     bool isEmpty() const;
-    RenderRubyText* rubyText() const;
-    RenderRubyBase* rubyBase() const;
-    RenderRubyBase* rubyBaseSafe(); // creates the base if it doesn't already exist
+    RenderRubyText *rubyText() const;
+    RenderRubyBase *rubyBase() const;
+    RenderRubyBase *rubyBaseSafe(); // creates the base if it doesn't already exist
 
-    virtual RenderObject* layoutSpecialExcludedChild(bool relayoutChildren);
+    virtual RenderObject *layoutSpecialExcludedChild( bool relayoutChildren );
     virtual void layout();
 
-    virtual bool isChildAllowed(RenderObject*, RenderStyle*) const;
-    virtual void addChild(RenderObject* child, RenderObject* beforeChild = 0);
-    virtual void removeChild(RenderObject* child);
+    virtual bool isChildAllowed( RenderObject *, RenderStyle * ) const;
+    virtual void addChild( RenderObject *child, RenderObject *beforeChild = 0 );
+    virtual void removeChild( RenderObject *child );
 
-    virtual RenderBlock* firstLineBlock() const;
+    virtual RenderBlock *firstLineBlock() const;
     virtual void updateFirstLetter();
 
-    void getOverhang(bool firstLine, RenderObject* startRenderer, RenderObject* endRenderer, int& startOverhang, int& endOverhang) const;
+    void getOverhang( bool firstLine, RenderObject *startRenderer, RenderObject *endRenderer, int &startOverhang,
+                      int &endOverhang ) const;
 
-    static RenderRubyRun* staticCreateRubyRun(const RenderObject* parentRuby);
+    static RenderRubyRun *staticCreateRubyRun( const RenderObject *parentRuby );
 
 protected:
-    RenderRubyBase* createRubyBase() const;
+    RenderRubyBase *createRubyBase() const;
 
 private:
-    virtual bool isRubyRun() const { return true; }
-    virtual const char* renderName() const { return "RenderRubyRun (anonymous)"; }
-    virtual bool createsAnonymousWrapper() const { return true; }
-    virtual void removeLeftoverAnonymousBlock(RenderBlock*) { }
+    virtual bool isRubyRun() const
+    {
+        return true;
+    }
+    virtual const char *renderName() const
+    {
+        return "RenderRubyRun (anonymous)";
+    }
+    virtual bool createsAnonymousWrapper() const
+    {
+        return true;
+    }
+    virtual void removeLeftoverAnonymousBlock( RenderBlock * ) { }
 };
 
-inline RenderRubyRun* toRenderRubyRun(RenderObject* object)
+inline RenderRubyRun *toRenderRubyRun( RenderObject *object )
 {
-    ASSERT(!object || object->isRubyRun());
-    return static_cast<RenderRubyRun*>(object);
+    ASSERT( !object || object->isRubyRun() );
+    return static_cast<RenderRubyRun *>( object );
 }
 
-inline const RenderRubyRun* toRenderRubyRun(const RenderObject* object)
+inline const RenderRubyRun *toRenderRubyRun( const RenderObject *object )
 {
-    ASSERT(!object || object->isBox());
-    return static_cast<const RenderRubyRun*>(object);
+    ASSERT( !object || object->isBox() );
+    return static_cast<const RenderRubyRun *>( object );
 }
 
-void toRenderRubyRun(const RenderRubyRun*);
+void toRenderRubyRun( const RenderRubyRun * );
 
 } // namespace WebCore
 

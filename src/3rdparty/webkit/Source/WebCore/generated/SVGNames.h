@@ -32,9 +32,11 @@
 
 #include "QualifiedName.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
- namespace SVGNames {
+namespace SVGNames
+{
 
 #ifndef DOM_SVGNAMES_HIDE_GLOBALS
 // Namespace
@@ -373,12 +375,13 @@ extern const WebCore::QualifiedName zAttr;
 extern const WebCore::QualifiedName zoomAndPanAttr;
 #endif
 
-WebCore::QualifiedName** getSVGTags(size_t* size);
-WebCore::QualifiedName** getSVGAttrs(size_t* size);
+WebCore::QualifiedName **getSVGTags( size_t *size );
+WebCore::QualifiedName **getSVGAttrs( size_t *size );
 
 void init();
 
-} }
+}
+}
 
 #endif
 

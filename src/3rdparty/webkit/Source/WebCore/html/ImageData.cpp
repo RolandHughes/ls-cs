@@ -29,27 +29,28 @@
 #include "config.h"
 #include "ImageData.h"
 
-namespace WebCore {
-
-PassRefPtr<ImageData> ImageData::create(const IntSize& size)
+namespace WebCore
 {
-    return adoptRef(new ImageData(size));
+
+PassRefPtr<ImageData> ImageData::create( const IntSize &size )
+{
+    return adoptRef( new ImageData( size ) );
 }
 
-PassRefPtr<ImageData> ImageData::create(const IntSize& size, PassRefPtr<ByteArray> byteArray)
+PassRefPtr<ImageData> ImageData::create( const IntSize &size, PassRefPtr<ByteArray> byteArray )
 {
-    return adoptRef(new ImageData(size, byteArray));
+    return adoptRef( new ImageData( size, byteArray ) );
 }
 
-ImageData::ImageData(const IntSize& size)
-    : m_size(size)
-    , m_data(CanvasPixelArray::create(size.width() * size.height() * 4))
+ImageData::ImageData( const IntSize &size )
+    : m_size( size )
+    , m_data( CanvasPixelArray::create( size.width() * size.height() * 4 ) )
 {
 }
 
-ImageData::ImageData(const IntSize& size, PassRefPtr<ByteArray> byteArray)
-    : m_size(size)
-    , m_data(CanvasPixelArray::create(byteArray))
+ImageData::ImageData( const IntSize &size, PassRefPtr<ByteArray> byteArray )
+    : m_size( size )
+    , m_data( CanvasPixelArray::create( byteArray ) )
 {
 }
 

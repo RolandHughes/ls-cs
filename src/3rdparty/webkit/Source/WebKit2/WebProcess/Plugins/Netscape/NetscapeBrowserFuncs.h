@@ -28,9 +28,10 @@
 
 #include <WebCore/npfunctions.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
-NPNetscapeFuncs* netscapeBrowserFuncs();
+NPNetscapeFuncs *netscapeBrowserFuncs();
 
 } // namespace WebKit
 

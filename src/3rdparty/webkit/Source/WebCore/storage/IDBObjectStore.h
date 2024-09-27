@@ -41,16 +41,18 @@
 
 #if ENABLE(INDEXED_DATABASE)
 
-namespace WebCore {
+namespace WebCore
+{
 
 class DOMStringList;
 class IDBAny;
 
-class IDBObjectStore : public RefCounted<IDBObjectStore> {
+class IDBObjectStore : public RefCounted<IDBObjectStore>
+{
 public:
-    static PassRefPtr<IDBObjectStore> create(PassRefPtr<IDBObjectStoreBackendInterface> idbObjectStore, IDBTransaction* transaction)
+    static PassRefPtr<IDBObjectStore> create( PassRefPtr<IDBObjectStoreBackendInterface> idbObjectStore, IDBTransaction *transaction )
     {
-        return adoptRef(new IDBObjectStore(idbObjectStore, transaction));
+        return adoptRef( new IDBObjectStore( idbObjectStore, transaction ) );
     }
     ~IDBObjectStore() { }
 
@@ -59,26 +61,41 @@ public:
     PassRefPtr<DOMStringList> indexNames() const;
 
     // FIXME: Try to modify the code generator so this is unneeded.
-    PassRefPtr<IDBRequest> add(ScriptExecutionContext* context, PassRefPtr<SerializedScriptValue> value, ExceptionCode& ec) { return add(context, value, 0, ec);  }
-    PassRefPtr<IDBRequest> put(ScriptExecutionContext* context, PassRefPtr<SerializedScriptValue> value, ExceptionCode& ec) { return put(context, value, 0, ec);  }
-    PassRefPtr<IDBIndex> createIndex(const String& name, const String& keyPath, ExceptionCode& ec) { return createIndex(name, keyPath, OptionsObject(), ec); }
-    PassRefPtr<IDBRequest> openCursor(ScriptExecutionContext* context, ExceptionCode& ec) { return openCursor(context, 0, ec); } 
-    PassRefPtr<IDBRequest> openCursor(ScriptExecutionContext* context, PassRefPtr<IDBKeyRange> keyRange, ExceptionCode& ec) { return openCursor(context, keyRange, IDBCursor::NEXT, ec); } 
+    PassRefPtr<IDBRequest> add( ScriptExecutionContext *context, PassRefPtr<SerializedScriptValue> value, ExceptionCode &ec )
+    {
+        return add( context, value, 0, ec );
+    }
+    PassRefPtr<IDBRequest> put( ScriptExecutionContext *context, PassRefPtr<SerializedScriptValue> value, ExceptionCode &ec )
+    {
+        return put( context, value, 0, ec );
+    }
+    PassRefPtr<IDBIndex> createIndex( const String &name, const String &keyPath, ExceptionCode &ec )
+    {
+        return createIndex( name, keyPath, OptionsObject(), ec );
+    }
+    PassRefPtr<IDBRequest> openCursor( ScriptExecutionContext *context, ExceptionCode &ec )
+    {
+        return openCursor( context, 0, ec );
+    }
+    PassRefPtr<IDBRequest> openCursor( ScriptExecutionContext *context, PassRefPtr<IDBKeyRange> keyRange, ExceptionCode &ec )
+    {
+        return openCursor( context, keyRange, IDBCursor::NEXT, ec );
+    }
 
-    PassRefPtr<IDBRequest> get(ScriptExecutionContext*, PassRefPtr<IDBKey>, ExceptionCode&);
-    PassRefPtr<IDBRequest> add(ScriptExecutionContext*, PassRefPtr<SerializedScriptValue>, PassRefPtr<IDBKey>, ExceptionCode&);
-    PassRefPtr<IDBRequest> put(ScriptExecutionContext*, PassRefPtr<SerializedScriptValue>, PassRefPtr<IDBKey>, ExceptionCode&);
-    PassRefPtr<IDBRequest> deleteFunction(ScriptExecutionContext*, PassRefPtr<IDBKey> key, ExceptionCode&);
-    PassRefPtr<IDBRequest> clear(ScriptExecutionContext*, ExceptionCode&);
+    PassRefPtr<IDBRequest> get( ScriptExecutionContext *, PassRefPtr<IDBKey>, ExceptionCode & );
+    PassRefPtr<IDBRequest> add( ScriptExecutionContext *, PassRefPtr<SerializedScriptValue>, PassRefPtr<IDBKey>, ExceptionCode & );
+    PassRefPtr<IDBRequest> put( ScriptExecutionContext *, PassRefPtr<SerializedScriptValue>, PassRefPtr<IDBKey>, ExceptionCode & );
+    PassRefPtr<IDBRequest> deleteFunction( ScriptExecutionContext *, PassRefPtr<IDBKey> key, ExceptionCode & );
+    PassRefPtr<IDBRequest> clear( ScriptExecutionContext *, ExceptionCode & );
 
-    PassRefPtr<IDBIndex> createIndex(const String& name, const String& keyPath, const OptionsObject&, ExceptionCode&);
-    PassRefPtr<IDBIndex> index(const String& name, ExceptionCode&);
-    void deleteIndex(const String& name, ExceptionCode&);
+    PassRefPtr<IDBIndex> createIndex( const String &name, const String &keyPath, const OptionsObject &, ExceptionCode & );
+    PassRefPtr<IDBIndex> index( const String &name, ExceptionCode & );
+    void deleteIndex( const String &name, ExceptionCode & );
 
-    PassRefPtr<IDBRequest> openCursor(ScriptExecutionContext*, PassRefPtr<IDBKeyRange>, unsigned short direction, ExceptionCode&); 
+    PassRefPtr<IDBRequest> openCursor( ScriptExecutionContext *, PassRefPtr<IDBKeyRange>, unsigned short direction, ExceptionCode & );
 
 private:
-    IDBObjectStore(PassRefPtr<IDBObjectStoreBackendInterface>, IDBTransaction*);
+    IDBObjectStore( PassRefPtr<IDBObjectStoreBackendInterface>, IDBTransaction * );
     void removeTransactionFromPendingList();
 
     RefPtr<IDBObjectStoreBackendInterface> m_objectStore;

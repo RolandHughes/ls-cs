@@ -24,7 +24,8 @@
 #include "ImageBuffer.h"
 #include <wtf/Noncopyable.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class AffineTransform;
 class FloatRect;
@@ -32,16 +33,19 @@ class FloatSize;
 class GraphicsContext;
 class RenderObject;
 
-class SVGImageBufferTools {
-    WTF_MAKE_NONCOPYABLE(SVGImageBufferTools);
+class SVGImageBufferTools
+{
+    WTF_MAKE_NONCOPYABLE( SVGImageBufferTools );
 public:
-    static bool createImageBuffer(const FloatRect& absoluteTargetRect, const FloatRect& clampedAbsoluteTargetRect, OwnPtr<ImageBuffer>&, ColorSpace);
-    static void renderSubtreeToImageBuffer(ImageBuffer*, RenderObject*, const AffineTransform&);
-    static void clipToImageBuffer(GraphicsContext*, const AffineTransform& absoluteTransform, const FloatRect& clampedAbsoluteTargetRect, OwnPtr<ImageBuffer>&);
+    static bool createImageBuffer( const FloatRect &absoluteTargetRect, const FloatRect &clampedAbsoluteTargetRect,
+                                   OwnPtr<ImageBuffer> &, ColorSpace );
+    static void renderSubtreeToImageBuffer( ImageBuffer *, RenderObject *, const AffineTransform & );
+    static void clipToImageBuffer( GraphicsContext *, const AffineTransform &absoluteTransform,
+                                   const FloatRect &clampedAbsoluteTargetRect, OwnPtr<ImageBuffer> & );
 
-    static void calculateTransformationToOutermostSVGCoordinateSystem(const RenderObject*, AffineTransform& absoluteTransform);
-    static FloatRect clampedAbsoluteTargetRectForRenderer(const RenderObject*, const FloatRect& absoluteTargetRect);
-    static IntSize roundedImageBufferSize(const FloatSize&);
+    static void calculateTransformationToOutermostSVGCoordinateSystem( const RenderObject *, AffineTransform &absoluteTransform );
+    static FloatRect clampedAbsoluteTargetRectForRenderer( const RenderObject *, const FloatRect &absoluteTargetRect );
+    static IntSize roundedImageBufferSize( const FloatSize & );
 
 private:
     SVGImageBufferTools() { }

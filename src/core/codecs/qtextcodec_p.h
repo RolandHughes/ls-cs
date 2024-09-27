@@ -29,52 +29,57 @@
 
 #ifndef QT_NO_TEXTCODEC
 
-using QTextCodecStateFreeFunction = void (*)(QTextCodec::ConverterState *);
+using QTextCodecStateFreeFunction = void ( * )( QTextCodec::ConverterState * );
 
-struct QTextCodecUnalignedPointer {
-   static QTextCodecStateFreeFunction decode(const uint *src) {
-      quintptr data;
-      memcpy(&data, src, sizeof(data));
-      return reinterpret_cast<QTextCodecStateFreeFunction>(data);
-   }
+struct QTextCodecUnalignedPointer
+{
+    static QTextCodecStateFreeFunction decode( const uint *src )
+    {
+        quintptr data;
+        memcpy( &data, src, sizeof( data ) );
+        return reinterpret_cast<QTextCodecStateFreeFunction>( data );
+    }
 
-   static void encode(uint *dst, QTextCodecStateFreeFunction fn) {
-      quintptr data = reinterpret_cast<quintptr>(fn);
-      memcpy(dst, &data, sizeof(data));
-   }
+    static void encode( uint *dst, QTextCodecStateFreeFunction fn )
+    {
+        quintptr data = reinterpret_cast<quintptr>( fn );
+        memcpy( dst, &data, sizeof( data ) );
+    }
 };
 
 #else
 
 class QTextCodec
 {
- public:
-   enum ConversionFlag {
-      DefaultConversion,
-      ConvertInvalidToNull = 0x80000000,
-      IgnoreHeader = 0x1,
-      FreeFunction = 0x2
-   };
-   using ConversionFlags = QFlags<ConversionFlag>;
+public:
+    enum ConversionFlag
+    {
+        DefaultConversion,
+        ConvertInvalidToNull = 0x80000000,
+        IgnoreHeader = 0x1,
+        FreeFunction = 0x2
+    };
+    using ConversionFlags = QFlags<ConversionFlag>;
 
-   struct ConverterState {
-      ConverterState(ConversionFlags f = DefaultConversion)
-         : flags(f), remainingChars(0), invalidChars(0), d(nullptr)
-      {
-         state_data[0] = state_data[1] = state_data[2] = 0;
-      }
+    struct ConverterState
+    {
+        ConverterState( ConversionFlags f = DefaultConversion )
+            : flags( f ), remainingChars( 0 ), invalidChars( 0 ), d( nullptr )
+        {
+            state_data[0] = state_data[1] = state_data[2] = 0;
+        }
 
-      ConverterState(const ConverterState &) = delete;
-      ConverterState &operator=(const ConverterState &) = delete;
+        ConverterState( const ConverterState & ) = delete;
+        ConverterState &operator=( const ConverterState & ) = delete;
 
-      ~ConverterState() = default;
+        ~ConverterState() = default;
 
-      ConversionFlags flags;
-      int remainingChars;
-      int invalidChars;
-      uint state_data[3];
-      void *d;
-   };
+        ConversionFlags flags;
+        int remainingChars;
+        int invalidChars;
+        uint state_data[3];
+        void *d;
+    };
 };
 
 #endif // QT_NO_TEXTCODEC

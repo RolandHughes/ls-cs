@@ -36,10 +36,11 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
-WebContextMenu::WebContextMenu(WebPage* page)
-    : m_page(page)
+WebContextMenu::WebContextMenu( WebPage *page )
+    : m_page( page )
 {
 }
 
@@ -49,34 +50,57 @@ WebContextMenu::~WebContextMenu()
 
 void WebContextMenu::show()
 {
-    ContextMenuController* controller = m_page->corePage()->contextMenuController();
-    if (!controller)
+    ContextMenuController *controller = m_page->corePage()->contextMenuController();
+
+    if ( !controller )
+    {
         return;
-    ContextMenu* menu = controller->contextMenu();
-    if (!menu)
+    }
+
+    ContextMenu *menu = controller->contextMenu();
+
+    if ( !menu )
+    {
         return;
-    Node* node = controller->hitTestResult().innerNonSharedNode();
-    if (!node)
+    }
+
+    Node *node = controller->hitTestResult().innerNonSharedNode();
+
+    if ( !node )
+    {
         return;
-    Frame* frame = node->document()->frame();
-    if (!frame)
+    }
+
+    Frame *frame = node->document()->frame();
+
+    if ( !frame )
+    {
         return;
-    FrameView* view = frame->view();
-    if (!view)
+    }
+
+    FrameView *view = frame->view();
+
+    if ( !view )
+    {
         return;
+    }
 
     // Give the bundle client a chance to process the menu.
 #if USE(CROSS_PLATFORM_CONTEXT_MENUS)
-    const Vector<ContextMenuItem>& coreItems = menu->items();
+    const Vector<ContextMenuItem> &coreItems = menu->items();
 #else
-    Vector<ContextMenuItem> coreItems = contextMenuItemVector(menu->platformDescription());
+    Vector<ContextMenuItem> coreItems = contextMenuItemVector( menu->platformDescription() );
 #endif
-    Vector<WebContextMenuItemData> proposedMenu = kitItems(coreItems, menu);
+    Vector<WebContextMenuItemData> proposedMenu = kitItems( coreItems, menu );
     Vector<WebContextMenuItemData> newMenu;
     RefPtr<APIObject> userData;
-    RefPtr<InjectedBundleHitTestResult> hitTestResult = InjectedBundleHitTestResult::create(controller->hitTestResult());
-    if (m_page->injectedBundleContextMenuClient().getCustomMenuFromDefaultItems(m_page, hitTestResult.get(), proposedMenu, newMenu, userData))
+    RefPtr<InjectedBundleHitTestResult> hitTestResult = InjectedBundleHitTestResult::create( controller->hitTestResult() );
+
+    if ( m_page->injectedBundleContextMenuClient().getCustomMenuFromDefaultItems( m_page, hitTestResult.get(), proposedMenu, newMenu,
+            userData ) )
+    {
         proposedMenu = newMenu;
+    }
 
     ContextMenuState contextMenuState;
     contextMenuState.absoluteImageURLString = controller->hitTestResult().absoluteImageURL().string();
@@ -84,13 +108,14 @@ void WebContextMenu::show()
 
     // Mark the WebPage has having a shown context menu then notify the UIProcess.
     m_page->contextMenuShowing();
-    m_page->send(Messages::WebPageProxy::ShowContextMenu(view->contentsToWindow(controller->hitTestResult().point()), contextMenuState, proposedMenu, InjectedBundleUserMessageEncoder(userData.get())));
+    m_page->send( Messages::WebPageProxy::ShowContextMenu( view->contentsToWindow( controller->hitTestResult().point() ),
+                  contextMenuState, proposedMenu, InjectedBundleUserMessageEncoder( userData.get() ) ) );
 }
 
-void WebContextMenu::itemSelected(const WebContextMenuItemData& item)
+void WebContextMenu::itemSelected( const WebContextMenuItemData &item )
 {
-    ContextMenuItem coreItem(ActionType, static_cast<ContextMenuAction>(item.action()), item.title());
-    m_page->corePage()->contextMenuController()->contextMenuItemSelected(&coreItem);
+    ContextMenuItem coreItem( ActionType, static_cast<ContextMenuAction>( item.action() ), item.title() );
+    m_page->corePage()->contextMenuController()->contextMenuItemSelected( &coreItem );
 }
 
 } // namespace WebKit

@@ -30,66 +30,68 @@ class QScriptContextPrivate;
 
 class Q_SCRIPT_EXPORT QScriptContext
 {
- public:
-   enum ExecutionState {
-      NormalState,
-      ExceptionState
-   };
+public:
+    enum ExecutionState
+    {
+        NormalState,
+        ExceptionState
+    };
 
-   enum Error {
-      UnknownError,
-      ReferenceError,
-      SyntaxError,
-      TypeError,
-      RangeError,
-      URIError
-   };
+    enum Error
+    {
+        UnknownError,
+        ReferenceError,
+        SyntaxError,
+        TypeError,
+        RangeError,
+        URIError
+    };
 
-   QScriptContext(const QScriptContext &) = delete;
-   QScriptContext &operator=(const QScriptContext &) = delete;
+    QScriptContext( const QScriptContext & ) = delete;
+    QScriptContext &operator=( const QScriptContext & ) = delete;
 
-   ~QScriptContext();
+    ~QScriptContext();
 
-   QScriptContext *parentContext() const;
-   QScriptEngine *engine() const;
+    QScriptContext *parentContext() const;
+    QScriptEngine *engine() const;
 
-   ExecutionState state() const;
-   QScriptValue callee() const;
+    ExecutionState state() const;
+    QScriptValue callee() const;
 
-   int argumentCount() const;
-   QScriptValue argument(int index) const;
-   QScriptValue argumentsObject() const;
+    int argumentCount() const;
+    QScriptValue argument( int index ) const;
+    QScriptValue argumentsObject() const;
 
-   QList<QScriptValue> scopeChain() const;
-   void pushScope(const QScriptValue &object);
-   QScriptValue popScope();
+    QList<QScriptValue> scopeChain() const;
+    void pushScope( const QScriptValue &object );
+    QScriptValue popScope();
 
-   QScriptValue returnValue() const;
-   void setReturnValue(const QScriptValue &result);
+    QScriptValue returnValue() const;
+    void setReturnValue( const QScriptValue &result );
 
-   QScriptValue activationObject() const;
-   void setActivationObject(const QScriptValue &activation);
+    QScriptValue activationObject() const;
+    void setActivationObject( const QScriptValue &activation );
 
-   QScriptValue thisObject() const;
-   void setThisObject(const QScriptValue &thisObject);
+    QScriptValue thisObject() const;
+    void setThisObject( const QScriptValue &thisObject );
 
-   bool isCalledAsConstructor() const;
+    bool isCalledAsConstructor() const;
 
-   QScriptValue throwValue(const QScriptValue &value);
-   QScriptValue throwError(Error error, const QString &text);
-   QScriptValue throwError(const QString &text);
+    QScriptValue throwValue( const QScriptValue &value );
+    QScriptValue throwError( Error error, const QString &text );
+    QScriptValue throwError( const QString &text );
 
-   QStringList backtrace() const;
+    QStringList backtrace() const;
 
-   QString toString() const;
+    QString toString() const;
 
- private:
-   Q_DECLARE_PRIVATE(QScriptContext)
+private:
+    Q_DECLARE_PRIVATE( QScriptContext )
 
-   QScriptContext();
-   QScriptContextPrivate *d_ptr;
+    QScriptContext();
+    QScriptContextPrivate *d_ptr;
 };
 
-CS_DECLARE_METATYPE(QScriptContext)
+CS_DECLARE_METATYPE( QScriptContext )
 
 #endif

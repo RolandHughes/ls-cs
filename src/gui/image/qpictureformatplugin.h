@@ -38,15 +38,15 @@ class QStringList;
 
 class Q_GUI_EXPORT QPictureFormatPlugin : public QObject
 {
-   GUI_CS_OBJECT(QPictureFormatPlugin)
+    GUI_CS_OBJECT( QPictureFormatPlugin )
 
- public:
-   explicit QPictureFormatPlugin(QObject *parent = nullptr);
-   ~QPictureFormatPlugin();
+public:
+    explicit QPictureFormatPlugin( QObject *parent = nullptr );
+    ~QPictureFormatPlugin();
 
-   virtual bool loadPicture(const QString &format, const QString &fileName, QPicture *picture);
-   virtual bool savePicture(const QString &format, const QString &fileName, const QPicture &picture);
-   virtual bool installIOHandler(const QString &format) = 0;
+    virtual bool loadPicture( const QString &format, const QString &fileName, QPicture *picture );
+    virtual bool savePicture( const QString &format, const QString &fileName, const QPicture &picture );
+    virtual bool installIOHandler( const QString &format ) = 0;
 };
 
 #endif

@@ -29,84 +29,87 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class CSSStyleSelector;
 class CSSValue;
-class ApplyPropertyBase {
-    WTF_MAKE_NONCOPYABLE(ApplyPropertyBase);
+class ApplyPropertyBase
+{
+    WTF_MAKE_NONCOPYABLE( ApplyPropertyBase );
     WTF_MAKE_FAST_ALLOCATED;
 public:
     ApplyPropertyBase() { }
     virtual ~ApplyPropertyBase() { }
-    virtual void applyInheritValue(CSSStyleSelector*) const = 0;
-    virtual void applyInitialValue(CSSStyleSelector*) const = 0;
-    virtual void applyValue(CSSStyleSelector*, CSSValue*) const = 0;
+    virtual void applyInheritValue( CSSStyleSelector * ) const = 0;
+    virtual void applyInitialValue( CSSStyleSelector * ) const = 0;
+    virtual void applyValue( CSSStyleSelector *, CSSValue * ) const = 0;
 };
 
-class CSSStyleApplyProperty {
-    WTF_MAKE_NONCOPYABLE(CSSStyleApplyProperty);
+class CSSStyleApplyProperty
+{
+    WTF_MAKE_NONCOPYABLE( CSSStyleApplyProperty );
 public:
-    static const CSSStyleApplyProperty& sharedCSSStyleApplyProperty();
+    static const CSSStyleApplyProperty &sharedCSSStyleApplyProperty();
 
-    void applyInheritValue(CSSPropertyID property, CSSStyleSelector* selector) const
+    void applyInheritValue( CSSPropertyID property, CSSStyleSelector *selector ) const
     {
-        ASSERT(implements(property));
-        propertyHandler(property)->applyInheritValue(selector);
+        ASSERT( implements( property ) );
+        propertyHandler( property )->applyInheritValue( selector );
     }
 
-    void applyInitialValue(CSSPropertyID property, CSSStyleSelector* selector) const
+    void applyInitialValue( CSSPropertyID property, CSSStyleSelector *selector ) const
     {
-        ASSERT(implements(property));
-        propertyHandler(property)->applyInitialValue(selector);
+        ASSERT( implements( property ) );
+        propertyHandler( property )->applyInitialValue( selector );
     }
 
-    void applyValue(CSSPropertyID property, CSSStyleSelector* selector, CSSValue* value) const
+    void applyValue( CSSPropertyID property, CSSStyleSelector *selector, CSSValue *value ) const
     {
-        ASSERT(implements(property));
-        propertyHandler(property)->applyValue(selector, value);
+        ASSERT( implements( property ) );
+        propertyHandler( property )->applyValue( selector, value );
     }
 
-    bool implements(CSSPropertyID property) const
+    bool implements( CSSPropertyID property ) const
     {
-        return propertyHandler(property);
+        return propertyHandler( property );
     }
 
 private:
     CSSStyleApplyProperty();
-    static int index(CSSPropertyID property)
+    static int index( CSSPropertyID property )
     {
         return property - firstCSSProperty;
     }
 
-    static bool valid(CSSPropertyID property)
+    static bool valid( CSSPropertyID property )
     {
-        int i = index(property);
+        int i = index( property );
         return i >= 0 && i < numCSSProperties;
     }
 
-    void setPropertyHandler(CSSPropertyID property, ApplyPropertyBase* value)
+    void setPropertyHandler( CSSPropertyID property, ApplyPropertyBase *value )
     {
-        ASSERT(valid(property));
-        ASSERT(!propertyHandler(property));
-        m_propertyMap[index(property)] = value;
+        ASSERT( valid( property ) );
+        ASSERT( !propertyHandler( property ) );
+        m_propertyMap[index( property )] = value;
     }
 
-    void setPropertyHandler(CSSPropertyID newProperty, CSSPropertyID equivalentProperty)
+    void setPropertyHandler( CSSPropertyID newProperty, CSSPropertyID equivalentProperty )
     {
-        ASSERT(valid(newProperty));
-        ASSERT(valid(equivalentProperty));
-        ASSERT(!propertyHandler(newProperty));
-        m_propertyMap[index(newProperty)] = m_propertyMap[index(equivalentProperty)];
+        ASSERT( valid( newProperty ) );
+        ASSERT( valid( equivalentProperty ) );
+        ASSERT( !propertyHandler( newProperty ) );
+        m_propertyMap[index( newProperty )] = m_propertyMap[index( equivalentProperty )];
     }
 
-    ApplyPropertyBase* propertyHandler(CSSPropertyID property) const
+    ApplyPropertyBase *propertyHandler( CSSPropertyID property ) const
     {
-        ASSERT(valid(property));
-        return m_propertyMap[index(property)];
+        ASSERT( valid( property ) );
+        return m_propertyMap[index( property )];
     }
 
-    ApplyPropertyBase* m_propertyMap[numCSSProperties];
+    ApplyPropertyBase *m_propertyMap[numCSSProperties];
 };
 
 }

@@ -25,43 +25,54 @@
 #include <qcoreapplication.h>
 #include <qnetwork_reply.h>
 
-QtMIMETypeSniffer::QtMIMETypeSniffer(QNetworkReply* reply, const QString& advertisedMimeType, bool isSupportedImageType)
-    : QObject(0)
-    , m_reply(reply)
-    , m_mimeType(advertisedMimeType)
-    , m_sniffer(advertisedMimeType.toLatin1().constData(), isSupportedImageType)
-    , m_isFinished(false)
+QtMIMETypeSniffer::QtMIMETypeSniffer( QNetworkReply *reply, const QString &advertisedMimeType, bool isSupportedImageType )
+    : QObject( 0 )
+    , m_reply( reply )
+    , m_mimeType( advertisedMimeType )
+    , m_sniffer( advertisedMimeType.toLatin1().constData(), isSupportedImageType )
+    , m_isFinished( false )
 {
     m_isFinished = !m_sniffer.isValid() || sniff();
-    if (m_isFinished)
-        return;
 
-    connect(m_reply, SIGNAL(readyRead()), this, SLOT(trySniffing()));
-    connect(m_reply, SIGNAL(finished()), this, SLOT(trySniffing()));
+    if ( m_isFinished )
+    {
+        return;
+    }
+
+    connect( m_reply, SIGNAL( readyRead() ), this, SLOT( trySniffing() ) );
+    connect( m_reply, SIGNAL( finished() ), this, SLOT( trySniffing() ) );
 }
 
 bool QtMIMETypeSniffer::sniff()
 {
     // See QNetworkReplyWrapper::setFinished().
-    const bool isReplyFinished = m_reply->property("_q_isFinished").toBool();
+    const bool isReplyFinished = m_reply->property( "_q_isFinished" ).toBool();
 
-    if (!isReplyFinished && m_reply->bytesAvailable() < m_sniffer.dataSize())
+    if ( !isReplyFinished && m_reply->bytesAvailable() < m_sniffer.dataSize() )
+    {
         return false;
+    }
 
-    QByteArray data = m_reply->peek(m_sniffer.dataSize());
-    const char* sniffedMimeType = m_sniffer.sniff(data.constData(), data.size());
-    if (sniffedMimeType)
-        m_mimeType = QString::fromLatin1(sniffedMimeType);
+    QByteArray data = m_reply->peek( m_sniffer.dataSize() );
+    const char *sniffedMimeType = m_sniffer.sniff( data.constData(), data.size() );
+
+    if ( sniffedMimeType )
+    {
+        m_mimeType = QString::fromLatin1( sniffedMimeType );
+    }
+
     return true;
 }
 
 void QtMIMETypeSniffer::trySniffing()
 {
-    if (!sniff())
+    if ( !sniff() )
+    {
         return;
+    }
 
-    m_reply->disconnect(this);
-    QCoreApplication::removePostedEvents(this, QEvent::MetaCall);
+    m_reply->disconnect( this );
+    QCoreApplication::removePostedEvents( this, QEvent::MetaCall );
     m_isFinished = true;
     emit finished();
 }

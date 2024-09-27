@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 
@@ -45,35 +45,38 @@ class NSPasteboard;
 #endif
 #endif
 
-namespace WebCore {
-    
-    class Clipboard;
-    class DragData;
-    class Frame;
-    class Image;
-    class HTMLImageElement;
-    
-    class DragClient {
-    public:
-        virtual void willPerformDragDestinationAction(DragDestinationAction, DragData*) = 0;
-        virtual void willPerformDragSourceAction(DragSourceAction, const IntPoint&, Clipboard*) = 0;
-        virtual DragDestinationAction actionMaskForDrag(DragData*) = 0;
-        //We work in window rather than view coordinates here
-        virtual DragSourceAction dragSourceActionMaskForPoint(const IntPoint& windowPoint) = 0;
-        
-        virtual void startDrag(DragImageRef dragImage, const IntPoint& dragImageOrigin, const IntPoint& eventPos, Clipboard*, Frame*, bool linkDrag = false) = 0;
-        
-        virtual void dragControllerDestroyed() = 0;
+namespace WebCore
+{
+
+class Clipboard;
+class DragData;
+class Frame;
+class Image;
+class HTMLImageElement;
+
+class DragClient
+{
+public:
+    virtual void willPerformDragDestinationAction( DragDestinationAction, DragData * ) = 0;
+    virtual void willPerformDragSourceAction( DragSourceAction, const IntPoint &, Clipboard * ) = 0;
+    virtual DragDestinationAction actionMaskForDrag( DragData * ) = 0;
+    //We work in window rather than view coordinates here
+    virtual DragSourceAction dragSourceActionMaskForPoint( const IntPoint &windowPoint ) = 0;
+
+    virtual void startDrag( DragImageRef dragImage, const IntPoint &dragImageOrigin, const IntPoint &eventPos, Clipboard *, Frame *,
+                            bool linkDrag = false ) = 0;
+
+    virtual void dragControllerDestroyed() = 0;
 #if PLATFORM(MAC)
-        //Mac specific helper functions to allow access to functionality in webkit -- such as 
-        //web archives and NSPasteboard extras 
-        //not abstract as that would require another #if PLATFORM(MAC) for the SVGImage client empty impl
-        virtual void declareAndWriteDragImage(NSPasteboard*, DOMElement*, NSURL*, NSString*, Frame*) {};
+    //Mac specific helper functions to allow access to functionality in webkit -- such as
+    //web archives and NSPasteboard extras
+    //not abstract as that would require another #if PLATFORM(MAC) for the SVGImage client empty impl
+    virtual void declareAndWriteDragImage( NSPasteboard *, DOMElement *, NSURL *, NSString *, Frame * ) {};
 #endif
-        
-        virtual ~DragClient() {};
-    };
-    
+
+    virtual ~DragClient() {};
+};
+
 }
 
 #endif // !DragClient_h

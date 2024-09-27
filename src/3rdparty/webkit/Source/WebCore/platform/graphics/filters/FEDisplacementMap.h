@@ -27,9 +27,11 @@
 #include "FilterEffect.h"
 #include "Filter.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-enum ChannelSelectorType {
+enum ChannelSelectorType
+{
     CHANNEL_UNKNOWN = 0,
     CHANNEL_R = 1,
     CHANNEL_G = 2,
@@ -37,28 +39,33 @@ enum ChannelSelectorType {
     CHANNEL_A = 4
 };
 
-class FEDisplacementMap : public FilterEffect {
+class FEDisplacementMap : public FilterEffect
+{
 public:
-    static PassRefPtr<FEDisplacementMap> create(Filter*, ChannelSelectorType xChannelSelector, ChannelSelectorType yChannelSelector, float);
+    static PassRefPtr<FEDisplacementMap> create( Filter *, ChannelSelectorType xChannelSelector, ChannelSelectorType yChannelSelector,
+            float );
 
     ChannelSelectorType xChannelSelector() const;
-    bool setXChannelSelector(const ChannelSelectorType);
+    bool setXChannelSelector( const ChannelSelectorType );
 
     ChannelSelectorType yChannelSelector() const;
-    bool setYChannelSelector(const ChannelSelectorType);
+    bool setYChannelSelector( const ChannelSelectorType );
 
     float scale() const;
-    bool setScale(float);
+    bool setScale( float );
 
     virtual void apply();
     virtual void dump();
 
-    virtual void determineAbsolutePaintRect() { setAbsolutePaintRect(maxEffectRect()); }
+    virtual void determineAbsolutePaintRect()
+    {
+        setAbsolutePaintRect( maxEffectRect() );
+    }
 
-    virtual TextStream& externalRepresentation(TextStream&, int indention) const;
+    virtual TextStream &externalRepresentation( TextStream &, int indention ) const;
 
 private:
-    FEDisplacementMap(Filter*, ChannelSelectorType xChannelSelector, ChannelSelectorType yChannelSelector, float);
+    FEDisplacementMap( Filter *, ChannelSelectorType xChannelSelector, ChannelSelectorType yChannelSelector, float );
 
     ChannelSelectorType m_xChannelSelector;
     ChannelSelectorType m_yChannelSelector;

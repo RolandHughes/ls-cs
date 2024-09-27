@@ -32,10 +32,10 @@
 
 #include <ocidl.h>
 
-inline BSTR QStringToBSTR(const QString &str)
+inline BSTR QStringToBSTR( const QString &str )
 {
-   std::wstring tmp = str.toStdWString();
-   return SysAllocStringLen(reinterpret_cast<const OLECHAR *>(tmp.data()), UINT(tmp.size()));
+    std::wstring tmp = str.toStdWString();
+    return SysAllocStringLen( reinterpret_cast<const OLECHAR *>( tmp.data() ), UINT( tmp.size() ) );
 }
 
 #endif

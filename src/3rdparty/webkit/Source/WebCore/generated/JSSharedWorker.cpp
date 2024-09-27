@@ -31,9 +31,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSSharedWorker);
+ASSERT_CLASS_FITS_IN_CELL( JSSharedWorker );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -44,9 +45,9 @@ ASSERT_CLASS_FITS_IN_CELL(JSSharedWorker);
 
 static const HashTableValue JSSharedWorkerTableValues[3] =
 {
-    { "port", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSharedWorkerPort), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSharedWorkerConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "port", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSharedWorkerPort ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSharedWorkerConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -60,32 +61,36 @@ static JSC_CONST_HASHTABLE HashTable JSSharedWorkerTable = { 4, 3, JSSharedWorke
 
 static const HashTableValue JSSharedWorkerConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSharedWorkerConstructorTable = { 1, 0, JSSharedWorkerConstructorTableValues, 0 };
 const ClassInfo JSSharedWorkerConstructor::s_info = { "SharedWorkerConstructor", &DOMConstructorObject::s_info, &JSSharedWorkerConstructorTable, 0 };
 
-JSSharedWorkerConstructor::JSSharedWorkerConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSSharedWorkerConstructor::JSSharedWorkerConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSSharedWorkerPrototype::self(exec, globalObject), DontDelete | ReadOnly);
-    putDirect(exec->globalData(), exec->propertyNames().length, jsNumber(2), ReadOnly | DontDelete | DontEnum);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSSharedWorkerPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
+    putDirect( exec->globalData(), exec->propertyNames().length, jsNumber( 2 ), ReadOnly | DontDelete | DontEnum );
 }
 
-bool JSSharedWorkerConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSharedWorkerConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSharedWorkerConstructor, JSDOMWrapper>(exec, &JSSharedWorkerConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSharedWorkerConstructor, JSDOMWrapper>( exec, &JSSharedWorkerConstructorTable, this, propertyName,
+            slot );
 }
 
-bool JSSharedWorkerConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSharedWorkerConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSharedWorkerConstructor, JSDOMWrapper>(exec, &JSSharedWorkerConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSharedWorkerConstructor, JSDOMWrapper>( exec, &JSSharedWorkerConstructorTable, this,
+            propertyName, descriptor );
 }
 
-ConstructType JSSharedWorkerConstructor::getConstructData(ConstructData& constructData)
+ConstructType JSSharedWorkerConstructor::getConstructData( ConstructData &constructData )
 {
     constructData.native.function = constructJSSharedWorker;
     return ConstructTypeHost;
@@ -100,95 +105,106 @@ ConstructType JSSharedWorkerConstructor::getConstructData(ConstructData& constru
 
 static const HashTableValue JSSharedWorkerPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSharedWorkerPrototypeTable = { 1, 0, JSSharedWorkerPrototypeTableValues, 0 };
 const ClassInfo JSSharedWorkerPrototype::s_info = { "SharedWorkerPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSSharedWorkerPrototypeTable, 0 };
 
-JSObject* JSSharedWorkerPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSharedWorkerPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSSharedWorker>(exec, globalObject);
+    return getDOMPrototype<JSSharedWorker>( exec, globalObject );
 }
 
 const ClassInfo JSSharedWorker::s_info = { "SharedWorker", &JSAbstractWorker::s_info, &JSSharedWorkerTable, 0 };
 
-JSSharedWorker::JSSharedWorker(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<SharedWorker> impl)
-    : JSAbstractWorker(structure, globalObject, impl)
+JSSharedWorker::JSSharedWorker( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<SharedWorker> impl )
+    : JSAbstractWorker( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSSharedWorker::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSharedWorker::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSSharedWorkerPrototype(exec->globalData(), globalObject, JSSharedWorkerPrototype::createStructure(exec->globalData(), JSAbstractWorkerPrototype::self(exec, globalObject)));
+    return new ( exec ) JSSharedWorkerPrototype( exec->globalData(), globalObject,
+            JSSharedWorkerPrototype::createStructure( exec->globalData(), JSAbstractWorkerPrototype::self( exec, globalObject ) ) );
 }
 
-bool JSSharedWorker::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSharedWorker::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSharedWorker, Base>(exec, &JSSharedWorkerTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSharedWorker, Base>( exec, &JSSharedWorkerTable, this, propertyName, slot );
 }
 
-bool JSSharedWorker::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSharedWorker::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSharedWorker, Base>(exec, &JSSharedWorkerTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSharedWorker, Base>( exec, &JSSharedWorkerTable, this, propertyName, descriptor );
 }
 
-JSValue jsSharedWorkerPort(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSharedWorkerPort( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSharedWorker* castedThis = static_cast<JSSharedWorker*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SharedWorker* imp = static_cast<SharedWorker*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->port()));
+    JSSharedWorker *castedThis = static_cast<JSSharedWorker *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SharedWorker *imp = static_cast<SharedWorker *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->port() ) );
     return result;
 }
 
 
-JSValue jsSharedWorkerConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSharedWorkerConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSharedWorker* domObject = static_cast<JSSharedWorker*>(asObject(slotBase));
-    return JSSharedWorker::getConstructor(exec, domObject->globalObject());
+    JSSharedWorker *domObject = static_cast<JSSharedWorker *>( asObject( slotBase ) );
+    return JSSharedWorker::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSSharedWorker::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSSharedWorker::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSSharedWorkerConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSSharedWorkerConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-static inline bool isObservable(JSSharedWorker* jsSharedWorker)
+static inline bool isObservable( JSSharedWorker *jsSharedWorker )
 {
-    if (jsSharedWorker->hasCustomProperties())
+    if ( jsSharedWorker->hasCustomProperties() )
+    {
         return true;
+    }
+
     return false;
 }
 
-bool JSSharedWorkerOwner::isReachableFromOpaqueRoots(JSC::Handle<JSC::Unknown> handle, void*, SlotVisitor& visitor)
+bool JSSharedWorkerOwner::isReachableFromOpaqueRoots( JSC::Handle<JSC::Unknown> handle, void *, SlotVisitor &visitor )
 {
-    JSSharedWorker* jsSharedWorker = static_cast<JSSharedWorker*>(handle.get().asCell());
-    if (jsSharedWorker->impl()->hasPendingActivity())
+    JSSharedWorker *jsSharedWorker = static_cast<JSSharedWorker *>( handle.get().asCell() );
+
+    if ( jsSharedWorker->impl()->hasPendingActivity() )
+    {
         return true;
-    if (!isObservable(jsSharedWorker))
+    }
+
+    if ( !isObservable( jsSharedWorker ) )
+    {
         return false;
-    UNUSED_PARAM(visitor);
+    }
+
+    UNUSED_PARAM( visitor );
     return false;
 }
 
-void JSSharedWorkerOwner::finalize(JSC::Handle<JSC::Unknown> handle, void* context)
+void JSSharedWorkerOwner::finalize( JSC::Handle<JSC::Unknown> handle, void *context )
 {
-    JSSharedWorker* jsSharedWorker = static_cast<JSSharedWorker*>(handle.get().asCell());
-    DOMWrapperWorld* world = static_cast<DOMWrapperWorld*>(context);
-    uncacheWrapper(world, jsSharedWorker->impl(), jsSharedWorker);
+    JSSharedWorker *jsSharedWorker = static_cast<JSSharedWorker *>( handle.get().asCell() );
+    DOMWrapperWorld *world = static_cast<DOMWrapperWorld *>( context );
+    uncacheWrapper( world, jsSharedWorker->impl(), jsSharedWorker );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, SharedWorker* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, SharedWorker *impl )
 {
-    return wrap<JSSharedWorker>(exec, globalObject, impl);
+    return wrap<JSSharedWorker>( exec, globalObject, impl );
 }
 
-SharedWorker* toSharedWorker(JSC::JSValue value)
+SharedWorker *toSharedWorker( JSC::JSValue value )
 {
-    return value.inherits(&JSSharedWorker::s_info) ? static_cast<JSSharedWorker*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSSharedWorker::s_info ) ? static_cast<JSSharedWorker *>( asObject( value ) )->impl() : 0;
 }
 
 }

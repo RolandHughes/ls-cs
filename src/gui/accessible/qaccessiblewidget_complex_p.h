@@ -41,80 +41,81 @@ class QScrollArea;
 #ifndef QT_NO_SCROLLAREA
 class QAccessibleAbstractScrollArea : public QAccessibleWidget
 {
- public:
-   explicit QAccessibleAbstractScrollArea(QWidget *widget);
+public:
+    explicit QAccessibleAbstractScrollArea( QWidget *widget );
 
-   enum AbstractScrollAreaElement {
-      Self = 0,
-      Viewport,
-      HorizontalContainer,
-      VerticalContainer,
-      CornerWidget,
-      Undefined
-   };
+    enum AbstractScrollAreaElement
+    {
+        Self = 0,
+        Viewport,
+        HorizontalContainer,
+        VerticalContainer,
+        CornerWidget,
+        Undefined
+    };
 
-   QAccessibleInterface *child(int index) const override;
-   int childCount() const override;
-   int indexOfChild(const QAccessibleInterface *child) const override;
-   bool isValid() const override;
-   QAccessibleInterface *childAt(int x, int y) const override;
+    QAccessibleInterface *child( int index ) const override;
+    int childCount() const override;
+    int indexOfChild( const QAccessibleInterface *child ) const override;
+    bool isValid() const override;
+    QAccessibleInterface *childAt( int x, int y ) const override;
 
-   //protected:
-   QAbstractScrollArea *abstractScrollArea() const;
+    //protected:
+    QAbstractScrollArea *abstractScrollArea() const;
 
- private:
-   QWidgetList accessibleChildren() const;
-   AbstractScrollAreaElement elementType(QWidget *widget) const;
-   bool isLeftToRight() const;
+private:
+    QWidgetList accessibleChildren() const;
+    AbstractScrollAreaElement elementType( QWidget *widget ) const;
+    bool isLeftToRight() const;
 };
 
 class QAccessibleScrollArea : public QAccessibleAbstractScrollArea
 {
- public:
-   explicit QAccessibleScrollArea(QWidget *widget);
+public:
+    explicit QAccessibleScrollArea( QWidget *widget );
 };
 #endif
 
 #ifndef QT_NO_TABBAR
 class QAccessibleTabBar : public QAccessibleWidget
 {
- public:
-   explicit QAccessibleTabBar(QWidget *w);
-   ~QAccessibleTabBar();
+public:
+    explicit QAccessibleTabBar( QWidget *w );
+    ~QAccessibleTabBar();
 
-   int childCount() const override;
-   QString text(QAccessible::Text t) const override;
+    int childCount() const override;
+    QString text( QAccessible::Text t ) const override;
 
-   QAccessibleInterface *child(int index) const override;
-   int indexOfChild(const QAccessibleInterface *child) const override;
+    QAccessibleInterface *child( int index ) const override;
+    int indexOfChild( const QAccessibleInterface *child ) const override;
 
- protected:
-   QTabBar *tabBar() const;
-   mutable QHash<int, QAccessible::Id> m_childInterfaces;
+protected:
+    QTabBar *tabBar() const;
+    mutable QHash<int, QAccessible::Id> m_childInterfaces;
 };
 #endif
 
 #ifndef QT_NO_COMBOBOX
 class QAccessibleComboBox : public QAccessibleWidget
 {
- public:
-   explicit QAccessibleComboBox(QWidget *w);
+public:
+    explicit QAccessibleComboBox( QWidget *w );
 
-   int childCount() const override;
-   QAccessibleInterface *childAt(int x, int y) const override;
-   int indexOfChild(const QAccessibleInterface *child) const override;
-   QAccessibleInterface *child(int index) const override;
+    int childCount() const override;
+    QAccessibleInterface *childAt( int x, int y ) const override;
+    int indexOfChild( const QAccessibleInterface *child ) const override;
+    QAccessibleInterface *child( int index ) const override;
 
-   QString text(QAccessible::Text t) const override;
+    QString text( QAccessible::Text t ) const override;
 
-   // QAccessibleActionInterface
-   QStringList actionNames() const override;
-   QString localizedActionDescription(const QString &actionName) const override;
-   void doAction(const QString &actionName) override;
-   QStringList keyBindingsForAction(const QString &actionName) const override;
+    // QAccessibleActionInterface
+    QStringList actionNames() const override;
+    QString localizedActionDescription( const QString &actionName ) const override;
+    void doAction( const QString &actionName ) override;
+    QStringList keyBindingsForAction( const QString &actionName ) const override;
 
- protected:
-   QComboBox *comboBox() const;
+protected:
+    QComboBox *comboBox() const;
 };
 #endif
 

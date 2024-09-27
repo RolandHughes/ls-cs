@@ -29,12 +29,13 @@
 
 class QScriptEngine;
 
-struct Q_SCRIPT_EXPORT QScriptExtensionInterface : public QFactoryInterface {
-   virtual void initialize(const QString &key, QScriptEngine *engine) = 0;
+struct Q_SCRIPT_EXPORT QScriptExtensionInterface : public QFactoryInterface
+{
+    virtual void initialize( const QString &key, QScriptEngine *engine ) = 0;
 };
 
 #define QScriptExtensionInterface_iid "com.copperspice.CS.QScriptExtensionInterface/1.0"
-CS_DECLARE_INTERFACE(QScriptExtensionInterface, QScriptExtensionInterface_iid)
+CS_DECLARE_INTERFACE( QScriptExtensionInterface, QScriptExtensionInterface_iid )
 
 
 #endif

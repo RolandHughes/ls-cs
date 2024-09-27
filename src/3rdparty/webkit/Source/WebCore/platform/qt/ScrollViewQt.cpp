@@ -32,13 +32,14 @@
 #include "config.h"
 #include "ScrollView.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-void ScrollView::platformAddChild(Widget*)
+void ScrollView::platformAddChild( Widget * )
 {
 }
 
-void ScrollView::platformRemoveChild(Widget* child)
+void ScrollView::platformRemoveChild( Widget *child )
 {
     child->hide();
 }

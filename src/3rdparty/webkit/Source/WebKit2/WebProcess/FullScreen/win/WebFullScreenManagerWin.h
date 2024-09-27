@@ -32,22 +32,24 @@
 
 #include <WebCore/IntRect.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
-class WebFullScreenManagerWin : public WebFullScreenManager {
+class WebFullScreenManagerWin : public WebFullScreenManager
+{
 public:
-    static PassRefPtr<WebFullScreenManagerWin> create(WebPage*);
+    static PassRefPtr<WebFullScreenManagerWin> create( WebPage * );
 
 private:
-    WebFullScreenManagerWin(WebPage*);
+    WebFullScreenManagerWin( WebPage * );
     virtual ~WebFullScreenManagerWin();
 
-    virtual void setRootFullScreenLayer(WebCore::GraphicsLayer*);
-    virtual void beginEnterFullScreenAnimation(float duration);
-    virtual void beginExitFullScreenAnimation(float duration);
+    virtual void setRootFullScreenLayer( WebCore::GraphicsLayer * );
+    virtual void beginEnterFullScreenAnimation( float duration );
+    virtual void beginExitFullScreenAnimation( float duration );
 
     OwnPtr<WebCore::GraphicsLayer> m_rootLayer;
-    WebCore::GraphicsLayer* m_fullScreenRootLayer;
+    WebCore::GraphicsLayer *m_fullScreenRootLayer;
 };
 
 }

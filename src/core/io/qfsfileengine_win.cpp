@@ -56,954 +56,1086 @@
 #define CS_PATH_LEN  FILENAME_MAX
 #endif
 
-static inline bool isUncPath(const QString &path)
+static inline bool isUncPath( const QString &path )
 {
-   // Starts with \\, but not \\.
-   return (path.startsWith("\\\\") && path.size() > 2 && path.at(2) != '.');
+    // Starts with \\, but not \\.
+    return ( path.startsWith( "\\\\" ) && path.size() > 2 && path.at( 2 ) != '.' );
 }
 
-QString QFSFileEnginePrivate::longFileName(const QString &path)
+QString QFSFileEnginePrivate::longFileName( const QString &path )
 {
-   if (path.startsWith("\\\\.\\")) {
-      return path;
-   }
+    if ( path.startsWith( "\\\\.\\" ) )
+    {
+        return path;
+    }
 
-   QString absPath = QFileSystemEngine::nativeAbsoluteFilePath(path);
-   QString prefix  = "\\\\?\\";
+    QString absPath = QFileSystemEngine::nativeAbsoluteFilePath( path );
+    QString prefix  = "\\\\?\\";
 
-   if (isUncPath(absPath)) {
-      prefix.append("UNC\\");                         // "\\\\?\\UNC\\"
-      absPath.remove(0, 2);
-   }
+    if ( isUncPath( absPath ) )
+    {
+        prefix.append( "UNC\\" );                       // "\\\\?\\UNC\\"
+        absPath.remove( 0, 2 );
+    }
 
-   return prefix + absPath;
+    return prefix + absPath;
 }
 
-bool QFSFileEnginePrivate::nativeOpen(QIODevice::OpenMode openMode)
+bool QFSFileEnginePrivate::nativeOpen( QIODevice::OpenMode openMode )
 {
-   Q_Q(QFSFileEngine);
+    Q_Q( QFSFileEngine );
 
-   // All files are opened in share mode (both read and write).
-   DWORD shareMode = FILE_SHARE_READ | FILE_SHARE_WRITE;
+    // All files are opened in share mode (both read and write).
+    DWORD shareMode = FILE_SHARE_READ | FILE_SHARE_WRITE;
 
-   int accessRights = 0;
+    int accessRights = 0;
 
-   if (openMode & QIODevice::ReadOnly) {
-      accessRights |= GENERIC_READ;
-   }
+    if ( openMode & QIODevice::ReadOnly )
+    {
+        accessRights |= GENERIC_READ;
+    }
 
-   if (openMode & QIODevice::WriteOnly) {
-      accessRights |= GENERIC_WRITE;
-   }
+    if ( openMode & QIODevice::WriteOnly )
+    {
+        accessRights |= GENERIC_WRITE;
+    }
 
-   SECURITY_ATTRIBUTES securityAtts = { sizeof(SECURITY_ATTRIBUTES), nullptr, FALSE };
+    SECURITY_ATTRIBUTES securityAtts = { sizeof( SECURITY_ATTRIBUTES ), nullptr, FALSE };
 
-   // WriteOnly can create files, ReadOnly cannot
-   DWORD creationDisp = (openMode & QIODevice::WriteOnly) ? OPEN_ALWAYS : OPEN_EXISTING;
+    // WriteOnly can create files, ReadOnly cannot
+    DWORD creationDisp = ( openMode & QIODevice::WriteOnly ) ? OPEN_ALWAYS : OPEN_EXISTING;
 
-   // Create the file handle
-   fileHandle = CreateFile(&fileEntry.nativeFilePath().toStdWString()[0],
-         accessRights, shareMode, &securityAtts, creationDisp, FILE_ATTRIBUTE_NORMAL, nullptr);
+    // Create the file handle
+    fileHandle = CreateFile( &fileEntry.nativeFilePath().toStdWString()[0],
+                             accessRights, shareMode, &securityAtts, creationDisp, FILE_ATTRIBUTE_NORMAL, nullptr );
 
-   // Bail out on error
-   if (fileHandle == INVALID_HANDLE_VALUE) {
-      q->setError(QFile::OpenError, qt_error_string());
-      return false;
-   }
+    // Bail out on error
+    if ( fileHandle == INVALID_HANDLE_VALUE )
+    {
+        q->setError( QFile::OpenError, qt_error_string() );
+        return false;
+    }
 
-   // Truncate the file after successfully opening it if Truncate is passed
-   if (openMode & QIODevice::Truncate) {
-      q->setSize(0);
-   }
+    // Truncate the file after successfully opening it if Truncate is passed
+    if ( openMode & QIODevice::Truncate )
+    {
+        q->setSize( 0 );
+    }
 
-   return true;
+    return true;
 }
 
 bool QFSFileEnginePrivate::nativeClose()
 {
-   Q_Q(QFSFileEngine);
+    Q_Q( QFSFileEngine );
 
-   if (fh || fd != -1) {
-      // stdlib / stdio mode
-      return closeFdFh();
-   }
+    if ( fh || fd != -1 )
+    {
+        // stdlib / stdio mode
+        return closeFdFh();
+    }
 
-   // Windows native mode
-   bool ok = true;
+    // Windows native mode
+    bool ok = true;
 
-   if (cachedFd != -1) {
-      if (::_close(cachedFd) && !::CloseHandle(fileHandle)) {
-         q->setError(QFile::UnspecifiedError, qt_error_string());
-         ok = false;
-      }
+    if ( cachedFd != -1 )
+    {
+        if ( ::_close( cachedFd ) && !::CloseHandle( fileHandle ) )
+        {
+            q->setError( QFile::UnspecifiedError, qt_error_string() );
+            ok = false;
+        }
 
-      // System handle is closed with associated file descriptor.
-      fileHandle = INVALID_HANDLE_VALUE;
-      cachedFd = -1;
+        // System handle is closed with associated file descriptor.
+        fileHandle = INVALID_HANDLE_VALUE;
+        cachedFd = -1;
 
-      return ok;
-   }
+        return ok;
+    }
 
-   if ((fileHandle == INVALID_HANDLE_VALUE || !::CloseHandle(fileHandle))) {
-      q->setError(QFile::UnspecifiedError, qt_error_string());
-      ok = false;
-   }
+    if ( ( fileHandle == INVALID_HANDLE_VALUE || !::CloseHandle( fileHandle ) ) )
+    {
+        q->setError( QFile::UnspecifiedError, qt_error_string() );
+        ok = false;
+    }
 
-   fileHandle = INVALID_HANDLE_VALUE;
-   return ok;
+    fileHandle = INVALID_HANDLE_VALUE;
+    return ok;
 }
 
 bool QFSFileEnginePrivate::nativeFlush()
 {
-   if (fh) {
-      // Buffered stdlib mode.
-      return flushFh();
-   }
+    if ( fh )
+    {
+        // Buffered stdlib mode.
+        return flushFh();
+    }
 
-   if (fd != -1) {
-      // Unbuffered stdio mode; always succeeds (no buffer).
-      return true;
-   }
+    if ( fd != -1 )
+    {
+        // Unbuffered stdio mode; always succeeds (no buffer).
+        return true;
+    }
 
-   // Windows native mode; flushing is unnecessary.
-   return true;
+    // Windows native mode; flushing is unnecessary.
+    return true;
 }
 
 bool QFSFileEnginePrivate::nativeSyncToDisk()
 {
-   if (fh || fd != -1) {
-      // stdlib / stdio mode. No API available.
-      return false;
-   }
+    if ( fh || fd != -1 )
+    {
+        // stdlib / stdio mode. No API available.
+        return false;
+    }
 
-   return FlushFileBuffers(fileHandle);
+    return FlushFileBuffers( fileHandle );
 }
 
 qint64 QFSFileEnginePrivate::nativeSize() const
 {
-   Q_Q(const QFSFileEngine);
+    Q_Q( const QFSFileEngine );
 
-   QFSFileEngine *self_FileEngine = const_cast<QFSFileEngine *>(q);
+    QFSFileEngine *self_FileEngine = const_cast<QFSFileEngine *>( q );
 
-   // do not flush, for buffered files, we should get away with ftell
-   self_FileEngine->flush();
+    // do not flush, for buffered files, we should get away with ftell
+    self_FileEngine->flush();
 
-   // Always retrive the current information
-   metaData.clearFlags(QFileSystemMetaData::SizeAttribute);
+    // Always retrive the current information
+    metaData.clearFlags( QFileSystemMetaData::SizeAttribute );
 
-   bool filled = false;
+    bool filled = false;
 
-   if (fileHandle != INVALID_HANDLE_VALUE && openMode != QIODevice::NotOpen) {
-      filled = QFileSystemEngine::fillMetaData(fileHandle, metaData, QFileSystemMetaData::SizeAttribute);
+    if ( fileHandle != INVALID_HANDLE_VALUE && openMode != QIODevice::NotOpen )
+    {
+        filled = QFileSystemEngine::fillMetaData( fileHandle, metaData, QFileSystemMetaData::SizeAttribute );
 
-   } else {
-      filled = doStat(QFileSystemMetaData::SizeAttribute);
-   }
+    }
+    else
+    {
+        filled = doStat( QFileSystemMetaData::SizeAttribute );
+    }
 
-   if (! filled) {
-      // file is most likely not open
+    if ( ! filled )
+    {
+        // file is most likely not open
 
-      self_FileEngine->setError(QFile::UnspecifiedError, qt_error_string(errno));
-      return 0;
-   }
+        self_FileEngine->setError( QFile::UnspecifiedError, qt_error_string( errno ) );
+        return 0;
+    }
 
-   return metaData.size();
+    return metaData.size();
 }
 
 qint64 QFSFileEnginePrivate::nativePos() const
 {
-   Q_Q(const QFSFileEngine);
-   QFSFileEngine *self_FileEngine = const_cast<QFSFileEngine *>(q);
+    Q_Q( const QFSFileEngine );
+    QFSFileEngine *self_FileEngine = const_cast<QFSFileEngine *>( q );
 
-   if (fh || fd != -1) {
-      // stdlib / stido mode.
-      return posFdFh();
-   }
+    if ( fh || fd != -1 )
+    {
+        // stdlib / stido mode.
+        return posFdFh();
+    }
 
-   // Windows native mode.
-   if (fileHandle == INVALID_HANDLE_VALUE) {
-      return 0;
-   }
+    // Windows native mode.
+    if ( fileHandle == INVALID_HANDLE_VALUE )
+    {
+        return 0;
+    }
 
-   LARGE_INTEGER currentFilePos;
-   LARGE_INTEGER offset;
-   offset.QuadPart = 0;
+    LARGE_INTEGER currentFilePos;
+    LARGE_INTEGER offset;
+    offset.QuadPart = 0;
 
-   if (! ::SetFilePointerEx(fileHandle, offset, &currentFilePos, FILE_CURRENT)) {
-      self_FileEngine->setError(QFile::UnspecifiedError, qt_error_string());
-      return 0;
-   }
+    if ( ! ::SetFilePointerEx( fileHandle, offset, &currentFilePos, FILE_CURRENT ) )
+    {
+        self_FileEngine->setError( QFile::UnspecifiedError, qt_error_string() );
+        return 0;
+    }
 
-   return qint64(currentFilePos.QuadPart);
+    return qint64( currentFilePos.QuadPart );
 }
 
-bool QFSFileEnginePrivate::nativeSeek(qint64 pos)
+bool QFSFileEnginePrivate::nativeSeek( qint64 pos )
 {
-   Q_Q(QFSFileEngine);
+    Q_Q( QFSFileEngine );
 
-   if (fh || fd != -1) {
-      // stdlib / stdio mode.
-      return seekFdFh(pos);
-   }
+    if ( fh || fd != -1 )
+    {
+        // stdlib / stdio mode.
+        return seekFdFh( pos );
+    }
 
-   LARGE_INTEGER currentFilePos;
-   LARGE_INTEGER offset;
-   offset.QuadPart = pos;
+    LARGE_INTEGER currentFilePos;
+    LARGE_INTEGER offset;
+    offset.QuadPart = pos;
 
-   if (!::SetFilePointerEx(fileHandle, offset, &currentFilePos, FILE_BEGIN)) {
-      q->setError(QFile::UnspecifiedError, qt_error_string());
-      return false;
-   }
+    if ( !::SetFilePointerEx( fileHandle, offset, &currentFilePos, FILE_BEGIN ) )
+    {
+        q->setError( QFile::UnspecifiedError, qt_error_string() );
+        return false;
+    }
 
-   return true;
+    return true;
 }
 
-qint64 QFSFileEnginePrivate::nativeRead(char *data, qint64 maxlen)
+qint64 QFSFileEnginePrivate::nativeRead( char *data, qint64 maxlen )
 {
-   Q_Q(QFSFileEngine);
+    Q_Q( QFSFileEngine );
 
-   if (fh || fd != -1) {
-      // stdio / stdlib mode.
-      if (fh && nativeIsSequential() && feof(fh)) {
-         q->setError(QFile::ReadError, qt_error_string(int(errno)));
-         return -1;
-      }
-
-      return readFdFh(data, maxlen);
-   }
-
-   // Windows native mode.
-   if (fileHandle == INVALID_HANDLE_VALUE) {
-      return -1;
-   }
-
-   qint64 bytesToRead = maxlen;
-
-   // Reading on Windows fails with ERROR_NO_SYSTEM_RESOURCES when
-   // the chunks are too large, so we limit the block size to 32MB.
-   static constexpr const qint64 maxBlockSize = 32 * 1024 * 1024;
-
-   qint64 totalRead = 0;
-
-   do {
-      DWORD blockSize = qMin(bytesToRead, maxBlockSize);
-      DWORD bytesRead;
-
-      if (! ReadFile(fileHandle, data + totalRead, blockSize, &bytesRead, nullptr)) {
-         if (totalRead == 0) {
-            // Note: only return failure if the first ReadFile fails.
-            q->setError(QFile::ReadError, qt_error_string());
+    if ( fh || fd != -1 )
+    {
+        // stdio / stdlib mode.
+        if ( fh && nativeIsSequential() && feof( fh ) )
+        {
+            q->setError( QFile::ReadError, qt_error_string( int( errno ) ) );
             return -1;
-         }
+        }
 
-         break;
-      }
+        return readFdFh( data, maxlen );
+    }
 
-      if (bytesRead == 0) {
-         break;
-      }
+    // Windows native mode.
+    if ( fileHandle == INVALID_HANDLE_VALUE )
+    {
+        return -1;
+    }
 
-      totalRead += bytesRead;
-      bytesToRead -= bytesRead;
+    qint64 bytesToRead = maxlen;
 
-   } while (totalRead < maxlen);
+    // Reading on Windows fails with ERROR_NO_SYSTEM_RESOURCES when
+    // the chunks are too large, so we limit the block size to 32MB.
+    static constexpr const qint64 maxBlockSize = 32 * 1024 * 1024;
 
-   return totalRead;
+    qint64 totalRead = 0;
+
+    do
+    {
+        DWORD blockSize = qMin( bytesToRead, maxBlockSize );
+        DWORD bytesRead;
+
+        if ( ! ReadFile( fileHandle, data + totalRead, blockSize, &bytesRead, nullptr ) )
+        {
+            if ( totalRead == 0 )
+            {
+                // Note: only return failure if the first ReadFile fails.
+                q->setError( QFile::ReadError, qt_error_string() );
+                return -1;
+            }
+
+            break;
+        }
+
+        if ( bytesRead == 0 )
+        {
+            break;
+        }
+
+        totalRead += bytesRead;
+        bytesToRead -= bytesRead;
+
+    }
+    while ( totalRead < maxlen );
+
+    return totalRead;
 }
 
-qint64 QFSFileEnginePrivate::nativeReadLine(char *data, qint64 maxlen)
+qint64 QFSFileEnginePrivate::nativeReadLine( char *data, qint64 maxlen )
 {
-   Q_Q(QFSFileEngine);
+    Q_Q( QFSFileEngine );
 
-   if (fh || fd != -1) {
-      // stdio / stdlib mode.
-      return readLineFdFh(data, maxlen);
-   }
+    if ( fh || fd != -1 )
+    {
+        // stdio / stdlib mode.
+        return readLineFdFh( data, maxlen );
+    }
 
-   // Windows native mode.
-   if (fileHandle == INVALID_HANDLE_VALUE) {
-      return -1;
-   }
+    // Windows native mode.
+    if ( fileHandle == INVALID_HANDLE_VALUE )
+    {
+        return -1;
+    }
 
-   // ### No equivalent in Win32?
-   return q->QAbstractFileEngine::readLine(data, maxlen);
+    // ### No equivalent in Win32?
+    return q->QAbstractFileEngine::readLine( data, maxlen );
 }
 
-qint64 QFSFileEnginePrivate::nativeWrite(const char *data, qint64 len)
+qint64 QFSFileEnginePrivate::nativeWrite( const char *data, qint64 len )
 {
-   Q_Q(QFSFileEngine);
+    Q_Q( QFSFileEngine );
 
-   if (fh || fd != -1) {
-      // stdio / stdlib mode.
-      return writeFdFh(data, len);
-   }
+    if ( fh || fd != -1 )
+    {
+        // stdio / stdlib mode.
+        return writeFdFh( data, len );
+    }
 
-   // Windows native mode.
-   if (fileHandle == INVALID_HANDLE_VALUE) {
-      return -1;
-   }
+    // Windows native mode.
+    if ( fileHandle == INVALID_HANDLE_VALUE )
+    {
+        return -1;
+    }
 
-   qint64 bytesToWrite = len;
+    qint64 bytesToWrite = len;
 
-   // Writing on Windows fails with ERROR_NO_SYSTEM_RESOURCES when
-   // the chunks are too large, so we limit the block size to 32MB.
-   static constexpr const qint64 maxBlockSize = 32 * 1024 * 1024;
+    // Writing on Windows fails with ERROR_NO_SYSTEM_RESOURCES when
+    // the chunks are too large, so we limit the block size to 32MB.
+    static constexpr const qint64 maxBlockSize = 32 * 1024 * 1024;
 
-   qint64 totalWritten = 0;
+    qint64 totalWritten = 0;
 
-   do {
-      DWORD blockSize = qMin(bytesToWrite, maxBlockSize);
-      DWORD bytesWritten;
+    do
+    {
+        DWORD blockSize = qMin( bytesToWrite, maxBlockSize );
+        DWORD bytesWritten;
 
-      if (!WriteFile(fileHandle, data + totalWritten, blockSize, &bytesWritten, nullptr)) {
-         if (totalWritten == 0) {
-            // Note: Only return error if the first WriteFile failed.
-            q->setError(QFile::WriteError, qt_error_string());
-            return -1;
-         }
+        if ( !WriteFile( fileHandle, data + totalWritten, blockSize, &bytesWritten, nullptr ) )
+        {
+            if ( totalWritten == 0 )
+            {
+                // Note: Only return error if the first WriteFile failed.
+                q->setError( QFile::WriteError, qt_error_string() );
+                return -1;
+            }
 
-         break;
-      }
+            break;
+        }
 
-      if (bytesWritten == 0) {
-         break;
-      }
+        if ( bytesWritten == 0 )
+        {
+            break;
+        }
 
-      totalWritten += bytesWritten;
-      bytesToWrite -= bytesWritten;
-   } while (totalWritten < len);
+        totalWritten += bytesWritten;
+        bytesToWrite -= bytesWritten;
+    }
+    while ( totalWritten < len );
 
-   return qint64(totalWritten);
+    return qint64( totalWritten );
 }
 
 int QFSFileEnginePrivate::nativeHandle() const
 {
-   if (fh || fd != -1) {
-      return fh ? QT_FILENO(fh) : fd;
-   }
+    if ( fh || fd != -1 )
+    {
+        return fh ? QT_FILENO( fh ) : fd;
+    }
 
-   if (cachedFd != -1) {
-      return cachedFd;
-   }
+    if ( cachedFd != -1 )
+    {
+        return cachedFd;
+    }
 
-   int flags = 0;
+    int flags = 0;
 
-   if (openMode & QIODevice::Append) {
-      flags |= _O_APPEND;
-   }
+    if ( openMode & QIODevice::Append )
+    {
+        flags |= _O_APPEND;
+    }
 
-   if (!(openMode & QIODevice::WriteOnly)) {
-      flags |= _O_RDONLY;
-   }
+    if ( !( openMode & QIODevice::WriteOnly ) )
+    {
+        flags |= _O_RDONLY;
+    }
 
-   cachedFd = _open_osfhandle((intptr_t) fileHandle, flags);
+    cachedFd = _open_osfhandle( ( intptr_t ) fileHandle, flags );
 
-   return cachedFd;
+    return cachedFd;
 
 }
 
 bool QFSFileEnginePrivate::nativeIsSequential() const
 {
-   HANDLE handle = fileHandle;
+    HANDLE handle = fileHandle;
 
-   if (fh || fd != -1) {
-      handle = (HANDLE)_get_osfhandle(fh ? QT_FILENO(fh) : fd);
-   }
+    if ( fh || fd != -1 )
+    {
+        handle = ( HANDLE )_get_osfhandle( fh ? QT_FILENO( fh ) : fd );
+    }
 
-   if (handle == INVALID_HANDLE_VALUE) {
-      return false;
-   }
+    if ( handle == INVALID_HANDLE_VALUE )
+    {
+        return false;
+    }
 
-   DWORD fileType = GetFileType(handle);
+    DWORD fileType = GetFileType( handle );
 
-   return (fileType == FILE_TYPE_CHAR) || (fileType == FILE_TYPE_PIPE);
+    return ( fileType == FILE_TYPE_CHAR ) || ( fileType == FILE_TYPE_PIPE );
 }
 
 bool QFSFileEngine::remove()
 {
-   Q_D(QFSFileEngine);
+    Q_D( QFSFileEngine );
 
-   QSystemError error;
-   bool retval = QFileSystemEngine::removeFile(d->fileEntry, error);
+    QSystemError error;
+    bool retval = QFileSystemEngine::removeFile( d->fileEntry, error );
 
-   if (! retval) {
-      setError(QFile::RemoveError, error.toString());
-   }
+    if ( ! retval )
+    {
+        setError( QFile::RemoveError, error.toString() );
+    }
 
-   return retval;
+    return retval;
 }
 
-bool QFSFileEngine::copy(const QString &copyName)
+bool QFSFileEngine::copy( const QString &copyName )
 {
-   Q_D(QFSFileEngine);
+    Q_D( QFSFileEngine );
 
-   QSystemError error;
-   bool retval = QFileSystemEngine::copyFile(d->fileEntry, QFileSystemEntry(copyName), error);
+    QSystemError error;
+    bool retval = QFileSystemEngine::copyFile( d->fileEntry, QFileSystemEntry( copyName ), error );
 
-   if (! retval) {
-      setError(QFile::CopyError, error.toString());
-   }
+    if ( ! retval )
+    {
+        setError( QFile::CopyError, error.toString() );
+    }
 
-   return retval;
+    return retval;
 }
 
-bool QFSFileEngine::rename(const QString &newName)
+bool QFSFileEngine::rename( const QString &newName )
 {
-   Q_D(QFSFileEngine);
+    Q_D( QFSFileEngine );
 
-   QSystemError error;
-   bool retval = QFileSystemEngine::renameFile(d->fileEntry, QFileSystemEntry(newName), error);
+    QSystemError error;
+    bool retval = QFileSystemEngine::renameFile( d->fileEntry, QFileSystemEntry( newName ), error );
 
-   if (! retval) {
-      setError(QFile::RenameError, error.toString());
-   }
+    if ( ! retval )
+    {
+        setError( QFile::RenameError, error.toString() );
+    }
 
-   return retval;
+    return retval;
 }
 
-bool QFSFileEngine::renameOverwrite(const QString &newName)
+bool QFSFileEngine::renameOverwrite( const QString &newName )
 {
-   Q_D(QFSFileEngine);
+    Q_D( QFSFileEngine );
 
-   bool retval = ::MoveFileEx(&d->fileEntry.nativeFilePath().toStdWString()[0],
-         &QFileSystemEntry(newName).nativeFilePath().toStdWString()[0], MOVEFILE_REPLACE_EXISTING) != 0;
+    bool retval = ::MoveFileEx( &d->fileEntry.nativeFilePath().toStdWString()[0],
+                                &QFileSystemEntry( newName ).nativeFilePath().toStdWString()[0], MOVEFILE_REPLACE_EXISTING ) != 0;
 
-   if (! retval) {
-      setError(QFile::RenameError, QSystemError(::GetLastError(), QSystemError::NativeError).toString());
-   }
+    if ( ! retval )
+    {
+        setError( QFile::RenameError, QSystemError( ::GetLastError(), QSystemError::NativeError ).toString() );
+    }
 
-   return retval;
+    return retval;
 }
 
-bool QFSFileEngine::mkdir(const QString &name, bool createParentDirectories) const
+bool QFSFileEngine::mkdir( const QString &name, bool createParentDirectories ) const
 {
-   return QFileSystemEngine::createDirectory(QFileSystemEntry(name), createParentDirectories);
+    return QFileSystemEngine::createDirectory( QFileSystemEntry( name ), createParentDirectories );
 }
 
-bool QFSFileEngine::rmdir(const QString &name, bool recurseParentDirectories) const
+bool QFSFileEngine::rmdir( const QString &name, bool recurseParentDirectories ) const
 {
-   return QFileSystemEngine::removeDirectory(QFileSystemEntry(name), recurseParentDirectories);
+    return QFileSystemEngine::removeDirectory( QFileSystemEntry( name ), recurseParentDirectories );
 }
 
 bool QFSFileEngine::caseSensitive() const
 {
-   return false;
+    return false;
 }
 
-bool QFSFileEngine::setCurrentPath(const QString &path)
+bool QFSFileEngine::setCurrentPath( const QString &path )
 {
-   return QFileSystemEngine::setCurrentPath(QFileSystemEntry(path));
+    return QFileSystemEngine::setCurrentPath( QFileSystemEntry( path ) );
 }
 
-QString QFSFileEngine::currentPath(const QString &fileName)
+QString QFSFileEngine::currentPath( const QString &fileName )
 {
-   QString retval;
+    QString retval;
 
-   // if filename is a drive: then get the pwd of that drive
-   if (fileName.length() >= 2 && fileName.at(0).isLetter() && fileName.at(1) == ':') {
-      int drv = fileName.toUpper().at(0).toLatin1() - 'A' + 1;
+    // if filename is a drive: then get the pwd of that drive
+    if ( fileName.length() >= 2 && fileName.at( 0 ).isLetter() && fileName.at( 1 ) == ':' )
+    {
+        int drv = fileName.toUpper().at( 0 ).toLatin1() - 'A' + 1;
 
-      if (_getdrive() != drv) {
-         std::wstring buffer(CS_PATH_LEN, L'\0');
-         ::_wgetdcwd(drv, &buffer[0], CS_PATH_LEN);
+        if ( _getdrive() != drv )
+        {
+            std::wstring buffer( CS_PATH_LEN, L'\0' );
+            ::_wgetdcwd( drv, &buffer[0], CS_PATH_LEN );
 
-         retval = QString::fromStdWString(buffer);
-      }
-   }
+            retval = QString::fromStdWString( buffer );
+        }
+    }
 
-   if (retval.isEmpty()) {
-      // just the pwd
-      retval = QFileSystemEngine::currentPath().filePath();
-   }
+    if ( retval.isEmpty() )
+    {
+        // just the pwd
+        retval = QFileSystemEngine::currentPath().filePath();
+    }
 
-   if (retval.length() >= 2 && retval[1] == ':' && retval[0].isLower()) {
-      // Force uppercase drive letters
-      retval.replace(0, 1, retval.at(0).toUpper());
-   }
+    if ( retval.length() >= 2 && retval[1] == ':' && retval[0].isLower() )
+    {
+        // Force uppercase drive letters
+        retval.replace( 0, 1, retval.at( 0 ).toUpper() );
+    }
 
-   return retval;
+    return retval;
 }
 
 QString QFSFileEngine::homePath()
 {
-   return QFileSystemEngine::homePath();
+    return QFileSystemEngine::homePath();
 }
 
 QString QFSFileEngine::rootPath()
 {
-   return QFileSystemEngine::rootPath();
+    return QFileSystemEngine::rootPath();
 }
 
 QString QFSFileEngine::tempPath()
 {
-   return QFileSystemEngine::tempPath();
+    return QFileSystemEngine::tempPath();
 }
 
 QFileInfoList QFSFileEngine::drives()
 {
-   QFileInfoList retval;
+    QFileInfoList retval;
 
 #if defined(Q_OS_WIN)
-   const UINT oldErrorMode = ::SetErrorMode(SEM_FAILCRITICALERRORS | SEM_NOOPENFILEERRORBOX);
-   quint32 driveBits = (quint32) GetLogicalDrives() & 0x3ffffff;
-   ::SetErrorMode(oldErrorMode);
+    const UINT oldErrorMode = ::SetErrorMode( SEM_FAILCRITICALERRORS | SEM_NOOPENFILEERRORBOX );
+    quint32 driveBits = ( quint32 ) GetLogicalDrives() & 0x3ffffff;
+    ::SetErrorMode( oldErrorMode );
 #endif
 
-   char driveName[] = "A:/";
+    char driveName[] = "A:/";
 
-   while (driveBits) {
-      if (driveBits & 1) {
-         retval.append(QFileInfo(driveName));
-      }
+    while ( driveBits )
+    {
+        if ( driveBits & 1 )
+        {
+            retval.append( QFileInfo( driveName ) );
+        }
 
-      driveName[0]++;
-      driveBits = driveBits >> 1;
-   }
+        driveName[0]++;
+        driveBits = driveBits >> 1;
+    }
 
-   return retval;
+    return retval;
 }
 
-bool QFSFileEnginePrivate::doStat(QFileSystemMetaData::MetaDataFlags flags) const
+bool QFSFileEnginePrivate::doStat( QFileSystemMetaData::MetaDataFlags flags ) const
 {
-   if (! tried_stat || ! metaData.hasFlags(flags)) {
-      tried_stat = true;
+    if ( ! tried_stat || ! metaData.hasFlags( flags ) )
+    {
+        tried_stat = true;
 
-      int localFd = fd;
+        int localFd = fd;
 
-      if (fh && fileEntry.isEmpty()) {
-         localFd = QT_FILENO(fh);
-      }
+        if ( fh && fileEntry.isEmpty() )
+        {
+            localFd = QT_FILENO( fh );
+        }
 
-      if (localFd != -1) {
-         QFileSystemEngine::fillMetaData(localFd, metaData, flags);
-      }
+        if ( localFd != -1 )
+        {
+            QFileSystemEngine::fillMetaData( localFd, metaData, flags );
+        }
 
-      if (metaData.missingFlags(flags) && !fileEntry.isEmpty()) {
-         QFileSystemEngine::fillMetaData(fileEntry, metaData, metaData.missingFlags(flags));
-      }
-   }
+        if ( metaData.missingFlags( flags ) && !fileEntry.isEmpty() )
+        {
+            QFileSystemEngine::fillMetaData( fileEntry, metaData, metaData.missingFlags( flags ) );
+        }
+    }
 
-   return metaData.exists();
+    return metaData.exists();
 }
 
-bool QFSFileEngine::link(const QString &newName)
+bool QFSFileEngine::link( const QString &newName )
 {
-   bool retval      = false;
-   QString linkName = newName;
+    bool retval      = false;
+    QString linkName = newName;
 
-   IShellLink *psl;
-   bool neededCoInit = false;
+    IShellLink *psl;
+    bool neededCoInit = false;
 
-   HRESULT hres = CoCreateInstance(CLSID_ShellLink, nullptr, CLSCTX_INPROC_SERVER, IID_IShellLink, (void **)&psl);
+    HRESULT hres = CoCreateInstance( CLSID_ShellLink, nullptr, CLSCTX_INPROC_SERVER, IID_IShellLink, ( void ** )&psl );
 
-   if (hres == CO_E_NOTINITIALIZED) {
-      // COM was not initialized
-      neededCoInit = true;
-      CoInitialize(nullptr);
-      hres = CoCreateInstance(CLSID_ShellLink, nullptr, CLSCTX_INPROC_SERVER, IID_IShellLink, (void **)&psl);
-   }
+    if ( hres == CO_E_NOTINITIALIZED )
+    {
+        // COM was not initialized
+        neededCoInit = true;
+        CoInitialize( nullptr );
+        hres = CoCreateInstance( CLSID_ShellLink, nullptr, CLSCTX_INPROC_SERVER, IID_IShellLink, ( void ** )&psl );
+    }
 
-   if (SUCCEEDED(hres)) {
-      QString tmp = this->fileName(AbsoluteName).replace('/', '\\');
+    if ( SUCCEEDED( hres ) )
+    {
+        QString tmp = this->fileName( AbsoluteName ).replace( '/', '\\' );
 
-      hres = psl->SetPath(&tmp.toStdWString()[0]);
+        hres = psl->SetPath( &tmp.toStdWString()[0] );
 
-      if (SUCCEEDED(hres)) {
-         tmp = this->fileName(AbsolutePathName).replace('/', '\\');
+        if ( SUCCEEDED( hres ) )
+        {
+            tmp = this->fileName( AbsolutePathName ).replace( '/', '\\' );
 
-         hres = psl->SetWorkingDirectory(&tmp.toStdWString()[0]);
+            hres = psl->SetWorkingDirectory( &tmp.toStdWString()[0] );
 
-         if (SUCCEEDED(hres)) {
-            IPersistFile *ppf;
-            hres = psl->QueryInterface(IID_IPersistFile, (void **)&ppf);
+            if ( SUCCEEDED( hres ) )
+            {
+                IPersistFile *ppf;
+                hres = psl->QueryInterface( IID_IPersistFile, ( void ** )&ppf );
 
-            if (SUCCEEDED(hres)) {
-               hres = ppf->Save(&linkName.toStdWString()[0], TRUE);
+                if ( SUCCEEDED( hres ) )
+                {
+                    hres = ppf->Save( &linkName.toStdWString()[0], TRUE );
 
-               if (SUCCEEDED(hres)) {
-                  retval = true;
-               }
+                    if ( SUCCEEDED( hres ) )
+                    {
+                        retval = true;
+                    }
 
-               ppf->Release();
+                    ppf->Release();
+                }
             }
-         }
-      }
+        }
 
-      psl->Release();
-   }
+        psl->Release();
+    }
 
-   if (! retval) {
-      setError(QFile::RenameError, qt_error_string());
-   }
+    if ( ! retval )
+    {
+        setError( QFile::RenameError, qt_error_string() );
+    }
 
-   if (neededCoInit) {
-      CoUninitialize();
-   }
+    if ( neededCoInit )
+    {
+        CoUninitialize();
+    }
 
-   return retval;
+    return retval;
 }
 
-QAbstractFileEngine::FileFlags QFSFileEngine::fileFlags(QAbstractFileEngine::FileFlags type) const
+QAbstractFileEngine::FileFlags QFSFileEngine::fileFlags( QAbstractFileEngine::FileFlags type ) const
 {
-   Q_D(const QFSFileEngine);
+    Q_D( const QFSFileEngine );
 
-   if (type & Refresh) {
-      d->metaData.clear();
-   }
+    if ( type & Refresh )
+    {
+        d->metaData.clear();
+    }
 
-   QAbstractFileEngine::FileFlags retval = Qt::EmptyFlag;
+    QAbstractFileEngine::FileFlags retval = Qt::EmptyFlag;
 
-   if (type & FlagsMask) {
-      retval |= LocalDiskFlag;
-   }
+    if ( type & FlagsMask )
+    {
+        retval |= LocalDiskFlag;
+    }
 
-   bool exists;
-   {
-      QFileSystemMetaData::MetaDataFlags queryFlags = Qt::EmptyFlag;
-      queryFlags |= QFileSystemMetaData::MetaDataFlags(uint(type)) & QFileSystemMetaData::Permissions;
+    bool exists;
+    {
+        QFileSystemMetaData::MetaDataFlags queryFlags = Qt::EmptyFlag;
+        queryFlags |= QFileSystemMetaData::MetaDataFlags( uint( type ) ) & QFileSystemMetaData::Permissions;
 
-      // AliasType and BundleType are 0x0
-      if (type & TypesMask)
-         queryFlags |= QFileSystemMetaData::AliasType
-               | QFileSystemMetaData::LinkType
-               | QFileSystemMetaData::FileType
-               | QFileSystemMetaData::DirectoryType
-               | QFileSystemMetaData::BundleType;
+        // AliasType and BundleType are 0x0
+        if ( type & TypesMask )
+            queryFlags |= QFileSystemMetaData::AliasType
+                          | QFileSystemMetaData::LinkType
+                          | QFileSystemMetaData::FileType
+                          | QFileSystemMetaData::DirectoryType
+                          | QFileSystemMetaData::BundleType;
 
-      if (type & FlagsMask) {
-         queryFlags |= QFileSystemMetaData::HiddenAttribute | QFileSystemMetaData::ExistsAttribute;
-      }
+        if ( type & FlagsMask )
+        {
+            queryFlags |= QFileSystemMetaData::HiddenAttribute | QFileSystemMetaData::ExistsAttribute;
+        }
 
-      queryFlags |= QFileSystemMetaData::LinkType;
+        queryFlags |= QFileSystemMetaData::LinkType;
 
-      exists = d->doStat(queryFlags);
-   }
+        exists = d->doStat( queryFlags );
+    }
 
-   if (exists && (type & PermsMask)) {
-      retval |= FileFlags(uint(d->metaData.permissions()));
-   }
+    if ( exists && ( type & PermsMask ) )
+    {
+        retval |= FileFlags( uint( d->metaData.permissions() ) );
+    }
 
-   if (type & TypesMask) {
-      if ((type & LinkType) && d->metaData.isLegacyLink()) {
-         retval |= LinkType;
-      }
+    if ( type & TypesMask )
+    {
+        if ( ( type & LinkType ) && d->metaData.isLegacyLink() )
+        {
+            retval |= LinkType;
+        }
 
-      if (d->metaData.isDirectory()) {
-         retval |= DirectoryType;
-      } else {
-         retval |= FileType;
-      }
-   }
+        if ( d->metaData.isDirectory() )
+        {
+            retval |= DirectoryType;
+        }
+        else
+        {
+            retval |= FileType;
+        }
+    }
 
-   if (type & FlagsMask) {
-      if (d->metaData.exists()) {
-         retval |= ExistsFlag;
+    if ( type & FlagsMask )
+    {
+        if ( d->metaData.exists() )
+        {
+            retval |= ExistsFlag;
 
-         if (d->fileEntry.isRoot()) {
-            retval |= RootFlag;
+            if ( d->fileEntry.isRoot() )
+            {
+                retval |= RootFlag;
 
-         } else if (d->metaData.isHidden()) {
-            retval |= HiddenFlag;
-         }
-      }
-   }
+            }
+            else if ( d->metaData.isHidden() )
+            {
+                retval |= HiddenFlag;
+            }
+        }
+    }
 
-   return retval;
+    return retval;
 }
 
-QString QFSFileEngine::fileName(FileName file) const
+QString QFSFileEngine::fileName( FileName file ) const
 {
-   Q_D(const QFSFileEngine);
+    Q_D( const QFSFileEngine );
 
-   if (file == BaseName) {
-      return d->fileEntry.fileName();
+    if ( file == BaseName )
+    {
+        return d->fileEntry.fileName();
 
-   } else if (file == PathName) {
-      return d->fileEntry.path();
+    }
+    else if ( file == PathName )
+    {
+        return d->fileEntry.path();
 
-   } else if (file == AbsoluteName || file == AbsolutePathName) {
-      QString retval;
+    }
+    else if ( file == AbsoluteName || file == AbsolutePathName )
+    {
+        QString retval;
 
-      if (! isRelativePath()) {
+        if ( ! isRelativePath() )
+        {
 
-         if (d->fileEntry.filePath().startsWith('/') ||  d->fileEntry.filePath().size() == 2 ||
-               (d->fileEntry.filePath().size() > 2 && d->fileEntry.filePath().at(2) != '/') ||
-               d->fileEntry.filePath().contains("/../") || d->fileEntry.filePath().contains("/./") ||
-               d->fileEntry.filePath().endsWith("/..")  || d->fileEntry.filePath().endsWith("/.")) {
+            if ( d->fileEntry.filePath().startsWith( '/' ) ||  d->fileEntry.filePath().size() == 2 ||
+                    ( d->fileEntry.filePath().size() > 2 && d->fileEntry.filePath().at( 2 ) != '/' ) ||
+                    d->fileEntry.filePath().contains( "/../" ) || d->fileEntry.filePath().contains( "/./" ) ||
+                    d->fileEntry.filePath().endsWith( "/.." )  || d->fileEntry.filePath().endsWith( "/." ) )
+            {
 
-            // an absolute path to the current drive, so \a.txt -> Z:\a.txt
-            // a drive letter that needs to get a working dir appended
-            // a drive-relative path, so Z:a.txt -> Z:\currentpath\a.txt
+                // an absolute path to the current drive, so \a.txt -> Z:\a.txt
+                // a drive letter that needs to get a working dir appended
+                // a drive-relative path, so Z:a.txt -> Z:\currentpath\a.txt
 
-            retval = QDir::fromNativeSeparators(QFileSystemEngine::nativeAbsoluteFilePath(d->fileEntry.filePath()));
+                retval = QDir::fromNativeSeparators( QFileSystemEngine::nativeAbsoluteFilePath( d->fileEntry.filePath() ) );
 
-         } else
+            }
+            else
 
-         {
-            retval = d->fileEntry.filePath();
-         }
+            {
+                retval = d->fileEntry.filePath();
+            }
 
-      } else {
-         retval = QDir::cleanPath(QDir::currentPath() + '/' + d->fileEntry.filePath());
-      }
+        }
+        else
+        {
+            retval = QDir::cleanPath( QDir::currentPath() + '/' + d->fileEntry.filePath() );
+        }
 
-      // The path should be absolute at this point.
-      // Absolute paths begin with the directory separator "/"
-      // (optionally preceded by a drive specification under Windows).
+        // The path should be absolute at this point.
+        // Absolute paths begin with the directory separator "/"
+        // (optionally preceded by a drive specification under Windows).
 
-      if (retval.at(0) != '/' && retval[0].isLower()) {
-         Q_ASSERT(retval.length() >= 2);
-         Q_ASSERT(retval.at(0).isLetter());
-         Q_ASSERT(retval.at(1) == ':');
+        if ( retval.at( 0 ) != '/' && retval[0].isLower() )
+        {
+            Q_ASSERT( retval.length() >= 2 );
+            Q_ASSERT( retval.at( 0 ).isLetter() );
+            Q_ASSERT( retval.at( 1 ) == ':' );
 
-         // Force uppercase drive letters.
-         retval.replace(0, 1, retval.at(0).toUpper());
-      }
+            // Force uppercase drive letters.
+            retval.replace( 0, 1, retval.at( 0 ).toUpper() );
+        }
 
-      if (file == AbsolutePathName) {
-         int slash = retval.lastIndexOf('/');
+        if ( file == AbsolutePathName )
+        {
+            int slash = retval.lastIndexOf( '/' );
 
-         if (slash < 0) {
-            return retval;
+            if ( slash < 0 )
+            {
+                return retval;
 
-         } else if (retval.at(0) != '/' && slash == 2) {
-            return retval.left(3);   // include the slash
+            }
+            else if ( retval.at( 0 ) != '/' && slash == 2 )
+            {
+                return retval.left( 3 ); // include the slash
 
-         } else {
-            return retval.left(slash > 0 ? slash : 1);
-         }
-      }
+            }
+            else
+            {
+                return retval.left( slash > 0 ? slash : 1 );
+            }
+        }
 
-      return retval;
+        return retval;
 
-   } else if (file == CanonicalName || file == CanonicalPathName) {
-      if (! (fileFlags(ExistsFlag) & ExistsFlag)) {
-         return QString();
-      }
+    }
+    else if ( file == CanonicalName || file == CanonicalPathName )
+    {
+        if ( ! ( fileFlags( ExistsFlag ) & ExistsFlag ) )
+        {
+            return QString();
+        }
 
-      QFileSystemEntry entry(QFileSystemEngine::canonicalName(QFileSystemEntry(fileName(AbsoluteName)), d->metaData));
+        QFileSystemEntry entry( QFileSystemEngine::canonicalName( QFileSystemEntry( fileName( AbsoluteName ) ), d->metaData ) );
 
-      if (file == CanonicalPathName) {
-         return entry.path();
-      }
+        if ( file == CanonicalPathName )
+        {
+            return entry.path();
+        }
 
-      return entry.filePath();
+        return entry.filePath();
 
-   } else if (file == LinkName) {
-      return QFileSystemEngine::getLinkTarget(d->fileEntry, d->metaData).filePath();
+    }
+    else if ( file == LinkName )
+    {
+        return QFileSystemEngine::getLinkTarget( d->fileEntry, d->metaData ).filePath();
 
-   } else if (file == BundleName) {
-      return QString();
-   }
+    }
+    else if ( file == BundleName )
+    {
+        return QString();
+    }
 
-   return d->fileEntry.filePath();
+    return d->fileEntry.filePath();
 }
 
 bool QFSFileEngine::isRelativePath() const
 {
-   Q_D(const QFSFileEngine);
+    Q_D( const QFSFileEngine );
 
-   // drive, e.g. "a:", or UNC root, e.q. "//"
-   return d->fileEntry.isRelative();
+    // drive, e.g. "a:", or UNC root, e.q. "//"
+    return d->fileEntry.isRelative();
 }
 
-uint QFSFileEngine::ownerId(FileOwner) const
+uint QFSFileEngine::ownerId( FileOwner ) const
 {
-   static constexpr const uint nobodyID = (uint) - 2;
-   return nobodyID;
+    static constexpr const uint nobodyID = ( uint ) - 2;
+    return nobodyID;
 }
 
-QString QFSFileEngine::owner(FileOwner own) const
+QString QFSFileEngine::owner( FileOwner own ) const
 {
-   Q_D(const QFSFileEngine);
-   return QFileSystemEngine::owner(d->fileEntry, own);
+    Q_D( const QFSFileEngine );
+    return QFileSystemEngine::owner( d->fileEntry, own );
 }
 
-bool QFSFileEngine::setPermissions(uint perms)
+bool QFSFileEngine::setPermissions( uint perms )
 {
-   Q_D(QFSFileEngine);
+    Q_D( QFSFileEngine );
 
-   QSystemError error;
-   bool retval = QFileSystemEngine::setPermissions(d->fileEntry, QFile::Permissions(perms), error);
+    QSystemError error;
+    bool retval = QFileSystemEngine::setPermissions( d->fileEntry, QFile::Permissions( perms ), error );
 
-   if (! retval) {
-      setError(QFile::PermissionsError, error.toString());
-   }
+    if ( ! retval )
+    {
+        setError( QFile::PermissionsError, error.toString() );
+    }
 
-   return retval;
+    return retval;
 }
 
-bool QFSFileEngine::setSize(qint64 size)
+bool QFSFileEngine::setSize( qint64 size )
 {
-   Q_D(QFSFileEngine);
+    Q_D( QFSFileEngine );
 
-   if (d->fileHandle != INVALID_HANDLE_VALUE || d->fd != -1 || d->fh) {
-      // resize open file
-      HANDLE fh = d->fileHandle;
+    if ( d->fileHandle != INVALID_HANDLE_VALUE || d->fd != -1 || d->fh )
+    {
+        // resize open file
+        HANDLE fh = d->fileHandle;
 
-      if (fh == INVALID_HANDLE_VALUE) {
-         if (d->fh) {
-            fh = (HANDLE)_get_osfhandle(QT_FILENO(d->fh));
-         } else {
-            fh = (HANDLE)_get_osfhandle(d->fd);
-         }
-      }
+        if ( fh == INVALID_HANDLE_VALUE )
+        {
+            if ( d->fh )
+            {
+                fh = ( HANDLE )_get_osfhandle( QT_FILENO( d->fh ) );
+            }
+            else
+            {
+                fh = ( HANDLE )_get_osfhandle( d->fd );
+            }
+        }
 
-      if (fh == INVALID_HANDLE_VALUE) {
-         return false;
-      }
+        if ( fh == INVALID_HANDLE_VALUE )
+        {
+            return false;
+        }
 
-      qint64 currentPos = pos();
+        qint64 currentPos = pos();
 
-      if (seek(size) && SetEndOfFile(fh)) {
-         seek(qMin(currentPos, size));
-         return true;
-      }
+        if ( seek( size ) && SetEndOfFile( fh ) )
+        {
+            seek( qMin( currentPos, size ) );
+            return true;
+        }
 
-      seek(currentPos);
-      return false;
-   }
+        seek( currentPos );
+        return false;
+    }
 
-   if (!d->fileEntry.isEmpty()) {
-      // resize file on disk
-      QFile file(d->fileEntry.filePath());
+    if ( !d->fileEntry.isEmpty() )
+    {
+        // resize file on disk
+        QFile file( d->fileEntry.filePath() );
 
-      if (file.open(QFile::ReadWrite)) {
-         bool retval = file.resize(size);
+        if ( file.open( QFile::ReadWrite ) )
+        {
+            bool retval = file.resize( size );
 
-         if (!retval) {
-            setError(QFile::ResizeError, file.errorString());
-         }
+            if ( !retval )
+            {
+                setError( QFile::ResizeError, file.errorString() );
+            }
 
-         return retval;
-      }
-   }
+            return retval;
+        }
+    }
 
-   return false;
+    return false;
 }
 
-QDateTime QFSFileEngine::fileTime(FileTime time) const
+QDateTime QFSFileEngine::fileTime( FileTime time ) const
 {
-   Q_D(const QFSFileEngine);
+    Q_D( const QFSFileEngine );
 
-   if (d->doStat(QFileSystemMetaData::Times)) {
-      return d->metaData.fileTime(time);
-   }
+    if ( d->doStat( QFileSystemMetaData::Times ) )
+    {
+        return d->metaData.fileTime( time );
+    }
 
-   return QDateTime();
+    return QDateTime();
 }
 
-uchar *QFSFileEnginePrivate::map(qint64 offset, qint64 size, QFile::MemoryMapFlags flags)
+uchar *QFSFileEnginePrivate::map( qint64 offset, qint64 size, QFile::MemoryMapFlags flags )
 {
-   (void) flags;
+    ( void ) flags;
 
-   Q_Q(QFSFileEngine);
+    Q_Q( QFSFileEngine );
 
-   if (openMode == QFile::NotOpen) {
-      q->setError(QFile::PermissionsError, qt_error_string(ERROR_ACCESS_DENIED));
-      return nullptr;
-   }
+    if ( openMode == QFile::NotOpen )
+    {
+        q->setError( QFile::PermissionsError, qt_error_string( ERROR_ACCESS_DENIED ) );
+        return nullptr;
+    }
 
-   if (offset == 0 && size == 0) {
-      q->setError(QFile::UnspecifiedError, qt_error_string(ERROR_INVALID_PARAMETER));
-      return nullptr;
-   }
+    if ( offset == 0 && size == 0 )
+    {
+        q->setError( QFile::UnspecifiedError, qt_error_string( ERROR_INVALID_PARAMETER ) );
+        return nullptr;
+    }
 
-   if (mapHandle == nullptr) {
-      // get handle to the file
-      HANDLE handle = fileHandle;
+    if ( mapHandle == nullptr )
+    {
+        // get handle to the file
+        HANDLE handle = fileHandle;
 
-      if (handle == INVALID_HANDLE_VALUE && fh) {
-         handle = (HANDLE)::_get_osfhandle(QT_FILENO(fh));
-      }
+        if ( handle == INVALID_HANDLE_VALUE && fh )
+        {
+            handle = ( HANDLE )::_get_osfhandle( QT_FILENO( fh ) );
+        }
 
-      if (handle == INVALID_HANDLE_VALUE) {
-         q->setError(QFile::PermissionsError, qt_error_string(ERROR_ACCESS_DENIED));
-         return nullptr;
-      }
+        if ( handle == INVALID_HANDLE_VALUE )
+        {
+            q->setError( QFile::PermissionsError, qt_error_string( ERROR_ACCESS_DENIED ) );
+            return nullptr;
+        }
 
-      // first create the file mapping handle
-      DWORD protection = (openMode & QIODevice::WriteOnly) ? PAGE_READWRITE : PAGE_READONLY;
-      mapHandle = ::CreateFileMapping(handle, nullptr, protection, 0, 0, nullptr);
+        // first create the file mapping handle
+        DWORD protection = ( openMode & QIODevice::WriteOnly ) ? PAGE_READWRITE : PAGE_READONLY;
+        mapHandle = ::CreateFileMapping( handle, nullptr, protection, 0, 0, nullptr );
 
-      if (mapHandle == nullptr) {
-         q->setError(QFile::PermissionsError, qt_error_string());
-         return nullptr;
-      }
-   }
+        if ( mapHandle == nullptr )
+        {
+            q->setError( QFile::PermissionsError, qt_error_string() );
+            return nullptr;
+        }
+    }
 
-   // setup args to map
-   DWORD access = 0;
+    // setup args to map
+    DWORD access = 0;
 
-   if (openMode & QIODevice::ReadOnly) {
-      access = FILE_MAP_READ;
-   }
+    if ( openMode & QIODevice::ReadOnly )
+    {
+        access = FILE_MAP_READ;
+    }
 
-   if (openMode & QIODevice::WriteOnly) {
-      access = FILE_MAP_WRITE;
-   }
+    if ( openMode & QIODevice::WriteOnly )
+    {
+        access = FILE_MAP_WRITE;
+    }
 
-   DWORD offsetHi = offset >> 32;
-   DWORD offsetLo = offset & Q_UINT64_C(0xffffffff);
-   SYSTEM_INFO sysinfo;
-   ::GetSystemInfo(&sysinfo);
-   DWORD mask = sysinfo.dwAllocationGranularity - 1;
-   DWORD extra = offset & mask;
+    DWORD offsetHi = offset >> 32;
+    DWORD offsetLo = offset & Q_UINT64_C( 0xffffffff );
+    SYSTEM_INFO sysinfo;
+    ::GetSystemInfo( &sysinfo );
+    DWORD mask = sysinfo.dwAllocationGranularity - 1;
+    DWORD extra = offset & mask;
 
-   if (extra) {
-      offsetLo &= ~mask;
-   }
+    if ( extra )
+    {
+        offsetLo &= ~mask;
+    }
 
-   // attempt to create the map
-   LPVOID mapAddress = ::MapViewOfFile(mapHandle, access, offsetHi, offsetLo, size + extra);
+    // attempt to create the map
+    LPVOID mapAddress = ::MapViewOfFile( mapHandle, access, offsetHi, offsetLo, size + extra );
 
-   if (mapAddress) {
-      uchar *address = extra + static_cast<uchar *>(mapAddress);
-      maps[address] = extra;
-      return address;
-   }
+    if ( mapAddress )
+    {
+        uchar *address = extra + static_cast<uchar *>( mapAddress );
+        maps[address] = extra;
+        return address;
+    }
 
-   switch (GetLastError()) {
-      case ERROR_ACCESS_DENIED:
-         q->setError(QFile::PermissionsError, qt_error_string());
-         break;
+    switch ( GetLastError() )
+    {
+        case ERROR_ACCESS_DENIED:
+            q->setError( QFile::PermissionsError, qt_error_string() );
+            break;
 
-      case ERROR_INVALID_PARAMETER:
-         // size is out of bounds
-         [[fallthrough]];
+        case ERROR_INVALID_PARAMETER:
+            // size is out of bounds
+            [[fallthrough]];
 
-      default:
-         q->setError(QFile::UnspecifiedError, qt_error_string());
-   }
+        default:
+            q->setError( QFile::UnspecifiedError, qt_error_string() );
+    }
 
-   ::CloseHandle(mapHandle);
-   mapHandle = nullptr;
+    ::CloseHandle( mapHandle );
+    mapHandle = nullptr;
 
-   return nullptr;
+    return nullptr;
 }
 
-bool QFSFileEnginePrivate::unmap(uchar *ptr)
+bool QFSFileEnginePrivate::unmap( uchar *ptr )
 {
-   Q_Q(QFSFileEngine);
+    Q_Q( QFSFileEngine );
 
-   if (! maps.contains(ptr)) {
-      q->setError(QFile::PermissionsError, qt_error_string(ERROR_ACCESS_DENIED));
-      return false;
-   }
+    if ( ! maps.contains( ptr ) )
+    {
+        q->setError( QFile::PermissionsError, qt_error_string( ERROR_ACCESS_DENIED ) );
+        return false;
+    }
 
-   uchar *start = ptr - maps[ptr];
+    uchar *start = ptr - maps[ptr];
 
-   if (!UnmapViewOfFile(start)) {
-      q->setError(QFile::PermissionsError, qt_error_string());
-      return false;
-   }
+    if ( !UnmapViewOfFile( start ) )
+    {
+        q->setError( QFile::PermissionsError, qt_error_string() );
+        return false;
+    }
 
-   maps.remove(ptr);
+    maps.remove( ptr );
 
-   if (maps.isEmpty()) {
-      ::CloseHandle(mapHandle);
-      mapHandle = nullptr;
-   }
+    if ( maps.isEmpty() )
+    {
+        ::CloseHandle( mapHandle );
+        mapHandle = nullptr;
+    }
 
-   return true;
+    return true;
 }

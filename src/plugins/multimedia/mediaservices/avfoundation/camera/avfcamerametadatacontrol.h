@@ -31,21 +31,21 @@ class AVFCameraService;
 
 class AVFCameraMetaDataControl : public QMetaDataWriterControl
 {
-   CS_OBJECT(AVFCameraMetaDataControl)
+    CS_OBJECT( AVFCameraMetaDataControl )
 
- public:
-   AVFCameraMetaDataControl(AVFCameraService *service, QObject *parent = nullptr);
-   virtual ~AVFCameraMetaDataControl();
+public:
+    AVFCameraMetaDataControl( AVFCameraService *service, QObject *parent = nullptr );
+    virtual ~AVFCameraMetaDataControl();
 
-   bool isMetaDataAvailable() const override;
-   bool isWritable() const override;
+    bool isMetaDataAvailable() const override;
+    bool isWritable() const override;
 
-   QVariant metaData(const QString &key) const override;
-   void setMetaData(const QString &key, const QVariant &value) override;
-   QStringList availableMetaData() const override;
+    QVariant metaData( const QString &key ) const override;
+    void setMetaData( const QString &key, const QVariant &value ) override;
+    QStringList availableMetaData() const override;
 
- private:
-   QMap<QString, QVariant> m_tags;
+private:
+    QMap<QString, QVariant> m_tags;
 };
 
 #endif

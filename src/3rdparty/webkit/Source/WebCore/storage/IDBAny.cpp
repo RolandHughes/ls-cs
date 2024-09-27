@@ -35,22 +35,23 @@
 #include "IDBObjectStore.h"
 #include "SerializedScriptValue.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 PassRefPtr<IDBAny> IDBAny::createInvalid()
 {
-    return adoptRef(new IDBAny());
+    return adoptRef( new IDBAny() );
 }
 
 PassRefPtr<IDBAny> IDBAny::createNull()
 {
-    RefPtr<IDBAny> idbAny = adoptRef(new IDBAny());
+    RefPtr<IDBAny> idbAny = adoptRef( new IDBAny() );
     idbAny->setNull();
     return idbAny.release();
 }
 
 IDBAny::IDBAny()
-    : m_type(UndefinedType)
+    : m_type( UndefinedType )
 {
 }
 
@@ -60,124 +61,124 @@ IDBAny::~IDBAny()
 
 PassRefPtr<IDBCursor> IDBAny::idbCursor()
 {
-    ASSERT(m_type == IDBCursorType);
+    ASSERT( m_type == IDBCursorType );
     return m_idbCursor;
 }
 
 
 PassRefPtr<IDBCursorWithValue> IDBAny::idbCursorWithValue()
 {
-    ASSERT(m_type == IDBCursorWithValueType);
+    ASSERT( m_type == IDBCursorWithValueType );
     return m_idbCursorWithValue;
 }
 
 PassRefPtr<IDBDatabase> IDBAny::idbDatabase()
 {
-    ASSERT(m_type == IDBDatabaseType);
+    ASSERT( m_type == IDBDatabaseType );
     return m_idbDatabase;
 }
 
 PassRefPtr<IDBFactory> IDBAny::idbFactory()
 {
-    ASSERT(m_type == IDBFactoryType);
+    ASSERT( m_type == IDBFactoryType );
     return m_idbFactory;
 }
 
 PassRefPtr<IDBIndex> IDBAny::idbIndex()
 {
-    ASSERT(m_type == IDBIndexType);
+    ASSERT( m_type == IDBIndexType );
     return m_idbIndex;
 }
 
 PassRefPtr<IDBKey> IDBAny::idbKey()
 {
-    ASSERT(m_type == IDBKeyType);
+    ASSERT( m_type == IDBKeyType );
     return m_idbKey;
 }
 
 PassRefPtr<IDBObjectStore> IDBAny::idbObjectStore()
 {
-    ASSERT(m_type == IDBObjectStoreType);
+    ASSERT( m_type == IDBObjectStoreType );
     return m_idbObjectStore;
 }
 
 PassRefPtr<IDBTransaction> IDBAny::idbTransaction()
 {
-    ASSERT(m_type == IDBTransactionType);
+    ASSERT( m_type == IDBTransactionType );
     return m_idbTransaction;
 }
 
 PassRefPtr<SerializedScriptValue> IDBAny::serializedScriptValue()
 {
-    ASSERT(m_type == SerializedScriptValueType);
+    ASSERT( m_type == SerializedScriptValueType );
     return m_serializedScriptValue;
 }
 
 void IDBAny::setNull()
 {
-    ASSERT(m_type == UndefinedType);
+    ASSERT( m_type == UndefinedType );
     m_type = NullType;
 }
 
-void IDBAny::set(PassRefPtr<IDBCursorWithValue> value)
+void IDBAny::set( PassRefPtr<IDBCursorWithValue> value )
 {
-    ASSERT(m_type == UndefinedType);
+    ASSERT( m_type == UndefinedType );
     m_type = IDBCursorWithValueType;
     m_idbCursorWithValue = value;
 }
 
-void IDBAny::set(PassRefPtr<IDBCursor> value)
+void IDBAny::set( PassRefPtr<IDBCursor> value )
 {
-    ASSERT(m_type == UndefinedType);
+    ASSERT( m_type == UndefinedType );
     m_type = IDBCursorType;
     m_idbCursor = value;
 }
 
-void IDBAny::set(PassRefPtr<IDBDatabase> value)
+void IDBAny::set( PassRefPtr<IDBDatabase> value )
 {
-    ASSERT(m_type == UndefinedType);
+    ASSERT( m_type == UndefinedType );
     m_type = IDBDatabaseType;
     m_idbDatabase = value;
 }
 
-void IDBAny::set(PassRefPtr<IDBFactory> value)
+void IDBAny::set( PassRefPtr<IDBFactory> value )
 {
-    ASSERT(m_type == UndefinedType);
+    ASSERT( m_type == UndefinedType );
     m_type = IDBFactoryType;
     m_idbFactory = value;
 }
 
-void IDBAny::set(PassRefPtr<IDBIndex> value)
+void IDBAny::set( PassRefPtr<IDBIndex> value )
 {
-    ASSERT(m_type == UndefinedType);
+    ASSERT( m_type == UndefinedType );
     m_type = IDBIndexType;
     m_idbIndex = value;
 }
 
-void IDBAny::set(PassRefPtr<IDBKey> value)
+void IDBAny::set( PassRefPtr<IDBKey> value )
 {
-    ASSERT(m_type == UndefinedType);
+    ASSERT( m_type == UndefinedType );
     m_type = IDBKeyType;
     m_idbKey = value;
 }
 
-void IDBAny::set(PassRefPtr<IDBTransaction> value)
+void IDBAny::set( PassRefPtr<IDBTransaction> value )
 {
-    ASSERT(m_type == UndefinedType);
+    ASSERT( m_type == UndefinedType );
     m_type = IDBTransactionType;
     m_idbTransaction = value;
 }
 
-void IDBAny::set(PassRefPtr<IDBObjectStore> value)
+void IDBAny::set( PassRefPtr<IDBObjectStore> value )
 {
-    ASSERT(m_type == UndefinedType);
+    ASSERT( m_type == UndefinedType );
     m_type = IDBObjectStoreType;
     m_idbObjectStore = value;
 }
 
-void IDBAny::set(PassRefPtr<SerializedScriptValue> value)
+void IDBAny::set( PassRefPtr<SerializedScriptValue> value )
 {
-    ASSERT(m_type == UndefinedType);
+    ASSERT( m_type == UndefinedType );
     m_type = SerializedScriptValueType;
     m_serializedScriptValue = value;
 }

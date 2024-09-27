@@ -28,44 +28,53 @@
 #include <v8.h>
 #include <wtf/HashMap.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class V8TestMediaQueryListListener {
+class V8TestMediaQueryListListener
+{
 
 public:
-    static bool HasInstance(v8::Handle<v8::Value> value);
+    static bool HasInstance( v8::Handle<v8::Value> value );
     static v8::Persistent<v8::FunctionTemplate> GetRawTemplate();
     static v8::Persistent<v8::FunctionTemplate> GetTemplate();
-    static TestMediaQueryListListener* toNative(v8::Handle<v8::Object> object)
+    static TestMediaQueryListListener *toNative( v8::Handle<v8::Object> object )
     {
-        return reinterpret_cast<TestMediaQueryListListener*>(object->GetPointerFromInternalField(v8DOMWrapperObjectIndex));
+        return reinterpret_cast<TestMediaQueryListListener *>( object->GetPointerFromInternalField( v8DOMWrapperObjectIndex ) );
     }
-    inline static v8::Handle<v8::Object> wrap(TestMediaQueryListListener*);
-    static void derefObject(void*);
+    inline static v8::Handle<v8::Object> wrap( TestMediaQueryListListener * );
+    static void derefObject( void * );
     static WrapperTypeInfo info;
     static const int internalFieldCount = v8DefaultWrapperInternalFieldCount + 0;
 private:
-    static v8::Handle<v8::Object> wrapSlow(TestMediaQueryListListener*);
+    static v8::Handle<v8::Object> wrapSlow( TestMediaQueryListListener * );
 };
 
 
-v8::Handle<v8::Object> V8TestMediaQueryListListener::wrap(TestMediaQueryListListener* impl)
+v8::Handle<v8::Object> V8TestMediaQueryListListener::wrap( TestMediaQueryListListener *impl )
 {
-        v8::Handle<v8::Object> wrapper = getDOMObjectMap().get(impl);
-        if (!wrapper.IsEmpty())
-            return wrapper;
-    return V8TestMediaQueryListListener::wrapSlow(impl);
+    v8::Handle<v8::Object> wrapper = getDOMObjectMap().get( impl );
+
+    if ( !wrapper.IsEmpty() )
+    {
+        return wrapper;
+    }
+
+    return V8TestMediaQueryListListener::wrapSlow( impl );
 }
 
-inline v8::Handle<v8::Value> toV8(TestMediaQueryListListener* impl)
+inline v8::Handle<v8::Value> toV8( TestMediaQueryListListener *impl )
 {
-    if (!impl)
+    if ( !impl )
+    {
         return v8::Null();
-    return V8TestMediaQueryListListener::wrap(impl);
+    }
+
+    return V8TestMediaQueryListListener::wrap( impl );
 }
-inline v8::Handle<v8::Value> toV8(PassRefPtr< TestMediaQueryListListener > impl)
+inline v8::Handle<v8::Value> toV8( PassRefPtr< TestMediaQueryListListener > impl )
 {
-    return toV8(impl.get());
+    return toV8( impl.get() );
 }
 }
 

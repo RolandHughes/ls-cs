@@ -40,25 +40,25 @@ class QNetworkManagerEngine : public QBearerEngineImpl
     Q_OBJECT
 
 public:
-    QNetworkManagerEngine(QObject *parent = nullptr);
+    QNetworkManagerEngine( QObject *parent = nullptr );
     ~QNetworkManagerEngine();
 
     bool networkManagerAvailable() const;
 
-    QString getInterfaceFromId(const QString &id);
-    bool hasIdentifier(const QString &id);
+    QString getInterfaceFromId( const QString &id );
+    bool hasIdentifier( const QString &id );
 
-    void connectToId(const QString &id);
-    void disconnectFromId(const QString &id);
+    void connectToId( const QString &id );
+    void disconnectFromId( const QString &id );
 
     Q_INVOKABLE void initialize();
     Q_INVOKABLE void requestUpdate();
 
-    QNetworkSession::State sessionStateForId(const QString &id);
+    QNetworkSession::State sessionStateForId( const QString &id );
 
-    quint64 bytesWritten(const QString &id);
-    quint64 bytesReceived(const QString &id);
-    quint64 startTime(const QString &id);
+    quint64 bytesWritten( const QString &id );
+    quint64 bytesReceived( const QString &id );
+    quint64 startTime( const QString &id );
 
     QNetworkConfigurationManager::Capabilities capabilities() const;
 
@@ -67,30 +67,30 @@ public:
     QNetworkConfigurationPrivatePointer defaultConfiguration();
 
 private Q_SLOTS:
-    void interfacePropertiesChanged(const QString &path,
-                                    const QMap<QString, QVariant> &properties);
-    void activeConnectionPropertiesChanged(const QString &path,
-                                           const QMap<QString, QVariant> &properties);
-    void devicePropertiesChanged(const QString &path,
-                                 const QMap<QString, QVariant> &properties);
+    void interfacePropertiesChanged( const QString &path,
+                                     const QMap<QString, QVariant> &properties );
+    void activeConnectionPropertiesChanged( const QString &path,
+                                            const QMap<QString, QVariant> &properties );
+    void devicePropertiesChanged( const QString &path,
+                                  const QMap<QString, QVariant> &properties );
 
-    void deviceAdded(const QDBusObjectPath &path);
-    void deviceRemoved(const QDBusObjectPath &path);
+    void deviceAdded( const QDBusObjectPath &path );
+    void deviceRemoved( const QDBusObjectPath &path );
 
-    void newConnection(const QDBusObjectPath &path, QNetworkManagerSettings *settings = 0);
-    void removeConnection(const QString &path);
-    void updateConnection(const QNmSettingsMap &settings);
-    void activationFinished(QDBusPendingCallWatcher *watcher);
+    void newConnection( const QDBusObjectPath &path, QNetworkManagerSettings *settings = 0 );
+    void removeConnection( const QString &path );
+    void updateConnection( const QNmSettingsMap &settings );
+    void activationFinished( QDBusPendingCallWatcher *watcher );
 
-    void newAccessPoint(const QString &path, const QDBusObjectPath &objectPath);
-    void removeAccessPoint(const QString &path, const QDBusObjectPath &objectPath);
-    void updateAccessPoint(const QMap<QString, QVariant> &map);
+    void newAccessPoint( const QString &path, const QDBusObjectPath &objectPath );
+    void removeAccessPoint( const QString &path, const QDBusObjectPath &objectPath );
+    void updateAccessPoint( const QMap<QString, QVariant> &map );
 
 private:
-    QNetworkConfigurationPrivate *parseConnection(const QString &service,
-                                                  const QString &settingsPath,
-                                                  const QNmSettingsMap &map);
-    QNetworkManagerSettingsConnection *connectionFromId(const QString &id) const;
+    QNetworkConfigurationPrivate *parseConnection( const QString &service,
+            const QString &settingsPath,
+            const QNmSettingsMap &map );
+    QNetworkManagerSettingsConnection *connectionFromId( const QString &id ) const;
 
 private:
     QNetworkManagerInterface *interface;

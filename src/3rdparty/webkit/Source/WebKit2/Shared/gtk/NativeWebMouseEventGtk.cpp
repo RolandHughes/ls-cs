@@ -28,11 +28,12 @@
 
 #include "WebEventFactory.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
-NativeWebMouseEvent::NativeWebMouseEvent(GdkEvent* event, int eventClickCount)
-    : WebMouseEvent(WebEventFactory::createWebMouseEvent(event, eventClickCount))
-    , m_nativeEvent(event)
+NativeWebMouseEvent::NativeWebMouseEvent( GdkEvent *event, int eventClickCount )
+    : WebMouseEvent( WebEventFactory::createWebMouseEvent( event, eventClickCount ) )
+    , m_nativeEvent( event )
 {
 }
 

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef JSCustomXPathNSResolver_h
@@ -33,31 +33,34 @@
 #include <wtf/Forward.h>
 #include <wtf/RefPtr.h>
 
-namespace JSC {
-    class ExecState;
-    class JSObject;
+namespace JSC
+{
+class ExecState;
+class JSObject;
 }
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class Frame;
-    class JSDOMWindow;
+class Frame;
+class JSDOMWindow;
 
-    class JSCustomXPathNSResolver : public XPathNSResolver {
-    public:
-        static PassRefPtr<JSCustomXPathNSResolver> create(JSC::ExecState*, JSC::JSValue);
-        
-        virtual ~JSCustomXPathNSResolver();
+class JSCustomXPathNSResolver : public XPathNSResolver
+{
+public:
+    static PassRefPtr<JSCustomXPathNSResolver> create( JSC::ExecState *, JSC::JSValue );
 
-        virtual String lookupNamespaceURI(const String& prefix);
+    virtual ~JSCustomXPathNSResolver();
 
-    private:
-        JSCustomXPathNSResolver(JSC::JSObject*, JSDOMWindow*);
+    virtual String lookupNamespaceURI( const String &prefix );
 
-        // JSCustomXPathNSResolvers are always temporary, thus no need to GC protect the objects.
-        JSC::JSObject* m_customResolver;
-        JSDOMWindow* m_globalObject;
-    };
+private:
+    JSCustomXPathNSResolver( JSC::JSObject *, JSDOMWindow * );
+
+    // JSCustomXPathNSResolvers are always temporary, thus no need to GC protect the objects.
+    JSC::JSObject *m_customResolver;
+    JSDOMWindow *m_globalObject;
+};
 
 } // namespace WebCore
 

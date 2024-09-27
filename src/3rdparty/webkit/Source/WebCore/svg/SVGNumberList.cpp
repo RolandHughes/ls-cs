@@ -26,21 +26,26 @@
 #include "SVGParserUtilities.h"
 #include <wtf/text/StringBuilder.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-void SVGNumberList::parse(const String& value)
+void SVGNumberList::parse( const String &value )
 {
     clear();
 
     float number = 0;
-    const UChar* ptr = value.characters();
-    const UChar* end = ptr + value.length();
+    const UChar *ptr = value.characters();
+    const UChar *end = ptr + value.length();
 
     // The spec strangely doesn't allow leading whitespace.  We might choose to violate that intentionally. (section 4.1)
-    while (ptr < end) {
-        if (!parseNumber(ptr, end, number))
+    while ( ptr < end )
+    {
+        if ( !parseNumber( ptr, end, number ) )
+        {
             return;
-        append(number);
+        }
+
+        append( number );
     }
 }
 
@@ -49,11 +54,15 @@ String SVGNumberList::valueAsString() const
     StringBuilder builder;
 
     unsigned size = this->size();
-    for (unsigned i = 0; i < size; ++i) {
-        if (i > 0)
-            builder.append(' ');
 
-        builder.append(String::number(at(i)));
+    for ( unsigned i = 0; i < size; ++i )
+    {
+        if ( i > 0 )
+        {
+            builder.append( ' ' );
+        }
+
+        builder.append( String::number( at( i ) ) );
     }
 
     return builder.toString();

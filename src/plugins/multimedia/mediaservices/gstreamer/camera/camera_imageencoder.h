@@ -34,33 +34,33 @@ class CameraBinSession;
 
 class CameraBinImageEncoder : public QImageEncoderControl
 {
-   CS_OBJECT(CameraBinImageEncoder)
+    CS_OBJECT( CameraBinImageEncoder )
 
- public:
-   CameraBinImageEncoder(CameraBinSession *session);
-   virtual ~CameraBinImageEncoder();
+public:
+    CameraBinImageEncoder( CameraBinSession *session );
+    virtual ~CameraBinImageEncoder();
 
-   QList<QSize> supportedResolutions(const QImageEncoderSettings &settings = QImageEncoderSettings(),
-         bool *continuous = nullptr) const override;
+    QList<QSize> supportedResolutions( const QImageEncoderSettings &settings = QImageEncoderSettings(),
+                                       bool *continuous = nullptr ) const override;
 
-   QStringList supportedImageCodecs() const override;
-   QString imageCodecDescription(const QString &formatName) const override;
+    QStringList supportedImageCodecs() const override;
+    QString imageCodecDescription( const QString &formatName ) const override;
 
-   QImageEncoderSettings imageSettings() const override;
-   void setImageSettings(const QImageEncoderSettings &settings) override;
+    QImageEncoderSettings imageSettings() const override;
+    void setImageSettings( const QImageEncoderSettings &settings ) override;
 
-   CS_SIGNAL_1(Public, void settingsChanged())
-   CS_SIGNAL_2(settingsChanged)
+    CS_SIGNAL_1( Public, void settingsChanged() )
+    CS_SIGNAL_2( settingsChanged )
 
- private:
-   QImageEncoderSettings m_settings;
+private:
+    QImageEncoderSettings m_settings;
 
-   CameraBinSession *m_session;
+    CameraBinSession *m_session;
 
-   QStringList m_codecs;
-   QMap<QString, QByteArray> m_elementNames;
-   QMap<QString, QString> m_codecDescriptions;
-   QMap<QString, QStringList> m_codecOptions;
+    QStringList m_codecs;
+    QMap<QString, QByteArray> m_elementNames;
+    QMap<QString, QString> m_codecDescriptions;
+    QMap<QString, QStringList> m_codecOptions;
 };
 
 #endif

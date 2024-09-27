@@ -26,21 +26,23 @@
 
 #include "HTMLElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class HTMLHtmlElement : public HTMLElement {
+class HTMLHtmlElement : public HTMLElement
+{
 public:
-    static PassRefPtr<HTMLHtmlElement> create(Document*);
-    static PassRefPtr<HTMLHtmlElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<HTMLHtmlElement> create( Document * );
+    static PassRefPtr<HTMLHtmlElement> create( const QualifiedName &, Document * );
 
 #if ENABLE(OFFLINE_WEB_APPLICATIONS)
     void insertedByParser();
 #endif
 
 private:
-    HTMLHtmlElement(const QualifiedName&, Document*);
+    HTMLHtmlElement( const QualifiedName &, Document * );
 
-    virtual bool isURLAttribute(Attribute*) const;
+    virtual bool isURLAttribute( Attribute * ) const;
 };
 
 } // namespace

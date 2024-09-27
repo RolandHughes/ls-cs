@@ -25,45 +25,68 @@
 
 #include "RenderBlock.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class FlexBoxIterator;
 
-class RenderFlexibleBox : public RenderBlock {
+class RenderFlexibleBox : public RenderBlock
+{
 public:
-    RenderFlexibleBox(Node*);
+    RenderFlexibleBox( Node * );
     virtual ~RenderFlexibleBox();
 
-    virtual const char* renderName() const;
+    virtual const char *renderName() const;
 
     virtual void computePreferredLogicalWidths();
     void calcHorizontalPrefWidths();
     void calcVerticalPrefWidths();
 
-    virtual void layoutBlock(bool relayoutChildren, int pageHeight);
-    void layoutHorizontalBox(bool relayoutChildren);
-    void layoutVerticalBox(bool relayoutChildren);
+    virtual void layoutBlock( bool relayoutChildren, int pageHeight );
+    void layoutHorizontalBox( bool relayoutChildren );
+    void layoutVerticalBox( bool relayoutChildren );
 
-    virtual bool avoidsFloats() const { return true; }
+    virtual bool avoidsFloats() const
+    {
+        return true;
+    }
 
-    virtual bool isFlexibleBox() const { return true; }
-    virtual bool isFlexingChildren() const { return m_flexingChildren; }
-    virtual bool isStretchingChildren() const { return m_stretchingChildren; }
+    virtual bool isFlexibleBox() const
+    {
+        return true;
+    }
+    virtual bool isFlexingChildren() const
+    {
+        return m_flexingChildren;
+    }
+    virtual bool isStretchingChildren() const
+    {
+        return m_stretchingChildren;
+    }
 
-    void placeChild(RenderBox* child, int x, int y);
+    void placeChild( RenderBox *child, int x, int y );
 
 protected:
-    int allowedChildFlex(RenderBox* child, bool expanding, unsigned group);
+    int allowedChildFlex( RenderBox *child, bool expanding, unsigned group );
 
-    bool hasMultipleLines() const { return style()->boxLines() == MULTIPLE; }
-    bool isVertical() const { return style()->boxOrient() == VERTICAL; }
-    bool isHorizontal() const { return style()->boxOrient() == HORIZONTAL; }
+    bool hasMultipleLines() const
+    {
+        return style()->boxLines() == MULTIPLE;
+    }
+    bool isVertical() const
+    {
+        return style()->boxOrient() == VERTICAL;
+    }
+    bool isHorizontal() const
+    {
+        return style()->boxOrient() == HORIZONTAL;
+    }
 
     bool m_flexingChildren : 1;
     bool m_stretchingChildren : 1;
 
 private:
-    void applyLineClamp(FlexBoxIterator&, bool relayoutChildren);
+    void applyLineClamp( FlexBoxIterator &, bool relayoutChildren );
 };
 
 } // namespace WebCore

@@ -39,18 +39,19 @@
 using namespace WebCore;
 using namespace std;
 
-namespace WebKit {
+namespace WebKit
+{
 
-WebFrameProxy::WebFrameProxy(WebPageProxy* page, uint64_t frameID)
-    : m_page(page)
-    , m_parentFrame(0)
-    , m_nextSibling(0)
-    , m_previousSibling(0)
-    , m_firstChild(0)
-    , m_lastChild(0)
-    , m_loadState(LoadStateFinished)
-    , m_isFrameSet(false)
-    , m_frameID(frameID)
+WebFrameProxy::WebFrameProxy( WebPageProxy *page, uint64_t frameID )
+    : m_page( page )
+    , m_parentFrame( 0 )
+    , m_nextSibling( 0 )
+    , m_previousSibling( 0 )
+    , m_firstChild( 0 )
+    , m_lastChild( 0 )
+    , m_loadState( LoadStateFinished )
+    , m_isFrameSet( false )
+    , m_frameID( frameID )
 {
     WebContext::statistics().wkFrameCount++;
 }
@@ -69,7 +70,8 @@ void WebFrameProxy::disconnect()
     m_firstChild = 0;
     m_lastChild = 0;
 
-    if (m_activeListener) {
+    if ( m_activeListener )
+    {
         m_activeListener->invalidate();
         m_activeListener = 0;
     }
@@ -77,40 +79,54 @@ void WebFrameProxy::disconnect()
 
 bool WebFrameProxy::isMainFrame() const
 {
-    if (!m_page)
+    if ( !m_page )
+    {
         return false;
+    }
 
     return this == m_page->mainFrame();
 }
 
 void WebFrameProxy::stopLoading() const
 {
-    if (!m_page)
+    if ( !m_page )
+    {
         return;
+    }
 
-    if (!m_page->isValid())
+    if ( !m_page->isValid() )
+    {
         return;
+    }
 
-    m_page->process()->send(Messages::WebPage::StopLoadingFrame(m_frameID), m_page->pageID());
+    m_page->process()->send( Messages::WebPage::StopLoadingFrame( m_frameID ), m_page->pageID() );
 }
-    
+
 bool WebFrameProxy::canProvideSource() const
 {
     return isDisplayingMarkupDocument();
 }
 
-bool WebFrameProxy::canShowMIMEType(const String& mimeType) const
+bool WebFrameProxy::canShowMIMEType( const String &mimeType ) const
 {
-    if (!m_page)
+    if ( !m_page )
+    {
         return false;
+    }
 
-    if (m_page->canShowMIMEType(mimeType))
+    if ( m_page->canShowMIMEType( mimeType ) )
+    {
         return true;
+    }
 
 #if PLATFORM(MAC)
+
     // On Mac, we can show PDFs in the main frame.
-    if (isMainFrame() && !mimeType.isEmpty())
-        return WebContext::pdfAndPostScriptMIMETypes().contains(mimeType);
+    if ( isMainFrame() && !mimeType.isEmpty() )
+    {
+        return WebContext::pdfAndPostScriptMIMETypes().contains( mimeType );
+    }
+
 #endif
 
     return false;
@@ -118,211 +134,247 @@ bool WebFrameProxy::canShowMIMEType(const String& mimeType) const
 
 bool WebFrameProxy::isDisplayingStandaloneImageDocument() const
 {
-    return Image::supportsType(m_MIMEType);
+    return Image::supportsType( m_MIMEType );
 }
 
 bool WebFrameProxy::isDisplayingMarkupDocument() const
 {
     // FIXME: This check should be moved to somewhere in WebCore.
     // FIXME: This returns false when displaying a web archive.
-    return m_MIMEType == "text/html" || m_MIMEType == "image/svg+xml" || DOMImplementation::isXMLMIMEType(m_MIMEType);
+    return m_MIMEType == "text/html" || m_MIMEType == "image/svg+xml" || DOMImplementation::isXMLMIMEType( m_MIMEType );
 }
 
-void WebFrameProxy::didStartProvisionalLoad(const String& url)
+void WebFrameProxy::didStartProvisionalLoad( const String &url )
 {
-    ASSERT(m_loadState == LoadStateFinished);
-    ASSERT(m_provisionalURL.isEmpty());
+    ASSERT( m_loadState == LoadStateFinished );
+    ASSERT( m_provisionalURL.isEmpty() );
     m_loadState = LoadStateProvisional;
     m_provisionalURL = url;
 }
 
-void WebFrameProxy::didReceiveServerRedirectForProvisionalLoad(const String& url)
+void WebFrameProxy::didReceiveServerRedirectForProvisionalLoad( const String &url )
 {
-    ASSERT(m_loadState == LoadStateProvisional);
+    ASSERT( m_loadState == LoadStateProvisional );
     m_provisionalURL = url;
 }
 
 void WebFrameProxy::didFailProvisionalLoad()
 {
-    ASSERT(m_loadState == LoadStateProvisional);
+    ASSERT( m_loadState == LoadStateProvisional );
     m_loadState = LoadStateFinished;
     m_provisionalURL = String();
     m_unreachableURL = m_lastUnreachableURL;
 }
 
-void WebFrameProxy::didCommitLoad(const String& contentType, const PlatformCertificateInfo& certificateInfo)
+void WebFrameProxy::didCommitLoad( const String &contentType, const PlatformCertificateInfo &certificateInfo )
 {
-    ASSERT(m_loadState == LoadStateProvisional);
+    ASSERT( m_loadState == LoadStateProvisional );
     m_loadState = LoadStateCommitted;
     m_url = m_provisionalURL;
     m_provisionalURL = String();
     m_title = String();
     m_MIMEType = contentType;
     m_isFrameSet = false;
-    m_certificateInfo = WebCertificateInfo::create(certificateInfo);
+    m_certificateInfo = WebCertificateInfo::create( certificateInfo );
 }
 
 void WebFrameProxy::didFinishLoad()
 {
-    ASSERT(m_loadState == LoadStateCommitted);
-    ASSERT(m_provisionalURL.isEmpty());
+    ASSERT( m_loadState == LoadStateCommitted );
+    ASSERT( m_provisionalURL.isEmpty() );
     m_loadState = LoadStateFinished;
 }
 
 void WebFrameProxy::didFailLoad()
 {
-    ASSERT(m_loadState == LoadStateCommitted);
-    ASSERT(m_provisionalURL.isEmpty());
+    ASSERT( m_loadState == LoadStateCommitted );
+    ASSERT( m_provisionalURL.isEmpty() );
     m_loadState = LoadStateFinished;
     m_title = String();
 }
 
-void WebFrameProxy::didSameDocumentNavigation(const String& url)
+void WebFrameProxy::didSameDocumentNavigation( const String &url )
 {
     m_url = url;
 }
 
-void WebFrameProxy::didChangeTitle(const String& title)
+void WebFrameProxy::didChangeTitle( const String &title )
 {
     m_title = title;
 }
 
-void WebFrameProxy::appendChild(WebFrameProxy* child)
+void WebFrameProxy::appendChild( WebFrameProxy *child )
 {
-    ASSERT(child->page() == page());
-    ASSERT(!child->m_parentFrame);
-    ASSERT(!child->m_nextSibling);
-    ASSERT(!child->m_previousSibling);
+    ASSERT( child->page() == page() );
+    ASSERT( !child->m_parentFrame );
+    ASSERT( !child->m_nextSibling );
+    ASSERT( !child->m_previousSibling );
 
     child->m_parentFrame = this;
 
-    WebFrameProxy* oldLast = m_lastChild;
+    WebFrameProxy *oldLast = m_lastChild;
     m_lastChild = child;
 
-    if (oldLast) {
-        ASSERT(!oldLast->m_nextSibling);
+    if ( oldLast )
+    {
+        ASSERT( !oldLast->m_nextSibling );
         child->m_previousSibling = oldLast;
         oldLast->m_nextSibling = child;
-    } else
+    }
+    else
+    {
         m_firstChild = child;
+    }
 }
 
-void WebFrameProxy::removeChild(WebFrameProxy* child)
+void WebFrameProxy::removeChild( WebFrameProxy *child )
 {
     child->m_parentFrame = 0;
 
-    WebFrameProxy*& newLocationForNext = m_firstChild == child ? m_firstChild : child->m_previousSibling->m_nextSibling;
-    WebFrameProxy*& newLocationForPrevious = m_lastChild == child ? m_lastChild : child->m_nextSibling->m_previousSibling;
-    swap(newLocationForNext, child->m_nextSibling);
-    swap(newLocationForPrevious, child->m_previousSibling);
+    WebFrameProxy *&newLocationForNext = m_firstChild == child ? m_firstChild : child->m_previousSibling->m_nextSibling;
+    WebFrameProxy *&newLocationForPrevious = m_lastChild == child ? m_lastChild : child->m_nextSibling->m_previousSibling;
+    swap( newLocationForNext, child->m_nextSibling );
+    swap( newLocationForPrevious, child->m_previousSibling );
     child->m_previousSibling = 0;
     child->m_nextSibling = 0;
 }
 
-bool WebFrameProxy::isDescendantOf(const WebFrameProxy* ancestor) const
+bool WebFrameProxy::isDescendantOf( const WebFrameProxy *ancestor ) const
 {
-    if (!ancestor)
+    if ( !ancestor )
+    {
         return false;
+    }
 
-    if (m_page != ancestor->m_page)
+    if ( m_page != ancestor->m_page )
+    {
         return false;
+    }
 
-    for (const WebFrameProxy* frame = this; frame; frame = frame->m_parentFrame) {
-        if (frame == ancestor)
+    for ( const WebFrameProxy *frame = this; frame; frame = frame->m_parentFrame )
+    {
+        if ( frame == ancestor )
+        {
             return true;
+        }
     }
 
     return false;
 }
 
-void WebFrameProxy::dumpFrameTreeToSTDOUT(unsigned indent)
+void WebFrameProxy::dumpFrameTreeToSTDOUT( unsigned indent )
 {
-    if (!indent && m_parentFrame)
-        printf("NOTE: Printing subtree.\n");
+    if ( !indent && m_parentFrame )
+    {
+        printf( "NOTE: Printing subtree.\n" );
+    }
 
-    for (unsigned i = 0; i < indent; ++i)
-        printf(" ");
-    printf("| FRAME %d %s\n", (int)m_frameID, m_url.utf8().data());
+    for ( unsigned i = 0; i < indent; ++i )
+    {
+        printf( " " );
+    }
 
-    for (WebFrameProxy* child = m_firstChild; child; child = child->m_nextSibling)
-        child->dumpFrameTreeToSTDOUT(indent + 4);
+    printf( "| FRAME %d %s\n", ( int )m_frameID, m_url.utf8().data() );
+
+    for ( WebFrameProxy *child = m_firstChild; child; child = child->m_nextSibling )
+    {
+        child->dumpFrameTreeToSTDOUT( indent + 4 );
+    }
 }
 
 void WebFrameProxy::didRemoveFromHierarchy()
 {
-    if (m_parentFrame)
-        m_parentFrame->removeChild(this);
+    if ( m_parentFrame )
+    {
+        m_parentFrame->removeChild( this );
+    }
 }
 
 PassRefPtr<ImmutableArray> WebFrameProxy::childFrames()
 {
-    if (!m_firstChild)
+    if ( !m_firstChild )
+    {
         return ImmutableArray::create();
+    }
 
     Vector<RefPtr<APIObject> > vector;
-    for (WebFrameProxy* child = m_firstChild; child; child = child->m_nextSibling)
-        vector.append(child);
 
-    return ImmutableArray::adopt(vector);
+    for ( WebFrameProxy *child = m_firstChild; child; child = child->m_nextSibling )
+    {
+        vector.append( child );
+    }
+
+    return ImmutableArray::adopt( vector );
 }
 
-void WebFrameProxy::receivedPolicyDecision(WebCore::PolicyAction action, uint64_t listenerID)
+void WebFrameProxy::receivedPolicyDecision( WebCore::PolicyAction action, uint64_t listenerID )
 {
-    if (!m_page)
+    if ( !m_page )
+    {
         return;
+    }
 
-    ASSERT(m_activeListener);
-    ASSERT(m_activeListener->listenerID() == listenerID);
-    m_page->receivedPolicyDecision(action, this, listenerID);
+    ASSERT( m_activeListener );
+    ASSERT( m_activeListener->listenerID() == listenerID );
+    m_page->receivedPolicyDecision( action, this, listenerID );
 }
 
-WebFramePolicyListenerProxy* WebFrameProxy::setUpPolicyListenerProxy(uint64_t listenerID)
+WebFramePolicyListenerProxy *WebFrameProxy::setUpPolicyListenerProxy( uint64_t listenerID )
 {
-    if (m_activeListener)
+    if ( m_activeListener )
+    {
         m_activeListener->invalidate();
-    m_activeListener = WebFramePolicyListenerProxy::create(this, listenerID);
-    return static_cast<WebFramePolicyListenerProxy*>(m_activeListener.get());
+    }
+
+    m_activeListener = WebFramePolicyListenerProxy::create( this, listenerID );
+    return static_cast<WebFramePolicyListenerProxy *>( m_activeListener.get() );
 }
 
-WebFormSubmissionListenerProxy* WebFrameProxy::setUpFormSubmissionListenerProxy(uint64_t listenerID)
+WebFormSubmissionListenerProxy *WebFrameProxy::setUpFormSubmissionListenerProxy( uint64_t listenerID )
 {
-    if (m_activeListener)
+    if ( m_activeListener )
+    {
         m_activeListener->invalidate();
-    m_activeListener = WebFormSubmissionListenerProxy::create(this, listenerID);
-    return static_cast<WebFormSubmissionListenerProxy*>(m_activeListener.get());
+    }
+
+    m_activeListener = WebFormSubmissionListenerProxy::create( this, listenerID );
+    return static_cast<WebFormSubmissionListenerProxy *>( m_activeListener.get() );
 }
 
-void WebFrameProxy::getWebArchive(PassRefPtr<DataCallback> callback)
+void WebFrameProxy::getWebArchive( PassRefPtr<DataCallback> callback )
 {
-    if (!m_page) {
+    if ( !m_page )
+    {
         callback->invalidate();
         return;
     }
 
-    m_page->getWebArchiveOfFrame(this, callback);
+    m_page->getWebArchiveOfFrame( this, callback );
 }
 
-void WebFrameProxy::getMainResourceData(PassRefPtr<DataCallback> callback)
+void WebFrameProxy::getMainResourceData( PassRefPtr<DataCallback> callback )
 {
-    if (!m_page) {
+    if ( !m_page )
+    {
         callback->invalidate();
         return;
     }
 
-    m_page->getMainResourceDataOfFrame(this, callback);
+    m_page->getMainResourceDataOfFrame( this, callback );
 }
 
-void WebFrameProxy::getResourceData(WebURL* resourceURL, PassRefPtr<DataCallback> callback)
+void WebFrameProxy::getResourceData( WebURL *resourceURL, PassRefPtr<DataCallback> callback )
 {
-    if (!m_page) {
+    if ( !m_page )
+    {
         callback->invalidate();
         return;
     }
 
-    m_page->getResourceDataFromFrame(this, resourceURL, callback);
+    m_page->getResourceDataFromFrame( this, resourceURL, callback );
 }
 
-void WebFrameProxy::setUnreachableURL(const String& unreachableURL)
+void WebFrameProxy::setUnreachableURL( const String &unreachableURL )
 {
     m_lastUnreachableURL = m_unreachableURL;
     m_unreachableURL = unreachableURL;

@@ -32,43 +32,48 @@
 
 #if USE(CFNETWORK)
 #include <CFNetwork/CFURLCachePriv.h>
-#include <WebKitSystemInterface/WebKitSystemInterface.h> 
+#include <WebKitSystemInterface/WebKitSystemInterface.h>
 #endif
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
 String WebContext::applicationCacheDirectory()
 {
     return localUserSpecificStorageDirectory();
 }
 
-void WebContext::setShouldPaintNativeControls(bool b)
+void WebContext::setShouldPaintNativeControls( bool b )
 {
     m_shouldPaintNativeControls = b;
 
-    sendToAllProcesses(Messages::WebProcess::SetShouldPaintNativeControls(m_shouldPaintNativeControls));
+    sendToAllProcesses( Messages::WebProcess::SetShouldPaintNativeControls( m_shouldPaintNativeControls ) );
 }
 
-void WebContext::platformInitializeWebProcess(WebProcessCreationParameters& parameters)
+void WebContext::platformInitializeWebProcess( WebProcessCreationParameters &parameters )
 {
     parameters.shouldPaintNativeControls = m_shouldPaintNativeControls;
 
 #if USE(CFNETWORK)
-    RetainPtr<CFURLCacheRef> cfurlCache(AdoptCF, CFURLCacheCopySharedURLCache());
-    parameters.cfURLCacheDiskCapacity = CFURLCacheDiskCapacity(cfurlCache.get());
-    parameters.cfURLCacheMemoryCapacity = CFURLCacheMemoryCapacity(cfurlCache.get());
+    RetainPtr<CFURLCacheRef> cfurlCache( AdoptCF, CFURLCacheCopySharedURLCache() );
+    parameters.cfURLCacheDiskCapacity = CFURLCacheDiskCapacity( cfurlCache.get() );
+    parameters.cfURLCacheMemoryCapacity = CFURLCacheMemoryCapacity( cfurlCache.get() );
 
-    RetainPtr<CFStringRef> cfURLCachePath(AdoptCF, wkCopyFoundationCacheDirectory());
-    parameters.cfURLCachePath = String(cfURLCachePath.get());
+    RetainPtr<CFStringRef> cfURLCachePath( AdoptCF, wkCopyFoundationCacheDirectory() );
+    parameters.cfURLCachePath = String( cfURLCachePath.get() );
     // Remove the ending '\' (necessary to have CFNetwork find the Cache file).
-    ASSERT(parameters.cfURLCachePath.length());
-    if (parameters.cfURLCachePath[parameters.cfURLCachePath.length() - 1] == '\\')
-        parameters.cfURLCachePath.remove(parameters.cfURLCachePath.length() - 1);
+    ASSERT( parameters.cfURLCachePath.length() );
+
+    if ( parameters.cfURLCachePath[parameters.cfURLCachePath.length() - 1] == '\\' )
+    {
+        parameters.cfURLCachePath.remove( parameters.cfURLCachePath.length() - 1 );
+    }
 
 #if USE(CFURLSTORAGESESSIONS)
-    parameters.uiProcessBundleIdentifier = String(reinterpret_cast<CFStringRef>(CFBundleGetValueForInfoDictionaryKey(CFBundleGetMainBundle(), kCFBundleIdentifierKey)));
+    parameters.uiProcessBundleIdentifier = String( reinterpret_cast<CFStringRef>( CFBundleGetValueForInfoDictionaryKey(
+            CFBundleGetMainBundle(), kCFBundleIdentifierKey ) ) );
 #endif // USE(CFURLSTORAGESESSIONS)
 
     parameters.initialHTTPCookieAcceptPolicy = m_initialHTTPCookieAcceptPolicy;
@@ -82,7 +87,7 @@ void WebContext::platformInvalidateContext()
 
 String WebContext::platformDefaultDatabaseDirectory() const
 {
-    return WebCore::pathByAppendingComponent(WebCore::localUserSpecificStorageDirectory(), "Databases");
+    return WebCore::pathByAppendingComponent( WebCore::localUserSpecificStorageDirectory(), "Databases" );
 }
 
 String WebContext::platformDefaultIconDatabasePath() const
@@ -93,7 +98,7 @@ String WebContext::platformDefaultIconDatabasePath() const
 
 String WebContext::platformDefaultLocalStorageDirectory() const
 {
-    return WebCore::pathByAppendingComponent(WebCore::localUserSpecificStorageDirectory(), "LocalStorage");
+    return WebCore::pathByAppendingComponent( WebCore::localUserSpecificStorageDirectory(), "LocalStorage" );
 }
 
 } // namespace WebKit

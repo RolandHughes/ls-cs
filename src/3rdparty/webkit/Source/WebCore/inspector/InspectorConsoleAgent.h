@@ -33,7 +33,8 @@
 #include <wtf/text/StringHash.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 #if ENABLE(INSPECTOR)
 
@@ -52,46 +53,49 @@ class ScriptProfile;
 
 typedef String ErrorString;
 
-class InspectorConsoleAgent {
-    WTF_MAKE_NONCOPYABLE(InspectorConsoleAgent);
+class InspectorConsoleAgent
+{
+    WTF_MAKE_NONCOPYABLE( InspectorConsoleAgent );
 public:
-    InspectorConsoleAgent(InstrumentingAgents*, InspectorAgent*, InspectorState*, InjectedScriptManager*, InspectorDOMAgent*);
+    InspectorConsoleAgent( InstrumentingAgents *, InspectorAgent *, InspectorState *, InjectedScriptManager *, InspectorDOMAgent * );
     ~InspectorConsoleAgent();
 
-    void enable(ErrorString*, int* consoleMessageExpireCount);
-    void disable(ErrorString*);
-    void clearConsoleMessages(ErrorString* error);
+    void enable( ErrorString *, int *consoleMessageExpireCount );
+    void disable( ErrorString * );
+    void clearConsoleMessages( ErrorString *error );
     void reset();
-    void setFrontend(InspectorFrontend*);
+    void setFrontend( InspectorFrontend * );
     void clearFrontend();
 
-    void addMessageToConsole(MessageSource, MessageType, MessageLevel, const String& message, PassRefPtr<ScriptArguments>, PassRefPtr<ScriptCallStack>);
-    void addMessageToConsole(MessageSource, MessageType, MessageLevel, const String& message, unsigned lineNumber, const String& sourceID);
+    void addMessageToConsole( MessageSource, MessageType, MessageLevel, const String &message, PassRefPtr<ScriptArguments>,
+                              PassRefPtr<ScriptCallStack> );
+    void addMessageToConsole( MessageSource, MessageType, MessageLevel, const String &message, unsigned lineNumber,
+                              const String &sourceID );
 
-    void startTiming(const String& title);
-    void stopTiming(const String& title, PassRefPtr<ScriptCallStack>);
-    void count(PassRefPtr<ScriptArguments>, PassRefPtr<ScriptCallStack>);
+    void startTiming( const String &title );
+    void stopTiming( const String &title, PassRefPtr<ScriptCallStack> );
+    void count( PassRefPtr<ScriptArguments>, PassRefPtr<ScriptCallStack> );
 
-    void resourceRetrievedByXMLHttpRequest(const String& url, const String& sendURL, unsigned sendLineNumber);
-    void didReceiveResponse(unsigned long identifier, const ResourceResponse&);
-    void didFailLoading(unsigned long identifier, const ResourceError&);
+    void resourceRetrievedByXMLHttpRequest( const String &url, const String &sendURL, unsigned sendLineNumber );
+    void didReceiveResponse( unsigned long identifier, const ResourceResponse & );
+    void didFailLoading( unsigned long identifier, const ResourceError & );
 #if ENABLE(JAVASCRIPT_DEBUGGER)
-    void addProfileFinishedMessageToConsole(PassRefPtr<ScriptProfile>, unsigned lineNumber, const String& sourceURL);
-    void addStartProfilingMessageToConsole(const String& title, unsigned lineNumber, const String& sourceURL);
+    void addProfileFinishedMessageToConsole( PassRefPtr<ScriptProfile>, unsigned lineNumber, const String &sourceURL );
+    void addStartProfilingMessageToConsole( const String &title, unsigned lineNumber, const String &sourceURL );
 #endif
-    void setMonitoringXHREnabled(ErrorString* error, bool enabled);
-    void addInspectedNode(ErrorString*, int nodeId);
+    void setMonitoringXHREnabled( ErrorString *error, bool enabled );
+    void addInspectedNode( ErrorString *, int nodeId );
 
 private:
-    void addConsoleMessage(PassOwnPtr<ConsoleMessage>);
+    void addConsoleMessage( PassOwnPtr<ConsoleMessage> );
 
-    InstrumentingAgents* m_instrumentingAgents;
-    InspectorAgent* m_inspectorAgent;
-    InspectorState* m_inspectorState;
-    InjectedScriptManager* m_injectedScriptManager;
-    InspectorDOMAgent* m_inspectorDOMAgent;
-    InspectorFrontend::Console* m_frontend;
-    ConsoleMessage* m_previousMessage;
+    InstrumentingAgents *m_instrumentingAgents;
+    InspectorAgent *m_inspectorAgent;
+    InspectorState *m_inspectorState;
+    InjectedScriptManager *m_injectedScriptManager;
+    InspectorDOMAgent *m_inspectorDOMAgent;
+    InspectorFrontend::Console *m_frontend;
+    ConsoleMessage *m_previousMessage;
     Vector<OwnPtr<ConsoleMessage> > m_consoleMessages;
     int m_expiredConsoleMessageCount;
     HashMap<String, unsigned> m_counts;

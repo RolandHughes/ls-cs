@@ -29,31 +29,42 @@
 #include "AudioNode.h"
 #include "AudioSourceProvider.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class AudioBus;
 class AudioContext;
-    
-class AudioDestinationNode : public AudioNode, public AudioSourceProvider {
-public:
-    AudioDestinationNode(AudioContext*, double sampleRate);
-    virtual ~AudioDestinationNode();
-    
-    // AudioNode   
-    virtual void process(size_t) { }; // we're pulled by hardware so this is never called
-    virtual void reset() { m_currentTime = 0.0; };
-    
-    // The audio hardware calls here periodically to gets its input stream.
-    virtual void provideInput(AudioBus*, size_t numberOfFrames);
 
-    double currentTime() { return m_currentTime; }
+class AudioDestinationNode : public AudioNode, public AudioSourceProvider
+{
+public:
+    AudioDestinationNode( AudioContext *, double sampleRate );
+    virtual ~AudioDestinationNode();
+
+    // AudioNode
+    virtual void process( size_t ) { }; // we're pulled by hardware so this is never called
+    virtual void reset()
+    {
+        m_currentTime = 0.0;
+    };
+
+    // The audio hardware calls here periodically to gets its input stream.
+    virtual void provideInput( AudioBus *, size_t numberOfFrames );
+
+    double currentTime()
+    {
+        return m_currentTime;
+    }
 
     virtual double sampleRate() const = 0;
 
-    virtual unsigned numberOfChannels() const { return 2; } // FIXME: update when multi-channel (more than stereo) is supported
+    virtual unsigned numberOfChannels() const
+    {
+        return 2;    // FIXME: update when multi-channel (more than stereo) is supported
+    }
 
     virtual void startRendering() = 0;
-    
+
 protected:
     double m_currentTime;
 };

@@ -33,169 +33,201 @@
 #include <QGLWidget>
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
 #if USE(ACCELERATED_COMPOSITING) && USE(TEXTURE_MAPPER)
-class PlatformLayerProxyQt : public QObject, public virtual TextureMapperLayerClient {
+class PlatformLayerProxyQt : public QObject, public virtual TextureMapperLayerClient
+{
 public:
-    PlatformLayerProxyQt(QWebFrame* frame, TextureMapperContentLayer* layer, QObject* object)
-        : QObject(object)
-        , m_frame(frame)
-        , m_layer(layer)
+    PlatformLayerProxyQt( QWebFrame *frame, TextureMapperContentLayer *layer, QObject *object )
+        : QObject( object )
+        , m_frame( frame )
+        , m_layer( layer )
     {
-        if (m_layer)
-            m_layer->setPlatformLayerClient(this);
+        if ( m_layer )
+        {
+            m_layer->setPlatformLayerClient( this );
+        }
+
         m_frame->d->rootGraphicsLayer = m_layer;
     }
 
-    void setTextureMapper(PassOwnPtr<TextureMapper> textureMapper)
+    void setTextureMapper( PassOwnPtr<TextureMapper> textureMapper )
     {
         m_frame->d->textureMapper = textureMapper;
     }
 
     virtual ~PlatformLayerProxyQt()
     {
-        if (m_layer)
-            m_layer->setPlatformLayerClient(0);
-        if (m_frame->d)
+        if ( m_layer )
+        {
+            m_layer->setPlatformLayerClient( 0 );
+        }
+
+        if ( m_frame->d )
+        {
             m_frame->d->rootGraphicsLayer = 0;
+        }
     }
 
-    virtual TextureMapper* textureMapper()
+    virtual TextureMapper *textureMapper()
     {
         return m_frame->d->textureMapper.get();
     }
 
     // Since we just paint the composited tree and never create a special item for it, we don't have to handle its size changes.
-    void setSizeChanged(const IntSize&) { }
+    void setSizeChanged( const IntSize & ) { }
 
 private:
-    QWebFrame* m_frame;
-    TextureMapperContentLayer* m_layer;
+    QWebFrame *m_frame;
+    TextureMapperContentLayer *m_layer;
 };
 
-class PlatformLayerProxyQWidget : public PlatformLayerProxyQt {
+class PlatformLayerProxyQWidget : public PlatformLayerProxyQt
+{
 public:
-    PlatformLayerProxyQWidget(QWebFrame* frame, TextureMapperContentLayer* layer, QWidget* widget)
-        : PlatformLayerProxyQt(frame, layer, widget)
-        , m_widget(widget)
+    PlatformLayerProxyQWidget( QWebFrame *frame, TextureMapperContentLayer *layer, QWidget *widget )
+        : PlatformLayerProxyQt( frame, layer, widget )
+        , m_widget( widget )
     {
-        if (m_widget)
-            m_widget->installEventFilter(this);
+        if ( m_widget )
+        {
+            m_widget->installEventFilter( this );
+        }
 
-        if (textureMapper())
+        if ( textureMapper() )
+        {
             return;
+        }
 
-        setTextureMapper(TextureMapperQt::create());
+        setTextureMapper( TextureMapperQt::create() );
     }
 
     // We don't want a huge region-clip on the compositing layers; instead we unite the rectangles together
     // and clear them when the paint actually occurs.
-    bool eventFilter(QObject* object, QEvent* event)
+    bool eventFilter( QObject *object, QEvent *event )
     {
-        if (object == m_widget && event->type() == QEvent::Paint)
+        if ( object == m_widget && event->type() == QEvent::Paint )
+        {
             m_dirtyRect = QRect();
-        return QObject::eventFilter(object, event);
+        }
+
+        return QObject::eventFilter( object, event );
     }
 
     void setNeedsDisplay()
     {
-        if (m_widget)
+        if ( m_widget )
+        {
             m_widget->update();
+        }
     }
 
-    void setNeedsDisplayInRect(const IntRect& rect)
+    void setNeedsDisplayInRect( const IntRect &rect )
     {
         m_dirtyRect |= rect;
-        m_widget->update(m_dirtyRect);
+        m_widget->update( m_dirtyRect );
     }
 
 private:
     QRect m_dirtyRect;
-    QWidget* m_widget;
+    QWidget *m_widget;
 };
 
 #if !defined(QT_NO_GRAPHICSVIEW)
-class PlatformLayerProxyQGraphicsObject : public PlatformLayerProxyQt {
+class PlatformLayerProxyQGraphicsObject : public PlatformLayerProxyQt
+{
 public:
-    PlatformLayerProxyQGraphicsObject(QWebFrame* frame, TextureMapperContentLayer* layer, QGraphicsObject* object)
-        : PlatformLayerProxyQt(frame, layer, object)
-        , m_graphicsItem(object)
+    PlatformLayerProxyQGraphicsObject( QWebFrame *frame, TextureMapperContentLayer *layer, QGraphicsObject *object )
+        : PlatformLayerProxyQt( frame, layer, object )
+        , m_graphicsItem( object )
     {
-        if (textureMapper())
-            return;
-
-#ifdef QT_OPENGL_LIB
-        QGraphicsView* view = object->scene()->views()[0];
-        if (view && view->viewport() && view->viewport()->inherits("QGLWidget")) {
-            setTextureMapper(TextureMapperGL::create());
+        if ( textureMapper() )
+        {
             return;
         }
+
+#ifdef QT_OPENGL_LIB
+        QGraphicsView *view = object->scene()->views()[0];
+
+        if ( view && view->viewport() && view->viewport()->inherits( "QGLWidget" ) )
+        {
+            setTextureMapper( TextureMapperGL::create() );
+            return;
+        }
+
 #endif
-        setTextureMapper(TextureMapperQt::create());
+        setTextureMapper( TextureMapperQt::create() );
     }
 
     void setNeedsDisplay()
     {
-        if (m_graphicsItem)
+        if ( m_graphicsItem )
+        {
             m_graphicsItem->update();
+        }
     }
 
-    void setNeedsDisplayInRect(const IntRect& rect)
+    void setNeedsDisplayInRect( const IntRect &rect )
     {
-        if (m_graphicsItem)
-            m_graphicsItem->update(QRectF(rect));
+        if ( m_graphicsItem )
+        {
+            m_graphicsItem->update( QRectF( rect ) );
+        }
     }
 
 private:
-    QGraphicsItem* m_graphicsItem;
+    QGraphicsItem *m_graphicsItem;
 };
 #endif // QT_NO_GRAPHICSVIEW
 
-void PageClientQWidget::setRootGraphicsLayer(TextureMapperPlatformLayer* layer)
+void PageClientQWidget::setRootGraphicsLayer( TextureMapperPlatformLayer *layer )
 {
-    if (layer) {
-        platformLayerProxy = new PlatformLayerProxyQWidget(page->mainFrame(), static_cast<TextureMapperContentLayer*>(layer), view);
+    if ( layer )
+    {
+        platformLayerProxy = new PlatformLayerProxyQWidget( page->mainFrame(), static_cast<TextureMapperContentLayer *>( layer ), view );
         return;
     }
+
     delete platformLayerProxy;
     platformLayerProxy = 0;
 }
 
-void PageClientQWidget::markForSync(bool scheduleSync)
+void PageClientQWidget::markForSync( bool scheduleSync )
 {
-    syncTimer.startOneShot(0);
+    syncTimer.startOneShot( 0 );
 }
 
-void PageClientQWidget::syncLayers(Timer<PageClientQWidget>*)
+void PageClientQWidget::syncLayers( Timer<PageClientQWidget> * )
 {
-    QWebFramePrivate::core(page->mainFrame())->view()->syncCompositingStateIncludingSubframes();
+    QWebFramePrivate::core( page->mainFrame() )->view()->syncCompositingStateIncludingSubframes();
 }
 #endif
 
-void PageClientQWidget::scroll(int dx, int dy, const QRect& rectToScroll)
+void PageClientQWidget::scroll( int dx, int dy, const QRect &rectToScroll )
 {
-    view->scroll(qreal(dx), qreal(dy), rectToScroll);
+    view->scroll( qreal( dx ), qreal( dy ), rectToScroll );
 }
 
-void PageClientQWidget::update(const QRect & dirtyRect)
+void PageClientQWidget::update( const QRect &dirtyRect )
 {
-    view->update(dirtyRect);
+    view->update( dirtyRect );
 }
 
-void PageClientQWidget::setInputMethodEnabled(bool enable)
+void PageClientQWidget::setInputMethodEnabled( bool enable )
 {
-    view->setAttribute(Qt::WA_InputMethodEnabled, enable);
+    view->setAttribute( Qt::WA_InputMethodEnabled, enable );
 }
 
 bool PageClientQWidget::inputMethodEnabled() const
 {
-    return view->testAttribute(Qt::WA_InputMethodEnabled);
+    return view->testAttribute( Qt::WA_InputMethodEnabled );
 }
 
-void PageClientQWidget::setInputMethodHints(Qt::InputMethodHints hints)
+void PageClientQWidget::setInputMethodHints( Qt::InputMethodHints hints )
 {
-    view->setInputMethodHints(hints);
+    view->setInputMethodHints( hints );
 }
 
 PageClientQWidget::~PageClientQWidget()
@@ -211,9 +243,9 @@ QCursor PageClientQWidget::cursor() const
     return view->cursor();
 }
 
-void PageClientQWidget::updateCursor(const QCursor& cursor)
+void PageClientQWidget::updateCursor( const QCursor &cursor )
 {
-    view->setCursor(cursor);
+    view->setCursor( cursor );
 }
 #endif
 
@@ -225,13 +257,13 @@ QPalette PageClientQWidget::palette() const
 int PageClientQWidget::screenNumber() const
 {
 #if defined(Q_WS_X11)
-    return QApplication::desktop()->screenNumber(view);
+    return QApplication::desktop()->screenNumber( view );
 #endif
 
     return 0;
 }
 
-QWidget* PageClientQWidget::ownerWidget() const
+QWidget *PageClientQWidget::ownerWidget() const
 {
     return view;
 }
@@ -241,19 +273,19 @@ QRect PageClientQWidget::geometryRelativeToOwnerWidget() const
     return view->geometry();
 }
 
-QObject* PageClientQWidget::pluginParent() const
+QObject *PageClientQWidget::pluginParent() const
 {
     return view;
 }
 
-QStyle* PageClientQWidget::style() const
+QStyle *PageClientQWidget::style() const
 {
     return view->style();
 }
 
 QRectF PageClientQWidget::windowRect() const
 {
-    return QRectF(view->window()->geometry());
+    return QRectF( view->window()->geometry() );
 }
 
 #if !defined(QT_NO_GRAPHICSVIEW)
@@ -264,27 +296,35 @@ PageClientQGraphicsWidget::~PageClientQGraphicsWidget()
 #if USE(TEXTURE_MAPPER)
     delete platformLayerProxy;
 #else
-    if (!rootGraphicsLayer)
+
+    if ( !rootGraphicsLayer )
+    {
         return;
+    }
+
     // we don't need to delete the root graphics layer. The lifecycle is managed in GraphicsLayerQt.cpp.
-    rootGraphicsLayer.data()->setParentItem(0);
-    view->scene()->removeItem(rootGraphicsLayer.data());
+    rootGraphicsLayer.data()->setParentItem( 0 );
+    view->scene()->removeItem( rootGraphicsLayer.data() );
 #endif
 #endif
 }
 
-void PageClientQGraphicsWidget::scroll(int dx, int dy, const QRect& rectToScroll)
+void PageClientQGraphicsWidget::scroll( int dx, int dy, const QRect &rectToScroll )
 {
-    view->scroll(qreal(dx), qreal(dy), rectToScroll);
+    view->scroll( qreal( dx ), qreal( dy ), rectToScroll );
 }
 
-void PageClientQGraphicsWidget::update(const QRect& dirtyRect)
+void PageClientQGraphicsWidget::update( const QRect &dirtyRect )
 {
-    view->update(dirtyRect);
+    view->update( dirtyRect );
 
     createOrDeleteOverlay();
-    if (overlay)
-        overlay->update(QRectF(dirtyRect));
+
+    if ( overlay )
+    {
+        overlay->update( QRectF( dirtyRect ) );
+    }
+
 #if USE(ACCELERATED_COMPOSITING)
     syncLayers();
 #endif
@@ -295,71 +335,90 @@ void PageClientQGraphicsWidget::createOrDeleteOverlay()
     // We don't use an overlay with TextureMapper. Instead, the overlay is drawn inside QWebFrame.
 #if !USE(TEXTURE_MAPPER)
     bool useOverlay = false;
-    if (!viewResizesToContents) {
+
+    if ( !viewResizesToContents )
+    {
 #if USE(ACCELERATED_COMPOSITING)
         useOverlay = useOverlay || rootGraphicsLayer;
 #endif
 #if ENABLE(TILED_BACKING_STORE)
-        useOverlay = useOverlay || QWebFramePrivate::core(page->mainFrame())->tiledBackingStore();
+        useOverlay = useOverlay || QWebFramePrivate::core( page->mainFrame() )->tiledBackingStore();
 #endif
     }
-    if (useOverlay == !!overlay)
-        return;
 
-    if (useOverlay) {
-        overlay = new QGraphicsItemOverlay(view, page);
-        overlay->setZValue(OverlayZValue);
-    } else {
+    if ( useOverlay == !!overlay )
+    {
+        return;
+    }
+
+    if ( useOverlay )
+    {
+        overlay = new QGraphicsItemOverlay( view, page );
+        overlay->setZValue( OverlayZValue );
+    }
+    else
+    {
         // Changing the overlay might be done inside paint events.
         overlay->deleteLater();
         overlay = 0;
     }
+
 #endif // !USE(TEXTURE_MAPPER)
 }
 
 #if USE(ACCELERATED_COMPOSITING)
 void PageClientQGraphicsWidget::syncLayers()
 {
-    if (shouldSync) {
-        QWebFramePrivate::core(page->mainFrame())->view()->syncCompositingStateIncludingSubframes();
+    if ( shouldSync )
+    {
+        QWebFramePrivate::core( page->mainFrame() )->view()->syncCompositingStateIncludingSubframes();
         shouldSync = false;
     }
 }
 
 #if USE(TEXTURE_MAPPER)
-void PageClientQGraphicsWidget::setRootGraphicsLayer(TextureMapperPlatformLayer* layer)
+void PageClientQGraphicsWidget::setRootGraphicsLayer( TextureMapperPlatformLayer *layer )
 {
-    if (layer) {
-        platformLayerProxy = new PlatformLayerProxyQGraphicsObject(page->mainFrame(), static_cast<TextureMapperContentLayer*>(layer), view);
+    if ( layer )
+    {
+        platformLayerProxy = new PlatformLayerProxyQGraphicsObject( page->mainFrame(), static_cast<TextureMapperContentLayer *>( layer ),
+                view );
         return;
     }
+
     delete platformLayerProxy;
     platformLayerProxy = 0;
 }
 #else
-void PageClientQGraphicsWidget::setRootGraphicsLayer(QGraphicsObject* layer)
+void PageClientQGraphicsWidget::setRootGraphicsLayer( QGraphicsObject *layer )
 {
-    if (rootGraphicsLayer) {
-        rootGraphicsLayer.data()->setParentItem(0);
-        view->scene()->removeItem(rootGraphicsLayer.data());
-        QWebFramePrivate::core(page->mainFrame())->view()->syncCompositingStateIncludingSubframes();
+    if ( rootGraphicsLayer )
+    {
+        rootGraphicsLayer.data()->setParentItem( 0 );
+        view->scene()->removeItem( rootGraphicsLayer.data() );
+        QWebFramePrivate::core( page->mainFrame() )->view()->syncCompositingStateIncludingSubframes();
     }
 
     rootGraphicsLayer = layer;
 
-    if (layer) {
-        layer->setParentItem(view);
-        layer->setZValue(RootGraphicsLayerZValue);
+    if ( layer )
+    {
+        layer->setParentItem( view );
+        layer->setZValue( RootGraphicsLayerZValue );
     }
+
     createOrDeleteOverlay();
 }
 #endif
 
-void PageClientQGraphicsWidget::markForSync(bool scheduleSync)
+void PageClientQGraphicsWidget::markForSync( bool scheduleSync )
 {
     shouldSync = true;
-    if (scheduleSync)
-        syncMetaMethod.invoke(view, Qt::QueuedConnection);
+
+    if ( scheduleSync )
+    {
+        syncMetaMethod.invoke( view, Qt::QueuedConnection );
+    }
 }
 
 #endif
@@ -367,16 +426,20 @@ void PageClientQGraphicsWidget::markForSync(bool scheduleSync)
 #if ENABLE(TILED_BACKING_STORE)
 void PageClientQGraphicsWidget::updateTiledBackingStoreScale()
 {
-    WebCore::TiledBackingStore* backingStore = QWebFramePrivate::core(page->mainFrame())->tiledBackingStore();
-    if (!backingStore)
+    WebCore::TiledBackingStore *backingStore = QWebFramePrivate::core( page->mainFrame() )->tiledBackingStore();
+
+    if ( !backingStore )
+    {
         return;
-    backingStore->setContentsScale(view->scale());
+    }
+
+    backingStore->setContentsScale( view->scale() );
 }
 #endif
 
-void PageClientQGraphicsWidget::setInputMethodEnabled(bool enable)
+void PageClientQGraphicsWidget::setInputMethodEnabled( bool enable )
 {
-    view->setFlag(QGraphicsItem::ItemAcceptsInputMethod, enable);
+    view->setFlag( QGraphicsItem::ItemAcceptsInputMethod, enable );
 }
 
 bool PageClientQGraphicsWidget::inputMethodEnabled() const
@@ -384,9 +447,9 @@ bool PageClientQGraphicsWidget::inputMethodEnabled() const
     return view->flags() & QGraphicsItem::ItemAcceptsInputMethod;
 }
 
-void PageClientQGraphicsWidget::setInputMethodHints(Qt::InputMethodHints hints)
+void PageClientQGraphicsWidget::setInputMethodHints( Qt::InputMethodHints hints )
 {
-    view->setInputMethodHints(hints);
+    view->setInputMethodHints( hints );
 }
 
 #ifndef QT_NO_CURSOR
@@ -395,9 +458,9 @@ QCursor PageClientQGraphicsWidget::cursor() const
     return view->cursor();
 }
 
-void PageClientQGraphicsWidget::updateCursor(const QCursor& cursor)
+void PageClientQGraphicsWidget::updateCursor( const QCursor &cursor )
 {
-    view->setCursor(cursor);
+    view->setCursor( cursor );
 }
 #endif
 
@@ -409,71 +472,89 @@ QPalette PageClientQGraphicsWidget::palette() const
 int PageClientQGraphicsWidget::screenNumber() const
 {
 #if defined(Q_WS_X11)
-    if (QGraphicsScene* scene = view->scene()) {
-        const QList<QGraphicsView*> views = scene->views();
 
-        if (! views.isEmpty()) {
-           return QApplication::desktop()->screenNumber(views.at(0));
+    if ( QGraphicsScene *scene = view->scene() )
+    {
+        const QList<QGraphicsView *> views = scene->views();
+
+        if ( ! views.isEmpty() )
+        {
+            return QApplication::desktop()->screenNumber( views.at( 0 ) );
         }
     }
+
 #endif
 
     return 0;
 }
 
-QWidget* PageClientQGraphicsWidget::ownerWidget() const
+QWidget *PageClientQGraphicsWidget::ownerWidget() const
 {
-    if (QGraphicsScene* scene = view->scene()) {
-        const QList<QGraphicsView*> views = scene->views();
-        return views.value(0);
+    if ( QGraphicsScene *scene = view->scene() )
+    {
+        const QList<QGraphicsView *> views = scene->views();
+        return views.value( 0 );
     }
+
     return 0;
 }
 
 QRect PageClientQGraphicsWidget::geometryRelativeToOwnerWidget() const
 {
-    if (!view->scene())
+    if ( !view->scene() )
+    {
         return QRect();
+    }
 
-    QList<QGraphicsView*> views = view->scene()->views();
-    if (views.isEmpty())
+    QList<QGraphicsView *> views = view->scene()->views();
+
+    if ( views.isEmpty() )
+    {
         return QRect();
+    }
 
-    QGraphicsView* graphicsView = views.at(0);
-    return graphicsView->mapFromScene(view->boundingRect()).boundingRect();
+    QGraphicsView *graphicsView = views.at( 0 );
+    return graphicsView->mapFromScene( view->boundingRect() ).boundingRect();
 }
 
 #if ENABLE(TILED_BACKING_STORE)
 QRectF PageClientQGraphicsWidget::graphicsItemVisibleRect() const
 {
-    if (!view->scene())
+    if ( !view->scene() )
+    {
         return QRectF();
+    }
 
-    QList<QGraphicsView*> views = view->scene()->views();
-    if (views.isEmpty())
+    QList<QGraphicsView *> views = view->scene()->views();
+
+    if ( views.isEmpty() )
+    {
         return QRectF();
+    }
 
-    QGraphicsView* graphicsView = views.at(0);
+    QGraphicsView *graphicsView = views.at( 0 );
     int xOffset = graphicsView->horizontalScrollBar()->value();
     int yOffset = graphicsView->verticalScrollBar()->value();
-    return view->mapRectFromScene(QRectF(QPointF(xOffset, yOffset), graphicsView->viewport()->size()));
+    return view->mapRectFromScene( QRectF( QPointF( xOffset, yOffset ), graphicsView->viewport()->size() ) );
 }
 #endif
 
-QObject* PageClientQGraphicsWidget::pluginParent() const
+QObject *PageClientQGraphicsWidget::pluginParent() const
 {
     return view;
 }
 
-QStyle* PageClientQGraphicsWidget::style() const
+QStyle *PageClientQGraphicsWidget::style() const
 {
     return view->style();
 }
 
 QRectF PageClientQGraphicsWidget::windowRect() const
 {
-    if (!view->scene())
+    if ( !view->scene() )
+    {
         return QRectF();
+    }
 
     // The sceneRect is a good approximation of the size of the application, independent of the view.
     return view->scene()->sceneRect();

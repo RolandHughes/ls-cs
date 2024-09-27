@@ -31,43 +31,65 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/Vector.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 // ImmutableArray - An immutable array type suitable for vending to an API.
 
-class ImmutableArray : public APIObject {
+class ImmutableArray : public APIObject
+{
 public:
     static const Type APIType = TypeArray;
 
     static PassRefPtr<ImmutableArray> create()
     {
-        return adoptRef(new ImmutableArray);
+        return adoptRef( new ImmutableArray );
     }
-    static PassRefPtr<ImmutableArray> create(APIObject** entries, size_t size)
+    static PassRefPtr<ImmutableArray> create( APIObject **entries, size_t size )
     {
-        return adoptRef(new ImmutableArray(entries, size));
+        return adoptRef( new ImmutableArray( entries, size ) );
     }
-    static PassRefPtr<ImmutableArray> adopt(Vector<RefPtr<APIObject> >& entries)
+    static PassRefPtr<ImmutableArray> adopt( Vector<RefPtr<APIObject> > &entries )
     {
-        return adoptRef(new ImmutableArray(entries));
+        return adoptRef( new ImmutableArray( entries ) );
     }
 
     virtual ~ImmutableArray();
 
     template<typename T>
-    T* at(size_t i) { if (m_entries[i]->type() != T::APIType) return 0; return static_cast<T*>(m_entries[i].get()); }
+    T *at( size_t i )
+    {
+        if ( m_entries[i]->type() != T::APIType )
+        {
+            return 0;
+        }
 
-    APIObject* at(size_t i) { return m_entries[i].get(); }
-    size_t size() { return m_entries.size(); }
+        return static_cast<T *>( m_entries[i].get() );
+    }
 
-    virtual bool isMutable() { return false; }
+    APIObject *at( size_t i )
+    {
+        return m_entries[i].get();
+    }
+    size_t size()
+    {
+        return m_entries.size();
+    }
+
+    virtual bool isMutable()
+    {
+        return false;
+    }
 
 protected:
     ImmutableArray();
-    ImmutableArray(APIObject** entries, size_t size);
-    ImmutableArray(Vector<RefPtr<APIObject> >& entries);
+    ImmutableArray( APIObject **entries, size_t size );
+    ImmutableArray( Vector<RefPtr<APIObject> > &entries );
 
-    virtual Type type() const { return APIType; }
+    virtual Type type() const
+    {
+        return APIType;
+    }
 
     Vector<RefPtr<APIObject> > m_entries;
 };

@@ -25,20 +25,20 @@
 
 using namespace QPatternist;
 
-FunctionArgument::FunctionArgument(const QXmlName nameP,
-                                   const SequenceType::Ptr &typeP) : m_name(nameP),
-   m_type(typeP)
+FunctionArgument::FunctionArgument( const QXmlName nameP,
+                                    const SequenceType::Ptr &typeP ) : m_name( nameP ),
+    m_type( typeP )
 {
-   Q_ASSERT(!nameP.isNull());
-   Q_ASSERT(typeP);
+    Q_ASSERT( !nameP.isNull() );
+    Q_ASSERT( typeP );
 }
 
 QXmlName FunctionArgument::name() const
 {
-   return m_name;
+    return m_name;
 }
 
 SequenceType::Ptr FunctionArgument::type() const
 {
-   return m_type;
+    return m_type;
 }

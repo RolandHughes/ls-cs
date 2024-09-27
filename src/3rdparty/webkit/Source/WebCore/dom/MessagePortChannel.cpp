@@ -30,17 +30,20 @@
 #include "config.h"
 #include "MessagePortChannel.h"
 
-namespace WebCore {
-
-
-PassOwnPtr<MessagePortChannel::EventData> MessagePortChannel::EventData::create(PassRefPtr<SerializedScriptValue> message, PassOwnPtr<MessagePortChannelArray> channels)
+namespace WebCore
 {
-    return adoptPtr(new EventData(message, channels));
+
+
+PassOwnPtr<MessagePortChannel::EventData> MessagePortChannel::EventData::create( PassRefPtr<SerializedScriptValue> message,
+        PassOwnPtr<MessagePortChannelArray> channels )
+{
+    return adoptPtr( new EventData( message, channels ) );
 }
 
-MessagePortChannel::EventData::EventData(PassRefPtr<SerializedScriptValue> message, PassOwnPtr<MessagePortChannelArray> channels)
-    : m_message(message)
-    , m_channels(channels)
+MessagePortChannel::EventData::EventData( PassRefPtr<SerializedScriptValue> message,
+        PassOwnPtr<MessagePortChannelArray> channels )
+    : m_message( message )
+    , m_channels( channels )
 {
 }
 

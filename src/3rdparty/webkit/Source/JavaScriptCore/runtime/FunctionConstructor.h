@@ -23,21 +23,24 @@
 
 #include "InternalFunction.h"
 
-namespace JSC {
+namespace JSC
+{
 
-    class FunctionPrototype;
+class FunctionPrototype;
 
-    class FunctionConstructor : public InternalFunction {
-    public:
-        FunctionConstructor(ExecState*, JSGlobalObject*, Structure*, FunctionPrototype*);
+class FunctionConstructor : public InternalFunction
+{
+public:
+    FunctionConstructor( ExecState *, JSGlobalObject *, Structure *, FunctionPrototype * );
 
-    private:
-        virtual ConstructType getConstructData(ConstructData&);
-        virtual CallType getCallData(CallData&);
-    };
+private:
+    virtual ConstructType getConstructData( ConstructData & );
+    virtual CallType getCallData( CallData & );
+};
 
-    JSObject* constructFunction(ExecState*, JSGlobalObject*, const ArgList&, const Identifier& functionName, const UString& sourceURL, int lineNumber);
-    JSObject* constructFunction(ExecState*, JSGlobalObject*, const ArgList&);
+JSObject *constructFunction( ExecState *, JSGlobalObject *, const ArgList &, const Identifier &functionName,
+                             const UString &sourceURL, int lineNumber );
+JSObject *constructFunction( ExecState *, JSGlobalObject *, const ArgList & );
 
 } // namespace JSC
 

@@ -29,36 +29,46 @@
 #include "PluginStrategy.h"
 #endif
 
-namespace WebCore {
-
-PluginData::PluginData(const Page* page)
+namespace WebCore
 {
-    initPlugins(page);
 
-    for (unsigned i = 0; i < m_plugins.size(); ++i) {
-        const PluginInfo& plugin = m_plugins[i];
-        for (unsigned j = 0; j < plugin.mimes.size(); ++j) {
-            m_mimes.append(plugin.mimes[j]);
-            m_mimePluginIndices.append(i);
+PluginData::PluginData( const Page *page )
+{
+    initPlugins( page );
+
+    for ( unsigned i = 0; i < m_plugins.size(); ++i )
+    {
+        const PluginInfo &plugin = m_plugins[i];
+
+        for ( unsigned j = 0; j < plugin.mimes.size(); ++j )
+        {
+            m_mimes.append( plugin.mimes[j] );
+            m_mimePluginIndices.append( i );
         }
     }
 }
 
-bool PluginData::supportsMimeType(const String& mimeType) const
+bool PluginData::supportsMimeType( const String &mimeType ) const
 {
-    for (unsigned i = 0; i < m_mimes.size(); ++i)
-        if (m_mimes[i].type == mimeType)
+    for ( unsigned i = 0; i < m_mimes.size(); ++i )
+        if ( m_mimes[i].type == mimeType )
+        {
             return true;
+        }
+
     return false;
 }
 
-String PluginData::pluginNameForMimeType(const String& mimeType) const
+String PluginData::pluginNameForMimeType( const String &mimeType ) const
 {
-    for (unsigned i = 0; i < m_mimes.size(); ++i) {
-        const MimeClassInfo& info = m_mimes[i];
-    
-        if (info.type == mimeType)
+    for ( unsigned i = 0; i < m_mimes.size(); ++i )
+    {
+        const MimeClassInfo &info = m_mimes[i];
+
+        if ( info.type == mimeType )
+        {
             return m_plugins[m_mimePluginIndices[i]].name;
+        }
     }
 
     return String();
@@ -70,11 +80,11 @@ void PluginData::refresh()
     platformStrategies()->pluginStrategy()->refreshPlugins();
 }
 
-void PluginData::initPlugins(const Page* page)
+void PluginData::initPlugins( const Page *page )
 {
-    ASSERT(m_plugins.isEmpty());
-    
-    platformStrategies()->pluginStrategy()->getPluginInfo(page, m_plugins);
+    ASSERT( m_plugins.isEmpty() );
+
+    platformStrategies()->pluginStrategy()->getPluginInfo( page, m_plugins );
 }
 #endif
 

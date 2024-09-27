@@ -21,42 +21,43 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
 #include "Uint32Array.h"
 
-namespace WebCore {
-
-PassRefPtr<Uint32Array> Uint32Array::create(unsigned length)
+namespace WebCore
 {
-    return TypedArrayBase<unsigned int>::create<Uint32Array>(length);
+
+PassRefPtr<Uint32Array> Uint32Array::create( unsigned length )
+{
+    return TypedArrayBase<unsigned int>::create<Uint32Array>( length );
 }
 
-PassRefPtr<Uint32Array> Uint32Array::create(unsigned int* array, unsigned length)
+PassRefPtr<Uint32Array> Uint32Array::create( unsigned int *array, unsigned length )
 {
-    return TypedArrayBase<unsigned int>::create<Uint32Array>(array, length);
+    return TypedArrayBase<unsigned int>::create<Uint32Array>( array, length );
 }
 
-PassRefPtr<Uint32Array> Uint32Array::create(PassRefPtr<ArrayBuffer> buffer, unsigned byteOffset, unsigned length)
+PassRefPtr<Uint32Array> Uint32Array::create( PassRefPtr<ArrayBuffer> buffer, unsigned byteOffset, unsigned length )
 {
-    return TypedArrayBase<unsigned int>::create<Uint32Array>(buffer, byteOffset, length);
+    return TypedArrayBase<unsigned int>::create<Uint32Array>( buffer, byteOffset, length );
 }
 
-Uint32Array::Uint32Array(PassRefPtr<ArrayBuffer> buffer, unsigned byteOffset, unsigned length)
-    : IntegralTypedArrayBase<unsigned int>(buffer, byteOffset, length)
+Uint32Array::Uint32Array( PassRefPtr<ArrayBuffer> buffer, unsigned byteOffset, unsigned length )
+    : IntegralTypedArrayBase<unsigned int>( buffer, byteOffset, length )
 {
 }
 
-PassRefPtr<Uint32Array> Uint32Array::subarray(int start) const
+PassRefPtr<Uint32Array> Uint32Array::subarray( int start ) const
 {
-    return subarray(start, length());
+    return subarray( start, length() );
 }
 
-PassRefPtr<Uint32Array> Uint32Array::subarray(int start, int end) const
+PassRefPtr<Uint32Array> Uint32Array::subarray( int start, int end ) const
 {
-    return subarrayImpl<Uint32Array>(start, end);
+    return subarrayImpl<Uint32Array>( start, end );
 }
 
 }

@@ -25,20 +25,22 @@
 
 #include "Text.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class CDATASection : public Text {
+class CDATASection : public Text
+{
 public:
-    static PassRefPtr<CDATASection> create(Document*, const String&);
+    static PassRefPtr<CDATASection> create( Document *, const String & );
 
 private:
-    CDATASection(Document*, const String&);
+    CDATASection( Document *, const String & );
 
     virtual String nodeName() const;
     virtual NodeType nodeType() const;
-    virtual PassRefPtr<Node> cloneNode(bool deep);
-    virtual bool childTypeAllowed(NodeType) const;
-    virtual PassRefPtr<Text> virtualCreate(const String&);
+    virtual PassRefPtr<Node> cloneNode( bool deep );
+    virtual bool childTypeAllowed( NodeType ) const;
+    virtual PassRefPtr<Text> virtualCreate( const String & );
 };
 
 } // namespace WebCore

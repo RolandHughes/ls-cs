@@ -28,19 +28,20 @@
 #include "HTMLNames.h"
 #include <wtf/StdLibExtras.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-inline HTMLLegendElement::HTMLLegendElement(const QualifiedName& tagName, Document* document, HTMLFormElement* form)
-    : HTMLFormControlElement(tagName, document, form)
+inline HTMLLegendElement::HTMLLegendElement( const QualifiedName &tagName, Document *document, HTMLFormElement *form )
+    : HTMLFormControlElement( tagName, document, form )
 {
-    ASSERT(hasTagName(legendTag));
+    ASSERT( hasTagName( legendTag ) );
 }
 
-PassRefPtr<HTMLLegendElement> HTMLLegendElement::create(const QualifiedName& tagName, Document* document, HTMLFormElement* form)
+PassRefPtr<HTMLLegendElement> HTMLLegendElement::create( const QualifiedName &tagName, Document *document, HTMLFormElement *form )
 {
-    return adoptRef(new HTMLLegendElement(tagName, document, form));
+    return adoptRef( new HTMLLegendElement( tagName, document, form ) );
 }
 
 bool HTMLLegendElement::supportsFocus() const
@@ -48,49 +49,67 @@ bool HTMLLegendElement::supportsFocus() const
     return HTMLElement::supportsFocus();
 }
 
-const AtomicString& HTMLLegendElement::formControlType() const
+const AtomicString &HTMLLegendElement::formControlType() const
 {
-    DEFINE_STATIC_LOCAL(const AtomicString, legend, ("legend"));
+    DEFINE_STATIC_LOCAL( const AtomicString, legend, ( "legend" ) );
     return legend;
 }
 
-HTMLFormControlElement* HTMLLegendElement::associatedControl()
+HTMLFormControlElement *HTMLLegendElement::associatedControl()
 {
     // Check if there's a fieldset belonging to this legend.
-    ContainerNode* fieldset = parentNode();
-    while (fieldset && !fieldset->hasTagName(fieldsetTag))
+    ContainerNode *fieldset = parentNode();
+
+    while ( fieldset && !fieldset->hasTagName( fieldsetTag ) )
+    {
         fieldset = fieldset->parentNode();
-    if (!fieldset)
+    }
+
+    if ( !fieldset )
+    {
         return 0;
+    }
 
     // Find first form element inside the fieldset that is not a legend element.
     // FIXME: Should we consider tabindex?
-    Node* node = fieldset;
-    while ((node = node->traverseNextNode(fieldset))) {
-        if (node->isElementNode()) {
-            Element* element = static_cast<Element*>(node);
-            if (!element->hasLocalName(legendTag) && element->isFormControlElement())
-                return static_cast<HTMLFormControlElement*>(element);
+    Node *node = fieldset;
+
+    while ( ( node = node->traverseNextNode( fieldset ) ) )
+    {
+        if ( node->isElementNode() )
+        {
+            Element *element = static_cast<Element *>( node );
+
+            if ( !element->hasLocalName( legendTag ) && element->isFormControlElement() )
+            {
+                return static_cast<HTMLFormControlElement *>( element );
+            }
         }
     }
 
     return 0;
 }
 
-void HTMLLegendElement::focus(bool)
+void HTMLLegendElement::focus( bool )
 {
-    if (isFocusable())
+    if ( isFocusable() )
+    {
         Element::focus();
-        
+    }
+
     // To match other browsers' behavior, never restore previous selection.
-    if (HTMLFormControlElement* control = associatedControl())
-        control->focus(false);
+    if ( HTMLFormControlElement *control = associatedControl() )
+    {
+        control->focus( false );
+    }
 }
 
-void HTMLLegendElement::accessKeyAction(bool sendToAnyElement)
+void HTMLLegendElement::accessKeyAction( bool sendToAnyElement )
 {
-    if (HTMLFormControlElement* control = associatedControl())
-        control->accessKeyAction(sendToAnyElement);
+    if ( HTMLFormControlElement *control = associatedControl() )
+    {
+        control->accessKeyAction( sendToAnyElement );
+    }
 }
-    
+
 } // namespace

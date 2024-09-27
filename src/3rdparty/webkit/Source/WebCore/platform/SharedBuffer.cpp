@@ -21,7 +21,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -32,64 +32,65 @@
 
 using namespace std;
 
-namespace WebCore {
+namespace WebCore
+{
 
 static const unsigned segmentSize = 0x1000;
 static const unsigned segmentPositionMask = 0x0FFF;
 
-static inline unsigned segmentIndex(unsigned position)
+static inline unsigned segmentIndex( unsigned position )
 {
     return position / segmentSize;
 }
 
-static inline unsigned offsetInSegment(unsigned position)
+static inline unsigned offsetInSegment( unsigned position )
 {
     return position & segmentPositionMask;
 }
 
-static inline char* allocateSegment()
+static inline char *allocateSegment()
 {
-    return static_cast<char*>(fastMalloc(segmentSize));
+    return static_cast<char *>( fastMalloc( segmentSize ) );
 }
 
-static inline void freeSegment(char* p)
+static inline void freeSegment( char *p )
 {
-    fastFree(p);
+    fastFree( p );
 }
 
 SharedBuffer::SharedBuffer()
-    : m_size(0)
+    : m_size( 0 )
 {
 }
 
-SharedBuffer::SharedBuffer(const char* data, int size)
-    : m_size(0)
+SharedBuffer::SharedBuffer( const char *data, int size )
+    : m_size( 0 )
 {
-    append(data, size);
+    append( data, size );
 }
 
-SharedBuffer::SharedBuffer(const unsigned char* data, int size)
-    : m_size(0)
+SharedBuffer::SharedBuffer( const unsigned char *data, int size )
+    : m_size( 0 )
 {
-    append(reinterpret_cast<const char*>(data), size);
+    append( reinterpret_cast<const char *>( data ), size );
 }
-    
+
 SharedBuffer::~SharedBuffer()
 {
     clear();
 }
 
-PassRefPtr<SharedBuffer> SharedBuffer::adoptVector(Vector<char>& vector)
+PassRefPtr<SharedBuffer> SharedBuffer::adoptVector( Vector<char> &vector )
 {
     RefPtr<SharedBuffer> buffer = create();
-    buffer->m_buffer.swap(vector);
+    buffer->m_buffer.swap( vector );
     buffer->m_size = buffer->m_buffer.size();
     return buffer.release();
 }
 
-PassRefPtr<SharedBuffer> SharedBuffer::adoptPurgeableBuffer(PassOwnPtr<PurgeableBuffer> purgeableBuffer) 
-{ 
-    ASSERT(!purgeableBuffer->isPurgeable());
+PassRefPtr<SharedBuffer> SharedBuffer::adoptPurgeableBuffer( PassOwnPtr<PurgeableBuffer> purgeableBuffer )
+{
+    ASSERT( !purgeableBuffer->isPurgeable() );
     RefPtr<SharedBuffer> buffer = create();
     buffer->m_purgeableBuffer = purgeableBuffer;
     return buffer.release();
@@ -97,70 +98,90 @@ PassRefPtr<SharedBuffer> SharedBuffer::adoptPurgeableBuffer(PassOwnPtr<Purgeable
 
 unsigned SharedBuffer::size() const
 {
-    if (hasPlatformData())
+    if ( hasPlatformData() )
+    {
         return platformDataSize();
-    
-    if (m_purgeableBuffer)
+    }
+
+    if ( m_purgeableBuffer )
+    {
         return m_purgeableBuffer->size();
-    
+    }
+
     return m_size;
 }
 
-const char* SharedBuffer::data() const
+const char *SharedBuffer::data() const
 {
-    if (hasPlatformData())
+    if ( hasPlatformData() )
+    {
         return platformData();
-    
-    if (m_purgeableBuffer)
+    }
+
+    if ( m_purgeableBuffer )
+    {
         return m_purgeableBuffer->data();
-    
+    }
+
     return buffer().data();
 }
 
-void SharedBuffer::append(const char* data, unsigned length)
+void SharedBuffer::append( const char *data, unsigned length )
 {
-    ASSERT(!m_purgeableBuffer);
+    ASSERT( !m_purgeableBuffer );
 
     maybeTransferPlatformData();
-    
-    unsigned positionInSegment = offsetInSegment(m_size - m_buffer.size());
+
+    unsigned positionInSegment = offsetInSegment( m_size - m_buffer.size() );
     m_size += length;
 
-    if (m_size <= segmentSize) {
+    if ( m_size <= segmentSize )
+    {
         // No need to use segments for small resource data
-        m_buffer.append(data, length);
+        m_buffer.append( data, length );
         return;
     }
 
-    char* segment;
-    if (!positionInSegment) {
+    char *segment;
+
+    if ( !positionInSegment )
+    {
         segment = allocateSegment();
-        m_segments.append(segment);
-    } else
+        m_segments.append( segment );
+    }
+    else
+    {
         segment = m_segments.last() + positionInSegment;
+    }
 
     unsigned segmentFreeSpace = segmentSize - positionInSegment;
-    unsigned bytesToCopy = min(length, segmentFreeSpace);
+    unsigned bytesToCopy = min( length, segmentFreeSpace );
 
-    for (;;) {
-        memcpy(segment, data, bytesToCopy);
-        if (static_cast<unsigned>(length) == bytesToCopy)
+    for ( ;; )
+    {
+        memcpy( segment, data, bytesToCopy );
+
+        if ( static_cast<unsigned>( length ) == bytesToCopy )
+        {
             break;
+        }
 
         length -= bytesToCopy;
         data += bytesToCopy;
         segment = allocateSegment();
-        m_segments.append(segment);
-        bytesToCopy = min(length, segmentSize);
+        m_segments.append( segment );
+        bytesToCopy = min( length, segmentSize );
     }
 }
 
 void SharedBuffer::clear()
 {
     clearPlatformData();
-    
-    for (unsigned i = 0; i < m_segments.size(); ++i)
-        freeSegment(m_segments[i]);
+
+    for ( unsigned i = 0; i < m_segments.size(); ++i )
+    {
+        freeSegment( m_segments[i] );
+    }
 
     m_segments.clear();
     m_size = 0;
@@ -174,73 +195,89 @@ void SharedBuffer::clear()
 
 PassRefPtr<SharedBuffer> SharedBuffer::copy() const
 {
-    RefPtr<SharedBuffer> clone(adoptRef(new SharedBuffer));
-    if (m_purgeableBuffer || hasPlatformData()) {
-        clone->append(data(), size());
+    RefPtr<SharedBuffer> clone( adoptRef( new SharedBuffer ) );
+
+    if ( m_purgeableBuffer || hasPlatformData() )
+    {
+        clone->append( data(), size() );
         return clone;
     }
 
     clone->m_size = m_size;
-    clone->m_buffer.reserveCapacity(m_size);
-    clone->m_buffer.append(m_buffer.data(), m_buffer.size());
-    for (unsigned i = 0; i < m_segments.size(); ++i)
-        clone->m_buffer.append(m_segments[i], segmentSize);
+    clone->m_buffer.reserveCapacity( m_size );
+    clone->m_buffer.append( m_buffer.data(), m_buffer.size() );
+
+    for ( unsigned i = 0; i < m_segments.size(); ++i )
+    {
+        clone->m_buffer.append( m_segments[i], segmentSize );
+    }
+
     return clone;
 }
 
 PassOwnPtr<PurgeableBuffer> SharedBuffer::releasePurgeableBuffer()
-{ 
-    ASSERT(hasOneRef()); 
-    return m_purgeableBuffer.release(); 
+{
+    ASSERT( hasOneRef() );
+    return m_purgeableBuffer.release();
 }
 
-const Vector<char>& SharedBuffer::buffer() const
+const Vector<char> &SharedBuffer::buffer() const
 {
     unsigned bufferSize = m_buffer.size();
-    if (m_size > bufferSize) {
-        m_buffer.resize(m_size);
-        char* destination = m_buffer.data() + bufferSize;
+
+    if ( m_size > bufferSize )
+    {
+        m_buffer.resize( m_size );
+        char *destination = m_buffer.data() + bufferSize;
         unsigned bytesLeft = m_size - bufferSize;
-        for (unsigned i = 0; i < m_segments.size(); ++i) {
-            unsigned bytesToCopy = min(bytesLeft, segmentSize);
-            memcpy(destination, m_segments[i], bytesToCopy);
+
+        for ( unsigned i = 0; i < m_segments.size(); ++i )
+        {
+            unsigned bytesToCopy = min( bytesLeft, segmentSize );
+            memcpy( destination, m_segments[i], bytesToCopy );
             destination += bytesToCopy;
             bytesLeft -= bytesToCopy;
-            freeSegment(m_segments[i]);
+            freeSegment( m_segments[i] );
         }
+
         m_segments.clear();
 #if HAVE(CFNETWORK_DATA_ARRAY_CALLBACK)
-        copyDataArrayAndClear(destination, bytesLeft);
+        copyDataArrayAndClear( destination, bytesLeft );
 #endif
     }
+
     return m_buffer;
 }
 
-unsigned SharedBuffer::getSomeData(const char*& someData, unsigned position) const
+unsigned SharedBuffer::getSomeData( const char *&someData, unsigned position ) const
 {
-    if (hasPlatformData() || m_purgeableBuffer) {
+    if ( hasPlatformData() || m_purgeableBuffer )
+    {
         someData = data() + position;
         return size() - position;
     }
 
-    if (position >= m_size) {
+    if ( position >= m_size )
+    {
         someData = 0;
         return 0;
     }
 
     unsigned consecutiveSize = m_buffer.size();
-    if (position < consecutiveSize) {
+
+    if ( position < consecutiveSize )
+    {
         someData = m_buffer.data() + position;
         return consecutiveSize - position;
     }
- 
+
     position -= consecutiveSize;
     unsigned segmentedSize = m_size - consecutiveSize;
     unsigned segments = m_segments.size();
-    unsigned segment = segmentIndex(position);
-    ASSERT(segment < segments);
+    unsigned segment = segmentIndex( position );
+    ASSERT( segment < segments );
 
-    unsigned positionInSegment = offsetInSegment(position);
+    unsigned positionInSegment = offsetInSegment( position );
     someData = m_segments[segment] + positionInSegment;
     return segment == segments - 1 ? segmentedSize - position : segmentSize - positionInSegment;
 }
@@ -260,7 +297,7 @@ inline bool SharedBuffer::hasPlatformData() const
     return false;
 }
 
-inline const char* SharedBuffer::platformData() const
+inline const char *SharedBuffer::platformData() const
 {
     ASSERT_NOT_REACHED();
 
@@ -270,7 +307,7 @@ inline const char* SharedBuffer::platformData() const
 inline unsigned SharedBuffer::platformDataSize() const
 {
     ASSERT_NOT_REACHED();
-    
+
     return 0;
 }
 

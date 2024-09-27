@@ -28,130 +28,130 @@
 
 #include <qaudiodevicefactory_p.h>
 
-QAudioOutput::QAudioOutput(const QAudioFormat &format, QObject *parent)
-   : QObject(parent)
+QAudioOutput::QAudioOutput( const QAudioFormat &format, QObject *parent )
+    : QObject( parent )
 {
-   m_audioOutput = QAudioDeviceFactory::createDefaultOutputDevice(format);
+    m_audioOutput = QAudioDeviceFactory::createDefaultOutputDevice( format );
 
-   connect(m_audioOutput, &QAbstractAudioOutput::notify,       this, &QAudioOutput::notify);
-   connect(m_audioOutput, &QAbstractAudioOutput::stateChanged, this, &QAudioOutput::stateChanged);
+    connect( m_audioOutput, &QAbstractAudioOutput::notify,       this, &QAudioOutput::notify );
+    connect( m_audioOutput, &QAbstractAudioOutput::stateChanged, this, &QAudioOutput::stateChanged );
 }
 
-QAudioOutput::QAudioOutput(const QAudioDeviceInfo &audioDevice, const QAudioFormat &format, QObject *parent)
-   : QObject(parent)
+QAudioOutput::QAudioOutput( const QAudioDeviceInfo &audioDevice, const QAudioFormat &format, QObject *parent )
+    : QObject( parent )
 {
-   m_audioOutput = QAudioDeviceFactory::createOutputDevice(audioDevice, format);
-   connect(m_audioOutput, &QAbstractAudioOutput::notify,       this, &QAudioOutput::notify);
-   connect(m_audioOutput, &QAbstractAudioOutput::stateChanged, this, &QAudioOutput::stateChanged);
+    m_audioOutput = QAudioDeviceFactory::createOutputDevice( audioDevice, format );
+    connect( m_audioOutput, &QAbstractAudioOutput::notify,       this, &QAudioOutput::notify );
+    connect( m_audioOutput, &QAbstractAudioOutput::stateChanged, this, &QAudioOutput::stateChanged );
 }
 
 QAudioOutput::~QAudioOutput()
 {
-   delete m_audioOutput;
+    delete m_audioOutput;
 }
 
 QAudioFormat QAudioOutput::format() const
 {
-   return m_audioOutput->format();
+    return m_audioOutput->format();
 }
 
-void QAudioOutput::start(QIODevice *device)
+void QAudioOutput::start( QIODevice *device )
 {
-   m_audioOutput->start(device);
+    m_audioOutput->start( device );
 }
 
 QIODevice *QAudioOutput::start()
 {
-   return m_audioOutput->start();
+    return m_audioOutput->start();
 }
 
 void QAudioOutput::stop()
 {
-   m_audioOutput->stop();
+    m_audioOutput->stop();
 }
 
 void QAudioOutput::reset()
 {
-   m_audioOutput->reset();
+    m_audioOutput->reset();
 }
 
 void QAudioOutput::suspend()
 {
-   m_audioOutput->suspend();
+    m_audioOutput->suspend();
 }
 
 void QAudioOutput::resume()
 {
-   m_audioOutput->resume();
+    m_audioOutput->resume();
 }
 
 int QAudioOutput::bytesFree() const
 {
-   return m_audioOutput->bytesFree();
+    return m_audioOutput->bytesFree();
 }
 
 int QAudioOutput::periodSize() const
 {
-   return m_audioOutput->periodSize();
+    return m_audioOutput->periodSize();
 }
 
-void QAudioOutput::setBufferSize(int value)
+void QAudioOutput::setBufferSize( int value )
 {
-   m_audioOutput->setBufferSize(value);
+    m_audioOutput->setBufferSize( value );
 }
 
 int QAudioOutput::bufferSize() const
 {
-   return m_audioOutput->bufferSize();
+    return m_audioOutput->bufferSize();
 }
 
-void QAudioOutput::setNotifyInterval(int ms)
+void QAudioOutput::setNotifyInterval( int ms )
 {
-   m_audioOutput->setNotifyInterval(ms);
+    m_audioOutput->setNotifyInterval( ms );
 }
 
 int QAudioOutput::notifyInterval() const
 {
-   return m_audioOutput->notifyInterval();
+    return m_audioOutput->notifyInterval();
 }
 
 qint64 QAudioOutput::processedUSecs() const
 {
-   return m_audioOutput->processedUSecs();
+    return m_audioOutput->processedUSecs();
 }
 
 qint64 QAudioOutput::elapsedUSecs() const
 {
-   return m_audioOutput->elapsedUSecs();
+    return m_audioOutput->elapsedUSecs();
 }
 
 QAudio::Error QAudioOutput::error() const
 {
-   return m_audioOutput->error();
+    return m_audioOutput->error();
 }
 
 QAudio::State QAudioOutput::state() const
 {
-   return m_audioOutput->state();
+    return m_audioOutput->state();
 }
 
-void QAudioOutput::setVolume(qreal volume)
+void QAudioOutput::setVolume( qreal volume )
 {
-   qreal v = qBound(qreal(0.0), volume, qreal(1.0));
-   m_audioOutput->setVolume(v);
+    qreal v = qBound( qreal( 0.0 ), volume, qreal( 1.0 ) );
+    m_audioOutput->setVolume( v );
 }
 
 qreal QAudioOutput::volume() const
 {
-   return m_audioOutput->volume();
+    return m_audioOutput->volume();
 }
 
 QString QAudioOutput::category() const
 {
-   return m_audioOutput->category();
+    return m_audioOutput->category();
 }
 
-void QAudioOutput::setCategory(const QString &category)
+void QAudioOutput::setCategory( const QString &category )
 {
-   m_audioOutput->setCategory(category);
+    m_audioOutput->setCategory( category );
 }

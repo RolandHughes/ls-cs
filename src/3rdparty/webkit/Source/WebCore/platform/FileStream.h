@@ -38,16 +38,18 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class KURL;
 
 // All methods are synchronous.
-class FileStream : public RefCounted<FileStream> {
+class FileStream : public RefCounted<FileStream>
+{
 public:
     static PassRefPtr<FileStream> create()
     {
-        return adoptRef(new FileStream());
+        return adoptRef( new FileStream() );
     }
     ~FileStream();
 
@@ -59,15 +61,15 @@ public:
 
     // Gets the size of a file. Also validates if the file has been changed or not if the expected modification time is provided, i.e. non-zero.
     // Returns total number of bytes if successful. -1 otherwise.
-    long long getSize(const String& path, double expectedModificationTime);
+    long long getSize( const String &path, double expectedModificationTime );
 
     // Opens a file for reading. The reading starts at the specified offset and lasts till the specified length.
     // Returns true on success. False otherwise.
-    bool openForRead(const String& path, long long offset, long long length);
+    bool openForRead( const String &path, long long offset, long long length );
 
     // Opens a file for writing.
     // Returns true on success. False otherwise.
-    bool openForWrite(const String& path);
+    bool openForWrite( const String &path );
 
     // Closes the file.
     void close();
@@ -75,15 +77,15 @@ public:
     // Reads a file into the provided data buffer.
     // Returns number of bytes being read on success. -1 otherwise.
     // If 0 is returned, it means that the reading is completed.
-    int read(char* buffer, int length);
+    int read( char *buffer, int length );
 
     // Writes a blob to the file.
     // Returns number of bytes being written on success. -1 otherwise.
-    int write(const KURL& blobURL, long long position, int length);
+    int write( const KURL &blobURL, long long position, int length );
 
     // Truncates the file to the specified position.
     // Returns true on success. False otherwise.
-    bool truncate(long long position);
+    bool truncate( long long position );
 
 private:
     FileStream();

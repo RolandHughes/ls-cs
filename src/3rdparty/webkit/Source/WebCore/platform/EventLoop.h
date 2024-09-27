@@ -28,22 +28,27 @@
 
 #include <wtf/Noncopyable.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class EventLoop {
-        WTF_MAKE_NONCOPYABLE(EventLoop);
-    public:
-        EventLoop()
-            : m_ended(false)
-        {
-        }
+class EventLoop
+{
+    WTF_MAKE_NONCOPYABLE( EventLoop );
+public:
+    EventLoop()
+        : m_ended( false )
+    {
+    }
 
-        void cycle();
-        bool ended() const { return m_ended; }
+    void cycle();
+    bool ended() const
+    {
+        return m_ended;
+    }
 
-    private:
-        bool m_ended;
-    };
+private:
+    bool m_ended;
+};
 
 } // namespace WebCore
 

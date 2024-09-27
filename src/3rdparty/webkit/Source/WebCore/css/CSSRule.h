@@ -26,19 +26,23 @@
 #include "KURLHash.h"
 #include <wtf/ListHashSet.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 typedef int ExceptionCode;
 
-enum CSSRuleFilter {
+enum CSSRuleFilter
+{
     AllCSSRules,
     SameOriginCSSRulesOnly
-}; 
+};
 
-class CSSRule : public StyleBase {
+class CSSRule : public StyleBase
+{
 public:
     // FIXME: Change name to Type.
-    enum CSSRuleType {
+    enum CSSRuleType
+    {
         UNKNOWN_RULE,
         STYLE_RULE,
         CHARSET_RULE,
@@ -54,22 +58,25 @@ public:
     // FIXME: Change to return CSSRuleType.
     virtual unsigned short type() const = 0;
 
-    CSSStyleSheet* parentStyleSheet() const;
-    CSSRule* parentRule() const;
+    CSSStyleSheet *parentStyleSheet() const;
+    CSSRule *parentRule() const;
 
     virtual String cssText() const = 0;
-    void setCssText(const String&, ExceptionCode&);
+    void setCssText( const String &, ExceptionCode & );
 
-    virtual void addSubresourceStyleURLs(ListHashSet<KURL>&) { }
+    virtual void addSubresourceStyleURLs( ListHashSet<KURL> & ) { }
 
 protected:
-    CSSRule(CSSStyleSheet* parent)
-        : StyleBase(parent)
+    CSSRule( CSSStyleSheet *parent )
+        : StyleBase( parent )
     {
     }
 
 private:
-    virtual bool isRule() { return true; }
+    virtual bool isRule()
+    {
+        return true;
+    }
 };
 
 } // namespace WebCore

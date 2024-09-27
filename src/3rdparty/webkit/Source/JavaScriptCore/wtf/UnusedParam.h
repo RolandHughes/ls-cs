@@ -28,7 +28,10 @@
 
 #if COMPILER(INTEL) && !OS(WINDOWS) || COMPILER(RVCT)
 template<typename T>
-inline void unusedParam(T& x) { (void)x; }
+inline void unusedParam( T &x )
+{
+    ( void )x;
+}
 #define UNUSED_PARAM(variable) unusedParam(variable)
 #else
 #define UNUSED_PARAM(variable) (void)variable

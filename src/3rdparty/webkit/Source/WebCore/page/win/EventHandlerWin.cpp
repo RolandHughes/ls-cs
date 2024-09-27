@@ -21,7 +21,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -49,44 +49,50 @@
 #include "ClipboardWin.h"
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
 const double EventHandler::TextDragDelay = 0.0;
 
-bool EventHandler::passMousePressEventToSubframe(MouseEventWithHitTestResults& mev, Frame* subframe)
+bool EventHandler::passMousePressEventToSubframe( MouseEventWithHitTestResults &mev, Frame *subframe )
 {
-    subframe->eventHandler()->handleMousePressEvent(mev.event());
+    subframe->eventHandler()->handleMousePressEvent( mev.event() );
     return true;
 }
 
-bool EventHandler::passMouseMoveEventToSubframe(MouseEventWithHitTestResults& mev, Frame* subframe, HitTestResult* hoveredNode)
+bool EventHandler::passMouseMoveEventToSubframe( MouseEventWithHitTestResults &mev, Frame *subframe, HitTestResult *hoveredNode )
 {
-    if (m_mouseDownMayStartDrag && !m_mouseDownWasInSubframe)
+    if ( m_mouseDownMayStartDrag && !m_mouseDownWasInSubframe )
+    {
         return false;
-    subframe->eventHandler()->handleMouseMoveEvent(mev.event(), hoveredNode);
+    }
+
+    subframe->eventHandler()->handleMouseMoveEvent( mev.event(), hoveredNode );
     return true;
 }
 
-bool EventHandler::passMouseReleaseEventToSubframe(MouseEventWithHitTestResults& mev, Frame* subframe)
+bool EventHandler::passMouseReleaseEventToSubframe( MouseEventWithHitTestResults &mev, Frame *subframe )
 {
-    subframe->eventHandler()->handleMouseReleaseEvent(mev.event());
+    subframe->eventHandler()->handleMouseReleaseEvent( mev.event() );
     return true;
 }
 
-bool EventHandler::passWheelEventToWidget(PlatformWheelEvent& wheelEvent, Widget* widget)
+bool EventHandler::passWheelEventToWidget( PlatformWheelEvent &wheelEvent, Widget *widget )
 {
-    if (!widget->isFrameView())
+    if ( !widget->isFrameView() )
+    {
         return false;
+    }
 
-    return static_cast<FrameView*>(widget)->frame()->eventHandler()->handleWheelEvent(wheelEvent);
+    return static_cast<FrameView *>( widget )->frame()->eventHandler()->handleWheelEvent( wheelEvent );
 }
 
-bool EventHandler::tabsToAllFormControls(KeyboardEvent*) const
+bool EventHandler::tabsToAllFormControls( KeyboardEvent * ) const
 {
     return true;
 }
 
-bool EventHandler::eventActivatedView(const PlatformMouseEvent& event) const
+bool EventHandler::eventActivatedView( const PlatformMouseEvent &event ) const
 {
     return event.didActivateWebView();
 }
@@ -97,20 +103,24 @@ PassRefPtr<Clipboard> EventHandler::createDraggingClipboard() const
     return 0;
 #else
     COMPtr<WCDataObject> dataObject;
-    WCDataObject::createInstance(&dataObject);
-    return ClipboardWin::create(Clipboard::DragAndDrop, dataObject.get(), ClipboardWritable, m_frame);
+    WCDataObject::createInstance( &dataObject );
+    return ClipboardWin::create( Clipboard::DragAndDrop, dataObject.get(), ClipboardWritable, m_frame );
 #endif
 }
 
 void EventHandler::focusDocumentView()
 {
-    Page* page = m_frame->page();
-    if (!page)
+    Page *page = m_frame->page();
+
+    if ( !page )
+    {
         return;
-    page->focusController()->setFocusedFrame(m_frame);
+    }
+
+    page->focusController()->setFocusedFrame( m_frame );
 }
 
-bool EventHandler::passWidgetMouseDownEventToWidget(const MouseEventWithHitTestResults&)
+bool EventHandler::passWidgetMouseDownEventToWidget( const MouseEventWithHitTestResults & )
 {
     notImplemented();
     return false;

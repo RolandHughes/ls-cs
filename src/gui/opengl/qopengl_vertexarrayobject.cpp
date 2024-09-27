@@ -35,42 +35,61 @@
 class QOpenGLFunctions_3_0;
 class QOpenGLFunctions_3_2_Core;
 
-void qtInitializeVertexArrayObjectHelper(QOpenGLVertexArrayObjectHelper *helper, QOpenGLContext *context)
+void qtInitializeVertexArrayObjectHelper( QOpenGLVertexArrayObjectHelper *helper, QOpenGLContext *context )
 {
-    Q_ASSERT(helper);
-    Q_ASSERT(context);
+    Q_ASSERT( helper );
+    Q_ASSERT( context );
 
     bool tryARB = true;
 
-    if (context->isOpenGLES()) {
-        if (context->format().majorVersion() >= 3) {
-            QOpenGLES3Helper *es3 = static_cast<QOpenGLExtensions *>(context->functions())->gles3Helper();
+    if ( context->isOpenGLES() )
+    {
+        if ( context->format().majorVersion() >= 3 )
+        {
+            QOpenGLES3Helper *es3 = static_cast<QOpenGLExtensions *>( context->functions() )->gles3Helper();
             helper->GenVertexArrays = es3->GenVertexArrays;
             helper->DeleteVertexArrays = es3->DeleteVertexArrays;
             helper->BindVertexArray = es3->BindVertexArray;
             helper->IsVertexArray = es3->IsVertexArray;
             tryARB = false;
-        } else if (context->hasExtension(QByteArrayLiteral("GL_OES_vertex_array_object"))) {
-            helper->GenVertexArrays = reinterpret_cast<QOpenGLVertexArrayObjectHelper::qt_GenVertexArrays_t>(context->getProcAddress(QByteArrayLiteral("glGenVertexArraysOES")));
-            helper->DeleteVertexArrays = reinterpret_cast<QOpenGLVertexArrayObjectHelper::qt_DeleteVertexArrays_t>(context->getProcAddress(QByteArrayLiteral("glDeleteVertexArraysOES")));
-            helper->BindVertexArray = reinterpret_cast<QOpenGLVertexArrayObjectHelper::qt_BindVertexArray_t>(context->getProcAddress(QByteArrayLiteral("glBindVertexArrayOES")));
-            helper->IsVertexArray = reinterpret_cast<QOpenGLVertexArrayObjectHelper::qt_IsVertexArray_t>(context->getProcAddress(QByteArrayLiteral("glIsVertexArrayOES")));
+        }
+        else if ( context->hasExtension( QByteArrayLiteral( "GL_OES_vertex_array_object" ) ) )
+        {
+            helper->GenVertexArrays = reinterpret_cast<QOpenGLVertexArrayObjectHelper::qt_GenVertexArrays_t>( context->getProcAddress(
+                                          QByteArrayLiteral( "glGenVertexArraysOES" ) ) );
+            helper->DeleteVertexArrays = reinterpret_cast<QOpenGLVertexArrayObjectHelper::qt_DeleteVertexArrays_t>( context->getProcAddress(
+                                             QByteArrayLiteral( "glDeleteVertexArraysOES" ) ) );
+            helper->BindVertexArray = reinterpret_cast<QOpenGLVertexArrayObjectHelper::qt_BindVertexArray_t>( context->getProcAddress(
+                                          QByteArrayLiteral( "glBindVertexArrayOES" ) ) );
+            helper->IsVertexArray = reinterpret_cast<QOpenGLVertexArrayObjectHelper::qt_IsVertexArray_t>( context->getProcAddress(
+                                        QByteArrayLiteral( "glIsVertexArrayOES" ) ) );
             tryARB = false;
         }
-    } else if (context->hasExtension(QByteArrayLiteral("GL_APPLE_vertex_array_object")) &&
-               !context->hasExtension(QByteArrayLiteral("GL_ARB_vertex_array_object"))) {
-        helper->GenVertexArrays = reinterpret_cast<QOpenGLVertexArrayObjectHelper::qt_GenVertexArrays_t>(context->getProcAddress(QByteArrayLiteral("glGenVertexArraysAPPLE")));
-        helper->DeleteVertexArrays = reinterpret_cast<QOpenGLVertexArrayObjectHelper::qt_DeleteVertexArrays_t>(context->getProcAddress(QByteArrayLiteral("glDeleteVertexArraysAPPLE")));
-        helper->BindVertexArray = reinterpret_cast<QOpenGLVertexArrayObjectHelper::qt_BindVertexArray_t>(context->getProcAddress(QByteArrayLiteral("glBindVertexArrayAPPLE")));
-        helper->IsVertexArray = reinterpret_cast<QOpenGLVertexArrayObjectHelper::qt_IsVertexArray_t>(context->getProcAddress(QByteArrayLiteral("glIsVertexArrayAPPLE")));
+    }
+    else if ( context->hasExtension( QByteArrayLiteral( "GL_APPLE_vertex_array_object" ) ) &&
+              !context->hasExtension( QByteArrayLiteral( "GL_ARB_vertex_array_object" ) ) )
+    {
+        helper->GenVertexArrays = reinterpret_cast<QOpenGLVertexArrayObjectHelper::qt_GenVertexArrays_t>( context->getProcAddress(
+                                      QByteArrayLiteral( "glGenVertexArraysAPPLE" ) ) );
+        helper->DeleteVertexArrays = reinterpret_cast<QOpenGLVertexArrayObjectHelper::qt_DeleteVertexArrays_t>( context->getProcAddress(
+                                         QByteArrayLiteral( "glDeleteVertexArraysAPPLE" ) ) );
+        helper->BindVertexArray = reinterpret_cast<QOpenGLVertexArrayObjectHelper::qt_BindVertexArray_t>( context->getProcAddress(
+                                      QByteArrayLiteral( "glBindVertexArrayAPPLE" ) ) );
+        helper->IsVertexArray = reinterpret_cast<QOpenGLVertexArrayObjectHelper::qt_IsVertexArray_t>( context->getProcAddress(
+                                    QByteArrayLiteral( "glIsVertexArrayAPPLE" ) ) );
         tryARB = false;
     }
 
-    if (tryARB && context->hasExtension(QByteArrayLiteral("GL_ARB_vertex_array_object"))) {
-        helper->GenVertexArrays = reinterpret_cast<QOpenGLVertexArrayObjectHelper::qt_GenVertexArrays_t>(context->getProcAddress(QByteArrayLiteral("glGenVertexArrays")));
-        helper->DeleteVertexArrays = reinterpret_cast<QOpenGLVertexArrayObjectHelper::qt_DeleteVertexArrays_t>(context->getProcAddress(QByteArrayLiteral("glDeleteVertexArrays")));
-        helper->BindVertexArray = reinterpret_cast<QOpenGLVertexArrayObjectHelper::qt_BindVertexArray_t>(context->getProcAddress(QByteArrayLiteral("glBindVertexArray")));
-        helper->IsVertexArray = reinterpret_cast<QOpenGLVertexArrayObjectHelper::qt_IsVertexArray_t>(context->getProcAddress(QByteArrayLiteral("glIsVertexArray")));
+    if ( tryARB && context->hasExtension( QByteArrayLiteral( "GL_ARB_vertex_array_object" ) ) )
+    {
+        helper->GenVertexArrays = reinterpret_cast<QOpenGLVertexArrayObjectHelper::qt_GenVertexArrays_t>( context->getProcAddress(
+                                      QByteArrayLiteral( "glGenVertexArrays" ) ) );
+        helper->DeleteVertexArrays = reinterpret_cast<QOpenGLVertexArrayObjectHelper::qt_DeleteVertexArrays_t>( context->getProcAddress(
+                                         QByteArrayLiteral( "glDeleteVertexArrays" ) ) );
+        helper->BindVertexArray = reinterpret_cast<QOpenGLVertexArrayObjectHelper::qt_BindVertexArray_t>( context->getProcAddress(
+                                      QByteArrayLiteral( "glBindVertexArray" ) ) );
+        helper->IsVertexArray = reinterpret_cast<QOpenGLVertexArrayObjectHelper::qt_IsVertexArray_t>( context->getProcAddress(
+                                    QByteArrayLiteral( "glIsVertexArray" ) ) );
     }
 }
 
@@ -78,14 +97,16 @@ class QOpenGLVertexArrayObjectPrivate
 {
 public:
     QOpenGLVertexArrayObjectPrivate()
-        : vao(0), vaoFuncsType(NotSupported), context(nullptr)
+        : vao( 0 ), vaoFuncsType( NotSupported ), context( nullptr )
     {
     }
 
     ~QOpenGLVertexArrayObjectPrivate()
     {
-        if (vaoFuncsType == ARB || vaoFuncsType == APPLE || vaoFuncsType == OES)
+        if ( vaoFuncsType == ARB || vaoFuncsType == APPLE || vaoFuncsType == OES )
+        {
             delete vaoFuncs.helper;
+        }
     }
 
     bool create();
@@ -94,16 +115,18 @@ public:
     void release();
     void _q_contextAboutToBeDestroyed();
 
-    Q_DECLARE_PUBLIC(QOpenGLVertexArrayObject)
+    Q_DECLARE_PUBLIC( QOpenGLVertexArrayObject )
 
     GLuint vao;
 
-    union {
+    union
+    {
         QOpenGLFunctions_3_0 *core_3_0;
         QOpenGLFunctions_3_2_Core *core_3_2;
         QOpenGLVertexArrayObjectHelper *helper;
     } vaoFuncs;
-    enum {
+    enum
+    {
         NotSupported,
         Core_3_0,
         Core_3_2,
@@ -114,97 +137,122 @@ public:
 
     QOpenGLContext *context;
 
- protected:
+protected:
     QOpenGLVertexArrayObject *q_ptr;
 };
 
 bool QOpenGLVertexArrayObjectPrivate::create()
 {
-    if (vao) {
-        qWarning("QOpenGLVertexArrayObject::create() VAO is already created");
+    if ( vao )
+    {
+        qWarning( "QOpenGLVertexArrayObject::create() VAO is already created" );
         return false;
     }
 
-    Q_Q(QOpenGLVertexArrayObject);
+    Q_Q( QOpenGLVertexArrayObject );
 
     QOpenGLContext *ctx = QOpenGLContext::currentContext();
-    if (!ctx) {
-        qWarning("QOpenGLVertexArrayObject::create() requires a valid current OpenGL context");
+
+    if ( !ctx )
+    {
+        qWarning( "QOpenGLVertexArrayObject::create() requires a valid current OpenGL context" );
         return false;
     }
 
     //Fail early, if context is the same as ctx, it means we have tried to initialize for this context and failed
-    if (ctx == context)
+    if ( ctx == context )
+    {
         return false;
+    }
 
     context = ctx;
-    QObject::connect(context, &QOpenGLContext::aboutToBeDestroyed, q, &QOpenGLVertexArrayObject::_q_contextAboutToBeDestroyed);
+    QObject::connect( context, &QOpenGLContext::aboutToBeDestroyed, q, &QOpenGLVertexArrayObject::_q_contextAboutToBeDestroyed );
 
-    if (ctx->isOpenGLES()) {
-        if (ctx->format().majorVersion() >= 3 || ctx->hasExtension(QByteArrayLiteral("GL_OES_vertex_array_object"))) {
-            vaoFuncs.helper = new QOpenGLVertexArrayObjectHelper(ctx);
+    if ( ctx->isOpenGLES() )
+    {
+        if ( ctx->format().majorVersion() >= 3 || ctx->hasExtension( QByteArrayLiteral( "GL_OES_vertex_array_object" ) ) )
+        {
+            vaoFuncs.helper = new QOpenGLVertexArrayObjectHelper( ctx );
             vaoFuncsType = OES;
-            vaoFuncs.helper->glGenVertexArrays(1, &vao);
+            vaoFuncs.helper->glGenVertexArrays( 1, &vao );
         }
 
-    } else {
+    }
+    else
+    {
         vaoFuncs.core_3_0 = nullptr;
         vaoFuncsType = NotSupported;
 
         QSurfaceFormat format = ctx->format();
 #ifndef QT_OPENGL_ES_2
-        if (format.version() >= qMakePair<int, int>(3,2)) {
+
+        if ( format.version() >= qMakePair<int, int>( 3,2 ) )
+        {
             vaoFuncs.core_3_2 = ctx->versionFunctions<QOpenGLFunctions_3_2_Core>();
             vaoFuncsType = Core_3_2;
-            vaoFuncs.core_3_2->glGenVertexArrays(1, &vao);
-        } else if (format.majorVersion() >= 3) {
+            vaoFuncs.core_3_2->glGenVertexArrays( 1, &vao );
+        }
+        else if ( format.majorVersion() >= 3 )
+        {
             vaoFuncs.core_3_0 = ctx->versionFunctions<QOpenGLFunctions_3_0>();
             vaoFuncsType = Core_3_0;
-            vaoFuncs.core_3_0->glGenVertexArrays(1, &vao);
-        } else
-#endif
-        if (ctx->hasExtension(QByteArrayLiteral("GL_ARB_vertex_array_object"))) {
-            vaoFuncs.helper = new QOpenGLVertexArrayObjectHelper(ctx);
-            vaoFuncsType = ARB;
-            vaoFuncs.helper->glGenVertexArrays(1, &vao);
-        } else if (ctx->hasExtension(QByteArrayLiteral("GL_APPLE_vertex_array_object"))) {
-            vaoFuncs.helper = new QOpenGLVertexArrayObjectHelper(ctx);
-            vaoFuncsType = APPLE;
-            vaoFuncs.helper->glGenVertexArrays(1, &vao);
+            vaoFuncs.core_3_0->glGenVertexArrays( 1, &vao );
         }
+        else
+#endif
+            if ( ctx->hasExtension( QByteArrayLiteral( "GL_ARB_vertex_array_object" ) ) )
+            {
+                vaoFuncs.helper = new QOpenGLVertexArrayObjectHelper( ctx );
+                vaoFuncsType = ARB;
+                vaoFuncs.helper->glGenVertexArrays( 1, &vao );
+            }
+            else if ( ctx->hasExtension( QByteArrayLiteral( "GL_APPLE_vertex_array_object" ) ) )
+            {
+                vaoFuncs.helper = new QOpenGLVertexArrayObjectHelper( ctx );
+                vaoFuncsType = APPLE;
+                vaoFuncs.helper->glGenVertexArrays( 1, &vao );
+            }
     }
 
-    return (vao != 0);
+    return ( vao != 0 );
 }
 
 void QOpenGLVertexArrayObjectPrivate::destroy()
 {
-    Q_Q(QOpenGLVertexArrayObject);
+    Q_Q( QOpenGLVertexArrayObject );
 
-    if (context) {
-        QObject::disconnect(context, &QOpenGLContext::aboutToBeDestroyed, q, &QOpenGLVertexArrayObject::_q_contextAboutToBeDestroyed);
+    if ( context )
+    {
+        QObject::disconnect( context, &QOpenGLContext::aboutToBeDestroyed, q, &QOpenGLVertexArrayObject::_q_contextAboutToBeDestroyed );
         context = nullptr;
     }
 
-    if (!vao)
+    if ( !vao )
+    {
         return;
+    }
 
-    switch (vaoFuncsType) {
+    switch ( vaoFuncsType )
+    {
 #ifndef QT_OPENGL_ES_2
-    case Core_3_2:
-        vaoFuncs.core_3_2->glDeleteVertexArrays(1, &vao);
-        break;
-    case Core_3_0:
-        vaoFuncs.core_3_0->glDeleteVertexArrays(1, &vao);
-        break;
+
+        case Core_3_2:
+            vaoFuncs.core_3_2->glDeleteVertexArrays( 1, &vao );
+            break;
+
+        case Core_3_0:
+            vaoFuncs.core_3_0->glDeleteVertexArrays( 1, &vao );
+            break;
 #endif
-    case ARB:
-    case APPLE:
-    case OES:
-        vaoFuncs.helper->glDeleteVertexArrays(1, &vao);
-        break;
-    default:
-        break;
+
+        case ARB:
+        case APPLE:
+        case OES:
+            vaoFuncs.helper->glDeleteVertexArrays( 1, &vao );
+            break;
+
+        default:
+            break;
     }
 
     vao = 0;
@@ -218,138 +266,153 @@ void QOpenGLVertexArrayObjectPrivate::_q_contextAboutToBeDestroyed()
 
 void QOpenGLVertexArrayObjectPrivate::bind()
 {
-    switch (vaoFuncsType) {
+    switch ( vaoFuncsType )
+    {
 #ifndef QT_OPENGL_ES_2
-    case Core_3_2:
-        vaoFuncs.core_3_2->glBindVertexArray(vao);
-        break;
 
-    case Core_3_0:
-        vaoFuncs.core_3_0->glBindVertexArray(vao);
-        break;
+        case Core_3_2:
+            vaoFuncs.core_3_2->glBindVertexArray( vao );
+            break;
+
+        case Core_3_0:
+            vaoFuncs.core_3_0->glBindVertexArray( vao );
+            break;
 #endif
-    case ARB:
-    case APPLE:
-    case OES:
-        vaoFuncs.helper->glBindVertexArray(vao);
-        break;
 
-    default:
-        break;
+        case ARB:
+        case APPLE:
+        case OES:
+            vaoFuncs.helper->glBindVertexArray( vao );
+            break;
+
+        default:
+            break;
     }
 }
 
 void QOpenGLVertexArrayObjectPrivate::release()
 {
-    switch (vaoFuncsType) {
+    switch ( vaoFuncsType )
+    {
 #ifndef QT_OPENGL_ES_2
-    case Core_3_2:
-        vaoFuncs.core_3_2->glBindVertexArray(0);
-        break;
 
-    case Core_3_0:
-        vaoFuncs.core_3_0->glBindVertexArray(0);
-        break;
+        case Core_3_2:
+            vaoFuncs.core_3_2->glBindVertexArray( 0 );
+            break;
+
+        case Core_3_0:
+            vaoFuncs.core_3_0->glBindVertexArray( 0 );
+            break;
 #endif
 
-    case ARB:
-    case APPLE:
-    case OES:
-        vaoFuncs.helper->glBindVertexArray(0);
-        break;
+        case ARB:
+        case APPLE:
+        case OES:
+            vaoFuncs.helper->glBindVertexArray( 0 );
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 }
 
-QOpenGLVertexArrayObject::QOpenGLVertexArrayObject(QObject* parent)
-    : QObject(parent), d_ptr(new QOpenGLVertexArrayObjectPrivate)
+QOpenGLVertexArrayObject::QOpenGLVertexArrayObject( QObject *parent )
+    : QObject( parent ), d_ptr( new QOpenGLVertexArrayObjectPrivate )
 {
-   d_ptr->q_ptr = this;
+    d_ptr->q_ptr = this;
 }
 
 // internal
-QOpenGLVertexArrayObject::QOpenGLVertexArrayObject(QOpenGLVertexArrayObjectPrivate &dd)
-    : d_ptr(&dd)
+QOpenGLVertexArrayObject::QOpenGLVertexArrayObject( QOpenGLVertexArrayObjectPrivate &dd )
+    : d_ptr( &dd )
 {
-   d_ptr->q_ptr = this;
+    d_ptr->q_ptr = this;
 }
 
 QOpenGLVertexArrayObject::~QOpenGLVertexArrayObject()
 {
-    QOpenGLContext* ctx = QOpenGLContext::currentContext();
+    QOpenGLContext *ctx = QOpenGLContext::currentContext();
 
-    Q_D(QOpenGLVertexArrayObject);
+    Q_D( QOpenGLVertexArrayObject );
     QOpenGLContext *oldContext  = nullptr;
     QSurface *oldContextSurface = nullptr;
     QScopedPointer<QOffscreenSurface> offscreenSurface;
 
-    if (d->context && ctx && d->context != ctx) {
+    if ( d->context && ctx && d->context != ctx )
+    {
         oldContext = ctx;
         oldContextSurface = ctx->surface();
         // Cannot just make the current surface current again with another context.
         // The format may be incompatible and some platforms (iOS) may impose
         // restrictions on using a window with different contexts. Create an
         // offscreen surface (a pbuffer or a hidden window) instead to be safe.
-        offscreenSurface.reset(new QOffscreenSurface);
-        offscreenSurface->setFormat(d->context->format());
+        offscreenSurface.reset( new QOffscreenSurface );
+        offscreenSurface->setFormat( d->context->format() );
         offscreenSurface->create();
-        if (d->context->makeCurrent(offscreenSurface.data())) {
+
+        if ( d->context->makeCurrent( offscreenSurface.data() ) )
+        {
             ctx = d->context;
-        } else {
-            qWarning("QOpenGLVertexArrayObject::~QOpenGLVertexArrayObject() failed to make VAO's context current");
+        }
+        else
+        {
+            qWarning( "QOpenGLVertexArrayObject::~QOpenGLVertexArrayObject() failed to make VAO's context current" );
             ctx = nullptr;
         }
     }
 
-    if (ctx)
+    if ( ctx )
+    {
         destroy();
+    }
 
-    if (oldContext) {
-        if (!oldContext->makeCurrent(oldContextSurface))
-            qWarning("QOpenGLVertexArrayObject::~QOpenGLVertexArrayObject() failed to restore current context");
+    if ( oldContext )
+    {
+        if ( !oldContext->makeCurrent( oldContextSurface ) )
+        {
+            qWarning( "QOpenGLVertexArrayObject::~QOpenGLVertexArrayObject() failed to restore current context" );
+        }
     }
 }
 
 bool QOpenGLVertexArrayObject::create()
 {
-    Q_D(QOpenGLVertexArrayObject);
+    Q_D( QOpenGLVertexArrayObject );
     return d->create();
 }
 
 void QOpenGLVertexArrayObject::destroy()
 {
-    Q_D(QOpenGLVertexArrayObject);
+    Q_D( QOpenGLVertexArrayObject );
     d->destroy();
 }
 
 bool QOpenGLVertexArrayObject::isCreated() const
 {
-    Q_D(const QOpenGLVertexArrayObject);
-    return (d->vao != 0);
+    Q_D( const QOpenGLVertexArrayObject );
+    return ( d->vao != 0 );
 }
 
 GLuint QOpenGLVertexArrayObject::objectId() const
 {
-    Q_D(const QOpenGLVertexArrayObject);
+    Q_D( const QOpenGLVertexArrayObject );
     return d->vao;
 }
 
 void QOpenGLVertexArrayObject::bind()
 {
-    Q_D(QOpenGLVertexArrayObject);
+    Q_D( QOpenGLVertexArrayObject );
     d->bind();
 }
 
 void QOpenGLVertexArrayObject::release()
 {
-    Q_D(QOpenGLVertexArrayObject);
+    Q_D( QOpenGLVertexArrayObject );
     d->release();
 }
 
 void QOpenGLVertexArrayObject::_q_contextAboutToBeDestroyed()
 {
-   Q_D(QOpenGLVertexArrayObject);
-   d->_q_contextAboutToBeDestroyed();
+    Q_D( QOpenGLVertexArrayObject );
+    d->_q_contextAboutToBeDestroyed();
 }

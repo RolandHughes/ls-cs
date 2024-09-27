@@ -40,7 +40,8 @@
 #include <wtf/Forward.h>
 #include <wtf/text/WTFString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class ArrayBuffer;
 class Blob;
@@ -49,9 +50,11 @@ class ScriptExecutionContext;
 class TextResourceDecoder;
 class ThreadableLoader;
 
-class FileReaderLoader : public ThreadableLoaderClient {
+class FileReaderLoader : public ThreadableLoaderClient
+{
 public:
-    enum ReadType {
+    enum ReadType
+    {
         ReadAsArrayBuffer,
         ReadAsBinaryString,
         ReadAsText,
@@ -59,40 +62,52 @@ public:
     };
 
     // If client is given, do the loading asynchronously. Otherwise, load synchronously.
-    FileReaderLoader(ReadType, FileReaderLoaderClient*);
+    FileReaderLoader( ReadType, FileReaderLoaderClient * );
     ~FileReaderLoader();
 
-    void start(ScriptExecutionContext*, Blob*);
+    void start( ScriptExecutionContext *, Blob * );
     void cancel();
 
     // ThreadableLoaderClient
-    virtual void didReceiveResponse(const ResourceResponse&);
-    virtual void didReceiveData(const char*, int);
-    virtual void didFinishLoading(unsigned long, double);
-    virtual void didFail(const ResourceError&);
+    virtual void didReceiveResponse( const ResourceResponse & );
+    virtual void didReceiveData( const char *, int );
+    virtual void didFinishLoading( unsigned long, double );
+    virtual void didFail( const ResourceError & );
 
     String stringResult();
     PassRefPtr<ArrayBuffer> arrayBufferResult() const;
-    unsigned bytesLoaded() const { return m_bytesLoaded; }
-    unsigned totalBytes() const { return m_totalBytes; }
-    int errorCode() const { return m_errorCode; }
+    unsigned bytesLoaded() const
+    {
+        return m_bytesLoaded;
+    }
+    unsigned totalBytes() const
+    {
+        return m_totalBytes;
+    }
+    int errorCode() const
+    {
+        return m_errorCode;
+    }
 
-    void setEncoding(const String&);
-    void setDataType(const String& dataType) { m_dataType = dataType; }
-    
+    void setEncoding( const String & );
+    void setDataType( const String &dataType )
+    {
+        m_dataType = dataType;
+    }
+
 private:
     void terminate();
     void cleanup();
-    void failed(int errorCode);
+    void failed( int errorCode );
     void convertToText();
     void convertToDataURL();
 
     bool isCompleted() const;
 
-    static FileError::ErrorCode httpStatusCodeToErrorCode(int);
+    static FileError::ErrorCode httpStatusCodeToErrorCode( int );
 
     ReadType m_readType;
-    FileReaderLoaderClient* m_client;
+    FileReaderLoaderClient *m_client;
     TextEncoding m_encoding;
     String m_dataType;
 

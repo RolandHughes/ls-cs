@@ -27,63 +27,85 @@
 #include "Document.h"
 #include "HTMLNames.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-inline HTMLParamElement::HTMLParamElement(const QualifiedName& tagName, Document* document)
-    : HTMLElement(tagName, document)
+inline HTMLParamElement::HTMLParamElement( const QualifiedName &tagName, Document *document )
+    : HTMLElement( tagName, document )
 {
-    ASSERT(hasTagName(paramTag));
+    ASSERT( hasTagName( paramTag ) );
 }
 
-PassRefPtr<HTMLParamElement> HTMLParamElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<HTMLParamElement> HTMLParamElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new HTMLParamElement(tagName, document));
+    return adoptRef( new HTMLParamElement( tagName, document ) );
 }
 
-bool HTMLParamElement::isURLParameter(const String& name)
+bool HTMLParamElement::isURLParameter( const String &name )
 {
-    return equalIgnoringCase(name, "data") || equalIgnoringCase(name, "movie") || equalIgnoringCase(name, "src");
+    return equalIgnoringCase( name, "data" ) || equalIgnoringCase( name, "movie" ) || equalIgnoringCase( name, "src" );
 }
 
-void HTMLParamElement::parseMappedAttribute(Attribute* attr)
+void HTMLParamElement::parseMappedAttribute( Attribute *attr )
 {
-    if (isIdAttributeName(attr->name())) {
+    if ( isIdAttributeName( attr->name() ) )
+    {
         // Must call base class so that hasID bit gets set.
-        HTMLElement::parseMappedAttribute(attr);
-        if (document()->isHTMLDocument())
+        HTMLElement::parseMappedAttribute( attr );
+
+        if ( document()->isHTMLDocument() )
+        {
             return;
+        }
+
         m_name = attr->value();
-    } else if (attr->name() == nameAttr) {
+    }
+    else if ( attr->name() == nameAttr )
+    {
         m_name = attr->value();
-    } else if (attr->name() == valueAttr) {
+    }
+    else if ( attr->name() == valueAttr )
+    {
         m_value = attr->value();
-    } else
-        HTMLElement::parseMappedAttribute(attr);
+    }
+    else
+    {
+        HTMLElement::parseMappedAttribute( attr );
+    }
 }
 
-bool HTMLParamElement::isURLAttribute(Attribute* attr) const
+bool HTMLParamElement::isURLAttribute( Attribute *attr ) const
 {
-    if (attr->name() == valueAttr) {
-        Attribute* attr = attributes()->getAttributeItem(nameAttr);
-        if (attr) {
-            const AtomicString& value = attr->value();
-            if (isURLParameter(value))
+    if ( attr->name() == valueAttr )
+    {
+        Attribute *attr = attributes()->getAttributeItem( nameAttr );
+
+        if ( attr )
+        {
+            const AtomicString &value = attr->value();
+
+            if ( isURLParameter( value ) )
+            {
                 return true;
+            }
         }
     }
+
     return false;
 }
 
-void HTMLParamElement::addSubresourceAttributeURLs(ListHashSet<KURL>& urls) const
+void HTMLParamElement::addSubresourceAttributeURLs( ListHashSet<KURL> &urls ) const
 {
-    HTMLElement::addSubresourceAttributeURLs(urls);
+    HTMLElement::addSubresourceAttributeURLs( urls );
 
-    if (!isURLParameter(name()))
+    if ( !isURLParameter( name() ) )
+    {
         return;
+    }
 
-    addSubresourceURL(urls, document()->completeURL(value()));
+    addSubresourceURL( urls, document()->completeURL( value() ) );
 }
 
 }

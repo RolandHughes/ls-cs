@@ -31,12 +31,13 @@
 
 #include "MathMLNames.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace MathMLNames;
 
-RenderMathMLMath::RenderMathMLMath(Node* math)
-    : RenderMathMLRow(math)
+RenderMathMLMath::RenderMathMLMath( Node *math )
+    : RenderMathMLRow( math )
 {
 }
 

@@ -32,18 +32,20 @@
 class NSPopUpButtonCell;
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
 class PopupMenuClient;
 class FrameView;
 class Scrollbar;
 
-class PopupMenuMac : public PopupMenu {
+class PopupMenuMac : public PopupMenu
+{
 public:
-    PopupMenuMac(PopupMenuClient*);
+    PopupMenuMac( PopupMenuClient * );
     ~PopupMenuMac();
 
-    virtual void show(const IntRect&, FrameView*, int index);
+    virtual void show( const IntRect &, FrameView *, int index );
     virtual void hide();
     virtual void updateFromElement();
     virtual void disconnectClient();
@@ -51,9 +53,12 @@ public:
 private:
     void clear();
     void populate();
-    PopupMenuClient* client() const { return m_popupClient; }
+    PopupMenuClient *client() const
+    {
+        return m_popupClient;
+    }
 
-    PopupMenuClient* m_popupClient;
+    PopupMenuClient *m_popupClient;
     RetainPtr<NSPopUpButtonCell> m_popup;
 };
 

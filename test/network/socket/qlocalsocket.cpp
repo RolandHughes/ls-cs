@@ -21,46 +21,46 @@
 
 #include <cs_catch2.h>
 
-TEST_CASE("QLocalSocket traits", "[qlocalsocket]")
+TEST_CASE( "QLocalSocket traits", "[qlocalsocket]" )
 {
-   REQUIRE(std::is_copy_constructible_v<QLocalSocket> == false);
-   REQUIRE(std::is_move_constructible_v<QLocalSocket> == false);
+    REQUIRE( std::is_copy_constructible_v<QLocalSocket> == false );
+    REQUIRE( std::is_move_constructible_v<QLocalSocket> == false );
 
-   REQUIRE(std::is_copy_assignable_v<QLocalSocket> == false);
-   REQUIRE(std::is_move_assignable_v<QLocalSocket> == false);
+    REQUIRE( std::is_copy_assignable_v<QLocalSocket> == false );
+    REQUIRE( std::is_move_assignable_v<QLocalSocket> == false );
 
-   REQUIRE(std::is_nothrow_move_constructible_v<QLocalSocket> == false);
-   REQUIRE(std::is_nothrow_move_assignable_v<QLocalSocket> == false);
+    REQUIRE( std::is_nothrow_move_constructible_v<QLocalSocket> == false );
+    REQUIRE( std::is_nothrow_move_assignable_v<QLocalSocket> == false );
 
-   REQUIRE(std::has_virtual_destructor_v<QLocalSocket> == true);
+    REQUIRE( std::has_virtual_destructor_v<QLocalSocket> == true );
 }
 
-TEST_CASE("QLocalSocket server", "[qlocalsocket]")
+TEST_CASE( "QLocalSocket server", "[qlocalsocket]" )
 {
-   QLocalSocket socket;
+    QLocalSocket socket;
 
-   REQUIRE(socket.serverName() == QString());
-   REQUIRE(socket.fullServerName() == QString());
+    REQUIRE( socket.serverName() == QString() );
+    REQUIRE( socket.fullServerName() == QString() );
 
-   socket.abort();
+    socket.abort();
 
-   REQUIRE(socket.bytesAvailable() == 0);
-   REQUIRE(socket.bytesToWrite() == 0);
-   REQUIRE(socket.canReadLine() == false);
+    REQUIRE( socket.bytesAvailable() == 0 );
+    REQUIRE( socket.bytesToWrite() == 0 );
+    REQUIRE( socket.canReadLine() == false );
 
-   socket.close();
-   socket.disconnectFromServer();
+    socket.close();
+    socket.disconnectFromServer();
 
-   REQUIRE(socket.error() == QLocalSocket::UnknownSocketError);
-   REQUIRE(socket.errorString() == "Unknown error");
+    REQUIRE( socket.error() == QLocalSocket::UnknownSocketError );
+    REQUIRE( socket.errorString() == "Unknown error" );
 
-   REQUIRE(socket.flush() == false);
-   REQUIRE(socket.isValid() == false);
-   REQUIRE(socket.readBufferSize() == 0);
+    REQUIRE( socket.flush() == false );
+    REQUIRE( socket.isValid() == false );
+    REQUIRE( socket.readBufferSize() == 0 );
 
-   socket.setReadBufferSize(0);
+    socket.setReadBufferSize( 0 );
 
-   REQUIRE(socket.state() == QLocalSocket::UnconnectedState);
-   REQUIRE(socket.waitForConnected(0) == false);
+    REQUIRE( socket.state() == QLocalSocket::UnconnectedState );
+    REQUIRE( socket.waitForConnected( 0 ) == false );
 }
 

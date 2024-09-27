@@ -30,14 +30,16 @@
 #include "WKGeolocationManager.h"
 #include <wtf/Forward.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 class WebGeolocationManagerProxy;
 
-class WebGeolocationProvider : public APIClient<WKGeolocationProvider> {
+class WebGeolocationProvider : public APIClient<WKGeolocationProvider>
+{
 public:
-    void startUpdating(WebGeolocationManagerProxy*);
-    void stopUpdating(WebGeolocationManagerProxy*);
+    void startUpdating( WebGeolocationManagerProxy * );
+    void stopUpdating( WebGeolocationManagerProxy * );
 };
 
 } // namespace WebKit

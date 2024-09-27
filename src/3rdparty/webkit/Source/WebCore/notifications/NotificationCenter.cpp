@@ -38,34 +38,45 @@
 #include "VoidCallback.h"
 #include "WorkerContext.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-NotificationCenter::NotificationCenter(ScriptExecutionContext* context, NotificationPresenter* presenter)
-    : ActiveDOMObject(context, this)
-    , m_notificationPresenter(presenter) {}
+NotificationCenter::NotificationCenter( ScriptExecutionContext *context, NotificationPresenter *presenter )
+    : ActiveDOMObject( context, this )
+    , m_notificationPresenter( presenter ) {}
 
 int NotificationCenter::checkPermission()
 {
-    if (!presenter() || !scriptExecutionContext())
+    if ( !presenter() || !scriptExecutionContext() )
+    {
         return NotificationPresenter::PermissionDenied;
-    return m_notificationPresenter->checkPermission(scriptExecutionContext());
+    }
+
+    return m_notificationPresenter->checkPermission( scriptExecutionContext() );
 }
 
-void NotificationCenter::requestPermission(PassRefPtr<VoidCallback> callback)
+void NotificationCenter::requestPermission( PassRefPtr<VoidCallback> callback )
 {
-    if (!presenter() || !scriptExecutionContext())
+    if ( !presenter() || !scriptExecutionContext() )
+    {
         return;
-    m_notificationPresenter->requestPermission(scriptExecutionContext(), callback);
+    }
+
+    m_notificationPresenter->requestPermission( scriptExecutionContext(), callback );
 }
 
 void NotificationCenter::disconnectFrame()
 {
     // m_notificationPresenter should never be 0. But just to be safe, we check it here.
     // Due to the mysterious bug http://code.google.com/p/chromium/issues/detail?id=49323.
-    ASSERT(m_notificationPresenter);
-    if (!m_notificationPresenter)
+    ASSERT( m_notificationPresenter );
+
+    if ( !m_notificationPresenter )
+    {
         return;
-    m_notificationPresenter->cancelRequestsForPermission(scriptExecutionContext());
+    }
+
+    m_notificationPresenter->cancelRequestsForPermission( scriptExecutionContext() );
     m_notificationPresenter = 0;
 }
 

@@ -32,35 +32,38 @@ class DSCameraSession;
 
 class DSCameraControl : public QCameraControl
 {
-   CS_OBJECT(DSCameraControl)
+    CS_OBJECT( DSCameraControl )
 
- public:
-   DSCameraControl(QObject *parent = nullptr);
-   ~DSCameraControl();
+public:
+    DSCameraControl( QObject *parent = nullptr );
+    ~DSCameraControl();
 
-   QCamera::State state() const override {
-      return m_state;
-   }
+    QCamera::State state() const override
+    {
+        return m_state;
+    }
 
-   QCamera::CaptureModes captureMode() const override {
-      return m_captureMode;
-   }
-   void setCaptureMode(QCamera::CaptureModes mode) override;
+    QCamera::CaptureModes captureMode() const override
+    {
+        return m_captureMode;
+    }
+    void setCaptureMode( QCamera::CaptureModes mode ) override;
 
-   void setState(QCamera::State state) override;
+    void setState( QCamera::State state ) override;
 
-   QCamera::Status status() const override;
-   bool isCaptureModeSupported(QCamera::CaptureModes mode) const override;
+    QCamera::Status status() const override;
+    bool isCaptureModeSupported( QCamera::CaptureModes mode ) const override;
 
-   bool canChangeProperty(PropertyChangeType, QCamera::Status) const override {
-      return false;
-   }
+    bool canChangeProperty( PropertyChangeType, QCamera::Status ) const override
+    {
+        return false;
+    }
 
- private:
-   DSCameraSession *m_session;
-   DSCameraService *m_service;
-   QCamera::State m_state;
-   QCamera::CaptureModes m_captureMode;
+private:
+    DSCameraSession *m_session;
+    DSCameraService *m_service;
+    QCamera::State m_state;
+    QCamera::CaptureModes m_captureMode;
 };
 
 #endif

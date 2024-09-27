@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
 
@@ -33,31 +33,39 @@
 #include "EventContext.h"
 #include "Node.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-WindowEventContext::WindowEventContext(Event* event, PassRefPtr<Node> node, const EventContext* topEventContext)
+WindowEventContext::WindowEventContext( Event *event, PassRefPtr<Node> node, const EventContext *topEventContext )
 {
     // We don't dispatch load events to the window. This quirk was originally
     // added because Mozilla doesn't propagate load events to the window object.
-    if (event->type() == eventNames().loadEvent)
+    if ( event->type() == eventNames().loadEvent )
+    {
         return;
+    }
 
-    Node* topLevelContainer = topEventContext ? topEventContext->node() : node.get();
-    if (!topLevelContainer->isDocumentNode())
+    Node *topLevelContainer = topEventContext ? topEventContext->node() : node.get();
+
+    if ( !topLevelContainer->isDocumentNode() )
+    {
         return;
+    }
 
-    m_window = static_cast<Document*>(topLevelContainer)->domWindow();
+    m_window = static_cast<Document *>( topLevelContainer )->domWindow();
     m_target = topEventContext ? topEventContext->target() : node.get();
 }
 
-bool WindowEventContext::handleLocalEvents(Event* event)
+bool WindowEventContext::handleLocalEvents( Event *event )
 {
-    if (!m_window)
+    if ( !m_window )
+    {
         return false;
+    }
 
-    event->setTarget(target());
-    event->setCurrentTarget(window());
-    m_window->fireEventListeners(event);
+    event->setTarget( target() );
+    event->setCurrentTarget( window() );
+    m_window->fireEventListeners( event );
     return true;
 }
 

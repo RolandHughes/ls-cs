@@ -27,51 +27,55 @@
 
 QMutexPool *globalMutexPool()
 {
-   static QMutexPool retval;
+    static QMutexPool retval;
 
-   return &retval;
+    return &retval;
 }
 
-QMutexPool::QMutexPool(int size)
-   : m_mutexArray(size)
+QMutexPool::QMutexPool( int size )
+    : m_mutexArray( size )
 {
-   for (int index = 0; index < m_mutexArray.count(); ++index) {
-      m_mutexArray[index].store(nullptr);
-   }
+    for ( int index = 0; index < m_mutexArray.count(); ++index )
+    {
+        m_mutexArray[index].store( nullptr );
+    }
 }
 
 QMutexPool::~QMutexPool()
 {
-   for (int index = 0; index < m_mutexArray.count(); ++index) {
-      delete m_mutexArray[index].load();
-   }
+    for ( int index = 0; index < m_mutexArray.count(); ++index )
+    {
+        delete m_mutexArray[index].load();
+    }
 }
 
 QMutexPool *QMutexPool::instance()
 {
-   return globalMutexPool();
+    return globalMutexPool();
 }
 
-QRecursiveMutex *QMutexPool::createMutex(int index)
+QRecursiveMutex *QMutexPool::createMutex( int index )
 {
-   QRecursiveMutex *newMutex = new QRecursiveMutex();
-   QRecursiveMutex *expected = nullptr;
+    QRecursiveMutex *newMutex = new QRecursiveMutex();
+    QRecursiveMutex *expected = nullptr;
 
-   if (! m_mutexArray[index].compareExchange(expected, newMutex, std::memory_order_release)) {
-      delete newMutex;
-   }
+    if ( ! m_mutexArray[index].compareExchange( expected, newMutex, std::memory_order_release ) )
+    {
+        delete newMutex;
+    }
 
-   return m_mutexArray[index].load();
+    return m_mutexArray[index].load();
 }
 
-QRecursiveMutex *QMutexPool::globalInstanceGet(const void *address)
+QRecursiveMutex *QMutexPool::globalInstanceGet( const void *address )
 {
-   QMutexPool *const globalInstance = globalMutexPool();
+    QMutexPool *const globalInstance = globalMutexPool();
 
-   if (globalInstance == nullptr) {
-      return nullptr;
-   }
+    if ( globalInstance == nullptr )
+    {
+        return nullptr;
+    }
 
-   return globalInstance->get(address);
+    return globalInstance->get( address );
 }
 

@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 #ifndef ProfileGenerator_h
 #define ProfileGenerator_h
 
@@ -31,49 +31,60 @@
 #include <wtf/RefCounted.h>
 #include <wtf/RefPtr.h>
 
-namespace JSC {
+namespace JSC
+{
 
-    class ExecState;
-    class JSGlobalObject;
-    class Profile;
-    class ProfileNode;
-    class UString;
-    struct CallIdentifier;    
+class ExecState;
+class JSGlobalObject;
+class Profile;
+class ProfileNode;
+class UString;
+struct CallIdentifier;
 
-    class ProfileGenerator : public RefCounted<ProfileGenerator>  {
-    public:
-        static PassRefPtr<ProfileGenerator> create(ExecState*, const UString& title, unsigned uid);
+class ProfileGenerator : public RefCounted<ProfileGenerator>
+{
+public:
+    static PassRefPtr<ProfileGenerator> create( ExecState *, const UString &title, unsigned uid );
 
-        // Members
-        const UString& title() const;
-        PassRefPtr<Profile> profile() const { return m_profile; }
-        JSGlobalObject* origin() const { return m_origin; }
-        unsigned profileGroup() const { return m_profileGroup; }
+    // Members
+    const UString &title() const;
+    PassRefPtr<Profile> profile() const
+    {
+        return m_profile;
+    }
+    JSGlobalObject *origin() const
+    {
+        return m_origin;
+    }
+    unsigned profileGroup() const
+    {
+        return m_profileGroup;
+    }
 
-        // Collecting
-        void willExecute(ExecState* callerCallFrame, const CallIdentifier&);
-        void didExecute(ExecState* callerCallFrame, const CallIdentifier&);
+    // Collecting
+    void willExecute( ExecState *callerCallFrame, const CallIdentifier & );
+    void didExecute( ExecState *callerCallFrame, const CallIdentifier & );
 
-        void exceptionUnwind(ExecState* handlerCallFrame, const CallIdentifier&);
+    void exceptionUnwind( ExecState *handlerCallFrame, const CallIdentifier & );
 
-        // Stopping Profiling
-        void stopProfiling();
+    // Stopping Profiling
+    void stopProfiling();
 
-        typedef void (ProfileGenerator::*ProfileFunction)(ExecState* callerOrHandlerCallFrame, const CallIdentifier& callIdentifier);
+    typedef void ( ProfileGenerator::*ProfileFunction )( ExecState *callerOrHandlerCallFrame, const CallIdentifier &callIdentifier );
 
-    private:
-        ProfileGenerator(ExecState*, const UString& title, unsigned uid);
-        void addParentForConsoleStart(ExecState*);
+private:
+    ProfileGenerator( ExecState *, const UString &title, unsigned uid );
+    void addParentForConsoleStart( ExecState * );
 
-        void removeProfileStart();
-        void removeProfileEnd();
+    void removeProfileStart();
+    void removeProfileEnd();
 
-        RefPtr<Profile> m_profile;
-        JSGlobalObject* m_origin;
-        unsigned m_profileGroup;
-        RefPtr<ProfileNode> m_head;
-        RefPtr<ProfileNode> m_currentNode;
-    };
+    RefPtr<Profile> m_profile;
+    JSGlobalObject *m_origin;
+    unsigned m_profileGroup;
+    RefPtr<ProfileNode> m_head;
+    RefPtr<ProfileNode> m_currentNode;
+};
 
 } // namespace JSC
 

@@ -34,7 +34,8 @@
 #include <wtf/text/StringHash.h>
 #include <wtf/text/WTFString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Frame;
 class KURL;
@@ -45,49 +46,66 @@ class ResourceRequest;
 class SubresourceLoader;
 class SubresourceLoaderClient;
 
-class ResourceLoadScheduler {
-    WTF_MAKE_NONCOPYABLE(ResourceLoadScheduler);
+class ResourceLoadScheduler
+{
+    WTF_MAKE_NONCOPYABLE( ResourceLoadScheduler );
 public:
-    friend ResourceLoadScheduler* resourceLoadScheduler();
+    friend ResourceLoadScheduler *resourceLoadScheduler();
 
-    PassRefPtr<SubresourceLoader> scheduleSubresourceLoad(Frame*, SubresourceLoaderClient*, const ResourceRequest&, ResourceLoadPriority = ResourceLoadPriorityLow, SecurityCheckPolicy = DoSecurityCheck, bool sendResourceLoadCallbacks = true, bool shouldContentSniff = true, const String& optionalOutgoingReferrer = String());
-    PassRefPtr<NetscapePlugInStreamLoader> schedulePluginStreamLoad(Frame*, NetscapePlugInStreamLoaderClient*, const ResourceRequest&);
-    void addMainResourceLoad(ResourceLoader*);
-    void remove(ResourceLoader*);
-    void crossOriginRedirectReceived(ResourceLoader*, const KURL& redirectURL);
-    
-    void servePendingRequests(ResourceLoadPriority minimumPriority = ResourceLoadPriorityVeryLow);
+    PassRefPtr<SubresourceLoader> scheduleSubresourceLoad( Frame *, SubresourceLoaderClient *, const ResourceRequest &,
+            ResourceLoadPriority = ResourceLoadPriorityLow, SecurityCheckPolicy = DoSecurityCheck, bool sendResourceLoadCallbacks = true,
+            bool shouldContentSniff = true, const String &optionalOutgoingReferrer = String() );
+    PassRefPtr<NetscapePlugInStreamLoader> schedulePluginStreamLoad( Frame *, NetscapePlugInStreamLoaderClient *,
+            const ResourceRequest & );
+    void addMainResourceLoad( ResourceLoader * );
+    void remove( ResourceLoader * );
+    void crossOriginRedirectReceived( ResourceLoader *, const KURL &redirectURL );
+
+    void servePendingRequests( ResourceLoadPriority minimumPriority = ResourceLoadPriorityVeryLow );
     void suspendPendingRequests();
     void resumePendingRequests();
-    
-    bool isSerialLoadingEnabled() const { return m_isSerialLoadingEnabled; }
-    void setSerialLoadingEnabled(bool b) { m_isSerialLoadingEnabled = b; }
+
+    bool isSerialLoadingEnabled() const
+    {
+        return m_isSerialLoadingEnabled;
+    }
+    void setSerialLoadingEnabled( bool b )
+    {
+        m_isSerialLoadingEnabled = b;
+    }
 
 private:
     ResourceLoadScheduler();
     ~ResourceLoadScheduler();
 
-    void scheduleLoad(ResourceLoader*, ResourceLoadPriority);
+    void scheduleLoad( ResourceLoader *, ResourceLoadPriority );
     void scheduleServePendingRequests();
-    void requestTimerFired(Timer<ResourceLoadScheduler>*);
+    void requestTimerFired( Timer<ResourceLoadScheduler> * );
 
-    class HostInformation {
-        WTF_MAKE_NONCOPYABLE(HostInformation);
+    class HostInformation
+    {
+        WTF_MAKE_NONCOPYABLE( HostInformation );
     public:
-        HostInformation(const String&, unsigned);
+        HostInformation( const String &, unsigned );
         ~HostInformation();
-        
-        const String& name() const { return m_name; }
-        void schedule(ResourceLoader*, ResourceLoadPriority = ResourceLoadPriorityVeryLow);
-        void addLoadInProgress(ResourceLoader*);
-        void remove(ResourceLoader*);
+
+        const String &name() const
+        {
+            return m_name;
+        }
+        void schedule( ResourceLoader *, ResourceLoadPriority = ResourceLoadPriorityVeryLow );
+        void addLoadInProgress( ResourceLoader * );
+        void remove( ResourceLoader * );
         bool hasRequests() const;
-        bool limitRequests(ResourceLoadPriority) const;
+        bool limitRequests( ResourceLoadPriority ) const;
 
         typedef Deque<RefPtr<ResourceLoader> > RequestQueue;
-        RequestQueue& requestsPending(ResourceLoadPriority priority) { return m_requestsPending[priority]; }
+        RequestQueue &requestsPending( ResourceLoadPriority priority )
+        {
+            return m_requestsPending[priority];
+        }
 
-    private:                    
+    private:
         RequestQueue m_requestsPending[ResourceLoadPriorityHighest + 1];
         typedef HashSet<RefPtr<ResourceLoader> > RequestMap;
         RequestMap m_requestsLoading;
@@ -95,25 +113,26 @@ private:
         const int m_maxRequestsInFlight;
     };
 
-    enum CreateHostPolicy {
+    enum CreateHostPolicy
+    {
         CreateIfNotFound,
         FindOnly
     };
-    
-    HostInformation* hostForURL(const KURL&, CreateHostPolicy = FindOnly);
-    void servePendingRequests(HostInformation*, ResourceLoadPriority);
 
-    typedef HashMap<String, HostInformation*, StringHash> HostMap;
+    HostInformation *hostForURL( const KURL &, CreateHostPolicy = FindOnly );
+    void servePendingRequests( HostInformation *, ResourceLoadPriority );
+
+    typedef HashMap<String, HostInformation *, StringHash> HostMap;
     HostMap m_hosts;
-    HostInformation* m_nonHTTPProtocolHost;
-        
+    HostInformation *m_nonHTTPProtocolHost;
+
     Timer<ResourceLoadScheduler> m_requestTimer;
 
     bool m_isSuspendingPendingRequests;
     bool m_isSerialLoadingEnabled;
 };
 
-ResourceLoadScheduler* resourceLoadScheduler();
+ResourceLoadScheduler *resourceLoadScheduler();
 
 }
 

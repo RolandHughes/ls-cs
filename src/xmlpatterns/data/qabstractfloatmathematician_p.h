@@ -31,18 +31,20 @@
 #include <qpatternistlocale_p.h>
 #include <qsourcelocationreflection_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 template <const bool isDouble>
 class AbstractFloatMathematician : public AtomicMathematician, public DelegatingSourceLocationReflection
 {
- public:
+public:
 
-   inline AbstractFloatMathematician(const SourceLocationReflection *const r) : DelegatingSourceLocationReflection(r) {
-   }
+    inline AbstractFloatMathematician( const SourceLocationReflection *const r ) : DelegatingSourceLocationReflection( r )
+    {
+    }
 
-   Item calculate(const Item &o1, const Operator op, const Item &o2,
-                          const QExplicitlySharedDataPointer<DynamicContext> &context) const override;
+    Item calculate( const Item &o1, const Operator op, const Item &o2,
+                    const QExplicitlySharedDataPointer<DynamicContext> &context ) const override;
 };
 
 #include "qabstractfloatmathematician.cpp"

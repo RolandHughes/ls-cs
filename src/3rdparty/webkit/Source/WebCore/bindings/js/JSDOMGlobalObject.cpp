@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
 
@@ -38,86 +38,108 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
 const ClassInfo JSDOMGlobalObject::s_info = { "DOMGlobalObject", &JSGlobalObject::s_info, 0, 0 };
 
-JSDOMGlobalObject::JSDOMGlobalObject(JSGlobalData& globalData, Structure* structure, PassRefPtr<DOMWrapperWorld> world, JSObject* thisValue)
-    : JSGlobalObject(globalData, structure, thisValue)
-    , m_currentEvent(0)
-    , m_world(world)
+JSDOMGlobalObject::JSDOMGlobalObject( JSGlobalData &globalData, Structure *structure, PassRefPtr<DOMWrapperWorld> world,
+                                      JSObject *thisValue )
+    : JSGlobalObject( globalData, structure, thisValue )
+    , m_currentEvent( 0 )
+    , m_world( world )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-void JSDOMGlobalObject::visitChildren(SlotVisitor& visitor)
+void JSDOMGlobalObject::visitChildren( SlotVisitor &visitor )
 {
-    Base::visitChildren(visitor);
+    Base::visitChildren( visitor );
 
     JSDOMStructureMap::iterator end = structures().end();
-    for (JSDOMStructureMap::iterator it = structures().begin(); it != end; ++it)
-        visitor.append(&it->second);
+
+    for ( JSDOMStructureMap::iterator it = structures().begin(); it != end; ++it )
+    {
+        visitor.append( &it->second );
+    }
 
     JSDOMConstructorMap::iterator end2 = constructors().end();
-    for (JSDOMConstructorMap::iterator it2 = constructors().begin(); it2 != end2; ++it2)
-        visitor.append(&it2->second);
 
-    if (m_injectedScript)
-        visitor.append(&m_injectedScript);
+    for ( JSDOMConstructorMap::iterator it2 = constructors().begin(); it2 != end2; ++it2 )
+    {
+        visitor.append( &it2->second );
+    }
+
+    if ( m_injectedScript )
+    {
+        visitor.append( &m_injectedScript );
+    }
 }
 
-void JSDOMGlobalObject::setCurrentEvent(Event* currentEvent)
+void JSDOMGlobalObject::setCurrentEvent( Event *currentEvent )
 {
     m_currentEvent = currentEvent;
 }
 
-Event* JSDOMGlobalObject::currentEvent() const
+Event *JSDOMGlobalObject::currentEvent() const
 {
     return m_currentEvent;
 }
 
-void JSDOMGlobalObject::setInjectedScript(JSObject* injectedScript)
+void JSDOMGlobalObject::setInjectedScript( JSObject *injectedScript )
 {
-    m_injectedScript.set(globalData(), this, injectedScript);
+    m_injectedScript.set( globalData(), this, injectedScript );
 }
 
-JSObject* JSDOMGlobalObject::injectedScript() const
+JSObject *JSDOMGlobalObject::injectedScript() const
 {
     return m_injectedScript.get();
 }
 
-JSDOMGlobalObject* toJSDOMGlobalObject(Document* document, JSC::ExecState* exec)
+JSDOMGlobalObject *toJSDOMGlobalObject( Document *document, JSC::ExecState *exec )
 {
-    return toJSDOMWindow(document->frame(), currentWorld(exec));
+    return toJSDOMWindow( document->frame(), currentWorld( exec ) );
 }
 
-JSDOMGlobalObject* toJSDOMGlobalObject(ScriptExecutionContext* scriptExecutionContext, JSC::ExecState* exec)
+JSDOMGlobalObject *toJSDOMGlobalObject( ScriptExecutionContext *scriptExecutionContext, JSC::ExecState *exec )
 {
-    if (scriptExecutionContext->isDocument())
-        return toJSDOMGlobalObject(static_cast<Document*>(scriptExecutionContext), exec);
+    if ( scriptExecutionContext->isDocument() )
+    {
+        return toJSDOMGlobalObject( static_cast<Document *>( scriptExecutionContext ), exec );
+    }
 
 #if ENABLE(WORKERS)
-    if (scriptExecutionContext->isWorkerContext())
-        return static_cast<WorkerContext*>(scriptExecutionContext)->script()->workerContextWrapper();
+
+    if ( scriptExecutionContext->isWorkerContext() )
+    {
+        return static_cast<WorkerContext *>( scriptExecutionContext )->script()->workerContextWrapper();
+    }
+
 #endif
 
     ASSERT_NOT_REACHED();
     return 0;
 }
 
-JSDOMGlobalObject* toJSDOMGlobalObject(Document* document, DOMWrapperWorld* world)
+JSDOMGlobalObject *toJSDOMGlobalObject( Document *document, DOMWrapperWorld *world )
 {
-    return toJSDOMWindow(document->frame(), world);
+    return toJSDOMWindow( document->frame(), world );
 }
 
-JSDOMGlobalObject* toJSDOMGlobalObject(ScriptExecutionContext* scriptExecutionContext, DOMWrapperWorld* world)
+JSDOMGlobalObject *toJSDOMGlobalObject( ScriptExecutionContext *scriptExecutionContext, DOMWrapperWorld *world )
 {
-    if (scriptExecutionContext->isDocument())
-        return toJSDOMGlobalObject(static_cast<Document*>(scriptExecutionContext), world);
+    if ( scriptExecutionContext->isDocument() )
+    {
+        return toJSDOMGlobalObject( static_cast<Document *>( scriptExecutionContext ), world );
+    }
 
 #if ENABLE(WORKERS)
-    if (scriptExecutionContext->isWorkerContext())
-        return static_cast<WorkerContext*>(scriptExecutionContext)->script()->workerContextWrapper();
+
+    if ( scriptExecutionContext->isWorkerContext() )
+    {
+        return static_cast<WorkerContext *>( scriptExecutionContext )->script()->workerContextWrapper();
+    }
+
 #endif
 
     ASSERT_NOT_REACHED();

@@ -27,8 +27,8 @@
 
 #ifndef QT_NO_TEXTCODECPLUGIN
 
-QTextCodecPlugin::QTextCodecPlugin(QObject *parent)
-   : QObject(parent)
+QTextCodecPlugin::QTextCodecPlugin( QObject *parent )
+    : QObject( parent )
 {
 }
 
@@ -38,25 +38,27 @@ QTextCodecPlugin::~QTextCodecPlugin()
 
 QStringList QTextCodecPlugin::keys() const
 {
-   QStringList keys = names();
-   keys += aliases();
+    QStringList keys = names();
+    keys += aliases();
 
-   QList<int> mibs = mibEnums();
+    QList<int> mibs = mibEnums();
 
-   for (int i = 0; i < mibs.count(); ++i) {
-      keys += "MIB: " + QString::number(mibs.at(i));
-   }
+    for ( int i = 0; i < mibs.count(); ++i )
+    {
+        keys += "MIB: " + QString::number( mibs.at( i ) );
+    }
 
-   return keys;
+    return keys;
 }
 
-QTextCodec *QTextCodecPlugin::create(const QString &name)
+QTextCodec *QTextCodecPlugin::create( const QString &name )
 {
-   if (name.startsWith("MIB: ")) {
-      return createForMib(name.mid(5).toInteger<int>());
-   }
+    if ( name.startsWith( "MIB: " ) )
+    {
+        return createForMib( name.mid( 5 ).toInteger<int>() );
+    }
 
-   return createForName(name);
+    return createForName( name );
 }
 
 #endif // QT_NO_TEXTCODECPLUGIN

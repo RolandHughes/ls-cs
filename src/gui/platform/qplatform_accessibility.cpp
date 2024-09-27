@@ -36,18 +36,18 @@
 
 static QFactoryLoader *bridgeloader()
 {
-   static QFactoryLoader retval(QAccessibleBridgeInterface_ID, "/accessiblebridge");
-   return &retval;
+    static QFactoryLoader retval( QAccessibleBridgeInterface_ID, "/accessiblebridge" );
+    return &retval;
 }
 
 static QVector<QAccessibleBridge *> *bridges()
 {
-   static QVector<QAccessibleBridge *> retval;
-   return &retval;
+    static QVector<QAccessibleBridge *> retval;
+    return &retval;
 }
 
 QPlatformAccessibility::QPlatformAccessibility()
-   : m_active(false)
+    : m_active( false )
 {
 }
 
@@ -55,72 +55,83 @@ QPlatformAccessibility::~QPlatformAccessibility()
 {
 }
 
-void QPlatformAccessibility::notifyAccessibilityUpdate(QAccessibleEvent *event)
+void QPlatformAccessibility::notifyAccessibilityUpdate( QAccessibleEvent *event )
 {
-   initialize();
+    initialize();
 
-   if (!bridges() || bridges()->isEmpty()) {
-      return;
-   }
+    if ( !bridges() || bridges()->isEmpty() )
+    {
+        return;
+    }
 
-   for (int i = 0; i < bridges()->count(); ++i) {
-      bridges()->at(i)->notifyAccessibilityUpdate(event);
-   }
+    for ( int i = 0; i < bridges()->count(); ++i )
+    {
+        bridges()->at( i )->notifyAccessibilityUpdate( event );
+    }
 }
 
-void QPlatformAccessibility::setRootObject(QObject *o)
+void QPlatformAccessibility::setRootObject( QObject *o )
 {
-   initialize();
-   if (bridges()->isEmpty()) {
-      return;
-   }
+    initialize();
 
-   if (!o) {
-      return;
-   }
+    if ( bridges()->isEmpty() )
+    {
+        return;
+    }
 
-   for (int i = 0; i < bridges()->count(); ++i) {
-      QAccessibleInterface *iface = QAccessible::queryAccessibleInterface(o);
-      bridges()->at(i)->setRootObject(iface);
-   }
+    if ( !o )
+    {
+        return;
+    }
+
+    for ( int i = 0; i < bridges()->count(); ++i )
+    {
+        QAccessibleInterface *iface = QAccessible::queryAccessibleInterface( o );
+        bridges()->at( i )->setRootObject( iface );
+    }
 }
 
 void QPlatformAccessibility::initialize()
 {
-   static bool isInit = false;
-   if (isInit) {
-      return;
-   }
+    static bool isInit = false;
 
-   isInit = true;      // not atomic
+    if ( isInit )
+    {
+        return;
+    }
 
-   auto keySet = bridgeloader()->keySet();
+    isInit = true;      // not atomic
 
-   QAccessibleBridgePlugin *factory = nullptr;
-   QSet<QAccessibleBridgePlugin *> usedSet;
+    auto keySet = bridgeloader()->keySet();
 
-   for (auto item : keySet) {
-      factory = qobject_cast<QAccessibleBridgePlugin *>(bridgeloader()->instance(item));
+    QAccessibleBridgePlugin *factory = nullptr;
+    QSet<QAccessibleBridgePlugin *> usedSet;
 
-      if (factory != nullptr && ! usedSet.contains(factory)) {
-         usedSet.insert(factory);
+    for ( auto item : keySet )
+    {
+        factory = qobject_cast<QAccessibleBridgePlugin *>( bridgeloader()->instance( item ) );
 
-         if (QAccessibleBridge *bridge = factory->create(item)) {
-            bridges()->append(bridge);
-         }
-      }
-   }
+        if ( factory != nullptr && ! usedSet.contains( factory ) )
+        {
+            usedSet.insert( factory );
+
+            if ( QAccessibleBridge *bridge = factory->create( item ) )
+            {
+                bridges()->append( bridge );
+            }
+        }
+    }
 }
 
 void QPlatformAccessibility::cleanup()
 {
-   qDeleteAll(*bridges());
+    qDeleteAll( *bridges() );
 }
 
-void QPlatformAccessibility::setActive(bool active)
+void QPlatformAccessibility::setActive( bool active )
 {
-   m_active = active;
-   QAccessible::setActive(active);
+    m_active = active;
+    QAccessible::setActive( active );
 }
 
 #endif // QT_NO_ACCESSIBILITY

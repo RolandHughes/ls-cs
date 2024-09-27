@@ -23,8 +23,8 @@
 
 #include <qmediacontainercontrol.h>
 
-QMediaContainerControl::QMediaContainerControl(QObject *parent)
-    :QMediaControl(parent)
+QMediaContainerControl::QMediaContainerControl( QObject *parent )
+    :QMediaControl( parent )
 {
 }
 

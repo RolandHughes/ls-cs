@@ -31,14 +31,16 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
-void Download::start(WebPage* initiatingWebPage)
+void Download::start( WebPage *initiatingWebPage )
 {
     notImplemented();
 }
 
-void Download::startWithHandle(WebPage* initiatingPage, ResourceHandle*, const ResourceRequest& initialRequest, const ResourceResponse&)
+void Download::startWithHandle( WebPage *initiatingPage, ResourceHandle *, const ResourceRequest &initialRequest,
+                                const ResourceResponse & )
 {
     notImplemented();
 }
@@ -53,7 +55,7 @@ void Download::platformInvalidate()
     notImplemented();
 }
 
-void Download::didDecideDestination(const String& destination, bool allowOverwrite)
+void Download::didDecideDestination( const String &destination, bool allowOverwrite )
 {
     notImplemented();
 }
@@ -63,17 +65,17 @@ void Download::platformDidFinish()
     notImplemented();
 }
 
-void Download::receivedCredential(const AuthenticationChallenge& authenticationChallenge, const Credential& credential)
+void Download::receivedCredential( const AuthenticationChallenge &authenticationChallenge, const Credential &credential )
 {
     notImplemented();
 }
 
-void Download::receivedRequestToContinueWithoutCredential(const AuthenticationChallenge& authenticationChallenge)
+void Download::receivedRequestToContinueWithoutCredential( const AuthenticationChallenge &authenticationChallenge )
 {
     notImplemented();
 }
 
-void Download::receivedCancellation(const AuthenticationChallenge& authenticationChallenge)
+void Download::receivedCancellation( const AuthenticationChallenge &authenticationChallenge )
 {
     notImplemented();
 }

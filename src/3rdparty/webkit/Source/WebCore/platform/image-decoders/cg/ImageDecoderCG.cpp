@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -31,75 +31,85 @@
 #include <CoreGraphics/CGColorSpace.h>
 #include <CoreGraphics/CGImage.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-static ImageFrame::PixelData* getPtrAsPixelData(CFMutableDataRef data)
+static ImageFrame::PixelData *getPtrAsPixelData( CFMutableDataRef data )
 {
-    return data ? reinterpret_cast<ImageFrame::PixelData*>(CFDataGetMutableBytePtr(data)) : 0;
+    return data ? reinterpret_cast<ImageFrame::PixelData *>( CFDataGetMutableBytePtr( data ) ) : 0;
 }
-   
-void ImageFrame::copyReferenceToBitmapData(const ImageFrame& other)
+
+void ImageFrame::copyReferenceToBitmapData( const ImageFrame &other )
 {
-    ASSERT(this != &other);
+    ASSERT( this != &other );
     m_backingStore = other.m_backingStore;
-    m_bytes = getPtrAsPixelData(m_backingStore.get());
+    m_bytes = getPtrAsPixelData( m_backingStore.get() );
     // FIXME: The rest of this function seems redundant with ImageFrame::copyBitmapData.
     m_size = other.m_size;
-    setHasAlpha(other.m_hasAlpha);
+    setHasAlpha( other.m_hasAlpha );
 }
 
-bool ImageFrame::copyBitmapData(const ImageFrame& other)
+bool ImageFrame::copyBitmapData( const ImageFrame &other )
 {
-    if (this == &other)
+    if ( this == &other )
+    {
         return true;
+    }
 
-    m_backingStore.adoptCF(CFDataCreateMutableCopy(kCFAllocatorDefault, 0, other.m_backingStore.get()));
-    m_bytes = getPtrAsPixelData(m_backingStore.get());
+    m_backingStore.adoptCF( CFDataCreateMutableCopy( kCFAllocatorDefault, 0, other.m_backingStore.get() ) );
+    m_bytes = getPtrAsPixelData( m_backingStore.get() );
     m_size = other.m_size;
-    setHasAlpha(other.m_hasAlpha);
+    setHasAlpha( other.m_hasAlpha );
     return true;
 }
 
-bool ImageFrame::setSize(int newWidth, int newHeight)
+bool ImageFrame::setSize( int newWidth, int newHeight )
 {
-    ASSERT(!m_backingStore);
-    size_t backingStoreSize = newWidth * newHeight * sizeof(PixelData);
-    CFMutableDataRef backingStoreRef = CFDataCreateMutable(kCFAllocatorDefault, backingStoreSize);
-    if (!backingStoreRef)
+    ASSERT( !m_backingStore );
+    size_t backingStoreSize = newWidth * newHeight * sizeof( PixelData );
+    CFMutableDataRef backingStoreRef = CFDataCreateMutable( kCFAllocatorDefault, backingStoreSize );
+
+    if ( !backingStoreRef )
+    {
         return false;
-    m_backingStore.adoptCF(backingStoreRef);
-    CFDataSetLength(backingStoreRef, backingStoreSize);
-    m_bytes = reinterpret_cast<PixelData*>(CFDataGetMutableBytePtr(m_backingStore.get()));
-    m_size = IntSize(newWidth, newHeight);
+    }
+
+    m_backingStore.adoptCF( backingStoreRef );
+    CFDataSetLength( backingStoreRef, backingStoreSize );
+    m_bytes = reinterpret_cast<PixelData *>( CFDataGetMutableBytePtr( m_backingStore.get() ) );
+    m_size = IntSize( newWidth, newHeight );
 
     zeroFillPixelData();
     return true;
 }
 
-static CGColorSpaceRef createColorSpace(const ColorProfile& colorProfile)
+static CGColorSpaceRef createColorSpace( const ColorProfile &colorProfile )
 {
-    if (colorProfile.isEmpty())
+    if ( colorProfile.isEmpty() )
+    {
         return CGColorSpaceCreateDeviceRGB();
+    }
 
-    RetainPtr<CFDataRef> data(AdoptCF, CFDataCreate(kCFAllocatorDefault, reinterpret_cast<const UInt8*>(colorProfile.data()), colorProfile.size()));
+    RetainPtr<CFDataRef> data( AdoptCF, CFDataCreate( kCFAllocatorDefault, reinterpret_cast<const UInt8 *>( colorProfile.data() ),
+                               colorProfile.size() ) );
 #ifndef TARGETING_LEOPARD
-    return CGColorSpaceCreateWithICCProfile(data.get());
+    return CGColorSpaceCreateWithICCProfile( data.get() );
 #else
-    RetainPtr<CGDataProviderRef> profileDataProvider(AdoptCF, CGDataProviderCreateWithCFData(data.get()));
+    RetainPtr<CGDataProviderRef> profileDataProvider( AdoptCF, CGDataProviderCreateWithCFData( data.get() ) );
     CGFloat ranges[] = {0.0, 255.0, 0.0, 255.0, 0.0, 255.0};
-    return CGColorSpaceCreateICCBased(3, ranges, profileDataProvider.get(), deviceRGBColorSpaceRef());
+    return CGColorSpaceCreateICCBased( 3, ranges, profileDataProvider.get(), deviceRGBColorSpaceRef() );
 #endif
 }
 
 NativeImagePtr ImageFrame::asNewNativeImage() const
 {
-    RetainPtr<CGColorSpaceRef> colorSpace(AdoptCF, createColorSpace(m_colorProfile));
-    RetainPtr<CGDataProviderRef> dataProvider(AdoptCF, CGDataProviderCreateWithCFData(m_backingStore.get()));
+    RetainPtr<CGColorSpaceRef> colorSpace( AdoptCF, createColorSpace( m_colorProfile ) );
+    RetainPtr<CGDataProviderRef> dataProvider( AdoptCF, CGDataProviderCreateWithCFData( m_backingStore.get() ) );
 
     CGImageAlphaInfo alphaInfo = m_premultiplyAlpha ? kCGImageAlphaPremultipliedFirst : kCGImageAlphaFirst;
 
-    return CGImageCreate(width(), height(), 8, 32, width() * sizeof(PixelData), colorSpace.get(),
-        alphaInfo | kCGBitmapByteOrder32Host, dataProvider.get(), 0, /*shouldInterpolate=*/true, kCGRenderingIntentDefault);
+    return CGImageCreate( width(), height(), 8, 32, width() * sizeof( PixelData ), colorSpace.get(),
+                          alphaInfo | kCGBitmapByteOrder32Host, dataProvider.get(), 0, /*shouldInterpolate=*/true, kCGRenderingIntentDefault );
 }
 
 } // namespace WebCore

@@ -28,27 +28,29 @@
 #include "SVGStyledTransformableElement.h"
 #include "SVGTests.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SVGDefsElement : public SVGStyledTransformableElement,
-                       public SVGTests,
-                       public SVGLangSpace,
-                       public SVGExternalResourcesRequired {
+    public SVGTests,
+    public SVGLangSpace,
+    public SVGExternalResourcesRequired
+{
 public:
-    static PassRefPtr<SVGDefsElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<SVGDefsElement> create( const QualifiedName &, Document * );
 
 private:
-    SVGDefsElement(const QualifiedName&, Document*);
+    SVGDefsElement( const QualifiedName &, Document * );
 
     virtual bool isValid() const;
 
-    virtual RenderObject* createRenderer(RenderArena*, RenderStyle*);
-    virtual void synchronizeProperty(const QualifiedName&);
+    virtual RenderObject *createRenderer( RenderArena *, RenderStyle * );
+    virtual void synchronizeProperty( const QualifiedName & );
 
     // Animated property declarations
 
     // SVGExternalResourcesRequired
-    DECLARE_ANIMATED_BOOLEAN(ExternalResourcesRequired, externalResourcesRequired)
+    DECLARE_ANIMATED_BOOLEAN( ExternalResourcesRequired, externalResourcesRequired )
 };
 
 } // namespace WebCore

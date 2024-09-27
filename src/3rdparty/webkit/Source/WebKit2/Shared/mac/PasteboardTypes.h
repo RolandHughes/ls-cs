@@ -26,15 +26,17 @@
 #ifndef PasteboardTypes_h
 #define PasteboardTypes_h
 
-namespace WebKit {
+namespace WebKit
+{
 
-class PasteboardTypes {
+class PasteboardTypes
+{
 public:
-    static NSString * const WebArchivePboardType;
-    static NSString * const WebURLsWithTitlesPboardType;
-    static NSString * const WebURLPboardType;
-    static NSString * const WebURLNamePboardType;
-    
+    static NSString *const WebArchivePboardType;
+    static NSString *const WebURLsWithTitlesPboardType;
+    static NSString *const WebURLPboardType;
+    static NSString *const WebURLNamePboardType;
+
     static NSArray *forEditing();
     static NSArray *forURL();
     static NSArray *forImages();

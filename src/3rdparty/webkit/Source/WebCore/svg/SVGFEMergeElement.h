@@ -25,18 +25,20 @@
 #include "FEMerge.h"
 #include "SVGFilterPrimitiveStandardAttributes.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SVGFEMergeElement : public SVGFilterPrimitiveStandardAttributes {
+class SVGFEMergeElement : public SVGFilterPrimitiveStandardAttributes
+{
 public:
-    static PassRefPtr<SVGFEMergeElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<SVGFEMergeElement> create( const QualifiedName &, Document * );
 
 private:
-    SVGFEMergeElement(const QualifiedName&, Document*);
+    SVGFEMergeElement( const QualifiedName &, Document * );
 
     virtual void fillAttributeToPropertyTypeMap();
-    virtual AttributeToPropertyTypeMap& attributeToPropertyTypeMap();
-    virtual PassRefPtr<FilterEffect> build(SVGFilterBuilder*, Filter*);
+    virtual AttributeToPropertyTypeMap &attributeToPropertyTypeMap();
+    virtual PassRefPtr<FilterEffect> build( SVGFilterBuilder *, Filter * );
 };
 
 } // namespace WebCore

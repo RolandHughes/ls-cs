@@ -31,9 +31,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSHTMLDataListElement);
+ASSERT_CLASS_FITS_IN_CELL( JSHTMLDataListElement );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -44,9 +45,9 @@ ASSERT_CLASS_FITS_IN_CELL(JSHTMLDataListElement);
 
 static const HashTableValue JSHTMLDataListElementTableValues[3] =
 {
-    { "options", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLDataListElementOptions), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLDataListElementConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "options", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLDataListElementOptions ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLDataListElementConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -60,43 +61,51 @@ static JSC_CONST_HASHTABLE HashTable JSHTMLDataListElementTable = { 4, 3, JSHTML
 
 static const HashTableValue JSHTMLDataListElementConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSHTMLDataListElementConstructorTable = { 1, 0, JSHTMLDataListElementConstructorTableValues, 0 };
-class JSHTMLDataListElementConstructor : public DOMConstructorObject {
+class JSHTMLDataListElementConstructor : public DOMConstructorObject
+{
 public:
-    JSHTMLDataListElementConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSHTMLDataListElementConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSHTMLDataListElementConstructor::s_info = { "HTMLDataListElementConstructor", &DOMConstructorObject::s_info, &JSHTMLDataListElementConstructorTable, 0 };
 
-JSHTMLDataListElementConstructor::JSHTMLDataListElementConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSHTMLDataListElementConstructor::JSHTMLDataListElementConstructor( ExecState *exec, Structure *structure,
+        JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSHTMLDataListElementPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSHTMLDataListElementPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSHTMLDataListElementConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSHTMLDataListElementConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSHTMLDataListElementConstructor, JSDOMWrapper>(exec, &JSHTMLDataListElementConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSHTMLDataListElementConstructor, JSDOMWrapper>( exec, &JSHTMLDataListElementConstructorTable, this,
+            propertyName, slot );
 }
 
-bool JSHTMLDataListElementConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSHTMLDataListElementConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSHTMLDataListElementConstructor, JSDOMWrapper>(exec, &JSHTMLDataListElementConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSHTMLDataListElementConstructor, JSDOMWrapper>( exec, &JSHTMLDataListElementConstructorTable,
+            this, propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -108,60 +117,63 @@ bool JSHTMLDataListElementConstructor::getOwnPropertyDescriptor(ExecState* exec,
 
 static const HashTableValue JSHTMLDataListElementPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSHTMLDataListElementPrototypeTable = { 1, 0, JSHTMLDataListElementPrototypeTableValues, 0 };
 const ClassInfo JSHTMLDataListElementPrototype::s_info = { "HTMLDataListElementPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSHTMLDataListElementPrototypeTable, 0 };
 
-JSObject* JSHTMLDataListElementPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSHTMLDataListElementPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSHTMLDataListElement>(exec, globalObject);
+    return getDOMPrototype<JSHTMLDataListElement>( exec, globalObject );
 }
 
 const ClassInfo JSHTMLDataListElement::s_info = { "HTMLDataListElement", &JSHTMLElement::s_info, &JSHTMLDataListElementTable, 0 };
 
-JSHTMLDataListElement::JSHTMLDataListElement(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<HTMLDataListElement> impl)
-    : JSHTMLElement(structure, globalObject, impl)
+JSHTMLDataListElement::JSHTMLDataListElement( Structure *structure, JSDOMGlobalObject *globalObject,
+        PassRefPtr<HTMLDataListElement> impl )
+    : JSHTMLElement( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSHTMLDataListElement::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSHTMLDataListElement::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSHTMLDataListElementPrototype(exec->globalData(), globalObject, JSHTMLDataListElementPrototype::createStructure(exec->globalData(), JSHTMLElementPrototype::self(exec, globalObject)));
+    return new ( exec ) JSHTMLDataListElementPrototype( exec->globalData(), globalObject,
+            JSHTMLDataListElementPrototype::createStructure( exec->globalData(), JSHTMLElementPrototype::self( exec, globalObject ) ) );
 }
 
-bool JSHTMLDataListElement::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSHTMLDataListElement::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSHTMLDataListElement, Base>(exec, &JSHTMLDataListElementTable, this, propertyName, slot);
+    return getStaticValueSlot<JSHTMLDataListElement, Base>( exec, &JSHTMLDataListElementTable, this, propertyName, slot );
 }
 
-bool JSHTMLDataListElement::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSHTMLDataListElement::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSHTMLDataListElement, Base>(exec, &JSHTMLDataListElementTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSHTMLDataListElement, Base>( exec, &JSHTMLDataListElementTable, this, propertyName, descriptor );
 }
 
-JSValue jsHTMLDataListElementOptions(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLDataListElementOptions( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLDataListElement* castedThis = static_cast<JSHTMLDataListElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLDataListElement* imp = static_cast<HTMLDataListElement*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->options()));
+    JSHTMLDataListElement *castedThis = static_cast<JSHTMLDataListElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLDataListElement *imp = static_cast<HTMLDataListElement *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->options() ) );
     return result;
 }
 
 
-JSValue jsHTMLDataListElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLDataListElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLDataListElement* domObject = static_cast<JSHTMLDataListElement*>(asObject(slotBase));
-    return JSHTMLDataListElement::getConstructor(exec, domObject->globalObject());
+    JSHTMLDataListElement *domObject = static_cast<JSHTMLDataListElement *>( asObject( slotBase ) );
+    return JSHTMLDataListElement::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSHTMLDataListElement::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSHTMLDataListElement::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSHTMLDataListElementConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSHTMLDataListElementConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
 

@@ -28,39 +28,42 @@
 #include "SVGAnimatedNumber.h"
 #include "SVGFilterPrimitiveStandardAttributes.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-enum SVGStitchOptions {
+enum SVGStitchOptions
+{
     SVG_STITCHTYPE_UNKNOWN  = 0,
     SVG_STITCHTYPE_STITCH   = 1,
     SVG_STITCHTYPE_NOSTITCH = 2
 };
 
-class SVGFETurbulenceElement : public SVGFilterPrimitiveStandardAttributes {
+class SVGFETurbulenceElement : public SVGFilterPrimitiveStandardAttributes
+{
 public:
-    static PassRefPtr<SVGFETurbulenceElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<SVGFETurbulenceElement> create( const QualifiedName &, Document * );
 
 private:
-    SVGFETurbulenceElement(const QualifiedName&, Document*);
+    SVGFETurbulenceElement( const QualifiedName &, Document * );
 
-    virtual void parseMappedAttribute(Attribute*);
-    virtual bool setFilterEffectAttribute(FilterEffect*, const QualifiedName& attrName);
-    virtual void svgAttributeChanged(const QualifiedName&);
-    virtual void synchronizeProperty(const QualifiedName&);
+    virtual void parseMappedAttribute( Attribute * );
+    virtual bool setFilterEffectAttribute( FilterEffect *, const QualifiedName &attrName );
+    virtual void svgAttributeChanged( const QualifiedName & );
+    virtual void synchronizeProperty( const QualifiedName & );
     virtual void fillAttributeToPropertyTypeMap();
-    virtual AttributeToPropertyTypeMap& attributeToPropertyTypeMap();
-    virtual PassRefPtr<FilterEffect> build(SVGFilterBuilder*, Filter*);
+    virtual AttributeToPropertyTypeMap &attributeToPropertyTypeMap();
+    virtual PassRefPtr<FilterEffect> build( SVGFilterBuilder *, Filter * );
 
-    static const AtomicString& baseFrequencyXIdentifier();
-    static const AtomicString& baseFrequencyYIdentifier();
+    static const AtomicString &baseFrequencyXIdentifier();
+    static const AtomicString &baseFrequencyYIdentifier();
 
     // Animated property declarations
-    DECLARE_ANIMATED_NUMBER(BaseFrequencyX, baseFrequencyX)
-    DECLARE_ANIMATED_NUMBER(BaseFrequencyY, baseFrequencyY)
-    DECLARE_ANIMATED_INTEGER(NumOctaves, numOctaves)
-    DECLARE_ANIMATED_NUMBER(Seed, seed)
-    DECLARE_ANIMATED_ENUMERATION(StitchTiles, stitchTiles)
-    DECLARE_ANIMATED_ENUMERATION(Type, type)
+    DECLARE_ANIMATED_NUMBER( BaseFrequencyX, baseFrequencyX )
+    DECLARE_ANIMATED_NUMBER( BaseFrequencyY, baseFrequencyY )
+    DECLARE_ANIMATED_INTEGER( NumOctaves, numOctaves )
+    DECLARE_ANIMATED_NUMBER( Seed, seed )
+    DECLARE_ANIMATED_ENUMERATION( StitchTiles, stitchTiles )
+    DECLARE_ANIMATED_ENUMERATION( Type, type )
 };
 
 } // namespace WebCore

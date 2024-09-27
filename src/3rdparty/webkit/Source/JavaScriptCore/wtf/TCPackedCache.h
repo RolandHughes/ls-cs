@@ -132,101 +132,119 @@
 // the table is controlled by kHashbits, and the type of each entry in
 // the cache is T.  See also the big comment at the top of the file.
 template <int kKeybits, typename T>
-class PackedCache {
- public:
-  typedef uintptr_t K;
-  typedef size_t V;
-  static const size_t kHashbits = 12;
-  static const size_t kValuebits = 8;
+class PackedCache
+{
+public:
+    typedef uintptr_t K;
+    typedef size_t V;
+    static const size_t kHashbits = 12;
+    static const size_t kValuebits = 8;
 
-  explicit PackedCache(V initial_value) {
-    COMPILE_ASSERT(kKeybits <= sizeof(K) * 8, key_size);
-    COMPILE_ASSERT(kValuebits <= sizeof(V) * 8, value_size);
-    COMPILE_ASSERT(kHashbits <= kKeybits, hash_function);
-    COMPILE_ASSERT(kKeybits - kHashbits + kValuebits <= kTbits,
-                   entry_size_must_be_big_enough);
-    Clear(initial_value);
-  }
-
-  void Put(K key, V value) {
-    DCHECK_EQ(key, key & kKeyMask);
-    DCHECK_EQ(value, value & kValueMask);
-    array_[Hash(key)] = static_cast<T>(KeyToUpper(key) | value);
-  }
-
-  bool Has(K key) const {
-    DCHECK_EQ(key, key & kKeyMask);
-    return KeyMatch(array_[Hash(key)], key);
-  }
-
-  V GetOrDefault(K key, V default_value) const {
-    // As with other code in this class, we touch array_ as few times
-    // as we can.  Assuming entries are read atomically (e.g., their
-    // type is uintptr_t on most hardware) then certain races are
-    // harmless.
-    DCHECK_EQ(key, key & kKeyMask);
-    T entry = array_[Hash(key)];
-    return KeyMatch(entry, key) ? EntryToValue(entry) : default_value;
-  }
-
-  void Clear(V value) {
-    DCHECK_EQ(value, value & kValueMask);
-    for (int i = 0; i < 1 << kHashbits; i++) {
-      array_[i] = static_cast<T>(value);
+    explicit PackedCache( V initial_value )
+    {
+        COMPILE_ASSERT( kKeybits <= sizeof( K ) * 8, key_size );
+        COMPILE_ASSERT( kValuebits <= sizeof( V ) * 8, value_size );
+        COMPILE_ASSERT( kHashbits <= kKeybits, hash_function );
+        COMPILE_ASSERT( kKeybits - kHashbits + kValuebits <= kTbits,
+                        entry_size_must_be_big_enough );
+        Clear( initial_value );
     }
-  }
 
- private:
-  // We are going to pack a value and the upper part of a key into
-  // an entry of type T.  The UPPER type is for the upper part of a key,
-  // after the key has been masked and shifted for inclusion in an entry.
-  typedef T UPPER;
+    void Put( K key, V value )
+    {
+        DCHECK_EQ( key, key & kKeyMask );
+        DCHECK_EQ( value, value & kValueMask );
+        array_[Hash( key )] = static_cast<T>( KeyToUpper( key ) | value );
+    }
 
-  static V EntryToValue(T t) { return t & kValueMask; }
+    bool Has( K key ) const
+    {
+        DCHECK_EQ( key, key & kKeyMask );
+        return KeyMatch( array_[Hash( key )], key );
+    }
 
-  static UPPER EntryToUpper(T t) { return t & kUpperMask; }
+    V GetOrDefault( K key, V default_value ) const
+    {
+        // As with other code in this class, we touch array_ as few times
+        // as we can.  Assuming entries are read atomically (e.g., their
+        // type is uintptr_t on most hardware) then certain races are
+        // harmless.
+        DCHECK_EQ( key, key & kKeyMask );
+        T entry = array_[Hash( key )];
+        return KeyMatch( entry, key ) ? EntryToValue( entry ) : default_value;
+    }
 
-  // If v is a V and u is an UPPER then you can create an entry by
-  // doing u | v.  kHashbits determines where in a K to find the upper
-  // part of the key, and kValuebits determines where in the entry to put
-  // it.
-  static UPPER KeyToUpper(K k) {
-    const int shift = kHashbits - kValuebits;
-    // Assume kHashbits >= kValuebits. It would be easy to lift this assumption.
-    return static_cast<T>(k >> shift) & kUpperMask;
-  }
+    void Clear( V value )
+    {
+        DCHECK_EQ( value, value & kValueMask );
 
-  // This is roughly the inverse of KeyToUpper().  Some of the key has been
-  // thrown away, since KeyToUpper() masks off the low bits of the key.
-  static K UpperToPartialKey(UPPER u) {
-    DCHECK_EQ(u, u & kUpperMask);
-    const int shift = kHashbits - kValuebits;
-    // Assume kHashbits >= kValuebits. It would be easy to lift this assumption.
-    return static_cast<K>(u) << shift;
-  }
+        for ( int i = 0; i < 1 << kHashbits; i++ )
+        {
+            array_[i] = static_cast<T>( value );
+        }
+    }
 
-  static size_t Hash(K key) {
-    return static_cast<size_t>(key) & N_ONES_(size_t, kHashbits);
-  }
+private:
+    // We are going to pack a value and the upper part of a key into
+    // an entry of type T.  The UPPER type is for the upper part of a key,
+    // after the key has been masked and shifted for inclusion in an entry.
+    typedef T UPPER;
 
-  // Does the entry's partial key match the relevant part of the given key?
-  static bool KeyMatch(T entry, K key) {
-    return ((KeyToUpper(key) ^ entry) & kUpperMask) == 0;
-  }
+    static V EntryToValue( T t )
+    {
+        return t & kValueMask;
+    }
 
-  static const size_t kTbits = 8 * sizeof(T);
-  static const int kUpperbits = kKeybits - kHashbits;
+    static UPPER EntryToUpper( T t )
+    {
+        return t & kUpperMask;
+    }
 
-  // For masking a K.
-  static const K kKeyMask = N_ONES_(K, kKeybits);
+    // If v is a V and u is an UPPER then you can create an entry by
+    // doing u | v.  kHashbits determines where in a K to find the upper
+    // part of the key, and kValuebits determines where in the entry to put
+    // it.
+    static UPPER KeyToUpper( K k )
+    {
+        const int shift = kHashbits - kValuebits;
+        // Assume kHashbits >= kValuebits. It would be easy to lift this assumption.
+        return static_cast<T>( k >> shift ) & kUpperMask;
+    }
 
-  // For masking a T.
-  static const T kUpperMask = N_ONES_(T, kUpperbits) << kValuebits;
+    // This is roughly the inverse of KeyToUpper().  Some of the key has been
+    // thrown away, since KeyToUpper() masks off the low bits of the key.
+    static K UpperToPartialKey( UPPER u )
+    {
+        DCHECK_EQ( u, u & kUpperMask );
+        const int shift = kHashbits - kValuebits;
+        // Assume kHashbits >= kValuebits. It would be easy to lift this assumption.
+        return static_cast<K>( u ) << shift;
+    }
 
-  // For masking a V or a T.
-  static const V kValueMask = N_ONES_(V, kValuebits);
+    static size_t Hash( K key )
+    {
+        return static_cast<size_t>( key ) & N_ONES_( size_t, kHashbits );
+    }
 
-  T array_[1 << kHashbits];
+    // Does the entry's partial key match the relevant part of the given key?
+    static bool KeyMatch( T entry, K key )
+    {
+        return ( ( KeyToUpper( key ) ^ entry ) & kUpperMask ) == 0;
+    }
+
+    static const size_t kTbits = 8 * sizeof( T );
+    static const int kUpperbits = kKeybits - kHashbits;
+
+    // For masking a K.
+    static const K kKeyMask = N_ONES_( K, kKeybits );
+
+    // For masking a T.
+    static const T kUpperMask = N_ONES_( T, kUpperbits ) << kValuebits;
+
+    // For masking a V or a T.
+    static const V kValueMask = N_ONES_( V, kValuebits );
+
+    T array_[1 << kHashbits];
 };
 
 #undef N_ONES_

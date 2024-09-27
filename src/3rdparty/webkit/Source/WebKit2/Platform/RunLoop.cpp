@@ -29,24 +29,27 @@
 #include "WorkItem.h"
 #include <wtf/StdLibExtras.h>
 
-static RunLoop* s_mainRunLoop;
+static RunLoop *s_mainRunLoop;
 
 void RunLoop::initializeMainRunLoop()
 {
-    if (s_mainRunLoop)
+    if ( s_mainRunLoop )
+    {
         return;
+    }
+
     s_mainRunLoop = RunLoop::current();
 }
 
-RunLoop* RunLoop::current()
+RunLoop *RunLoop::current()
 {
-    DEFINE_STATIC_LOCAL(WTF::ThreadSpecific<RunLoop>, runLoopData, ());
+    DEFINE_STATIC_LOCAL( WTF::ThreadSpecific<RunLoop>, runLoopData, () );
     return &*runLoopData;
 }
 
-RunLoop* RunLoop::main()
+RunLoop *RunLoop::main()
 {
-    ASSERT(s_mainRunLoop);
+    ASSERT( s_mainRunLoop );
     return s_mainRunLoop;
 }
 
@@ -54,20 +57,21 @@ void RunLoop::performWork()
 {
     Vector<OwnPtr<WorkItem> > workItemQueue;
     {
-        MutexLocker locker(m_workItemQueueLock);
-        m_workItemQueue.swap(workItemQueue);
+        MutexLocker locker( m_workItemQueueLock );
+        m_workItemQueue.swap( workItemQueue );
     }
 
-    for (size_t i = 0; i < workItemQueue.size(); ++i) {
+    for ( size_t i = 0; i < workItemQueue.size(); ++i )
+    {
         OwnPtr<WorkItem> item = workItemQueue[i].release();
         item->execute();
     }
 }
 
-void RunLoop::scheduleWork(PassOwnPtr<WorkItem> item)
+void RunLoop::scheduleWork( PassOwnPtr<WorkItem> item )
 {
-    MutexLocker locker(m_workItemQueueLock);
-    m_workItemQueue.append(item);
+    MutexLocker locker( m_workItemQueueLock );
+    m_workItemQueue.append( item );
 
     wakeUp();
 }

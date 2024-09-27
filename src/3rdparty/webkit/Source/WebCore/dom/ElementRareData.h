@@ -28,11 +28,13 @@
 #include "NodeRareData.h"
 #include <wtf/OwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class ShadowRoot;
 
-class ElementRareData : public NodeRareData {
+class ElementRareData : public NodeRareData
+{
 public:
     ElementRareData();
     virtual ~ElementRareData();
@@ -44,7 +46,7 @@ public:
 
     IntSize m_minimumSizeForResizing;
     RefPtr<RenderStyle> m_computedStyle;
-    ShadowRoot* m_shadowRoot;
+    ShadowRoot *m_shadowRoot;
 
     OwnPtr<DatasetDOMStringMap> m_datasetDOMStringMap;
     OwnPtr<ClassList> m_classList;
@@ -52,18 +54,18 @@ public:
 
 inline IntSize defaultMinimumSizeForResizing()
 {
-    return IntSize(INT_MAX, INT_MAX);
+    return IntSize( INT_MAX, INT_MAX );
 }
 
 inline ElementRareData::ElementRareData()
-    : m_minimumSizeForResizing(defaultMinimumSizeForResizing())
-    , m_shadowRoot(0)
+    : m_minimumSizeForResizing( defaultMinimumSizeForResizing() )
+    , m_shadowRoot( 0 )
 {
 }
 
 inline ElementRareData::~ElementRareData()
 {
-    ASSERT(!m_shadowRoot);
+    ASSERT( !m_shadowRoot );
 }
 
 inline void ElementRareData::resetComputedStyle()

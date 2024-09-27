@@ -36,23 +36,31 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Blob;
 class HTMLFormElement;
 class TextEncoding;
 
-class DOMFormData : public FormDataList, public RefCounted<DOMFormData> {
+class DOMFormData : public FormDataList, public RefCounted<DOMFormData>
+{
 public:
-    static PassRefPtr<DOMFormData> create(HTMLFormElement* form) { return adoptRef(new DOMFormData(form)); }
-    static PassRefPtr<DOMFormData> create(const TextEncoding& encoding) { return adoptRef(new DOMFormData(encoding)); }
+    static PassRefPtr<DOMFormData> create( HTMLFormElement *form )
+    {
+        return adoptRef( new DOMFormData( form ) );
+    }
+    static PassRefPtr<DOMFormData> create( const TextEncoding &encoding )
+    {
+        return adoptRef( new DOMFormData( encoding ) );
+    }
 
-    void append(const String& name, const String& value);
-    void append(const String& name, Blob*);
+    void append( const String &name, const String &value );
+    void append( const String &name, Blob * );
 
 private:
-    explicit DOMFormData(const TextEncoding&);
-    explicit DOMFormData(HTMLFormElement*);
+    explicit DOMFormData( const TextEncoding & );
+    explicit DOMFormData( HTMLFormElement * );
 };
 
 } // namespace WebCore

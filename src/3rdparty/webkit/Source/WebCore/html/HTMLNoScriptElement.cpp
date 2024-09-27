@@ -27,19 +27,20 @@
 #include "HTMLNames.h"
 #include "RenderObject.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-inline HTMLNoScriptElement::HTMLNoScriptElement(const QualifiedName& tagName, Document* document)
-    : HTMLElement(tagName, document)
+inline HTMLNoScriptElement::HTMLNoScriptElement( const QualifiedName &tagName, Document *document )
+    : HTMLElement( tagName, document )
 {
-    ASSERT(hasTagName(noscriptTag));
+    ASSERT( hasTagName( noscriptTag ) );
 }
 
-PassRefPtr<HTMLNoScriptElement> HTMLNoScriptElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<HTMLNoScriptElement> HTMLNoScriptElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new HTMLNoScriptElement(tagName, document));
+    return adoptRef( new HTMLNoScriptElement( tagName, document ) );
 }
 
 void HTMLNoScriptElement::attach()
@@ -47,33 +48,44 @@ void HTMLNoScriptElement::attach()
     HTMLElement::attach();
 
     // If no need to process <noscript>, we hide it by setting display:none temporarily
-    if (!document()->shouldProcessNoscriptElement()) {
-        if (renderer() && renderer()->style())
-            renderer()->style()->setDisplay(NONE);
+    if ( !document()->shouldProcessNoscriptElement() )
+    {
+        if ( renderer() && renderer()->style() )
+        {
+            renderer()->style()->setDisplay( NONE );
+        }
+
         setNeedsStyleRecalc();
     }
 }
 
-void HTMLNoScriptElement::recalcStyle(StyleChange change)
+void HTMLNoScriptElement::recalcStyle( StyleChange change )
 {
-    if (!document()->shouldProcessNoscriptElement() || !renderer() || !renderer()->style())
+    if ( !document()->shouldProcessNoscriptElement() || !renderer() || !renderer()->style() )
+    {
         return;
+    }
 
     // If <noscript> needs processing, we make it visiable here, including its visible children
     RefPtr<RenderStyle> style = renderer()->style();
-    if (style->display() == NONE) {
-        style->setDisplay(INLINE);
+
+    if ( style->display() == NONE )
+    {
+        style->setDisplay( INLINE );
 
         // Create renderers for its children
-        if (hasChildNodes()) {
-            for (Node* n = firstChild(); n; n = n->traverseNextNode(this))
-                if (!n->renderer())
+        if ( hasChildNodes() )
+        {
+            for ( Node *n = firstChild(); n; n = n->traverseNextNode( this ) )
+                if ( !n->renderer() )
+                {
                     n->createRendererIfNeeded();
+                }
         }
     }
 }
 
-bool HTMLNoScriptElement::childShouldCreateRenderer(Node*) const
+bool HTMLNoScriptElement::childShouldCreateRenderer( Node * ) const
 {
     return document()->shouldProcessNoscriptElement();
 }

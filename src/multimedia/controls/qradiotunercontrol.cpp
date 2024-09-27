@@ -24,8 +24,8 @@
 #include <qradiotunercontrol.h>
 #include <qmediacontrol_p.h>
 
-QRadioTunerControl::QRadioTunerControl(QObject *parent):
-    QMediaControl(*new QMediaControlPrivate, parent)
+QRadioTunerControl::QRadioTunerControl( QObject *parent ):
+    QMediaControl( *new QMediaControlPrivate, parent )
 {
 }
 

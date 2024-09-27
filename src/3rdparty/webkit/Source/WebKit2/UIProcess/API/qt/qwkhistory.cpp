@@ -39,8 +39,8 @@
 
 using namespace WebKit;
 
-QWKHistoryItemPrivate::QWKHistoryItemPrivate(WKBackForwardListItemRef listItem)
-    : m_backForwardListItem(listItem)
+QWKHistoryItemPrivate::QWKHistoryItemPrivate( WKBackForwardListItemRef listItem )
+    : m_backForwardListItem( listItem )
 {
 }
 
@@ -48,19 +48,19 @@ QWKHistoryItemPrivate::~QWKHistoryItemPrivate()
 {
 }
 
-QWKHistoryItem::QWKHistoryItem(const QWKHistoryItem& other)
-    : d(other.d) 
+QWKHistoryItem::QWKHistoryItem( const QWKHistoryItem &other )
+    : d( other.d )
 {
 }
 
-QWKHistoryItem& QWKHistoryItem::QWKHistoryItem::operator=(const QWKHistoryItem& other) 
-{ 
+QWKHistoryItem &QWKHistoryItem::QWKHistoryItem::operator=( const QWKHistoryItem &other )
+{
     d = other.d;
-    return *this; 
+    return *this;
 }
 
-QWKHistoryItem::QWKHistoryItem(WKBackForwardListItemRef item)
-    : d(new QWKHistoryItemPrivate(item))
+QWKHistoryItem::QWKHistoryItem( WKBackForwardListItemRef item )
+    : d( new QWKHistoryItemPrivate( item ) )
 {
 }
 
@@ -70,29 +70,35 @@ QWKHistoryItem::~QWKHistoryItem()
 
 QString QWKHistoryItem::title() const
 {
-    if (!d->m_backForwardListItem)
+    if ( !d->m_backForwardListItem )
+    {
         return QString();
-    WKRetainPtr<WKStringRef> title = WKBackForwardListItemCopyTitle(d->m_backForwardListItem.get());
-    return WKStringCopyQString(title.get());
+    }
+
+    WKRetainPtr<WKStringRef> title = WKBackForwardListItemCopyTitle( d->m_backForwardListItem.get() );
+    return WKStringCopyQString( title.get() );
 }
 
 QUrl QWKHistoryItem::url() const
 {
-    if (!d->m_backForwardListItem)
+    if ( !d->m_backForwardListItem )
+    {
         return QUrl();
-    WKRetainPtr<WKURLRef> url = WKBackForwardListItemCopyURL(d->m_backForwardListItem.get());
-    return WKURLCopyQUrl(url.get());
+    }
+
+    WKRetainPtr<WKURLRef> url = WKBackForwardListItemCopyURL( d->m_backForwardListItem.get() );
+    return WKURLCopyQUrl( url.get() );
 }
 
-QWKHistoryPrivate::QWKHistoryPrivate(WebKit::WebBackForwardList* list)
-    : m_backForwardList(list)
+QWKHistoryPrivate::QWKHistoryPrivate( WebKit::WebBackForwardList *list )
+    : m_backForwardList( list )
 {
 }
 
-QWKHistory* QWKHistoryPrivate::createHistory(WebKit::WebBackForwardList* list)
+QWKHistory *QWKHistoryPrivate::createHistory( WebKit::WebBackForwardList *list )
 {
-    QWKHistory* history = new QWKHistory();
-    history->d = new QWKHistoryPrivate(list);
+    QWKHistory *history = new QWKHistory();
+    history->d = new QWKHistoryPrivate( list );
     return history;
 }
 
@@ -111,12 +117,12 @@ QWKHistory::~QWKHistory()
 
 int QWKHistory::backListCount() const
 {
-    return WKBackForwardListGetBackListCount(toAPI(d->m_backForwardList));
+    return WKBackForwardListGetBackListCount( toAPI( d->m_backForwardList ) );
 }
 
 int QWKHistory::forwardListCount() const
 {
-    return WKBackForwardListGetForwardListCount(toAPI(d->m_backForwardList));
+    return WKBackForwardListGetForwardListCount( toAPI( d->m_backForwardList ) );
 }
 
 int QWKHistory::count() const
@@ -126,57 +132,63 @@ int QWKHistory::count() const
 
 QWKHistoryItem QWKHistory::currentItem() const
 {
-    WKRetainPtr<WKBackForwardListItemRef> itemRef = WKBackForwardListGetCurrentItem(toAPI(d->m_backForwardList));
-    QWKHistoryItem item(itemRef.get());
+    WKRetainPtr<WKBackForwardListItemRef> itemRef = WKBackForwardListGetCurrentItem( toAPI( d->m_backForwardList ) );
+    QWKHistoryItem item( itemRef.get() );
     return item;
 }
 
 QWKHistoryItem QWKHistory::backItem() const
 {
-    WKRetainPtr<WKBackForwardListItemRef> itemRef = WKBackForwardListGetBackItem(toAPI(d->m_backForwardList));
-    QWKHistoryItem item(itemRef.get());
+    WKRetainPtr<WKBackForwardListItemRef> itemRef = WKBackForwardListGetBackItem( toAPI( d->m_backForwardList ) );
+    QWKHistoryItem item( itemRef.get() );
     return item;
 }
 
 QWKHistoryItem QWKHistory::forwardItem() const
 {
-    WKRetainPtr<WKBackForwardListItemRef> itemRef = WKBackForwardListGetForwardItem(toAPI(d->m_backForwardList));
-    QWKHistoryItem item(itemRef.get());
+    WKRetainPtr<WKBackForwardListItemRef> itemRef = WKBackForwardListGetForwardItem( toAPI( d->m_backForwardList ) );
+    QWKHistoryItem item( itemRef.get() );
     return item;
 }
 
-QWKHistoryItem QWKHistory::itemAt(int index) const
+QWKHistoryItem QWKHistory::itemAt( int index ) const
 {
-    WKRetainPtr<WKBackForwardListItemRef> itemRef = WKBackForwardListGetItemAtIndex(toAPI(d->m_backForwardList), index);
-    QWKHistoryItem item(itemRef.get());
+    WKRetainPtr<WKBackForwardListItemRef> itemRef = WKBackForwardListGetItemAtIndex( toAPI( d->m_backForwardList ), index );
+    QWKHistoryItem item( itemRef.get() );
     return item;
 }
 
-QList<QWKHistoryItem> QWKHistory::backItems(int maxItems) const
+QList<QWKHistoryItem> QWKHistory::backItems( int maxItems ) const
 {
-    WKArrayRef arrayRef = WKBackForwardListCopyBackListWithLimit(toAPI(d->m_backForwardList), maxItems);
-    int size = WKArrayGetSize(arrayRef);
+    WKArrayRef arrayRef = WKBackForwardListCopyBackListWithLimit( toAPI( d->m_backForwardList ), maxItems );
+    int size = WKArrayGetSize( arrayRef );
     QList<QWKHistoryItem> itemList;
-    for (int i = 0; i < size; ++i) {
-        WKTypeRef wkHistoryItem = WKArrayGetItemAtIndex(arrayRef, i);
-        WKBackForwardListItemRef itemRef = static_cast<WKBackForwardListItemRef>(wkHistoryItem);
-        QWKHistoryItem item(itemRef);
-        itemList.append(item);
+
+    for ( int i = 0; i < size; ++i )
+    {
+        WKTypeRef wkHistoryItem = WKArrayGetItemAtIndex( arrayRef, i );
+        WKBackForwardListItemRef itemRef = static_cast<WKBackForwardListItemRef>( wkHistoryItem );
+        QWKHistoryItem item( itemRef );
+        itemList.append( item );
     }
+
     return itemList;
 }
 
-QList<QWKHistoryItem> QWKHistory::forwardItems(int maxItems) const
+QList<QWKHistoryItem> QWKHistory::forwardItems( int maxItems ) const
 {
-    WKArrayRef arrayRef = WKBackForwardListCopyForwardListWithLimit(toAPI(d->m_backForwardList), maxItems);
-    int size = WKArrayGetSize(arrayRef);
+    WKArrayRef arrayRef = WKBackForwardListCopyForwardListWithLimit( toAPI( d->m_backForwardList ), maxItems );
+    int size = WKArrayGetSize( arrayRef );
     QList<QWKHistoryItem> itemList;
-    for (int i = 0; i < size; ++i) {
-        WKTypeRef wkHistoryItem = WKArrayGetItemAtIndex(arrayRef, i);
-        WKBackForwardListItemRef itemRef = static_cast<WKBackForwardListItemRef>(wkHistoryItem);
-        QWKHistoryItem item(itemRef);
-        itemList.append(item);
+
+    for ( int i = 0; i < size; ++i )
+    {
+        WKTypeRef wkHistoryItem = WKArrayGetItemAtIndex( arrayRef, i );
+        WKBackForwardListItemRef itemRef = static_cast<WKBackForwardListItemRef>( wkHistoryItem );
+        QWKHistoryItem item( itemRef );
+        itemList.append( item );
     }
+
     return itemList;
 }
 

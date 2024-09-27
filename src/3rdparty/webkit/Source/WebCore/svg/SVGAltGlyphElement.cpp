@@ -31,81 +31,91 @@
 #include "SVGNames.h"
 #include "XLinkNames.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Animated property declarations
-DEFINE_ANIMATED_STRING(SVGAltGlyphElement, XLinkNames::hrefAttr, Href, href)
+DEFINE_ANIMATED_STRING( SVGAltGlyphElement, XLinkNames::hrefAttr, Href, href )
 
-inline SVGAltGlyphElement::SVGAltGlyphElement(const QualifiedName& tagName, Document* document)
-    : SVGTextPositioningElement(tagName, document)
+inline SVGAltGlyphElement::SVGAltGlyphElement( const QualifiedName &tagName, Document *document )
+    : SVGTextPositioningElement( tagName, document )
 {
 }
 
-PassRefPtr<SVGAltGlyphElement> SVGAltGlyphElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<SVGAltGlyphElement> SVGAltGlyphElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new SVGAltGlyphElement(tagName, document));
+    return adoptRef( new SVGAltGlyphElement( tagName, document ) );
 }
 
-void SVGAltGlyphElement::synchronizeProperty(const QualifiedName& attrName)
+void SVGAltGlyphElement::synchronizeProperty( const QualifiedName &attrName )
 {
-    SVGTextPositioningElement::synchronizeProperty(attrName);
+    SVGTextPositioningElement::synchronizeProperty( attrName );
 
-    if (attrName == anyQName() || SVGURIReference::isKnownAttribute(attrName))
+    if ( attrName == anyQName() || SVGURIReference::isKnownAttribute( attrName ) )
+    {
         synchronizeHref();
+    }
 }
 
-AttributeToPropertyTypeMap& SVGAltGlyphElement::attributeToPropertyTypeMap()
+AttributeToPropertyTypeMap &SVGAltGlyphElement::attributeToPropertyTypeMap()
 {
-    DEFINE_STATIC_LOCAL(AttributeToPropertyTypeMap, s_attributeToPropertyTypeMap, ());
+    DEFINE_STATIC_LOCAL( AttributeToPropertyTypeMap, s_attributeToPropertyTypeMap, () );
     return s_attributeToPropertyTypeMap;
 }
 
 void SVGAltGlyphElement::fillAttributeToPropertyTypeMap()
 {
-    AttributeToPropertyTypeMap& attributeToPropertyTypeMap = this->attributeToPropertyTypeMap();
+    AttributeToPropertyTypeMap &attributeToPropertyTypeMap = this->attributeToPropertyTypeMap();
 
-    SVGTextPositioningElement::fillPassedAttributeToPropertyTypeMap(attributeToPropertyTypeMap);
-    attributeToPropertyTypeMap.set(XLinkNames::hrefAttr, AnimatedString);
+    SVGTextPositioningElement::fillPassedAttributeToPropertyTypeMap( attributeToPropertyTypeMap );
+    attributeToPropertyTypeMap.set( XLinkNames::hrefAttr, AnimatedString );
 }
 
-void SVGAltGlyphElement::setGlyphRef(const AtomicString&, ExceptionCode& ec)
+void SVGAltGlyphElement::setGlyphRef( const AtomicString &, ExceptionCode &ec )
 {
     ec = NO_MODIFICATION_ALLOWED_ERR;
 }
 
-const AtomicString& SVGAltGlyphElement::glyphRef() const
+const AtomicString &SVGAltGlyphElement::glyphRef() const
 {
-    return getAttribute(SVGNames::glyphRefAttr);
+    return getAttribute( SVGNames::glyphRefAttr );
 }
 
-void SVGAltGlyphElement::setFormat(const AtomicString&, ExceptionCode& ec)
+void SVGAltGlyphElement::setFormat( const AtomicString &, ExceptionCode &ec )
 {
     ec = NO_MODIFICATION_ALLOWED_ERR;
 }
 
-const AtomicString& SVGAltGlyphElement::format() const
+const AtomicString &SVGAltGlyphElement::format() const
 {
-    return getAttribute(SVGNames::formatAttr);
+    return getAttribute( SVGNames::formatAttr );
 }
 
-bool SVGAltGlyphElement::childShouldCreateRenderer(Node* child) const
+bool SVGAltGlyphElement::childShouldCreateRenderer( Node *child ) const
 {
-    if (child->isTextNode())
+    if ( child->isTextNode() )
+    {
         return true;
+    }
+
     return false;
 }
 
-RenderObject* SVGAltGlyphElement::createRenderer(RenderArena* arena, RenderStyle*)
+RenderObject *SVGAltGlyphElement::createRenderer( RenderArena *arena, RenderStyle * )
 {
-    return new (arena) RenderSVGTSpan(this);
+    return new ( arena ) RenderSVGTSpan( this );
 }
 
-SVGGlyphElement* SVGAltGlyphElement::glyphElement() const
+SVGGlyphElement *SVGAltGlyphElement::glyphElement() const
 {
-    Element* elt = treeScope()->getElementById(getTarget(getAttribute(XLinkNames::hrefAttr)));
-    if (!elt || !elt->hasTagName(SVGNames::glyphTag))
+    Element *elt = treeScope()->getElementById( getTarget( getAttribute( XLinkNames::hrefAttr ) ) );
+
+    if ( !elt || !elt->hasTagName( SVGNames::glyphTag ) )
+    {
         return 0;
-    return static_cast<SVGGlyphElement*>(elt);
+    }
+
+    return static_cast<SVGGlyphElement *>( elt );
 }
 
 }

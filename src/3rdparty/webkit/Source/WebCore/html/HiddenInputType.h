@@ -33,18 +33,20 @@
 
 #include "InputType.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class HiddenInputType : public InputType {
+class HiddenInputType : public InputType
+{
 public:
-    static PassOwnPtr<InputType> create(HTMLInputElement*);
+    static PassOwnPtr<InputType> create( HTMLInputElement * );
 
 private:
-    HiddenInputType(HTMLInputElement* element) : InputType(element) { }
-    virtual const AtomicString& formControlType() const;
+    HiddenInputType( HTMLInputElement *element ) : InputType( element ) { }
+    virtual const AtomicString &formControlType() const;
     virtual bool supportsValidation() const;
-    virtual RenderObject* createRenderer(RenderArena*, RenderStyle*) const;
-    virtual void accessKeyAction(bool sendToAnyElement);
+    virtual RenderObject *createRenderer( RenderArena *, RenderStyle * ) const;
+    virtual void accessKeyAction( bool sendToAnyElement );
     virtual bool rendererIsNeeded();
     virtual bool storesValueSeparateFromAttribute();
     virtual bool isHiddenType() const;

@@ -30,13 +30,16 @@
 #include <wtf/Forward.h>
 #include <wtf/Noncopyable.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class FontPlatformData;
 class SharedBuffer;
 
-struct FontCustomPlatformData {
-    WTF_MAKE_NONCOPYABLE(FontCustomPlatformData); WTF_MAKE_FAST_ALLOCATED;
+struct FontCustomPlatformData
+{
+    WTF_MAKE_NONCOPYABLE( FontCustomPlatformData );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
     FontCustomPlatformData() { }
     ~FontCustomPlatformData();
@@ -44,13 +47,14 @@ public:
     // for use with QFontDatabase::addApplicationFont/removeApplicationFont
     int m_handle;
 
-    FontPlatformData fontPlatformData(int size, bool bold, bool italic, FontOrientation = Horizontal, TextOrientation = TextOrientationVerticalRight,
-                                      FontWidthVariant = RegularWidth, FontRenderingMode = NormalRenderingMode);
+    FontPlatformData fontPlatformData( int size, bool bold, bool italic, FontOrientation = Horizontal,
+                                       TextOrientation = TextOrientationVerticalRight,
+                                       FontWidthVariant = RegularWidth, FontRenderingMode = NormalRenderingMode );
 
-    static bool supportsFormat(const String&);
+    static bool supportsFormat( const String & );
 };
 
-FontCustomPlatformData* createFontCustomPlatformData(SharedBuffer* buffer);
+FontCustomPlatformData *createFontCustomPlatformData( SharedBuffer *buffer );
 
 } // namespace WebCore
 

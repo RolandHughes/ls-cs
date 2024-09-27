@@ -26,20 +26,21 @@
 
 #include <qdelegatingstaticcontext_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 class StaticBaseURIContext : public DelegatingStaticContext
 {
- public:
-   /**
-    * The @p bURI is the new static base URI, and it must be valid
-    * and absolute.
-    */
-   StaticBaseURIContext(const QUrl &bURI, const StaticContext::Ptr &prevContext);
+public:
+    /**
+     * The @p bURI is the new static base URI, and it must be valid
+     * and absolute.
+     */
+    StaticBaseURIContext( const QUrl &bURI, const StaticContext::Ptr &prevContext );
 
-   QUrl baseURI() const override;
+    QUrl baseURI() const override;
 
- private:
-   const QUrl m_baseURI;
+private:
+    const QUrl m_baseURI;
 };
 }
 

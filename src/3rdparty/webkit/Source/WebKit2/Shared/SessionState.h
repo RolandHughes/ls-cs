@@ -22,31 +22,40 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 #ifndef SessionState_h
 #define SessionState_h
 
 #include "WebBackForwardList.h"
 
-namespace CoreIPC {
-    class ArgumentDecoder;
-    class ArgumentEncoder;
+namespace CoreIPC
+{
+class ArgumentDecoder;
+class ArgumentEncoder;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
-class SessionState {
+class SessionState
+{
 public:
     SessionState();
-    SessionState(const BackForwardListItemVector&, uint32_t currentIndex);
+    SessionState( const BackForwardListItemVector &, uint32_t currentIndex );
 
-    const BackForwardListItemVector& list() const { return m_list; }
-    uint32_t currentIndex() const { return m_currentIndex; }
+    const BackForwardListItemVector &list() const
+    {
+        return m_list;
+    }
+    uint32_t currentIndex() const
+    {
+        return m_currentIndex;
+    }
 
     bool isEmpty() const;
 
-    void encode(CoreIPC::ArgumentEncoder*) const;
-    static bool decode(CoreIPC::ArgumentDecoder*, SessionState&);
+    void encode( CoreIPC::ArgumentEncoder * ) const;
+    static bool decode( CoreIPC::ArgumentDecoder *, SessionState & );
 
 private:
     BackForwardListItemVector m_list;

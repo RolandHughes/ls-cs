@@ -35,148 +35,199 @@
 using std::max;
 using std::min;
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Clamp rowspan at 8k to match Firefox.
 static const int maxRowspan = 8190;
 
 using namespace HTMLNames;
 
-inline HTMLTableCellElement::HTMLTableCellElement(const QualifiedName& tagName, Document* document)
-    : HTMLTablePartElement(tagName, document)
-    , m_rowSpan(1)
-    , m_colSpan(1)
+inline HTMLTableCellElement::HTMLTableCellElement( const QualifiedName &tagName, Document *document )
+    : HTMLTablePartElement( tagName, document )
+    , m_rowSpan( 1 )
+    , m_colSpan( 1 )
 {
 }
 
-PassRefPtr<HTMLTableCellElement> HTMLTableCellElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<HTMLTableCellElement> HTMLTableCellElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new HTMLTableCellElement(tagName, document));
+    return adoptRef( new HTMLTableCellElement( tagName, document ) );
 }
 
 int HTMLTableCellElement::cellIndex() const
 {
     int index = 0;
-    for (const Node * node = previousSibling(); node; node = node->previousSibling()) {
-        if (node->hasTagName(tdTag) || node->hasTagName(thTag))
+
+    for ( const Node *node = previousSibling(); node; node = node->previousSibling() )
+    {
+        if ( node->hasTagName( tdTag ) || node->hasTagName( thTag ) )
+        {
             index++;
+        }
     }
-    
+
     return index;
 }
 
-bool HTMLTableCellElement::mapToEntry(const QualifiedName& attrName, MappedAttributeEntry& result) const
+bool HTMLTableCellElement::mapToEntry( const QualifiedName &attrName, MappedAttributeEntry &result ) const
 {
-    if (attrName == nowrapAttr) {
+    if ( attrName == nowrapAttr )
+    {
         result = eUniversal;
         return false;
     }
-    
-    if (attrName == widthAttr ||
-        attrName == heightAttr) {
+
+    if ( attrName == widthAttr ||
+            attrName == heightAttr )
+    {
         result = eCell; // Because of the quirky behavior of ignoring 0 values, cells are special.
         return false;
     }
 
-    return HTMLTablePartElement::mapToEntry(attrName, result);
+    return HTMLTablePartElement::mapToEntry( attrName, result );
 }
 
-void HTMLTableCellElement::parseMappedAttribute(Attribute* attr)
+void HTMLTableCellElement::parseMappedAttribute( Attribute *attr )
 {
-    if (attr->name() == rowspanAttr) {
-        m_rowSpan = max(1, min(attr->value().toInt(), maxRowspan));
-        if (renderer() && renderer()->isTableCell())
-            toRenderTableCell(renderer())->updateFromElement();
-    } else if (attr->name() == colspanAttr) {
-        m_colSpan = max(1, attr->value().toInt());
-        if (renderer() && renderer()->isTableCell())
-            toRenderTableCell(renderer())->updateFromElement();
-    } else if (attr->name() == nowrapAttr) {
-        if (!attr->isNull())
-            addCSSProperty(attr, CSSPropertyWhiteSpace, CSSValueWebkitNowrap);
-    } else if (attr->name() == widthAttr) {
-        if (!attr->value().isEmpty()) {
+    if ( attr->name() == rowspanAttr )
+    {
+        m_rowSpan = max( 1, min( attr->value().toInt(), maxRowspan ) );
+
+        if ( renderer() && renderer()->isTableCell() )
+        {
+            toRenderTableCell( renderer() )->updateFromElement();
+        }
+    }
+    else if ( attr->name() == colspanAttr )
+    {
+        m_colSpan = max( 1, attr->value().toInt() );
+
+        if ( renderer() && renderer()->isTableCell() )
+        {
+            toRenderTableCell( renderer() )->updateFromElement();
+        }
+    }
+    else if ( attr->name() == nowrapAttr )
+    {
+        if ( !attr->isNull() )
+        {
+            addCSSProperty( attr, CSSPropertyWhiteSpace, CSSValueWebkitNowrap );
+        }
+    }
+    else if ( attr->name() == widthAttr )
+    {
+        if ( !attr->value().isEmpty() )
+        {
             int widthInt = attr->value().toInt();
-            if (widthInt > 0) // width="0" is ignored for compatibility with WinIE.
-                addCSSLength(attr, CSSPropertyWidth, attr->value());
+
+            if ( widthInt > 0 ) // width="0" is ignored for compatibility with WinIE.
+            {
+                addCSSLength( attr, CSSPropertyWidth, attr->value() );
+            }
         }
-    } else if (attr->name() == heightAttr) {
-        if (!attr->value().isEmpty()) {
+    }
+    else if ( attr->name() == heightAttr )
+    {
+        if ( !attr->value().isEmpty() )
+        {
             int heightInt = attr->value().toInt();
-            if (heightInt > 0) // height="0" is ignored for compatibility with WinIE.
-                addCSSLength(attr, CSSPropertyHeight, attr->value());
+
+            if ( heightInt > 0 ) // height="0" is ignored for compatibility with WinIE.
+            {
+                addCSSLength( attr, CSSPropertyHeight, attr->value() );
+            }
         }
-    } else
-        HTMLTablePartElement::parseMappedAttribute(attr);
+    }
+    else
+    {
+        HTMLTablePartElement::parseMappedAttribute( attr );
+    }
 }
 
 // used by table cells to share style decls created by the enclosing table.
-void HTMLTableCellElement::additionalAttributeStyleDecls(Vector<CSSMutableStyleDeclaration*>& results)
+void HTMLTableCellElement::additionalAttributeStyleDecls( Vector<CSSMutableStyleDeclaration *> &results )
 {
-    ContainerNode* p = parentNode();
-    while (p && !p->hasTagName(tableTag))
+    ContainerNode *p = parentNode();
+
+    while ( p && !p->hasTagName( tableTag ) )
+    {
         p = p->parentNode();
-    if (!p)
+    }
+
+    if ( !p )
+    {
         return;
-    static_cast<HTMLTableElement*>(p)->addSharedCellDecls(results);
+    }
+
+    static_cast<HTMLTableElement *>( p )->addSharedCellDecls( results );
 }
 
-bool HTMLTableCellElement::isURLAttribute(Attribute *attr) const
+bool HTMLTableCellElement::isURLAttribute( Attribute *attr ) const
 {
     return attr->name() == backgroundAttr;
 }
 
 String HTMLTableCellElement::abbr() const
 {
-    return getAttribute(abbrAttr);
+    return getAttribute( abbrAttr );
 }
 
 String HTMLTableCellElement::axis() const
 {
-    return getAttribute(axisAttr);
+    return getAttribute( axisAttr );
 }
 
-void HTMLTableCellElement::setColSpan(int n)
+void HTMLTableCellElement::setColSpan( int n )
 {
-    setAttribute(colspanAttr, String::number(n));
+    setAttribute( colspanAttr, String::number( n ) );
 }
 
 String HTMLTableCellElement::headers() const
 {
-    return getAttribute(headersAttr);
+    return getAttribute( headersAttr );
 }
 
-void HTMLTableCellElement::setRowSpan(int n)
+void HTMLTableCellElement::setRowSpan( int n )
 {
-    setAttribute(rowspanAttr, String::number(n));
+    setAttribute( rowspanAttr, String::number( n ) );
 }
 
 String HTMLTableCellElement::scope() const
 {
-    return getAttribute(scopeAttr);
+    return getAttribute( scopeAttr );
 }
 
-void HTMLTableCellElement::addSubresourceAttributeURLs(ListHashSet<KURL>& urls) const
+void HTMLTableCellElement::addSubresourceAttributeURLs( ListHashSet<KURL> &urls ) const
 {
-    HTMLTablePartElement::addSubresourceAttributeURLs(urls);
+    HTMLTablePartElement::addSubresourceAttributeURLs( urls );
 
-    addSubresourceURL(urls, document()->completeURL(getAttribute(backgroundAttr)));
+    addSubresourceURL( urls, document()->completeURL( getAttribute( backgroundAttr ) ) );
 }
 
-HTMLTableCellElement* HTMLTableCellElement::cellAbove() const
+HTMLTableCellElement *HTMLTableCellElement::cellAbove() const
 {
-    RenderObject* cellRenderer = renderer();
-    if (!cellRenderer)
-        return 0;
-    if (!cellRenderer->isTableCell())
-        return 0;
+    RenderObject *cellRenderer = renderer();
 
-    RenderTableCell* tableCellRenderer = toRenderTableCell(cellRenderer);
-    RenderTableCell* cellAboveRenderer = tableCellRenderer->table()->cellAbove(tableCellRenderer);
-    if (!cellAboveRenderer)
+    if ( !cellRenderer )
+    {
         return 0;
+    }
 
-    return static_cast<HTMLTableCellElement*>(cellAboveRenderer->node());
+    if ( !cellRenderer->isTableCell() )
+    {
+        return 0;
+    }
+
+    RenderTableCell *tableCellRenderer = toRenderTableCell( cellRenderer );
+    RenderTableCell *cellAboveRenderer = tableCellRenderer->table()->cellAbove( tableCellRenderer );
+
+    if ( !cellAboveRenderer )
+    {
+        return 0;
+    }
+
+    return static_cast<HTMLTableCellElement *>( cellAboveRenderer->node() );
 }
 
 } // namespace WebCore

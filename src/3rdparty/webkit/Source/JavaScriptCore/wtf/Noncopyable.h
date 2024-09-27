@@ -22,11 +22,11 @@
 #define WTF_Noncopyable_h
 
 #ifndef __has_feature
-    #define __has_feature(x) 0
+#define __has_feature(x) 0
 #endif
 
 #if __has_feature(cxx_deleted_functions)
-    #define WTF_MAKE_NONCOPYABLE(ClassName) \
+#define WTF_MAKE_NONCOPYABLE(ClassName) \
         _Pragma("clang diagnostic push") \
         _Pragma("clang diagnostic ignored \"-Wunknown-pragmas\"") \
         _Pragma("clang diagnostic ignored \"-Wc++0x-extensions\"") \
@@ -35,7 +35,7 @@
             ClassName& operator=(const ClassName&) = delete; \
         _Pragma("clang diagnostic pop")
 #else
-    #define WTF_MAKE_NONCOPYABLE(ClassName) \
+#define WTF_MAKE_NONCOPYABLE(ClassName) \
         private: \
             ClassName(const ClassName&); \
             ClassName& operator=(const ClassName&)

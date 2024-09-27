@@ -33,35 +33,38 @@
 
 static QFactoryLoader *loader()
 {
-   static QFactoryLoader retval(QPlatformThemeInterface_ID, "/platformthemes", Qt::CaseInsensitive);
-   return &retval;
+    static QFactoryLoader retval( QPlatformThemeInterface_ID, "/platformthemes", Qt::CaseInsensitive );
+    return &retval;
 }
 
 static QFactoryLoader *directLoader()
 {
-   static QFactoryLoader retval(QPlatformThemeInterface_ID, "", Qt::CaseInsensitive);
-   return &retval;
+    static QFactoryLoader retval( QPlatformThemeInterface_ID, "", Qt::CaseInsensitive );
+    return &retval;
 }
 
-QPlatformTheme *QPlatformThemeFactory::create(const QString &key, const QString &platformPluginPath)
+QPlatformTheme *QPlatformThemeFactory::create( const QString &key, const QString &platformPluginPath )
 {
-   QStringList paramList = key.split(':');
-   const QString platform = paramList.takeFirst().toLower();
+    QStringList paramList = key.split( ':' );
+    const QString platform = paramList.takeFirst().toLower();
 
-   // Try loading the plugin from platformPluginPath first:
-   if (! platformPluginPath.isEmpty()) {
-      QCoreApplication::addLibraryPath(platformPluginPath);
+    // Try loading the plugin from platformPluginPath first:
+    if ( ! platformPluginPath.isEmpty() )
+    {
+        QCoreApplication::addLibraryPath( platformPluginPath );
 
-      if (QPlatformTheme *ret = cs_load_plugin<QPlatformTheme, QPlatformThemePlugin>(directLoader(), platform, paramList)) {
-         return ret;
-      }
-   }
+        if ( QPlatformTheme *ret = cs_load_plugin<QPlatformTheme, QPlatformThemePlugin>( directLoader(), platform, paramList ) )
+        {
+            return ret;
+        }
+    }
 
-   if (QPlatformTheme *ret = cs_load_plugin<QPlatformTheme, QPlatformThemePlugin>(loader(), platform, paramList)) {
-      return ret;
-   }
+    if ( QPlatformTheme *ret = cs_load_plugin<QPlatformTheme, QPlatformThemePlugin>( loader(), platform, paramList ) )
+    {
+        return ret;
+    }
 
-   return nullptr;
+    return nullptr;
 }
 
 /*!
@@ -70,29 +73,32 @@ QPlatformTheme *QPlatformThemeFactory::create(const QString &key, const QString 
 
     \sa create()
 */
-QStringList QPlatformThemeFactory::keys(const QString &platformPluginPath)
+QStringList QPlatformThemeFactory::keys( const QString &platformPluginPath )
 {
-   QStringList list;
+    QStringList list;
 
-   if (! platformPluginPath.isEmpty()) {
-      QCoreApplication::addLibraryPath(platformPluginPath);
+    if ( ! platformPluginPath.isEmpty() )
+    {
+        QCoreApplication::addLibraryPath( platformPluginPath );
 
-      auto keySet = directLoader()->keySet();
-      list.append(keySet.toList());
+        auto keySet = directLoader()->keySet();
+        list.append( keySet.toList() );
 
-      if (! list.isEmpty()) {
-         const QString postFix = " (from " + QDir::toNativeSeparators(platformPluginPath) + ')';
+        if ( ! list.isEmpty() )
+        {
+            const QString postFix = " (from " + QDir::toNativeSeparators( platformPluginPath ) + ')';
 
-         for (auto &tmp : list) {
-            tmp.append(postFix);
-         }
-      }
-   }
+            for ( auto &tmp : list )
+            {
+                tmp.append( postFix );
+            }
+        }
+    }
 
-   auto keySet = loader()->keySet();
-   list.append(keySet.toList());
+    auto keySet = loader()->keySet();
+    list.append( keySet.toList() );
 
-   return list;
+    return list;
 
 }
 

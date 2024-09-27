@@ -23,19 +23,21 @@
 
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Element;
 
-class OptionGroupElement {
+class OptionGroupElement
+{
 public:
     virtual ~OptionGroupElement() { }
 
     virtual String groupLabelText() const = 0;
 };
 
-OptionGroupElement* toOptionGroupElement(Element*);
-bool isOptionGroupElement(Element*);
+OptionGroupElement *toOptionGroupElement( Element * );
+bool isOptionGroupElement( Element * );
 
 }
 

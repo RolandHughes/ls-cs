@@ -30,46 +30,56 @@
 #include <wtf/HashSet.h>
 #include <wtf/StaticConstructors.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-typedef HashSet<QualifiedName::QualifiedNameImpl*, QualifiedNameHash> QNameSet;
+typedef HashSet<QualifiedName::QualifiedNameImpl *, QualifiedNameHash> QNameSet;
 
-struct QNameComponentsTranslator {
-    static unsigned hash(const QualifiedNameComponents& components)
+struct QNameComponentsTranslator
+{
+    static unsigned hash( const QualifiedNameComponents &components )
     {
-        return hashComponents(components); 
+        return hashComponents( components );
     }
-    static bool equal(QualifiedName::QualifiedNameImpl* name, const QualifiedNameComponents& c)
+    static bool equal( QualifiedName::QualifiedNameImpl *name, const QualifiedNameComponents &c )
     {
-        return c.m_prefix == name->m_prefix.impl() && c.m_localName == name->m_localName.impl() && c.m_namespace == name->m_namespace.impl();
+        return c.m_prefix == name->m_prefix.impl() && c.m_localName == name->m_localName.impl()
+               && c.m_namespace == name->m_namespace.impl();
     }
-    static void translate(QualifiedName::QualifiedNameImpl*& location, const QualifiedNameComponents& components, unsigned)
+    static void translate( QualifiedName::QualifiedNameImpl *&location, const QualifiedNameComponents &components, unsigned )
     {
-        location = QualifiedName::QualifiedNameImpl::create(components.m_prefix, components.m_localName, components.m_namespace).releaseRef();
+        location = QualifiedName::QualifiedNameImpl::create( components.m_prefix, components.m_localName,
+                   components.m_namespace ).releaseRef();
     }
 };
 
-static QNameSet* gNameCache;
+static QNameSet *gNameCache;
 
-void QualifiedName::init(const AtomicString& p, const AtomicString& l, const AtomicString& n)
+void QualifiedName::init( const AtomicString &p, const AtomicString &l, const AtomicString &n )
 {
-    if (!gNameCache)
+    if ( !gNameCache )
+    {
         gNameCache = new QNameSet;
+    }
+
     QualifiedNameComponents components = { p.impl(), l.impl(), n.isEmpty() ? nullAtom.impl() : n.impl() };
-    pair<QNameSet::iterator, bool> addResult = gNameCache->add<QualifiedNameComponents, QNameComponentsTranslator>(components);
-    m_impl = *addResult.first;    
-    if (!addResult.second)
+    pair<QNameSet::iterator, bool> addResult = gNameCache->add<QualifiedNameComponents, QNameComponentsTranslator>( components );
+    m_impl = *addResult.first;
+
+    if ( !addResult.second )
+    {
         m_impl->ref();
+    }
 }
 
-QualifiedName::QualifiedName(const AtomicString& p, const AtomicString& l, const AtomicString& n)
+QualifiedName::QualifiedName( const AtomicString &p, const AtomicString &l, const AtomicString &n )
 {
-    init(p, l, n);
+    init( p, l, n );
 }
 
-QualifiedName::QualifiedName(const AtomicString& p, const char* l, const AtomicString& n)
+QualifiedName::QualifiedName( const AtomicString &p, const char *l, const AtomicString &n )
 {
-    init(p, AtomicString(l), n);
+    init( p, AtomicString( l ), n );
 }
 
 QualifiedName::~QualifiedName()
@@ -80,47 +90,62 @@ QualifiedName::~QualifiedName()
 void QualifiedName::deref()
 {
 #ifdef QNAME_DEFAULT_CONSTRUCTOR
-    if (!m_impl)
-        return;
-#endif
-    ASSERT(!isHashTableDeletedValue());
 
-    if (m_impl->hasOneRef())
-        gNameCache->remove(m_impl);
+    if ( !m_impl )
+    {
+        return;
+    }
+
+#endif
+    ASSERT( !isHashTableDeletedValue() );
+
+    if ( m_impl->hasOneRef() )
+    {
+        gNameCache->remove( m_impl );
+    }
+
     m_impl->deref();
 }
 
 String QualifiedName::toString() const
 {
     String local = localName();
-    if (hasPrefix()) {
+
+    if ( hasPrefix() )
+    {
         String result = prefix().string();
-        result.append(":");
-        result.append(local);
+        result.append( ":" );
+        result.append( local );
         return result;
     }
+
     return local;
 }
 
 // Global init routines
-DEFINE_GLOBAL(QualifiedName, anyName, nullAtom, starAtom, starAtom)
+DEFINE_GLOBAL( QualifiedName, anyName, nullAtom, starAtom, starAtom )
 
 void QualifiedName::init()
 {
     static bool initialized;
-    if (!initialized) {
+
+    if ( !initialized )
+    {
         // Use placement new to initialize the globals.
-        
+
         AtomicString::init();
-        new ((void*)&anyName) QualifiedName(nullAtom, starAtom, starAtom);
+        new ( ( void * )&anyName ) QualifiedName( nullAtom, starAtom, starAtom );
         initialized = true;
     }
 }
 
-const AtomicString& QualifiedName::localNameUpper() const
+const AtomicString &QualifiedName::localNameUpper() const
 {
-    if (!m_impl->m_localNameUpper)
+    if ( !m_impl->m_localNameUpper )
+    {
         m_impl->m_localNameUpper = m_impl->m_localName.upper();
+    }
+
     return m_impl->m_localNameUpper;
 }
 

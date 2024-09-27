@@ -33,153 +33,167 @@
 
 #include <qlockfile_p.h>
 
-QLockFile::QLockFile(const QString &fileName)
-   : d_ptr(new QLockFilePrivate(fileName))
+QLockFile::QLockFile( const QString &fileName )
+    : d_ptr( new QLockFilePrivate( fileName ) )
 {
 }
 
 QLockFile::~QLockFile()
 {
-   unlock();
+    unlock();
 }
 
-void QLockFile::setStaleLockTime(int staleLockTime)
+void QLockFile::setStaleLockTime( int staleLockTime )
 {
-   Q_D(QLockFile);
-   d->staleLockTime = staleLockTime;
+    Q_D( QLockFile );
+    d->staleLockTime = staleLockTime;
 }
 
 int QLockFile::staleLockTime() const
 {
-   Q_D(const QLockFile);
-   return d->staleLockTime;
+    Q_D( const QLockFile );
+    return d->staleLockTime;
 }
 
 bool QLockFile::isLocked() const
 {
-   Q_D(const QLockFile);
-   return d->isLocked;
+    Q_D( const QLockFile );
+    return d->isLocked;
 }
 
 bool QLockFile::lock()
 {
-   return tryLock(-1);
+    return tryLock( -1 );
 }
 
-bool QLockFile::tryLock(int timeout)
+bool QLockFile::tryLock( int timeout )
 {
-   Q_D(QLockFile);
+    Q_D( QLockFile );
 
-   QElapsedTimer timer;
+    QElapsedTimer timer;
 
-   if (timeout > 0) {
-      timer.start();
-   }
+    if ( timeout > 0 )
+    {
+        timer.start();
+    }
 
-   int sleepTime = 100;
+    int sleepTime = 100;
 
-   while (true) {
-      d->lockError = d->tryLock_sys();
+    while ( true )
+    {
+        d->lockError = d->tryLock_sys();
 
-      switch (d->lockError) {
-         case NoError:
-            d->isLocked = true;
-            return true;
+        switch ( d->lockError )
+        {
+            case NoError:
+                d->isLocked = true;
+                return true;
 
-         case PermissionError:
-         case UnknownError:
+            case PermissionError:
+            case UnknownError:
+                return false;
+
+            case LockFailedError:
+                if ( ! d->isLocked && d->isApparentlyStale() )
+                {
+                    // Stale lock from another thread/process
+                    // Ensure two processes don't remove it at the same time
+
+                    QLockFile rmlock( d->fileName + ".rmlock" );
+
+                    if ( rmlock.tryLock() )
+                    {
+                        if ( d->isApparentlyStale() && d->removeStaleLock() )
+                        {
+                            continue;
+                        }
+                    }
+                }
+
+                break;
+        }
+
+        if ( timeout == 0 || ( timeout > 0 && timer.hasExpired( timeout ) ) )
+        {
             return false;
+        }
 
-         case LockFailedError:
-            if (! d->isLocked && d->isApparentlyStale()) {
-               // Stale lock from another thread/process
-               // Ensure two processes don't remove it at the same time
+        QThread::msleep( sleepTime );
 
-               QLockFile rmlock(d->fileName + ".rmlock");
+        if ( sleepTime < 5 * 1000 )
+        {
+            sleepTime *= 2;
+        }
+    }
 
-               if (rmlock.tryLock()) {
-                  if (d->isApparentlyStale() && d->removeStaleLock()) {
-                     continue;
-                  }
-               }
-            }
-
-            break;
-      }
-
-      if (timeout == 0 || (timeout > 0 && timer.hasExpired(timeout))) {
-         return false;
-      }
-
-      QThread::msleep(sleepTime);
-
-      if (sleepTime < 5 * 1000) {
-         sleepTime *= 2;
-      }
-   }
-
-   // not reached
-   return false;
+    // not reached
+    return false;
 }
 
-bool QLockFile::getLockInfo(qint64 *pid, QString *hostname, QString *appname) const
+bool QLockFile::getLockInfo( qint64 *pid, QString *hostname, QString *appname ) const
 {
-   Q_D(const QLockFile);
-   return d->getLockInfo(pid, hostname, appname);
+    Q_D( const QLockFile );
+    return d->getLockInfo( pid, hostname, appname );
 }
 
-bool QLockFilePrivate::getLockInfo(qint64 *pid, QString *hostname, QString *appname) const
+bool QLockFilePrivate::getLockInfo( qint64 *pid, QString *hostname, QString *appname ) const
 {
-   QFile reader(fileName);
+    QFile reader( fileName );
 
-   if (! reader.open(QIODevice::ReadOnly)) {
-      return false;
-   }
+    if ( ! reader.open( QIODevice::ReadOnly ) )
+    {
+        return false;
+    }
 
-   QByteArray pidLine = reader.readLine();
-   pidLine.chop(1);
+    QByteArray pidLine = reader.readLine();
+    pidLine.chop( 1 );
 
-   QByteArray appNameLine = reader.readLine();
-   appNameLine.chop(1);
+    QByteArray appNameLine = reader.readLine();
+    appNameLine.chop( 1 );
 
-   QByteArray hostNameLine = reader.readLine();
-   hostNameLine.chop(1);
+    QByteArray hostNameLine = reader.readLine();
+    hostNameLine.chop( 1 );
 
-   if (pidLine.isEmpty()) {
-      return false;
-   }
+    if ( pidLine.isEmpty() )
+    {
+        return false;
+    }
 
-   qint64 thePid = pidLine.toLongLong();
+    qint64 thePid = pidLine.toLongLong();
 
-   if (pid) {
-      *pid = thePid;
-   }
+    if ( pid )
+    {
+        *pid = thePid;
+    }
 
-   if (appname) {
-      *appname = QString::fromUtf8(appNameLine);
-   }
+    if ( appname )
+    {
+        *appname = QString::fromUtf8( appNameLine );
+    }
 
-   if (hostname) {
-      *hostname = QString::fromUtf8(hostNameLine);
-   }
+    if ( hostname )
+    {
+        *hostname = QString::fromUtf8( hostNameLine );
+    }
 
-   return thePid > 0;
+    return thePid > 0;
 }
 
 bool QLockFile::removeStaleLockFile()
 {
-   Q_D(QLockFile);
+    Q_D( QLockFile );
 
-   if (d->isLocked) {
-      qWarning("QLockFile::removeStaleLockFile() File must not be locked");
-      return false;
-   }
+    if ( d->isLocked )
+    {
+        qWarning( "QLockFile::removeStaleLockFile() File must not be locked" );
+        return false;
+    }
 
-   return d->removeStaleLock();
+    return d->removeStaleLock();
 }
 
 QLockFile::LockError QLockFile::error() const
 {
-   Q_D(const QLockFile);
-   return d->lockError;
+    Q_D( const QLockFile );
+    return d->lockError;
 }

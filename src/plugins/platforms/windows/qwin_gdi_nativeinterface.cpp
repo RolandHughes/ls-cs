@@ -25,22 +25,24 @@
 #include <qwin_backingstore.h>
 #include <qbackingstore.h>
 
-void *QWindowsGdiNativeInterface::nativeResourceForBackingStore(const QByteArray &resource, QBackingStore *bs)
+void *QWindowsGdiNativeInterface::nativeResourceForBackingStore( const QByteArray &resource, QBackingStore *bs )
 {
-   if (! bs || ! bs->handle()) {
-      qWarning("QWindowsGdiNativeInterface::nativeResourceForBackingStore() Requested resource %s "
-            "for null backingstore or backingstore without handle", resource.constData());
-      return nullptr;
-   }
+    if ( ! bs || ! bs->handle() )
+    {
+        qWarning( "QWindowsGdiNativeInterface::nativeResourceForBackingStore() Requested resource %s "
+                  "for null backingstore or backingstore without handle", resource.constData() );
+        return nullptr;
+    }
 
-   QWindowsBackingStore *wbs = static_cast<QWindowsBackingStore *>(bs->handle());
+    QWindowsBackingStore *wbs = static_cast<QWindowsBackingStore *>( bs->handle() );
 
-   if (resource == "getDC") {
-      return wbs->getDC();
-   }
+    if ( resource == "getDC" )
+    {
+        return wbs->getDC();
+    }
 
-   qWarning("QWindowsGdiNativeInterface::nativeResourceForBackingStore() Invalid key %s requested", resource.constData());
+    qWarning( "QWindowsGdiNativeInterface::nativeResourceForBackingStore() Invalid key %s requested", resource.constData() );
 
-   return nullptr;
+    return nullptr;
 }
 

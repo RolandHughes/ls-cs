@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef DFGRegisterBank_h
@@ -30,7 +30,10 @@
 
 #include <dfg/DFGNode.h>
 
-namespace JSC { namespace DFG {
+namespace JSC
+{
+namespace DFG
+{
 
 // === RegisterBank ===
 //
@@ -66,7 +69,8 @@ namespace JSC { namespace DFG {
 // All named values must be given a hint that is greater than Min and
 // less than Max.
 template<class BankInfo>
-class RegisterBank {
+class RegisterBank
+{
     typedef typename BankInfo::RegisterType RegID;
     static const size_t NUM_REGS = BankInfo::numberOfRegisters;
 
@@ -75,7 +79,7 @@ class RegisterBank {
 
 public:
     RegisterBank()
-        : m_lastAllocated(NUM_REGS - 1)
+        : m_lastAllocated( NUM_REGS - 1 )
     {
     }
 
@@ -90,13 +94,13 @@ public:
     // This method select the register to be allocated, and calls the
     // private 'allocateInternal' method to update internal data
     // structures accordingly.
-    RegID allocate(VirtualRegister &spillMe)
+    RegID allocate( VirtualRegister &spillMe )
     {
         uint32_t currentLowest = NUM_REGS;
         SpillHint currentSpillOrder = SpillHintInvalid;
 
         // Scan through all register, starting at the last allocated & looping around.
-        ASSERT(m_lastAllocated < NUM_REGS);
+        ASSERT( m_lastAllocated < NUM_REGS );
 
         // This loop is broken into two halves, looping from the last allocated
         // register (the register returned last time this method was called) to
@@ -105,147 +109,173 @@ public:
         // thrash, and minimize time spent scanning locked registers in allocation.
         // If a unlocked and unnamed register is found return it immediately.
         // Otherwise, find the first unlocked register with the lowest spillOrder.
-        for (uint32_t i = m_lastAllocated + 1; i < NUM_REGS; ++i) {
+        for ( uint32_t i = m_lastAllocated + 1; i < NUM_REGS; ++i )
+        {
             // (1) If the current register is locked, it is not a candidate.
-            if (m_data[i].lockCount)
+            if ( m_data[i].lockCount )
+            {
                 continue;
+            }
+
             // (2) If the current register's spill order is 0, pick this! – unassigned registers have spill order 0.
             SpillHint spillOrder = m_data[i].spillOrder;
-            if (spillOrder == SpillHintInvalid)
-                return allocateInternal(i, spillMe);
+
+            if ( spillOrder == SpillHintInvalid )
+            {
+                return allocateInternal( i, spillMe );
+            }
+
             // If this register is better (has a lower spill order value) than any prior
             // candidate, then record it.
-            if (spillOrder < currentSpillOrder) {
+            if ( spillOrder < currentSpillOrder )
+            {
                 currentSpillOrder = spillOrder;
                 currentLowest = i;
             }
         }
+
         // Loop over the remaining entries.
-        for (uint32_t i = 0; i <= m_lastAllocated; ++i) {
-            if (m_data[i].lockCount)
+        for ( uint32_t i = 0; i <= m_lastAllocated; ++i )
+        {
+            if ( m_data[i].lockCount )
+            {
                 continue;
+            }
+
             SpillHint spillOrder = m_data[i].spillOrder;
-            if (spillOrder == SpillHintInvalid)
-                return allocateInternal(i, spillMe);
-            if (spillOrder < currentSpillOrder) {
+
+            if ( spillOrder == SpillHintInvalid )
+            {
+                return allocateInternal( i, spillMe );
+            }
+
+            if ( spillOrder < currentSpillOrder )
+            {
                 currentSpillOrder = spillOrder;
                 currentLowest = i;
             }
         }
 
         // Deadlock check - this could only occur is all registers are locked!
-        ASSERT(currentLowest != NUM_REGS && currentSpillOrder != SpillHintInvalid);
+        ASSERT( currentLowest != NUM_REGS && currentSpillOrder != SpillHintInvalid );
         // There were no available registers; currentLowest will need to be spilled.
-        return allocateInternal(currentLowest, spillMe);
+        return allocateInternal( currentLowest, spillMe );
     }
 
     // retain/release - these methods are used to associate/disassociate names
     // with values in registers. retain should only be called on locked registers.
-    void retain(RegID reg, VirtualRegister name, SpillHint spillOrder)
+    void retain( RegID reg, VirtualRegister name, SpillHint spillOrder )
     {
-        unsigned index = BankInfo::toIndex(reg);
+        unsigned index = BankInfo::toIndex( reg );
 
         // SpillHint must be valid.
-        ASSERT(spillOrder != SpillHintInvalid);
+        ASSERT( spillOrder != SpillHintInvalid );
         // 'index' must be a valid, locked register.
-        ASSERT(index < NUM_REGS);
-        ASSERT(m_data[index].lockCount);
+        ASSERT( index < NUM_REGS );
+        ASSERT( m_data[index].lockCount );
         // 'index' should not currently be named, the new name must be valid.
-        ASSERT(m_data[index].name == InvalidVirtualRegister);
-        ASSERT(name != InvalidVirtualRegister);
+        ASSERT( m_data[index].name == InvalidVirtualRegister );
+        ASSERT( name != InvalidVirtualRegister );
         // 'index' should not currently have a spillOrder.
-        ASSERT(m_data[index].spillOrder == SpillHintInvalid);
+        ASSERT( m_data[index].spillOrder == SpillHintInvalid );
 
         m_data[index].name = name;
         m_data[index].spillOrder = spillOrder;
     }
-    void release(RegID reg)
+    void release( RegID reg )
     {
-        releaseAtIndex(BankInfo::toIndex(reg));
+        releaseAtIndex( BankInfo::toIndex( reg ) );
     }
 
     // lock/unlock register, ensures that they are not spilled.
-    void lock(RegID reg)
+    void lock( RegID reg )
     {
-        unsigned index = BankInfo::toIndex(reg);
+        unsigned index = BankInfo::toIndex( reg );
 
-        ASSERT(index < NUM_REGS);
+        ASSERT( index < NUM_REGS );
         ++m_data[index].lockCount;
-        ASSERT(m_data[index].lockCount);
+        ASSERT( m_data[index].lockCount );
     }
-    void unlock(RegID reg)
+    void unlock( RegID reg )
     {
-        unsigned index = BankInfo::toIndex(reg);
+        unsigned index = BankInfo::toIndex( reg );
 
-        ASSERT(index < NUM_REGS);
-        ASSERT(m_data[index].lockCount);
+        ASSERT( index < NUM_REGS );
+        ASSERT( m_data[index].lockCount );
         --m_data[index].lockCount;
     }
-    bool isLocked(RegID reg) const
+    bool isLocked( RegID reg ) const
     {
-        return isLockedAtIndex(BankInfo::toIndex(reg));
+        return isLockedAtIndex( BankInfo::toIndex( reg ) );
     }
 
     // Get the name (VirtualRegister) associated with the
     // given register (or InvalidVirtualRegister for none).
-    VirtualRegister name(RegID reg) const
+    VirtualRegister name( RegID reg ) const
     {
-        return nameAtIndex(BankInfo::toIndex(reg));
+        return nameAtIndex( BankInfo::toIndex( reg ) );
     }
-    
+
 #ifndef NDEBUG
     void dump()
     {
         // For each register, print the VirtualRegister 'name'.
-        for (uint32_t i =0; i < NUM_REGS; ++i) {
-            if (m_data[i].name != InvalidVirtualRegister)
-                fprintf(stderr, "[%02d]", m_data[i].name);
+        for ( uint32_t i =0; i < NUM_REGS; ++i )
+        {
+            if ( m_data[i].name != InvalidVirtualRegister )
+            {
+                fprintf( stderr, "[%02d]", m_data[i].name );
+            }
             else
-                fprintf(stderr, "[--]");
+            {
+                fprintf( stderr, "[--]" );
+            }
         }
-        fprintf(stderr, "\n");
+
+        fprintf( stderr, "\n" );
     }
 #endif
 
-    class iterator {
-    friend class RegisterBank<BankInfo>;
+    class iterator
+    {
+        friend class RegisterBank<BankInfo>;
     public:
         VirtualRegister name() const
         {
-            return m_bank->nameAtIndex(m_index);
+            return m_bank->nameAtIndex( m_index );
         }
 
         bool isLocked() const
         {
-            return m_bank->isLockedAtIndex(m_index);
+            return m_bank->isLockedAtIndex( m_index );
         }
 
         void release() const
         {
-            m_bank->releaseAtIndex(m_index);
+            m_bank->releaseAtIndex( m_index );
         }
 
         RegID regID() const
         {
-            return BankInfo::toRegister(m_index);
+            return BankInfo::toRegister( m_index );
         }
 
 #ifndef NDEBUG
-        const char* debugName() const
+        const char *debugName() const
         {
-            return BankInfo::debugName(regID());
+            return BankInfo::debugName( regID() );
         }
 #endif
 
-        iterator& operator++()
+        iterator &operator++()
         {
             ++m_index;
             return *this;
         }
 
-        bool operator!=(const iterator& other) const
+        bool operator!=( const iterator &other ) const
         {
-            ASSERT(m_bank == other.m_bank);
+            ASSERT( m_bank == other.m_bank );
             return m_index != other.m_index;
         }
 
@@ -255,57 +285,57 @@ public:
         }
 
     private:
-        iterator(RegisterBank<BankInfo>* bank, unsigned index)
-            : m_bank(bank)
-            , m_index(index)
+        iterator( RegisterBank<BankInfo> *bank, unsigned index )
+            : m_bank( bank )
+            , m_index( index )
         {
         }
 
-        RegisterBank<BankInfo>* m_bank;
+        RegisterBank<BankInfo> *m_bank;
         unsigned m_index;
     };
 
     iterator begin()
     {
-        return iterator(this, 0);
+        return iterator( this, 0 );
     }
 
     iterator end()
     {
-        return iterator(this, NUM_REGS);
+        return iterator( this, NUM_REGS );
     }
 
 private:
-    bool isLockedAtIndex(unsigned index) const
+    bool isLockedAtIndex( unsigned index ) const
     {
-        ASSERT(index < NUM_REGS);
+        ASSERT( index < NUM_REGS );
         return m_data[index].lockCount;
     }
 
-    VirtualRegister nameAtIndex(unsigned index) const
+    VirtualRegister nameAtIndex( unsigned index ) const
     {
-        ASSERT(index < NUM_REGS);
+        ASSERT( index < NUM_REGS );
         return m_data[index].name;
     }
 
-    void releaseAtIndex(unsigned index)
+    void releaseAtIndex( unsigned index )
     {
         // 'index' must be a valid register.
-        ASSERT(index < NUM_REGS);
+        ASSERT( index < NUM_REGS );
         // 'index' should currently be named.
-        ASSERT(m_data[index].name != InvalidVirtualRegister);
+        ASSERT( m_data[index].name != InvalidVirtualRegister );
         // 'index' should currently have a valid spill order.
-        ASSERT(m_data[index].spillOrder != SpillHintInvalid);
+        ASSERT( m_data[index].spillOrder != SpillHintInvalid );
 
         m_data[index].name = InvalidVirtualRegister;
         m_data[index].spillOrder = SpillHintInvalid;
     }
 
     // Used by 'allocate', above, to update inforamtion in the map.
-    RegID allocateInternal(uint32_t i, VirtualRegister &spillMe)
+    RegID allocateInternal( uint32_t i, VirtualRegister &spillMe )
     {
         // 'i' must be a valid, unlocked register.
-        ASSERT(i < NUM_REGS && !m_data[i].lockCount);
+        ASSERT( i < NUM_REGS && !m_data[i].lockCount );
 
         // Return the VirtualRegister of the named value currently stored in
         // the register being returned - or InvalidVirtualRegister if none.
@@ -317,7 +347,7 @@ private:
         m_data[i].lockCount = 1;
 
         m_lastAllocated = i;
-        return BankInfo::toRegister(i);
+        return BankInfo::toRegister( i );
     }
 
     // === MapEntry ===
@@ -325,11 +355,12 @@ private:
     // This structure provides information for an individual machine register
     // being managed by the RegisterBank. For each register we track a lock
     // count, name and spillOrder hint.
-    struct MapEntry {
+    struct MapEntry
+    {
         MapEntry()
-            : name(InvalidVirtualRegister)
-            , spillOrder(SpillHintInvalid)
-            , lockCount(0)
+            : name( InvalidVirtualRegister )
+            , spillOrder( SpillHintInvalid )
+            , lockCount( 0 )
         {
         }
 
@@ -344,7 +375,8 @@ private:
     uint32_t m_lastAllocated;
 };
 
-} } // namespace JSC::DFG
+}
+} // namespace JSC::DFG
 
 #endif
 #endif

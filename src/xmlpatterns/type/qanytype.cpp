@@ -31,53 +31,56 @@ AnyType::~AnyType()
 {
 }
 
-bool AnyType::wxsTypeMatches(const SchemaType::Ptr &other) const
+bool AnyType::wxsTypeMatches( const SchemaType::Ptr &other ) const
 {
-   if (other) {
-      return this == other.data() ? true : wxsTypeMatches(other->wxsSuperType());
-   } else {
-      return false;
-   }
+    if ( other )
+    {
+        return this == other.data() ? true : wxsTypeMatches( other->wxsSuperType() );
+    }
+    else
+    {
+        return false;
+    }
 }
 
 bool AnyType::isAbstract() const
 {
-   return false;
+    return false;
 }
 
-QXmlName AnyType::name(const NamePool::Ptr &np) const
+QXmlName AnyType::name( const NamePool::Ptr &np ) const
 {
-   return np->allocateQName(StandardNamespaces::xs, QLatin1String("anyType"));
+    return np->allocateQName( StandardNamespaces::xs, QLatin1String( "anyType" ) );
 }
 
-QString AnyType::displayName(const NamePool::Ptr &) const
+QString AnyType::displayName( const NamePool::Ptr & ) const
 {
-   /* A bit faster than calling name()->displayName() */
-   return QLatin1String("xs:anyType");
+    /* A bit faster than calling name()->displayName() */
+    return QLatin1String( "xs:anyType" );
 }
 
 SchemaType::Ptr AnyType::wxsSuperType() const
 {
-   return SchemaType::Ptr();
+    return SchemaType::Ptr();
 }
 
 SchemaType::TypeCategory AnyType::category() const
 {
-   return None;
+    return None;
 }
 
 bool AnyType::isComplexType() const
 {
-   return true;
+    return true;
 }
 
 SchemaType::DerivationMethod AnyType::derivationMethod() const
 {
-   return NoDerivation;
+    return NoDerivation;
 }
 
 SchemaType::DerivationConstraints AnyType::derivationConstraints() const
 {
-   return SchemaType::DerivationConstraints();
+    return SchemaType::DerivationConstraints();
 }
 

@@ -28,45 +28,83 @@
 #include "AudioNode.h"
 #include "RealtimeAnalyser.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class RealtimeAnalyserNode : public AudioNode {
+class RealtimeAnalyserNode : public AudioNode
+{
 public:
-    static PassRefPtr<RealtimeAnalyserNode> create(AudioContext* context, double sampleRate)
+    static PassRefPtr<RealtimeAnalyserNode> create( AudioContext *context, double sampleRate )
     {
-        return adoptRef(new RealtimeAnalyserNode(context, sampleRate));      
+        return adoptRef( new RealtimeAnalyserNode( context, sampleRate ) );
     }
 
     virtual ~RealtimeAnalyserNode();
-    
+
     // AudioNode
-    virtual void process(size_t framesToProcess);
-    virtual void pullInputs(size_t framesToProcess);
+    virtual void process( size_t framesToProcess );
+    virtual void pullInputs( size_t framesToProcess );
     virtual void reset();
 
     // Javascript bindings
-    unsigned int fftSize() const { return m_analyser.fftSize(); }
-    void setFftSize(unsigned int size) { m_analyser.setFftSize(size); }
+    unsigned int fftSize() const
+    {
+        return m_analyser.fftSize();
+    }
+    void setFftSize( unsigned int size )
+    {
+        m_analyser.setFftSize( size );
+    }
 
-    unsigned frequencyBinCount() const { return m_analyser.frequencyBinCount(); }
+    unsigned frequencyBinCount() const
+    {
+        return m_analyser.frequencyBinCount();
+    }
 
-    void setMinDecibels(float k) { m_analyser.setMinDecibels(k); }
-    float minDecibels() const { return m_analyser.minDecibels(); }
+    void setMinDecibels( float k )
+    {
+        m_analyser.setMinDecibels( k );
+    }
+    float minDecibels() const
+    {
+        return m_analyser.minDecibels();
+    }
 
-    void setMaxDecibels(float k) { m_analyser.setMaxDecibels(k); }
-    float maxDecibels() const { return m_analyser.maxDecibels(); }
+    void setMaxDecibels( float k )
+    {
+        m_analyser.setMaxDecibels( k );
+    }
+    float maxDecibels() const
+    {
+        return m_analyser.maxDecibels();
+    }
 
-    void setSmoothingTimeConstant(float k) { m_analyser.setSmoothingTimeConstant(k); }
-    float smoothingTimeConstant() const { return m_analyser.smoothingTimeConstant(); }
+    void setSmoothingTimeConstant( float k )
+    {
+        m_analyser.setSmoothingTimeConstant( k );
+    }
+    float smoothingTimeConstant() const
+    {
+        return m_analyser.smoothingTimeConstant();
+    }
 
 #if ENABLE(WEBGL)
-    void getFloatFrequencyData(Float32Array* array) { m_analyser.getFloatFrequencyData(array); }
-    void getByteFrequencyData(Uint8Array* array) { m_analyser.getByteFrequencyData(array); }
-    void getByteTimeDomainData(Uint8Array* array) { m_analyser.getByteTimeDomainData(array); }
+    void getFloatFrequencyData( Float32Array *array )
+    {
+        m_analyser.getFloatFrequencyData( array );
+    }
+    void getByteFrequencyData( Uint8Array *array )
+    {
+        m_analyser.getByteFrequencyData( array );
+    }
+    void getByteTimeDomainData( Uint8Array *array )
+    {
+        m_analyser.getByteTimeDomainData( array );
+    }
 #endif
 
 private:
-    RealtimeAnalyserNode(AudioContext*, double sampleRate);
+    RealtimeAnalyserNode( AudioContext *, double sampleRate );
 
     RealtimeAnalyser m_analyser;
 };

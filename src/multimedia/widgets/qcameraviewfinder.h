@@ -39,23 +39,23 @@ class QCameraViewfinderPrivate;
 
 class Q_MULTIMEDIA_EXPORT QCameraViewfinder : public QVideoWidget
 {
-   MULTI_CS_OBJECT(QCameraViewfinder)
+    MULTI_CS_OBJECT( QCameraViewfinder )
 
- public:
-   explicit QCameraViewfinder(QWidget *parent = nullptr);
+public:
+    explicit QCameraViewfinder( QWidget *parent = nullptr );
 
-   QCameraViewfinder(const QCameraViewfinder &) = delete;
-   QCameraViewfinder &operator=(const QCameraViewfinder &) = delete;
+    QCameraViewfinder( const QCameraViewfinder & ) = delete;
+    QCameraViewfinder &operator=( const QCameraViewfinder & ) = delete;
 
-   ~QCameraViewfinder();
+    ~QCameraViewfinder();
 
-   QMediaObject *mediaObject() const override;
+    QMediaObject *mediaObject() const override;
 
- protected:
-   bool setMediaObject(QMediaObject *object) override;
+protected:
+    bool setMediaObject( QMediaObject *object ) override;
 
- private:
-   Q_DECLARE_PRIVATE(QCameraViewfinder)
+private:
+    Q_DECLARE_PRIVATE( QCameraViewfinder )
 };
 
 #endif

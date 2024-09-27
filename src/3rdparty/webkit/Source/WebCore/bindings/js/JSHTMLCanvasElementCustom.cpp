@@ -21,7 +21,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -38,65 +38,102 @@
 
 using namespace JSC;
 
-namespace WebCore {
-
-JSValue JSHTMLCanvasElement::getContext(ExecState* exec)
+namespace WebCore
 {
-    HTMLCanvasElement* canvas = static_cast<HTMLCanvasElement*>(impl());
-    const UString& contextId = exec->argument(0).toString(exec);
+
+JSValue JSHTMLCanvasElement::getContext( ExecState *exec )
+{
+    HTMLCanvasElement *canvas = static_cast<HTMLCanvasElement *>( impl() );
+    const UString &contextId = exec->argument( 0 ).toString( exec );
     RefPtr<CanvasContextAttributes> attrs;
 #if ENABLE(WEBGL)
-    if (contextId == "experimental-webgl" || contextId == "webkit-3d") {
+
+    if ( contextId == "experimental-webgl" || contextId == "webkit-3d" )
+    {
         attrs = WebGLContextAttributes::create();
-        WebGLContextAttributes* webGLAttrs = static_cast<WebGLContextAttributes*>(attrs.get());
-        if (exec->argumentCount() > 1 && exec->argument(1).isObject()) {
-            JSObject* jsAttrs = exec->argument(1).getObject();
-            Identifier alpha(exec, "alpha");
-            if (jsAttrs->hasProperty(exec, alpha))
-                webGLAttrs->setAlpha(jsAttrs->get(exec, alpha).toBoolean(exec));
-            Identifier depth(exec, "depth");
-            if (jsAttrs->hasProperty(exec, depth))
-                webGLAttrs->setDepth(jsAttrs->get(exec, depth).toBoolean(exec));
-            Identifier stencil(exec, "stencil");
-            if (jsAttrs->hasProperty(exec, stencil))
-                webGLAttrs->setStencil(jsAttrs->get(exec, stencil).toBoolean(exec));
-            Identifier antialias(exec, "antialias");
-            if (jsAttrs->hasProperty(exec, antialias))
-                webGLAttrs->setAntialias(jsAttrs->get(exec, antialias).toBoolean(exec));
-            Identifier premultipliedAlpha(exec, "premultipliedAlpha");
-            if (jsAttrs->hasProperty(exec, premultipliedAlpha))
-                webGLAttrs->setPremultipliedAlpha(jsAttrs->get(exec, premultipliedAlpha).toBoolean(exec));
-            Identifier preserveDrawingBuffer(exec, "preserveDrawingBuffer");
-            if (jsAttrs->hasProperty(exec, preserveDrawingBuffer))
-                webGLAttrs->setPreserveDrawingBuffer(jsAttrs->get(exec, preserveDrawingBuffer).toBoolean(exec));
+        WebGLContextAttributes *webGLAttrs = static_cast<WebGLContextAttributes *>( attrs.get() );
+
+        if ( exec->argumentCount() > 1 && exec->argument( 1 ).isObject() )
+        {
+            JSObject *jsAttrs = exec->argument( 1 ).getObject();
+            Identifier alpha( exec, "alpha" );
+
+            if ( jsAttrs->hasProperty( exec, alpha ) )
+            {
+                webGLAttrs->setAlpha( jsAttrs->get( exec, alpha ).toBoolean( exec ) );
+            }
+
+            Identifier depth( exec, "depth" );
+
+            if ( jsAttrs->hasProperty( exec, depth ) )
+            {
+                webGLAttrs->setDepth( jsAttrs->get( exec, depth ).toBoolean( exec ) );
+            }
+
+            Identifier stencil( exec, "stencil" );
+
+            if ( jsAttrs->hasProperty( exec, stencil ) )
+            {
+                webGLAttrs->setStencil( jsAttrs->get( exec, stencil ).toBoolean( exec ) );
+            }
+
+            Identifier antialias( exec, "antialias" );
+
+            if ( jsAttrs->hasProperty( exec, antialias ) )
+            {
+                webGLAttrs->setAntialias( jsAttrs->get( exec, antialias ).toBoolean( exec ) );
+            }
+
+            Identifier premultipliedAlpha( exec, "premultipliedAlpha" );
+
+            if ( jsAttrs->hasProperty( exec, premultipliedAlpha ) )
+            {
+                webGLAttrs->setPremultipliedAlpha( jsAttrs->get( exec, premultipliedAlpha ).toBoolean( exec ) );
+            }
+
+            Identifier preserveDrawingBuffer( exec, "preserveDrawingBuffer" );
+
+            if ( jsAttrs->hasProperty( exec, preserveDrawingBuffer ) )
+            {
+                webGLAttrs->setPreserveDrawingBuffer( jsAttrs->get( exec, preserveDrawingBuffer ).toBoolean( exec ) );
+            }
         }
     }
+
 #endif
-    CanvasRenderingContext* context = canvas->getContext(ustringToString(contextId), attrs.get());
-    if (!context)
+    CanvasRenderingContext *context = canvas->getContext( ustringToString( contextId ), attrs.get() );
+
+    if ( !context )
+    {
         return jsNull();
-    return toJS(exec, globalObject(), WTF::getPtr(context));
+    }
+
+    return toJS( exec, globalObject(), WTF::getPtr( context ) );
 }
 
-JSValue JSHTMLCanvasElement::toDataURL(ExecState* exec)
+JSValue JSHTMLCanvasElement::toDataURL( ExecState *exec )
 {
-    const String& type = valueToStringWithUndefinedOrNullCheck(exec, exec->argument(0));
-    HTMLCanvasElement* canvas = static_cast<HTMLCanvasElement*>(impl());
+    const String &type = valueToStringWithUndefinedOrNullCheck( exec, exec->argument( 0 ) );
+    HTMLCanvasElement *canvas = static_cast<HTMLCanvasElement *>( impl() );
     ExceptionCode ec = 0;
-    
+
     JSC::JSValue result;
     double quality;
-    double* qualityPtr = 0;
-    if (exec->argumentCount() > 1) {
-        JSValue v = exec->argument(1);
-        if (v.isNumber()) {
-            quality = v.toNumber(exec);
+    double *qualityPtr = 0;
+
+    if ( exec->argumentCount() > 1 )
+    {
+        JSValue v = exec->argument( 1 );
+
+        if ( v.isNumber() )
+        {
+            quality = v.toNumber( exec );
             qualityPtr = &quality;
         }
     }
-    
-    result = jsString(exec, canvas->toDataURL(type, qualityPtr, ec));
-    setDOMException(exec, ec);
+
+    result = jsString( exec, canvas->toDataURL( type, qualityPtr, ec ) );
+    setDOMException( exec, ec );
     return result;
 }
 

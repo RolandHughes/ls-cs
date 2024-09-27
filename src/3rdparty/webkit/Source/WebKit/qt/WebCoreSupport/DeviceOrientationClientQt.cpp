@@ -25,14 +25,16 @@
 #include "DeviceOrientationProviderQt.h"
 #include "qwebpage.h"
 
-namespace WebCore {
-
-DeviceOrientationClientQt::DeviceOrientationClientQt(QWebPage* page)
-    : m_page(page)
-    , m_controller(0)
-    , m_provider(new DeviceOrientationProviderQt())
+namespace WebCore
 {
-    connect(m_provider, SIGNAL(deviceOrientationChanged(DeviceOrientation*)), this, SLOT(changeDeviceOrientation(DeviceOrientation*)));
+
+DeviceOrientationClientQt::DeviceOrientationClientQt( QWebPage *page )
+    : m_page( page )
+    , m_controller( 0 )
+    , m_provider( new DeviceOrientationProviderQt() )
+{
+    connect( m_provider, SIGNAL( deviceOrientationChanged( DeviceOrientation * ) ), this,
+             SLOT( changeDeviceOrientation( DeviceOrientation * ) ) );
 }
 
 DeviceOrientationClientQt::~DeviceOrientationClientQt()
@@ -41,7 +43,7 @@ DeviceOrientationClientQt::~DeviceOrientationClientQt()
     delete m_provider;
 }
 
-void DeviceOrientationClientQt::setController(DeviceOrientationController* controller)
+void DeviceOrientationClientQt::setController( DeviceOrientationController *controller )
 {
     m_controller = controller;
 }
@@ -56,7 +58,7 @@ void DeviceOrientationClientQt::stopUpdating()
     m_provider->stop();
 }
 
-DeviceOrientation* DeviceOrientationClientQt::lastOrientation() const
+DeviceOrientation *DeviceOrientationClientQt::lastOrientation() const
 {
     return m_provider->orientation();
 }
@@ -66,12 +68,14 @@ void DeviceOrientationClientQt::deviceOrientationControllerDestroyed()
     delete this;
 }
 
-void DeviceOrientationClientQt::changeDeviceOrientation(DeviceOrientation* orientation)
+void DeviceOrientationClientQt::changeDeviceOrientation( DeviceOrientation *orientation )
 {
-    if (!m_controller)
+    if ( !m_controller )
+    {
         return;
+    }
 
-    m_controller->didChangeDeviceOrientation(orientation);
+    m_controller->didChangeDeviceOrientation( orientation );
 }
 
 } // namespace WebCore

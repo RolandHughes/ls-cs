@@ -29,31 +29,33 @@
 #include <v8.h>
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class ScriptExecutionContext;
 
-class V8TestCallback : public TestCallback, public ActiveDOMCallback {
+class V8TestCallback : public TestCallback, public ActiveDOMCallback
+{
 public:
-    static PassRefPtr<V8TestCallback> create(v8::Local<v8::Value> value, ScriptExecutionContext* context)
+    static PassRefPtr<V8TestCallback> create( v8::Local<v8::Value> value, ScriptExecutionContext *context )
     {
-        ASSERT(value->IsObject());
-        ASSERT(context);
-        return adoptRef(new V8TestCallback(value->ToObject(), context));
+        ASSERT( value->IsObject() );
+        ASSERT( context );
+        return adoptRef( new V8TestCallback( value->ToObject(), context ) );
     }
 
     virtual ~V8TestCallback();
 
     // Functions
     virtual bool callbackWithNoParam();
-    virtual bool callbackWithClass1Param(Class1* class1Param);
-    virtual bool callbackWithClass2Param(Class2* class2Param, const String& strArg);
-    COMPILE_ASSERT(false)    virtual int callbackWithNonBoolReturnType(Class3* class3Param);
-    virtual int customCallback(Class5* class5Param, Class6* class6Param);
-    virtual bool callbackWithStringList(PassRefPtr<DOMStringList> listParam);
+    virtual bool callbackWithClass1Param( Class1 *class1Param );
+    virtual bool callbackWithClass2Param( Class2 *class2Param, const String &strArg );
+    COMPILE_ASSERT( false )    virtual int callbackWithNonBoolReturnType( Class3 *class3Param );
+    virtual int customCallback( Class5 *class5Param, Class6 *class6Param );
+    virtual bool callbackWithStringList( PassRefPtr<DOMStringList> listParam );
 
 private:
-    V8TestCallback(v8::Local<v8::Object>, ScriptExecutionContext*);
+    V8TestCallback( v8::Local<v8::Object>, ScriptExecutionContext * );
 
     v8::Persistent<v8::Object> m_callback;
     WorldContextHandle m_worldContext;

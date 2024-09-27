@@ -32,9 +32,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSHTMLMarqueeElement);
+ASSERT_CLASS_FITS_IN_CELL( JSHTMLMarqueeElement );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -45,19 +46,19 @@ ASSERT_CLASS_FITS_IN_CELL(JSHTMLMarqueeElement);
 
 static const HashTableValue JSHTMLMarqueeElementTableValues[13] =
 {
-    { "behavior", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLMarqueeElementBehavior), (intptr_t)setJSHTMLMarqueeElementBehavior THUNK_GENERATOR(0) },
-    { "bgColor", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLMarqueeElementBgColor), (intptr_t)setJSHTMLMarqueeElementBgColor THUNK_GENERATOR(0) },
-    { "direction", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLMarqueeElementDirection), (intptr_t)setJSHTMLMarqueeElementDirection THUNK_GENERATOR(0) },
-    { "height", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLMarqueeElementHeight), (intptr_t)setJSHTMLMarqueeElementHeight THUNK_GENERATOR(0) },
-    { "hspace", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLMarqueeElementHspace), (intptr_t)setJSHTMLMarqueeElementHspace THUNK_GENERATOR(0) },
-    { "loop", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLMarqueeElementLoop), (intptr_t)setJSHTMLMarqueeElementLoop THUNK_GENERATOR(0) },
-    { "scrollAmount", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLMarqueeElementScrollAmount), (intptr_t)setJSHTMLMarqueeElementScrollAmount THUNK_GENERATOR(0) },
-    { "scrollDelay", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLMarqueeElementScrollDelay), (intptr_t)setJSHTMLMarqueeElementScrollDelay THUNK_GENERATOR(0) },
-    { "trueSpeed", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLMarqueeElementTrueSpeed), (intptr_t)setJSHTMLMarqueeElementTrueSpeed THUNK_GENERATOR(0) },
-    { "vspace", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLMarqueeElementVspace), (intptr_t)setJSHTMLMarqueeElementVspace THUNK_GENERATOR(0) },
-    { "width", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLMarqueeElementWidth), (intptr_t)setJSHTMLMarqueeElementWidth THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLMarqueeElementConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "behavior", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLMarqueeElementBehavior ), ( intptr_t )setJSHTMLMarqueeElementBehavior THUNK_GENERATOR( 0 ) },
+    { "bgColor", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLMarqueeElementBgColor ), ( intptr_t )setJSHTMLMarqueeElementBgColor THUNK_GENERATOR( 0 ) },
+    { "direction", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLMarqueeElementDirection ), ( intptr_t )setJSHTMLMarqueeElementDirection THUNK_GENERATOR( 0 ) },
+    { "height", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLMarqueeElementHeight ), ( intptr_t )setJSHTMLMarqueeElementHeight THUNK_GENERATOR( 0 ) },
+    { "hspace", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLMarqueeElementHspace ), ( intptr_t )setJSHTMLMarqueeElementHspace THUNK_GENERATOR( 0 ) },
+    { "loop", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLMarqueeElementLoop ), ( intptr_t )setJSHTMLMarqueeElementLoop THUNK_GENERATOR( 0 ) },
+    { "scrollAmount", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLMarqueeElementScrollAmount ), ( intptr_t )setJSHTMLMarqueeElementScrollAmount THUNK_GENERATOR( 0 ) },
+    { "scrollDelay", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLMarqueeElementScrollDelay ), ( intptr_t )setJSHTMLMarqueeElementScrollDelay THUNK_GENERATOR( 0 ) },
+    { "trueSpeed", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLMarqueeElementTrueSpeed ), ( intptr_t )setJSHTMLMarqueeElementTrueSpeed THUNK_GENERATOR( 0 ) },
+    { "vspace", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLMarqueeElementVspace ), ( intptr_t )setJSHTMLMarqueeElementVspace THUNK_GENERATOR( 0 ) },
+    { "width", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLMarqueeElementWidth ), ( intptr_t )setJSHTMLMarqueeElementWidth THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLMarqueeElementConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -71,43 +72,51 @@ static JSC_CONST_HASHTABLE HashTable JSHTMLMarqueeElementTable = { 36, 31, JSHTM
 
 static const HashTableValue JSHTMLMarqueeElementConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSHTMLMarqueeElementConstructorTable = { 1, 0, JSHTMLMarqueeElementConstructorTableValues, 0 };
-class JSHTMLMarqueeElementConstructor : public DOMConstructorObject {
+class JSHTMLMarqueeElementConstructor : public DOMConstructorObject
+{
 public:
-    JSHTMLMarqueeElementConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSHTMLMarqueeElementConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSHTMLMarqueeElementConstructor::s_info = { "HTMLMarqueeElementConstructor", &DOMConstructorObject::s_info, &JSHTMLMarqueeElementConstructorTable, 0 };
 
-JSHTMLMarqueeElementConstructor::JSHTMLMarqueeElementConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSHTMLMarqueeElementConstructor::JSHTMLMarqueeElementConstructor( ExecState *exec, Structure *structure,
+        JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSHTMLMarqueeElementPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSHTMLMarqueeElementPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSHTMLMarqueeElementConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSHTMLMarqueeElementConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSHTMLMarqueeElementConstructor, JSDOMWrapper>(exec, &JSHTMLMarqueeElementConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSHTMLMarqueeElementConstructor, JSDOMWrapper>( exec, &JSHTMLMarqueeElementConstructorTable, this,
+            propertyName, slot );
 }
 
-bool JSHTMLMarqueeElementConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSHTMLMarqueeElementConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSHTMLMarqueeElementConstructor, JSDOMWrapper>(exec, &JSHTMLMarqueeElementConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSHTMLMarqueeElementConstructor, JSDOMWrapper>( exec, &JSHTMLMarqueeElementConstructorTable, this,
+            propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -119,295 +128,307 @@ bool JSHTMLMarqueeElementConstructor::getOwnPropertyDescriptor(ExecState* exec, 
 
 static const HashTableValue JSHTMLMarqueeElementPrototypeTableValues[3] =
 {
-    { "start", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsHTMLMarqueeElementPrototypeFunctionStart), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "stop", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsHTMLMarqueeElementPrototypeFunctionStop), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "start", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsHTMLMarqueeElementPrototypeFunctionStart ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "stop", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsHTMLMarqueeElementPrototypeFunctionStop ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSHTMLMarqueeElementPrototypeTable = { 5, 3, JSHTMLMarqueeElementPrototypeTableValues, 0 };
 const ClassInfo JSHTMLMarqueeElementPrototype::s_info = { "HTMLMarqueeElementPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSHTMLMarqueeElementPrototypeTable, 0 };
 
-JSObject* JSHTMLMarqueeElementPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSHTMLMarqueeElementPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSHTMLMarqueeElement>(exec, globalObject);
+    return getDOMPrototype<JSHTMLMarqueeElement>( exec, globalObject );
 }
 
-bool JSHTMLMarqueeElementPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSHTMLMarqueeElementPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticFunctionSlot<JSObject>(exec, &JSHTMLMarqueeElementPrototypeTable, this, propertyName, slot);
+    return getStaticFunctionSlot<JSObject>( exec, &JSHTMLMarqueeElementPrototypeTable, this, propertyName, slot );
 }
 
-bool JSHTMLMarqueeElementPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSHTMLMarqueeElementPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticFunctionDescriptor<JSObject>(exec, &JSHTMLMarqueeElementPrototypeTable, this, propertyName, descriptor);
+    return getStaticFunctionDescriptor<JSObject>( exec, &JSHTMLMarqueeElementPrototypeTable, this, propertyName, descriptor );
 }
 
 const ClassInfo JSHTMLMarqueeElement::s_info = { "HTMLMarqueeElement", &JSHTMLElement::s_info, &JSHTMLMarqueeElementTable, 0 };
 
-JSHTMLMarqueeElement::JSHTMLMarqueeElement(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<HTMLMarqueeElement> impl)
-    : JSHTMLElement(structure, globalObject, impl)
+JSHTMLMarqueeElement::JSHTMLMarqueeElement( Structure *structure, JSDOMGlobalObject *globalObject,
+        PassRefPtr<HTMLMarqueeElement> impl )
+    : JSHTMLElement( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSHTMLMarqueeElement::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSHTMLMarqueeElement::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSHTMLMarqueeElementPrototype(exec->globalData(), globalObject, JSHTMLMarqueeElementPrototype::createStructure(exec->globalData(), JSHTMLElementPrototype::self(exec, globalObject)));
+    return new ( exec ) JSHTMLMarqueeElementPrototype( exec->globalData(), globalObject,
+            JSHTMLMarqueeElementPrototype::createStructure( exec->globalData(), JSHTMLElementPrototype::self( exec, globalObject ) ) );
 }
 
-bool JSHTMLMarqueeElement::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSHTMLMarqueeElement::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSHTMLMarqueeElement, Base>(exec, &JSHTMLMarqueeElementTable, this, propertyName, slot);
+    return getStaticValueSlot<JSHTMLMarqueeElement, Base>( exec, &JSHTMLMarqueeElementTable, this, propertyName, slot );
 }
 
-bool JSHTMLMarqueeElement::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSHTMLMarqueeElement::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSHTMLMarqueeElement, Base>(exec, &JSHTMLMarqueeElementTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSHTMLMarqueeElement, Base>( exec, &JSHTMLMarqueeElementTable, this, propertyName, descriptor );
 }
 
-JSValue jsHTMLMarqueeElementBehavior(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLMarqueeElementBehavior( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLMarqueeElement* castedThis = static_cast<JSHTMLMarqueeElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLMarqueeElement* imp = static_cast<HTMLMarqueeElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->getAttribute(WebCore::HTMLNames::behaviorAttr));
+    JSHTMLMarqueeElement *castedThis = static_cast<JSHTMLMarqueeElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLMarqueeElement *imp = static_cast<HTMLMarqueeElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->getAttribute( WebCore::HTMLNames::behaviorAttr ) );
     return result;
 }
 
 
-JSValue jsHTMLMarqueeElementBgColor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLMarqueeElementBgColor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLMarqueeElement* castedThis = static_cast<JSHTMLMarqueeElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLMarqueeElement* imp = static_cast<HTMLMarqueeElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->getAttribute(WebCore::HTMLNames::bgcolorAttr));
+    JSHTMLMarqueeElement *castedThis = static_cast<JSHTMLMarqueeElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLMarqueeElement *imp = static_cast<HTMLMarqueeElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->getAttribute( WebCore::HTMLNames::bgcolorAttr ) );
     return result;
 }
 
 
-JSValue jsHTMLMarqueeElementDirection(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLMarqueeElementDirection( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLMarqueeElement* castedThis = static_cast<JSHTMLMarqueeElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLMarqueeElement* imp = static_cast<HTMLMarqueeElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->getAttribute(WebCore::HTMLNames::directionAttr));
+    JSHTMLMarqueeElement *castedThis = static_cast<JSHTMLMarqueeElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLMarqueeElement *imp = static_cast<HTMLMarqueeElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->getAttribute( WebCore::HTMLNames::directionAttr ) );
     return result;
 }
 
 
-JSValue jsHTMLMarqueeElementHeight(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLMarqueeElementHeight( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLMarqueeElement* castedThis = static_cast<JSHTMLMarqueeElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLMarqueeElement* imp = static_cast<HTMLMarqueeElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->getAttribute(WebCore::HTMLNames::heightAttr));
+    JSHTMLMarqueeElement *castedThis = static_cast<JSHTMLMarqueeElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLMarqueeElement *imp = static_cast<HTMLMarqueeElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->getAttribute( WebCore::HTMLNames::heightAttr ) );
     return result;
 }
 
 
-JSValue jsHTMLMarqueeElementHspace(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLMarqueeElementHspace( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLMarqueeElement* castedThis = static_cast<JSHTMLMarqueeElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLMarqueeElement* imp = static_cast<HTMLMarqueeElement*>(castedThis->impl());
-    JSValue result = jsNumber(std::max(0, imp->getIntegralAttribute(WebCore::HTMLNames::hspaceAttr)));
+    JSHTMLMarqueeElement *castedThis = static_cast<JSHTMLMarqueeElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLMarqueeElement *imp = static_cast<HTMLMarqueeElement *>( castedThis->impl() );
+    JSValue result = jsNumber( std::max( 0, imp->getIntegralAttribute( WebCore::HTMLNames::hspaceAttr ) ) );
     return result;
 }
 
 
-JSValue jsHTMLMarqueeElementLoop(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLMarqueeElementLoop( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLMarqueeElement* castedThis = static_cast<JSHTMLMarqueeElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLMarqueeElement* imp = static_cast<HTMLMarqueeElement*>(castedThis->impl());
-    JSValue result = jsNumber(imp->loop());
+    JSHTMLMarqueeElement *castedThis = static_cast<JSHTMLMarqueeElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLMarqueeElement *imp = static_cast<HTMLMarqueeElement *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->loop() );
     return result;
 }
 
 
-JSValue jsHTMLMarqueeElementScrollAmount(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLMarqueeElementScrollAmount( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLMarqueeElement* castedThis = static_cast<JSHTMLMarqueeElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLMarqueeElement* imp = static_cast<HTMLMarqueeElement*>(castedThis->impl());
-    JSValue result = jsNumber(imp->scrollAmount());
+    JSHTMLMarqueeElement *castedThis = static_cast<JSHTMLMarqueeElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLMarqueeElement *imp = static_cast<HTMLMarqueeElement *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->scrollAmount() );
     return result;
 }
 
 
-JSValue jsHTMLMarqueeElementScrollDelay(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLMarqueeElementScrollDelay( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLMarqueeElement* castedThis = static_cast<JSHTMLMarqueeElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLMarqueeElement* imp = static_cast<HTMLMarqueeElement*>(castedThis->impl());
-    JSValue result = jsNumber(imp->scrollDelay());
+    JSHTMLMarqueeElement *castedThis = static_cast<JSHTMLMarqueeElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLMarqueeElement *imp = static_cast<HTMLMarqueeElement *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->scrollDelay() );
     return result;
 }
 
 
-JSValue jsHTMLMarqueeElementTrueSpeed(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLMarqueeElementTrueSpeed( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLMarqueeElement* castedThis = static_cast<JSHTMLMarqueeElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLMarqueeElement* imp = static_cast<HTMLMarqueeElement*>(castedThis->impl());
-    JSValue result = jsBoolean(imp->hasAttribute(WebCore::HTMLNames::truespeedAttr));
+    JSHTMLMarqueeElement *castedThis = static_cast<JSHTMLMarqueeElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLMarqueeElement *imp = static_cast<HTMLMarqueeElement *>( castedThis->impl() );
+    JSValue result = jsBoolean( imp->hasAttribute( WebCore::HTMLNames::truespeedAttr ) );
     return result;
 }
 
 
-JSValue jsHTMLMarqueeElementVspace(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLMarqueeElementVspace( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLMarqueeElement* castedThis = static_cast<JSHTMLMarqueeElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLMarqueeElement* imp = static_cast<HTMLMarqueeElement*>(castedThis->impl());
-    JSValue result = jsNumber(std::max(0, imp->getIntegralAttribute(WebCore::HTMLNames::vspaceAttr)));
+    JSHTMLMarqueeElement *castedThis = static_cast<JSHTMLMarqueeElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLMarqueeElement *imp = static_cast<HTMLMarqueeElement *>( castedThis->impl() );
+    JSValue result = jsNumber( std::max( 0, imp->getIntegralAttribute( WebCore::HTMLNames::vspaceAttr ) ) );
     return result;
 }
 
 
-JSValue jsHTMLMarqueeElementWidth(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLMarqueeElementWidth( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLMarqueeElement* castedThis = static_cast<JSHTMLMarqueeElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLMarqueeElement* imp = static_cast<HTMLMarqueeElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->getAttribute(WebCore::HTMLNames::widthAttr));
+    JSHTMLMarqueeElement *castedThis = static_cast<JSHTMLMarqueeElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLMarqueeElement *imp = static_cast<HTMLMarqueeElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->getAttribute( WebCore::HTMLNames::widthAttr ) );
     return result;
 }
 
 
-JSValue jsHTMLMarqueeElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLMarqueeElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLMarqueeElement* domObject = static_cast<JSHTMLMarqueeElement*>(asObject(slotBase));
-    return JSHTMLMarqueeElement::getConstructor(exec, domObject->globalObject());
+    JSHTMLMarqueeElement *domObject = static_cast<JSHTMLMarqueeElement *>( asObject( slotBase ) );
+    return JSHTMLMarqueeElement::getConstructor( exec, domObject->globalObject() );
 }
 
-void JSHTMLMarqueeElement::put(ExecState* exec, const Identifier& propertyName, JSValue value, PutPropertySlot& slot)
+void JSHTMLMarqueeElement::put( ExecState *exec, const Identifier &propertyName, JSValue value, PutPropertySlot &slot )
 {
-    lookupPut<JSHTMLMarqueeElement, Base>(exec, propertyName, value, &JSHTMLMarqueeElementTable, this, slot);
+    lookupPut<JSHTMLMarqueeElement, Base>( exec, propertyName, value, &JSHTMLMarqueeElementTable, this, slot );
 }
 
-void setJSHTMLMarqueeElementBehavior(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSHTMLMarqueeElementBehavior( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSHTMLMarqueeElement* castedThis = static_cast<JSHTMLMarqueeElement*>(thisObject);
-    HTMLMarqueeElement* imp = static_cast<HTMLMarqueeElement*>(castedThis->impl());
-    imp->setAttribute(WebCore::HTMLNames::behaviorAttr, valueToStringWithNullCheck(exec, value));
-}
-
-
-void setJSHTMLMarqueeElementBgColor(ExecState* exec, JSObject* thisObject, JSValue value)
-{
-    JSHTMLMarqueeElement* castedThis = static_cast<JSHTMLMarqueeElement*>(thisObject);
-    HTMLMarqueeElement* imp = static_cast<HTMLMarqueeElement*>(castedThis->impl());
-    imp->setAttribute(WebCore::HTMLNames::bgcolorAttr, valueToStringWithNullCheck(exec, value));
+    JSHTMLMarqueeElement *castedThis = static_cast<JSHTMLMarqueeElement *>( thisObject );
+    HTMLMarqueeElement *imp = static_cast<HTMLMarqueeElement *>( castedThis->impl() );
+    imp->setAttribute( WebCore::HTMLNames::behaviorAttr, valueToStringWithNullCheck( exec, value ) );
 }
 
 
-void setJSHTMLMarqueeElementDirection(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSHTMLMarqueeElementBgColor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSHTMLMarqueeElement* castedThis = static_cast<JSHTMLMarqueeElement*>(thisObject);
-    HTMLMarqueeElement* imp = static_cast<HTMLMarqueeElement*>(castedThis->impl());
-    imp->setAttribute(WebCore::HTMLNames::directionAttr, valueToStringWithNullCheck(exec, value));
+    JSHTMLMarqueeElement *castedThis = static_cast<JSHTMLMarqueeElement *>( thisObject );
+    HTMLMarqueeElement *imp = static_cast<HTMLMarqueeElement *>( castedThis->impl() );
+    imp->setAttribute( WebCore::HTMLNames::bgcolorAttr, valueToStringWithNullCheck( exec, value ) );
 }
 
 
-void setJSHTMLMarqueeElementHeight(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSHTMLMarqueeElementDirection( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSHTMLMarqueeElement* castedThis = static_cast<JSHTMLMarqueeElement*>(thisObject);
-    HTMLMarqueeElement* imp = static_cast<HTMLMarqueeElement*>(castedThis->impl());
-    imp->setAttribute(WebCore::HTMLNames::heightAttr, valueToStringWithNullCheck(exec, value));
+    JSHTMLMarqueeElement *castedThis = static_cast<JSHTMLMarqueeElement *>( thisObject );
+    HTMLMarqueeElement *imp = static_cast<HTMLMarqueeElement *>( castedThis->impl() );
+    imp->setAttribute( WebCore::HTMLNames::directionAttr, valueToStringWithNullCheck( exec, value ) );
 }
 
 
-void setJSHTMLMarqueeElementHspace(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSHTMLMarqueeElementHeight( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSHTMLMarqueeElement* castedThis = static_cast<JSHTMLMarqueeElement*>(thisObject);
-    HTMLMarqueeElement* imp = static_cast<HTMLMarqueeElement*>(castedThis->impl());
-    imp->setUnsignedIntegralAttribute(WebCore::HTMLNames::hspaceAttr, value.toUInt32(exec));
+    JSHTMLMarqueeElement *castedThis = static_cast<JSHTMLMarqueeElement *>( thisObject );
+    HTMLMarqueeElement *imp = static_cast<HTMLMarqueeElement *>( castedThis->impl() );
+    imp->setAttribute( WebCore::HTMLNames::heightAttr, valueToStringWithNullCheck( exec, value ) );
 }
 
 
-void setJSHTMLMarqueeElementLoop(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSHTMLMarqueeElementHspace( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSHTMLMarqueeElement* castedThis = static_cast<JSHTMLMarqueeElement*>(thisObject);
-    HTMLMarqueeElement* imp = static_cast<HTMLMarqueeElement*>(castedThis->impl());
+    JSHTMLMarqueeElement *castedThis = static_cast<JSHTMLMarqueeElement *>( thisObject );
+    HTMLMarqueeElement *imp = static_cast<HTMLMarqueeElement *>( castedThis->impl() );
+    imp->setUnsignedIntegralAttribute( WebCore::HTMLNames::hspaceAttr, value.toUInt32( exec ) );
+}
+
+
+void setJSHTMLMarqueeElementLoop( ExecState *exec, JSObject *thisObject, JSValue value )
+{
+    JSHTMLMarqueeElement *castedThis = static_cast<JSHTMLMarqueeElement *>( thisObject );
+    HTMLMarqueeElement *imp = static_cast<HTMLMarqueeElement *>( castedThis->impl() );
     ExceptionCode ec = 0;
-    imp->setLoop(value.toInt32(exec), ec);
-    setDOMException(exec, ec);
+    imp->setLoop( value.toInt32( exec ), ec );
+    setDOMException( exec, ec );
 }
 
 
-void setJSHTMLMarqueeElementScrollAmount(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSHTMLMarqueeElementScrollAmount( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSHTMLMarqueeElement* castedThis = static_cast<JSHTMLMarqueeElement*>(thisObject);
-    HTMLMarqueeElement* imp = static_cast<HTMLMarqueeElement*>(castedThis->impl());
+    JSHTMLMarqueeElement *castedThis = static_cast<JSHTMLMarqueeElement *>( thisObject );
+    HTMLMarqueeElement *imp = static_cast<HTMLMarqueeElement *>( castedThis->impl() );
     ExceptionCode ec = 0;
-    imp->setScrollAmount(value.toInt32(exec), ec);
-    setDOMException(exec, ec);
+    imp->setScrollAmount( value.toInt32( exec ), ec );
+    setDOMException( exec, ec );
 }
 
 
-void setJSHTMLMarqueeElementScrollDelay(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSHTMLMarqueeElementScrollDelay( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSHTMLMarqueeElement* castedThis = static_cast<JSHTMLMarqueeElement*>(thisObject);
-    HTMLMarqueeElement* imp = static_cast<HTMLMarqueeElement*>(castedThis->impl());
+    JSHTMLMarqueeElement *castedThis = static_cast<JSHTMLMarqueeElement *>( thisObject );
+    HTMLMarqueeElement *imp = static_cast<HTMLMarqueeElement *>( castedThis->impl() );
     ExceptionCode ec = 0;
-    imp->setScrollDelay(value.toInt32(exec), ec);
-    setDOMException(exec, ec);
+    imp->setScrollDelay( value.toInt32( exec ), ec );
+    setDOMException( exec, ec );
 }
 
 
-void setJSHTMLMarqueeElementTrueSpeed(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSHTMLMarqueeElementTrueSpeed( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSHTMLMarqueeElement* castedThis = static_cast<JSHTMLMarqueeElement*>(thisObject);
-    HTMLMarqueeElement* imp = static_cast<HTMLMarqueeElement*>(castedThis->impl());
-    imp->setBooleanAttribute(WebCore::HTMLNames::truespeedAttr, value.toBoolean(exec));
+    JSHTMLMarqueeElement *castedThis = static_cast<JSHTMLMarqueeElement *>( thisObject );
+    HTMLMarqueeElement *imp = static_cast<HTMLMarqueeElement *>( castedThis->impl() );
+    imp->setBooleanAttribute( WebCore::HTMLNames::truespeedAttr, value.toBoolean( exec ) );
 }
 
 
-void setJSHTMLMarqueeElementVspace(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSHTMLMarqueeElementVspace( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSHTMLMarqueeElement* castedThis = static_cast<JSHTMLMarqueeElement*>(thisObject);
-    HTMLMarqueeElement* imp = static_cast<HTMLMarqueeElement*>(castedThis->impl());
-    imp->setUnsignedIntegralAttribute(WebCore::HTMLNames::vspaceAttr, value.toUInt32(exec));
+    JSHTMLMarqueeElement *castedThis = static_cast<JSHTMLMarqueeElement *>( thisObject );
+    HTMLMarqueeElement *imp = static_cast<HTMLMarqueeElement *>( castedThis->impl() );
+    imp->setUnsignedIntegralAttribute( WebCore::HTMLNames::vspaceAttr, value.toUInt32( exec ) );
 }
 
 
-void setJSHTMLMarqueeElementWidth(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSHTMLMarqueeElementWidth( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSHTMLMarqueeElement* castedThis = static_cast<JSHTMLMarqueeElement*>(thisObject);
-    HTMLMarqueeElement* imp = static_cast<HTMLMarqueeElement*>(castedThis->impl());
-    imp->setAttribute(WebCore::HTMLNames::widthAttr, valueToStringWithNullCheck(exec, value));
+    JSHTMLMarqueeElement *castedThis = static_cast<JSHTMLMarqueeElement *>( thisObject );
+    HTMLMarqueeElement *imp = static_cast<HTMLMarqueeElement *>( castedThis->impl() );
+    imp->setAttribute( WebCore::HTMLNames::widthAttr, valueToStringWithNullCheck( exec, value ) );
 }
 
 
-JSValue JSHTMLMarqueeElement::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSHTMLMarqueeElement::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSHTMLMarqueeElementConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSHTMLMarqueeElementConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsHTMLMarqueeElementPrototypeFunctionStart(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsHTMLMarqueeElementPrototypeFunctionStart( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSHTMLMarqueeElement::s_info))
-        return throwVMTypeError(exec);
-    JSHTMLMarqueeElement* castedThis = static_cast<JSHTMLMarqueeElement*>(asObject(thisValue));
-    HTMLMarqueeElement* imp = static_cast<HTMLMarqueeElement*>(castedThis->impl());
+
+    if ( !thisValue.inherits( &JSHTMLMarqueeElement::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSHTMLMarqueeElement *castedThis = static_cast<JSHTMLMarqueeElement *>( asObject( thisValue ) );
+    HTMLMarqueeElement *imp = static_cast<HTMLMarqueeElement *>( castedThis->impl() );
 
     imp->start();
-    return JSValue::encode(jsUndefined());
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsHTMLMarqueeElementPrototypeFunctionStop(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsHTMLMarqueeElementPrototypeFunctionStop( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSHTMLMarqueeElement::s_info))
-        return throwVMTypeError(exec);
-    JSHTMLMarqueeElement* castedThis = static_cast<JSHTMLMarqueeElement*>(asObject(thisValue));
-    HTMLMarqueeElement* imp = static_cast<HTMLMarqueeElement*>(castedThis->impl());
+
+    if ( !thisValue.inherits( &JSHTMLMarqueeElement::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSHTMLMarqueeElement *castedThis = static_cast<JSHTMLMarqueeElement *>( asObject( thisValue ) );
+    HTMLMarqueeElement *imp = static_cast<HTMLMarqueeElement *>( castedThis->impl() );
 
     imp->stop();
-    return JSValue::encode(jsUndefined());
+    return JSValue::encode( jsUndefined() );
 }
 
 

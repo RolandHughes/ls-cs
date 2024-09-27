@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef Cursor_h
@@ -31,7 +31,7 @@
 #include <wtf/RefPtr.h>
 
 #if PLATFORM(WIN)
-typedef struct HICON__* HICON;
+typedef struct HICON__ *HICON;
 typedef HICON HCURSOR;
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
@@ -68,174 +68,196 @@ typedef HICON HCURSOR;
 #define WTF_USE_LAZY_NATIVE_CURSOR 1
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class Image;
+class Image;
 
 #if PLATFORM(WIN)
-    class SharedCursor : public RefCounted<SharedCursor> {
-    public:
-        static PassRefPtr<SharedCursor> create(HCURSOR nativeCursor) { return adoptRef(new SharedCursor(nativeCursor)); }
-        ~SharedCursor();
-        HCURSOR nativeCursor() const { return m_nativeCursor; }
-    private:
-        SharedCursor(HCURSOR nativeCursor) : m_nativeCursor(nativeCursor) { }
-        HCURSOR m_nativeCursor;
-    };
-    typedef RefPtr<SharedCursor> PlatformCursor;
+class SharedCursor : public RefCounted<SharedCursor>
+{
+public:
+    static PassRefPtr<SharedCursor> create( HCURSOR nativeCursor )
+    {
+        return adoptRef( new SharedCursor( nativeCursor ) );
+    }
+    ~SharedCursor();
+    HCURSOR nativeCursor() const
+    {
+        return m_nativeCursor;
+    }
+private:
+    SharedCursor( HCURSOR nativeCursor ) : m_nativeCursor( nativeCursor ) { }
+    HCURSOR m_nativeCursor;
+};
+typedef RefPtr<SharedCursor> PlatformCursor;
 #elif PLATFORM(MAC)
-    typedef NSCursor *PlatformCursor;
+typedef NSCursor *PlatformCursor;
 #elif PLATFORM(GTK)
-    typedef GRefPtr<GdkCursor> PlatformCursor;
+typedef GRefPtr<GdkCursor> PlatformCursor;
 #elif PLATFORM(EFL)
-    typedef const char* PlatformCursor;
+typedef const char *PlatformCursor;
 #elif PLATFORM(QT) && !defined(QT_NO_CURSOR)
-    // Do not need to be shared but need to be created dynamically via ensurePlatformCursor.
-    typedef QCursor* PlatformCursor;
+// Do not need to be shared but need to be created dynamically via ensurePlatformCursor.
+typedef QCursor *PlatformCursor;
 #elif PLATFORM(WX)
-    typedef wxCursor* PlatformCursor;
+typedef wxCursor *PlatformCursor;
 #elif PLATFORM(CHROMIUM)
-    // See PlatformCursor.h
+// See PlatformCursor.h
 #elif PLATFORM(HAIKU)
-    typedef BCursor* PlatformCursor;
+typedef BCursor *PlatformCursor;
 #else
-    typedef void* PlatformCursor;
+typedef void *PlatformCursor;
 #endif
 
-    class Cursor {
-    public:
-        enum Type {
-            Pointer,
-            Cross,
-            Hand,
-            IBeam,
-            Wait,
-            Help,
-            EastResize,
-            NorthResize,
-            NorthEastResize,
-            NorthWestResize,
-            SouthResize,
-            SouthEastResize,
-            SouthWestResize,
-            WestResize,
-            NorthSouthResize,
-            EastWestResize,
-            NorthEastSouthWestResize,
-            NorthWestSouthEastResize,
-            ColumnResize,
-            RowResize,
-            MiddlePanning,
-            EastPanning,
-            NorthPanning,
-            NorthEastPanning,
-            NorthWestPanning,
-            SouthPanning,
-            SouthEastPanning,
-            SouthWestPanning,
-            WestPanning,
-            Move,
-            VerticalText,
-            Cell,
-            ContextMenu,
-            Alias,
-            Progress,
-            NoDrop,
-            Copy,
-            None,
-            NotAllowed,
-            ZoomIn,
-            ZoomOut,
-            Grab,
-            Grabbing,
-            Custom
-        };
+class Cursor
+{
+public:
+    enum Type
+    {
+        Pointer,
+        Cross,
+        Hand,
+        IBeam,
+        Wait,
+        Help,
+        EastResize,
+        NorthResize,
+        NorthEastResize,
+        NorthWestResize,
+        SouthResize,
+        SouthEastResize,
+        SouthWestResize,
+        WestResize,
+        NorthSouthResize,
+        EastWestResize,
+        NorthEastSouthWestResize,
+        NorthWestSouthEastResize,
+        ColumnResize,
+        RowResize,
+        MiddlePanning,
+        EastPanning,
+        NorthPanning,
+        NorthEastPanning,
+        NorthWestPanning,
+        SouthPanning,
+        SouthEastPanning,
+        SouthWestPanning,
+        WestPanning,
+        Move,
+        VerticalText,
+        Cell,
+        ContextMenu,
+        Alias,
+        Progress,
+        NoDrop,
+        Copy,
+        None,
+        NotAllowed,
+        ZoomIn,
+        ZoomOut,
+        Grab,
+        Grabbing,
+        Custom
+    };
 
-        static const Cursor& fromType(Cursor::Type);
+    static const Cursor &fromType( Cursor::Type );
 
-        Cursor()
-            : m_platformCursor(0)
-        {
-        }
+    Cursor()
+        : m_platformCursor( 0 )
+    {
+    }
 
-        Cursor(Image*, const IntPoint& hotSpot);
-        Cursor(const Cursor&);
-        ~Cursor();
-        Cursor& operator=(const Cursor&);
+    Cursor( Image *, const IntPoint &hotSpot );
+    Cursor( const Cursor & );
+    ~Cursor();
+    Cursor &operator=( const Cursor & );
 
 #if USE(LAZY_NATIVE_CURSOR)
-        Cursor(Type);
-        Type type() const { return m_type; }
-        Image* image() const { return m_image.get(); }
-        const IntPoint& hotSpot() const { return m_hotSpot; }
-        PlatformCursor platformCursor() const;
+    Cursor( Type );
+    Type type() const
+    {
+        return m_type;
+    }
+    Image *image() const
+    {
+        return m_image.get();
+    }
+    const IntPoint &hotSpot() const
+    {
+        return m_hotSpot;
+    }
+    PlatformCursor platformCursor() const;
 #else
-        Cursor(PlatformCursor);
-        PlatformCursor impl() const { return m_platformCursor; }
+    Cursor( PlatformCursor );
+    PlatformCursor impl() const
+    {
+        return m_platformCursor;
+    }
 #endif
 
-     private:
+private:
 #if USE(LAZY_NATIVE_CURSOR)
-        void ensurePlatformCursor() const;
+    void ensurePlatformCursor() const;
 
-        Type m_type;
-        RefPtr<Image> m_image;
-        IntPoint m_hotSpot;
+    Type m_type;
+    RefPtr<Image> m_image;
+    IntPoint m_hotSpot;
 #endif
 
 #if !PLATFORM(MAC)
-        mutable PlatformCursor m_platformCursor;
+    mutable PlatformCursor m_platformCursor;
 #else
-        mutable RetainPtr<NSCursor> m_platformCursor;
+    mutable RetainPtr<NSCursor> m_platformCursor;
 #endif
-    };
+};
 
-    IntPoint determineHotSpot(Image*, const IntPoint& specifiedHotSpot);
-    const char* nameForCursorType(Cursor::Type);
-    
-    const Cursor& pointerCursor();
-    const Cursor& crossCursor();
-    const Cursor& handCursor();
-    const Cursor& moveCursor();
-    const Cursor& iBeamCursor();
-    const Cursor& waitCursor();
-    const Cursor& helpCursor();
-    const Cursor& eastResizeCursor();
-    const Cursor& northResizeCursor();
-    const Cursor& northEastResizeCursor();
-    const Cursor& northWestResizeCursor();
-    const Cursor& southResizeCursor();
-    const Cursor& southEastResizeCursor();
-    const Cursor& southWestResizeCursor();
-    const Cursor& westResizeCursor();
-    const Cursor& northSouthResizeCursor();
-    const Cursor& eastWestResizeCursor();
-    const Cursor& northEastSouthWestResizeCursor();
-    const Cursor& northWestSouthEastResizeCursor();
-    const Cursor& columnResizeCursor();
-    const Cursor& rowResizeCursor();
-    const Cursor& middlePanningCursor();
-    const Cursor& eastPanningCursor();
-    const Cursor& northPanningCursor();
-    const Cursor& northEastPanningCursor();
-    const Cursor& northWestPanningCursor();
-    const Cursor& southPanningCursor();
-    const Cursor& southEastPanningCursor();
-    const Cursor& southWestPanningCursor();
-    const Cursor& westPanningCursor();
-    const Cursor& verticalTextCursor();
-    const Cursor& cellCursor();
-    const Cursor& contextMenuCursor();
-    const Cursor& noDropCursor();
-    const Cursor& notAllowedCursor();
-    const Cursor& progressCursor();
-    const Cursor& aliasCursor();
-    const Cursor& zoomInCursor();
-    const Cursor& zoomOutCursor();
-    const Cursor& copyCursor();
-    const Cursor& noneCursor();
-    const Cursor& grabCursor();
-    const Cursor& grabbingCursor();
+IntPoint determineHotSpot( Image *, const IntPoint &specifiedHotSpot );
+const char *nameForCursorType( Cursor::Type );
+
+const Cursor &pointerCursor();
+const Cursor &crossCursor();
+const Cursor &handCursor();
+const Cursor &moveCursor();
+const Cursor &iBeamCursor();
+const Cursor &waitCursor();
+const Cursor &helpCursor();
+const Cursor &eastResizeCursor();
+const Cursor &northResizeCursor();
+const Cursor &northEastResizeCursor();
+const Cursor &northWestResizeCursor();
+const Cursor &southResizeCursor();
+const Cursor &southEastResizeCursor();
+const Cursor &southWestResizeCursor();
+const Cursor &westResizeCursor();
+const Cursor &northSouthResizeCursor();
+const Cursor &eastWestResizeCursor();
+const Cursor &northEastSouthWestResizeCursor();
+const Cursor &northWestSouthEastResizeCursor();
+const Cursor &columnResizeCursor();
+const Cursor &rowResizeCursor();
+const Cursor &middlePanningCursor();
+const Cursor &eastPanningCursor();
+const Cursor &northPanningCursor();
+const Cursor &northEastPanningCursor();
+const Cursor &northWestPanningCursor();
+const Cursor &southPanningCursor();
+const Cursor &southEastPanningCursor();
+const Cursor &southWestPanningCursor();
+const Cursor &westPanningCursor();
+const Cursor &verticalTextCursor();
+const Cursor &cellCursor();
+const Cursor &contextMenuCursor();
+const Cursor &noDropCursor();
+const Cursor &notAllowedCursor();
+const Cursor &progressCursor();
+const Cursor &aliasCursor();
+const Cursor &zoomInCursor();
+const Cursor &zoomOutCursor();
+const Cursor &copyCursor();
+const Cursor &noneCursor();
+const Cursor &grabCursor();
+const Cursor &grabbingCursor();
 
 } // namespace WebCore
 

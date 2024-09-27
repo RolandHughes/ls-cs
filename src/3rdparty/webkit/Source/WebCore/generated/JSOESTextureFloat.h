@@ -28,23 +28,29 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class OESTextureFloat;
 
-class JSOESTextureFloat : public JSDOMWrapper {
+class JSOESTextureFloat : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSOESTextureFloat(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<OESTextureFloat>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
+    JSOESTextureFloat( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<OESTextureFloat> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    OESTextureFloat* impl() const { return m_impl.get(); }
+    OESTextureFloat *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<OESTextureFloat> m_impl;
@@ -52,35 +58,39 @@ protected:
     static const unsigned StructureFlags = Base::StructureFlags;
 };
 
-class JSOESTextureFloatOwner : public JSC::WeakHandleOwner {
-    virtual bool isReachableFromOpaqueRoots(JSC::Handle<JSC::Unknown>, void* context, JSC::SlotVisitor&);
-    virtual void finalize(JSC::Handle<JSC::Unknown>, void* context);
+class JSOESTextureFloatOwner : public JSC::WeakHandleOwner
+{
+    virtual bool isReachableFromOpaqueRoots( JSC::Handle<JSC::Unknown>, void *context, JSC::SlotVisitor & );
+    virtual void finalize( JSC::Handle<JSC::Unknown>, void *context );
 };
 
-inline JSC::WeakHandleOwner* wrapperOwner(DOMWrapperWorld*, OESTextureFloat*)
+inline JSC::WeakHandleOwner *wrapperOwner( DOMWrapperWorld *, OESTextureFloat * )
 {
-    DEFINE_STATIC_LOCAL(JSOESTextureFloatOwner, jsOESTextureFloatOwner, ());
+    DEFINE_STATIC_LOCAL( JSOESTextureFloatOwner, jsOESTextureFloatOwner, () );
     return &jsOESTextureFloatOwner;
 }
 
-inline void* wrapperContext(DOMWrapperWorld* world, OESTextureFloat*)
+inline void *wrapperContext( DOMWrapperWorld *world, OESTextureFloat * )
 {
     return world;
 }
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, OESTextureFloat*);
-OESTextureFloat* toOESTextureFloat(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, OESTextureFloat * );
+OESTextureFloat *toOESTextureFloat( JSC::JSValue );
 
-class JSOESTextureFloatPrototype : public JSC::JSObjectWithGlobalObject {
+class JSOESTextureFloatPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSOESTextureFloatPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSOESTextureFloatPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                                JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = Base::StructureFlags;
 };

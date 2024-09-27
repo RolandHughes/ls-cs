@@ -29,9 +29,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSWebGLTexture);
+ASSERT_CLASS_FITS_IN_CELL( JSWebGLTexture );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -42,8 +43,8 @@ ASSERT_CLASS_FITS_IN_CELL(JSWebGLTexture);
 
 static const HashTableValue JSWebGLTextureTableValues[2] =
 {
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsWebGLTextureConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsWebGLTextureConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -57,43 +58,50 @@ static JSC_CONST_HASHTABLE HashTable JSWebGLTextureTable = { 2, 1, JSWebGLTextur
 
 static const HashTableValue JSWebGLTextureConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSWebGLTextureConstructorTable = { 1, 0, JSWebGLTextureConstructorTableValues, 0 };
-class JSWebGLTextureConstructor : public DOMConstructorObject {
+class JSWebGLTextureConstructor : public DOMConstructorObject
+{
 public:
-    JSWebGLTextureConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSWebGLTextureConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSWebGLTextureConstructor::s_info = { "WebGLTextureConstructor", &DOMConstructorObject::s_info, &JSWebGLTextureConstructorTable, 0 };
 
-JSWebGLTextureConstructor::JSWebGLTextureConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSWebGLTextureConstructor::JSWebGLTextureConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSWebGLTexturePrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSWebGLTexturePrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSWebGLTextureConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSWebGLTextureConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSWebGLTextureConstructor, JSDOMWrapper>(exec, &JSWebGLTextureConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSWebGLTextureConstructor, JSDOMWrapper>( exec, &JSWebGLTextureConstructorTable, this, propertyName,
+            slot );
 }
 
-bool JSWebGLTextureConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSWebGLTextureConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSWebGLTextureConstructor, JSDOMWrapper>(exec, &JSWebGLTextureConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSWebGLTextureConstructor, JSDOMWrapper>( exec, &JSWebGLTextureConstructorTable, this,
+            propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -105,61 +113,62 @@ bool JSWebGLTextureConstructor::getOwnPropertyDescriptor(ExecState* exec, const 
 
 static const HashTableValue JSWebGLTexturePrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSWebGLTexturePrototypeTable = { 1, 0, JSWebGLTexturePrototypeTableValues, 0 };
 const ClassInfo JSWebGLTexturePrototype::s_info = { "WebGLTexturePrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSWebGLTexturePrototypeTable, 0 };
 
-JSObject* JSWebGLTexturePrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSWebGLTexturePrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSWebGLTexture>(exec, globalObject);
+    return getDOMPrototype<JSWebGLTexture>( exec, globalObject );
 }
 
 const ClassInfo JSWebGLTexture::s_info = { "WebGLTexture", &JSDOMWrapper::s_info, &JSWebGLTextureTable, 0 };
 
-JSWebGLTexture::JSWebGLTexture(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<WebGLTexture> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSWebGLTexture::JSWebGLTexture( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<WebGLTexture> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSWebGLTexture::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSWebGLTexture::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSWebGLTexturePrototype(exec->globalData(), globalObject, JSWebGLTexturePrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSWebGLTexturePrototype( exec->globalData(), globalObject,
+            JSWebGLTexturePrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSWebGLTexture::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSWebGLTexture::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSWebGLTexture, Base>(exec, &JSWebGLTextureTable, this, propertyName, slot);
+    return getStaticValueSlot<JSWebGLTexture, Base>( exec, &JSWebGLTextureTable, this, propertyName, slot );
 }
 
-bool JSWebGLTexture::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSWebGLTexture::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSWebGLTexture, Base>(exec, &JSWebGLTextureTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSWebGLTexture, Base>( exec, &JSWebGLTextureTable, this, propertyName, descriptor );
 }
 
-JSValue jsWebGLTextureConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsWebGLTextureConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSWebGLTexture* domObject = static_cast<JSWebGLTexture*>(asObject(slotBase));
-    return JSWebGLTexture::getConstructor(exec, domObject->globalObject());
+    JSWebGLTexture *domObject = static_cast<JSWebGLTexture *>( asObject( slotBase ) );
+    return JSWebGLTexture::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSWebGLTexture::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSWebGLTexture::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSWebGLTextureConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSWebGLTextureConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, WebGLTexture* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, WebGLTexture *impl )
 {
-    return wrap<JSWebGLTexture>(exec, globalObject, impl);
+    return wrap<JSWebGLTexture>( exec, globalObject, impl );
 }
 
-WebGLTexture* toWebGLTexture(JSC::JSValue value)
+WebGLTexture *toWebGLTexture( JSC::JSValue value )
 {
-    return value.inherits(&JSWebGLTexture::s_info) ? static_cast<JSWebGLTexture*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSWebGLTexture::s_info ) ? static_cast<JSWebGLTexture *>( asObject( value ) )->impl() : 0;
 }
 
 }

@@ -26,10 +26,13 @@
 #ifndef LoopBlinnConstants_h
 #define LoopBlinnConstants_h
 
-namespace WebCore {
-namespace LoopBlinnConstants {
+namespace WebCore
+{
+namespace LoopBlinnConstants
+{
 
-enum FillSide {
+enum FillSide
+{
     LeftSide,
     RightSide
 };

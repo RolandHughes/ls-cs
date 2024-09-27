@@ -31,17 +31,17 @@
 #include <qpainter.h>
 #include <qstyleoption.h>
 
-QColumnViewGrip::QColumnViewGrip(QWidget *parent)
-   :  QWidget(*new QColumnViewGripPrivate, parent, Qt::EmptyFlag)
+QColumnViewGrip::QColumnViewGrip( QWidget *parent )
+    :  QWidget( *new QColumnViewGripPrivate, parent, Qt::EmptyFlag )
 {
 #ifndef QT_NO_CURSOR
-   setCursor(Qt::SplitHCursor);
+    setCursor( Qt::SplitHCursor );
 #endif
 }
 
 // internal
-QColumnViewGrip::QColumnViewGrip(QColumnViewGripPrivate &dd, QWidget *parent, Qt::WindowFlags flags)
-   :  QWidget(dd, parent, flags)
+QColumnViewGrip::QColumnViewGrip( QColumnViewGripPrivate &dd, QWidget *parent, Qt::WindowFlags flags )
+    :  QWidget( dd, parent, flags )
 {
 }
 
@@ -49,81 +49,91 @@ QColumnViewGrip::~QColumnViewGrip()
 {
 }
 
-int QColumnViewGrip::moveGrip(int offset)
+int QColumnViewGrip::moveGrip( int offset )
 {
-   QWidget *parentWidget = (QWidget *)parent();
+    QWidget *parentWidget = ( QWidget * )parent();
 
-   // first resize the parent
-   int oldWidth = parentWidget->width();
-   int newWidth = oldWidth;
+    // first resize the parent
+    int oldWidth = parentWidget->width();
+    int newWidth = oldWidth;
 
-   if (isRightToLeft()) {
-      newWidth -= offset;
-   } else {
-      newWidth += offset;
-   }
-   newWidth = qMax(parentWidget->minimumWidth(), newWidth);
-   parentWidget->resize(newWidth, parentWidget->height());
+    if ( isRightToLeft() )
+    {
+        newWidth -= offset;
+    }
+    else
+    {
+        newWidth += offset;
+    }
 
-   // Then have the view move the widget
-   int realOffset = parentWidget->width() - oldWidth;
-   int oldX = parentWidget->x();
-   if (realOffset != 0) {
-      emit gripMoved(realOffset);
-   }
+    newWidth = qMax( parentWidget->minimumWidth(), newWidth );
+    parentWidget->resize( newWidth, parentWidget->height() );
 
-   if (isRightToLeft()) {
-      realOffset = -1 * (oldX - parentWidget->x());
-   }
+    // Then have the view move the widget
+    int realOffset = parentWidget->width() - oldWidth;
+    int oldX = parentWidget->x();
 
-   return realOffset;
+    if ( realOffset != 0 )
+    {
+        emit gripMoved( realOffset );
+    }
+
+    if ( isRightToLeft() )
+    {
+        realOffset = -1 * ( oldX - parentWidget->x() );
+    }
+
+    return realOffset;
 }
 
-void QColumnViewGrip::paintEvent(QPaintEvent *event)
+void QColumnViewGrip::paintEvent( QPaintEvent *event )
 {
-   QPainter painter(this);
-   QStyleOption opt;
-   opt.initFrom(this);
-   style()->drawControl(QStyle::CE_ColumnViewGrip, &opt, &painter, this);
-   event->accept();
+    QPainter painter( this );
+    QStyleOption opt;
+    opt.initFrom( this );
+    style()->drawControl( QStyle::CE_ColumnViewGrip, &opt, &painter, this );
+    event->accept();
 }
 
-void QColumnViewGrip::mouseDoubleClickEvent(QMouseEvent *event)
+void QColumnViewGrip::mouseDoubleClickEvent( QMouseEvent *event )
 {
-   (void) event;
-   QWidget *parentWidget = (QWidget *)parent();
-   int offset = parentWidget->sizeHint().width() - parentWidget->width();
-   if (isRightToLeft()) {
-      offset *= -1;
-   }
-   moveGrip(offset);
-   event->accept();
+    ( void ) event;
+    QWidget *parentWidget = ( QWidget * )parent();
+    int offset = parentWidget->sizeHint().width() - parentWidget->width();
+
+    if ( isRightToLeft() )
+    {
+        offset *= -1;
+    }
+
+    moveGrip( offset );
+    event->accept();
 }
 
-void QColumnViewGrip::mousePressEvent(QMouseEvent *event)
+void QColumnViewGrip::mousePressEvent( QMouseEvent *event )
 {
-   Q_D(QColumnViewGrip);
-   d->originalXLocation = event->globalX();
-   event->accept();
+    Q_D( QColumnViewGrip );
+    d->originalXLocation = event->globalX();
+    event->accept();
 }
 
-void QColumnViewGrip::mouseMoveEvent(QMouseEvent *event)
+void QColumnViewGrip::mouseMoveEvent( QMouseEvent *event )
 {
-   Q_D(QColumnViewGrip);
-   int offset = event->globalX() - d->originalXLocation;
-   d->originalXLocation = moveGrip(offset) + d->originalXLocation;
-   event->accept();
+    Q_D( QColumnViewGrip );
+    int offset = event->globalX() - d->originalXLocation;
+    d->originalXLocation = moveGrip( offset ) + d->originalXLocation;
+    event->accept();
 }
 
-void QColumnViewGrip::mouseReleaseEvent(QMouseEvent *event)
+void QColumnViewGrip::mouseReleaseEvent( QMouseEvent *event )
 {
-   Q_D(QColumnViewGrip);
-   d->originalXLocation = -1;
-   event->accept();
+    Q_D( QColumnViewGrip );
+    d->originalXLocation = -1;
+    event->accept();
 }
 QColumnViewGripPrivate::QColumnViewGripPrivate()
-   :  QWidgetPrivate(),
-      originalXLocation(-1)
+    :  QWidgetPrivate(),
+       originalXLocation( -1 )
 {
 }
 

@@ -42,66 +42,100 @@
 
 #if ENABLE(INDEXED_DATABASE)
 
-namespace WebCore {
+namespace WebCore
+{
 
 class IDBVersionChangeRequest;
 class ScriptExecutionContext;
 
-class IDBDatabase : public RefCounted<IDBDatabase>, public EventTarget, public ActiveDOMObject {
+class IDBDatabase : public RefCounted<IDBDatabase>, public EventTarget, public ActiveDOMObject
+{
 public:
-    static PassRefPtr<IDBDatabase> create(ScriptExecutionContext*, PassRefPtr<IDBDatabaseBackendInterface>);
+    static PassRefPtr<IDBDatabase> create( ScriptExecutionContext *, PassRefPtr<IDBDatabaseBackendInterface> );
     ~IDBDatabase();
 
-    void setSetVersionTransaction(IDBTransaction*);
+    void setSetVersionTransaction( IDBTransaction * );
 
     // Implement the IDL
-    String name() const { return m_backend->name(); }
-    String version() const { return m_backend->version(); }
-    PassRefPtr<DOMStringList> objectStoreNames() const { return m_backend->objectStoreNames(); }
+    String name() const
+    {
+        return m_backend->name();
+    }
+    String version() const
+    {
+        return m_backend->version();
+    }
+    PassRefPtr<DOMStringList> objectStoreNames() const
+    {
+        return m_backend->objectStoreNames();
+    }
 
     // FIXME: Try to modify the code generator so this is unneeded.
-    PassRefPtr<IDBObjectStore> createObjectStore(const String& name, ExceptionCode& ec) { return createObjectStore(name, OptionsObject(), ec); }
-    PassRefPtr<IDBTransaction> transaction(ScriptExecutionContext* context, ExceptionCode& ec) { return transaction(context, 0, ec); }
-    PassRefPtr<IDBTransaction> transaction(ScriptExecutionContext* context, PassRefPtr<DOMStringList> storeNames, ExceptionCode& ec) { return transaction(context, storeNames, IDBTransaction::READ_ONLY, ec); }
-    PassRefPtr<IDBTransaction> transaction(ScriptExecutionContext*, PassRefPtr<DOMStringList>, unsigned short mode, ExceptionCode&);
+    PassRefPtr<IDBObjectStore> createObjectStore( const String &name, ExceptionCode &ec )
+    {
+        return createObjectStore( name, OptionsObject(), ec );
+    }
+    PassRefPtr<IDBTransaction> transaction( ScriptExecutionContext *context, ExceptionCode &ec )
+    {
+        return transaction( context, 0, ec );
+    }
+    PassRefPtr<IDBTransaction> transaction( ScriptExecutionContext *context, PassRefPtr<DOMStringList> storeNames,
+                                            ExceptionCode &ec )
+    {
+        return transaction( context, storeNames, IDBTransaction::READ_ONLY, ec );
+    }
+    PassRefPtr<IDBTransaction> transaction( ScriptExecutionContext *, PassRefPtr<DOMStringList>, unsigned short mode,
+                                            ExceptionCode & );
 
-    PassRefPtr<IDBObjectStore> createObjectStore(const String& name, const OptionsObject&, ExceptionCode&);
-    void deleteObjectStore(const String& name, ExceptionCode&);
-    PassRefPtr<IDBVersionChangeRequest> setVersion(ScriptExecutionContext*, const String& version, ExceptionCode&);
+    PassRefPtr<IDBObjectStore> createObjectStore( const String &name, const OptionsObject &, ExceptionCode & );
+    void deleteObjectStore( const String &name, ExceptionCode & );
+    PassRefPtr<IDBVersionChangeRequest> setVersion( ScriptExecutionContext *, const String &version, ExceptionCode & );
     void close();
 
-    DEFINE_ATTRIBUTE_EVENT_LISTENER(abort);
-    DEFINE_ATTRIBUTE_EVENT_LISTENER(error);
-    DEFINE_ATTRIBUTE_EVENT_LISTENER(versionchange);
+    DEFINE_ATTRIBUTE_EVENT_LISTENER( abort );
+    DEFINE_ATTRIBUTE_EVENT_LISTENER( error );
+    DEFINE_ATTRIBUTE_EVENT_LISTENER( versionchange );
 
     // IDBDatabaseCallbacks
-    virtual void onVersionChange(const String& requestedVersion);
+    virtual void onVersionChange( const String &requestedVersion );
 
     // ActiveDOMObject
     virtual bool hasPendingActivity() const;
     virtual void stop();
 
     // EventTarget
-    virtual IDBDatabase* toIDBDatabase() { return this; }
-    virtual ScriptExecutionContext* scriptExecutionContext() const;
+    virtual IDBDatabase *toIDBDatabase()
+    {
+        return this;
+    }
+    virtual ScriptExecutionContext *scriptExecutionContext() const;
 
 
     void open();
-    void enqueueEvent(PassRefPtr<Event>);
-    bool dispatchEvent(PassRefPtr<Event> event, ExceptionCode& ec) { return EventTarget::dispatchEvent(event, ec); }
-    virtual bool dispatchEvent(PassRefPtr<Event>);
+    void enqueueEvent( PassRefPtr<Event> );
+    bool dispatchEvent( PassRefPtr<Event> event, ExceptionCode &ec )
+    {
+        return EventTarget::dispatchEvent( event, ec );
+    }
+    virtual bool dispatchEvent( PassRefPtr<Event> );
 
     using RefCounted<IDBDatabase>::ref;
     using RefCounted<IDBDatabase>::deref;
 
 private:
-    IDBDatabase(ScriptExecutionContext*, PassRefPtr<IDBDatabaseBackendInterface>);
+    IDBDatabase( ScriptExecutionContext *, PassRefPtr<IDBDatabaseBackendInterface> );
 
     // EventTarget
-    virtual void refEventTarget() { ref(); }
-    virtual void derefEventTarget() { deref(); }
-    virtual EventTargetData* eventTargetData();
-    virtual EventTargetData* ensureEventTargetData();
+    virtual void refEventTarget()
+    {
+        ref();
+    }
+    virtual void derefEventTarget()
+    {
+        deref();
+    }
+    virtual EventTargetData *eventTargetData();
+    virtual EventTargetData *ensureEventTargetData();
 
     RefPtr<IDBDatabaseBackendInterface> m_backend;
     RefPtr<IDBTransaction> m_setVersionTransaction;

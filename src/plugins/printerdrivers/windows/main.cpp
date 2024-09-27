@@ -28,23 +28,24 @@
 
 class QWindowsPrinterSupportPlugin : public QPlatformPrinterSupportPlugin
 {
-   CS_OBJECT(QWindowsPrinterSupportPlugin)
+    CS_OBJECT( QWindowsPrinterSupportPlugin )
 
-   CS_PLUGIN_IID(QPlatformPrinterSupportPlugin_ID)
-   CS_PLUGIN_KEY("printerdriver_windows")
+    CS_PLUGIN_IID( QPlatformPrinterSupportPlugin_ID )
+    CS_PLUGIN_KEY( "printerdriver_windows" )
 
- public:
-   QPlatformPrinterSupport *create(const QString &) override;
+public:
+    QPlatformPrinterSupport *create( const QString & ) override;
 };
 
-CS_PLUGIN_REGISTER(QWindowsPrinterSupportPlugin)
+CS_PLUGIN_REGISTER( QWindowsPrinterSupportPlugin )
 
-QPlatformPrinterSupport *QWindowsPrinterSupportPlugin::create(const QString &key)
+QPlatformPrinterSupport *QWindowsPrinterSupportPlugin::create( const QString &key )
 {
-   if (key.compare(key, "printerdriver_windows", Qt::CaseInsensitive) == 0) {
-      return new QWindowsPrinterSupport;
-   }
+    if ( key.compare( key, "printerdriver_windows", Qt::CaseInsensitive ) == 0 )
+    {
+        return new QWindowsPrinterSupport;
+    }
 
-   return nullptr;
+    return nullptr;
 }
 

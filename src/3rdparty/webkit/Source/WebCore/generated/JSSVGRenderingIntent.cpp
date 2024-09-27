@@ -29,9 +29,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSSVGRenderingIntent);
+ASSERT_CLASS_FITS_IN_CELL( JSSVGRenderingIntent );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -42,8 +43,8 @@ ASSERT_CLASS_FITS_IN_CELL(JSSVGRenderingIntent);
 
 static const HashTableValue JSSVGRenderingIntentTableValues[2] =
 {
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGRenderingIntentConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGRenderingIntentConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -57,57 +58,71 @@ static JSC_CONST_HASHTABLE HashTable JSSVGRenderingIntentTable = { 2, 1, JSSVGRe
 
 static const HashTableValue JSSVGRenderingIntentConstructorTableValues[7] =
 {
-    { "RENDERING_INTENT_UNKNOWN", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGRenderingIntentRENDERING_INTENT_UNKNOWN), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "RENDERING_INTENT_AUTO", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGRenderingIntentRENDERING_INTENT_AUTO), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "RENDERING_INTENT_PERCEPTUAL", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGRenderingIntentRENDERING_INTENT_PERCEPTUAL), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "RENDERING_INTENT_RELATIVE_COLORIMETRIC", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGRenderingIntentRENDERING_INTENT_RELATIVE_COLORIMETRIC), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "RENDERING_INTENT_SATURATION", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGRenderingIntentRENDERING_INTENT_SATURATION), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "RENDERING_INTENT_ABSOLUTE_COLORIMETRIC", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGRenderingIntentRENDERING_INTENT_ABSOLUTE_COLORIMETRIC), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "RENDERING_INTENT_UNKNOWN", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGRenderingIntentRENDERING_INTENT_UNKNOWN ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "RENDERING_INTENT_AUTO", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGRenderingIntentRENDERING_INTENT_AUTO ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "RENDERING_INTENT_PERCEPTUAL", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGRenderingIntentRENDERING_INTENT_PERCEPTUAL ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "RENDERING_INTENT_RELATIVE_COLORIMETRIC", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGRenderingIntentRENDERING_INTENT_RELATIVE_COLORIMETRIC ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "RENDERING_INTENT_SATURATION", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGRenderingIntentRENDERING_INTENT_SATURATION ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "RENDERING_INTENT_ABSOLUTE_COLORIMETRIC", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGRenderingIntentRENDERING_INTENT_ABSOLUTE_COLORIMETRIC ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGRenderingIntentConstructorTable = { 16, 15, JSSVGRenderingIntentConstructorTableValues, 0 };
 
-COMPILE_ASSERT(0 == SVGRenderingIntent::RENDERING_INTENT_UNKNOWN, SVGRenderingIntentEnumRENDERING_INTENT_UNKNOWNIsWrongUseDontCheckEnums);
-COMPILE_ASSERT(1 == SVGRenderingIntent::RENDERING_INTENT_AUTO, SVGRenderingIntentEnumRENDERING_INTENT_AUTOIsWrongUseDontCheckEnums);
-COMPILE_ASSERT(2 == SVGRenderingIntent::RENDERING_INTENT_PERCEPTUAL, SVGRenderingIntentEnumRENDERING_INTENT_PERCEPTUALIsWrongUseDontCheckEnums);
-COMPILE_ASSERT(3 == SVGRenderingIntent::RENDERING_INTENT_RELATIVE_COLORIMETRIC, SVGRenderingIntentEnumRENDERING_INTENT_RELATIVE_COLORIMETRICIsWrongUseDontCheckEnums);
-COMPILE_ASSERT(4 == SVGRenderingIntent::RENDERING_INTENT_SATURATION, SVGRenderingIntentEnumRENDERING_INTENT_SATURATIONIsWrongUseDontCheckEnums);
-COMPILE_ASSERT(5 == SVGRenderingIntent::RENDERING_INTENT_ABSOLUTE_COLORIMETRIC, SVGRenderingIntentEnumRENDERING_INTENT_ABSOLUTE_COLORIMETRICIsWrongUseDontCheckEnums);
+COMPILE_ASSERT( 0 == SVGRenderingIntent::RENDERING_INTENT_UNKNOWN,
+                SVGRenderingIntentEnumRENDERING_INTENT_UNKNOWNIsWrongUseDontCheckEnums );
+COMPILE_ASSERT( 1 == SVGRenderingIntent::RENDERING_INTENT_AUTO,
+                SVGRenderingIntentEnumRENDERING_INTENT_AUTOIsWrongUseDontCheckEnums );
+COMPILE_ASSERT( 2 == SVGRenderingIntent::RENDERING_INTENT_PERCEPTUAL,
+                SVGRenderingIntentEnumRENDERING_INTENT_PERCEPTUALIsWrongUseDontCheckEnums );
+COMPILE_ASSERT( 3 == SVGRenderingIntent::RENDERING_INTENT_RELATIVE_COLORIMETRIC,
+                SVGRenderingIntentEnumRENDERING_INTENT_RELATIVE_COLORIMETRICIsWrongUseDontCheckEnums );
+COMPILE_ASSERT( 4 == SVGRenderingIntent::RENDERING_INTENT_SATURATION,
+                SVGRenderingIntentEnumRENDERING_INTENT_SATURATIONIsWrongUseDontCheckEnums );
+COMPILE_ASSERT( 5 == SVGRenderingIntent::RENDERING_INTENT_ABSOLUTE_COLORIMETRIC,
+                SVGRenderingIntentEnumRENDERING_INTENT_ABSOLUTE_COLORIMETRICIsWrongUseDontCheckEnums );
 
-class JSSVGRenderingIntentConstructor : public DOMConstructorObject {
+class JSSVGRenderingIntentConstructor : public DOMConstructorObject
+{
 public:
-    JSSVGRenderingIntentConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSSVGRenderingIntentConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSSVGRenderingIntentConstructor::s_info = { "SVGRenderingIntentConstructor", &DOMConstructorObject::s_info, &JSSVGRenderingIntentConstructorTable, 0 };
 
-JSSVGRenderingIntentConstructor::JSSVGRenderingIntentConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSSVGRenderingIntentConstructor::JSSVGRenderingIntentConstructor( ExecState *exec, Structure *structure,
+        JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSSVGRenderingIntentPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSSVGRenderingIntentPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSSVGRenderingIntentConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGRenderingIntentConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGRenderingIntentConstructor, JSDOMWrapper>(exec, &JSSVGRenderingIntentConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGRenderingIntentConstructor, JSDOMWrapper>( exec, &JSSVGRenderingIntentConstructorTable, this,
+            propertyName, slot );
 }
 
-bool JSSVGRenderingIntentConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGRenderingIntentConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGRenderingIntentConstructor, JSDOMWrapper>(exec, &JSSVGRenderingIntentConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGRenderingIntentConstructor, JSDOMWrapper>( exec, &JSSVGRenderingIntentConstructorTable, this,
+            propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -119,115 +134,121 @@ bool JSSVGRenderingIntentConstructor::getOwnPropertyDescriptor(ExecState* exec, 
 
 static const HashTableValue JSSVGRenderingIntentPrototypeTableValues[7] =
 {
-    { "RENDERING_INTENT_UNKNOWN", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGRenderingIntentRENDERING_INTENT_UNKNOWN), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "RENDERING_INTENT_AUTO", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGRenderingIntentRENDERING_INTENT_AUTO), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "RENDERING_INTENT_PERCEPTUAL", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGRenderingIntentRENDERING_INTENT_PERCEPTUAL), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "RENDERING_INTENT_RELATIVE_COLORIMETRIC", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGRenderingIntentRENDERING_INTENT_RELATIVE_COLORIMETRIC), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "RENDERING_INTENT_SATURATION", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGRenderingIntentRENDERING_INTENT_SATURATION), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "RENDERING_INTENT_ABSOLUTE_COLORIMETRIC", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGRenderingIntentRENDERING_INTENT_ABSOLUTE_COLORIMETRIC), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "RENDERING_INTENT_UNKNOWN", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGRenderingIntentRENDERING_INTENT_UNKNOWN ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "RENDERING_INTENT_AUTO", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGRenderingIntentRENDERING_INTENT_AUTO ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "RENDERING_INTENT_PERCEPTUAL", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGRenderingIntentRENDERING_INTENT_PERCEPTUAL ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "RENDERING_INTENT_RELATIVE_COLORIMETRIC", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGRenderingIntentRENDERING_INTENT_RELATIVE_COLORIMETRIC ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "RENDERING_INTENT_SATURATION", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGRenderingIntentRENDERING_INTENT_SATURATION ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "RENDERING_INTENT_ABSOLUTE_COLORIMETRIC", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGRenderingIntentRENDERING_INTENT_ABSOLUTE_COLORIMETRIC ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGRenderingIntentPrototypeTable = { 16, 15, JSSVGRenderingIntentPrototypeTableValues, 0 };
 const ClassInfo JSSVGRenderingIntentPrototype::s_info = { "SVGRenderingIntentPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSSVGRenderingIntentPrototypeTable, 0 };
 
-JSObject* JSSVGRenderingIntentPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGRenderingIntentPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSSVGRenderingIntent>(exec, globalObject);
+    return getDOMPrototype<JSSVGRenderingIntent>( exec, globalObject );
 }
 
-bool JSSVGRenderingIntentPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGRenderingIntentPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGRenderingIntentPrototype, JSObject>(exec, &JSSVGRenderingIntentPrototypeTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGRenderingIntentPrototype, JSObject>( exec, &JSSVGRenderingIntentPrototypeTable, this, propertyName,
+            slot );
 }
 
-bool JSSVGRenderingIntentPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGRenderingIntentPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGRenderingIntentPrototype, JSObject>(exec, &JSSVGRenderingIntentPrototypeTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGRenderingIntentPrototype, JSObject>( exec, &JSSVGRenderingIntentPrototypeTable, this,
+            propertyName, descriptor );
 }
 
 const ClassInfo JSSVGRenderingIntent::s_info = { "SVGRenderingIntent", &JSDOMWrapper::s_info, &JSSVGRenderingIntentTable, 0 };
 
-JSSVGRenderingIntent::JSSVGRenderingIntent(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<SVGRenderingIntent> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSSVGRenderingIntent::JSSVGRenderingIntent( Structure *structure, JSDOMGlobalObject *globalObject,
+        PassRefPtr<SVGRenderingIntent> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSSVGRenderingIntent::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGRenderingIntent::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSSVGRenderingIntentPrototype(exec->globalData(), globalObject, JSSVGRenderingIntentPrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSSVGRenderingIntentPrototype( exec->globalData(), globalObject,
+            JSSVGRenderingIntentPrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSSVGRenderingIntent::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGRenderingIntent::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGRenderingIntent, Base>(exec, &JSSVGRenderingIntentTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGRenderingIntent, Base>( exec, &JSSVGRenderingIntentTable, this, propertyName, slot );
 }
 
-bool JSSVGRenderingIntent::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGRenderingIntent::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGRenderingIntent, Base>(exec, &JSSVGRenderingIntentTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGRenderingIntent, Base>( exec, &JSSVGRenderingIntentTable, this, propertyName, descriptor );
 }
 
-JSValue jsSVGRenderingIntentConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGRenderingIntentConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGRenderingIntent* domObject = static_cast<JSSVGRenderingIntent*>(asObject(slotBase));
-    return JSSVGRenderingIntent::getConstructor(exec, domObject->globalObject());
+    JSSVGRenderingIntent *domObject = static_cast<JSSVGRenderingIntent *>( asObject( slotBase ) );
+    return JSSVGRenderingIntent::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSSVGRenderingIntent::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSSVGRenderingIntent::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSSVGRenderingIntentConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSSVGRenderingIntentConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
 // Constant getters
 
-JSValue jsSVGRenderingIntentRENDERING_INTENT_UNKNOWN(ExecState* exec, JSValue, const Identifier&)
+JSValue jsSVGRenderingIntentRENDERING_INTENT_UNKNOWN( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(0));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 0 ) );
 }
 
-JSValue jsSVGRenderingIntentRENDERING_INTENT_AUTO(ExecState* exec, JSValue, const Identifier&)
+JSValue jsSVGRenderingIntentRENDERING_INTENT_AUTO( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(1));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 1 ) );
 }
 
-JSValue jsSVGRenderingIntentRENDERING_INTENT_PERCEPTUAL(ExecState* exec, JSValue, const Identifier&)
+JSValue jsSVGRenderingIntentRENDERING_INTENT_PERCEPTUAL( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(2));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 2 ) );
 }
 
-JSValue jsSVGRenderingIntentRENDERING_INTENT_RELATIVE_COLORIMETRIC(ExecState* exec, JSValue, const Identifier&)
+JSValue jsSVGRenderingIntentRENDERING_INTENT_RELATIVE_COLORIMETRIC( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(3));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 3 ) );
 }
 
-JSValue jsSVGRenderingIntentRENDERING_INTENT_SATURATION(ExecState* exec, JSValue, const Identifier&)
+JSValue jsSVGRenderingIntentRENDERING_INTENT_SATURATION( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(4));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 4 ) );
 }
 
-JSValue jsSVGRenderingIntentRENDERING_INTENT_ABSOLUTE_COLORIMETRIC(ExecState* exec, JSValue, const Identifier&)
+JSValue jsSVGRenderingIntentRENDERING_INTENT_ABSOLUTE_COLORIMETRIC( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(5));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 5 ) );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, SVGRenderingIntent* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, SVGRenderingIntent *impl )
 {
-    return wrap<JSSVGRenderingIntent>(exec, globalObject, impl);
+    return wrap<JSSVGRenderingIntent>( exec, globalObject, impl );
 }
 
-SVGRenderingIntent* toSVGRenderingIntent(JSC::JSValue value)
+SVGRenderingIntent *toSVGRenderingIntent( JSC::JSValue value )
 {
-    return value.inherits(&JSSVGRenderingIntent::s_info) ? static_cast<JSSVGRenderingIntent*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSSVGRenderingIntent::s_info ) ? static_cast<JSSVGRenderingIntent *>( asObject( value ) )->impl() : 0;
 }
 
 }

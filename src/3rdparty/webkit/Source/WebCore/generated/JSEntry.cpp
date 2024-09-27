@@ -41,9 +41,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSEntry);
+ASSERT_CLASS_FITS_IN_CELL( JSEntry );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -54,13 +55,13 @@ ASSERT_CLASS_FITS_IN_CELL(JSEntry);
 
 static const HashTableValue JSEntryTableValues[7] =
 {
-    { "isFile", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsEntryIsFile), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "isDirectory", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsEntryIsDirectory), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "name", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsEntryName), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "fullPath", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsEntryFullPath), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "filesystem", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsEntryFilesystem), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsEntryConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "isFile", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsEntryIsFile ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "isDirectory", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsEntryIsDirectory ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "name", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsEntryName ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "fullPath", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsEntryFullPath ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "filesystem", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsEntryFilesystem ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsEntryConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -74,43 +75,49 @@ static JSC_CONST_HASHTABLE HashTable JSEntryTable = { 17, 15, JSEntryTableValues
 
 static const HashTableValue JSEntryConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSEntryConstructorTable = { 1, 0, JSEntryConstructorTableValues, 0 };
-class JSEntryConstructor : public DOMConstructorObject {
+class JSEntryConstructor : public DOMConstructorObject
+{
 public:
-    JSEntryConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSEntryConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSEntryConstructor::s_info = { "EntryConstructor", &DOMConstructorObject::s_info, &JSEntryConstructorTable, 0 };
 
-JSEntryConstructor::JSEntryConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSEntryConstructor::JSEntryConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSEntryPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSEntryPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSEntryConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSEntryConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSEntryConstructor, JSDOMWrapper>(exec, &JSEntryConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSEntryConstructor, JSDOMWrapper>( exec, &JSEntryConstructorTable, this, propertyName, slot );
 }
 
-bool JSEntryConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSEntryConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSEntryConstructor, JSDOMWrapper>(exec, &JSEntryConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSEntryConstructor, JSDOMWrapper>( exec, &JSEntryConstructorTable, this, propertyName,
+            descriptor );
 }
 
 /* Hash table for prototype */
@@ -122,311 +129,399 @@ bool JSEntryConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identif
 
 static const HashTableValue JSEntryPrototypeTableValues[7] =
 {
-    { "getMetadata", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsEntryPrototypeFunctionGetMetadata), (intptr_t)2 THUNK_GENERATOR(0) },
-    { "moveTo", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsEntryPrototypeFunctionMoveTo), (intptr_t)4 THUNK_GENERATOR(0) },
-    { "copyTo", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsEntryPrototypeFunctionCopyTo), (intptr_t)4 THUNK_GENERATOR(0) },
-    { "toURL", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsEntryPrototypeFunctionToURL), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "remove", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsEntryPrototypeFunctionRemove), (intptr_t)2 THUNK_GENERATOR(0) },
-    { "getParent", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsEntryPrototypeFunctionGetParent), (intptr_t)2 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "getMetadata", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsEntryPrototypeFunctionGetMetadata ), ( intptr_t )2 THUNK_GENERATOR( 0 ) },
+    { "moveTo", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsEntryPrototypeFunctionMoveTo ), ( intptr_t )4 THUNK_GENERATOR( 0 ) },
+    { "copyTo", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsEntryPrototypeFunctionCopyTo ), ( intptr_t )4 THUNK_GENERATOR( 0 ) },
+    { "toURL", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsEntryPrototypeFunctionToURL ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "remove", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsEntryPrototypeFunctionRemove ), ( intptr_t )2 THUNK_GENERATOR( 0 ) },
+    { "getParent", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsEntryPrototypeFunctionGetParent ), ( intptr_t )2 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSEntryPrototypeTable = { 17, 15, JSEntryPrototypeTableValues, 0 };
-static const HashTable* getJSEntryPrototypeTable(ExecState* exec)
+static const HashTable *getJSEntryPrototypeTable( ExecState *exec )
 {
-    return getHashTableForGlobalData(exec->globalData(), &JSEntryPrototypeTable);
+    return getHashTableForGlobalData( exec->globalData(), &JSEntryPrototypeTable );
 }
 
 const ClassInfo JSEntryPrototype::s_info = { "EntryPrototype", &JSC::JSObjectWithGlobalObject::s_info, 0, getJSEntryPrototypeTable };
 
-JSObject* JSEntryPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSEntryPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSEntry>(exec, globalObject);
+    return getDOMPrototype<JSEntry>( exec, globalObject );
 }
 
-bool JSEntryPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSEntryPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticFunctionSlot<JSObject>(exec, getJSEntryPrototypeTable(exec), this, propertyName, slot);
+    return getStaticFunctionSlot<JSObject>( exec, getJSEntryPrototypeTable( exec ), this, propertyName, slot );
 }
 
-bool JSEntryPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSEntryPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticFunctionDescriptor<JSObject>(exec, getJSEntryPrototypeTable(exec), this, propertyName, descriptor);
+    return getStaticFunctionDescriptor<JSObject>( exec, getJSEntryPrototypeTable( exec ), this, propertyName, descriptor );
 }
 
-static const HashTable* getJSEntryTable(ExecState* exec)
+static const HashTable *getJSEntryTable( ExecState *exec )
 {
-    return getHashTableForGlobalData(exec->globalData(), &JSEntryTable);
+    return getHashTableForGlobalData( exec->globalData(), &JSEntryTable );
 }
 
 const ClassInfo JSEntry::s_info = { "Entry", &JSDOMWrapper::s_info, 0, getJSEntryTable };
 
-JSEntry::JSEntry(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<Entry> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSEntry::JSEntry( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<Entry> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSEntry::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSEntry::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSEntryPrototype(exec->globalData(), globalObject, JSEntryPrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSEntryPrototype( exec->globalData(), globalObject,
+                                          JSEntryPrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSEntry::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSEntry::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSEntry, Base>(exec, getJSEntryTable(exec), this, propertyName, slot);
+    return getStaticValueSlot<JSEntry, Base>( exec, getJSEntryTable( exec ), this, propertyName, slot );
 }
 
-bool JSEntry::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSEntry::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSEntry, Base>(exec, getJSEntryTable(exec), this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSEntry, Base>( exec, getJSEntryTable( exec ), this, propertyName, descriptor );
 }
 
-JSValue jsEntryIsFile(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsEntryIsFile( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSEntry* castedThis = static_cast<JSEntry*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    Entry* imp = static_cast<Entry*>(castedThis->impl());
-    JSValue result = jsBoolean(imp->isFile());
+    JSEntry *castedThis = static_cast<JSEntry *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    Entry *imp = static_cast<Entry *>( castedThis->impl() );
+    JSValue result = jsBoolean( imp->isFile() );
     return result;
 }
 
 
-JSValue jsEntryIsDirectory(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsEntryIsDirectory( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSEntry* castedThis = static_cast<JSEntry*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    Entry* imp = static_cast<Entry*>(castedThis->impl());
-    JSValue result = jsBoolean(imp->isDirectory());
+    JSEntry *castedThis = static_cast<JSEntry *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    Entry *imp = static_cast<Entry *>( castedThis->impl() );
+    JSValue result = jsBoolean( imp->isDirectory() );
     return result;
 }
 
 
-JSValue jsEntryName(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsEntryName( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSEntry* castedThis = static_cast<JSEntry*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    Entry* imp = static_cast<Entry*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->name());
+    JSEntry *castedThis = static_cast<JSEntry *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    Entry *imp = static_cast<Entry *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->name() );
     return result;
 }
 
 
-JSValue jsEntryFullPath(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsEntryFullPath( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSEntry* castedThis = static_cast<JSEntry*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    Entry* imp = static_cast<Entry*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->fullPath());
+    JSEntry *castedThis = static_cast<JSEntry *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    Entry *imp = static_cast<Entry *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->fullPath() );
     return result;
 }
 
 
-JSValue jsEntryFilesystem(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsEntryFilesystem( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSEntry* castedThis = static_cast<JSEntry*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    Entry* imp = static_cast<Entry*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->filesystem()));
+    JSEntry *castedThis = static_cast<JSEntry *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    Entry *imp = static_cast<Entry *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->filesystem() ) );
     return result;
 }
 
 
-JSValue jsEntryConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsEntryConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSEntry* domObject = static_cast<JSEntry*>(asObject(slotBase));
-    return JSEntry::getConstructor(exec, domObject->globalObject());
+    JSEntry *domObject = static_cast<JSEntry *>( asObject( slotBase ) );
+    return JSEntry::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSEntry::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSEntry::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSEntryConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSEntryConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsEntryPrototypeFunctionGetMetadata(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsEntryPrototypeFunctionGetMetadata( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSEntry::s_info))
-        return throwVMTypeError(exec);
-    JSEntry* castedThis = static_cast<JSEntry*>(asObject(thisValue));
-    Entry* imp = static_cast<Entry*>(castedThis->impl());
+
+    if ( !thisValue.inherits( &JSEntry::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSEntry *castedThis = static_cast<JSEntry *>( asObject( thisValue ) );
+    Entry *imp = static_cast<Entry *>( castedThis->impl() );
     RefPtr<MetadataCallback> successCallback;
-    if (exec->argumentCount() > 0 && !exec->argument(0).isNull() && !exec->argument(0).isUndefined()) {
-        if (!exec->argument(0).isObject()) {
-            setDOMException(exec, TYPE_MISMATCH_ERR);
-            return JSValue::encode(jsUndefined());
+
+    if ( exec->argumentCount() > 0 && !exec->argument( 0 ).isNull() && !exec->argument( 0 ).isUndefined() )
+    {
+        if ( !exec->argument( 0 ).isObject() )
+        {
+            setDOMException( exec, TYPE_MISMATCH_ERR );
+            return JSValue::encode( jsUndefined() );
         }
-        successCallback = JSMetadataCallback::create(asObject(exec->argument(0)), castedThis->globalObject());
-    }
-    RefPtr<ErrorCallback> errorCallback;
-    if (exec->argumentCount() > 1 && !exec->argument(1).isNull() && !exec->argument(1).isUndefined()) {
-        if (!exec->argument(1).isObject()) {
-            setDOMException(exec, TYPE_MISMATCH_ERR);
-            return JSValue::encode(jsUndefined());
-        }
-        errorCallback = JSErrorCallback::create(asObject(exec->argument(1)), castedThis->globalObject());
+
+        successCallback = JSMetadataCallback::create( asObject( exec->argument( 0 ) ), castedThis->globalObject() );
     }
 
-    imp->getMetadata(successCallback, errorCallback);
-    return JSValue::encode(jsUndefined());
+    RefPtr<ErrorCallback> errorCallback;
+
+    if ( exec->argumentCount() > 1 && !exec->argument( 1 ).isNull() && !exec->argument( 1 ).isUndefined() )
+    {
+        if ( !exec->argument( 1 ).isObject() )
+        {
+            setDOMException( exec, TYPE_MISMATCH_ERR );
+            return JSValue::encode( jsUndefined() );
+        }
+
+        errorCallback = JSErrorCallback::create( asObject( exec->argument( 1 ) ), castedThis->globalObject() );
+    }
+
+    imp->getMetadata( successCallback, errorCallback );
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsEntryPrototypeFunctionMoveTo(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsEntryPrototypeFunctionMoveTo( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSEntry::s_info))
-        return throwVMTypeError(exec);
-    JSEntry* castedThis = static_cast<JSEntry*>(asObject(thisValue));
-    Entry* imp = static_cast<Entry*>(castedThis->impl());
-    DirectoryEntry* parent(toDirectoryEntry(exec->argument(0)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+
+    if ( !thisValue.inherits( &JSEntry::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSEntry *castedThis = static_cast<JSEntry *>( asObject( thisValue ) );
+    Entry *imp = static_cast<Entry *>( castedThis->impl() );
+    DirectoryEntry *parent( toDirectoryEntry( exec->argument( 0 ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
 
     int argsCount = exec->argumentCount();
-    if (argsCount <= 1) {
-        imp->moveTo(parent);
-        return JSValue::encode(jsUndefined());
+
+    if ( argsCount <= 1 )
+    {
+        imp->moveTo( parent );
+        return JSValue::encode( jsUndefined() );
     }
 
-    const String& name(valueToStringWithUndefinedOrNullCheck(exec, exec->argument(1)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+    const String &name( valueToStringWithUndefinedOrNullCheck( exec, exec->argument( 1 ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
     RefPtr<EntryCallback> successCallback;
-    if (exec->argumentCount() > 2 && !exec->argument(2).isNull() && !exec->argument(2).isUndefined()) {
-        if (!exec->argument(2).isObject()) {
-            setDOMException(exec, TYPE_MISMATCH_ERR);
-            return JSValue::encode(jsUndefined());
+
+    if ( exec->argumentCount() > 2 && !exec->argument( 2 ).isNull() && !exec->argument( 2 ).isUndefined() )
+    {
+        if ( !exec->argument( 2 ).isObject() )
+        {
+            setDOMException( exec, TYPE_MISMATCH_ERR );
+            return JSValue::encode( jsUndefined() );
         }
-        successCallback = JSEntryCallback::create(asObject(exec->argument(2)), castedThis->globalObject());
-    }
-    RefPtr<ErrorCallback> errorCallback;
-    if (exec->argumentCount() > 3 && !exec->argument(3).isNull() && !exec->argument(3).isUndefined()) {
-        if (!exec->argument(3).isObject()) {
-            setDOMException(exec, TYPE_MISMATCH_ERR);
-            return JSValue::encode(jsUndefined());
-        }
-        errorCallback = JSErrorCallback::create(asObject(exec->argument(3)), castedThis->globalObject());
+
+        successCallback = JSEntryCallback::create( asObject( exec->argument( 2 ) ), castedThis->globalObject() );
     }
 
-    imp->moveTo(parent, name, successCallback, errorCallback);
-    return JSValue::encode(jsUndefined());
+    RefPtr<ErrorCallback> errorCallback;
+
+    if ( exec->argumentCount() > 3 && !exec->argument( 3 ).isNull() && !exec->argument( 3 ).isUndefined() )
+    {
+        if ( !exec->argument( 3 ).isObject() )
+        {
+            setDOMException( exec, TYPE_MISMATCH_ERR );
+            return JSValue::encode( jsUndefined() );
+        }
+
+        errorCallback = JSErrorCallback::create( asObject( exec->argument( 3 ) ), castedThis->globalObject() );
+    }
+
+    imp->moveTo( parent, name, successCallback, errorCallback );
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsEntryPrototypeFunctionCopyTo(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsEntryPrototypeFunctionCopyTo( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSEntry::s_info))
-        return throwVMTypeError(exec);
-    JSEntry* castedThis = static_cast<JSEntry*>(asObject(thisValue));
-    Entry* imp = static_cast<Entry*>(castedThis->impl());
-    DirectoryEntry* parent(toDirectoryEntry(exec->argument(0)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+
+    if ( !thisValue.inherits( &JSEntry::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSEntry *castedThis = static_cast<JSEntry *>( asObject( thisValue ) );
+    Entry *imp = static_cast<Entry *>( castedThis->impl() );
+    DirectoryEntry *parent( toDirectoryEntry( exec->argument( 0 ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
 
     int argsCount = exec->argumentCount();
-    if (argsCount <= 1) {
-        imp->copyTo(parent);
-        return JSValue::encode(jsUndefined());
+
+    if ( argsCount <= 1 )
+    {
+        imp->copyTo( parent );
+        return JSValue::encode( jsUndefined() );
     }
 
-    const String& name(valueToStringWithUndefinedOrNullCheck(exec, exec->argument(1)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+    const String &name( valueToStringWithUndefinedOrNullCheck( exec, exec->argument( 1 ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
     RefPtr<EntryCallback> successCallback;
-    if (exec->argumentCount() > 2 && !exec->argument(2).isNull() && !exec->argument(2).isUndefined()) {
-        if (!exec->argument(2).isObject()) {
-            setDOMException(exec, TYPE_MISMATCH_ERR);
-            return JSValue::encode(jsUndefined());
+
+    if ( exec->argumentCount() > 2 && !exec->argument( 2 ).isNull() && !exec->argument( 2 ).isUndefined() )
+    {
+        if ( !exec->argument( 2 ).isObject() )
+        {
+            setDOMException( exec, TYPE_MISMATCH_ERR );
+            return JSValue::encode( jsUndefined() );
         }
-        successCallback = JSEntryCallback::create(asObject(exec->argument(2)), castedThis->globalObject());
+
+        successCallback = JSEntryCallback::create( asObject( exec->argument( 2 ) ), castedThis->globalObject() );
     }
+
     RefPtr<ErrorCallback> errorCallback;
-    if (exec->argumentCount() > 3 && !exec->argument(3).isNull() && !exec->argument(3).isUndefined()) {
-        if (!exec->argument(3).isObject()) {
-            setDOMException(exec, TYPE_MISMATCH_ERR);
-            return JSValue::encode(jsUndefined());
+
+    if ( exec->argumentCount() > 3 && !exec->argument( 3 ).isNull() && !exec->argument( 3 ).isUndefined() )
+    {
+        if ( !exec->argument( 3 ).isObject() )
+        {
+            setDOMException( exec, TYPE_MISMATCH_ERR );
+            return JSValue::encode( jsUndefined() );
         }
-        errorCallback = JSErrorCallback::create(asObject(exec->argument(3)), castedThis->globalObject());
+
+        errorCallback = JSErrorCallback::create( asObject( exec->argument( 3 ) ), castedThis->globalObject() );
     }
 
-    imp->copyTo(parent, name, successCallback, errorCallback);
-    return JSValue::encode(jsUndefined());
+    imp->copyTo( parent, name, successCallback, errorCallback );
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsEntryPrototypeFunctionToURL(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsEntryPrototypeFunctionToURL( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSEntry::s_info))
-        return throwVMTypeError(exec);
-    JSEntry* castedThis = static_cast<JSEntry*>(asObject(thisValue));
-    Entry* imp = static_cast<Entry*>(castedThis->impl());
+
+    if ( !thisValue.inherits( &JSEntry::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSEntry *castedThis = static_cast<JSEntry *>( asObject( thisValue ) );
+    Entry *imp = static_cast<Entry *>( castedThis->impl() );
 
 
-    JSC::JSValue result = jsString(exec, imp->toURL());
-    return JSValue::encode(result);
+    JSC::JSValue result = jsString( exec, imp->toURL() );
+    return JSValue::encode( result );
 }
 
-EncodedJSValue JSC_HOST_CALL jsEntryPrototypeFunctionRemove(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsEntryPrototypeFunctionRemove( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSEntry::s_info))
-        return throwVMTypeError(exec);
-    JSEntry* castedThis = static_cast<JSEntry*>(asObject(thisValue));
-    Entry* imp = static_cast<Entry*>(castedThis->impl());
+
+    if ( !thisValue.inherits( &JSEntry::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSEntry *castedThis = static_cast<JSEntry *>( asObject( thisValue ) );
+    Entry *imp = static_cast<Entry *>( castedThis->impl() );
     RefPtr<VoidCallback> successCallback;
-    if (exec->argumentCount() > 0 && !exec->argument(0).isNull() && !exec->argument(0).isUndefined()) {
-        if (!exec->argument(0).isObject()) {
-            setDOMException(exec, TYPE_MISMATCH_ERR);
-            return JSValue::encode(jsUndefined());
+
+    if ( exec->argumentCount() > 0 && !exec->argument( 0 ).isNull() && !exec->argument( 0 ).isUndefined() )
+    {
+        if ( !exec->argument( 0 ).isObject() )
+        {
+            setDOMException( exec, TYPE_MISMATCH_ERR );
+            return JSValue::encode( jsUndefined() );
         }
-        successCallback = JSCustomVoidCallback::create(asObject(exec->argument(0)), castedThis->globalObject());
-    }
-    RefPtr<ErrorCallback> errorCallback;
-    if (exec->argumentCount() > 1 && !exec->argument(1).isNull() && !exec->argument(1).isUndefined()) {
-        if (!exec->argument(1).isObject()) {
-            setDOMException(exec, TYPE_MISMATCH_ERR);
-            return JSValue::encode(jsUndefined());
-        }
-        errorCallback = JSErrorCallback::create(asObject(exec->argument(1)), castedThis->globalObject());
+
+        successCallback = JSCustomVoidCallback::create( asObject( exec->argument( 0 ) ), castedThis->globalObject() );
     }
 
-    imp->remove(successCallback, errorCallback);
-    return JSValue::encode(jsUndefined());
+    RefPtr<ErrorCallback> errorCallback;
+
+    if ( exec->argumentCount() > 1 && !exec->argument( 1 ).isNull() && !exec->argument( 1 ).isUndefined() )
+    {
+        if ( !exec->argument( 1 ).isObject() )
+        {
+            setDOMException( exec, TYPE_MISMATCH_ERR );
+            return JSValue::encode( jsUndefined() );
+        }
+
+        errorCallback = JSErrorCallback::create( asObject( exec->argument( 1 ) ), castedThis->globalObject() );
+    }
+
+    imp->remove( successCallback, errorCallback );
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsEntryPrototypeFunctionGetParent(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsEntryPrototypeFunctionGetParent( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSEntry::s_info))
-        return throwVMTypeError(exec);
-    JSEntry* castedThis = static_cast<JSEntry*>(asObject(thisValue));
-    Entry* imp = static_cast<Entry*>(castedThis->impl());
-    RefPtr<EntryCallback> successCallback;
-    if (exec->argumentCount() > 0 && !exec->argument(0).isNull() && !exec->argument(0).isUndefined()) {
-        if (!exec->argument(0).isObject()) {
-            setDOMException(exec, TYPE_MISMATCH_ERR);
-            return JSValue::encode(jsUndefined());
-        }
-        successCallback = JSEntryCallback::create(asObject(exec->argument(0)), castedThis->globalObject());
-    }
-    RefPtr<ErrorCallback> errorCallback;
-    if (exec->argumentCount() > 1 && !exec->argument(1).isNull() && !exec->argument(1).isUndefined()) {
-        if (!exec->argument(1).isObject()) {
-            setDOMException(exec, TYPE_MISMATCH_ERR);
-            return JSValue::encode(jsUndefined());
-        }
-        errorCallback = JSErrorCallback::create(asObject(exec->argument(1)), castedThis->globalObject());
+
+    if ( !thisValue.inherits( &JSEntry::s_info ) )
+    {
+        return throwVMTypeError( exec );
     }
 
-    imp->getParent(successCallback, errorCallback);
-    return JSValue::encode(jsUndefined());
+    JSEntry *castedThis = static_cast<JSEntry *>( asObject( thisValue ) );
+    Entry *imp = static_cast<Entry *>( castedThis->impl() );
+    RefPtr<EntryCallback> successCallback;
+
+    if ( exec->argumentCount() > 0 && !exec->argument( 0 ).isNull() && !exec->argument( 0 ).isUndefined() )
+    {
+        if ( !exec->argument( 0 ).isObject() )
+        {
+            setDOMException( exec, TYPE_MISMATCH_ERR );
+            return JSValue::encode( jsUndefined() );
+        }
+
+        successCallback = JSEntryCallback::create( asObject( exec->argument( 0 ) ), castedThis->globalObject() );
+    }
+
+    RefPtr<ErrorCallback> errorCallback;
+
+    if ( exec->argumentCount() > 1 && !exec->argument( 1 ).isNull() && !exec->argument( 1 ).isUndefined() )
+    {
+        if ( !exec->argument( 1 ).isObject() )
+        {
+            setDOMException( exec, TYPE_MISMATCH_ERR );
+            return JSValue::encode( jsUndefined() );
+        }
+
+        errorCallback = JSErrorCallback::create( asObject( exec->argument( 1 ) ), castedThis->globalObject() );
+    }
+
+    imp->getParent( successCallback, errorCallback );
+    return JSValue::encode( jsUndefined() );
 }
 
-Entry* toEntry(JSC::JSValue value)
+Entry *toEntry( JSC::JSValue value )
 {
-    return value.inherits(&JSEntry::s_info) ? static_cast<JSEntry*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSEntry::s_info ) ? static_cast<JSEntry *>( asObject( value ) )->impl() : 0;
 }
 
 }

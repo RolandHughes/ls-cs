@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef TextMetrics_h
@@ -29,18 +29,29 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class TextMetrics : public RefCounted<TextMetrics> {
+class TextMetrics : public RefCounted<TextMetrics>
+{
 public:
-    static PassRefPtr<TextMetrics> create() { return adoptRef(new TextMetrics); }
+    static PassRefPtr<TextMetrics> create()
+    {
+        return adoptRef( new TextMetrics );
+    }
 
-    float width() const { return m_width; }
-    void setWidth(float w) { m_width = w; }
+    float width() const
+    {
+        return m_width;
+    }
+    void setWidth( float w )
+    {
+        m_width = w;
+    }
 
 private:
     TextMetrics()
-        : m_width(0)
+        : m_width( 0 )
     { }
 
     float m_width;

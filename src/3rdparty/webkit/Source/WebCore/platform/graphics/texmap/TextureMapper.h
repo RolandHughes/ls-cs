@@ -22,9 +22,9 @@
 
 #if USE(ACCELERATED_COMPOSITING)
 #if (defined(QT_OPENGL_LIB))
-    #if defined(QT_OPENGL_ES_2) && !defined(TEXMAP_OPENGL_ES_2)
-        #define TEXMAP_OPENGL_ES_2
-    #endif
+#if defined(QT_OPENGL_ES_2) && !defined(TEXMAP_OPENGL_ES_2)
+#define TEXMAP_OPENGL_ES_2
+#endif
 #endif
 
 #include "GraphicsContext.h"
@@ -38,21 +38,26 @@
     a need for a platform specific scene-graph library like CoreAnimations or QGraphicsView.
 */
 
-namespace WebCore {
+namespace WebCore
+{
 
 class TextureMapper;
 
 // A 2D texture that can be the target of software or GL rendering.
-class BitmapTexture  : public RefCounted<BitmapTexture> {
+class BitmapTexture  : public RefCounted<BitmapTexture>
+{
 public:
-    BitmapTexture() : m_lockCount(0) {}
+    BitmapTexture() : m_lockCount( 0 ) {}
     virtual ~BitmapTexture() { }
 
-    virtual bool allowOfflineTextureUpload() const { return false; }
+    virtual bool allowOfflineTextureUpload() const
+    {
+        return false;
+    }
     virtual void destroy() = 0;
     virtual IntSize size() const = 0;
     virtual bool isValid() const = 0;
-    virtual void reset(const IntSize& size, bool opaque = false)
+    virtual void reset( const IntSize &size, bool opaque = false )
     {
         m_isOpaque = opaque;
         m_contentSize = size;
@@ -60,23 +65,47 @@ public:
 
     virtual void pack() { }
     virtual void unpack() { }
-    virtual bool isPacked() const { return false; }
-
-    virtual PlatformGraphicsContext* beginPaint(const IntRect& dirtyRect) = 0;
-    virtual void endPaint() = 0;
-    virtual PlatformGraphicsContext* beginPaintMedia()
+    virtual bool isPacked() const
     {
-        return beginPaint(IntRect(0, 0, size().width(), size().height()));
+        return false;
     }
-    virtual void setContentsToImage(Image*) = 0;
-    virtual bool save(const String&) { return false; }
 
-    inline void lock() { ++m_lockCount; }
-    inline void unlock() { --m_lockCount; }
-    inline bool isLocked() { return m_lockCount; }
-    inline IntSize contentSize() const { return m_contentSize; }
-    inline void setOffset(const IntPoint& o) { m_offset = o; }
-    inline IntPoint offset() const { return m_offset; }
+    virtual PlatformGraphicsContext *beginPaint( const IntRect &dirtyRect ) = 0;
+    virtual void endPaint() = 0;
+    virtual PlatformGraphicsContext *beginPaintMedia()
+    {
+        return beginPaint( IntRect( 0, 0, size().width(), size().height() ) );
+    }
+    virtual void setContentsToImage( Image * ) = 0;
+    virtual bool save( const String & )
+    {
+        return false;
+    }
+
+    inline void lock()
+    {
+        ++m_lockCount;
+    }
+    inline void unlock()
+    {
+        --m_lockCount;
+    }
+    inline bool isLocked()
+    {
+        return m_lockCount;
+    }
+    inline IntSize contentSize() const
+    {
+        return m_contentSize;
+    }
+    inline void setOffset( const IntPoint &o )
+    {
+        m_offset = o;
+    }
+    inline IntPoint offset() const
+    {
+        return m_offset;
+    }
 
 protected:
 
@@ -89,40 +118,55 @@ private:
 
 // A "context" class used to encapsulate accelerated texture mapping functions: i.e. drawing a texture
 // onto the screen or into another texture with a specified transform, opacity and mask.
-class TextureMapper {
+class TextureMapper
+{
     friend class BitmapTexture;
 
 public:
-    static PassOwnPtr<TextureMapper> create(GraphicsContext* graphicsContext = 0);
+    static PassOwnPtr<TextureMapper> create( GraphicsContext *graphicsContext = 0 );
     virtual ~TextureMapper() { }
 
-    virtual void drawTexture(const BitmapTexture& texture, const IntRect& target, const TransformationMatrix& matrix = TransformationMatrix(), float opacity = 1.0f, const BitmapTexture* maskTexture = 0) = 0;
+    virtual void drawTexture( const BitmapTexture &texture, const IntRect &target,
+                              const TransformationMatrix &matrix = TransformationMatrix(), float opacity = 1.0f, const BitmapTexture *maskTexture = 0 ) = 0;
 
     // makes a surface the target for the following drawTexture calls.
-    virtual void bindSurface(BitmapTexture* surface) = 0;
-    virtual void paintToTarget(const BitmapTexture& texture, const IntSize&, const TransformationMatrix& matrix, float opacity, const IntRect& visibleRect)
+    virtual void bindSurface( BitmapTexture *surface ) = 0;
+    virtual void paintToTarget( const BitmapTexture &texture, const IntSize &, const TransformationMatrix &matrix, float opacity,
+                                const IntRect &visibleRect )
     {
-        UNUSED_PARAM(visibleRect);
-        drawTexture(texture, IntRect(0, 0, texture.contentSize().width(), texture.contentSize().height()), matrix, opacity, 0);
+        UNUSED_PARAM( visibleRect );
+        drawTexture( texture, IntRect( 0, 0, texture.contentSize().width(), texture.contentSize().height() ), matrix, opacity, 0 );
     }
 
-    virtual void setGraphicsContext(GraphicsContext*) { }
-    virtual void setClip(const IntRect&) = 0;
+    virtual void setGraphicsContext( GraphicsContext * ) { }
+    virtual void setClip( const IntRect & ) = 0;
     virtual bool allowSurfaceForRoot() const = 0;
     virtual PassRefPtr<BitmapTexture> createTexture() = 0;
 
-    void setImageInterpolationQuality(InterpolationQuality quality) { m_interpolationQuality = quality; }
-    void setTextDrawingMode(TextDrawingModeFlags mode) { m_textDrawingMode = mode; }
+    void setImageInterpolationQuality( InterpolationQuality quality )
+    {
+        m_interpolationQuality = quality;
+    }
+    void setTextDrawingMode( TextDrawingModeFlags mode )
+    {
+        m_textDrawingMode = mode;
+    }
 
-    InterpolationQuality imageInterpolationQuality() const { return m_interpolationQuality; }
-    TextDrawingModeFlags textDrawingMode() const { return m_textDrawingMode; }
+    InterpolationQuality imageInterpolationQuality() const
+    {
+        return m_interpolationQuality;
+    }
+    TextDrawingModeFlags textDrawingMode() const
+    {
+        return m_textDrawingMode;
+    }
 
-    void setViewportSize(const IntSize&);
+    void setViewportSize( const IntSize & );
 
 protected:
     TextureMapper()
-        : m_interpolationQuality(InterpolationDefault)
-        , m_textDrawingMode(TextModeFill)
+        : m_interpolationQuality( InterpolationDefault )
+        , m_textDrawingMode( TextModeFill )
     {}
 
 private:

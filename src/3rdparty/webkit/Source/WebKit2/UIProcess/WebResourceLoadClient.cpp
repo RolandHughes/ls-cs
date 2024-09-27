@@ -32,60 +32,86 @@
 
 using namespace WebCore;
 
-namespace WebKit {
-
-void WebResourceLoadClient::didInitiateLoadForResource(WebPageProxy* page, WebFrameProxy* frame, uint64_t resourceIdentifier, const ResourceRequest& resourceRequest, bool pageIsProvisionallyLoading)
+namespace WebKit
 {
-    if (!m_client.didInitiateLoadForResource)
-        return;
 
-    RefPtr<WebURLRequest> request = WebURLRequest::create(resourceRequest);
-    return m_client.didInitiateLoadForResource(toAPI(page), toAPI(frame), resourceIdentifier, toAPI(request.get()), pageIsProvisionallyLoading, m_client.clientInfo);
+void WebResourceLoadClient::didInitiateLoadForResource( WebPageProxy *page, WebFrameProxy *frame, uint64_t resourceIdentifier,
+        const ResourceRequest &resourceRequest, bool pageIsProvisionallyLoading )
+{
+    if ( !m_client.didInitiateLoadForResource )
+    {
+        return;
+    }
+
+    RefPtr<WebURLRequest> request = WebURLRequest::create( resourceRequest );
+    return m_client.didInitiateLoadForResource( toAPI( page ), toAPI( frame ), resourceIdentifier, toAPI( request.get() ),
+            pageIsProvisionallyLoading, m_client.clientInfo );
 }
 
-void WebResourceLoadClient::didSendRequestForResource(WebPageProxy* page, WebFrameProxy* frame, uint64_t resourceIdentifier, const ResourceRequest& resourceRequest, const ResourceResponse& redirectResourceResponse)
+void WebResourceLoadClient::didSendRequestForResource( WebPageProxy *page, WebFrameProxy *frame, uint64_t resourceIdentifier,
+        const ResourceRequest &resourceRequest, const ResourceResponse &redirectResourceResponse )
 {
-    if (!m_client.didSendRequestForResource)
+    if ( !m_client.didSendRequestForResource )
+    {
         return;
+    }
 
-    RefPtr<WebURLRequest> request = WebURLRequest::create(resourceRequest);
+    RefPtr<WebURLRequest> request = WebURLRequest::create( resourceRequest );
     RefPtr<WebURLResponse> response;
-    if (!redirectResourceResponse.isNull())
-        response = WebURLResponse::create(redirectResourceResponse);
-    return m_client.didSendRequestForResource(toAPI(page), toAPI(frame), resourceIdentifier, toAPI(request.get()), toAPI(response.get()), m_client.clientInfo);
+
+    if ( !redirectResourceResponse.isNull() )
+    {
+        response = WebURLResponse::create( redirectResourceResponse );
+    }
+
+    return m_client.didSendRequestForResource( toAPI( page ), toAPI( frame ), resourceIdentifier, toAPI( request.get() ),
+            toAPI( response.get() ), m_client.clientInfo );
 }
 
-void WebResourceLoadClient::didReceiveResponseForResource(WebPageProxy* page, WebFrameProxy* frame, uint64_t resourceIdentifier, const ResourceResponse& resourceResponse)
+void WebResourceLoadClient::didReceiveResponseForResource( WebPageProxy *page, WebFrameProxy *frame, uint64_t resourceIdentifier,
+        const ResourceResponse &resourceResponse )
 {
-    if (!m_client.didReceiveResponseForResource)
+    if ( !m_client.didReceiveResponseForResource )
+    {
         return;
+    }
 
-    RefPtr<WebURLResponse> response = WebURLResponse::create(resourceResponse);
-    return m_client.didReceiveResponseForResource(toAPI(page), toAPI(frame), resourceIdentifier, toAPI(response.get()), m_client.clientInfo);
+    RefPtr<WebURLResponse> response = WebURLResponse::create( resourceResponse );
+    return m_client.didReceiveResponseForResource( toAPI( page ), toAPI( frame ), resourceIdentifier, toAPI( response.get() ),
+            m_client.clientInfo );
 }
 
-void WebResourceLoadClient::didReceiveContentLengthForResource(WebPageProxy* page, WebFrameProxy* frame, uint64_t resourceIdentifier, uint64_t contentLength)
+void WebResourceLoadClient::didReceiveContentLengthForResource( WebPageProxy *page, WebFrameProxy *frame,
+        uint64_t resourceIdentifier, uint64_t contentLength )
 {
-    if (!m_client.didReceiveContentLengthForResource)
+    if ( !m_client.didReceiveContentLengthForResource )
+    {
         return;
+    }
 
-    return m_client.didReceiveContentLengthForResource(toAPI(page), toAPI(frame), resourceIdentifier, contentLength, m_client.clientInfo);
+    return m_client.didReceiveContentLengthForResource( toAPI( page ), toAPI( frame ), resourceIdentifier, contentLength,
+            m_client.clientInfo );
 }
 
-void WebResourceLoadClient::didFinishLoadForResource(WebPageProxy* page, WebFrameProxy* frame, uint64_t resourceIdentifier)
+void WebResourceLoadClient::didFinishLoadForResource( WebPageProxy *page, WebFrameProxy *frame, uint64_t resourceIdentifier )
 {
-    if (!m_client.didFinishLoadForResource)
+    if ( !m_client.didFinishLoadForResource )
+    {
         return;
+    }
 
-    return m_client.didFinishLoadForResource(toAPI(page), toAPI(frame), resourceIdentifier, m_client.clientInfo);
+    return m_client.didFinishLoadForResource( toAPI( page ), toAPI( frame ), resourceIdentifier, m_client.clientInfo );
 }
 
-void WebResourceLoadClient::didFailLoadForResource(WebPageProxy* page, WebFrameProxy* frame, uint64_t resourceIdentifier, const ResourceError& error)
+void WebResourceLoadClient::didFailLoadForResource( WebPageProxy *page, WebFrameProxy *frame, uint64_t resourceIdentifier,
+        const ResourceError &error )
 {
-    if (!m_client.didFailLoadForResource)
+    if ( !m_client.didFailLoadForResource )
+    {
         return;
+    }
 
-    return m_client.didFailLoadForResource(toAPI(page), toAPI(frame), resourceIdentifier, toAPI(error), m_client.clientInfo);
+    return m_client.didFailLoadForResource( toAPI( page ), toAPI( frame ), resourceIdentifier, toAPI( error ), m_client.clientInfo );
 }
 
 } // namespace WebKit

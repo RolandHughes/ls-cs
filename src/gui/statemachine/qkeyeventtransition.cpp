@@ -32,73 +32,76 @@
 
 class QKeyEventTransitionPrivate : public QEventTransitionPrivate
 {
-   Q_DECLARE_PUBLIC(QKeyEventTransition)
+    Q_DECLARE_PUBLIC( QKeyEventTransition )
 
- public:
-   QKeyEventTransitionPrivate() {}
+public:
+    QKeyEventTransitionPrivate() {}
 
-   QBasicKeyEventTransition *transition;
+    QBasicKeyEventTransition *transition;
 };
 
-QKeyEventTransition::QKeyEventTransition(QState *sourceState)
-   : QEventTransition(*new QKeyEventTransitionPrivate, sourceState)
+QKeyEventTransition::QKeyEventTransition( QState *sourceState )
+    : QEventTransition( *new QKeyEventTransitionPrivate, sourceState )
 {
-   Q_D(QKeyEventTransition);
-   d->transition = new QBasicKeyEventTransition();
+    Q_D( QKeyEventTransition );
+    d->transition = new QBasicKeyEventTransition();
 }
 
-QKeyEventTransition::QKeyEventTransition(QObject *object, QEvent::Type type,
-      int key, QState *sourceState)
-   : QEventTransition(*new QKeyEventTransitionPrivate, object, type, sourceState)
+QKeyEventTransition::QKeyEventTransition( QObject *object, QEvent::Type type,
+        int key, QState *sourceState )
+    : QEventTransition( *new QKeyEventTransitionPrivate, object, type, sourceState )
 {
-   Q_D(QKeyEventTransition);
-   d->transition = new QBasicKeyEventTransition(type, key);
+    Q_D( QKeyEventTransition );
+    d->transition = new QBasicKeyEventTransition( type, key );
 }
 
 QKeyEventTransition::~QKeyEventTransition()
 {
-   Q_D(QKeyEventTransition);
-   delete d->transition;
+    Q_D( QKeyEventTransition );
+    delete d->transition;
 }
 
 int QKeyEventTransition::key() const
 {
-   Q_D(const QKeyEventTransition);
-   return d->transition->key();
+    Q_D( const QKeyEventTransition );
+    return d->transition->key();
 }
 
-void QKeyEventTransition::setKey(int key)
+void QKeyEventTransition::setKey( int key )
 {
-   Q_D(QKeyEventTransition);
-   d->transition->setKey(key);
+    Q_D( QKeyEventTransition );
+    d->transition->setKey( key );
 }
 
 Qt::KeyboardModifiers QKeyEventTransition::modifierMask() const
 {
-   Q_D(const QKeyEventTransition);
-   return d->transition->modifierMask();
+    Q_D( const QKeyEventTransition );
+    return d->transition->modifierMask();
 }
 
-void QKeyEventTransition::setModifierMask(Qt::KeyboardModifiers modifierMask)
+void QKeyEventTransition::setModifierMask( Qt::KeyboardModifiers modifierMask )
 {
-   Q_D(QKeyEventTransition);
-   d->transition->setModifierMask(modifierMask);
+    Q_D( QKeyEventTransition );
+    d->transition->setModifierMask( modifierMask );
 }
 
-bool QKeyEventTransition::eventTest(QEvent *event)
+bool QKeyEventTransition::eventTest( QEvent *event )
 {
-   Q_D(const QKeyEventTransition);
-   if (!QEventTransition::eventTest(event)) {
-      return false;
-   }
-   QStateMachine::WrappedEvent *we = static_cast<QStateMachine::WrappedEvent *>(event);
-   d->transition->setEventType(we->event()->type());
-   return QAbstractTransitionPrivate::get(d->transition)->callEventTest(we->event());
+    Q_D( const QKeyEventTransition );
+
+    if ( !QEventTransition::eventTest( event ) )
+    {
+        return false;
+    }
+
+    QStateMachine::WrappedEvent *we = static_cast<QStateMachine::WrappedEvent *>( event );
+    d->transition->setEventType( we->event()->type() );
+    return QAbstractTransitionPrivate::get( d->transition )->callEventTest( we->event() );
 }
 
-void QKeyEventTransition::onTransition(QEvent *event)
+void QKeyEventTransition::onTransition( QEvent *event )
 {
-   QEventTransition::onTransition(event);
+    QEventTransition::onTransition( event );
 }
 
 #endif //QT_NO_STATEMACHINE

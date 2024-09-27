@@ -29,28 +29,40 @@
 
 struct QGLXNativeContext
 {
-   QGLXNativeContext()
-      : m_context(nullptr), m_display(nullptr), m_window(0), m_visualId(0)
-   {
-   }
+    QGLXNativeContext()
+        : m_context( nullptr ), m_display( nullptr ), m_window( 0 ), m_visualId( 0 )
+    {
+    }
 
-   QGLXNativeContext(GLXContext ctx, Display *dpy = nullptr, Window wnd = 0, VisualID vid = 0)
-      : m_context(ctx), m_display(dpy), m_window(wnd), m_visualId(vid)
-   {
-   }
+    QGLXNativeContext( GLXContext ctx, Display *dpy = nullptr, Window wnd = 0, VisualID vid = 0 )
+        : m_context( ctx ), m_display( dpy ), m_window( wnd ), m_visualId( vid )
+    {
+    }
 
-   GLXContext context() const { return m_context; }
-   Display *display() const { return m_display; }
-   Window window() const { return m_window; }
-   VisualID visualId() const { return m_visualId; }
+    GLXContext context() const
+    {
+        return m_context;
+    }
+    Display *display() const
+    {
+        return m_display;
+    }
+    Window window() const
+    {
+        return m_window;
+    }
+    VisualID visualId() const
+    {
+        return m_visualId;
+    }
 
 private:
-   GLXContext m_context;
-   Display *m_display;
-   Window m_window;
-   VisualID m_visualId;
+    GLXContext m_context;
+    Display *m_display;
+    Window m_window;
+    VisualID m_visualId;
 };
 
-CS_DECLARE_METATYPE(QGLXNativeContext)
+CS_DECLARE_METATYPE( QGLXNativeContext )
 
 #endif

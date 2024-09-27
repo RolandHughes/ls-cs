@@ -22,14 +22,14 @@
 
 #include <catch2/catch.hpp>
 
-TEST_CASE("QJsonValue traits", "[qjsonvalue")
+TEST_CASE( "QJsonValue traits", "[qjsonvalue" )
 {
-   REQUIRE(std::is_copy_constructible_v<QJsonValue> == true);
-   REQUIRE(std::is_move_constructible_v<QJsonValue> == true);
+    REQUIRE( std::is_copy_constructible_v<QJsonValue> == true );
+    REQUIRE( std::is_move_constructible_v<QJsonValue> == true );
 
-   REQUIRE(std::is_copy_assignable_v<QJsonValue> == true);
-   REQUIRE(std::is_move_assignable_v<QJsonValue> == true);
+    REQUIRE( std::is_copy_assignable_v<QJsonValue> == true );
+    REQUIRE( std::is_move_assignable_v<QJsonValue> == true );
 
-   REQUIRE(std::has_virtual_destructor_v<QJsonValue> == false);
+    REQUIRE( std::has_virtual_destructor_v<QJsonValue> == false );
 }
 

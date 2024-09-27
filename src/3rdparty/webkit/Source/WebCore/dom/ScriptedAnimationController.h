@@ -33,35 +33,37 @@
 #include <wtf/RefPtr.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Document;
 class Element;
 class RequestAnimationFrameCallback;
 
-class ScriptedAnimationController {
-WTF_MAKE_NONCOPYABLE(ScriptedAnimationController);
+class ScriptedAnimationController
+{
+    WTF_MAKE_NONCOPYABLE( ScriptedAnimationController );
 public:
-    static PassOwnPtr<ScriptedAnimationController> create(Document* document)
+    static PassOwnPtr<ScriptedAnimationController> create( Document *document )
     {
-        return adoptPtr(new ScriptedAnimationController(document));
+        return adoptPtr( new ScriptedAnimationController( document ) );
     }
 
     typedef int CallbackId;
 
-    CallbackId registerCallback(PassRefPtr<RequestAnimationFrameCallback>, Element*);
-    void cancelCallback(CallbackId);
-    void serviceScriptedAnimations(DOMTimeStamp);
+    CallbackId registerCallback( PassRefPtr<RequestAnimationFrameCallback>, Element * );
+    void cancelCallback( CallbackId );
+    void serviceScriptedAnimations( DOMTimeStamp );
 
     void suspend();
     void resume();
 
 private:
-    explicit ScriptedAnimationController(Document*);
+    explicit ScriptedAnimationController( Document * );
     typedef Vector<RefPtr<RequestAnimationFrameCallback> > CallbackList;
     CallbackList m_callbacks;
 
-    Document* m_document;
+    Document *m_document;
     CallbackId m_nextCallbackId;
     int m_suspendCount;
 };

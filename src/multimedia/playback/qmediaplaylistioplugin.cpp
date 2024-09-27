@@ -31,8 +31,8 @@ QMediaPlaylistWriter::~QMediaPlaylistWriter()
 {
 }
 
-QMediaPlaylistIOPlugin::QMediaPlaylistIOPlugin(QObject *parent)
-   : QObject(parent)
+QMediaPlaylistIOPlugin::QMediaPlaylistIOPlugin( QObject *parent )
+    : QObject( parent )
 {
 }
 

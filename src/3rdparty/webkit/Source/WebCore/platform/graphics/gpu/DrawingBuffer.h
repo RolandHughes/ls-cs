@@ -47,7 +47,8 @@ class GrContext;
 struct GrPlatformSurfaceDesc;
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
 #if PLATFORM(CHROMIUM)
 struct DrawingBufferInternal;
@@ -55,19 +56,26 @@ struct DrawingBufferInternal;
 
 // Manages a rendering target (framebuffer + attachment) for a canvas.  Can publish its rendering
 // results to a PlatformLayer for compositing.
-class DrawingBuffer : public RefCounted<DrawingBuffer> {
+class DrawingBuffer : public RefCounted<DrawingBuffer>
+{
 public:
     friend class GraphicsContext3D;
-    
+
     ~DrawingBuffer();
 
     void clearFramebuffer();
 
     // Returns true if the buffer was successfully resized.
-    bool reset(const IntSize&);
+    bool reset( const IntSize & );
     void bind();
-    IntSize size() const { return m_size; }
-    Platform3DObject colorBuffer() const { return m_colorBuffer; }
+    IntSize size() const
+    {
+        return m_size;
+    }
+    Platform3DObject colorBuffer() const
+    {
+        return m_colorBuffer;
+    }
 
     // Clear all resources from this object, as well as context. Called when context is destroyed
     // to prevent invalid accesses to the resources.
@@ -75,46 +83,57 @@ public:
 
     // Create the depth/stencil and multisample buffers, if needed.
     void createSecondaryBuffers();
-    
-    void resizeDepthStencil(int sampleCount);
+
+    void resizeDepthStencil( int sampleCount );
 
     // Copies the multisample color buffer to the normal color buffer and leaves m_fbo bound
-    void commit(long x = 0, long y = 0, long width = -1, long height = -1);
-    
-    bool multisample() const { return m_context && m_context->getContextAttributes().antialias && m_multisampleExtensionSupported; }
-    
+    void commit( long x = 0, long y = 0, long width = -1, long height = -1 );
+
+    bool multisample() const
+    {
+        return m_context && m_context->getContextAttributes().antialias && m_multisampleExtensionSupported;
+    }
+
     Platform3DObject platformColorBuffer() const;
 
 #if USE(ACCELERATED_COMPOSITING)
-    PlatformLayer* platformLayer();
+    PlatformLayer *platformLayer();
     void publishToPlatformLayer();
 #endif
 
 #if PLATFORM(CHROMIUM)
-    class WillPublishCallback {
-        WTF_MAKE_NONCOPYABLE(WillPublishCallback);
+    class WillPublishCallback
+    {
+        WTF_MAKE_NONCOPYABLE( WillPublishCallback );
     public:
         WillPublishCallback() { }
         virtual ~WillPublishCallback() { }
-        
+
         virtual void willPublish() = 0;
     };
 
-    void setWillPublishCallback(PassOwnPtr<WillPublishCallback> callback) { m_callback = callback; }
+    void setWillPublishCallback( PassOwnPtr<WillPublishCallback> callback )
+    {
+        m_callback = callback;
+    }
 #endif
 
 #if USE(SKIA)
-    void setGrContext(GrContext* ctx);
-    void getGrPlatformSurfaceDesc(GrPlatformSurfaceDesc*);
+    void setGrContext( GrContext *ctx );
+    void getGrPlatformSurfaceDesc( GrPlatformSurfaceDesc * );
 #endif
 
-    PassRefPtr<GraphicsContext3D> graphicsContext3D() const { return m_context; }
+    PassRefPtr<GraphicsContext3D> graphicsContext3D() const
+    {
+        return m_context;
+    }
 
 private:
-    static PassRefPtr<DrawingBuffer> create(GraphicsContext3D*, const IntSize&);
-    
-    DrawingBuffer(GraphicsContext3D*, const IntSize&, bool multisampleExtensionSupported, bool packedDepthStencilExtensionSupported);
-    
+    static PassRefPtr<DrawingBuffer> create( GraphicsContext3D *, const IntSize & );
+
+    DrawingBuffer( GraphicsContext3D *, const IntSize &, bool multisampleExtensionSupported,
+                   bool packedDepthStencilExtensionSupported );
+
     // Platform specific function called after reset() so each platform can do extra work if needed
     void didReset();
 
@@ -146,7 +165,7 @@ private:
 #endif
 
 #if USE(SKIA)
-    GrContext* m_grContext;
+    GrContext *m_grContext;
 #endif
 };
 

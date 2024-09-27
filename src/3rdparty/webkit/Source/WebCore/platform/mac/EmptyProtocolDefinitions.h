@@ -31,16 +31,16 @@
 
 #ifdef BUILDING_ON_LEOPARD
 
-EMPTY_PROTOCOL(NSTableViewDataSource)
-EMPTY_PROTOCOL(NSTableViewDelegate)
-EMPTY_PROTOCOL(NSWindowDelegate)
+EMPTY_PROTOCOL( NSTableViewDataSource )
+EMPTY_PROTOCOL( NSTableViewDelegate )
+EMPTY_PROTOCOL( NSWindowDelegate )
 
 #endif
 
 #if defined(BUILDING_ON_LEOPARD) || defined(BUILDING_ON_SNOW_LEOPARD)
 
-EMPTY_PROTOCOL(NSURLConnectionDelegate)
-EMPTY_PROTOCOL(NSURLDownloadDelegate)
+EMPTY_PROTOCOL( NSURLConnectionDelegate )
+EMPTY_PROTOCOL( NSURLDownloadDelegate )
 
 #endif
 

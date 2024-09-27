@@ -32,7 +32,8 @@
 #include <wtf/RefPtr.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Filter;
 class FilterEffect;
@@ -41,80 +42,151 @@ class TextStream;
 
 typedef Vector<RefPtr<FilterEffect> > FilterEffectVector;
 
-enum FilterEffectType {
+enum FilterEffectType
+{
     FilterEffectTypeUnknown,
     FilterEffectTypeImage,
     FilterEffectTypeTile,
     FilterEffectTypeSourceInput
 };
 
-class FilterEffect : public RefCounted<FilterEffect> {
+class FilterEffect : public RefCounted<FilterEffect>
+{
 public:
     virtual ~FilterEffect();
 
-    bool hasResult() const { return m_imageBufferResult || m_unmultipliedImageResult || m_premultipliedImageResult; }
+    bool hasResult() const
+    {
+        return m_imageBufferResult || m_unmultipliedImageResult || m_premultipliedImageResult;
+    }
     void clearResult();
-    ImageBuffer* asImageBuffer();
-    PassRefPtr<ByteArray> asUnmultipliedImage(const IntRect&);
-    PassRefPtr<ByteArray> asPremultipliedImage(const IntRect&);
-    void copyUnmultipliedImage(ByteArray* destination, const IntRect&);
-    void copyPremultipliedImage(ByteArray* destination, const IntRect&);
+    ImageBuffer *asImageBuffer();
+    PassRefPtr<ByteArray> asUnmultipliedImage( const IntRect & );
+    PassRefPtr<ByteArray> asPremultipliedImage( const IntRect & );
+    void copyUnmultipliedImage( ByteArray *destination, const IntRect & );
+    void copyPremultipliedImage( ByteArray *destination, const IntRect & );
 
-    FilterEffectVector& inputEffects() { return m_inputEffects; }
-    FilterEffect* inputEffect(unsigned) const;
-    unsigned numberOfEffectInputs() const { return m_inputEffects.size(); }
+    FilterEffectVector &inputEffects()
+    {
+        return m_inputEffects;
+    }
+    FilterEffect *inputEffect( unsigned ) const;
+    unsigned numberOfEffectInputs() const
+    {
+        return m_inputEffects.size();
+    }
 
-    IntRect drawingRegionOfInputImage(const IntRect&) const;
-    IntRect requestedRegionOfInputImageData(const IntRect&) const;
+    IntRect drawingRegionOfInputImage( const IntRect & ) const;
+    IntRect requestedRegionOfInputImageData( const IntRect & ) const;
 
     // Solid black image with different alpha values.
-    bool isAlphaImage() const { return m_alphaImage; }
-    void setIsAlphaImage(bool alphaImage) { m_alphaImage = alphaImage; }
+    bool isAlphaImage() const
+    {
+        return m_alphaImage;
+    }
+    void setIsAlphaImage( bool alphaImage )
+    {
+        m_alphaImage = alphaImage;
+    }
 
-    IntRect absolutePaintRect() const { return m_absolutePaintRect; }
-    void setAbsolutePaintRect(const IntRect& absolutePaintRect) { m_absolutePaintRect = absolutePaintRect; }
+    IntRect absolutePaintRect() const
+    {
+        return m_absolutePaintRect;
+    }
+    void setAbsolutePaintRect( const IntRect &absolutePaintRect )
+    {
+        m_absolutePaintRect = absolutePaintRect;
+    }
 
-    IntRect maxEffectRect() const { return m_maxEffectRect; }
-    void setMaxEffectRect(const IntRect& maxEffectRect) { m_maxEffectRect = maxEffectRect; } 
+    IntRect maxEffectRect() const
+    {
+        return m_maxEffectRect;
+    }
+    void setMaxEffectRect( const IntRect &maxEffectRect )
+    {
+        m_maxEffectRect = maxEffectRect;
+    }
 
     virtual void apply() = 0;
     virtual void dump() = 0;
 
     virtual void determineAbsolutePaintRect();
 
-    virtual FilterEffectType filterEffectType() const { return FilterEffectTypeUnknown; }
+    virtual FilterEffectType filterEffectType() const
+    {
+        return FilterEffectTypeUnknown;
+    }
 
-    virtual TextStream& externalRepresentation(TextStream&, int indention = 0) const;
+    virtual TextStream &externalRepresentation( TextStream &, int indention = 0 ) const;
 
 public:
     // The following functions are SVG specific and will move to RenderSVGResourceFilterPrimitive.
     // See bug https://bugs.webkit.org/show_bug.cgi?id=45614.
-    bool hasX() const { return m_hasX; }
-    void setHasX(bool value) { m_hasX = value; }
+    bool hasX() const
+    {
+        return m_hasX;
+    }
+    void setHasX( bool value )
+    {
+        m_hasX = value;
+    }
 
-    bool hasY() const { return m_hasY; }
-    void setHasY(bool value) { m_hasY = value; }
+    bool hasY() const
+    {
+        return m_hasY;
+    }
+    void setHasY( bool value )
+    {
+        m_hasY = value;
+    }
 
-    bool hasWidth() const { return m_hasWidth; }
-    void setHasWidth(bool value) { m_hasWidth = value; }
+    bool hasWidth() const
+    {
+        return m_hasWidth;
+    }
+    void setHasWidth( bool value )
+    {
+        m_hasWidth = value;
+    }
 
-    bool hasHeight() const { return m_hasHeight; }
-    void setHasHeight(bool value) { m_hasHeight = value; }
+    bool hasHeight() const
+    {
+        return m_hasHeight;
+    }
+    void setHasHeight( bool value )
+    {
+        m_hasHeight = value;
+    }
 
-    FloatRect filterPrimitiveSubregion() const { return m_filterPrimitiveSubregion; }
-    void setFilterPrimitiveSubregion(const FloatRect& filterPrimitiveSubregion) { m_filterPrimitiveSubregion = filterPrimitiveSubregion; }
+    FloatRect filterPrimitiveSubregion() const
+    {
+        return m_filterPrimitiveSubregion;
+    }
+    void setFilterPrimitiveSubregion( const FloatRect &filterPrimitiveSubregion )
+    {
+        m_filterPrimitiveSubregion = filterPrimitiveSubregion;
+    }
 
-    FloatRect effectBoundaries() const { return m_effectBoundaries; }
-    void setEffectBoundaries(const FloatRect& effectBoundaries) { m_effectBoundaries = effectBoundaries; }
+    FloatRect effectBoundaries() const
+    {
+        return m_effectBoundaries;
+    }
+    void setEffectBoundaries( const FloatRect &effectBoundaries )
+    {
+        m_effectBoundaries = effectBoundaries;
+    }
 
-    Filter* filter() { return m_filter; }
+    Filter *filter()
+    {
+        return m_filter;
+    }
 
 protected:
-    FilterEffect(Filter*);
+    FilterEffect( Filter * );
 
-    ImageBuffer* createImageBufferResult();
-    ByteArray* createUnmultipliedImageResult();
-    ByteArray* createPremultipliedImageResult();
+    ImageBuffer *createImageBufferResult();
+    ByteArray *createUnmultipliedImageResult();
+    ByteArray *createPremultipliedImageResult();
 
 private:
     OwnPtr<ImageBuffer> m_imageBufferResult;
@@ -125,14 +197,14 @@ private:
     bool m_alphaImage;
 
     IntRect m_absolutePaintRect;
-    
+
     // The maximum size of a filter primitive. In SVG this is the primitive subregion in absolute coordinate space.
     // The absolute paint rect should never be bigger than m_maxEffectRect.
     IntRect m_maxEffectRect;
-    Filter* m_filter;
+    Filter *m_filter;
 
 private:
-    inline void copyImageBytes(ByteArray* source, ByteArray* destination, const IntRect&);
+    inline void copyImageBytes( ByteArray *source, ByteArray *destination, const IntRect & );
 
     // The following member variables are SVG specific and will move to RenderSVGResourceFilterPrimitive.
     // See bug https://bugs.webkit.org/show_bug.cgi?id=45614.

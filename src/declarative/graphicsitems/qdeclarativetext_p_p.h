@@ -37,75 +37,76 @@ class QTextDocumentWithImageResources;
 
 class QDeclarativeTextPrivate : public QDeclarativeImplicitSizeItemPrivate
 {
-   Q_DECLARE_PUBLIC(QDeclarativeText)
- public:
-   QDeclarativeTextPrivate();
+    Q_DECLARE_PUBLIC( QDeclarativeText )
+public:
+    QDeclarativeTextPrivate();
 
-   ~QDeclarativeTextPrivate();
+    ~QDeclarativeTextPrivate();
 
-   void updateSize();
-   void updateLayout();
-   bool determineHorizontalAlignment();
-   bool setHAlign(QDeclarativeText::HAlignment, bool forceAlign = false);
-   void mirrorChange();
-   QTextDocument *textDocument();
+    void updateSize();
+    void updateLayout();
+    bool determineHorizontalAlignment();
+    bool setHAlign( QDeclarativeText::HAlignment, bool forceAlign = false );
+    void mirrorChange();
+    QTextDocument *textDocument();
 
-   QString text;
-   QFont font;
-   QFont sourceFont;
-   QColor  color;
-   QDeclarativeText::TextStyle style;
-   QColor  styleColor;
-   QString activeLink;
-   QDeclarativeText::HAlignment hAlign;
-   QDeclarativeText::VAlignment vAlign;
-   QDeclarativeText::TextElideMode elideMode;
-   QDeclarativeText::TextFormat format;
-   QDeclarativeText::WrapMode wrapMode;
-   qreal lineHeight;
-   QDeclarativeText::LineHeightMode lineHeightMode;
-   int lineCount;
-   bool truncated;
-   int maximumLineCount;
-   int maximumLineCountValid;
-   QPointF elidePos;
+    QString text;
+    QFont font;
+    QFont sourceFont;
+    QColor  color;
+    QDeclarativeText::TextStyle style;
+    QColor  styleColor;
+    QString activeLink;
+    QDeclarativeText::HAlignment hAlign;
+    QDeclarativeText::VAlignment vAlign;
+    QDeclarativeText::TextElideMode elideMode;
+    QDeclarativeText::TextFormat format;
+    QDeclarativeText::WrapMode wrapMode;
+    qreal lineHeight;
+    QDeclarativeText::LineHeightMode lineHeightMode;
+    int lineCount;
+    bool truncated;
+    int maximumLineCount;
+    int maximumLineCountValid;
+    QPointF elidePos;
 
-   static QString elideChar;
+    static QString elideChar;
 
-   void invalidateImageCache();
-   void checkImageCache();
-   QPixmap imageCache;
+    void invalidateImageCache();
+    void checkImageCache();
+    QPixmap imageCache;
 
-   bool imageCacheDirty: 1;
-   bool updateOnComponentComplete: 1;
-   bool richText: 1;
-   bool singleline: 1;
-   bool cacheAllTextAsImage: 1;
-   bool internalWidthUpdate: 1;
-   bool requireImplicitWidth: 1;
-   bool hAlignImplicit: 1;
-   bool rightToLeftText: 1;
-   bool layoutTextElided: 1;
+    bool imageCacheDirty: 1;
+    bool updateOnComponentComplete: 1;
+    bool richText: 1;
+    bool singleline: 1;
+    bool cacheAllTextAsImage: 1;
+    bool internalWidthUpdate: 1;
+    bool requireImplicitWidth: 1;
+    bool hAlignImplicit: 1;
+    bool rightToLeftText: 1;
+    bool layoutTextElided: 1;
 
-   QRect layedOutTextRect;
-   QSize paintedSize;
-   qreal naturalWidth;
-   virtual qreal implicitWidth() const;
-   void ensureDoc();
-   QPixmap textDocumentImage(bool drawStyle);
-   QTextDocumentWithImageResources *doc;
+    QRect layedOutTextRect;
+    QSize paintedSize;
+    qreal naturalWidth;
+    virtual qreal implicitWidth() const;
+    void ensureDoc();
+    QPixmap textDocumentImage( bool drawStyle );
+    QTextDocumentWithImageResources *doc;
 
-   QRect setupTextLayout();
-   QPixmap textLayoutImage(bool drawStyle);
-   void drawTextLayout(QPainter *p, const QPointF &pos, bool drawStyle);
-   QDeclarativeTextLayout layout;
+    QRect setupTextLayout();
+    QPixmap textLayoutImage( bool drawStyle );
+    void drawTextLayout( QPainter *p, const QPointF &pos, bool drawStyle );
+    QDeclarativeTextLayout layout;
 
-   static QPixmap drawOutline(const QPixmap &source, const QPixmap &styleSource);
-   static QPixmap drawOutline(const QPixmap &source, const QPixmap &styleSource, int yOffset);
+    static QPixmap drawOutline( const QPixmap &source, const QPixmap &styleSource );
+    static QPixmap drawOutline( const QPixmap &source, const QPixmap &styleSource, int yOffset );
 
-   static inline QDeclarativeTextPrivate *get(QDeclarativeText *t) {
-      return t->d_func();
-   }
+    static inline QDeclarativeTextPrivate *get( QDeclarativeText *t )
+    {
+        return t->d_func();
+    }
 };
 
 QT_END_NAMESPACE

@@ -28,21 +28,22 @@
 
 #if ENABLE(INPUT_SPEECH)
 
-namespace WebCore {
-
-PassRefPtr<SpeechInputResult> SpeechInputResult::create(const String& utterance, double confidence)
+namespace WebCore
 {
-    return adoptRef(new SpeechInputResult(utterance, confidence));
+
+PassRefPtr<SpeechInputResult> SpeechInputResult::create( const String &utterance, double confidence )
+{
+    return adoptRef( new SpeechInputResult( utterance, confidence ) );
 }
 
-PassRefPtr<SpeechInputResult> SpeechInputResult::create(const SpeechInputResult& source)
+PassRefPtr<SpeechInputResult> SpeechInputResult::create( const SpeechInputResult &source )
 {
-    return adoptRef(new SpeechInputResult(source.m_utterance, source.m_confidence));
+    return adoptRef( new SpeechInputResult( source.m_utterance, source.m_confidence ) );
 }
 
-SpeechInputResult::SpeechInputResult(const String& utterance, double confidence)
-    : m_utterance(utterance)
-    , m_confidence(confidence)
+SpeechInputResult::SpeechInputResult( const String &utterance, double confidence )
+    : m_utterance( utterance )
+    , m_confidence( confidence )
 {
 }
 
@@ -51,7 +52,7 @@ double SpeechInputResult::confidence() const
     return m_confidence;
 }
 
-const String& SpeechInputResult::utterance() const
+const String &SpeechInputResult::utterance() const
 {
     return m_utterance;
 }

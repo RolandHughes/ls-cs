@@ -35,26 +35,26 @@ class QDeclarativeType;
 class QDeclarativeTypeNameCache;
 class QDeclarativeTypeNameScriptClass : public QScriptDeclarativeClass
 {
- public:
-   QDeclarativeTypeNameScriptClass(QDeclarativeEngine *);
-   ~QDeclarativeTypeNameScriptClass();
+public:
+    QDeclarativeTypeNameScriptClass( QDeclarativeEngine * );
+    ~QDeclarativeTypeNameScriptClass();
 
-   enum TypeNameMode { IncludeEnums, ExcludeEnums };
-   QScriptValue newObject(QObject *, QDeclarativeType *, TypeNameMode = IncludeEnums);
-   QScriptValue newObject(QObject *, QDeclarativeTypeNameCache *, TypeNameMode = IncludeEnums);
+    enum TypeNameMode { IncludeEnums, ExcludeEnums };
+    QScriptValue newObject( QObject *, QDeclarativeType *, TypeNameMode = IncludeEnums );
+    QScriptValue newObject( QObject *, QDeclarativeTypeNameCache *, TypeNameMode = IncludeEnums );
 
- protected:
-   virtual QScriptClass::QueryFlags queryProperty(Object *, const Identifier &,
-         QScriptClass::QueryFlags flags);
+protected:
+    virtual QScriptClass::QueryFlags queryProperty( Object *, const Identifier &,
+            QScriptClass::QueryFlags flags );
 
-   virtual Value property(Object *, const Identifier &);
-   virtual void setProperty(Object *, const Identifier &name, const QScriptValue &);
+    virtual Value property( Object *, const Identifier & );
+    virtual void setProperty( Object *, const Identifier &name, const QScriptValue & );
 
- private:
-   QDeclarativeEngine *engine;
-   QObject *object;
-   QDeclarativeType *type;
-   quint32 enumValue;
+private:
+    QDeclarativeEngine *engine;
+    QObject *object;
+    QDeclarativeType *type;
+    quint32 enumValue;
 };
 
 QT_END_NAMESPACE

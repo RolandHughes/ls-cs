@@ -33,36 +33,39 @@ class DomScript;
 
 class CustomWidgetsInfo : public TreeWalker
 {
- public:
-   CustomWidgetsInfo();
+public:
+    CustomWidgetsInfo();
 
-   void acceptUI(DomUI *node) override;
+    void acceptUI( DomUI *node ) override;
 
-   void acceptCustomWidgets(DomCustomWidgets *node) override;
-   void acceptCustomWidget(DomCustomWidget *node) override;
+    void acceptCustomWidgets( DomCustomWidgets *node ) override;
+    void acceptCustomWidget( DomCustomWidget *node ) override;
 
-   QStringList customWidgets() const {
-      return m_customWidgets.keys();
-   }
+    QStringList customWidgets() const
+    {
+        return m_customWidgets.keys();
+    }
 
-   bool hasCustomWidget(const QString &name) const {
-      return m_customWidgets.contains(name);
-   }
+    bool hasCustomWidget( const QString &name ) const
+    {
+        return m_customWidgets.contains( name );
+    }
 
-   DomCustomWidget *customWidget(const QString &name) const {
-      return m_customWidgets.value(name);
-   }
+    DomCustomWidget *customWidget( const QString &name ) const
+    {
+        return m_customWidgets.value( name );
+    }
 
-   DomScript *customWidgetScript(const QString &name) const;
+    DomScript *customWidgetScript( const QString &name ) const;
 
-   QString customWidgetAddPageMethod(const QString &name) const;
-   QString realClassName(const QString &className) const;
-   bool extends(const QString &className, const QString &baseClassName) const;
-   bool isCustomWidgetContainer(const QString &className) const;
+    QString customWidgetAddPageMethod( const QString &name ) const;
+    QString realClassName( const QString &className ) const;
+    bool extends( const QString &className, const QString &baseClassName ) const;
+    bool isCustomWidgetContainer( const QString &className ) const;
 
- private:
-   typedef QMap<QString, DomCustomWidget *> NameCustomWidgetMap;
-   NameCustomWidgetMap m_customWidgets;
+private:
+    typedef QMap<QString, DomCustomWidget *> NameCustomWidgetMap;
+    NameCustomWidgetMap m_customWidgets;
 };
 
 #endif

@@ -26,83 +26,101 @@
 
 #include <qabstracteventdispatcher_p.h>
 
-void QBasicTimer::start(int msec, QObject *obj)
+void QBasicTimer::start( int msec, QObject *obj )
 {
-   QAbstractEventDispatcher *eventDispatcher = QAbstractEventDispatcher::instance();
+    QAbstractEventDispatcher *eventDispatcher = QAbstractEventDispatcher::instance();
 
-   if (! eventDispatcher) {
-      qWarning("QBasicTimer::start() Timer can only be used within a QThread");
-      return;
-   }
+    if ( ! eventDispatcher )
+    {
+        qWarning( "QBasicTimer::start() Timer can only be used within a QThread" );
+        return;
+    }
 
-   if (obj && obj->thread() != eventDispatcher->thread()) {
-      qWarning("QBasicTimer::start() Unable to start a timer from another thread");
-      return;
-   }
+    if ( obj && obj->thread() != eventDispatcher->thread() )
+    {
+        qWarning( "QBasicTimer::start() Unable to start a timer from another thread" );
+        return;
+    }
 
-   if (id) {
-      if (eventDispatcher->unregisterTimer(id)) {
-         QAbstractEventDispatcherPrivate::releaseTimerId(id);
-      } else {
-         qWarning("QBasicTimer::start() Stopping previous timer failed, might be trying to stop from a different thread");
-      }
-   }
+    if ( id )
+    {
+        if ( eventDispatcher->unregisterTimer( id ) )
+        {
+            QAbstractEventDispatcherPrivate::releaseTimerId( id );
+        }
+        else
+        {
+            qWarning( "QBasicTimer::start() Stopping previous timer failed, might be trying to stop from a different thread" );
+        }
+    }
 
-   id = 0;
+    id = 0;
 
-   if (obj) {
-      id = eventDispatcher->registerTimer(msec, Qt::CoarseTimer, obj);
-   }
+    if ( obj )
+    {
+        id = eventDispatcher->registerTimer( msec, Qt::CoarseTimer, obj );
+    }
 }
 
-void QBasicTimer::start(int msec, Qt::TimerType timerType, QObject *obj)
+void QBasicTimer::start( int msec, Qt::TimerType timerType, QObject *obj )
 {
-   QAbstractEventDispatcher *eventDispatcher = QAbstractEventDispatcher::instance();
+    QAbstractEventDispatcher *eventDispatcher = QAbstractEventDispatcher::instance();
 
-   if (msec < 0) {
-      qWarning("QBasicTimer::start() Duration of timer can not be negative");
-      return;
-   }
+    if ( msec < 0 )
+    {
+        qWarning( "QBasicTimer::start() Duration of timer can not be negative" );
+        return;
+    }
 
-   if (! eventDispatcher) {
-      qWarning("QBasicTimer::start() Timer can only be used within a QThread");
-      return;
-   }
+    if ( ! eventDispatcher )
+    {
+        qWarning( "QBasicTimer::start() Timer can only be used within a QThread" );
+        return;
+    }
 
-   if (obj && obj->thread() != eventDispatcher->thread()) {
-      qWarning("QBasicTimer::start() Unable to start a timer from another thread");
-      return;
-   }
+    if ( obj && obj->thread() != eventDispatcher->thread() )
+    {
+        qWarning( "QBasicTimer::start() Unable to start a timer from another thread" );
+        return;
+    }
 
-   if (id) {
-      if (eventDispatcher->unregisterTimer(id)) {
-         QAbstractEventDispatcherPrivate::releaseTimerId(id);
-      } else {
-         qWarning("QBasicTimer::start() Stopping previous timer failed, might be trying to stop from a different thread");
-      }
-   }
+    if ( id )
+    {
+        if ( eventDispatcher->unregisterTimer( id ) )
+        {
+            QAbstractEventDispatcherPrivate::releaseTimerId( id );
+        }
+        else
+        {
+            qWarning( "QBasicTimer::start() Stopping previous timer failed, might be trying to stop from a different thread" );
+        }
+    }
 
-   id = 0;
+    id = 0;
 
-   if (obj) {
-      id = eventDispatcher->registerTimer(msec, timerType, obj);
-   }
+    if ( obj )
+    {
+        id = eventDispatcher->registerTimer( msec, timerType, obj );
+    }
 }
 
 void QBasicTimer::stop()
 {
-   if (id) {
-      QAbstractEventDispatcher *eventDispatcher = QAbstractEventDispatcher::instance();
+    if ( id )
+    {
+        QAbstractEventDispatcher *eventDispatcher = QAbstractEventDispatcher::instance();
 
-      if (eventDispatcher) {
-         if (! eventDispatcher->unregisterTimer(id)) {
-            qWarning("QBasicTimer::stop() Stopping previous timer failed, might be trying to stop from a different thread");
-            return;
-         }
+        if ( eventDispatcher )
+        {
+            if ( ! eventDispatcher->unregisterTimer( id ) )
+            {
+                qWarning( "QBasicTimer::stop() Stopping previous timer failed, might be trying to stop from a different thread" );
+                return;
+            }
 
-         QAbstractEventDispatcherPrivate::releaseTimerId(id);
-      }
-   }
+            QAbstractEventDispatcherPrivate::releaseTimerId( id );
+        }
+    }
 
-   id = 0;
+    id = 0;
 }

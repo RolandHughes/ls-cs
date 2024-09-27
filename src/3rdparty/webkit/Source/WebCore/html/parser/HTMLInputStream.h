@@ -28,7 +28,8 @@
 
 #include "SegmentedString.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 // The InputStream is made up of a sequence of SegmentedStrings:
 //
@@ -47,22 +48,23 @@ namespace WebCore {
 // m_last is a pointer to the last of the afterInsertionPoint strings.
 // The network adds data at the end of the InputStream, which appends
 // them to the "last" string.
-class HTMLInputStream {
-    WTF_MAKE_NONCOPYABLE(HTMLInputStream);
+class HTMLInputStream
+{
+    WTF_MAKE_NONCOPYABLE( HTMLInputStream );
 public:
     HTMLInputStream()
-        : m_last(&m_first)
+        : m_last( &m_first )
     {
     }
 
-    void appendToEnd(const SegmentedString& string)
+    void appendToEnd( const SegmentedString &string )
     {
-        m_last->append(string);
+        m_last->append( string );
     }
 
-    void insertAtCurrentInsertionPoint(const SegmentedString& string)
+    void insertAtCurrentInsertionPoint( const SegmentedString &string )
     {
-        m_first.append(string);
+        m_first.append( string );
     }
 
     bool hasInsertionPoint() const
@@ -75,7 +77,7 @@ public:
         // FIXME: This should use InputStreamPreprocessor::endOfFileMarker
         // once InputStreamPreprocessor is split off into its own header.
         static const UChar endOfFileMarker = 0;
-        m_last->append(SegmentedString(String(&endOfFileMarker, 1)));
+        m_last->append( SegmentedString( String( &endOfFileMarker, 1 ) ) );
         m_last->close();
     }
 
@@ -84,14 +86,22 @@ public:
         return m_last->isClosed();
     }
 
-    SegmentedString& current() { return m_first; }
-    const SegmentedString& current() const { return m_first; }
+    SegmentedString &current()
+    {
+        return m_first;
+    }
+    const SegmentedString &current() const
+    {
+        return m_first;
+    }
 
-    void splitInto(SegmentedString& next)
+    void splitInto( SegmentedString &next )
     {
         next = m_first;
         m_first = SegmentedString();
-        if (m_last == &m_first) {
+
+        if ( m_last == &m_first )
+        {
             // We used to only have one SegmentedString in the InputStream
             // but now we have two.  That means m_first is no longer also
             // the m_last string, |next| is now the last one.
@@ -99,16 +109,20 @@ public:
         }
     }
 
-    void mergeFrom(SegmentedString& next)
+    void mergeFrom( SegmentedString &next )
     {
-        m_first.append(next);
-        if (m_last == &next) {
+        m_first.append( next );
+
+        if ( m_last == &next )
+        {
             // The string |next| used to be the last SegmentedString in
             // the InputStream.  Now that it's been merged into m_first,
             // that makes m_first the last one.
             m_last = &m_first;
         }
-        if (next.isClosed()) {
+
+        if ( next.isClosed() )
+        {
             // We also need to merge the "closed" state from next to
             // m_first.  Arguably, this work could be done in append().
             m_first.close();
@@ -117,21 +131,22 @@ public:
 
 private:
     SegmentedString m_first;
-    SegmentedString* m_last;
+    SegmentedString *m_last;
 };
 
-class InsertionPointRecord {
-    WTF_MAKE_NONCOPYABLE(InsertionPointRecord);
+class InsertionPointRecord
+{
+    WTF_MAKE_NONCOPYABLE( InsertionPointRecord );
 public:
-    explicit InsertionPointRecord(HTMLInputStream& inputStream)
-        : m_inputStream(&inputStream)
+    explicit InsertionPointRecord( HTMLInputStream &inputStream )
+        : m_inputStream( &inputStream )
     {
         m_line = m_inputStream->current().currentLine();
         m_column = m_inputStream->current().currentColumn();
-        m_inputStream->splitInto(m_next);
+        m_inputStream->splitInto( m_next );
         // We 'fork' current position and use it for the generated script part.
         // This is a bit weird, because generated part does not have positions within an HTML document.
-        m_inputStream->current().setCurrentPosition(m_line, m_column, 0);
+        m_inputStream->current().setCurrentPosition( m_line, m_column, 0 );
     }
 
     ~InsertionPointRecord()
@@ -139,13 +154,13 @@ public:
         // Some inserted text may have remained in input stream. E.g. if script has written "&amp" or "<table",
         // it stays in buffer because it cannot be properly tokenized before we see next part.
         int unparsedRemainderLength = m_inputStream->current().length();
-        m_inputStream->mergeFrom(m_next);
+        m_inputStream->mergeFrom( m_next );
         // We restore position for the character that goes right after unparsed remainder.
-        m_inputStream->current().setCurrentPosition(m_line, m_column, unparsedRemainderLength);
+        m_inputStream->current().setCurrentPosition( m_line, m_column, unparsedRemainderLength );
     }
 
 private:
-    HTMLInputStream* m_inputStream;
+    HTMLInputStream *m_inputStream;
     SegmentedString m_next;
     WTF::ZeroBasedNumber m_line;
     WTF::ZeroBasedNumber m_column;

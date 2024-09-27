@@ -33,20 +33,20 @@ using namespace WebKit;
 
 WKTypeID WKBackForwardListItemGetTypeID()
 {
-    return toAPI(WebBackForwardListItem::APIType);
+    return toAPI( WebBackForwardListItem::APIType );
 }
 
-WKURLRef WKBackForwardListItemCopyURL(WKBackForwardListItemRef itemRef)
+WKURLRef WKBackForwardListItemCopyURL( WKBackForwardListItemRef itemRef )
 {
-    return toCopiedURLAPI(toImpl(itemRef)->url());
+    return toCopiedURLAPI( toImpl( itemRef )->url() );
 }
 
-WKStringRef WKBackForwardListItemCopyTitle(WKBackForwardListItemRef itemRef)
+WKStringRef WKBackForwardListItemCopyTitle( WKBackForwardListItemRef itemRef )
 {
-    return toCopiedAPI(toImpl(itemRef)->title());
+    return toCopiedAPI( toImpl( itemRef )->title() );
 }
 
-WKURLRef WKBackForwardListItemCopyOriginalURL(WKBackForwardListItemRef itemRef)
+WKURLRef WKBackForwardListItemCopyOriginalURL( WKBackForwardListItemRef itemRef )
 {
-    return toCopiedURLAPI(toImpl(itemRef)->originalURL());
+    return toCopiedURLAPI( toImpl( itemRef )->originalURL() );
 }

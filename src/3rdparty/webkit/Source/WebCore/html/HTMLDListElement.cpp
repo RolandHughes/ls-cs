@@ -25,19 +25,20 @@
 
 #include "HTMLNames.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-inline HTMLDListElement::HTMLDListElement(const QualifiedName& tagName, Document* document)
-    : HTMLElement(tagName, document)
+inline HTMLDListElement::HTMLDListElement( const QualifiedName &tagName, Document *document )
+    : HTMLElement( tagName, document )
 {
-    ASSERT(hasTagName(dlTag));
+    ASSERT( hasTagName( dlTag ) );
 }
 
-PassRefPtr<HTMLDListElement> HTMLDListElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<HTMLDListElement> HTMLDListElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new HTMLDListElement(tagName, document));
+    return adoptRef( new HTMLDListElement( tagName, document ) );
 }
 
 }

@@ -32,78 +32,80 @@
 
 class QFileSystemEngine
 {
- public:
-   static bool isCaseSensitive() {
+public:
+    static bool isCaseSensitive()
+    {
 #ifndef Q_OS_WIN
-      return true;
+        return true;
 #else
-      return false;
+        return false;
 #endif
-   }
+    }
 
-   static QFileSystemEntry getLinkTarget(const QFileSystemEntry &link, QFileSystemMetaData &data);
-   static QFileSystemEntry canonicalName(const QFileSystemEntry &entry, QFileSystemMetaData &data);
-   static QFileSystemEntry absoluteName(const QFileSystemEntry &entry);
-   static QByteArray id(const QFileSystemEntry &entry);
-   static QString resolveUserName(const QFileSystemEntry &entry, QFileSystemMetaData &data);
-   static QString resolveGroupName(const QFileSystemEntry &entry, QFileSystemMetaData &data);
+    static QFileSystemEntry getLinkTarget( const QFileSystemEntry &link, QFileSystemMetaData &data );
+    static QFileSystemEntry canonicalName( const QFileSystemEntry &entry, QFileSystemMetaData &data );
+    static QFileSystemEntry absoluteName( const QFileSystemEntry &entry );
+    static QByteArray id( const QFileSystemEntry &entry );
+    static QString resolveUserName( const QFileSystemEntry &entry, QFileSystemMetaData &data );
+    static QString resolveGroupName( const QFileSystemEntry &entry, QFileSystemMetaData &data );
 
 #if defined(Q_OS_UNIX)
-   static QString resolveUserName(uint userId);
-   static QString resolveGroupName(uint groupId);
+    static QString resolveUserName( uint userId );
+    static QString resolveGroupName( uint groupId );
 #endif
 
 #if defined(Q_OS_DARWIN)
-   static QString bundleName(const QFileSystemEntry &entry);
+    static QString bundleName( const QFileSystemEntry &entry );
 #else
-   static QString bundleName(const QFileSystemEntry &entry) {
-      (void) entry;
-      return QString();
-   }
+    static QString bundleName( const QFileSystemEntry &entry )
+    {
+        ( void ) entry;
+        return QString();
+    }
 #endif
 
-   static bool fillMetaData(const QFileSystemEntry &entry, QFileSystemMetaData &data, QFileSystemMetaData::MetaDataFlags what);
+    static bool fillMetaData( const QFileSystemEntry &entry, QFileSystemMetaData &data, QFileSystemMetaData::MetaDataFlags what );
 
 #if defined(Q_OS_UNIX)
-   static bool fillMetaData(int fd, QFileSystemMetaData &data); // what = PosixStatFlags
+    static bool fillMetaData( int fd, QFileSystemMetaData &data ); // what = PosixStatFlags
 #endif
 
 #if defined(Q_OS_WIN)
-   static bool uncListSharesOnServer(const QString &server, QStringList *list);
-   static bool fillMetaData(int fd, QFileSystemMetaData &data, QFileSystemMetaData::MetaDataFlags what);
-   static bool fillMetaData(HANDLE fHandle, QFileSystemMetaData &data, QFileSystemMetaData::MetaDataFlags what);
-   static bool fillPermissions(const QFileSystemEntry &entry, QFileSystemMetaData &data, QFileSystemMetaData::MetaDataFlags what);
-   static QString owner(const QFileSystemEntry &entry, QAbstractFileEngine::FileOwner own);
-   static QString nativeAbsoluteFilePath(const QString &path);
+    static bool uncListSharesOnServer( const QString &server, QStringList *list );
+    static bool fillMetaData( int fd, QFileSystemMetaData &data, QFileSystemMetaData::MetaDataFlags what );
+    static bool fillMetaData( HANDLE fHandle, QFileSystemMetaData &data, QFileSystemMetaData::MetaDataFlags what );
+    static bool fillPermissions( const QFileSystemEntry &entry, QFileSystemMetaData &data, QFileSystemMetaData::MetaDataFlags what );
+    static QString owner( const QFileSystemEntry &entry, QAbstractFileEngine::FileOwner own );
+    static QString nativeAbsoluteFilePath( const QString &path );
 #endif
 
-   //homePath, rootPath and tempPath shall return clean paths
-   static QString homePath();
-   static QString rootPath();
-   static QString tempPath();
+    //homePath, rootPath and tempPath shall return clean paths
+    static QString homePath();
+    static QString rootPath();
+    static QString tempPath();
 
-   static bool createDirectory(const QFileSystemEntry &entry, bool createParents);
-   static bool removeDirectory(const QFileSystemEntry &entry, bool removeEmptyParents);
+    static bool createDirectory( const QFileSystemEntry &entry, bool createParents );
+    static bool removeDirectory( const QFileSystemEntry &entry, bool removeEmptyParents );
 
-   static bool createLink(const QFileSystemEntry &source, const QFileSystemEntry &target, QSystemError &error);
+    static bool createLink( const QFileSystemEntry &source, const QFileSystemEntry &target, QSystemError &error );
 
-   static bool copyFile(const QFileSystemEntry &source, const QFileSystemEntry &target, QSystemError &error);
-   static bool renameFile(const QFileSystemEntry &source, const QFileSystemEntry &target, QSystemError &error);
-   static bool removeFile(const QFileSystemEntry &entry, QSystemError &error);
+    static bool copyFile( const QFileSystemEntry &source, const QFileSystemEntry &target, QSystemError &error );
+    static bool renameFile( const QFileSystemEntry &source, const QFileSystemEntry &target, QSystemError &error );
+    static bool removeFile( const QFileSystemEntry &entry, QSystemError &error );
 
-   static bool setPermissions(const QFileSystemEntry &entry, QFile::Permissions permissions,
-         QSystemError &error, QFileSystemMetaData *data = nullptr);
+    static bool setPermissions( const QFileSystemEntry &entry, QFile::Permissions permissions,
+                                QSystemError &error, QFileSystemMetaData *data = nullptr );
 
-   static bool setCurrentPath(const QFileSystemEntry &entry);
-   static QFileSystemEntry currentPath();
+    static bool setCurrentPath( const QFileSystemEntry &entry );
+    static QFileSystemEntry currentPath();
 
-   static QAbstractFileEngine *resolveEntryAndCreateLegacyEngine(QFileSystemEntry &entry, QFileSystemMetaData &data);
+    static QAbstractFileEngine *resolveEntryAndCreateLegacyEngine( QFileSystemEntry &entry, QFileSystemMetaData &data );
 
- private:
-   static QString slowCanonicalized(const QString &path);
+private:
+    static QString slowCanonicalized( const QString &path );
 
 #if defined(Q_OS_WIN)
-   static void clearWinStatData(QFileSystemMetaData &data);
+    static void clearWinStatData( QFileSystemMetaData &data );
 #endif
 };
 

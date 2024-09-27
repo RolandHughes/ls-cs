@@ -22,25 +22,42 @@
 #ifndef TextureMapperQt_h
 #define TextureMapperQt_h
 
-namespace WebCore {
+namespace WebCore
+{
 
-class BitmapTextureQt : public BitmapTexture {
+class BitmapTextureQt : public BitmapTexture
+{
     friend class TextureMapperQt;
 public:
     BitmapTextureQt();
-    ~BitmapTextureQt() { destroy(); }
+    ~BitmapTextureQt()
+    {
+        destroy();
+    }
     virtual void destroy();
-    virtual IntSize size() const { return IntSize(m_pixmap.width(), m_pixmap.height()); }
-    virtual void reset(const IntSize&, bool opaque);
-    virtual PlatformGraphicsContext* beginPaint(const IntRect& dirtyRect);
+    virtual IntSize size() const
+    {
+        return IntSize( m_pixmap.width(), m_pixmap.height() );
+    }
+    virtual void reset( const IntSize &, bool opaque );
+    virtual PlatformGraphicsContext *beginPaint( const IntRect &dirtyRect );
     virtual void endPaint();
-    virtual void setContentsToImage(Image*);
-    virtual bool save(const String& path);
-    virtual bool isValid() const { return !m_pixmap.isNull() || !m_image.isNull(); }
-    IntRect sourceRect() const { return IntRect(0, 0, contentSize().width(), contentSize().height()); }
+    virtual void setContentsToImage( Image * );
+    virtual bool save( const String &path );
+    virtual bool isValid() const
+    {
+        return !m_pixmap.isNull() || !m_image.isNull();
+    }
+    IntRect sourceRect() const
+    {
+        return IntRect( 0, 0, contentSize().width(), contentSize().height() );
+    }
     virtual void pack();
     virtual void unpack();
-    virtual bool isPacked() const { return m_isPacked; }
+    virtual bool isPacked() const
+    {
+        return m_isPacked;
+    }
 
 private:
     QPainter m_painter;
@@ -49,26 +66,34 @@ private:
     bool m_isPacked;
 };
 
-class TextureMapperQt : public TextureMapper {
+class TextureMapperQt : public TextureMapper
+{
 public:
     TextureMapperQt();
 
-    virtual void drawTexture(const BitmapTexture& texture, const IntRect& targetRect, const TransformationMatrix& matrix, float opacity, const BitmapTexture* maskTexture);
-    virtual void bindSurface(BitmapTexture* surface);
-    virtual void setClip(const IntRect&);
-    virtual void setGraphicsContext(GraphicsContext*);
-    virtual bool allowSurfaceForRoot() const { return false; }
+    virtual void drawTexture( const BitmapTexture &texture, const IntRect &targetRect, const TransformationMatrix &matrix,
+                              float opacity, const BitmapTexture *maskTexture );
+    virtual void bindSurface( BitmapTexture *surface );
+    virtual void setClip( const IntRect & );
+    virtual void setGraphicsContext( GraphicsContext * );
+    virtual bool allowSurfaceForRoot() const
+    {
+        return false;
+    }
     virtual PassRefPtr<BitmapTexture> createTexture();
 
-    static void initialize(QPainter* painter)
+    static void initialize( QPainter *painter )
     {
-        painter->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform, false);
+        painter->setRenderHints( QPainter::Antialiasing | QPainter::SmoothPixmapTransform, false );
     }
 
-    static PassOwnPtr<TextureMapper> create() { return new TextureMapperQt; }
+    static PassOwnPtr<TextureMapper> create()
+    {
+        return new TextureMapperQt;
+    }
 
 private:
-    QPainter* m_painter;
+    QPainter *m_painter;
     RefPtr<BitmapTextureQt> m_currentSurface;
 };
 

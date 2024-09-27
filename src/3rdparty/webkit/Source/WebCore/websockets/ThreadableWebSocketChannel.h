@@ -37,20 +37,23 @@
 #include <wtf/Noncopyable.h>
 #include <wtf/PassRefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class KURL;
 class ScriptExecutionContext;
 class WebSocketChannelClient;
 
-class ThreadableWebSocketChannel {
-    WTF_MAKE_NONCOPYABLE(ThreadableWebSocketChannel);
+class ThreadableWebSocketChannel
+{
+    WTF_MAKE_NONCOPYABLE( ThreadableWebSocketChannel );
 public:
     ThreadableWebSocketChannel() { }
-    static PassRefPtr<ThreadableWebSocketChannel> create(ScriptExecutionContext*, WebSocketChannelClient*, const KURL&, const String& protocol);
+    static PassRefPtr<ThreadableWebSocketChannel> create( ScriptExecutionContext *, WebSocketChannelClient *, const KURL &,
+            const String &protocol );
 
     virtual void connect() = 0;
-    virtual bool send(const String& message) = 0;
+    virtual bool send( const String &message ) = 0;
     virtual unsigned long bufferedAmount() const = 0;
     virtual void close() = 0;
     virtual void disconnect() = 0; // Will suppress didClose().
@@ -58,8 +61,14 @@ public:
     virtual void suspend() = 0;
     virtual void resume() = 0;
 
-    void ref() { refThreadableWebSocketChannel(); }
-    void deref() { derefThreadableWebSocketChannel(); }
+    void ref()
+    {
+        refThreadableWebSocketChannel();
+    }
+    void deref()
+    {
+        derefThreadableWebSocketChannel();
+    }
 
 protected:
     virtual ~ThreadableWebSocketChannel() { }

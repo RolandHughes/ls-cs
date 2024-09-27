@@ -22,7 +22,8 @@
 
 #include <QCoreApplication>
 
-namespace WebCore {
+namespace WebCore
+{
 
 void EventLoop::cycle()
 {

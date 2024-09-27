@@ -30,25 +30,25 @@ class QXcbNativeInterfaceHandler;
 
 class QXcbGlxIntegration : public QXcbGlIntegration
 {
- public:
-   QXcbGlxIntegration();
-   ~QXcbGlxIntegration();
+public:
+    QXcbGlxIntegration();
+    ~QXcbGlxIntegration();
 
-   bool initialize(QXcbConnection *connection) override;
-   bool handleXcbEvent(xcb_generic_event_t *event, uint responseType) override;
+    bool initialize( QXcbConnection *connection ) override;
+    bool handleXcbEvent( xcb_generic_event_t *event, uint responseType ) override;
 
-   QXcbWindow *createWindow(QWindow *window) const override;
-   QPlatformOpenGLContext *createPlatformOpenGLContext(QOpenGLContext *context) const override;
-   QPlatformOffscreenSurface *createPlatformOffscreenSurface(QOffscreenSurface *surface) const override;
+    QXcbWindow *createWindow( QWindow *window ) const override;
+    QPlatformOpenGLContext *createPlatformOpenGLContext( QOpenGLContext *context ) const override;
+    QPlatformOffscreenSurface *createPlatformOffscreenSurface( QOffscreenSurface *surface ) const override;
 
-   bool supportsThreadedOpenGL() const override;
-   bool supportsSwitchableWidgetComposition() const override;
+    bool supportsThreadedOpenGL() const override;
+    bool supportsSwitchableWidgetComposition() const override;
 
- private:
-   QXcbConnection *m_connection;
-   uint32_t m_glx_first_event;
+private:
+    QXcbConnection *m_connection;
+    uint32_t m_glx_first_event;
 
-   QScopedPointer<QXcbNativeInterfaceHandler> m_native_interface_handler;
+    QScopedPointer<QXcbNativeInterfaceHandler> m_native_interface_handler;
 };
 
 #endif

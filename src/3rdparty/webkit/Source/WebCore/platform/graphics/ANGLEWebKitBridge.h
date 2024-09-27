@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef ANGLEWebKitBridge_h
@@ -35,30 +35,37 @@
 #include "ShaderLang.h"
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
-enum ANGLEShaderType {
+enum ANGLEShaderType
+{
     SHADER_TYPE_VERTEX = SH_VERTEX_SHADER,
     SHADER_TYPE_FRAGMENT = SH_FRAGMENT_SHADER,
 };
 
-class ANGLEWebKitBridge {
+class ANGLEWebKitBridge
+{
 public:
 
     ANGLEWebKitBridge();
     ~ANGLEWebKitBridge();
-    
-    ShBuiltInResources getResources() { return m_resources; }
-    void setResources(ShBuiltInResources);
-    
-    bool validateShaderSource(const char* shaderSource, ANGLEShaderType shaderType, String& translatedShaderSource, String& shaderValidationLog);
+
+    ShBuiltInResources getResources()
+    {
+        return m_resources;
+    }
+    void setResources( ShBuiltInResources );
+
+    bool validateShaderSource( const char *shaderSource, ANGLEShaderType shaderType, String &translatedShaderSource,
+                               String &shaderValidationLog );
 
 private:
 
     void cleanupCompilers();
 
     bool builtCompilers;
-    
+
     ShHandle m_fragmentCompiler;
     ShHandle m_vertexCompiler;
 

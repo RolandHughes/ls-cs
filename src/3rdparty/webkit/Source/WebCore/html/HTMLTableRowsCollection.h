@@ -31,22 +31,24 @@
 
 #include "HTMLCollection.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class HTMLTableElement;
 class HTMLTableRowElement;
 
-class HTMLTableRowsCollection : public HTMLCollection {
+class HTMLTableRowsCollection : public HTMLCollection
+{
 public:
-    static PassRefPtr<HTMLTableRowsCollection> create(PassRefPtr<HTMLTableElement>);
+    static PassRefPtr<HTMLTableRowsCollection> create( PassRefPtr<HTMLTableElement> );
 
-    static HTMLTableRowElement* rowAfter(HTMLTableElement*, HTMLTableRowElement*);
-    static HTMLTableRowElement* lastRow(HTMLTableElement*);
+    static HTMLTableRowElement *rowAfter( HTMLTableElement *, HTMLTableRowElement * );
+    static HTMLTableRowElement *lastRow( HTMLTableElement * );
 
 private:
-    HTMLTableRowsCollection(PassRefPtr<HTMLTableElement>);
+    HTMLTableRowsCollection( PassRefPtr<HTMLTableElement> );
 
-    virtual Element* itemAfter(Element*) const;
+    virtual Element *itemAfter( Element * ) const;
 };
 
 } // namespace

@@ -35,85 +35,95 @@
 
 QT_BEGIN_NAMESPACE
 
-static void copyArgument(void *to, int id, const QVariant &arg)
+static void copyArgument( void *to, int id, const QVariant &arg )
 {
-    if (id == arg.userType()) {
-        switch (id) {
-        case QVariant::Bool:
-            *reinterpret_cast<bool *>(to) = arg.toBool();
-            return;
+    if ( id == arg.userType() )
+    {
+        switch ( id )
+        {
+            case QVariant::Bool:
+                *reinterpret_cast<bool *>( to ) = arg.toBool();
+                return;
 
-        case QMetaType::UChar:
-            *reinterpret_cast<uchar *>(to) = arg.value<uchar>();
-            return;
+            case QMetaType::UChar:
+                *reinterpret_cast<uchar *>( to ) = arg.value<uchar>();
+                return;
 
-        case QMetaType::Short:
-            *reinterpret_cast<short *>(to) = arg.value<short>();
-            return;
+            case QMetaType::Short:
+                *reinterpret_cast<short *>( to ) = arg.value<short>();
+                return;
 
-        case QMetaType::UShort:
-            *reinterpret_cast<ushort *>(to) = arg.value<ushort>();
-            return;
+            case QMetaType::UShort:
+                *reinterpret_cast<ushort *>( to ) = arg.value<ushort>();
+                return;
 
-        case QVariant::Int:
-            *reinterpret_cast<int *>(to) = arg.toInt();
-            return;
+            case QVariant::Int:
+                *reinterpret_cast<int *>( to ) = arg.toInt();
+                return;
 
-        case QVariant::UInt:
-            *reinterpret_cast<uint *>(to) = arg.toUInt();
-            return;
+            case QVariant::UInt:
+                *reinterpret_cast<uint *>( to ) = arg.toUInt();
+                return;
 
-        case QVariant::LongLong:
-            *reinterpret_cast<qint64 *>(to) = arg.toLongLong();
-            return;
+            case QVariant::LongLong:
+                *reinterpret_cast<qint64 *>( to ) = arg.toLongLong();
+                return;
 
-        case QVariant::ULongLong:
-            *reinterpret_cast<quint64 *>(to) = arg.toULongLong();
-            return;
+            case QVariant::ULongLong:
+                *reinterpret_cast<quint64 *>( to ) = arg.toULongLong();
+                return;
 
-        case QVariant::Double:
-            *reinterpret_cast<double *>(to) = arg.toDouble();
-            return;
+            case QVariant::Double:
+                *reinterpret_cast<double *>( to ) = arg.toDouble();
+                return;
 
-        case QVariant::String:
-            *reinterpret_cast<QString *>(to) = arg.toString();
-            return;
+            case QVariant::String:
+                *reinterpret_cast<QString *>( to ) = arg.toString();
+                return;
 
-        case QVariant::ByteArray:
-            *reinterpret_cast<QByteArray *>(to) = arg.toByteArray();
-            return;
+            case QVariant::ByteArray:
+                *reinterpret_cast<QByteArray *>( to ) = arg.toByteArray();
+                return;
 
-        case QVariant::StringList:
-            *reinterpret_cast<QStringList *>(to) = arg.toStringList();
-            return;
+            case QVariant::StringList:
+                *reinterpret_cast<QStringList *>( to ) = arg.toStringList();
+                return;
         }
 
-        if (id == QDBusMetaTypeId::variant) {
-            *reinterpret_cast<QDBusVariant *>(to) = arg.value<QDBusVariant>();
+        if ( id == QDBusMetaTypeId::variant )
+        {
+            *reinterpret_cast<QDBusVariant *>( to ) = arg.value<QDBusVariant>();
             return;
-        } else if (id == QDBusMetaTypeId::objectpath) {
-            *reinterpret_cast<QDBusObjectPath *>(to) = arg.value<QDBusObjectPath>();
+        }
+        else if ( id == QDBusMetaTypeId::objectpath )
+        {
+            *reinterpret_cast<QDBusObjectPath *>( to ) = arg.value<QDBusObjectPath>();
             return;
-        } else if (id == QDBusMetaTypeId::signature) {
-            *reinterpret_cast<QDBusSignature *>(to) = arg.value<QDBusSignature>();
+        }
+        else if ( id == QDBusMetaTypeId::signature )
+        {
+            *reinterpret_cast<QDBusSignature *>( to ) = arg.value<QDBusSignature>();
             return;
         }
 
         // those above are the only types possible
         // the demarshaller code doesn't demarshall anything else
-        qFatal("Found a decoded basic type in a D-Bus reply that shouldn't be there");
+        qFatal( "Found a decoded basic type in a D-Bus reply that shouldn't be there" );
     }
 
     // if we got here, it's either an un-dermarshalled type or a mismatch
-    if (arg.userType() != QDBusMetaTypeId::argument) {
+    if ( arg.userType() != QDBusMetaTypeId::argument )
+    {
         // it's a mismatch
         //qWarning?
         return;
     }
 
     // is this type registered?
-    const char *userSignature = QDBusMetaType::typeToSignature(id);
-    if (!userSignature || !*userSignature) {
+    const char *userSignature = QDBusMetaType::typeToSignature( id );
+
+    if ( !userSignature || !*userSignature )
+    {
         // type not registered
         //qWarning?
         return;
@@ -121,39 +131,47 @@ static void copyArgument(void *to, int id, const QVariant &arg)
 
     // is it the same signature?
     QDBusArgument dbarg = arg.value<QDBusArgument>();
-    if (dbarg.currentSignature() != QLatin1String(userSignature)) {
+
+    if ( dbarg.currentSignature() != QLatin1String( userSignature ) )
+    {
         // not the same signature, another mismatch
         //qWarning?
         return;
     }
 
     // we can demarshall
-    QDBusMetaType::demarshall(dbarg, id, to);
+    QDBusMetaType::demarshall( dbarg, id, to );
 }
 
-QDBusInterfacePrivate::QDBusInterfacePrivate(const QString &serv, const QString &p,
-                                             const QString &iface, const QDBusConnection &con)
-    : QDBusAbstractInterfacePrivate(serv, p, iface, con, true), metaObject(0)
+QDBusInterfacePrivate::QDBusInterfacePrivate( const QString &serv, const QString &p,
+        const QString &iface, const QDBusConnection &con )
+    : QDBusAbstractInterfacePrivate( serv, p, iface, con, true ), metaObject( 0 )
 {
     // QDBusAbstractInterfacePrivate's constructor checked the parameters for us
-    if (connection.isConnected()) {
-        metaObject = connectionPrivate()->findMetaObject(service, path, interface, lastError);
+    if ( connection.isConnected() )
+    {
+        metaObject = connectionPrivate()->findMetaObject( service, path, interface, lastError );
 
-        if (!metaObject) {
+        if ( !metaObject )
+        {
             // creation failed, somehow
             // most common causes are that the service doesn't exist or doesn't support introspection
             // those are not fatal errors, so we continue working
 
-            if (!lastError.isValid())
-                lastError = QDBusError(QDBusError::InternalError, QLatin1String("Unknown error"));
+            if ( !lastError.isValid() )
+            {
+                lastError = QDBusError( QDBusError::InternalError, QLatin1String( "Unknown error" ) );
+            }
         }
     }
 }
 
 QDBusInterfacePrivate::~QDBusInterfacePrivate()
 {
-    if (metaObject && !metaObject->cached)
+    if ( metaObject && !metaObject->cached )
+    {
         delete metaObject;
+    }
 }
 
 
@@ -197,10 +215,10 @@ QDBusInterfacePrivate::~QDBusInterfacePrivate()
     \a interface, the object created will not be valid (see
     isValid()).
 */
-QDBusInterface::QDBusInterface(const QString &service, const QString &path, const QString &interface,
-                               const QDBusConnection &connection, QObject *parent)
-    : QDBusAbstractInterface(*new QDBusInterfacePrivate(service, path, interface, connection),
-                             parent)
+QDBusInterface::QDBusInterface( const QString &service, const QString &path, const QString &interface,
+                                const QDBusConnection &connection, QObject *parent )
+    : QDBusAbstractInterface( *new QDBusInterfacePrivate( service, path, interface, connection ),
+                              parent )
 {
 }
 
@@ -225,75 +243,101 @@ const QMetaObject *QDBusInterface::metaObject() const
     \internal
     Override QObject::qt_metacast to catch the interface name too.
 */
-void *QDBusInterface::qt_metacast(const char *_clname)
+void *QDBusInterface::qt_metacast( const char *_clname )
 {
-    if (!_clname) return 0;
-    if (!strcmp(_clname, "QDBusInterface"))
-        return static_cast<void*>(const_cast<QDBusInterface*>(this));
-    if (d_func()->interface.toLatin1() == _clname)
-        return static_cast<void*>(const_cast<QDBusInterface*>(this));
-    return QDBusAbstractInterface::qt_metacast(_clname);
+    if ( !_clname )
+    {
+        return 0;
+    }
+
+    if ( !strcmp( _clname, "QDBusInterface" ) )
+    {
+        return static_cast<void *>( const_cast<QDBusInterface *>( this ) );
+    }
+
+    if ( d_func()->interface.toLatin1() == _clname )
+    {
+        return static_cast<void *>( const_cast<QDBusInterface *>( this ) );
+    }
+
+    return QDBusAbstractInterface::qt_metacast( _clname );
 }
 
 /*!
     \internal
     Dispatch the call through the private.
 */
-int QDBusInterface::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+int QDBusInterface::qt_metacall( QMetaObject::Call _c, int _id, void **_a )
 {
-    _id = QDBusAbstractInterface::qt_metacall(_c, _id, _a);
-    if (_id < 0 || !d_func()->isValid || !d_func()->metaObject)
+    _id = QDBusAbstractInterface::qt_metacall( _c, _id, _a );
+
+    if ( _id < 0 || !d_func()->isValid || !d_func()->metaObject )
+    {
         return _id;
-    return d_func()->metacall(_c, _id, _a);
+    }
+
+    return d_func()->metacall( _c, _id, _a );
 }
 
-int QDBusInterfacePrivate::metacall(QMetaObject::Call c, int id, void **argv)
+int QDBusInterfacePrivate::metacall( QMetaObject::Call c, int id, void **argv )
 {
-    Q_Q(QDBusInterface);
+    Q_Q( QDBusInterface );
 
-    if (c == QMetaObject::InvokeMetaMethod) {
+    if ( c == QMetaObject::InvokeMetaMethod )
+    {
         int offset = metaObject->methodOffset();
-        QMetaMethod mm = metaObject->method(id + offset);
+        QMetaMethod mm = metaObject->method( id + offset );
 
-        if (mm.methodType() == QMetaMethod::Signal) {
+        if ( mm.methodType() == QMetaMethod::Signal )
+        {
             // signal relay from D-Bus world to Qt world
-            QMetaObject::activate(q, metaObject, id, argv);
+            QMetaObject::activate( q, metaObject, id, argv );
 
-        } else if (mm.methodType() == QMetaMethod::Slot || mm.methodType() == QMetaMethod::Method) {
+        }
+        else if ( mm.methodType() == QMetaMethod::Slot || mm.methodType() == QMetaMethod::Method )
+        {
             // method call relay from Qt world to D-Bus world
             // get D-Bus equivalent signature
-            QString methodName = QLatin1String(metaObject->dbusNameForMethod(id));
-            const int *inputTypes = metaObject->inputTypesForMethod(id);
+            QString methodName = QLatin1String( metaObject->dbusNameForMethod( id ) );
+            const int *inputTypes = metaObject->inputTypesForMethod( id );
             int inputTypesCount = *inputTypes;
 
             // we will assume that the input arguments were passed correctly
             QVariantList args;
             int i = 1;
-            for ( ; i <= inputTypesCount; ++i)
-                args << QVariant(inputTypes[i], argv[i]);
+
+            for ( ; i <= inputTypesCount; ++i )
+            {
+                args << QVariant( inputTypes[i], argv[i] );
+            }
 
             // make the call
-            QDBusMessage reply = q->callWithArgumentList(QDBus::Block, methodName, args);
+            QDBusMessage reply = q->callWithArgumentList( QDBus::Block, methodName, args );
 
-            if (reply.type() == QDBusMessage::ReplyMessage) {
+            if ( reply.type() == QDBusMessage::ReplyMessage )
+            {
                 // attempt to demarshall the return values
                 args = reply.arguments();
                 QVariantList::ConstIterator it = args.constBegin();
-                const int *outputTypes = metaObject->outputTypesForMethod(id);
+                const int *outputTypes = metaObject->outputTypesForMethod( id );
                 int outputTypesCount = *outputTypes++;
 
-                if (*mm.typeName()) {
+                if ( *mm.typeName() )
+                {
                     // this method has a return type
-                    if (argv[0] && it != args.constEnd())
-                        copyArgument(argv[0], *outputTypes++, *it);
+                    if ( argv[0] && it != args.constEnd() )
+                    {
+                        copyArgument( argv[0], *outputTypes++, *it );
+                    }
 
                     // skip this argument even if we didn't copy it
                     --outputTypesCount;
                     ++it;
                 }
 
-                for (int j = 0; j < outputTypesCount && it != args.constEnd(); ++i, ++j, ++it) {
-                    copyArgument(argv[i], outputTypes[j], *it);
+                for ( int j = 0; j < outputTypesCount && it != args.constEnd(); ++i, ++j, ++it )
+                {
+                    copyArgument( argv[i], outputTypes[j], *it );
                 }
             }
 
@@ -302,6 +346,7 @@ int QDBusInterfacePrivate::metacall(QMetaObject::Call c, int id, void **argv)
             return -1;
         }
     }
+
     return id;
 }
 

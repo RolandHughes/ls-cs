@@ -30,16 +30,16 @@
 
 class QNetmaskAddress: public QHostAddress
 {
-   int length;
+    int length;
 
- public:
-   QNetmaskAddress() : QHostAddress(), length(-1) { }
+public:
+    QNetmaskAddress() : QHostAddress(), length( -1 ) { }
 
-   bool setAddress(const QString &address);
-   bool setAddress(const QHostAddress &address);
+    bool setAddress( const QString &address );
+    bool setAddress( const QHostAddress &address );
 
-   int prefixLength() const;
-   void setPrefixLength(QAbstractSocket::NetworkLayerProtocol proto, int len);
+    int prefixLength() const;
+    void setPrefixLength( QAbstractSocket::NetworkLayerProtocol proto, int len );
 };
 
 #endif

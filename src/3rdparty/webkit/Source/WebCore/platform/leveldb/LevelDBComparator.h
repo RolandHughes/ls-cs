@@ -30,16 +30,18 @@
 
 #include <wtf/text/WTFString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class LevelDBSlice;
 
-class LevelDBComparator {
+class LevelDBComparator
+{
 public:
     virtual ~LevelDBComparator() {}
 
-    virtual int compare(const LevelDBSlice&, const LevelDBSlice&) const = 0;
-    virtual const char* name() const = 0;
+    virtual int compare( const LevelDBSlice &, const LevelDBSlice & ) const = 0;
+    virtual const char *name() const = 0;
 };
 
 } // namespace WebCore

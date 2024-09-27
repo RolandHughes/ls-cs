@@ -30,21 +30,23 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Document;
 
-class Internals : public RefCounted<Internals> {
+class Internals : public RefCounted<Internals>
+{
 public:
     static PassRefPtr<Internals> create();
     virtual ~Internals();
 
-    void reset(Document*);
+    void reset( Document * );
 
-    void setPasswordEchoEnabled(Document*, bool enabled, ExceptionCode&);
-    void setPasswordEchoDurationInSeconds(Document*, double durationInSeconds, ExceptionCode&);
+    void setPasswordEchoEnabled( Document *, bool enabled, ExceptionCode & );
+    void setPasswordEchoDurationInSeconds( Document *, double durationInSeconds, ExceptionCode & );
 
-    static const char* internalsId;
+    static const char *internalsId;
 
 private:
     Internals();

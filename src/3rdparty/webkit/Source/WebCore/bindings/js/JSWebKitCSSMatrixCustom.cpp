@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -30,19 +30,23 @@
 
 using namespace JSC;
 
-namespace WebCore {
-
-EncodedJSValue JSC_HOST_CALL JSWebKitCSSMatrixConstructor::constructJSWebKitCSSMatrix(ExecState* exec)
+namespace WebCore
 {
-    JSWebKitCSSMatrixConstructor* jsConstructor = static_cast<JSWebKitCSSMatrixConstructor*>(exec->callee());
+
+EncodedJSValue JSC_HOST_CALL JSWebKitCSSMatrixConstructor::constructJSWebKitCSSMatrix( ExecState *exec )
+{
+    JSWebKitCSSMatrixConstructor *jsConstructor = static_cast<JSWebKitCSSMatrixConstructor *>( exec->callee() );
     String s;
-    if (exec->argumentCount() >= 1)
-        s = ustringToString(exec->argument(0).toString(exec));
-    
+
+    if ( exec->argumentCount() >= 1 )
+    {
+        s = ustringToString( exec->argument( 0 ).toString( exec ) );
+    }
+
     ExceptionCode ec = 0;
-    RefPtr<WebKitCSSMatrix> matrix = WebKitCSSMatrix::create(s, ec);
-    setDOMException(exec, ec);
-    return JSValue::encode(CREATE_DOM_WRAPPER(exec, jsConstructor->globalObject(), WebKitCSSMatrix, matrix.get()));
+    RefPtr<WebKitCSSMatrix> matrix = WebKitCSSMatrix::create( s, ec );
+    setDOMException( exec, ec );
+    return JSValue::encode( CREATE_DOM_WRAPPER( exec, jsConstructor->globalObject(), WebKitCSSMatrix, matrix.get() ) );
 }
 
 } // namespace WebCore

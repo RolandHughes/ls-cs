@@ -32,41 +32,44 @@
 #include <wtf/Assertions.h>
 #include <wtf/Noncopyable.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Performs a localized triangulation of the triangle mesh
 // corresponding to the four control point vertices of a cubic curve
 // segment.
-class LoopBlinnLocalTriangulator {
-    WTF_MAKE_NONCOPYABLE(LoopBlinnLocalTriangulator);
+class LoopBlinnLocalTriangulator
+{
+    WTF_MAKE_NONCOPYABLE( LoopBlinnLocalTriangulator );
 public:
     // The vertices that the triangulator operates upon, containing both
     // the position information as well as the cubic texture
     // coordinates.
-    class Vertex {
-        WTF_MAKE_NONCOPYABLE(Vertex);
+    class Vertex
+    {
+        WTF_MAKE_NONCOPYABLE( Vertex );
     public:
         Vertex()
         {
             resetFlags();
         }
 
-        const FloatPoint& xyCoordinates() const
+        const FloatPoint &xyCoordinates() const
         {
             return m_xyCoordinates;
         }
 
-        const FloatPoint3D& klmCoordinates() const
+        const FloatPoint3D &klmCoordinates() const
         {
             return m_klmCoordinates;
         }
 
         // Sets the position and texture coordinates of the vertex.
-        void set(float x, float y,
-                 float k, float l, float m)
+        void set( float x, float y,
+                  float k, float l, float m )
         {
-            m_xyCoordinates.set(x, y);
-            m_klmCoordinates.set(k, l, m);
+            m_xyCoordinates.set( x, y );
+            m_klmCoordinates.set( k, l, m );
         }
 
         // Flags for walking from the start vertex to the end vertex.
@@ -75,7 +78,7 @@ public:
             return m_end;
         }
 
-        void setEnd(bool end)
+        void setEnd( bool end )
         {
             m_end = end;
         }
@@ -85,7 +88,7 @@ public:
             return m_marked;
         }
 
-        void setMarked(bool marked)
+        void setMarked( bool marked )
         {
             m_marked = marked;
         }
@@ -95,7 +98,7 @@ public:
             return m_interior;
         }
 
-        void setInterior(bool interior)
+        void setInterior( bool interior )
         {
             m_interior = interior;
         }
@@ -120,7 +123,8 @@ public:
     };
 
     // The triangles the Triangulator produces.
-    class Triangle {
+    class Triangle
+    {
     public:
         Triangle()
         {
@@ -130,25 +134,25 @@ public:
         }
 
         // Gets the vertex at the given index, 0 <= index < 3.
-        Vertex* getVertex(int index)
+        Vertex *getVertex( int index )
         {
-            ASSERT(index >= 0 && index < 3);
+            ASSERT( index >= 0 && index < 3 );
             return m_vertices[index];
         }
 
         // Returns true if this triangle contains the given vertex (by
         // identity, not geometrically).
-        bool contains(Vertex* v);
+        bool contains( Vertex *v );
 
         // Returns the vertex following the current one in the specified
         // direction, counterclockwise or clockwise.
-        Vertex* nextVertex(Vertex* current, bool traverseCounterClockwise);
+        Vertex *nextVertex( Vertex *current, bool traverseCounterClockwise );
 
         // Sets the vertices of this triangle, potentially reordering them
         // to produce a canonical orientation.
-        void setVertices(Vertex* v0,
-                         Vertex* v1,
-                         Vertex* v2)
+        void setVertices( Vertex *v0,
+                          Vertex *v1,
+                          Vertex *v2 )
         {
             m_vertices[0] = v0;
             m_vertices[1] = v1;
@@ -159,7 +163,7 @@ public:
     private:
         // Returns the index [0..2] associated with the given vertex, or
         // -1 if not found.
-        int indexForVertex(Vertex* vertex);
+        int indexForVertex( Vertex *vertex );
 
         // Reorders the vertices in this triangle to make them
         // counterclockwise when viewed in the 2D plane, in order to
@@ -168,7 +172,7 @@ public:
 
         // Note: these are raw pointers because they point to the
         // m_vertices contained in the surrounding triangulator.
-        Vertex* m_vertices[3];
+        Vertex *m_vertices[3];
     };
 
     LoopBlinnLocalTriangulator();
@@ -180,13 +184,14 @@ public:
 
     // Returns a mutable vertex stored in the triangulator. Use this to
     // set up the vertices before a triangulation.
-    Vertex* getVertex(int index)
+    Vertex *getVertex( int index )
     {
-        ASSERT(index >= 0 && index < 4);
+        ASSERT( index >= 0 && index < 4 );
         return &m_vertices[index];
     }
 
-    enum InsideEdgeComputation {
+    enum InsideEdgeComputation
+    {
         ComputeInsideEdges,
         DontComputeInsideEdges
     };
@@ -203,8 +208,8 @@ public:
     //     will be chosen for the cut into two triangles.
     //   - If one of the vertices is contained in the triangle spanned
     //     by the other three, three triangles will be produced.
-    void triangulate(InsideEdgeComputation computeInsideEdges,
-                     LoopBlinnConstants::FillSide sideToFill);
+    void triangulate( InsideEdgeComputation computeInsideEdges,
+                      LoopBlinnConstants::FillSide sideToFill );
 
     // Number of triangles computed by triangulate().
     int numberOfTriangles() const
@@ -213,9 +218,9 @@ public:
     }
 
     // Returns the computed triangle at index, 0 <= index < numberOfTriangles().
-    Triangle* getTriangle(int index)
+    Triangle *getTriangle( int index )
     {
-        ASSERT(index >= 0 && index < m_numberOfTriangles);
+        ASSERT( index >= 0 && index < m_numberOfTriangles );
         return &m_triangles[index];
     }
 
@@ -227,24 +232,24 @@ public:
     }
 
     // Fetches the given interior vertex, 0 <= index < numberOfInteriorVertices().
-    Vertex* getInteriorVertex(int index)
+    Vertex *getInteriorVertex( int index )
     {
-        ASSERT(index >= 0 && index < m_numberOfInteriorVertices);
+        ASSERT( index >= 0 && index < m_numberOfInteriorVertices );
         return m_interiorVertices[index];
     }
 
 private:
-    void triangulateHelper(LoopBlinnConstants::FillSide sideToFill);
+    void triangulateHelper( LoopBlinnConstants::FillSide sideToFill );
 
     // Adds a triangle to the triangulation.
-    void addTriangle(Vertex* v0, Vertex* v1, Vertex* v2);
+    void addTriangle( Vertex *v0, Vertex *v1, Vertex *v2 );
 
     // Adds a vertex to the list of interior vertices.
-    void addInteriorVertex(Vertex* v);
+    void addInteriorVertex( Vertex *v );
 
     // Indicates whether the edge between vertex v0 and v1 is shared
     // between two or more triangles.
-    bool isSharedEdge(Vertex* v0, Vertex* v1);
+    bool isSharedEdge( Vertex *v0, Vertex *v1 );
 
     // The vertices being triangulated.
     Vertex m_vertices[4];
@@ -252,7 +257,7 @@ private:
     // The vertices corresponding to the edges facing the inside of the
     // shape, in order from the start vertex to the end vertex. The more
     // general triangulation algorithm tessellates this interior region.
-    Vertex* m_interiorVertices[4];
+    Vertex *m_interiorVertices[4];
     // The number of interior vertices that are valid for the current
     // triangulation.
     int m_numberOfInteriorVertices;

@@ -27,19 +27,21 @@
 #include "Filter.h"
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class FEMerge : public FilterEffect {
+class FEMerge : public FilterEffect
+{
 public:
-    static PassRefPtr<FEMerge> create(Filter*);
+    static PassRefPtr<FEMerge> create( Filter * );
 
     virtual void apply();
     virtual void dump();
 
-    virtual TextStream& externalRepresentation(TextStream&, int indention) const;
+    virtual TextStream &externalRepresentation( TextStream &, int indention ) const;
 
 private:
-    FEMerge(Filter*);
+    FEMerge( Filter * );
 };
 
 } // namespace WebCore

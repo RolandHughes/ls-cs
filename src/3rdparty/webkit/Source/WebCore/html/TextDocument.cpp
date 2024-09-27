@@ -27,18 +27,19 @@
 
 #include "TextDocumentParser.h"
 
-namespace WebCore {
-
-TextDocument::TextDocument(Frame* frame, const KURL& url)
-    : HTMLDocument(frame, url)
+namespace WebCore
 {
-    setCompatibilityMode(QuirksMode);
+
+TextDocument::TextDocument( Frame *frame, const KURL &url )
+    : HTMLDocument( frame, url )
+{
+    setCompatibilityMode( QuirksMode );
     lockCompatibilityMode();
 }
 
 PassRefPtr<DocumentParser> TextDocument::createParser()
 {
-    return TextDocumentParser::create(this);
+    return TextDocumentParser::create( this );
 }
 
 }

@@ -33,20 +33,20 @@
 
 /* ************************************************************************** */
 
-mng_retcode mngjpeg_initialize      (mng_datap  pData);
-mng_retcode mngjpeg_cleanup         (mng_datap  pData);
+mng_retcode mngjpeg_initialize      ( mng_datap  pData );
+mng_retcode mngjpeg_cleanup         ( mng_datap  pData );
 
-mng_retcode mngjpeg_decompressinit  (mng_datap  pData);
-mng_retcode mngjpeg_decompressdata  (mng_datap  pData,
-                                     mng_uint32 iRawsize,
-                                     mng_uint8p pRawdata);
-mng_retcode mngjpeg_decompressfree  (mng_datap  pData);
+mng_retcode mngjpeg_decompressinit  ( mng_datap  pData );
+mng_retcode mngjpeg_decompressdata  ( mng_datap  pData,
+                                      mng_uint32 iRawsize,
+                                      mng_uint8p pRawdata );
+mng_retcode mngjpeg_decompressfree  ( mng_datap  pData );
 
-mng_retcode mngjpeg_decompressinit2 (mng_datap  pData);
-mng_retcode mngjpeg_decompressdata2 (mng_datap  pData,
-                                     mng_uint32 iRawsize,
-                                     mng_uint8p pRawdata);
-mng_retcode mngjpeg_decompressfree2 (mng_datap  pData);
+mng_retcode mngjpeg_decompressinit2 ( mng_datap  pData );
+mng_retcode mngjpeg_decompressdata2 ( mng_datap  pData,
+                                      mng_uint32 iRawsize,
+                                      mng_uint8p pRawdata );
+mng_retcode mngjpeg_decompressfree2 ( mng_datap  pData );
 
 /* ************************************************************************** */
 

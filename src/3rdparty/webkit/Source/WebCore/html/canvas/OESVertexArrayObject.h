@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef OESVertexArrayObject_h
@@ -33,25 +33,27 @@
 #include <wtf/PassOwnPtr.h>
 #include <wtf/UnusedParam.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class WebGLRenderingContext;
 class WebGLVertexArrayObjectOES;
 
-class OESVertexArrayObject : public WebGLExtension {
+class OESVertexArrayObject : public WebGLExtension
+{
 public:
-    static PassOwnPtr<OESVertexArrayObject> create(WebGLRenderingContext*);
+    static PassOwnPtr<OESVertexArrayObject> create( WebGLRenderingContext * );
 
     virtual ~OESVertexArrayObject();
     virtual ExtensionName getName() const;
-    
+
     PassRefPtr<WebGLVertexArrayObjectOES> createVertexArrayOES();
-    void deleteVertexArrayOES(WebGLVertexArrayObjectOES*);
-    GC3Dboolean isVertexArrayOES(WebGLVertexArrayObjectOES*);
-    void bindVertexArrayOES(WebGLVertexArrayObjectOES*, ExceptionCode&);
+    void deleteVertexArrayOES( WebGLVertexArrayObjectOES * );
+    GC3Dboolean isVertexArrayOES( WebGLVertexArrayObjectOES * );
+    void bindVertexArrayOES( WebGLVertexArrayObjectOES *, ExceptionCode & );
 
 private:
-    OESVertexArrayObject(WebGLRenderingContext*);
+    OESVertexArrayObject( WebGLRenderingContext * );
 };
 
 } // namespace WebCore

@@ -35,40 +35,64 @@
 #include <QMimeData>
 
 
-namespace WebCore {
+namespace WebCore
+{
 
-static inline Qt::DropActions dragOperationsToDropActions(unsigned op)
+static inline Qt::DropActions dragOperationsToDropActions( unsigned op )
 {
     Qt::DropActions result = Qt::IgnoreAction;
-    if (op & DragOperationCopy)
+
+    if ( op & DragOperationCopy )
+    {
         result = Qt::CopyAction;
-    if (op & DragOperationMove)
+    }
+
+    if ( op & DragOperationMove )
+    {
         result |= Qt::MoveAction;
-    if (op & DragOperationGeneric)
+    }
+
+    if ( op & DragOperationGeneric )
+    {
         result |= Qt::MoveAction;
-    if (op & DragOperationLink)
+    }
+
+    if ( op & DragOperationLink )
+    {
         result |= Qt::LinkAction;
+    }
+
     return result;
 }
 
-static inline DragOperation dropActionToDragOperation(Qt::DropActions action)
+static inline DragOperation dropActionToDragOperation( Qt::DropActions action )
 {
     DragOperation result = DragOperationNone;
-    if (action & Qt::CopyAction)
+
+    if ( action & Qt::CopyAction )
+    {
         result = DragOperationCopy;
-    if (action & Qt::LinkAction)
+    }
+
+    if ( action & Qt::LinkAction )
+    {
         result = DragOperationLink;
-    if (action & Qt::MoveAction)
+    }
+
+    if ( action & Qt::MoveAction )
+    {
         result = DragOperationMove;
+    }
+
     return result;
 }
 
-DragDestinationAction DragClientQt::actionMaskForDrag(DragData*)
+DragDestinationAction DragClientQt::actionMaskForDrag( DragData * )
 {
     return DragDestinationActionAny;
 }
 
-void DragClientQt::willPerformDragDestinationAction(DragDestinationAction, DragData*)
+void DragClientQt::willPerformDragDestinationAction( DragDestinationAction, DragData * )
 {
 }
 
@@ -77,38 +101,46 @@ void DragClientQt::dragControllerDestroyed()
     delete this;
 }
 
-DragSourceAction DragClientQt::dragSourceActionMaskForPoint(const IntPoint&)
+DragSourceAction DragClientQt::dragSourceActionMaskForPoint( const IntPoint & )
 {
     return DragSourceActionAny;
 }
 
-void DragClientQt::willPerformDragSourceAction(DragSourceAction, const IntPoint&, Clipboard*)
+void DragClientQt::willPerformDragSourceAction( DragSourceAction, const IntPoint &, Clipboard * )
 {
 }
 
-void DragClientQt::startDrag(DragImageRef dragImage, const IntPoint&, const IntPoint&, Clipboard* clipboard, Frame* frame, bool)
+void DragClientQt::startDrag( DragImageRef dragImage, const IntPoint &, const IntPoint &, Clipboard *clipboard, Frame *frame,
+                              bool )
 {
 #ifndef QT_NO_DRAGANDDROP
-    QMimeData* clipboardData = static_cast<ClipboardQt*>(clipboard)->clipboardData();
-    static_cast<ClipboardQt*>(clipboard)->invalidateWritableData();
-    QWidget* view = m_webPage->view();
+    QMimeData *clipboardData = static_cast<ClipboardQt *>( clipboard )->clipboardData();
+    static_cast<ClipboardQt *>( clipboard )->invalidateWritableData();
+    QWidget *view = m_webPage->view();
 
-    if (view) {
-        QDrag* drag = new QDrag(view);
+    if ( view )
+    {
+        QDrag *drag = new QDrag( view );
 
-        if (dragImage)
-            drag->setPixmap(*dragImage);
-        else if (clipboardData && clipboardData->hasImage())
-            drag->setPixmap((clipboardData->imageData()).value<QPixmap>());
+        if ( dragImage )
+        {
+            drag->setPixmap( *dragImage );
+        }
+        else if ( clipboardData && clipboardData->hasImage() )
+        {
+            drag->setPixmap( ( clipboardData->imageData() ).value<QPixmap>() );
+        }
 
         DragOperation dragOperationMask = clipboard->sourceOperation();
-        drag->setMimeData(clipboardData);
-        Qt::DropAction actualDropAction = drag->exec(dragOperationsToDropActions(dragOperationMask));
+        drag->setMimeData( clipboardData );
+        Qt::DropAction actualDropAction = drag->exec( dragOperationsToDropActions( dragOperationMask ) );
 
         // Send dragEnd event
-        PlatformMouseEvent me(m_webPage->view()->mapFromGlobal(QCursor::pos()), QCursor::pos(), LeftButton, MouseEventMoved, 0, false, false, false, false, 0);
-        frame->eventHandler()->dragSourceEndedAt(me, dropActionToDragOperation(actualDropAction));
+        PlatformMouseEvent me( m_webPage->view()->mapFromGlobal( QCursor::pos() ), QCursor::pos(), LeftButton, MouseEventMoved, 0, false,
+                               false, false, false, 0 );
+        frame->eventHandler()->dragSourceEndedAt( me, dropActionToDragOperation( actualDropAction ) );
     }
+
 #endif
 }
 

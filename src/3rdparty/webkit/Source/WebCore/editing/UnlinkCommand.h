@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef UnlinkCommand_h
@@ -28,20 +28,25 @@
 
 #include "CompositeEditCommand.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class UnlinkCommand : public CompositeEditCommand {
+class UnlinkCommand : public CompositeEditCommand
+{
 public:
-    static PassRefPtr<UnlinkCommand> create(Document* document)
+    static PassRefPtr<UnlinkCommand> create( Document *document )
     {
-        return adoptRef(new UnlinkCommand(document));
+        return adoptRef( new UnlinkCommand( document ) );
     }
 
 private:
-    UnlinkCommand(Document*);
+    UnlinkCommand( Document * );
 
     virtual void doApply();
-    virtual EditAction editingAction() const { return EditActionUnlink; }
+    virtual EditAction editingAction() const
+    {
+        return EditActionUnlink;
+    }
 };
 
 } // namespace WebCore

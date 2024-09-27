@@ -21,9 +21,9 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 #include "config.h"
 #include "FloatSize.h"
 
@@ -31,15 +31,16 @@
 
 #include <ApplicationServices/ApplicationServices.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-FloatSize::FloatSize(const CGSize& s) : m_width(s.width), m_height(s.height)
+FloatSize::FloatSize( const CGSize &s ) : m_width( s.width ), m_height( s.height )
 {
 }
 
 FloatSize::operator CGSize() const
 {
-    return CGSizeMake(m_width, m_height);
+    return CGSizeMake( m_width, m_height );
 }
 
 }

@@ -22,11 +22,14 @@
 #ifndef HitTestRequest_h
 #define HitTestRequest_h
 
-namespace WebCore {
+namespace WebCore
+{
 
-class HitTestRequest {
+class HitTestRequest
+{
 public:
-    enum RequestType {
+    enum RequestType
+    {
         ReadOnly = 1 << 1,
         Active = 1 << 2,
         MouseMove = 1 << 3,
@@ -37,17 +40,35 @@ public:
 
     typedef unsigned HitTestRequestType;
 
-    HitTestRequest(HitTestRequestType requestType)
-        : m_requestType(requestType)
+    HitTestRequest( HitTestRequestType requestType )
+        : m_requestType( requestType )
     {
     }
 
-    bool readOnly() const { return m_requestType & ReadOnly; }
-    bool active() const { return m_requestType & Active; }
-    bool mouseMove() const { return m_requestType & MouseMove; }
-    bool mouseUp() const { return m_requestType & MouseUp; }
-    bool ignoreClipping() const { return m_requestType & IgnoreClipping; }
-    bool svgClipContent() const { return m_requestType & SVGClipContent; }
+    bool readOnly() const
+    {
+        return m_requestType & ReadOnly;
+    }
+    bool active() const
+    {
+        return m_requestType & Active;
+    }
+    bool mouseMove() const
+    {
+        return m_requestType & MouseMove;
+    }
+    bool mouseUp() const
+    {
+        return m_requestType & MouseUp;
+    }
+    bool ignoreClipping() const
+    {
+        return m_requestType & IgnoreClipping;
+    }
+    bool svgClipContent() const
+    {
+        return m_requestType & SVGClipContent;
+    }
 
 private:
     HitTestRequestType m_requestType;

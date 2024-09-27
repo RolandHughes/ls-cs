@@ -32,20 +32,23 @@
 
 #include <wtf/Noncopyable.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Computes three-dimensional texture coordinates for the control
 // points of a cubic curve for rendering via the shader in "Rendering
 // Vector Art on the GPU" by Loop and Blinn, GPU Gems 3, Chapter 25.
-class LoopBlinnTextureCoords {
+class LoopBlinnTextureCoords
+{
 public:
     // Container for the cubic texture coordinates and other associated
     // information.
-    struct Result {
+    struct Result
+    {
         Result()
-            : isLineOrPoint(false)
-            , hasRenderingArtifact(false)
-            , subdivisionParameterValue(0.0f) { }
+            : isLineOrPoint( false )
+            , hasRenderingArtifact( false )
+            , subdivisionParameterValue( 0.0f ) { }
 
         // The (k, l, m) texture coordinates that are to be associated
         // with the four control points of the cubic curve.
@@ -69,8 +72,8 @@ public:
     // Computes the texture coordinates for a cubic curve segment's
     // control points, given the classification of the curve as well as
     // an indication of which side is to be filled.
-    static Result compute(const LoopBlinnClassifier::Result& classification,
-                          LoopBlinnConstants::FillSide sideToFill);
+    static Result compute( const LoopBlinnClassifier::Result &classification,
+                           LoopBlinnConstants::FillSide sideToFill );
 
 private:
     // This class does not need to be instantiated.

@@ -28,8 +28,9 @@
 
 QT_BEGIN_NAMESPACE
 
-struct Q_DECLARATIVE_EXPORT QDeclarativeDebuggingEnabler {
-   QDeclarativeDebuggingEnabler();
+struct Q_DECLARATIVE_EXPORT QDeclarativeDebuggingEnabler
+{
+    QDeclarativeDebuggingEnabler();
 };
 
 // Execute code in constructor before first QDeclarativeEngine is instantiated

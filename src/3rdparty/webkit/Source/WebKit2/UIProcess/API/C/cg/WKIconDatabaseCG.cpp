@@ -34,15 +34,15 @@
 using namespace WebKit;
 using namespace WebCore;
 
-CGImageRef WKIconDatabaseTryGetCGImageForURL(WKIconDatabaseRef iconDatabaseRef, WKURLRef urlRef, WKSize size)
+CGImageRef WKIconDatabaseTryGetCGImageForURL( WKIconDatabaseRef iconDatabaseRef, WKURLRef urlRef, WKSize size )
 {
-    Image* image = toImpl(iconDatabaseRef)->imageForPageURL(toWTFString(urlRef));
-    return image ? image->getFirstCGImageRefOfSize(IntSize(static_cast<int>(size.width), static_cast<int>(size.height))) : 0;
+    Image *image = toImpl( iconDatabaseRef )->imageForPageURL( toWTFString( urlRef ) );
+    return image ? image->getFirstCGImageRefOfSize( IntSize( static_cast<int>( size.width ), static_cast<int>( size.height ) ) ) : 0;
 }
 
-CFArrayRef WKIconDatabaseTryCopyCGImageArrayForURL(WKIconDatabaseRef iconDatabaseRef, WKURLRef urlRef)
+CFArrayRef WKIconDatabaseTryCopyCGImageArrayForURL( WKIconDatabaseRef iconDatabaseRef, WKURLRef urlRef )
 {
-    Image* image = toImpl(iconDatabaseRef)->imageForPageURL(toWTFString(urlRef));
+    Image *image = toImpl( iconDatabaseRef )->imageForPageURL( toWTFString( urlRef ) );
     return image ? image->getCGImageArray().leakRef() : 0;
 }
 

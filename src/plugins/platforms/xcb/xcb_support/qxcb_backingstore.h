@@ -33,33 +33,33 @@ class QXcbShmImage;
 
 class QXcbBackingStore : public QXcbObject, public QPlatformBackingStore
 {
- public:
-   QXcbBackingStore(QWindow *widget);
-   ~QXcbBackingStore();
+public:
+    QXcbBackingStore( QWindow *widget );
+    ~QXcbBackingStore();
 
-   QPaintDevice *paintDevice() override;
-   void flush(QWindow *window, const QRegion &region, const QPoint &offset) override;
+    QPaintDevice *paintDevice() override;
+    void flush( QWindow *window, const QRegion &region, const QPoint &offset ) override;
 
 #ifndef QT_NO_OPENGL
-   void composeAndFlush(QWindow *window, const QRegion &region, const QPoint &offset,
-      QPlatformTextureList *textures, QOpenGLContext *context,
-      bool translucentBackground) override;
-   QImage toImage() const override;
+    void composeAndFlush( QWindow *window, const QRegion &region, const QPoint &offset,
+                          QPlatformTextureList *textures, QOpenGLContext *context,
+                          bool translucentBackground ) override;
+    QImage toImage() const override;
 #endif
 
-   QPlatformGraphicsBuffer *graphicsBuffer() const override;
+    QPlatformGraphicsBuffer *graphicsBuffer() const override;
 
-   void resize(const QSize &size, const QRegion &staticContents) override;
-   bool scroll(const QRegion &area, int dx, int dy) override;
+    void resize( const QSize &size, const QRegion &staticContents ) override;
+    bool scroll( const QRegion &area, int dx, int dy ) override;
 
-   void beginPaint(const QRegion &) override;
-   void endPaint() override;
+    void beginPaint( const QRegion & ) override;
+    void endPaint() override;
 
- private:
-   QXcbShmImage *m_image;
-   QRegion m_paintRegion;
-   QImage m_rgbImage;
-   QSize m_size;
+private:
+    QXcbShmImage *m_image;
+    QRegion m_paintRegion;
+    QImage m_rgbImage;
+    QSize m_size;
 };
 
 #endif

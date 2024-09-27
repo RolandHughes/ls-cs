@@ -30,7 +30,8 @@
 extern "C" {
 #endif
 
-enum {
+enum
+{
     kWKContextMenuItemTagNoAction = 0,
     kWKContextMenuItemTagOpenLinkInNewWindow,
     kWKContextMenuItemTagDownloadLinkToDisk,
@@ -66,12 +67,12 @@ enum {
     kWKContextMenuItemTagPDFPreviousPage,
     kWKContextMenuItemTagOpenLink,
     kWKContextMenuItemTagIgnoreGrammar,
-    kWKContextMenuItemTagSpellingMenu, 
+    kWKContextMenuItemTagSpellingMenu,
     kWKContextMenuItemTagShowSpellingPanel,
     kWKContextMenuItemTagCheckSpelling,
     kWKContextMenuItemTagCheckSpellingWhileTyping,
     kWKContextMenuItemTagCheckGrammarWithSpelling,
-    kWKContextMenuItemTagFontMenu, 
+    kWKContextMenuItemTagFontMenu,
     kWKContextMenuItemTagShowFonts,
     kWKContextMenuItemTagBold,
     kWKContextMenuItemTagItalic,
@@ -79,10 +80,10 @@ enum {
     kWKContextMenuItemTagOutline,
     kWKContextMenuItemTagStyles,
     kWKContextMenuItemTagShowColors,
-    kWKContextMenuItemTagSpeechMenu, 
+    kWKContextMenuItemTagSpeechMenu,
     kWKContextMenuItemTagStartSpeaking,
     kWKContextMenuItemTagStopSpeaking,
-    kWKContextMenuItemTagWritingDirectionMenu, 
+    kWKContextMenuItemTagWritingDirectionMenu,
     kWKContextMenuItemTagDefaultDirection,
     kWKContextMenuItemTagLeftToRight,
     kWKContextMenuItemTagRightToLeft,
@@ -117,14 +118,15 @@ enum {
 };
 typedef uint32_t WKContextMenuItemTag;
 
-enum {
+enum
+{
     kWKContextMenuItemTypeAction,
     kWKContextMenuItemTypeCheckableAction,
     kWKContextMenuItemTypeSeparator,
     kWKContextMenuItemTypeSubmenu
 };
 typedef uint32_t WKContextMenuItemType;
-    
+
 #ifdef __cplusplus
 }
 #endif

@@ -25,8 +25,8 @@
 
 #include <qmediacontrol_p.h>
 
-QCameraLocksControl::QCameraLocksControl(QObject *parent)
-   : QMediaControl(*new QMediaControlPrivate, parent)
+QCameraLocksControl::QCameraLocksControl( QObject *parent )
+    : QMediaControl( *new QMediaControlPrivate, parent )
 {
 }
 

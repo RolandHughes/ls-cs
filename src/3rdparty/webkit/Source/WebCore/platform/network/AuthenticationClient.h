@@ -26,19 +26,27 @@
 #ifndef AuthenticationClient_h
 #define AuthenticationClient_h
 
-namespace WebCore {
+namespace WebCore
+{
 
 class AuthenticationChallenge;
 class Credential;
 
-class AuthenticationClient {
+class AuthenticationClient
+{
 public:
-    virtual void receivedCredential(const AuthenticationChallenge&, const Credential&) = 0;
-    virtual void receivedRequestToContinueWithoutCredential(const AuthenticationChallenge&) = 0;
-    virtual void receivedCancellation(const AuthenticationChallenge&) = 0;
+    virtual void receivedCredential( const AuthenticationChallenge &, const Credential & ) = 0;
+    virtual void receivedRequestToContinueWithoutCredential( const AuthenticationChallenge & ) = 0;
+    virtual void receivedCancellation( const AuthenticationChallenge & ) = 0;
 
-    void ref() { refAuthenticationClient(); }
-    void deref() { derefAuthenticationClient(); }
+    void ref()
+    {
+        refAuthenticationClient();
+    }
+    void deref()
+    {
+        derefAuthenticationClient();
+    }
 
 protected:
     virtual ~AuthenticationClient() { }

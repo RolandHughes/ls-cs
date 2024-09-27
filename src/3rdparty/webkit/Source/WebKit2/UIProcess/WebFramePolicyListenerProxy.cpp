@@ -28,26 +28,27 @@
 
 #include "WebFrameProxy.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
-WebFramePolicyListenerProxy::WebFramePolicyListenerProxy(WebFrameProxy* frame, uint64_t listenerID)
-    : WebFrameListenerProxy(frame, listenerID)
+WebFramePolicyListenerProxy::WebFramePolicyListenerProxy( WebFrameProxy *frame, uint64_t listenerID )
+    : WebFrameListenerProxy( frame, listenerID )
 {
 }
 
 void WebFramePolicyListenerProxy::use()
 {
-    receivedPolicyDecision(WebCore::PolicyUse);
+    receivedPolicyDecision( WebCore::PolicyUse );
 }
 
 void WebFramePolicyListenerProxy::download()
 {
-    receivedPolicyDecision(WebCore::PolicyDownload);
+    receivedPolicyDecision( WebCore::PolicyDownload );
 }
 
 void WebFramePolicyListenerProxy::ignore()
 {
-    receivedPolicyDecision(WebCore::PolicyIgnore);
+    receivedPolicyDecision( WebCore::PolicyIgnore );
 }
 
 } // namespace WebKit

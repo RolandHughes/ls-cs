@@ -31,7 +31,8 @@
 #include "config.h"
 #include "SocketStreamError.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 SocketStreamError SocketStreamErrorBase::copy() const
 {
@@ -40,22 +41,32 @@ SocketStreamError SocketStreamErrorBase::copy() const
     return errorCopy;
 }
 
-bool SocketStreamErrorBase::compare(const SocketStreamError& a, const SocketStreamError& b)
+bool SocketStreamErrorBase::compare( const SocketStreamError &a, const SocketStreamError &b )
 {
-    if (a.isNull() && b.isNull())
+    if ( a.isNull() && b.isNull() )
+    {
         return true;
+    }
 
-    if (a.isNull() || b.isNull())
+    if ( a.isNull() || b.isNull() )
+    {
         return false;
+    }
 
-    if (a.errorCode() != b.errorCode())
+    if ( a.errorCode() != b.errorCode() )
+    {
         return false;
+    }
 
-    if (a.failingURL() != b.failingURL())
+    if ( a.failingURL() != b.failingURL() )
+    {
         return false;
+    }
 
-    if (a.localizedDescription() != b.localizedDescription())
+    if ( a.localizedDescription() != b.localizedDescription() )
+    {
         return false;
+    }
 
     return true;
 }

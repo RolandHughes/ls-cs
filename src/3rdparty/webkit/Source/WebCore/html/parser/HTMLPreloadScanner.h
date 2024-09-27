@@ -21,7 +21,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef HTMLPreloadScanner_h
@@ -31,26 +31,29 @@
 #include "HTMLToken.h"
 #include "SegmentedString.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Document;
 class HTMLToken;
 class HTMLTokenizer;
 class SegmentedString;
 
-class HTMLPreloadScanner {
-    WTF_MAKE_NONCOPYABLE(HTMLPreloadScanner); WTF_MAKE_FAST_ALLOCATED;
+class HTMLPreloadScanner
+{
+    WTF_MAKE_NONCOPYABLE( HTMLPreloadScanner );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
-    HTMLPreloadScanner(Document*);
+    HTMLPreloadScanner( Document * );
 
-    void appendToEnd(const SegmentedString&);
+    void appendToEnd( const SegmentedString & );
     void scan();
 
 private:
     void processToken();
     bool scanningBody() const;
 
-    Document* m_document;
+    Document *m_document;
     SegmentedString m_source;
     CSSPreloadScanner m_cssScanner;
     OwnPtr<HTMLTokenizer> m_tokenizer;

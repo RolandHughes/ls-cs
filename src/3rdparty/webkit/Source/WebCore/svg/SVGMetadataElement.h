@@ -24,14 +24,16 @@
 
 #include "SVGElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SVGMetadataElement : public SVGElement {
+class SVGMetadataElement : public SVGElement
+{
 public:
-    static PassRefPtr<SVGMetadataElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<SVGMetadataElement> create( const QualifiedName &, Document * );
 
 private:
-    SVGMetadataElement(const QualifiedName&, Document*);
+    SVGMetadataElement( const QualifiedName &, Document * );
 };
 
 } // namespace WebCore

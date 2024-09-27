@@ -30,9 +30,10 @@
 #include <wtf/GetPtr.h>
 #include <wtf/RefPtr.h>
 
-struct WebDOMTestSerializedScriptValueInterface::WebDOMTestSerializedScriptValueInterfacePrivate {
-    WebDOMTestSerializedScriptValueInterfacePrivate(WebCore::TestSerializedScriptValueInterface* object = 0)
-        : impl(object)
+struct WebDOMTestSerializedScriptValueInterface::WebDOMTestSerializedScriptValueInterfacePrivate
+{
+    WebDOMTestSerializedScriptValueInterfacePrivate( WebCore::TestSerializedScriptValueInterface *object = 0 )
+        : impl( object )
     {
     }
 
@@ -41,30 +42,33 @@ struct WebDOMTestSerializedScriptValueInterface::WebDOMTestSerializedScriptValue
 
 WebDOMTestSerializedScriptValueInterface::WebDOMTestSerializedScriptValueInterface()
     : WebDOMObject()
-    , m_impl(0)
+    , m_impl( 0 )
 {
 }
 
-WebDOMTestSerializedScriptValueInterface::WebDOMTestSerializedScriptValueInterface(WebCore::TestSerializedScriptValueInterface* impl)
+WebDOMTestSerializedScriptValueInterface::WebDOMTestSerializedScriptValueInterface( WebCore::TestSerializedScriptValueInterface
+        *impl )
     : WebDOMObject()
-    , m_impl(new WebDOMTestSerializedScriptValueInterfacePrivate(impl))
+    , m_impl( new WebDOMTestSerializedScriptValueInterfacePrivate( impl ) )
 {
 }
 
-WebDOMTestSerializedScriptValueInterface::WebDOMTestSerializedScriptValueInterface(const WebDOMTestSerializedScriptValueInterface& copy)
+WebDOMTestSerializedScriptValueInterface::WebDOMTestSerializedScriptValueInterface( const
+        WebDOMTestSerializedScriptValueInterface &copy )
     : WebDOMObject()
 {
-    m_impl = copy.impl() ? new WebDOMTestSerializedScriptValueInterfacePrivate(copy.impl()) : 0;
+    m_impl = copy.impl() ? new WebDOMTestSerializedScriptValueInterfacePrivate( copy.impl() ) : 0;
 }
 
-WebDOMTestSerializedScriptValueInterface& WebDOMTestSerializedScriptValueInterface::operator=(const WebDOMTestSerializedScriptValueInterface& copy)
+WebDOMTestSerializedScriptValueInterface &WebDOMTestSerializedScriptValueInterface::operator=
+( const WebDOMTestSerializedScriptValueInterface &copy )
 {
     delete m_impl;
-    m_impl = copy.impl() ? new WebDOMTestSerializedScriptValueInterfacePrivate(copy.impl()) : 0;
+    m_impl = copy.impl() ? new WebDOMTestSerializedScriptValueInterfacePrivate( copy.impl() ) : 0;
     return *this;
 }
 
-WebCore::TestSerializedScriptValueInterface* WebDOMTestSerializedScriptValueInterface::impl() const
+WebCore::TestSerializedScriptValueInterface *WebDOMTestSerializedScriptValueInterface::impl() const
 {
     return m_impl ? m_impl->impl.get() : 0;
 }
@@ -77,20 +81,22 @@ WebDOMTestSerializedScriptValueInterface::~WebDOMTestSerializedScriptValueInterf
 
 WebDOMString WebDOMTestSerializedScriptValueInterface::value() const
 {
-    if (!impl())
+    if ( !impl() )
+    {
         return WebDOMString();
+    }
 
     return impl()->value()->toString();
 }
 
-WebCore::TestSerializedScriptValueInterface* toWebCore(const WebDOMTestSerializedScriptValueInterface& wrapper)
+WebCore::TestSerializedScriptValueInterface *toWebCore( const WebDOMTestSerializedScriptValueInterface &wrapper )
 {
     return wrapper.impl();
 }
 
-WebDOMTestSerializedScriptValueInterface toWebKit(WebCore::TestSerializedScriptValueInterface* value)
+WebDOMTestSerializedScriptValueInterface toWebKit( WebCore::TestSerializedScriptValueInterface *value )
 {
-    return WebDOMTestSerializedScriptValueInterface(value);
+    return WebDOMTestSerializedScriptValueInterface( value );
 }
 
 #endif // ENABLE(Condition1) || ENABLE(Condition2)

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -32,40 +32,47 @@
 #include "Extensions3D.h"
 #include "WebGLRenderingContext.h"
 
-namespace WebCore {
-
-PassRefPtr<WebGLVertexArrayObjectOES> WebGLVertexArrayObjectOES::create(WebGLRenderingContext* ctx, VaoType type)
+namespace WebCore
 {
-    return adoptRef(new WebGLVertexArrayObjectOES(ctx, type));
+
+PassRefPtr<WebGLVertexArrayObjectOES> WebGLVertexArrayObjectOES::create( WebGLRenderingContext *ctx, VaoType type )
+{
+    return adoptRef( new WebGLVertexArrayObjectOES( ctx, type ) );
 }
 
-WebGLVertexArrayObjectOES::WebGLVertexArrayObjectOES(WebGLRenderingContext* ctx, VaoType type)
-    : WebGLObject(ctx)
-    , m_type(type)
-    , m_hasEverBeenBound(false)
-    , m_boundElementArrayBuffer(0)
+WebGLVertexArrayObjectOES::WebGLVertexArrayObjectOES( WebGLRenderingContext *ctx, VaoType type )
+    : WebGLObject( ctx )
+    , m_type( type )
+    , m_hasEverBeenBound( false )
+    , m_boundElementArrayBuffer( 0 )
 {
-    m_vertexAttribState.resize(ctx->getMaxVertexAttribs());
-    
-    Extensions3D* extensions = context()->graphicsContext3D()->getExtensions();
-    switch (m_type) {
-    case VaoTypeDefault:
-        break;
-    default:
-        setObject(extensions->createVertexArrayOES());
-        break;
+    m_vertexAttribState.resize( ctx->getMaxVertexAttribs() );
+
+    Extensions3D *extensions = context()->graphicsContext3D()->getExtensions();
+
+    switch ( m_type )
+    {
+        case VaoTypeDefault:
+            break;
+
+        default:
+            setObject( extensions->createVertexArrayOES() );
+            break;
     }
 }
 
-void WebGLVertexArrayObjectOES::deleteObjectImpl(Platform3DObject object)
+void WebGLVertexArrayObjectOES::deleteObjectImpl( Platform3DObject object )
 {
-    Extensions3D* extensions = context()->graphicsContext3D()->getExtensions();
-    switch (m_type) {
-    case VaoTypeDefault:
-        break;
-    default:
-        extensions->deleteVertexArrayOES(object);
-        break;
+    Extensions3D *extensions = context()->graphicsContext3D()->getExtensions();
+
+    switch ( m_type )
+    {
+        case VaoTypeDefault:
+            break;
+
+        default:
+            extensions->deleteVertexArrayOES( object );
+            break;
     }
 }
 

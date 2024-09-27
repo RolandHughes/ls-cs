@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -32,31 +32,36 @@
 
 using namespace JSC;
 
-namespace WebCore {
-
-void JSInt8Array::indexSetter(JSC::ExecState* exec, unsigned index, JSC::JSValue value)
+namespace WebCore
 {
-    impl()->set(index, static_cast<signed char>(value.toInt32(exec)));
+
+void JSInt8Array::indexSetter( JSC::ExecState *exec, unsigned index, JSC::JSValue value )
+{
+    impl()->set( index, static_cast<signed char>( value.toInt32( exec ) ) );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, Int8Array* object)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, Int8Array *object )
 {
-    return toJSArrayBufferView<JSInt8Array>(exec, globalObject, object);
+    return toJSArrayBufferView<JSInt8Array>( exec, globalObject, object );
 }
 
-JSC::JSValue JSInt8Array::set(JSC::ExecState* exec)
+JSC::JSValue JSInt8Array::set( JSC::ExecState *exec )
 {
-    return setWebGLArrayHelper(exec, impl(), toInt8Array);
+    return setWebGLArrayHelper( exec, impl(), toInt8Array );
 }
 
-EncodedJSValue JSC_HOST_CALL JSInt8ArrayConstructor::constructJSInt8Array(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL JSInt8ArrayConstructor::constructJSInt8Array( ExecState *exec )
 {
-    JSInt8ArrayConstructor* jsConstructor = static_cast<JSInt8ArrayConstructor*>(exec->callee());
-    RefPtr<Int8Array> array = constructArrayBufferView<Int8Array, signed char>(exec);
-    if (!array.get())
+    JSInt8ArrayConstructor *jsConstructor = static_cast<JSInt8ArrayConstructor *>( exec->callee() );
+    RefPtr<Int8Array> array = constructArrayBufferView<Int8Array, signed char>( exec );
+
+    if ( !array.get() )
         // Exception has already been thrown.
-        return JSValue::encode(JSValue());
-    return JSValue::encode(asObject(toJS(exec, jsConstructor->globalObject(), array.get())));
+    {
+        return JSValue::encode( JSValue() );
+    }
+
+    return JSValue::encode( asObject( toJS( exec, jsConstructor->globalObject(), array.get() ) ) );
 }
 
 } // namespace WebCore

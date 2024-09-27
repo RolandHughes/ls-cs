@@ -38,7 +38,8 @@ class QDBusMessage;
 class Q_DBUS_EXPORT QDBusError
 {
 public:
-    enum ErrorType {
+    enum ErrorType
+    {
         NoError = 0,
         Other = 1,
         Failed,
@@ -70,18 +71,18 @@ public:
         LastErrorType = InvalidMember
     };
 
-    QDBusError(const DBusError *error = 0);
-    QDBusError(const QDBusMessage& msg);
-    QDBusError(ErrorType error, const QString &message);
-    QDBusError(const QDBusError &other);
-    QDBusError &operator=(const QDBusError &other);
+    QDBusError( const DBusError *error = 0 );
+    QDBusError( const QDBusMessage &msg );
+    QDBusError( ErrorType error, const QString &message );
+    QDBusError( const QDBusError &other );
+    QDBusError &operator=( const QDBusError &other );
 
     ErrorType type() const;
     QString name() const;
     QString message() const;
     bool isValid() const;
 
-    static QString errorString(ErrorType error);
+    static QString errorString( ErrorType error );
 
 private:
     ErrorType code;
@@ -90,7 +91,7 @@ private:
     void *unused;
 };
 
-Q_DBUS_EXPORT QDebug operator<<(QDebug, const QDBusError &);
+Q_DBUS_EXPORT QDebug operator<<( QDebug, const QDBusError & );
 
 QT_END_NAMESPACE
 

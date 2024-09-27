@@ -30,46 +30,49 @@
 
 #include "BiquadProcessor.h"
 
-namespace WebCore {
-
-void BiquadDSPKernel::process(const float* source, float* destination, size_t framesToProcess)
+namespace WebCore
 {
-    ASSERT(source && destination && biquadProcessor());
-    
+
+void BiquadDSPKernel::process( const float *source, float *destination, size_t framesToProcess )
+{
+    ASSERT( source && destination && biquadProcessor() );
+
     // Recompute filter coefficients if any of the parameters have changed.
     // FIXME: as an optimization, implement a way that a Biquad object can simply copy its internal filter coefficients from another Biquad object.
     // Then re-factor this code to only run for the first BiquadDSPKernel of each BiquadProcessor.
-    if (biquadProcessor()->filterCoefficientsDirty()) {
+    if ( biquadProcessor()->filterCoefficientsDirty() )
+    {
         double value1 = biquadProcessor()->parameter1()->smoothedValue();
         double value2 = biquadProcessor()->parameter2()->smoothedValue();
-        
+
         // Convert from Hertz to normalized frequency 0 -> 1.
         double nyquist = this->nyquist();
         double normalizedValue1 = value1 / nyquist;
 
         // Configure the biquad with the new filter parameters for the appropriate type of filter.
-        switch (biquadProcessor()->type()) {
-        case BiquadProcessor::LowPass2:
-            m_biquad.setLowpassParams(normalizedValue1, value2);
-            break;
+        switch ( biquadProcessor()->type() )
+        {
+            case BiquadProcessor::LowPass2:
+                m_biquad.setLowpassParams( normalizedValue1, value2 );
+                break;
 
-        case BiquadProcessor::HighPass2:
-            m_biquad.setHighpassParams(normalizedValue1, value2);
-            break;
+            case BiquadProcessor::HighPass2:
+                m_biquad.setHighpassParams( normalizedValue1, value2 );
+                break;
 
-        case BiquadProcessor::LowShelf:
-            m_biquad.setLowShelfParams(normalizedValue1, value2);
-            break;
+            case BiquadProcessor::LowShelf:
+                m_biquad.setLowShelfParams( normalizedValue1, value2 );
+                break;
 
-        // FIXME: add other biquad filter types...
-        case BiquadProcessor::Peaking:
-        case BiquadProcessor::Allpass:
-        case BiquadProcessor::HighShelf:
-            break;
+            // FIXME: add other biquad filter types...
+            case BiquadProcessor::Peaking:
+            case BiquadProcessor::Allpass:
+            case BiquadProcessor::HighShelf:
+                break;
         }
     }
 
-    m_biquad.process(source, destination, framesToProcess);
+    m_biquad.process( source, destination, framesToProcess );
 }
 
 } // namespace WebCore

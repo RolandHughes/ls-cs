@@ -28,20 +28,22 @@
 #include "DynamicNodeList.h"
 #include <wtf/PassRefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class LabelsNodeList : public DynamicNodeList {
+class LabelsNodeList : public DynamicNodeList
+{
 public:
-    static PassRefPtr<LabelsNodeList> create(Node* forNode)
+    static PassRefPtr<LabelsNodeList> create( Node *forNode )
     {
-        return adoptRef(new LabelsNodeList(forNode));
+        return adoptRef( new LabelsNodeList( forNode ) );
     }
     ~LabelsNodeList();
 
 protected:
-    LabelsNodeList(Node* forNode);
+    LabelsNodeList( Node *forNode );
 
-    virtual bool nodeMatches(Element*) const;
+    virtual bool nodeMatches( Element * ) const;
 
 private:
     RefPtr<Node> m_forNode;

@@ -35,29 +35,39 @@ class QBearerEngineImpl : public QBearerEngine
     Q_OBJECT
 
 public:
-    enum ConnectionError {
+    enum ConnectionError
+    {
         InterfaceLookupError = 0,
         ConnectError,
         OperationNotSupported,
         DisconnectionError,
     };
 
-    QBearerEngineImpl(QObject *parent = nullptr) : QBearerEngine(parent) {}
+    QBearerEngineImpl( QObject *parent = nullptr ) : QBearerEngine( parent ) {}
     ~QBearerEngineImpl() {}
 
-    virtual void connectToId(const QString &id) = 0;
-    virtual void disconnectFromId(const QString &id) = 0;
+    virtual void connectToId( const QString &id ) = 0;
+    virtual void disconnectFromId( const QString &id ) = 0;
 
-    virtual QString getInterfaceFromId(const QString &id) = 0;
+    virtual QString getInterfaceFromId( const QString &id ) = 0;
 
-    virtual QNetworkSession::State sessionStateForId(const QString &id) = 0;
+    virtual QNetworkSession::State sessionStateForId( const QString &id ) = 0;
 
-    virtual quint64 bytesWritten(const QString &) { return Q_UINT64_C(0); }
-    virtual quint64 bytesReceived(const QString &) { return Q_UINT64_C(0); }
-    virtual quint64 startTime(const QString &) { return Q_UINT64_C(0); }
+    virtual quint64 bytesWritten( const QString & )
+    {
+        return Q_UINT64_C( 0 );
+    }
+    virtual quint64 bytesReceived( const QString & )
+    {
+        return Q_UINT64_C( 0 );
+    }
+    virtual quint64 startTime( const QString & )
+    {
+        return Q_UINT64_C( 0 );
+    }
 
 Q_SIGNALS:
-    void connectionError(const QString &id, QBearerEngineImpl::ConnectionError error);
+    void connectionError( const QString &id, QBearerEngineImpl::ConnectionError error );
 };
 
 QT_END_NAMESPACE

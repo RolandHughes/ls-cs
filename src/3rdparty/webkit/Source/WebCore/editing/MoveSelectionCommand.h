@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef MoveSelectionCommand_h
@@ -28,23 +28,26 @@
 
 #include "CompositeEditCommand.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class DocumentFragment;
 
-class MoveSelectionCommand : public CompositeEditCommand {
+class MoveSelectionCommand : public CompositeEditCommand
+{
 public:
-    static PassRefPtr<MoveSelectionCommand> create(PassRefPtr<DocumentFragment> fragment, const Position& position, bool smartInsert = false, bool smartDelete = false)
+    static PassRefPtr<MoveSelectionCommand> create( PassRefPtr<DocumentFragment> fragment, const Position &position,
+            bool smartInsert = false, bool smartDelete = false )
     {
-        return adoptRef(new MoveSelectionCommand(fragment, position, smartInsert, smartDelete));
+        return adoptRef( new MoveSelectionCommand( fragment, position, smartInsert, smartDelete ) );
     }
 
 private:
-    MoveSelectionCommand(PassRefPtr<DocumentFragment>, const Position&, bool smartInsert, bool smartDelete);
+    MoveSelectionCommand( PassRefPtr<DocumentFragment>, const Position &, bool smartInsert, bool smartDelete );
 
     virtual void doApply();
     virtual EditAction editingAction() const;
-    
+
     RefPtr<DocumentFragment> m_fragment;
     Position m_position;
     bool m_smartInsert;

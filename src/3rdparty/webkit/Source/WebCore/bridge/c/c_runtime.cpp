@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -36,50 +36,60 @@
 #include <runtime/JSLock.h>
 #include <runtime/JSObject.h>
 
-namespace JSC {
-namespace Bindings {
-
-JSValue CField::valueFromInstance(ExecState* exec, const Instance* inst) const
+namespace JSC
 {
-    const CInstance* instance = static_cast<const CInstance*>(inst);
-    NPObject* obj = instance->getObject();
-    if (obj->_class->getProperty) {
+namespace Bindings
+{
+
+JSValue CField::valueFromInstance( ExecState *exec, const Instance *inst ) const
+{
+    const CInstance *instance = static_cast<const CInstance *>( inst );
+    NPObject *obj = instance->getObject();
+
+    if ( obj->_class->getProperty )
+    {
         NPVariant property;
-        VOID_TO_NPVARIANT(property);
+        VOID_TO_NPVARIANT( property );
 
         bool result;
         {
-            JSLock::DropAllLocks dropAllLocks(SilenceAssertionsOnly);
-            result = obj->_class->getProperty(obj, _fieldIdentifier, &property);
-            CInstance::moveGlobalExceptionToExecState(exec);
+            JSLock::DropAllLocks dropAllLocks( SilenceAssertionsOnly );
+            result = obj->_class->getProperty( obj, _fieldIdentifier, &property );
+            CInstance::moveGlobalExceptionToExecState( exec );
         }
-        if (result) {
-            JSValue result = convertNPVariantToValue(exec, &property, instance->rootObject());
-            _NPN_ReleaseVariantValue(&property);
+
+        if ( result )
+        {
+            JSValue result = convertNPVariantToValue( exec, &property, instance->rootObject() );
+            _NPN_ReleaseVariantValue( &property );
             return result;
         }
     }
+
     return jsUndefined();
 }
 
-void CField::setValueToInstance(ExecState *exec, const Instance *inst, JSValue aValue) const
+void CField::setValueToInstance( ExecState *exec, const Instance *inst, JSValue aValue ) const
 {
-    const CInstance* instance = static_cast<const CInstance*>(inst);
-    NPObject* obj = instance->getObject();
-    if (obj->_class->setProperty) {
+    const CInstance *instance = static_cast<const CInstance *>( inst );
+    NPObject *obj = instance->getObject();
+
+    if ( obj->_class->setProperty )
+    {
         NPVariant variant;
-        convertValueToNPVariant(exec, aValue, &variant);
+        convertValueToNPVariant( exec, aValue, &variant );
 
         {
-            JSLock::DropAllLocks dropAllLocks(SilenceAssertionsOnly);
-            obj->_class->setProperty(obj, _fieldIdentifier, &variant);
-            CInstance::moveGlobalExceptionToExecState(exec);
+            JSLock::DropAllLocks dropAllLocks( SilenceAssertionsOnly );
+            obj->_class->setProperty( obj, _fieldIdentifier, &variant );
+            CInstance::moveGlobalExceptionToExecState( exec );
         }
 
-        _NPN_ReleaseVariantValue(&variant);
+        _NPN_ReleaseVariantValue( &variant );
     }
 }
 
-} }
+}
+}
 
 #endif // ENABLE(NETSCAPE_PLUGIN_API)

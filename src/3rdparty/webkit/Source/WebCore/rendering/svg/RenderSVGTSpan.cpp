@@ -25,10 +25,11 @@
 #if ENABLE(SVG)
 #include "RenderSVGTSpan.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-RenderSVGTSpan::RenderSVGTSpan(Node* n)
-    : RenderSVGInline(n)
+RenderSVGTSpan::RenderSVGTSpan( Node *n )
+    : RenderSVGInline( n )
 {
 }
 

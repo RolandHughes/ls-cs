@@ -23,48 +23,51 @@
 #if ENABLE(SVG)
 #include "SVGAnimatedProperty.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 template<typename PropertyType>
-class SVGAnimatedStaticPropertyTearOff : public SVGAnimatedProperty {
+class SVGAnimatedStaticPropertyTearOff : public SVGAnimatedProperty
+{
 public:
-    PropertyType& baseVal()
+    PropertyType &baseVal()
     {
         return m_property;
     }
 
-    PropertyType& animVal()
+    PropertyType &animVal()
     {
         // FIXME: No animVal support.
         return m_property;
     }
 
-    void setBaseVal(const PropertyType& property)
+    void setBaseVal( const PropertyType &property )
     {
         m_property = property;
         commitChange();
     }
 
     // FIXME: No animVal support.
-    void setAnimVal(const PropertyType&) { }
+    void setAnimVal( const PropertyType & ) { }
 
 private:
     friend class SVGAnimatedProperty;
 
-    static PassRefPtr<SVGAnimatedStaticPropertyTearOff<PropertyType> > create(SVGElement* contextElement, const QualifiedName& attributeName, PropertyType& property)
+    static PassRefPtr<SVGAnimatedStaticPropertyTearOff<PropertyType> > create( SVGElement *contextElement,
+            const QualifiedName &attributeName, PropertyType &property )
     {
-        ASSERT(contextElement);
-        return adoptRef(new SVGAnimatedStaticPropertyTearOff<PropertyType>(contextElement, attributeName, property));
+        ASSERT( contextElement );
+        return adoptRef( new SVGAnimatedStaticPropertyTearOff<PropertyType>( contextElement, attributeName, property ) );
     }
 
-    SVGAnimatedStaticPropertyTearOff(SVGElement* contextElement, const QualifiedName& attributeName, PropertyType& property)
-        : SVGAnimatedProperty(contextElement, attributeName)
-        , m_property(property)
+    SVGAnimatedStaticPropertyTearOff( SVGElement *contextElement, const QualifiedName &attributeName, PropertyType &property )
+        : SVGAnimatedProperty( contextElement, attributeName )
+        , m_property( property )
     {
     }
 
 private:
-    PropertyType& m_property;
+    PropertyType &m_property;
 };
 
 }

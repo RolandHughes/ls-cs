@@ -22,13 +22,14 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 #include "config.h"
 #include "SourceProviderCache.h"
 
 #include "SourceProviderCacheItem.h"
 
-namespace JSC {
+namespace JSC
+{
 
 SourceProviderCache::~SourceProviderCache()
 {
@@ -37,19 +38,19 @@ SourceProviderCache::~SourceProviderCache()
 
 void SourceProviderCache::clear()
 {
-    deleteAllValues(m_map);
+    deleteAllValues( m_map );
     m_map.clear();
     m_contentByteSize = 0;
 }
 
 unsigned SourceProviderCache::byteSize() const
-{ 
-    return m_contentByteSize + sizeof(*this) + m_map.capacity() * sizeof(SourceProviderCacheItem*);
+{
+    return m_contentByteSize + sizeof( *this ) + m_map.capacity() * sizeof( SourceProviderCacheItem * );
 }
 
-void SourceProviderCache::add(int sourcePosition, PassOwnPtr<SourceProviderCacheItem> item, unsigned size)
+void SourceProviderCache::add( int sourcePosition, PassOwnPtr<SourceProviderCacheItem> item, unsigned size )
 {
-    m_map.add(sourcePosition, item.leakPtr());
+    m_map.add( sourcePosition, item.leakPtr() );
     m_contentByteSize += size;
 }
 

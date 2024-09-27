@@ -28,22 +28,23 @@
 
 #include <qnamespaceresolver_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class DelegatingNamespaceResolver : public NamespaceResolver
 {
- public:
-   DelegatingNamespaceResolver(const NamespaceResolver::Ptr &ns);
-   DelegatingNamespaceResolver(const NamespaceResolver::Ptr &ns,
-                               const Bindings &overrides);
+public:
+    DelegatingNamespaceResolver( const NamespaceResolver::Ptr &ns );
+    DelegatingNamespaceResolver( const NamespaceResolver::Ptr &ns,
+                                 const Bindings &overrides );
 
-   void addBinding(const QXmlName nb) override;
-   QXmlName::NamespaceCode lookupNamespaceURI(const QXmlName::PrefixCode prefix) const override;
-   Bindings bindings() const override;
+    void addBinding( const QXmlName nb ) override;
+    QXmlName::NamespaceCode lookupNamespaceURI( const QXmlName::PrefixCode prefix ) const override;
+    Bindings bindings() const override;
 
- private:
-   const NamespaceResolver::Ptr m_nsResolver;
-   Bindings m_bindings;
+private:
+    const NamespaceResolver::Ptr m_nsResolver;
+    Bindings m_bindings;
 };
 }
 

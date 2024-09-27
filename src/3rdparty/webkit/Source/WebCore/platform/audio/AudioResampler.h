@@ -31,29 +31,34 @@
 #include <wtf/OwnPtr.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 // AudioResampler resamples the audio stream from an AudioSourceProvider.
 // The audio stream may be single or multi-channel.
 // The default constructor defaults to single-channel (mono).
 
-class AudioResampler {
+class AudioResampler
+{
 public:
     AudioResampler();
-    AudioResampler(unsigned numberOfChannels);
+    AudioResampler( unsigned numberOfChannels );
     ~AudioResampler() { }
-    
+
     // Given an AudioSourceProvider, process() resamples the source stream into destinationBus.
-    void process(AudioSourceProvider*, AudioBus* destinationBus, size_t framesToProcess);
+    void process( AudioSourceProvider *, AudioBus *destinationBus, size_t framesToProcess );
 
     // Resets the processing state.
     void reset();
 
-    void configureChannels(unsigned numberOfChannels);
+    void configureChannels( unsigned numberOfChannels );
 
     // 0 < rate <= MaxRate
-    void setRate(double rate);
-    double rate() const { return m_rate; }
+    void setRate( double rate );
+    double rate() const
+    {
+        return m_rate;
+    }
 
     static const double MaxRate;
 

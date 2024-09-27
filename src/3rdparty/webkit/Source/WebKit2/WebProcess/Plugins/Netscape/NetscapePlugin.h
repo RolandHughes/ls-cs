@@ -35,34 +35,41 @@
 #include <wtf/text/CString.h>
 #include <wtf/text/StringHash.h>
 
-namespace WebCore {
-    class HTTPHeaderMap;
+namespace WebCore
+{
+class HTTPHeaderMap;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 class NetscapePluginStream;
-    
-class NetscapePlugin : public Plugin {
+
+class NetscapePlugin : public Plugin
+{
 public:
-    static PassRefPtr<NetscapePlugin> create(PassRefPtr<NetscapePluginModule> pluginModule);
+    static PassRefPtr<NetscapePlugin> create( PassRefPtr<NetscapePluginModule> pluginModule );
     virtual ~NetscapePlugin();
 
-    static PassRefPtr<NetscapePlugin> fromNPP(NPP);
+    static PassRefPtr<NetscapePlugin> fromNPP( NPP );
 
 #if PLATFORM(MAC)
-    NPError setDrawingModel(NPDrawingModel);
-    NPError setEventModel(NPEventModel);
-    NPBool convertPoint(double sourceX, double sourceY, NPCoordinateSpace sourceSpace, double& destX, double& destY, NPCoordinateSpace destSpace);
-    NPError popUpContextMenu(NPMenu*);
+    NPError setDrawingModel( NPDrawingModel );
+    NPError setEventModel( NPEventModel );
+    NPBool convertPoint( double sourceX, double sourceY, NPCoordinateSpace sourceSpace, double &destX, double &destY,
+                         NPCoordinateSpace destSpace );
+    NPError popUpContextMenu( NPMenu * );
 
     mach_port_t compositingRenderServerPort();
 
 #ifndef NP_NO_CARBON
     WindowRef windowRef() const;
-    bool isWindowActive() const { return m_windowHasFocus; }
+    bool isWindowActive() const
+    {
+        return m_windowHasFocus;
+    }
 
-    static NetscapePlugin* netscapePluginFromWindow(WindowRef);
+    static NetscapePlugin *netscapePluginFromWindow( WindowRef );
     static unsigned buttonState();
 #endif
 
@@ -70,129 +77,133 @@ public:
     HWND containingWindow() const;
 #endif
 
-    PluginQuirks quirks() const { return m_pluginModule->pluginQuirks(); }
+    PluginQuirks quirks() const
+    {
+        return m_pluginModule->pluginQuirks();
+    }
 
-    void invalidate(const NPRect*);
-    static const char* userAgent(NPP);
-    void loadURL(const String& method, const String& urlString, const String& target, const WebCore::HTTPHeaderMap& headerFields,
-                 const Vector<uint8_t>& httpBody, bool sendNotification, void* notificationData);
-    NPError destroyStream(NPStream*, NPReason);
-    void setIsWindowed(bool);
-    void setIsTransparent(bool);
-    void setStatusbarText(const String&);
-    static void setException(const String&);
-    bool evaluate(NPObject*, const String&scriptString, NPVariant* result);
+    void invalidate( const NPRect * );
+    static const char *userAgent( NPP );
+    void loadURL( const String &method, const String &urlString, const String &target, const WebCore::HTTPHeaderMap &headerFields,
+                  const Vector<uint8_t> &httpBody, bool sendNotification, void *notificationData );
+    NPError destroyStream( NPStream *, NPReason );
+    void setIsWindowed( bool );
+    void setIsTransparent( bool );
+    void setStatusbarText( const String & );
+    static void setException( const String & );
+    bool evaluate( NPObject *, const String &scriptString, NPVariant *result );
     bool isPrivateBrowsingEnabled();
 
     // These return retained objects.
-    NPObject* windowScriptNPObject();
-    NPObject* pluginElementNPObject();
+    NPObject *windowScriptNPObject();
+    NPObject *pluginElementNPObject();
 
-    void cancelStreamLoad(NetscapePluginStream*);
-    void removePluginStream(NetscapePluginStream*);
+    void cancelStreamLoad( NetscapePluginStream * );
+    void removePluginStream( NetscapePluginStream * );
 
     bool isAcceleratedCompositingEnabled();
 
-    void pushPopupsEnabledState(bool enabled);
+    void pushPopupsEnabledState( bool enabled );
     void popPopupsEnabledState();
 
-    String proxiesForURL(const String& urlString);
-    String cookiesForURL(const String& urlString);
-    void setCookiesForURL(const String& urlString, const String& cookieString);
+    String proxiesForURL( const String &urlString );
+    String cookiesForURL( const String &urlString );
+    void setCookiesForURL( const String &urlString, const String &cookieString );
 
     // Member functions for calling into the plug-in.
-    NPError NPP_New(NPMIMEType pluginType, uint16_t mode, int16_t argc, char* argn[], char* argv[], NPSavedData*);
-    NPError NPP_Destroy(NPSavedData**);
-    NPError NPP_SetWindow(NPWindow*);
-    NPError NPP_NewStream(NPMIMEType, NPStream*, NPBool seekable, uint16_t* stype);
-    NPError NPP_DestroyStream(NPStream*, NPReason);
-    void NPP_StreamAsFile(NPStream*, const char* filename);
-    int32_t NPP_WriteReady(NPStream*);
-    int32_t NPP_Write(NPStream*, int32_t offset, int32_t len, void* buffer);
-    int16_t NPP_HandleEvent(void* event);
-    void NPP_URLNotify(const char* url, NPReason, void* notifyData);
-    NPError NPP_GetValue(NPPVariable, void *value);
-    NPError NPP_SetValue(NPNVariable, void *value);
+    NPError NPP_New( NPMIMEType pluginType, uint16_t mode, int16_t argc, char *argn[], char *argv[], NPSavedData * );
+    NPError NPP_Destroy( NPSavedData ** );
+    NPError NPP_SetWindow( NPWindow * );
+    NPError NPP_NewStream( NPMIMEType, NPStream *, NPBool seekable, uint16_t *stype );
+    NPError NPP_DestroyStream( NPStream *, NPReason );
+    void NPP_StreamAsFile( NPStream *, const char *filename );
+    int32_t NPP_WriteReady( NPStream * );
+    int32_t NPP_Write( NPStream *, int32_t offset, int32_t len, void *buffer );
+    int16_t NPP_HandleEvent( void *event );
+    void NPP_URLNotify( const char *url, NPReason, void *notifyData );
+    NPError NPP_GetValue( NPPVariable, void *value );
+    NPError NPP_SetValue( NPNVariable, void *value );
 
 private:
-    NetscapePlugin(PassRefPtr<NetscapePluginModule> pluginModule);
+    NetscapePlugin( PassRefPtr<NetscapePluginModule> pluginModule );
 
     void callSetWindow();
     bool shouldLoadSrcURL();
-    NetscapePluginStream* streamFromID(uint64_t streamID);
+    NetscapePluginStream *streamFromID( uint64_t streamID );
     void stopAllStreams();
     bool allowPopups() const;
 
-    const char* userAgent();
+    const char *userAgent();
 
     bool platformPostInitialize();
     void platformDestroy();
-    bool platformInvalidate(const WebCore::IntRect&);
+    bool platformInvalidate( const WebCore::IntRect & );
     void platformGeometryDidChange();
-    void platformPaint(WebCore::GraphicsContext*, const WebCore::IntRect& dirtyRect, bool isSnapshot = false);
+    void platformPaint( WebCore::GraphicsContext *, const WebCore::IntRect &dirtyRect, bool isSnapshot = false );
 
-    bool platformHandleMouseEvent(const WebMouseEvent&);
-    bool platformHandleWheelEvent(const WebWheelEvent&);
-    bool platformHandleMouseEnterEvent(const WebMouseEvent&);
-    bool platformHandleMouseLeaveEvent(const WebMouseEvent&);
-    bool platformHandleKeyboardEvent(const WebKeyboardEvent&);
-    void platformSetFocus(bool);
+    bool platformHandleMouseEvent( const WebMouseEvent & );
+    bool platformHandleWheelEvent( const WebWheelEvent & );
+    bool platformHandleMouseEnterEvent( const WebMouseEvent & );
+    bool platformHandleMouseLeaveEvent( const WebMouseEvent & );
+    bool platformHandleKeyboardEvent( const WebKeyboardEvent & );
+    void platformSetFocus( bool );
 
     // Plugin
-    virtual bool initialize(PluginController*, const Parameters&);
+    virtual bool initialize( PluginController *, const Parameters & );
     virtual void destroy();
-    virtual void paint(WebCore::GraphicsContext*, const WebCore::IntRect& dirtyRect);
+    virtual void paint( WebCore::GraphicsContext *, const WebCore::IntRect &dirtyRect );
     virtual PassRefPtr<ShareableBitmap> snapshot();
 #if PLATFORM(MAC)
-    virtual PlatformLayer* pluginLayer();
+    virtual PlatformLayer *pluginLayer();
 #endif
     virtual bool isTransparent();
-    virtual void geometryDidChange(const WebCore::IntRect& frameRect, const WebCore::IntRect& clipRect);
-    virtual void frameDidFinishLoading(uint64_t requestID);
-    virtual void frameDidFail(uint64_t requestID, bool wasCancelled);
-    virtual void didEvaluateJavaScript(uint64_t requestID, const String& requestURLString, const String& result);
-    virtual void streamDidReceiveResponse(uint64_t streamID, const WebCore::KURL& responseURL, uint32_t streamLength, 
-                                          uint32_t lastModifiedTime, const String& mimeType, const String& headers);
-    virtual void streamDidReceiveData(uint64_t streamID, const char* bytes, int length);
-    virtual void streamDidFinishLoading(uint64_t streamID);
-    virtual void streamDidFail(uint64_t streamID, bool wasCancelled);
-    virtual void manualStreamDidReceiveResponse(const WebCore::KURL& responseURL, uint32_t streamLength, 
-                                                uint32_t lastModifiedTime, const String& mimeType, const String& headers);
-    virtual void manualStreamDidReceiveData(const char* bytes, int length);
+    virtual void geometryDidChange( const WebCore::IntRect &frameRect, const WebCore::IntRect &clipRect );
+    virtual void frameDidFinishLoading( uint64_t requestID );
+    virtual void frameDidFail( uint64_t requestID, bool wasCancelled );
+    virtual void didEvaluateJavaScript( uint64_t requestID, const String &requestURLString, const String &result );
+    virtual void streamDidReceiveResponse( uint64_t streamID, const WebCore::KURL &responseURL, uint32_t streamLength,
+                                           uint32_t lastModifiedTime, const String &mimeType, const String &headers );
+    virtual void streamDidReceiveData( uint64_t streamID, const char *bytes, int length );
+    virtual void streamDidFinishLoading( uint64_t streamID );
+    virtual void streamDidFail( uint64_t streamID, bool wasCancelled );
+    virtual void manualStreamDidReceiveResponse( const WebCore::KURL &responseURL, uint32_t streamLength,
+            uint32_t lastModifiedTime, const String &mimeType, const String &headers );
+    virtual void manualStreamDidReceiveData( const char *bytes, int length );
     virtual void manualStreamDidFinishLoading();
-    virtual void manualStreamDidFail(bool wasCancelled);
-    
-    virtual bool handleMouseEvent(const WebMouseEvent&);
-    virtual bool handleWheelEvent(const WebWheelEvent&);
-    virtual bool handleMouseEnterEvent(const WebMouseEvent&);
-    virtual bool handleMouseLeaveEvent(const WebMouseEvent&);
-    virtual bool handleKeyboardEvent(const WebKeyboardEvent&);
-    virtual void setFocus(bool);
-    virtual NPObject* pluginScriptableNPObject();
+    virtual void manualStreamDidFail( bool wasCancelled );
+
+    virtual bool handleMouseEvent( const WebMouseEvent & );
+    virtual bool handleWheelEvent( const WebWheelEvent & );
+    virtual bool handleMouseEnterEvent( const WebMouseEvent & );
+    virtual bool handleMouseLeaveEvent( const WebMouseEvent & );
+    virtual bool handleKeyboardEvent( const WebKeyboardEvent & );
+    virtual void setFocus( bool );
+    virtual NPObject *pluginScriptableNPObject();
 
 #if PLATFORM(MAC)
-    virtual void windowFocusChanged(bool);
-    virtual void windowAndViewFramesChanged(const WebCore::IntRect& windowFrameInScreenCoordinates, const WebCore::IntRect& viewFrameInWindowCoordinates);
-    virtual void windowVisibilityChanged(bool);
+    virtual void windowFocusChanged( bool );
+    virtual void windowAndViewFramesChanged( const WebCore::IntRect &windowFrameInScreenCoordinates,
+            const WebCore::IntRect &viewFrameInWindowCoordinates );
+    virtual void windowVisibilityChanged( bool );
 
     virtual uint64_t pluginComplexTextInputIdentifier() const;
-    virtual void sendComplexTextInput(const String& textInput);
+    virtual void sendComplexTextInput( const String &textInput );
 #endif
 
-    virtual void privateBrowsingStateChanged(bool);
+    virtual void privateBrowsingStateChanged( bool );
 
     bool supportsSnapshotting() const;
 
-    virtual PluginController* controller();
+    virtual PluginController *controller();
 
 #if PLUGIN_ARCHITECTURE(WIN)
-    static BOOL WINAPI hookedTrackPopupMenu(HMENU, UINT uFlags, int x, int y, int nReserved, HWND, const RECT*);
+    static BOOL WINAPI hookedTrackPopupMenu( HMENU, UINT uFlags, int x, int y, int nReserved, HWND, const RECT * );
 #endif
 
-    PluginController* m_pluginController;
+    PluginController *m_pluginController;
     uint64_t m_nextRequestID;
 
-    typedef HashMap<uint64_t, std::pair<String, void*> > PendingURLNotifyMap;
+    typedef HashMap<uint64_t, std::pair<String, void *> > PendingURLNotifyMap;
     PendingURLNotifyMap m_pendingURLNotifications;
 
     typedef HashMap<uint64_t, RefPtr<NetscapePluginStream> > StreamsMap;
@@ -220,7 +231,7 @@ private:
     NPEventModel m_eventModel;
     RetainPtr<PlatformLayer> m_pluginLayer;
 
-    NPCocoaEvent* m_currentMouseEvent;
+    NPCocoaEvent *m_currentMouseEvent;
 
     bool m_pluginHasFocus;
     bool m_windowHasFocus;
@@ -241,7 +252,7 @@ private:
     HWND m_contextMenuOwnerWindow;
 #elif PLUGIN_ARCHITECTURE(X11)
     Pixmap m_drawable;
-    Display* m_pluginDisplay;
+    Display *m_pluginDisplay;
 #endif
 };
 

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef htmlediting_h
@@ -34,7 +34,8 @@
 #include <wtf/Forward.h>
 #include <wtf/unicode/CharacterNames.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Document;
 class Element;
@@ -54,115 +55,123 @@ class VisibleSelection;
 
 // Functions returning Node
 
-Node* highestAncestor(Node*);
-Node* highestEditableRoot(const Position&);
-Node* highestEnclosingNodeOfType(const Position&, bool (*nodeIsOfType)(const Node*), EditingBoundaryCrossingRule = CannotCrossEditingBoundary);
-Node* lowestEditableAncestor(Node*);   
+Node *highestAncestor( Node * );
+Node *highestEditableRoot( const Position & );
+Node *highestEnclosingNodeOfType( const Position &, bool ( *nodeIsOfType )( const Node * ),
+                                  EditingBoundaryCrossingRule = CannotCrossEditingBoundary );
+Node *lowestEditableAncestor( Node * );
 
-Node* enclosingBlock(Node*, EditingBoundaryCrossingRule = CannotCrossEditingBoundary);
-Node* enclosingTableCell(const Position&);
-Node* enclosingEmptyListItem(const VisiblePosition&);
-Node* enclosingAnchorElement(const Position&);
-Node* enclosingNodeWithTag(const Position&, const QualifiedName&);
-Node* enclosingNodeOfType(const Position&, bool (*nodeIsOfType)(const Node*), EditingBoundaryCrossingRule = CannotCrossEditingBoundary);
+Node *enclosingBlock( Node *, EditingBoundaryCrossingRule = CannotCrossEditingBoundary );
+Node *enclosingTableCell( const Position & );
+Node *enclosingEmptyListItem( const VisiblePosition & );
+Node *enclosingAnchorElement( const Position & );
+Node *enclosingNodeWithTag( const Position &, const QualifiedName & );
+Node *enclosingNodeOfType( const Position &, bool ( *nodeIsOfType )( const Node * ),
+                           EditingBoundaryCrossingRule = CannotCrossEditingBoundary );
 
-Node* tabSpanNode(const Node*);
-Node* isLastPositionBeforeTable(const VisiblePosition&);
-Node* isFirstPositionAfterTable(const VisiblePosition&);
+Node *tabSpanNode( const Node * );
+Node *isLastPositionBeforeTable( const VisiblePosition & );
+Node *isFirstPositionAfterTable( const VisiblePosition & );
 
 // offset functions on Node
 
-int lastOffsetForEditing(const Node*);
-int caretMinOffset(const Node*);
-int caretMaxOffset(const Node*);
+int lastOffsetForEditing( const Node * );
+int caretMinOffset( const Node * );
+int caretMaxOffset( const Node * );
 
 // boolean functions on Node
 
-bool editingIgnoresContent(const Node*);
-bool canHaveChildrenForEditing(const Node*);
-bool isAtomicNode(const Node*);
-bool isBlock(const Node*);
-bool isSpecialElement(const Node*);
-bool isTabSpanNode(const Node*);
-bool isTabSpanTextNode(const Node*);
-bool isMailBlockquote(const Node*);
-bool isTableElement(Node*);
-bool isTableCell(const Node*);
-bool isEmptyTableCell(const Node*);
-bool isTableStructureNode(const Node*);
-bool isListElement(Node*);
-bool isListItem(Node*);
-bool isNodeRendered(const Node*);
-bool isNodeVisiblyContainedWithin(Node*, const Range*);
-bool isRenderedAsNonInlineTableImageOrHR(const Node*);
-bool isNodeInTextFormControl(Node* node);
-    
-TextDirection directionOfEnclosingBlock(const Position&);
+bool editingIgnoresContent( const Node * );
+bool canHaveChildrenForEditing( const Node * );
+bool isAtomicNode( const Node * );
+bool isBlock( const Node * );
+bool isSpecialElement( const Node * );
+bool isTabSpanNode( const Node * );
+bool isTabSpanTextNode( const Node * );
+bool isMailBlockquote( const Node * );
+bool isTableElement( Node * );
+bool isTableCell( const Node * );
+bool isEmptyTableCell( const Node * );
+bool isTableStructureNode( const Node * );
+bool isListElement( Node * );
+bool isListItem( Node * );
+bool isNodeRendered( const Node * );
+bool isNodeVisiblyContainedWithin( Node *, const Range * );
+bool isRenderedAsNonInlineTableImageOrHR( const Node * );
+bool isNodeInTextFormControl( Node *node );
+
+TextDirection directionOfEnclosingBlock( const Position & );
 
 // -------------------------------------------------------------------------
 // Position
 // -------------------------------------------------------------------------
-    
+
 // Functions returning Position
-    
-Position nextCandidate(const Position&);
-Position previousCandidate(const Position&);
-    
-Position nextVisuallyDistinctCandidate(const Position&);
-Position previousVisuallyDistinctCandidate(const Position&);
 
-Position positionOutsideTabSpan(const Position&);
-Position positionBeforeContainingSpecialElement(const Position&, Node** containingSpecialElement=0);
-Position positionAfterContainingSpecialElement(const Position&, Node** containingSpecialElement=0);
-Position positionOutsideContainingSpecialElement(const Position&, Node** containingSpecialElement=0);
+Position nextCandidate( const Position & );
+Position previousCandidate( const Position & );
 
-inline Position firstPositionInOrBeforeNode(Node* node)
+Position nextVisuallyDistinctCandidate( const Position & );
+Position previousVisuallyDistinctCandidate( const Position & );
+
+Position positionOutsideTabSpan( const Position & );
+Position positionBeforeContainingSpecialElement( const Position &, Node **containingSpecialElement=0 );
+Position positionAfterContainingSpecialElement( const Position &, Node **containingSpecialElement=0 );
+Position positionOutsideContainingSpecialElement( const Position &, Node **containingSpecialElement=0 );
+
+inline Position firstPositionInOrBeforeNode( Node *node )
 {
-    if (!node)
+    if ( !node )
+    {
         return Position();
-    return editingIgnoresContent(node) ? positionBeforeNode(node) : firstPositionInNode(node);
+    }
+
+    return editingIgnoresContent( node ) ? positionBeforeNode( node ) : firstPositionInNode( node );
 }
 
-inline Position lastPositionInOrAfterNode(Node* node)
+inline Position lastPositionInOrAfterNode( Node *node )
 {
-    if (!node)
+    if ( !node )
+    {
         return Position();
-    return editingIgnoresContent(node) ? positionAfterNode(node) : lastPositionInNode(node);
+    }
+
+    return editingIgnoresContent( node ) ? positionAfterNode( node ) : lastPositionInNode( node );
 }
 
 // comparision functions on Position
-    
-int comparePositions(const Position&, const Position&);
+
+int comparePositions( const Position &, const Position & );
 
 // boolean functions on Position
-    
-bool isEditablePosition(const Position&);
-bool isRichlyEditablePosition(const Position&);
-bool isFirstVisiblePositionInSpecialElement(const Position&);
-bool isLastVisiblePositionInSpecialElement(const Position&);
-bool lineBreakExistsAtPosition(const Position&);
-bool isVisiblyAdjacent(const Position& first, const Position& second);
-bool isAtUnsplittableElement(const Position&);
+
+bool isEditablePosition( const Position & );
+bool isRichlyEditablePosition( const Position & );
+bool isFirstVisiblePositionInSpecialElement( const Position & );
+bool isLastVisiblePositionInSpecialElement( const Position & );
+bool lineBreakExistsAtPosition( const Position & );
+bool isVisiblyAdjacent( const Position &first, const Position &second );
+bool isAtUnsplittableElement( const Position & );
 
 // miscellaneous functions on Position
 
-unsigned numEnclosingMailBlockquotes(const Position&);
+unsigned numEnclosingMailBlockquotes( const Position & );
 
 // -------------------------------------------------------------------------
 // VisiblePosition
 // -------------------------------------------------------------------------
-    
-// Functions returning VisiblePosition
-    
-VisiblePosition firstEditablePositionAfterPositionInRoot(const Position&, Node*);
-VisiblePosition lastEditablePositionBeforePositionInRoot(const Position&, Node*);
-VisiblePosition visiblePositionBeforeNode(Node*);
-VisiblePosition visiblePositionAfterNode(Node*);
 
-bool lineBreakExistsAtVisiblePosition(const VisiblePosition&);
-    
-int comparePositions(const VisiblePosition&, const VisiblePosition&);
-int indexForVisiblePosition(const VisiblePosition&);
+// Functions returning VisiblePosition
+
+VisiblePosition firstEditablePositionAfterPositionInRoot( const Position &, Node * );
+VisiblePosition lastEditablePositionBeforePositionInRoot( const Position &, Node * );
+VisiblePosition visiblePositionBeforeNode( Node * );
+VisiblePosition visiblePositionAfterNode( Node * );
+
+bool lineBreakExistsAtVisiblePosition( const VisiblePosition & );
+
+int comparePositions( const VisiblePosition &, const VisiblePosition & );
+int indexForVisiblePosition( const VisiblePosition & );
 
 // -------------------------------------------------------------------------
 // Range
@@ -170,62 +179,62 @@ int indexForVisiblePosition(const VisiblePosition&);
 
 // Functions returning Range
 
-PassRefPtr<Range> createRange(PassRefPtr<Document>, const VisiblePosition& start, const VisiblePosition& end, ExceptionCode&);
-PassRefPtr<Range> extendRangeToWrappingNodes(PassRefPtr<Range> rangeToExtend, const Range* maximumRange, const Node* rootNode);
-PassRefPtr<Range> avoidIntersectionWithNode(const Range*, Node*);
+PassRefPtr<Range> createRange( PassRefPtr<Document>, const VisiblePosition &start, const VisiblePosition &end, ExceptionCode & );
+PassRefPtr<Range> extendRangeToWrappingNodes( PassRefPtr<Range> rangeToExtend, const Range *maximumRange, const Node *rootNode );
+PassRefPtr<Range> avoidIntersectionWithNode( const Range *, Node * );
 
 // -------------------------------------------------------------------------
 // HTMLElement
 // -------------------------------------------------------------------------
-    
-// Functions returning HTMLElement
-    
-PassRefPtr<HTMLElement> createDefaultParagraphElement(Document*);
-PassRefPtr<HTMLElement> createBreakElement(Document*);
-PassRefPtr<HTMLElement> createOrderedListElement(Document*);
-PassRefPtr<HTMLElement> createUnorderedListElement(Document*);
-PassRefPtr<HTMLElement> createListItemElement(Document*);
-PassRefPtr<HTMLElement> createHTMLElement(Document*, const QualifiedName&);
-PassRefPtr<HTMLElement> createHTMLElement(Document*, const AtomicString&);
 
-HTMLElement* enclosingList(Node*);
-HTMLElement* outermostEnclosingList(Node*, Node* rootList = 0);
-Node* enclosingListChild(Node*);
+// Functions returning HTMLElement
+
+PassRefPtr<HTMLElement> createDefaultParagraphElement( Document * );
+PassRefPtr<HTMLElement> createBreakElement( Document * );
+PassRefPtr<HTMLElement> createOrderedListElement( Document * );
+PassRefPtr<HTMLElement> createUnorderedListElement( Document * );
+PassRefPtr<HTMLElement> createListItemElement( Document * );
+PassRefPtr<HTMLElement> createHTMLElement( Document *, const QualifiedName & );
+PassRefPtr<HTMLElement> createHTMLElement( Document *, const AtomicString & );
+
+HTMLElement *enclosingList( Node * );
+HTMLElement *outermostEnclosingList( Node *, Node *rootList = 0 );
+Node *enclosingListChild( Node * );
 
 // -------------------------------------------------------------------------
 // Element
 // -------------------------------------------------------------------------
-    
-// Functions returning Element
-    
-PassRefPtr<Element> createTabSpanElement(Document*);
-PassRefPtr<Element> createTabSpanElement(Document*, PassRefPtr<Node> tabTextNode);
-PassRefPtr<Element> createTabSpanElement(Document*, const String& tabText);
-PassRefPtr<Element> createBlockPlaceholderElement(Document*);
 
-Element* editableRootForPosition(const Position&);
-Element* unsplittableElementForPosition(const Position&);
+// Functions returning Element
+
+PassRefPtr<Element> createTabSpanElement( Document * );
+PassRefPtr<Element> createTabSpanElement( Document *, PassRefPtr<Node> tabTextNode );
+PassRefPtr<Element> createTabSpanElement( Document *, const String &tabText );
+PassRefPtr<Element> createBlockPlaceholderElement( Document * );
+
+Element *editableRootForPosition( const Position & );
+Element *unsplittableElementForPosition( const Position & );
 
 // Boolean functions on Element
-    
-bool canMergeLists(Element* firstList, Element* secondList);
-    
+
+bool canMergeLists( Element *firstList, Element *secondList );
+
 // -------------------------------------------------------------------------
 // VisibleSelection
 // -------------------------------------------------------------------------
 
 // Functions returning VisibleSelection
-VisibleSelection avoidIntersectionWithNode(const VisibleSelection&, Node*);
-VisibleSelection selectionForParagraphIteration(const VisibleSelection&);
-    
+VisibleSelection avoidIntersectionWithNode( const VisibleSelection &, Node * );
+VisibleSelection selectionForParagraphIteration( const VisibleSelection & );
+
 
 // Miscellaneous functions on Text
-inline bool isWhitespace(UChar c)
+inline bool isWhitespace( UChar c )
 {
     return c == noBreakSpace || c == ' ' || c == '\n' || c == '\t';
 }
 
-inline bool isAmbiguousBoundaryCharacter(UChar character)
+inline bool isAmbiguousBoundaryCharacter( UChar character )
 {
     // These are characters that can behave as word boundaries, but can appear within words.
     // If they are just typed, i.e. if they are immediately followed by a caret, we want to delay text checking until the next character has been typed.
@@ -233,8 +242,8 @@ inline bool isAmbiguousBoundaryCharacter(UChar character)
     return character == '\'' || character == rightSingleQuotationMark || character == hebrewPunctuationGershayim;
 }
 
-String stringWithRebalancedWhitespace(const String&, bool startIsStartOfParagraph, bool endIsEndOfParagraph);
-const String& nonBreakingSpaceString();
+String stringWithRebalancedWhitespace( const String &, bool startIsStartOfParagraph, bool endIsEndOfParagraph );
+const String &nonBreakingSpaceString();
 
 }
 

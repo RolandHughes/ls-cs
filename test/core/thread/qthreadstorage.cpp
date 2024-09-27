@@ -21,28 +21,28 @@
 
 #include <cs_catch2.h>
 
-TEST_CASE("QThreadStorage traits", "[qthreadstorage]")
+TEST_CASE( "QThreadStorage traits", "[qthreadstorage]" )
 {
-   REQUIRE(std::is_copy_constructible_v<QThreadStorage<int>> == false);
-   REQUIRE(std::is_move_constructible_v<QThreadStorage<int>> == false);
+    REQUIRE( std::is_copy_constructible_v<QThreadStorage<int>> == false );
+    REQUIRE( std::is_move_constructible_v<QThreadStorage<int>> == false );
 
-   REQUIRE(std::is_copy_assignable_v<QThreadStorage<int>> == false);
-   REQUIRE(std::is_move_assignable_v<QThreadStorage<int>> == false);
+    REQUIRE( std::is_copy_assignable_v<QThreadStorage<int>> == false );
+    REQUIRE( std::is_move_assignable_v<QThreadStorage<int>> == false );
 
-   REQUIRE(std::has_virtual_destructor_v<QThreadStorage<int>> == false);
+    REQUIRE( std::has_virtual_destructor_v<QThreadStorage<int>> == false );
 }
 
-TEST_CASE("QThreadStorage local_data", "[qthreadstorage]")
+TEST_CASE( "QThreadStorage local_data", "[qthreadstorage]" )
 {
-   QThreadStorage<int> data;
+    QThreadStorage<int> data;
 
-   REQUIRE(data.hasLocalData() == false);
+    REQUIRE( data.hasLocalData() == false );
 
-/*
-   data.setLocalData(42);
-   REQUIRE(data.hasLocalData() == true);
+    /*
+       data.setLocalData(42);
+       REQUIRE(data.hasLocalData() == true);
 
-   data.setLocalData(0);
-   REQUIRE(data.hasLocalData() == true);
-*/
+       data.setLocalData(0);
+       REQUIRE(data.hasLocalData() == true);
+    */
 }

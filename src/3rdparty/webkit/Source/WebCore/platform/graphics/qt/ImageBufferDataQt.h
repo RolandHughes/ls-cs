@@ -30,13 +30,15 @@
 #include <QPixmap>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class IntSize;
 
-class ImageBufferData {
+class ImageBufferData
+{
 public:
-    ImageBufferData(const IntSize&);
+    ImageBufferData( const IntSize & );
 
     QImage toQImage() const;
 

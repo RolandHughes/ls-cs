@@ -29,16 +29,18 @@
 #include "ArgumentCoders.h"
 #include "Arguments.h"
 
-namespace WebKit {
-
-void WebPageGroupData::encode(CoreIPC::ArgumentEncoder* encoder) const
+namespace WebKit
 {
-    return encoder->encode(CoreIPC::In(identifer, pageGroupID, visibleToInjectedBundle, visibleToHistoryClient));
+
+void WebPageGroupData::encode( CoreIPC::ArgumentEncoder *encoder ) const
+{
+    return encoder->encode( CoreIPC::In( identifer, pageGroupID, visibleToInjectedBundle, visibleToHistoryClient ) );
 }
 
-bool WebPageGroupData::decode(CoreIPC::ArgumentDecoder* decoder, WebPageGroupData& data)
+bool WebPageGroupData::decode( CoreIPC::ArgumentDecoder *decoder, WebPageGroupData &data )
 {
-    return decoder->decode(CoreIPC::Out(data.identifer, data.pageGroupID, data.visibleToInjectedBundle, data.visibleToHistoryClient));
+    return decoder->decode( CoreIPC::Out( data.identifer, data.pageGroupID, data.visibleToInjectedBundle,
+                                          data.visibleToHistoryClient ) );
 }
 
 } // namespace WebKit

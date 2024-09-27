@@ -31,9 +31,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSDelayNode);
+ASSERT_CLASS_FITS_IN_CELL( JSDelayNode );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -44,9 +45,9 @@ ASSERT_CLASS_FITS_IN_CELL(JSDelayNode);
 
 static const HashTableValue JSDelayNodeTableValues[3] =
 {
-    { "delayTime", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDelayNodeDelayTime), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDelayNodeConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "delayTime", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDelayNodeDelayTime ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDelayNodeConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -60,43 +61,49 @@ static JSC_CONST_HASHTABLE HashTable JSDelayNodeTable = { 4, 3, JSDelayNodeTable
 
 static const HashTableValue JSDelayNodeConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSDelayNodeConstructorTable = { 1, 0, JSDelayNodeConstructorTableValues, 0 };
-class JSDelayNodeConstructor : public DOMConstructorObject {
+class JSDelayNodeConstructor : public DOMConstructorObject
+{
 public:
-    JSDelayNodeConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSDelayNodeConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSDelayNodeConstructor::s_info = { "DelayNodeConstructor", &DOMConstructorObject::s_info, &JSDelayNodeConstructorTable, 0 };
 
-JSDelayNodeConstructor::JSDelayNodeConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSDelayNodeConstructor::JSDelayNodeConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSDelayNodePrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSDelayNodePrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSDelayNodeConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSDelayNodeConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSDelayNodeConstructor, JSDOMWrapper>(exec, &JSDelayNodeConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSDelayNodeConstructor, JSDOMWrapper>( exec, &JSDelayNodeConstructorTable, this, propertyName, slot );
 }
 
-bool JSDelayNodeConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSDelayNodeConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSDelayNodeConstructor, JSDOMWrapper>(exec, &JSDelayNodeConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSDelayNodeConstructor, JSDOMWrapper>( exec, &JSDelayNodeConstructorTable, this, propertyName,
+            descriptor );
 }
 
 /* Hash table for prototype */
@@ -108,65 +115,66 @@ bool JSDelayNodeConstructor::getOwnPropertyDescriptor(ExecState* exec, const Ide
 
 static const HashTableValue JSDelayNodePrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSDelayNodePrototypeTable = { 1, 0, JSDelayNodePrototypeTableValues, 0 };
 const ClassInfo JSDelayNodePrototype::s_info = { "DelayNodePrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSDelayNodePrototypeTable, 0 };
 
-JSObject* JSDelayNodePrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSDelayNodePrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSDelayNode>(exec, globalObject);
+    return getDOMPrototype<JSDelayNode>( exec, globalObject );
 }
 
 const ClassInfo JSDelayNode::s_info = { "DelayNode", &JSAudioNode::s_info, &JSDelayNodeTable, 0 };
 
-JSDelayNode::JSDelayNode(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<DelayNode> impl)
-    : JSAudioNode(structure, globalObject, impl)
+JSDelayNode::JSDelayNode( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<DelayNode> impl )
+    : JSAudioNode( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSDelayNode::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSDelayNode::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSDelayNodePrototype(exec->globalData(), globalObject, JSDelayNodePrototype::createStructure(exec->globalData(), JSAudioNodePrototype::self(exec, globalObject)));
+    return new ( exec ) JSDelayNodePrototype( exec->globalData(), globalObject,
+            JSDelayNodePrototype::createStructure( exec->globalData(), JSAudioNodePrototype::self( exec, globalObject ) ) );
 }
 
-bool JSDelayNode::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSDelayNode::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSDelayNode, Base>(exec, &JSDelayNodeTable, this, propertyName, slot);
+    return getStaticValueSlot<JSDelayNode, Base>( exec, &JSDelayNodeTable, this, propertyName, slot );
 }
 
-bool JSDelayNode::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSDelayNode::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSDelayNode, Base>(exec, &JSDelayNodeTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSDelayNode, Base>( exec, &JSDelayNodeTable, this, propertyName, descriptor );
 }
 
-JSValue jsDelayNodeDelayTime(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDelayNodeDelayTime( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDelayNode* castedThis = static_cast<JSDelayNode*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    DelayNode* imp = static_cast<DelayNode*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->delayTime()));
+    JSDelayNode *castedThis = static_cast<JSDelayNode *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    DelayNode *imp = static_cast<DelayNode *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->delayTime() ) );
     return result;
 }
 
 
-JSValue jsDelayNodeConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDelayNodeConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDelayNode* domObject = static_cast<JSDelayNode*>(asObject(slotBase));
-    return JSDelayNode::getConstructor(exec, domObject->globalObject());
+    JSDelayNode *domObject = static_cast<JSDelayNode *>( asObject( slotBase ) );
+    return JSDelayNode::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSDelayNode::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSDelayNode::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSDelayNodeConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSDelayNodeConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, DelayNode* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, DelayNode *impl )
 {
-    return wrap<JSDelayNode>(exec, globalObject, impl);
+    return wrap<JSDelayNode>( exec, globalObject, impl );
 }
 
 

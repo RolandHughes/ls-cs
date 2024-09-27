@@ -32,7 +32,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // would be in compiler and library that had the support.
 
 #ifndef __has_feature
-    #define __has_feature(feature) 0
+#define __has_feature(feature) 0
 #endif
 
 #if __has_feature(cxx_nullptr) || (GCC_VERSION_AT_LEAST(4, 6, 0) && defined(__GXX_EXPERIMENTAL_CXX0X__)) || (defined(_MSC_VER) && _MSC_VER >= 1600 && !COMPILER(INTEL)) || defined(_LIBCPP_VERSION)
@@ -41,8 +41,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #else
 
-namespace std {
-    class nullptr_t { };
+namespace std
+{
+class nullptr_t { };
 }
 
 extern std::nullptr_t nullptr;

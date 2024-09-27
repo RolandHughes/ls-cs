@@ -31,30 +31,30 @@
 
 class Q_CORE_EXPORT QWinEventNotifier : public QObject
 {
-   CORE_CS_OBJECT(QWinEventNotifier)
+    CORE_CS_OBJECT( QWinEventNotifier )
 
- public:
-   explicit QWinEventNotifier(QObject *parent = nullptr);
-   explicit QWinEventNotifier(HANDLE hEvent, QObject *parent = nullptr);
-   ~QWinEventNotifier();
+public:
+    explicit QWinEventNotifier( QObject *parent = nullptr );
+    explicit QWinEventNotifier( HANDLE hEvent, QObject *parent = nullptr );
+    ~QWinEventNotifier();
 
-   void setHandle(HANDLE hEvent);
-   HANDLE handle() const;
+    void setHandle( HANDLE hEvent );
+    HANDLE handle() const;
 
-   bool isEnabled() const;
+    bool isEnabled() const;
 
-   CORE_CS_SIGNAL_1(Public, void activated(HANDLE hEvent))
-   CORE_CS_SIGNAL_2(activated, hEvent)
+    CORE_CS_SIGNAL_1( Public, void activated( HANDLE hEvent ) )
+    CORE_CS_SIGNAL_2( activated, hEvent )
 
-   CORE_CS_SLOT_1(Public, void setEnabled(bool enable))
-   CORE_CS_SLOT_2(setEnabled)
+    CORE_CS_SLOT_1( Public, void setEnabled( bool enable ) )
+    CORE_CS_SLOT_2( setEnabled )
 
- protected:
-   bool event(QEvent *event) override;
+protected:
+    bool event( QEvent *event ) override;
 
- private:
-   HANDLE handleToEvent;
-   bool enabled;
+private:
+    HANDLE handleToEvent;
+    bool enabled;
 };
 
 #endif // Q_OS_WIN

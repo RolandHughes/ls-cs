@@ -29,61 +29,62 @@
 #include "DataReference.h"
 #include "WebCoreArgumentCoders.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
 EncoderAdapter::EncoderAdapter()
-    : m_encoder(CoreIPC::ArgumentEncoder::create(0))
+    : m_encoder( CoreIPC::ArgumentEncoder::create( 0 ) )
 {
 }
 
 CoreIPC::DataReference EncoderAdapter::data() const
 {
-    return CoreIPC::DataReference(m_encoder->buffer(), m_encoder->bufferSize());
+    return CoreIPC::DataReference( m_encoder->buffer(), m_encoder->bufferSize() );
 }
 
-void EncoderAdapter::encodeBytes(const uint8_t* bytes, size_t size)
+void EncoderAdapter::encodeBytes( const uint8_t *bytes, size_t size )
 {
-    m_encoder->encodeBytes(bytes, size);
+    m_encoder->encodeBytes( bytes, size );
 }
 
-void EncoderAdapter::encodeBool(bool value)
+void EncoderAdapter::encodeBool( bool value )
 {
-    m_encoder->encodeBool(value);
+    m_encoder->encodeBool( value );
 }
 
-void EncoderAdapter::encodeUInt32(uint32_t value)
+void EncoderAdapter::encodeUInt32( uint32_t value )
 {
-    m_encoder->encodeUInt32(value);
+    m_encoder->encodeUInt32( value );
 }
 
-void EncoderAdapter::encodeUInt64(uint64_t value)
+void EncoderAdapter::encodeUInt64( uint64_t value )
 {
-    m_encoder->encodeUInt64(value);
+    m_encoder->encodeUInt64( value );
 }
 
-void EncoderAdapter::encodeInt32(int32_t value)
+void EncoderAdapter::encodeInt32( int32_t value )
 {
-    m_encoder->encodeInt32(value);
+    m_encoder->encodeInt32( value );
 }
 
-void EncoderAdapter::encodeInt64(int64_t value)
+void EncoderAdapter::encodeInt64( int64_t value )
 {
-    m_encoder->encodeInt64(value);
+    m_encoder->encodeInt64( value );
 }
 
-void EncoderAdapter::encodeFloat(float value)
+void EncoderAdapter::encodeFloat( float value )
 {
-    m_encoder->encodeFloat(value);
+    m_encoder->encodeFloat( value );
 }
 
-void EncoderAdapter::encodeDouble(double value)
+void EncoderAdapter::encodeDouble( double value )
 {
-    m_encoder->encodeDouble(value);
+    m_encoder->encodeDouble( value );
 }
 
-void EncoderAdapter::encodeString(const String& value)
+void EncoderAdapter::encodeString( const String &value )
 {
-    m_encoder->encode(value);
+    m_encoder->encode( value );
 }
 
 }

@@ -33,9 +33,9 @@
 extern "C" {
 #endif
 
-WK_EXPORT WKCertificateInfoRef WKCertificateInfoCreateWithCertificate(PCCERT_CONTEXT certificate);
-WK_EXPORT size_t WKCertificateInfoGetCertificateChainLength(WKCertificateInfoRef certificateInfo);
-WK_EXPORT PCCERT_CONTEXT WKCertificateInfoGetCertificateContextAtIndex(WKCertificateInfoRef certificateInfo, size_t index);
+WK_EXPORT WKCertificateInfoRef WKCertificateInfoCreateWithCertificate( PCCERT_CONTEXT certificate );
+WK_EXPORT size_t WKCertificateInfoGetCertificateChainLength( WKCertificateInfoRef certificateInfo );
+WK_EXPORT PCCERT_CONTEXT WKCertificateInfoGetCertificateContextAtIndex( WKCertificateInfoRef certificateInfo, size_t index );
 
 #ifdef __cplusplus
 }

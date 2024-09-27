@@ -30,55 +30,79 @@
 #include "RefCounted.h"
 #include "Vector.h"
 
-namespace WTF {
+namespace WTF
+{
 
-class CStringBuffer : public RefCounted<CStringBuffer> {
+class CStringBuffer : public RefCounted<CStringBuffer>
+{
 public:
-    const char* data() { return m_vector.data(); }
-    size_t length() { return m_vector.size(); }
+    const char *data()
+    {
+        return m_vector.data();
+    }
+    size_t length()
+    {
+        return m_vector.size();
+    }
 
 private:
     friend class CString;
 
-    static PassRefPtr<CStringBuffer> create(size_t length) { return adoptRef(new CStringBuffer(length)); }
-    CStringBuffer(size_t length) : m_vector(length) { }
-    char* mutableData() { return m_vector.data(); }
+    static PassRefPtr<CStringBuffer> create( size_t length )
+    {
+        return adoptRef( new CStringBuffer( length ) );
+    }
+    CStringBuffer( size_t length ) : m_vector( length ) { }
+    char *mutableData()
+    {
+        return m_vector.data();
+    }
 
     Vector<char> m_vector;
 };
 
 // A container for a null-terminated char array supporting copy-on-write
 // assignment.  The contained char array may be null.
-class CString {
+class CString
+{
 public:
     CString() { }
-    CString(const char*);
-    CString(const char*, size_t length);
-    CString(CStringBuffer* buffer) : m_buffer(buffer) { }
-    static CString newUninitialized(size_t length, char*& characterBuffer);
+    CString( const char * );
+    CString( const char *, size_t length );
+    CString( CStringBuffer *buffer ) : m_buffer( buffer ) { }
+    static CString newUninitialized( size_t length, char *&characterBuffer );
 
-    const char* data() const
+    const char *data() const
     {
         return m_buffer ? m_buffer->data() : nullptr;
     }
-    char* mutableData();
+    char *mutableData();
     size_t length() const
     {
         return m_buffer ? m_buffer->length() - 1 : 0;
     }
 
-    bool isNull() const { return !m_buffer; }
+    bool isNull() const
+    {
+        return !m_buffer;
+    }
 
-    CStringBuffer* buffer() const { return m_buffer.get(); }
+    CStringBuffer *buffer() const
+    {
+        return m_buffer.get();
+    }
 
 private:
     void copyBufferIfNeeded();
-    void init(const char*, size_t length);
+    void init( const char *, size_t length );
     RefPtr<CStringBuffer> m_buffer;
 };
 
-bool operator==(const CString& a, const CString& b);
-inline bool operator!=(const CString& a, const CString& b) { return !(a == b); }
+bool operator==( const CString &a, const CString &b );
+inline bool operator!=( const CString &a, const CString &b )
+{
+    return !( a == b );
+}
 
 } // namespace WTF
 

@@ -32,31 +32,34 @@ class QXcbNativeInterfaceHandler;
 
 class Q_XCB_EXPORT QXcbGlIntegration
 {
- public:
-   QXcbGlIntegration();
-   virtual ~QXcbGlIntegration();
+public:
+    QXcbGlIntegration();
+    virtual ~QXcbGlIntegration();
 
-   virtual bool initialize(QXcbConnection *connection) = 0;
+    virtual bool initialize( QXcbConnection *connection ) = 0;
 
-   virtual bool supportsThreadedOpenGL() const {
-      return false;
-   }
-   virtual bool supportsSwitchableWidgetComposition()  const {
-      return true;
-   }
-   virtual bool handleXcbEvent(xcb_generic_event_t *event, uint responseType);
+    virtual bool supportsThreadedOpenGL() const
+    {
+        return false;
+    }
+    virtual bool supportsSwitchableWidgetComposition()  const
+    {
+        return true;
+    }
+    virtual bool handleXcbEvent( xcb_generic_event_t *event, uint responseType );
 
-   virtual QXcbWindow *createWindow(QWindow *window) const = 0;
+    virtual QXcbWindow *createWindow( QWindow *window ) const = 0;
 
 #ifndef QT_NO_OPENGL
-   virtual QPlatformOpenGLContext *createPlatformOpenGLContext(QOpenGLContext *context) const = 0;
+    virtual QPlatformOpenGLContext *createPlatformOpenGLContext( QOpenGLContext *context ) const = 0;
 #endif
 
-   virtual QPlatformOffscreenSurface *createPlatformOffscreenSurface(QOffscreenSurface *surface) const = 0;
+    virtual QPlatformOffscreenSurface *createPlatformOffscreenSurface( QOffscreenSurface *surface ) const = 0;
 
-   virtual QXcbNativeInterfaceHandler *nativeInterfaceHandler() const  {
-      return nullptr;
-   }
+    virtual QXcbNativeInterfaceHandler *nativeInterfaceHandler() const
+    {
+        return nullptr;
+    }
 };
 
 #endif

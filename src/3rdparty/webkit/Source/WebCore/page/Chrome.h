@@ -36,154 +36,159 @@ class NSView;
 #endif
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class ChromeClient;
-    class ContextMenu;
-    class FloatRect;
-    class Frame;
-    class Geolocation;
-    class HitTestResult;
-    class IntRect;
-    class NavigationAction;
-    class Node;
-    class Page;
-    class PopupMenuClient;
+class ChromeClient;
+class ContextMenu;
+class FloatRect;
+class Frame;
+class Geolocation;
+class HitTestResult;
+class IntRect;
+class NavigationAction;
+class Node;
+class Page;
+class PopupMenuClient;
 #if ENABLE(NOTIFICATIONS)
-    class NotificationPresenter;
+class NotificationPresenter;
 #endif
 
-    struct FrameLoadRequest;
-    struct ViewportArguments;
-    struct WindowFeatures;
-    
-    class Chrome : public HostWindow {
-    public:
-        Chrome(Page*, ChromeClient*);
-        ~Chrome();
+struct FrameLoadRequest;
+struct ViewportArguments;
+struct WindowFeatures;
 
-        ChromeClient* client() { return m_client; }
+class Chrome : public HostWindow
+{
+public:
+    Chrome( Page *, ChromeClient * );
+    ~Chrome();
 
-        // HostWindow methods.
+    ChromeClient *client()
+    {
+        return m_client;
+    }
 
-        virtual void invalidateWindow(const IntRect&, bool);
-        virtual void invalidateContentsAndWindow(const IntRect&, bool);
-        virtual void invalidateContentsForSlowScroll(const IntRect&, bool);
-        virtual void scroll(const IntSize&, const IntRect&, const IntRect&);
+    // HostWindow methods.
+
+    virtual void invalidateWindow( const IntRect &, bool );
+    virtual void invalidateContentsAndWindow( const IntRect &, bool );
+    virtual void invalidateContentsForSlowScroll( const IntRect &, bool );
+    virtual void scroll( const IntSize &, const IntRect &, const IntRect & );
 #if ENABLE(TILED_BACKING_STORE)
-        virtual void delegatedScrollRequested(const IntPoint& scrollPoint);
+    virtual void delegatedScrollRequested( const IntPoint &scrollPoint );
 #endif
-        virtual IntPoint screenToWindow(const IntPoint&) const;
-        virtual IntRect windowToScreen(const IntRect&) const;
-        virtual PlatformPageClient platformPageClient() const;
-        virtual void scrollbarsModeDidChange() const;
-        virtual void setCursor(const Cursor&);
+    virtual IntPoint screenToWindow( const IntPoint & ) const;
+    virtual IntRect windowToScreen( const IntRect & ) const;
+    virtual PlatformPageClient platformPageClient() const;
+    virtual void scrollbarsModeDidChange() const;
+    virtual void setCursor( const Cursor & );
 #if ENABLE(REQUEST_ANIMATION_FRAME)
-        virtual void scheduleAnimation();
+    virtual void scheduleAnimation();
 #endif
 
-        void scrollRectIntoView(const IntRect&) const;
+    void scrollRectIntoView( const IntRect & ) const;
 
-        void contentsSizeChanged(Frame*, const IntSize&) const;
+    void contentsSizeChanged( Frame *, const IntSize & ) const;
 
-        void setWindowRect(const FloatRect&) const;
-        FloatRect windowRect() const;
+    void setWindowRect( const FloatRect & ) const;
+    FloatRect windowRect() const;
 
-        FloatRect pageRect() const;
-        
-        float scaleFactor();
+    FloatRect pageRect() const;
 
-        void focus() const;
-        void unfocus() const;
+    float scaleFactor();
 
-        bool canTakeFocus(FocusDirection) const;
-        void takeFocus(FocusDirection) const;
+    void focus() const;
+    void unfocus() const;
 
-        void focusedNodeChanged(Node*) const;
-        void focusedFrameChanged(Frame*) const;
+    bool canTakeFocus( FocusDirection ) const;
+    void takeFocus( FocusDirection ) const;
 
-        Page* createWindow(Frame*, const FrameLoadRequest&, const WindowFeatures&, const NavigationAction&) const;
-        void show() const;
+    void focusedNodeChanged( Node * ) const;
+    void focusedFrameChanged( Frame * ) const;
 
-        bool canRunModal() const;
-        bool canRunModalNow() const;
-        void runModal() const;
+    Page *createWindow( Frame *, const FrameLoadRequest &, const WindowFeatures &, const NavigationAction & ) const;
+    void show() const;
 
-        void setToolbarsVisible(bool) const;
-        bool toolbarsVisible() const;
-        
-        void setStatusbarVisible(bool) const;
-        bool statusbarVisible() const;
-        
-        void setScrollbarsVisible(bool) const;
-        bool scrollbarsVisible() const;
-        
-        void setMenubarVisible(bool) const;
-        bool menubarVisible() const;
-        
-        void setResizable(bool) const;
+    bool canRunModal() const;
+    bool canRunModalNow() const;
+    void runModal() const;
 
-        bool canRunBeforeUnloadConfirmPanel();
-        bool runBeforeUnloadConfirmPanel(const String& message, Frame* frame);
+    void setToolbarsVisible( bool ) const;
+    bool toolbarsVisible() const;
 
-        void closeWindowSoon();
+    void setStatusbarVisible( bool ) const;
+    bool statusbarVisible() const;
 
-        void runJavaScriptAlert(Frame*, const String&);
-        bool runJavaScriptConfirm(Frame*, const String&);
-        bool runJavaScriptPrompt(Frame*, const String& message, const String& defaultValue, String& result);
-        void setStatusbarText(Frame*, const String&);
-        bool shouldInterruptJavaScript();
+    void setScrollbarsVisible( bool ) const;
+    bool scrollbarsVisible() const;
+
+    void setMenubarVisible( bool ) const;
+    bool menubarVisible() const;
+
+    void setResizable( bool ) const;
+
+    bool canRunBeforeUnloadConfirmPanel();
+    bool runBeforeUnloadConfirmPanel( const String &message, Frame *frame );
+
+    void closeWindowSoon();
+
+    void runJavaScriptAlert( Frame *, const String & );
+    bool runJavaScriptConfirm( Frame *, const String & );
+    bool runJavaScriptPrompt( Frame *, const String &message, const String &defaultValue, String &result );
+    void setStatusbarText( Frame *, const String & );
+    bool shouldInterruptJavaScript();
 
 #if ENABLE(REGISTER_PROTOCOL_HANDLER)
-        void registerProtocolHandler(const String& scheme, const String& baseURL, const String& url, const String& title);
+    void registerProtocolHandler( const String &scheme, const String &baseURL, const String &url, const String &title );
 #endif
 
-        IntRect windowResizerRect() const;
+    IntRect windowResizerRect() const;
 
-        void mouseDidMoveOverElement(const HitTestResult&, unsigned modifierFlags);
+    void mouseDidMoveOverElement( const HitTestResult &, unsigned modifierFlags );
 
-        void setToolTip(const HitTestResult&);
+    void setToolTip( const HitTestResult & );
 
-        void print(Frame*);
+    void print( Frame * );
 
-        // FIXME: Remove once all ports are using client-based geolocation. https://bugs.webkit.org/show_bug.cgi?id=40373
-        // For client-based geolocation, these two methods have moved to GeolocationClient. https://bugs.webkit.org/show_bug.cgi?id=50061
-        void requestGeolocationPermissionForFrame(Frame*, Geolocation*);
-        void cancelGeolocationPermissionRequestForFrame(Frame*, Geolocation*);
+    // FIXME: Remove once all ports are using client-based geolocation. https://bugs.webkit.org/show_bug.cgi?id=40373
+    // For client-based geolocation, these two methods have moved to GeolocationClient. https://bugs.webkit.org/show_bug.cgi?id=50061
+    void requestGeolocationPermissionForFrame( Frame *, Geolocation * );
+    void cancelGeolocationPermissionRequestForFrame( Frame *, Geolocation * );
 
-        void runOpenPanel(Frame*, PassRefPtr<FileChooser>);
-        void chooseIconForFiles(const Vector<String>&, FileChooser*);
+    void runOpenPanel( Frame *, PassRefPtr<FileChooser> );
+    void chooseIconForFiles( const Vector<String> &, FileChooser * );
 #if ENABLE(DIRECTORY_UPLOAD)
-        void enumerateChosenDirectory(const String&, FileChooser*);
+    void enumerateChosenDirectory( const String &, FileChooser * );
 #endif
 
-        void dispatchViewportDataDidChange(const ViewportArguments&) const;
+    void dispatchViewportDataDidChange( const ViewportArguments & ) const;
 
-        bool requiresFullscreenForVideoPlayback();
+    bool requiresFullscreenForVideoPlayback();
 
 #if PLATFORM(MAC)
-        void focusNSView(NSView*);
+    void focusNSView( NSView * );
 #endif
 
 #if ENABLE(NOTIFICATIONS)
-        NotificationPresenter* notificationPresenter() const; 
+    NotificationPresenter *notificationPresenter() const;
 #endif
 
-        bool selectItemWritingDirectionIsNatural();
-        bool selectItemAlignmentFollowsMenuWritingDirection();
-        PassRefPtr<PopupMenu> createPopupMenu(PopupMenuClient*) const;
-        PassRefPtr<SearchPopupMenu> createSearchPopupMenu(PopupMenuClient*) const;
+    bool selectItemWritingDirectionIsNatural();
+    bool selectItemAlignmentFollowsMenuWritingDirection();
+    PassRefPtr<PopupMenu> createPopupMenu( PopupMenuClient * ) const;
+    PassRefPtr<SearchPopupMenu> createSearchPopupMenu( PopupMenuClient * ) const;
 
 #if ENABLE(CONTEXT_MENUS)
-        void showContextMenu();
+    void showContextMenu();
 #endif
 
-        void willRunModalHTMLDialog(const Frame*) const;
+    void willRunModalHTMLDialog( const Frame * ) const;
 
-    private:
-        Page* m_page;
-        ChromeClient* m_client;
-    };
+private:
+    Page *m_page;
+    ChromeClient *m_client;
+};
 }
 
 #endif // Chrome_h

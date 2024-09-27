@@ -33,22 +33,27 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class IDBAny;
 
-class IDBVersionChangeEvent : public Event {
+class IDBVersionChangeEvent : public Event
+{
 public:
-    static PassRefPtr<IDBVersionChangeEvent> create(const String& version, const AtomicString& eventType);
+    static PassRefPtr<IDBVersionChangeEvent> create( const String &version, const AtomicString &eventType );
     // FIXME: Need to allow creation of these events from JS.
     virtual ~IDBVersionChangeEvent();
 
-    virtual bool isIDBVersionChangeEvent() const { return true; }
+    virtual bool isIDBVersionChangeEvent() const
+    {
+        return true;
+    }
 
     virtual String version();
 
 private:
-    IDBVersionChangeEvent(const String& version, const AtomicString& eventType);
+    IDBVersionChangeEvent( const String &version, const AtomicString &eventType );
 
     String m_version;
 };

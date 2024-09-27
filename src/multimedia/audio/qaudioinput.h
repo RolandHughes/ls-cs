@@ -34,53 +34,53 @@ class QAbstractAudioInput;
 
 class Q_MULTIMEDIA_EXPORT QAudioInput : public QObject
 {
-   MULTI_CS_OBJECT(QAudioInput)
+    MULTI_CS_OBJECT( QAudioInput )
 
- public:
-   explicit QAudioInput(const QAudioFormat &format = QAudioFormat(), QObject *parent = nullptr);
-   explicit QAudioInput(const QAudioDeviceInfo &audioDeviceInfo, const QAudioFormat &format = QAudioFormat(),
-      QObject *parent = nullptr);
+public:
+    explicit QAudioInput( const QAudioFormat &format = QAudioFormat(), QObject *parent = nullptr );
+    explicit QAudioInput( const QAudioDeviceInfo &audioDeviceInfo, const QAudioFormat &format = QAudioFormat(),
+                          QObject *parent = nullptr );
 
-   QAudioInput(const QAudioInput &) = delete;
-   QAudioInput &operator=(const QAudioInput &) = delete;
+    QAudioInput( const QAudioInput & ) = delete;
+    QAudioInput &operator=( const QAudioInput & ) = delete;
 
-   ~QAudioInput();
+    ~QAudioInput();
 
-   QAudioFormat format() const;
+    QAudioFormat format() const;
 
-   void start(QIODevice *device);
-   QIODevice *start();
+    void start( QIODevice *device );
+    QIODevice *start();
 
-   void stop();
-   void reset();
-   void suspend();
-   void resume();
+    void stop();
+    void reset();
+    void suspend();
+    void resume();
 
-   void setBufferSize(int bytes);
-   int bufferSize() const;
+    void setBufferSize( int bytes );
+    int bufferSize() const;
 
-   int bytesReady() const;
-   int periodSize() const;
+    int bytesReady() const;
+    int periodSize() const;
 
-   void setNotifyInterval(int milliSeconds);
-   int notifyInterval() const;
+    void setNotifyInterval( int milliSeconds );
+    int notifyInterval() const;
 
-   void setVolume(qreal volume);
-   qreal volume() const;
-   qint64 processedUSecs() const;
-   qint64 elapsedUSecs() const;
+    void setVolume( qreal volume );
+    qreal volume() const;
+    qint64 processedUSecs() const;
+    qint64 elapsedUSecs() const;
 
-   QAudio::Error error() const;
-   QAudio::State state() const;
+    QAudio::Error error() const;
+    QAudio::State state() const;
 
-   MULTI_CS_SIGNAL_1(Public, void stateChanged(QAudio::State state))
-   MULTI_CS_SIGNAL_2(stateChanged, state)
+    MULTI_CS_SIGNAL_1( Public, void stateChanged( QAudio::State state ) )
+    MULTI_CS_SIGNAL_2( stateChanged, state )
 
-   MULTI_CS_SIGNAL_1(Public, void notify())
-   MULTI_CS_SIGNAL_2(notify)
+    MULTI_CS_SIGNAL_1( Public, void notify() )
+    MULTI_CS_SIGNAL_2( notify )
 
- private:
-   QAbstractAudioInput *m_audioInput;
+private:
+    QAbstractAudioInput *m_audioInput;
 };
 
 #endif

@@ -111,7 +111,7 @@ static const QString qglslPositionWithPatternBrushVertexShader = "\n\
     }\n";
 
 static const QString qglslAffinePositionWithPatternBrushVertexShader
-   = qglslPositionWithPatternBrushVertexShader;
+    = qglslPositionWithPatternBrushVertexShader;
 
 static const char *const qglslPatternBrushSrcFragmentShader = "\n\
     uniform           sampler2D brushTexture; \n\
@@ -146,7 +146,7 @@ static const QString qglslPositionWithLinearGradientBrushVertexShader = "\n\
     }\n";
 
 static const QString qglslAffinePositionWithLinearGradientBrushVertexShader
-   = qglslPositionWithLinearGradientBrushVertexShader;
+    = qglslPositionWithLinearGradientBrushVertexShader;
 
 static const char *const qglslLinearGradientBrushSrcFragmentShader = "\n\
     uniform           sampler2D brushTexture; \n\
@@ -180,7 +180,7 @@ static const QString qglslPositionWithConicalGradientBrushVertexShader = "\n\
     }\n";
 
 static const QString qglslAffinePositionWithConicalGradientBrushVertexShader
-   = qglslPositionWithConicalGradientBrushVertexShader;
+    = qglslPositionWithConicalGradientBrushVertexShader;
 
 static const char *const qglslConicalGradientBrushSrcFragmentShader = "\n\
     #define INVERSE_2PI 0.1591549430918953358 \n\
@@ -313,8 +313,8 @@ static const QString qglslImageSrcFragmentShader = "\n\
     uniform           sampler2D imageTexture; \n\
     lowp vec4 srcPixel() \n\
     { \n"
-      "return texture2D(imageTexture, textureCoords); \n"
-      "}\n";
+        "return texture2D(imageTexture, textureCoords); \n"
+        "}\n";
 
 static const QString qglslCustomSrcFragmentShader = "\n\
     varying   highp   vec2      textureCoords; \n\

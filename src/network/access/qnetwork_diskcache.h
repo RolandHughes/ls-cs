@@ -32,40 +32,40 @@ class QNetworkDiskCachePrivate;
 
 class Q_NETWORK_EXPORT QNetworkDiskCache : public QAbstractNetworkCache
 {
-   NET_CS_OBJECT(QNetworkDiskCache)
+    NET_CS_OBJECT( QNetworkDiskCache )
 
- public:
-   explicit QNetworkDiskCache(QObject *parent = nullptr);
+public:
+    explicit QNetworkDiskCache( QObject *parent = nullptr );
 
-   QNetworkDiskCache(const QNetworkDiskCache &) = delete;
-   QNetworkDiskCache &operator=(const QNetworkDiskCache &) = delete;
+    QNetworkDiskCache( const QNetworkDiskCache & ) = delete;
+    QNetworkDiskCache &operator=( const QNetworkDiskCache & ) = delete;
 
-   ~QNetworkDiskCache();
+    ~QNetworkDiskCache();
 
-   QString cacheDirectory() const;
-   void setCacheDirectory(const QString &cacheDir);
+    QString cacheDirectory() const;
+    void setCacheDirectory( const QString &cacheDir );
 
-   qint64 maximumCacheSize() const;
-   void setMaximumCacheSize(qint64 size);
+    qint64 maximumCacheSize() const;
+    void setMaximumCacheSize( qint64 size );
 
-   qint64 cacheSize() const override;
-   QNetworkCacheMetaData metaData(const QUrl &url) override;
-   void updateMetaData(const QNetworkCacheMetaData &metaData) override;
-   QIODevice *data(const QUrl &url) override;
-   bool remove(const QUrl &url) override;
-   QIODevice *prepare(const QNetworkCacheMetaData &metaData) override;
-   void insert(QIODevice *device) override;
+    qint64 cacheSize() const override;
+    QNetworkCacheMetaData metaData( const QUrl &url ) override;
+    void updateMetaData( const QNetworkCacheMetaData &metaData ) override;
+    QIODevice *data( const QUrl &url ) override;
+    bool remove( const QUrl &url ) override;
+    QIODevice *prepare( const QNetworkCacheMetaData &metaData ) override;
+    void insert( QIODevice *device ) override;
 
-   QNetworkCacheMetaData fileMetaData(const QString &fileName) const;
+    QNetworkCacheMetaData fileMetaData( const QString &fileName ) const;
 
-   NET_CS_SLOT_1(Public, void clear() override)
-   NET_CS_SLOT_2(clear)
+    NET_CS_SLOT_1( Public, void clear() override )
+    NET_CS_SLOT_2( clear )
 
- protected:
-   virtual qint64 expire();
+protected:
+    virtual qint64 expire();
 
- private:
-   Q_DECLARE_PRIVATE(QNetworkDiskCache)
+private:
+    Q_DECLARE_PRIVATE( QNetworkDiskCache )
 };
 
 #endif // QT_NO_NETWORKDISKCACHE

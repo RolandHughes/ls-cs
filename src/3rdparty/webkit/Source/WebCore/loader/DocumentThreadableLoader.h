@@ -41,68 +41,81 @@
 #include <wtf/RefPtr.h>
 #include <wtf/text/WTFString.h>
 
-namespace WebCore {
-    class Document;
-    class KURL;
-    class ResourceRequest;
-    class ThreadableLoaderClient;
+namespace WebCore
+{
+class Document;
+class KURL;
+class ResourceRequest;
+class ThreadableLoaderClient;
 
-    class DocumentThreadableLoader : public RefCounted<DocumentThreadableLoader>, public ThreadableLoader, private SubresourceLoaderClient  {
-        WTF_MAKE_FAST_ALLOCATED;
-    public:
-        static void loadResourceSynchronously(Document*, const ResourceRequest&, ThreadableLoaderClient&, const ThreadableLoaderOptions&);
-        static PassRefPtr<DocumentThreadableLoader> create(Document*, ThreadableLoaderClient*, const ResourceRequest&, const ThreadableLoaderOptions&, const String& optionalOutgoingReferrer = String());
-        virtual ~DocumentThreadableLoader();
+class DocumentThreadableLoader : public RefCounted<DocumentThreadableLoader>, public ThreadableLoader,
+    private SubresourceLoaderClient
+{
+    WTF_MAKE_FAST_ALLOCATED;
+public:
+    static void loadResourceSynchronously( Document *, const ResourceRequest &, ThreadableLoaderClient &,
+                                           const ThreadableLoaderOptions & );
+    static PassRefPtr<DocumentThreadableLoader> create( Document *, ThreadableLoaderClient *, const ResourceRequest &,
+            const ThreadableLoaderOptions &, const String &optionalOutgoingReferrer = String() );
+    virtual ~DocumentThreadableLoader();
 
-        virtual void cancel();
-        virtual void setDefersLoading(bool);
+    virtual void cancel();
+    virtual void setDefersLoading( bool );
 
-        using RefCounted<DocumentThreadableLoader>::ref;
-        using RefCounted<DocumentThreadableLoader>::deref;
+    using RefCounted<DocumentThreadableLoader>::ref;
+    using RefCounted<DocumentThreadableLoader>::deref;
 
-    protected:
-        virtual void refThreadableLoader() { ref(); }
-        virtual void derefThreadableLoader() { deref(); }
+protected:
+    virtual void refThreadableLoader()
+    {
+        ref();
+    }
+    virtual void derefThreadableLoader()
+    {
+        deref();
+    }
 
-    private:
-        enum BlockingBehavior {
-            LoadSynchronously,
-            LoadAsynchronously
-        };
-
-        DocumentThreadableLoader(Document*, ThreadableLoaderClient*, BlockingBehavior, const ResourceRequest&, const ThreadableLoaderOptions&, const String& optionalOutgoingReferrer);
-
-        virtual void willSendRequest(SubresourceLoader*, ResourceRequest&, const ResourceResponse& redirectResponse);
-        virtual void didSendData(SubresourceLoader*, unsigned long long bytesSent, unsigned long long totalBytesToBeSent);
-
-        virtual void didReceiveResponse(SubresourceLoader*, const ResourceResponse&);
-        virtual void didReceiveData(SubresourceLoader*, const char*, int dataLength);
-        virtual void didReceiveCachedMetadata(SubresourceLoader*, const char*, int dataLength);
-        virtual void didFinishLoading(SubresourceLoader*, double);
-        virtual void didFail(SubresourceLoader*, const ResourceError&);
-
-        virtual bool getShouldUseCredentialStorage(SubresourceLoader*, bool& shouldUseCredentialStorage);
-        virtual void didReceiveAuthenticationChallenge(SubresourceLoader*, const AuthenticationChallenge&);
-        virtual void receivedCancellation(SubresourceLoader*, const AuthenticationChallenge&);
-
-        void didFinishLoading(unsigned long identifier, double finishTime);
-        void makeSimpleCrossOriginAccessRequest(const ResourceRequest& request);
-        void makeCrossOriginAccessRequestWithPreflight(const ResourceRequest& request);
-        void preflightSuccess();
-        void preflightFailure(const String& url, const String& errorDescription);
-
-        void loadRequest(const ResourceRequest&, SecurityCheckPolicy);
-        bool isAllowedRedirect(const KURL&);
-
-        RefPtr<SubresourceLoader> m_loader;
-        ThreadableLoaderClient* m_client;
-        Document* m_document;
-        ThreadableLoaderOptions m_options;
-        String m_optionalOutgoingReferrer;
-        bool m_sameOriginRequest;
-        bool m_async;
-        OwnPtr<ResourceRequest> m_actualRequest;  // non-null during Access Control preflight checks
+private:
+    enum BlockingBehavior
+    {
+        LoadSynchronously,
+        LoadAsynchronously
     };
+
+    DocumentThreadableLoader( Document *, ThreadableLoaderClient *, BlockingBehavior, const ResourceRequest &,
+                              const ThreadableLoaderOptions &, const String &optionalOutgoingReferrer );
+
+    virtual void willSendRequest( SubresourceLoader *, ResourceRequest &, const ResourceResponse &redirectResponse );
+    virtual void didSendData( SubresourceLoader *, unsigned long long bytesSent, unsigned long long totalBytesToBeSent );
+
+    virtual void didReceiveResponse( SubresourceLoader *, const ResourceResponse & );
+    virtual void didReceiveData( SubresourceLoader *, const char *, int dataLength );
+    virtual void didReceiveCachedMetadata( SubresourceLoader *, const char *, int dataLength );
+    virtual void didFinishLoading( SubresourceLoader *, double );
+    virtual void didFail( SubresourceLoader *, const ResourceError & );
+
+    virtual bool getShouldUseCredentialStorage( SubresourceLoader *, bool &shouldUseCredentialStorage );
+    virtual void didReceiveAuthenticationChallenge( SubresourceLoader *, const AuthenticationChallenge & );
+    virtual void receivedCancellation( SubresourceLoader *, const AuthenticationChallenge & );
+
+    void didFinishLoading( unsigned long identifier, double finishTime );
+    void makeSimpleCrossOriginAccessRequest( const ResourceRequest &request );
+    void makeCrossOriginAccessRequestWithPreflight( const ResourceRequest &request );
+    void preflightSuccess();
+    void preflightFailure( const String &url, const String &errorDescription );
+
+    void loadRequest( const ResourceRequest &, SecurityCheckPolicy );
+    bool isAllowedRedirect( const KURL & );
+
+    RefPtr<SubresourceLoader> m_loader;
+    ThreadableLoaderClient *m_client;
+    Document *m_document;
+    ThreadableLoaderOptions m_options;
+    String m_optionalOutgoingReferrer;
+    bool m_sameOriginRequest;
+    bool m_async;
+    OwnPtr<ResourceRequest> m_actualRequest;  // non-null during Access Control preflight checks
+};
 
 } // namespace WebCore
 

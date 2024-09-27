@@ -55,8 +55,8 @@
 
 /* ************************************************************************** */
 
-void mng_add_chunk (mng_datap  pData,
-                    mng_chunkp pChunk);
+void mng_add_chunk ( mng_datap  pData,
+                     mng_chunkp pChunk );
 
 /* ************************************************************************** */
 
@@ -65,70 +65,70 @@ void mng_add_chunk (mng_datap  pData,
                                          mng_chunkp* ppChunk)
 
 #ifdef MNG_OPTIMIZE_CHUNKINITFREE
-INIT_CHUNK_HDR (mng_init_general) ;
+INIT_CHUNK_HDR ( mng_init_general ) ;
 #else
-INIT_CHUNK_HDR (mng_init_ihdr) ;
-INIT_CHUNK_HDR (mng_init_plte) ;
-INIT_CHUNK_HDR (mng_init_idat) ;
-INIT_CHUNK_HDR (mng_init_iend) ;
-INIT_CHUNK_HDR (mng_init_trns) ;
-INIT_CHUNK_HDR (mng_init_gama) ;
-INIT_CHUNK_HDR (mng_init_chrm) ;
-INIT_CHUNK_HDR (mng_init_srgb) ;
-INIT_CHUNK_HDR (mng_init_iccp) ;
-INIT_CHUNK_HDR (mng_init_text) ;
-INIT_CHUNK_HDR (mng_init_ztxt) ;
-INIT_CHUNK_HDR (mng_init_itxt) ;
-INIT_CHUNK_HDR (mng_init_bkgd) ;
-INIT_CHUNK_HDR (mng_init_phys) ;
-INIT_CHUNK_HDR (mng_init_sbit) ;
-INIT_CHUNK_HDR (mng_init_splt) ;
-INIT_CHUNK_HDR (mng_init_hist) ;
-INIT_CHUNK_HDR (mng_init_time) ;
-INIT_CHUNK_HDR (mng_init_mhdr) ;
-INIT_CHUNK_HDR (mng_init_mend) ;
-INIT_CHUNK_HDR (mng_init_loop) ;
-INIT_CHUNK_HDR (mng_init_endl) ;
-INIT_CHUNK_HDR (mng_init_defi) ;
-INIT_CHUNK_HDR (mng_init_basi) ;
-INIT_CHUNK_HDR (mng_init_clon) ;
+INIT_CHUNK_HDR ( mng_init_ihdr ) ;
+INIT_CHUNK_HDR ( mng_init_plte ) ;
+INIT_CHUNK_HDR ( mng_init_idat ) ;
+INIT_CHUNK_HDR ( mng_init_iend ) ;
+INIT_CHUNK_HDR ( mng_init_trns ) ;
+INIT_CHUNK_HDR ( mng_init_gama ) ;
+INIT_CHUNK_HDR ( mng_init_chrm ) ;
+INIT_CHUNK_HDR ( mng_init_srgb ) ;
+INIT_CHUNK_HDR ( mng_init_iccp ) ;
+INIT_CHUNK_HDR ( mng_init_text ) ;
+INIT_CHUNK_HDR ( mng_init_ztxt ) ;
+INIT_CHUNK_HDR ( mng_init_itxt ) ;
+INIT_CHUNK_HDR ( mng_init_bkgd ) ;
+INIT_CHUNK_HDR ( mng_init_phys ) ;
+INIT_CHUNK_HDR ( mng_init_sbit ) ;
+INIT_CHUNK_HDR ( mng_init_splt ) ;
+INIT_CHUNK_HDR ( mng_init_hist ) ;
+INIT_CHUNK_HDR ( mng_init_time ) ;
+INIT_CHUNK_HDR ( mng_init_mhdr ) ;
+INIT_CHUNK_HDR ( mng_init_mend ) ;
+INIT_CHUNK_HDR ( mng_init_loop ) ;
+INIT_CHUNK_HDR ( mng_init_endl ) ;
+INIT_CHUNK_HDR ( mng_init_defi ) ;
+INIT_CHUNK_HDR ( mng_init_basi ) ;
+INIT_CHUNK_HDR ( mng_init_clon ) ;
 #ifndef MNG_SKIPCHUNK_PAST
-INIT_CHUNK_HDR (mng_init_past) ;
+INIT_CHUNK_HDR ( mng_init_past ) ;
 #endif
-INIT_CHUNK_HDR (mng_init_disc) ;
-INIT_CHUNK_HDR (mng_init_back) ;
-INIT_CHUNK_HDR (mng_init_fram) ;
-INIT_CHUNK_HDR (mng_init_move) ;
-INIT_CHUNK_HDR (mng_init_clip) ;
-INIT_CHUNK_HDR (mng_init_show) ;
-INIT_CHUNK_HDR (mng_init_term) ;
-INIT_CHUNK_HDR (mng_init_save) ;
-INIT_CHUNK_HDR (mng_init_seek) ;
-INIT_CHUNK_HDR (mng_init_expi) ;
-INIT_CHUNK_HDR (mng_init_fpri) ;
-INIT_CHUNK_HDR (mng_init_need) ;
-INIT_CHUNK_HDR (mng_init_phyg) ;
+INIT_CHUNK_HDR ( mng_init_disc ) ;
+INIT_CHUNK_HDR ( mng_init_back ) ;
+INIT_CHUNK_HDR ( mng_init_fram ) ;
+INIT_CHUNK_HDR ( mng_init_move ) ;
+INIT_CHUNK_HDR ( mng_init_clip ) ;
+INIT_CHUNK_HDR ( mng_init_show ) ;
+INIT_CHUNK_HDR ( mng_init_term ) ;
+INIT_CHUNK_HDR ( mng_init_save ) ;
+INIT_CHUNK_HDR ( mng_init_seek ) ;
+INIT_CHUNK_HDR ( mng_init_expi ) ;
+INIT_CHUNK_HDR ( mng_init_fpri ) ;
+INIT_CHUNK_HDR ( mng_init_need ) ;
+INIT_CHUNK_HDR ( mng_init_phyg ) ;
 #ifdef MNG_INCLUDE_JNG
-INIT_CHUNK_HDR (mng_init_jhdr) ;
-INIT_CHUNK_HDR (mng_init_jdaa) ;
-INIT_CHUNK_HDR (mng_init_jdat) ;
-INIT_CHUNK_HDR (mng_init_jsep) ;
+INIT_CHUNK_HDR ( mng_init_jhdr ) ;
+INIT_CHUNK_HDR ( mng_init_jdaa ) ;
+INIT_CHUNK_HDR ( mng_init_jdat ) ;
+INIT_CHUNK_HDR ( mng_init_jsep ) ;
 #endif
 #ifndef MNG_NO_DELTA_PNG
-INIT_CHUNK_HDR (mng_init_dhdr) ;
-INIT_CHUNK_HDR (mng_init_prom) ;
-INIT_CHUNK_HDR (mng_init_ipng) ;
-INIT_CHUNK_HDR (mng_init_pplt) ;
+INIT_CHUNK_HDR ( mng_init_dhdr ) ;
+INIT_CHUNK_HDR ( mng_init_prom ) ;
+INIT_CHUNK_HDR ( mng_init_ipng ) ;
+INIT_CHUNK_HDR ( mng_init_pplt ) ;
 #ifdef MNG_INCLUDE_JNG
-INIT_CHUNK_HDR (mng_init_ijng) ;
+INIT_CHUNK_HDR ( mng_init_ijng ) ;
 #endif
-INIT_CHUNK_HDR (mng_init_drop) ;
-INIT_CHUNK_HDR (mng_init_dbyk) ;
-INIT_CHUNK_HDR (mng_init_ordr) ;
+INIT_CHUNK_HDR ( mng_init_drop ) ;
+INIT_CHUNK_HDR ( mng_init_dbyk ) ;
+INIT_CHUNK_HDR ( mng_init_ordr ) ;
 #endif
-INIT_CHUNK_HDR (mng_init_magn) ;
-INIT_CHUNK_HDR (mng_init_evnt) ;
-INIT_CHUNK_HDR (mng_init_unknown) ;
+INIT_CHUNK_HDR ( mng_init_magn ) ;
+INIT_CHUNK_HDR ( mng_init_evnt ) ;
+INIT_CHUNK_HDR ( mng_init_unknown ) ;
 #endif /* MNG_OPTIMIZE_CHUNKINITFREE */
 
 /* ************************************************************************** */
@@ -137,82 +137,82 @@ INIT_CHUNK_HDR (mng_init_unknown) ;
                                          mng_chunkp  pHeader)
 
 #ifdef MNG_OPTIMIZE_CHUNKINITFREE
-FREE_CHUNK_HDR (mng_free_general) ;
+FREE_CHUNK_HDR ( mng_free_general ) ;
 #else /* MNG_OPTIMIZE_CHUNKINITFREE */
-FREE_CHUNK_HDR (mng_free_ihdr) ;
-FREE_CHUNK_HDR (mng_free_plte) ;
-FREE_CHUNK_HDR (mng_free_iend) ;
-FREE_CHUNK_HDR (mng_free_trns) ;
-FREE_CHUNK_HDR (mng_free_gama) ;
-FREE_CHUNK_HDR (mng_free_chrm) ;
-FREE_CHUNK_HDR (mng_free_srgb) ;
-FREE_CHUNK_HDR (mng_free_bkgd) ;
-FREE_CHUNK_HDR (mng_free_phys) ;
-FREE_CHUNK_HDR (mng_free_sbit) ;
-FREE_CHUNK_HDR (mng_free_hist) ;
-FREE_CHUNK_HDR (mng_free_time) ;
-FREE_CHUNK_HDR (mng_free_mhdr) ;
-FREE_CHUNK_HDR (mng_free_mend) ;
-FREE_CHUNK_HDR (mng_free_endl) ;
-FREE_CHUNK_HDR (mng_free_defi) ;
-FREE_CHUNK_HDR (mng_free_basi) ;
-FREE_CHUNK_HDR (mng_free_clon) ;
-FREE_CHUNK_HDR (mng_free_back) ;
-FREE_CHUNK_HDR (mng_free_move) ;
-FREE_CHUNK_HDR (mng_free_clip) ;
-FREE_CHUNK_HDR (mng_free_show) ;
-FREE_CHUNK_HDR (mng_free_term) ;
-FREE_CHUNK_HDR (mng_free_fpri) ;
-FREE_CHUNK_HDR (mng_free_phyg) ;
+FREE_CHUNK_HDR ( mng_free_ihdr ) ;
+FREE_CHUNK_HDR ( mng_free_plte ) ;
+FREE_CHUNK_HDR ( mng_free_iend ) ;
+FREE_CHUNK_HDR ( mng_free_trns ) ;
+FREE_CHUNK_HDR ( mng_free_gama ) ;
+FREE_CHUNK_HDR ( mng_free_chrm ) ;
+FREE_CHUNK_HDR ( mng_free_srgb ) ;
+FREE_CHUNK_HDR ( mng_free_bkgd ) ;
+FREE_CHUNK_HDR ( mng_free_phys ) ;
+FREE_CHUNK_HDR ( mng_free_sbit ) ;
+FREE_CHUNK_HDR ( mng_free_hist ) ;
+FREE_CHUNK_HDR ( mng_free_time ) ;
+FREE_CHUNK_HDR ( mng_free_mhdr ) ;
+FREE_CHUNK_HDR ( mng_free_mend ) ;
+FREE_CHUNK_HDR ( mng_free_endl ) ;
+FREE_CHUNK_HDR ( mng_free_defi ) ;
+FREE_CHUNK_HDR ( mng_free_basi ) ;
+FREE_CHUNK_HDR ( mng_free_clon ) ;
+FREE_CHUNK_HDR ( mng_free_back ) ;
+FREE_CHUNK_HDR ( mng_free_move ) ;
+FREE_CHUNK_HDR ( mng_free_clip ) ;
+FREE_CHUNK_HDR ( mng_free_show ) ;
+FREE_CHUNK_HDR ( mng_free_term ) ;
+FREE_CHUNK_HDR ( mng_free_fpri ) ;
+FREE_CHUNK_HDR ( mng_free_phyg ) ;
 #ifdef MNG_INCLUDE_JNG
-FREE_CHUNK_HDR (mng_free_jhdr) ;
-FREE_CHUNK_HDR (mng_free_jsep) ;
+FREE_CHUNK_HDR ( mng_free_jhdr ) ;
+FREE_CHUNK_HDR ( mng_free_jsep ) ;
 #endif
 #ifndef MNG_NO_DELTA_PNG
-FREE_CHUNK_HDR (mng_free_dhdr) ;
-FREE_CHUNK_HDR (mng_free_prom) ;
-FREE_CHUNK_HDR (mng_free_ipng) ;
-FREE_CHUNK_HDR (mng_free_pplt) ;
+FREE_CHUNK_HDR ( mng_free_dhdr ) ;
+FREE_CHUNK_HDR ( mng_free_prom ) ;
+FREE_CHUNK_HDR ( mng_free_ipng ) ;
+FREE_CHUNK_HDR ( mng_free_pplt ) ;
 #ifdef MNG_INCLUDE_JNG
-FREE_CHUNK_HDR (mng_free_ijng) ;
+FREE_CHUNK_HDR ( mng_free_ijng ) ;
 #endif
 #endif
-FREE_CHUNK_HDR (mng_free_magn) ;
+FREE_CHUNK_HDR ( mng_free_magn ) ;
 #endif /* MNG_OPTIMIZE_CHUNKINITFREE */
 
-FREE_CHUNK_HDR (mng_free_idat) ;
-FREE_CHUNK_HDR (mng_free_iccp) ;
-FREE_CHUNK_HDR (mng_free_text) ;
-FREE_CHUNK_HDR (mng_free_ztxt) ;
-FREE_CHUNK_HDR (mng_free_itxt) ;
-FREE_CHUNK_HDR (mng_free_splt) ;
-FREE_CHUNK_HDR (mng_free_loop) ;
+FREE_CHUNK_HDR ( mng_free_idat ) ;
+FREE_CHUNK_HDR ( mng_free_iccp ) ;
+FREE_CHUNK_HDR ( mng_free_text ) ;
+FREE_CHUNK_HDR ( mng_free_ztxt ) ;
+FREE_CHUNK_HDR ( mng_free_itxt ) ;
+FREE_CHUNK_HDR ( mng_free_splt ) ;
+FREE_CHUNK_HDR ( mng_free_loop ) ;
 #ifndef MNG_SKIPCHUNK_PAST
-FREE_CHUNK_HDR (mng_free_past) ;
+FREE_CHUNK_HDR ( mng_free_past ) ;
 #endif
-FREE_CHUNK_HDR (mng_free_disc) ;
-FREE_CHUNK_HDR (mng_free_fram) ;
-FREE_CHUNK_HDR (mng_free_save) ;
-FREE_CHUNK_HDR (mng_free_seek) ;
-FREE_CHUNK_HDR (mng_free_expi) ;
-FREE_CHUNK_HDR (mng_free_need) ;
+FREE_CHUNK_HDR ( mng_free_disc ) ;
+FREE_CHUNK_HDR ( mng_free_fram ) ;
+FREE_CHUNK_HDR ( mng_free_save ) ;
+FREE_CHUNK_HDR ( mng_free_seek ) ;
+FREE_CHUNK_HDR ( mng_free_expi ) ;
+FREE_CHUNK_HDR ( mng_free_need ) ;
 #ifdef MNG_INCLUDE_JNG
-FREE_CHUNK_HDR (mng_free_jdaa) ;
-FREE_CHUNK_HDR (mng_free_jdat) ;
+FREE_CHUNK_HDR ( mng_free_jdaa ) ;
+FREE_CHUNK_HDR ( mng_free_jdat ) ;
 #endif
 #ifndef MNG_NO_DELTA_PNG
-FREE_CHUNK_HDR (mng_free_drop) ;
-FREE_CHUNK_HDR (mng_free_dbyk) ;
-FREE_CHUNK_HDR (mng_free_ordr) ;
+FREE_CHUNK_HDR ( mng_free_drop ) ;
+FREE_CHUNK_HDR ( mng_free_dbyk ) ;
+FREE_CHUNK_HDR ( mng_free_ordr ) ;
 #endif
 #ifdef MNG_INCLUDE_MPNG_PROPOSAL
-FREE_CHUNK_HDR (mng_free_mpng) ;
+FREE_CHUNK_HDR ( mng_free_mpng ) ;
 #endif
 #ifdef MNG_INCLUDE_ANG_PROPOSAL
-FREE_CHUNK_HDR (mng_free_adat) ;
+FREE_CHUNK_HDR ( mng_free_adat ) ;
 #endif
-FREE_CHUNK_HDR (mng_free_evnt) ;
-FREE_CHUNK_HDR (mng_free_unknown) ;
+FREE_CHUNK_HDR ( mng_free_evnt ) ;
+FREE_CHUNK_HDR ( mng_free_unknown ) ;
 
 /* ************************************************************************** */
 
@@ -223,83 +223,83 @@ FREE_CHUNK_HDR (mng_free_unknown) ;
                                            mng_chunkp  pChunkfrom)
 
 #ifdef MNG_OPTIMIZE_CHUNKASSIGN
-ASSIGN_CHUNK_HDR (mng_assign_general) ;
+ASSIGN_CHUNK_HDR ( mng_assign_general ) ;
 #else /* MNG_OPTIMIZE_CHUNKASSIGN */
-ASSIGN_CHUNK_HDR (mng_assign_ihdr) ;
-ASSIGN_CHUNK_HDR (mng_assign_plte) ;
-ASSIGN_CHUNK_HDR (mng_assign_iend) ;
-ASSIGN_CHUNK_HDR (mng_assign_trns) ;
-ASSIGN_CHUNK_HDR (mng_assign_gama) ;
-ASSIGN_CHUNK_HDR (mng_assign_chrm) ;
-ASSIGN_CHUNK_HDR (mng_assign_srgb) ;
-ASSIGN_CHUNK_HDR (mng_assign_bkgd) ;
-ASSIGN_CHUNK_HDR (mng_assign_phys) ;
-ASSIGN_CHUNK_HDR (mng_assign_sbit) ;
-ASSIGN_CHUNK_HDR (mng_assign_hist) ;
-ASSIGN_CHUNK_HDR (mng_assign_time) ;
-ASSIGN_CHUNK_HDR (mng_assign_mhdr) ;
-ASSIGN_CHUNK_HDR (mng_assign_mend) ;
-ASSIGN_CHUNK_HDR (mng_assign_endl) ;
-ASSIGN_CHUNK_HDR (mng_assign_defi) ;
-ASSIGN_CHUNK_HDR (mng_assign_basi) ;
-ASSIGN_CHUNK_HDR (mng_assign_clon) ;
-ASSIGN_CHUNK_HDR (mng_assign_back) ;
-ASSIGN_CHUNK_HDR (mng_assign_move) ;
-ASSIGN_CHUNK_HDR (mng_assign_clip) ;
-ASSIGN_CHUNK_HDR (mng_assign_show) ;
-ASSIGN_CHUNK_HDR (mng_assign_term) ;
-ASSIGN_CHUNK_HDR (mng_assign_fpri) ;
-ASSIGN_CHUNK_HDR (mng_assign_phyg) ;
+ASSIGN_CHUNK_HDR ( mng_assign_ihdr ) ;
+ASSIGN_CHUNK_HDR ( mng_assign_plte ) ;
+ASSIGN_CHUNK_HDR ( mng_assign_iend ) ;
+ASSIGN_CHUNK_HDR ( mng_assign_trns ) ;
+ASSIGN_CHUNK_HDR ( mng_assign_gama ) ;
+ASSIGN_CHUNK_HDR ( mng_assign_chrm ) ;
+ASSIGN_CHUNK_HDR ( mng_assign_srgb ) ;
+ASSIGN_CHUNK_HDR ( mng_assign_bkgd ) ;
+ASSIGN_CHUNK_HDR ( mng_assign_phys ) ;
+ASSIGN_CHUNK_HDR ( mng_assign_sbit ) ;
+ASSIGN_CHUNK_HDR ( mng_assign_hist ) ;
+ASSIGN_CHUNK_HDR ( mng_assign_time ) ;
+ASSIGN_CHUNK_HDR ( mng_assign_mhdr ) ;
+ASSIGN_CHUNK_HDR ( mng_assign_mend ) ;
+ASSIGN_CHUNK_HDR ( mng_assign_endl ) ;
+ASSIGN_CHUNK_HDR ( mng_assign_defi ) ;
+ASSIGN_CHUNK_HDR ( mng_assign_basi ) ;
+ASSIGN_CHUNK_HDR ( mng_assign_clon ) ;
+ASSIGN_CHUNK_HDR ( mng_assign_back ) ;
+ASSIGN_CHUNK_HDR ( mng_assign_move ) ;
+ASSIGN_CHUNK_HDR ( mng_assign_clip ) ;
+ASSIGN_CHUNK_HDR ( mng_assign_show ) ;
+ASSIGN_CHUNK_HDR ( mng_assign_term ) ;
+ASSIGN_CHUNK_HDR ( mng_assign_fpri ) ;
+ASSIGN_CHUNK_HDR ( mng_assign_phyg ) ;
 #ifdef MNG_INCLUDE_JNG
-ASSIGN_CHUNK_HDR (mng_assign_jhdr) ;
-ASSIGN_CHUNK_HDR (mng_assign_jsep) ;
+ASSIGN_CHUNK_HDR ( mng_assign_jhdr ) ;
+ASSIGN_CHUNK_HDR ( mng_assign_jsep ) ;
 #endif
 #ifndef MNG_NO_DELTA_PNG
-ASSIGN_CHUNK_HDR (mng_assign_dhdr) ;
-ASSIGN_CHUNK_HDR (mng_assign_prom) ;
-ASSIGN_CHUNK_HDR (mng_assign_ipng) ;
-ASSIGN_CHUNK_HDR (mng_assign_pplt) ;
+ASSIGN_CHUNK_HDR ( mng_assign_dhdr ) ;
+ASSIGN_CHUNK_HDR ( mng_assign_prom ) ;
+ASSIGN_CHUNK_HDR ( mng_assign_ipng ) ;
+ASSIGN_CHUNK_HDR ( mng_assign_pplt ) ;
 #ifdef MNG_INCLUDE_JNG
-ASSIGN_CHUNK_HDR (mng_assign_ijng) ;
+ASSIGN_CHUNK_HDR ( mng_assign_ijng ) ;
 #endif
 #endif
-ASSIGN_CHUNK_HDR (mng_assign_magn) ;
+ASSIGN_CHUNK_HDR ( mng_assign_magn ) ;
 #endif /* MNG_OPTIMIZE_CHUNKASSIGN */
 
-ASSIGN_CHUNK_HDR (mng_assign_idat) ;
-ASSIGN_CHUNK_HDR (mng_assign_iccp) ;
-ASSIGN_CHUNK_HDR (mng_assign_text) ;
-ASSIGN_CHUNK_HDR (mng_assign_ztxt) ;
-ASSIGN_CHUNK_HDR (mng_assign_itxt) ;
-ASSIGN_CHUNK_HDR (mng_assign_splt) ;
-ASSIGN_CHUNK_HDR (mng_assign_loop) ;
+ASSIGN_CHUNK_HDR ( mng_assign_idat ) ;
+ASSIGN_CHUNK_HDR ( mng_assign_iccp ) ;
+ASSIGN_CHUNK_HDR ( mng_assign_text ) ;
+ASSIGN_CHUNK_HDR ( mng_assign_ztxt ) ;
+ASSIGN_CHUNK_HDR ( mng_assign_itxt ) ;
+ASSIGN_CHUNK_HDR ( mng_assign_splt ) ;
+ASSIGN_CHUNK_HDR ( mng_assign_loop ) ;
 #ifndef MNG_SKIPCHUNK_PAST
-ASSIGN_CHUNK_HDR (mng_assign_past) ;
+ASSIGN_CHUNK_HDR ( mng_assign_past ) ;
 #endif
-ASSIGN_CHUNK_HDR (mng_assign_disc) ;
-ASSIGN_CHUNK_HDR (mng_assign_fram) ;
-ASSIGN_CHUNK_HDR (mng_assign_save) ;
-ASSIGN_CHUNK_HDR (mng_assign_seek) ;
-ASSIGN_CHUNK_HDR (mng_assign_need) ;
-ASSIGN_CHUNK_HDR (mng_assign_expi) ;
+ASSIGN_CHUNK_HDR ( mng_assign_disc ) ;
+ASSIGN_CHUNK_HDR ( mng_assign_fram ) ;
+ASSIGN_CHUNK_HDR ( mng_assign_save ) ;
+ASSIGN_CHUNK_HDR ( mng_assign_seek ) ;
+ASSIGN_CHUNK_HDR ( mng_assign_need ) ;
+ASSIGN_CHUNK_HDR ( mng_assign_expi ) ;
 #ifdef MNG_INCLUDE_JNG
-ASSIGN_CHUNK_HDR (mng_assign_jdaa) ;
-ASSIGN_CHUNK_HDR (mng_assign_jdat) ;
+ASSIGN_CHUNK_HDR ( mng_assign_jdaa ) ;
+ASSIGN_CHUNK_HDR ( mng_assign_jdat ) ;
 #endif
 #ifndef MNG_NO_DELTA_PNG
-ASSIGN_CHUNK_HDR (mng_assign_drop) ;
-ASSIGN_CHUNK_HDR (mng_assign_dbyk) ;
-ASSIGN_CHUNK_HDR (mng_assign_ordr) ;
+ASSIGN_CHUNK_HDR ( mng_assign_drop ) ;
+ASSIGN_CHUNK_HDR ( mng_assign_dbyk ) ;
+ASSIGN_CHUNK_HDR ( mng_assign_ordr ) ;
 #endif
 #ifdef MNG_INCLUDE_MPNG_PROPOSAL
-ASSIGN_CHUNK_HDR (mng_assign_mpng) ;
+ASSIGN_CHUNK_HDR ( mng_assign_mpng ) ;
 #endif
 #ifdef MNG_INCLUDE_ANG_PROPOSAL
-ASSIGN_CHUNK_HDR (mng_assign_ahdr) ;
-ASSIGN_CHUNK_HDR (mng_assign_adat) ;
+ASSIGN_CHUNK_HDR ( mng_assign_ahdr ) ;
+ASSIGN_CHUNK_HDR ( mng_assign_adat ) ;
 #endif
-ASSIGN_CHUNK_HDR (mng_assign_evnt) ;
-ASSIGN_CHUNK_HDR (mng_assign_unknown) ;
+ASSIGN_CHUNK_HDR ( mng_assign_evnt ) ;
+ASSIGN_CHUNK_HDR ( mng_assign_unknown ) ;
 
 /* ************************************************************************** */
 

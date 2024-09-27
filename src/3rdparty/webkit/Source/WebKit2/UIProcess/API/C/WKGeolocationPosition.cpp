@@ -33,11 +33,11 @@ using namespace WebKit;
 
 WKTypeID WKGeolocationPositionGetTypeID()
 {
-    return toAPI(WebGeolocationPosition::APIType);
+    return toAPI( WebGeolocationPosition::APIType );
 }
 
-WKGeolocationPositionRef WKGeolocationPositionCreate(double timestamp, double latitude, double longitude, double accuracy)
+WKGeolocationPositionRef WKGeolocationPositionCreate( double timestamp, double latitude, double longitude, double accuracy )
 {
-    RefPtr<WebGeolocationPosition> position = WebGeolocationPosition::create(timestamp, latitude, longitude, accuracy);
-    return toAPI(position.release().releaseRef());
+    RefPtr<WebGeolocationPosition> position = WebGeolocationPosition::create( timestamp, latitude, longitude, accuracy );
+    return toAPI( position.release().releaseRef() );
 }

@@ -29,16 +29,18 @@
 #include "CompositeEditCommand.h"
 #include "Range.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SpellingCorrectionCommand : public CompositeEditCommand {
+class SpellingCorrectionCommand : public CompositeEditCommand
+{
 public:
-    static PassRefPtr<SpellingCorrectionCommand> create(PassRefPtr<Range> rangeToBeCorrected, const String& correction)
+    static PassRefPtr<SpellingCorrectionCommand> create( PassRefPtr<Range> rangeToBeCorrected, const String &correction )
     {
-        return adoptRef(new SpellingCorrectionCommand(rangeToBeCorrected, correction));
+        return adoptRef( new SpellingCorrectionCommand( rangeToBeCorrected, correction ) );
     }
 private:
-    SpellingCorrectionCommand(PassRefPtr<Range> rangeToBeCorrected, const String& correction);
+    SpellingCorrectionCommand( PassRefPtr<Range> rangeToBeCorrected, const String &correction );
     virtual void doApply();
     virtual bool shouldRetainAutocorrectionIndicator() const;
 

@@ -27,40 +27,47 @@
 
 using namespace QPatternist;
 
-bool UnparsedTextAvailableFN::evaluateEBV(const DynamicContext::Ptr &context) const
+bool UnparsedTextAvailableFN::evaluateEBV( const DynamicContext::Ptr &context ) const
 {
-   Q_ASSERT(m_operands.count() == 1 || m_operands.count() == 2);
-   const Item href(m_operands.first()->evaluateSingleton(context));
-   if (!href) {
-      return Item();
-   }
+    Q_ASSERT( m_operands.count() == 1 || m_operands.count() == 2 );
+    const Item href( m_operands.first()->evaluateSingleton( context ) );
 
-   bool isValid = false;
-   const QUrl mayRela(AnyURI::toQUrl<ReportContext::XTDE1170>(href.stringValue(),
-                      context,
-                      this,
-                      &isValid));
+    if ( !href )
+    {
+        return Item();
+    }
 
-   if (!isValid) {
-      return false;
-   }
+    bool isValid = false;
+    const QUrl mayRela( AnyURI::toQUrl<ReportContext::XTDE1170>( href.stringValue(),
+                        context,
+                        this,
+                        &isValid ) );
 
-   const QUrl uri(context->resolveURI(mayRela, staticBaseURI()));
+    if ( !isValid )
+    {
+        return false;
+    }
 
-   /* fn:unparsed-text() will raise an error on this. */
-   if (uri.hasFragment()) {
-      return false;
-   }
+    const QUrl uri( context->resolveURI( mayRela, staticBaseURI() ) );
 
-   QString encoding;
+    /* fn:unparsed-text() will raise an error on this. */
+    if ( uri.hasFragment() )
+    {
+        return false;
+    }
 
-   if (m_operands.count() == 2) {
-      const Item encodingArg(m_operands.at(1)->evaluateSingleton(context));
-      if (encodingArg) {
-         encoding = encodingArg.stringValue();
-      }
-   }
+    QString encoding;
 
-   Q_ASSERT(uri.isValid() && !uri.isRelative());
-   return context->resourceLoader()->isUnparsedTextAvailable(uri, encoding);
+    if ( m_operands.count() == 2 )
+    {
+        const Item encodingArg( m_operands.at( 1 )->evaluateSingleton( context ) );
+
+        if ( encodingArg )
+        {
+            encoding = encodingArg.stringValue();
+        }
+    }
+
+    Q_ASSERT( uri.isValid() && !uri.isRelative() );
+    return context->resourceLoader()->isUnparsedTextAvailable( uri, encoding );
 }

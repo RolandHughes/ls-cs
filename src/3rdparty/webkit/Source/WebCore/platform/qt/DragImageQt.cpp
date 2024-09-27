@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -29,47 +29,54 @@
 #include "CachedImage.h"
 #include "Image.h"
 
-namespace WebCore {
-
-IntSize dragImageSize(DragImageRef image)
+namespace WebCore
 {
-    if (!image)
+
+IntSize dragImageSize( DragImageRef image )
+{
+    if ( !image )
+    {
         return IntSize();
+    }
 
     return image->size();
 }
 
-void deleteDragImage(DragImageRef image)
+void deleteDragImage( DragImageRef image )
 {
     delete image;
 }
 
-DragImageRef scaleDragImage(DragImageRef image, FloatSize scale)
+DragImageRef scaleDragImage( DragImageRef image, FloatSize scale )
 {
-    if (!image)
+    if ( !image )
+    {
         return 0;
+    }
 
     int scaledWidth = image->width() * scale.width();
     int scaledHeight = image->height() * scale.height();
 
-    *image = image->scaled(scaledWidth, scaledHeight);
+    *image = image->scaled( scaledWidth, scaledHeight );
     return image;
 }
 
-DragImageRef dissolveDragImageToFraction(DragImageRef image, float)
+DragImageRef dissolveDragImageToFraction( DragImageRef image, float )
 {
     return image;
 }
 
-DragImageRef createDragImageFromImage(Image* image)
+DragImageRef createDragImageFromImage( Image *image )
 {
-    if (!image || !image->nativeImageForCurrentFrame())
+    if ( !image || !image->nativeImageForCurrentFrame() )
+    {
         return 0;
+    }
 
-    return new QPixmap(*image->nativeImageForCurrentFrame());
+    return new QPixmap( *image->nativeImageForCurrentFrame() );
 }
 
-DragImageRef createDragImageIconForCachedImage(CachedImage*)
+DragImageRef createDragImageIconForCachedImage( CachedImage * )
 {
     return 0;
 }

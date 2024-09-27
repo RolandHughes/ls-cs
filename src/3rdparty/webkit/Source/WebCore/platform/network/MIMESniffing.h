@@ -24,16 +24,26 @@
 
 // MIME type sniffing implementation based on http://tools.ietf.org/html/draft-abarth-mime-sniff-06
 
-class MIMESniffer {
+class MIMESniffer
+{
 public:
-    MIMESniffer(const char* advertisedMIMEType, bool isSupportedImageType);
+    MIMESniffer( const char *advertisedMIMEType, bool isSupportedImageType );
 
-    size_t dataSize() const { return m_dataSize; }
-    const char* sniff(const char* data, size_t size) const { return m_function ?  m_function(data, size) : 0; }
-    bool isValid() const { return m_dataSize > 0; }
+    size_t dataSize() const
+    {
+        return m_dataSize;
+    }
+    const char *sniff( const char *data, size_t size ) const
+    {
+        return m_function ?  m_function( data, size ) : 0;
+    }
+    bool isValid() const
+    {
+        return m_dataSize > 0;
+    }
 
 private:
-    typedef const char* (*SniffFunction)(const char*, size_t);
+    typedef const char *( *SniffFunction )( const char *, size_t );
     size_t m_dataSize;
     SniffFunction m_function;
 };

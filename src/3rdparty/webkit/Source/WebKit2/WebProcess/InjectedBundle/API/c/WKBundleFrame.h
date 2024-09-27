@@ -37,39 +37,42 @@ extern "C" {
 
 WK_EXPORT WKTypeID WKBundleFrameGetTypeID();
 
-WK_EXPORT bool WKBundleFrameIsMainFrame(WKBundleFrameRef frame);
-WK_EXPORT WKArrayRef WKBundleFrameCopyChildFrames(WKBundleFrameRef frame);
+WK_EXPORT bool WKBundleFrameIsMainFrame( WKBundleFrameRef frame );
+WK_EXPORT WKArrayRef WKBundleFrameCopyChildFrames( WKBundleFrameRef frame );
 
-WK_EXPORT WKStringRef WKBundleFrameCopyName(WKBundleFrameRef frame);
-WK_EXPORT WKURLRef WKBundleFrameCopyURL(WKBundleFrameRef frame);
-WK_EXPORT WKURLRef WKBundleFrameCopyProvisionalURL(WKBundleFrameRef frame);
+WK_EXPORT WKStringRef WKBundleFrameCopyName( WKBundleFrameRef frame );
+WK_EXPORT WKURLRef WKBundleFrameCopyURL( WKBundleFrameRef frame );
+WK_EXPORT WKURLRef WKBundleFrameCopyProvisionalURL( WKBundleFrameRef frame );
 
-WK_EXPORT WKFrameLoadState WKBundleFrameGetFrameLoadState(WKBundleFrameRef frame); 
+WK_EXPORT WKFrameLoadState WKBundleFrameGetFrameLoadState( WKBundleFrameRef frame );
 
-WK_EXPORT JSGlobalContextRef WKBundleFrameGetJavaScriptContext(WKBundleFrameRef frame);
-WK_EXPORT JSGlobalContextRef WKBundleFrameGetJavaScriptContextForWorld(WKBundleFrameRef frame, WKBundleScriptWorldRef world);
+WK_EXPORT JSGlobalContextRef WKBundleFrameGetJavaScriptContext( WKBundleFrameRef frame );
+WK_EXPORT JSGlobalContextRef WKBundleFrameGetJavaScriptContextForWorld( WKBundleFrameRef frame, WKBundleScriptWorldRef world );
 
-WK_EXPORT WKBundleFrameRef WKBundleFrameForJavaScriptContext(JSContextRef context);
+WK_EXPORT WKBundleFrameRef WKBundleFrameForJavaScriptContext( JSContextRef context );
 
-WK_EXPORT JSValueRef WKBundleFrameGetJavaScriptWrapperForNodeForWorld(WKBundleFrameRef frame, WKBundleNodeHandleRef nodeHandle, WKBundleScriptWorldRef world);
-WK_EXPORT JSValueRef WKBundleFrameGetJavaScriptWrapperForRangeForWorld(WKBundleFrameRef frame, WKBundleRangeHandleRef rangeHandle, WKBundleScriptWorldRef world);
+WK_EXPORT JSValueRef WKBundleFrameGetJavaScriptWrapperForNodeForWorld( WKBundleFrameRef frame, WKBundleNodeHandleRef nodeHandle,
+        WKBundleScriptWorldRef world );
+WK_EXPORT JSValueRef WKBundleFrameGetJavaScriptWrapperForRangeForWorld( WKBundleFrameRef frame,
+        WKBundleRangeHandleRef rangeHandle, WKBundleScriptWorldRef world );
 
-WK_EXPORT WKBundlePageRef WKBundleFrameGetPage(WKBundleFrameRef frame);
+WK_EXPORT WKBundlePageRef WKBundleFrameGetPage( WKBundleFrameRef frame );
 
-WK_EXPORT bool WKBundleFrameAllowsFollowingLink(WKBundleFrameRef frame, WKURLRef url);
+WK_EXPORT bool WKBundleFrameAllowsFollowingLink( WKBundleFrameRef frame, WKURLRef url );
 
-WK_EXPORT WKRect WKBundleFrameGetContentBounds(WKBundleFrameRef frame);
-WK_EXPORT WKRect WKBundleFrameGetVisibleContentBounds(WKBundleFrameRef frame);
-WK_EXPORT WKRect WKBundleFrameGetVisibleContentBoundsExcludingScrollbars(WKBundleFrameRef frame);
-WK_EXPORT WKSize WKBundleFrameGetScrollOffset(WKBundleFrameRef frame);
+WK_EXPORT WKRect WKBundleFrameGetContentBounds( WKBundleFrameRef frame );
+WK_EXPORT WKRect WKBundleFrameGetVisibleContentBounds( WKBundleFrameRef frame );
+WK_EXPORT WKRect WKBundleFrameGetVisibleContentBoundsExcludingScrollbars( WKBundleFrameRef frame );
+WK_EXPORT WKSize WKBundleFrameGetScrollOffset( WKBundleFrameRef frame );
 
-WK_EXPORT bool WKBundleFrameHasHorizontalScrollbar(WKBundleFrameRef frame);
-WK_EXPORT bool WKBundleFrameHasVerticalScrollbar(WKBundleFrameRef frame);
+WK_EXPORT bool WKBundleFrameHasHorizontalScrollbar( WKBundleFrameRef frame );
+WK_EXPORT bool WKBundleFrameHasVerticalScrollbar( WKBundleFrameRef frame );
 
-WK_EXPORT bool WKBundleFrameGetDocumentBackgroundColor(WKBundleFrameRef frame, double* red, double* green, double* blue, double* alpha);
+WK_EXPORT bool WKBundleFrameGetDocumentBackgroundColor( WKBundleFrameRef frame, double *red, double *green, double *blue,
+        double *alpha );
 
-WK_EXPORT WKStringRef WKBundleFrameCopySuggestedFilenameForResourceWithURL(WKBundleFrameRef frame, WKURLRef url);
-WK_EXPORT WKStringRef WKBundleFrameCopyMIMETypeForResourceWithURL(WKBundleFrameRef frame, WKURLRef url);
+WK_EXPORT WKStringRef WKBundleFrameCopySuggestedFilenameForResourceWithURL( WKBundleFrameRef frame, WKURLRef url );
+WK_EXPORT WKStringRef WKBundleFrameCopyMIMETypeForResourceWithURL( WKBundleFrameRef frame, WKURLRef url );
 
 #ifdef __cplusplus
 }

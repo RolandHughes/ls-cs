@@ -27,9 +27,10 @@
 #include "config.h"
 #include "PluginData.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-void PluginData::initPlugins(const Page*)
+void PluginData::initPlugins( const Page * )
 {
 }
 

@@ -33,20 +33,22 @@
 
 #include <wtf/ByteArray.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-FEDisplacementMap::FEDisplacementMap(Filter* filter, ChannelSelectorType xChannelSelector, ChannelSelectorType yChannelSelector, float scale)
-    : FilterEffect(filter)
-    , m_xChannelSelector(xChannelSelector)
-    , m_yChannelSelector(yChannelSelector)
-    , m_scale(scale)
+FEDisplacementMap::FEDisplacementMap( Filter *filter, ChannelSelectorType xChannelSelector, ChannelSelectorType yChannelSelector,
+                                      float scale )
+    : FilterEffect( filter )
+    , m_xChannelSelector( xChannelSelector )
+    , m_yChannelSelector( yChannelSelector )
+    , m_scale( scale )
 {
 }
 
-PassRefPtr<FEDisplacementMap> FEDisplacementMap::create(Filter* filter, ChannelSelectorType xChannelSelector,
-    ChannelSelectorType yChannelSelector, float scale)
+PassRefPtr<FEDisplacementMap> FEDisplacementMap::create( Filter *filter, ChannelSelectorType xChannelSelector,
+        ChannelSelectorType yChannelSelector, float scale )
 {
-    return adoptRef(new FEDisplacementMap(filter, xChannelSelector, yChannelSelector, scale));
+    return adoptRef( new FEDisplacementMap( filter, xChannelSelector, yChannelSelector, scale ) );
 }
 
 ChannelSelectorType FEDisplacementMap::xChannelSelector() const
@@ -54,10 +56,13 @@ ChannelSelectorType FEDisplacementMap::xChannelSelector() const
     return m_xChannelSelector;
 }
 
-bool FEDisplacementMap::setXChannelSelector(const ChannelSelectorType xChannelSelector)
+bool FEDisplacementMap::setXChannelSelector( const ChannelSelectorType xChannelSelector )
 {
-    if (m_xChannelSelector == xChannelSelector)
+    if ( m_xChannelSelector == xChannelSelector )
+    {
         return false;
+    }
+
     m_xChannelSelector = xChannelSelector;
     return true;
 }
@@ -67,10 +72,13 @@ ChannelSelectorType FEDisplacementMap::yChannelSelector() const
     return m_yChannelSelector;
 }
 
-bool FEDisplacementMap::setYChannelSelector(const ChannelSelectorType yChannelSelector)
+bool FEDisplacementMap::setYChannelSelector( const ChannelSelectorType yChannelSelector )
 {
-    if (m_yChannelSelector == yChannelSelector)
+    if ( m_yChannelSelector == yChannelSelector )
+    {
         return false;
+    }
+
     m_yChannelSelector = yChannelSelector;
     return true;
 }
@@ -80,59 +88,82 @@ float FEDisplacementMap::scale() const
     return m_scale;
 }
 
-bool FEDisplacementMap::setScale(float scale)
+bool FEDisplacementMap::setScale( float scale )
 {
-    if (m_scale == scale)
+    if ( m_scale == scale )
+    {
         return false;
+    }
+
     m_scale = scale;
     return true;
 }
 
 void FEDisplacementMap::apply()
 {
-    if (hasResult())
+    if ( hasResult() )
+    {
         return;
-    FilterEffect* in = inputEffect(0);
-    FilterEffect* in2 = inputEffect(1);
+    }
+
+    FilterEffect *in = inputEffect( 0 );
+    FilterEffect *in2 = inputEffect( 1 );
     in->apply();
     in2->apply();
-    if (!in->hasResult() || !in2->hasResult())
+
+    if ( !in->hasResult() || !in2->hasResult() )
+    {
         return;
+    }
 
-    if (m_xChannelSelector == CHANNEL_UNKNOWN || m_yChannelSelector == CHANNEL_UNKNOWN)
+    if ( m_xChannelSelector == CHANNEL_UNKNOWN || m_yChannelSelector == CHANNEL_UNKNOWN )
+    {
         return;
+    }
 
-    ByteArray* dstPixelArray = createPremultipliedImageResult();
-    if (!dstPixelArray)
+    ByteArray *dstPixelArray = createPremultipliedImageResult();
+
+    if ( !dstPixelArray )
+    {
         return;
+    }
 
-    IntRect effectADrawingRect = requestedRegionOfInputImageData(in->absolutePaintRect());
-    RefPtr<ByteArray> srcPixelArrayA = in->asPremultipliedImage(effectADrawingRect);
+    IntRect effectADrawingRect = requestedRegionOfInputImageData( in->absolutePaintRect() );
+    RefPtr<ByteArray> srcPixelArrayA = in->asPremultipliedImage( effectADrawingRect );
 
-    IntRect effectBDrawingRect = requestedRegionOfInputImageData(in2->absolutePaintRect());
-    RefPtr<ByteArray> srcPixelArrayB = in2->asUnmultipliedImage(effectBDrawingRect);
+    IntRect effectBDrawingRect = requestedRegionOfInputImageData( in2->absolutePaintRect() );
+    RefPtr<ByteArray> srcPixelArrayB = in2->asUnmultipliedImage( effectBDrawingRect );
 
-    ASSERT(srcPixelArrayA->length() == srcPixelArrayB->length());
+    ASSERT( srcPixelArrayA->length() == srcPixelArrayB->length() );
 
-    Filter* filter = this->filter();
+    Filter *filter = this->filter();
     IntSize paintSize = absolutePaintRect().size();
-    float scaleX = filter->applyHorizontalScale(m_scale / 255);
-    float scaleY = filter->applyVerticalScale(m_scale / 255);
-    float scaleAdjustmentX = filter->applyHorizontalScale(0.5f - 0.5f * m_scale);
-    float scaleAdjustmentY = filter->applyVerticalScale(0.5f - 0.5f * m_scale);
+    float scaleX = filter->applyHorizontalScale( m_scale / 255 );
+    float scaleY = filter->applyVerticalScale( m_scale / 255 );
+    float scaleAdjustmentX = filter->applyHorizontalScale( 0.5f - 0.5f * m_scale );
+    float scaleAdjustmentY = filter->applyVerticalScale( 0.5f - 0.5f * m_scale );
     int stride = paintSize.width() * 4;
-    for (int y = 0; y < paintSize.height(); ++y) {
+
+    for ( int y = 0; y < paintSize.height(); ++y )
+    {
         int line = y * stride;
-        for (int x = 0; x < paintSize.width(); ++x) {
+
+        for ( int x = 0; x < paintSize.width(); ++x )
+        {
             int dstIndex = line + x * 4;
-            int srcX = x + static_cast<int>(scaleX * srcPixelArrayB->get(dstIndex + m_xChannelSelector - 1) + scaleAdjustmentX);
-            int srcY = y + static_cast<int>(scaleY * srcPixelArrayB->get(dstIndex + m_yChannelSelector - 1) + scaleAdjustmentY);
-            for (unsigned channel = 0; channel < 4; ++channel) {
-                if (srcX < 0 || srcX >= paintSize.width() || srcY < 0 || srcY >= paintSize.height())
-                    dstPixelArray->set(dstIndex + channel, static_cast<unsigned char>(0));
-                else {
-                    unsigned char pixelValue = srcPixelArrayA->get(srcY * stride + srcX * 4 + channel);
-                    dstPixelArray->set(dstIndex + channel, pixelValue);
+            int srcX = x + static_cast<int>( scaleX * srcPixelArrayB->get( dstIndex + m_xChannelSelector - 1 ) + scaleAdjustmentX );
+            int srcY = y + static_cast<int>( scaleY * srcPixelArrayB->get( dstIndex + m_yChannelSelector - 1 ) + scaleAdjustmentY );
+
+            for ( unsigned channel = 0; channel < 4; ++channel )
+            {
+                if ( srcX < 0 || srcX >= paintSize.width() || srcY < 0 || srcY >= paintSize.height() )
+                {
+                    dstPixelArray->set( dstIndex + channel, static_cast<unsigned char>( 0 ) );
+                }
+                else
+                {
+                    unsigned char pixelValue = srcPixelArrayA->get( srcY * stride + srcX * 4 + channel );
+                    dstPixelArray->set( dstIndex + channel, pixelValue );
                 }
             }
         }
@@ -143,38 +174,44 @@ void FEDisplacementMap::dump()
 {
 }
 
-static TextStream& operator<<(TextStream& ts, const ChannelSelectorType& type)
+static TextStream &operator<<( TextStream &ts, const ChannelSelectorType &type )
 {
-    switch (type) {
-    case CHANNEL_UNKNOWN:
-        ts << "UNKNOWN";
-        break;
-    case CHANNEL_R:
-        ts << "RED";
-        break;
-    case CHANNEL_G:
-        ts << "GREEN";
-        break;
-    case CHANNEL_B:
-        ts << "BLUE";
-        break;
-    case CHANNEL_A:
-        ts << "ALPHA";
-        break;
+    switch ( type )
+    {
+        case CHANNEL_UNKNOWN:
+            ts << "UNKNOWN";
+            break;
+
+        case CHANNEL_R:
+            ts << "RED";
+            break;
+
+        case CHANNEL_G:
+            ts << "GREEN";
+            break;
+
+        case CHANNEL_B:
+            ts << "BLUE";
+            break;
+
+        case CHANNEL_A:
+            ts << "ALPHA";
+            break;
     }
+
     return ts;
 }
 
-TextStream& FEDisplacementMap::externalRepresentation(TextStream& ts, int indent) const
+TextStream &FEDisplacementMap::externalRepresentation( TextStream &ts, int indent ) const
 {
-    writeIndent(ts, indent);
+    writeIndent( ts, indent );
     ts << "[feDisplacementMap";
-    FilterEffect::externalRepresentation(ts);
+    FilterEffect::externalRepresentation( ts );
     ts << " scale=\"" << m_scale << "\" "
        << "xChannelSelector=\"" << m_xChannelSelector << "\" "
        << "yChannelSelector=\"" << m_yChannelSelector << "\"]\n";
-    inputEffect(0)->externalRepresentation(ts, indent + 1);
-    inputEffect(1)->externalRepresentation(ts, indent + 1);
+    inputEffect( 0 )->externalRepresentation( ts, indent + 1 );
+    inputEffect( 1 )->externalRepresentation( ts, indent + 1 );
     return ts;
 }
 

@@ -32,24 +32,24 @@ class QFinalStatePrivate;
 
 class Q_CORE_EXPORT QFinalState : public QAbstractState
 {
-   CORE_CS_OBJECT(QFinalState)
+    CORE_CS_OBJECT( QFinalState )
 
- public:
-   QFinalState(QState *parent = nullptr);
+public:
+    QFinalState( QState *parent = nullptr );
 
-   QFinalState(const QFinalState &other) = delete;
-   QFinalState &operator=(const QFinalState &other) = delete;
+    QFinalState( const QFinalState &other ) = delete;
+    QFinalState &operator=( const QFinalState &other ) = delete;
 
-   ~QFinalState();
+    ~QFinalState();
 
- protected:
-   void onEntry(QEvent *event) override;
-   void onExit(QEvent *event) override;
+protected:
+    void onEntry( QEvent *event ) override;
+    void onExit( QEvent *event ) override;
 
-   bool event(QEvent *event) override;
+    bool event( QEvent *event ) override;
 
- private:
-   Q_DECLARE_PRIVATE(QFinalState)
+private:
+    Q_DECLARE_PRIVATE( QFinalState )
 };
 
 #endif //QT_NO_STATEMACHINE

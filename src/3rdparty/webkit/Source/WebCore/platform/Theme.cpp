@@ -20,36 +20,41 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
 #include "Theme.h"
 
-namespace WebCore {
-
-LengthBox Theme::controlBorder(ControlPart part, const Font&, const LengthBox& zoomedBox, float) const
+namespace WebCore
 {
-    switch (part) {
+
+LengthBox Theme::controlBorder( ControlPart part, const Font &, const LengthBox &zoomedBox, float ) const
+{
+    switch ( part )
+    {
         case PushButtonPart:
         case MenulistPart:
         case SearchFieldPart:
         case CheckboxPart:
         case RadioPart:
-            return LengthBox(0);
+            return LengthBox( 0 );
+
         default:
             return zoomedBox;
     }
 }
 
-LengthBox Theme::controlPadding(ControlPart part, const Font&, const LengthBox& zoomedBox, float) const
+LengthBox Theme::controlPadding( ControlPart part, const Font &, const LengthBox &zoomedBox, float ) const
 {
-    switch (part) {
+    switch ( part )
+    {
         case MenulistPart:
         case MenulistButtonPart:
         case CheckboxPart:
         case RadioPart:
-            return LengthBox(0);
+            return LengthBox( 0 );
+
         default:
             return zoomedBox;
     }

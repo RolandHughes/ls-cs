@@ -47,33 +47,33 @@ class QGstreamerVideoProbeControl;
 
 class QGstreamerPlayerService : public QMediaService
 {
-   CS_OBJECT(QGstreamerPlayerService)
+    CS_OBJECT( QGstreamerPlayerService )
 
- public:
-   QGstreamerPlayerService(QObject *parent = nullptr);
-   ~QGstreamerPlayerService();
+public:
+    QGstreamerPlayerService( QObject *parent = nullptr );
+    ~QGstreamerPlayerService();
 
-   QMediaControl *requestControl(const QString &name) override;
-   void releaseControl(QMediaControl *control) override;
+    QMediaControl *requestControl( const QString &name ) override;
+    void releaseControl( QMediaControl *control ) override;
 
- private:
-   QGstreamerPlayerControl *m_control;
-   QGstreamerPlayerSession *m_session;
-   QGstreamerMetaDataProvider *m_metaData;
-   QGstreamerStreamsControl *m_streamsControl;
-   QGStreamerAvailabilityControl *m_availabilityControl;
+private:
+    QGstreamerPlayerControl *m_control;
+    QGstreamerPlayerSession *m_session;
+    QGstreamerMetaDataProvider *m_metaData;
+    QGstreamerStreamsControl *m_streamsControl;
+    QGStreamerAvailabilityControl *m_availabilityControl;
 
-   QGstreamerAudioProbeControl *m_audioProbeControl;
-   QGstreamerVideoProbeControl *m_videoProbeControl;
+    QGstreamerAudioProbeControl *m_audioProbeControl;
+    QGstreamerVideoProbeControl *m_videoProbeControl;
 
-   QMediaControl *m_videoOutput;
-   QMediaControl *m_videoRenderer;
-   QGstreamerVideoWindow *m_videoWindow;
-   QGstreamerVideoWidgetControl *m_videoWidget;
+    QMediaControl *m_videoOutput;
+    QMediaControl *m_videoRenderer;
+    QGstreamerVideoWindow *m_videoWindow;
+    QGstreamerVideoWidgetControl *m_videoWidget;
 
-   void increaseVideoRef();
-   void decreaseVideoRef();
-   int m_videoReferenceCount;
+    void increaseVideoRef();
+    void decreaseVideoRef();
+    int m_videoReferenceCount;
 };
 
 #endif

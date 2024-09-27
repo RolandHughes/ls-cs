@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef WKTextInputWindowController_h
@@ -28,16 +28,17 @@
 
 @class WKTextInputPanel;
 
-@interface WKTextInputWindowController : NSObject {
+@interface WKTextInputWindowController : NSObject
+{
     WKTextInputPanel *_panel;
 }
 
-+ (WKTextInputWindowController *)sharedTextInputWindowController;
++ ( WKTextInputWindowController * )sharedTextInputWindowController;
 
-- (NSTextInputContext *)inputContext;
-- (BOOL)interpretKeyEvent:(NSEvent *)event string:(NSString **)string;
+- ( NSTextInputContext * )inputContext;
+- ( BOOL )interpretKeyEvent:( NSEvent * )event string:( NSString ** )string;
 
-- (void)keyboardInputSourceChanged;
+- ( void )keyboardInputSourceChanged;
 
 @end
 

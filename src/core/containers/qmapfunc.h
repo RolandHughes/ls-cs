@@ -27,32 +27,33 @@
 #include <qglobal.h>
 
 template <typename Key>
-inline bool qMapLessThanKey(const Key &key1, const Key &key2)
+inline bool qMapLessThanKey( const Key &key1, const Key &key2 )
 {
-   return key1 < key2;
+    return key1 < key2;
 }
 
 template <typename Ptr>
-inline bool qMapLessThanKey(Ptr *key1, Ptr *key2)
+inline bool qMapLessThanKey( Ptr *key1, Ptr *key2 )
 {
-   static_assert(sizeof(quintptr) == sizeof(Ptr *), "qMapLessThanKey: quintptr is not large enough to contain a ptr");
-   return quintptr(key1) < quintptr(key2);
+    static_assert( sizeof( quintptr ) == sizeof( Ptr * ), "qMapLessThanKey: quintptr is not large enough to contain a ptr" );
+    return quintptr( key1 ) < quintptr( key2 );
 }
 
 template <typename Ptr>
-inline bool qMapLessThanKey(const Ptr *key1, const Ptr *key2)
+inline bool qMapLessThanKey( const Ptr *key1, const Ptr *key2 )
 {
-   static_assert(sizeof(quintptr) == sizeof(const Ptr *), "qMapLessThanKey: quintptr is not large enough to contain a ptr");
-   return quintptr(key1) < quintptr(key2);
+    static_assert( sizeof( quintptr ) == sizeof( const Ptr * ), "qMapLessThanKey: quintptr is not large enough to contain a ptr" );
+    return quintptr( key1 ) < quintptr( key2 );
 }
 
 template <typename Key>
 class qMapCompare
 {
- public:
-   bool operator()(const Key &a, const Key &b)  const {
-      return qMapLessThanKey(a, b);
-   }
+public:
+    bool operator()( const Key &a, const Key &b )  const
+    {
+        return qMapLessThanKey( a, b );
+    }
 };
 
 #endif

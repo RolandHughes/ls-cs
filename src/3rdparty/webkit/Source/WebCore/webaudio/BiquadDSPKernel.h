@@ -29,26 +29,34 @@
 #include "Biquad.h"
 #include "BiquadProcessor.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class BiquadProcessor;
 
 // BiquadDSPKernel is an AudioDSPKernel and is responsible for filtering one channel of a BiquadProcessor using a Biquad object.
 
-class BiquadDSPKernel : public AudioDSPKernel {
-public:  
-    BiquadDSPKernel(BiquadProcessor* processor)
-    : AudioDSPKernel(processor)
+class BiquadDSPKernel : public AudioDSPKernel
+{
+public:
+    BiquadDSPKernel( BiquadProcessor *processor )
+        : AudioDSPKernel( processor )
     {
     }
-    
+
     // AudioDSPKernel
-    virtual void process(const float* source, float* dest, size_t framesToProcess);
-    virtual void reset() { m_biquad.reset(); }
-    
+    virtual void process( const float *source, float *dest, size_t framesToProcess );
+    virtual void reset()
+    {
+        m_biquad.reset();
+    }
+
 protected:
     Biquad m_biquad;
-    BiquadProcessor* biquadProcessor() { return static_cast<BiquadProcessor*>(processor()); }
+    BiquadProcessor *biquadProcessor()
+    {
+        return static_cast<BiquadProcessor *>( processor() );
+    }
 };
 
 } // namespace WebCore

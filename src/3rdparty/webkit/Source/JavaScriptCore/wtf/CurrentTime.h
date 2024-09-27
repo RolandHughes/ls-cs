@@ -34,7 +34,8 @@
 
 #include <time.h>
 
-namespace WTF {
+namespace WTF
+{
 
 // Returns the current UTC time in seconds, counted from January 1, 1970.
 // Precision varies depending on platform but is usually as good or better
@@ -47,14 +48,14 @@ inline double currentTimeMS()
     return currentTime() * 1000.0;
 }
 
-inline void getLocalTime(const time_t* localTime, struct tm* localTM)
+inline void getLocalTime( const time_t *localTime, struct tm *localTM )
 {
 #if COMPILER(MSVC7_OR_LOWER) || COMPILER(MINGW) || OS(WINCE)
-    *localTM = *localtime(localTime);
+    *localTM = *localtime( localTime );
 #elif COMPILER(MSVC)
-    localtime_s(localTM, localTime);
+    localtime_s( localTM, localTime );
 #else
-    localtime_r(localTime, localTM);
+    localtime_r( localTime, localTM );
 #endif
 }
 

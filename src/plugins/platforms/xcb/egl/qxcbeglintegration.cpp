@@ -28,66 +28,69 @@
 #include "qxcbeglnativeinterfacehandler.h"
 
 QXcbEglIntegration::QXcbEglIntegration()
-   : m_connection(nullptr)
-   , m_egl_display(EGL_NO_DISPLAY)
+    : m_connection( nullptr )
+    , m_egl_display( EGL_NO_DISPLAY )
 {
-   qCDebug(QT_XCB_GLINTEGRATION) << "Xcb EGL gl-integration created";
+    qCDebug( QT_XCB_GLINTEGRATION ) << "Xcb EGL gl-integration created";
 }
 
 QXcbEglIntegration::~QXcbEglIntegration()
 {
-   if (m_egl_display != EGL_NO_DISPLAY) {
-      eglTerminate(m_egl_display);
-   }
+    if ( m_egl_display != EGL_NO_DISPLAY )
+    {
+        eglTerminate( m_egl_display );
+    }
 }
 
-bool QXcbEglIntegration::initialize(QXcbConnection *connection)
+bool QXcbEglIntegration::initialize( QXcbConnection *connection )
 {
-   m_connection = connection;
-   m_egl_display = eglGetDisplay(reinterpret_cast<EGLNativeDisplayType>(xlib_display()));
+    m_connection = connection;
+    m_egl_display = eglGetDisplay( reinterpret_cast<EGLNativeDisplayType>( xlib_display() ) );
 
-   EGLint major, minor;
-   bool success = eglInitialize(m_egl_display, &major, &minor);
-   if (!success) {
-      m_egl_display = eglGetDisplay(EGL_DEFAULT_DISPLAY);
-      qCDebug(QT_XCB_GLINTEGRATION) << "Xcb EGL gl-integration retrying with display" << m_egl_display;
-      success = eglInitialize(m_egl_display, &major, &minor);
-   }
+    EGLint major, minor;
+    bool success = eglInitialize( m_egl_display, &major, &minor );
 
-   m_native_interface_handler.reset(new QXcbEglNativeInterfaceHandler(connection->nativeInterface()));
+    if ( !success )
+    {
+        m_egl_display = eglGetDisplay( EGL_DEFAULT_DISPLAY );
+        qCDebug( QT_XCB_GLINTEGRATION ) << "Xcb EGL gl-integration retrying with display" << m_egl_display;
+        success = eglInitialize( m_egl_display, &major, &minor );
+    }
 
-   qCDebug(QT_XCB_GLINTEGRATION) << "Xcb EGL gl-integration successfully initialized";
-   return success;
+    m_native_interface_handler.reset( new QXcbEglNativeInterfaceHandler( connection->nativeInterface() ) );
+
+    qCDebug( QT_XCB_GLINTEGRATION ) << "Xcb EGL gl-integration successfully initialized";
+    return success;
 }
 
-QXcbWindow *QXcbEglIntegration::createWindow(QWindow *window) const
+QXcbWindow *QXcbEglIntegration::createWindow( QWindow *window ) const
 {
-   return new QXcbEglWindow(window, const_cast<QXcbEglIntegration *>(this));
+    return new QXcbEglWindow( window, const_cast<QXcbEglIntegration *>( this ) );
 }
 
-QPlatformOpenGLContext *QXcbEglIntegration::createPlatformOpenGLContext(QOpenGLContext *context) const
+QPlatformOpenGLContext *QXcbEglIntegration::createPlatformOpenGLContext( QOpenGLContext *context ) const
 {
-   QXcbScreen *screen = static_cast<QXcbScreen *>(context->screen()->handle());
-   QXcbEglContext *platformContext = new QXcbEglContext(context->format(),
-      context->shareHandle(),
-      eglDisplay(),
-      screen->connection(),
-      context->nativeHandle());
-   context->setNativeHandle(platformContext->nativeHandle());
-   return platformContext;
+    QXcbScreen *screen = static_cast<QXcbScreen *>( context->screen()->handle() );
+    QXcbEglContext *platformContext = new QXcbEglContext( context->format(),
+            context->shareHandle(),
+            eglDisplay(),
+            screen->connection(),
+            context->nativeHandle() );
+    context->setNativeHandle( platformContext->nativeHandle() );
+    return platformContext;
 }
 
-QPlatformOffscreenSurface *QXcbEglIntegration::createPlatformOffscreenSurface(QOffscreenSurface *surface) const
+QPlatformOffscreenSurface *QXcbEglIntegration::createPlatformOffscreenSurface( QOffscreenSurface *surface ) const
 {
-   return new QEGLPbuffer(eglDisplay(), surface->requestedFormat(), surface);
+    return new QEGLPbuffer( eglDisplay(), surface->requestedFormat(), surface );
 }
 
 void *QXcbEglIntegration::xlib_display() const
 {
 #ifdef XCB_USE_XLIB
-   return m_connection->xlib_display();
+    return m_connection->xlib_display();
 #else
-   return EGL_DEFAULT_DISPLAY;
+    return EGL_DEFAULT_DISPLAY;
 #endif
 }
 

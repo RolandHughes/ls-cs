@@ -97,8 +97,8 @@
 #endif
 
 #if OS(WINCE)
-extern "C" size_t strftime(char * const s, const size_t maxsize, const char * const format, const struct tm * const t);
-extern "C" struct tm * localtime(const time_t *timer);
+extern "C" size_t strftime( char *const s, const size_t maxsize, const char *const format, const struct tm *const t );
+extern "C" struct tm *localtime( const time_t *timer );
 #endif
 
 #if HAVE(SYS_TIME_H)
@@ -117,7 +117,8 @@ extern "C" struct tm * localtime(const time_t *timer);
 
 using namespace WTF;
 
-namespace WTF {
+namespace WTF
+{
 
 /* Constants */
 
@@ -135,28 +136,38 @@ static const double maxECMAScriptTime = 8.64E15;
 
 // Day of year for the first day of each month, where index 0 is January, and day 0 is January 1.
 // First for non-leap years, then for leap years.
-static const int firstDayOfMonth[2][12] = {
+static const int firstDayOfMonth[2][12] =
+{
     {0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334},
     {0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335}
 };
 
-static inline bool isLeapYear(int year)
+static inline bool isLeapYear( int year )
 {
-    if (year % 4 != 0)
+    if ( year % 4 != 0 )
+    {
         return false;
-    if (year % 400 == 0)
+    }
+
+    if ( year % 400 == 0 )
+    {
         return true;
-    if (year % 100 == 0)
+    }
+
+    if ( year % 100 == 0 )
+    {
         return false;
+    }
+
     return true;
 }
 
-static inline int daysInYear(int year)
+static inline int daysInYear( int year )
 {
-    return 365 + isLeapYear(year);
+    return 365 + isLeapYear( year );
 }
 
-static inline double daysFrom1970ToYear(int year)
+static inline double daysFrom1970ToYear( int year )
 {
     // The Gregorian Calendar rules for leap years:
     // Every fourth year is a leap year.  2004, 2008, and 2012 are leap years.
@@ -168,169 +179,266 @@ static inline double daysFrom1970ToYear(int year)
     static const int leapDaysBefore1971By400Rule = 1970 / 400;
 
     const double yearMinusOne = year - 1;
-    const double yearsToAddBy4Rule = floor(yearMinusOne / 4.0) - leapDaysBefore1971By4Rule;
-    const double yearsToExcludeBy100Rule = floor(yearMinusOne / 100.0) - excludedLeapDaysBefore1971By100Rule;
-    const double yearsToAddBy400Rule = floor(yearMinusOne / 400.0) - leapDaysBefore1971By400Rule;
+    const double yearsToAddBy4Rule = floor( yearMinusOne / 4.0 ) - leapDaysBefore1971By4Rule;
+    const double yearsToExcludeBy100Rule = floor( yearMinusOne / 100.0 ) - excludedLeapDaysBefore1971By100Rule;
+    const double yearsToAddBy400Rule = floor( yearMinusOne / 400.0 ) - leapDaysBefore1971By400Rule;
 
-    return 365.0 * (year - 1970) + yearsToAddBy4Rule - yearsToExcludeBy100Rule + yearsToAddBy400Rule;
+    return 365.0 * ( year - 1970 ) + yearsToAddBy4Rule - yearsToExcludeBy100Rule + yearsToAddBy400Rule;
 }
 
-static inline double msToDays(double ms)
+static inline double msToDays( double ms )
 {
-    return floor(ms / msPerDay);
+    return floor( ms / msPerDay );
 }
 
-int msToYear(double ms)
+int msToYear( double ms )
 {
-    int approxYear = static_cast<int>(floor(ms / (msPerDay * 365.2425)) + 1970);
-    double msFromApproxYearTo1970 = msPerDay * daysFrom1970ToYear(approxYear);
-    if (msFromApproxYearTo1970 > ms)
+    int approxYear = static_cast<int>( floor( ms / ( msPerDay * 365.2425 ) ) + 1970 );
+    double msFromApproxYearTo1970 = msPerDay * daysFrom1970ToYear( approxYear );
+
+    if ( msFromApproxYearTo1970 > ms )
+    {
         return approxYear - 1;
-    if (msFromApproxYearTo1970 + msPerDay * daysInYear(approxYear) <= ms)
+    }
+
+    if ( msFromApproxYearTo1970 + msPerDay * daysInYear( approxYear ) <= ms )
+    {
         return approxYear + 1;
+    }
+
     return approxYear;
 }
 
-int dayInYear(double ms, int year)
+int dayInYear( double ms, int year )
 {
-    return static_cast<int>(msToDays(ms) - daysFrom1970ToYear(year));
+    return static_cast<int>( msToDays( ms ) - daysFrom1970ToYear( year ) );
 }
 
-static inline double msToMilliseconds(double ms)
+static inline double msToMilliseconds( double ms )
 {
-    double result = fmod(ms, msPerDay);
-    if (result < 0)
+    double result = fmod( ms, msPerDay );
+
+    if ( result < 0 )
+    {
         result += msPerDay;
+    }
+
     return result;
 }
 
 // 0: Sunday, 1: Monday, etc.
-static inline int msToWeekDay(double ms)
+static inline int msToWeekDay( double ms )
 {
-    int wd = (static_cast<int>(msToDays(ms)) + 4) % 7;
-    if (wd < 0)
+    int wd = ( static_cast<int>( msToDays( ms ) ) + 4 ) % 7;
+
+    if ( wd < 0 )
+    {
         wd += 7;
+    }
+
     return wd;
 }
 
-static inline int msToSeconds(double ms)
+static inline int msToSeconds( double ms )
 {
-    double result = fmod(floor(ms / msPerSecond), secondsPerMinute);
-    if (result < 0)
+    double result = fmod( floor( ms / msPerSecond ), secondsPerMinute );
+
+    if ( result < 0 )
+    {
         result += secondsPerMinute;
-    return static_cast<int>(result);
+    }
+
+    return static_cast<int>( result );
 }
 
-static inline int msToMinutes(double ms)
+static inline int msToMinutes( double ms )
 {
-    double result = fmod(floor(ms / msPerMinute), minutesPerHour);
-    if (result < 0)
+    double result = fmod( floor( ms / msPerMinute ), minutesPerHour );
+
+    if ( result < 0 )
+    {
         result += minutesPerHour;
-    return static_cast<int>(result);
+    }
+
+    return static_cast<int>( result );
 }
 
-static inline int msToHours(double ms)
+static inline int msToHours( double ms )
 {
-    double result = fmod(floor(ms/msPerHour), hoursPerDay);
-    if (result < 0)
+    double result = fmod( floor( ms/msPerHour ), hoursPerDay );
+
+    if ( result < 0 )
+    {
         result += hoursPerDay;
-    return static_cast<int>(result);
+    }
+
+    return static_cast<int>( result );
 }
 
-int monthFromDayInYear(int dayInYear, bool leapYear)
+int monthFromDayInYear( int dayInYear, bool leapYear )
 {
     const int d = dayInYear;
     int step;
 
-    if (d < (step = 31))
+    if ( d < ( step = 31 ) )
+    {
         return 0;
-    step += (leapYear ? 29 : 28);
-    if (d < step)
+    }
+
+    step += ( leapYear ? 29 : 28 );
+
+    if ( d < step )
+    {
         return 1;
-    if (d < (step += 31))
+    }
+
+    if ( d < ( step += 31 ) )
+    {
         return 2;
-    if (d < (step += 30))
+    }
+
+    if ( d < ( step += 30 ) )
+    {
         return 3;
-    if (d < (step += 31))
+    }
+
+    if ( d < ( step += 31 ) )
+    {
         return 4;
-    if (d < (step += 30))
+    }
+
+    if ( d < ( step += 30 ) )
+    {
         return 5;
-    if (d < (step += 31))
+    }
+
+    if ( d < ( step += 31 ) )
+    {
         return 6;
-    if (d < (step += 31))
+    }
+
+    if ( d < ( step += 31 ) )
+    {
         return 7;
-    if (d < (step += 30))
+    }
+
+    if ( d < ( step += 30 ) )
+    {
         return 8;
-    if (d < (step += 31))
+    }
+
+    if ( d < ( step += 31 ) )
+    {
         return 9;
-    if (d < (step += 30))
+    }
+
+    if ( d < ( step += 30 ) )
+    {
         return 10;
+    }
+
     return 11;
 }
 
-static inline bool checkMonth(int dayInYear, int& startDayOfThisMonth, int& startDayOfNextMonth, int daysInThisMonth)
+static inline bool checkMonth( int dayInYear, int &startDayOfThisMonth, int &startDayOfNextMonth, int daysInThisMonth )
 {
     startDayOfThisMonth = startDayOfNextMonth;
     startDayOfNextMonth += daysInThisMonth;
-    return (dayInYear <= startDayOfNextMonth);
+    return ( dayInYear <= startDayOfNextMonth );
 }
 
-int dayInMonthFromDayInYear(int dayInYear, bool leapYear)
+int dayInMonthFromDayInYear( int dayInYear, bool leapYear )
 {
     const int d = dayInYear;
     int step;
     int next = 30;
 
-    if (d <= next)
+    if ( d <= next )
+    {
         return d + 1;
-    const int daysInFeb = (leapYear ? 29 : 28);
-    if (checkMonth(d, step, next, daysInFeb))
+    }
+
+    const int daysInFeb = ( leapYear ? 29 : 28 );
+
+    if ( checkMonth( d, step, next, daysInFeb ) )
+    {
         return d - step;
-    if (checkMonth(d, step, next, 31))
+    }
+
+    if ( checkMonth( d, step, next, 31 ) )
+    {
         return d - step;
-    if (checkMonth(d, step, next, 30))
+    }
+
+    if ( checkMonth( d, step, next, 30 ) )
+    {
         return d - step;
-    if (checkMonth(d, step, next, 31))
+    }
+
+    if ( checkMonth( d, step, next, 31 ) )
+    {
         return d - step;
-    if (checkMonth(d, step, next, 30))
+    }
+
+    if ( checkMonth( d, step, next, 30 ) )
+    {
         return d - step;
-    if (checkMonth(d, step, next, 31))
+    }
+
+    if ( checkMonth( d, step, next, 31 ) )
+    {
         return d - step;
-    if (checkMonth(d, step, next, 31))
+    }
+
+    if ( checkMonth( d, step, next, 31 ) )
+    {
         return d - step;
-    if (checkMonth(d, step, next, 30))
+    }
+
+    if ( checkMonth( d, step, next, 30 ) )
+    {
         return d - step;
-    if (checkMonth(d, step, next, 31))
+    }
+
+    if ( checkMonth( d, step, next, 31 ) )
+    {
         return d - step;
-    if (checkMonth(d, step, next, 30))
+    }
+
+    if ( checkMonth( d, step, next, 30 ) )
+    {
         return d - step;
+    }
+
     step = next;
     return d - step;
 }
 
-static inline int monthToDayInYear(int month, bool isLeapYear)
+static inline int monthToDayInYear( int month, bool isLeapYear )
 {
     return firstDayOfMonth[isLeapYear][month];
 }
 
-static inline double timeToMS(double hour, double min, double sec, double ms)
+static inline double timeToMS( double hour, double min, double sec, double ms )
 {
-    return (((hour * minutesPerHour + min) * secondsPerMinute + sec) * msPerSecond + ms);
+    return ( ( ( hour * minutesPerHour + min ) * secondsPerMinute + sec ) * msPerSecond + ms );
 }
 
-double dateToDaysFrom1970(int year, int month, int day)
+double dateToDaysFrom1970( int year, int month, int day )
 {
     year += month / 12;
 
     month %= 12;
-    if (month < 0) {
+
+    if ( month < 0 )
+    {
         month += 12;
         --year;
     }
 
-    double yearday = floor(daysFrom1970ToYear(year));
-    ASSERT((year >= 1970 && yearday >= 0) || (year < 1970 && yearday < 0));
-    int monthday = monthToDayInYear(month, isLeapYear(year));
+    double yearday = floor( daysFrom1970ToYear( year ) );
+    ASSERT( ( year >= 1970 && yearday >= 0 ) || ( year < 1970 && yearday < 0 ) );
+    int monthday = monthToDayInYear( month, isLeapYear( year ) );
 
     return yearday + monthday + day - 1;
 }
@@ -348,7 +456,7 @@ static inline int minimumYearForDST()
     // greater than the max year minus 27 (2010), we want to use the max year
     // minus 27 instead, to ensure there is a range of 28 years that all years
     // can map to.
-    return std::min(msToYear(jsCurrentTime()), maximumYearForDST() - 27) ;
+    return std::min( msToYear( jsCurrentTime() ), maximumYearForDST() - 27 ) ;
 }
 
 /*
@@ -361,7 +469,7 @@ static inline int minimumYearForDST()
  * 2010, (rdar://problem/5052975), if the year passed in is before 1900 or after
  * 2100, (rdar://problem/5055038).
  */
-int equivalentYearForDST(int year)
+int equivalentYearForDST( int year )
 {
     // It is ok if the cached year is not the current year as long as the rules
     // for DST did not change between the two years; if they did the app would need
@@ -370,18 +478,25 @@ int equivalentYearForDST(int year)
     int maxYear = maximumYearForDST();
 
     int difference;
-    if (year > maxYear)
+
+    if ( year > maxYear )
+    {
         difference = minYear - year;
-    else if (year < minYear)
+    }
+    else if ( year < minYear )
+    {
         difference = maxYear - year;
+    }
     else
+    {
         return year;
+    }
 
     int quotient = difference / 28;
-    int product = (quotient) * 28;
+    int product = ( quotient ) * 28;
 
     year += product;
-    ASSERT((year >= minYear && year <= maxYear) || (product - year == static_cast<int>(NaN)));
+    ASSERT( ( year >= minYear && year <= maxYear ) || ( product - year == static_cast<int>( NaN ) ) );
     return year;
 }
 
@@ -390,12 +505,12 @@ int equivalentYearForDST(int year)
 int32_t calculateUTCOffset()
 {
 #if PLATFORM(BREWMP)
-    time_t localTime = static_cast<time_t>(currentTime());
+    time_t localTime = static_cast<time_t>( currentTime() );
 #else
-    time_t localTime = time(0);
+    time_t localTime = time( 0 );
 #endif
     tm localt;
-    getLocalTime(&localTime, &localt);
+    getLocalTime( &localTime, &localt );
 
     // Get the difference between this time zone and UTC on the 1st of January of this year.
     localt.tm_sec = 0;
@@ -413,78 +528,88 @@ int32_t calculateUTCOffset()
 #if HAVE(TM_ZONE)
     localt.tm_zone = 0;
 #endif
-    
+
 #if HAVE(TIMEGM)
-    time_t utcOffset = timegm(&localt) - mktime(&localt);
+    time_t utcOffset = timegm( &localt ) - mktime( &localt );
 #else
     // Using a canned date of 01/01/2009 on platforms with weaker date-handling foo.
     localt.tm_year = 109;
-    time_t utcOffset = 1230768000 - mktime(&localt);
+    time_t utcOffset = 1230768000 - mktime( &localt );
 #endif
 
-    return static_cast<int32_t>(utcOffset * 1000);
+    return static_cast<int32_t>( utcOffset * 1000 );
 }
 
 /*
  * Get the DST offset for the time passed in.
  */
-static double calculateDSTOffset(time_t localTime, double utcOffset)
+static double calculateDSTOffset( time_t localTime, double utcOffset )
 {
     //input is UTC so we have to shift back to local time to determine DST thus the + getUTCOffset()
-    double offsetTime = (localTime * msPerSecond) + utcOffset;
+    double offsetTime = ( localTime * msPerSecond ) + utcOffset;
 
     // Offset from UTC but doesn't include DST obviously
-    int offsetHour =  msToHours(offsetTime);
-    int offsetMinute =  msToMinutes(offsetTime);
+    int offsetHour =  msToHours( offsetTime );
+    int offsetMinute =  msToMinutes( offsetTime );
 
     tm localTM;
-    getLocalTime(&localTime, &localTM);
+    getLocalTime( &localTime, &localTM );
 
-    double diff = ((localTM.tm_hour - offsetHour) * secondsPerHour) + ((localTM.tm_min - offsetMinute) * 60);
+    double diff = ( ( localTM.tm_hour - offsetHour ) * secondsPerHour ) + ( ( localTM.tm_min - offsetMinute ) * 60 );
 
-    if (diff < 0)
+    if ( diff < 0 )
+    {
         diff += secondsPerDay;
+    }
 
-    return (diff * msPerSecond);
+    return ( diff * msPerSecond );
 }
 
 #endif
 
 // Returns combined offset in millisecond (UTC + DST).
-LocalTimeOffset calculateLocalTimeOffset(double ms)
+LocalTimeOffset calculateLocalTimeOffset( double ms )
 {
     // On Mac OS X, the call to localtime (see calculateDSTOffset) will return historically accurate
     // DST information (e.g. New Zealand did not have DST from 1946 to 1974) however the JavaScript
     // standard explicitly dictates that historical information should not be considered when
     // determining DST. For this reason we shift away from years that localtime can handle but would
     // return historically accurate information.
-    int year = msToYear(ms);
-    int equivalentYear = equivalentYearForDST(year);
-    if (year != equivalentYear) {
-        bool leapYear = isLeapYear(year);
-        int dayInYearLocal = dayInYear(ms, year);
-        int dayInMonth = dayInMonthFromDayInYear(dayInYearLocal, leapYear);
-        int month = monthFromDayInYear(dayInYearLocal, leapYear);
-        double day = dateToDaysFrom1970(equivalentYear, month, dayInMonth);
-        ms = (day * msPerDay) + msToMilliseconds(ms);
+    int year = msToYear( ms );
+    int equivalentYear = equivalentYearForDST( year );
+
+    if ( year != equivalentYear )
+    {
+        bool leapYear = isLeapYear( year );
+        int dayInYearLocal = dayInYear( ms, year );
+        int dayInMonth = dayInMonthFromDayInYear( dayInYearLocal, leapYear );
+        int month = monthFromDayInYear( dayInYearLocal, leapYear );
+        double day = dateToDaysFrom1970( equivalentYear, month, dayInMonth );
+        ms = ( day * msPerDay ) + msToMilliseconds( ms );
     }
 
     double localTimeSeconds = ms / msPerSecond;
-    if (localTimeSeconds > maxUnixTime)
+
+    if ( localTimeSeconds > maxUnixTime )
+    {
         localTimeSeconds = maxUnixTime;
-    else if (localTimeSeconds < 0) // Go ahead a day to make localtime work (does not work with 0).
+    }
+    else if ( localTimeSeconds < 0 ) // Go ahead a day to make localtime work (does not work with 0).
+    {
         localTimeSeconds += secondsPerDay;
+    }
+
     // FIXME: time_t has a potential problem in 2038.
-    time_t localTime = static_cast<time_t>(localTimeSeconds);
+    time_t localTime = static_cast<time_t>( localTimeSeconds );
 
 #if HAVE(TM_GMTOFF)
     tm localTM;
-    getLocalTime(&localTime, &localTM);
-    return LocalTimeOffset(localTM.tm_isdst, localTM.tm_gmtoff * msPerSecond);
+    getLocalTime( &localTime, &localTM );
+    return LocalTimeOffset( localTM.tm_isdst, localTM.tm_gmtoff * msPerSecond );
 #else
     double utcOffset = calculateUTCOffset();
-    double dstOffset = calculateDSTOffset(localTime, utcOffset);
-    return LocalTimeOffset(dstOffset, utcOffset + dstOffset);
+    double dstOffset = calculateDSTOffset( localTime, utcOffset );
+    return LocalTimeOffset( dstOffset, utcOffset + dstOffset );
 #endif
 }
 
@@ -492,32 +617,34 @@ void initializeDates()
 {
 #ifndef NDEBUG
     static bool alreadyInitialized;
-    ASSERT(!alreadyInitialized);
+    ASSERT( !alreadyInitialized );
     alreadyInitialized = true;
 #endif
 
-    equivalentYearForDST(2000); // Need to call once to initialize a static used in this function.
+    equivalentYearForDST( 2000 ); // Need to call once to initialize a static used in this function.
 }
 
-static inline double ymdhmsToSeconds(long year, int mon, int day, int hour, int minute, double second)
+static inline double ymdhmsToSeconds( long year, int mon, int day, int hour, int minute, double second )
 {
-    double days = (day - 32075)
-        + floor(1461 * (year + 4800.0 + (mon - 14) / 12) / 4)
-        + 367 * (mon - 2 - (mon - 14) / 12 * 12) / 12
-        - floor(3 * ((year + 4900.0 + (mon - 14) / 12) / 100) / 4)
-        - 2440588;
-    return ((days * hoursPerDay + hour) * minutesPerHour + minute) * secondsPerMinute + second;
+    double days = ( day - 32075 )
+                  + floor( 1461 * ( year + 4800.0 + ( mon - 14 ) / 12 ) / 4 )
+                  + 367 * ( mon - 2 - ( mon - 14 ) / 12 * 12 ) / 12
+                  - floor( 3 * ( ( year + 4900.0 + ( mon - 14 ) / 12 ) / 100 ) / 4 )
+                  - 2440588;
+    return ( ( days * hoursPerDay + hour ) * minutesPerHour + minute ) * secondsPerMinute + second;
 }
 
 // We follow the recommendation of RFC 2822 to consider all
 // obsolete time zones not listed here equivalent to "-0000".
-static const struct KnownZone {
+static const struct KnownZone
+{
 #if !OS(WINDOWS)
     const
 #endif
-        char tzName[4];
+    char tzName[4];
     int tzOffset;
-} known_zones[] = {
+} known_zones[] =
+{
     { "UT", 0 },
     { "GMT", 0 },
     { "EST", -300 },
@@ -530,211 +657,364 @@ static const struct KnownZone {
     { "PDT", -420 }
 };
 
-inline static void skipSpacesAndComments(const char*& s)
+inline static void skipSpacesAndComments( const char *&s )
 {
     int nesting = 0;
     char ch;
-    while ((ch = *s)) {
-        if (!isASCIISpace(ch)) {
-            if (ch == '(')
+
+    while ( ( ch = *s ) )
+    {
+        if ( !isASCIISpace( ch ) )
+        {
+            if ( ch == '(' )
+            {
                 nesting++;
-            else if (ch == ')' && nesting > 0)
+            }
+            else if ( ch == ')' && nesting > 0 )
+            {
                 nesting--;
-            else if (nesting == 0)
+            }
+            else if ( nesting == 0 )
+            {
                 break;
+            }
         }
+
         s++;
     }
 }
 
 // returns 0-11 (Jan-Dec); -1 on failure
-static int findMonth(const char* monthStr)
+static int findMonth( const char *monthStr )
 {
-    ASSERT(monthStr);
+    ASSERT( monthStr );
     char needle[4];
-    for (int i = 0; i < 3; ++i) {
-        if (!*monthStr)
+
+    for ( int i = 0; i < 3; ++i )
+    {
+        if ( !*monthStr )
+        {
             return -1;
-        needle[i] = static_cast<char>(toASCIILower(*monthStr++));
+        }
+
+        needle[i] = static_cast<char>( toASCIILower( *monthStr++ ) );
     }
+
     needle[3] = '\0';
     const char *haystack = "janfebmaraprmayjunjulaugsepoctnovdec";
-    const char *str = strstr(haystack, needle);
-    if (str) {
-        int position = static_cast<int>(str - haystack);
-        if (position % 3 == 0)
+    const char *str = strstr( haystack, needle );
+
+    if ( str )
+    {
+        int position = static_cast<int>( str - haystack );
+
+        if ( position % 3 == 0 )
+        {
             return position / 3;
+        }
     }
+
     return -1;
 }
 
-static bool parseLong(const char* string, char** stopPosition, int base, long* result)
+static bool parseLong( const char *string, char **stopPosition, int base, long *result )
 {
-    *result = strtol(string, stopPosition, base);
+    *result = strtol( string, stopPosition, base );
+
     // Avoid the use of errno as it is not available on Windows CE
-    if (string == *stopPosition || *result == LONG_MIN || *result == LONG_MAX)
+    if ( string == *stopPosition || *result == LONG_MIN || *result == LONG_MAX )
+    {
         return false;
+    }
+
     return true;
 }
 
-double parseES5DateFromNullTerminatedCharacters(const char* dateString)
+double parseES5DateFromNullTerminatedCharacters( const char *dateString )
 {
     // This parses a date of the form defined in ECMA-262-5, section 15.9.1.15
     // (similar to RFC 3339 / ISO 8601: YYYY-MM-DDTHH:mm:ss[.sss]Z).
     // In most cases it is intentionally strict (e.g. correct field widths, no stray whitespace).
-    
+
     static const long daysPerMonth[12] = { 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
-    
-    const char* currentPosition = dateString;
-    char* postParsePosition;
-    
+
+    const char *currentPosition = dateString;
+    char *postParsePosition;
+
     // This is a bit more lenient on the year string than ES5 specifies:
     // instead of restricting to 4 digits (or 6 digits with mandatory +/-),
     // it accepts any integer value. Consider this an implementation fallback.
     long year;
-    if (!parseLong(currentPosition, &postParsePosition, 10, &year))
+
+    if ( !parseLong( currentPosition, &postParsePosition, 10, &year ) )
+    {
         return NaN;
-    if (*postParsePosition != '-')
+    }
+
+    if ( *postParsePosition != '-' )
+    {
         return NaN;
+    }
+
     currentPosition = postParsePosition + 1;
-    
+
     long month;
-    if (!isASCIIDigit(*currentPosition))
+
+    if ( !isASCIIDigit( *currentPosition ) )
+    {
         return NaN;
-    if (!parseLong(currentPosition, &postParsePosition, 10, &month))
+    }
+
+    if ( !parseLong( currentPosition, &postParsePosition, 10, &month ) )
+    {
         return NaN;
-    if (*postParsePosition != '-' || (postParsePosition - currentPosition) != 2)
+    }
+
+    if ( *postParsePosition != '-' || ( postParsePosition - currentPosition ) != 2 )
+    {
         return NaN;
+    }
+
     currentPosition = postParsePosition + 1;
-    
+
     long day;
-    if (!isASCIIDigit(*currentPosition))
+
+    if ( !isASCIIDigit( *currentPosition ) )
+    {
         return NaN;
-    if (!parseLong(currentPosition, &postParsePosition, 10, &day))
+    }
+
+    if ( !parseLong( currentPosition, &postParsePosition, 10, &day ) )
+    {
         return NaN;
-    if (*postParsePosition != 'T' || (postParsePosition - currentPosition) != 2)
+    }
+
+    if ( *postParsePosition != 'T' || ( postParsePosition - currentPosition ) != 2 )
+    {
         return NaN;
+    }
+
     currentPosition = postParsePosition + 1;
-    
+
     long hours;
-    if (!isASCIIDigit(*currentPosition))
+
+    if ( !isASCIIDigit( *currentPosition ) )
+    {
         return NaN;
-    if (!parseLong(currentPosition, &postParsePosition, 10, &hours))
+    }
+
+    if ( !parseLong( currentPosition, &postParsePosition, 10, &hours ) )
+    {
         return NaN;
-    if (*postParsePosition != ':' || (postParsePosition - currentPosition) != 2)
+    }
+
+    if ( *postParsePosition != ':' || ( postParsePosition - currentPosition ) != 2 )
+    {
         return NaN;
+    }
+
     currentPosition = postParsePosition + 1;
-    
+
     long minutes;
-    if (!isASCIIDigit(*currentPosition))
+
+    if ( !isASCIIDigit( *currentPosition ) )
+    {
         return NaN;
-    if (!parseLong(currentPosition, &postParsePosition, 10, &minutes))
+    }
+
+    if ( !parseLong( currentPosition, &postParsePosition, 10, &minutes ) )
+    {
         return NaN;
-    if (*postParsePosition != ':' || (postParsePosition - currentPosition) != 2)
+    }
+
+    if ( *postParsePosition != ':' || ( postParsePosition - currentPosition ) != 2 )
+    {
         return NaN;
+    }
+
     currentPosition = postParsePosition + 1;
-    
+
     long intSeconds;
-    if (!isASCIIDigit(*currentPosition))
+
+    if ( !isASCIIDigit( *currentPosition ) )
+    {
         return NaN;
-    if (!parseLong(currentPosition, &postParsePosition, 10, &intSeconds))
+    }
+
+    if ( !parseLong( currentPosition, &postParsePosition, 10, &intSeconds ) )
+    {
         return NaN;
-    if ((postParsePosition - currentPosition) != 2)
+    }
+
+    if ( ( postParsePosition - currentPosition ) != 2 )
+    {
         return NaN;
-    
+    }
+
     double seconds = intSeconds;
-    if (*postParsePosition == '.') {
+
+    if ( *postParsePosition == '.' )
+    {
         currentPosition = postParsePosition + 1;
-        
+
         // In ECMA-262-5 it's a bit unclear if '.' can be present without milliseconds, but
         // a reasonable interpretation guided by the given examples and RFC 3339 says "no".
         // We check the next character to avoid reading +/- timezone hours after an invalid decimal.
-        if (!isASCIIDigit(*currentPosition))
+        if ( !isASCIIDigit( *currentPosition ) )
+        {
             return NaN;
-        
+        }
+
         // We are more lenient than ES5 by accepting more or less than 3 fraction digits.
         long fracSeconds;
-        if (!parseLong(currentPosition, &postParsePosition, 10, &fracSeconds))
+
+        if ( !parseLong( currentPosition, &postParsePosition, 10, &fracSeconds ) )
+        {
             return NaN;
-        
+        }
+
         long numFracDigits = postParsePosition - currentPosition;
-        seconds += fracSeconds * pow(10.0, static_cast<double>(-numFracDigits));
+        seconds += fracSeconds * pow( 10.0, static_cast<double>( -numFracDigits ) );
     }
+
     currentPosition = postParsePosition;
-    
+
     // A few of these checks could be done inline above, but since many of them are interrelated
     // we would be sacrificing readability to "optimize" the (presumably less common) failure path.
-    if (month < 1 || month > 12)
+    if ( month < 1 || month > 12 )
+    {
         return NaN;
-    if (day < 1 || day > daysPerMonth[month - 1])
+    }
+
+    if ( day < 1 || day > daysPerMonth[month - 1] )
+    {
         return NaN;
-    if (month == 2 && day > 28 && !isLeapYear(year))
+    }
+
+    if ( month == 2 && day > 28 && !isLeapYear( year ) )
+    {
         return NaN;
-    if (hours < 0 || hours > 24)
+    }
+
+    if ( hours < 0 || hours > 24 )
+    {
         return NaN;
-    if (hours == 24 && (minutes || seconds))
+    }
+
+    if ( hours == 24 && ( minutes || seconds ) )
+    {
         return NaN;
-    if (minutes < 0 || minutes > 59)
+    }
+
+    if ( minutes < 0 || minutes > 59 )
+    {
         return NaN;
-    if (seconds < 0 || seconds >= 61)
+    }
+
+    if ( seconds < 0 || seconds >= 61 )
+    {
         return NaN;
-    if (seconds > 60) {
+    }
+
+    if ( seconds > 60 )
+    {
         // Discard leap seconds by clamping to the end of a minute.
         seconds = 60;
     }
-    
+
     long timeZoneSeconds = 0;
-    if (*currentPosition != 'Z') {
+
+    if ( *currentPosition != 'Z' )
+    {
         bool tzNegative;
-        if (*currentPosition == '-')
+
+        if ( *currentPosition == '-' )
+        {
             tzNegative = true;
-        else if (*currentPosition == '+')
+        }
+        else if ( *currentPosition == '+' )
+        {
             tzNegative = false;
+        }
         else
+        {
             return NaN;
+        }
+
         currentPosition += 1;
-        
+
         long tzHours;
         long tzHoursAbs;
         long tzMinutes;
-        
-        if (!isASCIIDigit(*currentPosition))
+
+        if ( !isASCIIDigit( *currentPosition ) )
+        {
             return NaN;
-        if (!parseLong(currentPosition, &postParsePosition, 10, &tzHours))
+        }
+
+        if ( !parseLong( currentPosition, &postParsePosition, 10, &tzHours ) )
+        {
             return NaN;
-        if (*postParsePosition != ':' || (postParsePosition - currentPosition) != 2)
+        }
+
+        if ( *postParsePosition != ':' || ( postParsePosition - currentPosition ) != 2 )
+        {
             return NaN;
-        tzHoursAbs = labs(tzHours);
+        }
+
+        tzHoursAbs = labs( tzHours );
         currentPosition = postParsePosition + 1;
-        
-        if (!isASCIIDigit(*currentPosition))
+
+        if ( !isASCIIDigit( *currentPosition ) )
+        {
             return NaN;
-        if (!parseLong(currentPosition, &postParsePosition, 10, &tzMinutes))
+        }
+
+        if ( !parseLong( currentPosition, &postParsePosition, 10, &tzMinutes ) )
+        {
             return NaN;
-        if ((postParsePosition - currentPosition) != 2)
+        }
+
+        if ( ( postParsePosition - currentPosition ) != 2 )
+        {
             return NaN;
+        }
+
         currentPosition = postParsePosition;
-        
-        if (tzHoursAbs > 24)
+
+        if ( tzHoursAbs > 24 )
+        {
             return NaN;
-        if (tzMinutes < 0 || tzMinutes > 59)
+        }
+
+        if ( tzMinutes < 0 || tzMinutes > 59 )
+        {
             return NaN;
-        
-        timeZoneSeconds = 60 * (tzMinutes + (60 * tzHoursAbs));
-        if (tzNegative)
+        }
+
+        timeZoneSeconds = 60 * ( tzMinutes + ( 60 * tzHoursAbs ) );
+
+        if ( tzNegative )
+        {
             timeZoneSeconds = -timeZoneSeconds;
-    } else {
+        }
+    }
+    else
+    {
         currentPosition += 1;
     }
-    if (*currentPosition)
+
+    if ( *currentPosition )
+    {
         return NaN;
-    
-    double dateSeconds = ymdhmsToSeconds(year, month, day, hours, minutes, seconds) - timeZoneSeconds;
+    }
+
+    double dateSeconds = ymdhmsToSeconds( year, month, day, hours, minutes, seconds ) - timeZoneSeconds;
     return dateSeconds * msPerSecond;
 }
 
 // Odd case where 'exec' is allowed to be 0, to accomodate a caller in WebCore.
-static double parseDateFromNullTerminatedCharacters(const char* dateString, bool& haveTZ, int& offset)
+static double parseDateFromNullTerminatedCharacters( const char *dateString, bool &haveTZ, int &offset )
 {
     haveTZ = false;
     offset = 0;
@@ -752,227 +1032,371 @@ static double parseDateFromNullTerminatedCharacters(const char* dateString, bool
     //     [Wednesday] January 09 23:12:40 GMT 1999
     //
     // We ignore the weekday.
-     
+
     // Skip leading space
-    skipSpacesAndComments(dateString);
+    skipSpacesAndComments( dateString );
 
     long month = -1;
     const char *wordStart = dateString;
+
     // Check contents of first words if not number
-    while (*dateString && !isASCIIDigit(*dateString)) {
-        if (isASCIISpace(*dateString) || *dateString == '(') {
-            if (dateString - wordStart >= 3)
-                month = findMonth(wordStart);
-            skipSpacesAndComments(dateString);
+    while ( *dateString && !isASCIIDigit( *dateString ) )
+    {
+        if ( isASCIISpace( *dateString ) || *dateString == '(' )
+        {
+            if ( dateString - wordStart >= 3 )
+            {
+                month = findMonth( wordStart );
+            }
+
+            skipSpacesAndComments( dateString );
             wordStart = dateString;
-        } else
-           dateString++;
-    }
-
-    // Missing delimiter between month and day (like "January29")?
-    if (month == -1 && wordStart != dateString)
-        month = findMonth(wordStart);
-
-    skipSpacesAndComments(dateString);
-
-    if (!*dateString)
-        return NaN;
-
-    // ' 09-Nov-99 23:12:40 GMT'
-    char* newPosStr;
-    long day;
-    if (!parseLong(dateString, &newPosStr, 10, &day))
-        return NaN;
-    dateString = newPosStr;
-
-    if (!*dateString)
-        return NaN;
-
-    if (day < 0)
-        return NaN;
-
-    long year = 0;
-    if (day > 31) {
-        // ### where is the boundary and what happens below?
-        if (*dateString != '/')
-            return NaN;
-        // looks like a YYYY/MM/DD date
-        if (!*++dateString)
-            return NaN;
-        year = day;
-        if (!parseLong(dateString, &newPosStr, 10, &month))
-            return NaN;
-        month -= 1;
-        dateString = newPosStr;
-        if (*dateString++ != '/' || !*dateString)
-            return NaN;
-        if (!parseLong(dateString, &newPosStr, 10, &day))
-            return NaN;
-        dateString = newPosStr;
-    } else if (*dateString == '/' && month == -1) {
-        dateString++;
-        // This looks like a MM/DD/YYYY date, not an RFC date.
-        month = day - 1; // 0-based
-        if (!parseLong(dateString, &newPosStr, 10, &day))
-            return NaN;
-        if (day < 1 || day > 31)
-            return NaN;
-        dateString = newPosStr;
-        if (*dateString == '/')
-            dateString++;
-        if (!*dateString)
-            return NaN;
-     } else {
-        if (*dateString == '-')
-            dateString++;
-
-        skipSpacesAndComments(dateString);
-
-        if (*dateString == ',')
-            dateString++;
-
-        if (month == -1) { // not found yet
-            month = findMonth(dateString);
-            if (month == -1)
-                return NaN;
-
-            while (*dateString && *dateString != '-' && *dateString != ',' && !isASCIISpace(*dateString))
-                dateString++;
-
-            if (!*dateString)
-                return NaN;
-
-            // '-99 23:12:40 GMT'
-            if (*dateString != '-' && *dateString != '/' && *dateString != ',' && !isASCIISpace(*dateString))
-                return NaN;
+        }
+        else
+        {
             dateString++;
         }
     }
 
-    if (month < 0 || month > 11)
+    // Missing delimiter between month and day (like "January29")?
+    if ( month == -1 && wordStart != dateString )
+    {
+        month = findMonth( wordStart );
+    }
+
+    skipSpacesAndComments( dateString );
+
+    if ( !*dateString )
+    {
         return NaN;
+    }
+
+    // ' 09-Nov-99 23:12:40 GMT'
+    char *newPosStr;
+    long day;
+
+    if ( !parseLong( dateString, &newPosStr, 10, &day ) )
+    {
+        return NaN;
+    }
+
+    dateString = newPosStr;
+
+    if ( !*dateString )
+    {
+        return NaN;
+    }
+
+    if ( day < 0 )
+    {
+        return NaN;
+    }
+
+    long year = 0;
+
+    if ( day > 31 )
+    {
+        // ### where is the boundary and what happens below?
+        if ( *dateString != '/' )
+        {
+            return NaN;
+        }
+
+        // looks like a YYYY/MM/DD date
+        if ( !*++dateString )
+        {
+            return NaN;
+        }
+
+        year = day;
+
+        if ( !parseLong( dateString, &newPosStr, 10, &month ) )
+        {
+            return NaN;
+        }
+
+        month -= 1;
+        dateString = newPosStr;
+
+        if ( *dateString++ != '/' || !*dateString )
+        {
+            return NaN;
+        }
+
+        if ( !parseLong( dateString, &newPosStr, 10, &day ) )
+        {
+            return NaN;
+        }
+
+        dateString = newPosStr;
+    }
+    else if ( *dateString == '/' && month == -1 )
+    {
+        dateString++;
+        // This looks like a MM/DD/YYYY date, not an RFC date.
+        month = day - 1; // 0-based
+
+        if ( !parseLong( dateString, &newPosStr, 10, &day ) )
+        {
+            return NaN;
+        }
+
+        if ( day < 1 || day > 31 )
+        {
+            return NaN;
+        }
+
+        dateString = newPosStr;
+
+        if ( *dateString == '/' )
+        {
+            dateString++;
+        }
+
+        if ( !*dateString )
+        {
+            return NaN;
+        }
+    }
+    else
+    {
+        if ( *dateString == '-' )
+        {
+            dateString++;
+        }
+
+        skipSpacesAndComments( dateString );
+
+        if ( *dateString == ',' )
+        {
+            dateString++;
+        }
+
+        if ( month == -1 ) // not found yet
+        {
+            month = findMonth( dateString );
+
+            if ( month == -1 )
+            {
+                return NaN;
+            }
+
+            while ( *dateString && *dateString != '-' && *dateString != ',' && !isASCIISpace( *dateString ) )
+            {
+                dateString++;
+            }
+
+            if ( !*dateString )
+            {
+                return NaN;
+            }
+
+            // '-99 23:12:40 GMT'
+            if ( *dateString != '-' && *dateString != '/' && *dateString != ',' && !isASCIISpace( *dateString ) )
+            {
+                return NaN;
+            }
+
+            dateString++;
+        }
+    }
+
+    if ( month < 0 || month > 11 )
+    {
+        return NaN;
+    }
 
     // '99 23:12:40 GMT'
-    if (year <= 0 && *dateString) {
-        if (!parseLong(dateString, &newPosStr, 10, &year))
+    if ( year <= 0 && *dateString )
+    {
+        if ( !parseLong( dateString, &newPosStr, 10, &year ) )
+        {
             return NaN;
+        }
     }
 
     // Don't fail if the time is missing.
     long hour = 0;
     long minute = 0;
     long second = 0;
-    if (!*newPosStr)
+
+    if ( !*newPosStr )
+    {
         dateString = newPosStr;
-    else {
+    }
+    else
+    {
         // ' 23:12:40 GMT'
-        if (!(isASCIISpace(*newPosStr) || *newPosStr == ',')) {
-            if (*newPosStr != ':')
+        if ( !( isASCIISpace( *newPosStr ) || *newPosStr == ',' ) )
+        {
+            if ( *newPosStr != ':' )
+            {
                 return NaN;
+            }
+
             // There was no year; the number was the hour.
             year = -1;
-        } else {
+        }
+        else
+        {
             // in the normal case (we parsed the year), advance to the next number
             dateString = ++newPosStr;
-            skipSpacesAndComments(dateString);
+            skipSpacesAndComments( dateString );
         }
 
-        parseLong(dateString, &newPosStr, 10, &hour);
+        parseLong( dateString, &newPosStr, 10, &hour );
         // Do not check for errno here since we want to continue
         // even if errno was set becasue we are still looking
         // for the timezone!
 
         // Read a number? If not, this might be a timezone name.
-        if (newPosStr != dateString) {
+        if ( newPosStr != dateString )
+        {
             dateString = newPosStr;
 
-            if (hour < 0 || hour > 23)
+            if ( hour < 0 || hour > 23 )
+            {
                 return NaN;
-
-            if (!*dateString)
-                return NaN;
-
-            // ':12:40 GMT'
-            if (*dateString++ != ':')
-                return NaN;
-
-            if (!parseLong(dateString, &newPosStr, 10, &minute))
-                return NaN;
-            dateString = newPosStr;
-
-            if (minute < 0 || minute > 59)
-                return NaN;
-
-            // ':40 GMT'
-            if (*dateString && *dateString != ':' && !isASCIISpace(*dateString))
-                return NaN;
-
-            // seconds are optional in rfc822 + rfc2822
-            if (*dateString ==':') {
-                dateString++;
-
-                if (!parseLong(dateString, &newPosStr, 10, &second))
-                    return NaN;
-                dateString = newPosStr;
-
-                if (second < 0 || second > 59)
-                    return NaN;
             }
 
-            skipSpacesAndComments(dateString);
+            if ( !*dateString )
+            {
+                return NaN;
+            }
 
-            if (strncasecmp(dateString, "AM", 2) == 0) {
-                if (hour > 12)
+            // ':12:40 GMT'
+            if ( *dateString++ != ':' )
+            {
+                return NaN;
+            }
+
+            if ( !parseLong( dateString, &newPosStr, 10, &minute ) )
+            {
+                return NaN;
+            }
+
+            dateString = newPosStr;
+
+            if ( minute < 0 || minute > 59 )
+            {
+                return NaN;
+            }
+
+            // ':40 GMT'
+            if ( *dateString && *dateString != ':' && !isASCIISpace( *dateString ) )
+            {
+                return NaN;
+            }
+
+            // seconds are optional in rfc822 + rfc2822
+            if ( *dateString ==':' )
+            {
+                dateString++;
+
+                if ( !parseLong( dateString, &newPosStr, 10, &second ) )
+                {
                     return NaN;
-                if (hour == 12)
+                }
+
+                dateString = newPosStr;
+
+                if ( second < 0 || second > 59 )
+                {
+                    return NaN;
+                }
+            }
+
+            skipSpacesAndComments( dateString );
+
+            if ( strncasecmp( dateString, "AM", 2 ) == 0 )
+            {
+                if ( hour > 12 )
+                {
+                    return NaN;
+                }
+
+                if ( hour == 12 )
+                {
                     hour = 0;
+                }
+
                 dateString += 2;
-                skipSpacesAndComments(dateString);
-            } else if (strncasecmp(dateString, "PM", 2) == 0) {
-                if (hour > 12)
+                skipSpacesAndComments( dateString );
+            }
+            else if ( strncasecmp( dateString, "PM", 2 ) == 0 )
+            {
+                if ( hour > 12 )
+                {
                     return NaN;
-                if (hour != 12)
+                }
+
+                if ( hour != 12 )
+                {
                     hour += 12;
+                }
+
                 dateString += 2;
-                skipSpacesAndComments(dateString);
+                skipSpacesAndComments( dateString );
             }
         }
     }
 
-    // Don't fail if the time zone is missing. 
+    // Don't fail if the time zone is missing.
     // Some websites omit the time zone (4275206).
-    if (*dateString) {
-        if (strncasecmp(dateString, "GMT", 3) == 0 || strncasecmp(dateString, "UTC", 3) == 0) {
+    if ( *dateString )
+    {
+        if ( strncasecmp( dateString, "GMT", 3 ) == 0 || strncasecmp( dateString, "UTC", 3 ) == 0 )
+        {
             dateString += 3;
             haveTZ = true;
         }
 
-        if (*dateString == '+' || *dateString == '-') {
+        if ( *dateString == '+' || *dateString == '-' )
+        {
             long o;
-            if (!parseLong(dateString, &newPosStr, 10, &o))
+
+            if ( !parseLong( dateString, &newPosStr, 10, &o ) )
+            {
                 return NaN;
+            }
+
             dateString = newPosStr;
 
-            if (o < -9959 || o > 9959)
+            if ( o < -9959 || o > 9959 )
+            {
                 return NaN;
-
-            int sgn = (o < 0) ? -1 : 1;
-            o = labs(o);
-            if (*dateString != ':') {
-                offset = ((o / 100) * 60 + (o % 100)) * sgn;
-            } else { // GMT+05:00
-                long o2;
-                if (!parseLong(dateString, &newPosStr, 10, &o2))
-                    return NaN;
-                dateString = newPosStr;
-                offset = (o * 60 + o2) * sgn;
             }
+
+            int sgn = ( o < 0 ) ? -1 : 1;
+            o = labs( o );
+
+            if ( *dateString != ':' )
+            {
+                offset = ( ( o / 100 ) * 60 + ( o % 100 ) ) * sgn;
+            }
+            else     // GMT+05:00
+            {
+                long o2;
+
+                if ( !parseLong( dateString, &newPosStr, 10, &o2 ) )
+                {
+                    return NaN;
+                }
+
+                dateString = newPosStr;
+                offset = ( o * 60 + o2 ) * sgn;
+            }
+
             haveTZ = true;
-        } else {
-            for (size_t i = 0; i < WTF_ARRAY_LENGTH(known_zones); ++i) {
-                if (0 == strncasecmp(dateString, known_zones[i].tzName, strlen(known_zones[i].tzName))) {
+        }
+        else
+        {
+            for ( size_t i = 0; i < WTF_ARRAY_LENGTH( known_zones ); ++i )
+            {
+                if ( 0 == strncasecmp( dateString, known_zones[i].tzName, strlen( known_zones[i].tzName ) ) )
+                {
                     offset = known_zones[i].tzOffset;
-                    dateString += strlen(known_zones[i].tzName);
+                    dateString += strlen( known_zones[i].tzName );
                     haveTZ = true;
                     break;
                 }
@@ -980,80 +1404,110 @@ static double parseDateFromNullTerminatedCharacters(const char* dateString, bool
         }
     }
 
-    skipSpacesAndComments(dateString);
+    skipSpacesAndComments( dateString );
 
-    if (*dateString && year == -1) {
-        if (!parseLong(dateString, &newPosStr, 10, &year))
+    if ( *dateString && year == -1 )
+    {
+        if ( !parseLong( dateString, &newPosStr, 10, &year ) )
+        {
             return NaN;
+        }
+
         dateString = newPosStr;
     }
 
-    skipSpacesAndComments(dateString);
+    skipSpacesAndComments( dateString );
 
     // Trailing garbage
-    if (*dateString)
+    if ( *dateString )
+    {
         return NaN;
+    }
 
     // Y2K: Handle 2 digit years.
-    if (year >= 0 && year < 100) {
-        if (year < 50)
+    if ( year >= 0 && year < 100 )
+    {
+        if ( year < 50 )
+        {
             year += 2000;
+        }
         else
+        {
             year += 1900;
+        }
     }
-    
-    return ymdhmsToSeconds(year, month + 1, day, hour, minute, second) * msPerSecond;
+
+    return ymdhmsToSeconds( year, month + 1, day, hour, minute, second ) * msPerSecond;
 }
 
-double parseDateFromNullTerminatedCharacters(const char* dateString)
+double parseDateFromNullTerminatedCharacters( const char *dateString )
 {
     bool haveTZ;
     int offset;
-    double ms = parseDateFromNullTerminatedCharacters(dateString, haveTZ, offset);
-    if (std::isnan(ms))
+    double ms = parseDateFromNullTerminatedCharacters( dateString, haveTZ, offset );
+
+    if ( std::isnan( ms ) )
+    {
         return NaN;
+    }
 
     // fall back to local timezone
-    if (!haveTZ)
-        offset = calculateLocalTimeOffset(ms).offset / msPerMinute;
+    if ( !haveTZ )
+    {
+        offset = calculateLocalTimeOffset( ms ).offset / msPerMinute;
+    }
 
-    return ms - (offset * msPerMinute);
+    return ms - ( offset * msPerMinute );
 }
 
-double timeClip(double t)
+double timeClip( double t )
 {
-    if (! std::isfinite(t))
+    if ( ! std::isfinite( t ) )
+    {
         return NaN;
-    if (fabs(t) > maxECMAScriptTime)
+    }
+
+    if ( fabs( t ) > maxECMAScriptTime )
+    {
         return NaN;
-    return trunc(t);
+    }
+
+    return trunc( t );
 }
 } // namespace WTF
 
 #if USE(JSC)
-namespace JSC {
+namespace JSC
+{
 
 // Get the combined UTC + DST offset for the time passed in.
 //
 // NOTE: The implementation relies on the fact that no time zones have
 // more than one daylight savings offset change per month.
 // If this function is called with NaN it returns NaN.
-static LocalTimeOffset localTimeOffset(ExecState* exec, double ms)
+static LocalTimeOffset localTimeOffset( ExecState *exec, double ms )
 {
-    LocalTimeOffsetCache& cache = exec->globalData().localTimeOffsetCache;
+    LocalTimeOffsetCache &cache = exec->globalData().localTimeOffsetCache;
     double start = cache.start;
     double end = cache.end;
 
-    if (start <= ms) {
+    if ( start <= ms )
+    {
         // If the time fits in the cached interval, return the cached offset.
-        if (ms <= end) return cache.offset;
+        if ( ms <= end )
+        {
+            return cache.offset;
+        }
 
         // Compute a possible new interval end.
         double newEnd = end + cache.increment;
 
-        if (ms <= newEnd) {
-            LocalTimeOffset endOffset = calculateLocalTimeOffset(newEnd);
-            if (cache.offset == endOffset) {
+        if ( ms <= newEnd )
+        {
+            LocalTimeOffset endOffset = calculateLocalTimeOffset( newEnd );
+
+            if ( cache.offset == endOffset )
+            {
                 // If the offset at the end of the new interval still matches
                 // the offset in the cache, we grow the cached time interval
                 // and return the offset.
@@ -1061,8 +1515,11 @@ static LocalTimeOffset localTimeOffset(ExecState* exec, double ms)
                 cache.increment = msPerMonth;
                 return endOffset;
             }
-            LocalTimeOffset offset = calculateLocalTimeOffset(ms);
-            if (offset == endOffset) {
+
+            LocalTimeOffset offset = calculateLocalTimeOffset( ms );
+
+            if ( offset == endOffset )
+            {
                 // The offset at the given time is equal to the offset at the
                 // new end of the interval, so that means that we've just skipped
                 // the point in time where the DST offset change occurred. Updated
@@ -1070,13 +1527,16 @@ static LocalTimeOffset localTimeOffset(ExecState* exec, double ms)
                 cache.start = ms;
                 cache.end = newEnd;
                 cache.increment = msPerMonth;
-            } else {
+            }
+            else
+            {
                 // The interval contains a DST offset change and the given time is
                 // before it. Adjust the increment to avoid a linear search for
                 // the offset change point and change the end of the interval.
                 cache.increment /= 3;
                 cache.end = ms;
             }
+
             // Update the offset in the cache and return it.
             cache.offset = offset;
             return offset;
@@ -1086,7 +1546,7 @@ static LocalTimeOffset localTimeOffset(ExecState* exec, double ms)
     // Compute the DST offset for the time and shrink the cache interval
     // to only contain the time. This allows fast repeated DST offset
     // computations for the same time.
-    LocalTimeOffset offset = calculateLocalTimeOffset(ms);
+    LocalTimeOffset offset = calculateLocalTimeOffset( ms );
     cache.offset = offset;
     cache.start = ms;
     cache.end = ms;
@@ -1094,55 +1554,64 @@ static LocalTimeOffset localTimeOffset(ExecState* exec, double ms)
     return offset;
 }
 
-double gregorianDateTimeToMS(ExecState* exec, const GregorianDateTime& t, double milliSeconds, bool inputIsUTC)
+double gregorianDateTimeToMS( ExecState *exec, const GregorianDateTime &t, double milliSeconds, bool inputIsUTC )
 {
-    double day = dateToDaysFrom1970(t.year + 1900, t.month, t.monthDay);
-    double ms = timeToMS(t.hour, t.minute, t.second, milliSeconds);
-    double result = (day * WTF::msPerDay) + ms;
+    double day = dateToDaysFrom1970( t.year + 1900, t.month, t.monthDay );
+    double ms = timeToMS( t.hour, t.minute, t.second, milliSeconds );
+    double result = ( day * WTF::msPerDay ) + ms;
 
-    if (!inputIsUTC)
-        result -= localTimeOffset(exec, result).offset;
+    if ( !inputIsUTC )
+    {
+        result -= localTimeOffset( exec, result ).offset;
+    }
 
     return result;
 }
 
 // input is UTC
-void msToGregorianDateTime(ExecState* exec, double ms, bool outputIsUTC, GregorianDateTime& tm)
+void msToGregorianDateTime( ExecState *exec, double ms, bool outputIsUTC, GregorianDateTime &tm )
 {
-    LocalTimeOffset localTime(false, 0);
-    if (!outputIsUTC) {
-        localTime = localTimeOffset(exec, ms);
+    LocalTimeOffset localTime( false, 0 );
+
+    if ( !outputIsUTC )
+    {
+        localTime = localTimeOffset( exec, ms );
         ms += localTime.offset;
     }
 
-    const int year = msToYear(ms);
-    tm.second   =  msToSeconds(ms);
-    tm.minute   =  msToMinutes(ms);
-    tm.hour     =  msToHours(ms);
-    tm.weekDay  =  msToWeekDay(ms);
-    tm.yearDay  =  dayInYear(ms, year);
-    tm.monthDay =  dayInMonthFromDayInYear(tm.yearDay, isLeapYear(year));
-    tm.month    =  monthFromDayInYear(tm.yearDay, isLeapYear(year));
+    const int year = msToYear( ms );
+    tm.second   =  msToSeconds( ms );
+    tm.minute   =  msToMinutes( ms );
+    tm.hour     =  msToHours( ms );
+    tm.weekDay  =  msToWeekDay( ms );
+    tm.yearDay  =  dayInYear( ms, year );
+    tm.monthDay =  dayInMonthFromDayInYear( tm.yearDay, isLeapYear( year ) );
+    tm.month    =  monthFromDayInYear( tm.yearDay, isLeapYear( year ) );
     tm.year     =  year - 1900;
     tm.isDST    =  localTime.isDST;
     tm.utcOffset = localTime.offset / WTF::msPerSecond;
     tm.timeZone = nullptr;
 }
 
-double parseDateFromNullTerminatedCharacters(ExecState* exec, const char* dateString)
+double parseDateFromNullTerminatedCharacters( ExecState *exec, const char *dateString )
 {
-    ASSERT(exec);
+    ASSERT( exec );
     bool haveTZ;
     int offset;
-    double ms = WTF::parseDateFromNullTerminatedCharacters(dateString, haveTZ, offset);
-    if (std::isnan(ms))
+    double ms = WTF::parseDateFromNullTerminatedCharacters( dateString, haveTZ, offset );
+
+    if ( std::isnan( ms ) )
+    {
         return NaN;
+    }
 
     // fall back to local timezone
-    if (!haveTZ)
-        offset = calculateLocalTimeOffset(ms).offset / msPerMinute;
+    if ( !haveTZ )
+    {
+        offset = calculateLocalTimeOffset( ms ).offset / msPerMinute;
+    }
 
-    return ms - (offset * WTF::msPerMinute);
+    return ms - ( offset * WTF::msPerMinute );
 }
 
 } // namespace JSC

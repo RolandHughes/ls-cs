@@ -24,18 +24,20 @@
 #include "ErrorInstance.h"
 #include "InternalFunction.h"
 
-namespace JSC {
+namespace JSC
+{
 
-    class ErrorPrototype;
+class ErrorPrototype;
 
-    class ErrorConstructor : public InternalFunction {
-    public:
-        ErrorConstructor(ExecState*, JSGlobalObject*, Structure*, ErrorPrototype*);
+class ErrorConstructor : public InternalFunction
+{
+public:
+    ErrorConstructor( ExecState *, JSGlobalObject *, Structure *, ErrorPrototype * );
 
-    private:
-        virtual ConstructType getConstructData(ConstructData&);
-        virtual CallType getCallData(CallData&);
-    };
+private:
+    virtual ConstructType getConstructData( ConstructData & );
+    virtual CallType getCallData( CallData & );
+};
 
 } // namespace JSC
 

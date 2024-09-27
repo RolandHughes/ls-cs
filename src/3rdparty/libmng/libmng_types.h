@@ -239,7 +239,7 @@
 
 #define MNG_LOCAL static
 
-#if defined(MNG_DLL) && defined(WIN32) /* setup DLL calling conventions */ 
+#if defined(MNG_DLL) && defined(WIN32) /* setup DLL calling conventions */
 #define MNG_DECL __stdcall
 #if defined(MNG_BUILD_DLL)
 #define MNG_EXT __declspec(dllexport)
@@ -284,9 +284,9 @@ typedef double           mng_float;              /* basic float */
 
 typedef size_t           mng_size_t;             /* size field for memory allocation */
 
-typedef char *           mng_pchar;              /* string */
-typedef void *           mng_ptr;                /* generic pointer */
-typedef void             (*mng_fptr) (void);     /* generic function pointer */
+typedef char            *mng_pchar;              /* string */
+typedef void            *mng_ptr;                /* generic pointer */
+typedef void             ( *mng_fptr ) ( void ); /* generic function pointer */
 
 /* ************************************************************************** */
 /* *                                                                        * */
@@ -294,30 +294,31 @@ typedef void             (*mng_fptr) (void);     /* generic function pointer */
 /* *                                                                        * */
 /* ************************************************************************** */
 
-typedef mng_uint32 *     mng_uint32p;            /* pointer to unsigned longs */
-typedef mng_int32 *      mng_int32p;             /* pointer to longs */
-typedef mng_uint16 *     mng_uint16p;            /* pointer to unsigned words */
-typedef mng_uint8 *      mng_uint8p;             /* pointer to unsigned bytes */
+typedef mng_uint32      *mng_uint32p;            /* pointer to unsigned longs */
+typedef mng_int32       *mng_int32p;             /* pointer to longs */
+typedef mng_uint16      *mng_uint16p;            /* pointer to unsigned words */
+typedef mng_uint8       *mng_uint8p;             /* pointer to unsigned bytes */
 
 typedef mng_int8         mng_bool;               /* booleans */
 
 struct mng_data_struct;
-typedef struct mng_data_struct * mng_handle;     /* generic handle */
+typedef struct mng_data_struct *mng_handle;      /* generic handle */
 
 typedef mng_int32        mng_retcode;            /* generic return code */
 typedef mng_int32        mng_chunkid;            /* 4-byte chunkname identifier */
 typedef mng_ptr          mng_chunkp;             /* pointer to a chunk-structure */
 typedef mng_ptr          mng_objectp;            /* pointer to an object-structure */
 
-typedef mng_chunkid *    mng_chunkidp;           /* pointer to chunkid */
+typedef mng_chunkid     *mng_chunkidp;           /* pointer to chunkid */
 
-typedef struct {                                 /* 8-bit palette element */
-          mng_uint8 iRed;
-          mng_uint8 iGreen;
-          mng_uint8 iBlue;
-        } mng_palette8e;
+typedef struct                                   /* 8-bit palette element */
+{
+    mng_uint8 iRed;
+    mng_uint8 iGreen;
+    mng_uint8 iBlue;
+} mng_palette8e;
 typedef mng_palette8e   mng_palette8[256];       /* 8-bit palette */
-typedef mng_palette8e * mng_palette8ep;
+typedef mng_palette8e *mng_palette8ep;
 
 typedef mng_uint8       mng_uint8arr[256];       /* generic arrays */
 typedef mng_uint8       mng_uint8arr4[4];
@@ -361,10 +362,10 @@ typedef struct jpeg_decompress_struct mngjpeg_decomp;
 typedef struct jpeg_error_mgr         mngjpeg_error;
 typedef struct jpeg_source_mgr        mngjpeg_source;
 
-typedef mngjpeg_comp   * mngjpeg_compp;
-typedef mngjpeg_decomp * mngjpeg_decompp;
-typedef mngjpeg_error  * mngjpeg_errorp;
-typedef mngjpeg_source * mngjpeg_sourcep;
+typedef mngjpeg_comp    *mngjpeg_compp;
+typedef mngjpeg_decomp *mngjpeg_decompp;
+typedef mngjpeg_error   *mngjpeg_errorp;
+typedef mngjpeg_source *mngjpeg_sourcep;
 
 typedef J_DCT_METHOD     mngjpeg_dctmethod;
 
@@ -393,23 +394,23 @@ typedef LPGAMMATABLE        mng_gammatabp;
 
 /* ************************************************************************** */
 
-                                       /* enumeration of known graphics types */
+/* enumeration of known graphics types */
 enum mng_imgtypes {mng_it_unknown, mng_it_png, mng_it_mng, mng_it_jng
 #ifdef MNG_INCLUDE_MPNG_PROPOSAL
-     ,mng_it_mpng
-#endif     
-#ifdef MNG_INCLUDE_ANG_PROPOSAL
-     ,mng_it_ang
+,mng_it_mpng
 #endif
-     };
+#ifdef MNG_INCLUDE_ANG_PROPOSAL
+,mng_it_ang
+#endif
+                  };
 typedef enum mng_imgtypes mng_imgtype;
 
-                                       /* enumeration of animation speed-types */
+/* enumeration of animation speed-types */
 enum mng_speedtypes {mng_st_normal, mng_st_fast, mng_st_slow, mng_st_slowest};
 typedef enum mng_speedtypes mng_speedtype;
 
 #ifdef MNG_OPTIMIZE_CHUNKREADER
-                                       /* enumeration object-creation indicators */
+/* enumeration object-creation indicators */
 enum mng_createobjtypes {mng_create_none, mng_create_always, mng_create_ifglobal};
 typedef enum mng_createobjtypes mng_createobjtype;
 #endif
@@ -419,7 +420,7 @@ typedef enum mng_createobjtypes mng_createobjtype;
 /* enumeration of PNG image types */
 #ifdef MNG_OPTIMIZE_FOOTPRINT_INIT
 enum png_imgtypes
-  {
+{
     png_g1,
     png_g2,
     png_g4,
@@ -447,122 +448,122 @@ enum png_imgtypes
 #endif
 #endif
     png_none
-  };
-    
+};
+
 typedef enum png_imgtypes png_imgtype;
 #endif
 /* ************************************************************************** */
 
-                                       /* memory management callbacks */
-typedef mng_ptr    (MNG_DECL *mng_memalloc)      (mng_size_t  iLen);
-typedef void       (MNG_DECL *mng_memfree)       (mng_ptr     iPtr,
-                                                  mng_size_t  iLen);
+/* memory management callbacks */
+typedef mng_ptr    ( MNG_DECL *mng_memalloc )      ( mng_size_t  iLen );
+typedef void       ( MNG_DECL *mng_memfree )       ( mng_ptr     iPtr,
+        mng_size_t  iLen );
 
-typedef void       (MNG_DECL *mng_releasedata)   (mng_ptr     pUserdata,
-                                                  mng_ptr     pData,
-                                                  mng_size_t  iLength);
+typedef void       ( MNG_DECL *mng_releasedata )   ( mng_ptr     pUserdata,
+        mng_ptr     pData,
+        mng_size_t  iLength );
 
-                                       /* I/O management callbacks */
+/* I/O management callbacks */
 #ifndef MNG_NO_OPEN_CLOSE_STREAM
-typedef mng_bool   (MNG_DECL *mng_openstream)    (mng_handle  hHandle);
-typedef mng_bool   (MNG_DECL *mng_closestream)   (mng_handle  hHandle);
+typedef mng_bool   ( MNG_DECL *mng_openstream )    ( mng_handle  hHandle );
+typedef mng_bool   ( MNG_DECL *mng_closestream )   ( mng_handle  hHandle );
 #endif
-typedef mng_bool   (MNG_DECL *mng_readdata)      (mng_handle  hHandle,
-                                                  mng_ptr     pBuf,
-                                                  mng_uint32  iBuflen,
-                                                  mng_uint32p pRead);
-typedef mng_bool   (MNG_DECL *mng_writedata)     (mng_handle  hHandle,
-                                                  mng_ptr     pBuf,
-                                                  mng_uint32  iBuflen,
-                                                  mng_uint32p pWritten);
+typedef mng_bool   ( MNG_DECL *mng_readdata )      ( mng_handle  hHandle,
+        mng_ptr     pBuf,
+        mng_uint32  iBuflen,
+        mng_uint32p pRead );
+typedef mng_bool   ( MNG_DECL *mng_writedata )     ( mng_handle  hHandle,
+        mng_ptr     pBuf,
+        mng_uint32  iBuflen,
+        mng_uint32p pWritten );
 
-                                       /* error & trace processing callbacks */
-typedef mng_bool   (MNG_DECL *mng_errorproc)     (mng_handle  hHandle,
-                                                  mng_int32   iErrorcode,
-                                                  mng_int8    iSeverity,
-                                                  mng_chunkid iChunkname,
-                                                  mng_uint32  iChunkseq,
-                                                  mng_int32   iExtra1,
-                                                  mng_int32   iExtra2,
-                                                  mng_pchar   zErrortext);
-typedef mng_bool   (MNG_DECL *mng_traceproc)     (mng_handle  hHandle,
-                                                  mng_int32   iFuncnr,
-                                                  mng_int32   iFuncseq,
-                                                  mng_pchar   zFuncname);
+/* error & trace processing callbacks */
+typedef mng_bool   ( MNG_DECL *mng_errorproc )     ( mng_handle  hHandle,
+        mng_int32   iErrorcode,
+        mng_int8    iSeverity,
+        mng_chunkid iChunkname,
+        mng_uint32  iChunkseq,
+        mng_int32   iExtra1,
+        mng_int32   iExtra2,
+        mng_pchar   zErrortext );
+typedef mng_bool   ( MNG_DECL *mng_traceproc )     ( mng_handle  hHandle,
+        mng_int32   iFuncnr,
+        mng_int32   iFuncseq,
+        mng_pchar   zFuncname );
 
-                                       /* read processing callbacks */
-typedef mng_bool   (MNG_DECL *mng_processheader) (mng_handle  hHandle,
-                                                  mng_uint32  iWidth,
-                                                  mng_uint32  iHeight);
-typedef mng_bool   (MNG_DECL *mng_processtext)   (mng_handle  hHandle,
-                                                  mng_uint8   iType,
-                                                  mng_pchar   zKeyword,
-                                                  mng_pchar   zText,
-                                                  mng_pchar   zLanguage,
-                                                  mng_pchar   zTranslation);
-typedef mng_bool   (MNG_DECL *mng_processsave)   (mng_handle  hHandle);
-typedef mng_bool   (MNG_DECL *mng_processseek)   (mng_handle  hHandle,
-                                                  mng_pchar   zName);
-typedef mng_bool   (MNG_DECL *mng_processneed)   (mng_handle  hHandle,
-                                                  mng_pchar   zKeyword);
-typedef mng_bool   (MNG_DECL *mng_processmend)   (mng_handle  hHandle,
-                                                  mng_uint32  iIterationsdone,
-                                                  mng_uint32  iIterationsleft);
-typedef mng_bool   (MNG_DECL *mng_processunknown) (mng_handle  hHandle,
-                                                   mng_chunkid iChunkid,
-                                                   mng_uint32  iRawlen,
-                                                   mng_ptr     pRawdata);
-typedef mng_bool   (MNG_DECL *mng_processterm)   (mng_handle  hHandle,
-                                                  mng_uint8   iTermaction,
-                                                  mng_uint8   iIteraction,
-                                                  mng_uint32  iDelay,
-                                                  mng_uint32  iItermax);
+/* read processing callbacks */
+typedef mng_bool   ( MNG_DECL *mng_processheader ) ( mng_handle  hHandle,
+        mng_uint32  iWidth,
+        mng_uint32  iHeight );
+typedef mng_bool   ( MNG_DECL *mng_processtext )   ( mng_handle  hHandle,
+        mng_uint8   iType,
+        mng_pchar   zKeyword,
+        mng_pchar   zText,
+        mng_pchar   zLanguage,
+        mng_pchar   zTranslation );
+typedef mng_bool   ( MNG_DECL *mng_processsave )   ( mng_handle  hHandle );
+typedef mng_bool   ( MNG_DECL *mng_processseek )   ( mng_handle  hHandle,
+        mng_pchar   zName );
+typedef mng_bool   ( MNG_DECL *mng_processneed )   ( mng_handle  hHandle,
+        mng_pchar   zKeyword );
+typedef mng_bool   ( MNG_DECL *mng_processmend )   ( mng_handle  hHandle,
+        mng_uint32  iIterationsdone,
+        mng_uint32  iIterationsleft );
+typedef mng_bool   ( MNG_DECL *mng_processunknown ) ( mng_handle  hHandle,
+        mng_chunkid iChunkid,
+        mng_uint32  iRawlen,
+        mng_ptr     pRawdata );
+typedef mng_bool   ( MNG_DECL *mng_processterm )   ( mng_handle  hHandle,
+        mng_uint8   iTermaction,
+        mng_uint8   iIteraction,
+        mng_uint32  iDelay,
+        mng_uint32  iItermax );
 
-                                       /* display processing callbacks */
-typedef mng_ptr    (MNG_DECL *mng_getcanvasline) (mng_handle  hHandle,
-                                                  mng_uint32  iLinenr);
-typedef mng_ptr    (MNG_DECL *mng_getbkgdline)   (mng_handle  hHandle,
-                                                  mng_uint32  iLinenr);
-typedef mng_ptr    (MNG_DECL *mng_getalphaline)  (mng_handle  hHandle,
-                                                  mng_uint32  iLinenr);
-typedef mng_bool   (MNG_DECL *mng_refresh)       (mng_handle  hHandle,
-                                                  mng_uint32  iX,
-                                                  mng_uint32  iY,
-                                                  mng_uint32  iWidth,
-                                                  mng_uint32  iHeight);
+/* display processing callbacks */
+typedef mng_ptr    ( MNG_DECL *mng_getcanvasline ) ( mng_handle  hHandle,
+        mng_uint32  iLinenr );
+typedef mng_ptr    ( MNG_DECL *mng_getbkgdline )   ( mng_handle  hHandle,
+        mng_uint32  iLinenr );
+typedef mng_ptr    ( MNG_DECL *mng_getalphaline )  ( mng_handle  hHandle,
+        mng_uint32  iLinenr );
+typedef mng_bool   ( MNG_DECL *mng_refresh )       ( mng_handle  hHandle,
+        mng_uint32  iX,
+        mng_uint32  iY,
+        mng_uint32  iWidth,
+        mng_uint32  iHeight );
 
-                                       /* timer management callbacks */
-typedef mng_uint32 (MNG_DECL *mng_gettickcount)  (mng_handle  hHandle);
-typedef mng_bool   (MNG_DECL *mng_settimer)      (mng_handle  hHandle,
-                                                  mng_uint32  iMsecs);
+/* timer management callbacks */
+typedef mng_uint32 ( MNG_DECL *mng_gettickcount )  ( mng_handle  hHandle );
+typedef mng_bool   ( MNG_DECL *mng_settimer )      ( mng_handle  hHandle,
+        mng_uint32  iMsecs );
 
-                                       /* color management callbacks */
-typedef mng_bool   (MNG_DECL *mng_processgamma)  (mng_handle  hHandle,
-                                                  mng_uint32  iGamma);
-typedef mng_bool   (MNG_DECL *mng_processchroma) (mng_handle  hHandle,
-                                                  mng_uint32  iWhitepointx,
-                                                  mng_uint32  iWhitepointy,
-                                                  mng_uint32  iRedx,
-                                                  mng_uint32  iRedy,
-                                                  mng_uint32  iGreenx,
-                                                  mng_uint32  iGreeny,
-                                                  mng_uint32  iBluex,
-                                                  mng_uint32  iBluey);
-typedef mng_bool   (MNG_DECL *mng_processsrgb)   (mng_handle  hHandle,
-                                                  mng_uint8   iRenderingintent);
-typedef mng_bool   (MNG_DECL *mng_processiccp)   (mng_handle  hHandle,
-                                                  mng_uint32  iProfilesize,
-                                                  mng_ptr     pProfile);
-typedef mng_bool   (MNG_DECL *mng_processarow)   (mng_handle  hHandle,
-                                                  mng_uint32  iRowsamples,
-                                                  mng_bool    bIsRGBA16,
-                                                  mng_ptr     pRow);
+/* color management callbacks */
+typedef mng_bool   ( MNG_DECL *mng_processgamma )  ( mng_handle  hHandle,
+        mng_uint32  iGamma );
+typedef mng_bool   ( MNG_DECL *mng_processchroma ) ( mng_handle  hHandle,
+        mng_uint32  iWhitepointx,
+        mng_uint32  iWhitepointy,
+        mng_uint32  iRedx,
+        mng_uint32  iRedy,
+        mng_uint32  iGreenx,
+        mng_uint32  iGreeny,
+        mng_uint32  iBluex,
+        mng_uint32  iBluey );
+typedef mng_bool   ( MNG_DECL *mng_processsrgb )   ( mng_handle  hHandle,
+        mng_uint8   iRenderingintent );
+typedef mng_bool   ( MNG_DECL *mng_processiccp )   ( mng_handle  hHandle,
+        mng_uint32  iProfilesize,
+        mng_ptr     pProfile );
+typedef mng_bool   ( MNG_DECL *mng_processarow )   ( mng_handle  hHandle,
+        mng_uint32  iRowsamples,
+        mng_bool    bIsRGBA16,
+        mng_ptr     pRow );
 
-                                       /* chunk access callback(s) */
-typedef mng_bool   (MNG_DECL *mng_iteratechunk)  (mng_handle  hHandle,
-                                                  mng_handle  hChunk,
-                                                  mng_chunkid iChunkid,
-                                                  mng_uint32  iChunkseq);
+/* chunk access callback(s) */
+typedef mng_bool   ( MNG_DECL *mng_iteratechunk )  ( mng_handle  hHandle,
+        mng_handle  hChunk,
+        mng_chunkid iChunkid,
+        mng_uint32  iChunkseq );
 
 /* ************************************************************************** */
 

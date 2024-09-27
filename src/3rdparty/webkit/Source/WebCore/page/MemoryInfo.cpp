@@ -35,16 +35,18 @@
 #include "ScriptGCEvent.h"
 #include "Settings.h"
 
-namespace WebCore {
-
-MemoryInfo::MemoryInfo(Frame* frame)
-        : m_totalJSHeapSize(0),
-          m_usedJSHeapSize(0),
-          m_jsHeapSizeLimit(0)
+namespace WebCore
 {
-    if (frame && frame->settings() && frame->settings()->memoryInfoEnabled()) {
+
+MemoryInfo::MemoryInfo( Frame *frame )
+    : m_totalJSHeapSize( 0 ),
+      m_usedJSHeapSize( 0 ),
+      m_jsHeapSizeLimit( 0 )
+{
+    if ( frame && frame->settings() && frame->settings()->memoryInfoEnabled() )
+    {
 #if ENABLE(INSPECTOR)
-        ScriptGCEvent::getHeapSize(m_usedJSHeapSize, m_totalJSHeapSize, m_jsHeapSizeLimit);
+        ScriptGCEvent::getHeapSize( m_usedJSHeapSize, m_totalJSHeapSize, m_jsHeapSizeLimit );
 #endif
     }
 }

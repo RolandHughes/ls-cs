@@ -33,53 +33,53 @@ class QDeclarativeImagePrivate;
 
 class QDeclarativeImage : public QDeclarativeImageBase
 {
-   DECL_CS_OBJECT(QDeclarativeImage)
-   DECL_CS_ENUM(FillMode)
+    DECL_CS_OBJECT( QDeclarativeImage )
+    DECL_CS_ENUM( FillMode )
 
-   DECL_CS_PROPERTY_READ(fillMode, fillMode)
-   DECL_CS_PROPERTY_WRITE(fillMode, setFillMode)
-   DECL_CS_PROPERTY_NOTIFY(fillMode, fillModeChanged)
-   DECL_CS_PROPERTY_READ(paintedWidth, paintedWidth)
-   DECL_CS_PROPERTY_NOTIFY(paintedWidth, paintedGeometryChanged)
-   DECL_CS_PROPERTY_READ(paintedHeight, paintedHeight)
-   DECL_CS_PROPERTY_NOTIFY(paintedHeight, paintedGeometryChanged)
+    DECL_CS_PROPERTY_READ( fillMode, fillMode )
+    DECL_CS_PROPERTY_WRITE( fillMode, setFillMode )
+    DECL_CS_PROPERTY_NOTIFY( fillMode, fillModeChanged )
+    DECL_CS_PROPERTY_READ( paintedWidth, paintedWidth )
+    DECL_CS_PROPERTY_NOTIFY( paintedWidth, paintedGeometryChanged )
+    DECL_CS_PROPERTY_READ( paintedHeight, paintedHeight )
+    DECL_CS_PROPERTY_NOTIFY( paintedHeight, paintedGeometryChanged )
 
- public:
-   QDeclarativeImage(QDeclarativeItem *parent = 0);
-   ~QDeclarativeImage();
+public:
+    QDeclarativeImage( QDeclarativeItem *parent = 0 );
+    ~QDeclarativeImage();
 
-   enum FillMode { Stretch, PreserveAspectFit, PreserveAspectCrop, Tile, TileVertically, TileHorizontally };
-   FillMode fillMode() const;
-   void setFillMode(FillMode);
+    enum FillMode { Stretch, PreserveAspectFit, PreserveAspectCrop, Tile, TileVertically, TileHorizontally };
+    FillMode fillMode() const;
+    void setFillMode( FillMode );
 
-   QPixmap pixmap() const;
-   void setPixmap(const QPixmap &);
+    QPixmap pixmap() const;
+    void setPixmap( const QPixmap & );
 
-   qreal paintedWidth() const;
-   qreal paintedHeight() const;
+    qreal paintedWidth() const;
+    qreal paintedHeight() const;
 
-   void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *);
-   QRectF boundingRect() const;
+    void paint( QPainter *, const QStyleOptionGraphicsItem *, QWidget * );
+    QRectF boundingRect() const;
 
-   DECL_CS_SIGNAL_1(Public, void fillModeChanged())
-   DECL_CS_SIGNAL_2(fillModeChanged)
-   DECL_CS_SIGNAL_1(Public, void paintedGeometryChanged())
-   DECL_CS_SIGNAL_2(paintedGeometryChanged)
+    DECL_CS_SIGNAL_1( Public, void fillModeChanged() )
+    DECL_CS_SIGNAL_2( fillModeChanged )
+    DECL_CS_SIGNAL_1( Public, void paintedGeometryChanged() )
+    DECL_CS_SIGNAL_2( paintedGeometryChanged )
 
- protected:
-   QDeclarativeImage(QDeclarativeImagePrivate &dd, QDeclarativeItem *parent);
-   void geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry);
-   void pixmapChange();
-   void updatePaintedGeometry();
+protected:
+    QDeclarativeImage( QDeclarativeImagePrivate &dd, QDeclarativeItem *parent );
+    void geometryChanged( const QRectF &newGeometry, const QRectF &oldGeometry );
+    void pixmapChange();
+    void updatePaintedGeometry();
 
- private:
-   Q_DISABLE_COPY(QDeclarativeImage)
-   Q_DECLARE_PRIVATE_D(QGraphicsItem::d_ptr.data(), QDeclarativeImage)
+private:
+    Q_DISABLE_COPY( QDeclarativeImage )
+    Q_DECLARE_PRIVATE_D( QGraphicsItem::d_ptr.data(), QDeclarativeImage )
 };
 
 QT_END_NAMESPACE
 
-QML_DECLARE_TYPE(QDeclarativeImage)
+QML_DECLARE_TYPE( QDeclarativeImage )
 
 
 #endif // QDECLARATIVEIMAGE_H

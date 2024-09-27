@@ -24,108 +24,108 @@
 
 #include <cs_catch2.h>
 
-TEST_CASE("QMetaMethod traits", "[qmetamethod]")
+TEST_CASE( "QMetaMethod traits", "[qmetamethod]" )
 {
-   REQUIRE(std::is_copy_constructible_v<QMetaMethod> == true);
-   REQUIRE(std::is_move_constructible_v<QMetaMethod> == true);
+    REQUIRE( std::is_copy_constructible_v<QMetaMethod> == true );
+    REQUIRE( std::is_move_constructible_v<QMetaMethod> == true );
 
-   REQUIRE(std::is_copy_assignable_v<QMetaMethod> == true);
-   REQUIRE(std::is_move_assignable_v<QMetaMethod> == true);
+    REQUIRE( std::is_copy_assignable_v<QMetaMethod> == true );
+    REQUIRE( std::is_move_assignable_v<QMetaMethod> == true );
 
-   REQUIRE(std::has_virtual_destructor_v<QMetaMethod> == false);
+    REQUIRE( std::has_virtual_destructor_v<QMetaMethod> == false );
 }
 
 class Ginger_MM : public QObject
 {
-   CS_OBJECT(Ginger_MM)
+    CS_OBJECT( Ginger_MM )
 
-   public:
-      CS_INVOKABLE_METHOD_1(Public, QStringView someMethodName(QString, bool))
-      CS_INVOKABLE_METHOD_2(someMethodName)
+public:
+    CS_INVOKABLE_METHOD_1( Public, QStringView someMethodName( QString, bool ) )
+    CS_INVOKABLE_METHOD_2( someMethodName )
 
-      CS_SIGNAL_1(Public, void titleChanged(QString str))
-      CS_SIGNAL_2(titleChanged, str)
+    CS_SIGNAL_1( Public, void titleChanged( QString str ) )
+    CS_SIGNAL_2( titleChanged, str )
 
-   private:
-      CS_SLOT_1(Private, void actionB(const QString &value))
-      CS_SLOT_2(actionB)
+private:
+    CS_SLOT_1( Private, void actionB( const QString &value ) )
+    CS_SLOT_2( actionB )
 };
 
-QStringView Ginger_MM::someMethodName(QString, bool)
+QStringView Ginger_MM::someMethodName( QString, bool )
 {
-   return QStringView();
+    return QStringView();
 }
 
-void Ginger_MM::actionB(const QString &)
+void Ginger_MM::actionB( const QString & )
 {
 }
 
 
-TEST_CASE("QMetaMethod access_methods", "[qmetamethod]")
+TEST_CASE( "QMetaMethod access_methods", "[qmetamethod]" )
 {
-   Ginger_MM obj;
+    Ginger_MM obj;
 
-   const QMetaObject &metaObj = Ginger_MM::staticMetaObject();
+    const QMetaObject &metaObj = Ginger_MM::staticMetaObject();
 
-   {
-      QMetaMethod method;
-      REQUIRE(method.isValid() == false);
-      REQUIRE(method.name().isEmpty());
-   }
+    {
+        QMetaMethod method;
+        REQUIRE( method.isValid() == false );
+        REQUIRE( method.name().isEmpty() );
+    }
 
-   {
-      QMetaMethod method = metaObj.method(0);
+    {
+        QMetaMethod method = metaObj.method( 0 );
 
-      REQUIRE(method.isValid() == true);
-      REQUIRE(Ginger_MM::staticMetaObject().methodCount() == 8);
+        REQUIRE( method.isValid() == true );
+        REQUIRE( Ginger_MM::staticMetaObject().methodCount() == 8 );
 
-      REQUIRE(Ginger_MM::staticMetaObject().indexOfSignal("titleChanged(QString)") == 0);
-      REQUIRE(! method.name().isEmpty());
-      REQUIRE(method.access() == QMetaMethod::Public);
-      REQUIRE(method.methodType() == QMetaMethod::Signal);
-   }
+        REQUIRE( Ginger_MM::staticMetaObject().indexOfSignal( "titleChanged(QString)" ) == 0 );
+        REQUIRE( ! method.name().isEmpty() );
+        REQUIRE( method.access() == QMetaMethod::Public );
+        REQUIRE( method.methodType() == QMetaMethod::Signal );
+    }
 
-   {
-      QMetaMethod method = metaObj.method(metaObj.indexOfMethod("actionB(const QString &)"));
+    {
+        QMetaMethod method = metaObj.method( metaObj.indexOfMethod( "actionB(const QString &)" ) );
 
-      REQUIRE(method.isValid() == true);
-      REQUIRE(method.name() == "actionB");
-      REQUIRE(method.parameterCount() == 1);
-      REQUIRE(method.access() == QMetaMethod::Private);
-      REQUIRE(method.methodType() == QMetaMethod::Slot);
-      REQUIRE(method.typeName() == "void");
-   }
+        REQUIRE( method.isValid() == true );
+        REQUIRE( method.name() == "actionB" );
+        REQUIRE( method.parameterCount() == 1 );
+        REQUIRE( method.access() == QMetaMethod::Private );
+        REQUIRE( method.methodType() == QMetaMethod::Slot );
+        REQUIRE( method.typeName() == "void" );
+    }
 }
 
-TEST_CASE("QMetaMethod method", "[qmetamethod]")
+TEST_CASE( "QMetaMethod method", "[qmetamethod]" )
 {
-   QString signature = "someMethodName(QString,bool)";
+    QString signature = "someMethodName(QString,bool)";
 
-   Ginger_MM obj;
+    Ginger_MM obj;
 
-   const QMetaObject &metaObj = Ginger_MM::staticMetaObject();
+    const QMetaObject &metaObj = Ginger_MM::staticMetaObject();
 
-   int index = metaObj.indexOfMethod(signature);
-   QMetaMethod method = metaObj.method(index);
+    int index = metaObj.indexOfMethod( signature );
+    QMetaMethod method = metaObj.method( index );
 
-   REQUIRE(index != -1);
+    REQUIRE( index != -1 );
 
-   REQUIRE(method.isValid() == true);
-   REQUIRE(method.name() == "someMethodName");
-   REQUIRE(method.parameterCount() == 2);
-   REQUIRE(method.access() == QMetaMethod::Public);
-   REQUIRE(method.methodType() == QMetaMethod::Method);
-   REQUIRE(method.typeName() == "QStringView");
+    REQUIRE( method.isValid() == true );
+    REQUIRE( method.name() == "someMethodName" );
+    REQUIRE( method.parameterCount() == 2 );
+    REQUIRE( method.access() == QMetaMethod::Public );
+    REQUIRE( method.methodType() == QMetaMethod::Method );
+    REQUIRE( method.typeName() == "QStringView" );
 }
 
-TEST_CASE("QMetaMethod invalid_signature", "[qmetamethod]")
+TEST_CASE( "QMetaMethod invalid_signature", "[qmetamethod]" )
 {
-   Ginger_MM obj;
+    Ginger_MM obj;
 
-   const QMetaObject &metaObj = Ginger_MM::staticMetaObject();
+    const QMetaObject &metaObj = Ginger_MM::staticMetaObject();
 
-   // signature is invalid on purpose (missing &)
-   QMetaMethod method = metaObj.method(metaObj.indexOfMethod("actionB(const QString)"));
+    // signature is invalid on purpose (missing &)
+    QMetaMethod method = metaObj.method( metaObj.indexOfMethod( "actionB(const QString)" ) );
 
-   REQUIRE(method.isValid() == false);
+    REQUIRE( method.isValid() == false );
 }

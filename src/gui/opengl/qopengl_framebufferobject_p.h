@@ -33,9 +33,9 @@ class QOpenGLFramebufferObjectFormatPrivate
 {
 public:
     QOpenGLFramebufferObjectFormatPrivate()
-        : ref(1), samples(0),
-          attachment(QOpenGLFramebufferObject::NoAttachment),
-          target(GL_TEXTURE_2D), mipmap(false)
+        : ref( 1 ), samples( 0 ),
+          attachment( QOpenGLFramebufferObject::NoAttachment ),
+          target( GL_TEXTURE_2D ), mipmap( false )
     {
 #ifndef QT_OPENGL_ES_2
         // There is nothing that says QOpenGLFramebufferObjectFormat needs a current
@@ -49,13 +49,13 @@ public:
 #endif
     }
     QOpenGLFramebufferObjectFormatPrivate
-            (const QOpenGLFramebufferObjectFormatPrivate *other)
-        : ref(1), samples(other->samples), attachment(other->attachment),
-          target(other->target), internal_format(other->internal_format), mipmap(other->mipmap)
+    ( const QOpenGLFramebufferObjectFormatPrivate *other )
+        : ref( 1 ), samples( other->samples ), attachment( other->attachment ),
+          target( other->target ), internal_format( other->internal_format ), mipmap( other->mipmap )
     {
     }
 
-    bool equals(const QOpenGLFramebufferObjectFormatPrivate *other)
+    bool equals( const QOpenGLFramebufferObjectFormatPrivate *other )
     {
         return samples == other->samples &&
                attachment == other->attachment &&
@@ -76,22 +76,22 @@ class QOpenGLFramebufferObjectPrivate
 {
 public:
     QOpenGLFramebufferObjectPrivate()
-      : fbo_guard(nullptr), depth_buffer_guard(nullptr), stencil_buffer_guard(nullptr), valid(false)
-   {
-   }
+        : fbo_guard( nullptr ), depth_buffer_guard( nullptr ), stencil_buffer_guard( nullptr ), valid( false )
+    {
+    }
 
     ~QOpenGLFramebufferObjectPrivate() {}
 
-    void init(QOpenGLFramebufferObject *q, const QSize &size,
-              QOpenGLFramebufferObject::Attachment attachment,
-              GLenum texture_target, GLenum internal_format,
-              GLint samples = 0, bool mipmap = false);
+    void init( QOpenGLFramebufferObject *q, const QSize &size,
+               QOpenGLFramebufferObject::Attachment attachment,
+               GLenum texture_target, GLenum internal_format,
+               GLint samples = 0, bool mipmap = false );
 
-    void initTexture(int idx);
-    void initColorBuffer(int idx, GLint *samples);
-    void initDepthStencilAttachments(QOpenGLContext *ctx, QOpenGLFramebufferObject::Attachment attachment);
+    void initTexture( int idx );
+    void initColorBuffer( int idx, GLint *samples );
+    void initDepthStencilAttachments( QOpenGLContext *ctx, QOpenGLFramebufferObject::Attachment attachment );
 
-    bool checkFramebufferStatus(QOpenGLContext *ctx) const;
+    bool checkFramebufferStatus( QOpenGLContext *ctx ) const;
     QOpenGLSharedResourceGuard *fbo_guard;
     QOpenGLSharedResourceGuard *depth_buffer_guard;
     QOpenGLSharedResourceGuard *stencil_buffer_guard;
@@ -103,14 +103,15 @@ public:
     QOpenGLFramebufferObject::Attachment fbo_attachment;
     QOpenGLExtensions funcs;
 
-    struct ColorAttachment {
+    struct ColorAttachment
+    {
         ColorAttachment()
-           : internalFormat(0), guard(nullptr)
+            : internalFormat( 0 ), guard( nullptr )
         {
         }
 
-        ColorAttachment(const QSize &size, GLenum internalFormat)
-            : size(size), internalFormat(internalFormat), guard(nullptr)
+        ColorAttachment( const QSize &size, GLenum internalFormat )
+            : size( size ), internalFormat( internalFormat ), guard( nullptr )
         {
         }
 
@@ -120,7 +121,10 @@ public:
     };
     QVector<ColorAttachment> colorAttachments;
 
-    inline GLuint fbo() const { return fbo_guard ? fbo_guard->id() : 0; }
+    inline GLuint fbo() const
+    {
+        return fbo_guard ? fbo_guard->id() : 0;
+    }
 };
 
 

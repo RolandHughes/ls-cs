@@ -26,29 +26,34 @@
 #if ENABLE(FILTERS)
 #include "LightSource.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class PointLightSource : public LightSource {
+class PointLightSource : public LightSource
+{
 public:
-    static PassRefPtr<PointLightSource> create(const FloatPoint3D& position)
+    static PassRefPtr<PointLightSource> create( const FloatPoint3D &position )
     {
-        return adoptRef(new PointLightSource(position));
+        return adoptRef( new PointLightSource( position ) );
     }
 
-    const FloatPoint3D& position() const { return m_position; }
-    bool setX(float);
-    bool setY(float);
-    bool setZ(float);
+    const FloatPoint3D &position() const
+    {
+        return m_position;
+    }
+    bool setX( float );
+    bool setY( float );
+    bool setZ( float );
 
-    virtual void initPaintingData(PaintingData&);
-    virtual void updatePaintingData(PaintingData&, int x, int y, float z);
+    virtual void initPaintingData( PaintingData & );
+    virtual void updatePaintingData( PaintingData &, int x, int y, float z );
 
-    virtual TextStream& externalRepresentation(TextStream&) const;
+    virtual TextStream &externalRepresentation( TextStream & ) const;
 
 private:
-    PointLightSource(const FloatPoint3D& position)
-        : LightSource(LS_POINT)
-        , m_position(position)
+    PointLightSource( const FloatPoint3D &position )
+        : LightSource( LS_POINT )
+        , m_position( position )
     {
     }
 

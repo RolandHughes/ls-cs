@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef DecimalNumber_h
@@ -31,66 +31,86 @@
 #include <wtf/MathExtras.h>
 #include <wtf/text/WTFString.h>
 
-namespace WTF {
+namespace WTF
+{
 
 enum RoundingSignificantFiguresType { RoundingSignificantFigures };
 enum RoundingDecimalPlacesType { RoundingDecimalPlaces };
 
-class DecimalNumber {
+class DecimalNumber
+{
 public:
-    DecimalNumber(double d)
+    DecimalNumber( double d )
     {
-        ASSERT(! std::isnan(d) && ! std::isinf(d));
-        dtoa(m_significand, d, m_sign, m_exponent, m_precision);
+        ASSERT( ! std::isnan( d ) && ! std::isinf( d ) );
+        dtoa( m_significand, d, m_sign, m_exponent, m_precision );
 
-        ASSERT(m_precision);
+        ASSERT( m_precision );
         // Zero should always have exponent 0.
-        ASSERT(m_significand[0] != '0' || !m_exponent);
+        ASSERT( m_significand[0] != '0' || !m_exponent );
         // No values other than zero should have a leading zero.
-        ASSERT(m_significand[0] != '0' || m_precision == 1);
+        ASSERT( m_significand[0] != '0' || m_precision == 1 );
         // No values other than zero should have trailing zeros.
-        ASSERT(m_significand[0] == '0' || m_significand[m_precision - 1] != '0');
+        ASSERT( m_significand[0] == '0' || m_significand[m_precision - 1] != '0' );
     }
 
-    DecimalNumber(double d, RoundingSignificantFiguresType, unsigned significantFigures)
+    DecimalNumber( double d, RoundingSignificantFiguresType, unsigned significantFigures )
     {
-        ASSERT(! std::isnan(d) && ! std::isinf(d));
-        dtoaRoundSF(m_significand, d, significantFigures, m_sign, m_exponent, m_precision);
+        ASSERT( ! std::isnan( d ) && ! std::isinf( d ) );
+        dtoaRoundSF( m_significand, d, significantFigures, m_sign, m_exponent, m_precision );
 
-        ASSERT(significantFigures && significantFigures <= sizeof(DtoaBuffer));
-        while (m_precision < significantFigures)
+        ASSERT( significantFigures && significantFigures <= sizeof( DtoaBuffer ) );
+
+        while ( m_precision < significantFigures )
+        {
             m_significand[m_precision++] = '0';
+        }
 
-        ASSERT(m_precision);
+        ASSERT( m_precision );
         // Zero should always have exponent 0.
-        ASSERT(m_significand[0] != '0' || !m_exponent);
+        ASSERT( m_significand[0] != '0' || !m_exponent );
     }
 
-    DecimalNumber(double d, RoundingDecimalPlacesType, unsigned decimalPlaces)
+    DecimalNumber( double d, RoundingDecimalPlacesType, unsigned decimalPlaces )
     {
-        ASSERT(! std::isnan(d) && ! std::isinf(d));
-        dtoaRoundDP(m_significand, d, decimalPlaces, m_sign, m_exponent, m_precision);
+        ASSERT( ! std::isnan( d ) && ! std::isinf( d ) );
+        dtoaRoundDP( m_significand, d, decimalPlaces, m_sign, m_exponent, m_precision );
 
         unsigned significantFigures = 1 + m_exponent + decimalPlaces;
-        ASSERT(significantFigures && significantFigures <= sizeof(DtoaBuffer));
-        while (m_precision < significantFigures)
-            m_significand[m_precision++] = '0';
+        ASSERT( significantFigures && significantFigures <= sizeof( DtoaBuffer ) );
 
-        ASSERT(m_precision);
+        while ( m_precision < significantFigures )
+        {
+            m_significand[m_precision++] = '0';
+        }
+
+        ASSERT( m_precision );
         // Zero should always have exponent 0.
-        ASSERT(m_significand[0] != '0' || !m_exponent);
+        ASSERT( m_significand[0] != '0' || !m_exponent );
     }
 
     unsigned bufferLengthForStringDecimal() const;
     unsigned bufferLengthForStringExponential() const;
 
-    unsigned toStringDecimal(UChar* buffer, unsigned bufferLength) const;
-    unsigned toStringExponential(UChar* buffer, unsigned bufferLength) const;
+    unsigned toStringDecimal( UChar *buffer, unsigned bufferLength ) const;
+    unsigned toStringExponential( UChar *buffer, unsigned bufferLength ) const;
 
-    bool sign() const { return m_sign; }
-    int exponent() const { return m_exponent; }
-    const char* significand() const { return m_significand; } // significand contains precision characters, is not null-terminated.
-    unsigned precision() const { return m_precision; }
+    bool sign() const
+    {
+        return m_sign;
+    }
+    int exponent() const
+    {
+        return m_exponent;
+    }
+    const char *significand() const
+    {
+        return m_significand;    // significand contains precision characters, is not null-terminated.
+    }
+    unsigned precision() const
+    {
+        return m_precision;
+    }
 
 private:
     bool m_sign;

@@ -44,7 +44,8 @@
 #include "config.h"
 #include "ScrollBehavior.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 const ScrollAlignment ScrollAlignment::alignCenterIfNeeded = { noScroll, alignCenter, alignToClosestEdge };
 const ScrollAlignment ScrollAlignment::alignToEdgeIfNeeded = { noScroll, alignToClosestEdge, alignToClosestEdge };

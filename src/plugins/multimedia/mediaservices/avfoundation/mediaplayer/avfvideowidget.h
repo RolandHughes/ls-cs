@@ -35,31 +35,31 @@
 
 class AVFVideoWidget : public QWidget
 {
- public:
-   AVFVideoWidget(QWidget *parent);
-   virtual ~AVFVideoWidget();
+public:
+    AVFVideoWidget( QWidget *parent );
+    virtual ~AVFVideoWidget();
 
-   QSize sizeHint() const;
-   Qt::AspectRatioMode aspectRatioMode() const;
-   void setAspectRatioMode(Qt::AspectRatioMode mode);
-   void setPlayerLayer(AVPlayerLayer *layer);
+    QSize sizeHint() const;
+    Qt::AspectRatioMode aspectRatioMode() const;
+    void setAspectRatioMode( Qt::AspectRatioMode mode );
+    void setPlayerLayer( AVPlayerLayer *layer );
 
- protected:
-   void resizeEvent(QResizeEvent *);
-   void paintEvent(QPaintEvent *);
+protected:
+    void resizeEvent( QResizeEvent * );
+    void paintEvent( QPaintEvent * );
 
- private:
-   void updateAspectRatio();
-   void updatePlayerLayerBounds(const QSize &size);
+private:
+    void updateAspectRatio();
+    void updatePlayerLayerBounds( const QSize &size );
 
-   QSize m_nativeSize;
-   Qt::AspectRatioMode m_aspectRatioMode;
-   AVPlayerLayer *m_playerLayer;
+    QSize m_nativeSize;
+    Qt::AspectRatioMode m_aspectRatioMode;
+    AVPlayerLayer *m_playerLayer;
 
 #if defined(Q_OS_DARWIN)
-   NSView *m_nativeView;
+    NSView *m_nativeView;
 #else
-   UIView *m_nativeView;
+    UIView *m_nativeView;
 #endif
 
 };

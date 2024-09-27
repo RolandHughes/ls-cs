@@ -27,32 +27,39 @@
 
 class QWebPagePrivate;
 
-class QWebHistoryItemPrivate : public QSharedData {
+class QWebHistoryItemPrivate : public QSharedData
+{
 public:
-    static QExplicitlySharedDataPointer<QWebHistoryItemPrivate> get(QWebHistoryItem* q)
+    static QExplicitlySharedDataPointer<QWebHistoryItemPrivate> get( QWebHistoryItem *q )
     {
         return q->d;
     }
-    QWebHistoryItemPrivate(WebCore::HistoryItem* i)
+    QWebHistoryItemPrivate( WebCore::HistoryItem *i )
     {
-        if (i)
+        if ( i )
+        {
             i->ref();
+        }
+
         item = i;
     }
     ~QWebHistoryItemPrivate()
     {
-        if (item)
+        if ( item )
+        {
             item->deref();
+        }
     }
 
-    static WebCore::HistoryItem* core(const QWebHistoryItem* q);
+    static WebCore::HistoryItem *core( const QWebHistoryItem *q );
 
-    WebCore::HistoryItem* item;
+    WebCore::HistoryItem *item;
 };
 
-class QWebHistoryPrivate : public QSharedData {
+class QWebHistoryPrivate : public QSharedData
+{
 public:
-    QWebHistoryPrivate(WebCore::BackForwardListImpl* l)
+    QWebHistoryPrivate( WebCore::BackForwardListImpl *l )
     {
         l->ref();
         lst = l;
@@ -62,9 +69,9 @@ public:
         lst->deref();
     }
 
-    QWebPagePrivate* page();
+    QWebPagePrivate *page();
 
-    WebCore::BackForwardListImpl* lst;
+    WebCore::BackForwardListImpl *lst;
 };
 
 

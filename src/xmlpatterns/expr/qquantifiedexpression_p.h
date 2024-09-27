@@ -26,43 +26,45 @@
 
 #include <qpaircontainer_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class QuantifiedExpression : public PairContainer
 {
- public:
-   enum Operator {
-      Some    = 1,
-      Every
-   };
+public:
+    enum Operator
+    {
+        Some    = 1,
+        Every
+    };
 
-   QuantifiedExpression(const VariableSlotID varSlot,
-                        const Operator quantifier,
-                        const Expression::Ptr &inClause,
-                        const Expression::Ptr &testExpression);
+    QuantifiedExpression( const VariableSlotID varSlot,
+                          const Operator quantifier,
+                          const Expression::Ptr &inClause,
+                          const Expression::Ptr &testExpression );
 
-   bool evaluateEBV(const DynamicContext::Ptr &context) const override;
-   SequenceType::Ptr staticType() const override;
-   SequenceType::List expectedOperandTypes() const override;
+    bool evaluateEBV( const DynamicContext::Ptr &context ) const override;
+    SequenceType::Ptr staticType() const override;
+    SequenceType::List expectedOperandTypes() const override;
 
-   Operator operatorID() const;
+    Operator operatorID() const;
 
-   /**
-    * Determines the string representation for a quantification operator.
-    *
-    * @return "some" if @p quantifier is Some, or "every" if @p quantifier
-    * is Every
-    */
-   static QString displayName(const Operator quantifier);
+    /**
+     * Determines the string representation for a quantification operator.
+     *
+     * @return "some" if @p quantifier is Some, or "every" if @p quantifier
+     * is Every
+     */
+    static QString displayName( const Operator quantifier );
 
-   ExpressionVisitorResult::Ptr accept(const ExpressionVisitor::Ptr &visitor) const override;
+    ExpressionVisitorResult::Ptr accept( const ExpressionVisitor::Ptr &visitor ) const override;
 
-   inline Item mapToItem(const Item &item, const DynamicContext::Ptr &context) const;
+    inline Item mapToItem( const Item &item, const DynamicContext::Ptr &context ) const;
 
- private:
-   typedef QExplicitlySharedDataPointer<const QuantifiedExpression> ConstPtr;
-   const VariableSlotID m_varSlot;
-   const Operator m_quantifier;
+private:
+    typedef QExplicitlySharedDataPointer<const QuantifiedExpression> ConstPtr;
+    const VariableSlotID m_varSlot;
+    const Operator m_quantifier;
 };
 }
 

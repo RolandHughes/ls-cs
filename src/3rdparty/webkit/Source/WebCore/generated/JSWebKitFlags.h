@@ -28,27 +28,33 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class WebKitFlags;
 
-class JSWebKitFlags : public JSDOMWrapper {
+class JSWebKitFlags : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSWebKitFlags(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<WebKitFlags>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
-    virtual void put(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::JSValue, JSC::PutPropertySlot&);
+    JSWebKitFlags( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<WebKitFlags> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
+    virtual void put( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::JSValue, JSC::PutPropertySlot & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
-    WebKitFlags* impl() const { return m_impl.get(); }
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
+    WebKitFlags *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<WebKitFlags> m_impl;
@@ -56,30 +62,33 @@ protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, WebKitFlags*);
-WebKitFlags* toWebKitFlags(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, WebKitFlags * );
+WebKitFlags *toWebKitFlags( JSC::JSValue );
 
-class JSWebKitFlagsPrototype : public JSC::JSObjectWithGlobalObject {
+class JSWebKitFlagsPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSWebKitFlagsPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSWebKitFlagsPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                            JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = Base::StructureFlags;
 };
 
 // Attributes
 
-JSC::JSValue jsWebKitFlagsCreate(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSWebKitFlagsCreate(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsWebKitFlagsExclusive(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSWebKitFlagsExclusive(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsWebKitFlagsConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsWebKitFlagsCreate( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSWebKitFlagsCreate( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsWebKitFlagsExclusive( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSWebKitFlagsExclusive( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsWebKitFlagsConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

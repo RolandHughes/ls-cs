@@ -25,25 +25,39 @@
 #include "FloatRect.h"
 #include "RenderSVGResource.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class RenderSVGResourceSolidColor : public RenderSVGResource {
+class RenderSVGResourceSolidColor : public RenderSVGResource
+{
 public:
     RenderSVGResourceSolidColor();
     virtual ~RenderSVGResourceSolidColor();
 
-    virtual void removeAllClientsFromCache(bool = true) { }
-    virtual void removeClientFromCache(RenderObject*, bool = true) { }
+    virtual void removeAllClientsFromCache( bool = true ) { }
+    virtual void removeClientFromCache( RenderObject *, bool = true ) { }
 
-    virtual bool applyResource(RenderObject*, RenderStyle*, GraphicsContext*&, unsigned short resourceMode);
-    virtual void postApplyResource(RenderObject*, GraphicsContext*&, unsigned short resourceMode, const Path*);
-    virtual FloatRect resourceBoundingBox(RenderObject*) { return FloatRect(); }
+    virtual bool applyResource( RenderObject *, RenderStyle *, GraphicsContext *&, unsigned short resourceMode );
+    virtual void postApplyResource( RenderObject *, GraphicsContext *&, unsigned short resourceMode, const Path * );
+    virtual FloatRect resourceBoundingBox( RenderObject * )
+    {
+        return FloatRect();
+    }
 
-    virtual RenderSVGResourceType resourceType() const { return s_resourceType; }
+    virtual RenderSVGResourceType resourceType() const
+    {
+        return s_resourceType;
+    }
     static RenderSVGResourceType s_resourceType;
 
-    const Color& color() const { return m_color; }
-    void setColor(const Color& color) { m_color = color; }
+    const Color &color() const
+    {
+        return m_color;
+    }
+    void setColor( const Color &color )
+    {
+        m_color = color;
+    }
 
 private:
     Color m_color;

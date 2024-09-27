@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef HTMLEntitySearch_h
@@ -28,32 +28,47 @@
 
 #include "PlatformString.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 struct HTMLEntityTableEntry;
 
-class HTMLEntitySearch {
+class HTMLEntitySearch
+{
 public:
     HTMLEntitySearch();
 
-    void advance(UChar);
+    void advance( UChar );
 
-    bool isEntityPrefix() const { return !!m_first; }
-    UChar32 currentValue() const { return m_currentValue; }
-    int currentLength() const { return m_currentLength; }
+    bool isEntityPrefix() const
+    {
+        return !!m_first;
+    }
+    UChar32 currentValue() const
+    {
+        return m_currentValue;
+    }
+    int currentLength() const
+    {
+        return m_currentLength;
+    }
 
-    const HTMLEntityTableEntry* mostRecentMatch() const { return m_mostRecentMatch; }
+    const HTMLEntityTableEntry *mostRecentMatch() const
+    {
+        return m_mostRecentMatch;
+    }
 
 private:
-    enum CompareResult {
+    enum CompareResult
+    {
         Before,
         Prefix,
         After,
     };
 
-    CompareResult compare(const HTMLEntityTableEntry*, UChar) const;
-    const HTMLEntityTableEntry* findFirst(UChar) const;
-    const HTMLEntityTableEntry* findLast(UChar) const;
+    CompareResult compare( const HTMLEntityTableEntry *, UChar ) const;
+    const HTMLEntityTableEntry *findFirst( UChar ) const;
+    const HTMLEntityTableEntry *findLast( UChar ) const;
 
     void fail()
     {
@@ -65,9 +80,9 @@ private:
     int m_currentLength;
     UChar32 m_currentValue;
 
-    const HTMLEntityTableEntry* m_mostRecentMatch;
-    const HTMLEntityTableEntry* m_first;
-    const HTMLEntityTableEntry* m_last;
+    const HTMLEntityTableEntry *m_mostRecentMatch;
+    const HTMLEntityTableEntry *m_first;
+    const HTMLEntityTableEntry *m_last;
 };
 
 }

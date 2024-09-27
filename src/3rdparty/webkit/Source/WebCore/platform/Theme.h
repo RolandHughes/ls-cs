@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef Theme_h
@@ -34,13 +34,15 @@
 #include "PlatformString.h"
 #include "ThemeTypes.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class GraphicsContext;
 class ScrollView;
 
 // Unlike other platform classes, Theme does extensively use virtual functions.  This design allows a platform to switch between multiple themes at runtime.
-class Theme {
+class Theme
+{
 public:
     Theme() { }
     virtual ~Theme() { }
@@ -49,62 +51,111 @@ public:
     // position cannot be determined by examining child content. Checkboxes and radio buttons are examples of
     // controls that need to do this.  The adjustment is an offset that adds to the baseline, e.g., marginTop() + height() + |offset|.
     // The offset is not zoomed.
-    virtual int baselinePositionAdjustment(ControlPart) const { return 0; }
+    virtual int baselinePositionAdjustment( ControlPart ) const
+    {
+        return 0;
+    }
 
     // A method asking if the control changes its appearance when the window is inactive.
-    virtual bool controlHasInactiveAppearance(ControlPart) const { return false; }
-    
+    virtual bool controlHasInactiveAppearance( ControlPart ) const
+    {
+        return false;
+    }
+
     // General methods for whether or not any of the controls in the theme change appearance when the window is inactive or
     // when hovered over.
-    virtual bool controlsCanHaveInactiveAppearance() const { return false; }
-    virtual bool controlsCanHaveHoveredAppearance() const { return false; }
+    virtual bool controlsCanHaveInactiveAppearance() const
+    {
+        return false;
+    }
+    virtual bool controlsCanHaveHoveredAppearance() const
+    {
+        return false;
+    }
 
     // Used by RenderTheme::isControlStyled to figure out if the native look and feel should be turned off.
-    virtual bool controlDrawsBorder(ControlPart) const { return true; }
-    virtual bool controlDrawsBackground(ControlPart) const { return true; }
-    virtual bool controlDrawsFocusOutline(ControlPart) const { return true; }
+    virtual bool controlDrawsBorder( ControlPart ) const
+    {
+        return true;
+    }
+    virtual bool controlDrawsBackground( ControlPart ) const
+    {
+        return true;
+    }
+    virtual bool controlDrawsFocusOutline( ControlPart ) const
+    {
+        return true;
+    }
 
     // Methods for obtaining platform-specific colors.
-    virtual Color selectionColor(ControlPart, ControlState, SelectionPart) const { return Color(); }
-    virtual Color textSearchHighlightColor() const { return Color(); }
-    
+    virtual Color selectionColor( ControlPart, ControlState, SelectionPart ) const
+    {
+        return Color();
+    }
+    virtual Color textSearchHighlightColor() const
+    {
+        return Color();
+    }
+
     // CSS system colors and fonts
-    virtual Color systemColor(ThemeColor) const { return Color(); }
-    virtual Font systemFont(ThemeFont, FontDescription&) const { return Font(); }
-    
+    virtual Color systemColor( ThemeColor ) const
+    {
+        return Color();
+    }
+    virtual Font systemFont( ThemeFont, FontDescription & ) const
+    {
+        return Font();
+    }
+
     // How fast the caret blinks in text fields.
-    virtual double caretBlinkInterval() const { return 0.5; }
+    virtual double caretBlinkInterval() const
+    {
+        return 0.5;
+    }
 
     // Notification when the theme has changed
     virtual void themeChanged() { }
 
     // Methods used to adjust the RenderStyles of controls.
-    
+
     // The font description result should have a zoomed font size.
-    virtual FontDescription controlFont(ControlPart, const Font& font, float /*zoomFactor*/) const { return font.fontDescription(); }
-    
+    virtual FontDescription controlFont( ControlPart, const Font &font, float /*zoomFactor*/ ) const
+    {
+        return font.fontDescription();
+    }
+
     // The size here is in zoomed coordinates already.  If a new size is returned, it also needs to be in zoomed coordinates.
-    virtual LengthSize controlSize(ControlPart, const Font&, const LengthSize& zoomedSize, float /*zoomFactor*/) const { return zoomedSize; }
-    
-    // Returns the minimum size for a control in zoomed coordinates.  
-    virtual LengthSize minimumControlSize(ControlPart, const Font&, float /*zoomFactor*/) const { return LengthSize(Length(0, Fixed), Length(0, Fixed)); }
-    
+    virtual LengthSize controlSize( ControlPart, const Font &, const LengthSize &zoomedSize, float /*zoomFactor*/ ) const
+    {
+        return zoomedSize;
+    }
+
+    // Returns the minimum size for a control in zoomed coordinates.
+    virtual LengthSize minimumControlSize( ControlPart, const Font &, float /*zoomFactor*/ ) const
+    {
+        return LengthSize( Length( 0, Fixed ), Length( 0, Fixed ) );
+    }
+
     // Allows the theme to modify the existing padding/border.
-    virtual LengthBox controlPadding(ControlPart, const Font&, const LengthBox& zoomedBox, float zoomFactor) const;
-    virtual LengthBox controlBorder(ControlPart, const Font&, const LengthBox& zoomedBox, float zoomFactor) const;
-    
+    virtual LengthBox controlPadding( ControlPart, const Font &, const LengthBox &zoomedBox, float zoomFactor ) const;
+    virtual LengthBox controlBorder( ControlPart, const Font &, const LengthBox &zoomedBox, float zoomFactor ) const;
+
     // Whether or not whitespace: pre should be forced on always.
-    virtual bool controlRequiresPreWhiteSpace(ControlPart) const { return false; }
+    virtual bool controlRequiresPreWhiteSpace( ControlPart ) const
+    {
+        return false;
+    }
 
     // Method for painting a control. The rect is in zoomed coordinates.
-    virtual void paint(ControlPart, ControlStates, GraphicsContext*, const IntRect& /*zoomedRect*/, float /*zoomFactor*/, ScrollView*) const { }
+    virtual void paint( ControlPart, ControlStates, GraphicsContext *, const IntRect & /*zoomedRect*/, float /*zoomFactor*/,
+                        ScrollView * ) const { }
 
     // Some controls may spill out of their containers (e.g., the check on an OS X checkbox).  When these controls repaint,
     // the theme needs to communicate this inflated rect to the engine so that it can invalidate the whole control.
     // The rect passed in is in zoomed coordinates, so the inflation should take that into account and make sure the inflation
     // amount is also scaled by the zoomFactor.
-    virtual void inflateControlPaintRect(ControlPart, ControlStates, IntRect& /*zoomedRect*/, float /*zoomFactor*/) const { }
-    
+    virtual void inflateControlPaintRect( ControlPart, ControlStates, IntRect & /*zoomedRect*/, float /*zoomFactor*/ ) const { }
+
     // This method is called once, from RenderTheme::adjustDefaultStyleSheet(), to let each platform adjust
     // the default CSS rules in html.css.
     static String defaultStyleSheet();
@@ -115,7 +166,7 @@ private:
 };
 
 // Function to obtain the theme.  This is implemented in the platform-specific subclasses.
-Theme* platformTheme();
+Theme *platformTheme();
 
 } // namespace WebCore
 

@@ -29,14 +29,22 @@
 #ifndef Terminator_h
 #define Terminator_h
 
-namespace JSC {
+namespace JSC
+{
 
-class Terminator {
+class Terminator
+{
 public:
-    Terminator() : m_shouldTerminate(false) { }
+    Terminator() : m_shouldTerminate( false ) { }
 
-    void terminateSoon() { m_shouldTerminate = true; }
-    bool shouldTerminate() const { return m_shouldTerminate; }
+    void terminateSoon()
+    {
+        m_shouldTerminate = true;
+    }
+    bool shouldTerminate() const
+    {
+        return m_shouldTerminate;
+    }
 
 private:
     bool m_shouldTerminate;

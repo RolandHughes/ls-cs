@@ -30,24 +30,24 @@
 
 class Q_MULTIMEDIA_EXPORT QCameraCaptureBufferFormatControl : public QMediaControl
 {
-   MULTI_CS_OBJECT(QCameraCaptureBufferFormatControl)
+    MULTI_CS_OBJECT( QCameraCaptureBufferFormatControl )
 
- public:
-   ~QCameraCaptureBufferFormatControl();
+public:
+    ~QCameraCaptureBufferFormatControl();
 
-   virtual QList<QVideoFrame::PixelFormat> supportedBufferFormats() const = 0;
-   virtual QVideoFrame::PixelFormat bufferFormat() const = 0;
-   virtual void setBufferFormat(QVideoFrame::PixelFormat format) = 0;
+    virtual QList<QVideoFrame::PixelFormat> supportedBufferFormats() const = 0;
+    virtual QVideoFrame::PixelFormat bufferFormat() const = 0;
+    virtual void setBufferFormat( QVideoFrame::PixelFormat format ) = 0;
 
-   MULTI_CS_SIGNAL_1(Public, void bufferFormatChanged(QVideoFrame::PixelFormat format))
-   MULTI_CS_SIGNAL_2(bufferFormatChanged, format)
+    MULTI_CS_SIGNAL_1( Public, void bufferFormatChanged( QVideoFrame::PixelFormat format ) )
+    MULTI_CS_SIGNAL_2( bufferFormatChanged, format )
 
- protected:
-   explicit QCameraCaptureBufferFormatControl(QObject *parent = nullptr);
+protected:
+    explicit QCameraCaptureBufferFormatControl( QObject *parent = nullptr );
 };
 
 #define QCameraCaptureBufferFormatControl_iid "com.copperspice.CS.cameraCaptureBufferFormatControl/1.0"
-CS_DECLARE_INTERFACE(QCameraCaptureBufferFormatControl, QCameraCaptureBufferFormatControl_iid)
+CS_DECLARE_INTERFACE( QCameraCaptureBufferFormatControl, QCameraCaptureBufferFormatControl_iid )
 
 #endif
 

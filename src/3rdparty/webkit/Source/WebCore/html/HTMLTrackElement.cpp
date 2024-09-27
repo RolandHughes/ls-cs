@@ -34,27 +34,30 @@
 
 using namespace std;
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-inline HTMLTrackElement::HTMLTrackElement(const QualifiedName& tagName, Document* document)
-    : HTMLElement(tagName, document)
+inline HTMLTrackElement::HTMLTrackElement( const QualifiedName &tagName, Document *document )
+    : HTMLElement( tagName, document )
 {
-    LOG(Media, "HTMLTrackElement::HTMLTrackElement - %p", this);
-    ASSERT(hasTagName(trackTag));
+    LOG( Media, "HTMLTrackElement::HTMLTrackElement - %p", this );
+    ASSERT( hasTagName( trackTag ) );
 }
 
-PassRefPtr<HTMLTrackElement> HTMLTrackElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<HTMLTrackElement> HTMLTrackElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new HTMLTrackElement(tagName, document));
+    return adoptRef( new HTMLTrackElement( tagName, document ) );
 }
 
-void HTMLTrackElement::insertedIntoTree(bool deep)
+void HTMLTrackElement::insertedIntoTree( bool deep )
 {
-    HTMLElement::insertedIntoTree(deep);
-    Element* parent = parentElement();
-    if (parent && parent->isMediaElement()) {
+    HTMLElement::insertedIntoTree( deep );
+    Element *parent = parentElement();
+
+    if ( parent && parent->isMediaElement() )
+    {
         // TODO(annacc):
         // static_cast<HTMLMediaElement*>(parentNode())->trackWasAdded(this);
     }
@@ -62,65 +65,68 @@ void HTMLTrackElement::insertedIntoTree(bool deep)
 
 void HTMLTrackElement::willRemove()
 {
-    Element* parent = parentElement();
-    if (parent && parent->isMediaElement()) {
+    Element *parent = parentElement();
+
+    if ( parent && parent->isMediaElement() )
+    {
         // TODO(annacc):
         // static_cast<HTMLMediaElement*>(parentNode())->trackWillBeRemoved(this);
     }
+
     HTMLElement::willRemove();
 }
 
 KURL HTMLTrackElement::src() const
 {
-    return document()->completeURL(getAttribute(srcAttr));
+    return document()->completeURL( getAttribute( srcAttr ) );
 }
 
-void HTMLTrackElement::setSrc(const String& url)
+void HTMLTrackElement::setSrc( const String &url )
 {
-    setAttribute(srcAttr, url);
+    setAttribute( srcAttr, url );
 }
 
 String HTMLTrackElement::kind() const
 {
-    return getAttribute(kindAttr);
+    return getAttribute( kindAttr );
 }
 
-void HTMLTrackElement::setKind(const String& kind)
+void HTMLTrackElement::setKind( const String &kind )
 {
-    setAttribute(kindAttr, kind);
+    setAttribute( kindAttr, kind );
 }
 
 String HTMLTrackElement::srclang() const
 {
-    return getAttribute(srclangAttr);
+    return getAttribute( srclangAttr );
 }
 
-void HTMLTrackElement::setSrclang(const String& srclang)
+void HTMLTrackElement::setSrclang( const String &srclang )
 {
-    setAttribute(srclangAttr, srclang);
+    setAttribute( srclangAttr, srclang );
 }
 
 String HTMLTrackElement::label() const
 {
-    return getAttribute(labelAttr);
+    return getAttribute( labelAttr );
 }
 
-void HTMLTrackElement::setLabel(const String& label)
+void HTMLTrackElement::setLabel( const String &label )
 {
-    setAttribute(labelAttr, label);
+    setAttribute( labelAttr, label );
 }
 
 bool HTMLTrackElement::isDefault() const
 {
-    return hasAttribute(defaultAttr);
+    return hasAttribute( defaultAttr );
 }
 
-void HTMLTrackElement::setIsDefault(bool isDefault)
+void HTMLTrackElement::setIsDefault( bool isDefault )
 {
-    setBooleanAttribute(defaultAttr, isDefault);
+    setBooleanAttribute( defaultAttr, isDefault );
 }
 
-bool HTMLTrackElement::isURLAttribute(Attribute* attribute) const
+bool HTMLTrackElement::isURLAttribute( Attribute *attribute ) const
 {
     return attribute->name() == srcAttr;
 }

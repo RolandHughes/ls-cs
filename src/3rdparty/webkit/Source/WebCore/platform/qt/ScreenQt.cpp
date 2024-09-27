@@ -39,57 +39,75 @@
 #include <QApplication>
 #include <QDesktopWidget>
 
-namespace WebCore {
-
-static QWidget* qwidgetForPage(const Page* page)
+namespace WebCore
 {
-    Frame* frame = (page ? page->mainFrame() : 0);
-    FrameView* frameView = (frame ? frame->view() : 0);
 
-    if (!frameView)
+static QWidget *qwidgetForPage( const Page *page )
+{
+    Frame *frame = ( page ? page->mainFrame() : 0 );
+    FrameView *frameView = ( frame ? frame->view() : 0 );
+
+    if ( !frameView )
+    {
         return 0;
+    }
 
     return frameView->qwidget();
 }
 
-FloatRect screenRect(const Page* page)
+FloatRect screenRect( const Page *page )
 {
-    QWidget* qw = qwidgetForPage(page);
-    if (!qw)
+    QWidget *qw = qwidgetForPage( page );
+
+    if ( !qw )
+    {
         return FloatRect();
+    }
 
     // Taken from KGlobalSettings::desktopGeometry
-    QDesktopWidget* dw = QApplication::desktop();
-    if (!dw)
-        return FloatRect();
+    QDesktopWidget *dw = QApplication::desktop();
 
-    return IntRect(dw->screenGeometry(qw));
+    if ( !dw )
+    {
+        return FloatRect();
+    }
+
+    return IntRect( dw->screenGeometry( qw ) );
 }
 
-int screenDepth(const Page* page)
+int screenDepth( const Page *page )
 {
-    QWidget* qw = qwidgetForPage(page);
-    if (!qw)
+    QWidget *qw = qwidgetForPage( page );
+
+    if ( !qw )
+    {
         return 32;
+    }
 
     return qw->depth();
 }
 
-FloatRect usableScreenRect(const Page* page)
+FloatRect usableScreenRect( const Page *page )
 {
-    QWidget* qw = qwidgetForPage(page);
-    if (!qw)
+    QWidget *qw = qwidgetForPage( page );
+
+    if ( !qw )
+    {
         return FloatRect();
+    }
 
     // Taken from KGlobalSettings::desktopGeometry
-    QDesktopWidget* dw = QApplication::desktop();
-    if (!dw)
-        return FloatRect();
+    QDesktopWidget *dw = QApplication::desktop();
 
-    return IntRect(dw->availableGeometry(qw));
+    if ( !dw )
+    {
+        return FloatRect();
+    }
+
+    return IntRect( dw->availableGeometry( qw ) );
 }
 
-float scaleFactor(const Page*)
+float scaleFactor( const Page * )
 {
     return 1.0f;
 }

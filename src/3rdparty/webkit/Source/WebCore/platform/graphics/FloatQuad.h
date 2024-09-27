@@ -6,13 +6,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -33,46 +33,75 @@
 #include "FloatRect.h"
 #include "IntRect.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 // A FloatQuad is a collection of 4 points, often representing the result of
 // mapping a rectangle through transforms. When initialized from a rect, the
 // points are in clockwise order from top left.
-class FloatQuad {
+class FloatQuad
+{
 public:
     FloatQuad()
     {
     }
 
-    FloatQuad(const FloatPoint& p1, const FloatPoint& p2, const FloatPoint& p3, const FloatPoint& p4)
-        : m_p1(p1)
-        , m_p2(p2)
-        , m_p3(p3)
-        , m_p4(p4)
+    FloatQuad( const FloatPoint &p1, const FloatPoint &p2, const FloatPoint &p3, const FloatPoint &p4 )
+        : m_p1( p1 )
+        , m_p2( p2 )
+        , m_p3( p3 )
+        , m_p4( p4 )
     {
     }
 
-    FloatQuad(const FloatRect& inRect)
-        : m_p1(inRect.location())
-        , m_p2(inRect.maxX(), inRect.y())
-        , m_p3(inRect.maxX(), inRect.maxY())
-        , m_p4(inRect.x(), inRect.maxY())
+    FloatQuad( const FloatRect &inRect )
+        : m_p1( inRect.location() )
+        , m_p2( inRect.maxX(), inRect.y() )
+        , m_p3( inRect.maxX(), inRect.maxY() )
+        , m_p4( inRect.x(), inRect.maxY() )
     {
     }
 
-    FloatPoint p1() const { return m_p1; }
-    FloatPoint p2() const { return m_p2; }
-    FloatPoint p3() const { return m_p3; }
-    FloatPoint p4() const { return m_p4; }
+    FloatPoint p1() const
+    {
+        return m_p1;
+    }
+    FloatPoint p2() const
+    {
+        return m_p2;
+    }
+    FloatPoint p3() const
+    {
+        return m_p3;
+    }
+    FloatPoint p4() const
+    {
+        return m_p4;
+    }
 
-    void setP1(const FloatPoint& p) { m_p1 = p; }
-    void setP2(const FloatPoint& p) { m_p2 = p; }
-    void setP3(const FloatPoint& p) { m_p3 = p; }
-    void setP4(const FloatPoint& p) { m_p4 = p; }
+    void setP1( const FloatPoint &p )
+    {
+        m_p1 = p;
+    }
+    void setP2( const FloatPoint &p )
+    {
+        m_p2 = p;
+    }
+    void setP3( const FloatPoint &p )
+    {
+        m_p3 = p;
+    }
+    void setP4( const FloatPoint &p )
+    {
+        m_p4 = p;
+    }
 
     // isEmpty tests that the bounding box is empty. This will not identify
     // "slanted" empty quads.
-    bool isEmpty() const { return boundingBox().isEmpty(); }
+    bool isEmpty() const
+    {
+        return boundingBox().isEmpty();
+    }
 
     // Tests whether this quad can be losslessly represented by a FloatRect,
     // that is, if two edges are parallel to the x-axis and the other two
@@ -81,20 +110,20 @@ public:
     bool isRectilinear() const;
 
     // Tests whether the given point is inside, or on an edge or corner of this quad.
-    bool containsPoint(const FloatPoint&) const;
+    bool containsPoint( const FloatPoint & ) const;
 
     // Tests whether the four corners of other are inside, or coincident with the sides of this quad.
     // Note that this only works for convex quads, but that includes all quads that originate
     // from transformed rects.
-    bool containsQuad(const FloatQuad&) const;
+    bool containsQuad( const FloatQuad & ) const;
 
     FloatRect boundingBox() const;
     IntRect enclosingBoundingBox() const
     {
-        return enclosingIntRect(boundingBox());
+        return enclosingIntRect( boundingBox() );
     }
 
-    void move(const FloatSize& offset)
+    void move( const FloatSize &offset )
     {
         m_p1 += offset;
         m_p2 += offset;
@@ -102,12 +131,12 @@ public:
         m_p4 += offset;
     }
 
-    void move(float dx, float dy)
+    void move( float dx, float dy )
     {
-        m_p1.move(dx, dy);
-        m_p2.move(dx, dy);
-        m_p3.move(dx, dy);
-        m_p4.move(dx, dy);
+        m_p1.move( dx, dy );
+        m_p2.move( dx, dy );
+        m_p3.move( dx, dy );
+        m_p4.move( dx, dy );
     }
 
 private:
@@ -117,30 +146,30 @@ private:
     FloatPoint m_p4;
 };
 
-inline FloatQuad& operator+=(FloatQuad& a, const FloatSize& b)
+inline FloatQuad &operator+=( FloatQuad &a, const FloatSize &b )
 {
-    a.move(b);
+    a.move( b );
     return a;
 }
 
-inline FloatQuad& operator-=(FloatQuad& a, const FloatSize& b)
+inline FloatQuad &operator-=( FloatQuad &a, const FloatSize &b )
 {
-    a.move(-b.width(), -b.height());
+    a.move( -b.width(), -b.height() );
     return a;
 }
 
-inline bool operator==(const FloatQuad& a, const FloatQuad& b)
+inline bool operator==( const FloatQuad &a, const FloatQuad &b )
 {
     return a.p1() == b.p1() &&
-           a.p2() == b.p2() && 
+           a.p2() == b.p2() &&
            a.p3() == b.p3() &&
            a.p4() == b.p4();
 }
 
-inline bool operator!=(const FloatQuad& a, const FloatQuad& b)
+inline bool operator!=( const FloatQuad &a, const FloatQuad &b )
 {
     return a.p1() != b.p1() ||
-           a.p2() != b.p2() || 
+           a.p2() != b.p2() ||
            a.p3() != b.p3() ||
            a.p4() != b.p4();
 }

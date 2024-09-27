@@ -31,9 +31,9 @@
 
 static QTransform savedWorldTransform;
 
-ShaderEffect::ShaderEffect(QObject *parent)
-    : QGraphicsEffect(parent)
-    , m_changed(true)
+ShaderEffect::ShaderEffect( QObject *parent )
+    : QGraphicsEffect( parent )
+    , m_changed( true )
 {
 }
 
@@ -41,50 +41,64 @@ ShaderEffect::~ShaderEffect()
 {
 }
 
-void ShaderEffect::prepareBufferedDraw(QPainter *painter)
+void ShaderEffect::prepareBufferedDraw( QPainter *painter )
 {
     // This workaround needed because QGraphicsEffect seems to always utilize default painters worldtransform
     // instead of the active painters worldtransform.
-    const ShaderEffectBuffer *effectBuffer = dynamic_cast<ShaderEffectBuffer*> (painter->device());
-    if (effectBuffer) {
+    const ShaderEffectBuffer *effectBuffer = dynamic_cast<ShaderEffectBuffer *> ( painter->device() );
+
+    if ( effectBuffer )
+    {
         savedWorldTransform = painter->worldTransform() * savedWorldTransform;
-        painter->setWorldTransform(savedWorldTransform);
-    } else {
+        painter->setWorldTransform( savedWorldTransform );
+    }
+    else
+    {
         savedWorldTransform = painter->worldTransform();
     }
 }
 
-void ShaderEffect::draw (QPainter *painter)
+void ShaderEffect::draw ( QPainter *painter )
 {
     const QGLContext *context = QGLContext::currentContext();
 
-    prepareBufferedDraw(painter);
+    prepareBufferedDraw( painter );
 
-    if (context) {
+    if ( context )
+    {
         updateRenderTargets();
     }
 
-    if (!context || m_renderTargets.count() == 0 || !hideOriginal())
-        drawSource(painter);
+    if ( !context || m_renderTargets.count() == 0 || !hideOriginal() )
+    {
+        drawSource( painter );
+    }
 }
 
 void ShaderEffect::updateRenderTargets()
 {
-    if (!m_changed)
+    if ( !m_changed )
+    {
         return;
+    }
 
     m_changed = false;
 
     int count = m_renderTargets.count();
-    for (int i = 0; i < count; i++) {
-        if (m_renderTargets[i]->isLive() || m_renderTargets[i]->isDirtyTexture()) {
+
+    for ( int i = 0; i < count; i++ )
+    {
+        if ( m_renderTargets[i]->isLive() || m_renderTargets[i]->isDirtyTexture() )
+        {
             m_renderTargets[i]->updateBackbuffer();
-            ShaderEffectBuffer* target = m_renderTargets[i]->fbo();
-            if (target && target->isValid() && target->width() > 0 && target->height() > 0) {
-                QPainter p(target);
-                p.setCompositionMode(QPainter::CompositionMode_Clear);
-                p.fillRect(QRect(QPoint(0, 0), target->size()), Qt::transparent);
-                p.setCompositionMode(QPainter::CompositionMode_SourceOver);
+            ShaderEffectBuffer *target = m_renderTargets[i]->fbo();
+
+            if ( target && target->isValid() && target->width() > 0 && target->height() > 0 )
+            {
+                QPainter p( target );
+                p.setCompositionMode( QPainter::CompositionMode_Clear );
+                p.fillRect( QRect( QPoint( 0, 0 ), target->size() ), Qt::transparent );
+                p.setCompositionMode( QPainter::CompositionMode_SourceOver );
 
                 QRectF sourceRect = m_renderTargets[i]->sourceRect();
                 QSize textureSize = m_renderTargets[i]->textureSize();
@@ -101,36 +115,41 @@ void ShaderEffect::updateRenderTargets()
                 qreal width = m_renderTargets[i]->sourceItem()->width();
                 qreal height = m_renderTargets[i]->sourceItem()->height();
 
-                if (!sourceRect.isEmpty()) {
+                if ( !sourceRect.isEmpty() )
+                {
                     leftMargin = -sourceRect.left();
                     rightMargin = sourceRect.right() - width;
                     topMargin = -sourceRect.top();
                     bottomMargin = sourceRect.bottom() - height;
                 }
 
-                if ((width + leftMargin + rightMargin) > 0 && (height + topMargin + bottomMargin) > 0) {
-                    if (!textureSize.isEmpty()) {
+                if ( ( width + leftMargin + rightMargin ) > 0 && ( height + topMargin + bottomMargin ) > 0 )
+                {
+                    if ( !textureSize.isEmpty() )
+                    {
                         qreal textureWidth = textureSize.width();
                         qreal textureHeight = textureSize.height();
 
-                        xscale = width / (width + leftMargin + rightMargin);
-                        yscale = height / (height + topMargin + bottomMargin);
+                        xscale = width / ( width + leftMargin + rightMargin );
+                        yscale = height / ( height + topMargin + bottomMargin );
 
-                        p.translate(textureWidth / 2, textureHeight / 2);
-                        p.scale(xscale, yscale * yflip);
-                        p.translate(-textureWidth / 2, -textureHeight / 2);
-                        p.scale(textureWidth / width, textureHeight / height);
-                    } else {
-                        xscale = width / (width + leftMargin + rightMargin);
-                        yscale = height / (height + topMargin + bottomMargin);
+                        p.translate( textureWidth / 2, textureHeight / 2 );
+                        p.scale( xscale, yscale * yflip );
+                        p.translate( -textureWidth / 2, -textureHeight / 2 );
+                        p.scale( textureWidth / width, textureHeight / height );
+                    }
+                    else
+                    {
+                        xscale = width / ( width + leftMargin + rightMargin );
+                        yscale = height / ( height + topMargin + bottomMargin );
 
-                        p.translate(width / 2, height / 2);
-                        p.scale(xscale, yscale * yflip);
-                        p.translate(-width / 2, -height / 2);
+                        p.translate( width / 2, height / 2 );
+                        p.scale( xscale, yscale * yflip );
+                        p.translate( -width / 2, -height / 2 );
                     }
                 }
 
-                drawSource(&p);
+                drawSource( &p );
                 p.end();
                 m_renderTargets[i]->markSceneGraphDirty();
             }
@@ -138,37 +157,51 @@ void ShaderEffect::updateRenderTargets()
     }
 }
 
-void ShaderEffect::sourceChanged (ChangeFlags flags)
+void ShaderEffect::sourceChanged ( ChangeFlags flags )
 {
-    Q_UNUSED(flags);
+    Q_UNUSED( flags );
     m_changed = true;
 }
 
-void ShaderEffect::addRenderTarget(ShaderEffectSource *target)
+void ShaderEffect::addRenderTarget( ShaderEffectSource *target )
 {
-    if (!m_renderTargets.contains(target))
-        m_renderTargets.append(target);
+    if ( !m_renderTargets.contains( target ) )
+    {
+        m_renderTargets.append( target );
+    }
 }
 
-void ShaderEffect::removeRenderTarget(ShaderEffectSource *target)
+void ShaderEffect::removeRenderTarget( ShaderEffectSource *target )
 {
-    int index = m_renderTargets.indexOf(target);
-    if (index >= 0)
-        m_renderTargets.remove(index);
+    int index = m_renderTargets.indexOf( target );
+
+    if ( index >= 0 )
+    {
+        m_renderTargets.remove( index );
+    }
     else
+    {
         qWarning() << "ShaderEffect::removeRenderTarget - did not find target.";
+    }
 }
 
 bool ShaderEffect::hideOriginal() const
 {
-    if (m_renderTargets.count() == 0)
+    if ( m_renderTargets.count() == 0 )
+    {
         return false;
+    }
 
     // Just like scenegraph version, if there is even one source that says "hide original" we hide it.
     int count = m_renderTargets.count();
-    for (int i = 0; i < count; i++) {
-        if (m_renderTargets[i]->hideSource())
+
+    for ( int i = 0; i < count; i++ )
+    {
+        if ( m_renderTargets[i]->hideSource() )
+        {
             return true;
+        }
     }
+
     return false;
 }

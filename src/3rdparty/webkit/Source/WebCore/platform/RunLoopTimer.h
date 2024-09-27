@@ -32,23 +32,31 @@
 #include "SchedulePair.h"
 #include <wtf/RetainPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Time intervals are all in seconds.
 
-class RunLoopTimerBase {
-    WTF_MAKE_NONCOPYABLE(RunLoopTimerBase);
+class RunLoopTimerBase
+{
+    WTF_MAKE_NONCOPYABLE( RunLoopTimerBase );
 public:
     RunLoopTimerBase() { }
     virtual ~RunLoopTimerBase();
 
-    void schedule(const SchedulePair*);
-    void schedule(const SchedulePairHashSet&);
+    void schedule( const SchedulePair * );
+    void schedule( const SchedulePairHashSet & );
 
-    void start(double nextFireInterval, double repeatInterval);
+    void start( double nextFireInterval, double repeatInterval );
 
-    void startRepeating(double repeatInterval) { start(repeatInterval, repeatInterval); }
-    void startOneShot(double interval) { start(interval, 0); }
+    void startRepeating( double repeatInterval )
+    {
+        start( repeatInterval, repeatInterval );
+    }
+    void startOneShot( double interval )
+    {
+        start( interval, 0 );
+    }
 
     void stop();
     bool isActive() const;
@@ -61,17 +69,21 @@ private:
 #endif
 };
 
-template <typename TimerFiredClass> class RunLoopTimer : public RunLoopTimerBase {
+template <typename TimerFiredClass> class RunLoopTimer : public RunLoopTimerBase
+{
 public:
-    typedef void (TimerFiredClass::*TimerFiredFunction)(RunLoopTimer*);
+    typedef void ( TimerFiredClass::*TimerFiredFunction )( RunLoopTimer * );
 
-    RunLoopTimer(TimerFiredClass* o, TimerFiredFunction f)
-        : m_object(o), m_function(f) { }
+    RunLoopTimer( TimerFiredClass *o, TimerFiredFunction f )
+        : m_object( o ), m_function( f ) { }
 
-    virtual void fired() { (m_object->*m_function)(this); }
+    virtual void fired()
+    {
+        ( m_object->*m_function )( this );
+    }
 
 private:
-    TimerFiredClass* m_object;
+    TimerFiredClass *m_object;
     TimerFiredFunction m_function;
 };
 

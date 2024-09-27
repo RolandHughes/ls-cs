@@ -30,6 +30,7 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
 }

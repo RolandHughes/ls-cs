@@ -38,7 +38,8 @@
 #include <wtf/RefCounted.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class DatabaseSync;
 class SQLResultSet;
@@ -48,16 +49,23 @@ class SQLValue;
 class SQLiteTransaction;
 
 // Instances of this class should be created and used only on the worker's context thread.
-class SQLTransactionSync : public RefCounted<SQLTransactionSync> {
+class SQLTransactionSync : public RefCounted<SQLTransactionSync>
+{
 public:
-    static PassRefPtr<SQLTransactionSync> create(DatabaseSync*, PassRefPtr<SQLTransactionSyncCallback>, bool readOnly = false);
+    static PassRefPtr<SQLTransactionSync> create( DatabaseSync *, PassRefPtr<SQLTransactionSyncCallback>, bool readOnly = false );
 
     ~SQLTransactionSync();
 
-    PassRefPtr<SQLResultSet> executeSQL(const String& sqlStatement, const Vector<SQLValue>& arguments, ExceptionCode&);
+    PassRefPtr<SQLResultSet> executeSQL( const String &sqlStatement, const Vector<SQLValue> &arguments, ExceptionCode & );
 
-    DatabaseSync* database() { return m_database.get(); }
-    bool isReadOnly() const { return m_readOnly; }
+    DatabaseSync *database()
+    {
+        return m_database.get();
+    }
+    bool isReadOnly() const
+    {
+        return m_readOnly;
+    }
 
     ExceptionCode begin();
     ExceptionCode execute();
@@ -65,7 +73,7 @@ public:
     void rollback();
 
 private:
-    SQLTransactionSync(DatabaseSync*, PassRefPtr<SQLTransactionSyncCallback>, bool readOnly);
+    SQLTransactionSync( DatabaseSync *, PassRefPtr<SQLTransactionSyncCallback>, bool readOnly );
 
     RefPtr<DatabaseSync> m_database;
     RefPtr<SQLTransactionSyncCallback> m_callback;

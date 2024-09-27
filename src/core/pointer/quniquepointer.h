@@ -29,32 +29,36 @@
 #include <cs_unique_pointer.h>
 #include <cs_unique_array_pointer.h>
 
-struct QMallocDeleter {
-   void operator()(void *ptr) const {
-      if (ptr != nullptr) {
-         qFree(ptr);
-      }
-   }
+struct QMallocDeleter
+{
+    void operator()( void *ptr ) const
+    {
+        if ( ptr != nullptr )
+        {
+            qFree( ptr );
+        }
+    }
 };
 
-using QScopedPointerPodDeleter [[deprecated("Use QMallocDeleter instead")]] = QMallocDeleter;
+using QScopedPointerPodDeleter [[deprecated( "Use QMallocDeleter instead" )]] = QMallocDeleter;
 
 #if ! defined(CS_DOXYPRESS)
 
 template <typename T, typename Deleter = std::default_delete<T>>
 class QUniquePointer : public CsPointer::CsUniquePointer<T, Deleter>
 {
- public:
-   using CsPointer::CsUniquePointer<T, Deleter>::CsUniquePointer;
+public:
+    using CsPointer::CsUniquePointer<T, Deleter>::CsUniquePointer;
 
-   QUniquePointer(CsPointer::CsUniquePointer<T, Deleter> other) noexcept
-      : CsPointer::CsUniquePointer<T, Deleter>(std::move(other))
-   {
-   }
+    QUniquePointer( CsPointer::CsUniquePointer<T, Deleter> other ) noexcept
+        : CsPointer::CsUniquePointer<T, Deleter>( std::move( other ) )
+    {
+    }
 
-   bool isNull() const {
-      return CsPointer::CsUniquePointer<T, Deleter>::is_null();
-   }
+    bool isNull() const
+    {
+        return CsPointer::CsUniquePointer<T, Deleter>::is_null();
+    }
 };
 
 #endif
@@ -62,19 +66,20 @@ class QUniquePointer : public CsPointer::CsUniquePointer<T, Deleter>
 #if ! defined(CS_DOXYPRESS)
 
 template <typename T, typename Deleter = std::default_delete<CsPointer::cs_add_missing_extent_t<T>>>
-class QUniqueArrayPointer : public CsPointer::CsUniqueArrayPointer<T, Deleter>
+          class QUniqueArrayPointer : public CsPointer::CsUniqueArrayPointer<T, Deleter>
 {
 public:
-   using CsPointer::CsUniqueArrayPointer<T, Deleter>::CsUniqueArrayPointer;
+    using CsPointer::CsUniqueArrayPointer<T, Deleter>::CsUniqueArrayPointer;
 
-   QUniqueArrayPointer(CsPointer::CsUniqueArrayPointer<T, Deleter> other) noexcept
-      : CsPointer::CsUniqueArrayPointer<T, Deleter>(std::move(other))
-   {
-   }
+    QUniqueArrayPointer( CsPointer::CsUniqueArrayPointer<T, Deleter> other ) noexcept
+        : CsPointer::CsUniqueArrayPointer<T, Deleter>( std::move( other ) )
+    {
+    }
 
-   bool isNull() const {
-      return CsPointer::CsUniqueArrayPointer<T, Deleter>::is_null();
-   }
+    bool isNull() const
+    {
+        return CsPointer::CsUniqueArrayPointer<T, Deleter>::is_null();
+    }
 };
 
 #endif
@@ -83,16 +88,16 @@ public:
 
 // QScopedPointer
 template < typename T, typename... Args, typename = typename std::enable_if_t < ! std::is_array_v<T >>>
-QUniquePointer<T> QMakeUnique(Args && ... args)
+           QUniquePointer<T> QMakeUnique( Args && ... args )
 {
-   return CsPointer::make_unique<T>(std::forward<Args>(args)...);
+    return CsPointer::make_unique<T>( std::forward<Args>( args )... );
 }
 
 // QScopedArrayPointer
 template <typename T, typename = typename std::enable_if_t<std::is_array_v<T>>>
-QUniquePointer<T> QMakeUnique(std::size_t size)
+          QUniquePointer<T> QMakeUnique( std::size_t size )
 {
-   return CsPointer::make_unique<T>(size);
+    return CsPointer::make_unique<T>( size );
 }
 
 #endif

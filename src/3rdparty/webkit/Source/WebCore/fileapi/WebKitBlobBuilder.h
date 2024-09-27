@@ -35,7 +35,8 @@
 #include <wtf/Forward.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class ArrayBuffer;
 class Blob;
@@ -43,23 +44,27 @@ class TextEncoding;
 
 typedef int ExceptionCode;
 
-class WebKitBlobBuilder : public RefCounted<WebKitBlobBuilder> {
+class WebKitBlobBuilder : public RefCounted<WebKitBlobBuilder>
+{
 public:
-    static PassRefPtr<WebKitBlobBuilder> create() { return adoptRef(new WebKitBlobBuilder()); }
+    static PassRefPtr<WebKitBlobBuilder> create()
+    {
+        return adoptRef( new WebKitBlobBuilder() );
+    }
 
-    void append(Blob*);
-    void append(const String& text, ExceptionCode&);
-    void append(const String& text, const String& ending, ExceptionCode&);
+    void append( Blob * );
+    void append( const String &text, ExceptionCode & );
+    void append( const String &text, const String &ending, ExceptionCode & );
 #if ENABLE(BLOB)
-    void append(ArrayBuffer*);
+    void append( ArrayBuffer * );
 #endif
 
-    PassRefPtr<Blob> getBlob(const String& contentType = String());
+    PassRefPtr<Blob> getBlob( const String &contentType = String() );
 
 private:
     WebKitBlobBuilder();
 
-    Vector<char>& getBuffer();
+    Vector<char> &getBuffer();
 
     long long m_size;
     BlobDataItemList m_items;

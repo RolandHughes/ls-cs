@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include "config.h"
 
@@ -31,19 +31,20 @@
 
 using namespace std;
 
-class QTTrackPrivate {
-    WTF_MAKE_NONCOPYABLE(QTTrackPrivate);
+class QTTrackPrivate
+{
+    WTF_MAKE_NONCOPYABLE( QTTrackPrivate );
 public:
     QTTrackPrivate();
     ~QTTrackPrivate();
 
-    QTTrack* m_track;
+    QTTrack *m_track;
     Track m_trackHandle;
 };
 
 QTTrackPrivate::QTTrackPrivate()
-    : m_track(0)
-    , m_trackHandle(0)
+    : m_track( 0 )
+    , m_trackHandle( 0 )
 {
 }
 
@@ -52,13 +53,13 @@ QTTrackPrivate::~QTTrackPrivate()
     m_trackHandle = 0;
 }
 
-PassRefPtr<QTTrack> QTTrack::create(Track trackHandle)
+PassRefPtr<QTTrack> QTTrack::create( Track trackHandle )
 {
-    return adoptRef(new QTTrack(trackHandle));
+    return adoptRef( new QTTrack( trackHandle ) );
 }
 
-QTTrack::QTTrack(Track trackHandle)
-    : m_private(new QTTrackPrivate())
+QTTrack::QTTrack( Track trackHandle )
+    : m_private( new QTTrackPrivate() )
 {
     m_private->m_track = this;
     m_private->m_trackHandle = trackHandle;
@@ -71,50 +72,51 @@ QTTrack::~QTTrack()
 
 bool QTTrack::isEnabled() const
 {
-    ASSERT(m_private->m_track);
-    return GetTrackEnabled(m_private->m_trackHandle);
+    ASSERT( m_private->m_track );
+    return GetTrackEnabled( m_private->m_trackHandle );
 }
 
-void QTTrack::setEnabled(bool enabled)
+void QTTrack::setEnabled( bool enabled )
 {
-    ASSERT(m_private->m_trackHandle);
-    SetTrackEnabled(m_private->m_trackHandle, enabled);
+    ASSERT( m_private->m_trackHandle );
+    SetTrackEnabled( m_private->m_trackHandle, enabled );
 }
 
 CGAffineTransform QTTrack::getTransform() const
 {
-    ASSERT(m_private->m_trackHandle);
+    ASSERT( m_private->m_trackHandle );
     MatrixRecord m = {0};
-    GetTrackMatrix(m_private->m_trackHandle, &m);
+    GetTrackMatrix( m_private->m_trackHandle, &m );
 
-    ASSERT(!m.matrix[0][2]);
-    ASSERT(!m.matrix[1][2]);
+    ASSERT( !m.matrix[0][2] );
+    ASSERT( !m.matrix[1][2] );
     CGAffineTransform transform = CGAffineTransformMake(
-        Fix2X(m.matrix[0][0]),
-        Fix2X(m.matrix[0][1]),
-        Fix2X(m.matrix[1][0]),
-        Fix2X(m.matrix[1][1]),
-        Fix2X(m.matrix[2][0]),
-        Fix2X(m.matrix[2][1]));
+                                      Fix2X( m.matrix[0][0] ),
+                                      Fix2X( m.matrix[0][1] ),
+                                      Fix2X( m.matrix[1][0] ),
+                                      Fix2X( m.matrix[1][1] ),
+                                      Fix2X( m.matrix[2][0] ),
+                                      Fix2X( m.matrix[2][1] ) );
 
     return transform;
 }
 
-void QTTrack::setTransform(CGAffineTransform t)
+void QTTrack::setTransform( CGAffineTransform t )
 {
-    ASSERT(m_private->m_trackHandle);
+    ASSERT( m_private->m_trackHandle );
     MatrixRecord m = {{
-        {X2Fix(t.a), X2Fix(t.b), 0},
-        {X2Fix(t.c), X2Fix(t.d), 0},
-        {X2Fix(t.tx), X2Fix(t.ty), fract1},
-    }};
+            {X2Fix( t.a ), X2Fix( t.b ), 0},
+            {X2Fix( t.c ), X2Fix( t.d ), 0},
+            {X2Fix( t.tx ), X2Fix( t.ty ), fract1},
+        }
+    };
 
-    SetTrackMatrix(m_private->m_trackHandle, &m);
+    SetTrackMatrix( m_private->m_trackHandle, &m );
 }
 
 void QTTrack::resetTransform()
 {
-    ASSERT(m_private->m_trackHandle);
-    SetTrackMatrix(m_private->m_trackHandle, 0);
+    ASSERT( m_private->m_trackHandle );
+    SetTrackMatrix( m_private->m_trackHandle, 0 );
 }
 

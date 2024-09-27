@@ -31,101 +31,114 @@
 
 class QDateTimePrivate
 {
- public:
-   enum Spec {
-      LocalUnknown  = -1,
-      LocalStandard = 0,
-      LocalDST      = 1,
-      UTC           = 2,
-      OffsetFromUTC = 3,
-      TimeZone      = 4
-   };
+public:
+    enum Spec
+    {
+        LocalUnknown  = -1,
+        LocalStandard = 0,
+        LocalDST      = 1,
+        UTC           = 2,
+        OffsetFromUTC = 3,
+        TimeZone      = 4
+    };
 
-   enum DaylightStatus {
-      NoDaylightTime      = -2,
-      UnknownDaylightTime = -1,
-      StandardTime        = 0,
-      DaylightTime        = 1
-   };
+    enum DaylightStatus
+    {
+        NoDaylightTime      = -2,
+        UnknownDaylightTime = -1,
+        StandardTime        = 0,
+        DaylightTime        = 1
+    };
 
-   enum StatusFlag {
-      NullDate            = 0x01,
-      NullTime            = 0x02,
+    enum StatusFlag
+    {
+        NullDate            = 0x01,
+        NullTime            = 0x02,
 
-      ValidDate           = 0x04, // only the date field
-      ValidTime           = 0x08, // only the time field
-      ValidDateTime       = 0x10, // whole object (including timezone)
+        ValidDate           = 0x04, // only the date field
+        ValidTime           = 0x08, // only the time field
+        ValidDateTime       = 0x10, // whole object (including timezone)
 
-      SetToStandardTime   = 0x40,
-      SetToDaylightTime   = 0x80
-   };
-   using StatusFlags = QFlags<StatusFlag>;
+        SetToStandardTime   = 0x40,
+        SetToDaylightTime   = 0x80
+    };
+    using StatusFlags = QFlags<StatusFlag>;
 
-   QDateTimePrivate()
-      : m_msecs(0), m_tzUserDefined(false), m_status(NullDate | NullTime)
-   { }
+    QDateTimePrivate()
+        : m_msecs( 0 ), m_tzUserDefined( false ), m_status( NullDate | NullTime )
+    { }
 
-   QDateTimePrivate(const QDate &toDate, const QTime &toTime, const QTimeZone &timeZone);
+    QDateTimePrivate( const QDate &toDate, const QTime &toTime, const QTimeZone &timeZone );
 
-   void checkValidDateTime();
+    void checkValidDateTime();
 
-   void clearSetToDaylightStatus() {
-      m_status &= ~(SetToStandardTime | SetToDaylightTime);
-   }
+    void clearSetToDaylightStatus()
+    {
+        m_status &= ~( SetToStandardTime | SetToDaylightTime );
+    }
 
-   void clearValidDateTime() {
-      m_status &= ~ValidDateTime;
-   }
+    void clearValidDateTime()
+    {
+        m_status &= ~ValidDateTime;
+    }
 
-   DaylightStatus daylightStatus() const;
+    DaylightStatus daylightStatus() const;
 
-   QPair<QDate, QTime> getDateTime() const;
+    QPair<QDate, QTime> getDateTime() const;
 
-   bool isNullDate() const {
-      return m_status & NullDate;
-   }
+    bool isNullDate() const
+    {
+        return m_status & NullDate;
+    }
 
-   bool isNullTime() const {
-      return m_status & NullTime;
-   }
+    bool isNullTime() const
+    {
+        return m_status & NullTime;
+    }
 
-   bool isValidDate() const {
-      return m_status & ValidDate;
-   }
+    bool isValidDate() const
+    {
+        return m_status & ValidDate;
+    }
 
-   bool isValidTime() const {
-      return m_status & ValidTime;
-   }
+    bool isValidTime() const
+    {
+        return m_status & ValidTime;
+    }
 
-   bool isValidDateTime() const {
-      return m_status & ValidDateTime;
-   }
+    bool isValidDateTime() const
+    {
+        return m_status & ValidDateTime;
+    }
 
-   void refreshDateTime();
+    void refreshDateTime();
 
-   void setDateTime(const QDate &date, const QTime &time);
-   void setDaylightStatus(DaylightStatus status);
+    void setDateTime( const QDate &date, const QTime &time );
+    void setDaylightStatus( DaylightStatus status );
 
-   void setValidDateTime() {
-      m_status |= ValidDateTime;
-   }
+    void setValidDateTime()
+    {
+        m_status |= ValidDateTime;
+    }
 
-   static qint64 minJd() {
-      return QDate::minJd();
-   }
+    static qint64 minJd()
+    {
+        return QDate::minJd();
+    }
 
-   static qint64 maxJd() {
-      return QDate::maxJd();
-   }
+    static qint64 maxJd()
+    {
+        return QDate::maxJd();
+    }
 
-   static qint64 zoneMSecsToEpochMSecs(qint64 msecs, const QTimeZone &zone,
-         QDate *localDate = nullptr, QTime *localTime = nullptr);
+    static qint64 zoneMSecsToEpochMSecs( qint64 msecs, const QTimeZone &zone,
+                                         QDate *localDate = nullptr, QTime *localTime = nullptr );
 
-   qint64 m_msecs;
-   QTimeZone m_timeZone;
+    qint64 m_msecs;
+    QTimeZone m_timeZone;
 
-   bool m_tzUserDefined;
-   StatusFlags m_status;
+    bool m_tzUserDefined;
+    StatusFlags m_status;
 };
 
 #endif

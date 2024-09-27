@@ -29,15 +29,16 @@
 
 #include "ScriptExecutionContext.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-SuspendableTimer::SuspendableTimer(ScriptExecutionContext* context)
-    : ActiveDOMObject(context, this)
-    , m_nextFireInterval(0)
-    , m_repeatInterval(0)
+SuspendableTimer::SuspendableTimer( ScriptExecutionContext *context )
+    : ActiveDOMObject( context, this )
+    , m_nextFireInterval( 0 )
+    , m_repeatInterval( 0 )
 #if !ASSERT_DISABLED
-    , m_active(false)
-    , m_suspended(false)
+    , m_active( false )
+    , m_suspended( false )
 #endif
 {
 }
@@ -56,14 +57,16 @@ void SuspendableTimer::stop()
     TimerBase::stop();
 }
 
-void SuspendableTimer::suspend(ReasonForSuspension)
+void SuspendableTimer::suspend( ReasonForSuspension )
 {
 #if !ASSERT_DISABLED
-    ASSERT(!m_suspended);
+    ASSERT( !m_suspended );
     m_suspended = true;
 #endif
     m_active = isActive();
-    if (m_active) {
+
+    if ( m_active )
+    {
         m_nextFireInterval = nextFireInterval();
         m_repeatInterval = repeatInterval();
         TimerBase::stop();
@@ -73,11 +76,14 @@ void SuspendableTimer::suspend(ReasonForSuspension)
 void SuspendableTimer::resume()
 {
 #if !ASSERT_DISABLED
-    ASSERT(m_suspended);
+    ASSERT( m_suspended );
     m_suspended = false;
 #endif
-    if (m_active)
-        start(m_nextFireInterval, m_repeatInterval);
+
+    if ( m_active )
+    {
+        start( m_nextFireInterval, m_repeatInterval );
+    }
 }
 
 bool SuspendableTimer::canSuspend() const

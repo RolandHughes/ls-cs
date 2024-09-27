@@ -40,10 +40,11 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
-WebGeolocationManager::WebGeolocationManager(WebProcess* process)
-    : m_process(process)
+WebGeolocationManager::WebGeolocationManager( WebProcess *process )
+    : m_process( process )
 {
 }
 
@@ -51,45 +52,59 @@ WebGeolocationManager::~WebGeolocationManager()
 {
 }
 
-void WebGeolocationManager::didReceiveMessage(CoreIPC::Connection* connection, CoreIPC::MessageID messageID, CoreIPC::ArgumentDecoder* arguments)
+void WebGeolocationManager::didReceiveMessage( CoreIPC::Connection *connection, CoreIPC::MessageID messageID,
+        CoreIPC::ArgumentDecoder *arguments )
 {
-    didReceiveWebGeolocationManagerMessage(connection, messageID, arguments);
+    didReceiveWebGeolocationManagerMessage( connection, messageID, arguments );
 }
 
-void WebGeolocationManager::registerWebPage(WebPage* page)
+void WebGeolocationManager::registerWebPage( WebPage *page )
 {
 #if ENABLE(CLIENT_BASED_GEOLOCATION)
     bool wasEmpty = m_pageSet.isEmpty();
 
-    m_pageSet.add(page);
-    
-    if (wasEmpty)
-        m_process->connection()->send(Messages::WebGeolocationManagerProxy::StartUpdating(), 0);
-#endif
-}
+    m_pageSet.add( page );
 
-void WebGeolocationManager::unregisterWebPage(WebPage* page)
-{
-#if ENABLE(CLIENT_BASED_GEOLOCATION)
-    m_pageSet.remove(page);
-
-    if (m_pageSet.isEmpty())
-        m_process->connection()->send(Messages::WebGeolocationManagerProxy::StopUpdating(), 0);
-#endif
-}
-
-void WebGeolocationManager::didChangePosition(const WebGeolocationPosition::Data& data)
-{
-#if ENABLE(CLIENT_BASED_GEOLOCATION)
-    RefPtr<GeolocationPosition> position = GeolocationPosition::create(data.timestamp, data.latitude, data.longitude, data.accuracy);
-
-    HashSet<WebPage*>::const_iterator it = m_pageSet.begin();
-    HashSet<WebPage*>::const_iterator end = m_pageSet.end();
-    for (; it != end; ++it) {
-        WebPage* page = *it;
-        if (page->corePage())
-            page->corePage()->geolocationController()->positionChanged(position.get());
+    if ( wasEmpty )
+    {
+        m_process->connection()->send( Messages::WebGeolocationManagerProxy::StartUpdating(), 0 );
     }
+
+#endif
+}
+
+void WebGeolocationManager::unregisterWebPage( WebPage *page )
+{
+#if ENABLE(CLIENT_BASED_GEOLOCATION)
+    m_pageSet.remove( page );
+
+    if ( m_pageSet.isEmpty() )
+    {
+        m_process->connection()->send( Messages::WebGeolocationManagerProxy::StopUpdating(), 0 );
+    }
+
+#endif
+}
+
+void WebGeolocationManager::didChangePosition( const WebGeolocationPosition::Data &data )
+{
+#if ENABLE(CLIENT_BASED_GEOLOCATION)
+    RefPtr<GeolocationPosition> position = GeolocationPosition::create( data.timestamp, data.latitude, data.longitude,
+                                           data.accuracy );
+
+    HashSet<WebPage *>::const_iterator it = m_pageSet.begin();
+    HashSet<WebPage *>::const_iterator end = m_pageSet.end();
+
+    for ( ; it != end; ++it )
+    {
+        WebPage *page = *it;
+
+        if ( page->corePage() )
+        {
+            page->corePage()->geolocationController()->positionChanged( position.get() );
+        }
+    }
+
 #endif
 }
 
@@ -97,15 +112,22 @@ void WebGeolocationManager::didFailToDeterminePosition()
 {
 #if ENABLE(CLIENT_BASED_GEOLOCATION)
     // FIXME: Add localized error string.
-    RefPtr<GeolocationError> error = GeolocationError::create(GeolocationError::PositionUnavailable, /* Localized error string */ String(""));
+    RefPtr<GeolocationError> error = GeolocationError::create( GeolocationError::PositionUnavailable, /* Localized error string */
+                                     String( "" ) );
 
-    HashSet<WebPage*>::const_iterator it = m_pageSet.begin();
-    HashSet<WebPage*>::const_iterator end = m_pageSet.end();
-    for (; it != end; ++it) {
-        WebPage* page = *it;
-        if (page->corePage())
-            page->corePage()->geolocationController()->errorOccurred(error.get());
+    HashSet<WebPage *>::const_iterator it = m_pageSet.begin();
+    HashSet<WebPage *>::const_iterator end = m_pageSet.end();
+
+    for ( ; it != end; ++it )
+    {
+        WebPage *page = *it;
+
+        if ( page->corePage() )
+        {
+            page->corePage()->geolocationController()->errorOccurred( error.get() );
+        }
     }
+
 #endif
 }
 

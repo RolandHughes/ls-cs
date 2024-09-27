@@ -26,25 +26,25 @@
 FT_BEGIN_HEADER
 
 
-  /* the CJK-specific writing system */
+/* the CJK-specific writing system */
 
-  AF_DECLARE_WRITING_SYSTEM_CLASS( af_cjk_writing_system_class )
-
-
-  /*************************************************************************/
-  /*************************************************************************/
-  /*****                                                               *****/
-  /*****              C J K   G L O B A L   M E T R I C S              *****/
-  /*****                                                               *****/
-  /*************************************************************************/
-  /*************************************************************************/
+AF_DECLARE_WRITING_SYSTEM_CLASS( af_cjk_writing_system_class )
 
 
-  /*
-   * CJK glyphs tend to fill the square.  So we have both vertical and
-   * horizontal blue zones.  But some glyphs have flat bounding strokes that
-   * leave some space between neighbour glyphs.
-   */
+/*************************************************************************/
+/*************************************************************************/
+/*****                                                               *****/
+/*****              C J K   G L O B A L   M E T R I C S              *****/
+/*****                                                               *****/
+/*************************************************************************/
+/*************************************************************************/
+
+
+/*
+ * CJK glyphs tend to fill the square.  So we have both vertical and
+ * horizontal blue zones.  But some glyphs have flat bounding strokes that
+ * leave some space between neighbour glyphs.
+ */
 
 #define AF_CJK_IS_TOP_BLUE( b ) \
           ( (b)->properties & AF_BLUE_PROPERTY_CJK_TOP )
@@ -58,20 +58,20 @@ FT_BEGIN_HEADER
 #define AF_CJK_BLUE_ACTIVE      ( 1U << 0 ) /* zone height is <= 3/4px      */
 #define AF_CJK_BLUE_TOP         ( 1U << 1 ) /* result of AF_CJK_IS_TOP_BLUE */
 #define AF_CJK_BLUE_ADJUSTMENT  ( 1U << 2 ) /* used for scale adjustment    */
-                                            /* optimization                 */
+/* optimization                 */
 
 
-  typedef struct  AF_CJKBlueRec_
-  {
+typedef struct  AF_CJKBlueRec_
+{
     AF_WidthRec  ref;
     AF_WidthRec  shoot; /* undershoot */
     FT_UInt      flags;
 
-  } AF_CJKBlueRec, *AF_CJKBlue;
+} AF_CJKBlueRec, *AF_CJKBlue;
 
 
-  typedef struct  AF_CJKAxisRec_
-  {
+typedef struct  AF_CJKAxisRec_
+{
     FT_Fixed       scale;
     FT_Pos         delta;
 
@@ -89,45 +89,45 @@ FT_BEGIN_HEADER
     FT_Fixed       org_scale;
     FT_Pos         org_delta;
 
-  } AF_CJKAxisRec, *AF_CJKAxis;
+} AF_CJKAxisRec, *AF_CJKAxis;
 
 
-  typedef struct  AF_CJKMetricsRec_
-  {
+typedef struct  AF_CJKMetricsRec_
+{
     AF_StyleMetricsRec  root;
     FT_UInt             units_per_em;
     AF_CJKAxisRec       axis[AF_DIMENSION_MAX];
 
-  } AF_CJKMetricsRec, *AF_CJKMetrics;
+} AF_CJKMetricsRec, *AF_CJKMetrics;
 
 
 #ifdef AF_CONFIG_OPTION_CJK
-  FT_LOCAL( FT_Error )
-  af_cjk_metrics_init( AF_CJKMetrics  metrics,
-                       FT_Face        face );
+FT_LOCAL( FT_Error )
+af_cjk_metrics_init( AF_CJKMetrics  metrics,
+                     FT_Face        face );
 
-  FT_LOCAL( void )
-  af_cjk_metrics_scale( AF_CJKMetrics  metrics,
-                        AF_Scaler      scaler );
+FT_LOCAL( void )
+af_cjk_metrics_scale( AF_CJKMetrics  metrics,
+                      AF_Scaler      scaler );
 
-  FT_LOCAL( FT_Error )
-  af_cjk_hints_init( AF_GlyphHints  hints,
-                     AF_CJKMetrics  metrics );
+FT_LOCAL( FT_Error )
+af_cjk_hints_init( AF_GlyphHints  hints,
+                   AF_CJKMetrics  metrics );
 
-  FT_LOCAL( FT_Error )
-  af_cjk_hints_apply( FT_UInt        glyph_index,
-                      AF_GlyphHints  hints,
-                      FT_Outline*    outline,
-                      AF_CJKMetrics  metrics );
+FT_LOCAL( FT_Error )
+af_cjk_hints_apply( FT_UInt        glyph_index,
+                    AF_GlyphHints  hints,
+                    FT_Outline    *outline,
+                    AF_CJKMetrics  metrics );
 
-  /* shared; called from afindic.c */
-  FT_LOCAL( void )
-  af_cjk_metrics_check_digits( AF_CJKMetrics  metrics,
-                               FT_Face        face );
+/* shared; called from afindic.c */
+FT_LOCAL( void )
+af_cjk_metrics_check_digits( AF_CJKMetrics  metrics,
+                             FT_Face        face );
 
-  FT_LOCAL( void )
-  af_cjk_metrics_init_widths( AF_CJKMetrics  metrics,
-                              FT_Face        face );
+FT_LOCAL( void )
+af_cjk_metrics_init_widths( AF_CJKMetrics  metrics,
+                            FT_Face        face );
 #endif /* AF_CONFIG_OPTION_CJK */
 
 

@@ -31,42 +31,56 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/text/AtomicStringHash.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SVGFilterBuilder : public RefCounted<SVGFilterBuilder> {
+class SVGFilterBuilder : public RefCounted<SVGFilterBuilder>
+{
 public:
-    typedef HashSet<FilterEffect*> FilterEffectSet;
+    typedef HashSet<FilterEffect *> FilterEffectSet;
 
-    static PassRefPtr<SVGFilterBuilder> create(Filter* filter) { return adoptRef(new SVGFilterBuilder(filter)); }
+    static PassRefPtr<SVGFilterBuilder> create( Filter *filter )
+    {
+        return adoptRef( new SVGFilterBuilder( filter ) );
+    }
 
-    void add(const AtomicString& id, RefPtr<FilterEffect> effect);
+    void add( const AtomicString &id, RefPtr<FilterEffect> effect );
 
-    FilterEffect* getEffectById(const AtomicString& id) const;
-    FilterEffect* lastEffect() const { return m_lastEffect.get(); }
+    FilterEffect *getEffectById( const AtomicString &id ) const;
+    FilterEffect *lastEffect() const
+    {
+        return m_lastEffect.get();
+    }
 
-    void appendEffectToEffectReferences(RefPtr<FilterEffect>, RenderObject*);
+    void appendEffectToEffectReferences( RefPtr<FilterEffect>, RenderObject * );
 
-    inline FilterEffectSet& effectReferences(FilterEffect* effect)
+    inline FilterEffectSet &effectReferences( FilterEffect *effect )
     {
         // Only allowed for effects belongs to this builder.
-        ASSERT(m_effectReferences.contains(effect));
-        return m_effectReferences.find(effect)->second;
+        ASSERT( m_effectReferences.contains( effect ) );
+        return m_effectReferences.find( effect )->second;
     }
 
     // Required to change the attributes of a filter during an svgAttributeChanged.
-    inline FilterEffect* effectByRenderer(RenderObject* object) { return m_effectRenderer.get(object); }
+    inline FilterEffect *effectByRenderer( RenderObject *object )
+    {
+        return m_effectRenderer.get( object );
+    }
 
     void clearEffects();
-    void clearResultsRecursive(FilterEffect*);
+    void clearResultsRecursive( FilterEffect * );
 
 private:
-    SVGFilterBuilder(Filter*);
+    SVGFilterBuilder( Filter * );
 
     inline void addBuiltinEffects()
     {
         HashMap<AtomicString, RefPtr<FilterEffect> >::iterator end = m_builtinEffects.end();
-        for (HashMap<AtomicString, RefPtr<FilterEffect> >::iterator iterator = m_builtinEffects.begin(); iterator != end; ++iterator)
-             m_effectReferences.add(iterator->second, FilterEffectSet());
+
+        for ( HashMap<AtomicString, RefPtr<FilterEffect> >::iterator iterator = m_builtinEffects.begin(); iterator != end; ++iterator )
+        {
+            m_effectReferences.add( iterator->second, FilterEffectSet() );
+        }
     }
 
     HashMap<AtomicString, RefPtr<FilterEffect> > m_builtinEffects;
@@ -74,11 +88,11 @@ private:
     // The value is a list, which contains those filter effects,
     // which depends on the key filter effect.
     HashMap<RefPtr<FilterEffect>, FilterEffectSet> m_effectReferences;
-    HashMap<RenderObject*, FilterEffect*> m_effectRenderer;
+    HashMap<RenderObject *, FilterEffect *> m_effectRenderer;
 
     RefPtr<FilterEffect> m_lastEffect;
 };
-    
+
 } // namespace WebCore
 
 #endif // ENABLE(SVG) && ENABLE(FILTERS)

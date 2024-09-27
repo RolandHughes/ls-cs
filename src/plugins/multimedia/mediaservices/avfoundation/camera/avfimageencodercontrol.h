@@ -37,29 +37,29 @@ class AVFCameraService;
 
 class AVFImageEncoderControl : public QImageEncoderControl
 {
-   CS_OBJECT(AVFImageEncoderControl)
+    CS_OBJECT( AVFImageEncoderControl )
 
- public:
-   AVFImageEncoderControl(AVFCameraService *service);
+public:
+    AVFImageEncoderControl( AVFCameraService *service );
 
-   QStringList supportedImageCodecs() const override;
-   QString imageCodecDescription(const QString &codecName) const override;
-   QList<QSize> supportedResolutions(const QImageEncoderSettings &settings, bool *continuous) const override;
-   QImageEncoderSettings imageSettings() const override;
-   void setImageSettings(const QImageEncoderSettings &settings) override;
+    QStringList supportedImageCodecs() const override;
+    QString imageCodecDescription( const QString &codecName ) const override;
+    QList<QSize> supportedResolutions( const QImageEncoderSettings &settings, bool *continuous ) const override;
+    QImageEncoderSettings imageSettings() const override;
+    void setImageSettings( const QImageEncoderSettings &settings ) override;
 
-   QImageEncoderSettings requestedSettings() const;
+    QImageEncoderSettings requestedSettings() const;
 
- private:
-   AVFCameraService *m_service;
-   QImageEncoderSettings m_settings;
+private:
+    AVFCameraService *m_service;
+    QImageEncoderSettings m_settings;
 
-   bool applySettings();
-   bool videoCaptureDeviceIsValid() const;
+    bool applySettings();
+    bool videoCaptureDeviceIsValid() const;
 
-   friend class AVFCameraSession;
+    friend class AVFCameraSession;
 };
 
-QSize qt_image_high_resolution(AVCaptureDeviceFormat *fomat);
+QSize qt_image_high_resolution( AVCaptureDeviceFormat *fomat );
 
 #endif

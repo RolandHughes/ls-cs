@@ -36,49 +36,57 @@
 #include <wtf/PassOwnPtr.h>
 #include <wtf/ThreadingPrimitives.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class ActiveDOMObjectCallbackImpl : public ActiveDOMObject {
+class ActiveDOMObjectCallbackImpl : public ActiveDOMObject
+{
 public:
-    ActiveDOMObjectCallbackImpl(ScriptExecutionContext* context)
-        : ActiveDOMObject(context, this)
-        , m_suspended(false)
-        , m_stopped(false)
+    ActiveDOMObjectCallbackImpl( ScriptExecutionContext *context )
+        : ActiveDOMObject( context, this )
+        , m_suspended( false )
+        , m_stopped( false )
     {
     }
 
     virtual void contextDestroyed()
     {
-        MutexLocker locker(m_mutex);
+        MutexLocker locker( m_mutex );
         ActiveDOMObject::contextDestroyed();
     }
-    virtual bool canSuspend() const { return false; }
-    virtual void suspend(ReasonForSuspension)
+    virtual bool canSuspend() const
     {
-        MutexLocker locker(m_mutex);
+        return false;
+    }
+    virtual void suspend( ReasonForSuspension )
+    {
+        MutexLocker locker( m_mutex );
         m_suspended = true;
     }
     virtual void resume()
     {
-        MutexLocker locker(m_mutex);
+        MutexLocker locker( m_mutex );
         m_suspended = false;
     }
     virtual void stop()
     {
-        MutexLocker locker(m_mutex);
+        MutexLocker locker( m_mutex );
         m_stopped = true;
     }
     bool canInvokeCallback()
     {
-        MutexLocker locker(m_mutex);
-        return (!m_suspended && !m_stopped);
+        MutexLocker locker( m_mutex );
+        return ( !m_suspended && !m_stopped );
     }
-    ScriptExecutionContext* scriptExecutionContext()
+    ScriptExecutionContext *scriptExecutionContext()
     {
-        MutexLocker locker(m_mutex);
+        MutexLocker locker( m_mutex );
         return ActiveDOMObject::scriptExecutionContext();
     }
-    Mutex& mutex() { return m_mutex; }
+    Mutex &mutex()
+    {
+        return m_mutex;
+    }
 
 private:
     Mutex m_mutex;
@@ -86,47 +94,51 @@ private:
     bool m_stopped;
 };
 
-static void destroyOnContextThread(PassOwnPtr<ActiveDOMObjectCallbackImpl>);
+static void destroyOnContextThread( PassOwnPtr<ActiveDOMObjectCallbackImpl> );
 
-class DestroyOnContextThreadTask : public ScriptExecutionContext::Task {
+class DestroyOnContextThreadTask : public ScriptExecutionContext::Task
+{
 public:
-    static PassOwnPtr<DestroyOnContextThreadTask> create(PassOwnPtr<ActiveDOMObjectCallbackImpl> impl)
+    static PassOwnPtr<DestroyOnContextThreadTask> create( PassOwnPtr<ActiveDOMObjectCallbackImpl> impl )
     {
-        return adoptPtr(new DestroyOnContextThreadTask(impl));
+        return adoptPtr( new DestroyOnContextThreadTask( impl ) );
     }
 
-    virtual void performTask(ScriptExecutionContext*)
+    virtual void performTask( ScriptExecutionContext * )
     {
-        destroyOnContextThread(m_impl.release());
+        destroyOnContextThread( m_impl.release() );
     }
 
 private:
-    DestroyOnContextThreadTask(PassOwnPtr<ActiveDOMObjectCallbackImpl> impl)
-        : m_impl(impl)
+    DestroyOnContextThreadTask( PassOwnPtr<ActiveDOMObjectCallbackImpl> impl )
+        : m_impl( impl )
     {
     }
 
     OwnPtr<ActiveDOMObjectCallbackImpl> m_impl;
 };
 
-static void destroyOnContextThread(PassOwnPtr<ActiveDOMObjectCallbackImpl> impl)
+static void destroyOnContextThread( PassOwnPtr<ActiveDOMObjectCallbackImpl> impl )
 {
     OwnPtr<ActiveDOMObjectCallbackImpl> implOwnPtr = impl;
 
-    ScriptExecutionContext* context = implOwnPtr->scriptExecutionContext();
-    MutexLocker locker(implOwnPtr->mutex());
-    if (context && !context->isContextThread())
-        context->postTask(DestroyOnContextThreadTask::create(implOwnPtr.release()));
+    ScriptExecutionContext *context = implOwnPtr->scriptExecutionContext();
+    MutexLocker locker( implOwnPtr->mutex() );
+
+    if ( context && !context->isContextThread() )
+    {
+        context->postTask( DestroyOnContextThreadTask::create( implOwnPtr.release() ) );
+    }
 }
 
-ActiveDOMCallback::ActiveDOMCallback(ScriptExecutionContext* context)
-    : m_impl(adoptPtr(new ActiveDOMObjectCallbackImpl(context)))
+ActiveDOMCallback::ActiveDOMCallback( ScriptExecutionContext *context )
+    : m_impl( adoptPtr( new ActiveDOMObjectCallbackImpl( context ) ) )
 {
 }
 
 ActiveDOMCallback::~ActiveDOMCallback()
 {
-    destroyOnContextThread(m_impl.release());
+    destroyOnContextThread( m_impl.release() );
 }
 
 bool ActiveDOMCallback::canInvokeCallback() const
@@ -134,7 +146,7 @@ bool ActiveDOMCallback::canInvokeCallback() const
     return m_impl->canInvokeCallback();
 }
 
-ScriptExecutionContext* ActiveDOMCallback::scriptExecutionContext() const
+ScriptExecutionContext *ActiveDOMCallback::scriptExecutionContext() const
 {
     return m_impl->scriptExecutionContext();
 }

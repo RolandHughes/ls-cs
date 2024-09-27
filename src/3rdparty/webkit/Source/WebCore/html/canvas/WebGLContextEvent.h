@@ -28,27 +28,33 @@
 
 #include "Event.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class WebGLContextEvent : public Event {
+class WebGLContextEvent : public Event
+{
 public:
     static PassRefPtr<WebGLContextEvent> create()
     {
-        return adoptRef(new WebGLContextEvent);
+        return adoptRef( new WebGLContextEvent );
     }
-    static PassRefPtr<WebGLContextEvent> create(const AtomicString& type, bool canBubble, bool cancelable, const String& statusMessage)
+    static PassRefPtr<WebGLContextEvent> create( const AtomicString &type, bool canBubble, bool cancelable,
+            const String &statusMessage )
     {
-        return adoptRef(new WebGLContextEvent(type, canBubble, cancelable, statusMessage));
+        return adoptRef( new WebGLContextEvent( type, canBubble, cancelable, statusMessage ) );
     }
     virtual ~WebGLContextEvent();
 
-    void initEvent(const AtomicString& type, bool canBubble, bool cancelable, const String& statusMessage);
+    void initEvent( const AtomicString &type, bool canBubble, bool cancelable, const String &statusMessage );
 
-    const String& statusMessage() const { return m_statusMessage; }
+    const String &statusMessage() const
+    {
+        return m_statusMessage;
+    }
 
 private:
     WebGLContextEvent();
-    WebGLContextEvent(const AtomicString& type, bool canBubble, bool cancelable, const String& statusMessage);
+    WebGLContextEvent( const AtomicString &type, bool canBubble, bool cancelable, const String &statusMessage );
 
     String m_statusMessage;
 };

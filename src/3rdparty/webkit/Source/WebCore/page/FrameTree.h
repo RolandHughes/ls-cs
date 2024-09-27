@@ -22,71 +22,100 @@
 
 #include <wtf/text/AtomicString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class Frame;
+class Frame;
 
-    class FrameTree {
-        WTF_MAKE_NONCOPYABLE(FrameTree);
-    public:
-        FrameTree(Frame* thisFrame, Frame* parentFrame) 
-            : m_thisFrame(thisFrame)
-            , m_parent(parentFrame)
-            , m_previousSibling(0)
-            , m_lastChild(0)
-            , m_childCount(0)
-        {
-        }
-        ~FrameTree();
+class FrameTree
+{
+    WTF_MAKE_NONCOPYABLE( FrameTree );
+public:
+    FrameTree( Frame *thisFrame, Frame *parentFrame )
+        : m_thisFrame( thisFrame )
+        , m_parent( parentFrame )
+        , m_previousSibling( 0 )
+        , m_lastChild( 0 )
+        , m_childCount( 0 )
+    {
+    }
+    ~FrameTree();
 
-        const AtomicString& name() const { return m_name; }
-        const AtomicString& uniqueName() const { return m_uniqueName; }
-        void setName(const AtomicString&);
-        void clearName();
-        Frame* parent(bool checkForDisconnectedFrame = false) const;
-        void setParent(Frame* parent) { m_parent = parent; }
-        
-        Frame* nextSibling() const { return m_nextSibling.get(); }
-        Frame* previousSibling() const { return m_previousSibling; }
-        Frame* firstChild() const { return m_firstChild.get(); }
-        Frame* lastChild() const { return m_lastChild; }
-        unsigned childCount() const { return m_childCount; }
+    const AtomicString &name() const
+    {
+        return m_name;
+    }
+    const AtomicString &uniqueName() const
+    {
+        return m_uniqueName;
+    }
+    void setName( const AtomicString & );
+    void clearName();
+    Frame *parent( bool checkForDisconnectedFrame = false ) const;
+    void setParent( Frame *parent )
+    {
+        m_parent = parent;
+    }
 
-        bool isDescendantOf(const Frame* ancestor) const;
-        Frame* traverseNext(const Frame* stayWithin = 0) const;
-        Frame* traverseNextWithWrap(bool) const;
-        Frame* traversePreviousWithWrap(bool) const;
-        
-        void appendChild(PassRefPtr<Frame>);
-        bool transferChild(PassRefPtr<Frame>);
-        void detachFromParent() { m_parent = 0; }
-        void removeChild(Frame*);
+    Frame *nextSibling() const
+    {
+        return m_nextSibling.get();
+    }
+    Frame *previousSibling() const
+    {
+        return m_previousSibling;
+    }
+    Frame *firstChild() const
+    {
+        return m_firstChild.get();
+    }
+    Frame *lastChild() const
+    {
+        return m_lastChild;
+    }
+    unsigned childCount() const
+    {
+        return m_childCount;
+    }
 
-        Frame* child(unsigned index) const;
-        Frame* child(const AtomicString& name) const;
-        Frame* find(const AtomicString& name) const;
+    bool isDescendantOf( const Frame *ancestor ) const;
+    Frame *traverseNext( const Frame *stayWithin = 0 ) const;
+    Frame *traverseNextWithWrap( bool ) const;
+    Frame *traversePreviousWithWrap( bool ) const;
 
-        AtomicString uniqueChildName(const AtomicString& requestedName) const;
+    void appendChild( PassRefPtr<Frame> );
+    bool transferChild( PassRefPtr<Frame> );
+    void detachFromParent()
+    {
+        m_parent = 0;
+    }
+    void removeChild( Frame * );
 
-        Frame* top(bool checkForDisconnectedFrame = false) const;
+    Frame *child( unsigned index ) const;
+    Frame *child( const AtomicString &name ) const;
+    Frame *find( const AtomicString &name ) const;
 
-    private:
-        Frame* deepLastChild() const;
-        void actuallyAppendChild(PassRefPtr<Frame>);
+    AtomicString uniqueChildName( const AtomicString &requestedName ) const;
 
-        Frame* m_thisFrame;
+    Frame *top( bool checkForDisconnectedFrame = false ) const;
 
-        Frame* m_parent;
-        AtomicString m_name; // The actual frame name (may be empty).
-        AtomicString m_uniqueName;
+private:
+    Frame *deepLastChild() const;
+    void actuallyAppendChild( PassRefPtr<Frame> );
 
-        // FIXME: use ListRefPtr?
-        RefPtr<Frame> m_nextSibling;
-        Frame* m_previousSibling;
-        RefPtr<Frame> m_firstChild;
-        Frame* m_lastChild;
-        unsigned m_childCount;
-    };
+    Frame *m_thisFrame;
+
+    Frame *m_parent;
+    AtomicString m_name; // The actual frame name (may be empty).
+    AtomicString m_uniqueName;
+
+    // FIXME: use ListRefPtr?
+    RefPtr<Frame> m_nextSibling;
+    Frame *m_previousSibling;
+    RefPtr<Frame> m_firstChild;
+    Frame *m_lastChild;
+    unsigned m_childCount;
+};
 
 } // namespace WebCore
 

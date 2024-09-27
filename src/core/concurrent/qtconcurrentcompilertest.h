@@ -26,19 +26,20 @@
 
 #include <qglobal.h>
 
-namespace QtPrivate {
+namespace QtPrivate
+{
 
 template <class T>
 class HasResultType
 {
-   template <typename U>
-   static char test(int, const typename U::result_type * = nullptr);
+    template <typename U>
+    static char test( int, const typename U::result_type * = nullptr );
 
-   template <typename U>
-   static void *test(double);
+    template <typename U>
+    static void *test( double );
 
- public:
-   static constexpr bool Value = (sizeof(test<T>(0)) == sizeof(char));
+public:
+    static constexpr bool Value = ( sizeof( test<T>( 0 ) ) == sizeof( char ) );
 };
 
 }  // namespace

@@ -30,16 +30,16 @@
 #include <wtf/Assertions.h>
 
 #if PLATFORM(GTK) || PLATFORM(EFL)
-    #define supressNotImplementedWarning() getenv("DISABLE_NI_WARNING")
+#define supressNotImplementedWarning() getenv("DISABLE_NI_WARNING")
 #elif PLATFORM(QT)
-    #include <QByteArray>
-    #define supressNotImplementedWarning() !qgetenv("DISABLE_NI_WARNING").isEmpty()
+#include <QByteArray>
+#define supressNotImplementedWarning() !qgetenv("DISABLE_NI_WARNING").isEmpty()
 #else
-    #define supressNotImplementedWarning() false
+#define supressNotImplementedWarning() false
 #endif
 
 #if defined(NDEBUG)
-    #define notImplemented() ((void)0)
+#define notImplemented() ((void)0)
 #else
 
 #define notImplemented() do { \

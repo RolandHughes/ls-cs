@@ -42,34 +42,34 @@
 FT_BEGIN_HEADER
 
 
-  enum
-  {
+enum
+{
     CF2_MAX_HINTS = 96    /* maximum # of hints */
-  };
+};
 
 
-  /*
-   * A HintMask object stores a bit mask that specifies which hints in the
-   * charstring are active at a given time.  Hints in CFF must be declared
-   * at the start, before any drawing operators, with horizontal hints
-   * preceding vertical hints.  The HintMask is ordered the same way, with
-   * horizontal hints immediately followed by vertical hints.  Clients are
-   * responsible for knowing how many of each type are present.
-   *
-   * The maximum total number of hints is 96, as specified by the CFF
-   * specification.
-   *
-   * A HintMask is built 0 or more times while interpreting a charstring, by
-   * the HintMask operator.  There is only one HintMask, but it is built or
-   * rebuilt each time there is a hint substitution (HintMask operator) in
-   * the charstring.  A default HintMask with all bits set is built if there
-   * has been no HintMask operator prior to the first drawing operator.
-   *
-   */
+/*
+ * A HintMask object stores a bit mask that specifies which hints in the
+ * charstring are active at a given time.  Hints in CFF must be declared
+ * at the start, before any drawing operators, with horizontal hints
+ * preceding vertical hints.  The HintMask is ordered the same way, with
+ * horizontal hints immediately followed by vertical hints.  Clients are
+ * responsible for knowing how many of each type are present.
+ *
+ * The maximum total number of hints is 96, as specified by the CFF
+ * specification.
+ *
+ * A HintMask is built 0 or more times while interpreting a charstring, by
+ * the HintMask operator.  There is only one HintMask, but it is built or
+ * rebuilt each time there is a hint substitution (HintMask operator) in
+ * the charstring.  A default HintMask with all bits set is built if there
+ * has been no HintMask operator prior to the first drawing operator.
+ *
+ */
 
-  typedef struct  CF2_HintMaskRec_
-  {
-    FT_Error*  error;
+typedef struct  CF2_HintMaskRec_
+{
+    FT_Error  *error;
 
     FT_Bool  isValid;
     FT_Bool  isNew;
@@ -79,11 +79,11 @@ FT_BEGIN_HEADER
 
     FT_Byte  mask[( CF2_MAX_HINTS + 7 ) / 8];
 
-  } CF2_HintMaskRec, *CF2_HintMask;
+} CF2_HintMaskRec, *CF2_HintMask;
 
 
-  typedef struct  CF2_StemHintRec_
-  {
+typedef struct  CF2_StemHintRec_
+{
     FT_Bool  used;     /* DS positions are valid         */
 
     CF2_Fixed  min;    /* original character space value */
@@ -92,43 +92,43 @@ FT_BEGIN_HEADER
     CF2_Fixed  minDS;  /* DS position after first use    */
     CF2_Fixed  maxDS;
 
-  } CF2_StemHintRec, *CF2_StemHint;
+} CF2_StemHintRec, *CF2_StemHint;
 
 
-  /*
-   * A HintMap object stores a piecewise linear function for mapping
-   * y-coordinates from character space to device space, providing
-   * appropriate pixel alignment to stem edges.
-   *
-   * The map is implemented as an array of `CF2_Hint' elements, each
-   * representing an edge.  When edges are paired, as from stem hints, the
-   * bottom edge must immediately precede the top edge in the array.
-   * Element character space AND device space positions must both increase
-   * monotonically in the array.  `CF2_Hint' elements are also used as
-   * parameters to `cf2_blues_capture'.
-   *
-   * The `cf2_hintmap_build' method must be called before any drawing
-   * operation (beginning with a Move operator) and at each hint
-   * substitution (HintMask operator).
-   *
-   * The `cf2_hintmap_map' method is called to transform y-coordinates at
-   * each drawing operation (move, line, curve).
-   *
-   */
+/*
+ * A HintMap object stores a piecewise linear function for mapping
+ * y-coordinates from character space to device space, providing
+ * appropriate pixel alignment to stem edges.
+ *
+ * The map is implemented as an array of `CF2_Hint' elements, each
+ * representing an edge.  When edges are paired, as from stem hints, the
+ * bottom edge must immediately precede the top edge in the array.
+ * Element character space AND device space positions must both increase
+ * monotonically in the array.  `CF2_Hint' elements are also used as
+ * parameters to `cf2_blues_capture'.
+ *
+ * The `cf2_hintmap_build' method must be called before any drawing
+ * operation (beginning with a Move operator) and at each hint
+ * substitution (HintMask operator).
+ *
+ * The `cf2_hintmap_map' method is called to transform y-coordinates at
+ * each drawing operation (move, line, curve).
+ *
+ */
 
-  /* TODO: make this a CF2_ArrStack and add a deep copy method */
-  enum
-  {
+/* TODO: make this a CF2_ArrStack and add a deep copy method */
+enum
+{
     CF2_MAX_HINT_EDGES = CF2_MAX_HINTS * 2
-  };
+};
 
 
-  typedef struct  CF2_HintMapRec_
-  {
+typedef struct  CF2_HintMapRec_
+{
     CF2_Font  font;
 
     /* initial map based on blue zones */
-    struct CF2_HintMapRec_*  initialHintMap;
+    struct CF2_HintMapRec_  *initialHintMap;
 
     /* working storage for 2nd pass adjustHints */
     CF2_ArrStack  hintMoves;
@@ -144,42 +144,42 @@ FT_BEGIN_HEADER
 
     CF2_HintRec  edge[CF2_MAX_HINT_EDGES]; /* 192 */
 
-  } CF2_HintMapRec, *CF2_HintMap;
+} CF2_HintMapRec, *CF2_HintMap;
 
 
-  FT_LOCAL( FT_Bool )
-  cf2_hint_isValid( const CF2_Hint  hint );
-  FT_LOCAL( FT_Bool )
-  cf2_hint_isTop( const CF2_Hint  hint );
-  FT_LOCAL( FT_Bool )
-  cf2_hint_isBottom( const CF2_Hint  hint );
-  FT_LOCAL( void )
-  cf2_hint_lock( CF2_Hint  hint );
+FT_LOCAL( FT_Bool )
+cf2_hint_isValid( const CF2_Hint  hint );
+FT_LOCAL( FT_Bool )
+cf2_hint_isTop( const CF2_Hint  hint );
+FT_LOCAL( FT_Bool )
+cf2_hint_isBottom( const CF2_Hint  hint );
+FT_LOCAL( void )
+cf2_hint_lock( CF2_Hint  hint );
 
 
-  FT_LOCAL( void )
-  cf2_hintmap_init( CF2_HintMap   hintmap,
-                    CF2_Font      font,
-                    CF2_HintMap   initialMap,
-                    CF2_ArrStack  hintMoves,
-                    CF2_Fixed     scale );
-  FT_LOCAL( void )
-  cf2_hintmap_build( CF2_HintMap   hintmap,
-                     CF2_ArrStack  hStemHintArray,
-                     CF2_ArrStack  vStemHintArray,
-                     CF2_HintMask  hintMask,
-                     CF2_Fixed     hintOrigin,
-                     FT_Bool       initialMap );
+FT_LOCAL( void )
+cf2_hintmap_init( CF2_HintMap   hintmap,
+                  CF2_Font      font,
+                  CF2_HintMap   initialMap,
+                  CF2_ArrStack  hintMoves,
+                  CF2_Fixed     scale );
+FT_LOCAL( void )
+cf2_hintmap_build( CF2_HintMap   hintmap,
+                   CF2_ArrStack  hStemHintArray,
+                   CF2_ArrStack  vStemHintArray,
+                   CF2_HintMask  hintMask,
+                   CF2_Fixed     hintOrigin,
+                   FT_Bool       initialMap );
 
 
-  /*
-   * GlyphPath is a wrapper for drawing operations that scales the
-   * coordinates according to the render matrix and HintMap.  It also tracks
-   * open paths to control ClosePath and to insert MoveTo for broken fonts.
-   *
-   */
-  typedef struct  CF2_GlyphPathRec_
-  {
+/*
+ * GlyphPath is a wrapper for drawing operations that scales the
+ * coordinates according to the render matrix and HintMap.  It also tracks
+ * open paths to control ClosePath and to insert MoveTo for broken fonts.
+ *
+ */
+typedef struct  CF2_GlyphPathRec_
+{
     /* TODO: gather some of these into a hinting context */
 
     CF2_Font              font;           /* font instance    */
@@ -199,7 +199,7 @@ FT_BEGIN_HEADER
     FT_Vector  fractionalTranslation;  /* including deviceXScale */
 #if 0
     CF2_Fixed  hShift;    /* character space horizontal shift */
-                          /* (for fauxing)                    */
+    /* (for fauxing)                    */
 #endif
 
     FT_Bool  pathIsOpen;     /* true after MoveTo                     */
@@ -212,7 +212,7 @@ FT_BEGIN_HEADER
     CF2_ArrStack         vStemHintArray;
     CF2_HintMask         hintMask;     /* ptr to the current mask */
     CF2_Fixed            hintOriginY;  /* copy of current origin  */
-    const CF2_BluesRec*  blues;
+    const CF2_BluesRec  *blues;
 
     CF2_Fixed  xOffset;        /* character space offsets */
     CF2_Fixed  yOffset;
@@ -241,42 +241,42 @@ FT_BEGIN_HEADER
     FT_Vector  prevElemP2;
     FT_Vector  prevElemP3;
 
-  } CF2_GlyphPathRec, *CF2_GlyphPath;
+} CF2_GlyphPathRec, *CF2_GlyphPath;
 
 
-  FT_LOCAL( void )
-  cf2_glyphpath_init( CF2_GlyphPath         glyphpath,
-                      CF2_Font              font,
-                      CF2_OutlineCallbacks  callbacks,
-                      CF2_Fixed             scaleY,
-                      /* CF2_Fixed hShift, */
-                      CF2_ArrStack          hStemHintArray,
-                      CF2_ArrStack          vStemHintArray,
-                      CF2_HintMask          hintMask,
-                      CF2_Fixed             hintOrigin,
-                      const CF2_Blues       blues,
-                      const FT_Vector*      fractionalTranslation );
-  FT_LOCAL( void )
-  cf2_glyphpath_finalize( CF2_GlyphPath  glyphpath );
+FT_LOCAL( void )
+cf2_glyphpath_init( CF2_GlyphPath         glyphpath,
+                    CF2_Font              font,
+                    CF2_OutlineCallbacks  callbacks,
+                    CF2_Fixed             scaleY,
+                    /* CF2_Fixed hShift, */
+                    CF2_ArrStack          hStemHintArray,
+                    CF2_ArrStack          vStemHintArray,
+                    CF2_HintMask          hintMask,
+                    CF2_Fixed             hintOrigin,
+                    const CF2_Blues       blues,
+                    const FT_Vector      *fractionalTranslation );
+FT_LOCAL( void )
+cf2_glyphpath_finalize( CF2_GlyphPath  glyphpath );
 
-  FT_LOCAL( void )
-  cf2_glyphpath_moveTo( CF2_GlyphPath  glyphpath,
-                        CF2_Fixed      x,
-                        CF2_Fixed      y );
-  FT_LOCAL( void )
-  cf2_glyphpath_lineTo( CF2_GlyphPath  glyphpath,
-                        CF2_Fixed      x,
-                        CF2_Fixed      y );
-  FT_LOCAL( void )
-  cf2_glyphpath_curveTo( CF2_GlyphPath  glyphpath,
-                         CF2_Fixed      x1,
-                         CF2_Fixed      y1,
-                         CF2_Fixed      x2,
-                         CF2_Fixed      y2,
-                         CF2_Fixed      x3,
-                         CF2_Fixed      y3 );
-  FT_LOCAL( void )
-  cf2_glyphpath_closeOpenPath( CF2_GlyphPath  glyphpath );
+FT_LOCAL( void )
+cf2_glyphpath_moveTo( CF2_GlyphPath  glyphpath,
+                      CF2_Fixed      x,
+                      CF2_Fixed      y );
+FT_LOCAL( void )
+cf2_glyphpath_lineTo( CF2_GlyphPath  glyphpath,
+                      CF2_Fixed      x,
+                      CF2_Fixed      y );
+FT_LOCAL( void )
+cf2_glyphpath_curveTo( CF2_GlyphPath  glyphpath,
+                       CF2_Fixed      x1,
+                       CF2_Fixed      y1,
+                       CF2_Fixed      x2,
+                       CF2_Fixed      y2,
+                       CF2_Fixed      x3,
+                       CF2_Fixed      y3 );
+FT_LOCAL( void )
+cf2_glyphpath_closeOpenPath( CF2_GlyphPath  glyphpath );
 
 
 FT_END_HEADER

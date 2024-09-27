@@ -34,41 +34,41 @@ using namespace WebKit;
 
 WKTypeID WKBundleBackForwardListItemGetTypeID()
 {
-    return toAPI(InjectedBundleBackForwardListItem::APIType);
+    return toAPI( InjectedBundleBackForwardListItem::APIType );
 }
 
-bool WKBundleBackForwardListItemIsSame(WKBundleBackForwardListItemRef itemRef1, WKBundleBackForwardListItemRef itemRef2)
+bool WKBundleBackForwardListItemIsSame( WKBundleBackForwardListItemRef itemRef1, WKBundleBackForwardListItemRef itemRef2 )
 {
-    return toImpl(itemRef1)->item() == toImpl(itemRef2)->item();
+    return toImpl( itemRef1 )->item() == toImpl( itemRef2 )->item();
 }
 
-WKURLRef WKBundleBackForwardListItemCopyOriginalURL(WKBundleBackForwardListItemRef itemRef)
+WKURLRef WKBundleBackForwardListItemCopyOriginalURL( WKBundleBackForwardListItemRef itemRef )
 {
-    return toCopiedURLAPI(toImpl(itemRef)->originalURL());
+    return toCopiedURLAPI( toImpl( itemRef )->originalURL() );
 }
 
-WKURLRef WKBundleBackForwardListItemCopyURL(WKBundleBackForwardListItemRef itemRef)
+WKURLRef WKBundleBackForwardListItemCopyURL( WKBundleBackForwardListItemRef itemRef )
 {
-    return toCopiedURLAPI(toImpl(itemRef)->url());
+    return toCopiedURLAPI( toImpl( itemRef )->url() );
 }
 
-WKStringRef WKBundleBackForwardListItemCopyTitle(WKBundleBackForwardListItemRef itemRef)
+WKStringRef WKBundleBackForwardListItemCopyTitle( WKBundleBackForwardListItemRef itemRef )
 {
-    return toCopiedAPI(toImpl(itemRef)->title());
+    return toCopiedAPI( toImpl( itemRef )->title() );
 }
 
-WKStringRef WKBundleBackForwardListItemCopyTarget(WKBundleBackForwardListItemRef itemRef)
+WKStringRef WKBundleBackForwardListItemCopyTarget( WKBundleBackForwardListItemRef itemRef )
 {
-    return toCopiedAPI(toImpl(itemRef)->target());
+    return toCopiedAPI( toImpl( itemRef )->target() );
 }
 
-bool WKBundleBackForwardListItemIsTargetItem(WKBundleBackForwardListItemRef itemRef)
+bool WKBundleBackForwardListItemIsTargetItem( WKBundleBackForwardListItemRef itemRef )
 {
-    return toImpl(itemRef)->isTargetItem();
+    return toImpl( itemRef )->isTargetItem();
 }
 
-WKArrayRef WKBundleBackForwardListItemCopyChildren(WKBundleBackForwardListItemRef itemRef)
+WKArrayRef WKBundleBackForwardListItemCopyChildren( WKBundleBackForwardListItemRef itemRef )
 {
-    return toAPI(toImpl(itemRef)->children().leakRef());
+    return toAPI( toImpl( itemRef )->children().leakRef() );
 }
 

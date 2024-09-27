@@ -30,16 +30,18 @@
 
 using namespace WebCore;
 
-namespace WebKit {
-
-void OriginAndDatabases::encode(CoreIPC::ArgumentEncoder* encoder) const
+namespace WebKit
 {
-    encoder->encode(CoreIPC::In(originIdentifier, originQuota, originUsage, databases));
+
+void OriginAndDatabases::encode( CoreIPC::ArgumentEncoder *encoder ) const
+{
+    encoder->encode( CoreIPC::In( originIdentifier, originQuota, originUsage, databases ) );
 }
 
-bool OriginAndDatabases::decode(CoreIPC::ArgumentDecoder* decoder, OriginAndDatabases& originAndDatabases)
+bool OriginAndDatabases::decode( CoreIPC::ArgumentDecoder *decoder, OriginAndDatabases &originAndDatabases )
 {
-    return decoder->decode(CoreIPC::Out(originAndDatabases.originIdentifier, originAndDatabases.originQuota, originAndDatabases.originUsage, originAndDatabases.databases));
+    return decoder->decode( CoreIPC::Out( originAndDatabases.originIdentifier, originAndDatabases.originQuota,
+                                          originAndDatabases.originUsage, originAndDatabases.databases ) );
 }
 
 } // namespace WebKit

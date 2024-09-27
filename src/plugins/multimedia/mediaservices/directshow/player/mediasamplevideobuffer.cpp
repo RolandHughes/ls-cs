@@ -23,49 +23,53 @@
 
 #include "mediasamplevideobuffer.h"
 
-MediaSampleVideoBuffer::MediaSampleVideoBuffer(IMediaSample *sample, int bytesPerLine)
-   : QAbstractVideoBuffer(NoHandle)
-   , m_sample(sample)
-   , m_bytesPerLine(bytesPerLine)
-   , m_mapMode(NotMapped)
+MediaSampleVideoBuffer::MediaSampleVideoBuffer( IMediaSample *sample, int bytesPerLine )
+    : QAbstractVideoBuffer( NoHandle )
+    , m_sample( sample )
+    , m_bytesPerLine( bytesPerLine )
+    , m_mapMode( NotMapped )
 {
-   m_sample->AddRef();
+    m_sample->AddRef();
 }
 
 MediaSampleVideoBuffer::~MediaSampleVideoBuffer()
 {
-   m_sample->Release();
+    m_sample->Release();
 }
 
-uchar *MediaSampleVideoBuffer::map(MapMode mode, int *numBytes, int *bytesPerLine)
+uchar *MediaSampleVideoBuffer::map( MapMode mode, int *numBytes, int *bytesPerLine )
 {
-   if (m_mapMode == NotMapped && mode != NotMapped) {
-      if (numBytes) {
-         *numBytes = m_sample->GetActualDataLength();
-      }
+    if ( m_mapMode == NotMapped && mode != NotMapped )
+    {
+        if ( numBytes )
+        {
+            *numBytes = m_sample->GetActualDataLength();
+        }
 
-      if (bytesPerLine) {
-         *bytesPerLine = m_bytesPerLine;
-      }
+        if ( bytesPerLine )
+        {
+            *bytesPerLine = m_bytesPerLine;
+        }
 
-      BYTE *bytes = nullptr;
+        BYTE *bytes = nullptr;
 
-      if (m_sample->GetPointer(&bytes) == S_OK) {
-         m_mapMode = mode;
+        if ( m_sample->GetPointer( &bytes ) == S_OK )
+        {
+            m_mapMode = mode;
 
-         return reinterpret_cast<uchar *>(bytes);
-      }
-   }
+            return reinterpret_cast<uchar *>( bytes );
+        }
+    }
 
-   return nullptr;
+    return nullptr;
 }
 
 void MediaSampleVideoBuffer::unmap()
 {
-   m_mapMode = NotMapped;
+    m_mapMode = NotMapped;
 }
 
 QAbstractVideoBuffer::MapMode MediaSampleVideoBuffer::mapMode() const
 {
-   return m_mapMode;
+    return m_mapMode;
 }

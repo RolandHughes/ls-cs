@@ -36,9 +36,9 @@ class QMacSwipeGestureRecognizer : public QGestureRecognizer
 public:
     QMacSwipeGestureRecognizer();
 
-    QGesture *create(QObject *target);
-    QGestureRecognizer::Result recognize(QGesture *gesture, QObject *watched, QEvent *event);
-    void reset(QGesture *gesture);
+    QGesture *create( QObject *target );
+    QGestureRecognizer::Result recognize( QGesture *gesture, QObject *watched, QEvent *event );
+    void reset( QGesture *gesture );
 };
 
 class QMacPinchGestureRecognizer : public QGestureRecognizer
@@ -46,9 +46,9 @@ class QMacPinchGestureRecognizer : public QGestureRecognizer
 public:
     QMacPinchGestureRecognizer();
 
-    QGesture *create(QObject *target);
-    QGestureRecognizer::Result recognize(QGesture *gesture, QObject *watched, QEvent *event);
-    void reset(QGesture *gesture);
+    QGesture *create( QObject *target );
+    QGestureRecognizer::Result recognize( QGesture *gesture, QObject *watched, QEvent *event );
+    void reset( QGesture *gesture );
 };
 
 class QMacPanGestureRecognizer : public QObject, public QGestureRecognizer
@@ -56,9 +56,9 @@ class QMacPanGestureRecognizer : public QObject, public QGestureRecognizer
 public:
     QMacPanGestureRecognizer();
 
-    QGesture *create(QObject *target);
-    QGestureRecognizer::Result recognize(QGesture *gesture, QObject *watched, QEvent *event);
-    void reset(QGesture *gesture);
+    QGesture *create( QObject *target );
+    QGestureRecognizer::Result recognize( QGesture *gesture, QObject *watched, QEvent *event );
+    void reset( QGesture *gesture );
 
 private:
     QPointF _startPos;

@@ -31,231 +31,283 @@
 
 #include <qtextengine_p.h>
 
-extern QString qt_findAtNxFile(const QString &baseFileName, qreal targetDevicePixelRatio,
-   qreal *sourceDevicePixelRatio);
+extern QString qt_findAtNxFile( const QString &baseFileName, qreal targetDevicePixelRatio,
+                                qreal *sourceDevicePixelRatio );
 
-static QString resolveFileName(QString fileName, QUrl *url, qreal targetDevicePixelRatio,
-   qreal *sourceDevicePixelRatio)
+static QString resolveFileName( QString fileName, QUrl *url, qreal targetDevicePixelRatio,
+                                qreal *sourceDevicePixelRatio )
 {
-   // We might use the fileName for loading if url loading fails
-   // try to make sure it is a valid file path.
-   // Also, QFile{Info}::exists works only on filepaths (not urls)
+    // We might use the fileName for loading if url loading fails
+    // try to make sure it is a valid file path.
+    // Also, QFile{Info}::exists works only on filepaths (not urls)
 
-   if (url->isValid()) {
-      if (url->scheme() == "qrc") {
-         fileName = fileName.right(fileName.length() - 3);
-      } else if (url->scheme() == "file") {
-         fileName = url->toLocalFile();
-      }
-   }
+    if ( url->isValid() )
+    {
+        if ( url->scheme() == "qrc" )
+        {
+            fileName = fileName.right( fileName.length() - 3 );
+        }
+        else if ( url->scheme() == "file" )
+        {
+            fileName = url->toLocalFile();
+        }
+    }
 
-   if (targetDevicePixelRatio <= 1.0) {
-      return fileName;
-   }
+    if ( targetDevicePixelRatio <= 1.0 )
+    {
+        return fileName;
+    }
 
-   // try to find a Nx version
-   return qt_findAtNxFile(fileName, targetDevicePixelRatio, sourceDevicePixelRatio);
+    // try to find a Nx version
+    return qt_findAtNxFile( fileName, targetDevicePixelRatio, sourceDevicePixelRatio );
 }
 
-static QPixmap getPixmap(QTextDocument *doc, const QTextImageFormat &format, const qreal devicePixelRatio = 1.0)
+static QPixmap getPixmap( QTextDocument *doc, const QTextImageFormat &format, const qreal devicePixelRatio = 1.0 )
 {
-   QPixmap pm;
+    QPixmap pm;
 
-   QString name = format.name();
-   if (name.startsWith(QLatin1String(":/"))) {
-      // auto-detect resources
-      name.prepend(QLatin1String("qrc"));
-   }
+    QString name = format.name();
 
-   QUrl url = QUrl::fromEncoded(name.toUtf8());
+    if ( name.startsWith( QLatin1String( ":/" ) ) )
+    {
+        // auto-detect resources
+        name.prepend( QLatin1String( "qrc" ) );
+    }
 
-   qreal sourcePixelRatio = 1.0;
-   name = resolveFileName(name, &url, devicePixelRatio, &sourcePixelRatio);
+    QUrl url = QUrl::fromEncoded( name.toUtf8() );
 
-   const QVariant data = doc->resource(QTextDocument::ImageResource, url);
+    qreal sourcePixelRatio = 1.0;
+    name = resolveFileName( name, &url, devicePixelRatio, &sourcePixelRatio );
 
-   if (data.type() == QVariant::Pixmap || data.type() == QVariant::Image) {
-      pm = data.value<QPixmap>();
+    const QVariant data = doc->resource( QTextDocument::ImageResource, url );
 
-   } else if (data.type() == QVariant::ByteArray) {
-      pm.loadFromData(data.toByteArray());
-   }
+    if ( data.type() == QVariant::Pixmap || data.type() == QVariant::Image )
+    {
+        pm = data.value<QPixmap>();
 
-   if (pm.isNull()) {
-      QImage img;
+    }
+    else if ( data.type() == QVariant::ByteArray )
+    {
+        pm.loadFromData( data.toByteArray() );
+    }
 
-      if (name.isEmpty() || !img.load(name)) {
-         return QPixmap(QLatin1String(":LsCs/styles/commonstyle/images/file-16.png"));
-      }
+    if ( pm.isNull() )
+    {
+        QImage img;
 
-      pm = QPixmap::fromImage(img);
-      doc->addResource(QTextDocument::ImageResource, url, pm);
-   }
+        if ( name.isEmpty() || !img.load( name ) )
+        {
+            return QPixmap( QLatin1String( ":LsCs/styles/commonstyle/images/file-16.png" ) );
+        }
 
-   return pm;
+        pm = QPixmap::fromImage( img );
+        doc->addResource( QTextDocument::ImageResource, url, pm );
+    }
+
+    return pm;
 }
 
-static QSize getPixmapSize(QTextDocument *doc, const QTextImageFormat &format)
+static QSize getPixmapSize( QTextDocument *doc, const QTextImageFormat &format )
 {
-   QPixmap pm;
+    QPixmap pm;
 
-   const bool hasWidth  = format.hasProperty(QTextFormat::ImageWidth);
-   const int width      = qRound(format.width());
-   const bool hasHeight = format.hasProperty(QTextFormat::ImageHeight);
-   const int height     = qRound(format.height());
+    const bool hasWidth  = format.hasProperty( QTextFormat::ImageWidth );
+    const int width      = qRound( format.width() );
+    const bool hasHeight = format.hasProperty( QTextFormat::ImageHeight );
+    const int height     = qRound( format.height() );
 
-   QSize size(width, height);
-   if (!hasWidth || !hasHeight) {
-      pm = getPixmap(doc, format);
+    QSize size( width, height );
 
-      const int pmWidth = pm.width() / pm.devicePixelRatio();
-      const int pmHeight = pm.height() / pm.devicePixelRatio();
-      if (!hasWidth) {
-         if (!hasHeight) {
-            size.setWidth(pmWidth);
-         } else {
-            size.setWidth(qRound(height * (pmWidth / (qreal) pmHeight)));
-         }
-      }
+    if ( !hasWidth || !hasHeight )
+    {
+        pm = getPixmap( doc, format );
 
-      if (!hasHeight) {
-         if (!hasWidth) {
-            size.setHeight(pmHeight);
-         } else {
-            size.setHeight(qRound(width * (pmHeight / (qreal) pmWidth)));
-         }
-      }
-   }
+        const int pmWidth = pm.width() / pm.devicePixelRatio();
+        const int pmHeight = pm.height() / pm.devicePixelRatio();
 
-   qreal scale = 1.0;
-   QPaintDevice *pdev = doc->documentLayout()->paintDevice();
-   if (pdev) {
-      if (pm.isNull()) {
-         pm = getPixmap(doc, format);
-      }
+        if ( !hasWidth )
+        {
+            if ( !hasHeight )
+            {
+                size.setWidth( pmWidth );
+            }
+            else
+            {
+                size.setWidth( qRound( height * ( pmWidth / ( qreal ) pmHeight ) ) );
+            }
+        }
 
-      if (!pm.isNull()) {
-         scale = qreal(pdev->logicalDpiY()) / qreal(qt_defaultDpi());
-      }
-   }
-   size *= scale;
+        if ( !hasHeight )
+        {
+            if ( !hasWidth )
+            {
+                size.setHeight( pmHeight );
+            }
+            else
+            {
+                size.setHeight( qRound( width * ( pmHeight / ( qreal ) pmWidth ) ) );
+            }
+        }
+    }
 
-   return size;
+    qreal scale = 1.0;
+    QPaintDevice *pdev = doc->documentLayout()->paintDevice();
+
+    if ( pdev )
+    {
+        if ( pm.isNull() )
+        {
+            pm = getPixmap( doc, format );
+        }
+
+        if ( !pm.isNull() )
+        {
+            scale = qreal( pdev->logicalDpiY() ) / qreal( qt_defaultDpi() );
+        }
+    }
+
+    size *= scale;
+
+    return size;
 }
 
-static QImage getImage(QTextDocument *doc, const QTextImageFormat &format, const qreal devicePixelRatio = 1.0)
+static QImage getImage( QTextDocument *doc, const QTextImageFormat &format, const qreal devicePixelRatio = 1.0 )
 {
-   QImage image;
+    QImage image;
 
-   QString name = format.name();
-   if (name.startsWith(QLatin1String(":/"))) {
-      // auto-detect resources
-      name.prepend(QLatin1String("qrc"));
-   }
+    QString name = format.name();
 
-   QUrl url = QUrl::fromEncoded(name.toUtf8());
-   qreal sourcePixelRatio = 1.0;
-   name = resolveFileName(name, &url, devicePixelRatio, &sourcePixelRatio);
+    if ( name.startsWith( QLatin1String( ":/" ) ) )
+    {
+        // auto-detect resources
+        name.prepend( QLatin1String( "qrc" ) );
+    }
 
-   const QVariant data = doc->resource(QTextDocument::ImageResource, url);
+    QUrl url = QUrl::fromEncoded( name.toUtf8() );
+    qreal sourcePixelRatio = 1.0;
+    name = resolveFileName( name, &url, devicePixelRatio, &sourcePixelRatio );
 
-   if (data.type() == QVariant::Image) {
-      image = data.value<QImage>();
+    const QVariant data = doc->resource( QTextDocument::ImageResource, url );
 
-   } else if (data.type() == QVariant::ByteArray) {
-      image.loadFromData(data.toByteArray());
+    if ( data.type() == QVariant::Image )
+    {
+        image = data.value<QImage>();
 
-   }
+    }
+    else if ( data.type() == QVariant::ByteArray )
+    {
+        image.loadFromData( data.toByteArray() );
 
-   if (image.isNull()) {
-      if (name.isEmpty() || !image.load(name)) {
-         return QImage(QLatin1String(":LsCs/styles/commonstyle/images/file-16.png"));
-      }
+    }
 
-      doc->addResource(QTextDocument::ImageResource, url, image);
-   }
-   if (sourcePixelRatio != 1.0) {
-      image.setDevicePixelRatio(sourcePixelRatio);
-   }
+    if ( image.isNull() )
+    {
+        if ( name.isEmpty() || !image.load( name ) )
+        {
+            return QImage( QLatin1String( ":LsCs/styles/commonstyle/images/file-16.png" ) );
+        }
 
-   return image;
+        doc->addResource( QTextDocument::ImageResource, url, image );
+    }
+
+    if ( sourcePixelRatio != 1.0 )
+    {
+        image.setDevicePixelRatio( sourcePixelRatio );
+    }
+
+    return image;
 }
 
-static QSize getImageSize(QTextDocument *doc, const QTextImageFormat &format)
+static QSize getImageSize( QTextDocument *doc, const QTextImageFormat &format )
 {
-   QImage image;
+    QImage image;
 
-   const bool hasWidth = format.hasProperty(QTextFormat::ImageWidth);
-   const int width = qRound(format.width());
-   const bool hasHeight = format.hasProperty(QTextFormat::ImageHeight);
-   const int height = qRound(format.height());
+    const bool hasWidth = format.hasProperty( QTextFormat::ImageWidth );
+    const int width = qRound( format.width() );
+    const bool hasHeight = format.hasProperty( QTextFormat::ImageHeight );
+    const int height = qRound( format.height() );
 
-   QSize size(width, height);
-   if (!hasWidth || !hasHeight) {
-      image = getImage(doc, format);
-      if (!hasWidth) {
-         size.setWidth(image.width() / image.devicePixelRatio());
-      }
+    QSize size( width, height );
 
-      if (!hasHeight) {
-         size.setHeight(image.height() / image.devicePixelRatio());
-      }
-   }
+    if ( !hasWidth || !hasHeight )
+    {
+        image = getImage( doc, format );
 
-   qreal scale = 1.0;
-   QPaintDevice *pdev = doc->documentLayout()->paintDevice();
+        if ( !hasWidth )
+        {
+            size.setWidth( image.width() / image.devicePixelRatio() );
+        }
 
-   if (pdev) {
-      if (image.isNull()) {
-         image = getImage(doc, format);
-      }
-      if (!image.isNull()) {
-         scale = qreal(pdev->logicalDpiY()) / qreal(qt_defaultDpi());
-      }
-   }
-   size *= scale;
+        if ( !hasHeight )
+        {
+            size.setHeight( image.height() / image.devicePixelRatio() );
+        }
+    }
 
-   return size;
+    qreal scale = 1.0;
+    QPaintDevice *pdev = doc->documentLayout()->paintDevice();
+
+    if ( pdev )
+    {
+        if ( image.isNull() )
+        {
+            image = getImage( doc, format );
+        }
+
+        if ( !image.isNull() )
+        {
+            scale = qreal( pdev->logicalDpiY() ) / qreal( qt_defaultDpi() );
+        }
+    }
+
+    size *= scale;
+
+    return size;
 }
 
-QTextImageHandler::QTextImageHandler(QObject *parent)
-   : QObject(parent)
+QTextImageHandler::QTextImageHandler( QObject *parent )
+    : QObject( parent )
 {
 }
 
-QSizeF QTextImageHandler::intrinsicSize(QTextDocument *doc, int posInDocument, const QTextFormat &format)
+QSizeF QTextImageHandler::intrinsicSize( QTextDocument *doc, int posInDocument, const QTextFormat &format )
 {
-   (void) posInDocument;
+    ( void ) posInDocument;
 
-   const QTextImageFormat imageFormat = format.toImageFormat();
+    const QTextImageFormat imageFormat = format.toImageFormat();
 
-   if (QCoreApplication::instance()->thread() != QThread::currentThread()) {
-      return getImageSize(doc, imageFormat);
-   }
+    if ( QCoreApplication::instance()->thread() != QThread::currentThread() )
+    {
+        return getImageSize( doc, imageFormat );
+    }
 
-   return getPixmapSize(doc, imageFormat);
+    return getPixmapSize( doc, imageFormat );
 }
 
-QImage QTextImageHandler::image(QTextDocument *doc, const QTextImageFormat &imageFormat)
+QImage QTextImageHandler::image( QTextDocument *doc, const QTextImageFormat &imageFormat )
 {
-   Q_ASSERT(doc != nullptr);
+    Q_ASSERT( doc != nullptr );
 
-   return getImage(doc, imageFormat);
+    return getImage( doc, imageFormat );
 }
 
-void QTextImageHandler::drawObject(QPainter *p, const QRectF &rect, QTextDocument *doc, int posInDocument, const QTextFormat &format)
+void QTextImageHandler::drawObject( QPainter *p, const QRectF &rect, QTextDocument *doc, int posInDocument,
+                                    const QTextFormat &format )
 {
-   (void) posInDocument;
-   const QTextImageFormat imageFormat = format.toImageFormat();
+    ( void ) posInDocument;
+    const QTextImageFormat imageFormat = format.toImageFormat();
 
-   if (QCoreApplication::instance()->thread() != QThread::currentThread()) {
-      const QImage image = getImage(doc, imageFormat, p->device()->devicePixelRatioF());
-      p->drawImage(rect, image, image.rect());
+    if ( QCoreApplication::instance()->thread() != QThread::currentThread() )
+    {
+        const QImage image = getImage( doc, imageFormat, p->device()->devicePixelRatioF() );
+        p->drawImage( rect, image, image.rect() );
 
-   } else {
-      const QPixmap pixmap = getPixmap(doc, imageFormat, p->device()->devicePixelRatioF());
-      p->drawPixmap(rect, pixmap, pixmap.rect());
-   }
+    }
+    else
+    {
+        const QPixmap pixmap = getPixmap( doc, imageFormat, p->device()->devicePixelRatioF() );
+        p->drawPixmap( rect, pixmap, pixmap.rect() );
+    }
 }
 
 

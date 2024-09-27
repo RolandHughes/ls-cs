@@ -33,34 +33,34 @@ class QTextCursor;
 
 class Q_GUI_EXPORT QTextDocumentFragment
 {
- public:
-   QTextDocumentFragment();
-   explicit QTextDocumentFragment(const QTextDocument *document);
-   explicit QTextDocumentFragment(const QTextCursor &cursor);
-   QTextDocumentFragment(const QTextDocumentFragment &other);
-   QTextDocumentFragment &operator=(const QTextDocumentFragment &other);
+public:
+    QTextDocumentFragment();
+    explicit QTextDocumentFragment( const QTextDocument *document );
+    explicit QTextDocumentFragment( const QTextCursor &cursor );
+    QTextDocumentFragment( const QTextDocumentFragment &other );
+    QTextDocumentFragment &operator=( const QTextDocumentFragment &other );
 
-   ~QTextDocumentFragment();
+    ~QTextDocumentFragment();
 
-   bool isEmpty() const;
+    bool isEmpty() const;
 
-   QString toPlainText() const;
-
-#ifndef QT_NO_TEXTHTMLPARSER
-   QString toHtml(const QByteArray &encoding = QByteArray()) const;
-#endif
-
-   static QTextDocumentFragment fromPlainText(const QString &plainText);
+    QString toPlainText() const;
 
 #ifndef QT_NO_TEXTHTMLPARSER
-   static QTextDocumentFragment fromHtml(const QString &text);
-   static QTextDocumentFragment fromHtml(const QString &text, const QTextDocument *resourceProvider);
+    QString toHtml( const QByteArray &encoding = QByteArray() ) const;
 #endif
 
- private:
-   QTextDocumentFragmentPrivate *d;
-   friend class QTextCursor;
-   friend class QTextDocumentWriter;
+    static QTextDocumentFragment fromPlainText( const QString &plainText );
+
+#ifndef QT_NO_TEXTHTMLPARSER
+    static QTextDocumentFragment fromHtml( const QString &text );
+    static QTextDocumentFragment fromHtml( const QString &text, const QTextDocument *resourceProvider );
+#endif
+
+private:
+    QTextDocumentFragmentPrivate *d;
+    friend class QTextCursor;
+    friend class QTextDocumentWriter;
 };
 
 #endif

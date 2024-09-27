@@ -26,31 +26,48 @@
 #include "SVGParserUtilities.h"
 #include <wtf/text/StringBuilder.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-void SVGLengthList::parse(const String& value, SVGLengthMode mode)
+void SVGLengthList::parse( const String &value, SVGLengthMode mode )
 {
     clear();
     ExceptionCode ec = 0;
 
-    const UChar* ptr = value.characters();
-    const UChar* end = ptr + value.length();
-    while (ptr < end) {
-        const UChar* start = ptr;
-        while (ptr < end && *ptr != ',' && !isWhitespace(*ptr))
-            ptr++;
-        if (ptr == start)
-            break;
+    const UChar *ptr = value.characters();
+    const UChar *end = ptr + value.length();
 
-        SVGLength length(mode);
-        String valueString(start, ptr - start);
-        if (valueString.isEmpty())
+    while ( ptr < end )
+    {
+        const UChar *start = ptr;
+
+        while ( ptr < end && *ptr != ',' && !isWhitespace( *ptr ) )
+        {
+            ptr++;
+        }
+
+        if ( ptr == start )
+        {
+            break;
+        }
+
+        SVGLength length( mode );
+        String valueString( start, ptr - start );
+
+        if ( valueString.isEmpty() )
+        {
             return;
-        length.setValueAsString(valueString, ec);
-        if (ec)
+        }
+
+        length.setValueAsString( valueString, ec );
+
+        if ( ec )
+        {
             return;
-        append(length);
-        skipOptionalSpacesOrDelimiter(ptr, end);
+        }
+
+        append( length );
+        skipOptionalSpacesOrDelimiter( ptr, end );
     }
 }
 
@@ -59,11 +76,15 @@ String SVGLengthList::valueAsString() const
     StringBuilder builder;
 
     unsigned size = this->size();
-    for (unsigned i = 0; i < size; ++i) {
-        if (i > 0)
-            builder.append(' ');
 
-        builder.append(at(i).valueAsString());
+    for ( unsigned i = 0; i < size; ++i )
+    {
+        if ( i > 0 )
+        {
+            builder.append( ' ' );
+        }
+
+        builder.append( at( i ).valueAsString() );
     }
 
     return builder.toString();

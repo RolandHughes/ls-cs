@@ -30,32 +30,34 @@
 #include <wtf/RefPtr.h>
 #include <wtf/Threading.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class AudioBuffer;
 class Reverb;
-    
-class ConvolverNode : public AudioNode {
+
+class ConvolverNode : public AudioNode
+{
 public:
-    static PassRefPtr<ConvolverNode> create(AudioContext* context, double sampleRate)
+    static PassRefPtr<ConvolverNode> create( AudioContext *context, double sampleRate )
     {
-        return adoptRef(new ConvolverNode(context, sampleRate));      
+        return adoptRef( new ConvolverNode( context, sampleRate ) );
     }
-    
+
     virtual ~ConvolverNode();
-    
+
     // AudioNode
-    virtual void process(size_t framesToProcess);
+    virtual void process( size_t framesToProcess );
     virtual void reset();
     virtual void initialize();
     virtual void uninitialize();
 
     // Impulse responses
-    void setBuffer(AudioBuffer*);
-    AudioBuffer* buffer();
+    void setBuffer( AudioBuffer * );
+    AudioBuffer *buffer();
 
 private:
-    ConvolverNode(AudioContext*, double sampleRate);
+    ConvolverNode( AudioContext *, double sampleRate );
 
     OwnPtr<Reverb> m_reverb;
     RefPtr<AudioBuffer> m_buffer;

@@ -33,31 +33,40 @@
 #include "AudioDestination.h"
 #include <AudioUnit/AudioUnit.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 // An AudioDestination using CoreAudio's default output AudioUnit
 
-class AudioDestinationMac : public AudioDestination {
+class AudioDestinationMac : public AudioDestination
+{
 public:
-    AudioDestinationMac(AudioSourceProvider&, double sampleRate);
+    AudioDestinationMac( AudioSourceProvider &, double sampleRate );
     virtual ~AudioDestinationMac();
 
     virtual void start();
     virtual void stop();
-    bool isPlaying() { return m_isPlaying; }
+    bool isPlaying()
+    {
+        return m_isPlaying;
+    }
 
-    double sampleRate() const { return m_sampleRate; }
+    double sampleRate() const
+    {
+        return m_sampleRate;
+    }
 
 private:
     void configure();
 
     // DefaultOutputUnit callback
-    static OSStatus inputProc(void* userData, AudioUnitRenderActionFlags*, const AudioTimeStamp*, UInt32 busNumber, UInt32 numberOfFrames, AudioBufferList* ioData);
+    static OSStatus inputProc( void *userData, AudioUnitRenderActionFlags *, const AudioTimeStamp *, UInt32 busNumber,
+                               UInt32 numberOfFrames, AudioBufferList *ioData );
 
-    OSStatus render(UInt32 numberOfFrames, AudioBufferList* ioData);
+    OSStatus render( UInt32 numberOfFrames, AudioBufferList *ioData );
 
     AudioUnit m_outputUnit;
-    AudioSourceProvider& m_provider;
+    AudioSourceProvider &m_provider;
     AudioBus m_renderBus;
 
     double m_sampleRate;

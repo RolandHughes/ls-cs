@@ -34,18 +34,21 @@
 #include "MachPort.h"
 #endif
 
-namespace CoreIPC {
-    class ArgumentDecoder;
-    class ArgumentEncoder;
+namespace CoreIPC
+{
+class ArgumentDecoder;
+class ArgumentEncoder;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
-struct PluginProcessCreationParameters {
+struct PluginProcessCreationParameters
+{
     PluginProcessCreationParameters();
 
-    void encode(CoreIPC::ArgumentEncoder*) const;
-    static bool decode(CoreIPC::ArgumentDecoder*, PluginProcessCreationParameters&);
+    void encode( CoreIPC::ArgumentEncoder * ) const;
+    static bool decode( CoreIPC::ArgumentDecoder *, PluginProcessCreationParameters & );
 
     String pluginPath;
 

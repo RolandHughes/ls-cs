@@ -35,33 +35,37 @@
 #include <wtf/Noncopyable.h>
 #include <wtf/text/AtomicStringHash.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class FontDescription;
 class TextEncoding;
 
-class FontTranscoder {
-    WTF_MAKE_NONCOPYABLE(FontTranscoder); WTF_MAKE_FAST_ALLOCATED;
+class FontTranscoder
+{
+    WTF_MAKE_NONCOPYABLE( FontTranscoder );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
-    void convert(String& text, const FontDescription&, const TextEncoding* = 0) const;
-    bool needsTranscoding(const FontDescription&, const TextEncoding* = 0) const;
+    void convert( String &text, const FontDescription &, const TextEncoding * = 0 ) const;
+    bool needsTranscoding( const FontDescription &, const TextEncoding * = 0 ) const;
 
 private:
     FontTranscoder();
     ~FontTranscoder(); // Not implemented to make sure nobody accidentally calls delete -- WebCore does not delete singletons.
 
-    enum ConverterType {
+    enum ConverterType
+    {
         NoConversion, BackslashToYenSign,
     };
 
-    ConverterType converterType(const FontDescription&, const TextEncoding*) const;
+    ConverterType converterType( const FontDescription &, const TextEncoding * ) const;
 
     HashMap<AtomicString, ConverterType> m_converterTypes;
 
-    friend FontTranscoder& fontTranscoder();
+    friend FontTranscoder &fontTranscoder();
 };
 
-FontTranscoder& fontTranscoder();
+FontTranscoder &fontTranscoder();
 
 } // namespace WebCore
 

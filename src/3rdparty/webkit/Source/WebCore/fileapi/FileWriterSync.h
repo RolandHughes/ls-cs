@@ -38,29 +38,31 @@
 #include "FileWriterBase.h"
 #include <wtf/PassRefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Blob;
 
 typedef int ExceptionCode;
 
-class FileWriterSync : public FileWriterBase, public AsyncFileWriterClient {
+class FileWriterSync : public FileWriterBase, public AsyncFileWriterClient
+{
 public:
     static PassRefPtr<FileWriterSync> create()
     {
-        return adoptRef(new FileWriterSync());
+        return adoptRef( new FileWriterSync() );
     }
     virtual ~FileWriterSync();
 
     // FileWriterBase
-    void write(Blob*, ExceptionCode&);
-    void seek(long long position, ExceptionCode&);
-    void truncate(long long length, ExceptionCode&);
+    void write( Blob *, ExceptionCode & );
+    void seek( long long position, ExceptionCode & );
+    void truncate( long long length, ExceptionCode & );
 
     // AsyncFileWriterClient, via FileWriterBase
-    void didWrite(long long bytes, bool complete);
+    void didWrite( long long bytes, bool complete );
     void didTruncate();
-    void didFail(FileError::ErrorCode);
+    void didFail( FileError::ErrorCode );
 
 private:
     FileWriterSync();

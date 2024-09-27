@@ -28,29 +28,35 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class IDBTransaction;
 
-class JSIDBTransaction : public JSDOMWrapper {
+class JSIDBTransaction : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSIDBTransaction(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<IDBTransaction>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
-    virtual void put(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::JSValue, JSC::PutPropertySlot&);
+    JSIDBTransaction( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<IDBTransaction> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
+    virtual void put( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::JSValue, JSC::PutPropertySlot & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    virtual void visitChildren(JSC::SlotVisitor&);
+    virtual void visitChildren( JSC::SlotVisitor & );
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
-    IDBTransaction* impl() const { return m_impl.get(); }
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
+    IDBTransaction *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<IDBTransaction> m_impl;
@@ -58,64 +64,68 @@ protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::OverridesVisitChildren | Base::StructureFlags;
 };
 
-class JSIDBTransactionOwner : public JSC::WeakHandleOwner {
-    virtual bool isReachableFromOpaqueRoots(JSC::Handle<JSC::Unknown>, void* context, JSC::SlotVisitor&);
-    virtual void finalize(JSC::Handle<JSC::Unknown>, void* context);
+class JSIDBTransactionOwner : public JSC::WeakHandleOwner
+{
+    virtual bool isReachableFromOpaqueRoots( JSC::Handle<JSC::Unknown>, void *context, JSC::SlotVisitor & );
+    virtual void finalize( JSC::Handle<JSC::Unknown>, void *context );
 };
 
-inline JSC::WeakHandleOwner* wrapperOwner(DOMWrapperWorld*, IDBTransaction*)
+inline JSC::WeakHandleOwner *wrapperOwner( DOMWrapperWorld *, IDBTransaction * )
 {
-    DEFINE_STATIC_LOCAL(JSIDBTransactionOwner, jsIDBTransactionOwner, ());
+    DEFINE_STATIC_LOCAL( JSIDBTransactionOwner, jsIDBTransactionOwner, () );
     return &jsIDBTransactionOwner;
 }
 
-inline void* wrapperContext(DOMWrapperWorld* world, IDBTransaction*)
+inline void *wrapperContext( DOMWrapperWorld *world, IDBTransaction * )
 {
     return world;
 }
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, IDBTransaction*);
-IDBTransaction* toIDBTransaction(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, IDBTransaction * );
+IDBTransaction *toIDBTransaction( JSC::JSValue );
 
-class JSIDBTransactionPrototype : public JSC::JSObjectWithGlobalObject {
+class JSIDBTransactionPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSIDBTransactionPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSIDBTransactionPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                               JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::OverridesVisitChildren | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsIDBTransactionPrototypeFunctionObjectStore(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsIDBTransactionPrototypeFunctionAbort(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsIDBTransactionPrototypeFunctionAddEventListener(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsIDBTransactionPrototypeFunctionRemoveEventListener(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsIDBTransactionPrototypeFunctionDispatchEvent(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsIDBTransactionPrototypeFunctionObjectStore( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsIDBTransactionPrototypeFunctionAbort( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsIDBTransactionPrototypeFunctionAddEventListener( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsIDBTransactionPrototypeFunctionRemoveEventListener( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsIDBTransactionPrototypeFunctionDispatchEvent( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsIDBTransactionMode(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsIDBTransactionDb(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsIDBTransactionOnabort(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSIDBTransactionOnabort(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsIDBTransactionOncomplete(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSIDBTransactionOncomplete(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsIDBTransactionOnerror(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSIDBTransactionOnerror(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsIDBTransactionConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsIDBTransactionMode( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsIDBTransactionDb( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsIDBTransactionOnabort( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSIDBTransactionOnabort( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsIDBTransactionOncomplete( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSIDBTransactionOncomplete( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsIDBTransactionOnerror( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSIDBTransactionOnerror( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsIDBTransactionConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 // Constants
 
-JSC::JSValue jsIDBTransactionREAD_WRITE(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsIDBTransactionREAD_ONLY(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsIDBTransactionVERSION_CHANGE(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsIDBTransactionREAD_WRITE( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsIDBTransactionREAD_ONLY( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsIDBTransactionVERSION_CHANGE( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

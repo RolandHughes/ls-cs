@@ -29,12 +29,14 @@
 #include <wtf/RefPtr.h>
 #include <wtf/text/AtomicStringImpl.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-struct CounterDirectives {
+struct CounterDirectives
+{
     CounterDirectives()
-        : m_reset(false)
-        , m_increment(false)
+        : m_reset( false )
+        , m_increment( false )
     {
     }
 
@@ -44,8 +46,11 @@ struct CounterDirectives {
     int m_incrementValue;
 };
 
-bool operator==(const CounterDirectives&, const CounterDirectives&);
-inline bool operator!=(const CounterDirectives& a, const CounterDirectives& b) { return !(a == b); }
+bool operator==( const CounterDirectives &, const CounterDirectives & );
+inline bool operator!=( const CounterDirectives &a, const CounterDirectives &b )
+{
+    return !( a == b );
+}
 
 typedef HashMap<RefPtr<AtomicStringImpl>, CounterDirectives> CounterDirectiveMap;
 

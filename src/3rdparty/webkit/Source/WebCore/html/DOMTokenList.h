@@ -29,12 +29,15 @@
 #include <wtf/text/AtomicString.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Element;
 
-class DOMTokenList {
-    WTF_MAKE_NONCOPYABLE(DOMTokenList); WTF_MAKE_FAST_ALLOCATED;
+class DOMTokenList
+{
+    WTF_MAKE_NONCOPYABLE( DOMTokenList );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
     DOMTokenList() { }
     virtual ~DOMTokenList() {};
@@ -43,19 +46,22 @@ public:
     virtual void deref() = 0;
 
     virtual unsigned length() const = 0;
-    virtual const AtomicString item(unsigned index) const = 0;
-    virtual bool contains(const AtomicString&, ExceptionCode&) const = 0;
-    virtual void add(const AtomicString&, ExceptionCode&) = 0;
-    virtual void remove(const AtomicString&, ExceptionCode&) = 0;
-    virtual bool toggle(const AtomicString&, ExceptionCode&) = 0;
+    virtual const AtomicString item( unsigned index ) const = 0;
+    virtual bool contains( const AtomicString &, ExceptionCode & ) const = 0;
+    virtual void add( const AtomicString &, ExceptionCode & ) = 0;
+    virtual void remove( const AtomicString &, ExceptionCode & ) = 0;
+    virtual bool toggle( const AtomicString &, ExceptionCode & ) = 0;
     virtual String toString() const = 0;
 
-    virtual Element* element() { return 0; }
+    virtual Element *element()
+    {
+        return 0;
+    }
 
 protected:
-    static bool validateToken(const AtomicString&, ExceptionCode&);
-    static String addToken(const AtomicString&, const AtomicString&);
-    static String removeToken(const AtomicString&, const AtomicString&);
+    static bool validateToken( const AtomicString &, ExceptionCode & );
+    static String addToken( const AtomicString &, const AtomicString & );
+    static String removeToken( const AtomicString &, const AtomicString & );
 };
 
 } // namespace WebCore

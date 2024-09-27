@@ -27,29 +27,35 @@
 #include <wtf/Vector.h>
 #include <wtf/text/WTFString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SVGElement;
 
-class SVGPathSegList : public Vector<RefPtr<SVGPathSeg> > {
+class SVGPathSegList : public Vector<RefPtr<SVGPathSeg> >
+{
 public:
-    SVGPathSegList(SVGPathSegRole role)
-        : m_role(role)
+    SVGPathSegList( SVGPathSegRole role )
+        : m_role( role )
     {
     }
 
     String valueAsString() const;
 
     // Only used by SVGPathSegListPropertyTearOff.
-    void commitChange(SVGElement* contextElement);
+    void commitChange( SVGElement *contextElement );
 
 private:
     SVGPathSegRole m_role;
 };
 
 template<>
-struct SVGPropertyTraits<SVGPathSegList> {
-    static SVGPathSegList initialValue() { return SVGPathSegList(PathSegUndefinedRole); }
+struct SVGPropertyTraits<SVGPathSegList>
+{
+    static SVGPathSegList initialValue()
+    {
+        return SVGPathSegList( PathSegUndefinedRole );
+    }
     typedef RefPtr<SVGPathSeg> ListItemType;
 };
 

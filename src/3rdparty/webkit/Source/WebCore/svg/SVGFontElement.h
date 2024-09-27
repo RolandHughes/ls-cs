@@ -30,10 +30,12 @@
 #include "SVGParserUtilities.h"
 #include "SVGStyledElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Describe an SVG <hkern>/<vkern> element
-struct SVGKerningPair {
+struct SVGKerningPair
+{
     float kerning;
     UnicodeRanges unicodeRange1;
     UnicodeRanges unicodeRange2;
@@ -41,45 +43,49 @@ struct SVGKerningPair {
     HashSet<String> unicodeName2;
     HashSet<String> glyphName1;
     HashSet<String> glyphName2;
-    
+
     SVGKerningPair()
-        : kerning(0.0f)
+        : kerning( 0.0f )
     {
     }
 };
 
 typedef Vector<SVGKerningPair> KerningPairVector;
 
-class SVGMissingGlyphElement;    
+class SVGMissingGlyphElement;
 
 class SVGFontElement : public SVGStyledElement
-                     , public SVGExternalResourcesRequired {
+    , public SVGExternalResourcesRequired
+{
 public:
-    static PassRefPtr<SVGFontElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<SVGFontElement> create( const QualifiedName &, Document * );
 
     void invalidateGlyphCache();
 
-    void getGlyphIdentifiersForString(const String&, Vector<SVGGlyph>&) const;
+    void getGlyphIdentifiersForString( const String &, Vector<SVGGlyph> & ) const;
 
-    float horizontalKerningForPairOfStringsAndGlyphs(const String& u1, const String& g1, const String& u2, const String& g2) const;
-    float verticalKerningForPairOfStringsAndGlyphs(const String& u1, const String& g1, const String& u2, const String& g2) const;
-    
-    SVGMissingGlyphElement* firstMissingGlyphElement() const;
+    float horizontalKerningForPairOfStringsAndGlyphs( const String &u1, const String &g1, const String &u2, const String &g2 ) const;
+    float verticalKerningForPairOfStringsAndGlyphs( const String &u1, const String &g1, const String &u2, const String &g2 ) const;
+
+    SVGMissingGlyphElement *firstMissingGlyphElement() const;
 
 private:
-    SVGFontElement(const QualifiedName&, Document*);
+    SVGFontElement( const QualifiedName &, Document * );
 
-    virtual void synchronizeProperty(const QualifiedName&);
-    virtual bool rendererIsNeeded(RenderStyle*) { return false; }  
+    virtual void synchronizeProperty( const QualifiedName & );
+    virtual bool rendererIsNeeded( RenderStyle * )
+    {
+        return false;
+    }
     virtual void fillAttributeToPropertyTypeMap();
-    virtual AttributeToPropertyTypeMap& attributeToPropertyTypeMap();
+    virtual AttributeToPropertyTypeMap &attributeToPropertyTypeMap();
 
     void ensureGlyphCache() const;
 
     // Animated property declarations
 
     // SVGExternalResourcesRequired
-    DECLARE_ANIMATED_BOOLEAN(ExternalResourcesRequired, externalResourcesRequired)
+    DECLARE_ANIMATED_BOOLEAN( ExternalResourcesRequired, externalResourcesRequired )
 
     mutable KerningPairVector m_horizontalKerningPairs;
     mutable KerningPairVector m_verticalKerningPairs;

@@ -35,16 +35,19 @@
 #include "ScriptDebugServer.h"
 #include "WorkerContext.h"
 
-namespace WebCore {
-
-PassOwnPtr<WorkerDebuggerAgent> WorkerDebuggerAgent::create(InstrumentingAgents* instrumentingAgents, InspectorState* inspectorState, WorkerContext* inspectedWorkerContext, InjectedScriptManager* injectedScriptManager)
+namespace WebCore
 {
-    return adoptPtr(new WorkerDebuggerAgent(instrumentingAgents, inspectorState, inspectedWorkerContext, injectedScriptManager));
+
+PassOwnPtr<WorkerDebuggerAgent> WorkerDebuggerAgent::create( InstrumentingAgents *instrumentingAgents,
+        InspectorState *inspectorState, WorkerContext *inspectedWorkerContext, InjectedScriptManager *injectedScriptManager )
+{
+    return adoptPtr( new WorkerDebuggerAgent( instrumentingAgents, inspectorState, inspectedWorkerContext, injectedScriptManager ) );
 }
 
-WorkerDebuggerAgent::WorkerDebuggerAgent(InstrumentingAgents* instrumentingAgents, InspectorState* inspectorState, WorkerContext* inspectedWorkerContext, InjectedScriptManager* injectedScriptManager)
-    : InspectorDebuggerAgent(instrumentingAgents, inspectorState, injectedScriptManager)
-    , m_inspectedWorkerContext(inspectedWorkerContext)
+WorkerDebuggerAgent::WorkerDebuggerAgent( InstrumentingAgents *instrumentingAgents, InspectorState *inspectorState,
+        WorkerContext *inspectedWorkerContext, InjectedScriptManager *injectedScriptManager )
+    : InspectorDebuggerAgent( instrumentingAgents, inspectorState, injectedScriptManager )
+    , m_inspectedWorkerContext( inspectedWorkerContext )
 {
 }
 
@@ -54,15 +57,15 @@ WorkerDebuggerAgent::~WorkerDebuggerAgent()
 
 void WorkerDebuggerAgent::startListeningScriptDebugServer()
 {
-    scriptDebugServer().addListener(this, m_inspectedWorkerContext);
+    scriptDebugServer().addListener( this, m_inspectedWorkerContext );
 }
 
 void WorkerDebuggerAgent::stopListeningScriptDebugServer()
 {
-    scriptDebugServer().removeListener(this, m_inspectedWorkerContext);
+    scriptDebugServer().removeListener( this, m_inspectedWorkerContext );
 }
 
-WorkerScriptDebugServer& WorkerDebuggerAgent::scriptDebugServer()
+WorkerScriptDebugServer &WorkerDebuggerAgent::scriptDebugServer()
 {
     return m_scriptDebugServer;
 }

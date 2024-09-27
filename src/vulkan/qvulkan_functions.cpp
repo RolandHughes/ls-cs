@@ -23,92 +23,92 @@
 
 #include <qvulkan_functions.h>
 
-QVulkanFunctions::QVulkanFunctions(vk::Instance instance, vk::DispatchLoaderDynamic dld)
-   : m_dld(dld)
+QVulkanFunctions::QVulkanFunctions( vk::Instance instance, vk::DispatchLoaderDynamic dld )
+    : m_dld( dld )
 {
-   m_dld.init(instance);
+    m_dld.init( instance );
 }
 
-VkResult QVulkanFunctions::vkCreateDevice(VkPhysicalDevice physicalDevice, const VkDeviceCreateInfo *pCreateInfo,
-   const VkAllocationCallbacks *pAllocator, VkDevice *pDevice)
+VkResult QVulkanFunctions::vkCreateDevice( VkPhysicalDevice physicalDevice, const VkDeviceCreateInfo *pCreateInfo,
+        const VkAllocationCallbacks *pAllocator, VkDevice *pDevice )
 {
-   return m_dld.vkCreateDevice(physicalDevice, pCreateInfo, pAllocator, pDevice);
+    return m_dld.vkCreateDevice( physicalDevice, pCreateInfo, pAllocator, pDevice );
 }
 
-VkResult QVulkanFunctions::vkEnumerateDeviceExtensionProperties(VkPhysicalDevice physicalDevice, const char *pLayerName,
-   uint32_t *pPropertyCount, VkExtensionProperties *pProperties)
+VkResult QVulkanFunctions::vkEnumerateDeviceExtensionProperties( VkPhysicalDevice physicalDevice, const char *pLayerName,
+        uint32_t *pPropertyCount, VkExtensionProperties *pProperties )
 {
-   return m_dld.vkEnumerateDeviceExtensionProperties(physicalDevice, pLayerName, pPropertyCount, pProperties);
+    return m_dld.vkEnumerateDeviceExtensionProperties( physicalDevice, pLayerName, pPropertyCount, pProperties );
 }
 
-VkResult QVulkanFunctions::vkEnumerateInstanceExtensionProperties(const char *pLayerName, uint32_t *pPropertyCount,
-   VkExtensionProperties *pProperties)
+VkResult QVulkanFunctions::vkEnumerateInstanceExtensionProperties( const char *pLayerName, uint32_t *pPropertyCount,
+        VkExtensionProperties *pProperties )
 {
-   return m_dld.vkEnumerateInstanceExtensionProperties(pLayerName, pPropertyCount, pProperties);
+    return m_dld.vkEnumerateInstanceExtensionProperties( pLayerName, pPropertyCount, pProperties );
 }
 
-VkResult QVulkanFunctions::vkEnumerateDeviceLayerProperties(VkPhysicalDevice physicalDevice, uint32_t *pPropertyCount,
-   VkLayerProperties *pProperties)
+VkResult QVulkanFunctions::vkEnumerateDeviceLayerProperties( VkPhysicalDevice physicalDevice, uint32_t *pPropertyCount,
+        VkLayerProperties *pProperties )
 {
-   return m_dld.vkEnumerateDeviceLayerProperties(physicalDevice, pPropertyCount, pProperties);
+    return m_dld.vkEnumerateDeviceLayerProperties( physicalDevice, pPropertyCount, pProperties );
 }
 
-VkResult QVulkanFunctions::vkEnumerateInstanceLayerProperties(uint32_t *pPropertyCount, VkLayerProperties *pProperties)
+VkResult QVulkanFunctions::vkEnumerateInstanceLayerProperties( uint32_t *pPropertyCount, VkLayerProperties *pProperties )
 {
-   return m_dld.vkEnumerateInstanceLayerProperties(pPropertyCount, pProperties);
+    return m_dld.vkEnumerateInstanceLayerProperties( pPropertyCount, pProperties );
 }
 
-VkResult QVulkanFunctions::vkEnumeratePhysicalDevices(VkInstance instance, uint32_t *pPhysicalDeviceCount,
-   VkPhysicalDevice *pPhysicalDevices)
+VkResult QVulkanFunctions::vkEnumeratePhysicalDevices( VkInstance instance, uint32_t *pPhysicalDeviceCount,
+        VkPhysicalDevice *pPhysicalDevices )
 {
-   return m_dld.vkEnumeratePhysicalDevices(instance, pPhysicalDeviceCount, pPhysicalDevices);
+    return m_dld.vkEnumeratePhysicalDevices( instance, pPhysicalDeviceCount, pPhysicalDevices );
 }
 
-PFN_vkVoidFunction QVulkanFunctions::vkGetDeviceProcAddr(VkDevice device, const char *pName)
+PFN_vkVoidFunction QVulkanFunctions::vkGetDeviceProcAddr( VkDevice device, const char *pName )
 {
-   return m_dld.vkGetDeviceProcAddr(device, pName);
+    return m_dld.vkGetDeviceProcAddr( device, pName );
 }
 
-void QVulkanFunctions::vkGetPhysicalDeviceFeatures(VkPhysicalDevice physicalDevice, VkPhysicalDeviceFeatures *pFeatures)
+void QVulkanFunctions::vkGetPhysicalDeviceFeatures( VkPhysicalDevice physicalDevice, VkPhysicalDeviceFeatures *pFeatures )
 {
-   m_dld.vkGetPhysicalDeviceFeatures(physicalDevice, pFeatures);
+    m_dld.vkGetPhysicalDeviceFeatures( physicalDevice, pFeatures );
 }
 
-void QVulkanFunctions::vkGetPhysicalDeviceFormatProperties(VkPhysicalDevice physicalDevice, VkFormat format,
-   VkFormatProperties *pFormatProperties)
+void QVulkanFunctions::vkGetPhysicalDeviceFormatProperties( VkPhysicalDevice physicalDevice, VkFormat format,
+        VkFormatProperties *pFormatProperties )
 {
-   m_dld.vkGetPhysicalDeviceFormatProperties(physicalDevice, format, pFormatProperties);
+    m_dld.vkGetPhysicalDeviceFormatProperties( physicalDevice, format, pFormatProperties );
 }
 
-VkResult QVulkanFunctions::vkGetPhysicalDeviceImageFormatProperties(VkPhysicalDevice physicalDevice, VkFormat format,
-   VkImageType type, VkImageTiling tiling, VkImageUsageFlags usage, VkImageCreateFlags flags,
-   VkImageFormatProperties *pImageFormatProperties)
+VkResult QVulkanFunctions::vkGetPhysicalDeviceImageFormatProperties( VkPhysicalDevice physicalDevice, VkFormat format,
+        VkImageType type, VkImageTiling tiling, VkImageUsageFlags usage, VkImageCreateFlags flags,
+        VkImageFormatProperties *pImageFormatProperties )
 {
-   return m_dld.vkGetPhysicalDeviceImageFormatProperties(physicalDevice, format, type, tiling, usage, flags,
-      pImageFormatProperties);
+    return m_dld.vkGetPhysicalDeviceImageFormatProperties( physicalDevice, format, type, tiling, usage, flags,
+            pImageFormatProperties );
 }
 
-void QVulkanFunctions::vkGetPhysicalDeviceProperties(VkPhysicalDevice physicalDevice, VkPhysicalDeviceProperties *pProperties)
+void QVulkanFunctions::vkGetPhysicalDeviceProperties( VkPhysicalDevice physicalDevice, VkPhysicalDeviceProperties *pProperties )
 {
-   m_dld.vkGetPhysicalDeviceProperties(physicalDevice, pProperties);
+    m_dld.vkGetPhysicalDeviceProperties( physicalDevice, pProperties );
 }
 
-void QVulkanFunctions::vkGetPhysicalDeviceMemoryProperties(VkPhysicalDevice physicalDevice,
-   VkPhysicalDeviceMemoryProperties *pMemoryProperties)
+void QVulkanFunctions::vkGetPhysicalDeviceMemoryProperties( VkPhysicalDevice physicalDevice,
+        VkPhysicalDeviceMemoryProperties *pMemoryProperties )
 {
-   m_dld.vkGetPhysicalDeviceMemoryProperties(physicalDevice, pMemoryProperties);
+    m_dld.vkGetPhysicalDeviceMemoryProperties( physicalDevice, pMemoryProperties );
 }
 
-void QVulkanFunctions::vkGetPhysicalDeviceQueueFamilyProperties(VkPhysicalDevice physicalDevice,
-   uint32_t *pQueueFamilyPropertyCount, VkQueueFamilyProperties *pQueueFamilyProperties)
+void QVulkanFunctions::vkGetPhysicalDeviceQueueFamilyProperties( VkPhysicalDevice physicalDevice,
+        uint32_t *pQueueFamilyPropertyCount, VkQueueFamilyProperties *pQueueFamilyProperties )
 {
-   m_dld.vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, pQueueFamilyPropertyCount, pQueueFamilyProperties);
+    m_dld.vkGetPhysicalDeviceQueueFamilyProperties( physicalDevice, pQueueFamilyPropertyCount, pQueueFamilyProperties );
 }
 
-void QVulkanFunctions::vkGetPhysicalDeviceSparseImageFormatProperties(VkPhysicalDevice physicalDevice, VkFormat format,
-   VkImageType type, VkSampleCountFlagBits samples, VkImageUsageFlags usage, VkImageTiling tiling,
-   uint32_t *pPropertyCount, VkSparseImageFormatProperties *pProperties)
+void QVulkanFunctions::vkGetPhysicalDeviceSparseImageFormatProperties( VkPhysicalDevice physicalDevice, VkFormat format,
+        VkImageType type, VkSampleCountFlagBits samples, VkImageUsageFlags usage, VkImageTiling tiling,
+        uint32_t *pPropertyCount, VkSparseImageFormatProperties *pProperties )
 {
-   m_dld.vkGetPhysicalDeviceSparseImageFormatProperties(physicalDevice, format, type, samples,
-      usage, tiling, pPropertyCount, pProperties);
+    m_dld.vkGetPhysicalDeviceSparseImageFormatProperties( physicalDevice, format, type, samples,
+            usage, tiling, pPropertyCount, pProperties );
 }

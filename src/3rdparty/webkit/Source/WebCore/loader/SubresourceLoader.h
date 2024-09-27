@@ -6,13 +6,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -33,42 +33,52 @@
 #include "ResourceLoader.h"
 
 #include <wtf/text/WTFString.h>
- 
-namespace WebCore {
 
-    class ResourceRequest;
-    class SubresourceLoaderClient;
-    
-    class SubresourceLoader : public ResourceLoader {
-    public:
-        static PassRefPtr<SubresourceLoader> create(Frame*, SubresourceLoaderClient*, const ResourceRequest&, SecurityCheckPolicy = DoSecurityCheck, bool sendResourceLoadCallbacks = true, bool shouldContentSniff = true, const String& optionalOutgoingReferrer = String());
+namespace WebCore
+{
 
-        void clearClient() { m_client = 0; }
+class ResourceRequest;
+class SubresourceLoaderClient;
 
-    private:
-        SubresourceLoader(Frame*, SubresourceLoaderClient*, bool sendResourceLoadCallbacks, bool shouldContentSniff);
-        virtual ~SubresourceLoader();
-        
-        virtual void willSendRequest(ResourceRequest&, const ResourceResponse& redirectResponse);
-        virtual void didSendData(unsigned long long bytesSent, unsigned long long totalBytesToBeSent);
-        virtual void didReceiveResponse(const ResourceResponse&);
-        virtual void didReceiveData(const char*, int, long long encodedDataLength, bool allAtOnce);
-        virtual void didReceiveCachedMetadata(const char*, int);
-        virtual void didFinishLoading(double finishTime);
-        virtual void didFail(const ResourceError&);
-        virtual bool shouldUseCredentialStorage();
-        virtual void didReceiveAuthenticationChallenge(const AuthenticationChallenge&);
-        virtual void receivedCancellation(const AuthenticationChallenge&);        
-        virtual void didCancel(const ResourceError&);
+class SubresourceLoader : public ResourceLoader
+{
+public:
+    static PassRefPtr<SubresourceLoader> create( Frame *, SubresourceLoaderClient *, const ResourceRequest &,
+            SecurityCheckPolicy = DoSecurityCheck, bool sendResourceLoadCallbacks = true, bool shouldContentSniff = true,
+            const String &optionalOutgoingReferrer = String() );
+
+    void clearClient()
+    {
+        m_client = 0;
+    }
+
+private:
+    SubresourceLoader( Frame *, SubresourceLoaderClient *, bool sendResourceLoadCallbacks, bool shouldContentSniff );
+    virtual ~SubresourceLoader();
+
+    virtual void willSendRequest( ResourceRequest &, const ResourceResponse &redirectResponse );
+    virtual void didSendData( unsigned long long bytesSent, unsigned long long totalBytesToBeSent );
+    virtual void didReceiveResponse( const ResourceResponse & );
+    virtual void didReceiveData( const char *, int, long long encodedDataLength, bool allAtOnce );
+    virtual void didReceiveCachedMetadata( const char *, int );
+    virtual void didFinishLoading( double finishTime );
+    virtual void didFail( const ResourceError & );
+    virtual bool shouldUseCredentialStorage();
+    virtual void didReceiveAuthenticationChallenge( const AuthenticationChallenge & );
+    virtual void receivedCancellation( const AuthenticationChallenge & );
+    virtual void didCancel( const ResourceError & );
 
 #if HAVE(CFNETWORK_DATA_ARRAY_CALLBACK)
-        virtual bool supportsDataArray() { return true; }
-        virtual void didReceiveDataArray(CFArrayRef);
+    virtual bool supportsDataArray()
+    {
+        return true;
+    }
+    virtual void didReceiveDataArray( CFArrayRef );
 #endif
 
-        SubresourceLoaderClient* m_client;
-        bool m_loadingMultipartContent;
-    };
+    SubresourceLoaderClient *m_client;
+    bool m_loadingMultipartContent;
+};
 
 }
 

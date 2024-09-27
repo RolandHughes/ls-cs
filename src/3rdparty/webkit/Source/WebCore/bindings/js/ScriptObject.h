@@ -37,33 +37,42 @@
 #include <heap/Strong.h>
 #include <runtime/JSObject.h>
 
-namespace WebCore {
-    class InjectedScriptHost;
-    class InspectorFrontendHost;
+namespace WebCore
+{
+class InjectedScriptHost;
+class InspectorFrontendHost;
 
-    class ScriptObject : public ScriptValue {
-    public:
-        ScriptObject(ScriptState*, JSC::JSObject*);
-        ScriptObject() {}
-        JSC::JSObject* jsObject() const { return asObject(jsValue()); }
-        ScriptState* scriptState() const { return m_scriptState; }
+class ScriptObject : public ScriptValue
+{
+public:
+    ScriptObject( ScriptState *, JSC::JSObject * );
+    ScriptObject() {}
+    JSC::JSObject *jsObject() const
+    {
+        return asObject( jsValue() );
+    }
+    ScriptState *scriptState() const
+    {
+        return m_scriptState;
+    }
 
-    protected:
-        ScriptState* m_scriptState;
-    };
+protected:
+    ScriptState *m_scriptState;
+};
 
-    class ScriptGlobalObject {
-    public:
-        static bool set(ScriptState*, const char* name, const ScriptObject&);
+class ScriptGlobalObject
+{
+public:
+    static bool set( ScriptState *, const char *name, const ScriptObject & );
 #if ENABLE(INSPECTOR)
-        static bool set(ScriptState*, const char* name, InspectorFrontendHost*);
-        static bool set(ScriptState*, const char* name, InjectedScriptHost*);
+    static bool set( ScriptState *, const char *name, InspectorFrontendHost * );
+    static bool set( ScriptState *, const char *name, InjectedScriptHost * );
 #endif
-        static bool get(ScriptState*, const char* name, ScriptObject&);
-        static bool remove(ScriptState*, const char* name);
-    private:
-        ScriptGlobalObject() { }
-    };
+    static bool get( ScriptState *, const char *name, ScriptObject & );
+    static bool remove( ScriptState *, const char *name );
+private:
+    ScriptGlobalObject() { }
+};
 
 }
 

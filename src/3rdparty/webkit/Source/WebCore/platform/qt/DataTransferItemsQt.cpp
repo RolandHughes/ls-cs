@@ -32,21 +32,22 @@
 #include "DataTransferItemQt.h"
 #include "ExceptionCode.h"
 
-namespace WebCore {
-
-PassRefPtr<DataTransferItemsQt> DataTransferItemsQt::create(PassRefPtr<Clipboard> owner, ScriptExecutionContext* context)
+namespace WebCore
 {
-    return adoptRef(new DataTransferItemsQt(owner, context));
+
+PassRefPtr<DataTransferItemsQt> DataTransferItemsQt::create( PassRefPtr<Clipboard> owner, ScriptExecutionContext *context )
+{
+    return adoptRef( new DataTransferItemsQt( owner, context ) );
 }
 
-DataTransferItemsQt::DataTransferItemsQt(PassRefPtr<Clipboard> owner, ScriptExecutionContext* context)
-    : DataTransferItems(owner,  context)
+DataTransferItemsQt::DataTransferItemsQt( PassRefPtr<Clipboard> owner, ScriptExecutionContext *context )
+    : DataTransferItems( owner,  context )
 {
 }
 
-void DataTransferItemsQt::addPasteboardItem(const String& type)
+void DataTransferItemsQt::addPasteboardItem( const String &type )
 {
-    m_items.append(DataTransferItemQt::createFromPasteboard(m_owner, m_context, type));
+    m_items.append( DataTransferItemQt::createFromPasteboard( m_owner, m_context, type ) );
 }
 
 } // namespace WebCore

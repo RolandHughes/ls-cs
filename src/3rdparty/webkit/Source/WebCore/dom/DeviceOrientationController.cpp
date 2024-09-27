@@ -30,15 +30,16 @@
 #include "DeviceOrientationClient.h"
 #include "DeviceOrientationEvent.h"
 
-namespace WebCore {
-
-DeviceOrientationController::DeviceOrientationController(Page* page, DeviceOrientationClient* client)
-    : m_page(page)
-    , m_client(client)
-    , m_timer(this, &DeviceOrientationController::timerFired)
+namespace WebCore
 {
-    ASSERT(m_client);
-    m_client->setController(this);
+
+DeviceOrientationController::DeviceOrientationController( Page *page, DeviceOrientationClient *client )
+    : m_page( page )
+    , m_client( client )
+    , m_timer( this, &DeviceOrientationController::timerFired )
+{
+    ASSERT( m_client );
+    m_client->setController( this );
 }
 
 DeviceOrientationController::~DeviceOrientationController()
@@ -46,66 +47,87 @@ DeviceOrientationController::~DeviceOrientationController()
     m_client->deviceOrientationControllerDestroyed();
 }
 
-void DeviceOrientationController::timerFired(Timer<DeviceOrientationController>* timer)
+void DeviceOrientationController::timerFired( Timer<DeviceOrientationController> *timer )
 {
-    ASSERT_UNUSED(timer, timer == &m_timer);
-    ASSERT(m_client->lastOrientation());
+    ASSERT_UNUSED( timer, timer == &m_timer );
+    ASSERT( m_client->lastOrientation() );
 
     RefPtr<DeviceOrientation> orientation = m_client->lastOrientation();
-    RefPtr<DeviceOrientationEvent> event = DeviceOrientationEvent::create(eventNames().deviceorientationEvent, orientation.get());
+    RefPtr<DeviceOrientationEvent> event = DeviceOrientationEvent::create( eventNames().deviceorientationEvent, orientation.get() );
 
     Vector<RefPtr<DOMWindow> > listenersVector;
-    copyToVector(m_newListeners, listenersVector);
+    copyToVector( m_newListeners, listenersVector );
     m_newListeners.clear();
-    for (size_t i = 0; i < listenersVector.size(); ++i)
-        listenersVector[i]->dispatchEvent(event);
+
+    for ( size_t i = 0; i < listenersVector.size(); ++i )
+    {
+        listenersVector[i]->dispatchEvent( event );
+    }
 }
 
-void DeviceOrientationController::addListener(DOMWindow* window)
+void DeviceOrientationController::addListener( DOMWindow *window )
 {
     // If the client already has an orientation, we should fire an event with that
     // orientation. The event is fired asynchronously, but without
     // waiting for the client to get a new orientation.
-    if (m_client->lastOrientation()) {
-        m_newListeners.add(window);
-        if (!m_timer.isActive())
-            m_timer.startOneShot(0);
+    if ( m_client->lastOrientation() )
+    {
+        m_newListeners.add( window );
+
+        if ( !m_timer.isActive() )
+        {
+            m_timer.startOneShot( 0 );
+        }
     }
 
     // The client must not call back synchronously.
     bool wasEmpty = m_listeners.isEmpty();
-    m_listeners.add(window);
-    if (wasEmpty)
+    m_listeners.add( window );
+
+    if ( wasEmpty )
+    {
         m_client->startUpdating();
+    }
 }
 
-void DeviceOrientationController::removeListener(DOMWindow* window)
+void DeviceOrientationController::removeListener( DOMWindow *window )
 {
-    m_listeners.remove(window);
-    m_newListeners.remove(window);
-    if (m_listeners.isEmpty())
+    m_listeners.remove( window );
+    m_newListeners.remove( window );
+
+    if ( m_listeners.isEmpty() )
+    {
         m_client->stopUpdating();
+    }
 }
 
-void DeviceOrientationController::removeAllListeners(DOMWindow* window)
+void DeviceOrientationController::removeAllListeners( DOMWindow *window )
 {
     // May be called with a DOMWindow that's not a listener.
-    if (!m_listeners.contains(window))
+    if ( !m_listeners.contains( window ) )
+    {
         return;
+    }
 
-    m_listeners.removeAll(window);
-    m_newListeners.remove(window);
-    if (m_listeners.isEmpty())
+    m_listeners.removeAll( window );
+    m_newListeners.remove( window );
+
+    if ( m_listeners.isEmpty() )
+    {
         m_client->stopUpdating();
+    }
 }
 
-void DeviceOrientationController::didChangeDeviceOrientation(DeviceOrientation* orientation)
+void DeviceOrientationController::didChangeDeviceOrientation( DeviceOrientation *orientation )
 {
-    RefPtr<DeviceOrientationEvent> event = DeviceOrientationEvent::create(eventNames().deviceorientationEvent, orientation);
+    RefPtr<DeviceOrientationEvent> event = DeviceOrientationEvent::create( eventNames().deviceorientationEvent, orientation );
     Vector<RefPtr<DOMWindow> > listenersVector;
-    copyToVector(m_listeners, listenersVector);
-    for (size_t i = 0; i < listenersVector.size(); ++i)
-        listenersVector[i]->dispatchEvent(event);
+    copyToVector( m_listeners, listenersVector );
+
+    for ( size_t i = 0; i < listenersVector.size(); ++i )
+    {
+        listenersVector[i]->dispatchEvent( event );
+    }
 }
 
 } // namespace WebCore

@@ -29,36 +29,42 @@
 #include <wtf/Noncopyable.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class CachedResource;
-    class CachedResourceLoader;
-    class Request;
+class CachedResource;
+class CachedResourceLoader;
+class Request;
 
-    class CachedResourceRequest : public RefCounted<CachedResourceRequest>, private SubresourceLoaderClient {
-    public:
-        static PassRefPtr<CachedResourceRequest> load(CachedResourceLoader*, CachedResource*, bool incremental, SecurityCheckPolicy, bool sendResourceLoadCallbacks);
-        ~CachedResourceRequest();
-        void didFail(bool cancelled = false);
+class CachedResourceRequest : public RefCounted<CachedResourceRequest>, private SubresourceLoaderClient
+{
+public:
+    static PassRefPtr<CachedResourceRequest> load( CachedResourceLoader *, CachedResource *, bool incremental, SecurityCheckPolicy,
+            bool sendResourceLoadCallbacks );
+    ~CachedResourceRequest();
+    void didFail( bool cancelled = false );
 
-        CachedResourceLoader* cachedResourceLoader() const { return m_cachedResourceLoader; }
+    CachedResourceLoader *cachedResourceLoader() const
+    {
+        return m_cachedResourceLoader;
+    }
 
-    private:
-        CachedResourceRequest(CachedResourceLoader*, CachedResource*, bool incremental);
-        virtual void willSendRequest(SubresourceLoader*, ResourceRequest&, const ResourceResponse&);
-        virtual void didReceiveResponse(SubresourceLoader*, const ResourceResponse&);
-        virtual void didReceiveData(SubresourceLoader*, const char*, int);
-        virtual void didReceiveCachedMetadata(SubresourceLoader*, const char*, int);
-        virtual void didFinishLoading(SubresourceLoader*, double);
-        virtual void didFail(SubresourceLoader*, const ResourceError&);
+private:
+    CachedResourceRequest( CachedResourceLoader *, CachedResource *, bool incremental );
+    virtual void willSendRequest( SubresourceLoader *, ResourceRequest &, const ResourceResponse & );
+    virtual void didReceiveResponse( SubresourceLoader *, const ResourceResponse & );
+    virtual void didReceiveData( SubresourceLoader *, const char *, int );
+    virtual void didReceiveCachedMetadata( SubresourceLoader *, const char *, int );
+    virtual void didFinishLoading( SubresourceLoader *, double );
+    virtual void didFail( SubresourceLoader *, const ResourceError & );
 
-        RefPtr<SubresourceLoader> m_loader;
-        CachedResourceLoader* m_cachedResourceLoader;
-        CachedResource* m_resource;
-        bool m_incremental;
-        bool m_multipart;
-        bool m_finishing;
-    };
+    RefPtr<SubresourceLoader> m_loader;
+    CachedResourceLoader *m_cachedResourceLoader;
+    CachedResource *m_resource;
+    bool m_incremental;
+    bool m_multipart;
+    bool m_finishing;
+};
 
 }
 

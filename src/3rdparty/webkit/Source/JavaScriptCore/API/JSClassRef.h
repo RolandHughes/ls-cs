@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef JSClassRef_h
@@ -34,24 +34,27 @@
 #include "UString.h"
 #include <wtf/HashMap.h>
 
-struct StaticValueEntry {
+struct StaticValueEntry
+{
     WTF_MAKE_FAST_ALLOCATED;
 public:
-    StaticValueEntry(JSObjectGetPropertyCallback _getProperty, JSObjectSetPropertyCallback _setProperty, JSPropertyAttributes _attributes)
-        : getProperty(_getProperty), setProperty(_setProperty), attributes(_attributes)
+    StaticValueEntry( JSObjectGetPropertyCallback _getProperty, JSObjectSetPropertyCallback _setProperty,
+                      JSPropertyAttributes _attributes )
+        : getProperty( _getProperty ), setProperty( _setProperty ), attributes( _attributes )
     {
     }
-    
+
     JSObjectGetPropertyCallback getProperty;
     JSObjectSetPropertyCallback setProperty;
     JSPropertyAttributes attributes;
 };
 
-struct StaticFunctionEntry {
+struct StaticFunctionEntry
+{
     WTF_MAKE_FAST_ALLOCATED;
 public:
-    StaticFunctionEntry(JSObjectCallAsFunctionCallback _callAsFunction, JSPropertyAttributes _attributes)
-        : callAsFunction(_callAsFunction), attributes(_attributes)
+    StaticFunctionEntry( JSObjectCallAsFunctionCallback _callAsFunction, JSPropertyAttributes _attributes )
+        : callAsFunction( _callAsFunction ), attributes( _attributes )
     {
     }
 
@@ -59,17 +62,19 @@ public:
     JSPropertyAttributes attributes;
 };
 
-typedef HashMap<RefPtr<StringImpl>, StaticValueEntry*> OpaqueJSClassStaticValuesTable;
-typedef HashMap<RefPtr<StringImpl>, StaticFunctionEntry*> OpaqueJSClassStaticFunctionsTable;
+typedef HashMap<RefPtr<StringImpl>, StaticValueEntry *> OpaqueJSClassStaticValuesTable;
+typedef HashMap<RefPtr<StringImpl>, StaticFunctionEntry *> OpaqueJSClassStaticFunctionsTable;
 
 struct OpaqueJSClass;
 
 // An OpaqueJSClass (JSClass) is created without a context, so it can be used with any context, even across context groups.
 // This structure holds data members that vary across context groups.
-struct OpaqueJSClassContextData {
-    WTF_MAKE_NONCOPYABLE(OpaqueJSClassContextData); WTF_MAKE_FAST_ALLOCATED;
+struct OpaqueJSClassContextData
+{
+    WTF_MAKE_NONCOPYABLE( OpaqueJSClassContextData );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
-    OpaqueJSClassContextData(JSC::JSGlobalData&, OpaqueJSClass*);
+    OpaqueJSClassContextData( JSC::JSGlobalData &, OpaqueJSClass * );
     ~OpaqueJSClassContextData();
 
     // It is necessary to keep OpaqueJSClass alive because of the following rare scenario:
@@ -80,24 +85,25 @@ public:
     // 4. When it is used, the old context data is found in JSGlobalData and used.
     RefPtr<OpaqueJSClass> m_class;
 
-    OpaqueJSClassStaticValuesTable* staticValues;
-    OpaqueJSClassStaticFunctionsTable* staticFunctions;
+    OpaqueJSClassStaticValuesTable *staticValues;
+    OpaqueJSClassStaticFunctionsTable *staticFunctions;
     JSC::Weak<JSC::JSObject> cachedPrototype;
 };
 
-struct OpaqueJSClass : public ThreadSafeRefCounted<OpaqueJSClass> {
-    static PassRefPtr<OpaqueJSClass> create(const JSClassDefinition*);
-    static PassRefPtr<OpaqueJSClass> createNoAutomaticPrototype(const JSClassDefinition*);
+struct OpaqueJSClass : public ThreadSafeRefCounted<OpaqueJSClass>
+{
+    static PassRefPtr<OpaqueJSClass> create( const JSClassDefinition * );
+    static PassRefPtr<OpaqueJSClass> createNoAutomaticPrototype( const JSClassDefinition * );
     ~OpaqueJSClass();
-    
-    JSC::UString className();
-    OpaqueJSClassStaticValuesTable* staticValues(JSC::ExecState*);
-    OpaqueJSClassStaticFunctionsTable* staticFunctions(JSC::ExecState*);
-    JSC::JSObject* prototype(JSC::ExecState*);
 
-    OpaqueJSClass* parentClass;
-    OpaqueJSClass* prototypeClass;
-    
+    JSC::UString className();
+    OpaqueJSClassStaticValuesTable *staticValues( JSC::ExecState * );
+    OpaqueJSClassStaticFunctionsTable *staticFunctions( JSC::ExecState * );
+    JSC::JSObject *prototype( JSC::ExecState * );
+
+    OpaqueJSClass *parentClass;
+    OpaqueJSClass *prototypeClass;
+
     JSObjectInitializeCallback initialize;
     JSObjectFinalizeCallback finalize;
     JSObjectHasPropertyCallback hasProperty;
@@ -114,15 +120,15 @@ private:
     friend struct OpaqueJSClassContextData;
 
     OpaqueJSClass();
-    OpaqueJSClass(const OpaqueJSClass&);
-    OpaqueJSClass(const JSClassDefinition*, OpaqueJSClass* protoClass);
+    OpaqueJSClass( const OpaqueJSClass & );
+    OpaqueJSClass( const JSClassDefinition *, OpaqueJSClass *protoClass );
 
-    OpaqueJSClassContextData& contextData(JSC::ExecState*);
+    OpaqueJSClassContextData &contextData( JSC::ExecState * );
 
     // UStrings in these data members should not be put into any IdentifierTable.
     JSC::UString m_className;
-    OpaqueJSClassStaticValuesTable* m_staticValues;
-    OpaqueJSClassStaticFunctionsTable* m_staticFunctions;
+    OpaqueJSClassStaticValuesTable *m_staticValues;
+    OpaqueJSClassStaticFunctionsTable *m_staticFunctions;
 };
 
 #endif // JSClassRef_h

@@ -37,7 +37,8 @@
 #include <wtf/PassOwnPtr.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class AudioBus;
 class AudioDSPKernel;
@@ -47,10 +48,11 @@ class AudioProcessor;
 // It uses one AudioDSPKernel object per channel to do the processing, thus there is no cross-channel processing.
 // Despite this limitation it turns out to be a very common and useful type of processor.
 
-class AudioDSPKernelProcessor : public AudioProcessor {
+class AudioDSPKernelProcessor : public AudioProcessor
+{
 public:
     // numberOfChannels may be later changed if object is not yet in an "initialized" state
-    AudioDSPKernelProcessor(double sampleRate, unsigned numberOfChannels);
+    AudioDSPKernelProcessor( double sampleRate, unsigned numberOfChannels );
 
     // Subclasses create the appropriate type of processing kernel here.
     // We'll call this to create a kernel for each channel.
@@ -59,11 +61,14 @@ public:
     // AudioProcessor methods
     virtual void initialize();
     virtual void uninitialize();
-    virtual void process(AudioBus* source, AudioBus* destination, size_t framesToProcess);
+    virtual void process( AudioBus *source, AudioBus *destination, size_t framesToProcess );
     virtual void reset();
-    virtual void setNumberOfChannels(unsigned numberOfChannels);
+    virtual void setNumberOfChannels( unsigned numberOfChannels );
 
-    unsigned numberOfChannels() const { return m_numberOfChannels; }
+    unsigned numberOfChannels() const
+    {
+        return m_numberOfChannels;
+    }
 
 protected:
     unsigned m_numberOfChannels;

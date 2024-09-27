@@ -21,7 +21,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #import <WebCore/DOMObject.h>
@@ -35,7 +35,8 @@
 @class NSString;
 @protocol DOMEventListener;
 
-enum {
+enum
+{
     DOM_CONST_VALUE_0 = 0,
     DOM_CONST_VALUE_1 = 1,
     DOM_CONST_VALUE_2 = 2,
@@ -50,108 +51,108 @@ enum {
 };
 
 @interface DOMTestObj : DOMObject
-- (int)readOnlyIntAttr;
-- (NSString *)readOnlyStringAttr;
-- (DOMTestObj *)readOnlyTestObjAttr;
-- (short)shortAttr;
-- (void)setShortAttr:(short)newShortAttr;
-- (unsigned short)unsignedShortAttr;
-- (void)setUnsignedShortAttr:(unsigned short)newUnsignedShortAttr;
-- (int)intAttr;
-- (void)setIntAttr:(int)newIntAttr;
-- (long long)longLongAttr;
-- (void)setLongLongAttr:(long long)newLongLongAttr;
-- (unsigned long long)unsignedLongLongAttr;
-- (void)setUnsignedLongLongAttr:(unsigned long long)newUnsignedLongLongAttr;
-- (NSString *)stringAttr;
-- (void)setStringAttr:(NSString *)newStringAttr;
-- (DOMTestObj *)testObjAttr;
-- (void)setTestObjAttr:(DOMTestObj *)newTestObjAttr;
-- (DOMTestObj *)XMLObjAttr;
-- (void)setXMLObjAttr:(DOMTestObj *)newXMLObjAttr;
-- (BOOL)create;
-- (void)setCreate:(BOOL)newCreate;
-- (NSString *)reflectedStringAttr;
-- (void)setReflectedStringAttr:(NSString *)newReflectedStringAttr;
-- (int)reflectedIntegralAttr;
-- (void)setReflectedIntegralAttr:(int)newReflectedIntegralAttr;
-- (unsigned)reflectedUnsignedIntegralAttr;
-- (void)setReflectedUnsignedIntegralAttr:(unsigned)newReflectedUnsignedIntegralAttr;
-- (BOOL)reflectedBooleanAttr;
-- (void)setReflectedBooleanAttr:(BOOL)newReflectedBooleanAttr;
-- (NSString *)reflectedURLAttr;
-- (void)setReflectedURLAttr:(NSString *)newReflectedURLAttr;
-- (NSString *)reflectedNonEmptyURLAttr;
-- (void)setReflectedNonEmptyURLAttr:(NSString *)newReflectedNonEmptyURLAttr;
-- (NSString *)reflectedStringAttr;
-- (void)setReflectedStringAttr:(NSString *)newReflectedStringAttr;
-- (int)reflectedCustomIntegralAttr;
-- (void)setReflectedCustomIntegralAttr:(int)newReflectedCustomIntegralAttr;
-- (BOOL)reflectedCustomBooleanAttr;
-- (void)setReflectedCustomBooleanAttr:(BOOL)newReflectedCustomBooleanAttr;
-- (NSString *)reflectedCustomURLAttr;
-- (void)setReflectedCustomURLAttr:(NSString *)newReflectedCustomURLAttr;
-- (NSString *)reflectedCustomNonEmptyURLAttr;
-- (void)setReflectedCustomNonEmptyURLAttr:(NSString *)newReflectedCustomNonEmptyURLAttr;
-- (int)attrWithGetterException;
-- (void)setAttrWithGetterException:(int)newAttrWithGetterException;
-- (int)attrWithSetterException;
-- (void)setAttrWithSetterException:(int)newAttrWithSetterException;
-- (NSString *)stringAttrWithGetterException;
-- (void)setStringAttrWithGetterException:(NSString *)newStringAttrWithGetterException;
-- (NSString *)stringAttrWithSetterException;
-- (void)setStringAttrWithSetterException:(NSString *)newStringAttrWithSetterException;
-- (int)customAttr;
-- (void)setCustomAttr:(int)newCustomAttr;
-- (NSString *)scriptStringAttr;
+- ( int )readOnlyIntAttr;
+- ( NSString * )readOnlyStringAttr;
+- ( DOMTestObj * )readOnlyTestObjAttr;
+- ( short )shortAttr;
+- ( void )setShortAttr:( short )newShortAttr;
+- ( unsigned short )unsignedShortAttr;
+- ( void )setUnsignedShortAttr:( unsigned short )newUnsignedShortAttr;
+- ( int )intAttr;
+- ( void )setIntAttr:( int )newIntAttr;
+- ( long long )longLongAttr;
+- ( void )setLongLongAttr:( long long )newLongLongAttr;
+- ( unsigned long long )unsignedLongLongAttr;
+- ( void )setUnsignedLongLongAttr:( unsigned long long )newUnsignedLongLongAttr;
+- ( NSString * )stringAttr;
+- ( void )setStringAttr:( NSString * )newStringAttr;
+- ( DOMTestObj * )testObjAttr;
+- ( void )setTestObjAttr:( DOMTestObj * )newTestObjAttr;
+- ( DOMTestObj * )XMLObjAttr;
+- ( void )setXMLObjAttr:( DOMTestObj * )newXMLObjAttr;
+- ( BOOL )create;
+- ( void )setCreate:( BOOL )newCreate;
+- ( NSString * )reflectedStringAttr;
+- ( void )setReflectedStringAttr:( NSString * )newReflectedStringAttr;
+- ( int )reflectedIntegralAttr;
+- ( void )setReflectedIntegralAttr:( int )newReflectedIntegralAttr;
+- ( unsigned )reflectedUnsignedIntegralAttr;
+- ( void )setReflectedUnsignedIntegralAttr:( unsigned )newReflectedUnsignedIntegralAttr;
+- ( BOOL )reflectedBooleanAttr;
+- ( void )setReflectedBooleanAttr:( BOOL )newReflectedBooleanAttr;
+- ( NSString * )reflectedURLAttr;
+- ( void )setReflectedURLAttr:( NSString * )newReflectedURLAttr;
+- ( NSString * )reflectedNonEmptyURLAttr;
+- ( void )setReflectedNonEmptyURLAttr:( NSString * )newReflectedNonEmptyURLAttr;
+- ( NSString * )reflectedStringAttr;
+- ( void )setReflectedStringAttr:( NSString * )newReflectedStringAttr;
+- ( int )reflectedCustomIntegralAttr;
+- ( void )setReflectedCustomIntegralAttr:( int )newReflectedCustomIntegralAttr;
+- ( BOOL )reflectedCustomBooleanAttr;
+- ( void )setReflectedCustomBooleanAttr:( BOOL )newReflectedCustomBooleanAttr;
+- ( NSString * )reflectedCustomURLAttr;
+- ( void )setReflectedCustomURLAttr:( NSString * )newReflectedCustomURLAttr;
+- ( NSString * )reflectedCustomNonEmptyURLAttr;
+- ( void )setReflectedCustomNonEmptyURLAttr:( NSString * )newReflectedCustomNonEmptyURLAttr;
+- ( int )attrWithGetterException;
+- ( void )setAttrWithGetterException:( int )newAttrWithGetterException;
+- ( int )attrWithSetterException;
+- ( void )setAttrWithSetterException:( int )newAttrWithSetterException;
+- ( NSString * )stringAttrWithGetterException;
+- ( void )setStringAttrWithGetterException:( NSString * )newStringAttrWithGetterException;
+- ( NSString * )stringAttrWithSetterException;
+- ( void )setStringAttrWithSetterException:( NSString * )newStringAttrWithSetterException;
+- ( int )customAttr;
+- ( void )setCustomAttr:( int )newCustomAttr;
+- ( NSString * )scriptStringAttr;
 #if ENABLE(Condition1)
-- (int)conditionalAttr1;
-- (void)setConditionalAttr1:(int)newConditionalAttr1;
+- ( int )conditionalAttr1;
+- ( void )setConditionalAttr1:( int )newConditionalAttr1;
 #endif
 #if ENABLE(Condition1) && ENABLE(Condition2)
-- (int)conditionalAttr2;
-- (void)setConditionalAttr2:(int)newConditionalAttr2;
+- ( int )conditionalAttr2;
+- ( void )setConditionalAttr2:( int )newConditionalAttr2;
 #endif
 #if ENABLE(Condition1) || ENABLE(Condition2)
-- (int)conditionalAttr3;
-- (void)setConditionalAttr3:(int)newConditionalAttr3;
+- ( int )conditionalAttr3;
+- ( void )setConditionalAttr3:( int )newConditionalAttr3;
 #endif
-- (int)descriptionName;
-- (int)idName;
-- (void)setIdName:(int)newIdName;
-- (NSString *)hashName;
-- (void)voidMethod;
-- (void)voidMethodWithArgs:(int)intArg strArg:(NSString *)strArg objArg:(DOMTestObj *)objArg;
-- (int)intMethod;
-- (int)intMethodWithArgs:(int)intArg strArg:(NSString *)strArg objArg:(DOMTestObj *)objArg;
-- (DOMTestObj *)objMethod;
-- (DOMTestObj *)objMethodWithArgs:(int)intArg strArg:(NSString *)strArg objArg:(DOMTestObj *)objArg;
-- (DOMTestObj *)methodThatRequiresAllArgs:(NSString *)strArg objArg:(DOMTestObj *)objArg;
-- (DOMTestObj *)methodThatRequiresAllArgsAndThrows:(NSString *)strArg objArg:(DOMTestObj *)objArg;
-- (void)serializedValue:(NSString *)serializedArg;
-- (void)idbKey:(DOMIDBKey *)key;
-- (void)optionsObject:(DOMOptionsObject *)oo ooo:(DOMOptionsObject *)ooo;
-- (void)methodWithException;
-- (void)customMethod;
-- (void)customMethodWithArgs:(int)intArg strArg:(NSString *)strArg objArg:(DOMTestObj *)objArg;
-- (void)customArgsAndException:(DOMlog *)intArg;
-- (void)addEventListener:(NSString *)type listener:(id <DOMEventListener>)listener useCapture:(BOOL)useCapture;
-- (void)removeEventListener:(NSString *)type listener:(id <DOMEventListener>)listener useCapture:(BOOL)useCapture;
-- (void)withDynamicFrame;
-- (void)withDynamicFrameAndArg:(int)intArg;
-- (void)withDynamicFrameAndOptionalArg:(int)intArg optionalArg:(int)optionalArg;
-- (void)withDynamicFrameAndUserGesture:(int)intArg;
-- (void)withDynamicFrameAndUserGestureASAD:(int)intArg optionalArg:(int)optionalArg;
-- (void)withScriptStateVoid;
-- (DOMTestObj *)withScriptStateObj;
-- (void)withScriptStateVoidException;
-- (DOMTestObj *)withScriptStateObjException;
-- (void)withScriptExecutionContext;
-- (void)methodWithOptionalArg:(int)opt;
-- (void)methodWithNonOptionalArgAndOptionalArg:(int)nonOpt opt:(int)opt;
-- (void)methodWithNonOptionalArgAndTwoOptionalArgs:(int)nonOpt opt1:(int)opt1 opt2:(int)opt2;
-- (void)classMethod;
-- (int)classMethodWithOptional:(int)arg;
+- ( int )descriptionName;
+- ( int )idName;
+- ( void )setIdName:( int )newIdName;
+- ( NSString * )hashName;
+- ( void )voidMethod;
+- ( void )voidMethodWithArgs:( int )intArg strArg:( NSString * )strArg objArg:( DOMTestObj * )objArg;
+- ( int )intMethod;
+- ( int )intMethodWithArgs:( int )intArg strArg:( NSString * )strArg objArg:( DOMTestObj * )objArg;
+- ( DOMTestObj * )objMethod;
+- ( DOMTestObj * )objMethodWithArgs:( int )intArg strArg:( NSString * )strArg objArg:( DOMTestObj * )objArg;
+- ( DOMTestObj * )methodThatRequiresAllArgs:( NSString * )strArg objArg:( DOMTestObj * )objArg;
+- ( DOMTestObj * )methodThatRequiresAllArgsAndThrows:( NSString * )strArg objArg:( DOMTestObj * )objArg;
+- ( void )serializedValue:( NSString * )serializedArg;
+- ( void )idbKey:( DOMIDBKey * )key;
+- ( void )optionsObject:( DOMOptionsObject * )oo ooo:( DOMOptionsObject * )ooo;
+- ( void )methodWithException;
+- ( void )customMethod;
+- ( void )customMethodWithArgs:( int )intArg strArg:( NSString * )strArg objArg:( DOMTestObj * )objArg;
+- ( void )customArgsAndException:( DOMlog * )intArg;
+- ( void )addEventListener:( NSString * )type listener:( id <DOMEventListener> )listener useCapture:( BOOL )useCapture;
+- ( void )removeEventListener:( NSString * )type listener:( id <DOMEventListener> )listener useCapture:( BOOL )useCapture;
+- ( void )withDynamicFrame;
+- ( void )withDynamicFrameAndArg:( int )intArg;
+- ( void )withDynamicFrameAndOptionalArg:( int )intArg optionalArg:( int )optionalArg;
+- ( void )withDynamicFrameAndUserGesture:( int )intArg;
+- ( void )withDynamicFrameAndUserGestureASAD:( int )intArg optionalArg:( int )optionalArg;
+- ( void )withScriptStateVoid;
+- ( DOMTestObj * )withScriptStateObj;
+- ( void )withScriptStateVoidException;
+- ( DOMTestObj * )withScriptStateObjException;
+- ( void )withScriptExecutionContext;
+- ( void )methodWithOptionalArg:( int )opt;
+- ( void )methodWithNonOptionalArgAndOptionalArg:( int )nonOpt opt:( int )opt;
+- ( void )methodWithNonOptionalArgAndTwoOptionalArgs:( int )nonOpt opt1:( int )opt1 opt2:( int )opt2;
+- ( void )classMethod;
+- ( int )classMethodWithOptional:( int )arg;
 @end
 
 #endif

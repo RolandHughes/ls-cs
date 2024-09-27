@@ -36,234 +36,261 @@
 #include <qdebug.h>
 #include <qtextstream.h>
 
-namespace {
-
-void openNameSpaces(const QStringList &namespaceList, QTextStream &output)
+namespace
 {
-   if (namespaceList.empty()) {
-      return;
-   }
 
-   const QStringList::const_iterator cend = namespaceList.constEnd();
+void openNameSpaces( const QStringList &namespaceList, QTextStream &output )
+{
+    if ( namespaceList.empty() )
+    {
+        return;
+    }
 
-   for (QStringList::const_iterator it = namespaceList.constBegin(); it != cend; ++it) {
-      if (!it->isEmpty()) {
-         output << "namespace " << *it << " {\n";
-      }
-   }
+    const QStringList::const_iterator cend = namespaceList.constEnd();
+
+    for ( QStringList::const_iterator it = namespaceList.constBegin(); it != cend; ++it )
+    {
+        if ( !it->isEmpty() )
+        {
+            output << "namespace " << *it << " {\n";
+        }
+    }
 }
 
-void closeNameSpaces(const QStringList &namespaceList, QTextStream &output)
+void closeNameSpaces( const QStringList &namespaceList, QTextStream &output )
 {
-   if (namespaceList.empty()) {
-      return;
-   }
+    if ( namespaceList.empty() )
+    {
+        return;
+    }
 
-   QListIterator<QString> it(namespaceList);
-   it.toBack();
+    QListIterator<QString> it( namespaceList );
+    it.toBack();
 
-   while (it.hasPrevious()) {
-      const QString ns = it.previous();
+    while ( it.hasPrevious() )
+    {
+        const QString ns = it.previous();
 
-      if (!ns.isEmpty()) {
-         output << "}  // namespace " << ns << "\n";
-      }
-   }
+        if ( !ns.isEmpty() )
+        {
+            output << "}  // namespace " << ns << "\n";
+        }
+    }
 }
 
-void writeScriptContextClass(const QString &indent, QTextStream &str)
+void writeScriptContextClass( const QString &indent, QTextStream &str )
 {
-   str << indent << "class ScriptContext\n"
-      << indent << "{\n"
-      << indent << "public:\n"
-      << indent << "    void run(const QString &script, QWidget *widget, const QWidgetList &childWidgets)\n"
-      << indent << "    {\n"
-      << indent << "        QScriptValue widgetObject =  scriptEngine.newQObject(widget);\n"
-      << indent << "        QScriptValue childWidgetArray = scriptEngine.newArray (childWidgets.size());\n"
-      << indent << "        for (int i = 0; i < childWidgets.size(); i++)\n"
-      << indent << "               childWidgetArray.setProperty(i, scriptEngine.newQObject(childWidgets[i]));\n"
-      << indent << "        QScriptContext *ctx = scriptEngine.pushContext();\n"
-      << indent << "        ctx ->activationObject().setProperty(\"widget\", widgetObject);\n"
-      << indent << "        ctx ->activationObject().setProperty(\"childWidgets\", childWidgetArray);\n\n"
-      << indent << "        scriptEngine.evaluate(script);\n"
-      << indent << "        if (scriptEngine.hasUncaughtException ()) {\n"
-      << indent <<
-      "            qWarning() << \"An exception occurred at line \" << scriptEngine.uncaughtExceptionLineNumber()\n"
-      << indent <<
-      "                       << \" of the script for \" << widget->objectName() << \": \" << engineError() << '\\n'\n"
-      << indent << "                       << script;\n"
-      << indent << "        }\n\n"
-      << indent << "        scriptEngine.popContext();\n"
-      << indent << "    }\n\n"
-      << indent << "private:\n"
-      << indent << "    QString engineError()\n"
-      << indent << "    {\n"
-      << indent << "        QScriptValue error = scriptEngine.evaluate(\"Error\");\n"
-      << indent << "        return error.toString();\n"
-      << indent << "    }\n\n"
-      << indent << "    QScriptEngine scriptEngine;\n"
-      << indent << "};\n\n";
+    str << indent << "class ScriptContext\n"
+        << indent << "{\n"
+        << indent << "public:\n"
+        << indent << "    void run(const QString &script, QWidget *widget, const QWidgetList &childWidgets)\n"
+        << indent << "    {\n"
+        << indent << "        QScriptValue widgetObject =  scriptEngine.newQObject(widget);\n"
+        << indent << "        QScriptValue childWidgetArray = scriptEngine.newArray (childWidgets.size());\n"
+        << indent << "        for (int i = 0; i < childWidgets.size(); i++)\n"
+        << indent << "               childWidgetArray.setProperty(i, scriptEngine.newQObject(childWidgets[i]));\n"
+        << indent << "        QScriptContext *ctx = scriptEngine.pushContext();\n"
+        << indent << "        ctx ->activationObject().setProperty(\"widget\", widgetObject);\n"
+        << indent << "        ctx ->activationObject().setProperty(\"childWidgets\", childWidgetArray);\n\n"
+        << indent << "        scriptEngine.evaluate(script);\n"
+        << indent << "        if (scriptEngine.hasUncaughtException ()) {\n"
+        << indent <<
+        "            qWarning() << \"An exception occurred at line \" << scriptEngine.uncaughtExceptionLineNumber()\n"
+        << indent <<
+        "                       << \" of the script for \" << widget->objectName() << \": \" << engineError() << '\\n'\n"
+        << indent << "                       << script;\n"
+        << indent << "        }\n\n"
+        << indent << "        scriptEngine.popContext();\n"
+        << indent << "    }\n\n"
+        << indent << "private:\n"
+        << indent << "    QString engineError()\n"
+        << indent << "    {\n"
+        << indent << "        QScriptValue error = scriptEngine.evaluate(\"Error\");\n"
+        << indent << "        return error.toString();\n"
+        << indent << "    }\n\n"
+        << indent << "    QScriptEngine scriptEngine;\n"
+        << indent << "};\n\n";
 }
 }
 
-namespace CPP {
+namespace CPP
+{
 
-WriteDeclaration::WriteDeclaration(Uic *uic, bool activateScripts)  :
-   m_uic(uic),
-   m_driver(uic->driver()),
-   m_output(uic->output()),
-   m_option(uic->option()),
-   m_activateScripts(activateScripts)
+WriteDeclaration::WriteDeclaration( Uic *uic, bool activateScripts )  :
+    m_uic( uic ),
+    m_driver( uic->driver() ),
+    m_output( uic->output() ),
+    m_option( uic->option() ),
+    m_activateScripts( activateScripts )
 {
 }
 
-void WriteDeclaration::acceptUI(DomUI *node)
+void WriteDeclaration::acceptUI( DomUI *node )
 {
-   QString qualifiedClassName = node->elementClass() + m_option.postfix;
-   QString className = qualifiedClassName;
+    QString qualifiedClassName = node->elementClass() + m_option.postfix;
+    QString className = qualifiedClassName;
 
-   QString varName = m_driver->findOrInsertWidget(node->elementWidget());
-   QString widgetClassName = node->elementWidget()->attributeClass();
+    QString varName = m_driver->findOrInsertWidget( node->elementWidget() );
+    QString widgetClassName = node->elementWidget()->attributeClass();
 
-   QString exportMacro = node->elementExportMacro();
-   if (!exportMacro.isEmpty()) {
-      exportMacro.append(' ');
-   }
+    QString exportMacro = node->elementExportMacro();
 
-   QStringList namespaceList = qualifiedClassName.split("::");
+    if ( !exportMacro.isEmpty() )
+    {
+        exportMacro.append( ' ' );
+    }
 
-   if (namespaceList.count()) {
-      className = namespaceList.last();
-      namespaceList.removeLast();
-   }
+    QStringList namespaceList = qualifiedClassName.split( "::" );
 
-   openNameSpaces(namespaceList, m_output);
+    if ( namespaceList.count() )
+    {
+        className = namespaceList.last();
+        namespaceList.removeLast();
+    }
 
-   if (namespaceList.count()) {
-      m_output << "\n";
-   }
+    openNameSpaces( namespaceList, m_output );
 
-   m_output << "class " << exportMacro << m_option.prefix << className << "\n"
-            << "{\n"
-            << "public:\n";
+    if ( namespaceList.count() )
+    {
+        m_output << "\n";
+    }
 
-   const QStringList connections = m_uic->databaseInfo()->connections();
-   for (int i = 0; i < connections.size(); ++i) {
-      const QString connection = connections.at(i);
+    m_output << "class " << exportMacro << m_option.prefix << className << "\n"
+             << "{\n"
+             << "public:\n";
 
-      if (connection == "(default)") {
-         continue;
-      }
+    const QStringList connections = m_uic->databaseInfo()->connections();
 
-      m_output << m_option.indent << "QSqlDatabase " << connection << "Connection;\n";
-   }
+    for ( int i = 0; i < connections.size(); ++i )
+    {
+        const QString connection = connections.at( i );
 
-   TreeWalker::acceptWidget(node->elementWidget());
-   if (const DomButtonGroups *domButtonGroups = node->elementButtonGroups()) {
-      acceptButtonGroups(domButtonGroups);
-   }
+        if ( connection == "(default)" )
+        {
+            continue;
+        }
 
-   m_output << "\n";
+        m_output << m_option.indent << "QSqlDatabase " << connection << "Connection;\n";
+    }
 
-   WriteInitialization(m_uic, m_activateScripts).acceptUI(node);
+    TreeWalker::acceptWidget( node->elementWidget() );
 
-   if (node->elementImages()) {
-      if (m_option.extractImages) {
-         ExtractImages(m_uic->option()).acceptUI(node);
+    if ( const DomButtonGroups *domButtonGroups = node->elementButtonGroups() )
+    {
+        acceptButtonGroups( domButtonGroups );
+    }
 
-      } else {
-         m_output << "\n"
-            << "protected:\n"
-            << m_option.indent << "enum IconID\n"
-            << m_option.indent << "{\n";
-         WriteIconDeclaration(m_uic).acceptUI(node);
+    m_output << "\n";
 
-         m_output << m_option.indent << m_option.indent << "unknown_ID\n"
-            << m_option.indent << "};\n";
+    WriteInitialization( m_uic, m_activateScripts ).acceptUI( node );
 
-         WriteIconInitialization(m_uic).acceptUI(node);
-      }
-   }
+    if ( node->elementImages() )
+    {
+        if ( m_option.extractImages )
+        {
+            ExtractImages( m_uic->option() ).acceptUI( node );
 
-   if (m_activateScripts) {
-      m_output << "\nprivate:\n\n";
-      writeScriptContextClass(m_option.indent, m_output);
-   }
+        }
+        else
+        {
+            m_output << "\n"
+                     << "protected:\n"
+                     << m_option.indent << "enum IconID\n"
+                     << m_option.indent << "{\n";
+            WriteIconDeclaration( m_uic ).acceptUI( node );
 
-   m_output << "};\n\n";
+            m_output << m_option.indent << m_option.indent << "unknown_ID\n"
+                     << m_option.indent << "};\n";
 
-   closeNameSpaces(namespaceList, m_output);
+            WriteIconInitialization( m_uic ).acceptUI( node );
+        }
+    }
 
-   if (namespaceList.count()) {
-      m_output << "\n";
-   }
+    if ( m_activateScripts )
+    {
+        m_output << "\nprivate:\n\n";
+        writeScriptContextClass( m_option.indent, m_output );
+    }
 
-   if (m_option.generateNamespace && !m_option.prefix.isEmpty()) {
-      namespaceList.append("Ui");
-      openNameSpaces(namespaceList, m_output);
+    m_output << "};\n\n";
 
-      m_output << m_option.indent << "class "  << exportMacro << className << " : public "
-               << m_option.prefix << className << " {};\n";
+    closeNameSpaces( namespaceList, m_output );
 
-      closeNameSpaces(namespaceList, m_output);
+    if ( namespaceList.count() )
+    {
+        m_output << "\n";
+    }
 
-      if (namespaceList.count()) {
-         m_output << "\n";
-      }
-   }
+    if ( m_option.generateNamespace && !m_option.prefix.isEmpty() )
+    {
+        namespaceList.append( "Ui" );
+        openNameSpaces( namespaceList, m_output );
+
+        m_output << m_option.indent << "class "  << exportMacro << className << " : public "
+                 << m_option.prefix << className << " {};\n";
+
+        closeNameSpaces( namespaceList, m_output );
+
+        if ( namespaceList.count() )
+        {
+            m_output << "\n";
+        }
+    }
 }
 
-void WriteDeclaration::acceptWidget(DomWidget *node)
+void WriteDeclaration::acceptWidget( DomWidget *node )
 {
-   QString className = "QWidget";
+    QString className = "QWidget";
 
-   if (node->hasAttributeClass()) {
-      className = node->attributeClass();
-   }
+    if ( node->hasAttributeClass() )
+    {
+        className = node->attributeClass();
+    }
 
-   m_output << m_option.indent << m_uic->customWidgetsInfo()->realClassName(className) << " *" <<
-      m_driver->findOrInsertWidget(node) << ";\n";
+    m_output << m_option.indent << m_uic->customWidgetsInfo()->realClassName( className ) << " *" <<
+             m_driver->findOrInsertWidget( node ) << ";\n";
 
-   TreeWalker::acceptWidget(node);
+    TreeWalker::acceptWidget( node );
 }
 
-void WriteDeclaration::acceptSpacer(DomSpacer *node)
+void WriteDeclaration::acceptSpacer( DomSpacer *node )
 {
-   m_output << m_option.indent << "QSpacerItem *" << m_driver->findOrInsertSpacer(node) << ";\n";
-   TreeWalker::acceptSpacer(node);
+    m_output << m_option.indent << "QSpacerItem *" << m_driver->findOrInsertSpacer( node ) << ";\n";
+    TreeWalker::acceptSpacer( node );
 }
 
-void WriteDeclaration::acceptLayout(DomLayout *node)
+void WriteDeclaration::acceptLayout( DomLayout *node )
 {
-   QString className = "QLayout";
+    QString className = "QLayout";
 
-   if (node->hasAttributeClass()) {
-      className = node->attributeClass();
-   }
+    if ( node->hasAttributeClass() )
+    {
+        className = node->attributeClass();
+    }
 
-   m_output << m_option.indent << className << " *" << m_driver->findOrInsertLayout(node) << ";\n";
+    m_output << m_option.indent << className << " *" << m_driver->findOrInsertLayout( node ) << ";\n";
 
-   TreeWalker::acceptLayout(node);
+    TreeWalker::acceptLayout( node );
 }
 
-void WriteDeclaration::acceptActionGroup(DomActionGroup *node)
+void WriteDeclaration::acceptActionGroup( DomActionGroup *node )
 {
-   m_output << m_option.indent << "QActionGroup *" << m_driver->findOrInsertActionGroup(node) << ";\n";
+    m_output << m_option.indent << "QActionGroup *" << m_driver->findOrInsertActionGroup( node ) << ";\n";
 
-   TreeWalker::acceptActionGroup(node);
+    TreeWalker::acceptActionGroup( node );
 }
 
-void WriteDeclaration::acceptAction(DomAction *node)
+void WriteDeclaration::acceptAction( DomAction *node )
 {
-   m_output << m_option.indent << "QAction *" << m_driver->findOrInsertAction(node) << ";\n";
+    m_output << m_option.indent << "QAction *" << m_driver->findOrInsertAction( node ) << ";\n";
 
-   TreeWalker::acceptAction(node);
+    TreeWalker::acceptAction( node );
 }
 
-void WriteDeclaration::acceptButtonGroup(const DomButtonGroup *buttonGroup)
+void WriteDeclaration::acceptButtonGroup( const DomButtonGroup *buttonGroup )
 {
-   m_output << m_option.indent << "QButtonGroup *" << m_driver->findOrInsertButtonGroup(buttonGroup) << ";\n";
-   TreeWalker::acceptButtonGroup(buttonGroup);
+    m_output << m_option.indent << "QButtonGroup *" << m_driver->findOrInsertButtonGroup( buttonGroup ) << ";\n";
+    TreeWalker::acceptButtonGroup( buttonGroup );
 }
 
 } // namespace CPP

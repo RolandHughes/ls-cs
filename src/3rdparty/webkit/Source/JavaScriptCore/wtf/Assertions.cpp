@@ -60,212 +60,256 @@ extern "C" {
 
 #if PLATFORM(BREWMP)
 
-static void printLog(const Vector<char>& buffer)
-{
-    // Each call to DBGPRINTF generates at most 128 bytes of output on the Windows SDK.
-    // On Qualcomm chipset targets, DBGPRINTF() comes out the diag port (though this may change).
-    // The length of each output string is constrained even more than on the Windows SDK.
+    static void printLog( const Vector<char> &buffer )
+    {
+        // Each call to DBGPRINTF generates at most 128 bytes of output on the Windows SDK.
+        // On Qualcomm chipset targets, DBGPRINTF() comes out the diag port (though this may change).
+        // The length of each output string is constrained even more than on the Windows SDK.
 
-    const int printBufferSize = 32;
+        const int printBufferSize = 32;
 
-    char printBuffer[printBufferSize + 1];
-    printBuffer[printBufferSize] = 0; // to guarantee null termination
+        char printBuffer[printBufferSize + 1];
+        printBuffer[printBufferSize] = 0; // to guarantee null termination
 
-    const char* p = buffer.data();
-    const char* end = buffer.data() + buffer.size();
-    while (p < end) {
-        strncpy(printBuffer, p, printBufferSize);
-        dbg_Message(printBuffer, DBG_MSG_LEVEL_HIGH, __FILE__, __LINE__);
-        p += printBufferSize;
+        const char *p = buffer.data();
+        const char *end = buffer.data() + buffer.size();
+
+        while ( p < end )
+        {
+            strncpy( printBuffer, p, printBufferSize );
+            dbg_Message( printBuffer, DBG_MSG_LEVEL_HIGH, __FILE__, __LINE__ );
+            p += printBufferSize;
+        }
     }
-}
 
 #endif
 
-WTF_ATTRIBUTE_PRINTF(1, 0)
-static void vprintf_stderr_common(const char* format, va_list args)
-{
+    WTF_ATTRIBUTE_PRINTF( 1, 0 )
+    static void vprintf_stderr_common( const char *format, va_list args )
+    {
 #if PLATFORM(MAC)
-    if (strstr(format, "%@")) {
-        CFStringRef cfFormat = CFStringCreateWithCString(NULL, format, kCFStringEncodingUTF8);
-        CFStringRef str = CFStringCreateWithFormatAndArguments(NULL, NULL, cfFormat, args);
 
-        int length = CFStringGetMaximumSizeForEncoding(CFStringGetLength(str), kCFStringEncodingUTF8);
-        char* buffer = (char*)malloc(length + 1);
+        if ( strstr( format, "%@" ) )
+        {
+            CFStringRef cfFormat = CFStringCreateWithCString( NULL, format, kCFStringEncodingUTF8 );
+            CFStringRef str = CFStringCreateWithFormatAndArguments( NULL, NULL, cfFormat, args );
 
-        CFStringGetCString(str, buffer, length, kCFStringEncodingUTF8);
+            int length = CFStringGetMaximumSizeForEncoding( CFStringGetLength( str ), kCFStringEncodingUTF8 );
+            char *buffer = ( char * )malloc( length + 1 );
 
-        fputs(buffer, stderr);
+            CFStringGetCString( str, buffer, length, kCFStringEncodingUTF8 );
 
-        free(buffer);
-        CFRelease(str);
-        CFRelease(cfFormat);
-        return;
-    }
+            fputs( buffer, stderr );
+
+            free( buffer );
+            CFRelease( str );
+            CFRelease( cfFormat );
+            return;
+        }
+
 #elif PLATFORM(BREWMP)
-    // When str is 0, the return value is the number of bytes needed
-    // to accept the result including null termination.
-    int size = vsnprintf(0, 0, format, args);
-    if (size > 0) {
-        Vector<char> buffer(size);
-        vsnprintf(buffer.data(), size, format, args);
-        printLog(buffer);
-    }
+        // When str is 0, the return value is the number of bytes needed
+        // to accept the result including null termination.
+        int size = vsnprintf( 0, 0, format, args );
+
+        if ( size > 0 )
+        {
+            Vector<char> buffer( size );
+            vsnprintf( buffer.data(), size, format, args );
+            printLog( buffer );
+        }
 
 #elif HAVE(ISDEBUGGERPRESENT)
-    if (IsDebuggerPresent()) {
-        size_t size = 1024;
 
-        do {
-            char* buffer = (char*)malloc(size);
+        if ( IsDebuggerPresent() )
+        {
+            size_t size = 1024;
 
-            if (buffer == NULL)
-                break;
+            do
+            {
+                char *buffer = ( char * )malloc( size );
 
-            if (_vsnprintf(buffer, size, format, args) != -1) {
+                if ( buffer == NULL )
+                {
+                    break;
+                }
 
-                OutputDebugStringA(buffer);
+                if ( _vsnprintf( buffer, size, format, args ) != -1 )
+                {
 
-                free(buffer);
-                break;
+                    OutputDebugStringA( buffer );
+
+                    free( buffer );
+                    break;
+                }
+
+                free( buffer );
+                size *= 2;
             }
+            while ( size > 1024 );
+        }
 
-            free(buffer);
-            size *= 2;
-        } while (size > 1024);
-    }
 #endif
 
-    vfprintf(stderr, format, args);
-}
+        vfprintf( stderr, format, args );
+    }
 
-WTF_ATTRIBUTE_PRINTF(1, 2)
-static void printf_stderr_common(const char* format, ...)
-{
-    va_list args;
-    va_start(args, format);
-    vprintf_stderr_common(format, args);
-    va_end(args);
-}
+    WTF_ATTRIBUTE_PRINTF( 1, 2 )
+    static void printf_stderr_common( const char *format, ... )
+    {
+        va_list args;
+        va_start( args, format );
+        vprintf_stderr_common( format, args );
+        va_end( args );
+    }
 
-static void printCallSite(const char* file, int line, const char* function)
-{
+    static void printCallSite( const char *file, int line, const char *function )
+    {
 #if OS(WINDOWS) && defined(_DEBUG)
-    _CrtDbgReport(_CRT_WARN, file, line, NULL, "%s\n", function);
+        _CrtDbgReport( _CRT_WARN, file, line, NULL, "%s\n", function );
 #else
-    // By using this format, which matches the format used by MSVC for compiler errors, developers
-    // using Visual Studio can double-click the file/line number in the Output Window to have the
-    // editor navigate to that line of code. It seems fine for other developers, too.
-    printf_stderr_common("%s(%d) : %s\n", file, line, function);
+        // By using this format, which matches the format used by MSVC for compiler errors, developers
+        // using Visual Studio can double-click the file/line number in the Output Window to have the
+        // editor navigate to that line of code. It seems fine for other developers, too.
+        printf_stderr_common( "%s(%d) : %s\n", file, line, function );
 #endif
-}
-
-void WTFReportAssertionFailure(const char* file, int line, const char* function, const char* assertion)
-{
-    if (assertion)
-        printf_stderr_common("ASSERTION FAILED: %s\n", assertion);
-    else
-        printf_stderr_common("SHOULD NEVER BE REACHED\n");
-    printCallSite(file, line, function);
-}
-
-void WTFReportAssertionFailureWithMessage(const char* file, int line, const char* function, const char* assertion, const char* format, ...)
-{
-    printf_stderr_common("ASSERTION FAILED: ");
-    va_list args;
-    va_start(args, format);
-    vprintf_stderr_common(format, args);
-    va_end(args);
-    printf_stderr_common("\n%s\n", assertion);
-    printCallSite(file, line, function);
-}
-
-void WTFReportArgumentAssertionFailure(const char* file, int line, const char* function, const char* argName, const char* assertion)
-{
-    printf_stderr_common("ARGUMENT BAD: %s, %s\n", argName, assertion);
-    printCallSite(file, line, function);
-}
-
-void WTFReportBacktrace()
-{
-#if PLATFORM(MAC)
-    static const int maxFrames = 32;
-    void* samples[maxFrames];
-    int frames = backtrace(samples, maxFrames);
-
-    for (int i = 1; i < frames; ++i) {
-        void* pointer = samples[i];
-
-        // Try to get a symbol name from the dynamic linker.
-        Dl_info info;
-        if (dladdr(pointer, &info) && info.dli_sname) {
-            const char* mangledName = info.dli_sname;
-
-            // Assume c++ & try to demangle the name.
-            char* demangledName = abi::__cxa_demangle(mangledName, 0, 0, 0);
-            if (demangledName) {
-                fprintf(stderr, "%-3d %s\n", i, demangledName);
-                free(demangledName);
-            } else
-                fprintf(stderr, "%-3d %s\n", i, mangledName);
-        } else
-            fprintf(stderr, "%-3d %p\n", i, pointer);
     }
+
+    void WTFReportAssertionFailure( const char *file, int line, const char *function, const char *assertion )
+    {
+        if ( assertion )
+        {
+            printf_stderr_common( "ASSERTION FAILED: %s\n", assertion );
+        }
+        else
+        {
+            printf_stderr_common( "SHOULD NEVER BE REACHED\n" );
+        }
+
+        printCallSite( file, line, function );
+    }
+
+    void WTFReportAssertionFailureWithMessage( const char *file, int line, const char *function, const char *assertion,
+            const char *format, ... )
+    {
+        printf_stderr_common( "ASSERTION FAILED: " );
+        va_list args;
+        va_start( args, format );
+        vprintf_stderr_common( format, args );
+        va_end( args );
+        printf_stderr_common( "\n%s\n", assertion );
+        printCallSite( file, line, function );
+    }
+
+    void WTFReportArgumentAssertionFailure( const char *file, int line, const char *function, const char *argName,
+                                            const char *assertion )
+    {
+        printf_stderr_common( "ARGUMENT BAD: %s, %s\n", argName, assertion );
+        printCallSite( file, line, function );
+    }
+
+    void WTFReportBacktrace()
+    {
+#if PLATFORM(MAC)
+        static const int maxFrames = 32;
+        void *samples[maxFrames];
+        int frames = backtrace( samples, maxFrames );
+
+        for ( int i = 1; i < frames; ++i )
+        {
+            void *pointer = samples[i];
+
+            // Try to get a symbol name from the dynamic linker.
+            Dl_info info;
+
+            if ( dladdr( pointer, &info ) && info.dli_sname )
+            {
+                const char *mangledName = info.dli_sname;
+
+                // Assume c++ & try to demangle the name.
+                char *demangledName = abi::__cxa_demangle( mangledName, 0, 0, 0 );
+
+                if ( demangledName )
+                {
+                    fprintf( stderr, "%-3d %s\n", i, demangledName );
+                    free( demangledName );
+                }
+                else
+                {
+                    fprintf( stderr, "%-3d %s\n", i, mangledName );
+                }
+            }
+            else
+            {
+                fprintf( stderr, "%-3d %p\n", i, pointer );
+            }
+        }
+
 #endif
-}
+    }
 
-void WTFReportFatalError(const char* file, int line, const char* function, const char* format, ...)
-{
-    printf_stderr_common("FATAL ERROR: ");
-    va_list args;
-    va_start(args, format);
-    vprintf_stderr_common(format, args);
-    va_end(args);
-    printf_stderr_common("\n");
-    printCallSite(file, line, function);
-}
+    void WTFReportFatalError( const char *file, int line, const char *function, const char *format, ... )
+    {
+        printf_stderr_common( "FATAL ERROR: " );
+        va_list args;
+        va_start( args, format );
+        vprintf_stderr_common( format, args );
+        va_end( args );
+        printf_stderr_common( "\n" );
+        printCallSite( file, line, function );
+    }
 
-void WTFReportError(const char* file, int line, const char* function, const char* format, ...)
-{
-    printf_stderr_common("ERROR: ");
-    va_list args;
-    va_start(args, format);
-    vprintf_stderr_common(format, args);
-    va_end(args);
-    printf_stderr_common("\n");
-    printCallSite(file, line, function);
-}
+    void WTFReportError( const char *file, int line, const char *function, const char *format, ... )
+    {
+        printf_stderr_common( "ERROR: " );
+        va_list args;
+        va_start( args, format );
+        vprintf_stderr_common( format, args );
+        va_end( args );
+        printf_stderr_common( "\n" );
+        printCallSite( file, line, function );
+    }
 
-void WTFLog(WTFLogChannel* channel, const char* format, ...)
-{
-    if (channel->state != WTFLogChannelOn)
-        return;
+    void WTFLog( WTFLogChannel *channel, const char *format, ... )
+    {
+        if ( channel->state != WTFLogChannelOn )
+        {
+            return;
+        }
 
-    va_list args;
-    va_start(args, format);
-    vprintf_stderr_common(format, args);
-    va_end(args);
-    
-    size_t formatLength = strlen(format);
-    if (formatLength && format[formatLength - 1] != '\n')
-        printf_stderr_common("\n");
-}
+        va_list args;
+        va_start( args, format );
+        vprintf_stderr_common( format, args );
+        va_end( args );
 
-void WTFLogVerbose(const char* file, int line, const char* function, WTFLogChannel* channel, const char* format, ...)
-{
-    if (channel->state != WTFLogChannelOn)
-        return;
+        size_t formatLength = strlen( format );
 
-    va_list args;
-    va_start(args, format);
-    vprintf_stderr_common(format, args);
-    va_end(args);
+        if ( formatLength && format[formatLength - 1] != '\n' )
+        {
+            printf_stderr_common( "\n" );
+        }
+    }
 
-    size_t formatLength = strlen(format);
-    if (formatLength && format[formatLength - 1] != '\n')
-        printf_stderr_common("\n");
+    void WTFLogVerbose( const char *file, int line, const char *function, WTFLogChannel *channel, const char *format, ... )
+    {
+        if ( channel->state != WTFLogChannelOn )
+        {
+            return;
+        }
 
-    printCallSite(file, line, function);
-}
+        va_list args;
+        va_start( args, format );
+        vprintf_stderr_common( format, args );
+        va_end( args );
+
+        size_t formatLength = strlen( format );
+
+        if ( formatLength && format[formatLength - 1] != '\n' )
+        {
+            printf_stderr_common( "\n" );
+        }
+
+        printCallSite( file, line, function );
+    }
 
 } // extern "C"

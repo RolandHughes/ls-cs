@@ -32,26 +32,26 @@
 
 class Q_MULTIMEDIA_EXPORT QCameraFlashControl : public QMediaControl
 {
-   MULTI_CS_OBJECT(QCameraFlashControl)
+    MULTI_CS_OBJECT( QCameraFlashControl )
 
- public:
-   ~QCameraFlashControl();
+public:
+    ~QCameraFlashControl();
 
-   virtual QCameraExposure::FlashModes flashMode() const = 0;
-   virtual void setFlashMode(QCameraExposure::FlashModes mode) = 0;
-   virtual bool isFlashModeSupported(QCameraExposure::FlashModes mode) const = 0;
+    virtual QCameraExposure::FlashModes flashMode() const = 0;
+    virtual void setFlashMode( QCameraExposure::FlashModes mode ) = 0;
+    virtual bool isFlashModeSupported( QCameraExposure::FlashModes mode ) const = 0;
 
-   virtual bool isFlashReady() const = 0;
+    virtual bool isFlashReady() const = 0;
 
-   MULTI_CS_SIGNAL_1(Public, void flashReady(bool ready))
-   MULTI_CS_SIGNAL_2(flashReady, ready)
+    MULTI_CS_SIGNAL_1( Public, void flashReady( bool ready ) )
+    MULTI_CS_SIGNAL_2( flashReady, ready )
 
- protected:
-   explicit QCameraFlashControl(QObject *parent = nullptr);
+protected:
+    explicit QCameraFlashControl( QObject *parent = nullptr );
 };
 
 #define QCameraFlashControl_iid "com.copperspice.CS.cameraFlashControl/1.0"
-CS_DECLARE_INTERFACE(QCameraFlashControl, QCameraFlashControl_iid)
+CS_DECLARE_INTERFACE( QCameraFlashControl, QCameraFlashControl_iid )
 
 #endif
 

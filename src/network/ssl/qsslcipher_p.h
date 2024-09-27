@@ -28,22 +28,22 @@
 
 class QSslCipherPrivate
 {
- public:
-   QSslCipherPrivate()
-      : isNull(true), supportedBits(0), bits(0), exportable(false), protocol(QSsl::UnknownProtocol)
-   {
-   }
+public:
+    QSslCipherPrivate()
+        : isNull( true ), supportedBits( 0 ), bits( 0 ), exportable( false ), protocol( QSsl::UnknownProtocol )
+    {
+    }
 
-   bool isNull;
-   QString name;
-   int supportedBits;
-   int bits;
-   QString keyExchangeMethod;
-   QString authenticationMethod;
-   QString encryptionMethod;
-   bool exportable;
-   QString protocolString;
-   QSsl::SslProtocol protocol;
+    bool isNull;
+    QString name;
+    int supportedBits;
+    int bits;
+    QString keyExchangeMethod;
+    QString authenticationMethod;
+    QString encryptionMethod;
+    bool exportable;
+    QString protocolString;
+    QSsl::SslProtocol protocol;
 };
 
 #endif

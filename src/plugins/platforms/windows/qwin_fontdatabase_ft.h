@@ -30,18 +30,18 @@
 
 class QWindowsFontDatabaseFT : public QBasicFontDatabase
 {
- public:
-   void populateFontDatabase() override;
-   void populateFamily(const QString &familyName) override;
-   QFontEngine *fontEngine(const QFontDef &fontDef, void *handle) override;
-   QFontEngine *fontEngine(const QByteArray &fontData, qreal pixelSize,
-      QFont::HintingPreference hintingPreference) override;
+public:
+    void populateFontDatabase() override;
+    void populateFamily( const QString &familyName ) override;
+    QFontEngine *fontEngine( const QFontDef &fontDef, void *handle ) override;
+    QFontEngine *fontEngine( const QByteArray &fontData, qreal pixelSize,
+                             QFont::HintingPreference hintingPreference ) override;
 
-   QStringList fallbacksForFamily(const QString &family, QFont::Style style,
-      QFont::StyleHint styleHint, QChar::Script script) const override;
+    QStringList fallbacksForFamily( const QString &family, QFont::Style style,
+                                    QFont::StyleHint styleHint, QChar::Script script ) const override;
 
-   QString fontDir() const override;
-   QFont defaultFont() const override;
+    QString fontDir() const override;
+    QFont defaultFont() const override;
 };
 
 #endif

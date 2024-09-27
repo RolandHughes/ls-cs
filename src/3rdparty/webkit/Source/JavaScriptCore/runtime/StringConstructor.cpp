@@ -27,67 +27,88 @@
 #include "JSGlobalObject.h"
 #include "StringPrototype.h"
 
-namespace JSC {
+namespace JSC
+{
 
-static NEVER_INLINE JSValue stringFromCharCodeSlowCase(ExecState* exec)
+static NEVER_INLINE JSValue stringFromCharCodeSlowCase( ExecState *exec )
 {
     unsigned length = exec->argumentCount();
-    UChar* buf;
-    PassRefPtr<StringImpl> impl = StringImpl::createUninitialized(length, buf);
-    for (unsigned i = 0; i < length; ++i)
-        buf[i] = static_cast<UChar>(exec->argument(i).toUInt32(exec));
-    return jsString(exec, impl);
+    UChar *buf;
+    PassRefPtr<StringImpl> impl = StringImpl::createUninitialized( length, buf );
+
+    for ( unsigned i = 0; i < length; ++i )
+    {
+        buf[i] = static_cast<UChar>( exec->argument( i ).toUInt32( exec ) );
+    }
+
+    return jsString( exec, impl );
 }
 
-static EncodedJSValue JSC_HOST_CALL stringFromCharCode(ExecState* exec)
+static EncodedJSValue JSC_HOST_CALL stringFromCharCode( ExecState *exec )
 {
-    if (LIKELY(exec->argumentCount() == 1))
-        return JSValue::encode(jsSingleCharacterString(exec, exec->argument(0).toUInt32(exec)));
-    return JSValue::encode(stringFromCharCodeSlowCase(exec));
+    if ( LIKELY( exec->argumentCount() == 1 ) )
+    {
+        return JSValue::encode( jsSingleCharacterString( exec, exec->argument( 0 ).toUInt32( exec ) ) );
+    }
+
+    return JSValue::encode( stringFromCharCodeSlowCase( exec ) );
 }
 
-ASSERT_CLASS_FITS_IN_CELL(StringConstructor);
+ASSERT_CLASS_FITS_IN_CELL( StringConstructor );
 
-StringConstructor::StringConstructor(ExecState* exec, JSGlobalObject* globalObject, Structure* structure, Structure* functionStructure, StringPrototype* stringPrototype)
-    : InternalFunction(&exec->globalData(), globalObject, structure, Identifier(exec, stringPrototype->classInfo()->className))
+StringConstructor::StringConstructor( ExecState *exec, JSGlobalObject *globalObject, Structure *structure,
+                                      Structure *functionStructure, StringPrototype *stringPrototype )
+    : InternalFunction( &exec->globalData(), globalObject, structure, Identifier( exec, stringPrototype->classInfo()->className ) )
 {
     // ECMA 15.5.3.1 String.prototype
-    putDirectWithoutTransition(exec->globalData(), exec->propertyNames().prototype, stringPrototype, ReadOnly | DontEnum | DontDelete);
+    putDirectWithoutTransition( exec->globalData(), exec->propertyNames().prototype, stringPrototype,
+                                ReadOnly | DontEnum | DontDelete );
 
     // ECMA 15.5.3.2 fromCharCode()
 #if ENABLE(JIT) && ENABLE(JIT_OPTIMIZE_NATIVE_CALL)
-    putDirectFunctionWithoutTransition(exec, new (exec) JSFunction(exec, globalObject, functionStructure, 1, exec->propertyNames().fromCharCode, exec->globalData().getHostFunction(stringFromCharCode, fromCharCodeThunkGenerator)), DontEnum);
+    putDirectFunctionWithoutTransition( exec, new ( exec ) JSFunction( exec, globalObject, functionStructure, 1,
+                                        exec->propertyNames().fromCharCode, exec->globalData().getHostFunction( stringFromCharCode, fromCharCodeThunkGenerator ) ),
+                                        DontEnum );
 #else
-    putDirectFunctionWithoutTransition(exec, new (exec) JSFunction(exec, globalObject, functionStructure, 1, exec->propertyNames().fromCharCode, stringFromCharCode), DontEnum);
+    putDirectFunctionWithoutTransition( exec, new ( exec ) JSFunction( exec, globalObject, functionStructure, 1,
+                                        exec->propertyNames().fromCharCode, stringFromCharCode ), DontEnum );
 #endif
     // no. of arguments for constructor
-    putDirectWithoutTransition(exec->globalData(), exec->propertyNames().length, jsNumber(1), ReadOnly | DontEnum | DontDelete);
+    putDirectWithoutTransition( exec->globalData(), exec->propertyNames().length, jsNumber( 1 ), ReadOnly | DontEnum | DontDelete );
 }
 
 // ECMA 15.5.2
-static EncodedJSValue JSC_HOST_CALL constructWithStringConstructor(ExecState* exec)
+static EncodedJSValue JSC_HOST_CALL constructWithStringConstructor( ExecState *exec )
 {
-    JSGlobalObject* globalObject = asInternalFunction(exec->callee())->globalObject();
-    if (!exec->argumentCount())
-        return JSValue::encode(new (exec) StringObject(exec, globalObject->stringObjectStructure()));
-    return JSValue::encode(new (exec) StringObject(exec, globalObject->stringObjectStructure(), exec->argument(0).toString(exec)));
+    JSGlobalObject *globalObject = asInternalFunction( exec->callee() )->globalObject();
+
+    if ( !exec->argumentCount() )
+    {
+        return JSValue::encode( new ( exec ) StringObject( exec, globalObject->stringObjectStructure() ) );
+    }
+
+    return JSValue::encode( new ( exec ) StringObject( exec, globalObject->stringObjectStructure(),
+                            exec->argument( 0 ).toString( exec ) ) );
 }
 
-ConstructType StringConstructor::getConstructData(ConstructData& constructData)
+ConstructType StringConstructor::getConstructData( ConstructData &constructData )
 {
     constructData.native.function = constructWithStringConstructor;
     return ConstructTypeHost;
 }
 
 // ECMA 15.5.1
-static EncodedJSValue JSC_HOST_CALL callStringConstructor(ExecState* exec)
+static EncodedJSValue JSC_HOST_CALL callStringConstructor( ExecState *exec )
 {
-    if (!exec->argumentCount())
-        return JSValue::encode(jsEmptyString(exec));
-    return JSValue::encode(jsString(exec, exec->argument(0).toString(exec)));
+    if ( !exec->argumentCount() )
+    {
+        return JSValue::encode( jsEmptyString( exec ) );
+    }
+
+    return JSValue::encode( jsString( exec, exec->argument( 0 ).toString( exec ) ) );
 }
 
-CallType StringConstructor::getCallData(CallData& callData)
+CallType StringConstructor::getCallData( CallData &callData )
 {
     callData.native.function = callStringConstructor;
     return CallTypeHost;

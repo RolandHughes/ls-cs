@@ -38,17 +38,19 @@
 #include <wtf/PassOwnPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class AsyncFileWriter;
 class Blob;
 
 typedef int ExceptionCode;
 
-class FileWriterBase : public RefCounted<FileWriterBase> {
+class FileWriterBase : public RefCounted<FileWriterBase>
+{
 public:
     virtual ~FileWriterBase();
-    void initialize(PassOwnPtr<AsyncFileWriter>, long long length);
+    void initialize( PassOwnPtr<AsyncFileWriter>, long long length );
 
     long long position() const
     {
@@ -62,22 +64,22 @@ public:
 protected:
     FileWriterBase();
 
-    AsyncFileWriter* writer()
+    AsyncFileWriter *writer()
     {
         return m_writer.get();
     }
 
-    void setPosition(long long position)
+    void setPosition( long long position )
     {
         m_position = position;
     }
 
-    void setLength(long long length)
+    void setLength( long long length )
     {
         m_length = length;
     }
 
-    void seekInternal(long long position);
+    void seekInternal( long long position );
 
 private:
     friend class WTF::RefCounted<FileWriterBase>;

@@ -32,86 +32,88 @@ class QMoveEvent;
 
 class QWidgetWindow : public QWindow
 {
-   GUI_CS_OBJECT(QWidgetWindow)
+    GUI_CS_OBJECT( QWidgetWindow )
 
- public:
-   QWidgetWindow(QWidget *widget);
-   ~QWidgetWindow();
+public:
+    QWidgetWindow( QWidget *widget );
+    ~QWidgetWindow();
 
-   QWidget *widget() const {
-      return m_widget;
-   }
+    QWidget *widget() const
+    {
+        return m_widget;
+    }
 
 #ifndef QT_NO_ACCESSIBILITY
-   QAccessibleInterface *accessibleRoot() const override;
+    QAccessibleInterface *accessibleRoot() const override;
 #endif
 
-   QObject *focusObject() const override;
+    QObject *focusObject() const override;
 
- protected:
-   bool event(QEvent *) override;
+protected:
+    bool event( QEvent * ) override;
 
-   void handleCloseEvent(QCloseEvent *);
-   void handleEnterLeaveEvent(QEvent *);
-   void handleFocusInEvent(QFocusEvent *);
-   void handleKeyEvent(QKeyEvent *);
-   void handleMouseEvent(QMouseEvent *);
-   void handleNonClientAreaMouseEvent(QMouseEvent *);
-   void handleTouchEvent(QTouchEvent *);
-   void handleMoveEvent(QMoveEvent *);
-   void handleResizeEvent(QResizeEvent *);
+    void handleCloseEvent( QCloseEvent * );
+    void handleEnterLeaveEvent( QEvent * );
+    void handleFocusInEvent( QFocusEvent * );
+    void handleKeyEvent( QKeyEvent * );
+    void handleMouseEvent( QMouseEvent * );
+    void handleNonClientAreaMouseEvent( QMouseEvent * );
+    void handleTouchEvent( QTouchEvent * );
+    void handleMoveEvent( QMoveEvent * );
+    void handleResizeEvent( QResizeEvent * );
 
 #ifndef QT_NO_WHEELEVENT
-   void handleWheelEvent(QWheelEvent *);
+    void handleWheelEvent( QWheelEvent * );
 #endif
 
 #ifndef QT_NO_DRAGANDDROP
-   void handleDragEnterMoveEvent(QDragMoveEvent *);
-   void handleDragLeaveEvent(QDragLeaveEvent *);
-   void handleDropEvent(QDropEvent *);
+    void handleDragEnterMoveEvent( QDragMoveEvent * );
+    void handleDragLeaveEvent( QDragLeaveEvent * );
+    void handleDropEvent( QDropEvent * );
 #endif
 
-   void handleExposeEvent(QExposeEvent *);
-   void handleWindowStateChangedEvent(QWindowStateChangeEvent *event);
-   bool nativeEvent(const QByteArray &eventType, void *message, long *result) override;
+    void handleExposeEvent( QExposeEvent * );
+    void handleWindowStateChangedEvent( QWindowStateChangeEvent *event );
+    bool nativeEvent( const QByteArray &eventType, void *message, long *result ) override;
 
 #ifndef QT_NO_TABLETEVENT
-   void handleTabletEvent(QTabletEvent *);
+    void handleTabletEvent( QTabletEvent * );
 #endif
 
 #ifndef QT_NO_GESTURES
-   void handleGestureEvent(QNativeGestureEvent *);
+    void handleGestureEvent( QNativeGestureEvent * );
 #endif
 
 #ifndef QT_NO_CONTEXTMENU
-   void handleContextMenuEvent(QContextMenuEvent *);
+    void handleContextMenuEvent( QContextMenuEvent * );
 #endif
 
- private:
-   void repaintWindow();
-   bool updateSize();
-   bool updatePos();
-   void updateMargins();
-   void updateNormalGeometry();
+private:
+    void repaintWindow();
+    bool updateSize();
+    bool updatePos();
+    void updateMargins();
+    void updateNormalGeometry();
 
-   enum FocusWidgets {
-      FirstFocusWidget,
-      LastFocusWidget
-   };
-   QWidget *getFocusWidget(FocusWidgets fw);
+    enum FocusWidgets
+    {
+        FirstFocusWidget,
+        LastFocusWidget
+    };
+    QWidget *getFocusWidget( FocusWidgets fw );
 
-   QPointer<QWidget> m_widget;
-   QPointer<QWidget> m_implicit_mouse_grabber;
+    QPointer<QWidget> m_widget;
+    QPointer<QWidget> m_implicit_mouse_grabber;
 
 #ifndef QT_NO_DRAGANDDROP
-   QPointer<QWidget> m_dragTarget;
+    QPointer<QWidget> m_dragTarget;
 #endif
 
-   GUI_CS_SLOT_1(Private, void updateObjectName())
-   GUI_CS_SLOT_2(updateObjectName)
+    GUI_CS_SLOT_1( Private, void updateObjectName() )
+    GUI_CS_SLOT_2( updateObjectName )
 
-   GUI_CS_SLOT_1(Private, void handleScreenChange())
-   GUI_CS_SLOT_2(handleScreenChange)
+    GUI_CS_SLOT_1( Private, void handleScreenChange() )
+    GUI_CS_SLOT_2( handleScreenChange )
 };
 
 #endif

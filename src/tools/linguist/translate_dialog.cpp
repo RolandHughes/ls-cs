@@ -23,57 +23,58 @@
 
 #include <translate_dialog.h>
 
-TranslateDialog::TranslateDialog(QWidget *parent)
-   : QDialog(parent), m_ui(new Ui::TranslateDialog)
+TranslateDialog::TranslateDialog( QWidget *parent )
+    : QDialog( parent ), m_ui( new Ui::TranslateDialog )
 {
-   m_ui->setupUi(this);
+    m_ui->setupUi( this );
 
-   connect(m_ui->findNxt,      &QPushButton::clicked,   this, &TranslateDialog::emitFindNext);
-   connect(m_ui->translate,    &QPushButton::clicked,   this, &TranslateDialog::emitTranslateAndFindNext);
-   connect(m_ui->translateAll, &QPushButton::clicked,   this, &TranslateDialog::emitTranslateAll);
-   connect(m_ui->ledFindWhat,  &QLineEdit::textChanged, this, &TranslateDialog::verifyText);
-   connect(m_ui->ckMatchCase,  &QCheckBox::toggled,     this, &TranslateDialog::verifyText);
+    connect( m_ui->findNxt,      &QPushButton::clicked,   this, &TranslateDialog::emitFindNext );
+    connect( m_ui->translate,    &QPushButton::clicked,   this, &TranslateDialog::emitTranslateAndFindNext );
+    connect( m_ui->translateAll, &QPushButton::clicked,   this, &TranslateDialog::emitTranslateAll );
+    connect( m_ui->ledFindWhat,  &QLineEdit::textChanged, this, &TranslateDialog::verifyText );
+    connect( m_ui->ckMatchCase,  &QCheckBox::toggled,     this, &TranslateDialog::verifyText );
 }
 
 TranslateDialog::~TranslateDialog()
 {
-   delete m_ui;
+    delete m_ui;
 }
 
-void TranslateDialog::showEvent(QShowEvent *)
+void TranslateDialog::showEvent( QShowEvent * )
 {
-   verifyText();
-   m_ui->ledFindWhat->setFocus();
+    verifyText();
+    m_ui->ledFindWhat->setFocus();
 }
 
 void TranslateDialog::verifyText()
 {
-   QString str = m_ui->ledFindWhat->text();
+    QString str = m_ui->ledFindWhat->text();
 
-   bool canFind = ! str.isEmpty();
-   bool hit     = false;
+    bool canFind = ! str.isEmpty();
+    bool hit     = false;
 
-   if (canFind) {
-      emit requestMatchUpdate(hit);
-   }
+    if ( canFind )
+    {
+        emit requestMatchUpdate( hit );
+    }
 
-   m_ui->findNxt->setEnabled(canFind);
-   m_ui->translate->setEnabled(canFind && hit);
-   m_ui->translateAll->setEnabled(canFind);
+    m_ui->findNxt->setEnabled( canFind );
+    m_ui->translate->setEnabled( canFind && hit );
+    m_ui->translateAll->setEnabled( canFind );
 }
 
 void TranslateDialog::emitFindNext()
 {
-   emit activated(Skip);
+    emit activated( Skip );
 }
 
 void TranslateDialog::emitTranslateAndFindNext()
 {
-   emit activated(Translate);
+    emit activated( Translate );
 }
 
 void TranslateDialog::emitTranslateAll()
 {
-   emit activated(TranslateAll);
+    emit activated( TranslateAll );
 }
 

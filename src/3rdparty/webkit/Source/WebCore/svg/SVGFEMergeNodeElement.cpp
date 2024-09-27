@@ -29,65 +29,81 @@
 #include "SVGFilterElement.h"
 #include "SVGNames.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Animated property definitions
-DEFINE_ANIMATED_STRING(SVGFEMergeNodeElement, SVGNames::inAttr, In1, in1)
+DEFINE_ANIMATED_STRING( SVGFEMergeNodeElement, SVGNames::inAttr, In1, in1 )
 
-inline SVGFEMergeNodeElement::SVGFEMergeNodeElement(const QualifiedName& tagName, Document* document)
-    : SVGElement(tagName, document)
+inline SVGFEMergeNodeElement::SVGFEMergeNodeElement( const QualifiedName &tagName, Document *document )
+    : SVGElement( tagName, document )
 {
 }
 
-PassRefPtr<SVGFEMergeNodeElement> SVGFEMergeNodeElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<SVGFEMergeNodeElement> SVGFEMergeNodeElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new SVGFEMergeNodeElement(tagName, document));
+    return adoptRef( new SVGFEMergeNodeElement( tagName, document ) );
 }
 
-void SVGFEMergeNodeElement::parseMappedAttribute(Attribute* attr)
+void SVGFEMergeNodeElement::parseMappedAttribute( Attribute *attr )
 {
-    const String& value = attr->value();
-    if (attr->name() == SVGNames::inAttr)
-        setIn1BaseValue(value);
+    const String &value = attr->value();
+
+    if ( attr->name() == SVGNames::inAttr )
+    {
+        setIn1BaseValue( value );
+    }
     else
-        SVGElement::parseMappedAttribute(attr);
+    {
+        SVGElement::parseMappedAttribute( attr );
+    }
 }
 
-void SVGFEMergeNodeElement::svgAttributeChanged(const QualifiedName& attrName)
+void SVGFEMergeNodeElement::svgAttributeChanged( const QualifiedName &attrName )
 {
-    SVGElement::svgAttributeChanged(attrName);
+    SVGElement::svgAttributeChanged( attrName );
 
-    if (attrName != SVGNames::inAttr)
+    if ( attrName != SVGNames::inAttr )
+    {
         return;
+    }
 
-    ContainerNode* parent = parentNode();
-    if (!parent)
-        return;
+    ContainerNode *parent = parentNode();
 
-    RenderObject* renderer = parent->renderer();
-    if (!renderer || !renderer->isSVGResourceFilterPrimitive())
+    if ( !parent )
+    {
         return;
-    
-    RenderSVGResource::markForLayoutAndParentResourceInvalidation(renderer);
+    }
+
+    RenderObject *renderer = parent->renderer();
+
+    if ( !renderer || !renderer->isSVGResourceFilterPrimitive() )
+    {
+        return;
+    }
+
+    RenderSVGResource::markForLayoutAndParentResourceInvalidation( renderer );
 }
 
-AttributeToPropertyTypeMap& SVGFEMergeNodeElement::attributeToPropertyTypeMap()
+AttributeToPropertyTypeMap &SVGFEMergeNodeElement::attributeToPropertyTypeMap()
 {
-    DEFINE_STATIC_LOCAL(AttributeToPropertyTypeMap, s_attributeToPropertyTypeMap, ());
+    DEFINE_STATIC_LOCAL( AttributeToPropertyTypeMap, s_attributeToPropertyTypeMap, () );
     return s_attributeToPropertyTypeMap;
 }
 
 void SVGFEMergeNodeElement::fillAttributeToPropertyTypeMap()
 {
-    attributeToPropertyTypeMap().set(SVGNames::inAttr, AnimatedString);
+    attributeToPropertyTypeMap().set( SVGNames::inAttr, AnimatedString );
 }
 
-void SVGFEMergeNodeElement::synchronizeProperty(const QualifiedName& attrName)
+void SVGFEMergeNodeElement::synchronizeProperty( const QualifiedName &attrName )
 {
-    SVGElement::synchronizeProperty(attrName);
+    SVGElement::synchronizeProperty( attrName );
 
-    if (attrName == anyQName() || attrName == SVGNames::inAttr)
+    if ( attrName == anyQName() || attrName == SVGNames::inAttr )
+    {
         synchronizeIn1();
+    }
 }
 
 }

@@ -34,21 +34,23 @@
 #if ENABLE(OPENTYPE_SANITIZER)
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SharedBuffer;
 
-class OpenTypeSanitizer {
+class OpenTypeSanitizer
+{
 public:
-    explicit OpenTypeSanitizer(SharedBuffer* buffer)
-        : m_buffer(buffer)
+    explicit OpenTypeSanitizer( SharedBuffer *buffer )
+        : m_buffer( buffer )
     {
     }
 
     PassRefPtr<SharedBuffer> sanitize();
 
 private:
-    SharedBuffer* const m_buffer;
+    SharedBuffer *const m_buffer;
 };
 
 } // namespace WebCore

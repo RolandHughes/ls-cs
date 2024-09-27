@@ -32,23 +32,27 @@
 
 #include <omp.h>
 
-namespace WTF {
+namespace WTF
+{
 
-class ParallelEnvironment {
-    WTF_MAKE_NONCOPYABLE(ParallelEnvironment);
+class ParallelEnvironment
+{
+    WTF_MAKE_NONCOPYABLE( ParallelEnvironment );
 public:
-    typedef void (*ThreadFunction)(void*);
+    typedef void ( *ThreadFunction )( void * );
 
-    ParallelEnvironment(ThreadFunction threadFunction, size_t sizeOfParameter, int requestedJobNumber) :
-        m_threadFunction(threadFunction),
-        m_sizeOfParameter(sizeOfParameter)
+    ParallelEnvironment( ThreadFunction threadFunction, size_t sizeOfParameter, int requestedJobNumber ) :
+        m_threadFunction( threadFunction ),
+        m_sizeOfParameter( sizeOfParameter )
     {
         int maxNumberOfThreads = omp_get_max_threads();
 
-        if (!requestedJobNumber || requestedJobNumber > maxNumberOfThreads)
+        if ( !requestedJobNumber || requestedJobNumber > maxNumberOfThreads )
+        {
             requestedJobNumber = maxNumberOfThreads;
+        }
 
-        ASSERT(requestedJobNumber > 0);
+        ASSERT( requestedJobNumber > 0 );
 
         m_numberOfJobs = requestedJobNumber;
 
@@ -59,13 +63,16 @@ public:
         return m_numberOfJobs;
     }
 
-    void execute(unsigned char* parameters)
+    void execute( unsigned char *parameters )
     {
-        omp_set_num_threads(m_numberOfJobs);
+        omp_set_num_threads( m_numberOfJobs );
 
-#pragma omp parallel for
-        for (int i = 0; i < m_numberOfJobs; ++i)
-            (*m_threadFunction)(parameters + i * m_sizeOfParameter);
+        #pragma omp parallel for
+
+        for ( int i = 0; i < m_numberOfJobs; ++i )
+        {
+            ( *m_threadFunction )( parameters + i * m_sizeOfParameter );
+        }
     }
 
 private:

@@ -26,47 +26,51 @@
 #include <gst/gst.h>
 
 QGstreamerMessage::QGstreamerMessage()
-   : m_message(nullptr)
+    : m_message( nullptr )
 {
 }
 
-QGstreamerMessage::QGstreamerMessage(GstMessage *message)
-   : m_message(message)
+QGstreamerMessage::QGstreamerMessage( GstMessage *message )
+    : m_message( message )
 {
-   gst_message_ref(m_message);
+    gst_message_ref( m_message );
 }
 
-QGstreamerMessage::QGstreamerMessage(QGstreamerMessage const &m):
-   m_message(m.m_message)
+QGstreamerMessage::QGstreamerMessage( QGstreamerMessage const &m ):
+    m_message( m.m_message )
 {
-   gst_message_ref(m_message);
+    gst_message_ref( m_message );
 }
 
 QGstreamerMessage::~QGstreamerMessage()
 {
-   if (m_message != nullptr) {
-      gst_message_unref(m_message);
-   }
+    if ( m_message != nullptr )
+    {
+        gst_message_unref( m_message );
+    }
 }
 
 GstMessage *QGstreamerMessage::rawMessage() const
 {
-   return m_message;
+    return m_message;
 }
 
-QGstreamerMessage &QGstreamerMessage::operator=(QGstreamerMessage const &rhs)
+QGstreamerMessage &QGstreamerMessage::operator=( QGstreamerMessage const &rhs )
 {
-   if (rhs.m_message != m_message) {
-      if (rhs.m_message != nullptr) {
-         gst_message_ref(rhs.m_message);
-      }
+    if ( rhs.m_message != m_message )
+    {
+        if ( rhs.m_message != nullptr )
+        {
+            gst_message_ref( rhs.m_message );
+        }
 
-      if (m_message != nullptr) {
-         gst_message_unref(m_message);
-      }
+        if ( m_message != nullptr )
+        {
+            gst_message_unref( m_message );
+        }
 
-      m_message = rhs.m_message;
-   }
+        m_message = rhs.m_message;
+    }
 
-   return *this;
+    return *this;
 }

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -32,9 +32,11 @@
 #include <wtf/text/StringBuffer.h>
 #include <wtf/PassOwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-static const UChar table[256] = {
+static const UChar table[256] =
+{
     0x0000, 0x0001, 0x0002, 0x0003, 0x0004, 0x0005, 0x0006, 0x0007, // 00-07
     0x0008, 0x0009, 0x000A, 0x000B, 0x000C, 0x000D, 0x000E, 0x000F, // 08-0F
     0x0010, 0x0011, 0x0012, 0x0013, 0x0014, 0x0015, 0x0016, 0x0017, // 10-17
@@ -69,83 +71,94 @@ static const UChar table[256] = {
     0x00F8, 0x00F9, 0x00FA, 0x00FB, 0x00FC, 0x00FD, 0x00FE, 0x00FF  // F8-FF
 };
 
-void TextCodecLatin1::registerEncodingNames(EncodingNameRegistrar registrar)
+void TextCodecLatin1::registerEncodingNames( EncodingNameRegistrar registrar )
 {
-    registrar("windows-1252", "windows-1252");
-    registrar("ISO-8859-1", "ISO-8859-1");
-    registrar("US-ASCII", "US-ASCII");
+    registrar( "windows-1252", "windows-1252" );
+    registrar( "ISO-8859-1", "ISO-8859-1" );
+    registrar( "US-ASCII", "US-ASCII" );
 
-    registrar("WinLatin1", "windows-1252");
-    registrar("ibm-1252", "windows-1252");
-    registrar("ibm-1252_P100-2000", "windows-1252");
+    registrar( "WinLatin1", "windows-1252" );
+    registrar( "ibm-1252", "windows-1252" );
+    registrar( "ibm-1252_P100-2000", "windows-1252" );
 
-    registrar("CP819", "ISO-8859-1");
-    registrar("IBM819", "ISO-8859-1");
-    registrar("csISOLatin1", "ISO-8859-1");
-    registrar("iso-ir-100", "ISO-8859-1");
-    registrar("iso_8859-1:1987", "ISO-8859-1");
-    registrar("l1", "ISO-8859-1");
-    registrar("latin1", "ISO-8859-1");
+    registrar( "CP819", "ISO-8859-1" );
+    registrar( "IBM819", "ISO-8859-1" );
+    registrar( "csISOLatin1", "ISO-8859-1" );
+    registrar( "iso-ir-100", "ISO-8859-1" );
+    registrar( "iso_8859-1:1987", "ISO-8859-1" );
+    registrar( "l1", "ISO-8859-1" );
+    registrar( "latin1", "ISO-8859-1" );
 
-    registrar("ANSI_X3.4-1968", "US-ASCII");
-    registrar("ANSI_X3.4-1986", "US-ASCII");
-    registrar("ASCII", "US-ASCII");
-    registrar("IBM367", "US-ASCII");
-    registrar("ISO646-US", "US-ASCII");
-    registrar("ISO_646.irv:1991", "US-ASCII");
-    registrar("cp367", "US-ASCII");
-    registrar("csASCII", "US-ASCII");
-    registrar("ibm-367_P100-1995", "US-ASCII");
-    registrar("iso-ir-6", "US-ASCII");
-    registrar("iso-ir-6-us", "US-ASCII");
-    registrar("us", "US-ASCII");
-    registrar("x-ansi", "US-ASCII");
+    registrar( "ANSI_X3.4-1968", "US-ASCII" );
+    registrar( "ANSI_X3.4-1986", "US-ASCII" );
+    registrar( "ASCII", "US-ASCII" );
+    registrar( "IBM367", "US-ASCII" );
+    registrar( "ISO646-US", "US-ASCII" );
+    registrar( "ISO_646.irv:1991", "US-ASCII" );
+    registrar( "cp367", "US-ASCII" );
+    registrar( "csASCII", "US-ASCII" );
+    registrar( "ibm-367_P100-1995", "US-ASCII" );
+    registrar( "iso-ir-6", "US-ASCII" );
+    registrar( "iso-ir-6-us", "US-ASCII" );
+    registrar( "us", "US-ASCII" );
+    registrar( "x-ansi", "US-ASCII" );
 }
 
-static PassOwnPtr<TextCodec> newStreamingTextDecoderWindowsLatin1(const TextEncoding&, const void*)
+static PassOwnPtr<TextCodec> newStreamingTextDecoderWindowsLatin1( const TextEncoding &, const void * )
 {
-    return adoptPtr(new TextCodecLatin1);
+    return adoptPtr( new TextCodecLatin1 );
 }
 
-void TextCodecLatin1::registerCodecs(TextCodecRegistrar registrar)
+void TextCodecLatin1::registerCodecs( TextCodecRegistrar registrar )
 {
-    registrar("windows-1252", newStreamingTextDecoderWindowsLatin1, 0);
+    registrar( "windows-1252", newStreamingTextDecoderWindowsLatin1, 0 );
 
     // ASCII and Latin-1 both decode as Windows Latin-1 although they retain unique identities.
-    registrar("ISO-8859-1", newStreamingTextDecoderWindowsLatin1, 0);
-    registrar("US-ASCII", newStreamingTextDecoderWindowsLatin1, 0);
+    registrar( "ISO-8859-1", newStreamingTextDecoderWindowsLatin1, 0 );
+    registrar( "US-ASCII", newStreamingTextDecoderWindowsLatin1, 0 );
 }
 
-String TextCodecLatin1::decode(const char* bytes, size_t length, bool, bool, bool&)
+String TextCodecLatin1::decode( const char *bytes, size_t length, bool, bool, bool & )
 {
-    UChar* characters;
-    String result = String::createUninitialized(length, characters);
+    UChar *characters;
+    String result = String::createUninitialized( length, characters );
 
-    const uint8_t* source = reinterpret_cast<const uint8_t*>(bytes);
-    const uint8_t* end = reinterpret_cast<const uint8_t*>(bytes + length);
-    const uint8_t* alignedEnd = alignToMachineWord(end);
-    UChar* destination = characters;
+    const uint8_t *source = reinterpret_cast<const uint8_t *>( bytes );
+    const uint8_t *end = reinterpret_cast<const uint8_t *>( bytes + length );
+    const uint8_t *alignedEnd = alignToMachineWord( end );
+    UChar *destination = characters;
 
-    while (source < end) {
-        if (isASCII(*source)) {
+    while ( source < end )
+    {
+        if ( isASCII( *source ) )
+        {
             // Fast path for ASCII. Most Latin-1 text will be ASCII.
-            if (isAlignedToMachineWord(source)) {
-                while (source < alignedEnd) {
-                    MachineWord chunk = *reinterpret_cast_ptr<const MachineWord*>(source);
+            if ( isAlignedToMachineWord( source ) )
+            {
+                while ( source < alignedEnd )
+                {
+                    MachineWord chunk = *reinterpret_cast_ptr<const MachineWord *>( source );
 
-                    if (!isAllASCII(chunk))
+                    if ( !isAllASCII( chunk ) )
+                    {
                         goto useLookupTable;
+                    }
 
-                    copyASCIIMachineWord(destination, source);
-                    source += sizeof(MachineWord);
-                    destination += sizeof(MachineWord);
+                    copyASCIIMachineWord( destination, source );
+                    source += sizeof( MachineWord );
+                    destination += sizeof( MachineWord );
                 }
 
-                if (source == end)
+                if ( source == end )
+                {
                     break;
+                }
             }
+
             *destination = *source;
-        } else {
+        }
+        else
+        {
 useLookupTable:
             *destination = table[*source];
         }
@@ -157,58 +170,70 @@ useLookupTable:
     return result;
 }
 
-static CString encodeComplexWindowsLatin1(const UChar* characters, size_t length, UnencodableHandling handling)
+static CString encodeComplexWindowsLatin1( const UChar *characters, size_t length, UnencodableHandling handling )
 {
-    Vector<char> result(length);
-    char* bytes = result.data();
+    Vector<char> result( length );
+    char *bytes = result.data();
 
     size_t resultLength = 0;
-    for (size_t i = 0; i < length; ) {
+
+    for ( size_t i = 0; i < length; )
+    {
         UChar32 c;
-        U16_NEXT(characters, i, length, c);
+        U16_NEXT( characters, i, length, c );
         unsigned char b = c;
+
         // Do an efficient check to detect characters other than 00-7F and A0-FF.
-        if (b != c || (c & 0xE0) == 0x80) {
+        if ( b != c || ( c & 0xE0 ) == 0x80 )
+        {
             // Look for a way to encode this with Windows Latin-1.
-            for (b = 0x80; b < 0xA0; ++b)
-                if (table[b] == c)
+            for ( b = 0x80; b < 0xA0; ++b )
+                if ( table[b] == c )
+                {
                     goto gotByte;
+                }
+
             // No way to encode this character with Windows Latin-1.
             UnencodableReplacementArray replacement;
-            int replacementLength = TextCodec::getUnencodableReplacement(c, handling, replacement);
-            result.grow(resultLength + replacementLength + length - i);
+            int replacementLength = TextCodec::getUnencodableReplacement( c, handling, replacement );
+            result.grow( resultLength + replacementLength + length - i );
             bytes = result.data();
-            memcpy(bytes + resultLength, replacement, replacementLength);
+            memcpy( bytes + resultLength, replacement, replacementLength );
             resultLength += replacementLength;
             continue;
         }
-    gotByte:
+
+gotByte:
         bytes[resultLength++] = b;
     }
 
-    return CString(bytes, resultLength);
+    return CString( bytes, resultLength );
 }
 
-CString TextCodecLatin1::encode(const UChar* characters, size_t length, UnencodableHandling handling)
+CString TextCodecLatin1::encode( const UChar *characters, size_t length, UnencodableHandling handling )
 {
     {
-        char* bytes;
-        CString string = CString::newUninitialized(length, bytes);
+        char *bytes;
+        CString string = CString::newUninitialized( length, bytes );
 
         // Convert the string a fast way and simultaneously do an efficient check to see if it's all ASCII.
         UChar ored = 0;
-        for (size_t i = 0; i < length; ++i) {
+
+        for ( size_t i = 0; i < length; ++i )
+        {
             UChar c = characters[i];
             bytes[i] = c;
             ored |= c;
         }
 
-        if (!(ored & 0xFF80))
+        if ( !( ored & 0xFF80 ) )
+        {
             return string;
+        }
     }
 
     // If it wasn't all ASCII, call the function that handles more-complex cases.
-    return encodeComplexWindowsLatin1(characters, length, handling);
+    return encodeComplexWindowsLatin1( characters, length, handling );
 }
 
 } // namespace WebCore

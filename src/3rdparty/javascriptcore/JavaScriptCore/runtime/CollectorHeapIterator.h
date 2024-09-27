@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -29,109 +29,125 @@
 #ifndef CollectorHeapIterator_h
 #define CollectorHeapIterator_h
 
-namespace JSC {
+namespace JSC
+{
 
-    class CollectorHeapIterator {
-    public:
-        bool operator!=(const CollectorHeapIterator& other);
-        JSCell* operator*() const;
-    
-    protected:
-        CollectorHeapIterator(CollectorHeap&, size_t startBlock, size_t startCell);
-        void advance(size_t cellsPerBlock);
+class CollectorHeapIterator
+{
+public:
+    bool operator!=( const CollectorHeapIterator &other );
+    JSCell *operator*() const;
 
-        CollectorHeap& m_heap;
-        size_t m_block;
-        size_t m_cell;
-    };
+protected:
+    CollectorHeapIterator( CollectorHeap &, size_t startBlock, size_t startCell );
+    void advance( size_t cellsPerBlock );
 
-    class LiveObjectIterator : public CollectorHeapIterator {
-    public:
-        LiveObjectIterator(CollectorHeap&, size_t startBlock, size_t startCell = 0);
-        LiveObjectIterator& operator++();
-    };
+    CollectorHeap &m_heap;
+    size_t m_block;
+    size_t m_cell;
+};
 
-    class DeadObjectIterator : public CollectorHeapIterator {
-    public:
-        DeadObjectIterator(CollectorHeap&, size_t startBlock, size_t startCell = 0);
-        DeadObjectIterator& operator++();
-    };
+class LiveObjectIterator : public CollectorHeapIterator
+{
+public:
+    LiveObjectIterator( CollectorHeap &, size_t startBlock, size_t startCell = 0 );
+    LiveObjectIterator &operator++();
+};
 
-    class ObjectIterator : public CollectorHeapIterator {
-    public:
-        ObjectIterator(CollectorHeap&, size_t startBlock, size_t startCell = 0);
-        ObjectIterator& operator++();
-    };
+class DeadObjectIterator : public CollectorHeapIterator
+{
+public:
+    DeadObjectIterator( CollectorHeap &, size_t startBlock, size_t startCell = 0 );
+    DeadObjectIterator &operator++();
+};
 
-    inline CollectorHeapIterator::CollectorHeapIterator(CollectorHeap& heap, size_t startBlock, size_t startCell)
-        : m_heap(heap)
-        , m_block(startBlock)
-        , m_cell(startCell)
+class ObjectIterator : public CollectorHeapIterator
+{
+public:
+    ObjectIterator( CollectorHeap &, size_t startBlock, size_t startCell = 0 );
+    ObjectIterator &operator++();
+};
+
+inline CollectorHeapIterator::CollectorHeapIterator( CollectorHeap &heap, size_t startBlock, size_t startCell )
+    : m_heap( heap )
+    , m_block( startBlock )
+    , m_cell( startCell )
+{
+}
+
+inline bool CollectorHeapIterator::operator!=( const CollectorHeapIterator &other )
+{
+    return m_block != other.m_block || m_cell != other.m_cell;
+}
+
+inline JSCell *CollectorHeapIterator::operator*() const
+{
+    return reinterpret_cast<JSCell *>( m_heap.blocks[m_block]->cells + m_cell );
+}
+
+inline void CollectorHeapIterator::advance( size_t cellsPerBlock )
+{
+    ++m_cell;
+
+    if ( m_cell == cellsPerBlock )
     {
+        m_cell = 0;
+        ++m_block;
     }
+}
 
-    inline bool CollectorHeapIterator::operator!=(const CollectorHeapIterator& other)
-    {
-        return m_block != other.m_block || m_cell != other.m_cell;
-    }
+inline LiveObjectIterator::LiveObjectIterator( CollectorHeap &heap, size_t startBlock, size_t startCell )
+    : CollectorHeapIterator( heap, startBlock, startCell - 1 )
+{
+    ++( *this );
+}
 
-    inline JSCell* CollectorHeapIterator::operator*() const
-    {
-        return reinterpret_cast<JSCell*>(m_heap.blocks[m_block]->cells + m_cell);
-    }
-    
-    inline void CollectorHeapIterator::advance(size_t cellsPerBlock)
-    {
-        ++m_cell;
-        if (m_cell == cellsPerBlock) {
-            m_cell = 0;
-            ++m_block;
-        }
-    }
+inline LiveObjectIterator &LiveObjectIterator::operator++()
+{
+    advance( HeapConstants::cellsPerBlock - 1 );
 
-    inline LiveObjectIterator::LiveObjectIterator(CollectorHeap& heap, size_t startBlock, size_t startCell)
-        : CollectorHeapIterator(heap, startBlock, startCell - 1)
+    if ( m_block < m_heap.nextBlock || ( m_block == m_heap.nextBlock && m_cell < m_heap.nextCell ) )
     {
-        ++(*this);
-    }
-
-    inline LiveObjectIterator& LiveObjectIterator::operator++()
-    {
-        advance(HeapConstants::cellsPerBlock - 1);
-        if (m_block < m_heap.nextBlock || (m_block == m_heap.nextBlock && m_cell < m_heap.nextCell))
-            return *this;
-
-        while (m_block < m_heap.usedBlocks && !m_heap.blocks[m_block]->marked.get(m_cell))
-            advance(HeapConstants::cellsPerBlock - 1);
         return *this;
     }
 
-    inline DeadObjectIterator::DeadObjectIterator(CollectorHeap& heap, size_t startBlock, size_t startCell)
-        : CollectorHeapIterator(heap, startBlock, startCell - 1)
+    while ( m_block < m_heap.usedBlocks && !m_heap.blocks[m_block]->marked.get( m_cell ) )
     {
-        ++(*this);
+        advance( HeapConstants::cellsPerBlock - 1 );
     }
 
-    inline DeadObjectIterator& DeadObjectIterator::operator++()
-    {
-        do {
-            advance(HeapConstants::cellsPerBlock);
-            ASSERT(m_block > m_heap.nextBlock || (m_block == m_heap.nextBlock && m_cell >= m_heap.nextCell));
-        } while (m_block < m_heap.usedBlocks && m_heap.blocks[m_block]->marked.get(m_cell));
-        return *this;
-    }
+    return *this;
+}
 
-    inline ObjectIterator::ObjectIterator(CollectorHeap& heap, size_t startBlock, size_t startCell)
-        : CollectorHeapIterator(heap, startBlock, startCell - 1)
-    {
-        ++(*this);
-    }
+inline DeadObjectIterator::DeadObjectIterator( CollectorHeap &heap, size_t startBlock, size_t startCell )
+    : CollectorHeapIterator( heap, startBlock, startCell - 1 )
+{
+    ++( *this );
+}
 
-    inline ObjectIterator& ObjectIterator::operator++()
+inline DeadObjectIterator &DeadObjectIterator::operator++()
+{
+    do
     {
-        advance(HeapConstants::cellsPerBlock);
-        return *this;
+        advance( HeapConstants::cellsPerBlock );
+        ASSERT( m_block > m_heap.nextBlock || ( m_block == m_heap.nextBlock && m_cell >= m_heap.nextCell ) );
     }
+    while ( m_block < m_heap.usedBlocks && m_heap.blocks[m_block]->marked.get( m_cell ) );
+
+    return *this;
+}
+
+inline ObjectIterator::ObjectIterator( CollectorHeap &heap, size_t startBlock, size_t startCell )
+    : CollectorHeapIterator( heap, startBlock, startCell - 1 )
+{
+    ++( *this );
+}
+
+inline ObjectIterator &ObjectIterator::operator++()
+{
+    advance( HeapConstants::cellsPerBlock );
+    return *this;
+}
 
 } // namespace JSC
 

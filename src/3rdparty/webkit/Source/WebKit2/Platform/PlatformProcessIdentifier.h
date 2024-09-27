@@ -31,23 +31,24 @@
 class QProcess;
 #endif
 
-namespace WebKit {
+namespace WebKit
+{
 
 #if PLATFORM(MAC)
 typedef pid_t PlatformProcessIdentifier;
 #elif PLATFORM(WIN)
 typedef HANDLE PlatformProcessIdentifier;
 #elif PLATFORM(QT)
-typedef QProcess* PlatformProcessIdentifier;
+typedef QProcess *PlatformProcessIdentifier;
 #elif PLATFORM(GTK)
 #ifdef G_OS_WIN32
-typedef void* GPid;
+typedef void *GPid;
 #else
 typedef int GPid;
 #endif
 typedef GPid PlatformProcessIdentifier;
 #endif
 
-} // namespace WebKit 
+} // namespace WebKit
 
 #endif // PlatformProcessIdentifier_h

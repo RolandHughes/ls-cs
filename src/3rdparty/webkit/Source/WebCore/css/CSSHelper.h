@@ -24,7 +24,8 @@
 
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 // We always assume 96 CSS pixels in a CSS inch. This is the cold hard truth of the Web.
 // At high DPI, we may scale a CSS pixel, but the ratio of the CSS pixel to the so-called

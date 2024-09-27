@@ -35,41 +35,47 @@
 
 using namespace WebCore;
 
-namespace WebKit {
-
-void BackingStore::paint(QPainter* painter, const IntRect& rect)
+namespace WebKit
 {
-    ASSERT(!m_pixmap.isNull());
-    painter->drawPixmap(rect, m_pixmap, rect);
+
+void BackingStore::paint( QPainter *painter, const IntRect &rect )
+{
+    ASSERT( !m_pixmap.isNull() );
+    painter->drawPixmap( rect, m_pixmap, rect );
 }
 
-void BackingStore::incorporateUpdate(ShareableBitmap* bitmap, const UpdateInfo& updateInfo)
+void BackingStore::incorporateUpdate( ShareableBitmap *bitmap, const UpdateInfo &updateInfo )
 {
-    if (m_pixmap.isNull())
-        m_pixmap = QPixmap(m_size);
+    if ( m_pixmap.isNull() )
+    {
+        m_pixmap = QPixmap( m_size );
+    }
 
-    scroll(updateInfo.scrollRect, updateInfo.scrollOffset);
+    scroll( updateInfo.scrollRect, updateInfo.scrollOffset );
 
     IntPoint updateRectLocation = updateInfo.updateRectBounds.location();
 
-    QPainter painter(&m_pixmap);
-    GraphicsContext graphicsContext(&painter);
+    QPainter painter( &m_pixmap );
+    GraphicsContext graphicsContext( &painter );
 
     // Paint all update rects.
-    for (size_t i = 0; i < updateInfo.updateRects.size(); ++i) {
+    for ( size_t i = 0; i < updateInfo.updateRects.size(); ++i )
+    {
         IntRect updateRect = updateInfo.updateRects[i];
         IntRect srcRect = updateRect;
-        srcRect.move(-updateRectLocation.x(), -updateRectLocation.y());
-        bitmap->paint(graphicsContext, updateRect.location(), srcRect);
+        srcRect.move( -updateRectLocation.x(), -updateRectLocation.y() );
+        bitmap->paint( graphicsContext, updateRect.location(), srcRect );
     }
 }
 
-void BackingStore::scroll(const IntRect& scrollRect, const IntSize& scrollOffset)
+void BackingStore::scroll( const IntRect &scrollRect, const IntSize &scrollOffset )
 {
-    if (scrollOffset.isZero())
+    if ( scrollOffset.isZero() )
+    {
         return;
+    }
 
-    m_pixmap.scroll(scrollOffset.width(), scrollOffset.height(), scrollRect);
+    m_pixmap.scroll( scrollOffset.width(), scrollOffset.height(), scrollRect );
 }
 
 } // namespace WebKit

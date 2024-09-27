@@ -23,43 +23,55 @@
 
 #include "RenderBlock.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class HTMLInputElement;
-    class MouseEvent;
-    class SliderThumbElement;
-    
-    class RenderSlider : public RenderBlock {
-    public:
-        RenderSlider(HTMLInputElement*);
-        virtual ~RenderSlider();
+class HTMLInputElement;
+class MouseEvent;
+class SliderThumbElement;
 
-        bool inDragMode() const;
-        IntRect thumbRect();
+class RenderSlider : public RenderBlock
+{
+public:
+    RenderSlider( HTMLInputElement * );
+    virtual ~RenderSlider();
 
-    private:
-        virtual const char* renderName() const { return "RenderSlider"; }
-        virtual bool isSlider() const { return true; }
+    bool inDragMode() const;
+    IntRect thumbRect();
 
-        virtual int baselinePosition(FontBaseline, bool firstLine, LineDirectionMode, LinePositionMode = PositionOnContainingLine) const;
-        virtual void computePreferredLogicalWidths();
-        virtual void layout();
-
-        // FIXME: Eventually, the logic of manipulating slider thumb should move to
-        // SliderThumbElement and accessing shadowSliderThumb should not be necessary in this class.
-        SliderThumbElement* shadowSliderThumb() const;
-
-        virtual bool requiresForcedStyleRecalcPropagation() const { return true; }
-    };
-
-    inline RenderSlider* toRenderSlider(RenderObject* object)
+private:
+    virtual const char *renderName() const
     {
-        ASSERT(!object || object->isSlider());
-        return static_cast<RenderSlider*>(object);
+        return "RenderSlider";
+    }
+    virtual bool isSlider() const
+    {
+        return true;
     }
 
-    // This will catch anyone doing an unnecessary cast.
-    void toRenderSlider(const RenderSlider*);
+    virtual int baselinePosition( FontBaseline, bool firstLine, LineDirectionMode,
+                                  LinePositionMode = PositionOnContainingLine ) const;
+    virtual void computePreferredLogicalWidths();
+    virtual void layout();
+
+    // FIXME: Eventually, the logic of manipulating slider thumb should move to
+    // SliderThumbElement and accessing shadowSliderThumb should not be necessary in this class.
+    SliderThumbElement *shadowSliderThumb() const;
+
+    virtual bool requiresForcedStyleRecalcPropagation() const
+    {
+        return true;
+    }
+};
+
+inline RenderSlider *toRenderSlider( RenderObject *object )
+{
+    ASSERT( !object || object->isSlider() );
+    return static_cast<RenderSlider *>( object );
+}
+
+// This will catch anyone doing an unnecessary cast.
+void toRenderSlider( const RenderSlider * );
 
 } // namespace WebCore
 

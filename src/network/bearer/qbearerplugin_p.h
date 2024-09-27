@@ -31,23 +31,24 @@
 
 #ifndef QT_NO_BEARERMANAGEMENT
 
-struct Q_NETWORK_EXPORT QBearerEngineFactoryInterface : public QFactoryInterface {
-   virtual QBearerEngine *create(const QString &key) const = 0;
+struct Q_NETWORK_EXPORT QBearerEngineFactoryInterface : public QFactoryInterface
+{
+    virtual QBearerEngine *create( const QString &key ) const = 0;
 };
 
 #define QBearerEngineInterface_ID "com.copperspice.CS.QBearerEngineFactoryInterface"
-CS_DECLARE_INTERFACE(QBearerEngineFactoryInterface, QBearerEngineInterface_ID)
+CS_DECLARE_INTERFACE( QBearerEngineFactoryInterface, QBearerEngineInterface_ID )
 
 class Q_NETWORK_EXPORT QBearerEnginePlugin : public QObject, public QBearerEngineFactoryInterface
 {
-   NET_CS_OBJECT_MULTIPLE(QBearerEnginePlugin, QObject)
-   CS_INTERFACES(QBearerEngineFactoryInterface, QFactoryInterface)
+    NET_CS_OBJECT_MULTIPLE( QBearerEnginePlugin, QObject )
+    CS_INTERFACES( QBearerEngineFactoryInterface, QFactoryInterface )
 
- public:
-   explicit QBearerEnginePlugin(QObject *parent = nullptr);
-   virtual ~QBearerEnginePlugin();
+public:
+    explicit QBearerEnginePlugin( QObject *parent = nullptr );
+    virtual ~QBearerEnginePlugin();
 
-   QBearerEngine *create(const QString &key) const override = 0;
+    QBearerEngine *create( const QString &key ) const override = 0;
 };
 
 #endif // QT_NO_BEARERMANAGEMENT

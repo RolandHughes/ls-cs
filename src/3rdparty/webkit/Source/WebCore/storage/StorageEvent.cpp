@@ -30,11 +30,12 @@
 
 #include "Storage.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 PassRefPtr<StorageEvent> StorageEvent::create()
 {
-    return adoptRef(new StorageEvent);
+    return adoptRef( new StorageEvent );
 }
 
 StorageEvent::StorageEvent()
@@ -45,27 +46,32 @@ StorageEvent::~StorageEvent()
 {
 }
 
-PassRefPtr<StorageEvent> StorageEvent::create(const AtomicString& type, const String& key, const String& oldValue, const String& newValue, const String& url, Storage* storageArea)
+PassRefPtr<StorageEvent> StorageEvent::create( const AtomicString &type, const String &key, const String &oldValue,
+        const String &newValue, const String &url, Storage *storageArea )
 {
-    return adoptRef(new StorageEvent(type, key, oldValue, newValue, url, storageArea));
+    return adoptRef( new StorageEvent( type, key, oldValue, newValue, url, storageArea ) );
 }
 
-StorageEvent::StorageEvent(const AtomicString& type, const String& key, const String& oldValue, const String& newValue, const String& url, Storage* storageArea)
-    : Event(type, false, false)
-    , m_key(key)
-    , m_oldValue(oldValue)
-    , m_newValue(newValue)
-    , m_url(url)
-    , m_storageArea(storageArea)
+StorageEvent::StorageEvent( const AtomicString &type, const String &key, const String &oldValue, const String &newValue,
+                            const String &url, Storage *storageArea )
+    : Event( type, false, false )
+    , m_key( key )
+    , m_oldValue( oldValue )
+    , m_newValue( newValue )
+    , m_url( url )
+    , m_storageArea( storageArea )
 {
 }
 
-void StorageEvent::initStorageEvent(const AtomicString& type, bool canBubble, bool cancelable, const String& key, const String& oldValue, const String& newValue, const String& url, Storage* storageArea)
+void StorageEvent::initStorageEvent( const AtomicString &type, bool canBubble, bool cancelable, const String &key,
+                                     const String &oldValue, const String &newValue, const String &url, Storage *storageArea )
 {
-    if (dispatched())
+    if ( dispatched() )
+    {
         return;
+    }
 
-    initEvent(type, canBubble, cancelable);
+    initEvent( type, canBubble, cancelable );
 
     m_key = key;
     m_oldValue = oldValue;

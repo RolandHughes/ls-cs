@@ -79,9 +79,11 @@
 
 using namespace std;
 
-namespace WebCore {
+namespace WebCore
+{
 
-namespace InspectorAgentState {
+namespace InspectorAgentState
+{
 static const char timelineProfilerEnabled[] = "timelineProfilerEnabled";
 static const char debuggerEnabled[] = "debuggerEnabled";
 }
@@ -90,83 +92,92 @@ static const char scriptsPanelName[] = "scripts";
 static const char consolePanelName[] = "console";
 static const char profilesPanelName[] = "profiles";
 
-namespace {
+namespace
+{
 
-class PageRuntimeAgent : public InspectorRuntimeAgent {
+class PageRuntimeAgent : public InspectorRuntimeAgent
+{
 public:
-    PageRuntimeAgent(InjectedScriptManager* injectedScriptManager, Page* page)
-        : InspectorRuntimeAgent(injectedScriptManager)
-        , m_inspectedPage(page) { }
+    PageRuntimeAgent( InjectedScriptManager *injectedScriptManager, Page *page )
+        : InspectorRuntimeAgent( injectedScriptManager )
+        , m_inspectedPage( page ) { }
     virtual ~PageRuntimeAgent() { }
 
 private:
-    virtual ScriptState* getDefaultInspectedState() { return mainWorldScriptState(m_inspectedPage->mainFrame()); }
-    Page* m_inspectedPage;
+    virtual ScriptState *getDefaultInspectedState()
+    {
+        return mainWorldScriptState( m_inspectedPage->mainFrame() );
+    }
+    Page *m_inspectedPage;
 };
 
 }
 
-InspectorAgent::InspectorAgent(Page* page, InspectorClient* client, InjectedScriptManager* injectedScriptManager)
-    : m_inspectedPage(page)
-    , m_client(client)
-    , m_frontend(0)
-    , m_instrumentingAgents(adoptPtr(new InstrumentingAgents))
-    , m_injectedScriptManager(injectedScriptManager)
-    , m_state(adoptPtr(new InspectorState(client)))
-    , m_pageAgent(InspectorPageAgent::create(m_instrumentingAgents.get(), page, injectedScriptManager))
-    , m_domAgent(InspectorDOMAgent::create(m_instrumentingAgents.get(), m_pageAgent.get(), m_client, m_state.get(), injectedScriptManager))
-    , m_cssAgent(adoptPtr(new InspectorCSSAgent(m_instrumentingAgents.get(), m_domAgent.get())))
+InspectorAgent::InspectorAgent( Page *page, InspectorClient *client, InjectedScriptManager *injectedScriptManager )
+    : m_inspectedPage( page )
+    , m_client( client )
+    , m_frontend( 0 )
+    , m_instrumentingAgents( adoptPtr( new InstrumentingAgents ) )
+    , m_injectedScriptManager( injectedScriptManager )
+    , m_state( adoptPtr( new InspectorState( client ) ) )
+    , m_pageAgent( InspectorPageAgent::create( m_instrumentingAgents.get(), page, injectedScriptManager ) )
+    , m_domAgent( InspectorDOMAgent::create( m_instrumentingAgents.get(), m_pageAgent.get(), m_client, m_state.get(),
+                  injectedScriptManager ) )
+    , m_cssAgent( adoptPtr( new InspectorCSSAgent( m_instrumentingAgents.get(), m_domAgent.get() ) ) )
 #if ENABLE(DATABASE)
-    , m_databaseAgent(InspectorDatabaseAgent::create(m_instrumentingAgents.get(), m_state.get()))
+    , m_databaseAgent( InspectorDatabaseAgent::create( m_instrumentingAgents.get(), m_state.get() ) )
 #endif
 #if ENABLE(DOM_STORAGE)
-    , m_domStorageAgent(InspectorDOMStorageAgent::create(m_instrumentingAgents.get(), m_state.get()))
+    , m_domStorageAgent( InspectorDOMStorageAgent::create( m_instrumentingAgents.get(), m_state.get() ) )
 #endif
-    , m_timelineAgent(InspectorTimelineAgent::create(m_instrumentingAgents.get(), m_state.get()))
+    , m_timelineAgent( InspectorTimelineAgent::create( m_instrumentingAgents.get(), m_state.get() ) )
 #if ENABLE(OFFLINE_WEB_APPLICATIONS)
-    , m_applicationCacheAgent(adoptPtr(new InspectorApplicationCacheAgent(m_instrumentingAgents.get(), page)))
+    , m_applicationCacheAgent( adoptPtr( new InspectorApplicationCacheAgent( m_instrumentingAgents.get(), page ) ) )
 #endif
-    , m_resourceAgent(InspectorResourceAgent::create(m_instrumentingAgents.get(), m_pageAgent.get(), m_state.get()))
-    , m_runtimeAgent(adoptPtr(new PageRuntimeAgent(m_injectedScriptManager, page)))
-    , m_consoleAgent(adoptPtr(new InspectorConsoleAgent(m_instrumentingAgents.get(), this, m_state.get(), injectedScriptManager, m_domAgent.get())))
+    , m_resourceAgent( InspectorResourceAgent::create( m_instrumentingAgents.get(), m_pageAgent.get(), m_state.get() ) )
+    , m_runtimeAgent( adoptPtr( new PageRuntimeAgent( m_injectedScriptManager, page ) ) )
+    , m_consoleAgent( adoptPtr( new InspectorConsoleAgent( m_instrumentingAgents.get(), this, m_state.get(), injectedScriptManager,
+                                m_domAgent.get() ) ) )
 #if ENABLE(JAVASCRIPT_DEBUGGER)
-    , m_debuggerAgent(PageDebuggerAgent::create(m_instrumentingAgents.get(), m_state.get(), page, injectedScriptManager))
-    , m_domDebuggerAgent(InspectorDOMDebuggerAgent::create(m_instrumentingAgents.get(), m_state.get(), m_domAgent.get(), m_debuggerAgent.get(), this))
-    , m_profilerAgent(InspectorProfilerAgent::create(m_instrumentingAgents.get(), m_consoleAgent.get(), page, m_state.get()))
+    , m_debuggerAgent( PageDebuggerAgent::create( m_instrumentingAgents.get(), m_state.get(), page, injectedScriptManager ) )
+    , m_domDebuggerAgent( InspectorDOMDebuggerAgent::create( m_instrumentingAgents.get(), m_state.get(), m_domAgent.get(),
+                          m_debuggerAgent.get(), this ) )
+    , m_profilerAgent( InspectorProfilerAgent::create( m_instrumentingAgents.get(), m_consoleAgent.get(), page, m_state.get() ) )
 #endif
 #if ENABLE(WORKERS)
-    , m_workerAgent(InspectorWorkerAgent::create(m_instrumentingAgents.get()))
+    , m_workerAgent( InspectorWorkerAgent::create( m_instrumentingAgents.get() ) )
 #endif
-    , m_canIssueEvaluateForTestInFrontend(false)
+    , m_canIssueEvaluateForTestInFrontend( false )
 {
-    ASSERT_ARG(page, page);
-    ASSERT_ARG(client, client);
-    InspectorInstrumentation::bindInspectorAgent(m_inspectedPage, this);
-    m_instrumentingAgents->setInspectorAgent(this);
+    ASSERT_ARG( page, page );
+    ASSERT_ARG( client, client );
+    InspectorInstrumentation::bindInspectorAgent( m_inspectedPage, this );
+    m_instrumentingAgents->setInspectorAgent( this );
 
-    m_injectedScriptManager->injectedScriptHost()->init(this
-        , m_consoleAgent.get()
+    m_injectedScriptManager->injectedScriptHost()->init( this
+            , m_consoleAgent.get()
 #if ENABLE(DATABASE)
-        , m_databaseAgent.get()
+            , m_databaseAgent.get()
 #endif
 #if ENABLE(DOM_STORAGE)
-        , m_domStorageAgent.get()
+            , m_domStorageAgent.get()
 #endif
-    );
+                                                       );
 }
 
 InspectorAgent::~InspectorAgent()
 {
-    m_instrumentingAgents->setInspectorAgent(0);
+    m_instrumentingAgents->setInspectorAgent( 0 );
 
     // These should have been cleared in inspectedPageDestroyed().
-    ASSERT(!m_client);
-    ASSERT(!m_inspectedPage);
+    ASSERT( !m_client );
+    ASSERT( !m_inspectedPage );
 }
 
 void InspectorAgent::inspectedPageDestroyed()
 {
-    if (m_frontend) {
+    if ( m_frontend )
+    {
         m_frontend->inspector()->disconnectFromBackend();
         disconnectFrontend();
     }
@@ -176,8 +187,8 @@ void InspectorAgent::inspectedPageDestroyed()
     m_debuggerAgent.clear();
 #endif
 
-    ASSERT(m_inspectedPage);
-    InspectorInstrumentation::unbindInspectorAgent(m_inspectedPage);
+    ASSERT( m_inspectedPage );
+    InspectorInstrumentation::unbindInspectorAgent( m_inspectedPage );
     m_inspectedPage = 0;
 
     m_injectedScriptManager->disconnect();
@@ -186,9 +197,9 @@ void InspectorAgent::inspectedPageDestroyed()
     m_client = 0;
 }
 
-void InspectorAgent::restoreInspectorStateFromCookie(const String& inspectorStateCookie)
+void InspectorAgent::restoreInspectorStateFromCookie( const String &inspectorStateCookie )
 {
-    m_state->loadFromCookie(inspectorStateCookie);
+    m_state->loadFromCookie( inspectorStateCookie );
 
     m_frontend->inspector()->frontendReused();
 
@@ -210,16 +221,20 @@ void InspectorAgent::restoreInspectorStateFromCookie(const String& inspectorStat
 #endif
 }
 
-void InspectorAgent::didClearWindowObjectInWorld(Frame* frame, DOMWrapperWorld* world)
+void InspectorAgent::didClearWindowObjectInWorld( Frame *frame, DOMWrapperWorld *world )
 {
-    if (world != mainThreadNormalWorld())
+    if ( world != mainThreadNormalWorld() )
+    {
         return;
+    }
 
-    if (!m_inspectorExtensionAPI.isEmpty())
-        m_injectedScriptManager->injectScript(m_inspectorExtensionAPI, mainWorldScriptState(frame));
+    if ( !m_inspectorExtensionAPI.isEmpty() )
+    {
+        m_injectedScriptManager->injectScript( m_inspectorExtensionAPI, mainWorldScriptState( frame ) );
+    }
 }
 
-void InspectorAgent::setFrontend(InspectorFrontend* inspectorFrontend)
+void InspectorAgent::setFrontend( InspectorFrontend *inspectorFrontend )
 {
     // We can reconnect to existing front-end -> unmute state.
     m_state->unmute();
@@ -227,37 +242,42 @@ void InspectorAgent::setFrontend(InspectorFrontend* inspectorFrontend)
     m_frontend = inspectorFrontend;
 
 #if ENABLE(OFFLINE_WEB_APPLICATIONS)
-    m_applicationCacheAgent->setFrontend(m_frontend);
+    m_applicationCacheAgent->setFrontend( m_frontend );
 #endif
-    m_pageAgent->setFrontend(m_frontend);
-    m_domAgent->setFrontend(m_frontend);
-    m_consoleAgent->setFrontend(m_frontend);
-    m_timelineAgent->setFrontend(m_frontend);
-    m_resourceAgent->setFrontend(m_frontend);
+    m_pageAgent->setFrontend( m_frontend );
+    m_domAgent->setFrontend( m_frontend );
+    m_consoleAgent->setFrontend( m_frontend );
+    m_timelineAgent->setFrontend( m_frontend );
+    m_resourceAgent->setFrontend( m_frontend );
 #if ENABLE(JAVASCRIPT_DEBUGGER)
-    m_debuggerAgent->setFrontend(m_frontend);
-    m_profilerAgent->setFrontend(m_frontend);
+    m_debuggerAgent->setFrontend( m_frontend );
+    m_profilerAgent->setFrontend( m_frontend );
 #endif
 #if ENABLE(DATABASE)
-    m_databaseAgent->setFrontend(m_frontend);
+    m_databaseAgent->setFrontend( m_frontend );
 #endif
 #if ENABLE(DOM_STORAGE)
-    m_domStorageAgent->setFrontend(m_frontend);
+    m_domStorageAgent->setFrontend( m_frontend );
 #endif
 
-    if (!m_showPanelAfterVisible.isEmpty()) {
-        m_frontend->inspector()->showPanel(m_showPanelAfterVisible);
+    if ( !m_showPanelAfterVisible.isEmpty() )
+    {
+        m_frontend->inspector()->showPanel( m_showPanelAfterVisible );
         m_showPanelAfterVisible = String();
     }
+
 #if ENABLE(JAVASCRIPT_DEBUGGER) && ENABLE(WORKERS)
     WorkersMap::iterator workersEnd = m_workers.end();
-    for (WorkersMap::iterator it = m_workers.begin(); it != workersEnd; ++it) {
-        InspectorWorkerResource* worker = it->second.get();
-        m_frontend->inspector()->didCreateWorker(worker->id(), worker->url(), worker->isSharedWorker());
+
+    for ( WorkersMap::iterator it = m_workers.begin(); it != workersEnd; ++it )
+    {
+        InspectorWorkerResource *worker = it->second.get();
+        m_frontend->inspector()->didCreateWorker( worker->id(), worker->url(), worker->isSharedWorker() );
     }
+
 #endif
 #if ENABLE(WORKERS)
-    m_workerAgent->setFrontend(m_frontend);
+    m_workerAgent->setFrontend( m_frontend );
 #endif
 
     // Dispatch pending frontend commands
@@ -266,8 +286,10 @@ void InspectorAgent::setFrontend(InspectorFrontend* inspectorFrontend)
 
 void InspectorAgent::disconnectFrontend()
 {
-    if (!m_frontend)
+    if ( !m_frontend )
+    {
         return;
+    }
 
     m_canIssueEvaluateForTestInFrontend = false;
     m_pendingEvaluateTestCommands.clear();
@@ -306,8 +328,10 @@ void InspectorAgent::disconnectFrontend()
 
 void InspectorAgent::didCommitLoad()
 {
-    if (m_frontend)
+    if ( m_frontend )
+    {
         m_frontend->inspector()->reset();
+    }
 
     m_injectedScriptManager->discardInjectedScripts();
 #if ENABLE(WORKERS)
@@ -320,31 +344,37 @@ void InspectorAgent::domContentLoadedEventFired()
     m_injectedScriptManager->injectedScriptHost()->clearInspectedNodes();
 }
 
-bool InspectorAgent::isMainResourceLoader(DocumentLoader* loader, const KURL& requestUrl)
+bool InspectorAgent::isMainResourceLoader( DocumentLoader *loader, const KURL &requestUrl )
 {
     return loader->frame() == m_inspectedPage->mainFrame() && requestUrl == loader->requestURL();
 }
 
 #if ENABLE(WORKERS)
-class PostWorkerNotificationToFrontendTask : public ScriptExecutionContext::Task {
+class PostWorkerNotificationToFrontendTask : public ScriptExecutionContext::Task
+{
 public:
-    static PassOwnPtr<PostWorkerNotificationToFrontendTask> create(PassRefPtr<InspectorWorkerResource> worker, InspectorAgent::WorkerAction action)
+    static PassOwnPtr<PostWorkerNotificationToFrontendTask> create( PassRefPtr<InspectorWorkerResource> worker,
+            InspectorAgent::WorkerAction action )
     {
-        return adoptPtr(new PostWorkerNotificationToFrontendTask(worker, action));
+        return adoptPtr( new PostWorkerNotificationToFrontendTask( worker, action ) );
     }
 
 private:
-    PostWorkerNotificationToFrontendTask(PassRefPtr<InspectorWorkerResource> worker, InspectorAgent::WorkerAction action)
-        : m_worker(worker)
-        , m_action(action)
+    PostWorkerNotificationToFrontendTask( PassRefPtr<InspectorWorkerResource> worker, InspectorAgent::WorkerAction action )
+        : m_worker( worker )
+        , m_action( action )
     {
     }
 
-    virtual void performTask(ScriptExecutionContext* scriptContext)
+    virtual void performTask( ScriptExecutionContext *scriptContext )
     {
-        if (scriptContext->isDocument()) {
-            if (InspectorAgent* inspectorAgent = static_cast<Document*>(scriptContext)->page()->inspectorController()->m_inspectorAgent.get())
-                inspectorAgent->postWorkerNotificationToFrontend(*m_worker, m_action);
+        if ( scriptContext->isDocument() )
+        {
+            if ( InspectorAgent *inspectorAgent = static_cast<Document *>
+                                                  ( scriptContext )->page()->inspectorController()->m_inspectorAgent.get() )
+            {
+                inspectorAgent->postWorkerNotificationToFrontend( *m_worker, m_action );
+            }
         }
     }
 
@@ -353,62 +383,89 @@ private:
     InspectorAgent::WorkerAction m_action;
 };
 
-void InspectorAgent::postWorkerNotificationToFrontend(const InspectorWorkerResource& worker, InspectorAgent::WorkerAction action)
+void InspectorAgent::postWorkerNotificationToFrontend( const InspectorWorkerResource &worker,
+        InspectorAgent::WorkerAction action )
 {
-    if (!m_frontend)
+    if ( !m_frontend )
+    {
         return;
-#if ENABLE(JAVASCRIPT_DEBUGGER)
-    switch (action) {
-    case InspectorAgent::WorkerCreated:
-        m_frontend->inspector()->didCreateWorker(worker.id(), worker.url(), worker.isSharedWorker());
-        break;
-    case InspectorAgent::WorkerDestroyed:
-        m_frontend->inspector()->didDestroyWorker(worker.id());
-        break;
     }
+
+#if ENABLE(JAVASCRIPT_DEBUGGER)
+
+    switch ( action )
+    {
+        case InspectorAgent::WorkerCreated:
+            m_frontend->inspector()->didCreateWorker( worker.id(), worker.url(), worker.isSharedWorker() );
+            break;
+
+        case InspectorAgent::WorkerDestroyed:
+            m_frontend->inspector()->didDestroyWorker( worker.id() );
+            break;
+    }
+
 #endif
 }
 
-void InspectorAgent::didCreateWorker(intptr_t id, const String& url, bool isSharedWorker)
+void InspectorAgent::didCreateWorker( intptr_t id, const String &url, bool isSharedWorker )
 {
-    if (!enabled())
+    if ( !enabled() )
+    {
         return;
+    }
 
-    RefPtr<InspectorWorkerResource> workerResource(InspectorWorkerResource::create(id, url, isSharedWorker));
-    m_workers.set(id, workerResource);
-    if (m_inspectedPage && m_frontend)
-        m_inspectedPage->mainFrame()->document()->postTask(PostWorkerNotificationToFrontendTask::create(workerResource, InspectorAgent::WorkerCreated));
+    RefPtr<InspectorWorkerResource> workerResource( InspectorWorkerResource::create( id, url, isSharedWorker ) );
+    m_workers.set( id, workerResource );
+
+    if ( m_inspectedPage && m_frontend )
+    {
+        m_inspectedPage->mainFrame()->document()->postTask( PostWorkerNotificationToFrontendTask::create( workerResource,
+                InspectorAgent::WorkerCreated ) );
+    }
 }
 
-void InspectorAgent::didDestroyWorker(intptr_t id)
+void InspectorAgent::didDestroyWorker( intptr_t id )
 {
-    if (!enabled())
+    if ( !enabled() )
+    {
         return;
+    }
 
-    WorkersMap::iterator workerResource = m_workers.find(id);
-    if (workerResource == m_workers.end())
+    WorkersMap::iterator workerResource = m_workers.find( id );
+
+    if ( workerResource == m_workers.end() )
+    {
         return;
-    if (m_inspectedPage && m_frontend)
-        m_inspectedPage->mainFrame()->document()->postTask(PostWorkerNotificationToFrontendTask::create(workerResource->second, InspectorAgent::WorkerDestroyed));
-    m_workers.remove(workerResource);
+    }
+
+    if ( m_inspectedPage && m_frontend )
+    {
+        m_inspectedPage->mainFrame()->document()->postTask( PostWorkerNotificationToFrontendTask::create( workerResource->second,
+                InspectorAgent::WorkerDestroyed ) );
+    }
+
+    m_workers.remove( workerResource );
 }
 #endif // ENABLE(WORKERS)
 
 #if ENABLE(JAVASCRIPT_DEBUGGER)
 void InspectorAgent::showProfilesPanel()
 {
-    showPanel(profilesPanelName);
+    showPanel( profilesPanelName );
 }
 #endif
 
-void InspectorAgent::evaluateForTestInFrontend(long callId, const String& script)
+void InspectorAgent::evaluateForTestInFrontend( long callId, const String &script )
 {
-    m_pendingEvaluateTestCommands.append(pair<long, String>(callId, script));
-    if (m_canIssueEvaluateForTestInFrontend)
+    m_pendingEvaluateTestCommands.append( pair<long, String>( callId, script ) );
+
+    if ( m_canIssueEvaluateForTestInFrontend )
+    {
         issueEvaluateForTestCommands();
+    }
 }
 
-void InspectorAgent::setInspectorExtensionAPI(const String& source)
+void InspectorAgent::setInspectorExtensionAPI( const String &source )
 {
     m_inspectorExtensionAPI = source;
 }
@@ -427,32 +484,42 @@ KURL InspectorAgent::inspectedURLWithoutFragment() const
 
 bool InspectorAgent::enabled() const
 {
-    if (!m_inspectedPage)
+    if ( !m_inspectedPage )
+    {
         return false;
+    }
+
     return m_inspectedPage->settings()->developerExtrasEnabled();
 }
 
 void InspectorAgent::showConsole()
 {
-    showPanel(consolePanelName);
+    showPanel( consolePanelName );
 }
 
-void InspectorAgent::showPanel(const String& panel)
+void InspectorAgent::showPanel( const String &panel )
 {
-    if (!m_frontend) {
+    if ( !m_frontend )
+    {
         m_showPanelAfterVisible = panel;
         return;
     }
-    m_frontend->inspector()->showPanel(panel);
+
+    m_frontend->inspector()->showPanel( panel );
 }
 
 void InspectorAgent::issueEvaluateForTestCommands()
 {
-    if (m_frontend) {
+    if ( m_frontend )
+    {
         Vector<pair<long, String> > copy = m_pendingEvaluateTestCommands;
         m_pendingEvaluateTestCommands.clear();
-        for (Vector<pair<long, String> >::iterator it = copy.begin(); m_frontend && it != copy.end(); ++it)
-            m_frontend->inspector()->evaluateForTestInFrontend((*it).first, (*it).second);
+
+        for ( Vector<pair<long, String> >::iterator it = copy.begin(); m_frontend && it != copy.end(); ++it )
+        {
+            m_frontend->inspector()->evaluateForTestInFrontend( ( *it ).first, ( *it ).second );
+        }
+
         m_canIssueEvaluateForTestInFrontend = true;
     }
 }

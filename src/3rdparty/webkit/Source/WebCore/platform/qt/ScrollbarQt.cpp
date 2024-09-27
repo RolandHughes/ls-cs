@@ -45,54 +45,79 @@
 
 using namespace std;
 
-namespace WebCore {
+namespace WebCore
+{
 
-bool Scrollbar::contextMenu(const PlatformMouseEvent& event)
+bool Scrollbar::contextMenu( const PlatformMouseEvent &event )
 {
 #ifndef QT_NO_CONTEXTMENU
-    if (!QApplication::style()->styleHint(QStyle::SH_ScrollBar_ContextMenu))
-        return true;
 
-    bool horizontal = (m_orientation == HorizontalScrollbar);
+    if ( !QApplication::style()->styleHint( QStyle::SH_ScrollBar_ContextMenu ) )
+    {
+        return true;
+    }
+
+    bool horizontal = ( m_orientation == HorizontalScrollbar );
 
     QMenu menu;
-    QAction* actScrollHere = menu.addAction(QCoreApplication::translate("QWebPage", "Scroll here"));
+    QAction *actScrollHere = menu.addAction( QCoreApplication::translate( "QWebPage", "Scroll here" ) );
     menu.addSeparator();
 
-    QAction* actScrollTop = menu.addAction(horizontal ? QCoreApplication::translate("QWebPage", "Left edge") : QCoreApplication::translate("QWebPage", "Top"));
-    QAction* actScrollBottom = menu.addAction(horizontal ? QCoreApplication::translate("QWebPage", "Right edge") : QCoreApplication::translate("QWebPage", "Bottom"));
+    QAction *actScrollTop = menu.addAction( horizontal ? QCoreApplication::translate( "QWebPage",
+                                            "Left edge" ) : QCoreApplication::translate( "QWebPage", "Top" ) );
+    QAction *actScrollBottom = menu.addAction( horizontal ? QCoreApplication::translate( "QWebPage",
+                               "Right edge" ) : QCoreApplication::translate( "QWebPage", "Bottom" ) );
     menu.addSeparator();
 
-    QAction* actPageUp = menu.addAction(horizontal ? QCoreApplication::translate("QWebPage", "Page left") : QCoreApplication::translate("QWebPage", "Page up"));
-    QAction* actPageDown = menu.addAction(horizontal ? QCoreApplication::translate("QWebPage", "Page right") : QCoreApplication::translate("QWebPage", "Page down"));
+    QAction *actPageUp = menu.addAction( horizontal ? QCoreApplication::translate( "QWebPage",
+                                         "Page left" ) : QCoreApplication::translate( "QWebPage", "Page up" ) );
+    QAction *actPageDown = menu.addAction( horizontal ? QCoreApplication::translate( "QWebPage",
+                                           "Page right" ) : QCoreApplication::translate( "QWebPage", "Page down" ) );
     menu.addSeparator();
 
-    QAction* actScrollUp = menu.addAction(horizontal ? QCoreApplication::translate("QWebPage", "Scroll left") : QCoreApplication::translate("QWebPage", "Scroll up"));
-    QAction* actScrollDown = menu.addAction(horizontal ? QCoreApplication::translate("QWebPage", "Scroll right") : QCoreApplication::translate("QWebPage", "Scroll down"));
+    QAction *actScrollUp = menu.addAction( horizontal ? QCoreApplication::translate( "QWebPage",
+                                           "Scroll left" ) : QCoreApplication::translate( "QWebPage", "Scroll up" ) );
+    QAction *actScrollDown = menu.addAction( horizontal ? QCoreApplication::translate( "QWebPage",
+                             "Scroll right" ) : QCoreApplication::translate( "QWebPage", "Scroll down" ) );
 
-    const QPoint globalPos = QPoint(event.globalX(), event.globalY());
-    QAction* actionSelected = menu.exec(globalPos);
+    const QPoint globalPos = QPoint( event.globalX(), event.globalY() );
+    QAction *actionSelected = menu.exec( globalPos );
 
-    if (actionSelected == actScrollHere) {
-        // Set the pressed position to the middle of the thumb so that when we 
+    if ( actionSelected == actScrollHere )
+    {
+        // Set the pressed position to the middle of the thumb so that when we
         // do move, the delta will be from the current pixel position of the
         // thumb to the new position
-        int position = theme()->trackPosition(this) + theme()->thumbPosition(this) + theme()->thumbLength(this) / 2;
-        setPressedPos(position); 
-        const QPoint pos = convertFromContainingWindow(event.pos());
-        moveThumb(horizontal ? pos.x() : pos.y());
-    } else if (actionSelected == actScrollTop)
-        scrollableArea()->scroll(horizontal ? ScrollLeft : ScrollUp, ScrollByDocument);
-    else if (actionSelected == actScrollBottom)
-        scrollableArea()->scroll(horizontal ? ScrollRight : ScrollDown, ScrollByDocument);
-    else if (actionSelected == actPageUp)
-        scrollableArea()->scroll(horizontal ? ScrollLeft : ScrollUp, ScrollByPage);
-    else if (actionSelected == actPageDown)
-        scrollableArea()->scroll(horizontal ? ScrollRight : ScrollDown, ScrollByPage);
-    else if (actionSelected == actScrollUp)
-        scrollableArea()->scroll(horizontal ? ScrollLeft : ScrollUp, ScrollByLine);
-    else if (actionSelected == actScrollDown)
-        scrollableArea()->scroll(horizontal ? ScrollRight : ScrollDown, ScrollByLine);
+        int position = theme()->trackPosition( this ) + theme()->thumbPosition( this ) + theme()->thumbLength( this ) / 2;
+        setPressedPos( position );
+        const QPoint pos = convertFromContainingWindow( event.pos() );
+        moveThumb( horizontal ? pos.x() : pos.y() );
+    }
+    else if ( actionSelected == actScrollTop )
+    {
+        scrollableArea()->scroll( horizontal ? ScrollLeft : ScrollUp, ScrollByDocument );
+    }
+    else if ( actionSelected == actScrollBottom )
+    {
+        scrollableArea()->scroll( horizontal ? ScrollRight : ScrollDown, ScrollByDocument );
+    }
+    else if ( actionSelected == actPageUp )
+    {
+        scrollableArea()->scroll( horizontal ? ScrollLeft : ScrollUp, ScrollByPage );
+    }
+    else if ( actionSelected == actPageDown )
+    {
+        scrollableArea()->scroll( horizontal ? ScrollRight : ScrollDown, ScrollByPage );
+    }
+    else if ( actionSelected == actScrollUp )
+    {
+        scrollableArea()->scroll( horizontal ? ScrollLeft : ScrollUp, ScrollByLine );
+    }
+    else if ( actionSelected == actScrollDown )
+    {
+        scrollableArea()->scroll( horizontal ? ScrollRight : ScrollDown, ScrollByLine );
+    }
+
 #endif // QT_NO_CONTEXTMENU
     return true;
 }

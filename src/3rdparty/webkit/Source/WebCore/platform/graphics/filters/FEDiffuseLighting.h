@@ -25,40 +25,42 @@
 #if ENABLE(FILTERS)
 #include "FELighting.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class LightSource;
 
-class FEDiffuseLighting : public FELighting {
+class FEDiffuseLighting : public FELighting
+{
 public:
-    static PassRefPtr<FEDiffuseLighting> create(Filter*, const Color&, float, float,
-        float, float, PassRefPtr<LightSource>);
+    static PassRefPtr<FEDiffuseLighting> create( Filter *, const Color &, float, float,
+            float, float, PassRefPtr<LightSource> );
     virtual ~FEDiffuseLighting();
 
     Color lightingColor() const;
-    bool setLightingColor(const Color&);
+    bool setLightingColor( const Color & );
 
     float surfaceScale() const;
-    bool setSurfaceScale(float);
+    bool setSurfaceScale( float );
 
     float diffuseConstant() const;
-    bool setDiffuseConstant(float);
+    bool setDiffuseConstant( float );
 
     float kernelUnitLengthX() const;
-    bool setKernelUnitLengthX(float);
+    bool setKernelUnitLengthX( float );
 
     float kernelUnitLengthY() const;
-    bool setKernelUnitLengthY(float);
+    bool setKernelUnitLengthY( float );
 
-    const LightSource* lightSource() const;
-    void setLightSource(PassRefPtr<LightSource>);
+    const LightSource *lightSource() const;
+    void setLightSource( PassRefPtr<LightSource> );
 
     virtual void dump();
 
-    virtual TextStream& externalRepresentation(TextStream&, int indention) const;
+    virtual TextStream &externalRepresentation( TextStream &, int indention ) const;
 
 private:
-    FEDiffuseLighting(Filter*, const Color&, float, float, float, float, PassRefPtr<LightSource>);
+    FEDiffuseLighting( Filter *, const Color &, float, float, float, float, PassRefPtr<LightSource> );
 };
 
 } // namespace WebCore

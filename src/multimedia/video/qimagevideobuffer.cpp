@@ -30,21 +30,22 @@
 
 class QImageVideoBufferPrivate : public QAbstractVideoBufferPrivate
 {
- public:
-   QImageVideoBufferPrivate()
-      : mapMode(QAbstractVideoBuffer::NotMapped) {
-   }
+public:
+    QImageVideoBufferPrivate()
+        : mapMode( QAbstractVideoBuffer::NotMapped )
+    {
+    }
 
-   QAbstractVideoBuffer::MapMode mapMode;
-   QImage image;
+    QAbstractVideoBuffer::MapMode mapMode;
+    QImage image;
 };
 
-QImageVideoBuffer::QImageVideoBuffer(const QImage &image)
-   : QAbstractVideoBuffer(*new QImageVideoBufferPrivate, NoHandle)
+QImageVideoBuffer::QImageVideoBuffer( const QImage &image )
+    : QAbstractVideoBuffer( *new QImageVideoBufferPrivate, NoHandle )
 {
-   Q_D(QImageVideoBuffer);
+    Q_D( QImageVideoBuffer );
 
-   d->image = image;
+    d->image = image;
 }
 
 QImageVideoBuffer::~QImageVideoBuffer()
@@ -53,34 +54,39 @@ QImageVideoBuffer::~QImageVideoBuffer()
 
 QAbstractVideoBuffer::MapMode QImageVideoBuffer::mapMode() const
 {
-   return d_func()->mapMode;
+    return d_func()->mapMode;
 }
 
-uchar *QImageVideoBuffer::map(MapMode mode, int *numBytes, int *bytesPerLine)
+uchar *QImageVideoBuffer::map( MapMode mode, int *numBytes, int *bytesPerLine )
 {
-   Q_D(QImageVideoBuffer);
+    Q_D( QImageVideoBuffer );
 
-   if (d->mapMode == NotMapped && d->image.bits() && mode != NotMapped) {
-      d->mapMode = mode;
+    if ( d->mapMode == NotMapped && d->image.bits() && mode != NotMapped )
+    {
+        d->mapMode = mode;
 
-      if (numBytes) {
-         *numBytes = d->image.byteCount();
-      }
+        if ( numBytes )
+        {
+            *numBytes = d->image.byteCount();
+        }
 
-      if (bytesPerLine) {
-         *bytesPerLine = d->image.bytesPerLine();
-      }
+        if ( bytesPerLine )
+        {
+            *bytesPerLine = d->image.bytesPerLine();
+        }
 
-      return d->image.bits();
+        return d->image.bits();
 
-   } else {
-      return nullptr;
-   }
+    }
+    else
+    {
+        return nullptr;
+    }
 }
 
 void QImageVideoBuffer::unmap()
 {
-   Q_D(QImageVideoBuffer);
+    Q_D( QImageVideoBuffer );
 
-   d->mapMode = NotMapped;
+    d->mapMode = NotMapped;
 }

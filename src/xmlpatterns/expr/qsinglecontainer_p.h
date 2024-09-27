@@ -26,20 +26,21 @@
 
 #include <qexpression_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class SingleContainer : public Expression
 {
- public:
-   Expression::List operands() const override;
+public:
+    Expression::List operands() const override;
 
-   void setOperands(const Expression::List &operands) override;
-   bool compressOperands(const StaticContext::Ptr &) override;
+    void setOperands( const Expression::List &operands ) override;
+    bool compressOperands( const StaticContext::Ptr & ) override;
 
- protected:
-   SingleContainer(const Expression::Ptr &operand);
+protected:
+    SingleContainer( const Expression::Ptr &operand );
 
-   Expression::Ptr m_operand;
+    Expression::Ptr m_operand;
 };
 
 }

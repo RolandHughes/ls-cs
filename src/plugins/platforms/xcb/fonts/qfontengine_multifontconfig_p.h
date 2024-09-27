@@ -34,15 +34,15 @@
 class QFontEngineMultiFontConfig : public QFontEngineMulti
 {
 public:
-    explicit QFontEngineMultiFontConfig(QFontEngine *fe, int script);
+    explicit QFontEngineMultiFontConfig( QFontEngine *fe, int script );
     ~QFontEngineMultiFontConfig();
 
-    bool shouldLoadFontEngineForCharacter(int at, char32_t ch) const override;
+    bool shouldLoadFontEngineForCharacter( int at, char32_t ch ) const override;
 
 private:
-    FcPattern *getMatchPatternForFallback(int at) const;
+    FcPattern *getMatchPatternForFallback( int at ) const;
 
-    mutable QVector<FcPattern*> cachedMatchPatterns;
+    mutable QVector<FcPattern *> cachedMatchPatterns;
 };
 
 #endif

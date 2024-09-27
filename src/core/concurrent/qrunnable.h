@@ -28,30 +28,32 @@
 
 class QRunnable
 {
- public:
-   virtual void run() = 0;
+public:
+    virtual void run() = 0;
 
-   QRunnable()
-      : ref(0)
-   { }
+    QRunnable()
+        : ref( 0 )
+    { }
 
-   virtual ~QRunnable()
-   { }
+    virtual ~QRunnable()
+    { }
 
-   bool autoDelete() const {
-      return ref != -1;
-   }
+    bool autoDelete() const
+    {
+        return ref != -1;
+    }
 
-   void setAutoDelete(bool autoDelete) {
-      ref = autoDelete ? 0 : -1;
-   }
+    void setAutoDelete( bool autoDelete )
+    {
+        ref = autoDelete ? 0 : -1;
+    }
 
- private:
-   int ref;
+private:
+    int ref;
 
-   friend class QThreadPool;
-   friend class QThreadPoolPrivate;
-   friend class QThreadPoolThread;
+    friend class QThreadPool;
+    friend class QThreadPoolPrivate;
+    friend class QThreadPoolThread;
 };
 
 #endif

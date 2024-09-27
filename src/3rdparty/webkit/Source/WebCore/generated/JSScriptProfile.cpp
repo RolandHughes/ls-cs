@@ -33,9 +33,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSScriptProfile);
+ASSERT_CLASS_FITS_IN_CELL( JSScriptProfile );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -46,10 +47,10 @@ ASSERT_CLASS_FITS_IN_CELL(JSScriptProfile);
 
 static const HashTableValue JSScriptProfileTableValues[4] =
 {
-    { "title", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsScriptProfileTitle), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "uid", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsScriptProfileUid), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "head", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsScriptProfileHead), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "title", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsScriptProfileTitle ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "uid", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsScriptProfileUid ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "head", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsScriptProfileHead ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -63,80 +64,81 @@ static JSC_CONST_HASHTABLE HashTable JSScriptProfileTable = { 8, 7, JSScriptProf
 
 static const HashTableValue JSScriptProfilePrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSScriptProfilePrototypeTable = { 1, 0, JSScriptProfilePrototypeTableValues, 0 };
 const ClassInfo JSScriptProfilePrototype::s_info = { "ScriptProfilePrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSScriptProfilePrototypeTable, 0 };
 
-JSObject* JSScriptProfilePrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSScriptProfilePrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSScriptProfile>(exec, globalObject);
+    return getDOMPrototype<JSScriptProfile>( exec, globalObject );
 }
 
 const ClassInfo JSScriptProfile::s_info = { "ScriptProfile", &JSDOMWrapper::s_info, &JSScriptProfileTable, 0 };
 
-JSScriptProfile::JSScriptProfile(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<ScriptProfile> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSScriptProfile::JSScriptProfile( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<ScriptProfile> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSScriptProfile::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSScriptProfile::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSScriptProfilePrototype(exec->globalData(), globalObject, JSScriptProfilePrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSScriptProfilePrototype( exec->globalData(), globalObject,
+            JSScriptProfilePrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSScriptProfile::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSScriptProfile::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSScriptProfile, Base>(exec, &JSScriptProfileTable, this, propertyName, slot);
+    return getStaticValueSlot<JSScriptProfile, Base>( exec, &JSScriptProfileTable, this, propertyName, slot );
 }
 
-bool JSScriptProfile::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSScriptProfile::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSScriptProfile, Base>(exec, &JSScriptProfileTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSScriptProfile, Base>( exec, &JSScriptProfileTable, this, propertyName, descriptor );
 }
 
-JSValue jsScriptProfileTitle(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsScriptProfileTitle( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSScriptProfile* castedThis = static_cast<JSScriptProfile*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    ScriptProfile* imp = static_cast<ScriptProfile*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->title());
+    JSScriptProfile *castedThis = static_cast<JSScriptProfile *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    ScriptProfile *imp = static_cast<ScriptProfile *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->title() );
     return result;
 }
 
 
-JSValue jsScriptProfileUid(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsScriptProfileUid( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSScriptProfile* castedThis = static_cast<JSScriptProfile*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    ScriptProfile* imp = static_cast<ScriptProfile*>(castedThis->impl());
-    JSValue result = jsNumber(imp->uid());
+    JSScriptProfile *castedThis = static_cast<JSScriptProfile *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    ScriptProfile *imp = static_cast<ScriptProfile *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->uid() );
     return result;
 }
 
 
-JSValue jsScriptProfileHead(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsScriptProfileHead( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSScriptProfile* castedThis = static_cast<JSScriptProfile*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    ScriptProfile* imp = static_cast<ScriptProfile*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->head()));
+    JSScriptProfile *castedThis = static_cast<JSScriptProfile *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    ScriptProfile *imp = static_cast<ScriptProfile *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->head() ) );
     return result;
 }
 
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, ScriptProfile* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, ScriptProfile *impl )
 {
-    return wrap<JSScriptProfile>(exec, globalObject, impl);
+    return wrap<JSScriptProfile>( exec, globalObject, impl );
 }
 
-ScriptProfile* toScriptProfile(JSC::JSValue value)
+ScriptProfile *toScriptProfile( JSC::JSValue value )
 {
-    return value.inherits(&JSScriptProfile::s_info) ? static_cast<JSScriptProfile*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSScriptProfile::s_info ) ? static_cast<JSScriptProfile *>( asObject( value ) )->impl() : 0;
 }
 
 }

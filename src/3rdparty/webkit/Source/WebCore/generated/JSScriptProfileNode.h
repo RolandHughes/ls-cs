@@ -28,29 +28,35 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 typedef JSC::ProfileNode ScriptProfileNode;
 
-class JSScriptProfileNode : public JSDOMWrapper {
+class JSScriptProfileNode : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSScriptProfileNode(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<ScriptProfileNode>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
+    JSScriptProfileNode( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<ScriptProfileNode> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
 
     // Custom attributes
-    JSC::JSValue children(JSC::ExecState*) const;
-    JSC::JSValue callUID(JSC::ExecState*) const;
-    ScriptProfileNode* impl() const { return m_impl.get(); }
+    JSC::JSValue children( JSC::ExecState * ) const;
+    JSC::JSValue callUID( JSC::ExecState * ) const;
+    ScriptProfileNode *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<ScriptProfileNode> m_impl;
@@ -58,34 +64,37 @@ protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, ScriptProfileNode*);
-ScriptProfileNode* toScriptProfileNode(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, ScriptProfileNode * );
+ScriptProfileNode *toScriptProfileNode( JSC::JSValue );
 
-class JSScriptProfileNodePrototype : public JSC::JSObjectWithGlobalObject {
+class JSScriptProfileNodePrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSScriptProfileNodePrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSScriptProfileNodePrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                                  JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = Base::StructureFlags;
 };
 
 // Attributes
 
-JSC::JSValue jsScriptProfileNodeFunctionName(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsScriptProfileNodeUrl(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsScriptProfileNodeLineNumber(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsScriptProfileNodeTotalTime(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsScriptProfileNodeSelfTime(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsScriptProfileNodeNumberOfCalls(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsScriptProfileNodeChildren(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsScriptProfileNodeVisible(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsScriptProfileNodeCallUID(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsScriptProfileNodeFunctionName( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsScriptProfileNodeUrl( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsScriptProfileNodeLineNumber( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsScriptProfileNodeTotalTime( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsScriptProfileNodeSelfTime( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsScriptProfileNodeNumberOfCalls( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsScriptProfileNodeChildren( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsScriptProfileNodeVisible( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsScriptProfileNodeCallUID( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

@@ -30,10 +30,11 @@
 #include "WebPageProxy.h"
 #include "WebProcessProxy.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
-GeolocationPermissionRequestManagerProxy::GeolocationPermissionRequestManagerProxy(WebPageProxy* page)
-    : m_page(page)
+GeolocationPermissionRequestManagerProxy::GeolocationPermissionRequestManagerProxy( WebPageProxy *page )
+    : m_page( page )
 {
 }
 
@@ -41,30 +42,38 @@ void GeolocationPermissionRequestManagerProxy::invalidateRequests()
 {
     PendingRequestMap::const_iterator it = m_pendingRequests.begin();
     PendingRequestMap::const_iterator end = m_pendingRequests.end();
-    for (; it != end; ++it)
+
+    for ( ; it != end; ++it )
+    {
         it->second->invalidate();
+    }
 
     m_pendingRequests.clear();
 }
 
-PassRefPtr<GeolocationPermissionRequestProxy> GeolocationPermissionRequestManagerProxy::createRequest(uint64_t geolocationID)
+PassRefPtr<GeolocationPermissionRequestProxy> GeolocationPermissionRequestManagerProxy::createRequest( uint64_t geolocationID )
 {
-    RefPtr<GeolocationPermissionRequestProxy> request = GeolocationPermissionRequestProxy::create(this, geolocationID);
-    m_pendingRequests.add(geolocationID, request.get());
+    RefPtr<GeolocationPermissionRequestProxy> request = GeolocationPermissionRequestProxy::create( this, geolocationID );
+    m_pendingRequests.add( geolocationID, request.get() );
     return request.release();
 }
 
-void GeolocationPermissionRequestManagerProxy::didReceiveGeolocationPermissionDecision(uint64_t geolocationID, bool allowed)
+void GeolocationPermissionRequestManagerProxy::didReceiveGeolocationPermissionDecision( uint64_t geolocationID, bool allowed )
 {
-    if (!m_page->isValid())
+    if ( !m_page->isValid() )
+    {
         return;
+    }
 
-    PendingRequestMap::iterator it = m_pendingRequests.find(geolocationID);
-    if (it == m_pendingRequests.end())
+    PendingRequestMap::iterator it = m_pendingRequests.find( geolocationID );
+
+    if ( it == m_pendingRequests.end() )
+    {
         return;
+    }
 
-    m_page->process()->send(Messages::WebPage::DidReceiveGeolocationPermissionDecision(geolocationID, allowed), m_page->pageID());
-    m_pendingRequests.remove(it);
+    m_page->process()->send( Messages::WebPage::DidReceiveGeolocationPermissionDecision( geolocationID, allowed ), m_page->pageID() );
+    m_pendingRequests.remove( it );
 }
 
 } // namespace WebKit

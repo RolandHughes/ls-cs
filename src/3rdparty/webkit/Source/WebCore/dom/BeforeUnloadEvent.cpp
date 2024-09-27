@@ -25,10 +25,11 @@
 
 #include "EventNames.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 BeforeUnloadEvent::BeforeUnloadEvent()
-    : Event(eventNames().beforeunloadEvent, false, true)
+    : Event( eventNames().beforeunloadEvent, false, true )
 {
 }
 
@@ -41,7 +42,7 @@ bool BeforeUnloadEvent::storesResultAsString() const
     return true;
 }
 
-void BeforeUnloadEvent::storeResult(const String& s)
+void BeforeUnloadEvent::storeResult( const String &s )
 {
     m_result = s;
 }

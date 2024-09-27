@@ -33,23 +33,23 @@ class QDeclarativeValueType;
 
 class QDeclarativeValueTypeScriptClass : public QScriptDeclarativeClass
 {
- public:
-   QDeclarativeValueTypeScriptClass(QDeclarativeEngine *);
-   ~QDeclarativeValueTypeScriptClass();
+public:
+    QDeclarativeValueTypeScriptClass( QDeclarativeEngine * );
+    ~QDeclarativeValueTypeScriptClass();
 
-   QScriptValue newObject(QObject *object, int coreIndex, QDeclarativeValueType *);
-   QScriptValue newObject(const QVariant &, QDeclarativeValueType *);
+    QScriptValue newObject( QObject *object, int coreIndex, QDeclarativeValueType * );
+    QScriptValue newObject( const QVariant &, QDeclarativeValueType * );
 
-   virtual QScriptClass::QueryFlags queryProperty(Object *, const Identifier &,
-         QScriptClass::QueryFlags flags);
-   virtual Value property(Object *, const Identifier &);
-   virtual void setProperty(Object *, const Identifier &name, const QScriptValue &);
+    virtual QScriptClass::QueryFlags queryProperty( Object *, const Identifier &,
+            QScriptClass::QueryFlags flags );
+    virtual Value property( Object *, const Identifier & );
+    virtual void setProperty( Object *, const Identifier &name, const QScriptValue & );
 
-   virtual QVariant toVariant(Object *, bool *ok = 0);
-   QVariant toVariant(const QScriptValue &);
- private:
-   QDeclarativeEngine *engine;
-   int m_lastIndex;
+    virtual QVariant toVariant( Object *, bool *ok = 0 );
+    QVariant toVariant( const QScriptValue & );
+private:
+    QDeclarativeEngine *engine;
+    int m_lastIndex;
 };
 
 QT_END_NAMESPACE

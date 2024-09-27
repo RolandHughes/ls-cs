@@ -35,20 +35,20 @@ class QLineEdit;
 
 class QKeySequenceEditPrivate : public QWidgetPrivate
 {
-   Q_DECLARE_PUBLIC(QKeySequenceEdit)
+    Q_DECLARE_PUBLIC( QKeySequenceEdit )
 
- public:
-   void init();
-   int translateModifiers(Qt::KeyboardModifiers state, const QString &text);
-   void resetState();
-   void finishEditing();
+public:
+    void init();
+    int translateModifiers( Qt::KeyboardModifiers state, const QString &text );
+    void resetState();
+    void finishEditing();
 
-   QLineEdit *lineEdit;
-   QKeySequence keySequence;
-   int keyNum;
-   int key[QKeySequencePrivate::MaxKeyCount];
-   int prevKey;
-   int releaseTimer;
+    QLineEdit *lineEdit;
+    QKeySequence keySequence;
+    int keyNum;
+    int key[QKeySequencePrivate::MaxKeyCount];
+    int prevKey;
+    int releaseTimer;
 };
 
 #endif // QT_NO_KEYSEQUENCEEDIT

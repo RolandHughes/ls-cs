@@ -33,14 +33,15 @@
 #include "IDBTransactionBackendImpl.h"
 #include "ScriptExecutionContext.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 PassRefPtr<IDBTransactionCoordinator> IDBTransactionCoordinator::create()
 {
-    return adoptRef(new IDBTransactionCoordinator());
+    return adoptRef( new IDBTransactionCoordinator() );
 }
 
-IDBTransactionCoordinator::IDBTransactionCoordinator() 
+IDBTransactionCoordinator::IDBTransactionCoordinator()
 {
 }
 
@@ -48,47 +49,57 @@ IDBTransactionCoordinator::~IDBTransactionCoordinator()
 {
 }
 
-void IDBTransactionCoordinator::didCreateTransaction(IDBTransactionBackendImpl* transaction)
+void IDBTransactionCoordinator::didCreateTransaction( IDBTransactionBackendImpl *transaction )
 {
-    ASSERT(!m_transactions.contains(transaction));
-    m_transactions.add(transaction, transaction);
+    ASSERT( !m_transactions.contains( transaction ) );
+    m_transactions.add( transaction, transaction );
 }
 
-void IDBTransactionCoordinator::didStartTransaction(IDBTransactionBackendImpl* transaction)
+void IDBTransactionCoordinator::didStartTransaction( IDBTransactionBackendImpl *transaction )
 {
-    ASSERT(m_transactions.contains(transaction));
+    ASSERT( m_transactions.contains( transaction ) );
 
-    m_startedTransactions.add(transaction);
+    m_startedTransactions.add( transaction );
     processStartedTransactions();
 }
 
-void IDBTransactionCoordinator::didFinishTransaction(IDBTransactionBackendImpl* transaction)
+void IDBTransactionCoordinator::didFinishTransaction( IDBTransactionBackendImpl *transaction )
 {
-    ASSERT(m_transactions.contains(transaction));
+    ASSERT( m_transactions.contains( transaction ) );
 
-    if (m_startedTransactions.contains(transaction)) {
-        ASSERT(!m_runningTransactions.contains(transaction));
-        m_startedTransactions.remove(transaction);
-    } else if (m_runningTransactions.contains(transaction))
-        m_runningTransactions.remove(transaction);
+    if ( m_startedTransactions.contains( transaction ) )
+    {
+        ASSERT( !m_runningTransactions.contains( transaction ) );
+        m_startedTransactions.remove( transaction );
+    }
+    else if ( m_runningTransactions.contains( transaction ) )
+    {
+        m_runningTransactions.remove( transaction );
+    }
 
-    m_transactions.remove(transaction);
+    m_transactions.remove( transaction );
 
     processStartedTransactions();
 }
 
 #ifndef NDEBUG
 // Verifies internal consistiency while returning whether anything is found.
-bool IDBTransactionCoordinator::isActive(IDBTransactionBackendImpl* transaction)
+bool IDBTransactionCoordinator::isActive( IDBTransactionBackendImpl *transaction )
 {
     bool found = false;
-    if (m_startedTransactions.contains(transaction))
-        found = true;
-    if (m_runningTransactions.contains(transaction)) {
-        ASSERT(!found);
+
+    if ( m_startedTransactions.contains( transaction ) )
+    {
         found = true;
     }
-    ASSERT(found == m_transactions.contains(transaction));
+
+    if ( m_runningTransactions.contains( transaction ) )
+    {
+        ASSERT( !found );
+        found = true;
+    }
+
+    ASSERT( found == m_transactions.contains( transaction ) );
     return found;
 }
 #endif
@@ -96,15 +107,19 @@ bool IDBTransactionCoordinator::isActive(IDBTransactionBackendImpl* transaction)
 void IDBTransactionCoordinator::processStartedTransactions()
 {
     // FIXME: For now, we only allow one transaction to run at a time.
-    if (!m_runningTransactions.isEmpty())
+    if ( !m_runningTransactions.isEmpty() )
+    {
         return;
+    }
 
-    if (m_startedTransactions.isEmpty())
+    if ( m_startedTransactions.isEmpty() )
+    {
         return;
+    }
 
-    IDBTransactionBackendImpl* transaction = *m_startedTransactions.begin();
-    m_startedTransactions.remove(transaction);
-    m_runningTransactions.add(transaction);
+    IDBTransactionBackendImpl *transaction = *m_startedTransactions.begin();
+    m_startedTransactions.remove( transaction );
+    m_runningTransactions.add( transaction );
     transaction->run();
 }
 

@@ -33,18 +33,22 @@
 #include <wtf/RetainPtr.h>
 #endif
 
-namespace CoreIPC {
-    class ArgumentDecoder;
-    class ArgumentEncoder;
+namespace CoreIPC
+{
+class ArgumentDecoder;
+class ArgumentEncoder;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
-struct DictionaryPopupInfo {
-    void encode(CoreIPC::ArgumentEncoder*) const;
-    static bool decode(CoreIPC::ArgumentDecoder*, DictionaryPopupInfo&);
+struct DictionaryPopupInfo
+{
+    void encode( CoreIPC::ArgumentEncoder * ) const;
+    static bool decode( CoreIPC::ArgumentDecoder *, DictionaryPopupInfo & );
 
-    enum Type {
+    enum Type
+    {
         ContextMenu,
         HotKey
     };

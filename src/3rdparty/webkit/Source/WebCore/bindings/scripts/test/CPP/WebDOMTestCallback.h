@@ -28,7 +28,8 @@
 #include <WebDOMObject.h>
 #include <WebDOMString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 class TestCallback;
 };
 
@@ -39,30 +40,31 @@ class WebDOMClass5;
 class WebDOMClass6;
 class WebDOMDOMStringList;
 
-class WebDOMTestCallback : public WebDOMObject {
+class WebDOMTestCallback : public WebDOMObject
+{
 public:
     WebDOMTestCallback();
-    explicit WebDOMTestCallback(WebCore::TestCallback*);
-    WebDOMTestCallback(const WebDOMTestCallback&);
-    WebDOMTestCallback& operator=(const WebDOMTestCallback&);
+    explicit WebDOMTestCallback( WebCore::TestCallback * );
+    WebDOMTestCallback( const WebDOMTestCallback & );
+    WebDOMTestCallback &operator=( const WebDOMTestCallback & );
     virtual ~WebDOMTestCallback();
 
     bool callbackWithNoParam();
-    bool callbackWithClass1Param(const WebDOMClass1& class1Param);
-    bool callbackWithClass2Param(const WebDOMClass2& class2Param, const WebDOMString& strArg);
-    int callbackWithNonBoolReturnType(const WebDOMClass3& class3Param);
-    int customCallback(const WebDOMClass5& class5Param, const WebDOMClass6& class6Param);
-    bool callbackWithStringList(const WebDOMDOMStringList& listParam);
+    bool callbackWithClass1Param( const WebDOMClass1 &class1Param );
+    bool callbackWithClass2Param( const WebDOMClass2 &class2Param, const WebDOMString &strArg );
+    int callbackWithNonBoolReturnType( const WebDOMClass3 &class3Param );
+    int customCallback( const WebDOMClass5 &class5Param, const WebDOMClass6 &class6Param );
+    bool callbackWithStringList( const WebDOMDOMStringList &listParam );
 
-    WebCore::TestCallback* impl() const;
+    WebCore::TestCallback *impl() const;
 
 protected:
     struct WebDOMTestCallbackPrivate;
-    WebDOMTestCallbackPrivate* m_impl;
+    WebDOMTestCallbackPrivate *m_impl;
 };
 
-WebCore::TestCallback* toWebCore(const WebDOMTestCallback&);
-WebDOMTestCallback toWebKit(WebCore::TestCallback*);
+WebCore::TestCallback *toWebCore( const WebDOMTestCallback & );
+WebDOMTestCallback toWebKit( WebCore::TestCallback * );
 
 #endif
 #endif // ENABLE(DATABASE)

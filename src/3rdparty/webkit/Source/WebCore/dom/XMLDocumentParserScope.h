@@ -32,31 +32,34 @@
 #include <libxml/tree.h>
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class CachedResourceLoader;
+class CachedResourceLoader;
 
-    class XMLDocumentParserScope {
-        WTF_MAKE_NONCOPYABLE(XMLDocumentParserScope);
-    public:
-        XMLDocumentParserScope(CachedResourceLoader* cachedResourceLoader);
-        ~XMLDocumentParserScope();
+class XMLDocumentParserScope
+{
+    WTF_MAKE_NONCOPYABLE( XMLDocumentParserScope );
+public:
+    XMLDocumentParserScope( CachedResourceLoader *cachedResourceLoader );
+    ~XMLDocumentParserScope();
 
-        static CachedResourceLoader* currentCachedResourceLoader;
-
-#if ENABLE(XSLT)
-        XMLDocumentParserScope(CachedResourceLoader* cachedResourceLoader, xmlGenericErrorFunc genericErrorFunc, xmlStructuredErrorFunc structuredErrorFunc = 0, void* errorContext = 0);
-#endif
-
-    private:
-        CachedResourceLoader* m_oldCachedResourceLoader;
+    static CachedResourceLoader *currentCachedResourceLoader;
 
 #if ENABLE(XSLT)
-        xmlGenericErrorFunc m_oldGenericErrorFunc;
-        xmlStructuredErrorFunc m_oldStructuredErrorFunc;
-        void* m_oldErrorContext;
+    XMLDocumentParserScope( CachedResourceLoader *cachedResourceLoader, xmlGenericErrorFunc genericErrorFunc,
+                            xmlStructuredErrorFunc structuredErrorFunc = 0, void *errorContext = 0 );
 #endif
-    };
+
+private:
+    CachedResourceLoader *m_oldCachedResourceLoader;
+
+#if ENABLE(XSLT)
+    xmlGenericErrorFunc m_oldGenericErrorFunc;
+    xmlStructuredErrorFunc m_oldStructuredErrorFunc;
+    void *m_oldErrorContext;
+#endif
+};
 
 } // namespace WebCore
 

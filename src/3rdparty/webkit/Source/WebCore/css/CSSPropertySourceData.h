@@ -37,23 +37,26 @@
 #include <wtf/HashMap.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class CSSStyleRule;
 
-struct SourceRange {
+struct SourceRange
+{
     SourceRange();
-    SourceRange(unsigned start, unsigned end);
+    SourceRange( unsigned start, unsigned end );
 
     unsigned start;
     unsigned end;
 };
 
-struct CSSPropertySourceData {
+struct CSSPropertySourceData
+{
     static void init();
 
-    CSSPropertySourceData(const String& name, const String& value, bool important, bool parsedOk, const SourceRange& range);
-    CSSPropertySourceData(const CSSPropertySourceData& other);
+    CSSPropertySourceData( const String &name, const String &value, bool important, bool parsedOk, const SourceRange &range );
+    CSSPropertySourceData( const CSSPropertySourceData &other );
     CSSPropertySourceData();
 
     String toString() const;
@@ -70,10 +73,11 @@ struct CSSPropertySourceData {
 extern const CSSPropertySourceData emptyCSSPropertySourceData;
 #endif
 
-struct CSSStyleSourceData : public RefCounted<CSSStyleSourceData> {
+struct CSSStyleSourceData : public RefCounted<CSSStyleSourceData>
+{
     static PassRefPtr<CSSStyleSourceData> create()
     {
-        return adoptRef(new CSSStyleSourceData());
+        return adoptRef( new CSSStyleSourceData() );
     }
 
     // Range of the style text in the enclosing source.
@@ -81,17 +85,18 @@ struct CSSStyleSourceData : public RefCounted<CSSStyleSourceData> {
     Vector<CSSPropertySourceData> propertyData;
 };
 
-struct CSSRuleSourceData : public RefCounted<CSSRuleSourceData> {
+struct CSSRuleSourceData : public RefCounted<CSSRuleSourceData>
+{
     static PassRefPtr<CSSRuleSourceData> create()
     {
-        return adoptRef(new CSSRuleSourceData());
+        return adoptRef( new CSSRuleSourceData() );
     }
 
     // Range of the selector list in the enclosing source.
     SourceRange selectorListRange;
     RefPtr<CSSStyleSourceData> styleSourceData;
 };
-typedef HashMap<CSSStyleRule*, RefPtr<CSSRuleSourceData> > StyleRuleRangeMap;
+typedef HashMap<CSSStyleRule *, RefPtr<CSSRuleSourceData> > StyleRuleRangeMap;
 
 } // namespace WebCore
 

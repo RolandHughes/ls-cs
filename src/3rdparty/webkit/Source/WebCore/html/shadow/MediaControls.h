@@ -31,17 +31,19 @@
 
 #include "HTMLDivElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class HTMLMediaElement;
 
-class MediaControls : public HTMLDivElement {
-  public:
+class MediaControls : public HTMLDivElement
+{
+public:
     virtual ~MediaControls() {}
 
     // This function is to be implemented in your port-specific media
     // controls implementation.
-    static PassRefPtr<MediaControls> create(HTMLMediaElement*);
+    static PassRefPtr<MediaControls> create( HTMLMediaElement * );
 
     virtual void show() = 0;
     virtual void hide() = 0;
@@ -71,22 +73,25 @@ class MediaControls : public HTMLDivElement {
     virtual bool shouldHideControls() = 0;
 
 protected:
-    MediaControls(HTMLMediaElement*);
+    MediaControls( HTMLMediaElement * );
 
 private:
     MediaControls();
 
-    virtual bool isMediaControls() const { return true; }
+    virtual bool isMediaControls() const
+    {
+        return true;
+    }
 };
 
-inline MediaControls* toMediaControls(Node* node)
+inline MediaControls *toMediaControls( Node *node )
 {
-    ASSERT(!node || node->isMediaControls());
-    return static_cast<MediaControls*>(node);
+    ASSERT( !node || node->isMediaControls() );
+    return static_cast<MediaControls *>( node );
 }
 
 // This will catch anyone doing an unneccessary cast.
-void toMediaControls(const Node*);
+void toMediaControls( const Node * );
 
 }
 

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef JSONObject_h
@@ -28,34 +28,39 @@
 
 #include "JSObject.h"
 
-namespace JSC {
+namespace JSC
+{
 
-    class Stringifier;
+class Stringifier;
 
-    class JSONObject : public JSObject {
-    public:
-        JSONObject(NonNullPassRefPtr<Structure> structure)
-            : JSObject(structure)
-        {
-        }
+class JSONObject : public JSObject
+{
+public:
+    JSONObject( NonNullPassRefPtr<Structure> structure )
+        : JSObject( structure )
+    {
+    }
 
-        static PassRefPtr<Structure> createStructure(JSValue prototype)
-        {
-            return Structure::create(prototype, TypeInfo(ObjectType, StructureFlags));
-        }
+    static PassRefPtr<Structure> createStructure( JSValue prototype )
+    {
+        return Structure::create( prototype, TypeInfo( ObjectType, StructureFlags ) );
+    }
 
-        static void markStringifiers(MarkStack&, Stringifier*);
+    static void markStringifiers( MarkStack &, Stringifier * );
 
-    protected:
-        static const unsigned StructureFlags = OverridesGetOwnPropertySlot | JSObject::StructureFlags;
+protected:
+    static const unsigned StructureFlags = OverridesGetOwnPropertySlot | JSObject::StructureFlags;
 
-    private:
-        virtual bool getOwnPropertySlot(ExecState*, const Identifier&, PropertySlot&);
-        virtual bool getOwnPropertyDescriptor(ExecState*, const Identifier&, PropertyDescriptor&);
+private:
+    virtual bool getOwnPropertySlot( ExecState *, const Identifier &, PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( ExecState *, const Identifier &, PropertyDescriptor & );
 
-        virtual const ClassInfo* classInfo() const { return &info; }
-        static const ClassInfo info;
-    };
+    virtual const ClassInfo *classInfo() const
+    {
+        return &info;
+    }
+    static const ClassInfo info;
+};
 
 } // namespace JSC
 

@@ -33,74 +33,74 @@ class QItemSelection;
 
 class Q_GUI_EXPORT QAbstractProxyModel : public QAbstractItemModel
 {
-   GUI_CS_OBJECT(QAbstractProxyModel)
+    GUI_CS_OBJECT( QAbstractProxyModel )
 
-   GUI_CS_PROPERTY_READ(sourceModel, sourceModel)
-   GUI_CS_PROPERTY_WRITE(sourceModel, setSourceModel)
-   GUI_CS_PROPERTY_NOTIFY(sourceModel, sourceModelChanged)
+    GUI_CS_PROPERTY_READ( sourceModel, sourceModel )
+    GUI_CS_PROPERTY_WRITE( sourceModel, setSourceModel )
+    GUI_CS_PROPERTY_NOTIFY( sourceModel, sourceModelChanged )
 
- public:
-   explicit QAbstractProxyModel(QObject *parent = nullptr);
+public:
+    explicit QAbstractProxyModel( QObject *parent = nullptr );
 
-   QAbstractProxyModel(const QAbstractProxyModel & other) = delete;
-   QAbstractProxyModel & operator=(const QAbstractProxyModel & other) = delete;
+    QAbstractProxyModel( const QAbstractProxyModel &other ) = delete;
+    QAbstractProxyModel &operator=( const QAbstractProxyModel &other ) = delete;
 
-   ~QAbstractProxyModel() = default;
+    ~QAbstractProxyModel() = default;
 
-   virtual void setSourceModel(QAbstractItemModel *sourceModel);
-   QAbstractItemModel *sourceModel() const;
+    virtual void setSourceModel( QAbstractItemModel *sourceModel );
+    QAbstractItemModel *sourceModel() const;
 
-   virtual QModelIndex mapToSource(const QModelIndex &proxyIndex) const = 0;
-   virtual QModelIndex mapFromSource(const QModelIndex &sourceIndex) const = 0;
+    virtual QModelIndex mapToSource( const QModelIndex &proxyIndex ) const = 0;
+    virtual QModelIndex mapFromSource( const QModelIndex &sourceIndex ) const = 0;
 
-   virtual QItemSelection mapSelectionToSource(const QItemSelection &proxySelection) const;
-   virtual QItemSelection mapSelectionFromSource(const QItemSelection &sourceSelection) const;
+    virtual QItemSelection mapSelectionToSource( const QItemSelection &proxySelection ) const;
+    virtual QItemSelection mapSelectionFromSource( const QItemSelection &sourceSelection ) const;
 
-   bool submit() override;
-   void revert() override;
+    bool submit() override;
+    void revert() override;
 
-   QVariant data(const QModelIndex &proxyIndex, int role = Qt::DisplayRole) const override;
-   QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
-   QMap<int, QVariant> itemData(const QModelIndex &proxyIndex) const override;
-   Qt::ItemFlags flags(const QModelIndex &index) const override;
+    QVariant data( const QModelIndex &proxyIndex, int role = Qt::DisplayRole ) const override;
+    QVariant headerData( int section, Qt::Orientation orientation, int role ) const override;
+    QMap<int, QVariant> itemData( const QModelIndex &proxyIndex ) const override;
+    Qt::ItemFlags flags( const QModelIndex &index ) const override;
 
-   bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
-   bool setItemData(const QModelIndex &index, const QMap<int, QVariant> &roles) override;
-   bool setHeaderData(int section, Qt::Orientation orientation, const QVariant &value, int role = Qt::EditRole) override;
+    bool setData( const QModelIndex &index, const QVariant &value, int role = Qt::EditRole ) override;
+    bool setItemData( const QModelIndex &index, const QMap<int, QVariant> &roles ) override;
+    bool setHeaderData( int section, Qt::Orientation orientation, const QVariant &value, int role = Qt::EditRole ) override;
 
-   QModelIndex buddy(const QModelIndex &index) const override;
-   bool canFetchMore(const QModelIndex &parent) const override;
-   void fetchMore(const QModelIndex &parent) override;
-   void sort(int column, Qt::SortOrder order = Qt::AscendingOrder) override;
-   QSize span(const QModelIndex &index) const override;
-   bool hasChildren(const QModelIndex &parent = QModelIndex()) const override;
-   QModelIndex sibling(int row, int column, const QModelIndex &idx) const override;
+    QModelIndex buddy( const QModelIndex &index ) const override;
+    bool canFetchMore( const QModelIndex &parent ) const override;
+    void fetchMore( const QModelIndex &parent ) override;
+    void sort( int column, Qt::SortOrder order = Qt::AscendingOrder ) override;
+    QSize span( const QModelIndex &index ) const override;
+    bool hasChildren( const QModelIndex &parent = QModelIndex() ) const override;
+    QModelIndex sibling( int row, int column, const QModelIndex &idx ) const override;
 
-   QMimeData *mimeData(const QModelIndexList &indexes) const override;
-   bool canDropMimeData(const QMimeData *data, Qt::DropAction action,
-      int row, int column, const QModelIndex &parent) const override;
+    QMimeData *mimeData( const QModelIndexList &indexes ) const override;
+    bool canDropMimeData( const QMimeData *data, Qt::DropAction action,
+                          int row, int column, const QModelIndex &parent ) const override;
 
-   bool dropMimeData(const QMimeData *data, Qt::DropAction action,
-      int row, int column, const QModelIndex &parent) override;
+    bool dropMimeData( const QMimeData *data, Qt::DropAction action,
+                       int row, int column, const QModelIndex &parent ) override;
 
-   QStringList mimeTypes() const override;
-   Qt::DropActions supportedDragActions() const override;
-   Qt::DropActions supportedDropActions() const override;
+    QStringList mimeTypes() const override;
+    Qt::DropActions supportedDragActions() const override;
+    Qt::DropActions supportedDropActions() const override;
 
-   GUI_CS_SIGNAL_1(Public, void sourceModelChanged())
-   GUI_CS_SIGNAL_2(sourceModelChanged)
+    GUI_CS_SIGNAL_1( Public, void sourceModelChanged() )
+    GUI_CS_SIGNAL_2( sourceModelChanged )
 
- protected:
-   QAbstractProxyModel(QAbstractProxyModelPrivate &, QObject *parent);
+protected:
+    QAbstractProxyModel( QAbstractProxyModelPrivate &, QObject *parent );
 
-   GUI_CS_SLOT_1(Protected, void resetInternalData())
-   GUI_CS_SLOT_2(resetInternalData)
+    GUI_CS_SLOT_1( Protected, void resetInternalData() )
+    GUI_CS_SLOT_2( resetInternalData )
 
- private:
-   Q_DECLARE_PRIVATE(QAbstractProxyModel)
+private:
+    Q_DECLARE_PRIVATE( QAbstractProxyModel )
 
-   GUI_CS_SLOT_1(Private, void _q_sourceModelDestroyed())
-   GUI_CS_SLOT_2(_q_sourceModelDestroyed)
+    GUI_CS_SLOT_1( Private, void _q_sourceModelDestroyed() )
+    GUI_CS_SLOT_2( _q_sourceModelDestroyed )
 };
 
 #endif // QT_NO_PROXYMODEL

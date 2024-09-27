@@ -20,21 +20,22 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
 #include "MarkStack.h"
 
-namespace JSC {
+namespace JSC
+{
 
 size_t MarkStack::s_pageSize = 0;
 
 void MarkStack::compact()
 {
-    ASSERT(s_pageSize);
-    m_values.shrinkAllocation(s_pageSize);
-    m_markSets.shrinkAllocation(s_pageSize);
+    ASSERT( s_pageSize );
+    m_values.shrinkAllocation( s_pageSize );
+    m_markSets.shrinkAllocation( s_pageSize );
 }
 
 }

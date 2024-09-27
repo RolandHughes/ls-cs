@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef WebTiledLayer_h
@@ -30,45 +30,47 @@
 
 #include "WebLayer.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class WebTiledLayer : public WebLayer {
+class WebTiledLayer : public WebLayer
+{
 public:
-    static PassRefPtr<WebTiledLayer> create(const CGSize& tileSize, GraphicsLayer* owner);
+    static PassRefPtr<WebTiledLayer> create( const CGSize &tileSize, GraphicsLayer *owner );
 
     virtual ~WebTiledLayer();
 
-    virtual void setBounds(const CGRect&);
-    virtual void setFrame(const CGRect&);
+    virtual void setBounds( const CGRect & );
+    virtual void setFrame( const CGRect & );
 
 protected:
-    WebTiledLayer(const CGSize& tileSize, GraphicsLayer* owner);
+    WebTiledLayer( const CGSize &tileSize, GraphicsLayer *owner );
 
     // Overridden from WKCACFLayer
-    virtual WKCACFLayer* internalSublayerAtIndex(int) const;
-    virtual int internalIndexOfSublayer(const WKCACFLayer*);
+    virtual WKCACFLayer *internalSublayerAtIndex( int ) const;
+    virtual int internalIndexOfSublayer( const WKCACFLayer * );
 
     virtual size_t internalSublayerCount() const;
-    virtual void internalInsertSublayer(PassRefPtr<WKCACFLayer>, size_t index);
+    virtual void internalInsertSublayer( PassRefPtr<WKCACFLayer>, size_t index );
 
     virtual void internalRemoveAllSublayers();
-    virtual void internalSetSublayers(const Vector<RefPtr<WKCACFLayer> >&);
+    virtual void internalSetSublayers( const Vector<RefPtr<WKCACFLayer> > & );
 
-    virtual void internalSetNeedsDisplay(const CGRect* dirtyRect);
+    virtual void internalSetNeedsDisplay( const CGRect *dirtyRect );
 
 #ifndef NDEBUG
     virtual void internalCheckLayerConsistency();
 #endif
 
 private:
-    static void tileDisplayCallback(CACFLayerRef, CGContextRef);
-    void drawTile(CACFLayerRef, CGContextRef);
+    static void tileDisplayCallback( CACFLayerRef, CGContextRef );
+    void drawTile( CACFLayerRef, CGContextRef );
 
-    CGSize constrainedSize(const CGSize& size) const;
+    CGSize constrainedSize( const CGSize &size ) const;
 
     void addTile();
     void removeTile();
-    CACFLayerRef tileAtIndex(int);
+    CACFLayerRef tileAtIndex( int );
     int tileCount() const;
 
     void updateTiles();

@@ -37,64 +37,80 @@
 #include <math.h>
 #include <wtf/OwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace VectorMath;
 
-void AudioChannel::scale(double scale)
+void AudioChannel::scale( double scale )
 {
-    float s = static_cast<float>(scale);
-    vsmul(data(), 1, &s, data(), 1, length());
+    float s = static_cast<float>( scale );
+    vsmul( data(), 1, &s, data(), 1, length() );
 }
 
-void AudioChannel::copyFrom(const AudioChannel* sourceChannel)
+void AudioChannel::copyFrom( const AudioChannel *sourceChannel )
 {
-    bool isSafe = (sourceChannel && sourceChannel->length() >= length());
-    ASSERT(isSafe);
-    if (!isSafe)
+    bool isSafe = ( sourceChannel && sourceChannel->length() >= length() );
+    ASSERT( isSafe );
+
+    if ( !isSafe )
+    {
         return;
+    }
 
-    memcpy(data(), sourceChannel->data(), sizeof(float) * length());
+    memcpy( data(), sourceChannel->data(), sizeof( float ) * length() );
 }
 
-void AudioChannel::copyFromRange(const AudioChannel* sourceChannel, unsigned startFrame, unsigned endFrame)
+void AudioChannel::copyFromRange( const AudioChannel *sourceChannel, unsigned startFrame, unsigned endFrame )
 {
     // Check that range is safe for reading from sourceChannel.
     bool isRangeSafe = sourceChannel && startFrame < endFrame && endFrame <= sourceChannel->length();
-    ASSERT(isRangeSafe);
-    if (!isRangeSafe)
+    ASSERT( isRangeSafe );
+
+    if ( !isRangeSafe )
+    {
         return;
+    }
 
     // Check that this channel has enough space.
     size_t rangeLength = endFrame - startFrame;
     bool isRangeLengthSafe = rangeLength <= length();
-    ASSERT(isRangeLengthSafe);
-    if (!isRangeLengthSafe)
-        return;
+    ASSERT( isRangeLengthSafe );
 
-    const float* source = sourceChannel->data();
-    float* destination = data();
-    memcpy(destination, source + startFrame, sizeof(float) * rangeLength);
+    if ( !isRangeLengthSafe )
+    {
+        return;
+    }
+
+    const float *source = sourceChannel->data();
+    float *destination = data();
+    memcpy( destination, source + startFrame, sizeof( float ) * rangeLength );
 }
 
-void AudioChannel::sumFrom(const AudioChannel* sourceChannel)
+void AudioChannel::sumFrom( const AudioChannel *sourceChannel )
 {
     bool isSafe = sourceChannel && sourceChannel->length() >= length();
-    ASSERT(isSafe);
-    if (!isSafe)
-        return;
+    ASSERT( isSafe );
 
-    vadd(data(), 1, sourceChannel->data(), 1, data(), 1, length());
+    if ( !isSafe )
+    {
+        return;
+    }
+
+    vadd( data(), 1, sourceChannel->data(), 1, data(), 1, length() );
 }
 
 float AudioChannel::maxAbsValue() const
 {
-    const float* p = data();
+    const float *p = data();
     int n = length();
 
     float max = 0.0f;
-    while (n--)
-        max = std::max(max, fabsf(*p++));
+
+    while ( n-- )
+    {
+        max = std::max( max, fabsf( *p++ ) );
+    }
 
     return max;
 }

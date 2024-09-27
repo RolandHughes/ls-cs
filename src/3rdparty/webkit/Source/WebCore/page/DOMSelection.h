@@ -6,13 +6,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -34,70 +34,75 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class Frame;
-    class Range;
-    class Node;
-    class VisibleSelection;
+class Frame;
+class Range;
+class Node;
+class VisibleSelection;
 
-    typedef int ExceptionCode;
+typedef int ExceptionCode;
 
-    class DOMSelection : public RefCounted<DOMSelection> {
-    public:
-        static PassRefPtr<DOMSelection> create(Frame* frame) { return adoptRef(new DOMSelection(frame)); }
+class DOMSelection : public RefCounted<DOMSelection>
+{
+public:
+    static PassRefPtr<DOMSelection> create( Frame *frame )
+    {
+        return adoptRef( new DOMSelection( frame ) );
+    }
 
-        Frame* frame() const;
-        void disconnectFrame();
+    Frame *frame() const;
+    void disconnectFrame();
 
-        // Safari Selection Object API
-        // These methods return the valid equivalents of internal editing positions.
-        Node* baseNode() const;
-        Node* extentNode() const;
-        int baseOffset() const;
-        int extentOffset() const;
-        String type() const;
-        void setBaseAndExtent(Node* baseNode, int baseOffset, Node* extentNode, int extentOffset, ExceptionCode&);
-        void setPosition(Node*, int offset, ExceptionCode&);
-        void modify(const String& alter, const String& direction, const String& granularity);
+    // Safari Selection Object API
+    // These methods return the valid equivalents of internal editing positions.
+    Node *baseNode() const;
+    Node *extentNode() const;
+    int baseOffset() const;
+    int extentOffset() const;
+    String type() const;
+    void setBaseAndExtent( Node *baseNode, int baseOffset, Node *extentNode, int extentOffset, ExceptionCode & );
+    void setPosition( Node *, int offset, ExceptionCode & );
+    void modify( const String &alter, const String &direction, const String &granularity );
 
-        // Mozilla Selection Object API
-        // In Firefox, anchor/focus are the equal to the start/end of the selection,
-        // but reflect the direction in which the selection was made by the user.  That does
-        // not mean that they are base/extent, since the base/extent don't reflect
-        // expansion.
-        // These methods return the valid equivalents of internal editing positions.
-        Node* anchorNode() const;
-        int anchorOffset() const;
-        Node* focusNode() const;
-        int focusOffset() const;
-        bool isCollapsed() const;
-        int rangeCount() const;
-        void collapse(Node*, int offset, ExceptionCode&);
-        void collapseToEnd(ExceptionCode&);
-        void collapseToStart(ExceptionCode&);
-        void extend(Node*, int offset, ExceptionCode&);
-        PassRefPtr<Range> getRangeAt(int, ExceptionCode&);
-        void removeAllRanges();
-        void addRange(Range*);
-        void deleteFromDocument();
-        bool containsNode(const Node*, bool partlyContained) const;
-        void selectAllChildren(Node*, ExceptionCode&);
+    // Mozilla Selection Object API
+    // In Firefox, anchor/focus are the equal to the start/end of the selection,
+    // but reflect the direction in which the selection was made by the user.  That does
+    // not mean that they are base/extent, since the base/extent don't reflect
+    // expansion.
+    // These methods return the valid equivalents of internal editing positions.
+    Node *anchorNode() const;
+    int anchorOffset() const;
+    Node *focusNode() const;
+    int focusOffset() const;
+    bool isCollapsed() const;
+    int rangeCount() const;
+    void collapse( Node *, int offset, ExceptionCode & );
+    void collapseToEnd( ExceptionCode & );
+    void collapseToStart( ExceptionCode & );
+    void extend( Node *, int offset, ExceptionCode & );
+    PassRefPtr<Range> getRangeAt( int, ExceptionCode & );
+    void removeAllRanges();
+    void addRange( Range * );
+    void deleteFromDocument();
+    bool containsNode( const Node *, bool partlyContained ) const;
+    void selectAllChildren( Node *, ExceptionCode & );
 
-        String toString();
+    String toString();
 
-        // Microsoft Selection Object API
-        void empty();
+    // Microsoft Selection Object API
+    void empty();
 
-    private:
-        DOMSelection(Frame*);
+private:
+    DOMSelection( Frame * );
 
-        // Convenience method for accessors, does not NULL check m_frame.
-        const VisibleSelection& visibleSelection() const;
+    // Convenience method for accessors, does not NULL check m_frame.
+    const VisibleSelection &visibleSelection() const;
 
-        bool isValidForPosition(Node*) const;
-        Frame* m_frame;
-    };
+    bool isValidForPosition( Node * ) const;
+    Frame *m_frame;
+};
 
 } // namespace WebCore
 

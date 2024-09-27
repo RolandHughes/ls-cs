@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef BINDINGS_C_CLASS_H_
@@ -32,22 +32,25 @@
 #include "npruntime_internal.h"
 #include <wtf/HashMap.h>
 
-namespace JSC {
-namespace Bindings {
+namespace JSC
+{
+namespace Bindings
+{
 
-class CClass : public Class {
+class CClass : public Class
+{
 protected:
-    CClass(NPClass*); // Use classForIsA to create a CClass.
-    
+    CClass( NPClass * ); // Use classForIsA to create a CClass.
+
 public:
-    static CClass* classForIsA(NPClass*);
+    static CClass *classForIsA( NPClass * );
     virtual ~CClass();
 
-    virtual MethodList methodsNamed(const Identifier&, Instance*) const;
-    virtual Field* fieldNamed(const Identifier&, Instance*) const;
+    virtual MethodList methodsNamed( const Identifier &, Instance * ) const;
+    virtual Field *fieldNamed( const Identifier &, Instance * ) const;
 
 private:
-    NPClass* _isa;
+    NPClass *_isa;
     mutable MethodMap _methods;
     mutable FieldMap _fields;
 };

@@ -31,16 +31,17 @@
 #include "AudioNodeInput.h"
 #include "AudioNodeOutput.h"
 
-namespace WebCore {
-
-RealtimeAnalyserNode::RealtimeAnalyserNode(AudioContext* context, double sampleRate)
-    : AudioNode(context, sampleRate)
+namespace WebCore
 {
-    addInput(adoptPtr(new AudioNodeInput(this)));
-    addOutput(adoptPtr(new AudioNodeOutput(this, 2)));
-    
-    setType(NodeTypeAnalyser);
-    
+
+RealtimeAnalyserNode::RealtimeAnalyserNode( AudioContext *context, double sampleRate )
+    : AudioNode( context, sampleRate )
+{
+    addInput( adoptPtr( new AudioNodeInput( this ) ) );
+    addOutput( adoptPtr( new AudioNodeOutput( this, 2 ) ) );
+
+    setType( NodeTypeAnalyser );
+
     initialize();
 }
 
@@ -49,33 +50,36 @@ RealtimeAnalyserNode::~RealtimeAnalyserNode()
     uninitialize();
 }
 
-void RealtimeAnalyserNode::process(size_t framesToProcess)
+void RealtimeAnalyserNode::process( size_t framesToProcess )
 {
-    AudioBus* outputBus = output(0)->bus();
+    AudioBus *outputBus = output( 0 )->bus();
 
-    if (!isInitialized() || !input(0)->isConnected()) {
+    if ( !isInitialized() || !input( 0 )->isConnected() )
+    {
         outputBus->zero();
         return;
     }
 
-    AudioBus* inputBus = input(0)->bus();
-    
+    AudioBus *inputBus = input( 0 )->bus();
+
     // Give the analyser the audio which is passing through this AudioNode.
-    m_analyser.writeInput(inputBus, framesToProcess);
+    m_analyser.writeInput( inputBus, framesToProcess );
 
     // For in-place processing, our override of pullInputs() will just pass the audio data through unchanged if the channel count matches from input to output
     // (resulting in inputBus == outputBus).  Otherwise, do an up-mix to stereo.
-    if (inputBus != outputBus)
-        outputBus->copyFrom(*inputBus);
+    if ( inputBus != outputBus )
+    {
+        outputBus->copyFrom( *inputBus );
+    }
 }
 
 // We override pullInputs() as an optimization allowing this node to take advantage of in-place processing,
 // where the input is simply passed through unprocessed to the output.
 // Note: this only applies if the input and output channel counts match.
-void RealtimeAnalyserNode::pullInputs(size_t framesToProcess)
+void RealtimeAnalyserNode::pullInputs( size_t framesToProcess )
 {
     // Render input stream - try to render directly into output bus for pass-through processing where process() doesn't need to do anything...
-    input(0)->pull(output(0)->bus(), framesToProcess);
+    input( 0 )->pull( output( 0 )->bus(), framesToProcess );
 }
 
 void RealtimeAnalyserNode::reset()

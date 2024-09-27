@@ -25,13 +25,13 @@
 
 using namespace QPatternist;
 
-StaticCompatibilityContext::StaticCompatibilityContext(const StaticContext::Ptr &context) : DelegatingStaticContext(
-      context)
+StaticCompatibilityContext::StaticCompatibilityContext( const StaticContext::Ptr &context ) : DelegatingStaticContext(
+        context )
 {
 }
 
 bool StaticCompatibilityContext::compatModeEnabled() const
 {
-   return true;
+    return true;
 }
 

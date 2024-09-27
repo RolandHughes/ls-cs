@@ -21,7 +21,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef StyleMedia_h
@@ -29,28 +29,36 @@
 
 #include "PlatformString.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Frame;
 
-class StyleMedia : public RefCounted<StyleMedia> {
+class StyleMedia : public RefCounted<StyleMedia>
+{
 public:
-    static PassRefPtr<StyleMedia> create(Frame* frame)
+    static PassRefPtr<StyleMedia> create( Frame *frame )
     {
-        return adoptRef(new StyleMedia(frame));
+        return adoptRef( new StyleMedia( frame ) );
     }
 
-    Frame* frame() { return m_frame; }
-    void disconnectFrame() { m_frame = 0; }
+    Frame *frame()
+    {
+        return m_frame;
+    }
+    void disconnectFrame()
+    {
+        m_frame = 0;
+    }
 
     String type() const;
 
-    bool matchMedium(const String&) const;
+    bool matchMedium( const String & ) const;
 
 private:
-    StyleMedia(Frame*);
+    StyleMedia( Frame * );
 
-    Frame* m_frame;
+    Frame *m_frame;
 };
 
 } // namespace

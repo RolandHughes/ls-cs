@@ -30,24 +30,24 @@ class QTemporaryFile;
 
 class QFilePrivate : public QFileDevicePrivate
 {
- protected:
-   QFilePrivate();
-   ~QFilePrivate();
+protected:
+    QFilePrivate();
+    ~QFilePrivate();
 
-   bool openExternalFile(int flags, int fd, QFile::FileHandleFlags handleFlags);
-   bool openExternalFile(int flags, FILE *fh, QFile::FileHandleFlags handleFlags);
+    bool openExternalFile( int flags, int fd, QFile::FileHandleFlags handleFlags );
+    bool openExternalFile( int flags, FILE *fh, QFile::FileHandleFlags handleFlags );
 
-   QAbstractFileEngine *engine() const override;
+    QAbstractFileEngine *engine() const override;
 
-   QString fileName;
+    QString fileName;
 
- private:
-   Q_DECLARE_PUBLIC(QFile)
+private:
+    Q_DECLARE_PUBLIC( QFile )
 
-   static QFile::EncoderFn encoder;
-   static QFile::DecoderFn decoder;
+    static QFile::EncoderFn encoder;
+    static QFile::DecoderFn decoder;
 
-   friend class QTemporaryFile;
+    friend class QTemporaryFile;
 };
 
 #endif

@@ -32,7 +32,8 @@
 extern "C" {
 #endif
 
-enum {
+enum
+{
     kWKErrorCodeCannotShowMIMEType =                             100,
     kWKErrorCodeCannotShowURL =                                  101,
     kWKErrorCodeFrameLoadInterruptedByPolicyChange =             102,
@@ -49,10 +50,10 @@ WK_EXPORT WKTypeID WKErrorGetTypeID();
 
 WK_EXPORT WKStringRef WKErrorCopyWKErrorDomain();
 
-WK_EXPORT WKStringRef WKErrorCopyDomain(WKErrorRef error);
-WK_EXPORT int WKErrorGetErrorCode(WKErrorRef error);
-WK_EXPORT WKURLRef WKErrorCopyFailingURL(WKErrorRef error);
-WK_EXPORT WKStringRef WKErrorCopyLocalizedDescription(WKErrorRef error);
+WK_EXPORT WKStringRef WKErrorCopyDomain( WKErrorRef error );
+WK_EXPORT int WKErrorGetErrorCode( WKErrorRef error );
+WK_EXPORT WKURLRef WKErrorCopyFailingURL( WKErrorRef error );
+WK_EXPORT WKStringRef WKErrorCopyLocalizedDescription( WKErrorRef error );
 
 #ifdef __cplusplus
 }

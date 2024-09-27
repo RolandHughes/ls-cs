@@ -39,32 +39,43 @@
 
 using namespace QPatternist;
 
-AtomicValue::Ptr Numeric::fromLexical(const QString &number)
+AtomicValue::Ptr Numeric::fromLexical( const QString &number )
 {
-   Q_ASSERT(!number.isEmpty());
-   Q_ASSERT_X(!number.contains(QLatin1Char('e')) &&
-              !number.contains(QLatin1Char('E')),
-              Q_FUNC_INFO, "Should not contain any e/E");
+    Q_ASSERT( !number.isEmpty() );
+    Q_ASSERT_X( !number.contains( QLatin1Char( 'e' ) ) &&
+                !number.contains( QLatin1Char( 'E' ) ),
+                Q_FUNC_INFO, "Should not contain any e/E" );
 
-   if (number.contains(QLatin1Char('.'))) { /* an xs:decimal. */
-      return Decimal::fromLexical(number);
-   } else { /* It's an integer, of some sort. E.g, -3, -2, -1, 0, 1, 2, 3 */
-      return Integer::fromLexical(number);
-   }
+    if ( number.contains( QLatin1Char( '.' ) ) ) /* an xs:decimal. */
+    {
+        return Decimal::fromLexical( number );
+    }
+    else     /* It's an integer, of some sort. E.g, -3, -2, -1, 0, 1, 2, 3 */
+    {
+        return Integer::fromLexical( number );
+    }
 }
 
-xsDouble Numeric::roundFloat(const xsDouble val)
+xsDouble Numeric::roundFloat( const xsDouble val )
 {
-   if (qIsInf(val) || AbstractFloat<true>::isEqual(val, 0.0)) {
-      return val;
-   } else if (qIsNaN(val)) {
-      return val;
-   } else {
-      if (val >= -0.5 && val < 0) {
-         return -0.0;
-      } else {
-         return ::floor(val + 0.5);
-      }
+    if ( qIsInf( val ) || AbstractFloat<true>::isEqual( val, 0.0 ) )
+    {
+        return val;
+    }
+    else if ( qIsNaN( val ) )
+    {
+        return val;
+    }
+    else
+    {
+        if ( val >= -0.5 && val < 0 )
+        {
+            return -0.0;
+        }
+        else
+        {
+            return ::floor( val + 0.5 );
+        }
 
-   }
+    }
 }

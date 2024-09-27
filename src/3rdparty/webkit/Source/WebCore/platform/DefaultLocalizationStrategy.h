@@ -31,9 +31,11 @@
 #include "LocalizationStrategy.h"
 #include <wtf/text/WTFString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class DefaultLocalizationStrategy : public LocalizationStrategy {
+class DefaultLocalizationStrategy : public LocalizationStrategy
+{
 public:
     DefaultLocalizationStrategy();
 
@@ -78,11 +80,11 @@ private:
     virtual String contextMenuItemTagIgnoreSpelling();
     virtual String contextMenuItemTagLearnSpelling();
     virtual String contextMenuItemTagSearchWeb();
-    virtual String contextMenuItemTagLookUpInDictionary(const String& selectedString);
+    virtual String contextMenuItemTagLookUpInDictionary( const String &selectedString );
     virtual String contextMenuItemTagOpenLink();
     virtual String contextMenuItemTagIgnoreGrammar();
     virtual String contextMenuItemTagSpellingMenu();
-    virtual String contextMenuItemTagShowSpellingPanel(bool show);
+    virtual String contextMenuItemTagShowSpellingPanel( bool show );
     virtual String contextMenuItemTagCheckSpelling();
     virtual String contextMenuItemTagCheckSpellingWhileTyping();
     virtual String contextMenuItemTagCheckGrammarWithSpelling();
@@ -106,7 +108,7 @@ private:
     virtual String contextMenuItemTagStopSpeaking();
     virtual String contextMenuItemTagCorrectSpellingAutomatically();
     virtual String contextMenuItemTagSubstitutionsMenu();
-    virtual String contextMenuItemTagShowSubstitutions(bool show);
+    virtual String contextMenuItemTagShowSubstitutions( bool show );
     virtual String contextMenuItemTagSmartCopyPaste();
     virtual String contextMenuItemTagSmartQuotes();
     virtual String contextMenuItemTagSmartDashes();
@@ -116,7 +118,7 @@ private:
     virtual String contextMenuItemTagMakeUpperCase();
     virtual String contextMenuItemTagMakeLowerCase();
     virtual String contextMenuItemTagCapitalize();
-    virtual String contextMenuItemTagChangeBack(const String& replacedString);
+    virtual String contextMenuItemTagChangeBack( const String &replacedString );
 #endif
     virtual String contextMenuItemTagInspectElement();
     virtual String contextMenuItemTagOpenVideoInNewWindow();
@@ -141,7 +143,7 @@ private:
     virtual String AXDefinitionListTermText();
     virtual String AXDefinitionListDefinitionText();
 #if PLATFORM(MAC)
-    virtual String AXARIAContentGroupText(const String& ariaType);
+    virtual String AXARIAContentGroupText( const String &ariaType );
 #endif
     virtual String AXButtonActionVerb();
     virtual String AXRadioButtonActionVerb();
@@ -153,7 +155,7 @@ private:
     virtual String AXLinkActionVerb();
     virtual String missingPluginText();
     virtual String crashedPluginText();
-    virtual String multipleFileUploadText(unsigned numberOfFiles);
+    virtual String multipleFileUploadText( unsigned numberOfFiles );
     virtual String unknownFileSizeText();
 #if PLATFORM(WIN)
     virtual String uploadFileText();
@@ -163,14 +165,14 @@ private:
     virtual String keygenMenuItem512();
     virtual String keygenMenuItem1024();
     virtual String keygenMenuItem2048();
-    virtual String keygenKeychainItemName(const String& host);
+    virtual String keygenKeychainItemName( const String &host );
 #endif
-    virtual String imageTitle(const String& filename, const IntSize&);
+    virtual String imageTitle( const String &filename, const IntSize & );
     virtual String mediaElementLoadingStateText();
     virtual String mediaElementLiveBroadcastStateText();
-    virtual String localizedMediaControlElementString(const String&);
-    virtual String localizedMediaControlElementHelpText(const String&);
-    virtual String localizedMediaTimeDescription(float);
+    virtual String localizedMediaControlElementString( const String & );
+    virtual String localizedMediaControlElementHelpText( const String & );
+    virtual String localizedMediaTimeDescription( float );
     virtual String validationMessageValueMissingText();
     virtual String validationMessageTypeMismatchText();
     virtual String validationMessagePatternMismatchText();

@@ -54,12 +54,13 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 #ifndef NDEBUG
 #if OS(WINDOWS)
-static void sleep(unsigned seconds)
+static void sleep( unsigned seconds )
 {
-    ::Sleep(seconds * 1000);
+    ::Sleep( seconds * 1000 );
 }
 #endif
 #endif
@@ -71,7 +72,7 @@ public:
 
     bool initializeFromEnvironment();
 
-    QList<QNetworkProxy> queryProxy(const QNetworkProxyQuery& query = QNetworkProxyQuery());
+    QList<QNetworkProxy> queryProxy( const QNetworkProxyQuery &query = QNetworkProxyQuery() );
 
 private:
     QList<QNetworkProxy> m_httpProxy;
@@ -82,32 +83,47 @@ bool EnvHttpProxyFactory::initializeFromEnvironment()
 {
     bool wasSetByEnvironment = false;
 
-    QUrl proxyUrl = QUrl::fromUserInput(QString::fromLocal8Bit(qgetenv("http_proxy")));
-    if (proxyUrl.isValid() && !proxyUrl.host().isEmpty()) {
-        int proxyPort = (proxyUrl.port() > 0) ? proxyUrl.port() : 8080;
-        m_httpProxy << QNetworkProxy(QNetworkProxy::HttpProxy, proxyUrl.host(), proxyPort);
-        wasSetByEnvironment = true;
-    } else
-        m_httpProxy << QNetworkProxy::NoProxy;
+    QUrl proxyUrl = QUrl::fromUserInput( QString::fromLocal8Bit( qgetenv( "http_proxy" ) ) );
 
-    proxyUrl = QUrl::fromUserInput(QString::fromLocal8Bit(qgetenv("https_proxy")));
-    if (proxyUrl.isValid() && !proxyUrl.host().isEmpty()) {
-        int proxyPort = (proxyUrl.port() > 0) ? proxyUrl.port() : 8080;
-        m_httpsProxy << QNetworkProxy(QNetworkProxy::HttpProxy, proxyUrl.host(), proxyPort);
+    if ( proxyUrl.isValid() && !proxyUrl.host().isEmpty() )
+    {
+        int proxyPort = ( proxyUrl.port() > 0 ) ? proxyUrl.port() : 8080;
+        m_httpProxy << QNetworkProxy( QNetworkProxy::HttpProxy, proxyUrl.host(), proxyPort );
         wasSetByEnvironment = true;
-    } else
+    }
+    else
+    {
+        m_httpProxy << QNetworkProxy::NoProxy;
+    }
+
+    proxyUrl = QUrl::fromUserInput( QString::fromLocal8Bit( qgetenv( "https_proxy" ) ) );
+
+    if ( proxyUrl.isValid() && !proxyUrl.host().isEmpty() )
+    {
+        int proxyPort = ( proxyUrl.port() > 0 ) ? proxyUrl.port() : 8080;
+        m_httpsProxy << QNetworkProxy( QNetworkProxy::HttpProxy, proxyUrl.host(), proxyPort );
+        wasSetByEnvironment = true;
+    }
+    else
+    {
         m_httpsProxy << QNetworkProxy::NoProxy;
+    }
 
     return wasSetByEnvironment;
 }
 
-QList<QNetworkProxy> EnvHttpProxyFactory::queryProxy(const QNetworkProxyQuery& query)
+QList<QNetworkProxy> EnvHttpProxyFactory::queryProxy( const QNetworkProxyQuery &query )
 {
     QString protocol = query.protocolTag().toLower();
-    if (protocol == QLatin1String("http"))
+
+    if ( protocol == QLatin1String( "http" ) )
+    {
         return m_httpProxy;
-    else if (protocol == QLatin1String("https"))
+    }
+    else if ( protocol == QLatin1String( "https" ) )
+    {
         return m_httpsProxy;
+    }
 
     QList<QNetworkProxy> proxies;
     proxies << QNetworkProxy::NoProxy;
@@ -117,56 +133,69 @@ QList<QNetworkProxy> EnvHttpProxyFactory::queryProxy(const QNetworkProxyQuery& q
 static void initializeProxy()
 {
     QList<QNetworkProxy> proxylist = QNetworkProxyFactory::systemProxyForQuery();
-    if (proxylist.count() == 1) {
+
+    if ( proxylist.count() == 1 )
+    {
         QNetworkProxy proxy = proxylist.first();
-        if (proxy == QNetworkProxy::NoProxy || proxy == QNetworkProxy::DefaultProxy) {
-            EnvHttpProxyFactory* proxyFactory = new EnvHttpProxyFactory();
-            if (proxyFactory->initializeFromEnvironment()) {
-                QNetworkProxyFactory::setApplicationProxyFactory(proxyFactory);
+
+        if ( proxy == QNetworkProxy::NoProxy || proxy == QNetworkProxy::DefaultProxy )
+        {
+            EnvHttpProxyFactory *proxyFactory = new EnvHttpProxyFactory();
+
+            if ( proxyFactory->initializeFromEnvironment() )
+            {
+                QNetworkProxyFactory::setApplicationProxyFactory( proxyFactory );
                 return;
             }
         }
     }
-    QNetworkProxyFactory::setUseSystemConfiguration(true);
+
+    QNetworkProxyFactory::setUseSystemConfiguration( true );
 }
 
-Q_DECL_EXPORT int WebProcessMainQt(int argc, char** argv)
+Q_DECL_EXPORT int WebProcessMainQt( int argc, char **argv )
 {
-    QApplication::setGraphicsSystem(QLatin1String("raster"));
-    QApplication* app = new QApplication(argc, argv);
+    QApplication::setGraphicsSystem( QLatin1String( "raster" ) );
+    QApplication *app = new QApplication( argc, argv );
 #ifndef NDEBUG
-    if (!qgetenv("WEBKIT2_PAUSE_WEB_PROCESS_ON_LAUNCH").isEmpty()) {
+
+    if ( !qgetenv( "WEBKIT2_PAUSE_WEB_PROCESS_ON_LAUNCH" ).isEmpty() )
+    {
         qDebug() << "Waiting 3 seconds for debugger";
-        sleep(3);
+        sleep( 3 );
     }
+
 #endif
 
 #if USE(MEEGOTOUCH)
-    new MComponentData(argc, argv);
+    new MComponentData( argc, argv );
 #endif
 
     initializeProxy();
 
-    srandom(time(0));
+    srandom( time( 0 ) );
 
     JSC::initializeThreading();
     WTF::initializeMainThread();
     RunLoop::initializeMainRunLoop();
 
     // Create the connection.
-    if (app->arguments().size() <= 1) {
+    if ( app->arguments().size() <= 1 )
+    {
         qDebug() << "Error: wrong number of arguments.";
         return 1;
     }
 
     bool wasNumber = false;
-    int identifier = app->arguments().at(1).toInt(&wasNumber, 10);
-    if (!wasNumber) {
+    int identifier = app->arguments().at( 1 ).toInt( &wasNumber, 10 );
+
+    if ( !wasNumber )
+    {
         qDebug() << "Error: connection identifier wrong.";
         return 1;
     }
 
-    WebKit::WebProcess::shared().initialize(identifier, RunLoop::main());
+    WebKit::WebProcess::shared().initialize( identifier, RunLoop::main() );
 
     RunLoop::run();
 

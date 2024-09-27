@@ -32,13 +32,15 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefPtr.h>
 
-namespace CoreIPC {
+namespace CoreIPC
+{
 class ArgumentDecoder;
 class Connection;
 class MessageID;
 }
 
-namespace WebCore {
+namespace WebCore
+{
 class IntRect;
 }
 
@@ -46,8 +48,9 @@ class IntRect;
 OBJC_CLASS WKView;
 #endif
 
-namespace WebKit {
-    
+namespace WebKit
+{
+
 #if PLATFORM(MAC)
 typedef WKView PlatformWebView;
 #elif PLATFORM(WIN)
@@ -63,44 +66,47 @@ typedef WebView PlatformWebView;
 class WebPageProxy;
 class LayerTreeContext;
 
-class WebFullScreenManagerProxy : public RefCounted<WebFullScreenManagerProxy> {
+class WebFullScreenManagerProxy : public RefCounted<WebFullScreenManagerProxy>
+{
 public:
-    static PassRefPtr<WebFullScreenManagerProxy> create(WebPageProxy*);
+    static PassRefPtr<WebFullScreenManagerProxy> create( WebPageProxy * );
     virtual ~WebFullScreenManagerProxy();
 
     void invalidate();
 
-    void setWebView(PlatformWebView*);
+    void setWebView( PlatformWebView * );
 
-    void didReceiveMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*);
-    CoreIPC::SyncReplyMode didReceiveSyncMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder* arguments, CoreIPC::ArgumentEncoder* reply);
+    void didReceiveMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * );
+    CoreIPC::SyncReplyMode didReceiveSyncMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder *arguments,
+            CoreIPC::ArgumentEncoder *reply );
 
     void willEnterFullScreen();
     void didEnterFullScreen();
     void willExitFullScreen();
     void didExitFullScreen();
-    void beginEnterFullScreenAnimation(float duration);
-    void beginExitFullScreenAnimation(float duration);
+    void beginEnterFullScreenAnimation( float duration );
+    void beginExitFullScreenAnimation( float duration );
 
 private:
-    WebFullScreenManagerProxy(WebPageProxy*);
+    WebFullScreenManagerProxy( WebPageProxy * );
 
-    void supportsFullScreen(bool withKeyboard, bool&);
+    void supportsFullScreen( bool withKeyboard, bool & );
     void enterFullScreen();
     void exitFullScreen();
     void beganEnterFullScreenAnimation();
-    void finishedEnterFullScreenAnimation(bool completed);
+    void finishedEnterFullScreenAnimation( bool completed );
     void beganExitFullScreenAnimation();
-    void finishedExitFullScreenAnimation(bool completed);
-    void enterAcceleratedCompositingMode(const LayerTreeContext&);
+    void finishedExitFullScreenAnimation( bool completed );
+    void enterAcceleratedCompositingMode( const LayerTreeContext & );
     void exitAcceleratedCompositingMode();
-    void getFullScreenRect(WebCore::IntRect&);
+    void getFullScreenRect( WebCore::IntRect & );
 
-    WebPageProxy* m_page;
-    PlatformWebView* m_webView;
+    WebPageProxy *m_page;
+    PlatformWebView *m_webView;
 
-    void didReceiveWebFullScreenManagerProxyMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*);
-    CoreIPC::SyncReplyMode didReceiveSyncWebFullScreenManagerProxyMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder* arguments, CoreIPC::ArgumentEncoder* reply);
+    void didReceiveWebFullScreenManagerProxyMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * );
+    CoreIPC::SyncReplyMode didReceiveSyncWebFullScreenManagerProxyMessage( CoreIPC::Connection *, CoreIPC::MessageID,
+            CoreIPC::ArgumentDecoder *arguments, CoreIPC::ArgumentEncoder *reply );
 };
 
 } // namespace WebKit

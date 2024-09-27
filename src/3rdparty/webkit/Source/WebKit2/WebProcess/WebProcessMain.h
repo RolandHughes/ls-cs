@@ -28,11 +28,12 @@
 
 #include "WKBase.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
 class CommandLine;
 
-int WebProcessMain(const CommandLine&);
+int WebProcessMain( const CommandLine & );
 
 } // namespace WebKit
 

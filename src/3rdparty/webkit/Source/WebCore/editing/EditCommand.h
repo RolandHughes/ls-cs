@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef EditCommand_h
@@ -30,15 +30,17 @@
 #include "Element.h"
 #include "VisibleSelection.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class CompositeEditCommand;
 
-class EditCommand : public RefCounted<EditCommand> {
+class EditCommand : public RefCounted<EditCommand>
+{
 public:
     virtual ~EditCommand();
 
-    void setParent(CompositeEditCommand*);
+    void setParent( CompositeEditCommand * );
 
     void apply();
     void unapply();
@@ -46,30 +48,48 @@ public:
 
     virtual EditAction editingAction() const;
 
-    const VisibleSelection& startingSelection() const { return m_startingSelection; }
-    const VisibleSelection& endingSelection() const { return m_endingSelection; }
+    const VisibleSelection &startingSelection() const
+    {
+        return m_startingSelection;
+    }
+    const VisibleSelection &endingSelection() const
+    {
+        return m_endingSelection;
+    }
 
-    Element* startingRootEditableElement() const { return m_startingRootEditableElement.get(); }
-    Element* endingRootEditableElement() const { return m_endingRootEditableElement.get(); }
-    
+    Element *startingRootEditableElement() const
+    {
+        return m_startingRootEditableElement.get();
+    }
+    Element *endingRootEditableElement() const
+    {
+        return m_endingRootEditableElement.get();
+    }
+
     virtual bool isInsertTextCommand() const;
     virtual bool isTypingCommand() const;
     virtual bool isCreateLinkCommand() const;
-    
+
     virtual bool preservesTypingStyle() const;
 
-    bool isTopLevelCommand() const { return !m_parent; }
+    bool isTopLevelCommand() const
+    {
+        return !m_parent;
+    }
 
     virtual bool shouldRetainAutocorrectionIndicator() const;
-    virtual void setShouldRetainAutocorrectionIndicator(bool);
+    virtual void setShouldRetainAutocorrectionIndicator( bool );
 
 protected:
-    EditCommand(Document*);
+    EditCommand( Document * );
 
-    Document* document() const { return m_document.get(); }
+    Document *document() const
+    {
+        return m_document.get();
+    }
 
-    void setStartingSelection(const VisibleSelection&);
-    void setEndingSelection(const VisibleSelection&);
+    void setStartingSelection( const VisibleSelection & );
+    void setEndingSelection( const VisibleSelection & );
 
     void updateLayout() const;
 
@@ -83,17 +103,18 @@ private:
     VisibleSelection m_endingSelection;
     RefPtr<Element> m_startingRootEditableElement;
     RefPtr<Element> m_endingRootEditableElement;
-    CompositeEditCommand* m_parent;
+    CompositeEditCommand *m_parent;
 
-    friend void applyCommand(PassRefPtr<EditCommand>);
+    friend void applyCommand( PassRefPtr<EditCommand> );
 };
 
-class SimpleEditCommand : public EditCommand {
+class SimpleEditCommand : public EditCommand
+{
 protected:
-    SimpleEditCommand(Document* document) : EditCommand(document) { }
+    SimpleEditCommand( Document *document ) : EditCommand( document ) { }
 };
 
-void applyCommand(PassRefPtr<EditCommand>);
+void applyCommand( PassRefPtr<EditCommand> );
 
 } // namespace WebCore
 

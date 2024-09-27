@@ -33,20 +33,22 @@
 
 #include <wtf/Vector.h>
 
-namespace WTF {
+namespace WTF
+{
 
-class SHA1 {
+class SHA1
+{
 public:
     SHA1();
 
-    void addBytes(const Vector<uint8_t>& input)
+    void addBytes( const Vector<uint8_t> &input )
     {
-        addBytes(input.data(), input.size());
+        addBytes( input.data(), input.size() );
     }
-    void addBytes(const uint8_t* input, size_t length);
+    void addBytes( const uint8_t *input, size_t length );
 
     // computeHash has a side effect of resetting the state of the object.
-    void computeHash(Vector<uint8_t, 20>&);
+    void computeHash( Vector<uint8_t, 20> & );
 
 private:
     void finalize();

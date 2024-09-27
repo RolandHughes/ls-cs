@@ -26,108 +26,122 @@
 #include <qapplication.h>
 #include <qlist.h>
 
-struct QTextOptionPrivate {
-   QList<QTextOption::Tab> tabStops;
+struct QTextOptionPrivate
+{
+    QList<QTextOption::Tab> tabStops;
 };
 
 QTextOption::QTextOption()
-   : align(Qt::AlignLeft), wordWrap(QTextOption::WordWrap),
-     design(false), f(0), tab(-1), d(nullptr)
+    : align( Qt::AlignLeft ), wordWrap( QTextOption::WordWrap ),
+      design( false ), f( 0 ), tab( -1 ), d( nullptr )
 {
-   direction = Qt::LayoutDirectionAuto;
+    direction = Qt::LayoutDirectionAuto;
 }
 
-QTextOption::QTextOption(Qt::Alignment alignment)
-   : align(alignment), wordWrap(QTextOption::WordWrap),
-     design(false), f(0), tab(-1), d(nullptr)
+QTextOption::QTextOption( Qt::Alignment alignment )
+    : align( alignment ), wordWrap( QTextOption::WordWrap ),
+      design( false ), f( 0 ), tab( -1 ), d( nullptr )
 {
-   direction = QGuiApplication::layoutDirection();
+    direction = QGuiApplication::layoutDirection();
 }
 
 QTextOption::~QTextOption()
 {
-   delete d;
+    delete d;
 }
 
-QTextOption::QTextOption(const QTextOption &o)
-   : align(o.align), wordWrap(o.wordWrap), design(o.design),
-     direction(o.direction), f(o.f), tab(o.tab), d(nullptr)
+QTextOption::QTextOption( const QTextOption &o )
+    : align( o.align ), wordWrap( o.wordWrap ), design( o.design ),
+      direction( o.direction ), f( o.f ), tab( o.tab ), d( nullptr )
 {
-   if (o.d) {
-      d = new QTextOptionPrivate(*o.d);
-   }
+    if ( o.d )
+    {
+        d = new QTextOptionPrivate( *o.d );
+    }
 }
 
-QTextOption &QTextOption::operator=(const QTextOption &o)
+QTextOption &QTextOption::operator=( const QTextOption &o )
 {
-   if (this == &o) {
-      return *this;
-   }
+    if ( this == &o )
+    {
+        return *this;
+    }
 
-   QTextOptionPrivate *dNew = nullptr;
-   if (o.d) {
-      dNew = new QTextOptionPrivate(*o.d);
-   }
+    QTextOptionPrivate *dNew = nullptr;
 
-   delete d;
-   d = dNew;
+    if ( o.d )
+    {
+        dNew = new QTextOptionPrivate( *o.d );
+    }
 
-   align     = o.align;
-   wordWrap  = o.wordWrap;
-   design    = o.design;
-   direction = o.direction;
-   f         = o.f;
-   tab       = o.tab;
+    delete d;
+    d = dNew;
 
-   return *this;
+    align     = o.align;
+    wordWrap  = o.wordWrap;
+    design    = o.design;
+    direction = o.direction;
+    f         = o.f;
+    tab       = o.tab;
+
+    return *this;
 }
 
-void QTextOption::setTabArray(const QList<qreal> &tabStops)
+void QTextOption::setTabArray( const QList<qreal> &tabStops )
 {
-   if (! d) {
-      d = new QTextOptionPrivate;
-   }
+    if ( ! d )
+    {
+        d = new QTextOptionPrivate;
+    }
 
-   QList<QTextOption::Tab> tabs;
-   QTextOption::Tab tab;
+    QList<QTextOption::Tab> tabs;
+    QTextOption::Tab tab;
 
-   for (qreal pos : tabStops) {
-      tab.position = pos;
-      tabs.append(tab);
-   }
-   d->tabStops = tabs;
+    for ( qreal pos : tabStops )
+    {
+        tab.position = pos;
+        tabs.append( tab );
+    }
+
+    d->tabStops = tabs;
 }
 
-void QTextOption::setTabs(const QList<QTextOption::Tab> &tabStops)
+void QTextOption::setTabs( const QList<QTextOption::Tab> &tabStops )
 {
-   if (! d) {
-      d = new QTextOptionPrivate;
-   }
-   d->tabStops = tabStops;
+    if ( ! d )
+    {
+        d = new QTextOptionPrivate;
+    }
+
+    d->tabStops = tabStops;
 }
 
 QList<qreal> QTextOption::tabArray() const
 {
-   QList<qreal> answer;
+    QList<qreal> answer;
 
-   if (! d) {
-      return answer;
-   }
-   QList<QTextOption::Tab>::const_iterator iter = d->tabStops.constBegin();
+    if ( ! d )
+    {
+        return answer;
+    }
 
-   while (iter != d->tabStops.constEnd()) {
-      answer.append( (*iter).position);
-      ++iter;
-   }
+    QList<QTextOption::Tab>::const_iterator iter = d->tabStops.constBegin();
 
-   return answer;
+    while ( iter != d->tabStops.constEnd() )
+    {
+        answer.append( ( *iter ).position );
+        ++iter;
+    }
+
+    return answer;
 }
 
 QList<QTextOption::Tab> QTextOption::tabs() const
 {
-   if (! d) {
-      return QList<QTextOption::Tab>();
-   }
+    if ( ! d )
+    {
+        return QList<QTextOption::Tab>();
+    }
 
-   return d->tabStops;
+    return d->tabStops;
 }

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef RemoveCSSPropertyCommand_h
@@ -30,17 +30,20 @@
 #include "CSSPropertyNames.h"
 #include "StyledElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class RemoveCSSPropertyCommand : public SimpleEditCommand {
+class RemoveCSSPropertyCommand : public SimpleEditCommand
+{
 public:
-    static PassRefPtr<RemoveCSSPropertyCommand> create(Document* document, PassRefPtr<StyledElement> element, CSSPropertyID property)
+    static PassRefPtr<RemoveCSSPropertyCommand> create( Document *document, PassRefPtr<StyledElement> element,
+            CSSPropertyID property )
     {
-        return adoptRef(new RemoveCSSPropertyCommand(document, element, property));
+        return adoptRef( new RemoveCSSPropertyCommand( document, element, property ) );
     }
 
 private:
-    RemoveCSSPropertyCommand(Document*, PassRefPtr<StyledElement>, CSSPropertyID property);
+    RemoveCSSPropertyCommand( Document *, PassRefPtr<StyledElement>, CSSPropertyID property );
 
     virtual void doApply();
     virtual void doUnapply();

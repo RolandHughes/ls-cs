@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef MediaPlayerPrivateAVFoundationObjC_h
@@ -49,49 +49,54 @@ typedef struct objc_object *id;
 
 typedef struct CGImage *CGImageRef;
 
-namespace WebCore {
+namespace WebCore
+{
 
 class ApplicationCacheResource;
 
-class MediaPlayerPrivateAVFoundationObjC : public MediaPlayerPrivateAVFoundation {
+class MediaPlayerPrivateAVFoundationObjC : public MediaPlayerPrivateAVFoundation
+{
 public:
     ~MediaPlayerPrivateAVFoundationObjC();
 
-    static void registerMediaEngine(MediaEngineRegistrar);
+    static void registerMediaEngine( MediaEngineRegistrar );
 
-    void setAsset(id);
+    void setAsset( id );
     virtual void tracksChanged();
 
 private:
-    MediaPlayerPrivateAVFoundationObjC(MediaPlayer*);
+    MediaPlayerPrivateAVFoundationObjC( MediaPlayer * );
 
     // engine support
-    static PassOwnPtr<MediaPlayerPrivateInterface> create(MediaPlayer*);
-    static void getSupportedTypes(HashSet<String>& types);
-    static MediaPlayer::SupportsType supportsType(const String& type, const String& codecs);
+    static PassOwnPtr<MediaPlayerPrivateInterface> create( MediaPlayer * );
+    static void getSupportedTypes( HashSet<String> &types );
+    static MediaPlayer::SupportsType supportsType( const String &type, const String &codecs );
     static bool isAvailable();
 
     virtual void cancelLoad();
 
     virtual PlatformMedia platformMedia() const;
 
-    virtual void platformSetVisible(bool);
+    virtual void platformSetVisible( bool );
     virtual void platformPlay();
     virtual void platformPause();
     virtual float currentTime() const;
-    virtual void setVolume(float);
-    virtual void setClosedCaptionsVisible(bool);
-    virtual void paint(GraphicsContext*, const IntRect&);
-    virtual void paintCurrentFrameInContext(GraphicsContext*, const IntRect&);
-    virtual PlatformLayer* platformLayer() const;
-    virtual bool supportsAcceleratedRendering() const { return true; }
-    virtual float mediaTimeForTimeValue(float) const;
+    virtual void setVolume( float );
+    virtual void setClosedCaptionsVisible( bool );
+    virtual void paint( GraphicsContext *, const IntRect & );
+    virtual void paintCurrentFrameInContext( GraphicsContext *, const IntRect & );
+    virtual PlatformLayer *platformLayer() const;
+    virtual bool supportsAcceleratedRendering() const
+    {
+        return true;
+    }
+    virtual float mediaTimeForTimeValue( float ) const;
 
     virtual void createAVPlayer();
     virtual void createAVPlayerItem();
-    virtual void createAVAssetForURL(const String& url);
+    virtual void createAVAssetForURL( const String &url );
 #if ENABLE(OFFLINE_WEB_APPLICATIONS)
-    virtual void createAVAssetForCacheResource(ApplicationCacheResource*);
+    virtual void createAVAssetForCacheResource( ApplicationCacheResource * );
 #endif
     virtual MediaPlayerPrivateAVFoundation::ItemStatus playerItemStatus() const;
     virtual MediaPlayerPrivateAVFoundation::AssetStatus assetStatus() const;
@@ -99,7 +104,7 @@ private:
     virtual void checkPlayability();
     virtual void updateRate();
     virtual float rate() const;
-    virtual void seekToTime(float time);
+    virtual void seekToTime( float time );
     virtual unsigned totalBytes() const;
     virtual PassRefPtr<TimeRanges> platformBufferedTimeRanges() const;
     virtual float platformMaxTimeSeekable() const;
@@ -121,9 +126,9 @@ private:
 
     virtual bool hasSingleSecurityOrigin() const;
 
-    RetainPtr<CGImageRef> createImageForTimeInRect(float, const IntRect&);
+    RetainPtr<CGImageRef> createImageForTimeInRect( float, const IntRect & );
 
-    MediaPlayer* m_player;
+    MediaPlayer *m_player;
     RetainPtr<AVAsset> m_avAsset;
     RetainPtr<AVPlayer> m_avPlayer;
     RetainPtr<AVPlayerItem> m_avPlayerItem;

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
 
@@ -48,64 +48,75 @@
 
 #if USE(JSC)
 // FIXME: This is a temporary layering violation while we move more string code to WTF.
-namespace JSC {
+namespace JSC
+{
 
-typedef HashMap<const char*, RefPtr<StringImpl>, PtrHash<const char*> > LiteralIdentifierTable;
+typedef HashMap<const char *, RefPtr<StringImpl>, PtrHash<const char *> > LiteralIdentifierTable;
 
-class IdentifierTable {
+class IdentifierTable
+{
     WTF_MAKE_FAST_ALLOCATED;
 public:
     ~IdentifierTable();
 
-    std::pair<HashSet<StringImpl*>::iterator, bool> add(StringImpl* value);
+    std::pair<HashSet<StringImpl *>::iterator, bool> add( StringImpl *value );
     template<typename U, typename V>
-    std::pair<HashSet<StringImpl*>::iterator, bool> add(U value);
+    std::pair<HashSet<StringImpl *>::iterator, bool> add( U value );
 
-    bool remove(StringImpl* r)
+    bool remove( StringImpl *r )
     {
-        HashSet<StringImpl*>::iterator iter = m_table.find(r);
-        if (iter == m_table.end())
+        HashSet<StringImpl *>::iterator iter = m_table.find( r );
+
+        if ( iter == m_table.end() )
+        {
             return false;
-        m_table.remove(iter);
+        }
+
+        m_table.remove( iter );
         return true;
     }
 
-    LiteralIdentifierTable& literalTable() { return m_literalTable; }
+    LiteralIdentifierTable &literalTable()
+    {
+        return m_literalTable;
+    }
 
 private:
-    HashSet<StringImpl*> m_table;
+    HashSet<StringImpl *> m_table;
     LiteralIdentifierTable m_literalTable;
 };
 
 }
 #endif
 
-namespace WTF {
+namespace WTF
+{
 
 class AtomicStringTable;
 
-typedef void (*AtomicStringTableDestructor)(AtomicStringTable*);
+typedef void ( *AtomicStringTableDestructor )( AtomicStringTable * );
 
-class WTFThreadData {
-    WTF_MAKE_NONCOPYABLE(WTFThreadData);
+class WTFThreadData
+{
+    WTF_MAKE_NONCOPYABLE( WTFThreadData );
 public:
     WTFThreadData();
     ~WTFThreadData();
 
-    AtomicStringTable* atomicStringTable()
+    AtomicStringTable *atomicStringTable()
     {
         return m_atomicStringTable;
     }
 
 #if USE(JSC)
-    JSC::IdentifierTable* currentIdentifierTable()
+    JSC::IdentifierTable *currentIdentifierTable()
     {
         return m_currentIdentifierTable;
     }
 
-    JSC::IdentifierTable* setCurrentIdentifierTable(JSC::IdentifierTable* identifierTable)
+    JSC::IdentifierTable *setCurrentIdentifierTable( JSC::IdentifierTable *identifierTable )
     {
-        JSC::IdentifierTable* oldIdentifierTable = m_currentIdentifierTable;
+        JSC::IdentifierTable *oldIdentifierTable = m_currentIdentifierTable;
         m_currentIdentifierTable = identifierTable;
         return oldIdentifierTable;
     }
@@ -115,49 +126,56 @@ public:
         m_currentIdentifierTable = m_defaultIdentifierTable;
     }
 
-    const StackBounds& stack() const
+    const StackBounds &stack() const
     {
         return m_stackBounds;
     }
 #endif
 
 private:
-    AtomicStringTable* m_atomicStringTable;
+    AtomicStringTable *m_atomicStringTable;
     AtomicStringTableDestructor m_atomicStringTableDestructor;
 
 #if USE(JSC)
-    JSC::IdentifierTable* m_defaultIdentifierTable;
-    JSC::IdentifierTable* m_currentIdentifierTable;
+    JSC::IdentifierTable *m_defaultIdentifierTable;
+    JSC::IdentifierTable *m_currentIdentifierTable;
     StackBounds m_stackBounds;
 #endif
 
 #if WTFTHREADDATA_MULTITHREADED
-    static JS_EXPORTDATA ThreadSpecific<WTFThreadData>* staticData;
+    static JS_EXPORTDATA ThreadSpecific<WTFThreadData> *staticData;
 #else
-    static JS_EXPORTDATA WTFThreadData* staticData;
+    static JS_EXPORTDATA WTFThreadData *staticData;
 #endif
-    friend WTFThreadData& wtfThreadData();
+    friend WTFThreadData &wtfThreadData();
     friend class AtomicStringTable;
 };
 
-inline WTFThreadData& wtfThreadData()
+inline WTFThreadData &wtfThreadData()
 {
 #if WTFTHREADDATA_MULTITHREADED
+
     // WRT WebCore:
     //    WTFThreadData is used on main thread before it could possibly be used
     //    on secondary ones, so there is no need for synchronization here.
     // WRT JavaScriptCore:
     //    wtfThreadData() is initially called from initializeThreading(), ensuring
     //    this is initially called in a pthread_once locked context.
-    if (!WTFThreadData::staticData)
+    if ( !WTFThreadData::staticData )
+    {
         WTFThreadData::staticData = new ThreadSpecific<WTFThreadData>;
+    }
+
     return **WTFThreadData::staticData;
 #else
-    if (!WTFThreadData::staticData) {
-        WTFThreadData::staticData = static_cast<WTFThreadData*>(fastMalloc(sizeof(WTFThreadData)));
+
+    if ( !WTFThreadData::staticData )
+    {
+        WTFThreadData::staticData = static_cast<WTFThreadData *>( fastMalloc( sizeof( WTFThreadData ) ) );
         // WTFThreadData constructor indirectly uses staticData, so we need to set up the memory before invoking it.
-        new (WTFThreadData::staticData) WTFThreadData;
+        new ( WTFThreadData::staticData ) WTFThreadData;
     }
+
     return *WTFThreadData::staticData;
 #endif
 }

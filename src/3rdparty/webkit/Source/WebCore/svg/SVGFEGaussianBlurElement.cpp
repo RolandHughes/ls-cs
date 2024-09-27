@@ -29,108 +29,129 @@
 #include "SVGNames.h"
 #include "SVGParserUtilities.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Animated property definitions
-DEFINE_ANIMATED_STRING(SVGFEGaussianBlurElement, SVGNames::inAttr, In1, in1)
-DEFINE_ANIMATED_NUMBER_MULTIPLE_WRAPPERS(SVGFEGaussianBlurElement, SVGNames::stdDeviationAttr, stdDeviationXIdentifier(), StdDeviationX, stdDeviationX)
-DEFINE_ANIMATED_NUMBER_MULTIPLE_WRAPPERS(SVGFEGaussianBlurElement, SVGNames::stdDeviationAttr, stdDeviationYIdentifier(), StdDeviationY, stdDeviationY)
+DEFINE_ANIMATED_STRING( SVGFEGaussianBlurElement, SVGNames::inAttr, In1, in1 )
+DEFINE_ANIMATED_NUMBER_MULTIPLE_WRAPPERS( SVGFEGaussianBlurElement, SVGNames::stdDeviationAttr, stdDeviationXIdentifier(),
+        StdDeviationX, stdDeviationX )
+DEFINE_ANIMATED_NUMBER_MULTIPLE_WRAPPERS( SVGFEGaussianBlurElement, SVGNames::stdDeviationAttr, stdDeviationYIdentifier(),
+        StdDeviationY, stdDeviationY )
 
-inline SVGFEGaussianBlurElement::SVGFEGaussianBlurElement(const QualifiedName& tagName, Document* document)
-    : SVGFilterPrimitiveStandardAttributes(tagName, document)
+inline SVGFEGaussianBlurElement::SVGFEGaussianBlurElement( const QualifiedName &tagName, Document *document )
+    : SVGFilterPrimitiveStandardAttributes( tagName, document )
 {
 }
 
-PassRefPtr<SVGFEGaussianBlurElement> SVGFEGaussianBlurElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<SVGFEGaussianBlurElement> SVGFEGaussianBlurElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new SVGFEGaussianBlurElement(tagName, document));
+    return adoptRef( new SVGFEGaussianBlurElement( tagName, document ) );
 }
 
-const AtomicString& SVGFEGaussianBlurElement::stdDeviationXIdentifier()
+const AtomicString &SVGFEGaussianBlurElement::stdDeviationXIdentifier()
 {
-    DEFINE_STATIC_LOCAL(AtomicString, s_identifier, ("SVGStdDeviationX"));
+    DEFINE_STATIC_LOCAL( AtomicString, s_identifier, ( "SVGStdDeviationX" ) );
     return s_identifier;
 }
 
-const AtomicString& SVGFEGaussianBlurElement::stdDeviationYIdentifier()
+const AtomicString &SVGFEGaussianBlurElement::stdDeviationYIdentifier()
 {
-    DEFINE_STATIC_LOCAL(AtomicString, s_identifier, ("SVGStdDeviationY"));
+    DEFINE_STATIC_LOCAL( AtomicString, s_identifier, ( "SVGStdDeviationY" ) );
     return s_identifier;
 }
 
-void SVGFEGaussianBlurElement::setStdDeviation(float x, float y)
+void SVGFEGaussianBlurElement::setStdDeviation( float x, float y )
 {
-    setStdDeviationXBaseValue(x);
-    setStdDeviationYBaseValue(y);
+    setStdDeviationXBaseValue( x );
+    setStdDeviationYBaseValue( y );
     invalidate();
 }
 
-void SVGFEGaussianBlurElement::parseMappedAttribute(Attribute* attr)
+void SVGFEGaussianBlurElement::parseMappedAttribute( Attribute *attr )
 {
-    const String& value = attr->value();
-    if (attr->name() == SVGNames::stdDeviationAttr) {
+    const String &value = attr->value();
+
+    if ( attr->name() == SVGNames::stdDeviationAttr )
+    {
         float x, y;
-        if (parseNumberOptionalNumber(value, x, y)) {
-            setStdDeviationXBaseValue(x);
-            setStdDeviationYBaseValue(y);
+
+        if ( parseNumberOptionalNumber( value, x, y ) )
+        {
+            setStdDeviationXBaseValue( x );
+            setStdDeviationYBaseValue( y );
         }
-    } else if (attr->name() == SVGNames::inAttr)
-        setIn1BaseValue(value);
+    }
+    else if ( attr->name() == SVGNames::inAttr )
+    {
+        setIn1BaseValue( value );
+    }
     else
-        SVGFilterPrimitiveStandardAttributes::parseMappedAttribute(attr);
+    {
+        SVGFilterPrimitiveStandardAttributes::parseMappedAttribute( attr );
+    }
 }
 
-void SVGFEGaussianBlurElement::svgAttributeChanged(const QualifiedName& attrName)
+void SVGFEGaussianBlurElement::svgAttributeChanged( const QualifiedName &attrName )
 {
-    SVGFilterPrimitiveStandardAttributes::svgAttributeChanged(attrName);
+    SVGFilterPrimitiveStandardAttributes::svgAttributeChanged( attrName );
 
-    if (attrName == SVGNames::inAttr
-        || attrName == SVGNames::stdDeviationAttr)
+    if ( attrName == SVGNames::inAttr
+            || attrName == SVGNames::stdDeviationAttr )
+    {
         invalidate();
+    }
 }
 
-void SVGFEGaussianBlurElement::synchronizeProperty(const QualifiedName& attrName)
+void SVGFEGaussianBlurElement::synchronizeProperty( const QualifiedName &attrName )
 {
-    SVGFilterPrimitiveStandardAttributes::synchronizeProperty(attrName);
+    SVGFilterPrimitiveStandardAttributes::synchronizeProperty( attrName );
 
-    if (attrName == anyQName()) {
+    if ( attrName == anyQName() )
+    {
         synchronizeStdDeviationX();
         synchronizeStdDeviationY();
         synchronizeIn1();
         return;
     }
 
-    if (attrName == SVGNames::stdDeviationAttr) {
+    if ( attrName == SVGNames::stdDeviationAttr )
+    {
         synchronizeStdDeviationX();
         synchronizeStdDeviationY();
-    } else if (attrName == SVGNames::inAttr)
+    }
+    else if ( attrName == SVGNames::inAttr )
+    {
         synchronizeIn1();
+    }
 }
 
-AttributeToPropertyTypeMap& SVGFEGaussianBlurElement::attributeToPropertyTypeMap()
+AttributeToPropertyTypeMap &SVGFEGaussianBlurElement::attributeToPropertyTypeMap()
 {
-    DEFINE_STATIC_LOCAL(AttributeToPropertyTypeMap, s_attributeToPropertyTypeMap, ());
+    DEFINE_STATIC_LOCAL( AttributeToPropertyTypeMap, s_attributeToPropertyTypeMap, () );
     return s_attributeToPropertyTypeMap;
 }
 
 void SVGFEGaussianBlurElement::fillAttributeToPropertyTypeMap()
 {
-    AttributeToPropertyTypeMap& attributeToPropertyTypeMap = this->attributeToPropertyTypeMap();
+    AttributeToPropertyTypeMap &attributeToPropertyTypeMap = this->attributeToPropertyTypeMap();
 
-    SVGFilterPrimitiveStandardAttributes::fillPassedAttributeToPropertyTypeMap(attributeToPropertyTypeMap);
-    attributeToPropertyTypeMap.set(SVGNames::inAttr, AnimatedString);
-    attributeToPropertyTypeMap.set(SVGNames::stdDeviationAttr, AnimatedNumberOptionalNumber);
+    SVGFilterPrimitiveStandardAttributes::fillPassedAttributeToPropertyTypeMap( attributeToPropertyTypeMap );
+    attributeToPropertyTypeMap.set( SVGNames::inAttr, AnimatedString );
+    attributeToPropertyTypeMap.set( SVGNames::stdDeviationAttr, AnimatedNumberOptionalNumber );
 }
 
-PassRefPtr<FilterEffect> SVGFEGaussianBlurElement::build(SVGFilterBuilder* filterBuilder, Filter* filter)
+PassRefPtr<FilterEffect> SVGFEGaussianBlurElement::build( SVGFilterBuilder *filterBuilder, Filter *filter )
 {
-    FilterEffect* input1 = filterBuilder->getEffectById(in1());
+    FilterEffect *input1 = filterBuilder->getEffectById( in1() );
 
-    if (!input1)
+    if ( !input1 )
+    {
         return 0;
+    }
 
-    RefPtr<FilterEffect> effect = FEGaussianBlur::create(filter, stdDeviationX(), stdDeviationY());
-    effect->inputEffects().append(input1);
+    RefPtr<FilterEffect> effect = FEGaussianBlur::create( filter, stdDeviationX(), stdDeviationY() );
+    effect->inputEffects().append( input1 );
     return effect.release();
 }
 

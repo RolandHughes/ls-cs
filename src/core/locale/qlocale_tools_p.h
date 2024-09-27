@@ -28,30 +28,31 @@
 
 #include <cmath>
 
-QString qulltoa(quint64 l, int base, const QChar _zero);
-QString qlltoa(qint64 l, int base, const QChar zero);
+QString qulltoa( quint64 l, int base, const QChar _zero );
+QString qlltoa( qint64 l, int base, const QChar zero );
 
-enum PrecisionMode {
-   PMDecimalDigits =      0x01,
-   PMSignificantDigits =  0x02,
-   PMChopTrailingZeros =  0x03
+enum PrecisionMode
+{
+    PMDecimalDigits =      0x01,
+    PMSignificantDigits =  0x02,
+    PMChopTrailingZeros =  0x03
 };
 
-QString &decimalForm(QChar zero, QChar decimal, QChar group, QString &digits, int decpt, uint precision,
-      PrecisionMode pm, bool always_show_decpt, bool thousands_group);
+QString &decimalForm( QChar zero, QChar decimal, QChar group, QString &digits, int decpt, uint precision,
+                      PrecisionMode pm, bool always_show_decpt, bool thousands_group );
 
-QString &exponentForm(QChar zero, QChar decimal, QChar exponential, QChar group, QChar plus, QChar minus,
-      QString &digits, int decpt, uint precision, PrecisionMode pm, bool always_show_decpt);
+QString &exponentForm( QChar zero, QChar decimal, QChar exponential, QChar group, QChar plus, QChar minus,
+                       QString &digits, int decpt, uint precision, PrecisionMode pm, bool always_show_decpt );
 
-inline bool isZero(double d)
+inline bool isZero( double d )
 {
-   return std::fpclassify(d) == FP_ZERO;
+    return std::fpclassify( d ) == FP_ZERO;
 }
 
-Q_CORE_EXPORT char *qdtoa(double d, int mode, int ndigits, int *decpt, int *sign, char **rve, char **digits_str);
-Q_CORE_EXPORT double qstrtod(const char *s00, char const **se, bool *ok);
+Q_CORE_EXPORT char *qdtoa( double d, int mode, int ndigits, int *decpt, int *sign, char **rve, char **digits_str );
+Q_CORE_EXPORT double qstrtod( const char *s00, char const **se, bool *ok );
 
-qint64  qstrtoll(const char *nptr, const char **endptr, int base, bool *ok);
-quint64 qstrtoull(const char *nptr, const char **endptr, int base, bool *ok);
+qint64  qstrtoll( const char *nptr, const char **endptr, int base, bool *ok );
+quint64 qstrtoull( const char *nptr, const char **endptr, int base, bool *ok );
 
 #endif

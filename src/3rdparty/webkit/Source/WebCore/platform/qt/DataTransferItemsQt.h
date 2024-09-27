@@ -32,21 +32,23 @@
 #include <wtf/RefPtr.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Clipboard;
 class DataTransferItemQt;
 class ScriptExecutionContext;
 
-class DataTransferItemsQt : public DataTransferItems {
+class DataTransferItemsQt : public DataTransferItems
+{
 public:
-    static PassRefPtr<DataTransferItemsQt> create(PassRefPtr<Clipboard>, ScriptExecutionContext*);
+    static PassRefPtr<DataTransferItemsQt> create( PassRefPtr<Clipboard>, ScriptExecutionContext * );
 
     friend class ClipboardQt;
 private:
-    DataTransferItemsQt(PassRefPtr<Clipboard>, ScriptExecutionContext*);
+    DataTransferItemsQt( PassRefPtr<Clipboard>, ScriptExecutionContext * );
 
-    virtual void addPasteboardItem(const String& type);
+    virtual void addPasteboardItem( const String &type );
 };
 
 }

@@ -34,35 +34,39 @@
 #include <wtf/RetainPtr.h>
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
-enum CredentialPersistence {
+enum CredentialPersistence
+{
     CredentialPersistenceNone,
     CredentialPersistenceForSession,
     CredentialPersistencePermanent
 };
 
 #if CERTIFICATE_CREDENTIALS_SUPPORTED
-enum CredentialType {
+enum CredentialType
+{
     CredentialTypePassword,
     CredentialTypeClientCertificate
 };
 #endif
 
-class Credential {
+class Credential
+{
 
 public:
     Credential();
-    Credential(const String& user, const String& password, CredentialPersistence);
-    Credential(const Credential& original, CredentialPersistence);
+    Credential( const String &user, const String &password, CredentialPersistence );
+    Credential( const Credential &original, CredentialPersistence );
 #if CERTIFICATE_CREDENTIALS_SUPPORTED
-    Credential(SecIdentityRef identity, CFArrayRef certificates, CredentialPersistence);
+    Credential( SecIdentityRef identity, CFArrayRef certificates, CredentialPersistence );
 #endif
 
     bool isEmpty() const;
 
-    const String& user() const;
-    const String& password() const;
+    const String &user() const;
+    const String &password() const;
     bool hasPassword() const;
     CredentialPersistence persistence() const;
 
@@ -83,8 +87,11 @@ private:
 #endif
 };
 
-bool operator==(const Credential& a, const Credential& b);
-inline bool operator!=(const Credential& a, const Credential& b) { return !(a == b); }
+bool operator==( const Credential &a, const Credential &b );
+inline bool operator!=( const Credential &a, const Credential &b )
+{
+    return !( a == b );
+}
 
 };
 #endif

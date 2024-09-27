@@ -35,44 +35,44 @@ class QAbstractStatePrivate;
 
 class Q_CORE_EXPORT QAbstractState : public QObject
 {
-   CORE_CS_OBJECT(QAbstractState)
+    CORE_CS_OBJECT( QAbstractState )
 
-   CORE_CS_PROPERTY_READ(active, active)
-   CORE_CS_PROPERTY_NOTIFY(active, activeChanged)
+    CORE_CS_PROPERTY_READ( active, active )
+    CORE_CS_PROPERTY_NOTIFY( active, activeChanged )
 
- public:
-   QAbstractState(const QAbstractState &) = delete;
-   QAbstractState &operator=(const QAbstractState &) = delete;
+public:
+    QAbstractState( const QAbstractState & ) = delete;
+    QAbstractState &operator=( const QAbstractState & ) = delete;
 
-   ~QAbstractState();
+    ~QAbstractState();
 
-   QState *parentState() const;
-   QStateMachine *machine() const;
+    QState *parentState() const;
+    QStateMachine *machine() const;
 
-   bool active() const;
+    bool active() const;
 
-   CORE_CS_SIGNAL_1(Public, void entered())
-   CORE_CS_SIGNAL_2(entered)
+    CORE_CS_SIGNAL_1( Public, void entered() )
+    CORE_CS_SIGNAL_2( entered )
 
-   CORE_CS_SIGNAL_1(Public, void exited())
-   CORE_CS_SIGNAL_2(exited)
+    CORE_CS_SIGNAL_1( Public, void exited() )
+    CORE_CS_SIGNAL_2( exited )
 
-   CORE_CS_SIGNAL_1(Public, void activeChanged(bool active))
-   CORE_CS_SIGNAL_2(activeChanged, active)
+    CORE_CS_SIGNAL_1( Public, void activeChanged( bool active ) )
+    CORE_CS_SIGNAL_2( activeChanged, active )
 
- protected:
-   QAbstractState(QState *parent = nullptr);
+protected:
+    QAbstractState( QState *parent = nullptr );
 
-   virtual void onEntry(QEvent *event) = 0;
-   virtual void onExit(QEvent *event) = 0;
+    virtual void onEntry( QEvent *event ) = 0;
+    virtual void onExit( QEvent *event ) = 0;
 
-   bool event(QEvent *event) override;
-   QAbstractState(QAbstractStatePrivate &dd, QState *parent);
+    bool event( QEvent *event ) override;
+    QAbstractState( QAbstractStatePrivate &dd, QState *parent );
 
-   QScopedPointer<QAbstractStatePrivate> d_ptr;
+    QScopedPointer<QAbstractStatePrivate> d_ptr;
 
- private:
-   Q_DECLARE_PRIVATE(QAbstractState)
+private:
+    Q_DECLARE_PRIVATE( QAbstractState )
 };
 
 #endif //QT_NO_STATEMACHINE

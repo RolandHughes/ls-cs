@@ -40,74 +40,103 @@
 
 using namespace JSC;
 
-namespace WebCore {
-    
-JavaScriptCallFrame::JavaScriptCallFrame(const DebuggerCallFrame& debuggerCallFrame, PassRefPtr<JavaScriptCallFrame> caller, intptr_t sourceID, const TextPosition0& textPosition)
-    : m_debuggerCallFrame(debuggerCallFrame)
-    , m_caller(caller)
-    , m_sourceID(sourceID)
-    , m_textPosition(textPosition)
-    , m_isValid(true)
+namespace WebCore
+{
+
+JavaScriptCallFrame::JavaScriptCallFrame( const DebuggerCallFrame &debuggerCallFrame, PassRefPtr<JavaScriptCallFrame> caller,
+        intptr_t sourceID, const TextPosition0 &textPosition )
+    : m_debuggerCallFrame( debuggerCallFrame )
+    , m_caller( caller )
+    , m_sourceID( sourceID )
+    , m_textPosition( textPosition )
+    , m_isValid( true )
 {
 }
 
-JavaScriptCallFrame* JavaScriptCallFrame::caller()
+JavaScriptCallFrame *JavaScriptCallFrame::caller()
 {
     return m_caller.get();
 }
 
-JSC::ScopeChainNode* JavaScriptCallFrame::scopeChain() const
+JSC::ScopeChainNode *JavaScriptCallFrame::scopeChain() const
 {
-    ASSERT(m_isValid);
-    if (!m_isValid)
+    ASSERT( m_isValid );
+
+    if ( !m_isValid )
+    {
         return 0;
+    }
+
     return m_debuggerCallFrame.scopeChain();
 }
 
-JSC::JSGlobalObject* JavaScriptCallFrame::dynamicGlobalObject() const
+JSC::JSGlobalObject *JavaScriptCallFrame::dynamicGlobalObject() const
 {
-    ASSERT(m_isValid);
-    if (!m_isValid)
+    ASSERT( m_isValid );
+
+    if ( !m_isValid )
+    {
         return 0;
+    }
+
     return m_debuggerCallFrame.dynamicGlobalObject();
 }
 
 String JavaScriptCallFrame::functionName() const
 {
-    ASSERT(m_isValid);
-    if (!m_isValid)
+    ASSERT( m_isValid );
+
+    if ( !m_isValid )
+    {
         return String();
+    }
+
     UString functionName = m_debuggerCallFrame.calculatedFunctionName();
-    if (functionName.isEmpty())
+
+    if ( functionName.isEmpty() )
+    {
         return String();
-    return ustringToString(functionName);
+    }
+
+    return ustringToString( functionName );
 }
 
 DebuggerCallFrame::Type JavaScriptCallFrame::type() const
 {
-    ASSERT(m_isValid);
-    if (!m_isValid)
+    ASSERT( m_isValid );
+
+    if ( !m_isValid )
+    {
         return DebuggerCallFrame::ProgramType;
+    }
+
     return m_debuggerCallFrame.type();
 }
 
-JSObject* JavaScriptCallFrame::thisObject() const
+JSObject *JavaScriptCallFrame::thisObject() const
 {
-    ASSERT(m_isValid);
-    if (!m_isValid)
+    ASSERT( m_isValid );
+
+    if ( !m_isValid )
+    {
         return 0;
+    }
+
     return m_debuggerCallFrame.thisObject();
 }
 
 // Evaluate some JavaScript code in the scope of this frame.
-JSValue JavaScriptCallFrame::evaluate(const UString& script, JSValue& exception) const
+JSValue JavaScriptCallFrame::evaluate( const UString &script, JSValue &exception ) const
 {
-    ASSERT(m_isValid);
-    if (!m_isValid)
-        return jsNull();
+    ASSERT( m_isValid );
 
-    JSLock lock(SilenceAssertionsOnly);
-    return m_debuggerCallFrame.evaluate(script, exception);
+    if ( !m_isValid )
+    {
+        return jsNull();
+    }
+
+    JSLock lock( SilenceAssertionsOnly );
+    return m_debuggerCallFrame.evaluate( script, exception );
 }
 
 } // namespace WebCore

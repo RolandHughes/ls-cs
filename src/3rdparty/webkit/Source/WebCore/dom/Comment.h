@@ -25,19 +25,21 @@
 
 #include "CharacterData.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class Comment : public CharacterData {
+class Comment : public CharacterData
+{
 public:
-    static PassRefPtr<Comment> create(Document*, const String&);
+    static PassRefPtr<Comment> create( Document *, const String & );
 
 private:
-    Comment(Document*, const String&);
+    Comment( Document *, const String & );
 
     virtual String nodeName() const;
     virtual NodeType nodeType() const;
-    virtual PassRefPtr<Node> cloneNode(bool deep);
-    virtual bool childTypeAllowed(NodeType) const;
+    virtual PassRefPtr<Node> cloneNode( bool deep );
+    virtual bool childTypeAllowed( NodeType ) const;
 };
 
 } // namespace WebCore

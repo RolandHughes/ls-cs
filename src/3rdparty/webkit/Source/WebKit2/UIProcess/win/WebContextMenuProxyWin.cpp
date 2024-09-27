@@ -30,74 +30,97 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
-WebContextMenuProxyWin::WebContextMenuProxyWin(HWND parentWindow, WebPageProxy* page)
-    : m_window(parentWindow)
-    , m_page(page)
-    , m_menu(0)
+WebContextMenuProxyWin::WebContextMenuProxyWin( HWND parentWindow, WebPageProxy *page )
+    : m_window( parentWindow )
+    , m_page( page )
+    , m_menu( 0 )
 {
 }
 
-void WebContextMenuProxyWin::populateMenu(HMENU menu, const Vector<WebContextMenuItemData>& items)
+void WebContextMenuProxyWin::populateMenu( HMENU menu, const Vector<WebContextMenuItemData> &items )
 {
-    for (size_t i = 0; i < items.size(); ++i) {
-        const WebContextMenuItemData& itemData = items[i];
-        switch (itemData.type()) {
-        case ActionType:
-        case CheckableActionType: {
-            UINT flags = itemData.enabled() ? MF_ENABLED : MF_DISABLED;
-            if (itemData.checked())
-                flags |= MF_CHECKED;
-            String title = itemData.title();
-            ::AppendMenu(menu, flags, itemData.action(), title.charactersWithNullTermination());
+    for ( size_t i = 0; i < items.size(); ++i )
+    {
+        const WebContextMenuItemData &itemData = items[i];
 
-            m_actionMap.add(itemData.action(), itemData);
-            break;
-        }
-        case SeparatorType:
-            ::AppendMenu(menu, MF_SEPARATOR, 0, 0);
-            break;
-        case SubmenuType: {
-            HMENU subMenu = ::CreatePopupMenu();
-            populateMenu(subMenu, itemData.submenu());
-            String title = itemData.title();
-            ::AppendMenu(menu, MF_POPUP, reinterpret_cast<UINT>(subMenu), title.charactersWithNullTermination());
-            break;
-        }
-        default:
-            ASSERT_NOT_REACHED();
+        switch ( itemData.type() )
+        {
+            case ActionType:
+            case CheckableActionType:
+            {
+                UINT flags = itemData.enabled() ? MF_ENABLED : MF_DISABLED;
+
+                if ( itemData.checked() )
+                {
+                    flags |= MF_CHECKED;
+                }
+
+                String title = itemData.title();
+                ::AppendMenu( menu, flags, itemData.action(), title.charactersWithNullTermination() );
+
+                m_actionMap.add( itemData.action(), itemData );
+                break;
+            }
+
+            case SeparatorType:
+                ::AppendMenu( menu, MF_SEPARATOR, 0, 0 );
+                break;
+
+            case SubmenuType:
+            {
+                HMENU subMenu = ::CreatePopupMenu();
+                populateMenu( subMenu, itemData.submenu() );
+                String title = itemData.title();
+                ::AppendMenu( menu, MF_POPUP, reinterpret_cast<UINT>( subMenu ), title.charactersWithNullTermination() );
+                break;
+            }
+
+            default:
+                ASSERT_NOT_REACHED();
         }
     }
 }
 
-void WebContextMenuProxyWin::showContextMenu(const IntPoint& origin, const Vector<WebContextMenuItemData>& items)
+void WebContextMenuProxyWin::showContextMenu( const IntPoint &origin, const Vector<WebContextMenuItemData> &items )
 {
-    if (items.isEmpty())
+    if ( items.isEmpty() )
+    {
         return;
+    }
 
     // Hide any context menu we have showing (this also destroys the menu).
     hideContextMenu();
 
     m_menu = ::CreatePopupMenu();
-    populateMenu(m_menu, items);
+    populateMenu( m_menu, items );
 
-    POINT point = POINT(origin);
-    if (!::ClientToScreen(m_window, &point))
+    POINT point = POINT( origin );
+
+    if ( !::ClientToScreen( m_window, &point ) )
+    {
         return;
+    }
 
-    UINT flags = TPM_RIGHTBUTTON | TPM_TOPALIGN | TPM_VERPOSANIMATION | TPM_HORIZONTAL | TPM_LEFTALIGN | TPM_HORPOSANIMATION | TPM_RETURNCMD | TPM_NONOTIFY;
-    int selectedCommand = ::TrackPopupMenuEx(m_menu, flags, point.x, point.y, m_window, 0);
-    if (!selectedCommand)
+    UINT flags = TPM_RIGHTBUTTON | TPM_TOPALIGN | TPM_VERPOSANIMATION | TPM_HORIZONTAL | TPM_LEFTALIGN | TPM_HORPOSANIMATION |
+                 TPM_RETURNCMD | TPM_NONOTIFY;
+    int selectedCommand = ::TrackPopupMenuEx( m_menu, flags, point.x, point.y, m_window, 0 );
+
+    if ( !selectedCommand )
+    {
         return;
+    }
 
-    m_page->contextMenuItemSelected(m_actionMap.get(selectedCommand));
+    m_page->contextMenuItemSelected( m_actionMap.get( selectedCommand ) );
 }
 
 void WebContextMenuProxyWin::hideContextMenu()
 {
-    if (m_menu) {
-        ::DestroyMenu(m_menu);
+    if ( m_menu )
+    {
+        ::DestroyMenu( m_menu );
         m_menu = 0;
     }
 

@@ -93,10 +93,10 @@ using CS_FontUIFontType             = uint32_t;
 using ControlPartCode              = SInt16;
 using DescType                     = UInt32;
 
-using EventComparatorUPP           = unsigned char (*)(EventRef, void *);
-using EventHandlerProcPtr          = OSStatus (*)(EventHandlerCallRef, EventRef, void *);
+using EventComparatorUPP           = unsigned char ( * )( EventRef, void * );
+using EventHandlerProcPtr          = OSStatus ( * )( EventHandlerCallRef, EventRef, void * );
 using EventHandlerUPP              = EventHandlerProcPtr;
-using EventLoopTimerProcPtr        = void (*)(EventLoopTimerRef, void *);
+using EventLoopTimerProcPtr        = void ( * )( EventLoopTimerRef, void * );
 using EventLoopTimerUPP            = EventLoopTimerProcPtr;
 using EventPriority                = SInt16;
 using EventAttributes              = UInt32;
@@ -191,199 +191,225 @@ struct HIThemeWindowDrawInfo;
 
 #pragma pack(push, 2)
 
-struct EventTypeSpec {
-   UInt32 eventClass;
-   UInt32 eventKind;
+struct EventTypeSpec
+{
+    UInt32 eventClass;
+    UInt32 eventKind;
 };
 
-struct ProgressTrackInfo {
-   UInt8 phase;
+struct ProgressTrackInfo
+{
+    UInt8 phase;
 };
 
-struct ScrollBarTrackInfo {
-   SInt32 viewsize;
-   ThemeTrackPressState pressState;
+struct ScrollBarTrackInfo
+{
+    SInt32 viewsize;
+    ThemeTrackPressState pressState;
 };
 
-struct SliderTrackInfo {
-   ThemeThumbDirection thumbDir;
-   ThemeTrackPressState pressState;
+struct SliderTrackInfo
+{
+    ThemeThumbDirection thumbDir;
+    ThemeTrackPressState pressState;
 };
 
-struct TabletProximityRec {
-   UInt16 vendorID;
-   UInt16 tabletID;
-   UInt16 pointerID;
-   UInt16 deviceID;
-   UInt16 systemTabletID;
-   UInt16 vendorPointerType;
-   UInt32 pointerSerialNumber;
-   UInt64 uniqueID;
-   UInt32 capabilityMask;
-   UInt8  pointerType;
-   UInt8  enterProximity;
+struct TabletProximityRec
+{
+    UInt16 vendorID;
+    UInt16 tabletID;
+    UInt16 pointerID;
+    UInt16 deviceID;
+    UInt16 systemTabletID;
+    UInt16 vendorPointerType;
+    UInt32 pointerSerialNumber;
+    UInt64 uniqueID;
+    UInt32 capabilityMask;
+    UInt8  pointerType;
+    UInt8  enterProximity;
 };
 
-struct HIThemeAnimationTimeInfo {
-   CFAbsoluteTime start;
-   CFAbsoluteTime current;
+struct HIThemeAnimationTimeInfo
+{
+    CFAbsoluteTime start;
+    CFAbsoluteTime current;
 };
 
-struct HIThemeAnimationFrameInfo {
-   UInt32 index;
+struct HIThemeAnimationFrameInfo
+{
+    UInt32 index;
 };
 
-struct HIThemeButtonDrawInfo {
-   UInt32 version;
-   ThemeDrawState state;
-   ThemeButtonKind  kind;
-   ThemeButtonValue value;
-   ThemeButtonAdornnent adornment;
+struct HIThemeButtonDrawInfo
+{
+    UInt32 version;
+    ThemeDrawState state;
+    ThemeButtonKind  kind;
+    ThemeButtonValue value;
+    ThemeButtonAdornnent adornment;
 
-   union {
-      HIThemeAnimationTimeInfo time;
-      HIThemeAnimationFrameInfo frame;
-   } animation;
+    union
+    {
+        HIThemeAnimationTimeInfo time;
+        HIThemeAnimationFrameInfo frame;
+    } animation;
 };
 
-struct HIThemeGrowBoxDrawInfo {
-   UInt32 version;
-   ThemeDrawState state;
-   HIThemeGrowBoxKind kind;
-   ThemeGrowDirection direction;
-   HIThemeGrowBoxSize size;
+struct HIThemeGrowBoxDrawInfo
+{
+    UInt32 version;
+    ThemeDrawState state;
+    HIThemeGrowBoxKind kind;
+    ThemeGrowDirection direction;
+    HIThemeGrowBoxSize size;
 };
 
-struct HIThemeGroupBoxDrawInfo {
-   UInt32 version;
-   ThemeDrawState state;
-   HIThemeGroupBoxKind kind;
+struct HIThemeGroupBoxDrawInfo
+{
+    UInt32 version;
+    ThemeDrawState state;
+    HIThemeGroupBoxKind kind;
 };
 
-struct HIThemeFrameDrawInfo {
-   UInt32 version;
-   HIThemeFrameKind kind;
-   ThemeDrawState state;
-   unsigned char isFocused;
+struct HIThemeFrameDrawInfo
+{
+    UInt32 version;
+    HIThemeFrameKind kind;
+    ThemeDrawState state;
+    unsigned char isFocused;
 };
 
-struct HIThemeMenuBarDrawInfo {
-   UInt32 version;
-   ThemeMenuBarState state;
-   UInt32 attributes;
+struct HIThemeMenuBarDrawInfo
+{
+    UInt32 version;
+    ThemeMenuBarState state;
+    UInt32 attributes;
 };
 
-struct HIThemeMenuDrawInfo {
-   UInt32 version;
-   ThemeMenuType menuType;
-   unsigned long reserved1;
-   CGFloat reserved2;
-   UInt32 menuDirection;
-   CGFloat reserved3;
-   CGFloat reserved4;
+struct HIThemeMenuDrawInfo
+{
+    UInt32 version;
+    ThemeMenuType menuType;
+    unsigned long reserved1;
+    CGFloat reserved2;
+    UInt32 menuDirection;
+    CGFloat reserved3;
+    CGFloat reserved4;
 };
 
-struct HIThemeMenuItemDrawInfo {
-   UInt32 version;
-   ThemeMenuItemType itemType;
-   ThemeMenuState state;
+struct HIThemeMenuItemDrawInfo
+{
+    UInt32 version;
+    ThemeMenuItemType itemType;
+    ThemeMenuState state;
 };
 
-struct HIThemePopupArrowDrawInfo {
-   UInt32 version;
-   ThemeDrawState state;
-   ThemeArrowOrientation orientation;
-   ThemePopupArrowSize size;
+struct HIThemePopupArrowDrawInfo
+{
+    UInt32 version;
+    ThemeDrawState state;
+    ThemeArrowOrientation orientation;
+    ThemePopupArrowSize size;
 };
 
-struct HIScrollBarTrackInfo {
-   UInt32 version;
-   ThemeTrackEnableState enableState;
-   ThemeTrackPressState pressState;
-   CGFloat viewsize;
+struct HIScrollBarTrackInfo
+{
+    UInt32 version;
+    ThemeTrackEnableState enableState;
+    ThemeTrackPressState pressState;
+    CGFloat viewsize;
 };
 
-struct HIThemeSeparatorDrawInfo {
-   UInt32 version;
-   ThemeDrawState state;
+struct HIThemeSeparatorDrawInfo
+{
+    UInt32 version;
+    ThemeDrawState state;
 };
 
-struct HIThemeSplitterDrawInfo {
-   UInt32 version;
-   ThemeDrawState state;
-   HIThemeSplitterAdornment adornment;
+struct HIThemeSplitterDrawInfo
+{
+    UInt32 version;
+    ThemeDrawState state;
+    HIThemeSplitterAdornment adornment;
 };
 
-struct HIThemeTrackDrawInfo {
-   UInt32 version;
-   ThemeTrackKind kind;
-   HIRect bounds;
-   SInt32 min;
-   SInt32 max;
-   SInt32 value;
-   UInt32 reserved;
-   ThemeTrackAttributes attributes;
-   ThemeTrackEnableState enableState;
-   UInt8 filler1;
+struct HIThemeTrackDrawInfo
+{
+    UInt32 version;
+    ThemeTrackKind kind;
+    HIRect bounds;
+    SInt32 min;
+    SInt32 max;
+    SInt32 value;
+    UInt32 reserved;
+    ThemeTrackAttributes attributes;
+    ThemeTrackEnableState enableState;
+    UInt8 filler1;
 
-   union {
-      ScrollBarTrackInfo scrollbar;
-      SliderTrackInfo slider;
-      ProgressTrackInfo progress;
-   } trackInfo;
+    union
+    {
+        ScrollBarTrackInfo scrollbar;
+        SliderTrackInfo slider;
+        ProgressTrackInfo progress;
+    } trackInfo;
 };
 
-struct HIThemeWindowWidgetDrawInfo {
-   UInt32 version;
-   ThemeDrawState widgetState;
-   ThemeTitleBarWidget widgetType;
-   ThemeDrawState windowState;
-   ThemeWindowType windowType;
-   ThemeWindowAttributes attributes;
-   CGFloat titleHeight;
-   CGFloat titleWidth;
+struct HIThemeWindowWidgetDrawInfo
+{
+    UInt32 version;
+    ThemeDrawState widgetState;
+    ThemeTitleBarWidget widgetType;
+    ThemeDrawState windowState;
+    ThemeWindowType windowType;
+    ThemeWindowAttributes attributes;
+    CGFloat titleHeight;
+    CGFloat titleWidth;
 };
 
-struct HIThemeTabPaneDrawInfo {
-   UInt32 version;
-   ThemeDrawState state;
-   ThemeTabDirection direction;
-   HIThemeTabSize size;
-   HIThemeTabKind kind;
-   HIThemeTabPaneAdornment adornment;
+struct HIThemeTabPaneDrawInfo
+{
+    UInt32 version;
+    ThemeDrawState state;
+    ThemeTabDirection direction;
+    HIThemeTabSize size;
+    HIThemeTabKind kind;
+    HIThemeTabPaneAdornment adornment;
 };
 
-struct HIThemeTabDrawInfo {
-   UInt32 version;
-   ThemeTabStyle style;
-   ThemeTabDirection direction;
-   HIThemeTabSize size;
-   HIThemeTabAdornment adornment;
-   HIThemeTabKind kind;
-   HIThemeTabPosition position;
+struct HIThemeTabDrawInfo
+{
+    UInt32 version;
+    ThemeTabStyle style;
+    ThemeTabDirection direction;
+    HIThemeTabSize size;
+    HIThemeTabAdornment adornment;
+    HIThemeTabKind kind;
+    HIThemeTabPosition position;
 };
 
-struct HIThemeTextInfo {
-   UInt32 version;
-   ThemeDrawState state;
-   ThemeFontID fontID;
-   HIThemeTextHorizontalFlush horizontalFlushness;
-   HIThemeTextVerticalFlush verticalFlushness;
-   HIThemeTextBoxOptions options;
-   HIThemeTextTruncation truncationPosition;
-   UInt32 truncationMaxLines;
-   unsigned char truncationHappened;
-   UInt8 filler1;
-   CTFontRef font;
+struct HIThemeTextInfo
+{
+    UInt32 version;
+    ThemeDrawState state;
+    ThemeFontID fontID;
+    HIThemeTextHorizontalFlush horizontalFlushness;
+    HIThemeTextVerticalFlush verticalFlushness;
+    HIThemeTextBoxOptions options;
+    HIThemeTextTruncation truncationPosition;
+    UInt32 truncationMaxLines;
+    unsigned char truncationHappened;
+    UInt8 filler1;
+    CTFontRef font;
 };
 
-struct HIThemeWindowDrawInfo {
-   UInt32 version;
-   ThemeDrawState state;
-   ThemeWindowType windowType;
-   ThemeWindowAttributes attributes;
-   CGFloat titleHeight;
-   CGFloat titleWidth;
+struct HIThemeWindowDrawInfo
+{
+    UInt32 version;
+    ThemeDrawState state;
+    ThemeWindowType windowType;
+    ThemeWindowAttributes attributes;
+    CGFloat titleHeight;
+    CGFloat titleWidth;
 };
 
 #pragma pack(pop)
@@ -391,166 +417,166 @@ struct HIThemeWindowDrawInfo {
 #endif
 
 // methods
-CS_FontUIFontType CS_HIThemeGetUIFontType(ThemeFontID themeID);
-CTFontRef CS_CTFontCreateUIFontForLanguage(CS_FontUIFontType uiType, CGFloat size, CFStringRef language );
-void CS_HIThemeBrushCreateCGColor(ThemeBrush brush, CGColorRef *cgClr);
+CS_FontUIFontType CS_HIThemeGetUIFontType( ThemeFontID themeID );
+CTFontRef CS_CTFontCreateUIFontForLanguage( CS_FontUIFontType uiType, CGFloat size, CFStringRef language );
+void CS_HIThemeBrushCreateCGColor( ThemeBrush brush, CGColorRef *cgClr );
 
 void CS_EnableSecureEventInput();
 void CS_DisableSecureEventInput();
 
-OSStatus CS_GetEventParameter(EventRef event, EventParamName eventName, EventParamType eventType,
-   EventParamType *eventTypePtr,
-   ByteCount bufferSize, ByteCount *actualSize, void *data);
+OSStatus CS_GetEventParameter( EventRef event, EventParamName eventName, EventParamType eventType,
+                               EventParamType *eventTypePtr,
+                               ByteCount bufferSize, ByteCount *actualSize, void *data );
 
 UInt32 CS_GetCurrentKeyModifiers();
 UInt32 CS_GetCurrentEventKeyModifiers();
 EventTime CS_GetCurrentEventTime();
-OSType CS_GetEventKind(EventRef event);
-OSType CS_GetEventClass(EventRef event);
-EventTime CS_GetEventTime(EventRef event);
+OSType CS_GetEventKind( EventRef event );
+OSType CS_GetEventClass( EventRef event );
+EventTime CS_GetEventTime( EventRef event );
 EventQueueRef CS_GetMainEventQueue();
 EventLoopRef CS_GetMainEventLoop();
 EventTargetRef CS_GetEventMonitorTarget();
 UInt32 CS_GetCurrentEventButtonState();
-ItemCount CS_GetNumEventsInQueue(EventQueueRef eventQueue);
+ItemCount CS_GetNumEventsInQueue( EventQueueRef eventQueue );
 
-OSStatus CS_GetThemeMetric(ThemeMetric metric, SInt32 *callBack);
+OSStatus CS_GetThemeMetric( ThemeMetric metric, SInt32 *callBack );
 
-OSStatus CS_RemoveEventHandler(EventHandlerRef event);
-OSStatus CS_PostEventToQueue(EventQueueRef eventQueue, EventRef event, EventPriority priority);
-OSStatus CS_RemoveEventFromQueue(EventQueueRef eventQueue, EventRef event);
+OSStatus CS_RemoveEventHandler( EventHandlerRef event );
+OSStatus CS_PostEventToQueue( EventQueueRef eventQueue, EventRef event, EventPriority priority );
+OSStatus CS_RemoveEventFromQueue( EventQueueRef eventQueue, EventRef event );
 
-EventRef CS_RetainEvent(EventRef keydownEvent);
-void CS_ReleaseEvent(EventRef keydownEvent);
+EventRef CS_RetainEvent( EventRef keydownEvent );
+void CS_ReleaseEvent( EventRef keydownEvent );
 
 SInt16 CS_LMGetKbdType();
 
 TISInputSourceRef CS_TISCopyCurrentKeyboardInputSource();
-void *CS_TISGetInputSourceProperty(TISInputSourceRef source, CFStringRef string);
+void *CS_TISGetInputSourceProperty( TISInputSourceRef source, CFStringRef string );
 
-EventRef CS_FindSpecificEventInQueue(EventQueueRef eventQ, EventComparatorUPP callBack, void *data);
+EventRef CS_FindSpecificEventInQueue( EventQueueRef eventQ, EventComparatorUPP callBack, void *data );
 
-OSAError CS_OSACompile(ComponentInstance component, const AEDesc *sourceData, SInt32 key, OSAID *id);
-OSAError CS_OSAExecute(ComponentInstance component, OSAID id1, OSAID id2, SInt32 key, OSAID *id3);
-OSAError CS_OSAScriptError(ComponentInstance component, OSType type, DescType descType, AEDesc *sourceData);
-OSAError CS_OSADisplay(ComponentInstance component, OSAID id, DescType descType, SInt32 key, AEDesc *sourceData);
-OSAError CS_OSADispose(ComponentInstance component, OSAID id);
+OSAError CS_OSACompile( ComponentInstance component, const AEDesc *sourceData, SInt32 key, OSAID *id );
+OSAError CS_OSAExecute( ComponentInstance component, OSAID id1, OSAID id2, SInt32 key, OSAID *id3 );
+OSAError CS_OSAScriptError( ComponentInstance component, OSType type, DescType descType, AEDesc *sourceData );
+OSAError CS_OSADisplay( ComponentInstance component, OSAID id, DescType descType, SInt32 key, AEDesc *sourceData );
+OSAError CS_OSADispose( ComponentInstance component, OSAID id );
 
-OSStatus CS_RemoveEventLoopTimer(EventLoopTimerRef timer);
-EventLoopTimerUPP CS_NewEventLoopTimerUPP(EventLoopTimerProcPtr callBack);
-EventHandlerUPP CS_NewEventHandlerUPP(EventHandlerProcPtr callBack);
-OSStatus CS_CreateEvent(CFAllocatorRef allocator, UInt32 id, UInt32 kind, EventTime time, EventAttributes flags,
-   EventRef *event);
+OSStatus CS_RemoveEventLoopTimer( EventLoopTimerRef timer );
+EventLoopTimerUPP CS_NewEventLoopTimerUPP( EventLoopTimerProcPtr callBack );
+EventHandlerUPP CS_NewEventHandlerUPP( EventHandlerProcPtr callBack );
+OSStatus CS_CreateEvent( CFAllocatorRef allocator, UInt32 id, UInt32 kind, EventTime time, EventAttributes flags,
+                         EventRef *event );
 
-OSStatus CS_InstallEventLoopTimer(EventLoopRef eventLopp, EventTimerInterval delay, EventTimerInterval interval,
-   EventLoopTimerUPP callBack, void *data, EventLoopTimerRef *timer);
+OSStatus CS_InstallEventLoopTimer( EventLoopRef eventLopp, EventTimerInterval delay, EventTimerInterval interval,
+                                   EventLoopTimerUPP callBack, void *data, EventLoopTimerRef *timer );
 
-OSStatus CS_InstallEventHandler(EventTargetRef target, EventHandlerUPP handler, ItemCount numTypes,
-   const EventTypeSpec *list,
-   void *data, EventHandlerRef *ref);
+OSStatus CS_InstallEventHandler( EventTargetRef target, EventHandlerUPP handler, ItemCount numTypes,
+                                 const EventTypeSpec *list,
+                                 void *data, EventHandlerRef *ref );
 
-void CS_DisposeEventHandlerUPP(EventHandlerUPP userUPP);
-OSStatus CS_SetSystemUIMode(SystemUIMode mode, SystemUIOptions options);
+void CS_DisposeEventHandlerUPP( EventHandlerUPP userUPP );
+OSStatus CS_SetSystemUIMode( SystemUIMode mode, SystemUIOptions options );
 
 //OSStatus CS_ATSFontActivateFromFileSpecification(const FSSpec *spec, ATSFontContext context, ATSFontFormat format, void *reserved,
 //         ATSOptionFlags flags, ATSFontContainerRef *handle);
 
-OSStatus CS_HIThemeGetGrowBoxBounds(const HIPoint *origin, const HIThemeGrowBoxDrawInfo *drawInfo, HIRect *outBounds);
-OSStatus CS_HIThemeGetButtonContentBounds(const HIRect *inBounds, const HIThemeButtonDrawInfo *drawInfo,
-   HIRect *outBounds);
+OSStatus CS_HIThemeGetGrowBoxBounds( const HIPoint *origin, const HIThemeGrowBoxDrawInfo *drawInfo, HIRect *outBounds );
+OSStatus CS_HIThemeGetButtonContentBounds( const HIRect *inBounds, const HIThemeButtonDrawInfo *drawInfo,
+        HIRect *outBounds );
 
-OSStatus CS_HIThemeDrawButton(const HIRect *inBounds, const HIThemeButtonDrawInfo *inDrawInfo, CGContextRef inContext,
-   HIThemeOrientation inOrientation, HIRect *outLabelRect);
+OSStatus CS_HIThemeDrawButton( const HIRect *inBounds, const HIThemeButtonDrawInfo *inDrawInfo, CGContextRef inContext,
+                               HIThemeOrientation inOrientation, HIRect *outLabelRect );
 
-OSStatus CS_HIThemeSetFill(ThemeBrush brush, void *info, CGContextRef context, HIThemeOrientation orientation);
+OSStatus CS_HIThemeSetFill( ThemeBrush brush, void *info, CGContextRef context, HIThemeOrientation orientation );
 
-OSStatus CS_HIThemeDrawMenuBackground(const HIRect *rect, const HIThemeMenuDrawInfo *info, CGContextRef context,
-   HIThemeOrientation orientation);
+OSStatus CS_HIThemeDrawMenuBackground( const HIRect *rect, const HIThemeMenuDrawInfo *info, CGContextRef context,
+                                       HIThemeOrientation orientation );
 
-OSStatus CS_HIThemeGetMenuBackgroundShape(const HIRect *menuRect, const HIThemeMenuDrawInfo *mdi, HIShapeRef *shape);
+OSStatus CS_HIThemeGetMenuBackgroundShape( const HIRect *menuRect, const HIThemeMenuDrawInfo *mdi, HIShapeRef *shape );
 
-OSStatus CS_HIThemeDrawGroupBox(const HIRect *hirect, const HIThemeGroupBoxDrawInfo *drawInfo, CGContextRef context,
-   HIThemeOrientation orientation);
+OSStatus CS_HIThemeDrawGroupBox( const HIRect *hirect, const HIThemeGroupBoxDrawInfo *drawInfo, CGContextRef context,
+                                 HIThemeOrientation orientation );
 
-OSStatus CS_CopyThemeIdentifier(CFStringRef *theme);
+OSStatus CS_CopyThemeIdentifier( CFStringRef *theme );
 
-OSStatus CS_HIThemeDrawFrame(const HIRect *hirect, const HIThemeFrameDrawInfo *drawInfo, CGContextRef context,
-   HIThemeOrientation orientation);
+OSStatus CS_HIThemeDrawFrame( const HIRect *hirect, const HIThemeFrameDrawInfo *drawInfo, CGContextRef context,
+                              HIThemeOrientation orientation );
 
-OSStatus CS_HIThemeDrawPopupArrow(const HIRect *hirect, const HIThemePopupArrowDrawInfo *drawInfo, CGContextRef context,
-   HIThemeOrientation orientation);
+OSStatus CS_HIThemeDrawPopupArrow( const HIRect *hirect, const HIThemePopupArrowDrawInfo *drawInfo, CGContextRef context,
+                                   HIThemeOrientation orientation );
 
-OSStatus CS_HIThemeDrawSeparator(const HIRect *hirect, const HIThemeSeparatorDrawInfo *drawInfo, CGContextRef context,
-   HIThemeOrientation orientation);
+OSStatus CS_HIThemeDrawSeparator( const HIRect *hirect, const HIThemeSeparatorDrawInfo *drawInfo, CGContextRef context,
+                                  HIThemeOrientation orientation );
 
-OSStatus CS_HIThemeDrawTabPane(const HIRect *hirect, const HIThemeTabPaneDrawInfo *info, CGContextRef context,
-   HIThemeOrientation orientation);
+OSStatus CS_HIThemeDrawTabPane( const HIRect *hirect, const HIThemeTabPaneDrawInfo *info, CGContextRef context,
+                                HIThemeOrientation orientation );
 
-OSStatus CS_HIThemeDrawTextBox(CFTypeRef text, const HIRect *hirect, HIThemeTextInfo *info, CGContextRef context,
-   HIThemeOrientation orientation);
+OSStatus CS_HIThemeDrawTextBox( CFTypeRef text, const HIRect *hirect, HIThemeTextInfo *info, CGContextRef context,
+                                HIThemeOrientation orientation );
 
-OSStatus CS_HIThemeDrawTab(const HIRect *hirect, const HIThemeTabDrawInfo *info, CGContextRef context,
-   HIThemeOrientation orientation, HIRect *outRect);
+OSStatus CS_HIThemeDrawTab( const HIRect *hirect, const HIThemeTabDrawInfo *info, CGContextRef context,
+                            HIThemeOrientation orientation, HIRect *outRect );
 
-OSStatus CS_HIThemeDrawWindowFrame(const HIRect *hirect, const HIThemeWindowDrawInfo *info, CGContextRef context,
-   HIThemeOrientation orientation, HIRect *outRect);
+OSStatus CS_HIThemeDrawWindowFrame( const HIRect *hirect, const HIThemeWindowDrawInfo *info, CGContextRef context,
+                                    HIThemeOrientation orientation, HIRect *outRect );
 
-OSStatus CS_HIThemeDrawFocusRect(const HIRect *hirect, unsigned char, CGContextRef context,
-   HIThemeOrientation orientation);
+OSStatus CS_HIThemeDrawFocusRect( const HIRect *hirect, unsigned char, CGContextRef context,
+                                  HIThemeOrientation orientation );
 
-OSStatus CS_HIThemeGetWindowShape(const HIRect *hirect, const HIThemeWindowDrawInfo *info, WindowRegionCode code,
-   HIShapeRef *outShape);
+OSStatus CS_HIThemeGetWindowShape( const HIRect *hirect, const HIThemeWindowDrawInfo *info, WindowRegionCode code,
+                                   HIShapeRef *outShape );
 
-OSStatus CS_HIThemeDrawMenuSeparator(const HIRect *hirect1, const HIRect *hirect2, const HIThemeMenuItemDrawInfo *info,
-   CGContextRef context, HIThemeOrientation orientation);
+OSStatus CS_HIThemeDrawMenuSeparator( const HIRect *hirect1, const HIRect *hirect2, const HIThemeMenuItemDrawInfo *info,
+                                      CGContextRef context, HIThemeOrientation orientation );
 
-OSStatus CS_HIThemeDrawMenuItem(const HIRect *hirect1, const HIRect *hirect2, const HIThemeMenuItemDrawInfo *info,
-   CGContextRef context, HIThemeOrientation orientation, HIRect *outRect);
+OSStatus CS_HIThemeDrawMenuItem( const HIRect *hirect1, const HIRect *hirect2, const HIThemeMenuItemDrawInfo *info,
+                                 CGContextRef context, HIThemeOrientation orientation, HIRect *outRect );
 
-OSStatus CS_HIThemeGetTextDimensions(CFTypeRef string, CGFloat width, HIThemeTextInfo *tti, CGFloat *outWidth,
-   CGFloat *outHeight, CGFloat *outBaseline);
+OSStatus CS_HIThemeGetTextDimensions( CFTypeRef string, CGFloat width, HIThemeTextInfo *tti, CGFloat *outWidth,
+                                      CGFloat *outHeight, CGFloat *outBaseline );
 
-OSStatus CS_HIThemeDrawMenuBarBackground(const HIRect *hirect, const HIThemeMenuBarDrawInfo *bdi, CGContextRef context,
-   HIThemeOrientation orientation);
+OSStatus CS_HIThemeDrawMenuBarBackground( const HIRect *hirect, const HIThemeMenuBarDrawInfo *bdi, CGContextRef context,
+        HIThemeOrientation orientation );
 
-OSStatus CS_HIThemeDrawTrack(const HIThemeTrackDrawInfo *tdi, const HIRect *hirect, CGContextRef context,
-   HIThemeOrientation orientation);
+OSStatus CS_HIThemeDrawTrack( const HIThemeTrackDrawInfo *tdi, const HIRect *hirect, CGContextRef context,
+                              HIThemeOrientation orientation );
 
-OSStatus CS_HIThemeDrawGrowBox(const HIPoint *pt, const HIThemeGrowBoxDrawInfo *gdi, CGContextRef context,
-   HIThemeOrientation orientation);
+OSStatus CS_HIThemeDrawGrowBox( const HIPoint *pt, const HIThemeGrowBoxDrawInfo *gdi, CGContextRef context,
+                                HIThemeOrientation orientation );
 
-OSStatus CS_HIThemeDrawPaneSplitter(const HIRect *hirect, const HIThemeSplitterDrawInfo *info, CGContextRef context,
-   HIThemeOrientation orientation);
+OSStatus CS_HIThemeDrawPaneSplitter( const HIRect *hirect, const HIThemeSplitterDrawInfo *info, CGContextRef context,
+                                     HIThemeOrientation orientation );
 
-OSStatus CS_HIThemeGetButtonShape(const HIRect *hirect, const HIThemeButtonDrawInfo *bdi, HIShapeRef *shape);
+OSStatus CS_HIThemeGetButtonShape( const HIRect *hirect, const HIThemeButtonDrawInfo *bdi, HIShapeRef *shape );
 
-OSStatus CS_HIThemeGetTrackThumbShape(const HIThemeTrackDrawInfo *tdi, HIShapeRef *shape);
+OSStatus CS_HIThemeGetTrackThumbShape( const HIThemeTrackDrawInfo *tdi, HIShapeRef *shape );
 
-OSStatus CS_HIThemeDrawTrackTickMarks(const HIThemeTrackDrawInfo *tdi, ItemCount numMarks, CGContextRef context,
-   HIThemeOrientation orientation);
+OSStatus CS_HIThemeDrawTrackTickMarks( const HIThemeTrackDrawInfo *tdi, ItemCount numMarks, CGContextRef context,
+                                       HIThemeOrientation orientation );
 
-OSStatus CS_HIThemeGetButtonBackgroundBounds(const HIRect *newRect, const HIThemeButtonDrawInfo *info, HIRect *outRect);
-OSStatus CS_HIThemeDrawTitleBarWidget(const HIRect *titleBarRect, const HIThemeWindowWidgetDrawInfo *info,
-   CGContextRef context,
-   HIThemeOrientation orientation);
+OSStatus CS_HIThemeGetButtonBackgroundBounds( const HIRect *newRect, const HIThemeButtonDrawInfo *info, HIRect *outRect );
+OSStatus CS_HIThemeDrawTitleBarWidget( const HIRect *titleBarRect, const HIThemeWindowWidgetDrawInfo *info,
+                                       CGContextRef context,
+                                       HIThemeOrientation orientation );
 
-OSStatus CS_HIThemeGetTrackBounds(const HIThemeTrackDrawInfo *info, HIRect *macRect);
-OSStatus CS_HIThemeGetTrackDragRect(const HIThemeTrackDrawInfo *info, HIRect *macRect);
+OSStatus CS_HIThemeGetTrackBounds( const HIThemeTrackDrawInfo *info, HIRect *macRect );
+OSStatus CS_HIThemeGetTrackDragRect( const HIThemeTrackDrawInfo *info, HIRect *macRect );
 
-unsigned char CS_HIThemeHitTestTrack(const HIThemeTrackDrawInfo *info, const HIPoint *point,
-   ControlPartCode *outPartHit);
+unsigned char CS_HIThemeHitTestTrack( const HIThemeTrackDrawInfo *info, const HIPoint *point,
+                                      ControlPartCode *outPartHit );
 
-unsigned char CS_HIThemeHitTestScrollBarArrows(const HIRect *bounds, const HIScrollBarTrackInfo *info,
-   unsigned char isHoriz,
-   const HIPoint *point, HIRect *outBounds,  ControlPartCode *outPartCode);
+unsigned char CS_HIThemeHitTestScrollBarArrows( const HIRect *bounds, const HIScrollBarTrackInfo *info,
+        unsigned char isHoriz,
+        const HIPoint *point, HIRect *outBounds,  ControlPartCode *outPartCode );
 
-OSStatus CS_HIThemeGetTrackPartBounds(const HIThemeTrackDrawInfo *info, ControlPartCode inPartCode,
-   HIRect *outPartBounds);
+OSStatus CS_HIThemeGetTrackPartBounds( const HIThemeTrackDrawInfo *info, ControlPartCode inPartCode,
+                                       HIRect *outPartBounds );
 
-OSStatus CS_GetThemeMenuSeparatorHeight(SInt16 *ash);
+OSStatus CS_GetThemeMenuSeparatorHeight( SInt16 *ash );
 
 
 // wrappers
-void cs_updateMacBorderMetrics(QTabBar *q);
+void cs_updateMacBorderMetrics( QTabBar *q );
 
 #endif

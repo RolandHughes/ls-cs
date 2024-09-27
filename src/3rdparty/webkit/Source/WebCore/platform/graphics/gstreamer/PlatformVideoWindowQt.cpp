@@ -32,63 +32,75 @@ using namespace WebCore;
 static const int gHideMouseCursorDelay = 3000;
 
 FullScreenVideoWindow::FullScreenVideoWindow()
-    : QWidget(0, Qt::Window)
-    , m_mediaElement(0)
+    : QWidget( 0, Qt::Window )
+    , m_mediaElement( 0 )
 {
-    setAttribute(Qt::WA_NativeWindow);
-    setWindowModality(Qt::ApplicationModal);
-    setAttribute(Qt::WA_NoSystemBackground, true);
-    setAttribute(Qt::WA_PaintOnScreen, true);
+    setAttribute( Qt::WA_NativeWindow );
+    setWindowModality( Qt::ApplicationModal );
+    setAttribute( Qt::WA_NoSystemBackground, true );
+    setAttribute( Qt::WA_PaintOnScreen, true );
 
-    m_cursorTimer.setSingleShot(true);
-    connect(&m_cursorTimer, SIGNAL(timeout()), this, SLOT(hideCursor()));
+    m_cursorTimer.setSingleShot( true );
+    connect( &m_cursorTimer, SIGNAL( timeout() ), this, SLOT( hideCursor() ) );
 }
 
-void FullScreenVideoWindow::setVideoElement(HTMLVideoElement* element)
+void FullScreenVideoWindow::setVideoElement( HTMLVideoElement *element )
 {
     m_mediaElement = element;
 }
 
-void FullScreenVideoWindow::closeEvent(QCloseEvent*)
+void FullScreenVideoWindow::closeEvent( QCloseEvent * )
 {
     m_cursorTimer.stop();
-    setMouseTracking(false);
+    setMouseTracking( false );
     releaseMouse();
     QApplication::restoreOverrideCursor();
 }
 
-void FullScreenVideoWindow::keyPressEvent(QKeyEvent* ev)
+void FullScreenVideoWindow::keyPressEvent( QKeyEvent *ev )
 {
-    if (m_mediaElement && ev->key() == Qt::Key_Space) {
-        if (!m_mediaElement->paused())
-            m_mediaElement->pause(true);
+    if ( m_mediaElement && ev->key() == Qt::Key_Space )
+    {
+        if ( !m_mediaElement->paused() )
+        {
+            m_mediaElement->pause( true );
+        }
         else
-            m_mediaElement->play(true);
-    } else if (ev->key() == Qt::Key_Escape)
+        {
+            m_mediaElement->play( true );
+        }
+    }
+    else if ( ev->key() == Qt::Key_Escape )
+    {
         emit closed();
-    QWidget::keyPressEvent(ev);
+    }
+
+    QWidget::keyPressEvent( ev );
 }
 
-bool FullScreenVideoWindow::event(QEvent* ev)
+bool FullScreenVideoWindow::event( QEvent *ev )
 {
-    switch (ev->type()) {
-    case QEvent::MouseMove:
-        showCursor();
-        ev->accept();
-        return true;
-    case QEvent::MouseButtonDblClick:
-        emit closed();
-        ev->accept();
-        return true;
-    default:
-        return QWidget::event(ev);
+    switch ( ev->type() )
+    {
+        case QEvent::MouseMove:
+            showCursor();
+            ev->accept();
+            return true;
+
+        case QEvent::MouseButtonDblClick:
+            emit closed();
+            ev->accept();
+            return true;
+
+        default:
+            return QWidget::event( ev );
     }
 }
 
 void FullScreenVideoWindow::showFullScreen()
 {
     QWidget::showFullScreen();
-    setMouseTracking(true);
+    setMouseTracking( true );
     raise();
     setFocus();
     hideCursor();
@@ -96,24 +108,24 @@ void FullScreenVideoWindow::showFullScreen()
 
 void FullScreenVideoWindow::hideCursor()
 {
-    QApplication::setOverrideCursor(QCursor(Qt::BlankCursor));
+    QApplication::setOverrideCursor( QCursor( Qt::BlankCursor ) );
 }
 
 void FullScreenVideoWindow::showCursor()
 {
     QApplication::restoreOverrideCursor();
-    m_cursorTimer.start(gHideMouseCursorDelay);
+    m_cursorTimer.start( gHideMouseCursorDelay );
 }
 
 
 PlatformVideoWindow::PlatformVideoWindow()
 {
     m_window = new FullScreenVideoWindow();
-    m_window->setWindowFlags(m_window->windowFlags() | Qt::FramelessWindowHint);
+    m_window->setWindowFlags( m_window->windowFlags() | Qt::FramelessWindowHint );
     QPalette p;
-    p.setColor(QPalette::Base, Qt::black);
-    p.setColor(QPalette::Window, Qt::black);
-    m_window->setPalette(p);
+    p.setColor( QPalette::Base, Qt::black );
+    p.setColor( QPalette::Window, Qt::black );
+    m_window->setPalette( p );
     m_window->showFullScreen();
     m_videoWindowId = m_window->winId();
 }
@@ -124,6 +136,6 @@ PlatformVideoWindow::~PlatformVideoWindow()
     m_videoWindowId = 0;
 }
 
-void PlatformVideoWindow::prepareForOverlay(GstMessage*)
+void PlatformVideoWindow::prepareForOverlay( GstMessage * )
 {
 }

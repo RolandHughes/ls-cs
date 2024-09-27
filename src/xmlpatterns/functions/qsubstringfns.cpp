@@ -30,140 +30,163 @@
 
 using namespace QPatternist;
 
-Item ContainsFN::evaluateSingleton(const DynamicContext::Ptr &context) const
+Item ContainsFN::evaluateSingleton( const DynamicContext::Ptr &context ) const
 {
-   const Item op1(m_operands.first()->evaluateSingleton(context));
-   QString str1;
+    const Item op1( m_operands.first()->evaluateSingleton( context ) );
+    QString str1;
 
-   if (op1) {
-      str1 = op1.stringValue();
-   }
+    if ( op1 )
+    {
+        str1 = op1.stringValue();
+    }
 
-   const Item op2(m_operands.at(1)->evaluateSingleton(context));
-   QString str2;
+    const Item op2( m_operands.at( 1 )->evaluateSingleton( context ) );
+    QString str2;
 
-   if (op2) {
-      str2 = op2.stringValue();
-   }
+    if ( op2 )
+    {
+        str2 = op2.stringValue();
+    }
 
-   if (str2.isEmpty()) {
-      return CommonValues::BooleanTrue;
-   }
+    if ( str2.isEmpty() )
+    {
+        return CommonValues::BooleanTrue;
+    }
 
-   if (str1.isEmpty()) {
-      return CommonValues::BooleanFalse;
-   }
+    if ( str1.isEmpty() )
+    {
+        return CommonValues::BooleanFalse;
+    }
 
-   return Boolean::fromValue(str1.contains(str2, caseSensitivity()));
+    return Boolean::fromValue( str1.contains( str2, caseSensitivity() ) );
 }
 
-Item StartsWithFN::evaluateSingleton(const DynamicContext::Ptr &context) const
+Item StartsWithFN::evaluateSingleton( const DynamicContext::Ptr &context ) const
 {
-   const Item op1(m_operands.first()->evaluateSingleton(context));
-   QString str1;
+    const Item op1( m_operands.first()->evaluateSingleton( context ) );
+    QString str1;
 
-   if (op1) {
-      str1 = op1.stringValue();
-   }
+    if ( op1 )
+    {
+        str1 = op1.stringValue();
+    }
 
-   const Item op2(m_operands.at(1)->evaluateSingleton(context));
-   QString str2;
+    const Item op2( m_operands.at( 1 )->evaluateSingleton( context ) );
+    QString str2;
 
-   if (op2) {
-      str2 = op2.stringValue();
-   }
+    if ( op2 )
+    {
+        str2 = op2.stringValue();
+    }
 
-   if (str2.isEmpty()) {
-      return CommonValues::BooleanTrue;
-   }
+    if ( str2.isEmpty() )
+    {
+        return CommonValues::BooleanTrue;
+    }
 
-   if (str1.isEmpty()) {
-      return CommonValues::BooleanFalse;
-   }
+    if ( str1.isEmpty() )
+    {
+        return CommonValues::BooleanFalse;
+    }
 
-   return Boolean::fromValue(str1.startsWith(str2, caseSensitivity()));
+    return Boolean::fromValue( str1.startsWith( str2, caseSensitivity() ) );
 }
 
-Item EndsWithFN::evaluateSingleton(const DynamicContext::Ptr &context) const
+Item EndsWithFN::evaluateSingleton( const DynamicContext::Ptr &context ) const
 {
-   const Item op1(m_operands.first()->evaluateSingleton(context));
-   QString str1;
+    const Item op1( m_operands.first()->evaluateSingleton( context ) );
+    QString str1;
 
-   if (op1) {
-      str1 = op1.stringValue();
-   }
+    if ( op1 )
+    {
+        str1 = op1.stringValue();
+    }
 
-   const Item op2(m_operands.at(1)->evaluateSingleton(context));
-   QString str2;
+    const Item op2( m_operands.at( 1 )->evaluateSingleton( context ) );
+    QString str2;
 
-   if (op2) {
-      str2 = op2.stringValue();
-   }
+    if ( op2 )
+    {
+        str2 = op2.stringValue();
+    }
 
-   if (str2.isEmpty()) {
-      return CommonValues::BooleanTrue;
-   }
+    if ( str2.isEmpty() )
+    {
+        return CommonValues::BooleanTrue;
+    }
 
-   if (str1.isEmpty()) {
-      return CommonValues::BooleanFalse;
-   }
+    if ( str1.isEmpty() )
+    {
+        return CommonValues::BooleanFalse;
+    }
 
-   return Boolean::fromValue(str1.endsWith(str2, caseSensitivity()));
+    return Boolean::fromValue( str1.endsWith( str2, caseSensitivity() ) );
 }
 
-Item SubstringBeforeFN::evaluateSingleton(const DynamicContext::Ptr &context) const
+Item SubstringBeforeFN::evaluateSingleton( const DynamicContext::Ptr &context ) const
 {
-   const Item op1(m_operands.first()->evaluateSingleton(context));
-   QString str1;
+    const Item op1( m_operands.first()->evaluateSingleton( context ) );
+    QString str1;
 
-   if (op1) {
-      str1 = op1.stringValue();
-   }
+    if ( op1 )
+    {
+        str1 = op1.stringValue();
+    }
 
-   const Item op2(m_operands.at(1)->evaluateSingleton(context));
-   QString str2;
+    const Item op2( m_operands.at( 1 )->evaluateSingleton( context ) );
+    QString str2;
 
-   if (op2) {
-      str2 = op2.stringValue();
-   }
+    if ( op2 )
+    {
+        str2 = op2.stringValue();
+    }
 
-   const int pos = str1.indexOf(str2);
-   if (pos == -1) {
-      return CommonValues::EmptyString;
-   }
+    const int pos = str1.indexOf( str2 );
 
-   return AtomicString::fromValue(QString(str1.left(pos)));
+    if ( pos == -1 )
+    {
+        return CommonValues::EmptyString;
+    }
+
+    return AtomicString::fromValue( QString( str1.left( pos ) ) );
 }
 
-Item SubstringAfterFN::evaluateSingleton(const DynamicContext::Ptr &context) const
+Item SubstringAfterFN::evaluateSingleton( const DynamicContext::Ptr &context ) const
 {
-   const Item op1(m_operands.first()->evaluateSingleton(context));
-   QString str1;
+    const Item op1( m_operands.first()->evaluateSingleton( context ) );
+    QString str1;
 
-   if (op1) {
-      str1 = op1.stringValue();
-   }
+    if ( op1 )
+    {
+        str1 = op1.stringValue();
+    }
 
-   const Item op2(m_operands.at(1)->evaluateSingleton(context));
-   QString str2;
+    const Item op2( m_operands.at( 1 )->evaluateSingleton( context ) );
+    QString str2;
 
-   if (op2) {
-      str2 = op2.stringValue();
-   }
+    if ( op2 )
+    {
+        str2 = op2.stringValue();
+    }
 
-   if (str2.isEmpty()) {
-      if (op1) {
-         return op1;
-      } else {
-         return CommonValues::EmptyString;
-      }
-   }
+    if ( str2.isEmpty() )
+    {
+        if ( op1 )
+        {
+            return op1;
+        }
+        else
+        {
+            return CommonValues::EmptyString;
+        }
+    }
 
-   const int pos = str1.indexOf(str2);
+    const int pos = str1.indexOf( str2 );
 
-   if (pos == -1) {
-      return CommonValues::EmptyString;
-   }
+    if ( pos == -1 )
+    {
+        return CommonValues::EmptyString;
+    }
 
-   return AtomicString::fromValue(QString(str1.right(str1.length() - (pos + str2.length()))));
+    return AtomicString::fromValue( QString( str1.right( str1.length() - ( pos + str2.length() ) ) ) );
 }

@@ -36,97 +36,107 @@ class QScriptValue;
 
 class QScriptValuePrivate : public QSharedData
 {
- public:
-   enum Type {
-      JavaScriptCore,
-      Number,
-      String
-   };
+public:
+    enum Type
+    {
+        JavaScriptCore,
+        Number,
+        String
+    };
 
-   inline QScriptValuePrivate(QScriptEnginePrivate *);
+    inline QScriptValuePrivate( QScriptEnginePrivate * );
 
-   QScriptValuePrivate(const QScriptValuePrivate &) = delete;
-   QScriptValuePrivate &operator=(const QScriptValuePrivate &) = delete;
+    QScriptValuePrivate( const QScriptValuePrivate & ) = delete;
+    QScriptValuePrivate &operator=( const QScriptValuePrivate & ) = delete;
 
-   inline ~QScriptValuePrivate();
+    inline ~QScriptValuePrivate();
 
-   inline void *operator new (size_t, QScriptEnginePrivate *);
-   inline void operator delete (void *);
+    inline void *operator new ( size_t, QScriptEnginePrivate * );
+    inline void operator delete ( void * );
 
-   inline void initFrom(JSC::JSValue value);
-   inline void initFrom(qsreal value);
-   inline void initFrom(const QString &value);
+    inline void initFrom( JSC::JSValue value );
+    inline void initFrom( qsreal value );
+    inline void initFrom( const QString &value );
 
-   inline bool isJSC() const;
-   inline bool isObject() const;
+    inline bool isJSC() const;
+    inline bool isObject() const;
 
-   static inline QScriptValuePrivate *get(const QScriptValue &q) {
-      return q.d_ptr.data();
-   }
+    static inline QScriptValuePrivate *get( const QScriptValue &q )
+    {
+        return q.d_ptr.data();
+    }
 
-   static inline QScriptValue toPublic(QScriptValuePrivate *d) {
-      return QScriptValue(d);
-   }
+    static inline QScriptValue toPublic( QScriptValuePrivate *d )
+    {
+        return QScriptValue( d );
+    }
 
-   static inline QScriptEnginePrivate *getEngine(const QScriptValue &q) {
-      if (! q.d_ptr) {
-         return nullptr;
-      }
-      return q.d_ptr->engine;
-   }
+    static inline QScriptEnginePrivate *getEngine( const QScriptValue &q )
+    {
+        if ( ! q.d_ptr )
+        {
+            return nullptr;
+        }
 
-   inline JSC::JSValue property(const JSC::Identifier &id,
-      const QScriptValue::ResolveFlags &mode = QScriptValue::ResolvePrototype) const;
+        return q.d_ptr->engine;
+    }
 
-   inline JSC::JSValue property(quint32 index,
-      const QScriptValue::ResolveFlags &mode = QScriptValue::ResolvePrototype) const;
+    inline JSC::JSValue property( const JSC::Identifier &id,
+                                  const QScriptValue::ResolveFlags &mode = QScriptValue::ResolvePrototype ) const;
 
-   inline JSC::JSValue property(const JSC::UString &,
-      const QScriptValue::ResolveFlags &mode = QScriptValue::ResolvePrototype) const;
+    inline JSC::JSValue property( quint32 index,
+                                  const QScriptValue::ResolveFlags &mode = QScriptValue::ResolvePrototype ) const;
 
-   inline void setProperty(const JSC::UString &name, const JSC::JSValue &value,
-      const QScriptValue::PropertyFlags &flags = QScriptValue::KeepExistingFlags);
-   inline void setProperty(const JSC::Identifier &id, const JSC::JSValue &value,
-      const QScriptValue::PropertyFlags &flags = QScriptValue::KeepExistingFlags);
-   inline void setProperty(quint32 index, const JSC::JSValue &value,
-      const QScriptValue::PropertyFlags &flags = QScriptValue::KeepExistingFlags);
-   inline QScriptValue::PropertyFlags propertyFlags(
-      const JSC::Identifier &id, const QScriptValue::ResolveFlags &mode = QScriptValue::ResolvePrototype) const;
+    inline JSC::JSValue property( const JSC::UString &,
+                                  const QScriptValue::ResolveFlags &mode = QScriptValue::ResolvePrototype ) const;
 
-   void detachFromEngine();
+    inline void setProperty( const JSC::UString &name, const JSC::JSValue &value,
+                             const QScriptValue::PropertyFlags &flags = QScriptValue::KeepExistingFlags );
+    inline void setProperty( const JSC::Identifier &id, const JSC::JSValue &value,
+                             const QScriptValue::PropertyFlags &flags = QScriptValue::KeepExistingFlags );
+    inline void setProperty( quint32 index, const JSC::JSValue &value,
+                             const QScriptValue::PropertyFlags &flags = QScriptValue::KeepExistingFlags );
+    inline QScriptValue::PropertyFlags propertyFlags(
+        const JSC::Identifier &id, const QScriptValue::ResolveFlags &mode = QScriptValue::ResolvePrototype ) const;
 
-   qint64 objectId() {
-      if ( (type == JavaScriptCore) && (engine) && jscValue.isCell() ) {
-         return (qint64)jscValue.asCell();
-      } else {
-         return -1;
-      }
-   }
+    void detachFromEngine();
 
-   QScriptEnginePrivate *engine;
-   Type type;
-   JSC::JSValue jscValue;
-   qsreal numberValue;
-   QString stringValue;
+    qint64 objectId()
+    {
+        if ( ( type == JavaScriptCore ) && ( engine ) && jscValue.isCell() )
+        {
+            return ( qint64 )jscValue.asCell();
+        }
+        else
+        {
+            return -1;
+        }
+    }
 
-   // linked list of engine's script values
-   QScriptValuePrivate *prev;
-   QScriptValuePrivate *next;
+    QScriptEnginePrivate *engine;
+    Type type;
+    JSC::JSValue jscValue;
+    qsreal numberValue;
+    QString stringValue;
+
+    // linked list of engine's script values
+    QScriptValuePrivate *prev;
+    QScriptValuePrivate *next;
 };
 
-inline QScriptValuePrivate::QScriptValuePrivate(QScriptEnginePrivate *e)
-   : engine(e), prev(nullptr), next(nullptr)
+inline QScriptValuePrivate::QScriptValuePrivate( QScriptEnginePrivate *e )
+    : engine( e ), prev( nullptr ), next( nullptr )
 {
 }
 
 inline bool QScriptValuePrivate::isJSC() const
 {
-   return (type == JavaScriptCore);
+    return ( type == JavaScriptCore );
 }
 
 inline bool QScriptValuePrivate::isObject() const
 {
-   return isJSC() && jscValue && jscValue.isObject();
+    return isJSC() && jscValue && jscValue.isObject();
 }
 
 // Rest of inline functions implemented in qscriptengine_p.h

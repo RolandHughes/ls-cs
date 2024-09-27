@@ -44,7 +44,8 @@
 
 #include "UString.h"
 
-namespace JSC {
+namespace JSC
+{
 
 class ExecState;
 struct GregorianDateTime;
@@ -52,11 +53,11 @@ struct GregorianDateTime;
 static const unsigned DateConversionBufferSize = 100;
 typedef char DateConversionBuffer[DateConversionBufferSize];
 
-double parseDate(ExecState* exec, const UString&);
-void formatDate(const GregorianDateTime&, DateConversionBuffer&);
-void formatDateUTCVariant(const GregorianDateTime&, DateConversionBuffer&);
-void formatTime(const GregorianDateTime&, DateConversionBuffer&);
-void formatTimeUTC(const GregorianDateTime&, DateConversionBuffer&);
+double parseDate( ExecState *exec, const UString & );
+void formatDate( const GregorianDateTime &, DateConversionBuffer & );
+void formatDateUTCVariant( const GregorianDateTime &, DateConversionBuffer & );
+void formatTime( const GregorianDateTime &, DateConversionBuffer & );
+void formatTimeUTC( const GregorianDateTime &, DateConversionBuffer & );
 
 } // namespace JSC
 

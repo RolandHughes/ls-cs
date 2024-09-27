@@ -37,30 +37,42 @@
 #include "JavaStringV8.h"
 #endif
 
-namespace JSC {
+namespace JSC
+{
 
-namespace Bindings {
+namespace Bindings
+{
 
-class JavaString {
+class JavaString
+{
 public:
     JavaString()
     {
         m_impl.init();
     }
 
-    JavaString(JNIEnv* e, jstring s)
+    JavaString( JNIEnv *e, jstring s )
     {
-        m_impl.init(e, s);
+        m_impl.init( e, s );
     }
 
-    JavaString(jstring s)
+    JavaString( jstring s )
     {
-        m_impl.init(getJNIEnv(), s);
+        m_impl.init( getJNIEnv(), s );
     }
 
-    const char* utf8() const { return m_impl.utf8(); }
-    int length() const { return m_impl.length(); }
-    StringImpl* impl() const { return m_impl.impl(); }
+    const char *utf8() const
+    {
+        return m_impl.utf8();
+    }
+    int length() const
+    {
+        return m_impl.length();
+    }
+    StringImpl *impl() const
+    {
+        return m_impl.impl();
+    }
 
 private:
     JavaStringImpl m_impl;

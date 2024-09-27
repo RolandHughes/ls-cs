@@ -31,40 +31,41 @@ class QState;
 
 class QAbstractStatePrivate
 {
-   Q_DECLARE_PUBLIC(QAbstractState)
+    Q_DECLARE_PUBLIC( QAbstractState )
 
- public:
-   virtual ~QAbstractStatePrivate()
-   { }
+public:
+    virtual ~QAbstractStatePrivate()
+    { }
 
-   enum StateType {
-      AbstractState,
-      StandardState,
-      FinalState,
-      HistoryState
-   };
+    enum StateType
+    {
+        AbstractState,
+        StandardState,
+        FinalState,
+        HistoryState
+    };
 
-   QAbstractStatePrivate(StateType type);
+    QAbstractStatePrivate( StateType type );
 
-   static QAbstractStatePrivate *get(QAbstractState *q);
-   static const QAbstractStatePrivate *get(const QAbstractState *q);
+    static QAbstractStatePrivate *get( QAbstractState *q );
+    static const QAbstractStatePrivate *get( const QAbstractState *q );
 
-   QStateMachine *machine() const;
+    QStateMachine *machine() const;
 
-   void callOnEntry(QEvent *e);
-   void callOnExit(QEvent *e);
+    void callOnEntry( QEvent *e );
+    void callOnExit( QEvent *e );
 
-   void emitEntered();
-   void emitExited();
+    void emitEntered();
+    void emitExited();
 
-   uint stateType: 30;
-   uint isMachine: 1;
-   bool active: 1;
+    uint stateType: 30;
+    uint isMachine: 1;
+    bool active: 1;
 
-   mutable QState *parentState;
+    mutable QState *parentState;
 
- protected:
-   QAbstractState *q_ptr;
+protected:
+    QAbstractState *q_ptr;
 };
 
 #endif

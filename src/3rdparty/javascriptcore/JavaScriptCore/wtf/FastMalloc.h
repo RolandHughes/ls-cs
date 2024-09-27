@@ -26,155 +26,175 @@
 #include <stdlib.h>
 #include <new>
 
-namespace WTF {
+namespace WTF
+{
 
-    // These functions call CRASH() if an allocation fails.
-    void* fastMalloc(size_t);
-    void* fastZeroedMalloc(size_t);
-    void* fastCalloc(size_t numElements, size_t elementSize);
-    void* fastRealloc(void*, size_t);
-    char* fastStrDup(const char*);
+// These functions call CRASH() if an allocation fails.
+void *fastMalloc( size_t );
+void *fastZeroedMalloc( size_t );
+void *fastCalloc( size_t numElements, size_t elementSize );
+void *fastRealloc( void *, size_t );
+char *fastStrDup( const char * );
 
-    struct TryMallocReturnValue {
-        TryMallocReturnValue(void* data)
-            : m_data(data)
-        {
-        }
-        TryMallocReturnValue(const TryMallocReturnValue& source)
-            : m_data(source.m_data)
-        {
-            source.m_data = nullptr;
-        }
-        ~TryMallocReturnValue() { ASSERT(!m_data); }
-        template <typename T> bool getValue(T& data) WARN_UNUSED_RETURN;
-        template <typename T> operator PossiblyNull<T>()
-        {
-            T value;
-            getValue(value);
-            return PossiblyNull<T>(value);
-        }
-    private:
-        mutable void* m_data;
-    };
-
-    template <typename T> bool TryMallocReturnValue::getValue(T& data)
+struct TryMallocReturnValue
+{
+    TryMallocReturnValue( void *data )
+        : m_data( data )
     {
-        union u { void* data; T target; } res;
-        res.data = m_data;
-        data = res.target;
-        bool returnValue = !!m_data;
-        m_data = nullptr;
-        return returnValue;
     }
+    TryMallocReturnValue( const TryMallocReturnValue &source )
+        : m_data( source.m_data )
+    {
+        source.m_data = nullptr;
+    }
+    ~TryMallocReturnValue()
+    {
+        ASSERT( !m_data );
+    }
+    template <typename T> bool getValue( T &data ) WARN_UNUSED_RETURN;
+    template <typename T> operator PossiblyNull<T>()
+    {
+        T value;
+        getValue( value );
+        return PossiblyNull<T>( value );
+    }
+private:
+    mutable void *m_data;
+};
 
-    TryMallocReturnValue tryFastMalloc(size_t n);
-    TryMallocReturnValue tryFastZeroedMalloc(size_t n);
-    TryMallocReturnValue tryFastCalloc(size_t n_elements, size_t element_size);
-    TryMallocReturnValue tryFastRealloc(void* p, size_t n);
+template <typename T> bool TryMallocReturnValue::getValue( T &data )
+{
+    union u
+    {
+        void *data;
+        T target;
+    } res;
+    res.data = m_data;
+    data = res.target;
+    bool returnValue = !!m_data;
+    m_data = nullptr;
+    return returnValue;
+}
 
-    void fastFree(void*);
+TryMallocReturnValue tryFastMalloc( size_t n );
+TryMallocReturnValue tryFastZeroedMalloc( size_t n );
+TryMallocReturnValue tryFastCalloc( size_t n_elements, size_t element_size );
+TryMallocReturnValue tryFastRealloc( void *p, size_t n );
+
+void fastFree( void * );
 
 #ifndef NDEBUG
-    void fastMallocForbid();
-    void fastMallocAllow();
+void fastMallocForbid();
+void fastMallocAllow();
 #endif
 
-    void releaseFastMallocFreeMemory();
+void releaseFastMallocFreeMemory();
 
-    struct FastMallocStatistics {
-        size_t heapSize;
-        size_t freeSizeInHeap;
-        size_t freeSizeInCaches;
-        size_t returnedSize;
-    };
-    FastMallocStatistics fastMallocStatistics();
+struct FastMallocStatistics
+{
+    size_t heapSize;
+    size_t freeSizeInHeap;
+    size_t freeSizeInCaches;
+    size_t returnedSize;
+};
+FastMallocStatistics fastMallocStatistics();
 
-    // This defines a type which holds an unsigned integer and is the same
-    // size as the minimally aligned memory allocation.
-    typedef unsigned long long AllocAlignmentInteger;
+// This defines a type which holds an unsigned integer and is the same
+// size as the minimally aligned memory allocation.
+typedef unsigned long long AllocAlignmentInteger;
 
-    namespace Internal {
-        enum AllocType {                    // Start with an unusual number instead of zero, because zero is common.
-            AllocTypeMalloc = 0x375d6750,   // Encompasses fastMalloc, fastZeroedMalloc, fastCalloc, fastRealloc.
-            AllocTypeClassNew,              // Encompasses class operator new from FastAllocBase.
-            AllocTypeClassNewArray,         // Encompasses class operator new[] from FastAllocBase.
-            AllocTypeFastNew,               // Encompasses fastNew.
-            AllocTypeFastNewArray,          // Encompasses fastNewArray.
-            AllocTypeNew,                   // Encompasses global operator new.
-            AllocTypeNewArray               // Encompasses global operator new[].
-        };
-    }
+namespace Internal
+{
+enum AllocType                      // Start with an unusual number instead of zero, because zero is common.
+{
+    AllocTypeMalloc = 0x375d6750,   // Encompasses fastMalloc, fastZeroedMalloc, fastCalloc, fastRealloc.
+    AllocTypeClassNew,              // Encompasses class operator new from FastAllocBase.
+    AllocTypeClassNewArray,         // Encompasses class operator new[] from FastAllocBase.
+    AllocTypeFastNew,               // Encompasses fastNew.
+    AllocTypeFastNewArray,          // Encompasses fastNewArray.
+    AllocTypeNew,                   // Encompasses global operator new.
+    AllocTypeNewArray               // Encompasses global operator new[].
+};
+}
 
 #if ENABLE(FAST_MALLOC_MATCH_VALIDATION)
 
-    // Malloc validation is a scheme whereby a tag is attached to an
-    // allocation which identifies how it was originally allocated.
-    // This allows us to verify that the freeing operation matches the
-    // allocation operation. If memory is allocated with operator new[]
-    // but freed with free or delete, this system would detect that.
-    // In the implementation here, the tag is an integer prepended to
-    // the allocation memory which is assigned one of the AllocType
-    // enumeration values. An alternative implementation of this
-    // scheme could store the tag somewhere else or ignore it.
-    // Users of FastMalloc don't need to know or care how this tagging
-    // is implemented.
+// Malloc validation is a scheme whereby a tag is attached to an
+// allocation which identifies how it was originally allocated.
+// This allows us to verify that the freeing operation matches the
+// allocation operation. If memory is allocated with operator new[]
+// but freed with free or delete, this system would detect that.
+// In the implementation here, the tag is an integer prepended to
+// the allocation memory which is assigned one of the AllocType
+// enumeration values. An alternative implementation of this
+// scheme could store the tag somewhere else or ignore it.
+// Users of FastMalloc don't need to know or care how this tagging
+// is implemented.
 
-    namespace Internal {
+namespace Internal
+{
 
-        // Return the AllocType tag associated with the allocated block p.
-        inline AllocType fastMallocMatchValidationType(const void* p)
-        {
-            const AllocAlignmentInteger* type = static_cast<const AllocAlignmentInteger*>(p) - 1;
-            return static_cast<AllocType>(*type);
-        }
+// Return the AllocType tag associated with the allocated block p.
+inline AllocType fastMallocMatchValidationType( const void *p )
+{
+    const AllocAlignmentInteger *type = static_cast<const AllocAlignmentInteger *>( p ) - 1;
+    return static_cast<AllocType>( *type );
+}
 
-        // Return the address of the AllocType tag associated with the allocated block p.
-        inline AllocAlignmentInteger* fastMallocMatchValidationValue(void* p)
-        {
-            return reinterpret_cast<AllocAlignmentInteger*>(static_cast<char*>(p) - sizeof(AllocAlignmentInteger));
-        }
+// Return the address of the AllocType tag associated with the allocated block p.
+inline AllocAlignmentInteger *fastMallocMatchValidationValue( void *p )
+{
+    return reinterpret_cast<AllocAlignmentInteger *>( static_cast<char *>( p ) - sizeof( AllocAlignmentInteger ) );
+}
 
-        // Set the AllocType tag to be associaged with the allocated block p.
-        inline void setFastMallocMatchValidationType(void* p, AllocType allocType)
-        {
-            AllocAlignmentInteger* type = static_cast<AllocAlignmentInteger*>(p) - 1;
-            *type = static_cast<AllocAlignmentInteger>(allocType);
-        }
+// Set the AllocType tag to be associaged with the allocated block p.
+inline void setFastMallocMatchValidationType( void *p, AllocType allocType )
+{
+    AllocAlignmentInteger *type = static_cast<AllocAlignmentInteger *>( p ) - 1;
+    *type = static_cast<AllocAlignmentInteger>( allocType );
+}
 
-        // Handle a detected alloc/free mismatch. By default this calls CRASH().
-        void fastMallocMatchFailed(void* p);
+// Handle a detected alloc/free mismatch. By default this calls CRASH().
+void fastMallocMatchFailed( void *p );
 
-    } // namespace Internal
+} // namespace Internal
 
-    // This is a higher level function which is used by FastMalloc-using code.
-    inline void fastMallocMatchValidateMalloc(void* p, Internal::AllocType allocType)
+// This is a higher level function which is used by FastMalloc-using code.
+inline void fastMallocMatchValidateMalloc( void *p, Internal::AllocType allocType )
+{
+    if ( !p )
     {
-        if (!p)
-            return;
-
-        Internal::setFastMallocMatchValidationType(p, allocType);
+        return;
     }
 
-    // This is a higher level function which is used by FastMalloc-using code.
-    inline void fastMallocMatchValidateFree(void* p, Internal::AllocType allocType)
-    {
-        if (!p)
-            return;
+    Internal::setFastMallocMatchValidationType( p, allocType );
+}
 
-        if (Internal::fastMallocMatchValidationType(p) != allocType)
-            Internal::fastMallocMatchFailed(p);
-        Internal::setFastMallocMatchValidationType(p, Internal::AllocTypeMalloc);  // Set it to this so that fastFree thinks it's OK.
+// This is a higher level function which is used by FastMalloc-using code.
+inline void fastMallocMatchValidateFree( void *p, Internal::AllocType allocType )
+{
+    if ( !p )
+    {
+        return;
     }
+
+    if ( Internal::fastMallocMatchValidationType( p ) != allocType )
+    {
+        Internal::fastMallocMatchFailed( p );
+    }
+
+    Internal::setFastMallocMatchValidationType( p, Internal::AllocTypeMalloc ); // Set it to this so that fastFree thinks it's OK.
+}
 
 #else
 
-    inline void fastMallocMatchValidateMalloc(void*, Internal::AllocType)
-    {
-    }
+inline void fastMallocMatchValidateMalloc( void *, Internal::AllocType )
+{
+}
 
-    inline void fastMallocMatchValidateFree(void*, Internal::AllocType)
-    {
-    }
+inline void fastMallocMatchValidateFree( void *, Internal::AllocType )
+{
+}
 
 #endif
 
@@ -222,14 +242,38 @@ using WTF::fastMallocAllow;
 #pragma warning(push)
 #pragma warning(disable: 4290) // Disable the C++ exception specification ignored warning.
 #endif
-WTF_PRIVATE_INLINE void* operator new(size_t size) throw (std::bad_alloc) { return fastMalloc(size); }
-WTF_PRIVATE_INLINE void* operator new(size_t size, const std::nothrow_t&) throw() { return fastMalloc(size); }
-WTF_PRIVATE_INLINE void operator delete(void* p) throw() { fastFree(p); }
-WTF_PRIVATE_INLINE void operator delete(void* p, const std::nothrow_t&) throw() { fastFree(p); }
-WTF_PRIVATE_INLINE void* operator new[](size_t size) throw (std::bad_alloc) { return fastMalloc(size); }
-WTF_PRIVATE_INLINE void* operator new[](size_t size, const std::nothrow_t&) throw() { return fastMalloc(size); }
-WTF_PRIVATE_INLINE void operator delete[](void* p) throw() { fastFree(p); }
-WTF_PRIVATE_INLINE void operator delete[](void* p, const std::nothrow_t&) throw() { fastFree(p); }
+WTF_PRIVATE_INLINE void *operator new ( size_t size ) throw ( std::bad_alloc )
+{
+    return fastMalloc( size );
+}
+WTF_PRIVATE_INLINE void *operator new ( size_t size, const std::nothrow_t & ) throw()
+{
+    return fastMalloc( size );
+}
+WTF_PRIVATE_INLINE void operator delete ( void *p ) throw()
+{
+    fastFree( p );
+}
+WTF_PRIVATE_INLINE void operator delete ( void *p, const std::nothrow_t & ) throw()
+{
+    fastFree( p );
+}
+WTF_PRIVATE_INLINE void *operator new[]( size_t size ) throw ( std::bad_alloc )
+{
+    return fastMalloc( size );
+}
+WTF_PRIVATE_INLINE void *operator new[]( size_t size, const std::nothrow_t & ) throw()
+{
+    return fastMalloc( size );
+}
+WTF_PRIVATE_INLINE void operator delete[]( void *p ) throw()
+{
+    fastFree( p );
+}
+WTF_PRIVATE_INLINE void operator delete[]( void *p, const std::nothrow_t & ) throw()
+{
+    fastFree( p );
+}
 #if COMPILER(MSVC)
 #pragma warning(pop)
 #endif

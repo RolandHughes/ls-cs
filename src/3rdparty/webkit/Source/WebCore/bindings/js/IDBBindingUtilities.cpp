@@ -30,16 +30,26 @@
 
 #include "IDBKey.h"
 
-namespace WebCore {
-
-PassRefPtr<IDBKey> createIDBKeyFromValue(JSC::ExecState* exec, JSC::JSValue value)
+namespace WebCore
 {
-    if (value.isNull())
+
+PassRefPtr<IDBKey> createIDBKeyFromValue( JSC::ExecState *exec, JSC::JSValue value )
+{
+    if ( value.isNull() )
+    {
         return IDBKey::create();
-    if (value.isInt32())
-        return IDBKey::create(value.toInt32(exec));
-    if (value.isString())
-        return IDBKey::create(ustringToString(value.toString(exec)));
+    }
+
+    if ( value.isInt32() )
+    {
+        return IDBKey::create( value.toInt32( exec ) );
+    }
+
+    if ( value.isString() )
+    {
+        return IDBKey::create( ustringToString( value.toString( exec ) ) );
+    }
+
     // FIXME: Implement dates.
     return 0;
 }

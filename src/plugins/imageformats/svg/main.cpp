@@ -34,48 +34,51 @@
 
 class QSvgPlugin : public QImageIOPlugin
 {
-   CS_OBJECT(QSvgPlugin)
+    CS_OBJECT( QSvgPlugin )
 
-   CS_PLUGIN_IID(QImageIOHandlerInterface_ID)
-   CS_PLUGIN_KEY("svg, svgz")
+    CS_PLUGIN_IID( QImageIOHandlerInterface_ID )
+    CS_PLUGIN_KEY( "svg, svgz" )
 
 public:
     QStringList keys() const;
-    Capabilities capabilities(QIODevice *device, const QString &format) const override;
-    QImageIOHandler *create(QIODevice *device, const QString &format = QString()) const override;
+    Capabilities capabilities( QIODevice *device, const QString &format ) const override;
+    QImageIOHandler *create( QIODevice *device, const QString &format = QString() ) const override;
 };
 
-CS_PLUGIN_REGISTER(QSvgPlugin)
+CS_PLUGIN_REGISTER( QSvgPlugin )
 
 QStringList QSvgPlugin::keys() const
 {
     return QStringList() << "svg" << "svgz";
 }
 
-QImageIOPlugin::Capabilities QSvgPlugin::capabilities(QIODevice *device, const QString &format) const
+QImageIOPlugin::Capabilities QSvgPlugin::capabilities( QIODevice *device, const QString &format ) const
 {
-    if (format == "svg" || format == "svgz") {
-        return Capabilities(CanRead);
+    if ( format == "svg" || format == "svgz" )
+    {
+        return Capabilities( CanRead );
     }
 
-    if (! format.isEmpty()) {
+    if ( ! format.isEmpty() )
+    {
         return Qt::EmptyFlag;
     }
 
     Capabilities cap;
 
-    if (device->isReadable() && QSvgIOHandler::canRead(device)) {
+    if ( device->isReadable() && QSvgIOHandler::canRead( device ) )
+    {
         cap |= CanRead;
     }
 
     return cap;
 }
 
-QImageIOHandler *QSvgPlugin::create(QIODevice *device, const QString &format) const
+QImageIOHandler *QSvgPlugin::create( QIODevice *device, const QString &format ) const
 {
     QSvgIOHandler *hand = new QSvgIOHandler();
-    hand->setDevice(device);
-    hand->setFormat(format);
+    hand->setDevice( device );
+    hand->setFormat( format );
 
     return hand;
 }

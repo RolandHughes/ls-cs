@@ -33,16 +33,16 @@
 
 static QString configKey()
 {
-   return settingPath("RecentlyOpenedFiles");
+    return settingPath( "RecentlyOpenedFiles" );
 }
 
-RecentFiles::RecentFiles(const int maxEntries)
-   : m_groupOpen(false), m_clone1st(false), m_maxEntries(maxEntries)
+RecentFiles::RecentFiles( const int maxEntries )
+    : m_groupOpen( false ), m_clone1st( false ), m_maxEntries( maxEntries )
 {
-   m_timer.setSingleShot(true);
-   m_timer.setInterval(3 * 60 * 1000);
+    m_timer.setSingleShot( true );
+    m_timer.setInterval( 3 * 60 * 1000 );
 
-   connect(&m_timer, &QTimer::timeout, this, &RecentFiles::closeGroup);
+    connect( &m_timer, &QTimer::timeout, this, &RecentFiles::closeGroup );
 }
 
 /*
@@ -65,70 +65,82 @@ RecentFiles::RecentFiles(const int maxEntries)
  * - open, existing item, marked => insert at top, delete copy, (mark for cloning)
  * - closing clears marker
  */
-void RecentFiles::addFiles(const QStringList &names)
+void RecentFiles::addFiles( const QStringList &names )
 {
-   if (m_strLists.isEmpty() || names != m_strLists.first()) {
-      if (m_groupOpen && !m_clone1st) {
-         // Group being open implies at least one item in the list
-         m_strLists.removeFirst();
-      }
+    if ( m_strLists.isEmpty() || names != m_strLists.first() )
+    {
+        if ( m_groupOpen && !m_clone1st )
+        {
+            // Group being open implies at least one item in the list
+            m_strLists.removeFirst();
+        }
 
-      m_groupOpen = true;
+        m_groupOpen = true;
 
-      // We do *not* sort the actual entries, as that would destroy the user's
-      // chosen arrangement. However, we do the searching on sorted lists, so
-      // we throw out (probably) obsolete arrangements.
-      QList<QStringList> sortedLists = m_strLists;
-      for (int i = 0; i < sortedLists.size(); ++i) {
-         sortedLists[i].sort();
-      }
+        // We do *not* sort the actual entries, as that would destroy the user's
+        // chosen arrangement. However, we do the searching on sorted lists, so
+        // we throw out (probably) obsolete arrangements.
+        QList<QStringList> sortedLists = m_strLists;
 
-      QStringList sortedNames = names;
-      sortedNames.sort();
+        for ( int i = 0; i < sortedLists.size(); ++i )
+        {
+            sortedLists[i].sort();
+        }
 
-      int index = sortedLists.indexOf(sortedNames);
+        QStringList sortedNames = names;
+        sortedNames.sort();
 
-      if (index >= 0) {
-         m_strLists.removeAt(index);
-         m_clone1st = true;
+        int index = sortedLists.indexOf( sortedNames );
 
-      } else {
-         if (m_strLists.count() >= m_maxEntries) {
-            m_strLists.removeLast();
-         }
-         m_clone1st = false;
-      }
-      m_strLists.prepend(names);
-   }
+        if ( index >= 0 )
+        {
+            m_strLists.removeAt( index );
+            m_clone1st = true;
 
-   m_timer.start();
+        }
+        else
+        {
+            if ( m_strLists.count() >= m_maxEntries )
+            {
+                m_strLists.removeLast();
+            }
+
+            m_clone1st = false;
+        }
+
+        m_strLists.prepend( names );
+    }
+
+    m_timer.start();
 }
 
 void RecentFiles::closeGroup()
 {
-   m_timer.stop();
-   m_groupOpen = false;
+    m_timer.stop();
+    m_groupOpen = false;
 }
 
 void RecentFiles::readConfig()
 {
-   m_strLists.clear();
-   QVariant val = QSettings().value(configKey());
+    m_strLists.clear();
+    QVariant val = QSettings().value( configKey() );
 
-   for (const QVariant & v : val.toList()) {
-      m_strLists << v.toStringList();
-   }
+    for ( const QVariant &v : val.toList() )
+    {
+        m_strLists << v.toStringList();
+    }
 
 }
 
 void RecentFiles::writeConfig() const
 {
-   QList<QVariant> vals;
+    QList<QVariant> vals;
 
-   for (const QStringList & sl : m_strLists) {
-      vals << sl;
-   }
+    for ( const QStringList &sl : m_strLists )
+    {
+        vals << sl;
+    }
 
-   QSettings().setValue(configKey(), vals);
+    QSettings().setValue( configKey(), vals );
 }
 

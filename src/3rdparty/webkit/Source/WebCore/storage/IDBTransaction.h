@@ -38,46 +38,55 @@
 #include "IDBTransactionCallbacks.h"
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class IDBDatabase;
 class IDBObjectStore;
 
-class IDBTransaction : public IDBTransactionCallbacks, public EventTarget, public ActiveDOMObject {
+class IDBTransaction : public IDBTransactionCallbacks, public EventTarget, public ActiveDOMObject
+{
 public:
-    static PassRefPtr<IDBTransaction> create(ScriptExecutionContext*, PassRefPtr<IDBTransactionBackendInterface>, IDBDatabase*);
+    static PassRefPtr<IDBTransaction> create( ScriptExecutionContext *, PassRefPtr<IDBTransactionBackendInterface>, IDBDatabase * );
     virtual ~IDBTransaction();
 
-    enum Mode {
+    enum Mode
+    {
         READ_WRITE = 0,
         READ_ONLY = 1,
         VERSION_CHANGE = 2
     };
 
-    IDBTransactionBackendInterface* backend() const;
+    IDBTransactionBackendInterface *backend() const;
     bool finished() const;
 
     unsigned short mode() const;
-    IDBDatabase* db() const;
-    PassRefPtr<IDBObjectStore> objectStore(const String& name, ExceptionCode&);
+    IDBDatabase *db() const;
+    PassRefPtr<IDBObjectStore> objectStore( const String &name, ExceptionCode & );
     void abort();
 
-    void registerRequest(IDBRequest*);
-    void unregisterRequest(IDBRequest*);
+    void registerRequest( IDBRequest * );
+    void unregisterRequest( IDBRequest * );
 
-    DEFINE_ATTRIBUTE_EVENT_LISTENER(abort);
-    DEFINE_ATTRIBUTE_EVENT_LISTENER(complete);
-    DEFINE_ATTRIBUTE_EVENT_LISTENER(error);
+    DEFINE_ATTRIBUTE_EVENT_LISTENER( abort );
+    DEFINE_ATTRIBUTE_EVENT_LISTENER( complete );
+    DEFINE_ATTRIBUTE_EVENT_LISTENER( error );
 
     // IDBTransactionCallbacks
     virtual void onAbort();
     virtual void onComplete();
 
     // EventTarget
-    virtual IDBTransaction* toIDBTransaction() { return this; }
-    virtual ScriptExecutionContext* scriptExecutionContext() const;
-    virtual bool dispatchEvent(PassRefPtr<Event>);
-    bool dispatchEvent(PassRefPtr<Event> event, ExceptionCode& ec) { return EventTarget::dispatchEvent(event, ec); }
+    virtual IDBTransaction *toIDBTransaction()
+    {
+        return this;
+    }
+    virtual ScriptExecutionContext *scriptExecutionContext() const;
+    virtual bool dispatchEvent( PassRefPtr<Event> );
+    bool dispatchEvent( PassRefPtr<Event> event, ExceptionCode &ec )
+    {
+        return EventTarget::dispatchEvent( event, ec );
+    }
 
     // ActiveDOMObject
     virtual bool hasPendingActivity() const;
@@ -88,22 +97,28 @@ public:
     using RefCounted<IDBTransactionCallbacks>::deref;
 
 private:
-    IDBTransaction(ScriptExecutionContext*, PassRefPtr<IDBTransactionBackendInterface>, IDBDatabase*);
+    IDBTransaction( ScriptExecutionContext *, PassRefPtr<IDBTransactionBackendInterface>, IDBDatabase * );
 
-    void enqueueEvent(PassRefPtr<Event>);
+    void enqueueEvent( PassRefPtr<Event> );
 
     // EventTarget
-    virtual void refEventTarget() { ref(); }
-    virtual void derefEventTarget() { deref(); }
-    virtual EventTargetData* eventTargetData();
-    virtual EventTargetData* ensureEventTargetData();
+    virtual void refEventTarget()
+    {
+        ref();
+    }
+    virtual void derefEventTarget()
+    {
+        deref();
+    }
+    virtual EventTargetData *eventTargetData();
+    virtual EventTargetData *ensureEventTargetData();
 
     RefPtr<IDBTransactionBackendInterface> m_backend;
     RefPtr<IDBDatabase> m_database;
     unsigned short m_mode;
     bool m_finished; // Is it possible that we'll fire any more events or allow any new transactions? If not, we're finished.
 
-    ListHashSet<IDBRequest*> m_childRequests;
+    ListHashSet<IDBRequest *> m_childRequests;
 
     EventTargetData m_eventTargetData;
 };

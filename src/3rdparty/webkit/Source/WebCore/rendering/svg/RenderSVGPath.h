@@ -30,47 +30,82 @@
 #include "RenderSVGModelObject.h"
 #include "SVGMarkerLayoutInfo.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class FloatPoint;
 class RenderSVGContainer;
 class SVGStyledTransformableElement;
 
-class RenderSVGPath : public RenderSVGModelObject {
+class RenderSVGPath : public RenderSVGModelObject
+{
 public:
-    explicit RenderSVGPath(SVGStyledTransformableElement*);
+    explicit RenderSVGPath( SVGStyledTransformableElement * );
     virtual ~RenderSVGPath();
 
-    const Path& path() const { return m_path; }
-    void setNeedsPathUpdate() { m_needsPathUpdate = true; }
-    virtual void setNeedsBoundariesUpdate() { m_needsBoundariesUpdate = true; }
-    virtual void setNeedsTransformUpdate() { m_needsTransformUpdate = true; }
+    const Path &path() const
+    {
+        return m_path;
+    }
+    void setNeedsPathUpdate()
+    {
+        m_needsPathUpdate = true;
+    }
+    virtual void setNeedsBoundariesUpdate()
+    {
+        m_needsBoundariesUpdate = true;
+    }
+    virtual void setNeedsTransformUpdate()
+    {
+        m_needsTransformUpdate = true;
+    }
 
 private:
     // Hit-detection seperated for the fill and the stroke
-    bool fillContains(const FloatPoint&, bool requiresFill = true, WindRule fillRule = RULE_NONZERO);
-    bool strokeContains(const FloatPoint&, bool requiresStroke = true);
+    bool fillContains( const FloatPoint &, bool requiresFill = true, WindRule fillRule = RULE_NONZERO );
+    bool strokeContains( const FloatPoint &, bool requiresStroke = true );
 
-    virtual FloatRect objectBoundingBox() const { return m_fillBoundingBox; }
-    virtual FloatRect strokeBoundingBox() const { return m_strokeAndMarkerBoundingBox; }
-    virtual FloatRect repaintRectInLocalCoordinates() const { return m_repaintBoundingBox; }
-    virtual const AffineTransform& localToParentTransform() const { return m_localTransform; }
+    virtual FloatRect objectBoundingBox() const
+    {
+        return m_fillBoundingBox;
+    }
+    virtual FloatRect strokeBoundingBox() const
+    {
+        return m_strokeAndMarkerBoundingBox;
+    }
+    virtual FloatRect repaintRectInLocalCoordinates() const
+    {
+        return m_repaintBoundingBox;
+    }
+    virtual const AffineTransform &localToParentTransform() const
+    {
+        return m_localTransform;
+    }
 
-    virtual bool isSVGPath() const { return true; }
-    virtual const char* renderName() const { return "RenderSVGPath"; }
+    virtual bool isSVGPath() const
+    {
+        return true;
+    }
+    virtual const char *renderName() const
+    {
+        return "RenderSVGPath";
+    }
 
     virtual void layout();
-    virtual void paint(PaintInfo&, int parentX, int parentY);
-    virtual void addFocusRingRects(Vector<IntRect>&, int tx, int ty);
+    virtual void paint( PaintInfo &, int parentX, int parentY );
+    virtual void addFocusRingRects( Vector<IntRect> &, int tx, int ty );
 
-    virtual bool nodeAtFloatPoint(const HitTestRequest&, HitTestResult&, const FloatPoint& pointInParent, HitTestAction);
+    virtual bool nodeAtFloatPoint( const HitTestRequest &, HitTestResult &, const FloatPoint &pointInParent, HitTestAction );
 
     FloatRect calculateMarkerBoundsIfNeeded();
     void updateCachedBoundaries();
 
 private:
-    virtual AffineTransform localTransform() const { return m_localTransform; }
-    void fillAndStrokePath(GraphicsContext*);
+    virtual AffineTransform localTransform() const
+    {
+        return m_localTransform;
+    }
+    void fillAndStrokePath( GraphicsContext * );
 
     bool m_needsBoundariesUpdate : 1;
     bool m_needsPathUpdate : 1;
@@ -84,20 +119,20 @@ private:
     AffineTransform m_localTransform;
 };
 
-inline RenderSVGPath* toRenderSVGPath(RenderObject* object)
+inline RenderSVGPath *toRenderSVGPath( RenderObject *object )
 {
-    ASSERT(!object || object->isSVGPath());
-    return static_cast<RenderSVGPath*>(object);
+    ASSERT( !object || object->isSVGPath() );
+    return static_cast<RenderSVGPath *>( object );
 }
 
-inline const RenderSVGPath* toRenderSVGPath(const RenderObject* object)
+inline const RenderSVGPath *toRenderSVGPath( const RenderObject *object )
 {
-    ASSERT(!object || object->isSVGPath());
-    return static_cast<const RenderSVGPath*>(object);
+    ASSERT( !object || object->isSVGPath() );
+    return static_cast<const RenderSVGPath *>( object );
 }
 
 // This will catch anyone doing an unnecessary cast.
-void toRenderSVGPath(const RenderSVGPath*);
+void toRenderSVGPath( const RenderSVGPath * );
 
 }
 

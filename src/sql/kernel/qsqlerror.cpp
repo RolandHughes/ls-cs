@@ -24,62 +24,62 @@
 #include <qsqlerror.h>
 #include <qdebug.h>
 
-QDebug operator<<(QDebug dbg, const QSqlError &s)
+QDebug operator<<( QDebug dbg, const QSqlError &s )
 {
-   QDebugStateSaver saver(dbg);
-   dbg.nospace();
-   dbg << "QSqlError(" << s.nativeErrorCode() << ", " << s.driverText()
-      << ", " << s.databaseText() << ')';
-   return dbg;
+    QDebugStateSaver saver( dbg );
+    dbg.nospace();
+    dbg << "QSqlError(" << s.nativeErrorCode() << ", " << s.driverText()
+        << ", " << s.databaseText() << ')';
+    return dbg;
 }
 
 class QSqlErrorPrivate
 {
- public:
-   QString driverError;
-   QString databaseError;
-   QSqlError::ErrorType errorType;
-   QString errorCode;
+public:
+    QString driverError;
+    QString databaseError;
+    QSqlError::ErrorType errorType;
+    QString errorCode;
 };
-QSqlError::QSqlError(const QString &driverText, const QString &databaseText,
-   ErrorType type, const QString &code)
+QSqlError::QSqlError( const QString &driverText, const QString &databaseText,
+                      ErrorType type, const QString &code )
 {
-   d = new QSqlErrorPrivate;
+    d = new QSqlErrorPrivate;
 
-   d->driverError = driverText;
-   d->databaseError = databaseText;
-   d->errorType = type;
-   d->errorCode = code;
+    d->driverError = driverText;
+    d->databaseError = databaseText;
+    d->errorType = type;
+    d->errorCode = code;
 }
 
 /*!
     Creates a copy of \a other.
 */
-QSqlError::QSqlError(const QSqlError &other)
+QSqlError::QSqlError( const QSqlError &other )
 {
-   d = new QSqlErrorPrivate;
+    d = new QSqlErrorPrivate;
 
-   *d = *other.d;
+    *d = *other.d;
 }
 
 /*!
     Assigns the \a other error's values to this error.
 */
 
-QSqlError &QSqlError::operator=(const QSqlError &other)
+QSqlError &QSqlError::operator=( const QSqlError &other )
 {
-   *d = *other.d;
+    *d = *other.d;
 
-   return *this;
+    return *this;
 }
 
 /*!
     Compare the \a other error's values to this error and returns true, if it equal.
 */
 
-bool QSqlError::operator==(const QSqlError &other) const
+bool QSqlError::operator==( const QSqlError &other ) const
 {
-   return (d->errorType == other.d->errorType);
+    return ( d->errorType == other.d->errorType );
 }
 
 
@@ -87,9 +87,9 @@ bool QSqlError::operator==(const QSqlError &other) const
     Compare the \a other error's values to this error and returns true if it is not equal.
 */
 
-bool QSqlError::operator!=(const QSqlError &other) const
+bool QSqlError::operator!=( const QSqlError &other ) const
 {
-   return (d->errorType != other.d->errorType);
+    return ( d->errorType != other.d->errorType );
 }
 
 
@@ -99,7 +99,7 @@ bool QSqlError::operator!=(const QSqlError &other) const
 
 QSqlError::~QSqlError()
 {
-   delete d;
+    delete d;
 }
 
 /*!
@@ -110,7 +110,7 @@ QSqlError::~QSqlError()
 */
 QString QSqlError::driverText() const
 {
-   return d->driverError;
+    return d->driverError;
 }
 
 
@@ -118,38 +118,41 @@ QString QSqlError::driverText() const
 
 QString QSqlError::databaseText() const
 {
-   return d->databaseError;
+    return d->databaseError;
 }
 
 
 
 QSqlError::ErrorType QSqlError::type() const
 {
-   return d->errorType;
+    return d->errorType;
 }
 
 
 
 QString QSqlError::nativeErrorCode() const
 {
-   return d->errorCode;
+    return d->errorCode;
 }
 
 
 QString QSqlError::text() const
 {
-   QString result = d->databaseError;
-   if (!d->databaseError.endsWith(QLatin1String("\n"))) {
-      result += QLatin1Char(' ');
-   }
-   result += d->driverError;
-   return result;
+    QString result = d->databaseError;
+
+    if ( !d->databaseError.endsWith( QLatin1String( "\n" ) ) )
+    {
+        result += QLatin1Char( ' ' );
+    }
+
+    result += d->driverError;
+    return result;
 }
 
 
 bool QSqlError::isValid() const
 {
-   return d->errorType != NoError;
+    return d->errorType != NoError;
 }
 
 

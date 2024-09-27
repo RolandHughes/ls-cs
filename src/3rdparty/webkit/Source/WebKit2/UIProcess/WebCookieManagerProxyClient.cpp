@@ -28,14 +28,17 @@
 
 #include "WKAPICast.h"
 
-namespace WebKit {
-
-void WebCookieManagerProxyClient::cookiesDidChange(WebCookieManagerProxy* cookieManager)
+namespace WebKit
 {
-    if (!m_client.cookiesDidChange)
-        return;
 
-    m_client.cookiesDidChange(toAPI(cookieManager), m_client.clientInfo);
+void WebCookieManagerProxyClient::cookiesDidChange( WebCookieManagerProxy *cookieManager )
+{
+    if ( !m_client.cookiesDidChange )
+    {
+        return;
+    }
+
+    m_client.cookiesDidChange( toAPI( cookieManager ), m_client.clientInfo );
 }
 
 } // namespace WebKit

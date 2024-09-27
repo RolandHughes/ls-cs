@@ -26,19 +26,20 @@
 
 #include <qanynodetype_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class AbstractNodeTest : public AnyNodeType
 {
- public:
-   AbstractNodeTest(const ItemType::Ptr &primaryType);
+public:
+    AbstractNodeTest( const ItemType::Ptr &primaryType );
 
-   bool xdtTypeMatches(const ItemType::Ptr &other) const override;
-   ItemType::Ptr xdtSuperType() const override;
-   ItemType::Ptr atomizedType() const override;
+    bool xdtTypeMatches( const ItemType::Ptr &other ) const override;
+    ItemType::Ptr xdtSuperType() const override;
+    ItemType::Ptr atomizedType() const override;
 
- protected:
-   const ItemType::Ptr m_primaryType;
+protected:
+    const ItemType::Ptr m_primaryType;
 };
 
 }

@@ -33,9 +33,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSSharedWorkerContext);
+ASSERT_CLASS_FITS_IN_CELL( JSSharedWorkerContext );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -46,9 +47,9 @@ ASSERT_CLASS_FITS_IN_CELL(JSSharedWorkerContext);
 
 static const HashTableValue JSSharedWorkerContextTableValues[3] =
 {
-    { "name", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSharedWorkerContextName), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "onconnect", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSharedWorkerContextOnconnect), (intptr_t)setJSSharedWorkerContextOnconnect THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "name", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSharedWorkerContextName ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "onconnect", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSharedWorkerContextOnconnect ), ( intptr_t )setJSSharedWorkerContextOnconnect THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -62,88 +63,97 @@ static JSC_CONST_HASHTABLE HashTable JSSharedWorkerContextTable = { 4, 3, JSShar
 
 static const HashTableValue JSSharedWorkerContextPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSharedWorkerContextPrototypeTable = { 1, 0, JSSharedWorkerContextPrototypeTableValues, 0 };
-static const HashTable* getJSSharedWorkerContextPrototypeTable(ExecState* exec)
+static const HashTable *getJSSharedWorkerContextPrototypeTable( ExecState *exec )
 {
-    return getHashTableForGlobalData(exec->globalData(), &JSSharedWorkerContextPrototypeTable);
+    return getHashTableForGlobalData( exec->globalData(), &JSSharedWorkerContextPrototypeTable );
 }
 
 const ClassInfo JSSharedWorkerContextPrototype::s_info = { "SharedWorkerContextPrototype", &JSC::JSObjectWithGlobalObject::s_info, 0, getJSSharedWorkerContextPrototypeTable };
 
-void* JSSharedWorkerContextPrototype::operator new(size_t size, JSGlobalData* globalData)
+void *JSSharedWorkerContextPrototype::operator new ( size_t size, JSGlobalData *globalData )
 {
-    return globalData->heap.allocate(size);
+    return globalData->heap.allocate( size );
 }
 
-static const HashTable* getJSSharedWorkerContextTable(ExecState* exec)
+static const HashTable *getJSSharedWorkerContextTable( ExecState *exec )
 {
-    return getHashTableForGlobalData(exec->globalData(), &JSSharedWorkerContextTable);
+    return getHashTableForGlobalData( exec->globalData(), &JSSharedWorkerContextTable );
 }
 
 const ClassInfo JSSharedWorkerContext::s_info = { "SharedWorkerContext", &JSWorkerContext::s_info, 0, getJSSharedWorkerContextTable };
 
-JSSharedWorkerContext::JSSharedWorkerContext(JSGlobalData& globalData, Structure* structure, PassRefPtr<SharedWorkerContext> impl)
-    : JSWorkerContext(globalData, structure, impl)
+JSSharedWorkerContext::JSSharedWorkerContext( JSGlobalData &globalData, Structure *structure,
+        PassRefPtr<SharedWorkerContext> impl )
+    : JSWorkerContext( globalData, structure, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-bool JSSharedWorkerContext::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSharedWorkerContext::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSharedWorkerContext, Base>(exec, getJSSharedWorkerContextTable(exec), this, propertyName, slot);
+    return getStaticValueSlot<JSSharedWorkerContext, Base>( exec, getJSSharedWorkerContextTable( exec ), this, propertyName, slot );
 }
 
-bool JSSharedWorkerContext::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSharedWorkerContext::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSharedWorkerContext, Base>(exec, getJSSharedWorkerContextTable(exec), this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSharedWorkerContext, Base>( exec, getJSSharedWorkerContextTable( exec ), this, propertyName,
+            descriptor );
 }
 
-JSValue jsSharedWorkerContextName(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSharedWorkerContextName( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSharedWorkerContext* castedThis = static_cast<JSSharedWorkerContext*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SharedWorkerContext* imp = static_cast<SharedWorkerContext*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->name());
+    JSSharedWorkerContext *castedThis = static_cast<JSSharedWorkerContext *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SharedWorkerContext *imp = static_cast<SharedWorkerContext *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->name() );
     return result;
 }
 
 
-JSValue jsSharedWorkerContextOnconnect(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSharedWorkerContextOnconnect( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSharedWorkerContext* castedThis = static_cast<JSSharedWorkerContext*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SharedWorkerContext* imp = static_cast<SharedWorkerContext*>(castedThis->impl());
-    if (EventListener* listener = imp->onconnect()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp))
+    JSSharedWorkerContext *castedThis = static_cast<JSSharedWorkerContext *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SharedWorkerContext *imp = static_cast<SharedWorkerContext *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onconnect() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-void JSSharedWorkerContext::put(ExecState* exec, const Identifier& propertyName, JSValue value, PutPropertySlot& slot)
+void JSSharedWorkerContext::put( ExecState *exec, const Identifier &propertyName, JSValue value, PutPropertySlot &slot )
 {
-    lookupPut<JSSharedWorkerContext, Base>(exec, propertyName, value, getJSSharedWorkerContextTable(exec), this, slot);
+    lookupPut<JSSharedWorkerContext, Base>( exec, propertyName, value, getJSSharedWorkerContextTable( exec ), this, slot );
 }
 
-void setJSSharedWorkerContextOnconnect(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSSharedWorkerContextOnconnect( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    UNUSED_PARAM(exec);
-    JSSharedWorkerContext* castedThis = static_cast<JSSharedWorkerContext*>(thisObject);
-    SharedWorkerContext* imp = static_cast<SharedWorkerContext*>(castedThis->impl());
-    imp->setOnconnect(createJSAttributeEventListener(exec, value, thisObject));
+    UNUSED_PARAM( exec );
+    JSSharedWorkerContext *castedThis = static_cast<JSSharedWorkerContext *>( thisObject );
+    SharedWorkerContext *imp = static_cast<SharedWorkerContext *>( castedThis->impl() );
+    imp->setOnconnect( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-SharedWorkerContext* toSharedWorkerContext(JSC::JSValue value)
+SharedWorkerContext *toSharedWorkerContext( JSC::JSValue value )
 {
-    return value.inherits(&JSSharedWorkerContext::s_info) ? static_cast<JSSharedWorkerContext*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSSharedWorkerContext::s_info ) ? static_cast<JSSharedWorkerContext *>( asObject( value ) )->impl() : 0;
 }
 
 }

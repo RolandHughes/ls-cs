@@ -31,34 +31,35 @@ class QScriptEnginePrivate;
 
 class QScriptStringPrivate : public QSharedData
 {
- public:
-   enum AllocationType {
-      StackAllocated,
-      HeapAllocated
-   };
+public:
+    enum AllocationType
+    {
+        StackAllocated,
+        HeapAllocated
+    };
 
-   inline QScriptStringPrivate(QScriptEnginePrivate *engine, const JSC::Identifier &id,
-      AllocationType type);
-   inline ~QScriptStringPrivate();
-   static inline void init(QScriptString &q, QScriptStringPrivate *d);
+    inline QScriptStringPrivate( QScriptEnginePrivate *engine, const JSC::Identifier &id,
+                                 AllocationType type );
+    inline ~QScriptStringPrivate();
+    static inline void init( QScriptString &q, QScriptStringPrivate *d );
 
-   static inline QScriptStringPrivate *get(const QScriptString &q);
+    static inline QScriptStringPrivate *get( const QScriptString &q );
 
-   inline void detachFromEngine();
+    inline void detachFromEngine();
 
-   static inline bool isValid(const QScriptString &q);
-   QScriptEnginePrivate *engine;
-   JSC::Identifier identifier;
-   AllocationType type;
+    static inline bool isValid( const QScriptString &q );
+    QScriptEnginePrivate *engine;
+    JSC::Identifier identifier;
+    AllocationType type;
 
-   // linked list of engine's script values
-   QScriptStringPrivate *prev;
-   QScriptStringPrivate *next;
+    // linked list of engine's script values
+    QScriptStringPrivate *prev;
+    QScriptStringPrivate *next;
 };
 
-inline QScriptStringPrivate::QScriptStringPrivate(QScriptEnginePrivate *e, const JSC::Identifier &id,
-   AllocationType tp)
-   : engine(e), identifier(id), type(tp), prev(nullptr), next(nullptr)
+inline QScriptStringPrivate::QScriptStringPrivate( QScriptEnginePrivate *e, const JSC::Identifier &id,
+        AllocationType tp )
+    : engine( e ), identifier( id ), type( tp ), prev( nullptr ), next( nullptr )
 {
 }
 
@@ -66,25 +67,25 @@ inline QScriptStringPrivate::~QScriptStringPrivate()
 {
 }
 
-inline void QScriptStringPrivate::init(QScriptString &q, QScriptStringPrivate *d)
+inline void QScriptStringPrivate::init( QScriptString &q, QScriptStringPrivate *d )
 {
-   q.d_ptr = d;
+    q.d_ptr = d;
 }
 
-inline QScriptStringPrivate *QScriptStringPrivate::get(const QScriptString &q)
+inline QScriptStringPrivate *QScriptStringPrivate::get( const QScriptString &q )
 {
-   return const_cast<QScriptStringPrivate *>(q.d_func());
+    return const_cast<QScriptStringPrivate *>( q.d_func() );
 }
 
 inline void QScriptStringPrivate::detachFromEngine()
 {
-   engine = nullptr;
-   identifier = JSC::Identifier();
+    engine = nullptr;
+    identifier = JSC::Identifier();
 }
 
-inline bool QScriptStringPrivate::isValid(const QScriptString &q)
+inline bool QScriptStringPrivate::isValid( const QScriptString &q )
 {
-   return (q.d_ptr && q.d_ptr->engine);
+    return ( q.d_ptr && q.d_ptr->engine );
 }
 
 #endif

@@ -33,60 +33,65 @@ QT_BEGIN_NAMESPACE
 
 class QDeclarativeMouseAreaPrivate : public QDeclarativeItemPrivate
 {
-   Q_DECLARE_PUBLIC(QDeclarativeMouseArea)
+    Q_DECLARE_PUBLIC( QDeclarativeMouseArea )
 
- public:
-   QDeclarativeMouseAreaPrivate()
-      : absorb(true), hovered(false), pressed(false), longPress(false),
-        moved(false), stealMouse(false), doubleClick(false), preventStealing(false), drag(0) {
-   }
+public:
+    QDeclarativeMouseAreaPrivate()
+        : absorb( true ), hovered( false ), pressed( false ), longPress( false ),
+          moved( false ), stealMouse( false ), doubleClick( false ), preventStealing( false ), drag( 0 )
+    {
+    }
 
-   ~QDeclarativeMouseAreaPrivate();
+    ~QDeclarativeMouseAreaPrivate();
 
-   void init() {
-      Q_Q(QDeclarativeMouseArea);
-      q->setAcceptedMouseButtons(Qt::LeftButton);
-      q->setFiltersChildEvents(true);
-   }
+    void init()
+    {
+        Q_Q( QDeclarativeMouseArea );
+        q->setAcceptedMouseButtons( Qt::LeftButton );
+        q->setFiltersChildEvents( true );
+    }
 
-   void saveEvent(QGraphicsSceneMouseEvent *event) {
-      lastPos = event->pos();
-      lastScenePos = event->scenePos();
-      lastButton = event->button();
-      lastButtons = event->buttons();
-      lastModifiers = event->modifiers();
-   }
+    void saveEvent( QGraphicsSceneMouseEvent *event )
+    {
+        lastPos = event->pos();
+        lastScenePos = event->scenePos();
+        lastButton = event->button();
+        lastButtons = event->buttons();
+        lastModifiers = event->modifiers();
+    }
 
-   bool isPressAndHoldConnected() {
-      Q_Q(QDeclarativeMouseArea);
-      static int idx = QObjectPrivate::get(q)->signalIndex("pressAndHold(QDeclarativeMouseEvent*)");
-      return QObjectPrivate::get(q)->isSignalConnected(idx);
-   }
+    bool isPressAndHoldConnected()
+    {
+        Q_Q( QDeclarativeMouseArea );
+        static int idx = QObjectPrivate::get( q )->signalIndex( "pressAndHold(QDeclarativeMouseEvent*)" );
+        return QObjectPrivate::get( q )->isSignalConnected( idx );
+    }
 
-   bool isDoubleClickConnected() {
-      Q_Q(QDeclarativeMouseArea);
-      static int idx = QObjectPrivate::get(q)->signalIndex("doubleClicked(QDeclarativeMouseEvent*)");
-      return QObjectPrivate::get(q)->isSignalConnected(idx);
-   }
+    bool isDoubleClickConnected()
+    {
+        Q_Q( QDeclarativeMouseArea );
+        static int idx = QObjectPrivate::get( q )->signalIndex( "doubleClicked(QDeclarativeMouseEvent*)" );
+        return QObjectPrivate::get( q )->isSignalConnected( idx );
+    }
 
-   bool absorb : 1;
-   bool hovered : 1;
-   bool pressed : 1;
-   bool longPress : 1;
-   bool moved : 1;
-   bool stealMouse : 1;
-   bool doubleClick : 1;
-   bool preventStealing : 1;
-   QDeclarativeDrag *drag;
-   QPointF startScene;
-   qreal startX;
-   qreal startY;
-   QPointF lastPos;
-   QDeclarativeNullableValue<QPointF> lastScenePos;
-   Qt::MouseButton lastButton;
-   Qt::MouseButtons lastButtons;
-   Qt::KeyboardModifiers lastModifiers;
-   QBasicTimer pressAndHoldTimer;
+    bool absorb : 1;
+    bool hovered : 1;
+    bool pressed : 1;
+    bool longPress : 1;
+    bool moved : 1;
+    bool stealMouse : 1;
+    bool doubleClick : 1;
+    bool preventStealing : 1;
+    QDeclarativeDrag *drag;
+    QPointF startScene;
+    qreal startX;
+    qreal startY;
+    QPointF lastPos;
+    QDeclarativeNullableValue<QPointF> lastScenePos;
+    Qt::MouseButton lastButton;
+    Qt::MouseButtons lastButtons;
+    Qt::KeyboardModifiers lastModifiers;
+    QBasicTimer pressAndHoldTimer;
 };
 
 QT_END_NAMESPACE

@@ -31,332 +31,379 @@
 
 #include <qpixmap_raster_p.h>
 
-static inline void initBitMapInfoHeader(int width, int height, bool topToBottom, BITMAPINFOHEADER *bih)
+static inline void initBitMapInfoHeader( int width, int height, bool topToBottom, BITMAPINFOHEADER *bih )
 {
-   memset(bih, 0, sizeof(BITMAPINFOHEADER));
-   bih->biSize        = sizeof(BITMAPINFOHEADER);
-   bih->biWidth       = width;
-   bih->biHeight      = topToBottom ? -height : height;
-   bih->biPlanes      = 1;
-   bih->biBitCount    = 32;
-   bih->biCompression = BI_RGB;
-   bih->biSizeImage   = width * height * 4;
+    memset( bih, 0, sizeof( BITMAPINFOHEADER ) );
+    bih->biSize        = sizeof( BITMAPINFOHEADER );
+    bih->biWidth       = width;
+    bih->biHeight      = topToBottom ? -height : height;
+    bih->biPlanes      = 1;
+    bih->biBitCount    = 32;
+    bih->biCompression = BI_RGB;
+    bih->biSizeImage   = width * height * 4;
 }
 
-static inline void initBitMapInfo(int width, int height, bool topToBottom, BITMAPINFO *bmi)
+static inline void initBitMapInfo( int width, int height, bool topToBottom, BITMAPINFO *bmi )
 {
-   initBitMapInfoHeader(width, height, topToBottom, &bmi->bmiHeader);
-   memset(bmi->bmiColors, 0, sizeof(RGBQUAD));
+    initBitMapInfoHeader( width, height, topToBottom, &bmi->bmiHeader );
+    memset( bmi->bmiColors, 0, sizeof( RGBQUAD ) );
 }
 
-static inline uchar *getDiBits(HDC hdc, HBITMAP bitmap, int width, int height, bool topToBottom = true)
+static inline uchar *getDiBits( HDC hdc, HBITMAP bitmap, int width, int height, bool topToBottom = true )
 {
-   BITMAPINFO bmi;
-   initBitMapInfo(width, height, topToBottom, &bmi);
-   uchar *result = new uchar[bmi.bmiHeader.biSizeImage];
-   if (!GetDIBits(hdc, bitmap, 0, height, result, &bmi, DIB_RGB_COLORS)) {
-      delete [] result;
-      qErrnoWarning("%s: GetDIBits() failed to get bitmap bits.", __FUNCTION__);
-      return nullptr;
-   }
-   return result;
+    BITMAPINFO bmi;
+    initBitMapInfo( width, height, topToBottom, &bmi );
+    uchar *result = new uchar[bmi.bmiHeader.biSizeImage];
+
+    if ( !GetDIBits( hdc, bitmap, 0, height, result, &bmi, DIB_RGB_COLORS ) )
+    {
+        delete [] result;
+        qErrnoWarning( "%s: GetDIBits() failed to get bitmap bits.", __FUNCTION__ );
+        return nullptr;
+    }
+
+    return result;
 }
 
-static inline void copyImageDataCreateAlpha(const uchar *data, QImage *target)
+static inline void copyImageDataCreateAlpha( const uchar *data, QImage *target )
 {
-   const uint mask = target->format() == QImage::Format_RGB32 ? 0xff000000 : 0;
-   const int height = target->height();
-   const int width = target->width();
-   const int bytesPerLine = width * int(sizeof(QRgb));
+    const uint mask = target->format() == QImage::Format_RGB32 ? 0xff000000 : 0;
+    const int height = target->height();
+    const int width = target->width();
+    const int bytesPerLine = width * int( sizeof( QRgb ) );
 
-   for (int y = 0; y < height; ++y) {
-      QRgb *dest = reinterpret_cast<QRgb *>(target->scanLine(y));
-      const QRgb *src = reinterpret_cast<const QRgb *>(data + y * bytesPerLine);
+    for ( int y = 0; y < height; ++y )
+    {
+        QRgb *dest = reinterpret_cast<QRgb *>( target->scanLine( y ) );
+        const QRgb *src = reinterpret_cast<const QRgb *>( data + y * bytesPerLine );
 
-      for (int x = 0; x < width; ++x) {
-         const uint pixel = src[x];
-         if ((pixel & 0xff000000) == 0 && (pixel & 0x00ffffff) != 0) {
-            dest[x] = pixel | 0xff000000;
-         } else {
-            dest[x] = pixel | mask;
-         }
-      }
-   }
+        for ( int x = 0; x < width; ++x )
+        {
+            const uint pixel = src[x];
+
+            if ( ( pixel & 0xff000000 ) == 0 && ( pixel & 0x00ffffff ) != 0 )
+            {
+                dest[x] = pixel | 0xff000000;
+            }
+            else
+            {
+                dest[x] = pixel | mask;
+            }
+        }
+    }
 }
-static inline void copyImageData(const uchar *data, QImage *target)
+static inline void copyImageData( const uchar *data, QImage *target )
 {
-   const int height = target->height();
-   const int bytesPerLine = target->bytesPerLine();
+    const int height = target->height();
+    const int bytesPerLine = target->bytesPerLine();
 
-   for (int y = 0; y < height; ++y) {
-      void *dest = static_cast<void *>(target->scanLine(y));
-      const void *src = data + y * bytesPerLine;
-      memcpy(dest, src, bytesPerLine);
-   }
+    for ( int y = 0; y < height; ++y )
+    {
+        void *dest = static_cast<void *>( target->scanLine( y ) );
+        const void *src = data + y * bytesPerLine;
+        memcpy( dest, src, bytesPerLine );
+    }
 
 }
 
-enum HBitmapFormat {
-   HBitmapNoAlpha,
-   HBitmapPremultipliedAlpha,
-   HBitmapAlpha
+enum HBitmapFormat
+{
+    HBitmapNoAlpha,
+    HBitmapPremultipliedAlpha,
+    HBitmapAlpha
 };
 
-Q_GUI_EXPORT HBITMAP qt_createIconMask(const QBitmap &bitmap)
+Q_GUI_EXPORT HBITMAP qt_createIconMask( const QBitmap &bitmap )
 {
-   QImage bm = bitmap.toImage().convertToFormat(QImage::Format_Mono);
-   const int w = bm.width();
-   const int h = bm.height();
-   const int bpl = ((w + 15) / 16) * 2; // bpl, 16 bit alignment
+    QImage bm = bitmap.toImage().convertToFormat( QImage::Format_Mono );
+    const int w = bm.width();
+    const int h = bm.height();
+    const int bpl = ( ( w + 15 ) / 16 ) * 2; // bpl, 16 bit alignment
 
-   QScopedArrayPointer<uchar> bits(new uchar[bpl * h]);
-   bm.invertPixels();
+    QScopedArrayPointer<uchar> bits( new uchar[bpl * h] );
+    bm.invertPixels();
 
-   for (int y = 0; y < h; ++y) {
-      memcpy(bits.data() + y * bpl, bm.constScanLine(y), bpl);
-   }
+    for ( int y = 0; y < h; ++y )
+    {
+        memcpy( bits.data() + y * bpl, bm.constScanLine( y ), bpl );
+    }
 
-   HBITMAP hbm = CreateBitmap(w, h, 1, 1, bits.data());
+    HBITMAP hbm = CreateBitmap( w, h, 1, 1, bits.data() );
 
-   return hbm;
+    return hbm;
 }
 
-Q_GUI_EXPORT HBITMAP qt_pixmapToWinHBITMAP(const QPixmap &p, int hbitmapFormat = 0)
+Q_GUI_EXPORT HBITMAP qt_pixmapToWinHBITMAP( const QPixmap &p, int hbitmapFormat = 0 )
 {
-   if (p.isNull()) {
-      return nullptr;
-   }
+    if ( p.isNull() )
+    {
+        return nullptr;
+    }
 
-   HBITMAP bitmap = nullptr;
-   if (p.handle()->classId() != QPlatformPixmap::RasterClass) {
+    HBITMAP bitmap = nullptr;
 
-      QRasterPlatformPixmap *data = new QRasterPlatformPixmap(p.depth() == 1 ?
-         QRasterPlatformPixmap::BitmapType : QRasterPlatformPixmap::PixmapType);
+    if ( p.handle()->classId() != QPlatformPixmap::RasterClass )
+    {
 
-      data->fromImage(p.toImage(), Qt::AutoColor);
-      return qt_pixmapToWinHBITMAP(QPixmap(data), hbitmapFormat);
-   }
+        QRasterPlatformPixmap *data = new QRasterPlatformPixmap( p.depth() == 1 ?
+                QRasterPlatformPixmap::BitmapType : QRasterPlatformPixmap::PixmapType );
 
-   QRasterPlatformPixmap *d = static_cast<QRasterPlatformPixmap *>(p.handle());
-   const QImage *rasterImage = d->buffer();
-   const int w = rasterImage->width();
-   const int h = rasterImage->height();
+        data->fromImage( p.toImage(), Qt::AutoColor );
+        return qt_pixmapToWinHBITMAP( QPixmap( data ), hbitmapFormat );
+    }
 
-   HDC display_dc = GetDC(nullptr);
+    QRasterPlatformPixmap *d = static_cast<QRasterPlatformPixmap *>( p.handle() );
+    const QImage *rasterImage = d->buffer();
+    const int w = rasterImage->width();
+    const int h = rasterImage->height();
 
-   // Define the header
-   BITMAPINFO bmi;
-   initBitMapInfo(w, h, true, &bmi);
+    HDC display_dc = GetDC( nullptr );
 
-   // Create the pixmap
-   uchar *pixels = nullptr;
+    // Define the header
+    BITMAPINFO bmi;
+    initBitMapInfo( w, h, true, &bmi );
 
-   bitmap = CreateDIBSection(display_dc, &bmi, DIB_RGB_COLORS, (void **) &pixels, nullptr, 0);
-   ReleaseDC(nullptr, display_dc);
+    // Create the pixmap
+    uchar *pixels = nullptr;
 
-   if (!bitmap) {
-      qErrnoWarning("%s, failed to create dibsection", __FUNCTION__);
-      return nullptr;
-   }
+    bitmap = CreateDIBSection( display_dc, &bmi, DIB_RGB_COLORS, ( void ** ) &pixels, nullptr, 0 );
+    ReleaseDC( nullptr, display_dc );
 
-   if (!pixels) {
-      qErrnoWarning("%s, did not allocate pixel data", __FUNCTION__);
-      return nullptr;
-   }
+    if ( !bitmap )
+    {
+        qErrnoWarning( "%s, failed to create dibsection", __FUNCTION__ );
+        return nullptr;
+    }
 
-   // Copy over the data
-   QImage::Format imageFormat = QImage::Format_RGB32;
+    if ( !pixels )
+    {
+        qErrnoWarning( "%s, did not allocate pixel data", __FUNCTION__ );
+        return nullptr;
+    }
 
-   if (hbitmapFormat == HBitmapAlpha) {
-      imageFormat = QImage::Format_ARGB32;
-   } else if (hbitmapFormat == HBitmapPremultipliedAlpha) {
-      imageFormat = QImage::Format_ARGB32_Premultiplied;
-   }
+    // Copy over the data
+    QImage::Format imageFormat = QImage::Format_RGB32;
 
-   const QImage image = rasterImage->convertToFormat(imageFormat);
-   const int bytes_per_line = w * 4;
+    if ( hbitmapFormat == HBitmapAlpha )
+    {
+        imageFormat = QImage::Format_ARGB32;
+    }
+    else if ( hbitmapFormat == HBitmapPremultipliedAlpha )
+    {
+        imageFormat = QImage::Format_ARGB32_Premultiplied;
+    }
 
-   for (int y = 0; y < h; ++y) {
-      memcpy(pixels + y * bytes_per_line, image.scanLine(y), bytes_per_line);
-   }
+    const QImage image = rasterImage->convertToFormat( imageFormat );
+    const int bytes_per_line = w * 4;
 
-   return bitmap;
+    for ( int y = 0; y < h; ++y )
+    {
+        memcpy( pixels + y * bytes_per_line, image.scanLine( y ), bytes_per_line );
+    }
+
+    return bitmap;
 }
 
-Q_GUI_EXPORT QPixmap qt_pixmapFromWinHBITMAP(HBITMAP bitmap, int hbitmapFormat = 0)
+Q_GUI_EXPORT QPixmap qt_pixmapFromWinHBITMAP( HBITMAP bitmap, int hbitmapFormat = 0 )
 {
-   // Verify size
-   BITMAP bitmap_info;
-   memset(&bitmap_info, 0, sizeof(BITMAP));
+    // Verify size
+    BITMAP bitmap_info;
+    memset( &bitmap_info, 0, sizeof( BITMAP ) );
 
-   const int res = GetObject(bitmap, sizeof(BITMAP), &bitmap_info);
+    const int res = GetObject( bitmap, sizeof( BITMAP ), &bitmap_info );
 
-   if (!res) {
-      qErrnoWarning("QPixmap::fromWinHBITMAP(), failed to get bitmap info");
-      return QPixmap();
-   }
+    if ( !res )
+    {
+        qErrnoWarning( "QPixmap::fromWinHBITMAP(), failed to get bitmap info" );
+        return QPixmap();
+    }
 
-   const int w = bitmap_info.bmWidth;
-   const int h = bitmap_info.bmHeight;
+    const int w = bitmap_info.bmWidth;
+    const int h = bitmap_info.bmHeight;
 
-   // Get bitmap bits
-   HDC display_dc = GetDC(nullptr);
-   QScopedArrayPointer<uchar> data(getDiBits(display_dc, bitmap, w, h, true));
+    // Get bitmap bits
+    HDC display_dc = GetDC( nullptr );
+    QScopedArrayPointer<uchar> data( getDiBits( display_dc, bitmap, w, h, true ) );
 
-   if (data.isNull()) {
-      ReleaseDC(nullptr, display_dc);
-      return QPixmap();
-   }
+    if ( data.isNull() )
+    {
+        ReleaseDC( nullptr, display_dc );
+        return QPixmap();
+    }
 
-   const QImage::Format imageFormat = hbitmapFormat == HBitmapNoAlpha ?
-      QImage::Format_RGB32 : QImage::Format_ARGB32_Premultiplied;
+    const QImage::Format imageFormat = hbitmapFormat == HBitmapNoAlpha ?
+                                       QImage::Format_RGB32 : QImage::Format_ARGB32_Premultiplied;
 
-   // Create image and copy data into image
-   QImage image(w, h, imageFormat);
+    // Create image and copy data into image
+    QImage image( w, h, imageFormat );
 
-   if (image.isNull()) {
-      // failed to alloc?
-      ReleaseDC(nullptr, display_dc);
-      qWarning("QPixmap::qt_pixmapFromWinHBITMAP() Failed to create image of %d x %d", w, h);
+    if ( image.isNull() )
+    {
+        // failed to alloc?
+        ReleaseDC( nullptr, display_dc );
+        qWarning( "QPixmap::qt_pixmapFromWinHBITMAP() Failed to create image of %d x %d", w, h );
 
-      return QPixmap();
-   }
+        return QPixmap();
+    }
 
-   copyImageDataCreateAlpha(data.data(), &image);
-   ReleaseDC(nullptr, display_dc);
+    copyImageDataCreateAlpha( data.data(), &image );
+    ReleaseDC( nullptr, display_dc );
 
-   return QPixmap::fromImage(image);
+    return QPixmap::fromImage( image );
 }
 
-Q_GUI_EXPORT HICON qt_pixmapToWinHICON(const QPixmap &p)
+Q_GUI_EXPORT HICON qt_pixmapToWinHICON( const QPixmap &p )
 {
-   if (p.isNull()) {
-      return nullptr;
-   }
+    if ( p.isNull() )
+    {
+        return nullptr;
+    }
 
-   QBitmap maskBitmap = p.mask();
-   if (maskBitmap.isNull()) {
-      maskBitmap = QBitmap(p.size());
-      maskBitmap.fill(Qt::color1);
-   }
+    QBitmap maskBitmap = p.mask();
 
-   ICONINFO ii;
-   ii.fIcon    = true;
-   ii.hbmMask  = qt_createIconMask(maskBitmap);
-   ii.hbmColor = qt_pixmapToWinHBITMAP(p, HBitmapAlpha);
-   ii.xHotspot = 0;
-   ii.yHotspot = 0;
+    if ( maskBitmap.isNull() )
+    {
+        maskBitmap = QBitmap( p.size() );
+        maskBitmap.fill( Qt::color1 );
+    }
 
-   HICON hIcon = CreateIconIndirect(&ii);
+    ICONINFO ii;
+    ii.fIcon    = true;
+    ii.hbmMask  = qt_createIconMask( maskBitmap );
+    ii.hbmColor = qt_pixmapToWinHBITMAP( p, HBitmapAlpha );
+    ii.xHotspot = 0;
+    ii.yHotspot = 0;
 
-   DeleteObject(ii.hbmColor);
-   DeleteObject(ii.hbmMask);
+    HICON hIcon = CreateIconIndirect( &ii );
 
-   return hIcon;
+    DeleteObject( ii.hbmColor );
+    DeleteObject( ii.hbmMask );
+
+    return hIcon;
 }
 
-Q_GUI_EXPORT QImage qt_imageFromWinHBITMAP(HDC hdc, HBITMAP bitmap, int w, int h)
+Q_GUI_EXPORT QImage qt_imageFromWinHBITMAP( HDC hdc, HBITMAP bitmap, int w, int h )
 {
-   QImage image(w, h, QImage::Format_ARGB32_Premultiplied);
-   if (image.isNull()) {
-      return image;
-   }
+    QImage image( w, h, QImage::Format_ARGB32_Premultiplied );
 
-   QScopedArrayPointer<uchar> data(getDiBits(hdc, bitmap, w, h, true));
-   if (data.isNull()) {
-      return QImage();
-   }
+    if ( image.isNull() )
+    {
+        return image;
+    }
 
-   copyImageDataCreateAlpha(data.data(), &image);
+    QScopedArrayPointer<uchar> data( getDiBits( hdc, bitmap, w, h, true ) );
 
-   return image;
+    if ( data.isNull() )
+    {
+        return QImage();
+    }
+
+    copyImageDataCreateAlpha( data.data(), &image );
+
+    return image;
 }
 
-static QImage qt_imageFromWinIconHBITMAP(HDC hdc, HBITMAP bitmap, int w, int h)
+static QImage qt_imageFromWinIconHBITMAP( HDC hdc, HBITMAP bitmap, int w, int h )
 {
-   QImage image(w, h, QImage::Format_ARGB32_Premultiplied);
-   if (image.isNull()) {
-      return image;
-   }
+    QImage image( w, h, QImage::Format_ARGB32_Premultiplied );
 
-   QScopedArrayPointer<uchar> data(getDiBits(hdc, bitmap, w, h, true));
-   if (data.isNull()) {
-      return QImage();
-   }
+    if ( image.isNull() )
+    {
+        return image;
+    }
 
-   copyImageData(data.data(), &image);
+    QScopedArrayPointer<uchar> data( getDiBits( hdc, bitmap, w, h, true ) );
 
-   return image;
+    if ( data.isNull() )
+    {
+        return QImage();
+    }
+
+    copyImageData( data.data(), &image );
+
+    return image;
 }
 
-static inline bool hasAlpha(const QImage &image)
+static inline bool hasAlpha( const QImage &image )
 {
-   const int w = image.width();
-   const int h = image.height();
+    const int w = image.width();
+    const int h = image.height();
 
-   for (int y = 0; y < h; ++y) {
-      const QRgb *scanLine = reinterpret_cast<const QRgb *>(image.scanLine(y));
-      for (int x = 0; x < w; ++x) {
-         if (qAlpha(scanLine[x]) != 0) {
-            return true;
-         }
-      }
-   }
+    for ( int y = 0; y < h; ++y )
+    {
+        const QRgb *scanLine = reinterpret_cast<const QRgb *>( image.scanLine( y ) );
 
-   return false;
-}
-
-Q_GUI_EXPORT QPixmap qt_pixmapFromWinHICON(HICON icon)
-{
-   HDC screenDevice = GetDC(nullptr);
-   HDC hdc = CreateCompatibleDC(screenDevice);
-   ReleaseDC(nullptr, screenDevice);
-
-   ICONINFO iconinfo;
-   const bool result = GetIconInfo(icon, &iconinfo); //x and y Hotspot describes the icon center
-   if (!result) {
-      qErrnoWarning("QPixmap::fromWinHICON(), failed to GetIconInfo()");
-      DeleteDC(hdc);
-      return QPixmap();
-   }
-
-   const int w = iconinfo.xHotspot * 2;
-   const int h = iconinfo.yHotspot * 2;
-
-   BITMAPINFOHEADER bitmapInfo;
-   initBitMapInfoHeader(w, h, false, &bitmapInfo);
-   DWORD *bits;
-
-   HBITMAP winBitmap = CreateDIBSection(hdc, (BITMAPINFO *)&bitmapInfo, DIB_RGB_COLORS, (VOID **)&bits, nullptr, 0);
-   HGDIOBJ oldhdc = (HBITMAP)SelectObject(hdc, winBitmap);
-   DrawIconEx( hdc, 0, 0, icon, iconinfo.xHotspot * 2, iconinfo.yHotspot * 2, 0, nullptr, DI_NORMAL);
-   QImage image = qt_imageFromWinIconHBITMAP(hdc, winBitmap, w, h);
-
-   if (!image.isNull() && !hasAlpha(image)) { //If no alpha was found, we use the mask to set alpha values
-      DrawIconEx( hdc, 0, 0, icon, w, h, 0, nullptr, DI_MASK);
-      const QImage mask = qt_imageFromWinIconHBITMAP(hdc, winBitmap, w, h);
-
-      for (int y = 0 ; y < h ; y++) {
-         QRgb *scanlineImage = reinterpret_cast<QRgb *>(image.scanLine(y));
-         const QRgb *scanlineMask = mask.isNull() ? nullptr : reinterpret_cast<const QRgb *>(mask.scanLine(y));
-
-         for (int x = 0; x < w ; x++) {
-            if (scanlineMask && qRed(scanlineMask[x]) != 0) {
-               scanlineImage[x] = 0;   //mask out this pixel
-            } else {
-               scanlineImage[x] |= 0xff000000;   // set the alpha channel to 255
+        for ( int x = 0; x < w; ++x )
+        {
+            if ( qAlpha( scanLine[x] ) != 0 )
+            {
+                return true;
             }
-         }
-      }
-   }
+        }
+    }
 
-   //dispose resources created by iconinfo call
-   DeleteObject(iconinfo.hbmMask);
-   DeleteObject(iconinfo.hbmColor);
+    return false;
+}
 
-   SelectObject(hdc, oldhdc); //restore state
-   DeleteObject(winBitmap);
-   DeleteDC(hdc);
+Q_GUI_EXPORT QPixmap qt_pixmapFromWinHICON( HICON icon )
+{
+    HDC screenDevice = GetDC( nullptr );
+    HDC hdc = CreateCompatibleDC( screenDevice );
+    ReleaseDC( nullptr, screenDevice );
 
-   return QPixmap::fromImage(image);
+    ICONINFO iconinfo;
+    const bool result = GetIconInfo( icon, &iconinfo ); //x and y Hotspot describes the icon center
+
+    if ( !result )
+    {
+        qErrnoWarning( "QPixmap::fromWinHICON(), failed to GetIconInfo()" );
+        DeleteDC( hdc );
+        return QPixmap();
+    }
+
+    const int w = iconinfo.xHotspot * 2;
+    const int h = iconinfo.yHotspot * 2;
+
+    BITMAPINFOHEADER bitmapInfo;
+    initBitMapInfoHeader( w, h, false, &bitmapInfo );
+    DWORD *bits;
+
+    HBITMAP winBitmap = CreateDIBSection( hdc, ( BITMAPINFO * )&bitmapInfo, DIB_RGB_COLORS, ( VOID ** )&bits, nullptr, 0 );
+    HGDIOBJ oldhdc = ( HBITMAP )SelectObject( hdc, winBitmap );
+    DrawIconEx( hdc, 0, 0, icon, iconinfo.xHotspot * 2, iconinfo.yHotspot * 2, 0, nullptr, DI_NORMAL );
+    QImage image = qt_imageFromWinIconHBITMAP( hdc, winBitmap, w, h );
+
+    if ( !image.isNull() && !hasAlpha( image ) ) //If no alpha was found, we use the mask to set alpha values
+    {
+        DrawIconEx( hdc, 0, 0, icon, w, h, 0, nullptr, DI_MASK );
+        const QImage mask = qt_imageFromWinIconHBITMAP( hdc, winBitmap, w, h );
+
+        for ( int y = 0 ; y < h ; y++ )
+        {
+            QRgb *scanlineImage = reinterpret_cast<QRgb *>( image.scanLine( y ) );
+            const QRgb *scanlineMask = mask.isNull() ? nullptr : reinterpret_cast<const QRgb *>( mask.scanLine( y ) );
+
+            for ( int x = 0; x < w ; x++ )
+            {
+                if ( scanlineMask && qRed( scanlineMask[x] ) != 0 )
+                {
+                    scanlineImage[x] = 0;   //mask out this pixel
+                }
+                else
+                {
+                    scanlineImage[x] |= 0xff000000;   // set the alpha channel to 255
+                }
+            }
+        }
+    }
+
+    //dispose resources created by iconinfo call
+    DeleteObject( iconinfo.hbmMask );
+    DeleteObject( iconinfo.hbmColor );
+
+    SelectObject( hdc, oldhdc ); //restore state
+    DeleteObject( winBitmap );
+    DeleteDC( hdc );
+
+    return QPixmap::fromImage( image );
 }

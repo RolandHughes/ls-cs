@@ -32,22 +32,23 @@
 #include <limits>
 #include <wtf/ASCIICType.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-template <typename FloatType> static inline bool isValidRange(const FloatType& x)
+template <typename FloatType> static inline bool isValidRange( const FloatType &x )
 {
     static const FloatType max = std::numeric_limits<FloatType>::max();
     return x >= -max && x <= max;
 }
 
-// We use this generic parseNumber function to allow the Path parsing code to work 
+// We use this generic parseNumber function to allow the Path parsing code to work
 // at a higher precision internally, without any unnecessary runtime cost or code
 // complexity.
-template <typename FloatType> static bool genericParseNumber(const UChar*& ptr, const UChar* end, FloatType& number, bool skip)
+template <typename FloatType> static bool genericParseNumber( const UChar *&ptr, const UChar *end, FloatType &number, bool skip )
 {
     FloatType integer, decimal, frac, exponent;
     int sign, expsign;
-    const UChar* start = ptr;
+    const UChar *start = ptr;
 
     exponent = 0;
     integer = 0;
@@ -57,313 +58,446 @@ template <typename FloatType> static bool genericParseNumber(const UChar*& ptr, 
     expsign = 1;
 
     // read the sign
-    if (ptr < end && *ptr == '+')
+    if ( ptr < end && *ptr == '+' )
+    {
         ptr++;
-    else if (ptr < end && *ptr == '-') {
+    }
+    else if ( ptr < end && *ptr == '-' )
+    {
         ptr++;
         sign = -1;
-    } 
-    
-    if (ptr == end || ((*ptr < '0' || *ptr > '9') && *ptr != '.'))
-        // The first character of a number must be one of [0-9+-.]
-        return false;
-
-    // read the integer part, build right-to-left
-    const UChar* ptrStartIntPart = ptr;
-    while (ptr < end && *ptr >= '0' && *ptr <= '9')
-        ++ptr; // Advance to first non-digit.
-
-    if (ptr != ptrStartIntPart) {
-        const UChar* ptrScanIntPart = ptr - 1;
-        FloatType multiplier = 1;
-        while (ptrScanIntPart >= ptrStartIntPart) {
-            integer += multiplier * static_cast<FloatType>(*(ptrScanIntPart--) - '0');
-            multiplier *= 10;
-        }
-        // Bail out early if this overflows.
-        if (!isValidRange(integer))
-            return false;
     }
 
-    if (ptr < end && *ptr == '.') { // read the decimals
-        ptr++;
-        
-        // There must be a least one digit following the .
-        if (ptr >= end || *ptr < '0' || *ptr > '9')
+    if ( ptr == end || ( ( *ptr < '0' || *ptr > '9' ) && *ptr != '.' ) )
+        // The first character of a number must be one of [0-9+-.]
+    {
+        return false;
+    }
+
+    // read the integer part, build right-to-left
+    const UChar *ptrStartIntPart = ptr;
+
+    while ( ptr < end && *ptr >= '0' && *ptr <= '9' )
+    {
+        ++ptr;    // Advance to first non-digit.
+    }
+
+    if ( ptr != ptrStartIntPart )
+    {
+        const UChar *ptrScanIntPart = ptr - 1;
+        FloatType multiplier = 1;
+
+        while ( ptrScanIntPart >= ptrStartIntPart )
+        {
+            integer += multiplier * static_cast<FloatType>( *( ptrScanIntPart-- ) - '0' );
+            multiplier *= 10;
+        }
+
+        // Bail out early if this overflows.
+        if ( !isValidRange( integer ) )
+        {
             return false;
-        
-        while (ptr < end && *ptr >= '0' && *ptr <= '9')
-            decimal += (*(ptr++) - '0') * (frac *= static_cast<FloatType>(0.1));
+        }
+    }
+
+    if ( ptr < end && *ptr == '.' ) // read the decimals
+    {
+        ptr++;
+
+        // There must be a least one digit following the .
+        if ( ptr >= end || *ptr < '0' || *ptr > '9' )
+        {
+            return false;
+        }
+
+        while ( ptr < end && *ptr >= '0' && *ptr <= '9' )
+        {
+            decimal += ( *( ptr++ ) - '0' ) * ( frac *= static_cast<FloatType>( 0.1 ) );
+        }
     }
 
     // read the exponent part
-    if (ptr != start && ptr + 1 < end && (*ptr == 'e' || *ptr == 'E') 
-        && (ptr[1] != 'x' && ptr[1] != 'm')) { 
+    if ( ptr != start && ptr + 1 < end && ( *ptr == 'e' || *ptr == 'E' )
+            && ( ptr[1] != 'x' && ptr[1] != 'm' ) )
+    {
         ptr++;
 
         // read the sign of the exponent
-        if (*ptr == '+')
+        if ( *ptr == '+' )
+        {
             ptr++;
-        else if (*ptr == '-') {
+        }
+        else if ( *ptr == '-' )
+        {
             ptr++;
             expsign = -1;
         }
-        
-        // There must be an exponent
-        if (ptr >= end || *ptr < '0' || *ptr > '9')
-            return false;
 
-        while (ptr < end && *ptr >= '0' && *ptr <= '9') {
-            exponent *= static_cast<FloatType>(10);
+        // There must be an exponent
+        if ( ptr >= end || *ptr < '0' || *ptr > '9' )
+        {
+            return false;
+        }
+
+        while ( ptr < end && *ptr >= '0' && *ptr <= '9' )
+        {
+            exponent *= static_cast<FloatType>( 10 );
             exponent += *ptr - '0';
             ptr++;
         }
+
         // Make sure exponent is valid.
-        if (!isValidRange(exponent) || exponent > std::numeric_limits<FloatType>::max_exponent)
+        if ( !isValidRange( exponent ) || exponent > std::numeric_limits<FloatType>::max_exponent )
+        {
             return false;
+        }
     }
 
     number = integer + decimal;
     number *= sign;
 
-    if (exponent)
-        number *= static_cast<FloatType>(pow(10.0, expsign * static_cast<int>(exponent)));
+    if ( exponent )
+    {
+        number *= static_cast<FloatType>( pow( 10.0, expsign * static_cast<int>( exponent ) ) );
+    }
 
     // Don't return Infinity() or NaN().
-    if (!isValidRange(number))
+    if ( !isValidRange( number ) )
+    {
         return false;
+    }
 
-    if (start == ptr)
+    if ( start == ptr )
+    {
         return false;
+    }
 
-    if (skip)
-        skipOptionalSpacesOrDelimiter(ptr, end);
+    if ( skip )
+    {
+        skipOptionalSpacesOrDelimiter( ptr, end );
+    }
 
     return true;
 }
 
-bool parseNumber(const UChar*& ptr, const UChar* end, float& number, bool skip) 
+bool parseNumber( const UChar *&ptr, const UChar *end, float &number, bool skip )
 {
-    return genericParseNumber(ptr, end, number, skip);
+    return genericParseNumber( ptr, end, number, skip );
 }
 
 // only used to parse largeArcFlag and sweepFlag which must be a "0" or "1"
 // and might not have any whitespace/comma after it
-bool parseArcFlag(const UChar*& ptr, const UChar* end, bool& flag)
+bool parseArcFlag( const UChar *&ptr, const UChar *end, bool &flag )
 {
     const UChar flagChar = *ptr++;
-    if (flagChar == '0')
+
+    if ( flagChar == '0' )
+    {
         flag = false;
-    else if (flagChar == '1')
+    }
+    else if ( flagChar == '1' )
+    {
         flag = true;
+    }
     else
+    {
         return false;
-    
-    skipOptionalSpacesOrDelimiter(ptr, end);
-    
+    }
+
+    skipOptionalSpacesOrDelimiter( ptr, end );
+
     return true;
 }
 
-bool parseNumberOptionalNumber(const String& s, float& x, float& y)
+bool parseNumberOptionalNumber( const String &s, float &x, float &y )
 {
-    if (s.isEmpty())
+    if ( s.isEmpty() )
+    {
         return false;
-    const UChar* cur = s.characters();
-    const UChar* end = cur + s.length();
+    }
 
-    if (!parseNumber(cur, end, x))
+    const UChar *cur = s.characters();
+    const UChar *end = cur + s.length();
+
+    if ( !parseNumber( cur, end, x ) )
+    {
         return false;
+    }
 
-    if (cur == end)
+    if ( cur == end )
+    {
         y = x;
-    else if (!parseNumber(cur, end, y, false))
+    }
+    else if ( !parseNumber( cur, end, y, false ) )
+    {
         return false;
+    }
 
     return cur == end;
 }
 
-bool pointsListFromSVGData(SVGPointList& pointsList, const String& points)
+bool pointsListFromSVGData( SVGPointList &pointsList, const String &points )
 {
-    if (points.isEmpty())
+    if ( points.isEmpty() )
+    {
         return true;
-    const UChar* cur = points.characters();
-    const UChar* end = cur + points.length();
+    }
 
-    skipOptionalSpaces(cur, end);
+    const UChar *cur = points.characters();
+    const UChar *end = cur + points.length();
+
+    skipOptionalSpaces( cur, end );
 
     bool delimParsed = false;
-    while (cur < end) {
+
+    while ( cur < end )
+    {
         delimParsed = false;
         float xPos = 0.0f;
-        if (!parseNumber(cur, end, xPos))
-           return false;
+
+        if ( !parseNumber( cur, end, xPos ) )
+        {
+            return false;
+        }
 
         float yPos = 0.0f;
-        if (!parseNumber(cur, end, yPos, false))
+
+        if ( !parseNumber( cur, end, yPos, false ) )
+        {
             return false;
+        }
 
-        skipOptionalSpaces(cur, end);
+        skipOptionalSpaces( cur, end );
 
-        if (cur < end && *cur == ',') {
+        if ( cur < end && *cur == ',' )
+        {
             delimParsed = true;
             cur++;
         }
-        skipOptionalSpaces(cur, end);
 
-        pointsList.append(FloatPoint(xPos, yPos));
+        skipOptionalSpaces( cur, end );
+
+        pointsList.append( FloatPoint( xPos, yPos ) );
     }
+
     return cur == end && !delimParsed;
 }
 
-bool parseGlyphName(const String& input, HashSet<String>& values)
+bool parseGlyphName( const String &input, HashSet<String> &values )
 {
     // FIXME: Parsing error detection is missing.
     values.clear();
 
-    const UChar* ptr = input.characters();
-    const UChar* end = ptr + input.length();
-    skipOptionalSpaces(ptr, end);
+    const UChar *ptr = input.characters();
+    const UChar *end = ptr + input.length();
+    skipOptionalSpaces( ptr, end );
 
-    while (ptr < end) {
+    while ( ptr < end )
+    {
         // Leading and trailing white space, and white space before and after separators, will be ignored.
-        const UChar* inputStart = ptr;
-        while (ptr < end && *ptr != ',')
-            ++ptr;
+        const UChar *inputStart = ptr;
 
-        if (ptr == inputStart)
+        while ( ptr < end && *ptr != ',' )
+        {
+            ++ptr;
+        }
+
+        if ( ptr == inputStart )
+        {
             break;
+        }
 
         // walk backwards from the ; to ignore any whitespace
-        const UChar* inputEnd = ptr - 1;
-        while (inputStart < inputEnd && isWhitespace(*inputEnd))
-            --inputEnd;
+        const UChar *inputEnd = ptr - 1;
 
-        values.add(String(inputStart, inputEnd - inputStart + 1));
-        skipOptionalSpacesOrDelimiter(ptr, end, ',');
+        while ( inputStart < inputEnd && isWhitespace( *inputEnd ) )
+        {
+            --inputEnd;
+        }
+
+        values.add( String( inputStart, inputEnd - inputStart + 1 ) );
+        skipOptionalSpacesOrDelimiter( ptr, end, ',' );
     }
 
     return true;
 }
 
-static bool parseUnicodeRange(const UChar* characters, unsigned length, UnicodeRange& range)
+static bool parseUnicodeRange( const UChar *characters, unsigned length, UnicodeRange &range )
 {
-    if (length < 2 || characters[0] != 'U' || characters[1] != '+')
+    if ( length < 2 || characters[0] != 'U' || characters[1] != '+' )
+    {
         return false;
-    
+    }
+
     // Parse the starting hex number (or its prefix).
     unsigned startRange = 0;
     unsigned startLength = 0;
 
-    const UChar* ptr = characters + 2;
-    const UChar* end = characters + length;
-    while (ptr < end) {
-        if (!isASCIIHexDigit(*ptr))
+    const UChar *ptr = characters + 2;
+    const UChar *end = characters + length;
+
+    while ( ptr < end )
+    {
+        if ( !isASCIIHexDigit( *ptr ) )
+        {
             break;
+        }
+
         ++startLength;
-        if (startLength > 6)
+
+        if ( startLength > 6 )
+        {
             return false;
-        startRange = (startRange << 4) | toASCIIHexValue(*ptr);
+        }
+
+        startRange = ( startRange << 4 ) | toASCIIHexValue( *ptr );
         ++ptr;
     }
-    
+
     // Handle the case of ranges separated by "-" sign.
-    if (2 + startLength < length && *ptr == '-') {
-        if (!startLength)
+    if ( 2 + startLength < length && *ptr == '-' )
+    {
+        if ( !startLength )
+        {
             return false;
-        
+        }
+
         // Parse the ending hex number (or its prefix).
         unsigned endRange = 0;
         unsigned endLength = 0;
         ++ptr;
-        while (ptr < end) {
-            if (!isASCIIHexDigit(*ptr))
+
+        while ( ptr < end )
+        {
+            if ( !isASCIIHexDigit( *ptr ) )
+            {
                 break;
+            }
+
             ++endLength;
-            if (endLength > 6)
+
+            if ( endLength > 6 )
+            {
                 return false;
-            endRange = (endRange << 4) | toASCIIHexValue(*ptr);
+            }
+
+            endRange = ( endRange << 4 ) | toASCIIHexValue( *ptr );
             ++ptr;
         }
-        
-        if (!endLength)
+
+        if ( !endLength )
+        {
             return false;
-        
+        }
+
         range.first = startRange;
         range.second = endRange;
         return true;
     }
-    
+
     // Handle the case of a number with some optional trailing question marks.
     unsigned endRange = startRange;
-    while (ptr < end) {
-        if (*ptr != '?')
+
+    while ( ptr < end )
+    {
+        if ( *ptr != '?' )
+        {
             break;
+        }
+
         ++startLength;
-        if (startLength > 6)
+
+        if ( startLength > 6 )
+        {
             return false;
+        }
+
         startRange <<= 4;
-        endRange = (endRange << 4) | 0xF;
+        endRange = ( endRange << 4 ) | 0xF;
         ++ptr;
     }
-    
-    if (!startLength)
+
+    if ( !startLength )
+    {
         return false;
-    
+    }
+
     range.first = startRange;
     range.second = endRange;
     return true;
 }
 
-bool parseKerningUnicodeString(const String& input, UnicodeRanges& rangeList, HashSet<String>& stringList)
+bool parseKerningUnicodeString( const String &input, UnicodeRanges &rangeList, HashSet<String> &stringList )
 {
     // FIXME: Parsing error detection is missing.
-    const UChar* ptr = input.characters();
-    const UChar* end = ptr + input.length();
+    const UChar *ptr = input.characters();
+    const UChar *end = ptr + input.length();
 
-    while (ptr < end) {
-        const UChar* inputStart = ptr;
-        while (ptr < end && *ptr != ',')
+    while ( ptr < end )
+    {
+        const UChar *inputStart = ptr;
+
+        while ( ptr < end && *ptr != ',' )
+        {
             ++ptr;
+        }
 
-        if (ptr == inputStart)
+        if ( ptr == inputStart )
+        {
             break;
+        }
 
         // Try to parse unicode range first
         UnicodeRange range;
-        if (parseUnicodeRange(inputStart, ptr - inputStart, range))
-            rangeList.append(range);
+
+        if ( parseUnicodeRange( inputStart, ptr - inputStart, range ) )
+        {
+            rangeList.append( range );
+        }
         else
-            stringList.add(String(inputStart, ptr - inputStart));
+        {
+            stringList.add( String( inputStart, ptr - inputStart ) );
+        }
+
         ++ptr;
     }
 
     return true;
 }
 
-Vector<String> parseDelimitedString(const String& input, const char seperator)
+Vector<String> parseDelimitedString( const String &input, const char seperator )
 {
     Vector<String> values;
 
-    const UChar* ptr = input.characters();
-    const UChar* end = ptr + input.length();
-    skipOptionalSpaces(ptr, end);
+    const UChar *ptr = input.characters();
+    const UChar *end = ptr + input.length();
+    skipOptionalSpaces( ptr, end );
 
-    while (ptr < end) {
+    while ( ptr < end )
+    {
         // Leading and trailing white space, and white space before and after semicolon separators, will be ignored.
-        const UChar* inputStart = ptr;
-        while (ptr < end && *ptr != seperator) // careful not to ignore whitespace inside inputs
-            ptr++;
+        const UChar *inputStart = ptr;
 
-        if (ptr == inputStart)
+        while ( ptr < end && *ptr != seperator ) // careful not to ignore whitespace inside inputs
+        {
+            ptr++;
+        }
+
+        if ( ptr == inputStart )
+        {
             break;
+        }
 
         // walk backwards from the ; to ignore any whitespace
-        const UChar* inputEnd = ptr - 1;
-        while (inputStart < inputEnd && isWhitespace(*inputEnd))
-            inputEnd--;
+        const UChar *inputEnd = ptr - 1;
 
-        values.append(String(inputStart, inputEnd - inputStart + 1));
-        skipOptionalSpacesOrDelimiter(ptr, end, seperator);
+        while ( inputStart < inputEnd && isWhitespace( *inputEnd ) )
+        {
+            inputEnd--;
+        }
+
+        values.append( String( inputStart, inputEnd - inputStart + 1 ) );
+        skipOptionalSpacesOrDelimiter( ptr, end, seperator );
     }
 
     return values;

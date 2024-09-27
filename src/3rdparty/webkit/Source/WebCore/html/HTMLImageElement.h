@@ -28,82 +28,108 @@
 #include "HTMLElement.h"
 #include "HTMLImageLoader.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class HTMLFormElement;
 
-class HTMLImageElement : public HTMLElement {
+class HTMLImageElement : public HTMLElement
+{
     friend class HTMLFormElement;
 public:
-    static PassRefPtr<HTMLImageElement> create(Document*);
-    static PassRefPtr<HTMLImageElement> create(const QualifiedName&, Document*, HTMLFormElement*);
-    static PassRefPtr<HTMLImageElement> createForJSConstructor(Document*, const int* optionalWidth, const int* optionalHeight);
+    static PassRefPtr<HTMLImageElement> create( Document * );
+    static PassRefPtr<HTMLImageElement> create( const QualifiedName &, Document *, HTMLFormElement * );
+    static PassRefPtr<HTMLImageElement> createForJSConstructor( Document *, const int *optionalWidth, const int *optionalHeight );
 
     virtual ~HTMLImageElement();
 
-    int width(bool ignorePendingStylesheets = false) const;
-    int height(bool ignorePendingStylesheets = false) const;
+    int width( bool ignorePendingStylesheets = false ) const;
+    int height( bool ignorePendingStylesheets = false ) const;
 
     int naturalWidth() const;
     int naturalHeight() const;
 
-    bool isServerMap() const { return ismap && usemap.isEmpty(); }
+    bool isServerMap() const
+    {
+        return ismap && usemap.isEmpty();
+    }
 
     String altText() const;
 
-    CompositeOperator compositeOperator() const { return m_compositeOperator; }
+    CompositeOperator compositeOperator() const
+    {
+        return m_compositeOperator;
+    }
 
-    CachedImage* cachedImage() const { return m_imageLoader.image(); }
-    void setCachedImage(CachedImage* i) { m_imageLoader.setImage(i); };
+    CachedImage *cachedImage() const
+    {
+        return m_imageLoader.image();
+    }
+    void setCachedImage( CachedImage *i )
+    {
+        m_imageLoader.setImage( i );
+    };
 
-    void setLoadManually(bool loadManually) { m_imageLoader.setLoadManually(loadManually); }
+    void setLoadManually( bool loadManually )
+    {
+        m_imageLoader.setLoadManually( loadManually );
+    }
 
-    const AtomicString& alt() const;
+    const AtomicString &alt() const;
 
-    void setHeight(int);
+    void setHeight( int );
 
     KURL src() const;
-    void setSrc(const String&);
+    void setSrc( const String & );
 
-    void setWidth(int);
+    void setWidth( int );
 
     int x() const;
     int y() const;
 
     bool complete() const;
 
-    bool haveFiredLoadEvent() const { return m_imageLoader.haveFiredLoadEvent(); }
-    bool hasPendingActivity() const { return !m_imageLoader.haveFiredLoadEvent(); }
+    bool haveFiredLoadEvent() const
+    {
+        return m_imageLoader.haveFiredLoadEvent();
+    }
+    bool hasPendingActivity() const
+    {
+        return !m_imageLoader.haveFiredLoadEvent();
+    }
 
 protected:
-    HTMLImageElement(const QualifiedName&, Document*, HTMLFormElement* = 0);
+    HTMLImageElement( const QualifiedName &, Document *, HTMLFormElement * = 0 );
 
     virtual void willMoveToNewOwnerDocument();
 
 private:
-    virtual bool mapToEntry(const QualifiedName& attrName, MappedAttributeEntry& result) const;
-    virtual void parseMappedAttribute(Attribute*);
+    virtual bool mapToEntry( const QualifiedName &attrName, MappedAttributeEntry &result ) const;
+    virtual void parseMappedAttribute( Attribute * );
 
     virtual void attach();
-    virtual RenderObject* createRenderer(RenderArena*, RenderStyle*);
+    virtual RenderObject *createRenderer( RenderArena *, RenderStyle * );
 
-    virtual bool canStartSelection() const { return false; }
+    virtual bool canStartSelection() const
+    {
+        return false;
+    }
 
-    virtual bool isURLAttribute(Attribute*) const;
+    virtual bool isURLAttribute( Attribute * ) const;
 
     virtual bool draggable() const;
 
-    virtual void addSubresourceAttributeURLs(ListHashSet<KURL>&) const;
+    virtual void addSubresourceAttributeURLs( ListHashSet<KURL> & ) const;
 
     virtual void insertedIntoDocument();
     virtual void removedFromDocument();
-    virtual void insertedIntoTree(bool deep);
-    virtual void removedFromTree(bool deep);
+    virtual void insertedIntoTree( bool deep );
+    virtual void removedFromTree( bool deep );
 
     HTMLImageLoader m_imageLoader;
     String usemap;
     bool ismap;
-    HTMLFormElement* m_form;
+    HTMLFormElement *m_form;
     AtomicString m_name;
     AtomicString m_id;
     CompositeOperator m_compositeOperator;

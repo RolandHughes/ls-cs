@@ -37,129 +37,149 @@
 
 class QAudioRecorderObject : public QMediaObject
 {
- public:
-   QAudioRecorderObject(QObject *parent, QMediaService *service)
-      : QMediaObject(parent, service) {
-   }
+public:
+    QAudioRecorderObject( QObject *parent, QMediaService *service )
+        : QMediaObject( parent, service )
+    {
+    }
 
-   ~QAudioRecorderObject() {
-   }
+    ~QAudioRecorderObject()
+    {
+    }
 };
 
 class QAudioRecorderPrivate : public QMediaRecorderPrivate
 {
-   Q_DECLARE_NON_CONST_PUBLIC(QAudioRecorder)
+    Q_DECLARE_NON_CONST_PUBLIC( QAudioRecorder )
 
- public:
-   void initControls() {
-      Q_Q(QAudioRecorder);
+public:
+    void initControls()
+    {
+        Q_Q( QAudioRecorder );
 
-      audioInputSelector = nullptr;
+        audioInputSelector = nullptr;
 
-      QMediaService *service = mediaObject ? mediaObject->service() : nullptr;
+        QMediaService *service = mediaObject ? mediaObject->service() : nullptr;
 
-      if (service != nullptr) {
-         audioInputSelector = dynamic_cast<QAudioInputSelectorControl *>(service->requestControl(QAudioInputSelectorControl_iid));
-      }
+        if ( service != nullptr )
+        {
+            audioInputSelector = dynamic_cast<QAudioInputSelectorControl *>( service->requestControl( QAudioInputSelectorControl_iid ) );
+        }
 
-      if (audioInputSelector) {
-         q->connect(audioInputSelector, &QAudioInputSelectorControl::activeInputChanged, q,
-                  &QAudioRecorder::audioInputChanged);
+        if ( audioInputSelector )
+        {
+            q->connect( audioInputSelector, &QAudioInputSelectorControl::activeInputChanged, q,
+                        &QAudioRecorder::audioInputChanged );
 
-         q->connect(audioInputSelector, &QAudioInputSelectorControl::availableInputsChanged, q,
-                  &QAudioRecorder::availableAudioInputsChanged);
-      }
-   }
+            q->connect( audioInputSelector, &QAudioInputSelectorControl::availableInputsChanged, q,
+                        &QAudioRecorder::availableAudioInputsChanged );
+        }
+    }
 
-   QAudioRecorderPrivate()
-      : QMediaRecorderPrivate(), provider(nullptr), audioInputSelector(nullptr)
-   {
-   }
+    QAudioRecorderPrivate()
+        : QMediaRecorderPrivate(), provider( nullptr ), audioInputSelector( nullptr )
+    {
+    }
 
-   QMediaServiceProvider *provider;
-   QAudioInputSelectorControl *audioInputSelector;
+    QMediaServiceProvider *provider;
+    QAudioInputSelectorControl *audioInputSelector;
 };
 
-QAudioRecorder::QAudioRecorder(QObject *parent):
-   QMediaRecorder(*new QAudioRecorderPrivate, nullptr, parent)
+QAudioRecorder::QAudioRecorder( QObject *parent ):
+    QMediaRecorder( *new QAudioRecorderPrivate, nullptr, parent )
 {
-   Q_D(QAudioRecorder);
-   d->provider = QMediaServiceProvider::defaultServiceProvider();
+    Q_D( QAudioRecorder );
+    d->provider = QMediaServiceProvider::defaultServiceProvider();
 
-   QMediaService *service = d->provider->requestService(Q_MEDIASERVICE_AUDIOSOURCE);
-   setMediaObject(new QAudioRecorderObject(this, service));
-   d->initControls();
+    QMediaService *service = d->provider->requestService( Q_MEDIASERVICE_AUDIOSOURCE );
+    setMediaObject( new QAudioRecorderObject( this, service ) );
+    d->initControls();
 }
 
 QAudioRecorder::~QAudioRecorder()
 {
-   Q_D(QAudioRecorder);
+    Q_D( QAudioRecorder );
 
-   QMediaService *service = d->mediaObject ? d->mediaObject->service() : nullptr;
-   QMediaObject *mediaObject = d->mediaObject;
-   setMediaObject(nullptr);
+    QMediaService *service = d->mediaObject ? d->mediaObject->service() : nullptr;
+    QMediaObject *mediaObject = d->mediaObject;
+    setMediaObject( nullptr );
 
-   if (service && d->audioInputSelector) {
-      service->releaseControl(d->audioInputSelector);
-   }
+    if ( service && d->audioInputSelector )
+    {
+        service->releaseControl( d->audioInputSelector );
+    }
 
-   if (d->provider && service) {
-      d->provider->releaseService(service);
-   }
+    if ( d->provider && service )
+    {
+        d->provider->releaseService( service );
+    }
 
-   delete mediaObject;
+    delete mediaObject;
 }
 
 QStringList QAudioRecorder::audioInputs() const
 {
-   Q_D(const QAudioRecorder);
+    Q_D( const QAudioRecorder );
 
-   if (d->audioInputSelector) {
-      return d->audioInputSelector->availableInputs();
-   } else {
-      return QStringList();
-   }
+    if ( d->audioInputSelector )
+    {
+        return d->audioInputSelector->availableInputs();
+    }
+    else
+    {
+        return QStringList();
+    }
 }
 
-QString QAudioRecorder::audioInputDescription(const QString &name) const
+QString QAudioRecorder::audioInputDescription( const QString &name ) const
 {
-   Q_D(const QAudioRecorder);
+    Q_D( const QAudioRecorder );
 
-   if (d->audioInputSelector) {
-      return d->audioInputSelector->inputDescription(name);
-   } else {
-      return QString();
-   }
+    if ( d->audioInputSelector )
+    {
+        return d->audioInputSelector->inputDescription( name );
+    }
+    else
+    {
+        return QString();
+    }
 }
 
 QString QAudioRecorder::defaultAudioInput() const
 {
-   Q_D(const QAudioRecorder);
+    Q_D( const QAudioRecorder );
 
-   if (d->audioInputSelector) {
-      return d->audioInputSelector->defaultInput();
-   } else {
-      return QString();
-   }
+    if ( d->audioInputSelector )
+    {
+        return d->audioInputSelector->defaultInput();
+    }
+    else
+    {
+        return QString();
+    }
 }
 
 QString QAudioRecorder::audioInput() const
 {
-   Q_D(const QAudioRecorder);
+    Q_D( const QAudioRecorder );
 
-   if (d->audioInputSelector) {
-      return d->audioInputSelector->activeInput();
-   } else {
-      return QString();
-   }
+    if ( d->audioInputSelector )
+    {
+        return d->audioInputSelector->activeInput();
+    }
+    else
+    {
+        return QString();
+    }
 }
 
-void QAudioRecorder::setAudioInput(const QString &name)
+void QAudioRecorder::setAudioInput( const QString &name )
 {
-   Q_D(const QAudioRecorder);
+    Q_D( const QAudioRecorder );
 
-   if (d->audioInputSelector) {
-      return d->audioInputSelector->setActiveInput(name);
-   }
+    if ( d->audioInputSelector )
+    {
+        return d->audioInputSelector->setActiveInput( name );
+    }
 }
 

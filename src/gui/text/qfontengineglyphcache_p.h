@@ -33,24 +33,27 @@
 
 class Q_GUI_EXPORT QFontEngineGlyphCache: public QSharedData
 {
- public:
-   QFontEngineGlyphCache(QFontEngine::GlyphFormat format, const QTransform &matrix)
-      : m_format(format), m_transform(matrix) {
-      Q_ASSERT(m_format != QFontEngine::Format_None);
-   }
+public:
+    QFontEngineGlyphCache( QFontEngine::GlyphFormat format, const QTransform &matrix )
+        : m_format( format ), m_transform( matrix )
+    {
+        Q_ASSERT( m_format != QFontEngine::Format_None );
+    }
 
-   virtual ~QFontEngineGlyphCache();
+    virtual ~QFontEngineGlyphCache();
 
-   QFontEngine::GlyphFormat glyphFormat() const {
-      return m_format;
-   }
+    QFontEngine::GlyphFormat glyphFormat() const
+    {
+        return m_format;
+    }
 
-   const QTransform &transform() const {
-      return m_transform;
-   }
+    const QTransform &transform() const
+    {
+        return m_transform;
+    }
 
-   QFontEngine::GlyphFormat m_format;
-   QTransform m_transform;
+    QFontEngine::GlyphFormat m_format;
+    QTransform m_transform;
 };
 
 typedef QHash<void *, QList<QFontEngineGlyphCache *>> GlyphPointerHash;

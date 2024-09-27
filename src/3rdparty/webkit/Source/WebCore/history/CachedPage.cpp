@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -36,21 +36,22 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
 #ifndef NDEBUG
-static WTF::RefCountedLeakCounter cachedPageCounter("CachedPage");
+static WTF::RefCountedLeakCounter cachedPageCounter( "CachedPage" );
 #endif
 
-PassRefPtr<CachedPage> CachedPage::create(Page* page)
+PassRefPtr<CachedPage> CachedPage::create( Page *page )
 {
-    return adoptRef(new CachedPage(page));
+    return adoptRef( new CachedPage( page ) );
 }
 
-CachedPage::CachedPage(Page* page)
-    : m_timeStamp(currentTime())
-    , m_cachedMainFrame(CachedFrame::create(page->mainFrame()))
-    , m_needStyleRecalcForVisitedLinks(false)
+CachedPage::CachedPage( Page *page )
+    : m_timeStamp( currentTime() )
+    , m_cachedMainFrame( CachedFrame::create( page->mainFrame() ) )
+    , m_needStyleRecalcForVisitedLinks( false )
 {
 #ifndef NDEBUG
     cachedPageCounter.increment();
@@ -64,29 +65,37 @@ CachedPage::~CachedPage()
 #endif
 
     destroy();
-    ASSERT(!m_cachedMainFrame);
+    ASSERT( !m_cachedMainFrame );
 }
 
-void CachedPage::restore(Page* page)
+void CachedPage::restore( Page *page )
 {
-    ASSERT(m_cachedMainFrame);
-    ASSERT(page && page->mainFrame() && page->mainFrame() == m_cachedMainFrame->view()->frame());
-    ASSERT(!page->frameCount());
+    ASSERT( m_cachedMainFrame );
+    ASSERT( page && page->mainFrame() && page->mainFrame() == m_cachedMainFrame->view()->frame() );
+    ASSERT( !page->frameCount() );
 
     m_cachedMainFrame->open();
-    
+
     // Restore the focus appearance for the focused element.
     // FIXME: Right now we don't support pages w/ frames in the b/f cache.  This may need to be tweaked when we add support for that.
-    Document* focusedDocument = page->focusController()->focusedOrMainFrame()->document();
-    if (Node* node = focusedDocument->focusedNode()) {
-        if (node->isElementNode())
-            static_cast<Element*>(node)->updateFocusAppearance(true);
+    Document *focusedDocument = page->focusController()->focusedOrMainFrame()->document();
+
+    if ( Node *node = focusedDocument->focusedNode() )
+    {
+        if ( node->isElementNode() )
+        {
+            static_cast<Element *>( node )->updateFocusAppearance( true );
+        }
     }
 
-    if (m_needStyleRecalcForVisitedLinks) {
-        for (Frame* frame = page->mainFrame(); frame; frame = frame->tree()->traverseNext()) {
-            if (CSSStyleSelector* styleSelector = frame->document()->styleSelector())
+    if ( m_needStyleRecalcForVisitedLinks )
+    {
+        for ( Frame *frame = page->mainFrame(); frame; frame = frame->tree()->traverseNext() )
+        {
+            if ( CSSStyleSelector *styleSelector = frame->document()->styleSelector() )
+            {
                 styleSelector->allVisitedStateChanged();
+            }
         }
     }
 
@@ -95,7 +104,7 @@ void CachedPage::restore(Page* page)
 
 void CachedPage::clear()
 {
-    ASSERT(m_cachedMainFrame);
+    ASSERT( m_cachedMainFrame );
     m_cachedMainFrame->clear();
     m_cachedMainFrame = 0;
     m_needStyleRecalcForVisitedLinks = false;
@@ -103,8 +112,10 @@ void CachedPage::clear()
 
 void CachedPage::destroy()
 {
-    if (m_cachedMainFrame)
+    if ( m_cachedMainFrame )
+    {
         m_cachedMainFrame->destroy();
+    }
 
     m_cachedMainFrame = 0;
 }

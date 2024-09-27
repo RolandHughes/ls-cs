@@ -29,7 +29,8 @@
 
 #include <WebCore/NotImplemented.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 SharedMemory::Handle::Handle()
 {
@@ -41,35 +42,35 @@ SharedMemory::Handle::~Handle()
     notImplemented();
 }
 
-void SharedMemory::Handle::encode(CoreIPC::ArgumentEncoder* encoder) const
+void SharedMemory::Handle::encode( CoreIPC::ArgumentEncoder *encoder ) const
 {
     notImplemented();
 }
 
-bool SharedMemory::Handle::decode(CoreIPC::ArgumentDecoder* decoder, Handle& handle)
+bool SharedMemory::Handle::decode( CoreIPC::ArgumentDecoder *decoder, Handle &handle )
 {
     notImplemented();
     return false;
 }
 
-PassRefPtr<SharedMemory> SharedMemory::create(size_t size)
+PassRefPtr<SharedMemory> SharedMemory::create( size_t size )
 {
     notImplemented();
     return 0;
 }
 
-PassRefPtr<SharedMemory> SharedMemory::create(const Handle& handle, Protection protection)
+PassRefPtr<SharedMemory> SharedMemory::create( const Handle &handle, Protection protection )
 {
     notImplemented();
-    return 0;    
+    return 0;
 }
 
 SharedMemory::~SharedMemory()
 {
     notImplemented();
 }
-    
-bool SharedMemory::createHandle(Handle& handle, Protection protection)
+
+bool SharedMemory::createHandle( Handle &handle, Protection protection )
 {
     notImplemented();
     return false;

@@ -29,19 +29,19 @@
 
 class QFinalStatePrivate : public QAbstractStatePrivate
 {
-   Q_DECLARE_PUBLIC(QFinalState)
+    Q_DECLARE_PUBLIC( QFinalState )
 
- public:
-   QFinalStatePrivate();
+public:
+    QFinalStatePrivate();
 };
 
 QFinalStatePrivate::QFinalStatePrivate()
-   : QAbstractStatePrivate(FinalState)
+    : QAbstractStatePrivate( FinalState )
 {
 }
 
-QFinalState::QFinalState(QState *parent)
-   : QAbstractState(*new QFinalStatePrivate, parent)
+QFinalState::QFinalState( QState *parent )
+    : QAbstractState( *new QFinalStatePrivate, parent )
 {
 }
 
@@ -49,19 +49,19 @@ QFinalState::~QFinalState()
 {
 }
 
-void QFinalState::onEntry(QEvent *event)
+void QFinalState::onEntry( QEvent *event )
 {
-   (void) event;
+    ( void ) event;
 }
 
-void QFinalState::onExit(QEvent *event)
+void QFinalState::onExit( QEvent *event )
 {
-   (void) event;
+    ( void ) event;
 }
 
-bool QFinalState::event(QEvent *e)
+bool QFinalState::event( QEvent *e )
 {
-   return QAbstractState::event(e);
+    return QAbstractState::event( e );
 }
 
 #endif

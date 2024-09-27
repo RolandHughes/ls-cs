@@ -30,19 +30,19 @@ class QAbstractVideoSurface;
 
 class Q_MULTIMEDIA_EXPORT QVideoRendererControl : public QMediaControl
 {
-   MULTI_CS_OBJECT(QVideoRendererControl)
+    MULTI_CS_OBJECT( QVideoRendererControl )
 
- public:
-   ~QVideoRendererControl();
+public:
+    ~QVideoRendererControl();
 
-   virtual QAbstractVideoSurface *surface() const = 0;
-   virtual void setSurface(QAbstractVideoSurface *surface) = 0;
+    virtual QAbstractVideoSurface *surface() const = 0;
+    virtual void setSurface( QAbstractVideoSurface *surface ) = 0;
 
- protected:
-   explicit QVideoRendererControl(QObject *parent = nullptr);
+protected:
+    explicit QVideoRendererControl( QObject *parent = nullptr );
 };
 
 #define QVideoRendererControl_iid "com.copperspice.CS.videoRendererControl/1.0"
-CS_DECLARE_INTERFACE(QVideoRendererControl, QVideoRendererControl_iid)
+CS_DECLARE_INTERFACE( QVideoRendererControl, QVideoRendererControl_iid )
 
 #endif

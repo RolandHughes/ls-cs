@@ -38,197 +38,206 @@ using namespace WebKit;
 
 WKTypeID WKContextGetTypeID()
 {
-    return toAPI(WebContext::APIType);
+    return toAPI( WebContext::APIType );
 }
 
 WKContextRef WKContextCreate()
 {
-    RefPtr<WebContext> context = WebContext::create(String());
-    return toAPI(context.release().releaseRef());
+    RefPtr<WebContext> context = WebContext::create( String() );
+    return toAPI( context.release().releaseRef() );
 }
 
-WKContextRef WKContextCreateWithInjectedBundlePath(WKStringRef pathRef)
+WKContextRef WKContextCreateWithInjectedBundlePath( WKStringRef pathRef )
 {
-    RefPtr<WebContext> context = WebContext::create(toImpl(pathRef)->string());
-    return toAPI(context.release().releaseRef());
+    RefPtr<WebContext> context = WebContext::create( toImpl( pathRef )->string() );
+    return toAPI( context.release().releaseRef() );
 }
 
 WKContextRef WKContextGetSharedProcessContext()
 {
-    return toAPI(WebContext::sharedProcessContext());
+    return toAPI( WebContext::sharedProcessContext() );
 }
 
 WKContextRef WKContextGetSharedThreadContext()
 {
-    return toAPI(WebContext::sharedThreadContext());
+    return toAPI( WebContext::sharedThreadContext() );
 }
 
-void WKContextSetInjectedBundleClient(WKContextRef contextRef, const WKContextInjectedBundleClient* wkClient)
+void WKContextSetInjectedBundleClient( WKContextRef contextRef, const WKContextInjectedBundleClient *wkClient )
 {
-    if (wkClient && wkClient->version)
+    if ( wkClient && wkClient->version )
+    {
         return;
-    toImpl(contextRef)->initializeInjectedBundleClient(wkClient);
+    }
+
+    toImpl( contextRef )->initializeInjectedBundleClient( wkClient );
 }
 
-void WKContextSetHistoryClient(WKContextRef contextRef, const WKContextHistoryClient* wkClient)
+void WKContextSetHistoryClient( WKContextRef contextRef, const WKContextHistoryClient *wkClient )
 {
-    if (wkClient && wkClient->version)
+    if ( wkClient && wkClient->version )
+    {
         return;
-    toImpl(contextRef)->initializeHistoryClient(wkClient);
+    }
+
+    toImpl( contextRef )->initializeHistoryClient( wkClient );
 }
 
-void WKContextSetDownloadClient(WKContextRef contextRef, const WKContextDownloadClient* wkClient)
+void WKContextSetDownloadClient( WKContextRef contextRef, const WKContextDownloadClient *wkClient )
 {
-    if (wkClient && wkClient->version)
+    if ( wkClient && wkClient->version )
+    {
         return;
-    toImpl(contextRef)->initializeDownloadClient(wkClient);
+    }
+
+    toImpl( contextRef )->initializeDownloadClient( wkClient );
 }
 
-WKDownloadRef WKContextDownloadURLRequest(WKContextRef contextRef, const WKURLRequestRef requestRef)
+WKDownloadRef WKContextDownloadURLRequest( WKContextRef contextRef, const WKURLRequestRef requestRef )
 {
-    return toAPI(toImpl(contextRef)->download(0, toImpl(requestRef)->resourceRequest()));
+    return toAPI( toImpl( contextRef )->download( 0, toImpl( requestRef )->resourceRequest() ) );
 }
 
-void WKContextSetInitializationUserDataForInjectedBundle(WKContextRef contextRef,  WKTypeRef userDataRef)
+void WKContextSetInitializationUserDataForInjectedBundle( WKContextRef contextRef,  WKTypeRef userDataRef )
 {
-    toImpl(contextRef)->setInjectedBundleInitializationUserData(toImpl(userDataRef));
+    toImpl( contextRef )->setInjectedBundleInitializationUserData( toImpl( userDataRef ) );
 }
 
-void WKContextPostMessageToInjectedBundle(WKContextRef contextRef, WKStringRef messageNameRef, WKTypeRef messageBodyRef)
+void WKContextPostMessageToInjectedBundle( WKContextRef contextRef, WKStringRef messageNameRef, WKTypeRef messageBodyRef )
 {
-    toImpl(contextRef)->postMessageToInjectedBundle(toImpl(messageNameRef)->string(), toImpl(messageBodyRef));
+    toImpl( contextRef )->postMessageToInjectedBundle( toImpl( messageNameRef )->string(), toImpl( messageBodyRef ) );
 }
 
-void WKContextGetGlobalStatistics(WKContextStatistics* statistics)
+void WKContextGetGlobalStatistics( WKContextStatistics *statistics )
 {
-    const WebContext::Statistics& webContextStatistics = WebContext::statistics();
+    const WebContext::Statistics &webContextStatistics = WebContext::statistics();
 
     statistics->wkViewCount = webContextStatistics.wkViewCount;
     statistics->wkPageCount = webContextStatistics.wkPageCount;
     statistics->wkFrameCount = webContextStatistics.wkViewCount;
 }
 
-void WKContextAddVisitedLink(WKContextRef contextRef, WKStringRef visitedURL)
+void WKContextAddVisitedLink( WKContextRef contextRef, WKStringRef visitedURL )
 {
-    toImpl(contextRef)->addVisitedLink(toImpl(visitedURL)->string());
+    toImpl( contextRef )->addVisitedLink( toImpl( visitedURL )->string() );
 }
 
-void WKContextSetCacheModel(WKContextRef contextRef, WKCacheModel cacheModel)
+void WKContextSetCacheModel( WKContextRef contextRef, WKCacheModel cacheModel )
 {
-    toImpl(contextRef)->setCacheModel(toCacheModel(cacheModel));
+    toImpl( contextRef )->setCacheModel( toCacheModel( cacheModel ) );
 }
 
-WKCacheModel WKContextGetCacheModel(WKContextRef contextRef)
+WKCacheModel WKContextGetCacheModel( WKContextRef contextRef )
 {
-    return toAPI(toImpl(contextRef)->cacheModel());
+    return toAPI( toImpl( contextRef )->cacheModel() );
 }
 
-void _WKContextSetAlwaysUsesComplexTextCodePath(WKContextRef contextRef, bool alwaysUseComplexTextCodePath)
+void _WKContextSetAlwaysUsesComplexTextCodePath( WKContextRef contextRef, bool alwaysUseComplexTextCodePath )
 {
-    toImpl(contextRef)->setAlwaysUsesComplexTextCodePath(alwaysUseComplexTextCodePath);
+    toImpl( contextRef )->setAlwaysUsesComplexTextCodePath( alwaysUseComplexTextCodePath );
 }
 
-void _WKContextSetAdditionalPluginsDirectory(WKContextRef contextRef, WKStringRef pluginsDirectory)
+void _WKContextSetAdditionalPluginsDirectory( WKContextRef contextRef, WKStringRef pluginsDirectory )
 {
-    toImpl(contextRef)->setAdditionalPluginsDirectory(toImpl(pluginsDirectory)->string());
+    toImpl( contextRef )->setAdditionalPluginsDirectory( toImpl( pluginsDirectory )->string() );
 }
 
-void _WKContextRegisterURLSchemeAsEmptyDocument(WKContextRef contextRef, WKStringRef urlScheme)
+void _WKContextRegisterURLSchemeAsEmptyDocument( WKContextRef contextRef, WKStringRef urlScheme )
 {
-    toImpl(contextRef)->registerURLSchemeAsEmptyDocument(toImpl(urlScheme)->string());
+    toImpl( contextRef )->registerURLSchemeAsEmptyDocument( toImpl( urlScheme )->string() );
 }
 
-void WKContextRegisterURLSchemeAsSecure(WKContextRef contextRef, WKStringRef urlScheme)
+void WKContextRegisterURLSchemeAsSecure( WKContextRef contextRef, WKStringRef urlScheme )
 {
-    toImpl(contextRef)->registerURLSchemeAsSecure(toImpl(urlScheme)->string());
+    toImpl( contextRef )->registerURLSchemeAsSecure( toImpl( urlScheme )->string() );
 }
 
-void WKContextSetDomainRelaxationForbiddenForURLScheme(WKContextRef contextRef, WKStringRef urlScheme)
+void WKContextSetDomainRelaxationForbiddenForURLScheme( WKContextRef contextRef, WKStringRef urlScheme )
 {
-    toImpl(contextRef)->setDomainRelaxationForbiddenForURLScheme(toImpl(urlScheme)->string());
+    toImpl( contextRef )->setDomainRelaxationForbiddenForURLScheme( toImpl( urlScheme )->string() );
 }
 
-WKCookieManagerRef WKContextGetCookieManager(WKContextRef contextRef)
+WKCookieManagerRef WKContextGetCookieManager( WKContextRef contextRef )
 {
-    return toAPI(toImpl(contextRef)->cookieManagerProxy());
+    return toAPI( toImpl( contextRef )->cookieManagerProxy() );
 }
 
-WKApplicationCacheManagerRef WKContextGetApplicationCacheManager(WKContextRef contextRef)
+WKApplicationCacheManagerRef WKContextGetApplicationCacheManager( WKContextRef contextRef )
 {
-    return toAPI(toImpl(contextRef)->applicationCacheManagerProxy());
+    return toAPI( toImpl( contextRef )->applicationCacheManagerProxy() );
 }
 
-WKDatabaseManagerRef WKContextGetDatabaseManager(WKContextRef contextRef)
+WKDatabaseManagerRef WKContextGetDatabaseManager( WKContextRef contextRef )
 {
-    return toAPI(toImpl(contextRef)->databaseManagerProxy());
+    return toAPI( toImpl( contextRef )->databaseManagerProxy() );
 }
 
-WKGeolocationManagerRef WKContextGetGeolocationManager(WKContextRef contextRef)
+WKGeolocationManagerRef WKContextGetGeolocationManager( WKContextRef contextRef )
 {
-    return toAPI(toImpl(contextRef)->geolocationManagerProxy());
+    return toAPI( toImpl( contextRef )->geolocationManagerProxy() );
 }
 
-WKIconDatabaseRef WKContextGetIconDatabase(WKContextRef contextRef)
+WKIconDatabaseRef WKContextGetIconDatabase( WKContextRef contextRef )
 {
-    return toAPI(toImpl(contextRef)->iconDatabase());
+    return toAPI( toImpl( contextRef )->iconDatabase() );
 }
 
-WKKeyValueStorageManagerRef WKContextGetKeyValueStorageManager(WKContextRef contextRef)
+WKKeyValueStorageManagerRef WKContextGetKeyValueStorageManager( WKContextRef contextRef )
 {
-    return toAPI(toImpl(contextRef)->keyValueStorageManagerProxy());
+    return toAPI( toImpl( contextRef )->keyValueStorageManagerProxy() );
 }
 
-WKMediaCacheManagerRef WKContextGetMediaCacheManager(WKContextRef contextRef)
+WKMediaCacheManagerRef WKContextGetMediaCacheManager( WKContextRef contextRef )
 {
-    return toAPI(toImpl(contextRef)->mediaCacheManagerProxy());
+    return toAPI( toImpl( contextRef )->mediaCacheManagerProxy() );
 }
 
-WKPluginSiteDataManagerRef WKContextGetPluginSiteDataManager(WKContextRef contextRef)
+WKPluginSiteDataManagerRef WKContextGetPluginSiteDataManager( WKContextRef contextRef )
 {
-    return toAPI(toImpl(contextRef)->pluginSiteDataManager());
+    return toAPI( toImpl( contextRef )->pluginSiteDataManager() );
 }
 
-WKResourceCacheManagerRef WKContextGetResourceCacheManager(WKContextRef contextRef)
+WKResourceCacheManagerRef WKContextGetResourceCacheManager( WKContextRef contextRef )
 {
-    return toAPI(toImpl(contextRef)->resourceCacheManagerProxy());
+    return toAPI( toImpl( contextRef )->resourceCacheManagerProxy() );
 }
 
-void WKContextStartMemorySampler(WKContextRef contextRef, WKDoubleRef interval)
+void WKContextStartMemorySampler( WKContextRef contextRef, WKDoubleRef interval )
 {
-    toImpl(contextRef)->startMemorySampler(toImpl(interval)->value());
+    toImpl( contextRef )->startMemorySampler( toImpl( interval )->value() );
 }
 
-void WKContextStopMemorySampler(WKContextRef contextRef)
+void WKContextStopMemorySampler( WKContextRef contextRef )
 {
-    toImpl(contextRef)->stopMemorySampler();
+    toImpl( contextRef )->stopMemorySampler();
 }
 
-void WKContextSetIconDatabasePath(WKContextRef contextRef, WKStringRef iconDatabasePath)
+void WKContextSetIconDatabasePath( WKContextRef contextRef, WKStringRef iconDatabasePath )
 {
-    toImpl(contextRef)->setIconDatabasePath(toImpl(iconDatabasePath)->string());
+    toImpl( contextRef )->setIconDatabasePath( toImpl( iconDatabasePath )->string() );
 }
 
-void WKContextSetDatabaseDirectory(WKContextRef contextRef, WKStringRef databaseDirectory)
+void WKContextSetDatabaseDirectory( WKContextRef contextRef, WKStringRef databaseDirectory )
 {
-    toImpl(contextRef)->setDatabaseDirectory(toImpl(databaseDirectory)->string());
+    toImpl( contextRef )->setDatabaseDirectory( toImpl( databaseDirectory )->string() );
 }
 
-void WKContextSetLocalStorageDirectory(WKContextRef contextRef, WKStringRef localStorageDirectory)
+void WKContextSetLocalStorageDirectory( WKContextRef contextRef, WKStringRef localStorageDirectory )
 {
-    toImpl(contextRef)->setLocalStorageDirectory(toImpl(localStorageDirectory)->string());
+    toImpl( contextRef )->setLocalStorageDirectory( toImpl( localStorageDirectory )->string() );
 }
 
-void WKContextDisableProcessTermination(WKContextRef contextRef)
+void WKContextDisableProcessTermination( WKContextRef contextRef )
 {
-    toImpl(contextRef)->disableProcessTermination();
+    toImpl( contextRef )->disableProcessTermination();
 }
 
-void WKContextEnableProcessTermination(WKContextRef contextRef)
+void WKContextEnableProcessTermination( WKContextRef contextRef )
 {
-    toImpl(contextRef)->enableProcessTermination();
+    toImpl( contextRef )->enableProcessTermination();
 }
 
-void _WKContextSetHTTPPipeliningEnabled(WKContextRef contextRef, bool enabled)
+void _WKContextSetHTTPPipeliningEnabled( WKContextRef contextRef, bool enabled )
 {
-    toImpl(contextRef)->setHTTPPipeliningEnabled(enabled);
+    toImpl( contextRef )->setHTTPPipeliningEnabled( enabled );
 }

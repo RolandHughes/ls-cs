@@ -39,10 +39,10 @@ extern "C" {
 #endif
 
 // Defaults to true.
-WK_EXPORT void WKContextSetShouldPaintNativeControls(WKContextRef, bool);
+WK_EXPORT void WKContextSetShouldPaintNativeControls( WKContextRef, bool );
 
 // Defaults to WKHTTPCookieAcceptPolicyAlways.
-WK_EXPORT void WKContextSetInitialHTTPCookieAcceptPolicy(WKContextRef, WKHTTPCookieAcceptPolicy);
+WK_EXPORT void WKContextSetInitialHTTPCookieAcceptPolicy( WKContextRef, WKHTTPCookieAcceptPolicy );
 
 #ifdef __cplusplus
 }

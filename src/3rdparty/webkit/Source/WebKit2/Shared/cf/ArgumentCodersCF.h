@@ -32,43 +32,44 @@
 #include <Security/SecCertificate.h>
 #endif
 
-namespace CoreIPC {
+namespace CoreIPC
+{
 
 class ArgumentEncoder;
 class ArgumentDecoder;
 
 // CFArrayRef
-void encode(ArgumentEncoder*, CFArrayRef);
-bool decode(ArgumentDecoder*, RetainPtr<CFArrayRef>& result);
+void encode( ArgumentEncoder *, CFArrayRef );
+bool decode( ArgumentDecoder *, RetainPtr<CFArrayRef> &result );
 
 // CFBooleanRef
-void encode(ArgumentEncoder*, CFBooleanRef);
-bool decode(ArgumentDecoder*, RetainPtr<CFBooleanRef>& result);
+void encode( ArgumentEncoder *, CFBooleanRef );
+bool decode( ArgumentDecoder *, RetainPtr<CFBooleanRef> &result );
 
 // CFDataRef
-void encode(ArgumentEncoder*, CFDataRef);
-bool decode(ArgumentDecoder*, RetainPtr<CFDataRef>& result);
+void encode( ArgumentEncoder *, CFDataRef );
+bool decode( ArgumentDecoder *, RetainPtr<CFDataRef> &result );
 
 // CFDictionaryRef
-void encode(ArgumentEncoder*, CFDictionaryRef);
-bool decode(ArgumentDecoder*, RetainPtr<CFDictionaryRef>& result);
+void encode( ArgumentEncoder *, CFDictionaryRef );
+bool decode( ArgumentDecoder *, RetainPtr<CFDictionaryRef> &result );
 
 // CFNumberRef
-void encode(ArgumentEncoder*, CFNumberRef);
-bool decode(ArgumentDecoder*, RetainPtr<CFNumberRef>& result);
+void encode( ArgumentEncoder *, CFNumberRef );
+bool decode( ArgumentDecoder *, RetainPtr<CFNumberRef> &result );
 
 // CFStringRef
-void encode(ArgumentEncoder*, CFStringRef);
-bool decode(ArgumentDecoder*, RetainPtr<CFStringRef>& result);
+void encode( ArgumentEncoder *, CFStringRef );
+bool decode( ArgumentDecoder *, RetainPtr<CFStringRef> &result );
 
 // CFURLRef
-void encode(ArgumentEncoder*, CFURLRef);
-bool decode(ArgumentDecoder*, RetainPtr<CFURLRef>& result);
+void encode( ArgumentEncoder *, CFURLRef );
+bool decode( ArgumentDecoder *, RetainPtr<CFURLRef> &result );
 
 #if PLATFORM(MAC)
 // SecCertificateRef
-void encode(ArgumentEncoder*, SecCertificateRef);
-bool decode(ArgumentDecoder*, RetainPtr<SecCertificateRef>& result);
+void encode( ArgumentEncoder *, SecCertificateRef );
+bool decode( ArgumentDecoder *, RetainPtr<SecCertificateRef> &result );
 #endif
 
 CFTypeRef tokenNullTypeRef();

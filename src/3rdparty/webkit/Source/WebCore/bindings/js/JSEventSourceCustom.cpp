@@ -42,30 +42,41 @@
 
 using namespace JSC;
 
-namespace WebCore {
-
-EncodedJSValue JSC_HOST_CALL JSEventSourceConstructor::constructJSEventSource(ExecState* exec)
+namespace WebCore
 {
-    if (exec->argumentCount() < 1)
-        return throwVMError(exec, createSyntaxError(exec, "Not enough arguments"));
 
-    UString url = exec->argument(0).toString(exec);
-    if (exec->hadException())
-        return JSValue::encode(JSValue());
-
-    JSEventSourceConstructor* jsConstructor =  static_cast<JSEventSourceConstructor*>(exec->callee());
-    ScriptExecutionContext* context = jsConstructor->scriptExecutionContext();
-    if (!context)
-        return throwVMError(exec, createReferenceError(exec, "EventSource constructor associated document is unavailable"));
-
-    ExceptionCode ec = 0;
-    RefPtr<EventSource> eventSource = EventSource::create(ustringToString(url), context, ec);
-    if (ec) {
-        setDOMException(exec, ec);
-        return JSValue::encode(JSValue());
+EncodedJSValue JSC_HOST_CALL JSEventSourceConstructor::constructJSEventSource( ExecState *exec )
+{
+    if ( exec->argumentCount() < 1 )
+    {
+        return throwVMError( exec, createSyntaxError( exec, "Not enough arguments" ) );
     }
 
-    return JSValue::encode(asObject(toJS(exec, jsConstructor->globalObject(), eventSource.release())));
+    UString url = exec->argument( 0 ).toString( exec );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( JSValue() );
+    }
+
+    JSEventSourceConstructor *jsConstructor =  static_cast<JSEventSourceConstructor *>( exec->callee() );
+    ScriptExecutionContext *context = jsConstructor->scriptExecutionContext();
+
+    if ( !context )
+    {
+        return throwVMError( exec, createReferenceError( exec, "EventSource constructor associated document is unavailable" ) );
+    }
+
+    ExceptionCode ec = 0;
+    RefPtr<EventSource> eventSource = EventSource::create( ustringToString( url ), context, ec );
+
+    if ( ec )
+    {
+        setDOMException( exec, ec );
+        return JSValue::encode( JSValue() );
+    }
+
+    return JSValue::encode( asObject( toJS( exec, jsConstructor->globalObject(), eventSource.release() ) ) );
 }
 
 } // namespace WebCore

@@ -26,26 +26,28 @@
 #include "SVGAnimatedNumber.h"
 #include "SVGFilterPrimitiveStandardAttributes.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SVGFEOffsetElement : public SVGFilterPrimitiveStandardAttributes {
+class SVGFEOffsetElement : public SVGFilterPrimitiveStandardAttributes
+{
 public:
-    static PassRefPtr<SVGFEOffsetElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<SVGFEOffsetElement> create( const QualifiedName &, Document * );
 
 private:
-    SVGFEOffsetElement(const QualifiedName&, Document*);
+    SVGFEOffsetElement( const QualifiedName &, Document * );
 
-    virtual void parseMappedAttribute(Attribute*);
-    virtual void svgAttributeChanged(const QualifiedName&);
-    virtual void synchronizeProperty(const QualifiedName&);
+    virtual void parseMappedAttribute( Attribute * );
+    virtual void svgAttributeChanged( const QualifiedName & );
+    virtual void synchronizeProperty( const QualifiedName & );
     virtual void fillAttributeToPropertyTypeMap();
-    virtual AttributeToPropertyTypeMap& attributeToPropertyTypeMap();
-    virtual PassRefPtr<FilterEffect> build(SVGFilterBuilder*, Filter*);
+    virtual AttributeToPropertyTypeMap &attributeToPropertyTypeMap();
+    virtual PassRefPtr<FilterEffect> build( SVGFilterBuilder *, Filter * );
 
     // Animated property declarations
-    DECLARE_ANIMATED_STRING(In1, in1)
-    DECLARE_ANIMATED_NUMBER(Dx, dx)
-    DECLARE_ANIMATED_NUMBER(Dy, dy)
+    DECLARE_ANIMATED_STRING( In1, in1 )
+    DECLARE_ANIMATED_NUMBER( Dx, dx )
+    DECLARE_ANIMATED_NUMBER( Dy, dy )
 };
 
 } // namespace WebCore

@@ -24,16 +24,18 @@
 #include "WebNativeEventListener.h"
 #include <wtf/RefPtr.h>
 
-void WebDOMEventListener::handleEvent(const WebDOMEvent& evt)
+void WebDOMEventListener::handleEvent( const WebDOMEvent &evt )
 {
-    if (!impl())
+    if ( !impl() )
+    {
         return;
+    }
 
-    impl()->handleEvent(0, toWebCore(evt));
+    impl()->handleEvent( 0, toWebCore( evt ) );
 }
 
-WebDOMEventListener toWebKit(WebUserEventListener* value)
+WebDOMEventListener toWebKit( WebUserEventListener *value )
 {
-    RefPtr<WebNativeEventListener> listener = WebNativeEventListener::create(value);
-    return WebDOMEventListener(listener.get());
+    RefPtr<WebNativeEventListener> listener = WebNativeEventListener::create( value );
+    return WebDOMEventListener( listener.get() );
 }

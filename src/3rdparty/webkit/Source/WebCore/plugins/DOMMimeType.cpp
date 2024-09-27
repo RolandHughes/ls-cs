@@ -27,21 +27,26 @@
 #include "Settings.h"
 #include <wtf/text/StringBuilder.h>
 
-namespace WebCore {
-
-DOMMimeType::DOMMimeType(PassRefPtr<PluginData> pluginData, Frame* frame, unsigned index)
-    : m_pluginData(pluginData)
-    , m_frame(frame)
-    , m_index(index)
+namespace WebCore
 {
-    if (m_frame)
-        m_frame->addDestructionObserver(this);
+
+DOMMimeType::DOMMimeType( PassRefPtr<PluginData> pluginData, Frame *frame, unsigned index )
+    : m_pluginData( pluginData )
+    , m_frame( frame )
+    , m_index( index )
+{
+    if ( m_frame )
+    {
+        m_frame->addDestructionObserver( this );
+    }
 }
 
 DOMMimeType::~DOMMimeType()
 {
-    if (m_frame)
-        m_frame->removeDestructionObserver(this);
+    if ( m_frame )
+    {
+        m_frame->removeDestructionObserver( this );
+    }
 }
 
 const String &DOMMimeType::type() const
@@ -51,14 +56,20 @@ const String &DOMMimeType::type() const
 
 String DOMMimeType::suffixes() const
 {
-    const Vector<String>& extensions = mimeClassInfo().extensions;
+    const Vector<String> &extensions = mimeClassInfo().extensions;
 
     StringBuilder builder;
-    for (size_t i = 0; i < extensions.size(); ++i) {
-        if (i)
-            builder.append(',');
-        builder.append(extensions[i]);
+
+    for ( size_t i = 0; i < extensions.size(); ++i )
+    {
+        if ( i )
+        {
+            builder.append( ',' );
+        }
+
+        builder.append( extensions[i] );
     }
+
     return builder.toString();
 }
 
@@ -69,10 +80,13 @@ const String &DOMMimeType::description() const
 
 PassRefPtr<DOMPlugin> DOMMimeType::enabledPlugin() const
 {
-    if (!m_frame || !m_frame->page() || !m_frame->page()->mainFrame()->loader()->subframeLoader()->allowPlugins(NotAboutToInstantiatePlugin))
+    if ( !m_frame || !m_frame->page()
+            || !m_frame->page()->mainFrame()->loader()->subframeLoader()->allowPlugins( NotAboutToInstantiatePlugin ) )
+    {
         return 0;
+    }
 
-    return DOMPlugin::create(m_pluginData.get(), m_frame, m_pluginData->mimePluginIndices()[m_index]);
+    return DOMPlugin::create( m_pluginData.get(), m_frame, m_pluginData->mimePluginIndices()[m_index] );
 }
 
 } // namespace WebCore

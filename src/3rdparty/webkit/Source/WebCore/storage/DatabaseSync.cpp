@@ -44,113 +44,138 @@
 #include <wtf/RefPtr.h>
 #include <wtf/text/CString.h>
 
-namespace WebCore {
-
-PassRefPtr<DatabaseSync> DatabaseSync::openDatabaseSync(ScriptExecutionContext* context, const String& name, const String& expectedVersion, const String& displayName,
-                                                        unsigned long estimatedSize, PassRefPtr<DatabaseCallback> creationCallback, ExceptionCode& ec)
+namespace WebCore
 {
-    ASSERT(context->isContextThread());
 
-    if (!DatabaseTracker::tracker().canEstablishDatabase(context, name, displayName, estimatedSize)) {
-        LOG(StorageAPI, "Database %s for origin %s not allowed to be established", name.ascii().data(), context->securityOrigin()->toString().ascii().data());
+PassRefPtr<DatabaseSync> DatabaseSync::openDatabaseSync( ScriptExecutionContext *context, const String &name,
+        const String &expectedVersion, const String &displayName,
+        unsigned long estimatedSize, PassRefPtr<DatabaseCallback> creationCallback, ExceptionCode &ec )
+{
+    ASSERT( context->isContextThread() );
+
+    if ( !DatabaseTracker::tracker().canEstablishDatabase( context, name, displayName, estimatedSize ) )
+    {
+        LOG( StorageAPI, "Database %s for origin %s not allowed to be established", name.ascii().data(),
+             context->securityOrigin()->toString().ascii().data() );
         return 0;
     }
 
-    RefPtr<DatabaseSync> database = adoptRef(new DatabaseSync(context, name, expectedVersion, displayName, estimatedSize));
+    RefPtr<DatabaseSync> database = adoptRef( new DatabaseSync( context, name, expectedVersion, displayName, estimatedSize ) );
 
-    if (!database->performOpenAndVerify(!creationCallback, ec)) {
-        LOG(StorageAPI, "Failed to open and verify version (expected %s) of database %s", expectedVersion.ascii().data(), database->databaseDebugName().ascii().data());
-        DatabaseTracker::tracker().removeOpenDatabase(database.get());
+    if ( !database->performOpenAndVerify( !creationCallback, ec ) )
+    {
+        LOG( StorageAPI, "Failed to open and verify version (expected %s) of database %s", expectedVersion.ascii().data(),
+             database->databaseDebugName().ascii().data() );
+        DatabaseTracker::tracker().removeOpenDatabase( database.get() );
         return 0;
     }
 
-    DatabaseTracker::tracker().setDatabaseDetails(context->securityOrigin(), name, displayName, estimatedSize);
+    DatabaseTracker::tracker().setDatabaseDetails( context->securityOrigin(), name, displayName, estimatedSize );
 
-    if (database->isNew() && creationCallback.get()) {
+    if ( database->isNew() && creationCallback.get() )
+    {
         database->m_expectedVersion = "";
-        LOG(StorageAPI, "Invoking the creation callback for database %p\n", database.get());
-        creationCallback->handleEvent(database.get());
+        LOG( StorageAPI, "Invoking the creation callback for database %p\n", database.get() );
+        creationCallback->handleEvent( database.get() );
     }
 
     return database;
 }
 
-DatabaseSync::DatabaseSync(ScriptExecutionContext* context, const String& name, const String& expectedVersion,
-                           const String& displayName, unsigned long estimatedSize)
-    : AbstractDatabase(context, name, expectedVersion, displayName, estimatedSize)
+DatabaseSync::DatabaseSync( ScriptExecutionContext *context, const String &name, const String &expectedVersion,
+                            const String &displayName, unsigned long estimatedSize )
+    : AbstractDatabase( context, name, expectedVersion, displayName, estimatedSize )
 {
 }
 
 DatabaseSync::~DatabaseSync()
 {
-    ASSERT(m_scriptExecutionContext->isContextThread());
+    ASSERT( m_scriptExecutionContext->isContextThread() );
 
-    if (opened()) {
-        DatabaseTracker::tracker().removeOpenDatabase(this);
+    if ( opened() )
+    {
+        DatabaseTracker::tracker().removeOpenDatabase( this );
         closeDatabase();
     }
 }
 
-void DatabaseSync::changeVersion(const String& oldVersion, const String& newVersion, PassRefPtr<SQLTransactionSyncCallback> changeVersionCallback, ExceptionCode& ec)
+void DatabaseSync::changeVersion( const String &oldVersion, const String &newVersion,
+                                  PassRefPtr<SQLTransactionSyncCallback> changeVersionCallback, ExceptionCode &ec )
 {
-    ASSERT(m_scriptExecutionContext->isContextThread());
+    ASSERT( m_scriptExecutionContext->isContextThread() );
 
-    if (sqliteDatabase().transactionInProgress()) {
+    if ( sqliteDatabase().transactionInProgress() )
+    {
         ec = SQLException::DATABASE_ERR;
         return;
     }
 
-    RefPtr<SQLTransactionSync> transaction = SQLTransactionSync::create(this, changeVersionCallback, false);
-    if ((ec = transaction->begin()))
+    RefPtr<SQLTransactionSync> transaction = SQLTransactionSync::create( this, changeVersionCallback, false );
+
+    if ( ( ec = transaction->begin() ) )
+    {
         return;
+    }
 
     String actualVersion;
-    if (!getVersionFromDatabase(actualVersion)) {
+
+    if ( !getVersionFromDatabase( actualVersion ) )
+    {
         ec = SQLException::UNKNOWN_ERR;
         return;
     }
 
-    if (actualVersion != oldVersion) {
+    if ( actualVersion != oldVersion )
+    {
         ec = SQLException::VERSION_ERR;
         return;
     }
 
-    if ((ec = transaction->execute()))
+    if ( ( ec = transaction->execute() ) )
+    {
         return;
+    }
 
-    if (!setVersionInDatabase(newVersion)) {
+    if ( !setVersionInDatabase( newVersion ) )
+    {
         ec = SQLException::UNKNOWN_ERR;
         return;
     }
 
-    if ((ec = transaction->commit()))
+    if ( ( ec = transaction->commit() ) )
+    {
         return;
+    }
 
-    setExpectedVersion(newVersion);
+    setExpectedVersion( newVersion );
 }
 
-void DatabaseSync::transaction(PassRefPtr<SQLTransactionSyncCallback> callback, ExceptionCode& ec)
+void DatabaseSync::transaction( PassRefPtr<SQLTransactionSyncCallback> callback, ExceptionCode &ec )
 {
-    runTransaction(callback, false, ec);
+    runTransaction( callback, false, ec );
 }
 
-void DatabaseSync::readTransaction(PassRefPtr<SQLTransactionSyncCallback> callback, ExceptionCode& ec)
+void DatabaseSync::readTransaction( PassRefPtr<SQLTransactionSyncCallback> callback, ExceptionCode &ec )
 {
-    runTransaction(callback, true, ec);
+    runTransaction( callback, true, ec );
 }
 
-void DatabaseSync::runTransaction(PassRefPtr<SQLTransactionSyncCallback> callback, bool readOnly, ExceptionCode& ec)
+void DatabaseSync::runTransaction( PassRefPtr<SQLTransactionSyncCallback> callback, bool readOnly, ExceptionCode &ec )
 {
-    ASSERT(m_scriptExecutionContext->isContextThread());
+    ASSERT( m_scriptExecutionContext->isContextThread() );
 
-    if (sqliteDatabase().transactionInProgress()) {
+    if ( sqliteDatabase().transactionInProgress() )
+    {
         ec = SQLException::DATABASE_ERR;
         return;
     }
 
-    RefPtr<SQLTransactionSync> transaction = SQLTransactionSync::create(this, callback, readOnly);
-    if ((ec = transaction->begin()) || (ec = transaction->execute()) || (ec = transaction->commit()))
+    RefPtr<SQLTransactionSync> transaction = SQLTransactionSync::create( this, callback, readOnly );
+
+    if ( ( ec = transaction->begin() ) || ( ec = transaction->execute() ) || ( ec = transaction->commit() ) )
+    {
         transaction->rollback();
+    }
 }
 
 void DatabaseSync::markAsDeletedAndClose()
@@ -158,21 +183,22 @@ void DatabaseSync::markAsDeletedAndClose()
     // FIXME: need to do something similar to closeImmediately(), but in a sync way
 }
 
-class CloseSyncDatabaseOnContextThreadTask : public ScriptExecutionContext::Task {
+class CloseSyncDatabaseOnContextThreadTask : public ScriptExecutionContext::Task
+{
 public:
-    static PassOwnPtr<CloseSyncDatabaseOnContextThreadTask> create(PassRefPtr<DatabaseSync> database)
+    static PassOwnPtr<CloseSyncDatabaseOnContextThreadTask> create( PassRefPtr<DatabaseSync> database )
     {
-        return adoptPtr(new CloseSyncDatabaseOnContextThreadTask(database));
+        return adoptPtr( new CloseSyncDatabaseOnContextThreadTask( database ) );
     }
 
-    virtual void performTask(ScriptExecutionContext*)
+    virtual void performTask( ScriptExecutionContext * )
     {
         m_database->closeImmediately();
     }
 
 private:
-    CloseSyncDatabaseOnContextThreadTask(PassRefPtr<DatabaseSync> database)
-        : m_database(database)
+    CloseSyncDatabaseOnContextThreadTask( PassRefPtr<DatabaseSync> database )
+        : m_database( database )
     {
     }
 
@@ -181,15 +207,18 @@ private:
 
 void DatabaseSync::closeImmediately()
 {
-    if (!m_scriptExecutionContext->isContextThread()) {
-        m_scriptExecutionContext->postTask(CloseSyncDatabaseOnContextThreadTask::create(this));
+    if ( !m_scriptExecutionContext->isContextThread() )
+    {
+        m_scriptExecutionContext->postTask( CloseSyncDatabaseOnContextThreadTask::create( this ) );
         return;
     }
 
-    if (!opened())
+    if ( !opened() )
+    {
         return;
+    }
 
-    DatabaseTracker::tracker().removeOpenDatabase(this);
+    DatabaseTracker::tracker().removeOpenDatabase( this );
 
     closeDatabase();
 }

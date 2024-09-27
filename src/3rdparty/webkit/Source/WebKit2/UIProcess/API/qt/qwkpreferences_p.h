@@ -19,10 +19,11 @@
 
 #include "WKPreferences.h"
 
-class QWKPreferencesPrivate {
+class QWKPreferencesPrivate
+{
 public:
-    static QWKPreferences* createPreferences(WKPageGroupRef);
-    static QWKPreferences* createSharedPreferences();
+    static QWKPreferences *createPreferences( WKPageGroupRef );
+    static QWKPreferences *createSharedPreferences();
 
     WKPreferencesRef ref;
 };

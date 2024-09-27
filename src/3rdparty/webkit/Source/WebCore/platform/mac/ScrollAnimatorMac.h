@@ -51,35 +51,46 @@ class ScrollbarPainterDelegate;
 typedef struct __WKScrollbarPainterController *WKScrollbarPainterControllerRef;
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Scrollbar;
 
-class ScrollAnimatorMac : public ScrollAnimator {
+class ScrollAnimatorMac : public ScrollAnimator
+{
 public:
-    ScrollAnimatorMac(ScrollableArea*);
+    ScrollAnimatorMac( ScrollableArea * );
     virtual ~ScrollAnimatorMac();
 
-    virtual bool scroll(ScrollbarOrientation, ScrollGranularity, float step, float multiplier);
-    virtual void scrollToOffsetWithoutAnimation(const FloatPoint&);
+    virtual bool scroll( ScrollbarOrientation, ScrollGranularity, float step, float multiplier );
+    virtual void scrollToOffsetWithoutAnimation( const FloatPoint & );
 
 #if ENABLE(RUBBER_BANDING)
-    virtual void handleWheelEvent(PlatformWheelEvent&);
+    virtual void handleWheelEvent( PlatformWheelEvent & );
 #if ENABLE(GESTURE_EVENTS)
-    virtual void handleGestureEvent(const PlatformGestureEvent&);
+    virtual void handleGestureEvent( const PlatformGestureEvent & );
 #endif
 #endif
 
     virtual void cancelAnimations();
 
-    void immediateScrollToPoint(const FloatPoint& newPosition);
-    void immediateScrollByDeltaX(float deltaX);
-    void immediateScrollByDeltaY(float deltaY);
+    void immediateScrollToPoint( const FloatPoint &newPosition );
+    void immediateScrollByDeltaX( float deltaX );
+    void immediateScrollByDeltaY( float deltaY );
 
-    void setIsDrawingIntoLayer(bool b) { m_drawingIntoLayer = b; }
-    bool isDrawingIntoLayer() const { return m_drawingIntoLayer; }
+    void setIsDrawingIntoLayer( bool b )
+    {
+        m_drawingIntoLayer = b;
+    }
+    bool isDrawingIntoLayer() const
+    {
+        return m_drawingIntoLayer;
+    }
 
-    bool haveScrolledSincePageLoad() const { return m_haveScrolledSincePageLoad; }
+    bool haveScrolledSincePageLoad() const
+    {
+        return m_haveScrolledSincePageLoad;
+    }
 
 #if USE(WK_SCROLLBAR_PAINTER)
     bool scrollbarPaintTimerIsActive() const;
@@ -87,7 +98,7 @@ public:
     void stopScrollbarPaintTimer();
 #endif
 
-    void setVisibleScrollerThumbRect(const IntRect&);
+    void setVisibleScrollerThumbRect( const IntRect & );
 
 private:
     RetainPtr<id> m_scrollAnimationHelper;
@@ -98,10 +109,10 @@ private:
     RetainPtr<ScrollbarPainterControllerDelegate> m_scrollbarPainterControllerDelegate;
     RetainPtr<id> m_scrollbarPainterDelegate;
 
-    void initialScrollbarPaintTimerFired(Timer<ScrollAnimatorMac>*);
+    void initialScrollbarPaintTimerFired( Timer<ScrollAnimatorMac> * );
     Timer<ScrollAnimatorMac> m_initialScrollbarPaintTimer;
 #endif
-    
+
     virtual void notityPositionChanged();
     virtual void contentAreaWillPaint() const;
     virtual void mouseEnteredContentArea() const;
@@ -115,29 +126,29 @@ private:
     void didBeginScrollGesture() const;
     void didEndScrollGesture() const;
 
-    virtual void didAddVerticalScrollbar(Scrollbar*);
-    virtual void willRemoveVerticalScrollbar(Scrollbar*);
-    virtual void didAddHorizontalScrollbar(Scrollbar*);
-    virtual void willRemoveHorizontalScrollbar(Scrollbar*);
+    virtual void didAddVerticalScrollbar( Scrollbar * );
+    virtual void willRemoveVerticalScrollbar( Scrollbar * );
+    virtual void didAddHorizontalScrollbar( Scrollbar * );
+    virtual void willRemoveHorizontalScrollbar( Scrollbar * );
 
-    float adjustScrollXPositionIfNecessary(float) const;
-    float adjustScrollYPositionIfNecessary(float) const;
-    FloatPoint adjustScrollPositionIfNecessary(const FloatPoint&) const;
+    float adjustScrollXPositionIfNecessary( float ) const;
+    float adjustScrollYPositionIfNecessary( float ) const;
+    FloatPoint adjustScrollPositionIfNecessary( const FloatPoint & ) const;
 
 #if ENABLE(RUBBER_BANDING)
     bool allowsVerticalStretching() const;
     bool allowsHorizontalStretching() const;
-    bool pinnedInDirection(float deltaX, float deltaY);
+    bool pinnedInDirection( float deltaX, float deltaY );
     void snapRubberBand();
-    void snapRubberBandTimerFired(Timer<ScrollAnimatorMac>*);
-    void smoothScrollWithEvent(PlatformWheelEvent&);
+    void snapRubberBandTimerFired( Timer<ScrollAnimatorMac> * );
+    void smoothScrollWithEvent( PlatformWheelEvent & );
     void beginScrollGesture();
     void endScrollGesture();
 
     bool m_inScrollGesture;
     bool m_momentumScrollInProgress;
     bool m_ignoreMomentumScrolls;
-    
+
     CFTimeInterval m_lastMomemtumScrollTimestamp;
     FloatSize m_overflowScrollDelta;
     FloatSize m_stretchScrollForce;

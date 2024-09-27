@@ -32,36 +32,38 @@
 
 class QGstreamerVideoInputDeviceControl : public QVideoDeviceSelectorControl
 {
-   CS_OBJECT(QGstreamerVideoInputDeviceControl)
+    CS_OBJECT( QGstreamerVideoInputDeviceControl )
 
- public:
-   QGstreamerVideoInputDeviceControl(QObject *parent);
-   QGstreamerVideoInputDeviceControl(GstElementFactory *factory, QObject *parent);
+public:
+    QGstreamerVideoInputDeviceControl( QObject *parent );
+    QGstreamerVideoInputDeviceControl( GstElementFactory *factory, QObject *parent );
 
-   ~QGstreamerVideoInputDeviceControl();
+    ~QGstreamerVideoInputDeviceControl();
 
-   int deviceCount() const override;
+    int deviceCount() const override;
 
-   QString deviceName(int index) const override;
-   QString deviceDescription(int index) const override;
+    QString deviceName( int index ) const override;
+    QString deviceDescription( int index ) const override;
 
-   int defaultDevice() const override;
-   int selectedDevice() const override;
+    int defaultDevice() const override;
+    int selectedDevice() const override;
 
-   static QString primaryCamera()   {
-      return tr("Main camera");
-   }
-   static QString secondaryCamera() {
-      return tr("Front camera");
-   }
+    static QString primaryCamera()
+    {
+        return tr( "Main camera" );
+    }
+    static QString secondaryCamera()
+    {
+        return tr( "Front camera" );
+    }
 
-   CS_SLOT_1(Public, void setSelectedDevice(int index) override)
-   CS_SLOT_2(setSelectedDevice)
+    CS_SLOT_1( Public, void setSelectedDevice( int index ) override )
+    CS_SLOT_2( setSelectedDevice )
 
- private:
-   GstElementFactory *m_factory;
+private:
+    GstElementFactory *m_factory;
 
-   int m_selectedDevice;
+    int m_selectedDevice;
 };
 
 #endif

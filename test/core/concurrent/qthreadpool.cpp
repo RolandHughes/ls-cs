@@ -21,13 +21,13 @@
 
 #include <cs_catch2.h>
 
-TEST_CASE("QThreadPool traits", "[qthreadpool]")
+TEST_CASE( "QThreadPool traits", "[qthreadpool]" )
 {
-   REQUIRE(std::is_copy_constructible_v<QThreadPool> == false);
-   REQUIRE(std::is_move_constructible_v<QThreadPool> == false);
+    REQUIRE( std::is_copy_constructible_v<QThreadPool> == false );
+    REQUIRE( std::is_move_constructible_v<QThreadPool> == false );
 
-   REQUIRE(std::is_copy_assignable_v<QThreadPool> == false);
-   REQUIRE(std::is_move_assignable_v<QThreadPool> == false);
+    REQUIRE( std::is_copy_assignable_v<QThreadPool> == false );
+    REQUIRE( std::is_move_assignable_v<QThreadPool> == false );
 
-   REQUIRE(std::has_virtual_destructor_v<QThreadPool> == true);
+    REQUIRE( std::has_virtual_destructor_v<QThreadPool> == true );
 }

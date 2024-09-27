@@ -31,81 +31,89 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
 WebMouseEvent::WebMouseEvent()
     : WebEvent()
-    , m_button(static_cast<uint32_t>(NoButton))
-    , m_deltaX(0)
-    , m_deltaY(0)
-    , m_deltaZ(0)
-    , m_clickCount(0)
+    , m_button( static_cast<uint32_t>( NoButton ) )
+    , m_deltaX( 0 )
+    , m_deltaY( 0 )
+    , m_deltaZ( 0 )
+    , m_clickCount( 0 )
 #if PLATFORM(WIN)
-    , m_didActivateWebView(false)
+    , m_didActivateWebView( false )
 #endif
 {
 }
 
-WebMouseEvent::WebMouseEvent(Type type, Button button, const IntPoint& position, const IntPoint& globalPosition, float deltaX, float deltaY, float deltaZ, int clickCount, Modifiers modifiers, double timestamp)
-    : WebEvent(type, modifiers, timestamp)
-    , m_button(button)
-    , m_position(position)
-    , m_globalPosition(globalPosition)
-    , m_deltaX(deltaX)
-    , m_deltaY(deltaY)
-    , m_deltaZ(deltaZ)
-    , m_clickCount(clickCount)
+WebMouseEvent::WebMouseEvent( Type type, Button button, const IntPoint &position, const IntPoint &globalPosition, float deltaX,
+                              float deltaY, float deltaZ, int clickCount, Modifiers modifiers, double timestamp )
+    : WebEvent( type, modifiers, timestamp )
+    , m_button( button )
+    , m_position( position )
+    , m_globalPosition( globalPosition )
+    , m_deltaX( deltaX )
+    , m_deltaY( deltaY )
+    , m_deltaZ( deltaZ )
+    , m_clickCount( clickCount )
 #if PLATFORM(WIN)
-    , m_didActivateWebView(false)
+    , m_didActivateWebView( false )
 #endif
 {
-    ASSERT(isMouseEventType(type));
+    ASSERT( isMouseEventType( type ) );
 }
 
 #if PLATFORM(WIN)
-WebMouseEvent::WebMouseEvent(Type type, Button button, const IntPoint& position, const IntPoint& globalPosition, float deltaX, float deltaY, float deltaZ, int clickCount, Modifiers modifiers, double timestamp, bool didActivateWebView)
-    : WebEvent(type, modifiers, timestamp)
-    , m_button(button)
-    , m_position(position)
-    , m_globalPosition(globalPosition)
-    , m_deltaX(deltaX)
-    , m_deltaY(deltaY)
-    , m_deltaZ(deltaZ)
-    , m_clickCount(clickCount)
-    , m_didActivateWebView(didActivateWebView)
+WebMouseEvent::WebMouseEvent( Type type, Button button, const IntPoint &position, const IntPoint &globalPosition, float deltaX,
+                              float deltaY, float deltaZ, int clickCount, Modifiers modifiers, double timestamp, bool didActivateWebView )
+    : WebEvent( type, modifiers, timestamp )
+    , m_button( button )
+    , m_position( position )
+    , m_globalPosition( globalPosition )
+    , m_deltaX( deltaX )
+    , m_deltaY( deltaY )
+    , m_deltaZ( deltaZ )
+    , m_clickCount( clickCount )
+    , m_didActivateWebView( didActivateWebView )
 {
-    ASSERT(isMouseEventType(type));
+    ASSERT( isMouseEventType( type ) );
 }
 #endif
 
-void WebMouseEvent::encode(CoreIPC::ArgumentEncoder* encoder) const
+void WebMouseEvent::encode( CoreIPC::ArgumentEncoder *encoder ) const
 {
-    WebEvent::encode(encoder);
+    WebEvent::encode( encoder );
 
 #if PLATFORM(WIN)
     // Include m_didActivateWebView on Windows.
-    encoder->encode(CoreIPC::In(m_button, m_position, m_globalPosition, m_deltaX, m_deltaY, m_deltaZ, m_clickCount, m_didActivateWebView));
+    encoder->encode( CoreIPC::In( m_button, m_position, m_globalPosition, m_deltaX, m_deltaY, m_deltaZ, m_clickCount,
+                                  m_didActivateWebView ) );
 #else
-    encoder->encode(CoreIPC::In(m_button, m_position, m_globalPosition, m_deltaX, m_deltaY, m_deltaZ, m_clickCount));
+    encoder->encode( CoreIPC::In( m_button, m_position, m_globalPosition, m_deltaX, m_deltaY, m_deltaZ, m_clickCount ) );
 #endif
 }
 
-bool WebMouseEvent::decode(CoreIPC::ArgumentDecoder* decoder, WebMouseEvent& t)
+bool WebMouseEvent::decode( CoreIPC::ArgumentDecoder *decoder, WebMouseEvent &t )
 {
-    if (!WebEvent::decode(decoder, t))
+    if ( !WebEvent::decode( decoder, t ) )
+    {
         return false;
+    }
 
 #if PLATFORM(WIN)
     // Include m_didActivateWebView on Windows.
-    return decoder->decode(CoreIPC::Out(t.m_button, t.m_position, t.m_globalPosition, t.m_deltaX, t.m_deltaY, t.m_deltaZ, t.m_clickCount, t.m_didActivateWebView));
+    return decoder->decode( CoreIPC::Out( t.m_button, t.m_position, t.m_globalPosition, t.m_deltaX, t.m_deltaY, t.m_deltaZ,
+                                          t.m_clickCount, t.m_didActivateWebView ) );
 #else
-    return decoder->decode(CoreIPC::Out(t.m_button, t.m_position, t.m_globalPosition, t.m_deltaX, t.m_deltaY, t.m_deltaZ, t.m_clickCount));
+    return decoder->decode( CoreIPC::Out( t.m_button, t.m_position, t.m_globalPosition, t.m_deltaX, t.m_deltaY, t.m_deltaZ,
+                                          t.m_clickCount ) );
 #endif
 }
 
-bool WebMouseEvent::isMouseEventType(Type type)
+bool WebMouseEvent::isMouseEventType( Type type )
 {
     return type == MouseDown || type == MouseUp || type == MouseMove;
 }
-    
+
 } // namespace WebKit

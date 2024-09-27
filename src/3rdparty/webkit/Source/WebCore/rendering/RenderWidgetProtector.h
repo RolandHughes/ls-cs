@@ -28,25 +28,27 @@
 
 #include "RenderWidget.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class RenderWidgetProtector {
-    WTF_MAKE_NONCOPYABLE(RenderWidgetProtector);
+class RenderWidgetProtector
+{
+    WTF_MAKE_NONCOPYABLE( RenderWidgetProtector );
 public:
-    RenderWidgetProtector(RenderWidget* object)
-        : m_object(object)
-        , m_arena(object->ref())
+    RenderWidgetProtector( RenderWidget *object )
+        : m_object( object )
+        , m_arena( object->ref() )
     {
     }
 
     ~RenderWidgetProtector()
     {
-        m_object->deref(m_arena);
+        m_object->deref( m_arena );
     }
 
 private:
-    RenderWidget* m_object;
-    RenderArena* m_arena;
+    RenderWidget *m_object;
+    RenderArena *m_arena;
 };
 
 }

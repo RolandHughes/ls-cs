@@ -38,37 +38,37 @@ class QFileDialogPrivate;
 
 class QCocoaFileDialogHelper : public QPlatformFileDialogHelper
 {
- public:
-   QCocoaFileDialogHelper();
-   virtual ~QCocoaFileDialogHelper();
+public:
+    QCocoaFileDialogHelper();
+    virtual ~QCocoaFileDialogHelper();
 
-   void exec() override;
+    void exec() override;
 
-   bool defaultNameFilterDisables() const override;
+    bool defaultNameFilterDisables() const override;
 
-   bool show(Qt::WindowFlags windowFlags, Qt::WindowModality windowModality, QWindow *parent) override;
-   void hide() override;
-   void setDirectory(const QUrl &directory) override;
-   QUrl directory() const override;
-   void selectFile(const QUrl &filename) override;
-   QList<QUrl> selectedFiles() const override;
-   void setFilter() override;
-   void selectNameFilter(const QString &filter) override;
-   QString selectedNameFilter() const override;
+    bool show( Qt::WindowFlags windowFlags, Qt::WindowModality windowModality, QWindow *parent ) override;
+    void hide() override;
+    void setDirectory( const QUrl &directory ) override;
+    QUrl directory() const override;
+    void selectFile( const QUrl &filename ) override;
+    QList<QUrl> selectedFiles() const override;
+    void setFilter() override;
+    void selectNameFilter( const QString &filter ) override;
+    QString selectedNameFilter() const override;
 
- public:
-   bool showCocoaFilePanel(Qt::WindowModality windowModality, QWindow *parent);
-   bool hideCocoaFilePanel();
+public:
+    bool showCocoaFilePanel( Qt::WindowModality windowModality, QWindow *parent );
+    bool hideCocoaFilePanel();
 
-   void createNSOpenSavePanelDelegate();
-   void QNSOpenSavePanelDelegate_selectionChanged(const QString &newPath);
-   void QNSOpenSavePanelDelegate_panelClosed(bool accepted);
-   void QNSOpenSavePanelDelegate_directoryEntered(const QString &newDir);
-   void QNSOpenSavePanelDelegate_filterSelected(int menuIndex);
+    void createNSOpenSavePanelDelegate();
+    void QNSOpenSavePanelDelegate_selectionChanged( const QString &newPath );
+    void QNSOpenSavePanelDelegate_panelClosed( bool accepted );
+    void QNSOpenSavePanelDelegate_directoryEntered( const QString &newDir );
+    void QNSOpenSavePanelDelegate_filterSelected( int menuIndex );
 
- private:
-   QNSOpenSavePanelDelegate *mDelegate;
-   QUrl mDir;
+private:
+    QNSOpenSavePanelDelegate *mDelegate;
+    QUrl mDir;
 };
 
 #endif // QCOCOAFILEDIALOGHELPER_H

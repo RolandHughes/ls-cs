@@ -38,147 +38,172 @@
 
 #define POLYMORPHIC_LIST_CACHE_SIZE 8
 
-namespace JSC {
+namespace JSC
+{
 
-    // *Sigh*, If the JIT is enabled we need to track the stubRountine (of type CodeLocationLabel),
-    // If the JIT is not in use we don't actually need the variable (that said, if the JIT is not in use we don't
-    // curently actually use PolymorphicAccessStructureLists, which we should).  Anyway, this seems like the best
-    // solution for now - will need to something smarter if/when we actually want mixed-mode operation.
+// *Sigh*, If the JIT is enabled we need to track the stubRountine (of type CodeLocationLabel),
+// If the JIT is not in use we don't actually need the variable (that said, if the JIT is not in use we don't
+// curently actually use PolymorphicAccessStructureLists, which we should).  Anyway, this seems like the best
+// solution for now - will need to something smarter if/when we actually want mixed-mode operation.
 #if ENABLE(JIT)
-    typedef CodeLocationLabel PolymorphicAccessStructureListStubRoutineType;
+typedef CodeLocationLabel PolymorphicAccessStructureListStubRoutineType;
 #else
-    typedef void* PolymorphicAccessStructureListStubRoutineType;
+typedef void *PolymorphicAccessStructureListStubRoutineType;
 #endif
 
-    class JSCell;
-    class Structure;
-    class StructureChain;
+class JSCell;
+class Structure;
+class StructureChain;
 
-    // Structure used by op_get_by_id_self_list and op_get_by_id_proto_list instruction to hold data off the main opcode stream.
-    struct PolymorphicAccessStructureList {
-        WTF_MAKE_FAST_ALLOCATED;
-    public:
-        struct PolymorphicStubInfo {
-            bool isChain;
-            PolymorphicAccessStructureListStubRoutineType stubRoutine;
-            WriteBarrier<Structure> base;
-            union {
-                WriteBarrierBase<Structure> proto;
-                WriteBarrierBase<StructureChain> chain;
-            } u;
-
-            void set(JSGlobalData& globalData, JSCell* owner, PolymorphicAccessStructureListStubRoutineType _stubRoutine, Structure* _base)
-            {
-                stubRoutine = _stubRoutine;
-                base.set(globalData, owner, _base);
-                u.proto.clear();
-                isChain = false;
-            }
-            
-            void set(JSGlobalData& globalData, JSCell* owner, PolymorphicAccessStructureListStubRoutineType _stubRoutine, Structure* _base, Structure* _proto)
-            {
-                stubRoutine = _stubRoutine;
-                base.set(globalData, owner, _base);
-                u.proto.set(globalData, owner, _proto);
-                isChain = false;
-            }
-            
-            void set(JSGlobalData& globalData, JSCell* owner, PolymorphicAccessStructureListStubRoutineType _stubRoutine, Structure* _base, StructureChain* _chain)
-            {
-                stubRoutine = _stubRoutine;
-                base.set(globalData, owner, _base);
-                u.chain.set(globalData, owner, _chain);
-                isChain = true;
-            }
-        } list[POLYMORPHIC_LIST_CACHE_SIZE];
-        
-        PolymorphicAccessStructureList(JSGlobalData& globalData, JSCell* owner, PolymorphicAccessStructureListStubRoutineType stubRoutine, Structure* firstBase)
+// Structure used by op_get_by_id_self_list and op_get_by_id_proto_list instruction to hold data off the main opcode stream.
+struct PolymorphicAccessStructureList
+{
+    WTF_MAKE_FAST_ALLOCATED;
+public:
+    struct PolymorphicStubInfo
+    {
+        bool isChain;
+        PolymorphicAccessStructureListStubRoutineType stubRoutine;
+        WriteBarrier<Structure> base;
+        union
         {
-            list[0].set(globalData, owner, stubRoutine, firstBase);
-        }
-
-        PolymorphicAccessStructureList(JSGlobalData& globalData, JSCell* owner, PolymorphicAccessStructureListStubRoutineType stubRoutine, Structure* firstBase, Structure* firstProto)
-        {
-            list[0].set(globalData, owner, stubRoutine, firstBase, firstProto);
-        }
-
-        PolymorphicAccessStructureList(JSGlobalData& globalData, JSCell* owner, PolymorphicAccessStructureListStubRoutineType stubRoutine, Structure* firstBase, StructureChain* firstChain)
-        {
-            list[0].set(globalData, owner, stubRoutine, firstBase, firstChain);
-        }
-
-        void visitAggregate(SlotVisitor& visitor, int count)
-        {
-            for (int i = 0; i < count; ++i) {
-                PolymorphicStubInfo& info = list[i];
-                ASSERT(info.base);
-                
-                visitor.append(&info.base);
-                if (info.u.proto && !info.isChain)
-                    visitor.append(&info.u.proto);
-                if (info.u.chain && info.isChain)
-                    visitor.append(&info.u.chain);
-            }
-        }
-    };
-
-    struct Instruction {
-        Instruction(Opcode opcode)
-        {
-#if !ENABLE(COMPUTED_GOTO_INTERPRETER)
-            // We have to initialize one of the pointer members to ensure that
-            // the entire struct is initialized, when opcode is not a pointer.
-            u.jsCell.clear();
-#endif
-            u.opcode = opcode;
-        }
-
-        Instruction(int operand)
-        {
-            // We have to initialize one of the pointer members to ensure that
-            // the entire struct is initialized in 64-bit.
-            u.jsCell.clear();
-            u.operand = operand;
-        }
-
-        Instruction(JSGlobalData& globalData, JSCell* owner, Structure* structure)
-        {
-            u.structure.clear();
-            u.structure.set(globalData, owner, structure);
-        }
-        Instruction(JSGlobalData& globalData, JSCell* owner, StructureChain* structureChain)
-        {
-            u.structureChain.clear();
-            u.structureChain.set(globalData, owner, structureChain);
-        }
-        Instruction(JSGlobalData& globalData, JSCell* owner, JSCell* jsCell)
-        {
-            u.jsCell.clear();
-            u.jsCell.set(globalData, owner, jsCell);
-        }
-        Instruction(PolymorphicAccessStructureList* polymorphicStructures) { u.polymorphicStructures = polymorphicStructures; }
-        Instruction(PropertySlot::GetValueFunc getterFunc) { u.getterFunc = getterFunc; }
-
-        union {
-            Opcode opcode;
-            int operand;
-            WriteBarrierBase<Structure> structure;
-            WriteBarrierBase<StructureChain> structureChain;
-            WriteBarrierBase<JSCell> jsCell;
-            PolymorphicAccessStructureList* polymorphicStructures;
-            PropertySlot::GetValueFunc getterFunc;
+            WriteBarrierBase<Structure> proto;
+            WriteBarrierBase<StructureChain> chain;
         } u;
-        
-    private:
-        Instruction(StructureChain*);
-        Instruction(Structure*);
-    };
+
+        void set( JSGlobalData &globalData, JSCell *owner, PolymorphicAccessStructureListStubRoutineType _stubRoutine, Structure *_base )
+        {
+            stubRoutine = _stubRoutine;
+            base.set( globalData, owner, _base );
+            u.proto.clear();
+            isChain = false;
+        }
+
+        void set( JSGlobalData &globalData, JSCell *owner, PolymorphicAccessStructureListStubRoutineType _stubRoutine, Structure *_base,
+                  Structure *_proto )
+        {
+            stubRoutine = _stubRoutine;
+            base.set( globalData, owner, _base );
+            u.proto.set( globalData, owner, _proto );
+            isChain = false;
+        }
+
+        void set( JSGlobalData &globalData, JSCell *owner, PolymorphicAccessStructureListStubRoutineType _stubRoutine, Structure *_base,
+                  StructureChain *_chain )
+        {
+            stubRoutine = _stubRoutine;
+            base.set( globalData, owner, _base );
+            u.chain.set( globalData, owner, _chain );
+            isChain = true;
+        }
+    } list[POLYMORPHIC_LIST_CACHE_SIZE];
+
+    PolymorphicAccessStructureList( JSGlobalData &globalData, JSCell *owner,
+                                    PolymorphicAccessStructureListStubRoutineType stubRoutine, Structure *firstBase )
+    {
+        list[0].set( globalData, owner, stubRoutine, firstBase );
+    }
+
+    PolymorphicAccessStructureList( JSGlobalData &globalData, JSCell *owner,
+                                    PolymorphicAccessStructureListStubRoutineType stubRoutine, Structure *firstBase, Structure *firstProto )
+    {
+        list[0].set( globalData, owner, stubRoutine, firstBase, firstProto );
+    }
+
+    PolymorphicAccessStructureList( JSGlobalData &globalData, JSCell *owner,
+                                    PolymorphicAccessStructureListStubRoutineType stubRoutine, Structure *firstBase, StructureChain *firstChain )
+    {
+        list[0].set( globalData, owner, stubRoutine, firstBase, firstChain );
+    }
+
+    void visitAggregate( SlotVisitor &visitor, int count )
+    {
+        for ( int i = 0; i < count; ++i )
+        {
+            PolymorphicStubInfo &info = list[i];
+            ASSERT( info.base );
+
+            visitor.append( &info.base );
+
+            if ( info.u.proto && !info.isChain )
+            {
+                visitor.append( &info.u.proto );
+            }
+
+            if ( info.u.chain && info.isChain )
+            {
+                visitor.append( &info.u.chain );
+            }
+        }
+    }
+};
+
+struct Instruction
+{
+    Instruction( Opcode opcode )
+    {
+#if !ENABLE(COMPUTED_GOTO_INTERPRETER)
+        // We have to initialize one of the pointer members to ensure that
+        // the entire struct is initialized, when opcode is not a pointer.
+        u.jsCell.clear();
+#endif
+        u.opcode = opcode;
+    }
+
+    Instruction( int operand )
+    {
+        // We have to initialize one of the pointer members to ensure that
+        // the entire struct is initialized in 64-bit.
+        u.jsCell.clear();
+        u.operand = operand;
+    }
+
+    Instruction( JSGlobalData &globalData, JSCell *owner, Structure *structure )
+    {
+        u.structure.clear();
+        u.structure.set( globalData, owner, structure );
+    }
+    Instruction( JSGlobalData &globalData, JSCell *owner, StructureChain *structureChain )
+    {
+        u.structureChain.clear();
+        u.structureChain.set( globalData, owner, structureChain );
+    }
+    Instruction( JSGlobalData &globalData, JSCell *owner, JSCell *jsCell )
+    {
+        u.jsCell.clear();
+        u.jsCell.set( globalData, owner, jsCell );
+    }
+    Instruction( PolymorphicAccessStructureList *polymorphicStructures )
+    {
+        u.polymorphicStructures = polymorphicStructures;
+    }
+    Instruction( PropertySlot::GetValueFunc getterFunc )
+    {
+        u.getterFunc = getterFunc;
+    }
+
+    union
+    {
+        Opcode opcode;
+        int operand;
+        WriteBarrierBase<Structure> structure;
+        WriteBarrierBase<StructureChain> structureChain;
+        WriteBarrierBase<JSCell> jsCell;
+        PolymorphicAccessStructureList *polymorphicStructures;
+        PropertySlot::GetValueFunc getterFunc;
+    } u;
+
+private:
+    Instruction( StructureChain * );
+    Instruction( Structure * );
+};
 
 } // namespace JSC
 
-namespace WTF {
+namespace WTF
+{
 
-    template<> struct VectorTraits<JSC::Instruction> : VectorTraitsBase<true, JSC::Instruction> { };
+template<> struct VectorTraits<JSC::Instruction> : VectorTraitsBase<true, JSC::Instruction> { };
 
 } // namespace WTF
 

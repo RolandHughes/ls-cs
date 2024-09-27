@@ -36,68 +36,69 @@ class QMenu;
 
 class QToolBarItem : public QWidgetItem
 {
- public:
-   QToolBarItem(QWidget *widget);
-   bool isEmpty() const override;
+public:
+    QToolBarItem( QWidget *widget );
+    bool isEmpty() const override;
 
-   QAction *action;
-   bool customWidget;
+    QAction *action;
+    bool customWidget;
 };
 
 class QToolBarLayout : public QLayout
 {
-   GUI_CS_OBJECT(QToolBarLayout)
+    GUI_CS_OBJECT( QToolBarLayout )
 
- public:
-   QToolBarLayout(QWidget *parent = nullptr);
-   ~QToolBarLayout();
+public:
+    QToolBarLayout( QWidget *parent = nullptr );
+    ~QToolBarLayout();
 
-   void addItem(QLayoutItem *item) override;
-   QLayoutItem *itemAt(int index) const override;
-   QLayoutItem *takeAt(int index) override;
-   int count() const override;
+    void addItem( QLayoutItem *item ) override;
+    QLayoutItem *itemAt( int index ) const override;
+    QLayoutItem *takeAt( int index ) override;
+    int count() const override;
 
-   bool isEmpty() const override;
-   void invalidate() override;
-   Qt::Orientations expandingDirections() const override;
+    bool isEmpty() const override;
+    void invalidate() override;
+    Qt::Orientations expandingDirections() const override;
 
-   void setGeometry(const QRect &rect) override;
-   QSize minimumSize() const override;
-   QSize sizeHint() const override;
+    void setGeometry( const QRect &rect ) override;
+    QSize minimumSize() const override;
+    QSize sizeHint() const override;
 
-   void insertAction(int index, QAction *action);
-   int indexOf(QAction *action) const;
+    void insertAction( int index, QAction *action );
+    int indexOf( QAction *action ) const;
 
-   int indexOf(QWidget *widget) const override {
-      return QLayout::indexOf(widget);
-   }
+    int indexOf( QWidget *widget ) const override
+    {
+        return QLayout::indexOf( widget );
+    }
 
-   bool layoutActions(const QSize &size);
-   QSize expandedSize(const QSize &size) const;
-   bool expanded, animating;
+    bool layoutActions( const QSize &size );
+    QSize expandedSize( const QSize &size ) const;
+    bool expanded, animating;
 
-   void setUsePopupMenu(bool set);    // there's no getter, this is internal but public
-   void checkUsePopupMenu();
+    void setUsePopupMenu( bool set );  // there's no getter, this is internal but public
+    void checkUsePopupMenu();
 
-   bool movable() const;
-   void updateMarginAndSpacing();
-   bool hasExpandFlag() const;
+    bool movable() const;
+    void updateMarginAndSpacing();
+    bool hasExpandFlag() const;
 
-   void updateMacBorderMetrics();
-   GUI_CS_SLOT_1(Public, void setExpanded(bool b))
-   GUI_CS_SLOT_2(setExpanded)
+    void updateMacBorderMetrics();
+    GUI_CS_SLOT_1( Public, void setExpanded( bool b ) )
+    GUI_CS_SLOT_2( setExpanded )
 
- private:
-   QList<QToolBarItem *> items;
-   QSize hint, minSize;
-   bool dirty, expanding, empty, expandFlag;
-   QVector<QLayoutStruct> geomArray;
-   QRect handRect;
-   QToolBarExtension *extension;
+private:
+    QList<QToolBarItem *> items;
+    QSize hint, minSize;
+    bool dirty, expanding, empty, expandFlag;
+    QVector<QLayoutStruct> geomArray;
+    QRect handRect;
+    QToolBarExtension *extension;
 
-   void updateGeomArray() const;
-   QToolBarItem *createItem(QAction *action);
-   QMenu *popupMenu;
+    void updateGeomArray() const;
+    QToolBarItem *createItem( QAction *action );
+    QMenu *popupMenu;
 };
 
 #endif // QT_NO_TOOLBAR

@@ -20,30 +20,32 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef ImageObserver_h
 #define ImageObserver_h
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Image;
 class IntRect;
 
 // Interface for notification about changes to an image, including decoding,
 // drawing, and animating.
-class ImageObserver {
+class ImageObserver
+{
 protected:
     virtual ~ImageObserver() {}
 public:
-    virtual void decodedSizeChanged(const Image*, int delta) = 0;
-    virtual void didDraw(const Image*) = 0;
+    virtual void decodedSizeChanged( const Image *, int delta ) = 0;
+    virtual void didDraw( const Image * ) = 0;
 
-    virtual bool shouldPauseAnimation(const Image*) = 0;
-    virtual void animationAdvanced(const Image*) = 0;
+    virtual bool shouldPauseAnimation( const Image * ) = 0;
+    virtual void animationAdvanced( const Image * ) = 0;
 
-    virtual void changedInRect(const Image*, const IntRect&) = 0;
+    virtual void changedInRect( const Image *, const IntRect & ) = 0;
 };
 
 }

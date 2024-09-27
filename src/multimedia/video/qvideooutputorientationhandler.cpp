@@ -26,18 +26,18 @@
 #include <QGuiApplication>
 #include <QScreen>
 
-QVideoOutputOrientationHandler::QVideoOutputOrientationHandler(QObject *parent)
-    : QObject(parent), m_currentOrientation(0)
+QVideoOutputOrientationHandler::QVideoOutputOrientationHandler( QObject *parent )
+    : QObject( parent ), m_currentOrientation( 0 )
 {
     QScreen *screen = QGuiApplication::primaryScreen();
 
     // we want to be informed about all orientation changes
-    screen->setOrientationUpdateMask(Qt::PortraitOrientation|Qt::LandscapeOrientation
-                  | Qt::InvertedPortraitOrientation|Qt::InvertedLandscapeOrientation);
+    screen->setOrientationUpdateMask( Qt::PortraitOrientation|Qt::LandscapeOrientation
+                                      | Qt::InvertedPortraitOrientation|Qt::InvertedLandscapeOrientation );
 
-    connect(screen, &QScreen::orientationChanged, this, &QVideoOutputOrientationHandler::screenOrientationChanged);
+    connect( screen, &QScreen::orientationChanged, this, &QVideoOutputOrientationHandler::screenOrientationChanged );
 
-    screenOrientationChanged(screen->orientation());
+    screenOrientationChanged( screen->orientation() );
 }
 
 int QVideoOutputOrientationHandler::currentOrientation() const
@@ -45,16 +45,18 @@ int QVideoOutputOrientationHandler::currentOrientation() const
     return m_currentOrientation;
 }
 
-void QVideoOutputOrientationHandler::screenOrientationChanged(Qt::ScreenOrientation orientation)
+void QVideoOutputOrientationHandler::screenOrientationChanged( Qt::ScreenOrientation orientation )
 {
     const QScreen *screen = QGuiApplication::primaryScreen();
 
-    const int angle = (360 - screen->angleBetween(screen->nativeOrientation(), orientation)) % 360;
+    const int angle = ( 360 - screen->angleBetween( screen->nativeOrientation(), orientation ) ) % 360;
 
-    if (angle == m_currentOrientation)
+    if ( angle == m_currentOrientation )
+    {
         return;
+    }
 
     m_currentOrientation = angle;
-    emit orientationChanged(m_currentOrientation);
+    emit orientationChanged( m_currentOrientation );
 }
 

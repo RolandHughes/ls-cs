@@ -26,34 +26,35 @@
 #include <csmeta_callevent.h>
 
 // internal class
-CSMetaCallEvent::CSMetaCallEvent(const LsCsSignal::Internal::BentoAbstract *bento,
-      const LsCsSignal::Internal::TeaCupAbstract *dataPack,
-      const QObject *sender, int signal_index, QSemaphore *semaphore)
-   : QEvent(MetaCall), m_bento(bento), m_dataPack(dataPack), m_sender(sender),
-     m_semaphore(semaphore), m_signal_index(signal_index)
+CSMetaCallEvent::CSMetaCallEvent( const LsCsSignal::Internal::BentoAbstract *bento,
+                                  const LsCsSignal::Internal::TeaCupAbstract *dataPack,
+                                  const QObject *sender, int signal_index, QSemaphore *semaphore )
+    : QEvent( MetaCall ), m_bento( bento ), m_dataPack( dataPack ), m_sender( sender ),
+      m_semaphore( semaphore ), m_signal_index( signal_index )
 {
 }
 
 CSMetaCallEvent::~CSMetaCallEvent()
 {
-   delete m_dataPack;
+    delete m_dataPack;
 
-   if (m_semaphore) {
-      m_semaphore->release();
-   }
+    if ( m_semaphore )
+    {
+        m_semaphore->release();
+    }
 }
 
-void CSMetaCallEvent::placeMetaCall(QObject *object)
+void CSMetaCallEvent::placeMetaCall( QObject *object )
 {
-   m_bento->invoke(object, m_dataPack);
+    m_bento->invoke( object, m_dataPack );
 }
 
 const QObject *CSMetaCallEvent::sender() const
 {
-   return m_sender;
+    return m_sender;
 }
 
 int CSMetaCallEvent::signal_index() const
 {
-   return m_signal_index;
+    return m_signal_index;
 }

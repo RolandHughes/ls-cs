@@ -33,45 +33,45 @@
 
 class QCocoaDrag : public QPlatformDrag
 {
- public:
-   QCocoaDrag();
-   ~QCocoaDrag();
+public:
+    QCocoaDrag();
+    ~QCocoaDrag();
 
-   QMimeData *platformDropData() override;
-   Qt::DropAction drag(QDrag *m_drag) override;
+    QMimeData *platformDropData() override;
+    Qt::DropAction drag( QDrag *m_drag ) override;
 
-   Qt::DropAction defaultAction(Qt::DropActions possibleActions,
-      Qt::KeyboardModifiers modifiers) const override;
+    Qt::DropAction defaultAction( Qt::DropActions possibleActions,
+                                  Qt::KeyboardModifiers modifiers ) const override;
 
-   /**
-   * to meet NSView dragImage:at guarantees, we need to record the original
-   * event and view when handling an event in QNSView
-   */
-   void setLastMouseEvent(NSEvent *event, NSView *view);
+    /**
+    * to meet NSView dragImage:at guarantees, we need to record the original
+    * event and view when handling an event in QNSView
+    */
+    void setLastMouseEvent( NSEvent *event, NSView *view );
 
-   void setAcceptedAction(Qt::DropAction act);
+    void setAcceptedAction( Qt::DropAction act );
 
- private:
-   QDrag *m_drag;
-   NSEvent *m_lastEvent;
-   NSView *m_lastView;
-   Qt::DropAction m_executed_drop_action;
+private:
+    QDrag *m_drag;
+    NSEvent *m_lastEvent;
+    NSView *m_lastView;
+    Qt::DropAction m_executed_drop_action;
 
-   QPixmap dragPixmap(QDrag *drag, QPoint &hotSpot) const;
+    QPixmap dragPixmap( QDrag *drag, QPoint &hotSpot ) const;
 };
 
 class QCocoaDropData : public QInternalMimeData
 {
- public:
-   QCocoaDropData(NSPasteboard *pasteboard);
-   ~QCocoaDropData();
+public:
+    QCocoaDropData( NSPasteboard *pasteboard );
+    ~QCocoaDropData();
 
-   CFStringRef dropPasteboard;
+    CFStringRef dropPasteboard;
 
- protected:
-   bool hasFormat_sys(const QString &mimeType) const;
-   QStringList formats_sys() const;
-   QVariant retrieveData_sys(const QString &mimeType, QVariant::Type type) const;
+protected:
+    bool hasFormat_sys( const QString &mimeType ) const;
+    QStringList formats_sys() const;
+    QVariant retrieveData_sys( const QString &mimeType, QVariant::Type type ) const;
 
 };
 

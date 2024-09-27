@@ -38,24 +38,33 @@
 #include <wtf/RefPtr.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 class GraphicsContext3D;
 
 class IntRect;
 
-class Texture : public RefCounted<Texture> {
+class Texture : public RefCounted<Texture>
+{
 public:
     ~Texture();
     enum Format { RGBA8, BGRA8 };
-    static PassRefPtr<Texture> create(GraphicsContext3D*, Format, int width, int height);
-    void bindTile(int tile);
-    void load(void* pixels);
-    void updateSubRect(void* pixels, const IntRect&);
-    Format format() const { return m_format; }
-    const TilingData& tiles() const { return m_tiles; }
+    static PassRefPtr<Texture> create( GraphicsContext3D *, Format, int width, int height );
+    void bindTile( int tile );
+    void load( void *pixels );
+    void updateSubRect( void *pixels, const IntRect & );
+    Format format() const
+    {
+        return m_format;
+    }
+    const TilingData &tiles() const
+    {
+        return m_tiles;
+    }
 private:
-    Texture(GraphicsContext3D*, PassOwnPtr<Vector<unsigned int> > tileTextureIds, Format format, int width, int height, int maxTextureSize);
-    GraphicsContext3D* m_context;
+    Texture( GraphicsContext3D *, PassOwnPtr<Vector<unsigned int> > tileTextureIds, Format format, int width, int height,
+             int maxTextureSize );
+    GraphicsContext3D *m_context;
     Format m_format;
     TilingData m_tiles;
     OwnPtr<Vector<unsigned int> > m_tileTextureIds;

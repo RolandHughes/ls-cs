@@ -33,49 +33,58 @@
 #include <wtf/OwnPtr.h>
 #include <wtf/PassOwnPtr.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 class Region;
 
-class DrawingAreaProxyImpl : public DrawingAreaProxy {
+class DrawingAreaProxyImpl : public DrawingAreaProxy
+{
 public:
-    static PassOwnPtr<DrawingAreaProxyImpl> create(WebPageProxy*);
+    static PassOwnPtr<DrawingAreaProxyImpl> create( WebPageProxy * );
     virtual ~DrawingAreaProxyImpl();
 
-    void paint(BackingStore::PlatformGraphicsContext, const WebCore::IntRect&, Region& unpaintedRegion);
+    void paint( BackingStore::PlatformGraphicsContext, const WebCore::IntRect &, Region &unpaintedRegion );
 
 private:
-    explicit DrawingAreaProxyImpl(WebPageProxy*);
+    explicit DrawingAreaProxyImpl( WebPageProxy * );
 
     // DrawingAreaProxy
-    virtual void didReceiveMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*);
-    virtual void didReceiveSyncMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*, CoreIPC::ArgumentEncoder*);
-    virtual bool paint(const WebCore::IntRect&, PlatformDrawingContext);
+    virtual void didReceiveMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * );
+    virtual void didReceiveSyncMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder *,
+                                        CoreIPC::ArgumentEncoder * );
+    virtual bool paint( const WebCore::IntRect &, PlatformDrawingContext );
     virtual void sizeDidChange();
     virtual void visibilityDidChange();
-    virtual void setPageIsVisible(bool);
-    virtual void setBackingStoreIsDiscardable(bool);
+    virtual void setPageIsVisible( bool );
+    virtual void setBackingStoreIsDiscardable( bool );
 
     // CoreIPC message handlers
-    virtual void update(uint64_t backingStoreStateID, const UpdateInfo&);
-    virtual void didUpdateBackingStoreState(uint64_t backingStoreStateID, const UpdateInfo&, const LayerTreeContext&);
-    virtual void enterAcceleratedCompositingMode(uint64_t backingStoreStateID, const LayerTreeContext&);
-    virtual void exitAcceleratedCompositingMode(uint64_t backingStoreStateID, const UpdateInfo&);
+    virtual void update( uint64_t backingStoreStateID, const UpdateInfo & );
+    virtual void didUpdateBackingStoreState( uint64_t backingStoreStateID, const UpdateInfo &, const LayerTreeContext & );
+    virtual void enterAcceleratedCompositingMode( uint64_t backingStoreStateID, const LayerTreeContext & );
+    virtual void exitAcceleratedCompositingMode( uint64_t backingStoreStateID, const UpdateInfo & );
 
-    void incorporateUpdate(const UpdateInfo&);
+    void incorporateUpdate( const UpdateInfo & );
 
     enum RespondImmediatelyOrNot { DoNotRespondImmediately, RespondImmediately };
-    void backingStoreStateDidChange(RespondImmediatelyOrNot);
-    void sendUpdateBackingStoreState(RespondImmediatelyOrNot);
+    void backingStoreStateDidChange( RespondImmediatelyOrNot );
+    void sendUpdateBackingStoreState( RespondImmediatelyOrNot );
     void waitForAndDispatchDidUpdateBackingStoreState();
 
 #if USE(ACCELERATED_COMPOSITING)
-    void enterAcceleratedCompositingMode(const LayerTreeContext&);
+    void enterAcceleratedCompositingMode( const LayerTreeContext & );
     void exitAcceleratedCompositingMode();
 
-    bool isInAcceleratedCompositingMode() const { return !m_layerTreeContext.isEmpty(); }
+    bool isInAcceleratedCompositingMode() const
+    {
+        return !m_layerTreeContext.isEmpty();
+    }
 #else
-    bool isInAcceleratedCompositingMode() const { return false; }
+    bool isInAcceleratedCompositingMode() const
+    {
+        return false;
+    }
 #endif
 
     void discardBackingStoreSoon();
@@ -98,7 +107,7 @@ private:
     // Whether we've sent a UpdateBackingStoreState message and are now waiting for a DidUpdateBackingStoreState message.
     // Used to throttle UpdateBackingStoreState messages so we don't send them faster than the Web process can handle.
     bool m_isWaitingForDidUpdateBackingStoreState;
-    
+
     // For a new Drawing Area don't draw anything until the WebProcess has sent over the first content.
     bool m_hasReceivedFirstUpdate;
 

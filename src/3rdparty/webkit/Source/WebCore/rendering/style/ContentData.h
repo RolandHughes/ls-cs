@@ -29,15 +29,18 @@
 #include <wtf/OwnPtr.h>
 #include <wtf/PassOwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class StyleImage;
 
-struct ContentData {
-    WTF_MAKE_NONCOPYABLE(ContentData); WTF_MAKE_FAST_ALLOCATED;
+struct ContentData
+{
+    WTF_MAKE_NONCOPYABLE( ContentData );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
     ContentData()
-        : m_type(CONTENT_NONE)
+        : m_type( CONTENT_NONE )
     {
     }
 
@@ -48,46 +51,64 @@ public:
 
     void clear();
 
-    bool isCounter() const { return m_type == CONTENT_COUNTER; }
-    bool isImage() const { return m_type == CONTENT_OBJECT; }
-    bool isNone() const { return m_type == CONTENT_NONE; }
-    bool isQuote() const { return m_type == CONTENT_QUOTE; }
-    bool isText() const { return m_type == CONTENT_TEXT; }
-
-    StyleContentType type() const { return m_type; }
-
-    bool dataEquivalent(const ContentData&) const;
-
-    StyleImage* image() const
+    bool isCounter() const
     {
-        ASSERT(isImage());
+        return m_type == CONTENT_COUNTER;
+    }
+    bool isImage() const
+    {
+        return m_type == CONTENT_OBJECT;
+    }
+    bool isNone() const
+    {
+        return m_type == CONTENT_NONE;
+    }
+    bool isQuote() const
+    {
+        return m_type == CONTENT_QUOTE;
+    }
+    bool isText() const
+    {
+        return m_type == CONTENT_TEXT;
+    }
+
+    StyleContentType type() const
+    {
+        return m_type;
+    }
+
+    bool dataEquivalent( const ContentData & ) const;
+
+    StyleImage *image() const
+    {
+        ASSERT( isImage() );
         return m_content.m_image;
     }
-    void setImage(PassRefPtr<StyleImage> image)
+    void setImage( PassRefPtr<StyleImage> image )
     {
         deleteContent();
         m_type = CONTENT_OBJECT;
         m_content.m_image = image.leakRef();
     }
 
-    StringImpl* text() const
+    StringImpl *text() const
     {
-        ASSERT(isText());
+        ASSERT( isText() );
         return m_content.m_text;
     }
-    void setText(PassRefPtr<StringImpl> text)
+    void setText( PassRefPtr<StringImpl> text )
     {
         deleteContent();
         m_type = CONTENT_TEXT;
         m_content.m_text = text.leakRef();
     }
 
-    CounterContent* counter() const
+    CounterContent *counter() const
     {
-        ASSERT(isCounter());
+        ASSERT( isCounter() );
         return m_content.m_counter;
     }
-    void setCounter(PassOwnPtr<CounterContent> counter)
+    void setCounter( PassOwnPtr<CounterContent> counter )
     {
         deleteContent();
         m_type = CONTENT_COUNTER;
@@ -96,27 +117,34 @@ public:
 
     QuoteType quote() const
     {
-        ASSERT(isQuote());
+        ASSERT( isQuote() );
         return m_content.m_quote;
     }
-    void setQuote(QuoteType type)
+    void setQuote( QuoteType type )
     {
         deleteContent();
         m_type = CONTENT_QUOTE;
         m_content.m_quote = type;
     }
 
-    ContentData* next() const { return m_next.get(); }
-    void setNext(PassOwnPtr<ContentData> next) { m_next = next; }
+    ContentData *next() const
+    {
+        return m_next.get();
+    }
+    void setNext( PassOwnPtr<ContentData> next )
+    {
+        m_next = next;
+    }
 
 private:
     void deleteContent();
 
     StyleContentType m_type;
-    union {
-        StyleImage* m_image;
-        StringImpl* m_text;
-        CounterContent* m_counter;
+    union
+    {
+        StyleImage *m_image;
+        StringImpl *m_text;
+        CounterContent *m_counter;
         QuoteType m_quote;
     } m_content;
     OwnPtr<ContentData> m_next;

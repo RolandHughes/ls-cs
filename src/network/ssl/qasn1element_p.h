@@ -33,8 +33,9 @@
 
 class  QAsn1Element
 {
- public:
-    enum ElementType {
+public:
+    enum ElementType
+    {
         // universal
         BooleanType = 0x01,
         IntegerType  = 0x02,
@@ -61,43 +62,51 @@ class  QAsn1Element
         Context3Type = 0xA3
     };
 
-    explicit QAsn1Element(quint8 type = 0, const QByteArray &value = QByteArray());
+    explicit QAsn1Element( quint8 type = 0, const QByteArray &value = QByteArray() );
 
-    bool read(QDataStream &data);
-    bool read(const QByteArray &data);
-    void write(QDataStream &data) const;
+    bool read( QDataStream &data );
+    bool read( const QByteArray &data );
+    void write( QDataStream &data ) const;
 
-    static QAsn1Element fromBool(bool val);
-    static QAsn1Element fromInteger(unsigned int val);
-    static QAsn1Element fromVector(const QVector<QAsn1Element> &items);
-    static QAsn1Element fromObjectId(const QByteArray &id);
+    static QAsn1Element fromBool( bool val );
+    static QAsn1Element fromInteger( unsigned int val );
+    static QAsn1Element fromVector( const QVector<QAsn1Element> &items );
+    static QAsn1Element fromObjectId( const QByteArray &id );
 
-    bool toBool(bool *ok = nullptr) const;
+    bool toBool( bool *ok = nullptr ) const;
     QDateTime toDateTime() const;
     QMultiMap<QByteArray, QString> toInfo() const;
-    qint64 toInteger(bool *ok = nullptr) const;
+    qint64 toInteger( bool *ok = nullptr ) const;
     QVector<QAsn1Element> toVector() const;
     QByteArray toObjectId() const;
     QByteArray toObjectName() const;
     QString toString() const;
 
-    quint8 type() const { return mType; }
-    QByteArray value() const { return mValue; }
+    quint8 type() const
+    {
+        return mType;
+    }
+    QByteArray value() const
+    {
+        return mValue;
+    }
 
-    friend inline bool operator==(const QAsn1Element &, const QAsn1Element &);
-    friend inline bool operator!=(const QAsn1Element &, const QAsn1Element &);
+    friend inline bool operator==( const QAsn1Element &, const QAsn1Element & );
+    friend inline bool operator!=( const QAsn1Element &, const QAsn1Element & );
 
- private:
+private:
     quint8 mType;
     QByteArray mValue;
 };
 
-inline bool operator==(const QAsn1Element &e1, const QAsn1Element &e2) {
-   return e1.mType == e2.mType && e1.mValue == e2.mValue;
+inline bool operator==( const QAsn1Element &e1, const QAsn1Element &e2 )
+{
+    return e1.mType == e2.mType && e1.mValue == e2.mValue;
 }
 
-inline bool operator!=(const QAsn1Element &e1, const QAsn1Element &e2) {
-   return e1.mType != e2.mType || e1.mValue != e2.mValue;
+inline bool operator!=( const QAsn1Element &e1, const QAsn1Element &e2 )
+{
+    return e1.mType != e2.mType || e1.mValue != e2.mValue;
 }
 
 #endif

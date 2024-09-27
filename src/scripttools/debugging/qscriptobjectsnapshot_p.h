@@ -32,23 +32,24 @@ QT_BEGIN_NAMESPACE
 
 class QScriptObjectSnapshot
 {
- public:
-   struct Delta {
-      QStringList removedProperties;
-      QScriptValuePropertyList changedProperties;
-      QScriptValuePropertyList addedProperties;
-   };
+public:
+    struct Delta
+    {
+        QStringList removedProperties;
+        QScriptValuePropertyList changedProperties;
+        QScriptValuePropertyList addedProperties;
+    };
 
-   QScriptObjectSnapshot();
-   ~QScriptObjectSnapshot();
+    QScriptObjectSnapshot();
+    ~QScriptObjectSnapshot();
 
-   Delta capture(const QScriptValue &object);
-   QScriptValuePropertyList properties() const;
+    Delta capture( const QScriptValue &object );
+    QScriptValuePropertyList properties() const;
 
-   QScriptValueProperty findProperty(const QString &name) const;
+    QScriptValueProperty findProperty( const QString &name ) const;
 
- private:
-   QScriptValuePropertyList m_properties;
+private:
+    QScriptValuePropertyList m_properties;
 };
 
 QT_END_NAMESPACE

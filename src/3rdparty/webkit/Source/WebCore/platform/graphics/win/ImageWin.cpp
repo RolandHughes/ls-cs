@@ -30,9 +30,10 @@
 #include "SharedBuffer.h"
 
 // This function loads resources from WebKit
-PassRefPtr<WebCore::SharedBuffer> loadResourceIntoBuffer(const char*);
+PassRefPtr<WebCore::SharedBuffer> loadResourceIntoBuffer( const char * );
 
-namespace WebCore {
+namespace WebCore
+{
 
 void BitmapImage::initPlatformData()
 {
@@ -42,17 +43,17 @@ void BitmapImage::invalidatePlatformData()
 {
 }
 
-PassRefPtr<Image> Image::loadPlatformResource(const char *name)
+PassRefPtr<Image> Image::loadPlatformResource( const char *name )
 {
-    RefPtr<SharedBuffer> buffer = loadResourceIntoBuffer(name);
+    RefPtr<SharedBuffer> buffer = loadResourceIntoBuffer( name );
     RefPtr<BitmapImage> img = BitmapImage::create();
-    img->setData(buffer.release(), true);
+    img->setData( buffer.release(), true );
     return img.release();
 }
 
-bool BitmapImage::getHBITMAP(HBITMAP bmp)
+bool BitmapImage::getHBITMAP( HBITMAP bmp )
 {
-    return getHBITMAPOfSize(bmp, 0);
+    return getHBITMAPOfSize( bmp, 0 );
 }
 
 } // namespace WebCore

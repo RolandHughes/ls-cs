@@ -36,35 +36,40 @@
 #include "EventsCollector.h"
 #include "PlatformString.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-InspectorFrontendProxy::InspectorFrontendProxy(EventsCollector* collector)
+InspectorFrontendProxy::InspectorFrontendProxy( EventsCollector *collector )
 {
     m_receiver = 0;
     m_collector = collector;
 }
 
-InspectorFrontendProxy::InspectorFrontendProxy(EventsCollector* collector, InspectorFrontendChannel* nextChannel)
+InspectorFrontendProxy::InspectorFrontendProxy( EventsCollector *collector, InspectorFrontendChannel *nextChannel )
 {
     m_collector = collector;
     m_receiver = nextChannel;
 }
 
-void InspectorFrontendProxy::setInspectorFrontendChannel(InspectorFrontendChannel* receiver)
+void InspectorFrontendProxy::setInspectorFrontendChannel( InspectorFrontendChannel *receiver )
 {
     m_receiver = receiver;
 }
 
-void InspectorFrontendProxy::setEventsCollector(EventsCollector* collector)
+void InspectorFrontendProxy::setEventsCollector( EventsCollector *collector )
 {
     m_collector = collector;
 }
 
-bool InspectorFrontendProxy::sendMessageToFrontend(const String& message)
+bool InspectorFrontendProxy::sendMessageToFrontend( const String &message )
 {
-    m_collector->addEvent(message);
-    if (m_receiver)
-        return m_receiver->sendMessageToFrontend(message);
+    m_collector->addEvent( message );
+
+    if ( m_receiver )
+    {
+        return m_receiver->sendMessageToFrontend( message );
+    }
+
     return false;
 }
 

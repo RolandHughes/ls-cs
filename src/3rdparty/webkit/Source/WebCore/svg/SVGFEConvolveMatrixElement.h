@@ -29,43 +29,45 @@
 #include "SVGAnimatedNumberList.h"
 #include "SVGFilterPrimitiveStandardAttributes.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SVGFEConvolveMatrixElement : public SVGFilterPrimitiveStandardAttributes {
+class SVGFEConvolveMatrixElement : public SVGFilterPrimitiveStandardAttributes
+{
 public:
-    static PassRefPtr<SVGFEConvolveMatrixElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<SVGFEConvolveMatrixElement> create( const QualifiedName &, Document * );
 
-    void setOrder(float orderX, float orderY);
-    void setKernelUnitLength(float kernelUnitLengthX, float kernelUnitLengthY);
+    void setOrder( float orderX, float orderY );
+    void setKernelUnitLength( float kernelUnitLengthX, float kernelUnitLengthY );
 
 private:
-    SVGFEConvolveMatrixElement(const QualifiedName&, Document*);
+    SVGFEConvolveMatrixElement( const QualifiedName &, Document * );
 
-    virtual void parseMappedAttribute(Attribute*);
-    virtual bool setFilterEffectAttribute(FilterEffect*, const QualifiedName&);
-    virtual void svgAttributeChanged(const QualifiedName&);
+    virtual void parseMappedAttribute( Attribute * );
+    virtual bool setFilterEffectAttribute( FilterEffect *, const QualifiedName & );
+    virtual void svgAttributeChanged( const QualifiedName & );
     virtual void fillAttributeToPropertyTypeMap();
-    virtual AttributeToPropertyTypeMap& attributeToPropertyTypeMap();
-    virtual PassRefPtr<FilterEffect> build(SVGFilterBuilder*, Filter*);
+    virtual AttributeToPropertyTypeMap &attributeToPropertyTypeMap();
+    virtual PassRefPtr<FilterEffect> build( SVGFilterBuilder *, Filter * );
 
-    static const AtomicString& orderXIdentifier();
-    static const AtomicString& orderYIdentifier();
-    static const AtomicString& kernelUnitLengthXIdentifier();
-    static const AtomicString& kernelUnitLengthYIdentifier();
+    static const AtomicString &orderXIdentifier();
+    static const AtomicString &orderYIdentifier();
+    static const AtomicString &kernelUnitLengthXIdentifier();
+    static const AtomicString &kernelUnitLengthYIdentifier();
 
     // Animated property declarations
-    DECLARE_ANIMATED_STRING(In1, in1)
-    DECLARE_ANIMATED_INTEGER(OrderX, orderX)
-    DECLARE_ANIMATED_INTEGER(OrderY, orderY)
-    DECLARE_ANIMATED_NUMBER_LIST(KernelMatrix, kernelMatrix)
-    DECLARE_ANIMATED_NUMBER(Divisor, divisor)
-    DECLARE_ANIMATED_NUMBER(Bias, bias)
-    DECLARE_ANIMATED_INTEGER(TargetX, targetX)
-    DECLARE_ANIMATED_INTEGER(TargetY, targetY)
-    DECLARE_ANIMATED_ENUMERATION(EdgeMode, edgeMode)
-    DECLARE_ANIMATED_NUMBER(KernelUnitLengthX, kernelUnitLengthX)
-    DECLARE_ANIMATED_NUMBER(KernelUnitLengthY, kernelUnitLengthY)
-    DECLARE_ANIMATED_BOOLEAN(PreserveAlpha, preserveAlpha)
+    DECLARE_ANIMATED_STRING( In1, in1 )
+    DECLARE_ANIMATED_INTEGER( OrderX, orderX )
+    DECLARE_ANIMATED_INTEGER( OrderY, orderY )
+    DECLARE_ANIMATED_NUMBER_LIST( KernelMatrix, kernelMatrix )
+    DECLARE_ANIMATED_NUMBER( Divisor, divisor )
+    DECLARE_ANIMATED_NUMBER( Bias, bias )
+    DECLARE_ANIMATED_INTEGER( TargetX, targetX )
+    DECLARE_ANIMATED_INTEGER( TargetY, targetY )
+    DECLARE_ANIMATED_ENUMERATION( EdgeMode, edgeMode )
+    DECLARE_ANIMATED_NUMBER( KernelUnitLengthX, kernelUnitLengthX )
+    DECLARE_ANIMATED_NUMBER( KernelUnitLengthY, kernelUnitLengthY )
+    DECLARE_ANIMATED_BOOLEAN( PreserveAlpha, preserveAlpha )
 };
 
 } // namespace WebCore

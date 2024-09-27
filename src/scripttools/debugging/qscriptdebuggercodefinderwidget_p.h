@@ -32,39 +32,39 @@ class QScriptDebuggerCodeFinderWidgetPrivate;
 
 class QScriptDebuggerCodeFinderWidget : public QScriptDebuggerCodeFinderWidgetInterface
 {
-   SCRIPT_T_CS_OBJECT(QScriptDebuggerCodeFinderWidget)
+    SCRIPT_T_CS_OBJECT( QScriptDebuggerCodeFinderWidget )
 
- public:
-   QScriptDebuggerCodeFinderWidget(QWidget *parent = nullptr);
-   ~QScriptDebuggerCodeFinderWidget();
+public:
+    QScriptDebuggerCodeFinderWidget( QWidget *parent = nullptr );
+    ~QScriptDebuggerCodeFinderWidget();
 
-   int findOptions() const;
+    int findOptions() const;
 
-   QString text() const;
-   void setText(const QString &text);
+    QString text() const;
+    void setText( const QString &text );
 
-   void setOK(bool ok);
-   void setWrapped(bool wrapped);
+    void setOK( bool ok );
+    void setWrapped( bool wrapped );
 
- protected:
-   void keyPressEvent(QKeyEvent *e);
+protected:
+    void keyPressEvent( QKeyEvent *e );
 
- private:
-   Q_DECLARE_PRIVATE(QScriptDebuggerCodeFinderWidget)
-   Q_DISABLE_COPY(QScriptDebuggerCodeFinderWidget) 
+private:
+    Q_DECLARE_PRIVATE( QScriptDebuggerCodeFinderWidget )
+    Q_DISABLE_COPY( QScriptDebuggerCodeFinderWidget )
 
-   CS_SLOT_1(Private, void _q_updateButtons())
-   CS_SLOT_2(_q_updateButtons)
- 
-   CS_SLOT_1(Private, void _q_onTextChanged(const QString &un_named_arg1))
-   CS_SLOT_2(_q_onTextChanged)
-  
-   CS_SLOT_1(Private, void _q_next())
-   CS_SLOT_2(_q_next)
+    CS_SLOT_1( Private, void _q_updateButtons() )
+    CS_SLOT_2( _q_updateButtons )
 
-   CS_SLOT_1(Private, void _q_previous())
-   CS_SLOT_2(_q_previous)
-  
+    CS_SLOT_1( Private, void _q_onTextChanged( const QString &un_named_arg1 ) )
+    CS_SLOT_2( _q_onTextChanged )
+
+    CS_SLOT_1( Private, void _q_next() )
+    CS_SLOT_2( _q_next )
+
+    CS_SLOT_1( Private, void _q_previous() )
+    CS_SLOT_2( _q_previous )
+
 };
 
 QT_END_NAMESPACE

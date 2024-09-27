@@ -33,28 +33,29 @@ class QMediaService;
 
 class Q_MULTIMEDIA_EXPORT QMediaServiceProvider : public QObject
 {
-   MULTI_CS_OBJECT(QMediaServiceProvider)
+    MULTI_CS_OBJECT( QMediaServiceProvider )
 
- public:
-   virtual QMediaService *requestService(const QString &type, const QMediaServiceProviderHint &hint = QMediaServiceProviderHint()) = 0;
-   virtual void releaseService(QMediaService *service) = 0;
+public:
+    virtual QMediaService *requestService( const QString &type,
+                                           const QMediaServiceProviderHint &hint = QMediaServiceProviderHint() ) = 0;
+    virtual void releaseService( QMediaService *service ) = 0;
 
-   virtual QMediaServiceProviderHint::Features supportedFeatures(const QMediaService *service) const;
+    virtual QMediaServiceProviderHint::Features supportedFeatures( const QMediaService *service ) const;
 
-   virtual QMultimedia::SupportEstimate hasSupport(const QString &serviceType,
-         const QString &mimeType, const QStringList &codecs, int flags = 0) const;
+    virtual QMultimedia::SupportEstimate hasSupport( const QString &serviceType,
+            const QString &mimeType, const QStringList &codecs, int flags = 0 ) const;
 
-   virtual QStringList supportedMimeTypes(const QString &serviceType, int flags = 0) const;
+    virtual QStringList supportedMimeTypes( const QString &serviceType, int flags = 0 ) const;
 
-   virtual QString defaultDevice(const QString &serviceType) const;
-   virtual QList<QString> devices(const QString &serviceType) const;
-   virtual QString deviceDescription(const QString &serviceType, const QString &device);
+    virtual QString defaultDevice( const QString &serviceType ) const;
+    virtual QList<QString> devices( const QString &serviceType ) const;
+    virtual QString deviceDescription( const QString &serviceType, const QString &device );
 
-   virtual QCamera::Position cameraPosition(const QString &device) const;
-   virtual int cameraOrientation(const QString &device) const;
+    virtual QCamera::Position cameraPosition( const QString &device ) const;
+    virtual int cameraOrientation( const QString &device ) const;
 
-   static QMediaServiceProvider *defaultServiceProvider();
-   static void setDefaultServiceProvider(QMediaServiceProvider *provider);
+    static QMediaServiceProvider *defaultServiceProvider();
+    static void setDefaultServiceProvider( QMediaServiceProvider *provider );
 };
 
 #endif

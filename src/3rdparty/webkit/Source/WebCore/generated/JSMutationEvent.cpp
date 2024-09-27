@@ -33,9 +33,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSMutationEvent);
+ASSERT_CLASS_FITS_IN_CELL( JSMutationEvent );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -46,13 +47,13 @@ ASSERT_CLASS_FITS_IN_CELL(JSMutationEvent);
 
 static const HashTableValue JSMutationEventTableValues[7] =
 {
-    { "relatedNode", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsMutationEventRelatedNode), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "prevValue", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsMutationEventPrevValue), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "newValue", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsMutationEventNewValue), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "attrName", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsMutationEventAttrName), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "attrChange", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsMutationEventAttrChange), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsMutationEventConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "relatedNode", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsMutationEventRelatedNode ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "prevValue", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsMutationEventPrevValue ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "newValue", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsMutationEventNewValue ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "attrName", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsMutationEventAttrName ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "attrChange", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsMutationEventAttrChange ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsMutationEventConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -66,51 +67,58 @@ static JSC_CONST_HASHTABLE HashTable JSMutationEventTable = { 17, 15, JSMutation
 
 static const HashTableValue JSMutationEventConstructorTableValues[4] =
 {
-    { "MODIFICATION", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsMutationEventMODIFICATION), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "ADDITION", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsMutationEventADDITION), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "REMOVAL", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsMutationEventREMOVAL), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "MODIFICATION", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsMutationEventMODIFICATION ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "ADDITION", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsMutationEventADDITION ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "REMOVAL", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsMutationEventREMOVAL ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSMutationEventConstructorTable = { 8, 7, JSMutationEventConstructorTableValues, 0 };
 
-COMPILE_ASSERT(1 == MutationEvent::MODIFICATION, MutationEventEnumMODIFICATIONIsWrongUseDontCheckEnums);
-COMPILE_ASSERT(2 == MutationEvent::ADDITION, MutationEventEnumADDITIONIsWrongUseDontCheckEnums);
-COMPILE_ASSERT(3 == MutationEvent::REMOVAL, MutationEventEnumREMOVALIsWrongUseDontCheckEnums);
+COMPILE_ASSERT( 1 == MutationEvent::MODIFICATION, MutationEventEnumMODIFICATIONIsWrongUseDontCheckEnums );
+COMPILE_ASSERT( 2 == MutationEvent::ADDITION, MutationEventEnumADDITIONIsWrongUseDontCheckEnums );
+COMPILE_ASSERT( 3 == MutationEvent::REMOVAL, MutationEventEnumREMOVALIsWrongUseDontCheckEnums );
 
-class JSMutationEventConstructor : public DOMConstructorObject {
+class JSMutationEventConstructor : public DOMConstructorObject
+{
 public:
-    JSMutationEventConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSMutationEventConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSMutationEventConstructor::s_info = { "MutationEventConstructor", &DOMConstructorObject::s_info, &JSMutationEventConstructorTable, 0 };
 
-JSMutationEventConstructor::JSMutationEventConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSMutationEventConstructor::JSMutationEventConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSMutationEventPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSMutationEventPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSMutationEventConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSMutationEventConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSMutationEventConstructor, JSDOMWrapper>(exec, &JSMutationEventConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSMutationEventConstructor, JSDOMWrapper>( exec, &JSMutationEventConstructorTable, this, propertyName,
+            slot );
 }
 
-bool JSMutationEventConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSMutationEventConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSMutationEventConstructor, JSDOMWrapper>(exec, &JSMutationEventConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSMutationEventConstructor, JSDOMWrapper>( exec, &JSMutationEventConstructorTable, this,
+            propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -122,170 +130,209 @@ bool JSMutationEventConstructor::getOwnPropertyDescriptor(ExecState* exec, const
 
 static const HashTableValue JSMutationEventPrototypeTableValues[5] =
 {
-    { "MODIFICATION", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsMutationEventMODIFICATION), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "ADDITION", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsMutationEventADDITION), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "REMOVAL", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsMutationEventREMOVAL), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "initMutationEvent", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsMutationEventPrototypeFunctionInitMutationEvent), (intptr_t)8 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "MODIFICATION", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsMutationEventMODIFICATION ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "ADDITION", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsMutationEventADDITION ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "REMOVAL", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsMutationEventREMOVAL ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "initMutationEvent", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsMutationEventPrototypeFunctionInitMutationEvent ), ( intptr_t )8 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSMutationEventPrototypeTable = { 8, 7, JSMutationEventPrototypeTableValues, 0 };
 const ClassInfo JSMutationEventPrototype::s_info = { "MutationEventPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSMutationEventPrototypeTable, 0 };
 
-JSObject* JSMutationEventPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSMutationEventPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSMutationEvent>(exec, globalObject);
+    return getDOMPrototype<JSMutationEvent>( exec, globalObject );
 }
 
-bool JSMutationEventPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSMutationEventPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticPropertySlot<JSMutationEventPrototype, JSObject>(exec, &JSMutationEventPrototypeTable, this, propertyName, slot);
+    return getStaticPropertySlot<JSMutationEventPrototype, JSObject>( exec, &JSMutationEventPrototypeTable, this, propertyName,
+            slot );
 }
 
-bool JSMutationEventPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSMutationEventPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticPropertyDescriptor<JSMutationEventPrototype, JSObject>(exec, &JSMutationEventPrototypeTable, this, propertyName, descriptor);
+    return getStaticPropertyDescriptor<JSMutationEventPrototype, JSObject>( exec, &JSMutationEventPrototypeTable, this, propertyName,
+            descriptor );
 }
 
 const ClassInfo JSMutationEvent::s_info = { "MutationEvent", &JSEvent::s_info, &JSMutationEventTable, 0 };
 
-JSMutationEvent::JSMutationEvent(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<MutationEvent> impl)
-    : JSEvent(structure, globalObject, impl)
+JSMutationEvent::JSMutationEvent( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<MutationEvent> impl )
+    : JSEvent( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSMutationEvent::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSMutationEvent::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSMutationEventPrototype(exec->globalData(), globalObject, JSMutationEventPrototype::createStructure(exec->globalData(), JSEventPrototype::self(exec, globalObject)));
+    return new ( exec ) JSMutationEventPrototype( exec->globalData(), globalObject,
+            JSMutationEventPrototype::createStructure( exec->globalData(), JSEventPrototype::self( exec, globalObject ) ) );
 }
 
-bool JSMutationEvent::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSMutationEvent::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSMutationEvent, Base>(exec, &JSMutationEventTable, this, propertyName, slot);
+    return getStaticValueSlot<JSMutationEvent, Base>( exec, &JSMutationEventTable, this, propertyName, slot );
 }
 
-bool JSMutationEvent::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSMutationEvent::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSMutationEvent, Base>(exec, &JSMutationEventTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSMutationEvent, Base>( exec, &JSMutationEventTable, this, propertyName, descriptor );
 }
 
-JSValue jsMutationEventRelatedNode(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsMutationEventRelatedNode( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSMutationEvent* castedThis = static_cast<JSMutationEvent*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    MutationEvent* imp = static_cast<MutationEvent*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->relatedNode()));
+    JSMutationEvent *castedThis = static_cast<JSMutationEvent *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    MutationEvent *imp = static_cast<MutationEvent *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->relatedNode() ) );
     return result;
 }
 
 
-JSValue jsMutationEventPrevValue(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsMutationEventPrevValue( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSMutationEvent* castedThis = static_cast<JSMutationEvent*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    MutationEvent* imp = static_cast<MutationEvent*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->prevValue());
+    JSMutationEvent *castedThis = static_cast<JSMutationEvent *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    MutationEvent *imp = static_cast<MutationEvent *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->prevValue() );
     return result;
 }
 
 
-JSValue jsMutationEventNewValue(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsMutationEventNewValue( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSMutationEvent* castedThis = static_cast<JSMutationEvent*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    MutationEvent* imp = static_cast<MutationEvent*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->newValue());
+    JSMutationEvent *castedThis = static_cast<JSMutationEvent *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    MutationEvent *imp = static_cast<MutationEvent *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->newValue() );
     return result;
 }
 
 
-JSValue jsMutationEventAttrName(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsMutationEventAttrName( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSMutationEvent* castedThis = static_cast<JSMutationEvent*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    MutationEvent* imp = static_cast<MutationEvent*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->attrName());
+    JSMutationEvent *castedThis = static_cast<JSMutationEvent *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    MutationEvent *imp = static_cast<MutationEvent *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->attrName() );
     return result;
 }
 
 
-JSValue jsMutationEventAttrChange(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsMutationEventAttrChange( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSMutationEvent* castedThis = static_cast<JSMutationEvent*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    MutationEvent* imp = static_cast<MutationEvent*>(castedThis->impl());
-    JSValue result = jsNumber(imp->attrChange());
+    JSMutationEvent *castedThis = static_cast<JSMutationEvent *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    MutationEvent *imp = static_cast<MutationEvent *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->attrChange() );
     return result;
 }
 
 
-JSValue jsMutationEventConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsMutationEventConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSMutationEvent* domObject = static_cast<JSMutationEvent*>(asObject(slotBase));
-    return JSMutationEvent::getConstructor(exec, domObject->globalObject());
+    JSMutationEvent *domObject = static_cast<JSMutationEvent *>( asObject( slotBase ) );
+    return JSMutationEvent::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSMutationEvent::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSMutationEvent::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSMutationEventConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSMutationEventConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsMutationEventPrototypeFunctionInitMutationEvent(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsMutationEventPrototypeFunctionInitMutationEvent( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSMutationEvent::s_info))
-        return throwVMTypeError(exec);
-    JSMutationEvent* castedThis = static_cast<JSMutationEvent*>(asObject(thisValue));
-    MutationEvent* imp = static_cast<MutationEvent*>(castedThis->impl());
-    const String& type(ustringToString(exec->argument(0).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    bool canBubble(exec->argument(1).toBoolean(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    bool cancelable(exec->argument(2).toBoolean(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    Node* relatedNode(toNode(exec->argument(3)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    const String& prevValue(ustringToString(exec->argument(4).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    const String& newValue(ustringToString(exec->argument(5).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    const String& attrName(ustringToString(exec->argument(6).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    unsigned short attrChange(exec->argument(7).toUInt32(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
 
-    imp->initMutationEvent(type, canBubble, cancelable, relatedNode, prevValue, newValue, attrName, attrChange);
-    return JSValue::encode(jsUndefined());
+    if ( !thisValue.inherits( &JSMutationEvent::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSMutationEvent *castedThis = static_cast<JSMutationEvent *>( asObject( thisValue ) );
+    MutationEvent *imp = static_cast<MutationEvent *>( castedThis->impl() );
+    const String &type( ustringToString( exec->argument( 0 ).toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    bool canBubble( exec->argument( 1 ).toBoolean( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    bool cancelable( exec->argument( 2 ).toBoolean( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    Node *relatedNode( toNode( exec->argument( 3 ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    const String &prevValue( ustringToString( exec->argument( 4 ).toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    const String &newValue( ustringToString( exec->argument( 5 ).toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    const String &attrName( ustringToString( exec->argument( 6 ).toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    unsigned short attrChange( exec->argument( 7 ).toUInt32( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->initMutationEvent( type, canBubble, cancelable, relatedNode, prevValue, newValue, attrName, attrChange );
+    return JSValue::encode( jsUndefined() );
 }
 
 // Constant getters
 
-JSValue jsMutationEventMODIFICATION(ExecState* exec, JSValue, const Identifier&)
+JSValue jsMutationEventMODIFICATION( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(1));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 1 ) );
 }
 
-JSValue jsMutationEventADDITION(ExecState* exec, JSValue, const Identifier&)
+JSValue jsMutationEventADDITION( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(2));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 2 ) );
 }
 
-JSValue jsMutationEventREMOVAL(ExecState* exec, JSValue, const Identifier&)
+JSValue jsMutationEventREMOVAL( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(3));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 3 ) );
 }
 
 

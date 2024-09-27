@@ -25,8 +25,8 @@
 
 #include <qmediacontrol_p.h>
 
-QCameraViewfinderSettingsControl::QCameraViewfinderSettingsControl(QObject *parent)
-   : QMediaControl(*new QMediaControlPrivate, parent)
+QCameraViewfinderSettingsControl::QCameraViewfinderSettingsControl( QObject *parent )
+    : QMediaControl( *new QMediaControlPrivate, parent )
 {
 }
 
@@ -34,8 +34,8 @@ QCameraViewfinderSettingsControl::~QCameraViewfinderSettingsControl()
 {
 }
 
-QCameraViewfinderSettingsControl2::QCameraViewfinderSettingsControl2(QObject *parent)
-   : QMediaControl(*new QMediaControlPrivate, parent)
+QCameraViewfinderSettingsControl2::QCameraViewfinderSettingsControl2( QObject *parent )
+    : QMediaControl( *new QMediaControlPrivate, parent )
 {
 }
 

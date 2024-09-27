@@ -26,8 +26,8 @@
 
 class QCocoaMimeTypes
 {
- public:
-   static void initializeMimeTypes();
+public:
+    static void initializeMimeTypes();
 };
 
 #endif

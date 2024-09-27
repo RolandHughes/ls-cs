@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef DFGByteCodeParser_h
@@ -30,18 +30,21 @@
 
 #include <dfg/DFGGraph.h>
 
-namespace JSC {
+namespace JSC
+{
 
 class CodeBlock;
 class JSGlobalData;
 
-namespace DFG {
+namespace DFG
+{
 
 // Populate the Graph with a basic block of code from the CodeBlock,
 // starting at the provided bytecode index.
-bool parse(Graph&, JSGlobalData*, CodeBlock*);
+bool parse( Graph &, JSGlobalData *, CodeBlock * );
 
-} } // namespace JSC::DFG
+}
+} // namespace JSC::DFG
 
 #endif
 #endif

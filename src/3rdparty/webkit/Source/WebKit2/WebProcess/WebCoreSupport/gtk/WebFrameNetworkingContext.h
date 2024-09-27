@@ -29,16 +29,17 @@
 
 #include <WebCore/FrameNetworkingContext.h>
 
-class WebFrameNetworkingContext : public WebCore::FrameNetworkingContext {
+class WebFrameNetworkingContext : public WebCore::FrameNetworkingContext
+{
 public:
-    static PassRefPtr<WebFrameNetworkingContext> create(WebCore::Frame*)
+    static PassRefPtr<WebFrameNetworkingContext> create( WebCore::Frame * )
     {
         return 0;
     }
 
 private:
-    WebFrameNetworkingContext(WebCore::Frame* frame)
-        : WebCore::FrameNetworkingContext(frame)
+    WebFrameNetworkingContext( WebCore::Frame *frame )
+        : WebCore::FrameNetworkingContext( frame )
     {
     }
 

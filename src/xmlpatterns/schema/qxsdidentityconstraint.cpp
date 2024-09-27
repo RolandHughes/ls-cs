@@ -25,47 +25,47 @@
 
 using namespace QPatternist;
 
-void XsdIdentityConstraint::setCategory(Category category)
+void XsdIdentityConstraint::setCategory( Category category )
 {
-   m_category = category;
+    m_category = category;
 }
 
 XsdIdentityConstraint::Category XsdIdentityConstraint::category() const
 {
-   return m_category;
+    return m_category;
 }
 
-void XsdIdentityConstraint::setSelector(const XsdXPathExpression::Ptr &selector)
+void XsdIdentityConstraint::setSelector( const XsdXPathExpression::Ptr &selector )
 {
-   m_selector = selector;
+    m_selector = selector;
 }
 
 XsdXPathExpression::Ptr XsdIdentityConstraint::selector() const
 {
-   return m_selector;
+    return m_selector;
 }
 
-void XsdIdentityConstraint::setFields(const XsdXPathExpression::List &fields)
+void XsdIdentityConstraint::setFields( const XsdXPathExpression::List &fields )
 {
-   m_fields = fields;
+    m_fields = fields;
 }
 
-void XsdIdentityConstraint::addField(const XsdXPathExpression::Ptr &field)
+void XsdIdentityConstraint::addField( const XsdXPathExpression::Ptr &field )
 {
-   m_fields.append(field);
+    m_fields.append( field );
 }
 
 XsdXPathExpression::List XsdIdentityConstraint::fields() const
 {
-   return m_fields;
+    return m_fields;
 }
 
-void XsdIdentityConstraint::setReferencedKey(const XsdIdentityConstraint::Ptr &referencedKey)
+void XsdIdentityConstraint::setReferencedKey( const XsdIdentityConstraint::Ptr &referencedKey )
 {
-   m_referencedKey = referencedKey;
+    m_referencedKey = referencedKey;
 }
 
 XsdIdentityConstraint::Ptr XsdIdentityConstraint::referencedKey() const
 {
-   return m_referencedKey;
+    return m_referencedKey;
 }

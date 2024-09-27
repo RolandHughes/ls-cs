@@ -21,7 +21,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef BatchedTransitionOptimizer_h
@@ -30,25 +30,29 @@
 #include <wtf/Noncopyable.h>
 #include "JSObject.h"
 
-namespace JSC {
+namespace JSC
+{
 
-    class BatchedTransitionOptimizer : public Noncopyable {
-    public:
-        BatchedTransitionOptimizer(JSObject* object)
-            : m_object(object)
+class BatchedTransitionOptimizer : public Noncopyable
+{
+public:
+    BatchedTransitionOptimizer( JSObject *object )
+        : m_object( object )
+    {
+        if ( !m_object->structure()->isDictionary() )
         {
-            if (!m_object->structure()->isDictionary())
-                m_object->setStructure(Structure::toCacheableDictionaryTransition(m_object->structure()));
+            m_object->setStructure( Structure::toCacheableDictionaryTransition( m_object->structure() ) );
         }
+    }
 
-        ~BatchedTransitionOptimizer()
-        {
-            m_object->flattenDictionaryObject();
-        }
+    ~BatchedTransitionOptimizer()
+    {
+        m_object->flattenDictionaryObject();
+    }
 
-    private:
-        JSObject* m_object;
-    };
+private:
+    JSObject *m_object;
+};
 
 } // namespace JSC
 

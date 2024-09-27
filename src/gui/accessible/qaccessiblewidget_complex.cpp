@@ -46,199 +46,250 @@
 
 #ifndef QT_NO_ACCESSIBILITY
 
-QString qt_accStripAmp(const QString &text);
-QString qt_accHotKey(const QString &text);
+QString qt_accStripAmp( const QString &text );
+QString qt_accHotKey( const QString &text );
 
 #ifndef QT_NO_TABBAR
 
 class QAccessibleTabButton: public QAccessibleInterface, public QAccessibleActionInterface
 {
- public:
-   QAccessibleTabButton(QTabBar *parent, int index)
-      : m_parent(parent), m_index(index)
-   {}
+public:
+    QAccessibleTabButton( QTabBar *parent, int index )
+        : m_parent( parent ), m_index( index )
+    {}
 
-   void *interface_cast(QAccessible::InterfaceType t) override {
-      if (t == QAccessible::ActionInterface) {
-         return static_cast<QAccessibleActionInterface *>(this);
-      }
-      return nullptr;
-   }
+    void *interface_cast( QAccessible::InterfaceType t ) override
+    {
+        if ( t == QAccessible::ActionInterface )
+        {
+            return static_cast<QAccessibleActionInterface *>( this );
+        }
 
-   QObject *object() const override {
-      return nullptr;
-   }
-   QAccessible::Role role() const override {
-      return QAccessible::PageTab;
-   }
-   QAccessible::State state() const override {
-      if (!isValid()) {
-         QAccessible::State s;
-         s.invalid = true;
-         return s;
-      }
-      return parent()->state();
-   }
+        return nullptr;
+    }
 
-   QRect rect() const override {
-      if (!isValid()) {
-         return QRect();
-      }
+    QObject *object() const override
+    {
+        return nullptr;
+    }
+    QAccessible::Role role() const override
+    {
+        return QAccessible::PageTab;
+    }
+    QAccessible::State state() const override
+    {
+        if ( !isValid() )
+        {
+            QAccessible::State s;
+            s.invalid = true;
+            return s;
+        }
 
-      QPoint tp = m_parent->mapToGlobal(QPoint(0, 0));
-      QRect rec = m_parent->tabRect(m_index);
-      rec = QRect(tp.x() + rec.x(), tp.y() + rec.y(), rec.width(), rec.height());
-      return rec;
-   }
+        return parent()->state();
+    }
 
-   bool isValid() const override {
-      return m_parent.data() && m_parent->count() > m_index;
-   }
+    QRect rect() const override
+    {
+        if ( !isValid() )
+        {
+            return QRect();
+        }
 
-   QAccessibleInterface *childAt(int, int) const override {
-      return nullptr;
-   }
+        QPoint tp = m_parent->mapToGlobal( QPoint( 0, 0 ) );
+        QRect rec = m_parent->tabRect( m_index );
+        rec = QRect( tp.x() + rec.x(), tp.y() + rec.y(), rec.width(), rec.height() );
+        return rec;
+    }
 
-   int childCount() const override {
-      return 0;
-   }
+    bool isValid() const override
+    {
+        return m_parent.data() && m_parent->count() > m_index;
+    }
 
-   int indexOfChild(const QAccessibleInterface *) const override  {
-      return -1;
-   }
+    QAccessibleInterface *childAt( int, int ) const override
+    {
+        return nullptr;
+    }
 
-   QString text(QAccessible::Text t) const override {
-      if (!isValid()) {
-         return QString();
-      }
-      switch (t) {
-         case QAccessible::Name:
-            return qt_accStripAmp(m_parent->tabText(m_index));
-         case QAccessible::Accelerator:
-            return qt_accHotKey(m_parent->tabText(m_index));
-         case QAccessible::Description:
-            return m_parent->tabToolTip(m_index);
-         case QAccessible::Help:
-            return m_parent->tabWhatsThis(m_index);
-         default:
-            break;
-      }
-      return QString();
-   }
+    int childCount() const override
+    {
+        return 0;
+    }
 
-   void setText(QAccessible::Text, const QString &) override {}
+    int indexOfChild( const QAccessibleInterface * ) const override
+    {
+        return -1;
+    }
 
-   QAccessibleInterface *parent() const override {
-      return QAccessible::queryAccessibleInterface(m_parent.data());
-   }
-   QAccessibleInterface *child(int) const override {
-      return nullptr;
-   }
+    QString text( QAccessible::Text t ) const override
+    {
+        if ( !isValid() )
+        {
+            return QString();
+        }
 
-   // action interface
-   QStringList actionNames() const override {
-      return QStringList(pressAction());
-   }
+        switch ( t )
+        {
+            case QAccessible::Name:
+                return qt_accStripAmp( m_parent->tabText( m_index ) );
 
-   void doAction(const QString &actionName) override {
-      if (isValid() && actionName == pressAction()) {
-         m_parent->setCurrentIndex(m_index);
-      }
-   }
+            case QAccessible::Accelerator:
+                return qt_accHotKey( m_parent->tabText( m_index ) );
 
-   QStringList keyBindingsForAction(const QString &) const override {
-      return QStringList();
-   }
+            case QAccessible::Description:
+                return m_parent->tabToolTip( m_index );
 
-   int index() const {
-      return m_index;
-   }
+            case QAccessible::Help:
+                return m_parent->tabWhatsThis( m_index );
 
- private:
-   QPointer<QTabBar> m_parent;
-   int m_index;
+            default:
+                break;
+        }
+
+        return QString();
+    }
+
+    void setText( QAccessible::Text, const QString & ) override {}
+
+    QAccessibleInterface *parent() const override
+    {
+        return QAccessible::queryAccessibleInterface( m_parent.data() );
+    }
+    QAccessibleInterface *child( int ) const override
+    {
+        return nullptr;
+    }
+
+    // action interface
+    QStringList actionNames() const override
+    {
+        return QStringList( pressAction() );
+    }
+
+    void doAction( const QString &actionName ) override
+    {
+        if ( isValid() && actionName == pressAction() )
+        {
+            m_parent->setCurrentIndex( m_index );
+        }
+    }
+
+    QStringList keyBindingsForAction( const QString & ) const override
+    {
+        return QStringList();
+    }
+
+    int index() const
+    {
+        return m_index;
+    }
+
+private:
+    QPointer<QTabBar> m_parent;
+    int m_index;
 
 };
 
 /*!
   Constructs a QAccessibleTabBar object for \a w.
 */
-QAccessibleTabBar::QAccessibleTabBar(QWidget *w)
-   : QAccessibleWidget(w, QAccessible::PageTabList)
+QAccessibleTabBar::QAccessibleTabBar( QWidget *w )
+    : QAccessibleWidget( w, QAccessible::PageTabList )
 {
-   Q_ASSERT(tabBar());
+    Q_ASSERT( tabBar() );
 }
 
 QAccessibleTabBar::~QAccessibleTabBar()
 {
-   for (QAccessible::Id id : m_childInterfaces) {
-      QAccessible::deleteAccessibleInterface(id);
-   }
+    for ( QAccessible::Id id : m_childInterfaces )
+    {
+        QAccessible::deleteAccessibleInterface( id );
+    }
 }
 
 /*! Returns the QTabBar. */
 QTabBar *QAccessibleTabBar::tabBar() const
 {
-   return qobject_cast<QTabBar *>(object());
+    return qobject_cast<QTabBar *>( object() );
 }
 
-QAccessibleInterface *QAccessibleTabBar::child(int index) const
+QAccessibleInterface *QAccessibleTabBar::child( int index ) const
 {
-   if (QAccessible::Id id = m_childInterfaces.value(index)) {
-      return QAccessible::accessibleInterface(id);
-   }
+    if ( QAccessible::Id id = m_childInterfaces.value( index ) )
+    {
+        return QAccessible::accessibleInterface( id );
+    }
 
-   // first the tabs, then 2 buttons
-   if (index < tabBar()->count()) {
-      QAccessibleTabButton *button = new QAccessibleTabButton(tabBar(), index);
-      QAccessible::registerAccessibleInterface(button);
-      m_childInterfaces.insert(index, QAccessible::uniqueId(button));
-      return button;
-   } else if (index >= tabBar()->count()) {
-      // left button
-      if (index - tabBar()->count() == 0) {
-         return QAccessible::queryAccessibleInterface(tabBar()->d_func()->leftB);
-      }
-      // right button
-      if (index - tabBar()->count() == 1) {
-         return QAccessible::queryAccessibleInterface(tabBar()->d_func()->rightB);
-      }
-   }
-   return nullptr;
+    // first the tabs, then 2 buttons
+    if ( index < tabBar()->count() )
+    {
+        QAccessibleTabButton *button = new QAccessibleTabButton( tabBar(), index );
+        QAccessible::registerAccessibleInterface( button );
+        m_childInterfaces.insert( index, QAccessible::uniqueId( button ) );
+        return button;
+    }
+    else if ( index >= tabBar()->count() )
+    {
+        // left button
+        if ( index - tabBar()->count() == 0 )
+        {
+            return QAccessible::queryAccessibleInterface( tabBar()->d_func()->leftB );
+        }
+
+        // right button
+        if ( index - tabBar()->count() == 1 )
+        {
+            return QAccessible::queryAccessibleInterface( tabBar()->d_func()->rightB );
+        }
+    }
+
+    return nullptr;
 }
 
-int QAccessibleTabBar::indexOfChild(const QAccessibleInterface *child) const
+int QAccessibleTabBar::indexOfChild( const QAccessibleInterface *child ) const
 {
-   if (child->object() && child->object() == tabBar()->d_func()->leftB) {
-      return tabBar()->count();
-   }
-   if (child->object() && child->object() == tabBar()->d_func()->rightB) {
-      return tabBar()->count() + 1;
-   }
-   if (child->role() == QAccessible::PageTab) {
-      QAccessibleInterface *parent = child->parent();
-      if (parent == this) {
-         const QAccessibleTabButton *tabButton = static_cast<const QAccessibleTabButton *>(child);
-         return tabButton->index();
-      }
-   }
-   return -1;
+    if ( child->object() && child->object() == tabBar()->d_func()->leftB )
+    {
+        return tabBar()->count();
+    }
+
+    if ( child->object() && child->object() == tabBar()->d_func()->rightB )
+    {
+        return tabBar()->count() + 1;
+    }
+
+    if ( child->role() == QAccessible::PageTab )
+    {
+        QAccessibleInterface *parent = child->parent();
+
+        if ( parent == this )
+        {
+            const QAccessibleTabButton *tabButton = static_cast<const QAccessibleTabButton *>( child );
+            return tabButton->index();
+        }
+    }
+
+    return -1;
 }
 
 int QAccessibleTabBar::childCount() const
 {
-   // tabs + scroll buttons
-   return tabBar()->count() + 2;
+    // tabs + scroll buttons
+    return tabBar()->count() + 2;
 }
 
-QString QAccessibleTabBar::text(QAccessible::Text t) const
+QString QAccessibleTabBar::text( QAccessible::Text t ) const
 {
-   if (t == QAccessible::Name) {
-      return qt_accStripAmp(tabBar()->tabText(tabBar()->currentIndex()));
-   } else if (t == QAccessible::Accelerator) {
-      return qt_accHotKey(tabBar()->tabText(tabBar()->currentIndex()));
-   }
-   return QString();
+    if ( t == QAccessible::Name )
+    {
+        return qt_accStripAmp( tabBar()->tabText( tabBar()->currentIndex() ) );
+    }
+    else if ( t == QAccessible::Accelerator )
+    {
+        return qt_accHotKey( tabBar()->tabText( tabBar()->currentIndex() ) );
+    }
+
+    return QString();
 }
 
 #endif // QT_NO_TABBAR
@@ -255,10 +306,10 @@ QString QAccessibleTabBar::text(QAccessible::Text t) const
 /*!
   Constructs a QAccessibleComboBox object for \a w.
 */
-QAccessibleComboBox::QAccessibleComboBox(QWidget *w)
-   : QAccessibleWidget(w, QAccessible::ComboBox)
+QAccessibleComboBox::QAccessibleComboBox( QWidget *w )
+    : QAccessibleWidget( w, QAccessible::ComboBox )
 {
-   Q_ASSERT(comboBox());
+    Q_ASSERT( comboBox() );
 }
 
 /*!
@@ -266,235 +317,282 @@ QAccessibleComboBox::QAccessibleComboBox(QWidget *w)
 */
 QComboBox *QAccessibleComboBox::comboBox() const
 {
-   return qobject_cast<QComboBox *>(object());
+    return qobject_cast<QComboBox *>( object() );
 }
 
-QAccessibleInterface *QAccessibleComboBox::child(int index) const
+QAccessibleInterface *QAccessibleComboBox::child( int index ) const
 {
-   if (index == 0) {
-      QAbstractItemView *view = comboBox()->view();
-      //QWidget *parent = view ? view->parentWidget() : 0;
-      return QAccessible::queryAccessibleInterface(view);
-   } else if (index == 1 && comboBox()->isEditable()) {
-      return QAccessible::queryAccessibleInterface(comboBox()->lineEdit());
-   }
-   return nullptr;
+    if ( index == 0 )
+    {
+        QAbstractItemView *view = comboBox()->view();
+        //QWidget *parent = view ? view->parentWidget() : 0;
+        return QAccessible::queryAccessibleInterface( view );
+    }
+    else if ( index == 1 && comboBox()->isEditable() )
+    {
+        return QAccessible::queryAccessibleInterface( comboBox()->lineEdit() );
+    }
+
+    return nullptr;
 }
 
 int QAccessibleComboBox::childCount() const
 {
-   // list and text edit
-   return comboBox()->isEditable() ? 2 : 1;
+    // list and text edit
+    return comboBox()->isEditable() ? 2 : 1;
 }
 
-QAccessibleInterface *QAccessibleComboBox::childAt(int x, int y) const
+QAccessibleInterface *QAccessibleComboBox::childAt( int x, int y ) const
 {
-   if (comboBox()->isEditable() && comboBox()->lineEdit()->rect().contains(x, y)) {
-      return child(1);
-   }
-   return nullptr;
+    if ( comboBox()->isEditable() && comboBox()->lineEdit()->rect().contains( x, y ) )
+    {
+        return child( 1 );
+    }
+
+    return nullptr;
 }
 
-int QAccessibleComboBox::indexOfChild(const QAccessibleInterface *child) const
+int QAccessibleComboBox::indexOfChild( const QAccessibleInterface *child ) const
 {
-   if (comboBox()->view() == child->object()) {
-      return 0;
-   }
-   if (comboBox()->isEditable() && comboBox()->lineEdit() == child->object()) {
-      return 1;
-   }
-   return -1;
+    if ( comboBox()->view() == child->object() )
+    {
+        return 0;
+    }
+
+    if ( comboBox()->isEditable() && comboBox()->lineEdit() == child->object() )
+    {
+        return 1;
+    }
+
+    return -1;
 }
 
-QString QAccessibleComboBox::text(QAccessible::Text t) const
+QString QAccessibleComboBox::text( QAccessible::Text t ) const
 {
-   QString str;
+    QString str;
 
-   switch (t) {
-      case QAccessible::Name:
+    switch ( t )
+    {
+        case QAccessible::Name:
 #ifdef Q_OS_UNIX
-         // on Linux we use relations, name is the text
-        [[fallthrough]];
+            // on Linux we use relations, name is the text
+            [[fallthrough]];
 #else
-         str = QAccessibleWidget::text(t);
-         break;
+            str = QAccessibleWidget::text( t );
+            break;
 #endif
 
-      case QAccessible::Value:
-         if (comboBox()->isEditable()) {
-            str = comboBox()->lineEdit()->text();
-         } else {
-            str = comboBox()->currentText();
-         }
-         break;
+        case QAccessible::Value:
+            if ( comboBox()->isEditable() )
+            {
+                str = comboBox()->lineEdit()->text();
+            }
+            else
+            {
+                str = comboBox()->currentText();
+            }
+
+            break;
 
 #ifndef QT_NO_SHORTCUT
-      case QAccessible::Accelerator:
-         str = QKeySequence(Qt::Key_Down).toString(QKeySequence::NativeText);
-         break;
+
+        case QAccessible::Accelerator:
+            str = QKeySequence( Qt::Key_Down ).toString( QKeySequence::NativeText );
+            break;
 #endif
 
-      default:
-         break;
-   }
+        default:
+            break;
+    }
 
-   if (str.isEmpty()) {
-      str = QAccessibleWidget::text(t);
-   }
+    if ( str.isEmpty() )
+    {
+        str = QAccessibleWidget::text( t );
+    }
 
-   return str;
+    return str;
 }
 
 QStringList QAccessibleComboBox::actionNames() const
 {
-   return QStringList() << showMenuAction() << pressAction();
+    return QStringList() << showMenuAction() << pressAction();
 }
 
-QString QAccessibleComboBox::localizedActionDescription(const QString &actionName) const
+QString QAccessibleComboBox::localizedActionDescription( const QString &actionName ) const
 {
-   if (actionName == showMenuAction() || actionName == pressAction()) {
-      return QComboBox::tr("Open the combo box selection popup");
-   }
+    if ( actionName == showMenuAction() || actionName == pressAction() )
+    {
+        return QComboBox::tr( "Open the combo box selection popup" );
+    }
 
-   return QString();
+    return QString();
 }
 
-void QAccessibleComboBox::doAction(const QString &actionName)
+void QAccessibleComboBox::doAction( const QString &actionName )
 {
-   if (actionName == showMenuAction() || actionName == pressAction()) {
-      if (comboBox()->view()->isVisible()) {
-         comboBox()->hidePopup();
-      } else {
-         comboBox()->showPopup();
-      }
-   }
+    if ( actionName == showMenuAction() || actionName == pressAction() )
+    {
+        if ( comboBox()->view()->isVisible() )
+        {
+            comboBox()->hidePopup();
+        }
+        else
+        {
+            comboBox()->showPopup();
+        }
+    }
 }
 
-QStringList QAccessibleComboBox::keyBindingsForAction(const QString &) const
+QStringList QAccessibleComboBox::keyBindingsForAction( const QString & ) const
 {
-   return QStringList();
+    return QStringList();
 }
 
 #endif // QT_NO_COMBOBOX
 
 #ifndef QT_NO_SCROLLAREA
 
-QAccessibleAbstractScrollArea::QAccessibleAbstractScrollArea(QWidget *widget)
-   : QAccessibleWidget(widget, QAccessible::Client)
+QAccessibleAbstractScrollArea::QAccessibleAbstractScrollArea( QWidget *widget )
+    : QAccessibleWidget( widget, QAccessible::Client )
 {
-   Q_ASSERT(qobject_cast<QAbstractScrollArea *>(widget));
+    Q_ASSERT( qobject_cast<QAbstractScrollArea *>( widget ) );
 }
 
-QAccessibleInterface *QAccessibleAbstractScrollArea::child(int index) const
+QAccessibleInterface *QAccessibleAbstractScrollArea::child( int index ) const
 {
-   return QAccessible::queryAccessibleInterface(accessibleChildren().at(index));
+    return QAccessible::queryAccessibleInterface( accessibleChildren().at( index ) );
 }
 
 int QAccessibleAbstractScrollArea::childCount() const
 {
-   return accessibleChildren().count();
+    return accessibleChildren().count();
 }
 
-int QAccessibleAbstractScrollArea::indexOfChild(const QAccessibleInterface *child) const
+int QAccessibleAbstractScrollArea::indexOfChild( const QAccessibleInterface *child ) const
 {
-   if (!child || !child->object()) {
-      return -1;
-   }
-   return accessibleChildren().indexOf(qobject_cast<QWidget *>(child->object()));
+    if ( !child || !child->object() )
+    {
+        return -1;
+    }
+
+    return accessibleChildren().indexOf( qobject_cast<QWidget *>( child->object() ) );
 }
 
 bool QAccessibleAbstractScrollArea::isValid() const
 {
-   return (QAccessibleWidget::isValid() && abstractScrollArea() && abstractScrollArea()->viewport());
+    return ( QAccessibleWidget::isValid() && abstractScrollArea() && abstractScrollArea()->viewport() );
 }
 
-QAccessibleInterface *QAccessibleAbstractScrollArea::childAt(int x, int y) const
+QAccessibleInterface *QAccessibleAbstractScrollArea::childAt( int x, int y ) const
 {
-   if (!abstractScrollArea()->isVisible()) {
-      return nullptr;
-   }
+    if ( !abstractScrollArea()->isVisible() )
+    {
+        return nullptr;
+    }
 
-   for (int i = 0; i < childCount(); ++i) {
-      QPoint wpos = accessibleChildren().at(i)->mapToGlobal(QPoint(0, 0));
-      QRect rect = QRect(wpos, accessibleChildren().at(i)->size());
-      if (rect.contains(x, y)) {
-         return child(i);
-      }
-   }
-   return nullptr;
+    for ( int i = 0; i < childCount(); ++i )
+    {
+        QPoint wpos = accessibleChildren().at( i )->mapToGlobal( QPoint( 0, 0 ) );
+        QRect rect = QRect( wpos, accessibleChildren().at( i )->size() );
+
+        if ( rect.contains( x, y ) )
+        {
+            return child( i );
+        }
+    }
+
+    return nullptr;
 }
 
 QAbstractScrollArea *QAccessibleAbstractScrollArea::abstractScrollArea() const
 {
-   return static_cast<QAbstractScrollArea *>(object());
+    return static_cast<QAbstractScrollArea *>( object() );
 }
 
 QWidgetList QAccessibleAbstractScrollArea::accessibleChildren() const
 {
-   QWidgetList children;
+    QWidgetList children;
 
-   // Viewport.
-   QWidget *viewport = abstractScrollArea()->viewport();
-   if (viewport) {
-      children.append(viewport);
-   }
+    // Viewport.
+    QWidget *viewport = abstractScrollArea()->viewport();
 
-   // Horizontal scrollBar container.
-   QScrollBar *horizontalScrollBar = abstractScrollArea()->horizontalScrollBar();
-   if (horizontalScrollBar && horizontalScrollBar->isVisible()) {
-      children.append(horizontalScrollBar->parentWidget());
-   }
+    if ( viewport )
+    {
+        children.append( viewport );
+    }
 
-   // Vertical scrollBar container.
-   QScrollBar *verticalScrollBar = abstractScrollArea()->verticalScrollBar();
-   if (verticalScrollBar && verticalScrollBar->isVisible()) {
-      children.append(verticalScrollBar->parentWidget());
-   }
+    // Horizontal scrollBar container.
+    QScrollBar *horizontalScrollBar = abstractScrollArea()->horizontalScrollBar();
 
-   // CornerWidget.
-   QWidget *cornerWidget = abstractScrollArea()->cornerWidget();
-   if (cornerWidget && cornerWidget->isVisible()) {
-      children.append(cornerWidget);
-   }
+    if ( horizontalScrollBar && horizontalScrollBar->isVisible() )
+    {
+        children.append( horizontalScrollBar->parentWidget() );
+    }
 
-   return children;
+    // Vertical scrollBar container.
+    QScrollBar *verticalScrollBar = abstractScrollArea()->verticalScrollBar();
+
+    if ( verticalScrollBar && verticalScrollBar->isVisible() )
+    {
+        children.append( verticalScrollBar->parentWidget() );
+    }
+
+    // CornerWidget.
+    QWidget *cornerWidget = abstractScrollArea()->cornerWidget();
+
+    if ( cornerWidget && cornerWidget->isVisible() )
+    {
+        children.append( cornerWidget );
+    }
+
+    return children;
 }
 
-QAccessibleAbstractScrollArea::AbstractScrollAreaElement QAccessibleAbstractScrollArea::elementType(QWidget *widget) const
+QAccessibleAbstractScrollArea::AbstractScrollAreaElement QAccessibleAbstractScrollArea::elementType( QWidget *widget ) const
 {
-   if (!widget) {
-      return Undefined;
-   }
+    if ( !widget )
+    {
+        return Undefined;
+    }
 
-   if (widget == abstractScrollArea()) {
-      return Self;
-   }
-   if (widget == abstractScrollArea()->viewport()) {
-      return Viewport;
-   }
-   if (widget->objectName() == QLatin1String("qt_scrollarea_hcontainer")) {
-      return HorizontalContainer;
-   }
-   if (widget->objectName() == QLatin1String("qt_scrollarea_vcontainer")) {
-      return VerticalContainer;
-   }
-   if (widget == abstractScrollArea()->cornerWidget()) {
-      return CornerWidget;
-   }
+    if ( widget == abstractScrollArea() )
+    {
+        return Self;
+    }
 
-   return Undefined;
+    if ( widget == abstractScrollArea()->viewport() )
+    {
+        return Viewport;
+    }
+
+    if ( widget->objectName() == QLatin1String( "qt_scrollarea_hcontainer" ) )
+    {
+        return HorizontalContainer;
+    }
+
+    if ( widget->objectName() == QLatin1String( "qt_scrollarea_vcontainer" ) )
+    {
+        return VerticalContainer;
+    }
+
+    if ( widget == abstractScrollArea()->cornerWidget() )
+    {
+        return CornerWidget;
+    }
+
+    return Undefined;
 }
 
 bool QAccessibleAbstractScrollArea::isLeftToRight() const
 {
-   return abstractScrollArea()->isLeftToRight();
+    return abstractScrollArea()->isLeftToRight();
 }
 
 // ======================= QAccessibleScrollArea ===========================
-QAccessibleScrollArea::QAccessibleScrollArea(QWidget *widget)
-   : QAccessibleAbstractScrollArea(widget)
+QAccessibleScrollArea::QAccessibleScrollArea( QWidget *widget )
+    : QAccessibleAbstractScrollArea( widget )
 {
-   Q_ASSERT(qobject_cast<QScrollArea *>(widget));
+    Q_ASSERT( qobject_cast<QScrollArea *>( widget ) );
 }
 #endif // QT_NO_SCROLLAREA
 

@@ -34,98 +34,110 @@ class QKeyEvent;
 
 class Q_GUI_EXPORT QWidgetResizeHandler : public QObject
 {
-   GUI_CS_OBJECT(QWidgetResizeHandler)
+    GUI_CS_OBJECT( QWidgetResizeHandler )
 
- public:
-   enum Action {
-      Move     = 0x01,
-      Resize   = 0x02,
-      Any      = Move | Resize
-   };
+public:
+    enum Action
+    {
+        Move     = 0x01,
+        Resize   = 0x02,
+        Any      = Move | Resize
+    };
 
-   explicit QWidgetResizeHandler(QWidget *parent, QWidget *cw = nullptr);
+    explicit QWidgetResizeHandler( QWidget *parent, QWidget *cw = nullptr );
 
-   QWidgetResizeHandler(const QWidgetResizeHandler &) = delete;
-   QWidgetResizeHandler &operator=(const QWidgetResizeHandler &) = delete;
+    QWidgetResizeHandler( const QWidgetResizeHandler & ) = delete;
+    QWidgetResizeHandler &operator=( const QWidgetResizeHandler & ) = delete;
 
-   void setActive(bool b) {
-      setActive(Any, b);
-   }
+    void setActive( bool b )
+    {
+        setActive( Any, b );
+    }
 
-   void setActive(Action ac, bool b);
-   bool isActive() const {
-      return isActive(Any);
-   }
+    void setActive( Action ac, bool b );
+    bool isActive() const
+    {
+        return isActive( Any );
+    }
 
-   bool isActive(Action ac) const;
-   void setMovingEnabled(bool b) {
-      movingEnabled = b;
-   }
+    bool isActive( Action ac ) const;
+    void setMovingEnabled( bool b )
+    {
+        movingEnabled = b;
+    }
 
-   bool isMovingEnabled() const {
-      return movingEnabled;
-   }
+    bool isMovingEnabled() const
+    {
+        return movingEnabled;
+    }
 
-   bool isButtonDown() const {
-      return buttonDown;
-   }
+    bool isButtonDown() const
+    {
+        return buttonDown;
+    }
 
-   void setExtraHeight(int h) {
-      extrahei = h;
-   }
+    void setExtraHeight( int h )
+    {
+        extrahei = h;
+    }
 
-   void setSizeProtection(bool b) {
-      sizeprotect = b;
-   }
+    void setSizeProtection( bool b )
+    {
+        sizeprotect = b;
+    }
 
-   void setFrameWidth(int w) {
-      fw = w;
-   }
+    void setFrameWidth( int w )
+    {
+        fw = w;
+    }
 
-   void doResize();
-   void doMove();
+    void doResize();
+    void doMove();
 
-   GUI_CS_SIGNAL_1(Public, void activate())
-   GUI_CS_SIGNAL_2(activate)
+    GUI_CS_SIGNAL_1( Public, void activate() )
+    GUI_CS_SIGNAL_2( activate )
 
- protected:
-   bool eventFilter(QObject *o, QEvent *e) override;
-   void mouseMoveEvent(QMouseEvent *e);
-   void keyPressEvent(QKeyEvent *e);
+protected:
+    bool eventFilter( QObject *o, QEvent *e ) override;
+    void mouseMoveEvent( QMouseEvent *e );
+    void keyPressEvent( QKeyEvent *e );
 
- private:
-   enum MousePosition {
-      Nowhere,
-      TopLeft, BottomRight, BottomLeft, TopRight,
-      Top, Bottom, Left, Right,
-      Center
-   };
+private:
+    enum MousePosition
+    {
+        Nowhere,
+        TopLeft, BottomRight, BottomLeft, TopRight,
+        Top, Bottom, Left, Right,
+        Center
+    };
 
-   QWidget *widget;
-   QWidget *childWidget;
-   QPoint moveOffset;
-   QPoint invertedMoveOffset;
-   MousePosition mode;
+    QWidget *widget;
+    QWidget *childWidget;
+    QPoint moveOffset;
+    QPoint invertedMoveOffset;
+    MousePosition mode;
 
-   int fw;
-   int extrahei;
-   int range;
-   uint buttonDown         : 1;
-   uint moveResizeMode     : 1;
-   uint activeForResize    : 1;
-   uint sizeprotect        : 1;
-   uint movingEnabled      : 1;
-   uint activeForMove      : 1;
+    int fw;
+    int extrahei;
+    int range;
+    uint buttonDown         : 1;
+    uint moveResizeMode     : 1;
+    uint activeForResize    : 1;
+    uint sizeprotect        : 1;
+    uint movingEnabled      : 1;
+    uint activeForMove      : 1;
 
-   void setMouseCursor(MousePosition m);
+    void setMouseCursor( MousePosition m );
 
-   bool isMove() const {
-      return moveResizeMode && mode == Center;
-   }
+    bool isMove() const
+    {
+        return moveResizeMode && mode == Center;
+    }
 
-   bool isResize() const {
-      return moveResizeMode && !isMove();
-   }
+    bool isResize() const
+    {
+        return moveResizeMode && !isMove();
+    }
 };
 
 #endif // QT_NO_RESIZEHANDLER

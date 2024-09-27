@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -32,49 +32,53 @@
 
 using namespace WTF;
 
-namespace JSC { namespace WREC {
-
-void GeneratePatternCharacterFunctor::generateAtom(Generator* generator, Generator::JumpList& failures)
+namespace JSC
 {
-    generator->generatePatternCharacter(failures, m_ch);
+namespace WREC
+{
+
+void GeneratePatternCharacterFunctor::generateAtom( Generator *generator, Generator::JumpList &failures )
+{
+    generator->generatePatternCharacter( failures, m_ch );
 }
 
-void GeneratePatternCharacterFunctor::backtrack(Generator* generator)
-{
-    generator->generateBacktrack1();
-}
-
-void GenerateCharacterClassFunctor::generateAtom(Generator* generator, Generator::JumpList& failures)
-{
-    generator->generateCharacterClass(failures, *m_charClass, m_invert);
-}
-
-void GenerateCharacterClassFunctor::backtrack(Generator* generator)
+void GeneratePatternCharacterFunctor::backtrack( Generator *generator )
 {
     generator->generateBacktrack1();
 }
 
-void GenerateBackreferenceFunctor::generateAtom(Generator* generator, Generator::JumpList& failures)
+void GenerateCharacterClassFunctor::generateAtom( Generator *generator, Generator::JumpList &failures )
 {
-    generator->generateBackreference(failures, m_subpatternId);
+    generator->generateCharacterClass( failures, *m_charClass, m_invert );
 }
 
-void GenerateBackreferenceFunctor::backtrack(Generator* generator)
+void GenerateCharacterClassFunctor::backtrack( Generator *generator )
 {
-    generator->generateBacktrackBackreference(m_subpatternId);
+    generator->generateBacktrack1();
 }
 
-void GenerateParenthesesNonGreedyFunctor::generateAtom(Generator* generator, Generator::JumpList& failures)
+void GenerateBackreferenceFunctor::generateAtom( Generator *generator, Generator::JumpList &failures )
 {
-    generator->generateParenthesesNonGreedy(failures, m_start, m_success, m_fail);
+    generator->generateBackreference( failures, m_subpatternId );
 }
 
-void GenerateParenthesesNonGreedyFunctor::backtrack(Generator*)
+void GenerateBackreferenceFunctor::backtrack( Generator *generator )
+{
+    generator->generateBacktrackBackreference( m_subpatternId );
+}
+
+void GenerateParenthesesNonGreedyFunctor::generateAtom( Generator *generator, Generator::JumpList &failures )
+{
+    generator->generateParenthesesNonGreedy( failures, m_start, m_success, m_fail );
+}
+
+void GenerateParenthesesNonGreedyFunctor::backtrack( Generator * )
 {
     // FIXME: do something about this.
     CRASH();
 }
 
-} } // namespace JSC::WREC
+}
+} // namespace JSC::WREC
 
 #endif // ENABLE(WREC)

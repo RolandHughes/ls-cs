@@ -26,47 +26,48 @@
 
 #include <qtemplatemode_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class ApplyTemplate : public TemplateInvoker
 {
- public:
-   typedef QExplicitlySharedDataPointer<ApplyTemplate> Ptr;
+public:
+    typedef QExplicitlySharedDataPointer<ApplyTemplate> Ptr;
 
-   ApplyTemplate(const TemplateMode::Ptr &mode, const WithParam::Hash &withParams, const TemplateMode::Ptr &defaultMode);
+    ApplyTemplate( const TemplateMode::Ptr &mode, const WithParam::Hash &withParams, const TemplateMode::Ptr &defaultMode );
 
-   Item::Iterator::Ptr evaluateSequence(const DynamicContext::Ptr &context) const override;
+    Item::Iterator::Ptr evaluateSequence( const DynamicContext::Ptr &context ) const override;
 
-   SequenceType::Ptr staticType() const override;
-   ExpressionVisitorResult::Ptr accept(const ExpressionVisitor::Ptr &visitor) const override;
-   Properties properties() const override;
+    SequenceType::Ptr staticType() const override;
+    ExpressionVisitorResult::Ptr accept( const ExpressionVisitor::Ptr &visitor ) const override;
+    Properties properties() const override;
 
-   inline Item mapToItem(const QXmlNodeModelIndex &node, const DynamicContext::Ptr &context) const;
-   inline Item::Iterator::Ptr mapToSequence(const Item &item, const DynamicContext::Ptr &context) const;
+    inline Item mapToItem( const QXmlNodeModelIndex &node, const DynamicContext::Ptr &context ) const;
+    inline Item::Iterator::Ptr mapToSequence( const Item &item, const DynamicContext::Ptr &context ) const;
 
-   inline TemplateMode::Ptr mode() const;
+    inline TemplateMode::Ptr mode() const;
 
-   bool configureRecursion(const CallTargetDescription::Ptr &sign) override;
-   Expression::Ptr body() const override;
-   CallTargetDescription::Ptr callTargetDescription() const override;
+    bool configureRecursion( const CallTargetDescription::Ptr &sign ) override;
+    Expression::Ptr body() const override;
+    CallTargetDescription::Ptr callTargetDescription() const override;
 
-   Expression::Ptr compress(const StaticContext::Ptr &context) override;
+    Expression::Ptr compress( const StaticContext::Ptr &context ) override;
 
- private:
-   typedef QExplicitlySharedDataPointer<const ApplyTemplate> ConstPtr;
+private:
+    typedef QExplicitlySharedDataPointer<const ApplyTemplate> ConstPtr;
 
-   Template::Ptr findTemplate(const DynamicContext::Ptr &context, const TemplateMode::Ptr &templateMode) const;
+    Template::Ptr findTemplate( const DynamicContext::Ptr &context, const TemplateMode::Ptr &templateMode ) const;
 
-   const TemplateMode::Ptr m_mode;
+    const TemplateMode::Ptr m_mode;
 
-   TemplateMode::Ptr m_defaultMode;
+    TemplateMode::Ptr m_defaultMode;
 
-   inline TemplateMode::Ptr effectiveMode(const DynamicContext::Ptr &context) const;
+    inline TemplateMode::Ptr effectiveMode( const DynamicContext::Ptr &context ) const;
 };
 
 TemplateMode::Ptr ApplyTemplate::mode() const
 {
-   return m_mode;
+    return m_mode;
 }
 }
 

@@ -32,66 +32,71 @@
 #include <qstring.h>
 #include <qtextstream.h>
 
-namespace CPP {
-
-WriteIconInitialization::WriteIconInitialization(Uic *uic)
-   : driver(uic->driver()), output(uic->output()), option(uic->option())
+namespace CPP
 {
-   this->uic = uic;
+
+WriteIconInitialization::WriteIconInitialization( Uic *uic )
+    : driver( uic->driver() ), output( uic->output() ), option( uic->option() )
+{
+    this->uic = uic;
 }
 
-void WriteIconInitialization::acceptUI(DomUI *node)
+void WriteIconInitialization::acceptUI( DomUI *node )
 {
-   if (node->elementImages() == nullptr) {
-      return;
-   }
+    if ( node->elementImages() == nullptr )
+    {
+        return;
+    }
 
-   QString className = node->elementClass() + option.postfix;
+    QString className = node->elementClass() + option.postfix;
 
-   output << option.indent << "static QPixmap " << iconFromDataFunction() << "(IconID id)\n"
-      << option.indent << "{\n";
+    output << option.indent << "static QPixmap " << iconFromDataFunction() << "(IconID id)\n"
+           << option.indent << "{\n";
 
-   WriteIconData(uic).acceptUI(node);
+    WriteIconData( uic ).acceptUI( node );
 
-   output << option.indent << "switch (id) {\n";
+    output << option.indent << "switch (id) {\n";
 
-   TreeWalker::acceptUI(node);
+    TreeWalker::acceptUI( node );
 
-   output << option.indent << option.indent << "default: return QPixmap();\n";
+    output << option.indent << option.indent << "default: return QPixmap();\n";
 
-   output << option.indent << "} // switch\n"
-          << option.indent << "} // icon\n\n";
+    output << option.indent << "} // switch\n"
+           << option.indent << "} // icon\n\n";
 }
 
 QString WriteIconInitialization::iconFromDataFunction()
 {
-   return "qt_get_icon";
+    return "qt_get_icon";
 }
 
-void WriteIconInitialization::acceptImages(DomImages *images)
+void WriteIconInitialization::acceptImages( DomImages *images )
 {
-   TreeWalker::acceptImages(images);
+    TreeWalker::acceptImages( images );
 }
 
-void WriteIconInitialization::acceptImage(DomImage *image)
+void WriteIconInitialization::acceptImage( DomImage *image )
 {
-   QString img  = image->attributeName() + "_data";
-   QString data = image->elementData()->text();
-   QString fmt  = image->elementData()->attributeFormat();
+    QString img  = image->attributeName() + "_data";
+    QString data = image->elementData()->text();
+    QString fmt  = image->elementData()->attributeFormat();
 
-   QString imageId   = image->attributeName() + "_ID";
-   QString imageData = image->attributeName() + "_data";
-   QString ind = option.indent + option.indent;
+    QString imageId   = image->attributeName() + "_ID";
+    QString imageData = image->attributeName() + "_data";
+    QString ind = option.indent + option.indent;
 
-   output << ind << "case " << imageId << ": ";
+    output << ind << "case " << imageId << ": ";
 
-   if (fmt == "XPM.GZ") {
-      output << "return " << "QPixmap((const char**)" << imageData << ");\n";
+    if ( fmt == "XPM.GZ" )
+    {
+        output << "return " << "QPixmap((const char**)" << imageData << ");\n";
 
-   } else {
-      output << " { QImage img; img.loadFromData(" << imageData << ", sizeof(" << imageData << "), " << fixString(fmt,
-            ind) << "); return QPixmap::fromImage(img); }\n";
-   }
+    }
+    else
+    {
+        output << " { QImage img; img.loadFromData(" << imageData << ", sizeof(" << imageData << "), " << fixString( fmt,
+                ind ) << "); return QPixmap::fromImage(img); }\n";
+    }
 }
 
 } // namespace

@@ -40,27 +40,27 @@ class QScanThread;
 
 class QCoreWlanEngine : public QBearerEngineImpl
 {
-     friend class QScanThread;
+    friend class QScanThread;
     Q_OBJECT
 
 public:
-    QCoreWlanEngine(QObject *parent = nullptr);
+    QCoreWlanEngine( QObject *parent = nullptr );
     ~QCoreWlanEngine();
 
-    QString getInterfaceFromId(const QString &id);
-    bool hasIdentifier(const QString &id);
+    QString getInterfaceFromId( const QString &id );
+    bool hasIdentifier( const QString &id );
 
-    void connectToId(const QString &id);
-    void disconnectFromId(const QString &id);
+    void connectToId( const QString &id );
+    void disconnectFromId( const QString &id );
 
     Q_INVOKABLE void initialize();
     Q_INVOKABLE void requestUpdate();
 
-    QNetworkSession::State sessionStateForId(const QString &id);
+    QNetworkSession::State sessionStateForId( const QString &id );
 
-    quint64 bytesWritten(const QString &id);
-    quint64 bytesReceived(const QString &id);
-    quint64 startTime(const QString &id);
+    quint64 bytesWritten( const QString &id );
+    quint64 bytesReceived( const QString &id );
+    quint64 startTime( const QString &id );
 
     QNetworkConfigurationManager::Capabilities capabilities() const;
 
@@ -75,7 +75,7 @@ private Q_SLOTS:
     void networksChanged();
 
 private:
-    bool isWifiReady(const QString &dev);
+    bool isWifiReady( const QString &dev );
     QList<QNetworkConfigurationPrivate *> foundConfigurations;
 
     SCDynamicStoreRef storeSession;
@@ -84,7 +84,7 @@ private:
     bool scanning;
     QScanThread *scanThread;
 
-    quint64 getBytes(const QString &interfaceName,bool b);
+    quint64 getBytes( const QString &interfaceName,bool b );
 
 protected:
     void startNetworkChangeLoop();
@@ -96,7 +96,7 @@ class QScanThread : public QThread
     Q_OBJECT
 
 public:
-    QScanThread(QObject *parent = nullptr);
+    QScanThread( QObject *parent = nullptr );
     ~QScanThread();
 
     void quit();
@@ -104,9 +104,9 @@ public:
     QString interfaceName;
     QMap<QString, QString> configurationInterface;
     void getUserConfigurations();
-    QString getNetworkNameFromSsid(const QString &ssid);
-    QString getSsidFromNetworkName(const QString &name);
-    bool isKnownSsid(const QString &ssid);
+    QString getNetworkNameFromSsid( const QString &ssid );
+    QString getSsidFromNetworkName( const QString &name );
+    bool isKnownSsid( const QString &ssid );
     QMap<QString, QMap<QString,QString> > userProfiles;
 
 signals:
@@ -118,7 +118,8 @@ protected:
 private:
     QList<QNetworkConfigurationPrivate *> fetchedConfigurations;
     QMutex mutex;
-    QStringList foundNetwork(const QString &id, const QString &ssid, const QNetworkConfiguration::StateFlags state, const QString &interfaceName, const QNetworkConfiguration::Purpose purpose);
+    QStringList foundNetwork( const QString &id, const QString &ssid, const QNetworkConfiguration::StateFlags state,
+                              const QString &interfaceName, const QNetworkConfiguration::Purpose purpose );
 
 };
 

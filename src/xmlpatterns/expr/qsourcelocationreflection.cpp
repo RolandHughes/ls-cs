@@ -29,15 +29,15 @@ using namespace QPatternist;
 
 QSourceLocation SourceLocationReflection::sourceLocation() const
 {
-   return QSourceLocation();
+    return QSourceLocation();
 }
 
 const SourceLocationReflection *DelegatingSourceLocationReflection::actualReflection() const
 {
-   return m_r->actualReflection();
+    return m_r->actualReflection();
 }
 
 QString DelegatingSourceLocationReflection::description() const
 {
-   return m_r->description();
+    return m_r->description();
 }

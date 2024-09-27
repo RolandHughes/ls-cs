@@ -34,147 +34,164 @@
 #include <qxsdvalidatinginstancereader_p.h>
 
 QXmlSchemaValidator::QXmlSchemaValidator()
-   : d(new QXmlSchemaValidatorPrivate(QXmlSchema()))
+    : d( new QXmlSchemaValidatorPrivate( QXmlSchema() ) )
 {
 }
 
-QXmlSchemaValidator::QXmlSchemaValidator(const QXmlSchema &schema)
-   : d(new QXmlSchemaValidatorPrivate(schema))
+QXmlSchemaValidator::QXmlSchemaValidator( const QXmlSchema &schema )
+    : d( new QXmlSchemaValidatorPrivate( schema ) )
 {
 }
 
 QXmlSchemaValidator::~QXmlSchemaValidator()
 {
-   delete d;
+    delete d;
 }
 
-void QXmlSchemaValidator::setSchema(const QXmlSchema &schema)
+void QXmlSchemaValidator::setSchema( const QXmlSchema &schema )
 {
-   d->setSchema(schema);
+    d->setSchema( schema );
 }
 
-bool QXmlSchemaValidator::validate(const QByteArray &data, const QUrl &documentUri) const
+bool QXmlSchemaValidator::validate( const QByteArray &data, const QUrl &documentUri ) const
 {
-   QByteArray localData(data);
+    QByteArray localData( data );
 
-   QBuffer buffer(&localData);
-   buffer.open(QIODevice::ReadOnly);
+    QBuffer buffer( &localData );
+    buffer.open( QIODevice::ReadOnly );
 
-   return validate(&buffer, documentUri);
+    return validate( &buffer, documentUri );
 }
 
-bool QXmlSchemaValidator::validate(const QUrl &source) const
+bool QXmlSchemaValidator::validate( const QUrl &source ) const
 {
-   d->m_context->setMessageHandler(messageHandler());
-   d->m_context->setUriResolver(uriResolver());
-   d->m_context->setNetworkAccessManager(networkAccessManager());
+    d->m_context->setMessageHandler( messageHandler() );
+    d->m_context->setUriResolver( uriResolver() );
+    d->m_context->setNetworkAccessManager( networkAccessManager() );
 
-   const std::unique_ptr<QNetworkReply> reply(QPatternist::AccelTreeResourceLoader::load(source,
-         d->m_context->networkAccessManager(),
-         d->m_context, QPatternist::AccelTreeResourceLoader::ContinueOnError));
-
-   if (reply) {
-      return validate(reply.get(), source);
-   } else {
-      return false;
-   }
-}
-
-bool QXmlSchemaValidator::validate(QIODevice *source, const QUrl &documentUri) const
-{
-   if (!source) {
-      qWarning("A null QIODevice pointer cannot be passed.");
-      return false;
-   }
-
-   if (!source->isReadable()) {
-      qWarning("The device must be readable.");
-      return false;
-   }
-
-   const QUrl normalizedUri = QPatternist::XPathHelper::normalizeQueryURI(documentUri);
-
-   d->m_context->setMessageHandler(messageHandler());
-   d->m_context->setUriResolver(uriResolver());
-   d->m_context->setNetworkAccessManager(networkAccessManager());
-
-   QPatternist::NetworkAccessDelegator::Ptr delegator(new QPatternist::NetworkAccessDelegator(
+    const std::unique_ptr<QNetworkReply> reply( QPatternist::AccelTreeResourceLoader::load( source,
             d->m_context->networkAccessManager(),
-            d->m_context->networkAccessManager()));
+            d->m_context, QPatternist::AccelTreeResourceLoader::ContinueOnError ) );
 
-   QPatternist::AccelTreeResourceLoader loader(d->m_context->namePool(), delegator,
-         QPatternist::AccelTreeBuilder<true>::SourceLocationsFeature);
+    if ( reply )
+    {
+        return validate( reply.get(), source );
+    }
+    else
+    {
+        return false;
+    }
+}
 
-   QPatternist::Item item;
-   try {
-      item = loader.openDocument(source, normalizedUri, d->m_context);
-   } catch (QPatternist::Exception exception) {
-      (void) exception;
-      return false;
-   }
+bool QXmlSchemaValidator::validate( QIODevice *source, const QUrl &documentUri ) const
+{
+    if ( !source )
+    {
+        qWarning( "A null QIODevice pointer cannot be passed." );
+        return false;
+    }
 
-   const QAbstractXmlNodeModel *model = item.asNode().model();
+    if ( !source->isReadable() )
+    {
+        qWarning( "The device must be readable." );
+        return false;
+    }
 
-   QPatternist::XsdValidatedXmlNodeModel *validatedModel = new QPatternist::XsdValidatedXmlNodeModel(model);
+    const QUrl normalizedUri = QPatternist::XPathHelper::normalizeQueryURI( documentUri );
 
-   QPatternist::XsdValidatingInstanceReader reader(validatedModel, normalizedUri, d->m_context);
-   if (d->m_schema) {
-      reader.addSchema(d->m_schema, d->m_schemaDocumentUri);
-   }
-   try {
-      reader.read();
-   } catch (QPatternist::Exception exception) {
-      (void) exception;
-      return false;
-   }
+    d->m_context->setMessageHandler( messageHandler() );
+    d->m_context->setUriResolver( uriResolver() );
+    d->m_context->setNetworkAccessManager( networkAccessManager() );
 
-   return true;
+    QPatternist::NetworkAccessDelegator::Ptr delegator( new QPatternist::NetworkAccessDelegator(
+                d->m_context->networkAccessManager(),
+                d->m_context->networkAccessManager() ) );
+
+    QPatternist::AccelTreeResourceLoader loader( d->m_context->namePool(), delegator,
+            QPatternist::AccelTreeBuilder<true>::SourceLocationsFeature );
+
+    QPatternist::Item item;
+
+    try
+    {
+        item = loader.openDocument( source, normalizedUri, d->m_context );
+    }
+    catch ( QPatternist::Exception exception )
+    {
+        ( void ) exception;
+        return false;
+    }
+
+    const QAbstractXmlNodeModel *model = item.asNode().model();
+
+    QPatternist::XsdValidatedXmlNodeModel *validatedModel = new QPatternist::XsdValidatedXmlNodeModel( model );
+
+    QPatternist::XsdValidatingInstanceReader reader( validatedModel, normalizedUri, d->m_context );
+
+    if ( d->m_schema )
+    {
+        reader.addSchema( d->m_schema, d->m_schemaDocumentUri );
+    }
+
+    try
+    {
+        reader.read();
+    }
+    catch ( QPatternist::Exception exception )
+    {
+        ( void ) exception;
+        return false;
+    }
+
+    return true;
 }
 
 QXmlNamePool QXmlSchemaValidator::namePool() const
 {
-   return d->m_namePool;
+    return d->m_namePool;
 }
 
 QXmlSchema QXmlSchemaValidator::schema() const
 {
-   return d->m_originalSchema;
+    return d->m_originalSchema;
 }
 
-void QXmlSchemaValidator::setMessageHandler(QAbstractMessageHandler *handler)
+void QXmlSchemaValidator::setMessageHandler( QAbstractMessageHandler *handler )
 {
-   d->m_userMessageHandler = handler;
+    d->m_userMessageHandler = handler;
 }
 
 QAbstractMessageHandler *QXmlSchemaValidator::messageHandler() const
 {
-   if (d->m_userMessageHandler) {
-      return d->m_userMessageHandler;
-   }
+    if ( d->m_userMessageHandler )
+    {
+        return d->m_userMessageHandler;
+    }
 
-   return d->m_messageHandler.data()->value;
+    return d->m_messageHandler.data()->value;
 }
 
-void QXmlSchemaValidator::setUriResolver(const QAbstractUriResolver *resolver)
+void QXmlSchemaValidator::setUriResolver( const QAbstractUriResolver *resolver )
 {
-   d->m_uriResolver = resolver;
+    d->m_uriResolver = resolver;
 }
 
 const QAbstractUriResolver *QXmlSchemaValidator::uriResolver() const
 {
-   return d->m_uriResolver;
+    return d->m_uriResolver;
 }
 
-void QXmlSchemaValidator::setNetworkAccessManager(QNetworkAccessManager *manager)
+void QXmlSchemaValidator::setNetworkAccessManager( QNetworkAccessManager *manager )
 {
-   d->m_userNetworkAccessManager = manager;
+    d->m_userNetworkAccessManager = manager;
 }
 
 QNetworkAccessManager *QXmlSchemaValidator::networkAccessManager() const
 {
-   if (d->m_userNetworkAccessManager) {
-      return d->m_userNetworkAccessManager;
-   }
+    if ( d->m_userNetworkAccessManager )
+    {
+        return d->m_userNetworkAccessManager;
+    }
 
-   return d->m_networkAccessManager.data()->value;
+    return d->m_networkAccessManager.data()->value;
 }

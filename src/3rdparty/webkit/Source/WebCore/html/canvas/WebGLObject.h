@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef WebGLObject_h
@@ -31,15 +31,20 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class WebGLRenderingContext;
 
-class WebGLObject : public RefCounted<WebGLObject> {
+class WebGLObject : public RefCounted<WebGLObject>
+{
 public:
     virtual ~WebGLObject();
 
-    Platform3DObject object() const { return m_object; }
+    Platform3DObject object() const
+    {
+        return m_object;
+    }
 
     // deleteObject may not always delete the OpenGL resource.  For programs and
     // shaders, deletion is delayed until they are no longer attached.
@@ -53,41 +58,73 @@ public:
         m_context = 0;
     }
 
-    WebGLRenderingContext* context() const { return m_context; }
+    WebGLRenderingContext *context() const
+    {
+        return m_context;
+    }
 
-    virtual bool isBuffer() const { return false; }
-    virtual bool isFramebuffer() const { return false; }
-    virtual bool isProgram() const { return false; }
-    virtual bool isRenderbuffer() const { return false; }
-    virtual bool isShader() const { return false; }
-    virtual bool isTexture() const { return false; }
+    virtual bool isBuffer() const
+    {
+        return false;
+    }
+    virtual bool isFramebuffer() const
+    {
+        return false;
+    }
+    virtual bool isProgram() const
+    {
+        return false;
+    }
+    virtual bool isRenderbuffer() const
+    {
+        return false;
+    }
+    virtual bool isShader() const
+    {
+        return false;
+    }
+    virtual bool isTexture() const
+    {
+        return false;
+    }
 
-    void onAttached() { ++m_attachmentCount; }
+    void onAttached()
+    {
+        ++m_attachmentCount;
+    }
     void onDetached()
     {
-        if (m_attachmentCount)
+        if ( m_attachmentCount )
+        {
             --m_attachmentCount;
-        if (m_deleted)
+        }
+
+        if ( m_deleted )
+        {
             deleteObject();
+        }
     }
 
     // This indicates whether the client side issue a delete call already, not
     // whether the OpenGL resource is deleted.
     // object()==0 indicates the OpenGL resource is deleted.
-    bool isDeleted() { return m_deleted; }
+    bool isDeleted()
+    {
+        return m_deleted;
+    }
 
 protected:
-    WebGLObject(WebGLRenderingContext*);
+    WebGLObject( WebGLRenderingContext * );
 
     // setObject should be only called once right after creating a WebGLObject.
-    void setObject(Platform3DObject);
+    void setObject( Platform3DObject );
 
     // deleteObjectImpl should be only called once to delete the OpenGL resource.
-    virtual void deleteObjectImpl(Platform3DObject) = 0;
+    virtual void deleteObjectImpl( Platform3DObject ) = 0;
 
 private:
     Platform3DObject m_object;
-    WebGLRenderingContext* m_context;
+    WebGLRenderingContext *m_context;
     unsigned m_attachmentCount;
     bool m_deleted;
 };

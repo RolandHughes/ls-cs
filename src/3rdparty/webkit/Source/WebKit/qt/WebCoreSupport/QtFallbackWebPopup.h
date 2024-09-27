@@ -30,54 +30,69 @@
 class QGraphicsProxyWidget;
 class QWebPageClient;
 
-namespace WebCore {
+namespace WebCore
+{
 
 class ChromeClientQt;
 class QtFallbackWebPopupCombo;
 
-class QtFallbackWebPopup : public QWebSelectMethod {
-    WEB_CS_OBJECT(QtFallbackWebPopup)
+class QtFallbackWebPopup : public QWebSelectMethod
+{
+    WEB_CS_OBJECT( QtFallbackWebPopup )
 
 public:
-    QtFallbackWebPopup(const ChromeClientQt*);
+    QtFallbackWebPopup( const ChromeClientQt * );
     ~QtFallbackWebPopup();
 
-    virtual void show(const QWebSelectData&);
+    virtual void show( const QWebSelectData & );
     virtual void hide();
 
     void destroyPopup();
 
-    void setGeometry(const QRect& rect) { m_geometry = rect; }
-    QRect geometry() const { return m_geometry; }
+    void setGeometry( const QRect &rect )
+    {
+        m_geometry = rect;
+    }
+    QRect geometry() const
+    {
+        return m_geometry;
+    }
 
-    void setFont(const QFont& font) { m_font = font; }
-    QFont font() const { return m_font; }
+    void setFont( const QFont &font )
+    {
+        m_font = font;
+    }
+    QFont font() const
+    {
+        return m_font;
+    }
 
 private :
-    WEB_CS_SLOT_1(Private, void activeChanged(int index))
-    WEB_CS_SLOT_2(activeChanged)
+    WEB_CS_SLOT_1( Private, void activeChanged( int index ) )
+    WEB_CS_SLOT_2( activeChanged )
 
     friend class QtFallbackWebPopupCombo;
     bool m_popupVisible;
-    QtFallbackWebPopupCombo* m_combo;
-    const ChromeClientQt* m_chromeClient;
+    QtFallbackWebPopupCombo *m_combo;
+    const ChromeClientQt *m_chromeClient;
     QRect m_geometry;
     QFont m_font;
 
-    QWebPageClient* pageClient() const;
+    QWebPageClient *pageClient() const;
 
-    void populate(const QWebSelectData&);
+    void populate( const QWebSelectData & );
 };
 
-class QtFallbackWebPopupCombo : public QComboBox {
+class QtFallbackWebPopupCombo : public QComboBox
+{
 public:
-    QtFallbackWebPopupCombo(QtFallbackWebPopup& ownerPopup);
+    QtFallbackWebPopupCombo( QtFallbackWebPopup &ownerPopup );
     virtual void showPopup();
     virtual void hidePopup();
-    virtual bool eventFilter(QObject* watched, QEvent* event);
+    virtual bool eventFilter( QObject *watched, QEvent *event );
 
 private:
-    QtFallbackWebPopup& m_ownerPopup;
+    QtFallbackWebPopup &m_ownerPopup;
 };
 
 }

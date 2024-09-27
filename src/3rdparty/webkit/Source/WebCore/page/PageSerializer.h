@@ -38,7 +38,8 @@
 #include <wtf/ListHashSet.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class CachedImage;
 class CSSStyleDeclaration;
@@ -49,39 +50,41 @@ class Page;
 
 // This class is used to serialize a page contents back to text (typically HTML).
 // It serializes all the page frames and retrieves resources such as images and CSS stylesheets.
-class PageSerializer {
+class PageSerializer
+{
 public:
-    struct Resource {
+    struct Resource
+    {
         KURL url;
         String mimeType;
         RefPtr<SharedBuffer> data;
         Resource();
-        Resource(const KURL&, const String& mimeType, PassRefPtr<SharedBuffer> data);
+        Resource( const KURL &, const String &mimeType, PassRefPtr<SharedBuffer> data );
     };
 
-    explicit PageSerializer(Vector<Resource>*);
+    explicit PageSerializer( Vector<Resource> * );
 
     // Initiates the serialization of the frame's page. All serialized content and retrieved
     // resources are added to the Vector passed to the constructor. The first resource in that
     // vector is the top frame serialized content.
-    void serialize(Page*);
+    void serialize( Page * );
 
-    KURL urlForBlankFrame(Frame*);
+    KURL urlForBlankFrame( Frame * );
 
 private:
-    void serializeFrame(Frame*);
+    void serializeFrame( Frame * );
 
     // Serializes the stylesheet back to text and adds it to the resources if URL is not-empty.
     // It also adds any resources included in that stylesheet (including any imported stylesheets and their own resources).
-    void serializeCSSStyleSheet(CSSStyleSheet*, const KURL&);
+    void serializeCSSStyleSheet( CSSStyleSheet *, const KURL & );
 
-    void addImageToResources(CachedImage*, const KURL&);
-    void retrieveResourcesForCSSDeclaration(CSSStyleDeclaration*);
-    void retrieveResourcesForCSSRule(CSSStyleRule*);
+    void addImageToResources( CachedImage *, const KURL & );
+    void retrieveResourcesForCSSDeclaration( CSSStyleDeclaration * );
+    void retrieveResourcesForCSSRule( CSSStyleRule * );
 
-    Vector<Resource>* m_resources;
+    Vector<Resource> *m_resources;
     ListHashSet<KURL> m_resourceURLs;
-    HashMap<Frame*, KURL> m_blankFrameURLs;
+    HashMap<Frame *, KURL> m_blankFrameURLs;
     unsigned m_blankFrameCounter;
 };
 

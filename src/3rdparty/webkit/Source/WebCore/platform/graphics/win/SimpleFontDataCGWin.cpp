@@ -6,13 +6,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -43,11 +43,15 @@
 #include <wtf/MathExtras.h>
 #include <wtf/RetainPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 using std::max;
 
-static inline float scaleEmToUnits(float x, unsigned unitsPerEm) { return unitsPerEm ? x / static_cast<float>(unitsPerEm) : x; }
+static inline float scaleEmToUnits( float x, unsigned unitsPerEm )
+{
+    return unitsPerEm ? x / static_cast<float>( unitsPerEm ) : x;
+}
 
 void SimpleFontData::platformInit()
 {
@@ -56,30 +60,34 @@ void SimpleFontData::platformInit()
     m_scriptFontProperties = 0;
     m_isSystemFont = false;
 
-    if (m_platformData.useGDI())
-       return initGDIFont();
+    if ( m_platformData.useGDI() )
+    {
+        return initGDIFont();
+    }
 
     CGFontRef font = m_platformData.cgFont();
-    int iAscent = CGFontGetAscent(font);
-    int iDescent = CGFontGetDescent(font);
-    int iLineGap = CGFontGetLeading(font);
-    unsigned unitsPerEm = CGFontGetUnitsPerEm(font);
+    int iAscent = CGFontGetAscent( font );
+    int iDescent = CGFontGetDescent( font );
+    int iLineGap = CGFontGetLeading( font );
+    unsigned unitsPerEm = CGFontGetUnitsPerEm( font );
     float pointSize = m_platformData.size();
-    float fAscent = scaleEmToUnits(iAscent, unitsPerEm) * pointSize;
-    float fDescent = -scaleEmToUnits(iDescent, unitsPerEm) * pointSize;
-    float fLineGap = scaleEmToUnits(iLineGap, unitsPerEm) * pointSize;
+    float fAscent = scaleEmToUnits( iAscent, unitsPerEm ) * pointSize;
+    float fDescent = -scaleEmToUnits( iDescent, unitsPerEm ) * pointSize;
+    float fLineGap = scaleEmToUnits( iLineGap, unitsPerEm ) * pointSize;
 
-    if (!isCustomFont()) {
-        HDC dc = GetDC(0);
-        HGDIOBJ oldFont = SelectObject(dc, m_platformData.hfont());
-        int faceLength = GetTextFace(dc, 0, 0);
-        Vector<WCHAR> faceName(faceLength);
-        GetTextFace(dc, faceLength, faceName.data());
-        m_isSystemFont = !wcscmp(faceName.data(), L"Lucida Grande");
-        SelectObject(dc, oldFont);
-        ReleaseDC(0, dc);
+    if ( !isCustomFont() )
+    {
+        HDC dc = GetDC( 0 );
+        HGDIOBJ oldFont = SelectObject( dc, m_platformData.hfont() );
+        int faceLength = GetTextFace( dc, 0, 0 );
+        Vector<WCHAR> faceName( faceLength );
+        GetTextFace( dc, faceLength, faceName.data() );
+        m_isSystemFont = !wcscmp( faceName.data(), L"Lucida Grande" );
+        SelectObject( dc, oldFont );
+        ReleaseDC( 0, dc );
 
-        if (shouldApplyMacAscentHack()) {
+        if ( shouldApplyMacAscentHack() )
+        {
             // This code comes from FontDataMac.mm. We only ever do this when running regression tests so that our metrics will match Mac.
 
             // We need to adjust Times, Helvetica, and Courier to closely match the
@@ -87,70 +95,84 @@ void SimpleFontData::platformInit()
             // web standard. The AppKit adjustment of 20% is too big and is
             // incorrectly added to line spacing, so we use a 15% adjustment instead
             // and add it to the ascent.
-            if (!wcscmp(faceName.data(), L"Times") || !wcscmp(faceName.data(), L"Helvetica") || !wcscmp(faceName.data(), L"Courier"))
-                fAscent += floorf(((fAscent + fDescent) * 0.15f) + 0.5f);
+            if ( !wcscmp( faceName.data(), L"Times" ) || !wcscmp( faceName.data(), L"Helvetica" ) || !wcscmp( faceName.data(), L"Courier" ) )
+            {
+                fAscent += floorf( ( ( fAscent + fDescent ) * 0.15f ) + 0.5f );
+            }
         }
     }
 
-    m_fontMetrics.setAscent(fAscent);
-    m_fontMetrics.setDescent(fDescent);
-    m_fontMetrics.setLineGap(fLineGap);
-    m_fontMetrics.setLineSpacing(lroundf(fAscent) + lroundf(fDescent) + lroundf(fLineGap));
+    m_fontMetrics.setAscent( fAscent );
+    m_fontMetrics.setDescent( fDescent );
+    m_fontMetrics.setLineGap( fLineGap );
+    m_fontMetrics.setLineSpacing( lroundf( fAscent ) + lroundf( fDescent ) + lroundf( fLineGap ) );
 
-    GlyphPage* glyphPageZero = GlyphPageTreeNode::getRootChild(this, 0)->page();
-    Glyph xGlyph = glyphPageZero ? glyphPageZero->glyphDataForCharacter('x').glyph : 0;
-    if (xGlyph) {
+    GlyphPage *glyphPageZero = GlyphPageTreeNode::getRootChild( this, 0 )->page();
+    Glyph xGlyph = glyphPageZero ? glyphPageZero->glyphDataForCharacter( 'x' ).glyph : 0;
+
+    if ( xGlyph )
+    {
         // Measure the actual character "x", since it's possible for it to extend below the baseline, and we need the
         // reported x-height to only include the portion of the glyph that is above the baseline.
         CGRect xBox;
-        CGFontGetGlyphBBoxes(font, &xGlyph, 1, &xBox);
-        m_fontMetrics.setXHeight(scaleEmToUnits(CGRectGetMaxY(xBox), unitsPerEm) * pointSize);
-    } else {
-        int iXHeight = CGFontGetXHeight(font);
-        m_fontMetrics.setXHeight(scaleEmToUnits(iXHeight, unitsPerEm) * pointSize);
+        CGFontGetGlyphBBoxes( font, &xGlyph, 1, &xBox );
+        m_fontMetrics.setXHeight( scaleEmToUnits( CGRectGetMaxY( xBox ), unitsPerEm ) * pointSize );
+    }
+    else
+    {
+        int iXHeight = CGFontGetXHeight( font );
+        m_fontMetrics.setXHeight( scaleEmToUnits( iXHeight, unitsPerEm ) * pointSize );
     }
 
-    m_fontMetrics.setUnitsPerEm(unitsPerEm);
+    m_fontMetrics.setUnitsPerEm( unitsPerEm );
 }
 
 void SimpleFontData::platformCharWidthInit()
 {
     // GDI Fonts init charwidths in initGDIFont.
-    if (!m_platformData.useGDI()) {
+    if ( !m_platformData.useGDI() )
+    {
         m_avgCharWidth = 0.f;
         m_maxCharWidth = 0.f;
         initCharWidths();
     }
 }
-FloatRect SimpleFontData::platformBoundsForGlyph(Glyph glyph) const
+FloatRect SimpleFontData::platformBoundsForGlyph( Glyph glyph ) const
 {
-    if (m_platformData.useGDI())
-        return boundsForGDIGlyph(glyph);
+    if ( m_platformData.useGDI() )
+    {
+        return boundsForGDIGlyph( glyph );
+    }
 
     CGRect box;
-    CGFontGetGlyphBBoxes(m_platformData.cgFont(), &glyph, 1, &box);
+    CGFontGetGlyphBBoxes( m_platformData.cgFont(), &glyph, 1, &box );
     float pointSize = m_platformData.size();
     CGFloat scale = pointSize / fontMetrics().unitsPerEm();
-    FloatRect boundingBox = CGRectApplyAffineTransform(box, CGAffineTransformMakeScale(scale, -scale));
-    if (m_syntheticBoldOffset)
-        boundingBox.setWidth(boundingBox.width() + m_syntheticBoldOffset);
+    FloatRect boundingBox = CGRectApplyAffineTransform( box, CGAffineTransformMakeScale( scale, -scale ) );
+
+    if ( m_syntheticBoldOffset )
+    {
+        boundingBox.setWidth( boundingBox.width() + m_syntheticBoldOffset );
+    }
 
     return boundingBox;
 }
 
-float SimpleFontData::platformWidthForGlyph(Glyph glyph) const
+float SimpleFontData::platformWidthForGlyph( Glyph glyph ) const
 {
-    if (m_platformData.useGDI())
-        return widthForGDIGlyph(glyph);
+    if ( m_platformData.useGDI() )
+    {
+        return widthForGDIGlyph( glyph );
+    }
 
     CGFontRef font = m_platformData.cgFont();
     float pointSize = m_platformData.size();
     CGSize advance;
-    CGAffineTransform m = CGAffineTransformMakeScale(pointSize, pointSize);
- 
+    CGAffineTransform m = CGAffineTransformMakeScale( pointSize, pointSize );
+
     // FIXME: Need to add real support for printer fonts.
     bool isPrinterFont = false;
-    wkGetGlyphAdvances(font, m, m_isSystemFont, isPrinterFont, glyph, advance);
+    wkGetGlyphAdvances( font, m, m_isSystemFont, isPrinterFont, glyph, advance );
 
     return advance.width + m_syntheticBoldOffset;
 }

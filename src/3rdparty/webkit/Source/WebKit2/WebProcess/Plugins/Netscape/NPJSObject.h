@@ -30,7 +30,8 @@
 #include <WebCore/npruntime_internal.h>
 #include <wtf/Noncopyable.h>
 
-namespace JSC {
+namespace JSC
+{
 
 class JSGlobalData;
 class JSGlobalObject;
@@ -38,58 +39,65 @@ class JSObject;
 
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 class NPRuntimeObjectMap;
-    
+
 // NPJSObject is an NPObject that wraps a JSObject.
-class NPJSObject : public NPObject {
-    WTF_MAKE_NONCOPYABLE(NPJSObject);
+class NPJSObject : public NPObject
+{
+    WTF_MAKE_NONCOPYABLE( NPJSObject );
 public:
-    static NPJSObject* create(JSC::JSGlobalData&, NPRuntimeObjectMap*, JSC::JSObject*);
+    static NPJSObject *create( JSC::JSGlobalData &, NPRuntimeObjectMap *, JSC::JSObject * );
 
-    JSC::JSObject* jsObject() const { return m_jsObject.get(); }
-
-    static bool isNPJSObject(NPObject*);
-
-    static NPJSObject* toNPJSObject(NPObject* npObject)
+    JSC::JSObject *jsObject() const
     {
-        ASSERT(isNPJSObject(npObject));
-        return static_cast<NPJSObject*>(npObject);
+        return m_jsObject.get();
+    }
+
+    static bool isNPJSObject( NPObject * );
+
+    static NPJSObject *toNPJSObject( NPObject *npObject )
+    {
+        ASSERT( isNPJSObject( npObject ) );
+        return static_cast<NPJSObject *>( npObject );
     }
 
 private:
     NPJSObject();
     ~NPJSObject();
 
-    void initialize(JSC::JSGlobalData&, NPRuntimeObjectMap*, JSC::JSObject*);
+    void initialize( JSC::JSGlobalData &, NPRuntimeObjectMap *, JSC::JSObject * );
 
-    bool hasMethod(NPIdentifier methodName);
-    bool invoke(NPIdentifier methodName, const NPVariant* arguments, uint32_t argumentCount, NPVariant* result);
-    bool invokeDefault(const NPVariant* arguments, uint32_t argumentCount, NPVariant* result);
-    bool hasProperty(NPIdentifier propertyName);
-    bool getProperty(NPIdentifier propertyName, NPVariant* result);
-    bool setProperty(NPIdentifier propertyName, const NPVariant* value);
-    bool removeProperty(NPIdentifier propertyName);
-    bool enumerate(NPIdentifier** identifiers, uint32_t* identifierCount);
-    bool construct(const NPVariant* arguments, uint32_t argumentCount, NPVariant* result);
+    bool hasMethod( NPIdentifier methodName );
+    bool invoke( NPIdentifier methodName, const NPVariant *arguments, uint32_t argumentCount, NPVariant *result );
+    bool invokeDefault( const NPVariant *arguments, uint32_t argumentCount, NPVariant *result );
+    bool hasProperty( NPIdentifier propertyName );
+    bool getProperty( NPIdentifier propertyName, NPVariant *result );
+    bool setProperty( NPIdentifier propertyName, const NPVariant *value );
+    bool removeProperty( NPIdentifier propertyName );
+    bool enumerate( NPIdentifier **identifiers, uint32_t *identifierCount );
+    bool construct( const NPVariant *arguments, uint32_t argumentCount, NPVariant *result );
 
-    bool invoke(JSC::ExecState*, JSC::JSGlobalObject*, JSC::JSValue function, const NPVariant* arguments, uint32_t argumentCount, NPVariant* result);
+    bool invoke( JSC::ExecState *, JSC::JSGlobalObject *, JSC::JSValue function, const NPVariant *arguments, uint32_t argumentCount,
+                 NPVariant *result );
 
-    static NPClass* npClass();
-    static NPObject* NP_Allocate(NPP, NPClass*);
-    static void NP_Deallocate(NPObject*);
-    static bool NP_HasMethod(NPObject*, NPIdentifier methodName);
-    static bool NP_Invoke(NPObject*, NPIdentifier methodName, const NPVariant* arguments, uint32_t argumentCount, NPVariant* result);
-    static bool NP_InvokeDefault(NPObject*, const NPVariant* arguments, uint32_t argumentCount, NPVariant* result);
-    static bool NP_HasProperty(NPObject*, NPIdentifier propertyName);
-    static bool NP_GetProperty(NPObject*, NPIdentifier propertyName, NPVariant* result);
-    static bool NP_SetProperty(NPObject*, NPIdentifier propertyName, const NPVariant* value);
-    static bool NP_RemoveProperty(NPObject*, NPIdentifier propertyName);
-    static bool NP_Enumerate(NPObject*, NPIdentifier** identifiers, uint32_t* identifierCount);
-    static bool NP_Construct(NPObject*, const NPVariant* arguments, uint32_t argumentCount, NPVariant* result);
-    
-    NPRuntimeObjectMap* m_objectMap;
+    static NPClass *npClass();
+    static NPObject *NP_Allocate( NPP, NPClass * );
+    static void NP_Deallocate( NPObject * );
+    static bool NP_HasMethod( NPObject *, NPIdentifier methodName );
+    static bool NP_Invoke( NPObject *, NPIdentifier methodName, const NPVariant *arguments, uint32_t argumentCount,
+                           NPVariant *result );
+    static bool NP_InvokeDefault( NPObject *, const NPVariant *arguments, uint32_t argumentCount, NPVariant *result );
+    static bool NP_HasProperty( NPObject *, NPIdentifier propertyName );
+    static bool NP_GetProperty( NPObject *, NPIdentifier propertyName, NPVariant *result );
+    static bool NP_SetProperty( NPObject *, NPIdentifier propertyName, const NPVariant *value );
+    static bool NP_RemoveProperty( NPObject *, NPIdentifier propertyName );
+    static bool NP_Enumerate( NPObject *, NPIdentifier **identifiers, uint32_t *identifierCount );
+    static bool NP_Construct( NPObject *, const NPVariant *arguments, uint32_t argumentCount, NPVariant *result );
+
+    NPRuntimeObjectMap *m_objectMap;
     JSC::Strong<JSC::JSObject> m_jsObject;
 };
 

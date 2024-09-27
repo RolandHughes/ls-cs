@@ -23,15 +23,18 @@
 #if ENABLE(SVG)
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-enum SVGPropertyRole {
+enum SVGPropertyRole
+{
     UndefinedRole,
     BaseValRole,
     AnimValRole
 };
 
-class SVGProperty : public RefCounted<SVGProperty> {
+class SVGProperty : public RefCounted<SVGProperty>
+{
 public:
     virtual ~SVGProperty() { }
 

@@ -26,9 +26,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSCoordinates);
+ASSERT_CLASS_FITS_IN_CELL( JSCoordinates );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -39,14 +40,14 @@ ASSERT_CLASS_FITS_IN_CELL(JSCoordinates);
 
 static const HashTableValue JSCoordinatesTableValues[8] =
 {
-    { "latitude", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsCoordinatesLatitude), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "longitude", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsCoordinatesLongitude), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "altitude", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsCoordinatesAltitude), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "accuracy", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsCoordinatesAccuracy), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "altitudeAccuracy", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsCoordinatesAltitudeAccuracy), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "heading", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsCoordinatesHeading), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "speed", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsCoordinatesSpeed), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "latitude", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsCoordinatesLatitude ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "longitude", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsCoordinatesLongitude ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "altitude", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsCoordinatesAltitude ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "accuracy", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsCoordinatesAccuracy ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "altitudeAccuracy", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsCoordinatesAltitudeAccuracy ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "heading", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsCoordinatesHeading ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "speed", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsCoordinatesSpeed ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -60,108 +61,109 @@ static JSC_CONST_HASHTABLE HashTable JSCoordinatesTable = { 16, 15, JSCoordinate
 
 static const HashTableValue JSCoordinatesPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSCoordinatesPrototypeTable = { 1, 0, JSCoordinatesPrototypeTableValues, 0 };
 const ClassInfo JSCoordinatesPrototype::s_info = { "CoordinatesPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSCoordinatesPrototypeTable, 0 };
 
-JSObject* JSCoordinatesPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSCoordinatesPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSCoordinates>(exec, globalObject);
+    return getDOMPrototype<JSCoordinates>( exec, globalObject );
 }
 
 const ClassInfo JSCoordinates::s_info = { "Coordinates", &JSDOMWrapper::s_info, &JSCoordinatesTable, 0 };
 
-JSCoordinates::JSCoordinates(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<Coordinates> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSCoordinates::JSCoordinates( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<Coordinates> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSCoordinates::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSCoordinates::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSCoordinatesPrototype(exec->globalData(), globalObject, JSCoordinatesPrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSCoordinatesPrototype( exec->globalData(), globalObject,
+            JSCoordinatesPrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSCoordinates::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSCoordinates::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSCoordinates, Base>(exec, &JSCoordinatesTable, this, propertyName, slot);
+    return getStaticValueSlot<JSCoordinates, Base>( exec, &JSCoordinatesTable, this, propertyName, slot );
 }
 
-bool JSCoordinates::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSCoordinates::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSCoordinates, Base>(exec, &JSCoordinatesTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSCoordinates, Base>( exec, &JSCoordinatesTable, this, propertyName, descriptor );
 }
 
-JSValue jsCoordinatesLatitude(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsCoordinatesLatitude( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSCoordinates* castedThis = static_cast<JSCoordinates*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    Coordinates* imp = static_cast<Coordinates*>(castedThis->impl());
-    JSValue result = jsNumber(imp->latitude());
+    JSCoordinates *castedThis = static_cast<JSCoordinates *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    Coordinates *imp = static_cast<Coordinates *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->latitude() );
     return result;
 }
 
 
-JSValue jsCoordinatesLongitude(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsCoordinatesLongitude( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSCoordinates* castedThis = static_cast<JSCoordinates*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    Coordinates* imp = static_cast<Coordinates*>(castedThis->impl());
-    JSValue result = jsNumber(imp->longitude());
+    JSCoordinates *castedThis = static_cast<JSCoordinates *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    Coordinates *imp = static_cast<Coordinates *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->longitude() );
     return result;
 }
 
 
-JSValue jsCoordinatesAltitude(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsCoordinatesAltitude( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSCoordinates* castedThis = static_cast<JSCoordinates*>(asObject(slotBase));
-    return castedThis->altitude(exec);
+    JSCoordinates *castedThis = static_cast<JSCoordinates *>( asObject( slotBase ) );
+    return castedThis->altitude( exec );
 }
 
 
-JSValue jsCoordinatesAccuracy(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsCoordinatesAccuracy( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSCoordinates* castedThis = static_cast<JSCoordinates*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    Coordinates* imp = static_cast<Coordinates*>(castedThis->impl());
-    JSValue result = jsNumber(imp->accuracy());
+    JSCoordinates *castedThis = static_cast<JSCoordinates *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    Coordinates *imp = static_cast<Coordinates *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->accuracy() );
     return result;
 }
 
 
-JSValue jsCoordinatesAltitudeAccuracy(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsCoordinatesAltitudeAccuracy( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSCoordinates* castedThis = static_cast<JSCoordinates*>(asObject(slotBase));
-    return castedThis->altitudeAccuracy(exec);
+    JSCoordinates *castedThis = static_cast<JSCoordinates *>( asObject( slotBase ) );
+    return castedThis->altitudeAccuracy( exec );
 }
 
 
-JSValue jsCoordinatesHeading(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsCoordinatesHeading( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSCoordinates* castedThis = static_cast<JSCoordinates*>(asObject(slotBase));
-    return castedThis->heading(exec);
+    JSCoordinates *castedThis = static_cast<JSCoordinates *>( asObject( slotBase ) );
+    return castedThis->heading( exec );
 }
 
 
-JSValue jsCoordinatesSpeed(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsCoordinatesSpeed( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSCoordinates* castedThis = static_cast<JSCoordinates*>(asObject(slotBase));
-    return castedThis->speed(exec);
+    JSCoordinates *castedThis = static_cast<JSCoordinates *>( asObject( slotBase ) );
+    return castedThis->speed( exec );
 }
 
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, Coordinates* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, Coordinates *impl )
 {
-    return wrap<JSCoordinates>(exec, globalObject, impl);
+    return wrap<JSCoordinates>( exec, globalObject, impl );
 }
 
-Coordinates* toCoordinates(JSC::JSValue value)
+Coordinates *toCoordinates( JSC::JSValue value )
 {
-    return value.inherits(&JSCoordinates::s_info) ? static_cast<JSCoordinates*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSCoordinates::s_info ) ? static_cast<JSCoordinates *>( asObject( value ) )->impl() : 0;
 }
 
 }

@@ -26,16 +26,19 @@
 #ifndef Attachment_h
 #define Attachment_h
 
-namespace CoreIPC {
+namespace CoreIPC
+{
 
 class ArgumentDecoder;
 class ArgumentEncoder;
 
-class Attachment {
+class Attachment
+{
 public:
     Attachment();
 
-    enum Type {
+    enum Type
+    {
         Uninitialized,
 #if PLATFORM(MAC)
         MachPortType,
@@ -46,49 +49,90 @@ public:
     };
 
 #if PLATFORM(MAC)
-    Attachment(mach_port_name_t port, mach_msg_type_name_t disposition);
-    Attachment(void* address, mach_msg_size_t size, mach_msg_copy_options_t copyOptions, bool deallocate);
+    Attachment( mach_port_name_t port, mach_msg_type_name_t disposition );
+    Attachment( void *address, mach_msg_size_t size, mach_msg_copy_options_t copyOptions, bool deallocate );
 #elif USE(UNIX_DOMAIN_SOCKETS)
-    Attachment(int fileDescriptor, size_t);
+    Attachment( int fileDescriptor, size_t );
 #endif
 
-    Type type() const { return m_type; }
+    Type type() const
+    {
+        return m_type;
+    }
 
 #if PLATFORM(MAC)
     void release();
 
     // MachPortType
-    mach_port_name_t port() const { ASSERT(m_type == MachPortType); return m_port.port; }
-    mach_msg_type_name_t disposition() const { ASSERT(m_type == MachPortType); return m_port.disposition; }
+    mach_port_name_t port() const
+    {
+        ASSERT( m_type == MachPortType );
+        return m_port.port;
+    }
+    mach_msg_type_name_t disposition() const
+    {
+        ASSERT( m_type == MachPortType );
+        return m_port.disposition;
+    }
 
     // MachOOLMemoryType
-    void* address() const { ASSERT(m_type == MachOOLMemoryType); return m_oolMemory.address; }
-    mach_msg_size_t size() const { ASSERT(m_type == MachOOLMemoryType); return m_oolMemory.size; }
-    mach_msg_copy_options_t copyOptions() const { ASSERT(m_type == MachOOLMemoryType); return m_oolMemory.copyOptions; }
-    bool deallocate() const { ASSERT(m_type == MachOOLMemoryType); return m_oolMemory.deallocate; }
+    void *address() const
+    {
+        ASSERT( m_type == MachOOLMemoryType );
+        return m_oolMemory.address;
+    }
+    mach_msg_size_t size() const
+    {
+        ASSERT( m_type == MachOOLMemoryType );
+        return m_oolMemory.size;
+    }
+    mach_msg_copy_options_t copyOptions() const
+    {
+        ASSERT( m_type == MachOOLMemoryType );
+        return m_oolMemory.copyOptions;
+    }
+    bool deallocate() const
+    {
+        ASSERT( m_type == MachOOLMemoryType );
+        return m_oolMemory.deallocate;
+    }
 #elif USE(UNIX_DOMAIN_SOCKETS)
-    size_t size() const { return m_size; }
+    size_t size() const
+    {
+        return m_size;
+    }
 
-    int releaseFileDescriptor() { int temp = m_fileDescriptor; m_fileDescriptor = -1; return temp; }
-    int fileDescriptor() const { return m_fileDescriptor; }
+    int releaseFileDescriptor()
+    {
+        int temp = m_fileDescriptor;
+        m_fileDescriptor = -1;
+        return temp;
+    }
+    int fileDescriptor() const
+    {
+        return m_fileDescriptor;
+    }
 
     void dispose();
 #endif
 
-    void encode(ArgumentEncoder*) const;
-    static bool decode(ArgumentDecoder*, Attachment&);
-    
+    void encode( ArgumentEncoder * ) const;
+    static bool decode( ArgumentDecoder *, Attachment & );
+
 private:
     Type m_type;
 
 #if PLATFORM(MAC)
-    union {
-        struct {
+    union
+    {
+        struct
+        {
             mach_port_name_t port;
             mach_msg_type_name_t disposition;
         } m_port;
-        struct {
-            void* address;
+        struct
+        {
+            void *address;
             mach_msg_size_t size;
             mach_msg_copy_options_t copyOptions;
             bool deallocate;

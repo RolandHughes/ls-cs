@@ -24,30 +24,33 @@
 #ifndef QReferenceCountedValue_P_H
 #define QReferenceCountedValue_P_H
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 template<typename T>
 class ReferenceCountedValue : public QSharedData
 {
- public:
-   typedef QExplicitlySharedDataPointer<ReferenceCountedValue<T> > Ptr;
+public:
+    typedef QExplicitlySharedDataPointer<ReferenceCountedValue<T> > Ptr;
 
-   inline ReferenceCountedValue(T *const v) : value(v) {
-   }
+    inline ReferenceCountedValue( T *const v ) : value( v )
+    {
+    }
 
-   inline ~ReferenceCountedValue() {
-      delete value;
-   }
+    inline ~ReferenceCountedValue()
+    {
+        delete value;
+    }
 
-   T *const value;
+    T *const value;
 
- private:
+private:
 
-   // Disabled, no implementation provided
-   inline ReferenceCountedValue();
+    // Disabled, no implementation provided
+    inline ReferenceCountedValue();
 
-   ReferenceCountedValue(const ReferenceCountedValue &) = delete;
-   ReferenceCountedValue &operator=(const ReferenceCountedValue &) = delete;
+    ReferenceCountedValue( const ReferenceCountedValue & ) = delete;
+    ReferenceCountedValue &operator=( const ReferenceCountedValue & ) = delete;
 };
 
 }

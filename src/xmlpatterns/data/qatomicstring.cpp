@@ -27,26 +27,26 @@
 
 using namespace QPatternist;
 
-AtomicString::AtomicString(const QString &s) : m_value(s)
+AtomicString::AtomicString( const QString &s ) : m_value( s )
 {
 }
 
-AtomicString::Ptr AtomicString::fromValue(const QString &value)
+AtomicString::Ptr AtomicString::fromValue( const QString &value )
 {
-   return AtomicString::Ptr(new AtomicString(value));
+    return AtomicString::Ptr( new AtomicString( value ) );
 }
 
-bool AtomicString::evaluateEBV(const QExplicitlySharedDataPointer<DynamicContext> &) const
+bool AtomicString::evaluateEBV( const QExplicitlySharedDataPointer<DynamicContext> & ) const
 {
-   return m_value.length() > 0;
+    return m_value.length() > 0;
 }
 
 QString AtomicString::stringValue() const
 {
-   return m_value;
+    return m_value;
 }
 
 ItemType::Ptr AtomicString::type() const
 {
-   return BuiltinTypes::xsString;
+    return BuiltinTypes::xsString;
 }

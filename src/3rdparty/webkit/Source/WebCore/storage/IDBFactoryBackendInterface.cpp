@@ -36,7 +36,8 @@
 
 #if ENABLE(INDEXED_DATABASE)
 
-namespace WebCore {
+namespace WebCore
+{
 
 PassRefPtr<IDBFactoryBackendInterface> IDBFactoryBackendInterface::create()
 {

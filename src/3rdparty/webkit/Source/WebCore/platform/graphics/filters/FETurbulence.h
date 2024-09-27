@@ -28,55 +28,62 @@
 #include "FilterEffect.h"
 #include "Filter.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-enum TurbulenceType {
+enum TurbulenceType
+{
     FETURBULENCE_TYPE_UNKNOWN = 0,
     FETURBULENCE_TYPE_FRACTALNOISE = 1,
     FETURBULENCE_TYPE_TURBULENCE = 2
 };
 
-class FETurbulence : public FilterEffect {
+class FETurbulence : public FilterEffect
+{
 public:
-    static PassRefPtr<FETurbulence> create(Filter*, TurbulenceType, float, float, int, float, bool);
+    static PassRefPtr<FETurbulence> create( Filter *, TurbulenceType, float, float, int, float, bool );
 
     TurbulenceType type() const;
-    bool setType(TurbulenceType);
+    bool setType( TurbulenceType );
 
     float baseFrequencyY() const;
-    bool setBaseFrequencyY(float);
+    bool setBaseFrequencyY( float );
 
     float baseFrequencyX() const;
-    bool setBaseFrequencyX(float);
+    bool setBaseFrequencyX( float );
 
     float seed() const;
-    bool setSeed(float);
+    bool setSeed( float );
 
     int numOctaves() const;
-    bool setNumOctaves(int);
+    bool setNumOctaves( int );
 
     bool stitchTiles() const;
-    bool setStitchTiles(bool);
+    bool setStitchTiles( bool );
 
 #if ENABLE(PARALLEL_JOBS)
-    static void fillRegionWorker(void*);
+    static void fillRegionWorker( void * );
 #endif
 
     virtual void apply();
     virtual void dump();
-    
-    virtual void determineAbsolutePaintRect() { setAbsolutePaintRect(maxEffectRect()); }
 
-    virtual TextStream& externalRepresentation(TextStream&, int indention) const;
+    virtual void determineAbsolutePaintRect()
+    {
+        setAbsolutePaintRect( maxEffectRect() );
+    }
+
+    virtual TextStream &externalRepresentation( TextStream &, int indention ) const;
 
 private:
     static const int s_blockSize = 256;
     static const int s_blockMask = s_blockSize - 1;
 #if ENABLE(PARALLEL_JOBS)
-    static const int s_minimalRectDimension = (100 * 100); // Empirical data limit for parallel jobs
+    static const int s_minimalRectDimension = ( 100 * 100 ); // Empirical data limit for parallel jobs
 #endif
 
-    struct PaintingData {
+    struct PaintingData
+    {
         long seed;
         int latticeSelector[2 * s_blockSize + 2];
         float gradient[4][2 * s_blockSize + 2][2];
@@ -86,7 +93,7 @@ private:
         int wrapY;
         IntSize filterSize;
 
-        PaintingData(long paintingSeed, const IntSize& paintingSize);
+        PaintingData( long paintingSeed, const IntSize &paintingSize );
         inline long random();
     };
 
@@ -94,23 +101,24 @@ private:
     template<typename Type>
     friend class ParallelJobs;
 
-    struct FillRegionParameters {
-        FETurbulence* filter;
-        ByteArray* pixelArray;
-        PaintingData* paintingData;
+    struct FillRegionParameters
+    {
+        FETurbulence *filter;
+        ByteArray *pixelArray;
+        PaintingData *paintingData;
         int startY;
         int endY;
     };
 
-    static void fillRegionWorker(FillRegionParameters*);
+    static void fillRegionWorker( FillRegionParameters * );
 #endif
 
-    FETurbulence(Filter*, TurbulenceType, float, float, int, float, bool);
+    FETurbulence( Filter *, TurbulenceType, float, float, int, float, bool );
 
-    inline void initPaint(PaintingData&);
-    float noise2D(int channel, PaintingData&, const FloatPoint&);
-    unsigned char calculateTurbulenceValueForPoint(int channel, PaintingData&, const FloatPoint&);
-    inline void fillRegion(ByteArray*, PaintingData&, int, int);
+    inline void initPaint( PaintingData & );
+    float noise2D( int channel, PaintingData &, const FloatPoint & );
+    unsigned char calculateTurbulenceValueForPoint( int channel, PaintingData &, const FloatPoint & );
+    inline void fillRegion( ByteArray *, PaintingData &, int, int );
 
     TurbulenceType m_type;
     float m_baseFrequencyX;

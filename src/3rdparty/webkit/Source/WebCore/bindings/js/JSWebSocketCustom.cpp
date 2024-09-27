@@ -42,34 +42,53 @@
 
 using namespace JSC;
 
-namespace WebCore {
-
-EncodedJSValue JSC_HOST_CALL JSWebSocketConstructor::constructJSWebSocket(ExecState* exec)
+namespace WebCore
 {
-    JSWebSocketConstructor* jsConstructor = static_cast<JSWebSocketConstructor*>(exec->callee());
-    ScriptExecutionContext* context = jsConstructor->scriptExecutionContext();
-    if (!context)
-        return throwVMError(exec, createReferenceError(exec, "WebSocket constructor associated document is unavailable"));
 
-    if (!exec->argumentCount())
-        return throwVMError(exec, createSyntaxError(exec, "Not enough arguments"));
+EncodedJSValue JSC_HOST_CALL JSWebSocketConstructor::constructJSWebSocket( ExecState *exec )
+{
+    JSWebSocketConstructor *jsConstructor = static_cast<JSWebSocketConstructor *>( exec->callee() );
+    ScriptExecutionContext *context = jsConstructor->scriptExecutionContext();
 
-    String urlString = ustringToString(exec->argument(0).toString(exec));
-    if (exec->hadException())
-        return throwVMError(exec, createSyntaxError(exec, "wrong URL"));
-    KURL url = context->completeURL(urlString);
-    RefPtr<WebSocket> webSocket = WebSocket::create(context);
-    ExceptionCode ec = 0;
-    if (exec->argumentCount() < 2)
-        webSocket->connect(url, ec);
-    else {
-        String protocol = ustringToString(exec->argument(1).toString(exec));
-        if (exec->hadException())
-            return JSValue::encode(JSValue());
-        webSocket->connect(url, protocol, ec);
+    if ( !context )
+    {
+        return throwVMError( exec, createReferenceError( exec, "WebSocket constructor associated document is unavailable" ) );
     }
-    setDOMException(exec, ec);
-    return JSValue::encode(CREATE_DOM_WRAPPER(exec, jsConstructor->globalObject(), WebSocket, webSocket.get()));
+
+    if ( !exec->argumentCount() )
+    {
+        return throwVMError( exec, createSyntaxError( exec, "Not enough arguments" ) );
+    }
+
+    String urlString = ustringToString( exec->argument( 0 ).toString( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return throwVMError( exec, createSyntaxError( exec, "wrong URL" ) );
+    }
+
+    KURL url = context->completeURL( urlString );
+    RefPtr<WebSocket> webSocket = WebSocket::create( context );
+    ExceptionCode ec = 0;
+
+    if ( exec->argumentCount() < 2 )
+    {
+        webSocket->connect( url, ec );
+    }
+    else
+    {
+        String protocol = ustringToString( exec->argument( 1 ).toString( exec ) );
+
+        if ( exec->hadException() )
+        {
+            return JSValue::encode( JSValue() );
+        }
+
+        webSocket->connect( url, protocol, ec );
+    }
+
+    setDOMException( exec, ec );
+    return JSValue::encode( CREATE_DOM_WRAPPER( exec, jsConstructor->globalObject(), WebSocket, webSocket.get() ) );
 }
 
 } // namespace WebCore

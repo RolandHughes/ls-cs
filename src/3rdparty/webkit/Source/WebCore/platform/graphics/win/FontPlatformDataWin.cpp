@@ -33,45 +33,47 @@
 
 using std::min;
 
-namespace WebCore {
-
-FontPlatformData::FontPlatformData(HFONT font, float size, bool bold, bool oblique, bool useGDI)
-    : m_font(RefCountedGDIHandle<HFONT>::create(font))
-    , m_size(size)
-    , m_orientation(Horizontal)
-    , m_textOrientation(TextOrientationVerticalRight)
-    , m_widthVariant(RegularWidth)
-#if USE(CG)
-    , m_cgFont(0)
-#elif USE(CAIRO)
-    , m_scaledFont(0)
-#endif
-    , m_isColorBitmapFont(false)
-    , m_syntheticBold(bold)
-    , m_syntheticOblique(oblique)
-    , m_useGDI(useGDI)
+namespace WebCore
 {
-    HDC hdc = GetDC(0);
-    SaveDC(hdc);
-    
-    SelectObject(hdc, font);
-    UINT bufferSize = GetOutlineTextMetrics(hdc, 0, NULL);
 
-    ASSERT_WITH_MESSAGE(bufferSize, "Bitmap fonts not supported with CoreGraphics.");
+FontPlatformData::FontPlatformData( HFONT font, float size, bool bold, bool oblique, bool useGDI )
+    : m_font( RefCountedGDIHandle<HFONT>::create( font ) )
+    , m_size( size )
+    , m_orientation( Horizontal )
+    , m_textOrientation( TextOrientationVerticalRight )
+    , m_widthVariant( RegularWidth )
+#if USE(CG)
+    , m_cgFont( 0 )
+#elif USE(CAIRO)
+    , m_scaledFont( 0 )
+#endif
+    , m_isColorBitmapFont( false )
+    , m_syntheticBold( bold )
+    , m_syntheticOblique( oblique )
+    , m_useGDI( useGDI )
+{
+    HDC hdc = GetDC( 0 );
+    SaveDC( hdc );
 
-    if (bufferSize) {
-        OUTLINETEXTMETRICW* metrics = (OUTLINETEXTMETRICW*)malloc(bufferSize);
+    SelectObject( hdc, font );
+    UINT bufferSize = GetOutlineTextMetrics( hdc, 0, NULL );
 
-        GetOutlineTextMetricsW(hdc, bufferSize, metrics);
-        WCHAR* faceName = (WCHAR*)((uintptr_t)metrics + (uintptr_t)metrics->otmpFaceName);
+    ASSERT_WITH_MESSAGE( bufferSize, "Bitmap fonts not supported with CoreGraphics." );
 
-        platformDataInit(font, size, hdc, faceName);
+    if ( bufferSize )
+    {
+        OUTLINETEXTMETRICW *metrics = ( OUTLINETEXTMETRICW * )malloc( bufferSize );
 
-        free(metrics);
+        GetOutlineTextMetricsW( hdc, bufferSize, metrics );
+        WCHAR *faceName = ( WCHAR * )( ( uintptr_t )metrics + ( uintptr_t )metrics->otmpFaceName );
+
+        platformDataInit( font, size, hdc, faceName );
+
+        free( metrics );
     }
 
-    RestoreDC(hdc, -1);
-    ReleaseDC(0, hdc);
+    RestoreDC( hdc, -1 );
+    ReleaseDC( 0, hdc );
 }
 
 #ifndef NDEBUG

@@ -26,10 +26,11 @@
 #include "config.h"
 #include "WebNavigationData.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
-WebNavigationData::WebNavigationData(const WebNavigationDataStore& store)
-    : m_store(store)
+WebNavigationData::WebNavigationData( const WebNavigationDataStore &store )
+    : m_store( store )
 {
 }
 

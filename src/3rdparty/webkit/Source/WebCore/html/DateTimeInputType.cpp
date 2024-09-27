@@ -37,19 +37,20 @@
 #include <wtf/CurrentTime.h>
 #include <wtf/PassOwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
 static const double dateTimeDefaultStep = 60.0;
 static const double dateTimeStepScaleFactor = 1000.0;
 
-PassOwnPtr<InputType> DateTimeInputType::create(HTMLInputElement* element)
+PassOwnPtr<InputType> DateTimeInputType::create( HTMLInputElement *element )
 {
-    return adoptPtr(new DateTimeInputType(element));
+    return adoptPtr( new DateTimeInputType( element ) );
 }
 
-const AtomicString& DateTimeInputType::formControlType() const
+const AtomicString &DateTimeInputType::formControlType() const
 {
     return InputTypeNames::datetime();
 }
@@ -66,12 +67,12 @@ double DateTimeInputType::defaultValueForStepUp() const
 
 double DateTimeInputType::minimum() const
 {
-    return parseToDouble(element()->fastGetAttribute(minAttr), DateComponents::minimumDateTime());
+    return parseToDouble( element()->fastGetAttribute( minAttr ), DateComponents::minimumDateTime() );
 }
 
 double DateTimeInputType::maximum() const
 {
-    return parseToDouble(element()->fastGetAttribute(maxAttr), DateComponents::maximumDateTime());
+    return parseToDouble( element()->fastGetAttribute( maxAttr ), DateComponents::maximumDateTime() );
 }
 
 double DateTimeInputType::defaultStep() const
@@ -89,17 +90,17 @@ bool DateTimeInputType::scaledStepValueShouldBeInteger() const
     return true;
 }
 
-bool DateTimeInputType::parseToDateComponentsInternal(const UChar* characters, unsigned length, DateComponents* out) const
+bool DateTimeInputType::parseToDateComponentsInternal( const UChar *characters, unsigned length, DateComponents *out ) const
 {
-    ASSERT(out);
+    ASSERT( out );
     unsigned end;
-    return out->parseDateTime(characters, length, 0, end) && end == length;
+    return out->parseDateTime( characters, length, 0, end ) && end == length;
 }
 
-bool DateTimeInputType::setMillisecondToDateComponents(double value, DateComponents* date) const
+bool DateTimeInputType::setMillisecondToDateComponents( double value, DateComponents *date ) const
 {
-    ASSERT(date);
-    return date->setMillisecondsSinceEpochForDateTime(value);
+    ASSERT( date );
+    return date->setMillisecondsSinceEpochForDateTime( value );
 }
 
 } // namespace WebCore

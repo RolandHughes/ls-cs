@@ -29,55 +29,78 @@
 
 using namespace std;
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-StepRange::StepRange(const HTMLInputElement* element)
+StepRange::StepRange( const HTMLInputElement *element )
 {
-    if (element->hasAttribute(precisionAttr)) {
+    if ( element->hasAttribute( precisionAttr ) )
+    {
         step = 1.0;
-        hasStep = !equalIgnoringCase(element->getAttribute(precisionAttr), "float");
-    } else
-        hasStep = element->getAllowedValueStep(&step);
+        hasStep = !equalIgnoringCase( element->getAttribute( precisionAttr ), "float" );
+    }
+    else
+    {
+        hasStep = element->getAllowedValueStep( &step );
+    }
 
     maximum = element->maximum();
     minimum = element->minimum();
 }
 
-double StepRange::clampValue(double value)
+double StepRange::clampValue( double value )
 {
-    double clampedValue = max(minimum, min(value, maximum));
-    if (!hasStep)
+    double clampedValue = max( minimum, min( value, maximum ) );
+
+    if ( !hasStep )
+    {
         return clampedValue;
+    }
+
     // Rounds clampedValue to minimum + N * step.
-    clampedValue = minimum + round((clampedValue - minimum) / step) * step;
-    if (clampedValue > maximum)
-       clampedValue -= step;
-    ASSERT(clampedValue >= minimum);
-    ASSERT(clampedValue <= maximum);
+    clampedValue = minimum + round( ( clampedValue - minimum ) / step ) * step;
+
+    if ( clampedValue > maximum )
+    {
+        clampedValue -= step;
+    }
+
+    ASSERT( clampedValue >= minimum );
+    ASSERT( clampedValue <= maximum );
     return clampedValue;
 }
 
-double StepRange::clampValue(const String& stringValue)
+double StepRange::clampValue( const String &stringValue )
 {
     double value;
-    bool parseSuccess = parseToDoubleForNumberType(stringValue, &value);
-    if (!parseSuccess)
-        value = (minimum + maximum) / 2;
-    return clampValue(value);
+    bool parseSuccess = parseToDoubleForNumberType( stringValue, &value );
+
+    if ( !parseSuccess )
+    {
+        value = ( minimum + maximum ) / 2;
+    }
+
+    return clampValue( value );
 }
 
-double StepRange::valueFromElement(HTMLInputElement* element, bool* wasClamped)
+double StepRange::valueFromElement( HTMLInputElement *element, bool *wasClamped )
 {
     double oldValue;
-    bool parseSuccess = parseToDoubleForNumberType(element->value(), &oldValue);
-    if (!parseSuccess)
-        oldValue = (minimum + maximum) / 2;
-    double newValue = clampValue(oldValue);
+    bool parseSuccess = parseToDoubleForNumberType( element->value(), &oldValue );
 
-    if (wasClamped)
+    if ( !parseSuccess )
+    {
+        oldValue = ( minimum + maximum ) / 2;
+    }
+
+    double newValue = clampValue( oldValue );
+
+    if ( wasClamped )
+    {
         *wasClamped = !parseSuccess || newValue != oldValue;
+    }
 
     return newValue;
 }

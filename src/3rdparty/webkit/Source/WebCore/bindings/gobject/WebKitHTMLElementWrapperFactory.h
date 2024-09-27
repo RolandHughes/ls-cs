@@ -32,12 +32,14 @@
 
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 class HTMLElement;
 }
 
-namespace WebKit {
-gpointer createHTMLElementWrapper(PassRefPtr<WebCore::HTMLElement>);
+namespace WebKit
+{
+gpointer createHTMLElementWrapper( PassRefPtr<WebCore::HTMLElement> );
 }
 
 #endif // WebKitHTMLElementWrapperFactory_h

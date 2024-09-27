@@ -29,17 +29,19 @@
 #include "ArgumentCoders.h"
 #include <wtf/NotFound.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
-struct EditorState {
+struct EditorState
+{
     EditorState()
-        : selectionIsNone(true)
-        , selectionIsRange(false)
-        , isContentEditable(false)
-        , isContentRichlyEditable(false)
-        , isInPasswordField(false)
-        , hasComposition(false)
-        , shouldIgnoreCompositionSelectionChange(false)
+        : selectionIsNone( true )
+        , selectionIsRange( false )
+        , isContentEditable( false )
+        , isContentRichlyEditable( false )
+        , isInPasswordField( false )
+        , hasComposition( false )
+        , shouldIgnoreCompositionSelectionChange( false )
     {
     }
 
@@ -54,7 +56,8 @@ struct EditorState {
 
 }
 
-namespace CoreIPC {
+namespace CoreIPC
+{
 template<> struct ArgumentCoder<WebKit::EditorState> : SimpleArgumentCoder<WebKit::EditorState> { };
 };
 

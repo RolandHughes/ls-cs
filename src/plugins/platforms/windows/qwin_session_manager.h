@@ -28,46 +28,52 @@
 
 class QWindowsSessionManager : public QPlatformSessionManager
 {
- public:
-   explicit QWindowsSessionManager(const QString &id, const QString &key);
+public:
+    explicit QWindowsSessionManager( const QString &id, const QString &key );
 
-   QWindowsSessionManager(const QWindowsSessionManager &) = delete;
-   QWindowsSessionManager &operator=(const QWindowsSessionManager &) = delete;
+    QWindowsSessionManager( const QWindowsSessionManager & ) = delete;
+    QWindowsSessionManager &operator=( const QWindowsSessionManager & ) = delete;
 
-   bool allowsInteraction() override;
-   bool allowsErrorInteraction() override;
+    bool allowsInteraction() override;
+    bool allowsErrorInteraction() override;
 
-   void blocksInteraction() {
-      m_blockUserInput = true;
-   }
+    void blocksInteraction()
+    {
+        m_blockUserInput = true;
+    }
 
-   bool isInteractionBlocked() const {
-      return m_blockUserInput;
-   }
+    bool isInteractionBlocked() const
+    {
+        return m_blockUserInput;
+    }
 
-   void release() override;
+    void release() override;
 
-   void cancel() override;
-   void clearCancellation() {
-      m_canceled = false;
-   }
+    void cancel() override;
+    void clearCancellation()
+    {
+        m_canceled = false;
+    }
 
-   bool wasCanceled() const {
-      return m_canceled;
-   }
+    bool wasCanceled() const
+    {
+        return m_canceled;
+    }
 
-   void setActive(bool active) {
-      m_isActive = active;
-   }
+    void setActive( bool active )
+    {
+        m_isActive = active;
+    }
 
-   bool isActive() const {
-      return m_isActive;
-   }
+    bool isActive() const
+    {
+        return m_isActive;
+    }
 
- private:
-   bool m_isActive;
-   bool m_blockUserInput;
-   bool m_canceled;
+private:
+    bool m_isActive;
+    bool m_blockUserInput;
+    bool m_canceled;
 };
 
 #endif

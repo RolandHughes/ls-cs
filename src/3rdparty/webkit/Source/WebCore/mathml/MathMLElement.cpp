@@ -34,59 +34,84 @@
 #include "MathMLNames.h"
 #include "RenderObject.h"
 
-namespace WebCore {
-    
+namespace WebCore
+{
+
 using namespace MathMLNames;
-    
-MathMLElement::MathMLElement(const QualifiedName& tagName, Document* document)
-    : StyledElement(tagName, document, CreateStyledElement)
+
+MathMLElement::MathMLElement( const QualifiedName &tagName, Document *document )
+    : StyledElement( tagName, document, CreateStyledElement )
 {
-}
-    
-PassRefPtr<MathMLElement> MathMLElement::create(const QualifiedName& tagName, Document* document)
-{
-    return adoptRef(new MathMLElement(tagName, document));
 }
 
-bool MathMLElement::mapToEntry(const QualifiedName& attrName, MappedAttributeEntry& result) const
+PassRefPtr<MathMLElement> MathMLElement::create( const QualifiedName &tagName, Document *document )
 {
-    if (attrName == mathcolorAttr || attrName == mathbackgroundAttr
-        || attrName == colorAttr || attrName == backgroundAttr
-        || attrName == fontsizeAttr || attrName == fontstyleAttr
-        || attrName == fontweightAttr || attrName == fontfamilyAttr) {
+    return adoptRef( new MathMLElement( tagName, document ) );
+}
+
+bool MathMLElement::mapToEntry( const QualifiedName &attrName, MappedAttributeEntry &result ) const
+{
+    if ( attrName == mathcolorAttr || attrName == mathbackgroundAttr
+            || attrName == colorAttr || attrName == backgroundAttr
+            || attrName == fontsizeAttr || attrName == fontstyleAttr
+            || attrName == fontweightAttr || attrName == fontfamilyAttr )
+    {
         result = eMathML;
         return false;
     }
-    return StyledElement::mapToEntry(attrName, result);
+
+    return StyledElement::mapToEntry( attrName, result );
 }
 
-void MathMLElement::parseMappedAttribute(Attribute* attr)
+void MathMLElement::parseMappedAttribute( Attribute *attr )
 {
-    if (attr->name() == mathbackgroundAttr)
-        addCSSProperty(attr, CSSPropertyBackgroundColor, attr->value());
-    else if (attr->name() == mathsizeAttr) {
+    if ( attr->name() == mathbackgroundAttr )
+    {
+        addCSSProperty( attr, CSSPropertyBackgroundColor, attr->value() );
+    }
+    else if ( attr->name() == mathsizeAttr )
+    {
         // The following three values of mathsize are handled in WebCore/css/mathml.css
-        if (attr->value() != "normal" && attr->value() != "small" && attr->value() != "big")
-            addCSSProperty(attr, CSSPropertyFontSize, attr->value());
-    } else if (attr->name() == mathcolorAttr)
-        addCSSProperty(attr, CSSPropertyColor, attr->value());
+        if ( attr->value() != "normal" && attr->value() != "small" && attr->value() != "big" )
+        {
+            addCSSProperty( attr, CSSPropertyFontSize, attr->value() );
+        }
+    }
+    else if ( attr->name() == mathcolorAttr )
+    {
+        addCSSProperty( attr, CSSPropertyColor, attr->value() );
+    }
     // FIXME: deprecated attributes that should loose in a conflict with a non deprecated attribute
-    else if (attr->name() == fontsizeAttr)
-        addCSSProperty(attr, CSSPropertyFontSize, attr->value());
-    else if (attr->name() == backgroundAttr)
-        addCSSProperty(attr, CSSPropertyBackgroundColor, attr->value());
-    else if (attr->name() == colorAttr)
-        addCSSProperty(attr, CSSPropertyColor, attr->value());
-    else if (attr->name() == fontstyleAttr)
-        addCSSProperty(attr, CSSPropertyFontStyle, attr->value());
-    else if (attr->name() == fontweightAttr)
-        addCSSProperty(attr, CSSPropertyFontWeight, attr->value());
-    else if (attr->name() == fontfamilyAttr)
-        addCSSProperty(attr, CSSPropertyFontFamily, attr->value());
+    else if ( attr->name() == fontsizeAttr )
+    {
+        addCSSProperty( attr, CSSPropertyFontSize, attr->value() );
+    }
+    else if ( attr->name() == backgroundAttr )
+    {
+        addCSSProperty( attr, CSSPropertyBackgroundColor, attr->value() );
+    }
+    else if ( attr->name() == colorAttr )
+    {
+        addCSSProperty( attr, CSSPropertyColor, attr->value() );
+    }
+    else if ( attr->name() == fontstyleAttr )
+    {
+        addCSSProperty( attr, CSSPropertyFontStyle, attr->value() );
+    }
+    else if ( attr->name() == fontweightAttr )
+    {
+        addCSSProperty( attr, CSSPropertyFontWeight, attr->value() );
+    }
+    else if ( attr->name() == fontfamilyAttr )
+    {
+        addCSSProperty( attr, CSSPropertyFontFamily, attr->value() );
+    }
     else
-        StyledElement::parseMappedAttribute(attr);
+    {
+        StyledElement::parseMappedAttribute( attr );
+    }
 }
-    
+
 }
 
 #endif // ENABLE(MATHML)

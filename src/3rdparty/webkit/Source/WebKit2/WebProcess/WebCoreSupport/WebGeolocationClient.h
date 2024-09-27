@@ -30,14 +30,16 @@
 
 #include <WebCore/GeolocationClient.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 class WebPage;
 
-class WebGeolocationClient : public WebCore::GeolocationClient {
+class WebGeolocationClient : public WebCore::GeolocationClient
+{
 public:
-    WebGeolocationClient(WebPage* page)
-        : m_page(page)
+    WebGeolocationClient( WebPage *page )
+        : m_page( page )
     {
     }
 
@@ -48,15 +50,15 @@ private:
 
     virtual void startUpdating();
     virtual void stopUpdating();
-    virtual void setEnableHighAccuracy(bool);
+    virtual void setEnableHighAccuracy( bool );
 
-    virtual WebCore::GeolocationPosition* lastPosition();
+    virtual WebCore::GeolocationPosition *lastPosition();
 
-    virtual void requestPermission(WebCore::Geolocation*);
-    virtual void cancelPermissionRequest(WebCore::Geolocation*);
+    virtual void requestPermission( WebCore::Geolocation * );
+    virtual void cancelPermissionRequest( WebCore::Geolocation * );
 
 
-    WebPage* m_page;
+    WebPage *m_page;
 };
 
 } // namespace WebKit

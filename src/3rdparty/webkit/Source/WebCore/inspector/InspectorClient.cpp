@@ -39,28 +39,37 @@
 #include "ScriptSourceCode.h"
 #include "ScriptValue.h"
 
-namespace WebCore {
-
-bool InspectorClient::doDispatchMessageOnFrontendPage(Page* frontendPage, const String& message)
+namespace WebCore
 {
-    if (!frontendPage)
-        return false;
 
-    Frame* frame = frontendPage->mainFrame();
-    if (!frame)
+bool InspectorClient::doDispatchMessageOnFrontendPage( Page *frontendPage, const String &message )
+{
+    if ( !frontendPage )
+    {
         return false;
+    }
 
-    ScriptController* scriptController = frame->script();
-    if (!scriptController)
+    Frame *frame = frontendPage->mainFrame();
+
+    if ( !frame )
+    {
         return false;
+    }
 
-    String dispatchToFrontend("WebInspector.dispatchMessageFromBackend(");
+    ScriptController *scriptController = frame->script();
+
+    if ( !scriptController )
+    {
+        return false;
+    }
+
+    String dispatchToFrontend( "WebInspector.dispatchMessageFromBackend(" );
     dispatchToFrontend += message;
     dispatchToFrontend += ");";
 
     // Do not call executeInWorld here since it will end up calling Document::updateStyleForAllDocuments().
     // As a result we might re-enter CSSStyleSelector::styleForElement() which is terrible.
-    scriptController->evaluate(ScriptSourceCode(dispatchToFrontend));
+    scriptController->evaluate( ScriptSourceCode( dispatchToFrontend ) );
     return true;
 }
 

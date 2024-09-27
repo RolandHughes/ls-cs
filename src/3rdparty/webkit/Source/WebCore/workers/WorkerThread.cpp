@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
 
@@ -45,11 +45,12 @@
 #include "DatabaseTracker.h"
 #endif
 
-namespace WebCore {
-
-static Mutex& threadCountMutex()
+namespace WebCore
 {
-    AtomicallyInitializedStatic(Mutex&, mutex = *new Mutex);
+
+static Mutex &threadCountMutex()
+{
+    AtomicallyInitializedStatic( Mutex &, mutex = *new Mutex );
     return mutex;
 }
 
@@ -57,82 +58,88 @@ unsigned WorkerThread::m_threadCount = 0;
 
 unsigned WorkerThread::workerThreadCount()
 {
-    MutexLocker lock(threadCountMutex());
+    MutexLocker lock( threadCountMutex() );
     return m_threadCount;
 }
 
-struct WorkerThreadStartupData {
-    WTF_MAKE_NONCOPYABLE(WorkerThreadStartupData); WTF_MAKE_FAST_ALLOCATED;
+struct WorkerThreadStartupData
+{
+    WTF_MAKE_NONCOPYABLE( WorkerThreadStartupData );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
-    static PassOwnPtr<WorkerThreadStartupData> create(const KURL& scriptURL, const String& userAgent, const String& sourceCode)
+    static PassOwnPtr<WorkerThreadStartupData> create( const KURL &scriptURL, const String &userAgent, const String &sourceCode )
     {
-        return adoptPtr(new WorkerThreadStartupData(scriptURL, userAgent, sourceCode));
+        return adoptPtr( new WorkerThreadStartupData( scriptURL, userAgent, sourceCode ) );
     }
 
     KURL m_scriptURL;
     String m_userAgent;
     String m_sourceCode;
 private:
-    WorkerThreadStartupData(const KURL& scriptURL, const String& userAgent, const String& sourceCode);
+    WorkerThreadStartupData( const KURL &scriptURL, const String &userAgent, const String &sourceCode );
 };
 
-WorkerThreadStartupData::WorkerThreadStartupData(const KURL& scriptURL, const String& userAgent, const String& sourceCode)
-    : m_scriptURL(scriptURL.copy())
-    , m_userAgent(userAgent.crossThreadString())
-    , m_sourceCode(sourceCode.crossThreadString())
+WorkerThreadStartupData::WorkerThreadStartupData( const KURL &scriptURL, const String &userAgent, const String &sourceCode )
+    : m_scriptURL( scriptURL.copy() )
+    , m_userAgent( userAgent.crossThreadString() )
+    , m_sourceCode( sourceCode.crossThreadString() )
 {
 }
 
-WorkerThread::WorkerThread(const KURL& scriptURL, const String& userAgent, const String& sourceCode, WorkerLoaderProxy& workerLoaderProxy, WorkerReportingProxy& workerReportingProxy)
-    : m_threadID(0)
-    , m_workerLoaderProxy(workerLoaderProxy)
-    , m_workerReportingProxy(workerReportingProxy)
-    , m_startupData(WorkerThreadStartupData::create(scriptURL, userAgent, sourceCode))
+WorkerThread::WorkerThread( const KURL &scriptURL, const String &userAgent, const String &sourceCode,
+                            WorkerLoaderProxy &workerLoaderProxy, WorkerReportingProxy &workerReportingProxy )
+    : m_threadID( 0 )
+    , m_workerLoaderProxy( workerLoaderProxy )
+    , m_workerReportingProxy( workerReportingProxy )
+    , m_startupData( WorkerThreadStartupData::create( scriptURL, userAgent, sourceCode ) )
 {
-    MutexLocker lock(threadCountMutex());
+    MutexLocker lock( threadCountMutex() );
     m_threadCount++;
 }
 
 WorkerThread::~WorkerThread()
 {
-    MutexLocker lock(threadCountMutex());
-    ASSERT(m_threadCount > 0);
+    MutexLocker lock( threadCountMutex() );
+    ASSERT( m_threadCount > 0 );
     m_threadCount--;
 }
 
 bool WorkerThread::start()
 {
     // Mutex protection is necessary to ensure that m_threadID is initialized when the thread starts.
-    MutexLocker lock(m_threadCreationMutex);
+    MutexLocker lock( m_threadCreationMutex );
 
-    if (m_threadID)
+    if ( m_threadID )
+    {
         return true;
+    }
 
-    m_threadID = createThread(WorkerThread::workerThreadStart, this, "WebCore: Worker");
+    m_threadID = createThread( WorkerThread::workerThreadStart, this, "WebCore: Worker" );
 
     return m_threadID;
 }
 
-void* WorkerThread::workerThreadStart(void* thread)
+void *WorkerThread::workerThreadStart( void *thread )
 {
-    return static_cast<WorkerThread*>(thread)->workerThread();
+    return static_cast<WorkerThread *>( thread )->workerThread();
 }
 
-void* WorkerThread::workerThread()
+void *WorkerThread::workerThread()
 {
     {
-        MutexLocker lock(m_threadCreationMutex);
-        m_workerContext = createWorkerContext(m_startupData->m_scriptURL, m_startupData->m_userAgent);
+        MutexLocker lock( m_threadCreationMutex );
+        m_workerContext = createWorkerContext( m_startupData->m_scriptURL, m_startupData->m_userAgent );
 
-        if (m_runLoop.terminated()) {
+        if ( m_runLoop.terminated() )
+        {
             // The worker was terminated before the thread had a chance to run. Since the context didn't exist yet,
             // forbidExecution() couldn't be called from stop().
-           m_workerContext->script()->forbidExecution();
+            m_workerContext->script()->forbidExecution();
         }
     }
 
-    WorkerScriptController* script = m_workerContext->script();
-    script->evaluate(ScriptSourceCode(m_startupData->m_sourceCode, m_startupData->m_scriptURL));
+    WorkerScriptController *script = m_workerContext->script();
+    script->evaluate( ScriptSourceCode( m_startupData->m_sourceCode, m_startupData->m_scriptURL ) );
     // Free the startup data to cause its member variable deref's happen on the worker's thread (since
     // all ref/derefs of these objects are happening on the thread at this point). Note that
     // WorkerThread::~WorkerThread happens on a different thread where it was created.
@@ -142,7 +149,7 @@ void* WorkerThread::workerThread()
 
     ThreadIdentifier threadID = m_threadID;
 
-    ASSERT(m_workerContext->hasOneRef());
+    ASSERT( m_workerContext->hasOneRef() );
 
     // The below assignment will destroy the context, which will in turn notify messaging proxy.
     // We cannot let any objects survive past thread exit, because no other thread will run GC or otherwise destroy them.
@@ -152,7 +159,7 @@ void* WorkerThread::workerThread()
     threadGlobalData().destroy();
 
     // The thread object may be already destroyed from notification now, don't try to access "this".
-    detachThread(threadID);
+    detachThread( threadID );
 
     return 0;
 }
@@ -160,43 +167,48 @@ void* WorkerThread::workerThread()
 void WorkerThread::runEventLoop()
 {
     // Does not return until terminated.
-    m_runLoop.run(m_workerContext.get());
+    m_runLoop.run( m_workerContext.get() );
 }
 
-class WorkerThreadShutdownFinishTask : public ScriptExecutionContext::Task {
+class WorkerThreadShutdownFinishTask : public ScriptExecutionContext::Task
+{
 public:
     static PassOwnPtr<WorkerThreadShutdownFinishTask> create()
     {
-        return adoptPtr(new WorkerThreadShutdownFinishTask());
+        return adoptPtr( new WorkerThreadShutdownFinishTask() );
     }
 
-    virtual void performTask(ScriptExecutionContext *context)
+    virtual void performTask( ScriptExecutionContext *context )
     {
-        ASSERT(context->isWorkerContext());
-        WorkerContext* workerContext = static_cast<WorkerContext*>(context);
+        ASSERT( context->isWorkerContext() );
+        WorkerContext *workerContext = static_cast<WorkerContext *>( context );
         // It's not safe to call clearScript until all the cleanup tasks posted by functions initiated by WorkerThreadShutdownStartTask have completed.
         workerContext->clearScript();
         workerContext->thread()->runLoop().terminate();
     }
 
-    virtual bool isCleanupTask() const { return true; }
+    virtual bool isCleanupTask() const
+    {
+        return true;
+    }
 };
 
-class WorkerThreadShutdownStartTask : public ScriptExecutionContext::Task {
+class WorkerThreadShutdownStartTask : public ScriptExecutionContext::Task
+{
 public:
     static PassOwnPtr<WorkerThreadShutdownStartTask> create()
     {
-        return adoptPtr(new WorkerThreadShutdownStartTask());
+        return adoptPtr( new WorkerThreadShutdownStartTask() );
     }
 
-    virtual void performTask(ScriptExecutionContext *context)
+    virtual void performTask( ScriptExecutionContext *context )
     {
-        ASSERT(context->isWorkerContext());
-        WorkerContext* workerContext = static_cast<WorkerContext*>(context);
+        ASSERT( context->isWorkerContext() );
+        WorkerContext *workerContext = static_cast<WorkerContext *>( context );
 
 #if ENABLE(DATABASE)
         DatabaseTaskSynchronizer cleanupSync;
-        workerContext->stopDatabases(&cleanupSync);
+        workerContext->stopDatabases( &cleanupSync );
 #endif
 
         workerContext->stopActiveDOMObjects();
@@ -215,31 +227,38 @@ public:
 
         // Stick a shutdown command at the end of the queue, so that we deal
         // with all the cleanup tasks the databases post first.
-        workerContext->postTask(WorkerThreadShutdownFinishTask::create());
+        workerContext->postTask( WorkerThreadShutdownFinishTask::create() );
     }
 
-    virtual bool isCleanupTask() const { return true; }
+    virtual bool isCleanupTask() const
+    {
+        return true;
+    }
 };
 
 void WorkerThread::stop()
 {
     // Mutex protection is necessary because stop() can be called before the context is fully created.
-    MutexLocker lock(m_threadCreationMutex);
+    MutexLocker lock( m_threadCreationMutex );
 
     // Ensure that tasks are being handled by thread event loop. If script execution weren't forbidden, a while(1) loop in JS could keep the thread alive forever.
-    if (m_workerContext) {
+    if ( m_workerContext )
+    {
         m_workerContext->script()->scheduleExecutionTermination();
 
 #if ENABLE(DATABASE)
-        DatabaseTracker::tracker().interruptAllDatabasesForContext(m_workerContext.get());
+        DatabaseTracker::tracker().interruptAllDatabasesForContext( m_workerContext.get() );
 #endif
 
-    // FIXME: Rudely killing the thread won't work when we allow nested workers, because they will try to post notifications of their destruction.
-    // This can likely use the same mechanism as used for databases above.
+        // FIXME: Rudely killing the thread won't work when we allow nested workers, because they will try to post notifications of their destruction.
+        // This can likely use the same mechanism as used for databases above.
 
-        m_runLoop.postTask(WorkerThreadShutdownStartTask::create());
-    } else
+        m_runLoop.postTask( WorkerThreadShutdownStartTask::create() );
+    }
+    else
+    {
         m_runLoop.terminate();
+    }
 }
 
 } // namespace WebCore

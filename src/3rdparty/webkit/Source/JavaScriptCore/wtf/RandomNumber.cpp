@@ -21,7 +21,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -49,13 +49,14 @@ extern "C" {
 #include <wtf/brew/ShellBrew.h>
 #endif
 
-namespace WTF {
+namespace WTF
+{
 
 double randomNumber()
 {
 #if USE(OS_RANDOMNESS)
     uint32_t bits = cryptographicallyRandomNumber();
-    return static_cast<double>(bits) / (static_cast<double>(std::numeric_limits<uint32_t>::max()) + 1.0);
+    return static_cast<double>( bits ) / ( static_cast<double>( std::numeric_limits<uint32_t>::max() ) + 1.0 );
 #else
     // Without OS_RANDOMNESS, we fall back to other random number generators
     // that might not be cryptographically secure. Ideally, most ports would
@@ -63,10 +64,13 @@ double randomNumber()
 
 #if !ENABLE(WTF_MULTIPLE_THREADS)
     static bool s_initialized = false;
-    if (!s_initialized) {
+
+    if ( !s_initialized )
+    {
         initializeRandomNumberGenerator();
         s_initialized = true;
     }
+
 #endif
 
 #if USE(MERSENNE_TWISTER_19937)
@@ -78,13 +82,13 @@ double randomNumber()
     // http://csrc.nist.gov/groups/STM/cmvp/documents/140-1/140sp/140sp851.pdf
     // is slightly unclear on this point, although it seems to imply that it is
     // secure.
-    RefPtr<ISource> randomSource = createRefPtrInstance<ISource>(AEECLSID_RANDOM);
-    ISOURCE_Read(randomSource.get(), reinterpret_cast<char*>(&bits), 4);
+    RefPtr<ISource> randomSource = createRefPtrInstance<ISource>( AEECLSID_RANDOM );
+    ISOURCE_Read( randomSource.get(), reinterpret_cast<char *>( &bits ), 4 );
 
-    return static_cast<double>(bits) / (static_cast<double>(std::numeric_limits<uint32_t>::max()) + 1.0);
+    return static_cast<double>( bits ) / ( static_cast<double>( std::numeric_limits<uint32_t>::max() ) + 1.0 );
 #else
-    uint32_t part1 = rand() & (RAND_MAX - 1);
-    uint32_t part2 = rand() & (RAND_MAX - 1);
+    uint32_t part1 = rand() & ( RAND_MAX - 1 );
+    uint32_t part2 = rand() & ( RAND_MAX - 1 );
     // rand only provides 31 bits, and the low order bits of that aren't very random
     // so we take the high 26 bits of part 1, and the high 27 bits of part2.
     part1 >>= 5; // drop the low 5 bits
@@ -94,8 +98,8 @@ double randomNumber()
     fullRandom |= part2;
 
     // Mask off the low 53bits
-    fullRandom &= (1LL << 53) - 1;
-    return static_cast<double>(fullRandom)/static_cast<double>(1LL << 53);
+    fullRandom &= ( 1LL << 53 ) - 1;
+    return static_cast<double>( fullRandom )/static_cast<double>( 1LL << 53 );
 #endif
 #endif
 }

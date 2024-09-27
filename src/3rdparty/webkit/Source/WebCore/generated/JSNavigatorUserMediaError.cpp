@@ -29,9 +29,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSNavigatorUserMediaError);
+ASSERT_CLASS_FITS_IN_CELL( JSNavigatorUserMediaError );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -42,9 +43,9 @@ ASSERT_CLASS_FITS_IN_CELL(JSNavigatorUserMediaError);
 
 static const HashTableValue JSNavigatorUserMediaErrorTableValues[3] =
 {
-    { "code", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsNavigatorUserMediaErrorCode), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsNavigatorUserMediaErrorConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "code", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsNavigatorUserMediaErrorCode ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsNavigatorUserMediaErrorConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -58,47 +59,57 @@ static JSC_CONST_HASHTABLE HashTable JSNavigatorUserMediaErrorTable = { 5, 3, JS
 
 static const HashTableValue JSNavigatorUserMediaErrorConstructorTableValues[2] =
 {
-    { "PERMISSION_DENIED", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsNavigatorUserMediaErrorPERMISSION_DENIED), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "PERMISSION_DENIED", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsNavigatorUserMediaErrorPERMISSION_DENIED ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSNavigatorUserMediaErrorConstructorTable = { 2, 1, JSNavigatorUserMediaErrorConstructorTableValues, 0 };
 
-COMPILE_ASSERT(1 == NavigatorUserMediaError::PERMISSION_DENIED, NavigatorUserMediaErrorEnumPERMISSION_DENIEDIsWrongUseDontCheckEnums);
+COMPILE_ASSERT( 1 == NavigatorUserMediaError::PERMISSION_DENIED,
+                NavigatorUserMediaErrorEnumPERMISSION_DENIEDIsWrongUseDontCheckEnums );
 
-class JSNavigatorUserMediaErrorConstructor : public DOMConstructorObject {
+class JSNavigatorUserMediaErrorConstructor : public DOMConstructorObject
+{
 public:
-    JSNavigatorUserMediaErrorConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSNavigatorUserMediaErrorConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSNavigatorUserMediaErrorConstructor::s_info = { "NavigatorUserMediaErrorConstructor", &DOMConstructorObject::s_info, &JSNavigatorUserMediaErrorConstructorTable, 0 };
 
-JSNavigatorUserMediaErrorConstructor::JSNavigatorUserMediaErrorConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSNavigatorUserMediaErrorConstructor::JSNavigatorUserMediaErrorConstructor( ExecState *exec, Structure *structure,
+        JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSNavigatorUserMediaErrorPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSNavigatorUserMediaErrorPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSNavigatorUserMediaErrorConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSNavigatorUserMediaErrorConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName,
+        PropertySlot &slot )
 {
-    return getStaticValueSlot<JSNavigatorUserMediaErrorConstructor, JSDOMWrapper>(exec, &JSNavigatorUserMediaErrorConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSNavigatorUserMediaErrorConstructor, JSDOMWrapper>( exec, &JSNavigatorUserMediaErrorConstructorTable,
+            this, propertyName, slot );
 }
 
-bool JSNavigatorUserMediaErrorConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSNavigatorUserMediaErrorConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSNavigatorUserMediaErrorConstructor, JSDOMWrapper>(exec, &JSNavigatorUserMediaErrorConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSNavigatorUserMediaErrorConstructor, JSDOMWrapper>( exec,
+            &JSNavigatorUserMediaErrorConstructorTable, this, propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -110,90 +121,98 @@ bool JSNavigatorUserMediaErrorConstructor::getOwnPropertyDescriptor(ExecState* e
 
 static const HashTableValue JSNavigatorUserMediaErrorPrototypeTableValues[2] =
 {
-    { "PERMISSION_DENIED", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsNavigatorUserMediaErrorPERMISSION_DENIED), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "PERMISSION_DENIED", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsNavigatorUserMediaErrorPERMISSION_DENIED ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSNavigatorUserMediaErrorPrototypeTable = { 2, 1, JSNavigatorUserMediaErrorPrototypeTableValues, 0 };
 const ClassInfo JSNavigatorUserMediaErrorPrototype::s_info = { "NavigatorUserMediaErrorPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSNavigatorUserMediaErrorPrototypeTable, 0 };
 
-JSObject* JSNavigatorUserMediaErrorPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSNavigatorUserMediaErrorPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSNavigatorUserMediaError>(exec, globalObject);
+    return getDOMPrototype<JSNavigatorUserMediaError>( exec, globalObject );
 }
 
-bool JSNavigatorUserMediaErrorPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSNavigatorUserMediaErrorPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSNavigatorUserMediaErrorPrototype, JSObject>(exec, &JSNavigatorUserMediaErrorPrototypeTable, this, propertyName, slot);
+    return getStaticValueSlot<JSNavigatorUserMediaErrorPrototype, JSObject>( exec, &JSNavigatorUserMediaErrorPrototypeTable, this,
+            propertyName, slot );
 }
 
-bool JSNavigatorUserMediaErrorPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSNavigatorUserMediaErrorPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSNavigatorUserMediaErrorPrototype, JSObject>(exec, &JSNavigatorUserMediaErrorPrototypeTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSNavigatorUserMediaErrorPrototype, JSObject>( exec, &JSNavigatorUserMediaErrorPrototypeTable,
+            this, propertyName, descriptor );
 }
 
 const ClassInfo JSNavigatorUserMediaError::s_info = { "NavigatorUserMediaError", &JSDOMWrapper::s_info, &JSNavigatorUserMediaErrorTable, 0 };
 
-JSNavigatorUserMediaError::JSNavigatorUserMediaError(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<NavigatorUserMediaError> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSNavigatorUserMediaError::JSNavigatorUserMediaError( Structure *structure, JSDOMGlobalObject *globalObject,
+        PassRefPtr<NavigatorUserMediaError> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSNavigatorUserMediaError::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSNavigatorUserMediaError::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSNavigatorUserMediaErrorPrototype(exec->globalData(), globalObject, JSNavigatorUserMediaErrorPrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSNavigatorUserMediaErrorPrototype( exec->globalData(), globalObject,
+            JSNavigatorUserMediaErrorPrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSNavigatorUserMediaError::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSNavigatorUserMediaError::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSNavigatorUserMediaError, Base>(exec, &JSNavigatorUserMediaErrorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSNavigatorUserMediaError, Base>( exec, &JSNavigatorUserMediaErrorTable, this, propertyName, slot );
 }
 
-bool JSNavigatorUserMediaError::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSNavigatorUserMediaError::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSNavigatorUserMediaError, Base>(exec, &JSNavigatorUserMediaErrorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSNavigatorUserMediaError, Base>( exec, &JSNavigatorUserMediaErrorTable, this, propertyName,
+            descriptor );
 }
 
-JSValue jsNavigatorUserMediaErrorCode(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsNavigatorUserMediaErrorCode( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSNavigatorUserMediaError* castedThis = static_cast<JSNavigatorUserMediaError*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    NavigatorUserMediaError* imp = static_cast<NavigatorUserMediaError*>(castedThis->impl());
-    JSValue result = jsNumber(imp->code());
+    JSNavigatorUserMediaError *castedThis = static_cast<JSNavigatorUserMediaError *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    NavigatorUserMediaError *imp = static_cast<NavigatorUserMediaError *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->code() );
     return result;
 }
 
 
-JSValue jsNavigatorUserMediaErrorConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsNavigatorUserMediaErrorConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSNavigatorUserMediaError* domObject = static_cast<JSNavigatorUserMediaError*>(asObject(slotBase));
-    return JSNavigatorUserMediaError::getConstructor(exec, domObject->globalObject());
+    JSNavigatorUserMediaError *domObject = static_cast<JSNavigatorUserMediaError *>( asObject( slotBase ) );
+    return JSNavigatorUserMediaError::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSNavigatorUserMediaError::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSNavigatorUserMediaError::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSNavigatorUserMediaErrorConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSNavigatorUserMediaErrorConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
 // Constant getters
 
-JSValue jsNavigatorUserMediaErrorPERMISSION_DENIED(ExecState* exec, JSValue, const Identifier&)
+JSValue jsNavigatorUserMediaErrorPERMISSION_DENIED( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(1));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 1 ) );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, NavigatorUserMediaError* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, NavigatorUserMediaError *impl )
 {
-    return wrap<JSNavigatorUserMediaError>(exec, globalObject, impl);
+    return wrap<JSNavigatorUserMediaError>( exec, globalObject, impl );
 }
 
-NavigatorUserMediaError* toNavigatorUserMediaError(JSC::JSValue value)
+NavigatorUserMediaError *toNavigatorUserMediaError( JSC::JSValue value )
 {
-    return value.inherits(&JSNavigatorUserMediaError::s_info) ? static_cast<JSNavigatorUserMediaError*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSNavigatorUserMediaError::s_info ) ? static_cast<JSNavigatorUserMediaError *>( asObject(
+                value ) )->impl() : 0;
 }
 
 }

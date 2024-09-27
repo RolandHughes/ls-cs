@@ -14,15 +14,16 @@
 
 using namespace WebCore;
 
-namespace WebKit {
-
-PassRefPtr<WebURLRequest> WebURLRequest::create(const KURL& url)
+namespace WebKit
 {
-    return adoptRef(new WebURLRequest(ResourceRequest(url)));
+
+PassRefPtr<WebURLRequest> WebURLRequest::create( const KURL &url )
+{
+    return adoptRef( new WebURLRequest( ResourceRequest( url ) ) );
 }
 
-WebURLRequest::WebURLRequest(const ResourceRequest& request)
-    : m_request(request)
+WebURLRequest::WebURLRequest( const ResourceRequest &request )
+    : m_request( request )
 {
 }
 
@@ -32,13 +33,16 @@ double WebURLRequest::defaultTimeoutInterval()
 }
 
 // FIXME: This function should really be on WebContext.
-void WebURLRequest::setDefaultTimeoutInterval(double timeoutInterval)
+void WebURLRequest::setDefaultTimeoutInterval( double timeoutInterval )
 {
-    ResourceRequest::setDefaultTimeoutInterval(timeoutInterval);
+    ResourceRequest::setDefaultTimeoutInterval( timeoutInterval );
 
-    const Vector<WebContext*>& contexts = WebContext::allContexts();
-    for (size_t i = 0; i < contexts.size(); ++i)
-        contexts[i]->setDefaultRequestTimeoutInterval(timeoutInterval);
+    const Vector<WebContext *> &contexts = WebContext::allContexts();
+
+    for ( size_t i = 0; i < contexts.size(); ++i )
+    {
+        contexts[i]->setDefaultRequestTimeoutInterval( timeoutInterval );
+    }
 }
 
 } // namespace WebKit

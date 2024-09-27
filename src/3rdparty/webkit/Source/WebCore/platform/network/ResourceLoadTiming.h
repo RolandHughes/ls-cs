@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef ResourceLoadTiming_h
@@ -30,13 +30,15 @@
 #include <wtf/RefCounted.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class ResourceLoadTiming : public RefCounted<ResourceLoadTiming> {
+class ResourceLoadTiming : public RefCounted<ResourceLoadTiming>
+{
 public:
     static PassRefPtr<ResourceLoadTiming> create()
     {
-        return adoptRef(new ResourceLoadTiming);
+        return adoptRef( new ResourceLoadTiming );
     }
 
     PassRefPtr<ResourceLoadTiming> deepCopy()
@@ -57,25 +59,25 @@ public:
         return timing.release();
     }
 
-    bool operator==(const ResourceLoadTiming& other) const
+    bool operator==( const ResourceLoadTiming &other ) const
     {
         return requestTime == other.requestTime
-            && proxyStart == other.proxyStart
-            && proxyEnd == other.proxyEnd
-            && dnsStart == other.dnsStart
-            && dnsEnd == other.dnsEnd
-            && connectStart == other.connectStart
-            && connectEnd == other.connectEnd
-            && sendStart == other.sendStart
-            && sendEnd == other.sendEnd
-            && receiveHeadersEnd == other.receiveHeadersEnd
-            && sslStart == other.sslStart
-            && sslEnd == other.sslEnd;
+               && proxyStart == other.proxyStart
+               && proxyEnd == other.proxyEnd
+               && dnsStart == other.dnsStart
+               && dnsEnd == other.dnsEnd
+               && connectStart == other.connectStart
+               && connectEnd == other.connectEnd
+               && sendStart == other.sendStart
+               && sendEnd == other.sendEnd
+               && receiveHeadersEnd == other.receiveHeadersEnd
+               && sslStart == other.sslStart
+               && sslEnd == other.sslEnd;
     }
 
-    bool operator!=(const ResourceLoadTiming& other) const
+    bool operator!=( const ResourceLoadTiming &other ) const
     {
-        return !(*this == other);
+        return !( *this == other );
     }
 
     double requestTime;
@@ -93,18 +95,18 @@ public:
 
 private:
     ResourceLoadTiming()
-        : requestTime(0)
-        , proxyStart(-1)
-        , proxyEnd(-1)
-        , dnsStart(-1)
-        , dnsEnd(-1)
-        , connectStart(-1)
-        , connectEnd(-1)
-        , sendStart(0)
-        , sendEnd(0)
-        , receiveHeadersEnd(0)
-        , sslStart(-1)
-        , sslEnd(-1)
+        : requestTime( 0 )
+        , proxyStart( -1 )
+        , proxyEnd( -1 )
+        , dnsStart( -1 )
+        , dnsEnd( -1 )
+        , connectStart( -1 )
+        , connectEnd( -1 )
+        , sendStart( 0 )
+        , sendEnd( 0 )
+        , receiveHeadersEnd( 0 )
+        , sslStart( -1 )
+        , sslEnd( -1 )
     {
     }
 };

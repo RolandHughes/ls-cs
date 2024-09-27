@@ -38,47 +38,53 @@
 
 class QUdpSocketPrivate : public QAbstractSocketPrivate
 {
-   Q_DECLARE_PUBLIC(QUdpSocket)
+    Q_DECLARE_PUBLIC( QUdpSocket )
 
-   bool doEnsureInitialized(const QHostAddress &bindAddress, quint16 bindPort,
-                            const QHostAddress &remoteAddress);
- public:
-   bool ensureInitialized(const QHostAddress &bindAddress, quint16 bindPort) {
-      return doEnsureInitialized(bindAddress, bindPort, QHostAddress());
-   }
+    bool doEnsureInitialized( const QHostAddress &bindAddress, quint16 bindPort,
+                              const QHostAddress &remoteAddress );
+public:
+    bool ensureInitialized( const QHostAddress &bindAddress, quint16 bindPort )
+    {
+        return doEnsureInitialized( bindAddress, bindPort, QHostAddress() );
+    }
 
-   bool ensureInitialized(const QHostAddress &remoteAddress) {
-      return doEnsureInitialized(QHostAddress(), 0, remoteAddress);
-   }
+    bool ensureInitialized( const QHostAddress &remoteAddress )
+    {
+        return doEnsureInitialized( QHostAddress(), 0, remoteAddress );
+    }
 };
 
-bool QUdpSocketPrivate::doEnsureInitialized(const QHostAddress &bindAddress, quint16 bindPort,
-      const QHostAddress &remoteAddress)
+bool QUdpSocketPrivate::doEnsureInitialized( const QHostAddress &bindAddress, quint16 bindPort,
+        const QHostAddress &remoteAddress )
 {
-   const QHostAddress *address = &bindAddress;
-   QAbstractSocket::NetworkLayerProtocol proto = address->protocol();
+    const QHostAddress *address = &bindAddress;
+    QAbstractSocket::NetworkLayerProtocol proto = address->protocol();
 
-   if (proto == QUdpSocket::UnknownNetworkLayerProtocol) {
-      address = &remoteAddress;
-      proto = address->protocol();
-   }
+    if ( proto == QUdpSocket::UnknownNetworkLayerProtocol )
+    {
+        address = &remoteAddress;
+        proto = address->protocol();
+    }
 
-   // now check if the socket engine is initialized and to the right type
-   if (!socketEngine || !socketEngine->isValid()) {
-      resolveProxy(remoteAddress.toString(), bindPort);
-      if (! initSocketLayer(address->protocol())) {
-         return false;
-      }
-   }
+    // now check if the socket engine is initialized and to the right type
+    if ( !socketEngine || !socketEngine->isValid() )
+    {
+        resolveProxy( remoteAddress.toString(), bindPort );
 
-   return true;
+        if ( ! initSocketLayer( address->protocol() ) )
+        {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 
-QUdpSocket::QUdpSocket(QObject *parent)
-   : QAbstractSocket(UdpSocket, *new QUdpSocketPrivate, parent)
+QUdpSocket::QUdpSocket( QObject *parent )
+    : QAbstractSocket( UdpSocket, *new QUdpSocketPrivate, parent )
 {
-   d_func()->isBuffered = false;
+    d_func()->isBuffered = false;
 }
 
 
@@ -93,51 +99,54 @@ QUdpSocket::~QUdpSocket()
 #ifndef QT_NO_NETWORKINTERFACE
 
 
-bool QUdpSocket::joinMulticastGroup(const QHostAddress &groupAddress)
+bool QUdpSocket::joinMulticastGroup( const QHostAddress &groupAddress )
 {
-   return joinMulticastGroup(groupAddress, QNetworkInterface());
+    return joinMulticastGroup( groupAddress, QNetworkInterface() );
 }
 
 
-bool QUdpSocket::joinMulticastGroup(const QHostAddress &groupAddress,
-                                    const QNetworkInterface &iface)
+bool QUdpSocket::joinMulticastGroup( const QHostAddress &groupAddress,
+                                     const QNetworkInterface &iface )
 {
-   Q_D(QUdpSocket);
-   QT_CHECK_BOUND("QUdpSocket::joinMulticastGroup()", false);
-   return d->socketEngine->joinMulticastGroup(groupAddress, iface);
+    Q_D( QUdpSocket );
+    QT_CHECK_BOUND( "QUdpSocket::joinMulticastGroup()", false );
+    return d->socketEngine->joinMulticastGroup( groupAddress, iface );
 }
 
 
-bool QUdpSocket::leaveMulticastGroup(const QHostAddress &groupAddress)
+bool QUdpSocket::leaveMulticastGroup( const QHostAddress &groupAddress )
 {
-   return leaveMulticastGroup(groupAddress, QNetworkInterface());
+    return leaveMulticastGroup( groupAddress, QNetworkInterface() );
 }
 
 
-bool QUdpSocket::leaveMulticastGroup(const QHostAddress &groupAddress,
-                                     const QNetworkInterface &iface)
+bool QUdpSocket::leaveMulticastGroup( const QHostAddress &groupAddress,
+                                      const QNetworkInterface &iface )
 {
-   QT_CHECK_BOUND("QUdpSocket::leaveMulticastGroup()", false);
-   return d_func()->socketEngine->leaveMulticastGroup(groupAddress, iface);
+    QT_CHECK_BOUND( "QUdpSocket::leaveMulticastGroup()", false );
+    return d_func()->socketEngine->leaveMulticastGroup( groupAddress, iface );
 }
 
 
 QNetworkInterface QUdpSocket::multicastInterface() const
 {
-   Q_D(const QUdpSocket);
-   QT_CHECK_BOUND("QUdpSocket::multicastInterface()", QNetworkInterface());
-   return d->socketEngine->multicastInterface();
+    Q_D( const QUdpSocket );
+    QT_CHECK_BOUND( "QUdpSocket::multicastInterface()", QNetworkInterface() );
+    return d->socketEngine->multicastInterface();
 }
 
 
-void QUdpSocket::setMulticastInterface(const QNetworkInterface &iface)
+void QUdpSocket::setMulticastInterface( const QNetworkInterface &iface )
 {
-   Q_D(QUdpSocket);
-   if (!isValid()) {
-      qWarning("QUdpSocket::setMulticastInterface() Called on a QUdpSocket when not in QUdpSocket::BoundState");
-      return;
-   }
-   d->socketEngine->setMulticastInterface(iface);
+    Q_D( QUdpSocket );
+
+    if ( !isValid() )
+    {
+        qWarning( "QUdpSocket::setMulticastInterface() Called on a QUdpSocket when not in QUdpSocket::BoundState" );
+        return;
+    }
+
+    d->socketEngine->setMulticastInterface( iface );
 }
 
 #endif // QT_NO_NETWORKINTERFACE
@@ -145,79 +154,95 @@ void QUdpSocket::setMulticastInterface(const QNetworkInterface &iface)
 
 bool QUdpSocket::hasPendingDatagrams() const
 {
-   QT_CHECK_BOUND("QUdpSocket::hasPendingDatagrams()", false);
-   return d_func()->socketEngine->hasPendingDatagrams();
+    QT_CHECK_BOUND( "QUdpSocket::hasPendingDatagrams()", false );
+    return d_func()->socketEngine->hasPendingDatagrams();
 }
 
 
 qint64 QUdpSocket::pendingDatagramSize() const
 {
-   QT_CHECK_BOUND("QUdpSocket::pendingDatagramSize()", -1);
-   return d_func()->socketEngine->pendingDatagramSize();
+    QT_CHECK_BOUND( "QUdpSocket::pendingDatagramSize()", -1 );
+    return d_func()->socketEngine->pendingDatagramSize();
 }
 
 
-qint64 QUdpSocket::writeDatagram(const char *data, qint64 size, const QHostAddress &address,
-                                 quint16 port)
+qint64 QUdpSocket::writeDatagram( const char *data, qint64 size, const QHostAddress &address,
+                                  quint16 port )
 {
-   Q_D(QUdpSocket);
+    Q_D( QUdpSocket );
 
 #if defined(CS_SHOW_DEBUG_NETWORK)
-   qDebug("QUdpSocket::writeDatagram(%p, %llu, \"%s\", %i)", data, size,
-          address.toString().toLatin1().constData(), port);
+    qDebug( "QUdpSocket::writeDatagram(%p, %llu, \"%s\", %i)", data, size,
+            address.toString().toLatin1().constData(), port );
 #endif
 
-   if (! d->doEnsureInitialized(QHostAddress::Any, 0, address)) {
-      return -1;
-   }
+    if ( ! d->doEnsureInitialized( QHostAddress::Any, 0, address ) )
+    {
+        return -1;
+    }
 
-   if (state() == UnconnectedState) {
-      bind();
-   }
+    if ( state() == UnconnectedState )
+    {
+        bind();
+    }
 
-   qint64 sent = d->socketEngine->writeDatagram(data, size, QIpPacketHeader(address, port));
-   d->cachedSocketDescriptor = d->socketEngine->socketDescriptor();
+    qint64 sent = d->socketEngine->writeDatagram( data, size, QIpPacketHeader( address, port ) );
+    d->cachedSocketDescriptor = d->socketEngine->socketDescriptor();
 
-   if (sent >= 0) {
-      emit bytesWritten(sent);
+    if ( sent >= 0 )
+    {
+        emit bytesWritten( sent );
 
-   } else {
-      d->setErrorAndEmit(d->socketEngine->error(), d->socketEngine->errorString());
-   }
-   return sent;
+    }
+    else
+    {
+        d->setErrorAndEmit( d->socketEngine->error(), d->socketEngine->errorString() );
+    }
+
+    return sent;
 }
 
-qint64 QUdpSocket::readDatagram(char *data, qint64 maxSize, QHostAddress *address, quint16 *port)
+qint64 QUdpSocket::readDatagram( char *data, qint64 maxSize, QHostAddress *address, quint16 *port )
 {
-   Q_D(QUdpSocket);
+    Q_D( QUdpSocket );
 
 #if defined(CS_SHOW_DEBUG_NETWORK)
-   qDebug("QUdpSocket::readDatagram(%p, %llu, %p, %p)", data, maxSize, address, port);
+    qDebug( "QUdpSocket::readDatagram(%p, %llu, %p, %p)", data, maxSize, address, port );
 #endif
 
-   QT_CHECK_BOUND("QUdpSocket::readDatagram()", -1);
+    QT_CHECK_BOUND( "QUdpSocket::readDatagram()", -1 );
 
-   qint64 readBytes;
-   if (address || port) {
-      QIpPacketHeader header;
-      readBytes = d->socketEngine->readDatagram(data, maxSize, &header,
-                  QAbstractSocketEngine::WantDatagramSender);
-      if (address) {
-         *address = header.senderAddress;
-      }
-      if (port) {
-         *port = header.senderPort;
-      }
-   } else {
-      readBytes = d->socketEngine->readDatagram(data, maxSize);
-   }
-   d_func()->socketEngine->setReadNotificationEnabled(true);
+    qint64 readBytes;
 
-   if (readBytes < 0) {
-      d->setErrorAndEmit(d->socketEngine->error(), d->socketEngine->errorString());
-   }
+    if ( address || port )
+    {
+        QIpPacketHeader header;
+        readBytes = d->socketEngine->readDatagram( data, maxSize, &header,
+                    QAbstractSocketEngine::WantDatagramSender );
 
-   return readBytes;
+        if ( address )
+        {
+            *address = header.senderAddress;
+        }
+
+        if ( port )
+        {
+            *port = header.senderPort;
+        }
+    }
+    else
+    {
+        readBytes = d->socketEngine->readDatagram( data, maxSize );
+    }
+
+    d_func()->socketEngine->setReadNotificationEnabled( true );
+
+    if ( readBytes < 0 )
+    {
+        d->setErrorAndEmit( d->socketEngine->error(), d->socketEngine->errorString() );
+    }
+
+    return readBytes;
 }
 
 #endif // QT_NO_UDPSOCKET

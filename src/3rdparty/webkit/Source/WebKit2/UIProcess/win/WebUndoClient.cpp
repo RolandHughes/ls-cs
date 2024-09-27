@@ -30,39 +30,50 @@
 #include "WebEditCommandProxy.h"
 #include "WebView.h"
 
-namespace WebKit {
-
-void WebUndoClient::registerEditCommand(WebView* view, PassRefPtr<WebEditCommandProxy> prpCommand, WebPageProxy::UndoOrRedo undoOrRedo)
+namespace WebKit
 {
-    if (!m_client.registerEditCommand)
+
+void WebUndoClient::registerEditCommand( WebView *view, PassRefPtr<WebEditCommandProxy> prpCommand,
+        WebPageProxy::UndoOrRedo undoOrRedo )
+{
+    if ( !m_client.registerEditCommand )
+    {
         return;
+    }
 
     RefPtr<WebEditCommandProxy> command = prpCommand;
-    m_client.registerEditCommand(toAPI(view), toAPI(command.release().releaseRef()), (undoOrRedo == WebPageProxy::Undo) ? kWKViewUndo : kWKViewRedo, m_client.clientInfo);
+    m_client.registerEditCommand( toAPI( view ), toAPI( command.release().releaseRef() ),
+                                  ( undoOrRedo == WebPageProxy::Undo ) ? kWKViewUndo : kWKViewRedo, m_client.clientInfo );
 }
 
-void WebUndoClient::clearAllEditCommands(WebView* view)
+void WebUndoClient::clearAllEditCommands( WebView *view )
 {
-    if (!m_client.clearAllEditCommands)
+    if ( !m_client.clearAllEditCommands )
+    {
         return;
-    
-    m_client.clearAllEditCommands(toAPI(view), m_client.clientInfo);
+    }
+
+    m_client.clearAllEditCommands( toAPI( view ), m_client.clientInfo );
 }
 
-bool WebUndoClient::canUndoRedo(WebView* view, WebPageProxy::UndoOrRedo undoOrRedo)
+bool WebUndoClient::canUndoRedo( WebView *view, WebPageProxy::UndoOrRedo undoOrRedo )
 {
-    if (!m_client.canUndoRedo)
+    if ( !m_client.canUndoRedo )
+    {
         return false;
-    
-    return m_client.canUndoRedo(toAPI(view), undoOrRedo, m_client.clientInfo);
+    }
+
+    return m_client.canUndoRedo( toAPI( view ), undoOrRedo, m_client.clientInfo );
 }
 
-void WebUndoClient::executeUndoRedo(WebView* view, WebPageProxy::UndoOrRedo undoOrRedo)
+void WebUndoClient::executeUndoRedo( WebView *view, WebPageProxy::UndoOrRedo undoOrRedo )
 {
-    if (!m_client.executeUndoRedo)
+    if ( !m_client.executeUndoRedo )
+    {
         return;
-    
-    m_client.executeUndoRedo(toAPI(view), undoOrRedo, m_client.clientInfo);
+    }
+
+    m_client.executeUndoRedo( toAPI( view ), undoOrRedo, m_client.clientInfo );
 }
 
 } // namespace WebKit

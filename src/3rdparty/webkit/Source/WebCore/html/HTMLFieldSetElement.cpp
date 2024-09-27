@@ -29,19 +29,21 @@
 #include "RenderFieldset.h"
 #include <wtf/StdLibExtras.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-inline HTMLFieldSetElement::HTMLFieldSetElement(const QualifiedName& tagName, Document* document, HTMLFormElement* form)
-    : HTMLFormControlElement(tagName, document, form)
+inline HTMLFieldSetElement::HTMLFieldSetElement( const QualifiedName &tagName, Document *document, HTMLFormElement *form )
+    : HTMLFormControlElement( tagName, document, form )
 {
-    ASSERT(hasTagName(fieldsetTag));
+    ASSERT( hasTagName( fieldsetTag ) );
 }
 
-PassRefPtr<HTMLFieldSetElement> HTMLFieldSetElement::create(const QualifiedName& tagName, Document* document, HTMLFormElement* form)
+PassRefPtr<HTMLFieldSetElement> HTMLFieldSetElement::create( const QualifiedName &tagName, Document *document,
+        HTMLFormElement *form )
 {
-    return adoptRef(new HTMLFieldSetElement(tagName, document, form));
+    return adoptRef( new HTMLFieldSetElement( tagName, document, form ) );
 }
 
 bool HTMLFieldSetElement::supportsFocus() const
@@ -49,15 +51,15 @@ bool HTMLFieldSetElement::supportsFocus() const
     return HTMLElement::supportsFocus();
 }
 
-const AtomicString& HTMLFieldSetElement::formControlType() const
+const AtomicString &HTMLFieldSetElement::formControlType() const
 {
-    DEFINE_STATIC_LOCAL(const AtomicString, fieldset, ("fieldset"));
+    DEFINE_STATIC_LOCAL( const AtomicString, fieldset, ( "fieldset" ) );
     return fieldset;
 }
 
-RenderObject* HTMLFieldSetElement::createRenderer(RenderArena* arena, RenderStyle*)
+RenderObject *HTMLFieldSetElement::createRenderer( RenderArena *arena, RenderStyle * )
 {
-    return new (arena) RenderFieldset(this);
+    return new ( arena ) RenderFieldset( this );
 }
 
 } // namespace

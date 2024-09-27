@@ -26,33 +26,40 @@
 #include "config.h"
 #include "ConservativeRoots.h"
 
-namespace JSC {
-
-inline bool isPointerAligned(void* p)
+namespace JSC
 {
-    return !((intptr_t)(p) & (sizeof(char*) - 1));
+
+inline bool isPointerAligned( void *p )
+{
+    return !( ( intptr_t )( p ) & ( sizeof( char * ) - 1 ) );
 }
 
 void ConservativeRoots::grow()
 {
     size_t newCapacity = m_capacity == inlineCapacity ? nonInlineCapacity : m_capacity * 2;
-    JSCell** newRoots = static_cast<JSCell**>(OSAllocator::reserveAndCommit(newCapacity * sizeof(JSCell*)));
-    memcpy(newRoots, m_roots, m_size * sizeof(JSCell*));
-    if (m_roots != m_inlineRoots)
-        OSAllocator::decommitAndRelease(m_roots, m_capacity * sizeof(JSCell*));
+    JSCell **newRoots = static_cast<JSCell **>( OSAllocator::reserveAndCommit( newCapacity * sizeof( JSCell * ) ) );
+    memcpy( newRoots, m_roots, m_size * sizeof( JSCell * ) );
+
+    if ( m_roots != m_inlineRoots )
+    {
+        OSAllocator::decommitAndRelease( m_roots, m_capacity * sizeof( JSCell * ) );
+    }
+
     m_capacity = newCapacity;
     m_roots = newRoots;
 }
 
-void ConservativeRoots::add(void* begin, void* end)
+void ConservativeRoots::add( void *begin, void *end )
 {
-    ASSERT(begin <= end);
-    ASSERT((static_cast<char*>(end) - static_cast<char*>(begin)) < 0x1000000);
-    ASSERT(isPointerAligned(begin));
-    ASSERT(isPointerAligned(end));
+    ASSERT( begin <= end );
+    ASSERT( ( static_cast<char *>( end ) - static_cast<char *>( begin ) ) < 0x1000000 );
+    ASSERT( isPointerAligned( begin ) );
+    ASSERT( isPointerAligned( end ) );
 
-    for (char** it = static_cast<char**>(begin); it != static_cast<char**>(end); ++it)
-        add(*it);
+    for ( char **it = static_cast<char **>( begin ); it != static_cast<char **>( end ); ++it )
+    {
+        add( *it );
+    }
 }
 
 } // namespace JSC

@@ -24,23 +24,31 @@
 #if ENABLE(SVG)
 #include "SVGPathSegWithContext.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SVGPathSegClosePath : public SVGPathSegWithContext {
+class SVGPathSegClosePath : public SVGPathSegWithContext
+{
 public:
-    static PassRefPtr<SVGPathSegClosePath> create(SVGPathElement* element, SVGPathSegRole role)
+    static PassRefPtr<SVGPathSegClosePath> create( SVGPathElement *element, SVGPathSegRole role )
     {
-        return adoptRef(new SVGPathSegClosePath(element, role));
+        return adoptRef( new SVGPathSegClosePath( element, role ) );
     }
 
 private:
-    SVGPathSegClosePath(SVGPathElement* element, SVGPathSegRole role)
-        : SVGPathSegWithContext(element, role)
+    SVGPathSegClosePath( SVGPathElement *element, SVGPathSegRole role )
+        : SVGPathSegWithContext( element, role )
     {
     }
 
-    virtual unsigned short pathSegType() const { return PATHSEG_CLOSEPATH; }
-    virtual String pathSegTypeAsLetter() const { return "Z"; }
+    virtual unsigned short pathSegType() const
+    {
+        return PATHSEG_CLOSEPATH;
+    }
+    virtual String pathSegTypeAsLetter() const
+    {
+        return "Z";
+    }
 };
 
 } // namespace WebCore

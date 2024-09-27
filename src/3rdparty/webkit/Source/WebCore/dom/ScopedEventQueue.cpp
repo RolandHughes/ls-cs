@@ -34,55 +34,64 @@
 #include "Event.h"
 #include "EventTarget.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-ScopedEventQueue* ScopedEventQueue::s_instance = 0;
+ScopedEventQueue *ScopedEventQueue::s_instance = 0;
 
 ScopedEventQueue::ScopedEventQueue()
-    : m_scopingLevel(0)
+    : m_scopingLevel( 0 )
 {
 }
 
 ScopedEventQueue::~ScopedEventQueue()
 {
-    ASSERT(!m_scopingLevel);
-    ASSERT(!m_queuedEvents.size());
+    ASSERT( !m_scopingLevel );
+    ASSERT( !m_queuedEvents.size() );
 }
 
 void ScopedEventQueue::initialize()
 {
-    ASSERT(!s_instance);
-    OwnPtr<ScopedEventQueue> instance = adoptPtr(new ScopedEventQueue);
+    ASSERT( !s_instance );
+    OwnPtr<ScopedEventQueue> instance = adoptPtr( new ScopedEventQueue );
     s_instance = instance.leakPtr();
 }
 
-void ScopedEventQueue::enqueueEvent(PassRefPtr<Event> event)
+void ScopedEventQueue::enqueueEvent( PassRefPtr<Event> event )
 {
-    if (m_scopingLevel)
-        m_queuedEvents.append(event);
+    if ( m_scopingLevel )
+    {
+        m_queuedEvents.append( event );
+    }
     else
-        dispatchEvent(event);
+    {
+        dispatchEvent( event );
+    }
 }
 
 void ScopedEventQueue::dispatchAllEvents()
 {
     Vector<RefPtr<Event> > queuedEvents;
-    queuedEvents.swap(m_queuedEvents);
+    queuedEvents.swap( m_queuedEvents );
 
-    for (size_t i = 0; i < queuedEvents.size(); i++)
-        dispatchEvent(queuedEvents[i].release());
+    for ( size_t i = 0; i < queuedEvents.size(); i++ )
+    {
+        dispatchEvent( queuedEvents[i].release() );
+    }
 }
 
-void ScopedEventQueue::dispatchEvent(PassRefPtr<Event> event) const
+void ScopedEventQueue::dispatchEvent( PassRefPtr<Event> event ) const
 {
     RefPtr<EventTarget> eventTarget = event->target();
-    eventTarget->dispatchEvent(event);
+    eventTarget->dispatchEvent( event );
 }
 
-ScopedEventQueue* ScopedEventQueue::instance()
+ScopedEventQueue *ScopedEventQueue::instance()
 {
-    if (!s_instance)
+    if ( !s_instance )
+    {
         initialize();
+    }
 
     return s_instance;
 }
@@ -94,10 +103,13 @@ void ScopedEventQueue::incrementScopingLevel()
 
 void ScopedEventQueue::decrementScopingLevel()
 {
-    ASSERT(m_scopingLevel);
+    ASSERT( m_scopingLevel );
     m_scopingLevel--;
-    if (!m_scopingLevel)
+
+    if ( !m_scopingLevel )
+    {
         dispatchAllEvents();
+    }
 }
 
 }

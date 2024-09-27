@@ -34,44 +34,49 @@
 #include "TextResourceDecoder.h"
 #include <wtf/Vector.h>
 
-#if USE(JSC)  
+#if USE(JSC)
 #include <parser/SourceProvider.h>
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
-CachedScript::CachedScript(const String& url, const String& charset)
-    : CachedResource(url, Script)
-    , m_decoder(TextResourceDecoder::create("application/javascript", charset))
-    , m_decodedDataDeletionTimer(this, &CachedScript::decodedDataDeletionTimerFired)
+CachedScript::CachedScript( const String &url, const String &charset )
+    : CachedResource( url, Script )
+    , m_decoder( TextResourceDecoder::create( "application/javascript", charset ) )
+    , m_decodedDataDeletionTimer( this, &CachedScript::decodedDataDeletionTimerFired )
 {
     // It's javascript we want.
     // But some websites think their scripts are <some wrong mimetype here>
     // and refuse to serve them if we only accept application/x-javascript.
-    setAccept("*/*");
+    setAccept( "*/*" );
 }
 
 CachedScript::~CachedScript()
 {
 }
 
-void CachedScript::didAddClient(CachedResourceClient* c)
+void CachedScript::didAddClient( CachedResourceClient *c )
 {
-    if (m_decodedDataDeletionTimer.isActive())
+    if ( m_decodedDataDeletionTimer.isActive() )
+    {
         m_decodedDataDeletionTimer.stop();
+    }
 
-    CachedResource::didAddClient(c);
+    CachedResource::didAddClient( c );
 }
 
 void CachedScript::allClientsRemoved()
 {
-    if (double interval = memoryCache()->deadDecodedDataDeletionInterval())
-        m_decodedDataDeletionTimer.startOneShot(interval);
+    if ( double interval = memoryCache()->deadDecodedDataDeletionInterval() )
+    {
+        m_decodedDataDeletionTimer.startOneShot( interval );
+    }
 }
 
-void CachedScript::setEncoding(const String& chs)
+void CachedScript::setEncoding( const String &chs )
 {
-    m_decoder->setEncoding(chs, TextResourceDecoder::EncodingFromHTTPHeader);
+    m_decoder->setEncoding( chs, TextResourceDecoder::EncodingFromHTTPHeader );
 }
 
 String CachedScript::encoding() const
@@ -79,36 +84,40 @@ String CachedScript::encoding() const
     return m_decoder->encoding().name();
 }
 
-const String& CachedScript::script()
+const String &CachedScript::script()
 {
-    ASSERT(!isPurgeable());
+    ASSERT( !isPurgeable() );
 
-    if (!m_script && m_data) {
-        m_script = m_decoder->decode(m_data->data(), encodedSize());
+    if ( !m_script && m_data )
+    {
+        m_script = m_decoder->decode( m_data->data(), encodedSize() );
         m_script += m_decoder->flush();
-        setDecodedSize(m_script.length() * sizeof(UChar));
+        setDecodedSize( m_script.length() * sizeof( UChar ) );
     }
-    m_decodedDataDeletionTimer.startOneShot(0);
-    
+
+    m_decodedDataDeletionTimer.startOneShot( 0 );
+
     return m_script;
 }
 
-void CachedScript::data(PassRefPtr<SharedBuffer> data, bool allDataReceived)
+void CachedScript::data( PassRefPtr<SharedBuffer> data, bool allDataReceived )
 {
-    if (!allDataReceived)
+    if ( !allDataReceived )
+    {
         return;
+    }
 
     m_data = data;
-    setEncodedSize(m_data.get() ? m_data->size() : 0);
-    setLoading(false);
+    setEncodedSize( m_data.get() ? m_data->size() : 0 );
+    setLoading( false );
     checkNotify();
 }
 
-void CachedScript::error(CachedResource::Status status)
+void CachedScript::error( CachedResource::Status status )
 {
-    setStatus(status);
-    ASSERT(errorOccurred());
-    setLoading(false);
+    setStatus( status );
+    ASSERT( errorOccurred() );
+    setLoading( false );
     checkNotify();
 }
 
@@ -117,32 +126,41 @@ void CachedScript::destroyDecodedData()
     m_script = String();
     unsigned extraSize = 0;
 #if USE(JSC)
-    if (m_sourceProviderCache && m_clients.isEmpty())
+
+    if ( m_sourceProviderCache && m_clients.isEmpty() )
+    {
         m_sourceProviderCache->clear();
+    }
 
     extraSize = m_sourceProviderCache ? m_sourceProviderCache->byteSize() : 0;
 #endif
-    setDecodedSize(extraSize);
-    if (!MemoryCache::shouldMakeResourcePurgeableOnEviction() && isSafeToMakePurgeable())
-        makePurgeable(true);
+    setDecodedSize( extraSize );
+
+    if ( !MemoryCache::shouldMakeResourcePurgeableOnEviction() && isSafeToMakePurgeable() )
+    {
+        makePurgeable( true );
+    }
 }
 
-void CachedScript::decodedDataDeletionTimerFired(Timer<CachedScript>*)
+void CachedScript::decodedDataDeletionTimerFired( Timer<CachedScript> * )
 {
     destroyDecodedData();
 }
 
 #if USE(JSC)
-JSC::SourceProviderCache* CachedScript::sourceProviderCache() const
-{   
-    if (!m_sourceProviderCache) 
-        m_sourceProviderCache = adoptPtr(new JSC::SourceProviderCache); 
-    return m_sourceProviderCache.get(); 
+JSC::SourceProviderCache *CachedScript::sourceProviderCache() const
+{
+    if ( !m_sourceProviderCache )
+    {
+        m_sourceProviderCache = adoptPtr( new JSC::SourceProviderCache );
+    }
+
+    return m_sourceProviderCache.get();
 }
 
-void CachedScript::sourceProviderCacheSizeChanged(int delta)
+void CachedScript::sourceProviderCacheSizeChanged( int delta )
 {
-    setDecodedSize(decodedSize() + delta);
+    setDecodedSize( decodedSize() + delta );
 }
 #endif
 

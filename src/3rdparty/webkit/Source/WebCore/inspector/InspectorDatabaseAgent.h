@@ -33,7 +33,8 @@
 #include <wtf/HashMap.h>
 #include <wtf/PassOwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Database;
 class InspectorArray;
@@ -44,40 +45,41 @@ class InstrumentingAgents;
 
 typedef String ErrorString;
 
-class InspectorDatabaseAgent {
+class InspectorDatabaseAgent
+{
 public:
     class FrontendProvider;
 
-    static PassOwnPtr<InspectorDatabaseAgent> create(InstrumentingAgents* instrumentingAgents, InspectorState* state)
+    static PassOwnPtr<InspectorDatabaseAgent> create( InstrumentingAgents *instrumentingAgents, InspectorState *state )
     {
-        return adoptPtr(new InspectorDatabaseAgent(instrumentingAgents, state));
+        return adoptPtr( new InspectorDatabaseAgent( instrumentingAgents, state ) );
     }
     ~InspectorDatabaseAgent();
 
-    void setFrontend(InspectorFrontend*);
+    void setFrontend( InspectorFrontend * );
     void clearFrontend();
 
     void clearResources();
     void restore();
 
     // Called from the front-end.
-    void enable(ErrorString*);
-    void disable(ErrorString*);
-    void getDatabaseTableNames(ErrorString*, int databaseId, RefPtr<InspectorArray>* names);
-    void executeSQL(ErrorString*, int databaseId, const String& query, bool* success, int* transactionId);
+    void enable( ErrorString * );
+    void disable( ErrorString * );
+    void getDatabaseTableNames( ErrorString *, int databaseId, RefPtr<InspectorArray> *names );
+    void executeSQL( ErrorString *, int databaseId, const String &query, bool *success, int *transactionId );
 
     // Called from the injected script.
-    int databaseId(Database*);
+    int databaseId( Database * );
 
-    void didOpenDatabase(PassRefPtr<Database>, const String& domain, const String& name, const String& version);
+    void didOpenDatabase( PassRefPtr<Database>, const String &domain, const String &name, const String &version );
 private:
-    explicit InspectorDatabaseAgent(InstrumentingAgents*, InspectorState*);
+    explicit InspectorDatabaseAgent( InstrumentingAgents *, InspectorState * );
 
-    Database* databaseForId(int databaseId);
-    InspectorDatabaseResource* findByFileName(const String& fileName);
+    Database *databaseForId( int databaseId );
+    InspectorDatabaseResource *findByFileName( const String &fileName );
 
-    InstrumentingAgents* m_instrumentingAgents;
-    InspectorState* m_inspectorState;
+    InstrumentingAgents *m_instrumentingAgents;
+    InspectorState *m_inspectorState;
     typedef HashMap<int, RefPtr<InspectorDatabaseResource> > DatabaseResourcesMap;
     DatabaseResourcesMap m_resources;
     RefPtr<FrontendProvider> m_frontendProvider;

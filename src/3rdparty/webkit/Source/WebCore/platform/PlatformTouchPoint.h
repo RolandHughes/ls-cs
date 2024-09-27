@@ -29,13 +29,16 @@
 #include <QTouchEvent>
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
 class PlatformTouchEvent;
 
-class PlatformTouchPoint {
+class PlatformTouchPoint
+{
 public:
-    enum State {
+    enum State
+    {
         TouchReleased,
         TouchPressed,
         TouchMoved,
@@ -45,21 +48,33 @@ public:
     };
 
 #if PLATFORM(QT)
-    PlatformTouchPoint(const QTouchEvent::TouchPoint&);
+    PlatformTouchPoint( const QTouchEvent::TouchPoint & );
     PlatformTouchPoint() {};
 #elif PLATFORM(ANDROID)
-    PlatformTouchPoint(unsigned id, const IntPoint& windowPos, State);
+    PlatformTouchPoint( unsigned id, const IntPoint &windowPos, State );
 #elif PLATFORM(BREWMP)
-    PlatformTouchPoint(int id, const IntPoint& windowPos, State);
+    PlatformTouchPoint( int id, const IntPoint &windowPos, State );
 #elif PLATFORM(EFL)
-    PlatformTouchPoint(unsigned id, const IntPoint& windowPos, State);
+    PlatformTouchPoint( unsigned id, const IntPoint &windowPos, State );
 #endif
 
-    unsigned id() const { return m_id; }
-    State state() const { return m_state; }
-    IntPoint screenPos() const { return m_screenPos; }
-    IntPoint pos() const { return m_pos; }
-    
+    unsigned id() const
+    {
+        return m_id;
+    }
+    State state() const
+    {
+        return m_state;
+    }
+    IntPoint screenPos() const
+    {
+        return m_screenPos;
+    }
+    IntPoint pos() const
+    {
+        return m_pos;
+    }
+
 protected:
     unsigned m_id;
     State m_state;

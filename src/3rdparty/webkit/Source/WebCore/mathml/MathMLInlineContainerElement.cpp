@@ -40,46 +40,79 @@
 #include "RenderMathMLSubSup.h"
 #include "RenderMathMLUnderOver.h"
 
-namespace WebCore {
-    
+namespace WebCore
+{
+
 using namespace MathMLNames;
 
-MathMLInlineContainerElement::MathMLInlineContainerElement(const QualifiedName& tagName, Document* document)
-    : MathMLElement(tagName, document)
+MathMLInlineContainerElement::MathMLInlineContainerElement( const QualifiedName &tagName, Document *document )
+    : MathMLElement( tagName, document )
 {
 }
 
-PassRefPtr<MathMLInlineContainerElement> MathMLInlineContainerElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<MathMLInlineContainerElement> MathMLInlineContainerElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new MathMLInlineContainerElement(tagName, document));
+    return adoptRef( new MathMLInlineContainerElement( tagName, document ) );
 }
 
-RenderObject* MathMLInlineContainerElement::createRenderer(RenderArena* arena, RenderStyle*)
+RenderObject *MathMLInlineContainerElement::createRenderer( RenderArena *arena, RenderStyle * )
 {
-    if (hasLocalName(mrowTag))
-        return new (arena) RenderMathMLRow(this);
-    if (hasLocalName(msubTag))
-        return new (arena) RenderMathMLSubSup(this);
-    if (hasLocalName(msupTag))
-        return new (arena) RenderMathMLSubSup(this);
-    if (hasLocalName(msubsupTag))
-        return new (arena) RenderMathMLSubSup(this);
-    if (hasLocalName(moverTag))
-        return new (arena) RenderMathMLUnderOver(this);
-    if (hasLocalName(munderTag))
-        return new (arena) RenderMathMLUnderOver(this);
-    if (hasLocalName(munderoverTag))
-        return new (arena) RenderMathMLUnderOver(this);
-    if (hasLocalName(mfracTag))
-        return new (arena) RenderMathMLFraction(this);
-    if (hasLocalName(msqrtTag))
-        return new (arena) RenderMathMLSquareRoot(this);
-    if (hasLocalName(mrootTag))
-        return new (arena) RenderMathMLRoot(this);
-    if (hasLocalName(mfencedTag))
-        return new (arena) RenderMathMLFenced(this);
+    if ( hasLocalName( mrowTag ) )
+    {
+        return new ( arena ) RenderMathMLRow( this );
+    }
 
-    return new (arena) RenderMathMLBlock(this);
+    if ( hasLocalName( msubTag ) )
+    {
+        return new ( arena ) RenderMathMLSubSup( this );
+    }
+
+    if ( hasLocalName( msupTag ) )
+    {
+        return new ( arena ) RenderMathMLSubSup( this );
+    }
+
+    if ( hasLocalName( msubsupTag ) )
+    {
+        return new ( arena ) RenderMathMLSubSup( this );
+    }
+
+    if ( hasLocalName( moverTag ) )
+    {
+        return new ( arena ) RenderMathMLUnderOver( this );
+    }
+
+    if ( hasLocalName( munderTag ) )
+    {
+        return new ( arena ) RenderMathMLUnderOver( this );
+    }
+
+    if ( hasLocalName( munderoverTag ) )
+    {
+        return new ( arena ) RenderMathMLUnderOver( this );
+    }
+
+    if ( hasLocalName( mfracTag ) )
+    {
+        return new ( arena ) RenderMathMLFraction( this );
+    }
+
+    if ( hasLocalName( msqrtTag ) )
+    {
+        return new ( arena ) RenderMathMLSquareRoot( this );
+    }
+
+    if ( hasLocalName( mrootTag ) )
+    {
+        return new ( arena ) RenderMathMLRoot( this );
+    }
+
+    if ( hasLocalName( mfencedTag ) )
+    {
+        return new ( arena ) RenderMathMLFenced( this );
+    }
+
+    return new ( arena ) RenderMathMLBlock( this );
 }
 
 }

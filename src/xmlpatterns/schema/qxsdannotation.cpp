@@ -25,32 +25,32 @@
 
 using namespace QPatternist;
 
-void XsdAnnotation::setId(const DerivedString<TypeID>::Ptr &id)
+void XsdAnnotation::setId( const DerivedString<TypeID>::Ptr &id )
 {
-   m_id = id;
+    m_id = id;
 }
 
 DerivedString<TypeID>::Ptr XsdAnnotation::id() const
 {
-   return m_id;
+    return m_id;
 }
 
-void XsdAnnotation::addApplicationInformation(const XsdApplicationInformation::Ptr &information)
+void XsdAnnotation::addApplicationInformation( const XsdApplicationInformation::Ptr &information )
 {
-   m_applicationInformation.append(information);
+    m_applicationInformation.append( information );
 }
 
 XsdApplicationInformation::List XsdAnnotation::applicationInformation() const
 {
-   return m_applicationInformation;
+    return m_applicationInformation;
 }
 
-void XsdAnnotation::addDocumentation(const XsdDocumentation::Ptr &documentation)
+void XsdAnnotation::addDocumentation( const XsdDocumentation::Ptr &documentation )
 {
-   m_documentations.append(documentation);
+    m_documentations.append( documentation );
 }
 
 XsdDocumentation::List XsdAnnotation::documentation() const
 {
-   return m_documentations;
+    return m_documentations;
 }

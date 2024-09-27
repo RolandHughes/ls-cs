@@ -25,39 +25,39 @@
 
 using namespace QPatternist;
 
-ArgumentReference::ArgumentReference(const SequenceType::Ptr &sourceType,
-                                     const VariableSlotID slotP) : VariableReference(slotP),
-   m_type(sourceType)
+ArgumentReference::ArgumentReference( const SequenceType::Ptr &sourceType,
+                                      const VariableSlotID slotP ) : VariableReference( slotP ),
+    m_type( sourceType )
 {
-   Q_ASSERT(m_type);
+    Q_ASSERT( m_type );
 }
 
-bool ArgumentReference::evaluateEBV(const DynamicContext::Ptr &context) const
+bool ArgumentReference::evaluateEBV( const DynamicContext::Ptr &context ) const
 {
-   return context->expressionVariable(slot())->evaluateEBV(context);
+    return context->expressionVariable( slot() )->evaluateEBV( context );
 }
 
-Item ArgumentReference::evaluateSingleton(const DynamicContext::Ptr &context) const
+Item ArgumentReference::evaluateSingleton( const DynamicContext::Ptr &context ) const
 {
-   return context->expressionVariable(slot())->evaluateSingleton(context);
+    return context->expressionVariable( slot() )->evaluateSingleton( context );
 }
 
-Item::Iterator::Ptr ArgumentReference::evaluateSequence(const DynamicContext::Ptr &context) const
+Item::Iterator::Ptr ArgumentReference::evaluateSequence( const DynamicContext::Ptr &context ) const
 {
-   return context->expressionVariable(slot())->evaluateSequence(context);
+    return context->expressionVariable( slot() )->evaluateSequence( context );
 }
 
 SequenceType::Ptr ArgumentReference::staticType() const
 {
-   return m_type;
+    return m_type;
 }
 
-ExpressionVisitorResult::Ptr ArgumentReference::accept(const ExpressionVisitor::Ptr &visitor) const
+ExpressionVisitorResult::Ptr ArgumentReference::accept( const ExpressionVisitor::Ptr &visitor ) const
 {
-   return visitor->visit(this);
+    return visitor->visit( this );
 }
 
 Expression::ID ArgumentReference::id() const
 {
-   return IDArgumentReference;
+    return IDArgumentReference;
 }

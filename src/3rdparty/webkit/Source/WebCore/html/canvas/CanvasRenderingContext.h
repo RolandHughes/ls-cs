@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef CanvasRenderingContext_h
@@ -32,7 +32,8 @@
 #include <wtf/Noncopyable.h>
 #include <wtf/text/StringHash.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class CanvasPattern;
 class HTMLCanvasElement;
@@ -41,36 +42,62 @@ class HTMLVideoElement;
 class KURL;
 class WebGLObject;
 
-class CanvasRenderingContext {
-    WTF_MAKE_NONCOPYABLE(CanvasRenderingContext); WTF_MAKE_FAST_ALLOCATED;
+class CanvasRenderingContext
+{
+    WTF_MAKE_NONCOPYABLE( CanvasRenderingContext );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
     virtual ~CanvasRenderingContext() { }
 
-    void ref() { m_canvas->ref(); }
-    void deref() { m_canvas->deref(); }
-    HTMLCanvasElement* canvas() const { return m_canvas; }
+    void ref()
+    {
+        m_canvas->ref();
+    }
+    void deref()
+    {
+        m_canvas->deref();
+    }
+    HTMLCanvasElement *canvas() const
+    {
+        return m_canvas;
+    }
 
-    virtual bool is2d() const { return false; }
-    virtual bool is3d() const { return false; }
-    virtual bool isAccelerated() const { return false; }
+    virtual bool is2d() const
+    {
+        return false;
+    }
+    virtual bool is3d() const
+    {
+        return false;
+    }
+    virtual bool isAccelerated() const
+    {
+        return false;
+    }
 
     virtual void paintRenderingResultsToCanvas() {}
-    virtual bool paintsIntoCanvasBuffer() const { return true; }
+    virtual bool paintsIntoCanvasBuffer() const
+    {
+        return true;
+    }
 
 #if USE(ACCELERATED_COMPOSITING)
-    virtual PlatformLayer* platformLayer() const { return 0; }
+    virtual PlatformLayer *platformLayer() const
+    {
+        return 0;
+    }
 #endif
 
 protected:
-    CanvasRenderingContext(HTMLCanvasElement*);
-    void checkOrigin(const CanvasPattern*);
-    void checkOrigin(const HTMLCanvasElement*);
-    void checkOrigin(const HTMLImageElement*);
-    void checkOrigin(const HTMLVideoElement*);
-    void checkOrigin(const KURL&);
+    CanvasRenderingContext( HTMLCanvasElement * );
+    void checkOrigin( const CanvasPattern * );
+    void checkOrigin( const HTMLCanvasElement * );
+    void checkOrigin( const HTMLImageElement * );
+    void checkOrigin( const HTMLVideoElement * );
+    void checkOrigin( const KURL & );
 
 private:
-    HTMLCanvasElement* m_canvas;
+    HTMLCanvasElement *m_canvas;
     HashSet<String> m_cleanOrigins;
 };
 

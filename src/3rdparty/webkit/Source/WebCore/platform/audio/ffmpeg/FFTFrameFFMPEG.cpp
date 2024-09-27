@@ -37,58 +37,59 @@
 #include "VectorMath.h"
 
 extern "C" {
-    #include <libavcodec/avfft.h>
+#include <libavcodec/avfft.h>
 }
 
 #include <wtf/MathExtras.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 const int kMaxFFTPow2Size = 24;
 
 // Normal constructor: allocates for a given fftSize.
-FFTFrame::FFTFrame(unsigned fftSize)
-    : m_FFTSize(fftSize)
-    , m_log2FFTSize(static_cast<unsigned>(log2(fftSize)))
-    , m_forwardContext(0)
-    , m_inverseContext(0)
-    , m_complexData(fftSize)
-    , m_realData(fftSize / 2)
-    , m_imagData(fftSize / 2)
+FFTFrame::FFTFrame( unsigned fftSize )
+    : m_FFTSize( fftSize )
+    , m_log2FFTSize( static_cast<unsigned>( log2( fftSize ) ) )
+    , m_forwardContext( 0 )
+    , m_inverseContext( 0 )
+    , m_complexData( fftSize )
+    , m_realData( fftSize / 2 )
+    , m_imagData( fftSize / 2 )
 {
     // We only allow power of two.
-    ASSERT(1UL << m_log2FFTSize == m_FFTSize);
+    ASSERT( 1UL << m_log2FFTSize == m_FFTSize );
 
-    m_forwardContext = contextForSize(fftSize, DFT_R2C);
-    m_inverseContext = contextForSize(fftSize, IDFT_C2R);
+    m_forwardContext = contextForSize( fftSize, DFT_R2C );
+    m_inverseContext = contextForSize( fftSize, IDFT_C2R );
 }
 
 // Creates a blank/empty frame (interpolate() must later be called).
 FFTFrame::FFTFrame()
-    : m_FFTSize(0)
-    , m_log2FFTSize(0)
-    , m_forwardContext(0)
-    , m_inverseContext(0)
+    : m_FFTSize( 0 )
+    , m_log2FFTSize( 0 )
+    , m_forwardContext( 0 )
+    , m_inverseContext( 0 )
 {
 }
 
 // Copy constructor.
-FFTFrame::FFTFrame(const FFTFrame& frame)
-    : m_FFTSize(frame.m_FFTSize)
-    , m_log2FFTSize(frame.m_log2FFTSize)
-    , m_forwardContext(0)
-    , m_inverseContext(0)
-    , m_complexData(frame.m_FFTSize)
-    , m_realData(frame.m_FFTSize / 2)
-    , m_imagData(frame.m_FFTSize / 2)
+FFTFrame::FFTFrame( const FFTFrame &frame )
+    : m_FFTSize( frame.m_FFTSize )
+    , m_log2FFTSize( frame.m_log2FFTSize )
+    , m_forwardContext( 0 )
+    , m_inverseContext( 0 )
+    , m_complexData( frame.m_FFTSize )
+    , m_realData( frame.m_FFTSize / 2 )
+    , m_imagData( frame.m_FFTSize / 2 )
 {
-    m_forwardContext = contextForSize(m_FFTSize, DFT_R2C);
-    m_inverseContext = contextForSize(m_FFTSize, IDFT_C2R);
+    m_forwardContext = contextForSize( m_FFTSize, DFT_R2C );
+    m_inverseContext = contextForSize( m_FFTSize, IDFT_C2R );
 
     // Copy/setup frame data.
-    unsigned nbytes = sizeof(float) * (m_FFTSize / 2);
-    memcpy(realData(), frame.realData(), nbytes);
-    memcpy(imagData(), frame.imagData(), nbytes);
+    unsigned nbytes = sizeof( float ) * ( m_FFTSize / 2 );
+    memcpy( realData(), frame.realData(), nbytes );
+    memcpy( imagData(), frame.imagData(), nbytes );
 }
 
 void FFTFrame::initialize()
@@ -101,19 +102,19 @@ void FFTFrame::cleanup()
 
 FFTFrame::~FFTFrame()
 {
-    av_rdft_end(m_forwardContext);
-    av_rdft_end(m_inverseContext);
+    av_rdft_end( m_forwardContext );
+    av_rdft_end( m_inverseContext );
 }
 
-void FFTFrame::multiply(const FFTFrame& frame)
+void FFTFrame::multiply( const FFTFrame &frame )
 {
-    FFTFrame& frame1 = *this;
-    FFTFrame& frame2 = const_cast<FFTFrame&>(frame);
+    FFTFrame &frame1 = *this;
+    FFTFrame &frame2 = const_cast<FFTFrame &>( frame );
 
-    float* realP1 = frame1.realData();
-    float* imagP1 = frame1.imagData();
-    const float* realP2 = frame2.realData();
-    const float* imagP2 = frame2.imagData();
+    float *realP1 = frame1.realData();
+    float *imagP1 = frame1.imagData();
+    const float *realP2 = frame2.realData();
+    const float *imagP2 = frame2.imagData();
 
     // Scale accounts the peculiar scaling of vecLib on the Mac.
     // This ensures the right scaling all the way back to inverse FFT.
@@ -129,7 +130,8 @@ void FFTFrame::multiply(const FFTFrame& frame)
     // we should use SSE or other intrinsics to accelerate it.
     unsigned halfSize = fftSize() / 2;
 
-    for (unsigned i = 1; i < halfSize; ++i) {
+    for ( unsigned i = 1; i < halfSize; ++i )
+    {
         float realResult = realP1[i] * realP2[i] - imagP1[i] * imagP2[i];
         float imagResult = realP1[i] * imagP2[i] + imagP1[i] * realP2[i];
 
@@ -138,14 +140,14 @@ void FFTFrame::multiply(const FFTFrame& frame)
     }
 }
 
-void FFTFrame::doFFT(float* data)
+void FFTFrame::doFFT( float *data )
 {
     // Copy since processing is in-place.
-    float* p = m_complexData.data();
-    memcpy(p, data, sizeof(float) * m_FFTSize);
+    float *p = m_complexData.data();
+    memcpy( p, data, sizeof( float ) * m_FFTSize );
 
     // Compute Forward transform.
-    av_rdft_calc(m_forwardContext, p);
+    av_rdft_calc( m_forwardContext, p );
 
     // De-interleave to separate real and complex arrays.
     int len = m_FFTSize / 2;
@@ -153,7 +155,8 @@ void FFTFrame::doFFT(float* data)
     // FIXME: see above comment in multiply() about scaling.
     const float scale = 2.0f;
 
-    for (int i = 0; i < len; ++i) {
+    for ( int i = 0; i < len; ++i )
+    {
         int baseComplexIndex = 2 * i;
         // m_realData[0] is the DC component and m_imagData[0] is the nyquist component
         // since the interleaved complex data is packed.
@@ -162,52 +165,55 @@ void FFTFrame::doFFT(float* data)
     }
 }
 
-void FFTFrame::doInverseFFT(float* data)
+void FFTFrame::doInverseFFT( float *data )
 {
     // Prepare interleaved data.
-    float* interleavedData = getUpToDateComplexData();
+    float *interleavedData = getUpToDateComplexData();
 
     // Compute inverse transform.
-    av_rdft_calc(m_inverseContext, interleavedData);
+    av_rdft_calc( m_inverseContext, interleavedData );
 
     // Scale so that a forward then inverse FFT yields exactly the original data.
     const float scale = 1.0 / m_FFTSize;
-    VectorMath::vsmul(interleavedData, 1, &scale, data, 1, m_FFTSize);
+    VectorMath::vsmul( interleavedData, 1, &scale, data, 1, m_FFTSize );
 }
 
-float* FFTFrame::realData() const
+float *FFTFrame::realData() const
 {
-    return const_cast<float*>(m_realData.data());
+    return const_cast<float *>( m_realData.data() );
 }
 
-float* FFTFrame::imagData() const
+float *FFTFrame::imagData() const
 {
-    return const_cast<float*>(m_imagData.data());
+    return const_cast<float *>( m_imagData.data() );
 }
 
-float* FFTFrame::getUpToDateComplexData()
+float *FFTFrame::getUpToDateComplexData()
 {
     // FIXME: if we can't completely get rid of this method, SSE
     // optimization could be considered if it shows up hot on profiles.
     int len = m_FFTSize / 2;
-    for (int i = 0; i < len; ++i) {
+
+    for ( int i = 0; i < len; ++i )
+    {
         int baseComplexIndex = 2 * i;
         m_complexData[baseComplexIndex] = m_realData[i];
         m_complexData[baseComplexIndex + 1] = m_imagData[i];
     }
-    return const_cast<float*>(m_complexData.data());
+
+    return const_cast<float *>( m_complexData.data() );
 }
 
-RDFTContext* FFTFrame::contextForSize(unsigned fftSize, int trans)
+RDFTContext *FFTFrame::contextForSize( unsigned fftSize, int trans )
 {
     // FIXME: This is non-optimal. Ideally, we'd like to share the contexts for FFTFrames of the same size.
     // But FFmpeg's RDFT uses a scratch buffer inside the context and so they are not thread-safe.
     // We could improve this by sharing the FFTFrames on a per-thread basis.
-    ASSERT(fftSize);
-    int pow2size = static_cast<int>(log2(fftSize));
-    ASSERT(pow2size < kMaxFFTPow2Size);
+    ASSERT( fftSize );
+    int pow2size = static_cast<int>( log2( fftSize ) );
+    ASSERT( pow2size < kMaxFFTPow2Size );
 
-    RDFTContext* context = av_rdft_init(pow2size, (RDFTransformType)trans);
+    RDFTContext *context = av_rdft_init( pow2size, ( RDFTransformType )trans );
     return context;
 }
 

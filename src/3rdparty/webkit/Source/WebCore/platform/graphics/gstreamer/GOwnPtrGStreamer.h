@@ -25,9 +25,10 @@
 
 typedef struct _GstElement GstElement;
 
-namespace WTF {
+namespace WTF
+{
 
-template<> void freeOwnedGPtr<GstElement>(GstElement* ptr);
+template<> void freeOwnedGPtr<GstElement>( GstElement *ptr );
 
 }
 

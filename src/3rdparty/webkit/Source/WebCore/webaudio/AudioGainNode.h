@@ -30,32 +30,37 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/Threading.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class AudioContext;
-    
+
 // AudioGainNode is an AudioNode with one input and one output which applies a gain (volume) change to the audio signal.
 // De-zippering (smoothing) is applied when the gain value is changed dynamically.
 
-class AudioGainNode : public AudioNode {
+class AudioGainNode : public AudioNode
+{
 public:
-    static PassRefPtr<AudioGainNode> create(AudioContext* context, double sampleRate)
+    static PassRefPtr<AudioGainNode> create( AudioContext *context, double sampleRate )
     {
-        return adoptRef(new AudioGainNode(context, sampleRate));      
+        return adoptRef( new AudioGainNode( context, sampleRate ) );
     }
-    
+
     // AudioNode
-    virtual void process(size_t framesToProcess);
+    virtual void process( size_t framesToProcess );
     virtual void reset();
 
     // Called in the main thread when the number of channels for the input may have changed.
-    virtual void checkNumberOfChannelsForInput(AudioNodeInput*);
+    virtual void checkNumberOfChannelsForInput( AudioNodeInput * );
 
     // JavaScript interface
-    AudioGain* gain() { return m_gain.get(); }                                   
-    
+    AudioGain *gain()
+    {
+        return m_gain.get();
+    }
+
 private:
-    AudioGainNode(AudioContext*, double sampleRate);
+    AudioGainNode( AudioContext *, double sampleRate );
 
     double m_lastGain; // for de-zippering
     RefPtr<AudioGain> m_gain;

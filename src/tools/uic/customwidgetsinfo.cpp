@@ -31,95 +31,108 @@ CustomWidgetsInfo::CustomWidgetsInfo()
 {
 }
 
-void CustomWidgetsInfo::acceptUI(DomUI *node)
+void CustomWidgetsInfo::acceptUI( DomUI *node )
 {
-   m_customWidgets.clear();
+    m_customWidgets.clear();
 
-   if (node->elementCustomWidgets()) {
-      acceptCustomWidgets(node->elementCustomWidgets());
-   }
+    if ( node->elementCustomWidgets() )
+    {
+        acceptCustomWidgets( node->elementCustomWidgets() );
+    }
 }
 
-void CustomWidgetsInfo::acceptCustomWidgets(DomCustomWidgets *node)
+void CustomWidgetsInfo::acceptCustomWidgets( DomCustomWidgets *node )
 {
-   TreeWalker::acceptCustomWidgets(node);
+    TreeWalker::acceptCustomWidgets( node );
 }
 
-void CustomWidgetsInfo::acceptCustomWidget(DomCustomWidget *node)
+void CustomWidgetsInfo::acceptCustomWidget( DomCustomWidget *node )
 {
-   if (node->elementClass().isEmpty()) {
-      return;
-   }
+    if ( node->elementClass().isEmpty() )
+    {
+        return;
+    }
 
-   m_customWidgets.insert(node->elementClass(), node);
+    m_customWidgets.insert( node->elementClass(), node );
 }
 
-bool CustomWidgetsInfo::extends(const QString &classNameIn, const QString &baseClassName) const
+bool CustomWidgetsInfo::extends( const QString &classNameIn, const QString &baseClassName ) const
 {
-   if (classNameIn == baseClassName) {
-      return true;
-   }
+    if ( classNameIn == baseClassName )
+    {
+        return true;
+    }
 
-   QString className = classNameIn;
+    QString className = classNameIn;
 
-   while (const DomCustomWidget *c = customWidget(className)) {
-      const QString extends = c->elementExtends();
+    while ( const DomCustomWidget *c = customWidget( className ) )
+    {
+        const QString extends = c->elementExtends();
 
-      if (className == extends) {
-         // Faulty legacy custom widget entries exist.
-         return false;
-      }
+        if ( className == extends )
+        {
+            // Faulty legacy custom widget entries exist.
+            return false;
+        }
 
-      if (extends == baseClassName) {
-         return true;
-      }
+        if ( extends == baseClassName )
+        {
+            return true;
+        }
 
-      className = extends;
-   }
+        className = extends;
+    }
 
-   return false;
+    return false;
 }
 
-bool CustomWidgetsInfo::isCustomWidgetContainer(const QString &className) const
+bool CustomWidgetsInfo::isCustomWidgetContainer( const QString &className ) const
 {
-   if (const DomCustomWidget *dcw = m_customWidgets.value(className, nullptr)) {
-      if (dcw->hasElementContainer()) {
-         return dcw->elementContainer() != 0;
-      }
-   }
+    if ( const DomCustomWidget *dcw = m_customWidgets.value( className, nullptr ) )
+    {
+        if ( dcw->hasElementContainer() )
+        {
+            return dcw->elementContainer() != 0;
+        }
+    }
 
-   return false;
+    return false;
 }
 
-QString CustomWidgetsInfo::realClassName(const QString &className) const
+QString CustomWidgetsInfo::realClassName( const QString &className ) const
 {
-   if (className == "Line") {
-      return "QFrame";
-   }
+    if ( className == "Line" )
+    {
+        return "QFrame";
+    }
 
-   return className;
+    return className;
 }
 
-DomScript *CustomWidgetsInfo::customWidgetScript(const QString &name) const
+DomScript *CustomWidgetsInfo::customWidgetScript( const QString &name ) const
 {
-   if (m_customWidgets.empty()) {
-      return nullptr;
-   }
+    if ( m_customWidgets.empty() )
+    {
+        return nullptr;
+    }
 
-   const NameCustomWidgetMap::const_iterator iter = m_customWidgets.constFind(name);
-   if (iter == m_customWidgets.constEnd()) {
-      return nullptr;
-   }
+    const NameCustomWidgetMap::const_iterator iter = m_customWidgets.constFind( name );
 
-   return iter.value()->elementScript();
+    if ( iter == m_customWidgets.constEnd() )
+    {
+        return nullptr;
+    }
+
+    return iter.value()->elementScript();
 }
 
-QString CustomWidgetsInfo::customWidgetAddPageMethod(const QString &name) const
+QString CustomWidgetsInfo::customWidgetAddPageMethod( const QString &name ) const
 {
-   if (DomCustomWidget *dcw = m_customWidgets.value(name, nullptr)) {
-      return dcw->elementAddPageMethod();
-   }
+    if ( DomCustomWidget *dcw = m_customWidgets.value( name, nullptr ) )
+    {
+        return dcw->elementAddPageMethod();
+    }
 
-   return QString();
+    return QString();
 }
 

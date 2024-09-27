@@ -28,53 +28,54 @@
 #include <qcontextnodechecker_p.h>
 #include <qstaticbaseuricontainer_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class IdFN : public ContextNodeChecker
 {
- public:
-   IdFN();
-   typedef QPair<DynamicContext::Ptr, const QAbstractXmlNodeModel *> IDContext;
+public:
+    IdFN();
+    typedef QPair<DynamicContext::Ptr, const QAbstractXmlNodeModel *> IDContext;
 
-   Item::Iterator::Ptr evaluateSequence(const DynamicContext::Ptr &context) const override;
+    Item::Iterator::Ptr evaluateSequence( const DynamicContext::Ptr &context ) const override;
 
-   inline Item mapToItem(const QString &id, const IDContext &context) const;
+    inline Item mapToItem( const QString &id, const IDContext &context ) const;
 
-   Expression::Ptr typeCheck(const StaticContext::Ptr &context, const SequenceType::Ptr &reqType) override;
+    Expression::Ptr typeCheck( const StaticContext::Ptr &context, const SequenceType::Ptr &reqType ) override;
 
- private:
-   typedef QExplicitlySharedDataPointer<const IdFN> ConstPtr;
-   bool m_hasCreatedSorter;
+private:
+    typedef QExplicitlySharedDataPointer<const IdFN> ConstPtr;
+    bool m_hasCreatedSorter;
 };
 
 class IdrefFN : public ContextNodeChecker
 {
- public:
-   Item::Iterator::Ptr evaluateSequence(const DynamicContext::Ptr &context) const override;
+public:
+    Item::Iterator::Ptr evaluateSequence( const DynamicContext::Ptr &context ) const override;
 };
 
 class DocFN : public StaticBaseUriContainer
 {
- public:
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
-   Expression::Ptr typeCheck(const StaticContext::Ptr &context, const SequenceType::Ptr &reqType) override;
-   SequenceType::Ptr staticType() const override;
+public:
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
+    Expression::Ptr typeCheck( const StaticContext::Ptr &context, const SequenceType::Ptr &reqType ) override;
+    SequenceType::Ptr staticType() const override;
 
- private:
-   SequenceType::Ptr m_type;
+private:
+    SequenceType::Ptr m_type;
 };
 
 class DocAvailableFN : public StaticBaseUriContainer
 {
- public:
-   bool evaluateEBV(const DynamicContext::Ptr &context) const override;
+public:
+    bool evaluateEBV( const DynamicContext::Ptr &context ) const override;
 };
 
 
 class CollectionFN : public FunctionCall
 {
- public:
-   Item::Iterator::Ptr evaluateSequence(const DynamicContext::Ptr &context) const override;
+public:
+    Item::Iterator::Ptr evaluateSequence( const DynamicContext::Ptr &context ) const override;
 };
 }
 

@@ -26,58 +26,62 @@
 #include <qglx_context.h>
 #include <qopenglcontext.h>
 
-static int resourceType(const QByteArray &key)
+static int resourceType( const QByteArray &key )
 {
-   static const QByteArray names[] = {
-      // match QXcbGlxNativeInterfaceHandler::ResourceType
+    static const QByteArray names[] =
+    {
+        // match QXcbGlxNativeInterfaceHandler::ResourceType
 
-      "glxconfig",
-      "glxcontext",
-   };
+        "glxconfig",
+        "glxcontext",
+    };
 
-   for (size_t i = 0; i < sizeof(names) / sizeof(names[0]); i++) {
-      if (key == names[i]) {
-         return i;
-      }
-   }
+    for ( size_t i = 0; i < sizeof( names ) / sizeof( names[0] ); i++ )
+    {
+        if ( key == names[i] )
+        {
+            return i;
+        }
+    }
 
-   return sizeof(names) / sizeof(names[0]);
+    return sizeof( names ) / sizeof( names[0] );
 }
 
-QXcbGlxNativeInterfaceHandler::QXcbGlxNativeInterfaceHandler(QXcbNativeInterface *nativeInterface)
-   : QXcbNativeInterfaceHandler(nativeInterface)
+QXcbGlxNativeInterfaceHandler::QXcbGlxNativeInterfaceHandler( QXcbNativeInterface *nativeInterface )
+    : QXcbNativeInterfaceHandler( nativeInterface )
 {
 }
 
 QPlatformNativeInterface::FP_Context QXcbGlxNativeInterfaceHandler::nativeResourceFunctionForContext(
-   const QByteArray &resource) const
+    const QByteArray &resource ) const
 {
-   switch (resourceType(resource)) {
-      case GLXConfig:
-         return glxConfigForContext;
+    switch ( resourceType( resource ) )
+    {
+        case GLXConfig:
+            return glxConfigForContext;
 
-      case GLXContext:
-         return glxContextForContext;
+        case GLXContext:
+            return glxContextForContext;
 
-      default:
-         break;
-   }
+        default:
+            break;
+    }
 
-   return nullptr;
+    return nullptr;
 }
 
-void *QXcbGlxNativeInterfaceHandler::glxContextForContext(QOpenGLContext *context)
+void *QXcbGlxNativeInterfaceHandler::glxContextForContext( QOpenGLContext *context )
 {
-   Q_ASSERT(context);
-   QGLXContext *glxPlatformContext = static_cast<QGLXContext *>(context->handle());
+    Q_ASSERT( context );
+    QGLXContext *glxPlatformContext = static_cast<QGLXContext *>( context->handle() );
 
-   return glxPlatformContext->glxContext();
+    return glxPlatformContext->glxContext();
 }
 
-void *QXcbGlxNativeInterfaceHandler::glxConfigForContext(QOpenGLContext *context)
+void *QXcbGlxNativeInterfaceHandler::glxConfigForContext( QOpenGLContext *context )
 {
-   Q_ASSERT(context);
-   QGLXContext *glxPlatformContext = static_cast<QGLXContext *>(context->handle());
+    Q_ASSERT( context );
+    QGLXContext *glxPlatformContext = static_cast<QGLXContext *>( context->handle() );
 
-   return glxPlatformContext->glxConfig();
+    return glxPlatformContext->glxConfig();
 }

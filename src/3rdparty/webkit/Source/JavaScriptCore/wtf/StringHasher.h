@@ -23,7 +23,8 @@
 
 #include <wtf/unicode/Unicode.h>
 
-namespace WTF {
+namespace WTF
+{
 
 // Golden ratio - arbitrary start value to avoid mapping all 0's to all 0's
 static const unsigned stringHashingStartValue = 0x9e3779b9U;
@@ -31,25 +32,27 @@ static const unsigned stringHashingStartValue = 0x9e3779b9U;
 // Paul Hsieh's SuperFastHash
 // http://www.azillionmonkeys.com/qed/hash.html
 // char* data is interpreted as latin-encoded (zero extended to 16 bits).
-class StringHasher {
+class StringHasher
+{
 public:
     inline StringHasher()
-        : m_hash(stringHashingStartValue)
-        , m_hasPendingCharacter(false)
-        , m_pendingCharacter(0)
+        : m_hash( stringHashingStartValue )
+        , m_hasPendingCharacter( false )
+        , m_pendingCharacter( 0 )
     {
     }
 
-    inline void addCharacters(UChar a, UChar b)
+    inline void addCharacters( UChar a, UChar b )
     {
-        ASSERT(!m_hasPendingCharacter);
-        addCharactersToHash(a, b);
+        ASSERT( !m_hasPendingCharacter );
+        addCharactersToHash( a, b );
     }
 
-    inline void addCharacter(UChar ch)
+    inline void addCharacter( UChar ch )
     {
-        if (m_hasPendingCharacter) {
-            addCharactersToHash(m_pendingCharacter, ch);
+        if ( m_hasPendingCharacter )
+        {
+            addCharactersToHash( m_pendingCharacter, ch );
             m_hasPendingCharacter = false;
             return;
         }
@@ -63,7 +66,8 @@ public:
         unsigned result = m_hash;
 
         // Handle end case.
-        if (m_hasPendingCharacter) {
+        if ( m_hasPendingCharacter )
+        {
             result += m_pendingCharacter;
             result ^= result << 11;
             result += result >> 17;
@@ -82,87 +86,99 @@ public:
         // This avoids ever returning a hash code of 0, since that is used to
         // signal "hash not computed yet", using a value that is likely to be
         // effectively the same as 0 when the low bits are masked.
-        if (!result)
+        if ( !result )
+        {
             return 0x40000000;
+        }
 
         return result;
     }
 
-    template<typename T, UChar Converter(T)> static inline unsigned computeHash(const T* data, unsigned length)
+    template<typename T, UChar Converter( T )> static inline unsigned computeHash( const T *data, unsigned length )
     {
         StringHasher hasher;
         bool rem = length & 1;
         length >>= 1;
 
-        while (length--) {
-            hasher.addCharacters(Converter(data[0]), Converter(data[1]));
+        while ( length-- )
+        {
+            hasher.addCharacters( Converter( data[0] ), Converter( data[1] ) );
             data += 2;
         }
 
-        if (rem)
-            hasher.addCharacter(Converter(*data));
-
-        return hasher.hash();
-    }
-
-    template<typename T, UChar Converter(T)> static inline unsigned computeHash(const T* data)
-    {
-        StringHasher hasher;
-
-        while (true) {
-            UChar b0 = Converter(*data++);
-            if (!b0)
-                break;
-            UChar b1 = Converter(*data++);
-            if (!b1) {
-                hasher.addCharacter(b0);
-                break;
-            }
-
-            hasher.addCharacters(b0, b1);
+        if ( rem )
+        {
+            hasher.addCharacter( Converter( *data ) );
         }
 
         return hasher.hash();
     }
 
-    template<typename T> static inline unsigned computeHash(const T* data, unsigned length)
+    template<typename T, UChar Converter( T )> static inline unsigned computeHash( const T *data )
     {
-        return computeHash<T, defaultCoverter>(data, length);
+        StringHasher hasher;
+
+        while ( true )
+        {
+            UChar b0 = Converter( *data++ );
+
+            if ( !b0 )
+            {
+                break;
+            }
+
+            UChar b1 = Converter( *data++ );
+
+            if ( !b1 )
+            {
+                hasher.addCharacter( b0 );
+                break;
+            }
+
+            hasher.addCharacters( b0, b1 );
+        }
+
+        return hasher.hash();
     }
 
-    template<typename T> static inline unsigned computeHash(const T* data)
+    template<typename T> static inline unsigned computeHash( const T *data, unsigned length )
     {
-        return computeHash<T, defaultCoverter>(data);
+        return computeHash<T, defaultCoverter>( data, length );
     }
 
-    template<size_t length> static inline unsigned hashMemory(const void* data)
+    template<typename T> static inline unsigned computeHash( const T *data )
     {
-        COMPILE_ASSERT(!(length % 4), length_must_be_a_multible_of_four);
-        return computeHash<UChar>(static_cast<const UChar*>(data), length / sizeof(UChar));
+        return computeHash<T, defaultCoverter>( data );
     }
 
-    static inline unsigned hashMemory(const void* data, unsigned size)
+    template<size_t length> static inline unsigned hashMemory( const void *data )
     {
-        ASSERT(!(size % 2));
-        return computeHash<UChar>(static_cast<const UChar*>(data), size / sizeof(UChar));
+        COMPILE_ASSERT( !( length % 4 ), length_must_be_a_multible_of_four );
+        return computeHash<UChar>( static_cast<const UChar *>( data ), length / sizeof( UChar ) );
+    }
+
+    static inline unsigned hashMemory( const void *data, unsigned size )
+    {
+        ASSERT( !( size % 2 ) );
+        return computeHash<UChar>( static_cast<const UChar *>( data ), size / sizeof( UChar ) );
     }
 
 private:
-    static inline UChar defaultCoverter(UChar ch)
+    static inline UChar defaultCoverter( UChar ch )
     {
         return ch;
     }
 
-    static inline UChar defaultCoverter(char ch)
+    static inline UChar defaultCoverter( char ch )
     {
-        return static_cast<unsigned char>(ch);
+        return static_cast<unsigned char>( ch );
     }
 
-    inline void addCharactersToHash(UChar a, UChar b)
+    inline void addCharactersToHash( UChar a, UChar b )
     {
         m_hash += a;
-        unsigned tmp = (b << 11) ^ m_hash;
-        m_hash = (m_hash << 16) ^ tmp;
+        unsigned tmp = ( b << 11 ) ^ m_hash;
+        m_hash = ( m_hash << 16 ) ^ tmp;
         m_hash += m_hash >> 11;
     }
 

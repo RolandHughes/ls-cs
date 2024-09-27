@@ -25,22 +25,31 @@
 #include "SVGPropertyTraits.h"
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SVGNumberList : public Vector<float> {
+class SVGNumberList : public Vector<float>
+{
 public:
     SVGNumberList() { }
 
-    void parse(const String&);
+    void parse( const String & );
     String valueAsString() const;
 };
 
 template<>
-struct SVGPropertyTraits<SVGNumberList> {
+struct SVGPropertyTraits<SVGNumberList>
+{
     typedef float ListItemType;
 
-    static SVGNumberList initialValue() { return SVGNumberList(); }
-    static String toString(const SVGNumberList& type) { return type.valueAsString(); }
+    static SVGNumberList initialValue()
+    {
+        return SVGNumberList();
+    }
+    static String toString( const SVGNumberList &type )
+    {
+        return type.valueAsString();
+    }
 };
 
 } // namespace WebCore

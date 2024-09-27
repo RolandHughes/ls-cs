@@ -24,7 +24,8 @@
 
 #if HAVE(ACCESSIBILITY)
 
-namespace WebCore {
+namespace WebCore
+{
 
 bool AccessibilityObject::accessibilityIgnoreAttachment() const
 {

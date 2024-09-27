@@ -34,24 +34,25 @@ class Uic;
 
 struct Option;
 
-namespace CPP {
+namespace CPP
+{
 
 class WriteIconInitialization : public TreeWalker
 {
- public:
-   WriteIconInitialization(Uic *uic);
+public:
+    WriteIconInitialization( Uic *uic );
 
-   void acceptUI(DomUI *node) override;
-   void acceptImages(DomImages *images) override;
-   void acceptImage(DomImage *image) override;
+    void acceptUI( DomUI *node ) override;
+    void acceptImages( DomImages *images ) override;
+    void acceptImage( DomImage *image ) override;
 
-   static QString iconFromDataFunction();
+    static QString iconFromDataFunction();
 
- private:
-   Uic *uic;
-   Driver *driver;
-   QTextStream &output;
-   const Option &option;
+private:
+    Uic *uic;
+    Driver *driver;
+    QTextStream &output;
+    const Option &option;
 };
 
 } // namespace CPP

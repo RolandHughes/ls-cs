@@ -26,12 +26,13 @@
 
 #include "qfunctioncall_p.h"
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class DateTimeFN : public FunctionCall
 {
- public:
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
+public:
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
 };
 
 }

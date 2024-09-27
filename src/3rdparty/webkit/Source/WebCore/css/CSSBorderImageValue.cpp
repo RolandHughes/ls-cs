@@ -24,13 +24,15 @@
 #include "PlatformString.h"
 #include "Rect.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-CSSBorderImageValue::CSSBorderImageValue(PassRefPtr<CSSValue> image, PassRefPtr<Rect> imageRect, int horizontalRule, int verticalRule)
-    : m_image(image)
-    , m_imageSliceRect(imageRect)
-    , m_horizontalSizeRule(horizontalRule)
-    , m_verticalSizeRule(verticalRule)
+CSSBorderImageValue::CSSBorderImageValue( PassRefPtr<CSSValue> image, PassRefPtr<Rect> imageRect, int horizontalRule,
+        int verticalRule )
+    : m_image( image )
+    , m_imageSliceRect( imageRect )
+    , m_horizontalSizeRule( horizontalRule )
+    , m_verticalSizeRule( verticalRule )
 {
 }
 
@@ -41,7 +43,7 @@ CSSBorderImageValue::~CSSBorderImageValue()
 String CSSBorderImageValue::cssText() const
 {
     // Image first.
-    String text(m_image->cssText());
+    String text( m_image->cssText() );
     text += " ";
 
     // Now the rect, but it isn't really a rect, so we dump manually
@@ -55,16 +57,16 @@ String CSSBorderImageValue::cssText() const
 
     // Now the keywords.
     text += " ";
-    text += CSSPrimitiveValue::createIdentifier(m_horizontalSizeRule)->cssText();
+    text += CSSPrimitiveValue::createIdentifier( m_horizontalSizeRule )->cssText();
     text += " ";
-    text += CSSPrimitiveValue::createIdentifier(m_verticalSizeRule)->cssText();
+    text += CSSPrimitiveValue::createIdentifier( m_verticalSizeRule )->cssText();
 
     return text;
 }
 
-void CSSBorderImageValue::addSubresourceStyleURLs(ListHashSet<KURL>& urls, const CSSStyleSheet* styleSheet)
+void CSSBorderImageValue::addSubresourceStyleURLs( ListHashSet<KURL> &urls, const CSSStyleSheet *styleSheet )
 {
-    m_image->addSubresourceStyleURLs(urls, styleSheet);
+    m_image->addSubresourceStyleURLs( urls, styleSheet );
 }
 
 } // namespace WebCore

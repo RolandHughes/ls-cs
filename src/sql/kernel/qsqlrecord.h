@@ -34,57 +34,58 @@ class QSqlRecordPrivate;
 
 class Q_SQL_EXPORT QSqlRecord
 {
- public:
-   QSqlRecord();
+public:
+    QSqlRecord();
 
-   QSqlRecord(const QSqlRecord &other);
-   QSqlRecord &operator=(const QSqlRecord &other);
+    QSqlRecord( const QSqlRecord &other );
+    QSqlRecord &operator=( const QSqlRecord &other );
 
-   ~QSqlRecord();
+    ~QSqlRecord();
 
-   bool operator==(const QSqlRecord &other) const;
-   inline bool operator!=(const QSqlRecord &other) const {
-      return !operator==(other);
-   }
+    bool operator==( const QSqlRecord &other ) const;
+    inline bool operator!=( const QSqlRecord &other ) const
+    {
+        return !operator==( other );
+    }
 
-   QVariant value(int index) const;
-   QVariant value(const QString &name) const;
-   void setValue(int index, const QVariant &val);
-   void setValue(const QString &name, const QVariant &val);
+    QVariant value( int index ) const;
+    QVariant value( const QString &name ) const;
+    void setValue( int index, const QVariant &val );
+    void setValue( const QString &name, const QVariant &val );
 
-   void setNull(int index);
-   void setNull(const QString &name);
-   bool isNull(int index) const;
-   bool isNull(const QString &name) const;
+    void setNull( int index );
+    void setNull( const QString &name );
+    bool isNull( int index ) const;
+    bool isNull( const QString &name ) const;
 
-   int indexOf(const QString &name) const;
-   QString fieldName(int index) const;
+    int indexOf( const QString &name ) const;
+    QString fieldName( int index ) const;
 
-   QSqlField field(int index) const;
-   QSqlField field(const QString &name) const;
+    QSqlField field( int index ) const;
+    QSqlField field( const QString &name ) const;
 
-   bool isGenerated(int index) const;
-   bool isGenerated(const QString &name) const;
-   void setGenerated(const QString &name, bool generated);
-   void setGenerated(int index, bool generated);
+    bool isGenerated( int index ) const;
+    bool isGenerated( const QString &name ) const;
+    void setGenerated( const QString &name, bool generated );
+    void setGenerated( int index, bool generated );
 
-   void append(const QSqlField &field);
-   void replace(int pos, const QSqlField &field);
-   void insert(int pos, const QSqlField &field);
-   void remove(int pos);
+    void append( const QSqlField &field );
+    void replace( int pos, const QSqlField &field );
+    void insert( int pos, const QSqlField &field );
+    void remove( int pos );
 
-   bool isEmpty() const;
-   bool contains(const QString &name) const;
-   void clear();
-   void clearValues();
-   int count() const;
-   QSqlRecord keyValues(const QSqlRecord &keyFields) const;
+    bool isEmpty() const;
+    bool contains( const QString &name ) const;
+    void clear();
+    void clearValues();
+    int count() const;
+    QSqlRecord keyValues( const QSqlRecord &keyFields ) const;
 
- private:
-   void detach();
-   QSqlRecordPrivate *d;
+private:
+    void detach();
+    QSqlRecordPrivate *d;
 };
 
-Q_SQL_EXPORT QDebug operator<<(QDebug, const QSqlRecord &);
+Q_SQL_EXPORT QDebug operator<<( QDebug, const QSqlRecord & );
 
 #endif // QSQLRECORD_H

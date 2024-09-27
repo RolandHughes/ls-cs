@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef DeviceMotionEvent_h
@@ -28,31 +28,39 @@
 
 #include "Event.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class DeviceMotionData;
 
-class DeviceMotionEvent : public Event {
+class DeviceMotionEvent : public Event
+{
 public:
     ~DeviceMotionEvent();
     static PassRefPtr<DeviceMotionEvent> create()
     {
-        return adoptRef(new DeviceMotionEvent);
+        return adoptRef( new DeviceMotionEvent );
     }
-    static PassRefPtr<DeviceMotionEvent> create(const AtomicString& eventType, DeviceMotionData* deviceMotionData)
+    static PassRefPtr<DeviceMotionEvent> create( const AtomicString &eventType, DeviceMotionData *deviceMotionData )
     {
-        return adoptRef(new DeviceMotionEvent(eventType, deviceMotionData));
+        return adoptRef( new DeviceMotionEvent( eventType, deviceMotionData ) );
     }
 
-    void initDeviceMotionEvent(const AtomicString& type, bool bubbles, bool cancelable, DeviceMotionData*);
+    void initDeviceMotionEvent( const AtomicString &type, bool bubbles, bool cancelable, DeviceMotionData * );
 
-    virtual bool isDeviceMotionEvent() const { return true; }
+    virtual bool isDeviceMotionEvent() const
+    {
+        return true;
+    }
 
-    DeviceMotionData* deviceMotionData() const { return m_deviceMotionData.get(); }
+    DeviceMotionData *deviceMotionData() const
+    {
+        return m_deviceMotionData.get();
+    }
 
 private:
     DeviceMotionEvent();
-    DeviceMotionEvent(const AtomicString& eventType, DeviceMotionData*);
+    DeviceMotionEvent( const AtomicString &eventType, DeviceMotionData * );
 
     RefPtr<DeviceMotionData> m_deviceMotionData;
 };

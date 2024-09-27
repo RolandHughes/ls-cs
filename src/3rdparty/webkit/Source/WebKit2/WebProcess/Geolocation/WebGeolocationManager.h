@@ -32,42 +32,46 @@
 #include <wtf/HashMap.h>
 #include <wtf/Noncopyable.h>
 
-namespace CoreIPC {
+namespace CoreIPC
+{
 class ArgumentDecoder;
 class Connection;
 }
 
-namespace WebCore {
+namespace WebCore
+{
 class Geolocation;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 class WebProcess;
 class WebPage;
 
-class WebGeolocationManager {
-    WTF_MAKE_NONCOPYABLE(WebGeolocationManager);
+class WebGeolocationManager
+{
+    WTF_MAKE_NONCOPYABLE( WebGeolocationManager );
 public:
-    explicit WebGeolocationManager(WebProcess*);
+    explicit WebGeolocationManager( WebProcess * );
     ~WebGeolocationManager();
 
-    void registerWebPage(WebPage*);
-    void unregisterWebPage(WebPage*);
+    void registerWebPage( WebPage * );
+    void unregisterWebPage( WebPage * );
 
-    void requestPermission(WebCore::Geolocation*);
+    void requestPermission( WebCore::Geolocation * );
 
-    void didReceiveMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*);
+    void didReceiveMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * );
 
 private:
     // Implemented in generated WebGeolocationManagerMessageReceiver.cpp
-    void didReceiveWebGeolocationManagerMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*);
+    void didReceiveWebGeolocationManagerMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * );
 
-    void didChangePosition(const WebGeolocationPosition::Data&);
+    void didChangePosition( const WebGeolocationPosition::Data & );
     void didFailToDeterminePosition();
 
-    WebProcess* m_process;
-    HashSet<WebPage*> m_pageSet;
+    WebProcess *m_process;
+    HashSet<WebPage *> m_pageSet;
 };
 
 } // namespace WebKit

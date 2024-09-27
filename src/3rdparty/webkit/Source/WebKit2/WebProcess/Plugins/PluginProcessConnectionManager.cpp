@@ -39,7 +39,8 @@
 #include "MachPort.h"
 #endif
 
-namespace WebKit {
+namespace WebKit
+{
 
 PluginProcessConnectionManager::PluginProcessConnectionManager()
 {
@@ -49,19 +50,25 @@ PluginProcessConnectionManager::~PluginProcessConnectionManager()
 {
 }
 
-PluginProcessConnection* PluginProcessConnectionManager::getPluginProcessConnection(const String& pluginPath)
+PluginProcessConnection *PluginProcessConnectionManager::getPluginProcessConnection( const String &pluginPath )
 {
-    for (size_t i = 0; i < m_pluginProcessConnections.size(); ++i) {
-        if (m_pluginProcessConnections[i]->pluginPath() == pluginPath)
+    for ( size_t i = 0; i < m_pluginProcessConnections.size(); ++i )
+    {
+        if ( m_pluginProcessConnections[i]->pluginPath() == pluginPath )
+        {
             return m_pluginProcessConnections[i].get();
+        }
     }
 
     CoreIPC::Connection::Identifier connectionIdentifier;
 #if PLATFORM(MAC)
     CoreIPC::MachPort connectionMachPort;
 
-    if (!WebProcess::shared().connection()->sendSync(Messages::WebProcessProxy::GetPluginProcessConnection(pluginPath), Messages::WebProcessProxy::GetPluginProcessConnection::Reply(connectionMachPort), 0))
+    if ( !WebProcess::shared().connection()->sendSync( Messages::WebProcessProxy::GetPluginProcessConnection( pluginPath ),
+            Messages::WebProcessProxy::GetPluginProcessConnection::Reply( connectionMachPort ), 0 ) )
+    {
         return 0;
+    }
 
     connectionIdentifier = connectionMachPort.port();
 #else
@@ -69,46 +76,52 @@ PluginProcessConnection* PluginProcessConnectionManager::getPluginProcessConnect
     connectionIdentifier = 0;
     ASSERT_NOT_REACHED();
 #endif
-    if (!connectionIdentifier)
-        return 0;
 
-    RefPtr<PluginProcessConnection> pluginProcessConnection = PluginProcessConnection::create(this, pluginPath, connectionIdentifier);
-    m_pluginProcessConnections.append(pluginProcessConnection);
+    if ( !connectionIdentifier )
+    {
+        return 0;
+    }
+
+    RefPtr<PluginProcessConnection> pluginProcessConnection = PluginProcessConnection::create( this, pluginPath,
+            connectionIdentifier );
+    m_pluginProcessConnections.append( pluginProcessConnection );
 
     {
-        MutexLocker locker(m_pathsAndConnectionsMutex);
-        ASSERT(!m_pathsAndConnections.contains(pluginProcessConnection->pluginPath()));
+        MutexLocker locker( m_pathsAndConnectionsMutex );
+        ASSERT( !m_pathsAndConnections.contains( pluginProcessConnection->pluginPath() ) );
 
-        m_pathsAndConnections.set(pluginPath, pluginProcessConnection->connection());
+        m_pathsAndConnections.set( pluginPath, pluginProcessConnection->connection() );
     }
 
     return pluginProcessConnection.get();
 }
 
-void PluginProcessConnectionManager::removePluginProcessConnection(PluginProcessConnection* pluginProcessConnection)
+void PluginProcessConnectionManager::removePluginProcessConnection( PluginProcessConnection *pluginProcessConnection )
 {
-    size_t vectorIndex = m_pluginProcessConnections.find(pluginProcessConnection);
-    ASSERT(vectorIndex != notFound);
+    size_t vectorIndex = m_pluginProcessConnections.find( pluginProcessConnection );
+    ASSERT( vectorIndex != notFound );
 
     {
-        MutexLocker locker(m_pathsAndConnectionsMutex);
-        ASSERT(m_pathsAndConnections.contains(pluginProcessConnection->pluginPath()));
-        
-        m_pathsAndConnections.remove(pluginProcessConnection->pluginPath());
+        MutexLocker locker( m_pathsAndConnectionsMutex );
+        ASSERT( m_pathsAndConnections.contains( pluginProcessConnection->pluginPath() ) );
+
+        m_pathsAndConnections.remove( pluginProcessConnection->pluginPath() );
     }
 
-    m_pluginProcessConnections.remove(vectorIndex);
+    m_pluginProcessConnections.remove( vectorIndex );
 }
 
-void PluginProcessConnectionManager::pluginProcessCrashed(const String& pluginPath)
+void PluginProcessConnectionManager::pluginProcessCrashed( const String &pluginPath )
 {
-    MutexLocker locker(m_pathsAndConnectionsMutex);
-    CoreIPC::Connection* connection = m_pathsAndConnections.get(pluginPath).get();
+    MutexLocker locker( m_pathsAndConnectionsMutex );
+    CoreIPC::Connection *connection = m_pathsAndConnections.get( pluginPath ).get();
 
     // It's OK for connection to be null here; it will happen if this web process doesn't know
     // anything about the plug-in process.
-    if (!connection)
+    if ( !connection )
+    {
         return;
+    }
 
     connection->postConnectionDidCloseOnConnectionWorkQueue();
 }

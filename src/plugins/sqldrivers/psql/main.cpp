@@ -27,31 +27,32 @@
 
 class QPSQLDriverPlugin : public QSqlDriverPlugin
 {
-   CS_OBJECT(QPSQLDriverPlugin)
+    CS_OBJECT( QPSQLDriverPlugin )
 
-   CS_PLUGIN_IID(QSqlDriverInterface_ID)
-   CS_PLUGIN_KEY("QPSQL")
+    CS_PLUGIN_IID( QSqlDriverInterface_ID )
+    CS_PLUGIN_KEY( "QPSQL" )
 
- public:
-   QPSQLDriverPlugin();
+public:
+    QPSQLDriverPlugin();
 
-   QSqlDriver *create(const QString &) override;
+    QSqlDriver *create( const QString & ) override;
 };
 
-CS_PLUGIN_REGISTER(QPSQLDriverPlugin)
+CS_PLUGIN_REGISTER( QPSQLDriverPlugin )
 
 QPSQLDriverPlugin::QPSQLDriverPlugin()
-   : QSqlDriverPlugin()
+    : QSqlDriverPlugin()
 {
 }
 
-QSqlDriver *QPSQLDriverPlugin::create(const QString &name)
+QSqlDriver *QPSQLDriverPlugin::create( const QString &name )
 {
-   if (name == "QPSQL") {
-      QPSQLDriver *driver = new QPSQLDriver();
-      return driver;
-   }
+    if ( name == "QPSQL" )
+    {
+        QPSQLDriver *driver = new QPSQLDriver();
+        return driver;
+    }
 
-   return nullptr;
+    return nullptr;
 }
 

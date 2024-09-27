@@ -27,106 +27,118 @@
 #include <QtCore/QDebug>
 #include <QtCore/QStringList>
 
-QT_BEGIN_NAMESPACE
-
-QDeclarativeDebugServicePrivate::QDeclarativeDebugServicePrivate()
-   : server(0)
+QT_BEGIN_NAMESPACE QDeclarativeDebugServicePrivate::QDeclarativeDebugServicePrivate()
+    : server( 0 )
 {
 }
 
-QDeclarativeDebugService::QDeclarativeDebugService(const QString &name, QObject *parent)
-   : QObject(parent), d_ptr(new QDeclarativeDebugServicePrivate)
+QDeclarativeDebugService::QDeclarativeDebugService( const QString &name, QObject *parent )
+    : QObject( parent ), d_ptr( new QDeclarativeDebugServicePrivate )
 {
-   d_ptr->q_ptr = this;
-   Q_D(QDeclarativeDebugService);
+    d_ptr->q_ptr = this;
+    Q_D( QDeclarativeDebugService );
 
-   d->name = name;
-   d->server = QDeclarativeDebugServer::instance();
-   d->status = QDeclarativeDebugService::NotConnected;
+    d->name = name;
+    d->server = QDeclarativeDebugServer::instance();
+    d->status = QDeclarativeDebugService::NotConnected;
 
-   if (!d->server) {
-      return;
-   }
+    if ( !d->server )
+    {
+        return;
+    }
 
-   if (d->server->serviceNames().contains(name)) {
-      qWarning() << "QDeclarativeDebugService: Conflicting plugin name" << name;
-      d->server = 0;
-   } else {
-      d->server->addService(this);
-   }
+    if ( d->server->serviceNames().contains( name ) )
+    {
+        qWarning() << "QDeclarativeDebugService: Conflicting plugin name" << name;
+        d->server = 0;
+    }
+    else
+    {
+        d->server->addService( this );
+    }
 }
 
 QDeclarativeDebugService::~QDeclarativeDebugService()
 {
-   Q_D(const QDeclarativeDebugService);
-   if (d->server) {
-      d->server->removeService(this);
-   }
+    Q_D( const QDeclarativeDebugService );
+
+    if ( d->server )
+    {
+        d->server->removeService( this );
+    }
 }
 
 QString QDeclarativeDebugService::name() const
 {
-   Q_D(const QDeclarativeDebugService);
-   return d->name;
+    Q_D( const QDeclarativeDebugService );
+    return d->name;
 }
 
 QDeclarativeDebugService::Status QDeclarativeDebugService::status() const
 {
-   Q_D(const QDeclarativeDebugService);
-   return d->status;
+    Q_D( const QDeclarativeDebugService );
+    return d->status;
 }
 
-namespace {
+namespace
+{
 
-struct ObjectReference {
-   QPointer<QObject> object;
-   int id;
+struct ObjectReference
+{
+    QPointer<QObject> object;
+    int id;
 };
 
-struct ObjectReferenceHash {
-   ObjectReferenceHash() : nextId(0) {}
+struct ObjectReferenceHash
+{
+    ObjectReferenceHash() : nextId( 0 ) {}
 
-   QHash<QObject *, ObjectReference> objects;
-   QHash<int, QObject *> ids;
+    QHash<QObject *, ObjectReference> objects;
+    QHash<int, QObject *> ids;
 
-   int nextId;
+    int nextId;
 };
 
 }
-Q_GLOBAL_STATIC(ObjectReferenceHash, objectReferenceHash);
+Q_GLOBAL_STATIC( ObjectReferenceHash, objectReferenceHash );
 
 
 /*!
     Returns a unique id for \a object.  Calling this method multiple times
     for the same object will return the same id.
 */
-int QDeclarativeDebugService::idForObject(QObject *object)
+int QDeclarativeDebugService::idForObject( QObject *object )
 {
-   if (!object) {
-      return -1;
-   }
+    if ( !object )
+    {
+        return -1;
+    }
 
-   ObjectReferenceHash *hash = objectReferenceHash();
-   QHash<QObject *, ObjectReference>::Iterator iter =
-      hash->objects.find(object);
+    ObjectReferenceHash *hash = objectReferenceHash();
+    QHash<QObject *, ObjectReference>::Iterator iter =
+        hash->objects.find( object );
 
-   if (iter == hash->objects.end()) {
-      int id = hash->nextId++;
+    if ( iter == hash->objects.end() )
+    {
+        int id = hash->nextId++;
 
-      hash->ids.insert(id, object);
-      iter = hash->objects.insert(object, ObjectReference());
-      iter->object = object;
-      iter->id = id;
-   } else if (iter->object != object) {
-      int id = hash->nextId++;
+        hash->ids.insert( id, object );
+        iter = hash->objects.insert( object, ObjectReference() );
+        iter->object = object;
+        iter->id = id;
+    }
+    else if ( iter->object != object )
+    {
+        int id = hash->nextId++;
 
-      hash->ids.remove(iter->id);
+        hash->ids.remove( iter->id );
 
-      hash->ids.insert(id, object);
-      iter->object = object;
-      iter->id = id;
-   }
-   return iter->id;
+        hash->ids.insert( id, object );
+        iter->object = object;
+        iter->id = id;
+    }
+
+    return iter->id;
 }
 
 /*!
@@ -134,84 +146,94 @@ int QDeclarativeDebugService::idForObject(QObject *object)
     assigned an id, through idForObject(), then 0 is returned.  If the object
     has been destroyed, 0 is returned.
 */
-QObject *QDeclarativeDebugService::objectForId(int id)
+QObject *QDeclarativeDebugService::objectForId( int id )
 {
-   ObjectReferenceHash *hash = objectReferenceHash();
+    ObjectReferenceHash *hash = objectReferenceHash();
 
-   QHash<int, QObject *>::Iterator iter = hash->ids.find(id);
-   if (iter == hash->ids.end()) {
-      return 0;
-   }
+    QHash<int, QObject *>::Iterator iter = hash->ids.find( id );
+
+    if ( iter == hash->ids.end() )
+    {
+        return 0;
+    }
 
 
-   QHash<QObject *, ObjectReference>::Iterator objIter =
-      hash->objects.find(*iter);
-   Q_ASSERT(objIter != hash->objects.end());
+    QHash<QObject *, ObjectReference>::Iterator objIter =
+        hash->objects.find( *iter );
+    Q_ASSERT( objIter != hash->objects.end() );
 
-   if (objIter->object == 0) {
-      hash->ids.erase(iter);
-      hash->objects.erase(objIter);
-      return 0;
-   } else {
-      return *iter;
-   }
+    if ( objIter->object == 0 )
+    {
+        hash->ids.erase( iter );
+        hash->objects.erase( objIter );
+        return 0;
+    }
+    else
+    {
+        return *iter;
+    }
 }
 
 bool QDeclarativeDebugService::isDebuggingEnabled()
 {
-   return QDeclarativeDebugServer::instance() != 0;
+    return QDeclarativeDebugServer::instance() != 0;
 }
 
 bool QDeclarativeDebugService::hasDebuggingClient()
 {
-   return QDeclarativeDebugServer::instance() != 0
-          && QDeclarativeDebugServer::instance()->hasDebuggingClient();
+    return QDeclarativeDebugServer::instance() != 0
+           && QDeclarativeDebugServer::instance()->hasDebuggingClient();
 }
 
-QString QDeclarativeDebugService::objectToString(QObject *obj)
+QString QDeclarativeDebugService::objectToString( QObject *obj )
 {
-   if (!obj) {
-      return QLatin1String("NULL");
-   }
+    if ( !obj )
+    {
+        return QLatin1String( "NULL" );
+    }
 
-   QString objectName = obj->objectName();
-   if (objectName.isEmpty()) {
-      objectName = QLatin1String("<unnamed>");
-   }
+    QString objectName = obj->objectName();
 
-   QString rv = QString::fromUtf8(obj->metaObject()->className()) +
-                QLatin1String(": ") + objectName;
+    if ( objectName.isEmpty() )
+    {
+        objectName = QLatin1String( "<unnamed>" );
+    }
 
-   return rv;
+    QString rv = QString::fromUtf8( obj->metaObject()->className() ) +
+                 QLatin1String( ": " ) + objectName;
+
+    return rv;
 }
 
-void QDeclarativeDebugService::sendMessage(const QByteArray &message)
+void QDeclarativeDebugService::sendMessage( const QByteArray &message )
 {
-   Q_D(QDeclarativeDebugService);
+    Q_D( QDeclarativeDebugService );
 
-   if (status() != Enabled) {
-      return;
-   }
+    if ( status() != Enabled )
+    {
+        return;
+    }
 
-   d->server->sendMessage(this, message);
+    d->server->sendMessage( this, message );
 }
 
 bool QDeclarativeDebugService::waitForMessage()
 {
-   Q_D(QDeclarativeDebugService);
+    Q_D( QDeclarativeDebugService );
 
-   if (status() != Enabled) {
-      return false;
-   }
+    if ( status() != Enabled )
+    {
+        return false;
+    }
 
-   return d->server->waitForMessage(this);
+    return d->server->waitForMessage( this );
 }
 
-void QDeclarativeDebugService::statusChanged(Status)
+void QDeclarativeDebugService::statusChanged( Status )
 {
 }
 
-void QDeclarativeDebugService::messageReceived(const QByteArray &)
+void QDeclarativeDebugService::messageReceived( const QByteArray & )
 {
 }
 

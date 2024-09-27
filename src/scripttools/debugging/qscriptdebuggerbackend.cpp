@@ -38,8 +38,8 @@
 #include <QtCore/qcoreapplication.h>
 #include <QtCore/qdebug.h>
 
-Q_DECLARE_METATYPE(QScriptDebuggerValue)
-Q_DECLARE_METATYPE(QScriptDebuggerBackendPrivate *)
+Q_DECLARE_METATYPE( QScriptDebuggerValue )
+Q_DECLARE_METATYPE( QScriptDebuggerBackendPrivate * )
 
 QT_BEGIN_NAMESPACE
 
@@ -96,245 +96,292 @@ QT_BEGIN_NAMESPACE
 // helper class that's used to handle our custom Qt events
 class QScriptDebuggerBackendEventReceiver : public QObject
 {
- public:
-   QScriptDebuggerBackendEventReceiver(QScriptDebuggerBackendPrivate *backend,
-                                       QObject *parent = nullptr)
-      : QObject(parent), m_backend(backend) {}
-   ~QScriptDebuggerBackendEventReceiver() {}
+public:
+    QScriptDebuggerBackendEventReceiver( QScriptDebuggerBackendPrivate *backend,
+                                         QObject *parent = nullptr )
+        : QObject( parent ), m_backend( backend ) {}
+    ~QScriptDebuggerBackendEventReceiver() {}
 
-   bool event(QEvent *e) {
-      return m_backend->event(e);
-   }
+    bool event( QEvent *e )
+    {
+        return m_backend->event( e );
+    }
 
- private:
-   QScriptDebuggerBackendPrivate *m_backend;
+private:
+    QScriptDebuggerBackendPrivate *m_backend;
 };
 
 
 QScriptDebuggerBackendPrivate::QScriptDebuggerBackendPrivate()
-   : agent(0), commandExecutor(0),
-     pendingEvaluateContextIndex(-1), pendingEvaluateLineNumber(-1),
-     ignoreExceptions(false),
-     nextScriptValueIteratorId(0), nextScriptObjectSnapshotId(0),
-     eventReceiver(0),
-     q_ptr(0) // q_ptr will be set later by QScriptDebuggerBackend constructor
+    : agent( 0 ), commandExecutor( 0 ),
+      pendingEvaluateContextIndex( -1 ), pendingEvaluateLineNumber( -1 ),
+      ignoreExceptions( false ),
+      nextScriptValueIteratorId( 0 ), nextScriptObjectSnapshotId( 0 ),
+      eventReceiver( 0 ),
+      q_ptr( 0 ) // q_ptr will be set later by QScriptDebuggerBackend constructor
 {
 }
 
 QScriptDebuggerBackendPrivate::~QScriptDebuggerBackendPrivate()
 {
-   if (agent) {
-      agent->nullifyBackendPointer();
-   }
-   delete commandExecutor;
-   delete eventReceiver;
-   qDeleteAll(scriptValueIterators);
-   qDeleteAll(scriptObjectSnapshots);
+    if ( agent )
+    {
+        agent->nullifyBackendPointer();
+    }
+
+    delete commandExecutor;
+    delete eventReceiver;
+    qDeleteAll( scriptValueIterators );
+    qDeleteAll( scriptObjectSnapshots );
 }
 
-void QScriptDebuggerBackendPrivate::postEvent(QEvent *e)
+void QScriptDebuggerBackendPrivate::postEvent( QEvent *e )
 {
-   if (!eventReceiver) {
-      eventReceiver = new QScriptDebuggerBackendEventReceiver(this);
-      eventReceiver->moveToThread(agent->engine()->thread());
-   }
-   QCoreApplication::postEvent(eventReceiver, e);
+    if ( !eventReceiver )
+    {
+        eventReceiver = new QScriptDebuggerBackendEventReceiver( this );
+        eventReceiver->moveToThread( agent->engine()->thread() );
+    }
+
+    QCoreApplication::postEvent( eventReceiver, e );
 }
 
-bool QScriptDebuggerBackendPrivate::event(QEvent *e)
+bool QScriptDebuggerBackendPrivate::event( QEvent *e )
 {
-   if (e->type() == QEvent::User + 1) {
-      QScriptDebuggerEventEvent *de = static_cast<QScriptDebuggerEventEvent *>(e);
-      q_func()->event(de->event());
-      return true;
-   }
-   return false;
+    if ( e->type() == QEvent::User + 1 )
+    {
+        QScriptDebuggerEventEvent *de = static_cast<QScriptDebuggerEventEvent *>( e );
+        q_func()->event( de->event() );
+        return true;
+    }
+
+    return false;
 }
 
-void QScriptDebuggerBackendPrivate::agentDestroyed(QScriptDebuggerAgent *ag)
+void QScriptDebuggerBackendPrivate::agentDestroyed( QScriptDebuggerAgent *ag )
 {
-   // Since agents are owned by the script engine, this in practice means
-   // that the engine has been destroyed. Invalidate our pointer so we
-   // don't crash later.
-   if (agent == ag) {
-      agent = 0;
-   }
+    // Since agents are owned by the script engine, this in practice means
+    // that the engine has been destroyed. Invalidate our pointer so we
+    // don't crash later.
+    if ( agent == ag )
+    {
+        agent = 0;
+    }
 }
 
 /*!
   The agent calls this function when it has completed a step
   operation.
 */
-void QScriptDebuggerBackendPrivate::stepped(qint64 scriptId,
-      int lineNumber,
-      int columnNumber,
-      const QScriptValue &result)
+void QScriptDebuggerBackendPrivate::stepped( qint64 scriptId,
+        int lineNumber,
+        int columnNumber,
+        const QScriptValue &result )
 {
-   Q_Q(QScriptDebuggerBackend);
-   QScriptDebuggerEvent e(QScriptDebuggerEvent::SteppingFinished,
-                          scriptId, lineNumber, columnNumber);
-   e.setFileName(agent->scriptData(scriptId).fileName());
-   QScriptDebuggerValue value(result);
-   e.setScriptValue(value);
-   if (!result.isUndefined()) {
-      e.setMessage(result.toString());   // for convenience -- we always need it
-   }
-   q->event(e);
+    Q_Q( QScriptDebuggerBackend );
+    QScriptDebuggerEvent e( QScriptDebuggerEvent::SteppingFinished,
+                            scriptId, lineNumber, columnNumber );
+    e.setFileName( agent->scriptData( scriptId ).fileName() );
+    QScriptDebuggerValue value( result );
+    e.setScriptValue( value );
+
+    if ( !result.isUndefined() )
+    {
+        e.setMessage( result.toString() ); // for convenience -- we always need it
+    }
+
+    q->event( e );
 }
 
 /*!
   The agent calls this function when it has run to a particular
   location.
 */
-void QScriptDebuggerBackendPrivate::locationReached(qint64 scriptId,
-      int lineNumber,
-      int columnNumber)
+void QScriptDebuggerBackendPrivate::locationReached( qint64 scriptId,
+        int lineNumber,
+        int columnNumber )
 {
-   Q_Q(QScriptDebuggerBackend);
-   QScriptDebuggerEvent e(QScriptDebuggerEvent::LocationReached,
-                          scriptId, lineNumber, columnNumber);
-   e.setFileName(agent->scriptData(scriptId).fileName());
-   q->event(e);
+    Q_Q( QScriptDebuggerBackend );
+    QScriptDebuggerEvent e( QScriptDebuggerEvent::LocationReached,
+                            scriptId, lineNumber, columnNumber );
+    e.setFileName( agent->scriptData( scriptId ).fileName() );
+    q->event( e );
 }
 
 /*!
   The agent calls this function when evaluation has been interrupted.
 */
-void QScriptDebuggerBackendPrivate::interrupted(qint64 scriptId,
-      int lineNumber,
-      int columnNumber)
+void QScriptDebuggerBackendPrivate::interrupted( qint64 scriptId,
+        int lineNumber,
+        int columnNumber )
 {
-   Q_Q(QScriptDebuggerBackend);
-   QScriptDebuggerEvent e(QScriptDebuggerEvent::Interrupted,
-                          scriptId, lineNumber, columnNumber);
-   e.setFileName(agent->scriptData(scriptId).fileName());
-   q->event(e);
+    Q_Q( QScriptDebuggerBackend );
+    QScriptDebuggerEvent e( QScriptDebuggerEvent::Interrupted,
+                            scriptId, lineNumber, columnNumber );
+    e.setFileName( agent->scriptData( scriptId ).fileName() );
+    q->event( e );
 }
 
 /*!
   The agent calls this function when a breakpoint has been triggered.
 */
-void QScriptDebuggerBackendPrivate::breakpoint(qint64 scriptId,
-      int lineNumber,
-      int columnNumber,
-      int breakpointId)
+void QScriptDebuggerBackendPrivate::breakpoint( qint64 scriptId,
+        int lineNumber,
+        int columnNumber,
+        int breakpointId )
 {
-   Q_Q(QScriptDebuggerBackend);
-   QScriptDebuggerEvent e(QScriptDebuggerEvent::Breakpoint,
-                          scriptId, lineNumber, columnNumber);
-   e.setFileName(agent->scriptData(scriptId).fileName());
-   e.setBreakpointId(breakpointId);
-   q->event(e);
+    Q_Q( QScriptDebuggerBackend );
+    QScriptDebuggerEvent e( QScriptDebuggerEvent::Breakpoint,
+                            scriptId, lineNumber, columnNumber );
+    e.setFileName( agent->scriptData( scriptId ).fileName() );
+    e.setBreakpointId( breakpointId );
+    q->event( e );
 }
 
 /*!
   The agent calls this function when an uncaught exception has
   occurred.
 */
-void QScriptDebuggerBackendPrivate::exception(qint64 scriptId,
-      const QScriptValue &exception,
-      bool hasHandler)
+void QScriptDebuggerBackendPrivate::exception( qint64 scriptId,
+        const QScriptValue &exception,
+        bool hasHandler )
 {
-   Q_Q(QScriptDebuggerBackend);
-   if (ignoreExceptions) {
-      // don't care (it's caught by us)
-      return;
-   }
-   QScriptDebuggerEvent e(QScriptDebuggerEvent::Exception);
-   e.setScriptId(scriptId);
-   e.setFileName(agent->scriptData(scriptId).fileName());
-   e.setMessage(exception.toString());
-   e.setHasExceptionHandler(hasHandler);
-   int lineNumber = -1;
-   QString fileName;
-   if (exception.property(QLatin1String("lineNumber")).isNumber()) {
-      lineNumber = exception.property(QLatin1String("lineNumber")).toInt32();
-   }
-   if (exception.property(QLatin1String("fileName")).isString()) {
-      fileName = exception.property(QLatin1String("fileName")).toString();
-   }
-   if (lineNumber == -1) {
-      QScriptContextInfo info(q->engine()->currentContext());
-      lineNumber = info.lineNumber();
-      fileName = info.fileName();
-   }
-   if (lineNumber != -1) {
-      e.setLineNumber(lineNumber);
-   }
-   if (!fileName.isEmpty()) {
-      e.setFileName(fileName);
-   }
-   QScriptDebuggerValue value(exception);
-   e.setScriptValue(value);
-   q->event(e);
+    Q_Q( QScriptDebuggerBackend );
+
+    if ( ignoreExceptions )
+    {
+        // don't care (it's caught by us)
+        return;
+    }
+
+    QScriptDebuggerEvent e( QScriptDebuggerEvent::Exception );
+    e.setScriptId( scriptId );
+    e.setFileName( agent->scriptData( scriptId ).fileName() );
+    e.setMessage( exception.toString() );
+    e.setHasExceptionHandler( hasHandler );
+    int lineNumber = -1;
+    QString fileName;
+
+    if ( exception.property( QLatin1String( "lineNumber" ) ).isNumber() )
+    {
+        lineNumber = exception.property( QLatin1String( "lineNumber" ) ).toInt32();
+    }
+
+    if ( exception.property( QLatin1String( "fileName" ) ).isString() )
+    {
+        fileName = exception.property( QLatin1String( "fileName" ) ).toString();
+    }
+
+    if ( lineNumber == -1 )
+    {
+        QScriptContextInfo info( q->engine()->currentContext() );
+        lineNumber = info.lineNumber();
+        fileName = info.fileName();
+    }
+
+    if ( lineNumber != -1 )
+    {
+        e.setLineNumber( lineNumber );
+    }
+
+    if ( !fileName.isEmpty() )
+    {
+        e.setFileName( fileName );
+    }
+
+    QScriptDebuggerValue value( exception );
+    e.setScriptValue( value );
+    q->event( e );
 }
 
-QScriptValue QScriptDebuggerBackendPrivate::trace(QScriptContext *context,
-      QScriptEngine *engine)
+QScriptValue QScriptDebuggerBackendPrivate::trace( QScriptContext *context,
+        QScriptEngine *engine )
 {
-   QScriptValue data = context->callee().data();
-   QScriptDebuggerBackendPrivate *self = qscriptvalue_cast<QScriptDebuggerBackendPrivate *>(data);
-   if (!self) {
-      return engine->undefinedValue();
-   }
-   QString str;
-   for (int i = 0; i < context->argumentCount(); ++i) {
-      if (i > 0) {
-         str.append(QLatin1Char(' '));
-      }
-      str.append(context->argument(i).toString());
-   }
-   QScriptDebuggerEvent e(QScriptDebuggerEvent::Trace);
-   e.setMessage(str);
-   self->q_func()->event(e);
-   return engine->undefinedValue();
+    QScriptValue data = context->callee().data();
+    QScriptDebuggerBackendPrivate *self = qscriptvalue_cast<QScriptDebuggerBackendPrivate *>( data );
+
+    if ( !self )
+    {
+        return engine->undefinedValue();
+    }
+
+    QString str;
+
+    for ( int i = 0; i < context->argumentCount(); ++i )
+    {
+        if ( i > 0 )
+        {
+            str.append( QLatin1Char( ' ' ) );
+        }
+
+        str.append( context->argument( i ).toString() );
+    }
+
+    QScriptDebuggerEvent e( QScriptDebuggerEvent::Trace );
+    e.setMessage( str );
+    self->q_func()->event( e );
+    return engine->undefinedValue();
 }
 
-QScriptValue QScriptDebuggerBackendPrivate::qsassert(QScriptContext *context,
-      QScriptEngine *engine)
+QScriptValue QScriptDebuggerBackendPrivate::qsassert( QScriptContext *context,
+        QScriptEngine *engine )
 {
-   QScriptValue arg = context->argument(0);
-   if (arg.toBoolean()) {
-      return arg;
-   }
-   QScriptContextInfo info(context->parentContext());
-   QString msg;
-   QString fileName = info.fileName();
-   if (fileName.isEmpty()) {
-      fileName = QString::fromLatin1("<anonymous script, id=%0>").arg(info.scriptId());
-   }
-   msg.append(fileName);
-   msg.append(QLatin1Char(':'));
-   msg.append(QString::number(info.lineNumber()));
-   msg.append(QString::fromLatin1(": Assertion failed"));
-   for (int i = 1; i < context->argumentCount(); ++i) {
-      if (i == 1) {
-         msg.append(QLatin1Char(':'));
-      }
-      msg.append(QLatin1Char(' '));
-      msg.append(context->argument(i).toString());
-   }
-   QScriptValue err = context->throwError(msg);
-   err.setProperty(QString::fromLatin1("name"), QScriptValue(engine, QString::fromLatin1("AssertionError")));
-   return err;
+    QScriptValue arg = context->argument( 0 );
+
+    if ( arg.toBoolean() )
+    {
+        return arg;
+    }
+
+    QScriptContextInfo info( context->parentContext() );
+    QString msg;
+    QString fileName = info.fileName();
+
+    if ( fileName.isEmpty() )
+    {
+        fileName = QString::fromLatin1( "<anonymous script, id=%0>" ).arg( info.scriptId() );
+    }
+
+    msg.append( fileName );
+    msg.append( QLatin1Char( ':' ) );
+    msg.append( QString::number( info.lineNumber() ) );
+    msg.append( QString::fromLatin1( ": Assertion failed" ) );
+
+    for ( int i = 1; i < context->argumentCount(); ++i )
+    {
+        if ( i == 1 )
+        {
+            msg.append( QLatin1Char( ':' ) );
+        }
+
+        msg.append( QLatin1Char( ' ' ) );
+        msg.append( context->argument( i ).toString() );
+    }
+
+    QScriptValue err = context->throwError( msg );
+    err.setProperty( QString::fromLatin1( "name" ), QScriptValue( engine, QString::fromLatin1( "AssertionError" ) ) );
+    return err;
 }
 
-QScriptValue QScriptDebuggerBackendPrivate::fileName(QScriptContext *context,
-      QScriptEngine *engine)
+QScriptValue QScriptDebuggerBackendPrivate::fileName( QScriptContext *context,
+        QScriptEngine *engine )
 {
-   QScriptContextInfo info(context->parentContext());
-   QString fn = info.fileName();
-   if (fn.isEmpty()) {
-      return engine->undefinedValue();
-   }
-   return QScriptValue(engine, fn);
+    QScriptContextInfo info( context->parentContext() );
+    QString fn = info.fileName();
+
+    if ( fn.isEmpty() )
+    {
+        return engine->undefinedValue();
+    }
+
+    return QScriptValue( engine, fn );
 }
 
-QScriptValue QScriptDebuggerBackendPrivate::lineNumber(QScriptContext *context,
-      QScriptEngine *engine)
+QScriptValue QScriptDebuggerBackendPrivate::lineNumber( QScriptContext *context,
+        QScriptEngine *engine )
 {
-   QScriptContextInfo info(context->parentContext());
-   return QScriptValue(engine, info.lineNumber());
+    QScriptContextInfo info( context->parentContext() );
+    return QScriptValue( engine, info.lineNumber() );
 }
 
 /*!
@@ -342,34 +389,34 @@ QScriptValue QScriptDebuggerBackendPrivate::lineNumber(QScriptContext *context,
   "debugger" statement.
 */
 void QScriptDebuggerBackendPrivate::debuggerInvocationRequest(
-   qint64 scriptId, int lineNumber, int columnNumber)
+    qint64 scriptId, int lineNumber, int columnNumber )
 {
-   Q_Q(QScriptDebuggerBackend);
-   QScriptDebuggerEvent e(QScriptDebuggerEvent::DebuggerInvocationRequest,
-                          scriptId, lineNumber, columnNumber);
-   e.setFileName(agent->scriptData(scriptId).fileName());
-   q->event(e);
+    Q_Q( QScriptDebuggerBackend );
+    QScriptDebuggerEvent e( QScriptDebuggerEvent::DebuggerInvocationRequest,
+                            scriptId, lineNumber, columnNumber );
+    e.setFileName( agent->scriptData( scriptId ).fileName() );
+    q->event( e );
 }
 
 void QScriptDebuggerBackendPrivate::forcedReturn(
-   qint64 scriptId, int lineNumber, int columnNumber,
-   const QScriptValue &value)
+    qint64 scriptId, int lineNumber, int columnNumber,
+    const QScriptValue &value )
 {
-   Q_Q(QScriptDebuggerBackend);
-   QScriptDebuggerEvent e(QScriptDebuggerEvent::ForcedReturn,
-                          scriptId, lineNumber, columnNumber);
-   e.setFileName(agent->scriptData(scriptId).fileName());
-   e.setScriptValue(QScriptDebuggerValue(value));
-   q->event(e);
+    Q_Q( QScriptDebuggerBackend );
+    QScriptDebuggerEvent e( QScriptDebuggerEvent::ForcedReturn,
+                            scriptId, lineNumber, columnNumber );
+    e.setFileName( agent->scriptData( scriptId ).fileName() );
+    e.setScriptValue( QScriptDebuggerValue( value ) );
+    q->event( e );
 }
 
 /*!
   Creates a QScriptDebuggerBackend object.
 */
 QScriptDebuggerBackend::QScriptDebuggerBackend()
-   : d_ptr(new QScriptDebuggerBackendPrivate)
+    : d_ptr( new QScriptDebuggerBackendPrivate )
 {
-   d_ptr->q_ptr = this;
+    d_ptr->q_ptr = this;
 }
 
 /*!
@@ -377,16 +424,16 @@ QScriptDebuggerBackend::QScriptDebuggerBackend()
 */
 QScriptDebuggerBackend::~QScriptDebuggerBackend()
 {
-   detach();
+    detach();
 }
 
 /*!
   \internal
 */
-QScriptDebuggerBackend::QScriptDebuggerBackend(QScriptDebuggerBackendPrivate &dd)
-   : d_ptr(&dd)
+QScriptDebuggerBackend::QScriptDebuggerBackend( QScriptDebuggerBackendPrivate &dd )
+    : d_ptr( &dd )
 {
-   d_ptr->q_ptr = this;
+    d_ptr->q_ptr = this;
 }
 
 /*!
@@ -398,22 +445,22 @@ QScriptDebuggerBackend::QScriptDebuggerBackend(QScriptDebuggerBackendPrivate &dd
 
   \sa detach(). engine()
 */
-void QScriptDebuggerBackend::attachTo(QScriptEngine *engine)
+void QScriptDebuggerBackend::attachTo( QScriptEngine *engine )
 {
-   Q_D(QScriptDebuggerBackend);
-   detach();
-   d->agent = new QScriptDebuggerAgent(d, engine);
-   QScriptValue global = engine->globalObject();
-   d->origTraceFunction = global.property(QString::fromLatin1("print"));
-   global.setProperty(QString::fromLatin1("print"), traceFunction());
-   //    global.setProperty(QString::fromLatin1("qAssert"), assertFunction());
-   d->origFileNameFunction = global.property(QString::fromLatin1("__FILE__"));
-   global.setProperty(QString::fromLatin1("__FILE__"), fileNameFunction(),
-                      QScriptValue::PropertyGetter | QScriptValue::ReadOnly);
-   d->origLineNumberFunction = global.property(QString::fromLatin1("__LINE__"));
-   global.setProperty(QString::fromLatin1("__LINE__"), lineNumberFunction(),
-                      QScriptValue::PropertyGetter | QScriptValue::ReadOnly);
-   engine->setAgent(d->agent);
+    Q_D( QScriptDebuggerBackend );
+    detach();
+    d->agent = new QScriptDebuggerAgent( d, engine );
+    QScriptValue global = engine->globalObject();
+    d->origTraceFunction = global.property( QString::fromLatin1( "print" ) );
+    global.setProperty( QString::fromLatin1( "print" ), traceFunction() );
+    //    global.setProperty(QString::fromLatin1("qAssert"), assertFunction());
+    d->origFileNameFunction = global.property( QString::fromLatin1( "__FILE__" ) );
+    global.setProperty( QString::fromLatin1( "__FILE__" ), fileNameFunction(),
+                        QScriptValue::PropertyGetter | QScriptValue::ReadOnly );
+    d->origLineNumberFunction = global.property( QString::fromLatin1( "__LINE__" ) );
+    global.setProperty( QString::fromLatin1( "__LINE__" ), lineNumberFunction(),
+                        QScriptValue::PropertyGetter | QScriptValue::ReadOnly );
+    engine->setAgent( d->agent );
 }
 
 /*!
@@ -425,35 +472,39 @@ void QScriptDebuggerBackend::attachTo(QScriptEngine *engine)
 */
 void QScriptDebuggerBackend::detach()
 {
-   Q_D(QScriptDebuggerBackend);
-   if (d->agent) {
-      QScriptEngine *eng = d->agent->engine();
-      if (eng && eng->agent() == d->agent) {
-         eng->setAgent(0);
-         QScriptValue global = eng->globalObject();
-         global.setProperty(QString::fromLatin1("print"), d->origTraceFunction);
-         d->origTraceFunction = QScriptValue();
-         //            global.setProperty(QString::fromLatin1("qAssert"), QScriptValue());
-         global.setProperty(QString::fromLatin1("__FILE__"), QScriptValue(),
-                            QScriptValue::PropertyGetter);
-         global.setProperty(QString::fromLatin1("__FILE__"), d->origFileNameFunction);
-         d->origFileNameFunction = QScriptValue();
-         global.setProperty(QString::fromLatin1("__LINE__"), QScriptValue(),
-                            QScriptValue::PropertyGetter);
-         global.setProperty(QString::fromLatin1("__LINE__"), d->origLineNumberFunction);
-         d->origLineNumberFunction = QScriptValue();
-         d->agent->nullifyBackendPointer();
-         d->agent = 0; // agent is owned by engine
-      }
-   }
+    Q_D( QScriptDebuggerBackend );
 
-   d->pendingEvaluateLineNumber = -1;
-   d->ignoreExceptions = false;
-   d->nextScriptValueIteratorId = 0;
-   qDeleteAll(d->scriptValueIterators);
-   d->scriptValueIterators.clear();
-   qDeleteAll(d->scriptObjectSnapshots);
-   d->scriptObjectSnapshots.clear();
+    if ( d->agent )
+    {
+        QScriptEngine *eng = d->agent->engine();
+
+        if ( eng && eng->agent() == d->agent )
+        {
+            eng->setAgent( 0 );
+            QScriptValue global = eng->globalObject();
+            global.setProperty( QString::fromLatin1( "print" ), d->origTraceFunction );
+            d->origTraceFunction = QScriptValue();
+            //            global.setProperty(QString::fromLatin1("qAssert"), QScriptValue());
+            global.setProperty( QString::fromLatin1( "__FILE__" ), QScriptValue(),
+                                QScriptValue::PropertyGetter );
+            global.setProperty( QString::fromLatin1( "__FILE__" ), d->origFileNameFunction );
+            d->origFileNameFunction = QScriptValue();
+            global.setProperty( QString::fromLatin1( "__LINE__" ), QScriptValue(),
+                                QScriptValue::PropertyGetter );
+            global.setProperty( QString::fromLatin1( "__LINE__" ), d->origLineNumberFunction );
+            d->origLineNumberFunction = QScriptValue();
+            d->agent->nullifyBackendPointer();
+            d->agent = 0; // agent is owned by engine
+        }
+    }
+
+    d->pendingEvaluateLineNumber = -1;
+    d->ignoreExceptions = false;
+    d->nextScriptValueIteratorId = 0;
+    qDeleteAll( d->scriptValueIterators );
+    d->scriptValueIterators.clear();
+    qDeleteAll( d->scriptObjectSnapshots );
+    d->scriptObjectSnapshots.clear();
 }
 
 /*!
@@ -464,37 +515,44 @@ void QScriptDebuggerBackend::detach()
 */
 QScriptEngine *QScriptDebuggerBackend::engine() const
 {
-   Q_D(const QScriptDebuggerBackend);
-   if (!d->agent) {
-      return 0;
-   }
-   return d->agent->engine();
+    Q_D( const QScriptDebuggerBackend );
+
+    if ( !d->agent )
+    {
+        return 0;
+    }
+
+    return d->agent->engine();
 }
 
 /*!
   Steps into the next script statement.
   When stepping is complete, an event() will be generated.
 */
-void QScriptDebuggerBackend::stepInto(int count)
+void QScriptDebuggerBackend::stepInto( int count )
 {
-   Q_D(QScriptDebuggerBackend);
-   if (d->agent) {
-      d->agent->enterStepIntoMode(count);
-      resume();
-   }
+    Q_D( QScriptDebuggerBackend );
+
+    if ( d->agent )
+    {
+        d->agent->enterStepIntoMode( count );
+        resume();
+    }
 }
 
 /*!
   Steps over the next script statement.
   When stepping is complete, an event() will be generated.
 */
-void QScriptDebuggerBackend::stepOver(int count)
+void QScriptDebuggerBackend::stepOver( int count )
 {
-   Q_D(QScriptDebuggerBackend);
-   if (d->agent) {
-      d->agent->enterStepOverMode(count);
-      resume();
-   }
+    Q_D( QScriptDebuggerBackend );
+
+    if ( d->agent )
+    {
+        d->agent->enterStepOverMode( count );
+        resume();
+    }
 }
 
 /*!
@@ -503,11 +561,13 @@ void QScriptDebuggerBackend::stepOver(int count)
 */
 void QScriptDebuggerBackend::stepOut()
 {
-   Q_D(QScriptDebuggerBackend);
-   if (d->agent) {
-      d->agent->enterStepOutMode();
-      resume();
-   }
+    Q_D( QScriptDebuggerBackend );
+
+    if ( d->agent )
+    {
+        d->agent->enterStepOutMode();
+        resume();
+    }
 }
 
 /*!
@@ -518,11 +578,13 @@ void QScriptDebuggerBackend::stepOut()
 */
 void QScriptDebuggerBackend::continueEvalution()
 {
-   Q_D(QScriptDebuggerBackend);
-   if (d->agent) {
-      d->agent->enterContinueMode();
-      resume();
-   }
+    Q_D( QScriptDebuggerBackend );
+
+    if ( d->agent )
+    {
+        d->agent->enterContinueMode();
+        resume();
+    }
 }
 
 /*!
@@ -531,10 +593,12 @@ void QScriptDebuggerBackend::continueEvalution()
 */
 void QScriptDebuggerBackend::interruptEvaluation()
 {
-   Q_D(QScriptDebuggerBackend);
-   if (d->agent) {
-      d->agent->enterInterruptMode();
-   }
+    Q_D( QScriptDebuggerBackend );
+
+    if ( d->agent )
+    {
+        d->agent->enterInterruptMode();
+    }
 }
 
 /*!
@@ -542,13 +606,15 @@ void QScriptDebuggerBackend::interruptEvaluation()
   fileName and \a lineNumber is reached. When the location is reached,
   an event() will be generated.
 */
-void QScriptDebuggerBackend::runToLocation(const QString &fileName, int lineNumber)
+void QScriptDebuggerBackend::runToLocation( const QString &fileName, int lineNumber )
 {
-   Q_D(QScriptDebuggerBackend);
-   if (d->agent) {
-      d->agent->enterRunToLocationMode(fileName, lineNumber);
-      resume();
-   }
+    Q_D( QScriptDebuggerBackend );
+
+    if ( d->agent )
+    {
+        d->agent->enterRunToLocationMode( fileName, lineNumber );
+        resume();
+    }
 }
 
 /*!
@@ -556,104 +622,128 @@ void QScriptDebuggerBackend::runToLocation(const QString &fileName, int lineNumb
   scriptId and \a lineNumber is reached. When the location is reached,
   an event() will be generated.
 */
-void QScriptDebuggerBackend::runToLocation(qint64 scriptId, int lineNumber)
+void QScriptDebuggerBackend::runToLocation( qint64 scriptId, int lineNumber )
 {
-   Q_D(QScriptDebuggerBackend);
-   if (d->agent) {
-      d->agent->enterRunToLocationMode(scriptId, lineNumber);
-      resume();
-   }
+    Q_D( QScriptDebuggerBackend );
+
+    if ( d->agent )
+    {
+        d->agent->enterRunToLocationMode( scriptId, lineNumber );
+        resume();
+    }
 }
 
-void QScriptDebuggerBackend::returnToCaller(int contextIndex, const QScriptValue &value)
+void QScriptDebuggerBackend::returnToCaller( int contextIndex, const QScriptValue &value )
 {
-   Q_D(QScriptDebuggerBackend);
-   if (d->agent) {
-      d->agent->enterReturnByForceMode(contextIndex, value);
-      resume();
-   }
+    Q_D( QScriptDebuggerBackend );
+
+    if ( d->agent )
+    {
+        d->agent->enterReturnByForceMode( contextIndex, value );
+        resume();
+    }
 }
 
 /*!
   Evaluates the given \a program. When evaluation is complete, an
   event() is generated.
 */
-void QScriptDebuggerBackend::evaluate(int contextIndex, const QString &program,
-                                      const QString &fileName, int lineNumber)
+void QScriptDebuggerBackend::evaluate( int contextIndex, const QString &program,
+                                       const QString &fileName, int lineNumber )
 {
-   Q_D(QScriptDebuggerBackend);
-   d->pendingEvaluateContextIndex = contextIndex;
-   d->pendingEvaluateProgram = program;
-   d->pendingEvaluateFileName = fileName;
-   d->pendingEvaluateLineNumber = lineNumber;
-   if (!engine()->isEvaluating()) {
-      doPendingEvaluate(/*postEvent=*/true);
-   } else {
-      resume();
-   }
+    Q_D( QScriptDebuggerBackend );
+    d->pendingEvaluateContextIndex = contextIndex;
+    d->pendingEvaluateProgram = program;
+    d->pendingEvaluateFileName = fileName;
+    d->pendingEvaluateLineNumber = lineNumber;
+
+    if ( !engine()->isEvaluating() )
+    {
+        doPendingEvaluate( /*postEvent=*/true );
+    }
+    else
+    {
+        resume();
+    }
 }
 
 /*!
   Executes the pending evaluate, if any.
 */
-void QScriptDebuggerBackend::doPendingEvaluate(bool postEvent)
+void QScriptDebuggerBackend::doPendingEvaluate( bool postEvent )
 {
-   Q_D(QScriptDebuggerBackend);
-   QString program = d->pendingEvaluateProgram;
-   if (program.isEmpty()) {
-      return;
-   }
-   int contextIndex = d->pendingEvaluateContextIndex;
-   QScriptContext *ctx = context(contextIndex);
-   Q_ASSERT(ctx != 0);
-   QString fileName = d->pendingEvaluateFileName;
-   int lineNumber = d->pendingEvaluateLineNumber;
-   d->pendingEvaluateProgram = QString();
-   d->pendingEvaluateFileName = QString();
-   d->pendingEvaluateLineNumber = -1;
-   d->pendingEvaluateContextIndex = -1;
+    Q_D( QScriptDebuggerBackend );
+    QString program = d->pendingEvaluateProgram;
 
-   // push a new context and initialize its scope chain etc.
-   {
-      QScriptContext *evalContext = engine()->pushContext();
-      QScriptValueList scopeChain = ctx->scopeChain();
-      if (scopeChain.isEmpty()) {
-         scopeChain.append(engine()->globalObject());
-      }
-      while (!scopeChain.isEmpty()) {
-         evalContext->pushScope(scopeChain.takeLast());
-      }
-      evalContext->setActivationObject(ctx->activationObject());
-      evalContext->setThisObject(ctx->thisObject());
-   }
+    if ( program.isEmpty() )
+    {
+        return;
+    }
 
-   d->agent->enterContinueMode();
-   // set a flag so that any exception that happens in
-   // the evaluate() is not sent to the debugger
-   d->ignoreExceptions = true;
-   bool hadException = engine()->hasUncaughtException();
-   QScriptValue ret = engine()->evaluate(program, fileName, lineNumber);
-   d->ignoreExceptions = false;
-   if (!hadException && engine()->hasUncaughtException()) {
-      engine()->clearExceptions();
-   }
-   engine()->popContext();
+    int contextIndex = d->pendingEvaluateContextIndex;
+    QScriptContext *ctx = context( contextIndex );
+    Q_ASSERT( ctx != 0 );
+    QString fileName = d->pendingEvaluateFileName;
+    int lineNumber = d->pendingEvaluateLineNumber;
+    d->pendingEvaluateProgram = QString();
+    d->pendingEvaluateFileName = QString();
+    d->pendingEvaluateLineNumber = -1;
+    d->pendingEvaluateContextIndex = -1;
 
-   QScriptDebuggerValue retret(ret);
-   QScriptDebuggerEvent e(QScriptDebuggerEvent::InlineEvalFinished);
-   e.setScriptValue(retret);
-   if (!ret.isUndefined()) {
-      e.setMessage(ret.toString());   // for convenience -- we always need it
-   }
+    // push a new context and initialize its scope chain etc.
+    {
+        QScriptContext *evalContext = engine()->pushContext();
+        QScriptValueList scopeChain = ctx->scopeChain();
 
-   e.setNestedEvaluate(engine()->isEvaluating());
+        if ( scopeChain.isEmpty() )
+        {
+            scopeChain.append( engine()->globalObject() );
+        }
 
-   if (postEvent) {
-      QScriptDebuggerEventEvent *de = new QScriptDebuggerEventEvent(e);
-      d->postEvent(de);
-   } else {
-      event(e);
-   }
+        while ( !scopeChain.isEmpty() )
+        {
+            evalContext->pushScope( scopeChain.takeLast() );
+        }
+
+        evalContext->setActivationObject( ctx->activationObject() );
+        evalContext->setThisObject( ctx->thisObject() );
+    }
+
+    d->agent->enterContinueMode();
+    // set a flag so that any exception that happens in
+    // the evaluate() is not sent to the debugger
+    d->ignoreExceptions = true;
+    bool hadException = engine()->hasUncaughtException();
+    QScriptValue ret = engine()->evaluate( program, fileName, lineNumber );
+    d->ignoreExceptions = false;
+
+    if ( !hadException && engine()->hasUncaughtException() )
+    {
+        engine()->clearExceptions();
+    }
+
+    engine()->popContext();
+
+    QScriptDebuggerValue retret( ret );
+    QScriptDebuggerEvent e( QScriptDebuggerEvent::InlineEvalFinished );
+    e.setScriptValue( retret );
+
+    if ( !ret.isUndefined() )
+    {
+        e.setMessage( ret.toString() ); // for convenience -- we always need it
+    }
+
+    e.setNestedEvaluate( engine()->isEvaluating() );
+
+    if ( postEvent )
+    {
+        QScriptDebuggerEventEvent *de = new QScriptDebuggerEventEvent( e );
+        d->postEvent( de );
+    }
+    else
+    {
+        event( e );
+    }
 }
 
 /*!
@@ -665,16 +755,21 @@ void QScriptDebuggerBackend::doPendingEvaluate(bool postEvent)
 
   \sa deleteBreakpoint(), breakpoints()
 */
-int QScriptDebuggerBackend::setBreakpoint(const QScriptBreakpointData &data)
+int QScriptDebuggerBackend::setBreakpoint( const QScriptBreakpointData &data )
 {
-   Q_D(QScriptDebuggerBackend);
-   if (!d->agent) {
-      return -1;
-   }
-   if (!data.isValid()) {
-      return -1;
-   }
-   return d->agent->setBreakpoint(data);
+    Q_D( QScriptDebuggerBackend );
+
+    if ( !d->agent )
+    {
+        return -1;
+    }
+
+    if ( !data.isValid() )
+    {
+        return -1;
+    }
+
+    return d->agent->setBreakpoint( data );
 }
 
 /*!
@@ -684,13 +779,16 @@ int QScriptDebuggerBackend::setBreakpoint(const QScriptBreakpointData &data)
 
   \sa setBreakpoint()
 */
-bool QScriptDebuggerBackend::deleteBreakpoint(int id)
+bool QScriptDebuggerBackend::deleteBreakpoint( int id )
 {
-   Q_D(QScriptDebuggerBackend);
-   if (!d->agent) {
-      return false;
-   }
-   return d->agent->deleteBreakpoint(id);
+    Q_D( QScriptDebuggerBackend );
+
+    if ( !d->agent )
+    {
+        return false;
+    }
+
+    return d->agent->deleteBreakpoint( id );
 }
 
 /*!
@@ -698,36 +796,44 @@ bool QScriptDebuggerBackend::deleteBreakpoint(int id)
 */
 void QScriptDebuggerBackend::deleteAllBreakpoints()
 {
-   Q_D(QScriptDebuggerBackend);
-   if (d->agent) {
-      d->agent->deleteAllBreakpoints();
-   }
+    Q_D( QScriptDebuggerBackend );
+
+    if ( d->agent )
+    {
+        d->agent->deleteAllBreakpoints();
+    }
 }
 
 /*!
   Returns the data associated with the breakpoint identified by the
   given \a id.
 */
-QScriptBreakpointData QScriptDebuggerBackend::breakpointData(int id) const
+QScriptBreakpointData QScriptDebuggerBackend::breakpointData( int id ) const
 {
-   Q_D(const QScriptDebuggerBackend);
-   if (!d->agent) {
-      return QScriptBreakpointData();
-   }
-   return d->agent->breakpointData(id);
+    Q_D( const QScriptDebuggerBackend );
+
+    if ( !d->agent )
+    {
+        return QScriptBreakpointData();
+    }
+
+    return d->agent->breakpointData( id );
 }
 
 /*!
   Sets the \a data associated with the breakpoint identified by the
   given \a id.
 */
-bool QScriptDebuggerBackend::setBreakpointData(int id, const QScriptBreakpointData &data)
+bool QScriptDebuggerBackend::setBreakpointData( int id, const QScriptBreakpointData &data )
 {
-   Q_D(QScriptDebuggerBackend);
-   if (d->agent) {
-      return d->agent->setBreakpointData(id, data);
-   }
-   return false;
+    Q_D( QScriptDebuggerBackend );
+
+    if ( d->agent )
+    {
+        return d->agent->setBreakpointData( id, data );
+    }
+
+    return false;
 }
 
 /*!
@@ -737,11 +843,14 @@ bool QScriptDebuggerBackend::setBreakpointData(int id, const QScriptBreakpointDa
 */
 QScriptBreakpointMap QScriptDebuggerBackend::breakpoints() const
 {
-   Q_D(const QScriptDebuggerBackend);
-   if (!d->agent) {
-      return QScriptBreakpointMap();
-   }
-   return d->agent->breakpoints();
+    Q_D( const QScriptDebuggerBackend );
+
+    if ( !d->agent )
+    {
+        return QScriptBreakpointMap();
+    }
+
+    return d->agent->breakpoints();
 }
 
 /*!
@@ -751,11 +860,14 @@ QScriptBreakpointMap QScriptDebuggerBackend::breakpoints() const
 */
 QScriptScriptMap QScriptDebuggerBackend::scripts() const
 {
-   Q_D(const QScriptDebuggerBackend);
-   if (!d->agent) {
-      return QScriptScriptMap();
-   }
-   return d->agent->scripts();
+    Q_D( const QScriptDebuggerBackend );
+
+    if ( !d->agent )
+    {
+        return QScriptScriptMap();
+    }
+
+    return d->agent->scripts();
 }
 
 /*!
@@ -763,13 +875,16 @@ QScriptScriptMap QScriptDebuggerBackend::scripts() const
 
   \sa scripts()
 */
-QScriptScriptData QScriptDebuggerBackend::scriptData(qint64 id) const
+QScriptScriptData QScriptDebuggerBackend::scriptData( qint64 id ) const
 {
-   Q_D(const QScriptDebuggerBackend);
-   if (!d->agent) {
-      return QScriptScriptData();
-   }
-   return d->agent->scriptData(id);
+    Q_D( const QScriptDebuggerBackend );
+
+    if ( !d->agent )
+    {
+        return QScriptScriptData();
+    }
+
+    return d->agent->scriptData( id );
 }
 
 /*!
@@ -779,10 +894,12 @@ QScriptScriptData QScriptDebuggerBackend::scriptData(qint64 id) const
 */
 void QScriptDebuggerBackend::scriptsCheckpoint()
 {
-   Q_D(QScriptDebuggerBackend);
-   if (d->agent) {
-      d->agent->scriptsCheckpoint();
-   }
+    Q_D( QScriptDebuggerBackend );
+
+    if ( d->agent )
+    {
+        d->agent->scriptsCheckpoint();
+    }
 }
 
 /*!
@@ -796,20 +913,26 @@ void QScriptDebuggerBackend::scriptsCheckpoint()
 */
 QScriptScriptsDelta QScriptDebuggerBackend::scriptsDelta() const
 {
-   Q_D(const QScriptDebuggerBackend);
-   if (!d->agent) {
-      return QPair<QList<qint64>, QList<qint64> >();
-   }
-   return d->agent->scriptsDelta();
+    Q_D( const QScriptDebuggerBackend );
+
+    if ( !d->agent )
+    {
+        return QPair<QList<qint64>, QList<qint64> >();
+    }
+
+    return d->agent->scriptsDelta();
 }
 
-qint64 QScriptDebuggerBackend::resolveScript(const QString &fileName) const
+qint64 QScriptDebuggerBackend::resolveScript( const QString &fileName ) const
 {
-   Q_D(const QScriptDebuggerBackend);
-   if (!d->agent) {
-      return -1;
-   }
-   return d->agent->resolveScript(fileName);
+    Q_D( const QScriptDebuggerBackend );
+
+    if ( !d->agent )
+    {
+        return -1;
+    }
+
+    return d->agent->resolveScript( fileName );
 }
 
 /*!
@@ -817,29 +940,38 @@ qint64 QScriptDebuggerBackend::resolveScript(const QString &fileName) const
 */
 int QScriptDebuggerBackend::contextCount() const
 {
-   if (!engine()) {
-      return 0;
-   }
-   return contextIds().count();
+    if ( !engine() )
+    {
+        return 0;
+    }
+
+    return contextIds().count();
 }
 
 /*!
   Returns the context for the frame with the given \a index.
 */
-QScriptContext *QScriptDebuggerBackend::context(int index) const
+QScriptContext *QScriptDebuggerBackend::context( int index ) const
 {
-   if (index < 0) {
-      return 0;
-   }
-   QScriptContext *ctx = engine()->currentContext();
-   while (ctx) {
-      if (index == 0) {
-         return ctx;
-      }
-      ctx = ctx->parentContext();
-      --index;
-   }
-   return 0;
+    if ( index < 0 )
+    {
+        return 0;
+    }
+
+    QScriptContext *ctx = engine()->currentContext();
+
+    while ( ctx )
+    {
+        if ( index == 0 )
+        {
+            return ctx;
+        }
+
+        ctx = ctx->parentContext();
+        --index;
+    }
+
+    return 0;
 }
 
 /*!
@@ -847,84 +979,92 @@ QScriptContext *QScriptDebuggerBackend::context(int index) const
 */
 QStringList QScriptDebuggerBackend::backtrace() const
 {
-   if (!engine()) {
-      return QStringList();
-   }
-   return engine()->currentContext()->backtrace();
+    if ( !engine() )
+    {
+        return QStringList();
+    }
+
+    return engine()->currentContext()->backtrace();
 }
 
 QList<qint64> QScriptDebuggerBackend::contextIds() const
 {
-   Q_D(const QScriptDebuggerBackend);
-   if (!d->agent) {
-      return QList<qint64>();
-   }
-   return d->agent->contextIds();
+    Q_D( const QScriptDebuggerBackend );
+
+    if ( !d->agent )
+    {
+        return QList<qint64>();
+    }
+
+    return d->agent->contextIds();
 }
 
 QScriptContextsDelta QScriptDebuggerBackend::contextsCheckpoint()
 {
-   Q_D(QScriptDebuggerBackend);
-   if (!d->agent) {
-      return QScriptContextsDelta();
-   }
-   return d->agent->contextsCheckpoint();
+    Q_D( QScriptDebuggerBackend );
+
+    if ( !d->agent )
+    {
+        return QScriptContextsDelta();
+    }
+
+    return d->agent->contextsCheckpoint();
 }
 
 int QScriptDebuggerBackend::newScriptObjectSnapshot()
 {
-   Q_D(QScriptDebuggerBackend);
-   int id = d->nextScriptObjectSnapshotId;
-   ++d->nextScriptObjectSnapshotId;
-   d->scriptObjectSnapshots[id] = new QScriptObjectSnapshot();
-   return id;
+    Q_D( QScriptDebuggerBackend );
+    int id = d->nextScriptObjectSnapshotId;
+    ++d->nextScriptObjectSnapshotId;
+    d->scriptObjectSnapshots[id] = new QScriptObjectSnapshot();
+    return id;
 }
 
-QScriptObjectSnapshot *QScriptDebuggerBackend::scriptObjectSnapshot(int id) const
+QScriptObjectSnapshot *QScriptDebuggerBackend::scriptObjectSnapshot( int id ) const
 {
-   Q_D(const QScriptDebuggerBackend);
-   return d->scriptObjectSnapshots.value(id);
+    Q_D( const QScriptDebuggerBackend );
+    return d->scriptObjectSnapshots.value( id );
 }
 
-void QScriptDebuggerBackend::deleteScriptObjectSnapshot(int id)
+void QScriptDebuggerBackend::deleteScriptObjectSnapshot( int id )
 {
-   Q_D(QScriptDebuggerBackend);
-   QScriptObjectSnapshot *snap = d->scriptObjectSnapshots.take(id);
-   delete snap;
+    Q_D( QScriptDebuggerBackend );
+    QScriptObjectSnapshot *snap = d->scriptObjectSnapshots.take( id );
+    delete snap;
 }
 
-int QScriptDebuggerBackend::newScriptValueIterator(const QScriptValue &object)
+int QScriptDebuggerBackend::newScriptValueIterator( const QScriptValue &object )
 {
-   Q_D(QScriptDebuggerBackend);
-   int id = d->nextScriptValueIteratorId;
-   ++d->nextScriptValueIteratorId;
-   d->scriptValueIterators[id] = new QScriptValueIterator(object);
-   return id;
+    Q_D( QScriptDebuggerBackend );
+    int id = d->nextScriptValueIteratorId;
+    ++d->nextScriptValueIteratorId;
+    d->scriptValueIterators[id] = new QScriptValueIterator( object );
+    return id;
 }
 
-QScriptValueIterator *QScriptDebuggerBackend::scriptValueIterator(int id) const
+QScriptValueIterator *QScriptDebuggerBackend::scriptValueIterator( int id ) const
 {
-   Q_D(const QScriptDebuggerBackend);
-   return d->scriptValueIterators.value(id);
+    Q_D( const QScriptDebuggerBackend );
+    return d->scriptValueIterators.value( id );
 }
 
-void QScriptDebuggerBackend::deleteScriptValueIterator(int id)
+void QScriptDebuggerBackend::deleteScriptValueIterator( int id )
 {
-   Q_D(QScriptDebuggerBackend);
-   QScriptValueIterator *it = d->scriptValueIterators.take(id);
-   delete it;
+    Q_D( QScriptDebuggerBackend );
+    QScriptValueIterator *it = d->scriptValueIterators.take( id );
+    delete it;
 }
 
 bool QScriptDebuggerBackend::ignoreExceptions() const
 {
-   Q_D(const QScriptDebuggerBackend);
-   return d->ignoreExceptions;
+    Q_D( const QScriptDebuggerBackend );
+    return d->ignoreExceptions;
 }
 
-void QScriptDebuggerBackend::setIgnoreExceptions(bool ignore)
+void QScriptDebuggerBackend::setIgnoreExceptions( bool ignore )
 {
-   Q_D(QScriptDebuggerBackend);
-   d->ignoreExceptions = ignore;
+    Q_D( QScriptDebuggerBackend );
+    d->ignoreExceptions = ignore;
 }
 
 /*!
@@ -934,57 +1074,69 @@ void QScriptDebuggerBackend::setIgnoreExceptions(bool ignore)
 */
 QScriptValue QScriptDebuggerBackend::traceFunction() const
 {
-   Q_D(const QScriptDebuggerBackend);
-   if (!engine()) {
-      return QScriptValue();
-   }
-   QScriptValue fun = engine()->newFunction(QScriptDebuggerBackendPrivate::trace);
-   fun.setData(qScriptValueFromValue(engine(), const_cast<QScriptDebuggerBackendPrivate *>(d)));
-   return fun;
+    Q_D( const QScriptDebuggerBackend );
+
+    if ( !engine() )
+    {
+        return QScriptValue();
+    }
+
+    QScriptValue fun = engine()->newFunction( QScriptDebuggerBackendPrivate::trace );
+    fun.setData( qScriptValueFromValue( engine(), const_cast<QScriptDebuggerBackendPrivate *>( d ) ) );
+    return fun;
 }
 
 QScriptValue QScriptDebuggerBackend::assertFunction() const
 {
-   if (!engine()) {
-      return QScriptValue();
-   }
-   QScriptValue fun = engine()->newFunction(QScriptDebuggerBackendPrivate::qsassert);
-   return fun;
+    if ( !engine() )
+    {
+        return QScriptValue();
+    }
+
+    QScriptValue fun = engine()->newFunction( QScriptDebuggerBackendPrivate::qsassert );
+    return fun;
 }
 
 QScriptValue QScriptDebuggerBackend::fileNameFunction() const
 {
-   if (!engine()) {
-      return QScriptValue();
-   }
-   QScriptValue fun = engine()->newFunction(QScriptDebuggerBackendPrivate::fileName);
-   return fun;
+    if ( !engine() )
+    {
+        return QScriptValue();
+    }
+
+    QScriptValue fun = engine()->newFunction( QScriptDebuggerBackendPrivate::fileName );
+    return fun;
 }
 
 QScriptValue QScriptDebuggerBackend::lineNumberFunction() const
 {
-   if (!engine()) {
-      return QScriptValue();
-   }
-   QScriptValue fun = engine()->newFunction(QScriptDebuggerBackendPrivate::lineNumber);
-   return fun;
+    if ( !engine() )
+    {
+        return QScriptValue();
+    }
+
+    QScriptValue fun = engine()->newFunction( QScriptDebuggerBackendPrivate::lineNumber );
+    return fun;
 }
 
 QScriptDebuggerCommandExecutor *QScriptDebuggerBackend::commandExecutor() const
 {
-   Q_D(const QScriptDebuggerBackend);
-   if (d->commandExecutor) {
-      return d->commandExecutor;
-   }
-   QScriptDebuggerBackendPrivate *dd = const_cast<QScriptDebuggerBackendPrivate *>(d);
-   dd->commandExecutor = new QScriptDebuggerCommandExecutor();
-   return dd->commandExecutor;
+    Q_D( const QScriptDebuggerBackend );
+
+    if ( d->commandExecutor )
+    {
+        return d->commandExecutor;
+    }
+
+    QScriptDebuggerBackendPrivate *dd = const_cast<QScriptDebuggerBackendPrivate *>( d );
+    dd->commandExecutor = new QScriptDebuggerCommandExecutor();
+    return dd->commandExecutor;
 }
 
-void QScriptDebuggerBackend::setCommandExecutor(QScriptDebuggerCommandExecutor *executor)
+void QScriptDebuggerBackend::setCommandExecutor( QScriptDebuggerCommandExecutor *executor )
 {
-   Q_D(QScriptDebuggerBackend);
-   d->commandExecutor = executor;
+    Q_D( QScriptDebuggerBackend );
+    d->commandExecutor = executor;
 }
 
 /*!

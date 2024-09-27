@@ -25,7 +25,7 @@
 #include <WebKit2/WKBase.h>
 #include <WebKit2/WKURL.h>
 
-WK_EXPORT WKURLRef WKURLCreateWithQUrl(const QUrl& url);
-QUrl WKURLCopyQUrl(WKURLRef url);
+WK_EXPORT WKURLRef WKURLCreateWithQUrl( const QUrl &url );
+QUrl WKURLCopyQUrl( WKURLRef url );
 
 #endif /* WKURLCF_h */

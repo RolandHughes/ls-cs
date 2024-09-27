@@ -40,30 +40,33 @@
 
 #if ENABLE(INPUT_SPEECH)
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SpeechInputListener;
 
 // Provides a mock object for the speech input embedder API called by WebCore.
-class SpeechInputClientMock : public SpeechInputClient {
+class SpeechInputClientMock : public SpeechInputClient
+{
 public:
     SpeechInputClientMock();
 
-    void addRecognitionResult(const String& result, double confidence, const AtomicString& language);
+    void addRecognitionResult( const String &result, double confidence, const AtomicString &language );
     void clearResults();
 
     // SpeechInputClient methods.
-    void setListener(SpeechInputListener*);
-    bool startRecognition(int requestId, const IntRect& elementRect, const AtomicString& language, const String& grammar, SecurityOrigin*);
-    void stopRecording(int);
-    void cancelRecognition(int);
+    void setListener( SpeechInputListener * );
+    bool startRecognition( int requestId, const IntRect &elementRect, const AtomicString &language, const String &grammar,
+                           SecurityOrigin * );
+    void stopRecording( int );
+    void cancelRecognition( int );
 
 private:
-    void timerFired(Timer<SpeechInputClientMock>*);
+    void timerFired( Timer<SpeechInputClientMock> * );
 
     bool m_recording;
     Timer<SpeechInputClientMock> m_timer;
-    SpeechInputListener* m_listener;
+    SpeechInputListener *m_listener;
     int m_requestId;
 
     HashMap<String, SpeechInputResultArray> m_recognitionResults;

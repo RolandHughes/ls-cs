@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
 
@@ -38,75 +38,95 @@
 using WTF::ThreadSpecific;
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class EventNames;
-    struct ICUConverterWrapper;
-    struct TECConverterWrapper;
-    class ThreadTimers;
+class EventNames;
+struct ICUConverterWrapper;
+struct TECConverterWrapper;
+class ThreadTimers;
 
-    class ThreadGlobalData {
-        WTF_MAKE_NONCOPYABLE(ThreadGlobalData);
-    public:
-        ThreadGlobalData();
-        ~ThreadGlobalData();
-        void destroy(); // called on workers to clean up the ThreadGlobalData before the thread exits.
+class ThreadGlobalData
+{
+    WTF_MAKE_NONCOPYABLE( ThreadGlobalData );
+public:
+    ThreadGlobalData();
+    ~ThreadGlobalData();
+    void destroy(); // called on workers to clean up the ThreadGlobalData before the thread exits.
 
-        EventNames& eventNames() { return *m_eventNames; }
-        ThreadTimers& threadTimers() { return *m_threadTimers; }
+    EventNames &eventNames()
+    {
+        return *m_eventNames;
+    }
+    ThreadTimers &threadTimers()
+    {
+        return *m_threadTimers;
+    }
 
 #if USE(ICU_UNICODE)
-        ICUConverterWrapper& cachedConverterICU() { return *m_cachedConverterICU; }
+    ICUConverterWrapper &cachedConverterICU()
+    {
+        return *m_cachedConverterICU;
+    }
 #endif
 
 #if PLATFORM(MAC)
-        TECConverterWrapper& cachedConverterTEC() { return *m_cachedConverterTEC; }
+    TECConverterWrapper &cachedConverterTEC()
+    {
+        return *m_cachedConverterTEC;
+    }
 #endif
 
-    private:
-        EventNames* m_eventNames;
-        ThreadTimers* m_threadTimers;
+private:
+    EventNames *m_eventNames;
+    ThreadTimers *m_threadTimers;
 
 #ifndef NDEBUG
-        bool m_isMainThread;
+    bool m_isMainThread;
 #endif
 
 #if USE(ICU_UNICODE)
-        ICUConverterWrapper* m_cachedConverterICU;
+    ICUConverterWrapper *m_cachedConverterICU;
 #endif
 
 #if PLATFORM(MAC)
-        TECConverterWrapper* m_cachedConverterTEC;
+    TECConverterWrapper *m_cachedConverterTEC;
 #endif
 
 #if ENABLE(WORKERS)
-        static ThreadSpecific<ThreadGlobalData>* staticData;
+    static ThreadSpecific<ThreadGlobalData> *staticData;
 #else
-        static ThreadGlobalData* staticData;
+    static ThreadGlobalData *staticData;
 #endif
-        friend ThreadGlobalData& threadGlobalData();
-    };
+    friend ThreadGlobalData &threadGlobalData();
+};
 
-inline ThreadGlobalData& threadGlobalData() 
+inline ThreadGlobalData &threadGlobalData()
 {
     // FIXME: Workers are not necessarily the only feature that make per-thread global data necessary.
     // We need to check for e.g. database objects manipulating strings on secondary threads.
 
 #if ENABLE(WORKERS)
     // ThreadGlobalData is used on main thread before it could possibly be used on secondary ones, so there is no need for synchronization here.
-    if (!ThreadGlobalData::staticData)
+    if ( !ThreadGlobalData::staticData )
+    {
         ThreadGlobalData::staticData = new ThreadSpecific<ThreadGlobalData>;
+    }
+
     return **ThreadGlobalData::staticData;
 #else
-    if (!ThreadGlobalData::staticData) {
-        ThreadGlobalData::staticData = static_cast<ThreadGlobalData*>(fastMalloc(sizeof(ThreadGlobalData)));
+
+    if ( !ThreadGlobalData::staticData )
+    {
+        ThreadGlobalData::staticData = static_cast<ThreadGlobalData *>( fastMalloc( sizeof( ThreadGlobalData ) ) );
         // ThreadGlobalData constructor indirectly uses staticData, so we need to set up the memory before invoking it.
-        new (ThreadGlobalData::staticData) ThreadGlobalData;
+        new ( ThreadGlobalData::staticData ) ThreadGlobalData;
     }
+
     return *ThreadGlobalData::staticData;
 #endif
 }
-    
+
 } // namespace WebCore
 
 #endif // ThreadGlobalData_h

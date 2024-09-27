@@ -32,17 +32,20 @@
 #include "JNIUtility.h"
 #include <runtime/JSValue.h>
 
-namespace JSC {
+namespace JSC
+{
 
 class ExecState;
 class JSObject;
 
-namespace Bindings {
+namespace Bindings
+{
 
 class RootObject;
 
-jvalue convertValueToJValue(ExecState*, RootObject*, JSValue, JavaType, const char* javaClassName);
-bool dispatchJNICall(ExecState*, const void* targetAppletView, jobject, bool isStatic, JavaType returnType, jmethodID, jvalue* args, jvalue& result, const char* callingURL, JSValue& exceptionDescription);
+jvalue convertValueToJValue( ExecState *, RootObject *, JSValue, JavaType, const char *javaClassName );
+bool dispatchJNICall( ExecState *, const void *targetAppletView, jobject, bool isStatic, JavaType returnType, jmethodID,
+                      jvalue *args, jvalue &result, const char *callingURL, JSValue &exceptionDescription );
 
 } // namespace Bindings
 

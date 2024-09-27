@@ -30,27 +30,44 @@
 #include "WebPageGroupData.h"
 #include <wtf/PassRefPtr.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
-class WebPageGroupProxy : public APIObject {
+class WebPageGroupProxy : public APIObject
+{
 public:
     static const Type APIType = TypeBundlePageGroup;
 
-    static PassRefPtr<WebPageGroupProxy> create(const WebPageGroupData&);
+    static PassRefPtr<WebPageGroupProxy> create( const WebPageGroupData & );
     virtual ~WebPageGroupProxy();
 
-    const String& identifier() const { return m_data.identifer; }
-    uint64_t pageGroupID() const { return m_data.pageGroupID; }
-    bool isVisibleToInjectedBundle() const { return m_data.visibleToInjectedBundle; }
-    bool isVisibleToHistoryClient() const { return m_data.visibleToHistoryClient; }
+    const String &identifier() const
+    {
+        return m_data.identifer;
+    }
+    uint64_t pageGroupID() const
+    {
+        return m_data.pageGroupID;
+    }
+    bool isVisibleToInjectedBundle() const
+    {
+        return m_data.visibleToInjectedBundle;
+    }
+    bool isVisibleToHistoryClient() const
+    {
+        return m_data.visibleToHistoryClient;
+    }
 
 private:
-    WebPageGroupProxy(const WebPageGroupData& data)
-        : m_data(data)
+    WebPageGroupProxy( const WebPageGroupData &data )
+        : m_data( data )
     {
     }
 
-    virtual Type type() const { return APIType; }
+    virtual Type type() const
+    {
+        return APIType;
+    }
 
     WebPageGroupData m_data;
 };

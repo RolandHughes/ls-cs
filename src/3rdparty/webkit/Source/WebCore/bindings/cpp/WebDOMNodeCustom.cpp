@@ -25,72 +25,100 @@
 #include "WebExceptionHandler.h"
 #include "WebNativeEventListener.h"
 
-WebDOMNode WebDOMNode::insertBefore(const WebDOMNode& newChild, const WebDOMNode& refChild)
+WebDOMNode WebDOMNode::insertBefore( const WebDOMNode &newChild, const WebDOMNode &refChild )
 {
-    if (!impl())
+    if ( !impl() )
+    {
         return WebDOMNode();
+    }
 
     WebCore::ExceptionCode ec = 0;
-    if (impl()->insertBefore(toWebCore(newChild), toWebCore(refChild), ec, true))
+
+    if ( impl()->insertBefore( toWebCore( newChild ), toWebCore( refChild ), ec, true ) )
+    {
         return newChild;
+    }
 
-    webDOMRaiseError(static_cast<WebDOMExceptionCode>(ec));
+    webDOMRaiseError( static_cast<WebDOMExceptionCode>( ec ) );
     return WebDOMNode();
 }
 
-WebDOMNode WebDOMNode::replaceChild(const WebDOMNode& newChild, const WebDOMNode& oldChild)
+WebDOMNode WebDOMNode::replaceChild( const WebDOMNode &newChild, const WebDOMNode &oldChild )
 {
-    if (!impl())
+    if ( !impl() )
+    {
         return WebDOMNode();
+    }
 
     WebCore::ExceptionCode ec = 0;
-    if (impl()->replaceChild(toWebCore(newChild), toWebCore(oldChild), ec, true))
+
+    if ( impl()->replaceChild( toWebCore( newChild ), toWebCore( oldChild ), ec, true ) )
+    {
         return oldChild;
+    }
 
-    webDOMRaiseError(static_cast<WebDOMExceptionCode>(ec));
+    webDOMRaiseError( static_cast<WebDOMExceptionCode>( ec ) );
     return WebDOMNode();
 }
 
-WebDOMNode WebDOMNode::removeChild(const WebDOMNode& oldChild)
+WebDOMNode WebDOMNode::removeChild( const WebDOMNode &oldChild )
 {
-    if (!impl())
+    if ( !impl() )
+    {
         return WebDOMNode();
+    }
 
     WebCore::ExceptionCode ec = 0;
-    if (impl()->removeChild(toWebCore(oldChild), ec))
+
+    if ( impl()->removeChild( toWebCore( oldChild ), ec ) )
+    {
         return oldChild;
+    }
 
-    webDOMRaiseError(static_cast<WebDOMExceptionCode>(ec));
+    webDOMRaiseError( static_cast<WebDOMExceptionCode>( ec ) );
     return WebDOMNode();
 }
 
-WebDOMNode WebDOMNode::appendChild(const WebDOMNode& newChild)
+WebDOMNode WebDOMNode::appendChild( const WebDOMNode &newChild )
 {
-    if (!impl())
+    if ( !impl() )
+    {
         return WebDOMNode();
+    }
 
     WebCore::ExceptionCode ec = 0;
-    if (impl()->appendChild(toWebCore(newChild), ec, true))
+
+    if ( impl()->appendChild( toWebCore( newChild ), ec, true ) )
+    {
         return newChild;
+    }
 
-    webDOMRaiseError(static_cast<WebDOMExceptionCode>(ec));
+    webDOMRaiseError( static_cast<WebDOMExceptionCode>( ec ) );
     return WebDOMNode();
 }
 
-void WebDOMNode::addEventListener(const WebDOMString& type, const WebDOMEventListener& listener, bool useCapture)
+void WebDOMNode::addEventListener( const WebDOMString &type, const WebDOMEventListener &listener, bool useCapture )
 {
-    if (!impl())
+    if ( !impl() )
+    {
         return;
+    }
 
-    if (toWebCore(listener))
-        impl()->addEventListener(type, toWebCore(listener), useCapture);
+    if ( toWebCore( listener ) )
+    {
+        impl()->addEventListener( type, toWebCore( listener ), useCapture );
+    }
 }
 
-void WebDOMNode::removeEventListener(const WebDOMString& type, const WebDOMEventListener& listener, bool useCapture)
+void WebDOMNode::removeEventListener( const WebDOMString &type, const WebDOMEventListener &listener, bool useCapture )
 {
-    if (!impl())
+    if ( !impl() )
+    {
         return;
+    }
 
-    if (toWebCore(listener))
-        impl()->removeEventListener(type, toWebCore(listener), useCapture);
+    if ( toWebCore( listener ) )
+    {
+        impl()->removeEventListener( type, toWebCore( listener ), useCapture );
+    }
 }

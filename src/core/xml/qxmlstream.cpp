@@ -40,217 +40,243 @@ QXmlStreamEntityResolver::~QXmlStreamEntityResolver()
 {
 }
 
-QString QXmlStreamEntityResolver::resolveEntity(const QString &, const QString &)
+QString QXmlStreamEntityResolver::resolveEntity( const QString &, const QString & )
 {
-   return QString();
+    return QString();
 }
 
-QString QXmlStreamEntityResolver::resolveUndeclaredEntity(const QString &)
+QString QXmlStreamEntityResolver::resolveUndeclaredEntity( const QString & )
 {
-   return QString();
+    return QString();
 }
 
-QString QXmlStreamReaderPrivate::resolveUndeclaredEntity(const QString &name)
+QString QXmlStreamReaderPrivate::resolveUndeclaredEntity( const QString &name )
 {
-   if (entityResolver) {
-      return entityResolver->resolveUndeclaredEntity(name);
-   }
+    if ( entityResolver )
+    {
+        return entityResolver->resolveUndeclaredEntity( name );
+    }
 
-   return QString();
+    return QString();
 }
 
-void QXmlStreamReader::setEntityResolver(QXmlStreamEntityResolver *resolver)
+void QXmlStreamReader::setEntityResolver( QXmlStreamEntityResolver *resolver )
 {
-   Q_D(QXmlStreamReader);
-   d->entityResolver = resolver;
+    Q_D( QXmlStreamReader );
+    d->entityResolver = resolver;
 }
 
 QXmlStreamEntityResolver *QXmlStreamReader::entityResolver() const
 {
-   Q_D(const QXmlStreamReader);
-   return d->entityResolver;
+    Q_D( const QXmlStreamReader );
+    return d->entityResolver;
 }
 
 QXmlStreamReader::QXmlStreamReader()
-   : d_ptr(new QXmlStreamReaderPrivate(this))
+    : d_ptr( new QXmlStreamReaderPrivate( this ) )
 {
 }
 
-QXmlStreamReader::QXmlStreamReader(QIODevice *device)
-   : d_ptr(new QXmlStreamReaderPrivate(this))
+QXmlStreamReader::QXmlStreamReader( QIODevice *device )
+    : d_ptr( new QXmlStreamReaderPrivate( this ) )
 {
-   setDevice(device);
+    setDevice( device );
 }
 
-QXmlStreamReader::QXmlStreamReader(const QByteArray &data)
-   : d_ptr(new QXmlStreamReaderPrivate(this))
+QXmlStreamReader::QXmlStreamReader( const QByteArray &data )
+    : d_ptr( new QXmlStreamReaderPrivate( this ) )
 {
-   Q_D(QXmlStreamReader);
-   d->dataBuffer = data;
+    Q_D( QXmlStreamReader );
+    d->dataBuffer = data;
 }
 
-QXmlStreamReader::QXmlStreamReader(const QString &data)
-   : d_ptr(new QXmlStreamReaderPrivate(this))
+QXmlStreamReader::QXmlStreamReader( const QString &data )
+    : d_ptr( new QXmlStreamReaderPrivate( this ) )
 {
-   Q_D(QXmlStreamReader);
+    Q_D( QXmlStreamReader );
 
-   d->dataBuffer = d->codec->fromUnicode(data);
-   d->decoder    = d->codec->makeDecoder();
+    d->dataBuffer = d->codec->fromUnicode( data );
+    d->decoder    = d->codec->makeDecoder();
 
-   d->lockEncoding = true;
+    d->lockEncoding = true;
 }
 
-QXmlStreamReader::QXmlStreamReader(const char *data)
-   : d_ptr(new QXmlStreamReaderPrivate(this))
+QXmlStreamReader::QXmlStreamReader( const char *data )
+    : d_ptr( new QXmlStreamReaderPrivate( this ) )
 {
-   Q_D(QXmlStreamReader);
-   d->dataBuffer = QByteArray(data);
+    Q_D( QXmlStreamReader );
+    d->dataBuffer = QByteArray( data );
 }
 
 QXmlStreamReader::~QXmlStreamReader()
 {
-   Q_D(QXmlStreamReader);
+    Q_D( QXmlStreamReader );
 
-   if (d->deleteDevice) {
-      delete d->device;
-   }
+    if ( d->deleteDevice )
+    {
+        delete d->device;
+    }
 }
 
-void QXmlStreamReader::setDevice(QIODevice *device)
+void QXmlStreamReader::setDevice( QIODevice *device )
 {
-   Q_D(QXmlStreamReader);
+    Q_D( QXmlStreamReader );
 
-   if (d->deleteDevice) {
-      delete d->device;
-      d->deleteDevice = false;
-   }
+    if ( d->deleteDevice )
+    {
+        delete d->device;
+        d->deleteDevice = false;
+    }
 
-   d->device = device;
-   d->init();
+    d->device = device;
+    d->init();
 }
 
 QIODevice *QXmlStreamReader::device() const
 {
-   Q_D(const QXmlStreamReader);
-   return d->device;
+    Q_D( const QXmlStreamReader );
+    return d->device;
 }
 
-void QXmlStreamReader::addData(const QByteArray &data)
+void QXmlStreamReader::addData( const QByteArray &data )
 {
-   Q_D(QXmlStreamReader);
+    Q_D( QXmlStreamReader );
 
-   if (d->device) {
-      qWarning("QXmlStreamReader::addData() Invalid when using a device");
-      return;
-   }
+    if ( d->device )
+    {
+        qWarning( "QXmlStreamReader::addData() Invalid when using a device" );
+        return;
+    }
 
-   d->dataBuffer += data;
+    d->dataBuffer += data;
 }
 
-void QXmlStreamReader::addData(const QString &data)
+void QXmlStreamReader::addData( const QString &data )
 {
-   Q_D(QXmlStreamReader);
-   d->lockEncoding = true;
-   addData(d->codec->fromUnicode(data));
+    Q_D( QXmlStreamReader );
+    d->lockEncoding = true;
+    addData( d->codec->fromUnicode( data ) );
 }
 
-void QXmlStreamReader::addData(const char *data)
+void QXmlStreamReader::addData( const char *data )
 {
-   addData(QByteArray(data));
+    addData( QByteArray( data ) );
 }
 
 void QXmlStreamReader::clear()
 {
-   Q_D(QXmlStreamReader);
-   d->init();
+    Q_D( QXmlStreamReader );
+    d->init();
 
-   if (d->device) {
-      if (d->deleteDevice) {
-         delete d->device;
-      }
+    if ( d->device )
+    {
+        if ( d->deleteDevice )
+        {
+            delete d->device;
+        }
 
-      d->device = nullptr;
-   }
+        d->device = nullptr;
+    }
 }
 
 bool QXmlStreamReader::atEnd() const
 {
-   Q_D(const QXmlStreamReader);
+    Q_D( const QXmlStreamReader );
 
-   if (d->atEnd && ((d->type == QXmlStreamReader::Invalid && d->error == PrematureEndOfDocumentError)
-               || (d->type == QXmlStreamReader::EndDocument))) {
+    if ( d->atEnd && ( ( d->type == QXmlStreamReader::Invalid && d->error == PrematureEndOfDocumentError )
+                       || ( d->type == QXmlStreamReader::EndDocument ) ) )
+    {
 
-      if (d->device) {
-         return d->device->atEnd();
-      } else {
-         return !d->dataBuffer.size();
-      }
-   }
+        if ( d->device )
+        {
+            return d->device->atEnd();
+        }
+        else
+        {
+            return !d->dataBuffer.size();
+        }
+    }
 
-   return (d->atEnd || d->type == QXmlStreamReader::Invalid);
+    return ( d->atEnd || d->type == QXmlStreamReader::Invalid );
 }
 
 QXmlStreamReader::TokenType QXmlStreamReader::readNext()
 {
-   Q_D(QXmlStreamReader);
+    Q_D( QXmlStreamReader );
 
-   if (d->type != Invalid) {
-      if (!d->hasCheckedStartDocument) {
-         if (!d->checkStartDocument()) {
-            return d->type;   // synthetic StartDocument or error
-         }
-      }
+    if ( d->type != Invalid )
+    {
+        if ( !d->hasCheckedStartDocument )
+        {
+            if ( !d->checkStartDocument() )
+            {
+                return d->type;   // synthetic StartDocument or error
+            }
+        }
 
-      d->parse();
+        d->parse();
 
-      if (d->atEnd && d->type != EndDocument && d->type != Invalid) {
-         d->raiseError(PrematureEndOfDocumentError);
+        if ( d->atEnd && d->type != EndDocument && d->type != Invalid )
+        {
+            d->raiseError( PrematureEndOfDocumentError );
 
-      } else if (! d->atEnd && d->type == EndDocument) {
-         d->raiseWellFormedError(QXmlStream::tr("Extra content at end of document."));
-      }
+        }
+        else if ( ! d->atEnd && d->type == EndDocument )
+        {
+            d->raiseWellFormedError( QXmlStream::tr( "Extra content at end of document." ) );
+        }
 
-   } else if (d->error == PrematureEndOfDocumentError) {
-      // resume error
-      d->type = NoToken;
-      d->atEnd = false;
-      d->token = -1;
-      return readNext();
-   }
+    }
+    else if ( d->error == PrematureEndOfDocumentError )
+    {
+        // resume error
+        d->type = NoToken;
+        d->atEnd = false;
+        d->token = -1;
+        return readNext();
+    }
 
-   return d->type;
+    return d->type;
 }
 
 QXmlStreamReader::TokenType QXmlStreamReader::tokenType() const
 {
-   Q_D(const QXmlStreamReader);
-   return d->type;
+    Q_D( const QXmlStreamReader );
+    return d->type;
 }
 
 bool QXmlStreamReader::readNextStartElement()
 {
-   while (readNext() != Invalid) {
-      if (isEndElement()) {
-         return false;
-      } else if (isStartElement()) {
-         return true;
-      }
-   }
+    while ( readNext() != Invalid )
+    {
+        if ( isEndElement() )
+        {
+            return false;
+        }
+        else if ( isStartElement() )
+        {
+            return true;
+        }
+    }
 
-   return false;
+    return false;
 }
 
 void QXmlStreamReader::skipCurrentElement()
 {
-   int depth = 1;
+    int depth = 1;
 
-   while (depth && readNext() != Invalid) {
-      if (isEndElement()) {
-         --depth;
-      } else if (isStartElement()) {
-         ++depth;
-      }
-   }
+    while ( depth && readNext() != Invalid )
+    {
+        if ( isEndElement() )
+        {
+            --depth;
+        }
+        else if ( isStartElement() )
+        {
+            ++depth;
+        }
+    }
 }
 
 /*
@@ -286,1681 +312,1906 @@ EntityReference
 ProcessingInstruction
 */
 static const char QXmlStreamReader_tokenTypeString_string[] =
-      "NoToken\0"
-      "Invalid\0"
-      "StartDocument\0"
-      "EndDocument\0"
-      "StartElement\0"
-      "EndElement\0"
-      "Characters\0"
-      "Comment\0"
-      "DTD\0"
-      "EntityReference\0"
-      "ProcessingInstruction\0";
+    "NoToken\0"
+    "Invalid\0"
+    "StartDocument\0"
+    "EndDocument\0"
+    "StartElement\0"
+    "EndElement\0"
+    "Characters\0"
+    "Comment\0"
+    "DTD\0"
+    "EntityReference\0"
+    "ProcessingInstruction\0";
 
-static const short QXmlStreamReader_tokenTypeString_indices[] = {
-   0, 8, 16, 30, 42, 55, 66, 77, 85, 89, 105, 0
+static const short QXmlStreamReader_tokenTypeString_indices[] =
+{
+    0, 8, 16, 30, 42, 55, 66, 77, 85, 89, 105, 0
 };
 
-void QXmlStreamReader::setNamespaceProcessing(bool enable)
+void QXmlStreamReader::setNamespaceProcessing( bool enable )
 {
-   Q_D(QXmlStreamReader);
-   d->namespaceProcessing = enable;
+    Q_D( QXmlStreamReader );
+    d->namespaceProcessing = enable;
 }
 
 bool QXmlStreamReader::namespaceProcessing() const
 {
-   Q_D(const QXmlStreamReader);
-   return d->namespaceProcessing;
+    Q_D( const QXmlStreamReader );
+    return d->namespaceProcessing;
 }
 
 QString QXmlStreamReader::tokenString() const
 {
-   Q_D(const QXmlStreamReader);
-   return QString::fromUtf8(QXmlStreamReader_tokenTypeString_string + QXmlStreamReader_tokenTypeString_indices[d->type]);
+    Q_D( const QXmlStreamReader );
+    return QString::fromUtf8( QXmlStreamReader_tokenTypeString_string + QXmlStreamReader_tokenTypeString_indices[d->type] );
 }
 
 QXmlStreamPrivateTagStack::QXmlStreamPrivateTagStack()
 {
-   tagStack.reserve(16);
+    tagStack.reserve( 16 );
 
-   namespaceDeclarations.push(NamespaceDeclaration());
-   NamespaceDeclaration &namespaceDeclaration = namespaceDeclarations.top();
+    namespaceDeclarations.push( NamespaceDeclaration() );
+    NamespaceDeclaration &namespaceDeclaration = namespaceDeclarations.top();
 
-   namespaceDeclaration.prefix       = "xml";
-   namespaceDeclaration.namespaceUri = "http://www.w3.org/XML/1998/namespace";
+    namespaceDeclaration.prefix       = "xml";
+    namespaceDeclaration.namespaceUri = "http://www.w3.org/XML/1998/namespace";
 }
 
-QXmlStreamReaderPrivate::QXmlStreamReaderPrivate(QXmlStreamReader *q)
-   : q_ptr(q)
+QXmlStreamReaderPrivate::QXmlStreamReaderPrivate( QXmlStreamReader *q )
+    : q_ptr( q )
 {
-   device       = nullptr;
-   deleteDevice = false;
-   decoder      = nullptr;
+    device       = nullptr;
+    deleteDevice = false;
+    decoder      = nullptr;
 
-   stack_size  = 64;
-   sym_stack   = nullptr;
-   state_stack = nullptr;
+    stack_size  = 64;
+    sym_stack   = nullptr;
+    state_stack = nullptr;
 
-   reallocateStack();
-   entityResolver = nullptr;
-   init();
+    reallocateStack();
+    entityResolver = nullptr;
+    init();
 
-   entityHash.insert("lt",   Entity::createLiteral("<"));
-   entityHash.insert("gt",   Entity::createLiteral(">"));
-   entityHash.insert("amp",  Entity::createLiteral("&"));
-   entityHash.insert("apos", Entity::createLiteral("'"));
-   entityHash.insert("quot", Entity::createLiteral("\""));
+    entityHash.insert( "lt",   Entity::createLiteral( "<" ) );
+    entityHash.insert( "gt",   Entity::createLiteral( ">" ) );
+    entityHash.insert( "amp",  Entity::createLiteral( "&" ) );
+    entityHash.insert( "apos", Entity::createLiteral( "'" ) );
+    entityHash.insert( "quot", Entity::createLiteral( "\"" ) );
 }
 
 void QXmlStreamReaderPrivate::init()
 {
-   tos = 0;
-   scanDtd = false;
-   token = -1;
-   token_char = 0;
-   isEmptyElement = false;
-   isWhitespace = true;
-   isCDATA = false;
-   standalone = false;
-   tos = 0;
-   resumeReduction = 0;
-   state_stack[tos++] = 0;
-   state_stack[tos] = 0;
+    tos = 0;
+    scanDtd = false;
+    token = -1;
+    token_char = 0;
+    isEmptyElement = false;
+    isWhitespace = true;
+    isCDATA = false;
+    standalone = false;
+    tos = 0;
+    resumeReduction = 0;
+    state_stack[tos++] = 0;
+    state_stack[tos] = 0;
 
-   putStack.clear();
-   putStack.reserve(32);
-   textBuffer.clear();
-   tagStack.clear();
+    putStack.clear();
+    putStack.reserve( 32 );
+    textBuffer.clear();
+    tagStack.clear();
 
-   tagsDone = false;
-   attributes.clear();
-   attributes.reserve(16);
-   lineNumber = lastLineStart = characterOffset = 0;
-   nbytesread = 0;
+    tagsDone = false;
+    attributes.clear();
+    attributes.reserve( 16 );
+    lineNumber = lastLineStart = characterOffset = 0;
+    nbytesread = 0;
 
-   codec = QTextCodec::codecForMib(106);       // utf8
+    codec = QTextCodec::codecForMib( 106 );     // utf8
 
-   delete decoder;
-   decoder = nullptr;
+    delete decoder;
+    decoder = nullptr;
 
-   attributeStack.clear();
-   attributeStack.reserve(16);
-   entityParser = nullptr;
-   hasCheckedStartDocument = false;
-   normalizeLiterals = false;
-   hasSeenTag = false;
-   atEnd = false;
-   inParseEntity = false;
-   referenceToUnparsedEntityDetected = false;
-   referenceToParameterEntityDetected = false;
-   hasExternalDtdSubset = false;
-   lockEncoding = false;
-   namespaceProcessing = true;
-   rawReadBuffer.clear();
-   dataBuffer.clear();
+    attributeStack.clear();
+    attributeStack.reserve( 16 );
+    entityParser = nullptr;
+    hasCheckedStartDocument = false;
+    normalizeLiterals = false;
+    hasSeenTag = false;
+    atEnd = false;
+    inParseEntity = false;
+    referenceToUnparsedEntityDetected = false;
+    referenceToParameterEntityDetected = false;
+    hasExternalDtdSubset = false;
+    lockEncoding = false;
+    namespaceProcessing = true;
+    rawReadBuffer.clear();
+    dataBuffer.clear();
 
-   readBuffer.clear();
-   readBuffer_Iter = readBuffer.begin();
+    readBuffer.clear();
+    readBuffer_Iter = readBuffer.begin();
 
-   type  = QXmlStreamReader::NoToken;
-   error = QXmlStreamReader::NoError;
+    type  = QXmlStreamReader::NoToken;
+    error = QXmlStreamReader::NoError;
 }
 
-void QXmlStreamReaderPrivate::parseEntity(const QString &value)
+void QXmlStreamReaderPrivate::parseEntity( const QString &value )
 {
-   Q_Q(QXmlStreamReader);
+    Q_Q( QXmlStreamReader );
 
-   if (value.isEmpty()) {
-      return;
-   }
+    if ( value.isEmpty() )
+    {
+        return;
+    }
 
-   if (!entityParser) {
-      entityParser = new QXmlStreamReaderPrivate(q);
-   } else {
-      entityParser->init();
-   }
+    if ( !entityParser )
+    {
+        entityParser = new QXmlStreamReaderPrivate( q );
+    }
+    else
+    {
+        entityParser->init();
+    }
 
-   entityParser->inParseEntity = true;
-   entityParser->readBuffer    = value;
-   entityParser->injectToken(PARSE_ENTITY);
+    entityParser->inParseEntity = true;
+    entityParser->readBuffer    = value;
+    entityParser->injectToken( PARSE_ENTITY );
 
-   while (!entityParser->atEnd && entityParser->type != QXmlStreamReader::Invalid) {
-      entityParser->parse();
-   }
+    while ( !entityParser->atEnd && entityParser->type != QXmlStreamReader::Invalid )
+    {
+        entityParser->parse();
+    }
 
-   if (entityParser->type == QXmlStreamReader::Invalid || entityParser->tagStack.size()) {
-      raiseWellFormedError(QXmlStream::tr("Invalid entity value."));
-   }
+    if ( entityParser->type == QXmlStreamReader::Invalid || entityParser->tagStack.size() )
+    {
+        raiseWellFormedError( QXmlStream::tr( "Invalid entity value." ) );
+    }
 
 }
 
 inline void QXmlStreamReaderPrivate::reallocateStack()
 {
-   stack_size <<= 1;
+    stack_size <<= 1;
 
-   sym_stack = reinterpret_cast<Value *> (realloc(sym_stack, stack_size * sizeof(Value)));
-   Q_CHECK_PTR(sym_stack);
+    sym_stack = reinterpret_cast<Value *> ( realloc( sym_stack, stack_size * sizeof( Value ) ) );
+    Q_CHECK_PTR( sym_stack );
 
-   state_stack = reinterpret_cast<int *> (realloc(state_stack, stack_size * sizeof(int)));
-   Q_CHECK_PTR(sym_stack);
+    state_stack = reinterpret_cast<int *> ( realloc( state_stack, stack_size * sizeof( int ) ) );
+    Q_CHECK_PTR( sym_stack );
 }
 
 QXmlStreamReaderPrivate::~QXmlStreamReaderPrivate()
 {
-   delete decoder;
+    delete decoder;
 
-   free(sym_stack);
-   free(state_stack);
-   delete entityParser;
+    free( sym_stack );
+    free( state_stack );
+    delete entityParser;
 }
 
 inline uint QXmlStreamReaderPrivate::filterCarriageReturn()
 {
-   uint peekc = peekChar();
+    uint peekc = peekChar();
 
-   if (peekc == '\n') {
-      if (putStack.size()) {
-         putStack.pop();
-      } else {
-         ++readBuffer_Iter;
-      }
+    if ( peekc == '\n' )
+    {
+        if ( putStack.size() )
+        {
+            putStack.pop();
+        }
+        else
+        {
+            ++readBuffer_Iter;
+        }
 
-      return peekc;
-   }
+        return peekc;
+    }
 
-   if (peekc == 0) {
-      putChar('\r');
-      return 0;
-   }
+    if ( peekc == 0 )
+    {
+        putChar( '\r' );
+        return 0;
+    }
 
-   return '\n';
+    return '\n';
 }
 
 inline uint QXmlStreamReaderPrivate::getChar()
 {
-   uint c;
+    uint c;
 
-   if (putStack.size() != 0) {
-      c = atEnd ? 0 : putStack.pop();
+    if ( putStack.size() != 0 )
+    {
+        c = atEnd ? 0 : putStack.pop();
 
-   } else if (readBuffer_Iter != readBuffer.cend() ) {
-      c = readBuffer_Iter->unicode();
-      ++readBuffer_Iter;
+    }
+    else if ( readBuffer_Iter != readBuffer.cend() )
+    {
+        c = readBuffer_Iter->unicode();
+        ++readBuffer_Iter;
 
-   } else {
-      c = getChar_helper();
+    }
+    else
+    {
+        c = getChar_helper();
 
-   }
+    }
 
-   return c;
+    return c;
 }
 
 inline uint QXmlStreamReaderPrivate::peekChar()
 {
-   uint c;
+    uint c;
 
-   if (putStack.size() != 0) {
-      c = putStack.top();
+    if ( putStack.size() != 0 )
+    {
+        c = putStack.top();
 
-   } else if (readBuffer_Iter != readBuffer.cend() ) {
-      c = readBuffer_Iter->unicode();
+    }
+    else if ( readBuffer_Iter != readBuffer.cend() )
+    {
+        c = readBuffer_Iter->unicode();
 
-   } else {
-      c = getChar_helper();
+    }
+    else
+    {
+        c = getChar_helper();
 
-      if (c != 0) {
-         --readBuffer_Iter;
-      }
-   }
+        if ( c != 0 )
+        {
+            --readBuffer_Iter;
+        }
+    }
 
-   return c;
+    return c;
 }
 
-bool QXmlStreamReaderPrivate::scanUntil(const char *str, short tokenToInject)
+bool QXmlStreamReaderPrivate::scanUntil( const char *str, short tokenToInject )
 {
-   int pos = textBuffer.size();
-   int oldLineNumber = lineNumber;
+    int pos = textBuffer.size();
+    int oldLineNumber = lineNumber;
 
-   while (uint c = getChar()) {
-      // First, we do the validation & normalization.
+    while ( uint c = getChar() )
+    {
+        // First, we do the validation & normalization.
 
-      switch (c) {
-         case '\r':
-            if ((c = filterCarriageReturn()) == 0) {
-               break;
+        switch ( c )
+        {
+            case '\r':
+                if ( ( c = filterCarriageReturn() ) == 0 )
+                {
+                    break;
+                }
+
+                [[fallthrough]];
+
+            case '\n':
+                ++lineNumber;
+                lastLineStart = characterOffset + ( readBuffer_Iter - readBuffer.cbegin() );
+                [[fallthrough]];
+
+            case '\t':
+                textBuffer += char32_t( c );
+                continue;
+
+            default:
+                if ( c < 0x20 || ( c > 0xFFFD && c < 0x10000 ) || c > 0x10FFFF )
+                {
+                    raiseWellFormedError( QXmlStream::tr( "Invalid XML character." ) );
+                    lineNumber = oldLineNumber;
+                    return false;
+                }
+
+                textBuffer += char32_t( c );
+        }
+
+        // Second, attempt to lookup str
+        if ( c == uint( *str ) )
+        {
+
+            if ( !*( str + 1 ) )
+            {
+                if ( tokenToInject >= 0 )
+                {
+                    injectToken( tokenToInject );
+                }
+
+                return true;
+
             }
-
-            [[fallthrough]];
-
-         case '\n':
-            ++lineNumber;
-            lastLineStart = characterOffset + (readBuffer_Iter - readBuffer.cbegin());
-            [[fallthrough]];
-
-         case '\t':
-            textBuffer += char32_t(c);
-            continue;
-
-         default:
-            if (c < 0x20 || (c > 0xFFFD && c < 0x10000) || c > 0x10FFFF ) {
-               raiseWellFormedError(QXmlStream::tr("Invalid XML character."));
-               lineNumber = oldLineNumber;
-               return false;
+            else
+            {
+                if ( scanString( str + 1, tokenToInject, false ) )
+                {
+                    return true;
+                }
             }
+        }
+    }
 
-            textBuffer += char32_t(c);
-      }
+    putString( textBuffer, pos );
+    textBuffer.resize( pos );
+    lineNumber = oldLineNumber;
 
-      // Second, attempt to lookup str
-      if (c == uint(*str)) {
-
-         if (!*(str + 1)) {
-            if (tokenToInject >= 0) {
-               injectToken(tokenToInject);
-            }
-
-            return true;
-
-         } else {
-            if (scanString(str + 1, tokenToInject, false)) {
-               return true;
-            }
-         }
-      }
-   }
-
-   putString(textBuffer, pos);
-   textBuffer.resize(pos);
-   lineNumber = oldLineNumber;
-
-   return false;
+    return false;
 }
 
-bool QXmlStreamReaderPrivate::scanString(const char *str, short tokenToInject, bool requireSpace)
+bool QXmlStreamReaderPrivate::scanString( const char *str, short tokenToInject, bool requireSpace )
 {
-   int n = 0;
+    int n = 0;
 
-   while (str[n]) {
-      ushort c = getChar();
+    while ( str[n] )
+    {
+        ushort c = getChar();
 
-      if (c != ushort(str[n])) {
-         if (c) {
-            putChar(c);
-         }
+        if ( c != ushort( str[n] ) )
+        {
+            if ( c )
+            {
+                putChar( c );
+            }
 
-         while (n--) {
-            putChar(ushort(str[n]));
-         }
+            while ( n-- )
+            {
+                putChar( ushort( str[n] ) );
+            }
 
-         return false;
-      }
+            return false;
+        }
 
-      ++n;
-   }
+        ++n;
+    }
 
-   for (int i = 0; i < n; ++i) {
-      textBuffer += QChar(ushort(str[i]));
-   }
+    for ( int i = 0; i < n; ++i )
+    {
+        textBuffer += QChar( ushort( str[i] ) );
+    }
 
-   if (requireSpace) {
-      int s = fastScanSpace();
+    if ( requireSpace )
+    {
+        int s = fastScanSpace();
 
-      if (!s || atEnd) {
-         int pos = textBuffer.size() - n - s;
-         putString(textBuffer, pos);
-         textBuffer.resize(pos);
-         return false;
-      }
-   }
+        if ( !s || atEnd )
+        {
+            int pos = textBuffer.size() - n - s;
+            putString( textBuffer, pos );
+            textBuffer.resize( pos );
+            return false;
+        }
+    }
 
-   if (tokenToInject >= 0) {
-      injectToken(tokenToInject);
-   }
+    if ( tokenToInject >= 0 )
+    {
+        injectToken( tokenToInject );
+    }
 
-   return true;
+    return true;
 }
 
 bool QXmlStreamReaderPrivate::scanAfterLangleBang()
 {
-   switch (peekChar()) {
-      case '[':
-         return scanString(spell[CDATA_START], CDATA_START, false);
+    switch ( peekChar() )
+    {
+        case '[':
+            return scanString( spell[CDATA_START], CDATA_START, false );
 
-      case 'D':
-         return scanString(spell[DOCTYPE], DOCTYPE);
+        case 'D':
+            return scanString( spell[DOCTYPE], DOCTYPE );
 
-      case 'A':
-         return scanString(spell[ATTLIST], ATTLIST);
+        case 'A':
+            return scanString( spell[ATTLIST], ATTLIST );
 
-      case 'N':
-         return scanString(spell[NOTATION], NOTATION);
+        case 'N':
+            return scanString( spell[NOTATION], NOTATION );
 
-      case 'E':
-         if (scanString(spell[ELEMENT], ELEMENT)) {
-            return true;
-         }
+        case 'E':
+            if ( scanString( spell[ELEMENT], ELEMENT ) )
+            {
+                return true;
+            }
 
-         return scanString(spell[ENTITY], ENTITY);
+            return scanString( spell[ENTITY], ENTITY );
 
-      default:
-         ;
-   }
+        default:
+            ;
+    }
 
-   return false;
+    return false;
 }
 
 bool QXmlStreamReaderPrivate::scanPublicOrSystem()
 {
-   switch (peekChar()) {
-      case 'S':
-         return scanString(spell[SYSTEM], SYSTEM);
+    switch ( peekChar() )
+    {
+        case 'S':
+            return scanString( spell[SYSTEM], SYSTEM );
 
-      case 'P':
-         return scanString(spell[PUBLIC], PUBLIC);
+        case 'P':
+            return scanString( spell[PUBLIC], PUBLIC );
 
-      default:
-         ;
-   }
+        default:
+            ;
+    }
 
-   return false;
+    return false;
 }
 
 bool QXmlStreamReaderPrivate::scanNData()
 {
-   if (fastScanSpace()) {
-      if (scanString(spell[NDATA], NDATA)) {
-         return true;
-      }
+    if ( fastScanSpace() )
+    {
+        if ( scanString( spell[NDATA], NDATA ) )
+        {
+            return true;
+        }
 
-      putChar(' ');
-   }
+        putChar( ' ' );
+    }
 
-   return false;
+    return false;
 }
 
 bool QXmlStreamReaderPrivate::scanAfterDefaultDecl()
 {
-   switch (peekChar()) {
-      case 'R':
-         return scanString(spell[REQUIRED], REQUIRED, false);
+    switch ( peekChar() )
+    {
+        case 'R':
+            return scanString( spell[REQUIRED], REQUIRED, false );
 
-      case 'I':
-         return scanString(spell[IMPLIED], IMPLIED, false);
+        case 'I':
+            return scanString( spell[IMPLIED], IMPLIED, false );
 
-      case 'F':
-         return scanString(spell[FIXED], FIXED, false);
+        case 'F':
+            return scanString( spell[FIXED], FIXED, false );
 
-      default:
-         ;
-   }
+        default:
+            ;
+    }
 
-   return false;
+    return false;
 }
 
 bool QXmlStreamReaderPrivate::scanAttType()
 {
-   switch (peekChar()) {
-      case 'C':
-         return scanString(spell[CDATA], CDATA);
+    switch ( peekChar() )
+    {
+        case 'C':
+            return scanString( spell[CDATA], CDATA );
 
-      case 'I':
-         if (scanString(spell[ID], ID)) {
-            return true;
-         }
+        case 'I':
+            if ( scanString( spell[ID], ID ) )
+            {
+                return true;
+            }
 
-         if (scanString(spell[IDREF], IDREF)) {
-            return true;
-         }
+            if ( scanString( spell[IDREF], IDREF ) )
+            {
+                return true;
+            }
 
-         return scanString(spell[IDREFS], IDREFS);
+            return scanString( spell[IDREFS], IDREFS );
 
-      case 'E':
-         if (scanString(spell[ENTITY], ENTITY)) {
-            return true;
-         }
+        case 'E':
+            if ( scanString( spell[ENTITY], ENTITY ) )
+            {
+                return true;
+            }
 
-         return scanString(spell[ENTITIES], ENTITIES);
+            return scanString( spell[ENTITIES], ENTITIES );
 
-      case 'N':
-         if (scanString(spell[NOTATION], NOTATION)) {
-            return true;
-         }
+        case 'N':
+            if ( scanString( spell[NOTATION], NOTATION ) )
+            {
+                return true;
+            }
 
-         if (scanString(spell[NMTOKEN], NMTOKEN)) {
-            return true;
-         }
+            if ( scanString( spell[NMTOKEN], NMTOKEN ) )
+            {
+                return true;
+            }
 
-         return scanString(spell[NMTOKENS], NMTOKENS);
+            return scanString( spell[NMTOKENS], NMTOKENS );
 
-      default:
-         ;
-   }
+        default:
+            ;
+    }
 
-   return false;
+    return false;
 }
 
 inline int QXmlStreamReaderPrivate::fastScanLiteralContent()
 {
-   int n = 0;
-   uint c;
+    int n = 0;
+    uint c;
 
-   while ((c = getChar())) {
-      switch (ushort(c)) {
-         case 0xfffe:
-         case 0xffff:
-         case 0:
-            /* The putChar() call is necessary so the parser re-gets
-             * the character from the input source, when raising an error. */
-            putChar(c);
-            return n;
+    while ( ( c = getChar() ) )
+    {
+        switch ( ushort( c ) )
+        {
+            case 0xfffe:
+            case 0xffff:
+            case 0:
+                /* The putChar() call is necessary so the parser re-gets
+                 * the character from the input source, when raising an error. */
+                putChar( c );
+                return n;
 
-         case '\r':
-            if (filterCarriageReturn() == 0) {
-               return n;
-            }
+            case '\r':
+                if ( filterCarriageReturn() == 0 )
+                {
+                    return n;
+                }
 
-            [[fallthrough]];
+                [[fallthrough]];
 
-         case '\n':
-            ++lineNumber;
-            lastLineStart = characterOffset + (readBuffer_Iter - readBuffer.cbegin());
+            case '\n':
+                ++lineNumber;
+                lastLineStart = characterOffset + ( readBuffer_Iter - readBuffer.cbegin() );
 
-            [[fallthrough]];
+                [[fallthrough]];
 
-         case ' ':
-         case '\t':
-            if (normalizeLiterals) {
-               textBuffer += ' ';
-            } else {
-               textBuffer += char32_t(c);
-            }
+            case ' ':
+            case '\t':
+                if ( normalizeLiterals )
+                {
+                    textBuffer += ' ';
+                }
+                else
+                {
+                    textBuffer += char32_t( c );
+                }
 
-            ++n;
-            break;
+                ++n;
+                break;
 
-         case '&':
-         case '<':
-         case '\"':
-         case '\'':
-            if (!(c & 0xff0000)) {
-               putChar(c);
-               return n;
-            }
+            case '&':
+            case '<':
+            case '\"':
+            case '\'':
+                if ( !( c & 0xff0000 ) )
+                {
+                    putChar( c );
+                    return n;
+                }
 
-            [[fallthrough]];
+                [[fallthrough]];
 
-         default:
-            textBuffer += char32_t(c);
-            ++n;
-      }
-   }
+            default:
+                textBuffer += char32_t( c );
+                ++n;
+        }
+    }
 
-   return n;
+    return n;
 }
 
 inline int QXmlStreamReaderPrivate::fastScanSpace()
 {
-   int n = 0;
-   ushort c;
+    int n = 0;
+    ushort c;
 
-   while ((c = getChar())) {
-      switch (c) {
-         case '\r':
-            if ((c = filterCarriageReturn()) == 0) {
-               return n;
-            }
+    while ( ( c = getChar() ) )
+    {
+        switch ( c )
+        {
+            case '\r':
+                if ( ( c = filterCarriageReturn() ) == 0 )
+                {
+                    return n;
+                }
 
-            [[fallthrough]];
+                [[fallthrough]];
 
-         case '\n':
-            ++lineNumber;
-            lastLineStart = characterOffset + (readBuffer_Iter - readBuffer.cbegin());
-            [[fallthrough]];
+            case '\n':
+                ++lineNumber;
+                lastLineStart = characterOffset + ( readBuffer_Iter - readBuffer.cbegin() );
+                [[fallthrough]];
 
-         case ' ':
-         case '\t':
-            textBuffer += char32_t(c);
-            ++n;
-            break;
+            case ' ':
+            case '\t':
+                textBuffer += char32_t( c );
+                ++n;
+                break;
 
-         default:
-            putChar(c);
-            return n;
-      }
-   }
+            default:
+                putChar( c );
+                return n;
+        }
+    }
 
-   return n;
+    return n;
 }
 
 inline int QXmlStreamReaderPrivate::fastScanContentCharList()
 {
-   int n = 0;
-   uint c;
+    int n = 0;
+    uint c;
 
-   while ((c = getChar())) {
-      switch (ushort(c)) {
-         case 0xfffe:
-         case 0xffff:
-         case 0:
-            putChar(c);
-            return n;
+    while ( ( c = getChar() ) )
+    {
+        switch ( ushort( c ) )
+        {
+            case 0xfffe:
+            case 0xffff:
+            case 0:
+                putChar( c );
+                return n;
 
-         case ']': {
-            isWhitespace = false;
-            int pos = textBuffer.size();
-            textBuffer += QChar(ushort(c));
-            ++n;
+            case ']':
+            {
+                isWhitespace = false;
+                int pos = textBuffer.size();
+                textBuffer += QChar( ushort( c ) );
+                ++n;
 
-            while ((c = getChar()) == ']') {
-               textBuffer += QChar(ushort(c));
-               ++n;
+                while ( ( c = getChar() ) == ']' )
+                {
+                    textBuffer += QChar( ushort( c ) );
+                    ++n;
+                }
+
+                if ( c == 0 )
+                {
+                    putString( textBuffer, pos );
+                    textBuffer.resize( pos );
+
+                }
+                else if ( c == '>' && textBuffer.at( textBuffer.size() - 2 ) == ']' )
+                {
+                    raiseWellFormedError( QXmlStream::tr( "Sequence ']]>' not allowed in content." ) );
+
+                }
+                else
+                {
+                    putChar( c );
+                    break;
+                }
+
+                return n;
             }
-
-            if (c == 0) {
-               putString(textBuffer, pos);
-               textBuffer.resize(pos);
-
-            } else if (c == '>' && textBuffer.at(textBuffer.size() - 2) == ']') {
-               raiseWellFormedError(QXmlStream::tr("Sequence ']]>' not allowed in content."));
-
-            } else {
-               putChar(c);
-               break;
-            }
-
-            return n;
-         }
-         break;
-
-         case '\r':
-            if ((c = filterCarriageReturn()) == 0) {
-               return n;
-            }
-
-            [[fallthrough]];
-
-         case '\n':
-            ++lineNumber;
-            lastLineStart = characterOffset + (readBuffer_Iter - readBuffer.cbegin());
-            [[fallthrough]];
-
-         case ' ':
-         case '\t':
-            textBuffer += QChar(ushort(c));
-            ++n;
             break;
 
-         case '&':
-         case '<':
-            if (!(c & 0xff0000)) {
-               putChar(c);
-               return n;
-            }
+            case '\r':
+                if ( ( c = filterCarriageReturn() ) == 0 )
+                {
+                    return n;
+                }
 
-            [[fallthrough]];
+                [[fallthrough]];
 
-         default:
-            if (c < 0x20) {
-               putChar(c);
-               return n;
-            }
+            case '\n':
+                ++lineNumber;
+                lastLineStart = characterOffset + ( readBuffer_Iter - readBuffer.cbegin() );
+                [[fallthrough]];
 
-            isWhitespace = false;
-            textBuffer += QChar(ushort(c));
-            ++n;
-      }
-   }
+            case ' ':
+            case '\t':
+                textBuffer += QChar( ushort( c ) );
+                ++n;
+                break;
 
-   return n;
+            case '&':
+            case '<':
+                if ( !( c & 0xff0000 ) )
+                {
+                    putChar( c );
+                    return n;
+                }
+
+                [[fallthrough]];
+
+            default:
+                if ( c < 0x20 )
+                {
+                    putChar( c );
+                    return n;
+                }
+
+                isWhitespace = false;
+                textBuffer += QChar( ushort( c ) );
+                ++n;
+        }
+    }
+
+    return n;
 }
 
-inline int QXmlStreamReaderPrivate::fastScanName(int *prefix)
+inline int QXmlStreamReaderPrivate::fastScanName( int *prefix )
 {
-   int n = 0;
-   ushort c;
+    int n = 0;
+    ushort c;
 
-   while ((c = getChar())) {
-      switch (c) {
-         case '\n':
-         case ' ':
-         case '\t':
-         case '\r':
-         case '&':
-         case '#':
-         case '\'':
-         case '\"':
-         case '<':
-         case '>':
-         case '[':
-         case ']':
-         case '=':
-         case '%':
-         case '/':
-         case ';':
-         case '?':
-         case '!':
-         case '^':
-         case '|':
-         case ',':
-         case '(':
-         case ')':
-         case '+':
-         case '*':
-            putChar(c);
+    while ( ( c = getChar() ) )
+    {
+        switch ( c )
+        {
+            case '\n':
+            case ' ':
+            case '\t':
+            case '\r':
+            case '&':
+            case '#':
+            case '\'':
+            case '\"':
+            case '<':
+            case '>':
+            case '[':
+            case ']':
+            case '=':
+            case '%':
+            case '/':
+            case ';':
+            case '?':
+            case '!':
+            case '^':
+            case '|':
+            case ',':
+            case '(':
+            case ')':
+            case '+':
+            case '*':
+                putChar( c );
 
-            if (prefix && *prefix == n + 1) {
-               *prefix = 0;
-               putChar(':');
-               --n;
-            }
+                if ( prefix && *prefix == n + 1 )
+                {
+                    *prefix = 0;
+                    putChar( ':' );
+                    --n;
+                }
 
-            return n;
+                return n;
 
-         case ':':
-            if (prefix) {
-               if (*prefix == 0) {
-                  *prefix = n + 2;
-               } else { // only one colon allowed according to the namespace spec.
-                  putChar(c);
-                  return n;
-               }
-            } else {
-               putChar(c);
-               return n;
-            }
+            case ':':
+                if ( prefix )
+                {
+                    if ( *prefix == 0 )
+                    {
+                        *prefix = n + 2;
+                    }
+                    else     // only one colon allowed according to the namespace spec.
+                    {
+                        putChar( c );
+                        return n;
+                    }
+                }
+                else
+                {
+                    putChar( c );
+                    return n;
+                }
 
-            [[fallthrough]];
+                [[fallthrough]];
 
-         default:
-            textBuffer += QChar(c);
-            ++n;
-      }
-   }
+            default:
+                textBuffer += QChar( c );
+                ++n;
+        }
+    }
 
-   if (prefix) {
-      *prefix = 0;
-   }
+    if ( prefix )
+    {
+        *prefix = 0;
+    }
 
-   int pos = textBuffer.size() - n;
-   putString(textBuffer, pos);
-   textBuffer.resize(pos);
+    int pos = textBuffer.size() - n;
+    putString( textBuffer, pos );
+    textBuffer.resize( pos );
 
-   return 0;
+    return 0;
 }
 
-enum NameChar {
-   NameBeginning,
-   NameNotBeginning,
-   NotName
-};
-
-static const char Begi = static_cast<char>(NameBeginning);
-static const char NtBg = static_cast<char>(NameNotBeginning);
-static const char NotN = static_cast<char>(NotName);
-
-static const char nameCharTable[128] = {
-   // 0x00
-   NotN, NotN, NotN, NotN, NotN, NotN, NotN, NotN,
-   NotN, NotN, NotN, NotN, NotN, NotN, NotN, NotN,
-   // 0x10
-   NotN, NotN, NotN, NotN, NotN, NotN, NotN, NotN,
-   NotN, NotN, NotN, NotN, NotN, NotN, NotN, NotN,
-   // 0x20 (0x2D is '-', 0x2E is '.')
-   NotN, NotN, NotN, NotN, NotN, NotN, NotN, NotN,
-   NotN, NotN, NotN, NotN, NotN, NtBg, NtBg, NotN,
-   // 0x30 (0x30..0x39 are '0'..'9', 0x3A is ':')
-   NtBg, NtBg, NtBg, NtBg, NtBg, NtBg, NtBg, NtBg,
-   NtBg, NtBg, Begi, NotN, NotN, NotN, NotN, NotN,
-   // 0x40 (0x41..0x5A are 'A'..'Z')
-   NotN, Begi, Begi, Begi, Begi, Begi, Begi, Begi,
-   Begi, Begi, Begi, Begi, Begi, Begi, Begi, Begi,
-   // 0x50 (0x5F is '_')
-   Begi, Begi, Begi, Begi, Begi, Begi, Begi, Begi,
-   Begi, Begi, Begi, NotN, NotN, NotN, NotN, Begi,
-   // 0x60 (0x61..0x7A are 'a'..'z')
-   NotN, Begi, Begi, Begi, Begi, Begi, Begi, Begi,
-   Begi, Begi, Begi, Begi, Begi, Begi, Begi, Begi,
-   // 0x70
-   Begi, Begi, Begi, Begi, Begi, Begi, Begi, Begi,
-   Begi, Begi, Begi, NotN, NotN, NotN, NotN, NotN
-};
-
-static inline NameChar fastDetermineNameChar(QChar ch)
+enum NameChar
 {
-   ushort uc = ch.unicode();
+    NameBeginning,
+    NameNotBeginning,
+    NotName
+};
 
-   if (!(uc & ~0x7f)) {
-      // uc < 128
-      return static_cast<NameChar>(nameCharTable[uc]);
-   }
+static const char Begi = static_cast<char>( NameBeginning );
+static const char NtBg = static_cast<char>( NameNotBeginning );
+static const char NotN = static_cast<char>( NotName );
 
-   QChar::Category cat = ch.category();
+static const char nameCharTable[128] =
+{
+    // 0x00
+    NotN, NotN, NotN, NotN, NotN, NotN, NotN, NotN,
+    NotN, NotN, NotN, NotN, NotN, NotN, NotN, NotN,
+    // 0x10
+    NotN, NotN, NotN, NotN, NotN, NotN, NotN, NotN,
+    NotN, NotN, NotN, NotN, NotN, NotN, NotN, NotN,
+    // 0x20 (0x2D is '-', 0x2E is '.')
+    NotN, NotN, NotN, NotN, NotN, NotN, NotN, NotN,
+    NotN, NotN, NotN, NotN, NotN, NtBg, NtBg, NotN,
+    // 0x30 (0x30..0x39 are '0'..'9', 0x3A is ':')
+    NtBg, NtBg, NtBg, NtBg, NtBg, NtBg, NtBg, NtBg,
+    NtBg, NtBg, Begi, NotN, NotN, NotN, NotN, NotN,
+    // 0x40 (0x41..0x5A are 'A'..'Z')
+    NotN, Begi, Begi, Begi, Begi, Begi, Begi, Begi,
+    Begi, Begi, Begi, Begi, Begi, Begi, Begi, Begi,
+    // 0x50 (0x5F is '_')
+    Begi, Begi, Begi, Begi, Begi, Begi, Begi, Begi,
+    Begi, Begi, Begi, NotN, NotN, NotN, NotN, Begi,
+    // 0x60 (0x61..0x7A are 'a'..'z')
+    NotN, Begi, Begi, Begi, Begi, Begi, Begi, Begi,
+    Begi, Begi, Begi, Begi, Begi, Begi, Begi, Begi,
+    // 0x70
+    Begi, Begi, Begi, Begi, Begi, Begi, Begi, Begi,
+    Begi, Begi, Begi, NotN, NotN, NotN, NotN, NotN
+};
 
-   // ### some these categories might be slightly wrong
-   if ((cat >= QChar::Letter_Uppercase && cat <= QChar::Letter_Other) || cat == QChar::Number_Letter) {
-      return NameBeginning;
-   }
+static inline NameChar fastDetermineNameChar( QChar ch )
+{
+    ushort uc = ch.unicode();
 
-   if ((cat >= QChar::Number_DecimalDigit && cat <= QChar::Number_Other)
-         || (cat >= QChar::Mark_NonSpacing && cat <= QChar::Mark_Enclosing)) {
-      return NameNotBeginning;
-   }
+    if ( !( uc & ~0x7f ) )
+    {
+        // uc < 128
+        return static_cast<NameChar>( nameCharTable[uc] );
+    }
 
-   return NotName;
+    QChar::Category cat = ch.category();
+
+    // ### some these categories might be slightly wrong
+    if ( ( cat >= QChar::Letter_Uppercase && cat <= QChar::Letter_Other ) || cat == QChar::Number_Letter )
+    {
+        return NameBeginning;
+    }
+
+    if ( ( cat >= QChar::Number_DecimalDigit && cat <= QChar::Number_Other )
+            || ( cat >= QChar::Mark_NonSpacing && cat <= QChar::Mark_Enclosing ) )
+    {
+        return NameNotBeginning;
+    }
+
+    return NotName;
 }
 
 inline int QXmlStreamReaderPrivate::fastScanNMTOKEN()
 {
-   int n = 0;
-   uint c;
+    int n = 0;
+    uint c;
 
-   while ((c = getChar())) {
-      if (fastDetermineNameChar(char32_t(c)) == NotName) {
-         putChar(c);
-         return n;
+    while ( ( c = getChar() ) )
+    {
+        if ( fastDetermineNameChar( char32_t( c ) ) == NotName )
+        {
+            putChar( c );
+            return n;
 
-      } else {
-         ++n;
-         textBuffer += char32_t(c);
-      }
-   }
+        }
+        else
+        {
+            ++n;
+            textBuffer += char32_t( c );
+        }
+    }
 
-   int pos = textBuffer.size() - n;
-   putString(textBuffer, pos);
-   textBuffer.resize(pos);
+    int pos = textBuffer.size() - n;
+    putString( textBuffer, pos );
+    textBuffer.resize( pos );
 
-   return n;
+    return n;
 }
 
-void QXmlStreamReaderPrivate::putString(const QString &s, int from)
+void QXmlStreamReaderPrivate::putString( const QString &s, int from )
 {
-   putStack.reserve(s.size());
+    putStack.reserve( s.size() );
 
-   for (int i = s.size() - 1; i >= from; --i) {
-      putStack.push(s.at(i).unicode());
-   }
+    for ( int i = s.size() - 1; i >= from; --i )
+    {
+        putStack.push( s.at( i ).unicode() );
+    }
 }
 
-void QXmlStreamReaderPrivate::putStringLiteral(const QString &s)
+void QXmlStreamReaderPrivate::putStringLiteral( const QString &s )
 {
-   putStack.reserve(s.size());
+    putStack.reserve( s.size() );
 
-   for (int i = s.size() - 1; i >= 0; --i) {
-      putStack.push(((LETTER << 16) | s.at(i).unicode()));
-   }
+    for ( int i = s.size() - 1; i >= 0; --i )
+    {
+        putStack.push( ( ( LETTER << 16 ) | s.at( i ).unicode() ) );
+    }
 }
 
-void QXmlStreamReaderPrivate::putReplacement(const QString &s)
+void QXmlStreamReaderPrivate::putReplacement( const QString &s )
 {
-   putStack.reserve(s.size());
+    putStack.reserve( s.size() );
 
-   for (int i = s.size() - 1; i >= 0; --i) {
-      ushort c = s.at(i).unicode();
+    for ( int i = s.size() - 1; i >= 0; --i )
+    {
+        ushort c = s.at( i ).unicode();
 
-      if (c == '\n' || c == '\r') {
-         putStack.push(((LETTER << 16) | c));
-      } else {
-         putStack.push(c);
-      }
-   }
+        if ( c == '\n' || c == '\r' )
+        {
+            putStack.push( ( ( LETTER << 16 ) | c ) );
+        }
+        else
+        {
+            putStack.push( c );
+        }
+    }
 }
-void QXmlStreamReaderPrivate::putReplacementInAttributeValue(const QString &s)
+void QXmlStreamReaderPrivate::putReplacementInAttributeValue( const QString &s )
 {
-   putStack.reserve(s.size());
+    putStack.reserve( s.size() );
 
-   for (int i = s.size() - 1; i >= 0; --i) {
-      ushort c = s.at(i).unicode();
+    for ( int i = s.size() - 1; i >= 0; --i )
+    {
+        ushort c = s.at( i ).unicode();
 
-      if (c == '&' || c == ';') {
-         putStack.push(c);
+        if ( c == '&' || c == ';' )
+        {
+            putStack.push( c );
 
-      } else if (c == '\n' || c == '\r') {
-         putStack.push(' ');
+        }
+        else if ( c == '\n' || c == '\r' )
+        {
+            putStack.push( ' ' );
 
-      } else {
-         putStack.push(((LETTER << 16) | c));
-      }
-   }
+        }
+        else
+        {
+            putStack.push( ( ( LETTER << 16 ) | c ) );
+        }
+    }
 }
 
 ushort QXmlStreamReaderPrivate::getChar_helper()
 {
-   const int BUFFER_SIZE = 8192;
+    const int BUFFER_SIZE = 8192;
 
-   characterOffset = characterOffset + (readBuffer_Iter - readBuffer.cbegin());
-   readBuffer.resize(0);
+    characterOffset = characterOffset + ( readBuffer_Iter - readBuffer.cbegin() );
+    readBuffer.resize( 0 );
 
-   if (decoder) {
-      nbytesread = 0;
-   }
+    if ( decoder )
+    {
+        nbytesread = 0;
+    }
 
-   if (device) {
-      rawReadBuffer.resize(BUFFER_SIZE);
-      int nbytesreadOrMinus1 = device->read(rawReadBuffer.data() + nbytesread, BUFFER_SIZE - nbytesread);
-      nbytesread += qMax(nbytesreadOrMinus1, 0);
+    if ( device )
+    {
+        rawReadBuffer.resize( BUFFER_SIZE );
+        int nbytesreadOrMinus1 = device->read( rawReadBuffer.data() + nbytesread, BUFFER_SIZE - nbytesread );
+        nbytesread += qMax( nbytesreadOrMinus1, 0 );
 
-   } else {
-      if (nbytesread) {
-         rawReadBuffer += dataBuffer;
-      } else {
-         rawReadBuffer = dataBuffer;
-      }
+    }
+    else
+    {
+        if ( nbytesread )
+        {
+            rawReadBuffer += dataBuffer;
+        }
+        else
+        {
+            rawReadBuffer = dataBuffer;
+        }
 
-      nbytesread = rawReadBuffer.size();
-      dataBuffer.clear();
-   }
+        nbytesread = rawReadBuffer.size();
+        dataBuffer.clear();
+    }
 
-   if (! nbytesread) {
-      atEnd = true;
-      return 0;
-   }
+    if ( ! nbytesread )
+    {
+        atEnd = true;
+        return 0;
+    }
 
-   if (! decoder) {
+    if ( ! decoder )
+    {
 
-      if (nbytesread < 4) {
-         // the 4 is to cover 0xef 0xbb 0xbf plus one extra for the utf8 codec
-         atEnd = true;
-         return 0;
-      }
+        if ( nbytesread < 4 )
+        {
+            // the 4 is to cover 0xef 0xbb 0xbf plus one extra for the utf8 codec
+            atEnd = true;
+            return 0;
+        }
 
-      int mib = 106; // UTF-8
+        int mib = 106; // UTF-8
 
-      // look for byte order mark
-      uchar ch1 = rawReadBuffer.at(0);
-      uchar ch2 = rawReadBuffer.at(1);
-      uchar ch3 = rawReadBuffer.at(2);
-      uchar ch4 = rawReadBuffer.at(3);
+        // look for byte order mark
+        uchar ch1 = rawReadBuffer.at( 0 );
+        uchar ch2 = rawReadBuffer.at( 1 );
+        uchar ch3 = rawReadBuffer.at( 2 );
+        uchar ch4 = rawReadBuffer.at( 3 );
 
-      if ((ch1 == 0 && ch2 == 0 && ch3 == 0xfe && ch4 == 0xff) ||
-            (ch1 == 0xff && ch2 == 0xfe && ch3 == 0 && ch4 == 0)) {
-         mib = 1017;   // UTF-32 with byte order mark
+        if ( ( ch1 == 0 && ch2 == 0 && ch3 == 0xfe && ch4 == 0xff ) ||
+                ( ch1 == 0xff && ch2 == 0xfe && ch3 == 0 && ch4 == 0 ) )
+        {
+            mib = 1017;   // UTF-32 with byte order mark
 
-      } else if (ch1 == 0x3c && ch2 == 0x00 && ch3 == 0x00 && ch4 == 0x00) {
-         mib = 1019;   // UTF-32LE
+        }
+        else if ( ch1 == 0x3c && ch2 == 0x00 && ch3 == 0x00 && ch4 == 0x00 )
+        {
+            mib = 1019;   // UTF-32LE
 
-      } else if (ch1 == 0x00 && ch2 == 0x00 && ch3 == 0x00 && ch4 == 0x3c) {
-         mib = 1018;   // UTF-32BE
+        }
+        else if ( ch1 == 0x00 && ch2 == 0x00 && ch3 == 0x00 && ch4 == 0x3c )
+        {
+            mib = 1018;   // UTF-32BE
 
-      } else if ((ch1 == 0xfe && ch2 == 0xff) || (ch1 == 0xff && ch2 == 0xfe)) {
-         mib = 1015;   // UTF-16 with byte order mark
+        }
+        else if ( ( ch1 == 0xfe && ch2 == 0xff ) || ( ch1 == 0xff && ch2 == 0xfe ) )
+        {
+            mib = 1015;   // UTF-16 with byte order mark
 
-      } else if (ch1 == 0x3c && ch2 == 0x00) {
-         mib = 1014;   // UTF-16LE
+        }
+        else if ( ch1 == 0x3c && ch2 == 0x00 )
+        {
+            mib = 1014;   // UTF-16LE
 
-      } else if (ch1 == 0x00 && ch2 == 0x3c) {
-         mib = 1013;   // UTF-16BE
-      }
+        }
+        else if ( ch1 == 0x00 && ch2 == 0x3c )
+        {
+            mib = 1013;   // UTF-16BE
+        }
 
-      codec = QTextCodec::codecForMib(mib);
+        codec = QTextCodec::codecForMib( mib );
 
-      Q_ASSERT(codec);
-      decoder = codec->makeDecoder();
-   }
+        Q_ASSERT( codec );
+        decoder = codec->makeDecoder();
+    }
 
-   decoder->toUnicode(&readBuffer, rawReadBuffer.constData(), nbytesread);
-   readBuffer_Iter = readBuffer.cbegin();
+    decoder->toUnicode( &readBuffer, rawReadBuffer.constData(), nbytesread );
+    readBuffer_Iter = readBuffer.cbegin();
 
-   if (lockEncoding && decoder->hasFailure()) {
-      raiseWellFormedError(QXmlStream::tr("Encountered incorrectly encoded content."));
+    if ( lockEncoding && decoder->hasFailure() )
+    {
+        raiseWellFormedError( QXmlStream::tr( "Encountered incorrectly encoded content." ) );
 
-      readBuffer.clear();
-      readBuffer_Iter = readBuffer.cbegin();
+        readBuffer.clear();
+        readBuffer_Iter = readBuffer.cbegin();
 
-      return 0;
-   }
+        return 0;
+    }
 
-   if (readBuffer_Iter != readBuffer.cend()) {
-      ushort c = readBuffer_Iter->unicode();
-      ++readBuffer_Iter;
+    if ( readBuffer_Iter != readBuffer.cend() )
+    {
+        ushort c = readBuffer_Iter->unicode();
+        ++readBuffer_Iter;
 
-      return c;
-   }
+        return c;
+    }
 
-   atEnd = true;
-   return 0;
+    atEnd = true;
+    return 0;
 }
 
-QStringView QXmlStreamReaderPrivate::namespaceForPrefix(QStringView prefix)
+QStringView QXmlStreamReaderPrivate::namespaceForPrefix( QStringView prefix )
 {
-   for (int j = namespaceDeclarations.size() - 1; j >= 0; --j) {
-      const NamespaceDeclaration &namespaceDeclaration = namespaceDeclarations.at(j);
+    for ( int j = namespaceDeclarations.size() - 1; j >= 0; --j )
+    {
+        const NamespaceDeclaration &namespaceDeclaration = namespaceDeclarations.at( j );
 
-      if (namespaceDeclaration.prefix == prefix) {
-         return namespaceDeclaration.namespaceUri;
-      }
-   }
+        if ( namespaceDeclaration.prefix == prefix )
+        {
+            return namespaceDeclaration.namespaceUri;
+        }
+    }
 
-   if (namespaceProcessing && !prefix.isEmpty()) {
-      raiseWellFormedError(QXmlStream::tr("Namespace prefix '%1' not declared").formatArg(prefix.toString()));
-   }
+    if ( namespaceProcessing && !prefix.isEmpty() )
+    {
+        raiseWellFormedError( QXmlStream::tr( "Namespace prefix '%1' not declared" ).formatArg( prefix.toString() ) );
+    }
 
-   return QStringView();
+    return QStringView();
 }
 
 void QXmlStreamReaderPrivate::resolveTag()
 {
-   int n = attributeStack.size();
+    int n = attributeStack.size();
 
-   if (namespaceProcessing) {
-      for (int a = 0; a < dtdAttributes.size(); ++a) {
-         DtdAttribute &dtdAttribute = dtdAttributes[a];
+    if ( namespaceProcessing )
+    {
+        for ( int a = 0; a < dtdAttributes.size(); ++a )
+        {
+            DtdAttribute &dtdAttribute = dtdAttributes[a];
 
-         if (!dtdAttribute.isNamespaceAttribute || dtdAttribute.defaultValue.isEmpty()
-               || dtdAttribute.tagName != qualifiedName || dtdAttribute.attributeQualifiedName.isEmpty()) {
+            if ( !dtdAttribute.isNamespaceAttribute || dtdAttribute.defaultValue.isEmpty()
+                    || dtdAttribute.tagName != qualifiedName || dtdAttribute.attributeQualifiedName.isEmpty() )
+            {
+                continue;
+            }
+
+            int i = 0;
+
+            while ( i < n && symName( attributeStack[i].key ) != dtdAttribute.attributeQualifiedName )
+            {
+                ++i;
+            }
+
+            if ( i != n )
+            {
+                continue;
+            }
+
+            if ( dtdAttribute.attributePrefix.isEmpty() && dtdAttribute.attributeName == "xmlns" )
+            {
+                namespaceDeclarations.push( NamespaceDeclaration() );
+                NamespaceDeclaration &namespaceDeclaration = namespaceDeclarations.top();
+
+                namespaceDeclaration.prefix.clear();
+
+                QStringView ns( dtdAttribute.defaultValue );
+
+                if ( ns == "http://www.w3.org/2000/xmlns/" || ns == "http://www.w3.org/XML/1998/namespace" )
+                {
+                    raiseWellFormedError( QXmlStream::tr( "Illegal namespace declaration." ) );
+
+                }
+                else
+                {
+                    namespaceDeclaration.namespaceUri = ns;
+                }
+
+            }
+            else if ( dtdAttribute.attributePrefix == "xmlns" )
+            {
+                namespaceDeclarations.push( NamespaceDeclaration() );
+                NamespaceDeclaration &namespaceDeclaration = namespaceDeclarations.top();
+
+                QStringView namespacePrefix = dtdAttribute.attributeName;
+                QStringView namespaceUri    = dtdAttribute.defaultValue;
+
+                if ( ( ( namespacePrefix == "xml" ) ^ ( namespaceUri == "http://www.w3.org/XML/1998/namespace" ) )
+                        || namespaceUri    == "http://www.w3.org/2000/xmlns/" || namespaceUri.isEmpty()
+                        || namespacePrefix == "xmlns" )
+                {
+
+                    raiseWellFormedError( QXmlStream::tr( "Illegal namespace declaration." ) );
+                }
+
+                namespaceDeclaration.prefix       = namespacePrefix;
+                namespaceDeclaration.namespaceUri = namespaceUri;
+            }
+        }
+    }
+
+    tagStack.top().namespaceDeclaration.namespaceUri = namespaceUri = namespaceForPrefix( prefix );
+
+    attributes.resize( n );
+
+    for ( int i = 0; i < n; ++i )
+    {
+        QXmlStreamAttribute &attribute = attributes[i];
+        Attribute &attrib = attributeStack[i];
+
+        QStringView prefix( symPrefix( attrib.key ) );
+        QStringView name( symString( attrib.key ) );
+        QStringView qualifiedName( symName( attrib.key ) );
+        QStringView value( symString( attrib.value ) );
+
+        attribute.m_name  = name;
+        attribute.m_qualifiedName = qualifiedName;
+        attribute.m_value = value;
+
+        if ( ! prefix.isEmpty() )
+        {
+            attribute.m_namespaceUri = namespaceForPrefix( prefix );
+        }
+
+        for ( int j = 0; j < i; ++j )
+        {
+            if ( attributes[j].name() == attribute.name()
+                    && attributes[j].namespaceUri() == attribute.namespaceUri()
+                    && ( namespaceProcessing || attributes[j].qualifiedName() == attribute.qualifiedName() ) )
+            {
+                raiseWellFormedError( QXmlStream::tr( "Attribute redefined." ) );
+            }
+        }
+    }
+
+    for ( int a = 0; a < dtdAttributes.size(); ++a )
+    {
+        DtdAttribute &dtdAttribute = dtdAttributes[a];
+
+        if ( dtdAttribute.isNamespaceAttribute
+                || dtdAttribute.defaultValue.isEmpty()
+                || dtdAttribute.tagName != qualifiedName
+                || dtdAttribute.attributeQualifiedName.isEmpty() )
+        {
             continue;
-         }
+        }
 
-         int i = 0;
+        int i = 0;
 
-         while (i < n && symName(attributeStack[i].key) != dtdAttribute.attributeQualifiedName) {
+        while ( i < n && symName( attributeStack[i].key ) != dtdAttribute.attributeQualifiedName )
+        {
             ++i;
-         }
+        }
 
-         if (i != n) {
+        if ( i != n )
+        {
             continue;
-         }
+        }
 
-         if (dtdAttribute.attributePrefix.isEmpty() && dtdAttribute.attributeName == "xmlns") {
-            namespaceDeclarations.push(NamespaceDeclaration());
-            NamespaceDeclaration &namespaceDeclaration = namespaceDeclarations.top();
+        QXmlStreamAttribute attribute;
+        attribute.m_name =  dtdAttribute.attributeName;
+        attribute.m_qualifiedName = dtdAttribute.attributeQualifiedName;
+        attribute.m_value = dtdAttribute.defaultValue;
 
-            namespaceDeclaration.prefix.clear();
+        if ( ! dtdAttribute.attributePrefix.isEmpty() )
+        {
+            attribute.m_namespaceUri = namespaceForPrefix( dtdAttribute.attributePrefix );
+        }
 
-            QStringView ns(dtdAttribute.defaultValue);
+        attribute.m_isDefault = true;
+        attributes.append( attribute );
+    }
 
-            if (ns == "http://www.w3.org/2000/xmlns/" || ns == "http://www.w3.org/XML/1998/namespace") {
-               raiseWellFormedError(QXmlStream::tr("Illegal namespace declaration."));
-
-            } else {
-               namespaceDeclaration.namespaceUri = ns;
-            }
-
-         } else if (dtdAttribute.attributePrefix == "xmlns") {
-            namespaceDeclarations.push(NamespaceDeclaration());
-            NamespaceDeclaration &namespaceDeclaration = namespaceDeclarations.top();
-
-            QStringView namespacePrefix = dtdAttribute.attributeName;
-            QStringView namespaceUri    = dtdAttribute.defaultValue;
-
-            if (( (namespacePrefix == "xml") ^ (namespaceUri == "http://www.w3.org/XML/1998/namespace"))
-                  || namespaceUri    == "http://www.w3.org/2000/xmlns/" || namespaceUri.isEmpty()
-                  || namespacePrefix == "xmlns") {
-
-               raiseWellFormedError(QXmlStream::tr("Illegal namespace declaration."));
-            }
-
-            namespaceDeclaration.prefix       = namespacePrefix;
-            namespaceDeclaration.namespaceUri = namespaceUri;
-         }
-      }
-   }
-
-   tagStack.top().namespaceDeclaration.namespaceUri = namespaceUri = namespaceForPrefix(prefix);
-
-   attributes.resize(n);
-
-   for (int i = 0; i < n; ++i) {
-      QXmlStreamAttribute &attribute = attributes[i];
-      Attribute &attrib = attributeStack[i];
-
-      QStringView prefix(symPrefix(attrib.key));
-      QStringView name(symString(attrib.key));
-      QStringView qualifiedName(symName(attrib.key));
-      QStringView value(symString(attrib.value));
-
-      attribute.m_name  = name;
-      attribute.m_qualifiedName = qualifiedName;
-      attribute.m_value = value;
-
-      if (! prefix.isEmpty()) {
-         attribute.m_namespaceUri = namespaceForPrefix(prefix);
-      }
-
-      for (int j = 0; j < i; ++j) {
-         if (attributes[j].name() == attribute.name()
-               && attributes[j].namespaceUri() == attribute.namespaceUri()
-               && (namespaceProcessing || attributes[j].qualifiedName() == attribute.qualifiedName())) {
-            raiseWellFormedError(QXmlStream::tr("Attribute redefined."));
-         }
-      }
-   }
-
-   for (int a = 0; a < dtdAttributes.size(); ++a) {
-      DtdAttribute &dtdAttribute = dtdAttributes[a];
-
-      if (dtdAttribute.isNamespaceAttribute
-            || dtdAttribute.defaultValue.isEmpty()
-            || dtdAttribute.tagName != qualifiedName
-            || dtdAttribute.attributeQualifiedName.isEmpty()) {
-         continue;
-      }
-
-      int i = 0;
-
-      while (i < n && symName(attributeStack[i].key) != dtdAttribute.attributeQualifiedName) {
-         ++i;
-      }
-
-      if (i != n) {
-         continue;
-      }
-
-      QXmlStreamAttribute attribute;
-      attribute.m_name =  dtdAttribute.attributeName;
-      attribute.m_qualifiedName = dtdAttribute.attributeQualifiedName;
-      attribute.m_value = dtdAttribute.defaultValue;
-
-      if (! dtdAttribute.attributePrefix.isEmpty()) {
-         attribute.m_namespaceUri = namespaceForPrefix(dtdAttribute.attributePrefix);
-      }
-
-      attribute.m_isDefault = true;
-      attributes.append(attribute);
-   }
-
-   attributeStack.clear();
+    attributeStack.clear();
 }
 
 void QXmlStreamReaderPrivate::resolvePublicNamespaces()
 {
-   const Tag &tag = tagStack.top();
-   int n = namespaceDeclarations.size() - tag.namespaceDeclarationsSize;
-   publicNamespaceDeclarations.resize(n);
+    const Tag &tag = tagStack.top();
+    int n = namespaceDeclarations.size() - tag.namespaceDeclarationsSize;
+    publicNamespaceDeclarations.resize( n );
 
-   for (int i = 0; i < n; ++i) {
-      const NamespaceDeclaration &namespaceDeclaration = namespaceDeclarations.at(tag.namespaceDeclarationsSize + i);
-      QXmlStreamNamespaceDeclaration &publicNamespaceDeclaration = publicNamespaceDeclarations[i];
+    for ( int i = 0; i < n; ++i )
+    {
+        const NamespaceDeclaration &namespaceDeclaration = namespaceDeclarations.at( tag.namespaceDeclarationsSize + i );
+        QXmlStreamNamespaceDeclaration &publicNamespaceDeclaration = publicNamespaceDeclarations[i];
 
-      publicNamespaceDeclaration.m_prefix       = namespaceDeclaration.prefix;
-      publicNamespaceDeclaration.m_namespaceUri = namespaceDeclaration.namespaceUri;
-   }
+        publicNamespaceDeclaration.m_prefix       = namespaceDeclaration.prefix;
+        publicNamespaceDeclaration.m_namespaceUri = namespaceDeclaration.namespaceUri;
+    }
 }
 
 void QXmlStreamReaderPrivate::resolveDtd()
 {
-   publicNotationDeclarations.resize(notationDeclarations.size());
+    publicNotationDeclarations.resize( notationDeclarations.size() );
 
-   for (int i = 0; i < notationDeclarations.size(); ++i) {
-      const QXmlStreamReaderPrivate::NotationDeclaration &notationDeclaration = notationDeclarations.at(i);
-      QXmlStreamNotationDeclaration &publicNotationDeclaration = publicNotationDeclarations[i];
+    for ( int i = 0; i < notationDeclarations.size(); ++i )
+    {
+        const QXmlStreamReaderPrivate::NotationDeclaration &notationDeclaration = notationDeclarations.at( i );
+        QXmlStreamNotationDeclaration &publicNotationDeclaration = publicNotationDeclarations[i];
 
-      publicNotationDeclaration.m_name     = notationDeclaration.name;
-      publicNotationDeclaration.m_systemId = notationDeclaration.systemId;
-      publicNotationDeclaration.m_publicId = notationDeclaration.publicId;
+        publicNotationDeclaration.m_name     = notationDeclaration.name;
+        publicNotationDeclaration.m_systemId = notationDeclaration.systemId;
+        publicNotationDeclaration.m_publicId = notationDeclaration.publicId;
 
-   }
+    }
 
-   notationDeclarations.clear();
-   publicEntityDeclarations.resize(entityDeclarations.size());
+    notationDeclarations.clear();
+    publicEntityDeclarations.resize( entityDeclarations.size() );
 
-   for (int i = 0; i < entityDeclarations.size(); ++i) {
-      const QXmlStreamReaderPrivate::EntityDeclaration &entityDeclaration = entityDeclarations.at(i);
-      QXmlStreamEntityDeclaration &publicEntityDeclaration = publicEntityDeclarations[i];
+    for ( int i = 0; i < entityDeclarations.size(); ++i )
+    {
+        const QXmlStreamReaderPrivate::EntityDeclaration &entityDeclaration = entityDeclarations.at( i );
+        QXmlStreamEntityDeclaration &publicEntityDeclaration = publicEntityDeclarations[i];
 
-      publicEntityDeclaration.m_name         = entityDeclaration.name;
-      publicEntityDeclaration.m_notationName = entityDeclaration.notationName;
-      publicEntityDeclaration.m_systemId     = entityDeclaration.systemId;
-      publicEntityDeclaration.m_publicId     = entityDeclaration.publicId;
-      publicEntityDeclaration.m_value        = entityDeclaration.value;
-   }
+        publicEntityDeclaration.m_name         = entityDeclaration.name;
+        publicEntityDeclaration.m_notationName = entityDeclaration.notationName;
+        publicEntityDeclaration.m_systemId     = entityDeclaration.systemId;
+        publicEntityDeclaration.m_publicId     = entityDeclaration.publicId;
+        publicEntityDeclaration.m_value        = entityDeclaration.value;
+    }
 
-   entityDeclarations.clear();
-   parameterEntityHash.clear();
+    entityDeclarations.clear();
+    parameterEntityHash.clear();
 }
 
-QChar QXmlStreamReaderPrivate::resolveCharRef(int symbolIndex)
+QChar QXmlStreamReaderPrivate::resolveCharRef( int symbolIndex )
 {
-   bool ok = true;
-   uint s;
+    bool ok = true;
+    uint s;
 
-   if (sym(symbolIndex).c == 'x') {
-      s = symString(symbolIndex, 1).toString().toInteger<uint>(&ok, 16);
+    if ( sym( symbolIndex ).c == 'x' )
+    {
+        s = symString( symbolIndex, 1 ).toString().toInteger<uint>( &ok, 16 );
 
-   } else {
-      s = symString(symbolIndex).toString().toInteger<uint>(&ok, 10);
-   }
+    }
+    else
+    {
+        s = symString( symbolIndex ).toString().toInteger<uint>( &ok, 10 );
+    }
 
-   if (ok) {
-      ok = (s == 0x9 || s == 0xa || s == 0xd || (s >= 0x20 && s <= 0xd7ff)
-                  || (s >= 0xe000 && s <= 0xfffd) || (s >= 0x10000 && s <= 0x10ffff));
-   }
+    if ( ok )
+    {
+        ok = ( s == 0x9 || s == 0xa || s == 0xd || ( s >= 0x20 && s <= 0xd7ff )
+               || ( s >= 0xe000 && s <= 0xfffd ) || ( s >= 0x10000 && s <= 0x10ffff ) );
+    }
 
-   return ok ? char32_t(s) : char32_t(0);
+    return ok ? char32_t( s ) : char32_t( 0 );
 }
 
-void QXmlStreamReaderPrivate::checkPublicLiteral(QStringView publicId)
+void QXmlStreamReaderPrivate::checkPublicLiteral( QStringView publicId )
 {
-   //#x20 | #xD | #xA | [a-zA-Z0-9] | [-'()+,./:=?;!*#@$_%]
+    //#x20 | #xD | #xA | [a-zA-Z0-9] | [-'()+,./:=?;!*#@$_%]
 
-   for (auto item : publicId) {
-      char32_t uc = item.unicode();
+    for ( auto item : publicId )
+    {
+        char32_t uc = item.unicode();
 
-      if (uc < 256) {
+        if ( uc < 256 )
+        {
 
-         switch (uc) {
-            case ' ':
-            case '\n':
-            case '\r':
-            case '-':
-            case '(':
-            case ')':
-            case '+':
-            case ',':
-            case '.':
-            case '/':
-            case ':':
-            case '=':
-            case '?':
-            case ';':
-            case '!':
-            case '*':
-            case '#':
-            case '@':
-            case '$':
-            case '_':
-            case '%':
-            case '\'':
-            case '\"':
-               continue;
+            switch ( uc )
+            {
+                case ' ':
+                case '\n':
+                case '\r':
+                case '-':
+                case '(':
+                case ')':
+                case '+':
+                case ',':
+                case '.':
+                case '/':
+                case ':':
+                case '=':
+                case '?':
+                case ';':
+                case '!':
+                case '*':
+                case '#':
+                case '@':
+                case '$':
+                case '_':
+                case '%':
+                case '\'':
+                case '\"':
+                    continue;
 
-            default:
-               if ((uc >= 'a' && uc <= 'z') || (uc >= 'A' && uc <= 'Z') || (uc >= '0' && uc <= '9')) {
-                  continue;
-               }
-         }
-      }
+                default:
+                    if ( ( uc >= 'a' && uc <= 'z' ) || ( uc >= 'A' && uc <= 'Z' ) || ( uc >= '0' && uc <= '9' ) )
+                    {
+                        continue;
+                    }
+            }
+        }
 
-      raiseWellFormedError(QXmlStream::tr("Unexpected character '%1' in public id literal.").formatArg(item));
-      break;
-   }
+        raiseWellFormedError( QXmlStream::tr( "Unexpected character '%1' in public id literal." ).formatArg( item ) );
+        break;
+    }
 }
 
 bool QXmlStreamReaderPrivate::checkStartDocument()
 {
-   hasCheckedStartDocument = true;
+    hasCheckedStartDocument = true;
 
-   if (scanString(spell[XML], XML)) {
-      return true;
-   }
+    if ( scanString( spell[XML], XML ) )
+    {
+        return true;
+    }
 
-   type = QXmlStreamReader::StartDocument;
+    type = QXmlStreamReader::StartDocument;
 
-   if (atEnd) {
-      hasCheckedStartDocument = false;
-      raiseError(QXmlStreamReader::PrematureEndOfDocumentError);
-   }
+    if ( atEnd )
+    {
+        hasCheckedStartDocument = false;
+        raiseError( QXmlStreamReader::PrematureEndOfDocumentError );
+    }
 
-   return false;
+    return false;
 }
 
 void QXmlStreamReaderPrivate::startDocument()
 {
-   QString err;
+    QString err;
 
-   if (documentVersion != "1.0") {
-      if (documentVersion.contains(' ')) {
-         err = QXmlStream::tr("Invalid XML version string.");
+    if ( documentVersion != "1.0" )
+    {
+        if ( documentVersion.contains( ' ' ) )
+        {
+            err = QXmlStream::tr( "Invalid XML version string." );
 
-      } else {
-         err = QXmlStream::tr("Unsupported XML version.");
-      }
-   }
+        }
+        else
+        {
+            err = QXmlStream::tr( "Unsupported XML version." );
+        }
+    }
 
-   int n = attributeStack.size();
+    int n = attributeStack.size();
 
-   /* We use this bool to ensure that the pesudo attributes are in the
-    * proper order:
-    *
-    * [23]     XMLDecl     ::=     '<?xml' VersionInfo EncodingDecl? SDDecl? S? '?>' */
-   bool hasStandalone = false;
+    /* We use this bool to ensure that the pesudo attributes are in the
+     * proper order:
+     *
+     * [23]     XMLDecl     ::=     '<?xml' VersionInfo EncodingDecl? SDDecl? S? '?>' */
+    bool hasStandalone = false;
 
-   for (int i = 0; err.isEmpty() && i < n; ++i) {
-      Attribute &attrib = attributeStack[i];
-      QStringView prefix(symPrefix(attrib.key));
-      QStringView key(symString(attrib.key));
-      QStringView value(symString(attrib.value));
+    for ( int i = 0; err.isEmpty() && i < n; ++i )
+    {
+        Attribute &attrib = attributeStack[i];
+        QStringView prefix( symPrefix( attrib.key ) );
+        QStringView key( symString( attrib.key ) );
+        QStringView value( symString( attrib.value ) );
 
-      if (prefix.isEmpty() && key == "encoding") {
-         const QString name(value.toString());
-         documentEncoding = value;
+        if ( prefix.isEmpty() && key == "encoding" )
+        {
+            const QString name( value.toString() );
+            documentEncoding = value;
 
-         if (hasStandalone) {
-            err = QXmlStream::tr("The standalone pseudo attribute must appear after the encoding.");
-         }
+            if ( hasStandalone )
+            {
+                err = QXmlStream::tr( "The standalone pseudo attribute must appear after the encoding." );
+            }
 
-         if (! QXmlUtils::isEncName(name)) {
-            err = QXmlStream::tr("%1 is an invalid encoding name.").formatArg(name);
-
-         } else {
-            QTextCodec *const newCodec = QTextCodec::codecForName(name.toLatin1());
-
-            if (! newCodec) {
-               err = QXmlStream::tr("Encoding %1 is unsupported").formatArg(name);
-
-            } else if (newCodec != codec && ! lockEncoding) {
-               codec = newCodec;
-               delete decoder;
-
-               decoder = codec->makeDecoder();
-               decoder->toUnicode(&readBuffer, rawReadBuffer.data(), nbytesread);
-               readBuffer_Iter = readBuffer.cbegin();
+            if ( ! QXmlUtils::isEncName( name ) )
+            {
+                err = QXmlStream::tr( "%1 is an invalid encoding name." ).formatArg( name );
 
             }
-         }
+            else
+            {
+                QTextCodec *const newCodec = QTextCodec::codecForName( name.toLatin1() );
 
-      } else if (prefix.isEmpty() && key == "standalone") {
-         hasStandalone = true;
+                if ( ! newCodec )
+                {
+                    err = QXmlStream::tr( "Encoding %1 is unsupported" ).formatArg( name );
 
-         if (value == "yes") {
-            standalone = true;
+                }
+                else if ( newCodec != codec && ! lockEncoding )
+                {
+                    codec = newCodec;
+                    delete decoder;
 
-         } else if (value == "no") {
-            standalone = false;
+                    decoder = codec->makeDecoder();
+                    decoder->toUnicode( &readBuffer, rawReadBuffer.data(), nbytesread );
+                    readBuffer_Iter = readBuffer.cbegin();
 
-         } else {
-            err = QXmlStream::tr("Standalone accepts only yes or no.");
-         }
+                }
+            }
 
-      } else {
-         err = QXmlStream::tr("Invalid attribute in XML declaration.");
-      }
-   }
+        }
+        else if ( prefix.isEmpty() && key == "standalone" )
+        {
+            hasStandalone = true;
 
-   if (! err.isEmpty()) {
-      raiseWellFormedError(err);
-   }
+            if ( value == "yes" )
+            {
+                standalone = true;
 
-   attributeStack.clear();
+            }
+            else if ( value == "no" )
+            {
+                standalone = false;
+
+            }
+            else
+            {
+                err = QXmlStream::tr( "Standalone accepts only yes or no." );
+            }
+
+        }
+        else
+        {
+            err = QXmlStream::tr( "Invalid attribute in XML declaration." );
+        }
+    }
+
+    if ( ! err.isEmpty() )
+    {
+        raiseWellFormedError( err );
+    }
+
+    attributeStack.clear();
 }
 
-void QXmlStreamReaderPrivate::raiseError(QXmlStreamReader::Error error, const QString &message)
+void QXmlStreamReaderPrivate::raiseError( QXmlStreamReader::Error error, const QString &message )
 {
-   this->error = error;
-   errorString = message;
+    this->error = error;
+    errorString = message;
 
-   if (errorString.isEmpty()) {
-      if (error == QXmlStreamReader::PrematureEndOfDocumentError) {
-         errorString = QXmlStream::tr("Premature end of document.");
+    if ( errorString.isEmpty() )
+    {
+        if ( error == QXmlStreamReader::PrematureEndOfDocumentError )
+        {
+            errorString = QXmlStream::tr( "Premature end of document." );
 
-      } else if (error == QXmlStreamReader::CustomError) {
-         errorString = QXmlStream::tr("Invalid document.");
+        }
+        else if ( error == QXmlStreamReader::CustomError )
+        {
+            errorString = QXmlStream::tr( "Invalid document." );
 
-      }
-   }
+        }
+    }
 
-   type = QXmlStreamReader::Invalid;
+    type = QXmlStreamReader::Invalid;
 }
 
-void QXmlStreamReaderPrivate::raiseWellFormedError(const QString &message)
+void QXmlStreamReaderPrivate::raiseWellFormedError( const QString &message )
 {
-   raiseError(QXmlStreamReader::NotWellFormedError, message);
+    raiseError( QXmlStreamReader::NotWellFormedError, message );
 }
 
 void QXmlStreamReaderPrivate::parseError()
 {
-   if (token == EOF_SYMBOL) {
-      raiseError(QXmlStreamReader::PrematureEndOfDocumentError);
-      return;
-   }
+    if ( token == EOF_SYMBOL )
+    {
+        raiseError( QXmlStreamReader::PrematureEndOfDocumentError );
+        return;
+    }
 
-   const int nmax = 4;
-   QString error_message;
+    const int nmax = 4;
+    QString error_message;
 
-   int ers = state_stack[tos];
-   int nexpected = 0;
-   int expected[nmax];
+    int ers = state_stack[tos];
+    int nexpected = 0;
+    int expected[nmax];
 
-   if (token != ERROR)
-      for (int tk = 0; tk < TERMINAL_COUNT; ++tk) {
-         int k = t_action(ers, tk);
+    if ( token != ERROR )
+        for ( int tk = 0; tk < TERMINAL_COUNT; ++tk )
+        {
+            int k = t_action( ers, tk );
 
-         if (k <= 0) {
-            continue;
-         }
-
-         if (spell[tk]) {
-            if (nexpected < nmax) {
-               expected[nexpected++] = tk;
+            if ( k <= 0 )
+            {
+                continue;
             }
-         }
-      }
 
-   error_message.clear ();
+            if ( spell[tk] )
+            {
+                if ( nexpected < nmax )
+                {
+                    expected[nexpected++] = tk;
+                }
+            }
+        }
 
-   if (nexpected && nexpected < nmax) {
-      bool first = true;
+    error_message.clear ();
 
-      for (int s = 0; s < nexpected; ++s) {
+    if ( nexpected && nexpected < nmax )
+    {
+        bool first = true;
 
-         if (first) {
-            error_message += QXmlStream::tr ("Expected ");
+        for ( int s = 0; s < nexpected; ++s )
+        {
 
-         } else if (s == nexpected - 1) {
-            error_message += nexpected > 2 ? ", or " : " or ";
+            if ( first )
+            {
+                error_message += QXmlStream::tr ( "Expected " );
 
-         } else {
-            error_message += ", ";
-         }
+            }
+            else if ( s == nexpected - 1 )
+            {
+                error_message += nexpected > 2 ? ", or " : " or ";
 
-         first = false;
-         error_message += "\'";
-         error_message += spell[expected[s]];
-         error_message += "\'";
-      }
+            }
+            else
+            {
+                error_message += ", ";
+            }
 
-      error_message += QXmlStream::tr(", but got \'");
-      error_message += spell[token];
-      error_message += "\'";
+            first = false;
+            error_message += "\'";
+            error_message += spell[expected[s]];
+            error_message += "\'";
+        }
 
-   } else {
-      error_message += QXmlStream::tr("Unexpected \'");
-      error_message += spell[token];
-      error_message += "\'";
-   }
+        error_message += QXmlStream::tr( ", but got \'" );
+        error_message += spell[token];
+        error_message += "\'";
 
-   error_message += '.';
+    }
+    else
+    {
+        error_message += QXmlStream::tr( "Unexpected \'" );
+        error_message += spell[token];
+        error_message += "\'";
+    }
 
-   raiseWellFormedError(error_message);
+    error_message += '.';
+
+    raiseWellFormedError( error_message );
 }
 
-void QXmlStreamReaderPrivate::resume(int rule)
+void QXmlStreamReaderPrivate::resume( int rule )
 {
-   resumeReduction = rule;
+    resumeReduction = rule;
 
-   if (error == QXmlStreamReader::NoError) {
-      raiseError(QXmlStreamReader::PrematureEndOfDocumentError);
-   }
+    if ( error == QXmlStreamReader::NoError )
+    {
+        raiseError( QXmlStreamReader::PrematureEndOfDocumentError );
+    }
 }
 
 qint64 QXmlStreamReader::lineNumber() const
 {
-   Q_D(const QXmlStreamReader);
-   return d->lineNumber + 1; // in public we start with 1
+    Q_D( const QXmlStreamReader );
+    return d->lineNumber + 1; // in public we start with 1
 }
 
 qint64 QXmlStreamReader::columnNumber() const
 {
-   Q_D(const QXmlStreamReader);
-   return d->characterOffset - d->lastLineStart + (d->readBuffer_Iter - d->readBuffer.cbegin());
+    Q_D( const QXmlStreamReader );
+    return d->characterOffset - d->lastLineStart + ( d->readBuffer_Iter - d->readBuffer.cbegin() );
 }
 
 qint64 QXmlStreamReader::characterOffset() const
 {
-   Q_D(const QXmlStreamReader);
-   return d->characterOffset + (d->readBuffer_Iter - d->readBuffer.cbegin());
+    Q_D( const QXmlStreamReader );
+    return d->characterOffset + ( d->readBuffer_Iter - d->readBuffer.cbegin() );
 }
 
 QStringView QXmlStreamReader::text() const
 {
-   Q_D(const QXmlStreamReader);
-   return d->text;
+    Q_D( const QXmlStreamReader );
+    return d->text;
 }
 
 QXmlStreamNotationDeclarations QXmlStreamReader::notationDeclarations() const
 {
-   Q_D(const QXmlStreamReader);
+    Q_D( const QXmlStreamReader );
 
-   if (d->notationDeclarations.size()) {
-      const_cast<QXmlStreamReaderPrivate *>(d)->resolveDtd();
-   }
+    if ( d->notationDeclarations.size() )
+    {
+        const_cast<QXmlStreamReaderPrivate *>( d )->resolveDtd();
+    }
 
-   return d->publicNotationDeclarations;
+    return d->publicNotationDeclarations;
 }
 
 QXmlStreamEntityDeclarations QXmlStreamReader::entityDeclarations() const
 {
-   Q_D(const QXmlStreamReader);
+    Q_D( const QXmlStreamReader );
 
-   if (d->entityDeclarations.size()) {
-      const_cast<QXmlStreamReaderPrivate *>(d)->resolveDtd();
-   }
+    if ( d->entityDeclarations.size() )
+    {
+        const_cast<QXmlStreamReaderPrivate *>( d )->resolveDtd();
+    }
 
-   return d->publicEntityDeclarations;
+    return d->publicEntityDeclarations;
 }
 
 QStringView QXmlStreamReader::dtdName() const
 {
-   Q_D(const QXmlStreamReader);
+    Q_D( const QXmlStreamReader );
 
-   if (d->type == QXmlStreamReader::DTD) {
-      return d->dtdName;
-   }
+    if ( d->type == QXmlStreamReader::DTD )
+    {
+        return d->dtdName;
+    }
 
-   return QStringView();
+    return QStringView();
 }
 
 QStringView QXmlStreamReader::dtdPublicId() const
 {
-   Q_D(const QXmlStreamReader);
+    Q_D( const QXmlStreamReader );
 
-   if (d->type == QXmlStreamReader::DTD) {
-      return d->dtdPublicId;
-   }
+    if ( d->type == QXmlStreamReader::DTD )
+    {
+        return d->dtdPublicId;
+    }
 
-   return QStringView();
+    return QStringView();
 }
 
 QStringView QXmlStreamReader::dtdSystemId() const
 {
-   Q_D(const QXmlStreamReader);
+    Q_D( const QXmlStreamReader );
 
-   if (d->type == QXmlStreamReader::DTD) {
-      return d->dtdSystemId;
-   }
+    if ( d->type == QXmlStreamReader::DTD )
+    {
+        return d->dtdSystemId;
+    }
 
-   return QStringView();
+    return QStringView();
 }
 
 QXmlStreamNamespaceDeclarations QXmlStreamReader::namespaceDeclarations() const
 {
-   Q_D(const QXmlStreamReader);
+    Q_D( const QXmlStreamReader );
 
-   if (d->publicNamespaceDeclarations.isEmpty() && d->type == StartElement) {
-      const_cast<QXmlStreamReaderPrivate *>(d)->resolvePublicNamespaces();
-   }
+    if ( d->publicNamespaceDeclarations.isEmpty() && d->type == StartElement )
+    {
+        const_cast<QXmlStreamReaderPrivate *>( d )->resolvePublicNamespaces();
+    }
 
-   return d->publicNamespaceDeclarations;
+    return d->publicNamespaceDeclarations;
 }
 
-void QXmlStreamReader::addExtraNamespaceDeclaration(const QXmlStreamNamespaceDeclaration &extraNamespaceDeclaration)
+void QXmlStreamReader::addExtraNamespaceDeclaration( const QXmlStreamNamespaceDeclaration &extraNamespaceDeclaration )
 {
-   Q_D(QXmlStreamReader);
+    Q_D( QXmlStreamReader );
 
-   d->namespaceDeclarations.push(QXmlStreamReaderPrivate::NamespaceDeclaration());
-   QXmlStreamReaderPrivate::NamespaceDeclaration &namespaceDeclaration = d->namespaceDeclarations.top();
+    d->namespaceDeclarations.push( QXmlStreamReaderPrivate::NamespaceDeclaration() );
+    QXmlStreamReaderPrivate::NamespaceDeclaration &namespaceDeclaration = d->namespaceDeclarations.top();
 
-   namespaceDeclaration.prefix       = extraNamespaceDeclaration.prefix();
-   namespaceDeclaration.namespaceUri = extraNamespaceDeclaration.namespaceUri();
+    namespaceDeclaration.prefix       = extraNamespaceDeclaration.prefix();
+    namespaceDeclaration.namespaceUri = extraNamespaceDeclaration.namespaceUri();
 }
 
-void QXmlStreamReader::addExtraNamespaceDeclarations(const QXmlStreamNamespaceDeclarations &extraNamespaceDeclarations)
+void QXmlStreamReader::addExtraNamespaceDeclarations( const QXmlStreamNamespaceDeclarations &extraNamespaceDeclarations )
 {
-   for (int i = 0; i < extraNamespaceDeclarations.size(); ++i) {
-      addExtraNamespaceDeclaration(extraNamespaceDeclarations.at(i));
-   }
+    for ( int i = 0; i < extraNamespaceDeclarations.size(); ++i )
+    {
+        addExtraNamespaceDeclaration( extraNamespaceDeclarations.at( i ) );
+    }
 }
 
-QString QXmlStreamReader::readElementText(ReadElementTextBehaviour behaviour)
+QString QXmlStreamReader::readElementText( ReadElementTextBehaviour behaviour )
 {
-   Q_D(QXmlStreamReader);
+    Q_D( QXmlStreamReader );
 
-   if (isStartElement()) {
-      QString result;
+    if ( isStartElement() )
+    {
+        QString result;
 
-      while (true) {
-         switch (readNext()) {
-            case Characters:
-            case EntityReference:
-               result.append(d->text);
-               break;
+        while ( true )
+        {
+            switch ( readNext() )
+            {
+                case Characters:
+                case EntityReference:
+                    result.append( d->text );
+                    break;
 
-            case EndElement:
-               return result;
+                case EndElement:
+                    return result;
 
-            case ProcessingInstruction:
-            case Comment:
-               break;
+                case ProcessingInstruction:
+                case Comment:
+                    break;
 
-            case StartElement:
-               if (behaviour == SkipChildElements) {
-                  skipCurrentElement();
-                  break;
+                case StartElement:
+                    if ( behaviour == SkipChildElements )
+                    {
+                        skipCurrentElement();
+                        break;
 
-               } else if (behaviour == IncludeChildElements) {
-                  result += readElementText(behaviour);
-                  break;
-               }
+                    }
+                    else if ( behaviour == IncludeChildElements )
+                    {
+                        result += readElementText( behaviour );
+                        break;
+                    }
 
-               [[fallthrough]];
+                    [[fallthrough]];
 
-            default:
-               if (d->error || behaviour == ErrorOnUnexpectedElement) {
-                  if (! d->error) {
-                     d->raiseError(UnexpectedElementError, QXmlStream::tr("Expected character data."));
-                  }
+                default:
+                    if ( d->error || behaviour == ErrorOnUnexpectedElement )
+                    {
+                        if ( ! d->error )
+                        {
+                            d->raiseError( UnexpectedElementError, QXmlStream::tr( "Expected character data." ) );
+                        }
 
-                  return result;
-               }
-         }
-      }
-   }
+                        return result;
+                    }
+            }
+        }
+    }
 
-   return QString();
+    return QString();
 }
 
 QString QXmlStreamReader::readElementText()
 {
-   return readElementText(ErrorOnUnexpectedElement);
+    return readElementText( ErrorOnUnexpectedElement );
 }
 
-void QXmlStreamReader::raiseError(const QString &message)
+void QXmlStreamReader::raiseError( const QString &message )
 {
-   Q_D(QXmlStreamReader);
-   d->raiseError(CustomError, message);
+    Q_D( QXmlStreamReader );
+    d->raiseError( CustomError, message );
 }
 
 QString QXmlStreamReader::errorString() const
 {
-   Q_D(const QXmlStreamReader);
+    Q_D( const QXmlStreamReader );
 
-   if (d->type == QXmlStreamReader::Invalid) {
-      return d->errorString;
-   }
+    if ( d->type == QXmlStreamReader::Invalid )
+    {
+        return d->errorString;
+    }
 
-   return QString();
+    return QString();
 }
 
 QXmlStreamReader::Error QXmlStreamReader::error() const
 {
-   Q_D(const QXmlStreamReader);
+    Q_D( const QXmlStreamReader );
 
-   if (d->type == QXmlStreamReader::Invalid) {
-      return d->error;
-   }
+    if ( d->type == QXmlStreamReader::Invalid )
+    {
+        return d->error;
+    }
 
-   return NoError;
+    return NoError;
 }
 
 QStringView QXmlStreamReader::processingInstructionTarget() const
 {
-   Q_D(const QXmlStreamReader);
-   return d->processingInstructionTarget;
+    Q_D( const QXmlStreamReader );
+    return d->processingInstructionTarget;
 }
 
 QStringView QXmlStreamReader::processingInstructionData() const
 {
-   Q_D(const QXmlStreamReader);
-   return d->processingInstructionData;
+    Q_D( const QXmlStreamReader );
+    return d->processingInstructionData;
 }
 
 QStringView QXmlStreamReader::name() const
 {
-   Q_D(const QXmlStreamReader);
-   return d->name;
+    Q_D( const QXmlStreamReader );
+    return d->name;
 }
 
 QStringView QXmlStreamReader::namespaceUri() const
 {
-   Q_D(const QXmlStreamReader);
-   return d->namespaceUri;
+    Q_D( const QXmlStreamReader );
+    return d->namespaceUri;
 }
 
 QStringView QXmlStreamReader::qualifiedName() const
 {
-   Q_D(const QXmlStreamReader);
-   return d->qualifiedName;
+    Q_D( const QXmlStreamReader );
+    return d->qualifiedName;
 }
 
 QStringView QXmlStreamReader::prefix() const
 {
-   Q_D(const QXmlStreamReader);
-   return d->prefix;
+    Q_D( const QXmlStreamReader );
+    return d->prefix;
 }
 
 QXmlStreamAttributes QXmlStreamReader::attributes() const
 {
-   Q_D(const QXmlStreamReader);
-   return d->attributes;
+    Q_D( const QXmlStreamReader );
+    return d->attributes;
 }
 
 QXmlStreamAttribute::QXmlStreamAttribute()
 {
-   m_isDefault = false;
+    m_isDefault = false;
 }
 
 QXmlStreamAttribute::~QXmlStreamAttribute()
 {
 }
 
-QXmlStreamAttribute::QXmlStreamAttribute(const QString &namespaceUri, const QString &name, const QString &value)
+QXmlStreamAttribute::QXmlStreamAttribute( const QString &namespaceUri, const QString &name, const QString &value )
 {
-   m_namespaceUri  = namespaceUri;
-   m_name          = name;
-   m_qualifiedName = m_name;
-   m_value         = value;
+    m_namespaceUri  = namespaceUri;
+    m_name          = name;
+    m_qualifiedName = m_name;
+    m_value         = value;
 }
 
-QXmlStreamAttribute::QXmlStreamAttribute(const QString &qualifiedName, const QString &value)
+QXmlStreamAttribute::QXmlStreamAttribute( const QString &qualifiedName, const QString &value )
 {
-   auto iter_colon = qualifiedName.indexOfFast(':') + 1;
-   m_name          = QStringView(iter_colon, qualifiedName.cend());
+    auto iter_colon = qualifiedName.indexOfFast( ':' ) + 1;
+    m_name          = QStringView( iter_colon, qualifiedName.cend() );
 
-   m_qualifiedName = qualifiedName;
-   m_value         = value;
+    m_qualifiedName = qualifiedName;
+    m_value         = value;
 }
 
-QXmlStreamAttribute::QXmlStreamAttribute(const QXmlStreamAttribute &other)
+QXmlStreamAttribute::QXmlStreamAttribute( const QXmlStreamAttribute &other )
 {
-   *this = other;
+    *this = other;
 }
 
-QXmlStreamAttribute &QXmlStreamAttribute::operator=(const QXmlStreamAttribute &other)
+QXmlStreamAttribute &QXmlStreamAttribute::operator=( const QXmlStreamAttribute &other )
 {
-   m_name          = other.m_name;
-   m_namespaceUri  = other.m_namespaceUri;
-   m_qualifiedName = other.m_qualifiedName;
-   m_value         = other.m_value;
-   m_isDefault     = other.m_isDefault;
+    m_name          = other.m_name;
+    m_namespaceUri  = other.m_namespaceUri;
+    m_qualifiedName = other.m_qualifiedName;
+    m_value         = other.m_value;
+    m_isDefault     = other.m_isDefault;
 
-   return *this;
+    return *this;
 }
 
 QXmlStreamNotationDeclaration::QXmlStreamNotationDeclaration()
 {
 }
 
-QXmlStreamNotationDeclaration::QXmlStreamNotationDeclaration(const QXmlStreamNotationDeclaration &other)
+QXmlStreamNotationDeclaration::QXmlStreamNotationDeclaration( const QXmlStreamNotationDeclaration &other )
 {
-   *this = other;
+    *this = other;
 }
 
-QXmlStreamNotationDeclaration &QXmlStreamNotationDeclaration::operator=(const QXmlStreamNotationDeclaration &other)
+QXmlStreamNotationDeclaration &QXmlStreamNotationDeclaration::operator=( const QXmlStreamNotationDeclaration &other )
 {
-   m_name = other.m_name;
-   m_systemId = other.m_systemId;
-   m_publicId = other.m_publicId;
-   return *this;
+    m_name = other.m_name;
+    m_systemId = other.m_systemId;
+    m_publicId = other.m_publicId;
+    return *this;
 }
 
 QXmlStreamNotationDeclaration::~QXmlStreamNotationDeclaration()
@@ -1971,22 +2222,22 @@ QXmlStreamNamespaceDeclaration::QXmlStreamNamespaceDeclaration()
 {
 }
 
-QXmlStreamNamespaceDeclaration::QXmlStreamNamespaceDeclaration(const QString &prefix, const QString &namespaceUri)
+QXmlStreamNamespaceDeclaration::QXmlStreamNamespaceDeclaration( const QString &prefix, const QString &namespaceUri )
 {
-   m_prefix = prefix;
-   m_namespaceUri = namespaceUri;
+    m_prefix = prefix;
+    m_namespaceUri = namespaceUri;
 }
 
-QXmlStreamNamespaceDeclaration::QXmlStreamNamespaceDeclaration(const QXmlStreamNamespaceDeclaration &other)
+QXmlStreamNamespaceDeclaration::QXmlStreamNamespaceDeclaration( const QXmlStreamNamespaceDeclaration &other )
 {
-   *this = other;
+    *this = other;
 }
 
-QXmlStreamNamespaceDeclaration &QXmlStreamNamespaceDeclaration::operator=(const QXmlStreamNamespaceDeclaration &other)
+QXmlStreamNamespaceDeclaration &QXmlStreamNamespaceDeclaration::operator=( const QXmlStreamNamespaceDeclaration &other )
 {
-   m_prefix = other.m_prefix;
-   m_namespaceUri = other.m_namespaceUri;
-   return *this;
+    m_prefix = other.m_prefix;
+    m_namespaceUri = other.m_namespaceUri;
+    return *this;
 }
 
 QXmlStreamNamespaceDeclaration::~QXmlStreamNamespaceDeclaration()
@@ -1997,906 +2248,1009 @@ QXmlStreamEntityDeclaration::QXmlStreamEntityDeclaration()
 {
 }
 
-QXmlStreamEntityDeclaration::QXmlStreamEntityDeclaration(const QXmlStreamEntityDeclaration &other)
+QXmlStreamEntityDeclaration::QXmlStreamEntityDeclaration( const QXmlStreamEntityDeclaration &other )
 {
-   *this = other;
+    *this = other;
 }
 
-QXmlStreamEntityDeclaration &QXmlStreamEntityDeclaration::operator=(const QXmlStreamEntityDeclaration &other)
+QXmlStreamEntityDeclaration &QXmlStreamEntityDeclaration::operator=( const QXmlStreamEntityDeclaration &other )
 {
-   m_name = other.m_name;
-   m_notationName = other.m_notationName;
-   m_systemId = other.m_systemId;
-   m_publicId = other.m_publicId;
-   m_value = other.m_value;
-   return *this;
+    m_name = other.m_name;
+    m_notationName = other.m_notationName;
+    m_systemId = other.m_systemId;
+    m_publicId = other.m_publicId;
+    m_value = other.m_value;
+    return *this;
 }
 
 QXmlStreamEntityDeclaration::~QXmlStreamEntityDeclaration()
 {
 }
 
-QStringView QXmlStreamAttributes::value(const QString &namespaceUri, const QString &name) const
+QStringView QXmlStreamAttributes::value( const QString &namespaceUri, const QString &name ) const
 {
-   for (int i = 0; i < size(); ++i) {
-      const QXmlStreamAttribute &attribute = at(i);
+    for ( int i = 0; i < size(); ++i )
+    {
+        const QXmlStreamAttribute &attribute = at( i );
 
-      if (attribute.name() == name && attribute.namespaceUri() == namespaceUri) {
-         return attribute.value();
-      }
-   }
+        if ( attribute.name() == name && attribute.namespaceUri() == namespaceUri )
+        {
+            return attribute.value();
+        }
+    }
 
-   return QStringView();
+    return QStringView();
 }
 
-QStringView QXmlStreamAttributes::value(const QString &qualifiedName) const
+QStringView QXmlStreamAttributes::value( const QString &qualifiedName ) const
 {
-   for (int i = 0; i < size(); ++i) {
-      const QXmlStreamAttribute &attribute = at(i);
+    for ( int i = 0; i < size(); ++i )
+    {
+        const QXmlStreamAttribute &attribute = at( i );
 
-      if (attribute.qualifiedName() == qualifiedName) {
-         return attribute.value();
-      }
-   }
+        if ( attribute.qualifiedName() == qualifiedName )
+        {
+            return attribute.value();
+        }
+    }
 
-   return QStringView();
+    return QStringView();
 }
 
-void QXmlStreamAttributes::append(const QString &namespaceUri, const QString &name, const QString &value)
+void QXmlStreamAttributes::append( const QString &namespaceUri, const QString &name, const QString &value )
 {
-   append(QXmlStreamAttribute(namespaceUri, name, value));
+    append( QXmlStreamAttribute( namespaceUri, name, value ) );
 }
 
-void QXmlStreamAttributes::append(const QString &qualifiedName, const QString &value)
+void QXmlStreamAttributes::append( const QString &qualifiedName, const QString &value )
 {
-   append(QXmlStreamAttribute(qualifiedName, value));
+    append( QXmlStreamAttribute( qualifiedName, value ) );
 }
 
 bool QXmlStreamReader::isWhitespace() const
 {
-   Q_D(const QXmlStreamReader);
-   return d->type == QXmlStreamReader::Characters && d->isWhitespace;
+    Q_D( const QXmlStreamReader );
+    return d->type == QXmlStreamReader::Characters && d->isWhitespace;
 }
 
 bool QXmlStreamReader::isCDATA() const
 {
-   Q_D(const QXmlStreamReader);
-   return d->type == QXmlStreamReader::Characters && d->isCDATA;
+    Q_D( const QXmlStreamReader );
+    return d->type == QXmlStreamReader::Characters && d->isCDATA;
 }
 
 bool QXmlStreamReader::isStandaloneDocument() const
 {
-   Q_D(const QXmlStreamReader);
-   return d->standalone;
+    Q_D( const QXmlStreamReader );
+    return d->standalone;
 }
 
 QStringView QXmlStreamReader::documentVersion() const
 {
-   Q_D(const QXmlStreamReader);
+    Q_D( const QXmlStreamReader );
 
-   if (d->type == QXmlStreamReader::StartDocument) {
-      return d->documentVersion;
-   }
+    if ( d->type == QXmlStreamReader::StartDocument )
+    {
+        return d->documentVersion;
+    }
 
-   return QStringView();
+    return QStringView();
 }
 
 QStringView QXmlStreamReader::documentEncoding() const
 {
-   Q_D(const QXmlStreamReader);
+    Q_D( const QXmlStreamReader );
 
-   if (d->type == QXmlStreamReader::StartDocument) {
-      return d->documentEncoding;
-   }
+    if ( d->type == QXmlStreamReader::StartDocument )
+    {
+        return d->documentEncoding;
+    }
 
-   return QStringView();
+    return QStringView();
 }
 
 class QXmlStreamWriterPrivate : public QXmlStreamPrivateTagStack
 {
-   QXmlStreamWriter *q_ptr;
-   Q_DECLARE_PUBLIC(QXmlStreamWriter)
+    QXmlStreamWriter *q_ptr;
+    Q_DECLARE_PUBLIC( QXmlStreamWriter )
 
- public:
-   QXmlStreamWriterPrivate(QXmlStreamWriter *q);
+public:
+    QXmlStreamWriterPrivate( QXmlStreamWriter *q );
 
-   ~QXmlStreamWriterPrivate() {
-      if (deleteDevice) {
-         delete device;
-      }
+    ~QXmlStreamWriterPrivate()
+    {
+        if ( deleteDevice )
+        {
+            delete device;
+        }
 
-      delete encoder;
-   }
+        delete encoder;
+    }
 
-   void write(QStringView str);
-   void write(const QString &str);
-   void writeEscaped(const QString &, bool escapeWhitespace = false);
-   void write(const char *s, int len);
+    void write( QStringView str );
+    void write( const QString &str );
+    void writeEscaped( const QString &, bool escapeWhitespace = false );
+    void write( const char *s, int len );
 
-   template <int N>
-   void write(const char (&s)[N]) {
-      write(s, N - 1);
-   }
+    template <int N>
+    void write( const char ( &s )[N] )
+    {
+        write( s, N - 1 );
+    }
 
-   bool finishStartElement(bool contents = true);
-   void writeStartElement(const QString &namespaceUri, const QString &name);
+    bool finishStartElement( bool contents = true );
+    void writeStartElement( const QString &namespaceUri, const QString &name );
 
-   QIODevice *device;
-   QString *stringDevice;
+    QIODevice *device;
+    QString *stringDevice;
 
-   uint deleteDevice : 1;
-   uint inStartElement : 1;
-   uint inEmptyElement : 1;
-   uint lastWasStartElement : 1;
-   uint wroteSomething : 1;
-   uint hasError : 1;
-   uint autoFormatting : 1;
-   uint isCodecASCIICompatible : 1;
-   QByteArray autoFormattingIndent;
-   NamespaceDeclaration emptyNamespace;
-   int lastNamespaceDeclaration;
+    uint deleteDevice : 1;
+    uint inStartElement : 1;
+    uint inEmptyElement : 1;
+    uint lastWasStartElement : 1;
+    uint wroteSomething : 1;
+    uint hasError : 1;
+    uint autoFormatting : 1;
+    uint isCodecASCIICompatible : 1;
+    QByteArray autoFormattingIndent;
+    NamespaceDeclaration emptyNamespace;
+    int lastNamespaceDeclaration;
 
-   QTextCodec *codec;
-   QTextEncoder *encoder;
+    QTextCodec *codec;
+    QTextEncoder *encoder;
 
-   void checkIfASCIICompatibleCodec();
+    void checkIfASCIICompatibleCodec();
 
-   NamespaceDeclaration &findNamespace(const QString &namespaceUri, bool writeDeclaration = false,
-         bool noDefault = false);
+    NamespaceDeclaration &findNamespace( const QString &namespaceUri, bool writeDeclaration = false,
+                                         bool noDefault = false );
 
-   void writeNamespaceDeclaration(const NamespaceDeclaration &namespaceDeclaration);
+    void writeNamespaceDeclaration( const NamespaceDeclaration &namespaceDeclaration );
 
-   int namespacePrefixCount;
+    int namespacePrefixCount;
 
-   void indent(int level);
+    void indent( int level );
 };
 
-QXmlStreamWriterPrivate::QXmlStreamWriterPrivate(QXmlStreamWriter *q)
-   : autoFormattingIndent(4, ' ')
+QXmlStreamWriterPrivate::QXmlStreamWriterPrivate( QXmlStreamWriter *q )
+    : autoFormattingIndent( 4, ' ' )
 {
-   q_ptr        = q;
-   device       = nullptr;
-   stringDevice = nullptr;
-   deleteDevice = false;
+    q_ptr        = q;
+    device       = nullptr;
+    stringDevice = nullptr;
+    deleteDevice = false;
 
-   codec = QTextCodec::codecForMib(106);                   // utf8
-   encoder = codec->makeEncoder(QTextCodec::IgnoreHeader); // no byte order mark for utf8
+    codec = QTextCodec::codecForMib( 106 );                 // utf8
+    encoder = codec->makeEncoder( QTextCodec::IgnoreHeader ); // no byte order mark for utf8
 
-   checkIfASCIICompatibleCodec();
-   inStartElement = inEmptyElement = false;
-   wroteSomething = false;
-   hasError = false;
-   lastWasStartElement = false;
-   lastNamespaceDeclaration = 1;
-   autoFormatting = false;
-   namespacePrefixCount = 0;
+    checkIfASCIICompatibleCodec();
+    inStartElement = inEmptyElement = false;
+    wroteSomething = false;
+    hasError = false;
+    lastWasStartElement = false;
+    lastNamespaceDeclaration = 1;
+    autoFormatting = false;
+    namespacePrefixCount = 0;
 }
 
 void QXmlStreamWriterPrivate::checkIfASCIICompatibleCodec()
 {
-   Q_ASSERT(encoder);
+    Q_ASSERT( encoder );
 
-   // assumes ASCII-compatibility for all 8-bit encodings
-   const QByteArray bytes = encoder->fromUnicode(" ");
-   isCodecASCIICompatible = (bytes.count() == 1);
+    // assumes ASCII-compatibility for all 8-bit encodings
+    const QByteArray bytes = encoder->fromUnicode( " " );
+    isCodecASCIICompatible = ( bytes.count() == 1 );
 }
 
-void QXmlStreamWriterPrivate::write(QStringView str)
+void QXmlStreamWriterPrivate::write( QStringView str )
 {
-   if (device) {
+    if ( device )
+    {
 
-      if (hasError) {
-         return;
-      }
+        if ( hasError )
+        {
+            return;
+        }
 
-      QByteArray bytes = encoder->fromUnicode(str);
+        QByteArray bytes = encoder->fromUnicode( str );
 
-      if (device->write(bytes) != bytes.size()) {
-         hasError = true;
-      }
+        if ( device->write( bytes ) != bytes.size() )
+        {
+            hasError = true;
+        }
 
-   } else if (stringDevice != nullptr) {
-      stringDevice->append(str);
+    }
+    else if ( stringDevice != nullptr )
+    {
+        stringDevice->append( str );
 
-   } else {
-      qWarning("QXmlStreamWriter::write() No device available");
-   }
+    }
+    else
+    {
+        qWarning( "QXmlStreamWriter::write() No device available" );
+    }
 }
 
-void QXmlStreamWriterPrivate::write(const QString &s)
+void QXmlStreamWriterPrivate::write( const QString &s )
 {
-   if (device) {
-      if (hasError) {
-         return;
-      }
+    if ( device )
+    {
+        if ( hasError )
+        {
+            return;
+        }
 
-      QByteArray bytes = encoder->fromUnicode(s);
+        QByteArray bytes = encoder->fromUnicode( s );
 
-      if (device->write(bytes) != bytes.size()) {
-         hasError = true;
-      }
+        if ( device->write( bytes ) != bytes.size() )
+        {
+            hasError = true;
+        }
 
-   } else if (stringDevice) {
-      stringDevice->append(s);
-   } else {
-      qWarning("QXmlStreamWriter::write() No device available");
-   }
+    }
+    else if ( stringDevice )
+    {
+        stringDevice->append( s );
+    }
+    else
+    {
+        qWarning( "QXmlStreamWriter::write() No device available" );
+    }
 }
 
-void QXmlStreamWriterPrivate::writeEscaped(const QString &s, bool escapeWhitespace)
+void QXmlStreamWriterPrivate::writeEscaped( const QString &s, bool escapeWhitespace )
 {
-   QString escaped;
+    QString escaped;
 
-   for ( int i = 0; i < s.size(); ++i ) {
-      QChar c = s.at(i);
+    for ( int i = 0; i < s.size(); ++i )
+    {
+        QChar c = s.at( i );
 
-      if (c.unicode() == '<' ) {
-         escaped.append(QLatin1String("&lt;"));
+        if ( c.unicode() == '<' )
+        {
+            escaped.append( QLatin1String( "&lt;" ) );
 
-      } else if (c.unicode() == '>' ) {
-         escaped.append(QLatin1String("&gt;"));
+        }
+        else if ( c.unicode() == '>' )
+        {
+            escaped.append( QLatin1String( "&gt;" ) );
 
-      } else if (c.unicode() == '&' ) {
-         escaped.append(QLatin1String("&amp;"));
+        }
+        else if ( c.unicode() == '&' )
+        {
+            escaped.append( QLatin1String( "&amp;" ) );
 
-      } else if (c.unicode() == '\"' ) {
-         escaped.append(QLatin1String("&quot;"));
+        }
+        else if ( c.unicode() == '\"' )
+        {
+            escaped.append( QLatin1String( "&quot;" ) );
 
-      } else if (escapeWhitespace && c.isSpace()) {
-         if (c.unicode() == '\n') {
-            escaped.append(QLatin1String("&#10;"));
+        }
+        else if ( escapeWhitespace && c.isSpace() )
+        {
+            if ( c.unicode() == '\n' )
+            {
+                escaped.append( QLatin1String( "&#10;" ) );
 
-         } else if (c.unicode() == '\r') {
-            escaped.append(QLatin1String("&#13;"));
+            }
+            else if ( c.unicode() == '\r' )
+            {
+                escaped.append( QLatin1String( "&#13;" ) );
 
-         } else if (c.unicode() == '\t') {
-            escaped.append(QLatin1String("&#9;"));
+            }
+            else if ( c.unicode() == '\t' )
+            {
+                escaped.append( QLatin1String( "&#9;" ) );
 
-         } else {
-            escaped += c;
-         }
+            }
+            else
+            {
+                escaped += c;
+            }
 
-      } else {
-         escaped += QChar(c);
-      }
-   }
+        }
+        else
+        {
+            escaped += QChar( c );
+        }
+    }
 
-   write(escaped);
+    write( escaped );
 }
 
 // Converts from ASCII to output encoding
-void QXmlStreamWriterPrivate::write(const char *s, int len)
+void QXmlStreamWriterPrivate::write( const char *s, int len )
 {
-   if (device) {
-      if (hasError) {
-         return;
-      }
+    if ( device )
+    {
+        if ( hasError )
+        {
+            return;
+        }
 
-      if (isCodecASCIICompatible) {
-         if (device->write(s, len) != len) {
-            hasError = true;
-         }
+        if ( isCodecASCIICompatible )
+        {
+            if ( device->write( s, len ) != len )
+            {
+                hasError = true;
+            }
 
-         return;
-      }
-   }
+            return;
+        }
+    }
 
-   write(QString::fromLatin1(s, len));
+    write( QString::fromLatin1( s, len ) );
 }
 
-void QXmlStreamWriterPrivate::writeNamespaceDeclaration(const NamespaceDeclaration &namespaceDeclaration)
+void QXmlStreamWriterPrivate::writeNamespaceDeclaration( const NamespaceDeclaration &namespaceDeclaration )
 {
-   if (namespaceDeclaration.prefix.isEmpty()) {
-      write(" xmlns=\"");
-      write(namespaceDeclaration.namespaceUri);
-      write("\"");
-   } else {
-      write(" xmlns:");
-      write(namespaceDeclaration.prefix);
-      write("=\"");
-      write(namespaceDeclaration.namespaceUri);
-      write("\"");
-   }
+    if ( namespaceDeclaration.prefix.isEmpty() )
+    {
+        write( " xmlns=\"" );
+        write( namespaceDeclaration.namespaceUri );
+        write( "\"" );
+    }
+    else
+    {
+        write( " xmlns:" );
+        write( namespaceDeclaration.prefix );
+        write( "=\"" );
+        write( namespaceDeclaration.namespaceUri );
+        write( "\"" );
+    }
 }
 
-bool QXmlStreamWriterPrivate::finishStartElement(bool contents)
+bool QXmlStreamWriterPrivate::finishStartElement( bool contents )
 {
-   bool hadSomethingWritten = wroteSomething;
-   wroteSomething = contents;
+    bool hadSomethingWritten = wroteSomething;
+    wroteSomething = contents;
 
-   if (!inStartElement) {
-      return hadSomethingWritten;
-   }
+    if ( !inStartElement )
+    {
+        return hadSomethingWritten;
+    }
 
-   if (inEmptyElement) {
-      write("/>");
-      QXmlStreamWriterPrivate::Tag tag = tagStack_pop();
-      lastNamespaceDeclaration = tag.namespaceDeclarationsSize;
-      lastWasStartElement = false;
+    if ( inEmptyElement )
+    {
+        write( "/>" );
+        QXmlStreamWriterPrivate::Tag tag = tagStack_pop();
+        lastNamespaceDeclaration = tag.namespaceDeclarationsSize;
+        lastWasStartElement = false;
 
-   } else {
-      write(">");
-   }
+    }
+    else
+    {
+        write( ">" );
+    }
 
-   inStartElement = inEmptyElement = false;
-   lastNamespaceDeclaration = namespaceDeclarations.size();
-   return hadSomethingWritten;
+    inStartElement = inEmptyElement = false;
+    lastNamespaceDeclaration = namespaceDeclarations.size();
+    return hadSomethingWritten;
 }
 
-QXmlStreamPrivateTagStack::NamespaceDeclaration &QXmlStreamWriterPrivate::findNamespace(const QString &namespaceUri,
-      bool writeDeclaration, bool noDefault)
+QXmlStreamPrivateTagStack::NamespaceDeclaration &QXmlStreamWriterPrivate::findNamespace( const QString &namespaceUri,
+        bool writeDeclaration, bool noDefault )
 {
-   for (int j = namespaceDeclarations.size() - 1; j >= 0; --j) {
-      NamespaceDeclaration &namespaceDeclaration = namespaceDeclarations[j];
+    for ( int j = namespaceDeclarations.size() - 1; j >= 0; --j )
+    {
+        NamespaceDeclaration &namespaceDeclaration = namespaceDeclarations[j];
 
-      if (namespaceDeclaration.namespaceUri == namespaceUri) {
-         if (! noDefault || !namespaceDeclaration.prefix.isEmpty()) {
-            return namespaceDeclaration;
-         }
-      }
-   }
+        if ( namespaceDeclaration.namespaceUri == namespaceUri )
+        {
+            if ( ! noDefault || !namespaceDeclaration.prefix.isEmpty() )
+            {
+                return namespaceDeclaration;
+            }
+        }
+    }
 
-   if (namespaceUri.isEmpty()) {
-      return emptyNamespace;
-   }
+    if ( namespaceUri.isEmpty() )
+    {
+        return emptyNamespace;
+    }
 
-   namespaceDeclarations.push(NamespaceDeclaration());
-   NamespaceDeclaration &namespaceDeclaration = namespaceDeclarations.top();
+    namespaceDeclarations.push( NamespaceDeclaration() );
+    NamespaceDeclaration &namespaceDeclaration = namespaceDeclarations.top();
 
-   if (namespaceUri.isEmpty()) {
-      namespaceDeclaration.prefix.clear();
+    if ( namespaceUri.isEmpty() )
+    {
+        namespaceDeclaration.prefix.clear();
 
-   } else {
-      QString s;
-      int n = ++namespacePrefixCount;
+    }
+    else
+    {
+        QString s;
+        int n = ++namespacePrefixCount;
 
-      while (true) {
-         s     = "n" + QString::number(n++);
-         int j = namespaceDeclarations.size() - 2;
+        while ( true )
+        {
+            s     = "n" + QString::number( n++ );
+            int j = namespaceDeclarations.size() - 2;
 
-         while (j >= 0 && namespaceDeclarations.at(j).prefix != s) {
-            --j;
-         }
+            while ( j >= 0 && namespaceDeclarations.at( j ).prefix != s )
+            {
+                --j;
+            }
 
-         if (j < 0) {
-            break;
-         }
-      }
+            if ( j < 0 )
+            {
+                break;
+            }
+        }
 
-      namespaceDeclaration.prefix = s;
-   }
+        namespaceDeclaration.prefix = s;
+    }
 
-   namespaceDeclaration.namespaceUri = namespaceUri;
+    namespaceDeclaration.namespaceUri = namespaceUri;
 
-   if (writeDeclaration) {
-      writeNamespaceDeclaration(namespaceDeclaration);
-   }
+    if ( writeDeclaration )
+    {
+        writeNamespaceDeclaration( namespaceDeclaration );
+    }
 
-   return namespaceDeclaration;
+    return namespaceDeclaration;
 }
 
-void QXmlStreamWriterPrivate::indent(int level)
+void QXmlStreamWriterPrivate::indent( int level )
 {
-   write("\n");
+    write( "\n" );
 
-   for (int i = level; i > 0; --i) {
-      write(autoFormattingIndent.constData(), autoFormattingIndent.length());
-   }
+    for ( int i = level; i > 0; --i )
+    {
+        write( autoFormattingIndent.constData(), autoFormattingIndent.length() );
+    }
 }
 
 QXmlStreamWriter::QXmlStreamWriter()
-   : d_ptr(new QXmlStreamWriterPrivate(this))
+    : d_ptr( new QXmlStreamWriterPrivate( this ) )
 {
 }
 
-QXmlStreamWriter::QXmlStreamWriter(QIODevice *device)
-   : d_ptr(new QXmlStreamWriterPrivate(this))
+QXmlStreamWriter::QXmlStreamWriter( QIODevice *device )
+    : d_ptr( new QXmlStreamWriterPrivate( this ) )
 {
-   Q_D(QXmlStreamWriter);
-   d->device = device;
+    Q_D( QXmlStreamWriter );
+    d->device = device;
 }
 
-QXmlStreamWriter::QXmlStreamWriter(QByteArray *array)
-   : d_ptr(new QXmlStreamWriterPrivate(this))
+QXmlStreamWriter::QXmlStreamWriter( QByteArray *array )
+    : d_ptr( new QXmlStreamWriterPrivate( this ) )
 {
-   Q_D(QXmlStreamWriter);
-   d->device = new QBuffer(array);
-   d->device->open(QIODevice::WriteOnly);
-   d->deleteDevice = true;
+    Q_D( QXmlStreamWriter );
+    d->device = new QBuffer( array );
+    d->device->open( QIODevice::WriteOnly );
+    d->deleteDevice = true;
 }
 
-QXmlStreamWriter::QXmlStreamWriter(QString *string)
-   : d_ptr(new QXmlStreamWriterPrivate(this))
+QXmlStreamWriter::QXmlStreamWriter( QString *string )
+    : d_ptr( new QXmlStreamWriterPrivate( this ) )
 {
-   Q_D(QXmlStreamWriter);
-   d->stringDevice = string;
+    Q_D( QXmlStreamWriter );
+    d->stringDevice = string;
 }
 
 QXmlStreamWriter::~QXmlStreamWriter()
 {
 }
 
-void QXmlStreamWriter::setDevice(QIODevice *device)
+void QXmlStreamWriter::setDevice( QIODevice *device )
 {
-   Q_D(QXmlStreamWriter);
+    Q_D( QXmlStreamWriter );
 
-   if (device == d->device) {
-      return;
-   }
+    if ( device == d->device )
+    {
+        return;
+    }
 
-   d->stringDevice = nullptr;
+    d->stringDevice = nullptr;
 
-   if (d->deleteDevice) {
-      delete d->device;
-      d->deleteDevice = false;
-   }
+    if ( d->deleteDevice )
+    {
+        delete d->device;
+        d->deleteDevice = false;
+    }
 
-   d->device = device;
+    d->device = device;
 }
 
 QIODevice *QXmlStreamWriter::device() const
 {
-   Q_D(const QXmlStreamWriter);
-   return d->device;
+    Q_D( const QXmlStreamWriter );
+    return d->device;
 }
 
-void QXmlStreamWriter::setCodec(QTextCodec *codec)
+void QXmlStreamWriter::setCodec( QTextCodec *codec )
 {
-   Q_D(QXmlStreamWriter);
+    Q_D( QXmlStreamWriter );
 
-   if (codec) {
-      d->codec = codec;
-      delete d->encoder;
-      d->encoder = codec->makeEncoder(QTextCodec::IgnoreHeader); // no byte order mark for utf8
-      d->checkIfASCIICompatibleCodec();
-   }
+    if ( codec )
+    {
+        d->codec = codec;
+        delete d->encoder;
+        d->encoder = codec->makeEncoder( QTextCodec::IgnoreHeader ); // no byte order mark for utf8
+        d->checkIfASCIICompatibleCodec();
+    }
 }
 
-void QXmlStreamWriter::setCodec(const char *codecName)
+void QXmlStreamWriter::setCodec( const char *codecName )
 {
-   setCodec(QTextCodec::codecForName(codecName));
+    setCodec( QTextCodec::codecForName( codecName ) );
 }
 
 QTextCodec *QXmlStreamWriter::codec() const
 {
-   Q_D(const QXmlStreamWriter);
-   return d->codec;
+    Q_D( const QXmlStreamWriter );
+    return d->codec;
 }
 
-void QXmlStreamWriter::setAutoFormatting(bool enable)
+void QXmlStreamWriter::setAutoFormatting( bool enable )
 {
-   Q_D(QXmlStreamWriter);
-   d->autoFormatting = enable;
+    Q_D( QXmlStreamWriter );
+    d->autoFormatting = enable;
 }
 
 bool QXmlStreamWriter::autoFormatting() const
 {
-   Q_D(const QXmlStreamWriter);
-   return d->autoFormatting;
+    Q_D( const QXmlStreamWriter );
+    return d->autoFormatting;
 }
 
-void QXmlStreamWriter::setAutoFormattingIndent(int spacesOrTabs)
+void QXmlStreamWriter::setAutoFormattingIndent( int spacesOrTabs )
 {
-   Q_D(QXmlStreamWriter);
-   d->autoFormattingIndent = QByteArray(qAbs(spacesOrTabs), spacesOrTabs >= 0 ? ' ' : '\t');
+    Q_D( QXmlStreamWriter );
+    d->autoFormattingIndent = QByteArray( qAbs( spacesOrTabs ), spacesOrTabs >= 0 ? ' ' : '\t' );
 }
 
 int QXmlStreamWriter::autoFormattingIndent() const
 {
-   Q_D(const QXmlStreamWriter);
-   return d->autoFormattingIndent.count(' ') - d->autoFormattingIndent.count('\t');
+    Q_D( const QXmlStreamWriter );
+    return d->autoFormattingIndent.count( ' ' ) - d->autoFormattingIndent.count( '\t' );
 }
 
 bool QXmlStreamWriter::hasError() const
 {
-   Q_D(const QXmlStreamWriter);
-   return d->hasError;
+    Q_D( const QXmlStreamWriter );
+    return d->hasError;
 }
 
-void QXmlStreamWriter::writeAttribute(const QString &qualifiedName, const QString &value)
+void QXmlStreamWriter::writeAttribute( const QString &qualifiedName, const QString &value )
 {
-   Q_D(QXmlStreamWriter);
+    Q_D( QXmlStreamWriter );
 
-   Q_ASSERT(d->inStartElement);
-   Q_ASSERT(qualifiedName.count(':') <= 1);
+    Q_ASSERT( d->inStartElement );
+    Q_ASSERT( qualifiedName.count( ':' ) <= 1 );
 
-   d->write(" ");
-   d->write(qualifiedName);
-   d->write("=\"");
-   d->writeEscaped(value, true);
-   d->write("\"");
+    d->write( " " );
+    d->write( qualifiedName );
+    d->write( "=\"" );
+    d->writeEscaped( value, true );
+    d->write( "\"" );
 }
 
-void QXmlStreamWriter::writeAttribute(const QString &namespaceUri, const QString &name, const QString &value)
+void QXmlStreamWriter::writeAttribute( const QString &namespaceUri, const QString &name, const QString &value )
 {
-   Q_D(QXmlStreamWriter);
-   Q_ASSERT(d->inStartElement);
-   Q_ASSERT(!name.contains(':'));
+    Q_D( QXmlStreamWriter );
+    Q_ASSERT( d->inStartElement );
+    Q_ASSERT( !name.contains( ':' ) );
 
-   QXmlStreamWriterPrivate::NamespaceDeclaration &namespaceDeclaration = d->findNamespace(namespaceUri, true, true);
-   d->write(" ");
+    QXmlStreamWriterPrivate::NamespaceDeclaration &namespaceDeclaration = d->findNamespace( namespaceUri, true, true );
+    d->write( " " );
 
-   if (!namespaceDeclaration.prefix.isEmpty()) {
-      d->write(namespaceDeclaration.prefix);
-      d->write(":");
-   }
+    if ( !namespaceDeclaration.prefix.isEmpty() )
+    {
+        d->write( namespaceDeclaration.prefix );
+        d->write( ":" );
+    }
 
-   d->write(name);
-   d->write("=\"");
-   d->writeEscaped(value, true);
-   d->write("\"");
+    d->write( name );
+    d->write( "=\"" );
+    d->writeEscaped( value, true );
+    d->write( "\"" );
 }
 
-void QXmlStreamWriter::writeAttribute(const QXmlStreamAttribute &attribute)
+void QXmlStreamWriter::writeAttribute( const QXmlStreamAttribute &attribute )
 {
-   if (attribute.namespaceUri().isEmpty()) {
-      writeAttribute(attribute.qualifiedName().toString(), attribute.value());
-   } else {
-      writeAttribute(attribute.namespaceUri().toString(), attribute.name(), attribute.value());
-   }
+    if ( attribute.namespaceUri().isEmpty() )
+    {
+        writeAttribute( attribute.qualifiedName().toString(), attribute.value() );
+    }
+    else
+    {
+        writeAttribute( attribute.namespaceUri().toString(), attribute.name(), attribute.value() );
+    }
 }
 
-void QXmlStreamWriter::writeAttributes(const QXmlStreamAttributes &attributes)
+void QXmlStreamWriter::writeAttributes( const QXmlStreamAttributes &attributes )
 {
-   Q_D(QXmlStreamWriter);
+    Q_D( QXmlStreamWriter );
 
-   Q_ASSERT(d->inStartElement);
-   (void) d;
+    Q_ASSERT( d->inStartElement );
+    ( void ) d;
 
-   for (int i = 0; i < attributes.size(); ++i) {
-      writeAttribute(attributes.at(i));
-   }
+    for ( int i = 0; i < attributes.size(); ++i )
+    {
+        writeAttribute( attributes.at( i ) );
+    }
 }
 
-void QXmlStreamWriter::writeCDATA(const QString &text)
+void QXmlStreamWriter::writeCDATA( const QString &text )
 {
-   Q_D(QXmlStreamWriter);
-   d->finishStartElement();
+    Q_D( QXmlStreamWriter );
+    d->finishStartElement();
 
-   QString copy(text);
-   copy.replace(QLatin1String("]]>"), QLatin1String("]]]]><![CDATA[>"));
+    QString copy( text );
+    copy.replace( QLatin1String( "]]>" ), QLatin1String( "]]]]><![CDATA[>" ) );
 
-   d->write("<![CDATA[");
-   d->write(copy);
-   d->write("]]>");
+    d->write( "<![CDATA[" );
+    d->write( copy );
+    d->write( "]]>" );
 }
 
-void QXmlStreamWriter::writeCharacters(const QString &text)
+void QXmlStreamWriter::writeCharacters( const QString &text )
 {
-   Q_D(QXmlStreamWriter);
-   d->finishStartElement();
-   d->writeEscaped(text);
+    Q_D( QXmlStreamWriter );
+    d->finishStartElement();
+    d->writeEscaped( text );
 }
 
-void QXmlStreamWriter::writeComment(const QString &text)
+void QXmlStreamWriter::writeComment( const QString &text )
 {
-   Q_D(QXmlStreamWriter);
-   Q_ASSERT(!text.contains(QLatin1String("--")) && !text.endsWith(QLatin1Char('-')));
+    Q_D( QXmlStreamWriter );
+    Q_ASSERT( !text.contains( QLatin1String( "--" ) ) && !text.endsWith( QLatin1Char( '-' ) ) );
 
-   if (!d->finishStartElement(false) && d->autoFormatting) {
-      d->indent(d->tagStack.size());
-   }
+    if ( !d->finishStartElement( false ) && d->autoFormatting )
+    {
+        d->indent( d->tagStack.size() );
+    }
 
-   d->write("<!--");
-   d->write(text);
-   d->write("-->");
-   d->inStartElement = d->lastWasStartElement = false;
+    d->write( "<!--" );
+    d->write( text );
+    d->write( "-->" );
+    d->inStartElement = d->lastWasStartElement = false;
 }
 
-void QXmlStreamWriter::writeDTD(const QString &dtd)
+void QXmlStreamWriter::writeDTD( const QString &dtd )
 {
-   Q_D(QXmlStreamWriter);
-   d->finishStartElement();
+    Q_D( QXmlStreamWriter );
+    d->finishStartElement();
 
-   if (d->autoFormatting) {
-      d->write("\n");
-   }
+    if ( d->autoFormatting )
+    {
+        d->write( "\n" );
+    }
 
-   d->write(dtd);
+    d->write( dtd );
 
-   if (d->autoFormatting) {
-      d->write("\n");
-   }
+    if ( d->autoFormatting )
+    {
+        d->write( "\n" );
+    }
 }
 
-void QXmlStreamWriter::writeEmptyElement(const QString &qualifiedName)
+void QXmlStreamWriter::writeEmptyElement( const QString &qualifiedName )
 {
-   Q_D(QXmlStreamWriter);
-   Q_ASSERT(qualifiedName.count(QLatin1Char(':')) <= 1);
-   d->writeStartElement(QString(), qualifiedName);
-   d->inEmptyElement = true;
+    Q_D( QXmlStreamWriter );
+    Q_ASSERT( qualifiedName.count( QLatin1Char( ':' ) ) <= 1 );
+    d->writeStartElement( QString(), qualifiedName );
+    d->inEmptyElement = true;
 }
 
-void QXmlStreamWriter::writeEmptyElement(const QString &namespaceUri, const QString &name)
+void QXmlStreamWriter::writeEmptyElement( const QString &namespaceUri, const QString &name )
 {
-   Q_D(QXmlStreamWriter);
-   Q_ASSERT(!name.contains(QLatin1Char(':')));
-   d->writeStartElement(namespaceUri, name);
-   d->inEmptyElement = true;
+    Q_D( QXmlStreamWriter );
+    Q_ASSERT( !name.contains( QLatin1Char( ':' ) ) );
+    d->writeStartElement( namespaceUri, name );
+    d->inEmptyElement = true;
 }
 
-void QXmlStreamWriter::writeTextElement(const QString &qualifiedName, const QString &text)
+void QXmlStreamWriter::writeTextElement( const QString &qualifiedName, const QString &text )
 {
-   writeStartElement(qualifiedName);
-   writeCharacters(text);
-   writeEndElement();
+    writeStartElement( qualifiedName );
+    writeCharacters( text );
+    writeEndElement();
 }
 
-void QXmlStreamWriter::writeTextElement(const QString &namespaceUri, const QString &name, const QString &text)
+void QXmlStreamWriter::writeTextElement( const QString &namespaceUri, const QString &name, const QString &text )
 {
-   writeStartElement(namespaceUri, name);
-   writeCharacters(text);
-   writeEndElement();
+    writeStartElement( namespaceUri, name );
+    writeCharacters( text );
+    writeEndElement();
 }
 
 void QXmlStreamWriter::writeEndDocument()
 {
-   Q_D(QXmlStreamWriter);
+    Q_D( QXmlStreamWriter );
 
-   while (d->tagStack.size()) {
-      writeEndElement();
-   }
+    while ( d->tagStack.size() )
+    {
+        writeEndElement();
+    }
 
-   d->write("\n");
+    d->write( "\n" );
 }
 
 void QXmlStreamWriter::writeEndElement()
 {
-   Q_D(QXmlStreamWriter);
+    Q_D( QXmlStreamWriter );
 
-   if (d->tagStack.isEmpty()) {
-      return;
-   }
+    if ( d->tagStack.isEmpty() )
+    {
+        return;
+    }
 
-   // shortcut: if nothing was written, close as empty tag
-   if (d->inStartElement && !d->inEmptyElement) {
-      d->write("/>");
-      d->lastWasStartElement = d->inStartElement = false;
+    // shortcut: if nothing was written, close as empty tag
+    if ( d->inStartElement && !d->inEmptyElement )
+    {
+        d->write( "/>" );
+        d->lastWasStartElement = d->inStartElement = false;
 
-      QXmlStreamWriterPrivate::Tag tag = d->tagStack_pop();
-      d->lastNamespaceDeclaration = tag.namespaceDeclarationsSize;
-      return;
-   }
+        QXmlStreamWriterPrivate::Tag tag = d->tagStack_pop();
+        d->lastNamespaceDeclaration = tag.namespaceDeclarationsSize;
+        return;
+    }
 
-   if (!d->finishStartElement(false) && !d->lastWasStartElement && d->autoFormatting) {
-      d->indent(d->tagStack.size() - 1);
-   }
+    if ( !d->finishStartElement( false ) && !d->lastWasStartElement && d->autoFormatting )
+    {
+        d->indent( d->tagStack.size() - 1 );
+    }
 
-   if (d->tagStack.isEmpty()) {
-      return;
-   }
+    if ( d->tagStack.isEmpty() )
+    {
+        return;
+    }
 
-   d->lastWasStartElement = false;
+    d->lastWasStartElement = false;
 
-   QXmlStreamWriterPrivate::Tag tag = d->tagStack_pop();
-   d->lastNamespaceDeclaration = tag.namespaceDeclarationsSize;
-   d->write("</");
+    QXmlStreamWriterPrivate::Tag tag = d->tagStack_pop();
+    d->lastNamespaceDeclaration = tag.namespaceDeclarationsSize;
+    d->write( "</" );
 
-   if (!tag.namespaceDeclaration.prefix.isEmpty()) {
-      d->write(tag.namespaceDeclaration.prefix);
-      d->write(":");
-   }
+    if ( !tag.namespaceDeclaration.prefix.isEmpty() )
+    {
+        d->write( tag.namespaceDeclaration.prefix );
+        d->write( ":" );
+    }
 
-   d->write(tag.name);
-   d->write(">");
+    d->write( tag.name );
+    d->write( ">" );
 }
 
-void QXmlStreamWriter::writeEntityReference(const QString &name)
+void QXmlStreamWriter::writeEntityReference( const QString &name )
 {
-   Q_D(QXmlStreamWriter);
-   d->finishStartElement();
-   d->write("&");
-   d->write(name);
-   d->write(";");
+    Q_D( QXmlStreamWriter );
+    d->finishStartElement();
+    d->write( "&" );
+    d->write( name );
+    d->write( ";" );
 }
 
-void QXmlStreamWriter::writeNamespace(const QString &namespaceUri, const QString &prefix)
+void QXmlStreamWriter::writeNamespace( const QString &namespaceUri, const QString &prefix )
 {
-   Q_D(QXmlStreamWriter);
-   Q_ASSERT(!namespaceUri.isEmpty());
-   Q_ASSERT(prefix != QLatin1String("xmlns"));
+    Q_D( QXmlStreamWriter );
+    Q_ASSERT( !namespaceUri.isEmpty() );
+    Q_ASSERT( prefix != QLatin1String( "xmlns" ) );
 
-   if (prefix.isEmpty()) {
-      d->findNamespace(namespaceUri, d->inStartElement);
+    if ( prefix.isEmpty() )
+    {
+        d->findNamespace( namespaceUri, d->inStartElement );
 
-   } else {
-      Q_ASSERT(! ((prefix == "xml") ^ (namespaceUri == "http://www.w3.org/XML/1998/namespace")));
-      Q_ASSERT(namespaceUri != "http://www.w3.org/2000/xmlns/");
+    }
+    else
+    {
+        Q_ASSERT( ! ( ( prefix == "xml" ) ^ ( namespaceUri == "http://www.w3.org/XML/1998/namespace" ) ) );
+        Q_ASSERT( namespaceUri != "http://www.w3.org/2000/xmlns/" );
 
-      d->namespaceDeclarations.push(QXmlStreamWriterPrivate::NamespaceDeclaration());
-      QXmlStreamWriterPrivate::NamespaceDeclaration &namespaceDeclaration = d->namespaceDeclarations.top();
+        d->namespaceDeclarations.push( QXmlStreamWriterPrivate::NamespaceDeclaration() );
+        QXmlStreamWriterPrivate::NamespaceDeclaration &namespaceDeclaration = d->namespaceDeclarations.top();
 
-      namespaceDeclaration.prefix       = prefix;
-      namespaceDeclaration.namespaceUri = namespaceUri;
+        namespaceDeclaration.prefix       = prefix;
+        namespaceDeclaration.namespaceUri = namespaceUri;
 
-      if (d->inStartElement) {
-         d->writeNamespaceDeclaration(namespaceDeclaration);
-      }
-   }
+        if ( d->inStartElement )
+        {
+            d->writeNamespaceDeclaration( namespaceDeclaration );
+        }
+    }
 }
 
-void QXmlStreamWriter::writeDefaultNamespace(const QString &namespaceUri)
+void QXmlStreamWriter::writeDefaultNamespace( const QString &namespaceUri )
 {
-   Q_D(QXmlStreamWriter);
-   Q_ASSERT(namespaceUri != QLatin1String("http://www.w3.org/XML/1998/namespace"));
-   Q_ASSERT(namespaceUri != QLatin1String("http://www.w3.org/2000/xmlns/"));
+    Q_D( QXmlStreamWriter );
+    Q_ASSERT( namespaceUri != QLatin1String( "http://www.w3.org/XML/1998/namespace" ) );
+    Q_ASSERT( namespaceUri != QLatin1String( "http://www.w3.org/2000/xmlns/" ) );
 
-   d->namespaceDeclarations.push(QXmlStreamWriterPrivate::NamespaceDeclaration());
-   QXmlStreamWriterPrivate::NamespaceDeclaration &namespaceDeclaration = d->namespaceDeclarations.top();
+    d->namespaceDeclarations.push( QXmlStreamWriterPrivate::NamespaceDeclaration() );
+    QXmlStreamWriterPrivate::NamespaceDeclaration &namespaceDeclaration = d->namespaceDeclarations.top();
 
-   namespaceDeclaration.prefix.clear();
-   namespaceDeclaration.namespaceUri = namespaceUri;
+    namespaceDeclaration.prefix.clear();
+    namespaceDeclaration.namespaceUri = namespaceUri;
 
-   if (d->inStartElement) {
-      d->writeNamespaceDeclaration(namespaceDeclaration);
-   }
+    if ( d->inStartElement )
+    {
+        d->writeNamespaceDeclaration( namespaceDeclaration );
+    }
 }
 
-void QXmlStreamWriter::writeProcessingInstruction(const QString &target, const QString &data)
+void QXmlStreamWriter::writeProcessingInstruction( const QString &target, const QString &data )
 {
-   Q_D(QXmlStreamWriter);
-   Q_ASSERT(!data.contains(QLatin1String("?>")));
+    Q_D( QXmlStreamWriter );
+    Q_ASSERT( !data.contains( QLatin1String( "?>" ) ) );
 
-   if (!d->finishStartElement(false) && d->autoFormatting) {
-      d->indent(d->tagStack.size());
-   }
+    if ( !d->finishStartElement( false ) && d->autoFormatting )
+    {
+        d->indent( d->tagStack.size() );
+    }
 
-   d->write("<?");
-   d->write(target);
+    d->write( "<?" );
+    d->write( target );
 
-   if (!data.isEmpty()) {
-      d->write(" ");
-      d->write(data);
-   }
+    if ( !data.isEmpty() )
+    {
+        d->write( " " );
+        d->write( data );
+    }
 
-   d->write("?>");
+    d->write( "?>" );
 }
 
 void QXmlStreamWriter::writeStartDocument()
 {
-   writeStartDocument("1.0");
+    writeStartDocument( "1.0" );
 }
 
-void QXmlStreamWriter::writeStartDocument(const QString &version)
+void QXmlStreamWriter::writeStartDocument( const QString &version )
 {
-   Q_D(QXmlStreamWriter);
-   d->finishStartElement(false);
-   d->write("<?xml version=\"");
-   d->write(version);
+    Q_D( QXmlStreamWriter );
+    d->finishStartElement( false );
+    d->write( "<?xml version=\"" );
+    d->write( version );
 
-   if (d->device) {
-      // stringDevice does not get any encoding
-      d->write("\" encoding=\"");
+    if ( d->device )
+    {
+        // stringDevice does not get any encoding
+        d->write( "\" encoding=\"" );
 
-      d->write(d->codec->name().constData(), d->codec->name().length());
-   }
+        d->write( d->codec->name().constData(), d->codec->name().length() );
+    }
 
-   d->write("\"?>");
+    d->write( "\"?>" );
 }
 
-void QXmlStreamWriter::writeStartDocument(const QString &version, bool standalone)
+void QXmlStreamWriter::writeStartDocument( const QString &version, bool standalone )
 {
-   Q_D(QXmlStreamWriter);
-   d->finishStartElement(false);
-   d->write("<?xml version=\"");
-   d->write(version);
+    Q_D( QXmlStreamWriter );
+    d->finishStartElement( false );
+    d->write( "<?xml version=\"" );
+    d->write( version );
 
-   if (d->device) { // stringDevice does not get any encoding
-      d->write("\" encoding=\"");
+    if ( d->device ) // stringDevice does not get any encoding
+    {
+        d->write( "\" encoding=\"" );
 
-      d->write(d->codec->name().constData(), d->codec->name().length());
-   }
+        d->write( d->codec->name().constData(), d->codec->name().length() );
+    }
 
-   if (standalone) {
-      d->write("\" standalone=\"yes\"?>");
-   } else {
-      d->write("\" standalone=\"no\"?>");
-   }
+    if ( standalone )
+    {
+        d->write( "\" standalone=\"yes\"?>" );
+    }
+    else
+    {
+        d->write( "\" standalone=\"no\"?>" );
+    }
 }
 
-void QXmlStreamWriter::writeStartElement(const QString &qualifiedName)
+void QXmlStreamWriter::writeStartElement( const QString &qualifiedName )
 {
-   Q_D(QXmlStreamWriter);
-   Q_ASSERT(qualifiedName.count(QLatin1Char(':')) <= 1);
-   d->writeStartElement(QString(), qualifiedName);
+    Q_D( QXmlStreamWriter );
+    Q_ASSERT( qualifiedName.count( QLatin1Char( ':' ) ) <= 1 );
+    d->writeStartElement( QString(), qualifiedName );
 }
 
-void QXmlStreamWriter::writeStartElement(const QString &namespaceUri, const QString &name)
+void QXmlStreamWriter::writeStartElement( const QString &namespaceUri, const QString &name )
 {
-   Q_D(QXmlStreamWriter);
-   Q_ASSERT(! name.contains(QLatin1Char(':')));
+    Q_D( QXmlStreamWriter );
+    Q_ASSERT( ! name.contains( QLatin1Char( ':' ) ) );
 
-   d->writeStartElement(namespaceUri, name);
+    d->writeStartElement( namespaceUri, name );
 }
 
-void QXmlStreamWriterPrivate::writeStartElement(const QString &namespaceUri, const QString &name)
+void QXmlStreamWriterPrivate::writeStartElement( const QString &namespaceUri, const QString &name )
 {
-   if (! finishStartElement(false) && autoFormatting) {
-      indent(tagStack.size());
-   }
+    if ( ! finishStartElement( false ) && autoFormatting )
+    {
+        indent( tagStack.size() );
+    }
 
-   Tag &tag = tagStack_push();
-   tag.name = name;
-   tag.namespaceDeclaration = findNamespace(namespaceUri);
+    Tag &tag = tagStack_push();
+    tag.name = name;
+    tag.namespaceDeclaration = findNamespace( namespaceUri );
 
-   write("<");
+    write( "<" );
 
-   if (!tag.namespaceDeclaration.prefix.isEmpty()) {
-      write(tag.namespaceDeclaration.prefix);
-      write(":");
-   }
+    if ( !tag.namespaceDeclaration.prefix.isEmpty() )
+    {
+        write( tag.namespaceDeclaration.prefix );
+        write( ":" );
+    }
 
-   write(tag.name);
-   inStartElement = lastWasStartElement = true;
+    write( tag.name );
+    inStartElement = lastWasStartElement = true;
 
-   for (int i = lastNamespaceDeclaration; i < namespaceDeclarations.size(); ++i) {
-      writeNamespaceDeclaration(namespaceDeclarations[i]);
-   }
+    for ( int i = lastNamespaceDeclaration; i < namespaceDeclarations.size(); ++i )
+    {
+        writeNamespaceDeclaration( namespaceDeclarations[i] );
+    }
 
-   tag.namespaceDeclarationsSize = lastNamespaceDeclaration;
+    tag.namespaceDeclarationsSize = lastNamespaceDeclaration;
 }
 
-void QXmlStreamWriter::writeCurrentToken(const QXmlStreamReader &reader)
+void QXmlStreamWriter::writeCurrentToken( const QXmlStreamReader &reader )
 {
-   switch (reader.tokenType()) {
-      case QXmlStreamReader::NoToken:
-         break;
+    switch ( reader.tokenType() )
+    {
+        case QXmlStreamReader::NoToken:
+            break;
 
-      case QXmlStreamReader::StartDocument:
-         writeStartDocument();
-         break;
+        case QXmlStreamReader::StartDocument:
+            writeStartDocument();
+            break;
 
-      case QXmlStreamReader::EndDocument:
-         writeEndDocument();
-         break;
+        case QXmlStreamReader::EndDocument:
+            writeEndDocument();
+            break;
 
-      case QXmlStreamReader::StartElement: {
-         QXmlStreamNamespaceDeclarations namespaceDeclarations = reader.namespaceDeclarations();
+        case QXmlStreamReader::StartElement:
+        {
+            QXmlStreamNamespaceDeclarations namespaceDeclarations = reader.namespaceDeclarations();
 
-         for (int i = 0; i < namespaceDeclarations.size(); ++i) {
-            const QXmlStreamNamespaceDeclaration &namespaceDeclaration = namespaceDeclarations.at(i);
-            writeNamespace(namespaceDeclaration.namespaceUri().toString(),
-                  namespaceDeclaration.prefix().toString());
-         }
+            for ( int i = 0; i < namespaceDeclarations.size(); ++i )
+            {
+                const QXmlStreamNamespaceDeclaration &namespaceDeclaration = namespaceDeclarations.at( i );
+                writeNamespace( namespaceDeclaration.namespaceUri().toString(),
+                                namespaceDeclaration.prefix().toString() );
+            }
 
-         writeStartElement(reader.namespaceUri().toString(), reader.name().toString());
-         writeAttributes(reader.attributes());
-      }
-      break;
+            writeStartElement( reader.namespaceUri().toString(), reader.name().toString() );
+            writeAttributes( reader.attributes() );
+        }
+        break;
 
-      case QXmlStreamReader::EndElement:
-         writeEndElement();
-         break;
+        case QXmlStreamReader::EndElement:
+            writeEndElement();
+            break;
 
-      case QXmlStreamReader::Characters:
-         if (reader.isCDATA()) {
-            writeCDATA(reader.text().toString());
-         } else {
-            writeCharacters(reader.text().toString());
-         }
+        case QXmlStreamReader::Characters:
+            if ( reader.isCDATA() )
+            {
+                writeCDATA( reader.text().toString() );
+            }
+            else
+            {
+                writeCharacters( reader.text().toString() );
+            }
 
-         break;
+            break;
 
-      case QXmlStreamReader::Comment:
-         writeComment(reader.text().toString());
-         break;
+        case QXmlStreamReader::Comment:
+            writeComment( reader.text().toString() );
+            break;
 
-      case QXmlStreamReader::DTD:
-         writeDTD(reader.text().toString());
-         break;
+        case QXmlStreamReader::DTD:
+            writeDTD( reader.text().toString() );
+            break;
 
-      case QXmlStreamReader::EntityReference:
-         writeEntityReference(reader.name().toString());
-         break;
+        case QXmlStreamReader::EntityReference:
+            writeEntityReference( reader.name().toString() );
+            break;
 
-      case QXmlStreamReader::ProcessingInstruction:
-         writeProcessingInstruction(reader.processingInstructionTarget().toString(),
-               reader.processingInstructionData().toString());
-         break;
+        case QXmlStreamReader::ProcessingInstruction:
+            writeProcessingInstruction( reader.processingInstructionTarget().toString(),
+                                        reader.processingInstructionData().toString() );
+            break;
 
-      default:
-         Q_ASSERT(reader.tokenType() != QXmlStreamReader::Invalid);
-         qWarning("QXmlStreamWriter::writeCurrentToken() Invalid state");
-         break;
-   }
+        default:
+            Q_ASSERT( reader.tokenType() != QXmlStreamReader::Invalid );
+            qWarning( "QXmlStreamWriter::writeCurrentToken() Invalid state" );
+            break;
+    }
 }

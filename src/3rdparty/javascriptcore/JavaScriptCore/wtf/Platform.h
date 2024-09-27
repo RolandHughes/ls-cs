@@ -83,9 +83,9 @@
 #if defined(__MINGW32__)
 #define WTF_COMPILER_MINGW 1
 #include <_mingw.h> /* private MinGW header */
-    #if defined(__MINGW64_VERSION_MAJOR) /* best way to check for mingw-w64 vs mingw.org */
-        #define WTF_COMPILER_MINGW64 1
-    #endif /* __MINGW64_VERSION_MAJOR */
+#if defined(__MINGW64_VERSION_MAJOR) /* best way to check for mingw-w64 vs mingw.org */
+#define WTF_COMPILER_MINGW64 1
+#endif /* __MINGW64_VERSION_MAJOR */
 #endif /* __MINGW32__ */
 
 /* COMPILER(SUNCC) - Sun CC compiler, also known as Sun Studio or Sun Pro */
@@ -815,37 +815,37 @@ on MinGW. See https://bugs.webkit.org/show_bug.cgi?id=29268 */
 
 /* The JIT is tested & working on x86_64 Mac */
 #if CPU(X86_64) && PLATFORM(MAC)
-    #define ENABLE_JIT 1
+#define ENABLE_JIT 1
 /* The JIT is tested & working on x86 Mac */
 #elif CPU(X86) && PLATFORM(MAC)
-    #define ENABLE_JIT 1
-    #define WTF_USE_JIT_STUB_ARGUMENT_VA_LIST 1
+#define ENABLE_JIT 1
+#define WTF_USE_JIT_STUB_ARGUMENT_VA_LIST 1
 #elif CPU(ARM_THUMB2) && PLATFORM(IPHONE)
-    #define ENABLE_JIT 1
+#define ENABLE_JIT 1
 /* The JIT is tested & working on x86 Windows */
 #elif CPU(X86) && PLATFORM(WIN)
-    #define ENABLE_JIT 1
+#define ENABLE_JIT 1
 #endif
 
 #if PLATFORM(QT)
 #if CPU(X86_64) && OS(DARWIN)
-    #define ENABLE_JIT 1
+#define ENABLE_JIT 1
 #elif CPU(X86) && OS(DARWIN)
-    #define ENABLE_JIT 1
-    #define WTF_USE_JIT_STUB_ARGUMENT_VA_LIST 1
+#define ENABLE_JIT 1
+#define WTF_USE_JIT_STUB_ARGUMENT_VA_LIST 1
 #elif CPU(X86) && OS(WINDOWS) && COMPILER(MINGW) && GCC_VERSION >= 40100
-    #define ENABLE_JIT 1
-    #define WTF_USE_JIT_STUB_ARGUMENT_VA_LIST 1
+#define ENABLE_JIT 1
+#define WTF_USE_JIT_STUB_ARGUMENT_VA_LIST 1
 #elif CPU(X86) && OS(WINDOWS) && COMPILER(MSVC)
-    #define ENABLE_JIT 1
-    #define WTF_USE_JIT_STUB_ARGUMENT_REGISTER 1
+#define ENABLE_JIT 1
+#define WTF_USE_JIT_STUB_ARGUMENT_REGISTER 1
 #elif CPU(X86) && OS(LINUX) && GCC_VERSION >= 40100
-    #define ENABLE_JIT 1
-    #define WTF_USE_JIT_STUB_ARGUMENT_VA_LIST 1
+#define ENABLE_JIT 1
+#define WTF_USE_JIT_STUB_ARGUMENT_VA_LIST 1
 #elif CPU(X86_64) && OS(LINUX) && GCC_VERSION >= 40100
-    #define ENABLE_JIT 1
+#define ENABLE_JIT 1
 #elif CPU(ARM_TRADITIONAL) && OS(LINUX)
-    #define ENABLE_JIT 1
+#define ENABLE_JIT 1
 #endif
 #endif /* PLATFORM(QT) */
 
@@ -879,9 +879,9 @@ on MinGW. See https://bugs.webkit.org/show_bug.cgi?id=29268 */
 #endif
 
 #if ENABLE(JIT) && defined(COVERAGE)
-    #define WTF_USE_INTERPRETER 0
+#define WTF_USE_INTERPRETER 0
 #else
-    #define WTF_USE_INTERPRETER 1
+#define WTF_USE_INTERPRETER 1
 #endif
 
 /* Yet Another Regex Runtime. */

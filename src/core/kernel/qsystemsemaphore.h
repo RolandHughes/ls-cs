@@ -34,40 +34,42 @@ class QSystemSemaphorePrivate;
 class Q_CORE_EXPORT QSystemSemaphore
 {
 
- public:
-   enum AccessMode {
-      Open,
-      Create
-   };
+public:
+    enum AccessMode
+    {
+        Open,
+        Create
+    };
 
-   enum SystemSemaphoreError {
-      NoError,
-      PermissionDenied,
-      KeyError,
-      AlreadyExists,
-      NotFound,
-      OutOfResources,
-      UnknownError
-   };
+    enum SystemSemaphoreError
+    {
+        NoError,
+        PermissionDenied,
+        KeyError,
+        AlreadyExists,
+        NotFound,
+        OutOfResources,
+        UnknownError
+    };
 
-   QSystemSemaphore(const QString &key, int initialValue = 0, AccessMode mode = Open);
+    QSystemSemaphore( const QString &key, int initialValue = 0, AccessMode mode = Open );
 
-   QSystemSemaphore(const QSystemSemaphore &) = delete;
-   QSystemSemaphore &operator=(const QSystemSemaphore &) = delete;
+    QSystemSemaphore( const QSystemSemaphore & ) = delete;
+    QSystemSemaphore &operator=( const QSystemSemaphore & ) = delete;
 
-   ~QSystemSemaphore();
+    ~QSystemSemaphore();
 
-   void setKey(const QString &key, int initialValue = 0, AccessMode mode = Open);
-   QString key() const;
+    void setKey( const QString &key, int initialValue = 0, AccessMode mode = Open );
+    QString key() const;
 
-   bool acquire();
-   bool release(int n = 1);
+    bool acquire();
+    bool release( int n = 1 );
 
-   SystemSemaphoreError error() const;
-   QString errorString() const;
+    SystemSemaphoreError error() const;
+    QString errorString() const;
 
- private:
-   QScopedPointer<QSystemSemaphorePrivate> d;
+private:
+    QScopedPointer<QSystemSemaphorePrivate> d;
 };
 
 #endif // QT_NO_SYSTEMSEMAPHORE

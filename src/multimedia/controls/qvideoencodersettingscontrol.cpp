@@ -26,8 +26,8 @@
 #include <qstringlist.h>
 #include <qvariant.h>
 
-QVideoEncoderSettingsControl::QVideoEncoderSettingsControl(QObject *parent)
-    : QMediaControl(parent)
+QVideoEncoderSettingsControl::QVideoEncoderSettingsControl( QObject *parent )
+    : QMediaControl( parent )
 {
 }
 

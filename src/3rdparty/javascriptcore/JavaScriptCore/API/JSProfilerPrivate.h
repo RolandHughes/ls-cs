@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef JSProfiler_h
@@ -43,7 +43,7 @@ extern "C" {
 @param title The title of the profile.
 @result The profiler is turned on.
 */
-JS_EXPORT void JSStartProfiling(JSContextRef ctx, JSStringRef title);
+JS_EXPORT void JSStartProfiling( JSContextRef ctx, JSStringRef title );
 
 /*
 @function JSEndProfiling
@@ -54,7 +54,7 @@ JS_EXPORT void JSStartProfiling(JSContextRef ctx, JSStringRef title);
         profile is stopped. If the name does not match any profile then no profile
         is stopped.
 */
-JS_EXPORT void JSEndProfiling(JSContextRef ctx, JSStringRef title);
+JS_EXPORT void JSEndProfiling( JSContextRef ctx, JSStringRef title );
 
 #ifdef __cplusplus
 }

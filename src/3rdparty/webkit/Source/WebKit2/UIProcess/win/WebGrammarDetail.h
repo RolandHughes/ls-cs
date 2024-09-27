@@ -31,28 +31,45 @@
 #include <wtf/Forward.h>
 #include <wtf/PassRefPtr.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 class ImmutableArray;
 
-class WebGrammarDetail : public APIObject {
+class WebGrammarDetail : public APIObject
+{
 public:
     static const Type APIType = TypeGrammarDetail;
-    static PassRefPtr<WebGrammarDetail> create(int location, int length, ImmutableArray* guesses, const String& userDescription);
-    static PassRefPtr<WebGrammarDetail> create(const WebCore::GrammarDetail&);
+    static PassRefPtr<WebGrammarDetail> create( int location, int length, ImmutableArray *guesses, const String &userDescription );
+    static PassRefPtr<WebGrammarDetail> create( const WebCore::GrammarDetail & );
 
-    int location() const { return m_grammarDetail.location; }
-    int length() const { return m_grammarDetail.length; }
+    int location() const
+    {
+        return m_grammarDetail.location;
+    }
+    int length() const
+    {
+        return m_grammarDetail.length;
+    }
     PassRefPtr<ImmutableArray> guesses() const;
-    const String& userDescription() const { return m_grammarDetail.userDescription; }
+    const String &userDescription() const
+    {
+        return m_grammarDetail.userDescription;
+    }
 
-    const WebCore::GrammarDetail& grammarDetail() { return m_grammarDetail; }
+    const WebCore::GrammarDetail &grammarDetail()
+    {
+        return m_grammarDetail;
+    }
 
 private:
-    WebGrammarDetail(int location, int length, ImmutableArray* guesses, const String& userDescription);
-    WebGrammarDetail(const WebCore::GrammarDetail&);
+    WebGrammarDetail( int location, int length, ImmutableArray *guesses, const String &userDescription );
+    WebGrammarDetail( const WebCore::GrammarDetail & );
 
-    virtual Type type() const { return APIType; }
+    virtual Type type() const
+    {
+        return APIType;
+    }
 
     WebCore::GrammarDetail m_grammarDetail;
 };

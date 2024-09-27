@@ -31,330 +31,416 @@
 #include "Nodes.h"
 #include "SamplingTool.h"
 
-namespace JSC {
+namespace JSC
+{
 
-    class CodeBlock;
-    class Debugger;
-    class EvalCodeBlock;
-    class ProgramCodeBlock;
-    class ScopeChainNode;
+class CodeBlock;
+class Debugger;
+class EvalCodeBlock;
+class ProgramCodeBlock;
+class ScopeChainNode;
 
-    struct ExceptionInfo;
+struct ExceptionInfo;
 
-    class ExecutableBase : public RefCounted<ExecutableBase> {
-        friend class JIT;
+class ExecutableBase : public RefCounted<ExecutableBase>
+{
+    friend class JIT;
 
-    protected:
-        static const int NUM_PARAMETERS_IS_HOST = 0;
-        static const int NUM_PARAMETERS_NOT_COMPILED = -1;
+protected:
+    static const int NUM_PARAMETERS_IS_HOST = 0;
+    static const int NUM_PARAMETERS_NOT_COMPILED = -1;
 
-    public:
-        ExecutableBase(int numParameters)
-            : m_numParameters(numParameters)
-        {
-        }
+public:
+    ExecutableBase( int numParameters )
+        : m_numParameters( numParameters )
+    {
+    }
 
-        virtual ~ExecutableBase() {}
+    virtual ~ExecutableBase() {}
 
-        bool isHostFunction() const { return m_numParameters == NUM_PARAMETERS_IS_HOST; }
+    bool isHostFunction() const
+    {
+        return m_numParameters == NUM_PARAMETERS_IS_HOST;
+    }
 
-    protected:
-        int m_numParameters;
-
-#if ENABLE(JIT)
-    public:
-        JITCode& generatedJITCode()
-        {
-            ASSERT(m_jitCode);
-            return m_jitCode;
-        }
-
-        ExecutablePool* getExecutablePool()
-        {
-            return m_jitCode.getExecutablePool();
-        }
-
-    protected:
-        JITCode m_jitCode;
-#endif
-    };
+protected:
+    int m_numParameters;
 
 #if ENABLE(JIT)
-    class NativeExecutable : public ExecutableBase {
-    public:
-        NativeExecutable(ExecState* exec)
-            : ExecutableBase(NUM_PARAMETERS_IS_HOST)
-        {
-            m_jitCode = JITCode(JITCode::HostFunction(exec->globalData().jitStubs.ctiNativeCallThunk()));
-        }
+public:
+    JITCode &generatedJITCode()
+    {
+        ASSERT( m_jitCode );
+        return m_jitCode;
+    }
 
-        ~NativeExecutable();
-    };
+    ExecutablePool *getExecutablePool()
+    {
+        return m_jitCode.getExecutablePool();
+    }
+
+protected:
+    JITCode m_jitCode;
+#endif
+};
+
+#if ENABLE(JIT)
+class NativeExecutable : public ExecutableBase
+{
+public:
+    NativeExecutable( ExecState *exec )
+        : ExecutableBase( NUM_PARAMETERS_IS_HOST )
+    {
+        m_jitCode = JITCode( JITCode::HostFunction( exec->globalData().jitStubs.ctiNativeCallThunk() ) );
+    }
+
+    ~NativeExecutable();
+};
 #endif
 
-    class VPtrHackExecutable : public ExecutableBase {
-    public:
-        VPtrHackExecutable()
-            : ExecutableBase(NUM_PARAMETERS_IS_HOST)
-        {
-        }
+class VPtrHackExecutable : public ExecutableBase
+{
+public:
+    VPtrHackExecutable()
+        : ExecutableBase( NUM_PARAMETERS_IS_HOST )
+    {
+    }
 
-        ~VPtrHackExecutable();
-    };
+    ~VPtrHackExecutable();
+};
 
-    class ScriptExecutable : public ExecutableBase {
-    public:
-        ScriptExecutable(JSGlobalData* globalData, const SourceCode& source)
-            : ExecutableBase(NUM_PARAMETERS_NOT_COMPILED)
-            , m_source(source)
-            , m_features(0)
-        {
+class ScriptExecutable : public ExecutableBase
+{
+public:
+    ScriptExecutable( JSGlobalData *globalData, const SourceCode &source )
+        : ExecutableBase( NUM_PARAMETERS_NOT_COMPILED )
+        , m_source( source )
+        , m_features( 0 )
+    {
 #if ENABLE(CODEBLOCK_SAMPLING)
-            if (SamplingTool* sampler = globalData->interpreter->sampler())
-                sampler->notifyOfScope(this);
-#else
-            UNUSED_PARAM(globalData);
-#endif
+
+        if ( SamplingTool *sampler = globalData->interpreter->sampler() )
+        {
+            sampler->notifyOfScope( this );
         }
 
-        ScriptExecutable(ExecState* exec, const SourceCode& source)
-            : ExecutableBase(NUM_PARAMETERS_NOT_COMPILED)
-            , m_source(source)
-            , m_features(0)
-        {
+#else
+        UNUSED_PARAM( globalData );
+#endif
+    }
+
+    ScriptExecutable( ExecState *exec, const SourceCode &source )
+        : ExecutableBase( NUM_PARAMETERS_NOT_COMPILED )
+        , m_source( source )
+        , m_features( 0 )
+    {
 #if ENABLE(CODEBLOCK_SAMPLING)
-            if (SamplingTool* sampler = exec->globalData().interpreter->sampler())
-                sampler->notifyOfScope(this);
+
+        if ( SamplingTool *sampler = exec->globalData().interpreter->sampler() )
+        {
+            sampler->notifyOfScope( this );
+        }
+
 #else
-            UNUSED_PARAM(exec);
+        UNUSED_PARAM( exec );
 #endif
-        }
+    }
 
-        const SourceCode& source() { return m_source; }
-        intptr_t sourceID() const { return m_source.provider()->asID(); }
-        const UString& sourceURL() const { return m_source.provider()->url(); }
-        int lineNo() const { return m_firstLine; }
-        int lastLine() const { return m_lastLine; }
+    const SourceCode &source()
+    {
+        return m_source;
+    }
+    intptr_t sourceID() const
+    {
+        return m_source.provider()->asID();
+    }
+    const UString &sourceURL() const
+    {
+        return m_source.provider()->url();
+    }
+    int lineNo() const
+    {
+        return m_firstLine;
+    }
+    int lastLine() const
+    {
+        return m_lastLine;
+    }
 
-        bool usesEval() const { return m_features & EvalFeature; }
-        bool usesArguments() const { return m_features & ArgumentsFeature; }
-        bool needsActivation() const { return m_features & (EvalFeature | ClosureFeature | WithFeature | CatchFeature); }
+    bool usesEval() const
+    {
+        return m_features & EvalFeature;
+    }
+    bool usesArguments() const
+    {
+        return m_features & ArgumentsFeature;
+    }
+    bool needsActivation() const
+    {
+        return m_features & ( EvalFeature | ClosureFeature | WithFeature | CatchFeature );
+    }
 
-        virtual ExceptionInfo* reparseExceptionInfo(JSGlobalData*, ScopeChainNode*, CodeBlock*) = 0;
+    virtual ExceptionInfo *reparseExceptionInfo( JSGlobalData *, ScopeChainNode *, CodeBlock * ) = 0;
 
-    protected:
-        void recordParse(CodeFeatures features, int firstLine, int lastLine)
+protected:
+    void recordParse( CodeFeatures features, int firstLine, int lastLine )
+    {
+        m_features = features;
+        m_firstLine = firstLine;
+        m_lastLine = lastLine;
+    }
+
+    SourceCode m_source;
+    CodeFeatures m_features;
+    int m_firstLine;
+    int m_lastLine;
+};
+
+class EvalExecutable : public ScriptExecutable
+{
+public:
+
+    ~EvalExecutable();
+
+    EvalCodeBlock &bytecode( ExecState *exec, ScopeChainNode *scopeChainNode )
+    {
+        if ( !m_evalCodeBlock )
         {
-            m_features = features;
-            m_firstLine = firstLine;
-            m_lastLine = lastLine;
+            JSObject *error = compile( exec, scopeChainNode );
+            ASSERT_UNUSED( !error, error );
         }
 
-        SourceCode m_source;
-        CodeFeatures m_features;
-        int m_firstLine;
-        int m_lastLine;
-    };
+        return *m_evalCodeBlock;
+    }
 
-    class EvalExecutable : public ScriptExecutable {
-    public:
+    JSObject *compile( ExecState *, ScopeChainNode * );
 
-        ~EvalExecutable();
+    bool isCompiled() const
+    {
+        return m_evalCodeBlock;
+    }
 
-        EvalCodeBlock& bytecode(ExecState* exec, ScopeChainNode* scopeChainNode)
-        {
-            if (!m_evalCodeBlock) {
-                JSObject* error = compile(exec, scopeChainNode);
-                ASSERT_UNUSED(!error, error);
-            }
-            return *m_evalCodeBlock;
-        }
+    ExceptionInfo *reparseExceptionInfo( JSGlobalData *, ScopeChainNode *, CodeBlock * );
+    static PassRefPtr<EvalExecutable> create( ExecState *exec, const SourceCode &source )
+    {
+        return adoptRef( new EvalExecutable( exec, source ) );
+    }
 
-        JSObject* compile(ExecState*, ScopeChainNode*);
-
-        bool isCompiled() const { return m_evalCodeBlock; }
-
-        ExceptionInfo* reparseExceptionInfo(JSGlobalData*, ScopeChainNode*, CodeBlock*);
-        static PassRefPtr<EvalExecutable> create(ExecState* exec, const SourceCode& source) { return adoptRef(new EvalExecutable(exec, source)); }
-
-    private:
-        EvalExecutable(ExecState* exec, const SourceCode& source)
-            : ScriptExecutable(exec, source), m_evalCodeBlock(nullptr)
-        {
-        }
-        EvalCodeBlock* m_evalCodeBlock;
+private:
+    EvalExecutable( ExecState *exec, const SourceCode &source )
+        : ScriptExecutable( exec, source ), m_evalCodeBlock( nullptr )
+    {
+    }
+    EvalCodeBlock *m_evalCodeBlock;
 
 #if ENABLE(JIT)
-    public:
-        JITCode& jitCode(ExecState* exec, ScopeChainNode* scopeChainNode)
+public:
+    JITCode &jitCode( ExecState *exec, ScopeChainNode *scopeChainNode )
+    {
+        if ( !m_jitCode )
         {
-            if (!m_jitCode)
-                generateJITCode(exec, scopeChainNode);
-            return m_jitCode;
+            generateJITCode( exec, scopeChainNode );
         }
 
-    private:
-        void generateJITCode(ExecState*, ScopeChainNode*);
+        return m_jitCode;
+    }
+
+private:
+    void generateJITCode( ExecState *, ScopeChainNode * );
 #endif
-    };
+};
 
-    class ProgramExecutable : public ScriptExecutable {
-    public:
-        static PassRefPtr<ProgramExecutable> create(ExecState* exec, const SourceCode& source)
+class ProgramExecutable : public ScriptExecutable
+{
+public:
+    static PassRefPtr<ProgramExecutable> create( ExecState *exec, const SourceCode &source )
+    {
+        return adoptRef( new ProgramExecutable( exec, source ) );
+    }
+
+    ~ProgramExecutable();
+
+    ProgramCodeBlock &bytecode( ExecState *exec, ScopeChainNode *scopeChainNode )
+    {
+        if ( !m_programCodeBlock )
         {
-            return adoptRef(new ProgramExecutable(exec, source));
+            JSObject *error = compile( exec, scopeChainNode );
+            ASSERT_UNUSED( !error, error );
         }
 
-        ~ProgramExecutable();
+        return *m_programCodeBlock;
+    }
 
-        ProgramCodeBlock& bytecode(ExecState* exec, ScopeChainNode* scopeChainNode)
-        {
-            if (!m_programCodeBlock) {
-                JSObject* error = compile(exec, scopeChainNode);
-                ASSERT_UNUSED(!error, error);
-            }
-            return *m_programCodeBlock;
-        }
+    JSObject *checkSyntax( ExecState * );
+    JSObject *compile( ExecState *, ScopeChainNode * );
 
-        JSObject* checkSyntax(ExecState*);
-        JSObject* compile(ExecState*, ScopeChainNode*);
+    // CodeBlocks for program code are transient and therefore do not gain from from throwing out there exception information.
+    ExceptionInfo *reparseExceptionInfo( JSGlobalData *, ScopeChainNode *, CodeBlock * )
+    {
+        ASSERT_NOT_REACHED();
+        return nullptr;
+    }
 
-        // CodeBlocks for program code are transient and therefore do not gain from from throwing out there exception information.
-        ExceptionInfo* reparseExceptionInfo(JSGlobalData*, ScopeChainNode*, CodeBlock*) { ASSERT_NOT_REACHED(); return nullptr; }
-
-    private:
-        ProgramExecutable(ExecState* exec, const SourceCode& source)
-            : ScriptExecutable(exec, source), m_programCodeBlock(nullptr)
-        {
-        }
-        ProgramCodeBlock* m_programCodeBlock;
+private:
+    ProgramExecutable( ExecState *exec, const SourceCode &source )
+        : ScriptExecutable( exec, source ), m_programCodeBlock( nullptr )
+    {
+    }
+    ProgramCodeBlock *m_programCodeBlock;
 
 #if ENABLE(JIT)
-    public:
-        JITCode& jitCode(ExecState* exec, ScopeChainNode* scopeChainNode)
+public:
+    JITCode &jitCode( ExecState *exec, ScopeChainNode *scopeChainNode )
+    {
+        if ( !m_jitCode )
         {
-            if (!m_jitCode)
-                generateJITCode(exec, scopeChainNode);
-            return m_jitCode;
+            generateJITCode( exec, scopeChainNode );
         }
 
-    private:
-        void generateJITCode(ExecState*, ScopeChainNode*);
+        return m_jitCode;
+    }
+
+private:
+    void generateJITCode( ExecState *, ScopeChainNode * );
 #endif
-    };
+};
 
-    class FunctionExecutable : public ScriptExecutable {
-        friend class JIT;
-    public:
-        static PassRefPtr<FunctionExecutable> create(ExecState* exec, const Identifier& name, const SourceCode& source, bool forceUsesArguments, FunctionParameters* parameters, int firstLine, int lastLine)
+class FunctionExecutable : public ScriptExecutable
+{
+    friend class JIT;
+public:
+    static PassRefPtr<FunctionExecutable> create( ExecState *exec, const Identifier &name, const SourceCode &source,
+            bool forceUsesArguments, FunctionParameters *parameters, int firstLine, int lastLine )
+    {
+        return adoptRef( new FunctionExecutable( exec, name, source, forceUsesArguments, parameters, firstLine, lastLine ) );
+    }
+
+    static PassRefPtr<FunctionExecutable> create( JSGlobalData *globalData, const Identifier &name, const SourceCode &source,
+            bool forceUsesArguments, FunctionParameters *parameters, int firstLine, int lastLine )
+    {
+        return adoptRef( new FunctionExecutable( globalData, name, source, forceUsesArguments, parameters, firstLine, lastLine ) );
+    }
+
+    ~FunctionExecutable();
+
+    JSFunction *make( ExecState *exec, ScopeChainNode *scopeChain )
+    {
+        return new ( exec ) JSFunction( exec, this, scopeChain );
+    }
+
+    CodeBlock &bytecode( ExecState *exec, ScopeChainNode *scopeChainNode )
+    {
+        ASSERT( scopeChainNode );
+
+        if ( !m_codeBlock )
         {
-            return adoptRef(new FunctionExecutable(exec, name, source, forceUsesArguments, parameters, firstLine, lastLine));
+            compile( exec, scopeChainNode );
         }
 
-        static PassRefPtr<FunctionExecutable> create(JSGlobalData* globalData, const Identifier& name, const SourceCode& source, bool forceUsesArguments, FunctionParameters* parameters, int firstLine, int lastLine)
-        {
-            return adoptRef(new FunctionExecutable(globalData, name, source, forceUsesArguments, parameters, firstLine, lastLine));
-        }
+        return *m_codeBlock;
+    }
 
-        ~FunctionExecutable();
+    bool isGenerated() const
+    {
+        return m_codeBlock;
+    }
 
-        JSFunction* make(ExecState* exec, ScopeChainNode* scopeChain)
-        {
-            return new (exec) JSFunction(exec, this, scopeChain);
-        }
+    CodeBlock &generatedBytecode()
+    {
+        ASSERT( m_codeBlock );
+        return *m_codeBlock;
+    }
 
-        CodeBlock& bytecode(ExecState* exec, ScopeChainNode* scopeChainNode)
-        {
-            ASSERT(scopeChainNode);
-            if (!m_codeBlock)
-                compile(exec, scopeChainNode);
-            return *m_codeBlock;
-        }
-
-        bool isGenerated() const
-        {
-            return m_codeBlock;
-        }
-
-        CodeBlock& generatedBytecode()
-        {
-            ASSERT(m_codeBlock);
-            return *m_codeBlock;
-        }
-
-        const Identifier& name() { return m_name; }
-        size_t parameterCount() const { return m_parameters->size(); }
-        size_t variableCount() const { return m_numVariables; }
-        UString paramString() const;
+    const Identifier &name()
+    {
+        return m_name;
+    }
+    size_t parameterCount() const
+    {
+        return m_parameters->size();
+    }
+    size_t variableCount() const
+    {
+        return m_numVariables;
+    }
+    UString paramString() const;
 
 #ifdef QT_BUILD_SCRIPT_LIB
-        UString parameterName(int i) const { return (*m_parameters)[i].ustring(); }
+    UString parameterName( int i ) const
+    {
+        return ( *m_parameters )[i].ustring();
+    }
 #endif
 
-        void recompile(ExecState*);
-        ExceptionInfo* reparseExceptionInfo(JSGlobalData*, ScopeChainNode*, CodeBlock*);
-        void markAggregate(MarkStack& markStack);
-        static PassRefPtr<FunctionExecutable> fromGlobalCode(const Identifier&, ExecState*, Debugger*,
-              const SourceCode&, int* errLine = nullptr, UString* errMsg = nullptr);
+    void recompile( ExecState * );
+    ExceptionInfo *reparseExceptionInfo( JSGlobalData *, ScopeChainNode *, CodeBlock * );
+    void markAggregate( MarkStack &markStack );
+    static PassRefPtr<FunctionExecutable> fromGlobalCode( const Identifier &, ExecState *, Debugger *,
+            const SourceCode &, int *errLine = nullptr, UString *errMsg = nullptr );
 
-    private:
-        FunctionExecutable(JSGlobalData* globalData, const Identifier& name, const SourceCode& source, bool forceUsesArguments, FunctionParameters* parameters, int firstLine, int lastLine)
-            : ScriptExecutable(globalData, source)
-            , m_forceUsesArguments(forceUsesArguments)
-            , m_parameters(parameters)
-            , m_codeBlock(nullptr)
-            , m_name(name)
-            , m_numVariables(0)
-        {
-            m_firstLine = firstLine;
-            m_lastLine = lastLine;
-        }
+private:
+    FunctionExecutable( JSGlobalData *globalData, const Identifier &name, const SourceCode &source, bool forceUsesArguments,
+                        FunctionParameters *parameters, int firstLine, int lastLine )
+        : ScriptExecutable( globalData, source )
+        , m_forceUsesArguments( forceUsesArguments )
+        , m_parameters( parameters )
+        , m_codeBlock( nullptr )
+        , m_name( name )
+        , m_numVariables( 0 )
+    {
+        m_firstLine = firstLine;
+        m_lastLine = lastLine;
+    }
 
-        FunctionExecutable(ExecState* exec, const Identifier& name, const SourceCode& source, bool forceUsesArguments, FunctionParameters* parameters, int firstLine, int lastLine)
-            : ScriptExecutable(exec, source)
-            , m_forceUsesArguments(forceUsesArguments)
-            , m_parameters(parameters)
-            , m_codeBlock(nullptr)
-            , m_name(name)
-            , m_numVariables(0)
-        {
-            m_firstLine = firstLine;
-            m_lastLine = lastLine;
-        }
+    FunctionExecutable( ExecState *exec, const Identifier &name, const SourceCode &source, bool forceUsesArguments,
+                        FunctionParameters *parameters, int firstLine, int lastLine )
+        : ScriptExecutable( exec, source )
+        , m_forceUsesArguments( forceUsesArguments )
+        , m_parameters( parameters )
+        , m_codeBlock( nullptr )
+        , m_name( name )
+        , m_numVariables( 0 )
+    {
+        m_firstLine = firstLine;
+        m_lastLine = lastLine;
+    }
 
-        void compile(ExecState*, ScopeChainNode*);
+    void compile( ExecState *, ScopeChainNode * );
 
-        bool m_forceUsesArguments;
-        RefPtr<FunctionParameters> m_parameters;
-        CodeBlock* m_codeBlock;
-        Identifier m_name;
-        size_t m_numVariables;
+    bool m_forceUsesArguments;
+    RefPtr<FunctionParameters> m_parameters;
+    CodeBlock *m_codeBlock;
+    Identifier m_name;
+    size_t m_numVariables;
 
 #if ENABLE(JIT)
-    public:
-        JITCode& jitCode(ExecState* exec, ScopeChainNode* scopeChainNode)
+public:
+    JITCode &jitCode( ExecState *exec, ScopeChainNode *scopeChainNode )
+    {
+        if ( !m_jitCode )
         {
-            if (!m_jitCode)
-                generateJITCode(exec, scopeChainNode);
-            return m_jitCode;
+            generateJITCode( exec, scopeChainNode );
         }
 
-    private:
-        void generateJITCode(ExecState*, ScopeChainNode*);
+        return m_jitCode;
+    }
+
+private:
+    void generateJITCode( ExecState *, ScopeChainNode * );
 #endif
-    };
+};
 
-    inline FunctionExecutable* JSFunction::jsExecutable() const
-    {
-        ASSERT(!isHostFunctionNonInline());
-        return static_cast<FunctionExecutable*>(m_executable.get());
-    }
+inline FunctionExecutable *JSFunction::jsExecutable() const
+{
+    ASSERT( !isHostFunctionNonInline() );
+    return static_cast<FunctionExecutable *>( m_executable.get() );
+}
 
-    inline bool JSFunction::isHostFunction() const
-    {
-        ASSERT(m_executable);
-        return m_executable->isHostFunction();
-    }
+inline bool JSFunction::isHostFunction() const
+{
+    ASSERT( m_executable );
+    return m_executable->isHostFunction();
+}
 
 }
 

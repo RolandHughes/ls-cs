@@ -1,9 +1,9 @@
 zypper install -t pattern devel_basis   
 
-# by default only version 7 is installed and you need at least 11 for Scintilla
-#
-zupper install jed jed-common
-
+# executables first
+zypper install tree rpm-build rpmdevtools mercurial git cmake ninja fakeroot \
+               hashdeep dpkg-dev astyle hunspell
+               
 zypper install freetype-devel fontconfig-devel glib2-devel gstreamer-devel gstreamer-plugins-base-devel \
             libICE-devel Mesa-devel Mesa-libGL-devel glibc-devel libtirpc-devel libnsl2 libSM-devel \
             libXcursor-devel libXext-devel libXfixes-devel libXi-devel libXinerama-devel \
@@ -15,13 +15,12 @@ zypper install libxcb-devel libX11-xcb1 xcb-util-wm-devel xcb-util-image-devel \
 
 # note - OpenSuSE does not have C++ MySQL development support by default
 #
-zypper install fakeroot hashdeep dpkg-dev cmake ninja \
-            mercurial libcups2 libasound2 libxml++-devel libopenssl-devel libpulse-devel git astyle \
-            hunspell hunspell-devel libpqxx-devel  unixODBC-devel libmysqlcppconn-devel rpmdevtools \
-            rpm-build postgresql-devel tree
+zypper install libcups2 libasound2 libxml++-devel libopenssl-devel libpulse-devel \
+            hunspell-devel libpqxx-devel  unixODBC-devel libmysqlcppconn-devel \
+            postgresql-devel
 
 # By default OpenSuSE installs version 7 of C/C++ compilers. You need
-# at least version 11 to work with newer libraries.
+# at least version 13 to work with newer libraries.
 #
 # Other distros may need to run these as well
 #
@@ -40,11 +39,6 @@ if [[ $MACHTYPE == *"suse"* ]]; then
     #  suse inexplicably puts xkbcommon in the wrong place
     #
     sudo ln -s /usr/include/libxkbcommon/xkbcommon /usr/include/
-else
-    # The openSuSE repo installs way too much with emacs
-    # It also installs the X11 version and a bunch of terminal
-    # stuff.
-    zupper install emacs
 fi
 
 # reboot

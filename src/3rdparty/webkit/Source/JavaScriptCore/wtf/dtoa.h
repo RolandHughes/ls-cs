@@ -23,25 +23,26 @@
 
 #include <wtf/unicode/Unicode.h>
 
-namespace WTF {
+namespace WTF
+{
 class Mutex;
 
-extern WTF::Mutex* s_dtoaP5Mutex;
+extern WTF::Mutex *s_dtoaP5Mutex;
 
 // s00: input string. Must not be 0 and must be terminated by 0.
 // se: *se will have the last consumed character position + 1.
-double strtod(const char* s00, char** se);
+double strtod( const char *s00, char **se );
 
 typedef char DtoaBuffer[80];
 
-void dtoa(DtoaBuffer result, double dd, bool& sign, int& exponent, unsigned& precision);
-void dtoaRoundSF(DtoaBuffer result, double dd, int ndigits, bool& sign, int& exponent, unsigned& precision);
-void dtoaRoundDP(DtoaBuffer result, double dd, int ndigits, bool& sign, int& exponent, unsigned& precision);
+void dtoa( DtoaBuffer result, double dd, bool &sign, int &exponent, unsigned &precision );
+void dtoaRoundSF( DtoaBuffer result, double dd, int ndigits, bool &sign, int &exponent, unsigned &precision );
+void dtoaRoundDP( DtoaBuffer result, double dd, int ndigits, bool &sign, int &exponent, unsigned &precision );
 
 // Size = 80 for sizeof(DtoaBuffer) + some sign bits, decimal point, 'e', exponent digits.
 const unsigned NumberToStringBufferLength = 96;
 typedef UChar NumberToStringBuffer[NumberToStringBufferLength];
-unsigned numberToString(double, NumberToStringBuffer);
+unsigned numberToString( double, NumberToStringBuffer );
 
 } // namespace WTF
 

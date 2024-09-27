@@ -33,29 +33,29 @@ class QWindowsNativeImage;
 
 class QWindowsBackingStore : public QPlatformBackingStore
 {
- public:
-   QWindowsBackingStore(QWindow *window);
+public:
+    QWindowsBackingStore( QWindow *window );
 
-   QWindowsBackingStore(const QWindowsBackingStore &) = delete;
-   QWindowsBackingStore &operator=(const QWindowsBackingStore &) = delete;
+    QWindowsBackingStore( const QWindowsBackingStore & ) = delete;
+    QWindowsBackingStore &operator=( const QWindowsBackingStore & ) = delete;
 
-   ~QWindowsBackingStore();
+    ~QWindowsBackingStore();
 
-   QPaintDevice *paintDevice() override;
-   void flush(QWindow *window, const QRegion &region, const QPoint &offset) override;
-   void resize(const QSize &size, const QRegion &r) override;
-   bool scroll(const QRegion &area, int dx, int dy) override;
-   void beginPaint(const QRegion &) override;
+    QPaintDevice *paintDevice() override;
+    void flush( QWindow *window, const QRegion &region, const QPoint &offset ) override;
+    void resize( const QSize &size, const QRegion &r ) override;
+    bool scroll( const QRegion &area, int dx, int dy ) override;
+    void beginPaint( const QRegion & ) override;
 
-   HDC getDC() const;
+    HDC getDC() const;
 
 #ifndef QT_NO_OPENGL
-   QImage toImage() const override;
+    QImage toImage() const override;
 #endif
 
- private:
-   QScopedPointer<QWindowsNativeImage> m_image;
-   bool m_alphaNeedsFill;
+private:
+    QScopedPointer<QWindowsNativeImage> m_image;
+    bool m_alphaNeedsFill;
 };
 
 #endif

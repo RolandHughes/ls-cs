@@ -31,20 +31,24 @@
 
 using namespace WebKit;
 
-WKCertificateInfoRef WKCertificateInfoCreateWithCertificate(PCCERT_CONTEXT certificate)
+WKCertificateInfoRef WKCertificateInfoCreateWithCertificate( PCCERT_CONTEXT certificate )
 {
-    return toAPI(WebCertificateInfo::create(PlatformCertificateInfo(certificate)).leakRef());
+    return toAPI( WebCertificateInfo::create( PlatformCertificateInfo( certificate ) ).leakRef() );
 }
 
-size_t WKCertificateInfoGetCertificateChainLength(WKCertificateInfoRef certificateInfoRef)
+size_t WKCertificateInfoGetCertificateChainLength( WKCertificateInfoRef certificateInfoRef )
 {
-    return toImpl(certificateInfoRef)->platformCertificateInfo().certificateChain().size();
+    return toImpl( certificateInfoRef )->platformCertificateInfo().certificateChain().size();
 }
 
-PCCERT_CONTEXT WKCertificateInfoGetCertificateContextAtIndex(WKCertificateInfoRef certificateInfoRef, size_t index)
+PCCERT_CONTEXT WKCertificateInfoGetCertificateContextAtIndex( WKCertificateInfoRef certificateInfoRef, size_t index )
 {
-    const Vector<PCCERT_CONTEXT>& certificateChain = toImpl(certificateInfoRef)->platformCertificateInfo().certificateChain();
-    if (index >= certificateChain.size())
+    const Vector<PCCERT_CONTEXT> &certificateChain = toImpl( certificateInfoRef )->platformCertificateInfo().certificateChain();
+
+    if ( index >= certificateChain.size() )
+    {
         return 0;
+    }
+
     return certificateChain[index];
 }

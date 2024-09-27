@@ -35,20 +35,20 @@ extern "C" {
 
 WK_EXPORT WKTypeID WKBundleHitTestResultGetTypeID();
 
-WK_EXPORT WKBundleNodeHandleRef WKBundleHitTestResultCopyNodeHandle(WKBundleHitTestResultRef hitTestResult);
+WK_EXPORT WKBundleNodeHandleRef WKBundleHitTestResultCopyNodeHandle( WKBundleHitTestResultRef hitTestResult );
 
-WK_EXPORT WKBundleFrameRef WKBundleHitTestResultGetFrame(WKBundleHitTestResultRef hitTestResult);
-WK_EXPORT WKBundleFrameRef WKBundleHitTestResultGetTargetFrame(WKBundleHitTestResultRef hitTestResult);
+WK_EXPORT WKBundleFrameRef WKBundleHitTestResultGetFrame( WKBundleHitTestResultRef hitTestResult );
+WK_EXPORT WKBundleFrameRef WKBundleHitTestResultGetTargetFrame( WKBundleHitTestResultRef hitTestResult );
 
-WK_EXPORT WKURLRef WKBundleHitTestResultCopyAbsoluteImageURL(WKBundleHitTestResultRef hitTestResult);
-WK_EXPORT WKURLRef WKBundleHitTestResultCopyAbsoluteLinkURL(WKBundleHitTestResultRef hitTestResult);
-WK_EXPORT WKURLRef WKBundleHitTestResultCopyAbsoluteMediaURL(WKBundleHitTestResultRef hitTestResult);
+WK_EXPORT WKURLRef WKBundleHitTestResultCopyAbsoluteImageURL( WKBundleHitTestResultRef hitTestResult );
+WK_EXPORT WKURLRef WKBundleHitTestResultCopyAbsoluteLinkURL( WKBundleHitTestResultRef hitTestResult );
+WK_EXPORT WKURLRef WKBundleHitTestResultCopyAbsoluteMediaURL( WKBundleHitTestResultRef hitTestResult );
 
-WK_EXPORT WKRect WKBundleHitTestResultGetImageRect(WKBundleHitTestResultRef hitTestResult);
-WK_EXPORT bool WKBundleHitTestResultGetIsSelected(WKBundleHitTestResultRef hitTestResult);
+WK_EXPORT WKRect WKBundleHitTestResultGetImageRect( WKBundleHitTestResultRef hitTestResult );
+WK_EXPORT bool WKBundleHitTestResultGetIsSelected( WKBundleHitTestResultRef hitTestResult );
 
-WK_EXPORT WKStringRef WKBundleHitTestResultCopyLinkLabel(WKBundleHitTestResultRef hitTestResult);
-WK_EXPORT WKStringRef WKBundleHitTestResultCopyLinkTitle(WKBundleHitTestResultRef hitTestResult);
+WK_EXPORT WKStringRef WKBundleHitTestResultCopyLinkLabel( WKBundleHitTestResultRef hitTestResult );
+WK_EXPORT WKStringRef WKBundleHitTestResultCopyLinkTitle( WKBundleHitTestResultRef hitTestResult );
 
 #ifdef __cplusplus
 }

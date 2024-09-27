@@ -34,56 +34,82 @@
 #include "SharedBuffer.h"
 #include <wtf/text/StringBuilder.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-SharedBufferCRLFLineReader::SharedBufferCRLFLineReader(SharedBuffer* buffer)
-    : m_buffer(buffer)
-    , m_bufferPosition(0)
-    , m_segment(0)
-    , m_segmentLength(0)
-    , m_segmentIndex(0)
-    , m_reachedEndOfFile(false)
+SharedBufferCRLFLineReader::SharedBufferCRLFLineReader( SharedBuffer *buffer )
+    : m_buffer( buffer )
+    , m_bufferPosition( 0 )
+    , m_segment( 0 )
+    , m_segmentLength( 0 )
+    , m_segmentIndex( 0 )
+    , m_reachedEndOfFile( false )
 {
 }
 
 String SharedBufferCRLFLineReader::nextLine()
 {
-    if (m_reachedEndOfFile)
+    if ( m_reachedEndOfFile )
+    {
         return String();
+    }
 
     bool previousCharacterWasCR = false;
     StringBuilder stringBuilder;
-    while (true) {
+
+    while ( true )
+    {
         bool reachedEndOfLine = false;
-        while (m_segmentIndex < m_segmentLength) {
+
+        while ( m_segmentIndex < m_segmentLength )
+        {
             reachedEndOfLine = false;
             char currentCharacter = m_segment[m_segmentIndex];
-            if (previousCharacterWasCR) {
-                if (currentCharacter == '\n')
-                    reachedEndOfLine = true;
-                else
-                    stringBuilder.append('\r');
-            } else if (currentCharacter != '\r')
-                stringBuilder.append(currentCharacter);
 
-            previousCharacterWasCR = (currentCharacter == '\r');
+            if ( previousCharacterWasCR )
+            {
+                if ( currentCharacter == '\n' )
+                {
+                    reachedEndOfLine = true;
+                }
+                else
+                {
+                    stringBuilder.append( '\r' );
+                }
+            }
+            else if ( currentCharacter != '\r' )
+            {
+                stringBuilder.append( currentCharacter );
+            }
+
+            previousCharacterWasCR = ( currentCharacter == '\r' );
             m_segmentIndex++;
-            if (reachedEndOfLine)
+
+            if ( reachedEndOfLine )
+            {
                 return stringBuilder.toString();
+            }
         }
 
         // Read the next segment.
         m_segmentIndex = 0;
         m_bufferPosition += m_segmentLength;
-        m_segmentLength = m_buffer->getSomeData(m_segment, m_bufferPosition);
-        if (!m_segmentLength) {
+        m_segmentLength = m_buffer->getSomeData( m_segment, m_bufferPosition );
+
+        if ( !m_segmentLength )
+        {
             m_reachedEndOfFile = true;
-            if (previousCharacterWasCR)
-                stringBuilder.append('\r');
+
+            if ( previousCharacterWasCR )
+            {
+                stringBuilder.append( '\r' );
+            }
+
             String line = stringBuilder.toString();
-            return (line.isEmpty() && !reachedEndOfLine) ? String() : line;
+            return ( line.isEmpty() && !reachedEndOfLine ) ? String() : line;
         }
     }
+
     return String();
 }
 

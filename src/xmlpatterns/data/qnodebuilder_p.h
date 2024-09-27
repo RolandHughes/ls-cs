@@ -27,18 +27,20 @@
 #include <qitem_p.h>
 #include <qabstractxmlreceiver.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class NodeBuilder : public QAbstractXmlReceiver
 {
- public:
-   using Ptr = std::unique_ptr<NodeBuilder>;
+public:
+    using Ptr = std::unique_ptr<NodeBuilder>;
 
-   inline NodeBuilder() {
-   }
+    inline NodeBuilder()
+    {
+    }
 
-   virtual QAbstractXmlNodeModel::Ptr builtDocument() = 0;
-   virtual NodeBuilder::Ptr create(const QUrl &baseURI) const = 0;
+    virtual QAbstractXmlNodeModel::Ptr builtDocument() = 0;
+    virtual NodeBuilder::Ptr create( const QUrl &baseURI ) const = 0;
 };
 }
 

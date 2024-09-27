@@ -24,8 +24,8 @@
 #include <qmediaavailabilitycontrol.h>
 #include <qmediacontrol_p.h>
 
-QMediaAvailabilityControl::QMediaAvailabilityControl(QObject *parent)
-   : QMediaControl(*new QMediaControlPrivate, parent)
+QMediaAvailabilityControl::QMediaAvailabilityControl( QObject *parent )
+    : QMediaControl( *new QMediaControlPrivate, parent )
 {
 }
 

@@ -30,25 +30,25 @@
 
 class DirectShowPinEnum : public IEnumPins
 {
- public:
-   DirectShowPinEnum(const QList<IPin *> &pins);
-   virtual ~DirectShowPinEnum();
+public:
+    DirectShowPinEnum( const QList<IPin *> &pins );
+    virtual ~DirectShowPinEnum();
 
-   // IUnknown
-   HRESULT STDMETHODCALLTYPE QueryInterface(REFIID riid, void **ppvObject) override;
-   ULONG STDMETHODCALLTYPE AddRef() override;
-   ULONG STDMETHODCALLTYPE Release() override;
+    // IUnknown
+    HRESULT STDMETHODCALLTYPE QueryInterface( REFIID riid, void **ppvObject ) override;
+    ULONG STDMETHODCALLTYPE AddRef() override;
+    ULONG STDMETHODCALLTYPE Release() override;
 
-   // IEnumPins
-   HRESULT STDMETHODCALLTYPE Next(ULONG cPins, IPin **ppPins, ULONG *pcFetched) override;
-   HRESULT STDMETHODCALLTYPE Skip(ULONG cPins) override;
-   HRESULT STDMETHODCALLTYPE Reset() override;
-   HRESULT STDMETHODCALLTYPE Clone(IEnumPins **ppEnum) override;
+    // IEnumPins
+    HRESULT STDMETHODCALLTYPE Next( ULONG cPins, IPin **ppPins, ULONG *pcFetched ) override;
+    HRESULT STDMETHODCALLTYPE Skip( ULONG cPins ) override;
+    HRESULT STDMETHODCALLTYPE Reset() override;
+    HRESULT STDMETHODCALLTYPE Clone( IEnumPins **ppEnum ) override;
 
- private:
-   LONG m_ref;
-   QList<IPin *> m_pins;
-   int m_index;
+private:
+    LONG m_ref;
+    QList<IPin *> m_pins;
+    int m_index;
 };
 
 #endif

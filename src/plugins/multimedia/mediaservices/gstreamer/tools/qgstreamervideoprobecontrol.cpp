@@ -26,8 +26,8 @@
 #include <qgstutils_p.h>
 #include <qgstvideobuffer_p.h>
 
-QGstreamerVideoProbeControl::QGstreamerVideoProbeControl(QObject *parent)
-   : QMediaVideoProbeControl(parent), m_flushing(false), m_frameProbed(false)
+QGstreamerVideoProbeControl::QGstreamerVideoProbeControl( QObject *parent )
+    : QMediaVideoProbeControl( parent ), m_flushing( false ), m_frameProbed( false )
 {
 }
 
@@ -37,85 +37,91 @@ QGstreamerVideoProbeControl::~QGstreamerVideoProbeControl()
 
 void QGstreamerVideoProbeControl::startFlushing()
 {
-   m_flushing = true;
+    m_flushing = true;
 
-   {
-      QMutexLocker locker(&m_frameMutex);
-      m_pendingFrame = QVideoFrame();
-   }
+    {
+        QMutexLocker locker( &m_frameMutex );
+        m_pendingFrame = QVideoFrame();
+    }
 
-   // only emit flush if at least one frame was probed
-   if (m_frameProbed) {
-      emit flush();
-   }
+    // only emit flush if at least one frame was probed
+    if ( m_frameProbed )
+    {
+        emit flush();
+    }
 }
 
 void QGstreamerVideoProbeControl::stopFlushing()
 {
-   m_flushing = false;
+    m_flushing = false;
 }
 
-void QGstreamerVideoProbeControl::probeCaps(GstCaps *caps)
+void QGstreamerVideoProbeControl::probeCaps( GstCaps *caps )
 {
 #if GST_CHECK_VERSION(1,0,0)
-   GstVideoInfo videoInfo;
-   QVideoSurfaceFormat format = QGstUtils::formatForCaps(caps, &videoInfo);
+    GstVideoInfo videoInfo;
+    QVideoSurfaceFormat format = QGstUtils::formatForCaps( caps, &videoInfo );
 
-   QMutexLocker locker(&m_frameMutex);
-   m_videoInfo = videoInfo;
+    QMutexLocker locker( &m_frameMutex );
+    m_videoInfo = videoInfo;
 #else
-   int bytesPerLine = 0;
-   QVideoSurfaceFormat format = QGstUtils::formatForCaps(caps, &bytesPerLine);
+    int bytesPerLine = 0;
+    QVideoSurfaceFormat format = QGstUtils::formatForCaps( caps, &bytesPerLine );
 
-   QMutexLocker locker(&m_frameMutex);
-   m_bytesPerLine = bytesPerLine;
+    QMutexLocker locker( &m_frameMutex );
+    m_bytesPerLine = bytesPerLine;
 #endif
 
-   m_format = format;
+    m_format = format;
 }
 
-bool QGstreamerVideoProbeControl::probeBuffer(GstBuffer *buffer)
+bool QGstreamerVideoProbeControl::probeBuffer( GstBuffer *buffer )
 {
-   QMutexLocker locker(&m_frameMutex);
+    QMutexLocker locker( &m_frameMutex );
 
-   if (m_flushing || ! m_format.isValid()) {
-      return true;
-   }
+    if ( m_flushing || ! m_format.isValid() )
+    {
+        return true;
+    }
 
-   QVideoFrame frame(
+    QVideoFrame frame(
 
 #if GST_CHECK_VERSION(1,0,0)
-      new QGstVideoBuffer(buffer, m_videoInfo),
+        new QGstVideoBuffer( buffer, m_videoInfo ),
 #else
-      new QGstVideoBuffer(buffer, m_bytesPerLine),
+        new QGstVideoBuffer( buffer, m_bytesPerLine ),
 #endif
 
-      m_format.frameSize(),
-      m_format.pixelFormat());
+        m_format.frameSize(),
+        m_format.pixelFormat() );
 
-   QGstUtils::setFrameTimeStamps(&frame, buffer);
+    QGstUtils::setFrameTimeStamps( &frame, buffer );
 
-   m_frameProbed = true;
+    m_frameProbed = true;
 
-   if (!m_pendingFrame.isValid()) {
-      QMetaObject::invokeMethod(this, "frameProbed", Qt::QueuedConnection);
-   }
+    if ( !m_pendingFrame.isValid() )
+    {
+        QMetaObject::invokeMethod( this, "frameProbed", Qt::QueuedConnection );
+    }
 
-   m_pendingFrame = frame;
+    m_pendingFrame = frame;
 
-   return true;
+    return true;
 }
 
 void QGstreamerVideoProbeControl::frameProbed()
 {
-   QVideoFrame frame;
-   {
-      QMutexLocker locker(&m_frameMutex);
-      if (!m_pendingFrame.isValid()) {
-         return;
-      }
-      frame = m_pendingFrame;
-      m_pendingFrame = QVideoFrame();
-   }
-   emit videoFrameProbed(frame);
+    QVideoFrame frame;
+    {
+        QMutexLocker locker( &m_frameMutex );
+
+        if ( !m_pendingFrame.isValid() )
+        {
+            return;
+        }
+
+        frame = m_pendingFrame;
+        m_pendingFrame = QVideoFrame();
+    }
+    emit videoFrameProbed( frame );
 }

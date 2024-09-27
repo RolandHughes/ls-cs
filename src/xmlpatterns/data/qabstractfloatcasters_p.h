@@ -28,27 +28,28 @@
 #include <qatomiccaster_p.h>
 #include <qschemanumeric_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 template <const bool isDouble>
 class NumericToAbstractFloatCaster : public AtomicCaster
 {
- public:
-   Item castFrom(const Item &from, const QExplicitlySharedDataPointer<DynamicContext> &context) const override;
+public:
+    Item castFrom( const Item &from, const QExplicitlySharedDataPointer<DynamicContext> &context ) const override;
 };
 
 template <const bool isDouble>
 class StringToAbstractFloatCaster : public AtomicCaster
 {
- public:
-   Item castFrom(const Item &from, const QExplicitlySharedDataPointer<DynamicContext> &context) const override;
+public:
+    Item castFrom( const Item &from, const QExplicitlySharedDataPointer<DynamicContext> &context ) const override;
 };
 
 template <const bool isDouble>
 class BooleanToAbstractFloatCaster : public AtomicCaster
 {
- public:
-   Item castFrom(const Item &from, const QExplicitlySharedDataPointer<DynamicContext> &context) const override;
+public:
+    Item castFrom( const Item &from, const QExplicitlySharedDataPointer<DynamicContext> &context ) const override;
 };
 
 #include "qabstractfloatcasters.cpp"

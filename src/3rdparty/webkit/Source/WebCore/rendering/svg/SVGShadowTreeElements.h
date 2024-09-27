@@ -24,44 +24,53 @@
 #include "SVGGElement.h"
 #include "SVGLength.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class FloatSize;
 class SVGUseElement;
 
-class SVGShadowTreeContainerElement : public SVGGElement {
+class SVGShadowTreeContainerElement : public SVGGElement
+{
 public:
-    static PassRefPtr<SVGShadowTreeContainerElement> create(Document*);
+    static PassRefPtr<SVGShadowTreeContainerElement> create( Document * );
 
     FloatSize containerTranslation() const;
-    void setContainerOffset(const SVGLength& x, const SVGLength& y)
+    void setContainerOffset( const SVGLength &x, const SVGLength &y )
     {
         m_xOffset = x;
         m_yOffset = y;
     }
 
 protected:
-    SVGShadowTreeContainerElement(Document*);
+    SVGShadowTreeContainerElement( Document * );
 
 private:
     virtual PassRefPtr<Element> cloneElementWithoutAttributesAndChildren() const;
-    virtual bool isShadowTreeContainerElement() const { return true; }
+    virtual bool isShadowTreeContainerElement() const
+    {
+        return true;
+    }
 
     SVGLength m_xOffset;
     SVGLength m_yOffset;
 };
 
-class SVGShadowTreeRootElement : public SVGShadowTreeContainerElement {
+class SVGShadowTreeRootElement : public SVGShadowTreeContainerElement
+{
 public:
-    static PassRefPtr<SVGShadowTreeRootElement> create(Document*, SVGUseElement* host);
+    static PassRefPtr<SVGShadowTreeRootElement> create( Document *, SVGUseElement *host );
 
-    void attachElement(PassRefPtr<RenderStyle>, RenderArena*);
+    void attachElement( PassRefPtr<RenderStyle>, RenderArena * );
     void clearSVGShadowHost();
 
-    virtual bool isSVGShadowRoot() const { return true; }
+    virtual bool isSVGShadowRoot() const
+    {
+        return true;
+    }
 
 private:
-    SVGShadowTreeRootElement(Document*, SVGUseElement* host);
+    SVGShadowTreeRootElement( Document *, SVGUseElement *host );
 };
 
 }

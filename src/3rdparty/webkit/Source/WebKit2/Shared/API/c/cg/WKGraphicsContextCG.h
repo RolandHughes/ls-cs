@@ -33,7 +33,7 @@
 extern "C" {
 #endif
 
-WK_EXPORT CGContextRef WKGraphicsContextGetCGContext(WKGraphicsContextRef graphicsContext);
+WK_EXPORT CGContextRef WKGraphicsContextGetCGContext( WKGraphicsContextRef graphicsContext );
 
 #ifdef __cplusplus
 }

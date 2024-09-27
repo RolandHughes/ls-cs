@@ -29,7 +29,8 @@
 
 #include <WebCore/NotImplemented.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 CoreIPC::Connection::Identifier ThreadLauncher::createWebThread()
 {

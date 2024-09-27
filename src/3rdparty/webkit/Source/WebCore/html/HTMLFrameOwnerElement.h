@@ -24,7 +24,8 @@
 #include "FrameLoaderTypes.h"
 #include "HTMLElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class DOMWindow;
 class Frame;
@@ -34,41 +35,54 @@ class RenderPart;
 class SVGDocument;
 #endif
 
-class HTMLFrameOwnerElement : public HTMLElement {
+class HTMLFrameOwnerElement : public HTMLElement
+{
 public:
     virtual ~HTMLFrameOwnerElement();
 
-    Frame* contentFrame() const { return m_contentFrame; }
-    DOMWindow* contentWindow() const;
-    Document* contentDocument() const;
+    Frame *contentFrame() const
+    {
+        return m_contentFrame;
+    }
+    DOMWindow *contentWindow() const;
+    Document *contentDocument() const;
 
     // Most subclasses use RenderPart (either RenderEmbeddedObject or RenderIFrame)
     // except for HTMLObjectElement and HTMLEmbedElement which may return any
     // RenderObject when using fallback content.
-    RenderPart* renderPart() const;
+    RenderPart *renderPart() const;
 
 #if ENABLE(SVG)
-    SVGDocument* getSVGDocument(ExceptionCode&) const;
+    SVGDocument *getSVGDocument( ExceptionCode & ) const;
 #endif
 
-    virtual ScrollbarMode scrollingMode() const { return ScrollbarAuto; }
+    virtual ScrollbarMode scrollingMode() const
+    {
+        return ScrollbarAuto;
+    }
 
-    SandboxFlags sandboxFlags() const { return m_sandboxFlags; }
+    SandboxFlags sandboxFlags() const
+    {
+        return m_sandboxFlags;
+    }
 
 protected:
-    HTMLFrameOwnerElement(const QualifiedName& tagName, Document*);
+    HTMLFrameOwnerElement( const QualifiedName &tagName, Document * );
 
-    void setSandboxFlags(SandboxFlags);
+    void setSandboxFlags( SandboxFlags );
 
     virtual void willRemove();
 
 private:
     friend class Frame;
 
-    virtual bool isFrameOwnerElement() const { return true; }
-    virtual bool isKeyboardFocusable(KeyboardEvent*) const;
+    virtual bool isFrameOwnerElement() const
+    {
+        return true;
+    }
+    virtual bool isKeyboardFocusable( KeyboardEvent * ) const;
 
-    Frame* m_contentFrame;
+    Frame *m_contentFrame;
     SandboxFlags m_sandboxFlags;
 };
 

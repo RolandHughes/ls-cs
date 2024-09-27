@@ -29,147 +29,178 @@
 
 void QGL2PEXVertexArray::clear()
 {
-   vertexArray.clear();
-   vertexArrayStops.clear();
-   boundingRectDirty = true;
+    vertexArray.clear();
+    vertexArrayStops.clear();
+    boundingRectDirty = true;
 }
 
 QGLRect QGL2PEXVertexArray::boundingRect() const
 {
-   if (boundingRectDirty) {
-      return QGLRect(0.0, 0.0, 0.0, 0.0);
-   } else {
-      return QGLRect(minX, minY, maxX, maxY);
-   }
+    if ( boundingRectDirty )
+    {
+        return QGLRect( 0.0, 0.0, 0.0, 0.0 );
+    }
+    else
+    {
+        return QGLRect( minX, minY, maxX, maxY );
+    }
 }
 
-void QGL2PEXVertexArray::addClosingLine(int index)
+void QGL2PEXVertexArray::addClosingLine( int index )
 {
-   QPointF point(vertexArray.at(index));
-   if (point != QPointF(vertexArray.last())) {
-      vertexArray.append(point);
-   }
+    QPointF point( vertexArray.at( index ) );
+
+    if ( point != QPointF( vertexArray.last() ) )
+    {
+        vertexArray.append( point );
+    }
 }
 
-void QGL2PEXVertexArray::addCentroid(const QVectorPath &path, int subPathIndex)
+void QGL2PEXVertexArray::addCentroid( const QVectorPath &path, int subPathIndex )
 {
-   const QPointF *const points = reinterpret_cast<const QPointF *>(path.points());
-   const QPainterPath::ElementType *const elements = path.elements();
+    const QPointF *const points = reinterpret_cast<const QPointF *>( path.points() );
+    const QPainterPath::ElementType *const elements = path.elements();
 
-   QPointF sum = points[subPathIndex];
-   int count = 1;
+    QPointF sum = points[subPathIndex];
+    int count = 1;
 
-   for (int i = subPathIndex + 1; i < path.elementCount() && (! elements ||
-         elements[i] != QPainterPath::MoveToElement); ++i) {
-      sum += points[i];
-      ++count;
-   }
+    for ( int i = subPathIndex + 1; i < path.elementCount() && ( ! elements ||
+            elements[i] != QPainterPath::MoveToElement ); ++i )
+    {
+        sum += points[i];
+        ++count;
+    }
 
-   const QPointF centroid = sum / qreal(count);
-   vertexArray.append(centroid);
+    const QPointF centroid = sum / qreal( count );
+    vertexArray.append( centroid );
 }
 
-void QGL2PEXVertexArray::addPath(const QVectorPath &path, GLfloat curveInverseScale, bool outline)
+void QGL2PEXVertexArray::addPath( const QVectorPath &path, GLfloat curveInverseScale, bool outline )
 {
-   const QPointF *const points = reinterpret_cast<const QPointF *>(path.points());
-   const QPainterPath::ElementType *const elements = path.elements();
+    const QPointF *const points = reinterpret_cast<const QPointF *>( path.points() );
+    const QPainterPath::ElementType *const elements = path.elements();
 
-   if (boundingRectDirty) {
-      minX = maxX = points[0].x();
-      minY = maxY = points[0].y();
-      boundingRectDirty = false;
-   }
+    if ( boundingRectDirty )
+    {
+        minX = maxX = points[0].x();
+        minY = maxY = points[0].y();
+        boundingRectDirty = false;
+    }
 
-   if (!outline && !path.isConvex()) {
-      addCentroid(path, 0);
-   }
+    if ( !outline && !path.isConvex() )
+    {
+        addCentroid( path, 0 );
+    }
 
-   int lastMoveTo = vertexArray.size();
-   vertexArray.append(points[0]); // The first element is always a moveTo
+    int lastMoveTo = vertexArray.size();
+    vertexArray.append( points[0] ); // The first element is always a moveTo
 
-   do {
-      if (!elements) {
-         // If the path has a null elements pointer, the elements implicitly
-         // start with a moveTo (already added) and continue with lineTos
+    do
+    {
+        if ( !elements )
+        {
+            // If the path has a null elements pointer, the elements implicitly
+            // start with a moveTo (already added) and continue with lineTos
 
-         for (int i = 1; i < path.elementCount(); ++i) {
-            lineToArray(points[i].x(), points[i].y());
-         }
-
-         break;
-      }
-
-      for (int i = 1; i < path.elementCount(); ++i) {
-         switch (elements[i]) {
-            case QPainterPath::MoveToElement:
-               if (!outline) {
-                  addClosingLine(lastMoveTo);
-               }
-
-               vertexArrayStops.append(vertexArray.size());
-
-               if (!outline) {
-                  if (!path.isConvex()) {
-                     addCentroid(path, i);
-                  }
-
-                  lastMoveTo = vertexArray.size();
-               }
-
-               lineToArray(points[i].x(), points[i].y()); // Add the moveTo as a new vertex
-               break;
-
-            case QPainterPath::LineToElement:
-               lineToArray(points[i].x(), points[i].y());
-               break;
-
-            case QPainterPath::CurveToElement: {
-               QBezier b = QBezier::fromPoints(*(((const QPointF *) points) + i - 1),
-                     points[i], points[i + 1], points[i + 2]);
-
-               QRectF bounds = b.bounds();
-
-               // threshold based on same algorithm as in qtriangulatingstroker.cpp
-               int threshold = qMin(64, qMax(bounds.width(), bounds.height()) * M_PI / (curveInverseScale * 6));
-
-               if (threshold < 3) {
-                  threshold = 3;
-               }
-
-               qreal one_over_threshold_minus_1 = qreal(1) / (threshold - 1);
-               for (int t = 0; t < threshold; ++t) {
-                  QPointF pt = b.pointAt(t * one_over_threshold_minus_1);
-                  lineToArray(pt.x(), pt.y());
-               }
-               i += 2;
-               break;
+            for ( int i = 1; i < path.elementCount(); ++i )
+            {
+                lineToArray( points[i].x(), points[i].y() );
             }
-            default:
-               break;
-         }
-      }
-   } while (0);
 
-   if (! outline) {
-      addClosingLine(lastMoveTo);
-   }
+            break;
+        }
 
-   vertexArrayStops.append(vertexArray.size());
+        for ( int i = 1; i < path.elementCount(); ++i )
+        {
+            switch ( elements[i] )
+            {
+                case QPainterPath::MoveToElement:
+                    if ( !outline )
+                    {
+                        addClosingLine( lastMoveTo );
+                    }
+
+                    vertexArrayStops.append( vertexArray.size() );
+
+                    if ( !outline )
+                    {
+                        if ( !path.isConvex() )
+                        {
+                            addCentroid( path, i );
+                        }
+
+                        lastMoveTo = vertexArray.size();
+                    }
+
+                    lineToArray( points[i].x(), points[i].y() ); // Add the moveTo as a new vertex
+                    break;
+
+                case QPainterPath::LineToElement:
+                    lineToArray( points[i].x(), points[i].y() );
+                    break;
+
+                case QPainterPath::CurveToElement:
+                {
+                    QBezier b = QBezier::fromPoints( *( ( ( const QPointF * ) points ) + i - 1 ),
+                                                     points[i], points[i + 1], points[i + 2] );
+
+                    QRectF bounds = b.bounds();
+
+                    // threshold based on same algorithm as in qtriangulatingstroker.cpp
+                    int threshold = qMin( 64, qMax( bounds.width(), bounds.height() ) * M_PI / ( curveInverseScale * 6 ) );
+
+                    if ( threshold < 3 )
+                    {
+                        threshold = 3;
+                    }
+
+                    qreal one_over_threshold_minus_1 = qreal( 1 ) / ( threshold - 1 );
+
+                    for ( int t = 0; t < threshold; ++t )
+                    {
+                        QPointF pt = b.pointAt( t * one_over_threshold_minus_1 );
+                        lineToArray( pt.x(), pt.y() );
+                    }
+
+                    i += 2;
+                    break;
+                }
+
+                default:
+                    break;
+            }
+        }
+    }
+    while ( 0 );
+
+    if ( ! outline )
+    {
+        addClosingLine( lastMoveTo );
+    }
+
+    vertexArrayStops.append( vertexArray.size() );
 }
 
-void QGL2PEXVertexArray::lineToArray(const GLfloat x, const GLfloat y)
+void QGL2PEXVertexArray::lineToArray( const GLfloat x, const GLfloat y )
 {
-   vertexArray.append(QGLPoint(x, y));
+    vertexArray.append( QGLPoint( x, y ) );
 
-   if (x > maxX) {
-      maxX = x;
-   } else if (x < minX) {
-      minX = x;
-   }
-   if (y > maxY) {
-      maxY = y;
-   } else if (y < minY) {
-      minY = y;
-   }
+    if ( x > maxX )
+    {
+        maxX = x;
+    }
+    else if ( x < minX )
+    {
+        minX = x;
+    }
+
+    if ( y > maxY )
+    {
+        maxY = y;
+    }
+    else if ( y < minY )
+    {
+        minY = y;
+    }
 }
 

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef UStringBuilder_h
@@ -28,14 +28,22 @@
 
 #include <wtf/text/StringBuilder.h>
 
-namespace JSC {
+namespace JSC
+{
 
-class UStringBuilder : public StringBuilder {
+class UStringBuilder : public StringBuilder
+{
 public:
     using StringBuilder::append;
-    void append(const UString& str) { append(String(str.impl())); }
+    void append( const UString &str )
+    {
+        append( String( str.impl() ) );
+    }
 
-    UString toUString() { return toString().impl(); }
+    UString toUString()
+    {
+        return toString().impl();
+    }
 };
 
 } // namespace JSC

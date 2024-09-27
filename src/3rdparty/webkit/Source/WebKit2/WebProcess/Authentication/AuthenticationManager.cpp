@@ -39,7 +39,8 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
 static uint64_t generateAuthenticationChallengeID()
 {
@@ -47,9 +48,9 @@ static uint64_t generateAuthenticationChallengeID()
     return uniqueAuthenticationChallengeID++;
 }
 
-AuthenticationManager& AuthenticationManager::shared()
+AuthenticationManager &AuthenticationManager::shared()
 {
-    static AuthenticationManager& manager = *new AuthenticationManager;
+    static AuthenticationManager &manager = *new AuthenticationManager;
     return manager;
 }
 
@@ -57,83 +58,97 @@ AuthenticationManager::AuthenticationManager()
 {
 }
 
-void AuthenticationManager::didReceiveMessage(CoreIPC::Connection* connection, CoreIPC::MessageID messageID, CoreIPC::ArgumentDecoder* arguments)
+void AuthenticationManager::didReceiveMessage( CoreIPC::Connection *connection, CoreIPC::MessageID messageID,
+        CoreIPC::ArgumentDecoder *arguments )
 {
-    didReceiveAuthenticationManagerMessage(connection, messageID, arguments);
+    didReceiveAuthenticationManagerMessage( connection, messageID, arguments );
 }
 
-void AuthenticationManager::didReceiveAuthenticationChallenge(WebFrame* frame, const AuthenticationChallenge& authenticationChallenge)
+void AuthenticationManager::didReceiveAuthenticationChallenge( WebFrame *frame,
+        const AuthenticationChallenge &authenticationChallenge )
 {
-    ASSERT(frame);
-    ASSERT(frame->page());
+    ASSERT( frame );
+    ASSERT( frame->page() );
 
     uint64_t challengeID = generateAuthenticationChallengeID();
-    m_challenges.set(challengeID, authenticationChallenge);    
-    
-    WebProcess::shared().connection()->send(Messages::WebPageProxy::DidReceiveAuthenticationChallenge(frame->frameID(), authenticationChallenge, challengeID), frame->page()->pageID());
+    m_challenges.set( challengeID, authenticationChallenge );
+
+    WebProcess::shared().connection()->send( Messages::WebPageProxy::DidReceiveAuthenticationChallenge( frame->frameID(),
+            authenticationChallenge, challengeID ), frame->page()->pageID() );
 }
 
-void AuthenticationManager::didReceiveAuthenticationChallenge(Download* download, const AuthenticationChallenge& authenticationChallenge)
+void AuthenticationManager::didReceiveAuthenticationChallenge( Download *download,
+        const AuthenticationChallenge &authenticationChallenge )
 {
     uint64_t challengeID = generateAuthenticationChallengeID();
-    m_challenges.set(challengeID, authenticationChallenge);
+    m_challenges.set( challengeID, authenticationChallenge );
 
-    download->send(Messages::DownloadProxy::DidReceiveAuthenticationChallenge(authenticationChallenge, challengeID));
+    download->send( Messages::DownloadProxy::DidReceiveAuthenticationChallenge( authenticationChallenge, challengeID ) );
 }
 
 // Currently, only Mac knows how to respond to authentication challenges with certificate info.
 #if !PLATFORM(MAC)
-bool AuthenticationManager::tryUsePlatformCertificateInfoForChallenge(const WebCore::AuthenticationChallenge&, const PlatformCertificateInfo&)
+bool AuthenticationManager::tryUsePlatformCertificateInfoForChallenge( const WebCore::AuthenticationChallenge &,
+        const PlatformCertificateInfo & )
 {
     return false;
 }
 #endif
 
-void AuthenticationManager::useCredentialForChallenge(uint64_t challengeID, const Credential& credential, const PlatformCertificateInfo& certificateInfo)
+void AuthenticationManager::useCredentialForChallenge( uint64_t challengeID, const Credential &credential,
+        const PlatformCertificateInfo &certificateInfo )
 {
-    AuthenticationChallenge challenge = m_challenges.take(challengeID);
-    ASSERT(!challenge.isNull());
-    
-    if (tryUsePlatformCertificateInfoForChallenge(challenge, certificateInfo))
+    AuthenticationChallenge challenge = m_challenges.take( challengeID );
+    ASSERT( !challenge.isNull() );
+
+    if ( tryUsePlatformCertificateInfoForChallenge( challenge, certificateInfo ) )
+    {
         return;
-    
-    AuthenticationClient* coreClient = challenge.authenticationClient();
-    if (!coreClient) {
-        // This authentication challenge comes from a download.
-        Download::receivedCredential(challenge, credential);
-        return;
-        
     }
 
-    coreClient->receivedCredential(challenge, credential);
+    AuthenticationClient *coreClient = challenge.authenticationClient();
+
+    if ( !coreClient )
+    {
+        // This authentication challenge comes from a download.
+        Download::receivedCredential( challenge, credential );
+        return;
+
+    }
+
+    coreClient->receivedCredential( challenge, credential );
 }
 
-void AuthenticationManager::continueWithoutCredentialForChallenge(uint64_t challengeID)
+void AuthenticationManager::continueWithoutCredentialForChallenge( uint64_t challengeID )
 {
-    AuthenticationChallenge challenge = m_challenges.take(challengeID);
-    ASSERT(!challenge.isNull());
-    AuthenticationClient* coreClient = challenge.authenticationClient();
-    if (!coreClient) {
+    AuthenticationChallenge challenge = m_challenges.take( challengeID );
+    ASSERT( !challenge.isNull() );
+    AuthenticationClient *coreClient = challenge.authenticationClient();
+
+    if ( !coreClient )
+    {
         // This authentication challenge comes from a download.
-        Download::receivedRequestToContinueWithoutCredential(challenge);
+        Download::receivedRequestToContinueWithoutCredential( challenge );
         return;
     }
 
-    coreClient->receivedRequestToContinueWithoutCredential(challenge);
+    coreClient->receivedRequestToContinueWithoutCredential( challenge );
 }
 
-void AuthenticationManager::cancelChallenge(uint64_t challengeID)
+void AuthenticationManager::cancelChallenge( uint64_t challengeID )
 {
-    AuthenticationChallenge challenge = m_challenges.take(challengeID);
-    ASSERT(!challenge.isNull());
-    AuthenticationClient* coreClient = challenge.authenticationClient();
-    if (!coreClient) {
+    AuthenticationChallenge challenge = m_challenges.take( challengeID );
+    ASSERT( !challenge.isNull() );
+    AuthenticationClient *coreClient = challenge.authenticationClient();
+
+    if ( !coreClient )
+    {
         // This authentication challenge comes from a download.
-        Download::receivedCancellation(challenge);
+        Download::receivedCancellation( challenge );
         return;
     }
 
-    coreClient->receivedCancellation(challenge);
+    coreClient->receivedCancellation( challenge );
 }
 
 } // namespace WebKit

@@ -31,22 +31,28 @@
 
 #include "RenderMathMLBlock.h"
 
-namespace WebCore {
-    
-class RenderMathMLUnderOver : public RenderMathMLBlock {
+namespace WebCore
+{
+
+class RenderMathMLUnderOver : public RenderMathMLBlock
+{
 public:
-    RenderMathMLUnderOver(Node* expression);
-    virtual void addChild(RenderObject* child, RenderObject* beforeChild = 0);
+    RenderMathMLUnderOver( Node *expression );
+    virtual void addChild( RenderObject *child, RenderObject *beforeChild = 0 );
     virtual void layout();
-    virtual bool hasBase() const { return true; }
+    virtual bool hasBase() const
+    {
+        return true;
+    }
     virtual int nonOperatorHeight() const;
-    virtual int baselinePosition(FontBaseline, bool firstLine, LineDirectionMode, LinePositionMode = PositionOnContainingLine) const;    
-    virtual void stretchToHeight(int pixelHeight);
+    virtual int baselinePosition( FontBaseline, bool firstLine, LineDirectionMode,
+                                  LinePositionMode = PositionOnContainingLine ) const;
+    virtual void stretchToHeight( int pixelHeight );
 private:
     enum UnderOverType { Under, Over, UnderOver };
     UnderOverType m_kind;
 };
-    
+
 }
 
 #endif // ENABLE(MATHML)

@@ -35,76 +35,79 @@ class QPicturePrivate;
 
 class Q_GUI_EXPORT QPicture : public QPaintDevice
 {
- public:
-   explicit QPicture(int formatVersion = -1);
-   QPicture(const QPicture &other);
+public:
+    explicit QPicture( int formatVersion = -1 );
+    QPicture( const QPicture &other );
 
-   ~QPicture();
+    ~QPicture();
 
-   bool isNull() const;
+    bool isNull() const;
 
-   int devType() const override;
-   uint size() const;
+    int devType() const override;
+    uint size() const;
 
-   const char *data() const;
-   virtual void setData(const char *data, uint size);
+    const char *data() const;
+    virtual void setData( const char *data, uint size );
 
-   bool play(QPainter *painter);
+    bool play( QPainter *painter );
 
-   bool load(QIODevice *dev, const QString &format = QString());
-   bool load(const QString &fileName, const QString &format = QString());
-   bool save(QIODevice *dev, const QString &format = QString());
-   bool save(const QString &fileName, const QString &format = QString());
+    bool load( QIODevice *dev, const QString &format = QString() );
+    bool load( const QString &fileName, const QString &format = QString() );
+    bool save( QIODevice *dev, const QString &format = QString() );
+    bool save( const QString &fileName, const QString &format = QString() );
 
-   QRect boundingRect() const;
-   void setBoundingRect(const QRect &rect);
+    QRect boundingRect() const;
+    void setBoundingRect( const QRect &rect );
 
-   QPicture &operator=(const QPicture &other);
+    QPicture &operator=( const QPicture &other );
 
-   QPicture &operator=(QPicture &&other) {
-      qSwap(d_ptr, other.d_ptr);
-      return *this;
-   }
+    QPicture &operator=( QPicture &&other )
+    {
+        qSwap( d_ptr, other.d_ptr );
+        return *this;
+    }
 
-   void swap(QPicture &other) {
-      d_ptr.swap(other.d_ptr);
-   }
+    void swap( QPicture &other )
+    {
+        d_ptr.swap( other.d_ptr );
+    }
 
-   void detach();
-   bool isDetached() const;
+    void detach();
+    bool isDetached() const;
 
-   friend Q_GUI_EXPORT QDataStream &operator<<(QDataStream &stream, const QPicture &picture);
-   friend Q_GUI_EXPORT QDataStream &operator>>(QDataStream &stream, QPicture &picture);
+    friend Q_GUI_EXPORT QDataStream &operator<<( QDataStream &stream, const QPicture &picture );
+    friend Q_GUI_EXPORT QDataStream &operator>>( QDataStream &stream, QPicture &picture );
 
-   static QString pictureFormat(const QString &fileName);
+    static QString pictureFormat( const QString &fileName );
 
-   static QStringList inputFormats();
-   static QStringList outputFormats();
-   static QStringList inputFormatList();
-   static QStringList outputFormatList();
+    static QStringList inputFormats();
+    static QStringList outputFormats();
+    static QStringList inputFormatList();
+    static QStringList outputFormatList();
 
-   QPaintEngine *paintEngine() const override;
+    QPaintEngine *paintEngine() const override;
 
-   using DataPtr = QExplicitlySharedDataPointer<QPicturePrivate>;
+    using DataPtr = QExplicitlySharedDataPointer<QPicturePrivate>;
 
-   DataPtr &data_ptr() {
-      return d_ptr;
-   }
+    DataPtr &data_ptr()
+    {
+        return d_ptr;
+    }
 
- protected:
-   QPicture(QPicturePrivate &data);
+protected:
+    QPicture( QPicturePrivate &data );
 
-   int metric(PaintDeviceMetric m) const override;
+    int metric( PaintDeviceMetric m ) const override;
 
- private:
-   Q_DECLARE_PRIVATE(QPicture)
+private:
+    Q_DECLARE_PRIVATE( QPicture )
 
-   bool exec(QPainter *p, QDataStream &ds, int i);
-   QExplicitlySharedDataPointer<QPicturePrivate> d_ptr;
+    bool exec( QPainter *p, QDataStream &ds, int i );
+    QExplicitlySharedDataPointer<QPicturePrivate> d_ptr;
 
-   friend class QPicturePaintEngine;
-   friend class QAlphaPaintEngine;
-   friend class QPreviewPaintEngine;
+    friend class QPicturePaintEngine;
+    friend class QAlphaPaintEngine;
+    friend class QPreviewPaintEngine;
 };
 
 #ifndef QT_NO_PICTUREIO
@@ -112,63 +115,63 @@ class Q_GUI_EXPORT QPicture : public QPaintDevice
 class QIODevice;
 class QPictureIO;
 
-using picture_io_handler = void (*)(QPictureIO *);
+using picture_io_handler = void ( * )( QPictureIO * );
 
 struct QPictureIOData;
 
 class Q_GUI_EXPORT QPictureIO
 {
- public:
-   QPictureIO();
-   QPictureIO(QIODevice *ioDevice, const QString &format);
-   QPictureIO(const QString &fileName, const QString &format);
+public:
+    QPictureIO();
+    QPictureIO( QIODevice *ioDevice, const QString &format );
+    QPictureIO( const QString &fileName, const QString &format );
 
-   QPictureIO(const QPictureIO &) = delete;
-   QPictureIO &operator=(const QPictureIO &) = delete;
+    QPictureIO( const QPictureIO & ) = delete;
+    QPictureIO &operator=( const QPictureIO & ) = delete;
 
-   ~QPictureIO();
+    ~QPictureIO();
 
-   const QPicture &picture() const;
-   int status() const;
-   QString format() const;
-   QIODevice *ioDevice() const;
-   QString fileName() const;
-   int quality() const;
-   QString description() const;
-   const char *parameters() const;
-   float gamma() const;
+    const QPicture &picture() const;
+    int status() const;
+    QString format() const;
+    QIODevice *ioDevice() const;
+    QString fileName() const;
+    int quality() const;
+    QString description() const;
+    const char *parameters() const;
+    float gamma() const;
 
-   void setPicture(const QPicture &picture);
-   void setStatus(int status);
-   void setFormat(const QString &format);
-   void setIODevice(QIODevice *ioDevice);
-   void setFileName(const QString &fileName);
-   void setQuality(int q);
-   void setDescription(const QString &description);
-   void setParameters(const char *parameters);
-   void setGamma(float gamma);
+    void setPicture( const QPicture &picture );
+    void setStatus( int status );
+    void setFormat( const QString &format );
+    void setIODevice( QIODevice *ioDevice );
+    void setFileName( const QString &fileName );
+    void setQuality( int q );
+    void setDescription( const QString &description );
+    void setParameters( const char *parameters );
+    void setGamma( float gamma );
 
-   bool read();
-   bool write();
+    bool read();
+    bool write();
 
-   static QString pictureFormat(const QString &fileName);
-   static QString pictureFormat(QIODevice *ioDevice);
-   static QStringList inputFormats();
-   static QStringList outputFormats();
+    static QString pictureFormat( const QString &fileName );
+    static QString pictureFormat( QIODevice *ioDevice );
+    static QStringList inputFormats();
+    static QStringList outputFormats();
 
-   static void defineIOHandler(const QString &format, const QString &header, const char *flags,
-      picture_io_handler readPicture, picture_io_handler writePicture);
+    static void defineIOHandler( const QString &format, const QString &header, const char *flags,
+                                 picture_io_handler readPicture, picture_io_handler writePicture );
 
- private:
-   void init();
+private:
+    void init();
 
-   QPictureIOData *d;
+    QPictureIOData *d;
 };
 
 #endif // QT_NO_PICTUREIO
 
-Q_GUI_EXPORT QDataStream &operator<<(QDataStream &stream, const QPicture &picture);
-Q_GUI_EXPORT QDataStream &operator>>(QDataStream &stream, QPicture &picture);
+Q_GUI_EXPORT QDataStream &operator<<( QDataStream &stream, const QPicture &picture );
+Q_GUI_EXPORT QDataStream &operator>>( QDataStream &stream, QPicture &picture );
 
 #endif // QT_NO_PICTURE
 

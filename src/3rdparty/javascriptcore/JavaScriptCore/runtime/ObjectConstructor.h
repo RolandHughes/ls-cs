@@ -23,18 +23,20 @@
 
 #include "InternalFunction.h"
 
-namespace JSC {
+namespace JSC
+{
 
-    class ObjectPrototype;
+class ObjectPrototype;
 
-    class ObjectConstructor : public InternalFunction {
-    public:
-        ObjectConstructor(ExecState*, NonNullPassRefPtr<Structure>, ObjectPrototype*, Structure* prototypeFunctionStructure);
+class ObjectConstructor : public InternalFunction
+{
+public:
+    ObjectConstructor( ExecState *, NonNullPassRefPtr<Structure>, ObjectPrototype *, Structure *prototypeFunctionStructure );
 
-    private:
-        virtual ConstructType getConstructData(ConstructData&);
-        virtual CallType getCallData(CallData&);
-    };
+private:
+    virtual ConstructType getConstructData( ConstructData & );
+    virtual CallType getCallData( CallData & );
+};
 
 } // namespace JSC
 

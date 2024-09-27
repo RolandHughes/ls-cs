@@ -25,27 +25,27 @@
 
 QString QSslEllipticCurve::shortName() const
 {
-   return QString();
+    return QString();
 }
 
 QString QSslEllipticCurve::longName() const
 {
-   return QString();
+    return QString();
 }
 
-QSslEllipticCurve QSslEllipticCurve::fromShortName(const QString &name)
+QSslEllipticCurve QSslEllipticCurve::fromShortName( const QString &name )
 {
-   (void) name;
-   return QSslEllipticCurve();
+    ( void ) name;
+    return QSslEllipticCurve();
 }
 
-QSslEllipticCurve QSslEllipticCurve::fromLongName(const QString &name)
+QSslEllipticCurve QSslEllipticCurve::fromLongName( const QString &name )
 {
-   (void) name;
-   return QSslEllipticCurve();
+    ( void ) name;
+    return QSslEllipticCurve();
 }
 
 bool QSslEllipticCurve::isTlsNamedCurve() const
 {
-   return false;
+    return false;
 }

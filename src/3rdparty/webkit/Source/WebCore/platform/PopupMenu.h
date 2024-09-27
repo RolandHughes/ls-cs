@@ -23,15 +23,17 @@
 
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class FrameView;
 class IntRect;
 
-class PopupMenu : public RefCounted<PopupMenu> {
+class PopupMenu : public RefCounted<PopupMenu>
+{
 public:
     virtual ~PopupMenu() {}
-    virtual void show(const IntRect&, FrameView*, int index) = 0;
+    virtual void show( const IntRect &, FrameView *, int index ) = 0;
     virtual void hide() = 0;
     virtual void updateFromElement() = 0;
     virtual void disconnectClient() = 0;

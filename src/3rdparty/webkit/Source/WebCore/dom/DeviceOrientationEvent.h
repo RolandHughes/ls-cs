@@ -28,31 +28,39 @@
 
 #include "Event.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class DeviceOrientation;
 
-class DeviceOrientationEvent : public Event {
+class DeviceOrientationEvent : public Event
+{
 public:
     ~DeviceOrientationEvent();
     static PassRefPtr<DeviceOrientationEvent> create()
     {
-        return adoptRef(new DeviceOrientationEvent);
+        return adoptRef( new DeviceOrientationEvent );
     }
-    static PassRefPtr<DeviceOrientationEvent> create(const AtomicString& eventType, DeviceOrientation* orientation)
+    static PassRefPtr<DeviceOrientationEvent> create( const AtomicString &eventType, DeviceOrientation *orientation )
     {
-        return adoptRef(new DeviceOrientationEvent(eventType, orientation));
+        return adoptRef( new DeviceOrientationEvent( eventType, orientation ) );
     }
 
-    void initDeviceOrientationEvent(const AtomicString& type, bool bubbles, bool cancelable, DeviceOrientation*);
+    void initDeviceOrientationEvent( const AtomicString &type, bool bubbles, bool cancelable, DeviceOrientation * );
 
-    virtual bool isDeviceOrientationEvent() const { return true; }
+    virtual bool isDeviceOrientationEvent() const
+    {
+        return true;
+    }
 
-    DeviceOrientation* orientation() const { return m_orientation.get(); }
+    DeviceOrientation *orientation() const
+    {
+        return m_orientation.get();
+    }
 
 private:
     DeviceOrientationEvent();
-    DeviceOrientationEvent(const AtomicString& eventType, DeviceOrientation*);
+    DeviceOrientationEvent( const AtomicString &eventType, DeviceOrientation * );
 
     RefPtr<DeviceOrientation> m_orientation;
 };

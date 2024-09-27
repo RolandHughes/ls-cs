@@ -34,27 +34,27 @@ class QBitmap;
 
 class QCursorData
 {
- public:
-   QCursorData(Qt::CursorShape s = Qt::ArrowCursor);
-   ~QCursorData();
+public:
+    QCursorData( Qt::CursorShape s = Qt::ArrowCursor );
+    ~QCursorData();
 
-   void update();
+    void update();
 
-   static void initialize();
-   static void cleanup();
+    static void initialize();
+    static void cleanup();
 
-   static QCursorData *setBitmap(const QBitmap &bitmap, const QBitmap &mask, int hotX, int hotY,
-      qreal devicePixelRatio);
+    static QCursorData *setBitmap( const QBitmap &bitmap, const QBitmap &mask, int hotX, int hotY,
+                                   qreal devicePixelRatio );
 
-   QAtomicInt ref;
-   Qt::CursorShape cshape;
-   QBitmap *bm;
-   QBitmap *bmm;
-   QPixmap pixmap;
-   short hx;
-   short hy;
+    QAtomicInt ref;
+    Qt::CursorShape cshape;
+    QBitmap *bm;
+    QBitmap *bmm;
+    QPixmap pixmap;
+    short hx;
+    short hy;
 
-   static bool initialized;
+    static bool initialized;
 };
 
 extern QCursorData *qt_cursorTable[Qt::LastCursor + 1]; // qcursor.cpp

@@ -40,217 +40,298 @@
 #include <unistd.h>
 #include <wtf/text/CString.h>
 
-namespace WebCore {
-
-bool fileExists(const String& path)
+namespace WebCore
 {
-    if (path.isNull())
-        return false;
 
-    CString fsRep = fileSystemRepresentation(path);
-
-    if (!fsRep.data() || fsRep.data()[0] == '\0')
+bool fileExists( const String &path )
+{
+    if ( path.isNull() )
+    {
         return false;
+    }
+
+    CString fsRep = fileSystemRepresentation( path );
+
+    if ( !fsRep.data() || fsRep.data()[0] == '\0' )
+    {
+        return false;
+    }
 
     struct stat fileInfo;
 
     // stat(...) returns 0 on successful stat'ing of the file, and non-zero in any case where the file doesn't exist or cannot be accessed
-    return !stat(fsRep.data(), &fileInfo);
+    return !stat( fsRep.data(), &fileInfo );
 }
 
-bool deleteFile(const String& path)
+bool deleteFile( const String &path )
 {
-    CString fsRep = fileSystemRepresentation(path);
+    CString fsRep = fileSystemRepresentation( path );
 
-    if (!fsRep.data() || fsRep.data()[0] == '\0')
+    if ( !fsRep.data() || fsRep.data()[0] == '\0' )
+    {
         return false;
+    }
 
     // unlink(...) returns 0 on successful deletion of the path and non-zero in any other case (including invalid permissions or non-existent file)
-    return !unlink(fsRep.data());
+    return !unlink( fsRep.data() );
 }
 
-PlatformFileHandle openFile(const String& path, FileOpenMode mode)
+PlatformFileHandle openFile( const String &path, FileOpenMode mode )
 {
-    CString fsRep = fileSystemRepresentation(path);
+    CString fsRep = fileSystemRepresentation( path );
 
-    if (fsRep.isNull())
+    if ( fsRep.isNull() )
+    {
         return invalidPlatformFileHandle;
+    }
 
     int platformFlag = 0;
-    if (mode == OpenForRead)
+
+    if ( mode == OpenForRead )
+    {
         platformFlag |= O_RDONLY;
-    else if (mode == OpenForWrite)
-        platformFlag |= (O_WRONLY | O_CREAT | O_TRUNC);
-    return open(fsRep.data(), platformFlag, 0666);
+    }
+    else if ( mode == OpenForWrite )
+    {
+        platformFlag |= ( O_WRONLY | O_CREAT | O_TRUNC );
+    }
+
+    return open( fsRep.data(), platformFlag, 0666 );
 }
 
-void closeFile(PlatformFileHandle& handle)
+void closeFile( PlatformFileHandle &handle )
 {
-    if (isHandleValid(handle)) {
-        close(handle);
+    if ( isHandleValid( handle ) )
+    {
+        close( handle );
         handle = invalidPlatformFileHandle;
     }
 }
 
-long long seekFile(PlatformFileHandle handle, long long offset, FileSeekOrigin origin)
+long long seekFile( PlatformFileHandle handle, long long offset, FileSeekOrigin origin )
 {
     int whence = SEEK_SET;
-    switch (origin) {
-    case SeekFromBeginning:
-        whence = SEEK_SET;
-        break;
-    case SeekFromCurrent:
-        whence = SEEK_CUR;
-        break;
-    case SeekFromEnd:
-        whence = SEEK_END;
-        break;
-    default:
-        ASSERT_NOT_REACHED();
+
+    switch ( origin )
+    {
+        case SeekFromBeginning:
+            whence = SEEK_SET;
+            break;
+
+        case SeekFromCurrent:
+            whence = SEEK_CUR;
+            break;
+
+        case SeekFromEnd:
+            whence = SEEK_END;
+            break;
+
+        default:
+            ASSERT_NOT_REACHED();
     }
-    return static_cast<long long>(lseek(handle, offset, whence));
+
+    return static_cast<long long>( lseek( handle, offset, whence ) );
 }
 
-bool truncateFile(PlatformFileHandle handle, long long offset)
+bool truncateFile( PlatformFileHandle handle, long long offset )
 {
     // ftruncate returns 0 to indicate the success.
-    return !ftruncate(handle, offset);
+    return !ftruncate( handle, offset );
 }
 
-int writeToFile(PlatformFileHandle handle, const char* data, int length)
+int writeToFile( PlatformFileHandle handle, const char *data, int length )
 {
-    do {
-        int bytesWritten = write(handle, data, static_cast<size_t>(length));
-        if (bytesWritten >= 0)
+    do
+    {
+        int bytesWritten = write( handle, data, static_cast<size_t>( length ) );
+
+        if ( bytesWritten >= 0 )
+        {
             return bytesWritten;
-    } while (errno == EINTR);
+        }
+    }
+    while ( errno == EINTR );
+
     return -1;
 }
 
-int readFromFile(PlatformFileHandle handle, char* data, int length)
+int readFromFile( PlatformFileHandle handle, char *data, int length )
 {
-    do {
-        int bytesRead = read(handle, data, static_cast<size_t>(length));
-        if (bytesRead >= 0)
+    do
+    {
+        int bytesRead = read( handle, data, static_cast<size_t>( length ) );
+
+        if ( bytesRead >= 0 )
+        {
             return bytesRead;
-    } while (errno == EINTR);
+        }
+    }
+    while ( errno == EINTR );
+
     return -1;
 }
 
-bool deleteEmptyDirectory(const String& path)
+bool deleteEmptyDirectory( const String &path )
 {
-    CString fsRep = fileSystemRepresentation(path);
+    CString fsRep = fileSystemRepresentation( path );
 
-    if (!fsRep.data() || fsRep.data()[0] == '\0')
+    if ( !fsRep.data() || fsRep.data()[0] == '\0' )
+    {
         return false;
+    }
 
     // rmdir(...) returns 0 on successful deletion of the path and non-zero in any other case (including invalid permissions or non-existent file)
-    return !rmdir(fsRep.data());
+    return !rmdir( fsRep.data() );
 }
 
-bool getFileSize(const String& path, long long& result)
+bool getFileSize( const String &path, long long &result )
 {
-    CString fsRep = fileSystemRepresentation(path);
+    CString fsRep = fileSystemRepresentation( path );
 
-    if (!fsRep.data() || fsRep.data()[0] == '\0')
+    if ( !fsRep.data() || fsRep.data()[0] == '\0' )
+    {
         return false;
+    }
 
     struct stat fileInfo;
 
-    if (stat(fsRep.data(), &fileInfo))
+    if ( stat( fsRep.data(), &fileInfo ) )
+    {
         return false;
+    }
 
     result = fileInfo.st_size;
     return true;
 }
 
-bool getFileModificationTime(const String& path, time_t& result)
+bool getFileModificationTime( const String &path, time_t &result )
 {
-    CString fsRep = fileSystemRepresentation(path);
+    CString fsRep = fileSystemRepresentation( path );
 
-    if (!fsRep.data() || fsRep.data()[0] == '\0')
+    if ( !fsRep.data() || fsRep.data()[0] == '\0' )
+    {
         return false;
+    }
 
     struct stat fileInfo;
 
-    if (stat(fsRep.data(), &fileInfo))
+    if ( stat( fsRep.data(), &fileInfo ) )
+    {
         return false;
+    }
 
     result = fileInfo.st_mtime;
     return true;
 }
 
-String pathByAppendingComponent(const String& path, const String& component)
+String pathByAppendingComponent( const String &path, const String &component )
 {
-    if (path.endsWith("/"))
+    if ( path.endsWith( "/" ) )
+    {
         return path + component;
+    }
     else
+    {
         return path + "/" + component;
+    }
 }
 
-bool makeAllDirectories(const String& path)
+bool makeAllDirectories( const String &path )
 {
-    CString fullPath = fileSystemRepresentation(path);
-    if (!access(fullPath.data(), F_OK))
-        return true;
+    CString fullPath = fileSystemRepresentation( path );
 
-    char* p = fullPath.mutableData() + 1;
+    if ( !access( fullPath.data(), F_OK ) )
+    {
+        return true;
+    }
+
+    char *p = fullPath.mutableData() + 1;
     int length = fullPath.length();
 
-    if(p[length - 1] == '/')
+    if ( p[length - 1] == '/' )
+    {
         p[length - 1] = '\0';
-    for (; *p; ++p)
-        if (*p == '/') {
+    }
+
+    for ( ; *p; ++p )
+        if ( *p == '/' )
+        {
             *p = '\0';
-            if (access(fullPath.data(), F_OK))
-                if (mkdir(fullPath.data(), S_IRWXU))
+
+            if ( access( fullPath.data(), F_OK ) )
+                if ( mkdir( fullPath.data(), S_IRWXU ) )
+                {
                     return false;
+                }
+
             *p = '/';
         }
-    if (access(fullPath.data(), F_OK))
-        if (mkdir(fullPath.data(), S_IRWXU))
+
+    if ( access( fullPath.data(), F_OK ) )
+        if ( mkdir( fullPath.data(), S_IRWXU ) )
+        {
             return false;
+        }
 
     return true;
 }
 
-String pathGetFileName(const String& path)
+String pathGetFileName( const String &path )
 {
-    return path.substring(path.reverseFind('/') + 1);
+    return path.substring( path.reverseFind( '/' ) + 1 );
 }
 
-String directoryName(const String& path)
+String directoryName( const String &path )
 {
-    CString fsRep = fileSystemRepresentation(path);
+    CString fsRep = fileSystemRepresentation( path );
 
-    if (!fsRep.data() || fsRep.data()[0] == '\0')
+    if ( !fsRep.data() || fsRep.data()[0] == '\0' )
+    {
         return String();
+    }
 
-    return dirname(fsRep.mutableData());
+    return dirname( fsRep.mutableData() );
 }
 
 #if !PLATFORM(EFL)
-Vector<String> listDirectory(const String& path, const String& filter)
+Vector<String> listDirectory( const String &path, const String &filter )
 {
     Vector<String> entries;
     CString cpath = path.utf8();
     CString cfilter = filter.utf8();
-    DIR* dir = opendir(cpath.data());
-    if (dir) {
-        struct dirent* dp;
-        while ((dp = readdir(dir))) {
-            const char* name = dp->d_name;
-            if (!strcmp(name, ".") || !strcmp(name, ".."))
+    DIR *dir = opendir( cpath.data() );
+
+    if ( dir )
+    {
+        struct dirent *dp;
+
+        while ( ( dp = readdir( dir ) ) )
+        {
+            const char *name = dp->d_name;
+
+            if ( !strcmp( name, "." ) || !strcmp( name, ".." ) )
+            {
                 continue;
-            if (fnmatch(cfilter.data(), name, 0))
+            }
+
+            if ( fnmatch( cfilter.data(), name, 0 ) )
+            {
                 continue;
+            }
+
             char filePath[1024];
-            if (static_cast<int>(sizeof(filePath) - 1) < snprintf(filePath, sizeof(filePath), "%s/%s", cpath.data(), name))
-                continue; // buffer overflow
-            entries.append(filePath);
+
+            if ( static_cast<int>( sizeof( filePath ) - 1 ) < snprintf( filePath, sizeof( filePath ), "%s/%s", cpath.data(), name ) )
+            {
+                continue;    // buffer overflow
+            }
+
+            entries.append( filePath );
         }
-        closedir(dir);
+
+        closedir( dir );
     }
+
     return entries;
 }
 #endif

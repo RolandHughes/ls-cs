@@ -28,34 +28,36 @@
 #include "SVGFELightElement.h"
 #include "SVGFilterPrimitiveStandardAttributes.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SVGFESpecularLightingElement : public SVGFilterPrimitiveStandardAttributes {
+class SVGFESpecularLightingElement : public SVGFilterPrimitiveStandardAttributes
+{
 public:
-    static PassRefPtr<SVGFESpecularLightingElement> create(const QualifiedName&, Document*);
-    void lightElementAttributeChanged(const SVGFELightElement*, const QualifiedName&);
+    static PassRefPtr<SVGFESpecularLightingElement> create( const QualifiedName &, Document * );
+    void lightElementAttributeChanged( const SVGFELightElement *, const QualifiedName & );
 
 private:
-    SVGFESpecularLightingElement(const QualifiedName&, Document*);
-    
-    virtual void parseMappedAttribute(Attribute*);
-    virtual bool setFilterEffectAttribute(FilterEffect*, const QualifiedName&);
-    virtual void svgAttributeChanged(const QualifiedName&);
-    virtual void synchronizeProperty(const QualifiedName&);
-    virtual void fillAttributeToPropertyTypeMap();
-    virtual AttributeToPropertyTypeMap& attributeToPropertyTypeMap();
-    virtual PassRefPtr<FilterEffect> build(SVGFilterBuilder*, Filter*);
+    SVGFESpecularLightingElement( const QualifiedName &, Document * );
 
-    static const AtomicString& kernelUnitLengthXIdentifier();
-    static const AtomicString& kernelUnitLengthYIdentifier();
+    virtual void parseMappedAttribute( Attribute * );
+    virtual bool setFilterEffectAttribute( FilterEffect *, const QualifiedName & );
+    virtual void svgAttributeChanged( const QualifiedName & );
+    virtual void synchronizeProperty( const QualifiedName & );
+    virtual void fillAttributeToPropertyTypeMap();
+    virtual AttributeToPropertyTypeMap &attributeToPropertyTypeMap();
+    virtual PassRefPtr<FilterEffect> build( SVGFilterBuilder *, Filter * );
+
+    static const AtomicString &kernelUnitLengthXIdentifier();
+    static const AtomicString &kernelUnitLengthYIdentifier();
 
     // Animated property declarations
-    DECLARE_ANIMATED_STRING(In1, in1)
-    DECLARE_ANIMATED_NUMBER(SpecularConstant, specularConstant)
-    DECLARE_ANIMATED_NUMBER(SpecularExponent, specularExponent)
-    DECLARE_ANIMATED_NUMBER(SurfaceScale, surfaceScale)
-    DECLARE_ANIMATED_NUMBER(KernelUnitLengthX, kernelUnitLengthX)
-    DECLARE_ANIMATED_NUMBER(KernelUnitLengthY, kernelUnitLengthY)
+    DECLARE_ANIMATED_STRING( In1, in1 )
+    DECLARE_ANIMATED_NUMBER( SpecularConstant, specularConstant )
+    DECLARE_ANIMATED_NUMBER( SpecularExponent, specularExponent )
+    DECLARE_ANIMATED_NUMBER( SurfaceScale, surfaceScale )
+    DECLARE_ANIMATED_NUMBER( KernelUnitLengthX, kernelUnitLengthX )
+    DECLARE_ANIMATED_NUMBER( KernelUnitLengthY, kernelUnitLengthY )
 };
 
 } // namespace WebCore

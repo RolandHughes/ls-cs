@@ -25,8 +25,8 @@
 
 #include <qmediacontrol_p.h>
 
-QCameraFeedbackControl::QCameraFeedbackControl(QObject *parent)
-   : QMediaControl(*new QMediaControlPrivate, parent)
+QCameraFeedbackControl::QCameraFeedbackControl( QObject *parent )
+    : QMediaControl( *new QMediaControlPrivate, parent )
 {
 }
 

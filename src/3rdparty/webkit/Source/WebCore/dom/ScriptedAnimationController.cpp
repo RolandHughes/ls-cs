@@ -33,12 +33,13 @@
 #include "FrameView.h"
 #include "RequestAnimationFrameCallback.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-ScriptedAnimationController::ScriptedAnimationController(Document* document)
-    : m_document(document)
-    , m_nextCallbackId(0)
-    , m_suspendCount(0)
+ScriptedAnimationController::ScriptedAnimationController( Document *document )
+    : m_document( document )
+    , m_nextCallbackId( 0 )
+    , m_suspendCount( 0 )
 {
 }
 
@@ -50,39 +51,52 @@ void ScriptedAnimationController::suspend()
 void ScriptedAnimationController::resume()
 {
     --m_suspendCount;
-    if (!m_suspendCount && m_callbacks.size())
-        if (FrameView* fv = m_document->view())
+
+    if ( !m_suspendCount && m_callbacks.size() )
+        if ( FrameView *fv = m_document->view() )
+        {
             fv->scheduleAnimation();
+        }
 }
 
-ScriptedAnimationController::CallbackId ScriptedAnimationController::registerCallback(PassRefPtr<RequestAnimationFrameCallback> callback, Element* animationElement)
+ScriptedAnimationController::CallbackId ScriptedAnimationController::registerCallback( PassRefPtr<RequestAnimationFrameCallback>
+        callback, Element *animationElement )
 {
     ScriptedAnimationController::CallbackId id = m_nextCallbackId++;
     callback->m_firedOrCancelled = false;
     callback->m_id = id;
     callback->m_element = animationElement;
-    m_callbacks.append(callback);
-    if (!m_suspendCount)
-        if (FrameView* view = m_document->view())
+    m_callbacks.append( callback );
+
+    if ( !m_suspendCount )
+        if ( FrameView *view = m_document->view() )
+        {
             view->scheduleAnimation();
+        }
+
     return id;
 }
 
-void ScriptedAnimationController::cancelCallback(CallbackId id)
+void ScriptedAnimationController::cancelCallback( CallbackId id )
 {
-    for (size_t i = 0; i < m_callbacks.size(); ++i) {
-        if (m_callbacks[i]->m_id == id) {
+    for ( size_t i = 0; i < m_callbacks.size(); ++i )
+    {
+        if ( m_callbacks[i]->m_id == id )
+        {
             m_callbacks[i]->m_firedOrCancelled = true;
-            m_callbacks.remove(i);
+            m_callbacks.remove( i );
             return;
         }
     }
 }
 
-void ScriptedAnimationController::serviceScriptedAnimations(DOMTimeStamp time)
+void ScriptedAnimationController::serviceScriptedAnimations( DOMTimeStamp time )
 {
-    if (!m_callbacks.size() || m_suspendCount)
+    if ( !m_callbacks.size() || m_suspendCount )
+    {
         return;
+    }
+
     // We want to run the callback for all elements in the document that have registered
     // for a callback and that are visible.  Running the callbacks can cause new callbacks
     // to be registered, existing callbacks to be cancelled, and elements to gain or lose
@@ -92,40 +106,54 @@ void ScriptedAnimationController::serviceScriptedAnimations(DOMTimeStamp time)
 
     // First, generate a list of callbacks to consider.  Callbacks registered from this point
     // on are considered only for the "next" frame, not this one.
-    CallbackList callbacks(m_callbacks);
+    CallbackList callbacks( m_callbacks );
 
     // Firing the callback may cause the visibility of other elements to change.  To avoid
     // missing any callbacks, we keep iterating through the list of candiate callbacks and firing
     // them until nothing new becomes visible.
     bool firedCallback;
-    do {
+
+    do
+    {
         firedCallback = false;
         // A previous iteration may have invalidated style (or layout).  Update styles for each iteration
         // for now since all we check is the existence of a renderer.
         m_document->updateStyleIfNeeded();
-        for (size_t i = 0; i < callbacks.size(); ++i) {
-            RequestAnimationFrameCallback* callback = callbacks[i].get();
-            if (!callback->m_firedOrCancelled && (!callback->m_element || callback->m_element->renderer())) {
+
+        for ( size_t i = 0; i < callbacks.size(); ++i )
+        {
+            RequestAnimationFrameCallback *callback = callbacks[i].get();
+
+            if ( !callback->m_firedOrCancelled && ( !callback->m_element || callback->m_element->renderer() ) )
+            {
                 callback->m_firedOrCancelled = true;
-                callback->handleEvent(time);
+                callback->handleEvent( time );
                 firedCallback = true;
-                callbacks.remove(i);
+                callbacks.remove( i );
                 break;
             }
         }
-    } while (firedCallback);
+    }
+    while ( firedCallback );
 
     // Remove any callbacks we fired from the list of pending callbacks.
-    for (size_t i = 0; i < m_callbacks.size();) {
-        if (m_callbacks[i]->m_firedOrCancelled)
-            m_callbacks.remove(i);
+    for ( size_t i = 0; i < m_callbacks.size(); )
+    {
+        if ( m_callbacks[i]->m_firedOrCancelled )
+        {
+            m_callbacks.remove( i );
+        }
         else
+        {
             ++i;
+        }
     }
 
-    if (m_callbacks.size())
-        if (FrameView* view = m_document->view())
+    if ( m_callbacks.size() )
+        if ( FrameView *view = m_document->view() )
+        {
             view->scheduleAnimation();
+        }
 }
 
 }

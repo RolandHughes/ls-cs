@@ -31,91 +31,124 @@
 
 #include "GeolocationClient.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-GeolocationController::GeolocationController(Page* page, GeolocationClient* client)
-    : m_page(page)
-    , m_client(client)
+GeolocationController::GeolocationController( Page *page, GeolocationClient *client )
+    : m_page( page )
+    , m_client( client )
 {
 }
 
 GeolocationController::~GeolocationController()
 {
-    ASSERT(m_observers.isEmpty());
+    ASSERT( m_observers.isEmpty() );
 
-    if (m_client)
+    if ( m_client )
+    {
         m_client->geolocationDestroyed();
+    }
 }
 
-void GeolocationController::addObserver(Geolocation* observer, bool enableHighAccuracy)
+void GeolocationController::addObserver( Geolocation *observer, bool enableHighAccuracy )
 {
     // This may be called multiple times with the same observer, though removeObserver()
     // is called only once with each.
     bool wasEmpty = m_observers.isEmpty();
-    m_observers.add(observer);
-    if (enableHighAccuracy)
-        m_highAccuracyObservers.add(observer);
+    m_observers.add( observer );
 
-    if (m_client) {        
-        if (enableHighAccuracy)
-            m_client->setEnableHighAccuracy(true);
-        if (wasEmpty)
+    if ( enableHighAccuracy )
+    {
+        m_highAccuracyObservers.add( observer );
+    }
+
+    if ( m_client )
+    {
+        if ( enableHighAccuracy )
+        {
+            m_client->setEnableHighAccuracy( true );
+        }
+
+        if ( wasEmpty )
+        {
             m_client->startUpdating();
+        }
     }
 }
 
-void GeolocationController::removeObserver(Geolocation* observer)
+void GeolocationController::removeObserver( Geolocation *observer )
 {
-    if (!m_observers.contains(observer))
+    if ( !m_observers.contains( observer ) )
+    {
         return;
+    }
 
-    m_observers.remove(observer);
-    m_highAccuracyObservers.remove(observer);
+    m_observers.remove( observer );
+    m_highAccuracyObservers.remove( observer );
 
-    if (m_client) {
-        if (m_observers.isEmpty())
+    if ( m_client )
+    {
+        if ( m_observers.isEmpty() )
+        {
             m_client->stopUpdating();
-        else if (m_highAccuracyObservers.isEmpty())
-            m_client->setEnableHighAccuracy(false);
+        }
+        else if ( m_highAccuracyObservers.isEmpty() )
+        {
+            m_client->setEnableHighAccuracy( false );
+        }
     }
 }
 
-void GeolocationController::requestPermission(Geolocation* geolocation)
+void GeolocationController::requestPermission( Geolocation *geolocation )
 {
-    if (m_client)
-        m_client->requestPermission(geolocation);
+    if ( m_client )
+    {
+        m_client->requestPermission( geolocation );
+    }
 }
 
-void GeolocationController::cancelPermissionRequest(Geolocation* geolocation)
+void GeolocationController::cancelPermissionRequest( Geolocation *geolocation )
 {
-    if (m_client)
-        m_client->cancelPermissionRequest(geolocation);
+    if ( m_client )
+    {
+        m_client->cancelPermissionRequest( geolocation );
+    }
 }
 
-void GeolocationController::positionChanged(GeolocationPosition* position)
+void GeolocationController::positionChanged( GeolocationPosition *position )
 {
     m_lastPosition = position;
     Vector<RefPtr<Geolocation> > observersVector;
-    copyToVector(m_observers, observersVector);
-    for (size_t i = 0; i < observersVector.size(); ++i)
+    copyToVector( m_observers, observersVector );
+
+    for ( size_t i = 0; i < observersVector.size(); ++i )
+    {
         observersVector[i]->positionChanged();
+    }
 }
 
-void GeolocationController::errorOccurred(GeolocationError* error)
+void GeolocationController::errorOccurred( GeolocationError *error )
 {
     Vector<RefPtr<Geolocation> > observersVector;
-    copyToVector(m_observers, observersVector);
-    for (size_t i = 0; i < observersVector.size(); ++i)
-        observersVector[i]->setError(error);
+    copyToVector( m_observers, observersVector );
+
+    for ( size_t i = 0; i < observersVector.size(); ++i )
+    {
+        observersVector[i]->setError( error );
+    }
 }
 
-GeolocationPosition* GeolocationController::lastPosition()
+GeolocationPosition *GeolocationController::lastPosition()
 {
-    if (m_lastPosition.get())
+    if ( m_lastPosition.get() )
+    {
         return m_lastPosition.get();
+    }
 
-    if (!m_client)
+    if ( !m_client )
+    {
         return 0;
+    }
 
     return m_client->lastPosition();
 }

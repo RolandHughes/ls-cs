@@ -45,97 +45,101 @@ class QSslError;
 class QSslKey;
 class QStringList;
 
-Q_NETWORK_EXPORT uint qHash(const QSslCertificate &key, uint seed = 0);
+Q_NETWORK_EXPORT uint qHash( const QSslCertificate &key, uint seed = 0 );
 
 class Q_NETWORK_EXPORT QSslCertificate
 {
- public:
-   enum SubjectInfo {
-      Organization,
-      CommonName,
-      LocalityName,
-      OrganizationalUnitName,
-      CountryName,
-      StateOrProvinceName,
-      DistinguishedNameQualifier,
-      SerialNumber,
-      EmailAddress
-   };
+public:
+    enum SubjectInfo
+    {
+        Organization,
+        CommonName,
+        LocalityName,
+        OrganizationalUnitName,
+        CountryName,
+        StateOrProvinceName,
+        DistinguishedNameQualifier,
+        SerialNumber,
+        EmailAddress
+    };
 
-   explicit QSslCertificate(QIODevice *device, QSsl::EncodingFormat format = QSsl::Pem);
-   explicit QSslCertificate(const QByteArray &data = QByteArray(), QSsl::EncodingFormat format = QSsl::Pem);
-   QSslCertificate(const QSslCertificate &other);
+    explicit QSslCertificate( QIODevice *device, QSsl::EncodingFormat format = QSsl::Pem );
+    explicit QSslCertificate( const QByteArray &data = QByteArray(), QSsl::EncodingFormat format = QSsl::Pem );
+    QSslCertificate( const QSslCertificate &other );
 
-   ~QSslCertificate();
+    ~QSslCertificate();
 
-   QSslCertificate &operator=(QSslCertificate &&other) {
-      swap(other);
-      return *this;
-   }
+    QSslCertificate &operator=( QSslCertificate &&other )
+    {
+        swap( other );
+        return *this;
+    }
 
-   QSslCertificate &operator=(const QSslCertificate &other);
+    QSslCertificate &operator=( const QSslCertificate &other );
 
-   void swap(QSslCertificate &other)  {
-      qSwap(d, other.d);
-   }
+    void swap( QSslCertificate &other )
+    {
+        qSwap( d, other.d );
+    }
 
-   bool operator==(const QSslCertificate &other) const;
-   bool operator!=(const QSslCertificate &other) const {
-      return !operator==(other);
-   }
+    bool operator==( const QSslCertificate &other ) const;
+    bool operator!=( const QSslCertificate &other ) const
+    {
+        return !operator==( other );
+    }
 
-   bool isNull() const;
+    bool isNull() const;
 
-   bool isBlacklisted() const;
-   bool isSelfSigned() const;
-   void clear();
+    bool isBlacklisted() const;
+    bool isSelfSigned() const;
+    void clear();
 
-   // Certificate info
-   QByteArray version() const;
-   QByteArray serialNumber() const;
-   QByteArray digest(QCryptographicHash::Algorithm algorithm = QCryptographicHash::Md5) const;
+    // Certificate info
+    QByteArray version() const;
+    QByteArray serialNumber() const;
+    QByteArray digest( QCryptographicHash::Algorithm algorithm = QCryptographicHash::Md5 ) const;
 
-   QStringList issuerInfo(SubjectInfo info) const;
-   QStringList issuerInfo(const QByteArray &attribute) const;
-   QStringList subjectInfo(SubjectInfo subject) const;
-   QStringList subjectInfo(const QByteArray &attribute) const;
+    QStringList issuerInfo( SubjectInfo info ) const;
+    QStringList issuerInfo( const QByteArray &attribute ) const;
+    QStringList subjectInfo( SubjectInfo subject ) const;
+    QStringList subjectInfo( const QByteArray &attribute ) const;
 
-   QList<QByteArray> subjectInfoAttributes() const;
-   QList<QByteArray> issuerInfoAttributes() const;
+    QList<QByteArray> subjectInfoAttributes() const;
+    QList<QByteArray> issuerInfoAttributes() const;
 
-   QMultiMap<QSsl::AlternativeNameEntryType, QString> subjectAlternativeNames() const;
+    QMultiMap<QSsl::AlternativeNameEntryType, QString> subjectAlternativeNames() const;
 
-   QDateTime effectiveDate() const;
-   QDateTime expiryDate() const;
-   QSslKey publicKey() const;
-   QList<QSslCertificateExtension> extensions() const;
+    QDateTime effectiveDate() const;
+    QDateTime expiryDate() const;
+    QSslKey publicKey() const;
+    QList<QSslCertificateExtension> extensions() const;
 
-   QByteArray toPem() const;
-   QByteArray toDer() const;
-   QString toText() const;
+    QByteArray toPem() const;
+    QByteArray toDer() const;
+    QString toText() const;
 
-   static QList<QSslCertificate> fromPath(const QString &path, QSsl::EncodingFormat format = QSsl::Pem,
-                  QPatternOption syntax = QPatternOption::WildcardOption);
+    static QList<QSslCertificate> fromPath( const QString &path, QSsl::EncodingFormat format = QSsl::Pem,
+                                            QPatternOption syntax = QPatternOption::WildcardOption );
 
-   static QList<QSslCertificate> fromDevice(QIODevice *device, QSsl::EncodingFormat format = QSsl::Pem);
-   static QList<QSslCertificate> fromData(const QByteArray &data, QSsl::EncodingFormat format = QSsl::Pem);
+    static QList<QSslCertificate> fromDevice( QIODevice *device, QSsl::EncodingFormat format = QSsl::Pem );
+    static QList<QSslCertificate> fromData( const QByteArray &data, QSsl::EncodingFormat format = QSsl::Pem );
 
-   static QList<QSslError> verify(const QList<QSslCertificate> &certificateChain, const QString &hostName = QString());
-   static bool importPkcs12(QIODevice *device, QSslKey *key, QSslCertificate *certificate,
-                  QList<QSslCertificate> *caCertificates = nullptr, const QByteArray &passPhrase = QByteArray());
+    static QList<QSslError> verify( const QList<QSslCertificate> &certificateChain, const QString &hostName = QString() );
+    static bool importPkcs12( QIODevice *device, QSslKey *key, QSslCertificate *certificate,
+                              QList<QSslCertificate> *caCertificates = nullptr, const QByteArray &passPhrase = QByteArray() );
 
-   Qt::HANDLE handle() const;
+    Qt::HANDLE handle() const;
 
- private:
-   QExplicitlySharedDataPointer<QSslCertificatePrivate> d;
-   friend class QSslCertificatePrivate;
-   friend class QSslSocketBackendPrivate;
+private:
+    QExplicitlySharedDataPointer<QSslCertificatePrivate> d;
+    friend class QSslCertificatePrivate;
+    friend class QSslSocketBackendPrivate;
 
-   friend Q_NETWORK_EXPORT uint qHash(const QSslCertificate &key, uint seed);
+    friend Q_NETWORK_EXPORT uint qHash( const QSslCertificate &key, uint seed );
 };
 
-Q_NETWORK_EXPORT QDebug operator<<(QDebug debug, const QSslCertificate &certificate);
-Q_NETWORK_EXPORT QDebug operator<<(QDebug debug, QSslCertificate::SubjectInfo info);
+Q_NETWORK_EXPORT QDebug operator<<( QDebug debug, const QSslCertificate &certificate );
+Q_NETWORK_EXPORT QDebug operator<<( QDebug debug, QSslCertificate::SubjectInfo info );
 
 #endif
 

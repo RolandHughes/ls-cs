@@ -29,38 +29,43 @@
 #include "SVGStyledTransformableElement.h"
 #include "SVGTests.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SVGCircleElement : public SVGStyledTransformableElement,
-                         public SVGTests,
-                         public SVGLangSpace,
-                         public SVGExternalResourcesRequired {
+    public SVGTests,
+    public SVGLangSpace,
+    public SVGExternalResourcesRequired
+{
 public:
-    static PassRefPtr<SVGCircleElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<SVGCircleElement> create( const QualifiedName &, Document * );
 
 private:
-    SVGCircleElement(const QualifiedName&, Document*);
+    SVGCircleElement( const QualifiedName &, Document * );
 
-    virtual bool isValid() const { return SVGTests::isValid(); }
+    virtual bool isValid() const
+    {
+        return SVGTests::isValid();
+    }
 
-    virtual void parseMappedAttribute(Attribute*);
-    virtual void svgAttributeChanged(const QualifiedName&);
-    virtual void synchronizeProperty(const QualifiedName&);
+    virtual void parseMappedAttribute( Attribute * );
+    virtual void svgAttributeChanged( const QualifiedName & );
+    virtual void synchronizeProperty( const QualifiedName & );
 
     virtual void fillAttributeToPropertyTypeMap();
-    virtual AttributeToPropertyTypeMap& attributeToPropertyTypeMap();
+    virtual AttributeToPropertyTypeMap &attributeToPropertyTypeMap();
 
-    virtual void toPathData(Path&) const;
+    virtual void toPathData( Path & ) const;
 
     virtual bool selfHasRelativeLengths() const;
 
     // Animated property declarations
-    DECLARE_ANIMATED_LENGTH(Cx, cx)
-    DECLARE_ANIMATED_LENGTH(Cy, cy)
-    DECLARE_ANIMATED_LENGTH(R, r)
+    DECLARE_ANIMATED_LENGTH( Cx, cx )
+    DECLARE_ANIMATED_LENGTH( Cy, cy )
+    DECLARE_ANIMATED_LENGTH( R, r )
 
     // SVGExternalResourcesRequired
-    DECLARE_ANIMATED_BOOLEAN(ExternalResourcesRequired, externalResourcesRequired)
+    DECLARE_ANIMATED_BOOLEAN( ExternalResourcesRequired, externalResourcesRequired )
 };
 
 } // namespace WebCore

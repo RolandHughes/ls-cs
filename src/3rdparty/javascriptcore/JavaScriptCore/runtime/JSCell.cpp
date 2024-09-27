@@ -28,7 +28,8 @@
 #include "JSObject.h"
 #include <wtf/MathExtras.h>
 
-namespace JSC {
+namespace JSC
+{
 
 #if defined NAN && defined INFINITY
 
@@ -47,133 +48,148 @@ extern const double Inf = INFINITY;
 // while NaN_double has to be 4-byte aligned for 32-bits.
 // With -fstrict-aliasing enabled, unions are the only safe way to do type masquerading.
 
-static const union {
-    struct {
+static const union
+{
+    struct
+    {
         unsigned char NaN_Bytes[8];
         unsigned char Inf_Bytes[8];
     } bytes;
-    
-    struct {
+
+    struct
+    {
         double NaN_Double;
         double Inf_Double;
     } doubles;
-    
+
 } NaNInf = { {
 #if CPU(BIG_ENDIAN)
-    { 0x7f, 0xf8, 0, 0, 0, 0, 0, 0 },
-    { 0x7f, 0xf0, 0, 0, 0, 0, 0, 0 }
+        { 0x7f, 0xf8, 0, 0, 0, 0, 0, 0 },
+        { 0x7f, 0xf0, 0, 0, 0, 0, 0, 0 }
 #elif CPU(MIDDLE_ENDIAN)
-    { 0, 0, 0xf8, 0x7f, 0, 0, 0, 0 },
-    { 0, 0, 0xf0, 0x7f, 0, 0, 0, 0 }
+        { 0, 0, 0xf8, 0x7f, 0, 0, 0, 0 },
+        { 0, 0, 0xf0, 0x7f, 0, 0, 0, 0 }
 #else
-    { 0, 0, 0, 0, 0, 0, 0xf8, 0x7f },
-    { 0, 0, 0, 0, 0, 0, 0xf0, 0x7f }
+        { 0, 0, 0, 0, 0, 0, 0xf8, 0x7f },
+        { 0, 0, 0, 0, 0, 0, 0xf0, 0x7f }
 #endif
-} } ;
+    }
+} ;
 
 extern const double NaN = NaNInf.doubles.NaN_Double;
 extern const double Inf = NaNInf.doubles.Inf_Double;
- 
+
 #endif // !(defined NAN && defined INFINITY)
 
-bool JSCell::getUInt32(uint32_t&) const
+bool JSCell::getUInt32( uint32_t & ) const
 {
     return false;
 }
 
-bool JSCell::getString(ExecState* exec, UString&stringValue) const
+bool JSCell::getString( ExecState *exec, UString &stringValue ) const
 {
-    if (!isString())
+    if ( !isString() )
+    {
         return false;
-    stringValue = static_cast<const JSString*>(this)->value(exec);
+    }
+
+    stringValue = static_cast<const JSString *>( this )->value( exec );
     return true;
 }
 
-UString JSCell::getString(ExecState* exec) const
+UString JSCell::getString( ExecState *exec ) const
 {
-    return isString() ? static_cast<const JSString*>(this)->value(exec) : UString();
+    return isString() ? static_cast<const JSString *>( this )->value( exec ) : UString();
 }
 
-JSObject* JSCell::getObject()
+JSObject *JSCell::getObject()
 {
-    return isObject() ? asObject(this) : 0;
+    return isObject() ? asObject( this ) : 0;
 }
 
-const JSObject* JSCell::getObject() const
+const JSObject *JSCell::getObject() const
 {
-    return isObject() ? static_cast<const JSObject*>(this) : 0;
+    return isObject() ? static_cast<const JSObject *>( this ) : 0;
 }
 
-CallType JSCell::getCallData(CallData&)
+CallType JSCell::getCallData( CallData & )
 {
     return CallTypeNone;
 }
 
-ConstructType JSCell::getConstructData(ConstructData&)
+ConstructType JSCell::getConstructData( ConstructData & )
 {
     return ConstructTypeNone;
 }
 
-bool JSCell::getOwnPropertySlot(ExecState* exec, const Identifier& identifier, PropertySlot& slot)
+bool JSCell::getOwnPropertySlot( ExecState *exec, const Identifier &identifier, PropertySlot &slot )
 {
     // This is not a general purpose implementation of getOwnPropertySlot.
     // It should only be called by JSValue::get.
     // It calls getPropertySlot, not getOwnPropertySlot.
-    JSObject* object = toObject(exec);
-    slot.setBase(object);
-    if (!object->getPropertySlot(exec, identifier, slot))
+    JSObject *object = toObject( exec );
+    slot.setBase( object );
+
+    if ( !object->getPropertySlot( exec, identifier, slot ) )
+    {
         slot.setUndefined();
+    }
+
     return true;
 }
 
-bool JSCell::getOwnPropertySlot(ExecState* exec, unsigned identifier, PropertySlot& slot)
+bool JSCell::getOwnPropertySlot( ExecState *exec, unsigned identifier, PropertySlot &slot )
 {
     // This is not a general purpose implementation of getOwnPropertySlot.
     // It should only be called by JSValue::get.
     // It calls getPropertySlot, not getOwnPropertySlot.
-    JSObject* object = toObject(exec);
-    slot.setBase(object);
-    if (!object->getPropertySlot(exec, identifier, slot))
+    JSObject *object = toObject( exec );
+    slot.setBase( object );
+
+    if ( !object->getPropertySlot( exec, identifier, slot ) )
+    {
         slot.setUndefined();
+    }
+
     return true;
 }
 
-void JSCell::put(ExecState* exec, const Identifier& identifier, JSValue value, PutPropertySlot& slot)
+void JSCell::put( ExecState *exec, const Identifier &identifier, JSValue value, PutPropertySlot &slot )
 {
-    toObject(exec)->put(exec, identifier, value, slot);
+    toObject( exec )->put( exec, identifier, value, slot );
 }
 
-void JSCell::put(ExecState* exec, unsigned identifier, JSValue value)
+void JSCell::put( ExecState *exec, unsigned identifier, JSValue value )
 {
-    toObject(exec)->put(exec, identifier, value);
+    toObject( exec )->put( exec, identifier, value );
 }
 
-bool JSCell::deleteProperty(ExecState* exec, const Identifier& identifier)
+bool JSCell::deleteProperty( ExecState *exec, const Identifier &identifier )
 {
-    return toObject(exec)->deleteProperty(exec, identifier);
+    return toObject( exec )->deleteProperty( exec, identifier );
 }
 
-bool JSCell::deleteProperty(ExecState* exec, unsigned identifier)
+bool JSCell::deleteProperty( ExecState *exec, unsigned identifier )
 {
-    return toObject(exec)->deleteProperty(exec, identifier);
+    return toObject( exec )->deleteProperty( exec, identifier );
 }
 
-JSObject* JSCell::toThisObject(ExecState* exec) const
+JSObject *JSCell::toThisObject( ExecState *exec ) const
 {
-    return toObject(exec);
+    return toObject( exec );
 }
 
-UString JSCell::toThisString(ExecState* exec) const
+UString JSCell::toThisString( ExecState *exec ) const
 {
-    return toThisObject(exec)->toString(exec);
+    return toThisObject( exec )->toString( exec );
 }
 
-JSString* JSCell::toThisJSString(ExecState* exec)
+JSString *JSCell::toThisJSString( ExecState *exec )
 {
-    return jsString(exec, toThisString(exec));
+    return jsString( exec, toThisString( exec ) );
 }
 
-const ClassInfo* JSCell::classInfo() const
+const ClassInfo *JSCell::classInfo() const
 {
     return 0;
 }
@@ -188,37 +204,37 @@ bool JSCell::isGetterSetter() const
     return false;
 }
 
-JSValue JSCell::toPrimitive(ExecState*, PreferredPrimitiveType) const
+JSValue JSCell::toPrimitive( ExecState *, PreferredPrimitiveType ) const
 {
     ASSERT_NOT_REACHED();
     return JSValue();
 }
 
-bool JSCell::getPrimitiveNumber(ExecState*, double&, JSValue&)
+bool JSCell::getPrimitiveNumber( ExecState *, double &, JSValue & )
 {
     ASSERT_NOT_REACHED();
     return false;
 }
 
-bool JSCell::toBoolean(ExecState*) const
+bool JSCell::toBoolean( ExecState * ) const
 {
     ASSERT_NOT_REACHED();
     return false;
 }
 
-double JSCell::toNumber(ExecState*) const
+double JSCell::toNumber( ExecState * ) const
 {
     ASSERT_NOT_REACHED();
     return 0;
 }
 
-UString JSCell::toString(ExecState*) const
+UString JSCell::toString( ExecState * ) const
 {
     ASSERT_NOT_REACHED();
     return UString();
 }
 
-JSObject* JSCell::toObject(ExecState*) const
+JSObject *JSCell::toObject( ExecState * ) const
 {
     ASSERT_NOT_REACHED();
     return 0;

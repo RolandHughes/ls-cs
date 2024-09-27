@@ -27,30 +27,32 @@
 #include "SVGAnimatedNumber.h"
 #include "SVGAnimatedNumberList.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SVGComponentTransferFunctionElement : public SVGElement {
+class SVGComponentTransferFunctionElement : public SVGElement
+{
 public:
     ComponentTransferFunction transferFunction() const;
 
 protected:
-    SVGComponentTransferFunctionElement(const QualifiedName&, Document*);
+    SVGComponentTransferFunctionElement( const QualifiedName &, Document * );
 
-    virtual void parseMappedAttribute(Attribute*);
-    virtual void svgAttributeChanged(const QualifiedName&);
-    virtual void synchronizeProperty(const QualifiedName&);
+    virtual void parseMappedAttribute( Attribute * );
+    virtual void svgAttributeChanged( const QualifiedName & );
+    virtual void synchronizeProperty( const QualifiedName & );
     virtual void fillAttributeToPropertyTypeMap();
-    virtual AttributeToPropertyTypeMap& attributeToPropertyTypeMap();
-    
+    virtual AttributeToPropertyTypeMap &attributeToPropertyTypeMap();
+
 private:
     // Animated property declarations
-    DECLARE_ANIMATED_ENUMERATION(Type, type)
-    DECLARE_ANIMATED_NUMBER_LIST(TableValues, tableValues)
-    DECLARE_ANIMATED_NUMBER(Slope, slope)
-    DECLARE_ANIMATED_NUMBER(Intercept, intercept)
-    DECLARE_ANIMATED_NUMBER(Amplitude, amplitude)
-    DECLARE_ANIMATED_NUMBER(Exponent, exponent)
-    DECLARE_ANIMATED_NUMBER(Offset, offset)
+    DECLARE_ANIMATED_ENUMERATION( Type, type )
+    DECLARE_ANIMATED_NUMBER_LIST( TableValues, tableValues )
+    DECLARE_ANIMATED_NUMBER( Slope, slope )
+    DECLARE_ANIMATED_NUMBER( Intercept, intercept )
+    DECLARE_ANIMATED_NUMBER( Amplitude, amplitude )
+    DECLARE_ANIMATED_NUMBER( Exponent, exponent )
+    DECLARE_ANIMATED_NUMBER( Offset, offset )
 };
 
 } // namespace WebCore

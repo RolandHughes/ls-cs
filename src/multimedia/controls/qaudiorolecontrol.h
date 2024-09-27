@@ -30,24 +30,24 @@
 
 class Q_MULTIMEDIA_EXPORT QAudioRoleControl : public QMediaControl
 {
-   MULTI_CS_OBJECT(QAudioRoleControl)
+    MULTI_CS_OBJECT( QAudioRoleControl )
 
- public:
-   virtual ~QAudioRoleControl();
+public:
+    virtual ~QAudioRoleControl();
 
-   virtual QAudio::Role audioRole() const = 0;
-   virtual void setAudioRole(QAudio::Role role) = 0;
+    virtual QAudio::Role audioRole() const = 0;
+    virtual void setAudioRole( QAudio::Role role ) = 0;
 
-   virtual QList<QAudio::Role> supportedAudioRoles() const = 0;
+    virtual QList<QAudio::Role> supportedAudioRoles() const = 0;
 
-   MULTI_CS_SIGNAL_1(Public, void audioRoleChanged(QAudio::Role role))
-   MULTI_CS_SIGNAL_2(audioRoleChanged, role)
+    MULTI_CS_SIGNAL_1( Public, void audioRoleChanged( QAudio::Role role ) )
+    MULTI_CS_SIGNAL_2( audioRoleChanged, role )
 
- protected:
-   explicit QAudioRoleControl(QObject *parent = nullptr);
+protected:
+    explicit QAudioRoleControl( QObject *parent = nullptr );
 };
 
 #define QAudioRoleControl_iid "com.copperspice.CS.audioRoleControl/1.0"
-CS_DECLARE_INTERFACE(QAudioRoleControl, QAudioRoleControl_iid)
+CS_DECLARE_INTERFACE( QAudioRoleControl, QAudioRoleControl_iid )
 
 #endif

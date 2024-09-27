@@ -29,9 +29,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSPerformanceNavigation);
+ASSERT_CLASS_FITS_IN_CELL( JSPerformanceNavigation );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -42,9 +43,9 @@ ASSERT_CLASS_FITS_IN_CELL(JSPerformanceNavigation);
 
 static const HashTableValue JSPerformanceNavigationTableValues[3] =
 {
-    { "type", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsPerformanceNavigationType), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "redirectCount", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsPerformanceNavigationRedirectCount), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "type", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsPerformanceNavigationType ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "redirectCount", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsPerformanceNavigationRedirectCount ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -58,110 +59,118 @@ static JSC_CONST_HASHTABLE HashTable JSPerformanceNavigationTable = { 5, 3, JSPe
 
 static const HashTableValue JSPerformanceNavigationPrototypeTableValues[5] =
 {
-    { "TYPE_NAVIGATE", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsPerformanceNavigationTYPE_NAVIGATE), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "TYPE_RELOAD", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsPerformanceNavigationTYPE_RELOAD), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "TYPE_BACK_FORWARD", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsPerformanceNavigationTYPE_BACK_FORWARD), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "TYPE_RESERVED", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsPerformanceNavigationTYPE_RESERVED), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "TYPE_NAVIGATE", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsPerformanceNavigationTYPE_NAVIGATE ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "TYPE_RELOAD", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsPerformanceNavigationTYPE_RELOAD ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "TYPE_BACK_FORWARD", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsPerformanceNavigationTYPE_BACK_FORWARD ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "TYPE_RESERVED", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsPerformanceNavigationTYPE_RESERVED ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSPerformanceNavigationPrototypeTable = { 9, 7, JSPerformanceNavigationPrototypeTableValues, 0 };
 const ClassInfo JSPerformanceNavigationPrototype::s_info = { "PerformanceNavigationPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSPerformanceNavigationPrototypeTable, 0 };
 
-JSObject* JSPerformanceNavigationPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSPerformanceNavigationPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSPerformanceNavigation>(exec, globalObject);
+    return getDOMPrototype<JSPerformanceNavigation>( exec, globalObject );
 }
 
-bool JSPerformanceNavigationPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSPerformanceNavigationPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSPerformanceNavigationPrototype, JSObject>(exec, &JSPerformanceNavigationPrototypeTable, this, propertyName, slot);
+    return getStaticValueSlot<JSPerformanceNavigationPrototype, JSObject>( exec, &JSPerformanceNavigationPrototypeTable, this,
+            propertyName, slot );
 }
 
-bool JSPerformanceNavigationPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSPerformanceNavigationPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSPerformanceNavigationPrototype, JSObject>(exec, &JSPerformanceNavigationPrototypeTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSPerformanceNavigationPrototype, JSObject>( exec, &JSPerformanceNavigationPrototypeTable, this,
+            propertyName, descriptor );
 }
 
 const ClassInfo JSPerformanceNavigation::s_info = { "PerformanceNavigation", &JSDOMWrapper::s_info, &JSPerformanceNavigationTable, 0 };
 
-JSPerformanceNavigation::JSPerformanceNavigation(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<PerformanceNavigation> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSPerformanceNavigation::JSPerformanceNavigation( Structure *structure, JSDOMGlobalObject *globalObject,
+        PassRefPtr<PerformanceNavigation> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSPerformanceNavigation::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSPerformanceNavigation::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSPerformanceNavigationPrototype(exec->globalData(), globalObject, JSPerformanceNavigationPrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSPerformanceNavigationPrototype( exec->globalData(), globalObject,
+            JSPerformanceNavigationPrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSPerformanceNavigation::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSPerformanceNavigation::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSPerformanceNavigation, Base>(exec, &JSPerformanceNavigationTable, this, propertyName, slot);
+    return getStaticValueSlot<JSPerformanceNavigation, Base>( exec, &JSPerformanceNavigationTable, this, propertyName, slot );
 }
 
-bool JSPerformanceNavigation::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSPerformanceNavigation::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSPerformanceNavigation, Base>(exec, &JSPerformanceNavigationTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSPerformanceNavigation, Base>( exec, &JSPerformanceNavigationTable, this, propertyName,
+            descriptor );
 }
 
-JSValue jsPerformanceNavigationType(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsPerformanceNavigationType( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSPerformanceNavigation* castedThis = static_cast<JSPerformanceNavigation*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    PerformanceNavigation* imp = static_cast<PerformanceNavigation*>(castedThis->impl());
-    JSValue result = jsNumber(imp->type());
+    JSPerformanceNavigation *castedThis = static_cast<JSPerformanceNavigation *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    PerformanceNavigation *imp = static_cast<PerformanceNavigation *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->type() );
     return result;
 }
 
 
-JSValue jsPerformanceNavigationRedirectCount(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsPerformanceNavigationRedirectCount( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSPerformanceNavigation* castedThis = static_cast<JSPerformanceNavigation*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    PerformanceNavigation* imp = static_cast<PerformanceNavigation*>(castedThis->impl());
-    JSValue result = jsNumber(imp->redirectCount());
+    JSPerformanceNavigation *castedThis = static_cast<JSPerformanceNavigation *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    PerformanceNavigation *imp = static_cast<PerformanceNavigation *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->redirectCount() );
     return result;
 }
 
 
 // Constant getters
 
-JSValue jsPerformanceNavigationTYPE_NAVIGATE(ExecState* exec, JSValue, const Identifier&)
+JSValue jsPerformanceNavigationTYPE_NAVIGATE( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(0));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 0 ) );
 }
 
-JSValue jsPerformanceNavigationTYPE_RELOAD(ExecState* exec, JSValue, const Identifier&)
+JSValue jsPerformanceNavigationTYPE_RELOAD( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(1));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 1 ) );
 }
 
-JSValue jsPerformanceNavigationTYPE_BACK_FORWARD(ExecState* exec, JSValue, const Identifier&)
+JSValue jsPerformanceNavigationTYPE_BACK_FORWARD( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(2));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 2 ) );
 }
 
-JSValue jsPerformanceNavigationTYPE_RESERVED(ExecState* exec, JSValue, const Identifier&)
+JSValue jsPerformanceNavigationTYPE_RESERVED( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(255));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 255 ) );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, PerformanceNavigation* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, PerformanceNavigation *impl )
 {
-    return wrap<JSPerformanceNavigation>(exec, globalObject, impl);
+    return wrap<JSPerformanceNavigation>( exec, globalObject, impl );
 }
 
-PerformanceNavigation* toPerformanceNavigation(JSC::JSValue value)
+PerformanceNavigation *toPerformanceNavigation( JSC::JSValue value )
 {
-    return value.inherits(&JSPerformanceNavigation::s_info) ? static_cast<JSPerformanceNavigation*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSPerformanceNavigation::s_info ) ? static_cast<JSPerformanceNavigation *>( asObject(
+                value ) )->impl() : 0;
 }
 
 }

@@ -31,48 +31,48 @@
 
 class QCommandLineOptionPrivate : public QSharedData
 {
- public:
-   QCommandLineOptionPrivate()
-   { }
+public:
+    QCommandLineOptionPrivate()
+    { }
 
-   void setNames(const QStringList &nameList);
+    void setNames( const QStringList &nameList );
 
-   // The list of names used for this option.
-   QStringList names;
+    // The list of names used for this option.
+    QStringList names;
 
-   // The documentation name for the value, if one is expected
-   // Example: "-o <file>" means valueName == "file"
-   QString valueName;
+    // The documentation name for the value, if one is expected
+    // Example: "-o <file>" means valueName == "file"
+    QString valueName;
 
-   // The description used for this option.
-   QString description;
+    // The description used for this option.
+    QString description;
 
-   // The list of default values used for this option.
-   QStringList defaultValues;
+    // The list of default values used for this option.
+    QStringList defaultValues;
 };
 
-QCommandLineOption::QCommandLineOption(const QString &name, const QString &description,
-      const QString &valueName, const QString &defaultValue)
-   : d(new QCommandLineOptionPrivate)
+QCommandLineOption::QCommandLineOption( const QString &name, const QString &description,
+                                        const QString &valueName, const QString &defaultValue )
+    : d( new QCommandLineOptionPrivate )
 {
-   d->setNames(QStringList(name));
-   setValueName(valueName);
-   setDescription(description);
-   setDefaultValue(defaultValue);
+    d->setNames( QStringList( name ) );
+    setValueName( valueName );
+    setDescription( description );
+    setDefaultValue( defaultValue );
 }
 
-QCommandLineOption::QCommandLineOption(const QStringList &names, const QString &description,
-      const QString &valueName, const QString &defaultValue)
-   : d(new QCommandLineOptionPrivate)
+QCommandLineOption::QCommandLineOption( const QStringList &names, const QString &description,
+                                        const QString &valueName, const QString &defaultValue )
+    : d( new QCommandLineOptionPrivate )
 {
-   d->setNames(names);
-   setValueName(valueName);
-   setDescription(description);
-   setDefaultValue(defaultValue);
+    d->setNames( names );
+    setValueName( valueName );
+    setDescription( description );
+    setDefaultValue( defaultValue );
 }
 
-QCommandLineOption::QCommandLineOption(const QCommandLineOption &other)
-   : d(other.d)
+QCommandLineOption::QCommandLineOption( const QCommandLineOption &other )
+    : d( other.d )
 {
 }
 
@@ -80,83 +80,96 @@ QCommandLineOption::~QCommandLineOption()
 {
 }
 
-QCommandLineOption &QCommandLineOption::operator=(const QCommandLineOption &other)
+QCommandLineOption &QCommandLineOption::operator=( const QCommandLineOption &other )
 {
-   d = other.d;
-   return *this;
+    d = other.d;
+    return *this;
 }
 
 QStringList QCommandLineOption::names() const
 {
-   return d->names;
+    return d->names;
 }
 
-void QCommandLineOptionPrivate::setNames(const QStringList &nameList)
+void QCommandLineOptionPrivate::setNames( const QStringList &nameList )
 {
-   names.clear();
+    names.clear();
 
-   if (nameList.isEmpty()) {
-      qWarning("QCommandLineOption:setName() List of options can not be empty");
-   }
+    if ( nameList.isEmpty() )
+    {
+        qWarning( "QCommandLineOption:setName() List of options can not be empty" );
+    }
 
-   for (const QString &name : nameList) {
-      if (name.isEmpty()) {
-         qWarning("QCommandLineOption:setName() Option names can not be empty");
+    for ( const QString &name : nameList )
+    {
+        if ( name.isEmpty() )
+        {
+            qWarning( "QCommandLineOption:setName() Option names can not be empty" );
 
-      } else {
-         const QChar c = name.at(0);
+        }
+        else
+        {
+            const QChar c = name.at( 0 );
 
-         if (c == '-') {
-            qWarning("QCommandLineOption:setName() Option names can not start with a '-'");
+            if ( c == '-' )
+            {
+                qWarning( "QCommandLineOption:setName() Option names can not start with a '-'" );
 
-         } else if (c == '/') {
-            qWarning("QCommandLineOption:setName() Option names can not start with a '/'");
+            }
+            else if ( c == '/' )
+            {
+                qWarning( "QCommandLineOption:setName() Option names can not start with a '/'" );
 
-         } else if (name.contains('=')) {
-            qWarning("QCommandLineOption:setName() Option names can not contain a '='");
+            }
+            else if ( name.contains( '=' ) )
+            {
+                qWarning( "QCommandLineOption:setName() Option names can not contain a '='" );
 
-         } else {
-            names.append(name);
-         }
-      }
-   }
+            }
+            else
+            {
+                names.append( name );
+            }
+        }
+    }
 }
 
-void QCommandLineOption::setValueName(const QString &valueName)
+void QCommandLineOption::setValueName( const QString &valueName )
 {
-   d->valueName = valueName;
+    d->valueName = valueName;
 }
 
 QString QCommandLineOption::valueName() const
 {
-   return d->valueName;
+    return d->valueName;
 }
 
-void QCommandLineOption::setDescription(const QString &description)
+void QCommandLineOption::setDescription( const QString &description )
 {
-   d->description = description;
+    d->description = description;
 }
 
 QString QCommandLineOption::description() const
 {
-   return d->description;
+    return d->description;
 }
 
-void QCommandLineOption::setDefaultValue(const QString &defaultValue)
+void QCommandLineOption::setDefaultValue( const QString &defaultValue )
 {
-   d->defaultValues.clear();
+    d->defaultValues.clear();
 
-   if (! defaultValue.isEmpty()) {
-      d->defaultValues << defaultValue;
-   }
+    if ( ! defaultValue.isEmpty() )
+    {
+        d->defaultValues << defaultValue;
+    }
 }
 
-void QCommandLineOption::setDefaultValues(const QStringList &defaultValues)
+void QCommandLineOption::setDefaultValues( const QStringList &defaultValues )
 {
-   d->defaultValues = defaultValues;
+    d->defaultValues = defaultValues;
 }
 
 QStringList QCommandLineOption::defaultValues() const
 {
-   return d->defaultValues;
+    return d->defaultValues;
 }

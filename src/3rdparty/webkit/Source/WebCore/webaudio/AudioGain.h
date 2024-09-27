@@ -32,18 +32,20 @@
 #include "AudioParam.h"
 #include <wtf/PassRefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class AudioGain : public AudioParam {
-public:   
-    static PassRefPtr<AudioGain> create(const char* name, double defaultValue, double minValue, double maxValue)
+class AudioGain : public AudioParam
+{
+public:
+    static PassRefPtr<AudioGain> create( const char *name, double defaultValue, double minValue, double maxValue )
     {
-        return adoptRef(new AudioGain(name, defaultValue, minValue, maxValue));
+        return adoptRef( new AudioGain( name, defaultValue, minValue, maxValue ) );
     }
 
 private:
-    AudioGain(const char* name, double defaultValue, double minValue, double maxValue)
-        : AudioParam(name, defaultValue, minValue, maxValue)
+    AudioGain( const char *name, double defaultValue, double minValue, double maxValue )
+        : AudioParam( name, defaultValue, minValue, maxValue )
     {
     }
 };

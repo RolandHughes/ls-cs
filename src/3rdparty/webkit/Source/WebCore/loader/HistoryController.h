@@ -7,13 +7,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -35,22 +35,24 @@
 #include <wtf/Noncopyable.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Frame;
 class HistoryItem;
 class SerializedScriptValue;
 class StringWithDirection;
 
-class HistoryController {
-    WTF_MAKE_NONCOPYABLE(HistoryController);
+class HistoryController
+{
+    WTF_MAKE_NONCOPYABLE( HistoryController );
 public:
     enum HistoryUpdateType { UpdateAll, UpdateAllExceptBackForwardList };
 
-    HistoryController(Frame*);
+    HistoryController( Frame * );
     ~HistoryController();
 
-    void saveScrollPositionAndViewStateToItem(HistoryItem*);
+    void saveScrollPositionAndViewStateToItem( HistoryItem * );
     void restoreScrollPositionAndViewState();
 
     void updateBackForwardListForFragmentScroll();
@@ -63,46 +65,55 @@ public:
 
     void updateForBackForwardNavigation();
     void updateForReload();
-    void updateForStandardLoad(HistoryUpdateType updateType = UpdateAll);
+    void updateForStandardLoad( HistoryUpdateType updateType = UpdateAll );
     void updateForRedirectWithLockedBackForwardList();
     void updateForClientRedirect();
     void updateForCommit();
     void updateForSameDocumentNavigation();
     void updateForFrameLoadCompleted();
 
-    HistoryItem* currentItem() const { return m_currentItem.get(); }
-    void setCurrentItem(HistoryItem*);
-    void setCurrentItemTitle(const StringWithDirection&);
+    HistoryItem *currentItem() const
+    {
+        return m_currentItem.get();
+    }
+    void setCurrentItem( HistoryItem * );
+    void setCurrentItemTitle( const StringWithDirection & );
     bool currentItemShouldBeReplaced() const;
 
-    HistoryItem* previousItem() const { return m_previousItem.get(); }
+    HistoryItem *previousItem() const
+    {
+        return m_previousItem.get();
+    }
 
-    HistoryItem* provisionalItem() const { return m_provisionalItem.get(); }
-    void setProvisionalItem(HistoryItem*);
+    HistoryItem *provisionalItem() const
+    {
+        return m_provisionalItem.get();
+    }
+    void setProvisionalItem( HistoryItem * );
 
-    void pushState(PassRefPtr<SerializedScriptValue>, const String& title, const String& url);
-    void replaceState(PassRefPtr<SerializedScriptValue>, const String& title, const String& url);
+    void pushState( PassRefPtr<SerializedScriptValue>, const String &title, const String &url );
+    void replaceState( PassRefPtr<SerializedScriptValue>, const String &title, const String &url );
 
 private:
     friend class Page;
-    bool shouldStopLoadingForHistoryItem(HistoryItem*) const;
-    void goToItem(HistoryItem*, FrameLoadType);
+    bool shouldStopLoadingForHistoryItem( HistoryItem * ) const;
+    void goToItem( HistoryItem *, FrameLoadType );
 
-    void initializeItem(HistoryItem*);
+    void initializeItem( HistoryItem * );
     PassRefPtr<HistoryItem> createItem();
-    PassRefPtr<HistoryItem> createItemTree(Frame* targetFrame, bool clipAtTarget);
+    PassRefPtr<HistoryItem> createItemTree( Frame *targetFrame, bool clipAtTarget );
 
-    void recursiveSetProvisionalItem(HistoryItem*, HistoryItem*, FrameLoadType);
-    void recursiveGoToItem(HistoryItem*, HistoryItem*, FrameLoadType);
-    bool isReplaceLoadTypeWithProvisionalItem(FrameLoadType);
+    void recursiveSetProvisionalItem( HistoryItem *, HistoryItem *, FrameLoadType );
+    void recursiveGoToItem( HistoryItem *, HistoryItem *, FrameLoadType );
+    bool isReplaceLoadTypeWithProvisionalItem( FrameLoadType );
     void recursiveUpdateForCommit();
     void recursiveUpdateForSameDocumentNavigation();
-    bool itemsAreClones(HistoryItem*, HistoryItem*) const;
-    bool currentFramesMatchItem(HistoryItem*) const;
-    void updateBackForwardListClippedAtTarget(bool doClip);
+    bool itemsAreClones( HistoryItem *, HistoryItem * ) const;
+    bool currentFramesMatchItem( HistoryItem * ) const;
+    void updateBackForwardListClippedAtTarget( bool doClip );
     void updateCurrentItem();
 
-    Frame* m_frame;
+    Frame *m_frame;
 
     RefPtr<HistoryItem> m_currentItem;
     RefPtr<HistoryItem> m_previousItem;

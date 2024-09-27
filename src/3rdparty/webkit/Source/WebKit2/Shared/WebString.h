@@ -32,71 +32,114 @@
 #include <wtf/text/WTFString.h>
 #include <wtf/unicode/UTF8.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 // WebString - A string type suitable for vending to an API.
 
-class WebString : public APIObject {
+class WebString : public APIObject
+{
 public:
     static const Type APIType = TypeString;
 
-    static PassRefPtr<WebString> create(const String& string)
+    static PassRefPtr<WebString> create( const String &string )
     {
-        return adoptRef(new WebString(string));
+        return adoptRef( new WebString( string ) );
     }
 
-    static PassRefPtr<WebString> create(JSStringRef jsStringRef)
+    static PassRefPtr<WebString> create( JSStringRef jsStringRef )
     {
-        return adoptRef(new WebString(String(JSStringGetCharactersPtr(jsStringRef), JSStringGetLength(jsStringRef))));
+        return adoptRef( new WebString( String( JSStringGetCharactersPtr( jsStringRef ), JSStringGetLength( jsStringRef ) ) ) );
     }
 
-    static PassRefPtr<WebString> createFromUTF8String(const char* string)
+    static PassRefPtr<WebString> createFromUTF8String( const char *string )
     {
-        return adoptRef(new WebString(String::fromUTF8(string)));
+        return adoptRef( new WebString( String::fromUTF8( string ) ) );
     }
 
-    bool isNull() const { return m_string.isNull(); }
-    bool isEmpty() const { return m_string.isEmpty(); }
-    
-    size_t length() const { return m_string.length(); }
-    size_t getCharacters(UChar* buffer, size_t bufferLength) const
+    bool isNull() const
     {
-        if (!bufferLength)
+        return m_string.isNull();
+    }
+    bool isEmpty() const
+    {
+        return m_string.isEmpty();
+    }
+
+    size_t length() const
+    {
+        return m_string.length();
+    }
+    size_t getCharacters( UChar *buffer, size_t bufferLength ) const
+    {
+        if ( !bufferLength )
+        {
             return 0;
-        bufferLength = std::min(bufferLength, static_cast<size_t>(m_string.length()));
-        memcpy(buffer, m_string.characters(), bufferLength * sizeof(UChar));
+        }
+
+        bufferLength = std::min( bufferLength, static_cast<size_t>( m_string.length() ) );
+        memcpy( buffer, m_string.characters(), bufferLength * sizeof( UChar ) );
         return bufferLength;
     }
 
-    size_t maximumUTF8CStringSize() const { return m_string.length() * 3 + 1; }
-    size_t getUTF8CString(char* buffer, size_t bufferSize)
+    size_t maximumUTF8CStringSize() const
     {
-        if (!bufferSize)
+        return m_string.length() * 3 + 1;
+    }
+    size_t getUTF8CString( char *buffer, size_t bufferSize )
+    {
+        if ( !bufferSize )
+        {
             return 0;
-        char* p = buffer;
-        const UChar* d = m_string.characters();
-        WTF::Unicode::ConversionResult result = WTF::Unicode::convertUTF16ToUTF8(&d, d + m_string.length(), &p, p + bufferSize - 1, /* strict */ true);
+        }
+
+        char *p = buffer;
+        const UChar *d = m_string.characters();
+        WTF::Unicode::ConversionResult result = WTF::Unicode::convertUTF16ToUTF8( &d, d + m_string.length(), &p,
+                                                p + bufferSize - 1, /* strict */ true );
         *p++ = '\0';
-        if (result != WTF::Unicode::conversionOK && result != WTF::Unicode::targetExhausted)
+
+        if ( result != WTF::Unicode::conversionOK && result != WTF::Unicode::targetExhausted )
+        {
             return 0;
+        }
+
         return p - buffer;
     }
 
-    bool equal(WebString* other) { return m_string == other->m_string; }
-    bool equalToUTF8String(const char* other) { return m_string == String::fromUTF8(other); }
-    bool equalToUTF8StringIgnoringCase(const char* other) { return equalIgnoringCase(m_string, other); }
+    bool equal( WebString *other )
+    {
+        return m_string == other->m_string;
+    }
+    bool equalToUTF8String( const char *other )
+    {
+        return m_string == String::fromUTF8( other );
+    }
+    bool equalToUTF8StringIgnoringCase( const char *other )
+    {
+        return equalIgnoringCase( m_string, other );
+    }
 
-    const String& string() const { return m_string; }
+    const String &string() const
+    {
+        return m_string;
+    }
 
-    JSStringRef createJSString() const { return JSStringCreateWithCharacters(m_string.characters(), m_string.length()); }
+    JSStringRef createJSString() const
+    {
+        return JSStringCreateWithCharacters( m_string.characters(), m_string.length() );
+    }
 
 private:
-    WebString(const String& string)
-        : m_string(!string.impl() ? String(StringImpl::empty()) : string)
+    WebString( const String &string )
+        : m_string( !string.impl() ? String( StringImpl::empty() ) : string )
     {
     }
 
-    virtual Type type() const { return APIType; }
+    virtual Type type() const
+    {
+        return APIType;
+    }
 
     String m_string;
 };

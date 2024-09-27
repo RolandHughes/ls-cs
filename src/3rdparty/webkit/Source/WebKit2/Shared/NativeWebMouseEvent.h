@@ -37,28 +37,42 @@ OBJC_CLASS NSView;
 typedef union _GdkEvent GdkEvent;
 #endif
 
-namespace WebKit {
+namespace WebKit
+{
 
-class NativeWebMouseEvent : public WebMouseEvent {
+class NativeWebMouseEvent : public WebMouseEvent
+{
 public:
 #if PLATFORM(MAC)
-    NativeWebMouseEvent(NSEvent *, NSView *);
+    NativeWebMouseEvent( NSEvent *, NSView * );
 #elif PLATFORM(WIN)
-    NativeWebMouseEvent(HWND, UINT message, WPARAM, LPARAM, bool);
+    NativeWebMouseEvent( HWND, UINT message, WPARAM, LPARAM, bool );
 #elif PLATFORM(QT)
-    explicit NativeWebMouseEvent(QGraphicsSceneMouseEvent*, int);
+    explicit NativeWebMouseEvent( QGraphicsSceneMouseEvent *, int );
 #elif PLATFORM(GTK)
-    NativeWebMouseEvent(GdkEvent*, int);
+    NativeWebMouseEvent( GdkEvent *, int );
 #endif
 
 #if PLATFORM(MAC)
-    NSEvent* nativeEvent() const { return m_nativeEvent.get(); }
+    NSEvent *nativeEvent() const
+    {
+        return m_nativeEvent.get();
+    }
 #elif PLATFORM(WIN)
-    const MSG* nativeEvent() const { return &m_nativeEvent; }
+    const MSG *nativeEvent() const
+    {
+        return &m_nativeEvent;
+    }
 #elif PLATFORM(QT)
-    const QGraphicsSceneMouseEvent* nativeEvent() const { return m_nativeEvent; }
+    const QGraphicsSceneMouseEvent *nativeEvent() const
+    {
+        return m_nativeEvent;
+    }
 #elif PLATFORM(GTK)
-    GdkEvent* nativeEvent() const { return m_nativeEvent; }
+    GdkEvent *nativeEvent() const
+    {
+        return m_nativeEvent;
+    }
 #endif
 
 private:
@@ -67,9 +81,9 @@ private:
 #elif PLATFORM(WIN)
     MSG m_nativeEvent;
 #elif PLATFORM(QT)
-    QGraphicsSceneMouseEvent* m_nativeEvent;
+    QGraphicsSceneMouseEvent *m_nativeEvent;
 #elif PLATFORM(GTK)
-    GdkEvent* m_nativeEvent;
+    GdkEvent *m_nativeEvent;
 #endif
 };
 

@@ -38,21 +38,22 @@
 
 using namespace WebCore;
 
-namespace WebKit {
-
-PassOwnPtr<Download> Download::create(uint64_t downloadID, const ResourceRequest& request)
+namespace WebKit
 {
-    return adoptPtr(new Download(downloadID, request));
+
+PassOwnPtr<Download> Download::create( uint64_t downloadID, const ResourceRequest &request )
+{
+    return adoptPtr( new Download( downloadID, request ) );
 }
 
-Download::Download(uint64_t downloadID, const ResourceRequest& request)
-    : m_downloadID(downloadID)
-    , m_request(request)
+Download::Download( uint64_t downloadID, const ResourceRequest &request )
+    : m_downloadID( downloadID )
+    , m_request( request )
 #if USE(CFNETWORK)
-    , m_allowOverwrite(false)
+    , m_allowOverwrite( false )
 #endif
 {
-    ASSERT(m_downloadID);
+    ASSERT( m_downloadID );
 
     WebProcess::shared().disableTermination();
 }
@@ -64,95 +65,115 @@ Download::~Download()
     WebProcess::shared().enableTermination();
 }
 
-CoreIPC::Connection* Download::connection() const
+CoreIPC::Connection *Download::connection() const
 {
     return WebProcess::shared().connection();
 }
 
 void Download::didStart()
 {
-    send(Messages::DownloadProxy::DidStart(m_request));
+    send( Messages::DownloadProxy::DidStart( m_request ) );
 }
 
-void Download::didReceiveAuthenticationChallenge(const AuthenticationChallenge& authenticationChallenge)
+void Download::didReceiveAuthenticationChallenge( const AuthenticationChallenge &authenticationChallenge )
 {
-    AuthenticationManager::shared().didReceiveAuthenticationChallenge(this, authenticationChallenge);
+    AuthenticationManager::shared().didReceiveAuthenticationChallenge( this, authenticationChallenge );
 }
 
-void Download::didReceiveResponse(const ResourceResponse& response)
+void Download::didReceiveResponse( const ResourceResponse &response )
 {
-    send(Messages::DownloadProxy::DidReceiveResponse(response));
+    send( Messages::DownloadProxy::DidReceiveResponse( response ) );
 }
 
-void Download::didReceiveData(uint64_t length)
+void Download::didReceiveData( uint64_t length )
 {
-    send(Messages::DownloadProxy::DidReceiveData(length));
+    send( Messages::DownloadProxy::DidReceiveData( length ) );
 }
 
-bool Download::shouldDecodeSourceDataOfMIMEType(const String& mimeType)
+bool Download::shouldDecodeSourceDataOfMIMEType( const String &mimeType )
 {
     bool result;
-    if (!sendSync(Messages::DownloadProxy::ShouldDecodeSourceDataOfMIMEType(mimeType), Messages::DownloadProxy::ShouldDecodeSourceDataOfMIMEType::Reply(result)))
+
+    if ( !sendSync( Messages::DownloadProxy::ShouldDecodeSourceDataOfMIMEType( mimeType ),
+                    Messages::DownloadProxy::ShouldDecodeSourceDataOfMIMEType::Reply( result ) ) )
+    {
         return true;
+    }
 
     return result;
 }
 
-String Download::retrieveDestinationWithSuggestedFilename(const String& filename, bool& allowOverwrite)
+String Download::retrieveDestinationWithSuggestedFilename( const String &filename, bool &allowOverwrite )
 {
     String destination;
     SandboxExtension::Handle sandboxExtensionHandle;
-    if (!sendSync(Messages::DownloadProxy::DecideDestinationWithSuggestedFilename(filename), Messages::DownloadProxy::DecideDestinationWithSuggestedFilename::Reply(destination, allowOverwrite, sandboxExtensionHandle)))
+
+    if ( !sendSync( Messages::DownloadProxy::DecideDestinationWithSuggestedFilename( filename ),
+                    Messages::DownloadProxy::DecideDestinationWithSuggestedFilename::Reply( destination, allowOverwrite, sandboxExtensionHandle ) ) )
+    {
         return String();
+    }
 
-    m_sandboxExtension = SandboxExtension::create(sandboxExtensionHandle);
-    if (m_sandboxExtension)
+    m_sandboxExtension = SandboxExtension::create( sandboxExtensionHandle );
+
+    if ( m_sandboxExtension )
+    {
         m_sandboxExtension->consume();
+    }
 
     return destination;
 }
 
-String Download::decideDestinationWithSuggestedFilename(const String& filename, bool& allowOverwrite)
+String Download::decideDestinationWithSuggestedFilename( const String &filename, bool &allowOverwrite )
 {
-    String destination = retrieveDestinationWithSuggestedFilename(filename, allowOverwrite);
+    String destination = retrieveDestinationWithSuggestedFilename( filename, allowOverwrite );
 
-    didDecideDestination(destination, allowOverwrite);
+    didDecideDestination( destination, allowOverwrite );
 
     return destination;
 }
 
-void Download::didCreateDestination(const String& path)
+void Download::didCreateDestination( const String &path )
 {
-    send(Messages::DownloadProxy::DidCreateDestination(path));
+    send( Messages::DownloadProxy::DidCreateDestination( path ) );
 }
 
 void Download::didFinish()
 {
     platformDidFinish();
 
-    send(Messages::DownloadProxy::DidFinish());
+    send( Messages::DownloadProxy::DidFinish() );
 
-    if (m_sandboxExtension)
+    if ( m_sandboxExtension )
+    {
         m_sandboxExtension->invalidate();
-    DownloadManager::shared().downloadFinished(this);
+    }
+
+    DownloadManager::shared().downloadFinished( this );
 }
 
-void Download::didFail(const ResourceError& error, const CoreIPC::DataReference& resumeData)
+void Download::didFail( const ResourceError &error, const CoreIPC::DataReference &resumeData )
 {
-    send(Messages::DownloadProxy::DidFail(error, resumeData));
+    send( Messages::DownloadProxy::DidFail( error, resumeData ) );
 
-    if (m_sandboxExtension)
+    if ( m_sandboxExtension )
+    {
         m_sandboxExtension->invalidate();
-    DownloadManager::shared().downloadFinished(this);
+    }
+
+    DownloadManager::shared().downloadFinished( this );
 }
 
-void Download::didCancel(const CoreIPC::DataReference& resumeData)
+void Download::didCancel( const CoreIPC::DataReference &resumeData )
 {
-    send(Messages::DownloadProxy::DidCancel(resumeData));
+    send( Messages::DownloadProxy::DidCancel( resumeData ) );
 
-    if (m_sandboxExtension)
+    if ( m_sandboxExtension )
+    {
         m_sandboxExtension->invalidate();
-    DownloadManager::shared().downloadFinished(this);
+    }
+
+    DownloadManager::shared().downloadFinished( this );
 }
 
 } // namespace WebKit

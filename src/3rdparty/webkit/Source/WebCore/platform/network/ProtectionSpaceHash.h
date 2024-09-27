@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef ProtectionSpaceHash_h
@@ -29,40 +29,52 @@
 #include "ProtectionSpace.h"
 #include <wtf/HashTraits.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-struct ProtectionSpaceHash {
-    static unsigned hash(const ProtectionSpace& protectionSpace)
-    { 
-        unsigned hashCodes[5] = {
-            protectionSpace.host().impl() ? protectionSpace.host().impl()->hash() : 0, 
-            protectionSpace.port(), 
+struct ProtectionSpaceHash
+{
+    static unsigned hash( const ProtectionSpace &protectionSpace )
+    {
+        unsigned hashCodes[5] =
+        {
+            protectionSpace.host().impl() ? protectionSpace.host().impl()->hash() : 0,
+            protectionSpace.port(),
             protectionSpace.serverType(),
             protectionSpace.authenticationScheme(),
             protectionSpace.realm().impl() ? protectionSpace.realm().impl()->hash() : 0
         };
 
-        unsigned codeCount = sizeof(hashCodes);
+        unsigned codeCount = sizeof( hashCodes );
+
         // Ignore realm for proxies.
-        if (protectionSpace.isProxy())
-            codeCount -= sizeof(hashCodes[0]);
-        return StringHasher::hashMemory(hashCodes, codeCount);
+        if ( protectionSpace.isProxy() )
+        {
+            codeCount -= sizeof( hashCodes[0] );
+        }
+
+        return StringHasher::hashMemory( hashCodes, codeCount );
     }
-    
-    static bool equal(const ProtectionSpace& a, const ProtectionSpace& b) { return a == b; }
+
+    static bool equal( const ProtectionSpace &a, const ProtectionSpace &b )
+    {
+        return a == b;
+    }
     static const bool safeToCompareToEmptyOrDeleted = false;
 };
 
 } // namespace WebCore
 
-namespace WTF {
+namespace WTF
+{
 
-    template<> struct HashTraits<WebCore::ProtectionSpace> : SimpleClassHashTraits<WebCore::ProtectionSpace> { };
+template<> struct HashTraits<WebCore::ProtectionSpace> : SimpleClassHashTraits<WebCore::ProtectionSpace> { };
 
-    template<typename T> struct DefaultHash;
-    template<> struct DefaultHash<WebCore::ProtectionSpace> {
-        typedef WebCore::ProtectionSpaceHash Hash;
-    };
+template<typename T> struct DefaultHash;
+template<> struct DefaultHash<WebCore::ProtectionSpace>
+{
+    typedef WebCore::ProtectionSpaceHash Hash;
+};
 
 } // namespace WTF
 

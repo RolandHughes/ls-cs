@@ -162,395 +162,402 @@
 
 #include <wtf/text/CString.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 using namespace WebCore;
 using namespace WebCore::HTMLNames;
 
-typedef gpointer (*CreateHTMLElementWrapperFunction)(PassRefPtr<HTMLElement>);
+typedef gpointer ( *CreateHTMLElementWrapperFunction )( PassRefPtr<HTMLElement> );
 
-static gpointer createAnchorWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createAnchorWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLAnchorElement(static_cast<HTMLAnchorElement*>(element.get()));
+    return wrapHTMLAnchorElement( static_cast<HTMLAnchorElement *>( element.get() ) );
 }
 
-static gpointer createAppletWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createAppletWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLAppletElement(static_cast<HTMLAppletElement*>(element.get()));
+    return wrapHTMLAppletElement( static_cast<HTMLAppletElement *>( element.get() ) );
 }
 
-static gpointer createAreaWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createAreaWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLAreaElement(static_cast<HTMLAreaElement*>(element.get()));
+    return wrapHTMLAreaElement( static_cast<HTMLAreaElement *>( element.get() ) );
 }
 
 #if ENABLE(VIDEO)
-static gpointer createAudioWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createAudioWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLAudioElement(static_cast<HTMLAudioElement*>(element.get()));
+    return wrapHTMLAudioElement( static_cast<HTMLAudioElement *>( element.get() ) );
 }
 
-static gpointer createVideoWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createVideoWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLVideoElement(static_cast<HTMLVideoElement*>(element.get()));
+    return wrapHTMLVideoElement( static_cast<HTMLVideoElement *>( element.get() ) );
 }
 #endif
 
-static gpointer createBaseWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createBaseWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLBaseElement(static_cast<HTMLBaseElement*>(element.get()));
+    return wrapHTMLBaseElement( static_cast<HTMLBaseElement *>( element.get() ) );
 }
 
-static gpointer createBaseFontWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createBaseFontWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLBaseFontElement(static_cast<HTMLBaseFontElement*>(element.get()));
+    return wrapHTMLBaseFontElement( static_cast<HTMLBaseFontElement *>( element.get() ) );
 }
 
-static gpointer createBlockquoteWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createBlockquoteWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLBlockquoteElement(static_cast<HTMLBlockquoteElement*>(element.get()));
+    return wrapHTMLBlockquoteElement( static_cast<HTMLBlockquoteElement *>( element.get() ) );
 }
 
-static gpointer createBodyWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createBodyWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLBodyElement(static_cast<HTMLBodyElement*>(element.get()));
+    return wrapHTMLBodyElement( static_cast<HTMLBodyElement *>( element.get() ) );
 }
 
-static gpointer createBRWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createBRWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLBRElement(static_cast<HTMLBRElement*>(element.get()));
+    return wrapHTMLBRElement( static_cast<HTMLBRElement *>( element.get() ) );
 }
 
-static gpointer createButtonWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createButtonWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLButtonElement(static_cast<HTMLButtonElement*>(element.get()));
+    return wrapHTMLButtonElement( static_cast<HTMLButtonElement *>( element.get() ) );
 }
 
-static gpointer createCanvasWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createCanvasWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLCanvasElement(static_cast<HTMLCanvasElement*>(element.get()));
+    return wrapHTMLCanvasElement( static_cast<HTMLCanvasElement *>( element.get() ) );
 }
 
-static gpointer createTableCaptionWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createTableCaptionWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLTableCaptionElement(static_cast<HTMLTableCaptionElement*>(element.get()));
+    return wrapHTMLTableCaptionElement( static_cast<HTMLTableCaptionElement *>( element.get() ) );
 }
 
-static gpointer createTableColWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createTableColWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLTableColElement(static_cast<HTMLTableColElement*>(element.get()));
+    return wrapHTMLTableColElement( static_cast<HTMLTableColElement *>( element.get() ) );
 }
 
-static gpointer createModWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createModWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLModElement(static_cast<HTMLModElement*>(element.get()));
+    return wrapHTMLModElement( static_cast<HTMLModElement *>( element.get() ) );
 }
 
-static gpointer createDirectoryWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createDirectoryWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLDirectoryElement(static_cast<HTMLDirectoryElement*>(element.get()));
+    return wrapHTMLDirectoryElement( static_cast<HTMLDirectoryElement *>( element.get() ) );
 }
 
-static gpointer createDivWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createDivWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLDivElement(static_cast<HTMLDivElement*>(element.get()));
+    return wrapHTMLDivElement( static_cast<HTMLDivElement *>( element.get() ) );
 }
 
-static gpointer createDListWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createDListWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLDListElement(static_cast<HTMLDListElement*>(element.get()));
+    return wrapHTMLDListElement( static_cast<HTMLDListElement *>( element.get() ) );
 }
 
-static gpointer createEmbedWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createEmbedWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLEmbedElement(static_cast<HTMLEmbedElement*>(element.get()));
+    return wrapHTMLEmbedElement( static_cast<HTMLEmbedElement *>( element.get() ) );
 }
 
-static gpointer createFieldSetWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createFieldSetWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLFieldSetElement(static_cast<HTMLFieldSetElement*>(element.get()));
+    return wrapHTMLFieldSetElement( static_cast<HTMLFieldSetElement *>( element.get() ) );
 }
 
-static gpointer createFontWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createFontWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLFontElement(static_cast<HTMLFontElement*>(element.get()));
+    return wrapHTMLFontElement( static_cast<HTMLFontElement *>( element.get() ) );
 }
 
-static gpointer createFormWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createFormWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLFormElement(static_cast<HTMLFormElement*>(element.get()));
+    return wrapHTMLFormElement( static_cast<HTMLFormElement *>( element.get() ) );
 }
 
-static gpointer createFrameWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createFrameWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLFrameElement(static_cast<HTMLFrameElement*>(element.get()));
+    return wrapHTMLFrameElement( static_cast<HTMLFrameElement *>( element.get() ) );
 }
 
-static gpointer createFrameSetWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createFrameSetWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLFrameSetElement(static_cast<HTMLFrameSetElement*>(element.get()));
+    return wrapHTMLFrameSetElement( static_cast<HTMLFrameSetElement *>( element.get() ) );
 }
 
-static gpointer createHeadingWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createHeadingWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLHeadingElement(static_cast<HTMLHeadingElement*>(element.get()));
+    return wrapHTMLHeadingElement( static_cast<HTMLHeadingElement *>( element.get() ) );
 }
 
-static gpointer createHeadWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createHeadWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLHeadElement(static_cast<HTMLHeadElement*>(element.get()));
+    return wrapHTMLHeadElement( static_cast<HTMLHeadElement *>( element.get() ) );
 }
 
-static gpointer createHRWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createHRWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLHRElement(static_cast<HTMLHRElement*>(element.get()));
+    return wrapHTMLHRElement( static_cast<HTMLHRElement *>( element.get() ) );
 }
 
-static gpointer createHtmlWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createHtmlWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLHtmlElement(static_cast<HTMLHtmlElement*>(element.get()));
+    return wrapHTMLHtmlElement( static_cast<HTMLHtmlElement *>( element.get() ) );
 }
 
-static gpointer createIFrameWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createIFrameWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLIFrameElement(static_cast<HTMLIFrameElement*>(element.get()));
+    return wrapHTMLIFrameElement( static_cast<HTMLIFrameElement *>( element.get() ) );
 }
 
-static gpointer createImageWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createImageWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLImageElement(static_cast<HTMLImageElement*>(element.get()));
+    return wrapHTMLImageElement( static_cast<HTMLImageElement *>( element.get() ) );
 }
 
-static gpointer createInputWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createInputWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLInputElement(static_cast<HTMLInputElement*>(element.get()));
+    return wrapHTMLInputElement( static_cast<HTMLInputElement *>( element.get() ) );
 }
 
-static gpointer createIsIndexWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createIsIndexWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLIsIndexElement(static_cast<HTMLIsIndexElement*>(element.get()));
+    return wrapHTMLIsIndexElement( static_cast<HTMLIsIndexElement *>( element.get() ) );
 }
 
-static gpointer createKeygenWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createKeygenWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLKeygenElement(static_cast<HTMLKeygenElement*>(element.get()));
+    return wrapHTMLKeygenElement( static_cast<HTMLKeygenElement *>( element.get() ) );
 }
 
-static gpointer createLabelWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createLabelWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLLabelElement(static_cast<HTMLLabelElement*>(element.get()));
+    return wrapHTMLLabelElement( static_cast<HTMLLabelElement *>( element.get() ) );
 }
 
-static gpointer createLegendWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createLegendWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLLegendElement(static_cast<HTMLLegendElement*>(element.get()));
+    return wrapHTMLLegendElement( static_cast<HTMLLegendElement *>( element.get() ) );
 }
 
-static gpointer createLIWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createLIWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLLIElement(static_cast<HTMLLIElement*>(element.get()));
+    return wrapHTMLLIElement( static_cast<HTMLLIElement *>( element.get() ) );
 }
 
-static gpointer createLinkWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createLinkWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLLinkElement(static_cast<HTMLLinkElement*>(element.get()));
+    return wrapHTMLLinkElement( static_cast<HTMLLinkElement *>( element.get() ) );
 }
 
-static gpointer createMapWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createMapWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLMapElement(static_cast<HTMLMapElement*>(element.get()));
+    return wrapHTMLMapElement( static_cast<HTMLMapElement *>( element.get() ) );
 }
 
-static gpointer createMarqueeWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createMarqueeWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLMarqueeElement(static_cast<HTMLMarqueeElement*>(element.get()));
+    return wrapHTMLMarqueeElement( static_cast<HTMLMarqueeElement *>( element.get() ) );
 }
 
-static gpointer createMenuWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createMenuWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLMenuElement(static_cast<HTMLMenuElement*>(element.get()));
+    return wrapHTMLMenuElement( static_cast<HTMLMenuElement *>( element.get() ) );
 }
 
-static gpointer createMetaWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createMetaWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLMetaElement(static_cast<HTMLMetaElement*>(element.get()));
+    return wrapHTMLMetaElement( static_cast<HTMLMetaElement *>( element.get() ) );
 }
 
-static gpointer createObjectWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createObjectWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLObjectElement(static_cast<HTMLObjectElement*>(element.get()));
+    return wrapHTMLObjectElement( static_cast<HTMLObjectElement *>( element.get() ) );
 }
 
-static gpointer createOListWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createOListWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLOListElement(static_cast<HTMLOListElement*>(element.get()));
+    return wrapHTMLOListElement( static_cast<HTMLOListElement *>( element.get() ) );
 }
 
-static gpointer createOptGroupWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createOptGroupWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLOptGroupElement(static_cast<HTMLOptGroupElement*>(element.get()));
+    return wrapHTMLOptGroupElement( static_cast<HTMLOptGroupElement *>( element.get() ) );
 }
 
-static gpointer createOptionWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createOptionWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLOptionElement(static_cast<HTMLOptionElement*>(element.get()));
+    return wrapHTMLOptionElement( static_cast<HTMLOptionElement *>( element.get() ) );
 }
 
-static gpointer createParagraphWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createParagraphWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLParagraphElement(static_cast<HTMLParagraphElement*>(element.get()));
+    return wrapHTMLParagraphElement( static_cast<HTMLParagraphElement *>( element.get() ) );
 }
 
-static gpointer createParamWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createParamWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLParamElement(static_cast<HTMLParamElement*>(element.get()));
+    return wrapHTMLParamElement( static_cast<HTMLParamElement *>( element.get() ) );
 }
 
-static gpointer createPreWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createPreWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLPreElement(static_cast<HTMLPreElement*>(element.get()));
+    return wrapHTMLPreElement( static_cast<HTMLPreElement *>( element.get() ) );
 }
 
-static gpointer createQuoteWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createQuoteWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLQuoteElement(static_cast<HTMLQuoteElement*>(element.get()));
+    return wrapHTMLQuoteElement( static_cast<HTMLQuoteElement *>( element.get() ) );
 }
 
-static gpointer createScriptWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createScriptWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLScriptElement(static_cast<HTMLScriptElement*>(element.get()));
+    return wrapHTMLScriptElement( static_cast<HTMLScriptElement *>( element.get() ) );
 }
 
-static gpointer createSelectWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createSelectWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLSelectElement(static_cast<HTMLSelectElement*>(element.get()));
+    return wrapHTMLSelectElement( static_cast<HTMLSelectElement *>( element.get() ) );
 }
 
-static gpointer createStyleWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createStyleWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLStyleElement(static_cast<HTMLStyleElement*>(element.get()));
+    return wrapHTMLStyleElement( static_cast<HTMLStyleElement *>( element.get() ) );
 }
 
-static gpointer createTableWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createTableWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLTableElement(static_cast<HTMLTableElement*>(element.get()));
+    return wrapHTMLTableElement( static_cast<HTMLTableElement *>( element.get() ) );
 }
 
-static gpointer createTableSectionWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createTableSectionWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLTableSectionElement(static_cast<HTMLTableSectionElement*>(element.get()));
+    return wrapHTMLTableSectionElement( static_cast<HTMLTableSectionElement *>( element.get() ) );
 }
 
-static gpointer createTableCellWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createTableCellWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLTableCellElement(static_cast<HTMLTableCellElement*>(element.get()));
+    return wrapHTMLTableCellElement( static_cast<HTMLTableCellElement *>( element.get() ) );
 }
 
-static gpointer createTextAreaWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createTextAreaWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLTextAreaElement(static_cast<HTMLTextAreaElement*>(element.get()));
+    return wrapHTMLTextAreaElement( static_cast<HTMLTextAreaElement *>( element.get() ) );
 }
 
-static gpointer createTitleWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createTitleWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLTitleElement(static_cast<HTMLTitleElement*>(element.get()));
+    return wrapHTMLTitleElement( static_cast<HTMLTitleElement *>( element.get() ) );
 }
 
-static gpointer createTableRowWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createTableRowWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLTableRowElement(static_cast<HTMLTableRowElement*>(element.get()));
+    return wrapHTMLTableRowElement( static_cast<HTMLTableRowElement *>( element.get() ) );
 }
 
-static gpointer createUListWrapper(PassRefPtr<HTMLElement> element)
+static gpointer createUListWrapper( PassRefPtr<HTMLElement> element )
 {
-    return wrapHTMLUListElement(static_cast<HTMLUListElement*>(element.get()));
+    return wrapHTMLUListElement( static_cast<HTMLUListElement *>( element.get() ) );
 }
 
-gpointer createHTMLElementWrapper(PassRefPtr<WebCore::HTMLElement> element)
+gpointer createHTMLElementWrapper( PassRefPtr<WebCore::HTMLElement> element )
 {
-    static HashMap<WTF::AtomicStringImpl*, CreateHTMLElementWrapperFunction> map;
-    if (map.isEmpty()) {
-       map.set(aTag.localName().impl(), createAnchorWrapper);
-       map.set(appletTag.localName().impl(), createAppletWrapper);
+    static HashMap<WTF::AtomicStringImpl *, CreateHTMLElementWrapperFunction> map;
+
+    if ( map.isEmpty() )
+    {
+        map.set( aTag.localName().impl(), createAnchorWrapper );
+        map.set( appletTag.localName().impl(), createAppletWrapper );
 #if ENABLE(VIDEO)
-       map.set(audioTag.localName().impl(), createAudioWrapper);
-       map.set(videoTag.localName().impl(), createVideoWrapper);
+        map.set( audioTag.localName().impl(), createAudioWrapper );
+        map.set( videoTag.localName().impl(), createVideoWrapper );
 #endif
-       map.set(areaTag.localName().impl(), createAreaWrapper);
-       map.set(baseTag.localName().impl(), createBaseWrapper);
-       map.set(basefontTag.localName().impl(), createBaseFontWrapper);
-       map.set(blockquoteTag.localName().impl(), createBlockquoteWrapper);
-       map.set(bodyTag.localName().impl(), createBodyWrapper);
-       map.set(brTag.localName().impl(), createBRWrapper);
-       map.set(buttonTag.localName().impl(), createButtonWrapper);
-       map.set(canvasTag.localName().impl(), createCanvasWrapper);
-       map.set(captionTag.localName().impl(), createTableCaptionWrapper);
-       map.set(colTag.localName().impl(), createTableColWrapper);
-       map.set(delTag.localName().impl(), createModWrapper);
-       map.set(dirTag.localName().impl(), createDirectoryWrapper);
-       map.set(divTag.localName().impl(), createDivWrapper);
-       map.set(dlTag.localName().impl(), createDListWrapper);
-       map.set(embedTag.localName().impl(), createEmbedWrapper);
-       map.set(fieldsetTag.localName().impl(), createFieldSetWrapper);
-       map.set(fontTag.localName().impl(), createFontWrapper);
-       map.set(formTag.localName().impl(), createFormWrapper);
-       map.set(frameTag.localName().impl(), createFrameWrapper);
-       map.set(framesetTag.localName().impl(), createFrameSetWrapper);
-       map.set(h1Tag.localName().impl(), createHeadingWrapper);
-       map.set(headTag.localName().impl(), createHeadWrapper);
-       map.set(hrTag.localName().impl(), createHRWrapper);
-       map.set(htmlTag.localName().impl(), createHtmlWrapper);
-       map.set(iframeTag.localName().impl(), createIFrameWrapper);
-       map.set(imgTag.localName().impl(), createImageWrapper);
-       map.set(inputTag.localName().impl(), createInputWrapper);
-       map.set(isindexTag.localName().impl(), createIsIndexWrapper);
-       map.set(labelTag.localName().impl(), createLabelWrapper);
-       map.set(legendTag.localName().impl(), createLegendWrapper);
-       map.set(liTag.localName().impl(), createLIWrapper);
-       map.set(linkTag.localName().impl(), createLinkWrapper);
-       map.set(mapTag.localName().impl(), createMapWrapper);
-       map.set(marqueeTag.localName().impl(), createMarqueeWrapper);
-       map.set(menuTag.localName().impl(), createMenuWrapper);
-       map.set(metaTag.localName().impl(), createMetaWrapper);
-       map.set(objectTag.localName().impl(), createObjectWrapper);
-       map.set(olTag.localName().impl(), createOListWrapper);
-       map.set(optgroupTag.localName().impl(), createOptGroupWrapper);
-       map.set(optionTag.localName().impl(), createOptionWrapper);
-       map.set(pTag.localName().impl(), createParagraphWrapper);
-       map.set(paramTag.localName().impl(), createParamWrapper);
-       map.set(preTag.localName().impl(), createPreWrapper);
-       map.set(qTag.localName().impl(), createQuoteWrapper);
-       map.set(scriptTag.localName().impl(), createScriptWrapper);
-       map.set(selectTag.localName().impl(), createSelectWrapper);
-       map.set(styleTag.localName().impl(), createStyleWrapper);
-       map.set(tableTag.localName().impl(), createTableWrapper);
-       map.set(tbodyTag.localName().impl(), createTableSectionWrapper);
-       map.set(tdTag.localName().impl(), createTableCellWrapper);
-       map.set(textareaTag.localName().impl(), createTextAreaWrapper);
-       map.set(titleTag.localName().impl(), createTitleWrapper);
-       map.set(trTag.localName().impl(), createTableRowWrapper);
-       map.set(ulTag.localName().impl(), createUListWrapper);
-       map.set(colgroupTag.localName().impl(), createTableColWrapper);
-       map.set(h2Tag.localName().impl(), createHeadingWrapper);
-       map.set(h3Tag.localName().impl(), createHeadingWrapper);
-       map.set(h4Tag.localName().impl(), createHeadingWrapper);
-       map.set(h5Tag.localName().impl(), createHeadingWrapper);
-       map.set(h6Tag.localName().impl(), createHeadingWrapper);
-       map.set(imageTag.localName().impl(), createImageWrapper);
-       map.set(insTag.localName().impl(), createModWrapper);
-       map.set(keygenTag.localName().impl(), createKeygenWrapper);
-       map.set(listingTag.localName().impl(), createPreWrapper);
-       map.set(tfootTag.localName().impl(), createTableSectionWrapper);
-       map.set(thTag.localName().impl(), createTableCellWrapper);
-       map.set(theadTag.localName().impl(), createTableSectionWrapper);
-       map.set(xmpTag.localName().impl(), createPreWrapper);
+        map.set( areaTag.localName().impl(), createAreaWrapper );
+        map.set( baseTag.localName().impl(), createBaseWrapper );
+        map.set( basefontTag.localName().impl(), createBaseFontWrapper );
+        map.set( blockquoteTag.localName().impl(), createBlockquoteWrapper );
+        map.set( bodyTag.localName().impl(), createBodyWrapper );
+        map.set( brTag.localName().impl(), createBRWrapper );
+        map.set( buttonTag.localName().impl(), createButtonWrapper );
+        map.set( canvasTag.localName().impl(), createCanvasWrapper );
+        map.set( captionTag.localName().impl(), createTableCaptionWrapper );
+        map.set( colTag.localName().impl(), createTableColWrapper );
+        map.set( delTag.localName().impl(), createModWrapper );
+        map.set( dirTag.localName().impl(), createDirectoryWrapper );
+        map.set( divTag.localName().impl(), createDivWrapper );
+        map.set( dlTag.localName().impl(), createDListWrapper );
+        map.set( embedTag.localName().impl(), createEmbedWrapper );
+        map.set( fieldsetTag.localName().impl(), createFieldSetWrapper );
+        map.set( fontTag.localName().impl(), createFontWrapper );
+        map.set( formTag.localName().impl(), createFormWrapper );
+        map.set( frameTag.localName().impl(), createFrameWrapper );
+        map.set( framesetTag.localName().impl(), createFrameSetWrapper );
+        map.set( h1Tag.localName().impl(), createHeadingWrapper );
+        map.set( headTag.localName().impl(), createHeadWrapper );
+        map.set( hrTag.localName().impl(), createHRWrapper );
+        map.set( htmlTag.localName().impl(), createHtmlWrapper );
+        map.set( iframeTag.localName().impl(), createIFrameWrapper );
+        map.set( imgTag.localName().impl(), createImageWrapper );
+        map.set( inputTag.localName().impl(), createInputWrapper );
+        map.set( isindexTag.localName().impl(), createIsIndexWrapper );
+        map.set( labelTag.localName().impl(), createLabelWrapper );
+        map.set( legendTag.localName().impl(), createLegendWrapper );
+        map.set( liTag.localName().impl(), createLIWrapper );
+        map.set( linkTag.localName().impl(), createLinkWrapper );
+        map.set( mapTag.localName().impl(), createMapWrapper );
+        map.set( marqueeTag.localName().impl(), createMarqueeWrapper );
+        map.set( menuTag.localName().impl(), createMenuWrapper );
+        map.set( metaTag.localName().impl(), createMetaWrapper );
+        map.set( objectTag.localName().impl(), createObjectWrapper );
+        map.set( olTag.localName().impl(), createOListWrapper );
+        map.set( optgroupTag.localName().impl(), createOptGroupWrapper );
+        map.set( optionTag.localName().impl(), createOptionWrapper );
+        map.set( pTag.localName().impl(), createParagraphWrapper );
+        map.set( paramTag.localName().impl(), createParamWrapper );
+        map.set( preTag.localName().impl(), createPreWrapper );
+        map.set( qTag.localName().impl(), createQuoteWrapper );
+        map.set( scriptTag.localName().impl(), createScriptWrapper );
+        map.set( selectTag.localName().impl(), createSelectWrapper );
+        map.set( styleTag.localName().impl(), createStyleWrapper );
+        map.set( tableTag.localName().impl(), createTableWrapper );
+        map.set( tbodyTag.localName().impl(), createTableSectionWrapper );
+        map.set( tdTag.localName().impl(), createTableCellWrapper );
+        map.set( textareaTag.localName().impl(), createTextAreaWrapper );
+        map.set( titleTag.localName().impl(), createTitleWrapper );
+        map.set( trTag.localName().impl(), createTableRowWrapper );
+        map.set( ulTag.localName().impl(), createUListWrapper );
+        map.set( colgroupTag.localName().impl(), createTableColWrapper );
+        map.set( h2Tag.localName().impl(), createHeadingWrapper );
+        map.set( h3Tag.localName().impl(), createHeadingWrapper );
+        map.set( h4Tag.localName().impl(), createHeadingWrapper );
+        map.set( h5Tag.localName().impl(), createHeadingWrapper );
+        map.set( h6Tag.localName().impl(), createHeadingWrapper );
+        map.set( imageTag.localName().impl(), createImageWrapper );
+        map.set( insTag.localName().impl(), createModWrapper );
+        map.set( keygenTag.localName().impl(), createKeygenWrapper );
+        map.set( listingTag.localName().impl(), createPreWrapper );
+        map.set( tfootTag.localName().impl(), createTableSectionWrapper );
+        map.set( thTag.localName().impl(), createTableCellWrapper );
+        map.set( theadTag.localName().impl(), createTableSectionWrapper );
+        map.set( xmpTag.localName().impl(), createPreWrapper );
     }
 
     CreateHTMLElementWrapperFunction createWrapperFunction =
-        map.get(element->localName().impl());
-    if (createWrapperFunction)
-        return createWrapperFunction(element);
-    return wrapHTMLElement(element.get());
+        map.get( element->localName().impl() );
+
+    if ( createWrapperFunction )
+    {
+        return createWrapperFunction( element );
+    }
+
+    return wrapHTMLElement( element.get() );
 }
 
 }

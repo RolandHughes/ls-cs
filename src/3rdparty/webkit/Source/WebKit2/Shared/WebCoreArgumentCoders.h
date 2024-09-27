@@ -51,7 +51,8 @@
 #include <WebCore/WindowFeatures.h>
 #include <limits>
 
-namespace CoreIPC {
+namespace CoreIPC
+{
 
 template<> struct ArgumentCoder<WebCore::IntPoint> : SimpleArgumentCoder<WebCore::IntPoint> { };
 template<> struct ArgumentCoder<WebCore::IntSize> : SimpleArgumentCoder<WebCore::IntSize> { };
@@ -62,93 +63,121 @@ template<> struct ArgumentCoder<WebCore::FloatPoint> : SimpleArgumentCoder<WebCo
 template<> struct ArgumentCoder<WebCore::FloatSize> : SimpleArgumentCoder<WebCore::FloatSize> { };
 template<> struct ArgumentCoder<WebCore::FloatRect> : SimpleArgumentCoder<WebCore::FloatRect> { };
 
-template<> struct ArgumentCoder<WebCore::MimeClassInfo> {
-    static void encode(ArgumentEncoder* encoder, const WebCore::MimeClassInfo& mimeClassInfo)
+template<> struct ArgumentCoder<WebCore::MimeClassInfo>
+{
+    static void encode( ArgumentEncoder *encoder, const WebCore::MimeClassInfo &mimeClassInfo )
     {
-        encoder->encode(mimeClassInfo.type);
-        encoder->encode(mimeClassInfo.desc);
-        encoder->encode(mimeClassInfo.extensions);
+        encoder->encode( mimeClassInfo.type );
+        encoder->encode( mimeClassInfo.desc );
+        encoder->encode( mimeClassInfo.extensions );
     }
 
-    static bool decode(ArgumentDecoder* decoder, WebCore::MimeClassInfo& mimeClassInfo)
+    static bool decode( ArgumentDecoder *decoder, WebCore::MimeClassInfo &mimeClassInfo )
     {
-        if (!decoder->decode(mimeClassInfo.type))
+        if ( !decoder->decode( mimeClassInfo.type ) )
+        {
             return false;
-        if (!decoder->decode(mimeClassInfo.desc))
-            return false;
-        if (!decoder->decode(mimeClassInfo.extensions))
-            return false;
+        }
 
-        return true;
-    }
-};
-    
-template<> struct ArgumentCoder<WebCore::PluginInfo> {
-    static void encode(ArgumentEncoder* encoder, const WebCore::PluginInfo& pluginInfo)
-    {
-        encoder->encode(pluginInfo.name);
-        encoder->encode(pluginInfo.file);
-        encoder->encode(pluginInfo.desc);
-        encoder->encode(pluginInfo.mimes);
-    }
-    
-    static bool decode(ArgumentDecoder* decoder, WebCore::PluginInfo& pluginInfo)
-    {
-        if (!decoder->decode(pluginInfo.name))
+        if ( !decoder->decode( mimeClassInfo.desc ) )
+        {
             return false;
-        if (!decoder->decode(pluginInfo.file))
+        }
+
+        if ( !decoder->decode( mimeClassInfo.extensions ) )
+        {
             return false;
-        if (!decoder->decode(pluginInfo.desc))
-            return false;
-        if (!decoder->decode(pluginInfo.mimes))
-            return false;
+        }
 
         return true;
     }
 };
 
-template<> struct ArgumentCoder<WebCore::HTTPHeaderMap> {
-    static void encode(ArgumentEncoder* encoder, const WebCore::HTTPHeaderMap& headerMap)
+template<> struct ArgumentCoder<WebCore::PluginInfo>
+{
+    static void encode( ArgumentEncoder *encoder, const WebCore::PluginInfo &pluginInfo )
     {
-        encoder->encode(static_cast<const HashMap<AtomicString, String, CaseFoldingHash>&>(headerMap));
+        encoder->encode( pluginInfo.name );
+        encoder->encode( pluginInfo.file );
+        encoder->encode( pluginInfo.desc );
+        encoder->encode( pluginInfo.mimes );
     }
 
-    static bool decode(ArgumentDecoder* decoder, WebCore::HTTPHeaderMap& headerMap)
+    static bool decode( ArgumentDecoder *decoder, WebCore::PluginInfo &pluginInfo )
     {
-        return decoder->decode(static_cast<HashMap<AtomicString, String, CaseFoldingHash>&>(headerMap));
+        if ( !decoder->decode( pluginInfo.name ) )
+        {
+            return false;
+        }
+
+        if ( !decoder->decode( pluginInfo.file ) )
+        {
+            return false;
+        }
+
+        if ( !decoder->decode( pluginInfo.desc ) )
+        {
+            return false;
+        }
+
+        if ( !decoder->decode( pluginInfo.mimes ) )
+        {
+            return false;
+        }
+
+        return true;
     }
 };
 
-template<> struct ArgumentCoder<WebCore::AuthenticationChallenge> {
-    static void encode(ArgumentEncoder* encoder, const WebCore::AuthenticationChallenge& challenge)
+template<> struct ArgumentCoder<WebCore::HTTPHeaderMap>
+{
+    static void encode( ArgumentEncoder *encoder, const WebCore::HTTPHeaderMap &headerMap )
     {
-        encoder->encode(CoreIPC::In(challenge.protectionSpace(), challenge.proposedCredential(), challenge.previousFailureCount(), challenge.failureResponse(), challenge.error()));
+        encoder->encode( static_cast<const HashMap<AtomicString, String, CaseFoldingHash>&>( headerMap ) );
     }
 
-    static bool decode(ArgumentDecoder* decoder, WebCore::AuthenticationChallenge& challenge)
-    {    
+    static bool decode( ArgumentDecoder *decoder, WebCore::HTTPHeaderMap &headerMap )
+    {
+        return decoder->decode( static_cast<HashMap<AtomicString, String, CaseFoldingHash>&>( headerMap ) );
+    }
+};
+
+template<> struct ArgumentCoder<WebCore::AuthenticationChallenge>
+{
+    static void encode( ArgumentEncoder *encoder, const WebCore::AuthenticationChallenge &challenge )
+    {
+        encoder->encode( CoreIPC::In( challenge.protectionSpace(), challenge.proposedCredential(), challenge.previousFailureCount(),
+                                      challenge.failureResponse(), challenge.error() ) );
+    }
+
+    static bool decode( ArgumentDecoder *decoder, WebCore::AuthenticationChallenge &challenge )
+    {
         WebCore::ProtectionSpace protectionSpace;
         WebCore::Credential proposedCredential;
         unsigned previousFailureCount;
         WebCore::ResourceResponse failureResponse;
         WebCore::ResourceError error;
 
-        if (!decoder->decode(CoreIPC::Out(protectionSpace, proposedCredential, previousFailureCount, failureResponse, error)))
+        if ( !decoder->decode( CoreIPC::Out( protectionSpace, proposedCredential, previousFailureCount, failureResponse, error ) ) )
+        {
             return false;
-        
-        challenge = WebCore::AuthenticationChallenge(protectionSpace, proposedCredential, previousFailureCount, failureResponse, error);
+        }
+
+        challenge = WebCore::AuthenticationChallenge( protectionSpace, proposedCredential, previousFailureCount, failureResponse, error );
 
         return true;
     }
 };
 
-template<> struct ArgumentCoder<WebCore::ProtectionSpace> {
-    static void encode(ArgumentEncoder* encoder, const WebCore::ProtectionSpace& space)
+template<> struct ArgumentCoder<WebCore::ProtectionSpace>
+{
+    static void encode( ArgumentEncoder *encoder, const WebCore::ProtectionSpace &space )
     {
-        encoder->encode(CoreIPC::In(space.host(), space.port(), static_cast<uint32_t>(space.serverType()), space.realm(), static_cast<uint32_t>(space.authenticationScheme())));
+        encoder->encode( CoreIPC::In( space.host(), space.port(), static_cast<uint32_t>( space.serverType() ), space.realm(),
+                                      static_cast<uint32_t>( space.authenticationScheme() ) ) );
     }
 
-    static bool decode(ArgumentDecoder* decoder, WebCore::ProtectionSpace& space)
+    static bool decode( ArgumentDecoder *decoder, WebCore::ProtectionSpace &space )
     {
         String host;
         int port;
@@ -156,72 +185,95 @@ template<> struct ArgumentCoder<WebCore::ProtectionSpace> {
         String realm;
         uint32_t authenticationScheme;
 
-        if (!decoder->decode(CoreIPC::Out(host, port, serverType, realm, authenticationScheme)))
+        if ( !decoder->decode( CoreIPC::Out( host, port, serverType, realm, authenticationScheme ) ) )
+        {
             return false;
-    
-        space = WebCore::ProtectionSpace(host, port, static_cast<WebCore::ProtectionSpaceServerType>(serverType), realm, static_cast<WebCore::ProtectionSpaceAuthenticationScheme>(authenticationScheme));
+        }
+
+        space = WebCore::ProtectionSpace( host, port, static_cast<WebCore::ProtectionSpaceServerType>( serverType ), realm,
+                                          static_cast<WebCore::ProtectionSpaceAuthenticationScheme>( authenticationScheme ) );
 
         return true;
     }
 };
 
-template<> struct ArgumentCoder<WebCore::Credential> {
-    static void encode(ArgumentEncoder* encoder, const WebCore::Credential& credential)
+template<> struct ArgumentCoder<WebCore::Credential>
+{
+    static void encode( ArgumentEncoder *encoder, const WebCore::Credential &credential )
     {
-        encoder->encode(CoreIPC::In(credential.user(), credential.password(), static_cast<uint32_t>(credential.persistence())));
+        encoder->encode( CoreIPC::In( credential.user(), credential.password(), static_cast<uint32_t>( credential.persistence() ) ) );
     }
 
-    static bool decode(ArgumentDecoder* decoder, WebCore::Credential& credential)
+    static bool decode( ArgumentDecoder *decoder, WebCore::Credential &credential )
     {
         String user;
         String password;
         int persistence;
-        if (!decoder->decode(CoreIPC::Out(user, password, persistence)))
+
+        if ( !decoder->decode( CoreIPC::Out( user, password, persistence ) ) )
+        {
             return false;
-        
-        credential = WebCore::Credential(user, password, static_cast<WebCore::CredentialPersistence>(persistence));
+        }
+
+        credential = WebCore::Credential( user, password, static_cast<WebCore::CredentialPersistence>( persistence ) );
         return true;
     }
 };
 
 #if USE(LAZY_NATIVE_CURSOR)
 
-void encodeImage(ArgumentEncoder*, WebCore::Image*);
-bool decodeImage(ArgumentDecoder*, RefPtr<WebCore::Image>&);
-RefPtr<WebCore::Image> createImage(WebKit::ShareableBitmap*);
+void encodeImage( ArgumentEncoder *, WebCore::Image * );
+bool decodeImage( ArgumentDecoder *, RefPtr<WebCore::Image> & );
+RefPtr<WebCore::Image> createImage( WebKit::ShareableBitmap * );
 
-template<> struct ArgumentCoder<WebCore::Cursor> {
-    static void encode(ArgumentEncoder* encoder, const WebCore::Cursor& cursor)
+template<> struct ArgumentCoder<WebCore::Cursor>
+{
+    static void encode( ArgumentEncoder *encoder, const WebCore::Cursor &cursor )
     {
         WebCore::Cursor::Type type = cursor.type();
 #if !USE(CG)
+
         // FIXME: Currently we only have the createImage function implemented for CG.
         // Once we implement it for other platforms we can remove this conditional,
         // and the other conditionals below and in WebCoreArgumentCoders.cpp.
-        if (type == WebCore::Cursor::Custom)
+        if ( type == WebCore::Cursor::Custom )
+        {
             type = WebCore::Cursor::Pointer;
-#endif
-        encoder->encode(static_cast<uint32_t>(type));
-#if USE(CG)
-        if (type != WebCore::Cursor::Custom)
-            return;
+        }
 
-        encodeImage(encoder, cursor.image());
-        encoder->encode(cursor.hotSpot());
+#endif
+        encoder->encode( static_cast<uint32_t>( type ) );
+#if USE(CG)
+
+        if ( type != WebCore::Cursor::Custom )
+        {
+            return;
+        }
+
+        encodeImage( encoder, cursor.image() );
+        encoder->encode( cursor.hotSpot() );
 #endif
     }
-    
-    static bool decode(ArgumentDecoder* decoder, WebCore::Cursor& cursor)
+
+    static bool decode( ArgumentDecoder *decoder, WebCore::Cursor &cursor )
     {
         uint32_t typeInt;
-        if (!decoder->decode(typeInt))
-            return false;
-        if (typeInt > WebCore::Cursor::Custom)
-            return false;
-        WebCore::Cursor::Type type = static_cast<WebCore::Cursor::Type>(typeInt);
 
-        if (type != WebCore::Cursor::Custom) {
-            cursor = WebCore::Cursor::fromType(type);
+        if ( !decoder->decode( typeInt ) )
+        {
+            return false;
+        }
+
+        if ( typeInt > WebCore::Cursor::Custom )
+        {
+            return false;
+        }
+
+        WebCore::Cursor::Type type = static_cast<WebCore::Cursor::Type>( typeInt );
+
+        if ( type != WebCore::Cursor::Custom )
+        {
+            cursor = WebCore::Cursor::fromType( type );
             return true;
         }
 
@@ -229,15 +281,25 @@ template<> struct ArgumentCoder<WebCore::Cursor> {
         return false;
 #else
         RefPtr<WebCore::Image> image;
-        if (!decodeImage(decoder, image))
+
+        if ( !decodeImage( decoder, image ) )
+        {
             return false;
+        }
+
         WebCore::IntPoint hotSpot;
-        if (!decoder->decode(hotSpot))
-            return false;
-        if (!image->rect().contains(WebCore::IntRect(hotSpot, WebCore::IntSize())))
-            return false;
 
-        cursor = WebCore::Cursor(image.get(), hotSpot);
+        if ( !decoder->decode( hotSpot ) )
+        {
+            return false;
+        }
+
+        if ( !image->rect().contains( WebCore::IntRect( hotSpot, WebCore::IntSize() ) ) )
+        {
+            return false;
+        }
+
+        cursor = WebCore::Cursor( image.get(), hotSpot );
         return true;
 #endif
     }
@@ -246,236 +308,331 @@ template<> struct ArgumentCoder<WebCore::Cursor> {
 #endif
 
 // These two functions are implemented in a platform specific manner.
-void encodeResourceRequest(ArgumentEncoder*, const WebCore::ResourceRequest&);
-bool decodeResourceRequest(ArgumentDecoder*, WebCore::ResourceRequest&);
+void encodeResourceRequest( ArgumentEncoder *, const WebCore::ResourceRequest & );
+bool decodeResourceRequest( ArgumentDecoder *, WebCore::ResourceRequest & );
 
-template<> struct ArgumentCoder<WebCore::ResourceRequest> {
-    static void encode(ArgumentEncoder* encoder, const WebCore::ResourceRequest& resourceRequest)
+template<> struct ArgumentCoder<WebCore::ResourceRequest>
+{
+    static void encode( ArgumentEncoder *encoder, const WebCore::ResourceRequest &resourceRequest )
     {
-        encodeResourceRequest(encoder, resourceRequest);
-    }
-    
-    static bool decode(ArgumentDecoder* decoder, WebCore::ResourceRequest& resourceRequest)
-    {
-        return decodeResourceRequest(decoder, resourceRequest);
-    }
-};
-
-// These two functions are implemented in a platform specific manner.
-void encodeResourceResponse(ArgumentEncoder*, const WebCore::ResourceResponse&);
-bool decodeResourceResponse(ArgumentDecoder*, WebCore::ResourceResponse&);
-
-template<> struct ArgumentCoder<WebCore::ResourceResponse> {
-    static void encode(ArgumentEncoder* encoder, const WebCore::ResourceResponse& resourceResponse)
-    {
-        encodeResourceResponse(encoder, resourceResponse);
+        encodeResourceRequest( encoder, resourceRequest );
     }
 
-    static bool decode(ArgumentDecoder* decoder, WebCore::ResourceResponse& resourceResponse)
+    static bool decode( ArgumentDecoder *decoder, WebCore::ResourceRequest &resourceRequest )
     {
-        return decodeResourceResponse(decoder, resourceResponse);
+        return decodeResourceRequest( decoder, resourceRequest );
     }
 };
 
 // These two functions are implemented in a platform specific manner.
-void encodeResourceError(ArgumentEncoder*, const WebCore::ResourceError&);
-bool decodeResourceError(ArgumentDecoder*, WebCore::ResourceError&);
+void encodeResourceResponse( ArgumentEncoder *, const WebCore::ResourceResponse & );
+bool decodeResourceResponse( ArgumentDecoder *, WebCore::ResourceResponse & );
 
-template<> struct ArgumentCoder<WebCore::ResourceError> {
-    static void encode(ArgumentEncoder* encoder, const WebCore::ResourceError& resourceError)
+template<> struct ArgumentCoder<WebCore::ResourceResponse>
+{
+    static void encode( ArgumentEncoder *encoder, const WebCore::ResourceResponse &resourceResponse )
     {
-        encodeResourceError(encoder, resourceError);
+        encodeResourceResponse( encoder, resourceResponse );
     }
-    
-    static bool decode(ArgumentDecoder* decoder, WebCore::ResourceError& resourceError)
+
+    static bool decode( ArgumentDecoder *decoder, WebCore::ResourceResponse &resourceResponse )
     {
-        return decodeResourceError(decoder, resourceError);
+        return decodeResourceResponse( decoder, resourceResponse );
     }
 };
 
-template<> struct ArgumentCoder<WebCore::WindowFeatures> {
-    static void encode(ArgumentEncoder* encoder, const WebCore::WindowFeatures& windowFeatures)
+// These two functions are implemented in a platform specific manner.
+void encodeResourceError( ArgumentEncoder *, const WebCore::ResourceError & );
+bool decodeResourceError( ArgumentDecoder *, WebCore::ResourceError & );
+
+template<> struct ArgumentCoder<WebCore::ResourceError>
+{
+    static void encode( ArgumentEncoder *encoder, const WebCore::ResourceError &resourceError )
     {
-        encoder->encode(windowFeatures.x);
-        encoder->encode(windowFeatures.y);
-        encoder->encode(windowFeatures.width);
-        encoder->encode(windowFeatures.height);
-        encoder->encode(windowFeatures.xSet);
-        encoder->encode(windowFeatures.ySet);
-        encoder->encode(windowFeatures.widthSet);
-        encoder->encode(windowFeatures.heightSet);
-        encoder->encode(windowFeatures.menuBarVisible);
-        encoder->encode(windowFeatures.statusBarVisible);
-        encoder->encode(windowFeatures.toolBarVisible);
-        encoder->encode(windowFeatures.locationBarVisible);
-        encoder->encode(windowFeatures.scrollbarsVisible);
-        encoder->encode(windowFeatures.resizable);
-        encoder->encode(windowFeatures.fullscreen);
-        encoder->encode(windowFeatures.dialog);
+        encodeResourceError( encoder, resourceError );
     }
-    
-    static bool decode(ArgumentDecoder* decoder, WebCore::WindowFeatures& windowFeatures)
+
+    static bool decode( ArgumentDecoder *decoder, WebCore::ResourceError &resourceError )
     {
-        if (!decoder->decode(windowFeatures.x))
+        return decodeResourceError( decoder, resourceError );
+    }
+};
+
+template<> struct ArgumentCoder<WebCore::WindowFeatures>
+{
+    static void encode( ArgumentEncoder *encoder, const WebCore::WindowFeatures &windowFeatures )
+    {
+        encoder->encode( windowFeatures.x );
+        encoder->encode( windowFeatures.y );
+        encoder->encode( windowFeatures.width );
+        encoder->encode( windowFeatures.height );
+        encoder->encode( windowFeatures.xSet );
+        encoder->encode( windowFeatures.ySet );
+        encoder->encode( windowFeatures.widthSet );
+        encoder->encode( windowFeatures.heightSet );
+        encoder->encode( windowFeatures.menuBarVisible );
+        encoder->encode( windowFeatures.statusBarVisible );
+        encoder->encode( windowFeatures.toolBarVisible );
+        encoder->encode( windowFeatures.locationBarVisible );
+        encoder->encode( windowFeatures.scrollbarsVisible );
+        encoder->encode( windowFeatures.resizable );
+        encoder->encode( windowFeatures.fullscreen );
+        encoder->encode( windowFeatures.dialog );
+    }
+
+    static bool decode( ArgumentDecoder *decoder, WebCore::WindowFeatures &windowFeatures )
+    {
+        if ( !decoder->decode( windowFeatures.x ) )
+        {
             return false;
-        if (!decoder->decode(windowFeatures.y))
+        }
+
+        if ( !decoder->decode( windowFeatures.y ) )
+        {
             return false;
-        if (!decoder->decode(windowFeatures.width))
+        }
+
+        if ( !decoder->decode( windowFeatures.width ) )
+        {
             return false;
-        if (!decoder->decode(windowFeatures.height))
+        }
+
+        if ( !decoder->decode( windowFeatures.height ) )
+        {
             return false;
-        if (!decoder->decode(windowFeatures.xSet))
+        }
+
+        if ( !decoder->decode( windowFeatures.xSet ) )
+        {
             return false;
-        if (!decoder->decode(windowFeatures.ySet))
+        }
+
+        if ( !decoder->decode( windowFeatures.ySet ) )
+        {
             return false;
-        if (!decoder->decode(windowFeatures.widthSet))
+        }
+
+        if ( !decoder->decode( windowFeatures.widthSet ) )
+        {
             return false;
-        if (!decoder->decode(windowFeatures.heightSet))
+        }
+
+        if ( !decoder->decode( windowFeatures.heightSet ) )
+        {
             return false;
-        if (!decoder->decode(windowFeatures.menuBarVisible))
+        }
+
+        if ( !decoder->decode( windowFeatures.menuBarVisible ) )
+        {
             return false;
-        if (!decoder->decode(windowFeatures.statusBarVisible))
+        }
+
+        if ( !decoder->decode( windowFeatures.statusBarVisible ) )
+        {
             return false;
-        if (!decoder->decode(windowFeatures.toolBarVisible))
+        }
+
+        if ( !decoder->decode( windowFeatures.toolBarVisible ) )
+        {
             return false;
-        if (!decoder->decode(windowFeatures.locationBarVisible))
+        }
+
+        if ( !decoder->decode( windowFeatures.locationBarVisible ) )
+        {
             return false;
-        if (!decoder->decode(windowFeatures.scrollbarsVisible))
+        }
+
+        if ( !decoder->decode( windowFeatures.scrollbarsVisible ) )
+        {
             return false;
-        if (!decoder->decode(windowFeatures.resizable))
+        }
+
+        if ( !decoder->decode( windowFeatures.resizable ) )
+        {
             return false;
-        if (!decoder->decode(windowFeatures.fullscreen))
+        }
+
+        if ( !decoder->decode( windowFeatures.fullscreen ) )
+        {
             return false;
-        if (!decoder->decode(windowFeatures.dialog))
+        }
+
+        if ( !decoder->decode( windowFeatures.dialog ) )
+        {
             return false;
+        }
+
         return true;
     }
 };
 
-template<> struct ArgumentCoder<WebCore::Color> {
-    static void encode(ArgumentEncoder* encoder, const WebCore::Color& color)
+template<> struct ArgumentCoder<WebCore::Color>
+{
+    static void encode( ArgumentEncoder *encoder, const WebCore::Color &color )
     {
-        if (!color.isValid()) {
-            encoder->encodeBool(false);
+        if ( !color.isValid() )
+        {
+            encoder->encodeBool( false );
             return;
         }
 
-        encoder->encodeBool(true);
-        encoder->encode(color.rgb());
+        encoder->encodeBool( true );
+        encoder->encode( color.rgb() );
     }
 
-    static bool decode(ArgumentDecoder* decoder, WebCore::Color& color)
+    static bool decode( ArgumentDecoder *decoder, WebCore::Color &color )
     {
         bool isValid;
-        if (!decoder->decode(isValid))
-            return false;
 
-        if (!isValid) {
+        if ( !decoder->decode( isValid ) )
+        {
+            return false;
+        }
+
+        if ( !isValid )
+        {
             color = WebCore::Color();
             return true;
         }
 
         WebCore::RGBA32 rgba;
-        if (!decoder->decode(rgba))
-            return false;
 
-        color = WebCore::Color(rgba);
+        if ( !decoder->decode( rgba ) )
+        {
+            return false;
+        }
+
+        color = WebCore::Color( rgba );
         return true;
     }
 };
 
 #if PLATFORM(MAC)
-template<> struct ArgumentCoder<WebCore::KeypressCommand> {
-    static void encode(ArgumentEncoder* encoder, const WebCore::KeypressCommand& keypressCommand)
+template<> struct ArgumentCoder<WebCore::KeypressCommand>
+{
+    static void encode( ArgumentEncoder *encoder, const WebCore::KeypressCommand &keypressCommand )
     {
-        encoder->encode(CoreIPC::In(keypressCommand.commandName, keypressCommand.text));
+        encoder->encode( CoreIPC::In( keypressCommand.commandName, keypressCommand.text ) );
     }
-    
-    static bool decode(ArgumentDecoder* decoder, WebCore::KeypressCommand& keypressCommand)
+
+    static bool decode( ArgumentDecoder *decoder, WebCore::KeypressCommand &keypressCommand )
     {
-        return decoder->decode(CoreIPC::Out(keypressCommand.commandName, keypressCommand.text));
+        return decoder->decode( CoreIPC::Out( keypressCommand.commandName, keypressCommand.text ) );
     }
 };
 #endif
 
-template<> struct ArgumentCoder<WebCore::CompositionUnderline> {
-    static void encode(ArgumentEncoder* encoder, const WebCore::CompositionUnderline& underline)
+template<> struct ArgumentCoder<WebCore::CompositionUnderline>
+{
+    static void encode( ArgumentEncoder *encoder, const WebCore::CompositionUnderline &underline )
     {
-        encoder->encode(CoreIPC::In(underline.startOffset, underline.endOffset, underline.thick, underline.color));
+        encoder->encode( CoreIPC::In( underline.startOffset, underline.endOffset, underline.thick, underline.color ) );
     }
-    
-    static bool decode(ArgumentDecoder* decoder, WebCore::CompositionUnderline& underline)
+
+    static bool decode( ArgumentDecoder *decoder, WebCore::CompositionUnderline &underline )
     {
-        return decoder->decode(CoreIPC::Out(underline.startOffset, underline.endOffset, underline.thick, underline.color));
+        return decoder->decode( CoreIPC::Out( underline.startOffset, underline.endOffset, underline.thick, underline.color ) );
     }
 };
 
-template<> struct ArgumentCoder<WebCore::DatabaseDetails> {
-    static void encode(ArgumentEncoder* encoder, const WebCore::DatabaseDetails& details)
+template<> struct ArgumentCoder<WebCore::DatabaseDetails>
+{
+    static void encode( ArgumentEncoder *encoder, const WebCore::DatabaseDetails &details )
     {
-        encoder->encode(CoreIPC::In(details.name(), details.displayName(), details.expectedUsage(), details.currentUsage()));
+        encoder->encode( CoreIPC::In( details.name(), details.displayName(), details.expectedUsage(), details.currentUsage() ) );
     }
-    
-    static bool decode(ArgumentDecoder* decoder, WebCore::DatabaseDetails& details)
+
+    static bool decode( ArgumentDecoder *decoder, WebCore::DatabaseDetails &details )
     {
         String name;
         String displayName;
         uint64_t expectedUsage;
         uint64_t currentUsage;
-        if (!decoder->decode(CoreIPC::Out(name, displayName, expectedUsage, currentUsage)))
+
+        if ( !decoder->decode( CoreIPC::Out( name, displayName, expectedUsage, currentUsage ) ) )
+        {
             return false;
-        
-        details = WebCore::DatabaseDetails(name, displayName, expectedUsage, currentUsage);
+        }
+
+        details = WebCore::DatabaseDetails( name, displayName, expectedUsage, currentUsage );
         return true;
     }
 };
 
-template<> struct ArgumentCoder<WebCore::GrammarDetail> {
-    static void encode(ArgumentEncoder* encoder, const WebCore::GrammarDetail& detail)
+template<> struct ArgumentCoder<WebCore::GrammarDetail>
+{
+    static void encode( ArgumentEncoder *encoder, const WebCore::GrammarDetail &detail )
     {
-        encoder->encodeInt32(detail.location);
-        encoder->encodeInt32(detail.length);
-        encoder->encode(detail.guesses);
-        encoder->encode(detail.userDescription);
+        encoder->encodeInt32( detail.location );
+        encoder->encodeInt32( detail.length );
+        encoder->encode( detail.guesses );
+        encoder->encode( detail.userDescription );
     }
 
-    static bool decode(ArgumentDecoder* decoder, WebCore::GrammarDetail& detail)
+    static bool decode( ArgumentDecoder *decoder, WebCore::GrammarDetail &detail )
     {
-        if (!decoder->decodeInt32(detail.location))
+        if ( !decoder->decodeInt32( detail.location ) )
+        {
             return false;
-        if (!decoder->decodeInt32(detail.length))
+        }
+
+        if ( !decoder->decodeInt32( detail.length ) )
+        {
             return false;
-        if (!decoder->decode(detail.guesses))
+        }
+
+        if ( !decoder->decode( detail.guesses ) )
+        {
             return false;
-        if (!decoder->decode(detail.userDescription))
+        }
+
+        if ( !decoder->decode( detail.userDescription ) )
+        {
             return false;
+        }
 
         return true;
     }
 };
 
-template<> struct ArgumentCoder<WebCore::TextCheckingResult> {
-    static void encode(ArgumentEncoder* encoder, const WebCore::TextCheckingResult& result)
+template<> struct ArgumentCoder<WebCore::TextCheckingResult>
+{
+    static void encode( ArgumentEncoder *encoder, const WebCore::TextCheckingResult &result )
     {
-        encoder->encodeEnum(result.type);
-        encoder->encodeInt32(result.location);
-        encoder->encodeInt32(result.length);
-        encoder->encode(result.details);
-        encoder->encode(result.replacement);
+        encoder->encodeEnum( result.type );
+        encoder->encodeInt32( result.location );
+        encoder->encodeInt32( result.length );
+        encoder->encode( result.details );
+        encoder->encode( result.replacement );
     }
 
-    static bool decode(ArgumentDecoder* decoder, WebCore::TextCheckingResult& result)
+    static bool decode( ArgumentDecoder *decoder, WebCore::TextCheckingResult &result )
     {
-        if (!decoder->decodeEnum(result.type))
+        if ( !decoder->decodeEnum( result.type ) )
+        {
             return false;
-        if (!decoder->decodeInt32(result.location))
+        }
+
+        if ( !decoder->decodeInt32( result.location ) )
+        {
             return false;
-        if (!decoder->decodeInt32(result.length))
+        }
+
+        if ( !decoder->decodeInt32( result.length ) )
+        {
             return false;
-        if (!decoder->decode(result.details))
+        }
+
+        if ( !decoder->decode( result.details ) )
+        {
             return false;
-        if (!decoder->decode(result.replacement))
+        }
+
+        if ( !decoder->decode( result.replacement ) )
+        {
             return false;
+        }
+
         return true;
     }
 };

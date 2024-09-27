@@ -42,7 +42,8 @@
 #include <wtf/text/StringHash.h>
 #include <wtf/text/WTFString.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 class DownloadProxy;
 class WebApplicationCacheManagerProxy;
@@ -57,151 +58,223 @@ class WebPageProxy;
 class WebResourceCacheManagerProxy;
 struct WebProcessCreationParameters;
 
-class WebContext : public APIObject {
+class WebContext : public APIObject
+{
 public:
     static const Type APIType = TypeContext;
 
-    static WebContext* sharedProcessContext();
-    static WebContext* sharedThreadContext();
+    static WebContext *sharedProcessContext();
+    static WebContext *sharedThreadContext();
 
-    static PassRefPtr<WebContext> create(const String& injectedBundlePath);
+    static PassRefPtr<WebContext> create( const String &injectedBundlePath );
     virtual ~WebContext();
 
-    static const Vector<WebContext*>& allContexts();
+    static const Vector<WebContext *> &allContexts();
 
-    void initializeInjectedBundleClient(const WKContextInjectedBundleClient*);
-    void initializeHistoryClient(const WKContextHistoryClient*);
-    void initializeDownloadClient(const WKContextDownloadClient*);
+    void initializeInjectedBundleClient( const WKContextInjectedBundleClient * );
+    void initializeHistoryClient( const WKContextHistoryClient * );
+    void initializeDownloadClient( const WKContextDownloadClient * );
 
-    ProcessModel processModel() const { return m_processModel; }
-    WebProcessProxy* process() const { return m_process.get(); }
+    ProcessModel processModel() const
+    {
+        return m_processModel;
+    }
+    WebProcessProxy *process() const
+    {
+        return m_process.get();
+    }
 
-    template<typename U> bool sendToAllProcesses(const U& message);
-    template<typename U> bool sendToAllProcessesRelaunchingThemIfNecessary(const U& message);
-    
-    void processDidFinishLaunching(WebProcessProxy*);
+    template<typename U> bool sendToAllProcesses( const U &message );
+    template<typename U> bool sendToAllProcessesRelaunchingThemIfNecessary( const U &message );
+
+    void processDidFinishLaunching( WebProcessProxy * );
 
     // Disconnect the process from the context.
-    void disconnectProcess(WebProcessProxy*);
+    void disconnectProcess( WebProcessProxy * );
 
-    PassRefPtr<WebPageProxy> createWebPage(PageClient*, WebPageGroup*);
+    PassRefPtr<WebPageProxy> createWebPage( PageClient *, WebPageGroup * );
 
-    WebProcessProxy* relaunchProcessIfNecessary();
+    WebProcessProxy *relaunchProcessIfNecessary();
 
-    const String& injectedBundlePath() const { return m_injectedBundlePath; }
+    const String &injectedBundlePath() const
+    {
+        return m_injectedBundlePath;
+    }
 
-    DownloadProxy* download(WebPageProxy* initiatingPage, const WebCore::ResourceRequest&);
+    DownloadProxy *download( WebPageProxy *initiatingPage, const WebCore::ResourceRequest & );
 
-    void setInjectedBundleInitializationUserData(PassRefPtr<APIObject> userData) { m_injectedBundleInitializationUserData = userData; }
-    APIObject* injectedBundleInitializationUserData() const { return m_injectedBundleInitializationUserData.get(); }
+    void setInjectedBundleInitializationUserData( PassRefPtr<APIObject> userData )
+    {
+        m_injectedBundleInitializationUserData = userData;
+    }
+    APIObject *injectedBundleInitializationUserData() const
+    {
+        return m_injectedBundleInitializationUserData.get();
+    }
 
-    void postMessageToInjectedBundle(const String&, APIObject*);
+    void postMessageToInjectedBundle( const String &, APIObject * );
 
     // InjectedBundle client
-    void didReceiveMessageFromInjectedBundle(const String&, APIObject*);
-    void didReceiveSynchronousMessageFromInjectedBundle(const String&, APIObject*, RefPtr<APIObject>& returnData);
+    void didReceiveMessageFromInjectedBundle( const String &, APIObject * );
+    void didReceiveSynchronousMessageFromInjectedBundle( const String &, APIObject *, RefPtr<APIObject> &returnData );
 
     void populateVisitedLinks();
-    
-    void setAdditionalPluginsDirectory(const String&);
 
-    PluginInfoStore* pluginInfoStore() { return &m_pluginInfoStore; }
+    void setAdditionalPluginsDirectory( const String & );
+
+    PluginInfoStore *pluginInfoStore()
+    {
+        return &m_pluginInfoStore;
+    }
     String applicationCacheDirectory();
 
-    void setAlwaysUsesComplexTextCodePath(bool);
-    
-    void registerURLSchemeAsEmptyDocument(const String&);
-    void registerURLSchemeAsSecure(const String&);
-    void setDomainRelaxationForbiddenForURLScheme(const String&);
+    void setAlwaysUsesComplexTextCodePath( bool );
 
-    void addVisitedLink(const String&);
-    void addVisitedLinkHash(WebCore::LinkHash);
+    void registerURLSchemeAsEmptyDocument( const String & );
+    void registerURLSchemeAsSecure( const String & );
+    void setDomainRelaxationForbiddenForURLScheme( const String & );
 
-    void didReceiveMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*);
-    CoreIPC::SyncReplyMode didReceiveSyncMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*, CoreIPC::ArgumentEncoder*);
+    void addVisitedLink( const String & );
+    void addVisitedLinkHash( WebCore::LinkHash );
 
-    void setCacheModel(CacheModel);
-    CacheModel cacheModel() const { return m_cacheModel; }
+    void didReceiveMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * );
+    CoreIPC::SyncReplyMode didReceiveSyncMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder *,
+            CoreIPC::ArgumentEncoder * );
 
-    void setDefaultRequestTimeoutInterval(double);
+    void setCacheModel( CacheModel );
+    CacheModel cacheModel() const
+    {
+        return m_cacheModel;
+    }
 
-    void startMemorySampler(const double interval);
+    void setDefaultRequestTimeoutInterval( double );
+
+    void startMemorySampler( const double interval );
     void stopMemorySampler();
 
 #if PLATFORM(WIN)
-    void setShouldPaintNativeControls(bool);
+    void setShouldPaintNativeControls( bool );
 
-    void setInitialHTTPCookieAcceptPolicy(HTTPCookieAcceptPolicy policy) { m_initialHTTPCookieAcceptPolicy = policy; }
+    void setInitialHTTPCookieAcceptPolicy( HTTPCookieAcceptPolicy policy )
+    {
+        m_initialHTTPCookieAcceptPolicy = policy;
+    }
 #endif
 
-    void setEnhancedAccessibility(bool);
-    
+    void setEnhancedAccessibility( bool );
+
     // Downloads.
-    DownloadProxy* createDownloadProxy();
-    WebDownloadClient& downloadClient() { return m_downloadClient; }
-    void downloadFinished(DownloadProxy*);
+    DownloadProxy *createDownloadProxy();
+    WebDownloadClient &downloadClient()
+    {
+        return m_downloadClient;
+    }
+    void downloadFinished( DownloadProxy * );
 
     static HashSet<String, CaseFoldingHash> pdfAndPostScriptMIMETypes();
 
-    WebApplicationCacheManagerProxy* applicationCacheManagerProxy() const { return m_applicationCacheManagerProxy.get(); }
-    WebCookieManagerProxy* cookieManagerProxy() const { return m_cookieManagerProxy.get(); }
-    WebDatabaseManagerProxy* databaseManagerProxy() const { return m_databaseManagerProxy.get(); }
-    WebGeolocationManagerProxy* geolocationManagerProxy() const { return m_geolocationManagerProxy.get(); }
-    WebIconDatabase* iconDatabase() const { return m_iconDatabase.get(); }
-    WebKeyValueStorageManagerProxy* keyValueStorageManagerProxy() const { return m_keyValueStorageManagerProxy.get(); }
-    WebMediaCacheManagerProxy* mediaCacheManagerProxy() const { return m_mediaCacheManagerProxy.get(); }
-    WebPluginSiteDataManager* pluginSiteDataManager() const { return m_pluginSiteDataManager.get(); }
-    WebResourceCacheManagerProxy* resourceCacheManagerProxy() const { return m_resourceCacheManagerProxy.get(); }
+    WebApplicationCacheManagerProxy *applicationCacheManagerProxy() const
+    {
+        return m_applicationCacheManagerProxy.get();
+    }
+    WebCookieManagerProxy *cookieManagerProxy() const
+    {
+        return m_cookieManagerProxy.get();
+    }
+    WebDatabaseManagerProxy *databaseManagerProxy() const
+    {
+        return m_databaseManagerProxy.get();
+    }
+    WebGeolocationManagerProxy *geolocationManagerProxy() const
+    {
+        return m_geolocationManagerProxy.get();
+    }
+    WebIconDatabase *iconDatabase() const
+    {
+        return m_iconDatabase.get();
+    }
+    WebKeyValueStorageManagerProxy *keyValueStorageManagerProxy() const
+    {
+        return m_keyValueStorageManagerProxy.get();
+    }
+    WebMediaCacheManagerProxy *mediaCacheManagerProxy() const
+    {
+        return m_mediaCacheManagerProxy.get();
+    }
+    WebPluginSiteDataManager *pluginSiteDataManager() const
+    {
+        return m_pluginSiteDataManager.get();
+    }
+    WebResourceCacheManagerProxy *resourceCacheManagerProxy() const
+    {
+        return m_resourceCacheManagerProxy.get();
+    }
 
-    struct Statistics {
+    struct Statistics
+    {
         unsigned wkViewCount;
         unsigned wkPageCount;
         unsigned wkFrameCount;
     };
-    static Statistics& statistics();    
+    static Statistics &statistics();
 
-    void setDatabaseDirectory(const String& dir) { m_overrideDatabaseDirectory = dir; }
-    void setIconDatabasePath(const String&);
-    void setLocalStorageDirectory(const String& dir) { m_overrideLocalStorageDirectory = dir; }
+    void setDatabaseDirectory( const String &dir )
+    {
+        m_overrideDatabaseDirectory = dir;
+    }
+    void setIconDatabasePath( const String & );
+    void setLocalStorageDirectory( const String &dir )
+    {
+        m_overrideLocalStorageDirectory = dir;
+    }
 
     void ensureWebProcess();
 
-    bool shouldTerminate(WebProcessProxy*);
+    bool shouldTerminate( WebProcessProxy * );
 
-    void disableProcessTermination() { m_processTerminationEnabled = false; }
+    void disableProcessTermination()
+    {
+        m_processTerminationEnabled = false;
+    }
     void enableProcessTermination();
 
     // Defaults to false.
-    void setHTTPPipeliningEnabled(bool);
+    void setHTTPPipeliningEnabled( bool );
     bool httpPipeliningEnabled();
 
 private:
-    WebContext(ProcessModel, const String& injectedBundlePath);
+    WebContext( ProcessModel, const String &injectedBundlePath );
 
-    virtual Type type() const { return APIType; }
+    virtual Type type() const
+    {
+        return APIType;
+    }
 
-    void platformInitializeWebProcess(WebProcessCreationParameters&);
+    void platformInitializeWebProcess( WebProcessCreationParameters & );
     void platformInvalidateContext();
-    
+
     // History client
-    void didNavigateWithNavigationData(uint64_t pageID, const WebNavigationDataStore& store, uint64_t frameID);
-    void didPerformClientRedirect(uint64_t pageID, const String& sourceURLString, const String& destinationURLString, uint64_t frameID);
-    void didPerformServerRedirect(uint64_t pageID, const String& sourceURLString, const String& destinationURLString, uint64_t frameID);
-    void didUpdateHistoryTitle(uint64_t pageID, const String& title, const String& url, uint64_t frameID);
+    void didNavigateWithNavigationData( uint64_t pageID, const WebNavigationDataStore &store, uint64_t frameID );
+    void didPerformClientRedirect( uint64_t pageID, const String &sourceURLString, const String &destinationURLString,
+                                   uint64_t frameID );
+    void didPerformServerRedirect( uint64_t pageID, const String &sourceURLString, const String &destinationURLString,
+                                   uint64_t frameID );
+    void didUpdateHistoryTitle( uint64_t pageID, const String &title, const String &url, uint64_t frameID );
 
     // Plugins
-    void getPlugins(bool refresh, Vector<WebCore::PluginInfo>& plugins);
-    void getPluginPath(const String& mimeType, const String& urlString, String& pluginPath);
+    void getPlugins( bool refresh, Vector<WebCore::PluginInfo> &plugins );
+    void getPluginPath( const String &mimeType, const String &urlString, String &pluginPath );
 #if !ENABLE(PLUGIN_PROCESS)
-    void didGetSitesWithPluginData(const Vector<String>& sites, uint64_t callbackID);
-    void didClearPluginSiteData(uint64_t callbackID);
+    void didGetSitesWithPluginData( const Vector<String> &sites, uint64_t callbackID );
+    void didClearPluginSiteData( uint64_t callbackID );
 #endif
-        
-    // Implemented in generated WebContextMessageReceiver.cpp
-    void didReceiveWebContextMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*);
-    CoreIPC::SyncReplyMode didReceiveSyncWebContextMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*, CoreIPC::ArgumentEncoder*);
 
-    static void languageChanged(void* context);
+    // Implemented in generated WebContextMessageReceiver.cpp
+    void didReceiveWebContextMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * );
+    CoreIPC::SyncReplyMode didReceiveSyncWebContextMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder *,
+            CoreIPC::ArgumentEncoder * );
+
+    static void languageChanged( void *context );
     void languageChanged();
 
     String databaseDirectory() const;
@@ -214,7 +287,7 @@ private:
     String platformDefaultLocalStorageDirectory() const;
 
     ProcessModel m_processModel;
-    
+
     // FIXME: In the future, this should be one or more WebProcessProxies.
     RefPtr<WebProcessProxy> m_process;
 
@@ -228,7 +301,7 @@ private:
 
     PluginInfoStore m_pluginInfoStore;
     VisitedLinkProvider m_visitedLinkProvider;
-        
+
     HashSet<String> m_schemesToRegisterAsEmptyDocument;
     HashSet<String> m_schemesToRegisterAsSecure;
     HashSet<String> m_schemesToSetDomainRelaxationForbiddenFor;
@@ -241,7 +314,7 @@ private:
 
     WebDownloadClient m_downloadClient;
     HashMap<uint64_t, RefPtr<DownloadProxy> > m_downloads;
-    
+
     bool m_memorySamplerEnabled;
     double m_memorySamplerInterval;
 
@@ -263,7 +336,7 @@ private:
 #if PLATFORM(MAC)
     RetainPtr<CFTypeRef> m_enhancedAccessibilityObserver;
 #endif
-    
+
     String m_overrideDatabaseDirectory;
     String m_overrideIconDatabasePath;
     String m_overrideLocalStorageDirectory;
@@ -271,19 +344,21 @@ private:
     bool m_processTerminationEnabled;
 };
 
-template<typename U> inline bool WebContext::sendToAllProcesses(const U& message)
+template<typename U> inline bool WebContext::sendToAllProcesses( const U &message )
 {
-    if (!m_process || !m_process->canSendMessage())
+    if ( !m_process || !m_process->canSendMessage() )
+    {
         return false;
+    }
 
-    return m_process->send(message, 0);
+    return m_process->send( message, 0 );
 }
 
-template<typename U> bool WebContext::sendToAllProcessesRelaunchingThemIfNecessary(const U& message)
+template<typename U> bool WebContext::sendToAllProcessesRelaunchingThemIfNecessary( const U &message )
 {
     relaunchProcessIfNecessary();
 
-    return m_process->send(message, 0);
+    return m_process->send( message, 0 );
 }
 
 } // namespace WebKit

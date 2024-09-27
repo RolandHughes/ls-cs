@@ -24,102 +24,109 @@
 #include "AffineTransform.h"
 #include "SVGException.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Only used in the bindings.
-class SVGMatrix : public AffineTransform {
+class SVGMatrix : public AffineTransform
+{
 public:
     SVGMatrix() { }
-    SVGMatrix(const AffineTransform& other)
-        : AffineTransform(other)
+    SVGMatrix( const AffineTransform &other )
+        : AffineTransform( other )
     {
     }
 
-    SVGMatrix(double a, double b, double c, double d, double e, double f)
-        : AffineTransform(a, b, c, d, e, f)
+    SVGMatrix( double a, double b, double c, double d, double e, double f )
+        : AffineTransform( a, b, c, d, e, f )
     {
     }
 
-    SVGMatrix translate(double tx, double ty)
+    SVGMatrix translate( double tx, double ty )
     {
         AffineTransform copy = *this;
-        copy.translate(tx, ty);
-        return static_cast<SVGMatrix>(copy);
+        copy.translate( tx, ty );
+        return static_cast<SVGMatrix>( copy );
     }
 
-    SVGMatrix scale(double s)
+    SVGMatrix scale( double s )
     {
         AffineTransform copy = *this;
-        copy.scale(s, s);
-        return static_cast<SVGMatrix>(copy);
+        copy.scale( s, s );
+        return static_cast<SVGMatrix>( copy );
     }
 
-    SVGMatrix scaleNonUniform(double sx, double sy)
+    SVGMatrix scaleNonUniform( double sx, double sy )
     {
         AffineTransform copy = *this;
-        copy.scale(sx, sy);
-        return static_cast<SVGMatrix>(copy);
+        copy.scale( sx, sy );
+        return static_cast<SVGMatrix>( copy );
     }
 
-    SVGMatrix rotate(double d)
+    SVGMatrix rotate( double d )
     {
         AffineTransform copy = *this;
-        copy.rotate(d);
-        return static_cast<SVGMatrix>(copy);
+        copy.rotate( d );
+        return static_cast<SVGMatrix>( copy );
     }
 
     SVGMatrix flipX()
     {
         AffineTransform copy = *this;
         copy.flipX();
-        return static_cast<SVGMatrix>(copy);
+        return static_cast<SVGMatrix>( copy );
     }
 
     SVGMatrix flipY()
     {
         AffineTransform copy = *this;
         copy.flipY();
-        return static_cast<SVGMatrix>(copy);
+        return static_cast<SVGMatrix>( copy );
     }
 
-    SVGMatrix skewX(double angle)
+    SVGMatrix skewX( double angle )
     {
         AffineTransform copy = *this;
-        copy.skewX(angle);
-        return static_cast<SVGMatrix>(copy);
+        copy.skewX( angle );
+        return static_cast<SVGMatrix>( copy );
     }
 
-    SVGMatrix skewY(double angle)
+    SVGMatrix skewY( double angle )
     {
         AffineTransform copy = *this;
-        copy.skewY(angle);
-        return static_cast<SVGMatrix>(copy);
+        copy.skewY( angle );
+        return static_cast<SVGMatrix>( copy );
     }
 
-    SVGMatrix multiply(const SVGMatrix& other)
+    SVGMatrix multiply( const SVGMatrix &other )
     {
         AffineTransform copy = *this;
-        copy *= static_cast<const AffineTransform&>(other);
-        return static_cast<SVGMatrix>(copy);
+        copy *= static_cast<const AffineTransform &>( other );
+        return static_cast<SVGMatrix>( copy );
     }
 
-    SVGMatrix inverse(ExceptionCode& ec) const
+    SVGMatrix inverse( ExceptionCode &ec ) const
     {
         AffineTransform transform = AffineTransform::inverse();
-        if (!isInvertible())
+
+        if ( !isInvertible() )
+        {
             ec = SVGException::SVG_MATRIX_NOT_INVERTABLE;
+        }
 
         return transform;
     }
 
-    SVGMatrix rotateFromVector(double x, double y, ExceptionCode& ec)
+    SVGMatrix rotateFromVector( double x, double y, ExceptionCode &ec )
     {
-        if (!x || !y)
+        if ( !x || !y )
+        {
             ec = SVGException::SVG_INVALID_VALUE_ERR;
+        }
 
         AffineTransform copy = *this;
-        copy.rotateFromVector(x, y);
-        return static_cast<SVGMatrix>(copy);
+        copy.rotateFromVector( x, y );
+        return static_cast<SVGMatrix>( copy );
     }
 
 };

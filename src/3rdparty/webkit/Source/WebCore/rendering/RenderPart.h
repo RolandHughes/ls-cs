@@ -25,15 +25,17 @@
 
 #include "RenderWidget.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Renderer for frames via RenderFrameBase, and plug-ins via RenderEmbeddedObject.
-class RenderPart : public RenderWidget {
+class RenderPart : public RenderWidget
+{
 public:
-    RenderPart(Element*);
+    RenderPart( Element * );
     virtual ~RenderPart();
 
-    virtual void setWidget(PassRefPtr<Widget>);
+    virtual void setWidget( PassRefPtr<Widget> );
     virtual void viewCleared();
 
 #if USE(ACCELERATED_COMPOSITING)
@@ -46,18 +48,24 @@ protected:
 #endif
 
 private:
-    virtual bool isRenderPart() const { return true; }
-    virtual const char* renderName() const { return "RenderPart"; }
+    virtual bool isRenderPart() const
+    {
+        return true;
+    }
+    virtual const char *renderName() const
+    {
+        return "RenderPart";
+    }
 };
 
-inline RenderPart* toRenderPart(RenderObject* object)
+inline RenderPart *toRenderPart( RenderObject *object )
 {
-    ASSERT(!object || object->isRenderPart());
-    return static_cast<RenderPart*>(object);
+    ASSERT( !object || object->isRenderPart() );
+    return static_cast<RenderPart *>( object );
 }
 
 // This will catch anyone doing an unnecessary cast.
-void toRenderPart(const RenderPart*);
+void toRenderPart( const RenderPart * );
 
 }
 

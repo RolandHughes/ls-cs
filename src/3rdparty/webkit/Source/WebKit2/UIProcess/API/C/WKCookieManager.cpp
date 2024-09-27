@@ -33,47 +33,52 @@ using namespace WebKit;
 
 WKTypeID WKCookieManagerGetTypeID()
 {
-    return toAPI(WebCookieManagerProxy::APIType);
+    return toAPI( WebCookieManagerProxy::APIType );
 }
 
-void WKCookieManagerSetClient(WKCookieManagerRef cookieManagerRef, const WKCookieManagerClient* wkClient)
+void WKCookieManagerSetClient( WKCookieManagerRef cookieManagerRef, const WKCookieManagerClient *wkClient )
 {
-    if (wkClient && wkClient->version)
+    if ( wkClient && wkClient->version )
+    {
         return;
-    toImpl(cookieManagerRef)->initializeClient(wkClient);
+    }
+
+    toImpl( cookieManagerRef )->initializeClient( wkClient );
 }
 
-void WKCookieManagerGetHostnamesWithCookies(WKCookieManagerRef cookieManagerRef, void* context, WKCookieManagerGetCookieHostnamesFunction callback)
+void WKCookieManagerGetHostnamesWithCookies( WKCookieManagerRef cookieManagerRef, void *context,
+        WKCookieManagerGetCookieHostnamesFunction callback )
 {
-    toImpl(cookieManagerRef)->getHostnamesWithCookies(ArrayCallback::create(context, callback));
+    toImpl( cookieManagerRef )->getHostnamesWithCookies( ArrayCallback::create( context, callback ) );
 }
 
-void WKCookieManagerDeleteCookiesForHostname(WKCookieManagerRef cookieManagerRef, WKStringRef hostname)
+void WKCookieManagerDeleteCookiesForHostname( WKCookieManagerRef cookieManagerRef, WKStringRef hostname )
 {
-    toImpl(cookieManagerRef)->deleteCookiesForHostname(toImpl(hostname)->string());
+    toImpl( cookieManagerRef )->deleteCookiesForHostname( toImpl( hostname )->string() );
 }
 
-void WKCookieManagerDeleteAllCookies(WKCookieManagerRef cookieManagerRef)
+void WKCookieManagerDeleteAllCookies( WKCookieManagerRef cookieManagerRef )
 {
-    toImpl(cookieManagerRef)->deleteAllCookies();
+    toImpl( cookieManagerRef )->deleteAllCookies();
 }
 
-void WKCookieManagerSetHTTPCookieAcceptPolicy(WKCookieManagerRef cookieManager, WKHTTPCookieAcceptPolicy policy)
+void WKCookieManagerSetHTTPCookieAcceptPolicy( WKCookieManagerRef cookieManager, WKHTTPCookieAcceptPolicy policy )
 {
-    toImpl(cookieManager)->setHTTPCookieAcceptPolicy(toHTTPCookieAcceptPolicy(policy));
+    toImpl( cookieManager )->setHTTPCookieAcceptPolicy( toHTTPCookieAcceptPolicy( policy ) );
 }
 
-void WKCookieManagerGetHTTPCookieAcceptPolicy(WKCookieManagerRef cookieManager, void* context, WKCookieManagerGetHTTPCookieAcceptPolicyFunction callback)
+void WKCookieManagerGetHTTPCookieAcceptPolicy( WKCookieManagerRef cookieManager, void *context,
+        WKCookieManagerGetHTTPCookieAcceptPolicyFunction callback )
 {
-    toImpl(cookieManager)->getHTTPCookieAcceptPolicy(HTTPCookieAcceptPolicyCallback::create(context, callback));
+    toImpl( cookieManager )->getHTTPCookieAcceptPolicy( HTTPCookieAcceptPolicyCallback::create( context, callback ) );
 }
 
-void WKCookieManagerStartObservingCookieChanges(WKCookieManagerRef cookieManager)
+void WKCookieManagerStartObservingCookieChanges( WKCookieManagerRef cookieManager )
 {
-    toImpl(cookieManager)->startObservingCookieChanges();
+    toImpl( cookieManager )->startObservingCookieChanges();
 }
 
-void WKCookieManagerStopObservingCookieChanges(WKCookieManagerRef cookieManager)
+void WKCookieManagerStopObservingCookieChanges( WKCookieManagerRef cookieManager )
 {
-    toImpl(cookieManager)->stopObservingCookieChanges();
+    toImpl( cookieManager )->stopObservingCookieChanges();
 }

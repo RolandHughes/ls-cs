@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef Geoposition_h
@@ -31,35 +31,43 @@
 #include "PlatformString.h"
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class Geoposition : public RefCounted<Geoposition> {
+class Geoposition : public RefCounted<Geoposition>
+{
 public:
-    static PassRefPtr<Geoposition> create(PassRefPtr<Coordinates> coordinates, DOMTimeStamp timestamp)
+    static PassRefPtr<Geoposition> create( PassRefPtr<Coordinates> coordinates, DOMTimeStamp timestamp )
     {
-        return adoptRef(new Geoposition(coordinates, timestamp));
+        return adoptRef( new Geoposition( coordinates, timestamp ) );
     }
 
     PassRefPtr<Geoposition> threadSafeCopy() const
     {
-        return Geoposition::create(m_coordinates->threadSafeCopy(), m_timestamp);
+        return Geoposition::create( m_coordinates->threadSafeCopy(), m_timestamp );
     }
 
-    DOMTimeStamp timestamp() const { return m_timestamp; }
-    Coordinates* coords() const { return m_coordinates.get(); }
-    
-private:
-    Geoposition(PassRefPtr<Coordinates> coordinates, DOMTimeStamp timestamp)
-        : m_coordinates(coordinates)
-        , m_timestamp(timestamp)
+    DOMTimeStamp timestamp() const
     {
-        ASSERT(m_coordinates);
+        return m_timestamp;
+    }
+    Coordinates *coords() const
+    {
+        return m_coordinates.get();
+    }
+
+private:
+    Geoposition( PassRefPtr<Coordinates> coordinates, DOMTimeStamp timestamp )
+        : m_coordinates( coordinates )
+        , m_timestamp( timestamp )
+    {
+        ASSERT( m_coordinates );
     }
 
     RefPtr<Coordinates> m_coordinates;
     DOMTimeStamp m_timestamp;
 };
-    
+
 } // namespace WebCore
 
 #endif // Geoposition_h

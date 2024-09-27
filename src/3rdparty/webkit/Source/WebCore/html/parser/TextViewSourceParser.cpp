@@ -28,12 +28,13 @@
 
 #include "HTMLTokenizer.h"
 
-namespace WebCore {
-
-TextViewSourceParser::TextViewSourceParser(HTMLViewSourceDocument* document)
-    : HTMLViewSourceParser(document)
+namespace WebCore
 {
-    tokenizer()->setState(HTMLTokenizer::PLAINTEXTState);
+
+TextViewSourceParser::TextViewSourceParser( HTMLViewSourceDocument *document )
+    : HTMLViewSourceParser( document )
+{
+    tokenizer()->setState( HTMLTokenizer::PLAINTEXTState );
 }
 
 TextViewSourceParser::~TextViewSourceParser()

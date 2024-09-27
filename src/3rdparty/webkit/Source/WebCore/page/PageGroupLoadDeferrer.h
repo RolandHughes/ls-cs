@@ -23,20 +23,22 @@
 #include <wtf/RefPtr.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class Frame;
-    class Page;
+class Frame;
+class Page;
 
-    class PageGroupLoadDeferrer {
-        WTF_MAKE_NONCOPYABLE(PageGroupLoadDeferrer);
-    public:
-        PageGroupLoadDeferrer(Page*, bool deferSelf);
-        ~PageGroupLoadDeferrer();
+class PageGroupLoadDeferrer
+{
+    WTF_MAKE_NONCOPYABLE( PageGroupLoadDeferrer );
+public:
+    PageGroupLoadDeferrer( Page *, bool deferSelf );
+    ~PageGroupLoadDeferrer();
 
-    private:
-        Vector<RefPtr<Frame>, 16> m_deferredFrames;
-    };
+private:
+    Vector<RefPtr<Frame>, 16> m_deferredFrames;
+};
 }
 
 #endif // PageGroupLoadDeferrer_h

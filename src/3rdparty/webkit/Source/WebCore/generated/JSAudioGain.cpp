@@ -29,9 +29,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSAudioGain);
+ASSERT_CLASS_FITS_IN_CELL( JSAudioGain );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -42,8 +43,8 @@ ASSERT_CLASS_FITS_IN_CELL(JSAudioGain);
 
 static const HashTableValue JSAudioGainTableValues[2] =
 {
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsAudioGainConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsAudioGainConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -57,43 +58,49 @@ static JSC_CONST_HASHTABLE HashTable JSAudioGainTable = { 2, 1, JSAudioGainTable
 
 static const HashTableValue JSAudioGainConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSAudioGainConstructorTable = { 1, 0, JSAudioGainConstructorTableValues, 0 };
-class JSAudioGainConstructor : public DOMConstructorObject {
+class JSAudioGainConstructor : public DOMConstructorObject
+{
 public:
-    JSAudioGainConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSAudioGainConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSAudioGainConstructor::s_info = { "AudioGainConstructor", &DOMConstructorObject::s_info, &JSAudioGainConstructorTable, 0 };
 
-JSAudioGainConstructor::JSAudioGainConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSAudioGainConstructor::JSAudioGainConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSAudioGainPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSAudioGainPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSAudioGainConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSAudioGainConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSAudioGainConstructor, JSDOMWrapper>(exec, &JSAudioGainConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSAudioGainConstructor, JSDOMWrapper>( exec, &JSAudioGainConstructorTable, this, propertyName, slot );
 }
 
-bool JSAudioGainConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSAudioGainConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSAudioGainConstructor, JSDOMWrapper>(exec, &JSAudioGainConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSAudioGainConstructor, JSDOMWrapper>( exec, &JSAudioGainConstructorTable, this, propertyName,
+            descriptor );
 }
 
 /* Hash table for prototype */
@@ -105,55 +112,56 @@ bool JSAudioGainConstructor::getOwnPropertyDescriptor(ExecState* exec, const Ide
 
 static const HashTableValue JSAudioGainPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSAudioGainPrototypeTable = { 1, 0, JSAudioGainPrototypeTableValues, 0 };
 const ClassInfo JSAudioGainPrototype::s_info = { "AudioGainPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSAudioGainPrototypeTable, 0 };
 
-JSObject* JSAudioGainPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSAudioGainPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSAudioGain>(exec, globalObject);
+    return getDOMPrototype<JSAudioGain>( exec, globalObject );
 }
 
 const ClassInfo JSAudioGain::s_info = { "AudioGain", &JSAudioParam::s_info, &JSAudioGainTable, 0 };
 
-JSAudioGain::JSAudioGain(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<AudioGain> impl)
-    : JSAudioParam(structure, globalObject, impl)
+JSAudioGain::JSAudioGain( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<AudioGain> impl )
+    : JSAudioParam( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSAudioGain::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSAudioGain::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSAudioGainPrototype(exec->globalData(), globalObject, JSAudioGainPrototype::createStructure(exec->globalData(), JSAudioParamPrototype::self(exec, globalObject)));
+    return new ( exec ) JSAudioGainPrototype( exec->globalData(), globalObject,
+            JSAudioGainPrototype::createStructure( exec->globalData(), JSAudioParamPrototype::self( exec, globalObject ) ) );
 }
 
-bool JSAudioGain::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSAudioGain::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSAudioGain, Base>(exec, &JSAudioGainTable, this, propertyName, slot);
+    return getStaticValueSlot<JSAudioGain, Base>( exec, &JSAudioGainTable, this, propertyName, slot );
 }
 
-bool JSAudioGain::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSAudioGain::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSAudioGain, Base>(exec, &JSAudioGainTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSAudioGain, Base>( exec, &JSAudioGainTable, this, propertyName, descriptor );
 }
 
-JSValue jsAudioGainConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsAudioGainConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSAudioGain* domObject = static_cast<JSAudioGain*>(asObject(slotBase));
-    return JSAudioGain::getConstructor(exec, domObject->globalObject());
+    JSAudioGain *domObject = static_cast<JSAudioGain *>( asObject( slotBase ) );
+    return JSAudioGain::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSAudioGain::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSAudioGain::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSAudioGainConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSAudioGainConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, AudioGain* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, AudioGain *impl )
 {
-    return wrap<JSAudioGain>(exec, globalObject, impl);
+    return wrap<JSAudioGain>( exec, globalObject, impl );
 }
 
 

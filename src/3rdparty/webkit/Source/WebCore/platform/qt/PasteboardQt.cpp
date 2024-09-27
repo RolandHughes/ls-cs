@@ -22,7 +22,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -42,135 +42,166 @@
 
 #define methodDebug() qDebug() << "PasteboardQt: " << __FUNCTION__;
 
-namespace WebCore {
+namespace WebCore
+{
 
 Pasteboard::Pasteboard()
-    : m_selectionMode(false)
+    : m_selectionMode( false )
 {
 }
 
-Pasteboard* Pasteboard::generalPasteboard()
+Pasteboard *Pasteboard::generalPasteboard()
 {
-    static Pasteboard* pasteboard = 0;
-    if (!pasteboard)
+    static Pasteboard *pasteboard = 0;
+
+    if ( !pasteboard )
+    {
         pasteboard = new Pasteboard();
+    }
+
     return pasteboard;
 }
 
-void Pasteboard::writeSelection(Range* selectedRange, bool canSmartCopyOrDelete, Frame* frame)
+void Pasteboard::writeSelection( Range *selectedRange, bool canSmartCopyOrDelete, Frame *frame )
 {
-    QMimeData* md = new QMimeData;
+    QMimeData *md = new QMimeData;
     QString text = frame->editor()->selectedText();
-    text.replace(QChar(0xa0), QLatin1Char(' '));
-    md->setText(text);
+    text.replace( QChar( 0xa0 ), QLatin1Char( ' ' ) );
+    md->setText( text );
 
-    QString markup = createMarkup(selectedRange, 0, AnnotateForInterchange, false, AbsoluteURLs);
+    QString markup = createMarkup( selectedRange, 0, AnnotateForInterchange, false, AbsoluteURLs );
 #ifdef Q_OS_DARWIN
-    markup.prepend(QLatin1String("<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" /></head><body>"));
-    markup.append(QLatin1String("</body></html>"));
-    md->setData(QLatin1String("text/html"), markup.toUtf8());
+    markup.prepend(
+        QLatin1String( "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" /></head><body>" ) );
+    markup.append( QLatin1String( "</body></html>" ) );
+    md->setData( QLatin1String( "text/html" ), markup.toUtf8() );
 #else
-    md->setHtml(markup);
+    md->setHtml( markup );
 #endif
 
 #ifndef QT_NO_CLIPBOARD
-    QApplication::clipboard()->setMimeData(md, m_selectionMode ? QClipboard::Selection : QClipboard::Clipboard);
+    QApplication::clipboard()->setMimeData( md, m_selectionMode ? QClipboard::Selection : QClipboard::Clipboard );
 #endif
-    if (canSmartCopyOrDelete)
-        md->setData(QLatin1String("application/vnd.qtwebkit.smartpaste"), QByteArray());
+
+    if ( canSmartCopyOrDelete )
+    {
+        md->setData( QLatin1String( "application/vnd.qtwebkit.smartpaste" ), QByteArray() );
+    }
 }
 
 bool Pasteboard::canSmartReplace()
 {
 #ifndef QT_NO_CLIPBOARD
-    if (QApplication::clipboard()->mimeData()->hasFormat((QLatin1String("application/vnd.qtwebkit.smartpaste"))))
+
+    if ( QApplication::clipboard()->mimeData()->hasFormat( ( QLatin1String( "application/vnd.qtwebkit.smartpaste" ) ) ) )
+    {
         return true;
+    }
+
 #endif
     return false;
 }
 
-String Pasteboard::plainText(Frame*)
+String Pasteboard::plainText( Frame * )
 {
 #ifndef QT_NO_CLIPBOARD
-    return QApplication::clipboard()->text(m_selectionMode ? QClipboard::Selection : QClipboard::Clipboard);
+    return QApplication::clipboard()->text( m_selectionMode ? QClipboard::Selection : QClipboard::Clipboard );
 #else
     return String();
 #endif
 }
 
-PassRefPtr<DocumentFragment> Pasteboard::documentFragment(Frame* frame, PassRefPtr<Range> context,
-                                                          bool allowPlainText, bool& chosePlainText)
+PassRefPtr<DocumentFragment> Pasteboard::documentFragment( Frame *frame, PassRefPtr<Range> context,
+        bool allowPlainText, bool &chosePlainText )
 {
 #ifndef QT_NO_CLIPBOARD
-    const QMimeData* mimeData = QApplication::clipboard()->mimeData(
-            m_selectionMode ? QClipboard::Selection : QClipboard::Clipboard);
+    const QMimeData *mimeData = QApplication::clipboard()->mimeData(
+                                    m_selectionMode ? QClipboard::Selection : QClipboard::Clipboard );
 
     chosePlainText = false;
 
-    if (mimeData->hasHtml()) {
+    if ( mimeData->hasHtml() )
+    {
         QString html = mimeData->html();
-        if (!html.isEmpty()) {
-            RefPtr<DocumentFragment> fragment = createFragmentFromMarkup(frame->document(), html, "", FragmentScriptingNotAllowed);
-            if (fragment)
+
+        if ( !html.isEmpty() )
+        {
+            RefPtr<DocumentFragment> fragment = createFragmentFromMarkup( frame->document(), html, "", FragmentScriptingNotAllowed );
+
+            if ( fragment )
+            {
                 return fragment.release();
+            }
         }
     }
 
-    if (allowPlainText && mimeData->hasText()) {
+    if ( allowPlainText && mimeData->hasText() )
+    {
         chosePlainText = true;
-        RefPtr<DocumentFragment> fragment = createFragmentFromText(context.get(), mimeData->text());
-        if (fragment)
+        RefPtr<DocumentFragment> fragment = createFragmentFromText( context.get(), mimeData->text() );
+
+        if ( fragment )
+        {
             return fragment.release();
+        }
     }
+
 #endif
     return 0;
 }
 
-void Pasteboard::writePlainText(const String& text)
+void Pasteboard::writePlainText( const String &text )
 {
 #ifndef QT_NO_CLIPBOARD
-    QMimeData* md = new QMimeData;
+    QMimeData *md = new QMimeData;
     QString qtext = text;
-    qtext.replace(QChar(0xa0), QLatin1Char(' '));
-    md->setText(qtext);
-    QApplication::clipboard()->setMimeData(md, m_selectionMode ? QClipboard::Selection : QClipboard::Clipboard);
+    qtext.replace( QChar( 0xa0 ), QLatin1Char( ' ' ) );
+    md->setText( qtext );
+    QApplication::clipboard()->setMimeData( md, m_selectionMode ? QClipboard::Selection : QClipboard::Clipboard );
 #endif
 }
 
-void Pasteboard::writeURL(const KURL& url, const String&, Frame*)
+void Pasteboard::writeURL( const KURL &url, const String &, Frame * )
 {
-    ASSERT(!url.isEmpty());
+    ASSERT( !url.isEmpty() );
 
 #ifndef QT_NO_CLIPBOARD
-    QMimeData* md = new QMimeData;
+    QMimeData *md = new QMimeData;
     QString urlString = url.string();
-    md->setText(urlString);
-    md->setUrls(QList<QUrl>() << url);
-    QApplication::clipboard()->setMimeData(md, m_selectionMode ? QClipboard::Selection : QClipboard::Clipboard);
+    md->setText( urlString );
+    md->setUrls( QList<QUrl>() << url );
+    QApplication::clipboard()->setMimeData( md, m_selectionMode ? QClipboard::Selection : QClipboard::Clipboard );
 #endif
 }
 
-void Pasteboard::writeImage(Node* node, const KURL&, const String&)
+void Pasteboard::writeImage( Node *node, const KURL &, const String & )
 {
-    ASSERT(node && node->renderer() && node->renderer()->isImage());
+    ASSERT( node && node->renderer() && node->renderer()->isImage() );
 
 #ifndef QT_NO_CLIPBOARD
-    CachedImage* cachedImage = toRenderImage(node->renderer())->cachedImage();
-    if (!cachedImage || cachedImage->errorOccurred())
-        return;
+    CachedImage *cachedImage = toRenderImage( node->renderer() )->cachedImage();
 
-    Image* image = cachedImage->image();
-    ASSERT(image);
-
-    QPixmap* pixmap = image->nativeImageForCurrentFrame();
-    if (!pixmap)
+    if ( !cachedImage || cachedImage->errorOccurred() )
+    {
         return;
-    QApplication::clipboard()->setPixmap(*pixmap, QClipboard::Clipboard);
+    }
+
+    Image *image = cachedImage->image();
+    ASSERT( image );
+
+    QPixmap *pixmap = image->nativeImageForCurrentFrame();
+
+    if ( !pixmap )
+    {
+        return;
+    }
+
+    QApplication::clipboard()->setPixmap( *pixmap, QClipboard::Clipboard );
 #endif
 }
 
 /* This function is called from Editor::tryDHTMLCopy before actually set the clipboard
- * It introduce a race condition with klipper, which will try to grab the clipboard 
+ * It introduce a race condition with klipper, which will try to grab the clipboard
  * It's not required to clear it anyway, since QClipboard take care about replacing the clipboard
  */
 void Pasteboard::clear()
@@ -182,7 +213,7 @@ bool Pasteboard::isSelectionMode() const
     return m_selectionMode;
 }
 
-void Pasteboard::setSelectionMode(bool selectionMode)
+void Pasteboard::setSelectionMode( bool selectionMode )
 {
     m_selectionMode = selectionMode;
 }

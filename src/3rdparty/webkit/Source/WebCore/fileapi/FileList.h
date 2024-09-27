@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef FileList_h
@@ -32,27 +32,41 @@
 #include <wtf/RefPtr.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class FileList : public RefCounted<FileList> {
-    public:
-        static PassRefPtr<FileList> create()
-        {
-            return adoptRef(new FileList);
-        }
+class FileList : public RefCounted<FileList>
+{
+public:
+    static PassRefPtr<FileList> create()
+    {
+        return adoptRef( new FileList );
+    }
 
-        unsigned length() const { return m_files.size(); }
-        File* item(unsigned index) const;
+    unsigned length() const
+    {
+        return m_files.size();
+    }
+    File *item( unsigned index ) const;
 
-        bool isEmpty() const { return m_files.isEmpty(); }
-        void clear() { m_files.clear(); }
-        void append(PassRefPtr<File> file) { m_files.append(file); }
+    bool isEmpty() const
+    {
+        return m_files.isEmpty();
+    }
+    void clear()
+    {
+        m_files.clear();
+    }
+    void append( PassRefPtr<File> file )
+    {
+        m_files.append( file );
+    }
 
-    private:
-        FileList();
+private:
+    FileList();
 
-        Vector<RefPtr<File> > m_files;
-    };
+    Vector<RefPtr<File> > m_files;
+};
 
 } // namespace WebCore
 

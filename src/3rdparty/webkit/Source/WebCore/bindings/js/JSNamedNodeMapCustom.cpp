@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -33,31 +33,36 @@
 
 using namespace JSC;
 
-namespace WebCore {
-
-bool JSNamedNodeMap::canGetItemsForName(ExecState*, NamedNodeMap* impl, const Identifier& propertyName)
+namespace WebCore
 {
-    return impl->getNamedItem(identifierToString(propertyName));
+
+bool JSNamedNodeMap::canGetItemsForName( ExecState *, NamedNodeMap *impl, const Identifier &propertyName )
+{
+    return impl->getNamedItem( identifierToString( propertyName ) );
 }
 
-JSValue JSNamedNodeMap::nameGetter(ExecState* exec, JSValue slotBase, const Identifier& propertyName)
+JSValue JSNamedNodeMap::nameGetter( ExecState *exec, JSValue slotBase, const Identifier &propertyName )
 {
-    JSNamedNodeMap* thisObj = static_cast<JSNamedNodeMap*>(asObject(slotBase));
-    return toJS(exec, thisObj->globalObject(), thisObj->impl()->getNamedItem(identifierToString(propertyName)));
+    JSNamedNodeMap *thisObj = static_cast<JSNamedNodeMap *>( asObject( slotBase ) );
+    return toJS( exec, thisObj->globalObject(), thisObj->impl()->getNamedItem( identifierToString( propertyName ) ) );
 }
 
-void JSNamedNodeMap::visitChildren(SlotVisitor& visitor)
+void JSNamedNodeMap::visitChildren( SlotVisitor &visitor )
 {
-    Base::visitChildren(visitor);
+    Base::visitChildren( visitor );
 
     // We need to keep the wrapper for our underlying NamedNodeMap's element
     // alive because NamedNodeMap and Attr rely on the element for data, and
     // don't know how to keep it alive correctly.
     // FIXME: Fix this lifetime issue in the DOM, and remove this.
-    Element* element = impl()->element();
-    if (!element)
+    Element *element = impl()->element();
+
+    if ( !element )
+    {
         return;
-    visitor.addOpaqueRoot(root(element));
+    }
+
+    visitor.addOpaqueRoot( root( element ) );
 }
 
 } // namespace WebCore

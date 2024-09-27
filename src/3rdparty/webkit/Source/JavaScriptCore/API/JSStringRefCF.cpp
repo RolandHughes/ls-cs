@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -34,24 +34,28 @@
 #include <runtime/JSValue.h>
 #include <wtf/OwnArrayPtr.h>
 
-JSStringRef JSStringCreateWithCFString(CFStringRef string)
+JSStringRef JSStringCreateWithCFString( CFStringRef string )
 {
     JSC::initializeThreading();
 
     // We cannot use CFIndex here since CFStringGetLength can return values larger than
     // it can hold.  (<rdar://problem/6806478>)
-    size_t length = CFStringGetLength(string);
-    if (length) {
-        OwnArrayPtr<UniChar> buffer = adoptArrayPtr(new UniChar[length]);
-        CFStringGetCharacters(string, CFRangeMake(0, length), buffer.get());
-        COMPILE_ASSERT(sizeof(UniChar) == sizeof(UChar), unichar_and_uchar_must_be_same_size);
-        return OpaqueJSString::create(reinterpret_cast<UChar*>(buffer.get()), length).leakRef();
-    } else {
-        return OpaqueJSString::create(0, 0).leakRef();
+    size_t length = CFStringGetLength( string );
+
+    if ( length )
+    {
+        OwnArrayPtr<UniChar> buffer = adoptArrayPtr( new UniChar[length] );
+        CFStringGetCharacters( string, CFRangeMake( 0, length ), buffer.get() );
+        COMPILE_ASSERT( sizeof( UniChar ) == sizeof( UChar ), unichar_and_uchar_must_be_same_size );
+        return OpaqueJSString::create( reinterpret_cast<UChar *>( buffer.get() ), length ).leakRef();
+    }
+    else
+    {
+        return OpaqueJSString::create( 0, 0 ).leakRef();
     }
 }
 
-CFStringRef JSStringCopyCFString(CFAllocatorRef alloc, JSStringRef string)
+CFStringRef JSStringCopyCFString( CFAllocatorRef alloc, JSStringRef string )
 {
-    return CFStringCreateWithCharacters(alloc, reinterpret_cast<const UniChar*>(string->characters()), string->length());
+    return CFStringCreateWithCharacters( alloc, reinterpret_cast<const UniChar *>( string->characters() ), string->length() );
 }

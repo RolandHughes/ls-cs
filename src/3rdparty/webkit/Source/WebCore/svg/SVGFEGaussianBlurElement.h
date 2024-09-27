@@ -26,31 +26,33 @@
 #include "SVGAnimatedNumber.h"
 #include "SVGFilterPrimitiveStandardAttributes.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SVGFEGaussianBlurElement : public SVGFilterPrimitiveStandardAttributes {
+class SVGFEGaussianBlurElement : public SVGFilterPrimitiveStandardAttributes
+{
 public:
-    static PassRefPtr<SVGFEGaussianBlurElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<SVGFEGaussianBlurElement> create( const QualifiedName &, Document * );
 
-    void setStdDeviation(float stdDeviationX, float stdDeviationY);
+    void setStdDeviation( float stdDeviationX, float stdDeviationY );
 
 private:
-    SVGFEGaussianBlurElement(const QualifiedName&, Document*);
+    SVGFEGaussianBlurElement( const QualifiedName &, Document * );
 
-    virtual void parseMappedAttribute(Attribute*);
-    virtual void svgAttributeChanged(const QualifiedName&);
-    virtual void synchronizeProperty(const QualifiedName&);
+    virtual void parseMappedAttribute( Attribute * );
+    virtual void svgAttributeChanged( const QualifiedName & );
+    virtual void synchronizeProperty( const QualifiedName & );
     virtual void fillAttributeToPropertyTypeMap();
-    virtual AttributeToPropertyTypeMap& attributeToPropertyTypeMap();
-    virtual PassRefPtr<FilterEffect> build(SVGFilterBuilder*, Filter*);
+    virtual AttributeToPropertyTypeMap &attributeToPropertyTypeMap();
+    virtual PassRefPtr<FilterEffect> build( SVGFilterBuilder *, Filter * );
 
-    static const AtomicString& stdDeviationXIdentifier();
-    static const AtomicString& stdDeviationYIdentifier();
+    static const AtomicString &stdDeviationXIdentifier();
+    static const AtomicString &stdDeviationYIdentifier();
 
     // Animated property declarations
-    DECLARE_ANIMATED_STRING(In1, in1)
-    DECLARE_ANIMATED_NUMBER(StdDeviationX, stdDeviationX)
-    DECLARE_ANIMATED_NUMBER(StdDeviationY, stdDeviationY)
+    DECLARE_ANIMATED_STRING( In1, in1 )
+    DECLARE_ANIMATED_NUMBER( StdDeviationX, stdDeviationX )
+    DECLARE_ANIMATED_NUMBER( StdDeviationY, stdDeviationY )
 };
 
 } // namespace WebCore

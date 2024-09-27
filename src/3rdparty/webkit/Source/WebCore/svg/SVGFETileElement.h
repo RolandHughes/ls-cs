@@ -25,24 +25,26 @@
 #include "FETile.h"
 #include "SVGFilterPrimitiveStandardAttributes.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SVGFETileElement : public SVGFilterPrimitiveStandardAttributes {
+class SVGFETileElement : public SVGFilterPrimitiveStandardAttributes
+{
 public:
-    static PassRefPtr<SVGFETileElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<SVGFETileElement> create( const QualifiedName &, Document * );
 
 private:
-    SVGFETileElement(const QualifiedName&, Document*);
+    SVGFETileElement( const QualifiedName &, Document * );
 
-    virtual void parseMappedAttribute(Attribute*);
-    virtual void svgAttributeChanged(const QualifiedName&);
-    virtual void synchronizeProperty(const QualifiedName&);
+    virtual void parseMappedAttribute( Attribute * );
+    virtual void svgAttributeChanged( const QualifiedName & );
+    virtual void synchronizeProperty( const QualifiedName & );
     virtual void fillAttributeToPropertyTypeMap();
-    virtual AttributeToPropertyTypeMap& attributeToPropertyTypeMap();
-    virtual PassRefPtr<FilterEffect> build(SVGFilterBuilder*, Filter*);
+    virtual AttributeToPropertyTypeMap &attributeToPropertyTypeMap();
+    virtual PassRefPtr<FilterEffect> build( SVGFilterBuilder *, Filter * );
 
     // Animated property declarations
-    DECLARE_ANIMATED_STRING(In1, in1)
+    DECLARE_ANIMATED_STRING( In1, in1 )
 };
 
 } // namespace WebCore

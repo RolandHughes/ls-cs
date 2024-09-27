@@ -36,14 +36,14 @@ class QTsLibMouseHandler : public QObject
     Q_OBJECT
 
 public:
-    QTsLibMouseHandler(const QString &key, const QString &specification);
+    QTsLibMouseHandler( const QString &key, const QString &specification );
     ~QTsLibMouseHandler();
 
 private slots:
     void readMouseData();
 
 private:
-    QSocketNotifier * m_notify;
+    QSocketNotifier *m_notify;
     tsdev *m_dev;
     int m_x, m_y;
     bool m_pressed;

@@ -33,43 +33,44 @@ class QScriptEngineAgentPrivate;
 
 class Q_SCRIPT_EXPORT QScriptEngineAgent
 {
- public:
-   enum Extension {
-      DebuggerInvocationRequest
-   };
+public:
+    enum Extension
+    {
+        DebuggerInvocationRequest
+    };
 
-   QScriptEngineAgent(QScriptEngine *engine);
+    QScriptEngineAgent( QScriptEngine *engine );
 
-   QScriptEngineAgent(const QScriptEngineAgent &) = delete;
-   QScriptEngineAgent &operator=(const QScriptEngineAgent &) = delete;
+    QScriptEngineAgent( const QScriptEngineAgent & ) = delete;
+    QScriptEngineAgent &operator=( const QScriptEngineAgent & ) = delete;
 
-   virtual ~QScriptEngineAgent();
+    virtual ~QScriptEngineAgent();
 
-   virtual void scriptLoad(qint64 id, const QString &program, const QString &fileName, int baseLineNumber);
-   virtual void scriptUnload(qint64 id);
+    virtual void scriptLoad( qint64 id, const QString &program, const QString &fileName, int baseLineNumber );
+    virtual void scriptUnload( qint64 id );
 
-   virtual void contextPush();
-   virtual void contextPop();
+    virtual void contextPush();
+    virtual void contextPop();
 
-   virtual void functionEntry(qint64 scriptId);
-   virtual void functionExit(qint64 scriptId, const QScriptValue &returnValue);
+    virtual void functionEntry( qint64 scriptId );
+    virtual void functionExit( qint64 scriptId, const QScriptValue &returnValue );
 
-   virtual void positionChange(qint64 scriptId, int lineNumber, int columnNumber);
+    virtual void positionChange( qint64 scriptId, int lineNumber, int columnNumber );
 
-   virtual void exceptionThrow(qint64 scriptId, const QScriptValue &exception, bool hasHandler);
-   virtual void exceptionCatch(qint64 scriptId, const QScriptValue &exception);
+    virtual void exceptionThrow( qint64 scriptId, const QScriptValue &exception, bool hasHandler );
+    virtual void exceptionCatch( qint64 scriptId, const QScriptValue &exception );
 
-   virtual bool supportsExtension(Extension extension) const;
-   virtual QVariant extension(Extension extension, const QVariant &argument = QVariant());
+    virtual bool supportsExtension( Extension extension ) const;
+    virtual QVariant extension( Extension extension, const QVariant &argument = QVariant() );
 
-   QScriptEngine *engine() const;
+    QScriptEngine *engine() const;
 
- protected:
-   QScriptEngineAgent(QScriptEngineAgentPrivate &dd, QScriptEngine *engine);
-   QScopedPointer<QScriptEngineAgentPrivate> d_ptr;
+protected:
+    QScriptEngineAgent( QScriptEngineAgentPrivate &dd, QScriptEngine *engine );
+    QScopedPointer<QScriptEngineAgentPrivate> d_ptr;
 
- private:
-   Q_DECLARE_PRIVATE(QScriptEngineAgent)
+private:
+    Q_DECLARE_PRIVATE( QScriptEngineAgent )
 };
 
 #endif

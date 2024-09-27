@@ -26,81 +26,89 @@
 
 // Define the container allocation functions in a separate file, so users can easily override them.
 
-void *qMalloc(size_t size)
+void *qMalloc( size_t size )
 {
-   return ::malloc(size);
+    return ::malloc( size );
 }
 
-void qFree(void *ptr)
+void qFree( void *ptr )
 {
-   ::free(ptr);
+    ::free( ptr );
 }
 
-void *qRealloc(void *ptr, size_t size)
+void *qRealloc( void *ptr, size_t size )
 {
-   return ::realloc(ptr, size);
+    return ::realloc( ptr, size );
 }
 
-void *qMallocAligned(size_t size, size_t alignment)
+void *qMallocAligned( size_t size, size_t alignment )
 {
-   return qReallocAligned(nullptr, size, 0, alignment);
+    return qReallocAligned( nullptr, size, 0, alignment );
 }
 
-void *qReallocAligned(void *oldptr, size_t newsize, size_t oldsize, size_t alignment)
+void *qReallocAligned( void *oldptr, size_t newsize, size_t oldsize, size_t alignment )
 {
-   // fake an aligned allocation
-   (void) oldsize;
+    // fake an aligned allocation
+    ( void ) oldsize;
 
-   void *actualptr = oldptr ? static_cast<void **>(oldptr)[-1] : nullptr;
+    void *actualptr = oldptr ? static_cast<void **>( oldptr )[-1] : nullptr;
 
-   if (alignment <= sizeof(void *)) {
-      // special, fast case
-      void **newptr = static_cast<void **>(realloc(actualptr, newsize + sizeof(void *)));
-      if (! newptr) {
-         return nullptr;
-      }
+    if ( alignment <= sizeof( void * ) )
+    {
+        // special, fast case
+        void **newptr = static_cast<void **>( realloc( actualptr, newsize + sizeof( void * ) ) );
 
-      if (newptr == actualptr) {
-         // realloc succeeded without reallocating
-         return oldptr;
-      }
+        if ( ! newptr )
+        {
+            return nullptr;
+        }
 
-      *newptr = newptr;
-      return newptr + 1;
-   }
+        if ( newptr == actualptr )
+        {
+            // realloc succeeded without reallocating
+            return oldptr;
+        }
 
-   // malloc returns pointers aligned at least at sizeof(size_t) boundaries
-   // but usually more (8- or 16-byte boundaries).
-   // So we overallocate by alignment-sizeof(size_t) bytes, so we're guaranteed to find a
-   // somewhere within the first alignment-sizeof(size_t) that is properly aligned.
+        *newptr = newptr;
+        return newptr + 1;
+    }
 
-   // However, we need to store the actual pointer, so we need to allocate actually size +
-   // alignment anyway.
+    // malloc returns pointers aligned at least at sizeof(size_t) boundaries
+    // but usually more (8- or 16-byte boundaries).
+    // So we overallocate by alignment-sizeof(size_t) bytes, so we're guaranteed to find a
+    // somewhere within the first alignment-sizeof(size_t) that is properly aligned.
 
-   void *real = realloc(actualptr, newsize + alignment);
-   if (! real) {
-      return nullptr;
-   }
+    // However, we need to store the actual pointer, so we need to allocate actually size +
+    // alignment anyway.
 
-   quintptr faked = reinterpret_cast<quintptr>(real) + alignment;
-   faked &= ~(alignment - 1);
+    void *real = realloc( actualptr, newsize + alignment );
 
-   void **faked_ptr = reinterpret_cast<void **>(faked);
+    if ( ! real )
+    {
+        return nullptr;
+    }
 
-   // now save the value of the real pointer at faked-sizeof(void*)
-   // by construction, alignment > sizeof(void*) and is a power of 2, so
-   // faked-sizeof(void*) is properly aligned for a pointer
-   faked_ptr[-1] = real;
+    quintptr faked = reinterpret_cast<quintptr>( real ) + alignment;
+    faked &= ~( alignment - 1 );
 
-   return faked_ptr;
+    void **faked_ptr = reinterpret_cast<void **>( faked );
+
+    // now save the value of the real pointer at faked-sizeof(void*)
+    // by construction, alignment > sizeof(void*) and is a power of 2, so
+    // faked-sizeof(void*) is properly aligned for a pointer
+    faked_ptr[-1] = real;
+
+    return faked_ptr;
 }
 
-void qFreeAligned(void *ptr)
+void qFreeAligned( void *ptr )
 {
-   if (!ptr) {
-      return;
-   }
-   void **ptr2 = static_cast<void **>(ptr);
-   free(ptr2[-1]);
+    if ( !ptr )
+    {
+        return;
+    }
+
+    void **ptr2 = static_cast<void **>( ptr );
+    free( ptr2[-1] );
 }
 

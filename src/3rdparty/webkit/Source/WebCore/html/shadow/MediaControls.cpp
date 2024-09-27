@@ -34,10 +34,11 @@
 #include "HTMLMediaElement.h"
 #include "HTMLNames.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-MediaControls::MediaControls(HTMLMediaElement* mediaElement)
-    : HTMLDivElement(HTMLNames::divTag, mediaElement->document())
+MediaControls::MediaControls( HTMLMediaElement *mediaElement )
+    : HTMLDivElement( HTMLNames::divTag, mediaElement->document() )
 {
 }
 

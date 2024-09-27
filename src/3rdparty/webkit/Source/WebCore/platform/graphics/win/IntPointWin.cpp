@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -28,11 +28,12 @@
 
 #include <windows.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-IntPoint::IntPoint(const POINT& p)
-    : m_x(p.x)
-    , m_y(p.y)
+IntPoint::IntPoint( const POINT &p )
+    : m_x( p.x )
+    , m_y( p.y )
 {
 }
 
@@ -42,9 +43,9 @@ IntPoint::operator POINT() const
     return p;
 }
 
-IntPoint::IntPoint(const POINTS& p)
-    : m_x(p.x)
-    , m_y(p.y)
+IntPoint::IntPoint( const POINTS &p )
+    : m_x( p.x )
+    , m_y( p.y )
 {
 }
 

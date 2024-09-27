@@ -42,7 +42,8 @@
 @constant     kJSTypeString     A primitive string value.
 @constant     kJSTypeObject     An object value (meaning that this JSValueRef is a JSObjectRef).
 */
-typedef enum {
+typedef enum
+{
     kJSTypeUndefined,
     kJSTypeNull,
     kJSTypeBoolean,
@@ -62,7 +63,7 @@ extern "C" {
 @param value    The JSValue whose type you want to obtain.
 @result         A value of type JSType that identifies value's type.
 */
-JS_EXPORT JSType JSValueGetType(JSContextRef ctx, JSValueRef value);
+JS_EXPORT JSType JSValueGetType( JSContextRef ctx, JSValueRef value );
 
 /*
 @function
@@ -71,7 +72,7 @@ JS_EXPORT JSType JSValueGetType(JSContextRef ctx, JSValueRef value);
 @param value    The JSValue to test.
 @result         true if value's type is the undefined type, otherwise false.
 */
-JS_EXPORT bool JSValueIsUndefined(JSContextRef ctx, JSValueRef value);
+JS_EXPORT bool JSValueIsUndefined( JSContextRef ctx, JSValueRef value );
 
 /*
 @function
@@ -80,7 +81,7 @@ JS_EXPORT bool JSValueIsUndefined(JSContextRef ctx, JSValueRef value);
 @param value    The JSValue to test.
 @result         true if value's type is the null type, otherwise false.
 */
-JS_EXPORT bool JSValueIsNull(JSContextRef ctx, JSValueRef value);
+JS_EXPORT bool JSValueIsNull( JSContextRef ctx, JSValueRef value );
 
 /*
 @function
@@ -89,7 +90,7 @@ JS_EXPORT bool JSValueIsNull(JSContextRef ctx, JSValueRef value);
 @param value    The JSValue to test.
 @result         true if value's type is the boolean type, otherwise false.
 */
-JS_EXPORT bool JSValueIsBoolean(JSContextRef ctx, JSValueRef value);
+JS_EXPORT bool JSValueIsBoolean( JSContextRef ctx, JSValueRef value );
 
 /*
 @function
@@ -98,7 +99,7 @@ JS_EXPORT bool JSValueIsBoolean(JSContextRef ctx, JSValueRef value);
 @param value    The JSValue to test.
 @result         true if value's type is the number type, otherwise false.
 */
-JS_EXPORT bool JSValueIsNumber(JSContextRef ctx, JSValueRef value);
+JS_EXPORT bool JSValueIsNumber( JSContextRef ctx, JSValueRef value );
 
 /*
 @function
@@ -107,7 +108,7 @@ JS_EXPORT bool JSValueIsNumber(JSContextRef ctx, JSValueRef value);
 @param value    The JSValue to test.
 @result         true if value's type is the string type, otherwise false.
 */
-JS_EXPORT bool JSValueIsString(JSContextRef ctx, JSValueRef value);
+JS_EXPORT bool JSValueIsString( JSContextRef ctx, JSValueRef value );
 
 /*
 @function
@@ -116,7 +117,7 @@ JS_EXPORT bool JSValueIsString(JSContextRef ctx, JSValueRef value);
 @param value    The JSValue to test.
 @result         true if value's type is the object type, otherwise false.
 */
-JS_EXPORT bool JSValueIsObject(JSContextRef ctx, JSValueRef value);
+JS_EXPORT bool JSValueIsObject( JSContextRef ctx, JSValueRef value );
 
 /*
 @function
@@ -126,7 +127,7 @@ JS_EXPORT bool JSValueIsObject(JSContextRef ctx, JSValueRef value);
 @param jsClass The JSClass to test against.
 @result true if value is an object and has jsClass in its class chain, otherwise false.
 */
-JS_EXPORT bool JSValueIsObjectOfClass(JSContextRef ctx, JSValueRef value, JSClassRef jsClass);
+JS_EXPORT bool JSValueIsObjectOfClass( JSContextRef ctx, JSValueRef value, JSClassRef jsClass );
 
 /* Comparing values */
 
@@ -139,7 +140,7 @@ JS_EXPORT bool JSValueIsObjectOfClass(JSContextRef ctx, JSValueRef value, JSClas
 @param exception A pointer to a JSValueRef in which to store an exception, if any. Pass NULL if you do not care to store an exception.
 @result true if the two values are equal, false if they are not equal or an exception is thrown.
 */
-JS_EXPORT bool JSValueIsEqual(JSContextRef ctx, JSValueRef a, JSValueRef b, JSValueRef* exception);
+JS_EXPORT bool JSValueIsEqual( JSContextRef ctx, JSValueRef a, JSValueRef b, JSValueRef *exception );
 
 /*
 @function
@@ -149,7 +150,7 @@ JS_EXPORT bool JSValueIsEqual(JSContextRef ctx, JSValueRef a, JSValueRef b, JSVa
 @param b        The second value to test.
 @result         true if the two values are strict equal, otherwise false.
 */
-JS_EXPORT bool JSValueIsStrictEqual(JSContextRef ctx, JSValueRef a, JSValueRef b);
+JS_EXPORT bool JSValueIsStrictEqual( JSContextRef ctx, JSValueRef a, JSValueRef b );
 
 /*
 @function
@@ -160,7 +161,8 @@ JS_EXPORT bool JSValueIsStrictEqual(JSContextRef ctx, JSValueRef a, JSValueRef b
 @param exception A pointer to a JSValueRef in which to store an exception, if any. Pass NULL if you do not care to store an exception.
 @result true if value is an object constructed by constructor, as compared by the JS instanceof operator, otherwise false.
 */
-JS_EXPORT bool JSValueIsInstanceOfConstructor(JSContextRef ctx, JSValueRef value, JSObjectRef constructor, JSValueRef* exception);
+JS_EXPORT bool JSValueIsInstanceOfConstructor( JSContextRef ctx, JSValueRef value, JSObjectRef constructor,
+        JSValueRef *exception );
 
 /* Creating values */
 
@@ -170,7 +172,7 @@ JS_EXPORT bool JSValueIsInstanceOfConstructor(JSContextRef ctx, JSValueRef value
 @param ctx  The execution context to use.
 @result         The unique undefined value.
 */
-JS_EXPORT JSValueRef JSValueMakeUndefined(JSContextRef ctx);
+JS_EXPORT JSValueRef JSValueMakeUndefined( JSContextRef ctx );
 
 /*
 @function
@@ -178,7 +180,7 @@ JS_EXPORT JSValueRef JSValueMakeUndefined(JSContextRef ctx);
 @param ctx  The execution context to use.
 @result         The unique null value.
 */
-JS_EXPORT JSValueRef JSValueMakeNull(JSContextRef ctx);
+JS_EXPORT JSValueRef JSValueMakeNull( JSContextRef ctx );
 
 /*
 @function
@@ -187,7 +189,7 @@ JS_EXPORT JSValueRef JSValueMakeNull(JSContextRef ctx);
 @param boolean  The bool to assign to the newly created JSValue.
 @result         A JSValue of the boolean type, representing the value of boolean.
 */
-JS_EXPORT JSValueRef JSValueMakeBoolean(JSContextRef ctx, bool boolean);
+JS_EXPORT JSValueRef JSValueMakeBoolean( JSContextRef ctx, bool boolean );
 
 /*
 @function
@@ -196,7 +198,7 @@ JS_EXPORT JSValueRef JSValueMakeBoolean(JSContextRef ctx, bool boolean);
 @param number   The double to assign to the newly created JSValue.
 @result         A JSValue of the number type, representing the value of number.
 */
-JS_EXPORT JSValueRef JSValueMakeNumber(JSContextRef ctx, double number);
+JS_EXPORT JSValueRef JSValueMakeNumber( JSContextRef ctx, double number );
 
 /*
 @function
@@ -206,7 +208,7 @@ JS_EXPORT JSValueRef JSValueMakeNumber(JSContextRef ctx, double number);
  newly created JSValue retains string, and releases it upon garbage collection.
 @result         A JSValue of the string type, representing the value of string.
 */
-JS_EXPORT JSValueRef JSValueMakeString(JSContextRef ctx, JSStringRef string);
+JS_EXPORT JSValueRef JSValueMakeString( JSContextRef ctx, JSStringRef string );
 
 /* Converting to primitive values */
 
@@ -217,7 +219,7 @@ JS_EXPORT JSValueRef JSValueMakeString(JSContextRef ctx, JSStringRef string);
 @param value    The JSValue to convert.
 @result         The boolean result of conversion.
 */
-JS_EXPORT bool JSValueToBoolean(JSContextRef ctx, JSValueRef value);
+JS_EXPORT bool JSValueToBoolean( JSContextRef ctx, JSValueRef value );
 
 /*
 @function
@@ -227,7 +229,7 @@ JS_EXPORT bool JSValueToBoolean(JSContextRef ctx, JSValueRef value);
 @param exception A pointer to a JSValueRef in which to store an exception, if any. Pass NULL if you do not care to store an exception.
 @result         The numeric result of conversion, or NaN if an exception is thrown.
 */
-JS_EXPORT double JSValueToNumber(JSContextRef ctx, JSValueRef value, JSValueRef* exception);
+JS_EXPORT double JSValueToNumber( JSContextRef ctx, JSValueRef value, JSValueRef *exception );
 
 /*
 @function
@@ -237,7 +239,7 @@ JS_EXPORT double JSValueToNumber(JSContextRef ctx, JSValueRef value, JSValueRef*
 @param exception A pointer to a JSValueRef in which to store an exception, if any. Pass NULL if you do not care to store an exception.
 @result         A JSString with the result of conversion, or NULL if an exception is thrown. Ownership follows the Create Rule.
 */
-JS_EXPORT JSStringRef JSValueToStringCopy(JSContextRef ctx, JSValueRef value, JSValueRef* exception);
+JS_EXPORT JSStringRef JSValueToStringCopy( JSContextRef ctx, JSValueRef value, JSValueRef *exception );
 
 /*
 @function
@@ -247,7 +249,7 @@ JS_EXPORT JSStringRef JSValueToStringCopy(JSContextRef ctx, JSValueRef value, JS
 @param exception A pointer to a JSValueRef in which to store an exception, if any. Pass NULL if you do not care to store an exception.
 @result         The JSObject result of conversion, or NULL if an exception is thrown.
 */
-JS_EXPORT JSObjectRef JSValueToObject(JSContextRef ctx, JSValueRef value, JSValueRef* exception);
+JS_EXPORT JSObjectRef JSValueToObject( JSContextRef ctx, JSValueRef value, JSValueRef *exception );
 
 /* Garbage collection */
 /*
@@ -256,20 +258,20 @@ JS_EXPORT JSObjectRef JSValueToObject(JSContextRef ctx, JSValueRef value, JSValu
 @param ctx The execution context to use.
 @param value The JSValue to protect.
 @discussion Use this method when you want to store a JSValue in a global or on the heap, where the garbage collector will not be able to discover your reference to it.
- 
+
 A value may be protected multiple times and must be unprotected an equal number of times before becoming eligible for garbage collection.
 */
-JS_EXPORT void JSValueProtect(JSContextRef ctx, JSValueRef value);
+JS_EXPORT void JSValueProtect( JSContextRef ctx, JSValueRef value );
 
 /*
 @function
 @abstract       Unprotects a JavaScript value from garbage collection.
 @param ctx      The execution context to use.
 @param value    The JSValue to unprotect.
-@discussion     A value may be protected multiple times and must be unprotected an 
+@discussion     A value may be protected multiple times and must be unprotected an
  equal number of times before becoming eligible for garbage collection.
 */
-JS_EXPORT void JSValueUnprotect(JSContextRef ctx, JSValueRef value);
+JS_EXPORT void JSValueUnprotect( JSContextRef ctx, JSValueRef value );
 
 #ifdef __cplusplus
 }

@@ -31,62 +31,77 @@
 #include "SVGImageBufferTools.h"
 #include "TextStream.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-FETile::FETile(Filter* filter)
-    : FilterEffect(filter)
+FETile::FETile( Filter *filter )
+    : FilterEffect( filter )
 {
 }
 
-PassRefPtr<FETile> FETile::create(Filter* filter)
+PassRefPtr<FETile> FETile::create( Filter *filter )
 {
-    return adoptRef(new FETile(filter));
+    return adoptRef( new FETile( filter ) );
 }
 
 void FETile::apply()
 {
 // FIXME: See bug 47315. This is a hack to work around a compile failure, but is incorrect behavior otherwise.
 #if ENABLE(SVG)
-    if (hasResult())
+    if ( hasResult() )
+    {
         return;
-    FilterEffect* in = inputEffect(0);
+    }
+
+    FilterEffect *in = inputEffect( 0 );
     in->apply();
-    if (!in->hasResult())
-        return;
 
-    ImageBuffer* resultImage = createImageBufferResult();
-    if (!resultImage)
+    if ( !in->hasResult() )
+    {
         return;
+    }
 
-    setIsAlphaImage(in->isAlphaImage());
+    ImageBuffer *resultImage = createImageBufferResult();
+
+    if ( !resultImage )
+    {
+        return;
+    }
+
+    setIsAlphaImage( in->isAlphaImage() );
 
     // Source input needs more attention. It has the size of the filterRegion but gives the
     // size of the cutted sourceImage back. This is part of the specification and optimization.
     FloatRect tileRect = in->maxEffectRect();
     FloatPoint inMaxEffectLocation = tileRect.location();
     FloatPoint maxEffectLocation = maxEffectRect().location();
-    if (in->filterEffectType() == FilterEffectTypeSourceInput) {
-        Filter* filter = this->filter();
+
+    if ( in->filterEffectType() == FilterEffectTypeSourceInput )
+    {
+        Filter *filter = this->filter();
         tileRect = filter->filterRegion();
-        tileRect.scale(filter->filterResolution().width(), filter->filterResolution().height());
+        tileRect.scale( filter->filterResolution().width(), filter->filterResolution().height() );
     }
 
     OwnPtr<ImageBuffer> tileImage;
-    if (!SVGImageBufferTools::createImageBuffer(tileRect, tileRect, tileImage, ColorSpaceDeviceRGB))
+
+    if ( !SVGImageBufferTools::createImageBuffer( tileRect, tileRect, tileImage, ColorSpaceDeviceRGB ) )
+    {
         return;
+    }
 
-    GraphicsContext* tileImageContext = tileImage->context();
-    tileImageContext->translate(-inMaxEffectLocation.x(), -inMaxEffectLocation.y());
-    tileImageContext->drawImageBuffer(in->asImageBuffer(), ColorSpaceDeviceRGB, in->absolutePaintRect().location());
+    GraphicsContext *tileImageContext = tileImage->context();
+    tileImageContext->translate( -inMaxEffectLocation.x(), -inMaxEffectLocation.y() );
+    tileImageContext->drawImageBuffer( in->asImageBuffer(), ColorSpaceDeviceRGB, in->absolutePaintRect().location() );
 
-    RefPtr<Pattern> pattern = Pattern::create(tileImage->copyImage(), true, true);
+    RefPtr<Pattern> pattern = Pattern::create( tileImage->copyImage(), true, true );
 
     AffineTransform patternTransform;
-    patternTransform.translate(inMaxEffectLocation.x() - maxEffectLocation.x(), inMaxEffectLocation.y() - maxEffectLocation.y());
-    pattern->setPatternSpaceTransform(patternTransform);
-    GraphicsContext* filterContext = resultImage->context();
-    filterContext->setFillPattern(pattern);
-    filterContext->fillRect(FloatRect(FloatPoint(), absolutePaintRect().size()));
+    patternTransform.translate( inMaxEffectLocation.x() - maxEffectLocation.x(), inMaxEffectLocation.y() - maxEffectLocation.y() );
+    pattern->setPatternSpaceTransform( patternTransform );
+    GraphicsContext *filterContext = resultImage->context();
+    filterContext->setFillPattern( pattern );
+    filterContext->fillRect( FloatRect( FloatPoint(), absolutePaintRect().size() ) );
 #endif
 }
 
@@ -94,13 +109,13 @@ void FETile::dump()
 {
 }
 
-TextStream& FETile::externalRepresentation(TextStream& ts, int indent) const
+TextStream &FETile::externalRepresentation( TextStream &ts, int indent ) const
 {
-    writeIndent(ts, indent);
+    writeIndent( ts, indent );
     ts << "[feTile";
-    FilterEffect::externalRepresentation(ts);
+    FilterEffect::externalRepresentation( ts );
     ts << "]\n";
-    inputEffect(0)->externalRepresentation(ts, indent + 1);
+    inputEffect( 0 )->externalRepresentation( ts, indent + 1 );
 
     return ts;
 }

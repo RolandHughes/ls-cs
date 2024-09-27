@@ -34,28 +34,33 @@
 #include <WebCore/IntSize.h>
 #include <gtk/gtk.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 class DrawingAreaProxy;
 class WebPageNamespace;
 
-class PageClientImpl : public PageClient {
+class PageClientImpl : public PageClient
+{
 public:
     ~PageClientImpl();
-    static PassOwnPtr<PageClientImpl> create(GtkWidget* viewWidget)
+    static PassOwnPtr<PageClientImpl> create( GtkWidget *viewWidget )
     {
-        return adoptPtr(new PageClientImpl(viewWidget));
+        return adoptPtr( new PageClientImpl( viewWidget ) );
     }
 
-    void addPendingEditorCommand(const char* command) { m_pendingEditorCommands.append(WTF::String(command)); }
+    void addPendingEditorCommand( const char *command )
+    {
+        m_pendingEditorCommands.append( WTF::String( command ) );
+    }
 
 private:
-    PageClientImpl(GtkWidget*);
+    PageClientImpl( GtkWidget * );
 
     virtual PassOwnPtr<DrawingAreaProxy> createDrawingAreaProxy();
-    virtual void setViewNeedsDisplay(const WebCore::IntRect&);
+    virtual void setViewNeedsDisplay( const WebCore::IntRect & );
     virtual void displayView();
-    virtual void scrollView(const WebCore::IntRect& scrollRect, const WebCore::IntSize& scrollOffset);
+    virtual void scrollView( const WebCore::IntRect &scrollRect, const WebCore::IntSize &scrollOffset );
     virtual WebCore::IntSize viewSize();
     virtual bool isViewWindowActive();
     virtual bool isViewFocused();
@@ -64,41 +69,44 @@ private:
     virtual void processDidCrash();
     virtual void didRelaunchProcess();
     virtual void pageClosed();
-    virtual void takeFocus(bool direction);
-    virtual void toolTipChanged(const WTF::String&, const WTF::String&);
-    virtual void setCursor(const WebCore::Cursor&);
-    virtual void setViewportArguments(const WebCore::ViewportArguments&);
-    virtual void registerEditCommand(PassRefPtr<WebEditCommandProxy>, WebPageProxy::UndoOrRedo);
+    virtual void takeFocus( bool direction );
+    virtual void toolTipChanged( const WTF::String &, const WTF::String & );
+    virtual void setCursor( const WebCore::Cursor & );
+    virtual void setViewportArguments( const WebCore::ViewportArguments & );
+    virtual void registerEditCommand( PassRefPtr<WebEditCommandProxy>, WebPageProxy::UndoOrRedo );
     virtual void clearAllEditCommands();
-    virtual bool canUndoRedo(WebPageProxy::UndoOrRedo);
-    virtual void executeUndoRedo(WebPageProxy::UndoOrRedo);
-    virtual WebCore::FloatRect convertToDeviceSpace(const WebCore::FloatRect&);
-    virtual WebCore::FloatRect convertToUserSpace(const WebCore::FloatRect&);
-    virtual WebCore::IntRect windowToScreen(const WebCore::IntRect&);
-    virtual void doneWithKeyEvent(const NativeWebKeyboardEvent&, bool wasEventHandled);
-    virtual void didNotHandleKeyEvent(const NativeWebKeyboardEvent&);
-    virtual PassRefPtr<WebPopupMenuProxy> createPopupMenuProxy(WebPageProxy*);
-    virtual PassRefPtr<WebContextMenuProxy> createContextMenuProxy(WebPageProxy*);
-    virtual void setFindIndicator(PassRefPtr<FindIndicator>, bool fadeOut);
+    virtual bool canUndoRedo( WebPageProxy::UndoOrRedo );
+    virtual void executeUndoRedo( WebPageProxy::UndoOrRedo );
+    virtual WebCore::FloatRect convertToDeviceSpace( const WebCore::FloatRect & );
+    virtual WebCore::FloatRect convertToUserSpace( const WebCore::FloatRect & );
+    virtual WebCore::IntRect windowToScreen( const WebCore::IntRect & );
+    virtual void doneWithKeyEvent( const NativeWebKeyboardEvent &, bool wasEventHandled );
+    virtual void didNotHandleKeyEvent( const NativeWebKeyboardEvent & );
+    virtual PassRefPtr<WebPopupMenuProxy> createPopupMenuProxy( WebPageProxy * );
+    virtual PassRefPtr<WebContextMenuProxy> createContextMenuProxy( WebPageProxy * );
+    virtual void setFindIndicator( PassRefPtr<FindIndicator>, bool fadeOut );
     virtual void didChangeScrollbarsForMainFrame() const;
-    virtual void flashBackingStoreUpdates(const Vector<WebCore::IntRect>& updateRects);
-    virtual float userSpaceScaleFactor() const { return 1; }
-    virtual void getEditorCommandsForKeyEvent(const NativeWebKeyboardEvent&, Vector<WTF::String>&);
-    virtual void findStringInCustomRepresentation(const String&, FindOptions, unsigned);
-    virtual void countStringMatchesInCustomRepresentation(const String&, FindOptions, unsigned);
+    virtual void flashBackingStoreUpdates( const Vector<WebCore::IntRect> &updateRects );
+    virtual float userSpaceScaleFactor() const
+    {
+        return 1;
+    }
+    virtual void getEditorCommandsForKeyEvent( const NativeWebKeyboardEvent &, Vector<WTF::String> & );
+    virtual void findStringInCustomRepresentation( const String &, FindOptions, unsigned );
+    virtual void countStringMatchesInCustomRepresentation( const String &, FindOptions, unsigned );
 
 #if USE(ACCELERATED_COMPOSITING)
     virtual void pageDidEnterAcceleratedCompositing();
     virtual void pageDidLeaveAcceleratedCompositing();
 #endif
 
-    virtual void didCommitLoadForMainFrame(bool useCustomRepresentation);
-    virtual void didFinishLoadingDataForCustomRepresentation(const String& suggestedFilename, const CoreIPC::DataReference&);
+    virtual void didCommitLoadForMainFrame( bool useCustomRepresentation );
+    virtual void didFinishLoadingDataForCustomRepresentation( const String &suggestedFilename, const CoreIPC::DataReference & );
     virtual double customRepresentationZoomFactor();
-    virtual void setCustomRepresentationZoomFactor(double);
+    virtual void setCustomRepresentationZoomFactor( double );
 
     // Members of PageClientImpl class
-    GtkWidget* m_viewWidget;
+    GtkWidget *m_viewWidget;
     Vector<WTF::String> m_pendingEditorCommands;
     GRefPtr<GtkWidget> m_nativeWidget;
 };

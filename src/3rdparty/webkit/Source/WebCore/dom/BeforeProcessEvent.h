@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
 
@@ -30,26 +30,28 @@
 #include "Event.h"
 #include "EventNames.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class BeforeProcessEvent : public Event {
+class BeforeProcessEvent : public Event
+{
 public:
     static PassRefPtr<BeforeProcessEvent> create()
     {
-        return adoptRef(new BeforeProcessEvent);
+        return adoptRef( new BeforeProcessEvent );
     }
 
-    void initBeforeProcessEvent(const AtomicString& type, bool canBubble, bool cancelable)
+    void initBeforeProcessEvent( const AtomicString &type, bool canBubble, bool cancelable )
     {
-        initEvent(type, canBubble, cancelable);
+        initEvent( type, canBubble, cancelable );
     }
 
     String text() const;
-    void setText(const String&);
+    void setText( const String & );
 
 private:
     BeforeProcessEvent()
-        : Event(eventNames().beforeprocessEvent, false, true)
+        : Event( eventNames().beforeprocessEvent, false, true )
     {
     }
 

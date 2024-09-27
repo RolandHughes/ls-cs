@@ -31,9 +31,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSWebKitAnimation);
+ASSERT_CLASS_FITS_IN_CELL( JSWebKitAnimation );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -44,17 +45,17 @@ ASSERT_CLASS_FITS_IN_CELL(JSWebKitAnimation);
 
 static const HashTableValue JSWebKitAnimationTableValues[11] =
 {
-    { "name", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsWebKitAnimationName), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "duration", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsWebKitAnimationDuration), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "elapsedTime", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsWebKitAnimationElapsedTime), (intptr_t)setJSWebKitAnimationElapsedTime THUNK_GENERATOR(0) },
-    { "delay", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsWebKitAnimationDelay), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "iterationCount", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsWebKitAnimationIterationCount), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "paused", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsWebKitAnimationPaused), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "ended", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsWebKitAnimationEnded), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "direction", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsWebKitAnimationDirection), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "fillMode", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsWebKitAnimationFillMode), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsWebKitAnimationConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "name", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsWebKitAnimationName ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "duration", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsWebKitAnimationDuration ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "elapsedTime", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsWebKitAnimationElapsedTime ), ( intptr_t )setJSWebKitAnimationElapsedTime THUNK_GENERATOR( 0 ) },
+    { "delay", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsWebKitAnimationDelay ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "iterationCount", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsWebKitAnimationIterationCount ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "paused", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsWebKitAnimationPaused ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "ended", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsWebKitAnimationEnded ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "direction", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsWebKitAnimationDirection ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "fillMode", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsWebKitAnimationFillMode ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsWebKitAnimationConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -68,57 +69,65 @@ static JSC_CONST_HASHTABLE HashTable JSWebKitAnimationTable = { 33, 31, JSWebKit
 
 static const HashTableValue JSWebKitAnimationConstructorTableValues[7] =
 {
-    { "DIRECTION_NORMAL", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsWebKitAnimationDIRECTION_NORMAL), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "DIRECTION_ALTERNATE", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsWebKitAnimationDIRECTION_ALTERNATE), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "FILL_NONE", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsWebKitAnimationFILL_NONE), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "FILL_BACKWARDS", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsWebKitAnimationFILL_BACKWARDS), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "FILL_FORWARDS", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsWebKitAnimationFILL_FORWARDS), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "FILL_BOTH", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsWebKitAnimationFILL_BOTH), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "DIRECTION_NORMAL", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsWebKitAnimationDIRECTION_NORMAL ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "DIRECTION_ALTERNATE", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsWebKitAnimationDIRECTION_ALTERNATE ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "FILL_NONE", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsWebKitAnimationFILL_NONE ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "FILL_BACKWARDS", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsWebKitAnimationFILL_BACKWARDS ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "FILL_FORWARDS", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsWebKitAnimationFILL_FORWARDS ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "FILL_BOTH", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsWebKitAnimationFILL_BOTH ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSWebKitAnimationConstructorTable = { 16, 15, JSWebKitAnimationConstructorTableValues, 0 };
 
-COMPILE_ASSERT(0 == WebKitAnimation::DIRECTION_NORMAL, WebKitAnimationEnumDIRECTION_NORMALIsWrongUseDontCheckEnums);
-COMPILE_ASSERT(1 == WebKitAnimation::DIRECTION_ALTERNATE, WebKitAnimationEnumDIRECTION_ALTERNATEIsWrongUseDontCheckEnums);
-COMPILE_ASSERT(0 == WebKitAnimation::FILL_NONE, WebKitAnimationEnumFILL_NONEIsWrongUseDontCheckEnums);
-COMPILE_ASSERT(1 == WebKitAnimation::FILL_BACKWARDS, WebKitAnimationEnumFILL_BACKWARDSIsWrongUseDontCheckEnums);
-COMPILE_ASSERT(2 == WebKitAnimation::FILL_FORWARDS, WebKitAnimationEnumFILL_FORWARDSIsWrongUseDontCheckEnums);
-COMPILE_ASSERT(3 == WebKitAnimation::FILL_BOTH, WebKitAnimationEnumFILL_BOTHIsWrongUseDontCheckEnums);
+COMPILE_ASSERT( 0 == WebKitAnimation::DIRECTION_NORMAL, WebKitAnimationEnumDIRECTION_NORMALIsWrongUseDontCheckEnums );
+COMPILE_ASSERT( 1 == WebKitAnimation::DIRECTION_ALTERNATE, WebKitAnimationEnumDIRECTION_ALTERNATEIsWrongUseDontCheckEnums );
+COMPILE_ASSERT( 0 == WebKitAnimation::FILL_NONE, WebKitAnimationEnumFILL_NONEIsWrongUseDontCheckEnums );
+COMPILE_ASSERT( 1 == WebKitAnimation::FILL_BACKWARDS, WebKitAnimationEnumFILL_BACKWARDSIsWrongUseDontCheckEnums );
+COMPILE_ASSERT( 2 == WebKitAnimation::FILL_FORWARDS, WebKitAnimationEnumFILL_FORWARDSIsWrongUseDontCheckEnums );
+COMPILE_ASSERT( 3 == WebKitAnimation::FILL_BOTH, WebKitAnimationEnumFILL_BOTHIsWrongUseDontCheckEnums );
 
-class JSWebKitAnimationConstructor : public DOMConstructorObject {
+class JSWebKitAnimationConstructor : public DOMConstructorObject
+{
 public:
-    JSWebKitAnimationConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSWebKitAnimationConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSWebKitAnimationConstructor::s_info = { "WebKitAnimationConstructor", &DOMConstructorObject::s_info, &JSWebKitAnimationConstructorTable, 0 };
 
-JSWebKitAnimationConstructor::JSWebKitAnimationConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSWebKitAnimationConstructor::JSWebKitAnimationConstructor( ExecState *exec, Structure *structure,
+        JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSWebKitAnimationPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSWebKitAnimationPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSWebKitAnimationConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSWebKitAnimationConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSWebKitAnimationConstructor, JSDOMWrapper>(exec, &JSWebKitAnimationConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSWebKitAnimationConstructor, JSDOMWrapper>( exec, &JSWebKitAnimationConstructorTable, this,
+            propertyName, slot );
 }
 
-bool JSWebKitAnimationConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSWebKitAnimationConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSWebKitAnimationConstructor, JSDOMWrapper>(exec, &JSWebKitAnimationConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSWebKitAnimationConstructor, JSDOMWrapper>( exec, &JSWebKitAnimationConstructorTable, this,
+            propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -130,241 +139,254 @@ bool JSWebKitAnimationConstructor::getOwnPropertyDescriptor(ExecState* exec, con
 
 static const HashTableValue JSWebKitAnimationPrototypeTableValues[9] =
 {
-    { "DIRECTION_NORMAL", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsWebKitAnimationDIRECTION_NORMAL), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "DIRECTION_ALTERNATE", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsWebKitAnimationDIRECTION_ALTERNATE), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "FILL_NONE", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsWebKitAnimationFILL_NONE), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "FILL_BACKWARDS", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsWebKitAnimationFILL_BACKWARDS), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "FILL_FORWARDS", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsWebKitAnimationFILL_FORWARDS), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "FILL_BOTH", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsWebKitAnimationFILL_BOTH), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "play", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsWebKitAnimationPrototypeFunctionPlay), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "pause", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsWebKitAnimationPrototypeFunctionPause), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "DIRECTION_NORMAL", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsWebKitAnimationDIRECTION_NORMAL ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "DIRECTION_ALTERNATE", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsWebKitAnimationDIRECTION_ALTERNATE ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "FILL_NONE", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsWebKitAnimationFILL_NONE ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "FILL_BACKWARDS", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsWebKitAnimationFILL_BACKWARDS ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "FILL_FORWARDS", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsWebKitAnimationFILL_FORWARDS ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "FILL_BOTH", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsWebKitAnimationFILL_BOTH ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "play", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsWebKitAnimationPrototypeFunctionPlay ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "pause", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsWebKitAnimationPrototypeFunctionPause ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSWebKitAnimationPrototypeTable = { 17, 15, JSWebKitAnimationPrototypeTableValues, 0 };
 const ClassInfo JSWebKitAnimationPrototype::s_info = { "WebKitAnimationPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSWebKitAnimationPrototypeTable, 0 };
 
-JSObject* JSWebKitAnimationPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSWebKitAnimationPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSWebKitAnimation>(exec, globalObject);
+    return getDOMPrototype<JSWebKitAnimation>( exec, globalObject );
 }
 
-bool JSWebKitAnimationPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSWebKitAnimationPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticPropertySlot<JSWebKitAnimationPrototype, JSObject>(exec, &JSWebKitAnimationPrototypeTable, this, propertyName, slot);
+    return getStaticPropertySlot<JSWebKitAnimationPrototype, JSObject>( exec, &JSWebKitAnimationPrototypeTable, this, propertyName,
+            slot );
 }
 
-bool JSWebKitAnimationPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSWebKitAnimationPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticPropertyDescriptor<JSWebKitAnimationPrototype, JSObject>(exec, &JSWebKitAnimationPrototypeTable, this, propertyName, descriptor);
+    return getStaticPropertyDescriptor<JSWebKitAnimationPrototype, JSObject>( exec, &JSWebKitAnimationPrototypeTable, this,
+            propertyName, descriptor );
 }
 
 const ClassInfo JSWebKitAnimation::s_info = { "WebKitAnimation", &JSDOMWrapper::s_info, &JSWebKitAnimationTable, 0 };
 
-JSWebKitAnimation::JSWebKitAnimation(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<WebKitAnimation> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSWebKitAnimation::JSWebKitAnimation( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<WebKitAnimation> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSWebKitAnimation::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSWebKitAnimation::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSWebKitAnimationPrototype(exec->globalData(), globalObject, JSWebKitAnimationPrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSWebKitAnimationPrototype( exec->globalData(), globalObject,
+            JSWebKitAnimationPrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSWebKitAnimation::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSWebKitAnimation::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSWebKitAnimation, Base>(exec, &JSWebKitAnimationTable, this, propertyName, slot);
+    return getStaticValueSlot<JSWebKitAnimation, Base>( exec, &JSWebKitAnimationTable, this, propertyName, slot );
 }
 
-bool JSWebKitAnimation::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSWebKitAnimation::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSWebKitAnimation, Base>(exec, &JSWebKitAnimationTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSWebKitAnimation, Base>( exec, &JSWebKitAnimationTable, this, propertyName, descriptor );
 }
 
-JSValue jsWebKitAnimationName(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsWebKitAnimationName( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSWebKitAnimation* castedThis = static_cast<JSWebKitAnimation*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    WebKitAnimation* imp = static_cast<WebKitAnimation*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->name());
+    JSWebKitAnimation *castedThis = static_cast<JSWebKitAnimation *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    WebKitAnimation *imp = static_cast<WebKitAnimation *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->name() );
     return result;
 }
 
 
-JSValue jsWebKitAnimationDuration(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsWebKitAnimationDuration( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSWebKitAnimation* castedThis = static_cast<JSWebKitAnimation*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    WebKitAnimation* imp = static_cast<WebKitAnimation*>(castedThis->impl());
-    JSValue result = jsNumber(imp->duration());
+    JSWebKitAnimation *castedThis = static_cast<JSWebKitAnimation *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    WebKitAnimation *imp = static_cast<WebKitAnimation *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->duration() );
     return result;
 }
 
 
-JSValue jsWebKitAnimationElapsedTime(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsWebKitAnimationElapsedTime( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSWebKitAnimation* castedThis = static_cast<JSWebKitAnimation*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    WebKitAnimation* imp = static_cast<WebKitAnimation*>(castedThis->impl());
-    JSValue result = jsNumber(imp->elapsedTime());
+    JSWebKitAnimation *castedThis = static_cast<JSWebKitAnimation *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    WebKitAnimation *imp = static_cast<WebKitAnimation *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->elapsedTime() );
     return result;
 }
 
 
-JSValue jsWebKitAnimationDelay(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsWebKitAnimationDelay( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSWebKitAnimation* castedThis = static_cast<JSWebKitAnimation*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    WebKitAnimation* imp = static_cast<WebKitAnimation*>(castedThis->impl());
-    JSValue result = jsNumber(imp->delay());
+    JSWebKitAnimation *castedThis = static_cast<JSWebKitAnimation *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    WebKitAnimation *imp = static_cast<WebKitAnimation *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->delay() );
     return result;
 }
 
 
-JSValue jsWebKitAnimationIterationCount(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsWebKitAnimationIterationCount( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSWebKitAnimation* castedThis = static_cast<JSWebKitAnimation*>(asObject(slotBase));
-    return castedThis->iterationCount(exec);
+    JSWebKitAnimation *castedThis = static_cast<JSWebKitAnimation *>( asObject( slotBase ) );
+    return castedThis->iterationCount( exec );
 }
 
 
-JSValue jsWebKitAnimationPaused(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsWebKitAnimationPaused( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSWebKitAnimation* castedThis = static_cast<JSWebKitAnimation*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    WebKitAnimation* imp = static_cast<WebKitAnimation*>(castedThis->impl());
-    JSValue result = jsBoolean(imp->paused());
+    JSWebKitAnimation *castedThis = static_cast<JSWebKitAnimation *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    WebKitAnimation *imp = static_cast<WebKitAnimation *>( castedThis->impl() );
+    JSValue result = jsBoolean( imp->paused() );
     return result;
 }
 
 
-JSValue jsWebKitAnimationEnded(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsWebKitAnimationEnded( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSWebKitAnimation* castedThis = static_cast<JSWebKitAnimation*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    WebKitAnimation* imp = static_cast<WebKitAnimation*>(castedThis->impl());
-    JSValue result = jsBoolean(imp->ended());
+    JSWebKitAnimation *castedThis = static_cast<JSWebKitAnimation *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    WebKitAnimation *imp = static_cast<WebKitAnimation *>( castedThis->impl() );
+    JSValue result = jsBoolean( imp->ended() );
     return result;
 }
 
 
-JSValue jsWebKitAnimationDirection(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsWebKitAnimationDirection( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSWebKitAnimation* castedThis = static_cast<JSWebKitAnimation*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    WebKitAnimation* imp = static_cast<WebKitAnimation*>(castedThis->impl());
-    JSValue result = jsNumber(imp->direction());
+    JSWebKitAnimation *castedThis = static_cast<JSWebKitAnimation *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    WebKitAnimation *imp = static_cast<WebKitAnimation *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->direction() );
     return result;
 }
 
 
-JSValue jsWebKitAnimationFillMode(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsWebKitAnimationFillMode( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSWebKitAnimation* castedThis = static_cast<JSWebKitAnimation*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    WebKitAnimation* imp = static_cast<WebKitAnimation*>(castedThis->impl());
-    JSValue result = jsNumber(imp->fillMode());
+    JSWebKitAnimation *castedThis = static_cast<JSWebKitAnimation *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    WebKitAnimation *imp = static_cast<WebKitAnimation *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->fillMode() );
     return result;
 }
 
 
-JSValue jsWebKitAnimationConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsWebKitAnimationConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSWebKitAnimation* domObject = static_cast<JSWebKitAnimation*>(asObject(slotBase));
-    return JSWebKitAnimation::getConstructor(exec, domObject->globalObject());
+    JSWebKitAnimation *domObject = static_cast<JSWebKitAnimation *>( asObject( slotBase ) );
+    return JSWebKitAnimation::getConstructor( exec, domObject->globalObject() );
 }
 
-void JSWebKitAnimation::put(ExecState* exec, const Identifier& propertyName, JSValue value, PutPropertySlot& slot)
+void JSWebKitAnimation::put( ExecState *exec, const Identifier &propertyName, JSValue value, PutPropertySlot &slot )
 {
-    lookupPut<JSWebKitAnimation, Base>(exec, propertyName, value, &JSWebKitAnimationTable, this, slot);
+    lookupPut<JSWebKitAnimation, Base>( exec, propertyName, value, &JSWebKitAnimationTable, this, slot );
 }
 
-void setJSWebKitAnimationElapsedTime(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSWebKitAnimationElapsedTime( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSWebKitAnimation* castedThis = static_cast<JSWebKitAnimation*>(thisObject);
-    WebKitAnimation* imp = static_cast<WebKitAnimation*>(castedThis->impl());
-    imp->setElapsedTime(value.toNumber(exec));
+    JSWebKitAnimation *castedThis = static_cast<JSWebKitAnimation *>( thisObject );
+    WebKitAnimation *imp = static_cast<WebKitAnimation *>( castedThis->impl() );
+    imp->setElapsedTime( value.toNumber( exec ) );
 }
 
 
-JSValue JSWebKitAnimation::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSWebKitAnimation::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSWebKitAnimationConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSWebKitAnimationConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsWebKitAnimationPrototypeFunctionPlay(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsWebKitAnimationPrototypeFunctionPlay( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSWebKitAnimation::s_info))
-        return throwVMTypeError(exec);
-    JSWebKitAnimation* castedThis = static_cast<JSWebKitAnimation*>(asObject(thisValue));
-    WebKitAnimation* imp = static_cast<WebKitAnimation*>(castedThis->impl());
+
+    if ( !thisValue.inherits( &JSWebKitAnimation::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSWebKitAnimation *castedThis = static_cast<JSWebKitAnimation *>( asObject( thisValue ) );
+    WebKitAnimation *imp = static_cast<WebKitAnimation *>( castedThis->impl() );
 
     imp->play();
-    return JSValue::encode(jsUndefined());
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsWebKitAnimationPrototypeFunctionPause(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsWebKitAnimationPrototypeFunctionPause( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSWebKitAnimation::s_info))
-        return throwVMTypeError(exec);
-    JSWebKitAnimation* castedThis = static_cast<JSWebKitAnimation*>(asObject(thisValue));
-    WebKitAnimation* imp = static_cast<WebKitAnimation*>(castedThis->impl());
+
+    if ( !thisValue.inherits( &JSWebKitAnimation::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSWebKitAnimation *castedThis = static_cast<JSWebKitAnimation *>( asObject( thisValue ) );
+    WebKitAnimation *imp = static_cast<WebKitAnimation *>( castedThis->impl() );
 
     imp->pause();
-    return JSValue::encode(jsUndefined());
+    return JSValue::encode( jsUndefined() );
 }
 
 // Constant getters
 
-JSValue jsWebKitAnimationDIRECTION_NORMAL(ExecState* exec, JSValue, const Identifier&)
+JSValue jsWebKitAnimationDIRECTION_NORMAL( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(0));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 0 ) );
 }
 
-JSValue jsWebKitAnimationDIRECTION_ALTERNATE(ExecState* exec, JSValue, const Identifier&)
+JSValue jsWebKitAnimationDIRECTION_ALTERNATE( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(1));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 1 ) );
 }
 
-JSValue jsWebKitAnimationFILL_NONE(ExecState* exec, JSValue, const Identifier&)
+JSValue jsWebKitAnimationFILL_NONE( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(0));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 0 ) );
 }
 
-JSValue jsWebKitAnimationFILL_BACKWARDS(ExecState* exec, JSValue, const Identifier&)
+JSValue jsWebKitAnimationFILL_BACKWARDS( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(1));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 1 ) );
 }
 
-JSValue jsWebKitAnimationFILL_FORWARDS(ExecState* exec, JSValue, const Identifier&)
+JSValue jsWebKitAnimationFILL_FORWARDS( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(2));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 2 ) );
 }
 
-JSValue jsWebKitAnimationFILL_BOTH(ExecState* exec, JSValue, const Identifier&)
+JSValue jsWebKitAnimationFILL_BOTH( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(3));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 3 ) );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, WebKitAnimation* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, WebKitAnimation *impl )
 {
-    return wrap<JSWebKitAnimation>(exec, globalObject, impl);
+    return wrap<JSWebKitAnimation>( exec, globalObject, impl );
 }
 
-WebKitAnimation* toWebKitAnimation(JSC::JSValue value)
+WebKitAnimation *toWebKitAnimation( JSC::JSValue value )
 {
-    return value.inherits(&JSWebKitAnimation::s_info) ? static_cast<JSWebKitAnimation*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSWebKitAnimation::s_info ) ? static_cast<JSWebKitAnimation *>( asObject( value ) )->impl() : 0;
 }
 
 }

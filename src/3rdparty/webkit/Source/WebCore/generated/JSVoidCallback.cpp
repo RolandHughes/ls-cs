@@ -29,9 +29,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSVoidCallback);
+ASSERT_CLASS_FITS_IN_CELL( JSVoidCallback );
 
 /* Hash table for prototype */
 #if ENABLE(JIT)
@@ -42,58 +43,64 @@ ASSERT_CLASS_FITS_IN_CELL(JSVoidCallback);
 
 static const HashTableValue JSVoidCallbackPrototypeTableValues[2] =
 {
-    { "handleEvent", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsVoidCallbackPrototypeFunctionHandleEvent), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "handleEvent", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsVoidCallbackPrototypeFunctionHandleEvent ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSVoidCallbackPrototypeTable = { 2, 1, JSVoidCallbackPrototypeTableValues, 0 };
 const ClassInfo JSVoidCallbackPrototype::s_info = { "VoidCallbackPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSVoidCallbackPrototypeTable, 0 };
 
-JSObject* JSVoidCallbackPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSVoidCallbackPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSVoidCallback>(exec, globalObject);
+    return getDOMPrototype<JSVoidCallback>( exec, globalObject );
 }
 
-bool JSVoidCallbackPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSVoidCallbackPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticFunctionSlot<JSObject>(exec, &JSVoidCallbackPrototypeTable, this, propertyName, slot);
+    return getStaticFunctionSlot<JSObject>( exec, &JSVoidCallbackPrototypeTable, this, propertyName, slot );
 }
 
-bool JSVoidCallbackPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSVoidCallbackPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticFunctionDescriptor<JSObject>(exec, &JSVoidCallbackPrototypeTable, this, propertyName, descriptor);
+    return getStaticFunctionDescriptor<JSObject>( exec, &JSVoidCallbackPrototypeTable, this, propertyName, descriptor );
 }
 
 const ClassInfo JSVoidCallback::s_info = { "VoidCallback", &JSDOMWrapper::s_info, 0, 0 };
 
-JSVoidCallback::JSVoidCallback(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<VoidCallback> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSVoidCallback::JSVoidCallback( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<VoidCallback> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSVoidCallback::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSVoidCallback::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSVoidCallbackPrototype(exec->globalData(), globalObject, JSVoidCallbackPrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSVoidCallbackPrototype( exec->globalData(), globalObject,
+            JSVoidCallbackPrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsVoidCallbackPrototypeFunctionHandleEvent(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsVoidCallbackPrototypeFunctionHandleEvent( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSVoidCallback::s_info))
-        return throwVMTypeError(exec);
-    JSVoidCallback* castedThis = static_cast<JSVoidCallback*>(asObject(thisValue));
-    VoidCallback* imp = static_cast<VoidCallback*>(castedThis->impl());
+
+    if ( !thisValue.inherits( &JSVoidCallback::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSVoidCallback *castedThis = static_cast<JSVoidCallback *>( asObject( thisValue ) );
+    VoidCallback *imp = static_cast<VoidCallback *>( castedThis->impl() );
 
     imp->handleEvent();
-    return JSValue::encode(jsUndefined());
+    return JSValue::encode( jsUndefined() );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, VoidCallback* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, VoidCallback *impl )
 {
-    return wrap<JSVoidCallback>(exec, globalObject, impl);
+    return wrap<JSVoidCallback>( exec, globalObject, impl );
 }
 
 

@@ -35,22 +35,29 @@
 #endif
 
 
-namespace WebKit {
+namespace WebKit
+{
 
 #if PLATFORM(WIN)
 // The Windows version of WKSI defines these functions as capitalized, while the Mac version defines them as lower case.
-static inline CFArrayRef WKCFURLCacheCopyAllHostNamesInPersistentStore() { return wkCFURLCacheCopyAllHostNamesInPersistentStore(); }
-static inline void WKCFURLCacheDeleteHostNamesInPersistentStore(CFArrayRef hostNames) { return wkCFURLCacheDeleteHostNamesInPersistentStore(hostNames); }
+static inline CFArrayRef WKCFURLCacheCopyAllHostNamesInPersistentStore()
+{
+    return wkCFURLCacheCopyAllHostNamesInPersistentStore();
+}
+static inline void WKCFURLCacheDeleteHostNamesInPersistentStore( CFArrayRef hostNames )
+{
+    return wkCFURLCacheDeleteHostNamesInPersistentStore( hostNames );
+}
 #endif
 
 RetainPtr<CFArrayRef> WebResourceCacheManager::cfURLCacheHostNames()
 {
-    return RetainPtr<CFArrayRef>(AdoptCF, WKCFURLCacheCopyAllHostNamesInPersistentStore());
+    return RetainPtr<CFArrayRef>( AdoptCF, WKCFURLCacheCopyAllHostNamesInPersistentStore() );
 }
 
-void WebResourceCacheManager::clearCFURLCacheForHostNames(CFArrayRef hostNames)
+void WebResourceCacheManager::clearCFURLCacheForHostNames( CFArrayRef hostNames )
 {
-    WKCFURLCacheDeleteHostNamesInPersistentStore(hostNames);
+    WKCFURLCacheDeleteHostNamesInPersistentStore( hostNames );
 }
 
 } // namespace WebKit

@@ -31,18 +31,18 @@ class QResourceFileEngineIteratorPrivate;
 
 class QResourceFileEngineIterator : public QAbstractFileEngineIterator
 {
- public:
-   QResourceFileEngineIterator(QDir::Filters filters, const QStringList &filterNames);
-   ~QResourceFileEngineIterator();
+public:
+    QResourceFileEngineIterator( QDir::Filters filters, const QStringList &filterNames );
+    ~QResourceFileEngineIterator();
 
-   QString next() override;
-   bool hasNext() const override;
+    QString next() override;
+    bool hasNext() const override;
 
-   QString currentFileName() const override;
+    QString currentFileName() const override;
 
- private:
-   mutable QStringList entries;
-   mutable int index;
+private:
+    mutable QStringList entries;
+    mutable int index;
 };
 
 #endif

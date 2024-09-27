@@ -29,65 +29,71 @@
 #include "qxmlutils_p.h"
 
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class NCNameConstructor : public SingleContainer
 {
- public:
+public:
 
-   NCNameConstructor(const Expression::Ptr &source);
+    NCNameConstructor( const Expression::Ptr &source );
 
-   Item evaluateSingleton(const DynamicContext::Ptr &) const override;
+    Item evaluateSingleton( const DynamicContext::Ptr & ) const override;
 
-   SequenceType::List expectedOperandTypes() const override;
+    SequenceType::List expectedOperandTypes() const override;
 
-   Expression::Ptr typeCheck(const StaticContext::Ptr &context, const SequenceType::Ptr &reqType) override;
+    Expression::Ptr typeCheck( const StaticContext::Ptr &context, const SequenceType::Ptr &reqType ) override;
 
-   SequenceType::Ptr staticType() const override;
+    SequenceType::Ptr staticType() const override;
 
-   ExpressionVisitorResult::Ptr accept(const ExpressionVisitor::Ptr &visitor) const override;
+    ExpressionVisitorResult::Ptr accept( const ExpressionVisitor::Ptr &visitor ) const override;
 
-   /**
-    *  Validates @p lexicalNCName as a processing instruction's target
-    *  name, and raise an error if it's not an @c  NCName.
-    */
-   template<typename TReportContext, const ReportContext::ErrorCode NameIsXML,
-            const ReportContext::ErrorCode LexicallyInvalid>
+    /**
+     *  Validates @p lexicalNCName as a processing instruction's target
+     *  name, and raise an error if it's not an @c  NCName.
+     */
+    template<typename TReportContext, const ReportContext::ErrorCode NameIsXML,
+             const ReportContext::ErrorCode LexicallyInvalid>
 
-   static inline void validateTargetName(const QString &lexicalNCName,
-                 const TReportContext &context, const SourceLocationReflection *const r);
- private:
+    static inline void validateTargetName( const QString &lexicalNCName,
+                                           const TReportContext &context, const SourceLocationReflection *const r );
+private:
 
-   /**
-    * This translation string is put here in order to avoid duplicate messages and
-    * hence reduce work for translators and increase consistency.
-    */
-   static
-   const QString nameIsXML(const QString &lexTarget) {
-      return QtXmlPatterns::tr("The target name in a processing instruction "
-                               "cannot be %1 in any combination of upper "
-                               "and lower case. Therefore, %2 is invalid.")
-             .formatArgs(formatKeyword("xml"), formatKeyword(lexTarget));
-   }
+    /**
+     * This translation string is put here in order to avoid duplicate messages and
+     * hence reduce work for translators and increase consistency.
+     */
+    static
+    const QString nameIsXML( const QString &lexTarget )
+    {
+        return QtXmlPatterns::tr( "The target name in a processing instruction "
+                                  "cannot be %1 in any combination of upper "
+                                  "and lower case. Therefore, %2 is invalid." )
+               .formatArgs( formatKeyword( "xml" ), formatKeyword( lexTarget ) );
+    }
 };
 
 template<typename TReportContext, const ReportContext::ErrorCode NameIsXML, const ReportContext::ErrorCode LexicallyInvalid>
-inline void NCNameConstructor::validateTargetName(const QString &lexicalTarget, const TReportContext &context,
-      const SourceLocationReflection *const r)
+inline void NCNameConstructor::validateTargetName( const QString &lexicalTarget, const TReportContext &context,
+        const SourceLocationReflection *const r )
 {
-   Q_ASSERT(context);
+    Q_ASSERT( context );
 
-   if (QXmlUtils::isNCName(lexicalTarget)) {
-      if (QString::compare(QLatin1String("xml"), lexicalTarget, Qt::CaseInsensitive) == 0) {
-         context->error(nameIsXML(lexicalTarget), NameIsXML, r);
-      }
+    if ( QXmlUtils::isNCName( lexicalTarget ) )
+    {
+        if ( QString::compare( QLatin1String( "xml" ), lexicalTarget, Qt::CaseInsensitive ) == 0 )
+        {
+            context->error( nameIsXML( lexicalTarget ), NameIsXML, r );
+        }
 
-   } else {
-      context->error(QtXmlPatterns::tr("%1 is not a valid target name in a processing instruction. It "
-                     "must be a %2 value, e.g. %3.")
-                     .formatArg(formatKeyword(lexicalTarget)).formatArg(formatType(context->namePool(), BuiltinTypes::xsNCName))
-                     .formatArg(formatKeyword("my-name.123")), LexicallyInvalid, r);
-   }
+    }
+    else
+    {
+        context->error( QtXmlPatterns::tr( "%1 is not a valid target name in a processing instruction. It "
+                                           "must be a %2 value, e.g. %3." )
+                        .formatArg( formatKeyword( lexicalTarget ) ).formatArg( formatType( context->namePool(), BuiltinTypes::xsNCName ) )
+                        .formatArg( formatKeyword( "my-name.123" ) ), LexicallyInvalid, r );
+    }
 }
 }
 

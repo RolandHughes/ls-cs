@@ -24,8 +24,8 @@
 #include <qradiodatacontrol.h>
 #include <qmediacontrol_p.h>
 
-QRadioDataControl::QRadioDataControl(QObject *parent)
-   : QMediaControl(*new QMediaControlPrivate, parent)
+QRadioDataControl::QRadioDataControl( QObject *parent )
+    : QMediaControl( *new QMediaControlPrivate, parent )
 {
 }
 

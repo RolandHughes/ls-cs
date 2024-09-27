@@ -34,14 +34,14 @@
 using namespace WebKit;
 using namespace WebCore;
 
-WKViewRef WKViewCreate(WKContextRef contextRef, WKPageGroupRef pageGroupRef)
+WKViewRef WKViewCreate( WKContextRef contextRef, WKPageGroupRef pageGroupRef )
 {
-    return toAPI(webkitWebViewBaseCreate(toImpl(contextRef), toImpl(pageGroupRef)));
+    return toAPI( webkitWebViewBaseCreate( toImpl( contextRef ), toImpl( pageGroupRef ) ) );
 }
 
-WKPageRef WKViewGetPage(WKViewRef viewRef)
+WKPageRef WKViewGetPage( WKViewRef viewRef )
 {
-    return toAPI(webkitWebViewBaseGetPage(toImpl(viewRef)));
+    return toAPI( webkitWebViewBaseGetPage( toImpl( viewRef ) ) );
 }
 
 

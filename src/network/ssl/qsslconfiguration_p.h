@@ -34,56 +34,56 @@
 class QSslConfigurationPrivate : public QSharedData
 {
 public:
-   QSslConfigurationPrivate()
-      : sessionProtocol(QSsl::UnknownProtocol), protocol(QSsl::SecureProtocols),
-        peerVerifyMode(QSslSocket::AutoVerifyPeer), peerVerifyDepth(0),
-        allowRootCertOnDemandLoading(true), peerSessionShared(false),
-        sslOptions(QSslConfigurationPrivate::defaultSslOptions),
-        sslSessionTicketLifeTimeHint(-1),
-        nextProtocolNegotiationStatus(QSslConfiguration::NextProtocolNegotiationNone)
-   {
-   }
+    QSslConfigurationPrivate()
+        : sessionProtocol( QSsl::UnknownProtocol ), protocol( QSsl::SecureProtocols ),
+          peerVerifyMode( QSslSocket::AutoVerifyPeer ), peerVerifyDepth( 0 ),
+          allowRootCertOnDemandLoading( true ), peerSessionShared( false ),
+          sslOptions( QSslConfigurationPrivate::defaultSslOptions ),
+          sslSessionTicketLifeTimeHint( -1 ),
+          nextProtocolNegotiationStatus( QSslConfiguration::NextProtocolNegotiationNone )
+    {
+    }
 
-   QSslCertificate peerCertificate;
-   QList<QSslCertificate> peerCertificateChain;
+    QSslCertificate peerCertificate;
+    QList<QSslCertificate> peerCertificateChain;
 
-   QList<QSslCertificate> localCertificateChain;
+    QList<QSslCertificate> localCertificateChain;
 
-   QSslKey privateKey;
-   QSslCipher sessionCipher;
-   QSsl::SslProtocol sessionProtocol;
-   QList<QSslCipher> ciphers;
-   QList<QSslCertificate> caCertificates;
+    QSslKey privateKey;
+    QSslCipher sessionCipher;
+    QSsl::SslProtocol sessionProtocol;
+    QList<QSslCipher> ciphers;
+    QList<QSslCertificate> caCertificates;
 
-   QSsl::SslProtocol protocol;
-   QSslSocket::PeerVerifyMode peerVerifyMode;
-   int peerVerifyDepth;
-   bool allowRootCertOnDemandLoading;
-   bool peerSessionShared;
+    QSsl::SslProtocol protocol;
+    QSslSocket::PeerVerifyMode peerVerifyMode;
+    int peerVerifyDepth;
+    bool allowRootCertOnDemandLoading;
+    bool peerSessionShared;
 
-   static bool peerSessionWasShared(const QSslConfiguration &configuration);
+    static bool peerSessionWasShared( const QSslConfiguration &configuration );
 
-   QSsl::SslOptions sslOptions;
-   static const QSsl::SslOptions defaultSslOptions;
+    QSsl::SslOptions sslOptions;
+    static const QSsl::SslOptions defaultSslOptions;
 
-   QVector<QSslEllipticCurve> ellipticCurves;
+    QVector<QSslEllipticCurve> ellipticCurves;
 
-   QByteArray sslSession;
-   int sslSessionTicketLifeTimeHint;
+    QByteArray sslSession;
+    int sslSessionTicketLifeTimeHint;
 
-   QList<QByteArray> nextAllowedProtocols;
-   QByteArray nextNegotiatedProtocol;
-   QSslConfiguration::NextProtocolNegotiationStatus nextProtocolNegotiationStatus;
+    QList<QByteArray> nextAllowedProtocols;
+    QByteArray nextNegotiatedProtocol;
+    QSslConfiguration::NextProtocolNegotiationStatus nextProtocolNegotiationStatus;
 
-   // in qsslsocket.cpp:
-   static QSslConfiguration defaultConfiguration();
-   static void setDefaultConfiguration(const QSslConfiguration &configuration);
-   static void deepCopyDefaultConfiguration(QSslConfigurationPrivate *config);
+    // in qsslsocket.cpp:
+    static QSslConfiguration defaultConfiguration();
+    static void setDefaultConfiguration( const QSslConfiguration &configuration );
+    static void deepCopyDefaultConfiguration( QSslConfigurationPrivate *config );
 };
 
 // implemented here for inlining purposes
-inline QSslConfiguration::QSslConfiguration(QSslConfigurationPrivate *dd)
-   : d(dd)
+inline QSslConfiguration::QSslConfiguration( QSslConfigurationPrivate *dd )
+    : d( dd )
 {
 }
 

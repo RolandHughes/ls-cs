@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef JSAudioConstructor_h
@@ -32,22 +32,25 @@
 #include "JSDocument.h"
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class JSAudioConstructor : public DOMConstructorWithDocument {
-    public:
-        JSAudioConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+class JSAudioConstructor : public DOMConstructorWithDocument
+{
+public:
+    JSAudioConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-        static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
-        {
-            return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
-        }
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
+    {
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
+    }
 
-        static const JSC::ClassInfo s_info;
+    static const JSC::ClassInfo s_info;
 
-    private:
-        virtual JSC::ConstructType getConstructData(JSC::ConstructData&);
-    };
+private:
+    virtual JSC::ConstructType getConstructData( JSC::ConstructData & );
+};
 
 } // namespace WebCore
 

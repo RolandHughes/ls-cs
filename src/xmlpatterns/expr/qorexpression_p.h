@@ -26,16 +26,17 @@
 
 #include "qandexpression_p.h"
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class OrExpression : public AndExpression
 {
- public:
-   OrExpression(const Expression::Ptr &operand1, const Expression::Ptr &operand2);
+public:
+    OrExpression( const Expression::Ptr &operand1, const Expression::Ptr &operand2 );
 
-   bool evaluateEBV(const DynamicContext::Ptr &context) const override;
-   Expression::Ptr compress(const StaticContext::Ptr &context) override;
-   ExpressionVisitorResult::Ptr accept(const ExpressionVisitor::Ptr &visitor) const override;
+    bool evaluateEBV( const DynamicContext::Ptr &context ) const override;
+    Expression::Ptr compress( const StaticContext::Ptr &context ) override;
+    ExpressionVisitorResult::Ptr accept( const ExpressionVisitor::Ptr &visitor ) const override;
 };
 
 }

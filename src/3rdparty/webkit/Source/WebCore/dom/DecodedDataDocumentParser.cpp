@@ -30,28 +30,37 @@
 #include "SegmentedString.h"
 #include "TextResourceDecoder.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-DecodedDataDocumentParser::DecodedDataDocumentParser(Document* document)
-    : DocumentParser(document)
+DecodedDataDocumentParser::DecodedDataDocumentParser( Document *document )
+    : DocumentParser( document )
 {
 }
 
-void DecodedDataDocumentParser::appendBytes(DocumentWriter* writer , const char* data, int length, bool shouldFlush)
+void DecodedDataDocumentParser::appendBytes( DocumentWriter *writer, const char *data, int length, bool shouldFlush )
 {
-    if (!length && !shouldFlush)
+    if ( !length && !shouldFlush )
+    {
         return;
+    }
 
-    TextResourceDecoder* decoder = writer->createDecoderIfNeeded();
-    String decoded = decoder->decode(data, length);
-    if (shouldFlush)
+    TextResourceDecoder *decoder = writer->createDecoderIfNeeded();
+    String decoded = decoder->decode( data, length );
+
+    if ( shouldFlush )
+    {
         decoded += decoder->flush();
-    if (decoded.isEmpty())
+    }
+
+    if ( decoded.isEmpty() )
+    {
         return;
+    }
 
     writer->reportDataReceived();
 
-    append(decoded);
+    append( decoded );
 }
 
 };

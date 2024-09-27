@@ -39,27 +39,32 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class DirectoryReaderSync;
 class FileEntrySync;
 
-class DirectoryEntrySync : public EntrySync {
+class DirectoryEntrySync : public EntrySync
+{
 public:
-    static PassRefPtr<DirectoryEntrySync> create(PassRefPtr<DOMFileSystemBase> fileSystem, const String& fullPath)
+    static PassRefPtr<DirectoryEntrySync> create( PassRefPtr<DOMFileSystemBase> fileSystem, const String &fullPath )
     {
-        return adoptRef(new DirectoryEntrySync(fileSystem, fullPath));
+        return adoptRef( new DirectoryEntrySync( fileSystem, fullPath ) );
     }
-    virtual bool isDirectory() const { return true; }
+    virtual bool isDirectory() const
+    {
+        return true;
+    }
 
-    PassRefPtr<DirectoryReaderSync> createReader(ExceptionCode&);
-    PassRefPtr<FileEntrySync> getFile(const String& path, PassRefPtr<WebKitFlags>, ExceptionCode&);
-    PassRefPtr<DirectoryEntrySync> getDirectory(const String& path, PassRefPtr<WebKitFlags>, ExceptionCode&);
-    void removeRecursively(ExceptionCode&);
+    PassRefPtr<DirectoryReaderSync> createReader( ExceptionCode & );
+    PassRefPtr<FileEntrySync> getFile( const String &path, PassRefPtr<WebKitFlags>, ExceptionCode & );
+    PassRefPtr<DirectoryEntrySync> getDirectory( const String &path, PassRefPtr<WebKitFlags>, ExceptionCode & );
+    void removeRecursively( ExceptionCode & );
 
 private:
     friend class EntrySync;
-    DirectoryEntrySync(PassRefPtr<DOMFileSystemBase>, const String& fullPath);
+    DirectoryEntrySync( PassRefPtr<DOMFileSystemBase>, const String &fullPath );
 };
 
 }

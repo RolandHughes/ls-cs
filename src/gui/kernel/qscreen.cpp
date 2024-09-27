@@ -31,91 +31,101 @@
 #include <qhighdpiscaling_p.h>
 #include <qplatform_screen_p.h>
 
-QScreen::QScreen(QPlatformScreen *screen)
-   : d_ptr(new QScreenPrivate)
+QScreen::QScreen( QPlatformScreen *screen )
+    : d_ptr( new QScreenPrivate )
 {
-   d_ptr->q_ptr = this;
-   Q_D(QScreen);
+    d_ptr->q_ptr = this;
+    Q_D( QScreen );
 
-   d->setPlatformScreen(screen);
+    d->setPlatformScreen( screen );
 }
 
-void QScreenPrivate::setPlatformScreen(QPlatformScreen *screen)
+void QScreenPrivate::setPlatformScreen( QPlatformScreen *screen )
 {
-   Q_Q(QScreen);
-   platformScreen = screen;
-   platformScreen->d_func()->screen = q;
-   orientation = platformScreen->orientation();
-   geometry = platformScreen->deviceIndependentGeometry();
-   availableGeometry = QHighDpi::fromNative(platformScreen->availableGeometry(), QHighDpiScaling::factor(platformScreen),
-         geometry.topLeft());
-   logicalDpi = platformScreen->logicalDpi();
-   refreshRate = platformScreen->refreshRate();
+    Q_Q( QScreen );
+    platformScreen = screen;
+    platformScreen->d_func()->screen = q;
+    orientation = platformScreen->orientation();
+    geometry = platformScreen->deviceIndependentGeometry();
+    availableGeometry = QHighDpi::fromNative( platformScreen->availableGeometry(), QHighDpiScaling::factor( platformScreen ),
+                        geometry.topLeft() );
+    logicalDpi = platformScreen->logicalDpi();
+    refreshRate = platformScreen->refreshRate();
 
-   // safeguard ourselves against buggy platform behavior...
-   if (refreshRate < 1.0) {
-      refreshRate = 60.0;
-   }
+    // safeguard ourselves against buggy platform behavior...
+    if ( refreshRate < 1.0 )
+    {
+        refreshRate = 60.0;
+    }
 
-   updatePrimaryOrientation();
+    updatePrimaryOrientation();
 
-   filteredOrientation = orientation;
-   if (filteredOrientation == Qt::PrimaryOrientation) {
-      filteredOrientation = primaryOrientation;
-   }
+    filteredOrientation = orientation;
 
-   updateHighDpi();
+    if ( filteredOrientation == Qt::PrimaryOrientation )
+    {
+        filteredOrientation = primaryOrientation;
+    }
+
+    updateHighDpi();
 }
 
 QScreen::~QScreen()
 {
-   if (! qApp) {
-      return;
-   }
+    if ( ! qApp )
+    {
+        return;
+    }
 
-   // Allow clients to manage windows that are affected by the screen going
-   // away, before we fall back to moving them to the primary screen.
+    // Allow clients to manage windows that are affected by the screen going
+    // away, before we fall back to moving them to the primary screen.
 
-   emit qApp->screenRemoved(this);
+    emit qApp->screenRemoved( this );
 
-   if (QGuiApplication::closingDown()) {
-      return;
-   }
+    if ( QGuiApplication::closingDown() )
+    {
+        return;
+    }
 
-   QScreen *primaryScreen = QGuiApplication::primaryScreen();
-   if (this == primaryScreen) {
-      return;
-   }
+    QScreen *primaryScreen = QGuiApplication::primaryScreen();
 
-   bool movingFromVirtualSibling = primaryScreen && primaryScreen->handle()->virtualSiblings().contains(handle());
+    if ( this == primaryScreen )
+    {
+        return;
+    }
 
-   // Move any leftover windows to the primary screen
-   for (QWindow *window : QGuiApplication::allWindows()) {
-      if (!window->isTopLevel() || window->screen() != this) {
-         continue;
-      }
+    bool movingFromVirtualSibling = primaryScreen && primaryScreen->handle()->virtualSiblings().contains( handle() );
 
-      const bool wasVisible = window->isVisible();
-      window->setScreen(primaryScreen);
+    // Move any leftover windows to the primary screen
+    for ( QWindow *window : QGuiApplication::allWindows() )
+    {
+        if ( !window->isTopLevel() || window->screen() != this )
+        {
+            continue;
+        }
 
-      // Re-show window if moved from a virtual sibling screen. Otherwise
-      // leave it up to the application developer to show the window.
-      if (movingFromVirtualSibling) {
-         window->setVisible(wasVisible);
-      }
-   }
+        const bool wasVisible = window->isVisible();
+        window->setScreen( primaryScreen );
+
+        // Re-show window if moved from a virtual sibling screen. Otherwise
+        // leave it up to the application developer to show the window.
+        if ( movingFromVirtualSibling )
+        {
+            window->setVisible( wasVisible );
+        }
+    }
 }
 
 QPlatformScreen *QScreen::handle() const
 {
-   Q_D(const QScreen);
-   return d->platformScreen;
+    Q_D( const QScreen );
+    return d->platformScreen;
 }
 
 QString QScreen::name() const
 {
-   Q_D(const QScreen);
-   return d->platformScreen->name();
+    Q_D( const QScreen );
+    return d->platformScreen->name();
 }
 
 /*!
@@ -124,8 +134,8 @@ QString QScreen::name() const
 */
 int QScreen::depth() const
 {
-   Q_D(const QScreen);
-   return d->platformScreen->depth();
+    Q_D( const QScreen );
+    return d->platformScreen->depth();
 }
 
 /*!
@@ -134,8 +144,8 @@ int QScreen::depth() const
 */
 QSize QScreen::size() const
 {
-   Q_D(const QScreen);
-   return d->geometry.size();
+    Q_D( const QScreen );
+    return d->geometry.size();
 }
 
 /*!
@@ -150,7 +160,7 @@ QSize QScreen::size() const
 */
 qreal QScreen::physicalDotsPerInchX() const
 {
-   return size().width() / physicalSize().width() * qreal(25.4);
+    return size().width() / physicalSize().width() * qreal( 25.4 );
 }
 
 /*!
@@ -165,7 +175,7 @@ qreal QScreen::physicalDotsPerInchX() const
 */
 qreal QScreen::physicalDotsPerInchY() const
 {
-   return size().height() / physicalSize().height() * qreal(25.4);
+    return size().height() / physicalSize().height() * qreal( 25.4 );
 }
 
 /*!
@@ -184,9 +194,9 @@ qreal QScreen::physicalDotsPerInchY() const
 */
 qreal QScreen::physicalDotsPerInch() const
 {
-   QSize sz = size();
-   QSizeF psz = physicalSize();
-   return ((sz.height() / psz.height()) + (sz.width() / psz.width())) * qreal(25.4 * 0.5);
+    QSize sz = size();
+    QSizeF psz = physicalSize();
+    return ( ( sz.height() / psz.height() ) + ( sz.width() / psz.width() ) ) * qreal( 25.4 * 0.5 );
 }
 
 /*!
@@ -199,11 +209,14 @@ qreal QScreen::physicalDotsPerInch() const
 */
 qreal QScreen::logicalDotsPerInchX() const
 {
-   Q_D(const QScreen);
-   if (QHighDpiScaling::isActive()) {
-      return QHighDpiScaling::logicalDpi().first;
-   }
-   return d->logicalDpi.first;
+    Q_D( const QScreen );
+
+    if ( QHighDpiScaling::isActive() )
+    {
+        return QHighDpiScaling::logicalDpi().first;
+    }
+
+    return d->logicalDpi.first;
 }
 
 /*!
@@ -216,51 +229,54 @@ qreal QScreen::logicalDotsPerInchX() const
 */
 qreal QScreen::logicalDotsPerInchY() const
 {
-   Q_D(const QScreen);
-   if (QHighDpiScaling::isActive()) {
-      return QHighDpiScaling::logicalDpi().second;
-   }
-   return d->logicalDpi.second;
+    Q_D( const QScreen );
+
+    if ( QHighDpiScaling::isActive() )
+    {
+        return QHighDpiScaling::logicalDpi().second;
+    }
+
+    return d->logicalDpi.second;
 }
 
 
 qreal QScreen::logicalDotsPerInch() const
 {
-   Q_D(const QScreen);
-   QDpi dpi = QHighDpiScaling::isActive() ? QHighDpiScaling::logicalDpi() : d->logicalDpi;
-   return (dpi.first + dpi.second) * qreal(0.5);
+    Q_D( const QScreen );
+    QDpi dpi = QHighDpiScaling::isActive() ? QHighDpiScaling::logicalDpi() : d->logicalDpi;
+    return ( dpi.first + dpi.second ) * qreal( 0.5 );
 }
 
 qreal QScreen::devicePixelRatio() const
 {
-   Q_D(const QScreen);
-   return d->platformScreen->devicePixelRatio() * QHighDpiScaling::factor(this);
+    Q_D( const QScreen );
+    return d->platformScreen->devicePixelRatio() * QHighDpiScaling::factor( this );
 }
 
 
 QSizeF QScreen::physicalSize() const
 {
-   Q_D(const QScreen);
-   return d->platformScreen->physicalSize();
+    Q_D( const QScreen );
+    return d->platformScreen->physicalSize();
 }
 
 QSize QScreen::availableSize() const
 {
-   Q_D(const QScreen);
-   return d->availableGeometry.size();
+    Q_D( const QScreen );
+    return d->availableGeometry.size();
 }
 
 QRect QScreen::geometry() const
 {
-   Q_D(const QScreen);
-   return d->geometry;
+    Q_D( const QScreen );
+    return d->geometry;
 }
 
 
 QRect QScreen::availableGeometry() const
 {
-   Q_D(const QScreen);
-   return d->availableGeometry;
+    Q_D( const QScreen );
+    return d->availableGeometry;
 }
 
 /*!
@@ -273,52 +289,60 @@ QRect QScreen::availableGeometry() const
 QList<QScreen *> QScreen::virtualSiblings() const
 {
 
-   Q_D(const QScreen);
-   QList<QPlatformScreen *> platformScreens = d->platformScreen->virtualSiblings();
-   QList<QScreen *> screens;
+    Q_D( const QScreen );
+    QList<QPlatformScreen *> platformScreens = d->platformScreen->virtualSiblings();
+    QList<QScreen *> screens;
 
-   for (QPlatformScreen *platformScreen : platformScreens) {
-      screens << platformScreen->screen();
-   }
-   return screens;
+    for ( QPlatformScreen *platformScreen : platformScreens )
+    {
+        screens << platformScreen->screen();
+    }
+
+    return screens;
 }
 
 QSize QScreen::virtualSize() const
 {
-   return virtualGeometry().size();
+    return virtualGeometry().size();
 }
 
 QRect QScreen::virtualGeometry() const
 {
-   QRect result;
-   for (QScreen *screen : virtualSiblings()) {
-      result |= screen->geometry();
-   }
-   return result;
+    QRect result;
+
+    for ( QScreen *screen : virtualSiblings() )
+    {
+        result |= screen->geometry();
+    }
+
+    return result;
 }
 
 
 QSize QScreen::availableVirtualSize() const
 {
-   return availableVirtualGeometry().size();
+    return availableVirtualGeometry().size();
 }
 
 QRect QScreen::availableVirtualGeometry() const
 {
-   QRect result;
-   for (QScreen *screen : virtualSiblings()) {
-      result |= screen->availableGeometry();
-   }
-   return result;
+    QRect result;
+
+    for ( QScreen *screen : virtualSiblings() )
+    {
+        result |= screen->availableGeometry();
+    }
+
+    return result;
 }
 
-void QScreen::setOrientationUpdateMask(Qt::ScreenOrientations mask)
+void QScreen::setOrientationUpdateMask( Qt::ScreenOrientations mask )
 {
-   Q_D(QScreen);
+    Q_D( QScreen );
 
-   d->orientationUpdateMask = mask;
-   d->platformScreen->setOrientationUpdateMask(mask);
-   QGuiApplicationPrivate::updateFilteredScreenOrientation(this);
+    d->orientationUpdateMask = mask;
+    d->platformScreen->setOrientationUpdateMask( mask );
+    QGuiApplicationPrivate::updateFilteredScreenOrientation( this );
 }
 
 /*!
@@ -328,8 +352,8 @@ void QScreen::setOrientationUpdateMask(Qt::ScreenOrientations mask)
 */
 Qt::ScreenOrientations QScreen::orientationUpdateMask() const
 {
-   Q_D(const QScreen);
-   return d->orientationUpdateMask;
+    Q_D( const QScreen );
+    return d->orientationUpdateMask;
 }
 
 /*!
@@ -352,40 +376,42 @@ Qt::ScreenOrientations QScreen::orientationUpdateMask() const
 */
 Qt::ScreenOrientation QScreen::orientation() const
 {
-   Q_D(const QScreen);
-   return d->filteredOrientation;
+    Q_D( const QScreen );
+    return d->filteredOrientation;
 }
 
 
 qreal QScreen::refreshRate() const
 {
-   Q_D(const QScreen);
-   return d->refreshRate;
+    Q_D( const QScreen );
+    return d->refreshRate;
 }
 
 Qt::ScreenOrientation QScreen::primaryOrientation() const
 {
-   Q_D(const QScreen);
-   return d->primaryOrientation;
+    Q_D( const QScreen );
+    return d->primaryOrientation;
 }
 
 Qt::ScreenOrientation QScreen::nativeOrientation() const
 {
-   Q_D(const QScreen);
-   return d->platformScreen->nativeOrientation();
+    Q_D( const QScreen );
+    return d->platformScreen->nativeOrientation();
 }
 
-int QScreen::angleBetween(Qt::ScreenOrientation a, Qt::ScreenOrientation b) const
+int QScreen::angleBetween( Qt::ScreenOrientation a, Qt::ScreenOrientation b ) const
 {
-   if (a == Qt::PrimaryOrientation) {
-      a = primaryOrientation();
-   }
+    if ( a == Qt::PrimaryOrientation )
+    {
+        a = primaryOrientation();
+    }
 
-   if (b == Qt::PrimaryOrientation) {
-      b = primaryOrientation();
-   }
+    if ( b == Qt::PrimaryOrientation )
+    {
+        b = primaryOrientation();
+    }
 
-   return QPlatformScreen::angleBetween(a, b);
+    return QPlatformScreen::angleBetween( a, b );
 }
 
 /*!
@@ -400,17 +426,19 @@ int QScreen::angleBetween(Qt::ScreenOrientation a, Qt::ScreenOrientation b) cons
 
     Qt::PrimaryOrientation is interpreted as the screen's primaryOrientation().
 */
-QTransform QScreen::transformBetween(Qt::ScreenOrientation a, Qt::ScreenOrientation b, const QRect &target) const
+QTransform QScreen::transformBetween( Qt::ScreenOrientation a, Qt::ScreenOrientation b, const QRect &target ) const
 {
-   if (a == Qt::PrimaryOrientation) {
-      a = primaryOrientation();
-   }
+    if ( a == Qt::PrimaryOrientation )
+    {
+        a = primaryOrientation();
+    }
 
-   if (b == Qt::PrimaryOrientation) {
-      b = primaryOrientation();
-   }
+    if ( b == Qt::PrimaryOrientation )
+    {
+        b = primaryOrientation();
+    }
 
-   return QPlatformScreen::transformBetween(a, b, target);
+    return QPlatformScreen::transformBetween( a, b, target );
 }
 
 /*!
@@ -422,17 +450,19 @@ QTransform QScreen::transformBetween(Qt::ScreenOrientation a, Qt::ScreenOrientat
 
     Qt::PrimaryOrientation is interpreted as the screen's primaryOrientation().
 */
-QRect QScreen::mapBetween(Qt::ScreenOrientation a, Qt::ScreenOrientation b, const QRect &rect) const
+QRect QScreen::mapBetween( Qt::ScreenOrientation a, Qt::ScreenOrientation b, const QRect &rect ) const
 {
-   if (a == Qt::PrimaryOrientation) {
-      a = primaryOrientation();
-   }
+    if ( a == Qt::PrimaryOrientation )
+    {
+        a = primaryOrientation();
+    }
 
-   if (b == Qt::PrimaryOrientation) {
-      b = primaryOrientation();
-   }
+    if ( b == Qt::PrimaryOrientation )
+    {
+        b = primaryOrientation();
+    }
 
-   return QPlatformScreen::mapBetween(a, b, rect);
+    return QPlatformScreen::mapBetween( a, b, rect );
 }
 
 /*!
@@ -441,10 +471,10 @@ QRect QScreen::mapBetween(Qt::ScreenOrientation a, Qt::ScreenOrientation b, cons
 
     Qt::PrimaryOrientation is interpreted as the screen's primaryOrientation().
 */
-bool QScreen::isPortrait(Qt::ScreenOrientation o) const
+bool QScreen::isPortrait( Qt::ScreenOrientation o ) const
 {
-   return o == Qt::PortraitOrientation || o == Qt::InvertedPortraitOrientation
-      || (o == Qt::PrimaryOrientation && primaryOrientation() == Qt::PortraitOrientation);
+    return o == Qt::PortraitOrientation || o == Qt::InvertedPortraitOrientation
+           || ( o == Qt::PrimaryOrientation && primaryOrientation() == Qt::PortraitOrientation );
 }
 
 /*!
@@ -453,10 +483,10 @@ bool QScreen::isPortrait(Qt::ScreenOrientation o) const
 
     Qt::PrimaryOrientation is interpreted as the screen's primaryOrientation().
 */
-bool QScreen::isLandscape(Qt::ScreenOrientation o) const
+bool QScreen::isLandscape( Qt::ScreenOrientation o ) const
 {
-   return o == Qt::LandscapeOrientation || o == Qt::InvertedLandscapeOrientation
-      || (o == Qt::PrimaryOrientation && primaryOrientation() == Qt::LandscapeOrientation);
+    return o == Qt::LandscapeOrientation || o == Qt::InvertedLandscapeOrientation
+           || ( o == Qt::PrimaryOrientation && primaryOrientation() == Qt::LandscapeOrientation );
 }
 
 /*!
@@ -479,7 +509,7 @@ bool QScreen::isLandscape(Qt::ScreenOrientation o) const
 
 void QScreenPrivate::updatePrimaryOrientation()
 {
-   primaryOrientation = geometry.width() >= geometry.height() ? Qt::LandscapeOrientation : Qt::PortraitOrientation;
+    primaryOrientation = geometry.width() >= geometry.height() ? Qt::LandscapeOrientation : Qt::PortraitOrientation;
 }
 
 /*!
@@ -518,73 +548,80 @@ void QScreenPrivate::updatePrimaryOrientation()
     safe. This depends on the underlying window system.
 */
 
-QPixmap QScreen::grabWindow(WId window, int x, int y, int width, int height)
+QPixmap QScreen::grabWindow( WId window, int x, int y, int width, int height )
 {
-   const QPlatformScreen *platformScreen = handle();
-   if (! platformScreen) {
-      qWarning("QScreen::grabWindow() Called with an invalid handle (0)");
-      return QPixmap();
-   }
+    const QPlatformScreen *platformScreen = handle();
 
-   const qreal factor = QHighDpiScaling::factor(this);
-   if (qFuzzyCompare(factor, 1)) {
-      return platformScreen->grabWindow(window, x, y, width, height);
-   }
+    if ( ! platformScreen )
+    {
+        qWarning( "QScreen::grabWindow() Called with an invalid handle (0)" );
+        return QPixmap();
+    }
 
-   const QPoint nativePos = QHighDpi::toNative(QPoint(x, y), factor);
-   QSize nativeSize(width, height);
+    const qreal factor = QHighDpiScaling::factor( this );
 
-   if (nativeSize.isValid()) {
-      nativeSize = QHighDpi::toNative(nativeSize, factor);
-   }
+    if ( qFuzzyCompare( factor, 1 ) )
+    {
+        return platformScreen->grabWindow( window, x, y, width, height );
+    }
 
-   QPixmap result = platformScreen->grabWindow(window, nativePos.x(), nativePos.y(),
-         nativeSize.width(), nativeSize.height());
+    const QPoint nativePos = QHighDpi::toNative( QPoint( x, y ), factor );
+    QSize nativeSize( width, height );
 
-   result.setDevicePixelRatio(factor);
+    if ( nativeSize.isValid() )
+    {
+        nativeSize = QHighDpi::toNative( nativeSize, factor );
+    }
 
-   return result;
+    QPixmap result = platformScreen->grabWindow( window, nativePos.x(), nativePos.y(),
+                     nativeSize.width(), nativeSize.height() );
+
+    result.setDevicePixelRatio( factor );
+
+    return result;
 }
 
-static inline void formatRect(QDebug &debug, const QRect r)
+static inline void formatRect( QDebug &debug, const QRect r )
 {
-   debug << r.width() << 'x' << r.height()
-      << forcesign << r.x() << r.y() << noforcesign;
+    debug << r.width() << 'x' << r.height()
+          << forcesign << r.x() << r.y() << noforcesign;
 }
 
-Q_GUI_EXPORT QDebug operator<<(QDebug debug, const QScreen *screen)
+Q_GUI_EXPORT QDebug operator<<( QDebug debug, const QScreen *screen )
 {
-   const QDebugStateSaver saver(debug);
-   debug.nospace();
+    const QDebugStateSaver saver( debug );
+    debug.nospace();
 
-   debug << "QScreen(" << (const void *)screen;
+    debug << "QScreen(" << ( const void * )screen;
 
-   if (screen) {
-      debug << ", name=" << screen->name();
+    if ( screen )
+    {
+        debug << ", name=" << screen->name();
 
-      if (screen == QGuiApplication::primaryScreen()) {
-         debug << ", primary";
-      }
+        if ( screen == QGuiApplication::primaryScreen() )
+        {
+            debug << ", primary";
+        }
 
-      debug << ", geometry=";
+        debug << ", geometry=";
 
-      formatRect(debug, screen->geometry());
-      debug << ", available=";
+        formatRect( debug, screen->geometry() );
+        debug << ", available=";
 
-      formatRect(debug, screen->availableGeometry());
-      debug << ", logical DPI=" << screen->logicalDotsPerInchX()
-         << ',' << screen->logicalDotsPerInchY()
-         << ", physical DPI=" << screen->physicalDotsPerInchX()
-         << ',' << screen->physicalDotsPerInchY()
-         << ", devicePixelRatio=" << screen->devicePixelRatio()
-         << ", orientation=" << screen->orientation()
-         << ", physical size=" << screen->physicalSize().width()
-         << 'x' << screen->physicalSize().height() << "mm";
+        formatRect( debug, screen->availableGeometry() );
+        debug << ", logical DPI=" << screen->logicalDotsPerInchX()
+              << ',' << screen->logicalDotsPerInchY()
+              << ", physical DPI=" << screen->physicalDotsPerInchX()
+              << ',' << screen->physicalDotsPerInchY()
+              << ", devicePixelRatio=" << screen->devicePixelRatio()
+              << ", orientation=" << screen->orientation()
+              << ", physical size=" << screen->physicalSize().width()
+              << 'x' << screen->physicalSize().height() << "mm";
 
-   }
+    }
 
-   debug << ')';
-   return debug;
+    debug << ')';
+    return debug;
 }
 
 

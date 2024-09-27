@@ -30,6 +30,6 @@
 // in original WKNativeEvent.h file breaks Qt build in MacOS
 
 class QEvent;
-typedef const QEvent* WKNativeEventPtr;
+typedef const QEvent *WKNativeEventPtr;
 
 #endif /* WKNativeEvent_h */

@@ -22,20 +22,25 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 #ifndef ScriptableDocumentParser_h
 #define ScriptableDocumentParser_h
 
 #include "DecodedDataDocumentParser.h"
 #include <wtf/text/TextPosition.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class ScriptableDocumentParser : public DecodedDataDocumentParser {
+class ScriptableDocumentParser : public DecodedDataDocumentParser
+{
 public:
     // Only used by Document::open for deciding if its safe to act on a
     // JavaScript document.open() call right now, or it should be ignored.
-    virtual bool isExecutingScript() const { return false; }
+    virtual bool isExecutingScript() const
+    {
+        return false;
+    }
 
     // FIXME: Only the HTMLDocumentParser ever blocks script execution on
     // stylesheet load, which is likely a bug in the XMLDocumentParser.
@@ -47,14 +52,23 @@ public:
     virtual int lineNumber() const = 0;
     virtual TextPosition0 textPosition() const = 0;
 
-    void setWasCreatedByScript(bool wasCreatedByScript) { m_wasCreatedByScript = wasCreatedByScript; }
-    bool wasCreatedByScript() const { return m_wasCreatedByScript; }
+    void setWasCreatedByScript( bool wasCreatedByScript )
+    {
+        m_wasCreatedByScript = wasCreatedByScript;
+    }
+    bool wasCreatedByScript() const
+    {
+        return m_wasCreatedByScript;
+    }
 
 protected:
-    explicit ScriptableDocumentParser(Document*);
+    explicit ScriptableDocumentParser( Document * );
 
 private:
-    virtual ScriptableDocumentParser* asScriptableDocumentParser() { return this; }
+    virtual ScriptableDocumentParser *asScriptableDocumentParser()
+    {
+        return this;
+    }
 
     // http://www.whatwg.org/specs/web-apps/current-work/#script-created-parser
     bool m_wasCreatedByScript;

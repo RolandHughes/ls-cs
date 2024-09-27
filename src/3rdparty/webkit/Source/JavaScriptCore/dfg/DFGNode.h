@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef DFGNode_h
@@ -50,12 +50,15 @@
 
 #include <wtf/Vector.h>
 
-namespace JSC { namespace DFG {
+namespace JSC
+{
+namespace DFG
+{
 
 // Type for a virtual register number (spill location).
 // Using an enum to make this type-checked at compile time, to avert programmer errors.
 enum VirtualRegister { InvalidVirtualRegister = -1 };
-COMPILE_ASSERT(sizeof(VirtualRegister) == sizeof(int), VirtualRegister_is_32bit);
+COMPILE_ASSERT( sizeof( VirtualRegister ) == sizeof( int ), VirtualRegister_is_32bit );
 
 // Type for a reference to another node in the graph.
 typedef uint32_t NodeIndex;
@@ -148,67 +151,73 @@ typedef uint32_t ExceptionInfo;
 
 // This enum generates a monotonically increasing id for all Node types,
 // and is used by the subsequent enum to fill out the id (as accessed via the NodeIdMask).
-enum NodeId {
+enum NodeId
+{
 #define DFG_OP_ENUM(opcode, flags) opcode##_id,
-    FOR_EACH_DFG_OP(DFG_OP_ENUM)
+    FOR_EACH_DFG_OP( DFG_OP_ENUM )
 #undef DFG_OP_ENUM
 };
 
 // Entries in this enum describe all Node types.
 // The enum value contains a monotonically increasing id, a result type, and additional flags.
-enum NodeType {
+enum NodeType
+{
 #define DFG_OP_ENUM(opcode, flags) opcode = opcode##_id | (flags),
-    FOR_EACH_DFG_OP(DFG_OP_ENUM)
+    FOR_EACH_DFG_OP( DFG_OP_ENUM )
 #undef DFG_OP_ENUM
 };
 
 // This type used in passing an immediate argument to Node constructor;
-// distinguishes an immediate value (typically an index into a CodeBlock data structure - 
+// distinguishes an immediate value (typically an index into a CodeBlock data structure -
 // a constant index, argument, or identifier) from a NodeIndex.
-struct OpInfo {
-    explicit OpInfo(unsigned value) : m_value(value) {}
+struct OpInfo
+{
+    explicit OpInfo( unsigned value ) : m_value( value ) {}
     unsigned m_value;
 };
 
 // === Node ===
 //
 // Node represents a single operation in the data flow graph.
-struct Node {
+struct Node
+{
     // Construct a node with up to 3 children, no immediate value.
-    Node(NodeType op, ExceptionInfo exceptionInfo, NodeIndex child1 = NoNode, NodeIndex child2 = NoNode, NodeIndex child3 = NoNode)
-        : op(op)
-        , exceptionInfo(exceptionInfo)
-        , child1(child1)
-        , child2(child2)
-        , child3(child3)
-        , m_virtualRegister(InvalidVirtualRegister)
-        , m_refCount(0)
+    Node( NodeType op, ExceptionInfo exceptionInfo, NodeIndex child1 = NoNode, NodeIndex child2 = NoNode, NodeIndex child3 = NoNode )
+        : op( op )
+        , exceptionInfo( exceptionInfo )
+        , child1( child1 )
+        , child2( child2 )
+        , child3( child3 )
+        , m_virtualRegister( InvalidVirtualRegister )
+        , m_refCount( 0 )
     {
     }
 
     // Construct a node with up to 3 children and an immediate value.
-    Node(NodeType op, ExceptionInfo exceptionInfo, OpInfo imm, NodeIndex child1 = NoNode, NodeIndex child2 = NoNode, NodeIndex child3 = NoNode)
-        : op(op)
-        , exceptionInfo(exceptionInfo)
-        , child1(child1)
-        , child2(child2)
-        , child3(child3)
-        , m_virtualRegister(InvalidVirtualRegister)
-        , m_refCount(0)
-        , m_opInfo(imm.m_value)
+    Node( NodeType op, ExceptionInfo exceptionInfo, OpInfo imm, NodeIndex child1 = NoNode, NodeIndex child2 = NoNode,
+          NodeIndex child3 = NoNode )
+        : op( op )
+        , exceptionInfo( exceptionInfo )
+        , child1( child1 )
+        , child2( child2 )
+        , child3( child3 )
+        , m_virtualRegister( InvalidVirtualRegister )
+        , m_refCount( 0 )
+        , m_opInfo( imm.m_value )
     {
     }
 
     // Construct a node with up to 3 children and two immediate values.
-    Node(NodeType op, ExceptionInfo exceptionInfo, OpInfo imm1, OpInfo imm2, NodeIndex child1 = NoNode, NodeIndex child2 = NoNode, NodeIndex child3 = NoNode)
-        : op(op)
-        , exceptionInfo(exceptionInfo)
-        , child1(child1)
-        , child2(child2)
-        , child3(child3)
-        , m_virtualRegister(InvalidVirtualRegister)
-        , m_refCount(0)
-        , m_opInfo(imm1.m_value)
+    Node( NodeType op, ExceptionInfo exceptionInfo, OpInfo imm1, OpInfo imm2, NodeIndex child1 = NoNode, NodeIndex child2 = NoNode,
+          NodeIndex child3 = NoNode )
+        : op( op )
+        , exceptionInfo( exceptionInfo )
+        , child1( child1 )
+        , child2( child2 )
+        , child3( child3 )
+        , m_virtualRegister( InvalidVirtualRegister )
+        , m_refCount( 0 )
+        , m_opInfo( imm1.m_value )
     {
         m_constantValue.opInfo2 = imm2.m_value;
     }
@@ -225,7 +234,7 @@ struct Node {
 
     unsigned constantNumber()
     {
-        ASSERT(isConstant());
+        ASSERT( isConstant() );
         return m_opInfo;
     }
 
@@ -236,8 +245,8 @@ struct Node {
 
     VirtualRegister local()
     {
-        ASSERT(hasLocal());
-        return (VirtualRegister)m_opInfo;
+        ASSERT( hasLocal() );
+        return ( VirtualRegister )m_opInfo;
     }
 
     bool hasIdentifier()
@@ -247,7 +256,7 @@ struct Node {
 
     unsigned identifierNumber()
     {
-        ASSERT(hasIdentifier());
+        ASSERT( hasIdentifier() );
         return m_opInfo;
     }
 
@@ -258,7 +267,7 @@ struct Node {
 
     unsigned varNumber()
     {
-        ASSERT(hasVarNumber());
+        ASSERT( hasVarNumber() );
         return m_opInfo;
     }
 
@@ -269,48 +278,48 @@ struct Node {
 
     bool hasInt32Result()
     {
-        return (op & NodeResultMask) == NodeResultInt32;
+        return ( op & NodeResultMask ) == NodeResultInt32;
     }
 
     bool hasDoubleResult()
     {
-        return (op & NodeResultMask) == NodeResultDouble;
+        return ( op & NodeResultMask ) == NodeResultDouble;
     }
 
     bool hasJSResult()
     {
-        return (op & NodeResultMask) == NodeResultJS;
+        return ( op & NodeResultMask ) == NodeResultJS;
     }
 
     // Check for integers or doubles.
     bool hasNumericResult()
     {
         // This check will need updating if more result types are added.
-        ASSERT((hasInt32Result() || hasDoubleResult()) == !hasJSResult());
+        ASSERT( ( hasInt32Result() || hasDoubleResult() ) == !hasJSResult() );
         return !hasJSResult();
     }
 
     int32_t int32Constant()
     {
-        ASSERT(op == Int32Constant);
+        ASSERT( op == Int32Constant );
         return m_constantValue.asInt32;
     }
 
-    void setInt32Constant(int32_t value)
+    void setInt32Constant( int32_t value )
     {
-        ASSERT(op == Int32Constant);
+        ASSERT( op == Int32Constant );
         m_constantValue.asInt32 = value;
     }
 
     double numericConstant()
     {
-        ASSERT(op == DoubleConstant);
+        ASSERT( op == DoubleConstant );
         return m_constantValue.asDouble;
     }
 
-    void setDoubleConstant(double value)
+    void setDoubleConstant( double value )
     {
-        ASSERT(op == DoubleConstant);
+        ASSERT( op == DoubleConstant );
         m_constantValue.asDouble = value;
     }
 
@@ -331,27 +340,27 @@ struct Node {
 
     unsigned takenBytecodeOffset()
     {
-        ASSERT(isBranch() || isJump());
+        ASSERT( isBranch() || isJump() );
         return m_opInfo;
     }
 
     unsigned notTakenBytecodeOffset()
     {
-        ASSERT(isBranch());
+        ASSERT( isBranch() );
         return m_constantValue.opInfo2;
     }
 
     VirtualRegister virtualRegister()
     {
-        ASSERT(hasResult());
-        ASSERT(m_virtualRegister != InvalidVirtualRegister);
+        ASSERT( hasResult() );
+        ASSERT( m_virtualRegister != InvalidVirtualRegister );
         return m_virtualRegister;
     }
 
-    void setVirtualRegister(VirtualRegister virtualRegister)
+    void setVirtualRegister( VirtualRegister virtualRegister )
     {
-        ASSERT(hasResult());
-        ASSERT(m_virtualRegister == InvalidVirtualRegister);
+        ASSERT( hasResult() );
+        ASSERT( m_virtualRegister == InvalidVirtualRegister );
         m_virtualRegister = virtualRegister;
     }
 
@@ -391,14 +400,16 @@ private:
     // An immediate value, accesses type-checked via accessors above.
     unsigned m_opInfo;
     // The value of an int32/double constant.
-    union {
+    union
+    {
         int32_t asInt32;
         double asDouble;
         unsigned opInfo2;
     } m_constantValue;
 };
 
-} } // namespace JSC::DFG
+}
+} // namespace JSC::DFG
 
 #endif
 #endif

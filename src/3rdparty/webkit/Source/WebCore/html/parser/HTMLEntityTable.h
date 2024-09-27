@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef HTMLEntityTable_h
@@ -28,23 +28,29 @@
 
 #include "PlatformString.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-struct HTMLEntityTableEntry {
-    UChar lastCharacter() const { return entity[length - 1]; }
+struct HTMLEntityTableEntry
+{
+    UChar lastCharacter() const
+    {
+        return entity[length - 1];
+    }
 
-    const UChar* entity;
+    const UChar *entity;
     int length;
     UChar32 value;
 };
 
-class HTMLEntityTable {
+class HTMLEntityTable
+{
 public:
-    static const HTMLEntityTableEntry* firstEntry();
-    static const HTMLEntityTableEntry* lastEntry();
+    static const HTMLEntityTableEntry *firstEntry();
+    static const HTMLEntityTableEntry *lastEntry();
 
-    static const HTMLEntityTableEntry* firstEntryStartingWith(UChar);
-    static const HTMLEntityTableEntry* lastEntryStartingWith(UChar);
+    static const HTMLEntityTableEntry *firstEntryStartingWith( UChar );
+    static const HTMLEntityTableEntry *lastEntryStartingWith( UChar );
 };
 
 }

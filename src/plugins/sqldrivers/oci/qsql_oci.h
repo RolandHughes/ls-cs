@@ -44,64 +44,64 @@ struct QOCIResultPrivate;
 
 class Q_EXPORT_SQLDRIVER_OCI QOCIResult : public QSqlCachedResult
 {
-   friend class QOCIDriver;
-   friend struct QOCIResultPrivate;
-   friend class QOCICols;
- public:
-   QOCIResult(const QOCIDriver *db, const QOCIDriverPrivate *p);
-   ~QOCIResult();
-   bool prepare(const QString &query);
-   bool exec();
-   QVariant handle() const;
+    friend class QOCIDriver;
+    friend struct QOCIResultPrivate;
+    friend class QOCICols;
+public:
+    QOCIResult( const QOCIDriver *db, const QOCIDriverPrivate *p );
+    ~QOCIResult();
+    bool prepare( const QString &query );
+    bool exec();
+    QVariant handle() const;
 
- protected:
-   bool gotoNext(ValueCache &values, int index);
-   bool reset (const QString &query);
-   int size();
-   int numRowsAffected();
-   QSqlRecord record() const;
-   QVariant lastInsertId() const;
-   void virtual_hook(int id, void *data);
+protected:
+    bool gotoNext( ValueCache &values, int index );
+    bool reset ( const QString &query );
+    int size();
+    int numRowsAffected();
+    QSqlRecord record() const;
+    QVariant lastInsertId() const;
+    void virtual_hook( int id, void *data );
 
- private:
-   QOCIResultPrivate *d;
+private:
+    QOCIResultPrivate *d;
 };
 
 class Q_EXPORT_SQLDRIVER_OCI QOCIDriver : public QSqlDriver
 {
-   SQL_CS_OBJECT(QOCIDriver)
+    SQL_CS_OBJECT( QOCIDriver )
 
-   friend struct QOCIResultPrivate;
-   friend class QOCIPrivate;
+    friend struct QOCIResultPrivate;
+    friend class QOCIPrivate;
 
- public:
-   explicit QOCIDriver(QObject *parent = nullptr);
-   QOCIDriver(OCIEnv *env, OCISvcCtx *ctx, QObject *parent = nullptr);
-   ~QOCIDriver();
-   bool hasFeature(DriverFeature f) const;
-   bool open(const QString &db,
-      const QString &user,
-      const QString &password,
-      const QString &host,
-      int port,
-      const QString &connOpts);
-   void close();
-   QSqlResult *createResult() const;
-   QStringList tables(QSql::TableType) const;
-   QSqlRecord record(const QString &tablename) const;
-   QSqlIndex primaryIndex(const QString &tablename) const;
-   QString formatValue(const QSqlField &field,
-      bool trimStrings) const;
-   QVariant handle() const;
-   QString escapeIdentifier(const QString &identifier, IdentifierType) const;
+public:
+    explicit QOCIDriver( QObject *parent = nullptr );
+    QOCIDriver( OCIEnv *env, OCISvcCtx *ctx, QObject *parent = nullptr );
+    ~QOCIDriver();
+    bool hasFeature( DriverFeature f ) const;
+    bool open( const QString &db,
+               const QString &user,
+               const QString &password,
+               const QString &host,
+               int port,
+               const QString &connOpts );
+    void close();
+    QSqlResult *createResult() const;
+    QStringList tables( QSql::TableType ) const;
+    QSqlRecord record( const QString &tablename ) const;
+    QSqlIndex primaryIndex( const QString &tablename ) const;
+    QString formatValue( const QSqlField &field,
+                         bool trimStrings ) const;
+    QVariant handle() const;
+    QString escapeIdentifier( const QString &identifier, IdentifierType ) const;
 
- protected:
-   bool                beginTransaction();
-   bool                commitTransaction();
-   bool                rollbackTransaction();
+protected:
+    bool                beginTransaction();
+    bool                commitTransaction();
+    bool                rollbackTransaction();
 
- private:
-   QOCIDriverPrivate *d;
+private:
+    QOCIDriverPrivate *d;
 };
 
 #endif // QSQL_OCI_H

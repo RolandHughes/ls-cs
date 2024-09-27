@@ -20,9 +20,9 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 #ifndef IconDatabaseBase_h
 #define IconDatabaseBase_h
 
@@ -32,35 +32,44 @@
 #include <wtf/Noncopyable.h>
 #include <wtf/PassRefPtr.h>
 
-namespace WebCore { 
+namespace WebCore
+{
 
 class DocumentLoader;
 class IconDatabaseClient;
 class Image;
 class IntSize;
 
-enum IconLoadDecision {
+enum IconLoadDecision
+{
     IconLoadYes,
     IconLoadNo,
     IconLoadUnknown
 };
 
-class CallbackBase : public RefCounted<CallbackBase> {
+class CallbackBase : public RefCounted<CallbackBase>
+{
 public:
     virtual ~CallbackBase()
     {
     }
 
-    uint64_t callbackID() const { return m_callbackID; }
+    uint64_t callbackID() const
+    {
+        return m_callbackID;
+    }
 
 protected:
-    CallbackBase(void* context)
-        : m_context(context)
-        , m_callbackID(generateCallbackID())
+    CallbackBase( void *context )
+        : m_context( context )
+        , m_callbackID( generateCallbackID() )
     {
     }
 
-    void* context() const { return m_context; }
+    void *context() const
+    {
+        return m_context;
+    }
 
 private:
     static uint64_t generateCallbackID()
@@ -69,93 +78,102 @@ private:
         return uniqueCallbackID++;
     }
 
-    void* m_context;
+    void *m_context;
     uint64_t m_callbackID;
 };
 
-template<typename EnumType> 
-class EnumCallback : public CallbackBase {
+template<typename EnumType>
+class EnumCallback : public CallbackBase
+{
 public:
-    typedef void (*CallbackFunction)(EnumType, void*);
+    typedef void ( *CallbackFunction )( EnumType, void * );
 
-    static PassRefPtr<EnumCallback> create(void* context, CallbackFunction callback)
+    static PassRefPtr<EnumCallback> create( void *context, CallbackFunction callback )
     {
-        return adoptRef(new EnumCallback(context, callback));
+        return adoptRef( new EnumCallback( context, callback ) );
     }
 
     virtual ~EnumCallback()
     {
-        ASSERT(!m_callback);
+        ASSERT( !m_callback );
     }
 
-    void performCallback(EnumType result)
+    void performCallback( EnumType result )
     {
-        if (!m_callback)
+        if ( !m_callback )
+        {
             return;
-        m_callback(result, context());
+        }
+
+        m_callback( result, context() );
         m_callback = 0;
     }
-    
+
     void invalidate()
     {
         m_callback = 0;
     }
 
 private:
-    EnumCallback(void* context, CallbackFunction callback)
-        : CallbackBase(context)
-        , m_callback(callback)
+    EnumCallback( void *context, CallbackFunction callback )
+        : CallbackBase( context )
+        , m_callback( callback )
     {
-        ASSERT(m_callback);
+        ASSERT( m_callback );
     }
 
     CallbackFunction m_callback;
 };
 
-template<typename ObjectType> 
-class ObjectCallback : public CallbackBase {
+template<typename ObjectType>
+class ObjectCallback : public CallbackBase
+{
 public:
-    typedef void (*CallbackFunction)(ObjectType, void*);
+    typedef void ( *CallbackFunction )( ObjectType, void * );
 
-    static PassRefPtr<ObjectCallback> create(void* context, CallbackFunction callback)
+    static PassRefPtr<ObjectCallback> create( void *context, CallbackFunction callback )
     {
-        return adoptRef(new ObjectCallback(context, callback));
+        return adoptRef( new ObjectCallback( context, callback ) );
     }
 
     virtual ~ObjectCallback()
     {
-        ASSERT(!m_callback);
+        ASSERT( !m_callback );
     }
 
-    void performCallback(ObjectType result)
+    void performCallback( ObjectType result )
     {
-        if (!m_callback)
+        if ( !m_callback )
+        {
             return;
-        m_callback(result, context());
+        }
+
+        m_callback( result, context() );
         m_callback = 0;
     }
-    
+
     void invalidate()
     {
         m_callback = 0;
     }
 
 private:
-    ObjectCallback(void* context, CallbackFunction callback)
-        : CallbackBase(context)
-        , m_callback(callback)
+    ObjectCallback( void *context, CallbackFunction callback )
+        : CallbackBase( context )
+        , m_callback( callback )
     {
-        ASSERT(m_callback);
+        ASSERT( m_callback );
     }
 
     CallbackFunction m_callback;
 };
 
 typedef EnumCallback<IconLoadDecision> IconLoadDecisionCallback;
-typedef ObjectCallback<SharedBuffer*> IconDataCallback;
+typedef ObjectCallback<SharedBuffer *> IconDataCallback;
 
-class IconDatabaseBase {
-    WTF_MAKE_NONCOPYABLE(IconDatabaseBase);
+class IconDatabaseBase
+{
+    WTF_MAKE_NONCOPYABLE( IconDatabaseBase );
 
 protected:
     IconDatabaseBase() { }
@@ -164,57 +182,93 @@ public:
     virtual ~IconDatabaseBase() { }
 
     // Used internally by WebCore
-    virtual bool isEnabled() const { return false; }
-        
-    virtual void retainIconForPageURL(const String&) { }
-    virtual void releaseIconForPageURL(const String&) { }
+    virtual bool isEnabled() const
+    {
+        return false;
+    }
 
-    virtual void setIconURLForPageURL(const String&, const String&) { }
-    virtual void setIconDataForIconURL(PassRefPtr<SharedBuffer>, const String&) { }
+    virtual void retainIconForPageURL( const String & ) { }
+    virtual void releaseIconForPageURL( const String & ) { }
+
+    virtual void setIconURLForPageURL( const String &, const String & ) { }
+    virtual void setIconDataForIconURL( PassRefPtr<SharedBuffer>, const String & ) { }
 
     // Synchronous calls used internally by WebCore.
     // Usage should be replaced by asynchronous calls.
-    virtual String synchronousIconURLForPageURL(const String&);
-    virtual bool synchronousIconDataKnownForIconURL(const String&) { return false; }
-    virtual IconLoadDecision synchronousLoadDecisionForIconURL(const String&, DocumentLoader*) { return IconLoadNo; }
-    virtual Image* synchronousIconForPageURL(const String&, const IntSize&) { return 0; }
-    
+    virtual String synchronousIconURLForPageURL( const String & );
+    virtual bool synchronousIconDataKnownForIconURL( const String & )
+    {
+        return false;
+    }
+    virtual IconLoadDecision synchronousLoadDecisionForIconURL( const String &, DocumentLoader * )
+    {
+        return IconLoadNo;
+    }
+    virtual Image *synchronousIconForPageURL( const String &, const IntSize & )
+    {
+        return 0;
+    }
+
     // Asynchronous calls we should use to replace the above when supported.
-    virtual bool supportsAsynchronousMode() { return false; }
-    virtual void loadDecisionForIconURL(const String&, PassRefPtr<IconLoadDecisionCallback>) { }
-    virtual void iconDataForIconURL(const String&, PassRefPtr<IconDataCallback>) { }
-    
+    virtual bool supportsAsynchronousMode()
+    {
+        return false;
+    }
+    virtual void loadDecisionForIconURL( const String &, PassRefPtr<IconLoadDecisionCallback> ) { }
+    virtual void iconDataForIconURL( const String &, PassRefPtr<IconDataCallback> ) { }
+
 
     // Used within one or more WebKit ports.
     // We should try to remove these dependencies from the IconDatabaseBase class.
-    virtual void setEnabled(bool) { }
+    virtual void setEnabled( bool ) { }
 
-    virtual Image* defaultIcon(const IntSize&) { return 0; }
+    virtual Image *defaultIcon( const IntSize & )
+    {
+        return 0;
+    }
 
-    virtual size_t pageURLMappingCount() { return 0; }
-    virtual size_t retainedPageURLCount() { return 0; }
-    virtual size_t iconRecordCount() { return 0; }
-    virtual size_t iconRecordCountWithData() { return 0; }
+    virtual size_t pageURLMappingCount()
+    {
+        return 0;
+    }
+    virtual size_t retainedPageURLCount()
+    {
+        return 0;
+    }
+    virtual size_t iconRecordCount()
+    {
+        return 0;
+    }
+    virtual size_t iconRecordCountWithData()
+    {
+        return 0;
+    }
 
-    virtual void importIconURLForPageURL(const String&, const String&) { }
-    virtual void importIconDataForIconURL(PassRefPtr<SharedBuffer>, const String&) { }
-    virtual bool shouldStopThreadActivity() const { return true; }
+    virtual void importIconURLForPageURL( const String &, const String & ) { }
+    virtual void importIconDataForIconURL( PassRefPtr<SharedBuffer>, const String & ) { }
+    virtual bool shouldStopThreadActivity() const
+    {
+        return true;
+    }
 
-    virtual bool open(const String& directory, const String& filename);
+    virtual bool open( const String &directory, const String &filename );
     virtual void close() { }
     virtual void removeAllIcons() { }
 
-    virtual void setPrivateBrowsingEnabled(bool) { }
-    virtual void setClient(IconDatabaseClient*) { }
-    
-    virtual bool isOpen() const { return false; }
+    virtual void setPrivateBrowsingEnabled( bool ) { }
+    virtual void setClient( IconDatabaseClient * ) { }
+
+    virtual bool isOpen() const
+    {
+        return false;
+    }
     virtual String databasePath() const;
 
 };
 
 // Functions to get/set the global icon database.
-IconDatabaseBase& iconDatabase();
-void setGlobalIconDatabase(IconDatabaseBase*);
+IconDatabaseBase &iconDatabase();
+void setGlobalIconDatabase( IconDatabaseBase * );
 
 } // namespace WebCore
 

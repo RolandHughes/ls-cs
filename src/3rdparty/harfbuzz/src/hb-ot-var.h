@@ -40,7 +40,7 @@ HB_BEGIN_DECLS
  *
  * Registered tag for the roman/italic axis.
  */
-#define HB_OT_TAG_VAR_AXIS_ITALIC	HB_TAG('i','t','a','l')
+#define HB_OT_TAG_VAR_AXIS_ITALIC   HB_TAG('i','t','a','l')
 
 /**
  * HB_OT_TAG_VAR_AXIS_OPTICAL_SIZE:
@@ -48,28 +48,28 @@ HB_BEGIN_DECLS
  * Registered tag for the optical-size axis.
  * <note>Note: The optical-size axis supersedes the OpenType `size` feature.</note>
  */
-#define HB_OT_TAG_VAR_AXIS_OPTICAL_SIZE	HB_TAG('o','p','s','z')
+#define HB_OT_TAG_VAR_AXIS_OPTICAL_SIZE HB_TAG('o','p','s','z')
 
 /**
  * HB_OT_TAG_VAR_AXIS_SLANT:
  *
  * Registered tag for the slant axis
  */
-#define HB_OT_TAG_VAR_AXIS_SLANT	HB_TAG('s','l','n','t')
+#define HB_OT_TAG_VAR_AXIS_SLANT    HB_TAG('s','l','n','t')
 
 /**
  * HB_OT_TAG_VAR_AXIS_WIDTH:
  *
  * Registered tag for the width axis.
  */
-#define HB_OT_TAG_VAR_AXIS_WIDTH	HB_TAG('w','d','t','h')
+#define HB_OT_TAG_VAR_AXIS_WIDTH    HB_TAG('w','d','t','h')
 
 /**
  * HB_OT_TAG_VAR_AXIS_WEIGHT:
  *
  * Registered tag for the weight axis.
  */
-#define HB_OT_TAG_VAR_AXIS_WEIGHT	HB_TAG('w','g','h','t')
+#define HB_OT_TAG_VAR_AXIS_WEIGHT   HB_TAG('w','g','h','t')
 
 
 /*
@@ -77,7 +77,7 @@ HB_BEGIN_DECLS
  */
 
 HB_EXTERN hb_bool_t
-hb_ot_var_has_data (hb_face_t *face);
+hb_ot_var_has_data ( hb_face_t *face );
 
 
 /*
@@ -86,7 +86,7 @@ hb_ot_var_has_data (hb_face_t *face);
 
 
 HB_EXTERN unsigned int
-hb_ot_var_get_axis_count (hb_face_t *face);
+hb_ot_var_get_axis_count ( hb_face_t *face );
 
 /**
  * hb_ot_var_axis_flags_t:
@@ -96,11 +96,12 @@ hb_ot_var_get_axis_count (hb_face_t *face);
  *
  * Since: 2.2.0
  */
-typedef enum { /*< flags >*/
-  HB_OT_VAR_AXIS_FLAG_HIDDEN	= 0x00000001u,
+typedef enum   /*< flags >*/
+{
+    HB_OT_VAR_AXIS_FLAG_HIDDEN    = 0x00000001u,
 
-  /*< private >*/
-  _HB_OT_VAR_AXIS_FLAG_MAX_VALUE= HB_TAG_MAX_SIGNED /*< skip >*/
+    /*< private >*/
+    _HB_OT_VAR_AXIS_FLAG_MAX_VALUE= HB_TAG_MAX_SIGNED /*< skip >*/
 } hb_ot_var_axis_flags_t;
 
 /**
@@ -112,7 +113,7 @@ typedef enum { /*< flags >*/
  * @min_value: The minimum value on the variation axis that the font covers
  * @default_value: The position on the variation axis corresponding to the font's defaults
  * @max_value: The maximum value on the variation axis that the font covers
- * 
+ *
  * Data type for holding variation-axis values.
  *
  * The minimum, default, and maximum values are in un-normalized, user scales.
@@ -122,28 +123,29 @@ typedef enum { /*< flags >*/
  *
  * Since: 2.2.0
  */
-typedef struct hb_ot_var_axis_info_t {
-  unsigned int			axis_index;
-  hb_tag_t			tag;
-  hb_ot_name_id_t		name_id;
-  hb_ot_var_axis_flags_t	flags;
-  float				min_value;
-  float				default_value;
-  float				max_value;
-  /*< private >*/
-  unsigned int			reserved;
+typedef struct hb_ot_var_axis_info_t
+{
+    unsigned int          axis_index;
+    hb_tag_t          tag;
+    hb_ot_name_id_t       name_id;
+    hb_ot_var_axis_flags_t    flags;
+    float             min_value;
+    float             default_value;
+    float             max_value;
+    /*< private >*/
+    unsigned int          reserved;
 } hb_ot_var_axis_info_t;
 
 HB_EXTERN unsigned int
-hb_ot_var_get_axis_infos (hb_face_t             *face,
-			  unsigned int           start_offset,
-			  unsigned int          *axes_count /* IN/OUT */,
-			  hb_ot_var_axis_info_t *axes_array /* OUT */);
+hb_ot_var_get_axis_infos ( hb_face_t             *face,
+                           unsigned int           start_offset,
+                           unsigned int          *axes_count /* IN/OUT */,
+                           hb_ot_var_axis_info_t *axes_array /* OUT */ );
 
 HB_EXTERN hb_bool_t
-hb_ot_var_find_axis_info (hb_face_t             *face,
-			  hb_tag_t               axis_tag,
-			  hb_ot_var_axis_info_t *axis_info);
+hb_ot_var_find_axis_info ( hb_face_t             *face,
+                           hb_tag_t               axis_tag,
+                           hb_ot_var_axis_info_t *axis_info );
 
 
 /*
@@ -151,21 +153,21 @@ hb_ot_var_find_axis_info (hb_face_t             *face,
  */
 
 HB_EXTERN unsigned int
-hb_ot_var_get_named_instance_count (hb_face_t *face);
+hb_ot_var_get_named_instance_count ( hb_face_t *face );
 
 HB_EXTERN hb_ot_name_id_t
-hb_ot_var_named_instance_get_subfamily_name_id (hb_face_t   *face,
-						unsigned int instance_index);
+hb_ot_var_named_instance_get_subfamily_name_id ( hb_face_t   *face,
+        unsigned int instance_index );
 
 HB_EXTERN hb_ot_name_id_t
-hb_ot_var_named_instance_get_postscript_name_id (hb_face_t  *face,
-						unsigned int instance_index);
+hb_ot_var_named_instance_get_postscript_name_id ( hb_face_t  *face,
+        unsigned int instance_index );
 
 HB_EXTERN unsigned int
-hb_ot_var_named_instance_get_design_coords (hb_face_t    *face,
-					    unsigned int  instance_index,
-					    unsigned int *coords_length, /* IN/OUT */
-					    float        *coords         /* OUT */);
+hb_ot_var_named_instance_get_design_coords ( hb_face_t    *face,
+        unsigned int  instance_index,
+        unsigned int *coords_length, /* IN/OUT */
+        float        *coords         /* OUT */ );
 
 
 /*
@@ -173,17 +175,17 @@ hb_ot_var_named_instance_get_design_coords (hb_face_t    *face,
  */
 
 HB_EXTERN void
-hb_ot_var_normalize_variations (hb_face_t            *face,
-				const hb_variation_t *variations, /* IN */
-				unsigned int          variations_length,
-				int                  *coords, /* OUT */
-				unsigned int          coords_length);
+hb_ot_var_normalize_variations ( hb_face_t            *face,
+                                 const hb_variation_t *variations, /* IN */
+                                 unsigned int          variations_length,
+                                 int                  *coords, /* OUT */
+                                 unsigned int          coords_length );
 
 HB_EXTERN void
-hb_ot_var_normalize_coords (hb_face_t    *face,
-			    unsigned int coords_length,
-			    const float *design_coords, /* IN */
-			    int *normalized_coords /* OUT */);
+hb_ot_var_normalize_coords ( hb_face_t    *face,
+                             unsigned int coords_length,
+                             const float *design_coords, /* IN */
+                             int *normalized_coords /* OUT */ );
 
 
 HB_END_DECLS

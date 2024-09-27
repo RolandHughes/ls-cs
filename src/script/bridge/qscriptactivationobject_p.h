@@ -26,58 +26,66 @@
 
 #include "JSVariableObject.h"
 
-namespace QScript {
+namespace QScript
+{
 
 class QScriptActivationObject : public JSC::JSVariableObject
 {
- public:
-   QScriptActivationObject(JSC::ExecState *callFrame, JSC::JSObject *delegate = nullptr);
-   virtual ~QScriptActivationObject();
-   virtual bool isDynamicScope() const {
-      return true;
-   }
+public:
+    QScriptActivationObject( JSC::ExecState *callFrame, JSC::JSObject *delegate = nullptr );
+    virtual ~QScriptActivationObject();
+    virtual bool isDynamicScope() const
+    {
+        return true;
+    }
 
-   virtual bool getOwnPropertySlot(JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot &);
-   virtual bool getOwnPropertyDescriptor(JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor &);
-   virtual void getOwnPropertyNames(JSC::ExecState *, JSC::PropertyNameArray &,
-      JSC::EnumerationMode mode = JSC::ExcludeDontEnumProperties);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
+    virtual void getOwnPropertyNames( JSC::ExecState *, JSC::PropertyNameArray &,
+                                      JSC::EnumerationMode mode = JSC::ExcludeDontEnumProperties );
 
-   virtual void putWithAttributes(JSC::ExecState *exec, const JSC::Identifier &propertyName, JSC::JSValue value,
-      unsigned attributes);
-   virtual void put(JSC::ExecState *, const JSC::Identifier &propertyName, JSC::JSValue value, JSC::PutPropertySlot &);
-   virtual void put(JSC::ExecState *, unsigned propertyName, JSC::JSValue value);
+    virtual void putWithAttributes( JSC::ExecState *exec, const JSC::Identifier &propertyName, JSC::JSValue value,
+                                    unsigned attributes );
+    virtual void put( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::JSValue value, JSC::PutPropertySlot & );
+    virtual void put( JSC::ExecState *, unsigned propertyName, JSC::JSValue value );
 
-   virtual bool deleteProperty(JSC::ExecState *, const JSC::Identifier &propertyName);
+    virtual bool deleteProperty( JSC::ExecState *, const JSC::Identifier &propertyName );
 
-   virtual void defineGetter(JSC::ExecState *, const JSC::Identifier &propertyName, JSC::JSObject *getterFunction);
-   virtual void defineSetter(JSC::ExecState *, const JSC::Identifier &propertyName, JSC::JSObject *setterFunction);
-   virtual JSC::JSValue lookupGetter(JSC::ExecState *, const JSC::Identifier &propertyName);
-   virtual JSC::JSValue lookupSetter(JSC::ExecState *, const JSC::Identifier &propertyName);
+    virtual void defineGetter( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::JSObject *getterFunction );
+    virtual void defineSetter( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::JSObject *setterFunction );
+    virtual JSC::JSValue lookupGetter( JSC::ExecState *, const JSC::Identifier &propertyName );
+    virtual JSC::JSValue lookupSetter( JSC::ExecState *, const JSC::Identifier &propertyName );
 
-   virtual const JSC::ClassInfo *classInfo() const {
-      return &info;
-   }
-   static const JSC::ClassInfo info;
+    virtual const JSC::ClassInfo *classInfo() const
+    {
+        return &info;
+    }
+    static const JSC::ClassInfo info;
 
-   struct QScriptActivationObjectData : public JSVariableObjectData {
-      QScriptActivationObjectData(JSC::Register *registers, JSC::JSObject *dlg)
-         : JSVariableObjectData(&symbolTable, registers),
-           delegate(dlg) {
-      }
-      JSC::SymbolTable symbolTable;
-      JSC::JSObject *delegate;
-   };
+    struct QScriptActivationObjectData : public JSVariableObjectData
+    {
+        QScriptActivationObjectData( JSC::Register *registers, JSC::JSObject *dlg )
+            : JSVariableObjectData( &symbolTable, registers ),
+              delegate( dlg )
+        {
+        }
+        JSC::SymbolTable symbolTable;
+        JSC::JSObject *delegate;
+    };
 
-   JSC::JSObject *delegate() const {
-      return d_ptr()->delegate;
-   }
-   void setDelegate(JSC::JSObject *delegate) {
-      d_ptr()->delegate = delegate;
-   }
+    JSC::JSObject *delegate() const
+    {
+        return d_ptr()->delegate;
+    }
+    void setDelegate( JSC::JSObject *delegate )
+    {
+        d_ptr()->delegate = delegate;
+    }
 
-   QScriptActivationObjectData *d_ptr() const {
-      return static_cast<QScriptActivationObjectData *>(d);
-   }
+    QScriptActivationObjectData *d_ptr() const
+    {
+        return static_cast<QScriptActivationObjectData *>( d );
+    }
 };
 
 } // namespace QScript

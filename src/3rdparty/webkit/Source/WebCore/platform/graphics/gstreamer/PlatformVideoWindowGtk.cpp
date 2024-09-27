@@ -31,38 +31,40 @@ using namespace WebCore;
 
 PlatformVideoWindow::PlatformVideoWindow()
 {
-    m_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_widget_set_events(m_window, GDK_POINTER_MOTION_MASK | GDK_KEY_PRESS_MASK | GDK_FOCUS_CHANGE_MASK);
+    m_window = gtk_window_new( GTK_WINDOW_TOPLEVEL );
+    gtk_widget_set_events( m_window, GDK_POINTER_MOTION_MASK | GDK_KEY_PRESS_MASK | GDK_FOCUS_CHANGE_MASK );
 
     m_videoWindow = gtk_drawing_area_new();
-    gtk_widget_set_double_buffered(m_videoWindow, FALSE);
-    gtk_container_add(GTK_CONTAINER(m_window), m_videoWindow);
+    gtk_widget_set_double_buffered( m_videoWindow, FALSE );
+    gtk_container_add( GTK_CONTAINER( m_window ), m_videoWindow );
 
-    gtk_widget_realize(m_window);
+    gtk_widget_realize( m_window );
 
 #ifdef GDK_WINDOWING_X11
-    m_videoWindowId = GDK_WINDOW_XID(gtk_widget_get_window(m_window));
+    m_videoWindowId = GDK_WINDOW_XID( gtk_widget_get_window( m_window ) );
 #endif
 
 }
 
 PlatformVideoWindow::~PlatformVideoWindow()
 {
-    if (m_videoWindow && m_window) {
-        gtk_container_remove(GTK_CONTAINER(m_window), m_videoWindow);
-        gtk_widget_destroy(m_videoWindow);
+    if ( m_videoWindow && m_window )
+    {
+        gtk_container_remove( GTK_CONTAINER( m_window ), m_videoWindow );
+        gtk_widget_destroy( m_videoWindow );
         m_videoWindow = 0;
     }
 
-    if (m_window) {
-        gtk_widget_destroy(m_window);
+    if ( m_window )
+    {
+        gtk_widget_destroy( m_window );
         m_window = 0;
     }
 
     m_videoWindowId = 0;
 }
 
-void PlatformVideoWindow::prepareForOverlay(GstMessage*)
+void PlatformVideoWindow::prepareForOverlay( GstMessage * )
 {
 }
 #endif // USE(GSTREAMER)

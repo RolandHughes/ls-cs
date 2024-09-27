@@ -35,17 +35,17 @@ class QBearerEngineImpl;
 
 class QNetworkSessionPrivateImpl : public QNetworkSessionPrivate
 {
-   CS_OBJECT(QNetworkSessionPrivateImpl)
+    CS_OBJECT( QNetworkSessionPrivateImpl )
 
- public:
-   QNetworkSessionPrivateImpl()
-      : startTime(0), sessionTimeout(-1)
-   {
-   }
+public:
+    QNetworkSessionPrivateImpl()
+        : startTime( 0 ), sessionTimeout( -1 )
+    {
+    }
 
-   ~QNetworkSessionPrivateImpl()
-   {
-   }
+    ~QNetworkSessionPrivateImpl()
+    {
+    }
 
     //called by QNetworkSession constructor and ensures
     //that the state is immediately updated (w/o actually opening
@@ -57,8 +57,8 @@ class QNetworkSessionPrivateImpl : public QNetworkSessionPrivate
     QNetworkInterface currentInterface() const;
 #endif
 
-    QVariant sessionProperty(const QString& key) const;
-    void setSessionProperty(const QString& key, const QVariant& value);
+    QVariant sessionProperty( const QString &key ) const;
+    void setSessionProperty( const QString &key, const QVariant &value );
 
     void open();
     void close();
@@ -75,21 +75,21 @@ class QNetworkSessionPrivateImpl : public QNetworkSessionPrivate
     quint64 bytesReceived() const;
     quint64 activeTime() const;
 
- private:
-    CS_SLOT_1(Private, void networkConfigurationsChanged())
-    CS_SLOT_2(networkConfigurationsChanged)
+private:
+    CS_SLOT_1( Private, void networkConfigurationsChanged() )
+    CS_SLOT_2( networkConfigurationsChanged )
 
-    CS_SLOT_1(Private, void configurationChanged(QNetworkConfigurationPrivatePointer config))
-    CS_SLOT_2(configurationChanged)
+    CS_SLOT_1( Private, void configurationChanged( QNetworkConfigurationPrivatePointer config ) )
+    CS_SLOT_2( configurationChanged )
 
-    CS_SLOT_1(Private, void forcedSessionClose(const QNetworkConfiguration &config))
-    CS_SLOT_2(forcedSessionClose)
+    CS_SLOT_1( Private, void forcedSessionClose( const QNetworkConfiguration &config ) )
+    CS_SLOT_2( forcedSessionClose )
 
-    CS_SLOT_1(Private, void connectionError(const QString &id, QBearerEngineImpl::ConnectionError error))
-    CS_SLOT_2(connectionError)
+    CS_SLOT_1( Private, void connectionError( const QString &id, QBearerEngineImpl::ConnectionError error ) )
+    CS_SLOT_2( connectionError )
 
-    CS_SLOT_1(Private, void decrementTimeout())
-    CS_SLOT_2(decrementTimeout)
+    CS_SLOT_1( Private, void decrementTimeout() )
+    CS_SLOT_2( decrementTimeout )
 
     void updateStateFromServiceNetwork();
     void updateStateFromActiveConfig();

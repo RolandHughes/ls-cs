@@ -33,15 +33,15 @@ class QmlFolderListModelPlugin : public QDeclarativeExtensionPlugin
 {
     Q_OBJECT
 public:
-    virtual void registerTypes(const char *uri)
+    virtual void registerTypes( const char *uri )
     {
-        Q_ASSERT(QLatin1String(uri) == QLatin1String("Qt.labs.folderlistmodel"));
+        Q_ASSERT( QLatin1String( uri ) == QLatin1String( "Qt.labs.folderlistmodel" ) );
 #ifndef QT_NO_DIRMODEL
-        qmlRegisterType<QDeclarativeFolderListModel>(uri,1,0,"FolderListModel");
+        qmlRegisterType<QDeclarativeFolderListModel>( uri,1,0,"FolderListModel" );
 #endif
     }
 };
 
 QT_END_NAMESPACE
 
-Q_EXPORT_PLUGIN2(qmlfolderlistmodelplugin, QT_PREPEND_NAMESPACE(QmlFolderListModelPlugin));
+Q_EXPORT_PLUGIN2( qmlfolderlistmodelplugin, QT_PREPEND_NAMESPACE( QmlFolderListModelPlugin ) );

@@ -28,16 +28,18 @@
 
 #include "WebEvent.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
 // FIXME: This is not needed in the WebProcess and should be moved to be a peer
 // of WKView or removed altogether in favor of using PlatformEvents everywhere.
 
-class WebEventFactory {
+class WebEventFactory
+{
 public:
-    static WebMouseEvent createWebMouseEvent(HWND, UINT message, WPARAM, LPARAM, bool didActivateWebView);
-    static WebWheelEvent createWebWheelEvent(HWND, UINT message, WPARAM, LPARAM);
-    static WebKeyboardEvent createWebKeyboardEvent(HWND, UINT message, WPARAM, LPARAM);
+    static WebMouseEvent createWebMouseEvent( HWND, UINT message, WPARAM, LPARAM, bool didActivateWebView );
+    static WebWheelEvent createWebWheelEvent( HWND, UINT message, WPARAM, LPARAM );
+    static WebKeyboardEvent createWebKeyboardEvent( HWND, UINT message, WPARAM, LPARAM );
 };
 
 } // namespace WebKit

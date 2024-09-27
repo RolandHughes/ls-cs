@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -32,32 +32,35 @@
 #include "JSPositionError.h"
 #include <runtime/JSLock.h>
 
-namespace WebCore {
-    
+namespace WebCore
+{
+
 using namespace JSC;
 
-JSCustomPositionErrorCallback::JSCustomPositionErrorCallback(JSObject* callback, JSDOMGlobalObject* globalObject)
-    : PositionErrorCallback(globalObject->scriptExecutionContext())
-    , m_data(callback, globalObject)
+JSCustomPositionErrorCallback::JSCustomPositionErrorCallback( JSObject *callback, JSDOMGlobalObject *globalObject )
+    : PositionErrorCallback( globalObject->scriptExecutionContext() )
+    , m_data( callback, globalObject )
 {
 }
 
-void JSCustomPositionErrorCallback::handleEvent(PositionError* positionError)
+void JSCustomPositionErrorCallback::handleEvent( PositionError *positionError )
 {
     // ActiveDOMObject will null our pointer to the ScriptExecutionContext when it goes away.
-    if (!scriptExecutionContext())
+    if ( !scriptExecutionContext() )
+    {
         return;
+    }
 
-    RefPtr<JSCustomPositionErrorCallback> protect(this);
+    RefPtr<JSCustomPositionErrorCallback> protect( this );
 
-    JSC::JSLock lock(SilenceAssertionsOnly);
-    ExecState* exec = m_data.globalObject()->globalExec();
+    JSC::JSLock lock( SilenceAssertionsOnly );
+    ExecState *exec = m_data.globalObject()->globalExec();
     MarkedArgumentBuffer args;
-    args.append(toJS(exec, deprecatedGlobalObjectForPrototype(exec), positionError));
-    
-    m_data.invokeCallback(args);
+    args.append( toJS( exec, deprecatedGlobalObjectForPrototype( exec ), positionError ) );
+
+    m_data.invokeCallback( args );
 }
-    
+
 } // namespace WebCore
 
 #endif // ENABLE(GEOLOCATION)

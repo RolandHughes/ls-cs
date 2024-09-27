@@ -34,42 +34,44 @@
 extern "C" {
 #endif
 
-WK_EXPORT WKBundleNodeHandleRef WKBundleNodeHandleCreate(JSContextRef context, JSObjectRef object);
+WK_EXPORT WKBundleNodeHandleRef WKBundleNodeHandleCreate( JSContextRef context, JSObjectRef object );
 
 /* Convenience Operations */
-WK_EXPORT WKBundleNodeHandleRef WKBundleNodeHandleCopyDocument(WKBundleNodeHandleRef nodeHandle);
+WK_EXPORT WKBundleNodeHandleRef WKBundleNodeHandleCopyDocument( WKBundleNodeHandleRef nodeHandle );
 
 
 /* Additional DOM Operations */
 
-WK_EXPORT WKRect WKBundleNodeHandleGetRenderRect(WKBundleNodeHandleRef nodeHandle, bool* isReplaced);
+WK_EXPORT WKRect WKBundleNodeHandleGetRenderRect( WKBundleNodeHandleRef nodeHandle, bool *isReplaced );
 
 /* Element Specific Operations */
-WK_EXPORT WKRect WKBundleNodeHandleGetElementBounds(WKBundleNodeHandleRef elementHandle);
-WK_EXPORT WKBundleNodeHandleRef WKBundleNodeHandleCopyElementShadowRoot(WKBundleNodeHandleRef elementHandle);
-WK_EXPORT WKBundleNodeHandleRef WKBundleNodeHandleCopyElementEnsureShadowRoot(WKBundleNodeHandleRef elementHandle);
-WK_EXPORT void WKBundleNodeHandleRemoveShadowRoot(WKBundleNodeHandleRef elementHandle);
+WK_EXPORT WKRect WKBundleNodeHandleGetElementBounds( WKBundleNodeHandleRef elementHandle );
+WK_EXPORT WKBundleNodeHandleRef WKBundleNodeHandleCopyElementShadowRoot( WKBundleNodeHandleRef elementHandle );
+WK_EXPORT WKBundleNodeHandleRef WKBundleNodeHandleCopyElementEnsureShadowRoot( WKBundleNodeHandleRef elementHandle );
+WK_EXPORT void WKBundleNodeHandleRemoveShadowRoot( WKBundleNodeHandleRef elementHandle );
 
 /* HTMLInputElement Specific Operations */
-WK_EXPORT void WKBundleNodeHandleSetHTMLInputElementValueForUser(WKBundleNodeHandleRef htmlInputElementHandle, WKStringRef value);
-WK_EXPORT bool WKBundleNodeHandleGetHTMLInputElementAutofilled(WKBundleNodeHandleRef htmlInputElementHandle);
-WK_EXPORT void WKBundleNodeHandleSetHTMLInputElementAutofilled(WKBundleNodeHandleRef htmlInputElementHandle, bool filled);
-WK_EXPORT bool WKBundleNodeHandleGetHTMLInputElementLastChangeWasUserEdit(WKBundleNodeHandleRef htmlInputElementHandle);
+WK_EXPORT void WKBundleNodeHandleSetHTMLInputElementValueForUser( WKBundleNodeHandleRef htmlInputElementHandle,
+        WKStringRef value );
+WK_EXPORT bool WKBundleNodeHandleGetHTMLInputElementAutofilled( WKBundleNodeHandleRef htmlInputElementHandle );
+WK_EXPORT void WKBundleNodeHandleSetHTMLInputElementAutofilled( WKBundleNodeHandleRef htmlInputElementHandle, bool filled );
+WK_EXPORT bool WKBundleNodeHandleGetHTMLInputElementLastChangeWasUserEdit( WKBundleNodeHandleRef htmlInputElementHandle );
 
 /* HTMLTextAreaElement Specific Operations */
-WK_EXPORT bool WKBundleNodeHandleGetHTMLTextAreaElementLastChangeWasUserEdit(WKBundleNodeHandleRef htmlTextAreaElementHandle);
-    
+WK_EXPORT bool WKBundleNodeHandleGetHTMLTextAreaElementLastChangeWasUserEdit( WKBundleNodeHandleRef htmlTextAreaElementHandle );
+
 /* HTMLTableCellElement Specific Operations */
-WK_EXPORT WKBundleNodeHandleRef WKBundleNodeHandleCopyHTMLTableCellElementCellAbove(WKBundleNodeHandleRef htmlTableCellElementHandle);
+WK_EXPORT WKBundleNodeHandleRef WKBundleNodeHandleCopyHTMLTableCellElementCellAbove( WKBundleNodeHandleRef
+        htmlTableCellElementHandle );
 
 /* Document Specific Operations */
-WK_EXPORT WKBundleFrameRef WKBundleNodeHandleCopyDocumentFrame(WKBundleNodeHandleRef documentHandle);
+WK_EXPORT WKBundleFrameRef WKBundleNodeHandleCopyDocumentFrame( WKBundleNodeHandleRef documentHandle );
 
 /* HTMLFrameElement Specific Operations */
-WK_EXPORT WKBundleFrameRef WKBundleNodeHandleCopyHTMLFrameElementContentFrame(WKBundleNodeHandleRef htmlFrameElementHandle);
+WK_EXPORT WKBundleFrameRef WKBundleNodeHandleCopyHTMLFrameElementContentFrame( WKBundleNodeHandleRef htmlFrameElementHandle );
 
 /* HTMLIFrameElement Specific Operations */
-WK_EXPORT WKBundleFrameRef WKBundleNodeHandleCopyHTMLIFrameElementContentFrame(WKBundleNodeHandleRef htmlIFrameElementHandle);
+WK_EXPORT WKBundleFrameRef WKBundleNodeHandleCopyHTMLIFrameElementContentFrame( WKBundleNodeHandleRef htmlIFrameElementHandle );
 
 #ifdef __cplusplus
 }

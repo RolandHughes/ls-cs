@@ -25,16 +25,19 @@
 #include <wtf/ListHashSet.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class CSSStyleSheet;
 
 typedef int ExceptionCode;
 
-class CSSValue : public RefCounted<CSSValue> {
+class CSSValue : public RefCounted<CSSValue>
+{
 public:
     // FIXME: Change name to Type.
-    enum UnitTypes {
+    enum UnitTypes
+    {
         CSS_INHERIT = 0,
         CSS_PRIMITIVE_VALUE = 1,
         CSS_VALUE_LIST = 2,
@@ -45,34 +48,88 @@ public:
     virtual ~CSSValue() { }
 
     // FIXME: Change this to return UnitTypes.
-    virtual unsigned short cssValueType() const { return CSS_CUSTOM; }
+    virtual unsigned short cssValueType() const
+    {
+        return CSS_CUSTOM;
+    }
 
     virtual String cssText() const = 0;
-    void setCssText(const String&, ExceptionCode&) { } // FIXME: Not implemented.
+    void setCssText( const String &, ExceptionCode & ) { } // FIXME: Not implemented.
 
-    virtual bool isMutableValue() const { return false; }
+    virtual bool isMutableValue() const
+    {
+        return false;
+    }
 
-    virtual bool isBorderImageValue() const { return false; }
-    virtual bool isCursorImageValue() const { return false; }
-    virtual bool isFontFamilyValue() const { return false; }
-    virtual bool isFontValue() const { return false; }
-    virtual bool isImageGeneratorValue() const { return false; }
-    virtual bool isImageValue() const { return false; }
-    virtual bool isImplicitInitialValue() const { return false; }
-    virtual bool isPrimitiveValue() const { return false; }
-    virtual bool isReflectValue() const { return false; }
-    virtual bool isShadowValue() const { return false; }
-    virtual bool isTimingFunctionValue() const { return false; }
-    virtual bool isValueList() const { return false; }
-    virtual bool isWebKitCSSTransformValue() const { return false; }
-    virtual bool isCSSLineBoxContainValue() const { return false; }
-    
+    virtual bool isBorderImageValue() const
+    {
+        return false;
+    }
+    virtual bool isCursorImageValue() const
+    {
+        return false;
+    }
+    virtual bool isFontFamilyValue() const
+    {
+        return false;
+    }
+    virtual bool isFontValue() const
+    {
+        return false;
+    }
+    virtual bool isImageGeneratorValue() const
+    {
+        return false;
+    }
+    virtual bool isImageValue() const
+    {
+        return false;
+    }
+    virtual bool isImplicitInitialValue() const
+    {
+        return false;
+    }
+    virtual bool isPrimitiveValue() const
+    {
+        return false;
+    }
+    virtual bool isReflectValue() const
+    {
+        return false;
+    }
+    virtual bool isShadowValue() const
+    {
+        return false;
+    }
+    virtual bool isTimingFunctionValue() const
+    {
+        return false;
+    }
+    virtual bool isValueList() const
+    {
+        return false;
+    }
+    virtual bool isWebKitCSSTransformValue() const
+    {
+        return false;
+    }
+    virtual bool isCSSLineBoxContainValue() const
+    {
+        return false;
+    }
+
 #if ENABLE(SVG)
-    virtual bool isSVGColor() const { return false; }
-    virtual bool isSVGPaint() const { return false; }
+    virtual bool isSVGColor() const
+    {
+        return false;
+    }
+    virtual bool isSVGPaint() const
+    {
+        return false;
+    }
 #endif
 
-    virtual void addSubresourceStyleURLs(ListHashSet<KURL>&, const CSSStyleSheet*) { }
+    virtual void addSubresourceStyleURLs( ListHashSet<KURL> &, const CSSStyleSheet * ) { }
 };
 
 } // namespace WebCore

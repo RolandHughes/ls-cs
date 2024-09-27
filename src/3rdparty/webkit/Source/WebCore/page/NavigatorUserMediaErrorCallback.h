@@ -29,14 +29,16 @@
 
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class NavigatorUserMediaError;
 
-class NavigatorUserMediaErrorCallback : public RefCounted<NavigatorUserMediaErrorCallback> {
+class NavigatorUserMediaErrorCallback : public RefCounted<NavigatorUserMediaErrorCallback>
+{
 public:
     virtual ~NavigatorUserMediaErrorCallback() { }
-    virtual bool handleEvent(NavigatorUserMediaError*) = 0;
+    virtual bool handleEvent( NavigatorUserMediaError * ) = 0;
 };
 
 } // namespace WebCore

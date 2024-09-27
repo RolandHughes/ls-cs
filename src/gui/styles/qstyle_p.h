@@ -31,39 +31,39 @@ class QStyle;
 
 class QStylePrivate
 {
-   Q_DECLARE_PUBLIC(QStyle)
+    Q_DECLARE_PUBLIC( QStyle )
 
- public:
-   inline QStylePrivate()
-      : layoutSpacingIndex(-1), proxyStyle(nullptr)
-   {
-   }
+public:
+    inline QStylePrivate()
+        : layoutSpacingIndex( -1 ), proxyStyle( nullptr )
+    {
+    }
 
-   virtual ~QStylePrivate() {}
+    virtual ~QStylePrivate() {}
 
-   mutable int layoutSpacingIndex;
-   QStyle *proxyStyle;
+    mutable int layoutSpacingIndex;
+    QStyle *proxyStyle;
 
- protected:
-   QStyle *q_ptr;
+protected:
+    QStyle *q_ptr;
 };
 
-inline QImage styleCacheImage(const QSize &size)
+inline QImage styleCacheImage( const QSize &size )
 {
-   const qreal pixelRatio = qApp->devicePixelRatio();
-   QImage cacheImage = QImage(size * pixelRatio, QImage::Format_ARGB32_Premultiplied);
-   cacheImage.setDevicePixelRatio(pixelRatio);
+    const qreal pixelRatio = qApp->devicePixelRatio();
+    QImage cacheImage = QImage( size * pixelRatio, QImage::Format_ARGB32_Premultiplied );
+    cacheImage.setDevicePixelRatio( pixelRatio );
 
-   return cacheImage;
+    return cacheImage;
 }
 
-inline QPixmap styleCachePixmap(const QSize &size)
+inline QPixmap styleCachePixmap( const QSize &size )
 {
-   const qreal pixelRatio = qApp->devicePixelRatio();
-   QPixmap cachePixmap = QPixmap(size * pixelRatio);
-   cachePixmap.setDevicePixelRatio(pixelRatio);
+    const qreal pixelRatio = qApp->devicePixelRatio();
+    QPixmap cachePixmap = QPixmap( size * pixelRatio );
+    cachePixmap.setDevicePixelRatio( pixelRatio );
 
-   return cachePixmap;
+    return cachePixmap;
 }
 #define BEGIN_STYLE_PIXMAPCACHE(a) \
     QRect rect = option->rect; \

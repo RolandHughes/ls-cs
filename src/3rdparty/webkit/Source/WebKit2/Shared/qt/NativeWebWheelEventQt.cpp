@@ -28,11 +28,12 @@
 
 #include "WebEventFactoryQt.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
-NativeWebWheelEvent::NativeWebWheelEvent(QGraphicsSceneWheelEvent* event)
-    : WebWheelEvent(WebEventFactory::createWebWheelEvent(event))
-    , m_nativeEvent(event)
+NativeWebWheelEvent::NativeWebWheelEvent( QGraphicsSceneWheelEvent *event )
+    : WebWheelEvent( WebEventFactory::createWebWheelEvent( event ) )
+    , m_nativeEvent( event )
 {
 }
 

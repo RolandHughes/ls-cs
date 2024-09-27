@@ -28,32 +28,43 @@
 
 #if USE(CROSS_PLATFORM_CONTEXT_MENUS)
 
-namespace WebCore {
+namespace WebCore
+{
 
 ContextMenu::ContextMenu()
 {
 }
 
-static const ContextMenuItem* findItemWithAction(unsigned action, const Vector<ContextMenuItem>& items)
+static const ContextMenuItem *findItemWithAction( unsigned action, const Vector<ContextMenuItem> &items )
 {
-    for (size_t i = 0; i < items.size(); ++i) {
-        const ContextMenuItem& item = items[i];
-        if (item.action() == action)
+    for ( size_t i = 0; i < items.size(); ++i )
+    {
+        const ContextMenuItem &item = items[i];
+
+        if ( item.action() == action )
+        {
             return &item;
-        if (item.type() != SubmenuType)
+        }
+
+        if ( item.type() != SubmenuType )
+        {
             continue;
-        if (const ContextMenuItem* subMenuItem = findItemWithAction(action, item.subMenuItems()))
+        }
+
+        if ( const ContextMenuItem *subMenuItem = findItemWithAction( action, item.subMenuItems() ) )
+        {
             return subMenuItem;
+        }
     }
 
     return 0;
 }
 
-ContextMenuItem* ContextMenu::itemWithAction(unsigned action)
+ContextMenuItem *ContextMenu::itemWithAction( unsigned action )
 {
     // FIXME: When more platforms switch over, this fucntion should return a const ContextMenuItem*'s, and the const_cast
     // won't be needed anymore.
-    return const_cast<ContextMenuItem*>(findItemWithAction(action, m_items));
+    return const_cast<ContextMenuItem *>( findItemWithAction( action, m_items ) );
 }
 
 } // namespace WebCore

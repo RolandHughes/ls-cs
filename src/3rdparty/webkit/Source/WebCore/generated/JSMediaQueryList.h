@@ -26,26 +26,32 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class MediaQueryList;
 
-class JSMediaQueryList : public JSDOMWrapper {
+class JSMediaQueryList : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSMediaQueryList(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<MediaQueryList>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
+    JSMediaQueryList( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<MediaQueryList> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
-    MediaQueryList* impl() const { return m_impl.get(); }
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
+    MediaQueryList *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<MediaQueryList> m_impl;
@@ -53,34 +59,37 @@ protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, MediaQueryList*);
-MediaQueryList* toMediaQueryList(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, MediaQueryList * );
+MediaQueryList *toMediaQueryList( JSC::JSValue );
 
-class JSMediaQueryListPrototype : public JSC::JSObjectWithGlobalObject {
+class JSMediaQueryListPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSMediaQueryListPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSMediaQueryListPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                               JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsMediaQueryListPrototypeFunctionAddListener(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsMediaQueryListPrototypeFunctionRemoveListener(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsMediaQueryListPrototypeFunctionAddListener( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsMediaQueryListPrototypeFunctionRemoveListener( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsMediaQueryListMedia(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsMediaQueryListMatches(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsMediaQueryListConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsMediaQueryListMedia( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsMediaQueryListMatches( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsMediaQueryListConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

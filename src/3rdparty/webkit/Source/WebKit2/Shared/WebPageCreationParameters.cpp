@@ -28,91 +28,156 @@
 
 #include "WebCoreArgumentCoders.h"
 
-namespace WebKit {
-
-void WebPageCreationParameters::encode(CoreIPC::ArgumentEncoder* encoder) const
+namespace WebKit
 {
-    encoder->encode(viewSize);
-    encoder->encode(isActive);
-    encoder->encode(isFocused);
-    encoder->encode(isVisible);
-    encoder->encode(isInWindow);
 
-    encoder->encode(store);
-    encoder->encodeEnum(drawingAreaType);
-    encoder->encode(pageGroupData);
-    encoder->encode(drawsBackground);
-    encoder->encode(drawsTransparentBackground);
-    encoder->encode(areMemoryCacheClientCallsEnabled);
-    encoder->encode(useFixedLayout);
-    encoder->encode(fixedLayoutSize);
-    encoder->encode(userAgent);
-    encoder->encode(sessionState);
-    encoder->encode(highestUsedBackForwardItemID);
-    encoder->encode(canRunBeforeUnloadConfirmPanel);
-    encoder->encode(canRunModal);
-    encoder->encode(userSpaceScaleFactor);
+void WebPageCreationParameters::encode( CoreIPC::ArgumentEncoder *encoder ) const
+{
+    encoder->encode( viewSize );
+    encoder->encode( isActive );
+    encoder->encode( isFocused );
+    encoder->encode( isVisible );
+    encoder->encode( isInWindow );
+
+    encoder->encode( store );
+    encoder->encodeEnum( drawingAreaType );
+    encoder->encode( pageGroupData );
+    encoder->encode( drawsBackground );
+    encoder->encode( drawsTransparentBackground );
+    encoder->encode( areMemoryCacheClientCallsEnabled );
+    encoder->encode( useFixedLayout );
+    encoder->encode( fixedLayoutSize );
+    encoder->encode( userAgent );
+    encoder->encode( sessionState );
+    encoder->encode( highestUsedBackForwardItemID );
+    encoder->encode( canRunBeforeUnloadConfirmPanel );
+    encoder->encode( canRunModal );
+    encoder->encode( userSpaceScaleFactor );
 
 #if PLATFORM(MAC)
-    encoder->encode(isSmartInsertDeleteEnabled);
+    encoder->encode( isSmartInsertDeleteEnabled );
 #endif
 
 #if PLATFORM(WIN)
-    encoder->encode(reinterpret_cast<uint64_t>(nativeWindow));
+    encoder->encode( reinterpret_cast<uint64_t>( nativeWindow ) );
 #endif
 }
 
-bool WebPageCreationParameters::decode(CoreIPC::ArgumentDecoder* decoder, WebPageCreationParameters& parameters)
+bool WebPageCreationParameters::decode( CoreIPC::ArgumentDecoder *decoder, WebPageCreationParameters &parameters )
 {
-    if (!decoder->decode(parameters.viewSize))
+    if ( !decoder->decode( parameters.viewSize ) )
+    {
         return false;
-    if (!decoder->decode(parameters.isActive))
+    }
+
+    if ( !decoder->decode( parameters.isActive ) )
+    {
         return false;
-    if (!decoder->decode(parameters.isFocused))
+    }
+
+    if ( !decoder->decode( parameters.isFocused ) )
+    {
         return false;
-    if (!decoder->decode(parameters.isVisible))
+    }
+
+    if ( !decoder->decode( parameters.isVisible ) )
+    {
         return false;
-    if (!decoder->decode(parameters.isInWindow))
+    }
+
+    if ( !decoder->decode( parameters.isInWindow ) )
+    {
         return false;
-    if (!decoder->decode(parameters.store))
+    }
+
+    if ( !decoder->decode( parameters.store ) )
+    {
         return false;
-    if (!decoder->decodeEnum(parameters.drawingAreaType))
+    }
+
+    if ( !decoder->decodeEnum( parameters.drawingAreaType ) )
+    {
         return false;
-    if (!decoder->decode(parameters.pageGroupData))
+    }
+
+    if ( !decoder->decode( parameters.pageGroupData ) )
+    {
         return false;
-    if (!decoder->decode(parameters.drawsBackground))
+    }
+
+    if ( !decoder->decode( parameters.drawsBackground ) )
+    {
         return false;
-    if (!decoder->decode(parameters.drawsTransparentBackground))
+    }
+
+    if ( !decoder->decode( parameters.drawsTransparentBackground ) )
+    {
         return false;
-    if (!decoder->decode(parameters.areMemoryCacheClientCallsEnabled))
+    }
+
+    if ( !decoder->decode( parameters.areMemoryCacheClientCallsEnabled ) )
+    {
         return false;
-    if (!decoder->decode(parameters.useFixedLayout))
+    }
+
+    if ( !decoder->decode( parameters.useFixedLayout ) )
+    {
         return false;
-    if (!decoder->decode(parameters.fixedLayoutSize))
+    }
+
+    if ( !decoder->decode( parameters.fixedLayoutSize ) )
+    {
         return false;
-    if (!decoder->decode(parameters.userAgent))
+    }
+
+    if ( !decoder->decode( parameters.userAgent ) )
+    {
         return false;
-    if (!decoder->decode(parameters.sessionState))
+    }
+
+    if ( !decoder->decode( parameters.sessionState ) )
+    {
         return false;
-    if (!decoder->decode(parameters.highestUsedBackForwardItemID))
+    }
+
+    if ( !decoder->decode( parameters.highestUsedBackForwardItemID ) )
+    {
         return false;
-    if (!decoder->decode(parameters.canRunBeforeUnloadConfirmPanel))
+    }
+
+    if ( !decoder->decode( parameters.canRunBeforeUnloadConfirmPanel ) )
+    {
         return false;
-    if (!decoder->decode(parameters.canRunModal))
+    }
+
+    if ( !decoder->decode( parameters.canRunModal ) )
+    {
         return false;
-    if (!decoder->decode(parameters.userSpaceScaleFactor))
+    }
+
+    if ( !decoder->decode( parameters.userSpaceScaleFactor ) )
+    {
         return false;
+    }
 
 #if PLATFORM(MAC)
-    if (!decoder->decode(parameters.isSmartInsertDeleteEnabled))
+
+    if ( !decoder->decode( parameters.isSmartInsertDeleteEnabled ) )
+    {
         return false;
+    }
+
 #endif
 
 #if PLATFORM(WIN)
     uint64_t nativeWindow;
-    if (!decoder->decode(nativeWindow))
+
+    if ( !decoder->decode( nativeWindow ) )
+    {
         return false;
-    parameters.nativeWindow = reinterpret_cast<HWND>(nativeWindow);
+    }
+
+    parameters.nativeWindow = reinterpret_cast<HWND>( nativeWindow );
 #endif
 
     return true;

@@ -46,7 +46,8 @@ OBJC_CLASS WebInspectorWKView;
 #include <WebCore/WindowMessageListener.h>
 #endif
 
-namespace WebKit {
+namespace WebKit
+{
 
 class WebPageGroup;
 class WebPageProxy;
@@ -64,9 +65,9 @@ class WebInspectorProxy : public APIObject
 public:
     static const Type APIType = TypeInspector;
 
-    static PassRefPtr<WebInspectorProxy> create(WebPageProxy* page)
+    static PassRefPtr<WebInspectorProxy> create( WebPageProxy *page )
     {
-        return adoptRef(new WebInspectorProxy(page));
+        return adoptRef( new WebInspectorProxy( page ) );
     }
 
     ~WebInspectorProxy();
@@ -74,78 +75,100 @@ public:
     void invalidate();
 
     // Public APIs
-    WebPageProxy* page() { return m_page; }
+    WebPageProxy *page()
+    {
+        return m_page;
+    }
 
-    bool isVisible() const { return m_isVisible; }
+    bool isVisible() const
+    {
+        return m_isVisible;
+    }
     void show();
     void close();
-    
+
 #if PLATFORM(MAC)
     void inspectedViewFrameDidChange();
 #endif
 
     void showConsole();
 
-    bool isAttached() const { return m_isAttached; }
+    bool isAttached() const
+    {
+        return m_isAttached;
+    }
     void attach();
     void detach();
-    void setAttachedWindowHeight(unsigned);
+    void setAttachedWindowHeight( unsigned );
 
-    bool isDebuggingJavaScript() const { return m_isDebuggingJavaScript; }
+    bool isDebuggingJavaScript() const
+    {
+        return m_isDebuggingJavaScript;
+    }
     void toggleJavaScriptDebugging();
 
-    bool isProfilingJavaScript() const { return m_isProfilingJavaScript; }
+    bool isProfilingJavaScript() const
+    {
+        return m_isProfilingJavaScript;
+    }
     void toggleJavaScriptProfiling();
 
-    bool isProfilingPage() const { return m_isProfilingPage; }
+    bool isProfilingPage() const
+    {
+        return m_isProfilingPage;
+    }
     void togglePageProfiling();
 
 #if ENABLE(INSPECTOR)
     // Implemented in generated WebInspectorProxyMessageReceiver.cpp
-    void didReceiveWebInspectorProxyMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*);
-    CoreIPC::SyncReplyMode didReceiveSyncWebInspectorProxyMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*, CoreIPC::ArgumentEncoder*);
+    void didReceiveWebInspectorProxyMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * );
+    CoreIPC::SyncReplyMode didReceiveSyncWebInspectorProxyMessage( CoreIPC::Connection *, CoreIPC::MessageID,
+            CoreIPC::ArgumentDecoder *, CoreIPC::ArgumentEncoder * );
 #endif
 
-    static bool isInspectorPage(WebPageProxy*);
+    static bool isInspectorPage( WebPageProxy * );
 
 private:
-    WebInspectorProxy(WebPageProxy* page);
+    WebInspectorProxy( WebPageProxy *page );
 
-    virtual Type type() const { return APIType; }
+    virtual Type type() const
+    {
+        return APIType;
+    }
 
-    WebPageProxy* platformCreateInspectorPage();
+    WebPageProxy *platformCreateInspectorPage();
     void platformOpen();
     void platformDidClose();
     void platformBringToFront();
-    void platformInspectedURLChanged(const String&);
+    void platformInspectedURLChanged( const String & );
     void platformAttach();
     void platformDetach();
-    void platformSetAttachedWindowHeight(unsigned);
+    void platformSetAttachedWindowHeight( unsigned );
 
     // Implemented the platform WebInspectorProxy file
     String inspectorPageURL() const;
 
     // Called by WebInspectorProxy messages
-    void createInspectorPage(uint64_t& inspectorPageID, WebPageCreationParameters&);
+    void createInspectorPage( uint64_t &inspectorPageID, WebPageCreationParameters & );
     void didLoadInspectorPage();
     void didClose();
     void bringToFront();
-    void inspectedURLChanged(const String&);
+    void inspectedURLChanged( const String & );
 
-    static WebPageGroup* inspectorPageGroup();
+    static WebPageGroup *inspectorPageGroup();
 
 #if PLATFORM(WIN)
     static bool registerInspectorViewWindowClass();
-    static LRESULT CALLBACK InspectorViewWndProc(HWND, UINT, WPARAM, LPARAM);
-    LRESULT wndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+    static LRESULT CALLBACK InspectorViewWndProc( HWND, UINT, WPARAM, LPARAM );
+    LRESULT wndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam );
 
-    LRESULT onSizeEvent(HWND hWnd, UINT message, WPARAM, LPARAM, bool& handled);
-    LRESULT onMinMaxInfoEvent(HWND hWnd, UINT message, WPARAM, LPARAM, bool& handled);
-    LRESULT onSetFocusEvent(HWND hWnd, UINT message, WPARAM, LPARAM, bool& handled);
-    LRESULT onCloseEvent(HWND hWnd, UINT message, WPARAM, LPARAM, bool& handled);
+    LRESULT onSizeEvent( HWND hWnd, UINT message, WPARAM, LPARAM, bool &handled );
+    LRESULT onMinMaxInfoEvent( HWND hWnd, UINT message, WPARAM, LPARAM, bool &handled );
+    LRESULT onSetFocusEvent( HWND hWnd, UINT message, WPARAM, LPARAM, bool &handled );
+    LRESULT onCloseEvent( HWND hWnd, UINT message, WPARAM, LPARAM, bool &handled );
 
-    void onWebViewWindowPosChangingEvent(WPARAM, LPARAM);
-    virtual void windowReceivedMessage(HWND, UINT message, WPARAM, LPARAM);
+    void onWebViewWindowPosChangingEvent( WPARAM, LPARAM );
+    virtual void windowReceivedMessage( HWND, UINT message, WPARAM, LPARAM );
 #endif
 
     static const unsigned minimumWindowWidth = 500;
@@ -154,7 +177,7 @@ private:
     static const unsigned initialWindowWidth = 750;
     static const unsigned initialWindowHeight = 650;
 
-    WebPageProxy* m_page;
+    WebPageProxy *m_page;
 
     bool m_isVisible;
     bool m_isAttached;

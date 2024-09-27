@@ -26,25 +26,27 @@
 
 #include <qanynodetype_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class XSLTNodeTest : public AnyNodeType
 {
- public:
-   bool xdtTypeMatches(const ItemType::Ptr &other) const override;
-   bool itemMatches(const Item &item) const override;
+public:
+    bool xdtTypeMatches( const ItemType::Ptr &other ) const override;
+    bool itemMatches( const Item &item ) const override;
 
-   ItemType::Ptr xdtSuperType() const override;
+    ItemType::Ptr xdtSuperType() const override;
 
- protected:
-   friend class BuiltinTypes;
+protected:
+    friend class BuiltinTypes;
 
-   /**
-    * This constructor does nothing, but exists in order to make it impossible to
-    * instantiate this class from anywhere but from BuiltinTypes.
-    */
-   inline XSLTNodeTest() {
-   }
+    /**
+     * This constructor does nothing, but exists in order to make it impossible to
+     * instantiate this class from anywhere but from BuiltinTypes.
+     */
+    inline XSLTNodeTest()
+    {
+    }
 };
 }
 

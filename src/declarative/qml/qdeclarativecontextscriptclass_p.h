@@ -35,41 +35,41 @@ class QDeclarativeContextData;
 
 class QDeclarativeContextScriptClass : public QScriptDeclarativeClass
 {
- public:
-   QDeclarativeContextScriptClass(QDeclarativeEngine *);
-   ~QDeclarativeContextScriptClass();
+public:
+    QDeclarativeContextScriptClass( QDeclarativeEngine * );
+    ~QDeclarativeContextScriptClass();
 
-   QScriptValue newContext(QDeclarativeContextData *, QObject * = 0);
-   QScriptValue newUrlContext(QDeclarativeContextData *, QObject *, const QString &);
-   QScriptValue newUrlContext(const QString &);
-   QScriptValue newSharedContext();
+    QScriptValue newContext( QDeclarativeContextData *, QObject * = 0 );
+    QScriptValue newUrlContext( QDeclarativeContextData *, QObject *, const QString & );
+    QScriptValue newUrlContext( const QString & );
+    QScriptValue newSharedContext();
 
-   QDeclarativeContextData *contextFromValue(const QScriptValue &);
-   QUrl urlFromValue(const QScriptValue &);
+    QDeclarativeContextData *contextFromValue( const QScriptValue & );
+    QUrl urlFromValue( const QScriptValue & );
 
-   QObject *setOverrideObject(QScriptValue &, QObject *);
+    QObject *setOverrideObject( QScriptValue &, QObject * );
 
- protected:
-   virtual QScriptClass::QueryFlags queryProperty(Object *, const Identifier &,
-         QScriptClass::QueryFlags flags);
-   virtual Value property(Object *, const Identifier &);
-   virtual void setProperty(Object *, const Identifier &name, const QScriptValue &);
+protected:
+    virtual QScriptClass::QueryFlags queryProperty( Object *, const Identifier &,
+            QScriptClass::QueryFlags flags );
+    virtual Value property( Object *, const Identifier & );
+    virtual void setProperty( Object *, const Identifier &name, const QScriptValue & );
 
- private:
-   QScriptClass::QueryFlags queryProperty(QDeclarativeContextData *, QObject *scopeObject,
-                                          const Identifier &,
-                                          QScriptClass::QueryFlags flags,
-                                          bool includeTypes);
+private:
+    QScriptClass::QueryFlags queryProperty( QDeclarativeContextData *, QObject *scopeObject,
+                                            const Identifier &,
+                                            QScriptClass::QueryFlags flags,
+                                            bool includeTypes );
 
-   QDeclarativeEngine *engine;
+    QDeclarativeEngine *engine;
 
-   QObject *lastScopeObject;
-   QDeclarativeContextData *lastContext;
-   QDeclarativeTypeNameCache::Data *lastData;
-   int lastPropertyIndex;
-   QScriptValue lastFunction;
+    QObject *lastScopeObject;
+    QDeclarativeContextData *lastContext;
+    QDeclarativeTypeNameCache::Data *lastData;
+    int lastPropertyIndex;
+    QScriptValue lastFunction;
 
-   uint m_id;
+    uint m_id;
 };
 
 QT_END_NAMESPACE

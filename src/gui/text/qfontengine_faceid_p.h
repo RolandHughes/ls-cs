@@ -27,16 +27,17 @@
 #include <qbytearray.h>
 #include <qstring.h>
 
-struct QFontEngine_FaceId {
-   QFontEngine_FaceId()
-      : index(0), encoding(0)
-   { }
+struct QFontEngine_FaceId
+{
+    QFontEngine_FaceId()
+        : index( 0 ), encoding( 0 )
+    { }
 
-   QString filename;
-   QByteArray uuid;
+    QString filename;
+    QByteArray uuid;
 
-   int index;
-   int encoding;
+    int index;
+    int encoding;
 };
 
 #endif

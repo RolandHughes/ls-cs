@@ -30,48 +30,49 @@
 
 class Q_MULTIMEDIA_EXPORT QCameraViewfinderSettingsControl : public QMediaControl
 {
-   MULTI_CS_OBJECT(QCameraViewfinderSettingsControl)
+    MULTI_CS_OBJECT( QCameraViewfinderSettingsControl )
 
- public:
-   enum ViewfinderParameter {
-      Resolution,
-      PixelAspectRatio,
-      MinimumFrameRate,
-      MaximumFrameRate,
-      PixelFormat,
-      UserParameter = 1000
-   };
+public:
+    enum ViewfinderParameter
+    {
+        Resolution,
+        PixelAspectRatio,
+        MinimumFrameRate,
+        MaximumFrameRate,
+        PixelFormat,
+        UserParameter = 1000
+    };
 
-   ~QCameraViewfinderSettingsControl();
+    ~QCameraViewfinderSettingsControl();
 
-   virtual bool isViewfinderParameterSupported(ViewfinderParameter parameter) const = 0;
-   virtual QVariant viewfinderParameter(ViewfinderParameter parameter) const = 0;
-   virtual void setViewfinderParameter(ViewfinderParameter parameter, const QVariant &value) = 0;
+    virtual bool isViewfinderParameterSupported( ViewfinderParameter parameter ) const = 0;
+    virtual QVariant viewfinderParameter( ViewfinderParameter parameter ) const = 0;
+    virtual void setViewfinderParameter( ViewfinderParameter parameter, const QVariant &value ) = 0;
 
- protected:
-   explicit QCameraViewfinderSettingsControl(QObject *parent = nullptr);
+protected:
+    explicit QCameraViewfinderSettingsControl( QObject *parent = nullptr );
 };
 
 class Q_MULTIMEDIA_EXPORT QCameraViewfinderSettingsControl2 : public QMediaControl
 {
-   MULTI_CS_OBJECT(QCameraViewfinderSettingsControl2)
+    MULTI_CS_OBJECT( QCameraViewfinderSettingsControl2 )
 
- public:
-   virtual ~QCameraViewfinderSettingsControl2();
+public:
+    virtual ~QCameraViewfinderSettingsControl2();
 
-   virtual QList<QCameraViewfinderSettings> supportedViewfinderSettings() const = 0;
+    virtual QList<QCameraViewfinderSettings> supportedViewfinderSettings() const = 0;
 
-   virtual QCameraViewfinderSettings viewfinderSettings() const = 0;
-   virtual void setViewfinderSettings(const QCameraViewfinderSettings &settings) = 0;
+    virtual QCameraViewfinderSettings viewfinderSettings() const = 0;
+    virtual void setViewfinderSettings( const QCameraViewfinderSettings &settings ) = 0;
 
- protected:
-   explicit QCameraViewfinderSettingsControl2(QObject *parent = nullptr);
+protected:
+    explicit QCameraViewfinderSettingsControl2( QObject *parent = nullptr );
 };
 
 #define QCameraViewfinderSettingsControl_iid "com.copperspice.CS.cameraViewfinderSettingsControl/1.0"
-CS_DECLARE_INTERFACE(QCameraViewfinderSettingsControl, QCameraViewfinderSettingsControl_iid)
+CS_DECLARE_INTERFACE( QCameraViewfinderSettingsControl, QCameraViewfinderSettingsControl_iid )
 
 #define QCameraViewfinderSettingsControl2_iid "com.copperspice.CS.cameraViewfinderSettingsControl2/1.0"
-CS_DECLARE_INTERFACE(QCameraViewfinderSettingsControl2, QCameraViewfinderSettingsControl2_iid)
+CS_DECLARE_INTERFACE( QCameraViewfinderSettingsControl2, QCameraViewfinderSettingsControl2_iid )
 
 #endif

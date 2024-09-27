@@ -26,7 +26,8 @@
 #include "config.h"
 #include "MutableArray.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
 MutableArray::MutableArray()
 {
@@ -36,19 +37,19 @@ MutableArray::~MutableArray()
 {
 }
 
-void MutableArray::append(APIObject* item)
+void MutableArray::append( APIObject *item )
 {
-    m_entries.append(item);
+    m_entries.append( item );
 }
 
-void MutableArray::reserveCapacity(unsigned capacity)
+void MutableArray::reserveCapacity( unsigned capacity )
 {
-    m_entries.reserveCapacity(capacity);
+    m_entries.reserveCapacity( capacity );
 }
 
-void MutableArray::removeItemAtIndex(unsigned index)
+void MutableArray::removeItemAtIndex( unsigned index )
 {
-    m_entries.remove(index);
+    m_entries.remove( index );
 }
 
 } // namespace WebKit

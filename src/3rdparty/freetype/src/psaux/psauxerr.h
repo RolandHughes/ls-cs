@@ -16,12 +16,12 @@
  */
 
 
-  /**************************************************************************
-   *
-   * This file is used to define the PS auxiliary module error enumeration
-   * constants.
-   *
-   */
+/**************************************************************************
+ *
+ * This file is used to define the PS auxiliary module error enumeration
+ * constants.
+ *
+ */
 
 #ifndef PSAUXERR_H_
 #define PSAUXERR_H_

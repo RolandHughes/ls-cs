@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef WebGLTexture_h
@@ -32,62 +32,77 @@
 #include <wtf/RefCounted.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class WebGLTexture : public WebGLObject {
+class WebGLTexture : public WebGLObject
+{
 public:
-    virtual ~WebGLTexture() { deleteObject(); }
+    virtual ~WebGLTexture()
+    {
+        deleteObject();
+    }
 
-    static PassRefPtr<WebGLTexture> create(WebGLRenderingContext*);
+    static PassRefPtr<WebGLTexture> create( WebGLRenderingContext * );
 
-    void setTarget(GC3Denum target, GC3Dint maxLevel);
-    void setParameteri(GC3Denum pname, GC3Dint param);
-    void setParameterf(GC3Denum pname, GC3Dfloat param);
+    void setTarget( GC3Denum target, GC3Dint maxLevel );
+    void setParameteri( GC3Denum pname, GC3Dint param );
+    void setParameterf( GC3Denum pname, GC3Dfloat param );
 
-    GC3Denum getTarget() const { return m_target; }
+    GC3Denum getTarget() const
+    {
+        return m_target;
+    }
 
-    int getMinFilter() const { return m_minFilter; }
+    int getMinFilter() const
+    {
+        return m_minFilter;
+    }
 
-    void setLevelInfo(GC3Denum target, GC3Dint level, GC3Denum internalFormat, GC3Dsizei width, GC3Dsizei height, GC3Denum type);
+    void setLevelInfo( GC3Denum target, GC3Dint level, GC3Denum internalFormat, GC3Dsizei width, GC3Dsizei height, GC3Denum type );
 
     bool canGenerateMipmaps();
     // Generate all level information.
     void generateMipmapLevelInfo();
 
-    GC3Denum getInternalFormat(GC3Denum target, GC3Dint level) const;
-    GC3Denum getType(GC3Denum target, GC3Dint level) const;
-    GC3Dsizei getWidth(GC3Denum target, GC3Dint level) const;
-    GC3Dsizei getHeight(GC3Denum target, GC3Dint level) const;
+    GC3Denum getInternalFormat( GC3Denum target, GC3Dint level ) const;
+    GC3Denum getType( GC3Denum target, GC3Dint level ) const;
+    GC3Dsizei getWidth( GC3Denum target, GC3Dint level ) const;
+    GC3Dsizei getHeight( GC3Denum target, GC3Dint level ) const;
 
     // Whether width/height is NotPowerOfTwo.
-    static bool isNPOT(GC3Dsizei, GC3Dsizei);
+    static bool isNPOT( GC3Dsizei, GC3Dsizei );
 
     bool isNPOT() const;
     // Determine if texture sampling should always return [0, 0, 0, 1] (OpenGL ES 2.0 Sec 3.8.2).
     bool needToUseBlackTexture() const;
 
-    bool hasEverBeenBound() const { return object() && m_target; }
+    bool hasEverBeenBound() const
+    {
+        return object() && m_target;
+    }
 
-    static GC3Dint computeLevelCount(GC3Dsizei width, GC3Dsizei height);
+    static GC3Dint computeLevelCount( GC3Dsizei width, GC3Dsizei height );
 
 protected:
-    WebGLTexture(WebGLRenderingContext*);
+    WebGLTexture( WebGLRenderingContext * );
 
-    virtual void deleteObjectImpl(Platform3DObject);
+    virtual void deleteObjectImpl( Platform3DObject );
 
 private:
-    class LevelInfo {
+    class LevelInfo
+    {
     public:
         LevelInfo()
-            : valid(false)
-            , internalFormat(0)
-            , width(0)
-            , height(0)
-            , type(0)
+            : valid( false )
+            , internalFormat( 0 )
+            , width( 0 )
+            , height( 0 )
+            , type( 0 )
         {
         }
 
-        void setInfo(GC3Denum internalFmt, GC3Dsizei w, GC3Dsizei h, GC3Denum tp)
+        void setInfo( GC3Denum internalFmt, GC3Dsizei w, GC3Dsizei h, GC3Denum tp )
         {
             valid = true;
             internalFormat = internalFmt;
@@ -103,13 +118,16 @@ private:
         GC3Denum type;
     };
 
-    virtual bool isTexture() const { return true; }
+    virtual bool isTexture() const
+    {
+        return true;
+    }
 
     void update();
 
-    int mapTargetToIndex(GC3Denum) const;
+    int mapTargetToIndex( GC3Denum ) const;
 
-    const LevelInfo* getLevelInfo(GC3Denum target, GC3Dint level) const;
+    const LevelInfo *getLevelInfo( GC3Denum target, GC3Dint level ) const;
 
     GC3Denum m_target;
 

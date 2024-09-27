@@ -31,46 +31,52 @@
 
 using namespace WebCore;
 
-namespace WebKit {
-
-typedef HashMap<Range*, InjectedBundleRangeHandle*> DOMHandleCache;
-
-static DOMHandleCache& domHandleCache()
+namespace WebKit
 {
-    DEFINE_STATIC_LOCAL(DOMHandleCache, cache, ());
+
+typedef HashMap<Range *, InjectedBundleRangeHandle *> DOMHandleCache;
+
+static DOMHandleCache &domHandleCache()
+{
+    DEFINE_STATIC_LOCAL( DOMHandleCache, cache, () );
     return cache;
 }
 
-PassRefPtr<InjectedBundleRangeHandle> InjectedBundleRangeHandle::getOrCreate(Range* range)
+PassRefPtr<InjectedBundleRangeHandle> InjectedBundleRangeHandle::getOrCreate( Range *range )
 {
-    if (!range)
+    if ( !range )
+    {
         return 0;
+    }
 
-    std::pair<DOMHandleCache::iterator, bool> result = domHandleCache().add(range, 0);
-    if (!result.second)
-        return PassRefPtr<InjectedBundleRangeHandle>(result.first->second);
+    std::pair<DOMHandleCache::iterator, bool> result = domHandleCache().add( range, 0 );
 
-    RefPtr<InjectedBundleRangeHandle> rangeHandle = InjectedBundleRangeHandle::create(range);
+    if ( !result.second )
+    {
+        return PassRefPtr<InjectedBundleRangeHandle>( result.first->second );
+    }
+
+    RefPtr<InjectedBundleRangeHandle> rangeHandle = InjectedBundleRangeHandle::create( range );
     result.first->second = rangeHandle.get();
     return rangeHandle.release();
 }
 
-PassRefPtr<InjectedBundleRangeHandle> InjectedBundleRangeHandle::create(Range* range)
+PassRefPtr<InjectedBundleRangeHandle> InjectedBundleRangeHandle::create( Range *range )
 {
-    return adoptRef(new InjectedBundleRangeHandle(range));
+    return adoptRef( new InjectedBundleRangeHandle( range ) );
 }
 
-InjectedBundleRangeHandle::InjectedBundleRangeHandle(Range* range)
-    : m_range(range)
+InjectedBundleRangeHandle::InjectedBundleRangeHandle( Range *range )
+    : m_range( range )
 {
 }
 
 InjectedBundleRangeHandle::~InjectedBundleRangeHandle()
 {
-    domHandleCache().remove(m_range.get());
+    domHandleCache().remove( m_range.get() );
 }
 
-Range* InjectedBundleRangeHandle::coreRange() const
+Range *InjectedBundleRangeHandle::coreRange() const
 {
     return m_range.get();
 }

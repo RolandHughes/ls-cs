@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -29,12 +29,15 @@
 #include "ImageBuffer.h"
 #include "RenderObject.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 CSSCanvasValue::~CSSCanvasValue()
 {
-    if (m_element)
-        m_element->removeObserver(this);
+    if ( m_element )
+    {
+        m_element->removeObserver( this );
+    }
 }
 
 String CSSCanvasValue::cssText() const
@@ -44,51 +47,70 @@ String CSSCanvasValue::cssText() const
     return result;
 }
 
-void CSSCanvasValue::canvasChanged(HTMLCanvasElement*, const FloatRect& changedRect)
+void CSSCanvasValue::canvasChanged( HTMLCanvasElement *, const FloatRect &changedRect )
 {
-    IntRect imageChangeRect = enclosingIntRect(changedRect);
+    IntRect imageChangeRect = enclosingIntRect( changedRect );
     RenderObjectSizeCountMap::const_iterator end = m_clients.end();
-    for (RenderObjectSizeCountMap::const_iterator curr = m_clients.begin(); curr != end; ++curr)
-        curr->first->imageChanged(static_cast<WrappedImagePtr>(this), &imageChangeRect);
+
+    for ( RenderObjectSizeCountMap::const_iterator curr = m_clients.begin(); curr != end; ++curr )
+    {
+        curr->first->imageChanged( static_cast<WrappedImagePtr>( this ), &imageChangeRect );
+    }
 }
 
-void CSSCanvasValue::canvasResized(HTMLCanvasElement*)
+void CSSCanvasValue::canvasResized( HTMLCanvasElement * )
 {
     RenderObjectSizeCountMap::const_iterator end = m_clients.end();
-    for (RenderObjectSizeCountMap::const_iterator curr = m_clients.begin(); curr != end; ++curr)
-        curr->first->imageChanged(static_cast<WrappedImagePtr>(this));
+
+    for ( RenderObjectSizeCountMap::const_iterator curr = m_clients.begin(); curr != end; ++curr )
+    {
+        curr->first->imageChanged( static_cast<WrappedImagePtr>( this ) );
+    }
 }
 
-void CSSCanvasValue::canvasDestroyed(HTMLCanvasElement* element)
+void CSSCanvasValue::canvasDestroyed( HTMLCanvasElement *element )
 {
-    ASSERT_UNUSED(element, element == m_element);
+    ASSERT_UNUSED( element, element == m_element );
     m_element = 0;
 }
 
-IntSize CSSCanvasValue::fixedSize(const RenderObject* renderer)
+IntSize CSSCanvasValue::fixedSize( const RenderObject *renderer )
 {
-    if (HTMLCanvasElement* elt = element(renderer->document()))
-        return IntSize(elt->width(), elt->height());
+    if ( HTMLCanvasElement *elt = element( renderer->document() ) )
+    {
+        return IntSize( elt->width(), elt->height() );
+    }
+
     return IntSize();
 }
 
-HTMLCanvasElement* CSSCanvasValue::element(Document* document)
+HTMLCanvasElement *CSSCanvasValue::element( Document *document )
 {
-     if (!m_element) {
-        m_element = document->getCSSCanvasElement(m_name);
-        if (!m_element)
+    if ( !m_element )
+    {
+        m_element = document->getCSSCanvasElement( m_name );
+
+        if ( !m_element )
+        {
             return 0;
-        m_element->addObserver(this);
+        }
+
+        m_element->addObserver( this );
     }
+
     return m_element;
 }
 
-PassRefPtr<Image> CSSCanvasValue::image(RenderObject* renderer, const IntSize& /*size*/)
+PassRefPtr<Image> CSSCanvasValue::image( RenderObject *renderer, const IntSize & /*size*/ )
 {
-    ASSERT(m_clients.contains(renderer));
-    HTMLCanvasElement* elt = element(renderer->document());
-    if (!elt || !elt->buffer())
+    ASSERT( m_clients.contains( renderer ) );
+    HTMLCanvasElement *elt = element( renderer->document() );
+
+    if ( !elt || !elt->buffer() )
+    {
         return 0;
+    }
+
     return elt->copiedImage();
 }
 

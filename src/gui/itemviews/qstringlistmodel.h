@@ -31,35 +31,35 @@
 
 class Q_GUI_EXPORT QStringListModel : public QAbstractListModel
 {
-   GUI_CS_OBJECT(QStringListModel)
+    GUI_CS_OBJECT( QStringListModel )
 
- public:
-   explicit QStringListModel(QObject *parent = nullptr);
-   explicit QStringListModel(const QStringList &strings, QObject *parent = nullptr);
+public:
+    explicit QStringListModel( QObject *parent = nullptr );
+    explicit QStringListModel( const QStringList &strings, QObject *parent = nullptr );
 
-   QStringListModel(const QStringListModel &) = delete;
-   QStringListModel &operator=(const QStringListModel &) = delete;
+    QStringListModel( const QStringListModel & ) = delete;
+    QStringListModel &operator=( const QStringListModel & ) = delete;
 
-   int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-   QModelIndex sibling(int row, int column, const QModelIndex &idx) const override;
+    int rowCount( const QModelIndex &parent = QModelIndex() ) const override;
+    QModelIndex sibling( int row, int column, const QModelIndex &idx ) const override;
 
-   QVariant data(const QModelIndex &index, int role) const override;
-   bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
+    QVariant data( const QModelIndex &index, int role ) const override;
+    bool setData( const QModelIndex &index, const QVariant &value, int role = Qt::EditRole ) override;
 
-   Qt::ItemFlags flags(const QModelIndex &index) const override;
+    Qt::ItemFlags flags( const QModelIndex &index ) const override;
 
-   bool insertRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
-   bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
+    bool insertRows( int row, int count, const QModelIndex &parent = QModelIndex() ) override;
+    bool removeRows( int row, int count, const QModelIndex &parent = QModelIndex() ) override;
 
-   void sort(int column, Qt::SortOrder order = Qt::AscendingOrder) override;
+    void sort( int column, Qt::SortOrder order = Qt::AscendingOrder ) override;
 
-   QStringList stringList() const;
-   void setStringList(const QStringList &strings);
+    QStringList stringList() const;
+    void setStringList( const QStringList &strings );
 
-   Qt::DropActions supportedDropActions() const override;
+    Qt::DropActions supportedDropActions() const override;
 
- private:
-   QStringList lst;
+private:
+    QStringList lst;
 };
 
 #endif // QT_NO_STRINGLISTMODEL

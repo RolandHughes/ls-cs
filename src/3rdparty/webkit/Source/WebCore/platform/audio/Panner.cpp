@@ -36,26 +36,28 @@
 #include "HRTFPanner.h"
 #include <wtf/OwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-PassOwnPtr<Panner> Panner::create(PanningModel model, double sampleRate)
+PassOwnPtr<Panner> Panner::create( PanningModel model, double sampleRate )
 {
     OwnPtr<Panner> panner;
 
-    switch (model) {
-    case PanningModelEqualPower:
-        panner = adoptPtr(new EqualPowerPanner(sampleRate));
-        break;
+    switch ( model )
+    {
+        case PanningModelEqualPower:
+            panner = adoptPtr( new EqualPowerPanner( sampleRate ) );
+            break;
 
-    case PanningModelHRTF:
-        panner = adoptPtr(new HRTFPanner(sampleRate));
-        break;
+        case PanningModelHRTF:
+            panner = adoptPtr( new HRTFPanner( sampleRate ) );
+            break;
 
-    // FIXME: sound field panning is not yet implemented...
-    case PanningModelSoundField:
-    default:
-        ASSERT_NOT_REACHED();
-        return 0;
+        // FIXME: sound field panning is not yet implemented...
+        case PanningModelSoundField:
+        default:
+            ASSERT_NOT_REACHED();
+            return 0;
     }
 
     return panner.release();

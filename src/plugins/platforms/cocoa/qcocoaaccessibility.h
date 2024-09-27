@@ -32,16 +32,17 @@
 
 class QCocoaAccessibility : public QPlatformAccessibility
 {
- public:
-   QCocoaAccessibility();
-   ~QCocoaAccessibility();
-   void notifyAccessibilityUpdate(QAccessibleEvent *event) override;
-   void setRootObject(QObject *o) override;
-   void initialize() override;
-   void cleanup() override;
+public:
+    QCocoaAccessibility();
+    ~QCocoaAccessibility();
+    void notifyAccessibilityUpdate( QAccessibleEvent *event ) override;
+    void setRootObject( QObject *o ) override;
+    void initialize() override;
+    void cleanup() override;
 };
 
-namespace QCocoaAccessible {
+namespace QCocoaAccessible
+{
 
 /*
     Qt Cocoa Accessibility Overview
@@ -61,15 +62,15 @@ namespace QCocoaAccessible {
     demand.
 */
 
-NSString *macRole(QAccessibleInterface *interface);
-NSString *macSubrole(QAccessibleInterface *interface);
-bool shouldBeIgnored(QAccessibleInterface *interface);
-NSArray *unignoredChildren(QAccessibleInterface *interface);
-NSString *getTranslatedAction(const QString &qtAction);
-NSMutableArray *createTranslatedActionsList(const QStringList &qtActions);
-QString translateAction(NSString *nsAction, QAccessibleInterface *interface);
-bool hasValueAttribute(QAccessibleInterface *interface);
-id getValueAttribute(QAccessibleInterface *interface);
+NSString *macRole( QAccessibleInterface *interface );
+NSString *macSubrole( QAccessibleInterface *interface );
+bool shouldBeIgnored( QAccessibleInterface *interface );
+NSArray *unignoredChildren( QAccessibleInterface *interface );
+NSString *getTranslatedAction( const QString &qtAction );
+NSMutableArray *createTranslatedActionsList( const QStringList &qtActions );
+QString translateAction( NSString *nsAction, QAccessibleInterface *interface );
+bool hasValueAttribute( QAccessibleInterface *interface );
+id getValueAttribute( QAccessibleInterface *interface );
 
 }
 

@@ -29,22 +29,27 @@
 #include <wtf/RefCounted.h>
 #include <WebCore/FileChooser.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 class WebPage;
 
-class WebOpenPanelResultListener : public RefCounted<WebOpenPanelResultListener> {
+class WebOpenPanelResultListener : public RefCounted<WebOpenPanelResultListener>
+{
 public:
-    static PassRefPtr<WebOpenPanelResultListener> create(WebPage*, PassRefPtr<WebCore::FileChooser>);
+    static PassRefPtr<WebOpenPanelResultListener> create( WebPage *, PassRefPtr<WebCore::FileChooser> );
     ~WebOpenPanelResultListener();
 
-    void disconnectFromPage() { m_page = 0; }
-    void didChooseFiles(const Vector<String>&);
+    void disconnectFromPage()
+    {
+        m_page = 0;
+    }
+    void didChooseFiles( const Vector<String> & );
 
 private:
-    WebOpenPanelResultListener(WebPage*, PassRefPtr<WebCore::FileChooser>);
+    WebOpenPanelResultListener( WebPage *, PassRefPtr<WebCore::FileChooser> );
 
-    WebPage* m_page;
+    WebPage *m_page;
     RefPtr<WebCore::FileChooser> m_fileChooser;
 };
 

@@ -109,106 +109,106 @@ class QWindowsVistaStylePrivate;
 
 class QWindowsVistaStyle : public QWindowsXPStyle
 {
-   GUI_CS_OBJECT(QWindowsVistaStyle)
+    GUI_CS_OBJECT( QWindowsVistaStyle )
 
- public:
-   QWindowsVistaStyle();
+public:
+    QWindowsVistaStyle();
 
-   QWindowsVistaStyle(const QWindowsVistaStyle &) = delete;
-   QWindowsVistaStyle &operator=(const QWindowsVistaStyle &) = delete;
+    QWindowsVistaStyle( const QWindowsVistaStyle & ) = delete;
+    QWindowsVistaStyle &operator=( const QWindowsVistaStyle & ) = delete;
 
-   ~QWindowsVistaStyle();
+    ~QWindowsVistaStyle();
 
-   void drawPrimitive(PrimitiveElement element, const QStyleOption *option, QPainter *painter,
-      const QWidget *widget = nullptr) const override;
+    void drawPrimitive( PrimitiveElement element, const QStyleOption *option, QPainter *painter,
+                        const QWidget *widget = nullptr ) const override;
 
-   void drawControl(ControlElement element, const QStyleOption *option, QPainter *painter,
-      const QWidget *widget) const override;
+    void drawControl( ControlElement element, const QStyleOption *option, QPainter *painter,
+                      const QWidget *widget ) const override;
 
-   void drawComplexControl(ComplexControl control, const QStyleOptionComplex *option, QPainter *painter,
-      const QWidget *widget) const override;
+    void drawComplexControl( ComplexControl control, const QStyleOptionComplex *option, QPainter *painter,
+                             const QWidget *widget ) const override;
 
-   QSize sizeFromContents(ContentsType type, const QStyleOption *option, const QSize &size,
-      const QWidget *widget) const override;
+    QSize sizeFromContents( ContentsType type, const QStyleOption *option, const QSize &size,
+                            const QWidget *widget ) const override;
 
-   QRect subElementRect(SubElement element, const QStyleOption *option, const QWidget *widget) const override;
+    QRect subElementRect( SubElement element, const QStyleOption *option, const QWidget *widget ) const override;
 
-   QRect subControlRect(ComplexControl control, const QStyleOptionComplex *option, SubControl sc,
-      const QWidget *widget) const override;
+    QRect subControlRect( ComplexControl control, const QStyleOptionComplex *option, SubControl sc,
+                          const QWidget *widget ) const override;
 
-   SubControl hitTestComplexControl(ComplexControl control, const QStyleOptionComplex *option, const QPoint &pos,
-      const QWidget *widget = nullptr) const override;
+    SubControl hitTestComplexControl( ComplexControl control, const QStyleOptionComplex *option, const QPoint &pos,
+                                      const QWidget *widget = nullptr ) const override;
 
-   QIcon standardIcon(StandardPixmap standardIcon, const QStyleOption *option = nullptr,
-      const QWidget *widget = nullptr) const override;
+    QIcon standardIcon( StandardPixmap standardIcon, const QStyleOption *option = nullptr,
+                        const QWidget *widget = nullptr ) const override;
 
-   QPixmap standardPixmap(StandardPixmap standardPixmap, const QStyleOption *option,
-      const QWidget *widget = nullptr) const override;
+    QPixmap standardPixmap( StandardPixmap standardPixmap, const QStyleOption *option,
+                            const QWidget *widget = nullptr ) const override;
 
-   int pixelMetric(PixelMetric metric, const QStyleOption *option = nullptr, const QWidget *widget = nullptr) const override;
+    int pixelMetric( PixelMetric metric, const QStyleOption *option = nullptr, const QWidget *widget = nullptr ) const override;
 
-   int styleHint(StyleHint hint, const QStyleOption *opt = nullptr, const QWidget *widget = nullptr,
-      QStyleHintReturn *styleHintReturn = nullptr) const override;
+    int styleHint( StyleHint hint, const QStyleOption *opt = nullptr, const QWidget *widget = nullptr,
+                   QStyleHintReturn *styleHintReturn = nullptr ) const override;
 
-   void polish(QWidget *widget) override;
-   void unpolish(QWidget *widget) override;
-   void polish(QPalette &pal) override;
-   void polish(QApplication *app) override;
-   void unpolish(QApplication *app) override;
+    void polish( QWidget *widget ) override;
+    void unpolish( QWidget *widget ) override;
+    void polish( QPalette &pal ) override;
+    void polish( QApplication *app ) override;
+    void unpolish( QApplication *app ) override;
 
-   QPalette standardPalette() const override;
+    QPalette standardPalette() const override;
 
- private:
-   Q_DECLARE_PRIVATE(QWindowsVistaStyle)
+private:
+    Q_DECLARE_PRIVATE( QWindowsVistaStyle )
 
-   friend class QStyleFactory;
+    friend class QStyleFactory;
 };
 
 class QWindowsVistaAnimation : public QBlendStyleAnimation
 {
-   GUI_CS_OBJECT(QWindowsVistaAnimation)
+    GUI_CS_OBJECT( QWindowsVistaAnimation )
 
- public:
-   QWindowsVistaAnimation(Type type, QObject *target)
-      : QBlendStyleAnimation(type, target)
-   { }
+public:
+    QWindowsVistaAnimation( Type type, QObject *target )
+        : QBlendStyleAnimation( type, target )
+    { }
 
-   bool isUpdateNeeded() const override;
-   void paint(QPainter *painter, const QStyleOption *option);
+    bool isUpdateNeeded() const override;
+    void paint( QPainter *painter, const QStyleOption *option );
 };
 
 // Handles state transition animations
 class QWindowsVistaTransition : public QWindowsVistaAnimation
 {
-   GUI_CS_OBJECT(QWindowsVistaTransition)
+    GUI_CS_OBJECT( QWindowsVistaTransition )
 
- public :
-   QWindowsVistaTransition(QObject *target)
-      : QWindowsVistaAnimation(Transition, target)
-   { }
+public :
+    QWindowsVistaTransition( QObject *target )
+        : QWindowsVistaAnimation( Transition, target )
+    { }
 };
 
 // Handles pulse animations (default buttons)
 class QWindowsVistaPulse: public QWindowsVistaAnimation
 {
-   GUI_CS_OBJECT(QWindowsVistaPulse)
+    GUI_CS_OBJECT( QWindowsVistaPulse )
 
- public :
-   QWindowsVistaPulse(QObject *target)
-      : QWindowsVistaAnimation(Pulse, target)
-   { }
+public :
+    QWindowsVistaPulse( QObject *target )
+        : QWindowsVistaAnimation( Pulse, target )
+    { }
 };
 
 class QWindowsVistaStylePrivate :  public QWindowsXPStylePrivate
 {
-   Q_DECLARE_PUBLIC(QWindowsVistaStyle)
+    Q_DECLARE_PUBLIC( QWindowsVistaStyle )
 
- public:
-   QWindowsVistaStylePrivate();
+public:
+    QWindowsVistaStylePrivate();
 
-   static int fixedPixelMetric(QStyle::PixelMetric pm);
-   static inline bool useVista();
-   bool transitionsEnabled() const;
+    static int fixedPixelMetric( QStyle::PixelMetric pm );
+    static inline bool useVista();
+    bool transitionsEnabled() const;
 };
 
 #endif // QT_NO_STYLE_WINDOWSVISTA

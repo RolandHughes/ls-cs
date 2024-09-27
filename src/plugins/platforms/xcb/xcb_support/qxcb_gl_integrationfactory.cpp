@@ -31,69 +31,78 @@
 
 static QFactoryLoader *loader()
 {
-   static QFactoryLoader retval(QXcbGlIntegrationInterface_ID, "/xcbglintegrations", Qt::CaseInsensitive);
-   return &retval;
+    static QFactoryLoader retval( QXcbGlIntegrationInterface_ID, "/xcbglintegrations", Qt::CaseInsensitive );
+    return &retval;
 }
 
 static QFactoryLoader *directLoader()
 {
-   static QFactoryLoader retval(QXcbGlIntegrationInterface_ID, "", Qt::CaseInsensitive);
-   return &retval;
+    static QFactoryLoader retval( QXcbGlIntegrationInterface_ID, "", Qt::CaseInsensitive );
+    return &retval;
 }
 
-static inline QXcbGlIntegration *loadIntegration(QFactoryLoader *loader, const QString &key)
+static inline QXcbGlIntegration *loadIntegration( QFactoryLoader *loader, const QString &key )
 {
-   if (loader->keySet().contains(key)) {
-      QXcbGlIntegrationPlugin *factory = dynamic_cast<QXcbGlIntegrationPlugin *>(loader->instance(key));
+    if ( loader->keySet().contains( key ) )
+    {
+        QXcbGlIntegrationPlugin *factory = dynamic_cast<QXcbGlIntegrationPlugin *>( loader->instance( key ) );
 
-      if (factory != nullptr) {
-         if (QXcbGlIntegration *result = factory->create()) {
-            return result;
-         }
-      }
-   }
+        if ( factory != nullptr )
+        {
+            if ( QXcbGlIntegration *result = factory->create() )
+            {
+                return result;
+            }
+        }
+    }
 
-   return nullptr;
+    return nullptr;
 }
 
-QXcbGlIntegration *QXcbGlIntegrationFactory::create(const QString &platform, const QString &pluginPath)
+QXcbGlIntegration *QXcbGlIntegrationFactory::create( const QString &platform, const QString &pluginPath )
 {
-   // try loading the xcb-glx plugin from the path first
-   if (! pluginPath.isEmpty()) {
-      QCoreApplication::addLibraryPath(pluginPath);
+    // try loading the xcb-glx plugin from the path first
+    if ( ! pluginPath.isEmpty() )
+    {
+        QCoreApplication::addLibraryPath( pluginPath );
 
-      if (QXcbGlIntegration *ret = loadIntegration(directLoader(), platform)) {
-         return ret;
-      }
-   }
+        if ( QXcbGlIntegration *ret = loadIntegration( directLoader(), platform ) )
+        {
+            return ret;
+        }
+    }
 
-   if (QXcbGlIntegration *ret = loadIntegration(loader(), platform)) {
-      return ret;
-   }
+    if ( QXcbGlIntegration *ret = loadIntegration( loader(), platform ) )
+    {
+        return ret;
+    }
 
-   return nullptr;
+    return nullptr;
 }
 
-QStringList QXcbGlIntegrationFactory::keys(const QString &pluginPath)
+QStringList QXcbGlIntegrationFactory::keys( const QString &pluginPath )
 {
-   QStringList list;
+    QStringList list;
 
-   if (! pluginPath.isEmpty()) {
-      QCoreApplication::addLibraryPath(pluginPath);
-      list = directLoader()->keySet().toList();
+    if ( ! pluginPath.isEmpty() )
+    {
+        QCoreApplication::addLibraryPath( pluginPath );
+        list = directLoader()->keySet().toList();
 
-      if (! list.isEmpty()) {
-         const QString postFix = QString(" (from ") + QDir::toNativeSeparators(pluginPath) + ')';
+        if ( ! list.isEmpty() )
+        {
+            const QString postFix = QString( " (from " ) + QDir::toNativeSeparators( pluginPath ) + ')';
 
-         for (auto &item : list) {
-            item.append(postFix);
-         }
-      }
-   }
+            for ( auto &item : list )
+            {
+                item.append( postFix );
+            }
+        }
+    }
 
-   list.append(loader()->keySet().toList());
+    list.append( loader()->keySet().toList() );
 
-   return list;
+    return list;
 }
 
 

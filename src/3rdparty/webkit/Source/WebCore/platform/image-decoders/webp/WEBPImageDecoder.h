@@ -36,21 +36,26 @@
 // Forward declaration of libwebp's structure. Must be outside the WebCore scope.
 typedef struct WebPIDecoder WebPIDecoder;
 
-namespace WebCore {
+namespace WebCore
+{
 
-class WEBPImageDecoder : public ImageDecoder {
+class WEBPImageDecoder : public ImageDecoder
+{
 public:
-    WEBPImageDecoder(ImageSource::AlphaOption, ImageSource::GammaAndColorProfileOption);
+    WEBPImageDecoder( ImageSource::AlphaOption, ImageSource::GammaAndColorProfileOption );
     virtual ~WEBPImageDecoder();
-    virtual String filenameExtension() const { return "vp8"; }
+    virtual String filenameExtension() const
+    {
+        return "vp8";
+    }
     virtual bool isSizeAvailable();
-    virtual ImageFrame* frameBufferAtIndex(size_t index);
+    virtual ImageFrame *frameBufferAtIndex( size_t index );
 
 private:
     // Returns false in case of decoding failure.
-    bool decode(bool onlySize);
+    bool decode( bool onlySize );
 
-    WebPIDecoder* m_decoder; // This is only used when we want to decode() but not all data is available yet.
+    WebPIDecoder *m_decoder; // This is only used when we want to decode() but not all data is available yet.
     int m_lastVisibleRow;
     Vector<uint8_t> m_rgbOutput;
 };

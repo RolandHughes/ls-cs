@@ -39,50 +39,55 @@
 #include <wtf/text/CString.h>
 #include <wtf/text/WTFString.h>
 
-namespace WebCore {
-
-static leveldb::Slice makeSlice(const Vector<char>& value)
+namespace WebCore
 {
-    return leveldb::Slice(value.data(), value.size());
+
+static leveldb::Slice makeSlice( const Vector<char> &value )
+{
+    return leveldb::Slice( value.data(), value.size() );
 }
 
-static leveldb::Slice makeSlice(const LevelDBSlice& s)
+static leveldb::Slice makeSlice( const LevelDBSlice &s )
 {
-    return leveldb::Slice(s.begin(), s.end() - s.begin());
+    return leveldb::Slice( s.begin(), s.end() - s.begin() );
 }
 
-static LevelDBSlice makeLevelDBSlice(const leveldb::Slice& s)
+static LevelDBSlice makeLevelDBSlice( const leveldb::Slice &s )
 {
-    return LevelDBSlice(s.data(), s.data() + s.size());
+    return LevelDBSlice( s.data(), s.data() + s.size() );
 }
 
-static Vector<char> makeVector(const std::string& s)
+static Vector<char> makeVector( const std::string &s )
 {
     Vector<char> res;
-    res.append(s.c_str(), s.length());
+    res.append( s.c_str(), s.length() );
     return res;
 }
 
-class ComparatorAdapter : public leveldb::Comparator {
+class ComparatorAdapter : public leveldb::Comparator
+{
 public:
-    ComparatorAdapter(const LevelDBComparator* comparator)
-        : m_comparator(comparator)
+    ComparatorAdapter( const LevelDBComparator *comparator )
+        : m_comparator( comparator )
     {
     }
 
-    virtual int Compare(const leveldb::Slice& a, const leveldb::Slice& b) const
+    virtual int Compare( const leveldb::Slice &a, const leveldb::Slice &b ) const
     {
-        return m_comparator->compare(makeLevelDBSlice(a), makeLevelDBSlice(b));
+        return m_comparator->compare( makeLevelDBSlice( a ), makeLevelDBSlice( b ) );
     }
 
-    virtual const char* Name() const { return m_comparator->name(); }
+    virtual const char *Name() const
+    {
+        return m_comparator->name();
+    }
 
     // FIXME: Support the methods below in the future.
-    virtual void FindShortestSeparator(std::string* start, const leveldb::Slice& limit) const { }
-    virtual void FindShortSuccessor(std::string* key) const { }
+    virtual void FindShortestSeparator( std::string *start, const leveldb::Slice &limit ) const { }
+    virtual void FindShortSuccessor( std::string *key ) const { }
 
 private:
-    const LevelDBComparator* m_comparator;
+    const LevelDBComparator *m_comparator;
 };
 
 LevelDBDatabase::LevelDBDatabase()
@@ -93,60 +98,69 @@ LevelDBDatabase::~LevelDBDatabase()
 {
 }
 
-PassOwnPtr<LevelDBDatabase> LevelDBDatabase::open(const String& fileName, const LevelDBComparator* comparator)
+PassOwnPtr<LevelDBDatabase> LevelDBDatabase::open( const String &fileName, const LevelDBComparator *comparator )
 {
-    OwnPtr<ComparatorAdapter> comparatorAdapter = adoptPtr(new ComparatorAdapter(comparator));
+    OwnPtr<ComparatorAdapter> comparatorAdapter = adoptPtr( new ComparatorAdapter( comparator ) );
 
-    OwnPtr<LevelDBDatabase> result = adoptPtr(new LevelDBDatabase);
+    OwnPtr<LevelDBDatabase> result = adoptPtr( new LevelDBDatabase );
 
     leveldb::Options options;
     options.comparator = comparatorAdapter.get();
     options.create_if_missing = true;
-    leveldb::DB* db;
-    leveldb::Status s = leveldb::DB::Open(options, fileName.utf8().data(), &db);
+    leveldb::DB *db;
+    leveldb::Status s = leveldb::DB::Open( options, fileName.utf8().data(), &db );
 
-    if (!s.ok())
+    if ( !s.ok() )
+    {
         return nullptr;
+    }
 
-    result->m_db = adoptPtr(db);
+    result->m_db = adoptPtr( db );
     result->m_comparatorAdapter = comparatorAdapter.release();
 
     return result.release();
 }
 
 
-bool LevelDBDatabase::put(const LevelDBSlice& key, const Vector<char>& value)
+bool LevelDBDatabase::put( const LevelDBSlice &key, const Vector<char> &value )
 {
     leveldb::WriteOptions writeOptions;
     writeOptions.sync = false;
 
-    return m_db->Put(writeOptions, makeSlice(key), makeSlice(value)).ok();
+    return m_db->Put( writeOptions, makeSlice( key ), makeSlice( value ) ).ok();
 }
 
-bool LevelDBDatabase::remove(const LevelDBSlice& key)
+bool LevelDBDatabase::remove( const LevelDBSlice &key )
 {
     leveldb::WriteOptions writeOptions;
     writeOptions.sync = false;
 
-    return m_db->Delete(writeOptions, makeSlice(key)).ok();
+    return m_db->Delete( writeOptions, makeSlice( key ) ).ok();
 }
 
-bool LevelDBDatabase::get(const LevelDBSlice& key, Vector<char>& value)
+bool LevelDBDatabase::get( const LevelDBSlice &key, Vector<char> &value )
 {
     std::string result;
-    if (!m_db->Get(leveldb::ReadOptions(), makeSlice(key), &result).ok())
-        return false;
 
-    value = makeVector(result);
+    if ( !m_db->Get( leveldb::ReadOptions(), makeSlice( key ), &result ).ok() )
+    {
+        return false;
+    }
+
+    value = makeVector( result );
     return true;
 }
 
 PassOwnPtr<LevelDBIterator> LevelDBDatabase::createIterator()
 {
-    OwnPtr<leveldb::Iterator> i = adoptPtr(m_db->NewIterator(leveldb::ReadOptions()));
-    if (!i) // FIXME: Double check if we actually need to check this.
+    OwnPtr<leveldb::Iterator> i = adoptPtr( m_db->NewIterator( leveldb::ReadOptions() ) );
+
+    if ( !i ) // FIXME: Double check if we actually need to check this.
+    {
         return nullptr;
-    return adoptPtr(new LevelDBIterator(i.release()));
+    }
+
+    return adoptPtr( new LevelDBIterator( i.release() ) );
 }
 
 }

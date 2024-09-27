@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef SubstituteData_h
@@ -32,36 +32,57 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class SubstituteData {
-    public:
-        SubstituteData() { }
+class SubstituteData
+{
+public:
+    SubstituteData() { }
 
-        SubstituteData(PassRefPtr<SharedBuffer> content, const String& mimeType, const String& textEncoding, const KURL& failingURL, const KURL& responseURL = KURL())
-            : m_content(content)
-            , m_mimeType(mimeType)
-            , m_textEncoding(textEncoding)
-            , m_failingURL(failingURL)
-            , m_responseURL(responseURL)
-        {
-        }
+    SubstituteData( PassRefPtr<SharedBuffer> content, const String &mimeType, const String &textEncoding, const KURL &failingURL,
+                    const KURL &responseURL = KURL() )
+        : m_content( content )
+        , m_mimeType( mimeType )
+        , m_textEncoding( textEncoding )
+        , m_failingURL( failingURL )
+        , m_responseURL( responseURL )
+    {
+    }
 
-        bool isValid() const { return m_content != 0; }
+    bool isValid() const
+    {
+        return m_content != 0;
+    }
 
-        const SharedBuffer* content() const { return m_content.get(); }
-        const String& mimeType() const { return m_mimeType; }
-        const String& textEncoding() const { return m_textEncoding; }
-        const KURL& failingURL() const { return m_failingURL; }
-        const KURL& responseURL() const { return m_responseURL; }
-        
-    private:
-        RefPtr<SharedBuffer> m_content;
-        String m_mimeType;
-        String m_textEncoding;
-        KURL m_failingURL;
-        KURL m_responseURL;
-    };
+    const SharedBuffer *content() const
+    {
+        return m_content.get();
+    }
+    const String &mimeType() const
+    {
+        return m_mimeType;
+    }
+    const String &textEncoding() const
+    {
+        return m_textEncoding;
+    }
+    const KURL &failingURL() const
+    {
+        return m_failingURL;
+    }
+    const KURL &responseURL() const
+    {
+        return m_responseURL;
+    }
+
+private:
+    RefPtr<SharedBuffer> m_content;
+    String m_mimeType;
+    String m_textEncoding;
+    KURL m_failingURL;
+    KURL m_responseURL;
+};
 
 }
 

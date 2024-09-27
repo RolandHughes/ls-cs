@@ -39,20 +39,24 @@
 
 #define SHOW_CRASH_REPORTER 1
 
-namespace WebKit {
+namespace WebKit
+{
 
-int PluginProcessMain(const CommandLine& commandLine)
+int PluginProcessMain( const CommandLine &commandLine )
 {
     String serviceName = commandLine["servicename"];
-    if (serviceName.isEmpty())
+
+    if ( serviceName.isEmpty() )
+    {
         return EXIT_FAILURE;
+    }
 
 #if !SHOW_CRASH_REPORTER
     // Installs signal handlers that exit on a crash so that CrashReporter does not show up.
-    signal(SIGILL, _exit);
-    signal(SIGFPE, _exit);
-    signal(SIGBUS, _exit);
-    signal(SIGSEGV, _exit);
+    signal( SIGILL, _exit );
+    signal( SIGFPE, _exit );
+    signal( SIGBUS, _exit );
+    signal( SIGSEGV, _exit );
 #endif
 
     JSC::initializeThreading();

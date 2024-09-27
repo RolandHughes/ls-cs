@@ -23,19 +23,24 @@
 #if ENABLE(SVG_FONTS)
 #include "SVGStyledElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SVGMissingGlyphElement : public SVGStyledElement {
+class SVGMissingGlyphElement : public SVGStyledElement
+{
 public:
-    static PassRefPtr<SVGMissingGlyphElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<SVGMissingGlyphElement> create( const QualifiedName &, Document * );
 
 private:
-    SVGMissingGlyphElement(const QualifiedName&, Document*);
+    SVGMissingGlyphElement( const QualifiedName &, Document * );
 
     virtual void fillAttributeToPropertyTypeMap();
-    virtual AttributeToPropertyTypeMap& attributeToPropertyTypeMap();
+    virtual AttributeToPropertyTypeMap &attributeToPropertyTypeMap();
 
-    virtual bool rendererIsNeeded(RenderStyle*) { return false; }
+    virtual bool rendererIsNeeded( RenderStyle * )
+    {
+        return false;
+    }
 };
 
 } // namespace WebCore

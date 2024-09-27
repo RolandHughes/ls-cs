@@ -26,30 +26,31 @@
 
 #include <qtriplecontainer_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class IfThenClause : public TripleContainer
 {
- public:
-   IfThenClause(const Expression::Ptr &test, const Expression::Ptr &then, const Expression::Ptr &el);
+public:
+    IfThenClause( const Expression::Ptr &test, const Expression::Ptr &then, const Expression::Ptr &el );
 
-   bool evaluateEBV(const DynamicContext::Ptr &context) const override;
-   Item::Iterator::Ptr evaluateSequence(const DynamicContext::Ptr &context) const override;
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
-   void evaluateToSequenceReceiver(const DynamicContext::Ptr &context) const override;
+    bool evaluateEBV( const DynamicContext::Ptr &context ) const override;
+    Item::Iterator::Ptr evaluateSequence( const DynamicContext::Ptr &context ) const override;
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
+    void evaluateToSequenceReceiver( const DynamicContext::Ptr &context ) const override;
 
-   SequenceType::List expectedOperandTypes() const override;
-   Expression::Ptr compress(const StaticContext::Ptr &context) override;
+    SequenceType::List expectedOperandTypes() const override;
+    Expression::Ptr compress( const StaticContext::Ptr &context ) override;
 
-   SequenceType::Ptr staticType() const override;
-   ExpressionVisitorResult::Ptr accept(const ExpressionVisitor::Ptr &visitor) const override;
+    SequenceType::Ptr staticType() const override;
+    ExpressionVisitorResult::Ptr accept( const ExpressionVisitor::Ptr &visitor ) const override;
 
-   /**
-    * @returns IDIfThenClause
-    */
-   ID id() const override;
-   QList<QExplicitlySharedDataPointer<OptimizationPass> > optimizationPasses() const override;
-   //virtual Properties properties() const;
+    /**
+     * @returns IDIfThenClause
+     */
+    ID id() const override;
+    QList<QExplicitlySharedDataPointer<OptimizationPass> > optimizationPasses() const override;
+    //virtual Properties properties() const;
 };
 
 }

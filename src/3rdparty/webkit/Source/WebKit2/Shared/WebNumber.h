@@ -29,27 +29,35 @@
 #include "APIObject.h"
 #include <wtf/PassRefPtr.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 template<typename NumberType, APIObject::Type APIObjectType>
-class WebNumber : public APIObject {
+class WebNumber : public APIObject
+{
 public:
     static const Type APIType = APIObjectType;
 
-    static PassRefPtr<WebNumber> create(NumberType value)
+    static PassRefPtr<WebNumber> create( NumberType value )
     {
-        return adoptRef(new WebNumber(value));
+        return adoptRef( new WebNumber( value ) );
     }
 
-    NumberType value() const { return m_value; }
+    NumberType value() const
+    {
+        return m_value;
+    }
 
 private:
-    explicit WebNumber(NumberType value)
-        : m_value(value)
+    explicit WebNumber( NumberType value )
+        : m_value( value )
     {
     }
 
-    virtual Type type() const { return APIType; }
+    virtual Type type() const
+    {
+        return APIType;
+    }
 
     const NumberType m_value;
 };

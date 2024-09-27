@@ -33,21 +33,28 @@
 
 #include <wtf/text/WTFString.h>
 
-namespace WebCore {
-    
-static bool mainBundleIsEqualTo(const String& bundleIdentifierString)
+namespace WebCore
+{
+
+static bool mainBundleIsEqualTo( const String &bundleIdentifierString )
 {
 #if USE(CF)
     CFBundleRef mainBundle = CFBundleGetMainBundle();
-    if (!mainBundle)
-        return false;
 
-    CFStringRef bundleIdentifier = CFBundleGetIdentifier(mainBundle);
-    if (!bundleIdentifier)
+    if ( !mainBundle )
+    {
         return false;
+    }
 
-    RetainPtr<CFStringRef> bundleIdentifierToCompare(AdoptCF, bundleIdentifierString.createCFString());
-    return CFStringCompare(bundleIdentifier, bundleIdentifierToCompare.get(), 0) == kCFCompareEqualTo;
+    CFStringRef bundleIdentifier = CFBundleGetIdentifier( mainBundle );
+
+    if ( !bundleIdentifier )
+    {
+        return false;
+    }
+
+    RetainPtr<CFStringRef> bundleIdentifierToCompare( AdoptCF, bundleIdentifierString.createCFString() );
+    return CFStringCompare( bundleIdentifier, bundleIdentifierToCompare.get(), 0 ) == kCFCompareEqualTo;
 #else
     return false;
 #endif
@@ -56,49 +63,49 @@ static bool mainBundleIsEqualTo(const String& bundleIdentifierString)
 bool applicationIsSafari()
 {
     // FIXME: For the WebProcess case, ensure that this is Safari's WebProcess.
-    static bool isSafari = mainBundleIsEqualTo("com.apple.Safari") || mainBundleIsEqualTo("com.apple.WebProcess");
+    static bool isSafari = mainBundleIsEqualTo( "com.apple.Safari" ) || mainBundleIsEqualTo( "com.apple.WebProcess" );
     return isSafari;
 }
 
 bool applicationIsAppleMail()
 {
-    static bool isAppleMail = mainBundleIsEqualTo("com.apple.mail");
+    static bool isAppleMail = mainBundleIsEqualTo( "com.apple.mail" );
     return isAppleMail;
 }
 
 bool applicationIsMicrosoftMessenger()
 {
-    static bool isMicrosoftMessenger = mainBundleIsEqualTo("com.microsoft.Messenger");
+    static bool isMicrosoftMessenger = mainBundleIsEqualTo( "com.microsoft.Messenger" );
     return isMicrosoftMessenger;
 }
 
 bool applicationIsAdobeInstaller()
 {
-    static bool isAdobeInstaller = mainBundleIsEqualTo("com.adobe.Installers.Setup");
+    static bool isAdobeInstaller = mainBundleIsEqualTo( "com.adobe.Installers.Setup" );
     return isAdobeInstaller;
 }
 
 bool applicationIsAOLInstantMessenger()
 {
-    static bool isAOLInstantMessenger = mainBundleIsEqualTo("com.aol.aim.desktop");
+    static bool isAOLInstantMessenger = mainBundleIsEqualTo( "com.aol.aim.desktop" );
     return isAOLInstantMessenger;
 }
 
 bool applicationIsMicrosoftMyDay()
 {
-    static bool isMicrosoftMyDay = mainBundleIsEqualTo("com.microsoft.myday");
+    static bool isMicrosoftMyDay = mainBundleIsEqualTo( "com.microsoft.myday" );
     return isMicrosoftMyDay;
 }
 
 bool applicationIsMicrosoftOutlook()
 {
-    static bool isMicrosoftOutlook = mainBundleIsEqualTo("com.microsoft.Outlook");
+    static bool isMicrosoftOutlook = mainBundleIsEqualTo( "com.microsoft.Outlook" );
     return isMicrosoftOutlook;
 }
 
 bool applicationIsAperture()
 {
-    static bool isAperture = mainBundleIsEqualTo("com.apple.Aperture");
+    static bool isAperture = mainBundleIsEqualTo( "com.apple.Aperture" );
     return isAperture;
 }
 

@@ -41,42 +41,63 @@ class NSRunLoop;
 #endif
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SchedulePair : public RefCounted<SchedulePair> {
+class SchedulePair : public RefCounted<SchedulePair>
+{
 public:
-    static PassRefPtr<SchedulePair> create(CFRunLoopRef runLoop, CFStringRef mode) { return adoptRef(new SchedulePair(runLoop, mode)); }
+    static PassRefPtr<SchedulePair> create( CFRunLoopRef runLoop, CFStringRef mode )
+    {
+        return adoptRef( new SchedulePair( runLoop, mode ) );
+    }
 
 #if PLATFORM(MAC)
-    static PassRefPtr<SchedulePair> create(NSRunLoop* runLoop, CFStringRef mode) { return adoptRef(new SchedulePair(runLoop, mode)); }
-    NSRunLoop* nsRunLoop() const { return m_nsRunLoop.get(); }
+    static PassRefPtr<SchedulePair> create( NSRunLoop *runLoop, CFStringRef mode )
+    {
+        return adoptRef( new SchedulePair( runLoop, mode ) );
+    }
+    NSRunLoop *nsRunLoop() const
+    {
+        return m_nsRunLoop.get();
+    }
 #endif
 
-    CFRunLoopRef runLoop() const { return m_runLoop.get(); }
-    CFStringRef mode() const { return m_mode.get(); }
+    CFRunLoopRef runLoop() const
+    {
+        return m_runLoop.get();
+    }
+    CFStringRef mode() const
+    {
+        return m_mode.get();
+    }
 
-    bool operator==(const SchedulePair& other) const;
+    bool operator==( const SchedulePair &other ) const;
 
 private:
-    SchedulePair(CFRunLoopRef, CFStringRef);
+    SchedulePair( CFRunLoopRef, CFStringRef );
 
 #if PLATFORM(MAC)
-    SchedulePair(NSRunLoop*, CFStringRef);
-    RetainPtr<NSRunLoop*> m_nsRunLoop;
+    SchedulePair( NSRunLoop *, CFStringRef );
+    RetainPtr<NSRunLoop *> m_nsRunLoop;
 #endif
 
     RetainPtr<CFRunLoopRef> m_runLoop;
     RetainPtr<CFStringRef> m_mode;
 };
 
-struct SchedulePairHash {
-    static unsigned hash(const RefPtr<SchedulePair>& pair)
+struct SchedulePairHash
+{
+    static unsigned hash( const RefPtr<SchedulePair> &pair )
     {
-        uintptr_t hashCodes[2] = { reinterpret_cast<uintptr_t>(pair->runLoop()), pair->mode() ? CFHash(pair->mode()) : 0 };
-        return StringHasher::hashMemory<sizeof(hashCodes)>(hashCodes);
+        uintptr_t hashCodes[2] = { reinterpret_cast<uintptr_t>( pair->runLoop() ), pair->mode() ? CFHash( pair->mode() ) : 0 };
+        return StringHasher::hashMemory<sizeof( hashCodes )>( hashCodes );
     }
 
-    static bool equal(const RefPtr<SchedulePair>& a, const RefPtr<SchedulePair>& b) { return a == b; }
+    static bool equal( const RefPtr<SchedulePair> &a, const RefPtr<SchedulePair> &b )
+    {
+        return a == b;
+    }
 
     static const bool safeToCompareToEmptyOrDeleted = true;
 };

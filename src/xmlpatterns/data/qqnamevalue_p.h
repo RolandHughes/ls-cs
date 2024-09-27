@@ -27,29 +27,31 @@
 #include "qitem_p.h"
 #include "qxmlname.h"
 
-namespace QPatternist {
+namespace QPatternist
+{
 class QNameValue : public AtomicValue
 {
- public:
-   friend class CommonValues;
-   friend class QNameComparator;
+public:
+    friend class CommonValues;
+    friend class QNameComparator;
 
-   typedef QExplicitlySharedDataPointer<QNameValue> Ptr;
+    typedef QExplicitlySharedDataPointer<QNameValue> Ptr;
 
-   static QNameValue::Ptr fromValue(const NamePool::Ptr &np, const QXmlName name);
+    static QNameValue::Ptr fromValue( const NamePool::Ptr &np, const QXmlName name );
 
-   QString stringValue() const override;
-   ItemType::Ptr type() const override;
+    QString stringValue() const override;
+    ItemType::Ptr type() const override;
 
-   QXmlName qName() const {
-      return m_qName;
-   }
+    QXmlName qName() const
+    {
+        return m_qName;
+    }
 
- private:
-   QNameValue(const NamePool::Ptr &np, const QXmlName name);
+private:
+    QNameValue( const NamePool::Ptr &np, const QXmlName name );
 
-   const QXmlName m_qName;
-   const NamePool::Ptr m_namePool;
+    const QXmlName m_qName;
+    const NamePool::Ptr m_namePool;
 };
 }
 

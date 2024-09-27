@@ -34,11 +34,12 @@
 
 using namespace WebCore;
 
-namespace WebKit {
-
-WebMediaCacheManager& WebMediaCacheManager::shared()
+namespace WebKit
 {
-    static WebMediaCacheManager& shared = *new WebMediaCacheManager;
+
+WebMediaCacheManager &WebMediaCacheManager::shared()
+{
+    static WebMediaCacheManager &shared = *new WebMediaCacheManager;
     return shared;
 }
 
@@ -46,36 +47,38 @@ WebMediaCacheManager::WebMediaCacheManager()
 {
 }
 
-void WebMediaCacheManager::didReceiveMessage(CoreIPC::Connection* connection, CoreIPC::MessageID messageID, CoreIPC::ArgumentDecoder* arguments)
+void WebMediaCacheManager::didReceiveMessage( CoreIPC::Connection *connection, CoreIPC::MessageID messageID,
+        CoreIPC::ArgumentDecoder *arguments )
 {
-    didReceiveWebMediaCacheManagerMessage(connection, messageID, arguments);
+    didReceiveWebMediaCacheManagerMessage( connection, messageID, arguments );
 }
 
-void WebMediaCacheManager::getHostnamesWithMediaCache(uint64_t callbackID)
+void WebMediaCacheManager::getHostnamesWithMediaCache( uint64_t callbackID )
 {
-    WebProcess::LocalTerminationDisabler terminationDisabler(WebProcess::shared());
+    WebProcess::LocalTerminationDisabler terminationDisabler( WebProcess::shared() );
 
     Vector<String> mediaCacheHostnames;
 
 #if ENABLE(VIDEO)
-    HTMLMediaElement::getSitesInMediaCache(mediaCacheHostnames);
+    HTMLMediaElement::getSitesInMediaCache( mediaCacheHostnames );
 #endif
 
-    WebProcess::shared().connection()->send(Messages::WebMediaCacheManagerProxy::DidGetHostnamesWithMediaCache(mediaCacheHostnames, callbackID), 0);
+    WebProcess::shared().connection()->send( Messages::WebMediaCacheManagerProxy::DidGetHostnamesWithMediaCache( mediaCacheHostnames,
+            callbackID ), 0 );
 }
 
-void WebMediaCacheManager::clearCacheForHostname(const String& hostname)
+void WebMediaCacheManager::clearCacheForHostname( const String &hostname )
 {
-    WebProcess::LocalTerminationDisabler terminationDisabler(WebProcess::shared());
+    WebProcess::LocalTerminationDisabler terminationDisabler( WebProcess::shared() );
 
 #if ENABLE(VIDEO)
-    HTMLMediaElement::clearMediaCacheForSite(hostname);
+    HTMLMediaElement::clearMediaCacheForSite( hostname );
 #endif
 }
 
 void WebMediaCacheManager::clearCacheForAllHostnames()
 {
-    WebProcess::LocalTerminationDisabler terminationDisabler(WebProcess::shared());
+    WebProcess::LocalTerminationDisabler terminationDisabler( WebProcess::shared() );
 
 #if ENABLE(VIDEO)
     HTMLMediaElement::clearMediaCache();

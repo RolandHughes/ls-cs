@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef WebLayer_h
@@ -30,27 +30,28 @@
 
 #import <QuartzCore/QuartzCore.h>
 
-namespace WebCore {
-    class GraphicsLayer;
-    class PlatformCALayer;
-    class PlatformCALayerClient;
+namespace WebCore
+{
+class GraphicsLayer;
+class PlatformCALayer;
+class PlatformCALayerClient;
 }
 
 #if defined(BUILDING_ON_LEOPARD)
-@interface CALayer(WebLayerInternal)
-- (CGAffineTransform)contentsTransform;
-- (void)setContentsTransform:(CGAffineTransform)t;
+@interface CALayer( WebLayerInternal )
+- ( CGAffineTransform )contentsTransform;
+- ( void )setContentsTransform:( CGAffineTransform )t;
 @end
 #endif
 
-@interface WebLayer : CALayer 
+@interface WebLayer : CALayer
 {
 }
 @end
 
 // Functions allows us to share implementation across WebTiledLayer and WebLayer
-void drawLayerContents(CGContextRef, CALayer *, WebCore::PlatformCALayer*);
-void setLayerNeedsDisplayInRect(CALayer *, WebCore::PlatformCALayerClient*, CGRect);
+void drawLayerContents( CGContextRef, CALayer *, WebCore::PlatformCALayer * );
+void setLayerNeedsDisplayInRect( CALayer *, WebCore::PlatformCALayerClient *, CGRect );
 
 #endif // USE(ACCELERATED_COMPOSITING)
 

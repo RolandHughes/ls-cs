@@ -31,63 +31,66 @@
 
 using namespace QPatternist;
 
-UntypedAtomicConverter::UntypedAtomicConverter(const Expression::Ptr &operand,
-      const ItemType::Ptr &reqType,
-      const ReportContext::ErrorCode code) : SingleContainer(operand)
-   , CastingPlatform<UntypedAtomicConverter, true>(code)
-   , m_reqType(reqType)
+UntypedAtomicConverter::UntypedAtomicConverter( const Expression::Ptr &operand,
+        const ItemType::Ptr &reqType,
+        const ReportContext::ErrorCode code ) : SingleContainer( operand )
+    , CastingPlatform<UntypedAtomicConverter, true>( code )
+    , m_reqType( reqType )
 {
-   Q_ASSERT(reqType);
+    Q_ASSERT( reqType );
 }
 
-Item::Iterator::Ptr UntypedAtomicConverter::evaluateSequence(const DynamicContext::Ptr &context) const
+Item::Iterator::Ptr UntypedAtomicConverter::evaluateSequence( const DynamicContext::Ptr &context ) const
 {
-   return makeItemMappingIterator<Item>(ConstPtr(this),
-                                        m_operand->evaluateSequence(context),
-                                        context);
+    return makeItemMappingIterator<Item>( ConstPtr( this ),
+                                          m_operand->evaluateSequence( context ),
+                                          context );
 }
 
-Item UntypedAtomicConverter::evaluateSingleton(const DynamicContext::Ptr &context) const
+Item UntypedAtomicConverter::evaluateSingleton( const DynamicContext::Ptr &context ) const
 {
-   const Item item(m_operand->evaluateSingleton(context));
+    const Item item( m_operand->evaluateSingleton( context ) );
 
-   if (item) {
-      return cast(item, context);
-   } else { /* Empty is allowed. UntypedAtomicConverter doesn't care about cardinality. */
-      return Item();
-   }
+    if ( item )
+    {
+        return cast( item, context );
+    }
+    else     /* Empty is allowed. UntypedAtomicConverter doesn't care about cardinality. */
+    {
+        return Item();
+    }
 }
 
-Expression::Ptr UntypedAtomicConverter::typeCheck(const StaticContext::Ptr &context,
-      const SequenceType::Ptr &reqType)
+Expression::Ptr UntypedAtomicConverter::typeCheck( const StaticContext::Ptr &context,
+        const SequenceType::Ptr &reqType )
 {
-   const Expression::Ptr me(SingleContainer::typeCheck(context, reqType));
+    const Expression::Ptr me( SingleContainer::typeCheck( context, reqType ) );
 
-   /* Let the CastingPlatform look up its AtomicCaster. */
-   prepareCasting(context, m_operand->staticType()->itemType());
+    /* Let the CastingPlatform look up its AtomicCaster. */
+    prepareCasting( context, m_operand->staticType()->itemType() );
 
-   return me;
+    return me;
 }
 
 SequenceType::List UntypedAtomicConverter::expectedOperandTypes() const
 {
-   SequenceType::List result;
-   result.append(CommonSequenceTypes::ZeroOrMoreAtomicTypes);
-   return result;
+    SequenceType::List result;
+    result.append( CommonSequenceTypes::ZeroOrMoreAtomicTypes );
+    return result;
 }
 
 SequenceType::Ptr UntypedAtomicConverter::staticType() const
 {
-   return makeGenericSequenceType(m_reqType,
-                                  m_operand->staticType()->cardinality());
+    return makeGenericSequenceType( m_reqType,
+                                    m_operand->staticType()->cardinality() );
 }
 
-ExpressionVisitorResult::Ptr UntypedAtomicConverter::accept(const ExpressionVisitor::Ptr &visitor) const
+ExpressionVisitorResult::Ptr UntypedAtomicConverter::accept( const ExpressionVisitor::Ptr &visitor ) const
 {
-   return visitor->visit(this);
+    return visitor->visit( this );
 }
 
 const SourceLocationReflection *UntypedAtomicConverter::actualReflection() const
 {
-   return m_operand.data();
+    return m_operand.data();
 }

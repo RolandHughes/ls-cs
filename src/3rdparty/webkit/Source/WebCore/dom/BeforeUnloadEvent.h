@@ -26,27 +26,32 @@
 
 #include "Event.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class BeforeUnloadEvent : public Event {
-    public:
-        virtual ~BeforeUnloadEvent();
+class BeforeUnloadEvent : public Event
+{
+public:
+    virtual ~BeforeUnloadEvent();
 
-        static PassRefPtr<BeforeUnloadEvent> create()
-        {
-            return adoptRef(new BeforeUnloadEvent);
-        }
+    static PassRefPtr<BeforeUnloadEvent> create()
+    {
+        return adoptRef( new BeforeUnloadEvent );
+    }
 
-        virtual bool storesResultAsString() const;
-        virtual void storeResult(const String&);
+    virtual bool storesResultAsString() const;
+    virtual void storeResult( const String & );
 
-        String result() const { return m_result; }
+    String result() const
+    {
+        return m_result;
+    }
 
-    private:
-        BeforeUnloadEvent();
+private:
+    BeforeUnloadEvent();
 
-        String m_result;
-    };
+    String m_result;
+};
 
 } // namespace WebCore
 

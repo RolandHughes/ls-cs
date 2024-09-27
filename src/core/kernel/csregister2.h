@@ -29,20 +29,20 @@ template<class T>
 class cs_returnType;
 
 template<class T, class R>
-class cs_returnType<R (T::*)() const>
+class cs_returnType<R ( T::* )() const>
 {
- public:
-   using type = R;
+public:
+    using type = R;
 };
 
 template<class T>
 class cs_argType;
 
 template<class T, class R, class V>
-class cs_argType<R (T::*)(V)>
+class cs_argType<R ( T::* )( V )>
 {
- public:
-   using type = V;
+public:
+    using type = V;
 };
 
 #endif

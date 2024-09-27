@@ -22,27 +22,28 @@
 #if ENABLE(SVG_FONTS)
 #include "SVGMissingGlyphElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-inline SVGMissingGlyphElement::SVGMissingGlyphElement(const QualifiedName& tagName, Document* document)
-    : SVGStyledElement(tagName, document)
+inline SVGMissingGlyphElement::SVGMissingGlyphElement( const QualifiedName &tagName, Document *document )
+    : SVGStyledElement( tagName, document )
 {
 }
 
-PassRefPtr<SVGMissingGlyphElement> SVGMissingGlyphElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<SVGMissingGlyphElement> SVGMissingGlyphElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new SVGMissingGlyphElement(tagName, document));
+    return adoptRef( new SVGMissingGlyphElement( tagName, document ) );
 }
 
-AttributeToPropertyTypeMap& SVGMissingGlyphElement::attributeToPropertyTypeMap()
+AttributeToPropertyTypeMap &SVGMissingGlyphElement::attributeToPropertyTypeMap()
 {
-    DEFINE_STATIC_LOCAL(AttributeToPropertyTypeMap, s_attributeToPropertyTypeMap, ());
+    DEFINE_STATIC_LOCAL( AttributeToPropertyTypeMap, s_attributeToPropertyTypeMap, () );
     return s_attributeToPropertyTypeMap;
 }
 
 void SVGMissingGlyphElement::fillAttributeToPropertyTypeMap()
 {
-    SVGStyledElement::fillPassedAttributeToPropertyTypeMap(attributeToPropertyTypeMap());
+    SVGStyledElement::fillPassedAttributeToPropertyTypeMap( attributeToPropertyTypeMap() );
 }
 
 }

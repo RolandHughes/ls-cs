@@ -31,29 +31,31 @@ QT_BEGIN_NAMESPACE
 
 class QDeclarativeGlobalScriptClass : public QScriptClass
 {
- public:
-   QDeclarativeGlobalScriptClass(QScriptEngine *);
+public:
+    QDeclarativeGlobalScriptClass( QScriptEngine * );
 
-   virtual QueryFlags queryProperty(const QScriptValue &object,
-                                    const QScriptString &name,
-                                    QueryFlags flags, uint *id);
+    virtual QueryFlags queryProperty( const QScriptValue &object,
+                                      const QScriptString &name,
+                                      QueryFlags flags, uint *id );
 
-   virtual void setProperty(QScriptValue &object, const QScriptString &name,
-                            uint id, const QScriptValue &value);
+    virtual void setProperty( QScriptValue &object, const QScriptString &name,
+                              uint id, const QScriptValue &value );
 
-   void explicitSetProperty(const QStringList &, const QList<QScriptValue> &);
+    void explicitSetProperty( const QStringList &, const QList<QScriptValue> & );
 
-   const QScriptValue &staticGlobalObject() const {
-      return m_staticGlobalObject;
-   }
+    const QScriptValue &staticGlobalObject() const
+    {
+        return m_staticGlobalObject;
+    }
 
-   const QSet<QString> &illegalNames() const {
-      return m_illegalNames;
-   }
+    const QSet<QString> &illegalNames() const
+    {
+        return m_illegalNames;
+    }
 
- private:
-   QSet<QString> m_illegalNames;
-   QScriptValue m_staticGlobalObject;
+private:
+    QSet<QString> m_illegalNames;
+    QScriptValue m_staticGlobalObject;
 };
 
 QT_END_NAMESPACE

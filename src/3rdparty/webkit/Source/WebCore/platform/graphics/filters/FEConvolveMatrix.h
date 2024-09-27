@@ -31,9 +31,11 @@
 #include <wtf/AlwaysInline.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-enum EdgeModeType {
+enum EdgeModeType
+{
     EDGEMODE_UNKNOWN   = 0,
     EDGEMODE_DUPLICATE = 1,
     EDGEMODE_WRAP      = 2,
@@ -42,66 +44,71 @@ enum EdgeModeType {
 
 class CanvasPixelArray;
 
-class FEConvolveMatrix : public FilterEffect {
+class FEConvolveMatrix : public FilterEffect
+{
 public:
-    static PassRefPtr<FEConvolveMatrix> create(Filter*, const IntSize&,
-            float, float, const IntPoint&, EdgeModeType, const FloatPoint&,
-            bool, const Vector<float>&);
+    static PassRefPtr<FEConvolveMatrix> create( Filter *, const IntSize &,
+            float, float, const IntPoint &, EdgeModeType, const FloatPoint &,
+            bool, const Vector<float> & );
 
     IntSize kernelSize() const;
-    void setKernelSize(const IntSize&);
+    void setKernelSize( const IntSize & );
 
-    const Vector<float>& kernel() const;
-    void setKernel(const Vector<float>&);
+    const Vector<float> &kernel() const;
+    void setKernel( const Vector<float> & );
 
     float divisor() const;
-    bool setDivisor(float);
+    bool setDivisor( float );
 
     float bias() const;
-    bool setBias(float);
+    bool setBias( float );
 
     IntPoint targetOffset() const;
-    bool setTargetOffset(const IntPoint&);
+    bool setTargetOffset( const IntPoint & );
 
     EdgeModeType edgeMode() const;
-    bool setEdgeMode(EdgeModeType);
+    bool setEdgeMode( EdgeModeType );
 
     FloatPoint kernelUnitLength() const;
-    bool setKernelUnitLength(const FloatPoint&);
+    bool setKernelUnitLength( const FloatPoint & );
 
     bool preserveAlpha() const;
-    bool setPreserveAlpha(bool);
+    bool setPreserveAlpha( bool );
 
     virtual void apply();
     virtual void dump();
 
-    virtual void determineAbsolutePaintRect() { setAbsolutePaintRect(maxEffectRect()); }
+    virtual void determineAbsolutePaintRect()
+    {
+        setAbsolutePaintRect( maxEffectRect() );
+    }
 
-    virtual TextStream& externalRepresentation(TextStream&, int indention) const;
+    virtual TextStream &externalRepresentation( TextStream &, int indention ) const;
 
 private:
-    FEConvolveMatrix(Filter*, const IntSize&, float, float,
-            const IntPoint&, EdgeModeType, const FloatPoint&, bool, const Vector<float>&);
+    FEConvolveMatrix( Filter *, const IntSize &, float, float,
+                      const IntPoint &, EdgeModeType, const FloatPoint &, bool, const Vector<float> & );
 
-    struct PaintingData {
-        ByteArray* srcPixelArray;
-        ByteArray* dstPixelArray;
+    struct PaintingData
+    {
+        ByteArray *srcPixelArray;
+        ByteArray *dstPixelArray;
         int width;
         int height;
         float bias;
     };
 
     template<bool preserveAlphaValues>
-    ALWAYS_INLINE void fastSetInteriorPixels(PaintingData&, int clipRight, int clipBottom);
+    ALWAYS_INLINE void fastSetInteriorPixels( PaintingData &, int clipRight, int clipBottom );
 
-    ALWAYS_INLINE int getPixelValue(PaintingData&, int x, int y);
+    ALWAYS_INLINE int getPixelValue( PaintingData &, int x, int y );
 
     template<bool preserveAlphaValues>
-    void fastSetOuterPixels(PaintingData&, int x1, int y1, int x2, int y2);
+    void fastSetOuterPixels( PaintingData &, int x1, int y1, int x2, int y2 );
 
     // Wrapper functions
-    ALWAYS_INLINE void setInteriorPixels(PaintingData& paintingData, int clipRight, int clipBottom);
-    ALWAYS_INLINE void setOuterPixels(PaintingData& paintingData, int x1, int y1, int x2, int y2);
+    ALWAYS_INLINE void setInteriorPixels( PaintingData &paintingData, int clipRight, int clipBottom );
+    ALWAYS_INLINE void setOuterPixels( PaintingData &paintingData, int x1, int y1, int x2, int y2 );
 
     IntSize m_kernelSize;
     float m_divisor;

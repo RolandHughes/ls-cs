@@ -27,19 +27,22 @@
 #include <wtf/Forward.h>
 
 
-namespace WebCore {
+namespace WebCore
+{
 
 // A range of a node within a document that is "marked", such as the range of a misspelled word.
 // It optionally includes a description that could be displayed in the user interface.
 // It also optionally includes a flag specifying whether the match is active, which is ignored
 // for all types other than type TextMatch.
-struct DocumentMarker {
-    enum MarkerType {
+struct DocumentMarker
+{
+    enum MarkerType
+    {
         Spelling = 1 << 0,
         Grammar = 1 << 1,
         TextMatch = 1 << 2,
-        // Text has been modified by spell correction, reversion of spell correction or other type of substitution. 
-        // On some platforms, this prevents the text from being autocorrected again. On post Snow Leopard Mac OS X, 
+        // Text has been modified by spell correction, reversion of spell correction or other type of substitution.
+        // On some platforms, this prevents the text from being autocorrected again. On post Snow Leopard Mac OS X,
         // if a Replacement marker contains non-empty description, a reversion UI will be shown.
         Replacement = 1 << 3,
         // Renderer needs to add underline indicating that the text has been modified by spell
@@ -56,44 +59,62 @@ struct DocumentMarker {
         SpellCheckingExemption = 1 << 7,
     };
 
-    class MarkerTypes {
+    class MarkerTypes
+    {
     public:
         // The constructor is intentionally implicit to allow conversion from the bit-wise sum of above types
-        MarkerTypes(unsigned mask) : m_mask(mask) { }
+        MarkerTypes( unsigned mask ) : m_mask( mask ) { }
 
-        bool contains(MarkerType type) const { return m_mask & type; }
-        bool intersects(const MarkerTypes& types) const { return (m_mask & types.m_mask); }
-        bool operator==(const MarkerTypes& other) const { return m_mask == other.m_mask; }
+        bool contains( MarkerType type ) const
+        {
+            return m_mask & type;
+        }
+        bool intersects( const MarkerTypes &types ) const
+        {
+            return ( m_mask & types.m_mask );
+        }
+        bool operator==( const MarkerTypes &other ) const
+        {
+            return m_mask == other.m_mask;
+        }
 
-        void add(const MarkerTypes& types) { m_mask |= types.m_mask; }
-        void remove(const MarkerTypes& types) { m_mask &= ~types.m_mask; }
+        void add( const MarkerTypes &types )
+        {
+            m_mask |= types.m_mask;
+        }
+        void remove( const MarkerTypes &types )
+        {
+            m_mask &= ~types.m_mask;
+        }
 
     private:
         unsigned m_mask;
     };
 
-    class AllMarkers : public MarkerTypes {
+    class AllMarkers : public MarkerTypes
+    {
     public:
         AllMarkers()
-            : MarkerTypes(Spelling | Grammar | TextMatch | Replacement | CorrectionIndicator | RejectedCorrection | Autocorrected | SpellCheckingExemption)
+            : MarkerTypes( Spelling | Grammar | TextMatch | Replacement | CorrectionIndicator | RejectedCorrection | Autocorrected |
+                           SpellCheckingExemption )
         {
         }
     };
-    
+
     MarkerType type;
     unsigned startOffset;
     unsigned endOffset;
     String description;
     bool activeMatch;
 
-    bool operator==(const DocumentMarker& o) const
+    bool operator==( const DocumentMarker &o ) const
     {
         return type == o.type && startOffset == o.startOffset && endOffset == o.endOffset;
     }
 
-    bool operator!=(const DocumentMarker& o) const
+    bool operator!=( const DocumentMarker &o ) const
     {
-        return !(*this == o);
+        return !( *this == o );
     }
 };
 

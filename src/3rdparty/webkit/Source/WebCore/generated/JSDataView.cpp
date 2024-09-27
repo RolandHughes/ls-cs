@@ -29,9 +29,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSDataView);
+ASSERT_CLASS_FITS_IN_CELL( JSDataView );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -42,8 +43,8 @@ ASSERT_CLASS_FITS_IN_CELL(JSDataView);
 
 static const HashTableValue JSDataViewTableValues[2] =
 {
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDataViewConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDataViewConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -57,31 +58,34 @@ static JSC_CONST_HASHTABLE HashTable JSDataViewTable = { 2, 1, JSDataViewTableVa
 
 static const HashTableValue JSDataViewConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSDataViewConstructorTable = { 1, 0, JSDataViewConstructorTableValues, 0 };
 const ClassInfo JSDataViewConstructor::s_info = { "DataViewConstructor", &DOMConstructorObject::s_info, &JSDataViewConstructorTable, 0 };
 
-JSDataViewConstructor::JSDataViewConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSDataViewConstructor::JSDataViewConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSDataViewPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSDataViewPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSDataViewConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSDataViewConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSDataViewConstructor, JSDOMWrapper>(exec, &JSDataViewConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSDataViewConstructor, JSDOMWrapper>( exec, &JSDataViewConstructorTable, this, propertyName, slot );
 }
 
-bool JSDataViewConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSDataViewConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSDataViewConstructor, JSDOMWrapper>(exec, &JSDataViewConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSDataViewConstructor, JSDOMWrapper>( exec, &JSDataViewConstructorTable, this, propertyName,
+            descriptor );
 }
 
-ConstructType JSDataViewConstructor::getConstructData(ConstructData& constructData)
+ConstructType JSDataViewConstructor::getConstructData( ConstructData &constructData )
 {
     constructData.native.function = constructJSDataView;
     return ConstructTypeHost;
@@ -96,466 +100,676 @@ ConstructType JSDataViewConstructor::getConstructData(ConstructData& constructDa
 
 static const HashTableValue JSDataViewPrototypeTableValues[17] =
 {
-    { "getInt8", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDataViewPrototypeFunctionGetInt8), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "getUint8", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDataViewPrototypeFunctionGetUint8), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "getInt16", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDataViewPrototypeFunctionGetInt16), (intptr_t)2 THUNK_GENERATOR(0) },
-    { "getUint16", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDataViewPrototypeFunctionGetUint16), (intptr_t)2 THUNK_GENERATOR(0) },
-    { "getInt32", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDataViewPrototypeFunctionGetInt32), (intptr_t)2 THUNK_GENERATOR(0) },
-    { "getUint32", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDataViewPrototypeFunctionGetUint32), (intptr_t)2 THUNK_GENERATOR(0) },
-    { "getFloat32", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDataViewPrototypeFunctionGetFloat32), (intptr_t)2 THUNK_GENERATOR(0) },
-    { "getFloat64", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDataViewPrototypeFunctionGetFloat64), (intptr_t)2 THUNK_GENERATOR(0) },
-    { "setInt8", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDataViewPrototypeFunctionSetInt8), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "setUint8", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDataViewPrototypeFunctionSetUint8), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "setInt16", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDataViewPrototypeFunctionSetInt16), (intptr_t)3 THUNK_GENERATOR(0) },
-    { "setUint16", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDataViewPrototypeFunctionSetUint16), (intptr_t)3 THUNK_GENERATOR(0) },
-    { "setInt32", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDataViewPrototypeFunctionSetInt32), (intptr_t)3 THUNK_GENERATOR(0) },
-    { "setUint32", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDataViewPrototypeFunctionSetUint32), (intptr_t)3 THUNK_GENERATOR(0) },
-    { "setFloat32", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDataViewPrototypeFunctionSetFloat32), (intptr_t)3 THUNK_GENERATOR(0) },
-    { "setFloat64", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDataViewPrototypeFunctionSetFloat64), (intptr_t)3 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "getInt8", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDataViewPrototypeFunctionGetInt8 ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "getUint8", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDataViewPrototypeFunctionGetUint8 ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "getInt16", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDataViewPrototypeFunctionGetInt16 ), ( intptr_t )2 THUNK_GENERATOR( 0 ) },
+    { "getUint16", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDataViewPrototypeFunctionGetUint16 ), ( intptr_t )2 THUNK_GENERATOR( 0 ) },
+    { "getInt32", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDataViewPrototypeFunctionGetInt32 ), ( intptr_t )2 THUNK_GENERATOR( 0 ) },
+    { "getUint32", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDataViewPrototypeFunctionGetUint32 ), ( intptr_t )2 THUNK_GENERATOR( 0 ) },
+    { "getFloat32", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDataViewPrototypeFunctionGetFloat32 ), ( intptr_t )2 THUNK_GENERATOR( 0 ) },
+    { "getFloat64", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDataViewPrototypeFunctionGetFloat64 ), ( intptr_t )2 THUNK_GENERATOR( 0 ) },
+    { "setInt8", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDataViewPrototypeFunctionSetInt8 ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "setUint8", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDataViewPrototypeFunctionSetUint8 ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "setInt16", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDataViewPrototypeFunctionSetInt16 ), ( intptr_t )3 THUNK_GENERATOR( 0 ) },
+    { "setUint16", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDataViewPrototypeFunctionSetUint16 ), ( intptr_t )3 THUNK_GENERATOR( 0 ) },
+    { "setInt32", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDataViewPrototypeFunctionSetInt32 ), ( intptr_t )3 THUNK_GENERATOR( 0 ) },
+    { "setUint32", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDataViewPrototypeFunctionSetUint32 ), ( intptr_t )3 THUNK_GENERATOR( 0 ) },
+    { "setFloat32", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDataViewPrototypeFunctionSetFloat32 ), ( intptr_t )3 THUNK_GENERATOR( 0 ) },
+    { "setFloat64", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDataViewPrototypeFunctionSetFloat64 ), ( intptr_t )3 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSDataViewPrototypeTable = { 37, 31, JSDataViewPrototypeTableValues, 0 };
-static const HashTable* getJSDataViewPrototypeTable(ExecState* exec)
+static const HashTable *getJSDataViewPrototypeTable( ExecState *exec )
 {
-    return getHashTableForGlobalData(exec->globalData(), &JSDataViewPrototypeTable);
+    return getHashTableForGlobalData( exec->globalData(), &JSDataViewPrototypeTable );
 }
 
 const ClassInfo JSDataViewPrototype::s_info = { "DataViewPrototype", &JSC::JSObjectWithGlobalObject::s_info, 0, getJSDataViewPrototypeTable };
 
-JSObject* JSDataViewPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSDataViewPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSDataView>(exec, globalObject);
+    return getDOMPrototype<JSDataView>( exec, globalObject );
 }
 
-bool JSDataViewPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSDataViewPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticFunctionSlot<JSObject>(exec, getJSDataViewPrototypeTable(exec), this, propertyName, slot);
+    return getStaticFunctionSlot<JSObject>( exec, getJSDataViewPrototypeTable( exec ), this, propertyName, slot );
 }
 
-bool JSDataViewPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSDataViewPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticFunctionDescriptor<JSObject>(exec, getJSDataViewPrototypeTable(exec), this, propertyName, descriptor);
+    return getStaticFunctionDescriptor<JSObject>( exec, getJSDataViewPrototypeTable( exec ), this, propertyName, descriptor );
 }
 
-static const HashTable* getJSDataViewTable(ExecState* exec)
+static const HashTable *getJSDataViewTable( ExecState *exec )
 {
-    return getHashTableForGlobalData(exec->globalData(), &JSDataViewTable);
+    return getHashTableForGlobalData( exec->globalData(), &JSDataViewTable );
 }
 
 const ClassInfo JSDataView::s_info = { "DataView", &JSArrayBufferView::s_info, 0, getJSDataViewTable };
 
-JSDataView::JSDataView(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<DataView> impl)
-    : JSArrayBufferView(structure, globalObject, impl)
+JSDataView::JSDataView( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<DataView> impl )
+    : JSArrayBufferView( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSDataView::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSDataView::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSDataViewPrototype(exec->globalData(), globalObject, JSDataViewPrototype::createStructure(exec->globalData(), JSArrayBufferViewPrototype::self(exec, globalObject)));
+    return new ( exec ) JSDataViewPrototype( exec->globalData(), globalObject,
+            JSDataViewPrototype::createStructure( exec->globalData(), JSArrayBufferViewPrototype::self( exec, globalObject ) ) );
 }
 
-bool JSDataView::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSDataView::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSDataView, Base>(exec, getJSDataViewTable(exec), this, propertyName, slot);
+    return getStaticValueSlot<JSDataView, Base>( exec, getJSDataViewTable( exec ), this, propertyName, slot );
 }
 
-bool JSDataView::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSDataView::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSDataView, Base>(exec, getJSDataViewTable(exec), this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSDataView, Base>( exec, getJSDataViewTable( exec ), this, propertyName, descriptor );
 }
 
-JSValue jsDataViewConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDataViewConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDataView* domObject = static_cast<JSDataView*>(asObject(slotBase));
-    return JSDataView::getConstructor(exec, domObject->globalObject());
+    JSDataView *domObject = static_cast<JSDataView *>( asObject( slotBase ) );
+    return JSDataView::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSDataView::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSDataView::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSDataViewConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSDataViewConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionGetInt8(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionGetInt8( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSDataView::s_info))
-        return throwVMTypeError(exec);
-    JSDataView* castedThis = static_cast<JSDataView*>(asObject(thisValue));
-    return JSValue::encode(castedThis->getInt8(exec));
-}
 
-EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionGetUint8(ExecState* exec)
-{
-    JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSDataView::s_info))
-        return throwVMTypeError(exec);
-    JSDataView* castedThis = static_cast<JSDataView*>(asObject(thisValue));
-    return JSValue::encode(castedThis->getUint8(exec));
-}
-
-EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionGetInt16(ExecState* exec)
-{
-    JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSDataView::s_info))
-        return throwVMTypeError(exec);
-    JSDataView* castedThis = static_cast<JSDataView*>(asObject(thisValue));
-    DataView* imp = static_cast<DataView*>(castedThis->impl());
-    if (exec->argumentCount() < 1)
-        return throwVMError(exec, createSyntaxError(exec, "Not enough arguments"));
-    ExceptionCode ec = 0;
-    unsigned byteOffset(exec->argument(0).toUInt32(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-
-    int argsCount = exec->argumentCount();
-    if (argsCount <= 1) {
-
-        JSC::JSValue result = jsNumber(imp->getInt16(byteOffset, ec));
-        setDOMException(exec, ec);
-        return JSValue::encode(result);
+    if ( !thisValue.inherits( &JSDataView::s_info ) )
+    {
+        return throwVMTypeError( exec );
     }
 
-    bool littleEndian(exec->argument(1).toBoolean(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-
-
-    JSC::JSValue result = jsNumber(imp->getInt16(byteOffset, littleEndian, ec));
-    setDOMException(exec, ec);
-    return JSValue::encode(result);
+    JSDataView *castedThis = static_cast<JSDataView *>( asObject( thisValue ) );
+    return JSValue::encode( castedThis->getInt8( exec ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionGetUint16(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionGetUint8( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSDataView::s_info))
-        return throwVMTypeError(exec);
-    JSDataView* castedThis = static_cast<JSDataView*>(asObject(thisValue));
-    DataView* imp = static_cast<DataView*>(castedThis->impl());
-    if (exec->argumentCount() < 1)
-        return throwVMError(exec, createSyntaxError(exec, "Not enough arguments"));
-    ExceptionCode ec = 0;
-    unsigned byteOffset(exec->argument(0).toUInt32(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
 
-    int argsCount = exec->argumentCount();
-    if (argsCount <= 1) {
-
-        JSC::JSValue result = jsNumber(imp->getUint16(byteOffset, ec));
-        setDOMException(exec, ec);
-        return JSValue::encode(result);
+    if ( !thisValue.inherits( &JSDataView::s_info ) )
+    {
+        return throwVMTypeError( exec );
     }
 
-    bool littleEndian(exec->argument(1).toBoolean(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-
-
-    JSC::JSValue result = jsNumber(imp->getUint16(byteOffset, littleEndian, ec));
-    setDOMException(exec, ec);
-    return JSValue::encode(result);
+    JSDataView *castedThis = static_cast<JSDataView *>( asObject( thisValue ) );
+    return JSValue::encode( castedThis->getUint8( exec ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionGetInt32(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionGetInt16( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSDataView::s_info))
-        return throwVMTypeError(exec);
-    JSDataView* castedThis = static_cast<JSDataView*>(asObject(thisValue));
-    DataView* imp = static_cast<DataView*>(castedThis->impl());
-    if (exec->argumentCount() < 1)
-        return throwVMError(exec, createSyntaxError(exec, "Not enough arguments"));
-    ExceptionCode ec = 0;
-    unsigned byteOffset(exec->argument(0).toUInt32(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
 
-    int argsCount = exec->argumentCount();
-    if (argsCount <= 1) {
-
-        JSC::JSValue result = jsNumber(imp->getInt32(byteOffset, ec));
-        setDOMException(exec, ec);
-        return JSValue::encode(result);
+    if ( !thisValue.inherits( &JSDataView::s_info ) )
+    {
+        return throwVMTypeError( exec );
     }
 
-    bool littleEndian(exec->argument(1).toBoolean(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+    JSDataView *castedThis = static_cast<JSDataView *>( asObject( thisValue ) );
+    DataView *imp = static_cast<DataView *>( castedThis->impl() );
 
-
-    JSC::JSValue result = jsNumber(imp->getInt32(byteOffset, littleEndian, ec));
-    setDOMException(exec, ec);
-    return JSValue::encode(result);
-}
-
-EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionGetUint32(ExecState* exec)
-{
-    JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSDataView::s_info))
-        return throwVMTypeError(exec);
-    JSDataView* castedThis = static_cast<JSDataView*>(asObject(thisValue));
-    DataView* imp = static_cast<DataView*>(castedThis->impl());
-    if (exec->argumentCount() < 1)
-        return throwVMError(exec, createSyntaxError(exec, "Not enough arguments"));
-    ExceptionCode ec = 0;
-    unsigned byteOffset(exec->argument(0).toUInt32(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-
-    int argsCount = exec->argumentCount();
-    if (argsCount <= 1) {
-
-        JSC::JSValue result = jsNumber(imp->getUint32(byteOffset, ec));
-        setDOMException(exec, ec);
-        return JSValue::encode(result);
+    if ( exec->argumentCount() < 1 )
+    {
+        return throwVMError( exec, createSyntaxError( exec, "Not enough arguments" ) );
     }
 
-    bool littleEndian(exec->argument(1).toBoolean(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-
-
-    JSC::JSValue result = jsNumber(imp->getUint32(byteOffset, littleEndian, ec));
-    setDOMException(exec, ec);
-    return JSValue::encode(result);
-}
-
-EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionGetFloat32(ExecState* exec)
-{
-    JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSDataView::s_info))
-        return throwVMTypeError(exec);
-    JSDataView* castedThis = static_cast<JSDataView*>(asObject(thisValue));
-    return JSValue::encode(castedThis->getFloat32(exec));
-}
-
-EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionGetFloat64(ExecState* exec)
-{
-    JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSDataView::s_info))
-        return throwVMTypeError(exec);
-    JSDataView* castedThis = static_cast<JSDataView*>(asObject(thisValue));
-    return JSValue::encode(castedThis->getFloat64(exec));
-}
-
-EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionSetInt8(ExecState* exec)
-{
-    JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSDataView::s_info))
-        return throwVMTypeError(exec);
-    JSDataView* castedThis = static_cast<JSDataView*>(asObject(thisValue));
-    return JSValue::encode(castedThis->setInt8(exec));
-}
-
-EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionSetUint8(ExecState* exec)
-{
-    JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSDataView::s_info))
-        return throwVMTypeError(exec);
-    JSDataView* castedThis = static_cast<JSDataView*>(asObject(thisValue));
-    return JSValue::encode(castedThis->setUint8(exec));
-}
-
-EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionSetInt16(ExecState* exec)
-{
-    JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSDataView::s_info))
-        return throwVMTypeError(exec);
-    JSDataView* castedThis = static_cast<JSDataView*>(asObject(thisValue));
-    DataView* imp = static_cast<DataView*>(castedThis->impl());
-    if (exec->argumentCount() < 2)
-        return throwVMError(exec, createSyntaxError(exec, "Not enough arguments"));
     ExceptionCode ec = 0;
-    unsigned byteOffset(exec->argument(0).toUInt32(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    short value(exec->argument(1).toInt32(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+    unsigned byteOffset( exec->argument( 0 ).toUInt32( exec ) );
 
-    int argsCount = exec->argumentCount();
-    if (argsCount <= 2) {
-        imp->setInt16(byteOffset, value, ec);
-        setDOMException(exec, ec);
-        return JSValue::encode(jsUndefined());
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
     }
 
-    bool littleEndian(exec->argument(2).toBoolean(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-
-    imp->setInt16(byteOffset, value, littleEndian, ec);
-    setDOMException(exec, ec);
-    return JSValue::encode(jsUndefined());
-}
-
-EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionSetUint16(ExecState* exec)
-{
-    JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSDataView::s_info))
-        return throwVMTypeError(exec);
-    JSDataView* castedThis = static_cast<JSDataView*>(asObject(thisValue));
-    DataView* imp = static_cast<DataView*>(castedThis->impl());
-    if (exec->argumentCount() < 2)
-        return throwVMError(exec, createSyntaxError(exec, "Not enough arguments"));
-    ExceptionCode ec = 0;
-    unsigned byteOffset(exec->argument(0).toUInt32(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    unsigned short value(exec->argument(1).toUInt32(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-
     int argsCount = exec->argumentCount();
-    if (argsCount <= 2) {
-        imp->setUint16(byteOffset, value, ec);
-        setDOMException(exec, ec);
-        return JSValue::encode(jsUndefined());
+
+    if ( argsCount <= 1 )
+    {
+
+        JSC::JSValue result = jsNumber( imp->getInt16( byteOffset, ec ) );
+        setDOMException( exec, ec );
+        return JSValue::encode( result );
     }
 
-    bool littleEndian(exec->argument(2).toBoolean(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+    bool littleEndian( exec->argument( 1 ).toBoolean( exec ) );
 
-    imp->setUint16(byteOffset, value, littleEndian, ec);
-    setDOMException(exec, ec);
-    return JSValue::encode(jsUndefined());
-}
-
-EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionSetInt32(ExecState* exec)
-{
-    JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSDataView::s_info))
-        return throwVMTypeError(exec);
-    JSDataView* castedThis = static_cast<JSDataView*>(asObject(thisValue));
-    DataView* imp = static_cast<DataView*>(castedThis->impl());
-    if (exec->argumentCount() < 2)
-        return throwVMError(exec, createSyntaxError(exec, "Not enough arguments"));
-    ExceptionCode ec = 0;
-    unsigned byteOffset(exec->argument(0).toUInt32(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    int value(exec->argument(1).toInt32(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-
-    int argsCount = exec->argumentCount();
-    if (argsCount <= 2) {
-        imp->setInt32(byteOffset, value, ec);
-        setDOMException(exec, ec);
-        return JSValue::encode(jsUndefined());
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
     }
 
-    bool littleEndian(exec->argument(2).toBoolean(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
 
-    imp->setInt32(byteOffset, value, littleEndian, ec);
-    setDOMException(exec, ec);
-    return JSValue::encode(jsUndefined());
+    JSC::JSValue result = jsNumber( imp->getInt16( byteOffset, littleEndian, ec ) );
+    setDOMException( exec, ec );
+    return JSValue::encode( result );
 }
 
-EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionSetUint32(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionGetUint16( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSDataView::s_info))
-        return throwVMTypeError(exec);
-    JSDataView* castedThis = static_cast<JSDataView*>(asObject(thisValue));
-    DataView* imp = static_cast<DataView*>(castedThis->impl());
-    if (exec->argumentCount() < 2)
-        return throwVMError(exec, createSyntaxError(exec, "Not enough arguments"));
-    ExceptionCode ec = 0;
-    unsigned byteOffset(exec->argument(0).toUInt32(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    unsigned value(exec->argument(1).toUInt32(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
 
-    int argsCount = exec->argumentCount();
-    if (argsCount <= 2) {
-        imp->setUint32(byteOffset, value, ec);
-        setDOMException(exec, ec);
-        return JSValue::encode(jsUndefined());
+    if ( !thisValue.inherits( &JSDataView::s_info ) )
+    {
+        return throwVMTypeError( exec );
     }
 
-    bool littleEndian(exec->argument(2).toBoolean(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+    JSDataView *castedThis = static_cast<JSDataView *>( asObject( thisValue ) );
+    DataView *imp = static_cast<DataView *>( castedThis->impl() );
 
-    imp->setUint32(byteOffset, value, littleEndian, ec);
-    setDOMException(exec, ec);
-    return JSValue::encode(jsUndefined());
+    if ( exec->argumentCount() < 1 )
+    {
+        return throwVMError( exec, createSyntaxError( exec, "Not enough arguments" ) );
+    }
+
+    ExceptionCode ec = 0;
+    unsigned byteOffset( exec->argument( 0 ).toUInt32( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    int argsCount = exec->argumentCount();
+
+    if ( argsCount <= 1 )
+    {
+
+        JSC::JSValue result = jsNumber( imp->getUint16( byteOffset, ec ) );
+        setDOMException( exec, ec );
+        return JSValue::encode( result );
+    }
+
+    bool littleEndian( exec->argument( 1 ).toBoolean( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+
+    JSC::JSValue result = jsNumber( imp->getUint16( byteOffset, littleEndian, ec ) );
+    setDOMException( exec, ec );
+    return JSValue::encode( result );
 }
 
-EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionSetFloat32(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionGetInt32( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSDataView::s_info))
-        return throwVMTypeError(exec);
-    JSDataView* castedThis = static_cast<JSDataView*>(asObject(thisValue));
-    DataView* imp = static_cast<DataView*>(castedThis->impl());
-    if (exec->argumentCount() < 2)
-        return throwVMError(exec, createSyntaxError(exec, "Not enough arguments"));
-    ExceptionCode ec = 0;
-    unsigned byteOffset(exec->argument(0).toUInt32(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    float value(exec->argument(1).toFloat(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
 
-    int argsCount = exec->argumentCount();
-    if (argsCount <= 2) {
-        imp->setFloat32(byteOffset, value, ec);
-        setDOMException(exec, ec);
-        return JSValue::encode(jsUndefined());
+    if ( !thisValue.inherits( &JSDataView::s_info ) )
+    {
+        return throwVMTypeError( exec );
     }
 
-    bool littleEndian(exec->argument(2).toBoolean(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+    JSDataView *castedThis = static_cast<JSDataView *>( asObject( thisValue ) );
+    DataView *imp = static_cast<DataView *>( castedThis->impl() );
 
-    imp->setFloat32(byteOffset, value, littleEndian, ec);
-    setDOMException(exec, ec);
-    return JSValue::encode(jsUndefined());
+    if ( exec->argumentCount() < 1 )
+    {
+        return throwVMError( exec, createSyntaxError( exec, "Not enough arguments" ) );
+    }
+
+    ExceptionCode ec = 0;
+    unsigned byteOffset( exec->argument( 0 ).toUInt32( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    int argsCount = exec->argumentCount();
+
+    if ( argsCount <= 1 )
+    {
+
+        JSC::JSValue result = jsNumber( imp->getInt32( byteOffset, ec ) );
+        setDOMException( exec, ec );
+        return JSValue::encode( result );
+    }
+
+    bool littleEndian( exec->argument( 1 ).toBoolean( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+
+    JSC::JSValue result = jsNumber( imp->getInt32( byteOffset, littleEndian, ec ) );
+    setDOMException( exec, ec );
+    return JSValue::encode( result );
 }
 
-EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionSetFloat64(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionGetUint32( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSDataView::s_info))
-        return throwVMTypeError(exec);
-    JSDataView* castedThis = static_cast<JSDataView*>(asObject(thisValue));
-    DataView* imp = static_cast<DataView*>(castedThis->impl());
-    if (exec->argumentCount() < 2)
-        return throwVMError(exec, createSyntaxError(exec, "Not enough arguments"));
-    ExceptionCode ec = 0;
-    unsigned byteOffset(exec->argument(0).toUInt32(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    double value(exec->argument(1).toNumber(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
 
-    int argsCount = exec->argumentCount();
-    if (argsCount <= 2) {
-        imp->setFloat64(byteOffset, value, ec);
-        setDOMException(exec, ec);
-        return JSValue::encode(jsUndefined());
+    if ( !thisValue.inherits( &JSDataView::s_info ) )
+    {
+        return throwVMTypeError( exec );
     }
 
-    bool littleEndian(exec->argument(2).toBoolean(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+    JSDataView *castedThis = static_cast<JSDataView *>( asObject( thisValue ) );
+    DataView *imp = static_cast<DataView *>( castedThis->impl() );
 
-    imp->setFloat64(byteOffset, value, littleEndian, ec);
-    setDOMException(exec, ec);
-    return JSValue::encode(jsUndefined());
+    if ( exec->argumentCount() < 1 )
+    {
+        return throwVMError( exec, createSyntaxError( exec, "Not enough arguments" ) );
+    }
+
+    ExceptionCode ec = 0;
+    unsigned byteOffset( exec->argument( 0 ).toUInt32( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    int argsCount = exec->argumentCount();
+
+    if ( argsCount <= 1 )
+    {
+
+        JSC::JSValue result = jsNumber( imp->getUint32( byteOffset, ec ) );
+        setDOMException( exec, ec );
+        return JSValue::encode( result );
+    }
+
+    bool littleEndian( exec->argument( 1 ).toBoolean( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+
+    JSC::JSValue result = jsNumber( imp->getUint32( byteOffset, littleEndian, ec ) );
+    setDOMException( exec, ec );
+    return JSValue::encode( result );
+}
+
+EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionGetFloat32( ExecState *exec )
+{
+    JSValue thisValue = exec->hostThisValue();
+
+    if ( !thisValue.inherits( &JSDataView::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSDataView *castedThis = static_cast<JSDataView *>( asObject( thisValue ) );
+    return JSValue::encode( castedThis->getFloat32( exec ) );
+}
+
+EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionGetFloat64( ExecState *exec )
+{
+    JSValue thisValue = exec->hostThisValue();
+
+    if ( !thisValue.inherits( &JSDataView::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSDataView *castedThis = static_cast<JSDataView *>( asObject( thisValue ) );
+    return JSValue::encode( castedThis->getFloat64( exec ) );
+}
+
+EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionSetInt8( ExecState *exec )
+{
+    JSValue thisValue = exec->hostThisValue();
+
+    if ( !thisValue.inherits( &JSDataView::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSDataView *castedThis = static_cast<JSDataView *>( asObject( thisValue ) );
+    return JSValue::encode( castedThis->setInt8( exec ) );
+}
+
+EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionSetUint8( ExecState *exec )
+{
+    JSValue thisValue = exec->hostThisValue();
+
+    if ( !thisValue.inherits( &JSDataView::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSDataView *castedThis = static_cast<JSDataView *>( asObject( thisValue ) );
+    return JSValue::encode( castedThis->setUint8( exec ) );
+}
+
+EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionSetInt16( ExecState *exec )
+{
+    JSValue thisValue = exec->hostThisValue();
+
+    if ( !thisValue.inherits( &JSDataView::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSDataView *castedThis = static_cast<JSDataView *>( asObject( thisValue ) );
+    DataView *imp = static_cast<DataView *>( castedThis->impl() );
+
+    if ( exec->argumentCount() < 2 )
+    {
+        return throwVMError( exec, createSyntaxError( exec, "Not enough arguments" ) );
+    }
+
+    ExceptionCode ec = 0;
+    unsigned byteOffset( exec->argument( 0 ).toUInt32( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    short value( exec->argument( 1 ).toInt32( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    int argsCount = exec->argumentCount();
+
+    if ( argsCount <= 2 )
+    {
+        imp->setInt16( byteOffset, value, ec );
+        setDOMException( exec, ec );
+        return JSValue::encode( jsUndefined() );
+    }
+
+    bool littleEndian( exec->argument( 2 ).toBoolean( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->setInt16( byteOffset, value, littleEndian, ec );
+    setDOMException( exec, ec );
+    return JSValue::encode( jsUndefined() );
+}
+
+EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionSetUint16( ExecState *exec )
+{
+    JSValue thisValue = exec->hostThisValue();
+
+    if ( !thisValue.inherits( &JSDataView::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSDataView *castedThis = static_cast<JSDataView *>( asObject( thisValue ) );
+    DataView *imp = static_cast<DataView *>( castedThis->impl() );
+
+    if ( exec->argumentCount() < 2 )
+    {
+        return throwVMError( exec, createSyntaxError( exec, "Not enough arguments" ) );
+    }
+
+    ExceptionCode ec = 0;
+    unsigned byteOffset( exec->argument( 0 ).toUInt32( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    unsigned short value( exec->argument( 1 ).toUInt32( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    int argsCount = exec->argumentCount();
+
+    if ( argsCount <= 2 )
+    {
+        imp->setUint16( byteOffset, value, ec );
+        setDOMException( exec, ec );
+        return JSValue::encode( jsUndefined() );
+    }
+
+    bool littleEndian( exec->argument( 2 ).toBoolean( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->setUint16( byteOffset, value, littleEndian, ec );
+    setDOMException( exec, ec );
+    return JSValue::encode( jsUndefined() );
+}
+
+EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionSetInt32( ExecState *exec )
+{
+    JSValue thisValue = exec->hostThisValue();
+
+    if ( !thisValue.inherits( &JSDataView::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSDataView *castedThis = static_cast<JSDataView *>( asObject( thisValue ) );
+    DataView *imp = static_cast<DataView *>( castedThis->impl() );
+
+    if ( exec->argumentCount() < 2 )
+    {
+        return throwVMError( exec, createSyntaxError( exec, "Not enough arguments" ) );
+    }
+
+    ExceptionCode ec = 0;
+    unsigned byteOffset( exec->argument( 0 ).toUInt32( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    int value( exec->argument( 1 ).toInt32( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    int argsCount = exec->argumentCount();
+
+    if ( argsCount <= 2 )
+    {
+        imp->setInt32( byteOffset, value, ec );
+        setDOMException( exec, ec );
+        return JSValue::encode( jsUndefined() );
+    }
+
+    bool littleEndian( exec->argument( 2 ).toBoolean( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->setInt32( byteOffset, value, littleEndian, ec );
+    setDOMException( exec, ec );
+    return JSValue::encode( jsUndefined() );
+}
+
+EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionSetUint32( ExecState *exec )
+{
+    JSValue thisValue = exec->hostThisValue();
+
+    if ( !thisValue.inherits( &JSDataView::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSDataView *castedThis = static_cast<JSDataView *>( asObject( thisValue ) );
+    DataView *imp = static_cast<DataView *>( castedThis->impl() );
+
+    if ( exec->argumentCount() < 2 )
+    {
+        return throwVMError( exec, createSyntaxError( exec, "Not enough arguments" ) );
+    }
+
+    ExceptionCode ec = 0;
+    unsigned byteOffset( exec->argument( 0 ).toUInt32( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    unsigned value( exec->argument( 1 ).toUInt32( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    int argsCount = exec->argumentCount();
+
+    if ( argsCount <= 2 )
+    {
+        imp->setUint32( byteOffset, value, ec );
+        setDOMException( exec, ec );
+        return JSValue::encode( jsUndefined() );
+    }
+
+    bool littleEndian( exec->argument( 2 ).toBoolean( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->setUint32( byteOffset, value, littleEndian, ec );
+    setDOMException( exec, ec );
+    return JSValue::encode( jsUndefined() );
+}
+
+EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionSetFloat32( ExecState *exec )
+{
+    JSValue thisValue = exec->hostThisValue();
+
+    if ( !thisValue.inherits( &JSDataView::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSDataView *castedThis = static_cast<JSDataView *>( asObject( thisValue ) );
+    DataView *imp = static_cast<DataView *>( castedThis->impl() );
+
+    if ( exec->argumentCount() < 2 )
+    {
+        return throwVMError( exec, createSyntaxError( exec, "Not enough arguments" ) );
+    }
+
+    ExceptionCode ec = 0;
+    unsigned byteOffset( exec->argument( 0 ).toUInt32( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    float value( exec->argument( 1 ).toFloat( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    int argsCount = exec->argumentCount();
+
+    if ( argsCount <= 2 )
+    {
+        imp->setFloat32( byteOffset, value, ec );
+        setDOMException( exec, ec );
+        return JSValue::encode( jsUndefined() );
+    }
+
+    bool littleEndian( exec->argument( 2 ).toBoolean( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->setFloat32( byteOffset, value, littleEndian, ec );
+    setDOMException( exec, ec );
+    return JSValue::encode( jsUndefined() );
+}
+
+EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionSetFloat64( ExecState *exec )
+{
+    JSValue thisValue = exec->hostThisValue();
+
+    if ( !thisValue.inherits( &JSDataView::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSDataView *castedThis = static_cast<JSDataView *>( asObject( thisValue ) );
+    DataView *imp = static_cast<DataView *>( castedThis->impl() );
+
+    if ( exec->argumentCount() < 2 )
+    {
+        return throwVMError( exec, createSyntaxError( exec, "Not enough arguments" ) );
+    }
+
+    ExceptionCode ec = 0;
+    unsigned byteOffset( exec->argument( 0 ).toUInt32( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    double value( exec->argument( 1 ).toNumber( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    int argsCount = exec->argumentCount();
+
+    if ( argsCount <= 2 )
+    {
+        imp->setFloat64( byteOffset, value, ec );
+        setDOMException( exec, ec );
+        return JSValue::encode( jsUndefined() );
+    }
+
+    bool littleEndian( exec->argument( 2 ).toBoolean( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->setFloat64( byteOffset, value, littleEndian, ec );
+    setDOMException( exec, ec );
+    return JSValue::encode( jsUndefined() );
 }
 
 

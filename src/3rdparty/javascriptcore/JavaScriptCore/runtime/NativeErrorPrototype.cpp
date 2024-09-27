@@ -25,19 +25,21 @@
 #include "JSString.h"
 #include "UString.h"
 
-namespace JSC {
+namespace JSC
+{
 
-ASSERT_CLASS_FITS_IN_CELL(NativeErrorPrototype);
+ASSERT_CLASS_FITS_IN_CELL( NativeErrorPrototype );
 
-NativeErrorPrototype::NativeErrorPrototype(ExecState* exec, NonNullPassRefPtr<Structure> structure, const UString& name, const UString& message)
+NativeErrorPrototype::NativeErrorPrototype( ExecState *exec, NonNullPassRefPtr<Structure> structure, const UString &name,
+        const UString &message )
 #ifdef QT_BUILD_SCRIPT_LIB
-    : ErrorInstance(structure)
+    : ErrorInstance( structure )
 #else
-    : JSObject(structure)
+    : JSObject( structure )
 #endif
 {
-    putDirect(exec->propertyNames().name, jsString(exec, name), 0);
-    putDirect(exec->propertyNames().message, jsString(exec, message), 0);
+    putDirect( exec->propertyNames().name, jsString( exec, name ), 0 );
+    putDirect( exec->propertyNames().message, jsString( exec, message ), 0 );
 }
 
 } // namespace JSC

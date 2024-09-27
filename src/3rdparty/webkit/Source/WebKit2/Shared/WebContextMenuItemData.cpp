@@ -34,79 +34,86 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
 WebContextMenuItemData::WebContextMenuItemData()
-    : m_type(WebCore::ActionType)
-    , m_action(WebCore::ContextMenuItemTagNoAction)
-    , m_enabled(true)
-    , m_checked(false)
+    : m_type( WebCore::ActionType )
+    , m_action( WebCore::ContextMenuItemTagNoAction )
+    , m_enabled( true )
+    , m_checked( false )
 {
 }
 
-WebContextMenuItemData::WebContextMenuItemData(WebCore::ContextMenuItemType type, WebCore::ContextMenuAction action, const String& title, bool enabled, bool checked)
-    : m_type(type)
-    , m_action(action)
-    , m_title(title)
-    , m_enabled(enabled)
-    , m_checked(checked)
+WebContextMenuItemData::WebContextMenuItemData( WebCore::ContextMenuItemType type, WebCore::ContextMenuAction action,
+        const String &title, bool enabled, bool checked )
+    : m_type( type )
+    , m_action( action )
+    , m_title( title )
+    , m_enabled( enabled )
+    , m_checked( checked )
 {
-    ASSERT(type == WebCore::ActionType || type == WebCore::CheckableActionType || type == WebCore::SeparatorType);
+    ASSERT( type == WebCore::ActionType || type == WebCore::CheckableActionType || type == WebCore::SeparatorType );
 }
 
-WebContextMenuItemData::WebContextMenuItemData(WebCore::ContextMenuAction action, const String& title, bool enabled, const Vector<WebContextMenuItemData>& submenu)
-    : m_type(WebCore::SubmenuType)
-    , m_action(action)
-    , m_title(title)
-    , m_enabled(enabled)
-    , m_checked(false)
-    , m_submenu(submenu)
+WebContextMenuItemData::WebContextMenuItemData( WebCore::ContextMenuAction action, const String &title, bool enabled,
+        const Vector<WebContextMenuItemData> &submenu )
+    : m_type( WebCore::SubmenuType )
+    , m_action( action )
+    , m_title( title )
+    , m_enabled( enabled )
+    , m_checked( false )
+    , m_submenu( submenu )
 {
 }
 
-WebContextMenuItemData::WebContextMenuItemData(const WebCore::ContextMenuItem& item, WebCore::ContextMenu* menu)
-    : m_type(item.type())
-    , m_action(item.action())
-    , m_title(item.title())
+WebContextMenuItemData::WebContextMenuItemData( const WebCore::ContextMenuItem &item, WebCore::ContextMenu *menu )
+    : m_type( item.type() )
+    , m_action( item.action() )
+    , m_title( item.title() )
 {
-    if (m_type == WebCore::SubmenuType) {
+    if ( m_type == WebCore::SubmenuType )
+    {
 #if USE(CROSS_PLATFORM_CONTEXT_MENUS)
-        const Vector<WebCore::ContextMenuItem>& coreSubmenu = item.subMenuItems();
+        const Vector<WebCore::ContextMenuItem> &coreSubmenu = item.subMenuItems();
 #else
-        Vector<WebCore::ContextMenuItem> coreSubmenu = WebCore::contextMenuItemVector(item.platformSubMenu());
+        Vector<WebCore::ContextMenuItem> coreSubmenu = WebCore::contextMenuItemVector( item.platformSubMenu() );
 #endif
-        m_submenu = kitItems(coreSubmenu, menu);
+        m_submenu = kitItems( coreSubmenu, menu );
     }
-    
+
     m_enabled = item.enabled();
     m_checked = item.checked();
 }
 
 ContextMenuItem WebContextMenuItemData::core() const
 {
-    if (m_type != SubmenuType)
-        return ContextMenuItem(m_type, m_action, m_title, m_enabled, m_checked);
-    
-    Vector<ContextMenuItem> subMenuItems = coreItems(m_submenu);
-    return ContextMenuItem(m_action, m_title, m_enabled, m_checked, subMenuItems);
+    if ( m_type != SubmenuType )
+    {
+        return ContextMenuItem( m_type, m_action, m_title, m_enabled, m_checked );
+    }
+
+    Vector<ContextMenuItem> subMenuItems = coreItems( m_submenu );
+    return ContextMenuItem( m_action, m_title, m_enabled, m_checked, subMenuItems );
 }
 
-APIObject* WebContextMenuItemData::userData() const
+APIObject *WebContextMenuItemData::userData() const
 {
     return m_userData.get();
 }
 
-void WebContextMenuItemData::setUserData(APIObject* userData)
+void WebContextMenuItemData::setUserData( APIObject *userData )
 {
     m_userData = userData;
 }
-    
-void WebContextMenuItemData::encode(CoreIPC::ArgumentEncoder* encoder) const
+
+void WebContextMenuItemData::encode( CoreIPC::ArgumentEncoder *encoder ) const
 {
-    encoder->encode(CoreIPC::In(static_cast<uint32_t>(m_type), static_cast<uint32_t>(m_action), m_title, m_checked, m_enabled, m_submenu));
+    encoder->encode( CoreIPC::In( static_cast<uint32_t>( m_type ), static_cast<uint32_t>( m_action ), m_title, m_checked, m_enabled,
+                                  m_submenu ) );
 }
 
-bool WebContextMenuItemData::decode(CoreIPC::ArgumentDecoder* decoder, WebContextMenuItemData& item)
+bool WebContextMenuItemData::decode( CoreIPC::ArgumentDecoder *decoder, WebContextMenuItemData &item )
 {
     uint32_t type;
     uint32_t action;
@@ -115,43 +122,55 @@ bool WebContextMenuItemData::decode(CoreIPC::ArgumentDecoder* decoder, WebContex
     bool enabled;
     Vector<WebContextMenuItemData> submenu;
 
-    if (!decoder->decode(CoreIPC::Out(type, action, title, checked, enabled, submenu)))
+    if ( !decoder->decode( CoreIPC::Out( type, action, title, checked, enabled, submenu ) ) )
+    {
         return false;
+    }
 
-    switch (type) {
-    case WebCore::ActionType:
-    case WebCore::SeparatorType:
-    case WebCore::CheckableActionType:
-        item = WebContextMenuItemData(static_cast<WebCore::ContextMenuItemType>(type), static_cast<WebCore::ContextMenuAction>(action), title, enabled, checked);
-        break;
-    case WebCore::SubmenuType:
-        item = WebContextMenuItemData(static_cast<WebCore::ContextMenuAction>(action), title, enabled, submenu);
-        break;
-    default:
-        ASSERT_NOT_REACHED();
-        return false;
+    switch ( type )
+    {
+        case WebCore::ActionType:
+        case WebCore::SeparatorType:
+        case WebCore::CheckableActionType:
+            item = WebContextMenuItemData( static_cast<WebCore::ContextMenuItemType>( type ),
+                                           static_cast<WebCore::ContextMenuAction>( action ), title, enabled, checked );
+            break;
+
+        case WebCore::SubmenuType:
+            item = WebContextMenuItemData( static_cast<WebCore::ContextMenuAction>( action ), title, enabled, submenu );
+            break;
+
+        default:
+            ASSERT_NOT_REACHED();
+            return false;
     }
 
     return true;
 }
 
-Vector<WebContextMenuItemData> kitItems(const Vector<WebCore::ContextMenuItem>& coreItemVector, WebCore::ContextMenu* menu)
+Vector<WebContextMenuItemData> kitItems( const Vector<WebCore::ContextMenuItem> &coreItemVector, WebCore::ContextMenu *menu )
 {
     Vector<WebContextMenuItemData> result;
-    result.reserveCapacity(coreItemVector.size());
-    for (unsigned i = 0; i < coreItemVector.size(); ++i)
-        result.append(WebContextMenuItemData(coreItemVector[i], menu));
-    
+    result.reserveCapacity( coreItemVector.size() );
+
+    for ( unsigned i = 0; i < coreItemVector.size(); ++i )
+    {
+        result.append( WebContextMenuItemData( coreItemVector[i], menu ) );
+    }
+
     return result;
 }
 
-Vector<ContextMenuItem> coreItems(const Vector<WebContextMenuItemData>& kitItemVector)
+Vector<ContextMenuItem> coreItems( const Vector<WebContextMenuItemData> &kitItemVector )
 {
     Vector<ContextMenuItem> result;
-    result.reserveCapacity(kitItemVector.size());
-    for (unsigned i = 0; i < kitItemVector.size(); ++i)
-        result.append(kitItemVector[i].core());
-    
+    result.reserveCapacity( kitItemVector.size() );
+
+    for ( unsigned i = 0; i < kitItemVector.size(); ++i )
+    {
+        result.append( kitItemVector[i].core() );
+    }
+
     return result;
 }
 

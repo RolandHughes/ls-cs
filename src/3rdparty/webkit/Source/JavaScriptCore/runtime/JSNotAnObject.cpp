@@ -32,91 +32,92 @@
 
 #include <wtf/UnusedParam.h>
 
-namespace JSC {
+namespace JSC
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSNotAnObject);
+ASSERT_CLASS_FITS_IN_CELL( JSNotAnObject );
 
 // JSValue methods
-JSValue JSNotAnObject::toPrimitive(ExecState* exec, PreferredPrimitiveType) const
+JSValue JSNotAnObject::toPrimitive( ExecState *exec, PreferredPrimitiveType ) const
 {
-    ASSERT_UNUSED(exec, exec->hadException());
-    return jsNumber(0);
+    ASSERT_UNUSED( exec, exec->hadException() );
+    return jsNumber( 0 );
 }
 
-bool JSNotAnObject::getPrimitiveNumber(ExecState* exec, double&, JSValue&)
+bool JSNotAnObject::getPrimitiveNumber( ExecState *exec, double &, JSValue & )
 {
-    ASSERT_UNUSED(exec, exec->hadException());
+    ASSERT_UNUSED( exec, exec->hadException() );
     return false;
 }
 
-bool JSNotAnObject::toBoolean(ExecState* exec) const
+bool JSNotAnObject::toBoolean( ExecState *exec ) const
 {
-    ASSERT_UNUSED(exec, exec->hadException());
+    ASSERT_UNUSED( exec, exec->hadException() );
     return false;
 }
 
-double JSNotAnObject::toNumber(ExecState* exec) const
+double JSNotAnObject::toNumber( ExecState *exec ) const
 {
-    ASSERT_UNUSED(exec, exec->hadException());
+    ASSERT_UNUSED( exec, exec->hadException() );
     return NaN;
 }
 
-UString JSNotAnObject::toString(ExecState* exec) const
+UString JSNotAnObject::toString( ExecState *exec ) const
 {
-    ASSERT_UNUSED(exec, exec->hadException());
+    ASSERT_UNUSED( exec, exec->hadException() );
     return "";
 }
 
-JSObject* JSNotAnObject::toObject(ExecState* exec, JSGlobalObject*) const
+JSObject *JSNotAnObject::toObject( ExecState *exec, JSGlobalObject * ) const
 {
-    ASSERT_UNUSED(exec, exec->hadException());
-    return const_cast<JSNotAnObject*>(this);
+    ASSERT_UNUSED( exec, exec->hadException() );
+    return const_cast<JSNotAnObject *>( this );
 }
 
 // JSObject methods
-bool JSNotAnObject::getOwnPropertySlot(ExecState* exec, const Identifier&, PropertySlot&)
+bool JSNotAnObject::getOwnPropertySlot( ExecState *exec, const Identifier &, PropertySlot & )
 {
-    ASSERT_UNUSED(exec, exec->hadException());
+    ASSERT_UNUSED( exec, exec->hadException() );
     return false;
 }
 
-bool JSNotAnObject::getOwnPropertySlot(ExecState* exec, unsigned, PropertySlot&)
+bool JSNotAnObject::getOwnPropertySlot( ExecState *exec, unsigned, PropertySlot & )
 {
-    ASSERT_UNUSED(exec, exec->hadException());
+    ASSERT_UNUSED( exec, exec->hadException() );
     return false;
 }
 
-bool JSNotAnObject::getOwnPropertyDescriptor(ExecState* exec, const Identifier&, PropertyDescriptor&)
+bool JSNotAnObject::getOwnPropertyDescriptor( ExecState *exec, const Identifier &, PropertyDescriptor & )
 {
-    ASSERT_UNUSED(exec, exec->hadException());
+    ASSERT_UNUSED( exec, exec->hadException() );
     return false;
 }
 
-void JSNotAnObject::put(ExecState* exec, const Identifier& , JSValue, PutPropertySlot&)
+void JSNotAnObject::put( ExecState *exec, const Identifier &, JSValue, PutPropertySlot & )
 {
-    ASSERT_UNUSED(exec, exec->hadException());
+    ASSERT_UNUSED( exec, exec->hadException() );
 }
 
-void JSNotAnObject::put(ExecState* exec, unsigned, JSValue)
+void JSNotAnObject::put( ExecState *exec, unsigned, JSValue )
 {
-    ASSERT_UNUSED(exec, exec->hadException());
+    ASSERT_UNUSED( exec, exec->hadException() );
 }
 
-bool JSNotAnObject::deleteProperty(ExecState* exec, const Identifier&)
+bool JSNotAnObject::deleteProperty( ExecState *exec, const Identifier & )
 {
-    ASSERT_UNUSED(exec, exec->hadException());
+    ASSERT_UNUSED( exec, exec->hadException() );
     return false;
 }
 
-bool JSNotAnObject::deleteProperty(ExecState* exec, unsigned)
+bool JSNotAnObject::deleteProperty( ExecState *exec, unsigned )
 {
-    ASSERT_UNUSED(exec, exec->hadException());
+    ASSERT_UNUSED( exec, exec->hadException() );
     return false;
 }
 
-void JSNotAnObject::getOwnPropertyNames(ExecState* exec, PropertyNameArray&, EnumerationMode)
+void JSNotAnObject::getOwnPropertyNames( ExecState *exec, PropertyNameArray &, EnumerationMode )
 {
-    ASSERT_UNUSED(exec, exec->hadException());
+    ASSERT_UNUSED( exec, exec->hadException() );
 }
 
 } // namespace JSC

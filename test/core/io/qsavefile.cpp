@@ -21,35 +21,35 @@
 
 #include <cs_catch2.h>
 
-TEST_CASE("QSaveFile traits", "[qsavefile]")
+TEST_CASE( "QSaveFile traits", "[qsavefile]" )
 {
-   REQUIRE(std::is_copy_constructible_v<QSaveFile> == false);
-   REQUIRE(std::is_move_constructible_v<QSaveFile> == false);
+    REQUIRE( std::is_copy_constructible_v<QSaveFile> == false );
+    REQUIRE( std::is_move_constructible_v<QSaveFile> == false );
 
-   REQUIRE(std::is_copy_assignable_v<QSaveFile> == false);
-   REQUIRE(std::is_move_assignable_v<QSaveFile> == false);
+    REQUIRE( std::is_copy_assignable_v<QSaveFile> == false );
+    REQUIRE( std::is_move_assignable_v<QSaveFile> == false );
 
-   REQUIRE(std::has_virtual_destructor_v<QSaveFile> == true);
+    REQUIRE( std::has_virtual_destructor_v<QSaveFile> == true );
 }
 
-TEST_CASE("QSaveFile open", "[qsavefile]")
+TEST_CASE( "QSaveFile open", "[qsavefile]" )
 {
-   QSaveFile file;
+    QSaveFile file;
 
-   REQUIRE(file.open(QIODevice::WriteOnly) == true);
+    REQUIRE( file.open( QIODevice::WriteOnly ) == true );
 
-   REQUIRE(file.pos() == 0);
-   REQUIRE(file.size() == 0);
-   REQUIRE(file.resize(10) == true);
+    REQUIRE( file.pos() == 0 );
+    REQUIRE( file.size() == 0 );
+    REQUIRE( file.resize( 10 ) == true );
 }
 
-TEST_CASE("QSaveFile filename", "[qsavefile]")
+TEST_CASE( "QSaveFile filename", "[qsavefile]" )
 {
-   QSaveFile file("c:/machine/path1/dir1/file1");
+    QSaveFile file( "c:/machine/path1/dir1/file1" );
 
-   REQUIRE(file.fileName() == "c:/machine/path1/dir1/file1");
+    REQUIRE( file.fileName() == "c:/machine/path1/dir1/file1" );
 
-   REQUIRE(file.pos() == 0);
-   REQUIRE(file.size() == 0);
-   REQUIRE(file.resize(10) == false);
+    REQUIRE( file.pos() == 0 );
+    REQUIRE( file.size() == 0 );
+    REQUIRE( file.resize( 10 ) == false );
 }

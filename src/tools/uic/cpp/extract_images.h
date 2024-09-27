@@ -35,21 +35,22 @@ class QTextStream;
 
 struct Option;
 
-namespace CPP {
+namespace CPP
+{
 
 class ExtractImages : public TreeWalker
 {
- public:
-   ExtractImages(const Option &opt);
+public:
+    ExtractImages( const Option &opt );
 
-   void acceptUI(DomUI *node) override;
-   void acceptImages(DomImages *images) override;
-   void acceptImage(DomImage *image) override;
+    void acceptUI( DomUI *node ) override;
+    void acceptImages( DomImages *images ) override;
+    void acceptImage( DomImage *image ) override;
 
- private:
-   QTextStream *m_output;
-   const Option &m_option;
-   QDir m_imagesDir;
+private:
+    QTextStream *m_output;
+    const Option &m_option;
+    QDir m_imagesDir;
 };
 
 } // namespace CPP

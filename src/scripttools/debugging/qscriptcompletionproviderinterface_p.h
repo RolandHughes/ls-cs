@@ -32,16 +32,17 @@ class QScriptCompletionTaskInterface;
 
 class QScriptCompletionProviderInterface
 {
- public:
-   enum Option {
-      ConsoleCommandCompletion = 1
-   };
+public:
+    enum Option
+    {
+        ConsoleCommandCompletion = 1
+    };
 
-   virtual ~QScriptCompletionProviderInterface() {}
+    virtual ~QScriptCompletionProviderInterface() {}
 
-   virtual QScriptCompletionTaskInterface *createCompletionTask(
-      const QString &contents, int cursorPosition,
-      int frameIndex, int options) = 0;
+    virtual QScriptCompletionTaskInterface *createCompletionTask(
+        const QString &contents, int cursorPosition,
+        int frameIndex, int options ) = 0;
 };
 
 QT_END_NAMESPACE

@@ -29,70 +29,81 @@
 #include "SVGStringList.h"
 #include "SVGZoomAndPan.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Animated property definitions
-DEFINE_ANIMATED_BOOLEAN(SVGViewElement, SVGNames::externalResourcesRequiredAttr, ExternalResourcesRequired, externalResourcesRequired)
-DEFINE_ANIMATED_RECT(SVGViewElement, SVGNames::viewBoxAttr, ViewBox, viewBox)
-DEFINE_ANIMATED_PRESERVEASPECTRATIO(SVGViewElement, SVGNames::preserveAspectRatioAttr, PreserveAspectRatio, preserveAspectRatio)
+DEFINE_ANIMATED_BOOLEAN( SVGViewElement, SVGNames::externalResourcesRequiredAttr, ExternalResourcesRequired,
+                         externalResourcesRequired )
+DEFINE_ANIMATED_RECT( SVGViewElement, SVGNames::viewBoxAttr, ViewBox, viewBox )
+DEFINE_ANIMATED_PRESERVEASPECTRATIO( SVGViewElement, SVGNames::preserveAspectRatioAttr, PreserveAspectRatio, preserveAspectRatio )
 
-inline SVGViewElement::SVGViewElement(const QualifiedName& tagName, Document* document)
-    : SVGStyledElement(tagName, document)
-    , m_viewTarget(SVGNames::viewTargetAttr)
+inline SVGViewElement::SVGViewElement( const QualifiedName &tagName, Document *document )
+    : SVGStyledElement( tagName, document )
+    , m_viewTarget( SVGNames::viewTargetAttr )
 {
 }
 
-PassRefPtr<SVGViewElement> SVGViewElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<SVGViewElement> SVGViewElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new SVGViewElement(tagName, document));
+    return adoptRef( new SVGViewElement( tagName, document ) );
 }
 
-void SVGViewElement::parseMappedAttribute(Attribute* attr)
+void SVGViewElement::parseMappedAttribute( Attribute *attr )
 {
-    if (attr->name() == SVGNames::viewTargetAttr)
-        viewTarget().reset(attr->value());
-    else {
-        if (SVGExternalResourcesRequired::parseMappedAttribute(attr)
-           || SVGFitToViewBox::parseMappedAttribute(document(), attr)
-           || SVGZoomAndPan::parseMappedAttribute(attr))
+    if ( attr->name() == SVGNames::viewTargetAttr )
+    {
+        viewTarget().reset( attr->value() );
+    }
+    else
+    {
+        if ( SVGExternalResourcesRequired::parseMappedAttribute( attr )
+                || SVGFitToViewBox::parseMappedAttribute( document(), attr )
+                || SVGZoomAndPan::parseMappedAttribute( attr ) )
+        {
             return;
+        }
 
-        SVGStyledElement::parseMappedAttribute(attr);
+        SVGStyledElement::parseMappedAttribute( attr );
     }
 }
 
-void SVGViewElement::synchronizeProperty(const QualifiedName& attrName)
+void SVGViewElement::synchronizeProperty( const QualifiedName &attrName )
 {
-    SVGStyledElement::synchronizeProperty(attrName);
+    SVGStyledElement::synchronizeProperty( attrName );
 
-    if (attrName == anyQName()) {
+    if ( attrName == anyQName() )
+    {
         synchronizeExternalResourcesRequired();
         synchronizeViewBox();
         synchronizePreserveAspectRatio();
         return;
     }
 
-    if (SVGExternalResourcesRequired::isKnownAttribute(attrName))
+    if ( SVGExternalResourcesRequired::isKnownAttribute( attrName ) )
+    {
         synchronizeExternalResourcesRequired();
-    else if (SVGFitToViewBox::isKnownAttribute(attrName)) {
+    }
+    else if ( SVGFitToViewBox::isKnownAttribute( attrName ) )
+    {
         synchronizeViewBox();
         synchronizePreserveAspectRatio();
     }
 }
 
-AttributeToPropertyTypeMap& SVGViewElement::attributeToPropertyTypeMap()
+AttributeToPropertyTypeMap &SVGViewElement::attributeToPropertyTypeMap()
 {
-    DEFINE_STATIC_LOCAL(AttributeToPropertyTypeMap, s_attributeToPropertyTypeMap, ());
+    DEFINE_STATIC_LOCAL( AttributeToPropertyTypeMap, s_attributeToPropertyTypeMap, () );
     return s_attributeToPropertyTypeMap;
 }
 
 void SVGViewElement::fillAttributeToPropertyTypeMap()
 {
-    AttributeToPropertyTypeMap& attributeToPropertyTypeMap = this->attributeToPropertyTypeMap();
+    AttributeToPropertyTypeMap &attributeToPropertyTypeMap = this->attributeToPropertyTypeMap();
 
-    SVGStyledElement::fillPassedAttributeToPropertyTypeMap(attributeToPropertyTypeMap);
-    attributeToPropertyTypeMap.set(SVGNames::viewBoxAttr, AnimatedRect);
-    attributeToPropertyTypeMap.set(SVGNames::preserveAspectRatioAttr, AnimatedPreserveAspectRatio);
+    SVGStyledElement::fillPassedAttributeToPropertyTypeMap( attributeToPropertyTypeMap );
+    attributeToPropertyTypeMap.set( SVGNames::viewBoxAttr, AnimatedRect );
+    attributeToPropertyTypeMap.set( SVGNames::preserveAspectRatioAttr, AnimatedPreserveAspectRatio );
 }
 
 }

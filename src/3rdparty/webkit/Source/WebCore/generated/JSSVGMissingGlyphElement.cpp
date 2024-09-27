@@ -29,9 +29,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSSVGMissingGlyphElement);
+ASSERT_CLASS_FITS_IN_CELL( JSSVGMissingGlyphElement );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -42,8 +43,8 @@ ASSERT_CLASS_FITS_IN_CELL(JSSVGMissingGlyphElement);
 
 static const HashTableValue JSSVGMissingGlyphElementTableValues[2] =
 {
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGMissingGlyphElementConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGMissingGlyphElementConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -57,43 +58,52 @@ static JSC_CONST_HASHTABLE HashTable JSSVGMissingGlyphElementTable = { 2, 1, JSS
 
 static const HashTableValue JSSVGMissingGlyphElementConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGMissingGlyphElementConstructorTable = { 1, 0, JSSVGMissingGlyphElementConstructorTableValues, 0 };
-class JSSVGMissingGlyphElementConstructor : public DOMConstructorObject {
+class JSSVGMissingGlyphElementConstructor : public DOMConstructorObject
+{
 public:
-    JSSVGMissingGlyphElementConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSSVGMissingGlyphElementConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSSVGMissingGlyphElementConstructor::s_info = { "SVGMissingGlyphElementConstructor", &DOMConstructorObject::s_info, &JSSVGMissingGlyphElementConstructorTable, 0 };
 
-JSSVGMissingGlyphElementConstructor::JSSVGMissingGlyphElementConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSSVGMissingGlyphElementConstructor::JSSVGMissingGlyphElementConstructor( ExecState *exec, Structure *structure,
+        JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSSVGMissingGlyphElementPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSSVGMissingGlyphElementPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSSVGMissingGlyphElementConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGMissingGlyphElementConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName,
+        PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGMissingGlyphElementConstructor, JSDOMWrapper>(exec, &JSSVGMissingGlyphElementConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGMissingGlyphElementConstructor, JSDOMWrapper>( exec, &JSSVGMissingGlyphElementConstructorTable,
+            this, propertyName, slot );
 }
 
-bool JSSVGMissingGlyphElementConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGMissingGlyphElementConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGMissingGlyphElementConstructor, JSDOMWrapper>(exec, &JSSVGMissingGlyphElementConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGMissingGlyphElementConstructor, JSDOMWrapper>( exec,
+            &JSSVGMissingGlyphElementConstructorTable, this, propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -105,50 +115,54 @@ bool JSSVGMissingGlyphElementConstructor::getOwnPropertyDescriptor(ExecState* ex
 
 static const HashTableValue JSSVGMissingGlyphElementPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGMissingGlyphElementPrototypeTable = { 1, 0, JSSVGMissingGlyphElementPrototypeTableValues, 0 };
 const ClassInfo JSSVGMissingGlyphElementPrototype::s_info = { "SVGMissingGlyphElementPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSSVGMissingGlyphElementPrototypeTable, 0 };
 
-JSObject* JSSVGMissingGlyphElementPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGMissingGlyphElementPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSSVGMissingGlyphElement>(exec, globalObject);
+    return getDOMPrototype<JSSVGMissingGlyphElement>( exec, globalObject );
 }
 
 const ClassInfo JSSVGMissingGlyphElement::s_info = { "SVGMissingGlyphElement", &JSSVGElement::s_info, &JSSVGMissingGlyphElementTable, 0 };
 
-JSSVGMissingGlyphElement::JSSVGMissingGlyphElement(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<SVGMissingGlyphElement> impl)
-    : JSSVGElement(structure, globalObject, impl)
+JSSVGMissingGlyphElement::JSSVGMissingGlyphElement( Structure *structure, JSDOMGlobalObject *globalObject,
+        PassRefPtr<SVGMissingGlyphElement> impl )
+    : JSSVGElement( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSSVGMissingGlyphElement::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGMissingGlyphElement::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSSVGMissingGlyphElementPrototype(exec->globalData(), globalObject, JSSVGMissingGlyphElementPrototype::createStructure(exec->globalData(), JSSVGElementPrototype::self(exec, globalObject)));
+    return new ( exec ) JSSVGMissingGlyphElementPrototype( exec->globalData(), globalObject,
+            JSSVGMissingGlyphElementPrototype::createStructure( exec->globalData(), JSSVGElementPrototype::self( exec, globalObject ) ) );
 }
 
-bool JSSVGMissingGlyphElement::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGMissingGlyphElement::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGMissingGlyphElement, Base>(exec, &JSSVGMissingGlyphElementTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGMissingGlyphElement, Base>( exec, &JSSVGMissingGlyphElementTable, this, propertyName, slot );
 }
 
-bool JSSVGMissingGlyphElement::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGMissingGlyphElement::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGMissingGlyphElement, Base>(exec, &JSSVGMissingGlyphElementTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGMissingGlyphElement, Base>( exec, &JSSVGMissingGlyphElementTable, this, propertyName,
+            descriptor );
 }
 
-JSValue jsSVGMissingGlyphElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGMissingGlyphElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGMissingGlyphElement* domObject = static_cast<JSSVGMissingGlyphElement*>(asObject(slotBase));
-    return JSSVGMissingGlyphElement::getConstructor(exec, domObject->globalObject());
+    JSSVGMissingGlyphElement *domObject = static_cast<JSSVGMissingGlyphElement *>( asObject( slotBase ) );
+    return JSSVGMissingGlyphElement::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSSVGMissingGlyphElement::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSSVGMissingGlyphElement::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSSVGMissingGlyphElementConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSSVGMissingGlyphElementConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
 

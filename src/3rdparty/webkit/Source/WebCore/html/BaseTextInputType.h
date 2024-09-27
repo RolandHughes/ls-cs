@@ -33,17 +33,19 @@
 
 #include "TextFieldInputType.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Base of email, password, search, tel, text, and URL types.
 // They support maxlength, selection functions, and so on.
-class BaseTextInputType : public TextFieldInputType {
+class BaseTextInputType : public TextFieldInputType
+{
 protected:
-    BaseTextInputType(HTMLInputElement* element) : TextFieldInputType(element) { }
+    BaseTextInputType( HTMLInputElement *element ) : TextFieldInputType( element ) { }
 
 private:
     virtual bool isTextType() const;
-    virtual bool patternMismatch(const String&) const;
+    virtual bool patternMismatch( const String & ) const;
 };
 
 } // namespace WebCore

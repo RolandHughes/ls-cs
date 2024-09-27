@@ -39,128 +39,131 @@ extern "C" {
 WK_EXPORT WKTypeID WKPreferencesGetTypeID();
 
 WK_EXPORT WKPreferencesRef WKPreferencesCreate();
-WK_EXPORT WKPreferencesRef WKPreferencesCreateWithIdentifier(WKStringRef identifier);
+WK_EXPORT WKPreferencesRef WKPreferencesCreateWithIdentifier( WKStringRef identifier );
 
 // Defaults to true.
-WK_EXPORT void WKPreferencesSetJavaScriptEnabled(WKPreferencesRef preferences, bool javaScriptEnabled);
-WK_EXPORT bool WKPreferencesGetJavaScriptEnabled(WKPreferencesRef preferences);
+WK_EXPORT void WKPreferencesSetJavaScriptEnabled( WKPreferencesRef preferences, bool javaScriptEnabled );
+WK_EXPORT bool WKPreferencesGetJavaScriptEnabled( WKPreferencesRef preferences );
 
 // Defaults to true.
-WK_EXPORT void WKPreferencesSetLoadsImagesAutomatically(WKPreferencesRef preferences, bool loadsImagesAutomatically);
-WK_EXPORT bool WKPreferencesGetLoadsImagesAutomatically(WKPreferencesRef preferences);
+WK_EXPORT void WKPreferencesSetLoadsImagesAutomatically( WKPreferencesRef preferences, bool loadsImagesAutomatically );
+WK_EXPORT bool WKPreferencesGetLoadsImagesAutomatically( WKPreferencesRef preferences );
 
 // Defaults to false.
-WK_EXPORT void WKPreferencesSetLoadsSiteIconsIgnoringImageLoadingPreference(WKPreferencesRef preferences, bool loadsSiteIconsIgnoringImageLoadingPreference);
-WK_EXPORT bool WKPreferencesGetLoadsSiteIconsIgnoringImageLoadingPreference(WKPreferencesRef preferences);
+WK_EXPORT void WKPreferencesSetLoadsSiteIconsIgnoringImageLoadingPreference( WKPreferencesRef preferences,
+        bool loadsSiteIconsIgnoringImageLoadingPreference );
+WK_EXPORT bool WKPreferencesGetLoadsSiteIconsIgnoringImageLoadingPreference( WKPreferencesRef preferences );
 
 // Defaults to false.
-WK_EXPORT void WKPreferencesSetOfflineWebApplicationCacheEnabled(WKPreferencesRef preferences, bool offlineWebApplicationCacheEnabled);
-WK_EXPORT bool WKPreferencesGetOfflineWebApplicationCacheEnabled(WKPreferencesRef preferences);
+WK_EXPORT void WKPreferencesSetOfflineWebApplicationCacheEnabled( WKPreferencesRef preferences,
+        bool offlineWebApplicationCacheEnabled );
+WK_EXPORT bool WKPreferencesGetOfflineWebApplicationCacheEnabled( WKPreferencesRef preferences );
 
 // Defaults to true.
-WK_EXPORT void WKPreferencesSetLocalStorageEnabled(WKPreferencesRef preferences, bool localStorageEnabled);
-WK_EXPORT bool WKPreferencesGetLocalStorageEnabled(WKPreferencesRef preferences);
+WK_EXPORT void WKPreferencesSetLocalStorageEnabled( WKPreferencesRef preferences, bool localStorageEnabled );
+WK_EXPORT bool WKPreferencesGetLocalStorageEnabled( WKPreferencesRef preferences );
 
 // Defaults to true.
-WK_EXPORT void WKPreferencesSetDatabasesEnabled(WKPreferencesRef preferences, bool databasesEnabled);
-WK_EXPORT bool WKPreferencesGetDatabasesEnabled(WKPreferencesRef preferences);
+WK_EXPORT void WKPreferencesSetDatabasesEnabled( WKPreferencesRef preferences, bool databasesEnabled );
+WK_EXPORT bool WKPreferencesGetDatabasesEnabled( WKPreferencesRef preferences );
 
 // Defaults to true.
-WK_EXPORT void WKPreferencesSetXSSAuditorEnabled(WKPreferencesRef preferences, bool xssAuditorEnabled);
-WK_EXPORT bool WKPreferencesGetXSSAuditorEnabled(WKPreferencesRef preferences);
+WK_EXPORT void WKPreferencesSetXSSAuditorEnabled( WKPreferencesRef preferences, bool xssAuditorEnabled );
+WK_EXPORT bool WKPreferencesGetXSSAuditorEnabled( WKPreferencesRef preferences );
 
 // Defaults to false.
-WK_EXPORT void WKPreferencesSetFrameFlatteningEnabled(WKPreferencesRef preferences, bool frameFlatteningEnabled);
-WK_EXPORT bool WKPreferencesGetFrameFlatteningEnabled(WKPreferencesRef preferences);
+WK_EXPORT void WKPreferencesSetFrameFlatteningEnabled( WKPreferencesRef preferences, bool frameFlatteningEnabled );
+WK_EXPORT bool WKPreferencesGetFrameFlatteningEnabled( WKPreferencesRef preferences );
 
 // Defaults to true.
-WK_EXPORT void WKPreferencesSetPluginsEnabled(WKPreferencesRef preferences, bool pluginsEnabled);
-WK_EXPORT bool WKPreferencesGetPluginsEnabled(WKPreferencesRef preferences);
+WK_EXPORT void WKPreferencesSetPluginsEnabled( WKPreferencesRef preferences, bool pluginsEnabled );
+WK_EXPORT bool WKPreferencesGetPluginsEnabled( WKPreferencesRef preferences );
 
 // Defaults to true.
-WK_EXPORT void WKPreferencesSetJavaEnabled(WKPreferencesRef preferences, bool javaEnabled);
-WK_EXPORT bool WKPreferencesGetJavaEnabled(WKPreferencesRef preferences);
+WK_EXPORT void WKPreferencesSetJavaEnabled( WKPreferencesRef preferences, bool javaEnabled );
+WK_EXPORT bool WKPreferencesGetJavaEnabled( WKPreferencesRef preferences );
 
 // Defaults to true.
-WK_EXPORT void WKPreferencesSetJavaScriptCanOpenWindowsAutomatically(WKPreferencesRef preferences, bool javaScriptCanOpenWindowsAutomatically);
-WK_EXPORT bool WKPreferencesGetJavaScriptCanOpenWindowsAutomatically(WKPreferencesRef preferences);
+WK_EXPORT void WKPreferencesSetJavaScriptCanOpenWindowsAutomatically( WKPreferencesRef preferences,
+        bool javaScriptCanOpenWindowsAutomatically );
+WK_EXPORT bool WKPreferencesGetJavaScriptCanOpenWindowsAutomatically( WKPreferencesRef preferences );
 
 // Defaults to true.
-WK_EXPORT void WKPreferencesSetHyperlinkAuditingEnabled(WKPreferencesRef preferences, bool hyperlinkAuditingEnabled);
-WK_EXPORT bool WKPreferencesGetHyperlinkAuditingEnabled(WKPreferencesRef preferences);
+WK_EXPORT void WKPreferencesSetHyperlinkAuditingEnabled( WKPreferencesRef preferences, bool hyperlinkAuditingEnabled );
+WK_EXPORT bool WKPreferencesGetHyperlinkAuditingEnabled( WKPreferencesRef preferences );
 
-WK_EXPORT void WKPreferencesSetStandardFontFamily(WKPreferencesRef preferencesRef, WKStringRef family);
-WK_EXPORT WKStringRef WKPreferencesCopyStandardFontFamily(WKPreferencesRef preferencesRef);
+WK_EXPORT void WKPreferencesSetStandardFontFamily( WKPreferencesRef preferencesRef, WKStringRef family );
+WK_EXPORT WKStringRef WKPreferencesCopyStandardFontFamily( WKPreferencesRef preferencesRef );
 
-WK_EXPORT void WKPreferencesSetFixedFontFamily(WKPreferencesRef preferencesRef, WKStringRef family);
-WK_EXPORT WKStringRef WKPreferencesCopyFixedFontFamily(WKPreferencesRef preferencesRef);
+WK_EXPORT void WKPreferencesSetFixedFontFamily( WKPreferencesRef preferencesRef, WKStringRef family );
+WK_EXPORT WKStringRef WKPreferencesCopyFixedFontFamily( WKPreferencesRef preferencesRef );
 
-WK_EXPORT void WKPreferencesSetSerifFontFamily(WKPreferencesRef preferencesRef, WKStringRef family);
-WK_EXPORT WKStringRef WKPreferencesCopySerifFontFamily(WKPreferencesRef preferencesRef);
+WK_EXPORT void WKPreferencesSetSerifFontFamily( WKPreferencesRef preferencesRef, WKStringRef family );
+WK_EXPORT WKStringRef WKPreferencesCopySerifFontFamily( WKPreferencesRef preferencesRef );
 
-WK_EXPORT void WKPreferencesSetSansSerifFontFamily(WKPreferencesRef preferencesRef, WKStringRef family);
-WK_EXPORT WKStringRef WKPreferencesCopySansSerifFontFamily(WKPreferencesRef preferencesRef);
+WK_EXPORT void WKPreferencesSetSansSerifFontFamily( WKPreferencesRef preferencesRef, WKStringRef family );
+WK_EXPORT WKStringRef WKPreferencesCopySansSerifFontFamily( WKPreferencesRef preferencesRef );
 
-WK_EXPORT void WKPreferencesSetCursiveFontFamily(WKPreferencesRef preferencesRef, WKStringRef family);
-WK_EXPORT WKStringRef WKPreferencesCopyCursiveFontFamily(WKPreferencesRef preferencesRef);
+WK_EXPORT void WKPreferencesSetCursiveFontFamily( WKPreferencesRef preferencesRef, WKStringRef family );
+WK_EXPORT WKStringRef WKPreferencesCopyCursiveFontFamily( WKPreferencesRef preferencesRef );
 
-WK_EXPORT void WKPreferencesSetFantasyFontFamily(WKPreferencesRef preferencesRef, WKStringRef family);
-WK_EXPORT WKStringRef WKPreferencesCopyFantasyFontFamily(WKPreferencesRef preferencesRef);
+WK_EXPORT void WKPreferencesSetFantasyFontFamily( WKPreferencesRef preferencesRef, WKStringRef family );
+WK_EXPORT WKStringRef WKPreferencesCopyFantasyFontFamily( WKPreferencesRef preferencesRef );
 
 // Defaults to 16.
-WK_EXPORT void WKPreferencesSetDefaultFontSize(WKPreferencesRef preferencesRef, uint32_t);
-WK_EXPORT uint32_t WKPreferencesGetDefaultFontSize(WKPreferencesRef preferencesRef);
+WK_EXPORT void WKPreferencesSetDefaultFontSize( WKPreferencesRef preferencesRef, uint32_t );
+WK_EXPORT uint32_t WKPreferencesGetDefaultFontSize( WKPreferencesRef preferencesRef );
 
 // Defaults to 13.
-WK_EXPORT void WKPreferencesSetDefaultFixedFontSize(WKPreferencesRef preferencesRef, uint32_t);
-WK_EXPORT uint32_t WKPreferencesGetDefaultFixedFontSize(WKPreferencesRef preferencesRef);
+WK_EXPORT void WKPreferencesSetDefaultFixedFontSize( WKPreferencesRef preferencesRef, uint32_t );
+WK_EXPORT uint32_t WKPreferencesGetDefaultFixedFontSize( WKPreferencesRef preferencesRef );
 
 // Defaults to 0.
-WK_EXPORT void WKPreferencesSetMinimumFontSize(WKPreferencesRef preferencesRef, uint32_t);
-WK_EXPORT uint32_t WKPreferencesGetMinimumFontSize(WKPreferencesRef preferencesRef);
+WK_EXPORT void WKPreferencesSetMinimumFontSize( WKPreferencesRef preferencesRef, uint32_t );
+WK_EXPORT uint32_t WKPreferencesGetMinimumFontSize( WKPreferencesRef preferencesRef );
 
-WK_EXPORT void WKPreferencesSetDefaultTextEncodingName(WKPreferencesRef preferencesRef, WKStringRef name);
-WK_EXPORT WKStringRef WKPreferencesCopyDefaultTextEncodingName(WKPreferencesRef preferencesRef);
-
-// Defaults to false.
-WK_EXPORT void WKPreferencesSetPrivateBrowsingEnabled(WKPreferencesRef preferencesRef, bool enabled);
-WK_EXPORT bool WKPreferencesGetPrivateBrowsingEnabled(WKPreferencesRef preferencesRef);
+WK_EXPORT void WKPreferencesSetDefaultTextEncodingName( WKPreferencesRef preferencesRef, WKStringRef name );
+WK_EXPORT WKStringRef WKPreferencesCopyDefaultTextEncodingName( WKPreferencesRef preferencesRef );
 
 // Defaults to false.
-WK_EXPORT void WKPreferencesSetDeveloperExtrasEnabled(WKPreferencesRef preferencesRef, bool enabled);
-WK_EXPORT bool WKPreferencesGetDeveloperExtrasEnabled(WKPreferencesRef preferencesRef);
+WK_EXPORT void WKPreferencesSetPrivateBrowsingEnabled( WKPreferencesRef preferencesRef, bool enabled );
+WK_EXPORT bool WKPreferencesGetPrivateBrowsingEnabled( WKPreferencesRef preferencesRef );
+
+// Defaults to false.
+WK_EXPORT void WKPreferencesSetDeveloperExtrasEnabled( WKPreferencesRef preferencesRef, bool enabled );
+WK_EXPORT bool WKPreferencesGetDeveloperExtrasEnabled( WKPreferencesRef preferencesRef );
 
 // Defaults to true.
-WK_EXPORT void WKPreferencesSetTextAreasAreResizable(WKPreferencesRef preferencesRef, bool resizable);
-WK_EXPORT bool WKPreferencesGetTextAreasAreResizable(WKPreferencesRef preferencesRef);
+WK_EXPORT void WKPreferencesSetTextAreasAreResizable( WKPreferencesRef preferencesRef, bool resizable );
+WK_EXPORT bool WKPreferencesGetTextAreasAreResizable( WKPreferencesRef preferencesRef );
 
 // Defaults to false.
-WK_EXPORT void WKPreferencesSetTabsToLinks(WKPreferencesRef preferences, bool tabsToLinks);
-WK_EXPORT bool WKPreferencesGetTabsToLinks(WKPreferencesRef preferences);
+WK_EXPORT void WKPreferencesSetTabsToLinks( WKPreferencesRef preferences, bool tabsToLinks );
+WK_EXPORT bool WKPreferencesGetTabsToLinks( WKPreferencesRef preferences );
 
 // Defaults to false.
-WK_EXPORT void WKPreferencesSetDNSPrefetchingEnabled(WKPreferencesRef preferences, bool enabled);
-WK_EXPORT bool WKPreferencesGetDNSPrefetchingEnabled(WKPreferencesRef preferences);
+WK_EXPORT void WKPreferencesSetDNSPrefetchingEnabled( WKPreferencesRef preferences, bool enabled );
+WK_EXPORT bool WKPreferencesGetDNSPrefetchingEnabled( WKPreferencesRef preferences );
 
 // Defaults to true.
-WK_EXPORT void WKPreferencesSetAuthorAndUserStylesEnabled(WKPreferencesRef preferences, bool enabled);
-WK_EXPORT bool WKPreferencesGetAuthorAndUserStylesEnabled(WKPreferencesRef preferences);
+WK_EXPORT void WKPreferencesSetAuthorAndUserStylesEnabled( WKPreferencesRef preferences, bool enabled );
+WK_EXPORT bool WKPreferencesGetAuthorAndUserStylesEnabled( WKPreferencesRef preferences );
 
 // Defaults to false.
-WK_EXPORT void WKPreferencesSetShouldPrintBackgrounds(WKPreferencesRef preferences, bool shouldPrintBackgrounds);
-WK_EXPORT bool WKPreferencesGetShouldPrintBackgrounds(WKPreferencesRef preferences);
+WK_EXPORT void WKPreferencesSetShouldPrintBackgrounds( WKPreferencesRef preferences, bool shouldPrintBackgrounds );
+WK_EXPORT bool WKPreferencesGetShouldPrintBackgrounds( WKPreferencesRef preferences );
 
 // Defaults to false.
-WK_EXPORT void WKPreferencesSetJavaScriptCanAccessClipboard(WKPreferencesRef preferencesRef, bool enabled);
-WK_EXPORT bool WKPreferencesGetJavaScriptCanAccessClipboard(WKPreferencesRef preferencesRef);
+WK_EXPORT void WKPreferencesSetJavaScriptCanAccessClipboard( WKPreferencesRef preferencesRef, bool enabled );
+WK_EXPORT bool WKPreferencesGetJavaScriptCanAccessClipboard( WKPreferencesRef preferencesRef );
 
 // Defaults to false
-WK_EXPORT void WKPreferencesSetFullScreenEnabled(WKPreferencesRef preferencesRef, bool enabled);
-WK_EXPORT bool WKPreferencesGetFullScreenEnabled(WKPreferencesRef preferencesRef);
+WK_EXPORT void WKPreferencesSetFullScreenEnabled( WKPreferencesRef preferencesRef, bool enabled );
+WK_EXPORT bool WKPreferencesGetFullScreenEnabled( WKPreferencesRef preferencesRef );
 
 // Defaults to true.
-WK_EXPORT void WKPreferencesSetAVFoundationEnabled(WKPreferencesRef preferencesRef, bool enabled);
-WK_EXPORT bool WKPreferencesGetAVFoundationEnabled(WKPreferencesRef preferencesRef);
+WK_EXPORT void WKPreferencesSetAVFoundationEnabled( WKPreferencesRef preferencesRef, bool enabled );
+WK_EXPORT bool WKPreferencesGetAVFoundationEnabled( WKPreferencesRef preferencesRef );
 
 #ifdef __cplusplus
 }

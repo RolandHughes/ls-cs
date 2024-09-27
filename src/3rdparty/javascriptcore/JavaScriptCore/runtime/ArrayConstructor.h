@@ -23,17 +23,19 @@
 
 #include "InternalFunction.h"
 
-namespace JSC {
+namespace JSC
+{
 
-    class ArrayPrototype;
+class ArrayPrototype;
 
-    class ArrayConstructor : public InternalFunction {
-    public:
-        ArrayConstructor(ExecState*, NonNullPassRefPtr<Structure>, ArrayPrototype*, Structure*);
+class ArrayConstructor : public InternalFunction
+{
+public:
+    ArrayConstructor( ExecState *, NonNullPassRefPtr<Structure>, ArrayPrototype *, Structure * );
 
-        virtual ConstructType getConstructData(ConstructData&);
-        virtual CallType getCallData(CallData&);
-    };
+    virtual ConstructType getConstructData( ConstructData & );
+    virtual CallType getCallData( CallData & );
+};
 
 } // namespace JSC
 

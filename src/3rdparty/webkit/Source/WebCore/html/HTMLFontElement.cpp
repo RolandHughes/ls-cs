@@ -31,155 +31,206 @@
 
 using namespace WTF;
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-HTMLFontElement::HTMLFontElement(const QualifiedName& tagName, Document* document)
-    : HTMLElement(tagName, document)
+HTMLFontElement::HTMLFontElement( const QualifiedName &tagName, Document *document )
+    : HTMLElement( tagName, document )
 {
-    ASSERT(hasTagName(fontTag));
+    ASSERT( hasTagName( fontTag ) );
 }
 
-PassRefPtr<HTMLFontElement> HTMLFontElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<HTMLFontElement> HTMLFontElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new HTMLFontElement(tagName, document));
+    return adoptRef( new HTMLFontElement( tagName, document ) );
 }
 
 // http://www.whatwg.org/specs/web-apps/current-work/multipage/rendering.html#fonts-and-colors
-static bool parseFontSize(const String& input, int& size)
+static bool parseFontSize( const String &input, int &size )
 {
 
     // Step 1
     // Step 2
-    const UChar* position = input.characters();
-    const UChar* end = position + input.length();
+    const UChar *position = input.characters();
+    const UChar *end = position + input.length();
 
     // Step 3
-    while (position < end) {
-        if (!isHTMLSpace(*position))
+    while ( position < end )
+    {
+        if ( !isHTMLSpace( *position ) )
+        {
             break;
+        }
+
         ++position;
     }
 
     // Step 4
-    if (position == end)
+    if ( position == end )
+    {
         return false;
-    ASSERT(position < end);
+    }
+
+    ASSERT( position < end );
 
     // Step 5
-    enum {
+    enum
+    {
         RelativePlus,
         RelativeMinus,
         Absolute
     } mode;
 
-    switch (*position) {
-    case '+':
-        mode = RelativePlus;
-        ++position;
-        break;
-    case '-':
-        mode = RelativeMinus;
-        ++position;
-        break;
-    default:
-        mode = Absolute;
-        break;
+    switch ( *position )
+    {
+        case '+':
+            mode = RelativePlus;
+            ++position;
+            break;
+
+        case '-':
+            mode = RelativeMinus;
+            ++position;
+            break;
+
+        default:
+            mode = Absolute;
+            break;
     }
 
     // Step 6
     Vector<UChar, 16> digits;
-    while (position < end) {
-        if (!isASCIIDigit(*position))
+
+    while ( position < end )
+    {
+        if ( !isASCIIDigit( *position ) )
+        {
             break;
-        digits.append(*position++);
+        }
+
+        digits.append( *position++ );
     }
 
     // Step 7
-    if (digits.isEmpty())
+    if ( digits.isEmpty() )
+    {
         return false;
+    }
 
     // Step 8
-    int value = charactersToIntStrict(digits.data(), digits.size());
+    int value = charactersToIntStrict( digits.data(), digits.size() );
 
     // Step 9
-    if (mode == RelativePlus)
+    if ( mode == RelativePlus )
+    {
         value += 3;
-    else if (mode == RelativeMinus)
+    }
+    else if ( mode == RelativeMinus )
+    {
         value = 3 - value;
+    }
 
     // Step 10
-    if (value > 7)
+    if ( value > 7 )
+    {
         value = 7;
+    }
 
     // Step 11
-    if (value < 1)
+    if ( value < 1 )
+    {
         value = 1;
+    }
 
     size = value;
     return true;
 }
 
-bool HTMLFontElement::mapToEntry(const QualifiedName& attrName, MappedAttributeEntry& result) const
+bool HTMLFontElement::mapToEntry( const QualifiedName &attrName, MappedAttributeEntry &result ) const
 {
-    if (attrName == sizeAttr ||
-        attrName == colorAttr ||
-        attrName == faceAttr) {
+    if ( attrName == sizeAttr ||
+            attrName == colorAttr ||
+            attrName == faceAttr )
+    {
         result = eUniversal;
         return false;
     }
-    
-    return HTMLElement::mapToEntry(attrName, result);
+
+    return HTMLElement::mapToEntry( attrName, result );
 }
 
-bool HTMLFontElement::cssValueFromFontSizeNumber(const String& s, int& size)
+bool HTMLFontElement::cssValueFromFontSizeNumber( const String &s, int &size )
 {
     int num = 0;
-    if (!parseFontSize(s, num))
-        return false;
 
-    switch (num) {
-    case 1:
-        // FIXME: The spec says that we're supposed to use CSSValueXxSmall here.
-        size = CSSValueXSmall;
-        break;
-    case 2: 
-        size = CSSValueSmall;
-        break;
-    case 3: 
-        size = CSSValueMedium;
-        break;
-    case 4: 
-        size = CSSValueLarge;
-        break;
-    case 5: 
-        size = CSSValueXLarge;
-        break;
-    case 6: 
-        size = CSSValueXxLarge;
-        break;
-    case 7:
-        size = CSSValueWebkitXxxLarge;
-        break;
-    default:
-        ASSERT_NOT_REACHED();
+    if ( !parseFontSize( s, num ) )
+    {
+        return false;
     }
+
+    switch ( num )
+    {
+        case 1:
+            // FIXME: The spec says that we're supposed to use CSSValueXxSmall here.
+            size = CSSValueXSmall;
+            break;
+
+        case 2:
+            size = CSSValueSmall;
+            break;
+
+        case 3:
+            size = CSSValueMedium;
+            break;
+
+        case 4:
+            size = CSSValueLarge;
+            break;
+
+        case 5:
+            size = CSSValueXLarge;
+            break;
+
+        case 6:
+            size = CSSValueXxLarge;
+            break;
+
+        case 7:
+            size = CSSValueWebkitXxxLarge;
+            break;
+
+        default:
+            ASSERT_NOT_REACHED();
+    }
+
     return true;
 }
 
-void HTMLFontElement::parseMappedAttribute(Attribute* attr)
+void HTMLFontElement::parseMappedAttribute( Attribute *attr )
 {
-    if (attr->name() == sizeAttr) {
+    if ( attr->name() == sizeAttr )
+    {
         int size = 0;
-        if (cssValueFromFontSizeNumber(attr->value(), size))
-            addCSSProperty(attr, CSSPropertyFontSize, size);
-    } else if (attr->name() == colorAttr) {
-        addCSSColor(attr, CSSPropertyColor, attr->value());
-    } else if (attr->name() == faceAttr) {
-        addCSSProperty(attr, CSSPropertyFontFamily, attr->value());
-    } else
-        HTMLElement::parseMappedAttribute(attr);
+
+        if ( cssValueFromFontSizeNumber( attr->value(), size ) )
+        {
+            addCSSProperty( attr, CSSPropertyFontSize, size );
+        }
+    }
+    else if ( attr->name() == colorAttr )
+    {
+        addCSSColor( attr, CSSPropertyColor, attr->value() );
+    }
+    else if ( attr->name() == faceAttr )
+    {
+        addCSSProperty( attr, CSSPropertyFontFamily, attr->value() );
+    }
+    else
+    {
+        HTMLElement::parseMappedAttribute( attr );
+    }
 }
 
 }

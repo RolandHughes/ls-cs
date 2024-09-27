@@ -31,14 +31,14 @@
 
 using namespace WebKit;
 
-WKURLRequestRef WKURLRequestCreateWithCFURLRequest(CFURLRequestRef urlRequest)
+WKURLRequestRef WKURLRequestCreateWithCFURLRequest( CFURLRequestRef urlRequest )
 {
-    CFURLRequestRef copiedURLRequest = CFURLRequestCreateCopy(kCFAllocatorDefault, urlRequest);
-    RefPtr<WebURLRequest> request = WebURLRequest::create(copiedURLRequest);
-    return toAPI(request.release().releaseRef());
+    CFURLRequestRef copiedURLRequest = CFURLRequestCreateCopy( kCFAllocatorDefault, urlRequest );
+    RefPtr<WebURLRequest> request = WebURLRequest::create( copiedURLRequest );
+    return toAPI( request.release().releaseRef() );
 }
 
-CFURLRequestRef WKURLRequestCopyCFURLRequest(CFAllocatorRef alloc, WKURLRequestRef urlRequest)
+CFURLRequestRef WKURLRequestCopyCFURLRequest( CFAllocatorRef alloc, WKURLRequestRef urlRequest )
 {
-    return CFURLRequestCreateCopy(alloc, toImpl(urlRequest)->platformRequest());
+    return CFURLRequestCreateCopy( alloc, toImpl( urlRequest )->platformRequest() );
 }

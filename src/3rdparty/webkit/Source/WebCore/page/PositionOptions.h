@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef PositionOptions_h
@@ -29,55 +29,75 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
-    
-class PositionOptions : public RefCounted<PositionOptions> {
-public:
-    static PassRefPtr<PositionOptions> create() { return adoptRef(new PositionOptions()); }
+namespace WebCore
+{
 
-    bool enableHighAccuracy() const { return m_highAccuracy; }
-    void setEnableHighAccuracy(bool enable) { m_highAccuracy = enable; }
-    bool hasTimeout() const { return m_hasTimeout; }
+class PositionOptions : public RefCounted<PositionOptions>
+{
+public:
+    static PassRefPtr<PositionOptions> create()
+    {
+        return adoptRef( new PositionOptions() );
+    }
+
+    bool enableHighAccuracy() const
+    {
+        return m_highAccuracy;
+    }
+    void setEnableHighAccuracy( bool enable )
+    {
+        m_highAccuracy = enable;
+    }
+    bool hasTimeout() const
+    {
+        return m_hasTimeout;
+    }
     int timeout() const
     {
-        ASSERT(hasTimeout());
+        ASSERT( hasTimeout() );
         return m_timeout;
     }
-    void setTimeout(int timeout)
+    void setTimeout( int timeout )
     {
-        ASSERT(timeout >= 0);
+        ASSERT( timeout >= 0 );
         m_hasTimeout = true;
         m_timeout = timeout;
     }
-    bool hasMaximumAge() const { return m_hasMaximumAge; }
+    bool hasMaximumAge() const
+    {
+        return m_hasMaximumAge;
+    }
     int maximumAge() const
     {
-        ASSERT(hasMaximumAge());
+        ASSERT( hasMaximumAge() );
         return m_maximumAge;
     }
-    void clearMaximumAge() { m_hasMaximumAge = false; }
-    void setMaximumAge(int age)
+    void clearMaximumAge()
     {
-        ASSERT(age >= 0);
+        m_hasMaximumAge = false;
+    }
+    void setMaximumAge( int age )
+    {
+        ASSERT( age >= 0 );
         m_hasMaximumAge = true;
         m_maximumAge = age;
     }
-    
+
 private:
     PositionOptions()
-        : m_highAccuracy(false)
-        , m_hasTimeout(false)
+        : m_highAccuracy( false )
+        , m_hasTimeout( false )
     {
-        setMaximumAge(0);
+        setMaximumAge( 0 );
     }
-    
+
     bool m_highAccuracy;
     bool m_hasTimeout;
     int m_timeout;
     bool m_hasMaximumAge;
     int m_maximumAge;
 };
-    
+
 } // namespace WebCore
 
 #endif // PositionOptions_h

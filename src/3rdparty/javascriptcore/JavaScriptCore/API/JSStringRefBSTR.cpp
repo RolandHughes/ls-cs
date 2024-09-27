@@ -6,13 +6,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -31,12 +31,12 @@
 
 #include "JSStringRef.h"
 
-JSStringRef JSStringCreateWithBSTR(BSTR string)
+JSStringRef JSStringCreateWithBSTR( BSTR string )
 {
-    return JSStringCreateWithCharacters(string ? string : L"", string ? SysStringLen(string) : 0);
+    return JSStringCreateWithCharacters( string ? string : L"", string ? SysStringLen( string ) : 0 );
 }
 
-BSTR JSStringCopyBSTR(const JSStringRef string)
+BSTR JSStringCopyBSTR( const JSStringRef string )
 {
-    return SysAllocStringLen(JSStringGetCharactersPtr(string), JSStringGetLength(string));
+    return SysAllocStringLen( JSStringGetCharactersPtr( string ), JSStringGetLength( string ) );
 }

@@ -30,7 +30,7 @@
 
 class Q_MULTIMEDIA_EXPORT QRadioDataControl : public QMediaControl
 {
-    MULTI_CS_OBJECT(QRadioDataControl)
+    MULTI_CS_OBJECT( QRadioDataControl )
 
 public:
     ~QRadioDataControl();
@@ -40,38 +40,38 @@ public:
     virtual QString programTypeName() const = 0;
     virtual QString stationName() const = 0;
     virtual QString radioText() const = 0;
-    virtual void setAlternativeFrequenciesEnabled(bool enabled) = 0;
+    virtual void setAlternativeFrequenciesEnabled( bool enabled ) = 0;
     virtual bool isAlternativeFrequenciesEnabled() const = 0;
 
     virtual QRadioData::Error error() const = 0;
     virtual QString errorString() const = 0;
 
-    MULTI_CS_SIGNAL_1(Public, void stationIdChanged(QString stationId))
-    MULTI_CS_SIGNAL_2(stationIdChanged,stationId)
+    MULTI_CS_SIGNAL_1( Public, void stationIdChanged( QString stationId ) )
+    MULTI_CS_SIGNAL_2( stationIdChanged,stationId )
 
-    MULTI_CS_SIGNAL_1(Public, void programTypeChanged(QRadioData::ProgramType programType))
-    MULTI_CS_SIGNAL_2(programTypeChanged,programType)
+    MULTI_CS_SIGNAL_1( Public, void programTypeChanged( QRadioData::ProgramType programType ) )
+    MULTI_CS_SIGNAL_2( programTypeChanged,programType )
 
-    MULTI_CS_SIGNAL_1(Public, void programTypeNameChanged(QString programTypeName))
-    MULTI_CS_SIGNAL_2(programTypeNameChanged,programTypeName)
+    MULTI_CS_SIGNAL_1( Public, void programTypeNameChanged( QString programTypeName ) )
+    MULTI_CS_SIGNAL_2( programTypeNameChanged,programTypeName )
 
-    MULTI_CS_SIGNAL_1(Public, void stationNameChanged(QString stationName))
-    MULTI_CS_SIGNAL_2(stationNameChanged,stationName)
+    MULTI_CS_SIGNAL_1( Public, void stationNameChanged( QString stationName ) )
+    MULTI_CS_SIGNAL_2( stationNameChanged,stationName )
 
-    MULTI_CS_SIGNAL_1(Public, void radioTextChanged(QString radioText))
-    MULTI_CS_SIGNAL_2(radioTextChanged,radioText)
+    MULTI_CS_SIGNAL_1( Public, void radioTextChanged( QString radioText ) )
+    MULTI_CS_SIGNAL_2( radioTextChanged,radioText )
 
-    MULTI_CS_SIGNAL_1(Public, void alternativeFrequenciesEnabledChanged(bool enabled))
-    MULTI_CS_SIGNAL_2(alternativeFrequenciesEnabledChanged,enabled)
+    MULTI_CS_SIGNAL_1( Public, void alternativeFrequenciesEnabledChanged( bool enabled ) )
+    MULTI_CS_SIGNAL_2( alternativeFrequenciesEnabledChanged,enabled )
 
-    MULTI_CS_SIGNAL_1(Public, void error(QRadioData::Error error))
-    MULTI_CS_SIGNAL_OVERLOAD(error, (QRadioData::Error), error)
+    MULTI_CS_SIGNAL_1( Public, void error( QRadioData::Error error ) )
+    MULTI_CS_SIGNAL_OVERLOAD( error, ( QRadioData::Error ), error )
 
 protected:
-    explicit QRadioDataControl(QObject *parent = nullptr);
+    explicit QRadioDataControl( QObject *parent = nullptr );
 };
 
 #define QRadioDataControl_iid "com.copperspice.CS.radioDataControl/1.0"
-CS_DECLARE_INTERFACE(QRadioDataControl, QRadioDataControl_iid)
+CS_DECLARE_INTERFACE( QRadioDataControl, QRadioDataControl_iid )
 
 #endif

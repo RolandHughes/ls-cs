@@ -25,8 +25,8 @@
 
 #ifndef QT_NO_BEARERMANAGEMENT
 
-QBearerEnginePlugin::QBearerEnginePlugin(QObject *parent)
-   : QObject(parent)
+QBearerEnginePlugin::QBearerEnginePlugin( QObject *parent )
+    : QObject( parent )
 {
 }
 

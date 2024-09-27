@@ -20,28 +20,30 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef DocumentLoadTiming_h
 #define DocumentLoadTiming_h
 
-namespace WebCore {
+namespace WebCore
+{
 
-struct DocumentLoadTiming {
+struct DocumentLoadTiming
+{
     DocumentLoadTiming()
-        : navigationStart(0.0)
-        , unloadEventStart(0.0)
-        , unloadEventEnd(0.0)
-        , redirectStart(0.0)
-        , redirectEnd(0.0)
-        , redirectCount(0)
-        , fetchStart(0.0)
-        , responseEnd(0.0)
-        , loadEventStart(0.0)
-        , loadEventEnd(0.0)
-        , hasCrossOriginRedirect(false)
-        , hasSameOriginAsPreviousDocument(false)
+        : navigationStart( 0.0 )
+        , unloadEventStart( 0.0 )
+        , unloadEventEnd( 0.0 )
+        , redirectStart( 0.0 )
+        , redirectEnd( 0.0 )
+        , redirectCount( 0 )
+        , fetchStart( 0.0 )
+        , responseEnd( 0.0 )
+        , loadEventStart( 0.0 )
+        , loadEventEnd( 0.0 )
+        , hasCrossOriginRedirect( false )
+        , hasSameOriginAsPreviousDocument( false )
     {
     }
 

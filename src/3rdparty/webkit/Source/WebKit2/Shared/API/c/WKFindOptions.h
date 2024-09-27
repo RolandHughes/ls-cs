@@ -30,7 +30,8 @@
 extern "C" {
 #endif
 
-enum {
+enum
+{
     kWKFindOptionsCaseInsensitive = 1 << 0,
     kWKFindOptionsAtWordStarts = 1 << 1,
     kWKFindOptionsTreatMedialCapitalAsWordStart = 1 << 2,

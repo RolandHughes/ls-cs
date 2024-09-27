@@ -27,10 +27,12 @@
 
 #include <windows.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-typedef BOOL (APIENTRY *AlphaBlendPointerType) (HDC hdcDest, int nXOriginDest, int nYOriginDest, int nWidthDest, int nHeightDest, HDC hdcSrc,
-                                                int nXOriginSrc, int nYOriginSrc, int nWidthSrc, int nHeightSrc, BLENDFUNCTION blendFunction);
+typedef BOOL ( APIENTRY *AlphaBlendPointerType ) ( HDC hdcDest, int nXOriginDest, int nYOriginDest, int nWidthDest,
+        int nHeightDest, HDC hdcSrc,
+        int nXOriginSrc, int nYOriginSrc, int nWidthSrc, int nHeightSrc, BLENDFUNCTION blendFunction );
 
 #if OS(WINCE)
 AlphaBlendPointerType AlphaBlendPointer();
@@ -45,17 +47,22 @@ inline bool hasAlphaBlendSupport()
 #endif
 }
 
-inline bool alphaBlendIfSupported(HDC hdcDest, int nXOriginDest, int nYOriginDest, int nWidthDest, int nHeightDest, HDC hdcSrc,
-                                  int nXOriginSrc, int nYOriginSrc, int nWidthSrc, int nHeightSrc, BLENDFUNCTION blendFunction)
+inline bool alphaBlendIfSupported( HDC hdcDest, int nXOriginDest, int nYOriginDest, int nWidthDest, int nHeightDest, HDC hdcSrc,
+                                   int nXOriginSrc, int nYOriginSrc, int nWidthSrc, int nHeightSrc, BLENDFUNCTION blendFunction )
 {
 #if OS(WINCE)
     AlphaBlendPointerType alphaBlendPointer = AlphaBlendPointer();
-    if (!alphaBlendPointer)
-        return false;
 
-    alphaBlendPointer(hdcDest, nXOriginDest, nYOriginDest, nWidthDest, nHeightDest, hdcSrc, nXOriginSrc, nYOriginSrc, nWidthSrc, nHeightSrc, blendFunction);
+    if ( !alphaBlendPointer )
+    {
+        return false;
+    }
+
+    alphaBlendPointer( hdcDest, nXOriginDest, nYOriginDest, nWidthDest, nHeightDest, hdcSrc, nXOriginSrc, nYOriginSrc, nWidthSrc,
+                       nHeightSrc, blendFunction );
 #else
-    AlphaBlend(hdcDest, nXOriginDest, nYOriginDest, nWidthDest, nHeightDest, hdcSrc, nXOriginSrc, nYOriginSrc, nWidthSrc, nHeightSrc, blendFunction);
+    AlphaBlend( hdcDest, nXOriginDest, nYOriginDest, nWidthDest, nHeightDest, hdcSrc, nXOriginSrc, nYOriginSrc, nWidthSrc, nHeightSrc,
+                blendFunction );
 #endif
     return true;
 }

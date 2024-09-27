@@ -28,33 +28,35 @@
 #include "SVGTransform.h"
 #include "SVGTransformDistance.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class AffineTransform;
 
-class SVGAnimateTransformElement : public SVGAnimationElement {
+class SVGAnimateTransformElement : public SVGAnimationElement
+{
 public:
-    static PassRefPtr<SVGAnimateTransformElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<SVGAnimateTransformElement> create( const QualifiedName &, Document * );
 
 private:
-    SVGAnimateTransformElement(const QualifiedName&, Document*);
-    
+    SVGAnimateTransformElement( const QualifiedName &, Document * );
+
     virtual bool hasValidAttributeType() const;
-    AnimatedAttributeType determineAnimatedAttributeType(SVGElement*) const;
+    AnimatedAttributeType determineAnimatedAttributeType( SVGElement * ) const;
 
-    virtual void parseMappedAttribute(Attribute*);
+    virtual void parseMappedAttribute( Attribute * );
 
-    virtual void resetToBaseValue(const String&);
-    virtual bool calculateFromAndToValues(const String& fromString, const String& toString);
-    virtual bool calculateFromAndByValues(const String& fromString, const String& byString);
-    virtual void calculateAnimatedValue(float percentage, unsigned repeat, SVGSMILElement* resultElement);
+    virtual void resetToBaseValue( const String & );
+    virtual bool calculateFromAndToValues( const String &fromString, const String &toString );
+    virtual bool calculateFromAndByValues( const String &fromString, const String &byString );
+    virtual void calculateAnimatedValue( float percentage, unsigned repeat, SVGSMILElement *resultElement );
     virtual void applyResultsToTarget();
-    virtual float calculateDistance(const String& fromString, const String& toString);
+    virtual float calculateDistance( const String &fromString, const String &toString );
 
-    SVGTransform parseTransformValue(const String&) const;
-    
+    SVGTransform parseTransformValue( const String & ) const;
+
     SVGTransform::SVGTransformType m_type;
-    
+
     unsigned m_baseIndexInTransformList;
 
     SVGTransform m_toTransform;

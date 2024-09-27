@@ -24,7 +24,8 @@
 #include "SVGRenderStyleDefs.h"
 #include <wtf/Noncopyable.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Font;
 class RenderObject;
@@ -33,20 +34,22 @@ class SVGRenderStyle;
 class SVGTextMetrics;
 
 // Helper class used by SVGTextLayoutEngine to handle 'alignment-baseline' / 'dominant-baseline' and 'baseline-shift'.
-class SVGTextLayoutEngineBaseline {
-    WTF_MAKE_NONCOPYABLE(SVGTextLayoutEngineBaseline);
+class SVGTextLayoutEngineBaseline
+{
+    WTF_MAKE_NONCOPYABLE( SVGTextLayoutEngineBaseline );
 public:
-    SVGTextLayoutEngineBaseline(const Font&);
+    SVGTextLayoutEngineBaseline( const Font & );
 
-    float calculateBaselineShift(const SVGRenderStyle*, SVGElement* lengthContext) const;
-    float calculateAlignmentBaselineShift(bool isVerticalText, const RenderObject* textRenderer) const;
-    float calculateGlyphOrientationAngle(bool isVerticalText, const SVGRenderStyle*, const UChar& character) const;
-    float calculateGlyphAdvanceAndOrientation(bool isVerticalText, SVGTextMetrics&, float angle, float& xOrientationShift, float& yOrientationShift) const;
+    float calculateBaselineShift( const SVGRenderStyle *, SVGElement *lengthContext ) const;
+    float calculateAlignmentBaselineShift( bool isVerticalText, const RenderObject *textRenderer ) const;
+    float calculateGlyphOrientationAngle( bool isVerticalText, const SVGRenderStyle *, const UChar &character ) const;
+    float calculateGlyphAdvanceAndOrientation( bool isVerticalText, SVGTextMetrics &, float angle, float &xOrientationShift,
+            float &yOrientationShift ) const;
 
 private:
-    EAlignmentBaseline dominantBaselineToAlignmentBaseline(bool isVerticalText, const RenderObject* textRenderer) const;
+    EAlignmentBaseline dominantBaselineToAlignmentBaseline( bool isVerticalText, const RenderObject *textRenderer ) const;
 
-    const Font& m_font;
+    const Font &m_font;
 };
 
 } // namespace WebCore

@@ -30,17 +30,17 @@ class QMediaObject;
 
 class Q_MULTIMEDIA_EXPORT QMediaBindableInterface
 {
- public:
-   virtual ~QMediaBindableInterface();
+public:
+    virtual ~QMediaBindableInterface();
 
-   virtual QMediaObject *mediaObject() const = 0;
+    virtual QMediaObject *mediaObject() const = 0;
 
- protected:
-   friend class QMediaObject;
-   virtual bool setMediaObject(QMediaObject *object) = 0;
+protected:
+    friend class QMediaObject;
+    virtual bool setMediaObject( QMediaObject *object ) = 0;
 };
 
 #define QMediaBindableInterface_iid  "com.copperspice.CS.mediaBindable/1.0"
-CS_DECLARE_INTERFACE(QMediaBindableInterface, QMediaBindableInterface_iid)
+CS_DECLARE_INTERFACE( QMediaBindableInterface, QMediaBindableInterface_iid )
 
 #endif

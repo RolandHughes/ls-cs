@@ -36,32 +36,32 @@ class QUndoStackPrivate;
 
 class Q_GUI_EXPORT QUndoCommand
 {
-   QUndoCommandPrivate *d;
+    QUndoCommandPrivate *d;
 
- public:
-   explicit QUndoCommand(QUndoCommand *parent = nullptr);
-   explicit QUndoCommand(const QString &text, QUndoCommand *parent = nullptr);
+public:
+    explicit QUndoCommand( QUndoCommand *parent = nullptr );
+    explicit QUndoCommand( const QString &text, QUndoCommand *parent = nullptr );
 
-   QUndoCommand(const QUndoCommand &) = delete;
-   QUndoCommand &operator=(const QUndoCommand &) = delete;
+    QUndoCommand( const QUndoCommand & ) = delete;
+    QUndoCommand &operator=( const QUndoCommand & ) = delete;
 
-   virtual ~QUndoCommand();
+    virtual ~QUndoCommand();
 
-   virtual void undo();
-   virtual void redo();
+    virtual void undo();
+    virtual void redo();
 
-   QString text() const;
-   QString actionText() const;
-   void setText(const QString &text);
+    QString text() const;
+    QString actionText() const;
+    void setText( const QString &text );
 
-   virtual int id() const;
-   virtual bool mergeWith(const QUndoCommand *other);
+    virtual int id() const;
+    virtual bool mergeWith( const QUndoCommand *other );
 
-   int childCount() const;
-   const QUndoCommand *child(int index) const;
+    int childCount() const;
+    const QUndoCommand *child( int index ) const;
 
- private:
-   friend class QUndoStack;
+private:
+    friend class QUndoStack;
 };
 
 #endif // QT_NO_UNDOCOMMAND
@@ -70,85 +70,85 @@ class Q_GUI_EXPORT QUndoCommand
 
 class Q_GUI_EXPORT QUndoStack : public QObject
 {
-   GUI_CS_OBJECT(QUndoStack)
+    GUI_CS_OBJECT( QUndoStack )
 
-   GUI_CS_PROPERTY_READ(active, isActive)
-   GUI_CS_PROPERTY_WRITE(active, setActive)
-   GUI_CS_PROPERTY_READ(undoLimit, undoLimit)
-   GUI_CS_PROPERTY_WRITE(undoLimit, setUndoLimit)
+    GUI_CS_PROPERTY_READ( active, isActive )
+    GUI_CS_PROPERTY_WRITE( active, setActive )
+    GUI_CS_PROPERTY_READ( undoLimit, undoLimit )
+    GUI_CS_PROPERTY_WRITE( undoLimit, setUndoLimit )
 
- public:
-   explicit QUndoStack(QObject *parent = nullptr);
+public:
+    explicit QUndoStack( QObject *parent = nullptr );
 
-   QUndoStack(const QUndoStack &) = delete;
-   QUndoStack &operator=(const QUndoStack &) = delete;
+    QUndoStack( const QUndoStack & ) = delete;
+    QUndoStack &operator=( const QUndoStack & ) = delete;
 
-   ~QUndoStack();
+    ~QUndoStack();
 
-   void clear();
+    void clear();
 
-   void push(QUndoCommand *cmd);
+    void push( QUndoCommand *cmd );
 
-   bool canUndo() const;
-   bool canRedo() const;
-   QString undoText() const;
-   QString redoText() const;
+    bool canUndo() const;
+    bool canRedo() const;
+    QString undoText() const;
+    QString redoText() const;
 
-   int count() const;
-   int index() const;
-   QString text(int idx) const;
+    int count() const;
+    int index() const;
+    QString text( int idx ) const;
 
 #ifndef QT_NO_ACTION
-   QAction *createUndoAction(QObject *parent, const QString &prefix = QString()) const;
-   QAction *createRedoAction(QObject *parent, const QString &prefix = QString()) const;
+    QAction *createUndoAction( QObject *parent, const QString &prefix = QString() ) const;
+    QAction *createRedoAction( QObject *parent, const QString &prefix = QString() ) const;
 #endif
 
-   bool isActive() const;
-   bool isClean() const;
-   int cleanIndex() const;
+    bool isActive() const;
+    bool isClean() const;
+    int cleanIndex() const;
 
-   void beginMacro(const QString &text);
-   void endMacro();
+    void beginMacro( const QString &text );
+    void endMacro();
 
-   void setUndoLimit(int limit);
-   int undoLimit() const;
+    void setUndoLimit( int limit );
+    int undoLimit() const;
 
-   const QUndoCommand *command(int index) const;
+    const QUndoCommand *command( int index ) const;
 
-   GUI_CS_SLOT_1(Public, void setClean())
-   GUI_CS_SLOT_2(setClean)
+    GUI_CS_SLOT_1( Public, void setClean() )
+    GUI_CS_SLOT_2( setClean )
 
-   GUI_CS_SLOT_1(Public, void setIndex(int idx))
-   GUI_CS_SLOT_2(setIndex)
+    GUI_CS_SLOT_1( Public, void setIndex( int idx ) )
+    GUI_CS_SLOT_2( setIndex )
 
-   GUI_CS_SLOT_1(Public, void undo())
-   GUI_CS_SLOT_2(undo)
+    GUI_CS_SLOT_1( Public, void undo() )
+    GUI_CS_SLOT_2( undo )
 
-   GUI_CS_SLOT_1(Public, void redo())
-   GUI_CS_SLOT_2(redo)
+    GUI_CS_SLOT_1( Public, void redo() )
+    GUI_CS_SLOT_2( redo )
 
-   GUI_CS_SLOT_1(Public, void setActive(bool active = true))
-   GUI_CS_SLOT_2(setActive)
+    GUI_CS_SLOT_1( Public, void setActive( bool active = true ) )
+    GUI_CS_SLOT_2( setActive )
 
-   GUI_CS_SIGNAL_1(Public, void indexChanged(int idx))
-   GUI_CS_SIGNAL_2(indexChanged, idx)
-   GUI_CS_SIGNAL_1(Public, void cleanChanged(bool clean))
-   GUI_CS_SIGNAL_2(cleanChanged, clean)
-   GUI_CS_SIGNAL_1(Public, void canUndoChanged(bool canUndo))
-   GUI_CS_SIGNAL_2(canUndoChanged, canUndo)
-   GUI_CS_SIGNAL_1(Public, void canRedoChanged(bool canRedo))
-   GUI_CS_SIGNAL_2(canRedoChanged, canRedo)
-   GUI_CS_SIGNAL_1(Public, void undoTextChanged(const QString &undoText))
-   GUI_CS_SIGNAL_2(undoTextChanged, undoText)
-   GUI_CS_SIGNAL_1(Public, void redoTextChanged(const QString &redoText))
-   GUI_CS_SIGNAL_2(redoTextChanged, redoText)
+    GUI_CS_SIGNAL_1( Public, void indexChanged( int idx ) )
+    GUI_CS_SIGNAL_2( indexChanged, idx )
+    GUI_CS_SIGNAL_1( Public, void cleanChanged( bool clean ) )
+    GUI_CS_SIGNAL_2( cleanChanged, clean )
+    GUI_CS_SIGNAL_1( Public, void canUndoChanged( bool canUndo ) )
+    GUI_CS_SIGNAL_2( canUndoChanged, canUndo )
+    GUI_CS_SIGNAL_1( Public, void canRedoChanged( bool canRedo ) )
+    GUI_CS_SIGNAL_2( canRedoChanged, canRedo )
+    GUI_CS_SIGNAL_1( Public, void undoTextChanged( const QString &undoText ) )
+    GUI_CS_SIGNAL_2( undoTextChanged, undoText )
+    GUI_CS_SIGNAL_1( Public, void redoTextChanged( const QString &redoText ) )
+    GUI_CS_SIGNAL_2( redoTextChanged, redoText )
 
- protected:
-   QScopedPointer<QUndoStackPrivate> d_ptr;
+protected:
+    QScopedPointer<QUndoStackPrivate> d_ptr;
 
- private:
-   Q_DECLARE_PRIVATE(QUndoStack)
-   friend class QUndoGroup;
+private:
+    Q_DECLARE_PRIVATE( QUndoStack )
+    friend class QUndoGroup;
 };
 
 #endif // QT_NO_UNDOSTACK

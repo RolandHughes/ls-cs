@@ -29,9 +29,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSWebGLShader);
+ASSERT_CLASS_FITS_IN_CELL( JSWebGLShader );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -42,8 +43,8 @@ ASSERT_CLASS_FITS_IN_CELL(JSWebGLShader);
 
 static const HashTableValue JSWebGLShaderTableValues[2] =
 {
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsWebGLShaderConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsWebGLShaderConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -57,43 +58,50 @@ static JSC_CONST_HASHTABLE HashTable JSWebGLShaderTable = { 2, 1, JSWebGLShaderT
 
 static const HashTableValue JSWebGLShaderConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSWebGLShaderConstructorTable = { 1, 0, JSWebGLShaderConstructorTableValues, 0 };
-class JSWebGLShaderConstructor : public DOMConstructorObject {
+class JSWebGLShaderConstructor : public DOMConstructorObject
+{
 public:
-    JSWebGLShaderConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSWebGLShaderConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSWebGLShaderConstructor::s_info = { "WebGLShaderConstructor", &DOMConstructorObject::s_info, &JSWebGLShaderConstructorTable, 0 };
 
-JSWebGLShaderConstructor::JSWebGLShaderConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSWebGLShaderConstructor::JSWebGLShaderConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSWebGLShaderPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSWebGLShaderPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSWebGLShaderConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSWebGLShaderConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSWebGLShaderConstructor, JSDOMWrapper>(exec, &JSWebGLShaderConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSWebGLShaderConstructor, JSDOMWrapper>( exec, &JSWebGLShaderConstructorTable, this, propertyName,
+            slot );
 }
 
-bool JSWebGLShaderConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSWebGLShaderConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSWebGLShaderConstructor, JSDOMWrapper>(exec, &JSWebGLShaderConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSWebGLShaderConstructor, JSDOMWrapper>( exec, &JSWebGLShaderConstructorTable, this, propertyName,
+            descriptor );
 }
 
 /* Hash table for prototype */
@@ -105,61 +113,62 @@ bool JSWebGLShaderConstructor::getOwnPropertyDescriptor(ExecState* exec, const I
 
 static const HashTableValue JSWebGLShaderPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSWebGLShaderPrototypeTable = { 1, 0, JSWebGLShaderPrototypeTableValues, 0 };
 const ClassInfo JSWebGLShaderPrototype::s_info = { "WebGLShaderPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSWebGLShaderPrototypeTable, 0 };
 
-JSObject* JSWebGLShaderPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSWebGLShaderPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSWebGLShader>(exec, globalObject);
+    return getDOMPrototype<JSWebGLShader>( exec, globalObject );
 }
 
 const ClassInfo JSWebGLShader::s_info = { "WebGLShader", &JSDOMWrapper::s_info, &JSWebGLShaderTable, 0 };
 
-JSWebGLShader::JSWebGLShader(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<WebGLShader> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSWebGLShader::JSWebGLShader( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<WebGLShader> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSWebGLShader::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSWebGLShader::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSWebGLShaderPrototype(exec->globalData(), globalObject, JSWebGLShaderPrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSWebGLShaderPrototype( exec->globalData(), globalObject,
+            JSWebGLShaderPrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSWebGLShader::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSWebGLShader::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSWebGLShader, Base>(exec, &JSWebGLShaderTable, this, propertyName, slot);
+    return getStaticValueSlot<JSWebGLShader, Base>( exec, &JSWebGLShaderTable, this, propertyName, slot );
 }
 
-bool JSWebGLShader::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSWebGLShader::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSWebGLShader, Base>(exec, &JSWebGLShaderTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSWebGLShader, Base>( exec, &JSWebGLShaderTable, this, propertyName, descriptor );
 }
 
-JSValue jsWebGLShaderConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsWebGLShaderConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSWebGLShader* domObject = static_cast<JSWebGLShader*>(asObject(slotBase));
-    return JSWebGLShader::getConstructor(exec, domObject->globalObject());
+    JSWebGLShader *domObject = static_cast<JSWebGLShader *>( asObject( slotBase ) );
+    return JSWebGLShader::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSWebGLShader::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSWebGLShader::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSWebGLShaderConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSWebGLShaderConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, WebGLShader* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, WebGLShader *impl )
 {
-    return wrap<JSWebGLShader>(exec, globalObject, impl);
+    return wrap<JSWebGLShader>( exec, globalObject, impl );
 }
 
-WebGLShader* toWebGLShader(JSC::JSValue value)
+WebGLShader *toWebGLShader( JSC::JSValue value )
 {
-    return value.inherits(&JSWebGLShader::s_info) ? static_cast<JSWebGLShader*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSWebGLShader::s_info ) ? static_cast<JSWebGLShader *>( asObject( value ) )->impl() : 0;
 }
 
 }

@@ -38,34 +38,34 @@ class QScriptDebuggerValuePropertyPrivate;
 
 class QScriptDebuggerValueProperty
 {
- public:
-   QScriptDebuggerValueProperty();
-   QScriptDebuggerValueProperty(const QString &name,
-                                const QScriptDebuggerValue &value,
-                                const QString &valueAsString,
-                                QScriptValue::PropertyFlags flags);
-   QScriptDebuggerValueProperty(const QScriptDebuggerValueProperty &other);
-   ~QScriptDebuggerValueProperty();
+public:
+    QScriptDebuggerValueProperty();
+    QScriptDebuggerValueProperty( const QString &name,
+                                  const QScriptDebuggerValue &value,
+                                  const QString &valueAsString,
+                                  QScriptValue::PropertyFlags flags );
+    QScriptDebuggerValueProperty( const QScriptDebuggerValueProperty &other );
+    ~QScriptDebuggerValueProperty();
 
-   QScriptDebuggerValueProperty &operator=(const QScriptDebuggerValueProperty &other);
+    QScriptDebuggerValueProperty &operator=( const QScriptDebuggerValueProperty &other );
 
-   QString name() const;
-   QScriptDebuggerValue value() const;
-   QString valueAsString() const;
-   QScriptValue::PropertyFlags flags() const;
+    QString name() const;
+    QScriptDebuggerValue value() const;
+    QString valueAsString() const;
+    QScriptValue::PropertyFlags flags() const;
 
-   bool isValid() const;
+    bool isValid() const;
 
- private:
-   QScopedSharedPointer<QScriptDebuggerValuePropertyPrivate> d_ptr;
+private:
+    QScopedSharedPointer<QScriptDebuggerValuePropertyPrivate> d_ptr;
 
-   Q_DECLARE_PRIVATE(QScriptDebuggerValueProperty)
+    Q_DECLARE_PRIVATE( QScriptDebuggerValueProperty )
 };
 
 typedef QList<QScriptDebuggerValueProperty> QScriptDebuggerValuePropertyList;
 
-QDataStream &operator<<(QDataStream &, const QScriptDebuggerValueProperty &);
-QDataStream &operator>>(QDataStream &, QScriptDebuggerValueProperty &);
+QDataStream &operator<<( QDataStream &, const QScriptDebuggerValueProperty & );
+QDataStream &operator>>( QDataStream &, QScriptDebuggerValueProperty & );
 
 QT_END_NAMESPACE
 

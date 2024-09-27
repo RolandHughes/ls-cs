@@ -26,9 +26,11 @@
 #ifndef UnicodeBidi_h
 #define UnicodeBidi_h
 
-namespace WebCore {
+namespace WebCore
+{
 
-enum EUnicodeBidi {
+enum EUnicodeBidi
+{
     UBNormal,
     Embed,
     Override,

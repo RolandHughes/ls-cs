@@ -28,24 +28,26 @@
 #include "MetadataCallback.h"
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class JSMetadataCallback : public MetadataCallback, public ActiveDOMCallback {
+class JSMetadataCallback : public MetadataCallback, public ActiveDOMCallback
+{
 public:
-    static PassRefPtr<JSMetadataCallback> create(JSC::JSObject* callback, JSDOMGlobalObject* globalObject)
+    static PassRefPtr<JSMetadataCallback> create( JSC::JSObject *callback, JSDOMGlobalObject *globalObject )
     {
-        return adoptRef(new JSMetadataCallback(callback, globalObject));
+        return adoptRef( new JSMetadataCallback( callback, globalObject ) );
     }
 
     virtual ~JSMetadataCallback();
 
     // Functions
-    virtual bool handleEvent(Metadata* metadata);
+    virtual bool handleEvent( Metadata *metadata );
 
 private:
-    JSMetadataCallback(JSC::JSObject* callback, JSDOMGlobalObject*);
+    JSMetadataCallback( JSC::JSObject *callback, JSDOMGlobalObject * );
 
-    JSCallbackData* m_data;
+    JSCallbackData *m_data;
 };
 
 } // namespace WebCore

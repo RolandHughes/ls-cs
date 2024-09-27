@@ -31,70 +31,81 @@
 
 QT_QML_BEGIN_NAMESPACE
 
-namespace QDeclarativeJS {
+namespace QDeclarativeJS
+{
 
 class QML_PARSER_EXPORT MemoryPool : public QSharedData
 {
- public:
-   enum { maxBlockCount = -1 };
-   enum { defaultBlockSize = 1 << 12 };
+public:
+    enum { maxBlockCount = -1 };
+    enum { defaultBlockSize = 1 << 12 };
 
-   MemoryPool() {
-      m_blockIndex = maxBlockCount;
-      m_currentIndex = 0;
-      m_storage = 0;
-      m_currentBlock = 0;
-      m_currentBlockSize = 0;
-   }
+    MemoryPool()
+    {
+        m_blockIndex = maxBlockCount;
+        m_currentIndex = 0;
+        m_storage = 0;
+        m_currentBlock = 0;
+        m_currentBlockSize = 0;
+    }
 
-   virtual ~MemoryPool() {
-      for (int index = 0; index < m_blockIndex + 1; ++index) {
-         qFree(m_storage[index]);
-      }
+    virtual ~MemoryPool()
+    {
+        for ( int index = 0; index < m_blockIndex + 1; ++index )
+        {
+            qFree( m_storage[index] );
+        }
 
-      qFree(m_storage);
-   }
+        qFree( m_storage );
+    }
 
-   char *allocate(int bytes) {
-      bytes += (8 - bytes) & 7; // ensure multiple of 8 bytes (maintain alignment)
-      if (m_currentBlock == 0 || m_currentBlockSize < m_currentIndex + bytes) {
-         ++m_blockIndex;
-         m_currentBlockSize = defaultBlockSize << m_blockIndex;
+    char *allocate( int bytes )
+    {
+        bytes += ( 8 - bytes ) & 7; // ensure multiple of 8 bytes (maintain alignment)
 
-         m_storage = reinterpret_cast<char **>(qRealloc(m_storage, sizeof(char *) * (1 + m_blockIndex)));
-         m_currentBlock = m_storage[m_blockIndex] = reinterpret_cast<char *>(qMalloc(m_currentBlockSize));
-         ::memset(m_currentBlock, 0, m_currentBlockSize);
+        if ( m_currentBlock == 0 || m_currentBlockSize < m_currentIndex + bytes )
+        {
+            ++m_blockIndex;
+            m_currentBlockSize = defaultBlockSize << m_blockIndex;
 
-         m_currentIndex = (8 - quintptr(m_currentBlock)) & 7; // ensure first chunk is 64-bit aligned
-         Q_ASSERT(m_currentIndex + bytes <= m_currentBlockSize);
-      }
+            m_storage = reinterpret_cast<char **>( qRealloc( m_storage, sizeof( char * ) * ( 1 + m_blockIndex ) ) );
+            m_currentBlock = m_storage[m_blockIndex] = reinterpret_cast<char *>( qMalloc( m_currentBlockSize ) );
+            ::memset( m_currentBlock, 0, m_currentBlockSize );
 
-      char *p = reinterpret_cast<char *>
-                (m_currentBlock + m_currentIndex);
+            m_currentIndex = ( 8 - quintptr( m_currentBlock ) ) & 7; // ensure first chunk is 64-bit aligned
+            Q_ASSERT( m_currentIndex + bytes <= m_currentBlockSize );
+        }
 
-      m_currentIndex += bytes;
+        char *p = reinterpret_cast<char *>
+                  ( m_currentBlock + m_currentIndex );
 
-      return p;
-   }
+        m_currentIndex += bytes;
 
-   int bytesAllocated() const {
-      int bytes = 0;
-      for (int index = 0; index < m_blockIndex; ++index) {
-         bytes += (defaultBlockSize << index);
-      }
-      bytes += m_currentIndex;
-      return bytes;
-   }
+        return p;
+    }
 
- private:
-   int m_blockIndex;
-   int m_currentIndex;
-   char *m_currentBlock;
-   int m_currentBlockSize;
-   char **m_storage;
+    int bytesAllocated() const
+    {
+        int bytes = 0;
 
- private:
-   Q_DISABLE_COPY(MemoryPool)
+        for ( int index = 0; index < m_blockIndex; ++index )
+        {
+            bytes += ( defaultBlockSize << index );
+        }
+
+        bytes += m_currentIndex;
+        return bytes;
+    }
+
+private:
+    int m_blockIndex;
+    int m_currentIndex;
+    char *m_currentBlock;
+    int m_currentBlockSize;
+    char **m_storage;
+
+private:
+    Q_DISABLE_COPY( MemoryPool )
 };
 
 } // namespace QDeclarativeJS

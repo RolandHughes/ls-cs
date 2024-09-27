@@ -34,19 +34,19 @@ QT_BEGIN_NAMESPACE
 
 class QDeclarativeBehaviorPrivate
 {
-   Q_DECLARE_PUBLIC(QDeclarativeBehavior)
+    Q_DECLARE_PUBLIC( QDeclarativeBehavior )
 
- public:
-   QDeclarativeBehaviorPrivate() : animation(0), enabled(true), finalized(false)
-      , blockRunningChanged(false) {}
+public:
+    QDeclarativeBehaviorPrivate() : animation( 0 ), enabled( true ), finalized( false )
+        , blockRunningChanged( false ) {}
 
-   QDeclarativeProperty property;
-   QVariant currentValue;
-   QVariant targetValue;
-   QDeclarativeGuard<QDeclarativeAbstractAnimation> animation;
-   bool enabled;
-   bool finalized;
-   bool blockRunningChanged;
+    QDeclarativeProperty property;
+    QVariant currentValue;
+    QVariant targetValue;
+    QDeclarativeGuard<QDeclarativeAbstractAnimation> animation;
+    bool enabled;
+    bool finalized;
+    bool blockRunningChanged;
 };
 
 /*!
@@ -77,8 +77,8 @@ class QDeclarativeBehaviorPrivate
 */
 
 
-QDeclarativeBehavior::QDeclarativeBehavior(QObject *parent)
-   : QObject(*(new QDeclarativeBehaviorPrivate), parent)
+QDeclarativeBehavior::QDeclarativeBehavior( QObject *parent )
+    : QObject( *( new QDeclarativeBehaviorPrivate ), parent )
 {
 }
 
@@ -95,36 +95,42 @@ QDeclarativeBehavior::~QDeclarativeBehavior()
 
 QDeclarativeAbstractAnimation *QDeclarativeBehavior::animation()
 {
-   Q_D(QDeclarativeBehavior);
-   return d->animation;
+    Q_D( QDeclarativeBehavior );
+    return d->animation;
 }
 
-void QDeclarativeBehavior::setAnimation(QDeclarativeAbstractAnimation *animation)
+void QDeclarativeBehavior::setAnimation( QDeclarativeAbstractAnimation *animation )
 {
-   Q_D(QDeclarativeBehavior);
-   if (d->animation) {
-      qmlInfo(this) << tr("Cannot change the animation assigned to a Behavior.");
-      return;
-   }
+    Q_D( QDeclarativeBehavior );
 
-   d->animation = animation;
-   if (d->animation) {
-      d->animation->setDefaultTarget(d->property);
-      d->animation->setDisableUserControl();
-      connect(d->animation->qtAnimation(),
-              SIGNAL(stateChanged(QAbstractAnimation::State, QAbstractAnimation::State)),
-              this,
-              SLOT(qtAnimationStateChanged(QAbstractAnimation::State, QAbstractAnimation::State)));
-   }
+    if ( d->animation )
+    {
+        qmlInfo( this ) << tr( "Cannot change the animation assigned to a Behavior." );
+        return;
+    }
+
+    d->animation = animation;
+
+    if ( d->animation )
+    {
+        d->animation->setDefaultTarget( d->property );
+        d->animation->setDisableUserControl();
+        connect( d->animation->qtAnimation(),
+                 SIGNAL( stateChanged( QAbstractAnimation::State, QAbstractAnimation::State ) ),
+                 this,
+                 SLOT( qtAnimationStateChanged( QAbstractAnimation::State, QAbstractAnimation::State ) ) );
+    }
 }
 
 
-void QDeclarativeBehavior::qtAnimationStateChanged(QAbstractAnimation::State newState, QAbstractAnimation::State)
+void QDeclarativeBehavior::qtAnimationStateChanged( QAbstractAnimation::State newState, QAbstractAnimation::State )
 {
-   Q_D(QDeclarativeBehavior);
-   if (!d->blockRunningChanged) {
-      d->animation->notifyRunningChanged(newState == QAbstractAnimation::Running);
-   }
+    Q_D( QDeclarativeBehavior );
+
+    if ( !d->blockRunningChanged )
+    {
+        d->animation->notifyRunningChanged( newState == QAbstractAnimation::Running );
+    }
 }
 
 
@@ -139,78 +145,89 @@ void QDeclarativeBehavior::qtAnimationStateChanged(QAbstractAnimation::State new
 
 bool QDeclarativeBehavior::enabled() const
 {
-   Q_D(const QDeclarativeBehavior);
-   return d->enabled;
+    Q_D( const QDeclarativeBehavior );
+    return d->enabled;
 }
 
-void QDeclarativeBehavior::setEnabled(bool enabled)
+void QDeclarativeBehavior::setEnabled( bool enabled )
 {
-   Q_D(QDeclarativeBehavior);
-   if (d->enabled == enabled) {
-      return;
-   }
-   d->enabled = enabled;
-   emit enabledChanged();
+    Q_D( QDeclarativeBehavior );
+
+    if ( d->enabled == enabled )
+    {
+        return;
+    }
+
+    d->enabled = enabled;
+    emit enabledChanged();
 }
 
-void QDeclarativeBehavior::write(const QVariant &value)
+void QDeclarativeBehavior::write( const QVariant &value )
 {
-   Q_D(QDeclarativeBehavior);
-   qmlExecuteDeferred(this);
-   if (!d->animation || !d->enabled || !d->finalized) {
-      QDeclarativePropertyPrivate::write(d->property, value,
-                                         QDeclarativePropertyPrivate::BypassInterceptor | QDeclarativePropertyPrivate::DontRemoveBinding);
-      d->targetValue = value;
-      return;
-   }
+    Q_D( QDeclarativeBehavior );
+    qmlExecuteDeferred( this );
 
-   if (d->animation->isRunning() && value == d->targetValue) {
-      return;
-   }
+    if ( !d->animation || !d->enabled || !d->finalized )
+    {
+        QDeclarativePropertyPrivate::write( d->property, value,
+                                            QDeclarativePropertyPrivate::BypassInterceptor | QDeclarativePropertyPrivate::DontRemoveBinding );
+        d->targetValue = value;
+        return;
+    }
 
-   d->currentValue = d->property.read();
-   d->targetValue = value;
+    if ( d->animation->isRunning() && value == d->targetValue )
+    {
+        return;
+    }
 
-   if (d->animation->qtAnimation()->duration() != -1
-         && d->animation->qtAnimation()->state() != QAbstractAnimation::Stopped) {
-      d->blockRunningChanged = true;
-      d->animation->qtAnimation()->stop();
-   }
+    d->currentValue = d->property.read();
+    d->targetValue = value;
 
-   QDeclarativeStateOperation::ActionList actions;
-   QDeclarativeAction action;
-   action.property = d->property;
-   action.fromValue = d->currentValue;
-   action.toValue = value;
-   actions << action;
+    if ( d->animation->qtAnimation()->duration() != -1
+            && d->animation->qtAnimation()->state() != QAbstractAnimation::Stopped )
+    {
+        d->blockRunningChanged = true;
+        d->animation->qtAnimation()->stop();
+    }
 
-   QList<QDeclarativeProperty> after;
-   d->animation->transition(actions, after, QDeclarativeAbstractAnimation::Forward);
-   d->animation->qtAnimation()->start();
-   d->blockRunningChanged = false;
-   if (!after.contains(d->property)) {
-      QDeclarativePropertyPrivate::write(d->property, value,
-                                         QDeclarativePropertyPrivate::BypassInterceptor | QDeclarativePropertyPrivate::DontRemoveBinding);
-   }
+    QDeclarativeStateOperation::ActionList actions;
+    QDeclarativeAction action;
+    action.property = d->property;
+    action.fromValue = d->currentValue;
+    action.toValue = value;
+    actions << action;
+
+    QList<QDeclarativeProperty> after;
+    d->animation->transition( actions, after, QDeclarativeAbstractAnimation::Forward );
+    d->animation->qtAnimation()->start();
+    d->blockRunningChanged = false;
+
+    if ( !after.contains( d->property ) )
+    {
+        QDeclarativePropertyPrivate::write( d->property, value,
+                                            QDeclarativePropertyPrivate::BypassInterceptor | QDeclarativePropertyPrivate::DontRemoveBinding );
+    }
 }
 
-void QDeclarativeBehavior::setTarget(const QDeclarativeProperty &property)
+void QDeclarativeBehavior::setTarget( const QDeclarativeProperty &property )
 {
-   Q_D(QDeclarativeBehavior);
-   d->property = property;
-   d->currentValue = property.read();
-   if (d->animation) {
-      d->animation->setDefaultTarget(property);
-   }
+    Q_D( QDeclarativeBehavior );
+    d->property = property;
+    d->currentValue = property.read();
 
-   QDeclarativeEnginePrivate *engPriv = QDeclarativeEnginePrivate::get(qmlEngine(this));
-   engPriv->registerFinalizedParserStatusObject(this, this->metaObject()->indexOfSlot("componentFinalized()"));
+    if ( d->animation )
+    {
+        d->animation->setDefaultTarget( property );
+    }
+
+    QDeclarativeEnginePrivate *engPriv = QDeclarativeEnginePrivate::get( qmlEngine( this ) );
+    engPriv->registerFinalizedParserStatusObject( this, this->metaObject()->indexOfSlot( "componentFinalized()" ) );
 }
 
 void QDeclarativeBehavior::componentFinalized()
 {
-   Q_D(QDeclarativeBehavior);
-   d->finalized = true;
+    Q_D( QDeclarativeBehavior );
+    d->finalized = true;
 }
 
 QT_END_NAMESPACE

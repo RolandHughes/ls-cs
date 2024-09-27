@@ -25,23 +25,25 @@
 #include "FEComponentTransfer.h"
 #include "SVGFilterPrimitiveStandardAttributes.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SVGFEComponentTransferElement : public SVGFilterPrimitiveStandardAttributes {
+class SVGFEComponentTransferElement : public SVGFilterPrimitiveStandardAttributes
+{
 public:
-    static PassRefPtr<SVGFEComponentTransferElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<SVGFEComponentTransferElement> create( const QualifiedName &, Document * );
 
 private:
-    SVGFEComponentTransferElement(const QualifiedName&, Document*);
+    SVGFEComponentTransferElement( const QualifiedName &, Document * );
 
-    virtual void parseMappedAttribute(Attribute*);
-    virtual void synchronizeProperty(const QualifiedName&);
+    virtual void parseMappedAttribute( Attribute * );
+    virtual void synchronizeProperty( const QualifiedName & );
     virtual void fillAttributeToPropertyTypeMap();
-    virtual AttributeToPropertyTypeMap& attributeToPropertyTypeMap();
-    virtual PassRefPtr<FilterEffect> build(SVGFilterBuilder*, Filter*);
+    virtual AttributeToPropertyTypeMap &attributeToPropertyTypeMap();
+    virtual PassRefPtr<FilterEffect> build( SVGFilterBuilder *, Filter * );
 
     // Animated property declarations
-    DECLARE_ANIMATED_STRING(In1, in1)
+    DECLARE_ANIMATED_STRING( In1, in1 )
 };
 
 } // namespace WebCore

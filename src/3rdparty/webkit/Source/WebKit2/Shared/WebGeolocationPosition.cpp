@@ -29,9 +29,10 @@
 #include "ArgumentCoders.h"
 #include "Arguments.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
-WebGeolocationPosition::WebGeolocationPosition(double timestamp, double latitude, double longitude, double accuracy)
+WebGeolocationPosition::WebGeolocationPosition( double timestamp, double latitude, double longitude, double accuracy )
 {
     m_data.timestamp = timestamp;
     m_data.latitude = latitude;
@@ -43,14 +44,14 @@ WebGeolocationPosition::~WebGeolocationPosition()
 {
 }
 
-void WebGeolocationPosition::Data::encode(CoreIPC::ArgumentEncoder* encoder) const
+void WebGeolocationPosition::Data::encode( CoreIPC::ArgumentEncoder *encoder ) const
 {
-    encoder->encode(CoreIPC::In(timestamp, latitude, longitude, accuracy));
+    encoder->encode( CoreIPC::In( timestamp, latitude, longitude, accuracy ) );
 }
 
-bool WebGeolocationPosition::Data::decode(CoreIPC::ArgumentDecoder* decoder, Data& data)
+bool WebGeolocationPosition::Data::decode( CoreIPC::ArgumentDecoder *decoder, Data &data )
 {
-    return decoder->decode(CoreIPC::Out(data.timestamp, data.latitude, data.longitude, data.accuracy));
+    return decoder->decode( CoreIPC::Out( data.timestamp, data.latitude, data.longitude, data.accuracy ) );
 }
 
 } // namespace WebKit

@@ -40,18 +40,20 @@ G_BEGIN_DECLS
 
 typedef struct _WebKitDOMObjectPrivate WebKitDOMObjectPrivate;
 
-struct _WebKitDOMObject {
+struct _WebKitDOMObject
+{
     GObject parentInstance;
 
     gpointer coreObject;
 };
 
-struct _WebKitDOMObjectClass {
+struct _WebKitDOMObjectClass
+{
     GObjectClass parentClass;
 };
 
 WEBKIT_API GType
-webkit_dom_object_get_type(void);
+webkit_dom_object_get_type( void );
 
 G_END_DECLS
 

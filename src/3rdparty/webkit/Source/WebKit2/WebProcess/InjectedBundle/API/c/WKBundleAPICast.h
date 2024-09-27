@@ -35,11 +35,13 @@
 #include <WebCore/UserContentTypes.h>
 #include <WebCore/UserScriptTypes.h>
 
-namespace WebCore {
-    class CSSStyleDeclaration;
+namespace WebCore
+{
+class CSSStyleDeclaration;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 class InjectedBundle;
 class InjectedBundleBackForwardList;
@@ -55,72 +57,83 @@ class WebInspector;
 class WebPage;
 class WebPageGroupProxy;
 
-WK_ADD_API_MAPPING(WKBundleBackForwardListItemRef, InjectedBundleBackForwardListItem)
-WK_ADD_API_MAPPING(WKBundleBackForwardListRef, InjectedBundleBackForwardList)
-WK_ADD_API_MAPPING(WKBundleCSSStyleDeclarationRef, WebCore::CSSStyleDeclaration)
-WK_ADD_API_MAPPING(WKBundleFrameRef, WebFrame)
-WK_ADD_API_MAPPING(WKBundleHitTestResultRef, InjectedBundleHitTestResult)
-WK_ADD_API_MAPPING(WKBundleInspectorRef, WebInspector)
-WK_ADD_API_MAPPING(WKBundleNavigationActionRef, InjectedBundleNavigationAction)
-WK_ADD_API_MAPPING(WKBundleNodeHandleRef, InjectedBundleNodeHandle)
-WK_ADD_API_MAPPING(WKBundlePageGroupRef, WebPageGroupProxy)
-WK_ADD_API_MAPPING(WKBundlePageOverlayRef, PageOverlay)
-WK_ADD_API_MAPPING(WKBundlePageRef, WebPage)
-WK_ADD_API_MAPPING(WKBundleRangeHandleRef, InjectedBundleRangeHandle)
-WK_ADD_API_MAPPING(WKBundleRef, InjectedBundle)
-WK_ADD_API_MAPPING(WKBundleScriptWorldRef, InjectedBundleScriptWorld)
+WK_ADD_API_MAPPING( WKBundleBackForwardListItemRef, InjectedBundleBackForwardListItem )
+WK_ADD_API_MAPPING( WKBundleBackForwardListRef, InjectedBundleBackForwardList )
+WK_ADD_API_MAPPING( WKBundleCSSStyleDeclarationRef, WebCore::CSSStyleDeclaration )
+WK_ADD_API_MAPPING( WKBundleFrameRef, WebFrame )
+WK_ADD_API_MAPPING( WKBundleHitTestResultRef, InjectedBundleHitTestResult )
+WK_ADD_API_MAPPING( WKBundleInspectorRef, WebInspector )
+WK_ADD_API_MAPPING( WKBundleNavigationActionRef, InjectedBundleNavigationAction )
+WK_ADD_API_MAPPING( WKBundleNodeHandleRef, InjectedBundleNodeHandle )
+WK_ADD_API_MAPPING( WKBundlePageGroupRef, WebPageGroupProxy )
+WK_ADD_API_MAPPING( WKBundlePageOverlayRef, PageOverlay )
+WK_ADD_API_MAPPING( WKBundlePageRef, WebPage )
+WK_ADD_API_MAPPING( WKBundleRangeHandleRef, InjectedBundleRangeHandle )
+WK_ADD_API_MAPPING( WKBundleRef, InjectedBundle )
+WK_ADD_API_MAPPING( WKBundleScriptWorldRef, InjectedBundleScriptWorld )
 
-inline WKInsertActionType toAPI(WebCore::EditorInsertAction action)
+inline WKInsertActionType toAPI( WebCore::EditorInsertAction action )
 {
-    switch (action) {
-    case WebCore::EditorInsertActionTyped:
-        return kWKInsertActionTyped;
-        break;
-    case WebCore::EditorInsertActionPasted:
-        return kWKInsertActionPasted;
-        break;
-    case WebCore::EditorInsertActionDropped:
-        return kWKInsertActionDropped;
-        break;
+    switch ( action )
+    {
+        case WebCore::EditorInsertActionTyped:
+            return kWKInsertActionTyped;
+            break;
+
+        case WebCore::EditorInsertActionPasted:
+            return kWKInsertActionPasted;
+            break;
+
+        case WebCore::EditorInsertActionDropped:
+            return kWKInsertActionDropped;
+            break;
     }
+
     ASSERT_NOT_REACHED();
     return kWKInsertActionTyped;
 }
 
-inline WKAffinityType toAPI(WebCore::EAffinity affinity)
+inline WKAffinityType toAPI( WebCore::EAffinity affinity )
 {
-    switch (affinity) {
-    case WebCore::UPSTREAM:
-        return kWKAffinityUpstream;
-        break;
-    case WebCore::DOWNSTREAM:
-        return kWKAffinityDownstream;
-        break;
+    switch ( affinity )
+    {
+        case WebCore::UPSTREAM:
+            return kWKAffinityUpstream;
+            break;
+
+        case WebCore::DOWNSTREAM:
+            return kWKAffinityDownstream;
+            break;
     }
+
     ASSERT_NOT_REACHED();
     return kWKAffinityUpstream;
 }
 
-inline WebCore::UserScriptInjectionTime toUserScriptInjectionTime(WKUserScriptInjectionTime wkInjectedTime)
+inline WebCore::UserScriptInjectionTime toUserScriptInjectionTime( WKUserScriptInjectionTime wkInjectedTime )
 {
-    switch (wkInjectedTime) {
-    case kWKInjectAtDocumentStart:
-        return WebCore::InjectAtDocumentStart;
-    case kWKInjectAtDocumentEnd:
-        return WebCore::InjectAtDocumentEnd;
+    switch ( wkInjectedTime )
+    {
+        case kWKInjectAtDocumentStart:
+            return WebCore::InjectAtDocumentStart;
+
+        case kWKInjectAtDocumentEnd:
+            return WebCore::InjectAtDocumentEnd;
     }
 
     ASSERT_NOT_REACHED();
     return WebCore::InjectAtDocumentStart;
 }
 
-inline WebCore::UserContentInjectedFrames toUserContentInjectedFrames(WKUserContentInjectedFrames wkInjectedFrames)
+inline WebCore::UserContentInjectedFrames toUserContentInjectedFrames( WKUserContentInjectedFrames wkInjectedFrames )
 {
-    switch (wkInjectedFrames) {
-    case kWKInjectInAllFrames:
-        return WebCore::InjectInAllFrames;
-    case kWKInjectInTopFrameOnly:
-        return WebCore::InjectInTopFrameOnly;
+    switch ( wkInjectedFrames )
+    {
+        case kWKInjectInAllFrames:
+            return WebCore::InjectInAllFrames;
+
+        case kWKInjectInTopFrameOnly:
+            return WebCore::InjectInTopFrameOnly;
     }
 
     ASSERT_NOT_REACHED();

@@ -31,43 +31,57 @@
 
 #include <wtf/Assertions.h>
 
-namespace JSC {
+namespace JSC
+{
 
-    class ExecState;
+class ExecState;
 
-    class TimeoutChecker {
-    public:
-        TimeoutChecker();
+class TimeoutChecker
+{
+public:
+    TimeoutChecker();
 
-        void setTimeoutInterval(unsigned timeoutInterval) { m_timeoutInterval = timeoutInterval; }
-        unsigned timeoutInterval() const { return m_timeoutInterval; }
-        
-        unsigned ticksUntilNextCheck() { return m_ticksUntilNextCheck; }
-        
-        void start()
+    void setTimeoutInterval( unsigned timeoutInterval )
+    {
+        m_timeoutInterval = timeoutInterval;
+    }
+    unsigned timeoutInterval() const
+    {
+        return m_timeoutInterval;
+    }
+
+    unsigned ticksUntilNextCheck()
+    {
+        return m_ticksUntilNextCheck;
+    }
+
+    void start()
+    {
+        if ( !m_startCount )
         {
-            if (!m_startCount)
-                reset();
-            ++m_startCount;
+            reset();
         }
 
-        void stop()
-        {
-            ASSERT(m_startCount);
-            --m_startCount;
-        }
+        ++m_startCount;
+    }
 
-        void reset();
+    void stop()
+    {
+        ASSERT( m_startCount );
+        --m_startCount;
+    }
 
-        bool didTimeOut(ExecState*);
+    void reset();
 
-    private:
-        unsigned m_timeoutInterval;
-        unsigned m_timeAtLastCheck;
-        unsigned m_timeExecuting;
-        unsigned m_startCount;
-        unsigned m_ticksUntilNextCheck;
-    };
+    bool didTimeOut( ExecState * );
+
+private:
+    unsigned m_timeoutInterval;
+    unsigned m_timeAtLastCheck;
+    unsigned m_timeExecuting;
+    unsigned m_startCount;
+    unsigned m_ticksUntilNextCheck;
+};
 
 } // namespace JSC
 

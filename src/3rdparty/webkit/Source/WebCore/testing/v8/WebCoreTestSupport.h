@@ -26,15 +26,17 @@
 #ifndef WebCoreTestSupport_h
 #define WebCoreTestSupport_h
 
-namespace v8 {
+namespace v8
+{
 class Context;
 template <class T> class Local;
 }
 
-namespace WebCoreTestSupport {
+namespace WebCoreTestSupport
+{
 
-void injectInternalsObject(v8::Local<v8::Context>);
-void resetInternalsObject(v8::Local<v8::Context>);
+void injectInternalsObject( v8::Local<v8::Context> );
+void resetInternalsObject( v8::Local<v8::Context> );
 
 } // namespace WebCore
 

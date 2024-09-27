@@ -21,49 +21,49 @@
 
 #include <cs_catch2.h>
 
-TEST_CASE("QLocalServer traits", "[qlocalserver]")
+TEST_CASE( "QLocalServer traits", "[qlocalserver]" )
 {
-   REQUIRE(std::is_copy_constructible_v<QLocalServer> == false);
-   REQUIRE(std::is_move_constructible_v<QLocalServer> == false);
+    REQUIRE( std::is_copy_constructible_v<QLocalServer> == false );
+    REQUIRE( std::is_move_constructible_v<QLocalServer> == false );
 
-   REQUIRE(std::is_copy_assignable_v<QLocalServer> == false);
-   REQUIRE(std::is_move_assignable_v<QLocalServer> == false);
+    REQUIRE( std::is_copy_assignable_v<QLocalServer> == false );
+    REQUIRE( std::is_move_assignable_v<QLocalServer> == false );
 
-   REQUIRE(std::is_nothrow_move_constructible_v<QLocalServer> == false);
-   REQUIRE(std::is_nothrow_move_assignable_v<QLocalServer> == false);
+    REQUIRE( std::is_nothrow_move_constructible_v<QLocalServer> == false );
+    REQUIRE( std::is_nothrow_move_assignable_v<QLocalServer> == false );
 
-   REQUIRE(std::has_virtual_destructor_v<QLocalServer> == true);
+    REQUIRE( std::has_virtual_destructor_v<QLocalServer> == true );
 }
 
-TEST_CASE("QLocalServer connections", "[qlocalserver]")
+TEST_CASE( "QLocalServer connections", "[qlocalserver]" )
 {
-   QLocalServer server;
-   server.setMaxPendingConnections(10);
+    QLocalServer server;
+    server.setMaxPendingConnections( 10 );
 
-   REQUIRE(server.maxPendingConnections() == 10);
+    REQUIRE( server.maxPendingConnections() == 10 );
 }
 
-TEST_CASE("QLocalServer server", "[qlocalserver]")
+TEST_CASE( "QLocalServer server", "[qlocalserver]" )
 {
-   QLocalServer server;
-   server.close();
+    QLocalServer server;
+    server.close();
 
-   REQUIRE(server.serverName() == QString());
-   REQUIRE(server.fullServerName() == QString());
-   REQUIRE(server.serverError() == QAbstractSocket::UnknownSocketError);
-   REQUIRE(server.errorString() == QString());
+    REQUIRE( server.serverName() == QString() );
+    REQUIRE( server.fullServerName() == QString() );
+    REQUIRE( server.serverError() == QAbstractSocket::UnknownSocketError );
+    REQUIRE( server.errorString() == QString() );
 
-   REQUIRE(server.hasPendingConnections() == false);
-   REQUIRE(server.isListening() == false);
-   REQUIRE(server.maxPendingConnections() == 30);
-   REQUIRE(server.nextPendingConnection() == nullptr);
+    REQUIRE( server.hasPendingConnections() == false );
+    REQUIRE( server.isListening() == false );
+    REQUIRE( server.maxPendingConnections() == 30 );
+    REQUIRE( server.nextPendingConnection() == nullptr );
 
-   //
-   server.setMaxPendingConnections(20);
-   bool timedOut = true;
+    //
+    server.setMaxPendingConnections( 20 );
+    bool timedOut = true;
 
-   REQUIRE(server.waitForNewConnection(3000, &timedOut) == false);
-   REQUIRE(timedOut == false);
+    REQUIRE( server.waitForNewConnection( 3000, &timedOut ) == false );
+    REQUIRE( timedOut == false );
 
-   REQUIRE(server.listen("") == false);
+    REQUIRE( server.listen( "" ) == false );
 }

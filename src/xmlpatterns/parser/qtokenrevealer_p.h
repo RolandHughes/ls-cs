@@ -28,23 +28,24 @@
 
 #include <qtokenizer_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class TokenRevealer : public Tokenizer
 {
- public:
-   TokenRevealer(const QUrl &uri, const Tokenizer::Ptr &other);
-   virtual ~TokenRevealer();
+public:
+    TokenRevealer( const QUrl &uri, const Tokenizer::Ptr &other );
+    virtual ~TokenRevealer();
 
-   Token nextToken(YYLTYPE *const sourceLocator) override;
-   int commenceScanOnly() override;
-   void resumeTokenizationFrom(const int position) override;
-   void setParserContext(const ParserContext::Ptr &parseInfo) override;
+    Token nextToken( YYLTYPE *const sourceLocator ) override;
+    int commenceScanOnly() override;
+    void resumeTokenizationFrom( const int position ) override;
+    void setParserContext( const ParserContext::Ptr &parseInfo ) override;
 
- private:
-   const Tokenizer::Ptr    m_tokenizer;
-   QString                 m_result;
-   QString                 m_indentationString;
+private:
+    const Tokenizer::Ptr    m_tokenizer;
+    QString                 m_result;
+    QString                 m_indentationString;
 };
 
 }

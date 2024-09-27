@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -43,41 +43,59 @@
 #include <wincrypt.h> // windows.h must be included before wincrypt.h.
 #endif
 
-namespace WTF {
+namespace WTF
+{
 
 #if USE(OS_RANDOMNESS)
-void cryptographicallyRandomValuesFromOS(unsigned char* buffer, size_t length)
+void cryptographicallyRandomValuesFromOS( unsigned char *buffer, size_t length )
 {
 #if OS(SYMBIAN)
     TInt random;
-    while (length > sizeof(random)) {
+
+    while ( length > sizeof( random ) )
+    {
         random = Math::Random();
-        memcpy(buffer, &random, sizeof(random));
-        length -= sizeof(random);
-        buffer += sizeof(random);
+        memcpy( buffer, &random, sizeof( random ) );
+        length -= sizeof( random );
+        buffer += sizeof( random );
     }
-    if (length > 0) {
+
+    if ( length > 0 )
+    {
         random = Math::Random();
-        memcpy(buffer, &random, length);
+        memcpy( buffer, &random, length );
     }
+
 #elif OS(UNIX)
-    int fd = open("/dev/urandom", O_RDONLY, 0);
-    if (fd < 0)
-        CRASH(); // We need /dev/urandom for this API to work...
+    int fd = open( "/dev/urandom", O_RDONLY, 0 );
 
-    if (read(fd, buffer, length) != static_cast<ssize_t>(length))
+    if ( fd < 0 )
+    {
+        CRASH();    // We need /dev/urandom for this API to work...
+    }
+
+    if ( read( fd, buffer, length ) != static_cast<ssize_t>( length ) )
+    {
         CRASH();
+    }
 
-    close(fd);
+    close( fd );
 #elif OS(WINDOWS)
     HCRYPTPROV hCryptProv = 0;
-    if (!CryptAcquireContext(&hCryptProv, 0, MS_DEF_PROV, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT))
+
+    if ( !CryptAcquireContext( &hCryptProv, 0, MS_DEF_PROV, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT ) )
+    {
         CRASH();
-    if (!CryptGenRandom(hCryptProv, length, buffer))
+    }
+
+    if ( !CryptGenRandom( hCryptProv, length, buffer ) )
+    {
         CRASH();
-    CryptReleaseContext(hCryptProv, 0);
+    }
+
+    CryptReleaseContext( hCryptProv, 0 );
 #else
-    #error "This configuration doesn't have a strong source of randomness."
+#error "This configuration doesn't have a strong source of randomness."
     // WARNING: When adding new sources of OS randomness, the randomness must
     //          be of cryptographic quality!
 #endif

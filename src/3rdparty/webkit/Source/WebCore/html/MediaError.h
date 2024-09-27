@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef MediaError_h
@@ -31,18 +31,26 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class MediaError : public RefCounted<MediaError> {
+class MediaError : public RefCounted<MediaError>
+{
 public:
     enum Code { MEDIA_ERR_ABORTED = 1, MEDIA_ERR_NETWORK, MEDIA_ERR_DECODE, MEDIA_ERR_SRC_NOT_SUPPORTED };
 
-    static PassRefPtr<MediaError> create(Code code) { return adoptRef(new MediaError(code)); }
+    static PassRefPtr<MediaError> create( Code code )
+    {
+        return adoptRef( new MediaError( code ) );
+    }
 
-    Code code() const { return m_code; }
+    Code code() const
+    {
+        return m_code;
+    }
 
 private:
-    MediaError(Code code) : m_code(code) { }
+    MediaError( Code code ) : m_code( code ) { }
 
     Code m_code;
 };

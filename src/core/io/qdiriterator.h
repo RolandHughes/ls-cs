@@ -30,38 +30,40 @@ class QDirIteratorPrivate;
 
 class Q_CORE_EXPORT QDirIterator
 {
- public:
-   enum IteratorFlag {
-      NoIteratorFlags = 0x0,
-      FollowSymlinks = 0x1,
-      Subdirectories = 0x2
-   };
-   using IteratorFlags = QFlags<IteratorFlag>;
+public:
+    enum IteratorFlag
+    {
+        NoIteratorFlags = 0x0,
+        FollowSymlinks = 0x1,
+        Subdirectories = 0x2
+    };
+    using IteratorFlags = QFlags<IteratorFlag>;
 
-   QDirIterator(const QDir &dir, IteratorFlags flags = NoIteratorFlags);
-   QDirIterator(const QString &path, IteratorFlags flags = NoIteratorFlags);
+    QDirIterator( const QDir &dir, IteratorFlags flags = NoIteratorFlags );
+    QDirIterator( const QString &path, IteratorFlags flags = NoIteratorFlags );
 
-   QDirIterator(const QString &path, QDir::Filters filters, IteratorFlags flags = NoIteratorFlags);
-   QDirIterator(const QString &path, const QStringList &nameFilters, QDir::Filters filters = QDir::NoFilter, IteratorFlags flags = NoIteratorFlags);
+    QDirIterator( const QString &path, QDir::Filters filters, IteratorFlags flags = NoIteratorFlags );
+    QDirIterator( const QString &path, const QStringList &nameFilters, QDir::Filters filters = QDir::NoFilter,
+                  IteratorFlags flags = NoIteratorFlags );
 
-   QDirIterator(const QDirIterator &) = delete;
-   QDirIterator &operator=(const QDirIterator &) = delete;
+    QDirIterator( const QDirIterator & ) = delete;
+    QDirIterator &operator=( const QDirIterator & ) = delete;
 
-   ~QDirIterator();
+    ~QDirIterator();
 
-   QString next();
-   bool hasNext() const;
+    QString next();
+    bool hasNext() const;
 
-   QString fileName() const;
-   QString filePath() const;
-   QFileInfo fileInfo() const;
-   QString path() const;
+    QString fileName() const;
+    QString filePath() const;
+    QFileInfo fileInfo() const;
+    QString path() const;
 
- private:
-   QScopedPointer<QDirIteratorPrivate> d;
-   friend class QDir;
+private:
+    QScopedPointer<QDirIteratorPrivate> d;
+    friend class QDir;
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(QDirIterator::IteratorFlags)
+Q_DECLARE_OPERATORS_FOR_FLAGS( QDirIterator::IteratorFlags )
 
 #endif

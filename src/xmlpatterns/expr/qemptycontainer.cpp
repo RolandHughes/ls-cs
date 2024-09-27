@@ -29,19 +29,19 @@ using namespace QPatternist;
 
 Expression::List EmptyContainer::operands() const
 {
-   return Expression::List();
+    return Expression::List();
 }
 
 SequenceType::List EmptyContainer::expectedOperandTypes() const
 {
-   return SequenceType::List();
+    return SequenceType::List();
 }
 
-void EmptyContainer::setOperands(const Expression::List &)
+void EmptyContainer::setOperands( const Expression::List & )
 {
 }
 
-bool EmptyContainer::compressOperands(const StaticContext::Ptr &)
+bool EmptyContainer::compressOperands( const StaticContext::Ptr & )
 {
-   return true;
+    return true;
 }

@@ -33,26 +33,29 @@
 
 #include <wtf/text/WTFString.h>
 
-namespace WTF {
+namespace WTF
+{
 class StringBuilder;
 }
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SharedBuffer;
 
-class SharedBufferCRLFLineReader {
+class SharedBufferCRLFLineReader
+{
 public:
-    explicit SharedBufferCRLFLineReader(SharedBuffer*);
+    explicit SharedBufferCRLFLineReader( SharedBuffer * );
 
     // Returns the next line read from the buffer.
     // Returns a null string when the end of the buffer has been reached.
     String nextLine();
 
 private:
-    SharedBuffer* m_buffer;
+    SharedBuffer *m_buffer;
     size_t m_bufferPosition;
-    const char* m_segment;
+    const char *m_segment;
     size_t m_segmentLength;
     size_t m_segmentIndex;
     bool m_reachedEndOfFile;

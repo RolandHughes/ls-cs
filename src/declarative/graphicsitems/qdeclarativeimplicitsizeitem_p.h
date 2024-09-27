@@ -33,63 +33,63 @@ class QDeclarativeImplicitSizePaintedItemPrivate;
 
 class QDeclarativeImplicitSizeItem : public QDeclarativeItem
 {
-   DECL_CS_OBJECT(QDeclarativeImplicitSizeItem)
+    DECL_CS_OBJECT( QDeclarativeImplicitSizeItem )
 
-   DECL_CS_PROPERTY_READ(implicitWidth, implicitWidth)
-   DECL_CS_PROPERTY_NOTIFY(implicitWidth, implicitWidthChanged)
-   DECL_CS_PROPERTY_REVISION(implicitWidth, 1)
-   DECL_CS_PROPERTY_READ(implicitHeight, implicitHeight)
-   DECL_CS_PROPERTY_NOTIFY(implicitHeight, implicitHeightChanged)
-   DECL_CS_PROPERTY_REVISION(implicitHeight, 1)
+    DECL_CS_PROPERTY_READ( implicitWidth, implicitWidth )
+    DECL_CS_PROPERTY_NOTIFY( implicitWidth, implicitWidthChanged )
+    DECL_CS_PROPERTY_REVISION( implicitWidth, 1 )
+    DECL_CS_PROPERTY_READ( implicitHeight, implicitHeight )
+    DECL_CS_PROPERTY_NOTIFY( implicitHeight, implicitHeightChanged )
+    DECL_CS_PROPERTY_REVISION( implicitHeight, 1 )
 
- public:
-   QDeclarativeImplicitSizeItem(QDeclarativeItem *parent = 0);
+public:
+    QDeclarativeImplicitSizeItem( QDeclarativeItem *parent = 0 );
 
-   DECL_CS_SIGNAL_1(Public, void implicitWidthChanged())
-   DECL_CS_SIGNAL_2(implicitWidthChanged)
-   DECL_CS_REVISION(implicitWidthChanged, 1)
+    DECL_CS_SIGNAL_1( Public, void implicitWidthChanged() )
+    DECL_CS_SIGNAL_2( implicitWidthChanged )
+    DECL_CS_REVISION( implicitWidthChanged, 1 )
 
-   DECL_CS_SIGNAL_1(Public, void implicitHeightChanged())
-   DECL_CS_SIGNAL_2(implicitHeightChanged)
-   DECL_CS_REVISION(implicitHeightChanged, 1)
+    DECL_CS_SIGNAL_1( Public, void implicitHeightChanged() )
+    DECL_CS_SIGNAL_2( implicitHeightChanged )
+    DECL_CS_REVISION( implicitHeightChanged, 1 )
 
- protected:
-   QDeclarativeImplicitSizeItem(QDeclarativeImplicitSizeItemPrivate &dd, QDeclarativeItem *parent);
+protected:
+    QDeclarativeImplicitSizeItem( QDeclarativeImplicitSizeItemPrivate &dd, QDeclarativeItem *parent );
 
- private:
-   Q_DISABLE_COPY(QDeclarativeImplicitSizeItem)
-   Q_DECLARE_PRIVATE_D(QGraphicsItem::d_ptr.data(), QDeclarativeImplicitSizeItem)
+private:
+    Q_DISABLE_COPY( QDeclarativeImplicitSizeItem )
+    Q_DECLARE_PRIVATE_D( QGraphicsItem::d_ptr.data(), QDeclarativeImplicitSizeItem )
 };
 
 
 class QDeclarativeImplicitSizePaintedItem : public QDeclarativePaintedItem
 {
-   DECL_CS_OBJECT(QDeclarativeImplicitSizePaintedItem)
-   DECL_CS_PROPERTY_READ(implicitWidth, implicitWidth)
-   DECL_CS_PROPERTY_NOTIFY(implicitWidth, implicitWidthChanged)
-   DECL_CS_PROPERTY_REVISION(implicitWidth, 1)
-   DECL_CS_PROPERTY_READ(implicitHeight, implicitHeight)
-   DECL_CS_PROPERTY_NOTIFY(implicitHeight, implicitHeightChanged)
-   DECL_CS_PROPERTY_REVISION(implicitHeight, 1)
+    DECL_CS_OBJECT( QDeclarativeImplicitSizePaintedItem )
+    DECL_CS_PROPERTY_READ( implicitWidth, implicitWidth )
+    DECL_CS_PROPERTY_NOTIFY( implicitWidth, implicitWidthChanged )
+    DECL_CS_PROPERTY_REVISION( implicitWidth, 1 )
+    DECL_CS_PROPERTY_READ( implicitHeight, implicitHeight )
+    DECL_CS_PROPERTY_NOTIFY( implicitHeight, implicitHeightChanged )
+    DECL_CS_PROPERTY_REVISION( implicitHeight, 1 )
 
- public:
-   QDeclarativeImplicitSizePaintedItem(QDeclarativeItem *parent = 0);
+public:
+    QDeclarativeImplicitSizePaintedItem( QDeclarativeItem *parent = 0 );
 
-   DECL_CS_SIGNAL_1(Public, void implicitWidthChanged())
-   DECL_CS_SIGNAL_2(implicitWidthChanged)
-   DECL_CS_REVISION(implicitWidthChanged, 1)
+    DECL_CS_SIGNAL_1( Public, void implicitWidthChanged() )
+    DECL_CS_SIGNAL_2( implicitWidthChanged )
+    DECL_CS_REVISION( implicitWidthChanged, 1 )
 
-   DECL_CS_SIGNAL_1(Public, void implicitHeightChanged())
-   DECL_CS_SIGNAL_2(implicitHeightChanged)
-   DECL_CS_REVISION(implicitHeightChanged, 1)
+    DECL_CS_SIGNAL_1( Public, void implicitHeightChanged() )
+    DECL_CS_SIGNAL_2( implicitHeightChanged )
+    DECL_CS_REVISION( implicitHeightChanged, 1 )
 
- protected:
-   QDeclarativeImplicitSizePaintedItem(QDeclarativeImplicitSizePaintedItemPrivate &dd, QDeclarativeItem *parent);
-   virtual void drawContents(QPainter *, const QRect &) {};
+protected:
+    QDeclarativeImplicitSizePaintedItem( QDeclarativeImplicitSizePaintedItemPrivate &dd, QDeclarativeItem *parent );
+    virtual void drawContents( QPainter *, const QRect & ) {};
 
- private:
-   Q_DISABLE_COPY(QDeclarativeImplicitSizePaintedItem)
-   Q_DECLARE_PRIVATE_D(QGraphicsItem::d_ptr.data(), QDeclarativeImplicitSizePaintedItem)
+private:
+    Q_DISABLE_COPY( QDeclarativeImplicitSizePaintedItem )
+    Q_DECLARE_PRIVATE_D( QGraphicsItem::d_ptr.data(), QDeclarativeImplicitSizePaintedItem )
 };
 
 QT_END_NAMESPACE

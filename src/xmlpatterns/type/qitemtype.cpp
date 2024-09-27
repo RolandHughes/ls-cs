@@ -32,48 +32,58 @@ ItemType::~ItemType()
 {
 }
 
-const ItemType &ItemType::operator|(const ItemType &other) const
+const ItemType &ItemType::operator|( const ItemType &other ) const
 {
-   const ItemType *ca = this;
+    const ItemType *ca = this;
 
-   if (other == *CommonSequenceTypes::None) {
-      return *ca;
-   }
+    if ( other == *CommonSequenceTypes::None )
+    {
+        return *ca;
+    }
 
-   if (*ca == *CommonSequenceTypes::Empty) {
-      return other;
-   } else if (other == *CommonSequenceTypes::Empty) {
-      return *ca;
-   }
+    if ( *ca == *CommonSequenceTypes::Empty )
+    {
+        return other;
+    }
+    else if ( other == *CommonSequenceTypes::Empty )
+    {
+        return *ca;
+    }
 
-   do {
-      const ItemType *cb = &other;
-      do {
-         if (*ca == *cb) {
-            return *ca;
-         }
+    do
+    {
+        const ItemType *cb = &other;
 
-         cb = cb->xdtSuperType().data();
-      } while (cb);
+        do
+        {
+            if ( *ca == *cb )
+            {
+                return *ca;
+            }
 
-      ca = ca->xdtSuperType().data();
-   } while (ca);
+            cb = cb->xdtSuperType().data();
+        }
+        while ( cb );
 
-   Q_ASSERT_X(false, Q_FUNC_INFO, "This line should never be reached.");
-   return *this;
+        ca = ca->xdtSuperType().data();
+    }
+    while ( ca );
+
+    Q_ASSERT_X( false, Q_FUNC_INFO, "This line should never be reached." );
+    return *this;
 }
 
 ItemType::Category ItemType::itemTypeCategory() const
 {
-   return Other;
+    return Other;
 }
 
-bool ItemType::operator==(const ItemType &other) const
+bool ItemType::operator==( const ItemType &other ) const
 {
-   return this == &other;
+    return this == &other;
 }
 
 ItemType::InstanceOf ItemType::instanceOf() const
 {
-   return ClassOther;
+    return ClassOther;
 }

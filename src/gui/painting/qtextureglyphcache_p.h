@@ -42,120 +42,132 @@ class QTextItemInt;
 
 class Q_GUI_EXPORT QTextureGlyphCache : public QFontEngineGlyphCache
 {
- public:
-   QTextureGlyphCache(QFontEngine::GlyphFormat format, const QTransform &matrix)
-      : QFontEngineGlyphCache(format, matrix), m_current_fontengine(nullptr),
-        m_w(0), m_h(0), m_cx(0), m_cy(0), m_currentRowHeight(0)
-   { }
+public:
+    QTextureGlyphCache( QFontEngine::GlyphFormat format, const QTransform &matrix )
+        : QFontEngineGlyphCache( format, matrix ), m_current_fontengine( nullptr ),
+          m_w( 0 ), m_h( 0 ), m_cx( 0 ), m_cy( 0 ), m_currentRowHeight( 0 )
+    { }
 
-   virtual ~QTextureGlyphCache();
+    virtual ~QTextureGlyphCache();
 
-   struct GlyphAndSubPixelPosition {
-      GlyphAndSubPixelPosition(glyph_t g, QFixed spp) : glyph(g), subPixelPosition(spp) {}
+    struct GlyphAndSubPixelPosition
+    {
+        GlyphAndSubPixelPosition( glyph_t g, QFixed spp ) : glyph( g ), subPixelPosition( spp ) {}
 
-      bool operator==(const GlyphAndSubPixelPosition &other) const {
-         return glyph == other.glyph && subPixelPosition == other.subPixelPosition;
-      }
+        bool operator==( const GlyphAndSubPixelPosition &other ) const
+        {
+            return glyph == other.glyph && subPixelPosition == other.subPixelPosition;
+        }
 
-      glyph_t glyph;
-      QFixed subPixelPosition;
-   };
+        glyph_t glyph;
+        QFixed subPixelPosition;
+    };
 
-   struct Coord {
-      int x;
-      int y;
-      int w;
-      int h;
+    struct Coord
+    {
+        int x;
+        int y;
+        int w;
+        int h;
 
-      int baseLineX;
-      int baseLineY;
+        int baseLineX;
+        int baseLineY;
 
-      bool isNull() const {
-         return w == 0 || h == 0;
-      }
-   };
+        bool isNull() const
+        {
+            return w == 0 || h == 0;
+        }
+    };
 
-   bool populate(QFontEngine *fontEngine, int numGlyphs, const glyph_t *glyphs, const QFixedPoint *positions);
+    bool populate( QFontEngine *fontEngine, int numGlyphs, const glyph_t *glyphs, const QFixedPoint *positions );
 
-   bool hasPendingGlyphs() const {
-      return !m_pendingGlyphs.isEmpty();
-   };
+    bool hasPendingGlyphs() const
+    {
+        return !m_pendingGlyphs.isEmpty();
+    };
 
-   void fillInPendingGlyphs();
+    void fillInPendingGlyphs();
 
-   virtual void createTextureData(int width, int height) = 0;
-   virtual void resizeTextureData(int width, int height) = 0;
+    virtual void createTextureData( int width, int height ) = 0;
+    virtual void resizeTextureData( int width, int height ) = 0;
 
-   virtual int glyphPadding() const {
-      return 0;
-   }
+    virtual int glyphPadding() const
+    {
+        return 0;
+    }
 
-   virtual void fillTexture(const Coord &coord, glyph_t glyph, QFixed subPixelPosition) = 0;
+    virtual void fillTexture( const Coord &coord, glyph_t glyph, QFixed subPixelPosition ) = 0;
 
-   inline void createCache(int width, int height) {
-      m_w = width;
-      m_h = height;
-      createTextureData(width, height);
-   }
+    inline void createCache( int width, int height )
+    {
+        m_w = width;
+        m_h = height;
+        createTextureData( width, height );
+    }
 
-   inline void resizeCache(int width, int height) {
-      resizeTextureData(width, height);
-      m_w = width;
-      m_h = height;
-   }
+    inline void resizeCache( int width, int height )
+    {
+        resizeTextureData( width, height );
+        m_w = width;
+        m_h = height;
+    }
 
-   inline bool isNull() const {
-      return m_h == 0;
-   }
+    inline bool isNull() const
+    {
+        return m_h == 0;
+    }
 
-   QHash<GlyphAndSubPixelPosition, Coord> coords;
+    QHash<GlyphAndSubPixelPosition, Coord> coords;
 
-   virtual int maxTextureWidth() const {
-      return QT_DEFAULT_TEXTURE_GLYPH_CACHE_WIDTH;
-   }
+    virtual int maxTextureWidth() const
+    {
+        return QT_DEFAULT_TEXTURE_GLYPH_CACHE_WIDTH;
+    }
 
-   virtual int maxTextureHeight() const {
-      return -1;
-   }
+    virtual int maxTextureHeight() const
+    {
+        return -1;
+    }
 
-   QImage textureMapForGlyph(glyph_t g, QFixed subPixelPosition) const;
+    QImage textureMapForGlyph( glyph_t g, QFixed subPixelPosition ) const;
 
- protected:
-   int calculateSubPixelPositionCount(glyph_t) const;
+protected:
+    int calculateSubPixelPositionCount( glyph_t ) const;
 
-   QFontEngine *m_current_fontengine;
-   QHash<GlyphAndSubPixelPosition, Coord> m_pendingGlyphs;
+    QFontEngine *m_current_fontengine;
+    QHash<GlyphAndSubPixelPosition, Coord> m_pendingGlyphs;
 
-   int m_w; // image width
-   int m_h; // image height
-   int m_cx; // current x
-   int m_cy; // current y
-   int m_currentRowHeight; // Height of last row
+    int m_w; // image width
+    int m_h; // image height
+    int m_cx; // current x
+    int m_cy; // current y
+    int m_currentRowHeight; // Height of last row
 };
 
-inline uint qHash(const QTextureGlyphCache::GlyphAndSubPixelPosition &g)
+inline uint qHash( const QTextureGlyphCache::GlyphAndSubPixelPosition &g )
 {
-   return (g.glyph << 8)  | (g.subPixelPosition * 10).round().toInt();
+    return ( g.glyph << 8 )  | ( g.subPixelPosition * 10 ).round().toInt();
 }
 
 class Q_GUI_EXPORT QImageTextureGlyphCache : public QTextureGlyphCache
 {
- public:
-   QImageTextureGlyphCache(QFontEngine::GlyphFormat format, const QTransform &matrix)
-      : QTextureGlyphCache(format, matrix) { }
+public:
+    QImageTextureGlyphCache( QFontEngine::GlyphFormat format, const QTransform &matrix )
+        : QTextureGlyphCache( format, matrix ) { }
 
-   ~QImageTextureGlyphCache();
+    ~QImageTextureGlyphCache();
 
-   void createTextureData(int width, int height) override;
-   void resizeTextureData(int width, int height) override;
-   void fillTexture(const Coord &c, glyph_t glyph, QFixed subPixelPosition) override;
+    void createTextureData( int width, int height ) override;
+    void resizeTextureData( int width, int height ) override;
+    void fillTexture( const Coord &c, glyph_t glyph, QFixed subPixelPosition ) override;
 
-   inline const QImage &image() const {
-      return m_image;
-   }
+    inline const QImage &image() const
+    {
+        return m_image;
+    }
 
- private:
-   QImage m_image;
+private:
+    QImage m_image;
 };
 
 #endif

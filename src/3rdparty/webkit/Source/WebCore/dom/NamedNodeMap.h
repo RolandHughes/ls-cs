@@ -28,130 +28,190 @@
 #include "Attribute.h"
 #include "SpaceSplitString.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Node;
 
 typedef int ExceptionCode;
 
-class NamedNodeMap : public RefCounted<NamedNodeMap> {
+class NamedNodeMap : public RefCounted<NamedNodeMap>
+{
     friend class Element;
 public:
-    static PassRefPtr<NamedNodeMap> create(Element* element = 0)
+    static PassRefPtr<NamedNodeMap> create( Element *element = 0 )
     {
-        return adoptRef(new NamedNodeMap(element));
+        return adoptRef( new NamedNodeMap( element ) );
     }
 
     ~NamedNodeMap();
 
     // Public DOM interface.
 
-    PassRefPtr<Node> getNamedItem(const String& name) const;
-    PassRefPtr<Node> removeNamedItem(const String& name, ExceptionCode&);
+    PassRefPtr<Node> getNamedItem( const String &name ) const;
+    PassRefPtr<Node> removeNamedItem( const String &name, ExceptionCode & );
 
-    PassRefPtr<Node> getNamedItemNS(const String& namespaceURI, const String& localName) const;
-    PassRefPtr<Node> removeNamedItemNS(const String& namespaceURI, const String& localName, ExceptionCode&);
+    PassRefPtr<Node> getNamedItemNS( const String &namespaceURI, const String &localName ) const;
+    PassRefPtr<Node> removeNamedItemNS( const String &namespaceURI, const String &localName, ExceptionCode & );
 
-    PassRefPtr<Node> getNamedItem(const QualifiedName& name) const;
-    PassRefPtr<Node> removeNamedItem(const QualifiedName& name, ExceptionCode&);
-    PassRefPtr<Node> setNamedItem(Node*, ExceptionCode&);
-    PassRefPtr<Node> setNamedItemNS(Node*, ExceptionCode&);
+    PassRefPtr<Node> getNamedItem( const QualifiedName &name ) const;
+    PassRefPtr<Node> removeNamedItem( const QualifiedName &name, ExceptionCode & );
+    PassRefPtr<Node> setNamedItem( Node *, ExceptionCode & );
+    PassRefPtr<Node> setNamedItemNS( Node *, ExceptionCode & );
 
-    PassRefPtr<Node> item(unsigned index) const;
-    size_t length() const { return m_attributes.size(); }
-    bool isEmpty() const { return !length(); }
+    PassRefPtr<Node> item( unsigned index ) const;
+    size_t length() const
+    {
+        return m_attributes.size();
+    }
+    bool isEmpty() const
+    {
+        return !length();
+    }
 
     // Internal interface.
 
-    void setAttributes(const NamedNodeMap&);
+    void setAttributes( const NamedNodeMap & );
 
-    Attribute* attributeItem(unsigned index) const { return m_attributes[index].get(); }
-    Attribute* getAttributeItem(const QualifiedName&) const;
-
-    void copyAttributesToVector(Vector<RefPtr<Attribute> >&);
-
-    void shrinkToLength() { m_attributes.shrinkCapacity(length()); }
-    void reserveInitialCapacity(unsigned capacity) { m_attributes.reserveInitialCapacity(capacity); }
-
-    // Used during parsing: only inserts if not already there. No error checking!
-    void insertAttribute(PassRefPtr<Attribute> newAttribute, bool allowDuplicates)
+    Attribute *attributeItem( unsigned index ) const
     {
-        ASSERT(!m_element);
-        if (allowDuplicates || !getAttributeItem(newAttribute->name()))
-            addAttribute(newAttribute);
+        return m_attributes[index].get();
+    }
+    Attribute *getAttributeItem( const QualifiedName & ) const;
+
+    void copyAttributesToVector( Vector<RefPtr<Attribute> > & );
+
+    void shrinkToLength()
+    {
+        m_attributes.shrinkCapacity( length() );
+    }
+    void reserveInitialCapacity( unsigned capacity )
+    {
+        m_attributes.reserveInitialCapacity( capacity );
     }
 
-    const AtomicString& idForStyleResolution() const { return m_idForStyleResolution; }
-    void setIdForStyleResolution(const AtomicString& newId) { m_idForStyleResolution = newId; }
+    // Used during parsing: only inserts if not already there. No error checking!
+    void insertAttribute( PassRefPtr<Attribute> newAttribute, bool allowDuplicates )
+    {
+        ASSERT( !m_element );
+
+        if ( allowDuplicates || !getAttributeItem( newAttribute->name() ) )
+        {
+            addAttribute( newAttribute );
+        }
+    }
+
+    const AtomicString &idForStyleResolution() const
+    {
+        return m_idForStyleResolution;
+    }
+    void setIdForStyleResolution( const AtomicString &newId )
+    {
+        m_idForStyleResolution = newId;
+    }
 
     // FIXME: These two functions should be merged if possible.
-    bool mapsEquivalent(const NamedNodeMap* otherMap) const;
-    bool mappedMapsEquivalent(const NamedNodeMap* otherMap) const;
+    bool mapsEquivalent( const NamedNodeMap *otherMap ) const;
+    bool mappedMapsEquivalent( const NamedNodeMap *otherMap ) const;
 
     // These functions do no error checking.
-    void addAttribute(PassRefPtr<Attribute>);
-    void removeAttribute(const QualifiedName&);
+    void addAttribute( PassRefPtr<Attribute> );
+    void removeAttribute( const QualifiedName & );
 
-    Element* element() const { return m_element; }
+    Element *element() const
+    {
+        return m_element;
+    }
 
-    void clearClass() { m_classNames.clear(); }
-    void setClass(const String&);
-    const SpaceSplitString& classNames() const { return m_classNames; }
+    void clearClass()
+    {
+        m_classNames.clear();
+    }
+    void setClass( const String & );
+    const SpaceSplitString &classNames() const
+    {
+        return m_classNames;
+    }
 
-    bool hasMappedAttributes() const { return m_mappedAttributeCount > 0; }
-    void declRemoved() { m_mappedAttributeCount--; }
-    void declAdded() { m_mappedAttributeCount++; }
+    bool hasMappedAttributes() const
+    {
+        return m_mappedAttributeCount > 0;
+    }
+    void declRemoved()
+    {
+        m_mappedAttributeCount--;
+    }
+    void declAdded()
+    {
+        m_mappedAttributeCount++;
+    }
 
 private:
-    NamedNodeMap(Element* element) 
-        : m_mappedAttributeCount(0)
-        , m_element(element)
+    NamedNodeMap( Element *element )
+        : m_mappedAttributeCount( 0 )
+        , m_element( element )
     {
     }
 
     void detachAttributesFromElement();
     void detachFromElement();
-    Attribute* getAttributeItem(const String& name, bool shouldIgnoreAttributeCase) const;
-    Attribute* getAttributeItemSlowCase(const String& name, bool shouldIgnoreAttributeCase) const;
+    Attribute *getAttributeItem( const String &name, bool shouldIgnoreAttributeCase ) const;
+    Attribute *getAttributeItemSlowCase( const String &name, bool shouldIgnoreAttributeCase ) const;
     void clearAttributes();
     int declCount() const;
 
     int m_mappedAttributeCount;
     SpaceSplitString m_classNames;
-    Element* m_element;
+    Element *m_element;
     Vector<RefPtr<Attribute> > m_attributes;
     AtomicString m_idForStyleResolution;
 };
 
-inline Attribute* NamedNodeMap::getAttributeItem(const QualifiedName& name) const
+inline Attribute *NamedNodeMap::getAttributeItem( const QualifiedName &name ) const
 {
     unsigned len = length();
-    for (unsigned i = 0; i < len; ++i) {
-        if (m_attributes[i]->name().matches(name))
+
+    for ( unsigned i = 0; i < len; ++i )
+    {
+        if ( m_attributes[i]->name().matches( name ) )
+        {
             return m_attributes[i].get();
+        }
     }
+
     return 0;
 }
 
 // We use a boolean parameter instead of calling shouldIgnoreAttributeCase so that the caller
 // can tune the behavior (hasAttribute is case sensitive whereas getAttribute is not).
-inline Attribute* NamedNodeMap::getAttributeItem(const String& name, bool shouldIgnoreAttributeCase) const
+inline Attribute *NamedNodeMap::getAttributeItem( const String &name, bool shouldIgnoreAttributeCase ) const
 {
     unsigned len = length();
     bool doSlowCheck = shouldIgnoreAttributeCase;
-    
+
     // Optimize for the case where the attribute exists and its name exactly matches.
-    for (unsigned i = 0; i < len; ++i) {
-        const QualifiedName& attrName = m_attributes[i]->name();
-        if (!attrName.hasPrefix()) {
-            if (name == attrName.localName())
+    for ( unsigned i = 0; i < len; ++i )
+    {
+        const QualifiedName &attrName = m_attributes[i]->name();
+
+        if ( !attrName.hasPrefix() )
+        {
+            if ( name == attrName.localName() )
+            {
                 return m_attributes[i].get();
-        } else
+            }
+        }
+        else
+        {
             doSlowCheck = true;
+        }
     }
 
-    if (doSlowCheck)
-        return getAttributeItemSlowCase(name, shouldIgnoreAttributeCase);
+    if ( doSlowCheck )
+    {
+        return getAttributeItemSlowCase( name, shouldIgnoreAttributeCase );
+    }
+
     return 0;
 }
 

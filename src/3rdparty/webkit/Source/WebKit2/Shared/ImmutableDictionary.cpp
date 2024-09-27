@@ -29,15 +29,16 @@
 #include "ImmutableArray.h"
 #include "WebString.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
 ImmutableDictionary::ImmutableDictionary()
 {
 }
 
-ImmutableDictionary::ImmutableDictionary(MapType& map)
+ImmutableDictionary::ImmutableDictionary( MapType &map )
 {
-    m_map.swap(map);
+    m_map.swap( map );
 }
 
 ImmutableDictionary::~ImmutableDictionary()
@@ -46,18 +47,23 @@ ImmutableDictionary::~ImmutableDictionary()
 
 PassRefPtr<ImmutableArray> ImmutableDictionary::keys() const
 {
-    if (m_map.isEmpty())
+    if ( m_map.isEmpty() )
+    {
         return ImmutableArray::create();
+    }
 
     Vector<RefPtr<APIObject> > vector;
-    vector.reserveInitialCapacity(m_map.size());
+    vector.reserveInitialCapacity( m_map.size() );
 
     MapType::const_iterator::Keys it = m_map.begin().keys();
     MapType::const_iterator::Keys end = m_map.end().keys();
-    for (; it != end; ++it)
-        vector.uncheckedAppend(WebString::create(*it));
 
-    return ImmutableArray::adopt(vector);
+    for ( ; it != end; ++it )
+    {
+        vector.uncheckedAppend( WebString::create( *it ) );
+    }
+
+    return ImmutableArray::adopt( vector );
 }
 
 } // namespace WebKit

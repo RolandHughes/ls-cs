@@ -19,7 +19,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef ImageDocument_h
@@ -27,50 +27,61 @@
 
 #include "HTMLDocument.h"
 
-namespace WebCore {
-    
+namespace WebCore
+{
+
 class ImageDocumentElement;
 
-class ImageDocument : public HTMLDocument {
+class ImageDocument : public HTMLDocument
+{
 public:
-    static PassRefPtr<ImageDocument> create(Frame* frame, const KURL& url)
+    static PassRefPtr<ImageDocument> create( Frame *frame, const KURL &url )
     {
-        return adoptRef(new ImageDocument(frame, url));
+        return adoptRef( new ImageDocument( frame, url ) );
     }
 
-    CachedImage* cachedImage();
-    ImageDocumentElement* imageElement() const { return m_imageElement; }
-    void disconnectImageElement() { m_imageElement = 0; }
-    
+    CachedImage *cachedImage();
+    ImageDocumentElement *imageElement() const
+    {
+        return m_imageElement;
+    }
+    void disconnectImageElement()
+    {
+        m_imageElement = 0;
+    }
+
     void windowSizeChanged();
     void imageUpdated();
-    void imageClicked(int x, int y);
+    void imageClicked( int x, int y );
 
 private:
-    ImageDocument(Frame*, const KURL&);
+    ImageDocument( Frame *, const KURL & );
 
     virtual PassRefPtr<DocumentParser> createParser();
-    virtual bool isImageDocument() const { return true; }
-    
+    virtual bool isImageDocument() const
+    {
+        return true;
+    }
+
     void createDocumentStructure();
     void resizeImageToFit();
     void restoreImageSize();
     bool imageFitsInWindow() const;
     bool shouldShrinkToFit() const;
     float scale() const;
-    
-    ImageDocumentElement* m_imageElement;
-    
+
+    ImageDocumentElement *m_imageElement;
+
     // Whether enough of the image has been loaded to determine its size
     bool m_imageSizeIsKnown;
-    
+
     // Whether the image is shrunk to fit or not
     bool m_didShrinkImage;
-    
+
     // Whether the image should be shrunk or not
     bool m_shouldShrinkImage;
 };
-    
+
 }
 
 #endif // ImageDocument_h

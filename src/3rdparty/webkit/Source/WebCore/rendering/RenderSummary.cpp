@@ -25,21 +25,22 @@
 
 #include "RenderDetails.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-RenderSummary::RenderSummary(Node* node)
-    : RenderBlock(node)
+RenderSummary::RenderSummary( Node *node )
+    : RenderBlock( node )
 {
 }
 
-void RenderSummary::styleDidChange(StyleDifference diff, const RenderStyle* oldStyle)
+void RenderSummary::styleDidChange( StyleDifference diff, const RenderStyle *oldStyle )
 {
-    RenderBlock::styleDidChange(diff, oldStyle);
+    RenderBlock::styleDidChange( diff, oldStyle );
 
 
     // Ensure that if we ended up being inline that we set our replaced flag
     // so that we're treated like an inline-block.
-    setReplaced(isInline());
+    setReplaced( isInline() );
 }
 
 }

@@ -32,14 +32,14 @@
 using namespace WebCore;
 using namespace WebKit;
 
-WKErrorRef WKErrorCreateWithCFError(CFErrorRef cfError)
+WKErrorRef WKErrorCreateWithCFError( CFErrorRef cfError )
 {
-    RefPtr<WebError> error = WebError::create(ResourceError(cfError));
-    return toAPI(error.release().releaseRef());
+    RefPtr<WebError> error = WebError::create( ResourceError( cfError ) );
+    return toAPI( error.release().releaseRef() );
 }
 
-CFErrorRef WKErrorCopyCFError(CFAllocatorRef alloc, WKErrorRef error)
+CFErrorRef WKErrorCopyCFError( CFAllocatorRef alloc, WKErrorRef error )
 {
-    RetainPtr<CFErrorRef> cfError = toImpl(error)->platformError().cfError();
+    RetainPtr<CFErrorRef> cfError = toImpl( error )->platformError().cfError();
     return cfError.leakRef();
 }

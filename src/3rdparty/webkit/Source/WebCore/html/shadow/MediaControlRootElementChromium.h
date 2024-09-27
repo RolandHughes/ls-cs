@@ -32,7 +32,8 @@
 #include "MediaControls.h"
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class HTMLInputElement;
 class HTMLMediaElement;
@@ -54,9 +55,10 @@ class MediaPlayer;
 class RenderBox;
 class RenderMedia;
 
-class MediaControlRootElementChromium : public MediaControls {
+class MediaControlRootElementChromium : public MediaControls
+{
 public:
-    static PassRefPtr<MediaControlRootElementChromium> create(HTMLMediaElement*);
+    static PassRefPtr<MediaControlRootElementChromium> create( HTMLMediaElement * );
 
     // MediaControls implementation.
     void show();
@@ -85,20 +87,20 @@ public:
     void updateStatusDisplay();
 
 private:
-    MediaControlRootElementChromium(HTMLMediaElement*);
+    MediaControlRootElementChromium( HTMLMediaElement * );
 
-    virtual const AtomicString& shadowPseudoId() const;
+    virtual const AtomicString &shadowPseudoId() const;
 
-    HTMLMediaElement* m_mediaElement;
+    HTMLMediaElement *m_mediaElement;
 
-    MediaControlPlayButtonElement* m_playButton;
-    MediaControlCurrentTimeDisplayElement* m_currentTimeDisplay;
-    MediaControlTimelineElement* m_timeline;
-    MediaControlTimelineContainerElement* m_timelineContainer;
-    MediaControlPanelMuteButtonElement* m_panelMuteButton;
-    MediaControlVolumeSliderElement* m_volumeSlider;
-    MediaControlVolumeSliderContainerElement* m_volumeSliderContainer;
-    MediaControlPanelElement* m_panel;
+    MediaControlPlayButtonElement *m_playButton;
+    MediaControlCurrentTimeDisplayElement *m_currentTimeDisplay;
+    MediaControlTimelineElement *m_timeline;
+    MediaControlTimelineContainerElement *m_timelineContainer;
+    MediaControlPanelMuteButtonElement *m_panelMuteButton;
+    MediaControlVolumeSliderElement *m_volumeSlider;
+    MediaControlVolumeSliderContainerElement *m_volumeSliderContainer;
+    MediaControlPanelElement *m_panel;
 
     bool m_opaque;
 };

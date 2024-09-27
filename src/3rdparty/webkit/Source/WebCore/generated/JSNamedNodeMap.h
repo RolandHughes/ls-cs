@@ -26,89 +26,101 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class NamedNodeMap;
 
-class JSNamedNodeMap : public JSDOMWrapper {
+class JSNamedNodeMap : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSNamedNodeMap(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<NamedNodeMap>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, unsigned propertyName, JSC::PropertySlot&);
+    JSNamedNodeMap( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<NamedNodeMap> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, unsigned propertyName, JSC::PropertySlot & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    virtual void visitChildren(JSC::SlotVisitor&);
+    virtual void visitChildren( JSC::SlotVisitor & );
 
-    virtual void getOwnPropertyNames(JSC::ExecState*, JSC::PropertyNameArray&, JSC::EnumerationMode mode = JSC::ExcludeDontEnumProperties);
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
-    NamedNodeMap* impl() const { return m_impl.get(); }
+    virtual void getOwnPropertyNames( JSC::ExecState *, JSC::PropertyNameArray &,
+                                      JSC::EnumerationMode mode = JSC::ExcludeDontEnumProperties );
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
+    NamedNodeMap *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<NamedNodeMap> m_impl;
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetPropertyNames | JSC::OverridesGetOwnPropertySlot | JSC::OverridesVisitChildren | Base::StructureFlags;
-    static JSC::JSValue indexGetter(JSC::ExecState*, JSC::JSValue, unsigned);
+    static const unsigned StructureFlags = JSC::OverridesGetPropertyNames | JSC::OverridesGetOwnPropertySlot |
+                                           JSC::OverridesVisitChildren | Base::StructureFlags;
+    static JSC::JSValue indexGetter( JSC::ExecState *, JSC::JSValue, unsigned );
 private:
-    static bool canGetItemsForName(JSC::ExecState*, NamedNodeMap*, const JSC::Identifier&);
-    static JSC::JSValue nameGetter(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+    static bool canGetItemsForName( JSC::ExecState *, NamedNodeMap *, const JSC::Identifier & );
+    static JSC::JSValue nameGetter( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 };
 
-class JSNamedNodeMapOwner : public JSC::WeakHandleOwner {
-    virtual bool isReachableFromOpaqueRoots(JSC::Handle<JSC::Unknown>, void* context, JSC::SlotVisitor&);
-    virtual void finalize(JSC::Handle<JSC::Unknown>, void* context);
-};
-
-inline JSC::WeakHandleOwner* wrapperOwner(DOMWrapperWorld*, NamedNodeMap*)
+class JSNamedNodeMapOwner : public JSC::WeakHandleOwner
 {
-    DEFINE_STATIC_LOCAL(JSNamedNodeMapOwner, jsNamedNodeMapOwner, ());
+    virtual bool isReachableFromOpaqueRoots( JSC::Handle<JSC::Unknown>, void *context, JSC::SlotVisitor & );
+    virtual void finalize( JSC::Handle<JSC::Unknown>, void *context );
+};
+
+inline JSC::WeakHandleOwner *wrapperOwner( DOMWrapperWorld *, NamedNodeMap * )
+{
+    DEFINE_STATIC_LOCAL( JSNamedNodeMapOwner, jsNamedNodeMapOwner, () );
     return &jsNamedNodeMapOwner;
 }
 
-inline void* wrapperContext(DOMWrapperWorld* world, NamedNodeMap*)
+inline void *wrapperContext( DOMWrapperWorld *world, NamedNodeMap * )
 {
     return world;
 }
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, NamedNodeMap*);
-NamedNodeMap* toNamedNodeMap(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, NamedNodeMap * );
+NamedNodeMap *toNamedNodeMap( JSC::JSValue );
 
-class JSNamedNodeMapPrototype : public JSC::JSObjectWithGlobalObject {
+class JSNamedNodeMapPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSNamedNodeMapPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSNamedNodeMapPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                             JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::OverridesVisitChildren | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsNamedNodeMapPrototypeFunctionGetNamedItem(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsNamedNodeMapPrototypeFunctionSetNamedItem(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsNamedNodeMapPrototypeFunctionRemoveNamedItem(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsNamedNodeMapPrototypeFunctionItem(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsNamedNodeMapPrototypeFunctionGetNamedItemNS(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsNamedNodeMapPrototypeFunctionSetNamedItemNS(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsNamedNodeMapPrototypeFunctionRemoveNamedItemNS(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsNamedNodeMapPrototypeFunctionGetNamedItem( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsNamedNodeMapPrototypeFunctionSetNamedItem( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsNamedNodeMapPrototypeFunctionRemoveNamedItem( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsNamedNodeMapPrototypeFunctionItem( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsNamedNodeMapPrototypeFunctionGetNamedItemNS( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsNamedNodeMapPrototypeFunctionSetNamedItemNS( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsNamedNodeMapPrototypeFunctionRemoveNamedItemNS( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsNamedNodeMapLength(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsNamedNodeMapConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsNamedNodeMapLength( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsNamedNodeMapConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

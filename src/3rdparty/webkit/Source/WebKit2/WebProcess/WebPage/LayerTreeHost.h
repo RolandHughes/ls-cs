@@ -29,54 +29,71 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
-    class IntRect;
-    class IntSize;
-    class GraphicsLayer;
+namespace WebCore
+{
+class IntRect;
+class IntSize;
+class GraphicsLayer;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 class LayerTreeContext;
 class UpdateInfo;
 class WebPage;
 
-class LayerTreeHost : public RefCounted<LayerTreeHost> {
+class LayerTreeHost : public RefCounted<LayerTreeHost>
+{
 public:
-    static PassRefPtr<LayerTreeHost> create(WebPage*);
+    static PassRefPtr<LayerTreeHost> create( WebPage * );
     virtual ~LayerTreeHost();
 
     static bool supportsAcceleratedCompositing();
 
-    virtual const LayerTreeContext& layerTreeContext() = 0;
+    virtual const LayerTreeContext &layerTreeContext() = 0;
     virtual void scheduleLayerFlush() = 0;
-    virtual void setShouldNotifyAfterNextScheduledLayerFlush(bool) = 0;
-    virtual void setRootCompositingLayer(WebCore::GraphicsLayer*) = 0;
+    virtual void setShouldNotifyAfterNextScheduledLayerFlush( bool ) = 0;
+    virtual void setRootCompositingLayer( WebCore::GraphicsLayer * ) = 0;
     virtual void invalidate() = 0;
 
-    virtual void setNonCompositedContentsNeedDisplay(const WebCore::IntRect&) = 0;
-    virtual void scrollNonCompositedContents(const WebCore::IntRect& scrollRect, const WebCore::IntSize& scrollOffset) = 0;
+    virtual void setNonCompositedContentsNeedDisplay( const WebCore::IntRect & ) = 0;
+    virtual void scrollNonCompositedContents( const WebCore::IntRect &scrollRect, const WebCore::IntSize &scrollOffset ) = 0;
     virtual void forceRepaint() = 0;
-    virtual void sizeDidChange(const WebCore::IntSize& newSize) = 0;
+    virtual void sizeDidChange( const WebCore::IntSize &newSize ) = 0;
 
     virtual void didInstallPageOverlay() = 0;
     virtual void didUninstallPageOverlay() = 0;
-    virtual void setPageOverlayNeedsDisplay(const WebCore::IntRect&) = 0;
+    virtual void setPageOverlayNeedsDisplay( const WebCore::IntRect & ) = 0;
 
     virtual void pauseRendering() { }
     virtual void resumeRendering() { }
 
     // If a derived class overrides this function to return true, the derived class must also
     // override the functions beneath it.
-    virtual bool participatesInDisplay() { return false; }
-    virtual bool needsDisplay() { ASSERT_NOT_REACHED(); return false; }
-    virtual double timeUntilNextDisplay() { ASSERT_NOT_REACHED(); return 0; }
-    virtual void display(UpdateInfo&) { ASSERT_NOT_REACHED(); }
+    virtual bool participatesInDisplay()
+    {
+        return false;
+    }
+    virtual bool needsDisplay()
+    {
+        ASSERT_NOT_REACHED();
+        return false;
+    }
+    virtual double timeUntilNextDisplay()
+    {
+        ASSERT_NOT_REACHED();
+        return 0;
+    }
+    virtual void display( UpdateInfo & )
+    {
+        ASSERT_NOT_REACHED();
+    }
 
 protected:
-    explicit LayerTreeHost(WebPage*);
+    explicit LayerTreeHost( WebPage * );
 
-    WebPage* m_webPage;
+    WebPage *m_webPage;
 };
 
 #if !PLATFORM(WIN)

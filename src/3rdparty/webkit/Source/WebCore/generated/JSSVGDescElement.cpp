@@ -40,9 +40,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSSVGDescElement);
+ASSERT_CLASS_FITS_IN_CELL( JSSVGDescElement );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -53,12 +54,12 @@ ASSERT_CLASS_FITS_IN_CELL(JSSVGDescElement);
 
 static const HashTableValue JSSVGDescElementTableValues[6] =
 {
-    { "xmllang", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGDescElementXmllang), (intptr_t)setJSSVGDescElementXmllang THUNK_GENERATOR(0) },
-    { "xmlspace", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGDescElementXmlspace), (intptr_t)setJSSVGDescElementXmlspace THUNK_GENERATOR(0) },
-    { "className", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGDescElementClassName), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "style", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGDescElementStyle), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGDescElementConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "xmllang", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGDescElementXmllang ), ( intptr_t )setJSSVGDescElementXmllang THUNK_GENERATOR( 0 ) },
+    { "xmlspace", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGDescElementXmlspace ), ( intptr_t )setJSSVGDescElementXmlspace THUNK_GENERATOR( 0 ) },
+    { "className", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGDescElementClassName ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "style", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGDescElementStyle ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGDescElementConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -72,43 +73,50 @@ static JSC_CONST_HASHTABLE HashTable JSSVGDescElementTable = { 16, 15, JSSVGDesc
 
 static const HashTableValue JSSVGDescElementConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGDescElementConstructorTable = { 1, 0, JSSVGDescElementConstructorTableValues, 0 };
-class JSSVGDescElementConstructor : public DOMConstructorObject {
+class JSSVGDescElementConstructor : public DOMConstructorObject
+{
 public:
-    JSSVGDescElementConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSSVGDescElementConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSSVGDescElementConstructor::s_info = { "SVGDescElementConstructor", &DOMConstructorObject::s_info, &JSSVGDescElementConstructorTable, 0 };
 
-JSSVGDescElementConstructor::JSSVGDescElementConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSSVGDescElementConstructor::JSSVGDescElementConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSSVGDescElementPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSSVGDescElementPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSSVGDescElementConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGDescElementConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGDescElementConstructor, JSDOMWrapper>(exec, &JSSVGDescElementConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGDescElementConstructor, JSDOMWrapper>( exec, &JSSVGDescElementConstructorTable, this, propertyName,
+            slot );
 }
 
-bool JSSVGDescElementConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGDescElementConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGDescElementConstructor, JSDOMWrapper>(exec, &JSSVGDescElementConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGDescElementConstructor, JSDOMWrapper>( exec, &JSSVGDescElementConstructorTable, this,
+            propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -120,139 +128,148 @@ bool JSSVGDescElementConstructor::getOwnPropertyDescriptor(ExecState* exec, cons
 
 static const HashTableValue JSSVGDescElementPrototypeTableValues[2] =
 {
-    { "getPresentationAttribute", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsSVGDescElementPrototypeFunctionGetPresentationAttribute), (intptr_t)1 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "getPresentationAttribute", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsSVGDescElementPrototypeFunctionGetPresentationAttribute ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGDescElementPrototypeTable = { 2, 1, JSSVGDescElementPrototypeTableValues, 0 };
 const ClassInfo JSSVGDescElementPrototype::s_info = { "SVGDescElementPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSSVGDescElementPrototypeTable, 0 };
 
-JSObject* JSSVGDescElementPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGDescElementPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSSVGDescElement>(exec, globalObject);
+    return getDOMPrototype<JSSVGDescElement>( exec, globalObject );
 }
 
-bool JSSVGDescElementPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGDescElementPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticFunctionSlot<JSObject>(exec, &JSSVGDescElementPrototypeTable, this, propertyName, slot);
+    return getStaticFunctionSlot<JSObject>( exec, &JSSVGDescElementPrototypeTable, this, propertyName, slot );
 }
 
-bool JSSVGDescElementPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGDescElementPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticFunctionDescriptor<JSObject>(exec, &JSSVGDescElementPrototypeTable, this, propertyName, descriptor);
+    return getStaticFunctionDescriptor<JSObject>( exec, &JSSVGDescElementPrototypeTable, this, propertyName, descriptor );
 }
 
 const ClassInfo JSSVGDescElement::s_info = { "SVGDescElement", &JSSVGElement::s_info, &JSSVGDescElementTable, 0 };
 
-JSSVGDescElement::JSSVGDescElement(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<SVGDescElement> impl)
-    : JSSVGElement(structure, globalObject, impl)
+JSSVGDescElement::JSSVGDescElement( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<SVGDescElement> impl )
+    : JSSVGElement( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSSVGDescElement::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGDescElement::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSSVGDescElementPrototype(exec->globalData(), globalObject, JSSVGDescElementPrototype::createStructure(exec->globalData(), JSSVGElementPrototype::self(exec, globalObject)));
+    return new ( exec ) JSSVGDescElementPrototype( exec->globalData(), globalObject,
+            JSSVGDescElementPrototype::createStructure( exec->globalData(), JSSVGElementPrototype::self( exec, globalObject ) ) );
 }
 
-bool JSSVGDescElement::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGDescElement::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGDescElement, Base>(exec, &JSSVGDescElementTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGDescElement, Base>( exec, &JSSVGDescElementTable, this, propertyName, slot );
 }
 
-bool JSSVGDescElement::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGDescElement::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGDescElement, Base>(exec, &JSSVGDescElementTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGDescElement, Base>( exec, &JSSVGDescElementTable, this, propertyName, descriptor );
 }
 
-JSValue jsSVGDescElementXmllang(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGDescElementXmllang( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGDescElement* castedThis = static_cast<JSSVGDescElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGDescElement* imp = static_cast<SVGDescElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->xmllang());
+    JSSVGDescElement *castedThis = static_cast<JSSVGDescElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGDescElement *imp = static_cast<SVGDescElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->xmllang() );
     return result;
 }
 
 
-JSValue jsSVGDescElementXmlspace(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGDescElementXmlspace( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGDescElement* castedThis = static_cast<JSSVGDescElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGDescElement* imp = static_cast<SVGDescElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->xmlspace());
+    JSSVGDescElement *castedThis = static_cast<JSSVGDescElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGDescElement *imp = static_cast<SVGDescElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->xmlspace() );
     return result;
 }
 
 
-JSValue jsSVGDescElementClassName(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGDescElementClassName( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGDescElement* castedThis = static_cast<JSSVGDescElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGDescElement* imp = static_cast<SVGDescElement*>(castedThis->impl());
+    JSSVGDescElement *castedThis = static_cast<JSSVGDescElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGDescElement *imp = static_cast<SVGDescElement *>( castedThis->impl() );
     RefPtr<SVGAnimatedString> obj = imp->classNameAnimated();
-    JSValue result =  toJS(exec, castedThis->globalObject(), obj.get());
+    JSValue result =  toJS( exec, castedThis->globalObject(), obj.get() );
     return result;
 }
 
 
-JSValue jsSVGDescElementStyle(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGDescElementStyle( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGDescElement* castedThis = static_cast<JSSVGDescElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGDescElement* imp = static_cast<SVGDescElement*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->style()));
+    JSSVGDescElement *castedThis = static_cast<JSSVGDescElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGDescElement *imp = static_cast<SVGDescElement *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->style() ) );
     return result;
 }
 
 
-JSValue jsSVGDescElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGDescElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGDescElement* domObject = static_cast<JSSVGDescElement*>(asObject(slotBase));
-    return JSSVGDescElement::getConstructor(exec, domObject->globalObject());
+    JSSVGDescElement *domObject = static_cast<JSSVGDescElement *>( asObject( slotBase ) );
+    return JSSVGDescElement::getConstructor( exec, domObject->globalObject() );
 }
 
-void JSSVGDescElement::put(ExecState* exec, const Identifier& propertyName, JSValue value, PutPropertySlot& slot)
+void JSSVGDescElement::put( ExecState *exec, const Identifier &propertyName, JSValue value, PutPropertySlot &slot )
 {
-    lookupPut<JSSVGDescElement, Base>(exec, propertyName, value, &JSSVGDescElementTable, this, slot);
+    lookupPut<JSSVGDescElement, Base>( exec, propertyName, value, &JSSVGDescElementTable, this, slot );
 }
 
-void setJSSVGDescElementXmllang(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSSVGDescElementXmllang( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSSVGDescElement* castedThis = static_cast<JSSVGDescElement*>(thisObject);
-    SVGDescElement* imp = static_cast<SVGDescElement*>(castedThis->impl());
-    imp->setXmllang(ustringToString(value.toString(exec)));
-}
-
-
-void setJSSVGDescElementXmlspace(ExecState* exec, JSObject* thisObject, JSValue value)
-{
-    JSSVGDescElement* castedThis = static_cast<JSSVGDescElement*>(thisObject);
-    SVGDescElement* imp = static_cast<SVGDescElement*>(castedThis->impl());
-    imp->setXmlspace(ustringToString(value.toString(exec)));
+    JSSVGDescElement *castedThis = static_cast<JSSVGDescElement *>( thisObject );
+    SVGDescElement *imp = static_cast<SVGDescElement *>( castedThis->impl() );
+    imp->setXmllang( ustringToString( value.toString( exec ) ) );
 }
 
 
-JSValue JSSVGDescElement::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+void setJSSVGDescElementXmlspace( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    return getDOMConstructor<JSSVGDescElementConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    JSSVGDescElement *castedThis = static_cast<JSSVGDescElement *>( thisObject );
+    SVGDescElement *imp = static_cast<SVGDescElement *>( castedThis->impl() );
+    imp->setXmlspace( ustringToString( value.toString( exec ) ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsSVGDescElementPrototypeFunctionGetPresentationAttribute(ExecState* exec)
+
+JSValue JSSVGDescElement::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
+{
+    return getDOMConstructor<JSSVGDescElementConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
+}
+
+EncodedJSValue JSC_HOST_CALL jsSVGDescElementPrototypeFunctionGetPresentationAttribute( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSSVGDescElement::s_info))
-        return throwVMTypeError(exec);
-    JSSVGDescElement* castedThis = static_cast<JSSVGDescElement*>(asObject(thisValue));
-    SVGDescElement* imp = static_cast<SVGDescElement*>(castedThis->impl());
-    const String& name(ustringToString(exec->argument(0).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+
+    if ( !thisValue.inherits( &JSSVGDescElement::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSSVGDescElement *castedThis = static_cast<JSSVGDescElement *>( asObject( thisValue ) );
+    SVGDescElement *imp = static_cast<SVGDescElement *>( castedThis->impl() );
+    const String &name( ustringToString( exec->argument( 0 ).toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
 
 
-    JSC::JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->getPresentationAttribute(name)));
-    return JSValue::encode(result);
+    JSC::JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->getPresentationAttribute( name ) ) );
+    return JSValue::encode( result );
 }
 
 

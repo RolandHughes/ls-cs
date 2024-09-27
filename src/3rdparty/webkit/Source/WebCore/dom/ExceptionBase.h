@@ -33,26 +33,40 @@
 #include "PlatformString.h"
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class ExceptionBase : public RefCounted<ExceptionBase> {
-    public:
-        unsigned short code() const { return m_code; }
-        String name() const { return m_name; }
-        String message() const { return m_message; }
-        String description() const { return m_description; }
+class ExceptionBase : public RefCounted<ExceptionBase>
+{
+public:
+    unsigned short code() const
+    {
+        return m_code;
+    }
+    String name() const
+    {
+        return m_name;
+    }
+    String message() const
+    {
+        return m_message;
+    }
+    String description() const
+    {
+        return m_description;
+    }
 
-        String toString() const;
+    String toString() const;
 
-    protected:
-        ExceptionBase(const ExceptionCodeDescription&);
+protected:
+    ExceptionBase( const ExceptionCodeDescription & );
 
-    private:
-        unsigned short m_code;
-        String m_name;
-        String m_message;
-        String m_description;
-    };
+private:
+    unsigned short m_code;
+    String m_name;
+    String m_message;
+    String m_description;
+};
 
 } // namespace WebCore
 

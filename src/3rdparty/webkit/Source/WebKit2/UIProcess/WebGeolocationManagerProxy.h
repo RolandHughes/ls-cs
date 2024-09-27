@@ -30,47 +30,56 @@
 #include "MessageID.h"
 #include "WebGeolocationProvider.h"
 
-namespace CoreIPC {
+namespace CoreIPC
+{
 class ArgumentDecoder;
 class Connection;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 class WebContext;
 class WebGeolocationPosition;
 
-class WebGeolocationManagerProxy : public APIObject {
+class WebGeolocationManagerProxy : public APIObject
+{
 public:
     static const Type APIType = TypeGeolocationManager;
 
-    static PassRefPtr<WebGeolocationManagerProxy> create(WebContext*);
+    static PassRefPtr<WebGeolocationManagerProxy> create( WebContext * );
     virtual ~WebGeolocationManagerProxy();
 
     void invalidate();
-    void clearContext() { m_context = 0; }
+    void clearContext()
+    {
+        m_context = 0;
+    }
 
-    void initializeProvider(const WKGeolocationProvider*);
+    void initializeProvider( const WKGeolocationProvider * );
 
-    void providerDidChangePosition(WebGeolocationPosition*);
+    void providerDidChangePosition( WebGeolocationPosition * );
     void providerDidFailToDeterminePosition();
 
-    void didReceiveMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*);
+    void didReceiveMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * );
 
 private:
-    explicit WebGeolocationManagerProxy(WebContext*);
+    explicit WebGeolocationManagerProxy( WebContext * );
 
-    virtual Type type() const { return APIType; }
+    virtual Type type() const
+    {
+        return APIType;
+    }
 
     // Implemented in generated WebGeolocationManagerProxyMessageReceiver.cpp
-    void didReceiveWebGeolocationManagerProxyMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*);
+    void didReceiveWebGeolocationManagerProxyMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * );
 
     void startUpdating();
     void stopUpdating();
 
     bool m_isUpdating;
 
-    WebContext* m_context;
+    WebContext *m_context;
     WebGeolocationProvider m_provider;
 };
 

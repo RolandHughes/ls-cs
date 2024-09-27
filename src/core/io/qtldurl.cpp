@@ -30,86 +30,95 @@
 
 #include <qurltlds_p.h>
 
-static bool containsTLDEntry(const QString &entry)
+static bool containsTLDEntry( const QString &entry )
 {
-   int index = cs_stable_hash(entry) % tldCount;
+    int index = cs_stable_hash( entry ) % tldCount;
 
-   // select the right chunk from the big table
-   short chunk     = 0;
-   uint chunkIndex = tldIndices[index];
-   uint offset     = 0;
+    // select the right chunk from the big table
+    short chunk     = 0;
+    uint chunkIndex = tldIndices[index];
+    uint offset     = 0;
 
-   while (chunk < tldChunkCount && tldIndices[index] >= tldChunks[chunk]) {
-      chunkIndex -= tldChunks[chunk];
-      offset     += tldChunks[chunk];
-      chunk++;
-   }
+    while ( chunk < tldChunkCount && tldIndices[index] >= tldChunks[chunk] )
+    {
+        chunkIndex -= tldChunks[chunk];
+        offset     += tldChunks[chunk];
+        chunk++;
+    }
 
-   // check all the entries from the given index
-   while (chunkIndex < tldIndices[index + 1] - offset) {
-      QString currentEntry = QString::fromUtf8(tldData[chunk] + chunkIndex);
+    // check all the entries from the given index
+    while ( chunkIndex < tldIndices[index + 1] - offset )
+    {
+        QString currentEntry = QString::fromUtf8( tldData[chunk] + chunkIndex );
 
-      if (currentEntry == entry) {
-         return true;
-      }
+        if ( currentEntry == entry )
+        {
+            return true;
+        }
 
-      chunkIndex += qstrlen(tldData[chunk] + chunkIndex) + 1; // +1 for the ending \0
-   }
+        chunkIndex += qstrlen( tldData[chunk] + chunkIndex ) + 1; // +1 for the ending \0
+    }
 
-   return false;
+    return false;
 }
 
-Q_CORE_EXPORT QString qTopLevelDomain(const QString &domain)
+Q_CORE_EXPORT QString qTopLevelDomain( const QString &domain )
 {
-   const QString domainLower = domain.toLower();
-   QStringList sections      = domainLower.split('.', QStringParser::SkipEmptyParts);
+    const QString domainLower = domain.toLower();
+    QStringList sections      = domainLower.split( '.', QStringParser::SkipEmptyParts );
 
-   if (sections.isEmpty()) {
-      return QString();
-   }
+    if ( sections.isEmpty() )
+    {
+        return QString();
+    }
 
-   QString level, tld;
+    QString level, tld;
 
-   for (int j = sections.count() - 1; j >= 0; --j) {
-      level.prepend('.' + sections.at(j));
+    for ( int j = sections.count() - 1; j >= 0; --j )
+    {
+        level.prepend( '.' + sections.at( j ) );
 
-      if (qIsEffectiveTLD(level.right(level.size() - 1))) {
-         tld = level;
-      }
-   }
+        if ( qIsEffectiveTLD( level.right( level.size() - 1 ) ) )
+        {
+            tld = level;
+        }
+    }
 
-   return tld;
+    return tld;
 }
 
-Q_CORE_EXPORT bool qIsEffectiveTLD(const QString &domain)
+Q_CORE_EXPORT bool qIsEffectiveTLD( const QString &domain )
 {
-   // for domain 'foo.bar.com':
-   // 1. return if TLD table contains 'foo.bar.com'
-   if (containsTLDEntry(domain)) {
-      return true;
-   }
+    // for domain 'foo.bar.com':
+    // 1. return if TLD table contains 'foo.bar.com'
+    if ( containsTLDEntry( domain ) )
+    {
+        return true;
+    }
 
-   const int dot = domain.indexOf('.');
+    const int dot = domain.indexOf( '.' );
 
-   if (dot >= 0) {
-      int count = domain.size() - dot;
+    if ( dot >= 0 )
+    {
+        int count = domain.size() - dot;
 
-      QString wildCardDomain;
+        QString wildCardDomain;
 
-      wildCardDomain.append('*');
-      wildCardDomain.append(domain.right(count));
+        wildCardDomain.append( '*' );
+        wildCardDomain.append( domain.right( count ) );
 
-      // 2. if table contains '*.bar.com',
-      // test if table contains '!foo.bar.com'
-      if (containsTLDEntry(wildCardDomain)) {
-         QString exceptionDomain;
+        // 2. if table contains '*.bar.com',
+        // test if table contains '!foo.bar.com'
+        if ( containsTLDEntry( wildCardDomain ) )
+        {
+            QString exceptionDomain;
 
-         exceptionDomain.append('!');
-         exceptionDomain.append(domain);
+            exceptionDomain.append( '!' );
+            exceptionDomain.append( domain );
 
-         return (! containsTLDEntry(exceptionDomain));
-      }
-   }
+            return ( ! containsTLDEntry( exceptionDomain ) );
+        }
+    }
 
-   return false;
+    return false;
 }

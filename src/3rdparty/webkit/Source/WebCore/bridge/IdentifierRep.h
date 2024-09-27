@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef IdentifierRep_h
@@ -31,44 +31,56 @@
 #include <wtf/StringExtras.h>
 #include <string.h>
 
-namespace WebCore {
-    
-class IdentifierRep {
+namespace WebCore
+{
+
+class IdentifierRep
+{
     WTF_MAKE_FAST_ALLOCATED;
 public:
-    static IdentifierRep* get(int);
-    static IdentifierRep* get(const char*);
+    static IdentifierRep *get( int );
+    static IdentifierRep *get( const char * );
 
-    static bool isValid(IdentifierRep*);
-    
-    bool isString() const { return m_isString; }
+    static bool isValid( IdentifierRep * );
 
-    int number() const { return m_isString ? 0 : m_value.m_number; }
-    const char* string() const { return m_isString ? m_value.m_string : 0; }
+    bool isString() const
+    {
+        return m_isString;
+    }
+
+    int number() const
+    {
+        return m_isString ? 0 : m_value.m_number;
+    }
+    const char *string() const
+    {
+        return m_isString ? m_value.m_string : 0;
+    }
 
 private:
-    IdentifierRep(int number) 
-        : m_isString(false)
+    IdentifierRep( int number )
+        : m_isString( false )
     {
         m_value.m_number = number;
     }
-    
-    IdentifierRep(const char* name)
-        : m_isString(true)
+
+    IdentifierRep( const char *name )
+        : m_isString( true )
     {
-        m_value.m_string = fastStrDup(name);
+        m_value.m_string = fastStrDup( name );
     }
-    
+
     ~IdentifierRep()
     {
         // IdentifierReps should never be deleted.
         ASSERT_NOT_REACHED();
     }
-    
-    union {
-        const char* m_string;
-        int m_number;
-    } m_value;
+
+    union
+        {
+            const char *m_string;
+            int m_number;
+        } m_value;
     bool m_isString;
 };
 

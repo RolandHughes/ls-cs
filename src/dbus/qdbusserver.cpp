@@ -41,24 +41,27 @@ QT_BEGIN_NAMESPACE
 /*!
     Constructs a QDBusServer with the given \a address, and the given
     \a parent.
-*/
-QDBusServer::QDBusServer(const QString &address, QObject *parent)
-    : QObject(parent)
+*/ QDBusServer::QDBusServer( const QString &address, QObject *parent )
+    : QObject( parent )
 {
-    if (address.isEmpty())
+    if ( address.isEmpty() )
+    {
         return;
+    }
 
-    if (!qdbus_loadLibDBus()) {
+    if ( !qdbus_loadLibDBus() )
+    {
         d = 0;
         return;
     }
-    d = new QDBusConnectionPrivate(this);
 
-    QObject::connect(d, SIGNAL(newServerConnection(QDBusConnection)),
-                     this, SIGNAL(newConnection(QDBusConnection)));
+    d = new QDBusConnectionPrivate( this );
+
+    QObject::connect( d, SIGNAL( newServerConnection( QDBusConnection ) ),
+                      this, SIGNAL( newConnection( QDBusConnection ) ) );
 
     QDBusErrorInternal error;
-    d->setServer(q_dbus_server_listen(address.toUtf8().constData(), error), error);
+    d->setServer( q_dbus_server_listen( address.toUtf8().constData(), error ), error );
 }
 
 /*!
@@ -66,11 +69,15 @@ QDBusServer::QDBusServer(const QString &address, QObject *parent)
 */
 QDBusServer::~QDBusServer()
 {
-    if (QDBusConnectionManager::instance()) {
-        QMutexLocker locker(&QDBusConnectionManager::instance()->mutex);
-        for (const QString &name : d->serverConnectionNames) {
-            QDBusConnectionManager::instance()->removeConnection(name);
+    if ( QDBusConnectionManager::instance() )
+    {
+        QMutexLocker locker( &QDBusConnectionManager::instance()->mutex );
+
+        for ( const QString &name : d->serverConnectionNames )
+        {
+            QDBusConnectionManager::instance()->removeConnection( name );
         }
+
         d->serverConnectionNames.clear();
     }
 }
@@ -82,7 +89,7 @@ QDBusServer::~QDBusServer()
 */
 bool QDBusServer::isConnected() const
 {
-    return d && d->server && q_dbus_server_get_is_connected(d->server);
+    return d && d->server && q_dbus_server_get_is_connected( d->server );
 }
 
 /*!
@@ -101,10 +108,12 @@ QDBusError QDBusServer::lastError() const
 QString QDBusServer::address() const
 {
     QString addr;
-    if (d && d->server) {
-        char *c = q_dbus_server_get_address(d->server);
-        addr = QString::fromUtf8(c);
-        q_dbus_free(c);
+
+    if ( d && d->server )
+    {
+        char *c = q_dbus_server_get_address( d->server );
+        addr = QString::fromUtf8( c );
+        q_dbus_free( c );
     }
 
     return addr;

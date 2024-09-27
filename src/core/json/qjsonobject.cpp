@@ -29,193 +29,198 @@
 
 QJsonObject::QJsonObject()
 {
-   m_object = std::make_shared<QJsonDataObject>();
+    m_object = std::make_shared<QJsonDataObject>();
 }
 
-QJsonObject::QJsonObject(const_iterator iter_begin, const_iterator iter_end)
+QJsonObject::QJsonObject( const_iterator iter_begin, const_iterator iter_end )
 {
-   m_object = std::make_shared<QJsonDataObject>();
-   m_object->m_map = QFlatMap<QString, QJsonValue>(iter_begin, iter_end);
+    m_object = std::make_shared<QJsonDataObject>();
+    m_object->m_map = QFlatMap<QString, QJsonValue>( iter_begin, iter_end );
 }
 
-QJsonObject::QJsonObject(std::initializer_list<QPair<QString, QJsonValue>> list)
+QJsonObject::QJsonObject( std::initializer_list<QPair<QString, QJsonValue>> list )
 {
-   m_object = std::make_shared<QJsonDataObject>();
-   m_object->m_map = QFlatMap<QString, QJsonValue>(list.begin(), list.end());
+    m_object = std::make_shared<QJsonDataObject>();
+    m_object->m_map = QFlatMap<QString, QJsonValue>( list.begin(), list.end() );
 }
 
-QJsonObject::QJsonObject(const QJsonObject &other)
+QJsonObject::QJsonObject( const QJsonObject &other )
 {
-   m_object = std::make_shared<QJsonDataObject>(*other.m_object);
+    m_object = std::make_shared<QJsonDataObject>( *other.m_object );
 }
 
-QJsonObject::QJsonObject(QJsonObject &&other)
+QJsonObject::QJsonObject( QJsonObject &&other )
 {
-   m_object = std::move(other.m_object);
+    m_object = std::move( other.m_object );
 }
 
 QJsonObject::~QJsonObject()
 {
 }
 
-QJsonObject &QJsonObject::operator =(const QJsonObject &other)
+QJsonObject &QJsonObject::operator =( const QJsonObject &other )
 {
-   *m_object = *other.m_object;
+    *m_object = *other.m_object;
 
-   return *this;
+    return *this;
 }
 
-QJsonObject QJsonObject::fromVariantHash(const QVariantHash &hash)
+QJsonObject QJsonObject::fromVariantHash( const QVariantHash &hash )
 {
-   QJsonObject object;
+    QJsonObject object;
 
-   for (QVariantHash::const_iterator iter = hash.constBegin(); iter != hash.constEnd(); ++iter) {
-      object.insert(iter.key(), QJsonValue::fromVariant(iter.value()));
-   }
+    for ( QVariantHash::const_iterator iter = hash.constBegin(); iter != hash.constEnd(); ++iter )
+    {
+        object.insert( iter.key(), QJsonValue::fromVariant( iter.value() ) );
+    }
 
-   return object;
+    return object;
 }
 
 QVariantHash QJsonObject::toVariantHash() const
 {
-   QVariantHash hash;
+    QVariantHash hash;
 
-   for (QJsonObject::const_iterator iter = this->constBegin(); iter != this->constEnd(); ++iter) {
-      hash.insert(iter.key(), iter.value().toVariant());
-   }
+    for ( QJsonObject::const_iterator iter = this->constBegin(); iter != this->constEnd(); ++iter )
+    {
+        hash.insert( iter.key(), iter.value().toVariant() );
+    }
 
-   return hash;
+    return hash;
 }
 
-QJsonObject QJsonObject::fromVariantMap(const QVariantMap &map)
+QJsonObject QJsonObject::fromVariantMap( const QVariantMap &map )
 {
-   QJsonObject object;
+    QJsonObject object;
 
-   for (QVariantMap::const_iterator iter = map.constBegin(); iter != map.constEnd(); ++iter) {
-      object.insert(iter.key(), QJsonValue::fromVariant(iter.value()));
-   }
+    for ( QVariantMap::const_iterator iter = map.constBegin(); iter != map.constEnd(); ++iter )
+    {
+        object.insert( iter.key(), QJsonValue::fromVariant( iter.value() ) );
+    }
 
-   return object;
+    return object;
 }
 
 QVariantMap QJsonObject::toVariantMap() const
 {
-   QVariantMap map;
+    QVariantMap map;
 
-   for (QJsonObject::const_iterator iter = this->constBegin(); iter != this->constEnd(); ++iter) {
-      map.insert(iter.key(), iter.value().toVariant());
-   }
+    for ( QJsonObject::const_iterator iter = this->constBegin(); iter != this->constEnd(); ++iter )
+    {
+        map.insert( iter.key(), iter.value().toVariant() );
+    }
 
-   return map;
+    return map;
 }
 
 QStringList QJsonObject::keys() const
 {
-   return m_object->m_map.keys();
+    return m_object->m_map.keys();
 }
 
 QJsonObject::size_type QJsonObject::size() const
 {
-   return m_object->m_map.size();
+    return m_object->m_map.size();
 }
 
 bool QJsonObject::isEmpty() const
 {
-   return ! m_object->m_map.size();
+    return ! m_object->m_map.size();
 }
 
-const QJsonValue &QJsonObject::value(const QString &key) const
+const QJsonValue &QJsonObject::value( const QString &key ) const
 {
-   return m_object->m_map[key];
+    return m_object->m_map[key];
 }
 
-const QJsonValue &QJsonObject::operator [](const QString &key) const
+const QJsonValue &QJsonObject::operator []( const QString &key ) const
 {
-   return m_object->m_map[key];
+    return m_object->m_map[key];
 }
 
-QJsonValue &QJsonObject::operator [](const QString &key)
+QJsonValue &QJsonObject::operator []( const QString &key )
 {
-   return m_object->m_map[key];
+    return m_object->m_map[key];
 }
 
-QJsonObject::iterator QJsonObject::insert(const QString &key, QJsonValue value)
+QJsonObject::iterator QJsonObject::insert( const QString &key, QJsonValue value )
 {
-   if (value.type() == QJsonValue::Undefined) {
-      remove(key);
-      return end();
-   }
+    if ( value.type() == QJsonValue::Undefined )
+    {
+        remove( key );
+        return end();
+    }
 
-   return m_object->m_map.insert(key, std::move(value));
+    return m_object->m_map.insert( key, std::move( value ) );
 }
 
-void QJsonObject::remove(const QString &key)
+void QJsonObject::remove( const QString &key )
 {
-   m_object->m_map.remove(key);
+    m_object->m_map.remove( key );
 }
 
-QJsonValue QJsonObject::take(const QString &key)
+QJsonValue QJsonObject::take( const QString &key )
 {
-   return m_object->m_map.take(key);
+    return m_object->m_map.take( key );
 }
 
-bool QJsonObject::contains(const QString &key) const
+bool QJsonObject::contains( const QString &key ) const
 {
-   return m_object->m_map.contains(key);
+    return m_object->m_map.contains( key );
 }
 
-bool QJsonObject::operator==(const QJsonObject &other) const
+bool QJsonObject::operator==( const QJsonObject &other ) const
 {
-   return m_object->m_map == other.m_object->m_map;
+    return m_object->m_map == other.m_object->m_map;
 }
 
-bool QJsonObject::operator!=(const QJsonObject &other) const
+bool QJsonObject::operator!=( const QJsonObject &other ) const
 {
-   return !(*this == other);
+    return !( *this == other );
 }
 
-QJsonObject::iterator QJsonObject::erase(QJsonObject::const_iterator iter)
+QJsonObject::iterator QJsonObject::erase( QJsonObject::const_iterator iter )
 {
-   return m_object->m_map.erase(iter);
+    return m_object->m_map.erase( iter );
 }
 
-QJsonObject::iterator QJsonObject::find(const QString &key)
+QJsonObject::iterator QJsonObject::find( const QString &key )
 {
-   return m_object->m_map.find(key);
+    return m_object->m_map.find( key );
 }
 
-QJsonObject::const_iterator QJsonObject::constFind(const QString &key) const
+QJsonObject::const_iterator QJsonObject::constFind( const QString &key ) const
 {
-   return m_object->m_map.find(key);
+    return m_object->m_map.find( key );
 }
 
 // iterators
 QJsonObject::iterator QJsonObject::begin()
 {
-   return m_object->m_map.begin();
+    return m_object->m_map.begin();
 }
 
 QJsonObject::const_iterator QJsonObject::begin() const
 {
-   return m_object->m_map.begin();
+    return m_object->m_map.begin();
 }
 
 QJsonObject::const_iterator QJsonObject::constBegin() const
 {
-   return m_object->m_map.constBegin();
+    return m_object->m_map.constBegin();
 }
 
 QJsonObject::iterator QJsonObject::end()
 {
-   return m_object->m_map.end();
+    return m_object->m_map.end();
 }
 
 QJsonObject::const_iterator QJsonObject::end() const
 {
-   return m_object->m_map.end();
+    return m_object->m_map.end();
 }
 
 QJsonObject::const_iterator QJsonObject::constEnd() const
 {
-   return m_object->m_map.constEnd();
+    return m_object->m_map.constEnd();
 }

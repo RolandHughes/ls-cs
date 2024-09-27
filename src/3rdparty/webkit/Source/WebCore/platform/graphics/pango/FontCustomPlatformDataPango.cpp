@@ -24,29 +24,31 @@
 #include "SharedBuffer.h"
 #include "FontPlatformData.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 FontCustomPlatformData::~FontCustomPlatformData()
 {
 }
 
-FontPlatformData FontCustomPlatformData::fontPlatformData(int size, bool bold, bool italic, FontOrientation, TextOrientation, FontWidthVariant, FontRenderingMode)
+FontPlatformData FontCustomPlatformData::fontPlatformData( int size, bool bold, bool italic, FontOrientation, TextOrientation,
+        FontWidthVariant, FontRenderingMode )
 {
-    return FontPlatformData(m_fontFace, size, bold, italic);
+    return FontPlatformData( m_fontFace, size, bold, italic );
 }
 
-static void releaseData(void* data)
+static void releaseData( void *data )
 {
-    static_cast<SharedBuffer*>(data)->deref();
+    static_cast<SharedBuffer *>( data )->deref();
 }
 
-FontCustomPlatformData* createFontCustomPlatformData(SharedBuffer* buffer)
+FontCustomPlatformData *createFontCustomPlatformData( SharedBuffer *buffer )
 {
     // FIXME: we need support in pango to read fonts from memory to implement this.y
     return 0;
 }
 
-bool FontCustomPlatformData::supportsFormat(const String& /* format */)
+bool FontCustomPlatformData::supportsFormat( const String & /* format */ )
 {
     return false;
 }

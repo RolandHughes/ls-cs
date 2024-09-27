@@ -6,13 +6,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -45,7 +45,7 @@ extern "C" {
 @param string     The BSTR to copy into the new JSString.
 @result           A JSString containing string. Ownership follows the Create Rule.
 */
-JS_EXPORT JSStringRef JSStringCreateWithBSTR(const BSTR string);
+JS_EXPORT JSStringRef JSStringCreateWithBSTR( const BSTR string );
 
 /*
 @function
@@ -53,8 +53,8 @@ JS_EXPORT JSStringRef JSStringCreateWithBSTR(const BSTR string);
 @param string     The JSString to copy into the new BSTR.
 @result           A BSTR containing string. Ownership follows the Create Rule.
 */
-JS_EXPORT BSTR JSStringCopyBSTR(const JSStringRef string);
-    
+JS_EXPORT BSTR JSStringCopyBSTR( const JSStringRef string );
+
 #ifdef __cplusplus
 }
 #endif

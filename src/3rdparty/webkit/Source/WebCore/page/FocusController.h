@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef FocusController_h
@@ -32,7 +32,8 @@
 #include <wtf/Noncopyable.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Document;
 class Frame;
@@ -40,34 +41,46 @@ class KeyboardEvent;
 class Node;
 class Page;
 
-class FocusController {
-    WTF_MAKE_NONCOPYABLE(FocusController); WTF_MAKE_FAST_ALLOCATED;
+class FocusController
+{
+    WTF_MAKE_NONCOPYABLE( FocusController );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
-    FocusController(Page*);
+    FocusController( Page * );
 
-    void setFocusedFrame(PassRefPtr<Frame>);
-    Frame* focusedFrame() const { return m_focusedFrame.get(); }
-    Frame* focusedOrMainFrame() const;
+    void setFocusedFrame( PassRefPtr<Frame> );
+    Frame *focusedFrame() const
+    {
+        return m_focusedFrame.get();
+    }
+    Frame *focusedOrMainFrame() const;
 
-    bool setInitialFocus(FocusDirection, KeyboardEvent*);
-    bool advanceFocus(FocusDirection, KeyboardEvent*, bool initialFocus = false);
-        
-    bool setFocusedNode(Node*, PassRefPtr<Frame>);
+    bool setInitialFocus( FocusDirection, KeyboardEvent * );
+    bool advanceFocus( FocusDirection, KeyboardEvent *, bool initialFocus = false );
 
-    void setActive(bool);
-    bool isActive() const { return m_isActive; }
+    bool setFocusedNode( Node *, PassRefPtr<Frame> );
 
-    void setFocused(bool);
-    bool isFocused() const { return m_isFocused; }
+    void setActive( bool );
+    bool isActive() const
+    {
+        return m_isActive;
+    }
+
+    void setFocused( bool );
+    bool isFocused() const
+    {
+        return m_isFocused;
+    }
 
 private:
-    bool advanceFocusDirectionally(FocusDirection, KeyboardEvent*);
-    bool advanceFocusInDocumentOrder(FocusDirection, KeyboardEvent*, bool initialFocus);
+    bool advanceFocusDirectionally( FocusDirection, KeyboardEvent * );
+    bool advanceFocusInDocumentOrder( FocusDirection, KeyboardEvent *, bool initialFocus );
 
-    bool advanceFocusDirectionallyInContainer(Node* container, const IntRect& startingRect, FocusDirection, KeyboardEvent*);
-    void findFocusCandidateInContainer(Node* container, const IntRect& startingRect, FocusDirection, KeyboardEvent*, FocusCandidate& closest);
+    bool advanceFocusDirectionallyInContainer( Node *container, const IntRect &startingRect, FocusDirection, KeyboardEvent * );
+    void findFocusCandidateInContainer( Node *container, const IntRect &startingRect, FocusDirection, KeyboardEvent *,
+                                        FocusCandidate &closest );
 
-    Page* m_page;
+    Page *m_page;
     RefPtr<Frame> m_focusedFrame;
     bool m_isActive;
     bool m_isFocused;
@@ -75,5 +88,5 @@ private:
 };
 
 } // namespace WebCore
-    
+
 #endif // FocusController_h

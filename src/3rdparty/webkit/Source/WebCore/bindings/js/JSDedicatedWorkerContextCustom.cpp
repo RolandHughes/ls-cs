@@ -40,11 +40,12 @@
 
 using namespace JSC;
 
-namespace WebCore {
-
-JSC::JSValue JSDedicatedWorkerContext::postMessage(JSC::ExecState* exec)
+namespace WebCore
 {
-    return handlePostMessage(exec, impl());
+
+JSC::JSValue JSDedicatedWorkerContext::postMessage( JSC::ExecState *exec )
+{
+    return handlePostMessage( exec, impl() );
 }
 
 } // namespace WebCore

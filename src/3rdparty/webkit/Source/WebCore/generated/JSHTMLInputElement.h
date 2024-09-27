@@ -24,146 +24,152 @@
 #include "JSHTMLElement.h"
 #include <runtime/JSObjectWithGlobalObject.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class HTMLInputElement;
 
-class JSHTMLInputElement : public JSHTMLElement {
+class JSHTMLInputElement : public JSHTMLElement
+{
     typedef JSHTMLElement Base;
 public:
-    JSHTMLInputElement(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<HTMLInputElement>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
-    virtual void put(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::JSValue, JSC::PutPropertySlot&);
+    JSHTMLInputElement( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<HTMLInputElement> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
+    virtual void put( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::JSValue, JSC::PutPropertySlot & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
 
     // Custom attributes
-    JSC::JSValue selectionStart(JSC::ExecState*) const;
-    void setSelectionStart(JSC::ExecState*, JSC::JSValue);
-    JSC::JSValue selectionEnd(JSC::ExecState*) const;
-    void setSelectionEnd(JSC::ExecState*, JSC::JSValue);
+    JSC::JSValue selectionStart( JSC::ExecState * ) const;
+    void setSelectionStart( JSC::ExecState *, JSC::JSValue );
+    JSC::JSValue selectionEnd( JSC::ExecState * ) const;
+    void setSelectionEnd( JSC::ExecState *, JSC::JSValue );
 
     // Custom functions
-    JSC::JSValue setSelectionRange(JSC::ExecState*);
+    JSC::JSValue setSelectionRange( JSC::ExecState * );
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 
-class JSHTMLInputElementPrototype : public JSC::JSObjectWithGlobalObject {
+class JSHTMLInputElementPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSHTMLInputElementPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSHTMLInputElementPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                                 JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsHTMLInputElementPrototypeFunctionStepUp(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsHTMLInputElementPrototypeFunctionStepDown(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsHTMLInputElementPrototypeFunctionCheckValidity(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsHTMLInputElementPrototypeFunctionSetCustomValidity(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsHTMLInputElementPrototypeFunctionSelect(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsHTMLInputElementPrototypeFunctionClick(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsHTMLInputElementPrototypeFunctionSetSelectionRange(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsHTMLInputElementPrototypeFunctionStepUp( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsHTMLInputElementPrototypeFunctionStepDown( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsHTMLInputElementPrototypeFunctionCheckValidity( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsHTMLInputElementPrototypeFunctionSetCustomValidity( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsHTMLInputElementPrototypeFunctionSelect( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsHTMLInputElementPrototypeFunctionClick( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsHTMLInputElementPrototypeFunctionSetSelectionRange( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsHTMLInputElementDefaultValue(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLInputElementDefaultValue(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLInputElementDefaultChecked(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLInputElementDefaultChecked(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLInputElementForm(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLInputElementFormAction(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLInputElementFormAction(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLInputElementFormEnctype(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLInputElementFormEnctype(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLInputElementFormMethod(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLInputElementFormMethod(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLInputElementFormNoValidate(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLInputElementFormNoValidate(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLInputElementFormTarget(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLInputElementFormTarget(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLInputElementValidity(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLInputElementAccept(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLInputElementAccept(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLInputElementAccessKey(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLInputElementAccessKey(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLInputElementAlign(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLInputElementAlign(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLInputElementAlt(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLInputElementAlt(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLInputElementChecked(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLInputElementChecked(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLInputElementDisabled(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLInputElementDisabled(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLInputElementAutofocus(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLInputElementAutofocus(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLInputElementList(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLInputElementMax(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLInputElementMax(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLInputElementMaxLength(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLInputElementMaxLength(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLInputElementMin(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLInputElementMin(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLInputElementMultiple(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLInputElementMultiple(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLInputElementName(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLInputElementName(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLInputElementPattern(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLInputElementPattern(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLInputElementPlaceholder(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLInputElementPlaceholder(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLInputElementReadOnly(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLInputElementReadOnly(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLInputElementRequired(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLInputElementRequired(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLInputElementSize(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLInputElementSize(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLInputElementSrc(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLInputElementSrc(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLInputElementStep(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLInputElementStep(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLInputElementType(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLInputElementType(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLInputElementUseMap(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLInputElementUseMap(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLInputElementValue(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLInputElementValue(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLInputElementValueAsDate(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLInputElementValueAsDate(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLInputElementValueAsNumber(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLInputElementValueAsNumber(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLInputElementSelectedOption(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLInputElementIncremental(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLInputElementIncremental(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLInputElementWillValidate(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLInputElementValidationMessage(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLInputElementIndeterminate(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLInputElementIndeterminate(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLInputElementSelectionStart(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLInputElementSelectionStart(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLInputElementSelectionEnd(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLInputElementSelectionEnd(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLInputElementFiles(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLInputElementLabels(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLInputElementConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsHTMLInputElementDefaultValue( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLInputElementDefaultValue( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLInputElementDefaultChecked( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLInputElementDefaultChecked( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLInputElementForm( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLInputElementFormAction( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLInputElementFormAction( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLInputElementFormEnctype( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLInputElementFormEnctype( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLInputElementFormMethod( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLInputElementFormMethod( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLInputElementFormNoValidate( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLInputElementFormNoValidate( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLInputElementFormTarget( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLInputElementFormTarget( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLInputElementValidity( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLInputElementAccept( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLInputElementAccept( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLInputElementAccessKey( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLInputElementAccessKey( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLInputElementAlign( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLInputElementAlign( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLInputElementAlt( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLInputElementAlt( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLInputElementChecked( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLInputElementChecked( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLInputElementDisabled( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLInputElementDisabled( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLInputElementAutofocus( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLInputElementAutofocus( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLInputElementList( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLInputElementMax( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLInputElementMax( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLInputElementMaxLength( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLInputElementMaxLength( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLInputElementMin( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLInputElementMin( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLInputElementMultiple( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLInputElementMultiple( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLInputElementName( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLInputElementName( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLInputElementPattern( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLInputElementPattern( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLInputElementPlaceholder( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLInputElementPlaceholder( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLInputElementReadOnly( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLInputElementReadOnly( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLInputElementRequired( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLInputElementRequired( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLInputElementSize( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLInputElementSize( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLInputElementSrc( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLInputElementSrc( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLInputElementStep( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLInputElementStep( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLInputElementType( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLInputElementType( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLInputElementUseMap( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLInputElementUseMap( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLInputElementValue( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLInputElementValue( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLInputElementValueAsDate( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLInputElementValueAsDate( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLInputElementValueAsNumber( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLInputElementValueAsNumber( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLInputElementSelectedOption( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLInputElementIncremental( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLInputElementIncremental( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLInputElementWillValidate( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLInputElementValidationMessage( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLInputElementIndeterminate( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLInputElementIndeterminate( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLInputElementSelectionStart( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLInputElementSelectionStart( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLInputElementSelectionEnd( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLInputElementSelectionEnd( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLInputElementFiles( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLInputElementLabels( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLInputElementConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

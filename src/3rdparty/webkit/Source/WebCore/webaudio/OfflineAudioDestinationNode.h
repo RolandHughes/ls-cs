@@ -31,45 +31,50 @@
 #include <wtf/RefPtr.h>
 #include <wtf/Threading.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class AudioBus;
 class AudioContext;
-    
-class OfflineAudioDestinationNode : public AudioDestinationNode {
+
+class OfflineAudioDestinationNode : public AudioDestinationNode
+{
 public:
-    static PassRefPtr<OfflineAudioDestinationNode> create(AudioContext* context, AudioBuffer* renderTarget)
+    static PassRefPtr<OfflineAudioDestinationNode> create( AudioContext *context, AudioBuffer *renderTarget )
     {
-        return adoptRef(new OfflineAudioDestinationNode(context, renderTarget));     
+        return adoptRef( new OfflineAudioDestinationNode( context, renderTarget ) );
     }
 
     virtual ~OfflineAudioDestinationNode();
-    
-    // AudioNode   
+
+    // AudioNode
     virtual void initialize();
     virtual void uninitialize();
-    
-    double sampleRate() const { return m_renderTarget->sampleRate(); }
+
+    double sampleRate() const
+    {
+        return m_renderTarget->sampleRate();
+    }
 
     void startRendering();
-    
+
 private:
-    OfflineAudioDestinationNode(AudioContext*, AudioBuffer* renderTarget);
+    OfflineAudioDestinationNode( AudioContext *, AudioBuffer *renderTarget );
 
     // This AudioNode renders into this AudioBuffer.
     RefPtr<AudioBuffer> m_renderTarget;
-    
+
     // Temporary AudioBus for each render quantum.
     OwnPtr<AudioBus> m_renderBus;
-    
+
     // Rendering thread.
     volatile ThreadIdentifier m_renderThread;
     bool m_startedRendering;
-    static void* renderEntry(void* threadData);
+    static void *renderEntry( void *threadData );
     void render();
-    
+
     // For completion callback on main thread.
-    static void notifyCompleteDispatch(void* userData);
+    static void notifyCompleteDispatch( void *userData );
     void notifyComplete();
 };
 

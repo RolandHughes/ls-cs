@@ -45,9 +45,10 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
-static void* webThreadBody(void* /* context */)
+static void *webThreadBody( void * /* context */ )
 {
     // Initialization
     JSC::initializeThreading();
@@ -55,7 +56,7 @@ static void* webThreadBody(void* /* context */)
 
     // FIXME: We do not support threaded mode for now.
 
-    WebProcess::shared().initialize(-1, RunLoop::current());
+    WebProcess::shared().initialize( -1, RunLoop::current() );
     RunLoop::run();
 
     return 0;
@@ -63,10 +64,11 @@ static void* webThreadBody(void* /* context */)
 
 CoreIPC::Connection::Identifier ThreadLauncher::createWebThread()
 {
-    srandom(time(0));
+    srandom( time( 0 ) );
     int connectionIdentifier = random();
 
-    if (!createThread(webThreadBody, reinterpret_cast<void*>(connectionIdentifier), "WebKit2: WebThread")) {
+    if ( !createThread( webThreadBody, reinterpret_cast<void *>( connectionIdentifier ), "WebKit2: WebThread" ) )
+    {
         qWarning() << "failed starting thread";
         return 0;
     }

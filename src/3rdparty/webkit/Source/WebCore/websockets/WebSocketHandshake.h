@@ -38,74 +38,77 @@
 #include "WebSocketHandshakeRequest.h"
 #include "WebSocketHandshakeResponse.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class ScriptExecutionContext;
+class ScriptExecutionContext;
 
-    class WebSocketHandshake {
-        WTF_MAKE_NONCOPYABLE(WebSocketHandshake);
-    public:
-        enum Mode {
-            Incomplete, Normal, Failed, Connected
-        };
-        WebSocketHandshake(const KURL&, const String& protocol, ScriptExecutionContext*);
-        ~WebSocketHandshake();
-
-        const KURL& url() const;
-        void setURL(const KURL&);
-        const String host() const;
-
-        const String& clientProtocol() const;
-        void setClientProtocol(const String& protocol);
-
-        bool secure() const;
-
-        String clientOrigin() const;
-        String clientLocation() const;
-
-        CString clientHandshakeMessage() const;
-        WebSocketHandshakeRequest clientHandshakeRequest() const;
-
-        void reset();
-        void clearScriptExecutionContext();
-
-        int readServerHandshake(const char* header, size_t len);
-        Mode mode() const;
-
-        String serverWebSocketOrigin() const;
-        String serverWebSocketLocation() const;
-        String serverWebSocketProtocol() const;
-        String serverSetCookie() const;
-        String serverSetCookie2() const;
-        String serverUpgrade() const;
-        String serverConnection() const;
-
-        const WebSocketHandshakeResponse& serverHandshakeResponse() const;
-
-    private:
-        KURL httpURLForAuthenticationAndCookies() const;
-
-        int readStatusLine(const char* header, size_t headerLength, int& statusCode, String& statusText);
-
-        // Reads all headers except for the two predefined ones.
-        const char* readHTTPHeaders(const char* start, const char* end);
-        void processHeaders();
-        bool checkResponseHeaders();
-
-        KURL m_url;
-        String m_clientProtocol;
-        bool m_secure;
-        ScriptExecutionContext* m_context;
-
-        Mode m_mode;
-
-        String m_secWebSocketKey1;
-        String m_secWebSocketKey2;
-        unsigned char m_key3[8];
-        unsigned char m_expectedChallengeResponse[16];
-
-        WebSocketHandshakeResponse m_response;
+class WebSocketHandshake
+{
+    WTF_MAKE_NONCOPYABLE( WebSocketHandshake );
+public:
+    enum Mode
+    {
+        Incomplete, Normal, Failed, Connected
     };
+    WebSocketHandshake( const KURL &, const String &protocol, ScriptExecutionContext * );
+    ~WebSocketHandshake();
+
+    const KURL &url() const;
+    void setURL( const KURL & );
+    const String host() const;
+
+    const String &clientProtocol() const;
+    void setClientProtocol( const String &protocol );
+
+    bool secure() const;
+
+    String clientOrigin() const;
+    String clientLocation() const;
+
+    CString clientHandshakeMessage() const;
+    WebSocketHandshakeRequest clientHandshakeRequest() const;
+
+    void reset();
+    void clearScriptExecutionContext();
+
+    int readServerHandshake( const char *header, size_t len );
+    Mode mode() const;
+
+    String serverWebSocketOrigin() const;
+    String serverWebSocketLocation() const;
+    String serverWebSocketProtocol() const;
+    String serverSetCookie() const;
+    String serverSetCookie2() const;
+    String serverUpgrade() const;
+    String serverConnection() const;
+
+    const WebSocketHandshakeResponse &serverHandshakeResponse() const;
+
+private:
+    KURL httpURLForAuthenticationAndCookies() const;
+
+    int readStatusLine( const char *header, size_t headerLength, int &statusCode, String &statusText );
+
+    // Reads all headers except for the two predefined ones.
+    const char *readHTTPHeaders( const char *start, const char *end );
+    void processHeaders();
+    bool checkResponseHeaders();
+
+    KURL m_url;
+    String m_clientProtocol;
+    bool m_secure;
+    ScriptExecutionContext *m_context;
+
+    Mode m_mode;
+
+    String m_secWebSocketKey1;
+    String m_secWebSocketKey2;
+    unsigned char m_key3[8];
+    unsigned char m_expectedChallengeResponse[16];
+
+    WebSocketHandshakeResponse m_response;
+};
 
 } // namespace WebCore
 

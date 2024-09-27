@@ -28,15 +28,17 @@
 
 #include "WebFrameListenerProxy.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
-class WebFramePolicyListenerProxy : public WebFrameListenerProxy {
+class WebFramePolicyListenerProxy : public WebFrameListenerProxy
+{
 public:
     static const Type APIType = TypeFramePolicyListener;
 
-    static PassRefPtr<WebFramePolicyListenerProxy> create(WebFrameProxy* frame, uint64_t listenerID)
+    static PassRefPtr<WebFramePolicyListenerProxy> create( WebFrameProxy *frame, uint64_t listenerID )
     {
-        return adoptRef(new WebFramePolicyListenerProxy(frame, listenerID));
+        return adoptRef( new WebFramePolicyListenerProxy( frame, listenerID ) );
     }
 
     void use();
@@ -44,9 +46,12 @@ public:
     void ignore();
 
 private:
-    WebFramePolicyListenerProxy(WebFrameProxy*, uint64_t listenerID);
+    WebFramePolicyListenerProxy( WebFrameProxy *, uint64_t listenerID );
 
-    virtual Type type() const { return APIType; }
+    virtual Type type() const
+    {
+        return APIType;
+    }
 };
 
 } // namespace WebKit

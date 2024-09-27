@@ -32,13 +32,13 @@ class QScriptDebuggerConsoleCommand;
 
 class QScriptDebuggerConsoleCommandPrivate
 {
-   Q_DECLARE_PUBLIC(QScriptDebuggerConsoleCommand)
+    Q_DECLARE_PUBLIC( QScriptDebuggerConsoleCommand )
 
- public:
-   QScriptDebuggerConsoleCommandPrivate();
-   virtual ~QScriptDebuggerConsoleCommandPrivate();
+public:
+    QScriptDebuggerConsoleCommandPrivate();
+    virtual ~QScriptDebuggerConsoleCommandPrivate();
 
-   QScriptDebuggerConsoleCommand *q_ptr;
+    QScriptDebuggerConsoleCommand *q_ptr;
 };
 
 QT_END_NAMESPACE

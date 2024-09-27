@@ -32,31 +32,35 @@
 
 extern "C" HINSTANCE gInstance;
 
-namespace WebKit {
+namespace WebKit
+{
 
 static CFBundleRef createWebKitBundle()
 {
-    if (CFBundleRef existingBundle = CFBundleGetBundleWithIdentifier(CFSTR("com.apple.WebKit"))) {
-        CFRetain(existingBundle);
+    if ( CFBundleRef existingBundle = CFBundleGetBundleWithIdentifier( CFSTR( "com.apple.WebKit" ) ) )
+    {
+        CFRetain( existingBundle );
         return existingBundle;
     }
 
     wchar_t dllPathBuffer[MAX_PATH];
-    DWORD length = ::GetModuleFileNameW(gInstance, dllPathBuffer, WTF_ARRAY_LENGTH(dllPathBuffer));
-    ASSERT(length && length < WTF_ARRAY_LENGTH(dllPathBuffer));
+    DWORD length = ::GetModuleFileNameW( gInstance, dllPathBuffer, WTF_ARRAY_LENGTH( dllPathBuffer ) );
+    ASSERT( length && length < WTF_ARRAY_LENGTH( dllPathBuffer ) );
 
-    RetainPtr<CFStringRef> dllPath(AdoptCF, CFStringCreateWithCharactersNoCopy(0, reinterpret_cast<const UniChar*>(dllPathBuffer), length, kCFAllocatorNull));
-    RetainPtr<CFURLRef> dllURL(AdoptCF, CFURLCreateWithFileSystemPath(0, dllPath.get(), kCFURLWindowsPathStyle, false));
-    RetainPtr<CFURLRef> dllDirectoryURL(AdoptCF, CFURLCreateCopyDeletingLastPathComponent(0, dllURL.get()));
-    RetainPtr<CFURLRef> resourcesDirectoryURL(AdoptCF, CFURLCreateCopyAppendingPathComponent(0, dllDirectoryURL.get(), CFSTR("WebKit.resources"), true));
+    RetainPtr<CFStringRef> dllPath( AdoptCF, CFStringCreateWithCharactersNoCopy( 0,
+                                    reinterpret_cast<const UniChar *>( dllPathBuffer ), length, kCFAllocatorNull ) );
+    RetainPtr<CFURLRef> dllURL( AdoptCF, CFURLCreateWithFileSystemPath( 0, dllPath.get(), kCFURLWindowsPathStyle, false ) );
+    RetainPtr<CFURLRef> dllDirectoryURL( AdoptCF, CFURLCreateCopyDeletingLastPathComponent( 0, dllURL.get() ) );
+    RetainPtr<CFURLRef> resourcesDirectoryURL( AdoptCF, CFURLCreateCopyAppendingPathComponent( 0, dllDirectoryURL.get(),
+            CFSTR( "WebKit.resources" ), true ) );
 
-    return CFBundleCreate(0, resourcesDirectoryURL.get());
+    return CFBundleCreate( 0, resourcesDirectoryURL.get() );
 }
 
 CFBundleRef webKitBundle()
 {
     static CFBundleRef bundle = createWebKitBundle();
-    ASSERT(bundle);
+    ASSERT( bundle );
     return bundle;
 }
 

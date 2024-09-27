@@ -25,28 +25,36 @@
 
 #include "RenderBlock.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class RenderDetails;
 
-class RenderSummary : public RenderBlock {
+class RenderSummary : public RenderBlock
+{
 public:
-    explicit RenderSummary(Node*);
+    explicit RenderSummary( Node * );
 
 private:
-    virtual const char* renderName() const { return "RenderSummary"; }
-    virtual bool isSummary() const { return true; }
-    virtual void styleDidChange(StyleDifference, const RenderStyle* oldStyle);
+    virtual const char *renderName() const
+    {
+        return "RenderSummary";
+    }
+    virtual bool isSummary() const
+    {
+        return true;
+    }
+    virtual void styleDidChange( StyleDifference, const RenderStyle *oldStyle );
 };
 
-inline RenderSummary* toRenderSummary(RenderObject* object)
+inline RenderSummary *toRenderSummary( RenderObject *object )
 {
-    ASSERT(!object || object->isSummary());
-    return static_cast<RenderSummary*>(object);
+    ASSERT( !object || object->isSummary() );
+    return static_cast<RenderSummary *>( object );
 }
 
 // This will catch anyone doing an unnecessary cast.
-void toRenderSummary(const RenderSummary*);
+void toRenderSummary( const RenderSummary * );
 
 }
 

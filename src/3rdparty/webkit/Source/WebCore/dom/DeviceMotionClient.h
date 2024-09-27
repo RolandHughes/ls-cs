@@ -26,18 +26,20 @@
 #ifndef DeviceMotionClient_h
 #define DeviceMotionClient_h
 
-namespace WebCore {
+namespace WebCore
+{
 
 class DeviceMotionController;
 class DeviceMotionData;
 
-class DeviceMotionClient {
+class DeviceMotionClient
+{
 public:
     virtual ~DeviceMotionClient() {}
-    virtual void setController(DeviceMotionController*) = 0;
+    virtual void setController( DeviceMotionController * ) = 0;
     virtual void startUpdating() = 0;
     virtual void stopUpdating() = 0;
-    virtual DeviceMotionData* currentDeviceMotion() const = 0;
+    virtual DeviceMotionData *currentDeviceMotion() const = 0;
     virtual void deviceMotionControllerDestroyed() = 0;
 };
 

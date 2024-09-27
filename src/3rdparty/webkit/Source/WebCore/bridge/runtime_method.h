@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef RUNTIME_FUNCTION_H_
@@ -31,33 +31,38 @@
 #include <runtime/JSGlobalObject.h>
 #include <wtf/OwnPtr.h>
 
-namespace JSC {
+namespace JSC
+{
 
-class RuntimeMethod : public InternalFunction {
+class RuntimeMethod : public InternalFunction
+{
 public:
-    RuntimeMethod(ExecState*, JSGlobalObject*, Structure*, const Identifier& name, Bindings::MethodList&);
-    Bindings::MethodList* methods() const { return _methodList.get(); }
+    RuntimeMethod( ExecState *, JSGlobalObject *, Structure *, const Identifier &name, Bindings::MethodList & );
+    Bindings::MethodList *methods() const
+    {
+        return _methodList.get();
+    }
 
     static const ClassInfo s_info;
 
-    static FunctionPrototype* createPrototype(ExecState*, JSGlobalObject* globalObject)
+    static FunctionPrototype *createPrototype( ExecState *, JSGlobalObject *globalObject )
     {
         return globalObject->functionPrototype();
     }
 
-    static Structure* createStructure(JSGlobalData& globalData, JSValue prototype)
+    static Structure *createStructure( JSGlobalData &globalData, JSValue prototype )
     {
-        return Structure::create(globalData, prototype, TypeInfo(ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return Structure::create( globalData, prototype, TypeInfo( ObjectType, StructureFlags ), AnonymousSlotCount, &s_info );
     }
 
 protected:
     static const unsigned StructureFlags = OverridesGetOwnPropertySlot | InternalFunction::StructureFlags;
 
 private:
-    static JSValue lengthGetter(ExecState*, JSValue, const Identifier&);
-    virtual bool getOwnPropertySlot(ExecState*, const Identifier&, PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(ExecState*, const Identifier&, PropertyDescriptor&);
-    virtual CallType getCallData(CallData&);
+    static JSValue lengthGetter( ExecState *, JSValue, const Identifier & );
+    virtual bool getOwnPropertySlot( ExecState *, const Identifier &, PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( ExecState *, const Identifier &, PropertyDescriptor & );
+    virtual CallType getCallData( CallData & );
 
     OwnPtr<Bindings::MethodList> _methodList;
 };

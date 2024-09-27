@@ -27,32 +27,33 @@
 #include <qabstractnodetest_p.h>
 #include <qcontainerfwd.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 class QNameTest : public AbstractNodeTest
 {
- public:
-   typedef QHash<QString, QNameTest::Ptr> Hash;
+public:
+    typedef QHash<QString, QNameTest::Ptr> Hash;
 
-   static ItemType::Ptr create(const ItemType::Ptr &primaryType, const QXmlName qName);
+    static ItemType::Ptr create( const ItemType::Ptr &primaryType, const QXmlName qName );
 
-   /**
-    * @note This function assumes that @p item is a QXmlNodeModelIndex.
-    */
-   bool itemMatches(const Item &item) const override;
+    /**
+     * @note This function assumes that @p item is a QXmlNodeModelIndex.
+     */
+    bool itemMatches( const Item &item ) const override;
 
-   QString displayName(const NamePool::Ptr &np) const override;
+    QString displayName( const NamePool::Ptr &np ) const override;
 
-   bool operator==(const ItemType &other) const override;
+    bool operator==( const ItemType &other ) const override;
 
-   PatternPriority patternPriority() const override;
+    PatternPriority patternPriority() const override;
 
- protected:
-   InstanceOf instanceOf() const override;
+protected:
+    InstanceOf instanceOf() const override;
 
- private:
-   QNameTest(const ItemType::Ptr &primaryType, const QXmlName qName);
+private:
+    QNameTest( const ItemType::Ptr &primaryType, const QXmlName qName );
 
-   const QXmlName m_qName;
+    const QXmlName m_qName;
 };
 }
 

@@ -24,48 +24,50 @@
 
 #include "JSObject.h"
 
-namespace JSC {
+namespace JSC
+{
 
-    // This class is used as a base for classes such as String,
-    // Number, Boolean and Date which are wrappers for primitive types.
-    class JSWrapperObject : public JSNonFinalObject {
-    protected:
-        explicit JSWrapperObject(JSGlobalData&, Structure*);
+// This class is used as a base for classes such as String,
+// Number, Boolean and Date which are wrappers for primitive types.
+class JSWrapperObject : public JSNonFinalObject
+{
+protected:
+    explicit JSWrapperObject( JSGlobalData &, Structure * );
 
-    public:
-        JSValue internalValue() const;
-        void setInternalValue(JSGlobalData&, JSValue);
+public:
+    JSValue internalValue() const;
+    void setInternalValue( JSGlobalData &, JSValue );
 
-        static Structure* createStructure(JSGlobalData& globalData, JSValue prototype) 
-        { 
-            return Structure::create(globalData, prototype, TypeInfo(ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
-        }
-
-    protected:
-        static const unsigned StructureFlags = OverridesVisitChildren | JSNonFinalObject::StructureFlags;
-
-    private:
-        virtual void visitChildren(SlotVisitor&);
-        
-        WriteBarrier<Unknown> m_internalValue;
-    };
-
-    inline JSWrapperObject::JSWrapperObject(JSGlobalData& globalData, Structure* structure)
-        : JSNonFinalObject(globalData, structure)
+    static Structure *createStructure( JSGlobalData &globalData, JSValue prototype )
     {
+        return Structure::create( globalData, prototype, TypeInfo( ObjectType, StructureFlags ), AnonymousSlotCount, &s_info );
     }
 
-    inline JSValue JSWrapperObject::internalValue() const
-    {
-        return m_internalValue.get();
-    }
+protected:
+    static const unsigned StructureFlags = OverridesVisitChildren | JSNonFinalObject::StructureFlags;
 
-    inline void JSWrapperObject::setInternalValue(JSGlobalData& globalData, JSValue value)
-    {
-        ASSERT(value);
-        ASSERT(!value.isObject());
-        m_internalValue.set(globalData, this, value);
-    }
+private:
+    virtual void visitChildren( SlotVisitor & );
+
+    WriteBarrier<Unknown> m_internalValue;
+};
+
+inline JSWrapperObject::JSWrapperObject( JSGlobalData &globalData, Structure *structure )
+    : JSNonFinalObject( globalData, structure )
+{
+}
+
+inline JSValue JSWrapperObject::internalValue() const
+{
+    return m_internalValue.get();
+}
+
+inline void JSWrapperObject::setInternalValue( JSGlobalData &globalData, JSValue value )
+{
+    ASSERT( value );
+    ASSERT( !value.isObject() );
+    m_internalValue.set( globalData, this, value );
+}
 
 } // namespace JSC
 

@@ -33,57 +33,57 @@ class QStyleOptionSlider;
 
 class Q_GUI_EXPORT QDial: public QAbstractSlider
 {
-   GUI_CS_OBJECT(QDial)
+    GUI_CS_OBJECT( QDial )
 
-   GUI_CS_PROPERTY_READ(wrapping, wrapping)
-   GUI_CS_PROPERTY_WRITE(wrapping, setWrapping)
+    GUI_CS_PROPERTY_READ( wrapping, wrapping )
+    GUI_CS_PROPERTY_WRITE( wrapping, setWrapping )
 
-   GUI_CS_PROPERTY_READ(notchSize, notchSize)
+    GUI_CS_PROPERTY_READ( notchSize, notchSize )
 
-   GUI_CS_PROPERTY_READ(notchTarget, notchTarget)
-   GUI_CS_PROPERTY_WRITE(notchTarget, setNotchTarget)
+    GUI_CS_PROPERTY_READ( notchTarget, notchTarget )
+    GUI_CS_PROPERTY_WRITE( notchTarget, setNotchTarget )
 
-   GUI_CS_PROPERTY_READ(notchesVisible, notchesVisible)
-   GUI_CS_PROPERTY_WRITE(notchesVisible, setNotchesVisible)
+    GUI_CS_PROPERTY_READ( notchesVisible, notchesVisible )
+    GUI_CS_PROPERTY_WRITE( notchesVisible, setNotchesVisible )
 
- public:
-   explicit QDial(QWidget *parent = nullptr);
+public:
+    explicit QDial( QWidget *parent = nullptr );
 
-   QDial(const QDial &) = delete;
-   QDial &operator=(const QDial &) = delete;
+    QDial( const QDial & ) = delete;
+    QDial &operator=( const QDial & ) = delete;
 
-   ~QDial();
+    ~QDial();
 
-   bool wrapping() const;
-   int notchSize() const;
+    bool wrapping() const;
+    int notchSize() const;
 
-   void setNotchTarget(double target);
-   qreal notchTarget() const;
-   bool notchesVisible() const;
+    void setNotchTarget( double target );
+    qreal notchTarget() const;
+    bool notchesVisible() const;
 
-   QSize sizeHint() const override;
-   QSize minimumSizeHint() const override;
+    QSize sizeHint() const override;
+    QSize minimumSizeHint() const override;
 
-   GUI_CS_SLOT_1(Public, void setNotchesVisible(bool visible))
-   GUI_CS_SLOT_2(setNotchesVisible)
+    GUI_CS_SLOT_1( Public, void setNotchesVisible( bool visible ) )
+    GUI_CS_SLOT_2( setNotchesVisible )
 
-   GUI_CS_SLOT_1(Public, void setWrapping(bool enable))
-   GUI_CS_SLOT_2(setWrapping)
+    GUI_CS_SLOT_1( Public, void setWrapping( bool enable ) )
+    GUI_CS_SLOT_2( setWrapping )
 
- protected:
-   bool event(QEvent *event) override;
-   void resizeEvent(QResizeEvent *event) override;
-   void paintEvent(QPaintEvent *event) override;
+protected:
+    bool event( QEvent *event ) override;
+    void resizeEvent( QResizeEvent *event ) override;
+    void paintEvent( QPaintEvent *event ) override;
 
-   void mousePressEvent(QMouseEvent *event) override;
-   void mouseReleaseEvent(QMouseEvent *event) override;
-   void mouseMoveEvent(QMouseEvent *event) override;
+    void mousePressEvent( QMouseEvent *event ) override;
+    void mouseReleaseEvent( QMouseEvent *event ) override;
+    void mouseMoveEvent( QMouseEvent *event ) override;
 
-   void sliderChange(SliderChange change) override;
-   void initStyleOption(QStyleOptionSlider *option) const;
+    void sliderChange( SliderChange change ) override;
+    void initStyleOption( QStyleOptionSlider *option ) const;
 
- private:
-   Q_DECLARE_PRIVATE(QDial)
+private:
+    Q_DECLARE_PRIVATE( QDial )
 };
 
 #endif  // QT_NO_DIAL

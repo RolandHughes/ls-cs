@@ -37,8 +37,7 @@ QT_BEGIN_NAMESPACE
 
 /*!
     Constructs a QDeclarativePropertyValueSource.
-*/
-QDeclarativePropertyValueSource::QDeclarativePropertyValueSource()
+*/ QDeclarativePropertyValueSource::QDeclarativePropertyValueSource()
 {
 }
 

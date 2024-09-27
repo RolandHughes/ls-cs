@@ -29,23 +29,23 @@ class QSemaphore;
 
 class Q_CORE_EXPORT CSMetaCallEvent : public QEvent
 {
- public:
-   CSMetaCallEvent(const LsCsSignal::Internal::BentoAbstract *bento, const LsCsSignal::Internal::TeaCupAbstract *dataPack,
-         const QObject *sender, int signal_index, QSemaphore *semaphore = nullptr);
+public:
+    CSMetaCallEvent( const LsCsSignal::Internal::BentoAbstract *bento, const LsCsSignal::Internal::TeaCupAbstract *dataPack,
+                     const QObject *sender, int signal_index, QSemaphore *semaphore = nullptr );
 
-   ~CSMetaCallEvent();
+    ~CSMetaCallEvent();
 
-   void placeMetaCall(QObject *object);
-   const QObject *sender() const;
-   int signal_index() const;
+    void placeMetaCall( QObject *object );
+    const QObject *sender() const;
+    int signal_index() const;
 
- private:
-   const LsCsSignal::Internal::BentoAbstract *m_bento;
-   const LsCsSignal::Internal::TeaCupAbstract *m_dataPack;
+private:
+    const LsCsSignal::Internal::BentoAbstract *m_bento;
+    const LsCsSignal::Internal::TeaCupAbstract *m_dataPack;
 
-   const QObject *m_sender;
-   QSemaphore *m_semaphore;
-   int m_signal_index;
+    const QObject *m_sender;
+    QSemaphore *m_semaphore;
+    int m_signal_index;
 };
 
 #endif

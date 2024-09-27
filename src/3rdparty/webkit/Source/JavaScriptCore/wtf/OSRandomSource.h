@@ -20,20 +20,21 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef WTF_OSRandomSource_h
 #define WTF_OSRandomSource_h
 
-namespace WTF {
+namespace WTF
+{
 
 #if USE(OS_RANDOMNESS)
 // This function attempts to fill buffer with randomness from the operating
 // system.  If insufficient randomness is available, the buffer will be
 // partially filled.  Rather than calling this function directly, consider
 // calling cryptographicallyRandomNumber or cryptographicallyRandomValues.
-void cryptographicallyRandomValuesFromOS(unsigned char* buffer, size_t length);
+void cryptographicallyRandomValuesFromOS( unsigned char *buffer, size_t length );
 #endif
 
 }

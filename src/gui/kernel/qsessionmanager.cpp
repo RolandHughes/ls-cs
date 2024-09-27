@@ -31,12 +31,12 @@
 
 #ifndef QT_NO_SESSIONMANAGER
 
-QSessionManagerPrivate::QSessionManagerPrivate(const QString &id, const QString &key)
+QSessionManagerPrivate::QSessionManagerPrivate( const QString &id, const QString &key )
 {
-    platformSessionManager = QGuiApplicationPrivate::platformIntegration()->createPlatformSessionManager(id, key);
+    platformSessionManager = QGuiApplicationPrivate::platformIntegration()->createPlatformSessionManager( id, key );
 
-    Q_ASSERT_X(platformSessionManager, "Platform session management",
-               "No platform session management, should use the default implementation");
+    Q_ASSERT_X( platformSessionManager, "Platform session management",
+                "No platform session management, should use the default implementation" );
 }
 
 QSessionManagerPrivate::~QSessionManagerPrivate()
@@ -45,8 +45,8 @@ QSessionManagerPrivate::~QSessionManagerPrivate()
     platformSessionManager = nullptr;
 }
 
-QSessionManager::QSessionManager(QApplication *app, QString &id, QString &key)
-   : QObject(app), d_ptr(new QSessionManagerPrivate(id, key))
+QSessionManager::QSessionManager( QApplication *app, QString &id, QString &key )
+    : QObject( app ), d_ptr( new QSessionManagerPrivate( id, key ) )
 {
 }
 
@@ -56,99 +56,99 @@ QSessionManager::~QSessionManager()
 
 QString QSessionManager::sessionId() const
 {
-   Q_D(const QSessionManager);
-   return d->platformSessionManager->sessionId();
+    Q_D( const QSessionManager );
+    return d->platformSessionManager->sessionId();
 }
 
 QString QSessionManager::sessionKey() const
 {
-   Q_D(const QSessionManager);
-   return d->platformSessionManager->sessionKey();
+    Q_D( const QSessionManager );
+    return d->platformSessionManager->sessionKey();
 }
 
 bool QSessionManager::allowsInteraction()
 {
-    Q_D(QSessionManager);
+    Q_D( QSessionManager );
     return d->platformSessionManager->allowsInteraction();
 }
 
 bool QSessionManager::allowsErrorInteraction()
 {
-    Q_D(QSessionManager);
+    Q_D( QSessionManager );
     return d->platformSessionManager->allowsErrorInteraction();
 }
 
 void QSessionManager::release()
 {
-    Q_D(QSessionManager);
+    Q_D( QSessionManager );
     d->platformSessionManager->release();
 }
 
 void QSessionManager::cancel()
 {
-    Q_D(QSessionManager);
+    Q_D( QSessionManager );
     d->platformSessionManager->cancel();
 }
 
-void QSessionManager::setRestartHint(QSessionManager::RestartHint hint)
+void QSessionManager::setRestartHint( QSessionManager::RestartHint hint )
 {
-   Q_D(QSessionManager);
-    d->platformSessionManager->setRestartHint(hint);
+    Q_D( QSessionManager );
+    d->platformSessionManager->setRestartHint( hint );
 }
 
 QSessionManager::RestartHint QSessionManager::restartHint() const
 {
-   Q_D(const QSessionManager);
+    Q_D( const QSessionManager );
     return d->platformSessionManager->restartHint();
 }
 
-void QSessionManager::setRestartCommand(const QStringList &command)
+void QSessionManager::setRestartCommand( const QStringList &command )
 {
-   Q_D(QSessionManager);
-    d->platformSessionManager->setRestartCommand(command);
+    Q_D( QSessionManager );
+    d->platformSessionManager->setRestartCommand( command );
 }
 
 QStringList QSessionManager::restartCommand() const
 {
-   Q_D(const QSessionManager);
+    Q_D( const QSessionManager );
     return d->platformSessionManager->restartCommand();
 }
 
-void QSessionManager::setDiscardCommand(const QStringList &command)
+void QSessionManager::setDiscardCommand( const QStringList &command )
 {
-   Q_D(QSessionManager);
-    d->platformSessionManager->setDiscardCommand(command);
+    Q_D( QSessionManager );
+    d->platformSessionManager->setDiscardCommand( command );
 }
 
 QStringList QSessionManager::discardCommand() const
 {
-   Q_D(const QSessionManager);
+    Q_D( const QSessionManager );
     return d->platformSessionManager->discardCommand();
 }
 
-void QSessionManager::setManagerProperty(const QString &name,
-   const QString &value)
+void QSessionManager::setManagerProperty( const QString &name,
+        const QString &value )
 {
-    Q_D(QSessionManager);
-    d->platformSessionManager->setManagerProperty(name, value);
+    Q_D( QSessionManager );
+    d->platformSessionManager->setManagerProperty( name, value );
 }
 
-void QSessionManager::setManagerProperty(const QString &name,
-   const QStringList &value)
+void QSessionManager::setManagerProperty( const QString &name,
+        const QStringList &value )
 {
-    Q_D(QSessionManager);
-    d->platformSessionManager->setManagerProperty(name, value);
+    Q_D( QSessionManager );
+    d->platformSessionManager->setManagerProperty( name, value );
 }
 
 bool QSessionManager::isPhase2() const
 {
-    Q_D(const QSessionManager);
+    Q_D( const QSessionManager );
     return d->platformSessionManager->isPhase2();
 }
 
 void QSessionManager::requestPhase2()
 {
-    Q_D(QSessionManager);
+    Q_D( QSessionManager );
     d->platformSessionManager->requestPhase2();
 }
 

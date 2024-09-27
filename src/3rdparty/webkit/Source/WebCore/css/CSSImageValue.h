@@ -25,33 +25,44 @@
 #include "CachedResourceClient.h"
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class CachedResourceLoader;
 class StyleCachedImage;
 class StyleImage;
 
-class CSSImageValue : public CSSPrimitiveValue, private CachedResourceClient {
+class CSSImageValue : public CSSPrimitiveValue, private CachedResourceClient
+{
     WTF_MAKE_FAST_ALLOCATED;
 public:
-    static PassRefPtr<CSSImageValue> create() { return adoptRef(new CSSImageValue); }
-    static PassRefPtr<CSSImageValue> create(const String& url) { return adoptRef(new CSSImageValue(url)); }
+    static PassRefPtr<CSSImageValue> create()
+    {
+        return adoptRef( new CSSImageValue );
+    }
+    static PassRefPtr<CSSImageValue> create( const String &url )
+    {
+        return adoptRef( new CSSImageValue( url ) );
+    }
     virtual ~CSSImageValue();
 
-    virtual StyleCachedImage* cachedImage(CachedResourceLoader*);
+    virtual StyleCachedImage *cachedImage( CachedResourceLoader * );
     // Returns a StyleCachedImage if the image is cached already, otherwise a StylePendingImage.
-    StyleImage* cachedOrPendingImage();
-    
-protected:
-    CSSImageValue(const String& url);
+    StyleImage *cachedOrPendingImage();
 
-    StyleCachedImage* cachedImage(CachedResourceLoader*, const String& url);
+protected:
+    CSSImageValue( const String &url );
+
+    StyleCachedImage *cachedImage( CachedResourceLoader *, const String &url );
     String cachedImageURL();
     void clearCachedImage();
 
 private:
     CSSImageValue();
-    virtual bool isImageValue() const { return true; }
+    virtual bool isImageValue() const
+    {
+        return true;
+    }
 
     RefPtr<StyleImage> m_image;
     bool m_accessedImage;

@@ -62,24 +62,25 @@
 
 using namespace std;
 
-namespace WebCore {
+namespace WebCore
+{
 
 PassRefPtr<InjectedScriptHost> InjectedScriptHost::create()
 {
-    return adoptRef(new InjectedScriptHost());
+    return adoptRef( new InjectedScriptHost() );
 }
 
 InjectedScriptHost::InjectedScriptHost()
-    : m_inspectorAgent(0)
-    , m_consoleAgent(0)
+    : m_inspectorAgent( 0 )
+    , m_consoleAgent( 0 )
 #if ENABLE(DATABASE)
-    , m_databaseAgent(0)
+    , m_databaseAgent( 0 )
 #endif
 #if ENABLE(DOM_STORAGE)
-    , m_domStorageAgent(0)
+    , m_domStorageAgent( 0 )
 #endif
-    , m_frontend(0)
-    , m_lastWorkerId(1 << 31) // Distinguish ids of fake workers from real ones, to minimize the chances they overlap.
+    , m_frontend( 0 )
+    , m_lastWorkerId( 1 << 31 ) // Distinguish ids of fake workers from real ones, to minimize the chances they overlap.
 {
 }
 
@@ -100,11 +101,14 @@ void InjectedScriptHost::disconnect()
     m_frontend = 0;
 }
 
-void InjectedScriptHost::addInspectedNode(Node* node)
+void InjectedScriptHost::addInspectedNode( Node *node )
 {
-    m_inspectedNodes.prepend(node);
-    while (m_inspectedNodes.size() > 5)
+    m_inspectedNodes.prepend( node );
+
+    while ( m_inspectedNodes.size() > 5 )
+    {
         m_inspectedNodes.removeLast();
+    }
 }
 
 void InjectedScriptHost::clearInspectedNodes()
@@ -112,46 +116,58 @@ void InjectedScriptHost::clearInspectedNodes()
     m_inspectedNodes.clear();
 }
 
-void InjectedScriptHost::inspectImpl(PassRefPtr<InspectorValue> object, PassRefPtr<InspectorValue> hints)
+void InjectedScriptHost::inspectImpl( PassRefPtr<InspectorValue> object, PassRefPtr<InspectorValue> hints )
 {
-    if (m_frontend)
-        m_frontend->inspector()->inspect(object->asObject(), hints->asObject());
+    if ( m_frontend )
+    {
+        m_frontend->inspector()->inspect( object->asObject(), hints->asObject() );
+    }
 }
 
 void InjectedScriptHost::clearConsoleMessages()
 {
-    if (m_consoleAgent) {
+    if ( m_consoleAgent )
+    {
         ErrorString error;
-        m_consoleAgent->clearConsoleMessages(&error);
+        m_consoleAgent->clearConsoleMessages( &error );
     }
 }
 
-void InjectedScriptHost::copyText(const String& text)
+void InjectedScriptHost::copyText( const String &text )
 {
-    Pasteboard::generalPasteboard()->writePlainText(text);
+    Pasteboard::generalPasteboard()->writePlainText( text );
 }
 
-Node* InjectedScriptHost::inspectedNode(unsigned int num)
+Node *InjectedScriptHost::inspectedNode( unsigned int num )
 {
-    if (num < m_inspectedNodes.size())
+    if ( num < m_inspectedNodes.size() )
+    {
         return m_inspectedNodes[num].get();
+    }
+
     return 0;
 }
 
 #if ENABLE(DATABASE)
-int InjectedScriptHost::databaseIdImpl(Database* database)
+int InjectedScriptHost::databaseIdImpl( Database *database )
 {
-    if (m_databaseAgent)
-        return m_databaseAgent->databaseId(database);
+    if ( m_databaseAgent )
+    {
+        return m_databaseAgent->databaseId( database );
+    }
+
     return 0;
 }
 #endif
 
 #if ENABLE(DOM_STORAGE)
-int InjectedScriptHost::storageIdImpl(Storage* storage)
+int InjectedScriptHost::storageIdImpl( Storage *storage )
 {
-    if (m_domStorageAgent)
-        return m_domStorageAgent->storageId(storage);
+    if ( m_domStorageAgent )
+    {
+        return m_domStorageAgent->storageId( storage );
+    }
+
     return 0;
 }
 #endif
@@ -162,16 +178,20 @@ long InjectedScriptHost::nextWorkerId()
     return ++m_lastWorkerId;
 }
 
-void InjectedScriptHost::didCreateWorker(long id, const String& url, bool isSharedWorker)
+void InjectedScriptHost::didCreateWorker( long id, const String &url, bool isSharedWorker )
 {
-    if (m_inspectorAgent)
-        m_inspectorAgent->didCreateWorker(static_cast<int>(id), url, isSharedWorker);
+    if ( m_inspectorAgent )
+    {
+        m_inspectorAgent->didCreateWorker( static_cast<int>( id ), url, isSharedWorker );
+    }
 }
 
-void InjectedScriptHost::didDestroyWorker(long id)
+void InjectedScriptHost::didDestroyWorker( long id )
 {
-    if (m_inspectorAgent)
-        m_inspectorAgent->didDestroyWorker(static_cast<int>(id));
+    if ( m_inspectorAgent )
+    {
+        m_inspectorAgent->didDestroyWorker( static_cast<int>( id ) );
+    }
 }
 #endif // ENABLE(WORKERS)
 

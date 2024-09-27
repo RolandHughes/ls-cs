@@ -30,16 +30,21 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
 PassRefPtr<ImmutableArray> InjectedBundleBackForwardListItem::children() const
 {
-    const HistoryItemVector& children = m_item->children();
+    const HistoryItemVector &children = m_item->children();
     size_t size = children.size();
-    Vector<RefPtr<APIObject> > vector(size);
-    for (size_t i = 0; i < size; ++i)
-        vector[i] = InjectedBundleBackForwardListItem::create(children[i]);
-    return ImmutableArray::adopt(vector);
+    Vector<RefPtr<APIObject> > vector( size );
+
+    for ( size_t i = 0; i < size; ++i )
+    {
+        vector[i] = InjectedBundleBackForwardListItem::create( children[i] );
+    }
+
+    return ImmutableArray::adopt( vector );
 }
 
 } // namespace WebKit

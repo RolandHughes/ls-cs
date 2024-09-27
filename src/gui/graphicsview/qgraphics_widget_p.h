@@ -40,199 +40,211 @@ class QStyleOptionTitleBar;
 
 class QGraphicsWidgetPrivate : public QGraphicsItemPrivate
 {
- public:
-   enum WidgetMargins {
-      Left,
-      Top,
-      Right,
-      Bottom
-   };
+public:
+    enum WidgetMargins
+    {
+        Left,
+        Top,
+        Right,
+        Bottom
+    };
 
-   QGraphicsWidgetPrivate()
-      : windowData(nullptr), margins(nullptr), setWindowFrameMargins(false), windowFrameMargins(nullptr),
-        layout(nullptr), inheritedPaletteResolveMask(0), inheritedFontResolveMask(0),
-        m_flags(Qt::EmptyFlag), inSetGeometry(0), polished(0), inSetPos(0), autoFillBackground(0),
-        focusPolicy(Qt::NoFocus), focusNext(nullptr), focusPrev(nullptr)
-   {
-   }
+    QGraphicsWidgetPrivate()
+        : windowData( nullptr ), margins( nullptr ), setWindowFrameMargins( false ), windowFrameMargins( nullptr ),
+          layout( nullptr ), inheritedPaletteResolveMask( 0 ), inheritedFontResolveMask( 0 ),
+          m_flags( Qt::EmptyFlag ), inSetGeometry( 0 ), polished( 0 ), inSetPos( 0 ), autoFillBackground( 0 ),
+          focusPolicy( Qt::NoFocus ), focusNext( nullptr ), focusPrev( nullptr )
+    {
+    }
 
-   virtual ~QGraphicsWidgetPrivate();
+    virtual ~QGraphicsWidgetPrivate();
 
-   void init(QGraphicsItem *parentItem, Qt::WindowFlags flags);
-   qreal titleBarHeight(const QStyleOptionTitleBar &options) const;
+    void init( QGraphicsItem *parentItem, Qt::WindowFlags flags );
+    qreal titleBarHeight( const QStyleOptionTitleBar &options ) const;
 
-   void ensureMargins() const;
+    void ensureMargins() const;
 
-   void fixFocusChainBeforeReparenting(QGraphicsWidget *newParent, QGraphicsScene *oldScene,
-         QGraphicsScene *newScene = nullptr);
+    void fixFocusChainBeforeReparenting( QGraphicsWidget *newParent, QGraphicsScene *oldScene,
+                                         QGraphicsScene *newScene = nullptr );
 
-   void setLayout_helper(QGraphicsLayout *l);
+    void setLayout_helper( QGraphicsLayout *l );
 
-   // Layouts
-   void setLayoutDirection_helper(Qt::LayoutDirection direction);
-   void resolveLayoutDirection();
+    // Layouts
+    void setLayoutDirection_helper( Qt::LayoutDirection direction );
+    void resolveLayoutDirection();
 
-   // Style
-   void setPalette_helper(const QPalette &palette);
-   void resolvePalette(uint inheritedMask) override;
-   void updatePalette(const QPalette &palette);
+    // Style
+    void setPalette_helper( const QPalette &palette );
+    void resolvePalette( uint inheritedMask ) override;
+    void updatePalette( const QPalette &palette );
 
-   QPalette naturalWidgetPalette() const;
+    QPalette naturalWidgetPalette() const;
 
-   void setFont_helper(const QFont &font);
-   void resolveFont(uint inheritedMask) override;
-   void updateFont(const QFont &font);
-   QFont naturalWidgetFont() const;
+    void setFont_helper( const QFont &font );
+    void resolveFont( uint inheritedMask ) override;
+    void updateFont( const QFont &font );
+    QFont naturalWidgetFont() const;
 
-   // Window specific
-   void initStyleOptionTitleBar(QStyleOptionTitleBar *option);
-   void adjustWindowFlags(Qt::WindowFlags *flags);
+    // Window specific
+    void initStyleOptionTitleBar( QStyleOptionTitleBar *option );
+    void adjustWindowFlags( Qt::WindowFlags *flags );
 
-   void windowFrameMouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-   void windowFrameMousePressEvent(QGraphicsSceneMouseEvent *event);
-   void windowFrameMouseMoveEvent(QGraphicsSceneMouseEvent *event);
-   void windowFrameHoverMoveEvent(QGraphicsSceneHoverEvent *event);
-   void windowFrameHoverLeaveEvent(QGraphicsSceneHoverEvent *event);
-   bool hasDecoration() const;
+    void windowFrameMouseReleaseEvent( QGraphicsSceneMouseEvent *event );
+    void windowFrameMousePressEvent( QGraphicsSceneMouseEvent *event );
+    void windowFrameMouseMoveEvent( QGraphicsSceneMouseEvent *event );
+    void windowFrameHoverMoveEvent( QGraphicsSceneHoverEvent *event );
+    void windowFrameHoverLeaveEvent( QGraphicsSceneHoverEvent *event );
+    bool hasDecoration() const;
 
-   // Private Properties
-   qreal width() const override;
-   void setWidth(qreal) override;
-   void resetWidth() override;
+    // Private Properties
+    qreal width() const override;
+    void setWidth( qreal ) override;
+    void resetWidth() override;
 
-   qreal height() const override;
-   void setHeight(qreal) override;
-   void resetHeight() override;
-   void setGeometryFromSetPos();
+    qreal height() const override;
+    void setHeight( qreal ) override;
+    void resetHeight() override;
+    void setGeometryFromSetPos();
 
-   // State
-   int attributeToBitIndex(Qt::WidgetAttribute att) const {
-      int bit = -1;
+    // State
+    int attributeToBitIndex( Qt::WidgetAttribute att ) const
+    {
+        int bit = -1;
 
-      switch (att) {
-         case Qt::WA_SetLayoutDirection:
-            bit = 0;
-            break;
+        switch ( att )
+        {
+            case Qt::WA_SetLayoutDirection:
+                bit = 0;
+                break;
 
-         case Qt::WA_RightToLeft:
-            bit = 1;
-            break;
+            case Qt::WA_RightToLeft:
+                bit = 1;
+                break;
 
-         case Qt::WA_SetStyle:
-            bit = 2;
-            break;
+            case Qt::WA_SetStyle:
+                bit = 2;
+                break;
 
-         case Qt::WA_Resized:
-            bit = 3;
-            break;
+            case Qt::WA_Resized:
+                bit = 3;
+                break;
 
-         case Qt::WA_DeleteOnClose:
-            bit = 4;
-            break;
+            case Qt::WA_DeleteOnClose:
+                bit = 4;
+                break;
 
-         case Qt::WA_NoSystemBackground:
-            bit = 5;
-            break;
+            case Qt::WA_NoSystemBackground:
+                bit = 5;
+                break;
 
-         case Qt::WA_OpaquePaintEvent:
-            bit = 6;
-            break;
+            case Qt::WA_OpaquePaintEvent:
+                bit = 6;
+                break;
 
-         case Qt::WA_SetPalette:
-            bit = 7;
-            break;
+            case Qt::WA_SetPalette:
+                bit = 7;
+                break;
 
-         case Qt::WA_SetFont:
-            bit = 8;
-            break;
+            case Qt::WA_SetFont:
+                bit = 8;
+                break;
 
-         case Qt::WA_WindowPropagation:
-            bit = 9;
-            break;
+            case Qt::WA_WindowPropagation:
+                bit = 9;
+                break;
 
-         default:
-            break;
-      }
+            default:
+                break;
+        }
 
-      return bit;
-   }
+        return bit;
+    }
 
-   void setAttribute(Qt::WidgetAttribute att, bool value) {
-      int bit = attributeToBitIndex(att);
+    void setAttribute( Qt::WidgetAttribute att, bool value )
+    {
+        int bit = attributeToBitIndex( att );
 
-      if (bit == -1) {
-         qWarning("QGraphicsWidget::setAttribute: unsupported attribute %d", int(att));
-         return;
-      }
+        if ( bit == -1 )
+        {
+            qWarning( "QGraphicsWidget::setAttribute: unsupported attribute %d", int( att ) );
+            return;
+        }
 
-      if (value) {
-         attributes |= (1 << bit);
-      } else {
-         attributes &= ~(1 << bit);
-      }
-   }
+        if ( value )
+        {
+            attributes |= ( 1 << bit );
+        }
+        else
+        {
+            attributes &= ~( 1 << bit );
+        }
+    }
 
-   bool testAttribute(Qt::WidgetAttribute att) const {
-      int bit = attributeToBitIndex(att);
+    bool testAttribute( Qt::WidgetAttribute att ) const
+    {
+        int bit = attributeToBitIndex( att );
 
-      if (bit == -1) {
-         return false;
-      }
+        if ( bit == -1 )
+        {
+            return false;
+        }
 
-      return (attributes & (1 << bit)) != 0;
-   }
+        return ( attributes & ( 1 << bit ) ) != 0;
+    }
 
-   void ensureWindowData();
-   void ensureWindowFrameMargins() const;
+    void ensureWindowData();
+    void ensureWindowFrameMargins() const;
 
-   struct WindowData {
-      QString windowTitle;
-      QStyle::SubControl hoveredSubControl;
-      Qt::WindowFrameSection grabbedSection;
-      uint buttonMouseOver : 1;
-      uint buttonSunken : 1;
-      QRectF startGeometry;
-      QRect buttonRect;
+    struct WindowData
+    {
+        QString windowTitle;
+        QStyle::SubControl hoveredSubControl;
+        Qt::WindowFrameSection grabbedSection;
+        uint buttonMouseOver : 1;
+        uint buttonSunken : 1;
+        QRectF startGeometry;
+        QRect buttonRect;
 
-      WindowData()
-         : hoveredSubControl(QStyle::SC_None), grabbedSection(Qt::NoSection), buttonMouseOver(false), buttonSunken(false) {
-      }
-   };
+        WindowData()
+            : hoveredSubControl( QStyle::SC_None ), grabbedSection( Qt::NoSection ), buttonMouseOver( false ), buttonSunken( false )
+        {
+        }
+    };
 
-   WindowData *windowData;
+    WindowData *windowData;
 
-   mutable qreal *margins;
-   bool setWindowFrameMargins;
-   mutable qreal *windowFrameMargins;
+    mutable qreal *margins;
+    bool setWindowFrameMargins;
+    mutable qreal *windowFrameMargins;
 
-   QGraphicsLayout *layout;
-   QPalette palette;
-   QFont font;
+    QGraphicsLayout *layout;
+    QPalette palette;
+    QFont font;
 
-   uint inheritedPaletteResolveMask;
-   uint inheritedFontResolveMask;
+    uint inheritedPaletteResolveMask;
+    uint inheritedFontResolveMask;
 
-   // Windows
-   Qt::WindowFlags m_flags;
+    // Windows
+    Qt::WindowFlags m_flags;
 
 #ifndef QT_NO_ACTION
-   QList<QAction *> actions;
+    QList<QAction *> actions;
 #endif
 
-   // 32 bits
-   quint32 attributes : 10;
-   quint32 inSetGeometry : 1;
-   quint32 polished: 1;
-   quint32 inSetPos : 1;
-   quint32 autoFillBackground : 1;
+    // 32 bits
+    quint32 attributes : 10;
+    quint32 inSetGeometry : 1;
+    quint32 polished: 1;
+    quint32 inSetPos : 1;
+    quint32 autoFillBackground : 1;
 
-   // Focus
-   Qt::FocusPolicy focusPolicy;
-   QGraphicsWidget *focusNext;
-   QGraphicsWidget *focusPrev;
+    // Focus
+    Qt::FocusPolicy focusPolicy;
+    QGraphicsWidget *focusNext;
+    QGraphicsWidget *focusPrev;
 
- private:
-   Q_DECLARE_PUBLIC(QGraphicsWidget)
+private:
+    Q_DECLARE_PUBLIC( QGraphicsWidget )
 };
 
 #endif

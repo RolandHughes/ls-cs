@@ -44,111 +44,128 @@ class QDragMoveEvent;
 #include <CoreServices/CoreServices.h>
 #include <Carbon/Carbon.h>               // consider removing
 
-enum {
-   // AE types
-   typeAEClipboardChanged = 1,
+enum
+{
+    // AE types
+    typeAEClipboardChanged = 1,
 
-   // types
-   typeQWidget = 1,               /* QWidget *  */
+    // types
+    typeQWidget = 1,               /* QWidget *  */
 
-   // params
-   kEventParamQWidget = 'qwid',   /* typeQWidget */
+    // params
+    kEventParamQWidget = 'qwid',   /* typeQWidget */
 
-   // events
-   kEventQtRequestContext       = 13,
-   kEventQtRequestMenubarUpdate = 14,
-   kEventQtRequestShowSheet     = 17,
-   kEventQtRequestActivate      = 18,
-   kEventQtRequestWindowChange  = 20
+    // events
+    kEventQtRequestContext       = 13,
+    kEventQtRequestMenubarUpdate = 14,
+    kEventQtRequestShowSheet     = 17,
+    kEventQtRequestActivate      = 18,
+    kEventQtRequestWindowChange  = 20
 };
 
 // Simple class to manage short-lived regions
 class QMacSmartQuickDrawRegion
 {
-   RgnHandle qdRgn;
+    RgnHandle qdRgn;
 
- public:
-   explicit QMacSmartQuickDrawRegion(RgnHandle rgn)
-      : qdRgn(rgn)
-   {
-   }
+public:
+    explicit QMacSmartQuickDrawRegion( RgnHandle rgn )
+        : qdRgn( rgn )
+    {
+    }
 
-   QMacSmartQuickDrawRegion(const QMacSmartQuickDrawRegion &) = delete;
-   QMacSmartQuickDrawRegion &operator=(const QMacSmartQuickDrawRegion &) = delete;
+    QMacSmartQuickDrawRegion( const QMacSmartQuickDrawRegion & ) = delete;
+    QMacSmartQuickDrawRegion &operator=( const QMacSmartQuickDrawRegion & ) = delete;
 
-   ~QMacSmartQuickDrawRegion() {
-      extern void qt_mac_dispose_rgn(RgnHandle);           // qregion_mac.cpp
-      qt_mac_dispose_rgn(qdRgn);
-   }
+    ~QMacSmartQuickDrawRegion()
+    {
+        extern void qt_mac_dispose_rgn( RgnHandle );         // qregion_mac.cpp
+        qt_mac_dispose_rgn( qdRgn );
+    }
 
-   operator RgnHandle() {
-      return qdRgn;
-   }
+    operator RgnHandle()
+    {
+        return qdRgn;
+    }
 };
 
-QString qt_mac_removeMnemonics(const QString &original);   // implemented in qmacstyle_mac.cpp
+QString qt_mac_removeMnemonics( const QString &original ); // implemented in qmacstyle_mac.cpp
 
 class QMacCGContext
 {
-   CGContextRef context;
+    CGContextRef context;
 
- public:
-   QMacCGContext(QPainter *p);                             // implemented in qmacstyle_mac.cpp
+public:
+    QMacCGContext( QPainter *p );                           // implemented in qmacstyle_mac.cpp
 
-   QMacCGContext() {
-      context = nullptr;
-   }
+    QMacCGContext()
+    {
+        context = nullptr;
+    }
 
-   QMacCGContext(const QPaintDevice *pdev) {
-      extern CGContextRef qt_mac_cg_context(const QPaintDevice *);
-      context = qt_mac_cg_context(pdev);
-   }
+    QMacCGContext( const QPaintDevice *pdev )
+    {
+        extern CGContextRef qt_mac_cg_context( const QPaintDevice * );
+        context = qt_mac_cg_context( pdev );
+    }
 
-   QMacCGContext(CGContextRef cg, bool takeOwnership = false) {
-      context = cg;
-      if (! takeOwnership) {
-         CGContextRetain(context);
-      }
-   }
+    QMacCGContext( CGContextRef cg, bool takeOwnership = false )
+    {
+        context = cg;
 
-   QMacCGContext(const QMacCGContext &copy)
-      : context(nullptr) {
-      *this = copy;
-   }
+        if ( ! takeOwnership )
+        {
+            CGContextRetain( context );
+        }
+    }
 
-   ~QMacCGContext() {
-      if (context) {
-         CGContextRelease(context);
-      }
-   }
+    QMacCGContext( const QMacCGContext &copy )
+        : context( nullptr )
+    {
+        *this = copy;
+    }
 
-   bool isNull() const {
-      return context;
-   }
+    ~QMacCGContext()
+    {
+        if ( context )
+        {
+            CGContextRelease( context );
+        }
+    }
 
-   operator CGContextRef() {
-      return context;
-   }
+    bool isNull() const
+    {
+        return context;
+    }
 
-   QMacCGContext &operator=(const QMacCGContext &copy) {
-      if (context) {
-         CGContextRelease(context);
-      }
+    operator CGContextRef()
+    {
+        return context;
+    }
 
-      context = copy.context;
-      CGContextRetain(context);
-      return *this;
-   }
+    QMacCGContext &operator=( const QMacCGContext &copy )
+    {
+        if ( context )
+        {
+            CGContextRelease( context );
+        }
 
-   QMacCGContext &operator=(CGContextRef cg) {
-      if (context) {
-         CGContextRelease(context);
-      }
+        context = copy.context;
+        CGContextRetain( context );
+        return *this;
+    }
 
-      context = cg;
-      CGContextRetain(context);    // do not take ownership
-      return *this;
-   }
+    QMacCGContext &operator=( CGContextRef cg )
+    {
+        if ( context )
+        {
+            CGContextRelease( context );
+        }
+
+        context = cg;
+        CGContextRetain( context );  // do not take ownership
+        return *this;
+    }
 };
 
 class QMacInternalPasteboardMime;
@@ -156,35 +173,37 @@ class QMimeData;
 
 extern QPaintDevice *qt_mac_safe_pdev;                          // implemented in qmacstyle_mac.cpp
 
-extern OSWindowRef qt_mac_window_for(const QWidget *);          // implemented in qwidget_mac.mm
-extern OSViewRef qt_mac_nativeview_for(const QWidget *);
-extern QPoint qt_mac_nativeMapFromParent(const QWidget *child, const QPoint &pt);
+extern OSWindowRef qt_mac_window_for( const QWidget * );        // implemented in qwidget_mac.mm
+extern OSViewRef qt_mac_nativeview_for( const QWidget * );
+extern QPoint qt_mac_nativeMapFromParent( const QWidget *child, const QPoint &pt );
 
 #ifdef check
 # undef check
 #endif
 
-QFont qfontForThemeFont(ThemeFontID themeID);
-QColor qcolorForThemeTextColor(ThemeTextColor themeColor);
+QFont qfontForThemeFont( ThemeFontID themeID );
+QColor qcolorForThemeTextColor( ThemeTextColor themeColor );
 
-struct QMacDndAnswerRecord {
-   QRect rect;
-   Qt::KeyboardModifiers modifiers;
-   Qt::MouseButtons buttons;
-   Qt::DropAction lastAction;
-   unsigned int lastOperation;
+struct QMacDndAnswerRecord
+{
+    QRect rect;
+    Qt::KeyboardModifiers modifiers;
+    Qt::MouseButtons buttons;
+    Qt::DropAction lastAction;
+    unsigned int lastOperation;
 
-   void clear() {
-      rect = QRect();
-      modifiers = Qt::NoModifier;
-      buttons = Qt::NoButton;
-      lastAction = Qt::IgnoreAction;
-      lastOperation = 0;
-   }
+    void clear()
+    {
+        rect = QRect();
+        modifiers = Qt::NoModifier;
+        buttons = Qt::NoButton;
+        lastAction = Qt::IgnoreAction;
+        lastOperation = 0;
+    }
 };
 
 extern QMacDndAnswerRecord qt_mac_dnd_answer_rec;
-void qt_mac_copy_answer_rect(const QDragMoveEvent &event);
-bool qt_mac_mouse_inside_answer_rect(QPoint mouse);
+void qt_mac_copy_answer_rect( const QDragMoveEvent &event );
+bool qt_mac_mouse_inside_answer_rect( QPoint mouse );
 
 #endif

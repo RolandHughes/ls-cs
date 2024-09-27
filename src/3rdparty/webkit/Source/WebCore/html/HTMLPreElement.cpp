@@ -28,41 +28,52 @@
 #include "CSSValueKeywords.h"
 #include "HTMLNames.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-inline HTMLPreElement::HTMLPreElement(const QualifiedName& tagName, Document* document)
-    : HTMLElement(tagName, document)
+inline HTMLPreElement::HTMLPreElement( const QualifiedName &tagName, Document *document )
+    : HTMLElement( tagName, document )
 {
 }
 
-PassRefPtr<HTMLPreElement> HTMLPreElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<HTMLPreElement> HTMLPreElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new HTMLPreElement(tagName, document));
+    return adoptRef( new HTMLPreElement( tagName, document ) );
 }
 
-bool HTMLPreElement::mapToEntry(const QualifiedName& attrName, MappedAttributeEntry& result) const
+bool HTMLPreElement::mapToEntry( const QualifiedName &attrName, MappedAttributeEntry &result ) const
 {
-    if (attrName == widthAttr || attrName == wrapAttr) {
+    if ( attrName == widthAttr || attrName == wrapAttr )
+    {
         result = ePre;
         return false;
     }
-    return HTMLElement::mapToEntry(attrName, result);
+
+    return HTMLElement::mapToEntry( attrName, result );
 }
 
-void HTMLPreElement::parseMappedAttribute(Attribute* attr)
+void HTMLPreElement::parseMappedAttribute( Attribute *attr )
 {
-    if (attr->name() == widthAttr) {
+    if ( attr->name() == widthAttr )
+    {
         // FIXME: Implement this some day.  Width on a <pre> is the # of characters that
         // we should size the pre to.  We basically need to take the width of a space,
         // multiply by the value of the attribute and then set that as the width CSS
         // property.
-    } else if (attr->name() == wrapAttr) {
-        if (!attr->value().isNull())
-            addCSSProperty(attr, CSSPropertyWhiteSpace, CSSValuePreWrap);
-    } else
-        return HTMLElement::parseMappedAttribute(attr);
+    }
+    else if ( attr->name() == wrapAttr )
+    {
+        if ( !attr->value().isNull() )
+        {
+            addCSSProperty( attr, CSSPropertyWhiteSpace, CSSValuePreWrap );
+        }
+    }
+    else
+    {
+        return HTMLElement::parseMappedAttribute( attr );
+    }
 }
 
 }

@@ -21,13 +21,13 @@
 
 #include <cs_catch2.h>
 
-TEST_CASE("QFutureWatcher traits", "[qfuturewatcher]")
+TEST_CASE( "QFutureWatcher traits", "[qfuturewatcher]" )
 {
-   REQUIRE(std::is_copy_constructible_v<QFutureWatcher<int>> == false);
-   REQUIRE(std::is_move_constructible_v<QFutureWatcher<int>> == false);
+    REQUIRE( std::is_copy_constructible_v<QFutureWatcher<int>> == false );
+    REQUIRE( std::is_move_constructible_v<QFutureWatcher<int>> == false );
 
-   REQUIRE(std::is_copy_assignable_v<QFutureWatcher<int>> == false);
-   REQUIRE(std::is_move_assignable_v<QFutureWatcher<int>> == false);
+    REQUIRE( std::is_copy_assignable_v<QFutureWatcher<int>> == false );
+    REQUIRE( std::is_move_assignable_v<QFutureWatcher<int>> == false );
 
-   REQUIRE(std::has_virtual_destructor_v<QFutureWatcher<int>> == true);
+    REQUIRE( std::has_virtual_destructor_v<QFutureWatcher<int>> == true );
 }

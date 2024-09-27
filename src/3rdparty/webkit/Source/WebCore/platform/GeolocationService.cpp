@@ -33,23 +33,24 @@
 #include <wtf/Assertions.h>
 #include <wtf/CurrentTime.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 #if !ENABLE(GEOLOCATION) || ENABLE(CLIENT_BASED_GEOLOCATION)
-static PassOwnPtr<GeolocationService> createGeolocationServiceNull(GeolocationServiceClient*)
+static PassOwnPtr<GeolocationService> createGeolocationServiceNull( GeolocationServiceClient * )
 {
     return nullptr;
 }
 
-GeolocationService::FactoryFunction* GeolocationService::s_factoryFunction = &createGeolocationServiceNull;
-GeolocationService::FactoryFunction* GeolocationService::s_mockFactoryFunction = &createGeolocationServiceNull;
+GeolocationService::FactoryFunction *GeolocationService::s_factoryFunction = &createGeolocationServiceNull;
+GeolocationService::FactoryFunction *GeolocationService::s_mockFactoryFunction = &createGeolocationServiceNull;
 #else
-GeolocationService::FactoryFunction* GeolocationService::s_mockFactoryFunction = &GeolocationServiceMock::create;
+GeolocationService::FactoryFunction *GeolocationService::s_mockFactoryFunction = &GeolocationServiceMock::create;
 #endif
 
-PassOwnPtr<GeolocationService> GeolocationService::create(GeolocationServiceClient* client)
+PassOwnPtr<GeolocationService> GeolocationService::create( GeolocationServiceClient *client )
 {
-    return (*s_factoryFunction)(client);
+    return ( *s_factoryFunction )( client );
 }
 
 #if ENABLE(GEOLOCATION)
@@ -58,25 +59,25 @@ void GeolocationService::useMock()
     s_factoryFunction = s_mockFactoryFunction;
 }
 
-void GeolocationService::setCustomMockFactory(FactoryFunction f)
+void GeolocationService::setCustomMockFactory( FactoryFunction f )
 {
     s_mockFactoryFunction = f;
 }
 
-GeolocationService::GeolocationService(GeolocationServiceClient* client)
-    : m_geolocationServiceClient(client)
+GeolocationService::GeolocationService( GeolocationServiceClient *client )
+    : m_geolocationServiceClient( client )
 {
-    ASSERT(m_geolocationServiceClient);
+    ASSERT( m_geolocationServiceClient );
 }
 
 void GeolocationService::positionChanged()
 {
-    m_geolocationServiceClient->geolocationServicePositionChanged(this);
+    m_geolocationServiceClient->geolocationServicePositionChanged( this );
 }
 
 void GeolocationService::errorOccurred()
 {
-    m_geolocationServiceClient->geolocationServiceErrorOccurred(this);
+    m_geolocationServiceClient->geolocationServiceErrorOccurred( this );
 }
 
 #endif

@@ -41,50 +41,53 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class GeolocationController;
 class GeolocationPosition;
 class GeolocationError;
 
 // Provides a mock object for the geolocation client
-class GeolocationClientMock : public GeolocationClient {
+class GeolocationClientMock : public GeolocationClient
+{
 public:
     GeolocationClientMock();
     virtual ~GeolocationClientMock();
 
     void reset();
-    void setController(GeolocationController*);
+    void setController( GeolocationController * );
 
-    void setError(PassRefPtr<GeolocationError>);
-    void setPosition(PassRefPtr<GeolocationPosition>);
-    void setPermission(bool allowed);
+    void setError( PassRefPtr<GeolocationError> );
+    void setPosition( PassRefPtr<GeolocationPosition> );
+    void setPermission( bool allowed );
     int numberOfPendingPermissionRequests() const;
 
     // GeolocationClient
     virtual void geolocationDestroyed();
     virtual void startUpdating();
     virtual void stopUpdating();
-    virtual void setEnableHighAccuracy(bool);
-    virtual GeolocationPosition* lastPosition();
-    virtual void requestPermission(Geolocation*);
-    virtual void cancelPermissionRequest(Geolocation*);
+    virtual void setEnableHighAccuracy( bool );
+    virtual GeolocationPosition *lastPosition();
+    virtual void requestPermission( Geolocation * );
+    virtual void cancelPermissionRequest( Geolocation * );
 
 private:
     void asyncUpdateController();
-    void controllerTimerFired(Timer<GeolocationClientMock>*);
+    void controllerTimerFired( Timer<GeolocationClientMock> * );
 
     void asyncUpdatePermission();
-    void permissionTimerFired(Timer<GeolocationClientMock>*);
+    void permissionTimerFired( Timer<GeolocationClientMock> * );
 
-    GeolocationController* m_controller;
+    GeolocationController *m_controller;
     RefPtr<GeolocationPosition> m_lastPosition;
     RefPtr<GeolocationError> m_lastError;
     Timer<GeolocationClientMock> m_controllerTimer;
     Timer<GeolocationClientMock> m_permissionTimer;
     bool m_isActive;
 
-    enum PermissionState {
+    enum PermissionState
+    {
         PermissionStateUnset,
         PermissionStateAllowed,
         PermissionStateDenied,

@@ -44,20 +44,22 @@ typedef struct _WebKitWebViewBase WebKitWebViewBase;
 typedef struct _WebKitWebViewBaseClass WebKitWebViewBaseClass;
 typedef struct _WebKitWebViewBasePrivate WebKitWebViewBasePrivate;
 
-struct _WebKitWebViewBase {
+struct _WebKitWebViewBase
+{
     GtkContainer parentInstance;
     /*< private >*/
-    WebKitWebViewBasePrivate* priv;
+    WebKitWebViewBasePrivate *priv;
 };
 
-struct _WebKitWebViewBaseClass {
+struct _WebKitWebViewBaseClass
+{
     GtkContainerClass parentClass;
 
     /* Padding for future expansion */
-    void (*_webkit_reserved0) (void);
-    void (*_webkit_reserved1) (void);
-    void (*_webkit_reserved2) (void);
-    void (*_webkit_reserved3) (void);
+    void ( *_webkit_reserved0 ) ( void );
+    void ( *_webkit_reserved1 ) ( void );
+    void ( *_webkit_reserved2 ) ( void );
+    void ( *_webkit_reserved3 ) ( void );
 };
 
 WK_EXPORT GType

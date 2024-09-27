@@ -24,40 +24,43 @@
 #include "RenderStyleConstants.h"
 #include <wtf/HashMap.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class RenderObject;
 class RenderStyle;
 class RenderSVGResourceContainer;
 class SVGResources;
 
-class SVGResourcesCache {
-    WTF_MAKE_NONCOPYABLE(SVGResourcesCache); WTF_MAKE_FAST_ALLOCATED;
+class SVGResourcesCache
+{
+    WTF_MAKE_NONCOPYABLE( SVGResourcesCache );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
     SVGResourcesCache();
     ~SVGResourcesCache();
 
-    void addResourcesFromRenderObject(RenderObject*, const RenderStyle*);
-    void removeResourcesFromRenderObject(RenderObject*);
-    static SVGResources* cachedResourcesForRenderObject(RenderObject*);
+    void addResourcesFromRenderObject( RenderObject *, const RenderStyle * );
+    void removeResourcesFromRenderObject( RenderObject * );
+    static SVGResources *cachedResourcesForRenderObject( RenderObject * );
 
     // Called from all SVG renderers destroy() methods - except for RenderSVGResourceContainer.
-    static void clientDestroyed(RenderObject*);
+    static void clientDestroyed( RenderObject * );
 
     // Called from all SVG renderers layout() methods.
-    static void clientLayoutChanged(RenderObject*);
+    static void clientLayoutChanged( RenderObject * );
 
     // Called from all SVG renderers styleDidChange() methods.
-    static void clientStyleChanged(RenderObject*, StyleDifference, const RenderStyle* newStyle);
+    static void clientStyleChanged( RenderObject *, StyleDifference, const RenderStyle *newStyle );
 
     // Called from all SVG renderers updateFromElement() methods.
-    static void clientUpdatedFromElement(RenderObject*, const RenderStyle* newStyle);
+    static void clientUpdatedFromElement( RenderObject *, const RenderStyle *newStyle );
 
     // Called from RenderSVGResourceContainer::destroy().
-    static void resourceDestroyed(RenderSVGResourceContainer*);
+    static void resourceDestroyed( RenderSVGResourceContainer * );
 
 private:
-    HashMap<RenderObject*, SVGResources*> m_cache;
+    HashMap<RenderObject *, SVGResources *> m_cache;
 };
 
 }

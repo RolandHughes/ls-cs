@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -33,26 +33,31 @@
 #include <unistd.h>
 #include <wtf/VMTags.h>
 
-namespace JSC {
+namespace JSC
+{
 
 void ExecutableAllocator::intializePageSize()
 {
     ExecutableAllocator::pageSize = getpagesize();
 }
 
-ExecutablePool::Allocation ExecutablePool::systemAlloc(size_t n)
+ExecutablePool::Allocation ExecutablePool::systemAlloc( size_t n )
 {
-    void* allocation = mmap(NULL, n, INITIAL_PROTECTION_FLAGS, MAP_PRIVATE | MAP_ANON, VM_TAG_FOR_EXECUTABLEALLOCATOR_MEMORY, 0);
-    if (allocation == MAP_FAILED)
+    void *allocation = mmap( NULL, n, INITIAL_PROTECTION_FLAGS, MAP_PRIVATE | MAP_ANON, VM_TAG_FOR_EXECUTABLEALLOCATOR_MEMORY, 0 );
+
+    if ( allocation == MAP_FAILED )
+    {
         CRASH();
-    ExecutablePool::Allocation alloc = { reinterpret_cast<char*>(allocation), n };
+    }
+
+    ExecutablePool::Allocation alloc = { reinterpret_cast<char *>( allocation ), n };
     return alloc;
 }
 
-void ExecutablePool::systemRelease(const ExecutablePool::Allocation& alloc)
-{ 
-    int result = munmap(alloc.pages, alloc.size);
-    ASSERT_UNUSED(result, !result);
+void ExecutablePool::systemRelease( const ExecutablePool::Allocation &alloc )
+{
+    int result = munmap( alloc.pages, alloc.size );
+    ASSERT_UNUSED( result, !result );
 }
 
 }

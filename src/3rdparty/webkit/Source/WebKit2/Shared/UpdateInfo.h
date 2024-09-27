@@ -30,21 +30,24 @@
 #include <WebCore/IntRect.h>
 #include <wtf/Noncopyable.h>
 
-namespace CoreIPC {
-    class ArgumentDecoder;
-    class ArgumentEncoder;
+namespace CoreIPC
+{
+class ArgumentDecoder;
+class ArgumentEncoder;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
-class UpdateInfo {
-    WTF_MAKE_NONCOPYABLE(UpdateInfo);
+class UpdateInfo
+{
+    WTF_MAKE_NONCOPYABLE( UpdateInfo );
 
 public:
     UpdateInfo() { }
 
-    void encode(CoreIPC::ArgumentEncoder*) const;
-    static bool decode(CoreIPC::ArgumentDecoder*, UpdateInfo&);
+    void encode( CoreIPC::ArgumentEncoder * ) const;
+    static bool decode( CoreIPC::ArgumentDecoder *, UpdateInfo & );
 
     // The size of the web view.
     WebCore::IntSize viewSize;
@@ -52,7 +55,7 @@ public:
     // The rect and delta to be scrolled.
     WebCore::IntRect scrollRect;
     WebCore::IntSize scrollOffset;
-    
+
     // The bounds of the update rects.
     WebCore::IntRect updateRectBounds;
 

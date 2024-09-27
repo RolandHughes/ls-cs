@@ -399,9 +399,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSDOMWindow);
+ASSERT_CLASS_FITS_IN_CELL( JSDOMWindow );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -412,526 +413,526 @@ ASSERT_CLASS_FITS_IN_CELL(JSDOMWindow);
 
 static const HashTableValue JSDOMWindowTableValues[456] =
 {
-    { "screen", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowScreen), (intptr_t)setJSDOMWindowScreen THUNK_GENERATOR(0) },
-    { "history", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHistory), (intptr_t)setJSDOMWindowHistory THUNK_GENERATOR(0) },
-    { "locationbar", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowLocationbar), (intptr_t)setJSDOMWindowLocationbar THUNK_GENERATOR(0) },
-    { "menubar", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowMenubar), (intptr_t)setJSDOMWindowMenubar THUNK_GENERATOR(0) },
-    { "personalbar", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowPersonalbar), (intptr_t)setJSDOMWindowPersonalbar THUNK_GENERATOR(0) },
-    { "scrollbars", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowScrollbars), (intptr_t)setJSDOMWindowScrollbars THUNK_GENERATOR(0) },
-    { "statusbar", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowStatusbar), (intptr_t)setJSDOMWindowStatusbar THUNK_GENERATOR(0) },
-    { "toolbar", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowToolbar), (intptr_t)setJSDOMWindowToolbar THUNK_GENERATOR(0) },
-    { "navigator", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowNavigator), (intptr_t)setJSDOMWindowNavigator THUNK_GENERATOR(0) },
-    { "clientInformation", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowClientInformation), (intptr_t)setJSDOMWindowClientInformation THUNK_GENERATOR(0) },
-    { "crypto", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowCrypto), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "location", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowLocation), (intptr_t)setJSDOMWindowLocation THUNK_GENERATOR(0) },
-    { "event", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowEvent), (intptr_t)setJSDOMWindowEvent THUNK_GENERATOR(0) },
-    { "frameElement", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowFrameElement), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "offscreenBuffering", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOffscreenBuffering), (intptr_t)setJSDOMWindowOffscreenBuffering THUNK_GENERATOR(0) },
-    { "outerHeight", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOuterHeight), (intptr_t)setJSDOMWindowOuterHeight THUNK_GENERATOR(0) },
-    { "outerWidth", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOuterWidth), (intptr_t)setJSDOMWindowOuterWidth THUNK_GENERATOR(0) },
-    { "innerHeight", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowInnerHeight), (intptr_t)setJSDOMWindowInnerHeight THUNK_GENERATOR(0) },
-    { "innerWidth", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowInnerWidth), (intptr_t)setJSDOMWindowInnerWidth THUNK_GENERATOR(0) },
-    { "screenX", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowScreenX), (intptr_t)setJSDOMWindowScreenX THUNK_GENERATOR(0) },
-    { "screenY", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowScreenY), (intptr_t)setJSDOMWindowScreenY THUNK_GENERATOR(0) },
-    { "screenLeft", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowScreenLeft), (intptr_t)setJSDOMWindowScreenLeft THUNK_GENERATOR(0) },
-    { "screenTop", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowScreenTop), (intptr_t)setJSDOMWindowScreenTop THUNK_GENERATOR(0) },
-    { "scrollX", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowScrollX), (intptr_t)setJSDOMWindowScrollX THUNK_GENERATOR(0) },
-    { "scrollY", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowScrollY), (intptr_t)setJSDOMWindowScrollY THUNK_GENERATOR(0) },
-    { "pageXOffset", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowPageXOffset), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "pageYOffset", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowPageYOffset), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "closed", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowClosed), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "length", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowLength), (intptr_t)setJSDOMWindowLength THUNK_GENERATOR(0) },
-    { "name", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowName), (intptr_t)setJSDOMWindowName THUNK_GENERATOR(0) },
-    { "status", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowStatus), (intptr_t)setJSDOMWindowStatus THUNK_GENERATOR(0) },
-    { "defaultStatus", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowDefaultStatus), (intptr_t)setJSDOMWindowDefaultStatus THUNK_GENERATOR(0) },
-    { "defaultstatus", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowDefaultstatus), (intptr_t)setJSDOMWindowDefaultstatus THUNK_GENERATOR(0) },
-    { "self", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSelf), (intptr_t)setJSDOMWindowSelf THUNK_GENERATOR(0) },
-    { "window", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowWindow), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "frames", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowFrames), (intptr_t)setJSDOMWindowFrames THUNK_GENERATOR(0) },
-    { "opener", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOpener), (intptr_t)setJSDOMWindowOpener THUNK_GENERATOR(0) },
-    { "parent", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowParent), (intptr_t)setJSDOMWindowParent THUNK_GENERATOR(0) },
-    { "top", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowTop), (intptr_t)setJSDOMWindowTop THUNK_GENERATOR(0) },
-    { "document", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowDocument), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "styleMedia", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowStyleMedia), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "devicePixelRatio", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowDevicePixelRatio), (intptr_t)setJSDOMWindowDevicePixelRatio THUNK_GENERATOR(0) },
-    { "applicationCache", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowApplicationCache), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "sessionStorage", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSessionStorage), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "localStorage", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowLocalStorage), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "webkitNotifications", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowWebkitNotifications), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "console", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowConsole), (intptr_t)setJSDOMWindowConsole THUNK_GENERATOR(0) },
-    { "onabort", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOnabort), (intptr_t)setJSDOMWindowOnabort THUNK_GENERATOR(0) },
-    { "onbeforeunload", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOnbeforeunload), (intptr_t)setJSDOMWindowOnbeforeunload THUNK_GENERATOR(0) },
-    { "onblur", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOnblur), (intptr_t)setJSDOMWindowOnblur THUNK_GENERATOR(0) },
-    { "oncanplay", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOncanplay), (intptr_t)setJSDOMWindowOncanplay THUNK_GENERATOR(0) },
-    { "oncanplaythrough", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOncanplaythrough), (intptr_t)setJSDOMWindowOncanplaythrough THUNK_GENERATOR(0) },
-    { "onchange", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOnchange), (intptr_t)setJSDOMWindowOnchange THUNK_GENERATOR(0) },
-    { "onclick", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOnclick), (intptr_t)setJSDOMWindowOnclick THUNK_GENERATOR(0) },
-    { "oncontextmenu", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOncontextmenu), (intptr_t)setJSDOMWindowOncontextmenu THUNK_GENERATOR(0) },
-    { "ondblclick", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOndblclick), (intptr_t)setJSDOMWindowOndblclick THUNK_GENERATOR(0) },
-    { "ondrag", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOndrag), (intptr_t)setJSDOMWindowOndrag THUNK_GENERATOR(0) },
-    { "ondragend", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOndragend), (intptr_t)setJSDOMWindowOndragend THUNK_GENERATOR(0) },
-    { "ondragenter", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOndragenter), (intptr_t)setJSDOMWindowOndragenter THUNK_GENERATOR(0) },
-    { "ondragleave", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOndragleave), (intptr_t)setJSDOMWindowOndragleave THUNK_GENERATOR(0) },
-    { "ondragover", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOndragover), (intptr_t)setJSDOMWindowOndragover THUNK_GENERATOR(0) },
-    { "ondragstart", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOndragstart), (intptr_t)setJSDOMWindowOndragstart THUNK_GENERATOR(0) },
-    { "ondrop", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOndrop), (intptr_t)setJSDOMWindowOndrop THUNK_GENERATOR(0) },
-    { "ondurationchange", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOndurationchange), (intptr_t)setJSDOMWindowOndurationchange THUNK_GENERATOR(0) },
-    { "onemptied", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOnemptied), (intptr_t)setJSDOMWindowOnemptied THUNK_GENERATOR(0) },
-    { "onended", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOnended), (intptr_t)setJSDOMWindowOnended THUNK_GENERATOR(0) },
-    { "onerror", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOnerror), (intptr_t)setJSDOMWindowOnerror THUNK_GENERATOR(0) },
-    { "onfocus", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOnfocus), (intptr_t)setJSDOMWindowOnfocus THUNK_GENERATOR(0) },
-    { "onhashchange", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOnhashchange), (intptr_t)setJSDOMWindowOnhashchange THUNK_GENERATOR(0) },
-    { "oninput", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOninput), (intptr_t)setJSDOMWindowOninput THUNK_GENERATOR(0) },
-    { "oninvalid", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOninvalid), (intptr_t)setJSDOMWindowOninvalid THUNK_GENERATOR(0) },
-    { "onkeydown", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOnkeydown), (intptr_t)setJSDOMWindowOnkeydown THUNK_GENERATOR(0) },
-    { "onkeypress", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOnkeypress), (intptr_t)setJSDOMWindowOnkeypress THUNK_GENERATOR(0) },
-    { "onkeyup", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOnkeyup), (intptr_t)setJSDOMWindowOnkeyup THUNK_GENERATOR(0) },
-    { "onload", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOnload), (intptr_t)setJSDOMWindowOnload THUNK_GENERATOR(0) },
-    { "onloadeddata", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOnloadeddata), (intptr_t)setJSDOMWindowOnloadeddata THUNK_GENERATOR(0) },
-    { "onloadedmetadata", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOnloadedmetadata), (intptr_t)setJSDOMWindowOnloadedmetadata THUNK_GENERATOR(0) },
-    { "onloadstart", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOnloadstart), (intptr_t)setJSDOMWindowOnloadstart THUNK_GENERATOR(0) },
-    { "onmessage", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOnmessage), (intptr_t)setJSDOMWindowOnmessage THUNK_GENERATOR(0) },
-    { "onmousedown", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOnmousedown), (intptr_t)setJSDOMWindowOnmousedown THUNK_GENERATOR(0) },
-    { "onmousemove", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOnmousemove), (intptr_t)setJSDOMWindowOnmousemove THUNK_GENERATOR(0) },
-    { "onmouseout", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOnmouseout), (intptr_t)setJSDOMWindowOnmouseout THUNK_GENERATOR(0) },
-    { "onmouseover", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOnmouseover), (intptr_t)setJSDOMWindowOnmouseover THUNK_GENERATOR(0) },
-    { "onmouseup", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOnmouseup), (intptr_t)setJSDOMWindowOnmouseup THUNK_GENERATOR(0) },
-    { "onmousewheel", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOnmousewheel), (intptr_t)setJSDOMWindowOnmousewheel THUNK_GENERATOR(0) },
-    { "onoffline", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOnoffline), (intptr_t)setJSDOMWindowOnoffline THUNK_GENERATOR(0) },
-    { "ononline", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOnonline), (intptr_t)setJSDOMWindowOnonline THUNK_GENERATOR(0) },
-    { "onpagehide", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOnpagehide), (intptr_t)setJSDOMWindowOnpagehide THUNK_GENERATOR(0) },
-    { "onpageshow", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOnpageshow), (intptr_t)setJSDOMWindowOnpageshow THUNK_GENERATOR(0) },
-    { "onpause", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOnpause), (intptr_t)setJSDOMWindowOnpause THUNK_GENERATOR(0) },
-    { "onplay", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOnplay), (intptr_t)setJSDOMWindowOnplay THUNK_GENERATOR(0) },
-    { "onplaying", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOnplaying), (intptr_t)setJSDOMWindowOnplaying THUNK_GENERATOR(0) },
-    { "onpopstate", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOnpopstate), (intptr_t)setJSDOMWindowOnpopstate THUNK_GENERATOR(0) },
-    { "onprogress", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOnprogress), (intptr_t)setJSDOMWindowOnprogress THUNK_GENERATOR(0) },
-    { "onratechange", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOnratechange), (intptr_t)setJSDOMWindowOnratechange THUNK_GENERATOR(0) },
-    { "onresize", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOnresize), (intptr_t)setJSDOMWindowOnresize THUNK_GENERATOR(0) },
-    { "onscroll", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOnscroll), (intptr_t)setJSDOMWindowOnscroll THUNK_GENERATOR(0) },
-    { "onseeked", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOnseeked), (intptr_t)setJSDOMWindowOnseeked THUNK_GENERATOR(0) },
-    { "onseeking", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOnseeking), (intptr_t)setJSDOMWindowOnseeking THUNK_GENERATOR(0) },
-    { "onselect", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOnselect), (intptr_t)setJSDOMWindowOnselect THUNK_GENERATOR(0) },
-    { "onstalled", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOnstalled), (intptr_t)setJSDOMWindowOnstalled THUNK_GENERATOR(0) },
-    { "onstorage", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOnstorage), (intptr_t)setJSDOMWindowOnstorage THUNK_GENERATOR(0) },
-    { "onsubmit", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOnsubmit), (intptr_t)setJSDOMWindowOnsubmit THUNK_GENERATOR(0) },
-    { "onsuspend", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOnsuspend), (intptr_t)setJSDOMWindowOnsuspend THUNK_GENERATOR(0) },
-    { "ontimeupdate", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOntimeupdate), (intptr_t)setJSDOMWindowOntimeupdate THUNK_GENERATOR(0) },
-    { "onunload", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOnunload), (intptr_t)setJSDOMWindowOnunload THUNK_GENERATOR(0) },
-    { "onvolumechange", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOnvolumechange), (intptr_t)setJSDOMWindowOnvolumechange THUNK_GENERATOR(0) },
-    { "onwaiting", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOnwaiting), (intptr_t)setJSDOMWindowOnwaiting THUNK_GENERATOR(0) },
-    { "onreset", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOnreset), (intptr_t)setJSDOMWindowOnreset THUNK_GENERATOR(0) },
-    { "onsearch", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOnsearch), (intptr_t)setJSDOMWindowOnsearch THUNK_GENERATOR(0) },
-    { "onwebkitanimationend", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOnwebkitanimationend), (intptr_t)setJSDOMWindowOnwebkitanimationend THUNK_GENERATOR(0) },
-    { "onwebkitanimationiteration", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOnwebkitanimationiteration), (intptr_t)setJSDOMWindowOnwebkitanimationiteration THUNK_GENERATOR(0) },
-    { "onwebkitanimationstart", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOnwebkitanimationstart), (intptr_t)setJSDOMWindowOnwebkitanimationstart THUNK_GENERATOR(0) },
-    { "onwebkittransitionend", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOnwebkittransitionend), (intptr_t)setJSDOMWindowOnwebkittransitionend THUNK_GENERATOR(0) },
+    { "screen", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowScreen ), ( intptr_t )setJSDOMWindowScreen THUNK_GENERATOR( 0 ) },
+    { "history", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHistory ), ( intptr_t )setJSDOMWindowHistory THUNK_GENERATOR( 0 ) },
+    { "locationbar", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowLocationbar ), ( intptr_t )setJSDOMWindowLocationbar THUNK_GENERATOR( 0 ) },
+    { "menubar", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowMenubar ), ( intptr_t )setJSDOMWindowMenubar THUNK_GENERATOR( 0 ) },
+    { "personalbar", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowPersonalbar ), ( intptr_t )setJSDOMWindowPersonalbar THUNK_GENERATOR( 0 ) },
+    { "scrollbars", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowScrollbars ), ( intptr_t )setJSDOMWindowScrollbars THUNK_GENERATOR( 0 ) },
+    { "statusbar", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowStatusbar ), ( intptr_t )setJSDOMWindowStatusbar THUNK_GENERATOR( 0 ) },
+    { "toolbar", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowToolbar ), ( intptr_t )setJSDOMWindowToolbar THUNK_GENERATOR( 0 ) },
+    { "navigator", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowNavigator ), ( intptr_t )setJSDOMWindowNavigator THUNK_GENERATOR( 0 ) },
+    { "clientInformation", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowClientInformation ), ( intptr_t )setJSDOMWindowClientInformation THUNK_GENERATOR( 0 ) },
+    { "crypto", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowCrypto ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "location", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowLocation ), ( intptr_t )setJSDOMWindowLocation THUNK_GENERATOR( 0 ) },
+    { "event", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowEvent ), ( intptr_t )setJSDOMWindowEvent THUNK_GENERATOR( 0 ) },
+    { "frameElement", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowFrameElement ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "offscreenBuffering", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOffscreenBuffering ), ( intptr_t )setJSDOMWindowOffscreenBuffering THUNK_GENERATOR( 0 ) },
+    { "outerHeight", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOuterHeight ), ( intptr_t )setJSDOMWindowOuterHeight THUNK_GENERATOR( 0 ) },
+    { "outerWidth", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOuterWidth ), ( intptr_t )setJSDOMWindowOuterWidth THUNK_GENERATOR( 0 ) },
+    { "innerHeight", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowInnerHeight ), ( intptr_t )setJSDOMWindowInnerHeight THUNK_GENERATOR( 0 ) },
+    { "innerWidth", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowInnerWidth ), ( intptr_t )setJSDOMWindowInnerWidth THUNK_GENERATOR( 0 ) },
+    { "screenX", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowScreenX ), ( intptr_t )setJSDOMWindowScreenX THUNK_GENERATOR( 0 ) },
+    { "screenY", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowScreenY ), ( intptr_t )setJSDOMWindowScreenY THUNK_GENERATOR( 0 ) },
+    { "screenLeft", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowScreenLeft ), ( intptr_t )setJSDOMWindowScreenLeft THUNK_GENERATOR( 0 ) },
+    { "screenTop", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowScreenTop ), ( intptr_t )setJSDOMWindowScreenTop THUNK_GENERATOR( 0 ) },
+    { "scrollX", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowScrollX ), ( intptr_t )setJSDOMWindowScrollX THUNK_GENERATOR( 0 ) },
+    { "scrollY", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowScrollY ), ( intptr_t )setJSDOMWindowScrollY THUNK_GENERATOR( 0 ) },
+    { "pageXOffset", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowPageXOffset ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "pageYOffset", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowPageYOffset ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "closed", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowClosed ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "length", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowLength ), ( intptr_t )setJSDOMWindowLength THUNK_GENERATOR( 0 ) },
+    { "name", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowName ), ( intptr_t )setJSDOMWindowName THUNK_GENERATOR( 0 ) },
+    { "status", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowStatus ), ( intptr_t )setJSDOMWindowStatus THUNK_GENERATOR( 0 ) },
+    { "defaultStatus", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowDefaultStatus ), ( intptr_t )setJSDOMWindowDefaultStatus THUNK_GENERATOR( 0 ) },
+    { "defaultstatus", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowDefaultstatus ), ( intptr_t )setJSDOMWindowDefaultstatus THUNK_GENERATOR( 0 ) },
+    { "self", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSelf ), ( intptr_t )setJSDOMWindowSelf THUNK_GENERATOR( 0 ) },
+    { "window", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowWindow ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "frames", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowFrames ), ( intptr_t )setJSDOMWindowFrames THUNK_GENERATOR( 0 ) },
+    { "opener", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOpener ), ( intptr_t )setJSDOMWindowOpener THUNK_GENERATOR( 0 ) },
+    { "parent", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowParent ), ( intptr_t )setJSDOMWindowParent THUNK_GENERATOR( 0 ) },
+    { "top", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowTop ), ( intptr_t )setJSDOMWindowTop THUNK_GENERATOR( 0 ) },
+    { "document", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowDocument ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "styleMedia", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowStyleMedia ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "devicePixelRatio", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowDevicePixelRatio ), ( intptr_t )setJSDOMWindowDevicePixelRatio THUNK_GENERATOR( 0 ) },
+    { "applicationCache", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowApplicationCache ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "sessionStorage", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSessionStorage ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "localStorage", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowLocalStorage ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "webkitNotifications", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowWebkitNotifications ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "console", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowConsole ), ( intptr_t )setJSDOMWindowConsole THUNK_GENERATOR( 0 ) },
+    { "onabort", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOnabort ), ( intptr_t )setJSDOMWindowOnabort THUNK_GENERATOR( 0 ) },
+    { "onbeforeunload", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOnbeforeunload ), ( intptr_t )setJSDOMWindowOnbeforeunload THUNK_GENERATOR( 0 ) },
+    { "onblur", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOnblur ), ( intptr_t )setJSDOMWindowOnblur THUNK_GENERATOR( 0 ) },
+    { "oncanplay", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOncanplay ), ( intptr_t )setJSDOMWindowOncanplay THUNK_GENERATOR( 0 ) },
+    { "oncanplaythrough", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOncanplaythrough ), ( intptr_t )setJSDOMWindowOncanplaythrough THUNK_GENERATOR( 0 ) },
+    { "onchange", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOnchange ), ( intptr_t )setJSDOMWindowOnchange THUNK_GENERATOR( 0 ) },
+    { "onclick", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOnclick ), ( intptr_t )setJSDOMWindowOnclick THUNK_GENERATOR( 0 ) },
+    { "oncontextmenu", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOncontextmenu ), ( intptr_t )setJSDOMWindowOncontextmenu THUNK_GENERATOR( 0 ) },
+    { "ondblclick", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOndblclick ), ( intptr_t )setJSDOMWindowOndblclick THUNK_GENERATOR( 0 ) },
+    { "ondrag", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOndrag ), ( intptr_t )setJSDOMWindowOndrag THUNK_GENERATOR( 0 ) },
+    { "ondragend", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOndragend ), ( intptr_t )setJSDOMWindowOndragend THUNK_GENERATOR( 0 ) },
+    { "ondragenter", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOndragenter ), ( intptr_t )setJSDOMWindowOndragenter THUNK_GENERATOR( 0 ) },
+    { "ondragleave", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOndragleave ), ( intptr_t )setJSDOMWindowOndragleave THUNK_GENERATOR( 0 ) },
+    { "ondragover", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOndragover ), ( intptr_t )setJSDOMWindowOndragover THUNK_GENERATOR( 0 ) },
+    { "ondragstart", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOndragstart ), ( intptr_t )setJSDOMWindowOndragstart THUNK_GENERATOR( 0 ) },
+    { "ondrop", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOndrop ), ( intptr_t )setJSDOMWindowOndrop THUNK_GENERATOR( 0 ) },
+    { "ondurationchange", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOndurationchange ), ( intptr_t )setJSDOMWindowOndurationchange THUNK_GENERATOR( 0 ) },
+    { "onemptied", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOnemptied ), ( intptr_t )setJSDOMWindowOnemptied THUNK_GENERATOR( 0 ) },
+    { "onended", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOnended ), ( intptr_t )setJSDOMWindowOnended THUNK_GENERATOR( 0 ) },
+    { "onerror", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOnerror ), ( intptr_t )setJSDOMWindowOnerror THUNK_GENERATOR( 0 ) },
+    { "onfocus", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOnfocus ), ( intptr_t )setJSDOMWindowOnfocus THUNK_GENERATOR( 0 ) },
+    { "onhashchange", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOnhashchange ), ( intptr_t )setJSDOMWindowOnhashchange THUNK_GENERATOR( 0 ) },
+    { "oninput", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOninput ), ( intptr_t )setJSDOMWindowOninput THUNK_GENERATOR( 0 ) },
+    { "oninvalid", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOninvalid ), ( intptr_t )setJSDOMWindowOninvalid THUNK_GENERATOR( 0 ) },
+    { "onkeydown", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOnkeydown ), ( intptr_t )setJSDOMWindowOnkeydown THUNK_GENERATOR( 0 ) },
+    { "onkeypress", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOnkeypress ), ( intptr_t )setJSDOMWindowOnkeypress THUNK_GENERATOR( 0 ) },
+    { "onkeyup", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOnkeyup ), ( intptr_t )setJSDOMWindowOnkeyup THUNK_GENERATOR( 0 ) },
+    { "onload", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOnload ), ( intptr_t )setJSDOMWindowOnload THUNK_GENERATOR( 0 ) },
+    { "onloadeddata", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOnloadeddata ), ( intptr_t )setJSDOMWindowOnloadeddata THUNK_GENERATOR( 0 ) },
+    { "onloadedmetadata", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOnloadedmetadata ), ( intptr_t )setJSDOMWindowOnloadedmetadata THUNK_GENERATOR( 0 ) },
+    { "onloadstart", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOnloadstart ), ( intptr_t )setJSDOMWindowOnloadstart THUNK_GENERATOR( 0 ) },
+    { "onmessage", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOnmessage ), ( intptr_t )setJSDOMWindowOnmessage THUNK_GENERATOR( 0 ) },
+    { "onmousedown", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOnmousedown ), ( intptr_t )setJSDOMWindowOnmousedown THUNK_GENERATOR( 0 ) },
+    { "onmousemove", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOnmousemove ), ( intptr_t )setJSDOMWindowOnmousemove THUNK_GENERATOR( 0 ) },
+    { "onmouseout", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOnmouseout ), ( intptr_t )setJSDOMWindowOnmouseout THUNK_GENERATOR( 0 ) },
+    { "onmouseover", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOnmouseover ), ( intptr_t )setJSDOMWindowOnmouseover THUNK_GENERATOR( 0 ) },
+    { "onmouseup", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOnmouseup ), ( intptr_t )setJSDOMWindowOnmouseup THUNK_GENERATOR( 0 ) },
+    { "onmousewheel", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOnmousewheel ), ( intptr_t )setJSDOMWindowOnmousewheel THUNK_GENERATOR( 0 ) },
+    { "onoffline", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOnoffline ), ( intptr_t )setJSDOMWindowOnoffline THUNK_GENERATOR( 0 ) },
+    { "ononline", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOnonline ), ( intptr_t )setJSDOMWindowOnonline THUNK_GENERATOR( 0 ) },
+    { "onpagehide", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOnpagehide ), ( intptr_t )setJSDOMWindowOnpagehide THUNK_GENERATOR( 0 ) },
+    { "onpageshow", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOnpageshow ), ( intptr_t )setJSDOMWindowOnpageshow THUNK_GENERATOR( 0 ) },
+    { "onpause", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOnpause ), ( intptr_t )setJSDOMWindowOnpause THUNK_GENERATOR( 0 ) },
+    { "onplay", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOnplay ), ( intptr_t )setJSDOMWindowOnplay THUNK_GENERATOR( 0 ) },
+    { "onplaying", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOnplaying ), ( intptr_t )setJSDOMWindowOnplaying THUNK_GENERATOR( 0 ) },
+    { "onpopstate", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOnpopstate ), ( intptr_t )setJSDOMWindowOnpopstate THUNK_GENERATOR( 0 ) },
+    { "onprogress", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOnprogress ), ( intptr_t )setJSDOMWindowOnprogress THUNK_GENERATOR( 0 ) },
+    { "onratechange", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOnratechange ), ( intptr_t )setJSDOMWindowOnratechange THUNK_GENERATOR( 0 ) },
+    { "onresize", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOnresize ), ( intptr_t )setJSDOMWindowOnresize THUNK_GENERATOR( 0 ) },
+    { "onscroll", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOnscroll ), ( intptr_t )setJSDOMWindowOnscroll THUNK_GENERATOR( 0 ) },
+    { "onseeked", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOnseeked ), ( intptr_t )setJSDOMWindowOnseeked THUNK_GENERATOR( 0 ) },
+    { "onseeking", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOnseeking ), ( intptr_t )setJSDOMWindowOnseeking THUNK_GENERATOR( 0 ) },
+    { "onselect", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOnselect ), ( intptr_t )setJSDOMWindowOnselect THUNK_GENERATOR( 0 ) },
+    { "onstalled", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOnstalled ), ( intptr_t )setJSDOMWindowOnstalled THUNK_GENERATOR( 0 ) },
+    { "onstorage", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOnstorage ), ( intptr_t )setJSDOMWindowOnstorage THUNK_GENERATOR( 0 ) },
+    { "onsubmit", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOnsubmit ), ( intptr_t )setJSDOMWindowOnsubmit THUNK_GENERATOR( 0 ) },
+    { "onsuspend", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOnsuspend ), ( intptr_t )setJSDOMWindowOnsuspend THUNK_GENERATOR( 0 ) },
+    { "ontimeupdate", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOntimeupdate ), ( intptr_t )setJSDOMWindowOntimeupdate THUNK_GENERATOR( 0 ) },
+    { "onunload", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOnunload ), ( intptr_t )setJSDOMWindowOnunload THUNK_GENERATOR( 0 ) },
+    { "onvolumechange", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOnvolumechange ), ( intptr_t )setJSDOMWindowOnvolumechange THUNK_GENERATOR( 0 ) },
+    { "onwaiting", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOnwaiting ), ( intptr_t )setJSDOMWindowOnwaiting THUNK_GENERATOR( 0 ) },
+    { "onreset", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOnreset ), ( intptr_t )setJSDOMWindowOnreset THUNK_GENERATOR( 0 ) },
+    { "onsearch", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOnsearch ), ( intptr_t )setJSDOMWindowOnsearch THUNK_GENERATOR( 0 ) },
+    { "onwebkitanimationend", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOnwebkitanimationend ), ( intptr_t )setJSDOMWindowOnwebkitanimationend THUNK_GENERATOR( 0 ) },
+    { "onwebkitanimationiteration", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOnwebkitanimationiteration ), ( intptr_t )setJSDOMWindowOnwebkitanimationiteration THUNK_GENERATOR( 0 ) },
+    { "onwebkitanimationstart", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOnwebkitanimationstart ), ( intptr_t )setJSDOMWindowOnwebkitanimationstart THUNK_GENERATOR( 0 ) },
+    { "onwebkittransitionend", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOnwebkittransitionend ), ( intptr_t )setJSDOMWindowOnwebkittransitionend THUNK_GENERATOR( 0 ) },
 #if ENABLE(TOUCH_EVENTS)
-    { "ontouchstart", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOntouchstart), (intptr_t)setJSDOMWindowOntouchstart THUNK_GENERATOR(0) },
-#endif
-#if ENABLE(TOUCH_EVENTS)
-    { "ontouchmove", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOntouchmove), (intptr_t)setJSDOMWindowOntouchmove THUNK_GENERATOR(0) },
+    { "ontouchstart", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOntouchstart ), ( intptr_t )setJSDOMWindowOntouchstart THUNK_GENERATOR( 0 ) },
 #endif
 #if ENABLE(TOUCH_EVENTS)
-    { "ontouchend", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOntouchend), (intptr_t)setJSDOMWindowOntouchend THUNK_GENERATOR(0) },
+    { "ontouchmove", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOntouchmove ), ( intptr_t )setJSDOMWindowOntouchmove THUNK_GENERATOR( 0 ) },
 #endif
 #if ENABLE(TOUCH_EVENTS)
-    { "ontouchcancel", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOntouchcancel), (intptr_t)setJSDOMWindowOntouchcancel THUNK_GENERATOR(0) },
+    { "ontouchend", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOntouchend ), ( intptr_t )setJSDOMWindowOntouchend THUNK_GENERATOR( 0 ) },
+#endif
+#if ENABLE(TOUCH_EVENTS)
+    { "ontouchcancel", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOntouchcancel ), ( intptr_t )setJSDOMWindowOntouchcancel THUNK_GENERATOR( 0 ) },
 #endif
 #if ENABLE(DEVICE_ORIENTATION)
-    { "DeviceMotionEvent", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowDeviceMotionEventConstructor), (intptr_t)setJSDOMWindowDeviceMotionEventConstructor THUNK_GENERATOR(0) },
+    { "DeviceMotionEvent", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowDeviceMotionEventConstructor ), ( intptr_t )setJSDOMWindowDeviceMotionEventConstructor THUNK_GENERATOR( 0 ) },
 #endif
 #if ENABLE(DEVICE_ORIENTATION)
-    { "ondevicemotion", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOndevicemotion), (intptr_t)setJSDOMWindowOndevicemotion THUNK_GENERATOR(0) },
+    { "ondevicemotion", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOndevicemotion ), ( intptr_t )setJSDOMWindowOndevicemotion THUNK_GENERATOR( 0 ) },
 #endif
 #if ENABLE(DEVICE_ORIENTATION)
-    { "DeviceOrientationEvent", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowDeviceOrientationEventConstructor), (intptr_t)setJSDOMWindowDeviceOrientationEventConstructor THUNK_GENERATOR(0) },
+    { "DeviceOrientationEvent", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowDeviceOrientationEventConstructor ), ( intptr_t )setJSDOMWindowDeviceOrientationEventConstructor THUNK_GENERATOR( 0 ) },
 #endif
 #if ENABLE(DEVICE_ORIENTATION)
-    { "ondeviceorientation", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOndeviceorientation), (intptr_t)setJSDOMWindowOndeviceorientation THUNK_GENERATOR(0) },
+    { "ondeviceorientation", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOndeviceorientation ), ( intptr_t )setJSDOMWindowOndeviceorientation THUNK_GENERATOR( 0 ) },
 #endif
-    { "StyleSheet", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowStyleSheetConstructor), (intptr_t)setJSDOMWindowStyleSheetConstructor THUNK_GENERATOR(0) },
-    { "CSSStyleSheet", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowCSSStyleSheetConstructor), (intptr_t)setJSDOMWindowCSSStyleSheetConstructor THUNK_GENERATOR(0) },
-    { "CSSValue", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowCSSValueConstructor), (intptr_t)setJSDOMWindowCSSValueConstructor THUNK_GENERATOR(0) },
-    { "CSSPrimitiveValue", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowCSSPrimitiveValueConstructor), (intptr_t)setJSDOMWindowCSSPrimitiveValueConstructor THUNK_GENERATOR(0) },
-    { "CSSValueList", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowCSSValueListConstructor), (intptr_t)setJSDOMWindowCSSValueListConstructor THUNK_GENERATOR(0) },
-    { "WebKitCSSTransformValue", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowWebKitCSSTransformValueConstructor), (intptr_t)setJSDOMWindowWebKitCSSTransformValueConstructor THUNK_GENERATOR(0) },
-    { "CSSRule", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowCSSRuleConstructor), (intptr_t)setJSDOMWindowCSSRuleConstructor THUNK_GENERATOR(0) },
-    { "CSSCharsetRule", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowCSSCharsetRuleConstructor), (intptr_t)setJSDOMWindowCSSCharsetRuleConstructor THUNK_GENERATOR(0) },
-    { "CSSFontFaceRule", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowCSSFontFaceRuleConstructor), (intptr_t)setJSDOMWindowCSSFontFaceRuleConstructor THUNK_GENERATOR(0) },
-    { "CSSImportRule", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowCSSImportRuleConstructor), (intptr_t)setJSDOMWindowCSSImportRuleConstructor THUNK_GENERATOR(0) },
-    { "CSSMediaRule", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowCSSMediaRuleConstructor), (intptr_t)setJSDOMWindowCSSMediaRuleConstructor THUNK_GENERATOR(0) },
-    { "CSSPageRule", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowCSSPageRuleConstructor), (intptr_t)setJSDOMWindowCSSPageRuleConstructor THUNK_GENERATOR(0) },
-    { "CSSStyleRule", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowCSSStyleRuleConstructor), (intptr_t)setJSDOMWindowCSSStyleRuleConstructor THUNK_GENERATOR(0) },
-    { "CSSStyleDeclaration", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowCSSStyleDeclarationConstructor), (intptr_t)setJSDOMWindowCSSStyleDeclarationConstructor THUNK_GENERATOR(0) },
-    { "MediaList", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowMediaListConstructor), (intptr_t)setJSDOMWindowMediaListConstructor THUNK_GENERATOR(0) },
-    { "Counter", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowCounterConstructor), (intptr_t)setJSDOMWindowCounterConstructor THUNK_GENERATOR(0) },
-    { "CSSRuleList", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowCSSRuleListConstructor), (intptr_t)setJSDOMWindowCSSRuleListConstructor THUNK_GENERATOR(0) },
-    { "Rect", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowRectConstructor), (intptr_t)setJSDOMWindowRectConstructor THUNK_GENERATOR(0) },
-    { "RGBColor", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowRGBColorConstructor), (intptr_t)setJSDOMWindowRGBColorConstructor THUNK_GENERATOR(0) },
-    { "StyleSheetList", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowStyleSheetListConstructor), (intptr_t)setJSDOMWindowStyleSheetListConstructor THUNK_GENERATOR(0) },
-    { "DOMException", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowDOMExceptionConstructor), (intptr_t)setJSDOMWindowDOMExceptionConstructor THUNK_GENERATOR(0) },
-    { "DOMStringList", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowDOMStringListConstructor), (intptr_t)setJSDOMWindowDOMStringListConstructor THUNK_GENERATOR(0) },
-    { "DOMImplementation", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowDOMImplementationConstructor), (intptr_t)setJSDOMWindowDOMImplementationConstructor THUNK_GENERATOR(0) },
-    { "DOMSettableTokenList", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowDOMSettableTokenListConstructor), (intptr_t)setJSDOMWindowDOMSettableTokenListConstructor THUNK_GENERATOR(0) },
-    { "DOMTokenList", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowDOMTokenListConstructor), (intptr_t)setJSDOMWindowDOMTokenListConstructor THUNK_GENERATOR(0) },
-    { "DocumentFragment", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowDocumentFragmentConstructor), (intptr_t)setJSDOMWindowDocumentFragmentConstructor THUNK_GENERATOR(0) },
-    { "Document", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowDocumentConstructor), (intptr_t)setJSDOMWindowDocumentConstructor THUNK_GENERATOR(0) },
-    { "Node", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowNodeConstructor), (intptr_t)setJSDOMWindowNodeConstructor THUNK_GENERATOR(0) },
-    { "NodeList", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowNodeListConstructor), (intptr_t)setJSDOMWindowNodeListConstructor THUNK_GENERATOR(0) },
-    { "NamedNodeMap", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowNamedNodeMapConstructor), (intptr_t)setJSDOMWindowNamedNodeMapConstructor THUNK_GENERATOR(0) },
-    { "CharacterData", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowCharacterDataConstructor), (intptr_t)setJSDOMWindowCharacterDataConstructor THUNK_GENERATOR(0) },
-    { "Attr", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowAttrConstructor), (intptr_t)setJSDOMWindowAttrConstructor THUNK_GENERATOR(0) },
-    { "Element", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowElementConstructor), (intptr_t)setJSDOMWindowElementConstructor THUNK_GENERATOR(0) },
-    { "Text", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowTextConstructor), (intptr_t)setJSDOMWindowTextConstructor THUNK_GENERATOR(0) },
-    { "Comment", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowCommentConstructor), (intptr_t)setJSDOMWindowCommentConstructor THUNK_GENERATOR(0) },
-    { "CDATASection", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowCDATASectionConstructor), (intptr_t)setJSDOMWindowCDATASectionConstructor THUNK_GENERATOR(0) },
-    { "DocumentType", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowDocumentTypeConstructor), (intptr_t)setJSDOMWindowDocumentTypeConstructor THUNK_GENERATOR(0) },
-    { "Notation", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowNotationConstructor), (intptr_t)setJSDOMWindowNotationConstructor THUNK_GENERATOR(0) },
-    { "Entity", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowEntityConstructor), (intptr_t)setJSDOMWindowEntityConstructor THUNK_GENERATOR(0) },
-    { "EntityReference", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowEntityReferenceConstructor), (intptr_t)setJSDOMWindowEntityReferenceConstructor THUNK_GENERATOR(0) },
-    { "ProcessingInstruction", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowProcessingInstructionConstructor), (intptr_t)setJSDOMWindowProcessingInstructionConstructor THUNK_GENERATOR(0) },
-    { "HTMLDocument", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLDocumentConstructor), (intptr_t)setJSDOMWindowHTMLDocumentConstructor THUNK_GENERATOR(0) },
-    { "HTMLElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLElementConstructor), (intptr_t)setJSDOMWindowHTMLElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLAnchorElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLAnchorElementConstructor), (intptr_t)setJSDOMWindowHTMLAnchorElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLAppletElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLAppletElementConstructor), (intptr_t)setJSDOMWindowHTMLAppletElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLAreaElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLAreaElementConstructor), (intptr_t)setJSDOMWindowHTMLAreaElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLBRElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLBRElementConstructor), (intptr_t)setJSDOMWindowHTMLBRElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLBaseElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLBaseElementConstructor), (intptr_t)setJSDOMWindowHTMLBaseElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLBaseFontElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLBaseFontElementConstructor), (intptr_t)setJSDOMWindowHTMLBaseFontElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLBlockquoteElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLBlockquoteElementConstructor), (intptr_t)setJSDOMWindowHTMLBlockquoteElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLBodyElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLBodyElementConstructor), (intptr_t)setJSDOMWindowHTMLBodyElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLButtonElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLButtonElementConstructor), (intptr_t)setJSDOMWindowHTMLButtonElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLCanvasElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLCanvasElementConstructor), (intptr_t)setJSDOMWindowHTMLCanvasElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLDListElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLDListElementConstructor), (intptr_t)setJSDOMWindowHTMLDListElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLDirectoryElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLDirectoryElementConstructor), (intptr_t)setJSDOMWindowHTMLDirectoryElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLDivElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLDivElementConstructor), (intptr_t)setJSDOMWindowHTMLDivElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLEmbedElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLEmbedElementConstructor), (intptr_t)setJSDOMWindowHTMLEmbedElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLFieldSetElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLFieldSetElementConstructor), (intptr_t)setJSDOMWindowHTMLFieldSetElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLFontElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLFontElementConstructor), (intptr_t)setJSDOMWindowHTMLFontElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLFormElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLFormElementConstructor), (intptr_t)setJSDOMWindowHTMLFormElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLFrameElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLFrameElementConstructor), (intptr_t)setJSDOMWindowHTMLFrameElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLFrameSetElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLFrameSetElementConstructor), (intptr_t)setJSDOMWindowHTMLFrameSetElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLHRElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLHRElementConstructor), (intptr_t)setJSDOMWindowHTMLHRElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLHeadElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLHeadElementConstructor), (intptr_t)setJSDOMWindowHTMLHeadElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLHeadingElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLHeadingElementConstructor), (intptr_t)setJSDOMWindowHTMLHeadingElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLHtmlElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLHtmlElementConstructor), (intptr_t)setJSDOMWindowHTMLHtmlElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLIFrameElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLIFrameElementConstructor), (intptr_t)setJSDOMWindowHTMLIFrameElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLImageElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLImageElementConstructor), (intptr_t)setJSDOMWindowHTMLImageElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLInputElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLInputElementConstructor), (intptr_t)setJSDOMWindowHTMLInputElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLIsIndexElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLIsIndexElementConstructor), (intptr_t)setJSDOMWindowHTMLIsIndexElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLKeygenElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLKeygenElementConstructor), (intptr_t)setJSDOMWindowHTMLKeygenElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLLIElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLLIElementConstructor), (intptr_t)setJSDOMWindowHTMLLIElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLLabelElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLLabelElementConstructor), (intptr_t)setJSDOMWindowHTMLLabelElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLLegendElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLLegendElementConstructor), (intptr_t)setJSDOMWindowHTMLLegendElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLLinkElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLLinkElementConstructor), (intptr_t)setJSDOMWindowHTMLLinkElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLMapElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLMapElementConstructor), (intptr_t)setJSDOMWindowHTMLMapElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLMarqueeElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLMarqueeElementConstructor), (intptr_t)setJSDOMWindowHTMLMarqueeElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLMenuElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLMenuElementConstructor), (intptr_t)setJSDOMWindowHTMLMenuElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLMetaElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLMetaElementConstructor), (intptr_t)setJSDOMWindowHTMLMetaElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLMeterElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLMeterElementConstructor), (intptr_t)setJSDOMWindowHTMLMeterElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLModElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLModElementConstructor), (intptr_t)setJSDOMWindowHTMLModElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLOListElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLOListElementConstructor), (intptr_t)setJSDOMWindowHTMLOListElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLObjectElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLObjectElementConstructor), (intptr_t)setJSDOMWindowHTMLObjectElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLOptGroupElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLOptGroupElementConstructor), (intptr_t)setJSDOMWindowHTMLOptGroupElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLOptionElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLOptionElementConstructor), (intptr_t)setJSDOMWindowHTMLOptionElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLOutputElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLOutputElementConstructor), (intptr_t)setJSDOMWindowHTMLOutputElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLParagraphElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLParagraphElementConstructor), (intptr_t)setJSDOMWindowHTMLParagraphElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLParamElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLParamElementConstructor), (intptr_t)setJSDOMWindowHTMLParamElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLPreElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLPreElementConstructor), (intptr_t)setJSDOMWindowHTMLPreElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLProgressElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLProgressElementConstructor), (intptr_t)setJSDOMWindowHTMLProgressElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLQuoteElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLQuoteElementConstructor), (intptr_t)setJSDOMWindowHTMLQuoteElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLScriptElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLScriptElementConstructor), (intptr_t)setJSDOMWindowHTMLScriptElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLSelectElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLSelectElementConstructor), (intptr_t)setJSDOMWindowHTMLSelectElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLStyleElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLStyleElementConstructor), (intptr_t)setJSDOMWindowHTMLStyleElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLTableCaptionElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLTableCaptionElementConstructor), (intptr_t)setJSDOMWindowHTMLTableCaptionElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLTableCellElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLTableCellElementConstructor), (intptr_t)setJSDOMWindowHTMLTableCellElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLTableColElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLTableColElementConstructor), (intptr_t)setJSDOMWindowHTMLTableColElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLTableElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLTableElementConstructor), (intptr_t)setJSDOMWindowHTMLTableElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLTableRowElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLTableRowElementConstructor), (intptr_t)setJSDOMWindowHTMLTableRowElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLTableSectionElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLTableSectionElementConstructor), (intptr_t)setJSDOMWindowHTMLTableSectionElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLTextAreaElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLTextAreaElementConstructor), (intptr_t)setJSDOMWindowHTMLTextAreaElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLTitleElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLTitleElementConstructor), (intptr_t)setJSDOMWindowHTMLTitleElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLUListElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLUListElementConstructor), (intptr_t)setJSDOMWindowHTMLUListElementConstructor THUNK_GENERATOR(0) },
-    { "HTMLCollection", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLCollectionConstructor), (intptr_t)setJSDOMWindowHTMLCollectionConstructor THUNK_GENERATOR(0) },
-    { "HTMLAllCollection", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLAllCollectionConstructor), (intptr_t)setJSDOMWindowHTMLAllCollectionConstructor THUNK_GENERATOR(0) },
-    { "Image", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowImageConstructor), (intptr_t)setJSDOMWindowImageConstructor THUNK_GENERATOR(0) },
-    { "Option", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOptionConstructor), (intptr_t)setJSDOMWindowOptionConstructor THUNK_GENERATOR(0) },
-    { "CanvasPattern", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowCanvasPatternConstructor), (intptr_t)setJSDOMWindowCanvasPatternConstructor THUNK_GENERATOR(0) },
-    { "CanvasGradient", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowCanvasGradientConstructor), (intptr_t)setJSDOMWindowCanvasGradientConstructor THUNK_GENERATOR(0) },
-    { "CanvasRenderingContext2D", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowCanvasRenderingContext2DConstructor), (intptr_t)setJSDOMWindowCanvasRenderingContext2DConstructor THUNK_GENERATOR(0) },
-    { "ImageData", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowImageDataConstructor), (intptr_t)setJSDOMWindowImageDataConstructor THUNK_GENERATOR(0) },
+    { "StyleSheet", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowStyleSheetConstructor ), ( intptr_t )setJSDOMWindowStyleSheetConstructor THUNK_GENERATOR( 0 ) },
+    { "CSSStyleSheet", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowCSSStyleSheetConstructor ), ( intptr_t )setJSDOMWindowCSSStyleSheetConstructor THUNK_GENERATOR( 0 ) },
+    { "CSSValue", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowCSSValueConstructor ), ( intptr_t )setJSDOMWindowCSSValueConstructor THUNK_GENERATOR( 0 ) },
+    { "CSSPrimitiveValue", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowCSSPrimitiveValueConstructor ), ( intptr_t )setJSDOMWindowCSSPrimitiveValueConstructor THUNK_GENERATOR( 0 ) },
+    { "CSSValueList", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowCSSValueListConstructor ), ( intptr_t )setJSDOMWindowCSSValueListConstructor THUNK_GENERATOR( 0 ) },
+    { "WebKitCSSTransformValue", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowWebKitCSSTransformValueConstructor ), ( intptr_t )setJSDOMWindowWebKitCSSTransformValueConstructor THUNK_GENERATOR( 0 ) },
+    { "CSSRule", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowCSSRuleConstructor ), ( intptr_t )setJSDOMWindowCSSRuleConstructor THUNK_GENERATOR( 0 ) },
+    { "CSSCharsetRule", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowCSSCharsetRuleConstructor ), ( intptr_t )setJSDOMWindowCSSCharsetRuleConstructor THUNK_GENERATOR( 0 ) },
+    { "CSSFontFaceRule", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowCSSFontFaceRuleConstructor ), ( intptr_t )setJSDOMWindowCSSFontFaceRuleConstructor THUNK_GENERATOR( 0 ) },
+    { "CSSImportRule", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowCSSImportRuleConstructor ), ( intptr_t )setJSDOMWindowCSSImportRuleConstructor THUNK_GENERATOR( 0 ) },
+    { "CSSMediaRule", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowCSSMediaRuleConstructor ), ( intptr_t )setJSDOMWindowCSSMediaRuleConstructor THUNK_GENERATOR( 0 ) },
+    { "CSSPageRule", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowCSSPageRuleConstructor ), ( intptr_t )setJSDOMWindowCSSPageRuleConstructor THUNK_GENERATOR( 0 ) },
+    { "CSSStyleRule", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowCSSStyleRuleConstructor ), ( intptr_t )setJSDOMWindowCSSStyleRuleConstructor THUNK_GENERATOR( 0 ) },
+    { "CSSStyleDeclaration", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowCSSStyleDeclarationConstructor ), ( intptr_t )setJSDOMWindowCSSStyleDeclarationConstructor THUNK_GENERATOR( 0 ) },
+    { "MediaList", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowMediaListConstructor ), ( intptr_t )setJSDOMWindowMediaListConstructor THUNK_GENERATOR( 0 ) },
+    { "Counter", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowCounterConstructor ), ( intptr_t )setJSDOMWindowCounterConstructor THUNK_GENERATOR( 0 ) },
+    { "CSSRuleList", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowCSSRuleListConstructor ), ( intptr_t )setJSDOMWindowCSSRuleListConstructor THUNK_GENERATOR( 0 ) },
+    { "Rect", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowRectConstructor ), ( intptr_t )setJSDOMWindowRectConstructor THUNK_GENERATOR( 0 ) },
+    { "RGBColor", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowRGBColorConstructor ), ( intptr_t )setJSDOMWindowRGBColorConstructor THUNK_GENERATOR( 0 ) },
+    { "StyleSheetList", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowStyleSheetListConstructor ), ( intptr_t )setJSDOMWindowStyleSheetListConstructor THUNK_GENERATOR( 0 ) },
+    { "DOMException", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowDOMExceptionConstructor ), ( intptr_t )setJSDOMWindowDOMExceptionConstructor THUNK_GENERATOR( 0 ) },
+    { "DOMStringList", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowDOMStringListConstructor ), ( intptr_t )setJSDOMWindowDOMStringListConstructor THUNK_GENERATOR( 0 ) },
+    { "DOMImplementation", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowDOMImplementationConstructor ), ( intptr_t )setJSDOMWindowDOMImplementationConstructor THUNK_GENERATOR( 0 ) },
+    { "DOMSettableTokenList", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowDOMSettableTokenListConstructor ), ( intptr_t )setJSDOMWindowDOMSettableTokenListConstructor THUNK_GENERATOR( 0 ) },
+    { "DOMTokenList", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowDOMTokenListConstructor ), ( intptr_t )setJSDOMWindowDOMTokenListConstructor THUNK_GENERATOR( 0 ) },
+    { "DocumentFragment", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowDocumentFragmentConstructor ), ( intptr_t )setJSDOMWindowDocumentFragmentConstructor THUNK_GENERATOR( 0 ) },
+    { "Document", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowDocumentConstructor ), ( intptr_t )setJSDOMWindowDocumentConstructor THUNK_GENERATOR( 0 ) },
+    { "Node", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowNodeConstructor ), ( intptr_t )setJSDOMWindowNodeConstructor THUNK_GENERATOR( 0 ) },
+    { "NodeList", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowNodeListConstructor ), ( intptr_t )setJSDOMWindowNodeListConstructor THUNK_GENERATOR( 0 ) },
+    { "NamedNodeMap", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowNamedNodeMapConstructor ), ( intptr_t )setJSDOMWindowNamedNodeMapConstructor THUNK_GENERATOR( 0 ) },
+    { "CharacterData", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowCharacterDataConstructor ), ( intptr_t )setJSDOMWindowCharacterDataConstructor THUNK_GENERATOR( 0 ) },
+    { "Attr", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowAttrConstructor ), ( intptr_t )setJSDOMWindowAttrConstructor THUNK_GENERATOR( 0 ) },
+    { "Element", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowElementConstructor ), ( intptr_t )setJSDOMWindowElementConstructor THUNK_GENERATOR( 0 ) },
+    { "Text", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowTextConstructor ), ( intptr_t )setJSDOMWindowTextConstructor THUNK_GENERATOR( 0 ) },
+    { "Comment", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowCommentConstructor ), ( intptr_t )setJSDOMWindowCommentConstructor THUNK_GENERATOR( 0 ) },
+    { "CDATASection", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowCDATASectionConstructor ), ( intptr_t )setJSDOMWindowCDATASectionConstructor THUNK_GENERATOR( 0 ) },
+    { "DocumentType", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowDocumentTypeConstructor ), ( intptr_t )setJSDOMWindowDocumentTypeConstructor THUNK_GENERATOR( 0 ) },
+    { "Notation", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowNotationConstructor ), ( intptr_t )setJSDOMWindowNotationConstructor THUNK_GENERATOR( 0 ) },
+    { "Entity", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowEntityConstructor ), ( intptr_t )setJSDOMWindowEntityConstructor THUNK_GENERATOR( 0 ) },
+    { "EntityReference", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowEntityReferenceConstructor ), ( intptr_t )setJSDOMWindowEntityReferenceConstructor THUNK_GENERATOR( 0 ) },
+    { "ProcessingInstruction", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowProcessingInstructionConstructor ), ( intptr_t )setJSDOMWindowProcessingInstructionConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLDocument", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLDocumentConstructor ), ( intptr_t )setJSDOMWindowHTMLDocumentConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLElementConstructor ), ( intptr_t )setJSDOMWindowHTMLElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLAnchorElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLAnchorElementConstructor ), ( intptr_t )setJSDOMWindowHTMLAnchorElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLAppletElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLAppletElementConstructor ), ( intptr_t )setJSDOMWindowHTMLAppletElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLAreaElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLAreaElementConstructor ), ( intptr_t )setJSDOMWindowHTMLAreaElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLBRElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLBRElementConstructor ), ( intptr_t )setJSDOMWindowHTMLBRElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLBaseElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLBaseElementConstructor ), ( intptr_t )setJSDOMWindowHTMLBaseElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLBaseFontElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLBaseFontElementConstructor ), ( intptr_t )setJSDOMWindowHTMLBaseFontElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLBlockquoteElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLBlockquoteElementConstructor ), ( intptr_t )setJSDOMWindowHTMLBlockquoteElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLBodyElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLBodyElementConstructor ), ( intptr_t )setJSDOMWindowHTMLBodyElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLButtonElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLButtonElementConstructor ), ( intptr_t )setJSDOMWindowHTMLButtonElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLCanvasElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLCanvasElementConstructor ), ( intptr_t )setJSDOMWindowHTMLCanvasElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLDListElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLDListElementConstructor ), ( intptr_t )setJSDOMWindowHTMLDListElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLDirectoryElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLDirectoryElementConstructor ), ( intptr_t )setJSDOMWindowHTMLDirectoryElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLDivElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLDivElementConstructor ), ( intptr_t )setJSDOMWindowHTMLDivElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLEmbedElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLEmbedElementConstructor ), ( intptr_t )setJSDOMWindowHTMLEmbedElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLFieldSetElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLFieldSetElementConstructor ), ( intptr_t )setJSDOMWindowHTMLFieldSetElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLFontElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLFontElementConstructor ), ( intptr_t )setJSDOMWindowHTMLFontElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLFormElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLFormElementConstructor ), ( intptr_t )setJSDOMWindowHTMLFormElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLFrameElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLFrameElementConstructor ), ( intptr_t )setJSDOMWindowHTMLFrameElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLFrameSetElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLFrameSetElementConstructor ), ( intptr_t )setJSDOMWindowHTMLFrameSetElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLHRElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLHRElementConstructor ), ( intptr_t )setJSDOMWindowHTMLHRElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLHeadElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLHeadElementConstructor ), ( intptr_t )setJSDOMWindowHTMLHeadElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLHeadingElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLHeadingElementConstructor ), ( intptr_t )setJSDOMWindowHTMLHeadingElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLHtmlElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLHtmlElementConstructor ), ( intptr_t )setJSDOMWindowHTMLHtmlElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLIFrameElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLIFrameElementConstructor ), ( intptr_t )setJSDOMWindowHTMLIFrameElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLImageElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLImageElementConstructor ), ( intptr_t )setJSDOMWindowHTMLImageElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLInputElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLInputElementConstructor ), ( intptr_t )setJSDOMWindowHTMLInputElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLIsIndexElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLIsIndexElementConstructor ), ( intptr_t )setJSDOMWindowHTMLIsIndexElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLKeygenElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLKeygenElementConstructor ), ( intptr_t )setJSDOMWindowHTMLKeygenElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLLIElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLLIElementConstructor ), ( intptr_t )setJSDOMWindowHTMLLIElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLLabelElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLLabelElementConstructor ), ( intptr_t )setJSDOMWindowHTMLLabelElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLLegendElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLLegendElementConstructor ), ( intptr_t )setJSDOMWindowHTMLLegendElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLLinkElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLLinkElementConstructor ), ( intptr_t )setJSDOMWindowHTMLLinkElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLMapElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLMapElementConstructor ), ( intptr_t )setJSDOMWindowHTMLMapElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLMarqueeElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLMarqueeElementConstructor ), ( intptr_t )setJSDOMWindowHTMLMarqueeElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLMenuElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLMenuElementConstructor ), ( intptr_t )setJSDOMWindowHTMLMenuElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLMetaElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLMetaElementConstructor ), ( intptr_t )setJSDOMWindowHTMLMetaElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLMeterElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLMeterElementConstructor ), ( intptr_t )setJSDOMWindowHTMLMeterElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLModElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLModElementConstructor ), ( intptr_t )setJSDOMWindowHTMLModElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLOListElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLOListElementConstructor ), ( intptr_t )setJSDOMWindowHTMLOListElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLObjectElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLObjectElementConstructor ), ( intptr_t )setJSDOMWindowHTMLObjectElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLOptGroupElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLOptGroupElementConstructor ), ( intptr_t )setJSDOMWindowHTMLOptGroupElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLOptionElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLOptionElementConstructor ), ( intptr_t )setJSDOMWindowHTMLOptionElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLOutputElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLOutputElementConstructor ), ( intptr_t )setJSDOMWindowHTMLOutputElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLParagraphElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLParagraphElementConstructor ), ( intptr_t )setJSDOMWindowHTMLParagraphElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLParamElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLParamElementConstructor ), ( intptr_t )setJSDOMWindowHTMLParamElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLPreElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLPreElementConstructor ), ( intptr_t )setJSDOMWindowHTMLPreElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLProgressElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLProgressElementConstructor ), ( intptr_t )setJSDOMWindowHTMLProgressElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLQuoteElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLQuoteElementConstructor ), ( intptr_t )setJSDOMWindowHTMLQuoteElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLScriptElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLScriptElementConstructor ), ( intptr_t )setJSDOMWindowHTMLScriptElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLSelectElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLSelectElementConstructor ), ( intptr_t )setJSDOMWindowHTMLSelectElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLStyleElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLStyleElementConstructor ), ( intptr_t )setJSDOMWindowHTMLStyleElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLTableCaptionElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLTableCaptionElementConstructor ), ( intptr_t )setJSDOMWindowHTMLTableCaptionElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLTableCellElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLTableCellElementConstructor ), ( intptr_t )setJSDOMWindowHTMLTableCellElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLTableColElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLTableColElementConstructor ), ( intptr_t )setJSDOMWindowHTMLTableColElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLTableElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLTableElementConstructor ), ( intptr_t )setJSDOMWindowHTMLTableElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLTableRowElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLTableRowElementConstructor ), ( intptr_t )setJSDOMWindowHTMLTableRowElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLTableSectionElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLTableSectionElementConstructor ), ( intptr_t )setJSDOMWindowHTMLTableSectionElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLTextAreaElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLTextAreaElementConstructor ), ( intptr_t )setJSDOMWindowHTMLTextAreaElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLTitleElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLTitleElementConstructor ), ( intptr_t )setJSDOMWindowHTMLTitleElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLUListElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLUListElementConstructor ), ( intptr_t )setJSDOMWindowHTMLUListElementConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLCollection", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLCollectionConstructor ), ( intptr_t )setJSDOMWindowHTMLCollectionConstructor THUNK_GENERATOR( 0 ) },
+    { "HTMLAllCollection", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLAllCollectionConstructor ), ( intptr_t )setJSDOMWindowHTMLAllCollectionConstructor THUNK_GENERATOR( 0 ) },
+    { "Image", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowImageConstructor ), ( intptr_t )setJSDOMWindowImageConstructor THUNK_GENERATOR( 0 ) },
+    { "Option", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOptionConstructor ), ( intptr_t )setJSDOMWindowOptionConstructor THUNK_GENERATOR( 0 ) },
+    { "CanvasPattern", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowCanvasPatternConstructor ), ( intptr_t )setJSDOMWindowCanvasPatternConstructor THUNK_GENERATOR( 0 ) },
+    { "CanvasGradient", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowCanvasGradientConstructor ), ( intptr_t )setJSDOMWindowCanvasGradientConstructor THUNK_GENERATOR( 0 ) },
+    { "CanvasRenderingContext2D", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowCanvasRenderingContext2DConstructor ), ( intptr_t )setJSDOMWindowCanvasRenderingContext2DConstructor THUNK_GENERATOR( 0 ) },
+    { "ImageData", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowImageDataConstructor ), ( intptr_t )setJSDOMWindowImageDataConstructor THUNK_GENERATOR( 0 ) },
 #if ENABLE(WEBGL)
-    { "WebGLActiveInfo", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowWebGLActiveInfoConstructor), (intptr_t)setJSDOMWindowWebGLActiveInfoConstructor THUNK_GENERATOR(0) },
-#endif
-#if ENABLE(WEBGL)
-    { "WebGLBuffer", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowWebGLBufferConstructor), (intptr_t)setJSDOMWindowWebGLBufferConstructor THUNK_GENERATOR(0) },
+    { "WebGLActiveInfo", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowWebGLActiveInfoConstructor ), ( intptr_t )setJSDOMWindowWebGLActiveInfoConstructor THUNK_GENERATOR( 0 ) },
 #endif
 #if ENABLE(WEBGL)
-    { "WebGLFramebuffer", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowWebGLFramebufferConstructor), (intptr_t)setJSDOMWindowWebGLFramebufferConstructor THUNK_GENERATOR(0) },
+    { "WebGLBuffer", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowWebGLBufferConstructor ), ( intptr_t )setJSDOMWindowWebGLBufferConstructor THUNK_GENERATOR( 0 ) },
 #endif
 #if ENABLE(WEBGL)
-    { "WebGLProgram", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowWebGLProgramConstructor), (intptr_t)setJSDOMWindowWebGLProgramConstructor THUNK_GENERATOR(0) },
+    { "WebGLFramebuffer", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowWebGLFramebufferConstructor ), ( intptr_t )setJSDOMWindowWebGLFramebufferConstructor THUNK_GENERATOR( 0 ) },
 #endif
 #if ENABLE(WEBGL)
-    { "WebGLRenderbuffer", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowWebGLRenderbufferConstructor), (intptr_t)setJSDOMWindowWebGLRenderbufferConstructor THUNK_GENERATOR(0) },
+    { "WebGLProgram", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowWebGLProgramConstructor ), ( intptr_t )setJSDOMWindowWebGLProgramConstructor THUNK_GENERATOR( 0 ) },
 #endif
 #if ENABLE(WEBGL)
-    { "WebGLRenderingContext", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowWebGLRenderingContextConstructor), (intptr_t)setJSDOMWindowWebGLRenderingContextConstructor THUNK_GENERATOR(0) },
+    { "WebGLRenderbuffer", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowWebGLRenderbufferConstructor ), ( intptr_t )setJSDOMWindowWebGLRenderbufferConstructor THUNK_GENERATOR( 0 ) },
 #endif
 #if ENABLE(WEBGL)
-    { "WebGLShader", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowWebGLShaderConstructor), (intptr_t)setJSDOMWindowWebGLShaderConstructor THUNK_GENERATOR(0) },
+    { "WebGLRenderingContext", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowWebGLRenderingContextConstructor ), ( intptr_t )setJSDOMWindowWebGLRenderingContextConstructor THUNK_GENERATOR( 0 ) },
 #endif
 #if ENABLE(WEBGL)
-    { "WebGLTexture", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowWebGLTextureConstructor), (intptr_t)setJSDOMWindowWebGLTextureConstructor THUNK_GENERATOR(0) },
+    { "WebGLShader", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowWebGLShaderConstructor ), ( intptr_t )setJSDOMWindowWebGLShaderConstructor THUNK_GENERATOR( 0 ) },
 #endif
 #if ENABLE(WEBGL)
-    { "WebGLUniformLocation", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowWebGLUniformLocationConstructor), (intptr_t)setJSDOMWindowWebGLUniformLocationConstructor THUNK_GENERATOR(0) },
+    { "WebGLTexture", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowWebGLTextureConstructor ), ( intptr_t )setJSDOMWindowWebGLTextureConstructor THUNK_GENERATOR( 0 ) },
 #endif
-    { "TextMetrics", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowTextMetricsConstructor), (intptr_t)setJSDOMWindowTextMetricsConstructor THUNK_GENERATOR(0) },
-    { "DOMStringMap", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowDOMStringMapConstructor), (intptr_t)setJSDOMWindowDOMStringMapConstructor THUNK_GENERATOR(0) },
-    { "ArrayBuffer", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowArrayBufferConstructor), (intptr_t)setJSDOMWindowArrayBufferConstructor THUNK_GENERATOR(0) },
-    { "Int8Array", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowInt8ArrayConstructor), (intptr_t)setJSDOMWindowInt8ArrayConstructor THUNK_GENERATOR(0) },
-    { "Uint8Array", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowUint8ArrayConstructor), (intptr_t)setJSDOMWindowUint8ArrayConstructor THUNK_GENERATOR(0) },
-    { "Int16Array", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowInt16ArrayConstructor), (intptr_t)setJSDOMWindowInt16ArrayConstructor THUNK_GENERATOR(0) },
-    { "Uint16Array", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowUint16ArrayConstructor), (intptr_t)setJSDOMWindowUint16ArrayConstructor THUNK_GENERATOR(0) },
-    { "Int32Array", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowInt32ArrayConstructor), (intptr_t)setJSDOMWindowInt32ArrayConstructor THUNK_GENERATOR(0) },
-    { "Uint32Array", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowUint32ArrayConstructor), (intptr_t)setJSDOMWindowUint32ArrayConstructor THUNK_GENERATOR(0) },
-    { "Float32Array", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowFloat32ArrayConstructor), (intptr_t)setJSDOMWindowFloat32ArrayConstructor THUNK_GENERATOR(0) },
-    { "DataView", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowDataViewConstructor), (intptr_t)setJSDOMWindowDataViewConstructor THUNK_GENERATOR(0) },
+#if ENABLE(WEBGL)
+    { "WebGLUniformLocation", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowWebGLUniformLocationConstructor ), ( intptr_t )setJSDOMWindowWebGLUniformLocationConstructor THUNK_GENERATOR( 0 ) },
+#endif
+    { "TextMetrics", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowTextMetricsConstructor ), ( intptr_t )setJSDOMWindowTextMetricsConstructor THUNK_GENERATOR( 0 ) },
+    { "DOMStringMap", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowDOMStringMapConstructor ), ( intptr_t )setJSDOMWindowDOMStringMapConstructor THUNK_GENERATOR( 0 ) },
+    { "ArrayBuffer", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowArrayBufferConstructor ), ( intptr_t )setJSDOMWindowArrayBufferConstructor THUNK_GENERATOR( 0 ) },
+    { "Int8Array", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowInt8ArrayConstructor ), ( intptr_t )setJSDOMWindowInt8ArrayConstructor THUNK_GENERATOR( 0 ) },
+    { "Uint8Array", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowUint8ArrayConstructor ), ( intptr_t )setJSDOMWindowUint8ArrayConstructor THUNK_GENERATOR( 0 ) },
+    { "Int16Array", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowInt16ArrayConstructor ), ( intptr_t )setJSDOMWindowInt16ArrayConstructor THUNK_GENERATOR( 0 ) },
+    { "Uint16Array", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowUint16ArrayConstructor ), ( intptr_t )setJSDOMWindowUint16ArrayConstructor THUNK_GENERATOR( 0 ) },
+    { "Int32Array", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowInt32ArrayConstructor ), ( intptr_t )setJSDOMWindowInt32ArrayConstructor THUNK_GENERATOR( 0 ) },
+    { "Uint32Array", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowUint32ArrayConstructor ), ( intptr_t )setJSDOMWindowUint32ArrayConstructor THUNK_GENERATOR( 0 ) },
+    { "Float32Array", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowFloat32ArrayConstructor ), ( intptr_t )setJSDOMWindowFloat32ArrayConstructor THUNK_GENERATOR( 0 ) },
+    { "DataView", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowDataViewConstructor ), ( intptr_t )setJSDOMWindowDataViewConstructor THUNK_GENERATOR( 0 ) },
 #if ENABLE(WEB_AUDIO)
-    { "webkitAudioContext", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowWebkitAudioContextConstructor), (intptr_t)setJSDOMWindowWebkitAudioContextConstructor THUNK_GENERATOR(0) },
+    { "webkitAudioContext", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowWebkitAudioContextConstructor ), ( intptr_t )setJSDOMWindowWebkitAudioContextConstructor THUNK_GENERATOR( 0 ) },
 #endif
 #if ENABLE(WEB_AUDIO)
-    { "webkitAudioPannerNode", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowWebkitAudioPannerNodeConstructor), (intptr_t)setJSDOMWindowWebkitAudioPannerNodeConstructor THUNK_GENERATOR(0) },
+    { "webkitAudioPannerNode", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowWebkitAudioPannerNodeConstructor ), ( intptr_t )setJSDOMWindowWebkitAudioPannerNodeConstructor THUNK_GENERATOR( 0 ) },
 #endif
-    { "Event", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowEventConstructor), (intptr_t)setJSDOMWindowEventConstructor THUNK_GENERATOR(0) },
-    { "BeforeLoadEvent", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowBeforeLoadEventConstructor), (intptr_t)setJSDOMWindowBeforeLoadEventConstructor THUNK_GENERATOR(0) },
-    { "HashChangeEvent", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHashChangeEventConstructor), (intptr_t)setJSDOMWindowHashChangeEventConstructor THUNK_GENERATOR(0) },
-    { "KeyboardEvent", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowKeyboardEventConstructor), (intptr_t)setJSDOMWindowKeyboardEventConstructor THUNK_GENERATOR(0) },
-    { "MouseEvent", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowMouseEventConstructor), (intptr_t)setJSDOMWindowMouseEventConstructor THUNK_GENERATOR(0) },
-    { "MutationEvent", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowMutationEventConstructor), (intptr_t)setJSDOMWindowMutationEventConstructor THUNK_GENERATOR(0) },
-    { "OverflowEvent", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowOverflowEventConstructor), (intptr_t)setJSDOMWindowOverflowEventConstructor THUNK_GENERATOR(0) },
-    { "PageTransitionEvent", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowPageTransitionEventConstructor), (intptr_t)setJSDOMWindowPageTransitionEventConstructor THUNK_GENERATOR(0) },
-    { "ProgressEvent", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowProgressEventConstructor), (intptr_t)setJSDOMWindowProgressEventConstructor THUNK_GENERATOR(0) },
-    { "TextEvent", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowTextEventConstructor), (intptr_t)setJSDOMWindowTextEventConstructor THUNK_GENERATOR(0) },
-    { "UIEvent", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowUIEventConstructor), (intptr_t)setJSDOMWindowUIEventConstructor THUNK_GENERATOR(0) },
-    { "WebKitAnimationEvent", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowWebKitAnimationEventConstructor), (intptr_t)setJSDOMWindowWebKitAnimationEventConstructor THUNK_GENERATOR(0) },
-    { "WebKitTransitionEvent", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowWebKitTransitionEventConstructor), (intptr_t)setJSDOMWindowWebKitTransitionEventConstructor THUNK_GENERATOR(0) },
-    { "WheelEvent", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowWheelEventConstructor), (intptr_t)setJSDOMWindowWheelEventConstructor THUNK_GENERATOR(0) },
-    { "MessageEvent", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowMessageEventConstructor), (intptr_t)setJSDOMWindowMessageEventConstructor THUNK_GENERATOR(0) },
-    { "EventException", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowEventExceptionConstructor), (intptr_t)setJSDOMWindowEventExceptionConstructor THUNK_GENERATOR(0) },
-    { "WebKitCSSKeyframeRule", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowWebKitCSSKeyframeRuleConstructor), (intptr_t)setJSDOMWindowWebKitCSSKeyframeRuleConstructor THUNK_GENERATOR(0) },
-    { "WebKitCSSKeyframesRule", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowWebKitCSSKeyframesRuleConstructor), (intptr_t)setJSDOMWindowWebKitCSSKeyframesRuleConstructor THUNK_GENERATOR(0) },
-    { "WebKitCSSMatrix", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowWebKitCSSMatrixConstructor), (intptr_t)setJSDOMWindowWebKitCSSMatrixConstructor THUNK_GENERATOR(0) },
-    { "WebKitPoint", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowWebKitPointConstructor), (intptr_t)setJSDOMWindowWebKitPointConstructor THUNK_GENERATOR(0) },
-    { "Clipboard", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowClipboardConstructor), (intptr_t)setJSDOMWindowClipboardConstructor THUNK_GENERATOR(0) },
-    { "File", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowFileConstructor), (intptr_t)setJSDOMWindowFileConstructor THUNK_GENERATOR(0) },
-    { "FileList", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowFileListConstructor), (intptr_t)setJSDOMWindowFileListConstructor THUNK_GENERATOR(0) },
-    { "Blob", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowBlobConstructor), (intptr_t)setJSDOMWindowBlobConstructor THUNK_GENERATOR(0) },
-    { "NodeFilter", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowNodeFilterConstructor), (intptr_t)setJSDOMWindowNodeFilterConstructor THUNK_GENERATOR(0) },
-    { "Range", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowRangeConstructor), (intptr_t)setJSDOMWindowRangeConstructor THUNK_GENERATOR(0) },
-    { "RangeException", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowRangeExceptionConstructor), (intptr_t)setJSDOMWindowRangeExceptionConstructor THUNK_GENERATOR(0) },
-    { "EventSource", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowEventSourceConstructor), (intptr_t)setJSDOMWindowEventSourceConstructor THUNK_GENERATOR(0) },
-    { "XMLDocument", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowXMLDocumentConstructor), (intptr_t)setJSDOMWindowXMLDocumentConstructor THUNK_GENERATOR(0) },
-    { "DOMParser", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowDOMParserConstructor), (intptr_t)setJSDOMWindowDOMParserConstructor THUNK_GENERATOR(0) },
-    { "XMLSerializer", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowXMLSerializerConstructor), (intptr_t)setJSDOMWindowXMLSerializerConstructor THUNK_GENERATOR(0) },
-    { "XMLHttpRequest", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowXMLHttpRequestConstructor), (intptr_t)setJSDOMWindowXMLHttpRequestConstructor THUNK_GENERATOR(0) },
-    { "XMLHttpRequestUpload", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowXMLHttpRequestUploadConstructor), (intptr_t)setJSDOMWindowXMLHttpRequestUploadConstructor THUNK_GENERATOR(0) },
-    { "XMLHttpRequestException", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowXMLHttpRequestExceptionConstructor), (intptr_t)setJSDOMWindowXMLHttpRequestExceptionConstructor THUNK_GENERATOR(0) },
+    { "Event", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowEventConstructor ), ( intptr_t )setJSDOMWindowEventConstructor THUNK_GENERATOR( 0 ) },
+    { "BeforeLoadEvent", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowBeforeLoadEventConstructor ), ( intptr_t )setJSDOMWindowBeforeLoadEventConstructor THUNK_GENERATOR( 0 ) },
+    { "HashChangeEvent", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHashChangeEventConstructor ), ( intptr_t )setJSDOMWindowHashChangeEventConstructor THUNK_GENERATOR( 0 ) },
+    { "KeyboardEvent", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowKeyboardEventConstructor ), ( intptr_t )setJSDOMWindowKeyboardEventConstructor THUNK_GENERATOR( 0 ) },
+    { "MouseEvent", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowMouseEventConstructor ), ( intptr_t )setJSDOMWindowMouseEventConstructor THUNK_GENERATOR( 0 ) },
+    { "MutationEvent", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowMutationEventConstructor ), ( intptr_t )setJSDOMWindowMutationEventConstructor THUNK_GENERATOR( 0 ) },
+    { "OverflowEvent", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowOverflowEventConstructor ), ( intptr_t )setJSDOMWindowOverflowEventConstructor THUNK_GENERATOR( 0 ) },
+    { "PageTransitionEvent", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowPageTransitionEventConstructor ), ( intptr_t )setJSDOMWindowPageTransitionEventConstructor THUNK_GENERATOR( 0 ) },
+    { "ProgressEvent", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowProgressEventConstructor ), ( intptr_t )setJSDOMWindowProgressEventConstructor THUNK_GENERATOR( 0 ) },
+    { "TextEvent", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowTextEventConstructor ), ( intptr_t )setJSDOMWindowTextEventConstructor THUNK_GENERATOR( 0 ) },
+    { "UIEvent", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowUIEventConstructor ), ( intptr_t )setJSDOMWindowUIEventConstructor THUNK_GENERATOR( 0 ) },
+    { "WebKitAnimationEvent", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowWebKitAnimationEventConstructor ), ( intptr_t )setJSDOMWindowWebKitAnimationEventConstructor THUNK_GENERATOR( 0 ) },
+    { "WebKitTransitionEvent", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowWebKitTransitionEventConstructor ), ( intptr_t )setJSDOMWindowWebKitTransitionEventConstructor THUNK_GENERATOR( 0 ) },
+    { "WheelEvent", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowWheelEventConstructor ), ( intptr_t )setJSDOMWindowWheelEventConstructor THUNK_GENERATOR( 0 ) },
+    { "MessageEvent", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowMessageEventConstructor ), ( intptr_t )setJSDOMWindowMessageEventConstructor THUNK_GENERATOR( 0 ) },
+    { "EventException", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowEventExceptionConstructor ), ( intptr_t )setJSDOMWindowEventExceptionConstructor THUNK_GENERATOR( 0 ) },
+    { "WebKitCSSKeyframeRule", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowWebKitCSSKeyframeRuleConstructor ), ( intptr_t )setJSDOMWindowWebKitCSSKeyframeRuleConstructor THUNK_GENERATOR( 0 ) },
+    { "WebKitCSSKeyframesRule", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowWebKitCSSKeyframesRuleConstructor ), ( intptr_t )setJSDOMWindowWebKitCSSKeyframesRuleConstructor THUNK_GENERATOR( 0 ) },
+    { "WebKitCSSMatrix", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowWebKitCSSMatrixConstructor ), ( intptr_t )setJSDOMWindowWebKitCSSMatrixConstructor THUNK_GENERATOR( 0 ) },
+    { "WebKitPoint", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowWebKitPointConstructor ), ( intptr_t )setJSDOMWindowWebKitPointConstructor THUNK_GENERATOR( 0 ) },
+    { "Clipboard", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowClipboardConstructor ), ( intptr_t )setJSDOMWindowClipboardConstructor THUNK_GENERATOR( 0 ) },
+    { "File", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowFileConstructor ), ( intptr_t )setJSDOMWindowFileConstructor THUNK_GENERATOR( 0 ) },
+    { "FileList", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowFileListConstructor ), ( intptr_t )setJSDOMWindowFileListConstructor THUNK_GENERATOR( 0 ) },
+    { "Blob", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowBlobConstructor ), ( intptr_t )setJSDOMWindowBlobConstructor THUNK_GENERATOR( 0 ) },
+    { "NodeFilter", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowNodeFilterConstructor ), ( intptr_t )setJSDOMWindowNodeFilterConstructor THUNK_GENERATOR( 0 ) },
+    { "Range", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowRangeConstructor ), ( intptr_t )setJSDOMWindowRangeConstructor THUNK_GENERATOR( 0 ) },
+    { "RangeException", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowRangeExceptionConstructor ), ( intptr_t )setJSDOMWindowRangeExceptionConstructor THUNK_GENERATOR( 0 ) },
+    { "EventSource", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowEventSourceConstructor ), ( intptr_t )setJSDOMWindowEventSourceConstructor THUNK_GENERATOR( 0 ) },
+    { "XMLDocument", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowXMLDocumentConstructor ), ( intptr_t )setJSDOMWindowXMLDocumentConstructor THUNK_GENERATOR( 0 ) },
+    { "DOMParser", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowDOMParserConstructor ), ( intptr_t )setJSDOMWindowDOMParserConstructor THUNK_GENERATOR( 0 ) },
+    { "XMLSerializer", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowXMLSerializerConstructor ), ( intptr_t )setJSDOMWindowXMLSerializerConstructor THUNK_GENERATOR( 0 ) },
+    { "XMLHttpRequest", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowXMLHttpRequestConstructor ), ( intptr_t )setJSDOMWindowXMLHttpRequestConstructor THUNK_GENERATOR( 0 ) },
+    { "XMLHttpRequestUpload", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowXMLHttpRequestUploadConstructor ), ( intptr_t )setJSDOMWindowXMLHttpRequestUploadConstructor THUNK_GENERATOR( 0 ) },
+    { "XMLHttpRequestException", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowXMLHttpRequestExceptionConstructor ), ( intptr_t )setJSDOMWindowXMLHttpRequestExceptionConstructor THUNK_GENERATOR( 0 ) },
 #if ENABLE(XSLT)
-    { "XSLTProcessor", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowXSLTProcessorConstructor), (intptr_t)setJSDOMWindowXSLTProcessorConstructor THUNK_GENERATOR(0) },
+    { "XSLTProcessor", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowXSLTProcessorConstructor ), ( intptr_t )setJSDOMWindowXSLTProcessorConstructor THUNK_GENERATOR( 0 ) },
 #endif
-    { "MessagePort", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowMessagePortConstructor), (intptr_t)setJSDOMWindowMessagePortConstructor THUNK_GENERATOR(0) },
-    { "MessageChannel", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowMessageChannelConstructor), (intptr_t)setJSDOMWindowMessageChannelConstructor THUNK_GENERATOR(0) },
-    { "Worker", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowWorkerConstructor), (intptr_t)setJSDOMWindowWorkerConstructor THUNK_GENERATOR(0) },
-    { "SharedWorker", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSharedWorkerConstructor), (intptr_t)setJSDOMWindowSharedWorkerConstructor THUNK_GENERATOR(0) },
-    { "WebSocket", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowWebSocketConstructor), (intptr_t)setJSDOMWindowWebSocketConstructor THUNK_GENERATOR(0) },
-    { "Plugin", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowPluginConstructor), (intptr_t)setJSDOMWindowPluginConstructor THUNK_GENERATOR(0) },
-    { "PluginArray", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowPluginArrayConstructor), (intptr_t)setJSDOMWindowPluginArrayConstructor THUNK_GENERATOR(0) },
-    { "MimeType", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowMimeTypeConstructor), (intptr_t)setJSDOMWindowMimeTypeConstructor THUNK_GENERATOR(0) },
-    { "MimeTypeArray", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowMimeTypeArrayConstructor), (intptr_t)setJSDOMWindowMimeTypeArrayConstructor THUNK_GENERATOR(0) },
-    { "ClientRect", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowClientRectConstructor), (intptr_t)setJSDOMWindowClientRectConstructor THUNK_GENERATOR(0) },
-    { "ClientRectList", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowClientRectListConstructor), (intptr_t)setJSDOMWindowClientRectListConstructor THUNK_GENERATOR(0) },
-    { "Storage", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowStorageConstructor), (intptr_t)setJSDOMWindowStorageConstructor THUNK_GENERATOR(0) },
-    { "StorageEvent", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowStorageEventConstructor), (intptr_t)setJSDOMWindowStorageEventConstructor THUNK_GENERATOR(0) },
+    { "MessagePort", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowMessagePortConstructor ), ( intptr_t )setJSDOMWindowMessagePortConstructor THUNK_GENERATOR( 0 ) },
+    { "MessageChannel", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowMessageChannelConstructor ), ( intptr_t )setJSDOMWindowMessageChannelConstructor THUNK_GENERATOR( 0 ) },
+    { "Worker", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowWorkerConstructor ), ( intptr_t )setJSDOMWindowWorkerConstructor THUNK_GENERATOR( 0 ) },
+    { "SharedWorker", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSharedWorkerConstructor ), ( intptr_t )setJSDOMWindowSharedWorkerConstructor THUNK_GENERATOR( 0 ) },
+    { "WebSocket", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowWebSocketConstructor ), ( intptr_t )setJSDOMWindowWebSocketConstructor THUNK_GENERATOR( 0 ) },
+    { "Plugin", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowPluginConstructor ), ( intptr_t )setJSDOMWindowPluginConstructor THUNK_GENERATOR( 0 ) },
+    { "PluginArray", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowPluginArrayConstructor ), ( intptr_t )setJSDOMWindowPluginArrayConstructor THUNK_GENERATOR( 0 ) },
+    { "MimeType", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowMimeTypeConstructor ), ( intptr_t )setJSDOMWindowMimeTypeConstructor THUNK_GENERATOR( 0 ) },
+    { "MimeTypeArray", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowMimeTypeArrayConstructor ), ( intptr_t )setJSDOMWindowMimeTypeArrayConstructor THUNK_GENERATOR( 0 ) },
+    { "ClientRect", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowClientRectConstructor ), ( intptr_t )setJSDOMWindowClientRectConstructor THUNK_GENERATOR( 0 ) },
+    { "ClientRectList", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowClientRectListConstructor ), ( intptr_t )setJSDOMWindowClientRectListConstructor THUNK_GENERATOR( 0 ) },
+    { "Storage", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowStorageConstructor ), ( intptr_t )setJSDOMWindowStorageConstructor THUNK_GENERATOR( 0 ) },
+    { "StorageEvent", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowStorageEventConstructor ), ( intptr_t )setJSDOMWindowStorageEventConstructor THUNK_GENERATOR( 0 ) },
 #if ENABLE(VIDEO)
-    { "Audio", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowAudioConstructor), (intptr_t)setJSDOMWindowAudioConstructor THUNK_GENERATOR(0) },
-#endif
-#if ENABLE(VIDEO)
-    { "HTMLAudioElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLAudioElementConstructor), (intptr_t)setJSDOMWindowHTMLAudioElementConstructor THUNK_GENERATOR(0) },
+    { "Audio", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowAudioConstructor ), ( intptr_t )setJSDOMWindowAudioConstructor THUNK_GENERATOR( 0 ) },
 #endif
 #if ENABLE(VIDEO)
-    { "HTMLMediaElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLMediaElementConstructor), (intptr_t)setJSDOMWindowHTMLMediaElementConstructor THUNK_GENERATOR(0) },
+    { "HTMLAudioElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLAudioElementConstructor ), ( intptr_t )setJSDOMWindowHTMLAudioElementConstructor THUNK_GENERATOR( 0 ) },
 #endif
 #if ENABLE(VIDEO)
-    { "HTMLVideoElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowHTMLVideoElementConstructor), (intptr_t)setJSDOMWindowHTMLVideoElementConstructor THUNK_GENERATOR(0) },
+    { "HTMLMediaElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLMediaElementConstructor ), ( intptr_t )setJSDOMWindowHTMLMediaElementConstructor THUNK_GENERATOR( 0 ) },
 #endif
 #if ENABLE(VIDEO)
-    { "MediaError", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowMediaErrorConstructor), (intptr_t)setJSDOMWindowMediaErrorConstructor THUNK_GENERATOR(0) },
+    { "HTMLVideoElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowHTMLVideoElementConstructor ), ( intptr_t )setJSDOMWindowHTMLVideoElementConstructor THUNK_GENERATOR( 0 ) },
 #endif
 #if ENABLE(VIDEO)
-    { "TimeRanges", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowTimeRangesConstructor), (intptr_t)setJSDOMWindowTimeRangesConstructor THUNK_GENERATOR(0) },
+    { "MediaError", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowMediaErrorConstructor ), ( intptr_t )setJSDOMWindowMediaErrorConstructor THUNK_GENERATOR( 0 ) },
 #endif
-    { "XPathEvaluator", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowXPathEvaluatorConstructor), (intptr_t)setJSDOMWindowXPathEvaluatorConstructor THUNK_GENERATOR(0) },
-    { "XPathResult", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowXPathResultConstructor), (intptr_t)setJSDOMWindowXPathResultConstructor THUNK_GENERATOR(0) },
-    { "XPathException", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowXPathExceptionConstructor), (intptr_t)setJSDOMWindowXPathExceptionConstructor THUNK_GENERATOR(0) },
-    { "SVGAElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGAElementConstructor), (intptr_t)setJSDOMWindowSVGAElementConstructor THUNK_GENERATOR(0) },
-    { "SVGAngle", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGAngleConstructor), (intptr_t)setJSDOMWindowSVGAngleConstructor THUNK_GENERATOR(0) },
-    { "SVGAnimatedAngle", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGAnimatedAngleConstructor), (intptr_t)setJSDOMWindowSVGAnimatedAngleConstructor THUNK_GENERATOR(0) },
-    { "SVGAnimatedBoolean", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGAnimatedBooleanConstructor), (intptr_t)setJSDOMWindowSVGAnimatedBooleanConstructor THUNK_GENERATOR(0) },
-    { "SVGAnimatedEnumeration", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGAnimatedEnumerationConstructor), (intptr_t)setJSDOMWindowSVGAnimatedEnumerationConstructor THUNK_GENERATOR(0) },
-    { "SVGAnimatedInteger", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGAnimatedIntegerConstructor), (intptr_t)setJSDOMWindowSVGAnimatedIntegerConstructor THUNK_GENERATOR(0) },
-    { "SVGAnimatedLength", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGAnimatedLengthConstructor), (intptr_t)setJSDOMWindowSVGAnimatedLengthConstructor THUNK_GENERATOR(0) },
-    { "SVGAnimatedLengthList", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGAnimatedLengthListConstructor), (intptr_t)setJSDOMWindowSVGAnimatedLengthListConstructor THUNK_GENERATOR(0) },
-    { "SVGAnimatedNumber", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGAnimatedNumberConstructor), (intptr_t)setJSDOMWindowSVGAnimatedNumberConstructor THUNK_GENERATOR(0) },
-    { "SVGAnimatedNumberList", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGAnimatedNumberListConstructor), (intptr_t)setJSDOMWindowSVGAnimatedNumberListConstructor THUNK_GENERATOR(0) },
-    { "SVGAnimatedPreserveAspectRatio", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGAnimatedPreserveAspectRatioConstructor), (intptr_t)setJSDOMWindowSVGAnimatedPreserveAspectRatioConstructor THUNK_GENERATOR(0) },
-    { "SVGAnimatedRect", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGAnimatedRectConstructor), (intptr_t)setJSDOMWindowSVGAnimatedRectConstructor THUNK_GENERATOR(0) },
-    { "SVGAnimatedString", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGAnimatedStringConstructor), (intptr_t)setJSDOMWindowSVGAnimatedStringConstructor THUNK_GENERATOR(0) },
-    { "SVGAnimatedTransformList", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGAnimatedTransformListConstructor), (intptr_t)setJSDOMWindowSVGAnimatedTransformListConstructor THUNK_GENERATOR(0) },
-    { "SVGCircleElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGCircleElementConstructor), (intptr_t)setJSDOMWindowSVGCircleElementConstructor THUNK_GENERATOR(0) },
-    { "SVGClipPathElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGClipPathElementConstructor), (intptr_t)setJSDOMWindowSVGClipPathElementConstructor THUNK_GENERATOR(0) },
-    { "SVGColor", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGColorConstructor), (intptr_t)setJSDOMWindowSVGColorConstructor THUNK_GENERATOR(0) },
-    { "SVGCursorElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGCursorElementConstructor), (intptr_t)setJSDOMWindowSVGCursorElementConstructor THUNK_GENERATOR(0) },
-    { "SVGDefsElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGDefsElementConstructor), (intptr_t)setJSDOMWindowSVGDefsElementConstructor THUNK_GENERATOR(0) },
-    { "SVGDescElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGDescElementConstructor), (intptr_t)setJSDOMWindowSVGDescElementConstructor THUNK_GENERATOR(0) },
-    { "SVGDocument", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGDocumentConstructor), (intptr_t)setJSDOMWindowSVGDocumentConstructor THUNK_GENERATOR(0) },
-    { "SVGElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGElementConstructor), (intptr_t)setJSDOMWindowSVGElementConstructor THUNK_GENERATOR(0) },
-    { "SVGElementInstance", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGElementInstanceConstructor), (intptr_t)setJSDOMWindowSVGElementInstanceConstructor THUNK_GENERATOR(0) },
-    { "SVGElementInstanceList", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGElementInstanceListConstructor), (intptr_t)setJSDOMWindowSVGElementInstanceListConstructor THUNK_GENERATOR(0) },
-    { "SVGEllipseElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGEllipseElementConstructor), (intptr_t)setJSDOMWindowSVGEllipseElementConstructor THUNK_GENERATOR(0) },
-    { "SVGException", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGExceptionConstructor), (intptr_t)setJSDOMWindowSVGExceptionConstructor THUNK_GENERATOR(0) },
-    { "SVGGElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGGElementConstructor), (intptr_t)setJSDOMWindowSVGGElementConstructor THUNK_GENERATOR(0) },
-    { "SVGGradientElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGGradientElementConstructor), (intptr_t)setJSDOMWindowSVGGradientElementConstructor THUNK_GENERATOR(0) },
-    { "SVGImageElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGImageElementConstructor), (intptr_t)setJSDOMWindowSVGImageElementConstructor THUNK_GENERATOR(0) },
-    { "SVGLength", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGLengthConstructor), (intptr_t)setJSDOMWindowSVGLengthConstructor THUNK_GENERATOR(0) },
-    { "SVGLengthList", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGLengthListConstructor), (intptr_t)setJSDOMWindowSVGLengthListConstructor THUNK_GENERATOR(0) },
-    { "SVGLinearGradientElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGLinearGradientElementConstructor), (intptr_t)setJSDOMWindowSVGLinearGradientElementConstructor THUNK_GENERATOR(0) },
-    { "SVGLineElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGLineElementConstructor), (intptr_t)setJSDOMWindowSVGLineElementConstructor THUNK_GENERATOR(0) },
-    { "SVGMarkerElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGMarkerElementConstructor), (intptr_t)setJSDOMWindowSVGMarkerElementConstructor THUNK_GENERATOR(0) },
-    { "SVGMaskElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGMaskElementConstructor), (intptr_t)setJSDOMWindowSVGMaskElementConstructor THUNK_GENERATOR(0) },
-    { "SVGMatrix", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGMatrixConstructor), (intptr_t)setJSDOMWindowSVGMatrixConstructor THUNK_GENERATOR(0) },
-    { "SVGMetadataElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGMetadataElementConstructor), (intptr_t)setJSDOMWindowSVGMetadataElementConstructor THUNK_GENERATOR(0) },
-    { "SVGNumber", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGNumberConstructor), (intptr_t)setJSDOMWindowSVGNumberConstructor THUNK_GENERATOR(0) },
-    { "SVGNumberList", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGNumberListConstructor), (intptr_t)setJSDOMWindowSVGNumberListConstructor THUNK_GENERATOR(0) },
-    { "SVGPaint", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGPaintConstructor), (intptr_t)setJSDOMWindowSVGPaintConstructor THUNK_GENERATOR(0) },
-    { "SVGPathElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGPathElementConstructor), (intptr_t)setJSDOMWindowSVGPathElementConstructor THUNK_GENERATOR(0) },
-    { "SVGPathSeg", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGPathSegConstructor), (intptr_t)setJSDOMWindowSVGPathSegConstructor THUNK_GENERATOR(0) },
-    { "SVGPathSegArcAbs", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGPathSegArcAbsConstructor), (intptr_t)setJSDOMWindowSVGPathSegArcAbsConstructor THUNK_GENERATOR(0) },
-    { "SVGPathSegArcRel", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGPathSegArcRelConstructor), (intptr_t)setJSDOMWindowSVGPathSegArcRelConstructor THUNK_GENERATOR(0) },
-    { "SVGPathSegClosePath", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGPathSegClosePathConstructor), (intptr_t)setJSDOMWindowSVGPathSegClosePathConstructor THUNK_GENERATOR(0) },
-    { "SVGPathSegCurvetoCubicAbs", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGPathSegCurvetoCubicAbsConstructor), (intptr_t)setJSDOMWindowSVGPathSegCurvetoCubicAbsConstructor THUNK_GENERATOR(0) },
-    { "SVGPathSegCurvetoCubicRel", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGPathSegCurvetoCubicRelConstructor), (intptr_t)setJSDOMWindowSVGPathSegCurvetoCubicRelConstructor THUNK_GENERATOR(0) },
-    { "SVGPathSegCurvetoCubicSmoothAbs", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGPathSegCurvetoCubicSmoothAbsConstructor), (intptr_t)setJSDOMWindowSVGPathSegCurvetoCubicSmoothAbsConstructor THUNK_GENERATOR(0) },
-    { "SVGPathSegCurvetoCubicSmoothRel", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGPathSegCurvetoCubicSmoothRelConstructor), (intptr_t)setJSDOMWindowSVGPathSegCurvetoCubicSmoothRelConstructor THUNK_GENERATOR(0) },
-    { "SVGPathSegCurvetoQuadraticAbs", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGPathSegCurvetoQuadraticAbsConstructor), (intptr_t)setJSDOMWindowSVGPathSegCurvetoQuadraticAbsConstructor THUNK_GENERATOR(0) },
-    { "SVGPathSegCurvetoQuadraticRel", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGPathSegCurvetoQuadraticRelConstructor), (intptr_t)setJSDOMWindowSVGPathSegCurvetoQuadraticRelConstructor THUNK_GENERATOR(0) },
-    { "SVGPathSegCurvetoQuadraticSmoothAbs", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGPathSegCurvetoQuadraticSmoothAbsConstructor), (intptr_t)setJSDOMWindowSVGPathSegCurvetoQuadraticSmoothAbsConstructor THUNK_GENERATOR(0) },
-    { "SVGPathSegCurvetoQuadraticSmoothRel", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGPathSegCurvetoQuadraticSmoothRelConstructor), (intptr_t)setJSDOMWindowSVGPathSegCurvetoQuadraticSmoothRelConstructor THUNK_GENERATOR(0) },
-    { "SVGPathSegLinetoAbs", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGPathSegLinetoAbsConstructor), (intptr_t)setJSDOMWindowSVGPathSegLinetoAbsConstructor THUNK_GENERATOR(0) },
-    { "SVGPathSegLinetoHorizontalAbs", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGPathSegLinetoHorizontalAbsConstructor), (intptr_t)setJSDOMWindowSVGPathSegLinetoHorizontalAbsConstructor THUNK_GENERATOR(0) },
-    { "SVGPathSegLinetoHorizontalRel", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGPathSegLinetoHorizontalRelConstructor), (intptr_t)setJSDOMWindowSVGPathSegLinetoHorizontalRelConstructor THUNK_GENERATOR(0) },
-    { "SVGPathSegLinetoRel", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGPathSegLinetoRelConstructor), (intptr_t)setJSDOMWindowSVGPathSegLinetoRelConstructor THUNK_GENERATOR(0) },
-    { "SVGPathSegLinetoVerticalAbs", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGPathSegLinetoVerticalAbsConstructor), (intptr_t)setJSDOMWindowSVGPathSegLinetoVerticalAbsConstructor THUNK_GENERATOR(0) },
-    { "SVGPathSegLinetoVerticalRel", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGPathSegLinetoVerticalRelConstructor), (intptr_t)setJSDOMWindowSVGPathSegLinetoVerticalRelConstructor THUNK_GENERATOR(0) },
-    { "SVGPathSegList", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGPathSegListConstructor), (intptr_t)setJSDOMWindowSVGPathSegListConstructor THUNK_GENERATOR(0) },
-    { "SVGPathSegMovetoAbs", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGPathSegMovetoAbsConstructor), (intptr_t)setJSDOMWindowSVGPathSegMovetoAbsConstructor THUNK_GENERATOR(0) },
-    { "SVGPathSegMovetoRel", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGPathSegMovetoRelConstructor), (intptr_t)setJSDOMWindowSVGPathSegMovetoRelConstructor THUNK_GENERATOR(0) },
-    { "SVGPatternElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGPatternElementConstructor), (intptr_t)setJSDOMWindowSVGPatternElementConstructor THUNK_GENERATOR(0) },
-    { "SVGPoint", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGPointConstructor), (intptr_t)setJSDOMWindowSVGPointConstructor THUNK_GENERATOR(0) },
-    { "SVGPointList", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGPointListConstructor), (intptr_t)setJSDOMWindowSVGPointListConstructor THUNK_GENERATOR(0) },
-    { "SVGPolygonElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGPolygonElementConstructor), (intptr_t)setJSDOMWindowSVGPolygonElementConstructor THUNK_GENERATOR(0) },
-    { "SVGPolylineElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGPolylineElementConstructor), (intptr_t)setJSDOMWindowSVGPolylineElementConstructor THUNK_GENERATOR(0) },
-    { "SVGPreserveAspectRatio", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGPreserveAspectRatioConstructor), (intptr_t)setJSDOMWindowSVGPreserveAspectRatioConstructor THUNK_GENERATOR(0) },
-    { "SVGRadialGradientElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGRadialGradientElementConstructor), (intptr_t)setJSDOMWindowSVGRadialGradientElementConstructor THUNK_GENERATOR(0) },
-    { "SVGRect", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGRectConstructor), (intptr_t)setJSDOMWindowSVGRectConstructor THUNK_GENERATOR(0) },
-    { "SVGRectElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGRectElementConstructor), (intptr_t)setJSDOMWindowSVGRectElementConstructor THUNK_GENERATOR(0) },
-    { "SVGRenderingIntent", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGRenderingIntentConstructor), (intptr_t)setJSDOMWindowSVGRenderingIntentConstructor THUNK_GENERATOR(0) },
-    { "SVGScriptElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGScriptElementConstructor), (intptr_t)setJSDOMWindowSVGScriptElementConstructor THUNK_GENERATOR(0) },
-    { "SVGStopElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGStopElementConstructor), (intptr_t)setJSDOMWindowSVGStopElementConstructor THUNK_GENERATOR(0) },
-    { "SVGStringList", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGStringListConstructor), (intptr_t)setJSDOMWindowSVGStringListConstructor THUNK_GENERATOR(0) },
-    { "SVGStyleElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGStyleElementConstructor), (intptr_t)setJSDOMWindowSVGStyleElementConstructor THUNK_GENERATOR(0) },
-    { "SVGSVGElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGSVGElementConstructor), (intptr_t)setJSDOMWindowSVGSVGElementConstructor THUNK_GENERATOR(0) },
-    { "SVGSwitchElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGSwitchElementConstructor), (intptr_t)setJSDOMWindowSVGSwitchElementConstructor THUNK_GENERATOR(0) },
-    { "SVGSymbolElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGSymbolElementConstructor), (intptr_t)setJSDOMWindowSVGSymbolElementConstructor THUNK_GENERATOR(0) },
-    { "SVGTextContentElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGTextContentElementConstructor), (intptr_t)setJSDOMWindowSVGTextContentElementConstructor THUNK_GENERATOR(0) },
-    { "SVGTextElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGTextElementConstructor), (intptr_t)setJSDOMWindowSVGTextElementConstructor THUNK_GENERATOR(0) },
-    { "SVGTextPathElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGTextPathElementConstructor), (intptr_t)setJSDOMWindowSVGTextPathElementConstructor THUNK_GENERATOR(0) },
-    { "SVGTextPositioningElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGTextPositioningElementConstructor), (intptr_t)setJSDOMWindowSVGTextPositioningElementConstructor THUNK_GENERATOR(0) },
-    { "SVGTitleElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGTitleElementConstructor), (intptr_t)setJSDOMWindowSVGTitleElementConstructor THUNK_GENERATOR(0) },
-    { "SVGTransform", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGTransformConstructor), (intptr_t)setJSDOMWindowSVGTransformConstructor THUNK_GENERATOR(0) },
-    { "SVGTransformList", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGTransformListConstructor), (intptr_t)setJSDOMWindowSVGTransformListConstructor THUNK_GENERATOR(0) },
-    { "SVGTRefElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGTRefElementConstructor), (intptr_t)setJSDOMWindowSVGTRefElementConstructor THUNK_GENERATOR(0) },
-    { "SVGTSpanElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGTSpanElementConstructor), (intptr_t)setJSDOMWindowSVGTSpanElementConstructor THUNK_GENERATOR(0) },
-    { "SVGUnitTypes", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGUnitTypesConstructor), (intptr_t)setJSDOMWindowSVGUnitTypesConstructor THUNK_GENERATOR(0) },
-    { "SVGUseElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGUseElementConstructor), (intptr_t)setJSDOMWindowSVGUseElementConstructor THUNK_GENERATOR(0) },
-    { "SVGViewElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGViewElementConstructor), (intptr_t)setJSDOMWindowSVGViewElementConstructor THUNK_GENERATOR(0) },
-    { "SVGZoomEvent", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGZoomEventConstructor), (intptr_t)setJSDOMWindowSVGZoomEventConstructor THUNK_GENERATOR(0) },
-    { "SVGAnimateColorElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGAnimateColorElementConstructor), (intptr_t)setJSDOMWindowSVGAnimateColorElementConstructor THUNK_GENERATOR(0) },
-    { "SVGAnimateElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGAnimateElementConstructor), (intptr_t)setJSDOMWindowSVGAnimateElementConstructor THUNK_GENERATOR(0) },
-    { "SVGAnimateTransformElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGAnimateTransformElementConstructor), (intptr_t)setJSDOMWindowSVGAnimateTransformElementConstructor THUNK_GENERATOR(0) },
-    { "SVGSetElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGSetElementConstructor), (intptr_t)setJSDOMWindowSVGSetElementConstructor THUNK_GENERATOR(0) },
-    { "SVGAltGlyphElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGAltGlyphElementConstructor), (intptr_t)setJSDOMWindowSVGAltGlyphElementConstructor THUNK_GENERATOR(0) },
-    { "SVGFontElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGFontElementConstructor), (intptr_t)setJSDOMWindowSVGFontElementConstructor THUNK_GENERATOR(0) },
-    { "SVGFontFaceElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGFontFaceElementConstructor), (intptr_t)setJSDOMWindowSVGFontFaceElementConstructor THUNK_GENERATOR(0) },
-    { "SVGFontFaceFormatElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGFontFaceFormatElementConstructor), (intptr_t)setJSDOMWindowSVGFontFaceFormatElementConstructor THUNK_GENERATOR(0) },
-    { "SVGFontFaceNameElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGFontFaceNameElementConstructor), (intptr_t)setJSDOMWindowSVGFontFaceNameElementConstructor THUNK_GENERATOR(0) },
-    { "SVGFontFaceSrcElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGFontFaceSrcElementConstructor), (intptr_t)setJSDOMWindowSVGFontFaceSrcElementConstructor THUNK_GENERATOR(0) },
-    { "SVGFontFaceUriElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGFontFaceUriElementConstructor), (intptr_t)setJSDOMWindowSVGFontFaceUriElementConstructor THUNK_GENERATOR(0) },
-    { "SVGGlyphElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGGlyphElementConstructor), (intptr_t)setJSDOMWindowSVGGlyphElementConstructor THUNK_GENERATOR(0) },
-    { "SVGHKernElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGHKernElementConstructor), (intptr_t)setJSDOMWindowSVGHKernElementConstructor THUNK_GENERATOR(0) },
-    { "SVGMissingGlyphElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGMissingGlyphElementConstructor), (intptr_t)setJSDOMWindowSVGMissingGlyphElementConstructor THUNK_GENERATOR(0) },
-    { "SVGVKernElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGVKernElementConstructor), (intptr_t)setJSDOMWindowSVGVKernElementConstructor THUNK_GENERATOR(0) },
-    { "SVGForeignObjectElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGForeignObjectElementConstructor), (intptr_t)setJSDOMWindowSVGForeignObjectElementConstructor THUNK_GENERATOR(0) },
-    { "SVGComponentTransferFunctionElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGComponentTransferFunctionElementConstructor), (intptr_t)setJSDOMWindowSVGComponentTransferFunctionElementConstructor THUNK_GENERATOR(0) },
-    { "SVGFEBlendElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGFEBlendElementConstructor), (intptr_t)setJSDOMWindowSVGFEBlendElementConstructor THUNK_GENERATOR(0) },
-    { "SVGFEColorMatrixElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGFEColorMatrixElementConstructor), (intptr_t)setJSDOMWindowSVGFEColorMatrixElementConstructor THUNK_GENERATOR(0) },
-    { "SVGFEComponentTransferElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGFEComponentTransferElementConstructor), (intptr_t)setJSDOMWindowSVGFEComponentTransferElementConstructor THUNK_GENERATOR(0) },
-    { "SVGFECompositeElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGFECompositeElementConstructor), (intptr_t)setJSDOMWindowSVGFECompositeElementConstructor THUNK_GENERATOR(0) },
-    { "SVGFEConvolveMatrixElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGFEConvolveMatrixElementConstructor), (intptr_t)setJSDOMWindowSVGFEConvolveMatrixElementConstructor THUNK_GENERATOR(0) },
-    { "SVGFEDiffuseLightingElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGFEDiffuseLightingElementConstructor), (intptr_t)setJSDOMWindowSVGFEDiffuseLightingElementConstructor THUNK_GENERATOR(0) },
-    { "SVGFEDisplacementMapElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGFEDisplacementMapElementConstructor), (intptr_t)setJSDOMWindowSVGFEDisplacementMapElementConstructor THUNK_GENERATOR(0) },
-    { "SVGFEDistantLightElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGFEDistantLightElementConstructor), (intptr_t)setJSDOMWindowSVGFEDistantLightElementConstructor THUNK_GENERATOR(0) },
-    { "SVGFEDropShadowElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGFEDropShadowElementConstructor), (intptr_t)setJSDOMWindowSVGFEDropShadowElementConstructor THUNK_GENERATOR(0) },
-    { "SVGFEFloodElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGFEFloodElementConstructor), (intptr_t)setJSDOMWindowSVGFEFloodElementConstructor THUNK_GENERATOR(0) },
-    { "SVGFEFuncAElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGFEFuncAElementConstructor), (intptr_t)setJSDOMWindowSVGFEFuncAElementConstructor THUNK_GENERATOR(0) },
-    { "SVGFEFuncBElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGFEFuncBElementConstructor), (intptr_t)setJSDOMWindowSVGFEFuncBElementConstructor THUNK_GENERATOR(0) },
-    { "SVGFEFuncGElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGFEFuncGElementConstructor), (intptr_t)setJSDOMWindowSVGFEFuncGElementConstructor THUNK_GENERATOR(0) },
-    { "SVGFEFuncRElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGFEFuncRElementConstructor), (intptr_t)setJSDOMWindowSVGFEFuncRElementConstructor THUNK_GENERATOR(0) },
-    { "SVGFEGaussianBlurElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGFEGaussianBlurElementConstructor), (intptr_t)setJSDOMWindowSVGFEGaussianBlurElementConstructor THUNK_GENERATOR(0) },
-    { "SVGFEImageElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGFEImageElementConstructor), (intptr_t)setJSDOMWindowSVGFEImageElementConstructor THUNK_GENERATOR(0) },
-    { "SVGFEMergeElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGFEMergeElementConstructor), (intptr_t)setJSDOMWindowSVGFEMergeElementConstructor THUNK_GENERATOR(0) },
-    { "SVGFEMergeNodeElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGFEMergeNodeElementConstructor), (intptr_t)setJSDOMWindowSVGFEMergeNodeElementConstructor THUNK_GENERATOR(0) },
-    { "SVGFEMorphologyElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGFEMorphologyElementConstructor), (intptr_t)setJSDOMWindowSVGFEMorphologyElementConstructor THUNK_GENERATOR(0) },
-    { "SVGFEOffsetElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGFEOffsetElementConstructor), (intptr_t)setJSDOMWindowSVGFEOffsetElementConstructor THUNK_GENERATOR(0) },
-    { "SVGFEPointLightElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGFEPointLightElementConstructor), (intptr_t)setJSDOMWindowSVGFEPointLightElementConstructor THUNK_GENERATOR(0) },
-    { "SVGFESpecularLightingElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGFESpecularLightingElementConstructor), (intptr_t)setJSDOMWindowSVGFESpecularLightingElementConstructor THUNK_GENERATOR(0) },
-    { "SVGFESpotLightElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGFESpotLightElementConstructor), (intptr_t)setJSDOMWindowSVGFESpotLightElementConstructor THUNK_GENERATOR(0) },
-    { "SVGFETileElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGFETileElementConstructor), (intptr_t)setJSDOMWindowSVGFETileElementConstructor THUNK_GENERATOR(0) },
-    { "SVGFETurbulenceElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGFETurbulenceElementConstructor), (intptr_t)setJSDOMWindowSVGFETurbulenceElementConstructor THUNK_GENERATOR(0) },
-    { "SVGFilterElement", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSVGFilterElementConstructor), (intptr_t)setJSDOMWindowSVGFilterElementConstructor THUNK_GENERATOR(0) },
+#if ENABLE(VIDEO)
+    { "TimeRanges", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowTimeRangesConstructor ), ( intptr_t )setJSDOMWindowTimeRangesConstructor THUNK_GENERATOR( 0 ) },
+#endif
+    { "XPathEvaluator", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowXPathEvaluatorConstructor ), ( intptr_t )setJSDOMWindowXPathEvaluatorConstructor THUNK_GENERATOR( 0 ) },
+    { "XPathResult", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowXPathResultConstructor ), ( intptr_t )setJSDOMWindowXPathResultConstructor THUNK_GENERATOR( 0 ) },
+    { "XPathException", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowXPathExceptionConstructor ), ( intptr_t )setJSDOMWindowXPathExceptionConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGAElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGAElementConstructor ), ( intptr_t )setJSDOMWindowSVGAElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGAngle", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGAngleConstructor ), ( intptr_t )setJSDOMWindowSVGAngleConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGAnimatedAngle", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGAnimatedAngleConstructor ), ( intptr_t )setJSDOMWindowSVGAnimatedAngleConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGAnimatedBoolean", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGAnimatedBooleanConstructor ), ( intptr_t )setJSDOMWindowSVGAnimatedBooleanConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGAnimatedEnumeration", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGAnimatedEnumerationConstructor ), ( intptr_t )setJSDOMWindowSVGAnimatedEnumerationConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGAnimatedInteger", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGAnimatedIntegerConstructor ), ( intptr_t )setJSDOMWindowSVGAnimatedIntegerConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGAnimatedLength", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGAnimatedLengthConstructor ), ( intptr_t )setJSDOMWindowSVGAnimatedLengthConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGAnimatedLengthList", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGAnimatedLengthListConstructor ), ( intptr_t )setJSDOMWindowSVGAnimatedLengthListConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGAnimatedNumber", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGAnimatedNumberConstructor ), ( intptr_t )setJSDOMWindowSVGAnimatedNumberConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGAnimatedNumberList", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGAnimatedNumberListConstructor ), ( intptr_t )setJSDOMWindowSVGAnimatedNumberListConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGAnimatedPreserveAspectRatio", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGAnimatedPreserveAspectRatioConstructor ), ( intptr_t )setJSDOMWindowSVGAnimatedPreserveAspectRatioConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGAnimatedRect", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGAnimatedRectConstructor ), ( intptr_t )setJSDOMWindowSVGAnimatedRectConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGAnimatedString", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGAnimatedStringConstructor ), ( intptr_t )setJSDOMWindowSVGAnimatedStringConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGAnimatedTransformList", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGAnimatedTransformListConstructor ), ( intptr_t )setJSDOMWindowSVGAnimatedTransformListConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGCircleElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGCircleElementConstructor ), ( intptr_t )setJSDOMWindowSVGCircleElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGClipPathElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGClipPathElementConstructor ), ( intptr_t )setJSDOMWindowSVGClipPathElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGColor", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGColorConstructor ), ( intptr_t )setJSDOMWindowSVGColorConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGCursorElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGCursorElementConstructor ), ( intptr_t )setJSDOMWindowSVGCursorElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGDefsElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGDefsElementConstructor ), ( intptr_t )setJSDOMWindowSVGDefsElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGDescElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGDescElementConstructor ), ( intptr_t )setJSDOMWindowSVGDescElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGDocument", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGDocumentConstructor ), ( intptr_t )setJSDOMWindowSVGDocumentConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGElementConstructor ), ( intptr_t )setJSDOMWindowSVGElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGElementInstance", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGElementInstanceConstructor ), ( intptr_t )setJSDOMWindowSVGElementInstanceConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGElementInstanceList", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGElementInstanceListConstructor ), ( intptr_t )setJSDOMWindowSVGElementInstanceListConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGEllipseElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGEllipseElementConstructor ), ( intptr_t )setJSDOMWindowSVGEllipseElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGException", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGExceptionConstructor ), ( intptr_t )setJSDOMWindowSVGExceptionConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGGElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGGElementConstructor ), ( intptr_t )setJSDOMWindowSVGGElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGGradientElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGGradientElementConstructor ), ( intptr_t )setJSDOMWindowSVGGradientElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGImageElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGImageElementConstructor ), ( intptr_t )setJSDOMWindowSVGImageElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGLength", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGLengthConstructor ), ( intptr_t )setJSDOMWindowSVGLengthConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGLengthList", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGLengthListConstructor ), ( intptr_t )setJSDOMWindowSVGLengthListConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGLinearGradientElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGLinearGradientElementConstructor ), ( intptr_t )setJSDOMWindowSVGLinearGradientElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGLineElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGLineElementConstructor ), ( intptr_t )setJSDOMWindowSVGLineElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGMarkerElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGMarkerElementConstructor ), ( intptr_t )setJSDOMWindowSVGMarkerElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGMaskElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGMaskElementConstructor ), ( intptr_t )setJSDOMWindowSVGMaskElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGMatrix", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGMatrixConstructor ), ( intptr_t )setJSDOMWindowSVGMatrixConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGMetadataElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGMetadataElementConstructor ), ( intptr_t )setJSDOMWindowSVGMetadataElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGNumber", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGNumberConstructor ), ( intptr_t )setJSDOMWindowSVGNumberConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGNumberList", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGNumberListConstructor ), ( intptr_t )setJSDOMWindowSVGNumberListConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGPaint", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGPaintConstructor ), ( intptr_t )setJSDOMWindowSVGPaintConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGPathElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGPathElementConstructor ), ( intptr_t )setJSDOMWindowSVGPathElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGPathSeg", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGPathSegConstructor ), ( intptr_t )setJSDOMWindowSVGPathSegConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGPathSegArcAbs", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGPathSegArcAbsConstructor ), ( intptr_t )setJSDOMWindowSVGPathSegArcAbsConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGPathSegArcRel", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGPathSegArcRelConstructor ), ( intptr_t )setJSDOMWindowSVGPathSegArcRelConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGPathSegClosePath", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGPathSegClosePathConstructor ), ( intptr_t )setJSDOMWindowSVGPathSegClosePathConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGPathSegCurvetoCubicAbs", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGPathSegCurvetoCubicAbsConstructor ), ( intptr_t )setJSDOMWindowSVGPathSegCurvetoCubicAbsConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGPathSegCurvetoCubicRel", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGPathSegCurvetoCubicRelConstructor ), ( intptr_t )setJSDOMWindowSVGPathSegCurvetoCubicRelConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGPathSegCurvetoCubicSmoothAbs", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGPathSegCurvetoCubicSmoothAbsConstructor ), ( intptr_t )setJSDOMWindowSVGPathSegCurvetoCubicSmoothAbsConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGPathSegCurvetoCubicSmoothRel", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGPathSegCurvetoCubicSmoothRelConstructor ), ( intptr_t )setJSDOMWindowSVGPathSegCurvetoCubicSmoothRelConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGPathSegCurvetoQuadraticAbs", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGPathSegCurvetoQuadraticAbsConstructor ), ( intptr_t )setJSDOMWindowSVGPathSegCurvetoQuadraticAbsConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGPathSegCurvetoQuadraticRel", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGPathSegCurvetoQuadraticRelConstructor ), ( intptr_t )setJSDOMWindowSVGPathSegCurvetoQuadraticRelConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGPathSegCurvetoQuadraticSmoothAbs", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGPathSegCurvetoQuadraticSmoothAbsConstructor ), ( intptr_t )setJSDOMWindowSVGPathSegCurvetoQuadraticSmoothAbsConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGPathSegCurvetoQuadraticSmoothRel", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGPathSegCurvetoQuadraticSmoothRelConstructor ), ( intptr_t )setJSDOMWindowSVGPathSegCurvetoQuadraticSmoothRelConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGPathSegLinetoAbs", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGPathSegLinetoAbsConstructor ), ( intptr_t )setJSDOMWindowSVGPathSegLinetoAbsConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGPathSegLinetoHorizontalAbs", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGPathSegLinetoHorizontalAbsConstructor ), ( intptr_t )setJSDOMWindowSVGPathSegLinetoHorizontalAbsConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGPathSegLinetoHorizontalRel", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGPathSegLinetoHorizontalRelConstructor ), ( intptr_t )setJSDOMWindowSVGPathSegLinetoHorizontalRelConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGPathSegLinetoRel", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGPathSegLinetoRelConstructor ), ( intptr_t )setJSDOMWindowSVGPathSegLinetoRelConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGPathSegLinetoVerticalAbs", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGPathSegLinetoVerticalAbsConstructor ), ( intptr_t )setJSDOMWindowSVGPathSegLinetoVerticalAbsConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGPathSegLinetoVerticalRel", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGPathSegLinetoVerticalRelConstructor ), ( intptr_t )setJSDOMWindowSVGPathSegLinetoVerticalRelConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGPathSegList", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGPathSegListConstructor ), ( intptr_t )setJSDOMWindowSVGPathSegListConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGPathSegMovetoAbs", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGPathSegMovetoAbsConstructor ), ( intptr_t )setJSDOMWindowSVGPathSegMovetoAbsConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGPathSegMovetoRel", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGPathSegMovetoRelConstructor ), ( intptr_t )setJSDOMWindowSVGPathSegMovetoRelConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGPatternElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGPatternElementConstructor ), ( intptr_t )setJSDOMWindowSVGPatternElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGPoint", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGPointConstructor ), ( intptr_t )setJSDOMWindowSVGPointConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGPointList", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGPointListConstructor ), ( intptr_t )setJSDOMWindowSVGPointListConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGPolygonElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGPolygonElementConstructor ), ( intptr_t )setJSDOMWindowSVGPolygonElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGPolylineElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGPolylineElementConstructor ), ( intptr_t )setJSDOMWindowSVGPolylineElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGPreserveAspectRatio", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGPreserveAspectRatioConstructor ), ( intptr_t )setJSDOMWindowSVGPreserveAspectRatioConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGRadialGradientElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGRadialGradientElementConstructor ), ( intptr_t )setJSDOMWindowSVGRadialGradientElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGRect", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGRectConstructor ), ( intptr_t )setJSDOMWindowSVGRectConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGRectElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGRectElementConstructor ), ( intptr_t )setJSDOMWindowSVGRectElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGRenderingIntent", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGRenderingIntentConstructor ), ( intptr_t )setJSDOMWindowSVGRenderingIntentConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGScriptElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGScriptElementConstructor ), ( intptr_t )setJSDOMWindowSVGScriptElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGStopElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGStopElementConstructor ), ( intptr_t )setJSDOMWindowSVGStopElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGStringList", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGStringListConstructor ), ( intptr_t )setJSDOMWindowSVGStringListConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGStyleElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGStyleElementConstructor ), ( intptr_t )setJSDOMWindowSVGStyleElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGSVGElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGSVGElementConstructor ), ( intptr_t )setJSDOMWindowSVGSVGElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGSwitchElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGSwitchElementConstructor ), ( intptr_t )setJSDOMWindowSVGSwitchElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGSymbolElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGSymbolElementConstructor ), ( intptr_t )setJSDOMWindowSVGSymbolElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGTextContentElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGTextContentElementConstructor ), ( intptr_t )setJSDOMWindowSVGTextContentElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGTextElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGTextElementConstructor ), ( intptr_t )setJSDOMWindowSVGTextElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGTextPathElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGTextPathElementConstructor ), ( intptr_t )setJSDOMWindowSVGTextPathElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGTextPositioningElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGTextPositioningElementConstructor ), ( intptr_t )setJSDOMWindowSVGTextPositioningElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGTitleElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGTitleElementConstructor ), ( intptr_t )setJSDOMWindowSVGTitleElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGTransform", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGTransformConstructor ), ( intptr_t )setJSDOMWindowSVGTransformConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGTransformList", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGTransformListConstructor ), ( intptr_t )setJSDOMWindowSVGTransformListConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGTRefElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGTRefElementConstructor ), ( intptr_t )setJSDOMWindowSVGTRefElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGTSpanElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGTSpanElementConstructor ), ( intptr_t )setJSDOMWindowSVGTSpanElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGUnitTypes", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGUnitTypesConstructor ), ( intptr_t )setJSDOMWindowSVGUnitTypesConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGUseElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGUseElementConstructor ), ( intptr_t )setJSDOMWindowSVGUseElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGViewElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGViewElementConstructor ), ( intptr_t )setJSDOMWindowSVGViewElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGZoomEvent", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGZoomEventConstructor ), ( intptr_t )setJSDOMWindowSVGZoomEventConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGAnimateColorElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGAnimateColorElementConstructor ), ( intptr_t )setJSDOMWindowSVGAnimateColorElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGAnimateElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGAnimateElementConstructor ), ( intptr_t )setJSDOMWindowSVGAnimateElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGAnimateTransformElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGAnimateTransformElementConstructor ), ( intptr_t )setJSDOMWindowSVGAnimateTransformElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGSetElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGSetElementConstructor ), ( intptr_t )setJSDOMWindowSVGSetElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGAltGlyphElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGAltGlyphElementConstructor ), ( intptr_t )setJSDOMWindowSVGAltGlyphElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGFontElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGFontElementConstructor ), ( intptr_t )setJSDOMWindowSVGFontElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGFontFaceElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGFontFaceElementConstructor ), ( intptr_t )setJSDOMWindowSVGFontFaceElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGFontFaceFormatElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGFontFaceFormatElementConstructor ), ( intptr_t )setJSDOMWindowSVGFontFaceFormatElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGFontFaceNameElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGFontFaceNameElementConstructor ), ( intptr_t )setJSDOMWindowSVGFontFaceNameElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGFontFaceSrcElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGFontFaceSrcElementConstructor ), ( intptr_t )setJSDOMWindowSVGFontFaceSrcElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGFontFaceUriElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGFontFaceUriElementConstructor ), ( intptr_t )setJSDOMWindowSVGFontFaceUriElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGGlyphElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGGlyphElementConstructor ), ( intptr_t )setJSDOMWindowSVGGlyphElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGHKernElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGHKernElementConstructor ), ( intptr_t )setJSDOMWindowSVGHKernElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGMissingGlyphElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGMissingGlyphElementConstructor ), ( intptr_t )setJSDOMWindowSVGMissingGlyphElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGVKernElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGVKernElementConstructor ), ( intptr_t )setJSDOMWindowSVGVKernElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGForeignObjectElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGForeignObjectElementConstructor ), ( intptr_t )setJSDOMWindowSVGForeignObjectElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGComponentTransferFunctionElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGComponentTransferFunctionElementConstructor ), ( intptr_t )setJSDOMWindowSVGComponentTransferFunctionElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGFEBlendElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGFEBlendElementConstructor ), ( intptr_t )setJSDOMWindowSVGFEBlendElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGFEColorMatrixElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGFEColorMatrixElementConstructor ), ( intptr_t )setJSDOMWindowSVGFEColorMatrixElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGFEComponentTransferElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGFEComponentTransferElementConstructor ), ( intptr_t )setJSDOMWindowSVGFEComponentTransferElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGFECompositeElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGFECompositeElementConstructor ), ( intptr_t )setJSDOMWindowSVGFECompositeElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGFEConvolveMatrixElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGFEConvolveMatrixElementConstructor ), ( intptr_t )setJSDOMWindowSVGFEConvolveMatrixElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGFEDiffuseLightingElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGFEDiffuseLightingElementConstructor ), ( intptr_t )setJSDOMWindowSVGFEDiffuseLightingElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGFEDisplacementMapElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGFEDisplacementMapElementConstructor ), ( intptr_t )setJSDOMWindowSVGFEDisplacementMapElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGFEDistantLightElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGFEDistantLightElementConstructor ), ( intptr_t )setJSDOMWindowSVGFEDistantLightElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGFEDropShadowElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGFEDropShadowElementConstructor ), ( intptr_t )setJSDOMWindowSVGFEDropShadowElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGFEFloodElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGFEFloodElementConstructor ), ( intptr_t )setJSDOMWindowSVGFEFloodElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGFEFuncAElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGFEFuncAElementConstructor ), ( intptr_t )setJSDOMWindowSVGFEFuncAElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGFEFuncBElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGFEFuncBElementConstructor ), ( intptr_t )setJSDOMWindowSVGFEFuncBElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGFEFuncGElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGFEFuncGElementConstructor ), ( intptr_t )setJSDOMWindowSVGFEFuncGElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGFEFuncRElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGFEFuncRElementConstructor ), ( intptr_t )setJSDOMWindowSVGFEFuncRElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGFEGaussianBlurElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGFEGaussianBlurElementConstructor ), ( intptr_t )setJSDOMWindowSVGFEGaussianBlurElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGFEImageElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGFEImageElementConstructor ), ( intptr_t )setJSDOMWindowSVGFEImageElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGFEMergeElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGFEMergeElementConstructor ), ( intptr_t )setJSDOMWindowSVGFEMergeElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGFEMergeNodeElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGFEMergeNodeElementConstructor ), ( intptr_t )setJSDOMWindowSVGFEMergeNodeElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGFEMorphologyElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGFEMorphologyElementConstructor ), ( intptr_t )setJSDOMWindowSVGFEMorphologyElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGFEOffsetElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGFEOffsetElementConstructor ), ( intptr_t )setJSDOMWindowSVGFEOffsetElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGFEPointLightElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGFEPointLightElementConstructor ), ( intptr_t )setJSDOMWindowSVGFEPointLightElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGFESpecularLightingElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGFESpecularLightingElementConstructor ), ( intptr_t )setJSDOMWindowSVGFESpecularLightingElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGFESpotLightElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGFESpotLightElementConstructor ), ( intptr_t )setJSDOMWindowSVGFESpotLightElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGFETileElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGFETileElementConstructor ), ( intptr_t )setJSDOMWindowSVGFETileElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGFETurbulenceElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGFETurbulenceElementConstructor ), ( intptr_t )setJSDOMWindowSVGFETurbulenceElementConstructor THUNK_GENERATOR( 0 ) },
+    { "SVGFilterElement", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSVGFilterElementConstructor ), ( intptr_t )setJSDOMWindowSVGFilterElementConstructor THUNK_GENERATOR( 0 ) },
 #if ENABLE(DATABASE)
-    { "SQLException", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowSQLExceptionConstructor), (intptr_t)setJSDOMWindowSQLExceptionConstructor THUNK_GENERATOR(0) },
+    { "SQLException", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowSQLExceptionConstructor ), ( intptr_t )setJSDOMWindowSQLExceptionConstructor THUNK_GENERATOR( 0 ) },
 #endif
 #if ENABLE(TOUCH_EVENTS)
-    { "TouchEvent", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowTouchEventConstructor), (intptr_t)setJSDOMWindowTouchEventConstructor THUNK_GENERATOR(0) },
+    { "TouchEvent", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowTouchEventConstructor ), ( intptr_t )setJSDOMWindowTouchEventConstructor THUNK_GENERATOR( 0 ) },
 #endif
-    { "FormData", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowFormDataConstructor), (intptr_t)setJSDOMWindowFormDataConstructor THUNK_GENERATOR(0) },
+    { "FormData", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowFormDataConstructor ), ( intptr_t )setJSDOMWindowFormDataConstructor THUNK_GENERATOR( 0 ) },
 #if ENABLE(BLOB) || ENABLE(FILE_SYSTEM)
-    { "FileError", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowFileErrorConstructor), (intptr_t)setJSDOMWindowFileErrorConstructor THUNK_GENERATOR(0) },
+    { "FileError", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowFileErrorConstructor ), ( intptr_t )setJSDOMWindowFileErrorConstructor THUNK_GENERATOR( 0 ) },
 #endif
 #if ENABLE(BLOB)
-    { "FileReader", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowFileReaderConstructor), (intptr_t)setJSDOMWindowFileReaderConstructor THUNK_GENERATOR(0) },
+    { "FileReader", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowFileReaderConstructor ), ( intptr_t )setJSDOMWindowFileReaderConstructor THUNK_GENERATOR( 0 ) },
 #endif
 #if ENABLE(BLOB)
-    { "WebKitBlobBuilder", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowWebKitBlobBuilderConstructor), (intptr_t)setJSDOMWindowWebKitBlobBuilderConstructor THUNK_GENERATOR(0) },
+    { "WebKitBlobBuilder", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowWebKitBlobBuilderConstructor ), ( intptr_t )setJSDOMWindowWebKitBlobBuilderConstructor THUNK_GENERATOR( 0 ) },
 #endif
 #if ENABLE(BLOB)
-    { "webkitURL", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowWebkitURL), (intptr_t)0 THUNK_GENERATOR(0) },
+    { "webkitURL", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowWebkitURL ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
 #endif
-    { "constructor", DontEnum | DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDOMWindowConstructor), (intptr_t)setJSDOMWindowConstructor THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "constructor", DontEnum | DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDOMWindowConstructor ), ( intptr_t )setJSDOMWindowConstructor THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -945,43 +946,48 @@ static JSC_CONST_HASHTABLE HashTable JSDOMWindowTable = { 1123, 1023, JSDOMWindo
 
 static const HashTableValue JSDOMWindowConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSDOMWindowConstructorTable = { 1, 0, JSDOMWindowConstructorTableValues, 0 };
-class JSDOMWindowConstructor : public DOMConstructorObject {
+class JSDOMWindowConstructor : public DOMConstructorObject
+{
 public:
-    JSDOMWindowConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSDOMWindowConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSDOMWindowConstructor::s_info = { "DOMWindowConstructor", &DOMConstructorObject::s_info, &JSDOMWindowConstructorTable, 0 };
 
-JSDOMWindowConstructor::JSDOMWindowConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSDOMWindowConstructor::JSDOMWindowConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, globalObject->prototype(), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, globalObject->prototype(), DontDelete | ReadOnly );
 }
 
-bool JSDOMWindowConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSDOMWindowConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSDOMWindowConstructor, JSDOMWrapper>(exec, &JSDOMWindowConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSDOMWindowConstructor, JSDOMWrapper>( exec, &JSDOMWindowConstructorTable, this, propertyName, slot );
 }
 
-bool JSDOMWindowConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSDOMWindowConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSDOMWindowConstructor, JSDOMWrapper>(exec, &JSDOMWindowConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSDOMWindowConstructor, JSDOMWrapper>( exec, &JSDOMWindowConstructorTable, this, propertyName,
+            descriptor );
 }
 
 /* Hash table for prototype */
@@ -993,9748 +999,13747 @@ bool JSDOMWindowConstructor::getOwnPropertyDescriptor(ExecState* exec, const Ide
 
 static const HashTableValue JSDOMWindowPrototypeTableValues[38] =
 {
-    { "getSelection", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDOMWindowPrototypeFunctionGetSelection), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "focus", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDOMWindowPrototypeFunctionFocus), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "blur", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDOMWindowPrototypeFunctionBlur), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "close", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDOMWindowPrototypeFunctionClose), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "print", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDOMWindowPrototypeFunctionPrint), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "stop", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDOMWindowPrototypeFunctionStop), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "open", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDOMWindowPrototypeFunctionOpen), (intptr_t)3 THUNK_GENERATOR(0) },
-    { "showModalDialog", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDOMWindowPrototypeFunctionShowModalDialog), (intptr_t)3 THUNK_GENERATOR(0) },
-    { "alert", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDOMWindowPrototypeFunctionAlert), (intptr_t)1 THUNK_GENERATOR(0) },
-    { "confirm", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDOMWindowPrototypeFunctionConfirm), (intptr_t)1 THUNK_GENERATOR(0) },
-    { "prompt", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDOMWindowPrototypeFunctionPrompt), (intptr_t)2 THUNK_GENERATOR(0) },
-    { "find", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDOMWindowPrototypeFunctionFind), (intptr_t)7 THUNK_GENERATOR(0) },
-    { "scrollBy", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDOMWindowPrototypeFunctionScrollBy), (intptr_t)2 THUNK_GENERATOR(0) },
-    { "scrollTo", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDOMWindowPrototypeFunctionScrollTo), (intptr_t)2 THUNK_GENERATOR(0) },
-    { "scroll", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDOMWindowPrototypeFunctionScroll), (intptr_t)2 THUNK_GENERATOR(0) },
-    { "moveBy", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDOMWindowPrototypeFunctionMoveBy), (intptr_t)2 THUNK_GENERATOR(0) },
-    { "moveTo", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDOMWindowPrototypeFunctionMoveTo), (intptr_t)2 THUNK_GENERATOR(0) },
-    { "resizeBy", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDOMWindowPrototypeFunctionResizeBy), (intptr_t)2 THUNK_GENERATOR(0) },
-    { "resizeTo", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDOMWindowPrototypeFunctionResizeTo), (intptr_t)2 THUNK_GENERATOR(0) },
-    { "matchMedia", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDOMWindowPrototypeFunctionMatchMedia), (intptr_t)1 THUNK_GENERATOR(0) },
-    { "getComputedStyle", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDOMWindowPrototypeFunctionGetComputedStyle), (intptr_t)2 THUNK_GENERATOR(0) },
-    { "getMatchedCSSRules", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDOMWindowPrototypeFunctionGetMatchedCSSRules), (intptr_t)2 THUNK_GENERATOR(0) },
-    { "webkitConvertPointFromPageToNode", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDOMWindowPrototypeFunctionWebkitConvertPointFromPageToNode), (intptr_t)2 THUNK_GENERATOR(0) },
-    { "webkitConvertPointFromNodeToPage", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDOMWindowPrototypeFunctionWebkitConvertPointFromNodeToPage), (intptr_t)2 THUNK_GENERATOR(0) },
-    { "openDatabase", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDOMWindowPrototypeFunctionOpenDatabase), (intptr_t)5 THUNK_GENERATOR(0) },
-    { "postMessage", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDOMWindowPrototypeFunctionPostMessage), (intptr_t)3 THUNK_GENERATOR(0) },
-    { "setTimeout", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDOMWindowPrototypeFunctionSetTimeout), (intptr_t)2 THUNK_GENERATOR(0) },
-    { "clearTimeout", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDOMWindowPrototypeFunctionClearTimeout), (intptr_t)1 THUNK_GENERATOR(0) },
-    { "setInterval", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDOMWindowPrototypeFunctionSetInterval), (intptr_t)2 THUNK_GENERATOR(0) },
-    { "clearInterval", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDOMWindowPrototypeFunctionClearInterval), (intptr_t)1 THUNK_GENERATOR(0) },
-    { "atob", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDOMWindowPrototypeFunctionAtob), (intptr_t)1 THUNK_GENERATOR(0) },
-    { "btoa", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDOMWindowPrototypeFunctionBtoa), (intptr_t)1 THUNK_GENERATOR(0) },
-    { "addEventListener", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDOMWindowPrototypeFunctionAddEventListener), (intptr_t)3 THUNK_GENERATOR(0) },
-    { "removeEventListener", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDOMWindowPrototypeFunctionRemoveEventListener), (intptr_t)3 THUNK_GENERATOR(0) },
-    { "dispatchEvent", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDOMWindowPrototypeFunctionDispatchEvent), (intptr_t)1 THUNK_GENERATOR(0) },
-    { "captureEvents", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDOMWindowPrototypeFunctionCaptureEvents), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "releaseEvents", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDOMWindowPrototypeFunctionReleaseEvents), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "getSelection", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDOMWindowPrototypeFunctionGetSelection ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "focus", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDOMWindowPrototypeFunctionFocus ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "blur", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDOMWindowPrototypeFunctionBlur ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "close", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDOMWindowPrototypeFunctionClose ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "print", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDOMWindowPrototypeFunctionPrint ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "stop", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDOMWindowPrototypeFunctionStop ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "open", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDOMWindowPrototypeFunctionOpen ), ( intptr_t )3 THUNK_GENERATOR( 0 ) },
+    { "showModalDialog", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDOMWindowPrototypeFunctionShowModalDialog ), ( intptr_t )3 THUNK_GENERATOR( 0 ) },
+    { "alert", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDOMWindowPrototypeFunctionAlert ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { "confirm", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDOMWindowPrototypeFunctionConfirm ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { "prompt", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDOMWindowPrototypeFunctionPrompt ), ( intptr_t )2 THUNK_GENERATOR( 0 ) },
+    { "find", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDOMWindowPrototypeFunctionFind ), ( intptr_t )7 THUNK_GENERATOR( 0 ) },
+    { "scrollBy", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDOMWindowPrototypeFunctionScrollBy ), ( intptr_t )2 THUNK_GENERATOR( 0 ) },
+    { "scrollTo", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDOMWindowPrototypeFunctionScrollTo ), ( intptr_t )2 THUNK_GENERATOR( 0 ) },
+    { "scroll", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDOMWindowPrototypeFunctionScroll ), ( intptr_t )2 THUNK_GENERATOR( 0 ) },
+    { "moveBy", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDOMWindowPrototypeFunctionMoveBy ), ( intptr_t )2 THUNK_GENERATOR( 0 ) },
+    { "moveTo", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDOMWindowPrototypeFunctionMoveTo ), ( intptr_t )2 THUNK_GENERATOR( 0 ) },
+    { "resizeBy", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDOMWindowPrototypeFunctionResizeBy ), ( intptr_t )2 THUNK_GENERATOR( 0 ) },
+    { "resizeTo", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDOMWindowPrototypeFunctionResizeTo ), ( intptr_t )2 THUNK_GENERATOR( 0 ) },
+    { "matchMedia", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDOMWindowPrototypeFunctionMatchMedia ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { "getComputedStyle", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDOMWindowPrototypeFunctionGetComputedStyle ), ( intptr_t )2 THUNK_GENERATOR( 0 ) },
+    { "getMatchedCSSRules", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDOMWindowPrototypeFunctionGetMatchedCSSRules ), ( intptr_t )2 THUNK_GENERATOR( 0 ) },
+    { "webkitConvertPointFromPageToNode", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDOMWindowPrototypeFunctionWebkitConvertPointFromPageToNode ), ( intptr_t )2 THUNK_GENERATOR( 0 ) },
+    { "webkitConvertPointFromNodeToPage", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDOMWindowPrototypeFunctionWebkitConvertPointFromNodeToPage ), ( intptr_t )2 THUNK_GENERATOR( 0 ) },
+    { "openDatabase", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDOMWindowPrototypeFunctionOpenDatabase ), ( intptr_t )5 THUNK_GENERATOR( 0 ) },
+    { "postMessage", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDOMWindowPrototypeFunctionPostMessage ), ( intptr_t )3 THUNK_GENERATOR( 0 ) },
+    { "setTimeout", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDOMWindowPrototypeFunctionSetTimeout ), ( intptr_t )2 THUNK_GENERATOR( 0 ) },
+    { "clearTimeout", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDOMWindowPrototypeFunctionClearTimeout ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { "setInterval", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDOMWindowPrototypeFunctionSetInterval ), ( intptr_t )2 THUNK_GENERATOR( 0 ) },
+    { "clearInterval", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDOMWindowPrototypeFunctionClearInterval ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { "atob", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDOMWindowPrototypeFunctionAtob ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { "btoa", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDOMWindowPrototypeFunctionBtoa ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { "addEventListener", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDOMWindowPrototypeFunctionAddEventListener ), ( intptr_t )3 THUNK_GENERATOR( 0 ) },
+    { "removeEventListener", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDOMWindowPrototypeFunctionRemoveEventListener ), ( intptr_t )3 THUNK_GENERATOR( 0 ) },
+    { "dispatchEvent", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDOMWindowPrototypeFunctionDispatchEvent ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { "captureEvents", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDOMWindowPrototypeFunctionCaptureEvents ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "releaseEvents", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDOMWindowPrototypeFunctionReleaseEvents ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSDOMWindowPrototypeTable = { 134, 127, JSDOMWindowPrototypeTableValues, 0 };
 const ClassInfo JSDOMWindowPrototype::s_info = { "DOMWindowPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSDOMWindowPrototypeTable, 0 };
 
-void* JSDOMWindowPrototype::operator new(size_t size)
+void *JSDOMWindowPrototype::operator new ( size_t size )
 {
-    return JSDOMWindow::commonJSGlobalData()->heap.allocate(size);
+    return JSDOMWindow::commonJSGlobalData()->heap.allocate( size );
 }
 
-bool JSDOMWindowPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSDOMWindowPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticFunctionSlot<JSObject>(exec, &JSDOMWindowPrototypeTable, this, propertyName, slot);
+    return getStaticFunctionSlot<JSObject>( exec, &JSDOMWindowPrototypeTable, this, propertyName, slot );
 }
 
-bool JSDOMWindowPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSDOMWindowPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticFunctionDescriptor<JSObject>(exec, &JSDOMWindowPrototypeTable, this, propertyName, descriptor);
+    return getStaticFunctionDescriptor<JSObject>( exec, &JSDOMWindowPrototypeTable, this, propertyName, descriptor );
 }
 
 const ClassInfo JSDOMWindow::s_info = { "DOMWindow", &JSDOMWindowBase::s_info, &JSDOMWindowTable, 0 };
 
-JSDOMWindow::JSDOMWindow(JSGlobalData& globalData, Structure* structure, PassRefPtr<DOMWindow> impl, JSDOMWindowShell* shell)
-    : JSDOMWindowBase(globalData, structure, impl, shell)
+JSDOMWindow::JSDOMWindow( JSGlobalData &globalData, Structure *structure, PassRefPtr<DOMWindow> impl, JSDOMWindowShell *shell )
+    : JSDOMWindowBase( globalData, structure, impl, shell )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSValue jsDOMWindowScreen(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowScreen( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->screen()));
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->screen() ) );
     return result;
 }
 
 
-JSValue jsDOMWindowHistory(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHistory( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    return castedThis->history(exec);
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+    return castedThis->history( exec );
 }
 
 
-JSValue jsDOMWindowLocationbar(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowLocationbar( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->locationbar()));
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->locationbar() ) );
     return result;
 }
 
 
-JSValue jsDOMWindowMenubar(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowMenubar( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->menubar()));
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->menubar() ) );
     return result;
 }
 
 
-JSValue jsDOMWindowPersonalbar(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowPersonalbar( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->personalbar()));
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->personalbar() ) );
     return result;
 }
 
 
-JSValue jsDOMWindowScrollbars(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowScrollbars( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->scrollbars()));
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->scrollbars() ) );
     return result;
 }
 
 
-JSValue jsDOMWindowStatusbar(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowStatusbar( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->statusbar()));
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->statusbar() ) );
     return result;
 }
 
 
-JSValue jsDOMWindowToolbar(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowToolbar( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->toolbar()));
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->toolbar() ) );
     return result;
 }
 
 
-JSValue jsDOMWindowNavigator(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowNavigator( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->navigator()));
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->navigator() ) );
     return result;
 }
 
 
-JSValue jsDOMWindowClientInformation(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowClientInformation( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->clientInformation()));
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->clientInformation() ) );
     return result;
 }
 
 
-JSValue jsDOMWindowCrypto(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowCrypto( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->crypto()));
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->crypto() ) );
     return result;
 }
 
 
-JSValue jsDOMWindowLocation(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowLocation( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    return castedThis->location(exec);
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+    return castedThis->location( exec );
 }
 
 
-JSValue jsDOMWindowEvent(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowEvent( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return castedThis->event(exec);
+    }
+
+    return castedThis->event( exec );
 }
 
 
-JSValue jsDOMWindowFrameElement(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowFrameElement( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    return checkNodeSecurity(exec, imp->frameElement()) ? toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->frameElement())) : jsUndefined();
+    }
+
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    return checkNodeSecurity( exec, imp->frameElement() ) ? toJS( exec, castedThis->globalObject(),
+            WTF::getPtr( imp->frameElement() ) ) : jsUndefined();
 }
 
 
-JSValue jsDOMWindowOffscreenBuffering(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOffscreenBuffering( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    JSValue result = jsBoolean(imp->offscreenBuffering());
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    JSValue result = jsBoolean( imp->offscreenBuffering() );
     return result;
 }
 
 
-JSValue jsDOMWindowOuterHeight(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOuterHeight( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    JSValue result = jsNumber(imp->outerHeight());
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->outerHeight() );
     return result;
 }
 
 
-JSValue jsDOMWindowOuterWidth(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOuterWidth( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    JSValue result = jsNumber(imp->outerWidth());
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->outerWidth() );
     return result;
 }
 
 
-JSValue jsDOMWindowInnerHeight(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowInnerHeight( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    JSValue result = jsNumber(imp->innerHeight());
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->innerHeight() );
     return result;
 }
 
 
-JSValue jsDOMWindowInnerWidth(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowInnerWidth( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    JSValue result = jsNumber(imp->innerWidth());
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->innerWidth() );
     return result;
 }
 
 
-JSValue jsDOMWindowScreenX(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowScreenX( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    JSValue result = jsNumber(imp->screenX());
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->screenX() );
     return result;
 }
 
 
-JSValue jsDOMWindowScreenY(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowScreenY( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    JSValue result = jsNumber(imp->screenY());
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->screenY() );
     return result;
 }
 
 
-JSValue jsDOMWindowScreenLeft(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowScreenLeft( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    JSValue result = jsNumber(imp->screenLeft());
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->screenLeft() );
     return result;
 }
 
 
-JSValue jsDOMWindowScreenTop(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowScreenTop( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    JSValue result = jsNumber(imp->screenTop());
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->screenTop() );
     return result;
 }
 
 
-JSValue jsDOMWindowScrollX(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowScrollX( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    JSValue result = jsNumber(imp->scrollX());
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->scrollX() );
     return result;
 }
 
 
-JSValue jsDOMWindowScrollY(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowScrollY( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    JSValue result = jsNumber(imp->scrollY());
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->scrollY() );
     return result;
 }
 
 
-JSValue jsDOMWindowPageXOffset(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowPageXOffset( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    JSValue result = jsNumber(imp->pageXOffset());
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->pageXOffset() );
     return result;
 }
 
 
-JSValue jsDOMWindowPageYOffset(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowPageYOffset( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    JSValue result = jsNumber(imp->pageYOffset());
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->pageYOffset() );
     return result;
 }
 
 
-JSValue jsDOMWindowClosed(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowClosed( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    JSValue result = jsBoolean(imp->closed());
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    JSValue result = jsBoolean( imp->closed() );
     return result;
 }
 
 
-JSValue jsDOMWindowLength(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowLength( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    JSValue result = jsNumber(imp->length());
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->length() );
     return result;
 }
 
 
-JSValue jsDOMWindowName(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowName( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->name());
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->name() );
     return result;
 }
 
 
-JSValue jsDOMWindowStatus(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowStatus( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->status());
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->status() );
     return result;
 }
 
 
-JSValue jsDOMWindowDefaultStatus(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowDefaultStatus( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->defaultStatus());
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->defaultStatus() );
     return result;
 }
 
 
-JSValue jsDOMWindowDefaultstatus(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowDefaultstatus( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->defaultstatus());
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->defaultstatus() );
     return result;
 }
 
 
-JSValue jsDOMWindowSelf(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSelf( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->self()));
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->self() ) );
     return result;
 }
 
 
-JSValue jsDOMWindowWindow(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowWindow( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->window()));
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->window() ) );
     return result;
 }
 
 
-JSValue jsDOMWindowFrames(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowFrames( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->frames()));
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->frames() ) );
     return result;
 }
 
 
-JSValue jsDOMWindowOpener(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOpener( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->opener()));
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->opener() ) );
     return result;
 }
 
 
-JSValue jsDOMWindowParent(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowParent( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->parent()));
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->parent() ) );
     return result;
 }
 
 
-JSValue jsDOMWindowTop(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowTop( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->top()));
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->top() ) );
     return result;
 }
 
 
-JSValue jsDOMWindowDocument(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowDocument( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->document()));
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->document() ) );
     return result;
 }
 
 
-JSValue jsDOMWindowStyleMedia(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowStyleMedia( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->styleMedia()));
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->styleMedia() ) );
     return result;
 }
 
 
-JSValue jsDOMWindowDevicePixelRatio(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowDevicePixelRatio( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    JSValue result = jsNumber(imp->devicePixelRatio());
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->devicePixelRatio() );
     return result;
 }
 
 
-JSValue jsDOMWindowApplicationCache(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowApplicationCache( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->applicationCache()));
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->applicationCache() ) );
     return result;
 }
 
 
-JSValue jsDOMWindowSessionStorage(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSessionStorage( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
+    }
+
     ExceptionCode ec = 0;
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    JSC::JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->sessionStorage(ec)));
-    setDOMException(exec, ec);
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    JSC::JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->sessionStorage( ec ) ) );
+    setDOMException( exec, ec );
     return result;
 }
 
 
-JSValue jsDOMWindowLocalStorage(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowLocalStorage( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
+    }
+
     ExceptionCode ec = 0;
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    JSC::JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->localStorage(ec)));
-    setDOMException(exec, ec);
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    JSC::JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->localStorage( ec ) ) );
+    setDOMException( exec, ec );
     return result;
 }
 
 
-JSValue jsDOMWindowWebkitNotifications(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowWebkitNotifications( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->webkitNotifications()));
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->webkitNotifications() ) );
     return result;
 }
 
 
-JSValue jsDOMWindowConsole(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowConsole( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->console()));
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->console() ) );
     return result;
 }
 
 
-JSValue jsDOMWindowOnabort(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOnabort( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->onabort()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onabort() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOnbeforeunload(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOnbeforeunload( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->onbeforeunload()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onbeforeunload() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOnblur(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOnblur( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->onblur()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onblur() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOncanplay(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOncanplay( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->oncanplay()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->oncanplay() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOncanplaythrough(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOncanplaythrough( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->oncanplaythrough()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->oncanplaythrough() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOnchange(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOnchange( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->onchange()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onchange() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOnclick(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOnclick( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->onclick()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onclick() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOncontextmenu(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOncontextmenu( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->oncontextmenu()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->oncontextmenu() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOndblclick(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOndblclick( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->ondblclick()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->ondblclick() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOndrag(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOndrag( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->ondrag()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->ondrag() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOndragend(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOndragend( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->ondragend()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->ondragend() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOndragenter(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOndragenter( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->ondragenter()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->ondragenter() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOndragleave(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOndragleave( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->ondragleave()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->ondragleave() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOndragover(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOndragover( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->ondragover()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->ondragover() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOndragstart(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOndragstart( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->ondragstart()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->ondragstart() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOndrop(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOndrop( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->ondrop()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->ondrop() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOndurationchange(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOndurationchange( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->ondurationchange()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->ondurationchange() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOnemptied(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOnemptied( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->onemptied()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onemptied() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOnended(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOnended( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->onended()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onended() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOnerror(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOnerror( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->onerror()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onerror() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOnfocus(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOnfocus( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->onfocus()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onfocus() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOnhashchange(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOnhashchange( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->onhashchange()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onhashchange() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOninput(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOninput( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->oninput()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->oninput() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOninvalid(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOninvalid( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->oninvalid()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->oninvalid() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOnkeydown(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOnkeydown( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->onkeydown()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onkeydown() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOnkeypress(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOnkeypress( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->onkeypress()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onkeypress() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOnkeyup(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOnkeyup( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->onkeyup()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onkeyup() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOnload(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOnload( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->onload()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onload() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOnloadeddata(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOnloadeddata( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->onloadeddata()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onloadeddata() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOnloadedmetadata(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOnloadedmetadata( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->onloadedmetadata()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onloadedmetadata() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOnloadstart(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOnloadstart( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->onloadstart()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onloadstart() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOnmessage(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOnmessage( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->onmessage()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onmessage() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOnmousedown(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOnmousedown( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->onmousedown()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onmousedown() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOnmousemove(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOnmousemove( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->onmousemove()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onmousemove() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOnmouseout(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOnmouseout( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->onmouseout()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onmouseout() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOnmouseover(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOnmouseover( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->onmouseover()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onmouseover() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOnmouseup(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOnmouseup( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->onmouseup()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onmouseup() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOnmousewheel(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOnmousewheel( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->onmousewheel()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onmousewheel() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOnoffline(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOnoffline( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->onoffline()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onoffline() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOnonline(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOnonline( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->ononline()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->ononline() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOnpagehide(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOnpagehide( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->onpagehide()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onpagehide() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOnpageshow(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOnpageshow( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->onpageshow()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onpageshow() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOnpause(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOnpause( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->onpause()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onpause() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOnplay(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOnplay( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->onplay()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onplay() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOnplaying(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOnplaying( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->onplaying()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onplaying() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOnpopstate(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOnpopstate( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->onpopstate()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onpopstate() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOnprogress(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOnprogress( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->onprogress()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onprogress() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOnratechange(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOnratechange( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->onratechange()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onratechange() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOnresize(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOnresize( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->onresize()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onresize() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOnscroll(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOnscroll( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->onscroll()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onscroll() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOnseeked(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOnseeked( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->onseeked()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onseeked() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOnseeking(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOnseeking( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->onseeking()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onseeking() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOnselect(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOnselect( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->onselect()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onselect() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOnstalled(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOnstalled( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->onstalled()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onstalled() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOnstorage(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOnstorage( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->onstorage()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onstorage() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOnsubmit(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOnsubmit( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->onsubmit()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onsubmit() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOnsuspend(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOnsuspend( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->onsuspend()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onsuspend() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOntimeupdate(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOntimeupdate( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->ontimeupdate()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->ontimeupdate() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOnunload(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOnunload( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->onunload()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onunload() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOnvolumechange(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOnvolumechange( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->onvolumechange()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onvolumechange() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOnwaiting(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOnwaiting( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->onwaiting()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onwaiting() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOnreset(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOnreset( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->onreset()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onreset() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOnsearch(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOnsearch( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->onsearch()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onsearch() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOnwebkitanimationend(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOnwebkitanimationend( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->onwebkitanimationend()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onwebkitanimationend() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOnwebkitanimationiteration(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOnwebkitanimationiteration( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->onwebkitanimationiteration()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onwebkitanimationiteration() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOnwebkitanimationstart(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOnwebkitanimationstart( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->onwebkitanimationstart()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onwebkitanimationstart() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsDOMWindowOnwebkittransitionend(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOnwebkittransitionend( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->onwebkittransitionend()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onwebkittransitionend() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
 #if ENABLE(TOUCH_EVENTS)
-JSValue jsDOMWindowOntouchstart(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOntouchstart( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->ontouchstart()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->ontouchstart() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 #endif
 
 #if ENABLE(TOUCH_EVENTS)
-JSValue jsDOMWindowOntouchmove(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOntouchmove( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->ontouchmove()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->ontouchmove() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 #endif
 
 #if ENABLE(TOUCH_EVENTS)
-JSValue jsDOMWindowOntouchend(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOntouchend( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->ontouchend()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->ontouchend() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 #endif
 
 #if ENABLE(TOUCH_EVENTS)
-JSValue jsDOMWindowOntouchcancel(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOntouchcancel( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->ontouchcancel()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->ontouchcancel() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 #endif
 
 #if ENABLE(DEVICE_ORIENTATION)
-JSValue jsDOMWindowDeviceMotionEventConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowDeviceMotionEventConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSDeviceMotionEvent::getConstructor(exec, castedThis);
+    }
+
+    return JSDeviceMotionEvent::getConstructor( exec, castedThis );
 }
 
 #endif
 
 #if ENABLE(DEVICE_ORIENTATION)
-JSValue jsDOMWindowOndevicemotion(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOndevicemotion( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->ondevicemotion()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->ondevicemotion() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 #endif
 
 #if ENABLE(DEVICE_ORIENTATION)
-JSValue jsDOMWindowDeviceOrientationEventConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowDeviceOrientationEventConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSDeviceOrientationEvent::getConstructor(exec, castedThis);
+    }
+
+    return JSDeviceOrientationEvent::getConstructor( exec, castedThis );
 }
 
 #endif
 
 #if ENABLE(DEVICE_ORIENTATION)
-JSValue jsDOMWindowOndeviceorientation(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOndeviceorientation( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (EventListener* listener = imp->ondeviceorientation()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->ondeviceorientation() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 #endif
 
-JSValue jsDOMWindowStyleSheetConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowStyleSheetConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSStyleSheet::getConstructor(exec, castedThis);
+    }
+
+    return JSStyleSheet::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowCSSStyleSheetConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowCSSStyleSheetConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSCSSStyleSheet::getConstructor(exec, castedThis);
+    }
+
+    return JSCSSStyleSheet::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowCSSValueConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowCSSValueConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSCSSValue::getConstructor(exec, castedThis);
+    }
+
+    return JSCSSValue::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowCSSPrimitiveValueConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowCSSPrimitiveValueConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSCSSPrimitiveValue::getConstructor(exec, castedThis);
+    }
+
+    return JSCSSPrimitiveValue::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowCSSValueListConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowCSSValueListConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSCSSValueList::getConstructor(exec, castedThis);
+    }
+
+    return JSCSSValueList::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowWebKitCSSTransformValueConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowWebKitCSSTransformValueConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSWebKitCSSTransformValue::getConstructor(exec, castedThis);
+    }
+
+    return JSWebKitCSSTransformValue::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowCSSRuleConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowCSSRuleConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSCSSRule::getConstructor(exec, castedThis);
+    }
+
+    return JSCSSRule::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowCSSCharsetRuleConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowCSSCharsetRuleConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSCSSCharsetRule::getConstructor(exec, castedThis);
+    }
+
+    return JSCSSCharsetRule::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowCSSFontFaceRuleConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowCSSFontFaceRuleConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSCSSFontFaceRule::getConstructor(exec, castedThis);
+    }
+
+    return JSCSSFontFaceRule::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowCSSImportRuleConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowCSSImportRuleConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSCSSImportRule::getConstructor(exec, castedThis);
+    }
+
+    return JSCSSImportRule::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowCSSMediaRuleConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowCSSMediaRuleConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSCSSMediaRule::getConstructor(exec, castedThis);
+    }
+
+    return JSCSSMediaRule::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowCSSPageRuleConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowCSSPageRuleConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSCSSPageRule::getConstructor(exec, castedThis);
+    }
+
+    return JSCSSPageRule::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowCSSStyleRuleConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowCSSStyleRuleConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSCSSStyleRule::getConstructor(exec, castedThis);
+    }
+
+    return JSCSSStyleRule::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowCSSStyleDeclarationConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowCSSStyleDeclarationConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSCSSStyleDeclaration::getConstructor(exec, castedThis);
+    }
+
+    return JSCSSStyleDeclaration::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowMediaListConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowMediaListConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSMediaList::getConstructor(exec, castedThis);
+    }
+
+    return JSMediaList::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowCounterConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowCounterConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSCounter::getConstructor(exec, castedThis);
+    }
+
+    return JSCounter::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowCSSRuleListConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowCSSRuleListConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSCSSRuleList::getConstructor(exec, castedThis);
+    }
+
+    return JSCSSRuleList::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowRectConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowRectConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSRect::getConstructor(exec, castedThis);
+    }
+
+    return JSRect::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowRGBColorConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowRGBColorConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSRGBColor::getConstructor(exec, castedThis);
+    }
+
+    return JSRGBColor::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowStyleSheetListConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowStyleSheetListConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSStyleSheetList::getConstructor(exec, castedThis);
+    }
+
+    return JSStyleSheetList::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowDOMExceptionConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowDOMExceptionConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSDOMCoreException::getConstructor(exec, castedThis);
+    }
+
+    return JSDOMCoreException::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowDOMStringListConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowDOMStringListConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSDOMStringList::getConstructor(exec, castedThis);
+    }
+
+    return JSDOMStringList::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowDOMImplementationConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowDOMImplementationConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSDOMImplementation::getConstructor(exec, castedThis);
+    }
+
+    return JSDOMImplementation::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowDOMSettableTokenListConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowDOMSettableTokenListConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSDOMSettableTokenList::getConstructor(exec, castedThis);
+    }
+
+    return JSDOMSettableTokenList::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowDOMTokenListConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowDOMTokenListConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSDOMTokenList::getConstructor(exec, castedThis);
+    }
+
+    return JSDOMTokenList::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowDocumentFragmentConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowDocumentFragmentConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSDocumentFragment::getConstructor(exec, castedThis);
+    }
+
+    return JSDocumentFragment::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowDocumentConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowDocumentConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSDocument::getConstructor(exec, castedThis);
+    }
+
+    return JSDocument::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowNodeConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowNodeConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSNode::getConstructor(exec, castedThis);
+    }
+
+    return JSNode::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowNodeListConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowNodeListConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSNodeList::getConstructor(exec, castedThis);
+    }
+
+    return JSNodeList::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowNamedNodeMapConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowNamedNodeMapConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSNamedNodeMap::getConstructor(exec, castedThis);
+    }
+
+    return JSNamedNodeMap::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowCharacterDataConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowCharacterDataConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSCharacterData::getConstructor(exec, castedThis);
+    }
+
+    return JSCharacterData::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowAttrConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowAttrConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSAttr::getConstructor(exec, castedThis);
+    }
+
+    return JSAttr::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSElement::getConstructor(exec, castedThis);
+    }
+
+    return JSElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowTextConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowTextConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSText::getConstructor(exec, castedThis);
+    }
+
+    return JSText::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowCommentConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowCommentConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSComment::getConstructor(exec, castedThis);
+    }
+
+    return JSComment::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowCDATASectionConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowCDATASectionConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSCDATASection::getConstructor(exec, castedThis);
+    }
+
+    return JSCDATASection::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowDocumentTypeConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowDocumentTypeConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSDocumentType::getConstructor(exec, castedThis);
+    }
+
+    return JSDocumentType::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowNotationConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowNotationConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSNotation::getConstructor(exec, castedThis);
+    }
+
+    return JSNotation::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowEntityConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowEntityConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSEntity::getConstructor(exec, castedThis);
+    }
+
+    return JSEntity::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowEntityReferenceConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowEntityReferenceConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSEntityReference::getConstructor(exec, castedThis);
+    }
+
+    return JSEntityReference::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowProcessingInstructionConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowProcessingInstructionConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSProcessingInstruction::getConstructor(exec, castedThis);
+    }
+
+    return JSProcessingInstruction::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLDocumentConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLDocumentConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLDocument::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLDocument::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLAnchorElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLAnchorElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLAnchorElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLAnchorElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLAppletElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLAppletElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLAppletElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLAppletElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLAreaElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLAreaElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLAreaElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLAreaElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLBRElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLBRElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLBRElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLBRElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLBaseElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLBaseElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLBaseElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLBaseElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLBaseFontElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLBaseFontElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLBaseFontElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLBaseFontElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLBlockquoteElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLBlockquoteElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLBlockquoteElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLBlockquoteElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLBodyElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLBodyElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLBodyElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLBodyElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLButtonElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLButtonElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLButtonElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLButtonElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLCanvasElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLCanvasElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLCanvasElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLCanvasElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLDListElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLDListElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLDListElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLDListElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLDirectoryElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLDirectoryElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLDirectoryElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLDirectoryElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLDivElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLDivElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLDivElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLDivElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLEmbedElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLEmbedElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLEmbedElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLEmbedElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLFieldSetElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLFieldSetElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLFieldSetElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLFieldSetElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLFontElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLFontElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLFontElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLFontElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLFormElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLFormElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLFormElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLFormElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLFrameElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLFrameElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLFrameElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLFrameElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLFrameSetElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLFrameSetElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLFrameSetElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLFrameSetElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLHRElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLHRElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLHRElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLHRElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLHeadElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLHeadElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLHeadElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLHeadElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLHeadingElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLHeadingElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLHeadingElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLHeadingElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLHtmlElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLHtmlElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLHtmlElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLHtmlElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLIFrameElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLIFrameElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLIFrameElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLIFrameElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLImageElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLImageElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLImageElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLImageElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLInputElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLInputElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLInputElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLInputElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLIsIndexElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLIsIndexElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLIsIndexElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLIsIndexElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLKeygenElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLKeygenElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLKeygenElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLKeygenElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLLIElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLLIElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLLIElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLLIElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLLabelElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLLabelElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLLabelElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLLabelElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLLegendElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLLegendElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLLegendElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLLegendElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLLinkElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLLinkElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLLinkElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLLinkElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLMapElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLMapElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLMapElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLMapElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLMarqueeElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLMarqueeElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLMarqueeElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLMarqueeElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLMenuElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLMenuElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLMenuElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLMenuElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLMetaElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLMetaElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLMetaElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLMetaElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLMeterElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLMeterElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLMeterElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLMeterElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLModElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLModElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLModElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLModElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLOListElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLOListElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLOListElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLOListElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLObjectElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLObjectElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLObjectElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLObjectElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLOptGroupElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLOptGroupElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLOptGroupElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLOptGroupElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLOptionElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLOptionElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLOptionElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLOptionElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLOutputElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLOutputElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLOutputElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLOutputElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLParagraphElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLParagraphElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLParagraphElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLParagraphElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLParamElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLParamElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLParamElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLParamElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLPreElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLPreElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLPreElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLPreElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLProgressElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLProgressElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLProgressElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLProgressElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLQuoteElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLQuoteElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLQuoteElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLQuoteElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLScriptElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLScriptElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLScriptElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLScriptElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLSelectElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLSelectElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLSelectElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLSelectElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLStyleElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLStyleElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLStyleElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLStyleElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLTableCaptionElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLTableCaptionElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLTableCaptionElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLTableCaptionElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLTableCellElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLTableCellElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLTableCellElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLTableCellElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLTableColElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLTableColElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLTableColElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLTableColElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLTableElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLTableElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLTableElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLTableElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLTableRowElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLTableRowElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLTableRowElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLTableRowElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLTableSectionElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLTableSectionElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLTableSectionElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLTableSectionElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLTextAreaElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLTextAreaElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLTextAreaElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLTextAreaElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLTitleElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLTitleElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLTitleElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLTitleElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLUListElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLUListElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLUListElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLUListElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLCollectionConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLCollectionConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLCollection::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLCollection::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHTMLAllCollectionConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLAllCollectionConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLAllCollection::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLAllCollection::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowImageConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowImageConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return castedThis->image(exec);
+    }
+
+    return castedThis->image( exec );
 }
 
 
-JSValue jsDOMWindowOptionConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOptionConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return castedThis->option(exec);
+    }
+
+    return castedThis->option( exec );
 }
 
 
-JSValue jsDOMWindowCanvasPatternConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowCanvasPatternConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSCanvasPattern::getConstructor(exec, castedThis);
+    }
+
+    return JSCanvasPattern::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowCanvasGradientConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowCanvasGradientConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSCanvasGradient::getConstructor(exec, castedThis);
+    }
+
+    return JSCanvasGradient::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowCanvasRenderingContext2DConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowCanvasRenderingContext2DConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSCanvasRenderingContext2D::getConstructor(exec, castedThis);
+    }
+
+    return JSCanvasRenderingContext2D::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowImageDataConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowImageDataConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSImageData::getConstructor(exec, castedThis);
+    }
+
+    return JSImageData::getConstructor( exec, castedThis );
 }
 
 
 #if ENABLE(WEBGL)
-JSValue jsDOMWindowWebGLActiveInfoConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowWebGLActiveInfoConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSWebGLActiveInfo::getConstructor(exec, castedThis);
+    }
+
+    return JSWebGLActiveInfo::getConstructor( exec, castedThis );
 }
 
 #endif
 
 #if ENABLE(WEBGL)
-JSValue jsDOMWindowWebGLBufferConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowWebGLBufferConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSWebGLBuffer::getConstructor(exec, castedThis);
+    }
+
+    return JSWebGLBuffer::getConstructor( exec, castedThis );
 }
 
 #endif
 
 #if ENABLE(WEBGL)
-JSValue jsDOMWindowWebGLFramebufferConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowWebGLFramebufferConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSWebGLFramebuffer::getConstructor(exec, castedThis);
+    }
+
+    return JSWebGLFramebuffer::getConstructor( exec, castedThis );
 }
 
 #endif
 
 #if ENABLE(WEBGL)
-JSValue jsDOMWindowWebGLProgramConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowWebGLProgramConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSWebGLProgram::getConstructor(exec, castedThis);
+    }
+
+    return JSWebGLProgram::getConstructor( exec, castedThis );
 }
 
 #endif
 
 #if ENABLE(WEBGL)
-JSValue jsDOMWindowWebGLRenderbufferConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowWebGLRenderbufferConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSWebGLRenderbuffer::getConstructor(exec, castedThis);
+    }
+
+    return JSWebGLRenderbuffer::getConstructor( exec, castedThis );
 }
 
 #endif
 
 #if ENABLE(WEBGL)
-JSValue jsDOMWindowWebGLRenderingContextConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowWebGLRenderingContextConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSWebGLRenderingContext::getConstructor(exec, castedThis);
+    }
+
+    return JSWebGLRenderingContext::getConstructor( exec, castedThis );
 }
 
 #endif
 
 #if ENABLE(WEBGL)
-JSValue jsDOMWindowWebGLShaderConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowWebGLShaderConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSWebGLShader::getConstructor(exec, castedThis);
+    }
+
+    return JSWebGLShader::getConstructor( exec, castedThis );
 }
 
 #endif
 
 #if ENABLE(WEBGL)
-JSValue jsDOMWindowWebGLTextureConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowWebGLTextureConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSWebGLTexture::getConstructor(exec, castedThis);
+    }
+
+    return JSWebGLTexture::getConstructor( exec, castedThis );
 }
 
 #endif
 
 #if ENABLE(WEBGL)
-JSValue jsDOMWindowWebGLUniformLocationConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowWebGLUniformLocationConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSWebGLUniformLocation::getConstructor(exec, castedThis);
+    }
+
+    return JSWebGLUniformLocation::getConstructor( exec, castedThis );
 }
 
 #endif
 
-JSValue jsDOMWindowTextMetricsConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowTextMetricsConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSTextMetrics::getConstructor(exec, castedThis);
+    }
+
+    return JSTextMetrics::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowDOMStringMapConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowDOMStringMapConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSDOMStringMap::getConstructor(exec, castedThis);
+    }
+
+    return JSDOMStringMap::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowArrayBufferConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowArrayBufferConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return castedThis->arrayBuffer(exec);
+    }
+
+    return castedThis->arrayBuffer( exec );
 }
 
 
-JSValue jsDOMWindowInt8ArrayConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowInt8ArrayConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return castedThis->int8Array(exec);
+    }
+
+    return castedThis->int8Array( exec );
 }
 
 
-JSValue jsDOMWindowUint8ArrayConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowUint8ArrayConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return castedThis->uint8Array(exec);
+    }
+
+    return castedThis->uint8Array( exec );
 }
 
 
-JSValue jsDOMWindowInt16ArrayConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowInt16ArrayConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return castedThis->int16Array(exec);
+    }
+
+    return castedThis->int16Array( exec );
 }
 
 
-JSValue jsDOMWindowUint16ArrayConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowUint16ArrayConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return castedThis->uint16Array(exec);
+    }
+
+    return castedThis->uint16Array( exec );
 }
 
 
-JSValue jsDOMWindowInt32ArrayConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowInt32ArrayConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return castedThis->int32Array(exec);
+    }
+
+    return castedThis->int32Array( exec );
 }
 
 
-JSValue jsDOMWindowUint32ArrayConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowUint32ArrayConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return castedThis->uint32Array(exec);
+    }
+
+    return castedThis->uint32Array( exec );
 }
 
 
-JSValue jsDOMWindowFloat32ArrayConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowFloat32ArrayConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return castedThis->float32Array(exec);
+    }
+
+    return castedThis->float32Array( exec );
 }
 
 
-JSValue jsDOMWindowDataViewConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowDataViewConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return castedThis->dataView(exec);
+    }
+
+    return castedThis->dataView( exec );
 }
 
 
 #if ENABLE(WEB_AUDIO)
-JSValue jsDOMWindowWebkitAudioContextConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowWebkitAudioContextConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return castedThis->webkitAudioContext(exec);
+    }
+
+    return castedThis->webkitAudioContext( exec );
 }
 
 #endif
 
 #if ENABLE(WEB_AUDIO)
-JSValue jsDOMWindowWebkitAudioPannerNodeConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowWebkitAudioPannerNodeConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSAudioPannerNode::getConstructor(exec, castedThis);
+    }
+
+    return JSAudioPannerNode::getConstructor( exec, castedThis );
 }
 
 #endif
 
-JSValue jsDOMWindowEventConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowEventConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSEvent::getConstructor(exec, castedThis);
+    }
+
+    return JSEvent::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowBeforeLoadEventConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowBeforeLoadEventConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSBeforeLoadEvent::getConstructor(exec, castedThis);
+    }
+
+    return JSBeforeLoadEvent::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowHashChangeEventConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHashChangeEventConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHashChangeEvent::getConstructor(exec, castedThis);
+    }
+
+    return JSHashChangeEvent::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowKeyboardEventConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowKeyboardEventConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSKeyboardEvent::getConstructor(exec, castedThis);
+    }
+
+    return JSKeyboardEvent::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowMouseEventConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowMouseEventConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSMouseEvent::getConstructor(exec, castedThis);
+    }
+
+    return JSMouseEvent::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowMutationEventConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowMutationEventConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSMutationEvent::getConstructor(exec, castedThis);
+    }
+
+    return JSMutationEvent::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowOverflowEventConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowOverflowEventConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSOverflowEvent::getConstructor(exec, castedThis);
+    }
+
+    return JSOverflowEvent::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowPageTransitionEventConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowPageTransitionEventConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSPageTransitionEvent::getConstructor(exec, castedThis);
+    }
+
+    return JSPageTransitionEvent::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowProgressEventConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowProgressEventConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSProgressEvent::getConstructor(exec, castedThis);
+    }
+
+    return JSProgressEvent::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowTextEventConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowTextEventConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSTextEvent::getConstructor(exec, castedThis);
+    }
+
+    return JSTextEvent::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowUIEventConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowUIEventConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSUIEvent::getConstructor(exec, castedThis);
+    }
+
+    return JSUIEvent::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowWebKitAnimationEventConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowWebKitAnimationEventConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSWebKitAnimationEvent::getConstructor(exec, castedThis);
+    }
+
+    return JSWebKitAnimationEvent::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowWebKitTransitionEventConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowWebKitTransitionEventConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSWebKitTransitionEvent::getConstructor(exec, castedThis);
+    }
+
+    return JSWebKitTransitionEvent::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowWheelEventConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowWheelEventConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSWheelEvent::getConstructor(exec, castedThis);
+    }
+
+    return JSWheelEvent::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowMessageEventConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowMessageEventConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSMessageEvent::getConstructor(exec, castedThis);
+    }
+
+    return JSMessageEvent::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowEventExceptionConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowEventExceptionConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSEventException::getConstructor(exec, castedThis);
+    }
+
+    return JSEventException::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowWebKitCSSKeyframeRuleConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowWebKitCSSKeyframeRuleConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSWebKitCSSKeyframeRule::getConstructor(exec, castedThis);
+    }
+
+    return JSWebKitCSSKeyframeRule::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowWebKitCSSKeyframesRuleConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowWebKitCSSKeyframesRuleConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSWebKitCSSKeyframesRule::getConstructor(exec, castedThis);
+    }
+
+    return JSWebKitCSSKeyframesRule::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowWebKitCSSMatrixConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowWebKitCSSMatrixConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return castedThis->webKitCSSMatrix(exec);
+    }
+
+    return castedThis->webKitCSSMatrix( exec );
 }
 
 
-JSValue jsDOMWindowWebKitPointConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowWebKitPointConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return castedThis->webKitPoint(exec);
+    }
+
+    return castedThis->webKitPoint( exec );
 }
 
 
-JSValue jsDOMWindowClipboardConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowClipboardConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSClipboard::getConstructor(exec, castedThis);
+    }
+
+    return JSClipboard::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowFileConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowFileConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSFile::getConstructor(exec, castedThis);
+    }
+
+    return JSFile::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowFileListConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowFileListConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSFileList::getConstructor(exec, castedThis);
+    }
+
+    return JSFileList::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowBlobConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowBlobConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSBlob::getConstructor(exec, castedThis);
+    }
+
+    return JSBlob::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowNodeFilterConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowNodeFilterConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSNodeFilter::getConstructor(exec, castedThis);
+    }
+
+    return JSNodeFilter::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowRangeConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowRangeConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSRange::getConstructor(exec, castedThis);
+    }
+
+    return JSRange::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowRangeExceptionConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowRangeExceptionConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSRangeException::getConstructor(exec, castedThis);
+    }
+
+    return JSRangeException::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowEventSourceConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowEventSourceConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return castedThis->eventSource(exec);
+    }
+
+    return castedThis->eventSource( exec );
 }
 
 
-JSValue jsDOMWindowXMLDocumentConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowXMLDocumentConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSDocument::getConstructor(exec, castedThis);
+    }
+
+    return JSDocument::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowDOMParserConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowDOMParserConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSDOMParser::getConstructor(exec, castedThis);
+    }
+
+    return JSDOMParser::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowXMLSerializerConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowXMLSerializerConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSXMLSerializer::getConstructor(exec, castedThis);
+    }
+
+    return JSXMLSerializer::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowXMLHttpRequestConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowXMLHttpRequestConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return castedThis->xmlHttpRequest(exec);
+    }
+
+    return castedThis->xmlHttpRequest( exec );
 }
 
 
-JSValue jsDOMWindowXMLHttpRequestUploadConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowXMLHttpRequestUploadConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSXMLHttpRequestUpload::getConstructor(exec, castedThis);
+    }
+
+    return JSXMLHttpRequestUpload::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowXMLHttpRequestExceptionConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowXMLHttpRequestExceptionConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSXMLHttpRequestException::getConstructor(exec, castedThis);
+    }
+
+    return JSXMLHttpRequestException::getConstructor( exec, castedThis );
 }
 
 
 #if ENABLE(XSLT)
-JSValue jsDOMWindowXSLTProcessorConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowXSLTProcessorConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return castedThis->xsltProcessor(exec);
+    }
+
+    return castedThis->xsltProcessor( exec );
 }
 
 #endif
 
-JSValue jsDOMWindowMessagePortConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowMessagePortConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSMessagePort::getConstructor(exec, castedThis);
+    }
+
+    return JSMessagePort::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowMessageChannelConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowMessageChannelConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return castedThis->messageChannel(exec);
+    }
+
+    return castedThis->messageChannel( exec );
 }
 
 
-JSValue jsDOMWindowWorkerConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowWorkerConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return castedThis->worker(exec);
+    }
+
+    return castedThis->worker( exec );
 }
 
 
-JSValue jsDOMWindowSharedWorkerConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSharedWorkerConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return castedThis->sharedWorker(exec);
+    }
+
+    return castedThis->sharedWorker( exec );
 }
 
 
-JSValue jsDOMWindowWebSocketConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowWebSocketConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return castedThis->webSocket(exec);
+    }
+
+    return castedThis->webSocket( exec );
 }
 
 
-JSValue jsDOMWindowPluginConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowPluginConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSDOMPlugin::getConstructor(exec, castedThis);
+    }
+
+    return JSDOMPlugin::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowPluginArrayConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowPluginArrayConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSDOMPluginArray::getConstructor(exec, castedThis);
+    }
+
+    return JSDOMPluginArray::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowMimeTypeConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowMimeTypeConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSDOMMimeType::getConstructor(exec, castedThis);
+    }
+
+    return JSDOMMimeType::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowMimeTypeArrayConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowMimeTypeArrayConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSDOMMimeTypeArray::getConstructor(exec, castedThis);
+    }
+
+    return JSDOMMimeTypeArray::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowClientRectConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowClientRectConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSClientRect::getConstructor(exec, castedThis);
+    }
+
+    return JSClientRect::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowClientRectListConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowClientRectListConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSClientRectList::getConstructor(exec, castedThis);
+    }
+
+    return JSClientRectList::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowStorageConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowStorageConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSStorage::getConstructor(exec, castedThis);
+    }
+
+    return JSStorage::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowStorageEventConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowStorageEventConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSStorageEvent::getConstructor(exec, castedThis);
+    }
+
+    return JSStorageEvent::getConstructor( exec, castedThis );
 }
 
 
 #if ENABLE(VIDEO)
-JSValue jsDOMWindowAudioConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowAudioConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return castedThis->audio(exec);
+    }
+
+    return castedThis->audio( exec );
 }
 
 #endif
 
 #if ENABLE(VIDEO)
-JSValue jsDOMWindowHTMLAudioElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLAudioElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLAudioElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLAudioElement::getConstructor( exec, castedThis );
 }
 
 #endif
 
 #if ENABLE(VIDEO)
-JSValue jsDOMWindowHTMLMediaElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLMediaElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLMediaElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLMediaElement::getConstructor( exec, castedThis );
 }
 
 #endif
 
 #if ENABLE(VIDEO)
-JSValue jsDOMWindowHTMLVideoElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowHTMLVideoElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSHTMLVideoElement::getConstructor(exec, castedThis);
+    }
+
+    return JSHTMLVideoElement::getConstructor( exec, castedThis );
 }
 
 #endif
 
 #if ENABLE(VIDEO)
-JSValue jsDOMWindowMediaErrorConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowMediaErrorConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSMediaError::getConstructor(exec, castedThis);
+    }
+
+    return JSMediaError::getConstructor( exec, castedThis );
 }
 
 #endif
 
 #if ENABLE(VIDEO)
-JSValue jsDOMWindowTimeRangesConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowTimeRangesConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSTimeRanges::getConstructor(exec, castedThis);
+    }
+
+    return JSTimeRanges::getConstructor( exec, castedThis );
 }
 
 #endif
 
-JSValue jsDOMWindowXPathEvaluatorConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowXPathEvaluatorConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSXPathEvaluator::getConstructor(exec, castedThis);
+    }
+
+    return JSXPathEvaluator::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowXPathResultConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowXPathResultConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSXPathResult::getConstructor(exec, castedThis);
+    }
+
+    return JSXPathResult::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowXPathExceptionConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowXPathExceptionConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSXPathException::getConstructor(exec, castedThis);
+    }
+
+    return JSXPathException::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGAElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGAElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGAElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGAElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGAngleConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGAngleConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGAngle::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGAngle::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGAnimatedAngleConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGAnimatedAngleConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGAnimatedAngle::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGAnimatedAngle::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGAnimatedBooleanConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGAnimatedBooleanConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGAnimatedBoolean::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGAnimatedBoolean::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGAnimatedEnumerationConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGAnimatedEnumerationConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGAnimatedEnumeration::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGAnimatedEnumeration::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGAnimatedIntegerConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGAnimatedIntegerConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGAnimatedInteger::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGAnimatedInteger::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGAnimatedLengthConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGAnimatedLengthConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGAnimatedLength::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGAnimatedLength::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGAnimatedLengthListConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGAnimatedLengthListConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGAnimatedLengthList::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGAnimatedLengthList::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGAnimatedNumberConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGAnimatedNumberConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGAnimatedNumber::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGAnimatedNumber::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGAnimatedNumberListConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGAnimatedNumberListConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGAnimatedNumberList::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGAnimatedNumberList::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGAnimatedPreserveAspectRatioConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGAnimatedPreserveAspectRatioConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGAnimatedPreserveAspectRatio::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGAnimatedPreserveAspectRatio::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGAnimatedRectConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGAnimatedRectConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGAnimatedRect::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGAnimatedRect::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGAnimatedStringConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGAnimatedStringConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGAnimatedString::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGAnimatedString::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGAnimatedTransformListConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGAnimatedTransformListConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGAnimatedTransformList::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGAnimatedTransformList::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGCircleElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGCircleElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGCircleElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGCircleElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGClipPathElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGClipPathElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGClipPathElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGClipPathElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGColorConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGColorConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGColor::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGColor::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGCursorElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGCursorElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGCursorElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGCursorElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGDefsElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGDefsElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGDefsElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGDefsElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGDescElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGDescElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGDescElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGDescElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGDocumentConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGDocumentConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGDocument::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGDocument::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGElementInstanceConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGElementInstanceConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGElementInstance::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGElementInstance::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGElementInstanceListConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGElementInstanceListConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGElementInstanceList::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGElementInstanceList::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGEllipseElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGEllipseElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGEllipseElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGEllipseElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGExceptionConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGExceptionConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGException::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGException::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGGElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGGElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGGElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGGElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGGradientElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGGradientElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGGradientElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGGradientElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGImageElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGImageElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGImageElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGImageElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGLengthConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGLengthConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGLength::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGLength::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGLengthListConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGLengthListConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGLengthList::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGLengthList::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGLinearGradientElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGLinearGradientElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGLinearGradientElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGLinearGradientElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGLineElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGLineElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGLineElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGLineElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGMarkerElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGMarkerElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGMarkerElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGMarkerElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGMaskElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGMaskElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGMaskElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGMaskElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGMatrixConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGMatrixConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGMatrix::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGMatrix::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGMetadataElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGMetadataElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGMetadataElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGMetadataElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGNumberConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGNumberConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGNumber::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGNumber::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGNumberListConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGNumberListConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGNumberList::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGNumberList::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGPaintConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGPaintConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGPaint::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGPaint::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGPathElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGPathElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGPathElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGPathElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGPathSegConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGPathSegConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGPathSeg::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGPathSeg::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGPathSegArcAbsConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGPathSegArcAbsConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGPathSegArcAbs::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGPathSegArcAbs::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGPathSegArcRelConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGPathSegArcRelConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGPathSegArcRel::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGPathSegArcRel::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGPathSegClosePathConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGPathSegClosePathConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGPathSegClosePath::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGPathSegClosePath::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGPathSegCurvetoCubicAbsConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGPathSegCurvetoCubicAbsConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGPathSegCurvetoCubicAbs::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGPathSegCurvetoCubicAbs::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGPathSegCurvetoCubicRelConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGPathSegCurvetoCubicRelConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGPathSegCurvetoCubicRel::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGPathSegCurvetoCubicRel::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGPathSegCurvetoCubicSmoothAbsConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGPathSegCurvetoCubicSmoothAbsConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGPathSegCurvetoCubicSmoothAbs::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGPathSegCurvetoCubicSmoothAbs::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGPathSegCurvetoCubicSmoothRelConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGPathSegCurvetoCubicSmoothRelConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGPathSegCurvetoCubicSmoothRel::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGPathSegCurvetoCubicSmoothRel::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGPathSegCurvetoQuadraticAbsConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGPathSegCurvetoQuadraticAbsConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGPathSegCurvetoQuadraticAbs::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGPathSegCurvetoQuadraticAbs::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGPathSegCurvetoQuadraticRelConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGPathSegCurvetoQuadraticRelConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGPathSegCurvetoQuadraticRel::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGPathSegCurvetoQuadraticRel::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGPathSegCurvetoQuadraticSmoothAbsConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGPathSegCurvetoQuadraticSmoothAbsConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGPathSegCurvetoQuadraticSmoothAbs::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGPathSegCurvetoQuadraticSmoothAbs::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGPathSegCurvetoQuadraticSmoothRelConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGPathSegCurvetoQuadraticSmoothRelConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGPathSegCurvetoQuadraticSmoothRel::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGPathSegCurvetoQuadraticSmoothRel::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGPathSegLinetoAbsConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGPathSegLinetoAbsConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGPathSegLinetoAbs::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGPathSegLinetoAbs::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGPathSegLinetoHorizontalAbsConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGPathSegLinetoHorizontalAbsConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGPathSegLinetoHorizontalAbs::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGPathSegLinetoHorizontalAbs::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGPathSegLinetoHorizontalRelConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGPathSegLinetoHorizontalRelConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGPathSegLinetoHorizontalRel::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGPathSegLinetoHorizontalRel::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGPathSegLinetoRelConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGPathSegLinetoRelConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGPathSegLinetoRel::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGPathSegLinetoRel::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGPathSegLinetoVerticalAbsConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGPathSegLinetoVerticalAbsConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGPathSegLinetoVerticalAbs::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGPathSegLinetoVerticalAbs::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGPathSegLinetoVerticalRelConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGPathSegLinetoVerticalRelConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGPathSegLinetoVerticalRel::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGPathSegLinetoVerticalRel::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGPathSegListConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGPathSegListConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGPathSegList::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGPathSegList::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGPathSegMovetoAbsConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGPathSegMovetoAbsConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGPathSegMovetoAbs::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGPathSegMovetoAbs::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGPathSegMovetoRelConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGPathSegMovetoRelConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGPathSegMovetoRel::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGPathSegMovetoRel::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGPatternElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGPatternElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGPatternElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGPatternElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGPointConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGPointConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGPoint::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGPoint::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGPointListConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGPointListConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGPointList::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGPointList::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGPolygonElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGPolygonElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGPolygonElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGPolygonElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGPolylineElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGPolylineElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGPolylineElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGPolylineElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGPreserveAspectRatioConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGPreserveAspectRatioConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGPreserveAspectRatio::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGPreserveAspectRatio::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGRadialGradientElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGRadialGradientElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGRadialGradientElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGRadialGradientElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGRectConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGRectConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGRect::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGRect::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGRectElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGRectElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGRectElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGRectElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGRenderingIntentConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGRenderingIntentConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGRenderingIntent::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGRenderingIntent::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGScriptElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGScriptElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGScriptElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGScriptElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGStopElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGStopElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGStopElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGStopElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGStringListConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGStringListConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGStringList::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGStringList::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGStyleElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGStyleElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGStyleElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGStyleElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGSVGElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGSVGElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGSVGElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGSVGElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGSwitchElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGSwitchElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGSwitchElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGSwitchElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGSymbolElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGSymbolElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGSymbolElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGSymbolElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGTextContentElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGTextContentElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGTextContentElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGTextContentElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGTextElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGTextElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGTextElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGTextElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGTextPathElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGTextPathElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGTextPathElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGTextPathElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGTextPositioningElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGTextPositioningElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGTextPositioningElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGTextPositioningElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGTitleElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGTitleElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGTitleElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGTitleElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGTransformConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGTransformConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGTransform::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGTransform::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGTransformListConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGTransformListConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGTransformList::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGTransformList::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGTRefElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGTRefElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGTRefElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGTRefElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGTSpanElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGTSpanElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGTSpanElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGTSpanElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGUnitTypesConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGUnitTypesConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGUnitTypes::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGUnitTypes::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGUseElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGUseElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGUseElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGUseElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGViewElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGViewElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGViewElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGViewElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGZoomEventConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGZoomEventConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGZoomEvent::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGZoomEvent::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGAnimateColorElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGAnimateColorElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGAnimateColorElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGAnimateColorElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGAnimateElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGAnimateElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGAnimateElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGAnimateElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGAnimateTransformElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGAnimateTransformElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGAnimateTransformElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGAnimateTransformElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGSetElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGSetElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGSetElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGSetElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGAltGlyphElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGAltGlyphElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGAltGlyphElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGAltGlyphElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGFontElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGFontElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGFontElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGFontElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGFontFaceElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGFontFaceElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGFontFaceElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGFontFaceElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGFontFaceFormatElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGFontFaceFormatElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGFontFaceFormatElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGFontFaceFormatElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGFontFaceNameElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGFontFaceNameElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGFontFaceNameElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGFontFaceNameElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGFontFaceSrcElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGFontFaceSrcElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGFontFaceSrcElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGFontFaceSrcElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGFontFaceUriElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGFontFaceUriElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGFontFaceUriElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGFontFaceUriElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGGlyphElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGGlyphElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGGlyphElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGGlyphElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGHKernElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGHKernElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGHKernElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGHKernElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGMissingGlyphElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGMissingGlyphElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGMissingGlyphElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGMissingGlyphElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGVKernElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGVKernElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGVKernElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGVKernElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGForeignObjectElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGForeignObjectElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGForeignObjectElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGForeignObjectElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGComponentTransferFunctionElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGComponentTransferFunctionElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGComponentTransferFunctionElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGComponentTransferFunctionElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGFEBlendElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGFEBlendElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGFEBlendElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGFEBlendElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGFEColorMatrixElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGFEColorMatrixElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGFEColorMatrixElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGFEColorMatrixElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGFEComponentTransferElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGFEComponentTransferElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGFEComponentTransferElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGFEComponentTransferElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGFECompositeElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGFECompositeElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGFECompositeElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGFECompositeElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGFEConvolveMatrixElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGFEConvolveMatrixElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGFEConvolveMatrixElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGFEConvolveMatrixElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGFEDiffuseLightingElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGFEDiffuseLightingElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGFEDiffuseLightingElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGFEDiffuseLightingElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGFEDisplacementMapElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGFEDisplacementMapElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGFEDisplacementMapElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGFEDisplacementMapElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGFEDistantLightElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGFEDistantLightElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGFEDistantLightElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGFEDistantLightElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGFEDropShadowElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGFEDropShadowElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGFEDropShadowElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGFEDropShadowElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGFEFloodElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGFEFloodElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGFEFloodElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGFEFloodElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGFEFuncAElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGFEFuncAElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGFEFuncAElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGFEFuncAElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGFEFuncBElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGFEFuncBElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGFEFuncBElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGFEFuncBElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGFEFuncGElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGFEFuncGElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGFEFuncGElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGFEFuncGElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGFEFuncRElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGFEFuncRElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGFEFuncRElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGFEFuncRElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGFEGaussianBlurElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGFEGaussianBlurElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGFEGaussianBlurElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGFEGaussianBlurElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGFEImageElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGFEImageElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGFEImageElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGFEImageElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGFEMergeElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGFEMergeElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGFEMergeElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGFEMergeElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGFEMergeNodeElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGFEMergeNodeElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGFEMergeNodeElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGFEMergeNodeElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGFEMorphologyElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGFEMorphologyElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGFEMorphologyElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGFEMorphologyElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGFEOffsetElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGFEOffsetElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGFEOffsetElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGFEOffsetElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGFEPointLightElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGFEPointLightElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGFEPointLightElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGFEPointLightElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGFESpecularLightingElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGFESpecularLightingElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGFESpecularLightingElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGFESpecularLightingElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGFESpotLightElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGFESpotLightElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGFESpotLightElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGFESpotLightElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGFETileElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGFETileElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGFETileElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGFETileElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGFETurbulenceElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGFETurbulenceElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGFETurbulenceElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGFETurbulenceElement::getConstructor( exec, castedThis );
 }
 
 
-JSValue jsDOMWindowSVGFilterElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSVGFilterElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSVGFilterElement::getConstructor(exec, castedThis);
+    }
+
+    return JSSVGFilterElement::getConstructor( exec, castedThis );
 }
 
 
 #if ENABLE(DATABASE)
-JSValue jsDOMWindowSQLExceptionConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowSQLExceptionConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSSQLException::getConstructor(exec, castedThis);
+    }
+
+    return JSSQLException::getConstructor( exec, castedThis );
 }
 
 #endif
 
 #if ENABLE(TOUCH_EVENTS)
-JSValue jsDOMWindowTouchEventConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowTouchEventConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSTouchEvent::getConstructor(exec, castedThis);
+    }
+
+    return JSTouchEvent::getConstructor( exec, castedThis );
 }
 
 #endif
 
-JSValue jsDOMWindowFormDataConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowFormDataConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSDOMFormData::getConstructor(exec, castedThis);
+    }
+
+    return JSDOMFormData::getConstructor( exec, castedThis );
 }
 
 
 #if ENABLE(BLOB) || ENABLE(FILE_SYSTEM)
-JSValue jsDOMWindowFileErrorConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowFileErrorConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSFileError::getConstructor(exec, castedThis);
+    }
+
+    return JSFileError::getConstructor( exec, castedThis );
 }
 
 #endif
 
 #if ENABLE(BLOB)
-JSValue jsDOMWindowFileReaderConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowFileReaderConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSFileReader::getConstructor(exec, castedThis);
+    }
+
+    return JSFileReader::getConstructor( exec, castedThis );
 }
 
 #endif
 
 #if ENABLE(BLOB)
-JSValue jsDOMWindowWebKitBlobBuilderConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowWebKitBlobBuilderConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSWebKitBlobBuilder::getConstructor(exec, castedThis);
+    }
+
+    return JSWebKitBlobBuilder::getConstructor( exec, castedThis );
 }
 
 #endif
 
 #if ENABLE(BLOB)
-JSValue jsDOMWindowWebkitURL(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowWebkitURL( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!castedThis->allowsAccessFrom(exec))
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    UNUSED_PARAM(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->webkitURL()));
+    }
+
+    UNUSED_PARAM( exec );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->webkitURL() ) );
     return result;
 }
 
 #endif
 
-JSValue jsDOMWindowConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDOMWindowConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDOMWindow* domObject = static_cast<JSDOMWindow*>(asObject(slotBase));
-    if (!domObject->allowsAccessFrom(exec))
+    JSDOMWindow *domObject = static_cast<JSDOMWindow *>( asObject( slotBase ) );
+
+    if ( !domObject->allowsAccessFrom( exec ) )
+    {
         return jsUndefined();
-    return JSDOMWindow::getConstructor(exec, domObject->globalObject());
+    }
+
+    return JSDOMWindow::getConstructor( exec, domObject->globalObject() );
 }
 
-void setJSDOMWindowScreen(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowScreen( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in object
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "screen"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "screen" ), value );
 }
 
 
-void setJSDOMWindowHistory(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHistory( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in object
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "history"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "history" ), value );
 }
 
 
-void setJSDOMWindowLocationbar(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowLocationbar( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in object
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "locationbar"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "locationbar" ), value );
 }
 
 
-void setJSDOMWindowMenubar(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowMenubar( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in object
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "menubar"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "menubar" ), value );
 }
 
 
-void setJSDOMWindowPersonalbar(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowPersonalbar( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in object
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "personalbar"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "personalbar" ), value );
 }
 
 
-void setJSDOMWindowScrollbars(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowScrollbars( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in object
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "scrollbars"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "scrollbars" ), value );
 }
 
 
-void setJSDOMWindowStatusbar(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowStatusbar( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in object
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "statusbar"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "statusbar" ), value );
 }
 
 
-void setJSDOMWindowToolbar(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowToolbar( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in object
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "toolbar"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "toolbar" ), value );
 }
 
 
-void setJSDOMWindowNavigator(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowNavigator( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in object
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "navigator"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "navigator" ), value );
 }
 
 
-void setJSDOMWindowClientInformation(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowClientInformation( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in object
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "clientInformation"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "clientInformation" ), value );
 }
 
 
-void setJSDOMWindowLocation(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowLocation( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    static_cast<JSDOMWindow*>(thisObject)->setLocation(exec, value);
+    static_cast<JSDOMWindow *>( thisObject )->setLocation( exec, value );
 }
 
 
-void setJSDOMWindowEvent(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowEvent( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in object
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "event"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "event" ), value );
 }
 
 
-void setJSDOMWindowOffscreenBuffering(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOffscreenBuffering( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in object
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "offscreenBuffering"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "offscreenBuffering" ), value );
 }
 
 
-void setJSDOMWindowOuterHeight(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOuterHeight( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in object
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "outerHeight"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "outerHeight" ), value );
 }
 
 
-void setJSDOMWindowOuterWidth(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOuterWidth( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in object
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "outerWidth"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "outerWidth" ), value );
 }
 
 
-void setJSDOMWindowInnerHeight(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowInnerHeight( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in object
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "innerHeight"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "innerHeight" ), value );
 }
 
 
-void setJSDOMWindowInnerWidth(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowInnerWidth( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in object
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "innerWidth"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "innerWidth" ), value );
 }
 
 
-void setJSDOMWindowScreenX(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowScreenX( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in object
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "screenX"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "screenX" ), value );
 }
 
 
-void setJSDOMWindowScreenY(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowScreenY( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in object
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "screenY"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "screenY" ), value );
 }
 
 
-void setJSDOMWindowScreenLeft(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowScreenLeft( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in object
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "screenLeft"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "screenLeft" ), value );
 }
 
 
-void setJSDOMWindowScreenTop(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowScreenTop( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in object
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "screenTop"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "screenTop" ), value );
 }
 
 
-void setJSDOMWindowScrollX(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowScrollX( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in object
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "scrollX"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "scrollX" ), value );
 }
 
 
-void setJSDOMWindowScrollY(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowScrollY( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in object
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "scrollY"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "scrollY" ), value );
 }
 
 
-void setJSDOMWindowLength(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowLength( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in object
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "length"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "length" ), value );
 }
 
 
-void setJSDOMWindowName(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowName( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setName(ustringToString(value.toString(exec)));
+    }
+
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setName( ustringToString( value.toString( exec ) ) );
 }
 
 
-void setJSDOMWindowStatus(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowStatus( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setStatus(ustringToString(value.toString(exec)));
+    }
+
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setStatus( ustringToString( value.toString( exec ) ) );
 }
 
 
-void setJSDOMWindowDefaultStatus(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowDefaultStatus( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setDefaultStatus(ustringToString(value.toString(exec)));
+    }
+
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setDefaultStatus( ustringToString( value.toString( exec ) ) );
 }
 
 
-void setJSDOMWindowDefaultstatus(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowDefaultstatus( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setDefaultstatus(ustringToString(value.toString(exec)));
+    }
+
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setDefaultstatus( ustringToString( value.toString( exec ) ) );
 }
 
 
-void setJSDOMWindowSelf(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSelf( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in object
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "self"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "self" ), value );
 }
 
 
-void setJSDOMWindowFrames(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowFrames( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in object
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "frames"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "frames" ), value );
 }
 
 
-void setJSDOMWindowOpener(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOpener( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in object
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "opener"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "opener" ), value );
 }
 
 
-void setJSDOMWindowParent(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowParent( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in object
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "parent"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "parent" ), value );
 }
 
 
-void setJSDOMWindowTop(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowTop( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in object
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "top"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "top" ), value );
 }
 
 
-void setJSDOMWindowDevicePixelRatio(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowDevicePixelRatio( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in object
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "devicePixelRatio"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "devicePixelRatio" ), value );
 }
 
 
-void setJSDOMWindowConsole(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowConsole( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in object
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "console"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "console" ), value );
 }
 
 
-void setJSDOMWindowOnabort(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOnabort( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOnabort(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOnabort( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOnbeforeunload(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOnbeforeunload( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOnbeforeunload(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOnbeforeunload( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOnblur(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOnblur( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOnblur(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOnblur( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOncanplay(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOncanplay( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOncanplay(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOncanplay( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOncanplaythrough(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOncanplaythrough( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOncanplaythrough(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOncanplaythrough( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOnchange(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOnchange( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOnchange(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOnchange( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOnclick(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOnclick( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOnclick(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOnclick( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOncontextmenu(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOncontextmenu( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOncontextmenu(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOncontextmenu( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOndblclick(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOndblclick( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOndblclick(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOndblclick( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOndrag(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOndrag( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOndrag(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOndrag( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOndragend(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOndragend( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOndragend(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOndragend( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOndragenter(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOndragenter( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOndragenter(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOndragenter( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOndragleave(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOndragleave( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOndragleave(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOndragleave( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOndragover(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOndragover( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOndragover(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOndragover( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOndragstart(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOndragstart( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOndragstart(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOndragstart( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOndrop(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOndrop( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOndrop(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOndrop( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOndurationchange(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOndurationchange( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOndurationchange(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOndurationchange( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOnemptied(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOnemptied( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOnemptied(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOnemptied( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOnended(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOnended( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOnended(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOnended( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOnerror(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOnerror( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOnerror(createJSErrorHandler(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOnerror( createJSErrorHandler( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOnfocus(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOnfocus( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOnfocus(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOnfocus( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOnhashchange(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOnhashchange( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOnhashchange(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOnhashchange( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOninput(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOninput( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOninput(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOninput( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOninvalid(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOninvalid( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOninvalid(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOninvalid( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOnkeydown(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOnkeydown( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOnkeydown(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOnkeydown( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOnkeypress(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOnkeypress( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOnkeypress(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOnkeypress( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOnkeyup(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOnkeyup( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOnkeyup(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOnkeyup( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOnload(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOnload( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOnload(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOnload( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOnloadeddata(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOnloadeddata( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOnloadeddata(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOnloadeddata( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOnloadedmetadata(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOnloadedmetadata( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOnloadedmetadata(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOnloadedmetadata( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOnloadstart(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOnloadstart( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOnloadstart(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOnloadstart( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOnmessage(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOnmessage( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOnmessage(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOnmessage( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOnmousedown(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOnmousedown( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOnmousedown(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOnmousedown( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOnmousemove(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOnmousemove( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOnmousemove(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOnmousemove( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOnmouseout(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOnmouseout( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOnmouseout(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOnmouseout( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOnmouseover(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOnmouseover( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOnmouseover(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOnmouseover( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOnmouseup(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOnmouseup( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOnmouseup(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOnmouseup( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOnmousewheel(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOnmousewheel( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOnmousewheel(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOnmousewheel( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOnoffline(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOnoffline( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOnoffline(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOnoffline( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOnonline(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOnonline( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOnonline(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOnonline( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOnpagehide(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOnpagehide( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOnpagehide(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOnpagehide( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOnpageshow(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOnpageshow( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOnpageshow(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOnpageshow( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOnpause(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOnpause( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOnpause(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOnpause( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOnplay(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOnplay( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOnplay(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOnplay( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOnplaying(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOnplaying( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOnplaying(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOnplaying( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOnpopstate(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOnpopstate( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOnpopstate(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOnpopstate( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOnprogress(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOnprogress( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOnprogress(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOnprogress( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOnratechange(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOnratechange( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOnratechange(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOnratechange( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOnresize(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOnresize( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOnresize(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOnresize( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOnscroll(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOnscroll( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOnscroll(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOnscroll( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOnseeked(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOnseeked( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOnseeked(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOnseeked( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOnseeking(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOnseeking( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOnseeking(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOnseeking( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOnselect(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOnselect( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOnselect(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOnselect( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOnstalled(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOnstalled( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOnstalled(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOnstalled( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOnstorage(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOnstorage( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOnstorage(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOnstorage( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOnsubmit(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOnsubmit( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOnsubmit(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOnsubmit( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOnsuspend(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOnsuspend( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOnsuspend(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOnsuspend( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOntimeupdate(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOntimeupdate( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOntimeupdate(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOntimeupdate( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOnunload(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOnunload( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOnunload(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOnunload( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOnvolumechange(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOnvolumechange( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOnvolumechange(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOnvolumechange( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOnwaiting(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOnwaiting( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOnwaiting(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOnwaiting( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOnreset(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOnreset( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOnreset(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOnreset( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOnsearch(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOnsearch( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOnsearch(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOnsearch( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOnwebkitanimationend(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOnwebkitanimationend( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOnwebkitanimationend(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOnwebkitanimationend( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOnwebkitanimationiteration(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOnwebkitanimationiteration( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOnwebkitanimationiteration(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOnwebkitanimationiteration( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOnwebkitanimationstart(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOnwebkitanimationstart( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOnwebkitanimationstart(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOnwebkitanimationstart( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSDOMWindowOnwebkittransitionend(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOnwebkittransitionend( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOnwebkittransitionend(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOnwebkittransitionend( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
 #if ENABLE(TOUCH_EVENTS)
-void setJSDOMWindowOntouchstart(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOntouchstart( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOntouchstart(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOntouchstart( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 #endif
 
 #if ENABLE(TOUCH_EVENTS)
-void setJSDOMWindowOntouchmove(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOntouchmove( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOntouchmove(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOntouchmove( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 #endif
 
 #if ENABLE(TOUCH_EVENTS)
-void setJSDOMWindowOntouchend(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOntouchend( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOntouchend(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOntouchend( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 #endif
 
 #if ENABLE(TOUCH_EVENTS)
-void setJSDOMWindowOntouchcancel(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOntouchcancel( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOntouchcancel(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOntouchcancel( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 #endif
 
 #if ENABLE(DEVICE_ORIENTATION)
-void setJSDOMWindowDeviceMotionEventConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowDeviceMotionEventConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "DeviceMotionEvent"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "DeviceMotionEvent" ), value );
 }
 
 #endif
 
 #if ENABLE(DEVICE_ORIENTATION)
-void setJSDOMWindowOndevicemotion(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOndevicemotion( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOndevicemotion(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOndevicemotion( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 #endif
 
 #if ENABLE(DEVICE_ORIENTATION)
-void setJSDOMWindowDeviceOrientationEventConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowDeviceOrientationEventConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "DeviceOrientationEvent"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "DeviceOrientationEvent" ), value );
 }
 
 #endif
 
 #if ENABLE(DEVICE_ORIENTATION)
-void setJSDOMWindowOndeviceorientation(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOndeviceorientation( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
-    UNUSED_PARAM(exec);
-    JSDOMWindow* castedThis = static_cast<JSDOMWindow*>(thisObject);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    imp->setOndeviceorientation(createJSAttributeEventListener(exec, value, thisObject));
+    }
+
+    UNUSED_PARAM( exec );
+    JSDOMWindow *castedThis = static_cast<JSDOMWindow *>( thisObject );
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    imp->setOndeviceorientation( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 #endif
 
-void setJSDOMWindowStyleSheetConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowStyleSheetConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "StyleSheet"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "StyleSheet" ), value );
 }
 
 
-void setJSDOMWindowCSSStyleSheetConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowCSSStyleSheetConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "CSSStyleSheet"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "CSSStyleSheet" ), value );
 }
 
 
-void setJSDOMWindowCSSValueConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowCSSValueConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "CSSValue"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "CSSValue" ), value );
 }
 
 
-void setJSDOMWindowCSSPrimitiveValueConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowCSSPrimitiveValueConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "CSSPrimitiveValue"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "CSSPrimitiveValue" ), value );
 }
 
 
-void setJSDOMWindowCSSValueListConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowCSSValueListConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "CSSValueList"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "CSSValueList" ), value );
 }
 
 
-void setJSDOMWindowWebKitCSSTransformValueConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowWebKitCSSTransformValueConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "WebKitCSSTransformValue"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "WebKitCSSTransformValue" ), value );
 }
 
 
-void setJSDOMWindowCSSRuleConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowCSSRuleConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "CSSRule"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "CSSRule" ), value );
 }
 
 
-void setJSDOMWindowCSSCharsetRuleConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowCSSCharsetRuleConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "CSSCharsetRule"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "CSSCharsetRule" ), value );
 }
 
 
-void setJSDOMWindowCSSFontFaceRuleConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowCSSFontFaceRuleConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "CSSFontFaceRule"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "CSSFontFaceRule" ), value );
 }
 
 
-void setJSDOMWindowCSSImportRuleConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowCSSImportRuleConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "CSSImportRule"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "CSSImportRule" ), value );
 }
 
 
-void setJSDOMWindowCSSMediaRuleConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowCSSMediaRuleConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "CSSMediaRule"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "CSSMediaRule" ), value );
 }
 
 
-void setJSDOMWindowCSSPageRuleConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowCSSPageRuleConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "CSSPageRule"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "CSSPageRule" ), value );
 }
 
 
-void setJSDOMWindowCSSStyleRuleConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowCSSStyleRuleConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "CSSStyleRule"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "CSSStyleRule" ), value );
 }
 
 
-void setJSDOMWindowCSSStyleDeclarationConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowCSSStyleDeclarationConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "CSSStyleDeclaration"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "CSSStyleDeclaration" ), value );
 }
 
 
-void setJSDOMWindowMediaListConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowMediaListConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "MediaList"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "MediaList" ), value );
 }
 
 
-void setJSDOMWindowCounterConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowCounterConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "Counter"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "Counter" ), value );
 }
 
 
-void setJSDOMWindowCSSRuleListConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowCSSRuleListConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "CSSRuleList"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "CSSRuleList" ), value );
 }
 
 
-void setJSDOMWindowRectConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowRectConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "Rect"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "Rect" ), value );
 }
 
 
-void setJSDOMWindowRGBColorConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowRGBColorConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "RGBColor"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "RGBColor" ), value );
 }
 
 
-void setJSDOMWindowStyleSheetListConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowStyleSheetListConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "StyleSheetList"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "StyleSheetList" ), value );
 }
 
 
-void setJSDOMWindowDOMExceptionConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowDOMExceptionConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "DOMException"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "DOMException" ), value );
 }
 
 
-void setJSDOMWindowDOMStringListConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowDOMStringListConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "DOMStringList"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "DOMStringList" ), value );
 }
 
 
-void setJSDOMWindowDOMImplementationConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowDOMImplementationConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "DOMImplementation"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "DOMImplementation" ), value );
 }
 
 
-void setJSDOMWindowDOMSettableTokenListConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowDOMSettableTokenListConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "DOMSettableTokenList"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "DOMSettableTokenList" ), value );
 }
 
 
-void setJSDOMWindowDOMTokenListConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowDOMTokenListConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "DOMTokenList"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "DOMTokenList" ), value );
 }
 
 
-void setJSDOMWindowDocumentFragmentConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowDocumentFragmentConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "DocumentFragment"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "DocumentFragment" ), value );
 }
 
 
-void setJSDOMWindowDocumentConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowDocumentConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "Document"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "Document" ), value );
 }
 
 
-void setJSDOMWindowNodeConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowNodeConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "Node"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "Node" ), value );
 }
 
 
-void setJSDOMWindowNodeListConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowNodeListConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "NodeList"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "NodeList" ), value );
 }
 
 
-void setJSDOMWindowNamedNodeMapConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowNamedNodeMapConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "NamedNodeMap"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "NamedNodeMap" ), value );
 }
 
 
-void setJSDOMWindowCharacterDataConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowCharacterDataConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "CharacterData"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "CharacterData" ), value );
 }
 
 
-void setJSDOMWindowAttrConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowAttrConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "Attr"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "Attr" ), value );
 }
 
 
-void setJSDOMWindowElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "Element"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "Element" ), value );
 }
 
 
-void setJSDOMWindowTextConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowTextConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "Text"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "Text" ), value );
 }
 
 
-void setJSDOMWindowCommentConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowCommentConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "Comment"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "Comment" ), value );
 }
 
 
-void setJSDOMWindowCDATASectionConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowCDATASectionConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "CDATASection"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "CDATASection" ), value );
 }
 
 
-void setJSDOMWindowDocumentTypeConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowDocumentTypeConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "DocumentType"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "DocumentType" ), value );
 }
 
 
-void setJSDOMWindowNotationConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowNotationConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "Notation"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "Notation" ), value );
 }
 
 
-void setJSDOMWindowEntityConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowEntityConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "Entity"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "Entity" ), value );
 }
 
 
-void setJSDOMWindowEntityReferenceConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowEntityReferenceConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "EntityReference"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "EntityReference" ), value );
 }
 
 
-void setJSDOMWindowProcessingInstructionConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowProcessingInstructionConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "ProcessingInstruction"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "ProcessingInstruction" ), value );
 }
 
 
-void setJSDOMWindowHTMLDocumentConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLDocumentConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLDocument"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLDocument" ), value );
 }
 
 
-void setJSDOMWindowHTMLElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLAnchorElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLAnchorElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLAnchorElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLAnchorElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLAppletElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLAppletElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLAppletElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLAppletElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLAreaElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLAreaElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLAreaElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLAreaElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLBRElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLBRElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLBRElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLBRElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLBaseElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLBaseElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLBaseElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLBaseElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLBaseFontElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLBaseFontElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLBaseFontElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLBaseFontElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLBlockquoteElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLBlockquoteElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLBlockquoteElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLBlockquoteElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLBodyElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLBodyElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLBodyElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLBodyElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLButtonElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLButtonElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLButtonElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLButtonElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLCanvasElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLCanvasElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLCanvasElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLCanvasElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLDListElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLDListElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLDListElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLDListElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLDirectoryElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLDirectoryElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLDirectoryElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLDirectoryElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLDivElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLDivElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLDivElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLDivElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLEmbedElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLEmbedElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLEmbedElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLEmbedElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLFieldSetElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLFieldSetElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLFieldSetElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLFieldSetElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLFontElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLFontElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLFontElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLFontElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLFormElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLFormElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLFormElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLFormElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLFrameElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLFrameElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLFrameElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLFrameElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLFrameSetElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLFrameSetElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLFrameSetElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLFrameSetElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLHRElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLHRElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLHRElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLHRElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLHeadElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLHeadElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLHeadElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLHeadElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLHeadingElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLHeadingElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLHeadingElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLHeadingElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLHtmlElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLHtmlElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLHtmlElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLHtmlElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLIFrameElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLIFrameElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLIFrameElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLIFrameElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLImageElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLImageElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLImageElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLImageElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLInputElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLInputElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLInputElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLInputElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLIsIndexElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLIsIndexElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLIsIndexElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLIsIndexElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLKeygenElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLKeygenElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLKeygenElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLKeygenElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLLIElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLLIElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLLIElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLLIElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLLabelElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLLabelElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLLabelElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLLabelElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLLegendElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLLegendElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLLegendElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLLegendElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLLinkElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLLinkElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLLinkElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLLinkElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLMapElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLMapElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLMapElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLMapElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLMarqueeElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLMarqueeElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLMarqueeElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLMarqueeElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLMenuElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLMenuElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLMenuElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLMenuElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLMetaElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLMetaElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLMetaElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLMetaElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLMeterElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLMeterElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLMeterElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLMeterElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLModElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLModElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLModElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLModElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLOListElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLOListElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLOListElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLOListElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLObjectElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLObjectElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLObjectElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLObjectElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLOptGroupElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLOptGroupElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLOptGroupElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLOptGroupElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLOptionElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLOptionElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLOptionElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLOptionElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLOutputElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLOutputElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLOutputElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLOutputElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLParagraphElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLParagraphElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLParagraphElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLParagraphElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLParamElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLParamElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLParamElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLParamElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLPreElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLPreElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLPreElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLPreElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLProgressElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLProgressElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLProgressElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLProgressElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLQuoteElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLQuoteElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLQuoteElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLQuoteElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLScriptElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLScriptElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLScriptElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLScriptElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLSelectElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLSelectElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLSelectElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLSelectElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLStyleElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLStyleElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLStyleElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLStyleElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLTableCaptionElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLTableCaptionElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLTableCaptionElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLTableCaptionElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLTableCellElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLTableCellElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLTableCellElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLTableCellElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLTableColElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLTableColElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLTableColElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLTableColElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLTableElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLTableElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLTableElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLTableElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLTableRowElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLTableRowElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLTableRowElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLTableRowElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLTableSectionElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLTableSectionElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLTableSectionElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLTableSectionElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLTextAreaElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLTextAreaElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLTextAreaElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLTextAreaElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLTitleElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLTitleElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLTitleElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLTitleElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLUListElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLUListElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLUListElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLUListElement" ), value );
 }
 
 
-void setJSDOMWindowHTMLCollectionConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLCollectionConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLCollection"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLCollection" ), value );
 }
 
 
-void setJSDOMWindowHTMLAllCollectionConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLAllCollectionConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLAllCollection"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLAllCollection" ), value );
 }
 
 
-void setJSDOMWindowImageConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowImageConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "Image"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "Image" ), value );
 }
 
 
-void setJSDOMWindowOptionConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOptionConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "Option"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "Option" ), value );
 }
 
 
-void setJSDOMWindowCanvasPatternConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowCanvasPatternConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "CanvasPattern"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "CanvasPattern" ), value );
 }
 
 
-void setJSDOMWindowCanvasGradientConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowCanvasGradientConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "CanvasGradient"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "CanvasGradient" ), value );
 }
 
 
-void setJSDOMWindowCanvasRenderingContext2DConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowCanvasRenderingContext2DConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "CanvasRenderingContext2D"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "CanvasRenderingContext2D" ), value );
 }
 
 
-void setJSDOMWindowImageDataConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowImageDataConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "ImageData"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "ImageData" ), value );
 }
 
 
 #if ENABLE(WEBGL)
-void setJSDOMWindowWebGLActiveInfoConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowWebGLActiveInfoConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "WebGLActiveInfo"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "WebGLActiveInfo" ), value );
 }
 
 #endif
 
 #if ENABLE(WEBGL)
-void setJSDOMWindowWebGLBufferConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowWebGLBufferConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "WebGLBuffer"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "WebGLBuffer" ), value );
 }
 
 #endif
 
 #if ENABLE(WEBGL)
-void setJSDOMWindowWebGLFramebufferConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowWebGLFramebufferConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "WebGLFramebuffer"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "WebGLFramebuffer" ), value );
 }
 
 #endif
 
 #if ENABLE(WEBGL)
-void setJSDOMWindowWebGLProgramConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowWebGLProgramConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "WebGLProgram"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "WebGLProgram" ), value );
 }
 
 #endif
 
 #if ENABLE(WEBGL)
-void setJSDOMWindowWebGLRenderbufferConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowWebGLRenderbufferConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "WebGLRenderbuffer"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "WebGLRenderbuffer" ), value );
 }
 
 #endif
 
 #if ENABLE(WEBGL)
-void setJSDOMWindowWebGLRenderingContextConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowWebGLRenderingContextConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "WebGLRenderingContext"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "WebGLRenderingContext" ), value );
 }
 
 #endif
 
 #if ENABLE(WEBGL)
-void setJSDOMWindowWebGLShaderConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowWebGLShaderConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "WebGLShader"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "WebGLShader" ), value );
 }
 
 #endif
 
 #if ENABLE(WEBGL)
-void setJSDOMWindowWebGLTextureConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowWebGLTextureConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "WebGLTexture"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "WebGLTexture" ), value );
 }
 
 #endif
 
 #if ENABLE(WEBGL)
-void setJSDOMWindowWebGLUniformLocationConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowWebGLUniformLocationConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "WebGLUniformLocation"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "WebGLUniformLocation" ), value );
 }
 
 #endif
 
-void setJSDOMWindowTextMetricsConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowTextMetricsConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "TextMetrics"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "TextMetrics" ), value );
 }
 
 
-void setJSDOMWindowDOMStringMapConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowDOMStringMapConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "DOMStringMap"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "DOMStringMap" ), value );
 }
 
 
-void setJSDOMWindowArrayBufferConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowArrayBufferConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "ArrayBuffer"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "ArrayBuffer" ), value );
 }
 
 
-void setJSDOMWindowInt8ArrayConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowInt8ArrayConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "Int8Array"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "Int8Array" ), value );
 }
 
 
-void setJSDOMWindowUint8ArrayConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowUint8ArrayConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "Uint8Array"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "Uint8Array" ), value );
 }
 
 
-void setJSDOMWindowInt16ArrayConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowInt16ArrayConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "Int16Array"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "Int16Array" ), value );
 }
 
 
-void setJSDOMWindowUint16ArrayConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowUint16ArrayConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "Uint16Array"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "Uint16Array" ), value );
 }
 
 
-void setJSDOMWindowInt32ArrayConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowInt32ArrayConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "Int32Array"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "Int32Array" ), value );
 }
 
 
-void setJSDOMWindowUint32ArrayConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowUint32ArrayConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "Uint32Array"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "Uint32Array" ), value );
 }
 
 
-void setJSDOMWindowFloat32ArrayConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowFloat32ArrayConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "Float32Array"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "Float32Array" ), value );
 }
 
 
-void setJSDOMWindowDataViewConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowDataViewConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "DataView"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "DataView" ), value );
 }
 
 
 #if ENABLE(WEB_AUDIO)
-void setJSDOMWindowWebkitAudioContextConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowWebkitAudioContextConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "webkitAudioContext"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "webkitAudioContext" ), value );
 }
 
 #endif
 
 #if ENABLE(WEB_AUDIO)
-void setJSDOMWindowWebkitAudioPannerNodeConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowWebkitAudioPannerNodeConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "webkitAudioPannerNode"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "webkitAudioPannerNode" ), value );
 }
 
 #endif
 
-void setJSDOMWindowEventConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowEventConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "Event"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "Event" ), value );
 }
 
 
-void setJSDOMWindowBeforeLoadEventConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowBeforeLoadEventConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "BeforeLoadEvent"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "BeforeLoadEvent" ), value );
 }
 
 
-void setJSDOMWindowHashChangeEventConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHashChangeEventConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HashChangeEvent"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HashChangeEvent" ), value );
 }
 
 
-void setJSDOMWindowKeyboardEventConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowKeyboardEventConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "KeyboardEvent"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "KeyboardEvent" ), value );
 }
 
 
-void setJSDOMWindowMouseEventConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowMouseEventConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "MouseEvent"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "MouseEvent" ), value );
 }
 
 
-void setJSDOMWindowMutationEventConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowMutationEventConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "MutationEvent"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "MutationEvent" ), value );
 }
 
 
-void setJSDOMWindowOverflowEventConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowOverflowEventConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "OverflowEvent"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "OverflowEvent" ), value );
 }
 
 
-void setJSDOMWindowPageTransitionEventConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowPageTransitionEventConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "PageTransitionEvent"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "PageTransitionEvent" ), value );
 }
 
 
-void setJSDOMWindowProgressEventConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowProgressEventConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "ProgressEvent"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "ProgressEvent" ), value );
 }
 
 
-void setJSDOMWindowTextEventConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowTextEventConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "TextEvent"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "TextEvent" ), value );
 }
 
 
-void setJSDOMWindowUIEventConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowUIEventConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "UIEvent"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "UIEvent" ), value );
 }
 
 
-void setJSDOMWindowWebKitAnimationEventConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowWebKitAnimationEventConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "WebKitAnimationEvent"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "WebKitAnimationEvent" ), value );
 }
 
 
-void setJSDOMWindowWebKitTransitionEventConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowWebKitTransitionEventConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "WebKitTransitionEvent"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "WebKitTransitionEvent" ), value );
 }
 
 
-void setJSDOMWindowWheelEventConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowWheelEventConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "WheelEvent"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "WheelEvent" ), value );
 }
 
 
-void setJSDOMWindowMessageEventConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowMessageEventConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "MessageEvent"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "MessageEvent" ), value );
 }
 
 
-void setJSDOMWindowEventExceptionConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowEventExceptionConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "EventException"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "EventException" ), value );
 }
 
 
-void setJSDOMWindowWebKitCSSKeyframeRuleConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowWebKitCSSKeyframeRuleConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "WebKitCSSKeyframeRule"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "WebKitCSSKeyframeRule" ), value );
 }
 
 
-void setJSDOMWindowWebKitCSSKeyframesRuleConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowWebKitCSSKeyframesRuleConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "WebKitCSSKeyframesRule"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "WebKitCSSKeyframesRule" ), value );
 }
 
 
-void setJSDOMWindowWebKitCSSMatrixConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowWebKitCSSMatrixConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "WebKitCSSMatrix"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "WebKitCSSMatrix" ), value );
 }
 
 
-void setJSDOMWindowWebKitPointConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowWebKitPointConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "WebKitPoint"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "WebKitPoint" ), value );
 }
 
 
-void setJSDOMWindowClipboardConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowClipboardConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "Clipboard"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "Clipboard" ), value );
 }
 
 
-void setJSDOMWindowFileConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowFileConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "File"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "File" ), value );
 }
 
 
-void setJSDOMWindowFileListConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowFileListConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "FileList"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "FileList" ), value );
 }
 
 
-void setJSDOMWindowBlobConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowBlobConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "Blob"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "Blob" ), value );
 }
 
 
-void setJSDOMWindowNodeFilterConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowNodeFilterConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "NodeFilter"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "NodeFilter" ), value );
 }
 
 
-void setJSDOMWindowRangeConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowRangeConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "Range"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "Range" ), value );
 }
 
 
-void setJSDOMWindowRangeExceptionConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowRangeExceptionConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "RangeException"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "RangeException" ), value );
 }
 
 
-void setJSDOMWindowEventSourceConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowEventSourceConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "EventSource"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "EventSource" ), value );
 }
 
 
-void setJSDOMWindowXMLDocumentConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowXMLDocumentConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "XMLDocument"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "XMLDocument" ), value );
 }
 
 
-void setJSDOMWindowDOMParserConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowDOMParserConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "DOMParser"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "DOMParser" ), value );
 }
 
 
-void setJSDOMWindowXMLSerializerConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowXMLSerializerConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "XMLSerializer"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "XMLSerializer" ), value );
 }
 
 
-void setJSDOMWindowXMLHttpRequestConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowXMLHttpRequestConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "XMLHttpRequest"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "XMLHttpRequest" ), value );
 }
 
 
-void setJSDOMWindowXMLHttpRequestUploadConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowXMLHttpRequestUploadConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "XMLHttpRequestUpload"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "XMLHttpRequestUpload" ), value );
 }
 
 
-void setJSDOMWindowXMLHttpRequestExceptionConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowXMLHttpRequestExceptionConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "XMLHttpRequestException"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "XMLHttpRequestException" ), value );
 }
 
 
 #if ENABLE(XSLT)
-void setJSDOMWindowXSLTProcessorConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowXSLTProcessorConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "XSLTProcessor"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "XSLTProcessor" ), value );
 }
 
 #endif
 
-void setJSDOMWindowMessagePortConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowMessagePortConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "MessagePort"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "MessagePort" ), value );
 }
 
 
-void setJSDOMWindowMessageChannelConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowMessageChannelConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "MessageChannel"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "MessageChannel" ), value );
 }
 
 
-void setJSDOMWindowWorkerConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowWorkerConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "Worker"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "Worker" ), value );
 }
 
 
-void setJSDOMWindowSharedWorkerConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSharedWorkerConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SharedWorker"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SharedWorker" ), value );
 }
 
 
-void setJSDOMWindowWebSocketConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowWebSocketConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "WebSocket"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "WebSocket" ), value );
 }
 
 
-void setJSDOMWindowPluginConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowPluginConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "Plugin"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "Plugin" ), value );
 }
 
 
-void setJSDOMWindowPluginArrayConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowPluginArrayConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "PluginArray"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "PluginArray" ), value );
 }
 
 
-void setJSDOMWindowMimeTypeConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowMimeTypeConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "MimeType"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "MimeType" ), value );
 }
 
 
-void setJSDOMWindowMimeTypeArrayConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowMimeTypeArrayConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "MimeTypeArray"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "MimeTypeArray" ), value );
 }
 
 
-void setJSDOMWindowClientRectConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowClientRectConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "ClientRect"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "ClientRect" ), value );
 }
 
 
-void setJSDOMWindowClientRectListConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowClientRectListConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "ClientRectList"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "ClientRectList" ), value );
 }
 
 
-void setJSDOMWindowStorageConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowStorageConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "Storage"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "Storage" ), value );
 }
 
 
-void setJSDOMWindowStorageEventConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowStorageEventConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "StorageEvent"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "StorageEvent" ), value );
 }
 
 
 #if ENABLE(VIDEO)
-void setJSDOMWindowAudioConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowAudioConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "Audio"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "Audio" ), value );
 }
 
 #endif
 
 #if ENABLE(VIDEO)
-void setJSDOMWindowHTMLAudioElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLAudioElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLAudioElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLAudioElement" ), value );
 }
 
 #endif
 
 #if ENABLE(VIDEO)
-void setJSDOMWindowHTMLMediaElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLMediaElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLMediaElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLMediaElement" ), value );
 }
 
 #endif
 
 #if ENABLE(VIDEO)
-void setJSDOMWindowHTMLVideoElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowHTMLVideoElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "HTMLVideoElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "HTMLVideoElement" ), value );
 }
 
 #endif
 
 #if ENABLE(VIDEO)
-void setJSDOMWindowMediaErrorConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowMediaErrorConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "MediaError"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "MediaError" ), value );
 }
 
 #endif
 
 #if ENABLE(VIDEO)
-void setJSDOMWindowTimeRangesConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowTimeRangesConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "TimeRanges"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "TimeRanges" ), value );
 }
 
 #endif
 
-void setJSDOMWindowXPathEvaluatorConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowXPathEvaluatorConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "XPathEvaluator"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "XPathEvaluator" ), value );
 }
 
 
-void setJSDOMWindowXPathResultConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowXPathResultConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "XPathResult"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "XPathResult" ), value );
 }
 
 
-void setJSDOMWindowXPathExceptionConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowXPathExceptionConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "XPathException"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "XPathException" ), value );
 }
 
 
-void setJSDOMWindowSVGAElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGAElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGAElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGAElement" ), value );
 }
 
 
-void setJSDOMWindowSVGAngleConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGAngleConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGAngle"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGAngle" ), value );
 }
 
 
-void setJSDOMWindowSVGAnimatedAngleConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGAnimatedAngleConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGAnimatedAngle"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGAnimatedAngle" ), value );
 }
 
 
-void setJSDOMWindowSVGAnimatedBooleanConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGAnimatedBooleanConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGAnimatedBoolean"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGAnimatedBoolean" ), value );
 }
 
 
-void setJSDOMWindowSVGAnimatedEnumerationConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGAnimatedEnumerationConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGAnimatedEnumeration"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGAnimatedEnumeration" ), value );
 }
 
 
-void setJSDOMWindowSVGAnimatedIntegerConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGAnimatedIntegerConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGAnimatedInteger"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGAnimatedInteger" ), value );
 }
 
 
-void setJSDOMWindowSVGAnimatedLengthConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGAnimatedLengthConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGAnimatedLength"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGAnimatedLength" ), value );
 }
 
 
-void setJSDOMWindowSVGAnimatedLengthListConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGAnimatedLengthListConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGAnimatedLengthList"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGAnimatedLengthList" ), value );
 }
 
 
-void setJSDOMWindowSVGAnimatedNumberConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGAnimatedNumberConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGAnimatedNumber"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGAnimatedNumber" ), value );
 }
 
 
-void setJSDOMWindowSVGAnimatedNumberListConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGAnimatedNumberListConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGAnimatedNumberList"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGAnimatedNumberList" ), value );
 }
 
 
-void setJSDOMWindowSVGAnimatedPreserveAspectRatioConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGAnimatedPreserveAspectRatioConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGAnimatedPreserveAspectRatio"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGAnimatedPreserveAspectRatio" ),
+            value );
 }
 
 
-void setJSDOMWindowSVGAnimatedRectConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGAnimatedRectConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGAnimatedRect"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGAnimatedRect" ), value );
 }
 
 
-void setJSDOMWindowSVGAnimatedStringConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGAnimatedStringConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGAnimatedString"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGAnimatedString" ), value );
 }
 
 
-void setJSDOMWindowSVGAnimatedTransformListConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGAnimatedTransformListConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGAnimatedTransformList"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGAnimatedTransformList" ), value );
 }
 
 
-void setJSDOMWindowSVGCircleElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGCircleElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGCircleElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGCircleElement" ), value );
 }
 
 
-void setJSDOMWindowSVGClipPathElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGClipPathElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGClipPathElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGClipPathElement" ), value );
 }
 
 
-void setJSDOMWindowSVGColorConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGColorConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGColor"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGColor" ), value );
 }
 
 
-void setJSDOMWindowSVGCursorElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGCursorElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGCursorElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGCursorElement" ), value );
 }
 
 
-void setJSDOMWindowSVGDefsElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGDefsElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGDefsElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGDefsElement" ), value );
 }
 
 
-void setJSDOMWindowSVGDescElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGDescElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGDescElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGDescElement" ), value );
 }
 
 
-void setJSDOMWindowSVGDocumentConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGDocumentConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGDocument"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGDocument" ), value );
 }
 
 
-void setJSDOMWindowSVGElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGElement" ), value );
 }
 
 
-void setJSDOMWindowSVGElementInstanceConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGElementInstanceConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGElementInstance"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGElementInstance" ), value );
 }
 
 
-void setJSDOMWindowSVGElementInstanceListConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGElementInstanceListConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGElementInstanceList"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGElementInstanceList" ), value );
 }
 
 
-void setJSDOMWindowSVGEllipseElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGEllipseElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGEllipseElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGEllipseElement" ), value );
 }
 
 
-void setJSDOMWindowSVGExceptionConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGExceptionConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGException"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGException" ), value );
 }
 
 
-void setJSDOMWindowSVGGElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGGElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGGElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGGElement" ), value );
 }
 
 
-void setJSDOMWindowSVGGradientElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGGradientElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGGradientElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGGradientElement" ), value );
 }
 
 
-void setJSDOMWindowSVGImageElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGImageElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGImageElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGImageElement" ), value );
 }
 
 
-void setJSDOMWindowSVGLengthConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGLengthConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGLength"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGLength" ), value );
 }
 
 
-void setJSDOMWindowSVGLengthListConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGLengthListConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGLengthList"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGLengthList" ), value );
 }
 
 
-void setJSDOMWindowSVGLinearGradientElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGLinearGradientElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGLinearGradientElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGLinearGradientElement" ), value );
 }
 
 
-void setJSDOMWindowSVGLineElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGLineElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGLineElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGLineElement" ), value );
 }
 
 
-void setJSDOMWindowSVGMarkerElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGMarkerElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGMarkerElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGMarkerElement" ), value );
 }
 
 
-void setJSDOMWindowSVGMaskElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGMaskElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGMaskElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGMaskElement" ), value );
 }
 
 
-void setJSDOMWindowSVGMatrixConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGMatrixConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGMatrix"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGMatrix" ), value );
 }
 
 
-void setJSDOMWindowSVGMetadataElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGMetadataElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGMetadataElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGMetadataElement" ), value );
 }
 
 
-void setJSDOMWindowSVGNumberConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGNumberConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGNumber"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGNumber" ), value );
 }
 
 
-void setJSDOMWindowSVGNumberListConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGNumberListConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGNumberList"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGNumberList" ), value );
 }
 
 
-void setJSDOMWindowSVGPaintConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGPaintConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGPaint"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGPaint" ), value );
 }
 
 
-void setJSDOMWindowSVGPathElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGPathElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGPathElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGPathElement" ), value );
 }
 
 
-void setJSDOMWindowSVGPathSegConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGPathSegConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGPathSeg"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGPathSeg" ), value );
 }
 
 
-void setJSDOMWindowSVGPathSegArcAbsConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGPathSegArcAbsConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGPathSegArcAbs"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGPathSegArcAbs" ), value );
 }
 
 
-void setJSDOMWindowSVGPathSegArcRelConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGPathSegArcRelConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGPathSegArcRel"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGPathSegArcRel" ), value );
 }
 
 
-void setJSDOMWindowSVGPathSegClosePathConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGPathSegClosePathConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGPathSegClosePath"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGPathSegClosePath" ), value );
 }
 
 
-void setJSDOMWindowSVGPathSegCurvetoCubicAbsConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGPathSegCurvetoCubicAbsConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGPathSegCurvetoCubicAbs"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGPathSegCurvetoCubicAbs" ), value );
 }
 
 
-void setJSDOMWindowSVGPathSegCurvetoCubicRelConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGPathSegCurvetoCubicRelConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGPathSegCurvetoCubicRel"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGPathSegCurvetoCubicRel" ), value );
 }
 
 
-void setJSDOMWindowSVGPathSegCurvetoCubicSmoothAbsConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGPathSegCurvetoCubicSmoothAbsConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGPathSegCurvetoCubicSmoothAbs"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGPathSegCurvetoCubicSmoothAbs" ),
+            value );
 }
 
 
-void setJSDOMWindowSVGPathSegCurvetoCubicSmoothRelConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGPathSegCurvetoCubicSmoothRelConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGPathSegCurvetoCubicSmoothRel"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGPathSegCurvetoCubicSmoothRel" ),
+            value );
 }
 
 
-void setJSDOMWindowSVGPathSegCurvetoQuadraticAbsConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGPathSegCurvetoQuadraticAbsConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGPathSegCurvetoQuadraticAbs"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGPathSegCurvetoQuadraticAbs" ),
+            value );
 }
 
 
-void setJSDOMWindowSVGPathSegCurvetoQuadraticRelConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGPathSegCurvetoQuadraticRelConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGPathSegCurvetoQuadraticRel"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGPathSegCurvetoQuadraticRel" ),
+            value );
 }
 
 
-void setJSDOMWindowSVGPathSegCurvetoQuadraticSmoothAbsConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGPathSegCurvetoQuadraticSmoothAbsConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGPathSegCurvetoQuadraticSmoothAbs"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec,
+            "SVGPathSegCurvetoQuadraticSmoothAbs" ), value );
 }
 
 
-void setJSDOMWindowSVGPathSegCurvetoQuadraticSmoothRelConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGPathSegCurvetoQuadraticSmoothRelConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGPathSegCurvetoQuadraticSmoothRel"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec,
+            "SVGPathSegCurvetoQuadraticSmoothRel" ), value );
 }
 
 
-void setJSDOMWindowSVGPathSegLinetoAbsConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGPathSegLinetoAbsConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGPathSegLinetoAbs"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGPathSegLinetoAbs" ), value );
 }
 
 
-void setJSDOMWindowSVGPathSegLinetoHorizontalAbsConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGPathSegLinetoHorizontalAbsConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGPathSegLinetoHorizontalAbs"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGPathSegLinetoHorizontalAbs" ),
+            value );
 }
 
 
-void setJSDOMWindowSVGPathSegLinetoHorizontalRelConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGPathSegLinetoHorizontalRelConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGPathSegLinetoHorizontalRel"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGPathSegLinetoHorizontalRel" ),
+            value );
 }
 
 
-void setJSDOMWindowSVGPathSegLinetoRelConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGPathSegLinetoRelConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGPathSegLinetoRel"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGPathSegLinetoRel" ), value );
 }
 
 
-void setJSDOMWindowSVGPathSegLinetoVerticalAbsConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGPathSegLinetoVerticalAbsConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGPathSegLinetoVerticalAbs"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGPathSegLinetoVerticalAbs" ),
+            value );
 }
 
 
-void setJSDOMWindowSVGPathSegLinetoVerticalRelConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGPathSegLinetoVerticalRelConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGPathSegLinetoVerticalRel"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGPathSegLinetoVerticalRel" ),
+            value );
 }
 
 
-void setJSDOMWindowSVGPathSegListConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGPathSegListConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGPathSegList"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGPathSegList" ), value );
 }
 
 
-void setJSDOMWindowSVGPathSegMovetoAbsConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGPathSegMovetoAbsConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGPathSegMovetoAbs"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGPathSegMovetoAbs" ), value );
 }
 
 
-void setJSDOMWindowSVGPathSegMovetoRelConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGPathSegMovetoRelConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGPathSegMovetoRel"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGPathSegMovetoRel" ), value );
 }
 
 
-void setJSDOMWindowSVGPatternElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGPatternElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGPatternElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGPatternElement" ), value );
 }
 
 
-void setJSDOMWindowSVGPointConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGPointConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGPoint"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGPoint" ), value );
 }
 
 
-void setJSDOMWindowSVGPointListConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGPointListConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGPointList"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGPointList" ), value );
 }
 
 
-void setJSDOMWindowSVGPolygonElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGPolygonElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGPolygonElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGPolygonElement" ), value );
 }
 
 
-void setJSDOMWindowSVGPolylineElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGPolylineElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGPolylineElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGPolylineElement" ), value );
 }
 
 
-void setJSDOMWindowSVGPreserveAspectRatioConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGPreserveAspectRatioConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGPreserveAspectRatio"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGPreserveAspectRatio" ), value );
 }
 
 
-void setJSDOMWindowSVGRadialGradientElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGRadialGradientElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGRadialGradientElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGRadialGradientElement" ), value );
 }
 
 
-void setJSDOMWindowSVGRectConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGRectConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGRect"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGRect" ), value );
 }
 
 
-void setJSDOMWindowSVGRectElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGRectElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGRectElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGRectElement" ), value );
 }
 
 
-void setJSDOMWindowSVGRenderingIntentConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGRenderingIntentConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGRenderingIntent"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGRenderingIntent" ), value );
 }
 
 
-void setJSDOMWindowSVGScriptElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGScriptElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGScriptElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGScriptElement" ), value );
 }
 
 
-void setJSDOMWindowSVGStopElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGStopElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGStopElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGStopElement" ), value );
 }
 
 
-void setJSDOMWindowSVGStringListConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGStringListConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGStringList"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGStringList" ), value );
 }
 
 
-void setJSDOMWindowSVGStyleElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGStyleElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGStyleElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGStyleElement" ), value );
 }
 
 
-void setJSDOMWindowSVGSVGElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGSVGElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGSVGElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGSVGElement" ), value );
 }
 
 
-void setJSDOMWindowSVGSwitchElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGSwitchElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGSwitchElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGSwitchElement" ), value );
 }
 
 
-void setJSDOMWindowSVGSymbolElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGSymbolElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGSymbolElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGSymbolElement" ), value );
 }
 
 
-void setJSDOMWindowSVGTextContentElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGTextContentElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGTextContentElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGTextContentElement" ), value );
 }
 
 
-void setJSDOMWindowSVGTextElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGTextElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGTextElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGTextElement" ), value );
 }
 
 
-void setJSDOMWindowSVGTextPathElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGTextPathElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGTextPathElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGTextPathElement" ), value );
 }
 
 
-void setJSDOMWindowSVGTextPositioningElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGTextPositioningElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGTextPositioningElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGTextPositioningElement" ), value );
 }
 
 
-void setJSDOMWindowSVGTitleElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGTitleElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGTitleElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGTitleElement" ), value );
 }
 
 
-void setJSDOMWindowSVGTransformConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGTransformConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGTransform"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGTransform" ), value );
 }
 
 
-void setJSDOMWindowSVGTransformListConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGTransformListConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGTransformList"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGTransformList" ), value );
 }
 
 
-void setJSDOMWindowSVGTRefElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGTRefElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGTRefElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGTRefElement" ), value );
 }
 
 
-void setJSDOMWindowSVGTSpanElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGTSpanElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGTSpanElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGTSpanElement" ), value );
 }
 
 
-void setJSDOMWindowSVGUnitTypesConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGUnitTypesConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGUnitTypes"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGUnitTypes" ), value );
 }
 
 
-void setJSDOMWindowSVGUseElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGUseElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGUseElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGUseElement" ), value );
 }
 
 
-void setJSDOMWindowSVGViewElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGViewElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGViewElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGViewElement" ), value );
 }
 
 
-void setJSDOMWindowSVGZoomEventConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGZoomEventConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGZoomEvent"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGZoomEvent" ), value );
 }
 
 
-void setJSDOMWindowSVGAnimateColorElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGAnimateColorElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGAnimateColorElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGAnimateColorElement" ), value );
 }
 
 
-void setJSDOMWindowSVGAnimateElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGAnimateElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGAnimateElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGAnimateElement" ), value );
 }
 
 
-void setJSDOMWindowSVGAnimateTransformElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGAnimateTransformElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGAnimateTransformElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGAnimateTransformElement" ),
+            value );
 }
 
 
-void setJSDOMWindowSVGSetElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGSetElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGSetElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGSetElement" ), value );
 }
 
 
-void setJSDOMWindowSVGAltGlyphElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGAltGlyphElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGAltGlyphElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGAltGlyphElement" ), value );
 }
 
 
-void setJSDOMWindowSVGFontElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGFontElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGFontElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGFontElement" ), value );
 }
 
 
-void setJSDOMWindowSVGFontFaceElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGFontFaceElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGFontFaceElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGFontFaceElement" ), value );
 }
 
 
-void setJSDOMWindowSVGFontFaceFormatElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGFontFaceFormatElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGFontFaceFormatElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGFontFaceFormatElement" ), value );
 }
 
 
-void setJSDOMWindowSVGFontFaceNameElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGFontFaceNameElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGFontFaceNameElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGFontFaceNameElement" ), value );
 }
 
 
-void setJSDOMWindowSVGFontFaceSrcElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGFontFaceSrcElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGFontFaceSrcElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGFontFaceSrcElement" ), value );
 }
 
 
-void setJSDOMWindowSVGFontFaceUriElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGFontFaceUriElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGFontFaceUriElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGFontFaceUriElement" ), value );
 }
 
 
-void setJSDOMWindowSVGGlyphElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGGlyphElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGGlyphElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGGlyphElement" ), value );
 }
 
 
-void setJSDOMWindowSVGHKernElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGHKernElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGHKernElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGHKernElement" ), value );
 }
 
 
-void setJSDOMWindowSVGMissingGlyphElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGMissingGlyphElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGMissingGlyphElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGMissingGlyphElement" ), value );
 }
 
 
-void setJSDOMWindowSVGVKernElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGVKernElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGVKernElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGVKernElement" ), value );
 }
 
 
-void setJSDOMWindowSVGForeignObjectElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGForeignObjectElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGForeignObjectElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGForeignObjectElement" ), value );
 }
 
 
-void setJSDOMWindowSVGComponentTransferFunctionElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGComponentTransferFunctionElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGComponentTransferFunctionElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec,
+            "SVGComponentTransferFunctionElement" ), value );
 }
 
 
-void setJSDOMWindowSVGFEBlendElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGFEBlendElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGFEBlendElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGFEBlendElement" ), value );
 }
 
 
-void setJSDOMWindowSVGFEColorMatrixElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGFEColorMatrixElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGFEColorMatrixElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGFEColorMatrixElement" ), value );
 }
 
 
-void setJSDOMWindowSVGFEComponentTransferElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGFEComponentTransferElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGFEComponentTransferElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGFEComponentTransferElement" ),
+            value );
 }
 
 
-void setJSDOMWindowSVGFECompositeElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGFECompositeElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGFECompositeElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGFECompositeElement" ), value );
 }
 
 
-void setJSDOMWindowSVGFEConvolveMatrixElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGFEConvolveMatrixElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGFEConvolveMatrixElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGFEConvolveMatrixElement" ),
+            value );
 }
 
 
-void setJSDOMWindowSVGFEDiffuseLightingElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGFEDiffuseLightingElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGFEDiffuseLightingElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGFEDiffuseLightingElement" ),
+            value );
 }
 
 
-void setJSDOMWindowSVGFEDisplacementMapElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGFEDisplacementMapElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGFEDisplacementMapElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGFEDisplacementMapElement" ),
+            value );
 }
 
 
-void setJSDOMWindowSVGFEDistantLightElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGFEDistantLightElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGFEDistantLightElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGFEDistantLightElement" ), value );
 }
 
 
-void setJSDOMWindowSVGFEDropShadowElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGFEDropShadowElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGFEDropShadowElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGFEDropShadowElement" ), value );
 }
 
 
-void setJSDOMWindowSVGFEFloodElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGFEFloodElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGFEFloodElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGFEFloodElement" ), value );
 }
 
 
-void setJSDOMWindowSVGFEFuncAElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGFEFuncAElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGFEFuncAElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGFEFuncAElement" ), value );
 }
 
 
-void setJSDOMWindowSVGFEFuncBElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGFEFuncBElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGFEFuncBElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGFEFuncBElement" ), value );
 }
 
 
-void setJSDOMWindowSVGFEFuncGElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGFEFuncGElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGFEFuncGElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGFEFuncGElement" ), value );
 }
 
 
-void setJSDOMWindowSVGFEFuncRElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGFEFuncRElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGFEFuncRElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGFEFuncRElement" ), value );
 }
 
 
-void setJSDOMWindowSVGFEGaussianBlurElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGFEGaussianBlurElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGFEGaussianBlurElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGFEGaussianBlurElement" ), value );
 }
 
 
-void setJSDOMWindowSVGFEImageElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGFEImageElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGFEImageElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGFEImageElement" ), value );
 }
 
 
-void setJSDOMWindowSVGFEMergeElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGFEMergeElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGFEMergeElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGFEMergeElement" ), value );
 }
 
 
-void setJSDOMWindowSVGFEMergeNodeElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGFEMergeNodeElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGFEMergeNodeElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGFEMergeNodeElement" ), value );
 }
 
 
-void setJSDOMWindowSVGFEMorphologyElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGFEMorphologyElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGFEMorphologyElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGFEMorphologyElement" ), value );
 }
 
 
-void setJSDOMWindowSVGFEOffsetElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGFEOffsetElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGFEOffsetElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGFEOffsetElement" ), value );
 }
 
 
-void setJSDOMWindowSVGFEPointLightElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGFEPointLightElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGFEPointLightElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGFEPointLightElement" ), value );
 }
 
 
-void setJSDOMWindowSVGFESpecularLightingElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGFESpecularLightingElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGFESpecularLightingElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGFESpecularLightingElement" ),
+            value );
 }
 
 
-void setJSDOMWindowSVGFESpotLightElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGFESpotLightElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGFESpotLightElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGFESpotLightElement" ), value );
 }
 
 
-void setJSDOMWindowSVGFETileElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGFETileElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGFETileElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGFETileElement" ), value );
 }
 
 
-void setJSDOMWindowSVGFETurbulenceElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGFETurbulenceElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGFETurbulenceElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGFETurbulenceElement" ), value );
 }
 
 
-void setJSDOMWindowSVGFilterElementConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSVGFilterElementConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SVGFilterElement"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SVGFilterElement" ), value );
 }
 
 
 #if ENABLE(DATABASE)
-void setJSDOMWindowSQLExceptionConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowSQLExceptionConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "SQLException"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "SQLException" ), value );
 }
 
 #endif
 
 #if ENABLE(TOUCH_EVENTS)
-void setJSDOMWindowTouchEventConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowTouchEventConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "TouchEvent"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "TouchEvent" ), value );
 }
 
 #endif
 
-void setJSDOMWindowFormDataConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowFormDataConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "FormData"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "FormData" ), value );
 }
 
 
 #if ENABLE(BLOB) || ENABLE(FILE_SYSTEM)
-void setJSDOMWindowFileErrorConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowFileErrorConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "FileError"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "FileError" ), value );
 }
 
 #endif
 
 #if ENABLE(BLOB)
-void setJSDOMWindowFileReaderConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowFileReaderConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "FileReader"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "FileReader" ), value );
 }
 
 #endif
 
 #if ENABLE(BLOB)
-void setJSDOMWindowWebKitBlobBuilderConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowWebKitBlobBuilderConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), Identifier(exec, "WebKitBlobBuilder"), value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), Identifier( exec, "WebKitBlobBuilder" ), value );
 }
 
 #endif
 
-void setJSDOMWindowConstructor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSDOMWindowConstructor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    if (!static_cast<JSDOMWindow*>(thisObject)->allowsAccessFrom(exec))
+    if ( !static_cast<JSDOMWindow *>( thisObject )->allowsAccessFrom( exec ) )
+    {
         return;
+    }
+
     // Shadowing a built-in constructor
-    static_cast<JSDOMWindow*>(thisObject)->putDirect(exec->globalData(), exec->propertyNames().constructor, value);
+    static_cast<JSDOMWindow *>( thisObject )->putDirect( exec->globalData(), exec->propertyNames().constructor, value );
 }
 
-JSValue JSDOMWindow::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSDOMWindow::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSDOMWindowConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSDOMWindowConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionGetSelection(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionGetSelection( ExecState *exec )
 {
-    JSDOMWindow* castedThis = toJSDOMWindow(exec->hostThisValue().toThisObject(exec));
-    if (!castedThis)
-        return throwVMTypeError(exec);
-    if (!castedThis->allowsAccessFrom(exec))
-        return JSValue::encode(jsUndefined());
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
+    JSDOMWindow *castedThis = toJSDOMWindow( exec->hostThisValue().toThisObject( exec ) );
+
+    if ( !castedThis )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
 
 
-    JSC::JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->getSelection()));
-    return JSValue::encode(result);
+    JSC::JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->getSelection() ) );
+    return JSValue::encode( result );
 }
 
-EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionFocus(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionFocus( ExecState *exec )
 {
-    JSDOMWindow* castedThis = toJSDOMWindow(exec->hostThisValue().toThisObject(exec));
-    if (!castedThis)
-        return throwVMTypeError(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
+    JSDOMWindow *castedThis = toJSDOMWindow( exec->hostThisValue().toThisObject( exec ) );
+
+    if ( !castedThis )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
 
     imp->focus();
-    return JSValue::encode(jsUndefined());
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionBlur(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionBlur( ExecState *exec )
 {
-    JSDOMWindow* castedThis = toJSDOMWindow(exec->hostThisValue().toThisObject(exec));
-    if (!castedThis)
-        return throwVMTypeError(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
+    JSDOMWindow *castedThis = toJSDOMWindow( exec->hostThisValue().toThisObject( exec ) );
+
+    if ( !castedThis )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
 
     imp->blur();
-    return JSValue::encode(jsUndefined());
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionClose(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionClose( ExecState *exec )
 {
-    JSDOMWindow* castedThis = toJSDOMWindow(exec->hostThisValue().toThisObject(exec));
-    if (!castedThis)
-        return throwVMTypeError(exec);
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    ScriptExecutionContext* scriptContext = static_cast<JSDOMGlobalObject*>(exec->lexicalGlobalObject())->scriptExecutionContext();
-    if (!scriptContext)
-        return JSValue::encode(jsUndefined());
+    JSDOMWindow *castedThis = toJSDOMWindow( exec->hostThisValue().toThisObject( exec ) );
 
-    imp->close(scriptContext);
-    return JSValue::encode(jsUndefined());
+    if ( !castedThis )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    ScriptExecutionContext *scriptContext = static_cast<JSDOMGlobalObject *>( exec->lexicalGlobalObject() )->scriptExecutionContext();
+
+    if ( !scriptContext )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->close( scriptContext );
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionPrint(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionPrint( ExecState *exec )
 {
-    JSDOMWindow* castedThis = toJSDOMWindow(exec->hostThisValue().toThisObject(exec));
-    if (!castedThis)
-        return throwVMTypeError(exec);
-    if (!castedThis->allowsAccessFrom(exec))
-        return JSValue::encode(jsUndefined());
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
+    JSDOMWindow *castedThis = toJSDOMWindow( exec->hostThisValue().toThisObject( exec ) );
+
+    if ( !castedThis )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
 
     imp->print();
-    return JSValue::encode(jsUndefined());
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionStop(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionStop( ExecState *exec )
 {
-    JSDOMWindow* castedThis = toJSDOMWindow(exec->hostThisValue().toThisObject(exec));
-    if (!castedThis)
-        return throwVMTypeError(exec);
-    if (!castedThis->allowsAccessFrom(exec))
-        return JSValue::encode(jsUndefined());
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
+    JSDOMWindow *castedThis = toJSDOMWindow( exec->hostThisValue().toThisObject( exec ) );
+
+    if ( !castedThis )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
 
     imp->stop();
-    return JSValue::encode(jsUndefined());
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionOpen(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionOpen( ExecState *exec )
 {
-    JSDOMWindow* castedThis = toJSDOMWindow(exec->hostThisValue().toThisObject(exec));
-    if (!castedThis)
-        return throwVMTypeError(exec);
-    if (!castedThis->allowsAccessFrom(exec))
-        return JSValue::encode(jsUndefined());
-    return JSValue::encode(castedThis->open(exec));
+    JSDOMWindow *castedThis = toJSDOMWindow( exec->hostThisValue().toThisObject( exec ) );
+
+    if ( !castedThis )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    return JSValue::encode( castedThis->open( exec ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionShowModalDialog(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionShowModalDialog( ExecState *exec )
 {
-    JSDOMWindow* castedThis = toJSDOMWindow(exec->hostThisValue().toThisObject(exec));
-    if (!castedThis)
-        return throwVMTypeError(exec);
-    if (!castedThis->allowsAccessFrom(exec))
-        return JSValue::encode(jsUndefined());
-    return JSValue::encode(castedThis->showModalDialog(exec));
+    JSDOMWindow *castedThis = toJSDOMWindow( exec->hostThisValue().toThisObject( exec ) );
+
+    if ( !castedThis )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    return JSValue::encode( castedThis->showModalDialog( exec ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionAlert(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionAlert( ExecState *exec )
 {
-    JSDOMWindow* castedThis = toJSDOMWindow(exec->hostThisValue().toThisObject(exec));
-    if (!castedThis)
-        return throwVMTypeError(exec);
-    if (!castedThis->allowsAccessFrom(exec))
-        return JSValue::encode(jsUndefined());
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    const String& message(ustringToString(exec->argument(0).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+    JSDOMWindow *castedThis = toJSDOMWindow( exec->hostThisValue().toThisObject( exec ) );
 
-    imp->alert(message);
-    return JSValue::encode(jsUndefined());
+    if ( !castedThis )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    const String &message( ustringToString( exec->argument( 0 ).toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->alert( message );
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionConfirm(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionConfirm( ExecState *exec )
 {
-    JSDOMWindow* castedThis = toJSDOMWindow(exec->hostThisValue().toThisObject(exec));
-    if (!castedThis)
-        return throwVMTypeError(exec);
-    if (!castedThis->allowsAccessFrom(exec))
-        return JSValue::encode(jsUndefined());
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    const String& message(ustringToString(exec->argument(0).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+    JSDOMWindow *castedThis = toJSDOMWindow( exec->hostThisValue().toThisObject( exec ) );
 
+    if ( !castedThis )
+    {
+        return throwVMTypeError( exec );
+    }
 
-    JSC::JSValue result = jsBoolean(imp->confirm(message));
-    return JSValue::encode(result);
-}
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
 
-EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionPrompt(ExecState* exec)
-{
-    JSDOMWindow* castedThis = toJSDOMWindow(exec->hostThisValue().toThisObject(exec));
-    if (!castedThis)
-        return throwVMTypeError(exec);
-    if (!castedThis->allowsAccessFrom(exec))
-        return JSValue::encode(jsUndefined());
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    const String& message(ustringToString(exec->argument(0).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    const String& defaultValue(valueToStringWithUndefinedOrNullCheck(exec, exec->argument(1)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    const String &message( ustringToString( exec->argument( 0 ).toString( exec ) ) );
 
-
-    JSC::JSValue result = jsStringOrNull(exec, imp->prompt(message, defaultValue));
-    return JSValue::encode(result);
-}
-
-EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionFind(ExecState* exec)
-{
-    JSDOMWindow* castedThis = toJSDOMWindow(exec->hostThisValue().toThisObject(exec));
-    if (!castedThis)
-        return throwVMTypeError(exec);
-    if (!castedThis->allowsAccessFrom(exec))
-        return JSValue::encode(jsUndefined());
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    const String& string(ustringToString(exec->argument(0).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    bool caseSensitive(exec->argument(1).toBoolean(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    bool backwards(exec->argument(2).toBoolean(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    bool wrap(exec->argument(3).toBoolean(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    bool wholeWord(exec->argument(4).toBoolean(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    bool searchInFrames(exec->argument(5).toBoolean(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    bool showDialog(exec->argument(6).toBoolean(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-
-
-    JSC::JSValue result = jsBoolean(imp->find(string, caseSensitive, backwards, wrap, wholeWord, searchInFrames, showDialog));
-    return JSValue::encode(result);
-}
-
-EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionScrollBy(ExecState* exec)
-{
-    JSDOMWindow* castedThis = toJSDOMWindow(exec->hostThisValue().toThisObject(exec));
-    if (!castedThis)
-        return throwVMTypeError(exec);
-    if (!castedThis->allowsAccessFrom(exec))
-        return JSValue::encode(jsUndefined());
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (exec->argumentCount() < 2)
-        return JSValue::encode(jsUndefined());
-    int x(exec->argument(0).toInt32(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    int y(exec->argument(1).toInt32(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-
-    imp->scrollBy(x, y);
-    return JSValue::encode(jsUndefined());
-}
-
-EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionScrollTo(ExecState* exec)
-{
-    JSDOMWindow* castedThis = toJSDOMWindow(exec->hostThisValue().toThisObject(exec));
-    if (!castedThis)
-        return throwVMTypeError(exec);
-    if (!castedThis->allowsAccessFrom(exec))
-        return JSValue::encode(jsUndefined());
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (exec->argumentCount() < 2)
-        return JSValue::encode(jsUndefined());
-    int x(exec->argument(0).toInt32(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    int y(exec->argument(1).toInt32(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-
-    imp->scrollTo(x, y);
-    return JSValue::encode(jsUndefined());
-}
-
-EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionScroll(ExecState* exec)
-{
-    JSDOMWindow* castedThis = toJSDOMWindow(exec->hostThisValue().toThisObject(exec));
-    if (!castedThis)
-        return throwVMTypeError(exec);
-    if (!castedThis->allowsAccessFrom(exec))
-        return JSValue::encode(jsUndefined());
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (exec->argumentCount() < 2)
-        return JSValue::encode(jsUndefined());
-    int x(exec->argument(0).toInt32(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    int y(exec->argument(1).toInt32(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-
-    imp->scroll(x, y);
-    return JSValue::encode(jsUndefined());
-}
-
-EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionMoveBy(ExecState* exec)
-{
-    JSDOMWindow* castedThis = toJSDOMWindow(exec->hostThisValue().toThisObject(exec));
-    if (!castedThis)
-        return throwVMTypeError(exec);
-    if (!castedThis->allowsAccessFrom(exec))
-        return JSValue::encode(jsUndefined());
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (exec->argumentCount() < 2)
-        return JSValue::encode(jsUndefined());
-    float x(exec->argument(0).toFloat(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    float y(exec->argument(1).toFloat(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-
-    imp->moveBy(x, y);
-    return JSValue::encode(jsUndefined());
-}
-
-EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionMoveTo(ExecState* exec)
-{
-    JSDOMWindow* castedThis = toJSDOMWindow(exec->hostThisValue().toThisObject(exec));
-    if (!castedThis)
-        return throwVMTypeError(exec);
-    if (!castedThis->allowsAccessFrom(exec))
-        return JSValue::encode(jsUndefined());
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (exec->argumentCount() < 2)
-        return JSValue::encode(jsUndefined());
-    float x(exec->argument(0).toFloat(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    float y(exec->argument(1).toFloat(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-
-    imp->moveTo(x, y);
-    return JSValue::encode(jsUndefined());
-}
-
-EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionResizeBy(ExecState* exec)
-{
-    JSDOMWindow* castedThis = toJSDOMWindow(exec->hostThisValue().toThisObject(exec));
-    if (!castedThis)
-        return throwVMTypeError(exec);
-    if (!castedThis->allowsAccessFrom(exec))
-        return JSValue::encode(jsUndefined());
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (exec->argumentCount() < 2)
-        return JSValue::encode(jsUndefined());
-    float x(exec->argument(0).toFloat(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    float y(exec->argument(1).toFloat(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-
-    imp->resizeBy(x, y);
-    return JSValue::encode(jsUndefined());
-}
-
-EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionResizeTo(ExecState* exec)
-{
-    JSDOMWindow* castedThis = toJSDOMWindow(exec->hostThisValue().toThisObject(exec));
-    if (!castedThis)
-        return throwVMTypeError(exec);
-    if (!castedThis->allowsAccessFrom(exec))
-        return JSValue::encode(jsUndefined());
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (exec->argumentCount() < 2)
-        return JSValue::encode(jsUndefined());
-    float width(exec->argument(0).toFloat(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    float height(exec->argument(1).toFloat(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-
-    imp->resizeTo(width, height);
-    return JSValue::encode(jsUndefined());
-}
-
-EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionMatchMedia(ExecState* exec)
-{
-    JSDOMWindow* castedThis = toJSDOMWindow(exec->hostThisValue().toThisObject(exec));
-    if (!castedThis)
-        return throwVMTypeError(exec);
-    if (!castedThis->allowsAccessFrom(exec))
-        return JSValue::encode(jsUndefined());
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    const String& query(ustringToString(exec->argument(0).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-
-
-    JSC::JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->matchMedia(query)));
-    return JSValue::encode(result);
-}
-
-EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionGetComputedStyle(ExecState* exec)
-{
-    JSDOMWindow* castedThis = toJSDOMWindow(exec->hostThisValue().toThisObject(exec));
-    if (!castedThis)
-        return throwVMTypeError(exec);
-    if (!castedThis->allowsAccessFrom(exec))
-        return JSValue::encode(jsUndefined());
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    Element* element(toElement(exec->argument(0)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    const String& pseudoElement(valueToStringWithUndefinedOrNullCheck(exec, exec->argument(1)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-
-
-    JSC::JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->getComputedStyle(element, pseudoElement)));
-    return JSValue::encode(result);
-}
-
-EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionGetMatchedCSSRules(ExecState* exec)
-{
-    JSDOMWindow* castedThis = toJSDOMWindow(exec->hostThisValue().toThisObject(exec));
-    if (!castedThis)
-        return throwVMTypeError(exec);
-    if (!castedThis->allowsAccessFrom(exec))
-        return JSValue::encode(jsUndefined());
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    Element* element(toElement(exec->argument(0)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    const String& pseudoElement(ustringToString(exec->argument(1).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-
-
-    JSC::JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->getMatchedCSSRules(element, pseudoElement)));
-    return JSValue::encode(result);
-}
-
-EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionWebkitConvertPointFromPageToNode(ExecState* exec)
-{
-    JSDOMWindow* castedThis = toJSDOMWindow(exec->hostThisValue().toThisObject(exec));
-    if (!castedThis)
-        return throwVMTypeError(exec);
-    if (!castedThis->allowsAccessFrom(exec))
-        return JSValue::encode(jsUndefined());
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    Node* node(toNode(exec->argument(0)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    WebKitPoint* p(toWebKitPoint(exec->argument(1)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-
-
-    JSC::JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->webkitConvertPointFromPageToNode(node, p)));
-    return JSValue::encode(result);
-}
-
-EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionWebkitConvertPointFromNodeToPage(ExecState* exec)
-{
-    JSDOMWindow* castedThis = toJSDOMWindow(exec->hostThisValue().toThisObject(exec));
-    if (!castedThis)
-        return throwVMTypeError(exec);
-    if (!castedThis->allowsAccessFrom(exec))
-        return JSValue::encode(jsUndefined());
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    Node* node(toNode(exec->argument(0)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    WebKitPoint* p(toWebKitPoint(exec->argument(1)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-
-
-    JSC::JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->webkitConvertPointFromNodeToPage(node, p)));
-    return JSValue::encode(result);
-}
-
-EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionOpenDatabase(ExecState* exec)
-{
-    JSDOMWindow* castedThis = toJSDOMWindow(exec->hostThisValue().toThisObject(exec));
-    if (!castedThis)
-        return throwVMTypeError(exec);
-    if (!castedThis->allowsAccessFrom(exec))
-        return JSValue::encode(jsUndefined());
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    if (exec->argumentCount() < 4)
-        return throwVMError(exec, createSyntaxError(exec, "Not enough arguments"));
-    ExceptionCode ec = 0;
-    const String& name(ustringToString(exec->argument(0).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    const String& version(ustringToString(exec->argument(1).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    const String& displayName(ustringToString(exec->argument(2).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    unsigned estimatedSize(exec->argument(3).toUInt32(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    RefPtr<DatabaseCallback> creationCallback;
-    if (exec->argumentCount() > 4 && !exec->argument(4).isNull() && !exec->argument(4).isUndefined()) {
-        if (!exec->argument(4).isObject()) {
-            setDOMException(exec, TYPE_MISMATCH_ERR);
-            return JSValue::encode(jsUndefined());
-        }
-        creationCallback = JSDatabaseCallback::create(asObject(exec->argument(4)), castedThis->globalObject());
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
     }
 
 
-    JSC::JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->openDatabase(name, version, displayName, estimatedSize, creationCallback, ec)));
-    setDOMException(exec, ec);
-    return JSValue::encode(result);
+    JSC::JSValue result = jsBoolean( imp->confirm( message ) );
+    return JSValue::encode( result );
 }
 
-EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionPostMessage(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionPrompt( ExecState *exec )
 {
-    JSDOMWindow* castedThis = toJSDOMWindow(exec->hostThisValue().toThisObject(exec));
-    if (!castedThis)
-        return throwVMTypeError(exec);
-    return JSValue::encode(castedThis->postMessage(exec));
+    JSDOMWindow *castedThis = toJSDOMWindow( exec->hostThisValue().toThisObject( exec ) );
+
+    if ( !castedThis )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    const String &message( ustringToString( exec->argument( 0 ).toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    const String &defaultValue( valueToStringWithUndefinedOrNullCheck( exec, exec->argument( 1 ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+
+    JSC::JSValue result = jsStringOrNull( exec, imp->prompt( message, defaultValue ) );
+    return JSValue::encode( result );
 }
 
-EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionSetTimeout(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionFind( ExecState *exec )
 {
-    JSDOMWindow* castedThis = toJSDOMWindow(exec->hostThisValue().toThisObject(exec));
-    if (!castedThis)
-        return throwVMTypeError(exec);
-    if (!castedThis->allowsAccessFrom(exec))
-        return JSValue::encode(jsUndefined());
-    return JSValue::encode(castedThis->setTimeout(exec));
+    JSDOMWindow *castedThis = toJSDOMWindow( exec->hostThisValue().toThisObject( exec ) );
+
+    if ( !castedThis )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    const String &string( ustringToString( exec->argument( 0 ).toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    bool caseSensitive( exec->argument( 1 ).toBoolean( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    bool backwards( exec->argument( 2 ).toBoolean( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    bool wrap( exec->argument( 3 ).toBoolean( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    bool wholeWord( exec->argument( 4 ).toBoolean( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    bool searchInFrames( exec->argument( 5 ).toBoolean( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    bool showDialog( exec->argument( 6 ).toBoolean( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+
+    JSC::JSValue result = jsBoolean( imp->find( string, caseSensitive, backwards, wrap, wholeWord, searchInFrames, showDialog ) );
+    return JSValue::encode( result );
 }
 
-EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionClearTimeout(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionScrollBy( ExecState *exec )
 {
-    JSDOMWindow* castedThis = toJSDOMWindow(exec->hostThisValue().toThisObject(exec));
-    if (!castedThis)
-        return throwVMTypeError(exec);
-    if (!castedThis->allowsAccessFrom(exec))
-        return JSValue::encode(jsUndefined());
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    int handle(exec->argument(0).toInt32(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+    JSDOMWindow *castedThis = toJSDOMWindow( exec->hostThisValue().toThisObject( exec ) );
 
-    imp->clearTimeout(handle);
-    return JSValue::encode(jsUndefined());
+    if ( !castedThis )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( exec->argumentCount() < 2 )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    int x( exec->argument( 0 ).toInt32( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    int y( exec->argument( 1 ).toInt32( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->scrollBy( x, y );
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionSetInterval(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionScrollTo( ExecState *exec )
 {
-    JSDOMWindow* castedThis = toJSDOMWindow(exec->hostThisValue().toThisObject(exec));
-    if (!castedThis)
-        return throwVMTypeError(exec);
-    if (!castedThis->allowsAccessFrom(exec))
-        return JSValue::encode(jsUndefined());
-    return JSValue::encode(castedThis->setInterval(exec));
+    JSDOMWindow *castedThis = toJSDOMWindow( exec->hostThisValue().toThisObject( exec ) );
+
+    if ( !castedThis )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( exec->argumentCount() < 2 )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    int x( exec->argument( 0 ).toInt32( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    int y( exec->argument( 1 ).toInt32( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->scrollTo( x, y );
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionClearInterval(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionScroll( ExecState *exec )
 {
-    JSDOMWindow* castedThis = toJSDOMWindow(exec->hostThisValue().toThisObject(exec));
-    if (!castedThis)
-        return throwVMTypeError(exec);
-    if (!castedThis->allowsAccessFrom(exec))
-        return JSValue::encode(jsUndefined());
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
-    int handle(exec->argument(0).toInt32(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+    JSDOMWindow *castedThis = toJSDOMWindow( exec->hostThisValue().toThisObject( exec ) );
 
-    imp->clearInterval(handle);
-    return JSValue::encode(jsUndefined());
+    if ( !castedThis )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( exec->argumentCount() < 2 )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    int x( exec->argument( 0 ).toInt32( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    int y( exec->argument( 1 ).toInt32( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->scroll( x, y );
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionAtob(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionMoveBy( ExecState *exec )
 {
-    JSDOMWindow* castedThis = toJSDOMWindow(exec->hostThisValue().toThisObject(exec));
-    if (!castedThis)
-        return throwVMTypeError(exec);
-    if (!castedThis->allowsAccessFrom(exec))
-        return JSValue::encode(jsUndefined());
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
+    JSDOMWindow *castedThis = toJSDOMWindow( exec->hostThisValue().toThisObject( exec ) );
+
+    if ( !castedThis )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( exec->argumentCount() < 2 )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    float x( exec->argument( 0 ).toFloat( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    float y( exec->argument( 1 ).toFloat( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->moveBy( x, y );
+    return JSValue::encode( jsUndefined() );
+}
+
+EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionMoveTo( ExecState *exec )
+{
+    JSDOMWindow *castedThis = toJSDOMWindow( exec->hostThisValue().toThisObject( exec ) );
+
+    if ( !castedThis )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( exec->argumentCount() < 2 )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    float x( exec->argument( 0 ).toFloat( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    float y( exec->argument( 1 ).toFloat( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->moveTo( x, y );
+    return JSValue::encode( jsUndefined() );
+}
+
+EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionResizeBy( ExecState *exec )
+{
+    JSDOMWindow *castedThis = toJSDOMWindow( exec->hostThisValue().toThisObject( exec ) );
+
+    if ( !castedThis )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( exec->argumentCount() < 2 )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    float x( exec->argument( 0 ).toFloat( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    float y( exec->argument( 1 ).toFloat( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->resizeBy( x, y );
+    return JSValue::encode( jsUndefined() );
+}
+
+EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionResizeTo( ExecState *exec )
+{
+    JSDOMWindow *castedThis = toJSDOMWindow( exec->hostThisValue().toThisObject( exec ) );
+
+    if ( !castedThis )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( exec->argumentCount() < 2 )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    float width( exec->argument( 0 ).toFloat( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    float height( exec->argument( 1 ).toFloat( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->resizeTo( width, height );
+    return JSValue::encode( jsUndefined() );
+}
+
+EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionMatchMedia( ExecState *exec )
+{
+    JSDOMWindow *castedThis = toJSDOMWindow( exec->hostThisValue().toThisObject( exec ) );
+
+    if ( !castedThis )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    const String &query( ustringToString( exec->argument( 0 ).toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+
+    JSC::JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->matchMedia( query ) ) );
+    return JSValue::encode( result );
+}
+
+EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionGetComputedStyle( ExecState *exec )
+{
+    JSDOMWindow *castedThis = toJSDOMWindow( exec->hostThisValue().toThisObject( exec ) );
+
+    if ( !castedThis )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    Element *element( toElement( exec->argument( 0 ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    const String &pseudoElement( valueToStringWithUndefinedOrNullCheck( exec, exec->argument( 1 ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+
+    JSC::JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->getComputedStyle( element, pseudoElement ) ) );
+    return JSValue::encode( result );
+}
+
+EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionGetMatchedCSSRules( ExecState *exec )
+{
+    JSDOMWindow *castedThis = toJSDOMWindow( exec->hostThisValue().toThisObject( exec ) );
+
+    if ( !castedThis )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    Element *element( toElement( exec->argument( 0 ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    const String &pseudoElement( ustringToString( exec->argument( 1 ).toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+
+    JSC::JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->getMatchedCSSRules( element, pseudoElement ) ) );
+    return JSValue::encode( result );
+}
+
+EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionWebkitConvertPointFromPageToNode( ExecState *exec )
+{
+    JSDOMWindow *castedThis = toJSDOMWindow( exec->hostThisValue().toThisObject( exec ) );
+
+    if ( !castedThis )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    Node *node( toNode( exec->argument( 0 ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    WebKitPoint *p( toWebKitPoint( exec->argument( 1 ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+
+    JSC::JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->webkitConvertPointFromPageToNode( node, p ) ) );
+    return JSValue::encode( result );
+}
+
+EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionWebkitConvertPointFromNodeToPage( ExecState *exec )
+{
+    JSDOMWindow *castedThis = toJSDOMWindow( exec->hostThisValue().toThisObject( exec ) );
+
+    if ( !castedThis )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    Node *node( toNode( exec->argument( 0 ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    WebKitPoint *p( toWebKitPoint( exec->argument( 1 ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+
+    JSC::JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->webkitConvertPointFromNodeToPage( node, p ) ) );
+    return JSValue::encode( result );
+}
+
+EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionOpenDatabase( ExecState *exec )
+{
+    JSDOMWindow *castedThis = toJSDOMWindow( exec->hostThisValue().toThisObject( exec ) );
+
+    if ( !castedThis )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+
+    if ( exec->argumentCount() < 4 )
+    {
+        return throwVMError( exec, createSyntaxError( exec, "Not enough arguments" ) );
+    }
+
     ExceptionCode ec = 0;
-    const String& string(valueToStringWithNullCheck(exec, exec->argument(0)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+    const String &name( ustringToString( exec->argument( 0 ).toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    const String &version( ustringToString( exec->argument( 1 ).toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    const String &displayName( ustringToString( exec->argument( 2 ).toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    unsigned estimatedSize( exec->argument( 3 ).toUInt32( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    RefPtr<DatabaseCallback> creationCallback;
+
+    if ( exec->argumentCount() > 4 && !exec->argument( 4 ).isNull() && !exec->argument( 4 ).isUndefined() )
+    {
+        if ( !exec->argument( 4 ).isObject() )
+        {
+            setDOMException( exec, TYPE_MISMATCH_ERR );
+            return JSValue::encode( jsUndefined() );
+        }
+
+        creationCallback = JSDatabaseCallback::create( asObject( exec->argument( 4 ) ), castedThis->globalObject() );
+    }
 
 
-    JSC::JSValue result = jsString(exec, imp->atob(string, ec));
-    setDOMException(exec, ec);
-    return JSValue::encode(result);
+    JSC::JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->openDatabase( name, version, displayName,
+                                estimatedSize, creationCallback, ec ) ) );
+    setDOMException( exec, ec );
+    return JSValue::encode( result );
 }
 
-EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionBtoa(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionPostMessage( ExecState *exec )
 {
-    JSDOMWindow* castedThis = toJSDOMWindow(exec->hostThisValue().toThisObject(exec));
-    if (!castedThis)
-        return throwVMTypeError(exec);
-    if (!castedThis->allowsAccessFrom(exec))
-        return JSValue::encode(jsUndefined());
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
+    JSDOMWindow *castedThis = toJSDOMWindow( exec->hostThisValue().toThisObject( exec ) );
+
+    if ( !castedThis )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    return JSValue::encode( castedThis->postMessage( exec ) );
+}
+
+EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionSetTimeout( ExecState *exec )
+{
+    JSDOMWindow *castedThis = toJSDOMWindow( exec->hostThisValue().toThisObject( exec ) );
+
+    if ( !castedThis )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    return JSValue::encode( castedThis->setTimeout( exec ) );
+}
+
+EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionClearTimeout( ExecState *exec )
+{
+    JSDOMWindow *castedThis = toJSDOMWindow( exec->hostThisValue().toThisObject( exec ) );
+
+    if ( !castedThis )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    int handle( exec->argument( 0 ).toInt32( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->clearTimeout( handle );
+    return JSValue::encode( jsUndefined() );
+}
+
+EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionSetInterval( ExecState *exec )
+{
+    JSDOMWindow *castedThis = toJSDOMWindow( exec->hostThisValue().toThisObject( exec ) );
+
+    if ( !castedThis )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    return JSValue::encode( castedThis->setInterval( exec ) );
+}
+
+EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionClearInterval( ExecState *exec )
+{
+    JSDOMWindow *castedThis = toJSDOMWindow( exec->hostThisValue().toThisObject( exec ) );
+
+    if ( !castedThis )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    int handle( exec->argument( 0 ).toInt32( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->clearInterval( handle );
+    return JSValue::encode( jsUndefined() );
+}
+
+EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionAtob( ExecState *exec )
+{
+    JSDOMWindow *castedThis = toJSDOMWindow( exec->hostThisValue().toThisObject( exec ) );
+
+    if ( !castedThis )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
     ExceptionCode ec = 0;
-    const String& string(valueToStringWithNullCheck(exec, exec->argument(0)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+    const String &string( valueToStringWithNullCheck( exec, exec->argument( 0 ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
 
 
-    JSC::JSValue result = jsString(exec, imp->btoa(string, ec));
-    setDOMException(exec, ec);
-    return JSValue::encode(result);
+    JSC::JSValue result = jsString( exec, imp->atob( string, ec ) );
+    setDOMException( exec, ec );
+    return JSValue::encode( result );
 }
 
-EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionAddEventListener(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionBtoa( ExecState *exec )
 {
-    JSDOMWindow* castedThis = toJSDOMWindow(exec->hostThisValue().toThisObject(exec));
-    if (!castedThis)
-        return throwVMTypeError(exec);
-    if (!castedThis->allowsAccessFrom(exec))
-        return JSValue::encode(jsUndefined());
-    return JSValue::encode(castedThis->addEventListener(exec));
-}
+    JSDOMWindow *castedThis = toJSDOMWindow( exec->hostThisValue().toThisObject( exec ) );
 
-EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionRemoveEventListener(ExecState* exec)
-{
-    JSDOMWindow* castedThis = toJSDOMWindow(exec->hostThisValue().toThisObject(exec));
-    if (!castedThis)
-        return throwVMTypeError(exec);
-    if (!castedThis->allowsAccessFrom(exec))
-        return JSValue::encode(jsUndefined());
-    return JSValue::encode(castedThis->removeEventListener(exec));
-}
+    if ( !castedThis )
+    {
+        return throwVMTypeError( exec );
+    }
 
-EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionDispatchEvent(ExecState* exec)
-{
-    JSDOMWindow* castedThis = toJSDOMWindow(exec->hostThisValue().toThisObject(exec));
-    if (!castedThis)
-        return throwVMTypeError(exec);
-    if (!castedThis->allowsAccessFrom(exec))
-        return JSValue::encode(jsUndefined());
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
     ExceptionCode ec = 0;
-    Event* evt(toEvent(exec->argument(0)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+    const String &string( valueToStringWithNullCheck( exec, exec->argument( 0 ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
 
 
-    JSC::JSValue result = jsBoolean(imp->dispatchEvent(evt, ec));
-    setDOMException(exec, ec);
-    return JSValue::encode(result);
+    JSC::JSValue result = jsString( exec, imp->btoa( string, ec ) );
+    setDOMException( exec, ec );
+    return JSValue::encode( result );
 }
 
-EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionCaptureEvents(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionAddEventListener( ExecState *exec )
 {
-    JSDOMWindow* castedThis = toJSDOMWindow(exec->hostThisValue().toThisObject(exec));
-    if (!castedThis)
-        return throwVMTypeError(exec);
-    if (!castedThis->allowsAccessFrom(exec))
-        return JSValue::encode(jsUndefined());
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
+    JSDOMWindow *castedThis = toJSDOMWindow( exec->hostThisValue().toThisObject( exec ) );
+
+    if ( !castedThis )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    return JSValue::encode( castedThis->addEventListener( exec ) );
+}
+
+EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionRemoveEventListener( ExecState *exec )
+{
+    JSDOMWindow *castedThis = toJSDOMWindow( exec->hostThisValue().toThisObject( exec ) );
+
+    if ( !castedThis )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    return JSValue::encode( castedThis->removeEventListener( exec ) );
+}
+
+EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionDispatchEvent( ExecState *exec )
+{
+    JSDOMWindow *castedThis = toJSDOMWindow( exec->hostThisValue().toThisObject( exec ) );
+
+    if ( !castedThis )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
+    ExceptionCode ec = 0;
+    Event *evt( toEvent( exec->argument( 0 ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+
+    JSC::JSValue result = jsBoolean( imp->dispatchEvent( evt, ec ) );
+    setDOMException( exec, ec );
+    return JSValue::encode( result );
+}
+
+EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionCaptureEvents( ExecState *exec )
+{
+    JSDOMWindow *castedThis = toJSDOMWindow( exec->hostThisValue().toThisObject( exec ) );
+
+    if ( !castedThis )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
 
     imp->captureEvents();
-    return JSValue::encode(jsUndefined());
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionReleaseEvents(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsDOMWindowPrototypeFunctionReleaseEvents( ExecState *exec )
 {
-    JSDOMWindow* castedThis = toJSDOMWindow(exec->hostThisValue().toThisObject(exec));
-    if (!castedThis)
-        return throwVMTypeError(exec);
-    if (!castedThis->allowsAccessFrom(exec))
-        return JSValue::encode(jsUndefined());
-    DOMWindow* imp = static_cast<DOMWindow*>(castedThis->impl());
+    JSDOMWindow *castedThis = toJSDOMWindow( exec->hostThisValue().toThisObject( exec ) );
+
+    if ( !castedThis )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    if ( !castedThis->allowsAccessFrom( exec ) )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    DOMWindow *imp = static_cast<DOMWindow *>( castedThis->impl() );
 
     imp->releaseEvents();
-    return JSValue::encode(jsUndefined());
+    return JSValue::encode( jsUndefined() );
 }
 
 

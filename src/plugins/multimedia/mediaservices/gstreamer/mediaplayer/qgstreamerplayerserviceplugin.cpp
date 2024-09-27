@@ -30,71 +30,74 @@
 
 #include <qgstutils_p.h>
 
-CS_PLUGIN_REGISTER(QGstreamerPlayerServicePlugin)
+CS_PLUGIN_REGISTER( QGstreamerPlayerServicePlugin )
 
-QMediaService *QGstreamerPlayerServicePlugin::create(const QString &key)
+QMediaService *QGstreamerPlayerServicePlugin::create( const QString &key )
 {
-   QGstUtils::initializeGst();
+    QGstUtils::initializeGst();
 
-   if (key == Q_MEDIASERVICE_MEDIAPLAYER) {
-      return new QGstreamerPlayerService;
-   }
+    if ( key == Q_MEDIASERVICE_MEDIAPLAYER )
+    {
+        return new QGstreamerPlayerService;
+    }
 
-   qWarning() << "GStreamer media player service plugin, unsupported key:" << key;
+    qWarning() << "GStreamer media player service plugin, unsupported key:" << key;
 
-   return nullptr;
+    return nullptr;
 }
 
-void QGstreamerPlayerServicePlugin::release(QMediaService *service)
+void QGstreamerPlayerServicePlugin::release( QMediaService *service )
 {
-   delete service;
+    delete service;
 }
 
-QMediaServiceProviderHint::Features QGstreamerPlayerServicePlugin::supportedFeatures(const QString &service) const
+QMediaServiceProviderHint::Features QGstreamerPlayerServicePlugin::supportedFeatures( const QString &service ) const
 {
-   if (service == Q_MEDIASERVICE_MEDIAPLAYER)
-      return
+    if ( service == Q_MEDIASERVICE_MEDIAPLAYER )
+        return
 
 #ifdef HAVE_GST_APPSRC
-         QMediaServiceProviderHint::StreamPlayback |
+            QMediaServiceProviderHint::StreamPlayback |
 #endif
-         QMediaServiceProviderHint::VideoSurface;
+            QMediaServiceProviderHint::VideoSurface;
 
-   else {
-      return QMediaServiceProviderHint::Features();
-   }
+    else
+    {
+        return QMediaServiceProviderHint::Features();
+    }
 }
 
-QMultimedia::SupportEstimate QGstreamerPlayerServicePlugin::hasSupport(const QString &mimeType, const QStringList &codecs) const
+QMultimedia::SupportEstimate QGstreamerPlayerServicePlugin::hasSupport( const QString &mimeType, const QStringList &codecs ) const
 {
-   if (m_supportedMimeTypeSet.isEmpty()) {
-      updateSupportedMimeTypes();
-   }
+    if ( m_supportedMimeTypeSet.isEmpty() )
+    {
+        updateSupportedMimeTypes();
+    }
 
-   return QGstUtils::hasSupport(mimeType, codecs, m_supportedMimeTypeSet);
+    return QGstUtils::hasSupport( mimeType, codecs, m_supportedMimeTypeSet );
 }
 
-static bool isDecoderOrDemuxer(GstElementFactory *factory)
+static bool isDecoderOrDemuxer( GstElementFactory *factory )
 {
 #if GST_CHECK_VERSION(0, 10, 31)
-   return gst_element_factory_list_is_type(factory, GST_ELEMENT_FACTORY_TYPE_DEMUXER)
-      || gst_element_factory_list_is_type(factory, GST_ELEMENT_FACTORY_TYPE_DECODER);
+    return gst_element_factory_list_is_type( factory, GST_ELEMENT_FACTORY_TYPE_DEMUXER )
+           || gst_element_factory_list_is_type( factory, GST_ELEMENT_FACTORY_TYPE_DECODER );
 
 #else
-   return (factory
-         && (qstrcmp(factory->details.klass,   "Codec/Decoder/Audio") == 0
-            || qstrcmp(factory->details.klass, "Codec/Decoder/Video") == 0
-            || qstrcmp(factory->details.klass, "Codec/Demux") == 0 ));
+    return ( factory
+             && ( qstrcmp( factory->details.klass,   "Codec/Decoder/Audio" ) == 0
+                  || qstrcmp( factory->details.klass, "Codec/Decoder/Video" ) == 0
+                  || qstrcmp( factory->details.klass, "Codec/Demux" ) == 0 ) );
 #endif
 }
 
 void QGstreamerPlayerServicePlugin::updateSupportedMimeTypes() const
 {
-   m_supportedMimeTypeSet = QGstUtils::supportedMimeTypes(isDecoderOrDemuxer);
+    m_supportedMimeTypeSet = QGstUtils::supportedMimeTypes( isDecoderOrDemuxer );
 }
 
 QStringList QGstreamerPlayerServicePlugin::supportedMimeTypes() const
 {
-   return QStringList();
+    return QStringList();
 }
 

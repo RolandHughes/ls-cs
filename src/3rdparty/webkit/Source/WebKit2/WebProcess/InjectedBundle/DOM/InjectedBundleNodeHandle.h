@@ -32,26 +32,29 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
-    class IntRect;
-    class Node;
+namespace WebCore
+{
+class IntRect;
+class Node;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 class InjectedBundleScriptWorld;
 class WebFrame;
 
-class InjectedBundleNodeHandle : public APIObject {
+class InjectedBundleNodeHandle : public APIObject
+{
 public:
     static const Type APIType = TypeBundleNodeHandle;
 
-    static PassRefPtr<InjectedBundleNodeHandle> getOrCreate(JSContextRef, JSObjectRef);
-    static PassRefPtr<InjectedBundleNodeHandle> getOrCreate(WebCore::Node*);
+    static PassRefPtr<InjectedBundleNodeHandle> getOrCreate( JSContextRef, JSObjectRef );
+    static PassRefPtr<InjectedBundleNodeHandle> getOrCreate( WebCore::Node * );
 
     virtual ~InjectedBundleNodeHandle();
 
-    WebCore::Node* coreNode() const;
+    WebCore::Node *coreNode() const;
 
     // Convenience DOM Operations
     PassRefPtr<InjectedBundleNodeHandle> document();
@@ -59,13 +62,13 @@ public:
     // Additional DOM Operations
     // Note: These should only be operations that are not exposed to JavaScript.
     WebCore::IntRect elementBounds() const;
-    WebCore::IntRect renderRect(bool*) const;
-    void setHTMLInputElementValueForUser(const String&);
+    WebCore::IntRect renderRect( bool * ) const;
+    void setHTMLInputElementValueForUser( const String & );
     bool isHTMLInputElementAutofilled() const;
-    void setHTMLInputElementAutofilled(bool);
+    void setHTMLInputElementAutofilled( bool );
     bool htmlInputElementLastChangeWasUserEdit();
     bool htmlTextAreaElementLastChangeWasUserEdit();
-    
+
     PassRefPtr<InjectedBundleNodeHandle> htmlTableCellElementCellAbove();
 
     PassRefPtr<InjectedBundleNodeHandle> elementShadowRoot();
@@ -77,10 +80,13 @@ public:
     PassRefPtr<WebFrame> htmlIFrameElementContentFrame();
 
 private:
-    static PassRefPtr<InjectedBundleNodeHandle> create(WebCore::Node*);
-    InjectedBundleNodeHandle(WebCore::Node*);
+    static PassRefPtr<InjectedBundleNodeHandle> create( WebCore::Node * );
+    InjectedBundleNodeHandle( WebCore::Node * );
 
-    virtual Type type() const { return APIType; }
+    virtual Type type() const
+    {
+        return APIType;
+    }
 
     RefPtr<WebCore::Node> m_node;
 };

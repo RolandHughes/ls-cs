@@ -32,49 +32,50 @@
 
 class Q_MULTIMEDIA_EXPORT QCameraExposureControl : public QMediaControl
 {
-   MULTI_CS_OBJECT(QCameraExposureControl)
+    MULTI_CS_OBJECT( QCameraExposureControl )
 
-   MULTI_CS_ENUM(ExposureParameter)
+    MULTI_CS_ENUM( ExposureParameter )
 
- public:
-   ~QCameraExposureControl();
+public:
+    ~QCameraExposureControl();
 
-   enum ExposureParameter {
-      ISO,
-      Aperture,
-      ShutterSpeed,
-      ExposureCompensation,
-      FlashPower,
-      FlashCompensation,
-      TorchPower,
-      SpotMeteringPoint,
-      ExposureMode,
-      MeteringMode,
-      ExtendedExposureParameter = 1000
-   };
+    enum ExposureParameter
+    {
+        ISO,
+        Aperture,
+        ShutterSpeed,
+        ExposureCompensation,
+        FlashPower,
+        FlashCompensation,
+        TorchPower,
+        SpotMeteringPoint,
+        ExposureMode,
+        MeteringMode,
+        ExtendedExposureParameter = 1000
+    };
 
-   virtual bool isParameterSupported(ExposureParameter parameter) const = 0;
-   virtual QVariantList supportedParameterRange(ExposureParameter parameter, bool *continuous) const = 0;
+    virtual bool isParameterSupported( ExposureParameter parameter ) const = 0;
+    virtual QVariantList supportedParameterRange( ExposureParameter parameter, bool *continuous ) const = 0;
 
-   virtual QVariant requestedValue(ExposureParameter parameter) const = 0;
-   virtual QVariant actualValue(ExposureParameter parameter) const = 0;
-   virtual bool setValue(ExposureParameter parameter, const QVariant &value) = 0;
+    virtual QVariant requestedValue( ExposureParameter parameter ) const = 0;
+    virtual QVariant actualValue( ExposureParameter parameter ) const = 0;
+    virtual bool setValue( ExposureParameter parameter, const QVariant &value ) = 0;
 
-   MULTI_CS_SIGNAL_1(Public, void requestedValueChanged(int parameter))
-   MULTI_CS_SIGNAL_2(requestedValueChanged, parameter)
+    MULTI_CS_SIGNAL_1( Public, void requestedValueChanged( int parameter ) )
+    MULTI_CS_SIGNAL_2( requestedValueChanged, parameter )
 
-   MULTI_CS_SIGNAL_1(Public, void actualValueChanged(int parameter))
-   MULTI_CS_SIGNAL_2(actualValueChanged, parameter)
+    MULTI_CS_SIGNAL_1( Public, void actualValueChanged( int parameter ) )
+    MULTI_CS_SIGNAL_2( actualValueChanged, parameter )
 
-   MULTI_CS_SIGNAL_1(Public, void parameterRangeChanged(int parameter))
-   MULTI_CS_SIGNAL_2(parameterRangeChanged, parameter)
+    MULTI_CS_SIGNAL_1( Public, void parameterRangeChanged( int parameter ) )
+    MULTI_CS_SIGNAL_2( parameterRangeChanged, parameter )
 
- protected:
-   explicit QCameraExposureControl(QObject *parent = nullptr);
+protected:
+    explicit QCameraExposureControl( QObject *parent = nullptr );
 };
 
 #define QCameraExposureControl_iid  "com.copperspice.CS.cameraExposureControl/1.0"
-CS_DECLARE_INTERFACE(QCameraExposureControl, QCameraExposureControl_iid)
+CS_DECLARE_INTERFACE( QCameraExposureControl, QCameraExposureControl_iid )
 
 #endif
 

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -29,30 +29,33 @@
 
 #include "QTMovieTask.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-MediaPlayerPrivateTaskTimer* MediaPlayerPrivateTaskTimer::s_timer = 0;
+MediaPlayerPrivateTaskTimer *MediaPlayerPrivateTaskTimer::s_timer = 0;
 
 void MediaPlayerPrivateTaskTimer::initialize()
 {
-    if (s_timer)
+    if ( s_timer )
+    {
         return;
+    }
 
     s_timer = new MediaPlayerPrivateTaskTimer;
 
-    QTMovieTask::sharedTask()->setTaskTimerFuncs(setDelay, stopTaskTimer);
+    QTMovieTask::sharedTask()->setTaskTimerFuncs( setDelay, stopTaskTimer );
 }
 
-void MediaPlayerPrivateTaskTimer::setDelay(double delayInSeconds)
+void MediaPlayerPrivateTaskTimer::setDelay( double delayInSeconds )
 {
-    ASSERT(s_timer);
+    ASSERT( s_timer );
 
-    s_timer->startOneShot(delayInSeconds);
+    s_timer->startOneShot( delayInSeconds );
 }
 
 void MediaPlayerPrivateTaskTimer::stopTaskTimer()
 {
-    ASSERT(s_timer);
+    ASSERT( s_timer );
 
     s_timer->stop();
 }

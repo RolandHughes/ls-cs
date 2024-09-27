@@ -32,22 +32,23 @@ class GestureAreaQmlPlugin : public QDeclarativeExtensionPlugin
 {
     Q_OBJECT
 public:
-    virtual void registerTypes(const char *uri)
+    virtual void registerTypes( const char *uri )
     {
-        Q_ASSERT(QLatin1String(uri) == QLatin1String("Qt.labs.gestures"));
+        Q_ASSERT( QLatin1String( uri ) == QLatin1String( "Qt.labs.gestures" ) );
 #ifndef QT_NO_GESTURES
-        qmlRegisterCustomType<QDeclarativeGestureArea>(uri,1,0, "GestureArea", new QDeclarativeGestureAreaParser);
+        qmlRegisterCustomType<QDeclarativeGestureArea>( uri,1,0, "GestureArea", new QDeclarativeGestureAreaParser );
 
-        qmlRegisterUncreatableType<QGesture>(uri, 1, 0, "Gesture", QLatin1String("Do not create objects of this type."));
-        qmlRegisterUncreatableType<QPanGesture>(uri, 1, 0, "PanGesture", QLatin1String("Do not create objects of this type."));
-        qmlRegisterUncreatableType<QTapGesture>(uri, 1, 0, "TapGesture", QLatin1String("Do not create objects of this type."));
-        qmlRegisterUncreatableType<QTapAndHoldGesture>(uri, 1, 0, "TapAndHoldGesture", QLatin1String("Do not create objects of this type."));
-        qmlRegisterUncreatableType<QPinchGesture>(uri, 1, 0, "PinchGesture", QLatin1String("Do not create objects of this type."));
-        qmlRegisterUncreatableType<QSwipeGesture>(uri, 1, 0, "SwipeGesture", QLatin1String("Do not create objects of this type."));
+        qmlRegisterUncreatableType<QGesture>( uri, 1, 0, "Gesture", QLatin1String( "Do not create objects of this type." ) );
+        qmlRegisterUncreatableType<QPanGesture>( uri, 1, 0, "PanGesture", QLatin1String( "Do not create objects of this type." ) );
+        qmlRegisterUncreatableType<QTapGesture>( uri, 1, 0, "TapGesture", QLatin1String( "Do not create objects of this type." ) );
+        qmlRegisterUncreatableType<QTapAndHoldGesture>( uri, 1, 0, "TapAndHoldGesture",
+                QLatin1String( "Do not create objects of this type." ) );
+        qmlRegisterUncreatableType<QPinchGesture>( uri, 1, 0, "PinchGesture", QLatin1String( "Do not create objects of this type." ) );
+        qmlRegisterUncreatableType<QSwipeGesture>( uri, 1, 0, "SwipeGesture", QLatin1String( "Do not create objects of this type." ) );
 #endif
     }
 };
 
 QT_END_NAMESPACE
 
-Q_EXPORT_PLUGIN2(qmlgesturesplugin, QT_PREPEND_NAMESPACE(GestureAreaQmlPlugin));
+Q_EXPORT_PLUGIN2( qmlgesturesplugin, QT_PREPEND_NAMESPACE( GestureAreaQmlPlugin ) );

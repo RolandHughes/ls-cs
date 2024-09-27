@@ -34,52 +34,72 @@
 
 #include "PlatformString.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class SocketStreamError;
+class SocketStreamError;
 
-    class SocketStreamErrorBase {
-    public:
-        // Makes a deep copy.  Useful for when you need to use a SocketStreamError on another thread.
-        SocketStreamError copy() const;
+class SocketStreamErrorBase
+{
+public:
+    // Makes a deep copy.  Useful for when you need to use a SocketStreamError on another thread.
+    SocketStreamError copy() const;
 
-        bool isNull() const { return m_isNull; }
+    bool isNull() const
+    {
+        return m_isNull;
+    }
 
-        int errorCode() const { return m_errorCode; }
-        const String& failingURL() const { return m_failingURL; }
-        const String& localizedDescription() const { return m_localizedDescription; }
+    int errorCode() const
+    {
+        return m_errorCode;
+    }
+    const String &failingURL() const
+    {
+        return m_failingURL;
+    }
+    const String &localizedDescription() const
+    {
+        return m_localizedDescription;
+    }
 
-        static bool compare(const SocketStreamError&, const SocketStreamError&);
+    static bool compare( const SocketStreamError &, const SocketStreamError & );
 
-    protected:
-        SocketStreamErrorBase()
-            : m_errorCode(0)
-            , m_isNull(true)
-        {
-        }
+protected:
+    SocketStreamErrorBase()
+        : m_errorCode( 0 )
+        , m_isNull( true )
+    {
+    }
 
-        explicit SocketStreamErrorBase(int errorCode)
-            : m_errorCode(errorCode)
-            , m_isNull(false)
-        {
-        }
+    explicit SocketStreamErrorBase( int errorCode )
+        : m_errorCode( errorCode )
+        , m_isNull( false )
+    {
+    }
 
-        SocketStreamErrorBase(int errorCode, const String& failingURL, const String& localizedDescription)
-            : m_errorCode(errorCode)
-            , m_failingURL(failingURL)
-            , m_localizedDescription(localizedDescription)
-            , m_isNull(false)
-        {
-        }
+    SocketStreamErrorBase( int errorCode, const String &failingURL, const String &localizedDescription )
+        : m_errorCode( errorCode )
+        , m_failingURL( failingURL )
+        , m_localizedDescription( localizedDescription )
+        , m_isNull( false )
+    {
+    }
 
-        int m_errorCode;
-        String m_failingURL;
-        String m_localizedDescription;
-        bool m_isNull;
-    };
+    int m_errorCode;
+    String m_failingURL;
+    String m_localizedDescription;
+    bool m_isNull;
+};
 
-    inline bool operator==(const SocketStreamError& a, const SocketStreamError& b) { return SocketStreamErrorBase::compare(a, b); }
-    inline bool operator!=(const SocketStreamError& a, const SocketStreamError& b) { return !(a == b); }
+inline bool operator==( const SocketStreamError &a, const SocketStreamError &b )
+{
+    return SocketStreamErrorBase::compare( a, b );
+}
+inline bool operator!=( const SocketStreamError &a, const SocketStreamError &b )
+{
+    return !( a == b );
+}
 
 }  // namespace WebCore
 

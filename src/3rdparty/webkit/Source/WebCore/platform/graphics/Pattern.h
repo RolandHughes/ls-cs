@@ -22,7 +22,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef Pattern_h
@@ -36,62 +36,73 @@
 #include <wtf/RefPtr.h>
 
 #if USE(CG)
-typedef struct CGPattern* CGPatternRef;
+typedef struct CGPattern *CGPatternRef;
 typedef CGPatternRef PlatformPatternPtr;
 #elif USE(CAIRO)
 #include <cairo.h>
-typedef cairo_pattern_t* PlatformPatternPtr;
+typedef cairo_pattern_t *PlatformPatternPtr;
 #elif USE(SKIA)
 class SkShader;
-typedef SkShader* PlatformPatternPtr;
+typedef SkShader *PlatformPatternPtr;
 #elif PLATFORM(QT)
 #include <QBrush>
 typedef QBrush PlatformPatternPtr;
 #elif PLATFORM(WX)
 #if USE(WXGC)
 class wxGraphicsBrush;
-typedef wxGraphicsBrush* PlatformPatternPtr;
+typedef wxGraphicsBrush *PlatformPatternPtr;
 #else
 class wxBrush;
-typedef wxBrush* PlatformPatternPtr;
+typedef wxBrush *PlatformPatternPtr;
 #endif // USE(WXGC)
 #elif PLATFORM(HAIKU)
 #include <interface/GraphicsDefs.h>
-typedef pattern* PlatformPatternPtr;
+typedef pattern *PlatformPatternPtr;
 #elif OS(WINCE)
-typedef void* PlatformPatternPtr;
+typedef void *PlatformPatternPtr;
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
 class AffineTransform;
 
-class Pattern : public RefCounted<Pattern> {
+class Pattern : public RefCounted<Pattern>
+{
 public:
-    static PassRefPtr<Pattern> create(PassRefPtr<Image> tileImage, bool repeatX, bool repeatY)
+    static PassRefPtr<Pattern> create( PassRefPtr<Image> tileImage, bool repeatX, bool repeatY )
     {
-        return adoptRef(new Pattern(tileImage, repeatX, repeatY));
+        return adoptRef( new Pattern( tileImage, repeatX, repeatY ) );
     }
     virtual ~Pattern();
 
-    Image* tileImage() const { return m_tileImage.get(); }
+    Image *tileImage() const
+    {
+        return m_tileImage.get();
+    }
 
     void platformDestroy();
 
-    // Pattern space is an abstract space that maps to the default user space by the transformation 'userSpaceTransformation' 
+    // Pattern space is an abstract space that maps to the default user space by the transformation 'userSpaceTransformation'
 #if USE(SKIA)
-    PlatformPatternPtr platformPattern(const AffineTransform& userSpaceTransformation);
+    PlatformPatternPtr platformPattern( const AffineTransform &userSpaceTransformation );
 #else
-    PlatformPatternPtr createPlatformPattern(const AffineTransform& userSpaceTransformation) const;
+    PlatformPatternPtr createPlatformPattern( const AffineTransform &userSpaceTransformation ) const;
 #endif
-    void setPatternSpaceTransform(const AffineTransform& patternSpaceTransformation);
+    void setPatternSpaceTransform( const AffineTransform &patternSpaceTransformation );
     void setPlatformPatternSpaceTransform();
 
-    bool repeatX() const { return m_repeatX; }
-    bool repeatY() const { return m_repeatY; }
+    bool repeatX() const
+    {
+        return m_repeatX;
+    }
+    bool repeatY() const
+    {
+        return m_repeatY;
+    }
 
 private:
-    Pattern(PassRefPtr<Image>, bool repeatX, bool repeatY);
+    Pattern( PassRefPtr<Image>, bool repeatX, bool repeatY );
 
     RefPtr<Image> m_tileImage;
     bool m_repeatX;

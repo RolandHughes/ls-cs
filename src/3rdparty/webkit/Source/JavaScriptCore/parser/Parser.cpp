@@ -27,46 +27,55 @@
 #include "JSParser.h"
 #include "Lexer.h"
 
-namespace JSC {
-
-void Parser::parse(JSGlobalData* globalData, FunctionParameters* parameters, JSParserStrictness strictness, JSParserMode mode, int* errLine, UString* errMsg)
+namespace JSC
 {
-    ASSERT(globalData);
+
+void Parser::parse( JSGlobalData *globalData, FunctionParameters *parameters, JSParserStrictness strictness, JSParserMode mode,
+                    int *errLine, UString *errMsg )
+{
+    ASSERT( globalData );
     m_sourceElements = 0;
 
     int defaultErrLine;
     UString defaultErrMsg;
 
-    if (!errLine)
+    if ( !errLine )
+    {
         errLine = &defaultErrLine;
-    if (!errMsg)
+    }
+
+    if ( !errMsg )
+    {
         errMsg = &defaultErrMsg;
+    }
 
     *errLine = -1;
     *errMsg = UString();
 
-    Lexer& lexer = *globalData->lexer;
-    lexer.setCode(*m_source, m_arena);
+    Lexer &lexer = *globalData->lexer;
+    lexer.setCode( *m_source, m_arena );
 
-    const char* parseError = jsParse(globalData, parameters, strictness, mode, m_source);
+    const char *parseError = jsParse( globalData, parameters, strictness, mode, m_source );
     int lineNumber = lexer.lineNumber();
     bool lexError = lexer.sawError();
     lexer.clear();
 
-    if (parseError || lexError) {
+    if ( parseError || lexError )
+    {
         *errLine = lineNumber;
         *errMsg = parseError ? parseError : "Parse error";
         m_sourceElements = 0;
     }
 }
 
-void Parser::didFinishParsing(SourceElements* sourceElements, ParserArenaData<DeclarationStacks::VarStack>* varStack, 
-                              ParserArenaData<DeclarationStacks::FunctionStack>* funcStack, CodeFeatures features, int lastLine, int numConstants, IdentifierSet& capturedVars)
+void Parser::didFinishParsing( SourceElements *sourceElements, ParserArenaData<DeclarationStacks::VarStack> *varStack,
+                               ParserArenaData<DeclarationStacks::FunctionStack> *funcStack, CodeFeatures features, int lastLine, int numConstants,
+                               IdentifierSet &capturedVars )
 {
     m_sourceElements = sourceElements;
     m_varDeclarations = varStack;
     m_funcDeclarations = funcStack;
-    m_capturedVariables.swap(capturedVars);
+    m_capturedVariables.swap( capturedVars );
     m_features = features;
     m_lastLine = lastLine;
     m_numConstants = numConstants;

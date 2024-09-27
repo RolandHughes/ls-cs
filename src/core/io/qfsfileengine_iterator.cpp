@@ -28,8 +28,8 @@
 #ifndef QT_NO_FSFILEENGINE
 #ifndef QT_NO_FILESYSTEMITERATOR
 
-QFSFileEngineIterator::QFSFileEngineIterator(QDir::Filters filters, const QStringList &filterNames)
-   : QAbstractFileEngineIterator(filters, filterNames), done(false)
+QFSFileEngineIterator::QFSFileEngineIterator( QDir::Filters filters, const QStringList &filterNames )
+    : QAbstractFileEngineIterator( filters, filterNames ), done( false )
 {
 }
 
@@ -39,47 +39,52 @@ QFSFileEngineIterator::~QFSFileEngineIterator()
 
 bool QFSFileEngineIterator::hasNext() const
 {
-   if (!done && !nativeIterator) {
-      nativeIterator.reset(new QFileSystemIterator(QFileSystemEntry(path()), filters(), nameFilters()));
-      advance();
-   }
+    if ( !done && !nativeIterator )
+    {
+        nativeIterator.reset( new QFileSystemIterator( QFileSystemEntry( path() ), filters(), nameFilters() ) );
+        advance();
+    }
 
-   return !done;
+    return !done;
 }
 
 QString QFSFileEngineIterator::next()
 {
-   if (!hasNext()) {
-      return QString();
-   }
+    if ( !hasNext() )
+    {
+        return QString();
+    }
 
-   advance();
-   return currentFilePath();
+    advance();
+    return currentFilePath();
 }
 
 void QFSFileEngineIterator::advance() const
 {
-   currentInfo = nextInfo;
+    currentInfo = nextInfo;
 
-   QFileSystemEntry entry;
-   QFileSystemMetaData data;
+    QFileSystemEntry entry;
+    QFileSystemMetaData data;
 
-   if (nativeIterator->advance(entry, data)) {
-      nextInfo = QFileInfo(new QFileInfoPrivate(entry, data));
-   } else {
-      done = true;
-      nativeIterator.reset();
-   }
+    if ( nativeIterator->advance( entry, data ) )
+    {
+        nextInfo = QFileInfo( new QFileInfoPrivate( entry, data ) );
+    }
+    else
+    {
+        done = true;
+        nativeIterator.reset();
+    }
 }
 
 QString QFSFileEngineIterator::currentFileName() const
 {
-   return currentInfo.fileName();
+    return currentInfo.fileName();
 }
 
 QFileInfo QFSFileEngineIterator::currentFileInfo() const
 {
-   return currentInfo;
+    return currentInfo;
 }
 
 #endif // QT_NO_FILESYSTEMITERATOR

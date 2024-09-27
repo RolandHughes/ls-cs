@@ -30,35 +30,52 @@
 
 using namespace WebCore;
 
-namespace WebKit {
-
-void Plugin::Parameters::encode(CoreIPC::ArgumentEncoder* encoder) const
+namespace WebKit
 {
-    encoder->encode(url.string());
-    encoder->encode(names);
-    encoder->encode(values);
-    encoder->encode(mimeType);
-    encoder->encode(loadManually);
+
+void Plugin::Parameters::encode( CoreIPC::ArgumentEncoder *encoder ) const
+{
+    encoder->encode( url.string() );
+    encoder->encode( names );
+    encoder->encode( values );
+    encoder->encode( mimeType );
+    encoder->encode( loadManually );
 }
 
-bool Plugin::Parameters::decode(CoreIPC::ArgumentDecoder* decoder, Parameters& parameters)
+bool Plugin::Parameters::decode( CoreIPC::ArgumentDecoder *decoder, Parameters &parameters )
 {
     String urlString;
-    if (!decoder->decode(urlString))
+
+    if ( !decoder->decode( urlString ) )
+    {
         return false;
+    }
+
     // FIXME: We can't assume that the url passed in here is valid.
-    parameters.url = KURL(ParsedURLString, urlString);
+    parameters.url = KURL( ParsedURLString, urlString );
 
-    if (!decoder->decode(parameters.names))
+    if ( !decoder->decode( parameters.names ) )
+    {
         return false;
-    if (!decoder->decode(parameters.values))
-        return false;
-    if (!decoder->decode(parameters.mimeType))
-        return false;
-    if (!decoder->decode(parameters.loadManually))
-        return false;
+    }
 
-    if (parameters.names.size() != parameters.values.size()) {
+    if ( !decoder->decode( parameters.values ) )
+    {
+        return false;
+    }
+
+    if ( !decoder->decode( parameters.mimeType ) )
+    {
+        return false;
+    }
+
+    if ( !decoder->decode( parameters.loadManually ) )
+    {
+        return false;
+    }
+
+    if ( parameters.names.size() != parameters.values.size() )
+    {
         decoder->markInvalid();
         return false;
     }

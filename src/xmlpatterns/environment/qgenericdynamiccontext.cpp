@@ -31,153 +31,155 @@
 
 using namespace QPatternist;
 
-GenericDynamicContext::GenericDynamicContext(const NamePool::Ptr &np,
-      QAbstractMessageHandler *const errHandler, const LocationHash &locations)
-   : m_messageHandler(errHandler), m_currentDateTime(QDateTime::currentDateTime().toTimeZone(QTimeZone::utc())),
-      m_outputReceiver(nullptr), m_namePool(np), m_locations(locations), m_uriResolver(nullptr)
+GenericDynamicContext::GenericDynamicContext( const NamePool::Ptr &np,
+        QAbstractMessageHandler *const errHandler, const LocationHash &locations )
+    : m_messageHandler( errHandler ), m_currentDateTime( QDateTime::currentDateTime().toTimeZone( QTimeZone::utc() ) ),
+      m_outputReceiver( nullptr ), m_namePool( np ), m_locations( locations ), m_uriResolver( nullptr )
 {
-   Q_ASSERT(m_messageHandler);
-   Q_ASSERT(m_namePool);
+    Q_ASSERT( m_messageHandler );
+    Q_ASSERT( m_namePool );
 }
 
 QExplicitlySharedDataPointer<DayTimeDuration> GenericDynamicContext::implicitTimezone() const
 {
-   return CommonValues::DayTimeDurationZero;
+    return CommonValues::DayTimeDurationZero;
 }
 
 QAbstractMessageHandler *GenericDynamicContext::messageHandler() const
 {
-   return m_messageHandler;
+    return m_messageHandler;
 }
 
 QDateTime GenericDynamicContext::currentDateTime() const
 {
-   return m_currentDateTime;
+    return m_currentDateTime;
 }
 
 xsInteger GenericDynamicContext::contextPosition() const
 {
-   Q_ASSERT_X(false, Q_FUNC_INFO, "This function should never be called.");
-   return 0;
+    Q_ASSERT_X( false, Q_FUNC_INFO, "This function should never be called." );
+    return 0;
 }
 
 Item GenericDynamicContext::contextItem() const
 {
-   return Item();
+    return Item();
 }
 
 xsInteger GenericDynamicContext::contextSize()
 {
-   Q_ASSERT_X(false, Q_FUNC_INFO, "This function should never be called.");
-   return 0;
+    Q_ASSERT_X( false, Q_FUNC_INFO, "This function should never be called." );
+    return 0;
 }
 
-void GenericDynamicContext::setFocusIterator(const Item::Iterator::Ptr &)
+void GenericDynamicContext::setFocusIterator( const Item::Iterator::Ptr & )
 {
-   Q_ASSERT_X(false, Q_FUNC_INFO, "This function should never be called.");
+    Q_ASSERT_X( false, Q_FUNC_INFO, "This function should never be called." );
 }
 
 Item::Iterator::Ptr GenericDynamicContext::focusIterator() const
 {
-   return Item::Iterator::Ptr();
+    return Item::Iterator::Ptr();
 }
 
 QAbstractXmlReceiver *GenericDynamicContext::outputReceiver() const
 {
-   return m_outputReceiver;
+    return m_outputReceiver;
 }
 
-void GenericDynamicContext::setOutputReceiver(QAbstractXmlReceiver *const receiver)
+void GenericDynamicContext::setOutputReceiver( QAbstractXmlReceiver *const receiver )
 {
-   m_outputReceiver = receiver;
+    m_outputReceiver = receiver;
 }
 
-void GenericDynamicContext::setNodeBuilder(NodeBuilder::Ptr &builder)
+void GenericDynamicContext::setNodeBuilder( NodeBuilder::Ptr &builder )
 {
-   m_nodeBuilder = std::move(builder);
+    m_nodeBuilder = std::move( builder );
 }
 
-NodeBuilder::Ptr GenericDynamicContext::nodeBuilder(const QUrl &baseURI) const
+NodeBuilder::Ptr GenericDynamicContext::nodeBuilder( const QUrl &baseURI ) const
 {
-   return m_nodeBuilder->create(baseURI);
+    return m_nodeBuilder->create( baseURI );
 }
 
 ResourceLoader::Ptr GenericDynamicContext::resourceLoader() const
 {
-   return m_resourceLoader;
+    return m_resourceLoader;
 }
 
-void GenericDynamicContext::setResourceLoader(const ResourceLoader::Ptr &loader)
+void GenericDynamicContext::setResourceLoader( const ResourceLoader::Ptr &loader )
 {
-   m_resourceLoader = loader;
+    m_resourceLoader = loader;
 }
 
 ExternalVariableLoader::Ptr GenericDynamicContext::externalVariableLoader() const
 {
-   return m_externalVariableLoader;
+    return m_externalVariableLoader;
 }
 
-void GenericDynamicContext::setExternalVariableLoader(const ExternalVariableLoader::Ptr &loader)
+void GenericDynamicContext::setExternalVariableLoader( const ExternalVariableLoader::Ptr &loader )
 {
-   m_externalVariableLoader = loader;
+    m_externalVariableLoader = loader;
 }
 
 NamePool::Ptr GenericDynamicContext::namePool() const
 {
-   return m_namePool;
+    return m_namePool;
 }
 
-QSourceLocation GenericDynamicContext::locationFor(const SourceLocationReflection *const reflection) const
+QSourceLocation GenericDynamicContext::locationFor( const SourceLocationReflection *const reflection ) const
 {
 
-   return m_locations.value(reflection->actualReflection());
+    return m_locations.value( reflection->actualReflection() );
 }
 
-void GenericDynamicContext::addNodeModel(const QAbstractXmlNodeModel::Ptr &nm)
+void GenericDynamicContext::addNodeModel( const QAbstractXmlNodeModel::Ptr &nm )
 {
-   m_nodeModels.append(nm);
+    m_nodeModels.append( nm );
 }
 
 const QAbstractUriResolver *GenericDynamicContext::uriResolver() const
 {
-   return m_uriResolver;
+    return m_uriResolver;
 }
 
-ItemCacheCell &GenericDynamicContext::globalItemCacheCell(const VariableSlotID slot)
+ItemCacheCell &GenericDynamicContext::globalItemCacheCell( const VariableSlotID slot )
 {
-   if (slot >= m_globalItemCacheCells.size()) {
-      m_globalItemCacheCells.resize(qMax(slot + 1, m_globalItemCacheCells.size()));
-   }
+    if ( slot >= m_globalItemCacheCells.size() )
+    {
+        m_globalItemCacheCells.resize( qMax( slot + 1, m_globalItemCacheCells.size() ) );
+    }
 
-   return m_globalItemCacheCells[slot];
+    return m_globalItemCacheCells[slot];
 }
 
-ItemSequenceCacheCell::Vector &GenericDynamicContext::globalItemSequenceCacheCells(const VariableSlotID slot)
+ItemSequenceCacheCell::Vector &GenericDynamicContext::globalItemSequenceCacheCells( const VariableSlotID slot )
 {
-   if (slot >= m_globalItemSequenceCacheCells.size()) {
-      m_globalItemSequenceCacheCells.resize(qMax(slot + 1, m_globalItemSequenceCacheCells.size()));
-   }
+    if ( slot >= m_globalItemSequenceCacheCells.size() )
+    {
+        m_globalItemSequenceCacheCells.resize( qMax( slot + 1, m_globalItemSequenceCacheCells.size() ) );
+    }
 
-   return m_globalItemSequenceCacheCells;
+    return m_globalItemSequenceCacheCells;
 }
 
-void GenericDynamicContext::setUriResolver(const QAbstractUriResolver *const resolver)
+void GenericDynamicContext::setUriResolver( const QAbstractUriResolver *const resolver )
 {
-   m_uriResolver = resolver;
+    m_uriResolver = resolver;
 }
 
 Item GenericDynamicContext::currentItem() const
 {
-   return Item();
+    return Item();
 }
 
 DynamicContext::Ptr GenericDynamicContext::previousContext() const
 {
-   return DynamicContext::Ptr();
+    return DynamicContext::Ptr();
 }
 
 QExplicitlySharedDataPointer<TemplateMode> GenericDynamicContext::currentTemplateMode() const
 {
-   return QExplicitlySharedDataPointer<TemplateMode>();
+    return QExplicitlySharedDataPointer<TemplateMode>();
 }
 

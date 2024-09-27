@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef RemoveNodeCommand_h
@@ -28,24 +28,26 @@
 
 #include "EditCommand.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class RemoveNodeCommand : public SimpleEditCommand {
+class RemoveNodeCommand : public SimpleEditCommand
+{
 public:
-    static PassRefPtr<RemoveNodeCommand> create(PassRefPtr<Node> node)
+    static PassRefPtr<RemoveNodeCommand> create( PassRefPtr<Node> node )
     {
-        return adoptRef(new RemoveNodeCommand(node));
+        return adoptRef( new RemoveNodeCommand( node ) );
     }
 
 private:
-    RemoveNodeCommand(PassRefPtr<Node>);
+    RemoveNodeCommand( PassRefPtr<Node> );
 
     virtual void doApply();
     virtual void doUnapply();
 
     RefPtr<Node> m_node;
     RefPtr<ContainerNode> m_parent;
-    RefPtr<Node> m_refChild;    
+    RefPtr<Node> m_refChild;
 };
 
 } // namespace WebCore

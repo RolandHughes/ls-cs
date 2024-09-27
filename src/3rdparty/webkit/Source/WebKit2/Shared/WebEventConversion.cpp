@@ -28,41 +28,52 @@
 
 #include "WebEvent.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
-class WebKit2PlatformMouseEvent : public WebCore::PlatformMouseEvent {
+class WebKit2PlatformMouseEvent : public WebCore::PlatformMouseEvent
+{
 public:
-    WebKit2PlatformMouseEvent(const WebMouseEvent& webEvent)
+    WebKit2PlatformMouseEvent( const WebMouseEvent &webEvent )
     {
-        switch (webEvent.type()) {
-        case WebEvent::MouseDown:
-            m_eventType = WebCore::MouseEventPressed;
-            break;
-        case WebEvent::MouseUp:
-            m_eventType = WebCore::MouseEventReleased;
-            break;
-        case WebEvent::MouseMove:
-            m_eventType = WebCore::MouseEventMoved;
-            break;
-        default:
-            ASSERT_NOT_REACHED();
+        switch ( webEvent.type() )
+        {
+            case WebEvent::MouseDown:
+                m_eventType = WebCore::MouseEventPressed;
+                break;
+
+            case WebEvent::MouseUp:
+                m_eventType = WebCore::MouseEventReleased;
+                break;
+
+            case WebEvent::MouseMove:
+                m_eventType = WebCore::MouseEventMoved;
+                break;
+
+            default:
+                ASSERT_NOT_REACHED();
         }
 
-        switch (webEvent.button()) {
-        case WebMouseEvent::NoButton:
-            m_button = WebCore::NoButton;
-            break;
-        case WebMouseEvent::LeftButton:
-            m_button = WebCore::LeftButton;
-            break;
-        case WebMouseEvent::MiddleButton:
-            m_button = WebCore::MiddleButton;
-            break;
-        case WebMouseEvent::RightButton:
-            m_button = WebCore::RightButton;
-            break;
-        default:
-            ASSERT_NOT_REACHED();
+        switch ( webEvent.button() )
+        {
+            case WebMouseEvent::NoButton:
+                m_button = WebCore::NoButton;
+                break;
+
+            case WebMouseEvent::LeftButton:
+                m_button = WebCore::LeftButton;
+                break;
+
+            case WebMouseEvent::MiddleButton:
+                m_button = WebCore::MiddleButton;
+                break;
+
+            case WebMouseEvent::RightButton:
+                m_button = WebCore::RightButton;
+                break;
+
+            default:
+                ASSERT_NOT_REACHED();
         }
 
         m_position = webEvent.position();
@@ -75,14 +86,26 @@ public:
         m_metaKey = webEvent.metaKey();
 
         m_modifierFlags = 0;
-        if (m_shiftKey)
+
+        if ( m_shiftKey )
+        {
             m_modifierFlags |= WebEvent::ShiftKey;
-        if (m_ctrlKey)
+        }
+
+        if ( m_ctrlKey )
+        {
             m_modifierFlags |= WebEvent::ControlKey;
-        if (m_altKey)
+        }
+
+        if ( m_altKey )
+        {
             m_modifierFlags |= WebEvent::AltKey;
-        if (m_metaKey)
+        }
+
+        if ( m_metaKey )
+        {
             m_modifierFlags |= WebEvent::MetaKey;
+        }
 
 #if PLATFORM(WIN)
         m_didActivateWebView = webEvent.didActivateWebView();
@@ -90,14 +113,15 @@ public:
     }
 };
 
-WebCore::PlatformMouseEvent platform(const WebMouseEvent& webEvent)
+WebCore::PlatformMouseEvent platform( const WebMouseEvent &webEvent )
 {
-    return WebKit2PlatformMouseEvent(webEvent);
+    return WebKit2PlatformMouseEvent( webEvent );
 }
 
-class WebKit2PlatformWheelEvent : public WebCore::PlatformWheelEvent {
+class WebKit2PlatformWheelEvent : public WebCore::PlatformWheelEvent
+{
 public:
-    WebKit2PlatformWheelEvent(const WebWheelEvent& webEvent)
+    WebKit2PlatformWheelEvent( const WebWheelEvent &webEvent )
     {
         m_position = webEvent.position();
         m_globalPosition = webEvent.globalPosition();
@@ -105,45 +129,53 @@ public:
         m_deltaY = webEvent.delta().height();
         m_wheelTicksX = webEvent.wheelTicks().width();
         m_wheelTicksY = webEvent.wheelTicks().height();
-        m_granularity = (webEvent.granularity() == WebWheelEvent::ScrollByPageWheelEvent) ? WebCore::ScrollByPageWheelEvent : WebCore::ScrollByPixelWheelEvent;
+        m_granularity = ( webEvent.granularity() == WebWheelEvent::ScrollByPageWheelEvent ) ? WebCore::ScrollByPageWheelEvent :
+                        WebCore::ScrollByPixelWheelEvent;
         m_shiftKey = webEvent.shiftKey();
         m_ctrlKey = webEvent.controlKey();
         m_altKey = webEvent.altKey();
         m_metaKey = webEvent.metaKey();
 #if PLATFORM(MAC)
-        m_phase = static_cast<WebCore::PlatformWheelEventPhase>(webEvent.phase());
-        m_momentumPhase = static_cast<WebCore::PlatformWheelEventPhase>(webEvent.momentumPhase());
+        m_phase = static_cast<WebCore::PlatformWheelEventPhase>( webEvent.phase() );
+        m_momentumPhase = static_cast<WebCore::PlatformWheelEventPhase>( webEvent.momentumPhase() );
         m_hasPreciseScrollingDeltas = webEvent.hasPreciseScrollingDeltas();
         m_timestamp = webEvent.timestamp();
 #endif
     }
 };
 
-WebCore::PlatformWheelEvent platform(const WebWheelEvent& webEvent)
+WebCore::PlatformWheelEvent platform( const WebWheelEvent &webEvent )
 {
-    return WebKit2PlatformWheelEvent(webEvent);
+    return WebKit2PlatformWheelEvent( webEvent );
 }
 
-class WebKit2PlatformKeyboardEvent : public WebCore::PlatformKeyboardEvent {
+class WebKit2PlatformKeyboardEvent : public WebCore::PlatformKeyboardEvent
+{
 public:
-    WebKit2PlatformKeyboardEvent(const WebKeyboardEvent& webEvent)
+    WebKit2PlatformKeyboardEvent( const WebKeyboardEvent &webEvent )
     {
-        switch (webEvent.type()) {
-        case WebEvent::KeyDown:
-            m_type = PlatformKeyboardEvent::KeyDown;
-            break;
-        case WebEvent::KeyUp:
-            m_type = PlatformKeyboardEvent::KeyUp;
-            break;
-        case WebEvent::RawKeyDown:
-            m_type = PlatformKeyboardEvent::RawKeyDown;
-            break;
-        case WebEvent::Char:
-            m_type = PlatformKeyboardEvent::Char;
-            break;
-        default:
-            ASSERT_NOT_REACHED();
+        switch ( webEvent.type() )
+        {
+            case WebEvent::KeyDown:
+                m_type = PlatformKeyboardEvent::KeyDown;
+                break;
+
+            case WebEvent::KeyUp:
+                m_type = PlatformKeyboardEvent::KeyUp;
+                break;
+
+            case WebEvent::RawKeyDown:
+                m_type = PlatformKeyboardEvent::RawKeyDown;
+                break;
+
+            case WebEvent::Char:
+                m_type = PlatformKeyboardEvent::Char;
+                break;
+
+            default:
+                ASSERT_NOT_REACHED();
         }
+
         m_text = webEvent.text();
         m_unmodifiedText = webEvent.unmodifiedText();
         m_keyIdentifier = webEvent.keyIdentifier();
@@ -155,34 +187,38 @@ public:
         m_ctrlKey = webEvent.controlKey();
         m_altKey = webEvent.altKey();
         m_metaKey = webEvent.metaKey();
-        
+
 #if PLATFORM(WIN)
         // FIXME: We should make m_isSystemKey available (and false) on all platforms
-        // to avoid this #define. 
+        // to avoid this #define.
         m_isSystemKey = webEvent.isSystemKey();
 #endif
     }
 };
 
-WebCore::PlatformKeyboardEvent platform(const WebKeyboardEvent& webEvent)
+WebCore::PlatformKeyboardEvent platform( const WebKeyboardEvent &webEvent )
 {
-    return WebKit2PlatformKeyboardEvent(webEvent);
+    return WebKit2PlatformKeyboardEvent( webEvent );
 }
 
 #if ENABLE(GESTURE_EVENTS)
-class WebKit2PlatformGestureEvent : public WebCore::PlatformGestureEvent {
+class WebKit2PlatformGestureEvent : public WebCore::PlatformGestureEvent
+{
 public:
-    WebKit2PlatformGestureEvent(const WebGestureEvent& webEvent)
+    WebKit2PlatformGestureEvent( const WebGestureEvent &webEvent )
     {
-        switch (webEvent.type()) {
-        case WebEvent::GestureScrollBegin:
-            m_type = PlatformGestureEvent::ScrollBeginType;
-            break;
-        case WebEvent::GestureScrollEnd:
-            m_type = PlatformGestureEvent::ScrollEndType;
-            break;
-        default:
-            ASSERT_NOT_REACHED();
+        switch ( webEvent.type() )
+        {
+            case WebEvent::GestureScrollBegin:
+                m_type = PlatformGestureEvent::ScrollBeginType;
+                break;
+
+            case WebEvent::GestureScrollEnd:
+                m_type = PlatformGestureEvent::ScrollEndType;
+                break;
+
+            default:
+                ASSERT_NOT_REACHED();
         }
 
         m_position = webEvent.position();
@@ -191,37 +227,44 @@ public:
     }
 };
 
-WebCore::PlatformGestureEvent platform(const WebGestureEvent& webEvent)
+WebCore::PlatformGestureEvent platform( const WebGestureEvent &webEvent )
 {
-    return WebKit2PlatformGestureEvent(webEvent);
+    return WebKit2PlatformGestureEvent( webEvent );
 }
 #endif
 
 #if ENABLE(TOUCH_EVENTS)
-class WebKit2PlatformTouchPoint : public WebCore::PlatformTouchPoint {
+class WebKit2PlatformTouchPoint : public WebCore::PlatformTouchPoint
+{
 public:
-    WebKit2PlatformTouchPoint(const WebPlatformTouchPoint& webTouchPoint)
+    WebKit2PlatformTouchPoint( const WebPlatformTouchPoint &webTouchPoint )
     {
         m_id = webTouchPoint.id();
 
-        switch (webTouchPoint.state()) {
-        case WebPlatformTouchPoint::TouchReleased:
-            m_state = PlatformTouchPoint::TouchReleased;
-            break;
-        case WebPlatformTouchPoint::TouchPressed:
-            m_state = PlatformTouchPoint::TouchPressed;
-            break;
-        case WebPlatformTouchPoint::TouchMoved:
-            m_state = PlatformTouchPoint::TouchMoved;
-            break;
-        case WebPlatformTouchPoint::TouchStationary:
-            m_state = PlatformTouchPoint::TouchStationary;
-            break;
-        case WebPlatformTouchPoint::TouchCancelled:
-            m_state = PlatformTouchPoint::TouchCancelled;
-            break;
-        default:
-            ASSERT_NOT_REACHED();
+        switch ( webTouchPoint.state() )
+        {
+            case WebPlatformTouchPoint::TouchReleased:
+                m_state = PlatformTouchPoint::TouchReleased;
+                break;
+
+            case WebPlatformTouchPoint::TouchPressed:
+                m_state = PlatformTouchPoint::TouchPressed;
+                break;
+
+            case WebPlatformTouchPoint::TouchMoved:
+                m_state = PlatformTouchPoint::TouchMoved;
+                break;
+
+            case WebPlatformTouchPoint::TouchStationary:
+                m_state = PlatformTouchPoint::TouchStationary;
+                break;
+
+            case WebPlatformTouchPoint::TouchCancelled:
+                m_state = PlatformTouchPoint::TouchCancelled;
+                break;
+
+            default:
+                ASSERT_NOT_REACHED();
         }
 
         m_screenPos = webTouchPoint.screenPosition();
@@ -229,29 +272,37 @@ public:
     }
 };
 
-class WebKit2PlatformTouchEvent : public WebCore::PlatformTouchEvent {
+class WebKit2PlatformTouchEvent : public WebCore::PlatformTouchEvent
+{
 public:
-    WebKit2PlatformTouchEvent(const WebTouchEvent& webEvent)
+    WebKit2PlatformTouchEvent( const WebTouchEvent &webEvent )
     {
-        switch (webEvent.type()) {
-        case WebEvent::TouchStart: 
-            m_type = WebCore::TouchStart; 
-            break;
-        case WebEvent::TouchMove: 
-            m_type = WebCore::TouchMove; 
-            break;
-        case WebEvent::TouchEnd: 
-            m_type = WebCore::TouchEnd; 
-            break;
-        case WebEvent::TouchCancel:
-            m_type = WebCore::TouchCancel;
-            break;
-        default:
-            ASSERT_NOT_REACHED();
+        switch ( webEvent.type() )
+        {
+            case WebEvent::TouchStart:
+                m_type = WebCore::TouchStart;
+                break;
+
+            case WebEvent::TouchMove:
+                m_type = WebCore::TouchMove;
+                break;
+
+            case WebEvent::TouchEnd:
+                m_type = WebCore::TouchEnd;
+                break;
+
+            case WebEvent::TouchCancel:
+                m_type = WebCore::TouchCancel;
+                break;
+
+            default:
+                ASSERT_NOT_REACHED();
         }
 
-        for (int i = 0; i < webEvent.touchPoints().size(); ++i)
-            m_touchPoints.append(WebKit2PlatformTouchPoint(webEvent.touchPoints().at(i)));
+        for ( int i = 0; i < webEvent.touchPoints().size(); ++i )
+        {
+            m_touchPoints.append( WebKit2PlatformTouchPoint( webEvent.touchPoints().at( i ) ) );
+        }
 
         m_ctrlKey = webEvent.controlKey();
         m_altKey = webEvent.altKey();
@@ -260,9 +311,9 @@ public:
     }
 };
 
-WebCore::PlatformTouchEvent platform(const WebTouchEvent& webEvent)
+WebCore::PlatformTouchEvent platform( const WebTouchEvent &webEvent )
 {
-    return WebKit2PlatformTouchEvent(webEvent);
+    return WebKit2PlatformTouchEvent( webEvent );
 }
 #endif
 

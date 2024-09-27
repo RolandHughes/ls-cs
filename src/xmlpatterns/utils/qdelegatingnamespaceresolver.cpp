@@ -27,48 +27,55 @@
 
 using namespace QPatternist;
 
-DelegatingNamespaceResolver::DelegatingNamespaceResolver(const NamespaceResolver::Ptr &resolver) : m_nsResolver(
-      resolver)
+DelegatingNamespaceResolver::DelegatingNamespaceResolver( const NamespaceResolver::Ptr &resolver ) : m_nsResolver(
+        resolver )
 {
-   Q_ASSERT(m_nsResolver);
+    Q_ASSERT( m_nsResolver );
 }
 
-DelegatingNamespaceResolver::DelegatingNamespaceResolver(const NamespaceResolver::Ptr &ns,
-      const Bindings &overrides) : m_nsResolver(ns)
-   , m_bindings(overrides)
+DelegatingNamespaceResolver::DelegatingNamespaceResolver( const NamespaceResolver::Ptr &ns,
+        const Bindings &overrides ) : m_nsResolver( ns )
+    , m_bindings( overrides )
 {
-   Q_ASSERT(m_nsResolver);
+    Q_ASSERT( m_nsResolver );
 }
 
-QXmlName::NamespaceCode DelegatingNamespaceResolver::lookupNamespaceURI(const QXmlName::PrefixCode prefix) const
+QXmlName::NamespaceCode DelegatingNamespaceResolver::lookupNamespaceURI( const QXmlName::PrefixCode prefix ) const
 {
-   const QXmlName::NamespaceCode val(m_bindings.value(prefix, NoBinding));
+    const QXmlName::NamespaceCode val( m_bindings.value( prefix, NoBinding ) );
 
-   if (val == NoBinding) {
-      return m_nsResolver->lookupNamespaceURI(prefix);
-   } else {
-      return val;
-   }
+    if ( val == NoBinding )
+    {
+        return m_nsResolver->lookupNamespaceURI( prefix );
+    }
+    else
+    {
+        return val;
+    }
 }
 
 NamespaceResolver::Bindings DelegatingNamespaceResolver::bindings() const
 {
-   Bindings bs(m_nsResolver->bindings());
-   const Bindings::const_iterator end(m_bindings.constEnd());
-   Bindings::const_iterator it(m_bindings.constBegin());
+    Bindings bs( m_nsResolver->bindings() );
+    const Bindings::const_iterator end( m_bindings.constEnd() );
+    Bindings::const_iterator it( m_bindings.constBegin() );
 
-   for (; it != end; ++it) {
-      bs.insert(it.key(), it.value());
-   }
+    for ( ; it != end; ++it )
+    {
+        bs.insert( it.key(), it.value() );
+    }
 
-   return bs;
+    return bs;
 }
 
-void DelegatingNamespaceResolver::addBinding(const QXmlName nb)
+void DelegatingNamespaceResolver::addBinding( const QXmlName nb )
 {
-   if (nb.namespaceURI() == StandardNamespaces::UndeclarePrefix) {
-      m_bindings.remove(nb.prefix());
-   } else {
-      m_bindings.insert(nb.prefix(), nb.namespaceURI());
-   }
+    if ( nb.namespaceURI() == StandardNamespaces::UndeclarePrefix )
+    {
+        m_bindings.remove( nb.prefix() );
+    }
+    else
+    {
+        m_bindings.insert( nb.prefix(), nb.namespaceURI() );
+    }
 }

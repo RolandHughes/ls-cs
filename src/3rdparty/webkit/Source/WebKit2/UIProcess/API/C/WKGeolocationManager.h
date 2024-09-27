@@ -33,12 +33,14 @@ extern "C" {
 #endif
 
 // Provider.
-typedef void (*WKGeolocationProviderStartUpdatingCallback)(WKGeolocationManagerRef geolocationManager, const void* clientInfo);
-typedef void (*WKGeolocationProviderStopUpdatingCallback)(WKGeolocationManagerRef geolocationManager, const void* clientInfo);
+typedef void ( *WKGeolocationProviderStartUpdatingCallback )( WKGeolocationManagerRef geolocationManager,
+        const void *clientInfo );
+typedef void ( *WKGeolocationProviderStopUpdatingCallback )( WKGeolocationManagerRef geolocationManager, const void *clientInfo );
 
-struct WKGeolocationProvider {
+struct WKGeolocationProvider
+{
     int                                                                 version;
-    const void *                                                        clientInfo;
+    const void                                                         *clientInfo;
     WKGeolocationProviderStartUpdatingCallback                          startUpdating;
     WKGeolocationProviderStopUpdatingCallback                           stopUpdating;
 };
@@ -46,10 +48,12 @@ typedef struct WKGeolocationProvider WKGeolocationProvider;
 
 WK_EXPORT WKTypeID WKGeolocationManagerGetTypeID();
 
-WK_EXPORT void WKGeolocationManagerSetProvider(WKGeolocationManagerRef geolocationManager, const WKGeolocationProvider* provider);
+WK_EXPORT void WKGeolocationManagerSetProvider( WKGeolocationManagerRef geolocationManager,
+        const WKGeolocationProvider *provider );
 
-WK_EXPORT void WKGeolocationManagerProviderDidChangePosition(WKGeolocationManagerRef geolocationManager, WKGeolocationPositionRef position);
-WK_EXPORT void WKGeolocationManagerProviderDidFailToDeterminePosition(WKGeolocationManagerRef geolocationManager);
+WK_EXPORT void WKGeolocationManagerProviderDidChangePosition( WKGeolocationManagerRef geolocationManager,
+        WKGeolocationPositionRef position );
+WK_EXPORT void WKGeolocationManagerProviderDidFailToDeterminePosition( WKGeolocationManagerRef geolocationManager );
 
 #ifdef __cplusplus
 }

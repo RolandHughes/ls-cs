@@ -44,84 +44,99 @@
 
 #if ENABLE(INDEXED_DATABASE)
 
-namespace WebCore {
-
-PassRefPtr<IDBDatabase> IDBDatabase::create(ScriptExecutionContext* context, PassRefPtr<IDBDatabaseBackendInterface> database)
+namespace WebCore
 {
-    return adoptRef(new IDBDatabase(context, database));
+
+PassRefPtr<IDBDatabase> IDBDatabase::create( ScriptExecutionContext *context, PassRefPtr<IDBDatabaseBackendInterface> database )
+{
+    return adoptRef( new IDBDatabase( context, database ) );
 }
 
-IDBDatabase::IDBDatabase(ScriptExecutionContext* context, PassRefPtr<IDBDatabaseBackendInterface> backend)
-    : ActiveDOMObject(context, this)
-    , m_backend(backend)
-    , m_noNewTransactions(false)
-    , m_stopped(false)
+IDBDatabase::IDBDatabase( ScriptExecutionContext *context, PassRefPtr<IDBDatabaseBackendInterface> backend )
+    : ActiveDOMObject( context, this )
+    , m_backend( backend )
+    , m_noNewTransactions( false )
+    , m_stopped( false )
 {
     // We pass a reference of this object before it can be adopted.
     relaxAdoptionRequirement();
-    m_databaseCallbacks = IDBDatabaseCallbacksImpl::create(this);
+    m_databaseCallbacks = IDBDatabaseCallbacksImpl::create( this );
 }
 
 IDBDatabase::~IDBDatabase()
 {
-    m_databaseCallbacks->unregisterDatabase(this);
+    m_databaseCallbacks->unregisterDatabase( this );
 }
 
-void IDBDatabase::setSetVersionTransaction(IDBTransaction* transaction)
+void IDBDatabase::setSetVersionTransaction( IDBTransaction *transaction )
 {
     m_setVersionTransaction = transaction;
 }
 
-PassRefPtr<IDBObjectStore> IDBDatabase::createObjectStore(const String& name, const OptionsObject& options, ExceptionCode& ec)
+PassRefPtr<IDBObjectStore> IDBDatabase::createObjectStore( const String &name, const OptionsObject &options, ExceptionCode &ec )
 {
-    if (!m_setVersionTransaction) {
+    if ( !m_setVersionTransaction )
+    {
         ec = IDBDatabaseException::NOT_ALLOWED_ERR;
         return 0;
     }
 
     String keyPath;
-    options.getKeyString("keyPath", keyPath);
+    options.getKeyString( "keyPath", keyPath );
     bool autoIncrement = false;
-    options.getKeyBool("autoIncrement", autoIncrement);
+    options.getKeyBool( "autoIncrement", autoIncrement );
     // FIXME: Look up evictable and pass that on as well.
 
-    RefPtr<IDBObjectStoreBackendInterface> objectStore = m_backend->createObjectStore(name, keyPath, autoIncrement, m_setVersionTransaction->backend(), ec);
-    if (!objectStore) {
-        ASSERT(ec);
+    RefPtr<IDBObjectStoreBackendInterface> objectStore = m_backend->createObjectStore( name, keyPath, autoIncrement,
+            m_setVersionTransaction->backend(), ec );
+
+    if ( !objectStore )
+    {
+        ASSERT( ec );
         return 0;
     }
-    return IDBObjectStore::create(objectStore.release(), m_setVersionTransaction.get());
+
+    return IDBObjectStore::create( objectStore.release(), m_setVersionTransaction.get() );
 }
 
-void IDBDatabase::deleteObjectStore(const String& name, ExceptionCode& ec)
+void IDBDatabase::deleteObjectStore( const String &name, ExceptionCode &ec )
 {
-    if (!m_setVersionTransaction) {
+    if ( !m_setVersionTransaction )
+    {
         ec = IDBDatabaseException::NOT_ALLOWED_ERR;
         return;
     }
 
-    m_backend->deleteObjectStore(name, m_setVersionTransaction->backend(), ec);
+    m_backend->deleteObjectStore( name, m_setVersionTransaction->backend(), ec );
 }
 
-PassRefPtr<IDBVersionChangeRequest> IDBDatabase::setVersion(ScriptExecutionContext* context, const String& version, ExceptionCode& ec)
+PassRefPtr<IDBVersionChangeRequest> IDBDatabase::setVersion( ScriptExecutionContext *context, const String &version,
+        ExceptionCode &ec )
 {
-    RefPtr<IDBVersionChangeRequest> request = IDBVersionChangeRequest::create(context, IDBAny::create(this), version);
-    m_backend->setVersion(version, request, m_databaseCallbacks, ec);
+    RefPtr<IDBVersionChangeRequest> request = IDBVersionChangeRequest::create( context, IDBAny::create( this ), version );
+    m_backend->setVersion( version, request, m_databaseCallbacks, ec );
     return request;
 }
 
-PassRefPtr<IDBTransaction> IDBDatabase::transaction(ScriptExecutionContext* context, PassRefPtr<DOMStringList> prpStoreNames, unsigned short mode, ExceptionCode& ec)
+PassRefPtr<IDBTransaction> IDBDatabase::transaction( ScriptExecutionContext *context, PassRefPtr<DOMStringList> prpStoreNames,
+        unsigned short mode, ExceptionCode &ec )
 {
     RefPtr<DOMStringList> storeNames = prpStoreNames;
-    if (!storeNames)
-        storeNames = DOMStringList::create();
 
-    if (mode != IDBTransaction::READ_WRITE && mode != IDBTransaction::READ_ONLY) {
+    if ( !storeNames )
+    {
+        storeNames = DOMStringList::create();
+    }
+
+    if ( mode != IDBTransaction::READ_WRITE && mode != IDBTransaction::READ_ONLY )
+    {
         // FIXME: May need to change when specced: http://www.w3.org/Bugs/Public/show_bug.cgi?id=11406
         ec = IDBDatabaseException::CONSTRAINT_ERR;
         return 0;
     }
-    if (m_noNewTransactions) {
+
+    if ( m_noNewTransactions )
+    {
         ec = IDBDatabaseException::NOT_ALLOWED_ERR;
         return 0;
     }
@@ -130,39 +145,46 @@ PassRefPtr<IDBTransaction> IDBDatabase::transaction(ScriptExecutionContext* cont
     // can be queued against the transaction at any point. They will start executing as soon as the
     // appropriate locks have been acquired.
     // Also note that each backend object corresponds to exactly one IDBTransaction object.
-    RefPtr<IDBTransactionBackendInterface> transactionBackend = m_backend->transaction(storeNames.get(), mode, ec);
-    if (!transactionBackend) {
-        ASSERT(ec);
+    RefPtr<IDBTransactionBackendInterface> transactionBackend = m_backend->transaction( storeNames.get(), mode, ec );
+
+    if ( !transactionBackend )
+    {
+        ASSERT( ec );
         return 0;
     }
-    RefPtr<IDBTransaction> transaction = IDBTransaction::create(context, transactionBackend, this);
-    transactionBackend->setCallbacks(transaction.get());
+
+    RefPtr<IDBTransaction> transaction = IDBTransaction::create( context, transactionBackend, this );
+    transactionBackend->setCallbacks( transaction.get() );
     return transaction.release();
 }
 
 void IDBDatabase::close()
 {
-    if (m_noNewTransactions)
+    if ( m_noNewTransactions )
+    {
         return;
+    }
 
-    ASSERT(scriptExecutionContext()->isDocument());
-    EventQueue* eventQueue = static_cast<Document*>(scriptExecutionContext())->eventQueue();
+    ASSERT( scriptExecutionContext()->isDocument() );
+    EventQueue *eventQueue = static_cast<Document *>( scriptExecutionContext() )->eventQueue();
+
     // Remove any pending versionchange events scheduled to fire on this
     // connection. They would have been scheduled by the backend when another
     // connection called setVersion, but the frontend connection is being
     // closed before they could fire.
-    for (size_t i = 0; i < m_enqueuedEvents.size(); ++i) {
-        bool removed = eventQueue->cancelEvent(m_enqueuedEvents[i].get());
-        ASSERT_UNUSED(removed, removed);
+    for ( size_t i = 0; i < m_enqueuedEvents.size(); ++i )
+    {
+        bool removed = eventQueue->cancelEvent( m_enqueuedEvents[i].get() );
+        ASSERT_UNUSED( removed, removed );
     }
 
     m_noNewTransactions = true;
-    m_backend->close(m_databaseCallbacks);
+    m_backend->close( m_databaseCallbacks );
 }
 
-void IDBDatabase::onVersionChange(const String& version)
+void IDBDatabase::onVersionChange( const String &version )
 {
-    enqueueEvent(IDBVersionChangeEvent::create(version, eventNames().versionchangeEvent));
+    enqueueEvent( IDBVersionChangeEvent::create( version, eventNames().versionchangeEvent ) );
 }
 
 bool IDBDatabase::hasPendingActivity() const
@@ -177,26 +199,31 @@ bool IDBDatabase::hasPendingActivity() const
 
 void IDBDatabase::open()
 {
-    m_backend->open(m_databaseCallbacks);
+    m_backend->open( m_databaseCallbacks );
 }
 
-void IDBDatabase::enqueueEvent(PassRefPtr<Event> event)
+void IDBDatabase::enqueueEvent( PassRefPtr<Event> event )
 {
-    ASSERT(scriptExecutionContext()->isDocument());
-    EventQueue* eventQueue = static_cast<Document*>(scriptExecutionContext())->eventQueue();
-    event->setTarget(this);
-    eventQueue->enqueueEvent(event.get());
-    m_enqueuedEvents.append(event);
+    ASSERT( scriptExecutionContext()->isDocument() );
+    EventQueue *eventQueue = static_cast<Document *>( scriptExecutionContext() )->eventQueue();
+    event->setTarget( this );
+    eventQueue->enqueueEvent( event.get() );
+    m_enqueuedEvents.append( event );
 }
 
-bool IDBDatabase::dispatchEvent(PassRefPtr<Event> event)
+bool IDBDatabase::dispatchEvent( PassRefPtr<Event> event )
 {
-    ASSERT(event->type() == eventNames().versionchangeEvent);
-    for (size_t i = 0; i < m_enqueuedEvents.size(); ++i) {
-        if (m_enqueuedEvents[i].get() == event.get())
-            m_enqueuedEvents.remove(i);
+    ASSERT( event->type() == eventNames().versionchangeEvent );
+
+    for ( size_t i = 0; i < m_enqueuedEvents.size(); ++i )
+    {
+        if ( m_enqueuedEvents[i].get() == event.get() )
+        {
+            m_enqueuedEvents.remove( i );
+        }
     }
-    return EventTarget::dispatchEvent(event.get());
+
+    return EventTarget::dispatchEvent( event.get() );
 }
 
 void IDBDatabase::stop()
@@ -207,17 +234,17 @@ void IDBDatabase::stop()
     m_stopped = true;
 }
 
-ScriptExecutionContext* IDBDatabase::scriptExecutionContext() const
+ScriptExecutionContext *IDBDatabase::scriptExecutionContext() const
 {
     return ActiveDOMObject::scriptExecutionContext();
 }
 
-EventTargetData* IDBDatabase::eventTargetData()
+EventTargetData *IDBDatabase::eventTargetData()
 {
     return &m_eventTargetData;
 }
 
-EventTargetData* IDBDatabase::ensureEventTargetData()
+EventTargetData *IDBDatabase::ensureEventTargetData()
 {
     return &m_eventTargetData;
 }
